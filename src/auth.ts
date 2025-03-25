@@ -14,6 +14,9 @@ declare module 'next-auth' {
     user: {
       /** The user's role. */
       role: UserRole
+
+      /** The user's last name. */
+      lastName: string
       /**
        * By default, TypeScript merges new interface properties and overwrites existing ones.
        * In this case, the default session user properties will be overwritten,
@@ -70,9 +73,13 @@ export const {
       return true
     },
     async session({ session, token }) {
-      if (token.sub && session.user) session.user.id = token.sub
+      if (session.user) {
+        if (token.sub) session.user.id = token.sub
 
-      if (token.role && session.user) session.user.role = token.role
+        if (token.role) session.user.role = token.role
+
+        if (token.lastName) session.user.lastName = token.lastName as string
+      }
 
       return session
     },
@@ -84,6 +91,7 @@ export const {
       if (!existingUser || 'error' in existingUser) return token
 
       token.role = existingUser.role
+      token.lastName = existingUser.lastName
 
       return token
     },

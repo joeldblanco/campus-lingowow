@@ -4,14 +4,54 @@ import { signIn, signOut } from '@/auth'
 import { getUserByEmail } from '@/lib/actions/user'
 import { db } from '@/lib/db'
 import handleError from '@/lib/handleError'
-import { sendVerificationEmail } from '@/lib/mail'
-import { generateVerificationToken } from '@/lib/tokens'
+import { sendPasswordResetEmail, sendVerificationEmail } from '@/lib/mail'
+import { generatePasswordResetToken, generateVerificationToken } from '@/lib/tokens'
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes'
-import { SignInSchema, SignUpSchema } from '@/schemas/auth'
+import { NewPasswordSchema, ResetSchema, SignInSchema, SignUpSchema } from '@/schemas/auth'
 import { UserRole } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { AuthError } from 'next-auth'
 import * as z from 'zod'
+
+export const register = async (values: z.infer<typeof SignUpSchema>) => {
+  const validatedFields = SignUpSchema.safeParse(values)
+
+  if (!validatedFields.success) return { error: 'Campos inválidos' }
+
+  const validatedData = validatedFields.data
+
+  const hashedPassword = await bcrypt.hash(validatedData.password, 10)
+
+  const existingUser = await getUserByEmail(validatedData.email)
+
+  if (existingUser) {
+    return { error: 'El correo ya está en uso' }
+  }
+
+  try {
+    await db.user.create({
+      data: {
+        name: validatedData.name,
+        lastName: validatedData.lastName,
+        email: validatedData.email,
+        password: hashedPassword,
+        role: UserRole.GUEST,
+      },
+    })
+
+    const verificationToken = await generateVerificationToken(validatedData.email)
+
+    if ('error' in verificationToken) return { error: verificationToken.error }
+
+    await sendVerificationEmail(verificationToken.email, verificationToken.token)
+
+    return { success: 'Email de verificación enviado' }
+  } catch (error) {
+    return {
+      error: handleError(error) || 'Ocurrió un error al registrar al usuario',
+    }
+  }
+}
 
 export const login = async (values: z.infer<typeof SignInSchema>) => {
   const validatedFields = SignInSchema.safeParse(values)
@@ -59,44 +99,8 @@ export const login = async (values: z.infer<typeof SignInSchema>) => {
   }
 }
 
-export const register = async (values: z.infer<typeof SignUpSchema>) => {
-  const validatedFields = SignUpSchema.safeParse(values)
-
-  if (!validatedFields.success) return { error: 'Campos inválidos' }
-
-  const validatedData = validatedFields.data
-
-  const hashedPassword = await bcrypt.hash(validatedData.password, 10)
-
-  const existingUser = await getUserByEmail(validatedData.email)
-
-  if (existingUser) {
-    return { error: 'El correo ya está en uso' }
-  }
-
-  try {
-    await db.user.create({
-      data: {
-        name: validatedData.name,
-        lastName: validatedData.lastName,
-        email: validatedData.email,
-        password: hashedPassword,
-        role: UserRole.GUEST,
-      },
-    })
-
-    const verificationToken = await generateVerificationToken(validatedData.email)
-
-    if ('error' in verificationToken) return { error: verificationToken.error }
-
-    await sendVerificationEmail(verificationToken.email, verificationToken.token)
-
-    return { success: 'Email de verificación enviado' }
-  } catch (error) {
-    return {
-      error: handleError(error) || 'Ocurrió un error al registrar al usuario',
-    }
-  }
+export const logout = async () => {
+  await signOut()
 }
 
 export const resendVerificationEmail = async (email: string) => {
@@ -193,6 +197,102 @@ export const newVerification = async (token: string) => {
   return { redirect: DEFAULT_LOGIN_REDIRECT }
 }
 
-export const logout = async () => {
-  await signOut()
+export const getPasswordResetTokenByEmail = async (email: string) => {
+  try {
+    const passwordResetToken = await db.passwordResetToken.findFirst({
+      where: {
+        email,
+      },
+    })
+
+    return passwordResetToken
+  } catch (error) {
+    return {
+      error: handleError(error) || 'Ocurrió un error obteniendo el token de recuperación',
+    }
+  }
+}
+
+export const getPasswordResetTokenByToken = async (token: string) => {
+  try {
+    const passwordResetToken = await db.passwordResetToken.findUnique({
+      where: {
+        token,
+      },
+    })
+
+    return passwordResetToken
+  } catch (error) {
+    return {
+      error: handleError(error) || 'Ocurrió un error obteniendo el token de recuperación',
+    }
+  }
+}
+
+export const newPassword = async (
+  values: z.infer<typeof NewPasswordSchema>,
+  token: string | null
+) => {
+  if (!token) return { error: 'Token no encontrado' }
+
+  const validatedFields = NewPasswordSchema.safeParse(values)
+
+  if (!validatedFields.success) return { error: 'Campos inválidos' }
+
+  const validatedData = validatedFields.data
+
+  const existingToken = await getPasswordResetTokenByToken(token)
+
+  if (!existingToken || 'error' in existingToken) {
+    return { error: 'Token no encontrado' }
+  }
+
+  const hasExpired = new Date(existingToken.expires) < new Date()
+
+  if (hasExpired) {
+    return { error: 'El token ha expirado' }
+  }
+
+  const existingUser = await getUserByEmail(existingToken.email)
+
+  if (!existingUser || 'error' in existingUser) {
+    return { error: 'Correo electrónico no encontrado' }
+  }
+
+  await db.user.update({
+    where: {
+      id: existingUser.id,
+    },
+    data: {
+      password: await bcrypt.hash(validatedData.password, 10),
+    },
+  })
+
+  await db.passwordResetToken.delete({
+    where: {
+      id: existingToken.id,
+    },
+  })
+
+  return { success: 'Contraseña actualizada correctamente' }
+}
+
+export const reset = async (values: z.infer<typeof ResetSchema>) => {
+  const validatedFields = ResetSchema.safeParse(values)
+
+  if (!validatedFields.success) return { error: 'Correo electrónico inválido' }
+
+  const validatedData = validatedFields.data
+
+  const existingUser = await getUserByEmail(validatedData.email)
+
+  if (!existingUser) return { error: 'Correo electrónico no encontrado' }
+
+  const passwordResetToken = await generatePasswordResetToken(validatedData.email)
+
+  if ('error' in passwordResetToken) return passwordResetToken
+
+  await sendPasswordResetEmail(validatedData.email, passwordResetToken.token)
+
+  return { success: 'Correo de recuperación enviado' }
 }
