@@ -1,12 +1,3 @@
-import LogoutButton from '@/components/auth/logout-button'
-
-const DashboardPage = () => {
-  return (
-    <>
-      <div>Blablabla</div>
-      <LogoutButton />
-    </>
-  )
+export default function Page() {
+  return <p>Dashboard</p>
 }
-
-export default DashboardPage
