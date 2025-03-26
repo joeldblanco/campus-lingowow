@@ -1,36 +1,136 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ![Lingowow Logo](https://yt3.ggpht.com/MQLQ3Crl2-qmBiapRO0shemkdUDvHP-csNHbRrRWUpnZ4qVs_jrpnRdsKB4WjbnzZrLHIDRvhQ=s68-c-k-c0x00ffffff-no-rj) 
+# Lingowow - Campus Virtual
 
-## Getting Started
+**Lingowow** es el campus virtual de nuestra academia de idiomas en línea. Desde aquí, estudiantes, profesores, administradores e invitados pueden interactuar con los cursos y gestionar diversas funciones.
 
-First, run the development server:
+## ✨ Características
+
+🔹 **Estudiantes**:
+
+-   Acceden a los contenidos de sus cursos.
+    
+-   Agendan clases con sus profesores.
+    
+-   Ven grabaciones de sus sesiones.
+    
+
+🔹 **Profesores**:
+
+-   Administran sus horarios de disponibilidad.
+    
+-   Consultan sus ingresos según estudiantes y programas.
+    
+
+🔹 **Invitados**:
+
+-   Pueden ver previews de los cursos.
+    
+-   Acceden a la tienda de productos y programas.
+    
+
+🔹 **Administradores**:
+
+-   Gestionan cursos, productos e inscripciones.
+    
+-   Revisan métricas de ventas, clases e ingresos.
+    
+-   Agendan clases a profesores y generan facturas.
+    
+
+----------
+
+## 🏗️ Tecnologías Usadas
+
+-   **Next.js** - Framework para la aplicación web.
+    
+-   **Prisma** - ORM para gestionar la base de datos.
+    
+-   **Auth.js** - Autenticación de usuarios.
+    
+-   **PostgreSQL** - Base de datos.
+    
+-   **Resend** - API de emails transaccionales.
+    
+
+----------
+
+## 📂 Estructura del Proyecto
+
+```
+/app        # Rutas y vistas principales  
+/components # Componentes reutilizables de la UI  
+/lib        # Helpers y funciones auxiliares  
+/prisma     # Definiciones del esquema de la base de datos  
+/public     # Archivos estáticos  
+/scripts    # Scripts útiles para mantenimiento  
+.env.example # Variables de entorno necesarias  
+
+```
+
+----------
+
+## 🚀 Instalación y Ejecución
+
+### **1️⃣ Clonar el repositorio**
+
+```bash
+git clone https://github.com/tu-usuario/lingowow.git
+cd lingowow
+
+```
+
+### **2️⃣ Configurar variables de entorno**
+
+Crea un archivo `.env` en la raíz con el siguiente formato:
+
+```env
+DATABASE_URL=tu_database_url
+AUTH_GOOGLE_ID=tu_google_id
+AUTH_GOOGLE_SECRET=tu_google_secret
+RESEND_API_KEY=tu_resend_api_key
+AUTH_SECRET=tu_auth_secret
+JWT_SECRET=tu_jwt_secret
+NEXT_PUBLIC_DOMAIN=tu_dominio
+
+```
+
+### **3️⃣ Instalar dependencias**
+
+```bash
+npm install
+
+```
+
+### **4️⃣ Ejecutar el proyecto en local**
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+----------
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔧 Despliegue (en proceso)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+El despliegue se realizará en **Vercel** para la aplicación y **Neon** para la base de datos. 🚀
 
-## Learn More
+----------
 
-To learn more about Next.js, take a look at the following resources:
+## 📝 Mantenimiento y Administración
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+-   **Base de datos**: Actualmente en PostgreSQL. Se planea migrar a Neon.
+    
+-   **Autenticación**: Usando Google con `Auth.js`.
+    
+-   **Envío de emails**: Implementado con **Resend**.
+    
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+⚠️ _Si realizas cambios en la API o la estructura de datos, recuerda actualizar la documentación._
 
-## Deploy on Vercel
+----------
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📌 Notas Internas
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+-   No hay documentación formal aún. Se recomienda crear una carpeta `/docs` para ello.
+    
+-   Se evaluará la configuración de CI/CD para automatizar el despliegue.
