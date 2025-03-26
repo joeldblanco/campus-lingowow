@@ -1,0 +1,173 @@
+import { Course } from '@/types/shop'
+
+// Sample data
+export const courses: Course[] = [
+  {
+    id: 'spanish-101',
+    title: 'Spanish for Beginners',
+    description: 'Learn the basics of Spanish with our comprehensive beginner course.',
+    levels: ['Beginner', 'Intermediate', 'Advanced'],
+    language: 'Spanish',
+    category: 'Language',
+    image: '/media/images/sagrada_familia-min.png?height=200&width=300',
+    plans: [
+      {
+        id: 'spanish-101-basic',
+        name: 'Basic',
+        price: 49.99,
+        features: ['3-month access', '10 lessons', 'Basic exercises', 'Email support'],
+      },
+      {
+        id: 'spanish-101-standard',
+        name: 'Standard',
+        price: 89.99,
+        features: [
+          '6-month access',
+          '20 lessons',
+          'Interactive exercises',
+          'Email & chat support',
+          '1 live session per month',
+        ],
+      },
+      {
+        id: 'spanish-101-premium',
+        name: 'Premium',
+        price: 149.99,
+        features: [
+          '12-month access',
+          'All lessons',
+          'Advanced exercises',
+          'Priority support',
+          '4 live sessions per month',
+          'Certificate of completion',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'french-101',
+    title: 'French Essentials',
+    description: 'Master the essentials of French language and culture.',
+    levels: ['Beginner'],
+    language: 'French',
+    category: 'Language',
+    image: '/media/images/eiffel_tower-min.png?height=200&width=300',
+    plans: [
+      {
+        id: 'french-101-basic',
+        name: 'Basic',
+        price: 49.99,
+        features: ['3-month access', '10 lessons', 'Basic exercises', 'Email support'],
+      },
+      {
+        id: 'french-101-standard',
+        name: 'Standard',
+        price: 89.99,
+        features: [
+          '6-month access',
+          '20 lessons',
+          'Interactive exercises',
+          'Email & chat support',
+          '1 live session per month',
+        ],
+      },
+      {
+        id: 'french-101-premium',
+        name: 'Premium',
+        price: 149.99,
+        features: [
+          '12-month access',
+          'All lessons',
+          'Advanced exercises',
+          'Priority support',
+          '4 live sessions per month',
+          'Certificate of completion',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'german-101',
+    title: 'German Foundations',
+    description: 'Build a solid foundation in German language skills.',
+    levels: ['Advanced'],
+    language: 'German',
+    category: 'Language',
+    image: '/media/images/brandenburg_gate-min.png?height=200&width=300',
+    plans: [
+      {
+        id: 'german-101-basic',
+        name: 'Basic',
+        price: 49.99,
+        features: ['3-month access', '10 lessons', 'Basic exercises', 'Email support'],
+      },
+      {
+        id: 'german-101-standard',
+        name: 'Standard',
+        price: 89.99,
+        features: [
+          '6-month access',
+          '20 lessons',
+          'Interactive exercises',
+          'Email & chat support',
+          '1 live session per month',
+        ],
+      },
+      {
+        id: 'german-101-premium',
+        name: 'Premium',
+        price: 149.99,
+        features: [
+          '12-month access',
+          'All lessons',
+          'Advanced exercises',
+          'Priority support',
+          '4 live sessions per month',
+          'Certificate of completion',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'english-101',
+    title: 'English Fundamentals',
+    description: 'Learn the fundamentals of English language and writing systems.',
+    levels: ['Beginner', 'Intermediate', 'Advanced'],
+    language: 'English',
+    category: 'Language',
+    image: '/media/images/statue_of_liberty-min.png?height=200&width=300',
+    plans: [
+      {
+        id: 'english-101-basic',
+        name: 'Basic',
+        price: 59.99,
+        features: ['3-month access', '10 lessons', 'Basic exercises', 'Email support'],
+      },
+      {
+        id: 'english-101-standard',
+        name: 'Standard',
+        price: 99.99,
+        features: [
+          '6-month access',
+          '20 lessons',
+          'Interactive exercises',
+          'Email & chat support',
+          '1 live session per month',
+        ],
+      },
+      {
+        id: 'english-101-premium',
+        name: 'Premium',
+        price: 169.99,
+        features: [
+          '12-month access',
+          'All lessons',
+          'Advanced exercises',
+          'Priority support',
+          '4 live sessions per month',
+          'Certificate of completion',
+        ],
+      },
+    ],
+  },
+]
