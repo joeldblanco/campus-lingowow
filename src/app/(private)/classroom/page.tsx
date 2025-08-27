@@ -2,15 +2,11 @@
 'use client'
 
 import { ClassroomLayout } from '@/components/classroom/classroom-layout'
+import { useSearchParams } from 'next/navigation'
 
-interface ClassroomPageProps {
-  params: {
-    id: string
-  }
-}
-
-export default function ClassroomPage({ params }: ClassroomPageProps) {
-  const classId = params.id
+export default function ClassroomPage() {
+  const searchParams = useSearchParams()
+  const classId = searchParams.get('id') ?? ''
 
   // En un caso real, estos datos vendrían de tu base de datos
   const mockData = {

@@ -1,7 +1,7 @@
 // Este archivo iría en /app/cursos/[courseId]/agendar/page.tsx
 'use client'
 
-import { useState } from 'react'
+import { useState, use } from 'react'
 import { useRouter } from 'next/navigation'
 import { Calendar } from '@/components/ui/calendar'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -12,12 +12,13 @@ import { CalendarIcon, ChevronLeft } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface ScheduleClassPageProps {
-  params: {
+  params: Promise<{
     courseId: string
-  }
+  }>
 }
 
 export default function ScheduleClassPage({ params }: ScheduleClassPageProps) {
+  const resolvedParams = use(params)
   const [selectedTab, setSelectedTab] = useState<string>('calendar')
   const [selectedTeacher, setSelectedTeacher] = useState<string>('')
   // const [selectedDayOfWeek, setSelectedDayOfWeek] = useState<number>(0)
@@ -89,7 +90,7 @@ export default function ScheduleClassPage({ params }: ScheduleClassPageProps) {
         </TabsContent>
 
         <TabsContent value="teacher">
-          <AvailableTeachers courseId={params.courseId} onSelectTimeSlot={handleSelectTimeSlot} />
+          <AvailableTeachers courseId={resolvedParams.courseId} onSelectTimeSlot={handleSelectTimeSlot} />
 
           {selectedTeacher && (
             <Card className="mt-8">
@@ -100,7 +101,7 @@ export default function ScheduleClassPage({ params }: ScheduleClassPageProps) {
               <CardContent className="space-y-4">
                 <div className="grid gap-1">
                   <p className="text-sm font-medium">Detalles de la clase:</p>
-                  <p className="text-sm">Curso: {params.courseId}</p>
+                  <p className="text-sm">Curso: {resolvedParams.courseId}</p>
                   <p className="text-sm">ID del profesor: {selectedTeacher}</p>
                   <p className="text-sm">
                     Horario: {selectedStartTime} - {selectedEndTime}
