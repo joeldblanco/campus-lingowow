@@ -28,7 +28,7 @@ export default auth(async (req) => {
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
   const isAdminAuthRoute = nextUrl.pathname.startsWith(adminPrefix)
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
+  const isPublicRoute = matchesPathPattern(nextUrl.pathname, publicRoutes)
   const isAuthRoute = authRoutes.includes(nextUrl.pathname)
 
   if (isApiAuthRoute) {
@@ -50,14 +50,6 @@ export default auth(async (req) => {
     if (!isAdmin) {
       return NextResponse.redirect(new URL('/not-authorized', nextUrl))
     }
-  } else {
-    if (isAdmin) {
-      return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
-    }
-  }
-
-  if (nextUrl.pathname === '/') {
-    return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
   }
 
   return NextResponse.next()
@@ -65,4 +57,19 @@ export default auth(async (req) => {
 
 export const config = {
   matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trcp)(.*)'],
+}
+
+const matchesPathPattern = (path: string, patterns: string[]) => {
+  return patterns.some((pattern) => {
+    // Caso exacto
+    if (!pattern.includes('*')) return pattern === path
+
+    // Caso con comodín
+    if (pattern.endsWith('*')) {
+      const prefix = pattern.slice(0, -1)
+      return path.startsWith(prefix)
+    }
+
+    return false
+  })
 }

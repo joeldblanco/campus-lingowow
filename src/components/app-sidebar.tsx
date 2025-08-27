@@ -1,21 +1,35 @@
 'use client'
 
-import { BookOpenText, Frame, Laptop, LayoutDashboard, Map, PieChart, Store } from 'lucide-react'
+import {
+  Book,
+  BookOpenText,
+  Calendar,
+  CreditCard,
+  FileText,
+  GraduationCap,
+  Laptop,
+  LayoutDashboard,
+  Package,
+  Receipt,
+  Shapes,
+  ShoppingCart,
+  Store,
+  Tag,
+  Trophy,
+  UserCheck,
+  Users,
+  Zap,
+} from 'lucide-react'
 import * as React from 'react'
 
+import { NavAdmin } from '@/components/nav-admin'
 import { NavMain } from '@/components/nav-main'
-import { NavProjects } from '@/components/nav-projects'
 import { NavUser } from '@/components/nav-user'
 import CompanySidebarHeader from '@/components/sidebar/company-sidebar-header'
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarRail,
-} from '@/components/ui/sidebar'
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@/components/ui/sidebar'
 import { ROLES } from '@/lib/constants'
 import { useSession } from 'next-auth/react'
+import { UserRole } from '@prisma/client'
 
 const data = {
   navMain: [
@@ -40,22 +54,100 @@ const data = {
       url: '/classroom',
       icon: Laptop,
     },
+    {
+      title: 'Actividades',
+      url: '/activities',
+      icon: Shapes,
+    },
   ],
-  projects: [
+  navAdmin: [
     {
-      name: 'Design Engineering',
-      url: '#',
-      icon: Frame,
+      title: 'Gestión de Usuarios',
+      icon: Users,
+      subItems: [
+        {
+          title: 'Usuarios',
+          url: '/admin/users',
+          icon: Users,
+        },
+        {
+          title: 'Inscripciones',
+          url: '/admin/enrollments',
+          icon: UserCheck,
+        },
+      ],
     },
     {
-      name: 'Sales & Marketing',
-      url: '#',
-      icon: PieChart,
+      title: 'Gestión Académica',
+      icon: Book,
+      subItems: [
+        {
+          title: 'Períodos Académicos',
+          url: '/admin/academic-periods',
+          icon: Calendar,
+        },
+        {
+          title: 'Cursos',
+          url: '/admin/courses',
+          icon: BookOpenText,
+        },
+        {
+          title: 'Clases',
+          url: '/admin/classes',
+          icon: GraduationCap,
+        },
+        {
+          title: 'Calificaciones',
+          url: '/admin/grades',
+          icon: Trophy,
+        },
+        {
+          title: 'Exámenes',
+          url: '/admin/exams',
+          icon: FileText,
+        },
+        {
+          title: 'Actividades',
+          url: '/admin/activities',
+          icon: Shapes,
+        },
+      ],
     },
     {
-      name: 'Travel',
-      url: '#',
-      icon: Map,
+      title: 'Gestión Comercial',
+      icon: ShoppingCart,
+      subItems: [
+        {
+          title: 'Facturas',
+          url: '/admin/invoices',
+          icon: Receipt,
+        },
+        {
+          title: 'Productos',
+          url: '/admin/products',
+          icon: Package,
+        },
+        {
+          title: 'Planes',
+          url: '/admin/plans',
+          icon: CreditCard,
+        },
+        {
+          title: 'Categorías',
+          url: '/admin/categories',
+          icon: Tag,
+        },
+        {
+          title: 'Características',
+          url: '/admin/features',
+          icon: Zap,
+        },
+        {
+          title: 'Cupones',
+          url: '/admin/coupons',
+          icon: Tag,
+        },
+      ],
     },
   ],
 }
@@ -89,12 +181,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        {user.role === UserRole.ADMIN && <NavAdmin sections={data.navAdmin} />}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />
       </SidebarFooter>
-      <SidebarRail />
     </Sidebar>
   )
 }

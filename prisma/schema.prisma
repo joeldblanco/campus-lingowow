@@ -1,8 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// This is your Prisma schema file
+// learn more: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
@@ -13,22 +10,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id            String    @id @default(cuid())
-  name          String
-  lastName      String    @default("")
-  email         String    @unique
-  password      String?
-  emailVerified DateTime?
-  role          UserRole  @default(GUEST)
-  image         String?
-  accounts      Account[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+// =============================================
+// MODELOS PRINCIPALES
+// =============================================
 
 model Account {
+  id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
@@ -41,12 +28,662 @@ model Account {
   id_token          String?
   session_state     String?
 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model User {
+  id            String     @id @default(cuid())
+  name          String
+  lastName      String     @default("")
+  email         String     @unique
+  password      String?
+  emailVerified DateTime?
+  role          UserRole   @default(GUEST)
+  status        UserStatus @default(ACTIVE)
+  image         String?
+  bio           String? // Datos del profesor integrados
+  permissions   String[] // Permisos para administradores
+  accounts      Account[]
+  teacherRankId String?
+
+  // Información básica de roles
+  isStudent Boolean @default(false)
+  isTeacher Boolean @default(false)
+  isAdmin   Boolean @default(false)
+
+  // Relaciones comunes
+  createdCourses    Course[]
+  enrollments       Enrollment[]
+  completedContents UserContent[]
+  viewedResources   ResourceView[]
+  savedResources    UserResource[]
+  activities        UserActivity[]
+
+  // Relaciones del sistema de clases
+  bookingsAsStudent   ClassBooking[]        @relation("StudentBookings")
+  bookingsAsTeacher   ClassBooking[]        @relation("TeacherBookings")
+  classSchedules      ClassSchedule[]       @relation("TeacherSchedules")
+  studentPeriods      StudentPeriod[]
+  studentCredits      StudentCredit[]
+  classCredits        ClassCredit[]
+  teacherIncentives   TeacherIncentive[]
+  teacherAvailability TeacherAvailability[]
+
+  // Relación de profesor
+  teacherRank TeacherRank? @relation(fields: [teacherRankId], references: [id])
+  
+  // Relación de racha de usuario
+  userStreak UserStreak?
+  
+  // Relaciones comerciales
+  invoices Invoice[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([role])
+  @@index([teacherRankId])
+}
+
+model UserStreak {
+  userId           String    @id
+  currentStreak    Int       @default(0)
+  longestStreak    Int       @default(0)
+  lastActivityDate DateTime?
+  updatedAt        DateTime  @updatedAt
+  
+  // Relación con User
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@id([provider, providerAccountId])
+  @@map("user_streaks")
+}
+
+// =============================================
+// MODELOS DE CONTENIDO EDUCATIVO
+// =============================================
+
+model Course {
+  id          String  @id @default(cuid())
+  title       String
+  description String
+  language    String
+  level       String
+  isPublished Boolean @default(false)
+  createdById String
+
+  // Relaciones
+  createdBy   User         @relation(fields: [createdById], references: [id])
+  modules     Module[]
+  enrollments Enrollment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([createdById])
+  @@map("courses")
+}
+
+model Module {
+  id          String  @id @default(cuid())
+  title       String
+  description String?
+  level       Int     @default(1)
+  order       Int     @default(0)
+  isPublished Boolean @default(false)
+  courseId    String
+
+  // Relaciones
+  course     Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons    Lesson[]
+  activities ModuleActivity[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([courseId])
+  @@map("modules")
+}
+
+model Lesson {
+  id          String @id @default(cuid())
+  title       String
+  description String
+  order       Int    @default(0)
+  moduleId    String
+
+  // Relaciones
+  module     Module           @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  contents   Content[]
+  activities LessonActivity[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([moduleId])
+  @@map("lessons")
+}
+
+model Content {
+  id          String      @id @default(cuid())
+  title       String
+  description String
+  order       Int         @default(0)
+  contentType ContentType
+  lessonId    String
+
+  // Relaciones
+  lesson       Lesson        @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  userProgress UserContent[]
+
+  // Tipos específicos de contenido - relaciones 1:1
+  grammarCard          GrammarCard?
+  leveledText          LeveledText?
+  thematicGlossary     ThematicGlossary?
+  downloadableResource DownloadableResource?
+  activity             Activity?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([lessonId])
+  @@map("contents")
+}
+
+model Activity {
+  id           String       @id @default(cuid())
+  contentId    String?      @unique // Opcional: puede existir independientemente
+  title        String
+  description  String
+  activityType ActivityType
+  level        Int          @default(1)
+  points       Int          @default(10)
+  duration     Int          @default(5) // en minutos
+  activityData Json // Estructura de la actividad
+  steps        Json // Pasos de la actividad con su estructura tipada
+  questions    Json? // Preguntas, opciones y respuestas
+  timeLimit    Int? // Tiempo límite en segundos
+  createdById  String
+  isPublished  Boolean      @default(false)
+
+  // Relaciones
+  content      Content?         @relation(fields: [contentId], references: [id])
+  modules      ModuleActivity[]
+  lessons      LessonActivity[]
+  userProgress UserActivity[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([contentId])
+  @@map("activities")
+}
+
+// Tipos específicos de contenido
+
+model GrammarCard {
+  id            String  @id @default(cuid())
+  contentId     String  @unique
+  level         String
+  grammarPoints Json // Puntos gramaticales con ejemplos
+  explanations  Json // Explicaciones detalladas
+  notes         String?
+
+  // Relación
+  content Content @relation(fields: [contentId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("grammar_cards")
+}
+
+model LeveledText {
+  id          String  @id @default(cuid())
+  contentId   String  @unique
+  level       String
+  textContent String // Texto completo
+  translation String? // Traducción opcional
+  audioUrl    String? // URL al archivo de audio
+  vocabulary  Json? // Palabras destacadas
+  exercises   Json? // Ejercicios de comprensión
+
+  // Relación
+  content Content @relation(fields: [contentId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("leveled_texts")
+}
+
+model ThematicGlossary {
+  id         String @id @default(cuid())
+  contentId  String @unique
+  theme      String // Tema del glosario
+  level      String
+  terms      Json // Términos con definiciones
+  categories Json? // Categorías para términos
+
+  // Relación
+  content Content @relation(fields: [contentId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("thematic_glossaries")
+}
+
+model DownloadableResource {
+  id           String       @id @default(cuid())
+  contentId    String       @unique
+  resourceType ResourceType
+  fileUrl      String // URL al archivo
+  fileSize     Int // Tamaño en bytes
+  fileFormat   String // PDF, DOCX, etc.
+  previewUrl   String? // URL a vista previa
+  pages        Int? // Número de páginas
+  downloads    Int          @default(0)
+
+  // Relaciones
+  content   Content        @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  userSaves UserResource[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("downloadable_resources")
+}
+
+// =============================================
+// MODELOS DE SEGUIMIENTO DE PROGRESO
+// =============================================
+
+model UserContent {
+  id           String    @id @default(cuid())
+  userId       String
+  contentId    String
+  completed    Boolean   @default(false)
+  percentage   Float     @default(0)
+  lastAccessed DateTime?
+
+  // Relaciones
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content Content @relation(fields: [contentId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, contentId])
+  @@index([userId])
+  @@index([contentId])
+  @@map("user_contents")
+}
+
+model UserActivity {
+  userId        String
+  activityId    String
+  status        ActivityStatus @default(ASSIGNED)
+  score         Float?
+  answers       Json? // Respuestas dadas
+  attempts      Int            @default(0)
+  completedAt   DateTime?
+  lastAttemptAt DateTime?
+  assignedBy    String?
+  assignedAt    DateTime       @default(now())
+
+  // Relaciones
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activity Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  @@id([userId, activityId])
+  @@index([userId])
+  @@index([activityId])
+  @@map("user_activities")
+}
+
+model ResourceView {
+  id        String   @id @default(cuid())
+  userId    String
+  contentId String
+  viewedAt  DateTime @default(now())
+
+  // Relación
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([contentId])
+  @@map("resource_views")
+}
+
+model UserResource {
+  id         String   @id @default(cuid())
+  userId     String
+  resourceId String
+  savedAt    DateTime @default(now())
+
+  // Relaciones
+  user     User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resource DownloadableResource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, resourceId])
+  @@index([userId])
+  @@index([resourceId])
+  @@map("user_resources")
+}
+
+model Enrollment {
+  id             String           @id @default(cuid())
+  studentId      String
+  courseId       String
+  status         EnrollmentStatus @default(ACTIVE)
+  progress       Float            @default(0)
+  enrollmentDate DateTime         @default(now())
+  lastAccessed   DateTime?
+
+  // Relaciones
+  student User   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  course  Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, courseId])
+  @@index([studentId])
+  @@index([courseId])
+  @@map("enrollments")
+}
+
+// =============================================
+// MODELOS DE RELACIÓN (TABLAS PIVOTE)
+// =============================================
+
+model ModuleActivity {
+  moduleId   String
+  activityId String
+  order      Int    @default(0)
+
+  // Relaciones
+  module   Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  activity Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  @@id([moduleId, activityId])
+  @@index([moduleId])
+  @@index([activityId])
+  @@map("module_activities")
+}
+
+model LessonActivity {
+  lessonId   String
+  activityId String
+  order      Int    @default(0)
+
+  // Relaciones
+  lesson   Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  activity Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  @@id([lessonId, activityId])
+  @@index([lessonId])
+  @@index([activityId])
+  @@map("lesson_activities")
+}
+
+// =============================================
+// MODELOS DE CLASES Y PERÍODOS ACADÉMICOS
+// =============================================
+
+model ClassBooking {
+  id              String        @id @default(cuid())
+  studentId       String
+  teacherId       String
+  day             String // YYYY-MM-DD
+  timeSlot        String // HH:MM-HH:MM
+  status          BookingStatus @default(CONFIRMED)
+  notes           String?
+  reminderSent    Boolean       @default(false)
+  feedbackId      String?
+  cancelledAt     DateTime?
+  cancelledBy     String?
+  completedAt     DateTime?
+  studentPeriodId String?
+  creditId        String?
+
+  // Relaciones
+  student       User           @relation("StudentBookings", fields: [studentId], references: [id])
+  teacher       User           @relation("TeacherBookings", fields: [teacherId], references: [id])
+  studentPeriod StudentPeriod? @relation(fields: [studentPeriodId], references: [id])
+  studentCredit StudentCredit? @relation(fields: [creditId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([teacherId, day, timeSlot])
+  @@index([studentId])
+  @@index([teacherId])
+  @@index([studentPeriodId])
+  @@map("class_bookings")
+}
+
+model Season {
+  id          String   @id @default(cuid())
+  name        String
+  year        Int
+  startDate   DateTime
+  endDate     DateTime
+  description String?
+
+  // Relaciones
+  periods AcademicPeriod[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([name, year])
+  @@index([year])
+  @@map("seasons")
+}
+
+model AcademicPeriod {
+  id            String   @id @default(cuid())
+  name          String
+  startDate     DateTime
+  endDate       DateTime
+  seasonId      String
+  isSpecialWeek Boolean  @default(false)
+  isActive      Boolean  @default(false)
+
+  // Relaciones
+  season            Season             @relation(fields: [seasonId], references: [id])
+  studentPeriods    StudentPeriod[]
+  classCredits      ClassCredit[]
+  teacherIncentives TeacherIncentive[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([seasonId])
+  @@index([startDate, endDate])
+  @@map("academic_periods")
+}
+
+model StudentPeriod {
+  id              String  @id @default(cuid())
+  studentId       String
+  periodId        String
+  packageType     String
+  classesTotal    Int
+  classesAttended Int     @default(0)
+  classesMissed   Int     @default(0)
+  proratedStart   Boolean @default(false)
+  proratedClasses Int     @default(0)
+
+  // Relaciones
+  student   User            @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  period    AcademicPeriod  @relation(fields: [periodId], references: [id])
+  schedules ClassSchedule[]
+  bookings  ClassBooking[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentId, periodId])
+  @@index([studentId])
+  @@index([periodId])
+  @@map("student_periods")
+}
+
+model ClassSchedule {
+  id              String @id @default(cuid())
+  studentPeriodId String
+  teacherId       String
+  dayOfWeek       Int // 0-6, 0 es domingo
+  startTime       String // HH:MM
+  endTime         String // HH:MM
+
+  // Relaciones
+  studentPeriod StudentPeriod @relation(fields: [studentPeriodId], references: [id], onDelete: Cascade)
+  teacher       User          @relation("TeacherSchedules", fields: [teacherId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentPeriodId, dayOfWeek, startTime])
+  @@index([teacherId, dayOfWeek])
+  @@map("class_schedules")
+}
+
+model ClassCredit {
+  id             String   @id @default(cuid())
+  studentId      String
+  originPeriodId String
+  targetPeriodId String?
+  creditAmount   Int      @default(1)
+  isUsed         Boolean  @default(false)
+  expiryDate     DateTime
+
+  // Relaciones
+  student      User           @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  originPeriod AcademicPeriod @relation(fields: [originPeriodId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([studentId])
+  @@index([originPeriodId])
+  @@index([targetPeriodId])
+  @@map("class_credits")
+}
+
+model StudentCredit {
+  id         String   @id @default(cuid())
+  studentId  String
+  amount     Int      @default(1)
+  source     String // rollover, perfect_attendance, etc.
+  isUsed     Boolean  @default(false)
+  usedFor    String? // class, discount, materials, etc.
+  expiryDate DateTime
+
+  // Relaciones
+  student  User           @relation(fields: [studentId], references: [id])
+  bookings ClassBooking[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([studentId])
+  @@map("student_credits")
+}
+
+model TeacherIncentive {
+  id          String    @id @default(cuid())
+  teacherId   String
+  periodId    String
+  type        String // retention, perfect_attendance, etc.
+  percentage  Float
+  baseAmount  Float
+  bonusAmount Float
+  paid        Boolean   @default(false)
+  paidAt      DateTime?
+
+  // Relaciones
+  teacher User           @relation(fields: [teacherId], references: [id])
+  period  AcademicPeriod @relation(fields: [periodId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([teacherId, periodId])
+  @@map("teacher_incentives")
+}
+
+model TeacherRank {
+  id                String @id @default(cuid())
+  name              String // Basic, Certified, Senior, Master
+  level             Int // 1, 2, 3, 4
+  rateMultiplier    Float // 1.0, 1.05, 1.1, 1.15
+  requirementHours  Int
+  requirementRating Float
+  requirementTime   Int // Meses mínimos en plataforma
+
+  // Relaciones
+  teachers User[]
+
+  @@map("teacher_ranks")
+}
+
+model TeacherAvailability {
+  id        String @id @default(cuid())
+  userId    String
+  day       String // Día semana o fecha específica YYYY-MM-DD
+  startTime String // HH:MM
+  endTime   String // HH:MM
+
+  // Relación
+  user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, day, startTime, endTime])
+  @@index([userId, day])
+  @@map("teacher_availability")
+}
+
+// =============================================
+// MODELOS DE CONFIGURACIÓN Y SOPORTE
+// =============================================
+
+model CalendarSettings {
+  id                      String @id @default(cuid())
+  userId                  String @unique
+  slotDuration            Int    @default(30)
+  startHour               Float  @default(8)
+  endHour                 Float  @default(16.5)
+  maxBookingsPerStudent   Int    @default(3)
+  bookingAdvanceNotice    Int    @default(24)
+  cancellationWindow      Int    @default(12)
+  rescheduleMinutes       Int    @default(60)
+  maxReschedulesPerPeriod Int    @default(2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("calendar_settings")
+}
+
+// =============================================
+// MODELOS DE TOKENS Y VERIFICACIÓN
+// =============================================
+
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+  @@map("password_reset_tokens")
 }
 
 model VerificationToken {
@@ -56,20 +693,283 @@ model VerificationToken {
   expires DateTime
 
   @@unique([email, token])
+  @@map("verification_tokens")
 }
 
-model PasswordResetToken {
-  id      String   @id @default(cuid())
-  email   String
-  token   String   @unique
-  expires DateTime
+// =============================================
+// MODELOS COMERCIALES
+// =============================================
 
-  @@unique([email, token])
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  image       String?
+  isActive    Boolean   @default(true)
+  sortOrder   Int       @default(0)
+  
+  // Relaciones
+  products Product[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("categories")
 }
+
+model Feature {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+  icon        String?
+  isActive    Boolean @default(true)
+  
+  // Relaciones
+  planFeatures PlanFeature[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("features")
+}
+
+model Product {
+  id          String        @id @default(cuid())
+  name        String
+  slug        String        @unique
+  description String?
+  shortDesc   String?
+  price       Float
+  comparePrice Float?
+  sku         String?       @unique
+  image       String?
+  images      String[]
+  isActive    Boolean       @default(true)
+  isDigital   Boolean       @default(true)
+  stock       Int?
+  categoryId  String?
+  
+  // Relaciones
+  category     Category?     @relation(fields: [categoryId], references: [id])
+  plans        Plan[]
+  invoiceItems InvoiceItem[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([categoryId])
+  @@map("products")
+}
+
+model Plan {
+  id           String        @id @default(cuid())
+  name         String
+  slug         String        @unique
+  description  String?
+  price        Float
+  comparePrice Float?
+  duration     Int           // en días
+  isActive     Boolean       @default(true)
+  isPopular    Boolean       @default(false)
+  sortOrder    Int           @default(0)
+  productId    String?
+  
+  // Relaciones
+  product      Product?      @relation(fields: [productId], references: [id])
+  features     PlanFeature[]
+  invoiceItems InvoiceItem[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([productId])
+  @@map("plans")
+}
+
+model PlanFeature {
+  planId    String
+  featureId String
+  included  Boolean @default(true)
+  value     String? // Para características con valores específicos
+  
+  // Relaciones
+  plan    Plan    @relation(fields: [planId], references: [id], onDelete: Cascade)
+  feature Feature @relation(fields: [featureId], references: [id], onDelete: Cascade)
+  
+  @@id([planId, featureId])
+  @@map("plan_features")
+}
+
+model Coupon {
+  id           String      @id @default(cuid())
+  code         String      @unique
+  name         String?
+  description  String?
+  type         CouponType  @default(PERCENTAGE)
+  value        Float       // Porcentaje o cantidad fija
+  minAmount    Float?      // Monto mínimo para aplicar
+  maxDiscount  Float?      // Descuento máximo (para porcentajes)
+  usageLimit   Int?        // Límite de usos total
+  usageCount   Int         @default(0)
+  userLimit    Int?        // Límite por usuario
+  isActive     Boolean     @default(true)
+  startsAt     DateTime?
+  expiresAt    DateTime?
+  
+  // Relaciones
+  invoices Invoice[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("coupons")
+}
+
+model Invoice {
+  id           String        @id @default(cuid())
+  invoiceNumber String       @unique
+  userId       String
+  subtotal     Float
+  discount     Float         @default(0)
+  tax          Float         @default(0)
+  total        Float
+  status       InvoiceStatus @default(DRAFT)
+  currency     String        @default("USD")
+  couponId     String?
+  notes        String?
+  dueDate      DateTime?
+  paidAt       DateTime?
+  
+  // Relaciones
+  user    User          @relation(fields: [userId], references: [id])
+  coupon  Coupon?       @relation(fields: [couponId], references: [id])
+  items   InvoiceItem[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([couponId])
+  @@map("invoices")
+}
+
+model InvoiceItem {
+  id        String  @id @default(cuid())
+  invoiceId String
+  productId String?
+  planId    String?
+  name      String  // Nombre del producto/plan al momento de la compra
+  price     Float
+  quantity  Int     @default(1)
+  total     Float
+  
+  // Relaciones
+  invoice Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [id])
+  plan    Plan?    @relation(fields: [planId], references: [id])
+  
+  @@index([invoiceId])
+  @@index([productId])
+  @@index([planId])
+  @@map("invoice_items")
+}
+
+
+// =============================================
+// ENUMS
+// =============================================
 
 enum UserRole {
   ADMIN
-  TEACHER
-  STUDENT
   GUEST
+  STUDENT
+  TEACHER
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum ActivityStatus {
+  ASSIGNED
+  IN_PROGRESS
+  COMPLETED
+  EXPIRED
+}
+
+enum ActivityType {
+  LISTENING
+  READING
+  SPEAKING
+  VOCABULARY
+  WRITING
+  GRAMMAR
+  PRONUNCIATION
+  COMPREHENSION
+  MULTIPLE_CHOICE
+  FILL_IN_BLANK
+  MATCHING
+  ORDERING
+  DICTATION
+  TRANSLATION
+  OTHER
+}
+
+enum ActivityStepType {
+  INSTRUCTION
+  QUESTION
+  AUDIO
+  RECORDING
+  COMPLETION
+}
+
+enum BookingStatus {
+  CANCELLED
+  COMPLETED
+  CONFIRMED
+  NO_SHOW
+  PENDING
+}
+
+enum EnrollmentStatus {
+  ACTIVE
+  COMPLETED
+  PAUSED
+  CANCELLED
+}
+
+enum ContentType {
+  GRAMMAR_CARD
+  LEVELED_TEXT
+  THEMATIC_GLOSSARY
+  DOWNLOADABLE_RESOURCE
+  ACTIVITY
+  VIDEO
+  PODCAST
+  OTHER
+}
+
+enum ResourceType {
+  GRAMMAR_GUIDE
+  VOCABULARY_LIST
+  EXERCISE_SHEET
+  INFOGRAPHIC
+  CONJUGATION_TABLE
+  TEMPLATE
+  OTHER
+}
+
+enum CouponType {
+  PERCENTAGE
+  FIXED_AMOUNT
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+  OVERDUE
+  CANCELLED
 }

@@ -18,6 +18,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -25,6 +26,7 @@ import * as z from 'zod'
 
 export function RegisterForm() {
   const [isPending, startTransition] = useTransition()
+  const router = useRouter()
   const registerForm = useForm<z.infer<typeof SignUpSchema>>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
@@ -46,6 +48,8 @@ export function RegisterForm() {
           }
 
           toast.success('Usuario registrado correctamente')
+
+          router.push(data.redirect)
         })
         .catch((error) => {
           toast.error(error.message)

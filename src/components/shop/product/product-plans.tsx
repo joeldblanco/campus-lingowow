@@ -10,7 +10,7 @@ export function ProductPlans({ product }: { product: Product }) {
 
   // Función para verificar si un plan está en el carrito
   const isInCart = (planId: string) => {
-    return cart.some((item) => item.productId === product.id && item.planId === planId)
+    return cart.some((item) => item.product.id === product.id && item.plan.id === planId)
   }
 
   // Función para manejar la comparación de planes
@@ -42,11 +42,8 @@ export function ProductPlans({ product }: { product: Product }) {
               variant={isInCart(plan.id) ? 'destructive' : 'default'}
               onClick={() =>
                 addToCart({
-                  productId: product.id,
-                  productTitle: product.title,
-                  planId: plan.id,
-                  planName: plan.name,
-                  price: plan.price,
+                  product,
+                  plan,
                 })
               }
               className="w-full"

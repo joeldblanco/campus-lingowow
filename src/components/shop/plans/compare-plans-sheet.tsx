@@ -9,7 +9,7 @@ export function ComparePlansSheet() {
   const { comparePlans, setComparePlans, addToCart, cart } = useShopStore()
 
   const isInCart = (productId: string, planId: string) => {
-    return cart.some((item) => item.productId === productId && item.planId === planId)
+    return cart.some((item) => item.product.id === productId && item.plan.id === planId)
   }
 
   return (
@@ -68,23 +68,20 @@ export function ComparePlansSheet() {
                     <td className="p-2 pt-4"></td>
                     {comparePlans.product.plans.map((plan) => {
                       const item = {
-                        productId: comparePlans.product!.id,
-                        productTitle: comparePlans.product!.title,
-                        planId: plan.id,
-                        planName: plan.name,
-                        price: plan.price,
+                        product: comparePlans.product!,
+                        plan,
                       }
 
                       return (
                         <td key={plan.id} className="p-2 pt-4">
                           <Button
                             variant={
-                              isInCart(item.productId, item.planId) ? 'destructive' : 'default'
+                              isInCart(item.product.id, item.plan.id) ? 'destructive' : 'default'
                             }
                             onClick={() => addToCart(item)}
                             className="w-full"
                           >
-                            {isInCart(item.productId, item.planId) ? 'Remove' : 'Add to Cart'}
+                            {isInCart(item.product.id, item.plan.id) ? 'Remove' : 'Add to Cart'}
                           </Button>
                         </td>
                       )

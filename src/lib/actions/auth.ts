@@ -45,7 +45,7 @@ export const register = async (values: z.infer<typeof SignUpSchema>) => {
 
     await sendVerificationEmail(verificationToken.email, verificationToken.token)
 
-    return { success: 'Email de verificación enviado' }
+    return { success: 'Email de verificación enviado', redirect: DEFAULT_LOGIN_REDIRECT }
   } catch (error) {
     return {
       error: handleError(error) || 'Ocurrió un error al registrar al usuario',
