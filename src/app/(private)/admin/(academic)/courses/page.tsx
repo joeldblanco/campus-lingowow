@@ -1,8 +1,22 @@
+import { Suspense } from 'react'
+import { CoursesContainer } from '@/components/admin/courses/courses-container'
+import { CoursesLoadingSkeleton } from '@/components/admin/courses/courses-loading-skeleton'
+
 const CoursesAdminPage = () => {
   return (
     <div className="container py-8">
-      <h1 className="text-3xl font-bold mb-6">Cursos</h1>
-      <p>Aquí se encuentra toda la información sobre los cursos disponibles en Lingowow.</p>
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-3xl font-bold">Gestión de Cursos</h1>
+          <p className="text-muted-foreground mt-2">
+            Administra todos los cursos disponibles en la plataforma
+          </p>
+        </div>
+      </div>
+      
+      <Suspense fallback={<CoursesLoadingSkeleton />}>
+        <CoursesContainer />
+      </Suspense>
     </div>
   )
 }

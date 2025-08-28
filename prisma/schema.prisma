@@ -83,6 +83,8 @@ model User {
   
   // Relaciones comerciales
   invoices Invoice[]
+  productPurchases ProductPurchase[]
+  scheduleSlotBookings ProductScheduleSlot[] @relation("ScheduleSlotBookings")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -121,6 +123,7 @@ model Course {
   createdBy   User         @relation(fields: [createdById], references: [id])
   modules     Module[]
   enrollments Enrollment[]
+  products    Product[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -389,6 +392,7 @@ model Enrollment {
   // Relaciones
   student User   @relation(fields: [studentId], references: [id], onDelete: Cascade)
   course  Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  purchases ProductPurchase[]
 
   @@unique([studentId, courseId])
   @@index([studentId])
@@ -750,15 +754,25 @@ model Product {
   stock       Int?
   categoryId  String?
   
+  // Campos para programación y cursos
+  requiresScheduling Boolean @default(false)
+  courseId          String?
+  maxScheduleSlots  Int?     @default(1) // Máximo de horarios que puede reservar
+  scheduleDuration  Int?     @default(60) // Duración en minutos
+  
   // Relaciones
   category     Category?     @relation(fields: [categoryId], references: [id])
+  course       Course?       @relation(fields: [courseId], references: [id])
   plans        Plan[]
   invoiceItems InvoiceItem[]
+  scheduleSlots ProductScheduleSlot[]
+  purchases    ProductPurchase[]
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
   @@index([categoryId])
+  @@index([courseId])
   @@map("products")
 }
 
@@ -845,6 +859,7 @@ model Invoice {
   user    User          @relation(fields: [userId], references: [id])
   coupon  Coupon?       @relation(fields: [couponId], references: [id])
   items   InvoiceItem[]
+  purchases ProductPurchase[]
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -964,6 +979,67 @@ enum ResourceType {
 enum CouponType {
   PERCENTAGE
   FIXED_AMOUNT
+}
+
+// =============================================
+// MODELOS DE PROGRAMACIÓN Y RESERVAS
+// =============================================
+
+model ProductScheduleSlot {
+  id        String   @id @default(cuid())
+  productId String
+  date      DateTime // Fecha y hora del slot
+  isBooked  Boolean  @default(false)
+  bookedBy  String?  // ID del usuario que reservó
+  
+  // Relaciones
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user    User?    @relation("ScheduleSlotBookings", fields: [bookedBy], references: [id])
+  purchases ProductPurchase[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([productId, date])
+  @@index([productId])
+  @@index([bookedBy])
+  @@map("product_schedule_slots")
+}
+
+model ProductPurchase {
+  id              String    @id @default(cuid())
+  userId          String
+  productId       String
+  invoiceId       String
+  scheduleSlotId  String?   // Slot reservado si aplica
+  enrollmentId    String?   // Inscripción creada automáticamente
+  status          PurchaseStatus @default(PENDING)
+  purchaseDate    DateTime  @default(now())
+  scheduledDate   DateTime? // Fecha programada si aplica
+  
+  // Relaciones
+  user         User                 @relation(fields: [userId], references: [id])
+  product      Product              @relation(fields: [productId], references: [id])
+  invoice      Invoice              @relation(fields: [invoiceId], references: [id])
+  scheduleSlot ProductScheduleSlot? @relation(fields: [scheduleSlotId], references: [id])
+  enrollment   Enrollment?          @relation(fields: [enrollmentId], references: [id])
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([productId])
+  @@index([invoiceId])
+  @@map("product_purchases")
+}
+
+enum PurchaseStatus {
+  PENDING
+  CONFIRMED
+  SCHEDULED
+  ENROLLED
+  COMPLETED
+  CANCELLED
 }
 
 enum InvoiceStatus {

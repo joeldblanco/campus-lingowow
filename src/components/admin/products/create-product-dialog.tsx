@@ -33,8 +33,17 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createProduct, getCategories } from '@/lib/actions/commercial'
+import { getCoursesForProducts } from '@/lib/actions/courses'
 import { toast } from 'sonner'
 import { Category } from '@/types/category'
+
+interface Course {
+  id: string
+  title: string
+  description: string
+  level: string
+  language: string
+}
 
 const productSchema = z.object({
   name: z.string().min(1, 'El nombre es requerido'),
@@ -50,6 +59,10 @@ const productSchema = z.object({
   isDigital: z.boolean().default(true),
   stock: z.number().optional(),
   categoryId: z.string().optional(),
+  requiresScheduling: z.boolean().default(false),
+  courseId: z.string().optional(),
+  maxScheduleSlots: z.number().min(1).optional(),
+  scheduleDuration: z.number().min(15).optional(),
 })
 
 type ProductFormData = z.infer<typeof productSchema>
@@ -62,6 +75,7 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [categories, setCategories] = useState<Category[]>([])
+  const [courses, setCourses] = useState<Course[]>([])
 
   const form = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
@@ -79,15 +93,20 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
       isDigital: true,
       stock: undefined,
       categoryId: undefined,
+      requiresScheduling: false,
+      courseId: undefined,
+      maxScheduleSlots: 1,
+      scheduleDuration: 60,
     },
   })
 
   useEffect(() => {
-    const loadCategories = async () => {
-      const cats = await getCategories()
+    const loadData = async () => {
+      const [cats, coursesData] = await Promise.all([getCategories(), getCoursesForProducts()])
       setCategories(cats)
+      setCourses(coursesData)
     }
-    loadCategories()
+    loadData()
   }, [])
 
   const onSubmit = async (data: ProductFormData) => {
@@ -107,6 +126,10 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
         isDigital: data.isDigital,
         stock: data.stock || null,
         categoryId: data.categoryId || null,
+        requiresScheduling: data.requiresScheduling,
+        courseId: data.courseId || null,
+        maxScheduleSlots: data.maxScheduleSlots || null,
+        scheduleDuration: data.scheduleDuration || null,
       })
       if (result.success) {
         toast.success('Producto creado correctamente')
@@ -134,15 +157,11 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {children}
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Nuevo Producto</DialogTitle>
-          <DialogDescription>
-            Crea un nuevo producto para la tienda.
-          </DialogDescription>
+          <DialogDescription>Crea un nuevo producto para la tienda.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -154,7 +173,7 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                   <FormItem>
                     <FormLabel>Nombre</FormLabel>
                     <FormControl>
-                      <Input 
+                      <Input
                         placeholder="Nombre del producto"
                         {...field}
                         onChange={(e) => {
@@ -203,10 +222,7 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                 <FormItem>
                   <FormLabel>Descripción</FormLabel>
                   <FormControl>
-                    <Textarea 
-                      placeholder="Descripción detallada del producto"
-                      {...field}
-                    />
+                    <Textarea placeholder="Descripción detallada del producto" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -221,7 +237,7 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                   <FormItem>
                     <FormLabel>Precio</FormLabel>
                     <FormControl>
-                      <Input 
+                      <Input
                         type="number"
                         step="0.01"
                         placeholder="0.00"
@@ -240,7 +256,7 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                   <FormItem>
                     <FormLabel>Precio de Comparación</FormLabel>
                     <FormControl>
-                      <Input 
+                      <Input
                         type="number"
                         step="0.01"
                         placeholder="0.00 (opcional)"
@@ -274,14 +290,14 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Categoría</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value || undefined}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Seleccionar categoría" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="">Sin categoría</SelectItem>
+                        <SelectItem value="no-category">Sin categoría</SelectItem>
                         {categories.map((category) => (
                           <SelectItem key={category.id} value={category.id}>
                             {category.name}
@@ -302,10 +318,7 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                 <FormItem>
                   <FormLabel>URL de la Imagen</FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="https://ejemplo.com/imagen.jpg (opcional)"
-                      {...field}
-                    />
+                    <Input placeholder="https://ejemplo.com/imagen.jpg (opcional)" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -325,10 +338,7 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                       </div>
                     </div>
                     <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -345,10 +355,7 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                       </div>
                     </div>
                     <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -363,7 +370,7 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                   <FormItem>
                     <FormLabel>Stock</FormLabel>
                     <FormControl>
-                      <Input 
+                      <Input
                         type="number"
                         placeholder="0"
                         {...field}
@@ -375,6 +382,105 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                 )}
               />
             )}
+
+            <div className="grid grid-cols-1 gap-4">
+              <FormField
+                control={form.control}
+                name="requiresScheduling"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                    <div className="space-y-0.5">
+                      <FormLabel>Requiere agendar un horario</FormLabel>
+                      <div className="text-sm text-muted-foreground">
+                        Los estudiantes deberán seleccionar un horario
+                      </div>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={(checked) => {
+                          field.onChange(checked)
+                          if (!checked) {
+                            form.setValue('courseId', undefined)
+                          }
+                        }}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              {form.watch('requiresScheduling') && (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="courseId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Curso para inscripción automática</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value || undefined}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Seleccionar curso" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {courses.map((course) => (
+                              <SelectItem key={course.id} value={course.id}>
+                                {course.title} ({course.level})
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="maxScheduleSlots"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Máximo de horarios</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              min="1"
+                              placeholder="1"
+                              {...field}
+                              onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="scheduleDuration"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Duración (minutos)</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              min="15"
+                              step="15"
+                              placeholder="60"
+                              {...field}
+                              onChange={(e) => field.onChange(parseInt(e.target.value) || 60)}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </>
+              )}
+            </div>
 
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setOpen(false)}>

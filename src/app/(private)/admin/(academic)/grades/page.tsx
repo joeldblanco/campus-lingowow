@@ -1,8 +1,22 @@
+import { Suspense } from 'react'
+import { GradesContainer } from '@/components/admin/grades/grades-container'
+import { GradesLoadingSkeleton } from '@/components/admin/grades/grades-loading-skeleton'
+
 const GradesAdminPage = () => {
   return (
     <div className="container py-8">
-      <h1 className="text-3xl font-bold mb-6">Calificaciones</h1>
-      <p>Aquí se encuentra toda la información sobre las calificaciones de los estudiantes.</p>
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-3xl font-bold">Gestión de Calificaciones</h1>
+          <p className="text-muted-foreground mt-2">
+            Administra y visualiza las calificaciones de todos los estudiantes
+          </p>
+        </div>
+      </div>
+      
+      <Suspense fallback={<GradesLoadingSkeleton />}>
+        <GradesContainer />
+      </Suspense>
     </div>
   )
 }
