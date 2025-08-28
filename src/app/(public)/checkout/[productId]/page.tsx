@@ -5,19 +5,20 @@ import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 
 interface CheckoutPageProps {
-  params: {
+  params: Promise<{
     productId: string
-  }
+  }>
 }
 
 export default async function CheckoutPage({ params }: CheckoutPageProps) {
+  const { productId } = await params
   const session = await auth()
   
   if (!session?.user?.id) {
-    redirect('/auth/signin?callbackUrl=/checkout/' + params.productId)
+    redirect('/auth/signin?callbackUrl=/checkout/' + productId)
   }
 
-  const product = await getProductById(params.productId)
+  const product = await getProductById(productId)
   
   if (!product) {
     notFound()
