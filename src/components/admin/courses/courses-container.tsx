@@ -1,23 +1,51 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import { getAllCourses, getCourseStats } from '@/lib/actions/courses'
+import { CourseWithDetails, CourseStats } from '@/types/course'
 import { CoursesTable } from './courses-table'
 import { CoursesStats } from './courses-stats'
 import { CreateCourseDialog } from './create-course-dialog'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
+import { CoursesLoadingSkeleton } from './courses-loading-skeleton'
 
-export async function CoursesContainer() {
-  const [courses, stats] = await Promise.all([
-    getAllCourses(),
-    getCourseStats(),
-  ])
+export function CoursesContainer() {
+  const [courses, setCourses] = useState<CourseWithDetails[]>([])
+  const [stats, setStats] = useState<CourseStats | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  const loadData = async () => {
+    try {
+      setIsLoading(true)
+      const [coursesData, statsData] = await Promise.all([
+        getAllCourses(),
+        getCourseStats(),
+      ])
+      setCourses(coursesData)
+      setStats(statsData)
+    } catch (error) {
+      console.error('Error loading courses data:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    loadData()
+  }, [])
+
+  if (isLoading) {
+    return <CoursesLoadingSkeleton />
+  }
 
   return (
     <div className="space-y-6">
-      <CoursesStats stats={stats} />
+      {stats && <CoursesStats stats={stats} />}
       
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-semibold">Lista de Cursos</h2>
-        <CreateCourseDialog>
+        <CreateCourseDialog onCourseCreated={loadData}>
           <Button>
             <Plus className="h-4 w-4 mr-2" />
             Crear Curso
@@ -25,7 +53,7 @@ export async function CoursesContainer() {
         </CreateCourseDialog>
       </div>
 
-      <CoursesTable courses={courses} />
+      <CoursesTable courses={courses} onCourseUpdated={loadData} />
     </div>
   )
 }

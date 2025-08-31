@@ -24,12 +24,15 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { toast } from 'sonner'
+import { FileUpload } from '@/components/ui/file-upload'
+import Image from 'next/image'
 
 interface CreateCourseDialogProps {
   children: React.ReactNode
+  onCourseCreated?: () => void
 }
 
-export function CreateCourseDialog({ children }: CreateCourseDialogProps) {
+export function CreateCourseDialog({ children, onCourseCreated }: CreateCourseDialogProps) {
   const { data: session } = useSession()
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -38,6 +41,7 @@ export function CreateCourseDialog({ children }: CreateCourseDialogProps) {
     description: '',
     language: '',
     level: '',
+    image: '',
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -62,8 +66,9 @@ export function CreateCourseDialog({ children }: CreateCourseDialogProps) {
           description: '',
           language: '',
           level: '',
+          image: '',
         })
-        window.location.reload()
+        onCourseCreated?.()
       } else {
         toast.error(result.error || 'Error al crear el curso')
       }
@@ -146,6 +151,32 @@ export function CreateCourseDialog({ children }: CreateCourseDialogProps) {
                   <SelectItem value="Especializado">Especializado</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="image">Imagen del curso</Label>
+              <FileUpload
+                fileType="image"
+                folder="courses"
+                onUploadComplete={(result) => {
+                  setFormData({ ...formData, image: result.secure_url })
+                }}
+                onUploadError={(error) => {
+                  console.error('Upload error:', error)
+                  toast.error('Error al subir la imagen')
+                }}
+                className="mb-4"
+              />
+              {formData.image && (
+                <div className="mt-2">
+                  <Image 
+                    src={formData.image} 
+                    alt="Vista previa del curso" 
+                    width={80}
+                    height={80}
+                    className="object-cover rounded border"
+                  />
+                </div>
+              )}
             </div>
           </div>
           <DialogFooter>

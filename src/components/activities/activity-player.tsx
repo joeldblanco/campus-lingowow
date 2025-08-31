@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
-import { CheckCircle, XCircle, Volume2, Mic, ArrowRight, ArrowLeft } from 'lucide-react'
+import { CheckCircle, XCircle, Volume2, Mic, ArrowRight } from 'lucide-react'
 
 interface ActivityStep {
   type: 'instruction' | 'question' | 'audio' | 'recording' | 'completion'
@@ -80,13 +80,6 @@ export default function ActivityPlayer({ activity, onComplete, onClose }: Activi
     }
   }
 
-  const handlePrevStep = () => {
-    if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1)
-      setSelectedAnswer(null)
-      setShowResult(false)
-    }
-  }
 
   const renderStep = () => {
     switch (step.type) {
@@ -148,15 +141,7 @@ export default function ActivityPlayer({ activity, onComplete, onClose }: Activi
               </div>
             )}
 
-            <div className="flex justify-between mt-4">
-              <Button 
-                variant="outline" 
-                onClick={handlePrevStep}
-                disabled={currentStep === 0}
-              >
-                <ArrowLeft className="mr-2 h-4 w-4" /> Anterior
-              </Button>
-              
+            <div className="flex justify-end mt-4">
               {!showResult ? (
                 <Button 
                   onClick={handleSubmitAnswer}

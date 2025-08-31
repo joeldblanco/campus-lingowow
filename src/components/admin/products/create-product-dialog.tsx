@@ -32,10 +32,13 @@ import { Switch } from '@/components/ui/switch'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { createProduct, getCategories } from '@/lib/actions/commercial'
+import { createProduct, createProductWithPlans, getCategories } from '@/lib/actions/commercial'
 import { getCoursesForProducts } from '@/lib/actions/courses'
 import { toast } from 'sonner'
 import { Category } from '@/types/category'
+import { PlanManager, PlanData } from './plan-manager'
+import { FileUpload } from '@/components/ui/file-upload'
+import Image from 'next/image'
 
 interface Course {
   id: string
@@ -76,6 +79,7 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [categories, setCategories] = useState<Category[]>([])
   const [courses, setCourses] = useState<Course[]>([])
+  const [plans, setPlans] = useState<PlanData[]>([])
 
   const form = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
@@ -112,7 +116,7 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
   const onSubmit = async (data: ProductFormData) => {
     setIsLoading(true)
     try {
-      const result = await createProduct({
+      const productData = {
         name: data.name,
         slug: data.slug,
         description: data.description || null,
@@ -130,10 +134,26 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
         courseId: data.courseId || null,
         maxScheduleSlots: data.maxScheduleSlots || null,
         scheduleDuration: data.scheduleDuration || null,
-      })
+      }
+
+      const result = plans.length > 0 
+        ? await createProductWithPlans(productData, plans.map(plan => ({
+            name: plan.name,
+            slug: plan.slug,
+            description: plan.description || undefined,
+            price: plan.price,
+            comparePrice: plan.comparePrice || undefined,
+            duration: plan.duration,
+            isActive: plan.isActive,
+            isPopular: plan.isPopular,
+            sortOrder: plan.sortOrder,
+          })))
+        : await createProduct(productData)
+
       if (result.success) {
         toast.success('Producto creado correctamente')
         form.reset()
+        setPlans([])
         setOpen(false)
       } else {
         toast.error(result.error || 'Error al crear el producto')
@@ -316,10 +336,29 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
               name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>URL de la Imagen</FormLabel>
+                  <FormLabel>Imagen principal</FormLabel>
                   <FormControl>
-                    <Input placeholder="https://ejemplo.com/imagen.jpg (opcional)" {...field} />
+                    <FileUpload
+                      fileType="image"
+                      folder="products"
+                      onUploadComplete={(result) => {
+                        field.onChange(result.secure_url)
+                      }}
+                      onUploadError={(error) => {
+                        console.error('Upload error:', error)
+                      }}
+                      className="mb-4"
+                    />
                   </FormControl>
+                  {field.value && (
+                    <div className="mt-2">
+                      <Image 
+                        src={field.value} 
+                        alt="Vista previa" 
+                        className="w-20 h-20 object-cover rounded border"
+                      />
+                    </div>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
@@ -453,6 +492,9 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                               onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
                             />
                           </FormControl>
+                          <div className="text-xs text-muted-foreground">
+                            Número máximo de horarios que un usuario puede reservar para este producto
+                          </div>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -473,6 +515,9 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                               onChange={(e) => field.onChange(parseInt(e.target.value) || 60)}
                             />
                           </FormControl>
+                          <div className="text-xs text-muted-foreground">
+                            Duración en minutos de cada sesión programada (ej: 60 para 1 hora)
+                          </div>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -480,6 +525,15 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                   </div>
                 </>
               )}
+            </div>
+
+            {/* Plan Management Section */}
+            <div className="border-t pt-6">
+              <PlanManager
+                plans={plans}
+                onPlansChange={setPlans}
+                className="mb-6"
+              />
             </div>
 
             <DialogFooter>

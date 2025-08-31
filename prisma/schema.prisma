@@ -64,6 +64,8 @@ model User {
   viewedResources   ResourceView[]
   savedResources    UserResource[]
   activities        UserActivity[]
+  attendances       ClassAttendance[]
+  teacherAttendances TeacherAttendance[] @relation("TeacherAttendances")
 
   // Relaciones del sistema de clases
   bookingsAsStudent   ClassBooking[]        @relation("StudentBookings")
@@ -77,13 +79,18 @@ model User {
 
   // Relación de profesor
   teacherRank TeacherRank? @relation(fields: [teacherRankId], references: [id])
-  
+
   // Relación de racha de usuario
   userStreak UserStreak?
-  
+
+  // Relaciones del sistema de vidas y recompensas
+  userLives UserLives?
+  userRewards UserRewards?
+  rewardTransactions RewardTransaction[]
+
   // Relaciones comerciales
-  invoices Invoice[]
-  productPurchases ProductPurchase[]
+  invoices             Invoice[]
+  productPurchases     ProductPurchase[]
   scheduleSlotBookings ProductScheduleSlot[] @relation("ScheduleSlotBookings")
 
   createdAt DateTime @default(now())
@@ -99,11 +106,54 @@ model UserStreak {
   longestStreak    Int       @default(0)
   lastActivityDate DateTime?
   updatedAt        DateTime  @updatedAt
-  
+
   // Relación con User
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("user_streaks")
+}
+
+model UserLives {
+  userId           String    @id
+  currentLives     Int       @default(5) // Máximo 5 vidas
+  maxLives         Int       @default(5)
+  lastRechargeTime DateTime  @default(now())
+  rechargeRate     Int       @default(30) // Minutos para recargar 1 vida
+  updatedAt        DateTime  @updatedAt
+
+  // Relación con User
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_lives")
+}
+
+model UserRewards {
+  userId       String   @id
+  totalPoints  Int      @default(0)
+  spentPoints  Int      @default(0)
+  currentLevel Int      @default(1)
+  updatedAt    DateTime @updatedAt
+
+  // Relación con User
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_rewards")
+}
+
+model RewardTransaction {
+  id          String            @id @default(cuid())
+  userId      String
+  type        RewardType
+  amount      Int // Puntos ganados o gastados
+  description String
+  metadata    Json? // Información adicional sobre la transacción
+  createdAt   DateTime          @default(now())
+
+  // Relación con User
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("reward_transactions")
 }
 
 // =============================================
@@ -390,8 +440,8 @@ model Enrollment {
   lastAccessed   DateTime?
 
   // Relaciones
-  student User   @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  course  Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  student   User              @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  course    Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
   purchases ProductPurchase[]
 
   @@unique([studentId, courseId])
@@ -455,10 +505,12 @@ model ClassBooking {
   creditId        String?
 
   // Relaciones
-  student       User           @relation("StudentBookings", fields: [studentId], references: [id])
-  teacher       User           @relation("TeacherBookings", fields: [teacherId], references: [id])
-  studentPeriod StudentPeriod? @relation(fields: [studentPeriodId], references: [id])
-  studentCredit StudentCredit? @relation(fields: [creditId], references: [id])
+  student           User                @relation("StudentBookings", fields: [studentId], references: [id])
+  teacher           User                @relation("TeacherBookings", fields: [teacherId], references: [id])
+  studentPeriod     StudentPeriod?      @relation(fields: [studentPeriodId], references: [id])
+  studentCredit     StudentCredit?      @relation(fields: [creditId], references: [id])
+  attendances       ClassAttendance[]
+  teacherAttendances TeacherAttendance[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -524,10 +576,11 @@ model StudentPeriod {
   proratedClasses Int     @default(0)
 
   // Relaciones
-  student   User            @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  period    AcademicPeriod  @relation(fields: [periodId], references: [id])
-  schedules ClassSchedule[]
-  bookings  ClassBooking[]
+  student     User              @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  period      AcademicPeriod    @relation(fields: [periodId], references: [id])
+  schedules   ClassSchedule[]
+  bookings    ClassBooking[]
+  attendances ClassAttendance[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -654,6 +707,45 @@ model TeacherAvailability {
   @@map("teacher_availability")
 }
 
+model ClassAttendance {
+  id              String   @id @default(cuid())
+  classId         String
+  studentId       String
+  studentPeriodId String
+  status          String   @default("PRESENT")
+  timestamp       DateTime @default(now())
+
+  // Relations
+  student       User          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  booking       ClassBooking  @relation(fields: [classId], references: [id], onDelete: Cascade)
+  studentPeriod StudentPeriod @relation(fields: [studentPeriodId], references: [id])
+
+  // Indexes
+  @@unique([classId, studentId])
+  @@index([classId])
+  @@index([studentId])
+  @@index([studentPeriodId])
+  @@map("class_attendances")
+}
+
+model TeacherAttendance {
+  id        String   @id @default(cuid())
+  classId   String
+  teacherId String
+  status    String   @default("PRESENT")
+  timestamp DateTime @default(now())
+
+  // Relations
+  teacher User         @relation("TeacherAttendances", fields: [teacherId], references: [id], onDelete: Cascade)
+  booking ClassBooking @relation(fields: [classId], references: [id], onDelete: Cascade)
+
+  // Indexes
+  @@unique([classId, teacherId])
+  @@index([classId])
+  @@index([teacherId])
+  @@map("teacher_attendances")
+}
+
 // =============================================
 // MODELOS DE CONFIGURACIÓN Y SOPORTE
 // =============================================
@@ -705,20 +797,20 @@ model VerificationToken {
 // =============================================
 
 model Category {
-  id          String    @id @default(cuid())
+  id          String  @id @default(cuid())
   name        String
-  slug        String    @unique
+  slug        String  @unique
   description String?
   image       String?
-  isActive    Boolean   @default(true)
-  sortOrder   Int       @default(0)
-  
+  isActive    Boolean @default(true)
+  sortOrder   Int     @default(0)
+
   // Relaciones
   products Product[]
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@map("categories")
 }
 
@@ -728,75 +820,75 @@ model Feature {
   description String?
   icon        String?
   isActive    Boolean @default(true)
-  
+
   // Relaciones
   planFeatures PlanFeature[]
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@map("features")
 }
 
 model Product {
-  id          String        @id @default(cuid())
-  name        String
-  slug        String        @unique
-  description String?
-  shortDesc   String?
-  price       Float
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  description  String?
+  shortDesc    String?
+  price        Float
   comparePrice Float?
-  sku         String?       @unique
-  image       String?
-  images      String[]
-  isActive    Boolean       @default(true)
-  isDigital   Boolean       @default(true)
-  stock       Int?
-  categoryId  String?
-  
+  sku          String?  @unique
+  image        String?
+  images       String[]
+  isActive     Boolean  @default(true)
+  isDigital    Boolean  @default(true)
+  stock        Int?
+  categoryId   String?
+
   // Campos para programación y cursos
   requiresScheduling Boolean @default(false)
-  courseId          String?
-  maxScheduleSlots  Int?     @default(1) // Máximo de horarios que puede reservar
-  scheduleDuration  Int?     @default(60) // Duración en minutos
-  
+  courseId           String?
+  maxScheduleSlots   Int?    @default(1) // Máximo de horarios que puede reservar
+  scheduleDuration   Int?    @default(60) // Duración en minutos
+
   // Relaciones
-  category     Category?     @relation(fields: [categoryId], references: [id])
-  course       Course?       @relation(fields: [courseId], references: [id])
-  plans        Plan[]
-  invoiceItems InvoiceItem[]
+  category      Category?             @relation(fields: [categoryId], references: [id])
+  course        Course?               @relation(fields: [courseId], references: [id])
+  plans         Plan[]
+  invoiceItems  InvoiceItem[]
   scheduleSlots ProductScheduleSlot[]
-  purchases    ProductPurchase[]
-  
+  purchases     ProductPurchase[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@index([categoryId])
   @@index([courseId])
   @@map("products")
 }
 
 model Plan {
-  id           String        @id @default(cuid())
+  id           String  @id @default(cuid())
   name         String
-  slug         String        @unique
+  slug         String  @unique
   description  String?
   price        Float
   comparePrice Float?
-  duration     Int           // en días
-  isActive     Boolean       @default(true)
-  isPopular    Boolean       @default(false)
-  sortOrder    Int           @default(0)
+  duration     Int // en días
+  isActive     Boolean @default(true)
+  isPopular    Boolean @default(false)
+  sortOrder    Int     @default(0)
   productId    String?
-  
+
   // Relaciones
   product      Product?      @relation(fields: [productId], references: [id])
   features     PlanFeature[]
   invoiceItems InvoiceItem[]
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@index([productId])
   @@map("plans")
 }
@@ -806,64 +898,64 @@ model PlanFeature {
   featureId String
   included  Boolean @default(true)
   value     String? // Para características con valores específicos
-  
+
   // Relaciones
   plan    Plan    @relation(fields: [planId], references: [id], onDelete: Cascade)
   feature Feature @relation(fields: [featureId], references: [id], onDelete: Cascade)
-  
+
   @@id([planId, featureId])
   @@map("plan_features")
 }
 
 model Coupon {
-  id           String      @id @default(cuid())
-  code         String      @unique
-  name         String?
-  description  String?
-  type         CouponType  @default(PERCENTAGE)
-  value        Float       // Porcentaje o cantidad fija
-  minAmount    Float?      // Monto mínimo para aplicar
-  maxDiscount  Float?      // Descuento máximo (para porcentajes)
-  usageLimit   Int?        // Límite de usos total
-  usageCount   Int         @default(0)
-  userLimit    Int?        // Límite por usuario
-  isActive     Boolean     @default(true)
-  startsAt     DateTime?
-  expiresAt    DateTime?
-  
+  id          String     @id @default(cuid())
+  code        String     @unique
+  name        String?
+  description String?
+  type        CouponType @default(PERCENTAGE)
+  value       Float // Porcentaje o cantidad fija
+  minAmount   Float? // Monto mínimo para aplicar
+  maxDiscount Float? // Descuento máximo (para porcentajes)
+  usageLimit  Int? // Límite de usos total
+  usageCount  Int        @default(0)
+  userLimit   Int? // Límite por usuario
+  isActive    Boolean    @default(true)
+  startsAt    DateTime?
+  expiresAt   DateTime?
+
   // Relaciones
   invoices Invoice[]
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@map("coupons")
 }
 
 model Invoice {
-  id           String        @id @default(cuid())
-  invoiceNumber String       @unique
-  userId       String
-  subtotal     Float
-  discount     Float         @default(0)
-  tax          Float         @default(0)
-  total        Float
-  status       InvoiceStatus @default(DRAFT)
-  currency     String        @default("USD")
-  couponId     String?
-  notes        String?
-  dueDate      DateTime?
-  paidAt       DateTime?
-  
+  id            String        @id @default(cuid())
+  invoiceNumber String        @unique
+  userId        String
+  subtotal      Float
+  discount      Float         @default(0)
+  tax           Float         @default(0)
+  total         Float
+  status        InvoiceStatus @default(DRAFT)
+  currency      String        @default("USD")
+  couponId      String?
+  notes         String?
+  dueDate       DateTime?
+  paidAt        DateTime?
+
   // Relaciones
-  user    User          @relation(fields: [userId], references: [id])
-  coupon  Coupon?       @relation(fields: [couponId], references: [id])
-  items   InvoiceItem[]
+  user      User              @relation(fields: [userId], references: [id])
+  coupon    Coupon?           @relation(fields: [couponId], references: [id])
+  items     InvoiceItem[]
   purchases ProductPurchase[]
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@index([userId])
   @@index([couponId])
   @@map("invoices")
@@ -874,22 +966,21 @@ model InvoiceItem {
   invoiceId String
   productId String?
   planId    String?
-  name      String  // Nombre del producto/plan al momento de la compra
+  name      String // Nombre del producto/plan al momento de la compra
   price     Float
   quantity  Int     @default(1)
   total     Float
-  
+
   // Relaciones
   invoice Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
   product Product? @relation(fields: [productId], references: [id])
   plan    Plan?    @relation(fields: [planId], references: [id])
-  
+
   @@index([invoiceId])
   @@index([productId])
   @@index([planId])
   @@map("invoice_items")
 }
-
 
 // =============================================
 // ENUMS
@@ -990,16 +1081,16 @@ model ProductScheduleSlot {
   productId String
   date      DateTime // Fecha y hora del slot
   isBooked  Boolean  @default(false)
-  bookedBy  String?  // ID del usuario que reservó
-  
+  bookedBy  String? // ID del usuario que reservó
+
   // Relaciones
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  user    User?    @relation("ScheduleSlotBookings", fields: [bookedBy], references: [id])
+  product   Product           @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User?             @relation("ScheduleSlotBookings", fields: [bookedBy], references: [id])
   purchases ProductPurchase[]
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@unique([productId, date])
   @@index([productId])
   @@index([bookedBy])
@@ -1007,26 +1098,26 @@ model ProductScheduleSlot {
 }
 
 model ProductPurchase {
-  id              String    @id @default(cuid())
-  userId          String
-  productId       String
-  invoiceId       String
-  scheduleSlotId  String?   // Slot reservado si aplica
-  enrollmentId    String?   // Inscripción creada automáticamente
-  status          PurchaseStatus @default(PENDING)
-  purchaseDate    DateTime  @default(now())
-  scheduledDate   DateTime? // Fecha programada si aplica
-  
+  id             String         @id @default(cuid())
+  userId         String
+  productId      String
+  invoiceId      String
+  scheduleSlotId String? // Slot reservado si aplica
+  enrollmentId   String? // Inscripción creada automáticamente
+  status         PurchaseStatus @default(PENDING)
+  purchaseDate   DateTime       @default(now())
+  scheduledDate  DateTime? // Fecha programada si aplica
+
   // Relaciones
   user         User                 @relation(fields: [userId], references: [id])
   product      Product              @relation(fields: [productId], references: [id])
   invoice      Invoice              @relation(fields: [invoiceId], references: [id])
   scheduleSlot ProductScheduleSlot? @relation(fields: [scheduleSlotId], references: [id])
   enrollment   Enrollment?          @relation(fields: [enrollmentId], references: [id])
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@index([userId])
   @@index([productId])
   @@index([invoiceId])
@@ -1048,4 +1139,14 @@ enum InvoiceStatus {
   PAID
   OVERDUE
   CANCELLED
+}
+
+enum RewardType {
+  EARNED_ACTIVITY    // Puntos ganados por completar actividad
+  EARNED_STREAK      // Puntos ganados por racha
+  EARNED_LEVEL       // Puntos ganados por subir de nivel
+  SPENT_LIVES        // Puntos gastados en vidas
+  SPENT_PREMIUM      // Puntos gastados en lecciones premium
+  SPENT_MERCHANDISE  // Puntos gastados en mercancía
+  SPENT_COUPON       // Puntos gastados en cupones
 }

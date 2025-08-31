@@ -28,7 +28,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { CourseWithDetails, deleteCourse, toggleCoursePublished } from '@/lib/actions/courses'
+import { deleteCourse, toggleCoursePublished } from '@/lib/actions/courses'
+import { CourseWithDetails } from '@/types/course'
 import { Archive, BookOpen, Edit, Eye, Globe, MoreHorizontal, Trash2, Users } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -37,9 +38,10 @@ import { ViewCourseDialog } from './view-course-dialog'
 
 interface CoursesTableProps {
   courses: CourseWithDetails[]
+  onCourseUpdated?: () => void
 }
 
-export function CoursesTable({ courses }: CoursesTableProps) {
+export function CoursesTable({ courses, onCourseUpdated }: CoursesTableProps) {
   const [filteredCourses, setFilteredCourses] = useState(courses)
   const [searchTerm, setSearchTerm] = useState('')
   const [languageFilter, setLanguageFilter] = useState('all')
@@ -184,7 +186,7 @@ export function CoursesTable({ courses }: CoursesTableProps) {
                         Ver detalles
                       </DropdownMenuItem>
                     </ViewCourseDialog>
-                    <EditCourseDialog course={course}>
+                    <EditCourseDialog course={course} onCourseUpdated={onCourseUpdated}>
                       <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                         <Edit className="h-4 w-4 mr-2" />
                         Editar

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { CourseWithDetails } from '@/lib/actions/courses'
+import { CourseWithDetails } from '@/types/course'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -102,7 +102,7 @@ export function ViewCourseDialog({ course, children }: ViewCourseDialogProps) {
             <div>
               <h4 className="font-medium mb-3">Módulos ({course.modules.length})</h4>
               <div className="space-y-2 max-h-48 overflow-y-auto">
-                {course.modules.map((module, index) => (
+                {course.modules.map((module, index: number) => (
                   <div
                     key={module.id}
                     className="flex items-center justify-between p-3 border rounded-lg"

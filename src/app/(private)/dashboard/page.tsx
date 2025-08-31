@@ -421,7 +421,7 @@ const GuestDashboard = () => {
                 <CardTitle>Español</CardTitle>
               </CardHeader>
               <CardContent>
-                <p>Aprende español con profesores nativos</p>
+                <p>Aprende español con profesores expertos</p>
                 <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
                   Ver Más
                 </button>
@@ -451,8 +451,8 @@ const GuestDashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="flex flex-col items-center text-center">
               <Users className="h-12 w-12 text-blue-500 mb-2" />
-              <h3 className="font-bold">Profesores Nativos</h3>
-              <p>Aprende con hablantes nativos experimentados</p>
+              <h3 className="font-bold">Profesores Expertos</h3>
+              <p>Aprende con profesores experimentados</p>
             </div>
 
             <div className="flex flex-col items-center text-center">

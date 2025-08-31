@@ -2,22 +2,32 @@ import { Trophy, Flame, Star, Calendar } from 'lucide-react'
 import { Progress } from '@/components/ui/progress'
 import { Card, CardContent } from '@/components/ui/card'
 
+interface WeeklyActivity {
+  date: Date
+  hasActivity: boolean
+  isToday: boolean
+}
+
 interface UserProgressProps {
   level: number
   streak: number
   experience: number
-  nextLevelXP: number
-  currentDay: number
+  currentLevelXP: number
+  xpToNextLevel: number
+  weeklyActivity: WeeklyActivity[]
 }
 
 export default function UserProgress({
   level,
   streak,
   experience,
-  nextLevelXP,
-  currentDay,
+  currentLevelXP,
+  xpToNextLevel,
+  weeklyActivity,
 }: UserProgressProps) {
-  const progress = Math.round((experience / nextLevelXP) * 100)
+  // Calculate progress within current level (0-100%)
+  const levelXPRequired = 100 // Each level requires 100 XP
+  const progress = Math.round((currentLevelXP / levelXPRequired) * 100)
 
   // Array que representa los 7 días de la semana
   const weekDays = ['L', 'M', 'X', 'J', 'V', 'S', 'D']
@@ -33,7 +43,7 @@ export default function UserProgress({
                 <h3 className="font-semibold">Nivel {level}</h3>
                 <Progress value={progress} className="h-2" />
                 <p className="text-sm text-muted-foreground mt-1">
-                  {experience}/{nextLevelXP} XP para el siguiente nivel
+                  {currentLevelXP}/{levelXPRequired} XP ({xpToNextLevel} XP para siguiente nivel)
                 </p>
               </div>
             </div>
@@ -61,25 +71,27 @@ export default function UserProgress({
             </div>
 
             <div className="flex justify-between">
-              {weekDays.map((day, index) => {
-                const isDayComplete = index < currentDay
-                const isToday = index === currentDay
+              {weeklyActivity.map((dayActivity, index) => {
+                const dayLabel = weekDays[index]
+                const { hasActivity, isToday } = dayActivity
 
                 return (
-                  <div key={day} className="flex flex-col items-center">
-                    <div className="text-sm font-medium mb-2">{day}</div>
+                  <div key={index} className="flex flex-col items-center">
+                    <div className="text-sm font-medium mb-2">{dayLabel}</div>
                     <div
                       className={`h-12 w-12 rounded-full flex items-center justify-center ${
                         isToday
                           ? 'bg-blue-100 border-2 border-blue-500'
-                          : isDayComplete
+                          : hasActivity
                             ? 'bg-green-100'
                             : 'bg-gray-100'
                       }`}
                     >
-                      {isDayComplete && <Flame className="h-6 w-6 text-green-500" />}
+                      {hasActivity && !isToday && <Flame className="h-6 w-6 text-green-500" />}
                       {isToday && (
-                        <div className="h-3 w-3 bg-blue-500 rounded-full animate-pulse" />
+                        <div className={`h-3 w-3 rounded-full animate-pulse ${
+                          hasActivity ? 'bg-green-500' : 'bg-blue-500'
+                        }`} />
                       )}
                     </div>
                   </div>

@@ -36,7 +36,7 @@ export default function LandingPage() {
                 ¡Nuevo! Cursos de Japonés y Coreano
               </Badge>
               <h1 className="text-3xl md:text-5xl font-bold tracking-tight">
-                Domina cualquier idioma con instructores nativos
+                Domina cualquier idioma con instructores expertos
               </h1>
               <p className="text-muted-foreground">
                 Clases personalizadas, metodología probada y resultados garantizados. Aprende de
@@ -233,7 +233,7 @@ export default function LandingPage() {
             <div className="flex flex-col items-center justify-center gap-4 text-center mb-12">
               <h2 className="text-3xl font-bold tracking-tight">Nuestros Profesores</h2>
               <p className="text-muted-foreground max-w-[700px]">
-                Contamos con profesores nativos certificados y con amplia experiencia docente.
+                Contamos con profesores certificados y con amplia experiencia docente.
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
@@ -287,7 +287,7 @@ export default function LandingPage() {
                 {
                   name: 'Ana Martínez',
                   course: 'Francés Intermedio',
-                  text: 'Los profesores nativos y las clases personalizadas hicieron que me enamorara del idioma. Ahora puedo ver películas sin subtítulos.',
+                  text: 'Los profesores expertos y las clases personalizadas hicieron que me enamorara del idioma. Ahora puedo ver películas sin subtítulos.',
                 },
                 {
                   name: 'Roberto Sánchez',
@@ -475,10 +475,9 @@ export default function LandingPage() {
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-4">
-                  <AccordionTrigger>¿Los profesores son nativos?</AccordionTrigger>
+                  <AccordionTrigger>¿Qué certificaciones tienen los profesores?</AccordionTrigger>
                   <AccordionContent>
-                    Sí, todos nuestros profesores son hablantes nativos del idioma que enseñan y
-                    cuentan con certificaciones internacionales para la enseñanza de idiomas.
+                    Todos nuestros profesores cuentan con certificaciones internacionales para la enseñanza de idiomas y amplia experiencia docente.
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-5">

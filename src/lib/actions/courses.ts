@@ -2,45 +2,7 @@
 
 import { db } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
-
-export interface CourseWithDetails {
-  id: string
-  title: string
-  description: string
-  language: string
-  level: string
-  isPublished: boolean
-  createdById: string
-  createdBy: {
-    name: string
-    email: string
-  }
-  modules: {
-    id: string
-    title: string
-    description: string | null
-    level: number
-    order: number
-    isPublished: boolean
-    _count: {
-      lessons: number
-    }
-  }[]
-  enrollments: {
-    id: string
-    status: string
-    student: {
-      name: string
-      email: string
-    }
-  }[]
-  _count: {
-    modules: number
-    enrollments: number
-  }
-  createdAt: Date
-  updatedAt: Date
-}
+import { CourseWithDetails } from '@/types/course'
 
 export async function getAllCourses(): Promise<CourseWithDetails[]> {
   try {

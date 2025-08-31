@@ -291,11 +291,19 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
                   <SelectValue placeholder="Seleccionar curso" />
                 </SelectTrigger>
                 <SelectContent>
-                  {courses.map((course) => (
-                    <SelectItem key={course.id} value={course.id}>
-                      {course.title} ({course.language})
+                  {courses.length === 0 ? (
+                    <SelectItem value="" disabled>
+                      No hay cursos disponibles
                     </SelectItem>
-                  ))}
+                  ) : (
+                    courses.map((course) => (
+                      <SelectItem key={course.id} value={course.id}>
+                        <div className="truncate max-w-[200px]" title={`${course.title} (${course.language})`}>
+                          {course.title} ({course.language})
+                        </div>
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
             </div>
@@ -312,11 +320,19 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
                   <SelectValue placeholder="Seleccionar módulo" />
                 </SelectTrigger>
                 <SelectContent>
-                  {availableModules.map((module) => (
-                    <SelectItem key={module.id} value={module.id}>
-                      {module.title} (Level {module.level})
+                  {availableModules.length === 0 ? (
+                    <SelectItem value="" disabled>
+                      No hay módulos disponibles
                     </SelectItem>
-                  ))}
+                  ) : (
+                    availableModules.map((module) => (
+                      <SelectItem key={module.id} value={module.id}>
+                        <div className="truncate max-w-[180px]" title={`${module.title} (Level ${module.level})`}>
+                          {module.title} (Level {module.level})
+                        </div>
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
             </div>
@@ -331,11 +347,19 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
                   <SelectValue placeholder="Seleccionar lección" />
                 </SelectTrigger>
                 <SelectContent>
-                  {availableLessons.map((lesson) => (
-                    <SelectItem key={lesson.id} value={lesson.id}>
-                      {lesson.title}
+                  {availableLessons.length === 0 ? (
+                    <SelectItem value="" disabled>
+                      No hay lecciones disponibles
                     </SelectItem>
-                  ))}
+                  ) : (
+                    availableLessons.map((lesson) => (
+                      <SelectItem key={lesson.id} value={lesson.id}>
+                        <div className="truncate max-w-[180px]" title={lesson.title}>
+                          {lesson.title}
+                        </div>
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
             </div>

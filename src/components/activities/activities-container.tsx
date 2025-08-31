@@ -8,8 +8,7 @@ import ActivityCard from '@/components/activities/activity-card'
 import ActivityPlayer from '@/components/activities/activity-player'
 import RewardModal from '@/components/activities/reward-modal'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { getActivitiesByLevel, getUserProgress, updateActivityProgress, getActivityForPlayer } from '@/lib/actions/activity'
-import { getCurrentDay } from '@/lib/utils/activities'
+import { getActivitiesByLevel, getUserProgress, updateActivityProgress, getActivityForPlayer, getUserWeeklyActivity, getActivitiesSummaryByLevels } from '@/lib/actions/activity'
 
 interface ActivityStep {
   type: 'instruction' | 'question' | 'audio' | 'recording' | 'completion'
@@ -33,21 +32,32 @@ type Activity = {
   locked: boolean
 }
 
-type UserProgressData = {
-  currentLevel: number
-  streak: number
-  experience: number
-  nextLevelXP: number
+interface WeeklyActivity {
+  date: Date
+  hasActivity: boolean
+  isToday: boolean
 }
 
 export default function ActivitiesContainer() {
   const { data: session } = useSession()
-  const [userProgress, setUserProgress] = useState<UserProgressData>({
+  const [userProgress, setUserProgress] = useState({
     currentLevel: 1,
     streak: 0,
     experience: 0,
+    currentLevelXP: 0,
     nextLevelXP: 100,
+    xpToNextLevel: 100,
   })
+  const [weeklyActivity, setWeeklyActivity] = useState<WeeklyActivity[]>([])
+  const [levelsSummary, setLevelsSummary] = useState<Array<{
+    level: number
+    totalActivities: number
+    completedActivities: number
+    levelName: string
+    hasActivities: boolean
+    isComplete: boolean
+    progress: number
+  }>>([])
   const [showReward, setShowReward] = useState(false)
   const [lastReward, setLastReward] = useState('')
   const [activities, setActivities] = useState<Activity[]>([])
@@ -58,6 +68,7 @@ export default function ActivitiesContainer() {
     description: string
     steps: { steps: ActivityStep[] }
     points: number
+    isReview?: boolean
   } | null>(null)
   const [showActivityPlayer, setShowActivityPlayer] = useState(false)
 
@@ -72,6 +83,14 @@ export default function ActivitiesContainer() {
         // Cargar progreso del usuario
         const progress = await getUserProgress(session.user.id)
         setUserProgress(progress)
+
+        // Cargar actividad semanal
+        const weeklyData = await getUserWeeklyActivity(session.user.id)
+        setWeeklyActivity(weeklyData)
+
+        // Cargar resumen de niveles para el mapa de aprendizaje
+        const levelsData = await getActivitiesSummaryByLevels(session.user.id, 10)
+        setLevelsSummary(levelsData)
 
         // Cargar actividades para el nivel actual
         const levelActivities = await getActivitiesByLevel(progress.currentLevel, session.user.id)
@@ -104,38 +123,53 @@ export default function ActivitiesContainer() {
     }
   }, [userProgress.currentLevel, session?.user?.id])
 
-  const handleStartActivity = async (id: string) => {
+  const handleStartActivity = async (id: string, isReview = false) => {
     if (!session?.user?.id) return
 
     try {
       // Cargar datos completos de la actividad
       const activityData = await getActivityForPlayer(id)
-      setCurrentActivity(activityData)
+      
+      // Si es una revisión, modificar los puntos
+      if (isReview) {
+        activityData.points = 5
+      }
+      
+      setCurrentActivity({ ...activityData, isReview })
       setShowActivityPlayer(true)
       
-      // Marcar actividad como iniciada en la base de datos
-      await updateActivityProgress(session.user.id, id, 'IN_PROGRESS')
+      // Solo marcar como iniciada si no es una revisión
+      if (!isReview) {
+        await updateActivityProgress(session.user.id, id, 'IN_PROGRESS')
+      }
     } catch (error) {
       console.error('Error iniciando actividad:', error)
     }
+  }
+
+  const handleReviewActivity = async (id: string) => {
+    await handleStartActivity(id, true)
   }
 
   const handleActivityComplete = async (score: number) => {
     if (!session?.user?.id || !currentActivity) return
 
     const passed = score >= 60
+    const isReview = currentActivity.isReview
 
     try {
       if (passed) {
-        // Solo actualizar si pasó la actividad
-        await updateActivityProgress(session.user.id, currentActivity.id, 'COMPLETED', score)
+        // Solo actualizar progreso en DB si no es una revisión
+        if (!isReview) {
+          await updateActivityProgress(session.user.id, currentActivity.id, 'COMPLETED', score)
 
-        // Actualizar estado local
-        setActivities((prev) =>
-          prev.map((activity) => 
-            activity.id === currentActivity.id ? { ...activity, completed: true } : activity
+          // Actualizar estado local
+          setActivities((prev) =>
+            prev.map((activity) => 
+              activity.id === currentActivity.id ? { ...activity, completed: true } : activity
+            )
           )
-        )
+        }
 
         // Actualizar experiencia local solo si pasó
         const newExperience = userProgress.experience + currentActivity.points
@@ -147,19 +181,24 @@ export default function ActivitiesContainer() {
           currentLevel: newLevel,
         }))
 
-        // Verificar si todas las actividades están completadas para desbloquear siguiente nivel
-        const allCompleted = activities.every((activity) =>
-          activity.id === currentActivity.id ? true : activity.completed
-        )
+        // Verificar si todas las actividades están completadas para desbloquear siguiente nivel (solo para actividades nuevas)
+        if (!isReview) {
+          const allCompleted = activities.every((activity) =>
+            activity.id === currentActivity.id ? true : activity.completed
+          )
 
-        if (allCompleted && newLevel > userProgress.currentLevel) {
-          setTimeout(() => {
-            setLastReward('¡Nuevo nivel desbloqueado!')
+          if (allCompleted && newLevel > userProgress.currentLevel) {
+            setTimeout(() => {
+              setLastReward('¡Nuevo nivel desbloqueado!')
+              setShowReward(true)
+            }, 1000)
+          } else {
+            setLastReward(`¡Excelente! Ganaste ${currentActivity.points} puntos de experiencia (${score}%)`)
             setShowReward(true)
-          }, 1000)
+          }
         } else {
-          // Mostrar recompensa solo si pasó
-          setLastReward(`¡Excelente! Ganaste ${currentActivity.points} puntos de experiencia (${score}%)`)
+          // Mensaje especial para revisiones
+          setLastReward(`¡Bien hecho! Revisión completada. Ganaste ${currentActivity.points} XP (${score}%)`)
           setShowReward(true)
         }
       } else {
@@ -205,11 +244,16 @@ export default function ActivitiesContainer() {
         level={userProgress.currentLevel}
         streak={userProgress.streak}
         experience={userProgress.experience}
-        nextLevelXP={userProgress.nextLevelXP}
-        currentDay={getCurrentDay()}
+        currentLevelXP={userProgress.currentLevelXP}
+        xpToNextLevel={userProgress.xpToNextLevel}
+        weeklyActivity={weeklyActivity}
       />
 
-      <LearningPathMap currentLevel={userProgress.currentLevel} maxLevel={10} />
+      <LearningPathMap 
+        currentLevel={userProgress.currentLevel} 
+        maxLevel={10} 
+        levelsSummary={levelsSummary}
+      />
 
       <Tabs defaultValue="todos">
         <TabsList className="grid grid-cols-5 mb-4">
@@ -227,6 +271,7 @@ export default function ActivitiesContainer() {
                 key={activity.id}
                 activity={activity}
                 onComplete={() => handleStartActivity(activity.id)}
+                onReview={() => handleReviewActivity(activity.id)}
               />
             ))
           ) : (
@@ -251,6 +296,7 @@ export default function ActivitiesContainer() {
                     key={activity.id}
                     activity={activity}
                     onComplete={() => handleStartActivity(activity.id)}
+                    onReview={() => handleReviewActivity(activity.id)}
                   />
                 ))
               ) : (

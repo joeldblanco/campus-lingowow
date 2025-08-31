@@ -210,6 +210,42 @@ export async function createProduct(data: Omit<Product, 'id' | 'createdAt' | 'up
   }
 }
 
+export async function createProductWithPlans(
+  productData: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>,
+  plans: Array<{
+    name: string
+    slug: string
+    description?: string
+    price: number
+    comparePrice?: number
+    duration: number
+    isActive: boolean
+    isPopular: boolean
+    sortOrder: number
+  }>
+) {
+  try {
+    const product = await db.product.create({
+      data: productData
+    })
+
+    if (plans.length > 0) {
+      await db.plan.createMany({
+        data: plans.map(plan => ({
+          ...plan,
+          productId: product.id
+        }))
+      })
+    }
+
+    revalidatePath('/admin/products')
+    return { success: true, data: product }
+  } catch (error) {
+    console.error('Error creating product with plans:', error)
+    return { success: false, error: 'Error al crear el producto con planes' }
+  }
+}
+
 export async function updateProduct(id: string, data: Partial<Omit<Product, 'id' | 'createdAt' | 'updatedAt'>>) {
   try {
     const product = await db.product.update({

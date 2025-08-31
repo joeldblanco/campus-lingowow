@@ -1,4 +1,4 @@
-import { BookOpen, Headphones, Mic, PenTool, Clock, Award, Lock, Check } from 'lucide-react'
+import { BookOpen, Headphones, Mic, PenTool, Clock, Award, Lock, Check, RotateCcw } from 'lucide-react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -15,9 +15,10 @@ interface ActivityProps {
     locked: boolean
   }
   onComplete: () => void
+  onReview?: () => void
 }
 
-export default function ActivityCard({ activity, onComplete }: ActivityProps) {
+export default function ActivityCard({ activity, onComplete, onReview }: ActivityProps) {
   const { title, type, points, duration, completed, locked } = activity
 
   const getIcon = () => {
@@ -89,10 +90,18 @@ export default function ActivityCard({ activity, onComplete }: ActivityProps) {
             Bloqueado
           </Button>
         ) : completed ? (
-          <Button className="w-full" variant="outline" disabled>
-            <Check className="h-4 w-4 mr-2" />
-            Completado
-          </Button>
+          <div className="w-full space-y-2">
+            <Button className="w-full" variant="outline" disabled>
+              <Check className="h-4 w-4 mr-2" />
+              Completado
+            </Button>
+            {onReview && (
+              <Button className="w-full" variant="secondary" onClick={onReview}>
+                <RotateCcw className="h-4 w-4 mr-2" />
+                Revisar (5 XP)
+              </Button>
+            )}
+          </div>
         ) : (
           <Button className="w-full" onClick={onComplete}>
             Comenzar

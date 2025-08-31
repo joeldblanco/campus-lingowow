@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { CourseWithDetails, updateCourse } from '@/lib/actions/courses'
+import { updateCourse } from '@/lib/actions/courses'
+import { CourseWithDetails } from '@/types/course'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -27,9 +28,10 @@ import { toast } from 'sonner'
 interface EditCourseDialogProps {
   course: CourseWithDetails
   children: React.ReactNode
+  onCourseUpdated?: () => void
 }
 
-export function EditCourseDialog({ course, children }: EditCourseDialogProps) {
+export function EditCourseDialog({ course, children, onCourseUpdated }: EditCourseDialogProps) {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({
@@ -49,7 +51,7 @@ export function EditCourseDialog({ course, children }: EditCourseDialogProps) {
       if (result.success) {
         toast.success('Curso actualizado exitosamente')
         setOpen(false)
-        window.location.reload()
+        onCourseUpdated?.()
       } else {
         toast.error(result.error || 'Error al actualizar el curso')
       }

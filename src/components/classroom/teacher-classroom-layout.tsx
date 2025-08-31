@@ -1,4 +1,3 @@
-// /components/virtual-classroom/classroom-layout.tsx
 'use client'
 
 import React, { useState, useEffect } from 'react'
@@ -11,20 +10,20 @@ import { ClassNotes } from '@/components/classroom/class-notes'
 import { Button } from '@/components/ui/button'
 import { CheckCircle, Download, Video, LogIn } from 'lucide-react'
 import { toast } from 'sonner'
-import { checkStudentAttendance, markStudentAttendance } from '@/lib/actions/attendance'
+import { checkTeacherAttendance, markTeacherAttendance } from '@/lib/actions/attendance'
 
-interface ClassroomLayoutProps {
+interface TeacherClassroomLayoutProps {
   classId: string
-  studentId: string
   teacherId: string
+  studentId: string
   courseName: string
   lessonName: string
 }
 
-export const ClassroomLayout: React.FC<ClassroomLayoutProps> = ({
+export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
   classId,
-  studentId,
   teacherId,
+  studentId,
   courseName,
   lessonName,
 }) => {
@@ -33,29 +32,29 @@ export const ClassroomLayout: React.FC<ClassroomLayoutProps> = ({
   const [isChecking, setIsChecking] = useState(true)
 
   useEffect(() => {
-    // Check if attendance is already marked
+    // Check if teacher attendance is already marked
     const checkAttendance = async () => {
       try {
-        const { attendanceMarked: marked, error } = await checkStudentAttendance(classId, studentId)
+        const { attendanceMarked: marked, error } = await checkTeacherAttendance(classId, teacherId)
         if (error) {
-          console.error('Error checking attendance:', error)
+          console.error('Error checking teacher attendance:', error)
           toast.error('Error al verificar la asistencia')
         }
         setAttendanceMarked(marked)
       } catch (error) {
-        console.error('Error checking attendance:', error)
+        console.error('Error checking teacher attendance:', error)
         toast.error('Error al verificar la asistencia')
       } finally {
         setIsChecking(false)
       }
     }
     checkAttendance()
-  }, [classId, studentId])
+  }, [classId, teacherId])
 
   const handleMarkAttendance = async () => {
     try {
       setIsLoading(true)
-      const result = await markStudentAttendance(classId, studentId)
+      const result = await markTeacherAttendance(classId, teacherId)
 
       if (result.success) {
         setAttendanceMarked(true)
@@ -73,7 +72,7 @@ export const ClassroomLayout: React.FC<ClassroomLayoutProps> = ({
 
   const handleEndClass = () => {
     // Lógica para finalizar la clase
-    toast('Clase finalizada. La grabación estará disponible en tu panel en unos minutos')
+    toast('Clase finalizada. La grabación estará disponible en el panel en unos minutos')
   }
 
   const handleStartRecording = () => {
@@ -114,6 +113,7 @@ export const ClassroomLayout: React.FC<ClassroomLayoutProps> = ({
         <div>
           <h1 className="text-xl font-bold">{courseName}</h1>
           <p className="text-sm text-gray-500">{lessonName}</p>
+          <p className="text-xs text-blue-600">Vista del Profesor</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={handleStartRecording}>
@@ -161,7 +161,7 @@ export const ClassroomLayout: React.FC<ClassroomLayoutProps> = ({
             </TabsContent>
 
             <TabsContent value="notes" className="h-[calc(100vh-12rem)]">
-              <ClassNotes classId={classId} studentId={studentId} />
+              <ClassNotes classId={classId} studentId={teacherId} />
             </TabsContent>
           </Tabs>
         </div>
