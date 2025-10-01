@@ -215,7 +215,7 @@ export default function CookiesPage() {
               <h2>9. Actualizaciones de esta Política</h2>
               <p>
                 Podemos actualizar esta Política de Cookies periódicamente para reflejar cambios 
-                en nuestras prácticas o por razones legales. La fecha de "Última actualización" 
+                en nuestras prácticas o por razones legales. La fecha de &quot;Última actualización&quot; 
                 al inicio indica cuándo se realizó la última modificación.
               </p>
 
