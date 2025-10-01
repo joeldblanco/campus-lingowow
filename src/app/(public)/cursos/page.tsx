@@ -1,5 +1,5 @@
 import Header from '@/components/public-components/header'
-import Footer from '@/components/public-components/footer-3'
+import Footer from '@/components/public-components/footer'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'

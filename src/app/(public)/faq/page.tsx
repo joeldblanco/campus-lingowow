@@ -1,5 +1,5 @@
 import Header from '@/components/public-components/header'
-import Footer from '@/components/public-components/footer-3'
+import Footer from '@/components/public-components/footer'
 import { Badge } from '@/components/ui/badge'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Card, CardContent } from '@/components/ui/card'

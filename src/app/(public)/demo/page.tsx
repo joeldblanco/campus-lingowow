@@ -1,6 +1,6 @@
 'use client'
 
-import Footer from '@/components/public-components/footer-3'
+import Footer from '@/components/public-components/footer'
 import Header from '@/components/public-components/header'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
