@@ -1,4 +1,4 @@
-import authConfig from '@/auth.config'
+import authConfig from '@/auth.config.edge'
 import { ROLES } from '@/lib/constants'
 import {
   adminPrefix,
