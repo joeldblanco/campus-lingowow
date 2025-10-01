@@ -62,6 +62,7 @@
     "@tanstack/react-table": "^8.21.2",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/socket.io": "^3.0.1",
+    "@vercel/speed-insights": "^1.2.0",
     "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.7.0",
