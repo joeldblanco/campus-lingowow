@@ -19,7 +19,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar'
 import { logout } from '@/lib/actions/auth'
-import { ROLES } from '@/lib/constants'
+import { UserRole } from '@prisma/client'
 
 export function NavUser({
   user,
@@ -29,7 +29,7 @@ export function NavUser({
     email: string
     image: string
     lastName: string
-    role: (typeof ROLES)[keyof typeof ROLES]
+    roles: UserRole[]
   }
 }) {
   const { isMobile } = useSidebar()
@@ -46,6 +46,7 @@ export function NavUser({
             <SidebarMenuButton
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              data-testid="user-menu-trigger"
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user.image} alt={user.name} />
@@ -99,7 +100,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout}>
+            <DropdownMenuItem onClick={handleLogout} data-testid="logout-button">
               <LogOut />
               Cerrar sesión
             </DropdownMenuItem>

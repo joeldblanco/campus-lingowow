@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Clock, Users, Target, BookOpen, CheckCircle, XCircle } from 'lucide-react'
-import { ExamWithDetails } from '@/lib/actions/exams'
+import { ExamWithDetails } from '@/types/exam'
 
 interface ViewExamDialogProps {
   exam: ExamWithDetails
@@ -14,11 +14,12 @@ interface ViewExamDialogProps {
 }
 
 export function ViewExamDialog({ exam, open, onOpenChange }: ViewExamDialogProps) {
-  const totalQuestions = exam.examData?.sections?.reduce((sum, section) => sum + section.questions.length, 0) || 0
-  const totalAttempts = exam.userAttempts.length
-  const passedAttempts = exam.userAttempts.filter(
-    attempt => attempt.status === 'COMPLETED' && 
-    (attempt.score || 0) >= (exam.examData?.passingScore || 70)
+  const totalQuestions =
+    exam.sections?.reduce((sum, section) => sum + section.questions.length, 0) || 0
+  const totalAttempts = exam.attempts.length
+  const passedAttempts = exam.attempts.filter(
+    (attempt) =>
+      attempt.status === 'COMPLETED' && (attempt.score || 0) >= exam.passingScore
   ).length
   const passRate = totalAttempts > 0 ? Math.round((passedAttempts / totalAttempts) * 100) : 0
 
@@ -35,64 +36,63 @@ export function ViewExamDialog({ exam, open, onOpenChange }: ViewExamDialogProps
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
             <span>{exam.title}</span>
-            <Badge variant={exam.isPublished ? "default" : "secondary"}>
-              {exam.isPublished ? "Published" : "Draft"}
+            <Badge variant={exam.isPublished ? 'default' : 'secondary'}>
             </Badge>
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Basic Information */}
+          {/* Exam Info */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Exam Details</CardTitle>
+              <CardTitle className="text-lg">Detalles del Examen</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <h4 className="font-medium mb-2">Description</h4>
+                <h4 className="font-medium mb-2">Descripción</h4>
                 <p className="text-muted-foreground">{exam.description}</p>
               </div>
-
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="flex items-center space-x-2">
                   <Clock className="h-4 w-4 text-muted-foreground" />
                   <div>
-                    <p className="text-sm font-medium">Duration</p>
+                    <p className="text-sm font-medium">Duración</p>
                     <p className="text-sm text-muted-foreground">
-                      {formatDuration(exam.examData?.timeLimit || exam.duration)}
+                      {formatDuration(exam.timeLimit || 0)}
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-3">
                   <Target className="h-4 w-4 text-muted-foreground" />
                   <div>
-                    <p className="text-sm font-medium">Passing Score</p>
+                    <p className="text-sm font-medium">Puntaje Mínimo</p>
                     <p className="text-sm text-muted-foreground">
-                      {exam.examData?.passingScore || 70}%
+                      {exam.passingScore}%
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex items-center space-x-3">
                   <BookOpen className="h-4 w-4 text-muted-foreground" />
                   <div>
-                    <p className="text-sm font-medium">Questions</p>
+                    <p className="text-sm font-medium">Preguntas</p>
                     <p className="text-sm text-muted-foreground">{totalQuestions}</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-3">
                   <Users className="h-4 w-4 text-muted-foreground" />
                   <div>
-                    <p className="text-sm font-medium">Max Attempts</p>
-                    <p className="text-sm text-muted-foreground">
-                      {exam.examData?.attempts || 3}
-                    </p>
+                    <p className="text-sm font-medium">Intentos Máximos</p>
+                    <p className="text-sm text-muted-foreground">{exam.maxAttempts}</p>
                   </div>
                 </div>
               </div>
 
               {exam.course && (
                 <div>
-                  <h4 className="font-medium mb-2">Course Assignment</h4>
+                  <h4 className="font-medium mb-2">Asignación de Curso</h4>
                   <div className="flex items-center space-x-2">
                     <Badge variant="outline">{exam.course.title}</Badge>
                     <Badge variant="secondary">{exam.course.language}</Badge>
@@ -101,14 +101,14 @@ export function ViewExamDialog({ exam, open, onOpenChange }: ViewExamDialogProps
                   {exam.module && (
                     <div className="mt-2">
                       <span className="text-sm text-muted-foreground">
-                        Module: {exam.module.title} (Level {exam.module.level})
+                        Módulo: {exam.module.title} (Nivel {exam.module.level})
                       </span>
                     </div>
                   )}
                   {exam.lesson && (
                     <div className="mt-1">
                       <span className="text-sm text-muted-foreground">
-                        Lesson: {exam.lesson.title}
+                        Lección: {exam.lesson.title}
                       </span>
                     </div>
                   )}
@@ -120,70 +120,67 @@ export function ViewExamDialog({ exam, open, onOpenChange }: ViewExamDialogProps
           {/* Statistics */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Performance Statistics</CardTitle>
+              <CardTitle className="text-lg">Estadísticas de Rendimiento</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="text-center">
                   <div className="text-2xl font-bold">{totalAttempts}</div>
-                  <p className="text-sm text-muted-foreground">Total Attempts</p>
+                  <p className="text-sm text-muted-foreground">Intentos Totales</p>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-green-600">{passedAttempts}</div>
-                  <p className="text-sm text-muted-foreground">Passed</p>
+                  <p className="text-sm text-muted-foreground">Aprobados</p>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-red-600">{totalAttempts - passedAttempts}</div>
-                  <p className="text-sm text-muted-foreground">Failed</p>
+                  <div className="text-2xl font-bold text-red-600">
+                    {totalAttempts - passedAttempts}
+                  </div>
+                  <p className="text-sm text-muted-foreground">Reprobados</p>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold">{passRate}%</div>
-                  <p className="text-sm text-muted-foreground">Pass Rate</p>
+                  <p className="text-sm text-muted-foreground">Tasa de Aprobación</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           {/* Sections */}
-          {exam.examData?.sections && exam.examData.sections.length > 0 && (
+          {exam.sections && exam.sections.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Exam Sections</CardTitle>
+                <CardTitle className="text-lg">Secciones del Examen</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {exam.examData.sections.map((section, index) => (
+                {exam.sections.map((section, index) => (
                   <div key={section.id} className="border rounded-lg p-4">
                     <div className="flex items-center justify-between mb-3">
                       <h4 className="font-medium">
-                        Section {index + 1}: {section.title}
+                        Sección {index + 1}: {section.title}
                       </h4>
                       <div className="flex space-x-2">
+                        <Badge variant="outline">{section.questions.length} preguntas</Badge>
                         <Badge variant="outline">
-                          {section.questions.length} questions
-                        </Badge>
-                        <Badge variant="outline">
-                          {section.questions.reduce((sum, q) => sum + q.points, 0)} points
+                          {section.questions.reduce((sum, q) => sum + q.points, 0)} puntos
                         </Badge>
                         {section.timeLimit && (
-                          <Badge variant="outline">
-                            {formatDuration(section.timeLimit)}
-                          </Badge>
+                          <Badge variant="outline">{formatDuration(section.timeLimit)}</Badge>
                         )}
                       </div>
                     </div>
-                    
+
                     {section.description && (
-                      <p className="text-sm text-muted-foreground mb-3">
-                        {section.description}
-                      </p>
+                      <p className="text-sm text-muted-foreground mb-3">{section.description}</p>
                     )}
 
                     <div className="space-y-2">
                       {section.questions.map((question, qIndex) => (
-                        <div key={question.id} className="flex items-start space-x-3 p-2 bg-muted/50 rounded">
-                          <span className="text-sm font-medium min-w-[2rem]">
-                            {qIndex + 1}.
-                          </span>
+                        <div
+                          key={question.id}
+                          className="flex items-start space-x-3 p-2 bg-muted/50 rounded"
+                        >
+                          <span className="text-sm font-medium min-w-[2rem]">{qIndex + 1}.</span>
                           <div className="flex-1">
                             <p className="text-sm">{question.question}</p>
                             <div className="flex items-center space-x-2 mt-1">
@@ -191,7 +188,7 @@ export function ViewExamDialog({ exam, open, onOpenChange }: ViewExamDialogProps
                                 {question.type.replace('_', ' ')}
                               </Badge>
                               <Badge variant="outline" className="text-xs">
-                                {question.points} pts
+                                {question.points} ptos
                               </Badge>
                             </div>
                           </div>
@@ -205,51 +202,52 @@ export function ViewExamDialog({ exam, open, onOpenChange }: ViewExamDialogProps
           )}
 
           {/* Recent Attempts */}
-          {exam.userAttempts.length > 0 && (
+          {exam.attempts.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Recent Attempts</CardTitle>
+                <CardTitle className="text-lg">Intentos Recientes</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {exam.userAttempts.slice(0, 5).map((attempt, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 border rounded">
+                  {exam.attempts.slice(0, 5).map((attempt, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-3 border rounded"
+                    >
                       <div className="flex items-center space-x-3">
                         <div>
                           <p className="font-medium">
                             {attempt.user.name} {attempt.user.lastName}
                           </p>
-                          <p className="text-sm text-muted-foreground">
-                            {attempt.user.email}
-                          </p>
+                          <p className="text-sm text-muted-foreground">{attempt.user.email}</p>
                         </div>
                       </div>
                       <div className="flex items-center space-x-3">
                         <div className="text-right">
                           <p className="font-medium">
-                            {attempt.score !== null ? `${attempt.score}%` : 'In Progress'}
+                            {attempt.score !== null ? `${attempt.score}%` : 'En Progreso'}
                           </p>
                           <p className="text-sm text-muted-foreground">
-                            Attempt {attempt.attempts}
+                            Intento {attempt.attemptNumber}
                           </p>
                         </div>
                         <div className="flex items-center">
                           {attempt.status === 'COMPLETED' ? (
-                            (attempt.score || 0) >= (exam.examData?.passingScore || 70) ? (
+                            (attempt.score || 0) >= exam.passingScore ? (
                               <CheckCircle className="h-5 w-5 text-green-600" />
                             ) : (
                               <XCircle className="h-5 w-5 text-red-600" />
                             )
                           ) : (
-                            <Clock className="h-5 w-5 text-yellow-600" />
+                            <span className="text-sm text-muted-foreground">En Progreso</span>
                           )}
                         </div>
                       </div>
                     </div>
                   ))}
-                  {exam.userAttempts.length > 5 && (
+                  {exam.attempts.length > 5 && (
                     <p className="text-sm text-muted-foreground text-center">
-                      And {exam.userAttempts.length - 5} more attempts...
+                      Y {exam.attempts.length - 5} intentos más...
                     </p>
                   )}
                 </div>
@@ -259,7 +257,7 @@ export function ViewExamDialog({ exam, open, onOpenChange }: ViewExamDialogProps
         </div>
 
         <div className="flex justify-end">
-          <Button onClick={() => onOpenChange(false)}>Close</Button>
+          <Button onClick={() => onOpenChange(false)}>Cerrar</Button>
         </div>
       </DialogContent>
     </Dialog>

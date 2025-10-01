@@ -1,11 +1,11 @@
 import { useShopStore } from '@/stores/useShopStore'
 import { useEffect, useState } from 'react'
 import { getProducts, getPlans } from '@/lib/actions/commercial'
-import { Course } from '@/types/shop'
+import { Course, Merge, Product } from '@/types/shop'
 
 export function useFilterCourses() {
   const filters = useShopStore((state) => state.filters)
-  const [courses, setCourses] = useState<Course[]>([])
+  const [courses, setCourses] = useState<Array<Merge<Product, Course>>>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -13,23 +13,50 @@ export function useFilterCourses() {
       try {
         const [products, plans] = await Promise.all([getProducts(), getPlans()])
         
-        // Transform database products to Course format
-        const transformedCourses: Course[] = products.map((product) => ({
+        // Transform database products to merged Product & Course format
+        const transformedCourses: Array<Merge<Product, Course>> = products.map((product) => ({
+          // Product fields
           id: product.id,
-          title: product.name,
+          name: product.name,
+          slug: product.slug,
           description: product.description || '',
-          levels: ['Principiante', 'Intermedio', 'Avanzado'], // Default levels
+          shortDesc: product.shortDesc,
+          price: product.price,
+          comparePrice: product.comparePrice,
+          sku: product.sku,
+          image: product.image || '/media/images/default-course.png',
+          images: product.images,
+          isActive: product.isActive,
+          isDigital: product.isDigital,
+          stock: product.stock,
+          categoryId: product.categoryId,
+          requiresScheduling: product.requiresScheduling,
+          courseId: product.courseId,
+          maxScheduleSlots: product.maxScheduleSlots,
+          scheduleDuration: product.scheduleDuration,
+          createdAt: product.createdAt,
+          updatedAt: product.updatedAt,
+          // Course fields
+          title: product.name,
+          levels: ['Principiante', 'Intermedio', 'Avanzado'],
           language: product.category?.name || 'General',
           category: product.category?.name || 'General',
-          image: product.image || '/media/images/default-course.png',
           plans: plans
-            .filter((plan) => plan.isActive)
-            .slice(0, 3) // Take first 3 active plans as default
+            .filter((plan) => plan.isActive && plan.productId === product.id)
             .map((plan) => ({
               id: plan.id,
               name: plan.name,
+              slug: plan.slug,
+              description: plan.description,
               price: plan.price,
-              features: [], // Will be populated when plan features are loaded
+              comparePrice: plan.comparePrice,
+              duration: plan.duration,
+              isActive: plan.isActive,
+              isPopular: plan.isPopular,
+              sortOrder: plan.sortOrder,
+              productId: plan.productId,
+              createdAt: plan.createdAt,
+              updatedAt: plan.updatedAt,
             })),
         }))
         

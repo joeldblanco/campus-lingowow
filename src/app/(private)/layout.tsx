@@ -3,6 +3,8 @@ import { AppSidebar } from '@/components/app-sidebar'
 import { SidebarInset, SidebarTrigger } from '@/components/ui/sidebar'
 import { Toaster } from '@/components/ui/sonner'
 import { Providers } from '@/providers/providers'
+import { CurrentClassProvider } from '@/context/current-class'
+// import { FloatingChat } from '@/components/floating-chat/FloatingChat'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import '../globals.css'
@@ -36,21 +38,24 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers defaultOpen={defaultOpen}>
-          {session && (
-            <>
-              <AppSidebar />
-              <SidebarInset>
-                <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-                  <div className="flex items-center gap-2 px-4">
-                    <SidebarTrigger className="-ml-1" />
-                  </div>
-                </header>
-                <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>
-              </SidebarInset>
-            </>
-          )}
+          <CurrentClassProvider>
+            {session && (
+              <>
+                <AppSidebar />
+                <SidebarInset>
+                  <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+                    <div className="flex items-center gap-2 px-4">
+                      <SidebarTrigger className="-ml-1" />
+                    </div>
+                  </header>
+                  <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>
+                </SidebarInset>
+                {/* <FloatingChat userId={session.user.id || ''} /> */}
+              </>
+            )}
 
-          {!session && <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>}
+            {!session && <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>}
+          </CurrentClassProvider>
         </Providers>
         <Toaster richColors theme="light" />
       </body>

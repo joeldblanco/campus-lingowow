@@ -255,15 +255,17 @@ interface EnrollUserInCourseResult {
 export async function enrollUserInCourse(
   userId: string,
   courseId: string,
+  academicPeriodId: string,
   purchaseId?: string
 ): Promise<EnrollUserInCourseResult> {
   try {
-    // Verificar si ya está inscrito
+    // Verificar si ya está inscrito en este período
     const existingEnrollment = await db.enrollment.findUnique({
       where: {
-        studentId_courseId: {
+        studentId_courseId_academicPeriodId: {
           studentId: userId,
           courseId: courseId,
+          academicPeriodId: academicPeriodId,
         },
       },
     })
@@ -277,6 +279,7 @@ export async function enrollUserInCourse(
       data: {
         studentId: userId,
         courseId: courseId,
+        academicPeriodId: academicPeriodId,
         status: 'ACTIVE',
         progress: 0,
       },
@@ -313,6 +316,7 @@ interface ProcessProductPurchaseParams {
   productId: string
   invoiceId: string
   selectedSlots: string[]
+  academicPeriodId?: string // Opcional para productos que no requieren inscripción a curso
 }
 
 interface ProcessProductPurchaseResult {
@@ -362,9 +366,16 @@ export async function processProductPurchase(
 
     // Si tiene curso asociado, inscribir automáticamente
     if (product.courseId) {
+      if (!params.academicPeriodId) {
+        return {
+          success: false,
+          error: 'Se requiere un período académico para inscribirse en el curso',
+        }
+      }
       const enrollmentResult = await enrollUserInCourse(
         params.userId,
         product.courseId,
+        params.academicPeriodId,
         params.invoiceId
       )
       if (enrollmentResult?.success && enrollmentResult.data) {

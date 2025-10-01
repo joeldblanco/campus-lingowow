@@ -2,6 +2,8 @@
 
 import { db as prisma } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
+import { CreateModuleSchema, EditModuleSchema } from '@/schemas/modules'
+import * as z from 'zod'
 
 export async function getAllModules() {
   try {
@@ -62,23 +64,19 @@ export async function getModuleStats() {
   }
 }
 
-export async function createModule(data: {
-  title: string
-  description?: string
-  level: number
-  order: number
-  courseId: string
-  isPublished?: boolean
-}) {
+export async function createModule(data: z.infer<typeof CreateModuleSchema>) {
   try {
+    // Validate input data
+    const validatedData = CreateModuleSchema.parse(data)
+
     const moduleItem = await prisma.module.create({
       data: {
-        title: data.title,
-        description: data.description || '',
-        level: data.level,
-        order: data.order,
-        courseId: data.courseId,
-        isPublished: data.isPublished || false,
+        title: validatedData.title,
+        description: validatedData.description || '',
+        level: validatedData.level,
+        order: validatedData.order,
+        courseId: validatedData.courseId,
+        isPublished: validatedData.isPublished || false,
       },
       include: {
         course: {
@@ -90,25 +88,20 @@ export async function createModule(data: {
       },
     })
 
-    revalidatePath('/admin/units')
+    revalidatePath('/admin/lessons')
     return moduleItem
   } catch (error) {
     console.error('Error creating module:', error)
-    throw new Error('Failed to create module')
+
+    if (error instanceof z.ZodError) {
+      throw new Error(error.errors.map((e) => e.message).join(', '))
+    }
+
+    throw new Error('Error al crear el módulo')
   }
 }
 
-export async function updateModule(
-  id: string,
-  data: {
-    title?: string
-    description?: string
-    level?: number
-    order?: number
-    courseId?: string
-    isPublished?: boolean
-  }
-) {
+export async function updateModule(id: string, data: z.infer<typeof EditModuleSchema>) {
   try {
     const moduleItem = await prisma.module.update({
       where: { id },
@@ -123,7 +116,7 @@ export async function updateModule(
       },
     })
 
-    revalidatePath('/admin/units')
+    revalidatePath('/admin/lessons')
     return moduleItem
   } catch (error) {
     console.error('Error updating module:', error)
@@ -137,7 +130,7 @@ export async function deleteModule(id: string) {
       where: { id },
     })
 
-    revalidatePath('/admin/units')
+    revalidatePath('/admin/lessons')
     return { success: true }
   } catch (error) {
     console.error('Error deleting module:', error)

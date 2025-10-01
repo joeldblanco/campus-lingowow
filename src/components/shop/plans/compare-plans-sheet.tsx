@@ -19,7 +19,7 @@ export function ComparePlansSheet() {
     >
       <SheetContent side="right" className="w-[90vw] sm:w-[600px] max-w-full">
         <SheetHeader>
-          <SheetTitle>Compare Plans</SheetTitle>
+          <SheetTitle>Comparar Planes</SheetTitle>
         </SheetHeader>
         {comparePlans.product && (
           <div className="mt-6">
@@ -39,7 +39,7 @@ export function ComparePlansSheet() {
                 </thead>
                 <tbody>
                   <tr>
-                    <td className="p-2 border-b font-medium">Price</td>
+                    <td className="p-2 border-b font-medium">Precio</td>
                     {comparePlans.product.plans.map((plan) => (
                       <td key={plan.id} className="p-2 border-b">
                         ${plan.price.toFixed(2)}
@@ -48,13 +48,13 @@ export function ComparePlansSheet() {
                   </tr>
 
                   {Array.from(
-                    new Set(comparePlans.product.plans.flatMap((plan) => plan.features))
+                    new Set(comparePlans.product.plans.flatMap((plan) => plan.features || []))
                   ).map((feature, index) => (
                     <tr key={index}>
                       <td className="p-2 border-b font-medium">{feature}</td>
                       {comparePlans.product!.plans.map((plan) => (
                         <td key={plan.id} className="p-2 border-b">
-                          {plan.features.includes(feature) ? (
+                          {(plan.features || []).includes(feature) ? (
                             <ChevronUp className="h-5 w-5 text-primary" />
                           ) : (
                             <X className="h-5 w-5 text-muted-foreground" />
@@ -81,7 +81,7 @@ export function ComparePlansSheet() {
                             onClick={() => addToCart(item)}
                             className="w-full"
                           >
-                            {isInCart(item.product.id, item.plan.id) ? 'Remove' : 'Add to Cart'}
+                            {isInCart(item.product.id, item.plan.id) ? 'Quitar' : 'Agregar al Carrito'}
                           </Button>
                         </td>
                       )

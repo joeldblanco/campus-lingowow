@@ -6,24 +6,14 @@ import { CreateInvoiceDialog } from '@/components/admin/invoices/create-invoice-
 
 const InvoicesAdminPage = async () => {
   const invoicesData = await getInvoices()
-  
+
   // Transform database data to match Invoice interface
   const invoices = invoicesData.map((invoice) => ({
     ...invoice,
     number: invoice.invoiceNumber || `INV-${invoice.id.slice(-6)}`,
     taxAmount: invoice.tax || 0,
     discountAmount: invoice.discount || 0,
-    items: invoice.items.map((item: {
-      id: string
-      productId: string | null
-      planId: string | null
-      name: string
-      price: number
-      quantity: number
-      total: number
-      product: { name: string } | null
-      plan: { name: string } | null
-    }) => ({
+    items: invoice.items.map((item) => ({
       id: item.id,
       productId: item.productId || 'unknown',
       planId: item.planId || undefined,
@@ -47,7 +37,7 @@ const InvoicesAdminPage = async () => {
           </Button>
         </CreateInvoiceDialog>
       </div>
-      
+
       <InvoicesTable invoices={invoices} />
     </div>
   )

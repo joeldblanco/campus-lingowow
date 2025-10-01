@@ -8,7 +8,7 @@ import {
   splitTimeSlot,
   timeToMinutes,
 } from '@/lib/utils/calendar'
-import { BookingStatus } from '@prisma/client'
+import { BookingStatus, UserRole } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
@@ -142,7 +142,12 @@ export async function getStudentBookings() {
 export async function getTeacherBookings() {
   const session = await auth()
 
-  if (!session || !session.user || !session.user.id || session.user.role !== 'TEACHER') {
+  if (
+    !session ||
+    !session.user ||
+    !session.user.id ||
+    !session.user.roles.includes(UserRole.TEACHER)
+  ) {
     return { success: false, error: 'No autorizado' }
   }
 
@@ -216,7 +221,12 @@ export async function getCalendarSettings() {
 export async function updateCalendarSettings(params: CalendarSettingsParams) {
   const session = await auth()
 
-  if (!session || !session.user || !session.user.id || session.user.role !== 'TEACHER') {
+  if (
+    !session ||
+    !session.user ||
+    !session.user.id ||
+    !session.user.roles.includes(UserRole.TEACHER)
+  ) {
     return { success: false, error: 'No autorizado' }
   }
 
@@ -269,7 +279,12 @@ export async function updateCalendarSettings(params: CalendarSettingsParams) {
 export async function updateTeacherAvailability(params: AvailabilityParams) {
   const session = await auth()
 
-  if (!session || !session.user || !session.user.id || session.user.role !== 'TEACHER') {
+  if (
+    !session ||
+    !session.user ||
+    !session.user.id ||
+    !session.user.roles.includes(UserRole.TEACHER)
+  ) {
     return { success: false, error: 'No autorizado' }
   }
 
@@ -312,7 +327,12 @@ export async function updateTeacherAvailability(params: AvailabilityParams) {
 export async function bookClass(params: BookingParams) {
   const session = await auth()
 
-  if (!session || !session.user || !session.user.id || session.user.role !== 'STUDENT') {
+  if (
+    !session ||
+    !session.user ||
+    !session.user.id ||
+    !session.user.roles.includes(UserRole.STUDENT)
+  ) {
     return { success: false, error: 'No autorizado' }
   }
 
@@ -396,6 +416,39 @@ export async function bookClass(params: BookingParams) {
       }
     }
 
+    // Obtener el período académico actual
+    const currentPeriod = await db.academicPeriod.findFirst({
+      where: {
+        isActive: true,
+      },
+    })
+
+    if (!currentPeriod) {
+      return { success: false, error: 'No hay un período académico activo' }
+    }
+
+    // Obtener o crear el StudentPeriod para el estudiante
+    let studentPeriod = await db.studentPeriod.findUnique({
+      where: {
+        studentId_periodId: {
+          studentId,
+          periodId: currentPeriod.id,
+        },
+      },
+    })
+
+    // Si no existe, crear uno por defecto
+    if (!studentPeriod) {
+      studentPeriod = await db.studentPeriod.create({
+        data: {
+          studentId,
+          periodId: currentPeriod.id,
+          packageType: 'custom',
+          classesTotal: 1,
+        },
+      })
+    }
+
     // Crear la reserva
     await db.classBooking.create({
       data: {
@@ -404,6 +457,7 @@ export async function bookClass(params: BookingParams) {
         day,
         timeSlot, // Almacenamos el time slot completo con la duración correcta
         status: BookingStatus.CONFIRMED,
+        studentPeriodId: studentPeriod.id,
       },
     })
 
@@ -419,7 +473,12 @@ export async function bookClass(params: BookingParams) {
 export async function bulkUpdateAvailability(availabilityList: AvailabilityParams[]) {
   const session = await auth()
 
-  if (!session || !session.user || !session.user.id || session.user.role !== 'TEACHER') {
+  if (
+    !session ||
+    !session.user ||
+    !session.user.id ||
+    !session.user.roles.includes(UserRole.TEACHER)
+  ) {
     return { success: false, error: 'No autorizado' }
   }
 

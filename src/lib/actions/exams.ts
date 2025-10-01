@@ -2,213 +2,100 @@
 
 import { db } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
+import { 
+  CreateExamSchema, 
+  EditExamSchema, 
+  AssignExamSchema
+} from '@/schemas/exams'
+import * as z from 'zod'
+import { AttemptStatus, AssignmentStatus } from '@prisma/client'
+import type {
+  ExamWithDetails,
+  ExamStats,
+  ExamCreateResponse,
+  ExamUpdateResponse,
+  ExamDeleteResponse,
+  ExamAssignResponse
+} from '@/types/exam'
 
-// Since there's no exam model in the schema, I'll create a comprehensive exam system
-// using the Activity model with specific exam configurations
-
-export interface ExamQuestion {
-  id: string
-  type: 'multiple_choice' | 'true_false' | 'short_answer' | 'essay' | 'fill_blank'
-  question: string
-  options?: string[]
-  correctAnswer: string | string[]
-  points: number
-  explanation?: string
-}
-
-export interface ExamSection {
-  id: string
-  title: string
-  description?: string
-  timeLimit?: number // in minutes
-  questions: ExamQuestion[]
-  order: number
-}
-
-export interface ExamData {
-  title: string
-  description: string
-  sections: ExamSection[]
-  totalPoints: number
-  timeLimit?: number // total exam time in minutes
-  passingScore: number
-  isBlocking: boolean // if true, blocks course progression until passed
-  isOptional: boolean
-  attempts: number // maximum attempts allowed
-}
-
-export interface ExamWithDetails {
-  id: string
-  title: string
-  description: string
-  activityType: string
-  level: number
-  points: number
-  duration: number
-  timeLimit: number | null
-  isPublished: boolean
-  examData: ExamData
-  courseId?: string
-  moduleId?: string
-  lessonId?: string
-  course?: {
-    id: string
-    title: string
-    language: string
-    level: string
-  } | null
-  module?: {
-    id: string
-    title: string
-    level: number
-  } | null
-  lesson?: {
-    id: string
-    title: string
-  } | null
-  userAttempts: {
-    userId: string
-    score: number | null
-    status: string
-    attempts: number
-    completedAt: Date | null
-    user: {
-      name: string
-      lastName: string
-      email: string
-    }
-  }[]
-  createdAt: Date
-  updatedAt: Date
-}
+// =============================================
+// FUNCIONES PRINCIPALES DEL SISTEMA DE EXÁMENES
+// =============================================
 
 export async function getAllExams(): Promise<ExamWithDetails[]> {
   try {
-    // Get all activities that are configured as exams
-    const examActivities = await db.activity.findMany({
-      where: {
-        activityType: {
-          in: ['MULTIPLE_CHOICE', 'FILL_IN_BLANK', 'MATCHING', 'OTHER']
-        },
-        // Filter for exam-like activities based on structure
-        activityData: {
-          path: ['isExam'],
-          equals: true
-        }
-      },
+    const exams = await db.exam.findMany({
       include: {
-        modules: {
-          include: {
-            module: {
-              include: {
-                course: {
-                  select: {
-                    id: true,
-                    title: true,
-                    language: true,
-                    level: true,
-                  }
-                }
-              }
-            }
+        creator: {
+          select: {
+            name: true,
+            lastName: true,
+            email: true
           }
         },
-        lessons: {
-          include: {
-            lesson: {
-              include: {
-                module: {
-                  include: {
-                    course: {
-                      select: {
-                        id: true,
-                        title: true,
-                        language: true,
-                        level: true,
-                      }
-                    }
-                  }
-                }
-              }
-            }
+        course: {
+          select: {
+            id: true,
+            title: true,
+            language: true,
+            level: true
           }
         },
-        userProgress: {
+        module: {
+          select: {
+            id: true,
+            title: true,
+            level: true
+          }
+        },
+        lesson: {
+          select: {
+            id: true,
+            title: true
+          }
+        },
+        sections: {
+          include: {
+            questions: {
+              orderBy: { order: 'asc' }
+            }
+          },
+          orderBy: { order: 'asc' }
+        },
+        attempts: {
           include: {
             user: {
               select: {
+                id: true,
                 name: true,
                 lastName: true,
-                email: true,
+                email: true
               }
             }
           }
+        },
+        _count: {
+          select: {
+            attempts: true,
+            assignments: true
+          }
         }
       },
-      orderBy: {
-        createdAt: 'desc'
-      }
+      orderBy: { createdAt: 'desc' }
     })
 
-    const exams: ExamWithDetails[] = examActivities.map(activity => {
-      // Determine course/module/lesson context
-      let courseInfo = null
-      let moduleInfo = null
-      let lessonInfo = null
-
-      if (activity.modules.length > 0) {
-        const moduleRelation = activity.modules[0]
-        courseInfo = moduleRelation.module.course
-        moduleInfo = {
-          id: moduleRelation.module.id,
-          title: moduleRelation.module.title,
-          level: moduleRelation.module.level,
-        }
-      } else if (activity.lessons.length > 0) {
-        const lessonRelation = activity.lessons[0]
-        courseInfo = lessonRelation.lesson.module.course
-        moduleInfo = {
-          id: lessonRelation.lesson.module.id,
-          title: lessonRelation.lesson.module.title,
-          level: lessonRelation.lesson.module.level,
-        }
-        lessonInfo = {
-          id: lessonRelation.lesson.id,
-          title: lessonRelation.lesson.title,
-        }
-      }
-
-      return {
-        id: activity.id,
-        title: activity.title,
-        description: activity.description,
-        activityType: activity.activityType,
-        level: activity.level,
-        points: activity.points,
-        duration: activity.duration,
-        timeLimit: activity.timeLimit,
-        isPublished: activity.isPublished,
-        examData: (activity.activityData as unknown) as ExamData || {} as ExamData,
-        courseId: courseInfo?.id,
-        moduleId: moduleInfo?.id,
-        lessonId: lessonInfo?.id,
-        course: courseInfo,
-        module: moduleInfo,
-        lesson: lessonInfo,
-        userAttempts: activity.userProgress.map(up => ({
-          userId: up.userId,
-          score: up.score,
-          status: up.status,
-          attempts: up.attempts,
-          completedAt: up.completedAt,
-          user: up.user,
-        })),
-        createdAt: activity.createdAt,
-        updatedAt: activity.updatedAt,
-      }
-    })
-
-    return exams
+    return exams.map(exam => ({
+      ...exam,
+      sections: exam.sections.map(section => ({
+        ...section,
+        questions: section.questions.map(question => ({
+          ...question,
+          options: question.options as string[] | null,
+          correctAnswer: question.correctAnswer as string | string[]
+        }))
+      })),
+      attempts: exam.attempts
+    }))
   } catch (error) {
     console.error('Error fetching exams:', error)
     throw new Error('Failed to fetch exams')
@@ -217,115 +104,79 @@ export async function getAllExams(): Promise<ExamWithDetails[]> {
 
 export async function getExamById(id: string): Promise<ExamWithDetails | null> {
   try {
-    const activity = await db.activity.findUnique({
+    const exam = await db.exam.findUnique({
       where: { id },
       include: {
-        modules: {
-          include: {
-            module: {
-              include: {
-                course: {
-                  select: {
-                    id: true,
-                    title: true,
-                    language: true,
-                    level: true,
-                  }
-                }
-              }
-            }
+        creator: {
+          select: {
+            name: true,
+            lastName: true,
+            email: true
           }
         },
-        lessons: {
-          include: {
-            lesson: {
-              include: {
-                module: {
-                  include: {
-                    course: {
-                      select: {
-                        id: true,
-                        title: true,
-                        language: true,
-                        level: true,
-                      }
-                    }
-                  }
-                }
-              }
-            }
+        course: {
+          select: {
+            id: true,
+            title: true,
+            language: true,
+            level: true
           }
         },
-        userProgress: {
+        module: {
+          select: {
+            id: true,
+            title: true,
+            level: true
+          }
+        },
+        lesson: {
+          select: {
+            id: true,
+            title: true
+          }
+        },
+        sections: {
+          include: {
+            questions: {
+              orderBy: { order: 'asc' }
+            }
+          },
+          orderBy: { order: 'asc' }
+        },
+        attempts: {
           include: {
             user: {
               select: {
+                id: true,
                 name: true,
                 lastName: true,
-                email: true,
+                email: true
               }
             }
+          }
+        },
+        _count: {
+          select: {
+            attempts: true,
+            assignments: true
           }
         }
       }
     })
 
-    if (!activity) return null
-
-    // Determine course/module/lesson context
-    let courseInfo = null
-    let moduleInfo = null
-    let lessonInfo = null
-
-    if (activity.modules.length > 0) {
-      const moduleRelation = activity.modules[0]
-      courseInfo = moduleRelation.module.course
-      moduleInfo = {
-        id: moduleRelation.module.id,
-        title: moduleRelation.module.title,
-        level: moduleRelation.module.level,
-      }
-    } else if (activity.lessons.length > 0) {
-      const lessonRelation = activity.lessons[0]
-      courseInfo = lessonRelation.lesson.module.course
-      moduleInfo = {
-        id: lessonRelation.lesson.module.id,
-        title: lessonRelation.lesson.module.title,
-        level: lessonRelation.lesson.module.level,
-      }
-      lessonInfo = {
-        id: lessonRelation.lesson.id,
-        title: lessonRelation.lesson.title,
-      }
-    }
+    if (!exam) return null
 
     return {
-      id: activity.id,
-      title: activity.title,
-      description: activity.description,
-      activityType: activity.activityType,
-      level: activity.level,
-      points: activity.points,
-      duration: activity.duration,
-      timeLimit: activity.timeLimit,
-      isPublished: activity.isPublished,
-      examData: (activity.activityData as unknown) as ExamData || {} as ExamData,
-      courseId: courseInfo?.id,
-      moduleId: moduleInfo?.id,
-      lessonId: lessonInfo?.id,
-      course: courseInfo,
-      module: moduleInfo,
-      lesson: lessonInfo,
-      userAttempts: activity.userProgress.map(up => ({
-        userId: up.userId,
-        score: up.score,
-        status: up.status,
-        attempts: up.attempts,
-        completedAt: up.completedAt,
-        user: up.user,
+      ...exam,
+      sections: exam.sections.map(section => ({
+        ...section,
+        questions: section.questions.map(question => ({
+          ...question,
+          options: question.options as string[] | null,
+          correctAnswer: question.correctAnswer as string | string[]
+        }))
       })),
-      createdAt: activity.createdAt,
-      updatedAt: activity.updatedAt,
+      attempts: exam.attempts
     }
   } catch (error) {
     console.error('Error fetching exam:', error)
@@ -333,192 +184,220 @@ export async function getExamById(id: string): Promise<ExamWithDetails | null> {
   }
 }
 
-export interface CreateExamData {
-  title: string
-  description: string
-  courseId?: string
-  moduleId?: string
-  lessonId?: string
-  examData: ExamData
-  createdById: string
-}
-
-export async function createExam(data: CreateExamData) {
+export async function createExam(data: z.infer<typeof CreateExamSchema>): Promise<ExamCreateResponse> {
   try {
-    // Calculate total points and duration from exam data
-    const totalPoints = data.examData.sections.reduce((sum, section) => 
-      sum + section.questions.reduce((sectionSum, q) => sectionSum + q.points, 0), 0
-    )
+    // Validar datos de entrada
+    const validatedData = CreateExamSchema.parse(data)
     
-    const estimatedDuration = data.examData.timeLimit || 
-      data.examData.sections.reduce((sum, section) => sum + (section.timeLimit || 30), 0)
+    // Los puntos totales se calculan automáticamente en cada sección
 
-    // Create the exam as an activity
-    const exam = await db.activity.create({
-      data: {
-        title: data.title,
-        description: data.description,
-        activityType: 'OTHER', // We'll use OTHER type for exams
-        level: 1,
-        points: totalPoints,
-        duration: estimatedDuration,
-        timeLimit: data.examData.timeLimit,
-        activityData: JSON.parse(JSON.stringify({
-          ...data.examData,
-          isExam: true, // Mark this as an exam
-        })),
-        steps: JSON.parse(JSON.stringify({
-          examSections: data.examData.sections,
-        })),
-        questions: JSON.parse(JSON.stringify({
-          sections: data.examData.sections,
-          totalPoints,
-          passingScore: data.examData.passingScore,
-        })),
-        createdById: data.createdById,
-        isPublished: false,
-      },
+    // Crear el examen usando transacción para consistencia
+    const result = await db.$transaction(async (tx) => {
+      // Crear el examen principal
+      const exam = await tx.exam.create({
+        data: {
+          title: validatedData.title,
+          description: validatedData.description,
+          instructions: validatedData.instructions,
+          timeLimit: validatedData.timeLimit,
+          passingScore: validatedData.passingScore,
+          maxAttempts: validatedData.maxAttempts,
+          isBlocking: validatedData.isBlocking,
+          isOptional: validatedData.isOptional,
+          shuffleQuestions: validatedData.shuffleQuestions,
+          shuffleOptions: validatedData.shuffleOptions,
+          showResults: validatedData.showResults,
+          allowReview: validatedData.allowReview,
+          createdById: validatedData.createdById,
+          courseId: validatedData.courseId || null,
+          moduleId: validatedData.moduleId || null,
+          lessonId: validatedData.lessonId || null,
+        }
+      })
+
+      // Crear las secciones del examen
+      for (const sectionData of validatedData.sections) {
+        const section = await tx.examSection.create({
+          data: {
+            examId: exam.id,
+            title: sectionData.title,
+            description: sectionData.description,
+            instructions: sectionData.instructions,
+            timeLimit: sectionData.timeLimit,
+            order: sectionData.order,
+            points: sectionData.questions.reduce((sum, q) => sum + q.points, 0)
+          }
+        })
+
+        // Crear las preguntas de cada sección
+        for (const questionData of sectionData.questions) {
+          await tx.examQuestion.create({
+            data: {
+              sectionId: section.id,
+              type: questionData.type,
+              question: questionData.question,
+              options: questionData.options,
+              correctAnswer: questionData.correctAnswer,
+              explanation: questionData.explanation,
+              points: questionData.points,
+              order: questionData.order,
+              difficulty: questionData.difficulty,
+              tags: questionData.tags,
+              caseSensitive: questionData.caseSensitive,
+              partialCredit: questionData.partialCredit,
+              minLength: questionData.minLength,
+              maxLength: questionData.maxLength,
+              audioUrl: questionData.audioUrl,
+              audioPosition: questionData.audioPosition || 'BEFORE_QUESTION',
+              maxAudioPlays: questionData.maxAudioPlays,
+              audioAutoplay: questionData.audioAutoplay || false,
+              audioPausable: questionData.audioPausable || false
+            }
+          })
+        }
+      }
+
+      return exam
     })
 
-    // Associate with course structure
-    if (data.moduleId) {
-      await db.moduleActivity.create({
-        data: {
-          moduleId: data.moduleId,
-          activityId: exam.id,
-          order: 0,
-        },
-      })
-    } else if (data.lessonId) {
-      await db.lessonActivity.create({
-        data: {
-          lessonId: data.lessonId,
-          activityId: exam.id,
-          order: 0,
-        },
-      })
-    }
-
     revalidatePath('/admin/exams')
-    return { success: true, exam }
+    return { success: true, exam: result }
   } catch (error) {
     console.error('Error creating exam:', error)
-    return { success: false, error: 'Failed to create exam' }
+    if (error instanceof z.ZodError) {
+      return { success: false, error: 'Datos de validación incorrectos', details: error.errors }
+    }
+    return { success: false, error: 'Error al crear el examen' }
   }
 }
 
-export interface UpdateExamData {
-  title?: string
-  description?: string
-  examData?: ExamData
-  isPublished?: boolean
-}
-
-export async function updateExam(id: string, data: UpdateExamData) {
+export async function updateExam(id: string, data: z.infer<typeof EditExamSchema>): Promise<ExamUpdateResponse> {
   try {
-    const updateData: Record<string, unknown> = {}
-    
-    if (data.title) updateData.title = data.title
-    if (data.description) updateData.description = data.description
-    if (data.isPublished !== undefined) updateData.isPublished = data.isPublished
-    
-    if (data.examData) {
-      const totalPoints = data.examData.sections.reduce((sum, section) => 
-        sum + section.questions.reduce((sectionSum, q) => sectionSum + q.points, 0), 0
-      )
-      
-      updateData.activityData = {
-        ...data.examData,
-        isExam: true,
-      }
-      updateData.points = totalPoints
-      updateData.timeLimit = data.examData.timeLimit
-      updateData.steps = {
-        examSections: data.examData.sections,
-      }
-      updateData.questions = {
-        sections: data.examData.sections,
-        totalPoints,
-        passingScore: data.examData.passingScore,
-      }
-    }
+    const validatedData = EditExamSchema.parse(data)
 
-    const exam = await db.activity.update({
-      where: { id },
-      data: updateData,
+    const result = await db.$transaction(async (tx) => {
+      // Actualizar el examen principal
+      const exam = await tx.exam.update({
+        where: { id },
+        data: {
+          title: validatedData.title,
+          description: validatedData.description,
+          instructions: validatedData.instructions,
+          timeLimit: validatedData.timeLimit,
+          passingScore: validatedData.passingScore,
+          maxAttempts: validatedData.maxAttempts,
+          isBlocking: validatedData.isBlocking,
+          isOptional: validatedData.isOptional,
+          shuffleQuestions: validatedData.shuffleQuestions,
+          shuffleOptions: validatedData.shuffleOptions,
+          showResults: validatedData.showResults,
+          allowReview: validatedData.allowReview,
+          isPublished: validatedData.isPublished,
+          courseId: validatedData.courseId || undefined,
+          moduleId: validatedData.moduleId || undefined,
+          lessonId: validatedData.lessonId || undefined,
+        }
+      })
+
+      // Si se proporcionan secciones, actualizar completamente
+      if (validatedData.sections) {
+        // Eliminar secciones existentes (cascade eliminará preguntas)
+        await tx.examSection.deleteMany({
+          where: { examId: id }
+        })
+
+        // Crear nuevas secciones
+        for (const sectionData of validatedData.sections) {
+          const section = await tx.examSection.create({
+            data: {
+              examId: exam.id,
+              title: sectionData.title,
+              description: sectionData.description,
+              instructions: sectionData.instructions,
+              timeLimit: sectionData.timeLimit,
+              order: sectionData.order,
+              points: sectionData.questions.reduce((sum, q) => sum + q.points, 0)
+            }
+          })
+
+          // Crear preguntas de la sección
+          for (const questionData of sectionData.questions) {
+            await tx.examQuestion.create({
+              data: {
+                sectionId: section.id,
+                type: questionData.type,
+                question: questionData.question,
+                options: questionData.options,
+                correctAnswer: questionData.correctAnswer,
+                explanation: questionData.explanation,
+                points: questionData.points,
+                order: questionData.order,
+                difficulty: questionData.difficulty,
+                tags: questionData.tags,
+                caseSensitive: questionData.caseSensitive,
+                partialCredit: questionData.partialCredit,
+                minLength: questionData.minLength,
+                maxLength: questionData.maxLength,
+                audioUrl: questionData.audioUrl,
+                audioPosition: questionData.audioPosition || 'BEFORE_QUESTION',
+                maxAudioPlays: questionData.maxAudioPlays,
+                audioAutoplay: questionData.audioAutoplay || false,
+                audioPausable: questionData.audioPausable || false
+              }
+            })
+          }
+        }
+      }
+
+      return exam
     })
 
     revalidatePath('/admin/exams')
-    return { success: true, exam }
+    return { success: true, exam: result }
   } catch (error) {
     console.error('Error updating exam:', error)
-    return { success: false, error: 'Failed to update exam' }
+    if (error instanceof z.ZodError) {
+      return { success: false, error: 'Datos de validación incorrectos', details: error.errors }
+    }
+    return { success: false, error: 'Error al actualizar el examen' }
   }
 }
 
-export async function deleteExam(id: string) {
+export async function deleteExam(id: string): Promise<ExamDeleteResponse> {
   try {
-    // Check if exam has student attempts
-    const attemptCount = await db.userActivity.count({
-      where: { activityId: id },
+    // Verificar si el examen tiene intentos de estudiantes
+    const attemptCount = await db.examAttempt.count({
+      where: { examId: id }
     })
 
     if (attemptCount > 0) {
-      return { success: false, error: 'Cannot delete exam with student attempts' }
+      return { success: false, error: 'No se puede eliminar un examen con intentos de estudiantes' }
     }
 
-    await db.activity.delete({
-      where: { id },
+    await db.exam.delete({
+      where: { id }
     })
 
     revalidatePath('/admin/exams')
     return { success: true }
   } catch (error) {
     console.error('Error deleting exam:', error)
-    return { success: false, error: 'Failed to delete exam' }
+    return { success: false, error: 'Error al eliminar el examen' }
   }
 }
 
-export async function getExamStats() {
+export async function getExamStats(): Promise<ExamStats> {
   try {
     const [totalExams, publishedExams, totalAttempts, passedAttempts] = await Promise.all([
-      db.activity.count({
-        where: {
-          activityData: {
-            path: ['isExam'],
-            equals: true
-          }
-        }
+      db.exam.count(),
+      db.exam.count({
+        where: { isPublished: true }
       }),
-      db.activity.count({
+      db.examAttempt.count(),
+      db.examAttempt.count({
         where: {
-          activityData: {
-            path: ['isExam'],
-            equals: true
-          },
-          isPublished: true
-        }
-      }),
-      db.userActivity.count({
-        where: {
-          activity: {
-            activityData: {
-              path: ['isExam'],
-              equals: true
-            }
-          }
-        }
-      }),
-      db.userActivity.count({
-        where: {
-          activity: {
-            activityData: {
-              path: ['isExam'],
-              equals: true
-            }
-          },
-          status: 'COMPLETED',
-          score: { gte: 70 } // Assuming 70% is passing
+          status: AttemptStatus.COMPLETED,
+          score: { gte: 70 } // Asumiendo 70% como aprobatorio
         }
       })
     ])
@@ -533,7 +412,7 @@ export async function getExamStats() {
     }
   } catch (error) {
     console.error('Error fetching exam stats:', error)
-    throw new Error('Failed to fetch exam statistics')
+    throw new Error('Error al obtener estadísticas de exámenes')
   }
 }
 
@@ -563,30 +442,35 @@ export async function getCoursesForExams() {
     return courses
   } catch (error) {
     console.error('Error fetching courses for exams:', error)
-    throw new Error('Failed to fetch courses')
+    throw new Error('Error al obtener cursos para exámenes')
   }
 }
 
-export async function assignExamToStudents(examId: string, studentIds: string[]) {
+export async function assignExamToStudents(data: z.infer<typeof AssignExamSchema>): Promise<ExamAssignResponse> {
   try {
+    const validatedData = AssignExamSchema.parse(data)
+
     const assignments = await Promise.all(
-      studentIds.map(studentId =>
-        db.userActivity.upsert({
+      validatedData.studentIds.map(studentId =>
+        db.examAssignment.upsert({
           where: {
-            userId_activityId: {
+            examId_userId: {
+              examId: validatedData.examId,
               userId: studentId,
-              activityId: examId,
             }
           },
           update: {
-            status: 'ASSIGNED',
-            assignedAt: new Date(),
+            dueDate: validatedData.dueDate ? new Date(validatedData.dueDate) : null,
+            instructions: validatedData.instructions,
+            status: AssignmentStatus.ASSIGNED,
           },
           create: {
+            examId: validatedData.examId,
             userId: studentId,
-            activityId: examId,
-            status: 'ASSIGNED',
-            assignedAt: new Date(),
+            assignedBy: 'current-user-id', // TODO: Obtener del contexto de sesión
+            dueDate: validatedData.dueDate ? new Date(validatedData.dueDate) : null,
+            instructions: validatedData.instructions,
+            status: AssignmentStatus.ASSIGNED,
           }
         })
       )
@@ -596,6 +480,9 @@ export async function assignExamToStudents(examId: string, studentIds: string[])
     return { success: true, assignments }
   } catch (error) {
     console.error('Error assigning exam to students:', error)
-    return { success: false, error: 'Failed to assign exam to students' }
+    if (error instanceof z.ZodError) {
+      return { success: false, error: 'Datos de validación incorrectos', details: error.errors }
+    }
+    return { success: false, error: 'Error al asignar examen a estudiantes' }
   }
 }

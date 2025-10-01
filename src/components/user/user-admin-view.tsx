@@ -6,7 +6,7 @@ import { UserStatsCards } from '@/components/user/user-stats-cards'
 import { UsersDataTable } from '@/components/user/users-data-table'
 import { createUser, deleteUser, updateUser, getAllUsers } from '@/lib/actions/user'
 import { CreateUserSchema } from '@/schemas/user'
-import { User } from '@prisma/client'
+import { User, UserRole } from '@prisma/client'
 import { PlusCircle } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
@@ -24,7 +24,11 @@ export default function UserAdminView() {
         if ('error' in response) {
           toast.error(response.error)
         } else {
-          setUsers(response)
+          // Filtrar profesores - se gestionan en vista separada
+          const usersWithoutTeachers = response.filter(
+            (user) => !user.roles.includes(UserRole.TEACHER)
+          )
+          setUsers(usersWithoutTeachers)
         }
       } catch {
         toast.error('Error al cargar los usuarios')

@@ -1,6 +1,7 @@
 'use server'
 
 import { db } from '@/lib/db'
+import { UserRole } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 
 export interface StudentGradeData {
@@ -177,16 +178,38 @@ export async function getAllStudentGrades(filters?: GradeFilters): Promise<Stude
 
 export async function getStudentGradesByCourse(
   studentId: string,
-  courseId: string
+  courseId: string,
+  academicPeriodId?: string
 ): Promise<StudentGradeData | null> {
   try {
-    const enrollment = await db.enrollment.findUnique({
-      where: {
-        studentId_courseId: {
-          studentId,
-          courseId,
-        },
-      },
+    // Si se proporciona academicPeriodId, buscar esa inscripción específica
+    // Si no, buscar la inscripción más reciente
+    const enrollment = academicPeriodId
+      ? await db.enrollment.findUnique({
+          where: {
+            studentId_courseId_academicPeriodId: {
+              studentId,
+              courseId,
+              academicPeriodId,
+            },
+          },
+        })
+      : await db.enrollment.findFirst({
+          where: {
+            studentId,
+            courseId,
+          },
+          orderBy: {
+            enrollmentDate: 'desc',
+          },
+        })
+
+    if (!enrollment) {
+      return null
+    }
+
+    const enrollmentWithDetails = await db.enrollment.findUnique({
+      where: { id: enrollment.id },
       include: {
         student: {
           select: {
@@ -207,7 +230,7 @@ export async function getStudentGradesByCourse(
       },
     })
 
-    if (!enrollment) {
+    if (!enrollmentWithDetails) {
       return null
     }
 
@@ -274,16 +297,16 @@ export async function getStudentGradesByCourse(
         : 0
 
     return {
-      studentId: enrollment.studentId,
-      studentName: `${enrollment.student.name} ${enrollment.student.lastName}`,
-      studentEmail: enrollment.student.email,
-      courseId: enrollment.courseId,
-      courseTitle: enrollment.course.title,
-      courseLanguage: enrollment.course.language,
-      courseLevel: enrollment.course.level,
-      enrollmentStatus: enrollment.status,
-      enrollmentProgress: enrollment.progress,
-      enrollmentDate: enrollment.enrollmentDate,
+      studentId: enrollmentWithDetails.studentId,
+      studentName: `${enrollmentWithDetails.student.name} ${enrollmentWithDetails.student.lastName}`,
+      studentEmail: enrollmentWithDetails.student.email,
+      courseId: enrollmentWithDetails.courseId,
+      courseTitle: enrollmentWithDetails.course.title,
+      courseLanguage: enrollmentWithDetails.course.language,
+      courseLevel: enrollmentWithDetails.course.level,
+      enrollmentStatus: enrollmentWithDetails.status,
+      enrollmentProgress: enrollmentWithDetails.progress,
+      enrollmentDate: enrollmentWithDetails.enrollmentDate,
       activities: activityData,
       averageScore: Math.round(averageScore * 100) / 100,
       completedActivities,
@@ -398,7 +421,9 @@ export async function getAllStudentsForGrades() {
   try {
     const students = await db.user.findMany({
       where: {
-        isStudent: true,
+        roles: {
+          has: UserRole.STUDENT,
+        },
         status: 'ACTIVE',
       },
       select: {

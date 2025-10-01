@@ -25,7 +25,7 @@ export function ViewCourseDialog({ course, children }: ViewCourseDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto" data-testid="course-details">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <BookOpen className="h-5 w-5" />
@@ -99,7 +99,7 @@ export function ViewCourseDialog({ course, children }: ViewCourseDialogProps) {
 
           {/* Modules */}
           {course.modules.length > 0 && (
-            <div>
+            <div data-testid="modules-section">
               <h4 className="font-medium mb-3">Módulos ({course.modules.length})</h4>
               <div className="space-y-2 max-h-48 overflow-y-auto">
                 {course.modules.map((module, index: number) => (
@@ -139,7 +139,7 @@ export function ViewCourseDialog({ course, children }: ViewCourseDialogProps) {
 
           {/* Recent Enrollments */}
           {course.enrollments.length > 0 && (
-            <div>
+            <div data-testid="enrollments-section">
               <h4 className="font-medium mb-3">
                 Estudiantes Inscritos ({course.enrollments.length})
               </h4>

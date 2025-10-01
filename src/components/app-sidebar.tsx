@@ -7,7 +7,7 @@ import {
   CreditCard,
   FileText,
   GraduationCap,
-  Laptop,
+  Layers,
   LayoutDashboard,
   Package,
   Receipt,
@@ -18,18 +18,20 @@ import {
   Trophy,
   UserCheck,
   Users,
+  UserCog,
   Zap,
 } from 'lucide-react'
 import * as React from 'react'
 
 import { NavAdmin } from '@/components/nav-admin'
+import { NavClasses } from '@/components/nav-classes'
 import { NavMain } from '@/components/nav-main'
 import { NavUser } from '@/components/nav-user'
 import CompanySidebarHeader from '@/components/sidebar/company-sidebar-header'
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@/components/ui/sidebar'
-import { ROLES } from '@/lib/constants'
-import { useSession } from 'next-auth/react'
+import { hasRole } from '@/lib/utils/roles'
 import { UserRole } from '@prisma/client'
+import { useSession } from 'next-auth/react'
 
 const data = {
   navMain: [
@@ -48,11 +50,6 @@ const data = {
       title: 'Tienda',
       url: '/shop',
       icon: Store,
-    },
-    {
-      title: 'Aula Virtual',
-      url: '/classroom',
-      icon: Laptop,
     },
     {
       title: 'Actividades',
@@ -87,9 +84,24 @@ const data = {
           icon: Calendar,
         },
         {
+          title: 'Profesores',
+          url: '/admin/teachers',
+          icon: UserCog,
+        },
+        {
           title: 'Cursos',
           url: '/admin/courses',
           icon: BookOpenText,
+        },
+        {
+          title: 'Módulos',
+          url: '/admin/modules',
+          icon: Layers,
+        },
+        {
+          title: 'Lecciones',
+          url: '/admin/lessons',
+          icon: Book,
         },
         {
           title: 'Clases',
@@ -159,7 +171,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     email: 'usuario@ejemplo.com',
     image: '/avatars/usuario.jpg',
     lastName: '',
-    role: ROLES.GUEST,
+    roles: [UserRole.GUEST] as UserRole[],
   }
 
   let user = placeholderUser
@@ -170,7 +182,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       email: session.user.email ?? placeholderUser.email,
       image: session.user.image ?? placeholderUser.image,
       lastName: session.user.lastName,
-      role: session.user.role ?? placeholderUser.role,
+      roles: session.user.roles ?? placeholderUser.roles,
     }
   }
 
@@ -181,7 +193,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        {user.role === UserRole.ADMIN && <NavAdmin sections={data.navAdmin} />}
+        {hasRole(user.roles, UserRole.STUDENT) && <NavClasses />}
+        {user.roles.includes(UserRole.ADMIN) && <NavAdmin sections={data.navAdmin} />}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />

@@ -47,7 +47,7 @@ export function UserEditDialog({ user, open, onOpenChange, onUpdateUser }: UserE
       name: user.name,
       lastName: user.lastName,
       email: user.email,
-      role: user.role,
+      roles: user.roles,
       status: user.status,
       image: user.image,
     },
@@ -113,11 +113,14 @@ export function UserEditDialog({ user, open, onOpenChange, onUpdateUser }: UserE
 
             <FormField
               control={form.control}
-              name="role"
+              name="roles"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Rol</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select 
+                    onValueChange={(value) => field.onChange([value as UserRole])} 
+                    defaultValue={field.value?.[0]}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecciona un rol" />

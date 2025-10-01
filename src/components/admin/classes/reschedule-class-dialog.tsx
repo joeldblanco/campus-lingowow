@@ -7,8 +7,15 @@ import {
   getAvailableTeachers,
 } from '@/lib/actions/classes'
 import { Button } from '@/components/ui/button'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -26,35 +33,48 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { toast } from 'sonner'
+import { RescheduleClassSchema } from '@/schemas/classes'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import * as z from 'zod'
 
 interface RescheduleClassDialogProps {
   classItem: ClassBookingWithDetails
   children: React.ReactNode
 }
 
+type FormData = z.infer<typeof RescheduleClassSchema>
+
 export function RescheduleClassDialog({ classItem, children }: RescheduleClassDialogProps) {
   const [open, setOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
   const [availableTeachers, setAvailableTeachers] = useState<Array<{ id: string; name: string; lastName: string; email: string }>>([])
-  const [formData, setFormData] = useState({
-    day: classItem.day,
-    timeSlot: classItem.timeSlot,
+
+  const form = useForm<FormData>({
+    resolver: zodResolver(RescheduleClassSchema),
+    defaultValues: {
+      newDate: classItem.day,
+      newTimeSlot: classItem.timeSlot,
+      reason: '',
+    },
   })
+
+  const watchedDate = form.watch('newDate')
+  const watchedTimeSlot = form.watch('newTimeSlot')
 
   useEffect(() => {
     const checkTeacherAvailability = async () => {
       try {
-        const available = await getAvailableTeachers(formData.day, formData.timeSlot)
+        const available = await getAvailableTeachers(watchedDate, watchedTimeSlot)
         setAvailableTeachers(available)
       } catch {
         console.error('Error checking teacher availability')
       }
     }
 
-    if (formData.day && formData.timeSlot) {
+    if (watchedDate && watchedTimeSlot) {
       checkTeacherAvailability()
     }
-  }, [formData.day, formData.timeSlot])
+  }, [watchedDate, watchedTimeSlot])
 
   const generateTimeSlots = () => {
     const slots = []
@@ -70,12 +90,9 @@ export function RescheduleClassDialog({ classItem, children }: RescheduleClassDi
     return slots
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-
+  const onSubmit = async (values: FormData) => {
     try {
-      const result = await rescheduleClass(classItem.id, formData.day, formData.timeSlot)
+      const result = await rescheduleClass(classItem.id, values.newDate, values.newTimeSlot)
 
       if (result.success) {
         toast.success('Clase reagendada exitosamente')
@@ -87,8 +104,6 @@ export function RescheduleClassDialog({ classItem, children }: RescheduleClassDi
     } catch (error) {
       console.error(error)
       toast.error('Error al reagendar la clase')
-    } finally {
-      setIsLoading(false)
     }
   }
 
@@ -107,66 +122,79 @@ export function RescheduleClassDialog({ classItem, children }: RescheduleClassDi
             {classItem.teacher.lastName}.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="day">Nueva Fecha</Label>
-              <Input
-                id="day"
-                type="date"
-                value={formData.day}
-                onChange={(e) => setFormData({ ...formData, day: e.target.value })}
-                min={new Date().toISOString().split('T')[0]}
-                required
-              />
-            </div>
-
-            <div className="grid gap-2">
-              <Label htmlFor="timeSlot">Nuevo Horario</Label>
-              <Select
-                value={formData.timeSlot}
-                onValueChange={(value) => setFormData({ ...formData, timeSlot: value })}
-                required
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {generateTimeSlots().map((slot) => (
-                    <SelectItem key={slot} value={slot}>
-                      {slot}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {formData.day && formData.timeSlot && (
-              <div className="p-3 border rounded-lg">
-                {isTeacherAvailable() ? (
-                  <p className="text-sm text-green-600">
-                    ✓ El profesor {classItem.teacher.name} está disponible en este horario
-                  </p>
-                ) : (
-                  <p className="text-sm text-red-600">
-                    ✗ El profesor {classItem.teacher.name} no está disponible en este horario
-                  </p>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="grid gap-4 py-4">
+              <FormField
+                control={form.control}
+                name="newDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nueva Fecha</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="date"
+                        min={new Date().toISOString().split('T')[0]}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
-            )}
-          </div>
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
-              Cancelar
-            </Button>
-            <Button
-              type="submit"
-              disabled={isLoading || (formData.day && formData.timeSlot ? !isTeacherAvailable() : false)}
-            >
-              {isLoading ? 'Reagendando...' : 'Reagendar'}
-            </Button>
-          </DialogFooter>
-        </form>
+              />
+
+              <FormField
+                control={form.control}
+                name="newTimeSlot"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nuevo Horario</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {generateTimeSlots().map((slot) => (
+                          <SelectItem key={slot} value={slot}>
+                            {slot}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {watchedDate && watchedTimeSlot && (
+                <div className="p-3 border rounded-lg">
+                  {isTeacherAvailable() ? (
+                    <p className="text-sm text-green-600">
+                      ✓ El profesor {classItem.teacher.name} está disponible en este horario
+                    </p>
+                  ) : (
+                    <p className="text-sm text-red-600">
+                      ✗ El profesor {classItem.teacher.name} no está disponible en este horario
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+                Cancelar
+              </Button>
+              <Button
+                type="submit"
+                disabled={form.formState.isSubmitting || (watchedDate && watchedTimeSlot ? !isTeacherAvailable() : false)}
+              >
+                {form.formState.isSubmitting ? 'Reagendando...' : 'Reagendar'}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   )

@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { ArrowUpDown, ChevronDown, MoreHorizontal, Pencil, Trash, Eye } from 'lucide-react'
+import { ArrowUpDown, ChevronDown, MoreHorizontal, Pencil, Trash, Eye, BookOpen } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -37,6 +37,7 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { UserEditDialog } from '@/components/user/user-edit-dialog'
+import { ManageTeacherCoursesDialog } from '@/components/admin/teachers/manage-teacher-courses-dialog'
 import { User, UserRole, UserStatus } from '@prisma/client'
 import { RoleNames, StatusNames } from '@/types/user'
 
@@ -120,21 +121,29 @@ export function UsersDataTable({
       cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
     },
     {
-      accessorKey: 'role',
+      accessorKey: 'roles',
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
-            Rol
+            Roles
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         )
       },
       cell: ({ row }) => {
-        const role = row.getValue('role') as UserRole
-        return <div className="capitalize">{RoleNames[role]}</div>
+        const roles = row.getValue('roles') as UserRole[]
+        return (
+          <div className="flex flex-wrap gap-1">
+            {roles.map((role) => (
+              <Badge key={role} variant="outline" className="text-xs">
+                {RoleNames[role]}
+              </Badge>
+            ))}
+          </div>
+        )
       },
     },
     {
@@ -186,6 +195,17 @@ export function UsersDataTable({
                 <Pencil className="mr-2 h-4 w-4" />
                 Editar
               </DropdownMenuItem>
+              {user.roles.includes(UserRole.TEACHER) && (
+                <ManageTeacherCoursesDialog
+                  teacherId={user.id}
+                  teacherName={`${user.name} ${user.lastName}`}
+                >
+                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                    <BookOpen className="mr-2 h-4 w-4" />
+                    Gestionar Cursos
+                  </DropdownMenuItem>
+                </ManageTeacherCoursesDialog>
+              )}
               <DropdownMenuItem onClick={() => onDeleteUser(user.id)}>
                 <Trash className="mr-2 h-4 w-4" />
                 Eliminar

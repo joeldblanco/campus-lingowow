@@ -12,8 +12,8 @@ declare module 'next-auth' {
    */
   interface Session {
     user: {
-      /** The user's role. */
-      role: UserRole
+      /** The user's roles. */
+      roles: UserRole[]
 
       /** The user's last name. */
       lastName: string
@@ -31,7 +31,7 @@ declare module 'next-auth/jwt' {
   /** Returned by the `jwt` callback and `auth`, when using JWT sessions */
   interface JWT {
     /** OpenID ID Token */
-    role: UserRole
+    roles: UserRole[]
   }
 }
 
@@ -76,7 +76,7 @@ export const {
       if (session.user) {
         if (token.sub) session.user.id = token.sub
 
-        if (token.role) session.user.role = token.role
+        if (token.roles) session.user.roles = token.roles
 
         if (token.lastName) session.user.lastName = token.lastName as string
       }
@@ -90,7 +90,7 @@ export const {
 
       if (!existingUser || 'error' in existingUser) return token
 
-      token.role = existingUser.role
+      token.roles = existingUser.roles
       token.lastName = existingUser.lastName
 
       return token

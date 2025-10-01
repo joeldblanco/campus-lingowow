@@ -47,7 +47,7 @@ export function RegisterForm() {
             return
           }
 
-          toast.success('Usuario registrado correctamente')
+          toast.success('Registro exitoso')
 
           router.push(data.redirect)
         })
@@ -84,9 +84,9 @@ export function RegisterForm() {
                 <FormItem>
                   <FormLabel>Nombre</FormLabel>
                   <FormControl>
-                    <Input disabled={isPending} placeholder="John" {...field} />
+                    <Input disabled={isPending} placeholder="John" data-testid="name-input" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage data-testid="name-error" />
                 </FormItem>
               )}
             />
@@ -98,9 +98,9 @@ export function RegisterForm() {
                 <FormItem>
                   <FormLabel>Apellido</FormLabel>
                   <FormControl>
-                    <Input disabled={isPending} placeholder="Doe" {...field} />
+                    <Input disabled={isPending} placeholder="Doe" data-testid="last-name-input" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage data-testid="last-name-error" />
                 </FormItem>
               )}
             />
@@ -116,10 +116,11 @@ export function RegisterForm() {
                       disabled={isPending}
                       autoComplete="email"
                       placeholder="usuario@ejemplo.com"
+                      data-testid="email-input"
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage data-testid="email-error" />
                 </FormItem>
               )}
             />
@@ -136,10 +137,11 @@ export function RegisterForm() {
                       disabled={isPending}
                       placeholder="************"
                       type="password"
+                      data-testid="password-input"
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage data-testid="password-error" />
                 </FormItem>
               )}
             />
@@ -156,15 +158,16 @@ export function RegisterForm() {
                       disabled={isPending}
                       placeholder="************"
                       type="password"
+                      data-testid="confirm-password-input"
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage data-testid="confirm-password-error" />
                 </FormItem>
               )}
             />
 
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" data-testid="register-button">
               {isPending ? <Loader2 className="animate-spin" /> : 'Registrarse'}
             </Button>
             <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">

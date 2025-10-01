@@ -137,10 +137,10 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
       const result = await updateProduct(product.id, {
         ...data,
         images: data.image ? [data.image] : [],
-        categoryId: data.categoryId || null,
+        categoryId: data.categoryId === 'no-category' ? null : data.categoryId || null,
         comparePrice: data.comparePrice || null,
         sku: data.sku || null,
-        stock: data.isDigital ? null : (data.stock || 0),
+        stock: data.isDigital ? null : data.stock || 0,
       })
       if (result.success) {
         toast.success('Producto actualizado correctamente')
@@ -160,9 +160,7 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
       <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Editar Producto</DialogTitle>
-          <DialogDescription>
-            Modifica los datos del producto.
-          </DialogDescription>
+          <DialogDescription>Modifica los datos del producto.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -216,10 +214,7 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                 <FormItem>
                   <FormLabel>Descripción</FormLabel>
                   <FormControl>
-                    <Textarea 
-                      placeholder="Descripción detallada del producto"
-                      {...field}
-                    />
+                    <Textarea placeholder="Descripción detallada del producto" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -234,7 +229,7 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                   <FormItem>
                     <FormLabel>Precio</FormLabel>
                     <FormControl>
-                      <Input 
+                      <Input
                         type="number"
                         step="0.01"
                         placeholder="0.00"
@@ -253,7 +248,7 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                   <FormItem>
                     <FormLabel>Precio de Comparación</FormLabel>
                     <FormControl>
-                      <Input 
+                      <Input
                         type="number"
                         step="0.01"
                         placeholder="0.00 (opcional)"
@@ -294,7 +289,7 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="">Sin categoría</SelectItem>
+                        <SelectItem value="no-category">Sin categoría</SelectItem>
                         {categories.map((category) => (
                           <SelectItem key={category.id} value={category.id}>
                             {category.name}
@@ -315,10 +310,7 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                 <FormItem>
                   <FormLabel>URL de la Imagen</FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="https://ejemplo.com/imagen.jpg (opcional)"
-                      {...field}
-                    />
+                    <Input placeholder="https://ejemplo.com/imagen.jpg (opcional)" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -338,10 +330,7 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                       </div>
                     </div>
                     <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -358,10 +347,7 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                       </div>
                     </div>
                     <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -376,7 +362,7 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                   <FormItem>
                     <FormLabel>Stock</FormLabel>
                     <FormControl>
-                      <Input 
+                      <Input
                         type="number"
                         placeholder="0"
                         {...field}

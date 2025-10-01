@@ -26,20 +26,23 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Eye, Edit, Trash2, MoreHorizontal, Plus, Users, Clock } from 'lucide-react'
-import { ExamWithDetails } from '@/lib/actions/exams'
+import { Eye, Edit, Trash2, MoreHorizontal, Plus, Users, Clock, Send } from 'lucide-react'
 import { CreateExamDialog } from './create-exam-dialog'
 import { EditExamDialog } from './edit-exam-dialog'
 import { ViewExamDialog } from './view-exam-dialog'
 import { AssignExamDialog } from './assign-exam-dialog'
 import { toast } from 'sonner'
 import { deleteExam, updateExam } from '@/lib/actions/exams'
+import { ExamWithDetails } from '@/types/exam'
+import { calculateExamPoints } from '@/lib/utils/exam-helpers'
+import { useRouter } from 'next/navigation'
 
 interface ExamsTableProps {
   exams: ExamWithDetails[]
 }
 
 export function ExamsTable({ exams }: ExamsTableProps) {
+  const router = useRouter()
   const [filteredExams, setFilteredExams] = useState(exams)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('all')
@@ -65,7 +68,7 @@ export function ExamsTable({ exams }: ExamsTableProps) {
     if (statusFilter !== 'all') {
       filtered = filtered.filter((exam) => {
         if (statusFilter === 'published') return exam.isPublished
-        if (statusFilter === 'draft') return !exam.isPublished
+      if (statusFilter === 'draft') return !exam.isPublished
         return true
       })
     }
@@ -85,11 +88,11 @@ export function ExamsTable({ exams }: ExamsTableProps) {
   const handleDeleteExam = async (examId: string) => {
     const result = await deleteExam(examId)
     if (result.success) {
-      toast.success('Exam deleted successfully')
+      toast.success('Examen eliminado exitosamente')
       // Refresh the page or update state
       window.location.reload()
     } else {
-      toast.error(result.error || 'Failed to delete exam')
+      toast.error(result.error || 'Error al eliminar el examen')
     }
   }
 
@@ -98,18 +101,18 @@ export function ExamsTable({ exams }: ExamsTableProps) {
       isPublished: !exam.isPublished,
     })
     if (result.success) {
-      toast.success(`Exam ${exam.isPublished ? 'unpublished' : 'published'} successfully`)
+      toast.success(`Examen ${exam.isPublished ? 'despublicado' : 'publicado'} exitosamente`)
       window.location.reload()
     } else {
-      toast.error('Failed to update exam status')
+      toast.error('Error al actualizar el estado del examen')
     }
   }
 
   const getStatusBadge = (exam: ExamWithDetails) => {
     if (exam.isPublished) {
-      return <Badge variant="default">Published</Badge>
+      return <Badge variant="default">Publicado</Badge>
     }
-    return <Badge variant="secondary">Draft</Badge>
+    return <Badge variant="secondary">Borrador</Badge>
   }
 
   const formatDuration = (minutes: number) => {
@@ -131,7 +134,7 @@ export function ExamsTable({ exams }: ExamsTableProps) {
               Gestiona y crea exámenes para tus cursos
             </p>
           </div>
-          <Button onClick={() => setCreateDialogOpen(true)}>
+          <Button onClick={() => router.push('/admin/exams/create')}>
             <Plus className="mr-2 h-4 w-4" />
             Crear Examen
           </Button>
@@ -184,8 +187,8 @@ export function ExamsTable({ exams }: ExamsTableProps) {
               <TableHead>Duración</TableHead>
               <TableHead>Puntos</TableHead>
               <TableHead>Intentos</TableHead>
-              <TableHead>Pass Rate</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead>Tasa de Aprobación</TableHead>
+              <TableHead className="text-right">Acciones</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -197,14 +200,15 @@ export function ExamsTable({ exams }: ExamsTableProps) {
               </TableRow>
             ) : (
               filteredExams.map((exam) => {
-                const totalAttempts = exam.userAttempts.length
-                const passedAttempts = exam.userAttempts.filter(
+                const totalAttempts = exam.attempts.length
+                const passedAttempts = exam.attempts.filter(
                   (attempt) =>
                     attempt.status === 'COMPLETED' &&
-                    (attempt.score || 0) >= (exam.examData?.passingScore || 70)
+                    (attempt.score || 0) >= exam.passingScore
                 ).length
                 const passRate =
                   totalAttempts > 0 ? Math.round((passedAttempts / totalAttempts) * 100) : 0
+                const totalPoints = calculateExamPoints(exam)
 
                 return (
                   <TableRow key={exam.id}>
@@ -230,12 +234,12 @@ export function ExamsTable({ exams }: ExamsTableProps) {
                     </TableCell>
                     <TableCell>{getStatusBadge(exam)}</TableCell>
                     <TableCell>
-                      <div className="flex items-center">
-                        <Clock className="mr-1 h-3 w-3" />
-                        {formatDuration(exam.duration)}
+                      <div className="flex items-center space-x-2">
+                        <Clock className="h-4 w-4 text-muted-foreground" />
+                        {formatDuration(exam.timeLimit || 0)}
                       </div>
                     </TableCell>
-                    <TableCell>{exam.points} pts</TableCell>
+                    <TableCell>{totalPoints} pts</TableCell>
                     <TableCell>{totalAttempts}</TableCell>
                     <TableCell>
                       <Badge variant={passRate >= 70 ? 'default' : 'destructive'}>
@@ -260,10 +264,7 @@ export function ExamsTable({ exams }: ExamsTableProps) {
                             Ver Detalles
                           </DropdownMenuItem>
                           <DropdownMenuItem
-                            onClick={() => {
-                              setSelectedExam(exam)
-                              setEditDialogOpen(true)
-                            }}
+                            onClick={() => router.push(`/admin/exams/edit/${exam.id}`)}
                           >
                             <Edit className="mr-2 h-4 w-4" />
                             Editar
@@ -278,6 +279,7 @@ export function ExamsTable({ exams }: ExamsTableProps) {
                             Asignar a Estudiantes
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleTogglePublish(exam)}>
+                            <Send className="mr-2 h-4 w-4" />
                             {exam.isPublished ? 'Despublicar' : 'Publicar'}
                           </DropdownMenuItem>
                           <DropdownMenuItem

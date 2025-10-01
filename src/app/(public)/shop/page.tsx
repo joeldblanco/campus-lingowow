@@ -8,7 +8,6 @@ import { ComingSoonProduct } from '@/components/shop/product/coming-soon-product
 import { ProductCard } from '@/components/shop/product/product-card'
 import { useFilterCourses } from '@/hooks/use-filter-courses'
 import { useIsMobile } from '@/hooks/use-mobile'
-import { ProductTypeEnum } from '@/types/shop'
 
 export default function ShopPage() {
   const { courses: filteredCourses, loading } = useFilterCourses()
@@ -32,16 +31,9 @@ export default function ShopPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6">
-              {filteredCourses
-                .map((course) => {
-                  return {
-                    ...course,
-                    type: ProductTypeEnum.COURSE,
-                  }
-                })
-                .map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
+              {filteredCourses.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
             </div>
           )}
 

@@ -77,7 +77,7 @@ export const createUser = async (userData: z.infer<typeof CreateUserSchema>) => 
       data: {
         ...validatedUserData,
         // Set default values if not provided
-        role: validatedUserData.role || UserRole.STUDENT,
+        roles: validatedUserData.roles || [UserRole.STUDENT],
         status: validatedUserData.status || UserStatus.ACTIVE,
       },
     })

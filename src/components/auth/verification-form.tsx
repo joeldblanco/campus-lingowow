@@ -30,9 +30,9 @@ const VerificationForm = ({ email }: { email: string | null }) => {
 
   return (
     <AuthCard>
-      <div className="flex flex-col gap-6 min-h-96 items-center justify-center">
+      <div className="flex flex-col gap-6 min-h-96 items-center justify-center" data-testid="verification-form">
         <div className="flex flex-col items-center text-center">
-          <h1 className="text-2xl font-bold">Verificación Pendiente</h1>
+          <h1 className="text-2xl font-bold" data-testid="verification-title">Verifica tu correo electrónico</h1>
           <p className="text-balance text-muted-foreground">
             Hemos enviado las instrucciones a tu correo.
           </p>
@@ -42,6 +42,7 @@ const VerificationForm = ({ email }: { email: string | null }) => {
             <div className="flex flex-col gap-4 w-full items-center justify-center">
               <Button
                 disabled={isPending}
+                data-testid="resend-button"
                 onClick={() => {
                   if (!email) {
                     toast.error('Correo electrónico requerido')

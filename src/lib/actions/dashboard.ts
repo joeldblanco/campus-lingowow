@@ -9,7 +9,7 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
   try {
     // Get total students count
     const totalStudents = await db.user.count({
-      where: { role: UserRole.STUDENT }
+      where: { roles: { has: UserRole.STUDENT } }
     })
 
     // Get total classes (completed bookings)
@@ -219,7 +219,7 @@ export async function getStudentDashboardStats(studentId: string): Promise<Stude
         teacher: `${booking.teacher.name} ${booking.teacher.lastName}`,
         date: booking.day,
         time: booking.timeSlot,
-        link: '#' // TODO: Add actual class link
+        link: `/classroom?classId=${booking.id}`
       })),
       enrollments: enrollments.map(enrollment => ({
         title: enrollment.course.title,
@@ -229,5 +229,87 @@ export async function getStudentDashboardStats(studentId: string): Promise<Stude
   } catch (error) {
     console.error('Error getting student dashboard stats:', error)
     throw new Error('No se pudieron obtener las estadísticas del estudiante')
+  }
+}
+
+// Get user's available classes for sidebar
+export async function getUserClasses(userId: string) {
+  try {
+    const classes = await db.classBooking.findMany({
+      where: {
+        OR: [
+          { studentId: userId },
+          { teacherId: userId }
+        ],
+        status: 'CONFIRMED',
+        day: {
+          gte: new Date().toISOString().split('T')[0]
+        }
+      },
+      take: 10,
+      orderBy: [
+        { day: 'asc' },
+        { timeSlot: 'asc' }
+      ],
+      include: {
+        student: {
+          select: { name: true, lastName: true }
+        },
+        teacher: {
+          select: { name: true, lastName: true }
+        }
+      }
+    })
+
+    return classes.map(booking => ({
+      id: booking.id,
+      name: `Clase ${booking.day} - ${booking.timeSlot}`,
+      course: 'Programa Regular de Inglés', // TODO: Get from course relationship
+      date: booking.day,
+      time: booking.timeSlot,
+      isStudent: booking.studentId === userId
+    }))
+  } catch (error) {
+    console.error('Error getting user classes:', error)
+    return []
+  }
+}
+
+// Get classroom data for a specific class
+export async function getClassroomData(classId: string, userId: string) {
+  try {
+    // Get class booking details
+    const classBooking = await db.classBooking.findFirst({
+      where: {
+        id: classId,
+        OR: [
+          { studentId: userId },
+          { teacherId: userId }
+        ]
+      },
+      include: {
+        student: {
+          select: { id: true, name: true, lastName: true }
+        },
+        teacher: {
+          select: { id: true, name: true, lastName: true }
+        }
+      }
+    })
+
+    if (!classBooking) {
+      throw new Error('Clase no encontrada o sin acceso')
+    }
+
+    return {
+      studentId: classBooking.student.id,
+      teacherId: classBooking.teacher.id,
+      courseName: 'Programa Regular de Inglés', // TODO: Get from course relationship
+      lessonName: `Clase del ${classBooking.day} - ${classBooking.timeSlot}`,
+      bookingId: classBooking.id
+    }
+  } catch (error) {
+    console.error('Error getting classroom data:', error)
+    throw new Error('No se pudieron obtener los datos del aula')
   }
 }

@@ -17,6 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -24,6 +25,7 @@ import * as z from 'zod'
 
 export function ResetForm() {
   const [isPending, startTransition] = useTransition()
+  const router = useRouter()
   const resetForm = useForm<z.infer<typeof ResetSchema>>({
     resolver: zodResolver(ResetSchema),
     defaultValues: {
@@ -38,6 +40,10 @@ export function ResetForm() {
           toast.error((data.error as string) || 'Ocurrió un error al enviar el correo')
         } else {
           toast.success('Correo de recuperación enviado')
+          // Redirigir a signin después de enviar el correo de recuperación
+          setTimeout(() => {
+            router.push('/auth/signin')
+          }, 2000)
         }
       })
     })
@@ -70,14 +76,14 @@ export function ResetForm() {
                     <FormItem>
                       <FormLabel>Correo electrónico</FormLabel>
                       <FormControl>
-                        <Input disabled={isPending} placeholder="usuario@ejemplo.com" {...field} />
+                        <Input disabled={isPending} placeholder="usuario@ejemplo.com" data-testid="email-input" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage data-testid="email-error" />
                     </FormItem>
                   )}
                 />
               </div>
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full" data-testid="reset-button">
                 {isPending ? <Loader2 className="animate-spin" /> : 'Enviar correo de recuperación'}
               </Button>
               <div className="text-center text-sm">

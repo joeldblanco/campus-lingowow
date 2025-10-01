@@ -8,6 +8,7 @@ import { addMonths } from 'date-fns'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
+import { UserRole } from '@prisma/client'
 
 // Schema para validar la creación de créditos
 const createCreditsSchema = z.object({
@@ -28,7 +29,7 @@ export async function addStudentCredits(
   try {
     const user = await getCurrentUser()
 
-    if (!user || (user.role !== 'ADMIN' && user.role !== 'TEACHER')) {
+    if (!user || (!user.roles.includes(UserRole.ADMIN) && !user.roles.includes(UserRole.TEACHER))) {
       throw new Error('No autorizado')
     }
 
@@ -123,7 +124,7 @@ export async function useCreditsForClass(
     }
 
     // Verificar que el crédito pertenece al usuario actual (si no es admin)
-    if (user.role !== 'ADMIN' && credit.studentId !== user.id) {
+    if (!user.roles.includes(UserRole.ADMIN) && credit.studentId !== user.id) {
       throw new Error('No autorizado para usar este crédito')
     }
 
@@ -138,6 +139,28 @@ export async function useCreditsForClass(
 
     if (!currentPeriod) {
       throw new Error('No hay un período académico activo')
+    }
+
+    // Obtener o crear el StudentPeriod para el estudiante
+    let studentPeriod = await db.studentPeriod.findUnique({
+      where: {
+        studentId_periodId: {
+          studentId: credit.studentId,
+          periodId: currentPeriod.id,
+        },
+      },
+    })
+
+    // Si no existe, crear uno por defecto
+    if (!studentPeriod) {
+      studentPeriod = await db.studentPeriod.create({
+        data: {
+          studentId: credit.studentId,
+          periodId: currentPeriod.id,
+          packageType: 'custom',
+          classesTotal: 1,
+        },
+      })
     }
 
     // Usar el crédito para una clase adicional
@@ -163,6 +186,7 @@ export async function useCreditsForClass(
           timeSlot: timeSlot,
           status: 'CONFIRMED',
           creditId: creditId,
+          studentPeriodId: studentPeriod.id,
         },
       }),
     ])
@@ -213,7 +237,7 @@ export async function useCreditsForMaterials(formData: FormData | { creditId: st
     }
 
     // Verificar que el crédito pertenece al usuario actual (si no es admin)
-    if (user.role !== 'ADMIN' && credit.studentId !== user.id) {
+    if (!user.roles.includes(UserRole.ADMIN) && credit.studentId !== user.id) {
       throw new Error('No autorizado para usar este crédito')
     }
 
@@ -284,7 +308,7 @@ export async function useCreditsForDiscount(
     }
 
     // Verificar que el crédito pertenece al usuario actual (si no es admin)
-    if (user.role !== 'ADMIN' && credit.studentId !== user.id) {
+    if (!user.roles.includes(UserRole.ADMIN) && credit.studentId !== user.id) {
       throw new Error('No autorizado para usar este crédito')
     }
 
@@ -351,7 +375,7 @@ export async function getStudentCredits(studentId: string) {
     }
 
     // Verificar acceso (solo el propio estudiante o un admin pueden ver los créditos)
-    if (user.role !== 'ADMIN' && user.id !== studentId) {
+    if (!user.roles.includes(UserRole.ADMIN) && user.id !== studentId) {
       throw new Error('No autorizado para ver estos créditos')
     }
 
@@ -379,7 +403,7 @@ export async function generatePerfectAttendanceCredits(periodId: string) {
   try {
     const user = await getCurrentUser()
 
-    if (!user || user.role !== 'ADMIN') {
+    if (!user || !user.roles.includes(UserRole.ADMIN)) {
       throw new Error('Solo los administradores pueden ejecutar esta acción')
     }
 
@@ -444,7 +468,7 @@ export async function generateModulesCompletionCredits(studentId: string) {
   try {
     const user = await getCurrentUser()
 
-    if (!user || (user.role !== 'ADMIN' && user.role !== 'TEACHER')) {
+    if (!user || (!user.roles.includes(UserRole.ADMIN) && !user.roles.includes(UserRole.TEACHER))) {
       throw new Error('Solo los administradores y profesores pueden ejecutar esta acción')
     }
 
@@ -452,7 +476,9 @@ export async function generateModulesCompletionCredits(studentId: string) {
     const student = await db.user.findUnique({
       where: {
         id: studentId,
-        role: 'STUDENT',
+        roles: {
+          has: UserRole.STUDENT,
+        },
       },
     })
 
@@ -496,7 +522,7 @@ export async function generateReferralCredits(
   try {
     const user = await getCurrentUser()
 
-    if (!user || user.role !== 'ADMIN') {
+    if (!user || !user.roles.includes(UserRole.ADMIN)) {
       throw new Error('Solo los administradores pueden ejecutar esta acción')
     }
 
@@ -517,13 +543,17 @@ export async function generateReferralCredits(
       db.user.findUnique({
         where: {
           id: referrerId,
-          role: 'STUDENT',
+          roles: {
+            has: UserRole.STUDENT,
+          },
         },
       }),
       db.user.findUnique({
         where: {
           id: newStudentId,
-          role: 'STUDENT',
+          roles: {
+            has: UserRole.STUDENT,
+          },
         },
       }),
     ])

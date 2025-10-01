@@ -1,18 +1,18 @@
-import { CartItem, CheckoutInfo, Filters, Product, ProductTypeEnum } from '@/types/shop'
+import { CartItem, CheckoutInfo, Filters, Course, Merge, Product, ProductTypeEnum } from '@/types/shop'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 type ShopState = {
   cart: CartItem[]
   filters: Filters
-  comparePlans: { product: Product | null }
+  comparePlans: { product: Merge<Product, Course> | null }
   checkoutInfo: CheckoutInfo
 
   // Acciones
   addToCart: (item: CartItem) => void
   removeFromCart: (productId: string, planId: string) => void
   toggleFilter: (type: keyof Filters, value: string) => void
-  setComparePlans: (product: Product | null) => void
+  setComparePlans: (product: Merge<Product, Course> | null) => void
   clearCart: () => void
   setCheckoutInfo: (info: Partial<CheckoutInfo>) => void
 

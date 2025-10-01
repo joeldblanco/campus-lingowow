@@ -107,7 +107,7 @@ export function ViewLessonDialog({ children, lessonId }: ViewLessonDialogProps) 
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <h4 className="font-medium mb-2">Unidad</h4>
+                  <h4 className="font-medium mb-2">Módulo</h4>
                   <p className="text-sm text-muted-foreground">{lesson.module.title}</p>
                 </div>
 

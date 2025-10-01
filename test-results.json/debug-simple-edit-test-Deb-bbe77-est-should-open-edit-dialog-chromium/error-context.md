@@ -1,0 +1,1416 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - list [ref=e7]:
+        - listitem [ref=e8]:
+          - button "Lingowow Lingowow Go wow with us! Lingowow Go wow with us!" [ref=e9]:
+            - generic [ref=e11]:
+              - img "Lingowow" [ref=e13]
+              - generic:
+                - generic: Lingowow
+                - generic: Go wow with us!
+            - generic:
+              - generic: Lingowow
+              - generic: Go wow with us!
+      - generic [ref=e14]:
+        - generic [ref=e15]:
+          - generic [ref=e16]: Plataforma
+          - list [ref=e18]:
+            - listitem [ref=e19]:
+              - link "Panel de Control" [ref=e20] [cursor=pointer]:
+                - /url: /dashboard
+                - img [ref=e21] [cursor=pointer]
+                - generic: Panel de Control
+            - listitem [ref=e26]:
+              - link "Cursos" [ref=e27] [cursor=pointer]:
+                - /url: /courses
+                - img [ref=e28] [cursor=pointer]
+                - generic: Cursos
+            - listitem [ref=e30]:
+              - link "Tienda" [ref=e31] [cursor=pointer]:
+                - /url: /shop
+                - img [ref=e32] [cursor=pointer]
+                - generic: Tienda
+            - listitem [ref=e37]:
+              - link "Aula Virtual" [ref=e38] [cursor=pointer]:
+                - /url: /classroom
+                - img [ref=e39] [cursor=pointer]
+                - generic: Aula Virtual
+            - listitem [ref=e41]:
+              - link "Actividades" [ref=e42] [cursor=pointer]:
+                - /url: /activities
+                - img [ref=e43] [cursor=pointer]
+                - generic: Actividades
+        - generic [ref=e47]:
+          - generic [ref=e48]: Administración
+          - list [ref=e50]:
+            - listitem [ref=e52]:
+              - button "Gestión de Usuarios" [expanded] [ref=e53] [cursor=pointer]:
+                - img [ref=e54] [cursor=pointer]
+                - generic [ref=e59] [cursor=pointer]: Gestión de Usuarios
+                - img [ref=e60] [cursor=pointer]
+            - listitem [ref=e63]:
+              - button "Gestión Académica" [expanded] [ref=e64] [cursor=pointer]:
+                - img [ref=e65] [cursor=pointer]
+                - generic [ref=e67] [cursor=pointer]: Gestión Académica
+                - img [ref=e68] [cursor=pointer]
+            - listitem [ref=e71]:
+              - button "Gestión Comercial" [expanded] [ref=e72] [cursor=pointer]:
+                - img [ref=e73] [cursor=pointer]
+                - generic [ref=e77] [cursor=pointer]: Gestión Comercial
+                - img [ref=e78] [cursor=pointer]
+      - list [ref=e81]:
+        - listitem [ref=e82]:
+          - button "A Admin admin@test.com" [ref=e83]:
+            - generic [ref=e85]: A
+            - generic:
+              - generic: Admin
+              - generic: admin@test.com
+            - img [ref=e86]
+    - main [ref=e89]:
+      - button "Toggle Sidebar" [ref=e92] [cursor=pointer]:
+        - img
+        - generic [ref=e93] [cursor=pointer]: Toggle Sidebar
+      - generic [ref=e95]:
+        - generic [ref=e97]:
+          - heading "Gestión de Cursos" [level=1] [ref=e98]
+          - paragraph [ref=e99]: Administra todos los cursos disponibles en la plataforma
+        - generic [ref=e100]:
+          - generic [ref=e101]:
+            - generic [ref=e102]:
+              - generic [ref=e103]:
+                - generic [ref=e104]: Total Cursos
+                - img [ref=e105]
+              - generic [ref=e108]: "68"
+            - generic [ref=e109]:
+              - generic [ref=e110]:
+                - generic [ref=e111]: Publicados
+                - img [ref=e112]
+              - generic [ref=e116]: "1"
+            - generic [ref=e117]:
+              - generic [ref=e118]:
+                - generic [ref=e119]: No Publicados
+                - img [ref=e120]
+              - generic [ref=e126]: "67"
+            - generic [ref=e127]:
+              - generic [ref=e128]:
+                - generic [ref=e129]: Inscripciones
+                - img [ref=e130]
+              - generic [ref=e136]: "0"
+          - generic [ref=e137]:
+            - heading "Lista de Cursos" [level=2] [ref=e138]
+            - button "Crear Curso" [ref=e139] [cursor=pointer]:
+              - img
+              - text: Crear Curso
+          - generic [ref=e140]:
+            - generic [ref=e141]:
+              - textbox "Buscar cursos..." [ref=e142]
+              - combobox [ref=e143]:
+                - generic: Todos los idiomas
+                - img
+              - combobox [ref=e144]:
+                - generic: Todos
+                - img
+            - generic [ref=e145]:
+              - generic [ref=e146]:
+                - generic [ref=e148]:
+                  - generic [ref=e149]:
+                    - generic [ref=e150]: Course to Edit
+                    - generic [ref=e151]:
+                      - generic [ref=e152]: Inglés
+                      - generic [ref=e153]: Principiante
+                      - generic [ref=e154]: Borrador
+                  - button [ref=e155] [cursor=pointer]:
+                    - img
+                - generic [ref=e156]:
+                  - paragraph [ref=e157]: Original description
+                  - generic [ref=e159]:
+                    - generic [ref=e160]:
+                      - img [ref=e161]
+                      - generic [ref=e163]: 0 módulos
+                    - generic [ref=e164]:
+                      - img [ref=e165]
+                      - generic [ref=e170]: 0 estudiantes
+              - generic [ref=e171]:
+                - generic [ref=e173]:
+                  - generic [ref=e174]:
+                    - generic [ref=e175]: Course to Edit
+                    - generic [ref=e176]:
+                      - generic [ref=e177]: Inglés
+                      - generic [ref=e178]: Principiante
+                      - generic [ref=e179]: Borrador
+                  - button [ref=e180] [cursor=pointer]:
+                    - img
+                - generic [ref=e181]:
+                  - paragraph [ref=e182]: Original description
+                  - generic [ref=e184]:
+                    - generic [ref=e185]:
+                      - img [ref=e186]
+                      - generic [ref=e188]: 0 módulos
+                    - generic [ref=e189]:
+                      - img [ref=e190]
+                      - generic [ref=e195]: 0 estudiantes
+              - generic [ref=e196]:
+                - generic [ref=e198]:
+                  - generic [ref=e199]:
+                    - generic [ref=e200]: Course to Edit
+                    - generic [ref=e201]:
+                      - generic [ref=e202]: Inglés
+                      - generic [ref=e203]: Principiante
+                      - generic [ref=e204]: Borrador
+                  - button [ref=e205] [cursor=pointer]:
+                    - img
+                - generic [ref=e206]:
+                  - paragraph [ref=e207]: Original description
+                  - generic [ref=e209]:
+                    - generic [ref=e210]:
+                      - img [ref=e211]
+                      - generic [ref=e213]: 0 módulos
+                    - generic [ref=e214]:
+                      - img [ref=e215]
+                      - generic [ref=e220]: 0 estudiantes
+              - generic [ref=e221]:
+                - generic [ref=e223]:
+                  - generic [ref=e224]:
+                    - generic [ref=e225]: Course to Edit
+                    - generic [ref=e226]:
+                      - generic [ref=e227]: Inglés
+                      - generic [ref=e228]: Principiante
+                      - generic [ref=e229]: Borrador
+                  - button [ref=e230] [cursor=pointer]:
+                    - img
+                - generic [ref=e231]:
+                  - paragraph [ref=e232]: Original description
+                  - generic [ref=e234]:
+                    - generic [ref=e235]:
+                      - img [ref=e236]
+                      - generic [ref=e238]: 0 módulos
+                    - generic [ref=e239]:
+                      - img [ref=e240]
+                      - generic [ref=e245]: 0 estudiantes
+              - generic [ref=e246]:
+                - generic [ref=e248]:
+                  - generic [ref=e249]:
+                    - generic [ref=e250]: Course to Edit
+                    - generic [ref=e251]:
+                      - generic [ref=e252]: Inglés
+                      - generic [ref=e253]: Principiante
+                      - generic [ref=e254]: Borrador
+                  - button [ref=e255] [cursor=pointer]:
+                    - img
+                - generic [ref=e256]:
+                  - paragraph [ref=e257]: Original description
+                  - generic [ref=e259]:
+                    - generic [ref=e260]:
+                      - img [ref=e261]
+                      - generic [ref=e263]: 0 módulos
+                    - generic [ref=e264]:
+                      - img [ref=e265]
+                      - generic [ref=e270]: 0 estudiantes
+              - generic [ref=e271]:
+                - generic [ref=e273]:
+                  - generic [ref=e274]:
+                    - generic [ref=e275]: Course to Edit
+                    - generic [ref=e276]:
+                      - generic [ref=e277]: Inglés
+                      - generic [ref=e278]: Principiante
+                      - generic [ref=e279]: Borrador
+                  - button [ref=e280] [cursor=pointer]:
+                    - img
+                - generic [ref=e281]:
+                  - paragraph [ref=e282]: Original description
+                  - generic [ref=e284]:
+                    - generic [ref=e285]:
+                      - img [ref=e286]
+                      - generic [ref=e288]: 0 módulos
+                    - generic [ref=e289]:
+                      - img [ref=e290]
+                      - generic [ref=e295]: 0 estudiantes
+              - generic [ref=e296]:
+                - generic [ref=e298]:
+                  - generic [ref=e299]:
+                    - generic [ref=e300]: Test Course for Dropdown
+                    - generic [ref=e301]:
+                      - generic [ref=e302]: Inglés
+                      - generic [ref=e303]: Principiante
+                      - generic [ref=e304]: Borrador
+                  - button [ref=e305] [cursor=pointer]:
+                    - img
+                - generic [ref=e306]:
+                  - paragraph [ref=e307]: Test description
+                  - generic [ref=e309]:
+                    - generic [ref=e310]:
+                      - img [ref=e311]
+                      - generic [ref=e313]: 0 módulos
+                    - generic [ref=e314]:
+                      - img [ref=e315]
+                      - generic [ref=e320]: 0 estudiantes
+              - generic [ref=e321]:
+                - generic [ref=e323]:
+                  - generic [ref=e324]:
+                    - generic [ref=e325]: Course to Edit
+                    - generic [ref=e326]:
+                      - generic [ref=e327]: Inglés
+                      - generic [ref=e328]: Principiante
+                      - generic [ref=e329]: Borrador
+                  - button [ref=e330] [cursor=pointer]:
+                    - img
+                - generic [ref=e331]:
+                  - paragraph [ref=e332]: Original description
+                  - generic [ref=e334]:
+                    - generic [ref=e335]:
+                      - img [ref=e336]
+                      - generic [ref=e338]: 0 módulos
+                    - generic [ref=e339]:
+                      - img [ref=e340]
+                      - generic [ref=e345]: 0 estudiantes
+              - generic [ref=e346]:
+                - generic [ref=e348]:
+                  - generic [ref=e349]:
+                    - generic [ref=e350]: Test Course for Dropdown
+                    - generic [ref=e351]:
+                      - generic [ref=e352]: Inglés
+                      - generic [ref=e353]: Principiante
+                      - generic [ref=e354]: Borrador
+                  - button [ref=e355] [cursor=pointer]:
+                    - img
+                - generic [ref=e356]:
+                  - paragraph [ref=e357]: Test description
+                  - generic [ref=e359]:
+                    - generic [ref=e360]:
+                      - img [ref=e361]
+                      - generic [ref=e363]: 0 módulos
+                    - generic [ref=e364]:
+                      - img [ref=e365]
+                      - generic [ref=e370]: 0 estudiantes
+              - generic [ref=e371]:
+                - generic [ref=e373]:
+                  - generic [ref=e374]:
+                    - generic [ref=e375]: Bulk Delete Course 2 pVwvezGx
+                    - generic [ref=e376]:
+                      - generic [ref=e377]: Inglés
+                      - generic [ref=e378]: Principiante
+                      - generic [ref=e379]: Borrador
+                  - button [ref=e380] [cursor=pointer]:
+                    - img
+                - generic [ref=e381]:
+                  - paragraph [ref=e382]: Course 2 for bulk deletion
+                  - generic [ref=e384]:
+                    - generic [ref=e385]:
+                      - img [ref=e386]
+                      - generic [ref=e388]: 0 módulos
+                    - generic [ref=e389]:
+                      - img [ref=e390]
+                      - generic [ref=e395]: 0 estudiantes
+              - generic [ref=e396]:
+                - generic [ref=e398]:
+                  - generic [ref=e399]:
+                    - generic [ref=e400]: Bulk Delete Course 1 z6CJeuYA
+                    - generic [ref=e401]:
+                      - generic [ref=e402]: Inglés
+                      - generic [ref=e403]: Principiante
+                      - generic [ref=e404]: Borrador
+                  - button [ref=e405] [cursor=pointer]:
+                    - img
+                - generic [ref=e406]:
+                  - paragraph [ref=e407]: Course 1 for bulk deletion
+                  - generic [ref=e409]:
+                    - generic [ref=e410]:
+                      - img [ref=e411]
+                      - generic [ref=e413]: 0 módulos
+                    - generic [ref=e414]:
+                      - img [ref=e415]
+                      - generic [ref=e420]: 0 estudiantes
+              - generic [ref=e421]:
+                - generic [ref=e423]:
+                  - generic [ref=e424]:
+                    - generic [ref=e425]: Course to Delete lzYJ6Lf9
+                    - generic [ref=e426]:
+                      - generic [ref=e427]: Inglés
+                      - generic [ref=e428]: Principiante
+                      - generic [ref=e429]: Borrador
+                  - button [ref=e430] [cursor=pointer]:
+                    - img
+                - generic [ref=e431]:
+                  - paragraph [ref=e432]: Course to be deleted
+                  - generic [ref=e434]:
+                    - generic [ref=e435]:
+                      - img [ref=e436]
+                      - generic [ref=e438]: 0 módulos
+                    - generic [ref=e439]:
+                      - img [ref=e440]
+                      - generic [ref=e445]: 0 estudiantes
+              - generic [ref=e446]:
+                - generic [ref=e448]:
+                  - generic [ref=e449]:
+                    - generic [ref=e450]: Course to Publish lsxBZ3RP
+                    - generic [ref=e451]:
+                      - generic [ref=e452]: Inglés
+                      - generic [ref=e453]: Principiante
+                      - generic [ref=e454]: Borrador
+                  - button [ref=e455] [cursor=pointer]:
+                    - img
+                - generic [ref=e456]:
+                  - paragraph [ref=e457]: Course description
+                  - generic [ref=e459]:
+                    - generic [ref=e460]:
+                      - img [ref=e461]
+                      - generic [ref=e463]: 0 módulos
+                    - generic [ref=e464]:
+                      - img [ref=e465]
+                      - generic [ref=e470]: 0 estudiantes
+              - generic [ref=e471]:
+                - generic [ref=e473]:
+                  - generic [ref=e474]:
+                    - generic [ref=e475]: Course to Edit
+                    - generic [ref=e476]:
+                      - generic [ref=e477]: Inglés
+                      - generic [ref=e478]: Principiante
+                      - generic [ref=e479]: Borrador
+                  - button [ref=e480] [cursor=pointer]:
+                    - img
+                - generic [ref=e481]:
+                  - paragraph [ref=e482]: Original description
+                  - generic [ref=e484]:
+                    - generic [ref=e485]:
+                      - img [ref=e486]
+                      - generic [ref=e488]: 0 módulos
+                    - generic [ref=e489]:
+                      - img [ref=e490]
+                      - generic [ref=e495]: 0 estudiantes
+              - generic [ref=e496]:
+                - generic [ref=e498]:
+                  - generic [ref=e499]:
+                    - generic [ref=e500]: Duplicate Course Title
+                    - generic [ref=e501]:
+                      - generic [ref=e502]: Inglés
+                      - generic [ref=e503]: Principiante
+                      - generic [ref=e504]: Borrador
+                  - button [ref=e505] [cursor=pointer]:
+                    - img
+                - generic [ref=e506]:
+                  - paragraph [ref=e507]: First course
+                  - generic [ref=e509]:
+                    - generic [ref=e510]:
+                      - img [ref=e511]
+                      - generic [ref=e513]: 0 módulos
+                    - generic [ref=e514]:
+                      - img [ref=e515]
+                      - generic [ref=e520]: 0 estudiantes
+              - generic [ref=e521]:
+                - generic [ref=e523]:
+                  - generic [ref=e524]:
+                    - generic [ref=e525]: Test Course WU1Uxj1Y
+                    - generic [ref=e526]:
+                      - generic [ref=e527]: Inglés
+                      - generic [ref=e528]: Principiante
+                      - generic [ref=e529]: Borrador
+                  - button [ref=e530] [cursor=pointer]:
+                    - img
+                - generic [ref=e531]:
+                  - paragraph [ref=e532]: Test course description
+                  - generic [ref=e534]:
+                    - generic [ref=e535]:
+                      - img [ref=e536]
+                      - generic [ref=e538]: 0 módulos
+                    - generic [ref=e539]:
+                      - img [ref=e540]
+                      - generic [ref=e545]: 0 estudiantes
+              - generic [ref=e546]:
+                - generic [ref=e548]:
+                  - generic [ref=e549]:
+                    - generic [ref=e550]: Course to Edit
+                    - generic [ref=e551]:
+                      - generic [ref=e552]: Inglés
+                      - generic [ref=e553]: Principiante
+                      - generic [ref=e554]: Borrador
+                  - button [ref=e555] [cursor=pointer]:
+                    - img
+                - generic [ref=e556]:
+                  - paragraph [ref=e557]: Original description
+                  - generic [ref=e559]:
+                    - generic [ref=e560]:
+                      - img [ref=e561]
+                      - generic [ref=e563]: 0 módulos
+                    - generic [ref=e564]:
+                      - img [ref=e565]
+                      - generic [ref=e570]: 0 estudiantes
+              - generic [ref=e571]:
+                - generic [ref=e573]:
+                  - generic [ref=e574]:
+                    - generic [ref=e575]: Course to Edit
+                    - generic [ref=e576]:
+                      - generic [ref=e577]: Inglés
+                      - generic [ref=e578]: Principiante
+                      - generic [ref=e579]: Borrador
+                  - button [ref=e580] [cursor=pointer]:
+                    - img
+                - generic [ref=e581]:
+                  - paragraph [ref=e582]: Original description
+                  - generic [ref=e584]:
+                    - generic [ref=e585]:
+                      - img [ref=e586]
+                      - generic [ref=e588]: 0 módulos
+                    - generic [ref=e589]:
+                      - img [ref=e590]
+                      - generic [ref=e595]: 0 estudiantes
+              - generic [ref=e596]:
+                - generic [ref=e598]:
+                  - generic [ref=e599]:
+                    - generic [ref=e600]: Test Course for Dropdown
+                    - generic [ref=e601]:
+                      - generic [ref=e602]: Inglés
+                      - generic [ref=e603]: Principiante
+                      - generic [ref=e604]: Borrador
+                  - button [ref=e605] [cursor=pointer]:
+                    - img
+                - generic [ref=e606]:
+                  - paragraph [ref=e607]: Test description
+                  - generic [ref=e609]:
+                    - generic [ref=e610]:
+                      - img [ref=e611]
+                      - generic [ref=e613]: 0 módulos
+                    - generic [ref=e614]:
+                      - img [ref=e615]
+                      - generic [ref=e620]: 0 estudiantes
+              - generic [ref=e621]:
+                - generic [ref=e623]:
+                  - generic [ref=e624]:
+                    - generic [ref=e625]: Test Course for Dropdown
+                    - generic [ref=e626]:
+                      - generic [ref=e627]: Inglés
+                      - generic [ref=e628]: Principiante
+                      - generic [ref=e629]: Borrador
+                  - button [ref=e630] [cursor=pointer]:
+                    - img
+                - generic [ref=e631]:
+                  - paragraph [ref=e632]: Test description
+                  - generic [ref=e634]:
+                    - generic [ref=e635]:
+                      - img [ref=e636]
+                      - generic [ref=e638]: 0 módulos
+                    - generic [ref=e639]:
+                      - img [ref=e640]
+                      - generic [ref=e645]: 0 estudiantes
+              - generic [ref=e646]:
+                - generic [ref=e648]:
+                  - generic [ref=e649]:
+                    - generic [ref=e650]: Bulk Delete Course 2 WBM3OaPD
+                    - generic [ref=e651]:
+                      - generic [ref=e652]: Inglés
+                      - generic [ref=e653]: Principiante
+                      - generic [ref=e654]: Borrador
+                  - button [ref=e655] [cursor=pointer]:
+                    - img
+                - generic [ref=e656]:
+                  - paragraph [ref=e657]: Course 2 for bulk deletion
+                  - generic [ref=e659]:
+                    - generic [ref=e660]:
+                      - img [ref=e661]
+                      - generic [ref=e663]: 0 módulos
+                    - generic [ref=e664]:
+                      - img [ref=e665]
+                      - generic [ref=e670]: 0 estudiantes
+              - generic [ref=e671]:
+                - generic [ref=e673]:
+                  - generic [ref=e674]:
+                    - generic [ref=e675]: Bulk Delete Course 1 zzjRoVgV
+                    - generic [ref=e676]:
+                      - generic [ref=e677]: Inglés
+                      - generic [ref=e678]: Principiante
+                      - generic [ref=e679]: Borrador
+                  - button [ref=e680] [cursor=pointer]:
+                    - img
+                - generic [ref=e681]:
+                  - paragraph [ref=e682]: Course 1 for bulk deletion
+                  - generic [ref=e684]:
+                    - generic [ref=e685]:
+                      - img [ref=e686]
+                      - generic [ref=e688]: 0 módulos
+                    - generic [ref=e689]:
+                      - img [ref=e690]
+                      - generic [ref=e695]: 0 estudiantes
+              - generic [ref=e696]:
+                - generic [ref=e698]:
+                  - generic [ref=e699]:
+                    - generic [ref=e700]: Course to Edit
+                    - generic [ref=e701]:
+                      - generic [ref=e702]: Inglés
+                      - generic [ref=e703]: Principiante
+                      - generic [ref=e704]: Borrador
+                  - button [ref=e705] [cursor=pointer]:
+                    - img
+                - generic [ref=e706]:
+                  - paragraph [ref=e707]: Original description
+                  - generic [ref=e709]:
+                    - generic [ref=e710]:
+                      - img [ref=e711]
+                      - generic [ref=e713]: 0 módulos
+                    - generic [ref=e714]:
+                      - img [ref=e715]
+                      - generic [ref=e720]: 0 estudiantes
+              - generic [ref=e721]:
+                - generic [ref=e723]:
+                  - generic [ref=e724]:
+                    - generic [ref=e725]: Course to Edit
+                    - generic [ref=e726]:
+                      - generic [ref=e727]: Inglés
+                      - generic [ref=e728]: Principiante
+                      - generic [ref=e729]: Borrador
+                  - button [ref=e730] [cursor=pointer]:
+                    - img
+                - generic [ref=e731]:
+                  - paragraph [ref=e732]: Original description
+                  - generic [ref=e734]:
+                    - generic [ref=e735]:
+                      - img [ref=e736]
+                      - generic [ref=e738]: 0 módulos
+                    - generic [ref=e739]:
+                      - img [ref=e740]
+                      - generic [ref=e745]: 0 estudiantes
+              - generic [ref=e746]:
+                - generic [ref=e748]:
+                  - generic [ref=e749]:
+                    - generic [ref=e750]: Test Course for Dropdown
+                    - generic [ref=e751]:
+                      - generic [ref=e752]: Inglés
+                      - generic [ref=e753]: Principiante
+                      - generic [ref=e754]: Borrador
+                  - button [ref=e755] [cursor=pointer]:
+                    - img
+                - generic [ref=e756]:
+                  - paragraph [ref=e757]: Test description
+                  - generic [ref=e759]:
+                    - generic [ref=e760]:
+                      - img [ref=e761]
+                      - generic [ref=e763]: 0 módulos
+                    - generic [ref=e764]:
+                      - img [ref=e765]
+                      - generic [ref=e770]: 0 estudiantes
+              - generic [ref=e771]:
+                - generic [ref=e773]:
+                  - generic [ref=e774]:
+                    - generic [ref=e775]: Course to Edit
+                    - generic [ref=e776]:
+                      - generic [ref=e777]: Inglés
+                      - generic [ref=e778]: Principiante
+                      - generic [ref=e779]: Borrador
+                  - button [ref=e780] [cursor=pointer]:
+                    - img
+                - generic [ref=e781]:
+                  - paragraph [ref=e782]: Original description
+                  - generic [ref=e784]:
+                    - generic [ref=e785]:
+                      - img [ref=e786]
+                      - generic [ref=e788]: 0 módulos
+                    - generic [ref=e789]:
+                      - img [ref=e790]
+                      - generic [ref=e795]: 0 estudiantes
+              - generic [ref=e796]:
+                - generic [ref=e798]:
+                  - generic [ref=e799]:
+                    - generic [ref=e800]: Test Course for Dropdown
+                    - generic [ref=e801]:
+                      - generic [ref=e802]: Inglés
+                      - generic [ref=e803]: Principiante
+                      - generic [ref=e804]: Borrador
+                  - button [ref=e805] [cursor=pointer]:
+                    - img
+                - generic [ref=e806]:
+                  - paragraph [ref=e807]: Test description
+                  - generic [ref=e809]:
+                    - generic [ref=e810]:
+                      - img [ref=e811]
+                      - generic [ref=e813]: 0 módulos
+                    - generic [ref=e814]:
+                      - img [ref=e815]
+                      - generic [ref=e820]: 0 estudiantes
+              - generic [ref=e821]:
+                - generic [ref=e823]:
+                  - generic [ref=e824]:
+                    - generic [ref=e825]: Bulk Delete Course 2 Lvb3bgU6
+                    - generic [ref=e826]:
+                      - generic [ref=e827]: Inglés
+                      - generic [ref=e828]: Principiante
+                      - generic [ref=e829]: Borrador
+                  - button [ref=e830] [cursor=pointer]:
+                    - img
+                - generic [ref=e831]:
+                  - paragraph [ref=e832]: Course 2 for bulk deletion
+                  - generic [ref=e834]:
+                    - generic [ref=e835]:
+                      - img [ref=e836]
+                      - generic [ref=e838]: 0 módulos
+                    - generic [ref=e839]:
+                      - img [ref=e840]
+                      - generic [ref=e845]: 0 estudiantes
+              - generic [ref=e846]:
+                - generic [ref=e848]:
+                  - generic [ref=e849]:
+                    - generic [ref=e850]: Bulk Delete Course 1 44xxQ6NQ
+                    - generic [ref=e851]:
+                      - generic [ref=e852]: Inglés
+                      - generic [ref=e853]: Principiante
+                      - generic [ref=e854]: Borrador
+                  - button [ref=e855] [cursor=pointer]:
+                    - img
+                - generic [ref=e856]:
+                  - paragraph [ref=e857]: Course 1 for bulk deletion
+                  - generic [ref=e859]:
+                    - generic [ref=e860]:
+                      - img [ref=e861]
+                      - generic [ref=e863]: 0 módulos
+                    - generic [ref=e864]:
+                      - img [ref=e865]
+                      - generic [ref=e870]: 0 estudiantes
+              - generic [ref=e871]:
+                - generic [ref=e873]:
+                  - generic [ref=e874]:
+                    - generic [ref=e875]: Course to Delete oZErkdwj
+                    - generic [ref=e876]:
+                      - generic [ref=e877]: Inglés
+                      - generic [ref=e878]: Principiante
+                      - generic [ref=e879]: Borrador
+                  - button [ref=e880] [cursor=pointer]:
+                    - img
+                - generic [ref=e881]:
+                  - paragraph [ref=e882]: Course to be deleted
+                  - generic [ref=e884]:
+                    - generic [ref=e885]:
+                      - img [ref=e886]
+                      - generic [ref=e888]: 0 módulos
+                    - generic [ref=e889]:
+                      - img [ref=e890]
+                      - generic [ref=e895]: 0 estudiantes
+              - generic [ref=e896]:
+                - generic [ref=e898]:
+                  - generic [ref=e899]:
+                    - generic [ref=e900]: Course to Publish NmhgvZi0
+                    - generic [ref=e901]:
+                      - generic [ref=e902]: Inglés
+                      - generic [ref=e903]: Principiante
+                      - generic [ref=e904]: Borrador
+                  - button [ref=e905] [cursor=pointer]:
+                    - img
+                - generic [ref=e906]:
+                  - paragraph [ref=e907]: Course description
+                  - generic [ref=e909]:
+                    - generic [ref=e910]:
+                      - img [ref=e911]
+                      - generic [ref=e913]: 0 módulos
+                    - generic [ref=e914]:
+                      - img [ref=e915]
+                      - generic [ref=e920]: 0 estudiantes
+              - generic [ref=e921]:
+                - generic [ref=e923]:
+                  - generic [ref=e924]:
+                    - generic [ref=e925]: Course to Edit
+                    - generic [ref=e926]:
+                      - generic [ref=e927]: Inglés
+                      - generic [ref=e928]: Principiante
+                      - generic [ref=e929]: Borrador
+                  - button [ref=e930] [cursor=pointer]:
+                    - img
+                - generic [ref=e931]:
+                  - paragraph [ref=e932]: Original description
+                  - generic [ref=e934]:
+                    - generic [ref=e935]:
+                      - img [ref=e936]
+                      - generic [ref=e938]: 0 módulos
+                    - generic [ref=e939]:
+                      - img [ref=e940]
+                      - generic [ref=e945]: 0 estudiantes
+              - generic [ref=e946]:
+                - generic [ref=e948]:
+                  - generic [ref=e949]:
+                    - generic [ref=e950]: Duplicate Course Title
+                    - generic [ref=e951]:
+                      - generic [ref=e952]: Inglés
+                      - generic [ref=e953]: Principiante
+                      - generic [ref=e954]: Borrador
+                  - button [ref=e955] [cursor=pointer]:
+                    - img
+                - generic [ref=e956]:
+                  - paragraph [ref=e957]: First course
+                  - generic [ref=e959]:
+                    - generic [ref=e960]:
+                      - img [ref=e961]
+                      - generic [ref=e963]: 0 módulos
+                    - generic [ref=e964]:
+                      - img [ref=e965]
+                      - generic [ref=e970]: 0 estudiantes
+              - generic [ref=e971]:
+                - generic [ref=e973]:
+                  - generic [ref=e974]:
+                    - generic [ref=e975]: Test Course 6xb2SYqJ
+                    - generic [ref=e976]:
+                      - generic [ref=e977]: Inglés
+                      - generic [ref=e978]: Principiante
+                      - generic [ref=e979]: Borrador
+                  - button [ref=e980] [cursor=pointer]:
+                    - img
+                - generic [ref=e981]:
+                  - paragraph [ref=e982]: Test course description
+                  - generic [ref=e984]:
+                    - generic [ref=e985]:
+                      - img [ref=e986]
+                      - generic [ref=e988]: 0 módulos
+                    - generic [ref=e989]:
+                      - img [ref=e990]
+                      - generic [ref=e995]: 0 estudiantes
+              - generic [ref=e996]:
+                - generic [ref=e998]:
+                  - generic [ref=e999]:
+                    - generic [ref=e1000]: Course to Edit
+                    - generic [ref=e1001]:
+                      - generic [ref=e1002]: Inglés
+                      - generic [ref=e1003]: Principiante
+                      - generic [ref=e1004]: Borrador
+                  - button [ref=e1005] [cursor=pointer]:
+                    - img
+                - generic [ref=e1006]:
+                  - paragraph [ref=e1007]: Original description
+                  - generic [ref=e1009]:
+                    - generic [ref=e1010]:
+                      - img [ref=e1011]
+                      - generic [ref=e1013]: 0 módulos
+                    - generic [ref=e1014]:
+                      - img [ref=e1015]
+                      - generic [ref=e1020]: 0 estudiantes
+              - generic [ref=e1021]:
+                - generic [ref=e1023]:
+                  - generic [ref=e1024]:
+                    - generic [ref=e1025]: Test Course for Dropdown
+                    - generic [ref=e1026]:
+                      - generic [ref=e1027]: Inglés
+                      - generic [ref=e1028]: Principiante
+                      - generic [ref=e1029]: Borrador
+                  - button [ref=e1030] [cursor=pointer]:
+                    - img
+                - generic [ref=e1031]:
+                  - paragraph [ref=e1032]: Test description
+                  - generic [ref=e1034]:
+                    - generic [ref=e1035]:
+                      - img [ref=e1036]
+                      - generic [ref=e1038]: 0 módulos
+                    - generic [ref=e1039]:
+                      - img [ref=e1040]
+                      - generic [ref=e1045]: 0 estudiantes
+              - generic [ref=e1046]:
+                - generic [ref=e1048]:
+                  - generic [ref=e1049]:
+                    - generic [ref=e1050]: Course to Edit
+                    - generic [ref=e1051]:
+                      - generic [ref=e1052]: Inglés
+                      - generic [ref=e1053]: Principiante
+                      - generic [ref=e1054]: Borrador
+                  - button [ref=e1055] [cursor=pointer]:
+                    - img
+                - generic [ref=e1056]:
+                  - paragraph [ref=e1057]: Original description
+                  - generic [ref=e1059]:
+                    - generic [ref=e1060]:
+                      - img [ref=e1061]
+                      - generic [ref=e1063]: 0 módulos
+                    - generic [ref=e1064]:
+                      - img [ref=e1065]
+                      - generic [ref=e1070]: 0 estudiantes
+              - generic [ref=e1071]:
+                - generic [ref=e1073]:
+                  - generic [ref=e1074]:
+                    - generic [ref=e1075]: Bulk Delete Course 2 KGrQQlTN
+                    - generic [ref=e1076]:
+                      - generic [ref=e1077]: Inglés
+                      - generic [ref=e1078]: Principiante
+                      - generic [ref=e1079]: Borrador
+                  - button [ref=e1080] [cursor=pointer]:
+                    - img
+                - generic [ref=e1081]:
+                  - paragraph [ref=e1082]: Course 2 for bulk deletion
+                  - generic [ref=e1084]:
+                    - generic [ref=e1085]:
+                      - img [ref=e1086]
+                      - generic [ref=e1088]: 0 módulos
+                    - generic [ref=e1089]:
+                      - img [ref=e1090]
+                      - generic [ref=e1095]: 0 estudiantes
+              - generic [ref=e1096]:
+                - generic [ref=e1098]:
+                  - generic [ref=e1099]:
+                    - generic [ref=e1100]: Bulk Delete Course 1 sHsvTvWu
+                    - generic [ref=e1101]:
+                      - generic [ref=e1102]: Inglés
+                      - generic [ref=e1103]: Principiante
+                      - generic [ref=e1104]: Borrador
+                  - button [ref=e1105] [cursor=pointer]:
+                    - img
+                - generic [ref=e1106]:
+                  - paragraph [ref=e1107]: Course 1 for bulk deletion
+                  - generic [ref=e1109]:
+                    - generic [ref=e1110]:
+                      - img [ref=e1111]
+                      - generic [ref=e1113]: 0 módulos
+                    - generic [ref=e1114]:
+                      - img [ref=e1115]
+                      - generic [ref=e1120]: 0 estudiantes
+              - generic [ref=e1121]:
+                - generic [ref=e1123]:
+                  - generic [ref=e1124]:
+                    - generic [ref=e1125]: Course to Delete VKJRYVHW
+                    - generic [ref=e1126]:
+                      - generic [ref=e1127]: Inglés
+                      - generic [ref=e1128]: Principiante
+                      - generic [ref=e1129]: Borrador
+                  - button [ref=e1130] [cursor=pointer]:
+                    - img
+                - generic [ref=e1131]:
+                  - paragraph [ref=e1132]: Course to be deleted
+                  - generic [ref=e1134]:
+                    - generic [ref=e1135]:
+                      - img [ref=e1136]
+                      - generic [ref=e1138]: 0 módulos
+                    - generic [ref=e1139]:
+                      - img [ref=e1140]
+                      - generic [ref=e1145]: 0 estudiantes
+              - generic [ref=e1146]:
+                - generic [ref=e1148]:
+                  - generic [ref=e1149]:
+                    - generic [ref=e1150]: Bulk Delete Course 2 9yxh9y1v
+                    - generic [ref=e1151]:
+                      - generic [ref=e1152]: Inglés
+                      - generic [ref=e1153]: Principiante
+                      - generic [ref=e1154]: Borrador
+                  - button [ref=e1155] [cursor=pointer]:
+                    - img
+                - generic [ref=e1156]:
+                  - paragraph [ref=e1157]: Course 2 for bulk deletion
+                  - generic [ref=e1159]:
+                    - generic [ref=e1160]:
+                      - img [ref=e1161]
+                      - generic [ref=e1163]: 0 módulos
+                    - generic [ref=e1164]:
+                      - img [ref=e1165]
+                      - generic [ref=e1170]: 0 estudiantes
+              - generic [ref=e1171]:
+                - generic [ref=e1173]:
+                  - generic [ref=e1174]:
+                    - generic [ref=e1175]: Bulk Delete Course 1 oUeX2Z1x
+                    - generic [ref=e1176]:
+                      - generic [ref=e1177]: Inglés
+                      - generic [ref=e1178]: Principiante
+                      - generic [ref=e1179]: Borrador
+                  - button [ref=e1180] [cursor=pointer]:
+                    - img
+                - generic [ref=e1181]:
+                  - paragraph [ref=e1182]: Course 1 for bulk deletion
+                  - generic [ref=e1184]:
+                    - generic [ref=e1185]:
+                      - img [ref=e1186]
+                      - generic [ref=e1188]: 0 módulos
+                    - generic [ref=e1189]:
+                      - img [ref=e1190]
+                      - generic [ref=e1195]: 0 estudiantes
+              - generic [ref=e1196]:
+                - generic [ref=e1198]:
+                  - generic [ref=e1199]:
+                    - generic [ref=e1200]: Course to Delete 90rYaovM
+                    - generic [ref=e1201]:
+                      - generic [ref=e1202]: Inglés
+                      - generic [ref=e1203]: Principiante
+                      - generic [ref=e1204]: Borrador
+                  - button [ref=e1205] [cursor=pointer]:
+                    - img
+                - generic [ref=e1206]:
+                  - paragraph [ref=e1207]: Course to be deleted
+                  - generic [ref=e1209]:
+                    - generic [ref=e1210]:
+                      - img [ref=e1211]
+                      - generic [ref=e1213]: 0 módulos
+                    - generic [ref=e1214]:
+                      - img [ref=e1215]
+                      - generic [ref=e1220]: 0 estudiantes
+              - generic [ref=e1221]:
+                - generic [ref=e1223]:
+                  - generic [ref=e1224]:
+                    - generic [ref=e1225]: Course to Publish TxJF2nq5
+                    - generic [ref=e1226]:
+                      - generic [ref=e1227]: Inglés
+                      - generic [ref=e1228]: Principiante
+                      - generic [ref=e1229]: Borrador
+                  - button [ref=e1230] [cursor=pointer]:
+                    - img
+                - generic [ref=e1231]:
+                  - paragraph [ref=e1232]: Course description
+                  - generic [ref=e1234]:
+                    - generic [ref=e1235]:
+                      - img [ref=e1236]
+                      - generic [ref=e1238]: 0 módulos
+                    - generic [ref=e1239]:
+                      - img [ref=e1240]
+                      - generic [ref=e1245]: 0 estudiantes
+              - generic [ref=e1246]:
+                - generic [ref=e1248]:
+                  - generic [ref=e1249]:
+                    - generic [ref=e1250]: Course to Edit
+                    - generic [ref=e1251]:
+                      - generic [ref=e1252]: Inglés
+                      - generic [ref=e1253]: Principiante
+                      - generic [ref=e1254]: Borrador
+                  - button [ref=e1255] [cursor=pointer]:
+                    - img
+                - generic [ref=e1256]:
+                  - paragraph [ref=e1257]: Original description
+                  - generic [ref=e1259]:
+                    - generic [ref=e1260]:
+                      - img [ref=e1261]
+                      - generic [ref=e1263]: 0 módulos
+                    - generic [ref=e1264]:
+                      - img [ref=e1265]
+                      - generic [ref=e1270]: 0 estudiantes
+              - generic [ref=e1271]:
+                - generic [ref=e1273]:
+                  - generic [ref=e1274]:
+                    - generic [ref=e1275]: Duplicate Course Title
+                    - generic [ref=e1276]:
+                      - generic [ref=e1277]: Inglés
+                      - generic [ref=e1278]: Principiante
+                      - generic [ref=e1279]: Borrador
+                  - button [ref=e1280] [cursor=pointer]:
+                    - img
+                - generic [ref=e1281]:
+                  - paragraph [ref=e1282]: First course
+                  - generic [ref=e1284]:
+                    - generic [ref=e1285]:
+                      - img [ref=e1286]
+                      - generic [ref=e1288]: 0 módulos
+                    - generic [ref=e1289]:
+                      - img [ref=e1290]
+                      - generic [ref=e1295]: 0 estudiantes
+              - generic [ref=e1296]:
+                - generic [ref=e1298]:
+                  - generic [ref=e1299]:
+                    - generic [ref=e1300]: Test Course cfVv8yka
+                    - generic [ref=e1301]:
+                      - generic [ref=e1302]: Inglés
+                      - generic [ref=e1303]: Principiante
+                      - generic [ref=e1304]: Borrador
+                  - button [ref=e1305] [cursor=pointer]:
+                    - img
+                - generic [ref=e1306]:
+                  - paragraph [ref=e1307]: Test course description
+                  - generic [ref=e1309]:
+                    - generic [ref=e1310]:
+                      - img [ref=e1311]
+                      - generic [ref=e1313]: 0 módulos
+                    - generic [ref=e1314]:
+                      - img [ref=e1315]
+                      - generic [ref=e1320]: 0 estudiantes
+              - generic [ref=e1321]:
+                - generic [ref=e1323]:
+                  - generic [ref=e1324]:
+                    - generic [ref=e1325]: Course to Edit
+                    - generic [ref=e1326]:
+                      - generic [ref=e1327]: Inglés
+                      - generic [ref=e1328]: Principiante
+                      - generic [ref=e1329]: Borrador
+                  - button [ref=e1330] [cursor=pointer]:
+                    - img
+                - generic [ref=e1331]:
+                  - paragraph [ref=e1332]: Original description
+                  - generic [ref=e1334]:
+                    - generic [ref=e1335]:
+                      - img [ref=e1336]
+                      - generic [ref=e1338]: 0 módulos
+                    - generic [ref=e1339]:
+                      - img [ref=e1340]
+                      - generic [ref=e1345]: 0 estudiantes
+              - generic [ref=e1346]:
+                - generic [ref=e1348]:
+                  - generic [ref=e1349]:
+                    - generic [ref=e1350]: Course to Edit
+                    - generic [ref=e1351]:
+                      - generic [ref=e1352]: Inglés
+                      - generic [ref=e1353]: Principiante
+                      - generic [ref=e1354]: Borrador
+                  - button [ref=e1355] [cursor=pointer]:
+                    - img
+                - generic [ref=e1356]:
+                  - paragraph [ref=e1357]: Original description
+                  - generic [ref=e1359]:
+                    - generic [ref=e1360]:
+                      - img [ref=e1361]
+                      - generic [ref=e1363]: 0 módulos
+                    - generic [ref=e1364]:
+                      - img [ref=e1365]
+                      - generic [ref=e1370]: 0 estudiantes
+              - generic [ref=e1371]:
+                - generic [ref=e1373]:
+                  - generic [ref=e1374]:
+                    - generic [ref=e1375]: Course to Edit
+                    - generic [ref=e1376]:
+                      - generic [ref=e1377]: Inglés
+                      - generic [ref=e1378]: Principiante
+                      - generic [ref=e1379]: Borrador
+                  - button [ref=e1380] [cursor=pointer]:
+                    - img
+                - generic [ref=e1381]:
+                  - paragraph [ref=e1382]: Original description
+                  - generic [ref=e1384]:
+                    - generic [ref=e1385]:
+                      - img [ref=e1386]
+                      - generic [ref=e1388]: 0 módulos
+                    - generic [ref=e1389]:
+                      - img [ref=e1390]
+                      - generic [ref=e1395]: 0 estudiantes
+              - generic [ref=e1396]:
+                - generic [ref=e1398]:
+                  - generic [ref=e1399]:
+                    - generic [ref=e1400]: Course to Edit
+                    - generic [ref=e1401]:
+                      - generic [ref=e1402]: Inglés
+                      - generic [ref=e1403]: Principiante
+                      - generic [ref=e1404]: Borrador
+                  - button [ref=e1405] [cursor=pointer]:
+                    - img
+                - generic [ref=e1406]:
+                  - paragraph [ref=e1407]: Original description
+                  - generic [ref=e1409]:
+                    - generic [ref=e1410]:
+                      - img [ref=e1411]
+                      - generic [ref=e1413]: 0 módulos
+                    - generic [ref=e1414]:
+                      - img [ref=e1415]
+                      - generic [ref=e1420]: 0 estudiantes
+              - generic [ref=e1421]:
+                - generic [ref=e1423]:
+                  - generic [ref=e1424]:
+                    - generic [ref=e1425]: Test Course for Dropdown
+                    - generic [ref=e1426]:
+                      - generic [ref=e1427]: Inglés
+                      - generic [ref=e1428]: Principiante
+                      - generic [ref=e1429]: Borrador
+                  - button [ref=e1430] [cursor=pointer]:
+                    - img
+                - generic [ref=e1431]:
+                  - paragraph [ref=e1432]: Test description
+                  - generic [ref=e1434]:
+                    - generic [ref=e1435]:
+                      - img [ref=e1436]
+                      - generic [ref=e1438]: 0 módulos
+                    - generic [ref=e1439]:
+                      - img [ref=e1440]
+                      - generic [ref=e1445]: 0 estudiantes
+              - generic [ref=e1446]:
+                - generic [ref=e1448]:
+                  - generic [ref=e1449]:
+                    - generic [ref=e1450]: Bulk Delete Course 1 3McVNrWX
+                    - generic [ref=e1451]:
+                      - generic [ref=e1452]: Inglés
+                      - generic [ref=e1453]: Principiante
+                      - generic [ref=e1454]: Borrador
+                  - button [ref=e1455] [cursor=pointer]:
+                    - img
+                - generic [ref=e1456]:
+                  - paragraph [ref=e1457]: Course 1 for bulk deletion
+                  - generic [ref=e1459]:
+                    - generic [ref=e1460]:
+                      - img [ref=e1461]
+                      - generic [ref=e1463]: 0 módulos
+                    - generic [ref=e1464]:
+                      - img [ref=e1465]
+                      - generic [ref=e1470]: 0 estudiantes
+              - generic [ref=e1471]:
+                - generic [ref=e1473]:
+                  - generic [ref=e1474]:
+                    - generic [ref=e1475]: Course to Delete X6pyIr0F
+                    - generic [ref=e1476]:
+                      - generic [ref=e1477]: Inglés
+                      - generic [ref=e1478]: Principiante
+                      - generic [ref=e1479]: Borrador
+                  - button [ref=e1480] [cursor=pointer]:
+                    - img
+                - generic [ref=e1481]:
+                  - paragraph [ref=e1482]: Course to be deleted
+                  - generic [ref=e1484]:
+                    - generic [ref=e1485]:
+                      - img [ref=e1486]
+                      - generic [ref=e1488]: 0 módulos
+                    - generic [ref=e1489]:
+                      - img [ref=e1490]
+                      - generic [ref=e1495]: 0 estudiantes
+              - generic [ref=e1496]:
+                - generic [ref=e1498]:
+                  - generic [ref=e1499]:
+                    - generic [ref=e1500]: Course to Publish XUxzdv6V
+                    - generic [ref=e1501]:
+                      - generic [ref=e1502]: Inglés
+                      - generic [ref=e1503]: Principiante
+                      - generic [ref=e1504]: Borrador
+                  - button [ref=e1505] [cursor=pointer]:
+                    - img
+                - generic [ref=e1506]:
+                  - paragraph [ref=e1507]: Course description
+                  - generic [ref=e1509]:
+                    - generic [ref=e1510]:
+                      - img [ref=e1511]
+                      - generic [ref=e1513]: 0 módulos
+                    - generic [ref=e1514]:
+                      - img [ref=e1515]
+                      - generic [ref=e1520]: 0 estudiantes
+              - generic [ref=e1521]:
+                - generic [ref=e1523]:
+                  - generic [ref=e1524]:
+                    - generic [ref=e1525]: Course to Edit
+                    - generic [ref=e1526]:
+                      - generic [ref=e1527]: Inglés
+                      - generic [ref=e1528]: Principiante
+                      - generic [ref=e1529]: Borrador
+                  - button [ref=e1530] [cursor=pointer]:
+                    - img
+                - generic [ref=e1531]:
+                  - paragraph [ref=e1532]: Original description
+                  - generic [ref=e1534]:
+                    - generic [ref=e1535]:
+                      - img [ref=e1536]
+                      - generic [ref=e1538]: 0 módulos
+                    - generic [ref=e1539]:
+                      - img [ref=e1540]
+                      - generic [ref=e1545]: 0 estudiantes
+              - generic [ref=e1546]:
+                - generic [ref=e1548]:
+                  - generic [ref=e1549]:
+                    - generic [ref=e1550]: Course to Edit
+                    - generic [ref=e1551]:
+                      - generic [ref=e1552]: Inglés
+                      - generic [ref=e1553]: Principiante
+                      - generic [ref=e1554]: Borrador
+                  - button [ref=e1555] [cursor=pointer]:
+                    - img
+                - generic [ref=e1556]:
+                  - paragraph [ref=e1557]: Original description
+                  - generic [ref=e1559]:
+                    - generic [ref=e1560]:
+                      - img [ref=e1561]
+                      - generic [ref=e1563]: 0 módulos
+                    - generic [ref=e1564]:
+                      - img [ref=e1565]
+                      - generic [ref=e1570]: 0 estudiantes
+              - generic [ref=e1571]:
+                - generic [ref=e1573]:
+                  - generic [ref=e1574]:
+                    - generic [ref=e1575]: Course to Edit
+                    - generic [ref=e1576]:
+                      - generic [ref=e1577]: Inglés
+                      - generic [ref=e1578]: Principiante
+                      - generic [ref=e1579]: Borrador
+                  - button [ref=e1580] [cursor=pointer]:
+                    - img
+                - generic [ref=e1581]:
+                  - paragraph [ref=e1582]: Original description
+                  - generic [ref=e1584]:
+                    - generic [ref=e1585]:
+                      - img [ref=e1586]
+                      - generic [ref=e1588]: 0 módulos
+                    - generic [ref=e1589]:
+                      - img [ref=e1590]
+                      - generic [ref=e1595]: 0 estudiantes
+              - generic [ref=e1596]:
+                - generic [ref=e1598]:
+                  - generic [ref=e1599]:
+                    - generic [ref=e1600]: Test Course xKS1Y0NA
+                    - generic [ref=e1601]:
+                      - generic [ref=e1602]: Inglés
+                      - generic [ref=e1603]: Principiante
+                      - generic [ref=e1604]: Borrador
+                  - button [ref=e1605] [cursor=pointer]:
+                    - img
+                - generic [ref=e1606]:
+                  - paragraph [ref=e1607]: Test course description
+                  - generic [ref=e1609]:
+                    - generic [ref=e1610]:
+                      - img [ref=e1611]
+                      - generic [ref=e1613]: 0 módulos
+                    - generic [ref=e1614]:
+                      - img [ref=e1615]
+                      - generic [ref=e1620]: 0 estudiantes
+              - generic [ref=e1621]:
+                - generic [ref=e1623]:
+                  - generic [ref=e1624]:
+                    - generic [ref=e1625]: Test Course E8dpxrLc
+                    - generic [ref=e1626]:
+                      - generic [ref=e1627]: Inglés
+                      - generic [ref=e1628]: Principiante
+                      - generic [ref=e1629]: Borrador
+                  - button [ref=e1630] [cursor=pointer]:
+                    - img
+                - generic [ref=e1631]:
+                  - paragraph [ref=e1632]: Test course description
+                  - generic [ref=e1634]:
+                    - generic [ref=e1635]:
+                      - img [ref=e1636]
+                      - generic [ref=e1638]: 0 módulos
+                    - generic [ref=e1639]:
+                      - img [ref=e1640]
+                      - generic [ref=e1645]: 0 estudiantes
+              - generic [ref=e1646]:
+                - generic [ref=e1648]:
+                  - generic [ref=e1649]:
+                    - generic [ref=e1650]: Test Course for Dropdown
+                    - generic [ref=e1651]:
+                      - generic [ref=e1652]: Inglés
+                      - generic [ref=e1653]: Principiante
+                      - generic [ref=e1654]: Borrador
+                  - button [ref=e1655] [cursor=pointer]:
+                    - img
+                - generic [ref=e1656]:
+                  - paragraph [ref=e1657]: Test description
+                  - generic [ref=e1659]:
+                    - generic [ref=e1660]:
+                      - img [ref=e1661]
+                      - generic [ref=e1663]: 0 módulos
+                    - generic [ref=e1664]:
+                      - img [ref=e1665]
+                      - generic [ref=e1670]: 0 estudiantes
+              - generic [ref=e1671]:
+                - generic [ref=e1673]:
+                  - generic [ref=e1674]:
+                    - generic [ref=e1675]: Course to Edit
+                    - generic [ref=e1676]:
+                      - generic [ref=e1677]: Inglés
+                      - generic [ref=e1678]: Principiante
+                      - generic [ref=e1679]: Borrador
+                  - button [ref=e1680] [cursor=pointer]:
+                    - img
+                - generic [ref=e1681]:
+                  - paragraph [ref=e1682]: Original description
+                  - generic [ref=e1684]:
+                    - generic [ref=e1685]:
+                      - img [ref=e1686]
+                      - generic [ref=e1688]: 0 módulos
+                    - generic [ref=e1689]:
+                      - img [ref=e1690]
+                      - generic [ref=e1695]: 0 estudiantes
+              - generic [ref=e1696]:
+                - generic [ref=e1698]:
+                  - generic [ref=e1699]:
+                    - generic [ref=e1700]: Course to Edit
+                    - generic [ref=e1701]:
+                      - generic [ref=e1702]: Inglés
+                      - generic [ref=e1703]: Principiante
+                      - generic [ref=e1704]: Borrador
+                  - button [ref=e1705] [cursor=pointer]:
+                    - img
+                - generic [ref=e1706]:
+                  - paragraph [ref=e1707]: Original description
+                  - generic [ref=e1709]:
+                    - generic [ref=e1710]:
+                      - img [ref=e1711]
+                      - generic [ref=e1713]: 0 módulos
+                    - generic [ref=e1714]:
+                      - img [ref=e1715]
+                      - generic [ref=e1720]: 0 estudiantes
+              - generic [ref=e1721]:
+                - generic [ref=e1723]:
+                  - generic [ref=e1724]:
+                    - generic [ref=e1725]: Course to Edit
+                    - generic [ref=e1726]:
+                      - generic [ref=e1727]: Inglés
+                      - generic [ref=e1728]: Principiante
+                      - generic [ref=e1729]: Borrador
+                  - button [ref=e1730] [cursor=pointer]:
+                    - img
+                - generic [ref=e1731]:
+                  - paragraph [ref=e1732]: Original description
+                  - generic [ref=e1734]:
+                    - generic [ref=e1735]:
+                      - img [ref=e1736]
+                      - generic [ref=e1738]: 0 módulos
+                    - generic [ref=e1739]:
+                      - img [ref=e1740]
+                      - generic [ref=e1745]: 0 estudiantes
+              - generic [ref=e1746]:
+                - generic [ref=e1748]:
+                  - generic [ref=e1749]:
+                    - generic [ref=e1750]: Test Course GH8NQSWI
+                    - generic [ref=e1751]:
+                      - generic [ref=e1752]: Inglés
+                      - generic [ref=e1753]: Principiante
+                      - generic [ref=e1754]: Borrador
+                  - button [ref=e1755] [cursor=pointer]:
+                    - img
+                - generic [ref=e1756]:
+                  - paragraph [ref=e1757]: Test course description
+                  - generic [ref=e1759]:
+                    - generic [ref=e1760]:
+                      - img [ref=e1761]
+                      - generic [ref=e1763]: 0 módulos
+                    - generic [ref=e1764]:
+                      - img [ref=e1765]
+                      - generic [ref=e1770]: 0 estudiantes
+              - generic [ref=e1771]:
+                - generic [ref=e1773]:
+                  - generic [ref=e1774]:
+                    - generic [ref=e1775]: Test Course opWQ5n6V
+                    - generic [ref=e1776]:
+                      - generic [ref=e1777]: Inglés
+                      - generic [ref=e1778]: Principiante
+                      - generic [ref=e1779]: Borrador
+                  - button [ref=e1780] [cursor=pointer]:
+                    - img
+                - generic [ref=e1781]:
+                  - paragraph [ref=e1782]: Test course description
+                  - generic [ref=e1784]:
+                    - generic [ref=e1785]:
+                      - img [ref=e1786]
+                      - generic [ref=e1788]: 0 módulos
+                    - generic [ref=e1789]:
+                      - img [ref=e1790]
+                      - generic [ref=e1795]: 0 estudiantes
+              - generic [ref=e1796]:
+                - generic [ref=e1798]:
+                  - generic [ref=e1799]:
+                    - generic [ref=e1800]: Test Course 75Qedu93
+                    - generic [ref=e1801]:
+                      - generic [ref=e1802]: Inglés
+                      - generic [ref=e1803]: Principiante
+                      - generic [ref=e1804]: Borrador
+                  - button [ref=e1805] [cursor=pointer]:
+                    - img
+                - generic [ref=e1806]:
+                  - paragraph [ref=e1807]: Test course description
+                  - generic [ref=e1809]:
+                    - generic [ref=e1810]:
+                      - img [ref=e1811]
+                      - generic [ref=e1813]: 0 módulos
+                    - generic [ref=e1814]:
+                      - img [ref=e1815]
+                      - generic [ref=e1820]: 0 estudiantes
+              - generic [ref=e1821]:
+                - generic [ref=e1823]:
+                  - generic [ref=e1824]:
+                    - generic [ref=e1825]: Programa Regular de Inglés
+                    - generic [ref=e1826]:
+                      - generic [ref=e1827]: Inglés
+                      - generic [ref=e1828]: Básico
+                      - generic [ref=e1829]: Publicado
+                  - button [ref=e1830] [cursor=pointer]:
+                    - img
+                - generic [ref=e1831]:
+                  - paragraph [ref=e1832]: "Este programa está diseñado para estudiantes que inician su aprendizaje del inglés desde cero. El curso se enfoca en desarrollar las habilidades fundamentales de comunicación: comprensión auditiva, expresión oral, lectura y escritura. A través de clases dinámicas y personalizadas, el estudiante aprenderá vocabulario básico, estructuras gramaticales esenciales y expresiones cotidianas para desenvolverse en situaciones reales. El objetivo es que al finalizar el curso el alumno sea capaz de comprender y producir frases simples, así como interactuar de manera efectiva en contextos básicos de la vida diaria."
+                  - generic [ref=e1834]:
+                    - generic [ref=e1835]:
+                      - img [ref=e1836]
+                      - generic [ref=e1838]: 1 módulos
+                    - generic [ref=e1839]:
+                      - img [ref=e1840]
+                      - generic [ref=e1845]: 0 estudiantes
+    - button [ref=e1848] [cursor=pointer]:
+      - img
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e1854] [cursor=pointer]:
+    - img [ref=e1855] [cursor=pointer]
+  - alert [ref=e1858]
+```

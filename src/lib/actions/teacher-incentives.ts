@@ -7,6 +7,7 @@ import { db } from '@/lib/db'
 import { IncentiveType } from '@/types/academic-period'
 import { getCurrentUser } from '@/lib/utils/session'
 import { redirect } from 'next/navigation'
+import { UserRole } from '@prisma/client'
 
 // Schema para validar la creación de incentivos
 const createIncentiveSchema = z.object({
@@ -29,7 +30,7 @@ export async function calculateRetentionIncentives(periodId: string) {
   try {
     const user = await getCurrentUser()
 
-    if (!user || user.role !== 'ADMIN') {
+    if (!user || !user.roles.includes(UserRole.ADMIN)) {
       throw new Error('Solo los administradores pueden ejecutar esta acción')
     }
 
@@ -76,7 +77,9 @@ export async function calculateRetentionIncentives(periodId: string) {
     // Obtenemos todos los profesores activos
     const teachers = await db.user.findMany({
       where: {
-        role: 'TEACHER',
+        roles: {
+          has: UserRole.TEACHER,
+        },
         status: 'ACTIVE',
       },
     })
@@ -180,7 +183,7 @@ export async function calculatePerfectAttendanceIncentives(periodId: string) {
   try {
     const user = await getCurrentUser()
 
-    if (!user || user.role !== 'ADMIN') {
+    if (!user || !user.roles.includes(UserRole.ADMIN)) {
       throw new Error('Solo los administradores pueden ejecutar esta acción')
     }
 
@@ -201,7 +204,9 @@ export async function calculatePerfectAttendanceIncentives(periodId: string) {
     // Obtener profesores con asistencia perfecta (ejemplo simplificado)
     const teachers = await db.user.findMany({
       where: {
-        role: 'TEACHER',
+        roles: {
+          has: UserRole.TEACHER,
+        },
         status: 'ACTIVE',
         // Aquí iría la lógica para identificar asistencia perfecta
         // Por ejemplo, si tuviéramos algún campo o relación que lo indique
@@ -278,7 +283,7 @@ export async function createTeacherIncentive(
   try {
     const user = await getCurrentUser()
 
-    if (!user || user.role !== 'ADMIN') {
+    if (!user || !user.roles.includes(UserRole.ADMIN)) {
       throw new Error('Solo los administradores pueden crear incentivos')
     }
 
@@ -333,7 +338,7 @@ export async function processTeacherIncentives(formData: FormData | { incentiveI
   try {
     const user = await getCurrentUser()
 
-    if (!user || user.role !== 'ADMIN') {
+    if (!user || !user.roles.includes(UserRole.ADMIN)) {
       throw new Error('Solo los administradores pueden procesar incentivos')
     }
 
@@ -392,7 +397,7 @@ export async function getTeacherIncentives(teacherId: string) {
     }
 
     // Verificar acceso (solo el propio profesor o un admin pueden ver los incentivos)
-    if (user.role !== 'ADMIN' && user.id !== teacherId) {
+    if (!user.roles.includes(UserRole.ADMIN) && user.id !== teacherId) {
       throw new Error('No autorizado para ver estos incentivos')
     }
 

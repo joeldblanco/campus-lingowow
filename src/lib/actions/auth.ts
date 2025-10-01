@@ -8,6 +8,7 @@ import { sendPasswordResetEmail, sendVerificationEmail } from '@/lib/mail'
 import { generatePasswordResetToken, generateVerificationToken } from '@/lib/tokens'
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes'
 import { NewPasswordSchema, ResetSchema, SignInSchema, SignUpSchema } from '@/schemas/auth'
+import { hasRole } from '@/lib/utils/roles'
 import { UserRole } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { AuthError } from 'next-auth'
@@ -35,7 +36,7 @@ export const register = async (values: z.infer<typeof SignUpSchema>) => {
         lastName: validatedData.lastName,
         email: validatedData.email,
         password: hashedPassword,
-        role: UserRole.GUEST,
+        roles: [UserRole.GUEST],
       },
     })
 
@@ -45,7 +46,7 @@ export const register = async (values: z.infer<typeof SignUpSchema>) => {
 
     await sendVerificationEmail(verificationToken.email, verificationToken.token)
 
-    return { success: 'Email de verificación enviado', redirect: DEFAULT_LOGIN_REDIRECT }
+    return { success: 'Registro exitoso', redirect: '/auth/verification' }
   } catch (error) {
     return {
       error: handleError(error) || 'Ocurrió un error al registrar al usuario',
@@ -53,7 +54,7 @@ export const register = async (values: z.infer<typeof SignUpSchema>) => {
   }
 }
 
-export const login = async (values: z.infer<typeof SignInSchema>) => {
+export const login = async (values: z.infer<typeof SignInSchema>, callbackUrl?: string | null) => {
   const validatedFields = SignInSchema.safeParse(values)
 
   if (!validatedFields.success) {
@@ -65,7 +66,7 @@ export const login = async (values: z.infer<typeof SignInSchema>) => {
   const existingUser = await getUserByEmail(email)
 
   if (!existingUser || 'error' in existingUser) {
-    return { error: 'Usuario no encontrado' }
+    return { error: 'Credenciales inválidas' }
   }
 
   if (!existingUser || !existingUser.email || !existingUser.password) {
@@ -83,7 +84,9 @@ export const login = async (values: z.infer<typeof SignInSchema>) => {
       redirect: false,
     })
 
-    return { redirect: DEFAULT_LOGIN_REDIRECT }
+    // Determinar redirección basada en roles y callbackUrl
+    const redirectUrl = getRoleBasedRedirect(existingUser.roles, callbackUrl)
+    return { redirect: redirectUrl }
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
@@ -98,6 +101,50 @@ export const login = async (values: z.infer<typeof SignInSchema>) => {
     throw error
   }
 }
+
+/**
+ * Función auxiliar para determinar redirección basada en múltiples roles
+ * 
+ * Esta función maneja usuarios que pueden tener múltiples roles simultáneamente.
+ * Por ejemplo, un usuario puede ser ADMIN y TEACHER al mismo tiempo.
+ * 
+ * @param roles - Array de roles del usuario
+ * @param callbackUrl - URL de callback opcional
+ * @returns URL de redirección apropiada
+ */
+function getRoleBasedRedirect(roles: UserRole[], callbackUrl?: string | null): string {
+  // Si hay una URL de callback específica, validarla según los permisos del usuario
+  if (callbackUrl) {
+    // Solo usuarios con rol ADMIN pueden acceder a rutas /admin
+    if (callbackUrl.startsWith('/admin') && hasRole(roles, UserRole.ADMIN)) {
+      return callbackUrl
+    }
+    // Usuarios con rol TEACHER o ADMIN pueden acceder a rutas /classroom
+    if (callbackUrl.startsWith('/classroom') && (hasRole(roles, UserRole.TEACHER) || hasRole(roles, UserRole.ADMIN))) {
+      return callbackUrl
+    }
+    // Permitir URLs internas seguras que no requieran permisos especiales
+    if (!callbackUrl.startsWith('/admin') && !callbackUrl.startsWith('/api')) {
+      return callbackUrl
+    }
+  }
+
+  // Redirección por defecto basada en el rol de mayor prioridad
+  // Orden de prioridad: ADMIN > TEACHER > STUDENT > GUEST
+  // Un usuario con múltiples roles será redirigido según su rol de mayor privilegio
+  if (hasRole(roles, UserRole.ADMIN)) {
+    return '/admin'
+  }
+  if (hasRole(roles, UserRole.TEACHER)) {
+    return '/classroom'
+  }
+  if (hasRole(roles, UserRole.STUDENT)) {
+    return DEFAULT_LOGIN_REDIRECT
+  }
+  // GUEST o cualquier otro caso
+  return DEFAULT_LOGIN_REDIRECT
+}
+
 
 export const logout = async () => {
   await signOut()
@@ -119,7 +166,7 @@ export const resendVerificationEmail = async (email: string) => {
 
     await sendVerificationEmail(verificationToken.email, verificationToken.token)
 
-    return { success: 'Correo de verificación reenviado' }
+    return { success: 'Correo de verificación enviado' }
   } catch (error) {
     return {
       error: handleError(error) || 'Ocurrió un error al enviar el correo de verificación',

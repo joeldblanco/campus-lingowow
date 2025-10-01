@@ -44,6 +44,7 @@ import {
   GraduationCap,
 } from 'lucide-react'
 import { toast } from 'sonner'
+import { BookingStatus } from '@prisma/client'
 
 interface ClassesTableProps {
   classes: ClassBookingWithDetails[]
@@ -123,8 +124,18 @@ export function ClassesTable({ classes }: ClassesTableProps) {
 
   const handleMarkCompleted = async (classId: string) => {
     try {
+      const classItem = filteredClasses.find((c) => c.id === classId)
+      if (!classItem) {
+        toast.error('Clase no encontrada')
+        return
+      }
+
       const result = await updateClass(classId, {
-        status: 'COMPLETED',
+        studentId: classItem.studentId,
+        teacherId: classItem.teacherId,
+        day: classItem.day,
+        timeSlot: classItem.timeSlot,
+        status: BookingStatus.COMPLETED,
         completedAt: new Date(),
       })
       if (result.success) {

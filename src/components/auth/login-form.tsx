@@ -18,7 +18,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -27,6 +27,9 @@ import * as z from 'zod'
 export function LoginForm() {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams.get('callbackUrl')
+  
   const loginForm = useForm<z.infer<typeof SignInSchema>>({
     resolver: zodResolver(SignInSchema),
     defaultValues: {
@@ -37,7 +40,7 @@ export function LoginForm() {
 
   const onSubmit = async (data: z.infer<typeof SignInSchema>) => {
     startTransition(() => {
-      login(data)
+      login(data, callbackUrl)
         .then((data) => {
           if (data && 'error' in data) {
             toast.error(data.error as string)
@@ -80,10 +83,11 @@ export function LoginForm() {
                         disabled={isPending}
                         autoComplete="email"
                         placeholder="usuario@ejemplo.com"
+                        data-testid="email-input"
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage data-testid="email-error" />
                   </FormItem>
                 )}
               />
@@ -109,15 +113,16 @@ export function LoginForm() {
                         autoComplete="current-password"
                         type="password"
                         placeholder="********"
+                        data-testid="password-input"
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage data-testid="password-error" />
                   </FormItem>
                 )}
               />
             </div>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" data-testid="login-button">
               {isPending ? <Loader2 className="animate-spin" /> : 'Iniciar sesión'}
             </Button>
             <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">

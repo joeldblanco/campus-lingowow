@@ -26,7 +26,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { updateCategory } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
-import { Category } from '@/types/category'
+import { Category, CategoryWithCount } from '@/types/category'
 
 const categorySchema = z.object({
   name: z.string().min(1, 'El nombre es requerido'),
@@ -40,7 +40,7 @@ const categorySchema = z.object({
 type CategoryFormData = z.infer<typeof categorySchema>
 
 interface EditCategoryDialogProps {
-  category: Category
+  category: Category | CategoryWithCount
   open: boolean
   onOpenChange: (open: boolean) => void
 }

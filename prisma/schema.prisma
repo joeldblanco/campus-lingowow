@@ -44,27 +44,23 @@ model User {
   email         String     @unique
   password      String?
   emailVerified DateTime?
-  role          UserRole   @default(GUEST)
+  roles         UserRole[] @default([GUEST])
   status        UserStatus @default(ACTIVE)
   image         String?
   bio           String? // Datos del profesor integrados
   permissions   String[] // Permisos para administradores
+  teamBadge     TeamBadge? // Badge del equipo para chat flotante
   accounts      Account[]
   teacherRankId String?
 
-  // Información básica de roles
-  isStudent Boolean @default(false)
-  isTeacher Boolean @default(false)
-  isAdmin   Boolean @default(false)
-
   // Relaciones comunes
-  createdCourses    Course[]
-  enrollments       Enrollment[]
-  completedContents UserContent[]
-  viewedResources   ResourceView[]
-  savedResources    UserResource[]
-  activities        UserActivity[]
-  attendances       ClassAttendance[]
+  createdCourses     Course[]
+  enrollments        Enrollment[]
+  completedContents  UserContent[]
+  viewedResources    ResourceView[]
+  savedResources     UserResource[]
+  activities         UserActivity[]
+  attendances        ClassAttendance[]
   teacherAttendances TeacherAttendance[] @relation("TeacherAttendances")
 
   // Relaciones del sistema de clases
@@ -84,8 +80,8 @@ model User {
   userStreak UserStreak?
 
   // Relaciones del sistema de vidas y recompensas
-  userLives UserLives?
-  userRewards UserRewards?
+  userLives          UserLives?
+  userRewards        UserRewards?
   rewardTransactions RewardTransaction[]
 
   // Relaciones comerciales
@@ -93,10 +89,28 @@ model User {
   productPurchases     ProductPurchase[]
   scheduleSlotBookings ProductScheduleSlot[] @relation("ScheduleSlotBookings")
 
+  // Relaciones de videollamadas JaaS
+  teacherCalls VideoCall[] @relation("TeacherCalls")
+  studentCalls VideoCall[] @relation("StudentCalls")
+
+  // Relaciones de chat flotante
+  conversationsAsParticipant ConversationParticipant[]
+  sentFloatingMessages       FloatingChatMessage[]     @relation("SentFloatingMessages")
+
+  // Relaciones de exámenes
+  createdExams     Exam[]           @relation("ExamCreator")
+  examAttempts     ExamAttempt[]    @relation("ExamAttempts")
+  examAssignments  ExamAssignment[] @relation("ExamAssignments")
+  assignedExams    ExamAssignment[] @relation("ExamAssigner")
+  reviewedAnswers  ExamAnswer[]     @relation("ExamReviewer")
+
+  // Relación de cursos que puede enseñar (para profesores)
+  teachableCourses TeacherCourse[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([role])
+  @@index([roles])
   @@index([teacherRankId])
 }
 
@@ -114,12 +128,12 @@ model UserStreak {
 }
 
 model UserLives {
-  userId           String    @id
-  currentLives     Int       @default(5) // Máximo 5 vidas
-  maxLives         Int       @default(5)
-  lastRechargeTime DateTime  @default(now())
-  rechargeRate     Int       @default(30) // Minutos para recargar 1 vida
-  updatedAt        DateTime  @updatedAt
+  userId           String   @id
+  currentLives     Int      @default(5) // Máximo 5 vidas
+  maxLives         Int      @default(5)
+  lastRechargeTime DateTime @default(now())
+  rechargeRate     Int      @default(30) // Minutos para recargar 1 vida
+  updatedAt        DateTime @updatedAt
 
   // Relación con User
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -141,13 +155,13 @@ model UserRewards {
 }
 
 model RewardTransaction {
-  id          String            @id @default(cuid())
+  id          String     @id @default(cuid())
   userId      String
   type        RewardType
   amount      Int // Puntos ganados o gastados
   description String
   metadata    Json? // Información adicional sobre la transacción
-  createdAt   DateTime          @default(now())
+  createdAt   DateTime   @default(now())
 
   // Relación con User
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -170,10 +184,12 @@ model Course {
   createdById String
 
   // Relaciones
-  createdBy   User         @relation(fields: [createdById], references: [id])
-  modules     Module[]
-  enrollments Enrollment[]
-  products    Product[]
+  createdBy        User            @relation(fields: [createdById], references: [id])
+  modules          Module[]
+  enrollments      Enrollment[]
+  products         Product[]
+  exams            Exam[]
+  teacherCourses   TeacherCourse[] // Profesores que pueden enseñar este curso
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -195,6 +211,7 @@ model Module {
   course     Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
   lessons    Lesson[]
   activities ModuleActivity[]
+  exams      Exam[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -214,6 +231,7 @@ model Lesson {
   module     Module           @relation(fields: [moduleId], references: [id], onDelete: Cascade)
   contents   Content[]
   activities LessonActivity[]
+  exams      Exam[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -431,22 +449,25 @@ model UserResource {
 }
 
 model Enrollment {
-  id             String           @id @default(cuid())
-  studentId      String
-  courseId       String
-  status         EnrollmentStatus @default(ACTIVE)
-  progress       Float            @default(0)
-  enrollmentDate DateTime         @default(now())
-  lastAccessed   DateTime?
+  id               String           @id @default(cuid())
+  studentId        String
+  courseId         String
+  academicPeriodId String
+  status           EnrollmentStatus @default(ACTIVE)
+  progress         Float            @default(0)
+  enrollmentDate   DateTime         @default(now())
+  lastAccessed     DateTime?
 
   // Relaciones
-  student   User              @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  course    Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  purchases ProductPurchase[]
+  student        User              @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  course         Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  academicPeriod AcademicPeriod    @relation(fields: [academicPeriodId], references: [id], onDelete: Restrict)
+  purchases      ProductPurchase[]
 
-  @@unique([studentId, courseId])
+  @@unique([studentId, courseId, academicPeriodId])
   @@index([studentId])
   @@index([courseId])
+  @@index([academicPeriodId])
   @@map("enrollments")
 }
 
@@ -484,6 +505,22 @@ model LessonActivity {
   @@map("lesson_activities")
 }
 
+model TeacherCourse {
+  teacherId String
+  courseId  String
+
+  // Relaciones
+  teacher User   @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  course  Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@id([teacherId, courseId])
+  @@index([teacherId])
+  @@index([courseId])
+  @@map("teacher_courses")
+}
+
 // =============================================
 // MODELOS DE CLASES Y PERÍODOS ACADÉMICOS
 // =============================================
@@ -501,16 +538,17 @@ model ClassBooking {
   cancelledAt     DateTime?
   cancelledBy     String?
   completedAt     DateTime?
-  studentPeriodId String?
+  studentPeriodId String
   creditId        String?
 
   // Relaciones
-  student           User                @relation("StudentBookings", fields: [studentId], references: [id])
-  teacher           User                @relation("TeacherBookings", fields: [teacherId], references: [id])
-  studentPeriod     StudentPeriod?      @relation(fields: [studentPeriodId], references: [id])
-  studentCredit     StudentCredit?      @relation(fields: [creditId], references: [id])
-  attendances       ClassAttendance[]
+  student            User                @relation("StudentBookings", fields: [studentId], references: [id])
+  teacher            User                @relation("TeacherBookings", fields: [teacherId], references: [id])
+  studentPeriod      StudentPeriod       @relation(fields: [studentPeriodId], references: [id])
+  studentCredit      StudentCredit?      @relation(fields: [creditId], references: [id])
+  attendances        ClassAttendance[]
   teacherAttendances TeacherAttendance[]
+  videoCalls         VideoCall[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -555,6 +593,7 @@ model AcademicPeriod {
   studentPeriods    StudentPeriod[]
   classCredits      ClassCredit[]
   teacherIncentives TeacherIncentive[]
+  enrollments       Enrollment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -708,12 +747,12 @@ model TeacherAvailability {
 }
 
 model ClassAttendance {
-  id              String   @id @default(cuid())
+  id              String           @id @default(cuid())
   classId         String
   studentId       String
   studentPeriodId String
-  status          String   @default("PRESENT")
-  timestamp       DateTime @default(now())
+  status          AttendanceStatus @default(PRESENT)
+  timestamp       DateTime         @default(now())
 
   // Relations
   student       User          @relation(fields: [studentId], references: [id], onDelete: Cascade)
@@ -744,6 +783,11 @@ model TeacherAttendance {
   @@index([classId])
   @@index([teacherId])
   @@map("teacher_attendances")
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
 }
 
 // =============================================
@@ -998,6 +1042,16 @@ enum UserStatus {
   INACTIVE
 }
 
+enum TeamBadge {
+  SALES
+  CUSTOMER_SERVICE
+  ACADEMIC_COORDINATION
+  TECHNICAL_SUPPORT
+  ADMINISTRATION
+  TEACHER
+  STUDENT
+}
+
 enum ActivityStatus {
   ASSIGNED
   IN_PROGRESS
@@ -1040,10 +1094,11 @@ enum BookingStatus {
 }
 
 enum EnrollmentStatus {
-  ACTIVE
-  COMPLETED
-  PAUSED
-  CANCELLED
+  PENDING   // Pre-inscripción (período no ha iniciado)
+  ACTIVE    // Inscripción activa (período en curso)
+  COMPLETED // Curso completado
+  PAUSED    // Pausado temporalmente
+  CANCELLED // Cancelado
 }
 
 enum ContentType {
@@ -1142,11 +1197,341 @@ enum InvoiceStatus {
 }
 
 enum RewardType {
-  EARNED_ACTIVITY    // Puntos ganados por completar actividad
-  EARNED_STREAK      // Puntos ganados por racha
-  EARNED_LEVEL       // Puntos ganados por subir de nivel
-  SPENT_LIVES        // Puntos gastados en vidas
-  SPENT_PREMIUM      // Puntos gastados en lecciones premium
-  SPENT_MERCHANDISE  // Puntos gastados en mercancía
-  SPENT_COUPON       // Puntos gastados en cupones
+  EARNED_ACTIVITY // Puntos ganados por completar actividad
+  EARNED_STREAK // Puntos ganados por racha
+  EARNED_LEVEL // Puntos ganados por subir de nivel
+  SPENT_LIVES // Puntos gastados en vidas
+  SPENT_PREMIUM // Puntos gastados en lecciones premium
+  SPENT_MERCHANDISE // Puntos gastados en mercancía
+  SPENT_COUPON // Puntos gastados en cupones
+}
+
+// =============================================
+// MODELOS DE EXÁMENES
+// =============================================
+
+model Exam {
+  id              String      @id @default(cuid())
+  title           String
+  description     String
+  instructions    String?     // Instrucciones generales del examen
+  timeLimit       Int?        // Tiempo límite total en minutos
+  passingScore    Float       @default(70) // Puntaje mínimo para aprobar (%)
+  maxAttempts     Int         @default(3) // Máximo número de intentos
+  isBlocking      Boolean     @default(false) // Bloquea progreso si no se aprueba
+  isOptional      Boolean     @default(false) // Es opcional para el curso
+  isPublished     Boolean     @default(false)
+  shuffleQuestions Boolean    @default(false) // Mezclar preguntas
+  shuffleOptions  Boolean     @default(false) // Mezclar opciones
+  showResults     Boolean     @default(true) // Mostrar resultados al finalizar
+  allowReview     Boolean     @default(true) // Permitir revisar respuestas
+  createdById     String
+
+  // Relaciones de contexto (opcional - puede estar en curso, módulo o lección)
+  courseId        String?
+  moduleId        String?
+  lessonId        String?
+
+  // Relaciones
+  creator         User            @relation("ExamCreator", fields: [createdById], references: [id])
+  course          Course?         @relation(fields: [courseId], references: [id])
+  module          Module?         @relation(fields: [moduleId], references: [id])
+  lesson          Lesson?         @relation(fields: [lessonId], references: [id])
+  sections        ExamSection[]
+  attempts        ExamAttempt[]
+  assignments     ExamAssignment[]
+
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([courseId])
+  @@index([moduleId])
+  @@index([lessonId])
+  @@index([createdById])
+  @@map("exams")
+}
+
+model ExamSection {
+  id              String          @id @default(cuid())
+  examId          String
+  title           String
+  description     String?
+  instructions    String?         // Instrucciones específicas de la sección
+  timeLimit       Int?            // Tiempo límite de la sección en minutos
+  order           Int             @default(0)
+  points          Float           @default(0) // Puntos totales de la sección
+
+  // Relaciones
+  exam            Exam            @relation(fields: [examId], references: [id], onDelete: Cascade)
+  questions       ExamQuestion[]
+
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([examId])
+  @@map("exam_sections")
+}
+
+model ExamQuestion {
+  id              String          @id @default(cuid())
+  sectionId       String
+  type            QuestionType
+  question        String          // Texto de la pregunta
+  options         Json?           // Opciones para preguntas de opción múltiple
+  correctAnswer   Json            // Respuesta(s) correcta(s)
+  explanation     String?         // Explicación de la respuesta
+  points          Float           @default(1) // Puntos que vale la pregunta
+  order           Int             @default(0)
+  difficulty      QuestionDifficulty @default(MEDIUM)
+  tags            String[]        // Tags para categorización
+  
+  // Configuraciones específicas por tipo de pregunta
+  caseSensitive   Boolean         @default(false) // Para preguntas de texto
+  partialCredit   Boolean         @default(false) // Crédito parcial
+  minLength       Int?            // Longitud mínima para ensayos
+  maxLength       Int?            // Longitud máxima para ensayos
+
+  // Configuraciones para ejercicios de listening
+  audioUrl        String?         // URL del archivo de audio
+  audioPosition   AudioPosition   @default(BEFORE_QUESTION) // Dónde mostrar el reproductor
+  maxAudioPlays   Int?            // Número máximo de reproducciones (null = ilimitado)
+  audioAutoplay   Boolean         @default(false) // Reproducir automáticamente
+  audioPausable   Boolean         @default(false) // Permitir pausar el audio
+
+  // Relaciones
+  section         ExamSection     @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  answers         ExamAnswer[]
+
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([sectionId])
+  @@map("exam_questions")
+}
+
+model ExamAttempt {
+  id              String          @id @default(cuid())
+  examId          String
+  userId          String
+  attemptNumber   Int             // Número del intento (1, 2, 3...)
+  status          AttemptStatus   @default(IN_PROGRESS)
+  score           Float?          // Puntaje obtenido (%)
+  totalPoints     Float?          // Puntos totales obtenidos
+  maxPoints       Float?          // Puntos máximos posibles
+  timeSpent       Int?            // Tiempo gastado en minutos
+  startedAt       DateTime        @default(now())
+  submittedAt     DateTime?
+  reviewedAt      DateTime?       // Cuando fue revisado (para preguntas manuales)
+  
+  // Configuración del intento
+  questionsOrder  Json?           // Orden de las preguntas si fueron mezcladas
+  optionsOrder    Json?           // Orden de las opciones si fueron mezcladas
+  
+  // Relaciones
+  exam            Exam            @relation(fields: [examId], references: [id], onDelete: Cascade)
+  user            User            @relation("ExamAttempts", fields: [userId], references: [id], onDelete: Cascade)
+  answers         ExamAnswer[]
+
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@unique([examId, userId, attemptNumber])
+  @@index([examId])
+  @@index([userId])
+  @@map("exam_attempts")
+}
+
+model ExamAnswer {
+  id              String          @id @default(cuid())
+  attemptId       String
+  questionId      String
+  answer          Json            // Respuesta dada por el estudiante
+  isCorrect       Boolean?        // Si es correcta (null para preguntas manuales)
+  pointsEarned    Float           @default(0) // Puntos ganados
+  timeSpent       Int?            // Tiempo gastado en esta pregunta (segundos)
+  
+  // Para revisión manual
+  needsReview     Boolean         @default(false)
+  reviewedBy      String?         // ID del profesor que revisó
+  reviewedAt      DateTime?
+  feedback        String?         // Comentarios del profesor
+
+  // Relaciones
+  attempt         ExamAttempt     @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question        ExamQuestion    @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  reviewer        User?           @relation("ExamReviewer", fields: [reviewedBy], references: [id])
+
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@unique([attemptId, questionId])
+  @@index([attemptId])
+  @@index([questionId])
+  @@map("exam_answers")
+}
+
+model ExamAssignment {
+  id              String          @id @default(cuid())
+  examId          String
+  userId          String          // Estudiante asignado
+  assignedBy      String          // Profesor que asignó
+  dueDate         DateTime?       // Fecha límite
+  instructions    String?         // Instrucciones específicas para este estudiante
+  status          AssignmentStatus @default(ASSIGNED)
+  
+  // Relaciones
+  exam            Exam            @relation(fields: [examId], references: [id], onDelete: Cascade)
+  student         User            @relation("ExamAssignments", fields: [userId], references: [id], onDelete: Cascade)
+  assignedByUser  User            @relation("ExamAssigner", fields: [assignedBy], references: [id])
+
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@unique([examId, userId])
+  @@index([examId])
+  @@index([userId])
+  @@index([assignedBy])
+  @@map("exam_assignments")
+}
+
+// =============================================
+// MODELOS DE VIDEOLLAMADAS Y COMUNICACIÓN
+// =============================================
+
+model VideoCall {
+  id           String     @id @default(cuid())
+  roomId       String     @unique
+  teacherId    String
+  studentId    String
+  bookingId    String?    @unique // Vinculado a ClassBooking existente
+  status       CallStatus @default(SCHEDULED)
+  startTime    DateTime
+  endTime      DateTime?
+  duration     Int? // en minutos
+  recordingUrl String? // URL de grabación JaaS (24h storage)
+
+  // Relaciones
+  teacher User          @relation("TeacherCalls", fields: [teacherId], references: [id])
+  student User          @relation("StudentCalls", fields: [studentId], references: [id])
+  booking ClassBooking? @relation(fields: [bookingId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([teacherId])
+  @@index([studentId])
+  @@index([bookingId])
+  @@index([status])
+  @@map("video_calls")
+}
+
+// Modelos para chat flotante
+model FloatingConversation {
+  id            String    @id @default(cuid())
+  title         String?
+  isGroup       Boolean   @default(false)
+  lastMessage   String?
+  lastMessageAt DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relaciones
+  participants ConversationParticipant[]
+  messages     FloatingChatMessage[]
+
+  @@map("floating_conversations")
+}
+
+model ConversationParticipant {
+  id             String    @id @default(cuid())
+  conversationId String
+  userId         String
+  joinedAt       DateTime  @default(now())
+  lastReadAt     DateTime?
+
+  // Relaciones
+  conversation FloatingConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user         User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, userId])
+  @@map("conversation_participants")
+}
+
+model FloatingChatMessage {
+  id             String      @id @default(cuid())
+  conversationId String
+  senderId       String
+  content        String
+  type           MessageType @default(TEXT)
+  timestamp      DateTime    @default(now())
+  isRead         Boolean     @default(false)
+
+  // Relaciones
+  conversation FloatingConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender       User                 @relation("SentFloatingMessages", fields: [senderId], references: [id])
+
+  @@index([conversationId])
+  @@index([senderId])
+  @@index([timestamp])
+  @@map("floating_chat_messages")
+}
+
+enum CallStatus {
+  SCHEDULED
+  ACTIVE
+  ENDED
+  CANCELLED
+  FAILED
+}
+
+enum MessageType {
+  TEXT
+  FILE
+  SYSTEM
+  EMOJI
+}
+
+// =============================================
+// ENUMS DE EXÁMENES
+// =============================================
+
+enum QuestionType {
+  MULTIPLE_CHOICE    // Opción múltiple
+  TRUE_FALSE        // Verdadero/Falso
+  SHORT_ANSWER      // Respuesta corta
+  ESSAY            // Ensayo
+  FILL_BLANK       // Llenar espacios en blanco
+  MATCHING         // Emparejar
+  ORDERING         // Ordenar elementos
+  DRAG_DROP        // Arrastrar y soltar
+}
+
+enum QuestionDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum AttemptStatus {
+  IN_PROGRESS      // En progreso
+  SUBMITTED        // Enviado
+  COMPLETED        // Completado y calificado
+  EXPIRED          // Expirado por tiempo
+  CANCELLED        // Cancelado
+}
+
+enum AssignmentStatus {
+  ASSIGNED         // Asignado
+  STARTED          // Iniciado
+  SUBMITTED        // Enviado
+  COMPLETED        // Completado
+  OVERDUE          // Vencido
+  CANCELLED        // Cancelado
+}
+
+enum AudioPosition {
+  BEFORE_QUESTION  // Antes del texto de la pregunta
+  AFTER_QUESTION   // Después del texto de la pregunta
+  BEFORE_OPTIONS   // Antes de las opciones (para opción múltiple)
+  SECTION_TOP      // Al inicio de la sección (compartido)
 }

@@ -40,11 +40,12 @@ export function LessonsTable({ lessons, onLessonUpdated }: LessonsTableProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [isDeleting, setIsDeleting] = useState<string | null>(null)
 
-  const filteredLessons = lessons.filter(lesson =>
-    lesson.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    lesson.module.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    lesson.module.course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    lesson.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredLessons = lessons.filter(
+    (lesson) =>
+      lesson.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lesson.module.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lesson.module.course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lesson.description?.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const handleDelete = async (id: string, title: string) => {
@@ -87,7 +88,9 @@ export function LessonsTable({ lessons, onLessonUpdated }: LessonsTableProps) {
             <BookOpen className="mx-auto h-12 w-12 text-gray-400" />
             <h3 className="mt-2 text-sm font-semibold text-gray-900">No hay lecciones</h3>
             <p className="mt-1 text-sm text-gray-500">
-              {searchTerm ? 'No se encontraron lecciones con ese término de búsqueda.' : 'Comienza creando una nueva lección.'}
+              {searchTerm
+                ? 'No se encontraron lecciones con ese término de búsqueda.'
+                : 'Comienza creando una nueva lección.'}
             </p>
           </div>
         ) : (
@@ -100,17 +103,13 @@ export function LessonsTable({ lessons, onLessonUpdated }: LessonsTableProps) {
                 <div className="flex-1">
                   <div className="flex items-center gap-3">
                     <h3 className="font-semibold">{lesson.title}</h3>
-                    <Badge variant="outline">
-                      Orden {lesson.order}
-                    </Badge>
+                    <Badge variant="outline">Orden {lesson.order}</Badge>
                   </div>
                   <p className="text-sm text-muted-foreground mt-1">
-                    Unidad: {lesson.module.title} • Curso: {lesson.module.course.title}
+                    Módulo: {lesson.module.title} • Curso: {lesson.module.course.title}
                   </p>
                   {lesson.description && (
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {lesson.description}
-                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">{lesson.description}</p>
                   )}
                   <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
                     <div className="flex items-center gap-1">

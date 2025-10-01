@@ -11,6 +11,17 @@ import NextAuth from 'next-auth'
 import { getToken } from 'next-auth/jwt'
 import { NextResponse } from 'next/server'
 
+// Helper function to get primary role from array
+function getPrimaryRoleFromArray(roles: string[]): string {
+  if (!roles || roles.length === 0) return ROLES.GUEST
+  
+  // Priority order: ADMIN > TEACHER > STUDENT > GUEST
+  if (roles.includes(ROLES.ADMIN)) return ROLES.ADMIN
+  if (roles.includes(ROLES.TEACHER)) return ROLES.TEACHER
+  if (roles.includes(ROLES.STUDENT)) return ROLES.STUDENT
+  return ROLES.GUEST
+}
+
 const { auth } = NextAuth(authConfig)
 const secret = process.env.JWT_SECRET
 
@@ -24,7 +35,9 @@ export default auth(async (req) => {
   })
 
   const isLoggedIn = !!token
-  const isAdmin = token?.role === ROLES.ADMIN
+  const userRoles = token?.roles as string[] || []
+  const isAdmin = userRoles.includes(ROLES.ADMIN)
+  const primaryRole = getPrimaryRoleFromArray(userRoles)
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
   const isAdminAuthRoute = nextUrl.pathname.startsWith(adminPrefix)
@@ -37,13 +50,20 @@ export default auth(async (req) => {
 
   if (isAuthRoute) {
     if (isLoggedIn) {
-      return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
+      // Redirigir según el rol del usuario después del login
+      const redirectUrl = getRoleBasedRedirect(primaryRole, nextUrl.searchParams.get('callbackUrl'))
+      return NextResponse.redirect(new URL(redirectUrl, nextUrl))
     }
     return NextResponse.next()
   }
 
   if (!isLoggedIn && !isPublicRoute) {
-    return NextResponse.redirect(new URL('/auth/signin', nextUrl))
+    // Preservar la URL original para redirección después del login
+    const signInUrl = new URL('/auth/signin', nextUrl)
+    if (nextUrl.pathname !== '/' && nextUrl.pathname !== '/dashboard') {
+      signInUrl.searchParams.set('callbackUrl', nextUrl.pathname + nextUrl.search)
+    }
+    return NextResponse.redirect(signInUrl)
   }
 
   if (isAdminAuthRoute) {
@@ -54,6 +74,34 @@ export default auth(async (req) => {
 
   return NextResponse.next()
 })
+
+// Función para determinar redirección basada en rol
+function getRoleBasedRedirect(primaryRole: string, callbackUrl: string | null): string {
+  // Si hay una URL de callback específica, úsala (pero validarla)
+  if (callbackUrl) {
+    // Validar que la callback URL sea segura
+    if (callbackUrl.startsWith('/admin') && primaryRole === ROLES.ADMIN) {
+      return callbackUrl
+    }
+    if (callbackUrl.startsWith('/classroom') && (primaryRole === ROLES.TEACHER || primaryRole === ROLES.ADMIN)) {
+      return callbackUrl
+    }
+    if (!callbackUrl.startsWith('/admin') && !callbackUrl.startsWith('/api')) {
+      return callbackUrl
+    }
+  }
+
+  // Redirección por defecto basada en rol
+  switch (primaryRole) {
+    case ROLES.ADMIN:
+      return '/admin'
+    case ROLES.TEACHER:
+      return '/classroom'
+    case ROLES.STUDENT:
+    default:
+      return DEFAULT_LOGIN_REDIRECT
+  }
+}
 
 export const config = {
   matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trcp)(.*)'],

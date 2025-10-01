@@ -4,6 +4,7 @@ import { db } from '@/lib/db'
 import { generateAcademicPeriodsForYear } from '@/lib/utils/academic-period'
 import { getCurrentUser } from '@/lib/utils/session'
 import { SeasonName } from '@/types/academic-period'
+import { UserRole } from '@prisma/client'
 import { addWeeks, endOfDay, startOfDay } from 'date-fns'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
@@ -43,7 +44,7 @@ export async function createAcademicPeriod(
   try {
     const user = await getCurrentUser()
 
-    if (!user || user.role !== 'ADMIN') {
+    if (!user || !user.roles.includes(UserRole.ADMIN)) {
       throw new Error('Solo los administradores pueden crear períodos académicos')
     }
 
@@ -137,7 +138,7 @@ export async function createSeason(
   try {
     const user = await getCurrentUser()
 
-    if (!user || user.role !== 'ADMIN') {
+    if (!user || !user.roles.includes(UserRole.ADMIN)) {
       throw new Error('Solo los administradores pueden crear temporadas')
     }
 
@@ -202,7 +203,7 @@ export async function generatePeriodsForYear(year: number = new Date().getFullYe
   try {
     const user = await getCurrentUser()
 
-    if (!user || user.role !== 'ADMIN') {
+    if (!user || !user.roles.includes(UserRole.ADMIN)) {
       throw new Error('Solo los administradores pueden generar períodos académicos')
     }
 
@@ -289,7 +290,7 @@ export async function setActivePeriod(periodId: string) {
   try {
     const user = await getCurrentUser()
 
-    if (!user || user.role !== 'ADMIN') {
+    if (!user || !user.roles.includes(UserRole.ADMIN)) {
       throw new Error('Solo los administradores pueden cambiar el período activo')
     }
 
@@ -350,13 +351,13 @@ export async function enrollStudentInPeriod(
   try {
     const user = await getCurrentUser()
 
-    if (!user || (user.role !== 'ADMIN' && user.role !== 'STUDENT')) {
+    if (!user || (!user.roles.includes(UserRole.ADMIN) && !user.roles.includes(UserRole.STUDENT))) {
       throw new Error('No autorizado para realizar esta acción')
     }
 
     // Si es estudiante, solo puede inscribirse a sí mismo
     if (
-      user.role === 'STUDENT' &&
+      user.roles.includes(UserRole.STUDENT) &&
       user.id !== (formData instanceof FormData ? formData.get('studentId') : formData.studentId)
     ) {
       throw new Error('No puedes inscribir a otro estudiante')
@@ -388,7 +389,9 @@ export async function enrollStudentInPeriod(
       db.user.findUnique({
         where: {
           id: studentId,
-          role: 'STUDENT',
+          roles: {
+            has: UserRole.STUDENT,
+          },
         },
       }),
       db.academicPeriod.findUnique({
@@ -521,5 +524,40 @@ export async function getSeasons() {
   } catch (error) {
     console.error('Error al obtener las temporadas:', error)
     return { success: false, error: 'Error al obtener las temporadas' }
+  }
+}
+
+/**
+ * Acción para encontrar el período académico que contiene una fecha específica
+ */
+export async function getPeriodByDate(date: Date | string) {
+  try {
+    const targetDate = typeof date === 'string' ? new Date(date) : date
+
+    const period = await db.academicPeriod.findFirst({
+      where: {
+        startDate: {
+          lte: targetDate,
+        },
+        endDate: {
+          gte: targetDate,
+        },
+      },
+      include: {
+        season: true,
+      },
+    })
+
+    if (!period) {
+      return {
+        success: false,
+        error: 'No existe un período académico para la fecha seleccionada',
+      }
+    }
+
+    return { success: true, period }
+  } catch (error) {
+    console.error('Error al buscar período por fecha:', error)
+    return { success: false, error: 'Error al buscar el período académico' }
   }
 }

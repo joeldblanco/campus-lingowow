@@ -2,6 +2,8 @@
 
 import { db as prisma } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
+import { CreateLessonSchema, EditLessonSchema } from '@/schemas/lessons'
+import * as z from 'zod'
 
 export async function getAllLessons() {
   try {
@@ -70,19 +72,20 @@ export async function getLessonStats() {
   }
 }
 
-export async function createLesson(data: {
-  title: string
-  description: string
-  order: number
-  moduleId: string
-}) {
+export async function createLesson(data: z.infer<typeof CreateLessonSchema>) {
   try {
+    // Validate input data
+    const validatedData = CreateLessonSchema.parse(data)
+    
     const lesson = await prisma.lesson.create({
       data: {
-        title: data.title,
-        description: data.description,
-        order: data.order,
-        moduleId: data.moduleId,
+        title: validatedData.title,
+        description: validatedData.description,
+        order: validatedData.order,
+        moduleId: validatedData.moduleId,
+        ...(validatedData.duration && { duration: validatedData.duration }),
+        ...(validatedData.videoUrl && { videoUrl: validatedData.videoUrl }),
+        ...(validatedData.resources && { resources: validatedData.resources }),
       },
       include: {
         module: {
@@ -104,23 +107,31 @@ export async function createLesson(data: {
     return lesson
   } catch (error) {
     console.error('Error creating lesson:', error)
-    throw new Error('Failed to create lesson')
+    
+    if (error instanceof z.ZodError) {
+      throw new Error(error.errors.map(e => e.message).join(', '))
+    }
+    
+    throw new Error('Error al crear la lección')
   }
 }
 
 export async function updateLesson(
   id: string,
-  data: {
-    title?: string
-    description?: string
-    order?: number
-    moduleId?: string
-  }
+  data: z.infer<typeof EditLessonSchema>
 ) {
   try {
+    // Validate input data
+    const validatedData = EditLessonSchema.parse(data)
+    
     const lesson = await prisma.lesson.update({
       where: { id },
-      data,
+      data: {
+        ...validatedData,
+        ...(validatedData.duration && { duration: validatedData.duration }),
+        ...(validatedData.videoUrl && { videoUrl: validatedData.videoUrl }),
+        ...(validatedData.resources && { resources: validatedData.resources }),
+      },
       include: {
         module: {
           select: {
@@ -141,7 +152,12 @@ export async function updateLesson(
     return lesson
   } catch (error) {
     console.error('Error updating lesson:', error)
-    throw new Error('Failed to update lesson')
+    
+    if (error instanceof z.ZodError) {
+      throw new Error(error.errors.map(e => e.message).join(', '))
+    }
+    
+    throw new Error('Error al actualizar la lección')
   }
 }
 
@@ -231,5 +247,63 @@ export async function getAllModulesForLessons() {
   } catch (error) {
     console.error('Error fetching modules:', error)
     throw new Error('Failed to fetch modules')
+  }
+}
+
+export async function getCoursesForLessons() {
+  try {
+    const courses = await prisma.course.findMany({
+      select: {
+        id: true,
+        title: true,
+      },
+      where: {
+        isPublished: true,
+      },
+      orderBy: { title: 'asc' },
+    })
+
+    return courses
+  } catch (error) {
+    console.error('Error fetching courses:', error)
+    throw new Error('Failed to fetch courses')
+  }
+}
+
+export async function getModulesByCourse(courseId: string, isPublished?: boolean) {
+  try {
+    const modules = await prisma.module.findMany({
+      select: {
+        id: true,
+        title: true,
+        order: true,
+      },
+      where: {
+        courseId: courseId,
+        ...(isPublished ? { isPublished } : {}),
+      },
+      orderBy: { order: 'asc' },
+    })
+
+    return modules
+  } catch (error) {
+    console.error('Error fetching modules by course:', error)
+    throw new Error('Failed to fetch modules')
+  }
+}
+
+export async function getCourseIdByModule(moduleId: string) {
+  try {
+    const moduleData = await prisma.module.findUnique({
+      where: { id: moduleId },
+      select: {
+        courseId: true,
+      },
+    })
+
+    return moduleData?.courseId || null
+  } catch (error) {
+    console.error('Error fetching course by module:', error)
+    throw new Error('Failed to fetch course')
   }
 }

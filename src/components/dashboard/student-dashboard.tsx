@@ -18,13 +18,17 @@ import { es } from 'date-fns/locale'
 import { Play } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import { getStudentDashboardStats } from '@/lib/actions/dashboard'
+import { useCurrentClass } from '@/context/current-class'
 import type { StudentDashboardData } from '@/types/dashboard'
 
 export default function Dashboard() {
   const { data: session } = useSession()
   const user = session?.user
+  const router = useRouter()
+  const { setCurrentClass } = useCurrentClass()
   const [nextClassLink, setNextClassLink] = useState<string | null>(null)
   const [dashboardData, setDashboardData] = useState<StudentDashboardData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -36,6 +40,8 @@ export default function Dashboard() {
         try {
           const data = await getStudentDashboardStats(session.user.id)
           setDashboardData(data)
+
+          console.log(data)
 
           // Set next class link if there are upcoming classes
           if (data.upcomingClasses.length > 0) {
@@ -139,6 +145,10 @@ export default function Dashboard() {
                   endDate={new Date(`${classItem.date}T${classItem.time.split('-')[1]}:00`)}
                   instructor={classItem.teacher}
                   classLink={classItem.link}
+                  onJoinClass={(classId: string) => {
+                    setCurrentClass(classId)
+                    router.push(classItem.link)
+                  }}
                 />
               ))
             ) : (
@@ -213,12 +223,14 @@ function UpcomingClassCard({
   endDate,
   instructor,
   classLink,
+  onJoinClass,
 }: {
   className: string
   startDate: Date
   endDate: Date
   instructor: string
   classLink: string
+  onJoinClass?: (classId: string) => void
 }) {
   const [currentTime, setCurrentTime] = useState(new Date())
 
@@ -288,9 +300,19 @@ function UpcomingClassCard({
         <Button
           size="sm"
           disabled={!canJoinClass || isAfter(currentTime, endDate)}
-          asChild={!isAfter(currentTime, endDate) && canJoinClass}
+          onClick={() => {
+            if (onJoinClass && canJoinClass && !isAfter(currentTime, endDate)) {
+              // Extraer classId del link
+              const urlParams = new URLSearchParams(classLink.split('?')[1])
+              const classId = urlParams.get('classId')
+              if (classId) {
+                onJoinClass(classId)
+              }
+            }
+          }}
+          asChild={!onJoinClass && !isAfter(currentTime, endDate) && canJoinClass}
         >
-          {!isAfter(currentTime, endDate) && canJoinClass ? (
+          {!onJoinClass && !isAfter(currentTime, endDate) && canJoinClass ? (
             <Link href={classLink} className="flex items-center gap-2">
               <Play size={16} />
               <span>Unirse a la Clase</span>

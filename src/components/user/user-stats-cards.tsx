@@ -104,7 +104,11 @@ function calculateUserStats(users: User[]): UserStats {
 
   const roleDistribution = users.reduce(
     (acc, user) => {
-      acc[user.role] = (acc[user.role] || 0) + 1
+      // Handle both single role and array of roles for compatibility
+      const userRoles = Array.isArray(user.roles) ? user.roles : [user.roles]
+      userRoles.forEach(role => {
+        acc[role] = (acc[role] || 0) + 1
+      })
       return acc
     },
     {} as Record<UserRole, number>

@@ -5,7 +5,6 @@ import { useSession } from 'next-auth/react'
 import { createCourse } from '@/lib/actions/courses'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import {
   Select,
@@ -23,9 +22,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
 import { toast } from 'sonner'
 import { FileUpload } from '@/components/ui/file-upload'
 import Image from 'next/image'
+import { CreateCourseSchema } from '@/schemas/courses'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import * as z from 'zod'
 
 interface CreateCourseDialogProps {
   children: React.ReactNode
@@ -36,16 +47,20 @@ export function CreateCourseDialog({ children, onCourseCreated }: CreateCourseDi
   const { data: session } = useSession()
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    language: '',
-    level: '',
-    image: '',
+  
+  const form = useForm<z.infer<typeof CreateCourseSchema>>({
+    resolver: zodResolver(CreateCourseSchema),
+    defaultValues: {
+      title: '',
+      description: '',
+      language: '',
+      level: '',
+      image: '',
+      createdById: session?.user?.id || '',
+    },
   })
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const onSubmit = async (values: z.infer<typeof CreateCourseSchema>) => {
     if (!session?.user?.id) {
       toast.error('Debes estar autenticado para crear un curso')
       return
@@ -54,20 +69,14 @@ export function CreateCourseDialog({ children, onCourseCreated }: CreateCourseDi
     setIsLoading(true)
     try {
       const result = await createCourse({
-        ...formData,
+        ...values,
         createdById: session.user.id,
       })
 
       if (result.success) {
         toast.success('Curso creado exitosamente')
         setOpen(false)
-        setFormData({
-          title: '',
-          description: '',
-          language: '',
-          level: '',
-          image: '',
-        })
+        form.reset()
         onCourseCreated?.()
       } else {
         toast.error(result.error || 'Error al crear el curso')
@@ -83,111 +92,150 @@ export function CreateCourseDialog({ children, onCourseCreated }: CreateCourseDi
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px]" data-testid="create-course-dialog">
         <DialogHeader>
           <DialogTitle>Crear Nuevo Curso</DialogTitle>
           <DialogDescription>
             Completa la información básica para crear un nuevo curso.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="title">Título del Curso</Label>
-              <Input
-                id="title"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                placeholder="Ej: Programa Regular de Inglés"
-                required
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="grid gap-4 py-4">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Título del Curso</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Ej: Programa Regular de Inglés"
+                        data-testid="title-input"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage data-testid="title-error" />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Descripción</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Describe el contenido y objetivos del curso..."
+                        data-testid="description-input"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage data-testid="description-error" />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="language"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Idioma</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger data-testid="language-input">
+                          <SelectValue placeholder="Selecciona un idioma" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Inglés">Inglés</SelectItem>
+                        <SelectItem value="Español">Español</SelectItem>
+                        <SelectItem value="Francés">Francés</SelectItem>
+                        <SelectItem value="Alemán">Alemán</SelectItem>
+                        <SelectItem value="Italiano">Italiano</SelectItem>
+                        <SelectItem value="Portugués">Portugués</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage data-testid="language-error" />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="level"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nivel</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger data-testid="level-input">
+                          <SelectValue placeholder="Selecciona un nivel" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Principiante">Principiante</SelectItem>
+                        <SelectItem value="Básico">Básico</SelectItem>
+                        <SelectItem value="Intermedio">Intermedio</SelectItem>
+                        <SelectItem value="Avanzado">Avanzado</SelectItem>
+                        <SelectItem value="Conversacional">Conversacional</SelectItem>
+                        <SelectItem value="Especializado">Especializado</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage data-testid="level-error" />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Imagen del curso</FormLabel>
+                    <FormControl>
+                      <FileUpload
+                        fileType="image"
+                        folder="courses"
+                        onUploadComplete={(result) => {
+                          field.onChange(result.secure_url)
+                        }}
+                        onUploadError={(error) => {
+                          console.error('Upload error:', error)
+                          toast.error('Error al subir la imagen')
+                        }}
+                        className="mb-4"
+                      />
+                    </FormControl>
+                    {field.value && (
+                      <div className="mt-2">
+                        <Image 
+                          src={field.value} 
+                          alt="Vista previa del curso" 
+                          width={80}
+                          height={80}
+                          className="object-cover rounded border"
+                        />
+                      </div>
+                    )}
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="description">Descripción</Label>
-              <Textarea
-                id="description"
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Describe el contenido y objetivos del curso..."
-                required
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="language">Idioma</Label>
-              <Select
-                value={formData.language}
-                onValueChange={(value) => setFormData({ ...formData, language: value })}
-                required
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecciona un idioma" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Inglés">Inglés</SelectItem>
-                  <SelectItem value="Español">Español</SelectItem>
-                  <SelectItem value="Francés">Francés</SelectItem>
-                  <SelectItem value="Alemán">Alemán</SelectItem>
-                  <SelectItem value="Italiano">Italiano</SelectItem>
-                  <SelectItem value="Portugués">Portugués</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="level">Nivel</Label>
-              <Select
-                value={formData.level}
-                onValueChange={(value) => setFormData({ ...formData, level: value })}
-                required
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecciona un nivel" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Principiante">Principiante</SelectItem>
-                  <SelectItem value="Básico">Básico</SelectItem>
-                  <SelectItem value="Intermedio">Intermedio</SelectItem>
-                  <SelectItem value="Avanzado">Avanzado</SelectItem>
-                  <SelectItem value="Conversacional">Conversacional</SelectItem>
-                  <SelectItem value="Especializado">Especializado</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="image">Imagen del curso</Label>
-              <FileUpload
-                fileType="image"
-                folder="courses"
-                onUploadComplete={(result) => {
-                  setFormData({ ...formData, image: result.secure_url })
-                }}
-                onUploadError={(error) => {
-                  console.error('Upload error:', error)
-                  toast.error('Error al subir la imagen')
-                }}
-                className="mb-4"
-              />
-              {formData.image && (
-                <div className="mt-2">
-                  <Image 
-                    src={formData.image} 
-                    alt="Vista previa del curso" 
-                    width={80}
-                    height={80}
-                    className="object-cover rounded border"
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
-              Cancelar
-            </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'Creando...' : 'Crear Curso'}
-            </Button>
-          </DialogFooter>
-        </form>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+                Cancelar
+              </Button>
+              <Button type="submit" disabled={isLoading} data-testid="save-course-button">
+                {isLoading ? 'Creando...' : 'Crear Curso'}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   )

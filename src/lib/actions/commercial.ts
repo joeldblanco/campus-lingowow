@@ -2,7 +2,8 @@
 
 import { db } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
-import type { Category, Product, Plan, Feature, Coupon } from '@prisma/client'
+import type { Category, Product, Plan, Feature, Coupon, Invoice } from '@prisma/client'
+import type { InvoiceWithDetails } from '@/types/invoice'
 
 // =============================================
 // CATEGORIES
@@ -14,9 +15,9 @@ export async function getCategories() {
       orderBy: { sortOrder: 'asc' },
       include: {
         _count: {
-          select: { products: true }
-        }
-      }
+          select: { products: true },
+        },
+      },
     })
   } catch (error) {
     console.error('Error fetching categories:', error)
@@ -29,8 +30,8 @@ export async function getCategoryById(id: string) {
     return await db.category.findUnique({
       where: { id },
       include: {
-        products: true
-      }
+        products: true,
+      },
     })
   } catch (error) {
     console.error('Error fetching category:', error)
@@ -41,7 +42,7 @@ export async function getCategoryById(id: string) {
 export async function createCategory(data: Omit<Category, 'id' | 'createdAt' | 'updatedAt'>) {
   try {
     const category = await db.category.create({
-      data
+      data,
     })
     revalidatePath('/admin/categories')
     return { success: true, data: category }
@@ -51,11 +52,14 @@ export async function createCategory(data: Omit<Category, 'id' | 'createdAt' | '
   }
 }
 
-export async function updateCategory(id: string, data: Partial<Omit<Category, 'id' | 'createdAt' | 'updatedAt'>>) {
+export async function updateCategory(
+  id: string,
+  data: Partial<Omit<Category, 'id' | 'createdAt' | 'updatedAt'>>
+) {
   try {
     const category = await db.category.update({
       where: { id },
-      data
+      data,
     })
     revalidatePath('/admin/categories')
     return { success: true, data: category }
@@ -68,7 +72,7 @@ export async function updateCategory(id: string, data: Partial<Omit<Category, 'i
 export async function deleteCategory(id: string) {
   try {
     await db.category.delete({
-      where: { id }
+      where: { id },
     })
     revalidatePath('/admin/categories')
     return { success: true }
@@ -88,9 +92,9 @@ export async function getFeatures() {
       orderBy: { name: 'asc' },
       include: {
         _count: {
-          select: { planFeatures: true }
-        }
-      }
+          select: { planFeatures: true },
+        },
+      },
     })
   } catch (error) {
     console.error('Error fetching features:', error)
@@ -105,10 +109,10 @@ export async function getFeatureById(id: string) {
       include: {
         planFeatures: {
           include: {
-            plan: true
-          }
-        }
-      }
+            plan: true,
+          },
+        },
+      },
     })
   } catch (error) {
     console.error('Error fetching feature:', error)
@@ -119,7 +123,7 @@ export async function getFeatureById(id: string) {
 export async function createFeature(data: Omit<Feature, 'id' | 'createdAt' | 'updatedAt'>) {
   try {
     const feature = await db.feature.create({
-      data
+      data,
     })
     revalidatePath('/admin/features')
     return { success: true, data: feature }
@@ -129,11 +133,14 @@ export async function createFeature(data: Omit<Feature, 'id' | 'createdAt' | 'up
   }
 }
 
-export async function updateFeature(id: string, data: Partial<Omit<Feature, 'id' | 'createdAt' | 'updatedAt'>>) {
+export async function updateFeature(
+  id: string,
+  data: Partial<Omit<Feature, 'id' | 'createdAt' | 'updatedAt'>>
+) {
   try {
     const feature = await db.feature.update({
       where: { id },
-      data
+      data,
     })
     revalidatePath('/admin/features')
     return { success: true, data: feature }
@@ -146,7 +153,7 @@ export async function updateFeature(id: string, data: Partial<Omit<Feature, 'id'
 export async function deleteFeature(id: string) {
   try {
     await db.feature.delete({
-      where: { id }
+      where: { id },
     })
     revalidatePath('/admin/features')
     return { success: true }
@@ -188,8 +195,8 @@ export async function getProductById(id: string) {
       where: { id },
       include: {
         category: true,
-        invoiceItems: true
-      }
+        invoiceItems: true,
+      },
     })
   } catch (error) {
     console.error('Error fetching product:', error)
@@ -200,7 +207,7 @@ export async function getProductById(id: string) {
 export async function createProduct(data: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>) {
   try {
     const product = await db.product.create({
-      data
+      data,
     })
     revalidatePath('/admin/products')
     return { success: true, data: product }
@@ -226,15 +233,15 @@ export async function createProductWithPlans(
 ) {
   try {
     const product = await db.product.create({
-      data: productData
+      data: productData,
     })
 
     if (plans.length > 0) {
       await db.plan.createMany({
-        data: plans.map(plan => ({
+        data: plans.map((plan) => ({
           ...plan,
-          productId: product.id
-        }))
+          productId: product.id,
+        })),
       })
     }
 
@@ -246,11 +253,14 @@ export async function createProductWithPlans(
   }
 }
 
-export async function updateProduct(id: string, data: Partial<Omit<Product, 'id' | 'createdAt' | 'updatedAt'>>) {
+export async function updateProduct(
+  id: string,
+  data: Partial<Omit<Product, 'id' | 'createdAt' | 'updatedAt'>>
+) {
   try {
     const product = await db.product.update({
       where: { id },
-      data
+      data,
     })
     revalidatePath('/admin/products')
     return { success: true, data: product }
@@ -263,7 +273,7 @@ export async function updateProduct(id: string, data: Partial<Omit<Product, 'id'
 export async function deleteProduct(id: string) {
   try {
     await db.product.delete({
-      where: { id }
+      where: { id },
     })
     revalidatePath('/admin/products')
     return { success: true }
@@ -284,13 +294,13 @@ export async function getPlans() {
       include: {
         features: {
           include: {
-            feature: true
-          }
+            feature: true,
+          },
         },
         _count: {
-          select: { invoiceItems: true }
-        }
-      }
+          select: { invoiceItems: true },
+        },
+      },
     })
   } catch (error) {
     console.error('Error fetching plans:', error)
@@ -305,11 +315,11 @@ export async function getPlanById(id: string) {
       include: {
         features: {
           include: {
-            feature: true
-          }
+            feature: true,
+          },
         },
-        invoiceItems: true
-      }
+        invoiceItems: true,
+      },
     })
   } catch (error) {
     console.error('Error fetching plan:', error)
@@ -320,7 +330,7 @@ export async function getPlanById(id: string) {
 export async function createPlan(data: Omit<Plan, 'id' | 'createdAt' | 'updatedAt'>) {
   try {
     const plan = await db.plan.create({
-      data
+      data,
     })
     revalidatePath('/admin/plans')
     return { success: true, data: plan }
@@ -330,11 +340,14 @@ export async function createPlan(data: Omit<Plan, 'id' | 'createdAt' | 'updatedA
   }
 }
 
-export async function updatePlan(id: string, data: Partial<Omit<Plan, 'id' | 'createdAt' | 'updatedAt'>>) {
+export async function updatePlan(
+  id: string,
+  data: Partial<Omit<Plan, 'id' | 'createdAt' | 'updatedAt'>>
+) {
   try {
     const plan = await db.plan.update({
       where: { id },
-      data
+      data,
     })
     revalidatePath('/admin/plans')
     return { success: true, data: plan }
@@ -347,7 +360,7 @@ export async function updatePlan(id: string, data: Partial<Omit<Plan, 'id' | 'cr
 export async function deletePlan(id: string) {
   try {
     await db.plan.delete({
-      where: { id }
+      where: { id },
     })
     revalidatePath('/admin/plans')
     return { success: true }
@@ -357,15 +370,20 @@ export async function deletePlan(id: string) {
   }
 }
 
-export async function addFeatureToPlan(planId: string, featureId: string, included: boolean = true, value?: string) {
+export async function addFeatureToPlan(
+  planId: string,
+  featureId: string,
+  included: boolean = true,
+  value?: string
+) {
   try {
     await db.planFeature.create({
       data: {
         planId,
         featureId,
         included,
-        value
-      }
+        value,
+      },
     })
     revalidatePath('/admin/plans')
     return { success: true }
@@ -381,9 +399,9 @@ export async function removeFeatureFromPlan(planId: string, featureId: string) {
       where: {
         planId_featureId: {
           planId,
-          featureId
-        }
-      }
+          featureId,
+        },
+      },
     })
     revalidatePath('/admin/plans')
     return { success: true }
@@ -403,9 +421,9 @@ export async function getCoupons() {
       orderBy: { createdAt: 'desc' },
       include: {
         _count: {
-          select: { invoices: true }
-        }
-      }
+          select: { invoices: true },
+        },
+      },
     })
   } catch (error) {
     console.error('Error fetching coupons:', error)
@@ -418,8 +436,8 @@ export async function getCouponById(id: string) {
     return await db.coupon.findUnique({
       where: { id },
       include: {
-        invoices: true
-      }
+        invoices: true,
+      },
     })
   } catch (error) {
     console.error('Error fetching coupon:', error)
@@ -430,7 +448,7 @@ export async function getCouponById(id: string) {
 export async function createCoupon(data: Omit<Coupon, 'id' | 'createdAt' | 'updatedAt'>) {
   try {
     const coupon = await db.coupon.create({
-      data
+      data,
     })
     revalidatePath('/admin/coupons')
     return { success: true, data: coupon }
@@ -440,11 +458,14 @@ export async function createCoupon(data: Omit<Coupon, 'id' | 'createdAt' | 'upda
   }
 }
 
-export async function updateCoupon(id: string, data: Partial<Omit<Coupon, 'id' | 'createdAt' | 'updatedAt'>>) {
+export async function updateCoupon(
+  id: string,
+  data: Partial<Omit<Coupon, 'id' | 'createdAt' | 'updatedAt'>>
+) {
   try {
     const coupon = await db.coupon.update({
       where: { id },
-      data
+      data,
     })
     revalidatePath('/admin/coupons')
     return { success: true, data: coupon }
@@ -457,7 +478,7 @@ export async function updateCoupon(id: string, data: Partial<Omit<Coupon, 'id' |
 export async function deleteCoupon(id: string) {
   try {
     await db.coupon.delete({
-      where: { id }
+      where: { id },
     })
     revalidatePath('/admin/coupons')
     return { success: true }
@@ -471,7 +492,7 @@ export async function deleteCoupon(id: string) {
 // INVOICES
 // =============================================
 
-export async function getInvoices() {
+export async function getInvoices(): Promise<InvoiceWithDetails[]> {
   try {
     return await db.invoice.findMany({
       orderBy: { createdAt: 'desc' },
@@ -481,17 +502,37 @@ export async function getInvoices() {
             id: true,
             name: true,
             lastName: true,
-            email: true
-          }
+            email: true,
+          },
         },
-        coupon: true,
+        coupon: {
+          select: {
+            id: true,
+            code: true,
+            name: true,
+            type: true,
+            value: true,
+          },
+        },
         items: {
           include: {
-            product: true,
-            plan: true
-          }
-        }
-      }
+            product: {
+              select: {
+                id: true,
+                name: true,
+                slug: true,
+              },
+            },
+            plan: {
+              select: {
+                id: true,
+                name: true,
+                slug: true,
+              },
+            },
+          },
+        },
+      },
     })
   } catch (error) {
     console.error('Error fetching invoices:', error)
@@ -499,7 +540,7 @@ export async function getInvoices() {
   }
 }
 
-export async function getInvoiceById(id: string) {
+export async function getInvoiceById(id: string): Promise<Invoice | null> {
   try {
     return await db.invoice.findUnique({
       where: { id },
@@ -509,10 +550,10 @@ export async function getInvoiceById(id: string) {
         items: {
           include: {
             product: true,
-            plan: true
-          }
-        }
-      }
+            plan: true,
+          },
+        },
+      },
     })
   } catch (error) {
     console.error('Error fetching invoice:', error)
@@ -552,9 +593,9 @@ export async function createInvoice(data: {
         dueDate: data.dueDate,
         couponId: data.couponId,
         items: {
-          create: data.items
-        }
-      }
+          create: data.items,
+        },
+      },
     })
     revalidatePath('/admin/invoices')
     return { success: true, data: invoice }
@@ -564,16 +605,19 @@ export async function createInvoice(data: {
   }
 }
 
-export async function updateInvoice(id: string, data: {
-  invoiceNumber?: string
-  status?: 'DRAFT' | 'SENT' | 'PAID' | 'OVERDUE' | 'CANCELLED'
-  dueDate?: Date | null
-  paidAt?: Date | null
-}) {
+export async function updateInvoice(
+  id: string,
+  data: {
+    invoiceNumber?: string
+    status?: 'DRAFT' | 'SENT' | 'PAID' | 'OVERDUE' | 'CANCELLED'
+    dueDate?: Date | null
+    paidAt?: Date | null
+  }
+) {
   try {
     const invoice = await db.invoice.update({
       where: { id },
-      data
+      data,
     })
     revalidatePath('/admin/invoices')
     return { success: true, data: invoice }
@@ -586,7 +630,7 @@ export async function updateInvoice(id: string, data: {
 export async function deleteInvoice(id: string) {
   try {
     await db.invoice.delete({
-      where: { id }
+      where: { id },
     })
     revalidatePath('/admin/invoices')
     return { success: true }

@@ -2,6 +2,7 @@
 
 import { db as prisma } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
+import { AttendanceStatus } from '@prisma/client'
 
 export async function checkStudentAttendance(
   classId: string,
@@ -42,7 +43,7 @@ export async function markStudentAttendance(
     // Get the class booking to find the studentPeriodId
     const classBooking = await prisma.classBooking.findUnique({
       where: { id: classId },
-      select: { studentPeriodId: true }
+      select: { studentPeriodId: true },
     })
 
     if (!classBooking || !classBooking.studentPeriodId) {
@@ -55,7 +56,7 @@ export async function markStudentAttendance(
         classId,
         studentId,
         studentPeriodId: classBooking.studentPeriodId,
-        status: 'PRESENT',
+        status: AttendanceStatus.PRESENT,
         timestamp: new Date(),
       },
     })
@@ -109,7 +110,7 @@ export async function markTeacherAttendance(
       data: {
         classId,
         teacherId,
-        status: 'PRESENT',
+        status: AttendanceStatus.PRESENT,
         timestamp: new Date(),
       },
     })

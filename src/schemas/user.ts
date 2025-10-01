@@ -21,7 +21,7 @@ export const CreateUserSchema = z
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9])(?!.*\s).{8,32}$/,
         'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.'
       ),
-    role: z.enum([UserRole.ADMIN, UserRole.TEACHER, UserRole.STUDENT, UserRole.GUEST] as const),
+    roles: z.array(z.enum([UserRole.ADMIN, UserRole.TEACHER, UserRole.STUDENT, UserRole.GUEST] as const)),
     status: z.enum([UserStatus.ACTIVE, UserStatus.INACTIVE] as const),
     image: z.string().optional().nullable(),
   })

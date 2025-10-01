@@ -47,7 +47,7 @@ export function UserCreateDialog({ open, onOpenChange, onCreateUser }: UserCreat
       lastName: '',
       email: '',
       password: '',
-      role: UserRole.STUDENT,
+      roles: [UserRole.STUDENT],
       status: UserStatus.ACTIVE,
       image: null,
     },
@@ -62,7 +62,7 @@ export function UserCreateDialog({ open, onOpenChange, onCreateUser }: UserCreat
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Crear Uuario</DialogTitle>
+          <DialogTitle>Crear Usuario</DialogTitle>
           <DialogDescription>Añade un nuevo usuario al sistema.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -125,11 +125,14 @@ export function UserCreateDialog({ open, onOpenChange, onCreateUser }: UserCreat
 
             <FormField
               control={form.control}
-              name="role"
+              name="roles"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Rol</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select 
+                    onValueChange={(value) => field.onChange([value as UserRole])} 
+                    defaultValue={field.value?.[0]}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Seleccione un rol" />

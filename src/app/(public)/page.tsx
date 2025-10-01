@@ -1,3 +1,5 @@
+'use client'
+
 import Footer from '@/components/public-components/footer-3'
 import Header from '@/components/public-components/header'
 import {
@@ -16,12 +18,62 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Check, GraduationCap, MessageCircle, Star, Users } from 'lucide-react'
 import Image from 'next/image'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+import { toast } from 'sonner'
+
+// Schema para el formulario de contacto
+const ContactSchema = z.object({
+  name: z.string().min(1, 'El nombre es requerido'),
+  email: z.string().email('Por favor ingresa un email válido'),
+  phone: z.string().min(1, 'El teléfono es requerido'),
+  language: z.string().min(1, 'Por favor selecciona un idioma'),
+})
+
+type ContactFormData = z.infer<typeof ContactSchema>
 
 export default function LandingPage() {
+  const form = useForm<ContactFormData>({
+    resolver: zodResolver(ContactSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      language: '',
+    },
+  })
+
+  const onSubmit = async (values: ContactFormData) => {
+    try {
+      // Aquí iría la lógica para enviar el formulario de contacto
+      console.log('Contact form submission:', values)
+      toast.success('¡Solicitud enviada exitosamente! Te contactaremos pronto.')
+      form.reset()
+    } catch (error) {
+      console.error('Error submitting contact form:', error)
+      toast.error('Error al enviar la solicitud')
+    }
+  }
   return (
     <div className="flex flex-col min-h-screen">
       {/* Navegación */}
@@ -528,47 +580,84 @@ export default function LandingPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <form className="space-y-4">
-                    <div className="grid grid-cols-1 gap-4">
-                      <div>
-                        <label htmlFor="name" className="block text-sm font-medium mb-1">
-                          Nombre
-                        </label>
-                        <Input id="name" placeholder="Tu nombre completo" />
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                      <div className="grid grid-cols-1 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Nombre</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Tu nombre completo" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Email</FormLabel>
+                              <FormControl>
+                                <Input type="email" placeholder="tu@email.com" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="phone"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Teléfono</FormLabel>
+                              <FormControl>
+                                <Input type="tel" placeholder="+34 600 00 00 00" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="language"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Idioma de interés</FormLabel>
+                              <Select onValueChange={field.onChange} value={field.value}>
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Selecciona un idioma" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  <SelectItem value="english">Inglés</SelectItem>
+                                  <SelectItem value="french">Francés</SelectItem>
+                                  <SelectItem value="german">Alemán</SelectItem>
+                                  <SelectItem value="italian">Italiano</SelectItem>
+                                  <SelectItem value="portuguese">Portugués</SelectItem>
+                                  <SelectItem value="chinese">Chino Mandarín</SelectItem>
+                                  <SelectItem value="japanese">Japonés</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
                       </div>
-                      <div>
-                        <label htmlFor="email" className="block text-sm font-medium mb-1">
-                          Email
-                        </label>
-                        <Input id="email" type="email" placeholder="tu@email.com" />
-                      </div>
-                      <div>
-                        <label htmlFor="phone" className="block text-sm font-medium mb-1">
-                          Teléfono
-                        </label>
-                        <Input id="phone" type="tel" placeholder="+34 600 00 00 00" />
-                      </div>
-                      <div>
-                        <label htmlFor="language" className="block text-sm font-medium mb-1">
-                          Idioma de interés
-                        </label>
-                        <select id="language" className="w-full p-2 rounded-md border">
-                          <option value="">Selecciona un idioma</option>
-                          <option value="english">Inglés</option>
-                          <option value="french">Francés</option>
-                          <option value="german">Alemán</option>
-                          <option value="italian">Italiano</option>
-                          <option value="portuguese">Portugués</option>
-                          <option value="chinese">Chino Mandarín</option>
-                          <option value="japanese">Japonés</option>
-                        </select>
-                      </div>
-                    </div>
-                  </form>
+                      <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                        {form.formState.isSubmitting ? 'Enviando...' : 'Solicitar Clase Gratuita'}
+                      </Button>
+                    </form>
+                  </Form>
                 </CardContent>
-                <CardFooter>
-                  <Button className="w-full">Solicitar Clase Gratuita</Button>
-                </CardFooter>
               </Card>
             </div>
           </div>

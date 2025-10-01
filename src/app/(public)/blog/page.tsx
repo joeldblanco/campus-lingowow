@@ -1,3 +1,5 @@
+'use client'
+
 import Footer from '@/components/public-components/footer'
 import Header from '@/components/public-components/header'
 import { Badge } from '@/components/ui/badge'
@@ -10,11 +12,27 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ArrowRight, Calendar, ChevronRight, Clock, Search } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+import { toast } from 'sonner'
+
+// Schema para el formulario de suscripción
+const NewsletterSchema = z.object({
+  email: z.string().email('Por favor ingresa un email válido'),
+})
 
 const blogPosts = [
   {
@@ -127,7 +145,28 @@ const popularTags = [
   'recursos',
 ]
 
+type NewsletterFormData = z.infer<typeof NewsletterSchema>
+
 export default function BlogPage() {
+  const form = useForm<NewsletterFormData>({
+    resolver: zodResolver(NewsletterSchema),
+    defaultValues: {
+      email: '',
+    },
+  })
+
+  const onSubmit = async (values: NewsletterFormData) => {
+    try {
+      // Aquí iría la lógica para suscribir al newsletter
+      console.log('Newsletter subscription:', values)
+      toast.success('¡Te has suscrito exitosamente al newsletter!')
+      form.reset()
+    } catch (error) {
+      console.error('Error subscribing to newsletter:', error)
+      toast.error('Error al suscribirse al newsletter')
+    }
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Navegación */}
@@ -370,10 +409,25 @@ export default function BlogPage() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <form className="space-y-4">
-                      <Input type="email" placeholder="tu@email.com" />
-                      <Button className="w-full">Suscribirme</Button>
-                    </form>
+                    <Form {...form}>
+                      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                        <FormField
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <Input type="email" placeholder="tu@email.com" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                          {form.formState.isSubmitting ? 'Suscribiendo...' : 'Suscribirme'}
+                        </Button>
+                      </form>
+                    </Form>
                   </CardContent>
                 </Card>
 

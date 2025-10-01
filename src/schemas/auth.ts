@@ -22,7 +22,7 @@ export const SignInSchema = z.object({
   email: z
     .string({ required_error: 'El correo electrónico es requerido' })
     .min(1, 'El correo electrónico es requerido')
-    .email('El correo electrónico no es válido'),
+    .email('Formato de correo electrónico inválido'),
 
   password: z
     .string({ required_error: 'La contraseña es requerida' })
@@ -53,7 +53,7 @@ export const SignUpSchema = z
 
     password: z
       .string({ required_error: 'Contraseña requerida' })
-      .min(8, 'Mínimo 8 caracteres')
+      .min(8, 'La contraseña debe tener al menos 8 caracteres')
       .max(32, 'Máximo 32 caracteres')
       .regex(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9])(?!.*\s).{8,32}$/,
@@ -70,6 +70,6 @@ export const SignUpSchema = z
       ),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'Las contraseñas deben coincidir',
+    message: 'Las contraseñas no coinciden',
     path: ['confirmPassword'],
   })

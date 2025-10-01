@@ -9,7 +9,6 @@ import {
 } from '@/lib/actions/classes'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import {
   Select,
@@ -27,7 +26,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
 import { toast } from 'sonner'
+import { EditClassSchema } from '@/schemas/classes'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import * as z from 'zod'
 
 interface EditClassDialogProps {
   classItem: ClassBookingWithDetails
@@ -39,13 +50,15 @@ export function EditClassDialog({ classItem, children }: EditClassDialogProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [students, setStudents] = useState<Array<{ id: string; name: string; lastName: string; email: string }>>([])
   const [teachers, setTeachers] = useState<Array<{ id: string; name: string; lastName: string; email: string }>>([])
-  const [formData, setFormData] = useState({
-    studentId: classItem.studentId,
-    teacherId: classItem.teacherId,
-    day: classItem.day,
-    timeSlot: classItem.timeSlot,
-    status: classItem.status,
-    notes: classItem.notes || '',
+  const form = useForm<z.infer<typeof EditClassSchema>>({
+    resolver: zodResolver(EditClassSchema),
+    defaultValues: {
+      studentId: classItem.studentId,
+      teacherId: classItem.teacherId,
+      day: classItem.day,
+      timeSlot: classItem.timeSlot,
+      notes: classItem.notes || '',
+    },
   })
 
   useEffect(() => {
@@ -79,12 +92,11 @@ export function EditClassDialog({ classItem, children }: EditClassDialogProps) {
     return slots
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const onSubmit = async (values: z.infer<typeof EditClassSchema>) => {
     setIsLoading(true)
 
     try {
-      const result = await updateClass(classItem.id, formData)
+      const result = await updateClass(classItem.id, values)
 
       if (result.success) {
         toast.success('Clase actualizada exitosamente')
@@ -109,117 +121,125 @@ export function EditClassDialog({ classItem, children }: EditClassDialogProps) {
           <DialogTitle>Editar Clase</DialogTitle>
           <DialogDescription>Modifica la información de la clase.</DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="studentId">Estudiante</Label>
-              <Select
-                value={formData.studentId}
-                onValueChange={(value) => setFormData({ ...formData, studentId: value })}
-                required
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {students.map((student) => (
-                    <SelectItem key={student.id} value={student.id}>
-                      {student.name} {student.lastName} - {student.email}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="grid gap-4 py-4">
+              <FormField
+                control={form.control}
+                name="studentId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Estudiante</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {students.map((student) => (
+                          <SelectItem key={student.id} value={student.id}>
+                            {student.name} {student.lastName} - {student.email}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <div className="grid gap-2">
-              <Label htmlFor="teacherId">Profesor</Label>
-              <Select
-                value={formData.teacherId}
-                onValueChange={(value) => setFormData({ ...formData, teacherId: value })}
-                required
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {teachers.map((teacher) => (
-                    <SelectItem key={teacher.id} value={teacher.id}>
-                      {teacher.name} {teacher.lastName}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+              <FormField
+                control={form.control}
+                name="teacherId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Profesor</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {teachers.map((teacher) => (
+                          <SelectItem key={teacher.id} value={teacher.id}>
+                            {teacher.name} {teacher.lastName}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <div className="grid gap-2">
-              <Label htmlFor="day">Fecha</Label>
-              <Input
-                id="day"
-                type="date"
-                value={formData.day}
-                onChange={(e) => setFormData({ ...formData, day: e.target.value })}
-                required
+              <FormField
+                control={form.control}
+                name="day"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Fecha</FormLabel>
+                    <FormControl>
+                      <Input type="date" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="timeSlot"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Horario</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {generateTimeSlots().map((slot) => (
+                          <SelectItem key={slot} value={slot}>
+                            {slot}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="notes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Notas</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Notas adicionales sobre la clase..."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
-
-            <div className="grid gap-2">
-              <Label htmlFor="timeSlot">Horario</Label>
-              <Select
-                value={formData.timeSlot}
-                onValueChange={(value) => setFormData({ ...formData, timeSlot: value })}
-                required
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {generateTimeSlots().map((slot) => (
-                    <SelectItem key={slot} value={slot}>
-                      {slot}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="grid gap-2">
-              <Label htmlFor="status">Estado</Label>
-              <Select
-                value={formData.status}
-                onValueChange={(value) => setFormData({ ...formData, status: value })}
-                required
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="CONFIRMED">Confirmada</SelectItem>
-                  <SelectItem value="COMPLETED">Completada</SelectItem>
-                  <SelectItem value="CANCELLED">Cancelada</SelectItem>
-                  <SelectItem value="NO_SHOW">No asistió</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="grid gap-2">
-              <Label htmlFor="notes">Notas</Label>
-              <Textarea
-                id="notes"
-                value={formData.notes}
-                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                placeholder="Notas adicionales sobre la clase..."
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
-              Cancelar
-            </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'Guardando...' : 'Guardar Cambios'}
-            </Button>
-          </DialogFooter>
-        </form>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+                Cancelar
+              </Button>
+              <Button type="submit" disabled={isLoading}>
+                {isLoading ? 'Guardando...' : 'Guardar Cambios'}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   )

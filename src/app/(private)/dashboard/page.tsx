@@ -22,7 +22,7 @@ import type { AdminDashboardData, TeacherDashboardData } from '@/types/dashboard
 
 const Dashboard = () => {
   const { data: session, status } = useSession()
-  const [userRole, setUserRole] = useState<UserRole | null>(null)
+  const [userRoles, setUserRoles] = useState<UserRole[] | null>(null)
   const [adminData, setAdminData] = useState<AdminDashboardData | null>(null)
   const [teacherData, setTeacherData] = useState<TeacherDashboardData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -31,14 +31,14 @@ const Dashboard = () => {
   useEffect(() => {
     const loadDashboardData = async () => {
       if (session?.user) {
-        setUserRole(session.user.role)
+        setUserRoles(session.user.roles)
         setLoading(true)
-        
+
         try {
-          if (session.user.role === UserRole.ADMIN) {
+          if (session.user.roles.includes(UserRole.ADMIN)) {
             const data = await getAdminDashboardStats()
             setAdminData(data)
-          } else if (session.user.role === UserRole.TEACHER && session.user.id) {
+          } else if (session.user.roles.includes(UserRole.TEACHER) && session.user.id) {
             const data = await getTeacherDashboardStats(session.user.id)
             setTeacherData(data)
           }
@@ -49,34 +49,28 @@ const Dashboard = () => {
         }
       }
     }
-    
+
     loadDashboardData()
   }, [session, status])
 
   // Componente de carga mientras se determina el rol
-  if (status === 'loading' || userRole === null || loading) {
+  if (status === 'loading' || userRoles === null || loading) {
     return <div className="p-6">Cargando dashboard...</div>
   }
 
   // Renderizar el dashboard según el rol
   return (
     <div className="p-6">
-      {userRole === UserRole.ADMIN && (
-        <AdminDashboard dashboardData={adminData} />
-      )}
-      {userRole === UserRole.TEACHER && <TeacherDashboard dashboardData={teacherData} />}
-      {userRole === UserRole.STUDENT && <StudentDashboard />}
-      {userRole === UserRole.GUEST && <GuestDashboard />}
+      {userRoles?.includes(UserRole.ADMIN) && <AdminDashboard dashboardData={adminData} />}
+      {userRoles?.includes(UserRole.TEACHER) && <TeacherDashboard dashboardData={teacherData} />}
+      {userRoles?.includes(UserRole.STUDENT) && <StudentDashboard />}
+      {userRoles?.includes(UserRole.GUEST) && <GuestDashboard />}
     </div>
   )
 }
 
 // Componente para el dashboard de administradores
-const AdminDashboard = ({
-  dashboardData,
-}: {
-  dashboardData: AdminDashboardData | null
-}) => {
+const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData | null }) => {
   if (!dashboardData) return <div>Cargando datos...</div>
   return (
     <div className="space-y-6">

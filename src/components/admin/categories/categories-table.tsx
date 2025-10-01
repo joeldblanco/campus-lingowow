@@ -21,14 +21,14 @@ import { MoreHorizontal, Edit, Trash2 } from 'lucide-react'
 import { EditCategoryDialog } from './edit-category-dialog'
 import { deleteCategory } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
-import { Category } from '@/types/category'
+import { CategoryWithCount } from '@/types/category'
 
 interface CategoriesTableProps {
-  categories: Category[]
+  categories: CategoryWithCount[]
 }
 
 export function CategoriesTable({ categories }: CategoriesTableProps) {
-  const [editingCategory, setEditingCategory] = useState<Category | null>(null)
+  const [editingCategory, setEditingCategory] = useState<CategoryWithCount | null>(null)
 
   const handleDelete = async (id: string) => {
     if (confirm('¿Estás seguro de que quieres eliminar esta categoría?')) {

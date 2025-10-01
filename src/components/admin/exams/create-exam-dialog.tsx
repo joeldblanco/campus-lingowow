@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import {
   Select,
@@ -13,18 +12,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Plus, Trash2, Edit } from 'lucide-react'
-import {
-  createExam,
-  getCoursesForExams,
-  ExamData,
-  ExamSection,
-  ExamQuestion,
-} from '@/lib/actions/exams'
+import { createExam, getCoursesForExams } from '@/lib/actions/exams'
 import { toast } from 'sonner'
 import { useSession } from 'next-auth/react'
+import { CreateExamSchema } from '@/schemas/exams'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import * as z from 'zod'
+import { CreateExamSectionData, CreateExamQuestionData } from '@/types/exam'
 
 interface CreateExamDialogProps {
   open: boolean
@@ -52,19 +58,26 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
       }>
     }>
   >([])
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    courseId: '',
-    moduleId: '',
-    lessonId: '',
-    timeLimit: 60,
-    passingScore: 70,
-    attempts: 3,
-    isBlocking: false,
-    isOptional: false,
+  const form = useForm<z.infer<typeof CreateExamSchema>>({
+    resolver: zodResolver(CreateExamSchema),
+    defaultValues: {
+      title: '',
+      description: '',
+      courseId: '',
+      moduleId: '',
+      lessonId: '',
+      timeLimit: 60,
+      passingScore: 70,
+      maxAttempts: 3,
+      isBlocking: false,
+      isOptional: false,
+      shuffleQuestions: false,
+      shuffleOptions: false,
+      showResults: true,
+      allowReview: true,
+    },
   })
-  const [sections, setSections] = useState<ExamSection[]>([])
+  const [sections, setSections] = useState<CreateExamSectionData[]>([])
 
   useEffect(() => {
     if (open) {
@@ -82,8 +95,7 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
     }
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const onSubmit = async (values: z.infer<typeof CreateExamSchema>) => {
     if (sections.length === 0) {
       toast.error('Por favor, agregue al menos una sección')
       return
@@ -91,28 +103,23 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
 
     setLoading(true)
     try {
-      const examData: ExamData = {
-        title: formData.title,
-        description: formData.description,
-        sections,
-        totalPoints: sections.reduce(
-          (sum, section) => sum + section.questions.reduce((qSum, q) => qSum + q.points, 0),
-          0
-        ),
-        timeLimit: formData.timeLimit,
-        passingScore: formData.passingScore,
-        attempts: formData.attempts,
-        isBlocking: formData.isBlocking,
-        isOptional: formData.isOptional,
-      }
-
       const result = await createExam({
-        title: formData.title,
-        description: formData.description,
-        courseId: formData.courseId || undefined,
-        moduleId: formData.moduleId || undefined,
-        lessonId: formData.lessonId || undefined,
-        examData,
+        title: values.title,
+        description: values.description || '',
+        instructions: values.instructions,
+        timeLimit: values.timeLimit,
+        passingScore: values.passingScore,
+        maxAttempts: values.maxAttempts,
+        isBlocking: values.isBlocking,
+        isOptional: values.isOptional,
+        shuffleQuestions: values.shuffleQuestions,
+        shuffleOptions: values.shuffleOptions,
+        showResults: values.showResults,
+        allowReview: values.allowReview,
+        courseId: values.courseId || undefined,
+        moduleId: values.moduleId || undefined,
+        lessonId: values.lessonId || undefined,
+        sections,
         createdById: session?.user?.id || 'anonymous',
       })
 
@@ -133,104 +140,63 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
   }
 
   const resetForm = () => {
-    setFormData({
-      title: '',
-      description: '',
-      courseId: '',
-      moduleId: '',
-      lessonId: '',
-      timeLimit: 60,
-      passingScore: 70,
-      attempts: 3,
-      isBlocking: false,
-      isOptional: false,
-    })
+    form.reset()
     setSections([])
-    // setEditingSection(null)
-    // setEditingQuestion(null)
-    // setSectionForm({ title: '', description: '', timeLimit: 30 })
-    // setQuestionForm({
-    //   question: '',
-    //   type: 'multiple_choice',
-    //   options: ['', '', '', ''],
-    //   correctAnswer: '',
-    //   points: 1,
-    //   explanation: ''
-    // })
   }
 
   const addSection = () => {
-    const newSection: ExamSection = {
-      id: `section-${Date.now()}`,
-      title: 'New Section',
+    const newSection: CreateExamSectionData = {
+      title: 'Nueva Sección',
       description: '',
+      instructions: '',
       timeLimit: 30,
-      questions: [],
       order: sections.length + 1,
+      questions: [],
     }
     setSections([...sections, newSection])
   }
 
-  const updateSection = (sectionId: string, updates: Partial<ExamSection>) => {
+  const updateSection = (sectionIndex: number, updates: Partial<CreateExamSectionData>) => {
     setSections(
-      sections.map((section) => (section.id === sectionId ? { ...section, ...updates } : section))
+      sections.map((section, idx) => (idx === sectionIndex ? { ...section, ...updates } : section))
     )
   }
 
-  const deleteSection = (sectionId: string) => {
-    setSections(sections.filter((section) => section.id !== sectionId))
+  const deleteSection = (sectionIndex: number) => {
+    setSections(sections.filter((_, idx) => idx !== sectionIndex))
   }
 
-  const addQuestion = (sectionId: string) => {
-    const newQuestion: ExamQuestion = {
-      id: `question-${Date.now()}`,
-      type: 'multiple_choice',
-      question: 'New Question',
-      options: ['Option A', 'Option B', 'Option C', 'Option D'],
-      correctAnswer: 'Option A',
+  const addQuestion = (sectionIndex: number) => {
+    const newQuestion: CreateExamQuestionData = {
+      type: 'MULTIPLE_CHOICE',
+      question: 'Nueva Pregunta',
+      options: ['Opción A', 'Opción B', 'Opción C', 'Opción D'],
+      correctAnswer: 'Opción A',
       points: 1,
+      order: sections[sectionIndex]?.questions.length || 0,
+      difficulty: 'MEDIUM',
+      tags: [],
+      caseSensitive: false,
+      partialCredit: false,
       explanation: '',
     }
 
-    updateSection(sectionId, {
-      questions: [...(sections.find((s) => s.id === sectionId)?.questions || []), newQuestion],
+    updateSection(sectionIndex, {
+      questions: [...(sections[sectionIndex]?.questions || []), newQuestion],
     })
-    // setQuestionForm({
-    //   question: newQuestion.question,
-    //   type: newQuestion.type,
-    //   options: [...newQuestion.options!],
-    //   correctAnswer: newQuestion.correctAnswer as string,
-    //   points: newQuestion.points,
-    //   explanation: newQuestion.explanation || ''
-    // })
-    // setEditingQuestion(newQuestion)
   }
 
-  // const updateQuestion = (
-  //   sectionId: string,
-  //   questionId: string,
-  //   updates: Partial<ExamQuestion>
-  // ) => {
-  //   const section = sections.find((s) => s.id === sectionId)
-  //   if (section) {
-  //     const updatedQuestions = section.questions.map((q) =>
-  //       q.id === questionId ? { ...q, ...updates } : q
-  //     )
-  //     updateSection(sectionId, { questions: updatedQuestions })
-  //   }
-  // }
-
-  const deleteQuestion = (sectionId: string, questionId: string) => {
-    const section = sections.find((s) => s.id === sectionId)
+  const deleteQuestion = (sectionIndex: number, questionIndex: number) => {
+    const section = sections[sectionIndex]
     if (section) {
-      const updatedQuestions = section.questions.filter((q) => q.id !== questionId)
-      updateSection(sectionId, { questions: updatedQuestions })
+      const updatedQuestions = section.questions.filter((_, idx) => idx !== questionIndex)
+      updateSection(sectionIndex, { questions: updatedQuestions })
     }
   }
 
-  const selectedCourse = courses.find((c) => c.id === formData.courseId)
+  const selectedCourse = courses.find((c) => c.id === form.watch('courseId'))
   const availableModules = selectedCourse?.modules || []
-  const selectedModule = availableModules.find((m) => m.id === formData.moduleId)
+  const selectedModule = availableModules.find((m) => m.id === form.watch('moduleId'))
   const availableLessons = selectedModule?.lessons || []
 
   return (
@@ -240,249 +206,310 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
           <DialogTitle>Crear Examen</DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Basic Information */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="title">Titulo</Label>
-              <Input
-                id="title"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                required
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* Basic Information */}
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Título</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="timeLimit"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tiempo límite (minutos)</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        min="1"
+                        {...field}
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || 60)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="timeLimit">Tiempo límite (minutos)</Label>
-              <Input
-                id="timeLimit"
-                type="number"
-                value={formData.timeLimit}
-                onChange={(e) =>
-                  setFormData({ ...formData, timeLimit: parseInt(e.target.value) || 60 })
-                }
-                min="1"
-                required
-              />
-            </div>
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="description">Descripción</Label>
-            <Textarea
-              id="description"
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              rows={3}
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Descripción</FormLabel>
+                  <FormControl>
+                    <Textarea rows={3} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          {/* Course Assignment */}
-          <div className="grid grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <Label>Curso</Label>
-              <Select
-                value={formData.courseId}
-                onValueChange={(value) => {
-                  setFormData({ ...formData, courseId: value, moduleId: '', lessonId: '' })
-                }}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Seleccionar curso" />
-                </SelectTrigger>
-                <SelectContent>
-                  {courses.length === 0 ? (
-                    <SelectItem value="" disabled>
-                      No hay cursos disponibles
-                    </SelectItem>
-                  ) : (
-                    courses.map((course) => (
-                      <SelectItem key={course.id} value={course.id}>
-                        <div className="truncate max-w-[200px]" title={`${course.title} (${course.language})`}>
-                          {course.title} ({course.language})
-                        </div>
-                      </SelectItem>
-                    ))
-                  )}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label>Módulo (Opcional)</Label>
-              <Select
-                value={formData.moduleId}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, moduleId: value, lessonId: '' })
-                }
-                disabled={!formData.courseId}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Seleccionar módulo" />
-                </SelectTrigger>
-                <SelectContent>
-                  {availableModules.length === 0 ? (
-                    <SelectItem value="" disabled>
-                      No hay módulos disponibles
-                    </SelectItem>
-                  ) : (
-                    availableModules.map((module) => (
-                      <SelectItem key={module.id} value={module.id}>
-                        <div className="truncate max-w-[180px]" title={`${module.title} (Level ${module.level})`}>
-                          {module.title} (Level {module.level})
-                        </div>
-                      </SelectItem>
-                    ))
-                  )}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label>Lección (Opcional)</Label>
-              <Select
-                value={formData.lessonId}
-                onValueChange={(value) => setFormData({ ...formData, lessonId: value })}
-                disabled={!formData.moduleId}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Seleccionar lección" />
-                </SelectTrigger>
-                <SelectContent>
-                  {availableLessons.length === 0 ? (
-                    <SelectItem value="" disabled>
-                      No hay lecciones disponibles
-                    </SelectItem>
-                  ) : (
-                    availableLessons.map((lesson) => (
-                      <SelectItem key={lesson.id} value={lesson.id}>
-                        <div className="truncate max-w-[180px]" title={lesson.title}>
-                          {lesson.title}
-                        </div>
-                      </SelectItem>
-                    ))
-                  )}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Exam Settings */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="passingScore">Puntaje de aprobación (%)</Label>
-              <Input
-                id="passingScore"
-                type="number"
-                value={formData.passingScore}
-                onChange={(e) =>
-                  setFormData({ ...formData, passingScore: parseInt(e.target.value) || 70 })
-                }
-                min="0"
-                max="100"
-                required
+            {/* Course Assignment */}
+            <div className="grid grid-cols-3 gap-4">
+              <FormField
+                control={form.control}
+                name="courseId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Curso</FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value)
+                        form.setValue('moduleId', '')
+                        form.setValue('lessonId', '')
+                      }}
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccionar curso" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {courses.length === 0 ? (
+                          <SelectItem value="no-courses" disabled>
+                            No hay cursos disponibles
+                          </SelectItem>
+                        ) : (
+                          courses.map((course) => (
+                            <SelectItem key={course.id} value={course.id}>
+                              <div
+                                className="truncate max-w-[200px]"
+                                title={`${course.title} (${course.language})`}
+                              >
+                                {course.title} ({course.language})
+                              </div>
+                            </SelectItem>
+                          ))
+                        )}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="moduleId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Módulo (Opcional)</FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value)
+                        form.setValue('lessonId', '')
+                      }}
+                      value={field.value}
+                      disabled={!form.watch('courseId')}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccionar módulo" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {availableModules.length === 0 ? (
+                          <SelectItem value="no-modules" disabled>
+                            No hay módulos disponibles
+                          </SelectItem>
+                        ) : (
+                          availableModules.map((module) => (
+                            <SelectItem key={module.id} value={module.id}>
+                              <div
+                                className="truncate max-w-[180px]"
+                                title={`${module.title} (Level ${module.level})`}
+                              >
+                                {module.title} (Level {module.level})
+                              </div>
+                            </SelectItem>
+                          ))
+                        )}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="lessonId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Lección (Opcional)</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      disabled={!form.watch('moduleId')}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccionar lección" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {availableLessons.length === 0 ? (
+                          <SelectItem value="no-lessons" disabled>
+                            No hay lecciones disponibles
+                          </SelectItem>
+                        ) : (
+                          availableLessons.map((lesson) => (
+                            <SelectItem key={lesson.id} value={lesson.id}>
+                              <div className="truncate max-w-[180px]" title={lesson.title}>
+                                {lesson.title}
+                              </div>
+                            </SelectItem>
+                          ))
+                        )}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="attempts">Intentos máximos</Label>
-              <Input
-                id="attempts"
-                type="number"
-                value={formData.attempts}
-                onChange={(e) =>
-                  setFormData({ ...formData, attempts: parseInt(e.target.value) || 3 })
-                }
-                min="1"
-                required
+
+            {/* Exam Settings */}
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="passingScore"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Puntaje de aprobación (%)</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        min="0"
+                        max="100"
+                        {...field}
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || 70)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="maxAttempts"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Intentos máximos</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        min="1"
+                        {...field}
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || 3)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
-          </div>
 
-          {/* Sections */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold">Secciones del examen</h3>
-              <Button type="button" onClick={addSection} variant="outline">
-                <Plus className="mr-2 h-4 w-4" />
-                Agregar sección
+            {/* Sections */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold">Secciones del examen</h3>
+                <Button type="button" onClick={addSection} variant="outline">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Agregar sección
+                </Button>
+              </div>
+
+              {sections.map((section, sectionIndex) => (
+                <Card key={sectionIndex}>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-base">{section.title}</CardTitle>
+                      <div className="flex space-x-2">
+                        <Button type="button" variant="outline" size="sm" onClick={() => {}}>
+                          <Edit className="h-3 w-3" />
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => addQuestion(sectionIndex)}
+                        >
+                          <Plus className="h-3 w-3" />
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => deleteSection(sectionIndex)}
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      {section.questions.map((question, questionIndex) => (
+                        <div
+                          key={questionIndex}
+                          className="flex items-center justify-between p-2 border rounded"
+                        >
+                          <div>
+                            <span className="font-medium">{question.question}</span>
+                            <Badge variant="secondary" className="ml-2">
+                              {question.type}
+                            </Badge>
+                            <Badge variant="outline" className="ml-1">
+                              {question.points} pts
+                            </Badge>
+                          </div>
+                          <div className="flex space-x-1">
+                            <Button type="button" variant="ghost" size="sm" onClick={() => {}}>
+                              <Edit className="h-3 w-3" />
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => deleteQuestion(sectionIndex, questionIndex)}
+                            >
+                              <Trash2 className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                      {section.questions.length === 0 && (
+                        <p className="text-muted-foreground text-sm">No se han agregado preguntas</p>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="flex justify-end space-x-2">
+              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+                Cancelar
+              </Button>
+              <Button type="submit" disabled={loading}>
+                {loading ? 'Creando...' : 'Crear examen'}
               </Button>
             </div>
-
-            {sections.map((section) => (
-              <Card key={section.id}>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-base">{section.title}</CardTitle>
-                    <div className="flex space-x-2">
-                      <Button type="button" variant="outline" size="sm" onClick={() => {}}>
-                        <Edit className="h-3 w-3" />
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => addQuestion(section.id)}
-                      >
-                        <Plus className="h-3 w-3" />
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => deleteSection(section.id)}
-                      >
-                        <Trash2 className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    {section.questions.map((question) => (
-                      <div
-                        key={question.id}
-                        className="flex items-center justify-between p-2 border rounded"
-                      >
-                        <div>
-                          <span className="font-medium">{question.question}</span>
-                          <Badge variant="secondary" className="ml-2">
-                            {question.type}
-                          </Badge>
-                          <Badge variant="outline" className="ml-1">
-                            {question.points} pts
-                          </Badge>
-                        </div>
-                        <div className="flex space-x-1">
-                          <Button type="button" variant="ghost" size="sm" onClick={() => {}}>
-                            <Edit className="h-3 w-3" />
-                          </Button>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => deleteQuestion(section.id, question.id)}
-                          >
-                            <Trash2 className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      </div>
-                    ))}
-                    {section.questions.length === 0 && (
-                      <p className="text-muted-foreground text-sm">No questions added yet</p>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <div className="flex justify-end space-x-2">
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancelar
-            </Button>
-            <Button type="submit" disabled={loading}>
-              {loading ? 'Creando...' : 'Crear examen'}
-            </Button>
-          </div>
-        </form>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   )

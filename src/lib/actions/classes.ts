@@ -1,7 +1,9 @@
 'use server'
 
 import { db } from '@/lib/db'
+import { CreateClassSchema, EditClassSchema } from '@/schemas/classes'
 import { revalidatePath } from 'next/cache'
+import * as z from 'zod'
 
 export interface ClassBookingWithDetails {
   id: string
@@ -73,7 +75,7 @@ export async function getAllClasses(filters?: ClassFilters): Promise<ClassBookin
     }
     if (filters?.periodId) {
       where.studentPeriod = {
-        periodId: filters.periodId
+        periodId: filters.periodId,
       }
     }
 
@@ -110,10 +112,7 @@ export async function getAllClasses(filters?: ClassFilters): Promise<ClassBookin
           },
         },
       },
-      orderBy: [
-        { day: 'desc' },
-        { timeSlot: 'asc' },
-      ],
+      orderBy: [{ day: 'desc' }, { timeSlot: 'asc' }],
     })
 
     return classes
@@ -167,25 +166,18 @@ export async function getClassById(id: string): Promise<ClassBookingWithDetails 
   }
 }
 
-export interface CreateClassData {
-  studentId: string
-  teacherId: string
-  day: string
-  timeSlot: string
-  notes?: string
-  studentPeriodId?: string
-  creditId?: string
-}
-
-export async function createClass(data: CreateClassData) {
+export async function createClass(data: z.infer<typeof CreateClassSchema>) {
   try {
+    // Validate input data
+    const validatedData = CreateClassSchema.parse(data)
+    
     // Check if the time slot is available for the teacher
     const existingBooking = await db.classBooking.findUnique({
       where: {
         teacherId_day_timeSlot: {
-          teacherId: data.teacherId,
-          day: data.day,
-          timeSlot: data.timeSlot,
+          teacherId: validatedData.teacherId,
+          day: validatedData.day,
+          timeSlot: validatedData.timeSlot,
         },
       },
     })
@@ -196,13 +188,13 @@ export async function createClass(data: CreateClassData) {
 
     const classBooking = await db.classBooking.create({
       data: {
-        studentId: data.studentId,
-        teacherId: data.teacherId,
-        day: data.day,
-        timeSlot: data.timeSlot,
-        notes: data.notes,
-        studentPeriodId: data.studentPeriodId,
-        creditId: data.creditId,
+        studentId: validatedData.studentId,
+        teacherId: validatedData.teacherId,
+        day: validatedData.day,
+        timeSlot: validatedData.timeSlot,
+        notes: validatedData.notes,
+        studentPeriodId: validatedData.studentPeriodId,
+        creditId: validatedData.creditId,
         status: 'CONFIRMED',
       },
     })
@@ -211,7 +203,15 @@ export async function createClass(data: CreateClassData) {
     return { success: true, class: classBooking }
   } catch (error) {
     console.error('Error creating class:', error)
-    return { success: false, error: 'Failed to create class' }
+    
+    if (error instanceof z.ZodError) {
+      return { 
+        success: false, 
+        error: error.errors.map(e => e.message).join(', ')
+      }
+    }
+    
+    return { success: false, error: 'Error al crear la clase' }
   }
 }
 
@@ -226,10 +226,13 @@ export interface UpdateClassData {
   completedAt?: Date
 }
 
-export async function updateClass(id: string, data: UpdateClassData) {
+export async function updateClass(id: string, data: z.infer<typeof EditClassSchema>) {
   try {
+    // Validate input data
+    const validatedData = EditClassSchema.parse(data)
+    
     // If updating teacher, day, or timeSlot, check availability
-    if (data.teacherId || data.day || data.timeSlot) {
+    if (validatedData.teacherId || validatedData.day || validatedData.timeSlot) {
       const currentClass = await db.classBooking.findUnique({
         where: { id },
         select: { teacherId: true, day: true, timeSlot: true },
@@ -239,15 +242,16 @@ export async function updateClass(id: string, data: UpdateClassData) {
         return { success: false, error: 'Class not found' }
       }
 
-      const newTeacherId = data.teacherId || currentClass.teacherId
-      const newDay = data.day || currentClass.day
-      const newTimeSlot = data.timeSlot || currentClass.timeSlot
+      const newTeacherId = validatedData.teacherId || currentClass.teacherId
+      const newDay = validatedData.day || currentClass.day
+      const newTimeSlot = validatedData.timeSlot || currentClass.timeSlot
 
       // Only check if we're actually changing the schedule
-      if (newTeacherId !== currentClass.teacherId || 
-          newDay !== currentClass.day || 
-          newTimeSlot !== currentClass.timeSlot) {
-        
+      if (
+        newTeacherId !== currentClass.teacherId ||
+        newDay !== currentClass.day ||
+        newTimeSlot !== currentClass.timeSlot
+      ) {
         const existingBooking = await db.classBooking.findFirst({
           where: {
             teacherId: newTeacherId,
@@ -258,20 +262,23 @@ export async function updateClass(id: string, data: UpdateClassData) {
         })
 
         if (existingBooking) {
-          return { success: false, error: 'El profesor ya tiene una clase programada en este horario' }
+          return {
+            success: false,
+            error: 'El profesor ya tiene una clase programada en este horario',
+          }
         }
       }
     }
 
     const updateData: Record<string, unknown> = {}
-    if (data.teacherId) updateData.teacherId = data.teacherId
-    if (data.day) updateData.day = data.day
-    if (data.timeSlot) updateData.timeSlot = data.timeSlot
-    if (data.status) updateData.status = data.status
-    if (data.notes !== undefined) updateData.notes = data.notes
-    if (data.studentPeriodId) updateData.studentPeriodId = data.studentPeriodId
-    if (data.creditId) updateData.creditId = data.creditId
-    if (data.completedAt) updateData.completedAt = data.completedAt
+    if (validatedData.teacherId) updateData.teacherId = validatedData.teacherId
+    if (validatedData.day) updateData.day = validatedData.day
+    if (validatedData.timeSlot) updateData.timeSlot = validatedData.timeSlot
+    if (validatedData.status) updateData.status = validatedData.status
+    if (validatedData.notes !== undefined) updateData.notes = validatedData.notes
+    if (validatedData.studentPeriodId) updateData.studentPeriodId = validatedData.studentPeriodId
+    if (validatedData.creditId) updateData.creditId = validatedData.creditId
+    if (validatedData.completedAt) updateData.completedAt = validatedData.completedAt
 
     const classBooking = await db.classBooking.update({
       where: { id },
@@ -282,7 +289,15 @@ export async function updateClass(id: string, data: UpdateClassData) {
     return { success: true, class: classBooking }
   } catch (error) {
     console.error('Error updating class:', error)
-    return { success: false, error: 'Failed to update class' }
+    
+    if (error instanceof z.ZodError) {
+      return { 
+        success: false, 
+        error: error.errors.map(e => e.message).join(', ')
+      }
+    }
+    
+    return { success: false, error: 'Error al actualizar la clase' }
   }
 }
 
@@ -369,7 +384,9 @@ export async function getAvailableTeachers(day: string, timeSlot: string) {
     // Get all teachers
     const allTeachers = await db.user.findMany({
       where: {
-        isTeacher: true,
+        roles: {
+          has: 'TEACHER',
+        },
         status: 'ACTIVE',
       },
       select: {
@@ -392,10 +409,10 @@ export async function getAvailableTeachers(day: string, timeSlot: string) {
       },
     })
 
-    const busyTeacherIds = new Set(busyTeachers.map(b => b.teacherId))
+    const busyTeacherIds = new Set(busyTeachers.map((b) => b.teacherId))
 
     // Filter out busy teachers
-    const availableTeachers = allTeachers.filter(teacher => !busyTeacherIds.has(teacher.id))
+    const availableTeachers = allTeachers.filter((teacher) => !busyTeacherIds.has(teacher.id))
 
     return availableTeachers
   } catch (error) {
@@ -459,11 +476,53 @@ export async function getStudentPeriods(studentId: string) {
   }
 }
 
+/**
+ * Obtiene o busca el StudentPeriod para un estudiante y período académico específico
+ */
+export async function getStudentPeriodByAcademicPeriod(
+  studentId: string,
+  academicPeriodId: string
+) {
+  try {
+    const studentPeriod = await db.studentPeriod.findFirst({
+      where: {
+        studentId,
+        periodId: academicPeriodId,
+      },
+      include: {
+        period: {
+          select: {
+            id: true,
+            name: true,
+            startDate: true,
+            endDate: true,
+            isActive: true,
+          },
+        },
+      },
+    })
+
+    if (!studentPeriod) {
+      return {
+        success: false,
+        error: 'El estudiante no está inscrito en el período académico de esta fecha',
+      }
+    }
+
+    return { success: true, studentPeriod }
+  } catch (error) {
+    console.error('Error fetching student period:', error)
+    return { success: false, error: 'Error al buscar la inscripción del estudiante' }
+  }
+}
+
 export async function getAllTeachers() {
   try {
     const teachers = await db.user.findMany({
       where: {
-        isTeacher: true,
+        roles: {
+          has: 'TEACHER',
+        },
         status: 'ACTIVE',
       },
       select: {
@@ -488,7 +547,9 @@ export async function getAllStudents() {
   try {
     const students = await db.user.findMany({
       where: {
-        isStudent: true,
+        roles: {
+          has: 'STUDENT',
+        },
         status: 'ACTIVE',
       },
       select: {
@@ -506,6 +567,58 @@ export async function getAllStudents() {
   } catch (error) {
     console.error('Error fetching students:', error)
     throw new Error('Failed to fetch students')
+  }
+}
+
+/**
+ * Obtiene solo los estudiantes que están inscritos en al menos un período académico
+ * Útil para programar clases, ya que solo estos estudiantes pueden tener clases
+ */
+export async function getStudentsWithPeriods() {
+  try {
+    const students = await db.user.findMany({
+      where: {
+        roles: {
+          has: 'STUDENT',
+        },
+        status: 'ACTIVE',
+        studentPeriods: {
+          some: {}, // Debe tener al menos un período inscrito
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        lastName: true,
+        email: true,
+        studentPeriods: {
+          select: {
+            id: true,
+            period: {
+              select: {
+                name: true,
+                startDate: true,
+                endDate: true,
+                isActive: true,
+              },
+            },
+          },
+          orderBy: {
+            period: {
+              startDate: 'desc',
+            },
+          },
+        },
+      },
+      orderBy: {
+        name: 'asc',
+      },
+    })
+
+    return students
+  } catch (error) {
+    console.error('Error fetching students with periods:', error)
+    throw new Error('Failed to fetch students with periods')
   }
 }
 

@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { VideoCall } from '@/components/classroom/video-call'
 import { ClassMaterials } from '@/components/classroom/class-materials'
 import { WhiteboardArea } from '@/components/classroom/whiteboard-area'
-import { ClassChat } from '@/components/classroom/class-chat'
+// import { ClassChat } from '@/components/classroom/class-chat'
 import { ClassNotes } from '@/components/classroom/class-notes'
 import { Button } from '@/components/ui/button'
 import { CheckCircle, Download, Video, LogIn } from 'lucide-react'
@@ -19,14 +19,16 @@ interface ClassroomLayoutProps {
   teacherId: string
   courseName: string
   lessonName: string
+  bookingId: string
 }
 
 export const ClassroomLayout: React.FC<ClassroomLayoutProps> = ({
   classId,
   studentId,
-  teacherId,
+  // teacherId, // Temporarily commented out with chat implementation
   courseName,
   lessonName,
+  bookingId,
 }) => {
   const [attendanceMarked, setAttendanceMarked] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -128,7 +130,7 @@ export const ClassroomLayout: React.FC<ClassroomLayoutProps> = ({
 
       <div className="grid grid-cols-3 gap-4 p-4 flex-grow">
         <div className="col-span-2">
-          <VideoCall classId={classId} studentId={studentId} teacherId={teacherId} />
+          <VideoCall bookingId={bookingId} />
         </div>
 
         <div className="col-span-1">
@@ -140,9 +142,9 @@ export const ClassroomLayout: React.FC<ClassroomLayoutProps> = ({
               <TabsTrigger value="whiteboard" className="flex-1">
                 Pizarra
               </TabsTrigger>
-              <TabsTrigger value="chat" className="flex-1">
+              {/* <TabsTrigger value="chat" className="flex-1">
                 Chat
-              </TabsTrigger>
+              </TabsTrigger> */}
               <TabsTrigger value="notes" className="flex-1">
                 Notas
               </TabsTrigger>
@@ -156,9 +158,9 @@ export const ClassroomLayout: React.FC<ClassroomLayoutProps> = ({
               <WhiteboardArea classId={classId} />
             </TabsContent>
 
-            <TabsContent value="chat" className="h-[calc(100vh-12rem)]">
+            {/* <TabsContent value="chat" className="h-[calc(100vh-12rem)]">
               <ClassChat classId={classId} studentId={studentId} teacherId={teacherId} />
-            </TabsContent>
+            </TabsContent> */}
 
             <TabsContent value="notes" className="h-[calc(100vh-12rem)]">
               <ClassNotes classId={classId} studentId={studentId} />

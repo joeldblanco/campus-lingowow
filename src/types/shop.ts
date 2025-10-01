@@ -1,3 +1,5 @@
+import { Prisma } from '@prisma/client'
+
 export enum ProductTypeEnum {
   COURSE = 'course',
   MERCHANDISE = 'merchandise',
@@ -6,13 +8,69 @@ export enum ProductTypeEnum {
 // Tipo para distinguir entre tipos de productos
 export type ProductType = (typeof ProductTypeEnum)[keyof typeof ProductTypeEnum]
 
-export type Plan = {
-  id: string
-  name: string
-  price: number
-  features: string[]
-}
+// Tipos base generados por Prisma
+export type Product = Prisma.ProductGetPayload<{
+  select: {
+    id: true
+    name: true
+    slug: true
+    description: true
+    shortDesc: true
+    price: true
+    comparePrice: true
+    sku: true
+    image: true
+    images: true
+    isActive: true
+    isDigital: true
+    stock: true
+    categoryId: true
+    requiresScheduling: true
+    courseId: true
+    maxScheduleSlots: true
+    scheduleDuration: true
+    createdAt: true
+    updatedAt: true
+  }
+}>
 
+export type ProductWithRelations = Prisma.ProductGetPayload<{
+  include: {
+    category: true
+    course: true
+    plans: true
+  }
+}>
+
+export type Plan = Prisma.PlanGetPayload<{
+  select: {
+    id: true
+    name: true
+    slug: true
+    description: true
+    price: true
+    comparePrice: true
+    duration: true
+    isActive: true
+    isPopular: true
+    sortOrder: true
+    productId: true
+    createdAt: true
+    updatedAt: true
+  }
+}>
+
+export type PlanWithFeatures = Prisma.PlanGetPayload<{
+  include: {
+    features: {
+      include: {
+        feature: true
+      }
+    }
+  }
+}>
+
+// Tipo legacy para Course (mantener compatibilidad con shop público)
 export type Course = {
   id: string
   title: string
@@ -21,22 +79,18 @@ export type Course = {
   language: string
   category: string
   image: string
-  plans: Plan[]
+  plans: (Plan & { features?: string[] })[] // Plans con features opcionales para compatibilidad
 }
 
-export type Product = {
-  id: string
-  title: string
-  description: string
-  category: string
-  image: string
-  plans: Plan[]
-  type: ProductType
-}
-
-// Mantenemos la estructura actual para CartItem
+// CartItem para el carrito de compras
+// Usa 'title' para compatibilidad con el shop público (Course legacy type)
 export type CartItem = {
-  product: Pick<Product, 'id' | 'title' | 'description' | 'type'>
+  product: {
+    id: string
+    title: string // Compatibilidad con Course legacy
+    description: string | null
+    type?: ProductType
+  }
   plan: Pick<Plan, 'id' | 'name' | 'price'>
   cartItemDescription?: string
   quantity?: number

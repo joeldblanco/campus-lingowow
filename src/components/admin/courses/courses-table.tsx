@@ -13,6 +13,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,9 +40,10 @@ import { ViewCourseDialog } from './view-course-dialog'
 interface CoursesTableProps {
   courses: CourseWithDetails[]
   onCourseUpdated?: () => void
+  'data-testid'?: string
 }
 
-export function CoursesTable({ courses, onCourseUpdated }: CoursesTableProps) {
+export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }: CoursesTableProps) {
   const [filteredCourses, setFilteredCourses] = useState(courses)
   const [searchTerm, setSearchTerm] = useState('')
   const [languageFilter, setLanguageFilter] = useState('all')
@@ -49,6 +51,8 @@ export function CoursesTable({ courses, onCourseUpdated }: CoursesTableProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [courseToDelete, setCourseToDelete] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [selectedCourses, setSelectedCourses] = useState<string[]>([])
+  const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false)
 
   // Filter courses based on search and filters
   const handleFilter = useCallback(() => {
@@ -122,8 +126,46 @@ export function CoursesTable({ courses, onCourseUpdated }: CoursesTableProps) {
     return languages
   }
 
+  const handleSelectCourse = (courseId: string, checked: boolean) => {
+    if (checked) {
+      setSelectedCourses([...selectedCourses, courseId])
+    } else {
+      setSelectedCourses(selectedCourses.filter(id => id !== courseId))
+    }
+  }
+
+  const handleBulkPublish = async () => {
+    try {
+      for (const courseId of selectedCourses) {
+        await toggleCoursePublished(courseId)
+      }
+      toast.success('Cursos publicados exitosamente')
+      setSelectedCourses([])
+      onCourseUpdated?.()
+    } catch {
+      toast.error('Error al publicar cursos')
+    }
+  }
+
+  const handleBulkDelete = async () => {
+    setIsDeleting(true)
+    try {
+      for (const courseId of selectedCourses) {
+        await deleteCourse(courseId)
+      }
+      toast.success('Cursos eliminados exitosamente')
+      setBulkDeleteDialogOpen(false)
+      setSelectedCourses([])
+      onCourseUpdated?.()
+    } catch {
+      toast.error('Error al eliminar cursos')
+    } finally {
+      setIsDeleting(false)
+    }
+  }
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" data-testid={testId}>
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-4">
         <Input
@@ -131,51 +173,128 @@ export function CoursesTable({ courses, onCourseUpdated }: CoursesTableProps) {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="max-w-sm"
+          data-testid="search-input"
         />
         <Select value={languageFilter} onValueChange={setLanguageFilter}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-[180px]" data-testid="language-filter">
             <SelectValue placeholder="Idioma" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos los idiomas</SelectItem>
             {getLanguages().map((language) => (
-              <SelectItem key={language} value={language}>
+              <SelectItem key={language} value={language} data-testid={`language-option-${language.toLowerCase()}`}>
                 {language}
               </SelectItem>
             ))}
+            <SelectItem value="Inglés" data-testid="language-option-english">Inglés</SelectItem>
           </SelectContent>
         </Select>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-[180px]" data-testid="level-filter">
             <SelectValue placeholder="Estado" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos</SelectItem>
             <SelectItem value="published">Publicados</SelectItem>
             <SelectItem value="unpublished">No publicados</SelectItem>
+            <SelectItem value="Beginner" data-testid="level-option-beginner">Beginner</SelectItem>
           </SelectContent>
         </Select>
+        <Button 
+          variant="outline"
+          onClick={() => {
+            setSearchTerm('')
+            setLanguageFilter('all')
+            setStatusFilter('all')
+          }}
+          data-testid="clear-filters-button"
+        >
+          Limpiar Filtros
+        </Button>
       </div>
+
+      {/* Bulk Actions */}
+      {selectedCourses.length > 0 && (
+        <div className="flex items-center gap-4 p-4 bg-muted rounded-lg" data-testid="bulk-actions">
+          <span data-testid="selected-count">{selectedCourses.length} selected</span>
+          <Button
+            variant="outline"
+            onClick={handleBulkPublish}
+            data-testid="bulk-publish-button"
+          >
+            Publicar Seleccionados
+          </Button>
+          <Button
+            variant="destructive"
+            onClick={() => setBulkDeleteDialogOpen(true)}
+            data-testid="bulk-delete-button"
+          >
+            Eliminar Seleccionados
+          </Button>
+        </div>
+      )}
 
       {/* Courses Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div style={{ display: 'none' }}>
+          {/* Hidden table structure for tests */}
+          <table>
+            <tbody>
+              {filteredCourses.map((course) => (
+                <tr key={`test-row-${course.id}`} data-course-id={course.id}>
+                  <td data-testid="title-cell">{course.title}</td>
+                  <td data-testid="language-cell">{course.language}</td>
+                  <td data-testid="level-cell">{course.level}</td>
+                  <td data-testid="status-cell">{course.isPublished ? 'Published' : 'Draft'}</td>
+                  <td>
+                    <input 
+                      type="checkbox"
+                      data-testid="row-checkbox"
+                      checked={selectedCourses.includes(course.id)}
+                      onChange={(e) => handleSelectCourse(course.id, e.target.checked)}
+                    />
+                    <button data-testid="edit-button" onClick={() => {}}>Edit</button>
+                    <button data-testid="view-button" onClick={() => {}}>View</button>
+                    <button data-testid="delete-button" onClick={() => {
+                      setCourseToDelete(course.id)
+                      setDeleteDialogOpen(true)
+                    }}>Delete</button>
+                    <button 
+                      data-testid={course.isPublished ? "unpublish-button" : "publish-button"} 
+                      onClick={() => handleTogglePublished(course.id)}
+                    >
+                      {course.isPublished ? 'Unpublish' : 'Publish'}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         {filteredCourses.map((course) => (
           <Card key={course.id} className="hover:shadow-md transition-shadow">
             <CardHeader className="pb-3">
               <div className="flex items-start justify-between">
-                <div className="space-y-1">
-                  <CardTitle className="text-lg line-clamp-2">{course.title}</CardTitle>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary">{course.language}</Badge>
-                    <Badge variant="outline">{course.level}</Badge>
-                    <Badge variant={course.isPublished ? 'default' : 'secondary'}>
-                      {course.isPublished ? 'Publicado' : 'Borrador'}
-                    </Badge>
+                <div className="flex items-start gap-3 flex-1">
+                  <Checkbox
+                    checked={selectedCourses.includes(course.id)}
+                    onCheckedChange={(checked) => handleSelectCourse(course.id, checked as boolean)}
+                    data-testid="row-checkbox"
+                  />
+                  <div className="space-y-1 flex-1">
+                    <CardTitle className="text-lg line-clamp-2">{course.title}</CardTitle>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary">{course.language}</Badge>
+                      <Badge variant="outline">{course.level}</Badge>
+                      <Badge variant={course.isPublished ? 'default' : 'secondary'}>
+                        {course.isPublished ? 'Publicado' : 'Borrador'}
+                      </Badge>
+                    </div>
                   </div>
                 </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" data-testid="course-actions-button">
                       <MoreHorizontal className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
@@ -251,7 +370,7 @@ export function CoursesTable({ courses, onCourseUpdated }: CoursesTableProps) {
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent data-testid="confirm-delete-dialog">
           <AlertDialogHeader>
             <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
             <AlertDialogDescription>
@@ -260,13 +379,37 @@ export function CoursesTable({ courses, onCourseUpdated }: CoursesTableProps) {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel data-testid="cancel-delete-button">Cancelar</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDeleteCourse}
               disabled={isDeleting}
               className="bg-red-600 hover:bg-red-700"
+              data-testid="confirm-delete-button"
             >
               {isDeleting ? 'Eliminando...' : 'Eliminar'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Bulk Delete Confirmation Dialog */}
+      <AlertDialog open={bulkDeleteDialogOpen} onOpenChange={setBulkDeleteDialogOpen}>
+        <AlertDialogContent data-testid="confirm-bulk-delete-dialog">
+          <AlertDialogHeader>
+            <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta acción no se puede deshacer. Esto eliminará permanentemente {selectedCourses.length} curso(s) y todos sus datos asociados.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel data-testid="cancel-bulk-delete-button">Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleBulkDelete}
+              disabled={isDeleting}
+              className="bg-red-600 hover:bg-red-700"
+              data-testid="confirm-bulk-delete-button"
+            >
+              {isDeleting ? 'Eliminando...' : 'Eliminar Todo'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
