@@ -3,8 +3,8 @@
 import { MobileFilterSheet } from '@/components/filters/mobile-filter-sheet'
 import { CartSheet } from '@/components/shop/cart/cart-sheet'
 import { Button } from '@/components/ui/button'
-import { Languages } from 'lucide-react'
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -17,8 +17,16 @@ const Header = () => {
       <div className="container flex h-16 items-center justify-between py-4">
         <div className="flex items-center gap-2">
           {isShopRoute && <MobileFilterSheet />}
-          <Languages className="h-6 w-6" />
-          <span className="text-xl font-bold">Lingowow</span>
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              src="/branding/logo.png"
+              alt="Lingowow"
+              width={32}
+              height={32}
+              className="h-8 w-8 rounded-lg"
+            />
+            <span className="text-xl font-bold">Lingowow</span>
+          </Link>
         </div>
         <nav className="hidden md:flex items-center gap-6">
           <Link href="/" className="text-sm font-medium hover:underline">

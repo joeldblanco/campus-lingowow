@@ -9,7 +9,7 @@ const CompanySidebarHeader = () => {
           <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
             <div className="flex items-center text-left text-sm">
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={'/media/images/lingowow-logo.png'} alt={'Lingowow'} />
+                <AvatarImage src={'/branding/logo.png'} alt={'Lingowow'} />
                 <AvatarFallback className="rounded-lg">LW</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">

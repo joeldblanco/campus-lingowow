@@ -15,6 +15,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Lingowow',
   description: 'Go wow with us!',
+  icons: {
+    icon: '/branding/lw_logo_favicon.ico',
+    shortcut: '/branding/lw_logo_favicon.ico',
+    apple: '/branding/logo.png',
+  },
 }
 
 export default function RootLayout({

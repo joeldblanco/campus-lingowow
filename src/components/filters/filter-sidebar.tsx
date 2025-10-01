@@ -7,27 +7,27 @@ export function FilterSidebar() {
   return (
     <div className="space-y-6">
       <FilterSection
-        title="Level"
+        title="Nivel"
         icon="graduation-cap"
-        options={['Beginner', 'Intermediate', 'Advanced']}
+        options={['Principiante', 'Intermedio', 'Avanzado']}
         type="levels"
       />
 
       <Separator />
 
       <FilterSection
-        title="Language"
+        title="Idioma"
         icon="globe"
-        options={['Spanish', 'French', 'German', 'Japanese', 'Chinese', 'Italian']}
+        options={['Español', 'Francés', 'Alemán', 'Japonés', 'Chino', 'Italiano']}
         type="languages"
       />
 
       <Separator />
 
       <FilterSection
-        title="Category"
+        title="Categoría"
         icon="book"
-        options={['Language', 'Business', 'Travel', 'Academic']}
+        options={['Idiomas', 'Negocios', 'Viajes', 'Académico']}
         type="categories"
       />
     </div>

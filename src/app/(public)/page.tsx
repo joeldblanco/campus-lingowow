@@ -326,25 +326,34 @@ export default function LandingPage() {
                 Lo Que Dicen Nuestros Estudiantes
               </h2>
               <p className="text-muted-foreground max-w-[700px]">
-                Miles de estudiantes han alcanzado la fluidez con nuestro método.
+                Calificación de 4.9 estrellas en Google con más de 38 opiniones reales de nuestros estudiantes.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
                 {
-                  name: 'Carlos Mendoza',
-                  course: 'Inglés Avanzado',
-                  text: 'En seis meses pasé de un nivel básico a poder mantener conversaciones fluidas en mi trabajo. El enfoque práctico hace toda la diferencia.',
+                  name: 'Cristian Villamizar',
+                  text: 'Si quieres aprender inglés de forma personalizada no dudes en que Lingowow es la mejor opción… mi progreso con ellos ha sido inigualable y los recomiendo con toda confianza!',
                 },
                 {
-                  name: 'Ana Martínez',
-                  course: 'Francés Intermedio',
-                  text: 'Los profesores expertos y las clases personalizadas hicieron que me enamorara del idioma. Ahora puedo ver películas sin subtítulos.',
+                  name: 'Mari Carmen Rico',
+                  text: 'Son súper profesionales!!! Son profesores titulados en Lenguas Extranjeras!! Atención 100% personalizada, es una Escuela en línea, que lo hace muy accesible para cualquier parte del mundo que te encuentres, estoy simplemente fascinada.',
                 },
                 {
-                  name: 'Roberto Sánchez',
-                  course: 'Alemán Básico',
-                  text: 'Empecé desde cero y en poco tiempo ya podía comunicarme en situaciones cotidianas. La metodología es muy efectiva y amena.',
+                  name: 'Mariana Hernandez',
+                  text: 'Cuando estás aprendiendo un nuevo idioma no hay nada más importante que un sistema de enseñanza dinámico, entretenido y que te rete a exponerte. Tener un profesor particular que conoce cuál es tu nivel y cuáles son tus objetivos es invaluable.',
+                },
+                {
+                  name: 'Cristina Castillo',
+                  text: 'Excelente servicio, son profesionales cada clase es un completo aprendizaje, lo recomiendo completamente, si estás pensando aprender un idioma no dudes que esta es la mejor opción.',
+                },
+                {
+                  name: 'Eme Savedra',
+                  text: 'Excelente academia, profesionales y dedicados con sus estudiantes. Atención personalizada, siempre guiándonos para lograr nuestra meta de aprender un nuevo idioma.',
+                },
+                {
+                  name: 'Mónica Pereira',
+                  text: 'El profesor es excelente, divertido y muy comprometido. Lo recomiendo ampliamente.',
                 },
               ].map((testimonial, i) => (
                 <Card key={i} className="relative">
@@ -355,13 +364,23 @@ export default function LandingPage() {
                       ))}
                     </div>
                     <CardTitle className="text-lg">{testimonial.name}</CardTitle>
-                    <CardDescription>{testimonial.course}</CardDescription>
+                    <CardDescription>Reseña de Google</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p>&quot;{testimonial.text}&quot;</p>
+                    <p className="text-sm">&quot;{testimonial.text}&quot;</p>
                   </CardContent>
                 </Card>
               ))}
+            </div>
+            <div className="flex justify-center mt-8">
+              <a 
+                href="https://www.google.com/maps/place/Lingowow/@-12.0015217,-77.1199284,17z/data=!4m8!3m7!1s0x9105cd90a8800b7d:0xceb4d33979f426ad!8m2!3d-12.0015217!4d-77.1173535!9m1!1b1!16s%2Fg%2F11j2wlfzw8" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-primary hover:underline font-medium"
+              >
+                Ver todas las opiniones en Google →
+              </a>
             </div>
           </div>
         </section>
@@ -618,7 +637,7 @@ export default function LandingPage() {
                             <FormItem>
                               <FormLabel>Teléfono</FormLabel>
                               <FormControl>
-                                <Input type="tel" placeholder="+34 600 00 00 00" {...field} />
+                                <Input type="tel" placeholder="+51 000 000 000" {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
