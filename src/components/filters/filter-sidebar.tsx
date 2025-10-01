@@ -18,7 +18,7 @@ export function FilterSidebar() {
       <FilterSection
         title="Idioma"
         icon="globe"
-        options={['Español', 'Francés', 'Alemán', 'Japonés', 'Chino', 'Italiano']}
+        options={['Inglés', 'Español']}
         type="languages"
       />
 

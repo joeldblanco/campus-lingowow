@@ -85,7 +85,7 @@ export default function LandingPage() {
           <div className="container px-4 md:px-6 flex flex-col md:flex-row items-center gap-8">
             <div className="flex flex-col gap-4 md:w-1/2">
               <Badge className="w-fit" variant="outline">
-                ¡Nuevo! Cursos de Japonés y Coreano
+                ¡Aprende Inglés y Español con expertos!
               </Badge>
               <h1 className="text-3xl md:text-5xl font-bold tracking-tight">
                 Domina cualquier idioma con instructores expertos
@@ -156,44 +156,58 @@ export default function LandingPage() {
               </TabsList>
               <TabsContent value="populares" className="mt-6">
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {['Inglés', 'Español', 'Francés', 'Alemán', 'Italiano', 'Portugués'].map(
-                    (idioma) => (
-                      <Card key={idioma}>
-                        <CardHeader className="p-4">
-                          <CardTitle className="text-lg">{idioma}</CardTitle>
-                        </CardHeader>
-                        <CardFooter className="p-4 pt-0 flex justify-between">
-                          <Badge variant="outline">Todos los niveles</Badge>
+                  {[
+                    { name: 'Inglés', available: true },
+                    { name: 'Español', available: true },
+                    { name: 'Francés', available: false },
+                    { name: 'Alemán', available: false },
+                    { name: 'Italiano', available: false },
+                    { name: 'Portugués', available: false },
+                  ].map((idioma) => (
+                    <Card key={idioma.name} className={!idioma.available ? 'opacity-60' : ''}>
+                      <CardHeader className="p-4">
+                        <CardTitle className="text-lg">{idioma.name}</CardTitle>
+                      </CardHeader>
+                      <CardFooter className="p-4 pt-0 flex justify-between">
+                        <Badge variant="outline">
+                          {idioma.available ? 'Todos los niveles' : 'Próximamente'}
+                        </Badge>
+                        {idioma.available && (
                           <Button variant="ghost" size="sm">
                             Ver más
                           </Button>
-                        </CardFooter>
-                      </Card>
-                    )
-                  )}
+                        )}
+                      </CardFooter>
+                    </Card>
+                  ))}
                 </div>
               </TabsContent>
               <TabsContent value="europeos" className="mt-6">
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {[
-                    'Inglés',
-                    'Francés',
-                    'Alemán',
-                    'Italiano',
-                    'Portugués',
-                    'Ruso',
-                    'Sueco',
-                    'Holandés',
+                    { name: 'Inglés', available: true },
+                    { name: 'Español', available: true },
+                    { name: 'Francés', available: false },
+                    { name: 'Alemán', available: false },
+                    { name: 'Italiano', available: false },
+                    { name: 'Portugués', available: false },
+                    { name: 'Ruso', available: false },
+                    { name: 'Sueco', available: false },
+                    { name: 'Holandés', available: false },
                   ].map((idioma) => (
-                    <Card key={idioma}>
+                    <Card key={idioma.name} className={!idioma.available ? 'opacity-60' : ''}>
                       <CardHeader className="p-4">
-                        <CardTitle className="text-lg">{idioma}</CardTitle>
+                        <CardTitle className="text-lg">{idioma.name}</CardTitle>
                       </CardHeader>
                       <CardFooter className="p-4 pt-0 flex justify-between">
-                        <Badge variant="outline">Todos los niveles</Badge>
-                        <Button variant="ghost" size="sm">
-                          Ver más
-                        </Button>
+                        <Badge variant="outline">
+                          {idioma.available ? 'Todos los niveles' : 'Próximamente'}
+                        </Badge>
+                        {idioma.available && (
+                          <Button variant="ghost" size="sm">
+                            Ver más
+                          </Button>
+                        )}
                       </CardFooter>
                     </Card>
                   ))}
@@ -201,21 +215,23 @@ export default function LandingPage() {
               </TabsContent>
               <TabsContent value="asiaticos" className="mt-6">
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {['Chino Mandarín', 'Japonés', 'Coreano', 'Árabe', 'Hindi', 'Tailandés'].map(
-                    (idioma) => (
-                      <Card key={idioma}>
-                        <CardHeader className="p-4">
-                          <CardTitle className="text-lg">{idioma}</CardTitle>
-                        </CardHeader>
-                        <CardFooter className="p-4 pt-0 flex justify-between">
-                          <Badge variant="outline">Todos los niveles</Badge>
-                          <Button variant="ghost" size="sm">
-                            Ver más
-                          </Button>
-                        </CardFooter>
-                      </Card>
-                    )
-                  )}
+                  {[
+                    { name: 'Chino Mandarín', available: false },
+                    { name: 'Japonés', available: false },
+                    { name: 'Coreano', available: false },
+                    { name: 'Árabe', available: false },
+                    { name: 'Hindi', available: false },
+                    { name: 'Tailandés', available: false },
+                  ].map((idioma) => (
+                    <Card key={idioma.name} className="opacity-60">
+                      <CardHeader className="p-4">
+                        <CardTitle className="text-lg">{idioma.name}</CardTitle>
+                      </CardHeader>
+                      <CardFooter className="p-4 pt-0 flex justify-between">
+                        <Badge variant="outline">Próximamente</Badge>
+                      </CardFooter>
+                    </Card>
+                  ))}
                 </div>
               </TabsContent>
             </Tabs>
@@ -292,8 +308,6 @@ export default function LandingPage() {
               {[
                 { name: 'María García', language: 'Español', img: '/api/placeholder/200/200' },
                 { name: 'John Smith', language: 'Inglés', img: '/api/placeholder/200/200' },
-                { name: 'Sophie Dubois', language: 'Francés', img: '/api/placeholder/200/200' },
-                { name: 'Hiroshi Tanaka', language: 'Japonés', img: '/api/placeholder/200/200' },
               ].map((teacher) => (
                 <Card key={teacher.name} className="overflow-hidden">
                   <div className="aspect-square overflow-hidden">
@@ -658,12 +672,13 @@ export default function LandingPage() {
                                 </FormControl>
                                 <SelectContent>
                                   <SelectItem value="english">Inglés</SelectItem>
-                                  <SelectItem value="french">Francés</SelectItem>
-                                  <SelectItem value="german">Alemán</SelectItem>
-                                  <SelectItem value="italian">Italiano</SelectItem>
-                                  <SelectItem value="portuguese">Portugués</SelectItem>
-                                  <SelectItem value="chinese">Chino Mandarín</SelectItem>
-                                  <SelectItem value="japanese">Japonés</SelectItem>
+                                  <SelectItem value="spanish">Español</SelectItem>
+                                  <SelectItem value="french" disabled>Francés (Próximamente)</SelectItem>
+                                  <SelectItem value="german" disabled>Alemán (Próximamente)</SelectItem>
+                                  <SelectItem value="italian" disabled>Italiano (Próximamente)</SelectItem>
+                                  <SelectItem value="portuguese" disabled>Portugués (Próximamente)</SelectItem>
+                                  <SelectItem value="chinese" disabled>Chino Mandarín (Próximamente)</SelectItem>
+                                  <SelectItem value="japanese" disabled>Japonés (Próximamente)</SelectItem>
                                 </SelectContent>
                               </Select>
                               <FormMessage />

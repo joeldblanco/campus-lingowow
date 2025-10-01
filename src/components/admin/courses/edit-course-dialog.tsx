@@ -134,10 +134,10 @@ export function EditCourseDialog({ course, children, onCourseUpdated }: EditCour
                       <SelectContent>
                         <SelectItem value="Inglés">Inglés</SelectItem>
                         <SelectItem value="Español">Español</SelectItem>
-                        <SelectItem value="Francés">Francés</SelectItem>
-                        <SelectItem value="Alemán">Alemán</SelectItem>
-                        <SelectItem value="Italiano">Italiano</SelectItem>
-                        <SelectItem value="Portugués">Portugués</SelectItem>
+                        <SelectItem value="Francés" disabled>Francés (Próximamente)</SelectItem>
+                        <SelectItem value="Alemán" disabled>Alemán (Próximamente)</SelectItem>
+                        <SelectItem value="Italiano" disabled>Italiano (Próximamente)</SelectItem>
+                        <SelectItem value="Portugués" disabled>Portugués (Próximamente)</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

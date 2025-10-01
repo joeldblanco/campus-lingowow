@@ -249,7 +249,7 @@ export default async function BlogPostDetail({ params }: { params: Promise<{ id:
                 ¿Quieres aprender idiomas como un experto?
               </h2>
               <p className="text-primary-foreground/80 text-lg">
-                Aplica las técnicas de este artículo con la guía de nuestros profesores nativos.
+                Aplica las técnicas de este artículo con la guía de nuestros profesores expertos.
                 Primera clase gratis sin compromiso.
               </p>
               <Button variant="secondary" size="lg" className="mt-4">

@@ -56,7 +56,7 @@ const blogPosts = [
       'La música no es solo entretenimiento, es una poderosa herramienta para memorizar vocabulario y mejorar la pronunciación.',
     category: 'Recursos',
     author: 'John Smith',
-    authorRole: 'Profesor de Francés',
+    authorRole: 'Profesor de Inglés',
     date: '10 Mar 2025',
     readTime: '6 min',
     image: '/api/placeholder/800/450',
@@ -69,8 +69,8 @@ const blogPosts = [
     excerpt:
       'Analizamos en profundidad cómo funciona el método de inmersión y si realmente es tan efectivo como dicen.',
     category: 'Metodologías',
-    author: 'Hiroshi Tanaka',
-    authorRole: 'Profesor de Japonés',
+    author: 'Ana Martínez',
+    authorRole: 'Coordinadora académica',
     date: '5 Mar 2025',
     readTime: '10 min',
     image: '/api/placeholder/800/450',
@@ -93,17 +93,17 @@ const blogPosts = [
   },
   {
     id: 5,
-    title: 'Los errores más comunes al aprender alemán y cómo evitarlos',
+    title: 'Los errores más comunes al aprender inglés y cómo evitarlos',
     excerpt:
-      'El alemán tiene fama de ser un idioma difícil, pero conociendo estos errores frecuentes podrás avanzar más rápido.',
+      'Conociendo estos errores frecuentes al aprender inglés podrás avanzar más rápido y mejorar tu fluidez.',
     category: 'Errores Comunes',
-    author: 'Klaus Mueller',
-    authorRole: 'Profesor de Alemán',
+    author: 'John Smith',
+    authorRole: 'Profesor de Inglés',
     date: '25 Feb 2025',
     readTime: '9 min',
     image: '/api/placeholder/800/450',
     featured: false,
-    tags: ['alemán', 'errores', 'gramática'],
+    tags: ['inglés', 'errores', 'gramática'],
   },
   {
     id: 6,
@@ -471,7 +471,7 @@ export default function BlogPage() {
                   ¿Listo para llevar tu aprendizaje al siguiente nivel?
                 </h2>
                 <p className="text-primary-foreground/80 max-w-[600px]">
-                  Descubre nuestros cursos con profesores nativos y metodología probada. Primera
+                  Descubre nuestros cursos con profesores expertos y metodología probada. Primera
                   clase gratis.
                 </p>
               </div>

@@ -135,28 +135,28 @@ const Footer = () => {
               </li>
               <li>
                 <a href="#" className="text-muted-foreground hover:text-foreground">
-                  Francés
+                  Español
                 </a>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground">
-                  Alemán
-                </a>
+                <span className="text-muted-foreground/50">
+                  Francés (Próximamente)
+                </span>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground">
-                  Italiano
-                </a>
+                <span className="text-muted-foreground/50">
+                  Alemán (Próximamente)
+                </span>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground">
-                  Japonés
-                </a>
+                <span className="text-muted-foreground/50">
+                  Italiano (Próximamente)
+                </span>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground">
-                  Ver todos
-                </a>
+                <span className="text-muted-foreground/50">
+                  Japonés (Próximamente)
+                </span>
               </li>
             </ul>
           </div>
@@ -214,7 +214,7 @@ const Footer = () => {
                   <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
                   <circle cx="12" cy="10" r="3"></circle>
                 </svg>
-                <span className="text-muted-foreground">Calle Gran Vía 28, Madrid</span>
+                <span className="text-muted-foreground">Callao, Perú</span>
               </li>
             </ul>
           </div>
