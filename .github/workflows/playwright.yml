@@ -1,10 +1,13 @@
 name: Playwright Tests
 
+# WORKFLOW TEMPORALMENTE DESACTIVADO
+# Para reactivar, descomenta las líneas de 'on:' abajo
 on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
+  workflow_dispatch:  # Solo ejecución manual
+  # push:
+  #   branches: [ main, develop ]
+  # pull_request:
+  #   branches: [ main, develop ]
 
 jobs:
   test:

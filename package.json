@@ -23,7 +23,8 @@
     "test:ecommerce": "playwright test tests/ecommerce/",
     "test:api": "playwright test tests/api/",
     "test:report": "playwright show-report",
-    "test:install": "playwright install"
+    "test:install": "playwright install",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.8.0",
