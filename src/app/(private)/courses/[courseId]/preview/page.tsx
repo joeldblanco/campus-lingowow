@@ -6,14 +6,15 @@ import { CourseLoadingSkeleton } from '@/components/courses/course-loading-skele
 import { notFound } from 'next/navigation'
 
 interface CoursePreviewPageProps {
-  params: {
+  params: Promise<{
     courseId: string
-  }
+  }>
 }
 
 export default async function CoursePreviewPage({ params }: CoursePreviewPageProps) {
+  const { courseId } = await params
   const session = await auth()
-  const course = await getCourseForPublicView(params.courseId, session?.user?.id)
+  const course = await getCourseForPublicView(courseId, session?.user?.id)
 
   if (!course) {
     notFound()

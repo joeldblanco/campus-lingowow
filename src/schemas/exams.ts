@@ -47,10 +47,10 @@ export const ExamQuestionSchema = z.object({
   maxLength: z.number().optional(),
   // Audio configuration for listening exercises
   audioUrl: z.string().url('URL de audio inválida').optional().or(z.literal('')),
-  audioPosition: AudioPositionEnum.default('BEFORE_QUESTION'),
+  audioPosition: AudioPositionEnum.optional(),
   maxAudioPlays: z.number().min(1, 'Mínimo 1 reproducción').optional(),
-  audioAutoplay: z.boolean().default(false),
-  audioPausable: z.boolean().default(false)
+  audioAutoplay: z.boolean().optional(),
+  audioPausable: z.boolean().optional()
 })
 
 // Schema para secciones de examen

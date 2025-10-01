@@ -1,6 +1,5 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -20,8 +19,6 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Switch } from '@/components/ui/switch'
 import {
   Select,
   SelectContent,
@@ -29,11 +26,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { updateModule, getAllCourses } from '@/lib/actions/modules'
-import { toast } from 'sonner'
+import { Textarea } from '@/components/ui/textarea'
+import { updateModule } from '@/lib/actions/modules'
 import { EditModuleSchema } from '@/schemas/modules'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import * as z from 'zod'
 
 interface ModuleData {
@@ -56,12 +55,6 @@ type FormData = z.infer<typeof EditModuleSchema>
 
 export function EditModuleDialog({ children, module, onModuleUpdated }: EditModuleDialogProps) {
   const [open, setOpen] = useState(false)
-  const [courses, setCourses] = useState<
-    Array<{
-      id: string
-      title: string
-    }>
-  >([])
   
   const form = useForm<FormData>({
     resolver: zodResolver(EditModuleSchema),
@@ -73,22 +66,6 @@ export function EditModuleDialog({ children, module, onModuleUpdated }: EditModu
       objectives: '',
     },
   })
-
-  useEffect(() => {
-    const loadCourses = async () => {
-      try {
-        const coursesData = await getAllCourses()
-        setCourses(coursesData)
-      } catch (error) {
-        console.error('Error loading courses:', error)
-        toast.error('Error al cargar los cursos')
-      }
-    }
-
-    if (open) {
-      loadCourses()
-    }
-  }, [open])
 
   // Reset form values when module changes
   useEffect(() => {

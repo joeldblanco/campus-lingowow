@@ -6,12 +6,12 @@ import { db } from '@/lib/db'
 import { Loader2 } from 'lucide-react'
 
 interface MeetingPageProps {
-  params: {
+  params: Promise<{
     roomName: string
-  }
-  searchParams: {
+  }>
+  searchParams: Promise<{
     bookingId?: string
-  }
+  }>
 }
 
 async function MeetingContent({ params, searchParams }: MeetingPageProps) {
@@ -21,8 +21,8 @@ async function MeetingContent({ params, searchParams }: MeetingPageProps) {
     redirect('/signin')
   }
 
-  const { roomName } = params
-  const { bookingId } = searchParams
+  const { roomName } = await params
+  const { bookingId } = await searchParams
 
   // Verificar permisos si hay bookingId
   if (bookingId) {

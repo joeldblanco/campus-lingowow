@@ -6,14 +6,15 @@ import { CourseLoadingSkeleton } from '@/components/courses/course-loading-skele
 import { notFound, redirect } from 'next/navigation'
 
 interface CoursePageProps {
-  params: {
+  params: Promise<{
     courseId: string
-  }
+  }>
 }
 
 export default async function CoursePage({ params }: CoursePageProps) {
+  const { courseId } = await params
   const session = await auth()
-  const course = await getCourseForPublicView(params.courseId, session?.user?.id)
+  const course = await getCourseForPublicView(courseId, session?.user?.id)
 
   if (!course) {
     notFound()
@@ -21,12 +22,12 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
   // If user is not enrolled, redirect to preview
   if (!course.isEnrolled) {
-    redirect(`/courses/${params.courseId}/preview`)
+    redirect(`/courses/${courseId}/preview`)
   }
 
   // Get course progress for enrolled students
   const progress = session?.user?.id 
-    ? await getCourseProgress(params.courseId, session.user.id)
+    ? await getCourseProgress(courseId, session.user.id)
     : null
 
   return (
