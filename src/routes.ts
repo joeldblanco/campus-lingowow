@@ -6,6 +6,18 @@ export const publicRoutes = [
   '/blog',
   '/blog/*',
   '/demo',
+  '/cursos',
+  '/metodo',
+  '/contacto',
+  '/faq',
+  '/precios',
+  '/recursos',
+  '/recursos/*',
+  '/terminos',
+  '/privacidad',
+  '/cookies',
+  '/checkout',
+  '/checkout/*',
 ]
 
 export const authRoutes = [

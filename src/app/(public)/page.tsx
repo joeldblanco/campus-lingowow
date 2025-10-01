@@ -37,6 +37,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Check, GraduationCap, MessageCircle, Star, Users } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -95,12 +96,16 @@ export default function LandingPage() {
                 manera efectiva y divertida.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mt-4">
-                <Button size="lg" className="w-full sm:w-auto">
-                  Comienza Ahora
-                </Button>
-                <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                  Conoce Nuestros Métodos
-                </Button>
+                <Link href="/demo">
+                  <Button size="lg" className="w-full sm:w-auto">
+                    Comienza Ahora
+                  </Button>
+                </Link>
+                <Link href="/metodo">
+                  <Button size="lg" variant="outline" className="w-full sm:w-auto">
+                    Conoce Nuestros Métodos
+                  </Button>
+                </Link>
               </div>
               <div className="flex items-center gap-2 mt-4">
                 <div className="flex -space-x-2">
@@ -173,9 +178,11 @@ export default function LandingPage() {
                           {idioma.available ? 'Todos los niveles' : 'Próximamente'}
                         </Badge>
                         {idioma.available && (
-                          <Button variant="ghost" size="sm">
-                            Ver más
-                          </Button>
+                          <Link href="/cursos">
+                            <Button variant="ghost" size="sm">
+                              Ver más
+                            </Button>
+                          </Link>
                         )}
                       </CardFooter>
                     </Card>
@@ -204,9 +211,11 @@ export default function LandingPage() {
                           {idioma.available ? 'Todos los niveles' : 'Próximamente'}
                         </Badge>
                         {idioma.available && (
-                          <Button variant="ghost" size="sm">
-                            Ver más
-                          </Button>
+                          <Link href="/cursos">
+                            <Button variant="ghost" size="sm">
+                              Ver más
+                            </Button>
+                          </Link>
                         )}
                       </CardFooter>
                     </Card>
@@ -327,7 +336,9 @@ export default function LandingPage() {
               ))}
             </div>
             <div className="flex justify-center mt-8">
-              <Button variant="outline">Ver Todos los Profesores</Button>
+              <Link href="/cursos">
+                <Button variant="outline">Ver Todos los Profesores</Button>
+              </Link>
             </div>
           </div>
         </section>
@@ -434,7 +445,9 @@ export default function LandingPage() {
                   </ul>
                 </CardContent>
                 <CardFooter>
-                  <Button className="w-full">Seleccionar Plan</Button>
+                  <Link href="/shop" className="w-full">
+                    <Button className="w-full">Seleccionar Plan</Button>
+                  </Link>
                 </CardFooter>
               </Card>
               <Card className="border-primary relative">
@@ -471,9 +484,11 @@ export default function LandingPage() {
                   </ul>
                 </CardContent>
                 <CardFooter>
-                  <Button className="w-full" variant="default">
-                    Seleccionar Plan
-                  </Button>
+                  <Link href="/shop" className="w-full">
+                    <Button className="w-full" variant="default">
+                      Seleccionar Plan
+                    </Button>
+                  </Link>
                 </CardFooter>
               </Card>
               <Card>
@@ -513,7 +528,9 @@ export default function LandingPage() {
                   </ul>
                 </CardContent>
                 <CardFooter>
-                  <Button className="w-full">Seleccionar Plan</Button>
+                  <Link href="/shop" className="w-full">
+                    <Button className="w-full">Seleccionar Plan</Button>
+                  </Link>
                 </CardFooter>
               </Card>
             </div>
