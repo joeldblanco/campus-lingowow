@@ -1091,10 +1091,10 @@ enum BlogStatus {
 
 enum UserRole {
   ADMIN
+  TEACHER
+  STUDENT
   EDITOR
   GUEST
-  STUDENT
-  TEACHER
 }
 
 enum UserStatus {

@@ -14,6 +14,7 @@ export const RoleNames: Record<UserRole, string> = {
   TEACHER: 'Profesor',
   STUDENT: 'Estudiante',
   GUEST: 'Invitado',
+  EDITOR: 'Editor',
 }
 
 export const StatusNames: Record<UserStatus, string> = {

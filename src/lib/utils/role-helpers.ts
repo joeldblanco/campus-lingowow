@@ -114,7 +114,8 @@ export function getRoleDisplayName(role: UserRole): string {
     ADMIN: 'Administrador',
     TEACHER: 'Profesor',
     STUDENT: 'Estudiante',
-    GUEST: 'Invitado'
+    GUEST: 'Invitado',
+    EDITOR: 'Editor'
   }
   
   return roleNames[role] || 'Desconocido'
