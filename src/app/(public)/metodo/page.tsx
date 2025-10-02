@@ -196,7 +196,7 @@ export default function MetodoPage() {
                 <div>
                   <h3 className="font-semibold mb-2">Clases en Vivo por Videollamada</h3>
                   <p className="text-sm text-muted-foreground">
-                    Interacción directa con profesores nativos en tiempo real, desde cualquier lugar.
+                    Interacción directa con profesores profesionales en tiempo real, desde cualquier lugar.
                   </p>
                 </div>
               </div>

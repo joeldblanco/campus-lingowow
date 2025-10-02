@@ -88,6 +88,7 @@ model User {
   invoices             Invoice[]
   productPurchases     ProductPurchase[]
   scheduleSlotBookings ProductScheduleSlot[] @relation("ScheduleSlotBookings")
+  subscriptions        Subscription[]
 
   // Relaciones de videollamadas JaaS
   teacherCalls VideoCall[] @relation("TeacherCalls")
@@ -106,6 +107,9 @@ model User {
 
   // Relación de cursos que puede enseñar (para profesores)
   teachableCourses TeacherCourse[]
+
+  // Relación de blog posts (para editores)
+  blogPosts BlogPost[] @relation("BlogAuthor")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -188,6 +192,7 @@ model Course {
   modules          Module[]
   enrollments      Enrollment[]
   products         Product[]
+  plans            Plan[]
   exams            Exam[]
   teacherCourses   TeacherCourse[] // Profesores que pueden enseñar este curso
 
@@ -919,21 +924,33 @@ model Plan {
   description  String?
   price        Float
   comparePrice Float?
-  duration     Int // en días
+  duration     Int // en días (duración del período de facturación)
   isActive     Boolean @default(true)
   isPopular    Boolean @default(false)
   sortOrder    Int     @default(0)
   productId    String?
+  
+  // Campos para planes con clases
+  includesClasses     Boolean @default(false) // Si el plan incluye clases
+  classesPerPeriod    Int?    // Cantidad de clases por período (ej: 8 clases por mes)
+  classesPerWeek      Int?    // Frecuencia semanal (ej: 2 clases por semana)
+  allowProration      Boolean @default(true) // Si permite prorateo al comprar a mitad de período
+  autoRenewal         Boolean @default(true) // Si se renueva automáticamente
+  billingCycle        String? // WEEKLY, MONTHLY, QUARTERLY, ANNUAL
+  courseId            String? // Curso asociado al plan (opcional)
 
   // Relaciones
   product      Product?      @relation(fields: [productId], references: [id])
+  course       Course?       @relation(fields: [courseId], references: [id])
   features     PlanFeature[]
   invoiceItems InvoiceItem[]
+  subscriptions Subscription[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([productId])
+  @@index([courseId])
   @@map("plans")
 }
 
@@ -1027,11 +1044,54 @@ model InvoiceItem {
 }
 
 // =============================================
+// MODELOS DE BLOG
+// =============================================
+
+model BlogPost {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  excerpt     String?       // Resumen corto
+  content     Json          // Contenido estructurado con componentes
+  coverImage  String?       // URL de imagen destacada
+  category    String?
+  tags        String[]
+  status      BlogStatus    @default(DRAFT)
+  authorId    String
+  readTime    Int?          // Tiempo estimado de lectura en minutos
+  views       Int           @default(0)
+  publishedAt DateTime?
+  
+  // SEO
+  metaTitle       String?
+  metaDescription String?
+  
+  // Relaciones
+  author User @relation("BlogAuthor", fields: [authorId], references: [id])
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([authorId])
+  @@index([status])
+  @@index([publishedAt])
+  @@index([slug])
+  @@map("blog_posts")
+}
+
+enum BlogStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+// =============================================
 // ENUMS
 // =============================================
 
 enum UserRole {
   ADMIN
+  EDITOR
   GUEST
   STUDENT
   TEACHER
@@ -1186,6 +1246,42 @@ enum PurchaseStatus {
   ENROLLED
   COMPLETED
   CANCELLED
+}
+
+model Subscription {
+  id                String             @id @default(cuid())
+  userId            String
+  planId            String
+  status            SubscriptionStatus @default(ACTIVE)
+  startDate         DateTime           @default(now())
+  endDate           DateTime?
+  nextBillingDate   DateTime?
+  cancelledAt       DateTime?
+  cancelReason      String?
+  
+  // Campos de prorateo
+  proratedPrice     Float? // Precio prorrateado si se compró a mitad de período
+  proratedClasses   Int?   // Clases prorrateadas
+  remainingClasses  Int?   // Clases restantes en el período actual
+  
+  // Relaciones
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan              Plan               @relation(fields: [planId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([planId])
+  @@index([status])
+  @@map("subscriptions")
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  PAUSED
 }
 
 enum InvoiceStatus {

@@ -18,6 +18,7 @@ export const publicRoutes = [
   '/cookies',
   '/checkout',
   '/checkout/*',
+  '/about',
 ]
 
 export const authRoutes = [

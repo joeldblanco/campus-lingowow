@@ -16,9 +16,10 @@ export function hasRole(roles: UserRole[], targetRole: UserRole): boolean {
  * @returns El rol de mayor prioridad
  */
 export function getHighestPriorityRole(roles: UserRole[]): UserRole {
-  // Orden de prioridad: ADMIN > TEACHER > STUDENT > GUEST
+  // Orden de prioridad: ADMIN > EDITOR > TEACHER > STUDENT > GUEST
   const rolePriority = {
-    [UserRole.ADMIN]: 4,
+    [UserRole.ADMIN]: 5,
+    [UserRole.EDITOR]: 4,
     [UserRole.TEACHER]: 3,
     [UserRole.STUDENT]: 2,
     [UserRole.GUEST]: 1,
@@ -67,6 +68,15 @@ export function canAccessStudent(roles: UserRole[]): boolean {
 }
 
 /**
+ * Función auxiliar para verificar si el usuario puede acceder a rutas de editor
+ * @param roles - Array de roles del usuario
+ * @returns true si el usuario tiene rol EDITOR o ADMIN
+ */
+export function canAccessEditor(roles: UserRole[]): boolean {
+  return hasRole(roles, UserRole.EDITOR) || hasRole(roles, UserRole.ADMIN)
+}
+
+/**
  * Función auxiliar para obtener una descripción legible de los roles
  * @param roles - Array de roles del usuario
  * @returns String con los nombres de los roles separados por comas
@@ -74,6 +84,7 @@ export function canAccessStudent(roles: UserRole[]): boolean {
 export function getRoleNames(roles: UserRole[]): string {
   const roleNames = {
     [UserRole.ADMIN]: 'Administrador',
+    [UserRole.EDITOR]: 'Editor',
     [UserRole.TEACHER]: 'Profesor',
     [UserRole.STUDENT]: 'Estudiante',
     [UserRole.GUEST]: 'Invitado',

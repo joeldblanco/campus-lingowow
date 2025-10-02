@@ -1,5 +1,3 @@
-'use client'
-
 import Footer from '@/components/public-components/footer'
 import Header from '@/components/public-components/header'
 import {
@@ -18,63 +16,16 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Check, GraduationCap, MessageCircle, Star, Users } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
-import { toast } from 'sonner'
+import { PricingSection } from '@/components/public-components/pricing-section'
+import { getTeachersForLanding } from '@/lib/actions/teachers'
+import { ContactForm } from '@/components/public-components/contact-form'
 
-// Schema para el formulario de contacto
-const ContactSchema = z.object({
-  name: z.string().min(1, 'El nombre es requerido'),
-  email: z.string().email('Por favor ingresa un email válido'),
-  phone: z.string().min(1, 'El teléfono es requerido'),
-  language: z.string().min(1, 'Por favor selecciona un idioma'),
-})
-
-type ContactFormData = z.infer<typeof ContactSchema>
-
-export default function LandingPage() {
-  const form = useForm<ContactFormData>({
-    resolver: zodResolver(ContactSchema),
-    defaultValues: {
-      name: '',
-      email: '',
-      phone: '',
-      language: '',
-    },
-  })
-
-  const onSubmit = async (values: ContactFormData) => {
-    try {
-      // Aquí iría la lógica para enviar el formulario de contacto
-      console.log('Contact form submission:', values)
-      toast.success('¡Solicitud enviada exitosamente! Te contactaremos pronto.')
-      form.reset()
-    } catch (error) {
-      console.error('Error submitting contact form:', error)
-      toast.error('Error al enviar la solicitud')
-    }
-  }
+export default async function LandingPage() {
+  const teachers = await getTeachersForLanding(4)
   return (
     <div className="flex flex-col min-h-screen">
       {/* Navegación */}
@@ -109,30 +60,36 @@ export default function LandingPage() {
               </div>
               <div className="flex items-center gap-2 mt-4">
                 <div className="flex -space-x-2">
-                  {[1, 2, 3, 4].map((i) => (
+                  {[
+                    { name: 'Cristian' },
+                    { name: 'Maria' },
+                    { name: 'Miguel' },
+                    { name: 'Elena' },
+                  ].map((student, i) => (
                     <div
                       key={i}
-                      className="h-8 w-8 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center overflow-hidden"
+                      className="h-8 w-8 rounded-full border-2 border-white overflow-hidden bg-muted"
                     >
                       <Image
-                        src={`/api/placeholder/32/32`}
-                        alt="Student avatar"
-                        className="h-full w-full object-cover"
+                        src={`https://api.dicebear.com/9.x/lorelei/svg?seed=${student.name}`}
                         width={32}
                         height={32}
+                        alt={student.name}
+                        className="w-full h-full object-cover"
+                        unoptimized
                       />
                     </div>
                   ))}
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  <span className="font-medium">+2,500</span> estudiantes satisfechos
+                  <span className="font-medium">+145</span> estudiantes satisfechos
                 </p>
               </div>
             </div>
             <div className="md:w-1/2">
               <div className="rounded-lg border bg-card overflow-hidden shadow-lg">
                 <Image
-                  src="/api/placeholder/600/400"
+                  src="/media/images/hero-img.png"
                   width={600}
                   height={400}
                   alt="Estudiantes aprendiendo idiomas"
@@ -314,23 +271,21 @@ export default function LandingPage() {
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-              {[
-                { name: 'María García', language: 'Español', img: '/api/placeholder/200/200' },
-                { name: 'John Smith', language: 'Inglés', img: '/api/placeholder/200/200' },
-              ].map((teacher) => (
-                <Card key={teacher.name} className="overflow-hidden">
-                  <div className="aspect-square overflow-hidden">
+              {teachers.map((teacher) => (
+                <Card key={teacher.id} className="overflow-hidden">
+                  <div className="aspect-square overflow-hidden bg-muted">
                     <Image
-                      src={teacher.img}
+                      src={teacher.image}
                       width={200}
                       height={200}
                       alt={teacher.name}
                       className="w-full h-full object-cover"
+                      unoptimized
                     />
                   </div>
                   <CardHeader className="p-4">
                     <CardTitle className="text-lg">{teacher.name}</CardTitle>
-                    <CardDescription>{teacher.language}</CardDescription>
+                    <CardDescription>{teacher.rank}</CardDescription>
                   </CardHeader>
                 </Card>
               ))}
@@ -351,7 +306,8 @@ export default function LandingPage() {
                 Lo Que Dicen Nuestros Estudiantes
               </h2>
               <p className="text-muted-foreground max-w-[700px]">
-                Calificación de 4.9 estrellas en Google con más de 38 opiniones reales de nuestros estudiantes.
+                Calificación de 4.9 estrellas en Google con más de 38 opiniones reales de nuestros
+                estudiantes.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -398,9 +354,9 @@ export default function LandingPage() {
               ))}
             </div>
             <div className="flex justify-center mt-8">
-              <a 
-                href="https://www.google.com/maps/place/Lingowow/@-12.0015217,-77.1199284,17z/data=!4m8!3m7!1s0x9105cd90a8800b7d:0xceb4d33979f426ad!8m2!3d-12.0015217!4d-77.1173535!9m1!1b1!16s%2Fg%2F11j2wlfzw8" 
-                target="_blank" 
+              <a
+                href="https://www.google.com/maps/place/Lingowow/@-12.0015217,-77.1199284,17z/data=!4m8!3m7!1s0x9105cd90a8800b7d:0xceb4d33979f426ad!8m2!3d-12.0015217!4d-77.1173535!9m1!1b1!16s%2Fg%2F11j2wlfzw8"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline font-medium"
               >
@@ -411,131 +367,7 @@ export default function LandingPage() {
         </section>
 
         {/* Precios */}
-        <section id="precios" className="w-full py-12 md:py-16">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center gap-4 text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tight">Planes y Precios</h2>
-              <p className="text-muted-foreground max-w-[700px]">
-                Flexibilidad para adaptarse a tus necesidades y presupuesto.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Básico</CardTitle>
-                  <div className="mt-4">
-                    <span className="text-4xl font-bold">€89</span>
-                    <span className="text-muted-foreground ml-1">/mes</span>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 mb-6">
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-500" />
-                      <span>2 clases por semana</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-500" />
-                      <span>Materiales incluidos</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-500" />
-                      <span>Plataforma online</span>
-                    </li>
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Link href="/shop" className="w-full">
-                    <Button className="w-full">Seleccionar Plan</Button>
-                  </Link>
-                </CardFooter>
-              </Card>
-              <Card className="border-primary relative">
-                <CardHeader className="">
-                  <Badge className="absolute right-4 top-4">Popular</Badge>
-                  <CardTitle>Intensivo</CardTitle>
-                  <div className="mt-4">
-                    <span className="text-4xl font-bold">€149</span>
-                    <span className="text-muted-foreground ml-1">/mes</span>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 mb-6">
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-500" />
-                      <span>4 clases por semana</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-500" />
-                      <span>Materiales incluidos</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-500" />
-                      <span>Plataforma online</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-500" />
-                      <span>Clases de conversación</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-500" />
-                      <span>Tutorías personalizadas</span>
-                    </li>
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Link href="/shop" className="w-full">
-                    <Button className="w-full" variant="default">
-                      Seleccionar Plan
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Premium</CardTitle>
-                  <div className="mt-4">
-                    <span className="text-4xl font-bold">€199</span>
-                    <span className="text-muted-foreground ml-1">/mes</span>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 mb-6">
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-500" />
-                      <span>5 clases por semana</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-500" />
-                      <span>Materiales incluidos</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-500" />
-                      <span>Plataforma online</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-500" />
-                      <span>Clases de conversación</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-500" />
-                      <span>Tutorías ilimitadas</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-500" />
-                      <span>Intercambios culturales</span>
-                    </li>
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Link href="/shop" className="w-full">
-                    <Button className="w-full">Seleccionar Plan</Button>
-                  </Link>
-                </CardFooter>
-              </Card>
-            </div>
-          </div>
-        </section>
+        <PricingSection />
 
         {/* FAQ */}
         <section id="faq" className="w-full py-12 md:py-16 bg-slate-50">
@@ -579,7 +411,8 @@ export default function LandingPage() {
                 <AccordionItem value="item-4">
                   <AccordionTrigger>¿Qué certificaciones tienen los profesores?</AccordionTrigger>
                   <AccordionContent>
-                    Todos nuestros profesores cuentan con certificaciones internacionales para la enseñanza de idiomas y amplia experiencia docente.
+                    Todos nuestros profesores cuentan con certificaciones internacionales para la
+                    enseñanza de idiomas y amplia experiencia docente.
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-5">
@@ -622,94 +455,7 @@ export default function LandingPage() {
                   </div>
                 </div>
               </div>
-              <Card className="p-6">
-                <CardHeader>
-                  <CardTitle>Solicita tu clase de prueba gratuita</CardTitle>
-                  <CardDescription>
-                    Completa el formulario y te contactaremos en 24h
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                      <div className="grid grid-cols-1 gap-4">
-                        <FormField
-                          control={form.control}
-                          name="name"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Nombre</FormLabel>
-                              <FormControl>
-                                <Input placeholder="Tu nombre completo" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                        <FormField
-                          control={form.control}
-                          name="email"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Email</FormLabel>
-                              <FormControl>
-                                <Input type="email" placeholder="tu@email.com" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                        <FormField
-                          control={form.control}
-                          name="phone"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Teléfono</FormLabel>
-                              <FormControl>
-                                <Input type="tel" placeholder="+51 000 000 000" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                        <FormField
-                          control={form.control}
-                          name="language"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Idioma de interés</FormLabel>
-                              <Select onValueChange={field.onChange} value={field.value}>
-                                <FormControl>
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Selecciona un idioma" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  <SelectItem value="english">Inglés</SelectItem>
-                                  <SelectItem value="spanish">Español</SelectItem>
-                                  <SelectItem value="french" disabled>Francés (Próximamente)</SelectItem>
-                                  <SelectItem value="german" disabled>Alemán (Próximamente)</SelectItem>
-                                  <SelectItem value="italian" disabled>Italiano (Próximamente)</SelectItem>
-                                  <SelectItem value="portuguese" disabled>Portugués (Próximamente)</SelectItem>
-                                  <SelectItem value="chinese" disabled>Chino Mandarín (Próximamente)</SelectItem>
-                                  <SelectItem value="japanese" disabled>Japonés (Próximamente)</SelectItem>
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                      <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-                        {form.formState.isSubmitting ? 'Enviando...' : 'Solicitar Clase Gratuita'}
-                      </Button>
-                    </form>
-                  </Form>
-                </CardContent>
-              </Card>
+              <ContactForm />
             </div>
           </div>
         </section>

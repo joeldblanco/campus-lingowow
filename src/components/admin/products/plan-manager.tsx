@@ -77,7 +77,7 @@ export const PlanManager: React.FC<PlanManagerProps> = ({
     }
 
     const updatedPlans = editingPlan.id
-      ? plans.map(p => p.id === editingPlan.id ? editingPlan : p)
+      ? plans.map((p) => (p.id === editingPlan.id ? editingPlan : p))
       : [...plans, { ...editingPlan, id: `temp-${Date.now()}` }]
 
     onPlansChange(updatedPlans)
@@ -90,7 +90,7 @@ export const PlanManager: React.FC<PlanManagerProps> = ({
   }
 
   const handleDeletePlan = (planId: string) => {
-    const updatedPlans = plans.filter(p => p.id !== planId)
+    const updatedPlans = plans.filter((p) => p.id !== planId)
     onPlansChange(updatedPlans)
     toast.success('Plan eliminado')
   }
@@ -103,7 +103,7 @@ export const PlanManager: React.FC<PlanManagerProps> = ({
     if (!editingPlan) return
 
     const updates: Partial<PlanData> = { [field]: value }
-    
+
     // Auto-generate slug when name changes
     if (field === 'name' && typeof value === 'string') {
       updates.slug = generateSlug(value)
@@ -128,7 +128,7 @@ export const PlanManager: React.FC<PlanManagerProps> = ({
             Configura los planes de pago disponibles para este producto
           </p>
         </div>
-        <Button onClick={handleAddPlan} size="sm">
+        <Button onClick={handleAddPlan} type="button" size="sm">
           <Plus className="h-4 w-4 mr-2" />
           Agregar Plan
         </Button>
@@ -155,11 +155,7 @@ export const PlanManager: React.FC<PlanManagerProps> = ({
                   )}
                 </div>
                 <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleEditPlan(plan)}
-                  >
+                  <Button variant="outline" size="sm" onClick={() => handleEditPlan(plan)}>
                     Editar
                   </Button>
                   <Button
@@ -179,22 +175,16 @@ export const PlanManager: React.FC<PlanManagerProps> = ({
                     <DollarSign className="h-4 w-4 text-green-600" />
                     <span className="font-medium">${plan.price}</span>
                     {plan.comparePrice && (
-                      <span className="text-gray-500 line-through">
-                        ${plan.comparePrice}
-                      </span>
+                      <span className="text-gray-500 line-through">${plan.comparePrice}</span>
                     )}
                   </div>
-                  <span className="text-gray-600">
-                    {getDurationText(plan.duration)}
-                  </span>
+                  <span className="text-gray-600">{getDurationText(plan.duration)}</span>
                 </div>
                 <Badge variant="outline" className="text-xs">
                   {plan.slug}
                 </Badge>
               </div>
-              {plan.description && (
-                <p className="text-sm text-gray-600 mt-2">{plan.description}</p>
-              )}
+              {plan.description && <p className="text-sm text-gray-600 mt-2">{plan.description}</p>}
             </CardContent>
           </Card>
         ))}
@@ -260,7 +250,9 @@ export const PlanManager: React.FC<PlanManagerProps> = ({
                   type="number"
                   step="0.01"
                   value={editingPlan.comparePrice || ''}
-                  onChange={(e) => updateEditingPlan('comparePrice', parseFloat(e.target.value) || 0)}
+                  onChange={(e) =>
+                    updateEditingPlan('comparePrice', parseFloat(e.target.value) || 0)
+                  }
                   placeholder="0.00 (opcional)"
                 />
               </div>
@@ -280,9 +272,7 @@ export const PlanManager: React.FC<PlanManagerProps> = ({
               <div className="flex items-center justify-between rounded-lg border p-3">
                 <div>
                   <Label htmlFor="plan-active">Plan Activo</Label>
-                  <p className="text-sm text-gray-600">
-                    El plan estará disponible para compra
-                  </p>
+                  <p className="text-sm text-gray-600">El plan estará disponible para compra</p>
                 </div>
                 <Switch
                   id="plan-active"
@@ -293,9 +283,7 @@ export const PlanManager: React.FC<PlanManagerProps> = ({
               <div className="flex items-center justify-between rounded-lg border p-3">
                 <div>
                   <Label htmlFor="plan-popular">Plan Popular</Label>
-                  <p className="text-sm text-gray-600">
-                    Se destacará como recomendado
-                  </p>
+                  <p className="text-sm text-gray-600">Se destacará como recomendado</p>
                 </div>
                 <Switch
                   id="plan-popular"
@@ -306,10 +294,10 @@ export const PlanManager: React.FC<PlanManagerProps> = ({
             </div>
 
             <div className="flex gap-2 pt-4">
-              <Button onClick={handleSavePlan}>
+              <Button onClick={handleSavePlan} type="button">
                 {editingPlan.id ? 'Actualizar Plan' : 'Agregar Plan'}
               </Button>
-              <Button variant="outline" onClick={handleCancelEdit}>
+              <Button variant="outline" onClick={handleCancelEdit} type="button">
                 Cancelar
               </Button>
             </div>
@@ -321,9 +309,7 @@ export const PlanManager: React.FC<PlanManagerProps> = ({
         <Card className="border-dashed">
           <CardContent className="flex flex-col items-center justify-center py-8 text-center">
             <DollarSign className="h-12 w-12 text-gray-400 mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              No hay planes configurados
-            </h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">No hay planes configurados</h3>
             <p className="text-gray-600 mb-4">
               Agrega planes de pago para que los usuarios puedan elegir diferentes opciones.
             </p>

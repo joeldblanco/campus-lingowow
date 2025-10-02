@@ -8,79 +8,60 @@ import { Separator } from '@/components/ui/separator'
 import { ArrowLeft, Bookmark, Calendar, Clock, Facebook, Linkedin, Mail, Twitter } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { getBlogPostBySlug, getRelatedBlogPosts } from '@/lib/actions/blog'
+import { notFound } from 'next/navigation'
+import { BlogContentRenderer } from '@/components/blog/BlogContentRenderer'
+import type { BlogContent } from '@/types/blog'
 
 export default async function BlogPostDetail({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
-  // En una aplicación real, buscarías el post por ID desde una API o base de datos
+  const { id: slug } = await params
+  
+  // Cargar blog post desde la base de datos
+  const result = await getBlogPostBySlug(slug)
+  
+  if (!result.success || !result.blogPost) {
+    notFound()
+  }
+
+  const blogPost = result.blogPost
+  
+  // Cargar posts relacionados
+  const relatedResult = await getRelatedBlogPosts(slug, 3)
+  const relatedPosts = relatedResult.success ? relatedResult.blogPosts : []
+
+  // Parsear contenido JSON
+  const content = blogPost.content as unknown as BlogContent
+  
   const post = {
-    id: id,
-    title: '5 técnicas efectivas para mejorar tu fluidez en un idioma extranjero',
-    excerpt:
-      'Descubre los métodos más efectivos que utilizan los políglotas para alcanzar una fluidez natural en tiempo récord.',
-    content: `
-      <p>Uno de los desafíos más grandes al aprender un nuevo idioma es alcanzar la fluidez. Muchos estudiantes se sienten frustrados después de años de estudio cuando aún no pueden mantener una conversación fluida. La buena noticia es que existen técnicas probadas que pueden acelerar significativamente tu progreso.</p>
-      
-      <h2>1. La técnica de inmersión intensiva</h2>
-      <p>La inmersión total consiste en rodearte completamente del idioma que estás aprendiendo. Esto significa configurar tu teléfono, computadora y redes sociales en ese idioma, consumir exclusivamente contenido (películas, libros, podcasts) en el idioma objetivo, y buscar oportunidades para practicar con hablantes nativos.</p>
-      <p>Los políglotas más exitosos dedican al menos 4 horas diarias a la inmersión, incluso si no están estudiando activamente durante todo ese tiempo. Simplemente escuchar el idioma mientras realizas otras actividades ayuda a tu cerebro a familiarizarse con los patrones sonoros y la entonación.</p>
-      
-      <h2>2. El método de las frases modelo</h2>
-      <p>En lugar de memorizar vocabulario aislado, enfócate en aprender frases completas que puedas usar en situaciones reales. Estas "frases modelo" funcionan como plantillas que puedes adaptar a diferentes contextos.</p>
-      <p>Por ejemplo, en vez de aprender la palabra "hambre", aprende la frase "Tengo hambre, ¿hay algún restaurante cerca?". Esto te permite comenzar a hablar con más confianza desde el principio.</p>
-      
-      <h2>3. La técnica del shadowing</h2>
-      <p>El shadowing consiste en repetir lo que escuchas en tiempo real, imitando la pronunciación, entonación y ritmo de un hablante nativo. Es particularmente efectivo para mejorar la pronunciación y desarrollar fluidez.</p>
-      <p>Para practicar el shadowing, selecciona un audio con transcripción (como un podcast con subtítulos) y repite lo que escuchas con un retraso mínimo, tratando de imitar exactamente cómo suena. Comienza con fragmentos cortos y aumenta gradualmente la duración.</p>
-      
-      <h2>4. La técnica de conversación limitada</h2>
-      <p>Muchos estudiantes evitan hablar hasta que se sienten "preparados", pero esto solo retrasa el progreso. La técnica de conversación limitada consiste en comenzar a hablar desde el primer día, incluso con un vocabulario mínimo.</p>
-      <p>Encuentra un intercambio de idiomas o un tutor paciente y comprométete a hablar solo en el idioma objetivo durante períodos cortos pero regulares. Comienza con 5-10 minutos y aumenta gradualmente. La clave es persistir incluso cuando sientas que te faltan palabras.</p>
-      
-      <h2>5. El método de grabación y análisis</h2>
-      <p>Grábate hablando en el idioma que estás aprendiendo y luego escucha la grabación para identificar áreas de mejora. Esta técnica te ayuda a ser consciente de patrones de error recurrentes y a corregirlos sistemáticamente.</p>
-      <p>Para maximizar los beneficios, compara tu grabación con la de un hablante nativo diciendo las mismas frases. Presta atención no solo a la pronunciación, sino también al ritmo, las pausas y la entonación.</p>
-      
-      <h2>La consistencia es clave</h2>
-      <p>Independientemente de las técnicas que elijas, la clave para alcanzar la fluidez es la práctica regular y consistente. Incluso 20 minutos diarios son más efectivos que sesiones intensivas de estudio una vez a la semana.</p>
-      <p>Recuerda que la fluidez no significa perfección. El objetivo no es hablar como un nativo, sino poder comunicarte efectivamente y con confianza en situaciones reales.</p>
-      
-      <h2>Conclusión</h2>
-      <p>Implementar estas cinco técnicas en tu rutina de estudio puede transformar radicalmente tu experiencia de aprendizaje de idiomas. La fluidez no es un destino mágico e inalcanzable, sino el resultado natural de un enfoque estratégico y consistente.</p>
-      <p>En Lingowow, nuestros cursos integran estas técnicas en un método probado que ha ayudado a miles de estudiantes a alcanzar la fluidez en tiempo récord. ¿Quieres saber más? Agenda una clase de prueba gratuita con uno de nuestros profesores nativos.</p>
-    `,
-    category: 'Técnicas de Aprendizaje',
-    author: 'María García',
-    authorRole: 'Profesora de Inglés',
-    authorBio:
-      'María es profesora certificada con más de 10 años de experiencia enseñando inglés. Es políglota y habla con fluidez 5 idiomas.',
-    authorImage: '/api/placeholder/80/80',
-    date: '15 Mar 2025',
-    readTime: '8 min',
-    image: '/api/placeholder/1200/600',
-    tags: ['fluidez', 'técnicas', 'aprendizaje', 'práctica', 'idiomas'],
-    relatedPosts: [
-      {
-        id: 2,
-        title: 'Cómo la música puede acelerar tu aprendizaje de idiomas',
-        excerpt:
-          'La música no es solo entretenimiento, es una poderosa herramienta para memorizar vocabulario y mejorar la pronunciación.',
-        image: '/api/placeholder/400/200',
-      },
-      {
-        id: 3,
-        title: 'El método de inmersión: ventajas y desventajas',
-        excerpt:
-          'Analizamos en profundidad cómo funciona el método de inmersión y si realmente es tan efectivo como dicen.',
-        image: '/api/placeholder/400/200',
-      },
-      {
-        id: 6,
-        title: 'Beneficios cognitivos del bilingüismo: lo que dice la ciencia',
-        excerpt:
-          'Estudios recientes confirman que hablar más de un idioma aporta importantes beneficios para nuestro cerebro.',
-        image: '/api/placeholder/400/200',
-      },
-    ],
+    id: blogPost.id,
+    title: blogPost.title,
+    excerpt: blogPost.excerpt || '',
+    content: <BlogContentRenderer content={content} />,
+    category: blogPost.category || 'Sin categoría',
+    author: `${blogPost.author.name} ${blogPost.author.lastName}`,
+    authorRole: 'Editor',
+    authorBio: blogPost.author.bio || 'Editor de contenido en Lingowow',
+    authorImage: blogPost.author.image || '/api/placeholder/80/80',
+    date: blogPost.publishedAt
+      ? new Date(blogPost.publishedAt).toLocaleDateString('es-ES', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+        })
+      : new Date(blogPost.createdAt).toLocaleDateString('es-ES', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+        }),
+    readTime: `${blogPost.readTime || 5} min`,
+    image: blogPost.coverImage || '/api/placeholder/1200/600',
+    tags: blogPost.tags,
+    relatedPosts: relatedPosts.map((rp) => ({
+      id: rp.slug,
+      title: rp.title,
+      excerpt: rp.excerpt || '',
+      image: rp.coverImage || '/api/placeholder/400/200',
+    })),
   }
 
   return (
@@ -162,10 +143,9 @@ export default async function BlogPostDetail({ params }: { params: Promise<{ id:
 
             {/* Main Content */}
             <div className="lg:w-3/4 xl:w-2/3 mx-auto order-1 lg:order-2">
-              <article
-                className="prose prose-lg max-w-none"
-                dangerouslySetInnerHTML={{ __html: post.content }}
-              ></article>
+              <article className="prose prose-gray max-w-none dark:prose-invert prose-headings:font-bold prose-h2:mb-4 prose-h2:mt-8 prose-h2:text-2xl prose-h3:mb-3 prose-h3:mt-6 prose-h3:text-xl prose-p:mb-4 prose-p:leading-relaxed prose-p:text-gray-700 dark:prose-p:text-gray-300">
+                {post.content}
+              </article>
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2 mt-8">

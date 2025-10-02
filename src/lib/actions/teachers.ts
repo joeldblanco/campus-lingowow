@@ -191,7 +191,7 @@ export async function getAvailableTeachers(options?: {
           id: teacher.id,
           name: `${teacher.name} ${teacher.lastName}`.trim(),
           avatarUrl:
-            teacher.image || `https://api.dicebear.com/7.x/lorelei/svg?seed=${teacher.name}`,
+            teacher.image || `https://api.dicebear.com/9.x/lorelei/svg?seed=${teacher.name}`,
           specialties,
           availability,
           rating: Math.round(rating * 10) / 10,
@@ -204,5 +204,51 @@ export async function getAvailableTeachers(options?: {
   } catch (error) {
     console.error('Error fetching available teachers:', error)
     throw new Error('Failed to fetch available teachers')
+  }
+}
+
+/**
+ * Obtiene profesores para mostrar en la landing page
+ * Retorna información básica de profesores activos con rol TEACHER
+ */
+export async function getTeachersForLanding(limit: number = 4) {
+  'use server'
+  
+  try {
+    const teachers = await db.user.findMany({
+      where: {
+        roles: {
+          has: UserRole.TEACHER,
+        },
+        status: 'ACTIVE',
+      },
+      select: {
+        id: true,
+        name: true,
+        lastName: true,
+        image: true,
+        bio: true,
+        teacherRank: {
+          select: {
+            name: true,
+          },
+        },
+      },
+      take: limit,
+      orderBy: {
+        createdAt: 'asc',
+      },
+    })
+
+    return teachers.map((teacher) => ({
+      id: teacher.id,
+      name: `${teacher.name} ${teacher.lastName}`.trim(),
+      image: teacher.image || `https://api.dicebear.com/9.x/lorelei/svg?seed=${teacher.name}`,
+      bio: teacher.bio || 'Profesor certificado con amplia experiencia docente',
+      rank: teacher.teacherRank?.name || 'Profesor',
+    }))
+  } catch (error) {
+    console.error('Error fetching teachers for landing:', error)
+    return []
   }
 }

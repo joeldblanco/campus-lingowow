@@ -198,7 +198,7 @@ export default function ContactoPage() {
                               <FormItem>
                                 <FormLabel>Teléfono</FormLabel>
                                 <FormControl>
-                                  <Input type="tel" placeholder="+51 000 000 000" {...field} />
+                                  <Input type="tel" placeholder="+51 902 518 947" {...field} />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>

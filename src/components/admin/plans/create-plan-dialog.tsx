@@ -14,11 +14,19 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
@@ -38,6 +46,13 @@ const planSchema = z.object({
   isActive: z.boolean().default(true),
   isPopular: z.boolean().default(false),
   sortOrder: z.number().min(0).default(0),
+  includesClasses: z.boolean().default(false),
+  classesPerPeriod: z.number().optional(),
+  classesPerWeek: z.number().optional(),
+  allowProration: z.boolean().default(true),
+  autoRenewal: z.boolean().default(true),
+  billingCycle: z.string().optional(),
+  courseId: z.string().optional(),
 })
 
 type PlanFormData = z.infer<typeof planSchema>
@@ -62,6 +77,13 @@ export function CreatePlanDialog({ children }: CreatePlanDialogProps) {
       isActive: true,
       isPopular: false,
       sortOrder: 0,
+      includesClasses: false,
+      classesPerPeriod: undefined,
+      classesPerWeek: undefined,
+      allowProration: true,
+      autoRenewal: true,
+      billingCycle: undefined,
+      courseId: undefined,
     },
   })
 
@@ -69,10 +91,23 @@ export function CreatePlanDialog({ children }: CreatePlanDialogProps) {
     setIsLoading(true)
     try {
       const result = await createPlan({
-        ...data,
+        name: data.name,
+        slug: data.slug,
         description: data.description || null,
+        price: data.price,
         comparePrice: data.comparePrice || null,
+        duration: data.duration,
+        isActive: data.isActive,
+        isPopular: data.isPopular,
+        sortOrder: data.sortOrder,
         productId: null,
+        includesClasses: data.includesClasses,
+        classesPerPeriod: data.classesPerPeriod || null,
+        classesPerWeek: data.classesPerWeek || null,
+        allowProration: data.allowProration,
+        autoRenewal: data.autoRenewal,
+        billingCycle: data.billingCycle || null,
+        courseId: data.courseId || null,
       })
       if (result.success) {
         toast.success('Plan creado correctamente')
@@ -103,11 +138,11 @@ export function CreatePlanDialog({ children }: CreatePlanDialogProps) {
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Nuevo Plan</DialogTitle>
           <DialogDescription>
-            Crea un nuevo plan de suscripción.
+            Crea un nuevo plan de suscripción con clases incluidas.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -281,6 +316,151 @@ export function CreatePlanDialog({ children }: CreatePlanDialogProps) {
                 )}
               />
             </div>
+
+            {/* Sección de Clases */}
+            <div className="border-t pt-4">
+              <h3 className="text-sm font-medium mb-4">Configuración de Clases</h3>
+              
+              <FormField
+                control={form.control}
+                name="includesClasses"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm mb-4">
+                    <div className="space-y-0.5">
+                      <FormLabel>Incluye Clases</FormLabel>
+                      <FormDescription>
+                        Este plan incluye clases programadas
+                      </FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              {form.watch('includesClasses') && (
+                <>
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <FormField
+                      control={form.control}
+                      name="classesPerPeriod"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Clases por Período</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="number"
+                              placeholder="8"
+                              {...field}
+                              onChange={(e) => field.onChange(parseInt(e.target.value) || undefined)}
+                              value={field.value || ''}
+                            />
+                          </FormControl>
+                          <FormDescription>Total de clases</FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="classesPerWeek"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Clases por Semana</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="number"
+                              placeholder="2"
+                              {...field}
+                              onChange={(e) => field.onChange(parseInt(e.target.value) || undefined)}
+                              value={field.value || ''}
+                            />
+                          </FormControl>
+                          <FormDescription>Frecuencia semanal</FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <FormField
+                    control={form.control}
+                    name="billingCycle"
+                    render={({ field }) => (
+                      <FormItem className="mb-4">
+                        <FormLabel>Ciclo de Facturación</FormLabel>
+                        <Select 
+                          onValueChange={(value) => field.onChange(value === 'no-cycle' ? undefined : value)} 
+                          value={field.value || 'no-cycle'}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Selecciona un ciclo" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="no-cycle">Sin ciclo</SelectItem>
+                            <SelectItem value="WEEKLY">Semanal</SelectItem>
+                            <SelectItem value="MONTHLY">Mensual</SelectItem>
+                            <SelectItem value="QUARTERLY">Trimestral</SelectItem>
+                            <SelectItem value="ANNUAL">Anual</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="allowProration"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                          <div className="space-y-0.5">
+                            <FormLabel>Permite Prorateo</FormLabel>
+                            <FormDescription>
+                              Ajustar precio a mitad de período
+                            </FormDescription>
+                          </div>
+                          <FormControl>
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="autoRenewal"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                          <div className="space-y-0.5">
+                            <FormLabel>Renovación Automática</FormLabel>
+                            <FormDescription>
+                              Renovar al finalizar período
+                            </FormDescription>
+                          </div>
+                          <FormControl>
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                 Cancelar

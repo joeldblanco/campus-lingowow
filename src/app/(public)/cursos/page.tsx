@@ -45,7 +45,7 @@ export default function CursosPage() {
       duration: 'Variable',
       students: 95,
       rating: 4.9,
-      description: 'Aprende español con profesores nativos. Todos los niveles disponibles.',
+      description: 'Aprende español con profesores profesionales. Todos los niveles disponibles.',
       available: true,
     },
     {

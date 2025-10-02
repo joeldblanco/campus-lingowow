@@ -42,7 +42,7 @@ export default function FAQPage() {
                     <AccordionTrigger>¿Qué es Lingowow?</AccordionTrigger>
                     <AccordionContent>
                       Lingowow es una academia de idiomas online que ofrece clases personalizadas 
-                      con profesores nativos y certificados. Nos especializamos en inglés y español, 
+                      con profesores profesionales y certificados. Nos especializamos en inglés y español, 
                       con un método comunicativo e inmersivo que garantiza resultados reales.
                     </AccordionContent>
                   </AccordionItem>
@@ -109,7 +109,7 @@ export default function FAQPage() {
                   <AccordionItem value="item-7">
                     <AccordionTrigger>¿Qué certificaciones tienen los profesores?</AccordionTrigger>
                     <AccordionContent>
-                      Todos nuestros profesores son nativos o tienen nivel C2 certificado. 
+                      Todos nuestros profesores son profesionales con nivel C2 certificado. 
                       Cuentan con certificaciones internacionales para la enseñanza de idiomas 
                       (TEFL, TESOL, CELTA para inglés; DELE, ELE para español) y amplia experiencia 
                       docente. Cada profesor pasa por un riguroso proceso de selección.
@@ -136,9 +136,9 @@ export default function FAQPage() {
                     <AccordionContent>
                       Ofrecemos diferentes planes según la intensidad de estudio:
                       <ul className="list-disc list-inside mt-2 space-y-1">
-                        <li>Plan Básico: €89/mes (2 clases/semana)</li>
-                        <li>Plan Intensivo: €149/mes (4 clases/semana)</li>
-                        <li>Plan Premium: €199/mes (5 clases/semana)</li>
+                        <li>Plan Básico: $89/mes (2 clases/semana)</li>
+                        <li>Plan Intensivo: $149/mes (4 clases/semana)</li>
+                        <li>Plan Premium: $199/mes (5 clases/semana)</li>
                       </ul>
                       Todos los materiales están incluidos.
                     </AccordionContent>

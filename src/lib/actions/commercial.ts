@@ -639,3 +639,93 @@ export async function deleteInvoice(id: string) {
     return { success: false, error: 'Error al eliminar la factura' }
   }
 }
+
+// =============================================
+// ESTADÍSTICAS Y REPORTES
+// =============================================
+
+export async function getTotalRevenue() {
+  try {
+    const result = await db.invoice.aggregate({
+      where: {
+        status: 'PAID',
+      },
+      _sum: {
+        total: true,
+      },
+    })
+    return result._sum.total || 0
+  } catch (error) {
+    console.error('Error fetching total revenue:', error)
+    return 0
+  }
+}
+
+export async function getMonthlyRevenue(year: number, month: number) {
+  try {
+    const startDate = new Date(year, month - 1, 1)
+    const endDate = new Date(year, month, 0, 23, 59, 59)
+
+    const result = await db.invoice.aggregate({
+      where: {
+        status: 'PAID',
+        paidAt: {
+          gte: startDate,
+          lte: endDate,
+        },
+      },
+      _sum: {
+        total: true,
+      },
+    })
+    return result._sum.total || 0
+  } catch (error) {
+    console.error('Error fetching monthly revenue:', error)
+    return 0
+  }
+}
+
+export async function getRevenueByMonth(year: number) {
+  try {
+    const months = []
+    for (let month = 1; month <= 12; month++) {
+      const revenue = await getMonthlyRevenue(year, month)
+      months.push({
+        name: new Date(year, month - 1).toLocaleDateString('es-ES', { month: 'short' }),
+        income: revenue,
+      })
+    }
+    return months
+  } catch (error) {
+    console.error('Error fetching revenue by month:', error)
+    return []
+  }
+}
+
+export async function getActiveSubscriptionsCount() {
+  try {
+    return await db.subscription.count({
+      where: {
+        status: 'ACTIVE',
+      },
+    })
+  } catch (error) {
+    console.error('Error fetching active subscriptions count:', error)
+    return 0
+  }
+}
+
+export async function getProductSalesCount() {
+  try {
+    return await db.productPurchase.count({
+      where: {
+        status: {
+          in: ['CONFIRMED', 'SCHEDULED', 'ENROLLED', 'COMPLETED'],
+        },
+      },
+    })
+  } catch (error) {
+    console.error('Error fetching product sales count:', error)
+    return 0
+  }
+}
