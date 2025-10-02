@@ -2,7 +2,6 @@
 
 import { db } from '@/lib/db'
 import { getCurrentUser } from '@/lib/utils/session'
-import { getCurrentPeriod } from '@/lib/utils/academic-period'
 import { CreditSource, CreditUsage } from '@/types/academic-period'
 import { addMonths } from 'date-fns'
 import { revalidatePath } from 'next/cache'
@@ -81,7 +80,7 @@ export async function addStudentCredits(
  * Acción para usar un crédito para una clase adicional
  */
 export async function useCreditsForClass(
-  formData: FormData | { creditId: string; classDate: string; timeSlot: string; teacherId: string }
+  formData: FormData | { creditId: string; enrollmentId: string; classDate: string; timeSlot: string; teacherId: string }
 ) {
   try {
     const user = await getCurrentUser()
@@ -91,6 +90,7 @@ export async function useCreditsForClass(
     }
 
     let creditId: string
+    let enrollmentId: string
     let classDate: string
     let timeSlot: string
     let teacherId: string
@@ -98,11 +98,13 @@ export async function useCreditsForClass(
     // Procesar datos según el tipo de entrada
     if (formData instanceof FormData) {
       creditId = formData.get('creditId') as string
+      enrollmentId = formData.get('enrollmentId') as string
       classDate = formData.get('classDate') as string
       timeSlot = formData.get('timeSlot') as string
       teacherId = formData.get('teacherId') as string
     } else {
       creditId = formData.creditId
+      enrollmentId = formData.enrollmentId
       classDate = formData.classDate
       timeSlot = formData.timeSlot
       teacherId = formData.teacherId
@@ -128,39 +130,28 @@ export async function useCreditsForClass(
       throw new Error('No autorizado para usar este crédito')
     }
 
-    // Buscar el período académico actual
-    const currentPeriod = await getCurrentPeriod(
-      await db.academicPeriod.findMany({
-        where: {
-          isActive: true,
-        },
-      })
-    )
-
-    if (!currentPeriod) {
-      throw new Error('No hay un período académico activo')
-    }
-
-    // Obtener o crear el StudentPeriod para el estudiante
-    let studentPeriod = await db.studentPeriod.findUnique({
+    // Verificar que el enrollment existe y pertenece al estudiante
+    const enrollment = await db.enrollment.findUnique({
       where: {
-        studentId_periodId: {
-          studentId: credit.studentId,
-          periodId: currentPeriod.id,
-        },
+        id: enrollmentId,
+      },
+      select: {
+        id: true,
+        studentId: true,
+        status: true,
       },
     })
 
-    // Si no existe, crear uno por defecto
-    if (!studentPeriod) {
-      studentPeriod = await db.studentPeriod.create({
-        data: {
-          studentId: credit.studentId,
-          periodId: currentPeriod.id,
-          packageType: 'custom',
-          classesTotal: 1,
-        },
-      })
+    if (!enrollment) {
+      throw new Error('Inscripción no encontrada')
+    }
+
+    if (enrollment.studentId !== credit.studentId) {
+      throw new Error('La inscripción no pertenece a este estudiante')
+    }
+
+    if (enrollment.status !== 'ACTIVE') {
+      throw new Error('La inscripción no está activa')
     }
 
     // Usar el crédito para una clase adicional
@@ -182,11 +173,11 @@ export async function useCreditsForClass(
         data: {
           studentId: credit.studentId,
           teacherId: teacherId,
+          enrollmentId: enrollmentId,
           day: classDate,
           timeSlot: timeSlot,
           status: 'CONFIRMED',
           creditId: creditId,
-          studentPeriodId: studentPeriod.id,
         },
       }),
     ])
@@ -265,102 +256,15 @@ export async function useCreditsForMaterials(formData: FormData | { creditId: st
 }
 
 /**
+ * @deprecated Esta función ya no se usa. Los descuentos se aplican al crear Enrollments.
  * Acción para usar un crédito para descuento en renovación
  */
-export async function useCreditsForDiscount(
-  formData: FormData | { creditId: string; periodId: string; packageType: string }
-) {
-  try {
-    const user = await getCurrentUser()
-
-    if (!user) {
-      redirect('/auth/signin')
-    }
-
-    let creditId: string
-    let periodId: string
-    let packageType: string
-
-    // Procesar datos según el tipo de entrada
-    if (formData instanceof FormData) {
-      creditId = formData.get('creditId') as string
-      periodId = formData.get('periodId') as string
-      packageType = formData.get('packageType') as string
-    } else {
-      creditId = formData.creditId
-      periodId = formData.periodId
-      packageType = formData.packageType
-    }
-
-    // Verificar que el crédito existe y no ha sido utilizado
-    const credit = await db.studentCredit.findUnique({
-      where: {
-        id: creditId,
-        isUsed: false,
-        expiryDate: {
-          gte: new Date(),
-        },
-      },
-    })
-
-    if (!credit) {
-      throw new Error('Crédito no disponible o expirado')
-    }
-
-    // Verificar que el crédito pertenece al usuario actual (si no es admin)
-    if (!user.roles.includes(UserRole.ADMIN) && credit.studentId !== user.id) {
-      throw new Error('No autorizado para usar este crédito')
-    }
-
-    // Usar el crédito para descuento en renovación
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [updatedCredit, studentPeriod] = await db.$transaction([
-      // Marcar el crédito como utilizado
-      db.studentCredit.update({
-        where: {
-          id: creditId,
-        },
-        data: {
-          isUsed: true,
-          usedFor: CreditUsage.DISCOUNT,
-        },
-      }),
-
-      // Crear o actualizar el período del estudiante con descuento aplicado
-      db.studentPeriod.create({
-        data: {
-          studentId: credit.studentId,
-          periodId: periodId,
-          packageType: packageType,
-          classesTotal: getClassesForPackage(packageType),
-          // Aquí se aplicaría alguna lógica de descuento en el precio
-          // que no estamos almacenando directamente en StudentPeriod
-        },
-      }),
-    ])
-
-    revalidatePath('/dashboard/periods')
-    revalidatePath('/dashboard/credits')
-
-    return { success: true, periodId: studentPeriod.id }
-  } catch (error) {
-    console.error('Error al usar crédito para descuento:', error)
-    return { success: false, error: 'Error al aplicar el descuento con el crédito' }
+export async function useCreditsForDiscount() {
+  // DEPRECATED: Los descuentos ahora se manejan al crear Enrollments
+  return { 
+    success: false, 
+    error: 'Esta funcionalidad ha sido reemplazada. Los descuentos se aplican al inscribirse en cursos.' 
   }
-}
-
-/**
- * Función auxiliar para obtener el número de clases según el tipo de paquete
- */
-function getClassesForPackage(packageType: string): number {
-  const packageMap: Record<string, number> = {
-    basic: 8,
-    standard: 12,
-    intensive: 16,
-    custom: 0,
-  }
-
-  return packageMap[packageType] || 0
 }
 
 /**
@@ -419,10 +323,11 @@ export async function generatePerfectAttendanceCredits(periodId: string) {
     }
 
     // Obtener todos los estudiantes con asistencia perfecta en este período
-    const studentPeriods = await db.studentPeriod.findMany({
+    const enrollments = await db.enrollment.findMany({
       where: {
-        periodId: periodId,
+        academicPeriodId: periodId,
         classesMissed: 0, // Asistencia perfecta significa 0 clases perdidas
+        status: 'ACTIVE',
       },
       include: {
         student: true,
@@ -430,13 +335,13 @@ export async function generatePerfectAttendanceCredits(periodId: string) {
     })
 
     // Crear créditos para cada estudiante con asistencia perfecta
-    const creditsPromises = studentPeriods.map(async (sp) => {
+    const creditsPromises = enrollments.map(async (enrollment) => {
       // Calcular fecha de expiración (3 meses desde la fecha actual)
       const expiryDate = addMonths(new Date(), 3)
 
       return db.studentCredit.create({
         data: {
-          studentId: sp.studentId,
+          studentId: enrollment.studentId,
           amount: 2, // 2 créditos por asistencia perfecta
           source: CreditSource.PERFECT_ATTENDANCE,
           isUsed: false,

@@ -9,6 +9,7 @@ export interface ClassBookingWithDetails {
   id: string
   studentId: string
   teacherId: string
+  enrollmentId: string
   day: string
   timeSlot: string
   status: string
@@ -17,7 +18,6 @@ export interface ClassBookingWithDetails {
   cancelledAt: Date | null
   cancelledBy: string | null
   completedAt: Date | null
-  studentPeriodId: string | null
   creditId: string | null
   student: {
     id: string
@@ -31,15 +31,23 @@ export interface ClassBookingWithDetails {
     lastName: string
     email: string
   }
-  studentPeriod: {
+  enrollment: {
     id: string
-    packageType: string
-    period: {
+    course: {
+      id: string
+      title: string
+      language: string
+      level: string
+    }
+    academicPeriod: {
+      id: string
       name: string
       startDate: Date
       endDate: Date
     }
-  } | null
+    classesTotal: number
+    classesAttended: number
+  }
   createdAt: Date
   updatedAt: Date
 }
@@ -74,8 +82,8 @@ export async function getAllClasses(filters?: ClassFilters): Promise<ClassBookin
       where.status = filters.status
     }
     if (filters?.periodId) {
-      where.studentPeriod = {
-        periodId: filters.periodId,
+      where.enrollment = {
+        academicPeriodId: filters.periodId,
       }
     }
 
@@ -98,12 +106,22 @@ export async function getAllClasses(filters?: ClassFilters): Promise<ClassBookin
             email: true,
           },
         },
-        studentPeriod: {
+        enrollment: {
           select: {
             id: true,
-            packageType: true,
-            period: {
+            classesTotal: true,
+            classesAttended: true,
+            course: {
               select: {
+                id: true,
+                title: true,
+                language: true,
+                level: true,
+              },
+            },
+            academicPeriod: {
+              select: {
+                id: true,
                 name: true,
                 startDate: true,
                 endDate: true,
@@ -143,12 +161,22 @@ export async function getClassById(id: string): Promise<ClassBookingWithDetails 
             email: true,
           },
         },
-        studentPeriod: {
+        enrollment: {
           select: {
             id: true,
-            packageType: true,
-            period: {
+            classesTotal: true,
+            classesAttended: true,
+            course: {
               select: {
+                id: true,
+                title: true,
+                language: true,
+                level: true,
+              },
+            },
+            academicPeriod: {
+              select: {
+                id: true,
                 name: true,
                 startDate: true,
                 endDate: true,
@@ -171,7 +199,72 @@ export async function createClass(data: z.infer<typeof CreateClassSchema>) {
     // Validate input data
     const validatedData = CreateClassSchema.parse(data)
     
-    // Check if the time slot is available for the teacher
+    // 1. Validar que la fecha esté dentro del período académico de la inscripción
+    const enrollment = await db.enrollment.findUnique({
+      where: { id: validatedData.enrollmentId },
+      include: {
+        academicPeriod: {
+          select: {
+            startDate: true,
+            endDate: true,
+            name: true,
+          },
+        },
+      },
+    })
+
+    if (!enrollment) {
+      return { success: false, error: 'Inscripción no encontrada' }
+    }
+
+    const classDate = new Date(validatedData.day)
+    const periodStart = new Date(enrollment.academicPeriod.startDate)
+    const periodEnd = new Date(enrollment.academicPeriod.endDate)
+
+    // Normalizar las fechas a medianoche para comparación
+    classDate.setHours(0, 0, 0, 0)
+    periodStart.setHours(0, 0, 0, 0)
+    periodEnd.setHours(0, 0, 0, 0)
+
+    if (classDate < periodStart || classDate > periodEnd) {
+      return {
+        success: false,
+        error: `La fecha debe estar dentro del período académico "${enrollment.academicPeriod.name}" (${periodStart.toLocaleDateString('es-ES')} - ${periodEnd.toLocaleDateString('es-ES')})`,
+      }
+    }
+
+    // 2. Validar que el horario esté dentro de la disponibilidad del profesor
+    const [startTime, endTime] = validatedData.timeSlot.split('-')
+    const dayOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][classDate.getDay()]
+
+    // Buscar disponibilidad del profesor para ese día de la semana
+    const teacherAvailability = await db.teacherAvailability.findMany({
+      where: {
+        userId: validatedData.teacherId,
+        day: dayOfWeek,
+      },
+    })
+
+    if (teacherAvailability.length === 0) {
+      return {
+        success: false,
+        error: `El profesor no tiene disponibilidad configurada para los ${dayOfWeek === 'monday' ? 'lunes' : dayOfWeek === 'tuesday' ? 'martes' : dayOfWeek === 'wednesday' ? 'miércoles' : dayOfWeek === 'thursday' ? 'jueves' : dayOfWeek === 'friday' ? 'viernes' : dayOfWeek === 'saturday' ? 'sábados' : 'domingos'}`,
+      }
+    }
+
+    // Verificar que el horario de la clase esté dentro de algún rango de disponibilidad
+    const isWithinAvailability = teacherAvailability.some((slot) => {
+      return startTime >= slot.startTime && endTime <= slot.endTime
+    })
+
+    if (!isWithinAvailability) {
+      return {
+        success: false,
+        error: `El horario ${validatedData.timeSlot} está fuera de la disponibilidad del profesor para este día`,
+      }
+    }
+    
+    // 3. Check if the time slot is available for the teacher (no conflicting bookings)
     const existingBooking = await db.classBooking.findUnique({
       where: {
         teacherId_day_timeSlot: {
@@ -190,10 +283,10 @@ export async function createClass(data: z.infer<typeof CreateClassSchema>) {
       data: {
         studentId: validatedData.studentId,
         teacherId: validatedData.teacherId,
+        enrollmentId: validatedData.enrollmentId,
         day: validatedData.day,
         timeSlot: validatedData.timeSlot,
         notes: validatedData.notes,
-        studentPeriodId: validatedData.studentPeriodId,
         creditId: validatedData.creditId,
         status: 'CONFIRMED',
       },
@@ -221,7 +314,7 @@ export interface UpdateClassData {
   timeSlot?: string
   status?: string
   notes?: string
-  studentPeriodId?: string
+  enrollmentId?: string
   creditId?: string
   completedAt?: Date
 }
@@ -276,7 +369,7 @@ export async function updateClass(id: string, data: z.infer<typeof EditClassSche
     if (validatedData.timeSlot) updateData.timeSlot = validatedData.timeSlot
     if (validatedData.status) updateData.status = validatedData.status
     if (validatedData.notes !== undefined) updateData.notes = validatedData.notes
-    if (validatedData.studentPeriodId) updateData.studentPeriodId = validatedData.studentPeriodId
+    if (validatedData.enrollmentId) updateData.enrollmentId = validatedData.enrollmentId
     if (validatedData.creditId) updateData.creditId = validatedData.creditId
     if (validatedData.completedAt) updateData.completedAt = validatedData.completedAt
 
@@ -421,6 +514,60 @@ export async function getAvailableTeachers(day: string, timeSlot: string) {
   }
 }
 
+/**
+ * Obtiene los horarios disponibles de un profesor para una fecha específica
+ * basándose en su disponibilidad configurada
+ */
+export async function getTeacherAvailableTimeSlots(teacherId: string, date: string) {
+  try {
+    const classDate = new Date(date)
+    const dayOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][classDate.getDay()]
+
+    // Obtener disponibilidad del profesor para ese día
+    const availability = await db.teacherAvailability.findMany({
+      where: {
+        userId: teacherId,
+        day: dayOfWeek,
+      },
+      orderBy: {
+        startTime: 'asc',
+      },
+    })
+
+    if (availability.length === 0) {
+      return []
+    }
+
+    // Generar slots de 30 minutos dentro de los rangos de disponibilidad
+    const timeSlots: string[] = []
+    
+    availability.forEach((slot) => {
+      const [startHour, startMinute] = slot.startTime.split(':').map(Number)
+      const [endHour, endMinute] = slot.endTime.split(':').map(Number)
+      
+      const startMinutes = startHour * 60 + startMinute
+      const endMinutes = endHour * 60 + endMinute
+      
+      // Generar slots de 30 minutos
+      for (let minutes = startMinutes; minutes < endMinutes; minutes += 30) {
+        const slotStartHour = Math.floor(minutes / 60)
+        const slotStartMinute = minutes % 60
+        const slotEndMinutes = minutes + 30
+        const slotEndHour = Math.floor(slotEndMinutes / 60)
+        const slotEndMinute = slotEndMinutes % 60
+        
+        const timeSlot = `${slotStartHour.toString().padStart(2, '0')}:${slotStartMinute.toString().padStart(2, '0')}-${slotEndHour.toString().padStart(2, '0')}:${slotEndMinute.toString().padStart(2, '0')}`
+        timeSlots.push(timeSlot)
+      }
+    })
+
+    return timeSlots
+  } catch (error) {
+    console.error('Error fetching teacher available time slots:', error)
+    return []
+  }
+}
+
 export async function getStudentEnrollments(studentId: string) {
   try {
     const enrollments = await db.enrollment.findMany({
@@ -447,12 +594,24 @@ export async function getStudentEnrollments(studentId: string) {
   }
 }
 
-export async function getStudentPeriods(studentId: string) {
+/**
+ * Obtiene las inscripciones de un estudiante agrupadas por período
+ * Reemplaza la funcionalidad de getStudentPeriods
+ */
+export async function getStudentEnrollmentsByPeriod(studentId: string) {
   try {
-    const periods = await db.studentPeriod.findMany({
+    const enrollments = await db.enrollment.findMany({
       where: { studentId },
       include: {
-        period: {
+        course: {
+          select: {
+            id: true,
+            title: true,
+            language: true,
+            level: true,
+          },
+        },
+        academicPeriod: {
           select: {
             id: true,
             name: true,
@@ -463,34 +622,46 @@ export async function getStudentPeriods(studentId: string) {
         },
       },
       orderBy: {
-        period: {
+        academicPeriod: {
           startDate: 'desc',
         },
       },
     })
 
-    return periods
+    return enrollments
   } catch (error) {
-    console.error('Error fetching student periods:', error)
-    throw new Error('Failed to fetch student periods')
+    console.error('Error fetching student enrollments:', error)
+    throw new Error('Failed to fetch student enrollments')
   }
 }
 
 /**
- * Obtiene o busca el StudentPeriod para un estudiante y período académico específico
+ * Obtiene las inscripciones activas de un estudiante para un curso y período académico
  */
-export async function getStudentPeriodByAcademicPeriod(
+export async function getStudentEnrollment(
   studentId: string,
+  courseId: string,
   academicPeriodId: string
 ) {
   try {
-    const studentPeriod = await db.studentPeriod.findFirst({
+    const enrollment = await db.enrollment.findUnique({
       where: {
-        studentId,
-        periodId: academicPeriodId,
+        studentId_courseId_academicPeriodId: {
+          studentId,
+          courseId,
+          academicPeriodId,
+        },
       },
       include: {
-        period: {
+        course: {
+          select: {
+            id: true,
+            title: true,
+            language: true,
+            level: true,
+          },
+        },
+        academicPeriod: {
           select: {
             id: true,
             name: true,
@@ -502,16 +673,23 @@ export async function getStudentPeriodByAcademicPeriod(
       },
     })
 
-    if (!studentPeriod) {
+    if (!enrollment) {
       return {
         success: false,
-        error: 'El estudiante no está inscrito en el período académico de esta fecha',
+        error: 'El estudiante no está inscrito en este curso para el período seleccionado',
       }
     }
 
-    return { success: true, studentPeriod }
+    if (enrollment.status !== 'ACTIVE') {
+      return {
+        success: false,
+        error: 'La inscripción no está activa',
+      }
+    }
+
+    return { success: true, enrollment }
   } catch (error) {
-    console.error('Error fetching student period:', error)
+    console.error('Error fetching enrollment:', error)
     return { success: false, error: 'Error al buscar la inscripción del estudiante' }
   }
 }
@@ -571,19 +749,22 @@ export async function getAllStudents() {
 }
 
 /**
- * Obtiene solo los estudiantes que están inscritos en al menos un período académico
+ * Obtiene solo los estudiantes que están inscritos en al menos un curso activo
  * Útil para programar clases, ya que solo estos estudiantes pueden tener clases
  */
-export async function getStudentsWithPeriods() {
+export async function getStudentsWithEnrollments() {
   try {
+    // Obtenemos estudiantes con inscripciones activas
     const students = await db.user.findMany({
       where: {
         roles: {
           has: 'STUDENT',
         },
         status: 'ACTIVE',
-        studentPeriods: {
-          some: {}, // Debe tener al menos un período inscrito
+        enrollments: {
+          some: {
+            status: 'ACTIVE',
+          },
         },
       },
       select: {
@@ -591,11 +772,27 @@ export async function getStudentsWithPeriods() {
         name: true,
         lastName: true,
         email: true,
-        studentPeriods: {
+        enrollments: {
+          where: {
+            status: 'ACTIVE',
+          },
           select: {
             id: true,
-            period: {
+            courseId: true,
+            academicPeriodId: true,
+            classesTotal: true,
+            classesAttended: true,
+            course: {
               select: {
+                id: true,
+                title: true,
+                language: true,
+                level: true,
+              },
+            },
+            academicPeriod: {
+              select: {
+                id: true,
                 name: true,
                 startDate: true,
                 endDate: true,
@@ -604,9 +801,7 @@ export async function getStudentsWithPeriods() {
             },
           },
           orderBy: {
-            period: {
-              startDate: 'desc',
-            },
+            enrollmentDate: 'desc',
           },
         },
       },
@@ -615,31 +810,71 @@ export async function getStudentsWithPeriods() {
       },
     })
 
+    console.log('Total estudiantes con inscripciones activas:', students.length)
+
     return students
   } catch (error) {
-    console.error('Error fetching students with periods:', error)
-    throw new Error('Failed to fetch students with periods')
+    console.error('Error fetching students with enrollments:', error)
+    throw new Error('Failed to fetch students with enrollments')
   }
 }
 
-export async function getAllAcademicPeriods() {
+/**
+ * Obtiene los días disponibles de un profesor dentro de un rango de fechas
+ * basándose en su disponibilidad configurada
+ */
+export async function getTeacherAvailableDays(
+  teacherId: string,
+  startDate: string,
+  endDate: string
+): Promise<string[]> {
   try {
-    const periods = await db.academicPeriod.findMany({
-      select: {
-        id: true,
-        name: true,
-        startDate: true,
-        endDate: true,
-        isActive: true,
-      },
-      orderBy: {
-        startDate: 'desc',
+    // Obtener toda la disponibilidad del profesor
+    const availability = await db.teacherAvailability.findMany({
+      where: {
+        userId: teacherId,
       },
     })
 
-    return periods
+    if (availability.length === 0) {
+      return []
+    }
+
+    // Mapear días de disponibilidad
+    const availableDaysOfWeek = new Set(availability.map((a) => a.day))
+
+    // Convertir nombres de días a números (0 = domingo, 6 = sábado)
+    const dayNameToNumber: Record<string, number> = {
+      sunday: 0,
+      monday: 1,
+      tuesday: 2,
+      wednesday: 3,
+      thursday: 4,
+      friday: 5,
+      saturday: 6,
+    }
+
+    const availableDayNumbers = Array.from(availableDaysOfWeek).map(
+      (day) => dayNameToNumber[day]
+    )
+
+    // Generar todas las fechas en el rango que coincidan con los días disponibles
+    const start = new Date(startDate)
+    const end = new Date(endDate)
+    const availableDates: string[] = []
+
+    const current = new Date(start)
+    while (current <= end) {
+      const dayOfWeek = current.getDay()
+      if (availableDayNumbers.includes(dayOfWeek)) {
+        availableDates.push(current.toISOString().split('T')[0])
+      }
+      current.setDate(current.getDate() + 1)
+    }
+
+    return availableDates
   } catch (error) {
-    console.error('Error fetching academic periods:', error)
-    throw new Error('Failed to fetch academic periods')
+    console.error('Error fetching teacher available days:', error)
+    return []
   }
 }

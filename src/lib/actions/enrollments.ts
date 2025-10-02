@@ -289,6 +289,43 @@ export async function updateEnrollment(
   }
 }
 
+// Get active enrollments for a student
+export async function getActiveEnrollmentsForStudent(studentId: string) {
+  try {
+    const enrollments = await db.enrollment.findMany({
+      where: {
+        studentId,
+        status: EnrollmentStatus.ACTIVE,
+      },
+      include: {
+        course: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            level: true,
+          },
+        },
+        academicPeriod: {
+          select: {
+            id: true,
+            name: true,
+            isActive: true,
+          },
+        },
+      },
+      orderBy: {
+        enrollmentDate: 'desc',
+      },
+    })
+
+    return { success: true, data: enrollments }
+  } catch (error) {
+    console.error('Error fetching student enrollments:', error)
+    return { success: false, error: 'Error al cargar inscripciones' }
+  }
+}
+
 // Delete enrollment
 export async function deleteEnrollment(id: string) {
   try {

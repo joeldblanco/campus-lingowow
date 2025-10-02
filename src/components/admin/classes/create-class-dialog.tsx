@@ -3,13 +3,11 @@
 import { useState, useEffect, useCallback } from 'react'
 import {
   createClass,
-  getStudentsWithPeriods,
-  getAvailableTeachers,
-  getStudentPeriodByAcademicPeriod,
+  getStudentsWithEnrollments,
+  getTeacherAvailableTimeSlots,
+  getTeacherAvailableDays,
 } from '@/lib/actions/classes'
 import { getStudentCredits } from '@/lib/actions/student-credits'
-import { getPeriodByDate } from '@/lib/actions/academic-period'
-import { getAllCourses } from '@/lib/actions/courses'
 import { getTeachersForCourse } from '@/lib/actions/teacher-courses'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -57,9 +55,20 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
       name: string
       lastName: string
       email: string
-      studentPeriods: Array<{
+      enrollments: Array<{
         id: string
-        period: {
+        courseId: string
+        academicPeriodId: string
+        classesTotal: number
+        classesAttended: number
+        course: {
+          id: string
+          title: string
+          language: string
+          level: string
+        }
+        academicPeriod: {
+          id: string
           name: string
           startDate: Date
           endDate: Date
@@ -71,56 +80,60 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
   const [courses, setCourses] = useState<
     Array<{ id: string; title: string; language: string; level: string }>
   >([])
-  const [availableTeachers, setAvailableTeachers] = useState<
-    Array<{ id: string; name: string; lastName: string; email: string }>
-  >([])
   const [courseTeachers, setCourseTeachers] = useState<
     Array<{ id: string; name: string; lastName: string; email: string }>
   >([])
+  const [teacherAvailableSlots, setTeacherAvailableSlots] = useState<string[]>([])
+  const [teacherAvailableDays, setTeacherAvailableDays] = useState<string[]>([])
   const [studentCredits, setStudentCredits] = useState<
     Array<{ id: string; amount: number; isUsed: boolean; source: string }>
   >([])
-  const [periodInfo, setPeriodInfo] = useState<{
-    academicPeriod: { id: string; name: string } | null
-    studentPeriod: {
+  const [enrollmentInfo, setEnrollmentInfo] = useState<{
+    enrollment: {
       id: string
+      courseId: string
+      academicPeriodId: string
       classesTotal: number
       classesAttended: number
+      course: { title: string }
+      academicPeriod: { 
+        name: string
+        startDate: Date
+        endDate: Date
+      }
     } | null
     error: string | null
-  }>({ academicPeriod: null, studentPeriod: null, error: null })
+  }>({ enrollment: null, error: null })
   const form = useForm<z.infer<typeof CreateClassSchema>>({
     resolver: zodResolver(CreateClassSchema),
     defaultValues: {
       studentId: '',
+      courseId: '',
+      enrollmentId: '',
       teacherId: '',
       day: '',
       timeSlot: '',
       notes: '',
-      studentPeriodId: '',
       creditId: '',
-      courseId: '',
     },
   })
 
   const loadData = async () => {
     try {
-      const [studentsData, coursesData] = await Promise.all([
-        getStudentsWithPeriods(),
-        getAllCourses(),
-      ])
+      const studentsData = await getStudentsWithEnrollments()
 
       setStudents(studentsData)
-      setCourses(
-        coursesData
-          .filter((c) => c.isPublished)
-          .map((c) => ({
-            id: c.id,
-            title: c.title,
-            language: c.language,
-            level: c.level,
-          }))
-      )
+      
+      // Extraer cursos únicos de las inscripciones
+      const uniqueCourses = new Map()
+      studentsData.forEach(student => {
+        student.enrollments.forEach(enrollment => {
+          if (!uniqueCourses.has(enrollment.course.id)) {
+            uniqueCourses.set(enrollment.course.id, enrollment.course)
+          }
+        })
+      })
+      setCourses(Array.from(uniqueCourses.values()))
     } catch {
       console.error('Error loading data')
     }
@@ -137,76 +150,48 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
     }
   }, [])
 
-  const calculatePeriod = useCallback(async (studentId: string, date: string) => {
-    if (!studentId || !date) {
-      setPeriodInfo({ academicPeriod: null, studentPeriod: null, error: null })
+  const findEnrollment = useCallback((studentId: string, courseId: string) => {
+    if (!studentId || !courseId) {
+      setEnrollmentInfo({ enrollment: null, error: null })
       return
     }
 
-    try {
-      // Buscar el período académico para la fecha
-      const periodResult = await getPeriodByDate(date)
-
-      if (!periodResult.success || !periodResult.period) {
-        setPeriodInfo({
-          academicPeriod: null,
-          studentPeriod: null,
-          error: periodResult.error || 'No existe un período académico para esta fecha',
-        })
-        form.setValue('studentPeriodId', '')
-        toast.error('No existe un período académico para la fecha seleccionada')
-        return
-      }
-
-      // Buscar la inscripción del estudiante en ese período
-      const studentPeriodResult = await getStudentPeriodByAcademicPeriod(
-        studentId,
-        periodResult.period.id
-      )
-
-      if (!studentPeriodResult.success || !studentPeriodResult.studentPeriod) {
-        setPeriodInfo({
-          academicPeriod: { id: periodResult.period.id, name: periodResult.period.name },
-          studentPeriod: null,
-          error: studentPeriodResult.error || 'El estudiante no está inscrito en este período',
-        })
-        form.setValue('studentPeriodId', '')
-        toast.error('El estudiante no está inscrito en el período de esta fecha')
-        return
-      }
-
-      // Todo correcto, establecer el período
-      setPeriodInfo({
-        academicPeriod: { id: periodResult.period.id, name: periodResult.period.name },
-        studentPeriod: {
-          id: studentPeriodResult.studentPeriod.id,
-          classesTotal: studentPeriodResult.studentPeriod.classesTotal,
-          classesAttended: studentPeriodResult.studentPeriod.classesAttended,
-        },
-        error: null,
-      })
-      form.setValue('studentPeriodId', studentPeriodResult.studentPeriod.id)
-    } catch (error) {
-      console.error('Error calculating period:', error)
-      setPeriodInfo({
-        academicPeriod: null,
-        studentPeriod: null,
-        error: 'Error al calcular el período',
-      })
-      toast.error('Error al calcular el período académico')
+    const student = students.find(s => s.id === studentId)
+    if (!student) {
+      setEnrollmentInfo({ enrollment: null, error: 'Estudiante no encontrado' })
+      return
     }
-  }, [form])
 
-  const loadAvailableTeachers = useCallback(async () => {
-    const day = form.watch('day')
-    const timeSlot = form.watch('timeSlot')
-    try {
-      const available = await getAvailableTeachers(day, timeSlot)
-      setAvailableTeachers(available)
-    } catch {
-      toast.error('Error al verificar disponibilidad de profesores')
+    const enrollment = student.enrollments.find(e => e.courseId === courseId)
+    if (!enrollment) {
+      setEnrollmentInfo({ 
+        enrollment: null, 
+        error: 'El estudiante no está inscrito en este curso' 
+      })
+      form.setValue('enrollmentId', '')
+      toast.error('El estudiante no está inscrito en este curso')
+      return
     }
-  }, [form])
+
+    // Mapear el enrollment con las fechas del período académico
+    const mappedEnrollment = {
+      id: enrollment.id,
+      courseId: enrollment.courseId,
+      academicPeriodId: enrollment.academicPeriodId,
+      classesTotal: enrollment.classesTotal,
+      classesAttended: enrollment.classesAttended,
+      course: enrollment.course,
+      academicPeriod: {
+        name: enrollment.academicPeriod.name,
+        startDate: enrollment.academicPeriod.startDate,
+        endDate: enrollment.academicPeriod.endDate,
+      },
+    }
+
+    setEnrollmentInfo({ enrollment: mappedEnrollment, error: null })
+    form.setValue('enrollmentId', enrollment.id)
+  }, [students, form])
+
 
   useEffect(() => {
     if (open) {
@@ -228,47 +213,89 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
     }
   }, [])
 
+  const loadTeacherAvailableDays = useCallback(async () => {
+    const teacherId = form.watch('teacherId')
+    
+    if (!teacherId || !enrollmentInfo.enrollment) {
+      setTeacherAvailableDays([])
+      return
+    }
+
+    try {
+      const periodStart = new Date(enrollmentInfo.enrollment.academicPeriod.startDate)
+      const periodEnd = new Date(enrollmentInfo.enrollment.academicPeriod.endDate)
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+
+      const startDate = periodStart > today 
+        ? periodStart.toISOString().split('T')[0]
+        : today.toISOString().split('T')[0]
+      const endDate = periodEnd.toISOString().split('T')[0]
+
+      const days = await getTeacherAvailableDays(teacherId, startDate, endDate)
+      setTeacherAvailableDays(days)
+    } catch {
+      toast.error('Error al cargar días disponibles del profesor')
+      setTeacherAvailableDays([])
+    }
+  }, [form, enrollmentInfo])
+
+  const loadTeacherAvailableSlots = useCallback(async () => {
+    const teacherId = form.watch('teacherId')
+    const day = form.watch('day')
+    
+    if (!teacherId || !day) {
+      setTeacherAvailableSlots([])
+      return
+    }
+
+    try {
+      const slots = await getTeacherAvailableTimeSlots(teacherId, day)
+      setTeacherAvailableSlots(slots)
+    } catch {
+      toast.error('Error al cargar horarios disponibles del profesor')
+      setTeacherAvailableSlots([])
+    }
+  }, [form])
+
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
       if (name === 'studentId' && value.studentId) {
         loadStudentCredits(value.studentId)
         // Reset dependent fields
-        form.setValue('studentPeriodId', '')
+        form.setValue('enrollmentId', '')
         form.setValue('creditId', '')
-        setPeriodInfo({ academicPeriod: null, studentPeriod: null, error: null })
-        // Recalcular período si ya hay fecha seleccionada
-        if (value.day) {
-          calculatePeriod(value.studentId, value.day)
-        }
+        setEnrollmentInfo({ enrollment: null, error: null })
       }
-      if (name === 'day' && value.day && value.studentId) {
-        calculatePeriod(value.studentId, value.day)
+      if ((name === 'studentId' || name === 'courseId') && value.studentId && value.courseId) {
+        findEnrollment(value.studentId, value.courseId)
       }
       if (name === 'courseId' && value.courseId) {
         loadCourseTeachers(value.courseId)
         // Reset teacher selection
         form.setValue('teacherId', '')
+        form.setValue('enrollmentId', '')
+        form.setValue('day', '')
+        form.setValue('timeSlot', '')
+        setEnrollmentInfo({ enrollment: null, error: null })
+        setTeacherAvailableDays([])
+        setTeacherAvailableSlots([])
       }
-      if ((name === 'day' || name === 'timeSlot') && value.day && value.timeSlot) {
-        loadAvailableTeachers()
+      if (name === 'teacherId' && value.teacherId) {
+        loadTeacherAvailableDays()
+        // Reset day and timeSlot when teacher changes
+        form.setValue('day', '')
+        form.setValue('timeSlot', '')
+      }
+      if (name === 'day' && value.day && value.teacherId) {
+        loadTeacherAvailableSlots()
+        // Reset timeSlot when day changes
+        form.setValue('timeSlot', '')
       }
     })
     return () => subscription.unsubscribe()
-  }, [form, loadAvailableTeachers, loadStudentCredits, calculatePeriod, loadCourseTeachers])
+  }, [form, loadStudentCredits, findEnrollment, loadCourseTeachers, loadTeacherAvailableDays, loadTeacherAvailableSlots])
 
-  const generateTimeSlots = () => {
-    const slots = []
-    for (let hour = 8; hour <= 20; hour++) {
-      for (let minute = 0; minute < 60; minute += 30) {
-        const startTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
-        const endHour = minute === 30 ? hour + 1 : hour
-        const endMinute = minute === 30 ? 0 : 30
-        const endTime = `${endHour.toString().padStart(2, '0')}:${endMinute.toString().padStart(2, '0')}`
-        slots.push(`${startTime}-${endTime}`)
-      }
-    }
-    return slots
-  }
 
   const onSubmit = async (values: z.infer<typeof CreateClassSchema>) => {
     setIsLoading(true)
@@ -285,7 +312,7 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
         toast.success('Clase programada exitosamente')
         setOpen(false)
         form.reset()
-        setPeriodInfo({ academicPeriod: null, studentPeriod: null, error: null })
+        setEnrollmentInfo({ enrollment: null, error: null })
         setStudentCredits([])
         window.location.reload()
       } else {
@@ -299,9 +326,6 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
     }
   }
 
-  const isTeacherAvailable = (teacherId: string) => {
-    return availableTeachers.some((t) => t.id === teacherId)
-  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -331,137 +355,19 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                       <SelectContent>
                         {students.length === 0 ? (
                           <SelectItem value="no-students" disabled>
-                            No hay estudiantes inscritos en períodos
+                            No hay estudiantes con inscripciones activas
                           </SelectItem>
                         ) : (
-                          students.map((student) => {
-                            const activePeriod = student.studentPeriods.find((sp) => sp.period.isActive)
-                            const periodCount = student.studentPeriods.length
-                            return (
-                              <SelectItem key={student.id} value={student.id}>
-                                {student.name} {student.lastName}
-                                {activePeriod && (
-                                  <span className="text-xs text-muted-foreground">
-                                    {' '}
-                                    - {activePeriod.period.name}
-                                  </span>
-                                )}
-                                {!activePeriod && periodCount > 0 && (
-                                  <span className="text-xs text-muted-foreground">
-                                    {' '}
-                                    - {periodCount} período{periodCount > 1 ? 's' : ''}
-                                  </span>
-                                )}
-                              </SelectItem>
-                            )
-                          })
+                          students.map((student) => (
+                            <SelectItem key={student.id} value={student.id}>
+                              {student.name} {student.lastName}
+                              <span className="text-xs text-muted-foreground">
+                                {' '}
+                                - {student.enrollments.length} inscripción{student.enrollments.length > 1 ? 'es' : ''}
+                              </span>
+                            </SelectItem>
+                          ))
                         )}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="day"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Fecha</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="date"
-                        min={new Date().toISOString().split('T')[0]}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="timeSlot"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Horario</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecciona un horario" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {generateTimeSlots().map((slot) => (
-                          <SelectItem key={slot} value={slot}>
-                            {slot}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {periodInfo.academicPeriod && periodInfo.studentPeriod && (
-                <div className="rounded-lg border border-green-200 bg-green-50 p-3">
-                  <p className="text-sm font-medium text-green-900">
-                    Período: {periodInfo.academicPeriod.name}
-                  </p>
-                  <p className="text-xs text-green-700">
-                    Progreso: {periodInfo.studentPeriod.classesAttended}/{periodInfo.studentPeriod.classesTotal} clases
-                  </p>
-                </div>
-              )}
-
-              {periodInfo.error && (
-                <div className="rounded-lg border border-red-200 bg-red-50 p-3">
-                  <p className="text-sm font-medium text-red-900">⚠️ {periodInfo.error}</p>
-                  <p className="text-xs text-red-700 mt-1">
-                    Verifica que el estudiante esté inscrito en un período que incluya esta fecha.
-                  </p>
-                </div>
-              )}
-
-              <FormField
-                control={form.control}
-                name="studentPeriodId"
-                render={({ field }) => (
-                  <FormItem className="hidden">
-                    <FormControl>
-                      <Input type="hidden" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="creditId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Crédito (opcional)</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      disabled={!form.watch('studentId')}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Sin crédito" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="no-credit">Sin crédito</SelectItem>
-                        {studentCredits.map((credit) => (
-                          <SelectItem key={credit.id} value={credit.id}>
-                            {credit.source} - {credit.amount} crédito(s)
-                          </SelectItem>
-                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -475,14 +381,22 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Curso</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select 
+                      onValueChange={field.onChange} 
+                      value={field.value}
+                      disabled={!form.watch('studentId')}
+                    >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Selecciona un curso" />
+                          <SelectValue placeholder={!form.watch('studentId') ? "Primero selecciona un estudiante" : "Selecciona un curso"} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {courses.length === 0 ? (
+                        {!form.watch('studentId') ? (
+                          <SelectItem value="no-student-selected" disabled>
+                            Selecciona un estudiante primero
+                          </SelectItem>
+                        ) : courses.length === 0 ? (
                           <SelectItem value="no-courses" disabled>
                             No hay cursos disponibles
                           </SelectItem>
@@ -495,6 +409,39 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                         )}
                       </SelectContent>
                     </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {enrollmentInfo.enrollment && (
+                <div className="rounded-lg border border-green-200 bg-green-50 p-3">
+                  <p className="text-sm font-medium text-green-900">
+                    {enrollmentInfo.enrollment.course.title} - {enrollmentInfo.enrollment.academicPeriod.name}
+                  </p>
+                  <p className="text-xs text-green-700">
+                    Progreso: {enrollmentInfo.enrollment.classesAttended}/{enrollmentInfo.enrollment.classesTotal} clases
+                  </p>
+                </div>
+              )}
+
+              {enrollmentInfo.error && (
+                <div className="rounded-lg border border-red-200 bg-red-50 p-3">
+                  <p className="text-sm font-medium text-red-900">⚠️ {enrollmentInfo.error}</p>
+                  <p className="text-xs text-red-700 mt-1">
+                    Verifica que el estudiante esté inscrito en este curso.
+                  </p>
+                </div>
+              )}
+
+              <FormField
+                control={form.control}
+                name="enrollmentId"
+                render={({ field }) => (
+                  <FormItem className="hidden">
+                    <FormControl>
+                      <Input type="hidden" {...field} />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -526,24 +473,11 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                             No hay profesores asignados a este curso
                           </SelectItem>
                         ) : (
-                          courseTeachers.map((teacher) => {
-                            const hasDateTime = !!form.watch('day') && !!form.watch('timeSlot')
-                            const isAvailable = hasDateTime ? isTeacherAvailable(teacher.id) : true
-                            const isDisabled = hasDateTime && !isAvailable
-                            return (
-                              <SelectItem
-                                key={teacher.id}
-                                value={teacher.id}
-                                disabled={isDisabled}
-                              >
-                                {teacher.name} {teacher.lastName}
-                                {form.watch('day') &&
-                                  form.watch('timeSlot') &&
-                                  !isAvailable &&
-                                  ' (No disponible)'}
-                              </SelectItem>
-                            )
-                          })
+                          courseTeachers.map((teacher) => (
+                            <SelectItem key={teacher.id} value={teacher.id}>
+                              {teacher.name} {teacher.lastName}
+                            </SelectItem>
+                          ))
                         )}
                       </SelectContent>
                     </Select>
@@ -552,11 +486,153 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                         No hay profesores asignados a este curso. Asigna profesores desde la gestión de usuarios.
                       </p>
                     )}
-                    {form.watch('day') && form.watch('timeSlot') && form.watch('courseId') && courseTeachers.length > 0 && availableTeachers.length === 0 && (
-                      <p className="text-sm text-red-600">
-                        No hay profesores disponibles en este horario
-                      </p>
-                    )}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="day"
+                render={({ field }) => {
+                  const teacherId = form.watch('teacherId')
+                  const hasTeacher = !!teacherId
+
+                  return (
+                    <FormItem>
+                      <FormLabel>Fecha</FormLabel>
+                      <Select 
+                        onValueChange={field.onChange} 
+                        value={field.value}
+                        disabled={!hasTeacher}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={!hasTeacher ? "Selecciona un profesor primero" : "Selecciona una fecha"} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {!hasTeacher ? (
+                            <SelectItem value="no-teacher" disabled>
+                              Selecciona un profesor primero
+                            </SelectItem>
+                          ) : teacherAvailableDays.length === 0 ? (
+                            <SelectItem value="no-availability" disabled>
+                              El profesor no tiene disponibilidad configurada
+                            </SelectItem>
+                          ) : (
+                            teacherAvailableDays.map((date) => {
+                              const dateObj = new Date(date + 'T00:00:00')
+                              const formattedDate = dateObj.toLocaleDateString('es-ES', {
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                              })
+                              return (
+                                <SelectItem key={date} value={date}>
+                                  {formattedDate}
+                                </SelectItem>
+                              )
+                            })
+                          )}
+                        </SelectContent>
+                      </Select>
+                      {hasTeacher && teacherAvailableDays.length === 0 && (
+                        <p className="text-xs text-amber-600">
+                          El profesor no tiene disponibilidad configurada en el período académico
+                        </p>
+                      )}
+                      {hasTeacher && teacherAvailableDays.length > 0 && (
+                        <p className="text-xs text-muted-foreground">
+                          Mostrando solo fechas con disponibilidad del profesor
+                        </p>
+                      )}
+                      <FormMessage />
+                    </FormItem>
+                  )
+                }}
+              />
+
+              <FormField
+                control={form.control}
+                name="timeSlot"
+                render={({ field }) => {
+                  const day = form.watch('day')
+                  const hasDay = !!day
+
+                  return (
+                    <FormItem>
+                      <FormLabel>Horario</FormLabel>
+                      <Select 
+                        onValueChange={field.onChange} 
+                        value={field.value}
+                        disabled={!hasDay}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={!hasDay ? "Selecciona una fecha primero" : "Selecciona un horario"} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {!hasDay ? (
+                            <SelectItem value="no-date" disabled>
+                              Selecciona una fecha primero
+                            </SelectItem>
+                          ) : teacherAvailableSlots.length === 0 ? (
+                            <SelectItem value="no-availability" disabled>
+                              El profesor no tiene horarios disponibles para este día
+                            </SelectItem>
+                          ) : (
+                            teacherAvailableSlots.map((slot) => (
+                              <SelectItem key={slot} value={slot}>
+                                {slot}
+                              </SelectItem>
+                            ))
+                          )}
+                        </SelectContent>
+                      </Select>
+                      {hasDay && teacherAvailableSlots.length > 0 && (
+                        <p className="text-xs text-muted-foreground">
+                          Mostrando solo horarios disponibles del profesor
+                        </p>
+                      )}
+                      {hasDay && teacherAvailableSlots.length === 0 && (
+                        <p className="text-xs text-amber-600">
+                          El profesor no tiene bloques de horario configurados para este día
+                        </p>
+                      )}
+                      <FormMessage />
+                    </FormItem>
+                  )
+                }}
+              />
+
+              <FormField
+                control={form.control}
+                name="creditId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Crédito (opcional)</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      disabled={!form.watch('studentId')}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Sin crédito" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="no-credit">Sin crédito</SelectItem>
+                        {studentCredits.map((credit) => (
+                          <SelectItem key={credit.id} value={credit.id}>
+                            {credit.source} - {credit.amount} crédito(s)
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}

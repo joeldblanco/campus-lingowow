@@ -1,5 +1,6 @@
 'use client'
 
+import { BookingDialog } from '@/components/calendar/booking-dialog'
 import { BookingModeToggle } from '@/components/calendar/booking-mode-toggle'
 import { DateView } from '@/components/calendar/date-view'
 import { SettingsDialog } from '@/components/calendar/settings-dialog'
@@ -19,8 +20,8 @@ import {
   getTeacherBookings,
   updateCalendarSettings,
 } from '@/lib/actions/calendar'
+import { getActiveEnrollmentsForStudent } from '@/lib/actions/enrollments'
 import {
-  generateTimeSlotWithDuration,
   isSlotAvailableForDuration,
   isSlotOverlappingWithBookings,
 } from '@/lib/utils/booking'
@@ -73,6 +74,29 @@ export function CalendarApp() {
   const [useAccordion, setUseAccordion] = useState(window?.innerWidth < 768)
   const [modifiedSlots, setModifiedSlots] = useState(new Set())
   const [bookingMode, setBookingMode] = useState<'40min' | '90min'>('40min')
+  const [showBookingDialog, setShowBookingDialog] = useState(false)
+  const [pendingBooking, setPendingBooking] = useState<{
+    day: string
+    timeSlot: string
+    teacherId: string
+  } | null>(null)
+  const [enrollments, setEnrollments] = useState<
+    Array<{
+      id: string
+      course: {
+        id: string
+        title: string
+        description: string
+        level: string
+      }
+      academicPeriod: {
+        id: string
+        name: string
+        isActive: boolean
+      }
+    }>
+  >([])
+  const [selectedTeacherId, setSelectedTeacherId] = useState<string>('')
   const { data: session } = useSession()
   const userId = session?.user?.id
 
@@ -109,8 +133,13 @@ export function CalendarApp() {
       setIsLoading(true)
       try {
         if (!userId) return
+        
+        // Establecer el teacherId según el rol
+        const teacherId = userRole === UserRole.TEACHER ? userId : selectedTeacherId || userId
+        setSelectedTeacherId(teacherId)
+        
         // Cargar disponibilidad del profesor
-        const availabilityResult = await getTeacherAvailability(userId)
+        const availabilityResult = await getTeacherAvailability(teacherId)
         if (availabilityResult.success && availabilityResult.data) {
           setTeacherAvailability(availabilityResult.data)
         }
@@ -122,6 +151,12 @@ export function CalendarApp() {
             processBookings(bookingsResult.data)
           }
         } else {
+          // Cargar enrollments del estudiante
+          const enrollmentsResult = await getActiveEnrollmentsForStudent(userId)
+          if (enrollmentsResult.success && enrollmentsResult.data) {
+            setEnrollments(enrollmentsResult.data)
+          }
+
           const bookingsResult = await getStudentBookings()
           if (bookingsResult.success && bookingsResult.data) {
             const studentBookings: Record<string, string[]> = {}
@@ -186,6 +221,7 @@ export function CalendarApp() {
 
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId, userRole])
 
   // Guardar cambios de disponibilidad
@@ -438,10 +474,6 @@ export function CalendarApp() {
       return
     }
 
-    // Crear el time slot con la duración correcta
-    const [startTime] = splitTimeSlot(time)
-    const timeSlotWithDuration = generateTimeSlotWithDuration(startTime, durationMinutes)
-
     // Verificar si el slot ya está reservado o se superpone con otras reservas
     if (isSlotOverlappingWithBookings(time, bookedSlotsForDay, durationMinutes)) {
       toast.error('Este horario ya ha sido reservado o se superpone con otra reserva')
@@ -455,40 +487,70 @@ export function CalendarApp() {
       // Cancelar reserva (código existente)
       // ...
     } else {
-      // Book the slot with the correct duration
-      try {
-        const result = await bookClass({
-          teacherId: 'current',
-          day,
-          timeSlot: timeSlotWithDuration, // Usar el time slot con la duración correcta
-        })
+      // Abrir diálogo para seleccionar curso y reservar
+      if (!userId) {
+        toast.error('Debes iniciar sesión para reservar clases')
+        return
+      }
 
-        if (result.success) {
-          setBookedSlots((prev) => {
-            const dayBookings = [...(prev[day] || [])]
-            return {
-              ...prev,
-              [day]: [...dayBookings, timeSlotWithDuration].sort(),
-            }
-          })
-          toast.success('Clase reservada correctamente')
+      // Calcular el timeSlot completo según la duración
+      const [startTime] = time.split('-')
+      const [hours, minutes] = startTime.split(':').map(Number)
+      const startMinutes = hours * 60 + minutes
+      const endMinutes = startMinutes + durationMinutes
+      const endHours = Math.floor(endMinutes / 60)
+      const endMins = endMinutes % 60
+      const endTime = `${endHours.toString().padStart(2, '0')}:${endMins.toString().padStart(2, '0')}`
+      const fullTimeSlot = `${startTime}-${endTime}`
 
-          // Recargar bookings para obtener el ID
+      // Guardar información de la reserva pendiente
+      setPendingBooking({
+        day,
+        timeSlot: fullTimeSlot,
+        teacherId: selectedTeacherId || userId,
+      })
+      setShowBookingDialog(true)
+    }
+  }
+
+  // Manejar confirmación de reserva
+  const handleConfirmBooking = async (enrollmentId: string) => {
+    if (!pendingBooking) return
+
+    try {
+      const result = await bookClass({
+        teacherId: pendingBooking.teacherId,
+        enrollmentId,
+        day: pendingBooking.day,
+        timeSlot: pendingBooking.timeSlot,
+      })
+
+      if (result.success) {
+        toast.success('Clase reservada exitosamente')
+        setShowBookingDialog(false)
+        setPendingBooking(null)
+
+        // Recargar bookings
+        if (userId) {
           const bookingsResult = await getStudentBookings()
           if (bookingsResult.success && bookingsResult.data) {
+            const studentBookings: Record<string, string[]> = {}
+            bookingsResult.data.forEach((booking) => {
+              if (!studentBookings[booking.day]) {
+                studentBookings[booking.day] = []
+              }
+              studentBookings[booking.day].push(booking.timeSlot)
+            })
+            setBookedSlots(studentBookings)
             setBookings(bookingsResult.data)
           }
-        } else {
-          if (result.error === `Has alcanzado el límite de ${maxBookingsPerStudent} reservas`) {
-            toast.error(`Solo puedes reservar hasta ${maxBookingsPerStudent} slots`)
-          } else {
-            toast.error(result.error || 'Error al reservar clase')
-          }
         }
-      } catch (error) {
-        console.error('Error al reservar clase:', error)
-        toast.error('Error al reservar clase')
+      } else {
+        toast.error(result.error || 'Error al reservar clase')
       }
+    } catch (error) {
+      console.error('Error al reservar clase:', error)
+      toast.error('Error al reservar clase')
     }
   }
 
@@ -522,8 +584,24 @@ export function CalendarApp() {
     )
   }
 
+  // Formatear detalles de reserva para el diálogo
+  const bookingDetails = pendingBooking
+    ? {
+        day: pendingBooking.day,
+        timeSlot: pendingBooking.timeSlot,
+        duration: bookingMode === '40min' ? '40 minutos' : '90 minutos',
+      }
+    : { day: '', timeSlot: '', duration: '' }
+
   return (
     <div className="space-y-4">
+      <BookingDialog
+        open={showBookingDialog}
+        onOpenChange={setShowBookingDialog}
+        enrollments={enrollments}
+        onConfirm={handleConfirmBooking}
+        bookingDetails={bookingDetails}
+      />
       <div className="flex flex-col sm:flex-row justify-between gap-4">
         <UserRoleToggle userRole={userRole} setUserRole={setUserRole} />
         <div className="flex flex-col sm:flex-row gap-2">

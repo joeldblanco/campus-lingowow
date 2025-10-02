@@ -145,29 +145,35 @@ export function ViewClassDialog({ classItem, children }: ViewClassDialogProps) {
             </div>
           </div>
 
-          {/* Period Information */}
-          {classItem.studentPeriod && (
+          {/* Course and Period Information */}
+          {classItem.enrollment && (
             <div>
-              <h4 className="font-medium mb-3">Información del Período</h4>
+              <h4 className="font-medium mb-3">Información del Curso</h4>
               <Card>
                 <CardContent className="pt-4">
                   <div className="space-y-2">
                     <div>
-                      <p className="text-sm font-medium">Período Académico</p>
+                      <p className="text-sm font-medium">Curso</p>
                       <p className="text-sm text-muted-foreground">
-                        {classItem.studentPeriod.period.name}
+                        {classItem.enrollment.course.title} ({classItem.enrollment.course.language} - {classItem.enrollment.course.level})
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium">Tipo de Paquete</p>
+                      <p className="text-sm font-medium">Período Académico</p>
                       <p className="text-sm text-muted-foreground">
-                        {classItem.studentPeriod.packageType}
+                        {classItem.enrollment.academicPeriod.name}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">Progreso de Clases</p>
+                      <p className="text-sm text-muted-foreground">
+                        {classItem.enrollment.classesAttended}/{classItem.enrollment.classesTotal} clases completadas
                       </p>
                     </div>
                     <div>
                       <p className="text-sm font-medium">Duración del Período</p>
                       <p className="text-sm text-muted-foreground">
-                        {formatDate(classItem.studentPeriod.period.startDate.toString())} - {formatDate(classItem.studentPeriod.period.endDate.toString())}
+                        {formatDate(classItem.enrollment.academicPeriod.startDate.toString())} - {formatDate(classItem.enrollment.academicPeriod.endDate.toString())}
                       </p>
                     </div>
                   </div>

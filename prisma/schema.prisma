@@ -67,7 +67,6 @@ model User {
   bookingsAsStudent   ClassBooking[]        @relation("StudentBookings")
   bookingsAsTeacher   ClassBooking[]        @relation("TeacherBookings")
   classSchedules      ClassSchedule[]       @relation("TeacherSchedules")
-  studentPeriods      StudentPeriod[]
   studentCredits      StudentCredit[]
   classCredits        ClassCredit[]
   teacherIncentives   TeacherIncentive[]
@@ -462,12 +461,18 @@ model Enrollment {
   progress         Float            @default(0)
   enrollmentDate   DateTime         @default(now())
   lastAccessed     DateTime?
+  classesTotal     Int              @default(8) // Total de clases en el paquete
+  classesAttended  Int              @default(0) // Clases asistidas
+  classesMissed    Int              @default(0) // Clases perdidas
 
   // Relaciones
   student        User              @relation(fields: [studentId], references: [id], onDelete: Cascade)
   course         Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
   academicPeriod AcademicPeriod    @relation(fields: [academicPeriodId], references: [id], onDelete: Restrict)
   purchases      ProductPurchase[]
+  bookings       ClassBooking[]    // Clases programadas para esta inscripción
+  attendances    ClassAttendance[] // Asistencias para esta inscripción
+  schedules      ClassSchedule[]   // Horarios recurrentes para esta inscripción
 
   @@unique([studentId, courseId, academicPeriodId])
   @@index([studentId])
@@ -531,25 +536,25 @@ model TeacherCourse {
 // =============================================
 
 model ClassBooking {
-  id              String        @id @default(cuid())
-  studentId       String
-  teacherId       String
-  day             String // YYYY-MM-DD
-  timeSlot        String // HH:MM-HH:MM
-  status          BookingStatus @default(CONFIRMED)
-  notes           String?
-  reminderSent    Boolean       @default(false)
-  feedbackId      String?
-  cancelledAt     DateTime?
-  cancelledBy     String?
-  completedAt     DateTime?
-  studentPeriodId String
-  creditId        String?
+  id           String        @id @default(cuid())
+  studentId    String
+  teacherId    String
+  enrollmentId String
+  day          String // YYYY-MM-DD
+  timeSlot     String // HH:MM-HH:MM
+  status       BookingStatus @default(CONFIRMED)
+  notes        String?
+  reminderSent Boolean       @default(false)
+  feedbackId   String?
+  cancelledAt  DateTime?
+  cancelledBy  String?
+  completedAt  DateTime?
+  creditId     String?
 
   // Relaciones
   student            User                @relation("StudentBookings", fields: [studentId], references: [id])
   teacher            User                @relation("TeacherBookings", fields: [teacherId], references: [id])
-  studentPeriod      StudentPeriod       @relation(fields: [studentPeriodId], references: [id])
+  enrollment         Enrollment          @relation(fields: [enrollmentId], references: [id])
   studentCredit      StudentCredit?      @relation(fields: [creditId], references: [id])
   attendances        ClassAttendance[]
   teacherAttendances TeacherAttendance[]
@@ -561,7 +566,7 @@ model ClassBooking {
   @@unique([teacherId, day, timeSlot])
   @@index([studentId])
   @@index([teacherId])
-  @@index([studentPeriodId])
+  @@index([enrollmentId])
   @@map("class_bookings")
 }
 
@@ -595,7 +600,6 @@ model AcademicPeriod {
 
   // Relaciones
   season            Season             @relation(fields: [seasonId], references: [id])
-  studentPeriods    StudentPeriod[]
   classCredits      ClassCredit[]
   teacherIncentives TeacherIncentive[]
   enrollments       Enrollment[]
@@ -608,49 +612,22 @@ model AcademicPeriod {
   @@map("academic_periods")
 }
 
-model StudentPeriod {
-  id              String  @id @default(cuid())
-  studentId       String
-  periodId        String
-  packageType     String
-  classesTotal    Int
-  classesAttended Int     @default(0)
-  classesMissed   Int     @default(0)
-  proratedStart   Boolean @default(false)
-  proratedClasses Int     @default(0)
-
-  // Relaciones
-  student     User              @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  period      AcademicPeriod    @relation(fields: [periodId], references: [id])
-  schedules   ClassSchedule[]
-  bookings    ClassBooking[]
-  attendances ClassAttendance[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([studentId, periodId])
-  @@index([studentId])
-  @@index([periodId])
-  @@map("student_periods")
-}
-
 model ClassSchedule {
-  id              String @id @default(cuid())
-  studentPeriodId String
-  teacherId       String
-  dayOfWeek       Int // 0-6, 0 es domingo
-  startTime       String // HH:MM
-  endTime         String // HH:MM
+  id           String @id @default(cuid())
+  enrollmentId String
+  teacherId    String
+  dayOfWeek    Int // 0-6, 0 es domingo
+  startTime    String // HH:MM
+  endTime      String // HH:MM
 
   // Relaciones
-  studentPeriod StudentPeriod @relation(fields: [studentPeriodId], references: [id], onDelete: Cascade)
-  teacher       User          @relation("TeacherSchedules", fields: [teacherId], references: [id])
+  enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  teacher    User       @relation("TeacherSchedules", fields: [teacherId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([studentPeriodId, dayOfWeek, startTime])
+  @@unique([enrollmentId, dayOfWeek, startTime])
   @@index([teacherId, dayOfWeek])
   @@map("class_schedules")
 }
@@ -752,23 +729,23 @@ model TeacherAvailability {
 }
 
 model ClassAttendance {
-  id              String           @id @default(cuid())
-  classId         String
-  studentId       String
-  studentPeriodId String
-  status          AttendanceStatus @default(PRESENT)
-  timestamp       DateTime         @default(now())
+  id           String           @id @default(cuid())
+  classId      String
+  studentId    String
+  enrollmentId String
+  status       AttendanceStatus @default(PRESENT)
+  timestamp    DateTime         @default(now())
 
   // Relations
-  student       User          @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  booking       ClassBooking  @relation(fields: [classId], references: [id], onDelete: Cascade)
-  studentPeriod StudentPeriod @relation(fields: [studentPeriodId], references: [id])
+  student    User         @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  booking    ClassBooking @relation(fields: [classId], references: [id], onDelete: Cascade)
+  enrollment Enrollment   @relation(fields: [enrollmentId], references: [id])
 
   // Indexes
   @@unique([classId, studentId])
   @@index([classId])
   @@index([studentId])
-  @@index([studentPeriodId])
+  @@index([enrollmentId])
   @@map("class_attendances")
 }
 

@@ -40,7 +40,10 @@ export async function calculateRetentionIncentives(periodId: string) {
         id: periodId,
       },
       include: {
-        studentPeriods: {
+        enrollments: {
+          where: {
+            status: 'ACTIVE',
+          },
           include: {
             student: true,
           },
@@ -65,7 +68,11 @@ export async function calculateRetentionIncentives(periodId: string) {
         endDate: 'desc',
       },
       include: {
-        studentPeriods: true,
+        enrollments: {
+          where: {
+            status: 'ACTIVE',
+          },
+        },
       },
     })
 
@@ -92,8 +99,8 @@ export async function calculateRetentionIncentives(periodId: string) {
       const currentPeriodBookings = await db.classBooking.findMany({
         where: {
           teacherId: teacher.id,
-          studentPeriod: {
-            periodId: period.id,
+          enrollment: {
+            academicPeriodId: period.id,
           },
         },
         include: {
@@ -104,8 +111,8 @@ export async function calculateRetentionIncentives(periodId: string) {
       const previousPeriodBookings = await db.classBooking.findMany({
         where: {
           teacherId: teacher.id,
-          studentPeriod: {
-            periodId: previousPeriod.id,
+          enrollment: {
+            academicPeriodId: previousPeriod.id,
           },
         },
         include: {
@@ -221,8 +228,8 @@ export async function calculatePerfectAttendanceIncentives(periodId: string) {
       const periodBookings = await db.classBooking.findMany({
         where: {
           teacherId: teacher.id,
-          studentPeriod: {
-            periodId: period.id,
+          enrollment: {
+            academicPeriodId: period.id,
           },
         },
       })

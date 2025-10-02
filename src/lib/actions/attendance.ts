@@ -40,14 +40,14 @@ export async function markStudentAttendance(
       return { success: true } // Already marked attendance
     }
 
-    // Get the class booking to find the studentPeriodId
+    // Get the class booking to find the enrollmentId
     const classBooking = await prisma.classBooking.findUnique({
       where: { id: classId },
-      select: { studentPeriodId: true },
+      select: { enrollmentId: true },
     })
 
-    if (!classBooking || !classBooking.studentPeriodId) {
-      return { success: false, error: 'No se encontró información del período estudiantil' }
+    if (!classBooking || !classBooking.enrollmentId) {
+      return { success: false, error: 'No se encontró información de la inscripción' }
     }
 
     // Mark attendance
@@ -55,7 +55,7 @@ export async function markStudentAttendance(
       data: {
         classId,
         studentId,
-        studentPeriodId: classBooking.studentPeriodId,
+        enrollmentId: classBooking.enrollmentId,
         status: AttendanceStatus.PRESENT,
         timestamp: new Date(),
       },

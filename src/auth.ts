@@ -17,6 +17,11 @@ declare module 'next-auth' {
 
       /** The user's last name. */
       lastName: string
+
+      /** Datos de suplantación */
+      isImpersonating?: boolean
+      originalUserId?: string
+      impersonationData?: string
       /**
        * By default, TypeScript merges new interface properties and overwrites existing ones.
        * In this case, the default session user properties will be overwritten,
@@ -32,6 +37,12 @@ declare module 'next-auth/jwt' {
   interface JWT {
     /** OpenID ID Token */
     roles: UserRole[]
+    lastName?: string
+    
+    /** Datos de suplantación */
+    isImpersonating?: boolean
+    originalUserId?: string
+    impersonationData?: string
   }
 }
 
@@ -79,17 +90,35 @@ export const {
         if (token.roles) session.user.roles = token.roles
 
         if (token.lastName) session.user.lastName = token.lastName as string
+
+        // Pasar datos de suplantación a la sesión
+        if (token.isImpersonating) {
+          session.user.isImpersonating = token.isImpersonating
+          session.user.originalUserId = token.originalUserId
+          session.user.impersonationData = token.impersonationData
+        }
       }
 
       return session
     },
-    async jwt({ token }) {
+    async jwt({ token, user }) {
       if (!token.sub) return token
 
-      const existingUser = await getUserById(token.sub)
+      // Manejar datos de suplantación desde el objeto user (cuando se hace signIn)
+      if (user && 'impersonationData' in user && user.impersonationData) {
+        token.impersonationData = user.impersonationData as string
+        const impersonationData = JSON.parse(user.impersonationData as string)
+        token.isImpersonating = true
+        token.originalUserId = impersonationData.originalUserId
+      }
+
+      // Obtener datos del usuario actual
+      const userId = token.sub
+      const existingUser = await getUserById(userId)
 
       if (!existingUser || 'error' in existingUser) return token
 
+      // Actualizar token con datos del usuario
       token.roles = existingUser.roles
       token.lastName = existingUser.lastName
 

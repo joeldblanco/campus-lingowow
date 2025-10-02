@@ -21,6 +21,7 @@ interface AvailabilityParams {
 
 interface BookingParams {
   teacherId: string
+  enrollmentId: string
   day: string
   timeSlot: string
 }
@@ -336,7 +337,7 @@ export async function bookClass(params: BookingParams) {
     return { success: false, error: 'No autorizado' }
   }
 
-  const { teacherId, day, timeSlot } = params
+  const { teacherId, enrollmentId, day, timeSlot } = params
   const studentId = session.user.id
 
   try {
@@ -416,37 +417,28 @@ export async function bookClass(params: BookingParams) {
       }
     }
 
-    // Obtener el período académico actual
-    const currentPeriod = await db.academicPeriod.findFirst({
+    // Verificar que el enrollment existe y pertenece al estudiante
+    const enrollment = await db.enrollment.findUnique({
       where: {
-        isActive: true,
+        id: enrollmentId,
+      },
+      select: {
+        id: true,
+        studentId: true,
+        status: true,
       },
     })
 
-    if (!currentPeriod) {
-      return { success: false, error: 'No hay un período académico activo' }
+    if (!enrollment) {
+      return { success: false, error: 'Inscripción no encontrada' }
     }
 
-    // Obtener o crear el StudentPeriod para el estudiante
-    let studentPeriod = await db.studentPeriod.findUnique({
-      where: {
-        studentId_periodId: {
-          studentId,
-          periodId: currentPeriod.id,
-        },
-      },
-    })
+    if (enrollment.studentId !== studentId) {
+      return { success: false, error: 'Esta inscripción no te pertenece' }
+    }
 
-    // Si no existe, crear uno por defecto
-    if (!studentPeriod) {
-      studentPeriod = await db.studentPeriod.create({
-        data: {
-          studentId,
-          periodId: currentPeriod.id,
-          packageType: 'custom',
-          classesTotal: 1,
-        },
-      })
+    if (enrollment.status !== 'ACTIVE') {
+      return { success: false, error: 'La inscripción no está activa' }
     }
 
     // Crear la reserva
@@ -454,10 +446,10 @@ export async function bookClass(params: BookingParams) {
       data: {
         studentId,
         teacherId,
+        enrollmentId,
         day,
-        timeSlot, // Almacenamos el time slot completo con la duración correcta
+        timeSlot,
         status: BookingStatus.CONFIRMED,
-        studentPeriodId: studentPeriod.id,
       },
     })
 

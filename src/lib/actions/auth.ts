@@ -343,3 +343,36 @@ export const reset = async (values: z.infer<typeof ResetSchema>) => {
 
   return { success: 'Correo de recuperación enviado' }
 }
+
+/**
+ * Función para suplantar a otro usuario (solo para administradores)
+ * Permite a un administrador ver la plataforma como otro usuario
+ * 
+ * @param userId - ID del usuario a suplantar
+ * @returns URL del usuario suplantado
+ */
+export const impersonateUser = async (userId: string) => {
+  try {
+    // Obtener el usuario a suplantar
+    const userToImpersonate = await db.user.findUnique({
+      where: { id: userId },
+    })
+
+    if (!userToImpersonate) {
+      return { error: 'Usuario no encontrado' }
+    }
+
+    // Determinar redirección basada en roles del usuario suplantado
+    const redirectUrl = getRoleBasedRedirect(userToImpersonate.roles, null)
+    
+    return { 
+      success: `Suplantando a ${userToImpersonate.name} ${userToImpersonate.lastName}`,
+      userId: userToImpersonate.id,
+      redirect: redirectUrl 
+    }
+  } catch (error) {
+    return {
+      error: handleError(error) || 'Error al suplantar usuario',
+    }
+  }
+}

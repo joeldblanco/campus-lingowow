@@ -337,140 +337,14 @@ export async function setActivePeriod(periodId: string) {
 /**
  * Acción para inscribir a un estudiante en un período académico
  */
-export async function enrollStudentInPeriod(
-  formData:
-    | FormData
-    | {
-        studentId: string
-        periodId: string
-        packageType: string
-        proratedStart: boolean
-        proratedClasses?: number
-      }
-) {
-  try {
-    const user = await getCurrentUser()
-
-    if (!user || (!user.roles.includes(UserRole.ADMIN) && !user.roles.includes(UserRole.STUDENT))) {
-      throw new Error('No autorizado para realizar esta acción')
-    }
-
-    // Si es estudiante, solo puede inscribirse a sí mismo
-    if (
-      user.roles.includes(UserRole.STUDENT) &&
-      user.id !== (formData instanceof FormData ? formData.get('studentId') : formData.studentId)
-    ) {
-      throw new Error('No puedes inscribir a otro estudiante')
-    }
-
-    let studentId: string
-    let periodId: string
-    let packageType: string
-    let proratedStart: boolean
-    let proratedClasses: number = 0
-
-    // Procesar datos según el tipo de entrada
-    if (formData instanceof FormData) {
-      studentId = formData.get('studentId') as string
-      periodId = formData.get('periodId') as string
-      packageType = formData.get('packageType') as string
-      proratedStart = formData.get('proratedStart') === 'true'
-      proratedClasses = parseInt((formData.get('proratedClasses') as string) || '0')
-    } else {
-      studentId = formData.studentId
-      periodId = formData.periodId
-      packageType = formData.packageType
-      proratedStart = formData.proratedStart
-      proratedClasses = formData.proratedClasses || 0
-    }
-
-    // Verificar que el estudiante y el período existen
-    const [student, period] = await Promise.all([
-      db.user.findUnique({
-        where: {
-          id: studentId,
-          roles: {
-            has: UserRole.STUDENT,
-          },
-        },
-      }),
-      db.academicPeriod.findUnique({
-        where: {
-          id: periodId,
-        },
-      }),
-    ])
-
-    if (!student || !period) {
-      throw new Error('Estudiante o período no encontrado')
-    }
-
-    // Verificar que el estudiante no esté ya inscrito en este período
-    const existingEnrollment = await db.studentPeriod.findUnique({
-      where: {
-        studentId_periodId: {
-          studentId,
-          periodId,
-        },
-      },
-    })
-
-    if (existingEnrollment) {
-      throw new Error('El estudiante ya está inscrito en este período')
-    }
-
-    // Calcular el número total de clases según el tipo de paquete
-    let classesTotal
-
-    switch (packageType) {
-      case 'basic':
-        classesTotal = 8 // 2 clases x 4 semanas
-        break
-      case 'standard':
-        classesTotal = 12 // 3 clases x 4 semanas
-        break
-      case 'intensive':
-        classesTotal = 16 // 4 clases x 4 semanas
-        break
-      case 'custom':
-        // Si es prorateado, usar el número especificado
-        if (proratedStart && proratedClasses > 0) {
-          classesTotal = proratedClasses
-        } else {
-          throw new Error(
-            'Se requiere especificar el número de clases para un paquete personalizado'
-          )
-        }
-        break
-      default:
-        throw new Error('Tipo de paquete no válido')
-    }
-
-    // Ajustar el número de clases si es prorrateado y no es personalizado
-    if (proratedStart && packageType !== 'custom' && proratedClasses > 0) {
-      classesTotal = proratedClasses
-    }
-
-    // Crear la inscripción
-    const enrollment = await db.studentPeriod.create({
-      data: {
-        studentId,
-        periodId,
-        packageType,
-        classesTotal,
-        proratedStart,
-        proratedClasses: proratedStart ? proratedClasses : 0,
-      },
-    })
-
-    revalidatePath('/dashboard/students')
-    revalidatePath(`/dashboard/students/${studentId}`)
-    revalidatePath('/dashboard/periods')
-
-    return { success: true, enrollmentId: enrollment.id }
-  } catch (error) {
-    console.error('Error al inscribir estudiante:', error)
-    return { success: false, error: 'Error al inscribir al estudiante en el período' }
+/**
+ * @deprecated Esta función ya no se usa. Los estudiantes se inscriben en cursos (Enrollment), no en períodos.
+ * Usa la funcionalidad de enrollments desde /admin/enrollments
+ */
+export async function enrollStudentInPeriod() {
+  return { 
+    success: false, 
+    error: 'Esta funcionalidad ha sido reemplazada. Los estudiantes se inscriben en cursos específicos.' 
   }
 }
 

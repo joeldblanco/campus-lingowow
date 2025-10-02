@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -14,6 +14,9 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { ArrowUpDown, ChevronDown, MoreHorizontal, Pencil, Trash, Eye, BookOpen } from 'lucide-react'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
+import { impersonateUser } from '@/lib/actions/impersonate'
 
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -59,6 +62,31 @@ export function UsersDataTable({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
   const [editingUser, setEditingUser] = useState<User | null>(null)
+
+  const [isPending, startTransition] = useTransition()
+  const router = useRouter()
+
+  const handleImpersonate = (userId: string) => {
+    startTransition(() => {
+      impersonateUser(userId)
+        .then((response) => {
+          if (response.error) {
+            toast.error(response.error)
+          } else {
+            toast.success('Suplantación iniciada', {
+              description: 'Redirigiendo...',
+            })
+            // Redirigir después de suplantación exitosa
+            router.push('/')
+            router.refresh()
+          }
+        })
+        .catch((error) => {
+          toast.error('Error al suplantar usuario')
+          console.error('Error:', error)
+        })
+    })
+  }
 
   const columns: ColumnDef<User>[] = [
     {
@@ -211,9 +239,12 @@ export function UsersDataTable({
                 Eliminar
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem 
+                onClick={() => handleImpersonate(user.id)}
+                disabled={isPending}
+              >
                 <Eye className="mr-2 h-4 w-4" />
-                Suplantar
+                {isPending ? 'Suplantando...' : 'Suplantar'}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
