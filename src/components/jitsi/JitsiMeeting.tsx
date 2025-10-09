@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Loader2, AlertCircle } from 'lucide-react'
@@ -10,6 +10,7 @@ interface JitsiMeetingProps {
   roomName: string
   bookingId?: string
   onMeetingEnd?: () => void
+  studentName?: string
 }
 
 
@@ -34,11 +35,14 @@ interface JitsiOptions {
 interface JitsiAPI {
   addEventListener: (event: string, callback: (data?: unknown) => void) => void
   dispose: () => void
+  executeCommand: (command: string, ...args: unknown[]) => void
+  getParticipantsInfo: () => unknown[]
 }
 
-export function JitsiMeeting({ roomName, bookingId, onMeetingEnd }: JitsiMeetingProps) {
+export function JitsiMeeting({ roomName, bookingId, onMeetingEnd, studentName }: JitsiMeetingProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const apiRef = useRef<JitsiAPI | null>(null)
+  const isInitializedRef = useRef(false)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isScriptLoaded, setIsScriptLoaded] = useState(false)
@@ -69,9 +73,19 @@ export function JitsiMeeting({ roomName, bookingId, onMeetingEnd }: JitsiMeeting
     }
   }, [])
 
+  // Memoizar el callback de finalización de reunión
+  const handleMeetingEnd = useCallback(() => {
+    if (onMeetingEnd) {
+      onMeetingEnd()
+    } else {
+      router.push('/dashboard')
+    }
+  }, [onMeetingEnd, router])
+
   // Inicializar Jitsi cuando el script esté cargado
   useEffect(() => {
-    if (!isScriptLoaded || !containerRef.current) return
+    // Evitar re-inicializaciones si ya está inicializado
+    if (!isScriptLoaded || !containerRef.current || isInitializedRef.current) return
 
     const initializeJitsi = async () => {
       try {
@@ -94,6 +108,34 @@ export function JitsiMeeting({ roomName, bookingId, onMeetingEnd }: JitsiMeeting
 
         const { token, user } = await response.json()
 
+        // Verificar que el contenedor aún existe después del fetch
+        if (!containerRef.current) {
+          console.warn('Container ref is null after token fetch')
+          return
+        }
+
+        // Botones disponibles según el rol
+        const moderatorButtons = [
+          'microphone', 'camera', 'closedcaptions', 'desktop', 
+          'fullscreen', 'fodeviceselection', 'hangup', 'profile',
+          'recording', 'livestreaming', 'etherpad', 'sharedvideo',
+          'settings', 'raisehand', 'videoquality', 'filmstrip',
+          'invite', 'feedback', 'stats', 'shortcuts', 'tileview',
+          'videobackgroundblur', 'download', 'help', 'mute-everyone',
+          'security'
+        ]
+
+        const participantButtons = [
+          'microphone', 'camera', 'closedcaptions', 'desktop',
+          'fullscreen', 'fodeviceselection', 'hangup', 'profile',
+          'settings', 'raisehand', 'videoquality', 'filmstrip',
+          'tileview', 'videobackgroundblur'
+        ]
+
+        // Secciones de configuración según el rol
+        const moderatorSettings = ['devices', 'language', 'moderator', 'profile', 'calendar']
+        const participantSettings = ['devices', 'language', 'profile']
+
         // Configurar opciones de Jitsi
         const options: JitsiOptions = {
           roomName: `${process.env.NEXT_PUBLIC_JAAS_APP_ID}/${roomName}`,
@@ -114,21 +156,39 @@ export function JitsiMeeting({ roomName, bookingId, onMeetingEnd }: JitsiMeeting
             enablePhoneNumberInStats: false,
             requireDisplayName: false,
             notifications: [],
+            // Grabación automática
+            fileRecordingsEnabled: true,
+            fileRecordingsServiceEnabled: true,
+            fileRecordingsServiceSharingEnabled: false,
+            hiddenDomain: 'recorder.8x8.vc',
+            // Configuración de grabación
             recordingService: {
-              enabled: user.isModerator,
-              sharingEnabled: user.isModerator
+              enabled: true,
+              sharingEnabled: false,
+              hideStorageWarning: true
+            },
+            // Control de compartir pantalla
+            screenshotCapture: {
+              enabled: false
+            },
+            // Restricciones para participantes no moderadores
+            disableRemoteMute: !user.isModerator, // Solo moderadores pueden silenciar a otros
+            startSilent: false,
+            enableLobbyChat: false,
+            enableInsecureRoomNameWarning: false,
+            // Deshabilitar chat de Jitsi
+            disableChat: true,
+            // Permitir compartir pantalla con aprobación del moderador
+            desktopSharingFrameRate: {
+              min: 5,
+              max: 30
             }
           },
           interfaceConfigOverwrite: {
-            TOOLBAR_BUTTONS: [
-              'microphone', 'camera', 'closedcaptions', 'desktop', 
-              'fullscreen', 'fodeviceselection', 'hangup', 'profile',
-              'chat', 'recording', 'livestreaming', 'etherpad', 'sharedvideo',
-              'settings', 'raisehand', 'videoquality', 'filmstrip',
-              'invite', 'feedback', 'stats', 'shortcuts', 'tileview',
-              'videobackgroundblur', 'download', 'help', 'mute-everyone'
-            ],
-            SETTINGS_SECTIONS: ['devices', 'language', 'moderator', 'profile', 'calendar'],
+            TOOLBAR_BUTTONS: user.isModerator ? moderatorButtons : participantButtons,
+            SETTINGS_SECTIONS: user.isModerator ? moderatorSettings : participantSettings,
+            // Deshabilitar chat en la interfaz
+            DISABLE_CHAT: true,
             SHOW_JITSI_WATERMARK: false,
             SHOW_WATERMARK_FOR_GUESTS: false,
             SHOW_BRAND_WATERMARK: false,
@@ -175,14 +235,11 @@ export function JitsiMeeting({ roomName, bookingId, onMeetingEnd }: JitsiMeeting
 
         // Crear instancia de JitsiMeetExternalAPI
         apiRef.current = new window.JitsiMeetExternalAPI('8x8.vc', options)
+        isInitializedRef.current = true
 
         // Event listeners
         apiRef.current.addEventListener('readyToClose', () => {
-          if (onMeetingEnd) {
-            onMeetingEnd()
-          } else {
-            router.push('/dashboard')
-          }
+          handleMeetingEnd()
         })
 
         apiRef.current.addEventListener('participantLeft', (participant: unknown) => {
@@ -193,22 +250,72 @@ export function JitsiMeeting({ roomName, bookingId, onMeetingEnd }: JitsiMeeting
           console.log('Participante se unió:', participant)
         })
 
-        apiRef.current.addEventListener('videoConferenceJoined', (participant: unknown) => {
+        apiRef.current.addEventListener('videoConferenceJoined', async (participant: unknown) => {
           console.log('Te uniste a la conferencia:', participant)
           setIsLoading(false)
+          
+          // Marcar asistencia automáticamente
+          if (bookingId) {
+            try {
+              const userType = user.isModerator ? 'teacher' : 'student'
+              const response = await fetch('/api/attendance/mark', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                  bookingId, 
+                  userType 
+                }),
+              })
+              
+              const data = await response.json()
+              if (data.success) {
+                console.log(`Asistencia marcada: ${userType}`)
+              } else {
+                console.error('Error marcando asistencia:', data.error)
+              }
+            } catch (error) {
+              console.error('Error al marcar asistencia:', error)
+            }
+          }
+          
+          // Iniciar grabación automáticamente si es moderador
+          if (user.isModerator && apiRef.current) {
+            setTimeout(() => {
+              apiRef.current?.executeCommand('startRecording', {
+                mode: 'file',
+                shouldShare: false
+              })
+              console.log('Grabación iniciada automáticamente')
+            }, 3000) // Esperar 3 segundos después de unirse
+          }
+          
+          // Establecer el título de la sala
+          if (apiRef.current) {
+            const displayName = studentName ? `Aula de Clases - ${studentName}` : 'Aula de Clases'
+            apiRef.current.executeCommand('subject', displayName)
+          }
         })
 
         apiRef.current.addEventListener('videoConferenceLeft', () => {
           console.log('Saliste de la conferencia')
-          if (onMeetingEnd) {
-            onMeetingEnd()
-          } else {
-            router.push('/dashboard')
-          }
+          handleMeetingEnd()
         })
 
         apiRef.current.addEventListener('recordingStatusChanged', (status: unknown) => {
           console.log('Estado de grabación:', status)
+          // Prevenir que se detenga la grabación
+          const recordingStatus = status as { on?: boolean; mode?: string }
+          if (recordingStatus.on === false && user.isModerator && apiRef.current) {
+            console.log('Intentando reiniciar grabación...')
+            setTimeout(() => {
+              apiRef.current?.executeCommand('startRecording', {
+                mode: 'file',
+                shouldShare: false
+              })
+            }, 1000)
+          }
         })
 
       } catch (error) {
@@ -224,9 +331,10 @@ export function JitsiMeeting({ roomName, bookingId, onMeetingEnd }: JitsiMeeting
       if (apiRef.current) {
         apiRef.current.dispose()
         apiRef.current = null
+        isInitializedRef.current = false
       }
     }
-  }, [isScriptLoaded, roomName, bookingId, onMeetingEnd, router])
+  }, [isScriptLoaded, roomName, bookingId, studentName, handleMeetingEnd])
 
 
   const handleRetry = () => {
@@ -274,9 +382,11 @@ export function JitsiMeeting({ roomName, bookingId, onMeetingEnd }: JitsiMeeting
             <Loader2 className="w-12 h-12 mx-auto mb-4 animate-spin" />
             <h2 className="text-xl font-semibold mb-2">Iniciando Videollamada</h2>
             <p className="text-gray-300">Conectando con Campus Lingowow...</p>
-            <Badge variant="secondary" className="mt-4">
-              Sala: {roomName}
-            </Badge>
+            {studentName && (
+              <Badge variant="secondary" className="mt-4">
+                Aula de Clases - {studentName}
+              </Badge>
+            )}
           </div>
         </div>
       )}

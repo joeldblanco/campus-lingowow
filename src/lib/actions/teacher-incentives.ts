@@ -4,16 +4,16 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { db } from '@/lib/db'
-import { IncentiveType } from '@/types/academic-period'
 import { getCurrentUser } from '@/lib/utils/session'
-import { redirect } from 'next/navigation'
 import { UserRole } from '@prisma/client'
+import { redirect } from 'next/navigation'
+import { getCurrentDate } from '@/lib/utils/date'
 
 // Schema para validar la creación de incentivos
 const createIncentiveSchema = z.object({
   teacherId: z.string(),
   periodId: z.string(),
-  type: z.nativeEnum(IncentiveType),
+  type: z.string(),
   percentage: z.number().min(0).max(100),
   baseAmount: z.number().min(0),
 })
@@ -157,7 +157,7 @@ export async function calculateRetentionIncentives(periodId: string) {
           data: {
             teacherId: teacher.id,
             periodId: period.id,
-            type: IncentiveType.RETENTION,
+            type: 'RETENTION',
             percentage: incentivePercentage,
             baseAmount,
             bonusAmount,
@@ -248,7 +248,7 @@ export async function calculatePerfectAttendanceIncentives(periodId: string) {
         data: {
           teacherId: teacher.id,
           periodId: period.id,
-          type: IncentiveType.PERFECT_ATTENDANCE,
+          type: 'PERFECT_ATTENDANCE',
           percentage: incentivePercentage,
           baseAmount,
           bonusAmount,
@@ -282,7 +282,7 @@ export async function createTeacherIncentive(
     | {
         teacherId: string
         periodId: string
-        type: IncentiveType
+        type: string
         percentage: number
         baseAmount: number
       }
@@ -301,7 +301,7 @@ export async function createTeacherIncentive(
       const rawData = {
         teacherId: formData.get('teacherId') as string,
         periodId: formData.get('periodId') as string,
-        type: formData.get('type') as IncentiveType,
+        type: formData.get('type') as string,
         percentage: parseFloat(formData.get('percentage') as string),
         baseAmount: parseFloat(formData.get('baseAmount') as string),
       }
@@ -364,7 +364,7 @@ export async function processTeacherIncentives(formData: FormData | { incentiveI
     }
 
     // Marcar los incentivos como pagados
-    const now = new Date()
+    const now = getCurrentDate()
     const processedIncentives = await db.teacherIncentive.updateMany({
       where: {
         id: {

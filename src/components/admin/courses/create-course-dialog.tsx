@@ -55,6 +55,7 @@ export function CreateCourseDialog({ children, onCourseCreated }: CreateCourseDi
       description: '',
       language: '',
       level: '',
+      classDuration: 40,
       image: '',
       createdById: session?.user?.id || '',
     },
@@ -186,6 +187,33 @@ export function CreateCourseDialog({ children, onCourseCreated }: CreateCourseDi
                       </SelectContent>
                     </Select>
                     <FormMessage data-testid="level-error" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="classDuration"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Duración de Clase</FormLabel>
+                    <Select 
+                      onValueChange={(value) => field.onChange(parseInt(value))} 
+                      value={field.value?.toString()}
+                    >
+                      <FormControl>
+                        <SelectTrigger data-testid="class-duration-input">
+                          <SelectValue placeholder="Selecciona la duración" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="30">30 minutos</SelectItem>
+                        <SelectItem value="40">40 minutos</SelectItem>
+                        <SelectItem value="60">60 minutos</SelectItem>
+                        <SelectItem value="90">90 minutos</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage data-testid="class-duration-error" />
                   </FormItem>
                 )}
               />

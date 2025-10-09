@@ -3,20 +3,21 @@
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { LucideIcon } from 'lucide-react'
-import { GraduationCap, Globe, Book } from 'lucide-react'
+import { GraduationCap, Globe, Book, Tag } from 'lucide-react'
 import { useShopStore } from '@/stores/useShopStore'
 
 const iconMap: Record<string, LucideIcon> = {
   'graduation-cap': GraduationCap,
   globe: Globe,
   book: Book,
+  tag: Tag,
 }
 
 interface FilterSectionProps {
   title: string
   icon: keyof typeof iconMap
   options: string[]
-  type: 'levels' | 'languages' | 'categories'
+  type: 'levels' | 'languages' | 'categories' | 'tags'
 }
 
 export function FilterSection({ title, icon, options, type }: FilterSectionProps) {

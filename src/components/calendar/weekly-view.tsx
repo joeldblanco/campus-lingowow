@@ -21,6 +21,7 @@ interface WeeklyViewProps {
   showStudentNames?: boolean
   getStudentInfo?: (day: string, time: string) => { name: string; color: string } | null
   bookingMode?: '40min' | '90min'
+  is12HourFormat?: boolean
 }
 
 export function WeeklyView({
@@ -37,9 +38,10 @@ export function WeeklyView({
   showStudentNames,
   getStudentInfo,
   bookingMode = '40min',
+  is12HourFormat = false,
 }: WeeklyViewProps) {
-  const weekDaysEs = ['LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES']
-  const weekDaysEn = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+  const weekDaysEs = ['LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO', 'DOMINGO']
+  const weekDaysEn = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
   // Para profesores, siempre usamos slots de 60 minutos
   // Para estudiantes, usamos slots que empiezan en hora exacta (independientemente de la duración)
@@ -62,7 +64,7 @@ export function WeeklyView({
   }, [isDragging, onEndDrag])
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
       {weekDaysEs.map((dayEs, index) => {
         const dayEn = weekDaysEn[index]
         const dayRanges = teacherAvailability[dayEn] || []
@@ -102,6 +104,7 @@ export function WeeklyView({
                       onMouseUp={() => userRole === UserRole.TEACHER && onEndDrag()}
                       studentInfo={studentInfo}
                       bookingMode={bookingMode}
+                      is12HourFormat={is12HourFormat}
                     />
                   )
                 })

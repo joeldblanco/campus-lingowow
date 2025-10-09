@@ -3,6 +3,7 @@
 import { db } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 import type { SubscriptionStatus } from '@prisma/client'
+import { getCurrentDate } from '@/lib/utils/date'
 
 // =============================================
 // FUNCIONES DE CÁLCULO DE PRORATEO
@@ -17,7 +18,7 @@ import type { SubscriptionStatus } from '@prisma/client'
  */
 export async function calculatePlanProration(
   planId: string,
-  purchaseDate: Date = new Date(),
+  purchaseDate: Date = getCurrentDate(),
   academicPeriodId?: string
 ) {
   try {
@@ -154,7 +155,7 @@ export async function createSubscription(data: {
   purchaseDate?: Date
 }) {
   try {
-    const { userId, planId, academicPeriodId, purchaseDate = new Date() } = data
+    const { userId, planId, academicPeriodId, purchaseDate = getCurrentDate() } = data
 
     // Calcular prorateo
     const prorationResult = await calculatePlanProration(planId, purchaseDate, academicPeriodId)
@@ -235,7 +236,7 @@ export async function cancelSubscription(subscriptionId: string, reason?: string
       where: { id: subscriptionId },
       data: {
         status: 'CANCELLED',
-        cancelledAt: new Date(),
+        cancelledAt: getCurrentDate(),
         cancelReason: reason,
       },
     })

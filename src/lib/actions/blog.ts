@@ -5,6 +5,7 @@ import { db as prisma } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 import { BlogStatus, UserRole } from '@prisma/client'
 import type { Prisma } from '@prisma/client'
+import { getCurrentDate } from '@/lib/utils/date'
 
 // Verificar si el usuario tiene permisos de editor
 async function checkEditorPermission() {
@@ -85,7 +86,7 @@ export async function createBlogPost(data: {
         readTime,
         metaTitle: data.metaTitle || data.title,
         metaDescription: data.metaDescription || data.excerpt,
-        publishedAt: data.status === BlogStatus.PUBLISHED ? new Date() : null,
+        publishedAt: data.status === BlogStatus.PUBLISHED ? getCurrentDate() : null,
       },
       include: {
         author: {
@@ -168,7 +169,7 @@ export async function updateBlogPost(
       existingPost.status !== BlogStatus.PUBLISHED &&
       !publishedAt
     ) {
-      publishedAt = new Date()
+      publishedAt = getCurrentDate()
     }
 
     const updateData: Prisma.BlogPostUpdateInput = {

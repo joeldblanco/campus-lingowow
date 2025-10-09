@@ -128,6 +128,20 @@ export const {
   adapter: PrismaAdapter(db),
   session: {
     strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60, // 30 días
+  },
+  cookies: {
+    sessionToken: {
+      name: process.env.NODE_ENV === 'production' 
+        ? '__Secure-authjs.session-token'
+        : 'authjs.session-token',
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+      },
+    },
   },
   secret: process.env.JWT_SECRET,
   ...authConfig,

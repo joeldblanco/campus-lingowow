@@ -64,7 +64,7 @@ export function CartSheet() {
             <p className="mt-2 text-sm text-muted-foreground text-center px-8">
               Añade productos a tu carrito para comenzar.
             </p>
-            <Link href={'/shop/cart'}>
+            <Link href={'/shop'}>
               <Button className="mt-6">Ver Tienda</Button>
             </Link>
           </div>

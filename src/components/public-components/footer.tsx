@@ -69,12 +69,12 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/cursos" className="text-muted-foreground hover:text-foreground">
+                <Link href="/courses" className="text-muted-foreground hover:text-foreground">
                   Cursos
                 </Link>
               </li>
               <li>
-                <Link href="/metodo" className="text-muted-foreground hover:text-foreground">
+                <Link href="/method" className="text-muted-foreground hover:text-foreground">
                   Metodología
                 </Link>
               </li>
@@ -84,7 +84,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/precios" className="text-muted-foreground hover:text-foreground">
+                <Link href="/pricing" className="text-muted-foreground hover:text-foreground">
                   Precios
                 </Link>
               </li>
@@ -99,22 +99,22 @@ const Footer = () => {
             <h3 className="font-semibold mb-4">Recursos</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/recursos/biblioteca" className="text-muted-foreground hover:text-foreground">
+                <Link href="/resources/library" className="text-muted-foreground hover:text-foreground">
                   Biblioteca
                 </Link>
               </li>
               <li>
-                <Link href="/recursos/podcasts" className="text-muted-foreground hover:text-foreground">
+                <Link href="/resources/podcasts" className="text-muted-foreground hover:text-foreground">
                   Podcasts
                 </Link>
               </li>
               <li>
-                <Link href="/recursos/ejercicios" className="text-muted-foreground hover:text-foreground">
+                <Link href="/resources/exercises" className="text-muted-foreground hover:text-foreground">
                   Ejercicios
                 </Link>
               </li>
               <li>
-                <Link href="/contacto" className="text-muted-foreground hover:text-foreground">
+                <Link href="/contact" className="text-muted-foreground hover:text-foreground">
                   Contacto
                 </Link>
               </li>
@@ -189,10 +189,10 @@ const Footer = () => {
             © {new Date().getFullYear()} Lingowow. Todos los derechos reservados.
           </p>
           <div className="flex gap-4 mt-4 md:mt-0">
-            <Link href="/terminos" className="text-sm text-muted-foreground hover:text-foreground">
+            <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground">
               Términos de servicio
             </Link>
-            <Link href="/privacidad" className="text-sm text-muted-foreground hover:text-foreground">
+            <Link href="/privacy" className="text-sm text-muted-foreground hover:text-foreground">
               Política de privacidad
             </Link>
             <Link href="/cookies" className="text-sm text-muted-foreground hover:text-foreground">

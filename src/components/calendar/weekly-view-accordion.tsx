@@ -24,6 +24,7 @@ interface WeeklyViewAccordionProps {
   onEndDrag: () => void
   showStudentNames?: boolean
   getStudentInfo?: (day: string, time: string) => { name: string; color: string } | null
+  is12HourFormat?: boolean
 }
 
 export function WeeklyViewAccordion({
@@ -40,9 +41,10 @@ export function WeeklyViewAccordion({
   onEndDrag,
   showStudentNames,
   getStudentInfo,
+  is12HourFormat = false,
 }: WeeklyViewAccordionProps) {
-  const weekDaysEs = ['LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES']
-  const weekDaysEn = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+  const weekDaysEs = ['LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO', 'DOMINGO']
+  const weekDaysEn = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
   return (
     <Accordion type="single" collapsible className="w-full">
@@ -68,6 +70,7 @@ export function WeeklyViewAccordion({
                 onEndDrag={onEndDrag}
                 showStudentNames={showStudentNames}
                 getStudentInfo={getStudentInfo}
+                is12HourFormat={is12HourFormat}
               />
             </AccordionContent>
           </AccordionItem>

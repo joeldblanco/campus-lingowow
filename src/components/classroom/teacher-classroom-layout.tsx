@@ -8,9 +8,11 @@ import { WhiteboardArea } from '@/components/classroom/whiteboard-area'
 // import { ClassChat } from '@/components/classroom/class-chat'
 import { ClassNotes } from '@/components/classroom/class-notes'
 import { Button } from '@/components/ui/button'
-import { CheckCircle, Download, Video, LogIn } from 'lucide-react'
+import { CheckCircle, Download, Video, LogIn, AlertCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import { checkTeacherAttendance, markTeacherAttendance } from '@/lib/actions/attendance'
+import { validateClassAccess, shouldShowEndWarning } from '@/lib/utils/class-access'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 interface TeacherClassroomLayoutProps {
   classId: string
@@ -19,6 +21,8 @@ interface TeacherClassroomLayoutProps {
   courseName: string
   lessonName: string
   bookingId: string
+  day: string
+  timeSlot: string
 }
 
 export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
@@ -28,10 +32,14 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
   courseName,
   lessonName,
   bookingId,
+  day,
+  timeSlot,
 }) => {
   const [attendanceMarked, setAttendanceMarked] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isChecking, setIsChecking] = useState(true)
+  const [minutesUntilEnd, setMinutesUntilEnd] = useState<number | null>(null)
+  const [showEndWarning, setShowEndWarning] = useState(false)
 
   useEffect(() => {
     // Check if teacher attendance is already marked
@@ -52,6 +60,25 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
     }
     checkAttendance()
   }, [classId, teacherId])
+
+  // Monitor class end time
+  useEffect(() => {
+    const checkClassTime = () => {
+      const validation = validateClassAccess(day, timeSlot, true)
+      if (validation.minutesUntilEnd !== undefined) {
+        setMinutesUntilEnd(validation.minutesUntilEnd)
+        setShowEndWarning(shouldShowEndWarning(validation.minutesUntilEnd))
+      }
+    }
+
+    // Check immediately
+    checkClassTime()
+
+    // Check every minute
+    const interval = setInterval(checkClassTime, 60000)
+
+    return () => clearInterval(interval)
+  }, [day, timeSlot])
 
   const handleMarkAttendance = async () => {
     try {
@@ -127,6 +154,17 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
           </Button>
         </div>
       </header>
+
+      {/* Warning when class is about to end */}
+      {showEndWarning && minutesUntilEnd !== null && (
+        <Alert className="m-4 border-orange-500 bg-orange-50">
+          <AlertCircle className="h-4 w-4 text-orange-600" />
+          <AlertTitle className="text-orange-800">La clase está por finalizar</AlertTitle>
+          <AlertDescription className="text-orange-700">
+            Quedan {minutesUntilEnd} minuto{minutesUntilEnd !== 1 ? 's' : ''} para que termine la clase.
+          </AlertDescription>
+        </Alert>
+      )}
 
       <div className="grid grid-cols-3 gap-4 p-4 flex-grow">
         <div className="col-span-2">

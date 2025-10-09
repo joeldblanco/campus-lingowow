@@ -13,27 +13,24 @@ import {
 } from '@/components/ui/table'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { UserRole } from '@prisma/client'
-import { BookOpen, Calendar, DollarSign, Users } from 'lucide-react'
+import { BookOpen, Calendar, DollarSign, Users, Video } from 'lucide-react'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 import { getAdminDashboardStats, getTeacherDashboardStats } from '@/lib/actions/dashboard'
 import type { AdminDashboardData, TeacherDashboardData } from '@/types/dashboard'
+import { Button } from '@/components/ui/button'
 
 const Dashboard = () => {
-  const { data: session, status } = useSession()
-  const [userRoles, setUserRoles] = useState<UserRole[] | null>(null)
+  const { data: session } = useSession()
   const [adminData, setAdminData] = useState<AdminDashboardData | null>(null)
   const [teacherData, setTeacherData] = useState<TeacherDashboardData | null>(null)
-  const [loading, setLoading] = useState(true)
 
-  // Determinar el rol del usuario y cargar datos del dashboard
+  // Cargar datos del dashboard según el rol
   useEffect(() => {
     const loadDashboardData = async () => {
       if (session?.user) {
-        setUserRoles(session.user.roles)
-        setLoading(true)
-
         try {
           if (session.user.roles.includes(UserRole.ADMIN)) {
             const data = await getAdminDashboardStats()
@@ -44,19 +41,14 @@ const Dashboard = () => {
           }
         } catch (error) {
           console.error('Error loading dashboard data:', error)
-        } finally {
-          setLoading(false)
         }
       }
     }
 
     loadDashboardData()
-  }, [session, status])
+  }, [session])
 
-  // Componente de carga mientras se determina el rol
-  if (status === 'loading' || userRoles === null || loading) {
-    return <div className="p-6">Cargando dashboard...</div>
-  }
+  const userRoles = session?.user?.roles
 
   // Renderizar el dashboard según el rol
   return (
@@ -183,7 +175,14 @@ const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData |
 
 // Componente para el dashboard de profesores
 const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardData | null }) => {
+  const router = useRouter()
+  
   if (!dashboardData) return <div>Cargando datos...</div>
+  
+  const handleJoinClass = (classId: string) => {
+    router.push(`/classroom?classId=${classId}`)
+  }
+  
   return (
     <div className="space-y-6">
       <h2 className="text-3xl font-bold">Panel de Profesor</h2>
@@ -252,6 +251,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                 <TableHead>Curso</TableHead>
                 <TableHead>Fecha</TableHead>
                 <TableHead>Hora</TableHead>
+                <TableHead className="text-right">Acción</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -261,6 +261,16 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                   <TableCell>{classItem.course}</TableCell>
                   <TableCell>{classItem.date}</TableCell>
                   <TableCell>{classItem.time}</TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      size="sm"
+                      onClick={() => handleJoinClass(classItem.id)}
+                      className="gap-2"
+                    >
+                      <Video className="h-4 w-4" />
+                      Entrar al aula
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

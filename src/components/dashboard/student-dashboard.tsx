@@ -31,12 +31,10 @@ export default function Dashboard() {
   const { setCurrentClass } = useCurrentClass()
   const [nextClassLink, setNextClassLink] = useState<string | null>(null)
   const [dashboardData, setDashboardData] = useState<StudentDashboardData | null>(null)
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const loadDashboardData = async () => {
       if (session?.user?.id) {
-        setLoading(true)
         try {
           const data = await getStudentDashboardStats(session.user.id)
           setDashboardData(data)
@@ -49,18 +47,12 @@ export default function Dashboard() {
           }
         } catch (error) {
           console.error('Error loading dashboard data:', error)
-        } finally {
-          setLoading(false)
         }
       }
     }
 
     loadDashboardData()
   }, [session])
-
-  if (loading) {
-    return <div className="flex flex-1 flex-col gap-4 md:gap-8">Cargando dashboard...</div>
-  }
 
   return (
     <div className="flex flex-1 flex-col gap-4 md:gap-8">

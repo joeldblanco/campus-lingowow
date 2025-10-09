@@ -4,6 +4,7 @@ import { db } from '@/lib/db'
 import { auth } from '@/auth'
 import { generateRoomName } from '@/lib/jitsi-jwt'
 import { redirect } from 'next/navigation'
+import { getCurrentDate } from '@/lib/utils/date'
 
 export async function createJitsiMeeting(bookingId: string) {
   try {
@@ -51,7 +52,7 @@ export async function createJitsiMeeting(bookingId: string) {
         data: {
           roomId: roomName,
           status: 'SCHEDULED',
-          startTime: new Date()
+          startTime: getCurrentDate()
         }
       })
     } else {
@@ -63,7 +64,7 @@ export async function createJitsiMeeting(bookingId: string) {
           studentId: booking.studentId,
           bookingId: bookingId,
           status: 'SCHEDULED',
-          startTime: new Date()
+          startTime: getCurrentDate()
         }
       })
     }
@@ -77,7 +78,7 @@ export async function createJitsiMeeting(bookingId: string) {
     return { 
       success: true, 
       roomName: videoCall.roomId,
-      meetingUrl: `/meeting/${videoCall.roomId}?bookingId=${bookingId}`
+      meetingUrl: `/classroom?classId=${bookingId}`
     }
   } catch (error) {
     console.error('Error creando videollamada JaaS:', error)
@@ -117,7 +118,7 @@ export async function endJitsiMeeting(roomName: string) {
       throw new Error('No tienes permisos para finalizar esta videollamada')
     }
 
-    const endTime = new Date()
+    const endTime = getCurrentDate()
     const duration = Math.round((endTime.getTime() - videoCall.startTime.getTime()) / 1000 / 60) // minutos
 
     // Actualizar videollamada
@@ -215,8 +216,8 @@ export async function startJitsiMeetingFromBooking(bookingId: string) {
       return result
     }
 
-    // Redirigir a la página de videollamada
-    redirect(`/meeting/${result.roomName}?bookingId=${bookingId}`)
+    // Redirigir a la página de classroom
+    redirect(`/classroom?classId=${bookingId}`)
   } catch (error) {
     console.error('Error iniciando videollamada JaaS desde reserva:', error)
     return { 

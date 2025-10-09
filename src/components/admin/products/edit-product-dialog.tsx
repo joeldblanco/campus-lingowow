@@ -32,6 +32,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { updateProduct, getCategories } from '@/lib/actions/commercial'
+import { getAllCourses } from '@/lib/actions/courses'
 import { toast } from 'sonner'
 import { Category } from '@/types/category'
 
@@ -48,6 +49,9 @@ const productSchema = z.object({
   isDigital: z.boolean().default(true),
   stock: z.number().optional(),
   categoryId: z.string().optional(),
+  courseId: z.string().optional(),
+  pricingType: z.enum(['SINGLE_PRICE', 'MULTIPLE_PLANS']).default('SINGLE_PRICE'),
+  paymentType: z.enum(['ONE_TIME', 'RECURRING']).default('ONE_TIME'),
 })
 
 type ProductFormData = z.infer<typeof productSchema>
@@ -67,6 +71,8 @@ interface Product {
   isDigital: boolean
   stock: number | null
   categoryId: string | null
+  pricingType?: 'SINGLE_PRICE' | 'MULTIPLE_PLANS'
+  paymentType?: 'ONE_TIME' | 'RECURRING'
   createdAt: Date
   updatedAt: Date
   category: {
@@ -87,6 +93,7 @@ interface EditProductDialogProps {
 export function EditProductDialog({ product, open, onOpenChange }: EditProductDialogProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [categories, setCategories] = useState<Category[]>([])
+  const [courses, setCourses] = useState<Array<{ id: string; title: string }>>([])
 
   const form = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
@@ -103,15 +110,20 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
       isDigital: product.isDigital,
       stock: product.stock || undefined,
       categoryId: product.categoryId || '',
+      pricingType: product.pricingType || 'SINGLE_PRICE',
+      paymentType: product.paymentType || 'ONE_TIME',
     },
   })
 
   useEffect(() => {
-    const loadCategories = async () => {
+    const loadData = async () => {
       const cats = await getCategories()
       setCategories(cats)
+      
+      const coursesData = await getAllCourses()
+      setCourses(coursesData.map(c => ({ id: c.id, title: c.title })))
     }
-    loadCategories()
+    loadData()
   }, [])
 
   useEffect(() => {
@@ -128,6 +140,9 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
       isDigital: product.isDigital,
       stock: product.stock || undefined,
       categoryId: product.categoryId || '',
+      courseId: (product as { courseId?: string }).courseId || '',
+      pricingType: product.pricingType || 'SINGLE_PRICE',
+      paymentType: product.paymentType || 'ONE_TIME',
     })
   }, [product, form])
 
@@ -138,9 +153,12 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
         ...data,
         images: data.image ? [data.image] : [],
         categoryId: data.categoryId === 'no-category' ? null : data.categoryId || null,
+        courseId: data.courseId === 'no-course' ? null : data.courseId || null,
         comparePrice: data.comparePrice || null,
         sku: data.sku || null,
         stock: data.isDigital ? null : data.stock || 0,
+        pricingType: data.pricingType,
+        paymentType: data.paymentType,
       })
       if (result.success) {
         toast.success('Producto actualizado correctamente')
@@ -302,6 +320,35 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                 )}
               />
             </div>
+            
+            <FormField
+              control={form.control}
+              name="courseId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Curso Asociado</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccionar curso (opcional)" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="no-course">Sin curso asociado</SelectItem>
+                      {courses.map((course) => (
+                        <SelectItem key={course.id} value={course.id}>
+                          {course.title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    Al comprar este producto, el usuario será enrolado en el curso seleccionado
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}
@@ -374,6 +421,67 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                 )}
               />
             )}
+
+            {/* Product Type Configuration */}
+            <div className="border-t pt-6 space-y-4">
+              <h3 className="text-lg font-medium">Configuración del Producto</h3>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="pricingType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Tipo de Precio</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Seleccionar tipo" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="SINGLE_PRICE">Precio Único</SelectItem>
+                          <SelectItem value="MULTIPLE_PLANS">Múltiples Planes</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <div className="text-xs text-muted-foreground">
+                        {field.value === 'SINGLE_PRICE' 
+                          ? 'Producto con un solo precio (ej: franela, gorra)'
+                          : 'Producto con distintos planes de pago (ej: programa regular con planes simple, regular, intensivo)'}
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="paymentType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Tipo de Pago</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Seleccionar tipo" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="ONE_TIME">Pago Único</SelectItem>
+                          <SelectItem value="RECURRING">Pago Recurrente</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <div className="text-xs text-muted-foreground">
+                        {field.value === 'ONE_TIME'
+                          ? 'Pago único (ej: merchandising, curso asíncrono)'
+                          : 'Pago recurrente/suscripción (ej: programa regular de inglés)'}
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
 
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>

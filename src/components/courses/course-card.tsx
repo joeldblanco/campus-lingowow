@@ -157,13 +157,13 @@ export function CourseCard({ course, isEnrolled, isAuthenticated }: CourseCardPr
             // Enrolled Student Actions
             <div className="flex gap-2">
               <Button asChild className="flex-1">
-                <Link href={`/courses/${course.id}`}>
+                <Link href={`/my-courses/${course.id}`}>
                   <Play className="w-4 h-4 mr-2" />
                   Continuar Curso
                 </Link>
               </Button>
               <Button variant="outline" asChild>
-                <Link href={`/courses/${course.id}/overview`}>
+                <Link href={`/my-courses/${course.id}/overview`}>
                   <Eye className="w-4 h-4" />
                 </Link>
               </Button>
@@ -172,14 +172,14 @@ export function CourseCard({ course, isEnrolled, isAuthenticated }: CourseCardPr
             // Non-enrolled User Actions
             <div className="flex gap-2">
               <Button variant="outline" asChild className="flex-1">
-                <Link href={`/courses/${course.id}/preview`}>
+                <Link href={`/my-courses/${course.id}/preview`}>
                   <Eye className="w-4 h-4 mr-2" />
                   Vista Previa
                 </Link>
               </Button>
               {isAuthenticated ? (
                 <Button asChild>
-                  <Link href={`/courses/${course.id}/enroll`}>Inscribirse</Link>
+                  <Link href={`/my-courses/${course.id}/enroll`}>Inscribirse</Link>
                 </Button>
               ) : (
                 <Button asChild>

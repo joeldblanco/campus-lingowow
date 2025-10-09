@@ -210,7 +210,7 @@ export default function OrderHistory({ orders }: OrderHistoryProps) {
           order.items.some((item) => item.type === 'curso' || item.type === 'programa')
         ) && (
           <div className="mt-4 text-center">
-            <Link href="/dashboard/cursos" passHref>
+            <Link href="/my-courses" passHref>
               <Button variant="outline">Ver todos mis cursos</Button>
             </Link>
           </div>

@@ -25,6 +25,7 @@ export type Product = Prisma.ProductGetPayload<{
     isDigital: true
     stock: true
     categoryId: true
+    tags: true
     requiresScheduling: true
     courseId: true
     maxScheduleSlots: true
@@ -100,6 +101,7 @@ export type Filters = {
   levels: string[]
   languages: string[]
   categories: string[]
+  tags: string[]
 }
 
 // Nueva interfaz para manejar información del checkout

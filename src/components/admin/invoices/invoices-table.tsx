@@ -21,6 +21,7 @@ import { MoreHorizontal, Edit, Trash2, Eye, Send } from 'lucide-react'
 import { EditInvoiceDialog } from './edit-invoice-dialog'
 import { deleteInvoice } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
+import { formatDateNumeric } from '@/lib/utils/date'
 
 interface InvoiceItem {
   id: string
@@ -151,7 +152,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
                   <TableCell>
                     {invoice.dueDate ? (
                       <div className="text-sm">
-                        {new Date(invoice.dueDate).toLocaleDateString()}
+                        {formatDateNumeric(invoice.dueDate)}
                       </div>
                     ) : (
                       <span className="text-muted-foreground">Sin vencimiento</span>
@@ -159,11 +160,11 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
                   </TableCell>
                   <TableCell>
                     <div className="text-sm">
-                      {new Date(invoice.createdAt).toLocaleDateString()}
+                      {formatDateNumeric(invoice.createdAt)}
                     </div>
                     {invoice.paidAt && (
                       <div className="text-xs text-green-600">
-                        Pagada: {new Date(invoice.paidAt).toLocaleDateString()}
+                        Pagada: {formatDateNumeric(invoice.paidAt)}
                       </div>
                     )}
                   </TableCell>

@@ -310,7 +310,7 @@ export default function MetodoPage() {
                 <Link href="/demo">
                   <Button size="lg">Clase de Prueba Gratuita</Button>
                 </Link>
-                <Link href="/cursos">
+                <Link href="/courses">
                   <Button size="lg" variant="outline">Ver Cursos</Button>
                 </Link>
               </div>

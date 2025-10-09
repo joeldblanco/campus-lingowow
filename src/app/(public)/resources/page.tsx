@@ -172,7 +172,7 @@ export default function EjerciciosPage() {
                     Nuestros profesores te guiarán paso a paso.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Link href="/cursos">
+                    <Link href="/courses">
                       <Button size="lg">Ver Cursos</Button>
                     </Link>
                     <Link href="/demo">

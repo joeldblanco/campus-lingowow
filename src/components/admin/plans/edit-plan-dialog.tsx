@@ -21,11 +21,15 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
+import { Checkbox } from '@/components/ui/checkbox'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Separator } from '@/components/ui/separator'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { updatePlan } from '@/lib/actions/commercial'
+import { updatePlan, updatePlanFeatures, getFeatures } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
+import { Loader2 } from 'lucide-react'
 
 const planSchema = z.object({
   name: z.string().min(1, 'El nombre es requerido'),
@@ -79,6 +83,14 @@ interface EditPlanDialogProps {
 
 export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps) {
   const [isLoading, setIsLoading] = useState(false)
+  const [allFeatures, setAllFeatures] = useState<Array<{
+    id: string
+    name: string
+    description: string | null
+    icon: string | null
+  }>>([])
+  const [selectedFeatures, setSelectedFeatures] = useState<Set<string>>(new Set())
+  const [loadingFeatures, setLoadingFeatures] = useState(true)
 
   const form = useForm<PlanFormData>({
     resolver: zodResolver(planSchema),
@@ -107,20 +119,52 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
       isPopular: plan.isPopular,
       sortOrder: plan.sortOrder,
     })
-  }, [plan, form])
+    
+    // Load features and set selected ones
+    const loadFeatures = async () => {
+      setLoadingFeatures(true)
+      const features = await getFeatures()
+      setAllFeatures(features)
+      
+      // Set currently selected features
+      const selected = new Set(plan.features.map(f => f.featureId))
+      setSelectedFeatures(selected)
+      setLoadingFeatures(false)
+    }
+    
+    if (open) {
+      loadFeatures()
+    }
+  }, [plan, form, open])
 
   const onSubmit = async (data: PlanFormData) => {
     setIsLoading(true)
     try {
+      // Update plan basic data
       const result = await updatePlan(plan.id, {
         ...data,
         comparePrice: data.comparePrice || null,
       })
-      if (result.success) {
+      
+      if (!result.success) {
+        toast.error(result.error || 'Error al actualizar el plan')
+        return
+      }
+      
+      // Update plan features
+      const features = Array.from(selectedFeatures).map(featureId => ({
+        featureId,
+        included: true,
+        value: null,
+      }))
+      
+      const featuresResult = await updatePlanFeatures(plan.id, features)
+      
+      if (featuresResult.success) {
         toast.success('Plan actualizado correctamente')
         onOpenChange(false)
       } else {
-        toast.error(result.error || 'Error al actualizar el plan')
+        toast.error(featuresResult.error || 'Error al actualizar las características')
       }
     } catch {
       toast.error('Error inesperado al actualizar el plan')
@@ -128,10 +172,20 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
       setIsLoading(false)
     }
   }
+  
+  const toggleFeature = (featureId: string) => {
+    const newSelected = new Set(selectedFeatures)
+    if (newSelected.has(featureId)) {
+      newSelected.delete(featureId)
+    } else {
+      newSelected.add(featureId)
+    }
+    setSelectedFeatures(newSelected)
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh]">
         <DialogHeader>
           <DialogTitle>Editar Plan</DialogTitle>
           <DialogDescription>
@@ -302,6 +356,49 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
                 )}
               />
             </div>
+            
+            <Separator className="my-4" />
+            
+            <div className="space-y-3">
+              <FormLabel>Características del Plan</FormLabel>
+              {loadingFeatures ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="h-6 w-6 animate-spin" />
+                </div>
+              ) : (
+                <ScrollArea className="h-[200px] border rounded-md p-4">
+                  <div className="space-y-3">
+                    {allFeatures.map((feature) => (
+                      <div key={feature.id} className="flex items-start space-x-3">
+                        <Checkbox
+                          id={`feature-${feature.id}`}
+                          checked={selectedFeatures.has(feature.id)}
+                          onCheckedChange={() => toggleFeature(feature.id)}
+                        />
+                        <div className="grid gap-1.5 leading-none">
+                          <label
+                            htmlFor={`feature-${feature.id}`}
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer flex items-center gap-2"
+                          >
+                            {feature.icon && <span>{feature.icon}</span>}
+                            {feature.name}
+                          </label>
+                          {feature.description && (
+                            <p className="text-sm text-muted-foreground">
+                              {feature.description}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </ScrollArea>
+              )}
+              <p className="text-xs text-muted-foreground">
+                Selecciona las características incluidas en este plan
+              </p>
+            </div>
+            
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 Cancelar

@@ -41,6 +41,7 @@ import { CreateClassSchema } from '@/schemas/classes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
+import { formatDateLong, getTodayString } from '@/lib/utils/date'
 
 interface CreateClassDialogProps {
   children: React.ReactNode
@@ -96,7 +97,7 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
       classesTotal: number
       classesAttended: number
       course: { title: string }
-      academicPeriod: { 
+      academicPeriod: {
         name: string
         startDate: Date
         endDate: Date
@@ -114,7 +115,7 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
       day: '',
       timeSlot: '',
       notes: '',
-      creditId: '',
+      creditId: 'no-credit',
     },
   })
 
@@ -123,11 +124,11 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
       const studentsData = await getStudentsWithEnrollments()
 
       setStudents(studentsData)
-      
+
       // Extraer cursos únicos de las inscripciones
       const uniqueCourses = new Map()
-      studentsData.forEach(student => {
-        student.enrollments.forEach(enrollment => {
+      studentsData.forEach((student) => {
+        student.enrollments.forEach((enrollment) => {
           if (!uniqueCourses.has(enrollment.course.id)) {
             uniqueCourses.set(enrollment.course.id, enrollment.course)
           }
@@ -150,48 +151,50 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
     }
   }, [])
 
-  const findEnrollment = useCallback((studentId: string, courseId: string) => {
-    if (!studentId || !courseId) {
-      setEnrollmentInfo({ enrollment: null, error: null })
-      return
-    }
+  const findEnrollment = useCallback(
+    (studentId: string, courseId: string) => {
+      if (!studentId || !courseId) {
+        setEnrollmentInfo({ enrollment: null, error: null })
+        return
+      }
 
-    const student = students.find(s => s.id === studentId)
-    if (!student) {
-      setEnrollmentInfo({ enrollment: null, error: 'Estudiante no encontrado' })
-      return
-    }
+      const student = students.find((s) => s.id === studentId)
+      if (!student) {
+        setEnrollmentInfo({ enrollment: null, error: 'Estudiante no encontrado' })
+        return
+      }
 
-    const enrollment = student.enrollments.find(e => e.courseId === courseId)
-    if (!enrollment) {
-      setEnrollmentInfo({ 
-        enrollment: null, 
-        error: 'El estudiante no está inscrito en este curso' 
-      })
-      form.setValue('enrollmentId', '')
-      toast.error('El estudiante no está inscrito en este curso')
-      return
-    }
+      const enrollment = student.enrollments.find((e) => e.courseId === courseId)
+      if (!enrollment) {
+        setEnrollmentInfo({
+          enrollment: null,
+          error: 'El estudiante no está inscrito en este curso',
+        })
+        form.setValue('enrollmentId', '')
+        toast.error('El estudiante no está inscrito en este curso')
+        return
+      }
 
-    // Mapear el enrollment con las fechas del período académico
-    const mappedEnrollment = {
-      id: enrollment.id,
-      courseId: enrollment.courseId,
-      academicPeriodId: enrollment.academicPeriodId,
-      classesTotal: enrollment.classesTotal,
-      classesAttended: enrollment.classesAttended,
-      course: enrollment.course,
-      academicPeriod: {
-        name: enrollment.academicPeriod.name,
-        startDate: enrollment.academicPeriod.startDate,
-        endDate: enrollment.academicPeriod.endDate,
-      },
-    }
+      // Mapear el enrollment con las fechas del período académico
+      const mappedEnrollment = {
+        id: enrollment.id,
+        courseId: enrollment.courseId,
+        academicPeriodId: enrollment.academicPeriodId,
+        classesTotal: enrollment.classesTotal,
+        classesAttended: enrollment.classesAttended,
+        course: enrollment.course,
+        academicPeriod: {
+          name: enrollment.academicPeriod.name,
+          startDate: enrollment.academicPeriod.startDate,
+          endDate: enrollment.academicPeriod.endDate,
+        },
+      }
 
-    setEnrollmentInfo({ enrollment: mappedEnrollment, error: null })
-    form.setValue('enrollmentId', enrollment.id)
-  }, [students, form])
-
+      setEnrollmentInfo({ enrollment: mappedEnrollment, error: null })
+      form.setValue('enrollmentId', enrollment.id)
+    },
+    [students, form]
+  )
 
   useEffect(() => {
     if (open) {
@@ -215,7 +218,7 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
 
   const loadTeacherAvailableDays = useCallback(async () => {
     const teacherId = form.watch('teacherId')
-    
+
     if (!teacherId || !enrollmentInfo.enrollment) {
       setTeacherAvailableDays([])
       return
@@ -224,17 +227,18 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
     try {
       const periodStart = new Date(enrollmentInfo.enrollment.academicPeriod.startDate)
       const periodEnd = new Date(enrollmentInfo.enrollment.academicPeriod.endDate)
-      const today = new Date()
-      today.setHours(0, 0, 0, 0)
+      const today = getTodayString()
 
-      const startDate = periodStart > today 
-        ? periodStart.toISOString().split('T')[0]
-        : today.toISOString().split('T')[0]
-      const endDate = periodEnd.toISOString().split('T')[0]
+      const periodStartStr = periodStart.toISOString().split('T')[0]
+      const periodEndStr = periodEnd.toISOString().split('T')[0]
+
+      const startDate = periodStartStr > today ? periodStartStr : today
+      const endDate = periodEndStr
 
       const days = await getTeacherAvailableDays(teacherId, startDate, endDate)
       setTeacherAvailableDays(days)
-    } catch {
+    } catch (error) {
+      console.error('Error al cargar días disponibles:', error)
       toast.error('Error al cargar días disponibles del profesor')
       setTeacherAvailableDays([])
     }
@@ -243,16 +247,18 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
   const loadTeacherAvailableSlots = useCallback(async () => {
     const teacherId = form.watch('teacherId')
     const day = form.watch('day')
-    
-    if (!teacherId || !day) {
+    const courseId = form.watch('courseId')
+
+    if (!teacherId || !day || !courseId) {
       setTeacherAvailableSlots([])
       return
     }
 
     try {
-      const slots = await getTeacherAvailableTimeSlots(teacherId, day)
+      const slots = await getTeacherAvailableTimeSlots(teacherId, day, courseId)
       setTeacherAvailableSlots(slots)
-    } catch {
+    } catch (error) {
+      console.error('Error al cargar horarios disponibles:', error)
       toast.error('Error al cargar horarios disponibles del profesor')
       setTeacherAvailableSlots([])
     }
@@ -264,7 +270,7 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
         loadStudentCredits(value.studentId)
         // Reset dependent fields
         form.setValue('enrollmentId', '')
-        form.setValue('creditId', '')
+        form.setValue('creditId', 'no-credit')
         setEnrollmentInfo({ enrollment: null, error: null })
       }
       if ((name === 'studentId' || name === 'courseId') && value.studentId && value.courseId) {
@@ -274,10 +280,8 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
         loadCourseTeachers(value.courseId)
         // Reset teacher selection
         form.setValue('teacherId', '')
-        form.setValue('enrollmentId', '')
         form.setValue('day', '')
         form.setValue('timeSlot', '')
-        setEnrollmentInfo({ enrollment: null, error: null })
         setTeacherAvailableDays([])
         setTeacherAvailableSlots([])
       }
@@ -294,17 +298,23 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
       }
     })
     return () => subscription.unsubscribe()
-  }, [form, loadStudentCredits, findEnrollment, loadCourseTeachers, loadTeacherAvailableDays, loadTeacherAvailableSlots])
-
+  }, [
+    form,
+    loadStudentCredits,
+    findEnrollment,
+    loadCourseTeachers,
+    loadTeacherAvailableDays,
+    loadTeacherAvailableSlots,
+  ])
 
   const onSubmit = async (values: z.infer<typeof CreateClassSchema>) => {
     setIsLoading(true)
 
     try {
-      // Si el crédito es "no-credit", lo convertimos a undefined
+      // Si el crédito es "no-credit" o está vacío, lo convertimos a undefined
       const submitValues = {
         ...values,
-        creditId: values.creditId === 'no-credit' ? undefined : values.creditId,
+        creditId: values.creditId === 'no-credit' || !values.creditId ? undefined : values.creditId,
       }
       const result = await createClass(submitValues)
 
@@ -325,7 +335,6 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
       setIsLoading(false)
     }
   }
-
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -363,7 +372,8 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                               {student.name} {student.lastName}
                               <span className="text-xs text-muted-foreground">
                                 {' '}
-                                - {student.enrollments.length} inscripción{student.enrollments.length > 1 ? 'es' : ''}
+                                - {student.enrollments.length} inscripción
+                                {student.enrollments.length > 1 ? 'es' : ''}
                               </span>
                             </SelectItem>
                           ))
@@ -381,14 +391,20 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Curso</FormLabel>
-                    <Select 
-                      onValueChange={field.onChange} 
+                    <Select
+                      onValueChange={field.onChange}
                       value={field.value}
                       disabled={!form.watch('studentId')}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder={!form.watch('studentId') ? "Primero selecciona un estudiante" : "Selecciona un curso"} />
+                          <SelectValue
+                            placeholder={
+                              !form.watch('studentId')
+                                ? 'Primero selecciona un estudiante'
+                                : 'Selecciona un curso'
+                            }
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -417,10 +433,12 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
               {enrollmentInfo.enrollment && (
                 <div className="rounded-lg border border-green-200 bg-green-50 p-3">
                   <p className="text-sm font-medium text-green-900">
-                    {enrollmentInfo.enrollment.course.title} - {enrollmentInfo.enrollment.academicPeriod.name}
+                    {enrollmentInfo.enrollment.course.title} -{' '}
+                    {enrollmentInfo.enrollment.academicPeriod.name}
                   </p>
                   <p className="text-xs text-green-700">
-                    Progreso: {enrollmentInfo.enrollment.classesAttended}/{enrollmentInfo.enrollment.classesTotal} clases
+                    Progreso: {enrollmentInfo.enrollment.classesAttended}/
+                    {enrollmentInfo.enrollment.classesTotal} clases
                   </p>
                 </div>
               )}
@@ -460,7 +478,13 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder={!form.watch('courseId') ? "Primero selecciona un curso" : "Selecciona un profesor"} />
+                          <SelectValue
+                            placeholder={
+                              !form.watch('courseId')
+                                ? 'Primero selecciona un curso'
+                                : 'Selecciona un profesor'
+                            }
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -483,7 +507,8 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                     </Select>
                     {form.watch('courseId') && courseTeachers.length === 0 && (
                       <p className="text-sm text-amber-600">
-                        No hay profesores asignados a este curso. Asigna profesores desde la gestión de usuarios.
+                        No hay profesores asignados a este curso. Asigna profesores desde la gestión
+                        de usuarios.
                       </p>
                     )}
                     <FormMessage />
@@ -501,14 +526,20 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                   return (
                     <FormItem>
                       <FormLabel>Fecha</FormLabel>
-                      <Select 
-                        onValueChange={field.onChange} 
+                      <Select
+                        onValueChange={field.onChange}
                         value={field.value}
                         disabled={!hasTeacher}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={!hasTeacher ? "Selecciona un profesor primero" : "Selecciona una fecha"} />
+                            <SelectValue
+                              placeholder={
+                                !hasTeacher
+                                  ? 'Selecciona un profesor primero'
+                                  : 'Selecciona una fecha'
+                              }
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -522,13 +553,9 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                             </SelectItem>
                           ) : (
                             teacherAvailableDays.map((date) => {
-                              const dateObj = new Date(date + 'T00:00:00')
-                              const formattedDate = dateObj.toLocaleDateString('es-ES', {
-                                weekday: 'long',
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric',
-                              })
+                              // Usar utilidad de fecha para formatear correctamente
+                              const formattedDate = formatDateLong(date)
+                              
                               return (
                                 <SelectItem key={date} value={date}>
                                   {formattedDate}
@@ -564,14 +591,14 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                   return (
                     <FormItem>
                       <FormLabel>Horario</FormLabel>
-                      <Select 
-                        onValueChange={field.onChange} 
-                        value={field.value}
-                        disabled={!hasDay}
-                      >
+                      <Select onValueChange={field.onChange} value={field.value} disabled={!hasDay}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={!hasDay ? "Selecciona una fecha primero" : "Selecciona un horario"} />
+                            <SelectValue
+                              placeholder={
+                                !hasDay ? 'Selecciona una fecha primero' : 'Selecciona un horario'
+                              }
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -645,10 +672,7 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                   <FormItem>
                     <FormLabel>Notas (opcional)</FormLabel>
                     <FormControl>
-                      <Textarea
-                        placeholder="Notas adicionales sobre la clase..."
-                        {...field}
-                      />
+                      <Textarea placeholder="Notas adicionales sobre la clase..." {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -3,6 +3,7 @@
 import { auth } from '@/auth'
 import { db as prisma } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
+import { getCurrentDate } from '@/lib/utils/date'
 
 export async function getUserLives(userId?: string) {
   try {
@@ -24,14 +25,14 @@ export async function getUserLives(userId?: string) {
           userId: targetUserId,
           currentLives: 5,
           maxLives: 5,
-          lastRechargeTime: new Date(),
+          lastRechargeTime: getCurrentDate(),
           rechargeRate: 30,
         },
       })
     }
 
     // Calcular vidas recargadas automáticamente
-    const now = new Date()
+    const now = getCurrentDate()
     const timeDiff = now.getTime() - userLives.lastRechargeTime.getTime()
     const minutesPassed = Math.floor(timeDiff / (1000 * 60))
     const livesToRecharge = Math.floor(minutesPassed / userLives.rechargeRate)

@@ -6,13 +6,25 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { getClassroomData } from '@/lib/actions/dashboard'
+import { validateClassAccess } from '@/lib/utils/class-access'
+import { UserRole } from '@prisma/client'
+import { Button } from '@/components/ui/button'
+import { Clock } from 'lucide-react'
 
 type ClassroomData = {
   studentId: string
   teacherId: string
+  studentName: string
+  studentImage: string | null
+  teacherName: string
+  teacherImage: string | null
   courseName: string
   lessonName: string
   bookingId: string
+  dayUTC: string
+  timeSlotUTC: string
+  day: string
+  timeSlot: string
 }
 
 export default function ClassroomPage() {
@@ -21,9 +33,11 @@ export default function ClassroomPage() {
   const { data: session } = useSession()
   const [classroomData, setClassroomData] = useState<ClassroomData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [accessValidation, setAccessValidation] = useState<ReturnType<typeof validateClassAccess> | null>(null)
   
   const urlClassId = searchParams.get('classId')
   const effectiveClassId = urlClassId || currentClassId
+  const isTeacher = session?.user?.roles?.includes(UserRole.TEACHER) || false
 
   // Sincronizar el ID de la URL con el estado global
   useEffect(() => {
@@ -40,6 +54,10 @@ export default function ClassroomPage() {
         try {
           const data = await getClassroomData(effectiveClassId, session.user.id)
           setClassroomData(data)
+          
+          // Validar acceso a la clase usando datos UTC
+          const validation = validateClassAccess(data.dayUTC, data.timeSlotUTC, isTeacher)
+          setAccessValidation(validation)
         } catch (error) {
           console.error('Error cargando datos del aula:', error)
         } finally {
@@ -51,7 +69,7 @@ export default function ClassroomPage() {
     }
 
     loadClassroomData()
-  }, [effectiveClassId, session?.user?.id])
+  }, [effectiveClassId, session?.user?.id, isTeacher])
 
   if (loading) {
     return (
@@ -90,15 +108,52 @@ export default function ClassroomPage() {
     )
   }
 
+  // Validar acceso basado en horario
+  if (accessValidation && !accessValidation.canAccess) {
+    return (
+      <div className="flex flex-1 items-center justify-center">
+        <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
+          <Clock className="h-16 w-16 mx-auto mb-4 text-blue-500" />
+          <h1 className="text-2xl font-bold mb-4">{classroomData.courseName}</h1>
+          <p className="text-lg font-medium mb-2">{classroomData.lessonName}</p>
+          <p className="text-gray-600 mb-6">{accessValidation.reason}</p>
+          <div className="text-sm text-gray-500">
+            {isTeacher ? (
+              <p>Como profesor, podrás acceder 10 minutos antes de la clase.</p>
+            ) : (
+              <p>Podrás acceder cuando la clase comience.</p>
+            )}
+          </div>
+          <Button
+            onClick={() => window.location.reload()}
+            className="mt-6"
+            variant="outline"
+          >
+            Actualizar
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div data-testid="teacher-dashboard">
       <ClassroomLayout
         classId={effectiveClassId}
         studentId={classroomData.studentId}
         teacherId={classroomData.teacherId}
+        studentName={classroomData.studentName}
+        studentImage={classroomData.studentImage}
+        teacherName={classroomData.teacherName}
+        teacherImage={classroomData.teacherImage}
         courseName={classroomData.courseName}
         lessonName={classroomData.lessonName}
         bookingId={classroomData.bookingId}
+        currentUserId={session?.user?.id || ''}
+        currentUserName={session?.user?.name || 'Usuario'}
+        currentUserImage={session?.user?.image}
+        day={classroomData.day}
+        timeSlot={classroomData.timeSlot}
       />
     </div>
   )

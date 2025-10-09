@@ -32,10 +32,10 @@ const Header = () => {
           <Link href="/" className="text-sm font-medium hover:underline">
             Inicio
           </Link>
-          <Link href="/cursos" className="text-sm font-medium hover:underline">
+          <Link href="/courses" className="text-sm font-medium hover:underline">
             Cursos
           </Link>
-          <Link href="/metodo" className="text-sm font-medium hover:underline">
+          <Link href="/method" className="text-sm font-medium hover:underline">
             Método
           </Link>
           <Link href="/shop" className="text-sm font-medium hover:underline">
@@ -44,7 +44,7 @@ const Header = () => {
           <Link href="/blog" className="text-sm font-medium hover:underline text-primary">
             Blog
           </Link>
-          <Link href="/contacto" className="text-sm font-medium hover:underline">
+          <Link href="/contact" className="text-sm font-medium hover:underline">
             Contacto
           </Link>
         </nav>

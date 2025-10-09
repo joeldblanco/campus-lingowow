@@ -66,12 +66,20 @@ export async function getAllClasses(filters?: ClassFilters): Promise<ClassBookin
   try {
     const where: Record<string, unknown> = {}
 
-    if (filters?.startDate) {
-      where.day = { gte: filters.startDate }
+    // Nota: Los filtros de fecha vienen en hora local, necesitamos convertirlos a UTC
+    if (filters?.startDate || filters?.endDate) {
+      const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
+      
+      if (filters?.startDate) {
+        const utcStart = convertTimeSlotToUTC(filters.startDate, '00:00-00:00')
+        where.day = { gte: utcStart.day }
+      }
+      if (filters?.endDate) {
+        const utcEnd = convertTimeSlotToUTC(filters.endDate, '23:59-23:59')
+        where.day = { ...(where.day as object), lte: utcEnd.day }
+      }
     }
-    if (filters?.endDate) {
-      where.day = { ...(where.day as object), lte: filters.endDate }
-    }
+    
     if (filters?.teacherId) {
       where.teacherId = filters.teacherId
     }
@@ -133,7 +141,18 @@ export async function getAllClasses(filters?: ClassFilters): Promise<ClassBookin
       orderBy: [{ day: 'desc' }, { timeSlot: 'asc' }],
     })
 
-    return classes
+    // Convertir day y timeSlot de UTC a hora local antes de devolver
+    const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
+    const classesWithLocalTime = classes.map(classItem => {
+      const localData = convertTimeSlotFromUTC(classItem.day, classItem.timeSlot)
+      return {
+        ...classItem,
+        day: localData.day,
+        timeSlot: localData.timeSlot,
+      }
+    })
+
+    return classesWithLocalTime
   } catch (error) {
     console.error('Error fetching classes:', error)
     throw new Error('Failed to fetch classes')
@@ -187,7 +206,19 @@ export async function getClassById(id: string): Promise<ClassBookingWithDetails 
       },
     })
 
-    return classBooking
+    if (!classBooking) {
+      return null
+    }
+
+    // Convertir day y timeSlot de UTC a hora local antes de devolver
+    const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
+    const localData = convertTimeSlotFromUTC(classBooking.day, classBooking.timeSlot)
+    
+    return {
+      ...classBooking,
+      day: localData.day,
+      timeSlot: localData.timeSlot,
+    }
   } catch (error) {
     console.error('Error fetching class:', error)
     throw new Error('Failed to fetch class')
@@ -198,7 +229,11 @@ export async function createClass(data: z.infer<typeof CreateClassSchema>) {
   try {
     // Validate input data
     const validatedData = CreateClassSchema.parse(data)
-    
+
+    // Convertir day y timeSlot de hora local a UTC antes de guardar
+    const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
+    const utcData = convertTimeSlotToUTC(validatedData.day, validatedData.timeSlot)
+
     // 1. Validar que la fecha esté dentro del período académico de la inscripción
     const enrollment = await db.enrollment.findUnique({
       where: { id: validatedData.enrollmentId },
@@ -217,25 +252,26 @@ export async function createClass(data: z.infer<typeof CreateClassSchema>) {
       return { success: false, error: 'Inscripción no encontrada' }
     }
 
-    const classDate = new Date(validatedData.day)
-    const periodStart = new Date(enrollment.academicPeriod.startDate)
-    const periodEnd = new Date(enrollment.academicPeriod.endDate)
+    // Usar date-fns para manejar fechas
+    const { parseISO, isWithinInterval, format: formatDate } = await import('date-fns')
+    const { getDayName } = await import('@/lib/utils/date')
 
-    // Normalizar las fechas a medianoche para comparación
-    classDate.setHours(0, 0, 0, 0)
-    periodStart.setHours(0, 0, 0, 0)
-    periodEnd.setHours(0, 0, 0, 0)
+    // Validar usando la fecha local original (la que el usuario seleccionó)
+    const classDate = parseISO(validatedData.day)
+    const periodStart = parseISO(enrollment.academicPeriod.startDate.toISOString().split('T')[0])
+    const periodEnd = parseISO(enrollment.academicPeriod.endDate.toISOString().split('T')[0])
 
-    if (classDate < periodStart || classDate > periodEnd) {
+    // Validar que la fecha esté dentro del período académico
+    if (!isWithinInterval(classDate, { start: periodStart, end: periodEnd })) {
       return {
         success: false,
-        error: `La fecha debe estar dentro del período académico "${enrollment.academicPeriod.name}" (${periodStart.toLocaleDateString('es-ES')} - ${periodEnd.toLocaleDateString('es-ES')})`,
+        error: `La fecha debe estar dentro del período académico "${enrollment.academicPeriod.name}" (${formatDate(periodStart, 'dd/MM/yyyy')} - ${formatDate(periodEnd, 'dd/MM/yyyy')})`,
       }
     }
 
     // 2. Validar que el horario esté dentro de la disponibilidad del profesor
     const [startTime, endTime] = validatedData.timeSlot.split('-')
-    const dayOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][classDate.getDay()]
+    const dayOfWeek = getDayName(validatedData.day)
 
     // Buscar disponibilidad del profesor para ese día de la semana
     const teacherAvailability = await db.teacherAvailability.findMany({
@@ -263,7 +299,7 @@ export async function createClass(data: z.infer<typeof CreateClassSchema>) {
         error: `El horario ${validatedData.timeSlot} está fuera de la disponibilidad del profesor para este día`,
       }
     }
-    
+
     // 3. Check if the time slot is available for the teacher (no conflicting bookings)
     const existingBooking = await db.classBooking.findUnique({
       where: {
@@ -284,10 +320,10 @@ export async function createClass(data: z.infer<typeof CreateClassSchema>) {
         studentId: validatedData.studentId,
         teacherId: validatedData.teacherId,
         enrollmentId: validatedData.enrollmentId,
-        day: validatedData.day,
-        timeSlot: validatedData.timeSlot,
+        day: utcData.day, // Guardar en UTC
+        timeSlot: utcData.timeSlot, // Guardar en UTC
         notes: validatedData.notes,
-        creditId: validatedData.creditId,
+        ...(validatedData.creditId && { creditId: validatedData.creditId }),
         status: 'CONFIRMED',
       },
     })
@@ -296,14 +332,14 @@ export async function createClass(data: z.infer<typeof CreateClassSchema>) {
     return { success: true, class: classBooking }
   } catch (error) {
     console.error('Error creating class:', error)
-    
+
     if (error instanceof z.ZodError) {
-      return { 
-        success: false, 
-        error: error.errors.map(e => e.message).join(', ')
+      return {
+        success: false,
+        error: error.errors.map((e) => e.message).join(', '),
       }
     }
-    
+
     return { success: false, error: 'Error al crear la clase' }
   }
 }
@@ -323,7 +359,18 @@ export async function updateClass(id: string, data: z.infer<typeof EditClassSche
   try {
     // Validate input data
     const validatedData = EditClassSchema.parse(data)
+
+    // Convertir day y timeSlot a UTC si se están actualizando
+    let utcDay = validatedData.day
+    let utcTimeSlot = validatedData.timeSlot
     
+    if (validatedData.day && validatedData.timeSlot) {
+      const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
+      const utcData = convertTimeSlotToUTC(validatedData.day, validatedData.timeSlot)
+      utcDay = utcData.day
+      utcTimeSlot = utcData.timeSlot
+    }
+
     // If updating teacher, day, or timeSlot, check availability
     if (validatedData.teacherId || validatedData.day || validatedData.timeSlot) {
       const currentClass = await db.classBooking.findUnique({
@@ -336,8 +383,8 @@ export async function updateClass(id: string, data: z.infer<typeof EditClassSche
       }
 
       const newTeacherId = validatedData.teacherId || currentClass.teacherId
-      const newDay = validatedData.day || currentClass.day
-      const newTimeSlot = validatedData.timeSlot || currentClass.timeSlot
+      const newDay = utcDay || currentClass.day
+      const newTimeSlot = utcTimeSlot || currentClass.timeSlot
 
       // Only check if we're actually changing the schedule
       if (
@@ -365,12 +412,12 @@ export async function updateClass(id: string, data: z.infer<typeof EditClassSche
 
     const updateData: Record<string, unknown> = {}
     if (validatedData.teacherId) updateData.teacherId = validatedData.teacherId
-    if (validatedData.day) updateData.day = validatedData.day
-    if (validatedData.timeSlot) updateData.timeSlot = validatedData.timeSlot
+    if (utcDay) updateData.day = utcDay // Usar versión UTC
+    if (utcTimeSlot) updateData.timeSlot = utcTimeSlot // Usar versión UTC
     if (validatedData.status) updateData.status = validatedData.status
     if (validatedData.notes !== undefined) updateData.notes = validatedData.notes
     if (validatedData.enrollmentId) updateData.enrollmentId = validatedData.enrollmentId
-    if (validatedData.creditId) updateData.creditId = validatedData.creditId
+    if (validatedData.creditId && validatedData.creditId !== '') updateData.creditId = validatedData.creditId
     if (validatedData.completedAt) updateData.completedAt = validatedData.completedAt
 
     const classBooking = await db.classBooking.update({
@@ -382,14 +429,14 @@ export async function updateClass(id: string, data: z.infer<typeof EditClassSche
     return { success: true, class: classBooking }
   } catch (error) {
     console.error('Error updating class:', error)
-    
+
     if (error instanceof z.ZodError) {
-      return { 
-        success: false, 
-        error: error.errors.map(e => e.message).join(', ')
+      return {
+        success: false,
+        error: error.errors.map((e) => e.message).join(', '),
       }
     }
-    
+
     return { success: false, error: 'Error al actualizar la clase' }
   }
 }
@@ -410,6 +457,10 @@ export async function deleteClass(id: string) {
 
 export async function rescheduleClass(id: string, newDay: string, newTimeSlot: string) {
   try {
+    // Convertir day y timeSlot a UTC
+    const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
+    const utcData = convertTimeSlotToUTC(newDay, newTimeSlot)
+
     const currentClass = await db.classBooking.findUnique({
       where: { id },
       select: { teacherId: true },
@@ -419,12 +470,12 @@ export async function rescheduleClass(id: string, newDay: string, newTimeSlot: s
       return { success: false, error: 'Class not found' }
     }
 
-    // Check if the new time slot is available
+    // Check if the new time slot is available (usando UTC)
     const existingBooking = await db.classBooking.findFirst({
       where: {
         teacherId: currentClass.teacherId,
-        day: newDay,
-        timeSlot: newTimeSlot,
+        day: utcData.day,
+        timeSlot: utcData.timeSlot,
         id: { not: id },
       },
     })
@@ -436,8 +487,8 @@ export async function rescheduleClass(id: string, newDay: string, newTimeSlot: s
     const updatedClass = await db.classBooking.update({
       where: { id },
       data: {
-        day: newDay,
-        timeSlot: newTimeSlot,
+        day: utcData.day, // Guardar en UTC
+        timeSlot: utcData.timeSlot, // Guardar en UTC
         status: 'CONFIRMED',
       },
     })
@@ -516,18 +567,33 @@ export async function getAvailableTeachers(day: string, timeSlot: string) {
 
 /**
  * Obtiene los horarios disponibles de un profesor para una fecha específica
- * basándose en su disponibilidad configurada
+ * basándose en su disponibilidad configurada y la duración del curso
  */
-export async function getTeacherAvailableTimeSlots(teacherId: string, date: string) {
+export async function getTeacherAvailableTimeSlots(
+  teacherId: string,
+  date: string,
+  courseId: string
+) {
   try {
-    const classDate = new Date(date)
-    const dayOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][classDate.getDay()]
+    const { getDayName } = await import('@/lib/utils/date')
+
+    // Obtener el nombre del día de la semana
+    const dayOfWeek = getDayName(date)
+
+    // Obtener la duración del curso
+    const course = await db.course.findUnique({
+      where: { id: courseId },
+      select: { classDuration: true },
+    })
+
+    const classDuration = course?.classDuration || 40 // Default 40 minutos
 
     // Obtener disponibilidad del profesor para ese día
+    // Buscar tanto por día de la semana como por fecha específica
     const availability = await db.teacherAvailability.findMany({
       where: {
         userId: teacherId,
-        day: dayOfWeek,
+        OR: [{ day: dayOfWeek }, { day: date }],
       },
       orderBy: {
         startTime: 'asc',
@@ -538,30 +604,35 @@ export async function getTeacherAvailableTimeSlots(teacherId: string, date: stri
       return []
     }
 
-    // Generar slots de 30 minutos dentro de los rangos de disponibilidad
-    const timeSlots: string[] = []
-    
+    // Generar slots según la duración del curso
+    // Usar Set para evitar duplicados
+    const timeSlotsSet = new Set<string>()
+
     availability.forEach((slot) => {
       const [startHour, startMinute] = slot.startTime.split(':').map(Number)
       const [endHour, endMinute] = slot.endTime.split(':').map(Number)
-      
+
       const startMinutes = startHour * 60 + startMinute
       const endMinutes = endHour * 60 + endMinute
-      
-      // Generar slots de 30 minutos
-      for (let minutes = startMinutes; minutes < endMinutes; minutes += 30) {
+
+      // Generar slots según la duración configurada del curso
+      for (let minutes = startMinutes; minutes < endMinutes; minutes += classDuration) {
         const slotStartHour = Math.floor(minutes / 60)
         const slotStartMinute = minutes % 60
-        const slotEndMinutes = minutes + 30
+        const slotEndMinutes = minutes + classDuration
         const slotEndHour = Math.floor(slotEndMinutes / 60)
         const slotEndMinute = slotEndMinutes % 60
-        
-        const timeSlot = `${slotStartHour.toString().padStart(2, '0')}:${slotStartMinute.toString().padStart(2, '0')}-${slotEndHour.toString().padStart(2, '0')}:${slotEndMinute.toString().padStart(2, '0')}`
-        timeSlots.push(timeSlot)
+
+        // Solo agregar si el slot completo cabe en el rango de disponibilidad
+        if (slotEndMinutes <= endMinutes) {
+          const timeSlot = `${slotStartHour.toString().padStart(2, '0')}:${slotStartMinute.toString().padStart(2, '0')}-${slotEndHour.toString().padStart(2, '0')}:${slotEndMinute.toString().padStart(2, '0')}`
+          timeSlotsSet.add(timeSlot)
+        }
       }
     })
 
-    return timeSlots
+    // Convertir Set a array y ordenar
+    return Array.from(timeSlotsSet).sort()
   } catch (error) {
     console.error('Error fetching teacher available time slots:', error)
     return []
@@ -810,8 +881,6 @@ export async function getStudentsWithEnrollments() {
       },
     })
 
-    console.log('Total estudiantes con inscripciones activas:', students.length)
-
     return students
   } catch (error) {
     console.error('Error fetching students with enrollments:', error)
@@ -829,6 +898,10 @@ export async function getTeacherAvailableDays(
   endDate: string
 ): Promise<string[]> {
   try {
+    const { getDateRange, filterByDayOfWeek, dayNameToNumber, formatToISO } = await import(
+      '@/lib/utils/date'
+    )
+
     // Obtener toda la disponibilidad del profesor
     const availability = await db.teacherAvailability.findMany({
       where: {
@@ -840,39 +913,20 @@ export async function getTeacherAvailableDays(
       return []
     }
 
-    // Mapear días de disponibilidad
-    const availableDaysOfWeek = new Set(availability.map((a) => a.day))
+    // Convertir días de disponibilidad a números
+    const availableDayNumbers = Array.from(
+      new Set(availability.map((a) => dayNameToNumber(a.day)))
+    ).filter((num) => num !== -1)
 
-    // Convertir nombres de días a números (0 = domingo, 6 = sábado)
-    const dayNameToNumber: Record<string, number> = {
-      sunday: 0,
-      monday: 1,
-      tuesday: 2,
-      wednesday: 3,
-      thursday: 4,
-      friday: 5,
-      saturday: 6,
+    if (availableDayNumbers.length === 0) {
+      return []
     }
 
-    const availableDayNumbers = Array.from(availableDaysOfWeek).map(
-      (day) => dayNameToNumber[day]
-    )
+    // Generar todas las fechas en el rango y filtrar por días disponibles
+    const allDates = getDateRange(startDate, endDate)
+    const availableDates = filterByDayOfWeek(allDates, availableDayNumbers)
 
-    // Generar todas las fechas en el rango que coincidan con los días disponibles
-    const start = new Date(startDate)
-    const end = new Date(endDate)
-    const availableDates: string[] = []
-
-    const current = new Date(start)
-    while (current <= end) {
-      const dayOfWeek = current.getDay()
-      if (availableDayNumbers.includes(dayOfWeek)) {
-        availableDates.push(current.toISOString().split('T')[0])
-      }
-      current.setDate(current.getDate() + 1)
-    }
-
-    return availableDates
+    return availableDates.map((date) => formatToISO(date))
   } catch (error) {
     console.error('Error fetching teacher available days:', error)
     return []

@@ -20,6 +20,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { CreditSource, CreditUsage } from '@/types/academic-period'
 import { toast } from 'sonner'
+import { getCurrentDate, isBeforeDate } from '@/lib/utils/date'
 
 interface StudentCredit {
   id: string
@@ -85,9 +86,10 @@ const StudentCredits: React.FC<StudentCreditsProps> = ({
   onUseCredit,
   isLoading = false,
 }) => {
-  const activeCredits = credits.filter((c) => !c.isUsed && new Date(c.expiryDate) > new Date())
+  const now = getCurrentDate()
+  const activeCredits = credits.filter((c) => !c.isUsed && !isBeforeDate(c.expiryDate, now))
   const usedCredits = credits.filter((c) => c.isUsed)
-  const expiredCredits = credits.filter((c) => !c.isUsed && new Date(c.expiryDate) <= new Date())
+  const expiredCredits = credits.filter((c) => !c.isUsed && isBeforeDate(c.expiryDate, now))
 
   const handleUseCredit = async (creditId: string, usage: CreditUsage) => {
     try {

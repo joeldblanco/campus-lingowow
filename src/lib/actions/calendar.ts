@@ -11,6 +11,7 @@ import {
 import { BookingStatus, UserRole } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { getCurrentDate } from '@/lib/utils/date'
 
 // Tipos para acciones
 interface AvailabilityParams {
@@ -27,10 +28,8 @@ interface BookingParams {
 }
 
 interface CalendarSettingsParams {
-  slotDuration: number
   startHour: number
   endHour: number
-  maxBookingsPerStudent: number
 }
 
 // Acción para obtener disponibilidad del profesor
@@ -99,7 +98,7 @@ export async function cancelBooking(bookingId: string) {
       where: { id: bookingId },
       data: {
         status: BookingStatus.CANCELLED,
-        cancelledAt: new Date(),
+        cancelledAt: getCurrentDate(),
         cancelledBy: userId,
       },
     })
@@ -181,29 +180,22 @@ export async function getTeacherBookings() {
   }
 }
 
-// Acción para obtener/crear configuración del calendario
+// Acción para obtener/crear configuración del calendario (global)
 export async function getCalendarSettings() {
-  const session = await auth()
-
-  if (!session || !session.user || !session.user.id) {
-    redirect('/login')
-  }
-
-  const userId = session.user.id
-
   try {
-    let settings = await db.calendarSettings.findUnique({
+    // Buscar la configuración global (isGlobal = true)
+    let settings = await db.calendarSettings.findFirst({
       where: {
-        userId,
+        isGlobal: true,
       },
     })
 
-    // Crear configuración por defecto si no existe
+    // Crear configuración global por defecto si no existe
     if (!settings) {
       settings = await db.calendarSettings.create({
         data: {
-          userId,
-          slotDuration: 30,
+          isGlobal: true,
+          slotDuration: 60, // Fijo en 60 minutos para la interfaz del profesor
           startHour: 8,
           endHour: 16.5,
           maxBookingsPerStudent: 3,
@@ -218,7 +210,7 @@ export async function getCalendarSettings() {
   }
 }
 
-// Acción para actualizar configuración del calendario
+// Acción para actualizar configuración del calendario (global)
 export async function updateCalendarSettings(params: CalendarSettingsParams) {
   const session = await auth()
 
@@ -226,13 +218,12 @@ export async function updateCalendarSettings(params: CalendarSettingsParams) {
     !session ||
     !session.user ||
     !session.user.id ||
-    !session.user.roles.includes(UserRole.TEACHER)
+    (!session.user.roles.includes(UserRole.TEACHER) && !session.user.roles.includes(UserRole.ADMIN))
   ) {
     return { success: false, error: 'No autorizado' }
   }
 
-  const userId = session.user.id
-  const { slotDuration, startHour, endHour, maxBookingsPerStudent } = params
+  const { startHour, endHour } = params
 
   try {
     // Validar parámetros
@@ -240,35 +231,39 @@ export async function updateCalendarSettings(params: CalendarSettingsParams) {
       return { success: false, error: 'La hora de fin debe ser posterior a la hora de inicio' }
     }
 
-    if (slotDuration <= 0) {
-      return { success: false, error: 'La duración del slot debe ser positiva' }
-    }
-
-    if (maxBookingsPerStudent <= 0) {
-      return { success: false, error: 'El máximo de reservas debe ser positivo' }
-    }
-
-    // Actualizar o crear configuración
-    await db.calendarSettings.upsert({
+    // Buscar la configuración global existente
+    const existingSettings = await db.calendarSettings.findFirst({
       where: {
-        userId,
-      },
-      update: {
-        slotDuration,
-        startHour,
-        endHour,
-        maxBookingsPerStudent,
-      },
-      create: {
-        userId,
-        slotDuration,
-        startHour,
-        endHour,
-        maxBookingsPerStudent,
+        isGlobal: true,
       },
     })
 
+    if (existingSettings) {
+      // Actualizar configuración global existente
+      await db.calendarSettings.update({
+        where: {
+          id: existingSettings.id,
+        },
+        data: {
+          slotDuration: 60, // Siempre 60 minutos para la interfaz del profesor
+          startHour,
+          endHour,
+        },
+      })
+    } else {
+      // Crear configuración global si no existe
+      await db.calendarSettings.create({
+        data: {
+          isGlobal: true,
+          slotDuration: 60, // Siempre 60 minutos para la interfaz del profesor
+          startHour,
+          endHour,
+        },
+      })
+    }
+
     revalidatePath('/calendar')
+    revalidatePath('/admin/calendar-settings')
     return { success: true }
   } catch (error) {
     console.error('Error al actualizar configuración:', error)
@@ -294,12 +289,15 @@ export async function updateTeacherAvailability(params: AvailabilityParams) {
   const [startTime, endTime] = splitTimeSlot(timeSlot)
 
   try {
+    // Normalizar el día a minúsculas para consistencia
+    const normalizedDay = day.toLowerCase()
+    
     if (available) {
       // Agregar nueva disponibilidad
       await db.teacherAvailability.create({
         data: {
           userId,
-          day,
+          day: normalizedDay,
           startTime,
           endTime,
         },
@@ -309,7 +307,7 @@ export async function updateTeacherAvailability(params: AvailabilityParams) {
       await db.teacherAvailability.deleteMany({
         where: {
           userId,
-          day,
+          day: normalizedDay,
           startTime,
           endTime,
         },
@@ -341,11 +339,14 @@ export async function bookClass(params: BookingParams) {
   const studentId = session.user.id
 
   try {
+    // Normalizar el día a minúsculas para consistencia
+    const normalizedDay = day.toLowerCase()
+    
     // Obtener disponibilidad del profesor para este día
     const availability = await db.teacherAvailability.findMany({
       where: {
         userId: teacherId,
-        day,
+        day: normalizedDay,
       },
     })
 
@@ -399,7 +400,7 @@ export async function bookClass(params: BookingParams) {
     // Verificar número máximo de reservas por estudiante
     const settings = (await db.calendarSettings.findFirst({
       where: {
-        userId: teacherId,
+        isGlobal: true,
       },
     })) || { maxBookingsPerStudent: 3 }
 
@@ -482,14 +483,17 @@ export async function bulkUpdateAvailability(availabilityList: AvailabilityParam
 
     // Obtener cambios para aplicar
     for (const { day, timeSlot, available } of availabilityList) {
-      if (!availabilityByDay[day]) {
-        availabilityByDay[day] = []
+      // Normalizar el día a minúsculas para consistencia
+      const normalizedDay = day.toLowerCase()
+      
+      if (!availabilityByDay[normalizedDay]) {
+        availabilityByDay[normalizedDay] = []
       }
 
       const [startTime, endTime] = splitTimeSlot(timeSlot)
 
       if (available) {
-        availabilityByDay[day].push({ startTime, endTime })
+        availabilityByDay[normalizedDay].push({ startTime, endTime })
       }
     }
 

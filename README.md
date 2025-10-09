@@ -51,6 +51,8 @@
     
 -   **Resend** - API de emails transaccionales.
     
+-   **Jitsi JaaS** - Plataforma de videollamadas para clases en vivo.
+    
 
 ----------
 
@@ -92,7 +94,15 @@ AUTH_SECRET=tu_auth_secret
 JWT_SECRET=tu_jwt_secret
 NEXT_PUBLIC_DOMAIN=tu_dominio
 
+# Jitsi JaaS - Requerido para videollamadas
+NEXT_PUBLIC_JAAS_APP_ID=tu_jaas_app_id
+JAAS_APP_ID=tu_jaas_app_id
+JAAS_KID=tu_jaas_key_id
+JAAS_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nTu clave privada aquí\n-----END PRIVATE KEY-----"
+
 ```
+
+> **Nota**: Para obtener las credenciales de Jitsi JaaS, regístrate en [https://jaas.8x8.vc/](https://jaas.8x8.vc/) y crea una aplicación. Las credenciales se encuentran en la sección de configuración de tu aplicación.
 
 ### **3️⃣ Instalar dependencias**
 
@@ -131,6 +141,8 @@ El despliegue se realizará en **Vercel** para la aplicación y **Neon** para la
 
 ## 📌 Notas Internas
 
--   No hay documentación formal aún. Se recomienda crear una carpeta `/docs` para ello.
+-   **Documentación de Jitsi**: Ver [JITSI_SETUP.md](./JITSI_SETUP.md) para configuración completa de videollamadas.
+    
+-   **Solución rápida de errores**: Ver [docs/QUICK_FIX_JITSI_ERROR.md](./docs/QUICK_FIX_JITSI_ERROR.md) para resolver errores de Jitsi.
     
 -   Se evaluará la configuración de CI/CD para automatizar el despliegue.

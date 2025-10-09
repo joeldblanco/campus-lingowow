@@ -32,11 +32,11 @@ import { Switch } from '@/components/ui/switch'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { createProduct, createProductWithPlans, getCategories } from '@/lib/actions/commercial'
+import { createProduct, createProductWithMixedPlans, getCategories } from '@/lib/actions/commercial'
 import { getCoursesForProducts } from '@/lib/actions/courses'
 import { toast } from 'sonner'
 import { Category } from '@/types/category'
-import { PlanManager, PlanData } from './plan-manager'
+import { EnhancedPlanManager, PlanData } from './enhanced-plan-manager'
 import { FileUpload } from '@/components/ui/file-upload'
 import Image from 'next/image'
 
@@ -66,6 +66,8 @@ const productSchema = z.object({
   courseId: z.string().optional(),
   maxScheduleSlots: z.number().min(1).optional(),
   scheduleDuration: z.number().min(15).optional(),
+  pricingType: z.enum(['SINGLE_PRICE', 'MULTIPLE_PLANS']).default('SINGLE_PRICE'),
+  paymentType: z.enum(['ONE_TIME', 'RECURRING']).default('ONE_TIME'),
 })
 
 type ProductFormData = z.infer<typeof productSchema>
@@ -101,6 +103,8 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
       courseId: undefined,
       maxScheduleSlots: 1,
       scheduleDuration: 60,
+      pricingType: 'SINGLE_PRICE',
+      paymentType: 'ONE_TIME',
     },
   })
 
@@ -134,21 +138,47 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
         courseId: data.courseId || null,
         maxScheduleSlots: data.maxScheduleSlots || null,
         scheduleDuration: data.scheduleDuration || null,
+        pricingType: data.pricingType,
+        paymentType: data.paymentType,
+        tags: [],
       }
 
-      const result = plans.length > 0 
-        ? await createProductWithPlans(productData, plans.map(plan => ({
-            name: plan.name,
-            slug: plan.slug,
-            description: plan.description || undefined,
-            price: plan.price,
-            comparePrice: plan.comparePrice || undefined,
-            duration: plan.duration,
-            isActive: plan.isActive,
-            isPopular: plan.isPopular,
-            sortOrder: plan.sortOrder,
-          })))
-        : await createProduct(productData)
+      // Validar que si es MULTIPLE_PLANS, debe tener al menos un plan
+      if (data.pricingType === 'MULTIPLE_PLANS' && plans.length === 0) {
+        toast.error('Debes agregar al menos un plan para productos con múltiples planes')
+        return
+      }
+
+      let result
+      
+      if (data.pricingType === 'MULTIPLE_PLANS' && plans.length > 0) {
+        // Separar planes nuevos de planes existentes
+        const newPlans = plans.filter(plan => !plan.isExisting).map(plan => ({
+          name: plan.name,
+          slug: plan.slug,
+          description: plan.description || undefined,
+          price: plan.price,
+          comparePrice: plan.comparePrice || undefined,
+          duration: plan.duration,
+          isActive: plan.isActive,
+          isPopular: plan.isPopular,
+          sortOrder: plan.sortOrder,
+          includesClasses: plan.includesClasses || false,
+          classesPerPeriod: plan.classesPerPeriod || undefined,
+          classesPerWeek: plan.classesPerWeek || undefined,
+          allowProration: plan.allowProration ?? true,
+          autoRenewal: plan.autoRenewal ?? true,
+          billingCycle: plan.billingCycle || undefined,
+        }))
+        
+        const existingPlanIds = plans
+          .filter(plan => plan.isExisting && plan.id)
+          .map(plan => plan.id!)
+        
+        result = await createProductWithMixedPlans(productData, newPlans, existingPlanIds)
+      } else {
+        result = await createProduct(productData)
+      }
 
       if (result.success) {
         toast.success('Producto creado correctamente')
@@ -255,7 +285,7 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                 name="price"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Precio</FormLabel>
+                    <FormLabel>Precio {form.watch('pricingType') === 'MULTIPLE_PLANS' && '(Referencial)'}</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -263,8 +293,14 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                         placeholder="0.00"
                         {...field}
                         onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                        disabled={form.watch('pricingType') === 'MULTIPLE_PLANS'}
                       />
                     </FormControl>
+                    {form.watch('pricingType') === 'MULTIPLE_PLANS' && (
+                      <div className="text-xs text-muted-foreground">
+                        El precio se define en cada plan
+                      </div>
+                    )}
                     <FormMessage />
                   </FormItem>
                 )}
@@ -527,14 +563,77 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
               )}
             </div>
 
+            {/* Product Type Configuration */}
+            <div className="border-t pt-6 space-y-4">
+              <h3 className="text-lg font-medium">Configuración del Producto</h3>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="pricingType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Tipo de Precio</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Seleccionar tipo" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="SINGLE_PRICE">Precio Único</SelectItem>
+                          <SelectItem value="MULTIPLE_PLANS">Múltiples Planes</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <div className="text-xs text-muted-foreground">
+                        {field.value === 'SINGLE_PRICE' 
+                          ? 'Producto con un solo precio (ej: franela, gorra)'
+                          : 'Producto con distintos planes de pago (ej: programa regular con planes simple, regular, intensivo)'}
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="paymentType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Tipo de Pago</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Seleccionar tipo" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="ONE_TIME">Pago Único</SelectItem>
+                          <SelectItem value="RECURRING">Pago Recurrente</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <div className="text-xs text-muted-foreground">
+                        {field.value === 'ONE_TIME'
+                          ? 'Pago único (ej: merchandising, curso asíncrono)'
+                          : 'Pago recurrente/suscripción (ej: programa regular de inglés)'}
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
             {/* Plan Management Section */}
+            {form.watch('pricingType') === 'MULTIPLE_PLANS' && (
             <div className="border-t pt-6">
-              <PlanManager
+              <EnhancedPlanManager
                 plans={plans}
                 onPlansChange={setPlans}
                 className="mb-6"
               />
             </div>
+            )}
 
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setOpen(false)}>

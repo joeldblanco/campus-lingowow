@@ -44,6 +44,7 @@ import { EditEnrollmentDialog } from './edit-enrollment-dialog'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Progress } from '@/components/ui/progress'
 import { EnrollmentStatus } from '@prisma/client'
+import { formatDateShort } from '@/lib/utils/date'
 
 interface EnrollmentsTableProps {
   enrollments: EnrollmentWithDetails[]
@@ -136,11 +137,7 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
   }
 
   const formatDate = (date: Date) => {
-    return new Date(date).toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    })
+    return formatDateShort(date)
   }
 
   return (
@@ -242,15 +239,9 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
                     <div>
                       <div className="font-medium">{enrollment.academicPeriod.name}</div>
                       <div className="text-sm text-muted-foreground">
-                        {new Date(enrollment.academicPeriod.startDate).toLocaleDateString('es-ES', {
-                          month: 'short',
-                          year: 'numeric',
-                        })}{' '}
+                        {formatDateShort(enrollment.academicPeriod.startDate)}{' '}
                         -{' '}
-                        {new Date(enrollment.academicPeriod.endDate).toLocaleDateString('es-ES', {
-                          month: 'short',
-                          year: 'numeric',
-                        })}
+                        {formatDateShort(enrollment.academicPeriod.endDate)}
                       </div>
                     </div>
                   </TableCell>

@@ -15,8 +15,8 @@ import {
 } from '@/components/ui/form'
 import { useShopStore } from '@/stores/useShopStore'
 import { useSession } from 'next-auth/react'
-import { useState } from 'react'
-import { PersonalInfoSchema } from '@/schemas/checkout'
+import { useState, useEffect } from 'react'
+import { PersonalInfoSchema, createPersonalInfoSchema } from '@/schemas/checkout'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -35,7 +35,7 @@ export function PersonalInfoForm({ onSubmit }: PersonalInfoFormProps) {
   const [needsShipping, setNeedsShipping] = useState(false)
 
   const form = useForm<FormData>({
-    resolver: zodResolver(PersonalInfoSchema),
+    resolver: zodResolver(createPersonalInfoSchema(needsShipping)),
     defaultValues: {
       firstName: session?.user?.name?.split(' ')[0] || '',
       lastName: session?.user?.name?.split(' ').slice(1).join(' ') || '',
@@ -48,7 +48,40 @@ export function PersonalInfoForm({ onSubmit }: PersonalInfoFormProps) {
     },
   })
 
+  // Actualizar la validación cuando cambia needsShipping
+  useEffect(() => {
+    // Limpiar errores de campos de dirección cuando no se necesita envío
+    if (!needsShipping) {
+      form.clearErrors(['country', 'city', 'address', 'zipCode'])
+    }
+  }, [needsShipping, form])
+
   const onFormSubmit = (values: FormData) => {
+    // Validar campos de dirección si se necesita envío
+    if (hasMerchandise && needsShipping) {
+      const errors: { field: 'country' | 'city' | 'address' | 'zipCode', message: string }[] = []
+      
+      if (!values.country || values.country.trim() === '') {
+        errors.push({ field: 'country', message: 'El país es requerido' })
+      }
+      if (!values.city || values.city.trim() === '') {
+        errors.push({ field: 'city', message: 'La ciudad es requerida' })
+      }
+      if (!values.address || values.address.trim() === '') {
+        errors.push({ field: 'address', message: 'La dirección es requerida' })
+      }
+      if (!values.zipCode || values.zipCode.trim() === '') {
+        errors.push({ field: 'zipCode', message: 'El código postal es requerido' })
+      }
+
+      if (errors.length > 0) {
+        errors.forEach(({ field, message }) => {
+          form.setError(field, { type: 'manual', message })
+        })
+        return
+      }
+    }
+
     // Guardamos los datos del cliente en sessionStorage
     sessionStorage.setItem(
       'customer-info',
@@ -58,6 +91,8 @@ export function PersonalInfoForm({ onSubmit }: PersonalInfoFormProps) {
         fullName: `${values.firstName} ${values.lastName}`,
       })
     )
+
+    console.log(values)
 
     onSubmit()
   }

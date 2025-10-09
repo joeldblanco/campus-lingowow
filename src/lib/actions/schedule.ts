@@ -2,6 +2,7 @@
 
 import { db } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
+import { getCurrentDate } from '@/lib/utils/date'
 
 export interface CreateScheduleSlotData {
   productId: string
@@ -230,7 +231,7 @@ export async function createProductPurchase(data: {
         purchase: {
           id: purchase.id,
           status: 'completed',
-          scheduledDate: data.scheduleSlotId ? new Date() : null,
+          scheduledDate: data.scheduleSlotId ? getCurrentDate() : null,
         },
         scheduled: !!data.scheduleSlotId,
         enrolled: !!data.enrollmentId,
@@ -418,7 +419,7 @@ export async function processProductPurchase(
         purchase: {
           id: purchaseResult.data?.purchase.id || '',
           status: 'completed',
-          scheduledDate: scheduleSlotId ? new Date() : null,
+          scheduledDate: scheduleSlotId ? getCurrentDate() : null,
         },
         scheduled: !!scheduleSlotId,
         enrolled: !!enrollmentId,

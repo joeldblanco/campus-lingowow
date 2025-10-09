@@ -1,25 +1,25 @@
 // /components/classroom/video-call.tsx
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { JitsiMeeting } from '@/components/jitsi/JitsiMeeting'
-import { JitsiButton } from '@/components/jitsi/JitsiButton'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { 
   Video, 
-  Users,
-  ExternalLink
+  Users
 } from 'lucide-react'
 import { createJitsiMeeting } from '@/lib/actions/jitsi'
 import { toast } from 'sonner'
 
 interface VideoCallProps {
   bookingId?: string
+  studentName?: string
 }
 
 export const VideoCall: React.FC<VideoCallProps> = ({ 
-  bookingId 
+  bookingId,
+  studentName
 }) => {
   const [isInMeeting, setIsInMeeting] = useState(false)
   const [roomName, setRoomName] = useState<string | null>(null)
@@ -50,55 +50,38 @@ export const VideoCall: React.FC<VideoCallProps> = ({
     }
   }
 
-  const handleJoinExternalMeeting = () => {
-    if (roomName && bookingId) {
-      // Abrir en nueva ventana para mejor experiencia
-      const meetingUrl = `/meeting/${roomName}?bookingId=${bookingId}`
-      window.open(meetingUrl, '_blank', 'width=1200,height=800')
-    }
-  }
-
-  const handleEndMeeting = () => {
+  // Memoizar el callback para evitar re-renders innecesarios
+  const handleEndMeeting = useCallback(() => {
     setIsInMeeting(false)
     setRoomName(null)
     toast.success('Videollamada finalizada')
-  }
+  }, [])
 
   // Si está en reunión y tenemos roomName, mostrar Jitsi embebido
   if (isInMeeting && roomName && bookingId) {
     return (
       <div className="flex flex-col h-full border rounded-lg overflow-hidden">
-        {/* Header con opción de abrir en nueva ventana */}
+        {/* Header */}
         <div className="p-2 bg-gray-100 border-b flex items-center justify-between">
           <Badge variant="outline" className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-500"></div>
             Videollamada Activa
           </Badge>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleJoinExternalMeeting}
-              className="flex items-center gap-1"
-            >
-              <ExternalLink className="h-3 w-3" />
-              Abrir en Nueva Ventana
-            </Button>
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={handleEndMeeting}
-            >
-              Finalizar
-            </Button>
-          </div>
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={handleEndMeeting}
+          >
+            Finalizar
+          </Button>
         </div>
 
-        {/* Jitsi Meeting embebido */}
+        {/* Jitsi Meeting - Pantalla completa */}
         <div className="flex-grow">
           <JitsiMeeting
             roomName={roomName}
             bookingId={bookingId}
+            studentName={studentName}
             onMeetingEnd={handleEndMeeting}
           />
         </div>
@@ -134,38 +117,24 @@ export const VideoCall: React.FC<VideoCallProps> = ({
           </p>
           
           {bookingId ? (
-            <div className="space-y-3">
-              {/* Botón principal para iniciar */}
-              <Button
-                onClick={handleStartCall}
-                disabled={isInitializing}
-                className="w-full"
-                size="lg"
-              >
-                {isInitializing ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Iniciando...
-                  </>
-                ) : (
-                  <>
-                    <Video className="h-4 w-4 mr-2" />
-                    Iniciar Videollamada
-                  </>
-                )}
-              </Button>
-
-              {/* Botón alternativo usando JitsiButton */}
-              <div className="text-xs text-gray-400 mb-2">o</div>
-              <JitsiButton 
-                bookingId={bookingId}
-                variant="outline"
-                className="w-full"
-                size="lg"
-              >
-                Abrir en Nueva Ventana
-              </JitsiButton>
-            </div>
+            <Button
+              onClick={handleStartCall}
+              disabled={isInitializing}
+              className="w-full"
+              size="lg"
+            >
+              {isInitializing ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Iniciando...
+                </>
+              ) : (
+                <>
+                  <Video className="h-4 w-4 mr-2" />
+                  Iniciar Videollamada
+                </>
+              )}
+            </Button>
           ) : (
             <Button
               disabled

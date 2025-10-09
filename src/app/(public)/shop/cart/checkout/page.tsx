@@ -3,6 +3,7 @@
 import { OrderSummary } from '@/components/shop/checkout/order-summary'
 import { PaymentMethodForm } from '@/components/shop/checkout/payment-method-form'
 import { PersonalInfoForm } from '@/components/shop/checkout/personal-info-form'
+import { InlineAuthForm } from '@/components/shop/checkout/inline-auth-form'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
@@ -14,6 +15,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
+import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 
 // Constante para los cálculos financieros
 const TAX_RATE = 0.07 // 7% de impuestos - ajusta según tus requerimientos
@@ -29,25 +31,19 @@ export default function CheckoutPage() {
   // Obtenemos los items del carrito desde el store
   const cartItems = useShopStore((state) => state.cart)
 
-  // Verificamos si hay cursos en el carrito
-  const hasCourses = useMemo(
-    () => cartItems.some((item) => item.product.type === 'course'),
-    [cartItems]
-  )
-
   // Cuando se complete la carga de la sesión, decidimos qué hacer
   useEffect(() => {
     if (authStatus !== 'loading') {
-      // Si hay cursos y no hay sesión, nos quedamos en el paso 0
-      if (hasCourses && authStatus === 'unauthenticated') {
+      // SIEMPRE requerimos autenticación para el checkout (necesario para PayPal)
+      if (authStatus === 'unauthenticated') {
         setStep(0)
       } else {
-        // Si no hay cursos o hay sesión, avanzamos al paso 1
+        // Si hay sesión, avanzamos al paso 1
         setStep(1)
       }
       setCheckingAuth(false)
     }
-  }, [authStatus, hasCourses])
+  }, [authStatus])
 
   // Calculamos los totales usando useMemo para optimizar rendimiento
   const { products, subtotal, taxes, discount, total } = useMemo(() => {
@@ -89,6 +85,11 @@ export default function CheckoutPage() {
   }
 
   const handlePaymentSubmit = () => {
+    // Si es PayPal, no hacemos nada aquí, el botón de PayPal maneja el proceso
+    if (paymentMethod === 'paypal') {
+      return
+    }
+
     setIsLoading(true)
 
     // Preparamos los datos del pedido
@@ -115,6 +116,33 @@ export default function CheckoutPage() {
       // Redirigir a página de confirmación
       router.push('/shop/cart/checkout/confirmation')
     }, 2000)
+  }
+
+  const handlePayPalSuccess = (data: unknown) => {
+    const paypalData = data as { invoice: { invoiceNumber: string } }
+    
+    // Preparamos los datos del pedido
+    const orderData = {
+      orderNumber: paypalData.invoice.invoiceNumber,
+      orderDate: new Date().toISOString(),
+      totalAmount: total,
+      items: cartItems,
+      customer: JSON.parse(sessionStorage.getItem('customer-info') || '{}'),
+      paymentMethod: 'paypal',
+      user: session?.user ? { id: session.user.id, email: session.user.email } : undefined,
+      paypalData: data,
+    }
+
+    // Guardamos en sessionStorage para la página de confirmación
+    sessionStorage.setItem('last-order', JSON.stringify(orderData))
+
+    // Limpiamos el carrito
+    useShopStore.getState().clearCart()
+
+    // Pequeño delay para que PayPal cierre la ventana antes de redirigir
+    setTimeout(() => {
+      router.push('/shop/cart/checkout/confirmation')
+    }, 500)
   }
 
   // Si el carrito está vacío, redirigimos a la página del carrito
@@ -144,154 +172,155 @@ export default function CheckoutPage() {
       <div className="container mx-auto py-8">
         <h1 className="text-3xl font-bold mb-8 text-center">Finalizar Compra</h1>
 
-        <Card className="max-w-md mx-auto mb-8">
-          <CardHeader>
-            <CardTitle>Inicio de sesión requerido</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-6">
-              Tu carrito contiene cursos que requieren una cuenta en nuestra plataforma para acceder
-              a los materiales de aprendizaje.
-            </p>
-            <div className="space-y-4">
-              <Button
-                className="w-full"
-                onClick={() => {
-                  // Guardamos la intención de checkout para redireccionar después
-                  useShopStore.getState().setCheckoutInfo({ redirectAfterAuth: true })
-                  router.push('/auth/login?redirect=/checkout')
-                }}
-              >
-                Iniciar sesión
-              </Button>
-
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => {
-                  // Guardamos la intención de checkout para redireccionar después
-                  useShopStore.getState().setCheckoutInfo({ redirectAfterAuth: true })
-                  router.push('/auth/register?redirect=/checkout')
-                }}
-              >
-                Crear cuenta
-              </Button>
-
-              <Button variant="ghost" className="w-full" onClick={() => router.push('/shop')}>
-                Volver a la tienda
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div>
+            <InlineAuthForm
+              onSuccess={() => {
+                // Cuando el login/registro sea exitoso, el useEffect detectará
+                // el cambio en authStatus y avanzará automáticamente al paso 1
+              }}
+            />
+            
+            <div className="mt-4 text-center">
+              <Button variant="ghost" onClick={() => router.push('/shop')}>
+                ← Volver a la tienda
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
 
-        <div className="max-w-md mx-auto">
-          <OrderSummary
-            products={products}
-            subtotal={subtotal}
-            taxes={taxes}
-            discount={discount}
-            total={total}
-          />
+          <div>
+            <OrderSummary
+              products={products}
+              subtotal={subtotal}
+              taxes={taxes}
+              discount={discount}
+              total={total}
+            />
+          </div>
         </div>
       </div>
     )
   }
 
+  const paypalItems = cartItems.map((item) => ({
+    productId: item.product.id,
+    planId: item.plan.id,
+    name: item.product.title,
+    description: item.cartItemDescription || item.product.description || item.plan.name,
+    price: item.plan.price,
+    quantity: item.quantity || 1,
+  }))
+
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8 text-center">Finalizar Compra</h1>
+    <PayPalScriptProvider
+      options={{
+        clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '',
+        currency: 'USD',
+      }}
+    >
+      <div className="container mx-auto py-8">
+        <h1 className="text-3xl font-bold mb-8 text-center">Finalizar Compra</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="md:col-span-2">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center">
-                  <div
-                    className={`w-8 h-8 rounded-full ${step >= 1 ? 'bg-primary' : 'bg-muted'} flex items-center justify-center text-white mr-2`}
-                  >
-                    {step > 1 ? <CheckIcon size={16} /> : 1}
-                  </div>
-                  <span className="font-medium">Información Personal</span>
-                </div>
-                <div className="flex items-center">
-                  <div
-                    className={`w-8 h-8 rounded-full ${step >= 2 ? 'bg-primary' : 'bg-muted'} flex items-center justify-center text-white mr-2`}
-                  >
-                    {step > 2 ? <CheckIcon size={16} /> : 2}
-                  </div>
-                  <span className="font-medium">Pago</span>
-                </div>
-                <div className="flex items-center">
-                  <div
-                    className={`w-8 h-8 rounded-full ${step >= 3 ? 'bg-primary' : 'bg-muted'} flex items-center justify-center text-white mr-2`}
-                  >
-                    3
-                  </div>
-                  <span className="font-medium">Confirmación</span>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {step === 1 && <PersonalInfoForm onSubmit={handleSubmitPersonalInfo} />}
-
-              {step === 2 && (
-                <div>
-                  <CardTitle className="mb-4">Método de Pago</CardTitle>
-                  <RadioGroup
-                    value={paymentMethod}
-                    onValueChange={setPaymentMethod}
-                    className="mb-6"
-                  >
-                    <div className="flex items-center space-x-2 border p-4 rounded-md mb-2">
-                      <RadioGroupItem value="creditCard" id="creditCard" />
-                      <Label htmlFor="creditCard">Tarjeta de Crédito/Débito</Label>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="md:col-span-2">
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center">
+                    <div
+                      className={`w-8 h-8 rounded-full ${step >= 1 ? 'bg-primary' : 'bg-muted'} flex items-center justify-center text-white mr-2`}
+                    >
+                      {step > 1 ? <CheckIcon size={16} /> : 1}
                     </div>
-                    <div className="flex items-center space-x-2 border p-4 rounded-md mb-2">
-                      <RadioGroupItem value="paypal" id="paypal" />
-                      <Label htmlFor="paypal">PayPal</Label>
+                    <span className="font-medium">Información Personal</span>
+                  </div>
+                  <div className="flex items-center">
+                    <div
+                      className={`w-8 h-8 rounded-full ${step >= 2 ? 'bg-primary' : 'bg-muted'} flex items-center justify-center text-white mr-2`}
+                    >
+                      {step > 2 ? <CheckIcon size={16} /> : 2}
                     </div>
-                    <div className="flex items-center space-x-2 border p-4 rounded-md">
-                      <RadioGroupItem value="transfer" id="transfer" />
-                      <Label htmlFor="transfer">Transferencia Bancaria</Label>
+                    <span className="font-medium">Pago</span>
+                  </div>
+                  <div className="flex items-center">
+                    <div
+                      className={`w-8 h-8 rounded-full ${step >= 3 ? 'bg-primary' : 'bg-muted'} flex items-center justify-center text-white mr-2`}
+                    >
+                      3
                     </div>
-                  </RadioGroup>
-
-                  <PaymentMethodForm
-                    paymentMethod={paymentMethod}
-                    onSubmit={handlePaymentSubmit}
-                    isLoading={isLoading}
-                  />
-
-                  <div className="mt-6">
-                    <Button variant="outline" onClick={() => setStep(1)}>
-                      Volver
-                    </Button>
+                    <span className="font-medium">Confirmación</span>
                   </div>
                 </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+              </CardHeader>
+              <CardContent>
+                {step === 1 && <PersonalInfoForm onSubmit={handleSubmitPersonalInfo} />}
 
-        <div className="md:col-span-1">
-          <OrderSummary
-            products={products}
-            subtotal={subtotal}
-            taxes={taxes}
-            discount={discount}
-            total={total}
-          />
+                {step === 2 && (
+                  <div>
+                    <CardTitle className="mb-4">Método de Pago</CardTitle>
+                    <RadioGroup
+                      value={paymentMethod}
+                      onValueChange={setPaymentMethod}
+                      className="mb-6"
+                    >
+                      <div className="flex items-center space-x-2 border p-4 rounded-md mb-2">
+                        <RadioGroupItem value="creditCard" id="creditCard" />
+                        <Label htmlFor="creditCard">Tarjeta de Crédito/Débito</Label>
+                      </div>
+                      <div className="flex items-center space-x-2 border p-4 rounded-md mb-2">
+                        <RadioGroupItem value="paypal" id="paypal" />
+                        <Label htmlFor="paypal">PayPal</Label>
+                      </div>
+                      <div className="flex items-center space-x-2 border p-4 rounded-md">
+                        <RadioGroupItem value="transfer" id="transfer" />
+                        <Label htmlFor="transfer">Transferencia Bancaria</Label>
+                      </div>
+                    </RadioGroup>
 
-          <div className="mt-4">
-            <Link href={'/shop'}>
-              <Button variant="outline" className="w-full">
-                Volver a la Tienda
-              </Button>
-            </Link>
+                    <PaymentMethodForm
+                      paymentMethod={paymentMethod}
+                      onSubmit={handlePaymentSubmit}
+                      isLoading={isLoading}
+                      paypalData={{
+                        items: paypalItems,
+                        total,
+                        subtotal,
+                        tax: taxes,
+                        discount,
+                      }}
+                      onPayPalSuccess={handlePayPalSuccess}
+                    />
+
+                    <div className="mt-6">
+                      <Button variant="outline" onClick={() => setStep(1)}>
+                        Volver
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="md:col-span-1">
+            <OrderSummary
+              products={products}
+              subtotal={subtotal}
+              taxes={taxes}
+              discount={discount}
+              total={total}
+            />
+
+            <div className="mt-4">
+              <Link href={'/shop'}>
+                <Button variant="outline" className="w-full">
+                  Volver a la Tienda
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </PayPalScriptProvider>
   )
 }

@@ -22,6 +22,13 @@ export interface PlanData {
   isActive: boolean
   isPopular: boolean
   sortOrder: number
+  // Campos para planes con clases
+  includesClasses?: boolean
+  classesPerPeriod?: number
+  classesPerWeek?: number
+  allowProration?: boolean
+  autoRenewal?: boolean
+  billingCycle?: string
 }
 
 interface PlanManagerProps {
@@ -47,6 +54,12 @@ export const PlanManager: React.FC<PlanManagerProps> = ({
     isActive: true,
     isPopular: false,
     sortOrder: plans.length,
+    includesClasses: false,
+    classesPerPeriod: undefined,
+    classesPerWeek: undefined,
+    allowProration: true,
+    autoRenewal: true,
+    billingCycle: 'MONTHLY',
   })
 
   const generateSlug = (name: string): string => {
@@ -291,6 +304,89 @@ export const PlanManager: React.FC<PlanManagerProps> = ({
                   onCheckedChange={(checked) => updateEditingPlan('isPopular', checked)}
                 />
               </div>
+            </div>
+
+            {/* Configuración de clases */}
+            <div className="border-t pt-4">
+              <div className="flex items-center justify-between rounded-lg border p-3 mb-4">
+                <div>
+                  <Label htmlFor="plan-includes-classes">Incluye Clases</Label>
+                  <p className="text-sm text-gray-600">Este plan incluye clases programadas</p>
+                </div>
+                <Switch
+                  id="plan-includes-classes"
+                  checked={editingPlan.includesClasses || false}
+                  onCheckedChange={(checked) => updateEditingPlan('includesClasses', checked)}
+                />
+              </div>
+
+              {editingPlan.includesClasses && (
+                <>
+                  <div className="grid grid-cols-3 gap-4 mb-4">
+                    <div>
+                      <Label htmlFor="plan-classes-period">Clases por Período</Label>
+                      <Input
+                        id="plan-classes-period"
+                        type="number"
+                        value={editingPlan.classesPerPeriod || ''}
+                        onChange={(e) => updateEditingPlan('classesPerPeriod', parseInt(e.target.value) || 0)}
+                        placeholder="8"
+                      />
+                      <p className="text-xs text-gray-600 mt-1">Ej: 8 clases por mes</p>
+                    </div>
+                    <div>
+                      <Label htmlFor="plan-classes-week">Clases por Semana</Label>
+                      <Input
+                        id="plan-classes-week"
+                        type="number"
+                        value={editingPlan.classesPerWeek || ''}
+                        onChange={(e) => updateEditingPlan('classesPerWeek', parseInt(e.target.value) || 0)}
+                        placeholder="2"
+                      />
+                      <p className="text-xs text-gray-600 mt-1">Frecuencia semanal</p>
+                    </div>
+                    <div>
+                      <Label htmlFor="plan-billing-cycle">Ciclo de Facturación</Label>
+                      <select
+                        id="plan-billing-cycle"
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                        value={editingPlan.billingCycle || 'MONTHLY'}
+                        onChange={(e) => updateEditingPlan('billingCycle', e.target.value)}
+                      >
+                        <option value="WEEKLY">Semanal</option>
+                        <option value="MONTHLY">Mensual</option>
+                        <option value="QUARTERLY">Trimestral</option>
+                        <option value="ANNUAL">Anual</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex items-center justify-between rounded-lg border p-3">
+                      <div>
+                        <Label htmlFor="plan-prorated">Permitir Prorateo</Label>
+                        <p className="text-sm text-gray-600">Al comprar a mitad de período</p>
+                      </div>
+                      <Switch
+                        id="plan-prorated"
+                        checked={editingPlan.allowProration ?? true}
+                        onCheckedChange={(checked) => updateEditingPlan('allowProration', checked)}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between rounded-lg border p-3">
+                      <div>
+                        <Label htmlFor="plan-auto-renewal">Renovación Automática</Label>
+                        <p className="text-sm text-gray-600">Se renueva automáticamente</p>
+                      </div>
+                      <Switch
+                        id="plan-auto-renewal"
+                        checked={editingPlan.autoRenewal ?? true}
+                        onCheckedChange={(checked) => updateEditingPlan('autoRenewal', checked)}
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="flex gap-2 pt-4">

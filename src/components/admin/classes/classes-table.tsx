@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { ClassBookingWithDetails, deleteClass, updateClass } from '@/lib/actions/classes'
+import { getTodayString } from '@/lib/utils/date'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
@@ -83,7 +84,7 @@ export function ClassesTable({ classes }: ClassesTableProps) {
     }
 
     if (dateFilter !== 'all') {
-      const today = new Date().toISOString().split('T')[0]
+      const today = getTodayString()
       if (dateFilter === 'past') {
         filtered = filtered.filter((classItem) => classItem.day < today)
       } else if (dateFilter === 'today') {
@@ -136,7 +137,7 @@ export function ClassesTable({ classes }: ClassesTableProps) {
         day: classItem.day,
         timeSlot: classItem.timeSlot,
         status: BookingStatus.COMPLETED,
-        completedAt: new Date(),
+        completedAt: new Date(), // Se guardará en UTC automáticamente por Prisma
       })
       if (result.success) {
         toast.success('Clase marcada como completada')
@@ -180,7 +181,10 @@ export function ClassesTable({ classes }: ClassesTableProps) {
   }
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('es-ES', {
+    // dateString viene como YYYY-MM-DD, lo mostramos en formato local
+    const [year, month, day] = dateString.split('-').map(Number)
+    const date = new Date(year, month - 1, day)
+    return date.toLocaleDateString('es-ES', {
       weekday: 'short',
       year: 'numeric',
       month: 'short',

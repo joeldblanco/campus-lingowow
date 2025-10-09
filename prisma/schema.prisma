@@ -96,6 +96,7 @@ model User {
   // Relaciones de chat flotante
   conversationsAsParticipant ConversationParticipant[]
   sentFloatingMessages       FloatingChatMessage[]     @relation("SentFloatingMessages")
+  sentMeetingMessages        MeetingMessage[]          @relation("SentMeetingMessages")
 
   // Relaciones de exámenes
   createdExams     Exam[]           @relation("ExamCreator")
@@ -178,13 +179,14 @@ model RewardTransaction {
 // =============================================
 
 model Course {
-  id          String  @id @default(cuid())
-  title       String
-  description String
-  language    String
-  level       String
-  isPublished Boolean @default(false)
-  createdById String
+  id            String  @id @default(cuid())
+  title         String
+  description   String
+  language      String
+  level         String
+  isPublished   Boolean @default(false)
+  createdById   String
+  classDuration Int     @default(40) // Duración de cada clase en minutos (30, 40, 60, 90)
 
   // Relaciones
   createdBy        User            @relation(fields: [createdById], references: [id])
@@ -559,6 +561,7 @@ model ClassBooking {
   attendances        ClassAttendance[]
   teacherAttendances TeacherAttendance[]
   videoCalls         VideoCall[]
+  meetingMessages    MeetingMessage[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -777,16 +780,16 @@ enum AttendanceStatus {
 // =============================================
 
 model CalendarSettings {
-  id                      String @id @default(cuid())
-  userId                  String @unique
-  slotDuration            Int    @default(30)
-  startHour               Float  @default(8)
-  endHour                 Float  @default(16.5)
-  maxBookingsPerStudent   Int    @default(3)
-  bookingAdvanceNotice    Int    @default(24)
-  cancellationWindow      Int    @default(12)
-  rescheduleMinutes       Int    @default(60)
-  maxReschedulesPerPeriod Int    @default(2)
+  id                      String  @id @default(cuid())
+  isGlobal                Boolean @default(true) // Siempre true para configuración global
+  slotDuration            Int     @default(60) // Fijo en 60 minutos
+  startHour               Float   @default(8)
+  endHour                 Float   @default(16.5)
+  maxBookingsPerStudent   Int     @default(3)
+  bookingAdvanceNotice    Int     @default(24)
+  cancellationWindow      Int     @default(12)
+  rescheduleMinutes       Int     @default(60)
+  maxReschedulesPerPeriod Int     @default(2)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -871,12 +874,17 @@ model Product {
   isDigital    Boolean  @default(true)
   stock        Int?
   categoryId   String?
+  tags         String[] @default([])
 
   // Campos para programación y cursos
   requiresScheduling Boolean @default(false)
   courseId           String?
   maxScheduleSlots   Int?    @default(1) // Máximo de horarios que puede reservar
   scheduleDuration   Int?    @default(60) // Duración en minutos
+
+  // Campos para tipos de productos
+  pricingType  ProductPricingType @default(SINGLE_PRICE) // Precio único o múltiples planes
+  paymentType  ProductPaymentType @default(ONE_TIME)     // Pago único o recurrente
 
   // Relaciones
   category      Category?             @relation(fields: [categoryId], references: [id])
@@ -984,6 +992,12 @@ model Invoice {
   notes         String?
   dueDate       DateTime?
   paidAt        DateTime?
+  
+  // Campos para PayPal
+  paymentMethod String?       // 'paypal', 'creditCard', 'transfer'
+  paypalOrderId String?       // ID de orden de PayPal
+  paypalCaptureId String?     // ID de captura de PayPal
+  paypalPayerEmail String?    // Email del pagador en PayPal
 
   // Relaciones
   user      User              @relation(fields: [userId], references: [id])
@@ -996,6 +1010,7 @@ model Invoice {
 
   @@index([userId])
   @@index([couponId])
+  @@index([paypalOrderId])
   @@map("invoices")
 }
 
@@ -1162,6 +1177,16 @@ enum ResourceType {
 enum CouponType {
   PERCENTAGE
   FIXED_AMOUNT
+}
+
+enum ProductPricingType {
+  SINGLE_PRICE    // Producto con un solo precio (franela, gorra, etc.)
+  MULTIPLE_PLANS  // Producto con múltiples planes (programa regular con planes simple, regular, intensivo)
+}
+
+enum ProductPaymentType {
+  ONE_TIME    // Pago único (merchandising, curso asíncrono)
+  RECURRING   // Pago recurrente/suscripción (programa regular de inglés, español)
 }
 
 // =============================================
@@ -1496,6 +1521,24 @@ model VideoCall {
   @@index([bookingId])
   @@index([status])
   @@map("video_calls")
+}
+
+// Mensajes del chat de reuniones
+model MeetingMessage {
+  id        String   @id @default(cuid())
+  bookingId String
+  senderId  String
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+
+  // Relaciones
+  booking ClassBooking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  sender  User         @relation("SentMeetingMessages", fields: [senderId], references: [id])
+
+  @@index([bookingId])
+  @@index([senderId])
+  @@index([createdAt])
+  @@map("meeting_messages")
 }
 
 // Modelos para chat flotante

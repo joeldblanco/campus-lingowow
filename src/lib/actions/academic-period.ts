@@ -5,7 +5,7 @@ import { generateAcademicPeriodsForYear } from '@/lib/utils/academic-period'
 import { getCurrentUser } from '@/lib/utils/session'
 import { SeasonName } from '@/types/academic-period'
 import { UserRole } from '@prisma/client'
-import { addWeeks, endOfDay, startOfDay } from 'date-fns'
+import { addWeeksToDate, getStartOfDay, getEndOfDay, getCurrentDate, getStartOfYear, getEndOfYear } from '@/lib/utils/date'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
@@ -54,7 +54,7 @@ export async function createAcademicPeriod(
     if (formData instanceof FormData) {
       const rawData = {
         name: formData.get('name') as string,
-        startDate: new Date(formData.get('startDate') as string),
+        startDate: new Date(formData.get('startDate') as string), // FormData requires native Date constructor
         seasonId: formData.get('seasonId') as string,
         isSpecialWeek: formData.get('isSpecialWeek') === 'true',
         isActive: formData.get('isActive') === 'true',
@@ -66,7 +66,7 @@ export async function createAcademicPeriod(
     }
 
     // Calcular la fecha de fin (4 semanas después del inicio, o 1 semana si es especial)
-    const endDate = addWeeks(data.startDate, data.isSpecialWeek ? 1 : 4)
+    const endDate = addWeeksToDate(data.startDate, data.isSpecialWeek ? 1 : 4)
 
     // Verificar que no haya períodos superpuestos
     const overlappingPeriods = await db.academicPeriod.findMany({
@@ -148,8 +148,8 @@ export async function createSeason(
     if (formData instanceof FormData) {
       const rawData = {
         name: formData.get('name') as SeasonName,
-        startDate: new Date(formData.get('startDate') as string),
-        endDate: new Date(formData.get('endDate') as string),
+        startDate: new Date(formData.get('startDate') as string), // FormData requires native Date constructor
+        endDate: new Date(formData.get('endDate') as string), // FormData requires native Date constructor
         year: parseInt(formData.get('year') as string),
         description: formData.get('description') as string,
       }
@@ -199,7 +199,7 @@ export async function createSeason(
 /**
  * Acción para generar automáticamente los períodos académicos de un año
  */
-export async function generatePeriodsForYear(year: number = new Date().getFullYear()) {
+export async function generatePeriodsForYear(year: number = getCurrentDate().getFullYear()) {
   try {
     const user = await getCurrentUser()
 
@@ -216,10 +216,10 @@ export async function generatePeriodsForYear(year: number = new Date().getFullYe
     const existingPeriods = await db.academicPeriod.findMany({
       where: {
         startDate: {
-          gte: new Date(year, 0, 1),
+          gte: getStartOfYear(year),
         },
         endDate: {
-          lt: new Date(year + 1, 0, 1),
+          lt: getStartOfYear(year + 1),
         },
       },
     })
@@ -243,8 +243,8 @@ export async function generatePeriodsForYear(year: number = new Date().getFullYe
         const newSeason = await db.season.create({
           data: {
             name: season.name,
-            startDate: new Date(year, 0, 1), // Inicio del año
-            endDate: new Date(year, 11, 31), // Fin del año
+            startDate: getStartOfYear(year), // Inicio del año
+            endDate: getEndOfYear(year), // Fin del año
             year,
             description: `Temporada ${season.name} del año ${year}`,
           },
@@ -351,15 +351,15 @@ export async function enrollStudentInPeriod() {
 /**
  * Acción para obtener los períodos académicos
  */
-export async function getPeriods(year: number = new Date().getFullYear()) {
+export async function getPeriods(year: number = getCurrentDate().getFullYear()) {
   try {
     const periods = await db.academicPeriod.findMany({
       where: {
         startDate: {
-          gte: startOfDay(new Date(year, 0, 1)),
+          gte: getStartOfDay(getStartOfYear(year)),
         },
         endDate: {
-          lte: endOfDay(new Date(year, 11, 31)),
+          lte: getEndOfDay(getEndOfYear(year)),
         },
       },
       include: {
@@ -386,7 +386,7 @@ export async function getSeasons() {
     const seasons = await db.season.findMany({
       where: {
         year: {
-          gte: new Date().getFullYear(),
+          gte: getCurrentDate().getFullYear(),
         },
       },
       orderBy: {

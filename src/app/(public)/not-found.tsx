@@ -45,7 +45,7 @@ export default function NotFound() {
           <p className="text-sm text-gray-500">
             ¿Necesitas ayuda?{' '}
             <Link
-              href="/contacto"
+              href="/contact"
               className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors"
             >
               Contáctanos

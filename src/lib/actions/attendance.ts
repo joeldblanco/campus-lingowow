@@ -3,6 +3,7 @@
 import { db as prisma } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 import { AttendanceStatus } from '@prisma/client'
+import { getCurrentDate } from '@/lib/utils/date'
 
 export async function checkStudentAttendance(
   classId: string,
@@ -57,7 +58,7 @@ export async function markStudentAttendance(
         studentId,
         enrollmentId: classBooking.enrollmentId,
         status: AttendanceStatus.PRESENT,
-        timestamp: new Date(),
+        timestamp: getCurrentDate(),
       },
     })
 
@@ -111,7 +112,7 @@ export async function markTeacherAttendance(
         classId,
         teacherId,
         status: AttendanceStatus.PRESENT,
-        timestamp: new Date(),
+        timestamp: getCurrentDate(),
       },
     })
 
@@ -120,5 +121,69 @@ export async function markTeacherAttendance(
   } catch (error) {
     console.error('Error marking teacher attendance:', error)
     return { success: false, error: 'Error al marcar la asistencia del profesor' }
+  }
+}
+
+export async function checkBothAttendances(
+  classId: string
+): Promise<{ 
+  success: boolean
+  teacherPresent: boolean
+  studentPresent: boolean
+  bothPresent: boolean
+  error?: string 
+}> {
+  try {
+    const booking = await prisma.classBooking.findUnique({
+      where: { id: classId },
+      select: {
+        teacherId: true,
+        studentId: true,
+      },
+    })
+
+    if (!booking) {
+      return {
+        success: false,
+        teacherPresent: false,
+        studentPresent: false,
+        bothPresent: false,
+        error: 'Reserva no encontrada',
+      }
+    }
+
+    const teacherAttendance = await prisma.teacherAttendance.findFirst({
+      where: {
+        classId,
+        teacherId: booking.teacherId,
+      },
+    })
+
+    const studentAttendance = await prisma.classAttendance.findFirst({
+      where: {
+        classId,
+        studentId: booking.studentId,
+      },
+    })
+
+    const teacherPresent = !!teacherAttendance
+    const studentPresent = !!studentAttendance
+    const bothPresent = teacherPresent && studentPresent
+
+    return {
+      success: true,
+      teacherPresent,
+      studentPresent,
+      bothPresent,
+    }
+  } catch (error) {
+    console.error('Error checking both attendances:', error)
+    return {
+      success: false,
+      teacherPresent: false,
+      studentPresent: false,
+      bothPresent: false,
+      error: 'Error al verificar las asistencias',
+    }
   }
 }

@@ -5,34 +5,51 @@ import React, { useState, useEffect } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { VideoCall } from '@/components/classroom/video-call'
 import { ClassMaterials } from '@/components/classroom/class-materials'
-import { WhiteboardArea } from '@/components/classroom/whiteboard-area'
-// import { ClassChat } from '@/components/classroom/class-chat'
-import { ClassNotes } from '@/components/classroom/class-notes'
+import { MeetingChat } from '@/components/jitsi/MeetingChat'
 import { Button } from '@/components/ui/button'
-import { CheckCircle, Download, Video, LogIn } from 'lucide-react'
+import { CheckCircle, Download, LogIn, AlertCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import { checkStudentAttendance, markStudentAttendance } from '@/lib/actions/attendance'
+import { validateClassAccess, shouldShowEndWarning } from '@/lib/utils/class-access'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 interface ClassroomLayoutProps {
   classId: string
   studentId: string
   teacherId: string
+  studentName: string
+  studentImage: string | null
+  teacherName: string
+  teacherImage: string | null
   courseName: string
   lessonName: string
   bookingId: string
+  currentUserId: string
+  currentUserName: string
+  currentUserImage?: string | null
+  day: string
+  timeSlot: string
 }
 
 export const ClassroomLayout: React.FC<ClassroomLayoutProps> = ({
   classId,
   studentId,
-  // teacherId, // Temporarily commented out with chat implementation
+  studentName,
+  // studentImage, // TODO: Use for future features
+  currentUserId,
+  currentUserName,
+  currentUserImage,
   courseName,
   lessonName,
   bookingId,
+  day,
+  timeSlot,
 }) => {
   const [attendanceMarked, setAttendanceMarked] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isChecking, setIsChecking] = useState(true)
+  const [minutesUntilEnd, setMinutesUntilEnd] = useState<number | null>(null)
+  const [showEndWarning, setShowEndWarning] = useState(false)
 
   useEffect(() => {
     // Check if attendance is already marked
@@ -53,6 +70,25 @@ export const ClassroomLayout: React.FC<ClassroomLayoutProps> = ({
     }
     checkAttendance()
   }, [classId, studentId])
+
+  // Monitor class end time
+  useEffect(() => {
+    const checkClassTime = () => {
+      const validation = validateClassAccess(day, timeSlot, false)
+      if (validation.minutesUntilEnd !== undefined) {
+        setMinutesUntilEnd(validation.minutesUntilEnd)
+        setShowEndWarning(shouldShowEndWarning(validation.minutesUntilEnd))
+      }
+    }
+
+    // Check immediately
+    checkClassTime()
+
+    // Check every minute
+    const interval = setInterval(checkClassTime, 60000)
+
+    return () => clearInterval(interval)
+  }, [day, timeSlot])
 
   const handleMarkAttendance = async () => {
     try {
@@ -76,10 +112,6 @@ export const ClassroomLayout: React.FC<ClassroomLayoutProps> = ({
   const handleEndClass = () => {
     // Lógica para finalizar la clase
     toast('Clase finalizada. La grabación estará disponible en tu panel en unos minutos')
-  }
-
-  const handleStartRecording = () => {
-    toast('Grabación iniciada. Esta sesión se está grabando')
   }
 
   // Show loading state while checking attendance
@@ -118,52 +150,53 @@ export const ClassroomLayout: React.FC<ClassroomLayoutProps> = ({
           <p className="text-sm text-gray-500">{lessonName}</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={handleStartRecording}>
-            <Video className="h-4 w-4 mr-2" />
-            Grabar sesión
-          </Button>
           <Button variant="destructive" size="sm" onClick={handleEndClass}>
             Finalizar clase
           </Button>
         </div>
       </header>
 
+      {/* Warning when class is about to end */}
+      {showEndWarning && minutesUntilEnd !== null && (
+        <Alert className="m-4 border-orange-500 bg-orange-50">
+          <AlertCircle className="h-4 w-4 text-orange-600" />
+          <AlertTitle className="text-orange-800">La clase está por finalizar</AlertTitle>
+          <AlertDescription className="text-orange-700">
+            Quedan {minutesUntilEnd} minuto{minutesUntilEnd !== 1 ? 's' : ''} para que termine la clase.
+          </AlertDescription>
+        </Alert>
+      )}
+
       <div className="grid grid-cols-3 gap-4 p-4 flex-grow">
         <div className="col-span-2">
-          <VideoCall bookingId={bookingId} />
+          <VideoCall 
+            bookingId={bookingId}
+            studentName={studentName}
+          />
         </div>
 
         <div className="col-span-1">
-          <Tabs defaultValue="materials">
+          <Tabs defaultValue="chat">
             <TabsList className="w-full">
+              <TabsTrigger value="chat" className="flex-1">
+                Chat
+              </TabsTrigger>
               <TabsTrigger value="materials" className="flex-1">
                 Materiales
               </TabsTrigger>
-              <TabsTrigger value="whiteboard" className="flex-1">
-                Pizarra
-              </TabsTrigger>
-              {/* <TabsTrigger value="chat" className="flex-1">
-                Chat
-              </TabsTrigger> */}
-              <TabsTrigger value="notes" className="flex-1">
-                Notas
-              </TabsTrigger>
             </TabsList>
+
+            <TabsContent value="chat" className="h-[calc(100vh-12rem)]">
+              <MeetingChat
+                bookingId={bookingId}
+                currentUserId={currentUserId}
+                currentUserName={currentUserName}
+                currentUserImage={currentUserImage}
+              />
+            </TabsContent>
 
             <TabsContent value="materials" className="h-[calc(100vh-12rem)] overflow-y-auto">
               <ClassMaterials classId={classId} />
-            </TabsContent>
-
-            <TabsContent value="whiteboard" className="h-[calc(100vh-12rem)]">
-              <WhiteboardArea classId={classId} />
-            </TabsContent>
-
-            {/* <TabsContent value="chat" className="h-[calc(100vh-12rem)]">
-              <ClassChat classId={classId} studentId={studentId} teacherId={teacherId} />
-            </TabsContent> */}
-
-            <TabsContent value="notes" className="h-[calc(100vh-12rem)]">
-              <ClassNotes classId={classId} studentId={studentId} />
             </TabsContent>
           </Tabs>
         </div>

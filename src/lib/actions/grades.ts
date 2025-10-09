@@ -3,6 +3,7 @@
 import { db } from '@/lib/db'
 import { UserRole } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
+import { getCurrentDate } from '@/lib/utils/date'
 
 export interface StudentGradeData {
   studentId: string
@@ -330,7 +331,7 @@ export async function updateActivityGrade(userId: string, activityId: string, sc
       data: {
         score,
         status: 'COMPLETED',
-        completedAt: new Date(),
+        completedAt: getCurrentDate(),
       },
     })
 

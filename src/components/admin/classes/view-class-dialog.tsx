@@ -38,16 +38,21 @@ export function ViewClassDialog({ classItem, children }: ViewClassDialogProps) {
   }
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('es-ES', {
+    // dateString viene como YYYY-MM-DD, lo mostramos en formato local
+    const [year, month, day] = dateString.split('-').map(Number)
+    const date = new Date(year, month - 1, day)
+    return date.toLocaleDateString('es-ES', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     })
   }
 
-  const formatDateTime = (dateString: string) => {
-    return new Date(dateString).toLocaleString('es-ES')
+  const formatDateTime = (date: Date | string) => {
+    // Las fechas DateTime vienen en UTC, las mostramos en hora local
+    const dateObj = typeof date === 'string' ? new Date(date) : date
+    return dateObj.toLocaleString('es-ES')
   }
 
   return (

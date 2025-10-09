@@ -102,10 +102,10 @@ export default function PodcastsPage() {
                 Suscríbete a nuestros cursos para ser el primero en acceder cuando estén disponibles.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                <Link href="/cursos">
+                <Link href="/courses">
                   <Button size="lg">Ver Cursos</Button>
                 </Link>
-                <Link href="/contacto">
+                <Link href="/contact">
                   <Button size="lg" variant="outline">Mantenerme Informado</Button>
                 </Link>
               </div>

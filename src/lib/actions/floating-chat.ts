@@ -2,6 +2,7 @@
 
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
+import { getCurrentDate } from '@/lib/utils/date'
 
 export async function getFloatingConversations(userId: string) {
   try {
@@ -212,7 +213,7 @@ export async function sendFloatingMessage(conversationId: string, senderId: stri
       where: { id: conversationId },
       data: {
         lastMessage: content,
-        lastMessageAt: new Date()
+        lastMessageAt: getCurrentDate()
       }
     })
 
@@ -310,7 +311,7 @@ export async function markMessagesAsRead(conversationId: string, userId: string)
         userId
       },
       data: {
-        lastReadAt: new Date()
+        lastReadAt: getCurrentDate()
       }
     })
 

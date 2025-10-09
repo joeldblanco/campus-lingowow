@@ -3,8 +3,6 @@
 import { BookingDialog } from '@/components/calendar/booking-dialog'
 import { BookingModeToggle } from '@/components/calendar/booking-mode-toggle'
 import { DateView } from '@/components/calendar/date-view'
-import { SettingsDialog } from '@/components/calendar/settings-dialog'
-import { UserRoleToggle } from '@/components/calendar/user-role-toggle'
 import { WeeklyView } from '@/components/calendar/weekly-view'
 import { WeeklyViewAccordion } from '@/components/calendar/weekly-view-accordion'
 import { Button } from '@/components/ui/button'
@@ -18,7 +16,6 @@ import {
   getStudentBookings,
   getTeacherAvailability,
   getTeacherBookings,
-  updateCalendarSettings,
 } from '@/lib/actions/calendar'
 import { getActiveEnrollmentsForStudent } from '@/lib/actions/enrollments'
 import {
@@ -33,6 +30,7 @@ import {
 } from '@/lib/utils/calendar'
 import { UserRole } from '@prisma/client'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -60,14 +58,14 @@ interface AvailabilityAction {
 }
 
 export function CalendarApp() {
-  const [userRole, setUserRole] = useState<UserRole>(UserRole.STUDENT)
-  const [slotDuration, setSlotDuration] = useState(30)
-  const [maxBookingsPerStudent, setMaxBookingsPerStudent] = useState(3)
+  const router = useRouter()
+  const slotDuration = 60 // Fijo en 60 minutos para la interfaz del profesor
   const [startHour, setStartHour] = useState(8)
   const [endHour, setEndHour] = useState(16.5) // 16:30
   const [isDragging, setIsDragging] = useState(false)
   const [currentDragValue, setCurrentDragValue] = useState(false)
   const [showStudentNames, setShowStudentNames] = useState(false)
+  const [is12HourFormat, setIs12HourFormat] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [saveQueue, setSaveQueue] = useState<AvailabilityAction[]>([])
   const [isSaving, setIsSaving] = useState(false)
@@ -99,6 +97,7 @@ export function CalendarApp() {
   const [selectedTeacherId, setSelectedTeacherId] = useState<string>('')
   const { data: session } = useSession()
   const userId = session?.user?.id
+  const userRole = session?.user?.roles.includes(UserRole.TEACHER) ? UserRole.TEACHER : UserRole.STUDENT
 
   // Estado para almacenar la disponibilidad y las reservas
   const [teacherAvailability, setTeacherAvailability] = useState<
@@ -114,10 +113,8 @@ export function CalendarApp() {
       try {
         const result = await getCalendarSettings()
         if (result.success && result.data) {
-          setSlotDuration(result.data.slotDuration)
           setStartHour(result.data.startHour)
           setEndHour(result.data.endHour)
-          setMaxBookingsPerStudent(result.data.maxBookingsPerStudent)
         }
       } catch (error) {
         console.error('Error al cargar configuración:', error)
@@ -212,7 +209,9 @@ export function CalendarApp() {
       setStudentColors(newStudentColors)
     }
 
-    loadData()
+    if (userId) {
+      loadData()
+    }
 
     // Revisar tamaño de pantalla para acordeón
     const handleResize = () => {
@@ -222,7 +221,7 @@ export function CalendarApp() {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId, userRole])
+  }, [userId])
 
   // Guardar cambios de disponibilidad
   const saveAvailabilityChanges = async () => {
@@ -296,29 +295,6 @@ export function CalendarApp() {
     }
   }
 
-  // Actualizar configuración del calendario
-  const updateSettings = async (settings: {
-    slotDuration: number
-    startHour: number
-    endHour: number
-    maxBookingsPerStudent: number
-  }) => {
-    try {
-      const result = await updateCalendarSettings(settings)
-      if (result.success) {
-        setSlotDuration(settings.slotDuration)
-        setStartHour(settings.startHour)
-        setEndHour(settings.endHour)
-        setMaxBookingsPerStudent(settings.maxBookingsPerStudent)
-        toast.success('Configuración guardada correctamente')
-      } else {
-        toast.error(result.error || 'Error al guardar configuración')
-      }
-    } catch (error) {
-      console.error('Error al actualizar configuración:', error)
-      toast.error('Error al guardar configuración')
-    }
-  }
 
   const handleStartDrag = (day: string, time: string, isAvailable: boolean) => {
     if (userRole !== UserRole.TEACHER) return
@@ -556,8 +532,13 @@ export function CalendarApp() {
 
   const handleSlotAction = (day: string, time: string) => {
     if (userRole === UserRole.TEACHER) {
-      // Para profesores, handleStartDrag ya maneja el click individual
-      // así que no necesitamos hacer nada adicional aquí
+      // Para profesores, verificar si hay una clase reservada en este slot
+      const booking = bookings.find((b) => b.day === day && b.timeSlot === time)
+      if (booking) {
+        // Si hay una clase reservada, navegar al aula
+        router.push(`/classroom?classId=${booking.id}`)
+      }
+      // Si no hay clase reservada, handleStartDrag ya maneja el click individual
     } else {
       handleToggleBooking(day, time)
     }
@@ -570,6 +551,7 @@ export function CalendarApp() {
       return {
         name: `${booking.student.name} ${booking.student.lastName}`.trim(),
         color: studentColors[booking.studentId] || '',
+        bookingId: booking.id,
       }
     }
     return null
@@ -602,13 +584,18 @@ export function CalendarApp() {
         onConfirm={handleConfirmBooking}
         bookingDetails={bookingDetails}
       />
-      <div className="flex flex-col sm:flex-row justify-between gap-4">
-        <UserRoleToggle userRole={userRole} setUserRole={setUserRole} />
-        <div className="flex flex-col sm:flex-row gap-2">
-          {userRole === UserRole.STUDENT && (
-            <BookingModeToggle bookingMode={bookingMode} setBookingMode={setBookingMode} />
-          )}
-          {userRole === UserRole.TEACHER && (
+      
+      {/* Controles para estudiantes */}
+      {userRole === UserRole.STUDENT && (
+        <div className="flex flex-col sm:flex-row justify-between gap-4">
+          <BookingModeToggle bookingMode={bookingMode} setBookingMode={setBookingMode} />
+        </div>
+      )}
+
+      {/* Controles para profesores */}
+      {userRole === UserRole.TEACHER && (
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-4">
             <div className="flex items-center space-x-2">
               <Switch
                 id="show-students"
@@ -617,23 +604,15 @@ export function CalendarApp() {
               />
               <Label htmlFor="show-students">Ver estudiantes</Label>
             </div>
-          )}
-          <SettingsDialog
-            slotDuration={slotDuration}
-            setSlotDuration={setSlotDuration}
-            maxBookingsPerStudent={maxBookingsPerStudent}
-            setMaxBookingsPerStudent={setMaxBookingsPerStudent}
-            startHour={startHour}
-            setStartHour={setStartHour}
-            endHour={endHour}
-            setEndHour={setEndHour}
-            onSave={updateSettings}
-          />
-        </div>
-      </div>
-
-      {userRole === UserRole.TEACHER && (
-        <div className="flex justify-end">
+            <div className="flex items-center space-x-2">
+              <Switch
+                id="time-format"
+                checked={is12HourFormat}
+                onCheckedChange={setIs12HourFormat}
+              />
+              <Label htmlFor="time-format">Formato 12h</Label>
+            </div>
+          </div>
           <Button
             onClick={saveAvailabilityChanges}
             disabled={isSaving || saveQueue.length === 0}
@@ -644,48 +623,10 @@ export function CalendarApp() {
         </div>
       )}
 
-      <Tabs defaultValue="weekly" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="weekly">Vista Semanal</TabsTrigger>
-          <TabsTrigger value="date">Vista por Fecha</TabsTrigger>
-        </TabsList>
-        <TabsContent value="weekly" className="mt-4">
-          {useAccordion ? (
-            <WeeklyViewAccordion
-              userRole={userRole}
-              teacherAvailability={teacherAvailability}
-              bookedSlots={bookedSlots}
-              onSlotAction={handleSlotAction}
-              slotDuration={slotDuration}
-              startHour={startHour}
-              endHour={endHour}
-              isDragging={isDragging}
-              onStartDrag={handleStartDrag}
-              onDrag={handleDrag}
-              onEndDrag={handleEndDrag}
-              showStudentNames={showStudentNames}
-              getStudentInfo={getStudentInfo}
-            />
-          ) : (
-            <WeeklyView
-              userRole={userRole}
-              teacherAvailability={teacherAvailability}
-              bookedSlots={bookedSlots}
-              onSlotAction={handleSlotAction}
-              slotDuration={slotDuration}
-              startHour={startHour}
-              endHour={endHour}
-              isDragging={isDragging}
-              onStartDrag={handleStartDrag}
-              onDrag={handleDrag}
-              onEndDrag={handleEndDrag}
-              showStudentNames={showStudentNames}
-              getStudentInfo={getStudentInfo}
-            />
-          )}
-        </TabsContent>
-        <TabsContent value="date" className="mt-4">
-          <DateView
+      {/* Vista del calendario - sin tabs para profesores */}
+      {userRole === UserRole.TEACHER ? (
+        useAccordion ? (
+          <WeeklyViewAccordion
             userRole={userRole}
             teacherAvailability={teacherAvailability}
             bookedSlots={bookedSlots}
@@ -699,9 +640,86 @@ export function CalendarApp() {
             onEndDrag={handleEndDrag}
             showStudentNames={showStudentNames}
             getStudentInfo={getStudentInfo}
+            is12HourFormat={is12HourFormat}
           />
-        </TabsContent>
-      </Tabs>
+        ) : (
+          <WeeklyView
+            userRole={userRole}
+            teacherAvailability={teacherAvailability}
+            bookedSlots={bookedSlots}
+            onSlotAction={handleSlotAction}
+            slotDuration={slotDuration}
+            startHour={startHour}
+            endHour={endHour}
+            isDragging={isDragging}
+            onStartDrag={handleStartDrag}
+            onDrag={handleDrag}
+            onEndDrag={handleEndDrag}
+            showStudentNames={showStudentNames}
+            getStudentInfo={getStudentInfo}
+            is12HourFormat={is12HourFormat}
+          />
+        )
+      ) : (
+        <Tabs defaultValue="weekly" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="weekly">Vista Semanal</TabsTrigger>
+            <TabsTrigger value="date">Vista por Fecha</TabsTrigger>
+          </TabsList>
+          <TabsContent value="weekly" className="mt-4">
+            {useAccordion ? (
+              <WeeklyViewAccordion
+                userRole={userRole}
+                teacherAvailability={teacherAvailability}
+                bookedSlots={bookedSlots}
+                onSlotAction={handleSlotAction}
+                slotDuration={slotDuration}
+                startHour={startHour}
+                endHour={endHour}
+                isDragging={isDragging}
+                onStartDrag={handleStartDrag}
+                onDrag={handleDrag}
+                onEndDrag={handleEndDrag}
+                showStudentNames={showStudentNames}
+                getStudentInfo={getStudentInfo}
+              />
+            ) : (
+              <WeeklyView
+                userRole={userRole}
+                teacherAvailability={teacherAvailability}
+                bookedSlots={bookedSlots}
+                onSlotAction={handleSlotAction}
+                slotDuration={slotDuration}
+                startHour={startHour}
+                endHour={endHour}
+                isDragging={isDragging}
+                onStartDrag={handleStartDrag}
+                onDrag={handleDrag}
+                onEndDrag={handleEndDrag}
+                showStudentNames={showStudentNames}
+                getStudentInfo={getStudentInfo}
+              />
+            )}
+          </TabsContent>
+          <TabsContent value="date" className="mt-4">
+            <DateView
+              userRole={userRole}
+              teacherAvailability={teacherAvailability}
+              bookedSlots={bookedSlots}
+              onSlotAction={handleSlotAction}
+              slotDuration={slotDuration}
+              startHour={startHour}
+              endHour={endHour}
+              isDragging={isDragging}
+              onStartDrag={handleStartDrag}
+              onDrag={handleDrag}
+              onEndDrag={handleEndDrag}
+              showStudentNames={showStudentNames}
+              getStudentInfo={getStudentInfo}
+            />
+          </TabsContent>
+        </Tabs>
+      )}
     </div>
   )
 }

@@ -34,12 +34,14 @@ interface JitsiJWTPayload {
   nbf: number
 }
 
-export function generateJitsiJWT(user: JitsiUser, roomName: string): string {
+export function generateJitsiJWT(user: JitsiUser, roomName: string, privateKey?: string): string {
   const appId = process.env.JAAS_APP_ID
   const kid = process.env.JAAS_KID
-  const privateKey = process.env.JAAS_PRIVATE_KEY
+  
+  // Usar la clave privada pasada como parámetro o desde variable de entorno
+  const key = privateKey || process.env.JAAS_PRIVATE_KEY
 
-  if (!appId || !kid || !privateKey) {
+  if (!appId || !kid || !key) {
     throw new Error('Faltan variables de entorno de JaaS (JAAS_APP_ID, JAAS_KID, JAAS_PRIVATE_KEY)')
   }
 
@@ -54,25 +56,25 @@ export function generateJitsiJWT(user: JitsiUser, roomName: string): string {
         name: user.name,
         email: user.email,
         avatar: user.avatar,
-        moderator: user.isModerator,
+        moderator: user.isModerator, // TEACHER y ADMIN son moderadores
         'hidden-from-recorder': false
       },
       features: {
-        recording: user.isModerator, // Solo moderadores pueden grabar
-        livestreaming: false,
+        recording: user.isModerator, // Solo moderadores (TEACHER/ADMIN) pueden grabar
+        livestreaming: user.isModerator, // Solo moderadores pueden hacer streaming
         transcription: false,
         'outbound-call': false,
         'sip-outbound-call': false
       }
     },
     iss: 'chat',
-    room: `${appId}/${roomName}`,
+    room: '*', // Wildcard permite cualquier sala del tenant
     sub: appId,
     exp,
     nbf: now - 10 // 10 segundos de gracia
   }
 
-  const token = jwt.sign(payload, privateKey, {
+  const token = jwt.sign(payload, key, {
     algorithm: 'RS256',
     header: {
       alg: 'RS256',

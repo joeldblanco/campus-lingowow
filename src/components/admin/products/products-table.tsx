@@ -17,8 +17,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { MoreHorizontal, Edit, Trash2 } from 'lucide-react'
+import { MoreHorizontal, Edit, Trash2, ListTree } from 'lucide-react'
 import { EditProductDialog } from './edit-product-dialog'
+import { ProductPlansDialog } from './product-plans-dialog'
 import { deleteProduct } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
 import Image from 'next/image'
@@ -55,6 +56,7 @@ interface ProductsTableProps {
 
 export function ProductsTable({ products }: ProductsTableProps) {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
+  const [managingPlansProduct, setManagingPlansProduct] = useState<Product | null>(null)
 
   const handleDelete = async (id: string) => {
     if (confirm('¿Estás seguro de que quieres eliminar este producto?')) {
@@ -166,6 +168,10 @@ export function ProductsTable({ products }: ProductsTableProps) {
                           <Edit className="mr-2 h-4 w-4" />
                           Editar
                         </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setManagingPlansProduct(product)}>
+                          <ListTree className="mr-2 h-4 w-4" />
+                          Gestionar Planes
+                        </DropdownMenuItem>
                         <DropdownMenuItem 
                           onClick={() => handleDelete(product.id)}
                           className="text-destructive"
@@ -188,6 +194,15 @@ export function ProductsTable({ products }: ProductsTableProps) {
           product={editingProduct}
           open={!!editingProduct}
           onOpenChange={(open) => !open && setEditingProduct(null)}
+        />
+      )}
+
+      {managingPlansProduct && (
+        <ProductPlansDialog
+          productId={managingPlansProduct.id}
+          productName={managingPlansProduct.name}
+          open={!!managingPlansProduct}
+          onOpenChange={(open) => !open && setManagingPlansProduct(null)}
         />
       )}
     </>

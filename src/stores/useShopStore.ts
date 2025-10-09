@@ -2,9 +2,18 @@ import { CartItem, CheckoutInfo, Filters, Course, Merge, Product, ProductTypeEnu
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+export type SortOption = 'name-asc' | 'name-desc' | 'price-asc' | 'price-desc' | 'date-desc' | 'date-asc'
+export type ViewMode = 'grid' | 'list'
+
 type ShopState = {
   cart: CartItem[]
   filters: Filters
+  searchQuery: string
+  sortBy: SortOption
+  viewMode: ViewMode
+  priceRange: [number, number]
+  currentPage: number
+  itemsPerPage: number
   comparePlans: { product: Merge<Product, Course> | null }
   checkoutInfo: CheckoutInfo
 
@@ -12,6 +21,12 @@ type ShopState = {
   addToCart: (item: CartItem) => void
   removeFromCart: (productId: string, planId: string) => void
   toggleFilter: (type: keyof Filters, value: string) => void
+  setSearchQuery: (query: string) => void
+  setSortBy: (sort: SortOption) => void
+  setViewMode: (mode: ViewMode) => void
+  setPriceRange: (range: [number, number]) => void
+  setCurrentPage: (page: number) => void
+  clearFilters: () => void
   setComparePlans: (product: Merge<Product, Course> | null) => void
   clearCart: () => void
   setCheckoutInfo: (info: Partial<CheckoutInfo>) => void
@@ -29,7 +44,14 @@ export const useShopStore = create<ShopState>()(
         levels: [],
         languages: [],
         categories: [],
+        tags: [],
       },
+      searchQuery: '',
+      sortBy: 'date-desc' as SortOption,
+      viewMode: 'grid' as ViewMode,
+      priceRange: [0, 1000],
+      currentPage: 1,
+      itemsPerPage: 12,
       comparePlans: { product: null },
       checkoutInfo: {
         requiresAuth: false,
@@ -66,7 +88,31 @@ export const useShopStore = create<ShopState>()(
                 ? current.filter((item) => item !== value)
                 : [...current, value],
             },
+            currentPage: 1, // Reset page when filter changes
           }
+        }),
+
+      setSearchQuery: (query) => set({ searchQuery: query, currentPage: 1 }),
+
+      setSortBy: (sort) => set({ sortBy: sort }),
+
+      setViewMode: (mode) => set({ viewMode: mode }),
+
+      setPriceRange: (range) => set({ priceRange: range, currentPage: 1 }),
+
+      setCurrentPage: (page) => set({ currentPage: page }),
+
+      clearFilters: () =>
+        set({
+          filters: {
+            levels: [],
+            languages: [],
+            categories: [],
+            tags: [],
+          },
+          searchQuery: '',
+          priceRange: [0, 1000],
+          currentPage: 1,
         }),
 
       setComparePlans: (product) => set({ comparePlans: { product } }),
@@ -97,7 +143,9 @@ export const useShopStore = create<ShopState>()(
       partialize: (state) => ({
         cart: state.cart,
         checkoutInfo: state.checkoutInfo,
-      }), // Solo persistimos el carrito y la info de checkout
+        viewMode: state.viewMode,
+        sortBy: state.sortBy,
+      }), // Persistimos carrito, checkout, vista y ordenamiento
     }
   )
 )

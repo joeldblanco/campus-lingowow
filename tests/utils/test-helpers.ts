@@ -192,61 +192,24 @@ export class TestHelpers {
   }
 
   async logout() {
-    // Esperar a que el elemento esté visible y accesible
-    await this.page.waitForSelector('[data-testid="user-menu-trigger"]', {
+    // Navigate directly to the signout API endpoint to avoid issues with dropdown menu
+    // This is more reliable than trying to click through the UI, especially with Next.js dev overlay
+    await this.page.goto('/api/auth/signout', { waitUntil: 'networkidle' })
+    
+    // Wait for the signout page to load
+    await this.page.waitForSelector('button:has-text("Sign out")', { 
       state: 'visible',
-      timeout: 30000,
+      timeout: 10000 
     })
-
-    // Scroll to element to ensure it's in viewport
-    await this.page.locator('[data-testid="user-menu-trigger"]').scrollIntoViewIfNeeded()
-
-    // Wait a bit for any animations to complete
-    await this.page.waitForTimeout(1000)
-
-    // Hacer click en el trigger para abrir el dropdown
-    // Usar force: true para evitar que nextjs-portal intercepte el click
-    await this.page.click('[data-testid="user-menu-trigger"]', { force: true })
-
-    // Esperar a que el dropdown esté completamente renderizado
-    // shadcn/ui DropdownMenu usa Radix UI que necesita tiempo para portal rendering
-    await this.page.waitForTimeout(1500)
-
-    // Esperar explícitamente a que el dropdown content esté visible en el DOM
-    await this.page.waitForSelector('[role="menu"]', {
-      state: 'visible',
-      timeout: 10000,
-    })
-
-    // Buscar el botón de logout con reintentos
-    let retries = 3
-    while (retries > 0) {
-      try {
-        // Esperar a que el botón de logout esté visible
-        const logoutButton = this.page.locator('[data-testid="logout-button"]')
-        await logoutButton.waitFor({ state: 'visible', timeout: 5000 })
-
-        // Hacer click en logout
-        await logoutButton.click()
-
-        // Esperar a que la navegación se complete (puede ir a / o /auth/signin)
-        await this.page.waitForURL(/\/(auth\/signin)?$/, { timeout: 10000 })
-        break
-      } catch {
-        retries--
-        if (retries > 0) {
-          console.log(`Logout button not found, retrying menu click... (${retries} attempts left)`)
-          // Cerrar y reabrir el menú
-          await this.page.keyboard.press('Escape')
-          await this.page.waitForTimeout(500)
-          await this.page.click('[data-testid="user-menu-trigger"]')
-          await this.page.waitForTimeout(1500)
-          await this.page.waitForSelector('[role="menu"]', { state: 'visible', timeout: 5000 })
-        } else {
-          throw new Error('Logout button not found after opening user menu')
-        }
-      }
-    }
+    
+    // Click the signout button
+    await this.page.click('button:has-text("Sign out")')
+    
+    // Wait for redirect to signin page
+    await this.page.waitForURL(/\/(auth\/signin)?$/, { timeout: 10000 })
+    
+    // Wait for page to be fully loaded
+    await this.page.waitForLoadState('networkidle')
   }
 
   // Navigation helpers

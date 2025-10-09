@@ -40,11 +40,18 @@ export default auth(async (req) => {
   const primaryRole = getPrimaryRoleFromArray(userRoles)
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
+  const isApiPayPalRoute = nextUrl.pathname.startsWith('/api/paypal')
   const isAdminAuthRoute = nextUrl.pathname.startsWith(adminPrefix)
   const isPublicRoute = matchesPathPattern(nextUrl.pathname, publicRoutes)
   const isAuthRoute = authRoutes.includes(nextUrl.pathname)
 
+  // Permitir rutas de API de autenticación
   if (isApiAuthRoute) {
+    return NextResponse.next()
+  }
+
+  // Permitir rutas de API de PayPal (requieren autenticación interna)
+  if (isApiPayPalRoute) {
     return NextResponse.next()
   }
 

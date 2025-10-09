@@ -19,6 +19,7 @@ export interface TeacherDashboardData {
   classesThisMonth: number
   monthlyRevenue: number
   upcomingClasses: {
+    id: string
     studentName: string
     course: string
     date: string

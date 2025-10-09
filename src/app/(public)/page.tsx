@@ -52,7 +52,7 @@ export default async function LandingPage() {
                     Comienza Ahora
                   </Button>
                 </Link>
-                <Link href="/metodo">
+                <Link href="/method">
                   <Button size="lg" variant="outline" className="w-full sm:w-auto">
                     Conoce Nuestros Métodos
                   </Button>
@@ -135,7 +135,7 @@ export default async function LandingPage() {
                           {idioma.available ? 'Todos los niveles' : 'Próximamente'}
                         </Badge>
                         {idioma.available && (
-                          <Link href="/cursos">
+                          <Link href="/courses">
                             <Button variant="ghost" size="sm">
                               Ver más
                             </Button>
@@ -168,7 +168,7 @@ export default async function LandingPage() {
                           {idioma.available ? 'Todos los niveles' : 'Próximamente'}
                         </Badge>
                         {idioma.available && (
-                          <Link href="/cursos">
+                          <Link href="/courses">
                             <Button variant="ghost" size="sm">
                               Ver más
                             </Button>

@@ -197,3 +197,17 @@ export function mergeOverlappingRanges(ranges: AvailabilityRange[]): Availabilit
 
   return mergedRanges
 }
+
+// Convertir hora de formato 24h a 12h
+export function formatTimeTo12Hour(time: string): string {
+  const [hours, minutes] = time.split(':').map(Number)
+  const period = hours >= 12 ? 'PM' : 'AM'
+  const displayHours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours
+  return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`
+}
+
+// Convertir time slot completo a formato 12h
+export function formatTimeSlotTo12Hour(timeSlot: string): string {
+  const [start, end] = splitTimeSlot(timeSlot)
+  return `${formatTimeTo12Hour(start)}-${formatTimeTo12Hour(end)}`
+}

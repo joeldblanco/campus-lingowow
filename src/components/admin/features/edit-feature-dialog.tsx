@@ -26,6 +26,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { updateFeature } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
+import { IconPicker } from './icon-picker'
 
 const featureSchema = z.object({
   name: z.string().min(1, 'El nombre es requerido'),
@@ -145,9 +146,9 @@ export function EditFeatureDialog({ feature, open, onOpenChange }: EditFeatureDi
                 <FormItem>
                   <FormLabel>Icono</FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="🚀 o nombre del icono (opcional)"
-                      {...field}
+                    <IconPicker
+                      value={field.value}
+                      onChange={field.onChange}
                     />
                   </FormControl>
                   <FormMessage />

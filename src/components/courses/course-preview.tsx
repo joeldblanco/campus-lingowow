@@ -123,7 +123,7 @@ export function CoursePreview({ course, isAuthenticated }: CoursePreviewProps) {
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
         <Button variant="ghost" asChild>
-          <Link href="/courses">
+          <Link href="/my-courses">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Volver a Cursos
           </Link>
@@ -184,14 +184,14 @@ export function CoursePreview({ course, isAuthenticated }: CoursePreviewProps) {
           <div className="flex flex-col gap-3">
             {course.isEnrolled ? (
               <Button asChild size="lg">
-                <Link href={`/courses/${course.id}`}>
+                <Link href={`/my-courses/${course.id}`}>
                   <Play className="w-4 h-4 mr-2" />
                   Continuar Curso
                 </Link>
               </Button>
             ) : isAuthenticated ? (
               <Button asChild size="lg">
-                <Link href={`/courses/${course.id}/enroll`}>
+                <Link href={`/my-courses/${course.id}/enroll`}>
                   Inscribirse al Curso
                 </Link>
               </Button>
@@ -309,7 +309,7 @@ export function CoursePreview({ course, isAuthenticated }: CoursePreviewProps) {
             </p>
             {isAuthenticated ? (
               <Button asChild size="lg">
-                <Link href={`/courses/${course.id}/enroll`}>
+                <Link href={`/my-courses/${course.id}/enroll`}>
                   Inscribirse al Curso
                 </Link>
               </Button>

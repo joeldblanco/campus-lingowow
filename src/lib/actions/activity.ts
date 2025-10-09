@@ -3,6 +3,7 @@
 import { UserActivityUpdateData } from '@/types/activity'
 import { ActivityFormValues } from '@/schemas/activity'
 import { db } from '@/lib/db'
+import { getCurrentDate, getTodayStart, addDaysToDate, getDayOfWeek, isSameDayDate } from '@/lib/utils/date'
 
 // Crear una nueva actividad
 export async function createActivity(data: ActivityFormValues) {
@@ -156,14 +157,14 @@ export async function updateActivityProgress(
   try {
     const data: UserActivityUpdateData = {
       status,
-      lastAttemptAt: new Date(),
+      lastAttemptAt: getCurrentDate(),
       attempts: {
         increment: 1,
       },
     }
 
     if (status === 'COMPLETED') {
-      data.completedAt = new Date()
+      data.completedAt = getCurrentDate()
       if (score !== undefined) {
         data.score = score
       }
@@ -185,9 +186,9 @@ export async function updateActivityProgress(
         userId,
         activityId,
         status,
-        lastAttemptAt: new Date(),
+        lastAttemptAt: getCurrentDate(),
         attempts: 1,
-        completedAt: status === 'COMPLETED' ? new Date() : null,
+        completedAt: status === 'COMPLETED' ? getCurrentDate() : null,
         score: status === 'COMPLETED' ? score : null,
       },
     })
@@ -199,8 +200,7 @@ export async function updateActivityProgress(
 
 // Actualizar la racha del usuario
 async function updateUserStreak(userId: string) {
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
+  const today = getTodayStart()
 
   try {
     // Buscar o crear el registro de racha
@@ -215,7 +215,7 @@ async function updateUserStreak(userId: string) {
         status: 'COMPLETED',
         completedAt: {
           gte: today,
-          lt: new Date(today.getTime() + 24 * 60 * 60 * 1000) // Fin del día actual
+          lt: addDaysToDate(today, 1) // Fin del día actual
         }
       }
     })
@@ -239,21 +239,18 @@ async function updateUserStreak(userId: string) {
     }
 
     // Si la última actividad fue ayer, incrementar la racha
-    const lastDate = streak.lastActivityDate || new Date(0)
-    lastDate.setHours(0, 0, 0, 0)
-
-    const yesterday = new Date(today)
-    yesterday.setDate(yesterday.getDate() - 1)
+    const lastDate = streak.lastActivityDate ? getTodayStart() : new Date(0)
+    const yesterday = addDaysToDate(today, -1)
 
     let newCurrentStreak = 0 // Por defecto, racha perdida (0)
 
-    if (lastDate.getTime() === yesterday.getTime()) {
+    if (isSameDayDate(lastDate, yesterday)) {
       // Si la última actividad fue ayer, incrementar racha
       newCurrentStreak = streak.currentStreak + 1
-    } else if (lastDate.getTime() === today.getTime()) {
+    } else if (isSameDayDate(lastDate, today)) {
       // Si la última actividad fue hoy, mantener racha actual
       newCurrentStreak = streak.currentStreak
-    } else if (lastDate.getTime() < yesterday.getTime()) {
+    } else if (lastDate < yesterday) {
       // Si pasó más de un día, racha perdida (0)
       newCurrentStreak = 0
     }
@@ -430,28 +427,24 @@ export async function getActivitiesSummaryByLevels(userId?: string, maxLevel: nu
 // Obtener actividad semanal del usuario
 export async function getUserWeeklyActivity(userId: string) {
   try {
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
+    const today = getTodayStart()
     
     // Obtener el lunes de esta semana
-    const mondayOfWeek = new Date(today)
-    const dayOfWeek = today.getDay()
+    const dayOfWeek = getDayOfWeek(today)
     const daysFromMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1 // Domingo = 0, necesitamos que sea 6
-    mondayOfWeek.setDate(today.getDate() - daysFromMonday)
+    const mondayOfWeek = addDaysToDate(today, -daysFromMonday)
     
     // Crear array de los 7 días de la semana
     const weekDays = []
     for (let i = 0; i < 7; i++) {
-      const day = new Date(mondayOfWeek)
-      day.setDate(mondayOfWeek.getDate() + i)
+      const day = addDaysToDate(mondayOfWeek, i)
       weekDays.push(day)
     }
     
     // Obtener actividades completadas para cada día de la semana
     const weeklyActivity = await Promise.all(
       weekDays.map(async (day) => {
-        const nextDay = new Date(day)
-        nextDay.setDate(day.getDate() + 1)
+        const nextDay = addDaysToDate(day, 1)
         
         const activitiesCount = await db.userActivity.count({
           where: {
@@ -467,7 +460,7 @@ export async function getUserWeeklyActivity(userId: string) {
         return {
           date: day,
           hasActivity: activitiesCount > 0,
-          isToday: day.toDateString() === today.toDateString(),
+          isToday: isSameDayDate(day, today),
         }
       })
     )

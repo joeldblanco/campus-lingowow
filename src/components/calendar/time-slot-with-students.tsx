@@ -6,6 +6,7 @@ import {
   isTimeSlotInAnyRange,
   isTimeSlotBooked,
   splitTimeSlot,
+  formatTimeSlotTo12Hour,
 } from '@/lib/utils/calendar'
 import { isSlotAvailableForDuration, isSlotOverlappingWithBookings } from '@/lib/utils/booking'
 
@@ -19,8 +20,9 @@ interface TimeSlotWithStudentProps {
   onMouseEnter?: () => void
   onMouseDown?: () => void
   onMouseUp?: () => void
-  studentInfo?: { name: string; color: string } | null
+  studentInfo?: { name: string; color: string; bookingId?: string } | null
   bookingMode?: '40min' | '90min'
+  is12HourFormat?: boolean
 }
 
 // Componente TimeSlot con información de estudiante
@@ -36,6 +38,7 @@ export function TimeSlotWithStudent({
   onMouseUp,
   studentInfo,
   bookingMode = '40min',
+  is12HourFormat = false,
 }: TimeSlotWithStudentProps) {
   // Determinar disponibilidad y reserva
   const availabilityRanges = teacherAvailability[day] || []
@@ -76,20 +79,20 @@ export function TimeSlotWithStudent({
       }
 
       return {
-        label: isAvailable ? 'Disponible' : 'No disponible',
-        className: `flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors select-none ${
+        label: '', // Sin etiqueta para disponible/no disponible
+        className: `flex items-center justify-center p-2 rounded-md cursor-pointer transition-colors select-none ${
           isAvailable
-            ? 'bg-green-100 hover:bg-green-200 dark:bg-green-900/30 dark:hover:bg-green-900/50'
-            : 'bg-muted hover:bg-muted/80'
+            ? 'text-green-700 bg-green-100 hover:bg-green-200 dark:bg-green-900/30 dark:hover:bg-green-900/50'
+            : 'text-muted-foreground bg-muted hover:bg-muted/80'
         }`,
       }
     } else {
       // Para estudiantes
       if (!isAvailable) {
         return {
-          label: 'No disponible',
+          label: '',
           className:
-            'flex items-center justify-between p-2 rounded-md bg-muted text-muted-foreground select-none',
+            'flex items-center justify-center p-2 rounded-md bg-muted text-muted-foreground select-none',
         }
       } else if (isBookedByMe) {
         return {
@@ -105,15 +108,16 @@ export function TimeSlotWithStudent({
         }
       } else {
         return {
-          label: `Disponible (${bookingMode})`,
+          label: '',
           className:
-            'flex items-center justify-between p-2 rounded-md bg-green-100 hover:bg-green-200 dark:bg-green-900/30 dark:hover:bg-green-900/50 cursor-pointer select-none',
+            'flex items-center justify-center p-2 rounded-md bg-green-100 hover:bg-green-200 dark:bg-green-900/30 dark:hover:bg-green-900/50 cursor-pointer select-none',
         }
       }
     }
   }
 
   const { label, className } = getSlotStatus()
+  const displayTime = is12HourFormat ? formatTimeSlotTo12Hour(time) : time
 
   return (
     <div
@@ -123,8 +127,8 @@ export function TimeSlotWithStudent({
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
     >
-      <span>{time}</span>
-      <span className="text-xs font-medium">{label}</span>
+      <span className="font-medium text-sm">{displayTime}</span>
+      {label && <span className="text-xs font-medium">{label}</span>}
     </div>
   )
 }

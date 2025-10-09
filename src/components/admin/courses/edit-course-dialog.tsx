@@ -54,6 +54,7 @@ export function EditCourseDialog({ course, children, onCourseUpdated }: EditCour
       description: course.description,
       language: course.language,
       level: course.level,
+      classDuration: course.classDuration || 40,
     },
   })
 
@@ -164,6 +165,33 @@ export function EditCourseDialog({ course, children, onCourseUpdated }: EditCour
                         <SelectItem value="Avanzado">Avanzado</SelectItem>
                         <SelectItem value="Conversacional">Conversacional</SelectItem>
                         <SelectItem value="Especializado">Especializado</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="classDuration"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Duración de Clase</FormLabel>
+                    <Select 
+                      onValueChange={(value) => field.onChange(parseInt(value))} 
+                      value={field.value?.toString()}
+                    >
+                      <FormControl>
+                        <SelectTrigger data-testid="class-duration-input">
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="30">30 minutos</SelectItem>
+                        <SelectItem value="40">40 minutos</SelectItem>
+                        <SelectItem value="60">60 minutos</SelectItem>
+                        <SelectItem value="90">90 minutos</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

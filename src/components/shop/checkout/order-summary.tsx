@@ -83,11 +83,11 @@ export function OrderSummary({
           <p>Los precios incluyen IVA cuando aplica.</p>
           <p className="mt-2">
             Al finalizar la compra, aceptas nuestros{' '}
-            <a href="/terminos" className="text-primary underline">
+            <a href="/terms" className="text-primary underline">
               Términos y Condiciones
             </a>{' '}
             y{' '}
-            <a href="/privacidad" className="text-primary underline">
+            <a href="/privacy" className="text-primary underline">
               Política de Privacidad
             </a>
             .

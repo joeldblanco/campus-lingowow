@@ -155,7 +155,7 @@ export function CourseView({ course, progress }: CourseViewProps) {
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
         <Button variant="ghost" asChild>
-          <Link href="/courses">
+          <Link href="/my-courses">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Mis Cursos
           </Link>
@@ -383,7 +383,7 @@ export function CourseView({ course, progress }: CourseViewProps) {
                             
                             <div className="ml-4">
                               <Button asChild size="sm">
-                                <Link href={`/courses/${course.id}/lessons/${lesson.id}`}>
+                                <Link href={`/my-courses/${course.id}/lessons/${lesson.id}`}>
                                   <Play className="w-4 h-4 mr-2" />
                                   {lessonProgress > 0 ? 'Continuar' : 'Comenzar'}
                                 </Link>

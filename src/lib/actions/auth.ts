@@ -13,6 +13,7 @@ import { UserRole } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { AuthError } from 'next-auth'
 import * as z from 'zod'
+import { getCurrentDate, isBeforeDate } from '@/lib/utils/date'
 
 export const register = async (values: z.infer<typeof SignUpSchema>) => {
   const validatedFields = SignUpSchema.safeParse(values)
@@ -213,7 +214,7 @@ export const newVerification = async (token: string) => {
     return { error: 'Token no encontrado' }
   }
 
-  const hasExpired = existingToken.expires < new Date()
+  const hasExpired = isBeforeDate(existingToken.expires, getCurrentDate())
 
   if (hasExpired) {
     return { error: 'El token ha expirado' }
@@ -230,7 +231,7 @@ export const newVerification = async (token: string) => {
       id: existingUser.id,
     },
     data: {
-      emailVerified: new Date(),
+      emailVerified: getCurrentDate(),
       email: existingToken.email,
     },
   })
@@ -294,7 +295,7 @@ export const newPassword = async (
     return { error: 'Token no encontrado' }
   }
 
-  const hasExpired = new Date(existingToken.expires) < new Date()
+  const hasExpired = isBeforeDate(existingToken.expires, getCurrentDate())
 
   if (hasExpired) {
     return { error: 'El token ha expirado' }

@@ -193,7 +193,7 @@ export default function ConfirmationPage() {
                       )}
                     </p>
                     <Button asChild>
-                      <Link href="/cursos">Ir a Mis Cursos</Link>
+                      <Link href="/my-courses">Ir a Mis Cursos</Link>
                     </Button>
                   </div>
                 </div>
@@ -257,7 +257,7 @@ export default function ConfirmationPage() {
             </Button>
             {session && (
               <Button asChild>
-                <Link href="/perfil/pedidos">Ver mis pedidos</Link>
+                <Link href="/dashboard">Ir al Dashboard</Link>
               </Button>
             )}
           </CardFooter>

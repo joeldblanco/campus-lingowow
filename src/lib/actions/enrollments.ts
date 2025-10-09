@@ -1,8 +1,9 @@
 'use server'
 
 import { db } from '@/lib/db'
-import { revalidatePath } from 'next/cache'
 import { EnrollmentStatus } from '@prisma/client'
+import { revalidatePath } from 'next/cache'
+import { getCurrentDate, isAfterDate, getTodayStart } from '@/lib/utils/date'
 
 export interface EnrollmentWithDetails {
   id: string
@@ -242,9 +243,8 @@ export async function createEnrollment(data: {
     }
 
     // Determinar el estado según la fecha de inicio del período
-    const today = new Date()
-    const periodStartDate = new Date(academicPeriod.startDate)
-    const status = periodStartDate > today ? EnrollmentStatus.PENDING : EnrollmentStatus.ACTIVE
+    const today = getCurrentDate()
+    const status = isAfterDate(academicPeriod.startDate, today) ? EnrollmentStatus.PENDING : EnrollmentStatus.ACTIVE
 
     const enrollment = await db.enrollment.create({
       data: {
@@ -277,7 +277,7 @@ export async function updateEnrollment(
       where: { id },
       data: {
         ...data,
-        lastAccessed: new Date(),
+        lastAccessed: getCurrentDate(),
       },
     })
 
@@ -508,7 +508,7 @@ export async function getActiveAcademicPeriods() {
 // Get active and future academic periods (for pre-enrollments)
 export async function getActiveAndFutureAcademicPeriods() {
   try {
-    const today = new Date()
+    const today = getCurrentDate()
     const periods = await db.academicPeriod.findMany({
       where: {
         OR: [
@@ -565,8 +565,7 @@ export async function getAllAcademicPeriods() {
 // Activate pending enrollments when their academic period starts
 export async function activatePendingEnrollments() {
   try {
-    const today = new Date()
-    today.setHours(0, 0, 0, 0) // Inicio del día
+    const today = getTodayStart()
 
     const result = await db.enrollment.updateMany({
       where: {

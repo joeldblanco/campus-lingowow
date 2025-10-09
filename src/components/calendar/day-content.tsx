@@ -19,6 +19,7 @@ interface DayContentProps {
   onEndDrag: () => void
   showStudentNames?: boolean
   getStudentInfo?: (day: string, time: string) => { name: string; color: string } | null
+  is12HourFormat?: boolean
 }
 
 export function DayContent({
@@ -36,6 +37,7 @@ export function DayContent({
   onEndDrag,
   showStudentNames,
   getStudentInfo,
+  is12HourFormat = false,
 }: DayContentProps) {
   const allTimeSlots = generateTimeSlots(slotDuration, startHour, endHour)
   const availabilityForDay = teacherAvailability[day] || []
@@ -67,6 +69,7 @@ export function DayContent({
               }
               onMouseUp={() => userRole === UserRole.TEACHER && onEndDrag()}
               studentInfo={studentInfo}
+              is12HourFormat={is12HourFormat}
             />
           )
         })

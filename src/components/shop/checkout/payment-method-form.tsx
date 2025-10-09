@@ -21,11 +21,27 @@ import { CreditCard, LockIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { PayPalButton } from './paypal-button'
 
 interface PaymentMethodFormProps {
   paymentMethod: string
   onSubmit: (data: PaymentFormData) => void
   isLoading: boolean
+  paypalData?: {
+    items: Array<{
+      productId: string
+      planId?: string
+      name: string
+      description?: string
+      price: number
+      quantity: number
+    }>
+    total: number
+    subtotal: number
+    tax: number
+    discount: number
+  }
+  onPayPalSuccess?: (data: unknown) => void
 }
 
 type PaymentFormData = {
@@ -59,7 +75,13 @@ const createPaymentSchema = (paymentMethod: string) => {
   }
 }
 
-export function PaymentMethodForm({ paymentMethod, onSubmit, isLoading }: PaymentMethodFormProps) {
+export function PaymentMethodForm({ 
+  paymentMethod, 
+  onSubmit, 
+  isLoading,
+  paypalData,
+  onPayPalSuccess 
+}: PaymentMethodFormProps) {
   const schema = createPaymentSchema(paymentMethod)
   
   const getDefaultValues = (): PaymentFormData => {
@@ -207,13 +229,34 @@ export function PaymentMethodForm({ paymentMethod, onSubmit, isLoading }: Paymen
   }
 
   const renderPayPalForm = () => {
+    if (!paypalData || !onPayPalSuccess) {
+      return (
+        <div className="p-6 border rounded-md bg-slate-50 text-center">
+          <p className="mb-4">Serás redirigido a PayPal para completar tu pago de forma segura.</p>
+          <p className="text-sm text-muted-foreground">
+            Nota: No es necesario tener una cuenta de PayPal para pagar con tarjeta de crédito o
+            débito a través de su plataforma.
+          </p>
+        </div>
+      )
+    }
+
     return (
-      <div className="p-6 border rounded-md bg-slate-50 text-center">
-        <p className="mb-4">Serás redirigido a PayPal para completar tu pago de forma segura.</p>
-        <p className="text-sm text-muted-foreground">
-          Nota: No es necesario tener una cuenta de PayPal para pagar con tarjeta de crédito o
-          débito a través de su plataforma.
-        </p>
+      <div className="space-y-4">
+        <div className="p-6 border rounded-md bg-slate-50 text-center">
+          <p className="mb-4">Completa tu pago de forma segura con PayPal.</p>
+          <p className="text-sm text-muted-foreground">
+            Puedes pagar con tu cuenta de PayPal o con tarjeta de crédito/débito.
+          </p>
+        </div>
+        <PayPalButton
+          items={paypalData.items}
+          total={paypalData.total}
+          subtotal={paypalData.subtotal}
+          tax={paypalData.tax}
+          discount={paypalData.discount}
+          onSuccess={onPayPalSuccess}
+        />
       </div>
     )
   }

@@ -3,6 +3,7 @@
 import { db } from '@/lib/db'
 import { UserRole } from '@prisma/client'
 import type { AdminDashboardData, TeacherDashboardData, StudentDashboardData } from '@/types/dashboard'
+import { formatDateNumeric, getCurrentDate, formatToISO, getStartOfMonth } from '@/lib/utils/date'
 
 // Admin Dashboard Statistics
 export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
@@ -47,7 +48,7 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
       recentEnrollments: recentEnrollments.map(enrollment => ({
         studentName: `${enrollment.student.name} ${enrollment.student.lastName}`,
         courseName: enrollment.course.title,
-        date: enrollment.enrollmentDate.toLocaleDateString('es-ES'),
+        date: formatDateNumeric(enrollment.enrollmentDate),
         amount: '$300' // TODO: Get from payment records
       })),
       languageStats: languageStats.map(stat => ({
@@ -74,9 +75,7 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
     })
 
     // Get classes taught this month
-    const currentMonth = new Date()
-    currentMonth.setDate(1)
-    currentMonth.setHours(0, 0, 0, 0)
+    const currentMonth = getStartOfMonth(getCurrentDate())
     
     const classesThisMonth = await db.classBooking.count({
       where: {
@@ -94,7 +93,7 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
         teacherId,
         status: 'CONFIRMED',
         day: {
-          gte: new Date().toISOString().split('T')[0]
+          gte: formatToISO(getCurrentDate())
         }
       },
       take: 5,
@@ -105,9 +104,19 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
       include: {
         student: {
           select: { name: true, lastName: true }
+        },
+        enrollment: {
+          select: {
+            course: {
+              select: { title: true }
+            }
+          }
         }
       }
     })
+
+    // Convertir de UTC a hora local
+    const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
 
     // Get monthly revenue data (placeholder)
     const revenueData = [
@@ -121,12 +130,16 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
       totalStudents: myStudents.length,
       classesThisMonth,
       monthlyRevenue: 2560, // TODO: Calculate from actual payments
-      upcomingClasses: upcomingClasses.map(booking => ({
-        studentName: `${booking.student.name} ${booking.student.lastName}`,
-        course: 'Inglés', // TODO: Get from course relationship
-        date: booking.day,
-        time: booking.timeSlot
-      })),
+      upcomingClasses: upcomingClasses.map(booking => {
+        const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot)
+        return {
+          id: booking.id,
+          studentName: `${booking.student.name} ${booking.student.lastName}`,
+          course: booking.enrollment.course.title,
+          date: localData.day,
+          time: localData.timeSlot
+        }
+      }),
       revenueData
     }
   } catch (error) {
@@ -171,7 +184,7 @@ export async function getStudentDashboardStats(studentId: string): Promise<Stude
         studentId,
         status: 'CONFIRMED',
         day: {
-          gte: new Date().toISOString().split('T')[0]
+          gte: formatToISO(getCurrentDate())
         }
       },
       take: 3,
@@ -182,9 +195,19 @@ export async function getStudentDashboardStats(studentId: string): Promise<Stude
       include: {
         teacher: {
           select: { name: true, lastName: true }
+        },
+        enrollment: {
+          select: {
+            course: {
+              select: { title: true }
+            }
+          }
         }
       }
     })
+
+    // Convertir de UTC a hora local
+    const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
 
     // Get user progress from activities
     const userProgress = await db.userActivity.findMany({
@@ -214,13 +237,16 @@ export async function getStudentDashboardStats(studentId: string): Promise<Stude
       totalPoints,
       currentStreak: streak?.currentStreak || 0,
       longestStreak: streak?.longestStreak || 0,
-      upcomingClasses: upcomingClasses.map(booking => ({
-        course: 'Programa Regular de Inglés', // TODO: Get from course relationship
-        teacher: `${booking.teacher.name} ${booking.teacher.lastName}`,
-        date: booking.day,
-        time: booking.timeSlot,
-        link: `/classroom?classId=${booking.id}`
-      })),
+      upcomingClasses: upcomingClasses.map(booking => {
+        const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot)
+        return {
+          course: booking.enrollment.course.title,
+          teacher: `${booking.teacher.name} ${booking.teacher.lastName}`,
+          date: localData.day,
+          time: localData.timeSlot,
+          link: `/classroom?classId=${booking.id}`
+        }
+      }),
       enrollments: enrollments.map(enrollment => ({
         title: enrollment.course.title,
         progress: enrollment.progress
@@ -243,7 +269,7 @@ export async function getUserClasses(userId: string) {
         ],
         status: 'CONFIRMED',
         day: {
-          gte: new Date().toISOString().split('T')[0]
+          gte: formatToISO(getCurrentDate())
         }
       },
       take: 10,
@@ -257,18 +283,31 @@ export async function getUserClasses(userId: string) {
         },
         teacher: {
           select: { name: true, lastName: true }
+        },
+        enrollment: {
+          select: {
+            course: {
+              select: { title: true }
+            }
+          }
         }
       }
     })
 
-    return classes.map(booking => ({
-      id: booking.id,
-      name: `Clase ${booking.day} - ${booking.timeSlot}`,
-      course: 'Programa Regular de Inglés', // TODO: Get from course relationship
-      date: booking.day,
-      time: booking.timeSlot,
-      isStudent: booking.studentId === userId
-    }))
+    // Convertir de UTC a hora local
+    const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
+    
+    return classes.map(booking => {
+      const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot)
+      return {
+        id: booking.id,
+        name: `Clase ${localData.day} - ${localData.timeSlot}`,
+        course: booking.enrollment.course.title,
+        date: localData.day,
+        time: localData.timeSlot,
+        isStudent: booking.studentId === userId
+      }
+    })
   } catch (error) {
     console.error('Error getting user classes:', error)
     return []
@@ -289,10 +328,17 @@ export async function getClassroomData(classId: string, userId: string) {
       },
       include: {
         student: {
-          select: { id: true, name: true, lastName: true }
+          select: { id: true, name: true, lastName: true, image: true }
         },
         teacher: {
-          select: { id: true, name: true, lastName: true }
+          select: { id: true, name: true, lastName: true, image: true }
+        },
+        enrollment: {
+          select: {
+            course: {
+              select: { title: true }
+            }
+          }
         }
       }
     })
@@ -301,12 +347,29 @@ export async function getClassroomData(classId: string, userId: string) {
       throw new Error('Clase no encontrada o sin acceso')
     }
 
+    // Convertir de UTC a hora local para mostrar
+    const { convertTimeSlotFromUTC, formatDateNumeric } = await import('@/lib/utils/date')
+    const localData = convertTimeSlotFromUTC(classBooking.day, classBooking.timeSlot)
+    
+    // Formatear la fecha para mostrar (DD/MM/YYYY)
+    const formattedDate = formatDateNumeric(localData.day)
+
     return {
       studentId: classBooking.student.id,
       teacherId: classBooking.teacher.id,
-      courseName: 'Programa Regular de Inglés', // TODO: Get from course relationship
-      lessonName: `Clase del ${classBooking.day} - ${classBooking.timeSlot}`,
-      bookingId: classBooking.id
+      studentName: classBooking.student.name || 'Estudiante',
+      studentImage: classBooking.student.image || `https://api.dicebear.com/7.x/personas/svg?seed=${classBooking.student.id}`,
+      teacherName: classBooking.teacher.name || 'Profesor',
+      teacherImage: classBooking.teacher.image || `https://api.dicebear.com/7.x/personas/svg?seed=${classBooking.teacher.id}`,
+      courseName: classBooking.enrollment.course.title,
+      lessonName: `Clase del ${formattedDate} - ${localData.timeSlot}`,
+      bookingId: classBooking.id,
+      // Datos en UTC para validación
+      dayUTC: classBooking.day,
+      timeSlotUTC: classBooking.timeSlot,
+      // Datos en local para mostrar
+      day: localData.day,
+      timeSlot: localData.timeSlot
     }
   } catch (error) {
     console.error('Error getting classroom data:', error)

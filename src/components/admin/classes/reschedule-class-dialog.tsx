@@ -134,7 +134,10 @@ export function RescheduleClassDialog({ classItem, children }: RescheduleClassDi
                     <FormControl>
                       <Input
                         type="date"
-                        min={new Date().toISOString().split('T')[0]}
+                        min={(() => {
+                          const today = new Date()
+                          return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+                        })()}
                         {...field}
                       />
                     </FormControl>

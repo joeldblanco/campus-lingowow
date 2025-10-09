@@ -2,7 +2,7 @@
 
 import { db } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
-import type { Category, Product, Plan, Feature, Coupon, Invoice } from '@prisma/client'
+import type { Category, Product, Plan, Feature, Coupon, Invoice, Prisma } from '@prisma/client'
 import type { InvoiceWithDetails } from '@/types/invoice'
 
 // =============================================
@@ -167,9 +167,39 @@ export async function deleteFeature(id: string) {
 // PRODUCTS
 // =============================================
 
-export async function getProducts() {
+export async function getProducts(filters?: {
+  search?: string
+  categoryId?: string
+  tags?: string[]
+  isActive?: boolean
+}) {
   try {
+    const where: Prisma.ProductWhereInput = {}
+    
+    if (filters?.isActive !== undefined) {
+      where.isActive = filters.isActive
+    }
+    
+    if (filters?.categoryId) {
+      where.categoryId = filters.categoryId
+    }
+    
+    if (filters?.tags && filters.tags.length > 0) {
+      where.tags = {
+        hasSome: filters.tags,
+      }
+    }
+    
+    if (filters?.search) {
+      where.OR = [
+        { name: { contains: filters.search, mode: 'insensitive' } },
+        { description: { contains: filters.search, mode: 'insensitive' } },
+        { shortDesc: { contains: filters.search, mode: 'insensitive' } },
+      ]
+    }
+
     const products = await db.product.findMany({
+      where,
       include: {
         category: true,
         _count: {
@@ -189,6 +219,23 @@ export async function getProducts() {
   }
 }
 
+export async function getAllProductTags() {
+  try {
+    const products = await db.product.findMany({
+      where: { isActive: true },
+      select: { tags: true },
+    })
+    
+    const allTags = products.flatMap((p) => p.tags)
+    const uniqueTags = [...new Set(allTags)].sort()
+    
+    return uniqueTags
+  } catch (error) {
+    console.error('Error fetching product tags:', error)
+    return []
+  }
+}
+
 export async function getProductById(id: string) {
   try {
     return await db.product.findUnique({
@@ -196,6 +243,9 @@ export async function getProductById(id: string) {
       include: {
         category: true,
         invoiceItems: true,
+        plans: {
+          orderBy: { sortOrder: 'asc' },
+        },
       },
     })
   } catch (error) {
@@ -229,6 +279,12 @@ export async function createProductWithPlans(
     isActive: boolean
     isPopular: boolean
     sortOrder: number
+    includesClasses?: boolean
+    classesPerPeriod?: number
+    classesPerWeek?: number
+    allowProration?: boolean
+    autoRenewal?: boolean
+    billingCycle?: string
   }>
 ) {
   try {
@@ -408,6 +464,40 @@ export async function removeFeatureFromPlan(planId: string, featureId: string) {
   } catch (error) {
     console.error('Error removing feature from plan:', error)
     return { success: false, error: 'Error al eliminar característica del plan' }
+  }
+}
+
+export async function updatePlanFeatures(
+  planId: string,
+  features: Array<{
+    featureId: string
+    included: boolean
+    value?: string | null
+  }>
+) {
+  try {
+    // Delete all existing features for this plan
+    await db.planFeature.deleteMany({
+      where: { planId },
+    })
+
+    // Create new features
+    if (features.length > 0) {
+      await db.planFeature.createMany({
+        data: features.map((f) => ({
+          planId,
+          featureId: f.featureId,
+          included: f.included,
+          value: f.value || null,
+        })),
+      })
+    }
+
+    revalidatePath('/admin/plans')
+    return { success: true }
+  } catch (error) {
+    console.error('Error updating plan features:', error)
+    return { success: false, error: 'Error al actualizar las características del plan' }
   }
 }
 
@@ -727,5 +817,108 @@ export async function getProductSalesCount() {
   } catch (error) {
     console.error('Error fetching product sales count:', error)
     return 0
+  }
+}
+
+// =============================================
+// ASOCIACIÓN DE PLANES A PRODUCTOS
+// =============================================
+
+export async function associatePlanToProduct(planId: string, productId: string) {
+  try {
+    await db.plan.update({
+      where: { id: planId },
+      data: { productId },
+    })
+    revalidatePath('/admin/products')
+    return { success: true }
+  } catch (error) {
+    console.error('Error associating plan to product:', error)
+    return { success: false, error: 'Error al asociar el plan al producto' }
+  }
+}
+
+export async function dissociatePlanFromProduct(planId: string) {
+  try {
+    await db.plan.update({
+      where: { id: planId },
+      data: { productId: null },
+    })
+    revalidatePath('/admin/products')
+    return { success: true }
+  } catch (error) {
+    console.error('Error dissociating plan from product:', error)
+    return { success: false, error: 'Error al desasociar el plan del producto' }
+  }
+}
+
+export async function getAvailablePlansForProduct() {
+  try {
+    // Retorna planes que no están asociados a ningún producto
+    return await db.plan.findMany({
+      where: {
+        productId: null,
+      },
+      orderBy: { name: 'asc' },
+    })
+  } catch (error) {
+    console.error('Error fetching available plans:', error)
+    return []
+  }
+}
+
+export async function createProductWithMixedPlans(
+  productData: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>,
+  newPlans: Array<{
+    name: string
+    slug: string
+    description?: string
+    price: number
+    comparePrice?: number
+    duration: number
+    isActive: boolean
+    isPopular: boolean
+    sortOrder: number
+    includesClasses?: boolean
+    classesPerPeriod?: number
+    classesPerWeek?: number
+    allowProration?: boolean
+    autoRenewal?: boolean
+    billingCycle?: string
+  }>,
+  existingPlanIds: string[]
+) {
+  try {
+    const product = await db.product.create({
+      data: productData,
+    })
+
+    // Crear planes nuevos
+    if (newPlans.length > 0) {
+      await db.plan.createMany({
+        data: newPlans.map((plan) => ({
+          ...plan,
+          productId: product.id,
+        })),
+      })
+    }
+
+    // Asociar planes existentes
+    if (existingPlanIds.length > 0) {
+      await db.plan.updateMany({
+        where: {
+          id: { in: existingPlanIds },
+        },
+        data: {
+          productId: product.id,
+        },
+      })
+    }
+
+    revalidatePath('/admin/products')
+    return { success: true, data: product }
+  } catch (error) {
+    console.error('Error creating product with mixed plans:', error)
+    return { success: false, error: 'Error al crear el producto con planes' }
   }
 }

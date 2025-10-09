@@ -1,6 +1,15 @@
 import { ClassPackageType, PackageClassCount, SeasonName } from '@/types/academic-period'
 import { AcademicPeriod } from '@prisma/client'
-import { endOfDay, startOfDay } from 'date-fns'
+import {
+  createDate,
+  getStartOfDay,
+  getEndOfDay,
+  addDaysToDate,
+  getDayOfWeek,
+  getCurrentDate,
+  getMonthNumber,
+  getYearNumber,
+} from '@/lib/utils/date'
 
 /**
  * Genera períodos académicos y temporadas según el modelo de Prisma para un año específico
@@ -12,9 +21,9 @@ export function generateAcademicPeriodsForYear(
   year: number,
   setCurrentPeriodActive: boolean = true
 ) {
-  const startDate = new Date(year, 0, 1)
-  const endDate = new Date(year, 11, 31)
-  const today = new Date()
+  const startDate = createDate(year, 0, 1)
+  const endDate = createDate(year, 11, 31)
+  const today = getCurrentDate()
 
   // Estructuras temporales para cálculos
   const periodRanges = []
@@ -25,15 +34,13 @@ export function generateAcademicPeriodsForYear(
   const currentMonth = startDate
   while (currentMonth <= endDate) {
     // Encontrar el primer lunes del mes
-    const firstDayOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)
-    const dayOfWeek = firstDayOfMonth.getDay() // 0 = domingo, 1 = lunes, ...
+    const firstDayOfMonth = createDate(getYearNumber(currentMonth), getMonthNumber(currentMonth), 1)
+    const dayOfWeek = getDayOfWeek(firstDayOfMonth) // 0 = domingo, 1 = lunes, ...
     const daysToAdd = dayOfWeek === 1 ? 0 : dayOfWeek === 0 ? 1 : 8 - dayOfWeek
-    const firstMonday = new Date(firstDayOfMonth)
-    firstMonday.setDate(firstDayOfMonth.getDate() + daysToAdd)
+    const firstMonday = addDaysToDate(firstDayOfMonth, daysToAdd)
 
     // Calcular fin del período (28 días después)
-    const periodEnd = new Date(firstMonday)
-    periodEnd.setDate(firstMonday.getDate() + 27)
+    const periodEnd = addDaysToDate(firstMonday, 27)
 
     // Añadir el período
     periodRanges.push({
@@ -42,20 +49,19 @@ export function generateAcademicPeriodsForYear(
     })
 
     // Avanzar al siguiente mes
-    currentMonth.setMonth(currentMonth.getMonth() + 1)
+    currentMonth.setMonth(getMonthNumber(currentMonth) + 1)
   }
 
   // 2. Identificar semanas sueltas
-  const currentWeekStart = new Date(year, 0, 1)
+  const currentWeekStart = createDate(year, 0, 1)
   // Ajustar al primer lunes del año si no empieza en lunes
-  if (currentWeekStart.getDay() !== 1) {
-    const daysUntilMonday = currentWeekStart.getDay() === 0 ? 1 : 8 - currentWeekStart.getDay()
+  if (getDayOfWeek(currentWeekStart) !== 1) {
+    const daysUntilMonday = getDayOfWeek(currentWeekStart) === 0 ? 1 : 8 - getDayOfWeek(currentWeekStart)
     currentWeekStart.setDate(currentWeekStart.getDate() + daysUntilMonday)
   }
 
   while (currentWeekStart <= endDate) {
-    const currentWeekEnd = new Date(currentWeekStart)
-    currentWeekEnd.setDate(currentWeekStart.getDate() + 6) // Una semana completa
+    const currentWeekEnd = addDaysToDate(currentWeekStart, 6) // Una semana completa
 
     // Verificar si esta semana está incluida en algún período
     let isIncludedInPeriod = false
@@ -71,8 +77,8 @@ export function generateAcademicPeriodsForYear(
     // Si la semana no está incluida en ningún período, es una semana suelta
     if (!isIncludedInPeriod && currentWeekEnd <= endDate) {
       looseWeekRanges.push({
-        start: new Date(currentWeekStart),
-        end: new Date(currentWeekEnd),
+        start: currentWeekStart,
+        end: currentWeekEnd,
       })
     }
 
@@ -101,7 +107,7 @@ export function generateAcademicPeriodsForYear(
       seasonRanges.push({
         number: i + 1,
         name: `${seasonNames[i]}`,
-        start: new Date(previousLooseWeek.end.getTime() + 86400000), // Día siguiente a la semana suelta anterior
+        start: addDaysToDate(previousLooseWeek.end, 1), // Día siguiente a la semana suelta anterior
         end: currentLooseWeek.end,
       })
     }
@@ -110,7 +116,7 @@ export function generateAcademicPeriodsForYear(
     seasonRanges.push({
       number: looseWeekRanges.length + 1,
       name: `${seasonNames[looseWeekRanges.length]}`,
-      start: new Date(looseWeekRanges[looseWeekRanges.length - 1].end.getTime() + 86400000),
+      start: addDaysToDate(looseWeekRanges[looseWeekRanges.length - 1].end, 1),
       end: periodRanges[periodRanges.length - 1].end,
     })
   } else {
@@ -131,8 +137,8 @@ export function generateAcademicPeriodsForYear(
     name: season.name,
     startDate: season.start,
     endDate: season.end,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: getCurrentDate(),
+    updatedAt: getCurrentDate(),
   }))
 
   // Crear períodos académicos (tanto regulares como semanas sueltas)
@@ -158,8 +164,8 @@ export function generateAcademicPeriodsForYear(
       seasonId: season ? season.id : seasons[0].id,
       isSpecialWeek: false,
       isActive: isActive,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: getCurrentDate(),
+      updatedAt: getCurrentDate(),
     })
   })
 
@@ -179,8 +185,8 @@ export function generateAcademicPeriodsForYear(
       seasonId: season ? season.id : seasons[0].id,
       isSpecialWeek: true,
       isActive: isActive,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: getCurrentDate(),
+      updatedAt: getCurrentDate(),
     })
   })
 
@@ -228,9 +234,9 @@ export function calculatePackagePrice(
  * @param period Período académico
  */
 export function isDateInPeriod(date: Date, period: AcademicPeriod): boolean {
-  const checkDate = startOfDay(date)
-  const periodStart = startOfDay(period.startDate)
-  const periodEnd = endOfDay(period.endDate)
+  const checkDate = getStartOfDay(date)
+  const periodStart = getStartOfDay(period.startDate)
+  const periodEnd = getEndOfDay(period.endDate)
 
   return checkDate >= periodStart && checkDate <= periodEnd
 }
@@ -240,7 +246,7 @@ export function isDateInPeriod(date: Date, period: AcademicPeriod): boolean {
  * @param periods Lista de todos los períodos
  */
 export function getCurrentPeriod(periods: AcademicPeriod[]): AcademicPeriod | null {
-  const now = new Date()
+  const now = getCurrentDate()
   return periods.find((period) => isDateInPeriod(now, period)) || null
 }
 
@@ -274,13 +280,13 @@ export function getMonthName(monthNumber: number): string {
  */
 export function getFirstMondayOfMonth(year: number, month: number): Date {
   // El mes en JavaScript es 0-indexed (0-11)
-  const firstDayOfMonth = new Date(year, month - 1, 1)
-  const dayOfWeek = firstDayOfMonth.getDay() // 0 = Domingo, 1 = Lunes, ...
+  const firstDayOfMonth = createDate(year, month - 1, 1)
+  const dayOfWeek = getDayOfWeek(firstDayOfMonth) // 0 = Domingo, 1 = Lunes, ...
 
   // Calculamos cuántos días hay que sumar para llegar al primer lunes
   // Si es lunes (1), sumamos 0; si es martes (2), sumamos 6, etc.
   const daysToAdd = dayOfWeek === 1 ? 0 : (8 - dayOfWeek) % 7
 
-  const firstMonday = new Date(year, month - 1, 1 + daysToAdd)
+  const firstMonday = createDate(year, month - 1, 1 + daysToAdd)
   return firstMonday
 }

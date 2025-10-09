@@ -8,7 +8,7 @@ export const CreateClassSchema = z.object({
   day: z.string().min(1, 'La fecha es requerida'),
   timeSlot: z.string().min(1, 'El horario es requerido'),
   notes: z.string().optional(),
-  creditId: z.string().optional(),
+  creditId: z.string().min(1).optional().or(z.literal('')),
 })
 
 export const EditClassSchema = z.object({
@@ -19,7 +19,7 @@ export const EditClassSchema = z.object({
   timeSlot: z.string().min(1, 'El horario es requerido'),
   notes: z.string().optional(),
   status: z.string().optional(),
-  creditId: z.string().optional(),
+  creditId: z.string().min(1).optional().or(z.literal('')),
   completedAt: z.date().optional(),
 })
 

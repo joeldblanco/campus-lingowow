@@ -3,7 +3,7 @@
 import { db } from '@/lib/db'
 import { getCurrentUser } from '@/lib/utils/session'
 import { CreditSource, CreditUsage } from '@/types/academic-period'
-import { addMonths } from 'date-fns'
+import { addMonthsToDate, getCurrentDate } from '@/lib/utils/date'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
@@ -52,7 +52,7 @@ export async function addStudentCredits(
     }
 
     // Calcular fecha de expiración (por defecto 3 meses)
-    const expiryDate = addMonths(new Date(), data.expiryMonths)
+    const expiryDate = addMonthsToDate(getCurrentDate(), data.expiryMonths)
 
     // Crear el crédito en la base de datos
     const newCredit = await db.studentCredit.create({
@@ -116,7 +116,7 @@ export async function useCreditsForClass(
         id: creditId,
         isUsed: false,
         expiryDate: {
-          gte: new Date(),
+          gte: getCurrentDate(),
         },
       },
     })
@@ -218,7 +218,7 @@ export async function useCreditsForMaterials(formData: FormData | { creditId: st
         id: creditId,
         isUsed: false,
         expiryDate: {
-          gte: new Date(),
+          gte: getCurrentDate(),
         },
       },
     })
@@ -337,7 +337,7 @@ export async function generatePerfectAttendanceCredits(periodId: string) {
     // Crear créditos para cada estudiante con asistencia perfecta
     const creditsPromises = enrollments.map(async (enrollment) => {
       // Calcular fecha de expiración (3 meses desde la fecha actual)
-      const expiryDate = addMonths(new Date(), 3)
+      const expiryDate = addMonthsToDate(getCurrentDate(), 3)
 
       return db.studentCredit.create({
         data: {
@@ -395,7 +395,7 @@ export async function generateModulesCompletionCredits(studentId: string) {
     // Esto dependería de la estructura de la base de datos y las reglas del negocio
 
     // Para este ejemplo, simplemente creamos el crédito
-    const expiryDate = addMonths(new Date(), 3)
+    const expiryDate = addMonthsToDate(getCurrentDate(), 3)
 
     const newCredit = await db.studentCredit.create({
       data: {
@@ -468,7 +468,7 @@ export async function generateReferralCredits(
     }
 
     // Calcular fecha de expiración (3 meses desde la fecha actual)
-    const expiryDate = addMonths(new Date(), 3)
+    const expiryDate = addMonthsToDate(getCurrentDate(), 3)
 
     // Crear crédito para el estudiante que hizo la referencia
     const newCredit = await db.studentCredit.create({
@@ -498,7 +498,7 @@ export async function generateReferralCredits(
  */
 export async function expireCredits() {
   try {
-    const now = new Date()
+    const now = getCurrentDate()
 
     // Buscar todos los créditos no usados que han expirado
     const expiredCredits = await db.studentCredit.findMany({
