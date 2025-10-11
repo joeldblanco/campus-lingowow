@@ -5,9 +5,9 @@ import { db } from '@/lib/db'
 import { ScheduleSetup } from '@/components/enrollments/schedule-setup'
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export default async function EnrollmentSchedulePage({ params }: PageProps) {
@@ -17,10 +17,12 @@ export default async function EnrollmentSchedulePage({ params }: PageProps) {
     redirect('/auth/signin')
   }
 
+  const { id } = await params
+
   // Obtener la inscripción
   const enrollment = await db.enrollment.findUnique({
     where: {
-      id: params.id,
+      id,
       studentId: session.user.id, // Asegurar que pertenece al estudiante
     },
     include: {
