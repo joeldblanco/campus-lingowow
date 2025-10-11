@@ -1,3 +1,10 @@
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Panel de Administración | Lingowow',
+  description: 'Panel de administración de Lingowow',
+}
+
 export default function AdminPage() {
   return (
     <div className="p-6" data-testid="admin-dashboard">

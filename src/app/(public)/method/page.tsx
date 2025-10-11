@@ -5,6 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { GraduationCap, Users, MessageCircle, Target, BookOpen, Headphones, Video, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Nuestro Método | Lingowow - Metodología de Enseñanza',
+  description: 'Un enfoque comunicativo e inmersivo que garantiza resultados reales. Aprende de forma natural, práctica y efectiva con nuestra metodología probada.',
+}
 
 export default function MetodoPage() {
   return (

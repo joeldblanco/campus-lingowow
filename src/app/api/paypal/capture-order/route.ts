@@ -4,12 +4,22 @@ import { getToken } from 'next-auth/jwt'
 import { ordersController } from '@/lib/paypal'
 import { db } from '@/lib/db'
 
+interface ScheduleSlot {
+  teacherId: string
+  dayOfWeek: number
+  startTime: string
+  endTime: string
+}
+
 interface InvoiceItem {
   productId: string
   planId?: string
   name: string
   price: number
   quantity: number
+  selectedSchedule?: ScheduleSlot[]
+  proratedClasses?: number
+  proratedPrice?: number
 }
 
 interface InvoiceData {
@@ -99,19 +109,190 @@ export async function POST(req: NextRequest) {
         },
       })
 
+      // Obtener el período académico actual
+      const currentPeriod = await db.academicPeriod.findFirst({
+        where: { isActive: true },
+      })
+
       // Procesar las compras de productos
       const purchases = await Promise.all(
         invoiceData.items.map(async (item) => {
-          return await db.productPurchase.create({
+          // Obtener información del plan si existe
+          let plan = null
+          let enrollment: { id: string; course?: { title?: string } } | null = null
+          
+          if (item.planId) {
+            plan = await db.plan.findUnique({
+              where: { id: item.planId },
+              include: { course: true },
+            })
+          }
+
+          // Crear la compra del producto
+          const purchase = await db.productPurchase.create({
             data: {
               userId: userId,
               productId: item.productId,
               invoiceId: invoice.id,
               status: 'CONFIRMED',
+              selectedSchedule: item.selectedSchedule ? JSON.parse(JSON.stringify(item.selectedSchedule)) : undefined,
+              proratedClasses: item.proratedClasses || undefined,
+              proratedPrice: item.proratedPrice || undefined,
             },
           })
+
+          // Si el plan incluye clases y hay un horario seleccionado, crear inscripción
+          if (
+            plan?.includesClasses &&
+            plan.courseId &&
+            item.selectedSchedule &&
+            item.selectedSchedule.length > 0 &&
+            currentPeriod
+          ) {
+            // Crear o actualizar la inscripción
+            enrollment = await db.enrollment.upsert({
+              where: {
+                studentId_courseId_academicPeriodId: {
+                  studentId: userId,
+                  courseId: plan.courseId,
+                  academicPeriodId: currentPeriod.id,
+                },
+              },
+              create: {
+                studentId: userId,
+                courseId: plan.courseId,
+                academicPeriodId: currentPeriod.id,
+                status: 'ACTIVE',
+                classesTotal: item.proratedClasses || plan.classesPerPeriod || 8,
+                classesAttended: 0,
+                classesMissed: 0,
+              },
+              update: {
+                status: 'ACTIVE',
+                classesTotal: item.proratedClasses || plan.classesPerPeriod || 8,
+              },
+            })
+
+            // Actualizar la compra con el enrollmentId
+            await db.productPurchase.update({
+              where: { id: purchase.id },
+              data: { 
+                enrollmentId: enrollment.id,
+                status: 'ENROLLED',
+              },
+            })
+
+            // Crear los horarios recurrentes (ClassSchedule)
+            if (enrollment) {
+              await Promise.all(
+                item.selectedSchedule.map(async (slot) => {
+                  // Verificar si ya existe este horario
+                  const existingSchedule = await db.classSchedule.findUnique({
+                    where: {
+                      enrollmentId_dayOfWeek_startTime: {
+                        enrollmentId: enrollment!.id,
+                        dayOfWeek: slot.dayOfWeek,
+                        startTime: slot.startTime,
+                      },
+                    },
+                  })
+
+                  if (!existingSchedule) {
+                    await db.classSchedule.create({
+                      data: {
+                        enrollmentId: enrollment!.id,
+                        teacherId: slot.teacherId,
+                        dayOfWeek: slot.dayOfWeek,
+                        startTime: slot.startTime,
+                        endTime: slot.endTime,
+                      },
+                    })
+                  }
+                })
+              )
+
+              // Crear las clases individuales (ClassBooking) para el período actual
+              const periodStart = new Date(currentPeriod.startDate)
+              const periodEnd = new Date(currentPeriod.endDate)
+              const today = new Date()
+              const startDate = today > periodStart ? today : periodStart
+
+              // Generar clases para cada día del período que coincida con el horario
+              const currentDate = new Date(startDate)
+              while (currentDate <= periodEnd) {
+                const dayOfWeek = currentDate.getDay()
+
+                // Buscar si hay un horario para este día
+                const scheduleForDay = item.selectedSchedule.find(
+                  (slot) => slot.dayOfWeek === dayOfWeek
+                )
+
+                if (scheduleForDay) {
+                  // Formatear fecha como YYYY-MM-DD
+                  const dayString = currentDate.toISOString().split('T')[0]
+                  
+                  // Verificar si ya existe una reserva para esta fecha
+                  const existingBooking = await db.classBooking.findFirst({
+                    where: {
+                      studentId: userId,
+                      teacherId: scheduleForDay.teacherId,
+                      day: dayString,
+                      timeSlot: `${scheduleForDay.startTime}-${scheduleForDay.endTime}`,
+                    },
+                  })
+
+                  if (!existingBooking) {
+                    await db.classBooking.create({
+                      data: {
+                        studentId: userId,
+                        teacherId: scheduleForDay.teacherId,
+                        enrollmentId: enrollment!.id,
+                        day: dayString,
+                        timeSlot: `${scheduleForDay.startTime}-${scheduleForDay.endTime}`,
+                        status: 'CONFIRMED',
+                      },
+                    })
+                  }
+                }
+
+                // Avanzar al siguiente día
+                currentDate.setDate(currentDate.getDate() + 1)
+              }
+            }
+
+            // Actualizar el rol del usuario a STUDENT si es GUEST
+            const user = await db.user.findUnique({
+              where: { id: userId },
+              select: { roles: true },
+            })
+
+            if (user && user.roles.includes('GUEST') && !user.roles.includes('STUDENT')) {
+              // Reemplazar GUEST con STUDENT
+              const updatedRoles = user.roles.filter((role) => role !== 'GUEST')
+              updatedRoles.push('STUDENT')
+
+              await db.user.update({
+                where: { id: userId },
+                data: { roles: updatedRoles },
+              })
+            } else if (user && !user.roles.includes('STUDENT')) {
+              // Si no tiene STUDENT, agregarlo (sin quitar otros roles)
+              await db.user.update({
+                where: { id: userId },
+                data: { roles: { push: 'STUDENT' } },
+              })
+            }
+          }
+
+          return {
+            ...purchase,
+            enrollment,
+          }
         })
       )
+      
+      // Verificar si alguna compra requiere configuración de horario
+      const needsScheduleSetup = purchases.some(p => p.enrollment && !p.selectedSchedule)
       
       return NextResponse.json({
         success: true,
@@ -119,6 +300,13 @@ export async function POST(req: NextRequest) {
         status: captureData.status,
         invoice,
         purchases,
+        needsScheduleSetup,
+        enrollments: purchases
+          .filter(p => p.enrollment !== null)
+          .map(p => ({ 
+            id: p.enrollment!.id, 
+            courseTitle: p.enrollment!.course?.title 
+          })),
       })
     } else {
       return NextResponse.json(

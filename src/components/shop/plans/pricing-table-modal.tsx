@@ -51,7 +51,7 @@ export function PricingTableModal({ product, open, onOpenChange }: PricingTableM
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-fit h-fit">
         <DialogHeader>
           <DialogTitle className="text-2xl">{product.title}</DialogTitle>
           <DialogDescription>
@@ -61,7 +61,7 @@ export function PricingTableModal({ product, open, onOpenChange }: PricingTableM
 
         <div className="mt-6">
           {/* Desktop view - Grid */}
-          <div className="hidden md:grid md:grid-cols-3 gap-6">
+          <div className="hidden md:grid md:grid-cols-3 gap-6 pt-4">
             {product.plans.map((plan) => {
               const inCart = isInCart(plan.id)
               const isPopular = plan.isPopular || false
@@ -100,7 +100,7 @@ export function PricingTableModal({ product, open, onOpenChange }: PricingTableM
                           )}
                           <span
                             className={cn(
-                              'text-sm',
+                              'text-sm break-words',
                               !included && 'text-muted-foreground line-through'
                             )}
                           >
@@ -137,7 +137,7 @@ export function PricingTableModal({ product, open, onOpenChange }: PricingTableM
           </div>
 
           {/* Mobile view - Stacked */}
-          <div className="md:hidden space-y-4">
+          <div className="md:hidden space-y-4 pt-4">
             {product.plans.map((plan) => {
               const inCart = isInCart(plan.id)
               const isPopular = plan.isPopular || false
@@ -174,7 +174,7 @@ export function PricingTableModal({ product, open, onOpenChange }: PricingTableM
                           )}
                           <span
                             className={cn(
-                              'text-sm',
+                              'text-sm break-words',
                               !included && 'text-muted-foreground line-through'
                             )}
                           >

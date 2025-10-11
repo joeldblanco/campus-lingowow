@@ -3,6 +3,12 @@ import { PlansTable } from '@/components/admin/plans/plans-table'
 import { CreatePlanDialog } from '@/components/admin/plans/create-plan-dialog'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Gestión de Planes | Admin | Lingowow',
+  description: 'Administra los planes de suscripción de la plataforma',
+}
 
 const PlansAdminPage = async () => {
   const plans = await getPlans()

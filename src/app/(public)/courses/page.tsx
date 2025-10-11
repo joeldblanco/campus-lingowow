@@ -5,6 +5,12 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from '@/components/ui/badge'
 import { BookOpen, Clock, Users, Star } from 'lucide-react'
 import Link from 'next/link'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Cursos | Lingowow - Aprende Inglés y Español',
+  description: 'Descubre nuestra amplia oferta de cursos de idiomas diseñados para todos los niveles. Desde principiantes hasta avanzados, tenemos el curso perfecto para ti.',
+}
 
 export default function CursosPage() {
   const courses = [

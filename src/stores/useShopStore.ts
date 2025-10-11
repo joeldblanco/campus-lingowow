@@ -66,9 +66,16 @@ export const useShopStore = create<ShopState>()(
           )
 
           if (existingIndex >= 0) {
+            // Si el mismo plan ya está en el carrito, lo removemos
             return { cart: state.cart.filter((_, index) => index !== existingIndex) }
           }
-          return { cart: [...state.cart, item] }
+          
+          // Removemos cualquier otro plan del mismo producto antes de agregar el nuevo
+          const cartWithoutProductPlans = state.cart.filter(
+            (cartItem) => cartItem.product.id !== item.product.id
+          )
+          
+          return { cart: [...cartWithoutProductPlans, item] }
         }),
 
       removeFromCart: (productId, planId) =>

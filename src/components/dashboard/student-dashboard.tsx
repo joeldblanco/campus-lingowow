@@ -23,6 +23,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { getStudentDashboardStats } from '@/lib/actions/dashboard'
 import { useCurrentClass } from '@/context/current-class'
 import type { StudentDashboardData } from '@/types/dashboard'
+import { PendingScheduleBanner } from '@/components/enrollments/pending-schedule-banner'
 
 export default function Dashboard() {
   const { data: session } = useSession()
@@ -62,6 +63,10 @@ export default function Dashboard() {
         </h1>
         <p className="text-muted-foreground">Ve tu progreso y tus próximas clases.</p>
       </div>
+      
+      {/* Banner de horarios pendientes */}
+      <PendingScheduleBanner />
+      
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="pb-2">
@@ -152,7 +157,7 @@ export default function Dashboard() {
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Course Materials</CardTitle>
             <Button variant="outline" size="sm" asChild>
-              <Link href="#">Browse All</Link>
+              <Link href="#">Ver Todo</Link>
             </Button>
           </CardHeader>
           <CardContent>

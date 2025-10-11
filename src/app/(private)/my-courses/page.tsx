@@ -3,6 +3,12 @@ import { auth } from '@/auth'
 import { getCoursesForPublicView } from '@/lib/actions/courses'
 import { CoursesContainer } from '@/components/courses/courses-container'
 import { CoursesLoadingSkeleton } from '@/components/courses/courses-loading-skeleton'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Mis Cursos | Lingowow',
+  description: 'Explora nuestros cursos de idiomas y comienza tu aprendizaje',
+}
 
 export default async function CoursesPage() {
   const session = await auth()

@@ -5,6 +5,12 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Preguntas Frecuentes | Lingowow - Centro de Ayuda',
+  description: 'Encuentra respuestas a las preguntas más comunes sobre nuestros cursos, métodos de enseñanza, precios y más.',
+}
 
 export default function FAQPage() {
   return (

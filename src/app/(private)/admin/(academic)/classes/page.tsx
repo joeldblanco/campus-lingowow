@@ -1,6 +1,12 @@
 import { Suspense } from 'react'
 import { ClassesContainer } from '@/components/admin/classes/classes-container'
 import { ClassesLoadingSkeleton } from '@/components/admin/classes/classes-loading-skeleton'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Gestión de Clases | Admin | Lingowow',
+  description: 'Administra todas las clases programadas, pasadas y futuras',
+}
 
 const ClassesAdminPage = () => {
   return (

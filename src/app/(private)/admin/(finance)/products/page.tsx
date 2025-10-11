@@ -3,6 +3,12 @@ import { ProductsTable } from '@/components/admin/products/products-table'
 import { CreateProductDialog } from '@/components/admin/products/create-product-dialog'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Gestión de Productos | Admin | Lingowow',
+  description: 'Administra los productos de la tienda',
+}
 
 const ProductsAdminPage = async () => {
   const products = await getProducts()

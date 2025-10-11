@@ -4,6 +4,12 @@ import BlogClient from '@/components/blog/blog-client'
 import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
 import { getPublishedBlogPosts, getBlogCategories, getBlogTags } from '@/lib/actions/blog'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Blog | Lingowow - Recursos y Consejos para Aprender Idiomas',
+  description: 'Descubre artículos, consejos y recursos para mejorar tu aprendizaje de idiomas. Tips de profesores expertos y técnicas probadas.',
+}
 
 export default async function BlogPage() {
   // Cargar datos desde la base de datos

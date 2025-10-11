@@ -23,6 +23,12 @@ import Link from 'next/link'
 import { PricingSection } from '@/components/public-components/pricing-section'
 import { getTeachersForLanding } from '@/lib/actions/teachers'
 import { ContactForm } from '@/components/public-components/contact-form'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Inicio | Lingowow - Aprende Idiomas con Expertos',
+  description: 'Domina cualquier idioma con instructores expertos. Clases personalizadas, metodología probada y resultados garantizados. Aprende de manera efectiva y divertida.',
+}
 
 export default async function LandingPage() {
   const teachers = await getTeachersForLanding(4)

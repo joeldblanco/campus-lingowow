@@ -48,7 +48,18 @@ export function isSlotOverlappingWithBookings(
 
   // Verificar si hay superposición con alguna reserva existente
   return bookedSlots.some((bookedSlot) => {
+    // Validar que bookedSlot exista y tenga formato válido
+    if (!bookedSlot || typeof bookedSlot !== 'string') {
+      return false
+    }
+    
     const [bookedStart, bookedEnd] = splitTimeSlot(bookedSlot)
+    
+    // Validar que bookedStart y bookedEnd existan
+    if (!bookedStart || !bookedEnd) {
+      return false
+    }
+    
     const bookedStartMinutes = timeToMinutes(bookedStart)
     const bookedEndMinutes = timeToMinutes(bookedEnd)
 

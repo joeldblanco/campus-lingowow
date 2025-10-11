@@ -1224,6 +1224,11 @@ model ProductPurchase {
   status         PurchaseStatus @default(PENDING)
   purchaseDate   DateTime       @default(now())
   scheduledDate  DateTime? // Fecha programada si aplica
+  
+  // Campos para selección de horario de clases
+  selectedSchedule Json? // Horario seleccionado antes de la compra: {teacherId, dayOfWeek, startTime, endTime}[]
+  proratedClasses  Int? // Número de clases prorrateadas calculadas
+  proratedPrice    Float? // Precio prorrateado calculado
 
   // Relaciones
   user         User                 @relation(fields: [userId], references: [id])
