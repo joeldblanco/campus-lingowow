@@ -7,9 +7,7 @@ import { Progress } from '@/components/ui/progress'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   addMinutes,
-  differenceInDays,
-  differenceInHours,
-  differenceInMinutes,
+  differenceInSeconds,
   format,
   isAfter,
   isBefore,
@@ -231,36 +229,40 @@ function UpcomingClassCard({
 }) {
   const [currentTime, setCurrentTime] = useState(new Date())
 
-  // Actualiza el tiempo actual cada 10 segundos
+  // Actualiza el tiempo actual cada segundo
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(new Date())
-    }, 10000)
+    }, 1000)
 
     return () => clearInterval(interval)
   }, [])
   const timeRemaining = useMemo(() => {
-    const days = differenceInDays(startDate, currentTime)
     const isPastClass = isAfter(currentTime, endDate)
+    const isInProgress = !isBefore(currentTime, startDate) && !isAfter(currentTime, endDate)
 
     if (isPastClass) return 'Esta clase ya pasó'
+    if (isInProgress) return 'Clase en progreso'
 
-    // Calculamos los días completos
-    const remainingDays = Math.max(0, days)
+    // Calcular tiempo total en segundos
+    const totalSeconds = Math.max(0, differenceInSeconds(startDate, currentTime))
+    
+    // Calcular días, horas, minutos y segundos
+    const days = Math.floor(totalSeconds / (24 * 60 * 60))
+    const hours = Math.floor((totalSeconds % (24 * 60 * 60)) / (60 * 60))
+    const minutes = Math.floor((totalSeconds % (60 * 60)) / 60)
+    const seconds = totalSeconds % 60
 
-    // Para las horas, restamos los días completos y calculamos
-    const hoursDate = new Date(currentTime)
-    hoursDate.setDate(hoursDate.getDate() + remainingDays)
-    const hours = Math.max(0, differenceInHours(startDate, hoursDate))
-
-    // Para los minutos, restamos los días y horas completas y calculamos
-    const minutesDate = new Date(hoursDate)
-    minutesDate.setHours(minutesDate.getHours() + hours)
-    const minutes = Math.max(0, differenceInMinutes(startDate, minutesDate))
-
-    if (remainingDays + hours + minutes === 0) return 'Clase en progreso'
-
-    return `Faltan ${remainingDays} días, ${hours} horas y ${minutes} minutos`
+    // Construir mensaje según el tiempo restante
+    if (days > 0) {
+      return `Faltan ${days} días, ${hours} horas, ${minutes} minutos y ${seconds} segundos`
+    } else if (hours > 0) {
+      return `Faltan ${hours} horas, ${minutes} minutos y ${seconds} segundos`
+    } else if (minutes > 0) {
+      return `Faltan ${minutes} minutos y ${seconds} segundos`
+    } else {
+      return `Faltan ${seconds} segundos`
+    }
   }, [startDate, currentTime, endDate])
 
   const getStatus = () => {

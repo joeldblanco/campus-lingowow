@@ -180,6 +180,54 @@ export async function getTeacherBookings() {
   }
 }
 
+// Acción para obtener los horarios recurrentes de un profesor
+export async function getTeacherSchedules(teacherId?: string) {
+  const session = await auth()
+
+  if (!session || !session.user || !session.user.id) {
+    return { success: false, error: 'No autorizado' }
+  }
+
+  // Si no se proporciona teacherId, usar el del usuario actual
+  const targetTeacherId = teacherId || session.user.id
+
+  try {
+    const schedules = await db.classSchedule.findMany({
+      where: {
+        teacherId: targetTeacherId,
+      },
+      include: {
+        enrollment: {
+          include: {
+            student: {
+              select: {
+                name: true,
+                lastName: true,
+                email: true,
+                image: true,
+              },
+            },
+            course: {
+              select: {
+                title: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: [
+        { dayOfWeek: 'asc' },
+        { startTime: 'asc' },
+      ],
+    })
+
+    return { success: true, data: schedules }
+  } catch (error) {
+    console.error('Error al obtener horarios recurrentes:', error)
+    return { success: false, error: 'Error al cargar horarios recurrentes' }
+  }
+}
+
 // Acción para obtener/crear configuración del calendario (global)
 export async function getCalendarSettings() {
   try {

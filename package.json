@@ -27,7 +27,10 @@
     "test:api": "playwright test tests/api/",
     "test:report": "playwright show-report",
     "test:install": "playwright install",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "db:query": "tsx scripts/db-query.ts",
+    "db:info": "tsx scripts/db-query.ts -- --info",
+    "db:studio": "prisma studio"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.8.0",
@@ -105,6 +108,7 @@
     "@playwright/test": "^1.55.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pg": "^8.15.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "dotenv": "^17.2.2",
@@ -112,6 +116,7 @@
     "eslint-config-next": "15.2.3",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.3",
+    "pg": "^8.16.3",
     "prettier": "^3.5.3",
     "prisma": "^6.16.2",
     "tailwindcss": "^4",

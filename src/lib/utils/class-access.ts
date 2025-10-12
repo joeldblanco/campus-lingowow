@@ -9,6 +9,8 @@ export interface ClassAccessValidation {
   reason?: string
   minutesUntilStart?: number
   minutesUntilEnd?: number
+  secondsUntilStart?: number
+  secondsUntilEnd?: number
 }
 
 /**
@@ -49,9 +51,15 @@ export function validateClassAccess(
     // Crear fecha de fin de la clase en hora local
     const classEndDate = new Date(year, month - 1, dayOfMonth, endHour, endMinute, 0, 0)
 
-    // Calcular diferencias en minutos
-    const minutesUntilStart = Math.floor((classStartDate.getTime() - now.getTime()) / (1000 * 60))
-    const minutesUntilEnd = Math.floor((classEndDate.getTime() - now.getTime()) / (1000 * 60))
+    // Calcular diferencias en minutos y segundos
+    const millisecondsUntilStart = classStartDate.getTime() - now.getTime()
+    const millisecondsUntilEnd = classEndDate.getTime() - now.getTime()
+    
+    const minutesUntilStart = Math.floor(millisecondsUntilStart / (1000 * 60))
+    const minutesUntilEnd = Math.floor(millisecondsUntilEnd / (1000 * 60))
+    
+    const secondsUntilStart = Math.floor(millisecondsUntilStart / 1000)
+    const secondsUntilEnd = Math.floor(millisecondsUntilEnd / 1000)
 
     // Si la clase ya terminó, nadie puede acceder
     if (minutesUntilEnd < 0) {
@@ -60,6 +68,8 @@ export function validateClassAccess(
         reason: 'La clase ya ha finalizado',
         minutesUntilStart,
         minutesUntilEnd,
+        secondsUntilStart,
+        secondsUntilEnd,
       }
     }
 
@@ -71,22 +81,43 @@ export function validateClassAccess(
           reason: `Podrás acceder ${minutesUntilStart - 10} minutos antes de la clase`,
           minutesUntilStart,
           minutesUntilEnd,
+          secondsUntilStart,
+          secondsUntilEnd,
         }
       }
       return {
         canAccess: true,
         minutesUntilStart,
         minutesUntilEnd,
+        secondsUntilStart,
+        secondsUntilEnd,
       }
     }
 
     // Estudiantes solo pueden acceder desde la hora de inicio
-    if (minutesUntilStart > 0) {
+    if (secondsUntilStart > 0) {
+      // Calcular horas, minutos y segundos restantes
+      const hours = Math.floor(secondsUntilStart / 3600)
+      const mins = Math.floor((secondsUntilStart % 3600) / 60)
+      const secs = secondsUntilStart % 60
+      
+      // Construir mensaje de forma natural
+      let reason = 'La clase comenzará en '
+      if (hours > 0) {
+        reason += `${hours} ${hours === 1 ? 'hora' : 'horas'}, `
+      }
+      if (mins > 0 || hours > 0) {
+        reason += `${mins} ${mins === 1 ? 'minuto' : 'minutos'} y `
+      }
+      reason += `${secs} ${secs === 1 ? 'segundo' : 'segundos'}`
+      
       return {
         canAccess: false,
-        reason: `La clase comenzará en ${minutesUntilStart} minutos`,
+        reason,
         minutesUntilStart,
         minutesUntilEnd,
+        secondsUntilStart,
+        secondsUntilEnd,
       }
     }
 
@@ -94,6 +125,8 @@ export function validateClassAccess(
       canAccess: true,
       minutesUntilStart,
       minutesUntilEnd,
+      secondsUntilStart,
+      secondsUntilEnd,
     }
   } catch (error) {
     console.error('Error validating class access:', error)

@@ -150,6 +150,7 @@ export function DateView({
                           }
                           onMouseUp={() => userRole === UserRole.TEACHER && onEndDrag()}
                           studentInfo={studentInfo}
+                          showStudentNames={showStudentNames}
                         />
                       )
                     })
@@ -216,6 +217,7 @@ export function DateView({
                             }
                             onMouseUp={() => userRole === UserRole.TEACHER && onEndDrag()}
                             studentInfo={studentInfo}
+                            showStudentNames={showStudentNames}
                           />
                         )
                       })

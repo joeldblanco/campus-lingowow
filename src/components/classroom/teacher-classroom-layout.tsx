@@ -42,23 +42,36 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
   const [showEndWarning, setShowEndWarning] = useState(false)
 
   useEffect(() => {
-    // Check if teacher attendance is already marked
-    const checkAttendance = async () => {
+    // Marcar asistencia automáticamente cuando el profesor ingresa al classroom
+    const autoMarkAttendance = async () => {
       try {
+        // Primero verificar si ya está marcada
         const { attendanceMarked: marked, error } = await checkTeacherAttendance(classId, teacherId)
+        
         if (error) {
           console.error('Error checking teacher attendance:', error)
-          toast.error('Error al verificar la asistencia')
         }
-        setAttendanceMarked(marked)
+        
+        if (marked) {
+          // Ya está marcada, solo actualizar el estado
+          setAttendanceMarked(true)
+        } else {
+          // No está marcada, marcarla automáticamente
+          const result = await markTeacherAttendance(classId, teacherId)
+          if (result.success) {
+            setAttendanceMarked(true)
+            console.log('✅ Asistencia del profesor registrada automáticamente')
+          } else {
+            console.error('Error al marcar asistencia automáticamente:', result.error)
+          }
+        }
       } catch (error) {
-        console.error('Error checking teacher attendance:', error)
-        toast.error('Error al verificar la asistencia')
+        console.error('Error en registro automático de asistencia:', error)
       } finally {
         setIsChecking(false)
       }
     }
-    checkAttendance()
+    autoMarkAttendance()
   }, [classId, teacherId])
 
   // Monitor class end time

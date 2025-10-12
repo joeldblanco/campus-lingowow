@@ -97,8 +97,8 @@ const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData |
             <DollarSign className="h-4 w-4 text-gray-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$19,000</div>
-            <p className="text-xs text-gray-500">Próximamente</p>
+            <div className="text-2xl font-bold">${dashboardData.totalRevenue.toFixed(2)}</div>
+            <p className="text-xs text-gray-500">De facturas pagadas</p>
           </CardContent>
         </Card>
       </div>

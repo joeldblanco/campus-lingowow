@@ -70,6 +70,7 @@ export function DayContent({
               onMouseUp={() => userRole === UserRole.TEACHER && onEndDrag()}
               studentInfo={studentInfo}
               is12HourFormat={is12HourFormat}
+              showStudentNames={showStudentNames}
             />
           )
         })

@@ -16,6 +16,7 @@ import {
   getStudentBookings,
   getTeacherAvailability,
   getTeacherBookings,
+  getTeacherSchedules,
 } from '@/lib/actions/calendar'
 import { getActiveEnrollmentsForStudent } from '@/lib/actions/enrollments'
 import {
@@ -27,6 +28,7 @@ import {
   isTimeSlotInAnyRange,
   mergeOverlappingRanges,
   splitTimeSlot,
+  timeToMinutes,
 } from '@/lib/utils/calendar'
 import { UserRole } from '@prisma/client'
 import { useSession } from 'next-auth/react'
@@ -48,6 +50,27 @@ interface Booking {
   day: string
   timeSlot: string
   status: string
+}
+
+// Tipo para horarios recurrentes
+interface RecurringSchedule {
+  id: string
+  teacherId: string
+  enrollmentId: string
+  dayOfWeek: number // 0-6, 0=domingo
+  startTime: string
+  endTime: string
+  enrollment: {
+    student: {
+      name: string
+      lastName: string
+      email: string
+      image?: string | null
+    }
+    course: {
+      title: string
+    }
+  }
 }
 
 // Tipo para normalizar la estructura de disponibilidad entre formato DB y componente
@@ -105,6 +128,7 @@ export function CalendarApp() {
   >({})
   const [bookedSlots, setBookedSlots] = useState<Record<string, string[]>>({})
   const [bookings, setBookings] = useState<Booking[]>([])
+  const [recurringSchedules, setRecurringSchedules] = useState<RecurringSchedule[]>([])
   const [studentColors, setStudentColors] = useState<Record<string, string>>({})
 
   // Efecto para cargar la configuración del calendario
@@ -146,6 +170,37 @@ export function CalendarApp() {
           const bookingsResult = await getTeacherBookings()
           if (bookingsResult.success && bookingsResult.data) {
             processBookings(bookingsResult.data)
+          }
+
+          // Cargar horarios recurrentes del profesor
+          const schedulesResult = await getTeacherSchedules(teacherId)
+          if (schedulesResult.success && schedulesResult.data) {
+            setRecurringSchedules(schedulesResult.data)
+            
+            // Asignar colores a estudiantes de horarios recurrentes
+            const colorOptions = [
+              'bg-purple-200 text-purple-800',
+              'bg-blue-200 text-blue-800',
+              'bg-green-200 text-green-800',
+              'bg-yellow-200 text-yellow-800',
+              'bg-orange-200 text-orange-800',
+              'bg-red-200 text-red-800',
+              'bg-pink-200 text-pink-800',
+              'bg-indigo-200 text-indigo-800',
+            ]
+            
+            const newStudentColors: Record<string, string> = {}
+            let colorIndex = 0
+            
+            schedulesResult.data.forEach((schedule) => {
+              const studentEmail = schedule.enrollment.student.email
+              if (!newStudentColors[studentEmail]) {
+                newStudentColors[studentEmail] = colorOptions[colorIndex % colorOptions.length]
+                colorIndex++
+              }
+            })
+            
+            setStudentColors(newStudentColors)
           }
         } else {
           // Cargar enrollments del estudiante
@@ -546,14 +601,47 @@ export function CalendarApp() {
 
   // Obtener información de estudiante para un slot reservado
   const getStudentInfo = (day: string, timeSlot: string) => {
-    const booking = bookings.find((b) => b.day === day && b.timeSlot === timeSlot)
-    if (booking && booking.student) {
-      return {
-        name: `${booking.student.name} ${booking.student.lastName}`.trim(),
-        color: studentColors[booking.studentId] || '',
-        bookingId: booking.id,
+    // Determinar si 'day' es un nombre de día (monday, tuesday, etc.) o una fecha (YYYY-MM-DD)
+    const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+    const isDayName = dayNames.includes(day.toLowerCase())
+    
+    if (isDayName) {
+      // Para vista semanal, buscar en horarios recurrentes
+      const dayIndex = dayNames.indexOf(day.toLowerCase())
+      const [slotStart] = splitTimeSlot(timeSlot)
+      
+      // Buscar un horario recurrente que coincida con el día y la hora
+      const schedule = recurringSchedules.find((s) => {
+        if (s.dayOfWeek !== dayIndex) return false
+        
+        // Verificar si el slot está dentro del rango del horario
+        const scheduleStartMinutes = timeToMinutes(s.startTime)
+        const scheduleEndMinutes = timeToMinutes(s.endTime)
+        const slotStartMinutes = timeToMinutes(slotStart)
+        
+        return slotStartMinutes >= scheduleStartMinutes && slotStartMinutes < scheduleEndMinutes
+      })
+      
+      if (schedule && schedule.enrollment.student) {
+        return {
+          name: `${schedule.enrollment.student.name} ${schedule.enrollment.student.lastName}`.trim(),
+          color: studentColors[schedule.enrollment.student.email] || '',
+          bookingId: schedule.id,
+        }
+      }
+    } else {
+      // Para vista por fecha, buscar en bookings específicos
+      const booking = bookings.find((b) => b.day === day && b.timeSlot === timeSlot)
+      
+      if (booking && booking.student) {
+        return {
+          name: `${booking.student.name} ${booking.student.lastName}`.trim(),
+          color: studentColors[booking.studentId] || '',
+          bookingId: booking.id,
+        }
       }
     }
+    
     return null
   }
 

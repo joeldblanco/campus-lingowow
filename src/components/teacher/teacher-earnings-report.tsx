@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -12,23 +13,22 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table'
-import { 
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { 
-  Users, 
+  DollarSign, 
   Clock, 
-  CheckCircle2, 
-  XCircle,
+  CheckCircle2,
   Download,
   Filter,
-  DollarSign
+  TrendingUp
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
@@ -48,7 +48,8 @@ interface ClassDetail {
   academicPeriod: string
 }
 
-interface TeacherReport {
+interface EarningsData {
+  success: boolean
   teacherId: string
   teacherName: string
   teacherEmail: string
@@ -57,24 +58,9 @@ interface TeacherReport {
   totalClasses: number
   totalDuration: number
   totalEarnings: number
+  averagePerClass: number
   classes: ClassDetail[]
-}
-
-interface ReportSummary {
-  totalPayableClasses: number
-  totalTeachers: number
-  totalDuration: number
-  totalEarnings: number
-  totalCompletedClasses: number
-  totalNonPayableClasses: number
-}
-
-interface ReportData {
-  success: boolean
-  summary: ReportSummary
-  teacherReports: TeacherReport[]
   filters: {
-    teacherId: string | null
     startDate: string | null
     endDate: string | null
     periodId: string | null
@@ -88,35 +74,21 @@ interface AcademicPeriod {
   endDate: string
 }
 
-export function PayableClassesReport() {
-  const [reportData, setReportData] = useState<ReportData | null>(null)
+export function TeacherEarningsReport() {
+  const { data: session } = useSession()
+  const [earningsData, setEarningsData] = useState<EarningsData | null>(null)
   const [loading, setLoading] = useState(false)
-  const [teachers, setTeachers] = useState<{ id: string; name: string }[]>([])
   const [academicPeriods, setAcademicPeriods] = useState<AcademicPeriod[]>([])
-  const [expandedTeacher, setExpandedTeacher] = useState<string | null>(null)
   
   // Filtros
   const [filterType, setFilterType] = useState<'dates' | 'period'>('period')
-  const [selectedTeacher, setSelectedTeacher] = useState<string>('all')
   const [startDate, setStartDate] = useState<string>('')
   const [endDate, setEndDate] = useState<string>('')
   const [selectedPeriod, setSelectedPeriod] = useState<string>('all')
   const [initialPeriodSet, setInitialPeriodSet] = useState(false)
 
-  // Cargar lista de profesores y períodos académicos
+  // Cargar períodos académicos
   useEffect(() => {
-    async function loadTeachers() {
-      try {
-        const response = await fetch('/api/users?role=TEACHER')
-        if (response.ok) {
-          const data = await response.json()
-          setTeachers(data.users || [])
-        }
-      } catch (error) {
-        console.error('Error cargando profesores:', error)
-      }
-    }
-    
     async function loadAcademicPeriods() {
       try {
         const response = await fetch('/api/academic-periods')
@@ -125,8 +97,7 @@ export function PayableClassesReport() {
           const periods = data.periods || []
           setAcademicPeriods(periods)
           
-          // Buscar el período académico actual (isActive = true)
-          // Si no hay ninguno activo, buscar el más reciente que incluya la fecha actual
+          // Buscar el período académico actual
           const today = new Date()
           const activePeriod = periods.find((p: AcademicPeriod) => {
             const start = new Date(p.startDate)
@@ -143,27 +114,23 @@ export function PayableClassesReport() {
         console.error('Error cargando períodos académicos:', error)
       }
     }
-    
-    loadTeachers()
     loadAcademicPeriods()
   }, [initialPeriodSet])
 
   // Cargar reporte inicial cuando se seleccione el período
   useEffect(() => {
-    if (initialPeriodSet) {
+    if (session?.user?.id && initialPeriodSet) {
       loadReport()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialPeriodSet])
+  }, [session?.user?.id, initialPeriodSet])
 
   async function loadReport() {
+    if (!session?.user?.id) return
+    
     setLoading(true)
     try {
       const params = new URLSearchParams()
-      
-      if (selectedTeacher !== 'all') {
-        params.append('teacherId', selectedTeacher)
-      }
       
       if (filterType === 'dates') {
         if (startDate) {
@@ -176,17 +143,17 @@ export function PayableClassesReport() {
         params.append('periodId', selectedPeriod)
       }
 
-      const response = await fetch(`/api/reports/payable-classes?${params.toString()}`)
+      const response = await fetch(`/api/teacher/earnings?${params.toString()}`)
       
       if (!response.ok) {
-        throw new Error('Error al cargar el reporte')
+        throw new Error('Error al cargar el reporte de ganancias')
       }
 
       const data = await response.json()
-      setReportData(data)
+      setEarningsData(data)
     } catch (error) {
       console.error('Error cargando reporte:', error)
-      toast.error('Error al cargar el reporte de clases pagables')
+      toast.error('Error al cargar el reporte de ganancias')
     } finally {
       setLoading(false)
     }
@@ -197,7 +164,6 @@ export function PayableClassesReport() {
   }
 
   function handleClearFilters() {
-    setSelectedTeacher('all')
     setStartDate('')
     setEndDate('')
     setFilterType('period')
@@ -215,30 +181,24 @@ export function PayableClassesReport() {
   }
 
   function exportToCSV() {
-    if (!reportData) return
+    if (!earningsData) return
 
     const rows: string[] = []
     
     // Encabezado
-    rows.push('Profesor,Email,Rango,Multiplicador,Fecha,Hora,Estudiante,Curso,Duración (min),Ganancias,Período Académico')
+    rows.push('Fecha,Hora,Estudiante,Curso,Duración (min),Ganancias,Período Académico')
     
     // Datos
-    reportData.teacherReports.forEach((teacher) => {
-      teacher.classes.forEach((classDetail) => {
-        rows.push([
-          teacher.teacherName,
-          teacher.teacherEmail,
-          teacher.rank || 'N/A',
-          teacher.rateMultiplier,
-          classDetail.date,
-          classDetail.timeSlot,
-          classDetail.studentName,
-          classDetail.courseName,
-          classDetail.duration,
-          classDetail.earnings.toFixed(2),
-          classDetail.academicPeriod,
-        ].join(','))
-      })
+    earningsData.classes.forEach((classDetail) => {
+      rows.push([
+        classDetail.date,
+        classDetail.timeSlot,
+        classDetail.studentName,
+        classDetail.courseName,
+        classDetail.duration,
+        classDetail.earnings.toFixed(2),
+        classDetail.academicPeriod,
+      ].join(','))
     })
 
     const csv = rows.join('\n')
@@ -247,7 +207,7 @@ export function PayableClassesReport() {
     const url = URL.createObjectURL(blob)
     
     link.setAttribute('href', url)
-    link.setAttribute('download', `clases-pagables-${format(new Date(), 'yyyy-MM-dd')}.csv`)
+    link.setAttribute('download', `mis-ganancias-${format(new Date(), 'yyyy-MM-dd')}.csv`)
     link.style.visibility = 'hidden'
     document.body.appendChild(link)
     link.click()
@@ -256,7 +216,7 @@ export function PayableClassesReport() {
     toast.success('Reporte exportado exitosamente')
   }
 
-  if (loading && !reportData) {
+  if (loading && !earningsData) {
     return (
       <div className="flex items-center justify-center p-8">
         <div className="text-center">
@@ -279,24 +239,6 @@ export function PayableClassesReport() {
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
-            {/* Selector de Profesor */}
-            <div className="space-y-2">
-              <Label htmlFor="teacher">Profesor</Label>
-              <Select value={selectedTeacher} onValueChange={setSelectedTeacher}>
-                <SelectTrigger id="teacher">
-                  <SelectValue placeholder="Todos los profesores" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos los profesores</SelectItem>
-                  {teachers.map((teacher) => (
-                    <SelectItem key={teacher.id} value={teacher.id}>
-                      {teacher.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
             {/* Radio buttons para tipo de filtro */}
             <div className="space-y-3">
               <Label>Filtrar por</Label>
@@ -375,9 +317,23 @@ export function PayableClassesReport() {
       </Card>
 
       {/* Resumen */}
-      {reportData && (
+      {earningsData && (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Ganancias Totales
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-2">
+                  <DollarSign className="h-5 w-5 text-green-600" />
+                  <span className="text-2xl font-bold">${earningsData.totalEarnings.toFixed(2)}</span>
+                </div>
+              </CardContent>
+            </Card>
+
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -386,36 +342,8 @@ export function PayableClassesReport() {
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-green-600" />
-                  <span className="text-2xl font-bold">{reportData.summary.totalPayableClasses}</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Clases No Pagables
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center gap-2">
-                  <XCircle className="h-5 w-5 text-red-600" />
-                  <span className="text-2xl font-bold">{reportData.summary.totalNonPayableClasses}</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Total Profesores
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center gap-2">
-                  <Users className="h-5 w-5 text-blue-600" />
-                  <span className="text-2xl font-bold">{reportData.summary.totalTeachers}</span>
+                  <CheckCircle2 className="h-5 w-5 text-blue-600" />
+                  <span className="text-2xl font-bold">{earningsData.totalClasses}</span>
                 </div>
               </CardContent>
             </Card>
@@ -429,7 +357,7 @@ export function PayableClassesReport() {
               <CardContent>
                 <div className="flex items-center gap-2">
                   <Clock className="h-5 w-5 text-purple-600" />
-                  <span className="text-2xl font-bold">{reportData.summary.totalDuration}</span>
+                  <span className="text-2xl font-bold">{earningsData.totalDuration}</span>
                   <span className="text-sm text-muted-foreground">min</span>
                 </div>
               </CardContent>
@@ -438,122 +366,100 @@ export function PayableClassesReport() {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Ganancias Totales
+                  Promedio por Clase
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-2">
-                  <DollarSign className="h-5 w-5 text-green-600" />
-                  <span className="text-2xl font-bold">${reportData.summary.totalEarnings.toFixed(2)}</span>
+                  <TrendingUp className="h-5 w-5 text-orange-600" />
+                  <span className="text-2xl font-bold">${earningsData.averagePerClass.toFixed(2)}</span>
                 </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Acciones
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Button onClick={exportToCSV} variant="outline" className="w-full" size="sm">
-                  <Download className="h-4 w-4 mr-2" />
-                  Exportar CSV
-                </Button>
               </CardContent>
             </Card>
           </div>
 
-          {/* Tabla de profesores */}
+          {/* Información del profesor */}
           <Card>
             <CardHeader>
-              <CardTitle>Reporte por Profesor</CardTitle>
-              <CardDescription>
-                Clases donde tanto el profesor como el estudiante asistieron
-              </CardDescription>
+              <CardTitle>Información del Profesor</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {reportData.teacherReports.map((teacher) => (
-                  <div key={teacher.teacherId} className="border rounded-lg p-4">
-                    <div 
-                      className="flex items-center justify-between cursor-pointer"
-                      onClick={() => setExpandedTeacher(
-                        expandedTeacher === teacher.teacherId ? null : teacher.teacherId
-                      )}
-                    >
-                      <div className="flex items-center gap-4">
-                        <div>
-                          <h3 className="font-semibold">{teacher.teacherName}</h3>
-                          <p className="text-sm text-muted-foreground">{teacher.teacherEmail}</p>
-                        </div>
-                        {teacher.rank && (
-                          <Badge variant="secondary">{teacher.rank}</Badge>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-6">
-                        <div className="text-right">
-                          <p className="text-sm text-muted-foreground">Clases</p>
-                          <p className="font-semibold">{teacher.totalClasses}</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-sm text-muted-foreground">Duración</p>
-                          <p className="font-semibold">{teacher.totalDuration} min</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-sm text-muted-foreground">Ganancias</p>
-                          <p className="font-semibold text-green-600">${teacher.totalEarnings.toFixed(2)}</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-sm text-muted-foreground">Multiplicador</p>
-                          <p className="font-semibold">{teacher.rateMultiplier}x</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {expandedTeacher === teacher.teacherId && (
-                      <div className="mt-4">
-                        <Table>
-                          <TableHeader>
-                            <TableRow>
-                              <TableHead>Fecha</TableHead>
-                              <TableHead>Hora</TableHead>
-                              <TableHead>Estudiante</TableHead>
-                              <TableHead>Curso</TableHead>
-                              <TableHead>Duración</TableHead>
-                              <TableHead>Ganancias</TableHead>
-                              <TableHead>Período</TableHead>
-                            </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                            {teacher.classes.map((classDetail) => (
-                              <TableRow key={classDetail.bookingId}>
-                                <TableCell>
-                                  {format(new Date(classDetail.date), 'dd/MM/yyyy', { locale: es })}
-                                </TableCell>
-                                <TableCell>{classDetail.timeSlot}</TableCell>
-                                <TableCell>{classDetail.studentName}</TableCell>
-                                <TableCell>{classDetail.courseName}</TableCell>
-                                <TableCell>{classDetail.duration} min</TableCell>
-                                <TableCell className="font-semibold text-green-600">
-                                  ${classDetail.earnings.toFixed(2)}
-                                </TableCell>
-                                <TableCell>{classDetail.academicPeriod}</TableCell>
-                              </TableRow>
-                            ))}
-                          </TableBody>
-                        </Table>
-                      </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <p className="text-sm text-muted-foreground">Nombre</p>
+                  <p className="font-semibold">{earningsData.teacherName}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Rango</p>
+                  <div className="flex items-center gap-2">
+                    {earningsData.rank ? (
+                      <Badge variant="secondary">{earningsData.rank}</Badge>
+                    ) : (
+                      <span className="text-sm">Sin rango asignado</span>
                     )}
                   </div>
-                ))}
-
-                {reportData.teacherReports.length === 0 && (
-                  <div className="text-center py-8 text-muted-foreground">
-                    No se encontraron clases pagables con los filtros seleccionados
-                  </div>
-                )}
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Multiplicador de Tarifa</p>
+                  <p className="font-semibold">{earningsData.rateMultiplier}x</p>
+                </div>
               </div>
+            </CardContent>
+          </Card>
+
+          {/* Tabla de clases */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Detalle de Clases Pagables</CardTitle>
+                  <CardDescription>
+                    Clases donde tanto tú como el estudiante asistieron
+                  </CardDescription>
+                </div>
+                <Button onClick={exportToCSV} variant="outline" size="sm">
+                  <Download className="h-4 w-4 mr-2" />
+                  Exportar CSV
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              {earningsData.classes.length > 0 ? (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Fecha</TableHead>
+                      <TableHead>Hora</TableHead>
+                      <TableHead>Estudiante</TableHead>
+                      <TableHead>Curso</TableHead>
+                      <TableHead>Duración</TableHead>
+                      <TableHead>Ganancias</TableHead>
+                      <TableHead>Período</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {earningsData.classes.map((classDetail) => (
+                      <TableRow key={classDetail.bookingId}>
+                        <TableCell>
+                          {format(new Date(classDetail.date), 'dd/MM/yyyy', { locale: es })}
+                        </TableCell>
+                        <TableCell>{classDetail.timeSlot}</TableCell>
+                        <TableCell>{classDetail.studentName}</TableCell>
+                        <TableCell>{classDetail.courseName}</TableCell>
+                        <TableCell>{classDetail.duration} min</TableCell>
+                        <TableCell className="font-semibold text-green-600">
+                          ${classDetail.earnings.toFixed(2)}
+                        </TableCell>
+                        <TableCell>{classDetail.academicPeriod}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              ) : (
+                <div className="text-center py-8 text-muted-foreground">
+                  No se encontraron clases pagables con los filtros seleccionados
+                </div>
+              )}
             </CardContent>
           </Card>
         </>

@@ -105,6 +105,7 @@ export function WeeklyView({
                       studentInfo={studentInfo}
                       bookingMode={bookingMode}
                       is12HourFormat={is12HourFormat}
+                      showStudentNames={showStudentNames}
                     />
                   )
                 })

@@ -23,6 +23,7 @@ interface TimeSlotWithStudentProps {
   studentInfo?: { name: string; color: string; bookingId?: string } | null
   bookingMode?: '40min' | '90min'
   is12HourFormat?: boolean
+  showStudentNames?: boolean
 }
 
 // Componente TimeSlot con información de estudiante
@@ -71,10 +72,11 @@ export function TimeSlotWithStudent({
   // Determinar estado y estilo del slot
   const getSlotStatus = () => {
     if (userRole === UserRole.TEACHER) {
-      if (isBooked && studentInfo) {
+      // Si hay información de estudiante (de horarios recurrentes o bookings), mostrarla
+      if (studentInfo) {
         return {
           label: studentInfo.name,
-          className: `flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors select-none ${studentInfo.color || 'bg-primary/20 hover:bg-primary/30'}`,
+          className: `flex flex-col items-center justify-center p-2 rounded-md cursor-pointer transition-colors select-none ${studentInfo.color || 'bg-primary/20 hover:bg-primary/30'}`,
         }
       }
 
@@ -127,8 +129,23 @@ export function TimeSlotWithStudent({
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
     >
-      <span className="font-medium text-sm">{displayTime}</span>
-      {label && <span className="text-xs font-medium">{label}</span>}
+      {/* Si hay estudiante, mostrar nombre arriba y hora abajo */}
+      {label && userRole === UserRole.TEACHER && (
+        <>
+          <span className="text-xs font-semibold text-center">{label}</span>
+          <span className="text-xs text-center opacity-75">{displayTime}</span>
+        </>
+      )}
+      
+      {/* Si no hay estudiante o es estudiante, mostrar solo la hora */}
+      {(!label || userRole === UserRole.STUDENT) && (
+        <span className="font-medium text-sm">{displayTime}</span>
+      )}
+      
+      {/* Para estudiantes, mostrar el label adicional si existe */}
+      {label && userRole === UserRole.STUDENT && (
+        <span className="text-xs font-medium">{label}</span>
+      )}
     </div>
   )
 }

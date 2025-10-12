@@ -1,7 +1,7 @@
 'use server'
 
 import { db } from '@/lib/db'
-import { UserRole } from '@prisma/client'
+import { UserRole, BookingStatus } from '@prisma/client'
 import type { AdminDashboardData, TeacherDashboardData, StudentDashboardData } from '@/types/dashboard'
 import { formatDateNumeric, getCurrentDate, formatToISO, getStartOfMonth } from '@/lib/utils/date'
 
@@ -18,6 +18,17 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
       where: { status: 'COMPLETED' }
     })
 
+    // Calculate total revenue from paid invoices
+    const totalRevenueResult = await db.invoice.aggregate({
+      where: {
+        status: 'PAID'
+      },
+      _sum: {
+        total: true
+      }
+    })
+    const totalRevenue = totalRevenueResult._sum.total || 0
+
     // Get recent enrollments with student and course info
     const recentEnrollments = await db.enrollment.findMany({
       take: 5,
@@ -28,6 +39,15 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
         },
         course: {
           select: { title: true, language: true }
+        },
+        purchases: {
+          include: {
+            invoice: {
+              select: { total: true, status: true }
+            }
+          },
+          take: 1,
+          orderBy: { createdAt: 'desc' }
         }
       }
     })
@@ -44,13 +64,16 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
     return {
       totalStudents,
       totalClasses,
-      totalRevenue: 0, // TODO: Implement payment system
-      recentEnrollments: recentEnrollments.map(enrollment => ({
-        studentName: `${enrollment.student.name} ${enrollment.student.lastName}`,
-        courseName: enrollment.course.title,
-        date: formatDateNumeric(enrollment.enrollmentDate),
-        amount: '$300' // TODO: Get from payment records
-      })),
+      totalRevenue,
+      recentEnrollments: recentEnrollments.map(enrollment => {
+        const invoiceTotal = enrollment.purchases[0]?.invoice?.total
+        return {
+          studentName: `${enrollment.student.name} ${enrollment.student.lastName}`,
+          courseName: enrollment.course.title,
+          date: formatDateNumeric(enrollment.enrollmentDate),
+          amount: invoiceTotal ? `$${invoiceTotal.toFixed(2)}` : 'N/A'
+        }
+      }),
       languageStats: languageStats.map(stat => ({
         name: stat.language,
         classes: stat._count?.id || 0
@@ -87,6 +110,12 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
       }
     })
 
+    // Calculate monthly revenue from payable classes
+    const monthlyRevenue = await calculateTeacherMonthlyRevenue(teacherId, currentMonth)
+
+    // Get revenue data for the last 6 months
+    const revenueData = await getTeacherRevenueByMonth(teacherId, 6)
+
     // Get upcoming classes
     const upcomingClasses = await db.classBooking.findMany({
       where: {
@@ -118,18 +147,10 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
     // Convertir de UTC a hora local
     const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
 
-    // Get monthly revenue data (placeholder)
-    const revenueData = [
-      { name: 'Enero', income: 2000 },
-      { name: 'Febrero', income: 2200 },
-      { name: 'Marzo', income: 2400 },
-      { name: 'Abril', income: 2560 },
-    ]
-
     return {
       totalStudents: myStudents.length,
       classesThisMonth,
-      monthlyRevenue: 2560, // TODO: Calculate from actual payments
+      monthlyRevenue,
       upcomingClasses: upcomingClasses.map(booking => {
         const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot)
         return {
@@ -311,6 +332,234 @@ export async function getUserClasses(userId: string) {
   } catch (error) {
     console.error('Error getting user classes:', error)
     return []
+  }
+}
+
+// =============================================
+// FUNCIONES DE CÁLCULO DE GANANCIAS
+// =============================================
+
+/**
+ * Calcula las ganancias de un profesor basándose en clases pagables
+ * (clases donde tanto el profesor como el estudiante asistieron)
+ */
+export async function calculateTeacherMonthlyRevenue(
+  teacherId: string,
+  startDate: Date
+): Promise<number> {
+  try {
+    const endDate = new Date(startDate)
+    endDate.setMonth(endDate.getMonth() + 1)
+
+    // Obtener el rango del profesor
+    const teacher = await db.user.findUnique({
+      where: { id: teacherId },
+      select: {
+        teacherRank: {
+          select: {
+            rateMultiplier: true
+          }
+        }
+      }
+    })
+
+    const rateMultiplier = teacher?.teacherRank?.rateMultiplier || 1.0
+
+    // Obtener clases completadas en el período
+    const completedClasses = await db.classBooking.findMany({
+      where: {
+        teacherId,
+        status: BookingStatus.COMPLETED,
+        completedAt: {
+          gte: startDate,
+          lt: endDate
+        }
+      },
+      include: {
+        attendances: {
+          select: { status: true }
+        },
+        teacherAttendances: {
+          select: { status: true }
+        },
+        enrollment: {
+          select: {
+            course: {
+              select: { classDuration: true }
+            }
+          }
+        },
+        videoCalls: {
+          select: { duration: true }
+        }
+      }
+    })
+
+    // Filtrar solo clases pagables (donde ambos asistieron)
+    const payableClasses = completedClasses.filter(classBooking => {
+      const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
+      const hasStudentAttendance = classBooking.attendances.length > 0
+      return hasTeacherAttendance && hasStudentAttendance
+    })
+
+    // Calcular ingresos basados en duración y multiplicador
+    // Tarifa base: $10 por hora
+    const BASE_RATE_PER_HOUR = 10
+
+    let totalRevenue = 0
+    for (const classBooking of payableClasses) {
+      // Usar duración de videollamada si está disponible, sino usar duración del curso
+      const duration = classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+      const hours = duration / 60
+      const classRevenue = hours * BASE_RATE_PER_HOUR * rateMultiplier
+      totalRevenue += classRevenue
+    }
+
+    return Math.round(totalRevenue * 100) / 100 // Redondear a 2 decimales
+  } catch (error) {
+    console.error('Error calculating teacher monthly revenue:', error)
+    return 0
+  }
+}
+
+/**
+ * Obtiene los ingresos de un profesor por mes para los últimos N meses
+ */
+export async function getTeacherRevenueByMonth(
+  teacherId: string,
+  monthsCount: number = 6
+): Promise<{ name: string; income: number }[]> {
+  try {
+    const months = []
+    const currentDate = getCurrentDate()
+
+    for (let i = monthsCount - 1; i >= 0; i--) {
+      const monthDate = new Date(currentDate)
+      monthDate.setMonth(monthDate.getMonth() - i)
+      
+      const startOfMonth = getStartOfMonth(monthDate.toISOString())
+      const revenue = await calculateTeacherMonthlyRevenue(teacherId, startOfMonth)
+
+      // Formatear nombre del mes
+      const monthName = monthDate.toLocaleDateString('es-ES', { month: 'short' })
+      const capitalizedMonth = monthName.charAt(0).toUpperCase() + monthName.slice(1)
+
+      months.push({
+        name: capitalizedMonth,
+        income: revenue
+      })
+    }
+
+    return months
+  } catch (error) {
+    console.error('Error getting teacher revenue by month:', error)
+    return []
+  }
+}
+
+/**
+ * Calcula el total de ganancias de un profesor en un rango de fechas
+ */
+export async function calculateTeacherTotalRevenue(
+  teacherId: string,
+  startDate?: string,
+  endDate?: string
+): Promise<{
+  totalRevenue: number
+  totalClasses: number
+  totalDuration: number
+  averagePerClass: number
+}> {
+  try {
+    // Obtener el rango del profesor
+    const teacher = await db.user.findUnique({
+      where: { id: teacherId },
+      select: {
+        teacherRank: {
+          select: {
+            rateMultiplier: true
+          }
+        }
+      }
+    })
+
+    const rateMultiplier = teacher?.teacherRank?.rateMultiplier || 1.0
+
+    // Construir filtros
+    const whereClause: {
+      teacherId: string
+      status: BookingStatus
+      day?: { gte?: string; lte?: string }
+    } = {
+      teacherId,
+      status: BookingStatus.COMPLETED
+    }
+
+    if (startDate || endDate) {
+      whereClause.day = {}
+      if (startDate) whereClause.day.gte = startDate
+      if (endDate) whereClause.day.lte = endDate
+    }
+
+    // Obtener clases completadas
+    const completedClasses = await db.classBooking.findMany({
+      where: whereClause,
+      include: {
+        attendances: {
+          select: { status: true }
+        },
+        teacherAttendances: {
+          select: { status: true }
+        },
+        enrollment: {
+          select: {
+            course: {
+              select: { classDuration: true }
+            }
+          }
+        },
+        videoCalls: {
+          select: { duration: true }
+        }
+      }
+    })
+
+    // Filtrar solo clases pagables
+    const payableClasses = completedClasses.filter(classBooking => {
+      const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
+      const hasStudentAttendance = classBooking.attendances.length > 0
+      return hasTeacherAttendance && hasStudentAttendance
+    })
+
+    // Calcular estadísticas
+    const BASE_RATE_PER_HOUR = 10
+    let totalRevenue = 0
+    let totalDuration = 0
+
+    for (const classBooking of payableClasses) {
+      const duration = classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+      totalDuration += duration
+      const hours = duration / 60
+      const classRevenue = hours * BASE_RATE_PER_HOUR * rateMultiplier
+      totalRevenue += classRevenue
+    }
+
+    const averagePerClass = payableClasses.length > 0 ? totalRevenue / payableClasses.length : 0
+
+    return {
+      totalRevenue: Math.round(totalRevenue * 100) / 100,
+      totalClasses: payableClasses.length,
+      totalDuration,
+      averagePerClass: Math.round(averagePerClass * 100) / 100
+    }
+  } catch (error) {
+    console.error('Error calculating teacher total revenue:', error)
+    return {
+      totalRevenue: 0,
+      totalClasses: 0,
+      totalDuration: 0,
+      averagePerClass: 0
+    }
   }
 }
 

@@ -8,7 +8,6 @@ import { useSession } from 'next-auth/react'
 import { getClassroomData } from '@/lib/actions/dashboard'
 import { validateClassAccess } from '@/lib/utils/class-access'
 import { UserRole } from '@prisma/client'
-import { Button } from '@/components/ui/button'
 import { Clock } from 'lucide-react'
 
 type ClassroomData = {
@@ -71,6 +70,23 @@ export default function ClassroomPage() {
     loadClassroomData()
   }, [effectiveClassId, session?.user?.id, isTeacher])
 
+  // Actualizar validación cada segundo y recargar cuando llegue la hora
+  useEffect(() => {
+    if (!classroomData) return
+
+    const interval = setInterval(() => {
+      const validation = validateClassAccess(classroomData.dayUTC, classroomData.timeSlotUTC, isTeacher)
+      setAccessValidation(validation)
+      
+      // Si la clase ya puede accederse, recargar la página
+      if (validation.canAccess && accessValidation && !accessValidation.canAccess) {
+        window.location.reload()
+      }
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [classroomData, isTeacher, accessValidation])
+
   if (loading) {
     return (
       <div className="flex flex-1 items-center justify-center">
@@ -124,13 +140,6 @@ export default function ClassroomPage() {
               <p>Podrás acceder cuando la clase comience.</p>
             )}
           </div>
-          <Button
-            onClick={() => window.location.reload()}
-            className="mt-6"
-            variant="outline"
-          >
-            Actualizar
-          </Button>
         </div>
       </div>
     )

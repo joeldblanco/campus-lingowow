@@ -6,6 +6,7 @@ import {
   Calendar,
   CalendarCog,
   CreditCard,
+  DollarSign,
   FileText,
   GraduationCap,
   Layers,
@@ -56,6 +57,13 @@ const data = {
       title: 'Actividades',
       url: '/activities',
       icon: Shapes,
+    },
+  ],
+  navTeacher: [
+    {
+      title: 'Mis Ganancias',
+      url: '/teacher/earnings',
+      icon: DollarSign,
     },
   ],
   navAdmin: [
@@ -165,6 +173,11 @@ const data = {
           url: '/admin/coupons',
           icon: Tag,
         },
+        {
+          title: 'Clases Pagables',
+          url: '/admin/reports/payable-classes',
+          icon: DollarSign,
+        },
       ],
     },
   ],
@@ -200,6 +213,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={data.navMain} />
         {hasRole(user.roles, UserRole.STUDENT) && <NavClasses />}
+        {hasRole(user.roles, UserRole.TEACHER) && <NavMain items={data.navTeacher} />}
         {user.roles.includes(UserRole.ADMIN) && <NavAdmin sections={data.navAdmin} />}
       </SidebarContent>
       <SidebarFooter>
