@@ -1,22 +1,11 @@
 'use client'
 
-import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
-import { 
-  BookOpen, 
-  Users, 
-  Clock, 
-  User,
-  ArrowLeft,
-  Play,
-  CheckCircle,
-  Calendar,
-  Trophy,
-  Target
-} from 'lucide-react'
+import { ArrowLeft, Calendar, CheckCircle, Play, Target, Trophy } from 'lucide-react'
+import Link from 'next/link'
 
 interface CourseViewProps {
   course: {
@@ -88,7 +77,6 @@ interface CourseViewProps {
 }
 
 export function CourseView({ course, progress }: CourseViewProps) {
-  const totalLessons = course.modules.reduce((total, module) => total + module._count.lessons, 0)
   const totalContents = progress?.totalContents || 0
   const completedContents = progress?.completedContents || 0
   const progressPercentage = progress?.progressPercentage || course.enrollment?.progress || 0
@@ -163,148 +151,86 @@ export function CourseView({ course, progress }: CourseViewProps) {
       </div>
 
       {/* Course Header */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-6">
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <span className="text-4xl">{getLanguageFlag(course.language)}</span>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900">{course.title}</h1>
-                <div className="flex items-center gap-2 mt-2">
-                  <Badge className={getLevelColor(course.level)}>
-                    {course.level}
-                  </Badge>
-                  <Badge variant="outline">
-                    {course.language}
-                  </Badge>
-                  <Badge className="bg-blue-100 text-blue-800">
-                    <CheckCircle className="w-3 h-3 mr-1" />
-                    Inscrito
-                  </Badge>
-                </div>
-              </div>
+      <div className="space-y-4">
+        <div className="flex items-center gap-3">
+          <span className="text-4xl">{getLanguageFlag(course.language)}</span>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">{course.title}</h1>
+            <div className="flex items-center gap-2 mt-2">
+              <Badge className={getLevelColor(course.level)}>{course.level}</Badge>
+              <Badge variant="outline">{course.language}</Badge>
+              <Badge className="bg-blue-100 text-blue-800">
+                <CheckCircle className="w-3 h-3 mr-1" />
+                Inscrito
+              </Badge>
             </div>
-            
-            <p className="text-lg text-gray-600">
-              {course.description}
-            </p>
-
-            {/* Progress Overview */}
-            <Card className="bg-blue-50 border-blue-200">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-blue-900">
-                  <Target className="w-5 h-5" />
-                  Tu Progreso
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-blue-900">Progreso General</span>
-                  <span className="text-sm font-bold text-blue-900">{Math.round(progressPercentage)}%</span>
-                </div>
-                <Progress value={progressPercentage} className="h-3" />
-                
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                    <span>{completedContents} de {totalContents} completados</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Trophy className="w-4 h-4 text-yellow-600" />
-                    <span>{progress?.completedActivities.length || 0} actividades</span>
-                  </div>
-                </div>
-
-                {course.enrollment?.lastAccessed && (
-                  <div className="flex items-center gap-2 text-sm text-gray-600 pt-2 border-t">
-                    <Calendar className="w-4 h-4" />
-                    <span>Último acceso: {new Date(course.enrollment.lastAccessed).toLocaleDateString()}</span>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
           </div>
         </div>
 
-        {/* Sidebar */}
-        <div className="space-y-6">
-          {/* Course Stats */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Información del Curso</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <BookOpen className="w-4 h-4 text-gray-500" />
-                  <span className="text-sm">Módulos</span>
-                </div>
-                <span className="font-medium">{course._count.modules}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-gray-500" />
-                  <span className="text-sm">Lecciones</span>
-                </div>
-                <span className="font-medium">{totalLessons}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Play className="w-4 h-4 text-gray-500" />
-                  <span className="text-sm">Contenidos</span>
-                </div>
-                <span className="font-medium">{totalContents}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4 text-gray-500" />
-                  <span className="text-sm">Estudiantes</span>
-                </div>
-                <span className="font-medium">{course._count.enrollments}</span>
-              </div>
-            </CardContent>
-          </Card>
+        <p className="text-lg text-gray-600">{course.description}</p>
 
-          {/* Instructor */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <User className="w-5 h-5" />
-                Instructor
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <h3 className="font-semibold">{course.createdBy.name}</h3>
-                {course.createdBy.bio && (
-                  <p className="text-sm text-gray-600">{course.createdBy.bio}</p>
-                )}
+        {/* Progress Overview */}
+        <Card className="bg-blue-50 border-blue-200">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-blue-900">
+              <Target className="w-5 h-5" />
+              Tu Progreso
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium text-blue-900">Progreso General</span>
+              <span className="text-sm font-bold text-blue-900">
+                {Math.round(progressPercentage)}%
+              </span>
+            </div>
+            <Progress value={progressPercentage} className="h-3" />
+
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-green-600" />
+                <span>
+                  {completedContents} de {totalContents} completados
+                </span>
               </div>
-            </CardContent>
-          </Card>
-        </div>
+              <div className="flex items-center gap-2">
+                <Trophy className="w-4 h-4 text-yellow-600" />
+                <span>{progress?.completedActivities.length || 0} actividades</span>
+              </div>
+            </div>
+
+            {course.enrollment?.lastAccessed && (
+              <div className="flex items-center gap-2 text-sm text-gray-600 pt-2 border-t">
+                <Calendar className="w-4 h-4" />
+                <span>
+                  Último acceso: {new Date(course.enrollment.lastAccessed).toLocaleDateString()}
+                </span>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
 
       {/* Course Modules */}
       <div className="space-y-6">
         <h2 className="text-2xl font-semibold">Contenido del Curso</h2>
-        
+
         <div className="space-y-4">
           {course.modules.map((module, moduleIndex) => {
             const moduleProgress = module.lessons.reduce((total, lesson) => {
-              const completedInLesson = lesson.contents.filter(content => 
+              const completedInLesson = lesson.contents.filter((content) =>
                 isContentCompleted(content.id)
               ).length
               return total + completedInLesson
             }, 0)
-            
-            const totalModuleContents = module.lessons.reduce((total, lesson) => 
-              total + lesson.contents.length, 0
+
+            const totalModuleContents = module.lessons.reduce(
+              (total, lesson) => total + lesson.contents.length,
+              0
             )
-            
-            const moduleProgressPercentage = totalModuleContents > 0 
-              ? (moduleProgress / totalModuleContents) * 100 
-              : 0
+
+            const moduleProgressPercentage =
+              totalModuleContents > 0 ? (moduleProgress / totalModuleContents) * 100 : 0
 
             return (
               <Card key={module.id} className="overflow-hidden">
@@ -317,7 +243,7 @@ export function CourseView({ course, progress }: CourseViewProps) {
                       {module.description && (
                         <p className="text-sm text-gray-600">{module.description}</p>
                       )}
-                      
+
                       {/* Module Progress */}
                       <div className="space-y-1">
                         <div className="flex justify-between text-xs text-gray-500">
@@ -327,28 +253,29 @@ export function CourseView({ course, progress }: CourseViewProps) {
                         <Progress value={moduleProgressPercentage} className="h-1" />
                       </div>
                     </div>
-                    
+
                     <div className="text-right">
                       <div className="text-sm text-gray-500">
                         {moduleProgress} de {totalModuleContents}
                       </div>
-                      <div className="text-xs text-gray-400">
-                        {module._count.lessons} lecciones
-                      </div>
+                      <div className="text-xs text-gray-400">{module._count.lessons} lecciones</div>
                     </div>
                   </div>
                 </CardHeader>
-                
+
                 <CardContent className="p-0">
                   <div className="space-y-0">
                     {module.lessons.map((lesson, lessonIndex) => {
-                      const lessonProgress = lesson.contents.filter(content => 
+                      const lessonProgress = lesson.contents.filter((content) =>
                         isContentCompleted(content.id)
                       ).length
                       const isLessonCompleted = lessonProgress === lesson.contents.length
-                      
+
                       return (
-                        <div key={lesson.id} className="p-4 border-b last:border-b-0 hover:bg-gray-50 transition-colors">
+                        <div
+                          key={lesson.id}
+                          className="p-4 border-b last:border-b-0 hover:bg-gray-50 transition-colors"
+                        >
                           <div className="flex items-center justify-between">
                             <div className="space-y-2 flex-1">
                               <div className="flex items-center gap-2">
@@ -360,13 +287,15 @@ export function CourseView({ course, progress }: CourseViewProps) {
                                 )}
                               </div>
                               <p className="text-sm text-gray-600">{lesson.description}</p>
-                              
+
                               {/* Content List */}
                               <div className="space-y-1">
                                 {lesson.contents.map((content) => (
                                   <div key={content.id} className="flex items-center gap-2 text-xs">
                                     <span>{getContentTypeIcon(content.contentType)}</span>
-                                    <span className={`flex-1 ${isContentCompleted(content.id) ? 'line-through text-gray-400' : ''}`}>
+                                    <span
+                                      className={`flex-1 ${isContentCompleted(content.id) ? 'line-through text-gray-400' : ''}`}
+                                    >
                                       {content.title}
                                     </span>
                                     {isContentCompleted(content.id) && (
@@ -375,12 +304,12 @@ export function CourseView({ course, progress }: CourseViewProps) {
                                   </div>
                                 ))}
                               </div>
-                              
+
                               <div className="text-xs text-gray-500">
                                 {lessonProgress} de {lesson.contents.length} contenidos completados
                               </div>
                             </div>
-                            
+
                             <div className="ml-4">
                               <Button asChild size="sm">
                                 <Link href={`/my-courses/${course.id}/lessons/${lesson.id}`}>

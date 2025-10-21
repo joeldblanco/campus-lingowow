@@ -89,6 +89,11 @@ model User {
   scheduleSlotBookings ProductScheduleSlot[] @relation("ScheduleSlotBookings")
   subscriptions        Subscription[]
 
+  // Relaciones del sistema de créditos virtuales
+  userCreditBalance   UserCreditBalance?
+  creditTransactions  CreditTransaction[]
+  creditPackagePurchases CreditPackagePurchase[]
+
   // Relaciones de videollamadas JaaS
   teacherCalls VideoCall[] @relation("TeacherCalls")
   studentCalls VideoCall[] @relation("StudentCalls")
@@ -172,6 +177,90 @@ model RewardTransaction {
 
   @@index([userId])
   @@map("reward_transactions")
+}
+
+// =============================================
+// MODELOS DE CRÉDITOS VIRTUALES
+// =============================================
+
+model UserCreditBalance {
+  userId           String   @id
+  totalCredits     Int      @default(0) // Total de créditos comprados
+  availableCredits Int      @default(0) // Créditos disponibles para gastar
+  spentCredits     Int      @default(0) // Créditos gastados
+  bonusCredits     Int      @default(0) // Créditos de bonificación
+  updatedAt        DateTime @updatedAt
+
+  // Relación con User
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_credit_balances")
+}
+
+model CreditPackage {
+  id               String  @id @default(cuid())
+  name             String // "Paquete Básico", "Paquete Premium", etc.
+  description      String?
+  credits          Int // Cantidad de créditos que otorga
+  price            Float // Precio en dinero real
+  bonusCredits     Int     @default(0) // Créditos extra de bonificación
+  isActive         Boolean @default(true)
+  isPopular        Boolean @default(false)
+  sortOrder        Int     @default(0)
+  image            String?
+  
+  // Relaciones
+  purchases CreditPackagePurchase[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("credit_packages")
+}
+
+model CreditPackagePurchase {
+  id              String        @id @default(cuid())
+  userId          String
+  packageId       String
+  invoiceId       String
+  creditsReceived Int // Créditos recibidos (incluye bonus)
+  status          PurchaseStatus @default(CONFIRMED)
+  purchaseDate    DateTime      @default(now())
+
+  // Relaciones
+  user    User          @relation(fields: [userId], references: [id])
+  package CreditPackage @relation(fields: [packageId], references: [id])
+  invoice Invoice       @relation(fields: [invoiceId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([packageId])
+  @@index([invoiceId])
+  @@map("credit_package_purchases")
+}
+
+model CreditTransaction {
+  id                String                @id @default(cuid())
+  userId            String
+  transactionType   CreditTransactionType
+  amount            Int // Créditos (positivo = ganado, negativo = gastado)
+  balanceBefore     Int // Balance antes de la transacción
+  balanceAfter      Int // Balance después de la transacción
+  description       String
+  relatedEntityId   String? // ID del producto, plan, etc. relacionado
+  relatedEntityType String? // "product", "plan", "course", etc.
+  metadata          Json? // Información adicional
+  createdAt         DateTime              @default(now())
+
+  // Relación con User
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([transactionType])
+  @@index([createdAt])
+  @@map("credit_transactions")
 }
 
 // =============================================
@@ -886,6 +975,11 @@ model Product {
   pricingType  ProductPricingType @default(SINGLE_PRICE) // Precio único o múltiples planes
   paymentType  ProductPaymentType @default(ONE_TIME)     // Pago único o recurrente
 
+  // Campos para sistema de créditos
+  creditPrice         Int?     // Precio en créditos (si acepta créditos)
+  acceptsCredits      Boolean  @default(false) // Si acepta pago con créditos
+  acceptsRealMoney    Boolean  @default(true) // Si acepta pago con dinero real
+
   // Relaciones
   category      Category?             @relation(fields: [categoryId], references: [id])
   course        Course?               @relation(fields: [courseId], references: [id])
@@ -923,6 +1017,11 @@ model Plan {
   autoRenewal         Boolean @default(true) // Si se renueva automáticamente
   billingCycle        String? // WEEKLY, MONTHLY, QUARTERLY, ANNUAL
   courseId            String? // Curso asociado al plan (opcional)
+
+  // Campos para sistema de créditos
+  creditPrice         Int?     // Precio en créditos (si acepta créditos)
+  acceptsCredits      Boolean  @default(false) // Si acepta pago con créditos
+  acceptsRealMoney    Boolean  @default(true) // Si acepta pago con dinero real
 
   // Relaciones
   product      Product?      @relation(fields: [productId], references: [id])
@@ -1000,10 +1099,11 @@ model Invoice {
   paypalPayerEmail String?    // Email del pagador en PayPal
 
   // Relaciones
-  user      User              @relation(fields: [userId], references: [id])
-  coupon    Coupon?           @relation(fields: [couponId], references: [id])
-  items     InvoiceItem[]
-  purchases ProductPurchase[]
+  user                  User                    @relation(fields: [userId], references: [id])
+  coupon                Coupon?                 @relation(fields: [couponId], references: [id])
+  items                 InvoiceItem[]
+  purchases             ProductPurchase[]
+  creditPackagePurchases CreditPackagePurchase[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -1307,6 +1407,18 @@ enum RewardType {
   SPENT_PREMIUM // Puntos gastados en lecciones premium
   SPENT_MERCHANDISE // Puntos gastados en mercancía
   SPENT_COUPON // Puntos gastados en cupones
+}
+
+enum CreditTransactionType {
+  PURCHASE // Compra de paquete de créditos
+  SPEND_PRODUCT // Gasto en producto
+  SPEND_PLAN // Gasto en plan/suscripción
+  SPEND_COURSE // Gasto en curso
+  REFUND // Reembolso de créditos
+  BONUS // Créditos de bonificación
+  ADMIN_ADJUSTMENT // Ajuste manual por admin
+  REWARD // Créditos ganados como recompensa
+  EXPIRED // Créditos expirados
 }
 
 // =============================================

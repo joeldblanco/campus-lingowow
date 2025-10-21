@@ -143,11 +143,6 @@ export function CourseCard({ course, isEnrolled, isAuthenticated }: CourseCardPr
               <span>{course._count.enrollments}</span>
             </div>
           </div>
-
-          {/* Instructor */}
-          <div className="text-sm text-gray-600">
-            <span className="font-medium">Instructor:</span> {course.createdBy.name}
-          </div>
         </div>
       </CardContent>
 
