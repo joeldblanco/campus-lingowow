@@ -53,6 +53,9 @@ const planSchema = z.object({
   autoRenewal: z.boolean().default(true),
   billingCycle: z.string().optional(),
   courseId: z.string().optional(),
+  creditPrice: z.number().optional(),
+  acceptsCredits: z.boolean().default(false),
+  acceptsRealMoney: z.boolean().default(true),
 })
 
 type PlanFormData = z.infer<typeof planSchema>
@@ -84,6 +87,9 @@ export function CreatePlanDialog({ children }: CreatePlanDialogProps) {
       autoRenewal: true,
       billingCycle: undefined,
       courseId: undefined,
+      creditPrice: undefined,
+      acceptsCredits: false,
+      acceptsRealMoney: true,
     },
   })
 
@@ -108,6 +114,9 @@ export function CreatePlanDialog({ children }: CreatePlanDialogProps) {
         autoRenewal: data.autoRenewal,
         billingCycle: data.billingCycle || null,
         courseId: data.courseId || null,
+        creditPrice: data.creditPrice || null,
+        acceptsCredits: data.acceptsCredits,
+        acceptsRealMoney: data.acceptsRealMoney,
       })
       if (result.success) {
         toast.success('Plan creado correctamente')

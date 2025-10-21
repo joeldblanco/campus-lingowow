@@ -68,6 +68,9 @@ const productSchema = z.object({
   scheduleDuration: z.number().min(15).optional(),
   pricingType: z.enum(['SINGLE_PRICE', 'MULTIPLE_PLANS']).default('SINGLE_PRICE'),
   paymentType: z.enum(['ONE_TIME', 'RECURRING']).default('ONE_TIME'),
+  creditPrice: z.number().optional(),
+  acceptsCredits: z.boolean().default(false),
+  acceptsRealMoney: z.boolean().default(true),
 })
 
 type ProductFormData = z.infer<typeof productSchema>
@@ -105,6 +108,9 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
       scheduleDuration: 60,
       pricingType: 'SINGLE_PRICE',
       paymentType: 'ONE_TIME',
+      creditPrice: undefined,
+      acceptsCredits: false,
+      acceptsRealMoney: true,
     },
   })
 
@@ -141,6 +147,9 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
         pricingType: data.pricingType,
         paymentType: data.paymentType,
         tags: [],
+        creditPrice: data.creditPrice || null,
+        acceptsCredits: data.acceptsCredits,
+        acceptsRealMoney: data.acceptsRealMoney,
       }
 
       // Validar que si es MULTIPLE_PLANS, debe tener al menos un plan
@@ -169,6 +178,9 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
           allowProration: plan.allowProration ?? true,
           autoRenewal: plan.autoRenewal ?? true,
           billingCycle: plan.billingCycle || undefined,
+          creditPrice: plan.creditPrice || undefined,
+          acceptsCredits: plan.acceptsCredits ?? false,
+          acceptsRealMoney: plan.acceptsRealMoney ?? true,
         }))
         
         const existingPlanIds = plans

@@ -29,6 +29,10 @@ export interface PlanData {
   allowProration?: boolean
   autoRenewal?: boolean
   billingCycle?: string
+  // Campos para sistema de créditos
+  creditPrice?: number
+  acceptsCredits?: boolean
+  acceptsRealMoney?: boolean
 }
 
 interface PlanManagerProps {
@@ -60,6 +64,9 @@ export const PlanManager: React.FC<PlanManagerProps> = ({
     allowProration: true,
     autoRenewal: true,
     billingCycle: 'MONTHLY',
+    creditPrice: undefined,
+    acceptsCredits: false,
+    acceptsRealMoney: true,
   })
 
   const generateSlug = (name: string): string => {

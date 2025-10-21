@@ -38,6 +38,10 @@ export interface PlanData {
   allowProration?: boolean
   autoRenewal?: boolean
   billingCycle?: string
+  // Campos para sistema de créditos
+  creditPrice?: number
+  acceptsCredits?: boolean
+  acceptsRealMoney?: boolean
   // Para identificar si es un plan existente o nuevo
   isExisting?: boolean
 }
@@ -90,6 +94,9 @@ export const EnhancedPlanManager: React.FC<EnhancedPlanManagerProps> = ({
     allowProration: true,
     autoRenewal: true,
     billingCycle: 'MONTHLY',
+    creditPrice: undefined,
+    acceptsCredits: false,
+    acceptsRealMoney: true,
     isExisting: false,
   })
 
