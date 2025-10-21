@@ -407,18 +407,24 @@ describe('useShopStore - Checkout and Compare', () => {
   describe('setComparePlans', () => {
     it('should set product for plan comparison', () => {
       const store = useShopStore.getState()
-      const product = createMockProduct('product-1')
+      const product = {
+        ...createMockProduct('product-1'),
+        plans: [],
+      }
 
-      store.setComparePlans(product as any)
+      store.setComparePlans(product)
 
       expect(useShopStore.getState().comparePlans.product).toBe(product)
     })
 
     it('should clear comparison when null', () => {
       const store = useShopStore.getState()
-      const product = createMockProduct('product-1')
+      const product = {
+        ...createMockProduct('product-1'),
+        plans: [],
+      }
 
-      store.setComparePlans(product as any)
+      store.setComparePlans(product)
       store.setComparePlans(null)
 
       expect(useShopStore.getState().comparePlans.product).toBeNull()

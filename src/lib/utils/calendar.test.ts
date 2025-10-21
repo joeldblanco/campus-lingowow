@@ -164,20 +164,20 @@ describe('Calendar Utils - Availability Checking', () => {
     const allSlots = ['08:00-09:00', '09:00-10:00', '10:00-11:00', '14:00-15:00', '15:00-16:00']
 
     it('should return all slots for teachers', () => {
-      const result = filterAvailableTimeSlots(allSlots, mockRanges, UserRole.TEACHER as any)
+      const result = filterAvailableTimeSlots(allSlots, mockRanges, UserRole.TEACHER)
       expect(result).toHaveLength(allSlots.length)
       expect(result).toEqual(allSlots)
     })
 
     it('should filter slots for students based on availability', () => {
-      const result = filterAvailableTimeSlots(allSlots, mockRanges, UserRole.STUDENT as any)
+      const result = filterAvailableTimeSlots(allSlots, mockRanges, UserRole.STUDENT)
       expect(result).not.toContain('08:00-09:00') // Before availability
       expect(result).toContain('09:00-10:00') // Within availability
       expect(result).toContain('14:00-15:00') // Within availability
     })
 
     it('should return empty array for students with no availability', () => {
-      const result = filterAvailableTimeSlots(allSlots, [], UserRole.STUDENT as any)
+      const result = filterAvailableTimeSlots(allSlots, [], UserRole.STUDENT)
       expect(result).toHaveLength(0)
     })
   })
