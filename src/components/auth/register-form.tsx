@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input'
 import { register } from '@/lib/actions/auth'
 import { SignUpSchema } from '@/schemas/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2 } from 'lucide-react'
+import { Loader2, ChevronLeft } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -70,7 +70,13 @@ export function RegisterForm() {
         />
       </div>
       <Form {...registerForm}>
-        <form onSubmit={registerForm.handleSubmit(onSubmit)} className="p-6 md:p-8">
+        <form onSubmit={registerForm.handleSubmit(onSubmit)} className="p-6 md:p-8 relative">
+          <div className="absolute top-6 left-6">
+            <Link href={'/'} className="inline-flex items-center justify-center gap-1 text-sm text-muted-foreground hover:gap-2 transition-all">
+              <ChevronLeft className="h-4 w-4" />
+              Volver
+            </Link>
+          </div>
           <div className="flex flex-col gap-6">
             <div className="flex flex-col items-center text-center">
               <h1 className="text-2xl font-bold">Bienvenido</h1>

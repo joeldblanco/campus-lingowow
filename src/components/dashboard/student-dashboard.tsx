@@ -153,17 +153,17 @@ export default function Dashboard() {
         </Card>
         <Card className="lg:col-span-3">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Course Materials</CardTitle>
+            <CardTitle>Materiales del Curso</CardTitle>
             <Button variant="outline" size="sm" asChild>
-              <Link href="#">Ver Todo</Link>
+              <Link href="#">Ver Todos</Link>
             </Button>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="all">
               <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="all">All</TabsTrigger>
-                <TabsTrigger value="recent">Recent</TabsTrigger>
-                <TabsTrigger value="bookmarks">Bookmarks</TabsTrigger>
+                <TabsTrigger value="all">Todos</TabsTrigger>
+                <TabsTrigger value="recent">Recientes</TabsTrigger>
+                <TabsTrigger value="bookmarks">Marcadores</TabsTrigger>
               </TabsList>
               <TabsContent value="all" className="mt-4 space-y-4">
                 <p className="text-muted-foreground">
@@ -182,8 +182,8 @@ export default function Dashboard() {
       </div>
       <Card>
         <CardHeader>
-          <CardTitle>Language Progress</CardTitle>
-          <CardDescription>Track your proficiency across different languages</CardDescription>
+          <CardTitle>Progreso de Idiomas</CardTitle>
+          <CardDescription>Sigue tu progreso en diferentes idiomas</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
