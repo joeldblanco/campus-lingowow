@@ -10,6 +10,7 @@ import { DocumentEditor } from './document-editor'
 
 interface LessonBuilderProps {
   lesson: Lesson
+  onUpdateLesson: (updates: Partial<Lesson>) => void
   onAddBlock: (block: Block) => void
   onUpdateBlock: (blockId: string, updates: Partial<Block>) => void
   onRemoveBlock: (blockId: string) => void
@@ -18,6 +19,7 @@ interface LessonBuilderProps {
 
 export function LessonBuilder({
   lesson,
+  onUpdateLesson, // eslint-disable-line @typescript-eslint/no-unused-vars
   onAddBlock,
   onUpdateBlock,
   onRemoveBlock,

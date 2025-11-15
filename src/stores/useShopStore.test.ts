@@ -24,6 +24,7 @@ const createMockProduct = (id: string) => ({
   courseId: null,
   maxScheduleSlots: null,
   scheduleDuration: null,
+  sortOrder: 0,
   createdAt: new Date(),
   updatedAt: new Date(),
   // Course fields for compatibility
