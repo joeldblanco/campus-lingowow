@@ -15,6 +15,7 @@ import {
 import { Switch } from '@/components/ui/switch'
 import { Upload, X, Volume2, Play, Pause } from 'lucide-react'
 import { toast } from 'sonner'
+import { uploadAudioFile } from '@/lib/actions/cloudinary'
 
 interface AudioUploadWidgetProps {
   audioUrl?: string
@@ -65,29 +66,23 @@ export function AudioUploadWidget({
       // Crear FormData para subir el archivo
       const formData = new FormData()
       formData.append('file', file)
-      formData.append('folder', 'exam-audios')
 
-      // Subir a tu API de upload (debes implementar este endpoint)
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      })
+      // Subir usando server action (más seguro)
+      const result = await uploadAudioFile(formData, 'exam-audios')
 
-      if (!response.ok) {
-        throw new Error('Error al subir el archivo')
+      if (result.success && result.data) {
+        onAudioChange({
+          audioUrl: result.data.secure_url,
+          audioPosition,
+          maxAudioPlays,
+          audioAutoplay,
+          audioPausable,
+        })
+
+        toast.success('Audio subido exitosamente')
+      } else {
+        toast.error(result.error || 'Error al subir el audio')
       }
-
-      const data = await response.json()
-      
-      onAudioChange({
-        audioUrl: data.url,
-        audioPosition,
-        maxAudioPlays,
-        audioAutoplay,
-        audioPausable,
-      })
-
-      toast.success('Audio subido exitosamente')
     } catch (error) {
       console.error('Error uploading audio:', error)
       toast.error('Error al subir el audio. Intenta de nuevo.')

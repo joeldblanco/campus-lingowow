@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -58,7 +58,7 @@ export function ProductPlansDialog({
   const [selectedPlanId, setSelectedPlanId] = useState<string>('')
   const [isLoading, setIsLoading] = useState(false)
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setIsLoading(true)
     try {
       const [product, available] = await Promise.all([
@@ -75,14 +75,13 @@ export function ProductPlansDialog({
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [productId])
 
   useEffect(() => {
     if (open) {
       loadData()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, productId])
+  }, [open, productId, loadData])
 
   const handleAssociatePlan = async () => {
     if (!selectedPlanId) {
@@ -175,10 +174,7 @@ export function ProductPlansDialog({
                   )}
                 </SelectContent>
               </Select>
-              <Button
-                onClick={handleAssociatePlan}
-                disabled={!selectedPlanId || isLoading}
-              >
+              <Button onClick={handleAssociatePlan} disabled={!selectedPlanId || isLoading}>
                 <Plus className="h-4 w-4 mr-2" />
                 Asociar
               </Button>
@@ -190,17 +186,13 @@ export function ProductPlansDialog({
 
           {/* Planes asociados */}
           <div className="space-y-3">
-            <h3 className="text-sm font-medium">
-              Planes Asociados ({productPlans.length})
-            </h3>
-            
+            <h3 className="text-sm font-medium">Planes Asociados ({productPlans.length})</h3>
+
             {productPlans.length === 0 ? (
               <Card className="border-dashed">
                 <CardContent className="flex flex-col items-center justify-center py-8 text-center">
                   <DollarSign className="h-12 w-12 text-gray-400 mb-4" />
-                  <p className="text-gray-600">
-                    Este producto no tiene planes asociados
-                  </p>
+                  <p className="text-gray-600">Este producto no tiene planes asociados</p>
                 </CardContent>
               </Card>
             ) : (
@@ -245,9 +237,7 @@ export function ProductPlansDialog({
                               </span>
                             )}
                           </div>
-                          <span className="text-gray-600">
-                            {getDurationText(plan.duration)}
-                          </span>
+                          <span className="text-gray-600">{getDurationText(plan.duration)}</span>
                         </div>
                         <Badge variant="outline" className="text-xs">
                           {plan.slug}

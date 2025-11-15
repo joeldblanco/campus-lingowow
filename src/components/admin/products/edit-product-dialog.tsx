@@ -35,6 +35,7 @@ import { updateProduct, getCategories } from '@/lib/actions/commercial'
 import { getAllCourses } from '@/lib/actions/courses'
 import { toast } from 'sonner'
 import { Category } from '@/types/category'
+import { ImageSelector } from './image-selector'
 
 const productSchema = z.object({
   name: z.string().min(1, 'El nombre es requerido'),
@@ -355,10 +356,19 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
               name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>URL de la Imagen</FormLabel>
-                  <FormControl>
-                    <Input placeholder="https://ejemplo.com/imagen.jpg (opcional)" {...field} />
-                  </FormControl>
+                  <FormLabel>Imagen del Producto</FormLabel>
+                  <div className="space-y-2">
+                    <ImageSelector
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                    <FormControl>
+                      <Input 
+                        placeholder="O ingresa una URL personalizada (opcional)" 
+                        {...field} 
+                      />
+                    </FormControl>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}

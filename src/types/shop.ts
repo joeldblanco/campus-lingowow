@@ -26,6 +26,7 @@ export type Product = Prisma.ProductGetPayload<{
     stock: true
     categoryId: true
     tags: true
+    sortOrder: true
     requiresScheduling: true
     courseId: true
     maxScheduleSlots: true
@@ -56,6 +57,13 @@ export type Plan = Prisma.PlanGetPayload<{
     isPopular: true
     sortOrder: true
     productId: true
+    includesClasses: true
+    classesPerPeriod: true
+    classesPerWeek: true
+    allowProration: true
+    autoRenewal: true
+    billingCycle: true
+    courseId: true
     createdAt: true
     updatedAt: true
   }

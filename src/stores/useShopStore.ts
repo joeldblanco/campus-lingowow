@@ -2,7 +2,12 @@ import { CartItem, CheckoutInfo, Filters, Course, Merge, Product, ProductTypeEnu
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-export type SortOption = 'name-asc' | 'name-desc' | 'price-asc' | 'price-desc' | 'date-desc' | 'date-asc'
+export interface AppliedCoupon {
+  code: string
+  percentage: number
+}
+
+export type SortOption = 'name-asc' | 'name-desc' | 'price-asc' | 'price-desc' | 'date-desc' | 'date-asc' | 'custom-order'
 export type ViewMode = 'grid' | 'list'
 
 type ShopState = {
@@ -16,6 +21,7 @@ type ShopState = {
   itemsPerPage: number
   comparePlans: { product: Merge<Product, Course> | null }
   checkoutInfo: CheckoutInfo
+  appliedCoupon: AppliedCoupon | null
 
   // Acciones
   addToCart: (item: CartItem) => void
@@ -30,6 +36,8 @@ type ShopState = {
   setComparePlans: (product: Merge<Product, Course> | null) => void
   clearCart: () => void
   setCheckoutInfo: (info: Partial<CheckoutInfo>) => void
+  applyCoupon: (coupon: AppliedCoupon) => void
+  removeCoupon: () => void
 
   // Getters
   getRequiresAuth: () => boolean
@@ -47,7 +55,7 @@ export const useShopStore = create<ShopState>()(
         tags: [],
       },
       searchQuery: '',
-      sortBy: 'date-desc' as SortOption,
+      sortBy: 'custom-order' as SortOption,
       viewMode: 'grid' as ViewMode,
       priceRange: [0, 1000],
       currentPage: 1,
@@ -57,6 +65,7 @@ export const useShopStore = create<ShopState>()(
         requiresAuth: false,
         redirectAfterAuth: false,
       },
+      appliedCoupon: null,
 
       addToCart: (item) =>
         set((state) => {
@@ -70,12 +79,8 @@ export const useShopStore = create<ShopState>()(
             return { cart: state.cart.filter((_, index) => index !== existingIndex) }
           }
           
-          // Removemos cualquier otro plan del mismo producto antes de agregar el nuevo
-          const cartWithoutProductPlans = state.cart.filter(
-            (cartItem) => cartItem.product.id !== item.product.id
-          )
-          
-          return { cart: [...cartWithoutProductPlans, item] }
+          // Solo permitir un plan en el carrito - limpiamos el carrito completamente antes de agregar
+          return { cart: [item] }
         }),
 
       removeFromCart: (productId, planId) =>
@@ -131,6 +136,16 @@ export const useShopStore = create<ShopState>()(
           checkoutInfo: { ...state.checkoutInfo, ...info },
         })),
 
+      applyCoupon: (coupon) =>
+        set(() => ({
+          appliedCoupon: coupon,
+        })),
+
+      removeCoupon: () =>
+        set(() => ({
+          appliedCoupon: null,
+        })),
+
       // Función para verificar si el carrito requiere autenticación
       getRequiresAuth: () => {
         const { cart } = get()
@@ -152,7 +167,8 @@ export const useShopStore = create<ShopState>()(
         checkoutInfo: state.checkoutInfo,
         viewMode: state.viewMode,
         sortBy: state.sortBy,
-      }), // Persistimos carrito, checkout, vista y ordenamiento
+        appliedCoupon: state.appliedCoupon,
+      }), // Persistimos carrito, checkout, vista, ordenamiento y cupón
     }
   )
 )

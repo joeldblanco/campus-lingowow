@@ -15,7 +15,6 @@ interface PayPalButtonProps {
   }>
   total: number
   subtotal: number
-  tax: number
   discount: number
   currency?: string
   onSuccess: (data: unknown) => void
@@ -26,7 +25,6 @@ export function PayPalButton({
   items,
   total,
   subtotal,
-  tax,
   discount,
   currency = 'USD',
   onSuccess,
@@ -36,6 +34,9 @@ export function PayPalButton({
 
   const createOrder = async () => {
     try {
+      // Obtener información del cliente para usuarios invitados
+      const customerInfo = JSON.parse(sessionStorage.getItem('customer-info') || '{}')
+      
       const response = await fetch('/api/paypal/create-order', {
         method: 'POST',
         headers: {
@@ -45,9 +46,9 @@ export function PayPalButton({
         body: JSON.stringify({
           items,
           subtotal,
-          tax,
           total,
           currency,
+          customerInfo: Object.keys(customerInfo).length > 0 ? customerInfo : undefined,
         }),
       })
 
@@ -67,6 +68,9 @@ export function PayPalButton({
 
   const onApprove = async (data: { orderID: string }) => {
     try {
+      // Obtener información del cliente para usuarios invitados
+      const customerInfo = JSON.parse(sessionStorage.getItem('customer-info') || '{}')
+      
       const response = await fetch('/api/paypal/capture-order', {
         method: 'POST',
         headers: {
@@ -78,11 +82,11 @@ export function PayPalButton({
           invoiceData: {
             items,
             subtotal,
-            tax,
             discount,
             total,
             currency,
           },
+          customerInfo: Object.keys(customerInfo).length > 0 ? customerInfo : undefined,
         }),
       })
 

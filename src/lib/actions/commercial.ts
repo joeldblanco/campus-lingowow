@@ -209,7 +209,7 @@ export async function getProducts(filters?: {
         },
       },
       orderBy: {
-        createdAt: 'desc',
+        sortOrder: 'asc',
       },
     })
     return products
@@ -326,6 +326,20 @@ export async function updateProduct(
   }
 }
 
+export async function updateProductSortOrder(id: string, sortOrder: number) {
+  try {
+    const product = await db.product.update({
+      where: { id },
+      data: { sortOrder },
+    })
+    revalidatePath('/admin/products')
+    return { success: true, data: product }
+  } catch (error) {
+    console.error('Error updating product sort order:', error)
+    return { success: false, error: 'Error al actualizar el orden del producto' }
+  }
+}
+
 export async function deleteProduct(id: string) {
   try {
     await db.product.delete({
@@ -348,6 +362,12 @@ export async function getPlans() {
     return await db.plan.findMany({
       orderBy: { sortOrder: 'asc' },
       include: {
+        product: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         features: {
           include: {
             feature: true,

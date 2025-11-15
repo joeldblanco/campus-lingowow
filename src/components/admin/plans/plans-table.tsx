@@ -35,6 +35,11 @@ interface Plan {
   sortOrder: number
   createdAt: Date
   updatedAt: Date
+  productId: string | null
+  product: {
+    id: string
+    name: string
+  } | null
   features: Array<{
     planId: string
     featureId: string
@@ -93,6 +98,7 @@ export function PlansTable({ plans }: PlansTableProps) {
               <TableHead>Precio</TableHead>
               <TableHead>Duración</TableHead>
               <TableHead>Características</TableHead>
+              <TableHead>Productos</TableHead>
               <TableHead>Estado</TableHead>
               <TableHead>Ventas</TableHead>
               <TableHead>Orden</TableHead>
@@ -102,7 +108,7 @@ export function PlansTable({ plans }: PlansTableProps) {
           <TableBody>
             {plans.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
                   No hay planes registrados
                 </TableCell>
               </TableRow>
@@ -148,6 +154,19 @@ export function PlansTable({ plans }: PlansTableProps) {
                       {plan.features.length > 3 && (
                         <Badge variant="outline" className="text-xs">
                           +{plan.features.length - 3} más
+                        </Badge>
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-wrap gap-1">
+                      {plan.product ? (
+                        <Badge variant="outline" className="text-xs">
+                          {plan.product.name}
+                        </Badge>
+                      ) : (
+                        <Badge variant="secondary" className="text-xs">
+                          Sin producto
                         </Badge>
                       )}
                     </div>

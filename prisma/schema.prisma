@@ -116,6 +116,11 @@ model User {
   // Relación de blog posts (para editores)
   blogPosts BlogPost[] @relation("BlogAuthor")
 
+  // Relaciones de administración de archivos
+  uploadedFiles    FileAsset[]       @relation("FileUploader")
+  fileUsageLogs    FileUsageLog[]    @relation("FileUser")
+  createdFolders   FileFolder[]      @relation("FolderCreator")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -276,6 +281,7 @@ model Course {
   isPublished   Boolean @default(false)
   createdById   String
   classDuration Int     @default(40) // Duración de cada clase en minutos (30, 40, 60, 90)
+  image         String? // Imagen del curso para Course Builder
 
   // Relaciones
   createdBy        User            @relation(fields: [createdById], references: [id])
@@ -301,6 +307,7 @@ model Module {
   order       Int     @default(0)
   isPublished Boolean @default(false)
   courseId    String
+  objectives  String? // Objetivos del módulo para Course Builder
 
   // Relaciones
   course     Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
@@ -316,11 +323,14 @@ model Module {
 }
 
 model Lesson {
-  id          String @id @default(cuid())
+  id          String  @id @default(cuid())
   title       String
   description String
-  order       Int    @default(0)
+  order       Int     @default(0)
   moduleId    String
+  duration    Int     @default(30) // Duración estimada de la lección en minutos
+  content     String  @default("[]") // JSON con bloques de contenido para Course Builder
+  isPublished Boolean @default(false) // Estado de publicación de la lección
 
   // Relaciones
   module     Module           @relation(fields: [moduleId], references: [id], onDelete: Cascade)
@@ -964,6 +974,7 @@ model Product {
   stock        Int?
   categoryId   String?
   tags         String[] @default([])
+  sortOrder    Int      @default(0) // Orden de aparición en la tienda
 
   // Campos para programación y cursos
   requiresScheduling Boolean @default(false)
@@ -1767,4 +1778,147 @@ enum AudioPosition {
   AFTER_QUESTION   // Después del texto de la pregunta
   BEFORE_OPTIONS   // Antes de las opciones (para opción múltiple)
   SECTION_TOP      // Al inicio de la sección (compartido)
+}
+
+// =============================================
+// MODELOS DE ADMINISTRACIÓN DE ARCHIVOS
+// =============================================
+
+model FileAsset {
+  id              String           @id @default(cuid())
+  publicId        String           @unique // Cloudinary public_id
+  fileName        String           // Original filename
+  description     String?          // Optional description
+  tags            String[]         @default([]) // Searchable tags
+  category        FileCategory     @default(GENERAL)
+  resourceType    FileResourceType // image, video, audio, raw
+  format          String           // File format (jpg, mp4, pdf, etc.)
+  size            Int              // File size in bytes
+  width           Int?             // Width for images/videos
+  height          Int?             // Height for images/videos
+  duration        Int?             // Duration for videos/audio in seconds
+  secureUrl       String           // Cloudinary secure URL
+  url             String           // Cloudinary URL
+  folder          String           // Cloudinary folder path
+  uploadedBy      String           // User who uploaded the file
+  isPublic        Boolean          @default(false) // Public access flag
+  isActive        Boolean          @default(true) // Soft delete flag
+  metadata        Json?            // Additional metadata (transformations, etc.)
+  usageCount      Int              @default(0) // Track file usage
+  lastAccessedAt  DateTime?
+  expiresAt       DateTime?        // For temporary files
+  
+  // Relaciones
+  uploader        User             @relation("FileUploader", fields: [uploadedBy], references: [id])
+  transformations FileTransformation[]
+  usageLogs       FileUsageLog[]
+
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@index([publicId])
+  @@index([uploadedBy])
+  @@index([resourceType])
+  @@index([category])
+  @@index([folder])
+  @@index([isActive])
+  @@index([createdAt])
+  @@map("file_assets")
+}
+
+model FileTransformation {
+  id              String           @id @default(cuid())
+  fileAssetId     String
+  name            String           // Transformation name (thumb, medium, large, etc.)
+  transformation  Json             // Cloudinary transformation parameters
+  generatedUrl    String           // URL of transformed file
+  width           Int?
+  height          Int?
+  format          String?
+  quality         Int?
+  size            Int?             // Size of transformed file
+  
+  // Relación
+  fileAsset       FileAsset        @relation(fields: [fileAssetId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@index([fileAssetId])
+  @@map("file_transformations")
+}
+
+model FileUsageLog {
+  id              String           @id @default(cuid())
+  fileAssetId     String
+  userId          String?          // User who accessed the file
+  action          UsageAction      // view, download, embed, transform
+  context         String?          // Where the file was used (course, lesson, etc.)
+  contextId       String?          // ID of the context entity
+  ipAddress       String?
+  userAgent       String?
+  
+  // Relaciones
+  fileAsset       FileAsset        @relation(fields: [fileAssetId], references: [id], onDelete: Cascade)
+  user            User?            @relation("FileUser", fields: [userId], references: [id])
+
+  createdAt       DateTime         @default(now())
+
+  @@index([fileAssetId])
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("file_usage_logs")
+}
+
+model FileFolder {
+  id              String           @id @default(cuid())
+  name            String
+  path            String           @unique // Full path in Cloudinary
+  parentId        String?          // Parent folder for nested structure
+  description     String?
+  isPublic        Boolean          @default(false)
+  createdBy       String
+  
+  // Relaciones
+  creator         User             @relation("FolderCreator", fields: [createdBy], references: [id])
+  parent          FileFolder?      @relation("FolderHierarchy", fields: [parentId], references: [id])
+  children        FileFolder[]     @relation("FolderHierarchy")
+
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@index([parentId])
+  @@index([createdBy])
+  @@map("file_folders")
+}
+
+// Enums para archivos
+enum FileCategory {
+  GENERAL         // Archivos generales
+  COURSE_CONTENT  // Contenido de cursos
+  LESSON_MATERIAL // Material de lecciones
+  ASSIGNMENT      // Tareas y exámenes
+  USER_AVATAR     // Avatares de usuarios
+  BRANDING        // Archivos de marca
+  DOCUMENTATION   // Documentación
+  MEDIA           // Archivos multimedia
+  TEMPLATE        // Plantillas
+  BACKUP          // Archivos de respaldo
+}
+
+enum FileResourceType {
+  IMAGE           // Imágenes
+  VIDEO           // Videos
+  AUDIO           // Archivos de audio
+  RAW             // Documentos y otros archivos
+}
+
+enum UsageAction {
+  VIEW            // Visualización
+  DOWNLOAD        // Descarga
+  EMBED           // Incrustado en contenido
+  TRANSFORM       // Transformación aplicada
+  SHARE           // Compartido
+  DELETE          // Eliminado
 }

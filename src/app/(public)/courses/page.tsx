@@ -3,7 +3,7 @@ import Footer from '@/components/public-components/footer'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { BookOpen, Clock, Users, Star } from 'lucide-react'
+import { BookOpen, Clock, Users, Star, ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
 import { Metadata } from 'next'
 
@@ -77,7 +77,7 @@ export default function CursosPage() {
   ]
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-100">
       <Header />
       
       <main className="flex-1">
@@ -104,17 +104,19 @@ export default function CursosPage() {
           <div className="container px-4 md:px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {courses.map((course) => (
-                <Card key={course.id} className="flex flex-col">
+                <Card key={course.id} className="flex flex-col border-2 border-gray-200 shadow-lg hover:shadow-xl transition-shadow bg-white">
                   <CardHeader>
-                    <div className="flex items-center justify-between mb-2">
-                      <Badge>{course.level}</Badge>
+                    <div className="flex items-center justify-end mb-2">
                       <div className="flex items-center gap-1">
                         <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                         <span className="text-sm font-medium">{course.rating}</span>
                       </div>
                     </div>
-                    <CardTitle>{course.name}</CardTitle>
-                    <CardDescription>{course.description}</CardDescription>
+                    <CardTitle className="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors">{course.name}</CardTitle>
+                    <div className="mt-2">
+                      <Badge>{course.level}</Badge>
+                    </div>
+                    <CardDescription className="mt-3">{course.description}</CardDescription>
                   </CardHeader>
                   <CardContent className="flex-1">
                     <div className="space-y-2">
@@ -134,7 +136,13 @@ export default function CursosPage() {
                   </CardContent>
                   <CardFooter>
                     <Link href="/shop" className="w-full">
-                      <Button className="w-full">Ver Planes</Button>
+                      <Button 
+                        size="lg"
+                        className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold shadow-lg hover:shadow-xl transform transition hover:scale-105"
+                      >
+                        <ShoppingCart className="h-4 w-4 mr-2" />
+                        Ver Planes
+                      </Button>
                     </Link>
                   </CardFooter>
                 </Card>

@@ -102,8 +102,8 @@ describe('Booking Utils - Overlap Detection', () => {
 
     it('should handle invalid booked slots gracefully', () => {
       const invalidSlots = ['09:00-10:00', null, undefined, '', 'invalid'] as (string | null | undefined)[]
-      expect(isSlotOverlappingWithBookings('09:00-10:00', invalidSlots, 60)).toBe(true)
-      expect(isSlotOverlappingWithBookings('10:00-11:00', invalidSlots, 60)).toBe(false)
+      expect(isSlotOverlappingWithBookings('09:00-10:00', invalidSlots as string[], 60)).toBe(true)
+      expect(isSlotOverlappingWithBookings('10:00-11:00', invalidSlots as string[], 60)).toBe(false)
     })
 
     it('should handle 40-minute duration overlaps', () => {

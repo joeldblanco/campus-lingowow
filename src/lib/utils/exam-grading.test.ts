@@ -9,6 +9,11 @@ describe('Exam Grading - Multiple Choice Questions', () => {
     options: ['Madrid', 'Barcelona', 'Valencia', 'Sevilla'],
     correctAnswer: 'Madrid',
     points: 10,
+    order: 1,
+    difficulty: 'EASY',
+    tags: [],
+    caseSensitive: false,
+    partialCredit: false,
   }
 
   it('should mark correct answer as correct', () => {
@@ -44,6 +49,11 @@ describe('Exam Grading - True/False Questions', () => {
     question: 'El sol es una estrella',
     correctAnswer: 'true',
     points: 5,
+    order: 1,
+    difficulty: 'EASY',
+    tags: [],
+    caseSensitive: false,
+    partialCredit: false,
   }
 
   it('should mark true as correct', () => {
@@ -66,6 +76,10 @@ describe('Exam Grading - Short Answer Questions', () => {
     correctAnswer: 'París',
     points: 10,
     caseSensitive: false,
+    order: 1,
+    difficulty: 'EASY',
+    tags: [],
+    partialCredit: false,
   }
 
   it('should mark correct answer as correct (case insensitive)', () => {
@@ -102,6 +116,10 @@ describe('Exam Grading - Short Answer with Case Sensitivity', () => {
     correctAnswer: 'Au',
     points: 5,
     caseSensitive: true,
+    order: 1,
+    difficulty: 'EASY',
+    tags: [],
+    partialCredit: false,
   }
 
   it('should respect case sensitivity when enabled', () => {
@@ -118,6 +136,10 @@ describe('Exam Grading - Multiple Correct Answers', () => {
     correctAnswer: ['hola', 'buenos días', 'buenas'],
     points: 10,
     caseSensitive: false,
+    order: 1,
+    difficulty: 'EASY',
+    tags: [],
+    partialCredit: false,
   }
 
   it('should accept any of the correct answers', () => {
@@ -139,6 +161,9 @@ describe('Exam Grading - Partial Credit', () => {
     points: 10,
     partialCredit: true,
     caseSensitive: false,
+    order: 1,
+    difficulty: 'EASY',
+    tags: [],
   }
 
   it('should give full points for exact match', () => {
@@ -173,6 +198,10 @@ describe('Exam Grading - Fill in the Blank', () => {
     correctAnswer: 'blue',
     points: 5,
     caseSensitive: false,
+    order: 1,
+    difficulty: 'EASY',
+    tags: [],
+    partialCredit: false,
   }
 
   it('should grade fill in the blank like short answer', () => {
@@ -188,6 +217,11 @@ describe('Exam Grading - Essay Questions', () => {
     question: 'Describe the water cycle',
     correctAnswer: '',
     points: 20,
+    order: 1,
+    difficulty: 'EASY',
+    tags: [],
+    caseSensitive: false,
+    partialCredit: false,
   }
 
   it('should not auto-grade essay questions', () => {
@@ -214,12 +248,22 @@ describe('Exam Grading - Full Exam Grading', () => {
           options: ['A', 'B', 'C'],
           correctAnswer: 'A',
           points: 10,
+          order: 1,
+          difficulty: 'EASY' as const,
+          tags: [],
+          caseSensitive: false,
+          partialCredit: false,
         },
         {
           type: 'TRUE_FALSE' as const,
           question: 'Question 2',
           correctAnswer: 'true',
           points: 10,
+          order: 2,
+          difficulty: 'EASY' as const,
+          tags: [],
+          caseSensitive: false,
+          partialCredit: false,
         },
       ],
     },
@@ -231,6 +275,10 @@ describe('Exam Grading - Full Exam Grading', () => {
           correctAnswer: 'answer',
           points: 20,
           caseSensitive: false,
+          order: 1,
+          difficulty: 'EASY' as const,
+          tags: [],
+          partialCredit: false,
         },
       ],
     },
@@ -343,12 +391,22 @@ describe('Exam Grading - Exam with Essays', () => {
           options: ['A', 'B'],
           correctAnswer: 'A',
           points: 10,
+          order: 1,
+          difficulty: 'EASY' as const,
+          tags: [],
+          caseSensitive: false,
+          partialCredit: false,
         },
         {
           type: 'ESSAY' as const,
           question: 'Essay Question',
           correctAnswer: '',
           points: 30,
+          order: 2,
+          difficulty: 'EASY' as const,
+          tags: [],
+          caseSensitive: false,
+          partialCredit: false,
         },
       ],
     },
@@ -389,6 +447,11 @@ describe('Exam Grading - Edge Cases', () => {
             options: ['A'],
             correctAnswer: 'A',
             points: 10,
+            order: 1,
+            difficulty: 'EASY' as const,
+            tags: [],
+            caseSensitive: false,
+            partialCredit: false,
           },
         ],
       },
@@ -411,6 +474,11 @@ describe('Exam Grading - Edge Cases', () => {
             options: ['A'],
             correctAnswer: 'A',
             points: 3,
+            order: 1,
+            difficulty: 'EASY' as const,
+            tags: [],
+            caseSensitive: false,
+            partialCredit: false,
           },
           {
             type: 'MULTIPLE_CHOICE' as const,
@@ -418,6 +486,11 @@ describe('Exam Grading - Edge Cases', () => {
             options: ['A'],
             correctAnswer: 'A',
             points: 3,
+            order: 2,
+            difficulty: 'EASY' as const,
+            tags: [],
+            caseSensitive: false,
+            partialCredit: false,
           },
           {
             type: 'MULTIPLE_CHOICE' as const,
@@ -425,6 +498,11 @@ describe('Exam Grading - Edge Cases', () => {
             options: ['A'],
             correctAnswer: 'A',
             points: 3,
+            order: 3,
+            difficulty: 'EASY' as const,
+            tags: [],
+            caseSensitive: false,
+            partialCredit: false,
           },
         ],
       },

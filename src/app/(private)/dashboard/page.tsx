@@ -16,6 +16,7 @@ import { UserRole } from '@prisma/client'
 import { BookOpen, Calendar, DollarSign, Users, Video } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 import { getAdminDashboardStats, getTeacherDashboardStats } from '@/lib/actions/dashboard'
@@ -402,6 +403,21 @@ const GuestDashboard = () => {
     <div className="space-y-6">
       <h2 className="text-3xl font-bold">Bienvenido a Lingowow</h2>
 
+      {/* Prominent registration banner at the top */}
+      <Card className="bg-gradient-to-r from-blue-500 to-purple-600 text-white border-0">
+        <CardContent className="pt-6">
+          <div className="flex flex-col items-center text-center space-y-4">
+            <div>
+              <h3 className="text-2xl font-bold mb-2">¡Comienza tu Aprendizaje Hoy!</h3>
+              <p className="text-blue-100">Únete a miles de estudiantes aprendiendo idiomas con los mejores profesores</p>
+            </div>
+            <Link href="/shop" className="px-8 py-4 bg-white text-blue-600 rounded-lg hover:bg-blue-50 font-bold text-lg shadow-lg transform transition hover:scale-105 inline-block">
+              Regístrate Ahora
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+
       <Card>
         <CardHeader>
           <CardTitle>Descubre Nuestros Cursos</CardTitle>
@@ -470,12 +486,6 @@ const GuestDashboard = () => {
               <h3 className="font-bold">Materiales Exclusivos</h3>
               <p>Accede a contenido desarrollado por expertos</p>
             </div>
-          </div>
-
-          <div className="mt-6 text-center">
-            <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold">
-              Registrarse Ahora
-            </button>
           </div>
         </CardContent>
       </Card>

@@ -77,8 +77,8 @@ export function generateAcademicPeriodsForYear(
     // Si la semana no está incluida en ningún período, es una semana suelta
     if (!isIncludedInPeriod && currentWeekEnd <= endDate) {
       looseWeekRanges.push({
-        start: currentWeekStart,
-        end: currentWeekEnd,
+        start: new Date(currentWeekStart),
+        end: new Date(currentWeekEnd),
       })
     }
 

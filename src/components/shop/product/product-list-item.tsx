@@ -17,7 +17,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
   const hasDiscount = product.comparePrice && product.comparePrice > product.price
 
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow border-2 border-gray-200 shadow-lg bg-white">
       <div className="flex flex-col sm:flex-row">
         {/* Image */}
         <div className="relative w-full sm:w-48 h-48 sm:h-auto flex-shrink-0">
@@ -41,7 +41,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
             <div className="flex-1">
               <div className="flex items-start justify-between gap-4 mb-2">
                 <Link href={`/shop/${product.slug}`}>
-                  <h3 className="text-xl font-semibold hover:text-primary transition-colors">
+                  <h3 className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors">
                     {product.name}
                   </h3>
                 </Link>
@@ -75,10 +75,13 @@ export function ProductListItem({ product }: ProductListItemProps) {
             <div className="flex items-center justify-between pt-4 border-t">
               <div className="flex gap-2">
                 <Badge variant="outline">{product.category}</Badge>
-                <Badge variant="outline">{product.plans.length} planes</Badge>
+                <Badge variant="outline">{product.plans.length} Planes</Badge>
               </div>
               <Link href={`/shop/${product.slug}`}>
-                <Button>
+                <Button 
+                  size="lg"
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold shadow-lg hover:shadow-xl transform transition hover:scale-105"
+                >
                   <ShoppingCart className="h-4 w-4 mr-2" />
                   Ver Planes
                 </Button>

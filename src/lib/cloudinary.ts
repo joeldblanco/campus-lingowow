@@ -7,34 +7,96 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
-export interface CloudinaryUploadResult {
+// Cloudinary interfaces and types
+export interface CloudinaryResource {
   public_id: string
   secure_url: string
-  width?: number
-  height?: number
+  url: string
   format: string
   resource_type: string
   bytes: number
+  width?: number
+  height?: number
+  duration?: number
   created_at: string
+  folder?: string
+  tags?: string[]
+  context?: Record<string, string>
+}
+
+export interface CloudinaryFolder {
+  name: string
+  path: string
+  bytes: number
+  file_count: number
+  created_at: string
+}
+
+export interface CloudinarySearchOptions {
+  expression?: string
+  sort_by?: Array<{ [key: string]: 'asc' | 'desc' }>
+  max_results?: number
+  next_cursor?: string
+  with_field?: string[]
+  type?: string
+  prefix?: string
+  direction?: 'asc' | 'desc'
+}
+
+export interface CloudinarySearchResult {
+  resources: CloudinaryResource[]
+  next_cursor?: string
+  total_count: number
+  rate_limit_allowed?: number
+  rate_limit_remaining?: number
+  rate_limit_reset_at?: string
+}
+
+export interface CloudinaryUsageStats {
+  plan: string
+  last_updated: string
+  objects: number
+  bandwidth: number
+  storage: number
+  transformed_images: number
+  transformed_videos: number
+  rate_limit_allowed?: number
+  rate_limit_remaining?: number
 }
 
 export interface CloudinaryTransformation {
   width?: number
   height?: number
   crop?: string
-  quality?: string | number
+  quality?: number | string
   format?: string
   gravity?: string
   effect?: string
-  overlay?: string
-  underlay?: string
   angle?: number
-  radius?: number | string
+  flip?: string
+  opacity?: number
   border?: string
-  color?: string
-  dpr?: number
-  flags?: string
-  [key: string]: string | number | boolean | undefined
+  radius?: number
+}
+
+export interface CloudinaryUploadResult {
+  public_id: string
+  version: number
+  signature: string
+  width: number
+  height: number
+  format: string
+  resource_type: string
+  created_at: string
+  tags: string[]
+  bytes: number
+  type: string
+  etag: string
+  placeholder: boolean
+  url: string
+  secure_url: string
+  access_mode: string
+  original_filename: string
 }
 
 export interface UploadOptions {
@@ -70,6 +132,15 @@ export class CloudinaryService {
         resource_type: result.resource_type,
         bytes: result.bytes,
         created_at: result.created_at,
+        version: result.version || 0,
+        signature: result.signature || '',
+        tags: result.tags || [],
+        type: result.type || 'upload',
+        etag: result.etag || '',
+        placeholder: result.placeholder || false,
+        url: result.url || result.secure_url,
+        access_mode: result.access_mode || 'public',
+        original_filename: result.original_filename || '',
       }
     } catch (error) {
       console.error('Cloudinary upload error:', error)
@@ -159,6 +230,265 @@ export class CloudinaryService {
       format: options.format || 'auto',
       crop: options.crop || 'scale',
     })
+  }
+
+  // Admin API methods for advanced file management
+
+  static async listResources(
+    options: CloudinarySearchOptions = {}
+  ): Promise<CloudinarySearchResult> {
+    try {
+      const result = await cloudinary.api.resources({
+        type: options.type || 'upload',
+        prefix: options.prefix,
+        tags: options.with_field?.includes('tags') || false,
+        context: options.with_field?.includes('context') || false,
+        metadata: options.with_field?.includes('metadata') || false,
+        direction: options.direction || 'desc',
+        max_results: options.max_results || 50,
+        next_cursor: options.next_cursor,
+      })
+
+      return {
+        resources: result.resources,
+        next_cursor: result.next_cursor,
+        rate_limit_allowed: result.rate_limit_allowed,
+        rate_limit_reset_at: result.rate_limit_reset_at,
+        rate_limit_remaining: result.rate_limit_remaining,
+        total_count: result.total_count,
+      }
+    } catch (error) {
+      console.error('Cloudinary list resources error:', error)
+      throw new Error('Failed to list resources from Cloudinary')
+    }
+  }
+
+  static async searchResources(
+    expression: string,
+    options: CloudinarySearchOptions = {}
+  ): Promise<CloudinarySearchResult> {
+    try {
+      const result = await cloudinary.search
+        .expression(expression)
+        .sort_by('created_at', options.direction || 'desc')
+        .max_results(options.max_results || 50)
+        .execute()
+
+      return {
+        resources: result.resources,
+        next_cursor: result.next_cursor,
+        rate_limit_allowed: result.rate_limit_allowed,
+        rate_limit_reset_at: result.rate_limit_reset_at,
+        rate_limit_remaining: result.rate_limit_remaining,
+        total_count: result.total_count,
+      }
+    } catch (error) {
+      console.error('Cloudinary search resources error:', error)
+      throw new Error('Failed to search resources from Cloudinary')
+    }
+  }
+
+  static async listFolders(prefix?: string): Promise<CloudinaryFolder[]> {
+    try {
+      const result = await cloudinary.api.sub_folders(prefix || '')
+      return result.folders.map((folder: {
+        name: string
+        path: string
+        bytes?: number
+        file_count?: number
+      }) => ({
+        name: folder.name,
+        path: folder.path,
+        bytes: folder.bytes || 0,
+        file_count: folder.file_count || 0,
+        created_at: new Date().toISOString(),
+      }))
+    } catch (error) {
+      console.error('Cloudinary list folders error:', error)
+      throw new Error('Failed to list folders from Cloudinary')
+    }
+  }
+
+  static async createFolder(path: string): Promise<CloudinaryFolder> {
+    try {
+      // Cloudinary doesn't have a direct create folder API
+      // We create a dummy file to establish the folder structure
+      const dummyPublicId = `${path}/.folder_marker`
+      await cloudinary.uploader.upload('data:text/plain;base64,dGVzdA==', {
+        public_id: dummyPublicId,
+        resource_type: 'raw',
+      })
+      
+      // Clean up the dummy file
+      await cloudinary.uploader.destroy(dummyPublicId, { resource_type: 'raw' })
+      
+      return {
+        name: path.split('/').pop() || path,
+        path: path,
+        bytes: 0,
+        file_count: 0,
+        created_at: new Date().toISOString(),
+      }
+    } catch (error) {
+      console.error('Cloudinary create folder error:', error)
+      throw new Error('Failed to create folder in Cloudinary')
+    }
+  }
+
+  static async deleteFolder(path: string): Promise<boolean> {
+    try {
+      const result = await cloudinary.api.delete_folder(path)
+      return result.deleted
+    } catch (error) {
+      console.error('Cloudinary delete folder error:', error)
+      throw new Error('Failed to delete folder from Cloudinary')
+    }
+  }
+
+  static async deleteFiles(publicIds: string[]): Promise<{ deleted: string[]; failed: string[] }> {
+    try {
+      const result = await cloudinary.api.delete_resources(publicIds)
+      return {
+        deleted: Object.keys(result.deleted || {}),
+        failed: Object.keys(result.failed || {}),
+      }
+    } catch (error) {
+      console.error('Cloudinary batch delete error:', error)
+      throw new Error('Failed to delete files from Cloudinary')
+    }
+  }
+
+  static async moveFile(
+    publicId: string,
+    destination: string
+  ): Promise<{ public_id: string; secure_url: string }> {
+    try {
+      const result = await cloudinary.uploader.rename(publicId, destination)
+      return {
+        public_id: result.public_id,
+        secure_url: result.secure_url,
+      }
+    } catch (error) {
+      console.error('Cloudinary move file error:', error)
+      throw new Error('Failed to move file in Cloudinary')
+    }
+  }
+
+  static async addTags(publicIds: string[], tags: string[]): Promise<boolean> {
+    try {
+      await cloudinary.uploader.add_tag(tags.join(','), publicIds)
+      return true
+    } catch (error) {
+      console.error('Error adding tags:', error)
+      return false
+    }
+  }
+
+  static async removeTags(publicIds: string[], tags: string[]): Promise<boolean> {
+    try {
+      await cloudinary.uploader.remove_tag(tags.join(','), publicIds)
+      return true
+    } catch (error) {
+      console.error('Error removing tags:', error)
+      return false
+    }
+  }
+
+  static async addContext(
+    publicIds: string[], 
+    context: Record<string, string>
+  ): Promise<boolean> {
+    try {
+      const contextString = Object.entries(context)
+        .map(([key, value]) => `${key}=${value}`)
+        .join('|')
+      
+      await cloudinary.uploader.add_context(contextString, publicIds)
+      return true
+    } catch (error) {
+      console.error('Error adding context:', error)
+      return false
+    }
+  }
+
+  static async getUsageStats(): Promise<{
+    plan: string
+    last_updated: string
+    objects: number
+    bandwidth: number
+    storage: number
+    transformed_images: number
+    transformed_videos: number
+  }> {
+    try {
+      const result = await cloudinary.api.usage()
+      return {
+        plan: result.plan,
+        last_updated: result.last_updated,
+        objects: result.objects,
+        bandwidth: result.bandwidth,
+        storage: result.storage,
+        transformed_images: result.transformed_images,
+        transformed_videos: result.transformed_videos,
+      }
+    } catch (error) {
+      console.error('Cloudinary usage stats error:', error)
+      throw new Error('Failed to get usage stats from Cloudinary')
+    }
+  }
+
+  static async getResourceAnalysis(publicId: string): Promise<{
+    accessibility: {
+      score?: number
+      issues?: string[]
+    }
+    colors: {
+      prominent?: Array<{
+        color?: string
+        percent?: number
+      }>
+    }
+    faces: Array<{
+      coordinates?: Array<number>
+      attributes?: Record<string, unknown>
+    }>
+    exif: Record<string, unknown>
+    image_metadata: Record<string, unknown>
+    pages: Array<{
+      width?: number
+      height?: number
+    }>
+    quality_analysis: {
+      score?: number
+      focus?: number
+      noise?: number
+      contrast?: number
+      brightness?: number
+    }
+  }> {
+    try {
+      const result = await cloudinary.api.resource(publicId, {
+        quality_analysis: true,
+        colors: true,
+        faces: true,
+        accessibility: true,
+        image_metadata: true,
+        pages: true,
+      })
+
+      return {
+        accessibility: result.accessibility,
+        colors: result.colors,
+        faces: result.faces,
+        exif: result.exif,
+        image_metadata: result.image_metadata,
+        pages: result.pages,
+        quality_analysis: result.quality_analysis,
+      }
+    } catch (error) {
+      console.error('Cloudinary resource analysis error:', error)
+      throw new Error('Failed to get resource analysis from Cloudinary')
+    }
   }
 }
 

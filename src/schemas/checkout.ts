@@ -4,23 +4,21 @@ export const PersonalInfoSchema = z.object({
   firstName: z.string().min(1, 'El nombre es requerido'),
   lastName: z.string().min(1, 'El apellido es requerido'),
   email: z.string().email('Email inválido'),
-  phone: z.string().min(1, 'El teléfono es requerido'),
-  country: z.string().optional(),
-  city: z.string().optional(),
-  address: z.string().optional(),
-  zipCode: z.string().optional(),
+  country: z.string().min(1, 'El país es requerido'),
+  city: z.string().min(1, 'La ciudad es requerida'),
+  address: z.string().min(1, 'La dirección es requerida'),
+  zipCode: z.string().min(1, 'El código postal es requerido'),
 })
 
-export const createPersonalInfoSchema = (needsShipping: boolean) => {
+export const createPersonalInfoSchema = () => {
   return z.object({
     firstName: z.string().min(1, 'El nombre es requerido'),
     lastName: z.string().min(1, 'El apellido es requerido'),
     email: z.string().email('Email inválido'),
-    phone: z.string().min(1, 'El teléfono es requerido'),
-    country: needsShipping ? z.string().min(1, 'El país es requerido') : z.string().optional(),
-    city: needsShipping ? z.string().min(1, 'La ciudad es requerida') : z.string().optional(),
-    address: needsShipping ? z.string().min(1, 'La dirección es requerida') : z.string().optional(),
-    zipCode: needsShipping ? z.string().min(1, 'El código postal es requerido') : z.string().optional(),
+    country: z.string().min(1, 'El país es requerido'),
+    city: z.string().min(1, 'La ciudad es requerida'),
+    address: z.string().min(1, 'La dirección es requerida'),
+    zipCode: z.string().min(1, 'El código postal es requerido'),
   })
 }
 

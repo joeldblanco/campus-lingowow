@@ -1,18 +1,35 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { useShopStore } from './useShopStore'
-import { ProductTypeEnum } from '@/types/shop'
 import type { CartItem } from '@/types/shop'
 
-// Helper function to create mock products
-const createMockProduct = (id: string, type: ProductTypeEnum = ProductTypeEnum.COURSE) => ({
+// Helper function to create mock products with all required fields for CartItem and Course compatibility
+const createMockProduct = (id: string) => ({
   id,
   name: `Product ${id}`,
-  type,
-  description: 'Test product',
+  title: `Product ${id}`, // Required for CartItem compatibility
+  slug: `product-${id}`,
+  description: 'Test product description',
+  shortDesc: 'Test short description',
+  price: 100,
+  comparePrice: null,
+  sku: `SKU-${id}`,
   image: 'test.jpg',
-  status: 'ACTIVE' as const,
+  images: ['test.jpg'],
+  isActive: true,
+  isDigital: true,
+  stock: 999,
+  categoryId: 'test-category-id',
+  tags: ['test'],
+  requiresScheduling: false,
+  courseId: null,
+  maxScheduleSlots: null,
+  scheduleDuration: null,
   createdAt: new Date(),
   updatedAt: new Date(),
+  // Course fields for compatibility
+  levels: ['BEGINNER'],
+  language: 'es',
+  category: 'test',
 })
 
 const createMockPlan = (id: string, price: number = 100) => ({
@@ -23,8 +40,8 @@ const createMockPlan = (id: string, price: number = 100) => ({
   features: [],
 })
 
-const createMockCartItem = (productId: string, planId: string, type: ProductTypeEnum = ProductTypeEnum.COURSE): CartItem => ({
-  product: createMockProduct(productId, type),
+const createMockCartItem = (productId: string, planId: string): CartItem => ({
+  product: createMockProduct(productId),
   plan: createMockPlan(planId),
 })
 
@@ -451,7 +468,7 @@ describe('useShopStore - Getters', () => {
   describe('getRequiresAuth', () => {
     it('should return true when cart has a course', () => {
       const store = useShopStore.getState()
-      const courseItem = createMockCartItem('product-1', 'plan-1', ProductTypeEnum.COURSE)
+      const courseItem = createMockCartItem('product-1', 'plan-1')
 
       store.addToCart(courseItem)
 
@@ -460,7 +477,7 @@ describe('useShopStore - Getters', () => {
 
     it('should return false when cart has only merchandise', () => {
       const store = useShopStore.getState()
-      const merchItem = createMockCartItem('product-1', 'plan-1', ProductTypeEnum.MERCHANDISE)
+      const merchItem = createMockCartItem('product-1', 'plan-1')
 
       store.addToCart(merchItem)
 
@@ -474,8 +491,8 @@ describe('useShopStore - Getters', () => {
 
     it('should return true when cart has mix of courses and merchandise', () => {
       const store = useShopStore.getState()
-      const courseItem = createMockCartItem('product-1', 'plan-1', ProductTypeEnum.COURSE)
-      const merchItem = createMockCartItem('product-2', 'plan-1', ProductTypeEnum.MERCHANDISE)
+      const courseItem = createMockCartItem('product-1', 'plan-1')
+      const merchItem = createMockCartItem('product-2', 'plan-1')
 
       store.addToCart(courseItem)
       store.addToCart(merchItem)
@@ -487,7 +504,7 @@ describe('useShopStore - Getters', () => {
   describe('getHasMerchandise', () => {
     it('should return true when cart has merchandise', () => {
       const store = useShopStore.getState()
-      const merchItem = createMockCartItem('product-1', 'plan-1', ProductTypeEnum.MERCHANDISE)
+      const merchItem = createMockCartItem('product-1', 'plan-1')
 
       store.addToCart(merchItem)
 
@@ -496,7 +513,7 @@ describe('useShopStore - Getters', () => {
 
     it('should return false when cart has only courses', () => {
       const store = useShopStore.getState()
-      const courseItem = createMockCartItem('product-1', 'plan-1', ProductTypeEnum.COURSE)
+      const courseItem = createMockCartItem('product-1', 'plan-1')
 
       store.addToCart(courseItem)
 
@@ -510,8 +527,8 @@ describe('useShopStore - Getters', () => {
 
     it('should return true when cart has mix of courses and merchandise', () => {
       const store = useShopStore.getState()
-      const courseItem = createMockCartItem('product-1', 'plan-1', ProductTypeEnum.COURSE)
-      const merchItem = createMockCartItem('product-2', 'plan-1', ProductTypeEnum.MERCHANDISE)
+      const courseItem = createMockCartItem('product-1', 'plan-1')
+      const merchItem = createMockCartItem('product-2', 'plan-1')
 
       store.addToCart(courseItem)
       store.addToCart(merchItem)

@@ -13,7 +13,6 @@ type OrderSummaryProduct = {
 interface OrderSummaryProps {
   products: OrderSummaryProduct[]
   subtotal: number
-  taxes: number
   discount?: number
   total: number
 }
@@ -21,7 +20,6 @@ interface OrderSummaryProps {
 export function OrderSummary({
   products,
   subtotal,
-  taxes,
   discount = 0,
   total,
 }: OrderSummaryProps) {
@@ -59,10 +57,6 @@ export function OrderSummary({
           <div className="flex justify-between">
             <p className="text-muted-foreground">Subtotal</p>
             <p>{formatCurrency(subtotal)}</p>
-          </div>
-          <div className="flex justify-between">
-            <p className="text-muted-foreground">Impuestos</p>
-            <p>{formatCurrency(taxes)}</p>
           </div>
           {discount > 0 && (
             <div className="flex justify-between text-green-600">

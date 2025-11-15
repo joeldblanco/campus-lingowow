@@ -35,12 +35,11 @@ export function PersonalInfoForm({ onSubmit }: PersonalInfoFormProps) {
   const [needsShipping, setNeedsShipping] = useState(false)
 
   const form = useForm<FormData>({
-    resolver: zodResolver(createPersonalInfoSchema(needsShipping)),
+    resolver: zodResolver(createPersonalInfoSchema()),
     defaultValues: {
       firstName: session?.user?.name?.split(' ')[0] || '',
       lastName: session?.user?.name?.split(' ').slice(1).join(' ') || '',
       email: session?.user?.email || '',
-      phone: '',
       country: '',
       city: '',
       address: '',
@@ -99,7 +98,7 @@ export function PersonalInfoForm({ onSubmit }: PersonalInfoFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onFormSubmit)}>
+      <form id="personal-info-form" onSubmit={form.handleSubmit(onFormSubmit)}>
         <CardTitle className="mb-4">Información Personal</CardTitle>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <FormField
@@ -109,7 +108,7 @@ export function PersonalInfoForm({ onSubmit }: PersonalInfoFormProps) {
               <FormItem>
                 <FormLabel>Nombre</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input placeholder="Juan" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -122,7 +121,7 @@ export function PersonalInfoForm({ onSubmit }: PersonalInfoFormProps) {
               <FormItem>
                 <FormLabel>Apellidos</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input placeholder="Pérez García" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -135,25 +134,71 @@ export function PersonalInfoForm({ onSubmit }: PersonalInfoFormProps) {
               <FormItem>
                 <FormLabel>Correo Electrónico</FormLabel>
                 <FormControl>
-                  <Input type="email" {...field} />
+                  <Input type="email" placeholder="juan.perez@ejemplo.com" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Teléfono</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        </div>
+
+        {/* Billing Address - Always Required */}
+        <div className="mb-6">
+          <CardTitle className="mb-4">Dirección de Facturación</CardTitle>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="country"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>País</FormLabel>
+                  <FormControl>
+                    <Input placeholder="España" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="city"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Ciudad</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Madrid" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem className="md:col-span-2">
+                  <FormLabel>Dirección</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Calle Gran Vía 123, Piso 4, Puerta A" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="zipCode"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Código Postal</FormLabel>
+                  <FormControl>
+                    <Input placeholder="28013" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
 
         {/* Mostrar opción de envío solo si hay productos físicos */}
@@ -173,64 +218,48 @@ export function PersonalInfoForm({ onSubmit }: PersonalInfoFormProps) {
           </>
         )}
 
-        {/* Campos de dirección condicionales */}
-        {hasMerchandise && needsShipping && (
+        {/* Mostrar opción de envío solo si hay productos físicos */}
+        {hasMerchandise && (
           <>
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem className="mb-4">
-                  <FormLabel>Dirección</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <FormField
-                control={form.control}
-                name="city"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Ciudad</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="zipCode"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Código Postal</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="country"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>País</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <Separator className="my-4" />
+            <div className="mb-4">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="needsShipping"
+                  checked={needsShipping}
+                  onCheckedChange={(checked) => setNeedsShipping(checked === true)}
+                />
+                <label htmlFor="needsShipping">Usar esta dirección para envío</label>
+              </div>
+              <p className="text-sm text-gray-600 mt-2">
+                La dirección de facturación se usará también para envío si seleccionas esta opción
+              </p>
             </div>
           </>
+        )}
+
+        {/* Create Account Option for Guest Users */}
+        {!session?.user && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <div className="flex items-start gap-3">
+              <Checkbox
+                id="createAccount"
+                defaultChecked={true}
+                onCheckedChange={(checked) => {
+                  // Save preference for creating account after payment
+                  sessionStorage.setItem('create-account-after-payment', checked.toString())
+                }}
+              />
+              <div className="flex-1">
+                <label htmlFor="createAccount" className="text-sm font-medium text-blue-800 cursor-pointer">
+                  Crear cuenta después del pago
+                </label>
+                <p className="text-xs text-blue-600 mt-1">
+                  Guarda tu información para futuras compras y accede a tu historial de cursos.
+                </p>
+              </div>
+            </div>
+          </div>
         )}
 
         <Button type="submit" className="w-full">

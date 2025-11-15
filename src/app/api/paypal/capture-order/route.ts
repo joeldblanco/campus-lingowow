@@ -33,7 +33,32 @@ interface InvoiceData {
 
 export async function POST(req: NextRequest) {
   try {
-    // Intentar obtener el token primero (más confiable)
+    // Obtener datos del request body para usuarios invitados
+    const body = await req.json()
+    
+    const { orderID, invoiceData, customerInfo } = body as {
+      orderID: string
+      invoiceData: InvoiceData
+      customerInfo?: {
+        email: string
+        firstName: string
+        lastName: string
+        address?: string
+        country?: string
+        city?: string
+        zipCode?: string
+      }
+    }
+
+    // Verificar datos requeridos
+    if (!orderID || !invoiceData) {
+      return NextResponse.json(
+        { error: 'Datos incompletos' },
+        { status: 400 }
+      )
+    }
+
+    // Intentar obtener autenticación (para usuarios logueados)
     const token = await getToken({ 
       req,
       secret: process.env.JWT_SECRET,
@@ -43,7 +68,6 @@ export async function POST(req: NextRequest) {
         : 'authjs.session-token'
     })
     
-    // Si no hay token, intentar con auth()
     let userId = token?.sub
     
     if (!userId) {
@@ -51,15 +75,23 @@ export async function POST(req: NextRequest) {
       userId = session?.user?.id
     }
     
-    if (!userId) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    // Para usuarios invitados, verificar que tengan información del cliente
+    if (!userId && !customerInfo) {
+      return NextResponse.json({ error: 'Se requiere información del cliente para usuarios invitados' }, { status: 400 })
     }
 
-    const body = await req.json()
-    
-    const { orderID, invoiceData } = body as {
-      orderID: string
-      invoiceData: InvoiceData
+    // Si no hay usuario autenticado pero hay información de cliente, crear un usuario invitado
+    if (!userId && customerInfo) {
+      // Crear un usuario invitado temporal
+      const guestUser = await db.user.create({
+        data: {
+          name: customerInfo.firstName,
+          lastName: customerInfo.lastName,
+          email: customerInfo.email,
+          roles: ['GUEST'],
+        },
+      })
+      userId = guestUser.id
     }
 
     if (!orderID) {
@@ -80,7 +112,7 @@ export async function POST(req: NextRequest) {
       const invoice = await db.invoice.create({
         data: {
           invoiceNumber,
-          userId: userId,
+          userId: userId!,
           subtotal: invoiceData.subtotal,
           discount: invoiceData.discount || 0,
           tax: invoiceData.tax || 0,
@@ -131,7 +163,7 @@ export async function POST(req: NextRequest) {
           // Crear la compra del producto
           const purchase = await db.productPurchase.create({
             data: {
-              userId: userId,
+              userId: userId!,
               productId: item.productId,
               invoiceId: invoice.id,
               status: 'CONFIRMED',
@@ -153,13 +185,13 @@ export async function POST(req: NextRequest) {
             enrollment = await db.enrollment.upsert({
               where: {
                 studentId_courseId_academicPeriodId: {
-                  studentId: userId,
+                  studentId: userId!,
                   courseId: plan.courseId,
                   academicPeriodId: currentPeriod.id,
                 },
               },
               create: {
-                studentId: userId,
+                studentId: userId!,
                 courseId: plan.courseId,
                 academicPeriodId: currentPeriod.id,
                 status: 'ACTIVE',
@@ -234,7 +266,7 @@ export async function POST(req: NextRequest) {
                   // Verificar si ya existe una reserva para esta fecha
                   const existingBooking = await db.classBooking.findFirst({
                     where: {
-                      studentId: userId,
+                      studentId: userId!,
                       teacherId: scheduleForDay.teacherId,
                       day: dayString,
                       timeSlot: `${scheduleForDay.startTime}-${scheduleForDay.endTime}`,
@@ -244,7 +276,7 @@ export async function POST(req: NextRequest) {
                   if (!existingBooking) {
                     await db.classBooking.create({
                       data: {
-                        studentId: userId,
+                        studentId: userId!,
                         teacherId: scheduleForDay.teacherId,
                         enrollmentId: enrollment!.id,
                         day: dayString,

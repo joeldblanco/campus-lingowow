@@ -19,10 +19,7 @@ import {
   getTeacherSchedules,
 } from '@/lib/actions/calendar'
 import { getActiveEnrollmentsForStudent } from '@/lib/actions/enrollments'
-import {
-  isSlotAvailableForDuration,
-  isSlotOverlappingWithBookings,
-} from '@/lib/utils/booking'
+import { isSlotAvailableForDuration, isSlotOverlappingWithBookings } from '@/lib/utils/booking'
 import {
   AvailabilityRange,
   isTimeSlotInAnyRange,
@@ -120,7 +117,9 @@ export function CalendarApp() {
   const [selectedTeacherId, setSelectedTeacherId] = useState<string>('')
   const { data: session } = useSession()
   const userId = session?.user?.id
-  const userRole = session?.user?.roles.includes(UserRole.TEACHER) ? UserRole.TEACHER : UserRole.STUDENT
+  const userRole = session?.user?.roles.includes(UserRole.TEACHER)
+    ? UserRole.TEACHER
+    : UserRole.STUDENT
 
   // Estado para almacenar la disponibilidad y las reservas
   const [teacherAvailability, setTeacherAvailability] = useState<
@@ -154,11 +153,11 @@ export function CalendarApp() {
       setIsLoading(true)
       try {
         if (!userId) return
-        
+
         // Establecer el teacherId según el rol
         const teacherId = userRole === UserRole.TEACHER ? userId : selectedTeacherId || userId
         setSelectedTeacherId(teacherId)
-        
+
         // Cargar disponibilidad del profesor
         const availabilityResult = await getTeacherAvailability(teacherId)
         if (availabilityResult.success && availabilityResult.data) {
@@ -176,7 +175,7 @@ export function CalendarApp() {
           const schedulesResult = await getTeacherSchedules(teacherId)
           if (schedulesResult.success && schedulesResult.data) {
             setRecurringSchedules(schedulesResult.data)
-            
+
             // Asignar colores a estudiantes de horarios recurrentes
             const colorOptions = [
               'bg-purple-200 text-purple-800',
@@ -188,10 +187,10 @@ export function CalendarApp() {
               'bg-pink-200 text-pink-800',
               'bg-indigo-200 text-indigo-800',
             ]
-            
+
             const newStudentColors: Record<string, string> = {}
             let colorIndex = 0
-            
+
             schedulesResult.data.forEach((schedule) => {
               const studentEmail = schedule.enrollment.student.email
               if (!newStudentColors[studentEmail]) {
@@ -199,7 +198,7 @@ export function CalendarApp() {
                 colorIndex++
               }
             })
-            
+
             setStudentColors(newStudentColors)
           }
         } else {
@@ -275,8 +274,7 @@ export function CalendarApp() {
 
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId])
+  }, [userId, selectedTeacherId, userRole])
 
   // Guardar cambios de disponibilidad
   const saveAvailabilityChanges = async () => {
@@ -349,7 +347,6 @@ export function CalendarApp() {
       setIsSaving(false)
     }
   }
-
 
   const handleStartDrag = (day: string, time: string, isAvailable: boolean) => {
     if (userRole !== UserRole.TEACHER) return
@@ -604,24 +601,24 @@ export function CalendarApp() {
     // Determinar si 'day' es un nombre de día (monday, tuesday, etc.) o una fecha (YYYY-MM-DD)
     const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
     const isDayName = dayNames.includes(day.toLowerCase())
-    
+
     if (isDayName) {
       // Para vista semanal, buscar en horarios recurrentes
       const dayIndex = dayNames.indexOf(day.toLowerCase())
       const [slotStart] = splitTimeSlot(timeSlot)
-      
+
       // Buscar un horario recurrente que coincida con el día y la hora
       const schedule = recurringSchedules.find((s) => {
         if (s.dayOfWeek !== dayIndex) return false
-        
+
         // Verificar si el slot está dentro del rango del horario
         const scheduleStartMinutes = timeToMinutes(s.startTime)
         const scheduleEndMinutes = timeToMinutes(s.endTime)
         const slotStartMinutes = timeToMinutes(slotStart)
-        
+
         return slotStartMinutes >= scheduleStartMinutes && slotStartMinutes < scheduleEndMinutes
       })
-      
+
       if (schedule && schedule.enrollment.student) {
         return {
           name: `${schedule.enrollment.student.name} ${schedule.enrollment.student.lastName}`.trim(),
@@ -632,7 +629,7 @@ export function CalendarApp() {
     } else {
       // Para vista por fecha, buscar en bookings específicos
       const booking = bookings.find((b) => b.day === day && b.timeSlot === timeSlot)
-      
+
       if (booking && booking.student) {
         return {
           name: `${booking.student.name} ${booking.student.lastName}`.trim(),
@@ -641,7 +638,7 @@ export function CalendarApp() {
         }
       }
     }
-    
+
     return null
   }
 
@@ -672,7 +669,7 @@ export function CalendarApp() {
         onConfirm={handleConfirmBooking}
         bookingDetails={bookingDetails}
       />
-      
+
       {/* Controles para estudiantes */}
       {userRole === UserRole.STUDENT && (
         <div className="flex flex-col sm:flex-row justify-between gap-4">

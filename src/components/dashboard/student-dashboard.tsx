@@ -59,8 +59,31 @@ export default function Dashboard() {
         <h1 className="text-2xl font-bold tracking-tight">
           Bienvenido de nuevo, {user?.name ?? 'Usuario'}
         </h1>
-        <p className="text-muted-foreground">Ve tu progreso y tus próximas clases.</p>
+        <p className="text-muted-foreground">Mira cómo vas y tus próximas clases.</p>
       </div>
+      
+      {/* Notification for students with no active enrollments */}
+      {dashboardData?.enrollments && dashboardData.enrollments.filter(e => e.progress > 0).length === 0 && (
+        <Card className="border-yellow-200 bg-yellow-50">
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-3">
+              <div className="text-yellow-600">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+              </div>
+              <div>
+                <p className="font-medium text-yellow-800">No tienes cursos activos</p>
+                <p className="text-sm text-yellow-700">
+                  Para empezar a aprender, <Link href="/courses" className="underline font-medium">inscríbete en un curso</Link>.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
       
       {/* Banner de horarios pendientes */}
       <PendingScheduleBanner />
@@ -68,9 +91,9 @@ export default function Dashboard() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle>Próxima Clase</CardTitle>
+            <CardTitle>Mi próxima clase</CardTitle>
             <CardDescription>
-              Cuando tengas una clase, el botón se activará y podrás acceder a tu sala virtual
+              Cuando tengas una clase, este botón se activará para que puedas entrar
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -89,10 +112,10 @@ export default function Dashboard() {
             )}
           </CardContent>
         </Card>
-        <Card>
+        <Card className="lg:col-span-3">
           <CardHeader className="pb-2">
-            <CardTitle>Progreso</CardTitle>
-            <CardDescription>Nivel Actual</CardDescription>
+            <CardTitle>¿Cómo voy?</CardTitle>
+            <CardDescription>Mi nivel actual</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="text-2xl font-bold">Nivel {dashboardData?.currentLevel || 1}</div>
@@ -100,32 +123,11 @@ export default function Dashboard() {
             <p className="text-xs text-muted-foreground">{dashboardData?.totalPoints || 0} XP</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle>Asistencia</CardTitle>
-            <CardDescription>Período actual</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{dashboardData?.attendanceRate || 0}%</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle>Racha</CardTitle>
-            <CardDescription>Días consecutivos</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{dashboardData?.currentStreak || 0}</div>
-            <p className="text-xs text-muted-foreground">
-              Mejor: {dashboardData?.longestStreak || 0} días
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+        </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <Card className="lg:col-span-4">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Próximas Clases</CardTitle>
+            <CardTitle>Mis próximas clases</CardTitle>
             <Button variant="outline" size="sm" asChild>
               <Link href="/classes">Ver Todas</Link>
             </Button>
@@ -147,13 +149,13 @@ export default function Dashboard() {
                 />
               ))
             ) : (
-              <p className="text-muted-foreground">No tienes clases programadas próximamente.</p>
+              <p className="text-muted-foreground">No tienes clases próximas.</p>
             )}
           </CardContent>
         </Card>
         <Card className="lg:col-span-3">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Materiales del Curso</CardTitle>
+            <CardTitle>Mis materiales</CardTitle>
             <Button variant="outline" size="sm" asChild>
               <Link href="#">Ver Todos</Link>
             </Button>
@@ -167,11 +169,11 @@ export default function Dashboard() {
               </TabsList>
               <TabsContent value="all" className="mt-4 space-y-4">
                 <p className="text-muted-foreground">
-                  Los materiales del curso estarán disponibles próximamente.
+                  Tus materiales aparecerán aquí pronto.
                 </p>
               </TabsContent>
               <TabsContent value="recent" className="mt-4 space-y-4">
-                <p className="text-muted-foreground">No hay materiales recientes.</p>
+                <p className="text-muted-foreground">No hay materiales nuevos.</p>
               </TabsContent>
               <TabsContent value="bookmarks" className="mt-4 space-y-4">
                 <p className="text-muted-foreground">No tienes materiales guardados.</p>
@@ -182,29 +184,64 @@ export default function Dashboard() {
       </div>
       <Card>
         <CardHeader>
-          <CardTitle>Progreso de Idiomas</CardTitle>
-          <CardDescription>Sigue tu progreso en diferentes idiomas</CardDescription>
+          <CardTitle>Mis clases esta semana</CardTitle>
+          <CardDescription>Tus clases para los próximos 7 días</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {dashboardData?.enrollments.length && dashboardData?.enrollments.length > 0 ? (
-              dashboardData.enrollments.map((enrollment, index: number) => (
-                <div key={index} className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium">{enrollment.title}</span>
-                      <Badge>Activo</Badge>
+            {(() => {
+              const upcomingClasses = dashboardData?.upcomingClasses || []
+              if (upcomingClasses.length === 0) {
+                return <p className="text-muted-foreground">No tienes clases para esta semana.</p>
+              }
+
+              // Get current week dates
+              const today = new Date()
+              const currentWeek = []
+              for (let i = 0; i < 7; i++) {
+                const date = new Date(today)
+                date.setDate(today.getDate() - today.getDay() + i)
+                currentWeek.push(date)
+              }
+
+              // Filter classes for current week and group by day
+              const weekDays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+              const classesByDay = currentWeek.map((date, index) => {
+                const dateStr = format(date, 'yyyy-MM-dd')
+                const dayClasses = upcomingClasses.filter(cls => cls.date === dateStr)
+                return {
+                  dayName: weekDays[index],
+                  date: format(date, 'dd/MM'),
+                  classes: dayClasses
+                }
+              })
+
+              return (
+                <div className="grid grid-cols-7 gap-2">
+                  {classesByDay.map(({ dayName, date, classes }) => (
+                    <div key={dayName} className="text-center">
+                      <div className="font-medium text-sm mb-2">
+                        <div>{dayName}</div>
+                        <div className="text-xs text-muted-foreground">{date}</div>
+                      </div>
+                      <div className="space-y-1">
+                        {classes.length > 0 ? (
+                          classes.map((cls, idx) => (
+                            <div key={idx} className="bg-muted rounded p-2 text-xs">
+                              <div className="font-medium">{cls.course}</div>
+                              <div className="text-muted-foreground">{cls.time.split('-')[0]}</div>
+                              <div className="text-muted-foreground">{cls.teacher}</div>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="text-xs text-muted-foreground">Libre</div>
+                        )}
+                      </div>
                     </div>
-                    <span className="text-sm text-muted-foreground">
-                      {Math.round(enrollment.progress)}%
-                    </span>
-                  </div>
-                  <Progress value={enrollment.progress} className="h-2" />
+                  ))}
                 </div>
-              ))
-            ) : (
-              <p className="text-muted-foreground">No tienes cursos activos.</p>
-            )}
+              )
+            })()}
           </div>
         </CardContent>
       </Card>
@@ -241,8 +278,8 @@ function UpcomingClassCard({
     const isPastClass = isAfter(currentTime, endDate)
     const isInProgress = !isBefore(currentTime, startDate) && !isAfter(currentTime, endDate)
 
-    if (isPastClass) return 'Esta clase ya pasó'
-    if (isInProgress) return 'Clase en progreso'
+    if (isPastClass) return 'Esta clase ya terminó'
+    if (isInProgress) return 'La clase está ahora'
 
     // Calcular tiempo total en segundos
     const totalSeconds = Math.max(0, differenceInSeconds(startDate, currentTime))
@@ -255,13 +292,13 @@ function UpcomingClassCard({
 
     // Construir mensaje según el tiempo restante
     if (days > 0) {
-      return `Faltan ${days} días, ${hours} horas, ${minutes} minutos y ${seconds} segundos`
+      return `Empieza en ${days} días, ${hours} horas y ${minutes} minutos`
     } else if (hours > 0) {
-      return `Faltan ${hours} horas, ${minutes} minutos y ${seconds} segundos`
+      return `Empieza en ${hours} horas y ${minutes} minutos`
     } else if (minutes > 0) {
-      return `Faltan ${minutes} minutos y ${seconds} segundos`
+      return `Empieza en ${minutes} minutos`
     } else {
-      return `Faltan ${seconds} segundos`
+      return `Empieza en ${seconds} segundos`
     }
   }, [startDate, currentTime, endDate])
 
@@ -283,16 +320,16 @@ function UpcomingClassCard({
       <div className="flex flex-1 flex-col gap-1">
         <div className="flex items-center gap-2">
           <span className="font-semibold">{className}</span>
-          {status === 'in-progress' && <Badge className="bg-destructive">En Progreso</Badge>}
-          {status === 'completed' && <Badge variant="secondary">Completado</Badge>}
-          {status === 'upcoming' && <Badge variant="default">Próximamente</Badge>}
+          {status === 'in-progress' && <Badge className="bg-destructive">Ahora</Badge>}
+          {status === 'completed' && <Badge variant="secondary">Terminada</Badge>}
+          {status === 'upcoming' && <Badge variant="default">Pronto</Badge>}
         </div>
         <div className="text-sm text-muted-foreground">
           <span>{format(startDate, 'dd/MM/yyyy HH:mm', { locale: es })}</span> •{' '}
           <span>{timeRemaining}</span>
         </div>
         <div className="text-sm text-muted-foreground">
-          <span>Instructor: {instructor}</span>
+          <span>Profesor/a: {instructor}</span>
         </div>
       </div>
       <div className="flex flex-col gap-2 sm:flex-row">

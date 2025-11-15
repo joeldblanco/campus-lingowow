@@ -80,7 +80,15 @@ export async function addStudentCredits(
  * Acción para usar un crédito para una clase adicional
  */
 export async function useCreditsForClass(
-  formData: FormData | { creditId: string; enrollmentId: string; classDate: string; timeSlot: string; teacherId: string }
+  formData:
+    | FormData
+    | {
+        creditId: string
+        enrollmentId: string
+        classDate: string
+        timeSlot: string
+        teacherId: string
+      }
 ) {
   try {
     const user = await getCurrentUser()
@@ -155,8 +163,7 @@ export async function useCreditsForClass(
     }
 
     // Usar el crédito para una clase adicional
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [updatedCredit, classBooking] = await db.$transaction([
+    const [, classBooking] = await db.$transaction([
       // Marcar el crédito como utilizado
       db.studentCredit.update({
         where: {
@@ -261,9 +268,10 @@ export async function useCreditsForMaterials(formData: FormData | { creditId: st
  */
 export async function useCreditsForDiscount() {
   // DEPRECATED: Los descuentos ahora se manejan al crear Enrollments
-  return { 
-    success: false, 
-    error: 'Esta funcionalidad ha sido reemplazada. Los descuentos se aplican al inscribirse en cursos.' 
+  return {
+    success: false,
+    error:
+      'Esta funcionalidad ha sido reemplazada. Los descuentos se aplican al inscribirse en cursos.',
   }
 }
 

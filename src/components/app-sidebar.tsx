@@ -9,7 +9,6 @@ import {
   DollarSign,
   FileText,
   GraduationCap,
-  Layers,
   LayoutDashboard,
   Package,
   Receipt,
@@ -42,11 +41,6 @@ const data = {
       url: '/dashboard',
       icon: LayoutDashboard,
       isActive: true,
-    },
-    {
-      title: 'Cursos',
-      url: '/courses',
-      icon: BookOpenText,
     },
     {
       title: 'Tienda',
@@ -102,17 +96,7 @@ const data = {
           url: '/admin/courses',
           icon: BookOpenText,
         },
-        {
-          title: 'Módulos',
-          url: '/admin/modules',
-          icon: Layers,
-        },
-        {
-          title: 'Lecciones',
-          url: '/admin/lessons',
-          icon: Book,
-        },
-        {
+                {
           title: 'Clases',
           url: '/admin/classes',
           icon: GraduationCap,

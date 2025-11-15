@@ -28,22 +28,28 @@ export function useFilterCourses() {
           id: product.id,
           name: product.name,
           slug: product.slug,
-          description: product.description || '',
+          description: product.description,
           shortDesc: product.shortDesc,
           price: product.price,
           comparePrice: product.comparePrice,
           sku: product.sku,
-          image: product.image || '/media/images/default-course.png',
+          image: product.image,
           images: product.images,
           isActive: product.isActive,
           isDigital: product.isDigital,
           stock: product.stock,
           categoryId: product.categoryId,
-          tags: product.tags || [],
+          tags: product.tags,
+          sortOrder: product.sortOrder,
           requiresScheduling: product.requiresScheduling,
           courseId: product.courseId,
           maxScheduleSlots: product.maxScheduleSlots,
           scheduleDuration: product.scheduleDuration,
+          pricingType: product.pricingType,
+          paymentType: product.paymentType,
+          creditPrice: product.creditPrice,
+          acceptsCredits: product.acceptsCredits,
+          acceptsRealMoney: product.acceptsRealMoney,
           createdAt: product.createdAt,
           updatedAt: product.updatedAt,
           // Course fields
@@ -65,6 +71,16 @@ export function useFilterCourses() {
               isPopular: plan.isPopular,
               sortOrder: plan.sortOrder,
               productId: plan.productId,
+              includesClasses: plan.includesClasses,
+              classesPerPeriod: plan.classesPerPeriod,
+              classesPerWeek: plan.classesPerWeek,
+              allowProration: plan.allowProration,
+              autoRenewal: plan.autoRenewal,
+              billingCycle: plan.billingCycle,
+              courseId: plan.courseId,
+              features: (plan.features || []).map((f: string | { feature: { name: string } }) => 
+  typeof f === 'string' ? f : f.feature?.name || ''
+),
               createdAt: plan.createdAt,
               updatedAt: plan.updatedAt,
             })),
@@ -138,8 +154,11 @@ export function useFilterCourses() {
         case 'date-asc':
           return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         case 'date-desc':
-        default:
           return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        case 'custom-order':
+        default:
+          // Respect sortOrder from database for admin-defined ordering
+          return (a.sortOrder || 0) - (b.sortOrder || 0)
       }
     })
 

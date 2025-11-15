@@ -36,7 +36,7 @@ export function CartSheet() {
               {cart.length}
             </Badge>
           )}
-          <span className="sr-only">Open cart</span>
+          <span className="sr-only">Abrir carrito</span>
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className="w-[350px] sm:w-[450px] p-6">
@@ -55,6 +55,14 @@ export function CartSheet() {
               </Button>
             )}
           </div>
+          {/* Cart persistence messaging */}
+          {cart.length > 0 && (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-2 mt-2">
+              <p className="text-xs text-green-800">
+                <strong>✅ Carrito guardado:</strong> Tus productos están guardados de forma segura y estarán aquí cuando vuelvas.
+              </p>
+            </div>
+          )}
         </SheetHeader>
         <Separator className="my-4" />
         {cart.length === 0 ? (
@@ -89,7 +97,7 @@ export function CartSheet() {
                       className="opacity-60 group-hover:opacity-100 transition-opacity"
                     >
                       <X className="h-4 w-4" />
-                      <span className="sr-only">Remove</span>
+                      <span className="sr-only">Eliminar</span>
                     </Button>
                   </div>
                 ))}
@@ -114,7 +122,7 @@ export function CartSheet() {
                     </Button>
                   </Link>
                   <Link href="/shop/cart/checkout" className="flex-1">
-                    <Button className="w-full">Checkout</Button>
+                    <Button className="w-full">Proceder al Pago</Button>
                   </Link>
                 </div>
               </div>

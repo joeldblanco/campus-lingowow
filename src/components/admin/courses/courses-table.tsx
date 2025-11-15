@@ -31,7 +31,7 @@ import {
 } from '@/components/ui/select'
 import { deleteCourse, toggleCoursePublished } from '@/lib/actions/courses'
 import { CourseWithDetails } from '@/types/course'
-import { Archive, BookOpen, Edit, Eye, Globe, MoreHorizontal, Trash2, Users } from 'lucide-react'
+import { Archive, BookOpen, Edit, Eye, Globe, MoreHorizontal, Trash2, Users, Settings } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { EditCourseDialog } from './edit-course-dialog'
@@ -311,6 +311,12 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
                         Editar
                       </DropdownMenuItem>
                     </EditCourseDialog>
+                    <DropdownMenuItem asChild>
+                      <a href={`/admin/courses/${course.id}/builder`}>
+                        <Settings className="h-4 w-4 mr-2" />
+                        Course Builder
+                      </a>
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleTogglePublished(course.id)}>
                       {course.isPublished ? (
                         <>

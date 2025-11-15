@@ -5,22 +5,20 @@ import { PaymentMethodForm } from '@/components/shop/checkout/payment-method-for
 import { PersonalInfoForm } from '@/components/shop/checkout/personal-info-form'
 import { InlineAuthForm } from '@/components/shop/checkout/inline-auth-form'
 import { ScheduleCalendarSelector } from '@/components/checkout/schedule-calendar-selector'
+import { CheckoutProgress } from '@/components/checkout/checkout-progress'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { useShopStore } from '@/stores/useShopStore'
-import { CheckIcon, Loader2, AlertCircle } from 'lucide-react'
+import { Loader2, AlertCircle, ShoppingCart } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
-
-// Constante para los cálculos financieros
-const TAX_RATE = 0.07 // 7% de impuestos - ajusta según tus requerimientos
 
 interface ScheduleSlot {
   teacherId: string
@@ -85,6 +83,18 @@ export default function CheckoutPage() {
   
   const requiresScheduleSelection = plansRequiringSchedule.length > 0
   
+  // Mobile detection
+  const [isMobile, setIsMobile] = useState(false)
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+  
   // Verificar si todos los planes requeridos tienen horario seleccionado
   const allSchedulesSelected = useMemo(() => {
     if (!requiresScheduleSelection) return true
@@ -141,7 +151,7 @@ export default function CheckoutPage() {
   }, [authStatus])
 
   // Calculamos los totales usando useMemo para optimizar rendimiento (con prorrateo)
-  const { products, subtotal, taxes, discount, total } = useMemo(() => {
+  const { products, subtotal, discount, total } = useMemo(() => {
     // Transformamos los CartItems a OrderSummaryProducts para el componente OrderSummary
     const orderSummaryProducts = cartItems.map((item) => {
       // Usar precio prorrateado si existe
@@ -164,19 +174,15 @@ export default function CheckoutPage() {
       return sum + price * (item.quantity || 1)
     }, 0)
 
-    // Calculamos impuestos
-    const taxesAmount = subtotalAmount * TAX_RATE
-
     // Por ahora no hay descuento
     const discountAmount = 0
 
-    // Total final
-    const totalAmount = subtotalAmount + taxesAmount - discountAmount
+    // Total final (sin impuestos)
+    const totalAmount = subtotalAmount - discountAmount
 
     return {
       products: orderSummaryProducts,
       subtotal: subtotalAmount,
-      taxes: taxesAmount,
       discount: discountAmount,
       total: totalAmount,
     }
@@ -278,6 +284,11 @@ export default function CheckoutPage() {
     )
   }
 
+  // Definir pasos dinámicamente según si se requiere selección de horario
+  const checkoutSteps = requiresScheduleSelection 
+    ? ['Autenticación', 'Información Personal', 'Horario', 'Pago']
+    : ['Autenticación', 'Información Personal', 'Pago']
+
   // Mientras verificamos la autenticación
   if (checkingAuth) {
     return (
@@ -293,9 +304,49 @@ export default function CheckoutPage() {
     return (
       <div className="container mx-auto py-8">
         <h1 className="text-3xl font-bold mb-8 text-center">Finalizar Compra</h1>
+        
+        <CheckoutProgress currentStep={0} steps={checkoutSteps} />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <div>
+            {/* Guest Checkout Option */}
+            <Card className="mb-4 border-green-200 bg-green-50">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-bold text-green-800 flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/>
+                      </svg>
+                      Checkout Rápido como Invitado
+                    </h3>
+                    <p className="text-sm text-green-600 mt-1">
+                      Compra sin crear cuenta. Más rápido y privado.
+                    </p>
+                  </div>
+                  {!useShopStore.getState().getRequiresAuth() && (
+                    <Button 
+                      onClick={() => setStep(1)}
+                      className="bg-green-600 hover:bg-green-700"
+                    >
+                      Continuar como Invitado
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Divider */}
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-gray-500">O regístrate/inicia sesión</span>
+              </div>
+            </div>
+
+            {/* Existing Login/Register Form */}
             <InlineAuthForm
               onSuccess={() => {
                 // Cuando el login/registro sea exitoso, el useEffect detectará
@@ -314,7 +365,6 @@ export default function CheckoutPage() {
             <OrderSummary
               products={products}
               subtotal={subtotal}
-              taxes={taxes}
               discount={discount}
               total={total}
             />
@@ -351,50 +401,29 @@ export default function CheckoutPage() {
     >
       <div className="container mx-auto py-8">
         <h1 className="text-3xl font-bold mb-8 text-center">Finalizar Compra</h1>
+        
+        <CheckoutProgress 
+          currentStep={requiresScheduleSelection 
+            ? step === 1 ? 1 
+            : step === 1.5 ? 2 
+            : step === 2 ? 3 
+            : 0
+            : step === 1 ? 1
+            : step === 2 ? 2
+            : 0
+          } 
+          steps={checkoutSteps} 
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="md:col-span-2">
             <Card>
               <CardHeader>
-                <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-                  <div className="flex items-center">
-                    <div
-                      className={`w-8 h-8 rounded-full ${step >= 1 ? 'bg-primary' : 'bg-muted'} flex items-center justify-center text-white mr-2`}
-                    >
-                      {step > 1 ? <CheckIcon size={16} /> : 1}
-                    </div>
-                    <span className="font-medium text-sm">Info Personal</span>
-                  </div>
-                  
-                  {requiresScheduleSelection && (
-                    <div className="flex items-center">
-                      <div
-                        className={`w-8 h-8 rounded-full ${step >= 1.5 ? 'bg-primary' : 'bg-muted'} flex items-center justify-center text-white mr-2`}
-                      >
-                        {step > 1.5 ? <CheckIcon size={16} /> : 2}
-                      </div>
-                      <span className="font-medium text-sm">Horario</span>
-                    </div>
-                  )}
-                  
-                  <div className="flex items-center">
-                    <div
-                      className={`w-8 h-8 rounded-full ${step >= 2 ? 'bg-primary' : 'bg-muted'} flex items-center justify-center text-white mr-2`}
-                    >
-                      {step > 2 ? <CheckIcon size={16} /> : requiresScheduleSelection ? 3 : 2}
-                    </div>
-                    <span className="font-medium text-sm">Pago</span>
-                  </div>
-                  
-                  <div className="flex items-center">
-                    <div
-                      className={`w-8 h-8 rounded-full ${step >= 3 ? 'bg-primary' : 'bg-muted'} flex items-center justify-center text-white mr-2`}
-                    >
-                      {requiresScheduleSelection ? 4 : 3}
-                    </div>
-                    <span className="font-medium text-sm">Confirmación</span>
-                  </div>
-                </div>
+                <CardTitle className="text-xl">
+                  {step === 1 && 'Información Personal'}
+                  {step === 1.5 && 'Seleccionar Horario'}
+                  {step === 2 && 'Método de Pago'}
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 {step === 1 && <PersonalInfoForm onSubmit={handleSubmitPersonalInfo} />}
@@ -481,10 +510,6 @@ export default function CheckoutPage() {
                         <RadioGroupItem value="paypal" id="paypal" />
                         <Label htmlFor="paypal">PayPal</Label>
                       </div>
-                      <div className="flex items-center space-x-2 border p-4 rounded-md">
-                        <RadioGroupItem value="transfer" id="transfer" />
-                        <Label htmlFor="transfer">Transferencia Bancaria</Label>
-                      </div>
                     </RadioGroup>
 
                     <PaymentMethodForm
@@ -495,7 +520,6 @@ export default function CheckoutPage() {
                         items: paypalItems,
                         total,
                         subtotal,
-                        tax: taxes,
                         discount,
                       }}
                       onPayPalSuccess={handlePayPalSuccess}
@@ -519,7 +543,6 @@ export default function CheckoutPage() {
             <OrderSummary
               products={products}
               subtotal={subtotal}
-              taxes={taxes}
               discount={discount}
               total={total}
             />
@@ -534,6 +557,34 @@ export default function CheckoutPage() {
           </div>
         </div>
       </div>
+      
+      {/* Mobile Floating Checkout Button */}
+      {isMobile && step > 0 && (
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg z-40 md:hidden">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Total</p>
+              <p className="text-lg font-bold">${total.toFixed(2)}</p>
+            </div>
+            <Button 
+              size="lg" 
+              className="bg-green-600 hover:bg-green-700"
+              onClick={() => {
+                if (step === 1) {
+                  (document.getElementById('personal-info-form')?.querySelector('button[type="submit"]') as HTMLButtonElement)?.click()
+                } else if (step === 1.5) {
+                  (document.getElementById('schedule-form')?.querySelector('button') as HTMLButtonElement)?.click()
+                } else if (step === 2) {
+                  (document.getElementById('payment-form')?.querySelector('button[type="submit"]') as HTMLButtonElement)?.click()
+                }
+              }}
+            >
+              <ShoppingCart className="w-4 h-4 mr-2" />
+              {step === 2 ? 'Pagar Ahora' : 'Continuar'}
+            </Button>
+          </div>
+        </div>
+      )}
     </PayPalScriptProvider>
   )
 }

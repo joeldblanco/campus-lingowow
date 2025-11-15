@@ -150,6 +150,7 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
         creditPrice: data.creditPrice || null,
         acceptsCredits: data.acceptsCredits,
         acceptsRealMoney: data.acceptsRealMoney,
+        sortOrder: 0,
       }
 
       // Validar que si es MULTIPLE_PLANS, debe tener al menos un plan
@@ -402,7 +403,9 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                     <div className="mt-2">
                       <Image 
                         src={field.value} 
-                        alt="Vista previa" 
+                        alt="Vista previa"
+                        width={80}
+                        height={80}
                         className="w-20 h-20 object-cover rounded border"
                       />
                     </div>

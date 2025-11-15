@@ -27,7 +27,7 @@ interface PaymentMethodFormProps {
   paymentMethod: string
   onSubmit: (data: PaymentFormData) => void
   isLoading: boolean
-  paypalData?: {
+  paypalData: {
     items: Array<{
       productId: string
       planId?: string
@@ -38,7 +38,6 @@ interface PaymentMethodFormProps {
     }>
     total: number
     subtotal: number
-    tax: number
     discount: number
   }
   onPayPalSuccess?: (data: unknown) => void
@@ -50,8 +49,6 @@ type PaymentFormData = {
   expiryMonth?: string
   expiryYear?: string
   cvv?: string
-  holderName?: string
-  reference?: string
 }
 
 // Schema unificado que cambia según el método de pago
@@ -63,11 +60,6 @@ const createPaymentSchema = (paymentMethod: string) => {
       expiryMonth: z.string().min(1, 'Selecciona un mes'),
       expiryYear: z.string().min(1, 'Selecciona un año'),
       cvv: z.string().regex(/^\d{3,4}$/, 'El CVV debe tener 3 o 4 dígitos'),
-    })
-  } else if (paymentMethod === 'transfer') {
-    return z.object({
-      holderName: z.string().min(3, 'El nombre debe tener al menos 3 caracteres'),
-      reference: z.string().min(6, 'La referencia debe tener al menos 6 caracteres'),
     })
   } else {
     // PayPal no necesita campos adicionales
@@ -92,11 +84,6 @@ export function PaymentMethodForm({
         expiryMonth: '',
         expiryYear: '',
         cvv: '',
-      }
-    } else if (paymentMethod === 'transfer') {
-      return {
-        holderName: '',
-        reference: '',
       }
     }
     return {}
@@ -253,7 +240,6 @@ export function PaymentMethodForm({
           items={paypalData.items}
           total={paypalData.total}
           subtotal={paypalData.subtotal}
-          tax={paypalData.tax}
           discount={paypalData.discount}
           onSuccess={onPayPalSuccess}
         />
@@ -261,66 +247,12 @@ export function PaymentMethodForm({
     )
   }
 
-  const renderTransferForm = () => {
-    return (
-      <div className="space-y-6">
-        <div className="p-6 border rounded-md bg-slate-50 mb-4">
-          <h3 className="font-medium mb-2">Datos Bancarios:</h3>
-          <p className="mb-1">
-            <strong>Banco:</strong> Banco Lingowow
-          </p>
-          <p className="mb-1">
-            <strong>IBAN:</strong> ES12 3456 7890 1234 5678 9012
-          </p>
-          <p className="mb-1">
-            <strong>Titular:</strong> Lingowow S.L.
-          </p>
-          <p className="text-sm text-muted-foreground mt-4">
-            Realiza la transferencia e introduce los datos a continuación. Enviaremos tu producto
-            una vez confirmado el pago.
-          </p>
-        </div>
-
-        <FormField
-          control={form.control}
-          name="holderName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nombre del Ordenante</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="reference"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Referencia de la Transferencia</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Incluye la referencia que usaste en la transferencia"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
-    )
-  }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleFormSubmit)}>
         {paymentMethod === 'creditCard' && renderCreditCardForm()}
         {paymentMethod === 'paypal' && renderPayPalForm()}
-        {paymentMethod === 'transfer' && renderTransferForm()}
 
         <div className="mt-8 text-center">
           <div className="flex items-center justify-center mb-6">

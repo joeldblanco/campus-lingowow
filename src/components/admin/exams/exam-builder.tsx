@@ -281,7 +281,10 @@ export function ExamBuilder({ mode, exam }: ExamBuilderProps) {
     }
   }
 
-  const addQuestion = (sectionIndex: number, type: CreateExamQuestionData['type'] = 'MULTIPLE_CHOICE') => {
+  const addQuestion = (
+    sectionIndex: number,
+    type: CreateExamQuestionData['type'] = 'MULTIPLE_CHOICE'
+  ) => {
     const section = sections[sectionIndex]
     if (!section) return
 
@@ -289,8 +292,14 @@ export function ExamBuilder({ mode, exam }: ExamBuilderProps) {
       id: `question-${sectionIndex}-${Date.now()}`,
       type,
       question: '¿Nueva pregunta?',
-      options: type === 'MULTIPLE_CHOICE' ? ['Opción A', 'Opción B', 'Opción C', 'Opción D'] : type === 'TRUE_FALSE' ? ['Verdadero', 'Falso'] : undefined,
-      correctAnswer: type === 'MULTIPLE_CHOICE' ? 'Opción A' : type === 'TRUE_FALSE' ? 'Verdadero' : '',
+      options:
+        type === 'MULTIPLE_CHOICE'
+          ? ['Opción A', 'Opción B', 'Opción C', 'Opción D']
+          : type === 'TRUE_FALSE'
+            ? ['Verdadero', 'Falso']
+            : undefined,
+      correctAnswer:
+        type === 'MULTIPLE_CHOICE' ? 'Opción A' : type === 'TRUE_FALSE' ? 'Verdadero' : '',
       points: 1,
       order: section.questions.length,
       difficulty: 'MEDIUM' as const,
@@ -323,7 +332,9 @@ export function ExamBuilder({ mode, exam }: ExamBuilderProps) {
     const section = sections[sectionIndex]
     if (!section) return
 
-    const updatedQuestions = section.questions.filter((_, i) => i !== questionIndex) as QuestionWithId[]
+    const updatedQuestions = section.questions.filter(
+      (_, i) => i !== questionIndex
+    ) as QuestionWithId[]
     updateSection(sectionIndex, { questions: updatedQuestions })
   }
 
@@ -363,12 +374,18 @@ export function ExamBuilder({ mode, exam }: ExamBuilderProps) {
     setLoading(true)
     try {
       // Remove IDs before saving
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const sectionsToSave: CreateExamSectionData[] = sections.map(({ id, ...section }) => ({
-        ...section,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        questions: (section.questions as QuestionWithId[]).map(({ id: qId, ...question }) => question) as CreateExamQuestionData[],
-      }))
+      const sectionsToSave: CreateExamSectionData[] = sections.map(section => {
+        const { id, ...rest } = section
+        void id // Use the variable to satisfy ESLint
+        return {
+          ...rest,
+          questions: (section.questions as QuestionWithId[]).map(question => {
+            const { id: questionId, ...questionRest } = question
+            void questionId // Use the variable to satisfy ESLint
+            return questionRest
+          }) as CreateExamQuestionData[],
+        }
+      })
 
       const examData = {
         title,

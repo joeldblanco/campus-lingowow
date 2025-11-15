@@ -1,17 +1,17 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@/components/ui/table'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -22,14 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { 
-  DollarSign, 
-  Clock, 
-  CheckCircle2,
-  Download,
-  Filter,
-  TrendingUp
-} from 'lucide-react'
+import { DollarSign, Clock, CheckCircle2, Download, Filter, TrendingUp } from 'lucide-react'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
@@ -79,7 +72,7 @@ export function TeacherEarningsReport() {
   const [earningsData, setEarningsData] = useState<EarningsData | null>(null)
   const [loading, setLoading] = useState(false)
   const [academicPeriods, setAcademicPeriods] = useState<AcademicPeriod[]>([])
-  
+
   // Filtros
   const [filterType, setFilterType] = useState<'dates' | 'period'>('period')
   const [startDate, setStartDate] = useState<string>('')
@@ -96,7 +89,7 @@ export function TeacherEarningsReport() {
           const data = await response.json()
           const periods = data.periods || []
           setAcademicPeriods(periods)
-          
+
           // Buscar el período académico actual
           const today = new Date()
           const activePeriod = periods.find((p: AcademicPeriod) => {
@@ -104,7 +97,7 @@ export function TeacherEarningsReport() {
             const end = new Date(p.endDate)
             return today >= start && today <= end
           })
-          
+
           if (activePeriod && !initialPeriodSet) {
             setSelectedPeriod(activePeriod.id)
             setInitialPeriodSet(true)
@@ -117,21 +110,13 @@ export function TeacherEarningsReport() {
     loadAcademicPeriods()
   }, [initialPeriodSet])
 
-  // Cargar reporte inicial cuando se seleccione el período
-  useEffect(() => {
-    if (session?.user?.id && initialPeriodSet) {
-      loadReport()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session?.user?.id, initialPeriodSet])
-
-  async function loadReport() {
+  const loadReport = useCallback(async () => {
     if (!session?.user?.id) return
-    
+
     setLoading(true)
     try {
       const params = new URLSearchParams()
-      
+
       if (filterType === 'dates') {
         if (startDate) {
           params.append('startDate', startDate)
@@ -144,7 +129,7 @@ export function TeacherEarningsReport() {
       }
 
       const response = await fetch(`/api/teacher/earnings?${params.toString()}`)
-      
+
       if (!response.ok) {
         throw new Error('Error al cargar el reporte de ganancias')
       }
@@ -157,7 +142,14 @@ export function TeacherEarningsReport() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [session?.user?.id, filterType, startDate, endDate, selectedPeriod])
+
+  // Cargar reporte inicial cuando se seleccione el período
+  useEffect(() => {
+    if (session?.user?.id && initialPeriodSet) {
+      loadReport()
+    }
+  }, [session?.user?.id, initialPeriodSet, loadReport])
 
   function handleApplyFilters() {
     loadReport()
@@ -167,15 +159,15 @@ export function TeacherEarningsReport() {
     setStartDate('')
     setEndDate('')
     setFilterType('period')
-    
+
     // Restablecer al período actual
     const today = new Date()
-    const activePeriod = academicPeriods.find(p => {
+    const activePeriod = academicPeriods.find((p) => {
       const start = new Date(p.startDate)
       const end = new Date(p.endDate)
       return today >= start && today <= end
     })
-    
+
     setSelectedPeriod(activePeriod?.id || 'all')
     setTimeout(() => loadReport(), 100)
   }
@@ -184,35 +176,37 @@ export function TeacherEarningsReport() {
     if (!earningsData) return
 
     const rows: string[] = []
-    
+
     // Encabezado
     rows.push('Fecha,Hora,Estudiante,Curso,Duración (min),Ganancias,Período Académico')
-    
+
     // Datos
     earningsData.classes.forEach((classDetail) => {
-      rows.push([
-        classDetail.date,
-        classDetail.timeSlot,
-        classDetail.studentName,
-        classDetail.courseName,
-        classDetail.duration,
-        classDetail.earnings.toFixed(2),
-        classDetail.academicPeriod,
-      ].join(','))
+      rows.push(
+        [
+          classDetail.date,
+          classDetail.timeSlot,
+          classDetail.studentName,
+          classDetail.courseName,
+          classDetail.duration,
+          classDetail.earnings.toFixed(2),
+          classDetail.academicPeriod,
+        ].join(',')
+      )
     })
 
     const csv = rows.join('\n')
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
     const link = document.createElement('a')
     const url = URL.createObjectURL(blob)
-    
+
     link.setAttribute('href', url)
     link.setAttribute('download', `mis-ganancias-${format(new Date(), 'yyyy-MM-dd')}.csv`)
     link.style.visibility = 'hidden'
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
-    
+
     toast.success('Reporte exportado exitosamente')
   }
 
@@ -242,7 +236,10 @@ export function TeacherEarningsReport() {
             {/* Radio buttons para tipo de filtro */}
             <div className="space-y-3">
               <Label>Filtrar por</Label>
-              <RadioGroup value={filterType} onValueChange={(value: 'dates' | 'period') => setFilterType(value)}>
+              <RadioGroup
+                value={filterType}
+                onValueChange={(value: 'dates' | 'period') => setFilterType(value)}
+              >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="dates" id="dates" />
                   <Label htmlFor="dates" className="font-normal cursor-pointer">
@@ -295,7 +292,9 @@ export function TeacherEarningsReport() {
                     <SelectItem value="all">Todos los períodos</SelectItem>
                     {academicPeriods.map((period) => (
                       <SelectItem key={period.id} value={period.id}>
-                        {period.name} ({format(new Date(period.startDate), 'dd/MM/yyyy', { locale: es })} - {format(new Date(period.endDate), 'dd/MM/yyyy', { locale: es })})
+                        {period.name} (
+                        {format(new Date(period.startDate), 'dd/MM/yyyy', { locale: es })} -{' '}
+                        {format(new Date(period.endDate), 'dd/MM/yyyy', { locale: es })})
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -329,7 +328,9 @@ export function TeacherEarningsReport() {
               <CardContent>
                 <div className="flex items-center gap-2">
                   <DollarSign className="h-5 w-5 text-green-600" />
-                  <span className="text-2xl font-bold">${earningsData.totalEarnings.toFixed(2)}</span>
+                  <span className="text-2xl font-bold">
+                    ${earningsData.totalEarnings.toFixed(2)}
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -372,7 +373,9 @@ export function TeacherEarningsReport() {
               <CardContent>
                 <div className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5 text-orange-600" />
-                  <span className="text-2xl font-bold">${earningsData.averagePerClass.toFixed(2)}</span>
+                  <span className="text-2xl font-bold">
+                    ${earningsData.averagePerClass.toFixed(2)}
+                  </span>
                 </div>
               </CardContent>
             </Card>

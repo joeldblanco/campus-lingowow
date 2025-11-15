@@ -1,18 +1,18 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@/components/ui/table'
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -21,15 +21,7 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { 
-  Users, 
-  Clock, 
-  CheckCircle2, 
-  XCircle,
-  Download,
-  Filter,
-  DollarSign
-} from 'lucide-react'
+import { Users, Clock, CheckCircle2, XCircle, Download, Filter, DollarSign } from 'lucide-react'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
@@ -94,7 +86,7 @@ export function PayableClassesReport() {
   const [teachers, setTeachers] = useState<{ id: string; name: string }[]>([])
   const [academicPeriods, setAcademicPeriods] = useState<AcademicPeriod[]>([])
   const [expandedTeacher, setExpandedTeacher] = useState<string | null>(null)
-  
+
   // Filtros
   const [filterType, setFilterType] = useState<'dates' | 'period'>('period')
   const [selectedTeacher, setSelectedTeacher] = useState<string>('all')
@@ -116,7 +108,7 @@ export function PayableClassesReport() {
         console.error('Error cargando profesores:', error)
       }
     }
-    
+
     async function loadAcademicPeriods() {
       try {
         const response = await fetch('/api/academic-periods')
@@ -124,7 +116,7 @@ export function PayableClassesReport() {
           const data = await response.json()
           const periods = data.periods || []
           setAcademicPeriods(periods)
-          
+
           // Buscar el período académico actual (isActive = true)
           // Si no hay ninguno activo, buscar el más reciente que incluya la fecha actual
           const today = new Date()
@@ -133,7 +125,7 @@ export function PayableClassesReport() {
             const end = new Date(p.endDate)
             return today >= start && today <= end
           })
-          
+
           if (activePeriod && !initialPeriodSet) {
             setSelectedPeriod(activePeriod.id)
             setInitialPeriodSet(true)
@@ -143,28 +135,20 @@ export function PayableClassesReport() {
         console.error('Error cargando períodos académicos:', error)
       }
     }
-    
+
     loadTeachers()
     loadAcademicPeriods()
   }, [initialPeriodSet])
 
-  // Cargar reporte inicial cuando se seleccione el período
-  useEffect(() => {
-    if (initialPeriodSet) {
-      loadReport()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialPeriodSet])
-
-  async function loadReport() {
+  const loadReport = useCallback(async () => {
     setLoading(true)
     try {
       const params = new URLSearchParams()
-      
+
       if (selectedTeacher !== 'all') {
         params.append('teacherId', selectedTeacher)
       }
-      
+
       if (filterType === 'dates') {
         if (startDate) {
           params.append('startDate', startDate)
@@ -177,7 +161,7 @@ export function PayableClassesReport() {
       }
 
       const response = await fetch(`/api/reports/payable-classes?${params.toString()}`)
-      
+
       if (!response.ok) {
         throw new Error('Error al cargar el reporte')
       }
@@ -186,11 +170,18 @@ export function PayableClassesReport() {
       setReportData(data)
     } catch (error) {
       console.error('Error cargando reporte:', error)
-      toast.error('Error al cargar el reporte de clases pagables')
+      toast.error('Error al cargar el reporte')
     } finally {
       setLoading(false)
     }
-  }
+  }, [selectedTeacher, filterType, startDate, endDate, selectedPeriod])
+
+  // Cargar reporte inicial cuando se seleccione el período
+  useEffect(() => {
+    if (initialPeriodSet) {
+      loadReport()
+    }
+  }, [initialPeriodSet, loadReport])
 
   function handleApplyFilters() {
     loadReport()
@@ -201,15 +192,15 @@ export function PayableClassesReport() {
     setStartDate('')
     setEndDate('')
     setFilterType('period')
-    
+
     // Restablecer al período actual
     const today = new Date()
-    const activePeriod = academicPeriods.find(p => {
+    const activePeriod = academicPeriods.find((p) => {
       const start = new Date(p.startDate)
       const end = new Date(p.endDate)
       return today >= start && today <= end
     })
-    
+
     setSelectedPeriod(activePeriod?.id || 'all')
     setTimeout(() => loadReport(), 100)
   }
@@ -218,26 +209,30 @@ export function PayableClassesReport() {
     if (!reportData) return
 
     const rows: string[] = []
-    
+
     // Encabezado
-    rows.push('Profesor,Email,Rango,Multiplicador,Fecha,Hora,Estudiante,Curso,Duración (min),Ganancias,Período Académico')
-    
+    rows.push(
+      'Profesor,Email,Rango,Multiplicador,Fecha,Hora,Estudiante,Curso,Duración (min),Ganancias,Período Académico'
+    )
+
     // Datos
     reportData.teacherReports.forEach((teacher) => {
       teacher.classes.forEach((classDetail) => {
-        rows.push([
-          teacher.teacherName,
-          teacher.teacherEmail,
-          teacher.rank || 'N/A',
-          teacher.rateMultiplier,
-          classDetail.date,
-          classDetail.timeSlot,
-          classDetail.studentName,
-          classDetail.courseName,
-          classDetail.duration,
-          classDetail.earnings.toFixed(2),
-          classDetail.academicPeriod,
-        ].join(','))
+        rows.push(
+          [
+            teacher.teacherName,
+            teacher.teacherEmail,
+            teacher.rank || 'N/A',
+            teacher.rateMultiplier,
+            classDetail.date,
+            classDetail.timeSlot,
+            classDetail.studentName,
+            classDetail.courseName,
+            classDetail.duration,
+            classDetail.earnings.toFixed(2),
+            classDetail.academicPeriod,
+          ].join(',')
+        )
       })
     })
 
@@ -245,14 +240,14 @@ export function PayableClassesReport() {
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
     const link = document.createElement('a')
     const url = URL.createObjectURL(blob)
-    
+
     link.setAttribute('href', url)
     link.setAttribute('download', `clases-pagables-${format(new Date(), 'yyyy-MM-dd')}.csv`)
     link.style.visibility = 'hidden'
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
-    
+
     toast.success('Reporte exportado exitosamente')
   }
 
@@ -300,7 +295,10 @@ export function PayableClassesReport() {
             {/* Radio buttons para tipo de filtro */}
             <div className="space-y-3">
               <Label>Filtrar por</Label>
-              <RadioGroup value={filterType} onValueChange={(value: 'dates' | 'period') => setFilterType(value)}>
+              <RadioGroup
+                value={filterType}
+                onValueChange={(value: 'dates' | 'period') => setFilterType(value)}
+              >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="dates" id="dates" />
                   <Label htmlFor="dates" className="font-normal cursor-pointer">
@@ -353,7 +351,9 @@ export function PayableClassesReport() {
                     <SelectItem value="all">Todos los períodos</SelectItem>
                     {academicPeriods.map((period) => (
                       <SelectItem key={period.id} value={period.id}>
-                        {period.name} ({format(new Date(period.startDate), 'dd/MM/yyyy', { locale: es })} - {format(new Date(period.endDate), 'dd/MM/yyyy', { locale: es })})
+                        {period.name} (
+                        {format(new Date(period.startDate), 'dd/MM/yyyy', { locale: es })} -{' '}
+                        {format(new Date(period.endDate), 'dd/MM/yyyy', { locale: es })})
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -387,7 +387,9 @@ export function PayableClassesReport() {
               <CardContent>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-5 w-5 text-green-600" />
-                  <span className="text-2xl font-bold">{reportData.summary.totalPayableClasses}</span>
+                  <span className="text-2xl font-bold">
+                    {reportData.summary.totalPayableClasses}
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -401,7 +403,9 @@ export function PayableClassesReport() {
               <CardContent>
                 <div className="flex items-center gap-2">
                   <XCircle className="h-5 w-5 text-red-600" />
-                  <span className="text-2xl font-bold">{reportData.summary.totalNonPayableClasses}</span>
+                  <span className="text-2xl font-bold">
+                    {reportData.summary.totalNonPayableClasses}
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -444,7 +448,9 @@ export function PayableClassesReport() {
               <CardContent>
                 <div className="flex items-center gap-2">
                   <DollarSign className="h-5 w-5 text-green-600" />
-                  <span className="text-2xl font-bold">${reportData.summary.totalEarnings.toFixed(2)}</span>
+                  <span className="text-2xl font-bold">
+                    ${reportData.summary.totalEarnings.toFixed(2)}
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -476,20 +482,20 @@ export function PayableClassesReport() {
               <div className="space-y-4">
                 {reportData.teacherReports.map((teacher) => (
                   <div key={teacher.teacherId} className="border rounded-lg p-4">
-                    <div 
+                    <div
                       className="flex items-center justify-between cursor-pointer"
-                      onClick={() => setExpandedTeacher(
-                        expandedTeacher === teacher.teacherId ? null : teacher.teacherId
-                      )}
+                      onClick={() =>
+                        setExpandedTeacher(
+                          expandedTeacher === teacher.teacherId ? null : teacher.teacherId
+                        )
+                      }
                     >
                       <div className="flex items-center gap-4">
                         <div>
                           <h3 className="font-semibold">{teacher.teacherName}</h3>
                           <p className="text-sm text-muted-foreground">{teacher.teacherEmail}</p>
                         </div>
-                        {teacher.rank && (
-                          <Badge variant="secondary">{teacher.rank}</Badge>
-                        )}
+                        {teacher.rank && <Badge variant="secondary">{teacher.rank}</Badge>}
                       </div>
                       <div className="flex items-center gap-6">
                         <div className="text-right">
@@ -502,7 +508,9 @@ export function PayableClassesReport() {
                         </div>
                         <div className="text-right">
                           <p className="text-sm text-muted-foreground">Ganancias</p>
-                          <p className="font-semibold text-green-600">${teacher.totalEarnings.toFixed(2)}</p>
+                          <p className="font-semibold text-green-600">
+                            ${teacher.totalEarnings.toFixed(2)}
+                          </p>
                         </div>
                         <div className="text-right">
                           <p className="text-sm text-muted-foreground">Multiplicador</p>

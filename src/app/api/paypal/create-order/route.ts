@@ -19,7 +19,35 @@ interface CartItem {
 
 export async function POST(req: NextRequest) {
   try {
-    // Intentar obtener el token primero (más confiable)
+    // Obtener datos del request body para usuarios invitados
+    const body = await req.json()
+    
+    const { items, subtotal, tax, total, currency = 'USD', customerInfo } = body as {
+      items: CartItem[]
+      subtotal: number
+      tax: number
+      total: number
+      currency?: string
+      customerInfo?: {
+        email: string
+        firstName: string
+        lastName: string
+        address?: string
+        country?: string
+        city?: string
+        zipCode?: string
+      }
+    }
+
+    // Verificar datos requeridos
+    if (!items || !subtotal || total === undefined) {
+      return NextResponse.json(
+        { error: 'Datos incompletos' },
+        { status: 400 }
+      )
+    }
+
+    // Intentar obtener autenticación (para usuarios logueados)
     const token = await getToken({ 
       req,
       secret: process.env.JWT_SECRET,
@@ -29,7 +57,6 @@ export async function POST(req: NextRequest) {
         : 'authjs.session-token'
     })
     
-    // Si no hay token, intentar con auth()
     let userId = token?.sub
     
     if (!userId) {
@@ -37,25 +64,9 @@ export async function POST(req: NextRequest) {
       userId = session?.user?.id
     }
     
-    if (!userId) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
-    }
-
-    const body = await req.json()
-    
-    const { items, subtotal, tax, total, currency = 'USD' } = body as {
-      items: CartItem[]
-      subtotal: number
-      tax: number
-      total: number
-      currency?: string
-    }
-
-    if (!items || !subtotal || total === undefined) {
-      return NextResponse.json(
-        { error: 'Datos incompletos' },
-        { status: 400 }
-      )
+    // Para usuarios invitados, verificar que tengan información del cliente
+    if (!userId && !customerInfo) {
+      return NextResponse.json({ error: 'Se requiere información del cliente para usuarios invitados' }, { status: 400 })
     }
 
     // Crear la orden en PayPal
