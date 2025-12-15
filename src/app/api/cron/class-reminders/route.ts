@@ -12,7 +12,8 @@ export async function GET(req: NextRequest) {
     }
 
     const today = new Date()
-    const todayString = format(today, 'yyyy-MM-dd')
+    // Use UTC format to match how dates are stored in the database (via toISOString().split('T')[0])
+    const todayString = today.toISOString().split('T')[0]
 
     const classesToRemind = await db.classBooking.findMany({
       where: {
