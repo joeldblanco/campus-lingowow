@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sendContactFormEmail } from '@/lib/mail'
+import { rateLimit, getRateLimitHeaders } from '@/lib/rate-limit'
 import * as z from 'zod'
 
 const ContactSchema = z.object({
@@ -12,6 +13,16 @@ const ContactSchema = z.object({
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'anonymous'
+    const rateLimitResult = rateLimit(`contact:${ip}`, { windowMs: 60000, maxRequests: 3 })
+    
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: 'Demasiados intentos. Por favor espera un momento.' },
+        { status: 429, headers: getRateLimitHeaders(rateLimitResult) }
+      )
+    }
+
     const body = await req.json()
     
     const validatedData = ContactSchema.parse(body)
@@ -21,7 +32,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ 
       success: true, 
       message: 'Mensaje enviado exitosamente' 
-    })
+    }, { headers: getRateLimitHeaders(rateLimitResult) })
   } catch (error) {
     console.error('Error sending contact form:', error)
     

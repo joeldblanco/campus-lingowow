@@ -4,6 +4,7 @@ import { getToken } from 'next-auth/jwt'
 import { ordersController } from '@/lib/paypal'
 import { db } from '@/lib/db'
 import { sendPaymentConfirmationEmail } from '@/lib/mail'
+import { rateLimit, getRateLimitHeaders } from '@/lib/rate-limit'
 
 interface ScheduleSlot {
   teacherId: string
@@ -34,6 +35,16 @@ interface InvoiceData {
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'anonymous'
+    const rateLimitResult = rateLimit(`payment:${ip}`, { windowMs: 60000, maxRequests: 5 })
+    
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: 'Demasiados intentos de pago. Por favor espera un momento.' },
+        { status: 429, headers: getRateLimitHeaders(rateLimitResult) }
+      )
+    }
+
     // Obtener datos del request body para usuarios invitados
     const body = await req.json()
     

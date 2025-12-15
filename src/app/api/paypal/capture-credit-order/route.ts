@@ -4,9 +4,21 @@ import { getToken } from 'next-auth/jwt'
 import { ordersController } from '@/lib/paypal'
 import { db } from '@/lib/db'
 import { processCreditPackagePurchase } from '@/lib/actions/credits'
+import { sendCreditPurchaseConfirmationEmail } from '@/lib/mail'
+import { rateLimit, getRateLimitHeaders } from '@/lib/rate-limit'
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'anonymous'
+    const rateLimitResult = rateLimit(`credit-payment:${ip}`, { windowMs: 60000, maxRequests: 5 })
+    
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: 'Demasiados intentos de pago. Por favor espera un momento.' },
+        { status: 429, headers: getRateLimitHeaders(rateLimitResult) }
+      )
+    }
+
     // Autenticación
     const token = await getToken({
       req,
@@ -83,6 +95,26 @@ export async function POST(req: NextRequest) {
           { error: purchaseResult.error || 'Error al procesar la compra' },
           { status: 500 }
         )
+      }
+
+      // Enviar email de confirmación
+      try {
+        const user = await db.user.findUnique({
+          where: { id: userId },
+          select: { email: true, name: true, lastName: true },
+        })
+        
+        if (user?.email) {
+          await sendCreditPurchaseConfirmationEmail(user.email, {
+            customerName: `${user.name || ''} ${user.lastName || ''}`.trim() || 'Cliente',
+            invoiceNumber: invoice.invoiceNumber,
+            creditsAmount: pkg.credits + pkg.bonusCredits,
+            price: pkg.price,
+            currency: 'USD',
+          })
+        }
+      } catch (emailError) {
+        console.error('Error sending credit purchase confirmation email:', emailError)
       }
 
       return NextResponse.json({

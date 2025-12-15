@@ -2,6 +2,7 @@
 
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { SessionProvider } from 'next-auth/react'
+import { SessionTimeoutProvider } from '@/components/session-timeout-provider'
 import { type ReactNode } from 'react'
 
 export function Providers({
@@ -13,7 +14,9 @@ export function Providers({
 }) {
   return (
     <SessionProvider>
-      <SidebarProvider defaultOpen={defaultOpen}>{children}</SidebarProvider>
+      <SessionTimeoutProvider>
+        <SidebarProvider defaultOpen={defaultOpen}>{children}</SidebarProvider>
+      </SessionTimeoutProvider>
     </SessionProvider>
   )
 }

@@ -210,6 +210,60 @@ export const sendClassReminderEmail = async (email: string, data: ClassReminderD
   })
 }
 
+interface CreditPurchaseData {
+  customerName: string
+  invoiceNumber: string
+  creditsAmount: number
+  price: number
+  currency: string
+}
+
+export const sendCreditPurchaseConfirmationEmail = async (email: string, data: CreditPurchaseData) => {
+  const dashboardLink = `${process.env.NEXT_PUBLIC_DOMAIN}/dashboard`
+
+  await resend.emails.send({
+    from: 'hello@lingowow.com',
+    to: email,
+    subject: `¡Créditos agregados! - Factura ${data.invoiceNumber}`,
+    html: `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
+      <div style="padding: 20px; background-color: #8b5cf6; text-align: center;">
+        <h2 style="margin: 0; font-size: 24px; color: #ffffff;">¡Créditos Agregados!</h2>
+        <p style="color: #e9d5ff; font-size: 14px; margin-top: 8px;">Tu compra ha sido procesada exitosamente</p>
+      </div>
+      <div style="padding: 20px;">
+        <h3 style="font-size: 18px; color: #111827;">Hola ${data.customerName},</h3>
+        <p style="font-size: 16px; color: #374151;">Gracias por tu compra. Tus créditos ya están disponibles en tu cuenta.</p>
+        
+        <div style="background-color: #f5f3ff; border-radius: 12px; padding: 24px; margin: 20px 0; text-align: center;">
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: #6b7280;">Créditos agregados:</p>
+          <p style="margin: 0; font-size: 48px; font-weight: bold; color: #8b5cf6;">${data.creditsAmount}</p>
+        </div>
+
+        <div style="background-color: #f9fafb; border-radius: 8px; padding: 16px; margin: 20px 0;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <span style="color: #6b7280;">Número de factura:</span>
+            <span style="color: #111827; font-weight: bold;">${data.invoiceNumber}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: #6b7280;">Total pagado:</span>
+            <span style="color: #111827; font-weight: bold;">$${data.price.toFixed(2)} ${data.currency}</span>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin: 24px 0;">
+          <a href="${dashboardLink}" style="display: inline-block; background-color: #8b5cf6; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 16px;">Ver mis créditos</a>
+        </div>
+        
+        <p style="font-size: 14px; color: #6b7280; text-align: center;">Puedes usar tus créditos para reservar clases adicionales o acceder a contenido premium.</p>
+      </div>
+      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
+        Go wow with us! 🚀
+      </div>
+    </div>`,
+  })
+}
+
 interface ContactFormData {
   name: string
   email: string
