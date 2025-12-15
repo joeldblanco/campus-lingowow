@@ -3,6 +3,7 @@ import { ROLES } from '@/lib/constants'
 import {
   adminPrefix,
   apiAuthPrefix,
+  apiPublicRoutes,
   authRoutes,
   DEFAULT_LOGIN_REDIRECT,
   publicRoutes,
@@ -52,6 +53,11 @@ export default auth(async (req) => {
 
   // Permitir rutas de API de PayPal (requieren autenticación interna)
   if (isApiPayPalRoute) {
+    return NextResponse.next()
+  }
+
+  // Permitir rutas de API públicas (formularios de contacto)
+  if (apiPublicRoutes.includes(nextUrl.pathname)) {
     return NextResponse.next()
   }
 
