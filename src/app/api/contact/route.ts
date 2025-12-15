@@ -6,6 +6,7 @@ import * as z from 'zod'
 const ContactSchema = z.object({
   name: z.string().min(1, 'El nombre es requerido'),
   email: z.string().email('Por favor ingresa un email válido'),
+  countryCode: z.string().min(1, 'El código de país es requerido'),
   phone: z.string().min(1, 'El teléfono es requerido'),
   subject: z.string().min(1, 'Por favor selecciona un asunto'),
   message: z.string().min(10, 'El mensaje debe tener al menos 10 caracteres'),
@@ -27,7 +28,12 @@ export async function POST(req: NextRequest) {
     
     const validatedData = ContactSchema.parse(body)
     
-    await sendContactFormEmail(validatedData)
+    const emailData = {
+      ...validatedData,
+      phone: `${validatedData.countryCode} ${validatedData.phone}`,
+    }
+    
+    await sendContactFormEmail(emailData)
     
     return NextResponse.json({ 
       success: true, 

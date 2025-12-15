@@ -23,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { CountryCodeSelect } from '@/components/ui/country-code-select'
 import { Button } from '@/components/ui/button'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -33,6 +34,7 @@ import { toast } from 'sonner'
 const ContactSchema = z.object({
   name: z.string().min(1, 'El nombre es requerido'),
   email: z.string().email('Por favor ingresa un email válido'),
+  countryCode: z.string().min(1, 'El código de país es requerido'),
   phone: z.string().min(1, 'El teléfono es requerido'),
   language: z.string().min(1, 'Por favor selecciona un idioma'),
 })
@@ -45,6 +47,7 @@ export function ContactForm() {
     defaultValues: {
       name: '',
       email: '',
+      countryCode: '+51',
       phone: '',
       language: '',
     },
@@ -100,19 +103,20 @@ export function ContactForm() {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Teléfono</FormLabel>
-                    <FormControl>
-                      <Input type="tel" placeholder="+51 902 518 947" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <FormItem>
+                <FormLabel>Teléfono</FormLabel>
+                <FormControl>
+                  <CountryCodeSelect
+                    value={form.watch('countryCode')}
+                    onChange={(value) => form.setValue('countryCode', value)}
+                    phoneValue={form.watch('phone')}
+                    onPhoneChange={(value) => form.setValue('phone', value)}
+                  />
+                </FormControl>
+                <FormMessage>
+                  {form.formState.errors.countryCode?.message || form.formState.errors.phone?.message}
+                </FormMessage>
+              </FormItem>
 
               <FormField
                 control={form.control}

@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { CountryCodeSelect } from '@/components/ui/country-code-select'
 import { Badge } from '@/components/ui/badge'
 import { Mail, Phone, MapPin, Clock } from 'lucide-react'
 import { useForm } from 'react-hook-form'
@@ -19,6 +20,7 @@ import Link from 'next/link'
 const ContactSchema = z.object({
   name: z.string().min(1, 'El nombre es requerido'),
   email: z.string().email('Por favor ingresa un email válido'),
+  countryCode: z.string().min(1, 'El código de país es requerido'),
   phone: z.string().min(1, 'El teléfono es requerido'),
   subject: z.string().min(1, 'Por favor selecciona un asunto'),
   message: z.string().min(10, 'El mensaje debe tener al menos 10 caracteres'),
@@ -32,6 +34,7 @@ export default function ContactoPage() {
     defaultValues: {
       name: '',
       email: '',
+      countryCode: '+51',
       phone: '',
       subject: '',
       message: '',
@@ -201,19 +204,20 @@ export default function ContactoPage() {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <FormField
-                            control={form.control}
-                            name="phone"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Teléfono</FormLabel>
-                                <FormControl>
-                                  <Input type="tel" placeholder="+51 902 518 947" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
+                          <FormItem>
+                            <FormLabel>Teléfono</FormLabel>
+                            <FormControl>
+                              <CountryCodeSelect
+                                value={form.watch('countryCode')}
+                                onChange={(value) => form.setValue('countryCode', value)}
+                                phoneValue={form.watch('phone')}
+                                onPhoneChange={(value) => form.setValue('phone', value)}
+                              />
+                            </FormControl>
+                            <FormMessage>
+                              {form.formState.errors.countryCode?.message || form.formState.errors.phone?.message}
+                            </FormMessage>
+                          </FormItem>
 
                           <FormField
                             control={form.control}
