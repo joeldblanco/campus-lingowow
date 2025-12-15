@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sendTrialClassRequestEmail } from '@/lib/mail'
+import { sendSlackNotification } from '@/lib/slack'
 import { rateLimit, getRateLimitHeaders } from '@/lib/rate-limit'
 import * as z from 'zod'
 
@@ -33,6 +34,14 @@ export async function POST(req: NextRequest) {
     }
     
     await sendTrialClassRequestEmail(emailData)
+    
+    await sendSlackNotification({
+      type: 'trial_class',
+      name: validatedData.name,
+      email: validatedData.email,
+      phone: emailData.phone,
+      language: validatedData.language,
+    })
     
     return NextResponse.json({ 
       success: true, 

@@ -92,9 +92,9 @@ export const sendPaymentConfirmationEmail = async (email: string, data: PaymentC
     subject: `¡Gracias por tu compra! - Factura ${data.invoiceNumber}`,
     html: `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
-      <div style="padding: 20px; background-color: #10b981; text-align: center;">
+      <div style="padding: 20px; background-color: #3b82f6; text-align: center;">
         <h2 style="margin: 0; font-size: 24px; color: #ffffff;">¡Pago Confirmado!</h2>
-        <p style="color: #d1fae5; font-size: 14px; margin-top: 8px;">Tu compra ha sido procesada exitosamente</p>
+        <p style="color: #dbeafe; font-size: 14px; margin-top: 8px;">Tu compra ha sido procesada exitosamente</p>
       </div>
       <div style="padding: 20px;">
         <h3 style="font-size: 18px; color: #111827;">Hola ${data.customerName},</h3>
@@ -125,8 +125,8 @@ export const sendPaymentConfirmationEmail = async (email: string, data: PaymentC
           </div>
           ${data.discount > 0 ? `
           <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-            <span style="color: #10b981;">Descuento:</span>
-            <span style="color: #10b981;">-$${data.discount.toFixed(2)} ${data.currency}</span>
+            <span style="color: #3b82f6;">Descuento:</span>
+            <span style="color: #3b82f6;">-$${data.discount.toFixed(2)} ${data.currency}</span>
           </div>
           ` : ''}
           ${data.tax > 0 ? `
@@ -236,7 +236,7 @@ export const sendTrialClassRequestEmail = async (data: TrialClassRequestData) =>
     subject: `[Clase de Prueba] Nueva solicitud - ${data.name}`,
     html: `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
-      <div style="padding: 20px; background-color: #10b981; text-align: center;">
+      <div style="padding: 20px; background-color: #3b82f6; text-align: center;">
         <h2 style="margin: 0; font-size: 24px; color: #ffffff;">Nueva Solicitud de Clase de Prueba</h2>
       </div>
       <div style="padding: 20px;">
@@ -273,7 +273,7 @@ export const sendTrialClassRequestEmail = async (data: TrialClassRequestData) =>
     subject: '¡Recibimos tu solicitud de clase de prueba! - Lingowow',
     html: `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
-      <div style="padding: 20px; background-color: #10b981; text-align: center;">
+      <div style="padding: 20px; background-color: #3b82f6; text-align: center;">
         <h2 style="margin: 0; font-size: 24px; color: #ffffff;">¡Solicitud Recibida!</h2>
       </div>
       <div style="padding: 20px;">
@@ -281,9 +281,9 @@ export const sendTrialClassRequestEmail = async (data: TrialClassRequestData) =>
         <p style="font-size: 16px; color: #374151;">¡Gracias por tu interés en aprender ${languageLabels[data.language] || data.language} con nosotros!</p>
         <p style="font-size: 16px; color: #374151;">Hemos recibido tu solicitud de clase de prueba gratuita. Un miembro de nuestro equipo se pondrá en contacto contigo en las próximas 24 horas para coordinar tu sesión.</p>
         
-        <div style="background-color: #f0fdf4; border-radius: 8px; padding: 16px; margin: 20px 0; border-left: 4px solid #10b981;">
-          <p style="margin: 0; font-size: 14px; color: #166534; font-weight: bold;">¿Qué incluye tu clase de prueba?</p>
-          <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #166534;">
+        <div style="background-color: #eff6ff; border-radius: 8px; padding: 16px; margin: 20px 0; border-left: 4px solid #3b82f6;">
+          <p style="margin: 0; font-size: 14px; color: #1e40af; font-weight: bold;">¿Qué incluye tu clase de prueba?</p>
+          <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #1e40af;">
             <li>Sesión de 30 minutos con un profesor nativo</li>
             <li>Evaluación de tu nivel actual</li>
             <li>Plan de estudio personalizado</li>
@@ -291,7 +291,7 @@ export const sendTrialClassRequestEmail = async (data: TrialClassRequestData) =>
           </ul>
         </div>
         
-        <p style="font-size: 14px; color: #6b7280;">Si tienes alguna pregunta mientras tanto, puedes contactarnos por WhatsApp al +51 902 518 947.</p>
+        <p style="font-size: 14px; color: #6b7280;">Si tienes alguna pregunta mientras tanto, puedes contactarnos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
       </div>
       <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
         Go wow with us! 🚀
@@ -421,7 +421,7 @@ export const sendContactFormEmail = async (data: ContactFormData) => {
     subject: 'Hemos recibido tu mensaje - Lingowow',
     html: `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
-      <div style="padding: 20px; background-color: #10b981; text-align: center;">
+      <div style="padding: 20px; background-color: #3b82f6; text-align: center;">
         <h2 style="margin: 0; font-size: 24px; color: #ffffff;">¡Mensaje recibido!</h2>
       </div>
       <div style="padding: 20px;">
@@ -433,7 +433,7 @@ export const sendContactFormEmail = async (data: ContactFormData) => {
           <p style="margin: 0; font-size: 14px; color: #374151; font-style: italic;">"${data.message.substring(0, 200)}${data.message.length > 200 ? '...' : ''}"</p>
         </div>
         
-        <p style="font-size: 14px; color: #6b7280;">Si necesitas una respuesta más rápida, puedes contactarnos por WhatsApp al +51 902 518 947.</p>
+        <p style="font-size: 14px; color: #6b7280;">Si necesitas una respuesta más rápida, puedes contactarnos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
       </div>
       <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
         Go wow with us! 🚀

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sendContactFormEmail } from '@/lib/mail'
+import { sendSlackNotification } from '@/lib/slack'
 import { rateLimit, getRateLimitHeaders } from '@/lib/rate-limit'
 import * as z from 'zod'
 
@@ -34,6 +35,15 @@ export async function POST(req: NextRequest) {
     }
     
     await sendContactFormEmail(emailData)
+    
+    await sendSlackNotification({
+      type: 'contact_form',
+      name: validatedData.name,
+      email: validatedData.email,
+      phone: emailData.phone,
+      subject: validatedData.subject,
+      message: validatedData.message,
+    })
     
     return NextResponse.json({ 
       success: true, 
