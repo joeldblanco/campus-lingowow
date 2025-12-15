@@ -210,6 +210,96 @@ export const sendClassReminderEmail = async (email: string, data: ClassReminderD
   })
 }
 
+interface TrialClassRequestData {
+  name: string
+  email: string
+  phone: string
+  language: string
+}
+
+export const sendTrialClassRequestEmail = async (data: TrialClassRequestData) => {
+  const languageLabels: Record<string, string> = {
+    'english': 'Inglés',
+    'spanish': 'Español',
+    'french': 'Francés',
+    'german': 'Alemán',
+    'italian': 'Italiano',
+    'portuguese': 'Portugués',
+    'chinese': 'Chino Mandarín',
+    'japanese': 'Japonés',
+  }
+
+  await resend.emails.send({
+    from: 'hello@lingowow.com',
+    to: 'info@lingowow.com',
+    replyTo: data.email,
+    subject: `[Clase de Prueba] Nueva solicitud - ${data.name}`,
+    html: `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
+      <div style="padding: 20px; background-color: #10b981; text-align: center;">
+        <h2 style="margin: 0; font-size: 24px; color: #ffffff;">Nueva Solicitud de Clase de Prueba</h2>
+      </div>
+      <div style="padding: 20px;">
+        <div style="background-color: #f9fafb; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+          <div style="margin-bottom: 12px;">
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Nombre</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;">${data.name}</p>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Email</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;"><a href="mailto:${data.email}" style="color: #3b82f6;">${data.email}</a></p>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Teléfono</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;">${data.phone}</p>
+          </div>
+          <div>
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Idioma de interés</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827; font-weight: bold;">${languageLabels[data.language] || data.language}</p>
+          </div>
+        </div>
+        
+        <p style="font-size: 14px; color: #6b7280; text-align: center;">Contactar en las próximas 24 horas para agendar la clase de prueba.</p>
+      </div>
+      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
+        Solicitud desde el formulario de lingowow.com
+      </div>
+    </div>`,
+  })
+
+  await resend.emails.send({
+    from: 'hello@lingowow.com',
+    to: data.email,
+    subject: '¡Recibimos tu solicitud de clase de prueba! - Lingowow',
+    html: `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
+      <div style="padding: 20px; background-color: #10b981; text-align: center;">
+        <h2 style="margin: 0; font-size: 24px; color: #ffffff;">¡Solicitud Recibida!</h2>
+      </div>
+      <div style="padding: 20px;">
+        <h3 style="font-size: 18px; color: #111827;">Hola ${data.name},</h3>
+        <p style="font-size: 16px; color: #374151;">¡Gracias por tu interés en aprender ${languageLabels[data.language] || data.language} con nosotros!</p>
+        <p style="font-size: 16px; color: #374151;">Hemos recibido tu solicitud de clase de prueba gratuita. Un miembro de nuestro equipo se pondrá en contacto contigo en las próximas 24 horas para coordinar tu sesión.</p>
+        
+        <div style="background-color: #f0fdf4; border-radius: 8px; padding: 16px; margin: 20px 0; border-left: 4px solid #10b981;">
+          <p style="margin: 0; font-size: 14px; color: #166534; font-weight: bold;">¿Qué incluye tu clase de prueba?</p>
+          <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #166534;">
+            <li>Sesión de 30 minutos con un profesor nativo</li>
+            <li>Evaluación de tu nivel actual</li>
+            <li>Plan de estudio personalizado</li>
+            <li>Sin compromiso de compra</li>
+          </ul>
+        </div>
+        
+        <p style="font-size: 14px; color: #6b7280;">Si tienes alguna pregunta mientras tanto, puedes contactarnos por WhatsApp al +51 902 518 947.</p>
+      </div>
+      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
+        Go wow with us! 🚀
+      </div>
+    </div>`,
+  })
+}
+
 interface CreditPurchaseData {
   customerName: string
   invoiceNumber: string
