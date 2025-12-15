@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
 import { generateJitsiJWT } from '@/lib/jitsi-jwt'
-import fs from 'fs'
-import path from 'path'
 
 export async function POST(request: NextRequest) {
   try {
@@ -59,18 +57,8 @@ export async function POST(request: NextRequest) {
     // STUDENT y GUEST son participantes regulares sin permisos de moderador
     const isModerator = user.roles.includes('TEACHER') || user.roles.includes('ADMIN')
 
-    // Cargar clave privada desde archivo si está configurado
-    let privateKey: string | undefined
-    const privateKeyPath = process.env.JAAS_PRIVATE_KEY_PATH
-    
-    if (privateKeyPath) {
-      try {
-        privateKey = fs.readFileSync(path.resolve(privateKeyPath), 'utf-8')
-      } catch (error) {
-        console.error('Error leyendo clave privada:', error)
-        return NextResponse.json({ error: 'Error de configuración del servidor' }, { status: 500 })
-      }
-    }
+    // Usar clave privada desde variable de entorno (compatible con Vercel)
+    const privateKey = process.env.JAAS_PRIVATE_KEY
 
     // Generar JWT
     const token = generateJitsiJWT(
