@@ -3,6 +3,7 @@ import { auth } from '@/auth'
 import { getToken } from 'next-auth/jwt'
 import { ordersController } from '@/lib/paypal'
 import { db } from '@/lib/db'
+import { sendPaymentConfirmationEmail } from '@/lib/mail'
 
 interface ScheduleSlot {
   teacherId: string
@@ -325,6 +326,33 @@ export async function POST(req: NextRequest) {
       
       // Verificar si alguna compra requiere configuración de horario
       const needsScheduleSetup = purchases.some(p => p.enrollment && !p.selectedSchedule)
+      
+      // Enviar email de confirmación de pago
+      try {
+        const user = await db.user.findUnique({
+          where: { id: userId },
+          select: { email: true, name: true, lastName: true },
+        })
+        
+        if (user?.email) {
+          await sendPaymentConfirmationEmail(user.email, {
+            customerName: `${user.name || ''} ${user.lastName || ''}`.trim() || 'Cliente',
+            invoiceNumber: invoice.invoiceNumber,
+            items: invoiceData.items.map(item => ({
+              name: item.name,
+              price: item.price,
+              quantity: item.quantity || 1,
+            })),
+            subtotal: invoiceData.subtotal,
+            discount: invoiceData.discount || 0,
+            tax: invoiceData.tax || 0,
+            total: invoiceData.total,
+            currency: invoiceData.currency || 'USD',
+          })
+        }
+      } catch (emailError) {
+        console.error('Error sending payment confirmation email:', emailError)
+      }
       
       return NextResponse.json({
         success: true,

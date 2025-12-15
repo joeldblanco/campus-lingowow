@@ -40,13 +40,23 @@ export default function ContactoPage() {
 
   const onSubmit = async (values: ContactFormData) => {
     try {
-      // Aquí iría la lógica para enviar el formulario
-      console.log('Contact form submission:', values)
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(values),
+      })
+      
+      const data = await response.json()
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Error al enviar el mensaje')
+      }
+      
       toast.success('¡Mensaje enviado exitosamente! Te contactaremos pronto.')
       form.reset()
     } catch (error) {
       console.error('Error submitting contact form:', error)
-      toast.error('Error al enviar el mensaje')
+      toast.error(error instanceof Error ? error.message : 'Error al enviar el mensaje')
     }
   }
 
