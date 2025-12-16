@@ -130,10 +130,10 @@ export function TestVideoCall({ roomName, onMeetingEnd }: TestVideoCallProps) {
           height: '100%',
           lang: 'es',
           configOverwrite: {
-            startWithAudioMuted: false,
-            startWithVideoMuted: false,
+            startWithAudioMuted: true,
+            startWithVideoMuted: true,
             enableWelcomePage: false,
-            prejoinPageEnabled: false,
+            prejoinPageEnabled: true,
             disableModeratorIndicator: false,
             startScreenSharing: false,
             enableEmailInStats: false,
@@ -161,7 +161,27 @@ export function TestVideoCall({ roomName, onMeetingEnd }: TestVideoCallProps) {
             desktopSharingFrameRate: {
               min: 5,
               max: 30
-            }
+            },
+            constraints: {
+              video: {
+                height: {
+                  ideal: 720,
+                  max: 720,
+                  min: 180
+                },
+                width: {
+                  ideal: 1280,
+                  max: 1280,
+                  min: 320
+                }
+              }
+            },
+            disableSimulcast: false,
+            enableLayerSuspension: true,
+            p2p: {
+              enabled: true
+            },
+            disableDeepLinking: true
           },
           interfaceConfigOverwrite: {
             TOOLBAR_BUTTONS: user.isModerator ? moderatorButtons : participantButtons,
