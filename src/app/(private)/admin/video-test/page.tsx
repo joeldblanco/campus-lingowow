@@ -47,7 +47,7 @@ export default function VideoTestPage() {
   const copyJoinUrl = async () => {
     if (!roomCode) return
     
-    const url = `${window.location.origin}/admin/video-test?room=${roomCode}`
+    const url = `${window.location.origin}/video-test/${roomCode}`
     try {
       await navigator.clipboard.writeText(url)
       toast.success('URL copiada al portapapeles')
@@ -232,7 +232,7 @@ export default function VideoTestPage() {
                 <div>
                   <p className="font-medium text-sm">Dispositivo 2</p>
                   <p className="text-xs text-muted-foreground">
-                    Abre la URL copiada o navega a esta página e ingresa el mismo código
+                    Abre la URL copiada (accesible para cualquier usuario autenticado)
                   </p>
                 </div>
               </div>
