@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { sendClassReminderEmail } from '@/lib/mail'
-import { format } from 'date-fns'
-import { es } from 'date-fns/locale'
 
 export async function GET(req: NextRequest) {
   try {

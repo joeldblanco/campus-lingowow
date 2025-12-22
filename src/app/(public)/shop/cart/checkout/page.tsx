@@ -258,7 +258,7 @@ export default function CheckoutPage() {
 
   const handlePaymentSuccess = (data: unknown) => {
     // Determine order number based on provider data
-    const anyData = data as any
+    const anyData = data as { invoice?: { invoiceNumber?: string }; orderId?: string }
     const orderNumber = anyData.invoice?.invoiceNumber || anyData.orderId || `ORD-${Date.now()}`
 
     // Preparamos los datos del pedido

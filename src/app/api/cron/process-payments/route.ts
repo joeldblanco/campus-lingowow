@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server'
 import { db as prisma } from '@/lib/db'
+import { Prisma } from '@prisma/client'
 import { chargeRecurrentNiubizToken } from '@/lib/niubiz'
 import { getNiubizAccessToken } from '@/lib/niubiz'
-import { addWeeks, setDate, setDay, addMonths, startOfMonth, isMonday, nextMonday } from 'date-fns'
+import { addWeeks, addMonths, startOfMonth, isMonday, nextMonday } from 'date-fns'
 
 // Helper to find the first Monday of the next month
 function getFirstMondayOfNextMonth(date: Date): Date {
@@ -57,8 +58,7 @@ export async function GET(req: Request) {
           sub.niubizCardToken!,
           sub.plan.price, // Assuming plan has price.
           purchaseNumber,
-          accessToken,
-          sub.user.id
+          accessToken
         )
 
         // Check Success
@@ -96,7 +96,7 @@ export async function GET(req: Request) {
 
         const newRetryCount = sub.retryCount + 1
 
-        let updateData: any = {
+        const updateData: Prisma.SubscriptionUpdateInput = {
           retryCount: newRetryCount,
         }
 

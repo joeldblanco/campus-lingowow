@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge'
 import { Search, Filter, Trash2, Download, Eye, Loader2, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, RefreshCw } from 'lucide-react'
 import { toast } from 'sonner'
 import { deleteCloudinaryFile, getFileAssets, syncCloudinaryResources, GetFileAssetsParams } from '@/lib/actions/cloudinary'
-import { FileUploadResult, UploadedFile } from '@/types/file'
+import { FileUploadResult } from '@/types/file'
 import { FileAsset, FileResourceType } from '@prisma/client'
 
 export const FileManager: React.FC = () => {
@@ -309,7 +309,7 @@ export const FileManager: React.FC = () => {
                     fileType="image"
                     folder="images"
                     maxSize={10}
-                    onUploadComplete={(result) => handleFileUpload(result as any, 'images')}
+                    onUploadComplete={(result) => handleFileUpload(result, 'images')}
                     onUploadError={(error) => toast.error(error)}
                   />
                 </div>
@@ -320,7 +320,7 @@ export const FileManager: React.FC = () => {
                     fileType="video"
                     folder="videos"
                     maxSize={100}
-                    onUploadComplete={(result) => handleFileUpload(result as any, 'videos')}
+                    onUploadComplete={(result) => handleFileUpload(result, 'videos')}
                     onUploadError={(error) => toast.error(error)}
                   />
                 </div>
@@ -331,7 +331,7 @@ export const FileManager: React.FC = () => {
                     fileType="audio"
                     folder="audio"
                     maxSize={50}
-                    onUploadComplete={(result) => handleFileUpload(result as any, 'audio')}
+                    onUploadComplete={(result) => handleFileUpload(result, 'audio')}
                     onUploadError={(error) => toast.error(error)}
                   />
                 </div>
@@ -342,7 +342,7 @@ export const FileManager: React.FC = () => {
                     fileType="document"
                     folder="documents"
                     maxSize={25}
-                    onUploadComplete={(result) => handleFileUpload(result as any, 'documents')}
+                    onUploadComplete={(result) => handleFileUpload(result, 'documents')}
                     onUploadError={(error) => toast.error(error)}
                   />
                 </div>
@@ -364,7 +364,7 @@ export const FileManager: React.FC = () => {
                     </div>
                   </div>
                   <Button variant="outline" onClick={() => fetchFiles({
-                    resourceType: tab === 'documents' ? 'RAW' : tab.toUpperCase().slice(0, -1) as any
+                    resourceType: tab === 'documents' ? 'RAW' : tab.toUpperCase().slice(0, -1) as FileResourceType
                   })}>
                     <Filter className="h-4 w-4 mr-2" />
                     Refrescar

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Script from "next/script";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -10,8 +10,8 @@ interface NiubizCheckoutProps {
     amount: number;
     purchaseNumber: string; // Unique Order ID
     isRecurrent?: boolean;
-    onSuccess?: (data: any) => void;
-    onError?: (error: any) => void;
+    onSuccess?: (data: unknown) => void;
+    onError?: (error: unknown) => void;
     userEmail?: string;
     userFirstName?: string;
     userLastName?: string;
@@ -19,7 +19,10 @@ interface NiubizCheckoutProps {
 
 declare global {
     interface Window {
-        VisanetCheckout: any;
+        VisanetCheckout: {
+            configure: (config: unknown) => void;
+            open: () => void;
+        };
     }
 }
 
@@ -29,12 +32,15 @@ export const NiubizCheckout = ({
     isRecurrent = false,
     onSuccess,
     onError,
-    userEmail,
-    userFirstName,
-    userLastName,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    userEmail: _userEmail,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    userFirstName: _userFirstName,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    userLastName: _userLastName,
 }: NiubizCheckoutProps) => {
     const [loading, setLoading] = useState(false);
-    const [sessionToken, setSessionToken] = useState<string | null>(null);
+    // const [sessionToken, setSessionToken] = useState<string | null>(null);
 
     // Load the Niubiz Session
     const initializeSession = async () => {
@@ -51,7 +57,7 @@ export const NiubizCheckout = ({
             if (!res.ok) throw new Error("Failed to create Niubiz session");
 
             const data = await res.json();
-            setSessionToken(data.sessionKey);
+            // setSessionToken(data.sessionKey);
 
             // Open the checkout immediately or when ready
             openCheckout(data);
@@ -84,12 +90,12 @@ export const NiubizCheckout = ({
             merchantlogo: `https://res.cloudinary.com/dnjzg8tyg/image/upload/v1766376926/campus-lingowow/logo_lw_for_niubiz_l6sbww.png`, // Next.js optimized path
             formbuttoncolor: "#2F45B6", // Lingowow primary color
             action: "openModal", // openModal | inLine
-            complete: async (params: any) => {
+            complete: async (params: { transactionToken: string }) => {
                 // params.transactionToken is what we need
                 console.log("Niubiz Success Params:", params);
                 await handleAuthorization(params.transactionToken);
             },
-            error: (error: any) => {
+            error: (error: unknown) => {
                 console.error("Niubiz Form Error:", error);
                 toast.error("Ocurrió un error en el formulario de pago.");
                 onError?.(error);

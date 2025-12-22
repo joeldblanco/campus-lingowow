@@ -1,5 +1,3 @@
-import { env } from 'process'
-
 const NIUBIZ_API_URL = process.env.NIUBIZ_API_URL || 'https://apiprod.vnforapps.com'
 const MERCHANT_ID = process.env.NIUBIZ_MERCHANT_ID
 const USER = process.env.NIUBIZ_USER
@@ -7,15 +5,6 @@ const PASSWORD = process.env.NIUBIZ_PASSWORD
 
 if (!MERCHANT_ID || !USER || !PASSWORD) {
   console.warn('Missing Niubiz credentials')
-}
-
-// Log the active environment for debugging
-console.log('[NIUBIZ_CONFIG_DEBUG] API URL:', NIUBIZ_API_URL)
-console.log('[NIUBIZ_CONFIG_DEBUG] Merchant ID:', MERCHANT_ID)
-
-interface NiubizAccessToken {
-  accessToken: string
-  expiration: string // "30 minutes"
 }
 
 interface NiubizSessionResponse {
@@ -191,8 +180,7 @@ export async function chargeRecurrentNiubizToken(
   cardToken: string,
   amount: number,
   purchaseNumber: string,
-  accessToken: string,
-  userId: string // For antifraud
+  accessToken: string
 ) {
   // Recurring endpoint often differs. Common one: /api.authorization/v3/authorization/ecommerce/camprecurring/{merchantId}
   const url = `${NIUBIZ_API_URL}/api.authorization/v3/authorization/ecommerce/${MERCHANT_ID}`

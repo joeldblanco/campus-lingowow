@@ -1,6 +1,5 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
 import {
   Form,
 } from '@/components/ui/form'
@@ -37,19 +36,19 @@ interface PaymentMethodFormProps {
   isRecurrent?: boolean
 }
 
-type PaymentFormData = {
-  // Empty as we use external providers
-}
+type PaymentFormData = Record<string, never>
 
 // Schema unificado que cambia según el método de pago
-const createPaymentSchema = (paymentMethod: string) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const createPaymentSchema = (_paymentMethod: string) => {
   return z.object({})
 }
 
 export function PaymentMethodForm({
   paymentMethod,
   onSubmit,
-  isLoading,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  isLoading: _isLoading,
   paypalData,
   onPayPalSuccess,
   onNiubizSuccess,

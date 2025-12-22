@@ -3,7 +3,7 @@
 import CloudinaryService, { CloudinaryUploadResult } from '@/lib/cloudinary'
 import { db } from '@/lib/db'
 import { auth } from '@/auth'
-import { FileCategory, FileResourceType } from '@prisma/client'
+import { FileCategory, FileResourceType, Prisma } from '@prisma/client'
 
 export interface FileUploadResult {
   success: boolean
@@ -230,8 +230,8 @@ export async function getFileAssets({
   try {
     const skip = (page - 1) * limit
 
-    const where: any = {
-      isActive: true,
+    const where: Prisma.FileAssetWhereInput = {
+      isActive: true, // Only show active files
       folder: { startsWith: 'campus-lingowow' }, // Only show files from this project
     }
 
@@ -329,6 +329,7 @@ export async function syncCloudinaryResources(): Promise<{
     const resources = cloudinaryResult.resources
 
     // Sync each resource with database
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const syncPromises = resources.map(async (resource: any) => {
       const existingFile = await db.fileAsset.findUnique({
         where: { publicId: resource.public_id },
