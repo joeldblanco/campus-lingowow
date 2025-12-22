@@ -46,6 +46,7 @@ interface Course {
   description: string
   level: string
   language: string
+  classDuration: number
 }
 
 const productSchema = z.object({
@@ -160,7 +161,7 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
       }
 
       let result
-      
+
       if (data.pricingType === 'MULTIPLE_PLANS' && plans.length > 0) {
         // Separar planes nuevos de planes existentes
         const newPlans = plans.filter(plan => !plan.isExisting).map(plan => ({
@@ -183,11 +184,11 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
           acceptsCredits: plan.acceptsCredits ?? false,
           acceptsRealMoney: plan.acceptsRealMoney ?? true,
         }))
-        
+
         const existingPlanIds = plans
           .filter(plan => plan.isExisting && plan.id)
           .map(plan => plan.id!)
-        
+
         result = await createProductWithMixedPlans(productData, newPlans, existingPlanIds)
       } else {
         result = await createProduct(productData)
@@ -401,8 +402,8 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                   </FormControl>
                   {field.value && (
                     <div className="mt-2">
-                      <Image 
-                        src={field.value} 
+                      <Image
+                        src={field.value}
                         alt="Vista previa"
                         width={80}
                         height={80}
@@ -508,18 +509,40 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Curso para inscripción automática</FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value || undefined}>
+                        <Select
+                          onValueChange={(value) => {
+                            if (value === 'none') {
+                              field.onChange(undefined)
+                            } else {
+                              field.onChange(value)
+                              const selectedCourse = courses.find(c => c.id === value)
+                              if (selectedCourse) {
+                                form.setValue('scheduleDuration', selectedCourse.classDuration)
+                              }
+                            }
+                          }}
+                          value={field.value || undefined}
+                        >
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Seleccionar curso" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {courses.map((course) => (
-                              <SelectItem key={course.id} value={course.id}>
-                                {course.title} ({course.level})
+                            {courses.length === 0 ? (
+                              <SelectItem value="no-courses" disabled>
+                                No hay cursos publicados
                               </SelectItem>
-                            ))}
+                            ) : (
+                              <>
+                                <SelectItem value="none">Ninguno</SelectItem>
+                                {courses.map((course) => (
+                                  <SelectItem key={course.id} value={course.id}>
+                                    {course.title} ({course.level})
+                                  </SelectItem>
+                                ))}
+                              </>
+                            )}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -527,29 +550,31 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                     )}
                   />
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="maxScheduleSlots"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Máximo de horarios</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="number"
-                              min="1"
-                              placeholder="1"
-                              {...field}
-                              onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
-                            />
-                          </FormControl>
-                          <div className="text-xs text-muted-foreground">
-                            Número máximo de horarios que un usuario puede reservar para este producto
-                          </div>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                  <div className={`grid gap-4 ${form.watch('pricingType') === 'SINGLE_PRICE' ? 'grid-cols-2' : 'grid-cols-1'}`}>
+                    {form.watch('pricingType') === 'SINGLE_PRICE' && (
+                      <FormField
+                        control={form.control}
+                        name="maxScheduleSlots"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Máximo de horarios</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                min="1"
+                                placeholder="1"
+                                {...field}
+                                onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
+                              />
+                            </FormControl>
+                            <div className="text-xs text-muted-foreground">
+                              Número máximo de horarios que un usuario puede reservar para este producto
+                            </div>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
                     <FormField
                       control={form.control}
                       name="scheduleDuration"
@@ -564,10 +589,14 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                               placeholder="60"
                               {...field}
                               onChange={(e) => field.onChange(parseInt(e.target.value) || 60)}
+                              disabled={!!form.watch('courseId')}
                             />
                           </FormControl>
                           <div className="text-xs text-muted-foreground">
-                            Duración en minutos de cada sesión programada (ej: 60 para 1 hora)
+                            {form.watch('courseId')
+                              ? 'Determinado automáticamente por el curso seleccionado'
+                              : 'Duración en minutos de cada sesión programada (ej: 60 para 1 hora)'
+                            }
                           </div>
                           <FormMessage />
                         </FormItem>
@@ -581,7 +610,7 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
             {/* Product Type Configuration */}
             <div className="border-t pt-6 space-y-4">
               <h3 className="text-lg font-medium">Configuración del Producto</h3>
-              
+
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
@@ -601,7 +630,7 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                         </SelectContent>
                       </Select>
                       <div className="text-xs text-muted-foreground">
-                        {field.value === 'SINGLE_PRICE' 
+                        {field.value === 'SINGLE_PRICE'
                           ? 'Producto con un solo precio (ej: franela, gorra)'
                           : 'Producto con distintos planes de pago (ej: programa regular con planes simple, regular, intensivo)'}
                       </div>
@@ -609,7 +638,7 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField
                   control={form.control}
                   name="paymentType"
@@ -641,13 +670,13 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
 
             {/* Plan Management Section */}
             {form.watch('pricingType') === 'MULTIPLE_PLANS' && (
-            <div className="border-t pt-6">
-              <EnhancedPlanManager
-                plans={plans}
-                onPlansChange={setPlans}
-                className="mb-6"
-              />
-            </div>
+              <div className="border-t pt-6">
+                <EnhancedPlanManager
+                  plans={plans}
+                  onPlansChange={setPlans}
+                  className="mb-6"
+                />
+              </div>
             )}
 
             <DialogFooter>

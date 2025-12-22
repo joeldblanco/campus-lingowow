@@ -2,11 +2,8 @@
 
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
-import { CloudinaryService, CloudinaryResource, CloudinaryFolder } from '@/lib/cloudinary'
+import { CloudinaryService, type CloudinaryResource, type CloudinaryFolder } from '@/lib/cloudinary'
 import { FileCategory, FileResourceType, UsageAction, Prisma } from '@prisma/client'
-
-// Re-export CloudinaryFolder for client-side use
-export type { CloudinaryFolder }
 
 // Interfaces for server actions
 export interface ServerFileAsset {

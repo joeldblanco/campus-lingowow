@@ -14,8 +14,8 @@ import {
   syncCloudinaryResources,
   type FileListOptions,
   type ServerFileAsset,
-  type CloudinaryFolder
 } from '@/lib/actions/file-manager'
+import { type CloudinaryFolder } from '@/lib/cloudinary'
 import { FileCategory, FileResourceType } from '@prisma/client'
 
 // Main file management hook
@@ -30,30 +30,33 @@ export function useFileManager(initialOptions: FileListOptions = {}) {
   const [filters, setFilters] = useState<FileListOptions>(initialOptions)
 
   // Load files
-  const loadFiles = useCallback(async (options: FileListOptions = {}) => {
-    setLoading(true)
-    setError(null)
-    
-    try {
-      const result = await listFiles({ ...filters, ...options })
-      
-      if (result.success && result.data) {
-        setFiles(result.data.files)
-        setTotal(result.data.total)
-        setCurrentPage(result.data.page)
-        setLimit(result.data.limit)
-      } else {
-        setError(result.error || 'Failed to load files')
-        toast.error(result.error || 'Failed to load files')
+  const loadFiles = useCallback(
+    async (options: FileListOptions = {}) => {
+      setLoading(true)
+      setError(null)
+
+      try {
+        const result = await listFiles({ ...filters, ...options })
+
+        if (result.success && result.data) {
+          setFiles(result.data.files)
+          setTotal(result.data.total)
+          setCurrentPage(result.data.page)
+          setLimit(result.data.limit)
+        } else {
+          setError(result.error || 'Failed to load files')
+          toast.error(result.error || 'Failed to load files')
+        }
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'An error occurred'
+        setError(errorMessage)
+        toast.error(errorMessage)
+      } finally {
+        setLoading(false)
       }
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An error occurred'
-      setError(errorMessage)
-      toast.error(errorMessage)
-    } finally {
-      setLoading(false)
-    }
-  }, [filters])
+    },
+    [filters]
+  )
 
   // Initial load
   useEffect(() => {
@@ -62,20 +65,18 @@ export function useFileManager(initialOptions: FileListOptions = {}) {
 
   // Update filters
   const updateFilters = useCallback((newFilters: Partial<FileListOptions>) => {
-    setFilters(prev => ({ ...prev, ...newFilters }))
+    setFilters((prev) => ({ ...prev, ...newFilters }))
   }, [])
 
   // Handle file selection
   const toggleFileSelection = useCallback((publicId: string) => {
-    setSelectedFiles(prev => 
-      prev.includes(publicId)
-        ? prev.filter(id => id !== publicId)
-        : [...prev, publicId]
+    setSelectedFiles((prev) =>
+      prev.includes(publicId) ? prev.filter((id) => id !== publicId) : [...prev, publicId]
     )
   }, [])
 
   const selectAllFiles = useCallback(() => {
-    setSelectedFiles(files.map(file => file.publicId))
+    setSelectedFiles(files.map((file) => file.publicId))
   }, [files])
 
   const clearSelection = useCallback(() => {
@@ -89,7 +90,7 @@ export function useFileManager(initialOptions: FileListOptions = {}) {
     setLoading(true)
     try {
       const result = await batchDeleteFiles(selectedFiles)
-      
+
       if (result.success) {
         toast.success(`Deleted ${result.data?.deleted.length || 0} files`)
         setSelectedFiles([])
@@ -105,26 +106,29 @@ export function useFileManager(initialOptions: FileListOptions = {}) {
   }, [selectedFiles, loadFiles])
 
   // Move selected files
-  const moveSelectedFiles = useCallback(async (destinationFolder: string) => {
-    if (selectedFiles.length === 0) return
+  const moveSelectedFiles = useCallback(
+    async (destinationFolder: string) => {
+      if (selectedFiles.length === 0) return
 
-    setLoading(true)
-    try {
-      const result = await moveFiles(selectedFiles, destinationFolder)
-      
-      if (result.success) {
-        toast.success(`Moved ${result.data?.moved.length || 0} files`)
-        setSelectedFiles([])
-        await loadFiles()
-      } else {
-        toast.error(result.error || 'Failed to move files')
+      setLoading(true)
+      try {
+        const result = await moveFiles(selectedFiles, destinationFolder)
+
+        if (result.success) {
+          toast.success(`Moved ${result.data?.moved.length || 0} files`)
+          setSelectedFiles([])
+          await loadFiles()
+        } else {
+          toast.error(result.error || 'Failed to move files')
+        }
+      } catch {
+        toast.error('Failed to move files')
+      } finally {
+        setLoading(false)
       }
-    } catch {
-      toast.error('Failed to move files')
-    } finally {
-      setLoading(false)
-    }
-  }, [selectedFiles, loadFiles])
+    },
+    [selectedFiles, loadFiles]
+  )
 
   // Pagination
   const nextPage = useCallback(() => {
@@ -139,11 +143,14 @@ export function useFileManager(initialOptions: FileListOptions = {}) {
     }
   }, [currentPage, loadFiles])
 
-  const goToPage = useCallback((page: number) => {
-    if (page >= 1 && page <= Math.ceil(total / limit)) {
-      loadFiles({ page })
-    }
-  }, [total, limit, loadFiles])
+  const goToPage = useCallback(
+    (page: number) => {
+      if (page >= 1 && page <= Math.ceil(total / limit)) {
+        loadFiles({ page })
+      }
+    },
+    [total, limit, loadFiles]
+  )
 
   // Computed values
   const hasNextPage = currentPage * limit < total
@@ -167,7 +174,7 @@ export function useFileManager(initialOptions: FileListOptions = {}) {
     totalPages,
     isAllSelected,
     isSomeSelected,
-    
+
     // Actions
     loadFiles,
     updateFilters,
@@ -179,9 +186,9 @@ export function useFileManager(initialOptions: FileListOptions = {}) {
     nextPage,
     prevPage,
     goToPage,
-    
+
     // Refresh
-    refresh: () => loadFiles()
+    refresh: () => loadFiles(),
   }
 }
 
@@ -196,10 +203,10 @@ export function useFileDetails(publicId: string) {
 
     setLoading(true)
     setError(null)
-    
+
     try {
       const result = await getFileDetails(publicId)
-      
+
       if (result.success && result.data) {
         setFile(result.data)
       } else {
@@ -215,31 +222,34 @@ export function useFileDetails(publicId: string) {
     }
   }, [publicId])
 
-  const updateMetadata = useCallback(async (metadata: {
-    fileName?: string
-    description?: string
-    tags?: string[]
-    category?: FileCategory
-    isPublic?: boolean
-  }) => {
-    if (!publicId) return
+  const updateMetadata = useCallback(
+    async (metadata: {
+      fileName?: string
+      description?: string
+      tags?: string[]
+      category?: FileCategory
+      isPublic?: boolean
+    }) => {
+      if (!publicId) return
 
-    setLoading(true)
-    try {
-      const result = await updateFileMetadata(publicId, metadata)
-      
-      if (result.success && result.data) {
-        setFile(result.data)
-        toast.success('File metadata updated successfully')
-      } else {
-        toast.error(result.error || 'Failed to update file metadata')
+      setLoading(true)
+      try {
+        const result = await updateFileMetadata(publicId, metadata)
+
+        if (result.success && result.data) {
+          setFile(result.data)
+          toast.success('File metadata updated successfully')
+        } else {
+          toast.error(result.error || 'Failed to update file metadata')
+        }
+      } catch {
+        toast.error('Failed to update file metadata')
+      } finally {
+        setLoading(false)
       }
-    } catch {
-      toast.error('Failed to update file metadata')
-    } finally {
-      setLoading(false)
-    }
-  }, [publicId])
+    },
+    [publicId]
+  )
 
   useEffect(() => {
     loadFileDetails()
@@ -250,7 +260,7 @@ export function useFileDetails(publicId: string) {
     loading,
     error,
     updateMetadata,
-    refresh: loadFileDetails
+    refresh: loadFileDetails,
   }
 }
 
@@ -263,10 +273,10 @@ export function useFolderManager() {
   const loadFolders = useCallback(async (prefix?: string) => {
     setLoading(true)
     setError(null)
-    
+
     try {
       const result = await listFolders(prefix)
-      
+
       if (result.success && result.data) {
         setFolders(result.data)
       } else {
@@ -282,26 +292,29 @@ export function useFolderManager() {
     }
   }, [])
 
-  const createNewFolder = useCallback(async (path: string) => {
-    setLoading(true)
-    try {
-      const result = await createFolder(path)
-      
-      if (result.success) {
-        toast.success('Folder created successfully')
-        await loadFolders()
-        return result.data
-      } else {
-        toast.error(result.error || 'Failed to create folder')
+  const createNewFolder = useCallback(
+    async (path: string) => {
+      setLoading(true)
+      try {
+        const result = await createFolder(path)
+
+        if (result.success) {
+          toast.success('Folder created successfully')
+          await loadFolders()
+          return result.data
+        } else {
+          toast.error(result.error || 'Failed to create folder')
+          return null
+        }
+      } catch {
+        toast.error('Failed to create folder')
         return null
+      } finally {
+        setLoading(false)
       }
-    } catch {
-      toast.error('Failed to create folder')
-      return null
-    } finally {
-      setLoading(false)
-    }
-  }, [loadFolders])
+    },
+    [loadFolders]
+  )
 
   useEffect(() => {
     loadFolders()
@@ -313,7 +326,7 @@ export function useFolderManager() {
     error,
     loadFolders,
     createNewFolder,
-    refresh: () => loadFolders()
+    refresh: () => loadFolders(),
   }
 }
 
@@ -342,22 +355,24 @@ export function useUsageStats() {
   const loadStats = useCallback(async () => {
     setLoading(true)
     setError(null)
-    
+
     try {
       const result = await getUsageStats()
-      
+
       if (result.success && result.data) {
         setStats({
           ...result.data,
-          cloudinaryUsage: result.data.cloudinaryUsage as {
-            plan: string
-            objects: number
-            bandwidth: number
-            transformed_images: number
-            transformed_videos: number
-            rate_limit_remaining: number
-            last_updated: string
-          } | undefined
+          cloudinaryUsage: result.data.cloudinaryUsage as
+            | {
+                plan: string
+                objects: number
+                bandwidth: number
+                transformed_images: number
+                transformed_videos: number
+                rate_limit_remaining: number
+                last_updated: string
+              }
+            | undefined,
         })
       } else {
         setError(result.error || 'Failed to load usage stats')
@@ -380,7 +395,7 @@ export function useUsageStats() {
     stats,
     loading,
     error,
-    refresh: loadStats
+    refresh: loadStats,
   }
 }
 
@@ -393,7 +408,7 @@ export function useCloudinarySync() {
     setSyncing(true)
     try {
       const result = await syncCloudinaryResources()
-      
+
       if (result.success) {
         toast.success(result.message || 'Sync completed successfully')
         setLastSync(new Date())
@@ -410,7 +425,7 @@ export function useCloudinarySync() {
   return {
     syncing,
     lastSync,
-    sync
+    sync,
   }
 }
 
@@ -443,7 +458,7 @@ export function useFileSearch(initialQuery: string = '') {
     debouncedQuery,
     searching,
     search,
-    clearSearch
+    clearSearch,
   }
 }
 
@@ -452,10 +467,8 @@ export function useFileTypeFilter() {
   const [selectedTypes, setSelectedTypes] = useState<FileResourceType[]>([])
 
   const toggleType = useCallback((type: FileResourceType) => {
-    setSelectedTypes(prev => 
-      prev.includes(type)
-        ? prev.filter(t => t !== type)
-        : [...prev, type]
+    setSelectedTypes((prev) =>
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
     )
   }, [])
 
@@ -476,7 +489,7 @@ export function useFileTypeFilter() {
     activeFilters,
     toggleType,
     setTypes,
-    clearTypes
+    clearTypes,
   }
 }
 
@@ -485,10 +498,8 @@ export function useFileCategoryFilter() {
   const [selectedCategories, setSelectedCategories] = useState<FileCategory[]>([])
 
   const toggleCategory = useCallback((category: FileCategory) => {
-    setSelectedCategories(prev => 
-      prev.includes(category)
-        ? prev.filter(c => c !== category)
-        : [...prev, category]
+    setSelectedCategories((prev) =>
+      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
     )
   }, [])
 
@@ -509,7 +520,7 @@ export function useFileCategoryFilter() {
     activeFilters,
     toggleCategory,
     setCategories,
-    clearCategories
+    clearCategories,
   }
 }
 
@@ -517,40 +528,43 @@ export function useFileCategoryFilter() {
 export function useFileOperations() {
   const [operationLoading, setOperationLoading] = useState<string | null>(null)
 
-  const updateFile = useCallback(async (
-    publicId: string,
-    metadata: {
-      fileName?: string
-      description?: string
-      tags?: string[]
-      category?: FileCategory
-      isPublic?: boolean
-    }
-  ) => {
-    setOperationLoading(publicId)
-    try {
-      const result = await updateFileMetadata(publicId, metadata)
-      
-      if (result.success) {
-        toast.success('File updated successfully')
-        return result.data
-      } else {
-        toast.error(result.error || 'Failed to update file')
-        return null
+  const updateFile = useCallback(
+    async (
+      publicId: string,
+      metadata: {
+        fileName?: string
+        description?: string
+        tags?: string[]
+        category?: FileCategory
+        isPublic?: boolean
       }
-    } catch {
-      toast.error('Failed to update file')
-      return null
-    } finally {
-      setOperationLoading(null)
-    }
-  }, [])
+    ) => {
+      setOperationLoading(publicId)
+      try {
+        const result = await updateFileMetadata(publicId, metadata)
+
+        if (result.success) {
+          toast.success('File updated successfully')
+          return result.data
+        } else {
+          toast.error(result.error || 'Failed to update file')
+          return null
+        }
+      } catch {
+        toast.error('Failed to update file')
+        return null
+      } finally {
+        setOperationLoading(null)
+      }
+    },
+    []
+  )
 
   const deleteFile = useCallback(async (publicId: string) => {
     setOperationLoading(publicId)
     try {
       const result = await batchDeleteFiles([publicId])
-      
+
       if (result.success) {
         toast.success('File deleted successfully')
         return true
@@ -569,7 +583,7 @@ export function useFileOperations() {
   return {
     operationLoading,
     updateFile,
-    deleteFile
+    deleteFile,
   }
 }
 
@@ -588,30 +602,30 @@ export function useAdvancedFileManager(initialOptions: FileListOptions = {}) {
   useEffect(() => {
     fileManager.updateFilters({
       search: fileSearch.debouncedQuery,
-      resourceType: fileTypeFilter.activeFilters?.[0], 
-      category: fileCategoryFilter.activeFilters?.[0], 
+      resourceType: fileTypeFilter.activeFilters?.[0],
+      category: fileCategoryFilter.activeFilters?.[0],
     })
   }, [
     fileSearch.debouncedQuery,
     fileTypeFilter.activeFilters,
     fileCategoryFilter.activeFilters,
     fileManager,
-    fileManager.updateFilters
+    fileManager.updateFilters,
   ])
 
   return {
     // Core file management
     ...fileManager,
-    
+
     // Search and filters
     search: fileSearch,
     typeFilter: fileTypeFilter,
     categoryFilter: fileCategoryFilter,
-    
+
     // Additional features
     folders: folderManager,
     stats: usageStats,
     sync: cloudinarySync,
-    operations: fileOperations
+    operations: fileOperations,
   }
 }

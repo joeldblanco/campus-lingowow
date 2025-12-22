@@ -9,7 +9,7 @@ import { getCurrentDate } from '@/lib/utils/date'
 export async function createJitsiMeeting(bookingId: string) {
   try {
     const session = await auth()
-    
+
     if (!session?.user?.id) {
       throw new Error('Usuario no autenticado')
     }
@@ -19,12 +19,12 @@ export async function createJitsiMeeting(bookingId: string) {
       where: { id: bookingId },
       include: {
         student: {
-          select: { id: true, name: true, email: true, image: true }
+          select: { id: true, name: true, email: true, image: true },
         },
         teacher: {
-          select: { id: true, name: true, email: true, image: true }
-        }
-      }
+          select: { id: true, name: true, email: true, image: true },
+        },
+      },
     })
 
     if (!booking) {
@@ -41,7 +41,7 @@ export async function createJitsiMeeting(bookingId: string) {
 
     // Buscar videollamada existente por bookingId
     const existingVideoCall = await db.videoCall.findFirst({
-      where: { bookingId }
+      where: { bookingId },
     })
 
     let videoCall
@@ -52,8 +52,8 @@ export async function createJitsiMeeting(bookingId: string) {
         data: {
           roomId: roomName,
           status: 'SCHEDULED',
-          startTime: getCurrentDate()
-        }
+          startTime: getCurrentDate(),
+        },
       })
     } else {
       // Crear nueva videollamada
@@ -64,53 +64,57 @@ export async function createJitsiMeeting(bookingId: string) {
           studentId: booking.studentId,
           bookingId: bookingId,
           status: 'SCHEDULED',
-          startTime: getCurrentDate()
-        }
+          startTime: getCurrentDate(),
+        },
       })
     }
 
     // Actualizar estado de la reserva
     await db.classBooking.update({
       where: { id: bookingId },
-      data: { status: 'CONFIRMED' }
+      data: { status: 'CONFIRMED' },
     })
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       roomName: videoCall.roomId,
-      meetingUrl: `/classroom?classId=${bookingId}`
+      meetingUrl: `/classroom?classId=${bookingId}`,
     }
   } catch (error) {
     console.error('Error creando videollamada JaaS:', error)
-    return { 
-      success: false, 
-      error: error instanceof Error ? error.message : 'Error desconocido' 
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Error desconocido',
     }
   }
 }
 
-export async function endJitsiMeeting(roomName: string) {
+export async function endJitsiMeeting(bookingId: string) {
   try {
     const session = await auth()
-    
+
     if (!session?.user?.id) {
       throw new Error('Usuario no autenticado')
     }
 
-    // Buscar videollamada por roomId
-    const videoCall = await db.videoCall.findUnique({
-      where: { roomId: roomName },
+    // Buscar videollamada por bookingId
+    const videoCall = await db.videoCall.findFirst({
+      where: { bookingId },
       select: {
         id: true,
         teacherId: true,
         studentId: true,
         startTime: true,
-        bookingId: true
-      }
+        bookingId: true,
+        roomId: true, // Need roomId to potentially close Jitsi session if needed regarding API, but here we update DB
+      },
+      orderBy: {
+        startTime: 'desc',
+      },
     })
 
     if (!videoCall) {
-      throw new Error('Videollamada no encontrada')
+      throw new Error('Videollamada no encontrada para esta reserva')
     }
 
     // Verificar permisos
@@ -123,31 +127,33 @@ export async function endJitsiMeeting(roomName: string) {
 
     // Actualizar videollamada
     await db.videoCall.update({
-      where: { roomId: roomName },
+      where: { id: videoCall.id },
       data: {
         status: 'ENDED',
         endTime,
-        duration
-      }
+        duration,
+      },
     })
 
-    // Actualizar reserva si existe
-    if (videoCall.bookingId) {
-      await db.classBooking.update({
-        where: { id: videoCall.bookingId },
-        data: { 
-          status: 'COMPLETED',
-          completedAt: endTime
-        }
-      })
-    }
+    // Actualizar reserva
+    await db.classBooking.update({
+      where: { id: bookingId },
+      data: {
+        status: 'COMPLETED',
+        completedAt: endTime,
+      },
+    })
 
-    return { success: true, duration }
+    const roomName = videoCall.roomId
+    revalidatePath(`/classroom`)
+    revalidatePath(`/dashboard`)
+
+    return { success: true, duration, roomName }
   } catch (error) {
     console.error('Error finalizando videollamada JaaS:', error)
-    return { 
-      success: false, 
-      error: error instanceof Error ? error.message : 'Error desconocido' 
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Error desconocido',
     }
   }
 }
@@ -155,7 +161,7 @@ export async function endJitsiMeeting(roomName: string) {
 export async function getJitsiMeetingHistory(userId?: string) {
   try {
     const session = await auth()
-    
+
     if (!session?.user?.id) {
       throw new Error('Usuario no autenticado')
     }
@@ -165,44 +171,41 @@ export async function getJitsiMeetingHistory(userId?: string) {
     // Obtener historial de videollamadas
     const videoCalls = await db.videoCall.findMany({
       where: {
-        OR: [
-          { teacherId: targetUserId },
-          { studentId: targetUserId }
-        ]
+        OR: [{ teacherId: targetUserId }, { studentId: targetUserId }],
       },
       include: {
         teacher: {
           select: {
             id: true,
             name: true,
-            image: true
-          }
+            image: true,
+          },
         },
         student: {
           select: {
             id: true,
             name: true,
-            image: true
-          }
+            image: true,
+          },
         },
         booking: {
           select: {
             id: true,
             day: true,
-            timeSlot: true
-          }
-        }
+            timeSlot: true,
+          },
+        },
       },
       orderBy: { startTime: 'desc' },
-      take: 50
+      take: 50,
     })
 
     return { success: true, videoCalls }
   } catch (error) {
     console.error('Error obteniendo historial JaaS:', error)
-    return { 
-      success: false, 
-      error: error instanceof Error ? error.message : 'Error desconocido' 
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Error desconocido',
     }
   }
 }
@@ -211,7 +214,7 @@ export async function startJitsiMeetingFromBooking(bookingId: string) {
   try {
     // Crear la videollamada
     const result = await createJitsiMeeting(bookingId)
-    
+
     if (!result.success || !result.roomName) {
       return result
     }
@@ -220,9 +223,9 @@ export async function startJitsiMeetingFromBooking(bookingId: string) {
     redirect(`/classroom?classId=${bookingId}`)
   } catch (error) {
     console.error('Error iniciando videollamada JaaS desde reserva:', error)
-    return { 
-      success: false, 
-      error: error instanceof Error ? error.message : 'Error desconocido' 
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Error desconocido',
     }
   }
 }

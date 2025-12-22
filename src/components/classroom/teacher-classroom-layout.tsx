@@ -11,6 +11,8 @@ import { Button } from '@/components/ui/button'
 import { CheckCircle, Download, Video, LogIn, AlertCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import { checkTeacherAttendance, markTeacherAttendance } from '@/lib/actions/attendance'
+import { endJitsiMeeting } from '@/lib/actions/jitsi'
+import { useRouter } from 'next/navigation'
 import { validateClassAccess, shouldShowEndWarning } from '@/lib/utils/class-access'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
@@ -35,6 +37,7 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
   day,
   timeSlot,
 }) => {
+  const router = useRouter()
   const [attendanceMarked, setAttendanceMarked] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isChecking, setIsChecking] = useState(true)
@@ -47,11 +50,11 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
       try {
         // Primero verificar si ya está marcada
         const { attendanceMarked: marked, error } = await checkTeacherAttendance(classId, teacherId)
-        
+
         if (error) {
           console.error('Error checking teacher attendance:', error)
         }
-        
+
         if (marked) {
           // Ya está marcada, solo actualizar el estado
           setAttendanceMarked(true)
@@ -112,9 +115,26 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
     }
   }
 
-  const handleEndClass = () => {
-    // Lógica para finalizar la clase
-    toast('Clase finalizada. La grabación estará disponible en el panel en unos minutos')
+  const handleEndClass = async () => {
+    try {
+      setIsLoading(true)
+      const result = await endJitsiMeeting(bookingId)
+
+      if (result.success) {
+        toast.success(`Clase finalizada. Duración: ${result.duration} mins`)
+        // Esperar un momento para que el usuario lea el mensaje
+        setTimeout(() => {
+          router.push('/dashboard')
+        }, 1500)
+      } else {
+        toast.error(result.error || 'Error al finalizar la clase')
+      }
+    } catch (error) {
+      console.error('Error ending class:', error)
+      toast.error('Error al finalizar la clase')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleStartRecording = () => {

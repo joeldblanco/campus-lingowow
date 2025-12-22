@@ -134,10 +134,10 @@ export async function createCourse(data: z.infer<typeof CreateCourseSchema>) {
   try {
     // Validate input data
     const validatedData = CreateCourseSchema.parse(data)
-    
+
     // Check if course title already exists
     const existingCourse = await db.course.findFirst({
-      where: { title: validatedData.title }
+      where: { title: validatedData.title },
     })
 
     if (existingCourse) {
@@ -160,14 +160,14 @@ export async function createCourse(data: z.infer<typeof CreateCourseSchema>) {
     return { success: true, course }
   } catch (error) {
     console.error('Error creating course:', error)
-    
+
     if (error instanceof z.ZodError) {
-      return { 
-        success: false, 
-        error: error.errors.map(e => e.message).join(', ')
+      return {
+        success: false,
+        error: error.errors.map((e) => e.message).join(', '),
       }
     }
-    
+
     return { success: false, error: 'Error al crear el curso' }
   }
 }
@@ -184,7 +184,7 @@ export async function updateCourse(id: string, data: z.infer<typeof EditCourseSc
   try {
     // Validate input data
     const validatedData = EditCourseSchema.parse(data)
-    
+
     const course = await db.course.update({
       where: { id },
       data: {
@@ -198,14 +198,14 @@ export async function updateCourse(id: string, data: z.infer<typeof EditCourseSc
     return { success: true, course }
   } catch (error) {
     console.error('Error updating course:', error)
-    
+
     if (error instanceof z.ZodError) {
-      return { 
-        success: false, 
-        error: error.errors.map(e => e.message).join(', ')
+      return {
+        success: false,
+        error: error.errors.map((e) => e.message).join(', '),
       }
     }
-    
+
     return { success: false, error: 'Error al actualizar el curso' }
   }
 }
@@ -312,7 +312,10 @@ export async function createModule(data: CreateModuleData) {
   }
 }
 
-export async function updateModule(id: string, data: Partial<CreateModuleData> & { isPublished?: boolean }) {
+export async function updateModule(
+  id: string,
+  data: Partial<CreateModuleData> & { isPublished?: boolean }
+) {
   try {
     const courseModule = await db.module.update({
       where: { id },
@@ -364,6 +367,7 @@ export async function getCoursesForProducts() {
         description: true,
         level: true,
         language: true,
+        classDuration: true,
       },
       orderBy: {
         title: 'asc',
@@ -408,17 +412,19 @@ export async function getCoursesForPublicView(userId?: string) {
             order: 'asc',
           },
         },
-        enrollments: userId ? {
-          where: {
-            studentId: userId,
-          },
-          select: {
-            id: true,
-            status: true,
-            progress: true,
-            enrollmentDate: true,
-          },
-        } : false,
+        enrollments: userId
+          ? {
+              where: {
+                studentId: userId,
+              },
+              select: {
+                id: true,
+                status: true,
+                progress: true,
+                enrollmentDate: true,
+              },
+            }
+          : false,
         _count: {
           select: {
             modules: {
@@ -439,7 +445,7 @@ export async function getCoursesForPublicView(userId?: string) {
       },
     })
 
-    return courses.map(course => ({
+    return courses.map((course) => ({
       ...course,
       isEnrolled: userId ? course.enrollments.length > 0 : false,
       enrollment: userId && course.enrollments.length > 0 ? course.enrollments[0] : null,
@@ -509,18 +515,20 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
             order: 'asc',
           },
         },
-        enrollments: userId ? {
-          where: {
-            studentId: userId,
-          },
-          select: {
-            id: true,
-            status: true,
-            progress: true,
-            enrollmentDate: true,
-            lastAccessed: true,
-          },
-        } : false,
+        enrollments: userId
+          ? {
+              where: {
+                studentId: userId,
+              },
+              select: {
+                id: true,
+                status: true,
+                progress: true,
+                enrollmentDate: true,
+                lastAccessed: true,
+              },
+            }
+          : false,
         _count: {
           select: {
             modules: {
@@ -554,7 +562,11 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
 }
 
 // Get course progress for enrolled students
-export async function getCourseProgress(courseId: string, userId: string, academicPeriodId?: string) {
+export async function getCourseProgress(
+  courseId: string,
+  userId: string,
+  academicPeriodId?: string
+) {
   try {
     // Si se proporciona academicPeriodId, buscar esa inscripción específica
     // Si no, buscar la inscripción más reciente
@@ -636,13 +648,18 @@ export async function getCourseProgress(courseId: string, userId: string, academ
 
     // Calculate total content items
     const totalContents = enrollmentWithDetails.course.modules.reduce((total, module) => {
-      return total + module.lessons.reduce((lessonTotal, lesson) => {
-        return lessonTotal + lesson.contents.length
-      }, 0)
+      return (
+        total +
+        module.lessons.reduce((lessonTotal, lesson) => {
+          return lessonTotal + lesson.contents.length
+        }, 0)
+      )
     }, 0)
 
     // Calculate completed content items
-    const completedContents = enrollmentWithDetails.student.completedContents.filter(content => content.completed).length
+    const completedContents = enrollmentWithDetails.student.completedContents.filter(
+      (content) => content.completed
+    ).length
 
     // Calculate overall progress percentage
     const progressPercentage = totalContents > 0 ? (completedContents / totalContents) * 100 : 0
@@ -652,8 +669,10 @@ export async function getCourseProgress(courseId: string, userId: string, academ
       totalContents,
       completedContents,
       progressPercentage: Math.round(progressPercentage),
-      completedContentIds: enrollmentWithDetails.student.completedContents.map(c => c.contentId),
-      completedActivities: enrollmentWithDetails.student.activities.filter(a => a.status === 'COMPLETED'),
+      completedContentIds: enrollmentWithDetails.student.completedContents.map((c) => c.contentId),
+      completedActivities: enrollmentWithDetails.student.activities.filter(
+        (a) => a.status === 'COMPLETED'
+      ),
     }
   } catch (error) {
     console.error('Error fetching course progress:', error)
