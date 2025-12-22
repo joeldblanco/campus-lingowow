@@ -3,7 +3,9 @@
 import { db } from '@/lib/db'
 import { auth } from '@/auth'
 import { generateRoomName } from '@/lib/jitsi-jwt'
+import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+
 import { getCurrentDate } from '@/lib/utils/date'
 
 export async function createJitsiMeeting(bookingId: string) {
