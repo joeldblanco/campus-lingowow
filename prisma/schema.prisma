@@ -1381,6 +1381,11 @@ model Subscription {
   proratedPrice     Float? // Precio prorrateado si se compró a mitad de período
   proratedClasses   Int?   // Clases prorrateadas
   remainingClasses  Int?   // Clases restantes en el período actual
+
+  // Campos de Niubiz / Recurrencia
+  niubizCardToken   String?  // Token de la tarjeta guardada
+  nextPaymentDate   DateTime? // Fecha del próximo intento de cobro (para lógica de reintentos)
+  retryCount        Int       @default(0) // Contador de reintentos fallidos
   
   // Relaciones
   user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -1400,6 +1405,7 @@ enum SubscriptionStatus {
   CANCELLED
   EXPIRED
   PAUSED
+  PAST_DUE
 }
 
 enum InvoiceStatus {

@@ -50,6 +50,7 @@ interface PlanDetails {
   courseId: string | null
   classesPerWeek: number | null
   duration: number // Duración de cada clase en minutos
+  billingCycle: string | null
 }
 
 export default function CheckoutPage() {
@@ -60,19 +61,19 @@ export default function CheckoutPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [checkingAuth, setCheckingAuth] = useState<boolean>(true)
   const [loadingPlans, setLoadingPlans] = useState<boolean>(true)
-  
+
   // Estado para horarios y prorrateo
   const [scheduleSelections, setScheduleSelections] = useState<Record<string, {
     schedule: ScheduleSlot[]
     proration: ProrationResult
   }>>({})
-  
+
   // Estado para detalles de planes
   const [planDetails, setPlanDetails] = useState<Record<string, PlanDetails>>({})
 
   // Obtenemos los items del carrito desde el store
   const cartItems = useShopStore((state) => state.cart)
-  
+
   // Verificar si algún plan requiere selección de horario
   const plansRequiringSchedule = useMemo(() => {
     return cartItems.filter(item => {
@@ -80,12 +81,20 @@ export default function CheckoutPage() {
       return details?.includesClasses && details?.courseId
     })
   }, [cartItems, planDetails])
-  
+
+  // Check if any plan in the cart is recurrent aka has a billing cycle
+  const isRecurrentData = useMemo(() => {
+    return cartItems.some(item => {
+      const details = planDetails[item.plan.id]
+      return !!details?.billingCycle
+    })
+  }, [cartItems, planDetails])
+
   const requiresScheduleSelection = plansRequiringSchedule.length > 0
-  
+
   // Mobile detection
   const [isMobile, setIsMobile] = useState(false)
-  
+
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768)
@@ -94,7 +103,7 @@ export default function CheckoutPage() {
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
-  
+
   // Verificar si todos los planes requeridos tienen horario seleccionado
   const allSchedulesSelected = useMemo(() => {
     if (!requiresScheduleSelection) return true
@@ -108,7 +117,7 @@ export default function CheckoutPage() {
     const loadPlanDetails = async () => {
       setLoadingPlans(true)
       const details: Record<string, PlanDetails> = {}
-      
+
       for (const item of cartItems) {
         try {
           const response = await fetch(`/api/plans/${item.plan.id}`)
@@ -119,18 +128,19 @@ export default function CheckoutPage() {
               includesClasses: plan.includesClasses || false,
               courseId: plan.courseId || null,
               classesPerWeek: plan.classesPerWeek || null,
-              duration: 40, // Por defecto 40 minutos, puedes agregar este campo al plan si lo necesitas
+              duration: 40, // Por defecto 40 minutos
+              billingCycle: plan.billingCycle || null,
             }
           }
         } catch (error) {
           console.error(`Error loading plan ${item.plan.id}:`, error)
         }
       }
-      
+
       setPlanDetails(details)
       setLoadingPlans(false)
     }
-    
+
     if (cartItems.length > 0) {
       loadPlanDetails()
     }
@@ -157,7 +167,7 @@ export default function CheckoutPage() {
       // Usar precio prorrateado si existe
       const proration = scheduleSelections[item.plan.id]?.proration
       const price = proration?.proratedPrice ?? item.plan.price
-      
+
       return {
         id: item.product.id,
         name: item.product.title,
@@ -196,14 +206,14 @@ export default function CheckoutPage() {
       setStep(2)
     }
   }
-  
+
   const handleScheduleSelected = (planId: string, schedule: ScheduleSlot[], proration: ProrationResult) => {
     setScheduleSelections(prev => ({
       ...prev,
       [planId]: { schedule, proration }
     }))
   }
-  
+
   const handleContinueToPayment = () => {
     if (!allSchedulesSelected) {
       toast.error('Debes seleccionar un horario para todos los planes que incluyen clases')
@@ -246,17 +256,19 @@ export default function CheckoutPage() {
     }, 2000)
   }
 
-  const handlePayPalSuccess = (data: unknown) => {
-    const paypalData = data as { invoice: { invoiceNumber: string } }
-    
+  const handlePaymentSuccess = (data: unknown) => {
+    // Determine order number based on provider data
+    const anyData = data as any
+    const orderNumber = anyData.invoice?.invoiceNumber || anyData.orderId || `ORD-${Date.now()}`
+
     // Preparamos los datos del pedido
     const orderData = {
-      orderNumber: paypalData.invoice.invoiceNumber,
+      orderNumber: orderNumber,
       orderDate: new Date().toISOString(),
       totalAmount: total,
       items: cartItems,
       customer: JSON.parse(sessionStorage.getItem('customer-info') || '{}'),
-      paymentMethod: 'paypal',
+      paymentMethod: anyData.orderId ? 'creditCard' : 'paypal',
       user: session?.user ? { id: session.user.id, email: session.user.email } : undefined,
       paypalData: data,
     }
@@ -285,7 +297,7 @@ export default function CheckoutPage() {
   }
 
   // Definir pasos dinámicamente según si se requiere selección de horario
-  const checkoutSteps = requiresScheduleSelection 
+  const checkoutSteps = requiresScheduleSelection
     ? ['Autenticación', 'Información Personal', 'Horario', 'Pago']
     : ['Autenticación', 'Información Personal', 'Pago']
 
@@ -304,7 +316,7 @@ export default function CheckoutPage() {
     return (
       <div className="container mx-auto py-8">
         <h1 className="text-3xl font-bold mb-8 text-center">Finalizar Compra</h1>
-        
+
         <CheckoutProgress currentStep={0} steps={checkoutSteps} />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -316,7 +328,7 @@ export default function CheckoutPage() {
                   <div>
                     <h3 className="font-bold text-green-800 flex items-center gap-2">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/>
+                        <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" />
                       </svg>
                       Checkout Rápido como Invitado
                     </h3>
@@ -325,7 +337,7 @@ export default function CheckoutPage() {
                     </p>
                   </div>
                   {!useShopStore.getState().getRequiresAuth() && (
-                    <Button 
+                    <Button
                       onClick={() => setStep(1)}
                       className="bg-green-600 hover:bg-green-700"
                     >
@@ -353,7 +365,7 @@ export default function CheckoutPage() {
                 // el cambio en authStatus y avanzará automáticamente al paso 1
               }}
             />
-            
+
             <div className="mt-4 text-center">
               <Button variant="ghost" onClick={() => router.push('/shop')}>
                 ← Volver a la tienda
@@ -378,7 +390,7 @@ export default function CheckoutPage() {
     const selection = scheduleSelections[item.plan.id]
     const proration = selection?.proration
     const price = proration?.proratedPrice ?? item.plan.price
-    
+
     return {
       productId: item.product.id,
       planId: item.plan.id,
@@ -401,18 +413,18 @@ export default function CheckoutPage() {
     >
       <div className="container mx-auto py-8">
         <h1 className="text-3xl font-bold mb-8 text-center">Finalizar Compra</h1>
-        
-        <CheckoutProgress 
-          currentStep={requiresScheduleSelection 
-            ? step === 1 ? 1 
-            : step === 1.5 ? 2 
-            : step === 2 ? 3 
-            : 0
+
+        <CheckoutProgress
+          currentStep={requiresScheduleSelection
+            ? step === 1 ? 1
+              : step === 1.5 ? 2
+                : step === 2 ? 3
+                  : 0
             : step === 1 ? 1
-            : step === 2 ? 2
-            : 0
-          } 
-          steps={checkoutSteps} 
+              : step === 2 ? 2
+                : 0
+          }
+          steps={checkoutSteps}
         />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -454,13 +466,13 @@ export default function CheckoutPage() {
                                 <h3 className="font-semibold text-lg">{item.product.title}</h3>
                                 <p className="text-sm text-muted-foreground">{item.plan.name}</p>
                               </div>
-                              
+
                               <ScheduleCalendarSelector
                                 planId={item.plan.id}
                                 courseId={details.courseId}
                                 classesPerWeek={details.classesPerWeek}
                                 classDuration={details.duration}
-                                onScheduleSelected={(schedule: ScheduleSlot[], proration: ProrationResult) => 
+                                onScheduleSelected={(schedule: ScheduleSlot[], proration: ProrationResult) =>
                                   handleScheduleSelected(item.plan.id, schedule, proration)
                                 }
                               />
@@ -481,7 +493,7 @@ export default function CheckoutPage() {
                           <Button variant="outline" onClick={() => setStep(1)}>
                             Volver
                           </Button>
-                          <Button 
+                          <Button
                             onClick={handleContinueToPayment}
                             disabled={!allSchedulesSelected}
                             className="flex-1"
@@ -522,12 +534,17 @@ export default function CheckoutPage() {
                         subtotal,
                         discount,
                       }}
-                      onPayPalSuccess={handlePayPalSuccess}
+                      onPayPalSuccess={handlePaymentSuccess}
+                      onNiubizSuccess={handlePaymentSuccess} // Reusing the success handler as logic is similar (saving order, redirecting)
+                      userEmail={session?.user?.email || undefined}
+                      userFirstName={session?.user?.name?.split(' ')[0] || undefined} // Basic heuristic
+                      userLastName={session?.user?.name?.split(' ').slice(1).join(' ') || undefined}
+                      isRecurrent={isRecurrentData}
                     />
 
                     <div className="mt-6">
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         onClick={() => setStep(requiresScheduleSelection ? 1.5 : 1)}
                       >
                         Volver
@@ -557,7 +574,7 @@ export default function CheckoutPage() {
           </div>
         </div>
       </div>
-      
+
       {/* Mobile Floating Checkout Button */}
       {isMobile && step > 0 && (
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg z-40 md:hidden">
@@ -566,8 +583,8 @@ export default function CheckoutPage() {
               <p className="text-sm text-gray-600">Total</p>
               <p className="text-lg font-bold">${total.toFixed(2)}</p>
             </div>
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="bg-green-600 hover:bg-green-700"
               onClick={() => {
                 if (step === 1) {

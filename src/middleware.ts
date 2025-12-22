@@ -15,7 +15,7 @@ import { NextResponse } from 'next/server'
 // Helper function to get primary role from array
 function getPrimaryRoleFromArray(roles: string[]): string {
   if (!roles || roles.length === 0) return ROLES.GUEST
-  
+
   // Priority order: ADMIN > TEACHER > STUDENT > GUEST
   if (roles.includes(ROLES.ADMIN)) return ROLES.ADMIN
   if (roles.includes(ROLES.TEACHER)) return ROLES.TEACHER
@@ -36,12 +36,13 @@ export default auth(async (req) => {
   })
 
   const isLoggedIn = !!token
-  const userRoles = token?.roles as string[] || []
+  const userRoles = (token?.roles as string[]) || []
   const isAdmin = userRoles.includes(ROLES.ADMIN)
   const primaryRole = getPrimaryRoleFromArray(userRoles)
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
   const isApiPayPalRoute = nextUrl.pathname.startsWith('/api/paypal')
+  const isApiNiubizRoute = nextUrl.pathname.startsWith('/api/niubiz')
   const isAdminAuthRoute = nextUrl.pathname.startsWith(adminPrefix)
   const isPublicRoute = matchesPathPattern(nextUrl.pathname, publicRoutes)
   const isAuthRoute = authRoutes.includes(nextUrl.pathname)
@@ -53,6 +54,11 @@ export default auth(async (req) => {
 
   // Permitir rutas de API de PayPal (requieren autenticación interna)
   if (isApiPayPalRoute) {
+    return NextResponse.next()
+  }
+
+  // Permitir rutas de API de Niubiz (Checkout funciona como Guest)
+  if (isApiNiubizRoute) {
     return NextResponse.next()
   }
 
@@ -96,7 +102,10 @@ function getRoleBasedRedirect(primaryRole: string, callbackUrl: string | null): 
     if (callbackUrl.startsWith('/admin') && primaryRole === ROLES.ADMIN) {
       return callbackUrl
     }
-    if (callbackUrl.startsWith('/classroom') && (primaryRole === ROLES.TEACHER || primaryRole === ROLES.ADMIN)) {
+    if (
+      callbackUrl.startsWith('/classroom') &&
+      (primaryRole === ROLES.TEACHER || primaryRole === ROLES.ADMIN)
+    ) {
       return callbackUrl
     }
     if (!callbackUrl.startsWith('/admin') && !callbackUrl.startsWith('/api')) {

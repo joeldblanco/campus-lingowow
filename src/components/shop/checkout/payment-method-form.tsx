@@ -3,25 +3,14 @@
 import { Button } from '@/components/ui/button'
 import {
   Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { CreditCard, LockIcon } from 'lucide-react'
+import { LockIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { PayPalButton } from './paypal-button'
+import { NiubizCheckout } from '@/components/payments/NiubizCheckout'
+import { useEffect, useState } from 'react'
 
 interface PaymentMethodFormProps {
   paymentMethod: string
@@ -41,57 +30,48 @@ interface PaymentMethodFormProps {
     discount: number
   }
   onPayPalSuccess?: (data: unknown) => void
+  onNiubizSuccess?: (data: unknown) => void
+  userEmail?: string
+  userFirstName?: string
+  userLastName?: string
+  isRecurrent?: boolean
 }
 
 type PaymentFormData = {
-  cardNumber?: string
-  cardholderName?: string
-  expiryMonth?: string
-  expiryYear?: string
-  cvv?: string
+  // Empty as we use external providers
 }
 
 // Schema unificado que cambia según el método de pago
 const createPaymentSchema = (paymentMethod: string) => {
-  if (paymentMethod === 'creditCard') {
-    return z.object({
-      cardNumber: z.string().regex(/^\d{16}$/, 'El número de tarjeta debe tener 16 dígitos'),
-      cardholderName: z.string().min(3, 'El nombre debe tener al menos 3 caracteres'),
-      expiryMonth: z.string().min(1, 'Selecciona un mes'),
-      expiryYear: z.string().min(1, 'Selecciona un año'),
-      cvv: z.string().regex(/^\d{3,4}$/, 'El CVV debe tener 3 o 4 dígitos'),
-    })
-  } else {
-    // PayPal no necesita campos adicionales
-    return z.object({})
-  }
+  return z.object({})
 }
 
-export function PaymentMethodForm({ 
-  paymentMethod, 
-  onSubmit, 
+export function PaymentMethodForm({
+  paymentMethod,
+  onSubmit,
   isLoading,
   paypalData,
-  onPayPalSuccess 
+  onPayPalSuccess,
+  onNiubizSuccess,
+  userEmail,
+  userFirstName,
+  userLastName,
+  isRecurrent = false
 }: PaymentMethodFormProps) {
   const schema = createPaymentSchema(paymentMethod)
-  
-  const getDefaultValues = (): PaymentFormData => {
-    if (paymentMethod === 'creditCard') {
-      return {
-        cardNumber: '',
-        cardholderName: '',
-        expiryMonth: '',
-        expiryYear: '',
-        cvv: '',
-      }
-    }
-    return {}
-  }
+
+  // Create a unique purchase number for this session/attempt
+  const [purchaseNumber, setPurchaseNumber] = useState('')
+
+  useEffect(() => {
+    // Generate order ID on client side to ensure it's unique per attempt
+    // Format: ORD-{timestamp}-{random}
+    setPurchaseNumber(`ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`)
+  }, [])
 
   const form = useForm<PaymentFormData>({
     resolver: zodResolver(schema),
-    defaultValues: getDefaultValues(),
+    defaultValues: {},
   })
 
   const handleFormSubmit = (data: PaymentFormData) => {
@@ -99,116 +79,28 @@ export function PaymentMethodForm({
   }
 
   const renderCreditCardForm = () => {
+    if (!purchaseNumber) return null;
+
     return (
       <div className="space-y-6">
-        <FormField
-          control={form.control}
-          name="cardNumber"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Número de Tarjeta</FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <Input
-                    placeholder="1234 5678 9012 3456"
-                    className="pl-10"
-                    {...field}
-                  />
-                  <CreditCard className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="cardholderName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nombre del Titular</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Nombre completo como aparece en la tarjeta"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <div className="grid grid-cols-3 gap-4">
-          <FormField
-            control={form.control}
-            name="expiryMonth"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Mes</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="MM" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
-                      <SelectItem key={month} value={month.toString().padStart(2, '0')}>
-                        {month.toString().padStart(2, '0')}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="expiryYear"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Año</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="AAAA" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() + i).map((year) => (
-                      <SelectItem key={year} value={year.toString()}>
-                        {year}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="cvv"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>CVV</FormLabel>
-                <FormControl>
-                  <div className="relative">
-                    <Input
-                      placeholder="123"
-                      className="pl-10"
-                      {...field}
-                    />
-                    <LockIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+        <div className="p-6 border rounded-md bg-slate-50 text-center">
+          <p className="mb-4">Realiza tu pago de forma segura con Niubiz.</p>
+          <NiubizCheckout
+            amount={paypalData.total}
+            purchaseNumber={purchaseNumber}
+            onSuccess={(data) => {
+              if (onNiubizSuccess) {
+                onNiubizSuccess(data);
+              }
+            }}
+            onError={(error) => {
+              console.error("Niubiz Error:", error);
+            }}
+            userEmail={userEmail}
+            userFirstName={userFirstName}
+            userLastName={userLastName}
+            // Logic for 'isRecurrent' passed from parent
+            isRecurrent={isRecurrent}
           />
         </div>
       </div>
@@ -261,9 +153,11 @@ export function PaymentMethodForm({
               Pago 100% seguro con encriptación SSL
             </span>
           </div>
-          <Button type="submit" className="w-full" disabled={isLoading || form.formState.isSubmitting}>
+
+          {/* Hide default submit button as both PayPal and Niubiz have their own buttons */}
+          {/* <Button type="submit" className="w-full" disabled={isLoading || form.formState.isSubmitting}>
             {isLoading || form.formState.isSubmitting ? 'Procesando...' : 'Finalizar Compra'}
-          </Button>
+          </Button> */}
         </div>
       </form>
     </Form>

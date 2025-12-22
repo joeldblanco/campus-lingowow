@@ -115,7 +115,7 @@ export class CloudinaryService {
   ): Promise<CloudinaryUploadResult> {
     try {
       const result = await cloudinary.uploader.upload(file as string, {
-        folder: options.folder || 'lingowow',
+        folder: options.folder || 'campus-lingowow',
         resource_type: options.resource_type || 'auto',
         public_id: options.public_id,
         transformation: options.transformation,
@@ -164,7 +164,7 @@ export class CloudinaryService {
     transformations?: CloudinaryTransformation[]
   ): Promise<CloudinaryUploadResult> {
     return this.uploadFile(file, {
-      folder: `lingowow/${folder}`,
+      folder: `campus-lingowow/${folder}`,
       resource_type: 'image',
       transformation: transformations,
       quality: 'auto',
@@ -176,7 +176,7 @@ export class CloudinaryService {
     folder: string = 'videos'
   ): Promise<CloudinaryUploadResult> {
     return this.uploadFile(file, {
-      folder: `lingowow/${folder}`,
+      folder: `campus-lingowow/${folder}`,
       resource_type: 'video',
       quality: 'auto',
     })
@@ -187,7 +187,7 @@ export class CloudinaryService {
     folder: string = 'audio'
   ): Promise<CloudinaryUploadResult> {
     return this.uploadFile(file, {
-      folder: `lingowow/${folder}`,
+      folder: `campus-lingowow/${folder}`,
       resource_type: 'video', // Cloudinary treats audio as video
       quality: 'auto',
     })
@@ -198,7 +198,7 @@ export class CloudinaryService {
     folder: string = 'documents'
   ): Promise<CloudinaryUploadResult> {
     return this.uploadFile(file, {
-      folder: `lingowow/${folder}`,
+      folder: `campus-lingowow/${folder}`,
       resource_type: 'raw',
     })
   }
@@ -291,18 +291,15 @@ export class CloudinaryService {
   static async listFolders(prefix?: string): Promise<CloudinaryFolder[]> {
     try {
       const result = await cloudinary.api.sub_folders(prefix || '')
-      return result.folders.map((folder: {
-        name: string
-        path: string
-        bytes?: number
-        file_count?: number
-      }) => ({
-        name: folder.name,
-        path: folder.path,
-        bytes: folder.bytes || 0,
-        file_count: folder.file_count || 0,
-        created_at: new Date().toISOString(),
-      }))
+      return result.folders.map(
+        (folder: { name: string; path: string; bytes?: number; file_count?: number }) => ({
+          name: folder.name,
+          path: folder.path,
+          bytes: folder.bytes || 0,
+          file_count: folder.file_count || 0,
+          created_at: new Date().toISOString(),
+        })
+      )
     } catch (error) {
       console.error('Cloudinary list folders error:', error)
       throw new Error('Failed to list folders from Cloudinary')
@@ -318,10 +315,10 @@ export class CloudinaryService {
         public_id: dummyPublicId,
         resource_type: 'raw',
       })
-      
+
       // Clean up the dummy file
       await cloudinary.uploader.destroy(dummyPublicId, { resource_type: 'raw' })
-      
+
       return {
         name: path.split('/').pop() || path,
         path: path,
@@ -394,15 +391,12 @@ export class CloudinaryService {
     }
   }
 
-  static async addContext(
-    publicIds: string[], 
-    context: Record<string, string>
-  ): Promise<boolean> {
+  static async addContext(publicIds: string[], context: Record<string, string>): Promise<boolean> {
     try {
       const contextString = Object.entries(context)
         .map(([key, value]) => `${key}=${value}`)
         .join('|')
-      
+
       await cloudinary.uploader.add_context(contextString, publicIds)
       return true
     } catch (error) {

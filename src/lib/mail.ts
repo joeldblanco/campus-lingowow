@@ -21,6 +21,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
         <div style="text-align: center; margin: 20px 0;">
           <a href="${confirmLink}" style="display: inline-block; background-color: #020617; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 16px;">Validar correo electrónico</a>
         </div>
+        <p style="font-size: 14px; color: #6b7280; text-align:center;">Si tienes alguna duda, contáctanos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
         <p style="font-size: 14px; color: #6b7280; text-align:center;">Si no has sido tú quien se ha registrado, puedes ignorar este correo.</p>
       </div>
       <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
@@ -49,6 +50,7 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
         <div style="text-align: center; margin: 20px 0;">
           <a href="${confirmLink}" style="display: inline-block; background-color: #020617; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 16px;">Recuperar contraseña</a>
         </div>
+        <p style="font-size: 14px; color: #6b7280; text-align:center;">Si tienes alguna duda, contáctanos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
         <p style="font-size: 14px; color: #6b7280; text-align:center;">Si no has sido tú quien ha solicitado la recuperación de tu contraseña, puedes ignorar este correo.</p>
       </div>
       <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
@@ -75,16 +77,23 @@ interface PaymentConfirmationData {
   currency: string
 }
 
-export const sendPaymentConfirmationEmail = async (email: string, data: PaymentConfirmationData) => {
+export const sendPaymentConfirmationEmail = async (
+  email: string,
+  data: PaymentConfirmationData
+) => {
   const dashboardLink = `${process.env.NEXT_PUBLIC_DOMAIN}/dashboard`
-  
-  const itemsHtml = data.items.map(item => `
+
+  const itemsHtml = data.items
+    .map(
+      (item) => `
     <tr>
       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">${item.name}</td>
       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: center;">${item.quantity}</td>
       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: right;">$${item.price.toFixed(2)} ${data.currency}</td>
     </tr>
-  `).join('')
+  `
+    )
+    .join('')
 
   await resend.emails.send({
     from: 'hello@lingowow.com',
@@ -123,18 +132,26 @@ export const sendPaymentConfirmationEmail = async (email: string, data: PaymentC
             <span style="color: #6b7280;">Subtotal:</span>
             <span style="color: #374151;">$${data.subtotal.toFixed(2)} ${data.currency}</span>
           </div>
-          ${data.discount > 0 ? `
+          ${
+            data.discount > 0
+              ? `
           <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
             <span style="color: #3b82f6;">Descuento:</span>
             <span style="color: #3b82f6;">-$${data.discount.toFixed(2)} ${data.currency}</span>
           </div>
-          ` : ''}
-          ${data.tax > 0 ? `
+          `
+              : ''
+          }
+          ${
+            data.tax > 0
+              ? `
           <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
             <span style="color: #6b7280;">Impuestos:</span>
             <span style="color: #374151;">$${data.tax.toFixed(2)} ${data.currency}</span>
           </div>
-          ` : ''}
+          `
+              : ''
+          }
           <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb;">
             <span style="color: #111827;">Total:</span>
             <span style="color: #111827;">$${data.total.toFixed(2)} ${data.currency}</span>
@@ -145,7 +162,7 @@ export const sendPaymentConfirmationEmail = async (email: string, data: PaymentC
           <a href="${dashboardLink}" style="display: inline-block; background-color: #020617; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 16px;">Ir a mi Dashboard</a>
         </div>
         
-        <p style="font-size: 14px; color: #6b7280; text-align: center;">Si tienes alguna pregunta, no dudes en contactarnos en info@lingowow.com</p>
+        <p style="font-size: 14px; color: #6b7280; text-align: center;">Si tienes alguna pregunta, no dudes en contactarnos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a> o en info@lingowow.com</p>
       </div>
       <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
         Go wow with us! 🚀
@@ -202,6 +219,7 @@ export const sendClassReminderEmail = async (email: string, data: ClassReminderD
         </div>
         
         <p style="font-size: 14px; color: #6b7280; text-align: center;">El enlace estará disponible 5 minutos antes de la hora programada.</p>
+        <p style="font-size: 14px; color: #6b7280; text-align: center;">Si tienes alguna duda, contáctanos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
       </div>
       <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
         Go wow with us! 🚀
@@ -219,14 +237,14 @@ interface TrialClassRequestData {
 
 export const sendTrialClassRequestEmail = async (data: TrialClassRequestData) => {
   const languageLabels: Record<string, string> = {
-    'english': 'Inglés',
-    'spanish': 'Español',
-    'french': 'Francés',
-    'german': 'Alemán',
-    'italian': 'Italiano',
-    'portuguese': 'Portugués',
-    'chinese': 'Chino Mandarín',
-    'japanese': 'Japonés',
+    english: 'Inglés',
+    spanish: 'Español',
+    french: 'Francés',
+    german: 'Alemán',
+    italian: 'Italiano',
+    portuguese: 'Portugués',
+    chinese: 'Chino Mandarín',
+    japanese: 'Japonés',
   }
 
   await resend.emails.send({
@@ -308,7 +326,10 @@ interface CreditPurchaseData {
   currency: string
 }
 
-export const sendCreditPurchaseConfirmationEmail = async (email: string, data: CreditPurchaseData) => {
+export const sendCreditPurchaseConfirmationEmail = async (
+  email: string,
+  data: CreditPurchaseData
+) => {
   const dashboardLink = `${process.env.NEXT_PUBLIC_DOMAIN}/dashboard`
 
   await resend.emails.send({
@@ -346,6 +367,7 @@ export const sendCreditPurchaseConfirmationEmail = async (email: string, data: C
         </div>
         
         <p style="font-size: 14px; color: #6b7280; text-align: center;">Puedes usar tus créditos para reservar clases adicionales o acceder a contenido premium.</p>
+        <p style="font-size: 14px; color: #6b7280; text-align: center;">Si tienes alguna duda, contáctanos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
       </div>
       <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
         Go wow with us! 🚀
@@ -364,12 +386,12 @@ interface ContactFormData {
 
 export const sendContactFormEmail = async (data: ContactFormData) => {
   const subjectLabels: Record<string, string> = {
-    'informacion': 'Información General',
-    'cursos': 'Consulta sobre Cursos',
-    'precios': 'Precios y Planes',
+    informacion: 'Información General',
+    cursos: 'Consulta sobre Cursos',
+    precios: 'Precios y Planes',
     'clase-prueba': 'Clase de Prueba',
-    'soporte': 'Soporte Técnico',
-    'otro': 'Otro',
+    soporte: 'Soporte Técnico',
+    otro: 'Otro',
   }
 
   await resend.emails.send({

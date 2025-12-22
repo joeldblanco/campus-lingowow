@@ -77,15 +77,14 @@ async function getCurrentUser() {
 async function checkAdminPermissions(userId: string) {
   const user = await db.user.findUnique({
     where: { id: userId },
-    select: { roles: true, permissions: true }
+    select: { roles: true, permissions: true },
   })
 
   if (!user) {
     throw new Error('User not found')
   }
 
-  const isAdmin = user.roles.includes('ADMIN') || 
-                  user.permissions.includes('FILE_ADMIN')
+  const isAdmin = user.roles.includes('ADMIN') || user.permissions.includes('FILE_ADMIN')
 
   if (!isAdmin) {
     throw new Error('Insufficient permissions')
@@ -95,7 +94,9 @@ async function checkAdminPermissions(userId: string) {
 }
 
 // Sync Cloudinary resources with database
-export async function syncCloudinaryResources(): Promise<FileManagementResult<{ message: string }>> {
+export async function syncCloudinaryResources(): Promise<
+  FileManagementResult<{ message: string }>
+> {
   try {
     const user = await getCurrentUser()
     await checkAdminPermissions(user.id)
@@ -103,7 +104,8 @@ export async function syncCloudinaryResources(): Promise<FileManagementResult<{ 
     // Get all resources from Cloudinary
     const cloudinaryResult = await CloudinaryService.listResources({
       max_results: 500,
-      with_field: ['tags', 'context', 'metadata']
+      with_field: ['tags', 'context', 'metadata'],
+      prefix: 'campus-lingowow/', // Only sync files from this project folder
     })
 
     const resources = cloudinaryResult.resources
@@ -111,7 +113,7 @@ export async function syncCloudinaryResources(): Promise<FileManagementResult<{ 
     // Sync each resource with database
     const syncPromises = resources.map(async (resource: CloudinaryResource) => {
       const existingFile = await db.fileAsset.findUnique({
-        where: { publicId: resource.public_id }
+        where: { publicId: resource.public_id },
       })
 
       if (!existingFile) {
@@ -136,8 +138,9 @@ export async function syncCloudinaryResources(): Promise<FileManagementResult<{ 
             url: resource.url,
             folder: resource.folder || 'root',
             uploadedBy: user.id,
-            metadata: (resource as CloudinaryResource & { metadata?: Record<string, unknown> }).metadata as Prisma.InputJsonValue
-          }
+            metadata: (resource as CloudinaryResource & { metadata?: Record<string, unknown> })
+              .metadata as Prisma.InputJsonValue,
+          },
         })
       } else {
         // Update existing file record
@@ -148,10 +151,11 @@ export async function syncCloudinaryResources(): Promise<FileManagementResult<{ 
             width: resource.width || undefined,
             height: resource.height || undefined,
             duration: resource.duration || undefined,
-            metadata: (resource as CloudinaryResource & { metadata?: Record<string, unknown> }).metadata as Prisma.InputJsonValue,
+            metadata: (resource as CloudinaryResource & { metadata?: Record<string, unknown> })
+              .metadata as Prisma.InputJsonValue,
             tags: resource.tags || [],
-            updatedAt: new Date()
-          }
+            updatedAt: new Date(),
+          },
         })
       }
     })
@@ -160,19 +164,21 @@ export async function syncCloudinaryResources(): Promise<FileManagementResult<{ 
 
     return {
       success: true,
-      data: { message: `Synced ${resources.length} files from Cloudinary` }
+      data: { message: `Synced ${resources.length} files from Cloudinary` },
     }
   } catch (error) {
     console.error('Sync Cloudinary resources error:', error)
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to sync resources'
+      error: error instanceof Error ? error.message : 'Failed to sync resources',
     }
   }
 }
 
 // List files with filtering and pagination
-export async function listFiles(options: FileListOptions = {}): Promise<FileManagementResult<FileListResult>> {
+export async function listFiles(
+  options: FileListOptions = {}
+): Promise<FileManagementResult<FileListResult>> {
   try {
     const user = await getCurrentUser()
     await checkAdminPermissions(user.id)
@@ -187,14 +193,14 @@ export async function listFiles(options: FileListOptions = {}): Promise<FileMana
       tags,
       sortBy = 'createdAt',
       sortOrder = 'desc',
-      uploadedBy
+      uploadedBy,
     } = options
 
     const skip = (page - 1) * limit
 
     // Build where clause
     const where: Record<string, unknown> = {
-      isActive: true
+      isActive: true,
     }
 
     if (search) {
@@ -202,7 +208,7 @@ export async function listFiles(options: FileListOptions = {}): Promise<FileMana
         { fileName: { contains: search, mode: 'insensitive' } },
         { description: { contains: search, mode: 'insensitive' } },
         { tags: { hasSome: [search] } },
-        { publicId: { contains: search, mode: 'insensitive' } }
+        { publicId: { contains: search, mode: 'insensitive' } },
       ]
     }
 
@@ -215,7 +221,11 @@ export async function listFiles(options: FileListOptions = {}): Promise<FileMana
     }
 
     if (folder) {
+      // Ensure folder search stays within campus-lingowow if not already prefixed (though regex match would handle it, this is cleaner)
       where.folder = { contains: folder, mode: 'insensitive' }
+    } else {
+      // If no folder specified, default to showing everything under campus-lingowow
+      where.folder = { startsWith: 'campus-lingowow' }
     }
 
     if (tags && tags.length > 0) {
@@ -240,10 +250,10 @@ export async function listFiles(options: FileListOptions = {}): Promise<FileMana
           select: {
             id: true,
             name: true,
-            email: true
-          }
-        }
-      }
+            email: true,
+          },
+        },
+      },
     })
 
     return {
@@ -255,20 +265,22 @@ export async function listFiles(options: FileListOptions = {}): Promise<FileMana
         limit,
         totalPages: Math.ceil(total / limit),
         hasNext: skip + limit < total,
-        hasPrev: page > 1
-      }
+        hasPrev: page > 1,
+      },
     }
   } catch (error) {
     console.error('List files error:', error)
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to list files'
+      error: error instanceof Error ? error.message : 'Failed to list files',
     }
   }
 }
 
 // Get file details
-export async function getFileDetails(publicId: string): Promise<FileManagementResult<ServerFileAsset>> {
+export async function getFileDetails(
+  publicId: string
+): Promise<FileManagementResult<ServerFileAsset>> {
   try {
     const user = await getCurrentUser()
     await checkAdminPermissions(user.id)
@@ -280,8 +292,8 @@ export async function getFileDetails(publicId: string): Promise<FileManagementRe
           select: {
             id: true,
             name: true,
-            email: true
-          }
+            email: true,
+          },
         },
         transformations: true,
         usageLogs: {
@@ -292,18 +304,18 @@ export async function getFileDetails(publicId: string): Promise<FileManagementRe
               select: {
                 id: true,
                 name: true,
-                email: true
-              }
-            }
-          }
-        }
-      }
+                email: true,
+              },
+            },
+          },
+        },
+      },
     })
 
     if (!file) {
       return {
         success: false,
-        error: 'File not found'
+        error: 'File not found',
       }
     }
 
@@ -314,13 +326,13 @@ export async function getFileDetails(publicId: string): Promise<FileManagementRe
 
     return {
       success: true,
-      data: file as ServerFileAsset
+      data: file as ServerFileAsset,
     }
   } catch (error) {
     console.error('Get file details error:', error)
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to get file details'
+      error: error instanceof Error ? error.message : 'Failed to get file details',
     }
   }
 }
@@ -341,13 +353,13 @@ export async function updateFileMetadata(
     await checkAdminPermissions(user.id)
 
     const file = await db.fileAsset.findUnique({
-      where: { publicId }
+      where: { publicId },
     })
 
     if (!file) {
       return {
         success: false,
-        error: 'File not found'
+        error: 'File not found',
       }
     }
 
@@ -370,35 +382,37 @@ export async function updateFileMetadata(
       where: { id: file.id },
       data: {
         ...metadata,
-        updatedAt: new Date()
+        updatedAt: new Date(),
       },
       include: {
         uploader: {
           select: {
             id: true,
             name: true,
-            email: true
-          }
-        }
-      }
+            email: true,
+          },
+        },
+      },
     })
 
     return {
       success: true,
       data: updatedFile as ServerFileAsset,
-      message: 'File metadata updated successfully'
+      message: 'File metadata updated successfully',
     }
   } catch (error) {
     console.error('Update file metadata error:', error)
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to update file metadata'
+      error: error instanceof Error ? error.message : 'Failed to update file metadata',
     }
   }
 }
 
 // Batch delete files
-export async function batchDeleteFiles(publicIds: string[]): Promise<FileManagementResult<{ deleted: string[]; failed: string[] }>> {
+export async function batchDeleteFiles(
+  publicIds: string[]
+): Promise<FileManagementResult<{ deleted: string[]; failed: string[] }>> {
   try {
     const user = await getCurrentUser()
     await checkAdminPermissions(user.id)
@@ -408,12 +422,12 @@ export async function batchDeleteFiles(publicIds: string[]): Promise<FileManagem
 
     // Update database (soft delete)
     const files = await db.fileAsset.findMany({
-      where: { publicId: { in: publicIds } }
+      where: { publicId: { in: publicIds } },
     })
 
     await db.fileAsset.updateMany({
       where: { id: { in: files.map((f) => f.id) } },
-      data: { isActive: false }
+      data: { isActive: false },
     })
 
     // Log deletions
@@ -429,13 +443,13 @@ export async function batchDeleteFiles(publicIds: string[]): Promise<FileManagem
     return {
       success: true,
       data: cloudinaryResult,
-      message: `Deleted ${cloudinaryResult.deleted.length} files successfully`
+      message: `Deleted ${cloudinaryResult.deleted.length} files successfully`,
     }
   } catch (error) {
     console.error('Batch delete files error:', error)
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to delete files'
+      error: error instanceof Error ? error.message : 'Failed to delete files',
     }
   }
 }
@@ -454,18 +468,23 @@ export async function moveFiles(
 
     for (const publicId of publicIds) {
       try {
+        // Enforce campus-lingowow prefix on destination
+        const safeDestination = destinationFolder.startsWith('campus-lingowow')
+          ? destinationFolder
+          : `campus-lingowow/${destinationFolder}`
+
         // Move in Cloudinary
-        const newPublicId = `${destinationFolder}/${publicId.split('/').pop()}`
+        const newPublicId = `${safeDestination}/${publicId.split('/').pop()}`
         await CloudinaryService.moveFile(publicId, newPublicId)
 
         // Update database
         await db.fileAsset.updateMany({
           where: { publicId },
-          data: { 
+          data: {
             folder: destinationFolder,
             publicId: newPublicId,
-            updatedAt: new Date()
-          }
+            updatedAt: new Date(),
+          },
         })
 
         moved.push(publicId)
@@ -477,19 +496,21 @@ export async function moveFiles(
     return {
       success: true,
       data: { moved, failed },
-      message: `Moved ${moved.length} files successfully`
+      message: `Moved ${moved.length} files successfully`,
     }
   } catch (error) {
     console.error('Move files error:', error)
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to move files'
+      error: error instanceof Error ? error.message : 'Failed to move files',
     }
   }
 }
 
 // List folders
-export async function listFolders(prefix?: string): Promise<FileManagementResult<CloudinaryFolder[]>> {
+export async function listFolders(
+  prefix?: string
+): Promise<FileManagementResult<CloudinaryFolder[]>> {
   try {
     const user = await getCurrentUser()
     await checkAdminPermissions(user.id)
@@ -498,13 +519,13 @@ export async function listFolders(prefix?: string): Promise<FileManagementResult
 
     return {
       success: true,
-      data: folders
+      data: folders,
     }
   } catch (error) {
     console.error('List folders error:', error)
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to list folders'
+      error: error instanceof Error ? error.message : 'Failed to list folders',
     }
   }
 }
@@ -515,8 +536,11 @@ export async function createFolder(path: string): Promise<FileManagementResult<C
     const user = await getCurrentUser()
     await checkAdminPermissions(user.id)
 
+    // Enforce campus-lingowow prefix
+    const safePath = path.startsWith('campus-lingowow/') ? path : `campus-lingowow/${path}`
+
     // Create in Cloudinary
-    const cloudinaryFolder = await CloudinaryService.createFolder(path)
+    const cloudinaryFolder = await CloudinaryService.createFolder(safePath)
 
     // Create in database
     await db.fileFolder.create({
@@ -524,34 +548,36 @@ export async function createFolder(path: string): Promise<FileManagementResult<C
         name: cloudinaryFolder.name,
         path: cloudinaryFolder.path,
         creator: {
-          connect: { id: user.id }
-        }
-      }
+          connect: { id: user.id },
+        },
+      },
     })
 
     return {
       success: true,
       data: cloudinaryFolder,
-      message: 'Folder created successfully'
+      message: 'Folder created successfully',
     }
   } catch (error) {
     console.error('Create folder error:', error)
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to create folder'
+      error: error instanceof Error ? error.message : 'Failed to create folder',
     }
   }
 }
 
 // Get usage statistics
-export async function getUsageStats(): Promise<FileManagementResult<{
-  totalFiles: number
-  totalSize: number
-  byType: Record<FileResourceType, { count: number; size: number }>
-  byCategory: Record<FileCategory, { count: number; size: number }>
-  recentUploads: number
-  cloudinaryUsage: unknown
-}>> {
+export async function getUsageStats(): Promise<
+  FileManagementResult<{
+    totalFiles: number
+    totalSize: number
+    byType: Record<FileResourceType, { count: number; size: number }>
+    byCategory: Record<FileCategory, { count: number; size: number }>
+    recentUploads: number
+    cloudinaryUsage: unknown
+  }>
+> {
   try {
     const user = await getCurrentUser()
     await checkAdminPermissions(user.id)
@@ -561,46 +587,62 @@ export async function getUsageStats(): Promise<FileManagementResult<{
       db.fileAsset.count({ where: { isActive: true } }),
       db.fileAsset.aggregate({
         where: { isActive: true },
-        _sum: { size: true }
+        _sum: { size: true },
       }),
       db.fileAsset.groupBy({
         by: ['resourceType'],
         where: { isActive: true },
         _count: { id: true },
-        _sum: { size: true }
+        _sum: { size: true },
       }),
       db.fileAsset.groupBy({
         by: ['category'],
         where: { isActive: true },
         _count: { id: true },
-        _sum: { size: true }
+        _sum: { size: true },
       }),
       db.fileAsset.count({
-        where: { 
+        where: {
           isActive: true,
-          createdAt: { gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) } // Last 7 days
-        }
-      })
+          createdAt: { gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) }, // Last 7 days
+        },
+      }),
     ])
 
     // Get Cloudinary usage
     const cloudinaryUsage = await CloudinaryService.getUsageStats()
 
-    const byTypeMap = byType.reduce((acc: Record<FileResourceType, { count: number; size: number }>, item: { resourceType: FileResourceType; _count: { id: number }; _sum: { size: number | null } }) => {
-      acc[item.resourceType] = {
-        count: item._count.id,
-        size: item._sum.size || 0
-      }
-      return acc
-    }, {} as Record<FileResourceType, { count: number; size: number }>)
+    const byTypeMap = byType.reduce(
+      (
+        acc: Record<FileResourceType, { count: number; size: number }>,
+        item: {
+          resourceType: FileResourceType
+          _count: { id: number }
+          _sum: { size: number | null }
+        }
+      ) => {
+        acc[item.resourceType] = {
+          count: item._count.id,
+          size: item._sum.size || 0,
+        }
+        return acc
+      },
+      {} as Record<FileResourceType, { count: number; size: number }>
+    )
 
-    const byCategoryMap = byCategory.reduce((acc: Record<FileCategory, { count: number; size: number }>, item: { category: FileCategory; _count: { id: number }; _sum: { size: number | null } }) => {
-      acc[item.category] = {
-        count: item._count.id,
-        size: item._sum.size || 0
-      }
-      return acc
-    }, {} as Record<FileCategory, { count: number; size: number }>)
+    const byCategoryMap = byCategory.reduce(
+      (
+        acc: Record<FileCategory, { count: number; size: number }>,
+        item: { category: FileCategory; _count: { id: number }; _sum: { size: number | null } }
+      ) => {
+        acc[item.category] = {
+          count: item._count.id,
+          size: item._sum.size || 0,
+        }
+        return acc
+      },
+      {} as Record<FileCategory, { count: number; size: number }>
+    )
 
     return {
       success: true,
@@ -610,14 +652,14 @@ export async function getUsageStats(): Promise<FileManagementResult<{
         byType: byTypeMap,
         byCategory: byCategoryMap,
         recentUploads,
-        cloudinaryUsage
-      }
+        cloudinaryUsage,
+      },
     }
   } catch (error) {
     console.error('Get usage stats error:', error)
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to get usage stats'
+      error: error instanceof Error ? error.message : 'Failed to get usage stats',
     }
   }
 }
@@ -628,7 +670,7 @@ function determineFileCategory(folder?: string, context?: Record<string, string>
   if (context?.category) {
     return context.category as FileCategory
   }
-  
+
   if (folder) {
     if (folder.includes('course')) return FileCategory.COURSE_CONTENT
     if (folder.includes('lesson')) return FileCategory.LESSON_MATERIAL
@@ -636,21 +678,27 @@ function determineFileCategory(folder?: string, context?: Record<string, string>
     if (folder.includes('avatar') || folder.includes('profile')) return FileCategory.USER_AVATAR
     if (folder.includes('brand') || folder.includes('logo')) return FileCategory.BRANDING
     if (folder.includes('doc')) return FileCategory.DOCUMENTATION
-    if (folder.includes('media') || folder.includes('video') || folder.includes('audio')) return FileCategory.MEDIA
+    if (folder.includes('media') || folder.includes('video') || folder.includes('audio'))
+      return FileCategory.MEDIA
     if (folder.includes('template')) return FileCategory.TEMPLATE
     if (folder.includes('backup')) return FileCategory.BACKUP
   }
-  
+
   return FileCategory.GENERAL
 }
 
 function mapResourceType(resourceType: string): FileResourceType {
   switch (resourceType) {
-    case 'image': return FileResourceType.IMAGE
-    case 'video': return FileResourceType.VIDEO
-    case 'audio': return FileResourceType.AUDIO
-    case 'raw': return FileResourceType.RAW
-    default: return FileResourceType.RAW
+    case 'image':
+      return FileResourceType.IMAGE
+    case 'video':
+      return FileResourceType.VIDEO
+    case 'audio':
+      return FileResourceType.AUDIO
+    case 'raw':
+      return FileResourceType.RAW
+    default:
+      return FileResourceType.RAW
   }
 }
 
@@ -672,8 +720,8 @@ async function logFileUsage(
         userId,
         action: action as UsageAction,
         context,
-        contextId
-      }
+        contextId,
+      },
     })
 
     // Update usage count
@@ -681,8 +729,8 @@ async function logFileUsage(
       where: { id: fileAssetId },
       data: {
         usageCount: { increment: 1 },
-        lastAccessedAt: new Date()
-      }
+        lastAccessedAt: new Date(),
+      },
     })
   } catch (error) {
     console.error('Failed to log file usage:', error)

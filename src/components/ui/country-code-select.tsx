@@ -11,7 +11,7 @@ interface CountryCode {
   abbreviation: string
 }
 
-const countryCodes: CountryCode[] = [
+export const countryCodes: CountryCode[] = [
   { code: '+599', name: 'República Dominicana', abbreviation: 'DO' },
   { code: '+27', name: 'Sudáfrica', abbreviation: 'ZA' },
   { code: '+971', name: 'Emiratos Árabes', abbreviation: 'AE' },
@@ -74,9 +74,9 @@ export function CountryCodeSelect({ value, onChange, phoneValue, onPhoneChange }
             {value ? (
               <div className="flex items-center gap-2">
                 <span className="text-xs font-bold text-muted-foreground">
-                  {countryCodes.find(c => c.code === value)?.abbreviation}
+                  {value}
                 </span>
-                <span>{value}</span>
+                <span>{countryCodes.find(c => c.abbreviation === value)?.code}</span>
               </div>
             ) : (
               <span>Código</span>
@@ -85,7 +85,7 @@ export function CountryCodeSelect({ value, onChange, phoneValue, onPhoneChange }
         </SelectTrigger>
         <SelectContent>
           {countryCodes.map((country) => (
-            <SelectItem key={`${country.code}-${country.name}`} value={country.code}>
+            <SelectItem key={country.abbreviation} value={country.abbreviation}>
               <div className="flex items-center gap-2">
                 <span className="text-xs font-bold text-muted-foreground w-4">
                   {country.abbreviation}
@@ -97,7 +97,7 @@ export function CountryCodeSelect({ value, onChange, phoneValue, onPhoneChange }
           ))}
         </SelectContent>
       </Select>
-      
+
       <Input
         placeholder="Número de teléfono"
         value={phoneValue}
@@ -138,9 +138,9 @@ export function CountryCodeField<T extends FieldValues = FieldValues>({ control,
                     {field.value?.countryCode ? (
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-bold text-muted-foreground">
-                          {countryCodes.find(c => c.code === field.value.countryCode)?.abbreviation}
+                          {field.value.countryCode}
                         </span>
-                        <span>{field.value.countryCode}</span>
+                        <span>{countryCodes.find(c => c.abbreviation === field.value.countryCode)?.code}</span>
                       </div>
                     ) : (
                       <span>Código</span>
@@ -149,7 +149,7 @@ export function CountryCodeField<T extends FieldValues = FieldValues>({ control,
                 </SelectTrigger>
                 <SelectContent>
                   {countryCodes.map((country) => (
-                    <SelectItem key={`${country.code}-${country.name}`} value={country.code}>
+                    <SelectItem key={country.abbreviation} value={country.abbreviation}>
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-bold text-muted-foreground w-4">
                           {country.abbreviation}
@@ -161,7 +161,7 @@ export function CountryCodeField<T extends FieldValues = FieldValues>({ control,
                   ))}
                 </SelectContent>
               </Select>
-              
+
               <Input
                 placeholder="Número de teléfono"
                 value={field.value?.phoneNumber || ''}

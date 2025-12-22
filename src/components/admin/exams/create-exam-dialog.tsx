@@ -274,11 +274,11 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
                       value={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Seleccionar curso" />
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Seleccionar curso" className="truncate" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
+                      <SelectContent className="max-w-[300px]">
                         {courses.length === 0 ? (
                           <SelectItem value="no-courses" disabled>
                             No hay cursos disponibles
@@ -287,7 +287,7 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
                           courses.map((course) => (
                             <SelectItem key={course.id} value={course.id}>
                               <div
-                                className="truncate max-w-[200px]"
+                                className="truncate w-full"
                                 title={`${course.title} (${course.language})`}
                               >
                                 {course.title} ({course.language})
@@ -316,11 +316,11 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
                       disabled={!form.watch('courseId')}
                     >
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Seleccionar módulo" />
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Seleccionar módulo" className="truncate" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
+                      <SelectContent className="max-w-[300px]">
                         {availableModules.length === 0 ? (
                           <SelectItem value="no-modules" disabled>
                             No hay módulos disponibles
@@ -329,7 +329,7 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
                           availableModules.map((module) => (
                             <SelectItem key={module.id} value={module.id}>
                               <div
-                                className="truncate max-w-[180px]"
+                                className="truncate w-full"
                                 title={`${module.title} (Level ${module.level})`}
                               >
                                 {module.title} (Level {module.level})
@@ -355,11 +355,11 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
                       disabled={!form.watch('moduleId')}
                     >
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Seleccionar lección" />
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Seleccionar lección" className="truncate" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
+                      <SelectContent className="max-w-[300px]">
                         {availableLessons.length === 0 ? (
                           <SelectItem value="no-lessons" disabled>
                             No hay lecciones disponibles
@@ -367,7 +367,7 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
                         ) : (
                           availableLessons.map((lesson) => (
                             <SelectItem key={lesson.id} value={lesson.id}>
-                              <div className="truncate max-w-[180px]" title={lesson.title}>
+                              <div className="truncate w-full" title={lesson.title}>
                                 {lesson.title}
                               </div>
                             </SelectItem>
@@ -438,7 +438,7 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-base">{section.title}</CardTitle>
                       <div className="flex space-x-2">
-                        <Button type="button" variant="outline" size="sm" onClick={() => {}}>
+                        <Button type="button" variant="outline" size="sm" onClick={() => { }}>
                           <Edit className="h-3 w-3" />
                         </Button>
                         <Button
@@ -477,7 +477,7 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
                             </Badge>
                           </div>
                           <div className="flex space-x-1">
-                            <Button type="button" variant="ghost" size="sm" onClick={() => {}}>
+                            <Button type="button" variant="ghost" size="sm" onClick={() => { }}>
                               <Edit className="h-3 w-3" />
                             </Button>
                             <Button

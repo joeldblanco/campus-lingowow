@@ -23,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { CountryCodeSelect } from '@/components/ui/country-code-select'
+import { CountryCodeSelect, countryCodes } from '@/components/ui/country-code-select'
 import { Button } from '@/components/ui/button'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -47,7 +47,7 @@ export function ContactForm() {
     defaultValues: {
       name: '',
       email: '',
-      countryCode: '+51',
+      countryCode: 'PE',
       phone: '',
       language: '',
     },
@@ -55,18 +55,24 @@ export function ContactForm() {
 
   const onSubmit = async (values: ContactFormData) => {
     try {
+      const selectedCountry = countryCodes.find(c => c.abbreviation === values.countryCode)
+      const dataToSubmit = {
+        ...values,
+        countryCode: selectedCountry?.code || values.countryCode
+      }
+
       const response = await fetch('/api/trial-class', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
+        body: JSON.stringify(dataToSubmit),
       })
-      
+
       const data = await response.json()
-      
+
       if (!response.ok) {
         throw new Error(data.error || 'Error al enviar la solicitud')
       }
-      
+
       toast.success('¡Solicitud enviada exitosamente! Te contactaremos pronto.')
       form.reset()
     } catch (error) {

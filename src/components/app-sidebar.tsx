@@ -21,6 +21,7 @@ import {
   Users,
   UserCog,
   Zap,
+  FolderOpen,
 } from 'lucide-react'
 import * as React from 'react'
 
@@ -96,7 +97,7 @@ const data = {
           url: '/admin/courses',
           icon: BookOpenText,
         },
-                {
+        {
           title: 'Clases',
           url: '/admin/classes',
           icon: GraduationCap,
@@ -163,6 +164,11 @@ const data = {
           icon: DollarSign,
         },
       ],
+    },
+    {
+      title: 'Gestión de Archivos',
+      icon: FolderOpen,
+      url: '/admin/files',
     },
   ],
 }
