@@ -32,6 +32,7 @@ export const SignInSchema = z.object({
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9])(?!.*\s).{8,32}$/,
       'Debe tener minúscula, mayúscula, número y símbolo.'
     ),
+  timezone: z.string().optional(),
 })
 
 export const SignUpSchema = z

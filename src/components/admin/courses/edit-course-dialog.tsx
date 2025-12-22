@@ -35,6 +35,8 @@ import { EditCourseSchema } from '@/schemas/courses'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
+import { FileUpload } from '@/components/ui/file-upload'
+import Image from 'next/image'
 
 interface EditCourseDialogProps {
   course: CourseWithDetails
@@ -55,6 +57,7 @@ export function EditCourseDialog({ course, children, onCourseUpdated }: EditCour
       language: course.language,
       level: course.level,
       classDuration: course.classDuration || 40,
+      image: course.image || '',
     },
   })
 
@@ -78,7 +81,7 @@ export function EditCourseDialog({ course, children, onCourseUpdated }: EditCour
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]" data-testid="edit-course-dialog">
+      <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto" data-testid="edit-course-dialog">
         <DialogHeader>
           <DialogTitle>Editar Curso</DialogTitle>
           <DialogDescription>Modifica la información del curso.</DialogDescription>
@@ -178,8 +181,8 @@ export function EditCourseDialog({ course, children, onCourseUpdated }: EditCour
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Duración de Clase</FormLabel>
-                    <Select 
-                      onValueChange={(value) => field.onChange(parseInt(value))} 
+                    <Select
+                      onValueChange={(value) => field.onChange(parseInt(value))}
                       value={field.value?.toString()}
                     >
                       <FormControl>
@@ -194,6 +197,42 @@ export function EditCourseDialog({ course, children, onCourseUpdated }: EditCour
                         <SelectItem value="90">90 minutos</SelectItem>
                       </SelectContent>
                     </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Imagen del curso</FormLabel>
+                    <FormControl>
+                      <FileUpload
+                        fileType="image"
+                        folder="courses"
+                        onUploadComplete={(result) => {
+                          field.onChange(result.secure_url)
+                        }}
+                        onUploadError={(error) => {
+                          console.error('Upload error:', error)
+                          toast.error('Error al subir la imagen')
+                        }}
+                        className="mb-4"
+                      />
+                    </FormControl>
+                    {field.value && (
+                      <div className="mt-2">
+                        <Image
+                          src={field.value}
+                          alt="Vista previa del curso"
+                          width={80}
+                          height={80}
+                          className="object-cover rounded border"
+                        />
+                      </div>
+                    )}
                     <FormMessage />
                   </FormItem>
                 )}

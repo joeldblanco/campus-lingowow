@@ -112,7 +112,7 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
       const result = await toggleCoursePublished(courseId)
       if (result.success) {
         toast.success('Estado del curso actualizado')
-        window.location.reload()
+        onCourseUpdated?.()
       } else {
         toast.error(result.error || 'Error al actualizar el curso')
       }
@@ -200,7 +200,7 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
             <SelectItem value="Beginner" data-testid="level-option-beginner">Beginner</SelectItem>
           </SelectContent>
         </Select>
-        <Button 
+        <Button
           variant="outline"
           onClick={() => {
             setSearchTerm('')
@@ -247,20 +247,20 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
                   <td data-testid="level-cell">{course.level}</td>
                   <td data-testid="status-cell">{course.isPublished ? 'Published' : 'Draft'}</td>
                   <td>
-                    <input 
+                    <input
                       type="checkbox"
                       data-testid="row-checkbox"
                       checked={selectedCourses.includes(course.id)}
                       onChange={(e) => handleSelectCourse(course.id, e.target.checked)}
                     />
-                    <button data-testid="edit-button" onClick={() => {}}>Edit</button>
-                    <button data-testid="view-button" onClick={() => {}}>View</button>
+                    <button data-testid="edit-button" onClick={() => { }}>Edit</button>
+                    <button data-testid="view-button" onClick={() => { }}>View</button>
                     <button data-testid="delete-button" onClick={() => {
                       setCourseToDelete(course.id)
                       setDeleteDialogOpen(true)
                     }}>Delete</button>
-                    <button 
-                      data-testid={course.isPublished ? "unpublish-button" : "publish-button"} 
+                    <button
+                      data-testid={course.isPublished ? "unpublish-button" : "publish-button"}
                       onClick={() => handleTogglePublished(course.id)}
                     >
                       {course.isPublished ? 'Unpublish' : 'Publish'}

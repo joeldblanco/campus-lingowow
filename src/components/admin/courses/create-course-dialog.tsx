@@ -47,7 +47,7 @@ export function CreateCourseDialog({ children, onCourseCreated }: CreateCourseDi
   const { data: session } = useSession()
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  
+
   const form = useForm<z.infer<typeof CreateCourseSchema>>({
     resolver: zodResolver(CreateCourseSchema),
     defaultValues: {
@@ -93,7 +93,7 @@ export function CreateCourseDialog({ children, onCourseCreated }: CreateCourseDi
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]" data-testid="create-course-dialog">
+      <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto" data-testid="create-course-dialog">
         <DialogHeader>
           <DialogTitle>Crear Nuevo Curso</DialogTitle>
           <DialogDescription>
@@ -120,7 +120,7 @@ export function CreateCourseDialog({ children, onCourseCreated }: CreateCourseDi
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="description"
@@ -138,7 +138,7 @@ export function CreateCourseDialog({ children, onCourseCreated }: CreateCourseDi
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="language"
@@ -164,7 +164,7 @@ export function CreateCourseDialog({ children, onCourseCreated }: CreateCourseDi
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="level"
@@ -197,8 +197,8 @@ export function CreateCourseDialog({ children, onCourseCreated }: CreateCourseDi
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Duración de Clase</FormLabel>
-                    <Select 
-                      onValueChange={(value) => field.onChange(parseInt(value))} 
+                    <Select
+                      onValueChange={(value) => field.onChange(parseInt(value))}
                       value={field.value?.toString()}
                     >
                       <FormControl>
@@ -217,7 +217,7 @@ export function CreateCourseDialog({ children, onCourseCreated }: CreateCourseDi
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="image"
@@ -240,9 +240,9 @@ export function CreateCourseDialog({ children, onCourseCreated }: CreateCourseDi
                     </FormControl>
                     {field.value && (
                       <div className="mt-2">
-                        <Image 
-                          src={field.value} 
-                          alt="Vista previa del curso" 
+                        <Image
+                          src={field.value}
+                          alt="Vista previa del curso"
                           width={80}
                           height={80}
                           className="object-cover rounded border"

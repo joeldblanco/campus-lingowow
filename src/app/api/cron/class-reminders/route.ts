@@ -28,6 +28,7 @@ export async function GET(req: NextRequest) {
             name: true,
             lastName: true,
             email: true,
+            timezone: true,
           },
         },
         teacher: {
@@ -52,6 +53,9 @@ export async function GET(req: NextRequest) {
     let sentCount = 0
     const errors: string[] = []
 
+    // Import helper functions
+    const { combineDateAndTimeUTC, formatInTimeZone } = await import('@/lib/utils/date')
+
     for (const classBooking of classesToRemind) {
       try {
         if (!classBooking.student.email) continue
@@ -59,12 +63,20 @@ export async function GET(req: NextRequest) {
         const classLink = `${process.env.NEXT_PUBLIC_DOMAIN}/classroom?classId=${classBooking.id}`
         const [startTime] = classBooking.timeSlot.split('-')
 
+        // Combine UTC Date and Time
+        const utcDate = combineDateAndTimeUTC(classBooking.day, startTime)
+        const userTimeZone = classBooking.student.timezone || 'America/Lima'
+
         await sendClassReminderEmail(classBooking.student.email, {
-          studentName: `${classBooking.student.name || ''} ${classBooking.student.lastName || ''}`.trim() || 'Estudiante',
+          studentName:
+            `${classBooking.student.name || ''} ${classBooking.student.lastName || ''}`.trim() ||
+            'Estudiante',
           courseName: classBooking.enrollment.course.title,
-          teacherName: `${classBooking.teacher.name || ''} ${classBooking.teacher.lastName || ''}`.trim() || 'Profesor',
-          classDate: format(new Date(classBooking.day), "EEEE d 'de' MMMM", { locale: es }),
-          classTime: startTime,
+          teacherName:
+            `${classBooking.teacher.name || ''} ${classBooking.teacher.lastName || ''}`.trim() ||
+            'Profesor',
+          classDate: formatInTimeZone(utcDate, "EEEE d 'de' MMMM", userTimeZone),
+          classTime: formatInTimeZone(utcDate, 'HH:mm', userTimeZone),
           classLink,
         })
 
@@ -89,9 +101,6 @@ export async function GET(req: NextRequest) {
     })
   } catch (error) {
     console.error('Error in class reminders cron:', error)
-    return NextResponse.json(
-      { error: 'Error processing class reminders' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error processing class reminders' }, { status: 500 })
   }
 }

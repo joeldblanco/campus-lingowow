@@ -46,6 +46,7 @@ model User {
   emailVerified DateTime?
   roles         UserRole[] @default([GUEST])
   status        UserStatus @default(ACTIVE)
+  timezone      String     @default("America/Lima")
   image         String?
   bio           String? // Datos del profesor integrados
   permissions   String[] // Permisos para administradores

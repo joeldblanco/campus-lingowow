@@ -62,12 +62,22 @@ export const login = async (values: z.infer<typeof SignInSchema>, callbackUrl?: 
     return { error: 'Campos inválidos' }
   }
 
-  const { email, password } = validatedFields.data
+  const { email, password, timezone } = validatedFields.data
 
   const existingUser = await getUserByEmail(email)
 
   if (!existingUser || 'error' in existingUser) {
     return { error: 'Credenciales inválidas' }
+  }
+
+  // Update timezone if provided and different
+  if (timezone && existingUser.timezone !== timezone) {
+    await db.user
+      .update({
+        where: { id: existingUser.id },
+        data: { timezone },
+      })
+      .catch((err) => console.error('Error updating timezone on login:', err))
   }
 
   if (!existingUser || !existingUser.email || !existingUser.password) {
@@ -105,10 +115,10 @@ export const login = async (values: z.infer<typeof SignInSchema>, callbackUrl?: 
 
 /**
  * Función auxiliar para determinar redirección basada en múltiples roles
- * 
+ *
  * Esta función maneja usuarios que pueden tener múltiples roles simultáneamente.
  * Por ejemplo, un usuario puede ser ADMIN y TEACHER al mismo tiempo.
- * 
+ *
  * @param roles - Array de roles del usuario
  * @param callbackUrl - URL de callback opcional
  * @returns URL de redirección apropiada
@@ -121,7 +131,10 @@ function getRoleBasedRedirect(roles: UserRole[], callbackUrl?: string | null): s
       return callbackUrl
     }
     // Usuarios con rol TEACHER o ADMIN pueden acceder a rutas /classroom
-    if (callbackUrl.startsWith('/classroom') && (hasRole(roles, UserRole.TEACHER) || hasRole(roles, UserRole.ADMIN))) {
+    if (
+      callbackUrl.startsWith('/classroom') &&
+      (hasRole(roles, UserRole.TEACHER) || hasRole(roles, UserRole.ADMIN))
+    ) {
       return callbackUrl
     }
     // Permitir URLs internas seguras que no requieran permisos especiales
@@ -145,7 +158,6 @@ function getRoleBasedRedirect(roles: UserRole[], callbackUrl?: string | null): s
   // GUEST o cualquier otro caso
   return DEFAULT_LOGIN_REDIRECT
 }
-
 
 export const logout = async () => {
   await signOut()
@@ -348,7 +360,7 @@ export const reset = async (values: z.infer<typeof ResetSchema>) => {
 /**
  * Función para suplantar a otro usuario (solo para administradores)
  * Permite a un administrador ver la plataforma como otro usuario
- * 
+ *
  * @param userId - ID del usuario a suplantar
  * @returns URL del usuario suplantado
  */
@@ -365,11 +377,11 @@ export const impersonateUser = async (userId: string) => {
 
     // Determinar redirección basada en roles del usuario suplantado
     const redirectUrl = getRoleBasedRedirect(userToImpersonate.roles, null)
-    
-    return { 
+
+    return {
       success: `Suplantando a ${userToImpersonate.name} ${userToImpersonate.lastName}`,
       userId: userToImpersonate.id,
-      redirect: redirectUrl 
+      redirect: redirectUrl,
     }
   } catch (error) {
     return {

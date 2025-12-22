@@ -19,7 +19,7 @@ import { Loader2, ChevronLeft } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useTransition } from 'react'
+import { useTransition, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
@@ -29,14 +29,20 @@ export function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl')
-  
+
   const loginForm = useForm<z.infer<typeof SignInSchema>>({
     resolver: zodResolver(SignInSchema),
     defaultValues: {
       email: '',
       password: '',
+      timezone: '',
     },
   })
+
+  // Set timezone on mount
+  useEffect(() => {
+    loginForm.setValue('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone)
+  }, [loginForm])
 
   const onSubmit = async (data: z.infer<typeof SignInSchema>) => {
     startTransition(() => {

@@ -30,6 +30,7 @@ import {
   isWithinInterval,
 } from 'date-fns'
 import { es } from 'date-fns/locale'
+import { toZonedTime, format as formatTz } from 'date-fns-tz'
 
 /**
  * Parsea una fecha en formato ISO (YYYY-MM-DD) a objeto Date
@@ -114,7 +115,12 @@ export function dayNameToNumber(dayName: string): number {
 /**
  * Crea una fecha con hora específica (útil para evitar problemas de zona horaria)
  */
-export function createDateWithTime(date: Date | string, hours: number = 0, minutes: number = 0, seconds: number = 0): Date {
+export function createDateWithTime(
+  date: Date | string,
+  hours: number = 0,
+  minutes: number = 0,
+  seconds: number = 0
+): Date {
   const dateObj = typeof date === 'string' ? parseISO(date) : date
   return setMilliseconds(setSeconds(setMinutes(setHours(dateObj, hours), minutes), seconds), 0)
 }
@@ -252,7 +258,11 @@ export function getEndOfMonth(date: Date | string): Date {
 /**
  * Verifica si una fecha está dentro de un intervalo
  */
-export function isDateWithinInterval(date: Date | string, start: Date | string, end: Date | string): boolean {
+export function isDateWithinInterval(
+  date: Date | string,
+  start: Date | string,
+  end: Date | string
+): boolean {
   const dateObj = typeof date === 'string' ? parseISO(date) : date
   const startObj = typeof start === 'string' ? parseISO(start) : start
   const endObj = typeof end === 'string' ? parseISO(end) : end
@@ -307,14 +317,16 @@ export function getTodayEnd(): Date {
  */
 export function toUTCDate(date: Date | string): Date {
   const dateObj = typeof date === 'string' ? parseISO(date) : date
-  return new Date(Date.UTC(
-    dateObj.getFullYear(),
-    dateObj.getMonth(),
-    dateObj.getDate(),
-    dateObj.getHours(),
-    dateObj.getMinutes(),
-    dateObj.getSeconds()
-  ))
+  return new Date(
+    Date.UTC(
+      dateObj.getFullYear(),
+      dateObj.getMonth(),
+      dateObj.getDate(),
+      dateObj.getHours(),
+      dateObj.getMinutes(),
+      dateObj.getSeconds()
+    )
+  )
 }
 
 /**
@@ -323,7 +335,9 @@ export function toUTCDate(date: Date | string): Date {
  */
 export function fromUTCDate(date: Date | string): Date {
   const dateObj = typeof date === 'string' ? new Date(date) : date
-  return new Date(dateObj.toLocaleString('en-US', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone }))
+  return new Date(
+    dateObj.toLocaleString('en-US', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
+  )
 }
 
 /**
@@ -331,14 +345,16 @@ export function fromUTCDate(date: Date | string): Date {
  */
 export function getCurrentUTCDate(): Date {
   const now = new Date()
-  return new Date(Date.UTC(
-    now.getUTCFullYear(),
-    now.getUTCMonth(),
-    now.getUTCDate(),
-    now.getUTCHours(),
-    now.getUTCMinutes(),
-    now.getUTCSeconds()
-  ))
+  return new Date(
+    Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate(),
+      now.getUTCHours(),
+      now.getUTCMinutes(),
+      now.getUTCSeconds()
+    )
+  )
 }
 
 /**
@@ -423,7 +439,10 @@ export function isFutureDate(dateString: string): boolean {
  * @param timeSlot - Horario en formato HH:MM-HH:MM (en hora local)
  * @returns Objeto con day y timeSlot en UTC
  */
-export function convertTimeSlotToUTC(day: string, timeSlot: string): { day: string; timeSlot: string } {
+export function convertTimeSlotToUTC(
+  day: string,
+  timeSlot: string
+): { day: string; timeSlot: string } {
   const [startTime, endTime] = timeSlot.split('-')
   const [startHour, startMinute] = startTime.split(':').map(Number)
   const [endHour, endMinute] = endTime.split(':').map(Number)
@@ -445,7 +464,7 @@ export function convertTimeSlotToUTC(day: string, timeSlot: string): { day: stri
 
   return {
     day: `${utcStartYear}-${utcStartMonth}-${utcStartDay}`,
-    timeSlot: `${utcStartHour}:${utcStartMinute}-${utcEndHour}:${utcEndMinute}`
+    timeSlot: `${utcStartHour}:${utcStartMinute}-${utcEndHour}:${utcEndMinute}`,
   }
 }
 
@@ -455,7 +474,10 @@ export function convertTimeSlotToUTC(day: string, timeSlot: string): { day: stri
  * @param timeSlot - Horario en formato HH:MM-HH:MM (en UTC)
  * @returns Objeto con day y timeSlot en hora local
  */
-export function convertTimeSlotFromUTC(day: string, timeSlot: string): { day: string; timeSlot: string } {
+export function convertTimeSlotFromUTC(
+  day: string,
+  timeSlot: string
+): { day: string; timeSlot: string } {
   const [startTime, endTime] = timeSlot.split('-')
   const [startHour, startMinute] = startTime.split(':').map(Number)
   const [endHour, endMinute] = endTime.split(':').map(Number)
@@ -477,6 +499,36 @@ export function convertTimeSlotFromUTC(day: string, timeSlot: string): { day: st
 
   return {
     day: `${localStartYear}-${localStartMonth}-${localStartDay}`,
-    timeSlot: `${localStartHour}:${localStartMinute}-${localEndHour}:${localEndMinute}`
+    timeSlot: `${localStartHour}:${localStartMinute}-${localEndHour}:${localEndMinute}`,
   }
+}
+
+// =============================================
+// UTILIDADES PARA ZONA HORARIA (NUEVO)
+// =============================================
+
+/**
+ * Formatea una fecha en la zona horaria especificada
+ */
+export function formatInTimeZone(date: Date | string, formatStr: string, timeZone: string): string {
+  const dateObj = typeof date === 'string' ? parseISO(date) : date
+  return formatTz(dateObj, formatStr, { timeZone, locale: es })
+}
+
+/**
+ * Convierte una fecha UTC (u otra) a la zona horaria especificada
+ * Devuelve un objeto Date que representa la hora en esa zona
+ */
+export function convertToTimeZone(date: Date | string, timeZone: string): Date {
+  const dateObj = typeof date === 'string' ? parseISO(date) : date
+  return toZonedTime(dateObj, timeZone)
+}
+
+/**
+ * Combina una fecha (YYYY-MM-DD) y hora (HH:mm) UTC a un objeto Date
+ */
+export function combineDateAndTimeUTC(dateStr: string, timeStr: string): Date {
+  const [year, month, day] = dateStr.split('-').map(Number)
+  const [hours, minutes] = timeStr.split(':').map(Number)
+  return new Date(Date.UTC(year, month - 1, day, hours, minutes, 0))
 }

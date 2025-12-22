@@ -15,9 +15,9 @@ export function CoursesContainer() {
   const [stats, setStats] = useState<CourseStats | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  const loadData = async () => {
+  const loadData = async (showLoading = true) => {
     try {
-      setIsLoading(true)
+      if (showLoading) setIsLoading(true)
       const [coursesData, statsData] = await Promise.all([getAllCourses(), getCourseStats()])
       console.log(statsData)
       setCourses(coursesData)
@@ -43,7 +43,7 @@ export function CoursesContainer() {
 
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-semibold">Lista de Cursos</h2>
-        <CreateCourseDialog onCourseCreated={loadData}>
+        <CreateCourseDialog onCourseCreated={() => loadData(false)}>
           <Button data-testid="create-course-button" className="create-course-btn">
             <Plus className="h-4 w-4 mr-2" />
             Crear Curso
@@ -51,7 +51,7 @@ export function CoursesContainer() {
         </CreateCourseDialog>
       </div>
 
-      <CoursesTable courses={courses} onCourseUpdated={loadData} data-testid="courses-table" />
+      <CoursesTable courses={courses} onCourseUpdated={() => loadData(false)} data-testid="courses-table" />
     </div>
   )
 }
