@@ -5,26 +5,7 @@ import { InvoicesTable } from '@/components/admin/invoices/invoices-table'
 import { ImportPaypalDialog } from '@/components/admin/invoices/import-paypal-dialog'
 
 const InvoicesAdminPage = async () => {
-  const invoicesData = await getInvoices()
-
-  // Transform database data to match Invoice interface
-  const invoices = invoicesData.map((invoice) => ({
-    ...invoice,
-    number: invoice.invoiceNumber || `INV-${invoice.id.slice(-6)}`,
-    taxAmount: invoice.tax || 0,
-    discountAmount: invoice.discount || 0,
-    items: invoice.items.map((item) => ({
-      id: item.id,
-      productId: item.productId || 'unknown',
-      planId: item.planId || undefined,
-      name: item.name,
-      price: item.price,
-      quantity: item.quantity,
-      total: item.total,
-      unitPrice: item.price,
-      product: { name: item.product?.name || item.name },
-    })),
-  }))
+  const invoices = await getInvoices()
 
   return (
     <div className="container py-8">
