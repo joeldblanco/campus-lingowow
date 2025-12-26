@@ -5,20 +5,9 @@ import { useState, useEffect } from 'react'
 import { Lesson, Block } from '@/types/course-builder'
 import { LessonBuilder } from '@/components/admin/course-builder/lesson-builder/lesson-builder'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, Save } from 'lucide-react'
+import { ArrowLeft, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
-
-// Mock data - replace with actual API calls
-const mockLesson: Lesson = {
-  id: 'lesson-1',
-  title: 'Lección de Ejemplo',
-  description: 'Esta es una lección de ejemplo',
-  order: 1,
-  duration: 30,
-  blocks: [],
-  moduleId: 'module-1',
-  isPublished: false,
-}
+import { getLessonForBuilder, updateLessonBlocks } from '@/lib/actions/course-builder'
 
 export default function LessonBuilderPage() {
   const params = useParams()
@@ -27,25 +16,29 @@ export default function LessonBuilderPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // TODO: Fetch actual lesson data
-    // const fetchLesson = async () => {
-    //   try {
-    //     const response = await fetch(`/api/courses/${params.id}/lessons/${params.lessonId}`)
-    //     const data = await response.json()
-    //     setLesson(data)
-    //   } catch (error) {
-    //     toast.error('Error al cargar la lección')
-    //   } finally {
-    //     setIsLoading(false)
-    //   }
-    // }
-    
-    // Mock loading
-    setTimeout(() => {
-      setLesson(mockLesson)
-      setIsLoading(false)
-    }, 500)
-  }, [params.id, params.lessonId])
+    const fetchLesson = async () => {
+      if (!params.lessonId) return
+
+      try {
+        const result = await getLessonForBuilder(params.lessonId as string)
+        if (result.success && result.lesson) {
+          setLesson(result.lesson)
+        } else {
+          toast.error(result.error || 'Error al cargar la lección')
+          if (result.error === 'Lesson not found or unauthorized') {
+            // Optionally redirect or show specific error
+          }
+        }
+      } catch (error) {
+        console.error(error)
+        toast.error('Error al cargar la lección')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchLesson()
+  }, [params.lessonId])
 
   const handleUpdateLesson = (updates: Partial<Lesson>) => {
     if (!lesson) return
@@ -60,7 +53,7 @@ export default function LessonBuilderPage() {
 
   const handleUpdateBlock = (blockId: string, updates: Partial<Block>) => {
     if (!lesson) return
-    const newBlocks = lesson.blocks.map(block => 
+    const newBlocks = lesson.blocks.map(block =>
       block.id === blockId ? { ...block, ...updates } as Block : block
     )
     setLesson({ ...lesson, blocks: newBlocks })
@@ -77,29 +70,11 @@ export default function LessonBuilderPage() {
     setLesson({ ...lesson, blocks })
   }
 
-  const handleSave = async () => {
-    if (!lesson) return
-    
-    try {
-      // TODO: Save to API
-      // await fetch(`/api/courses/${params.id}/lessons/${params.lessonId}`, {
-      //   method: 'PUT',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(lesson)
-      // })
-      
-      toast.success('Lección guardada exitosamente')
-    } catch {
-      toast.error('Error al guardar la lección')
-    }
-  }
-
   if (isLoading) {
     return (
       <div className="container mx-auto py-8">
-        <div className="animate-pulse">
-          <div className="h-8 bg-muted rounded w-1/4 mb-4"></div>
-          <div className="h-64 bg-muted rounded"></div>
+        <div className="flex justify-center items-center min-h-[400px]">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
       </div>
     )
@@ -110,6 +85,7 @@ export default function LessonBuilderPage() {
       <div className="container mx-auto py-8">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Lección no encontrada</h1>
+          <p className="text-muted-foreground mb-6">No se pudo cargar la lección solicitada.</p>
           <Button onClick={() => router.back()}>
             <ArrowLeft className="h-4 w-4 mr-2" />
             Volver
@@ -120,24 +96,7 @@ export default function LessonBuilderPage() {
   }
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-4">
-          <Button variant="outline" onClick={() => router.back()}>
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Volver al Curso
-          </Button>
-          <div>
-            <h1 className="text-2xl font-bold">{lesson.title}</h1>
-            <p className="text-muted-foreground">Editor de contenido de lección</p>
-          </div>
-        </div>
-        <Button onClick={handleSave}>
-          <Save className="h-4 w-4 mr-2" />
-          Guardar Lección
-        </Button>
-      </div>
-
+    <div className="h-[calc(100vh-64px)] overflow-hidden flex flex-col">
       <LessonBuilder
         lesson={lesson}
         onUpdateLesson={handleUpdateLesson}

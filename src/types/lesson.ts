@@ -47,48 +47,87 @@ export type LessonForEdit = {
   moduleId: string
 }
 
-export type LessonForView = Prisma.LessonGetPayload<{
+// Definición recursiva para contenido anidado
+// Usamos intersection con campos manuales para evitar problemas de sincronización con el cliente generado
+export type ContentWithHierarchy = Prisma.ContentGetPayload<{
   include: {
-    module: {
-      select: {
-        id: true
-        title: true
-        course: {
-          select: {
-            id: true
-            title: true
-          }
-        }
-      }
-    }
-    contents: {
-      select: {
-        id: true
-        title: true
-        contentType: true
-        order: true
-      }
-      orderBy: {
-        order: 'asc'
-      }
-    }
-    activities: {
+    children: {
       include: {
-        activity: {
-          select: {
-            id: true
-            title: true
-            activityType: true
-            points: true
-          }
-        }
-      }
-      orderBy: {
-        order: 'asc'
+        children: true
       }
     }
   }
-}>
+}> & {
+  parentId?: string | null
+  data?: any
+  children?: ContentWithHierarchy[]
+}
+
+export type LessonForView = Omit<
+  Prisma.LessonGetPayload<{
+    include: {
+      module: {
+        select: {
+          id: true
+          title: true
+          course: {
+            select: {
+              id: true
+              title: true
+            }
+          }
+        }
+      }
+      contents: {
+        orderBy: {
+          order: 'asc'
+        }
+        include: {
+          children: {
+            orderBy: {
+              order: 'asc'
+            }
+            include: {
+              children: true
+            }
+          }
+        }
+      }
+      activities: {
+        include: {
+          activity: {
+            select: {
+              id: true
+              title: true
+              activityType: true
+              points: true
+            }
+          }
+        }
+        orderBy: {
+          order: 'asc'
+        }
+      }
+    }
+  }>,
+  'activities'
+> & {
+  videoUrl?: string | null
+  summary?: string | null
+  transcription?: string | null
+  activities: (Prisma.LessonActivityGetPayload<{
+    include: {
+      activity: {
+        select: {
+          id: true
+          title: true
+          activityType: true
+          points: true
+        }
+      }
+    }
+  }> & { isCompleted: boolean })[]
+}
 
 export type ModuleForLessons = Prisma.ModuleGetPayload<{
   select: {

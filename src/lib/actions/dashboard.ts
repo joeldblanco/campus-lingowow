@@ -2,7 +2,11 @@
 
 import { db } from '@/lib/db'
 import { UserRole, BookingStatus } from '@prisma/client'
-import type { AdminDashboardData, TeacherDashboardData, StudentDashboardData } from '@/types/dashboard'
+import type {
+  AdminDashboardData,
+  TeacherDashboardData,
+  StudentDashboardData,
+} from '@/types/dashboard'
 import { formatDateNumeric, getCurrentDate, formatToISO, getStartOfMonth } from '@/lib/utils/date'
 
 // Admin Dashboard Statistics
@@ -10,22 +14,22 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
   try {
     // Get total students count
     const totalStudents = await db.user.count({
-      where: { roles: { has: UserRole.STUDENT } }
+      where: { roles: { has: UserRole.STUDENT } },
     })
 
     // Get total classes (completed bookings)
     const totalClasses = await db.classBooking.count({
-      where: { status: 'COMPLETED' }
+      where: { status: 'COMPLETED' },
     })
 
     // Calculate total revenue from paid invoices
     const totalRevenueResult = await db.invoice.aggregate({
       where: {
-        status: 'PAID'
+        status: 'PAID',
       },
       _sum: {
-        total: true
-      }
+        total: true,
+      },
     })
     const totalRevenue = totalRevenueResult._sum.total || 0
 
@@ -35,49 +39,48 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
       orderBy: { enrollmentDate: 'desc' },
       include: {
         student: {
-          select: { name: true, lastName: true }
+          select: { name: true, lastName: true },
         },
         course: {
-          select: { title: true, language: true }
+          select: { title: true, language: true },
         },
         purchases: {
           include: {
             invoice: {
-              select: { total: true, status: true }
-            }
+              select: { total: true, status: true },
+            },
           },
           take: 1,
-          orderBy: { createdAt: 'desc' }
-        }
-      }
+          orderBy: { createdAt: 'desc' },
+        },
+      },
     })
-
 
     // Get classes by language (approximation based on course enrollments)
     const languageStats = await db.course.groupBy({
       by: ['language'],
       _count: {
-        id: true
-      }
+        id: true,
+      },
     })
 
     return {
       totalStudents,
       totalClasses,
       totalRevenue,
-      recentEnrollments: recentEnrollments.map(enrollment => {
+      recentEnrollments: recentEnrollments.map((enrollment) => {
         const invoiceTotal = enrollment.purchases[0]?.invoice?.total
         return {
           studentName: `${enrollment.student.name} ${enrollment.student.lastName}`,
           courseName: enrollment.course.title,
           date: formatDateNumeric(enrollment.enrollmentDate),
-          amount: invoiceTotal ? `$${invoiceTotal.toFixed(2)}` : 'N/A'
+          amount: invoiceTotal ? `$${invoiceTotal.toFixed(2)}` : 'N/A',
         }
       }),
-      languageStats: languageStats.map(stat => ({
+      languageStats: languageStats.map((stat) => ({
         name: stat.language,
-        classes: stat._count?.id || 0
-      }))
+        classes: stat._count?.id || 0,
+      })),
     }
   } catch (error) {
     console.error('Error getting admin dashboard stats:', error)
@@ -85,7 +88,7 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
   }
 }
 
-// Teacher Dashboard Statistics  
+// Teacher Dashboard Statistics
 export async function getTeacherDashboardStats(teacherId: string): Promise<TeacherDashboardData> {
   try {
     // Get teacher's students count
@@ -93,21 +96,21 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
       by: ['studentId'],
       where: {
         teacherId,
-        status: 'COMPLETED'
-      }
+        status: 'COMPLETED',
+      },
     })
 
     // Get classes taught this month
     const currentMonth = getStartOfMonth(getCurrentDate())
-    
+
     const classesThisMonth = await db.classBooking.count({
       where: {
         teacherId,
         status: 'COMPLETED',
         completedAt: {
-          gte: currentMonth
-        }
-      }
+          gte: currentMonth,
+        },
+      },
     })
 
     // Calculate monthly revenue from payable classes
@@ -122,26 +125,23 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
         teacherId,
         status: 'CONFIRMED',
         day: {
-          gte: formatToISO(getCurrentDate())
-        }
+          gte: formatToISO(getCurrentDate()),
+        },
       },
       take: 5,
-      orderBy: [
-        { day: 'asc' },
-        { timeSlot: 'asc' }
-      ],
+      orderBy: [{ day: 'asc' }, { timeSlot: 'asc' }],
       include: {
         student: {
-          select: { name: true, lastName: true }
+          select: { name: true, lastName: true },
         },
         enrollment: {
           select: {
             course: {
-              select: { title: true }
-            }
-          }
-        }
-      }
+              select: { title: true },
+            },
+          },
+        },
+      },
     })
 
     // Convertir de UTC a hora local
@@ -151,17 +151,17 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
       totalStudents: myStudents.length,
       classesThisMonth,
       monthlyRevenue,
-      upcomingClasses: upcomingClasses.map(booking => {
+      upcomingClasses: upcomingClasses.map((booking) => {
         const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot)
         return {
           id: booking.id,
           studentName: `${booking.student.name} ${booking.student.lastName}`,
           course: booking.enrollment.course.title,
           date: localData.day,
-          time: localData.timeSlot
+          time: localData.timeSlot,
         }
       }),
-      revenueData
+      revenueData,
     }
   } catch (error) {
     console.error('Error getting teacher dashboard stats:', error)
@@ -174,30 +174,31 @@ export async function getStudentDashboardStats(studentId: string): Promise<Stude
   try {
     // Get student's enrollments
     const enrollments = await db.enrollment.findMany({
-      where: { 
+      where: {
         studentId,
-        status: 'ACTIVE'
+        status: 'ACTIVE',
       },
       include: {
         course: {
-          select: { title: true, language: true }
-        }
-      }
+          select: { id: true, title: true, language: true, image: true },
+        },
+      },
     })
 
     // Get attendance rate
     const totalBookings = await db.classBooking.count({
-      where: { studentId }
+      where: { studentId },
     })
 
     const attendedBookings = await db.classBooking.count({
-      where: { 
+      where: {
         studentId,
-        status: 'COMPLETED'
-      }
+        status: 'COMPLETED',
+      },
     })
 
-    const attendanceRate = totalBookings > 0 ? Math.round((attendedBookings / totalBookings) * 100) : 0
+    const attendanceRate =
+      totalBookings > 0 ? Math.round((attendedBookings / totalBookings) * 100) : 0
 
     // Get upcoming classes
     const upcomingClasses = await db.classBooking.findMany({
@@ -205,26 +206,23 @@ export async function getStudentDashboardStats(studentId: string): Promise<Stude
         studentId,
         status: 'CONFIRMED',
         day: {
-          gte: formatToISO(getCurrentDate())
-        }
+          gte: formatToISO(getCurrentDate()),
+        },
       },
       take: 3,
-      orderBy: [
-        { day: 'asc' },
-        { timeSlot: 'asc' }
-      ],
+      orderBy: [{ day: 'asc' }, { timeSlot: 'asc' }],
       include: {
         teacher: {
-          select: { name: true, lastName: true }
+          select: { name: true, lastName: true },
         },
         enrollment: {
           select: {
             course: {
-              select: { title: true }
-            }
-          }
-        }
-      }
+              select: { title: true },
+            },
+          },
+        },
+      },
     })
 
     // Convertir de UTC a hora local
@@ -234,21 +232,24 @@ export async function getStudentDashboardStats(studentId: string): Promise<Stude
     const userProgress = await db.userActivity.findMany({
       where: {
         userId: studentId,
-        status: 'COMPLETED'
+        status: 'COMPLETED',
       },
       include: {
         activity: {
-          select: { points: true }
-        }
-      }
+          select: { points: true },
+        },
+      },
     })
 
-    const totalPoints = userProgress.reduce((sum, progress) => sum + (progress.activity.points || 0), 0)
+    const totalPoints = userProgress.reduce(
+      (sum, progress) => sum + (progress.activity.points || 0),
+      0
+    )
     const currentLevel = Math.floor(totalPoints / 100) + 1
 
     // Get user streak
     const streak = await db.userStreak.findUnique({
-      where: { userId: studentId }
+      where: { userId: studentId },
     })
 
     return {
@@ -258,20 +259,23 @@ export async function getStudentDashboardStats(studentId: string): Promise<Stude
       totalPoints,
       currentStreak: streak?.currentStreak || 0,
       longestStreak: streak?.longestStreak || 0,
-      upcomingClasses: upcomingClasses.map(booking => {
+      upcomingClasses: upcomingClasses.map((booking) => {
         const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot)
         return {
           course: booking.enrollment.course.title,
           teacher: `${booking.teacher.name} ${booking.teacher.lastName}`,
           date: localData.day,
           time: localData.timeSlot,
-          link: `/classroom?classId=${booking.id}`
+          link: `/classroom?classId=${booking.id}`,
         }
       }),
-      enrollments: enrollments.map(enrollment => ({
+      enrollments: enrollments.map((enrollment) => ({
+        id: enrollment.id,
+        courseId: enrollment.course.id,
         title: enrollment.course.title,
-        progress: enrollment.progress
-      }))
+        image: enrollment.course.image,
+        progress: enrollment.progress,
+      })),
     }
   } catch (error) {
     console.error('Error getting student dashboard stats:', error)
@@ -284,41 +288,35 @@ export async function getUserClasses(userId: string) {
   try {
     const classes = await db.classBooking.findMany({
       where: {
-        OR: [
-          { studentId: userId },
-          { teacherId: userId }
-        ],
+        OR: [{ studentId: userId }, { teacherId: userId }],
         status: 'CONFIRMED',
         day: {
-          gte: formatToISO(getCurrentDate())
-        }
+          gte: formatToISO(getCurrentDate()),
+        },
       },
       take: 10,
-      orderBy: [
-        { day: 'asc' },
-        { timeSlot: 'asc' }
-      ],
+      orderBy: [{ day: 'asc' }, { timeSlot: 'asc' }],
       include: {
         student: {
-          select: { name: true, lastName: true }
+          select: { name: true, lastName: true },
         },
         teacher: {
-          select: { name: true, lastName: true }
+          select: { name: true, lastName: true },
         },
         enrollment: {
           select: {
             course: {
-              select: { title: true }
-            }
-          }
-        }
-      }
+              select: { title: true },
+            },
+          },
+        },
+      },
     })
 
     // Convertir de UTC a hora local
     const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
-    
-    return classes.map(booking => {
+
+    return classes.map((booking) => {
       const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot)
       return {
         id: booking.id,
@@ -326,7 +324,7 @@ export async function getUserClasses(userId: string) {
         course: booking.enrollment.course.title,
         date: localData.day,
         time: localData.timeSlot,
-        isStudent: booking.studentId === userId
+        isStudent: booking.studentId === userId,
       }
     })
   } catch (error) {
@@ -357,10 +355,10 @@ export async function calculateTeacherMonthlyRevenue(
       select: {
         teacherRank: {
           select: {
-            rateMultiplier: true
-          }
-        }
-      }
+            rateMultiplier: true,
+          },
+        },
+      },
     })
 
     const rateMultiplier = teacher?.teacherRank?.rateMultiplier || 1.0
@@ -372,31 +370,31 @@ export async function calculateTeacherMonthlyRevenue(
         status: BookingStatus.COMPLETED,
         completedAt: {
           gte: startDate,
-          lt: endDate
-        }
+          lt: endDate,
+        },
       },
       include: {
         attendances: {
-          select: { status: true }
+          select: { status: true },
         },
         teacherAttendances: {
-          select: { status: true }
+          select: { status: true },
         },
         enrollment: {
           select: {
             course: {
-              select: { classDuration: true }
-            }
-          }
+              select: { classDuration: true },
+            },
+          },
         },
         videoCalls: {
-          select: { duration: true }
-        }
-      }
+          select: { duration: true },
+        },
+      },
     })
 
     // Filtrar solo clases pagables (donde ambos asistieron)
-    const payableClasses = completedClasses.filter(classBooking => {
+    const payableClasses = completedClasses.filter((classBooking) => {
       const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
       const hasStudentAttendance = classBooking.attendances.length > 0
       return hasTeacherAttendance && hasStudentAttendance
@@ -409,7 +407,8 @@ export async function calculateTeacherMonthlyRevenue(
     let totalRevenue = 0
     for (const classBooking of payableClasses) {
       // Usar duración de videollamada si está disponible, sino usar duración del curso
-      const duration = classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+      const duration =
+        classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
       const hours = duration / 60
       const classRevenue = hours * BASE_RATE_PER_HOUR * rateMultiplier
       totalRevenue += classRevenue
@@ -436,7 +435,7 @@ export async function getTeacherRevenueByMonth(
     for (let i = monthsCount - 1; i >= 0; i--) {
       const monthDate = new Date(currentDate)
       monthDate.setMonth(monthDate.getMonth() - i)
-      
+
       const startOfMonth = getStartOfMonth(monthDate.toISOString())
       const revenue = await calculateTeacherMonthlyRevenue(teacherId, startOfMonth)
 
@@ -446,7 +445,7 @@ export async function getTeacherRevenueByMonth(
 
       months.push({
         name: capitalizedMonth,
-        income: revenue
+        income: revenue,
       })
     }
 
@@ -477,10 +476,10 @@ export async function calculateTeacherTotalRevenue(
       select: {
         teacherRank: {
           select: {
-            rateMultiplier: true
-          }
-        }
-      }
+            rateMultiplier: true,
+          },
+        },
+      },
     })
 
     const rateMultiplier = teacher?.teacherRank?.rateMultiplier || 1.0
@@ -492,7 +491,7 @@ export async function calculateTeacherTotalRevenue(
       day?: { gte?: string; lte?: string }
     } = {
       teacherId,
-      status: BookingStatus.COMPLETED
+      status: BookingStatus.COMPLETED,
     }
 
     if (startDate || endDate) {
@@ -506,26 +505,26 @@ export async function calculateTeacherTotalRevenue(
       where: whereClause,
       include: {
         attendances: {
-          select: { status: true }
+          select: { status: true },
         },
         teacherAttendances: {
-          select: { status: true }
+          select: { status: true },
         },
         enrollment: {
           select: {
             course: {
-              select: { classDuration: true }
-            }
-          }
+              select: { classDuration: true },
+            },
+          },
         },
         videoCalls: {
-          select: { duration: true }
-        }
-      }
+          select: { duration: true },
+        },
+      },
     })
 
     // Filtrar solo clases pagables
-    const payableClasses = completedClasses.filter(classBooking => {
+    const payableClasses = completedClasses.filter((classBooking) => {
       const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
       const hasStudentAttendance = classBooking.attendances.length > 0
       return hasTeacherAttendance && hasStudentAttendance
@@ -537,7 +536,8 @@ export async function calculateTeacherTotalRevenue(
     let totalDuration = 0
 
     for (const classBooking of payableClasses) {
-      const duration = classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+      const duration =
+        classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
       totalDuration += duration
       const hours = duration / 60
       const classRevenue = hours * BASE_RATE_PER_HOUR * rateMultiplier
@@ -550,7 +550,7 @@ export async function calculateTeacherTotalRevenue(
       totalRevenue: Math.round(totalRevenue * 100) / 100,
       totalClasses: payableClasses.length,
       totalDuration,
-      averagePerClass: Math.round(averagePerClass * 100) / 100
+      averagePerClass: Math.round(averagePerClass * 100) / 100,
     }
   } catch (error) {
     console.error('Error calculating teacher total revenue:', error)
@@ -558,7 +558,7 @@ export async function calculateTeacherTotalRevenue(
       totalRevenue: 0,
       totalClasses: 0,
       totalDuration: 0,
-      averagePerClass: 0
+      averagePerClass: 0,
     }
   }
 }
@@ -570,26 +570,23 @@ export async function getClassroomData(classId: string, userId: string) {
     const classBooking = await db.classBooking.findFirst({
       where: {
         id: classId,
-        OR: [
-          { studentId: userId },
-          { teacherId: userId }
-        ]
+        OR: [{ studentId: userId }, { teacherId: userId }],
       },
       include: {
         student: {
-          select: { id: true, name: true, lastName: true, image: true }
+          select: { id: true, name: true, lastName: true, image: true },
         },
         teacher: {
-          select: { id: true, name: true, lastName: true, image: true }
+          select: { id: true, name: true, lastName: true, image: true },
         },
         enrollment: {
           select: {
             course: {
-              select: { title: true }
-            }
-          }
-        }
-      }
+              select: { title: true },
+            },
+          },
+        },
+      },
     })
 
     if (!classBooking) {
@@ -599,7 +596,7 @@ export async function getClassroomData(classId: string, userId: string) {
     // Convertir de UTC a hora local para mostrar
     const { convertTimeSlotFromUTC, formatDateNumeric } = await import('@/lib/utils/date')
     const localData = convertTimeSlotFromUTC(classBooking.day, classBooking.timeSlot)
-    
+
     // Formatear la fecha para mostrar (DD/MM/YYYY)
     const formattedDate = formatDateNumeric(localData.day)
 
@@ -607,9 +604,13 @@ export async function getClassroomData(classId: string, userId: string) {
       studentId: classBooking.student.id,
       teacherId: classBooking.teacher.id,
       studentName: classBooking.student.name || 'Estudiante',
-      studentImage: classBooking.student.image || `https://api.dicebear.com/7.x/personas/svg?seed=${classBooking.student.id}`,
+      studentImage:
+        classBooking.student.image ||
+        `https://api.dicebear.com/7.x/personas/svg?seed=${classBooking.student.id}`,
       teacherName: classBooking.teacher.name || 'Profesor',
-      teacherImage: classBooking.teacher.image || `https://api.dicebear.com/7.x/personas/svg?seed=${classBooking.teacher.id}`,
+      teacherImage:
+        classBooking.teacher.image ||
+        `https://api.dicebear.com/7.x/personas/svg?seed=${classBooking.teacher.id}`,
       courseName: classBooking.enrollment.course.title,
       lessonName: `Clase del ${formattedDate} - ${localData.timeSlot}`,
       bookingId: classBooking.id,
@@ -618,7 +619,7 @@ export async function getClassroomData(classId: string, userId: string) {
       timeSlotUTC: classBooking.timeSlot,
       // Datos en local para mostrar
       day: localData.day,
-      timeSlot: localData.timeSlot
+      timeSlot: localData.timeSlot,
     }
   } catch (error) {
     console.error('Error getting classroom data:', error)

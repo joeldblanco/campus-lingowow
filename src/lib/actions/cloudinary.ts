@@ -30,7 +30,7 @@ export async function uploadImageFile(
     const buffer = Buffer.from(bytes)
     const base64 = `data:${file.type};base64,${buffer.toString('base64')}`
 
-    const result = await CloudinaryService.uploadImage(base64, `campus-lingowow/${folder}`)
+    const result = await CloudinaryService.uploadImage(base64, folder, undefined, file.name)
 
     // Save metadata to database
     if (userId) {
@@ -93,7 +93,7 @@ export async function uploadVideoFile(
     const buffer = Buffer.from(bytes)
     const base64 = `data:${file.type};base64,${buffer.toString('base64')}`
 
-    const result = await CloudinaryService.uploadVideo(base64, `campus-lingowow/${folder}`)
+    const result = await CloudinaryService.uploadVideo(base64, folder, file.name)
 
     return { success: true, data: result }
   } catch (error) {
@@ -120,7 +120,7 @@ export async function uploadAudioFile(
     const buffer = Buffer.from(bytes)
     const base64 = `data:${file.type};base64,${buffer.toString('base64')}`
 
-    const result = await CloudinaryService.uploadAudio(base64, `campus-lingowow/${folder}`)
+    const result = await CloudinaryService.uploadAudio(base64, folder, file.name)
 
     // Save metadata to database
     if (userId) {
@@ -173,7 +173,10 @@ export async function uploadDocumentFile(
     const buffer = Buffer.from(bytes)
     const base64 = `data:${file.type};base64,${buffer.toString('base64')}`
 
-    const result = await CloudinaryService.uploadDocument(base64, `campus-lingowow/${folder}`)
+    const result = await CloudinaryService.uploadDocument(base64, folder, file.name)
+
+    // Inject original filename explicitly so frontend can use it
+    result.original_filename = file.name
 
     return { success: true, data: result }
   } catch (error) {
@@ -183,11 +186,12 @@ export async function uploadDocumentFile(
 }
 
 export async function deleteCloudinaryFile(
-  publicId: string
+  publicId: string,
+  resourceType: 'image' | 'video' | 'raw' = 'image'
 ): Promise<{ success: boolean; error?: string }> {
   try {
     // 1. Delete from Cloudinary
-    const success = await CloudinaryService.deleteFile(publicId)
+    const success = await CloudinaryService.deleteFile(publicId, resourceType)
 
     if (success) {
       // 2. Delete from Database

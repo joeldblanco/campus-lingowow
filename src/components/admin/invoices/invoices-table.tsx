@@ -64,8 +64,13 @@ interface InvoicesTableProps {
   invoices: Invoice[]
 }
 
+import { ViewInvoiceDialog } from './view-invoice-dialog'
+
+// ... existing imports
+
 export function InvoicesTable({ invoices }: InvoicesTableProps) {
   const [editingInvoice, setEditingInvoice] = useState<Invoice | null>(null)
+  const [viewingInvoice, setViewingInvoice] = useState<Invoice | null>(null)
 
   const handleDelete = async (id: string) => {
     if (confirm('¿Estás seguro de que quieres eliminar esta factura?')) {
@@ -176,7 +181,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setViewingInvoice(invoice)}>
                           <Eye className="mr-2 h-4 w-4" />
                           Ver Detalles
                         </DropdownMenuItem>
@@ -190,7 +195,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
                             Enviar
                           </DropdownMenuItem>
                         )}
-                        <DropdownMenuItem 
+                        <DropdownMenuItem
                           onClick={() => handleDelete(invoice.id)}
                           className="text-destructive"
                         >
@@ -212,6 +217,14 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
           invoice={editingInvoice}
           open={!!editingInvoice}
           onOpenChange={(open: boolean) => !open && setEditingInvoice(null)}
+        />
+      )}
+
+      {viewingInvoice && (
+        <ViewInvoiceDialog
+          invoice={viewingInvoice}
+          open={!!viewingInvoice}
+          onOpenChange={(open: boolean) => !open && setViewingInvoice(null)}
         />
       )}
     </>

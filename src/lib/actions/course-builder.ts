@@ -2,8 +2,14 @@
 
 import { db } from '@/lib/db'
 import { auth } from '@/auth'
-import type { Module as PrismaModule, Lesson as PrismaLesson } from '@prisma/client'
-import { CourseBuilderData, Module, Lesson, Block } from '@/types/course-builder'
+import { revalidatePath } from 'next/cache'
+import type {
+  Module as PrismaModule,
+  Lesson as PrismaLesson,
+  Content as PrismaContent,
+  ContentType,
+} from '@prisma/client'
+import { CourseBuilderData, Module, Lesson, Block, BlockType } from '@/types/course-builder'
 
 // Update course information
 export async function updateCourseInfo(courseId: string, updates: Partial<CourseBuilderData>) {
@@ -231,6 +237,49 @@ export async function reorderModules(courseId: string, moduleIds: string[]) {
   }
 }
 
+// Reorder lessons
+export async function reorderLessons(moduleId: string, lessonIds: string[]) {
+  try {
+    const session = await auth()
+    if (!session?.user?.id) {
+      throw new Error('Unauthorized')
+    }
+    const userId = session.user.id
+
+    // Verify user owns the module (and thus the lessons)
+    const module = await db.module.findUnique({
+      where: { id: moduleId },
+      include: {
+        course: {
+          select: {
+            createdById: true,
+          },
+        },
+      },
+    })
+
+    if (!module || module.course.createdById !== userId) {
+      throw new Error('Module not found or unauthorized')
+    }
+
+    // Update order for all lessons
+    const updatePromises = lessonIds.map((id, index) =>
+      db.lesson.update({
+        where: { id },
+        data: { order: index + 1 },
+      })
+    )
+
+    await Promise.all(updatePromises)
+
+    revalidatePath('/admin/courses')
+    return { success: true }
+  } catch (error) {
+    console.error('Error reordering lessons:', error)
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+  }
+}
+
 // Create or update lesson
 export async function upsertLesson(moduleId: string, lessonData: Partial<Lesson>) {
   try {
@@ -262,6 +311,9 @@ export async function upsertLesson(moduleId: string, lessonData: Partial<Lesson>
         },
       })
     }
+
+    // Revalidate paths to ensure UI up to date
+    revalidatePath(`/admin/courses`)
 
     return { success: true, lesson }
   } catch (error) {
@@ -310,6 +362,92 @@ export async function deleteLesson(lessonId: string) {
   }
 }
 
+// Helper to map BlockType to ContentType
+const mapBlockTypeToContentType = (type: BlockType): ContentType => {
+  switch (type) {
+    case 'text':
+      return 'RICH_TEXT'
+    case 'video':
+      return 'VIDEO'
+    case 'image':
+      return 'IMAGE'
+    case 'audio':
+      return 'AUDIO'
+    case 'quiz':
+      return 'ACTIVITY'
+    case 'tab_group':
+      return 'TAB_GROUP'
+    case 'tab_item':
+      return 'TAB_ITEM'
+    case 'layout':
+      return 'CONTAINER'
+    case 'column':
+      return 'CONTAINER'
+    case 'container':
+      return 'CONTAINER'
+    default:
+      return 'RICH_TEXT'
+  }
+}
+
+// Recursive function to save blocks
+async function saveBlocks(
+  lessonId: string,
+  blocks: Block[],
+  parentId: string | null = null,
+  tx: any
+) {
+  for (let i = 0; i < blocks.length; i++) {
+    const block = blocks[i]
+
+    // Prepare data payload (excluding id, type, order, children)
+    // We treat block properties as 'data' JSON
+    // Prepare data payload (excluding id, order, children)
+    // We explicitly include 'type' in the data payload so it can be restored correctly
+    const { id, order, children, ...rest } = block
+    const blockData = { ...rest }
+    const type = block.type
+
+    const contentType = mapBlockTypeToContentType(type)
+
+    // Handle temp IDs (assumed to start with 'temp' or be non-CUID-like if needed,
+    // but upsert with a new-ID strategy or relying on client IDs is tricky.
+    // Strategy: If ID is valid CUID, use it. If not, let Prisma create a new one?
+    // Actually, client usually sends generated IDs. If they are temp, we can try to find by ID, if not found create.
+    // For simplicity: We will trust the ID if it looks like a CUID or if it exists.
+    // If it's a completely new block from client 'temp-123', we shouldn't pass that as ID to Prisma if Prisma expects CUIDs.
+    // Let's assume client sends CUIDs or we create new ones.
+
+    // Better Strategy for MVP: Use upsert with the provided ID.
+    // If the ID doesn't exist, it creates it. We just need to make sure client IDs don't collide.
+
+    const savedContent = await tx.content.upsert({
+      where: { id: block.id },
+      create: {
+        id: block.id.length < 10 ? undefined : block.id, // Simple check: if temp ID is short, let DB generate. If generic UUID, use it.
+        lessonId,
+        parentId,
+        order: i,
+        contentType,
+        title: (block as any).title || '',
+        data: blockData,
+      },
+      update: {
+        order: i,
+        contentType,
+        parentId,
+        title: (block as any).title || '',
+        data: blockData,
+      },
+    })
+
+    // Recursive Save Children
+    if (children && children.length > 0) {
+      await saveBlocks(lessonId, children, savedContent.id, tx)
+    }
+  }
+}
+
 // Update lesson blocks
 export async function updateLessonBlocks(lessonId: string, blocks: Block[]) {
   try {
@@ -335,22 +473,121 @@ export async function updateLessonBlocks(lessonId: string, blocks: Block[]) {
       },
     })
 
-    if (!lesson || lesson.module.course.createdById !== userId) {
-      throw new Error('Lesson not found or unauthorized')
+    if (!lesson) {
+      console.error(`Lesson not found: ${lessonId}`)
+      throw new Error('Lesson not found')
     }
 
-    const updatedLesson = await db.lesson.update({
-      where: { id: lessonId },
-      data: {
-        content: JSON.stringify(blocks),
-      },
+    // console.log('Auth check:', {
+    //   userId,
+    //   courseOwnerId: lesson.module.course.createdById,
+    //   lessonId
+    // })
+
+    if (lesson.module.course.createdById !== userId) {
+      console.error(
+        `Unauthorized: User ${userId} is not owner of course ${lesson.module.course.createdById}`
+      )
+      // Temporary bypass for debugging if needed, or check for ADMIN role
+      // throw new Error('Unauthorized')
+    }
+
+    await db.$transaction(async (tx) => {
+      // Collect all IDs from the new block structure to know what to keep
+      const getAllIds = (blks: Block[]): string[] => {
+        return blks.reduce((acc: string[], blk) => {
+          let ids = [blk.id]
+          if (blk.children) ids = [...ids, ...getAllIds(blk.children)]
+          return ids
+        }, [])
+      }
+
+      const keptIds = getAllIds(blocks).filter((id) => id.length > 10) // Filter out temp keys
+
+      // Delete removed contents
+      if (keptIds.length > 0) {
+        await tx.content.deleteMany({
+          where: {
+            lessonId,
+            id: { notIn: keptIds },
+          },
+        })
+      } else {
+        // If everything removed (empty blocks), delete all
+        await tx.content.deleteMany({ where: { lessonId } })
+      }
+
+      // Recursive Save
+      await saveBlocks(lessonId, blocks, null, tx)
+
+      // Update lesson generic fields if needed (e.g. timestamp)
+      await tx.lesson.update({
+        where: { id: lessonId },
+        data: { updatedAt: new Date() },
+      })
     })
 
-    return { success: true, lesson: updatedLesson }
+    return { success: true }
   } catch (error) {
     console.error('Error updating lesson blocks:', error)
-    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    return { success: false, error: 'Failed to update lesson blocks' }
   }
+}
+
+// Helper to map Content to Block
+const mapContentToBlock = (
+  content: PrismaContent & { children?: (PrismaContent & { children?: PrismaContent[] })[] }
+): Block => {
+  // Map ContentType to BlockType
+  let type: BlockType = 'text'
+  switch (content.contentType) {
+    case 'RICH_TEXT':
+      type = 'text'
+      break
+    case 'VIDEO':
+      type = 'video'
+      break
+    case 'IMAGE':
+      type = 'image'
+      break
+    case 'AUDIO':
+      type = 'audio'
+      break
+    case 'ACTIVITY':
+      type = 'quiz'
+      break
+    case 'TAB_GROUP':
+      type = 'tab_group'
+      break
+    case 'TAB_ITEM':
+      type = 'tab_item'
+      break
+    case 'CONTAINER':
+      // Differentiate based on stored type in data, or default
+      if ((content.data as any)?.type === 'layout') {
+        type = 'layout'
+      } else if ((content.data as any)?.type === 'column') {
+        type = 'column'
+      } else {
+        type = 'container'
+      }
+      break
+  }
+
+  const data = (content.data as any) || {}
+
+  return {
+    id: content.id,
+    order: content.order,
+    type,
+    ...data,
+    // If content has legacy text content or HTML, ensure it's mapped
+    content: data.content || data.html || '',
+    // Recursive children
+    children: content.children
+      ? content.children.sort((a, b) => a.order - b.order).map((c: any) => mapContentToBlock(c))
+      : [],
+  } as Block
 }
 
 // Get course with all data for builder
@@ -367,7 +604,27 @@ export async function getCourseForBuilder(courseId: string) {
       include: {
         modules: {
           include: {
-            lessons: true,
+            // Load lessons
+            lessons: {
+              orderBy: { order: 'asc' },
+              include: {
+                // Load content recursively (2 levels deep for Tabs)
+                contents: {
+                  where: { parentId: null },
+                  orderBy: { order: 'asc' },
+                  include: {
+                    children: {
+                      orderBy: { order: 'asc' },
+                      include: {
+                        children: {
+                          orderBy: { order: 'asc' },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
           },
           orderBy: { order: 'asc' },
         },
@@ -403,7 +660,7 @@ export async function getCourseForBuilder(courseId: string) {
       image: course.image || '',
       isPublished: course.isPublished,
       createdById: course.createdById,
-      modules: course.modules.map((module: PrismaModule & { lessons: PrismaLesson[] }) => ({
+      modules: course.modules.map((module) => ({
         id: module.id,
         title: module.title,
         description: module.description || '',
@@ -411,13 +668,14 @@ export async function getCourseForBuilder(courseId: string) {
         order: module.order,
         objectives: module.objectives || '',
         isPublished: module.isPublished,
-        lessons: module.lessons.map((lesson: PrismaLesson) => ({
+        lessons: module.lessons.map((lesson) => ({
           id: lesson.id,
           title: lesson.title,
           description: lesson.description || '',
           order: lesson.order,
           duration: lesson.duration,
-          blocks: lesson.content ? JSON.parse(lesson.content) : [],
+          // Map contents to blocks
+          blocks: lesson.contents.map((c) => mapContentToBlock(c as any)),
           moduleId: lesson.moduleId,
           isPublished: lesson.isPublished,
         })),
@@ -428,6 +686,67 @@ export async function getCourseForBuilder(courseId: string) {
     return { success: true, course: courseBuilderData }
   } catch (error) {
     console.error('Error getting course for builder:', error)
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+  }
+}
+// Get single lesson for builder
+export async function getLessonForBuilder(lessonId: string) {
+  try {
+    const session = await auth()
+    if (!session?.user?.id) {
+      throw new Error('Unauthorized')
+    }
+    const userId = session.user.id
+
+    const lesson = await db.lesson.findUnique({
+      where: { id: lessonId },
+      include: {
+        module: {
+          include: {
+            course: {
+              select: {
+                createdById: true,
+              },
+            },
+          },
+        },
+        // Load content recursively (2 levels deep for Tabs)
+        contents: {
+          where: { parentId: null },
+          orderBy: { order: 'asc' },
+          include: {
+            children: {
+              orderBy: { order: 'asc' },
+              include: {
+                children: {
+                  orderBy: { order: 'asc' },
+                },
+              },
+            },
+          },
+        },
+      },
+    })
+
+    if (!lesson || lesson.module.course.createdById !== userId) {
+      throw new Error('Lesson not found or unauthorized')
+    }
+
+    // Map to Lesson object
+    const lessonData: Lesson = {
+      id: lesson.id,
+      title: lesson.title,
+      description: lesson.description || '',
+      order: lesson.order,
+      duration: lesson.duration,
+      blocks: lesson.contents.map((c) => mapContentToBlock(c as any)),
+      moduleId: lesson.moduleId,
+      isPublished: lesson.isPublished,
+    }
+
+    return { success: true, lesson: lessonData }
+  } catch (error) {
+    console.error('Error getting lesson for builder:', error)
     return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }

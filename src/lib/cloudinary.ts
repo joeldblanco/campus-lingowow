@@ -106,6 +106,9 @@ export interface UploadOptions {
   transformation?: CloudinaryTransformation[]
   quality?: string | number
   format?: string
+  use_filename?: boolean
+  unique_filename?: boolean
+  filename_override?: string
 }
 
 export class CloudinaryService {
@@ -121,6 +124,9 @@ export class CloudinaryService {
         transformation: options.transformation,
         quality: options.quality,
         format: options.format,
+        use_filename: options.use_filename,
+        unique_filename: options.unique_filename,
+        filename_override: options.filename_override,
       })
 
       return {
@@ -148,9 +154,12 @@ export class CloudinaryService {
     }
   }
 
-  static async deleteFile(publicId: string): Promise<boolean> {
+  static async deleteFile(
+    publicId: string,
+    resourceType: 'image' | 'video' | 'raw' = 'image'
+  ): Promise<boolean> {
     try {
-      const result = await cloudinary.uploader.destroy(publicId)
+      const result = await cloudinary.uploader.destroy(publicId, { resource_type: resourceType })
       return result.result === 'ok'
     } catch (error) {
       console.error('Cloudinary delete error:', error)
@@ -161,45 +170,61 @@ export class CloudinaryService {
   static async uploadImage(
     file: Buffer | string,
     folder: string = 'images',
-    transformations?: CloudinaryTransformation[]
+    transformations?: CloudinaryTransformation[],
+    filename?: string
   ): Promise<CloudinaryUploadResult> {
     return this.uploadFile(file, {
       folder: `campus-lingowow/${folder}`,
       resource_type: 'image',
       transformation: transformations,
       quality: 'auto',
+      use_filename: true,
+      unique_filename: false,
+      filename_override: filename,
     })
   }
 
   static async uploadVideo(
     file: Buffer | string,
-    folder: string = 'videos'
+    folder: string = 'videos',
+    filename?: string
   ): Promise<CloudinaryUploadResult> {
     return this.uploadFile(file, {
       folder: `campus-lingowow/${folder}`,
       resource_type: 'video',
       quality: 'auto',
+      use_filename: true,
+      unique_filename: false,
+      filename_override: filename,
     })
   }
 
   static async uploadAudio(
     file: Buffer | string,
-    folder: string = 'audio'
+    folder: string = 'audio',
+    filename?: string
   ): Promise<CloudinaryUploadResult> {
     return this.uploadFile(file, {
       folder: `campus-lingowow/${folder}`,
       resource_type: 'video', // Cloudinary treats audio as video
       quality: 'auto',
+      use_filename: true,
+      unique_filename: false,
+      filename_override: filename,
     })
   }
 
   static async uploadDocument(
     file: Buffer | string,
-    folder: string = 'documents'
+    folder: string = 'documents',
+    filename?: string
   ): Promise<CloudinaryUploadResult> {
     return this.uploadFile(file, {
       folder: `campus-lingowow/${folder}`,
       resource_type: 'raw',
+      use_filename: true,
+      unique_filename: false,
+      filename_override: filename,
     })
   }
 

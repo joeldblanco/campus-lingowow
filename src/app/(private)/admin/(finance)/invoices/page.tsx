@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import { getInvoices } from '@/lib/actions/commercial'
 import { InvoicesTable } from '@/components/admin/invoices/invoices-table'
-import { CreateInvoiceDialog } from '@/components/admin/invoices/create-invoice-dialog'
+import { ImportPaypalDialog } from '@/components/admin/invoices/import-paypal-dialog'
 
 const InvoicesAdminPage = async () => {
   const invoicesData = await getInvoices()
@@ -30,12 +30,12 @@ const InvoicesAdminPage = async () => {
     <div className="container py-8">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Facturas</h1>
-        <CreateInvoiceDialog>
+        <ImportPaypalDialog>
           <Button>
             <Plus className="mr-2 h-4 w-4" />
-            Nueva Factura
+            Importar de PayPal
           </Button>
-        </CreateInvoiceDialog>
+        </ImportPaypalDialog>
       </div>
 
       <InvoicesTable invoices={invoices} />

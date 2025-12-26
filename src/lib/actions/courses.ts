@@ -498,6 +498,9 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
                   },
                 },
               },
+              where: {
+                isPublished: true,
+              },
               orderBy: {
                 order: 'asc',
               },

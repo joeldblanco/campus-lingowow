@@ -4,11 +4,11 @@ import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { 
-  BookOpen, 
-  Users, 
-  Clock, 
-  Lock, 
+import {
+  BookOpen,
+  Users,
+  Clock,
+  Lock,
   User,
   ArrowLeft,
   Play,
@@ -19,7 +19,7 @@ interface CoursePreviewProps {
   course: {
     id: string
     title: string
-    description: string
+    description: string | null
     language: string
     level: string
     createdBy: {
@@ -36,12 +36,12 @@ interface CoursePreviewProps {
       lessons: Array<{
         id: string
         title: string
-        description: string
+        description: string | null
         order: number
         contents: Array<{
           id: string
           title: string
-          description: string
+          description: string | null
           contentType: string
           order: number
         }>
@@ -61,7 +61,7 @@ interface CoursePreviewProps {
 
 export function CoursePreview({ course, isAuthenticated }: CoursePreviewProps) {
   const totalLessons = course.modules.reduce((total, module) => total + module._count.lessons, 0)
-  const totalContents = course.modules.reduce((total, module) => 
+  const totalContents = course.modules.reduce((total, module) =>
     total + module.lessons.reduce((lessonTotal, lesson) => lessonTotal + lesson.contents.length, 0), 0
   )
 
@@ -154,7 +154,7 @@ export function CoursePreview({ course, isAuthenticated }: CoursePreviewProps) {
                 </div>
               </div>
             </div>
-            
+
             <p className="text-lg text-gray-600 max-w-2xl">
               {course.description}
             </p>
@@ -228,7 +228,7 @@ export function CoursePreview({ course, isAuthenticated }: CoursePreviewProps) {
       {/* Course Content Preview */}
       <div className="space-y-6">
         <h2 className="text-2xl font-semibold">Contenido del Curso</h2>
-        
+
         <div className="space-y-4">
           {course.modules.map((module, moduleIndex) => (
             <Card key={module.id} className="overflow-hidden">
@@ -248,7 +248,7 @@ export function CoursePreview({ course, isAuthenticated }: CoursePreviewProps) {
                   </div>
                 </div>
               </CardHeader>
-              
+
               <CardContent className="p-0">
                 <div className="space-y-0">
                   {module.lessons.slice(0, 3).map((lesson, lessonIndex) => (
@@ -259,7 +259,7 @@ export function CoursePreview({ course, isAuthenticated }: CoursePreviewProps) {
                             {lessonIndex + 1}. {lesson.title}
                           </h4>
                           <p className="text-sm text-gray-600">{lesson.description}</p>
-                          
+
                           {/* Content Preview */}
                           <div className="flex items-center gap-2 mt-2">
                             {lesson.contents.slice(0, 3).map((content) => (
@@ -275,7 +275,7 @@ export function CoursePreview({ course, isAuthenticated }: CoursePreviewProps) {
                             )}
                           </div>
                         </div>
-                        
+
                         <div className="flex items-center text-gray-400">
                           {course.isEnrolled ? (
                             <Play className="w-5 h-5" />
@@ -286,7 +286,7 @@ export function CoursePreview({ course, isAuthenticated }: CoursePreviewProps) {
                       </div>
                     </div>
                   ))}
-                  
+
                   {module.lessons.length > 3 && (
                     <div className="p-4 text-center text-sm text-gray-500 bg-gray-50">
                       +{module.lessons.length - 3} lecciones más

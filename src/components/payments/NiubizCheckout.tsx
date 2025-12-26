@@ -15,6 +15,8 @@ interface NiubizCheckoutProps {
     userEmail?: string;
     userFirstName?: string;
     userLastName?: string;
+    invoiceData?: unknown;
+    customerInfo?: unknown;
 }
 
 declare global {
@@ -32,12 +34,11 @@ export const NiubizCheckout = ({
     isRecurrent = false,
     onSuccess,
     onError,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    userEmail: _userEmail,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    userFirstName: _userFirstName,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    userLastName: _userLastName,
+    invoiceData,
+    customerInfo,
+    userEmail,
+    userFirstName,
+    userLastName,
 }: NiubizCheckoutProps) => {
     const [loading, setLoading] = useState(false);
     // const [sessionToken, setSessionToken] = useState<string | null>(null);
@@ -108,6 +109,14 @@ export const NiubizCheckout = ({
     const handleAuthorization = async (transactionToken: string) => {
         try {
             setLoading(true);
+
+            // Preparar customerInfo si no viene explícitamente pero tenemos los datos sueltos
+            const finalCustomerInfo = customerInfo || (userEmail ? {
+                email: userEmail,
+                firstName: userFirstName || '',
+                lastName: userLastName || '',
+            } : undefined);
+
             const res = await fetch("/api/niubiz/authorize", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -115,7 +124,9 @@ export const NiubizCheckout = ({
                     transactionToken,
                     amount,
                     orderId: purchaseNumber,
-                    registerCard: isRecurrent
+                    registerCard: isRecurrent,
+                    invoiceData,
+                    customerInfo: finalCustomerInfo
                 }),
             });
 
@@ -126,7 +137,7 @@ export const NiubizCheckout = ({
                 // Note: We need to robustly check the data structure. 
                 // For now, assuming if res.ok and no blatant error, it's success, but let's be safer.
                 // If data.authorization.header.ecoreTransactionUUID exists it might be processed.
-                throw new Error("Pago denegado o fallido.");
+                throw new Error(data.message || "Pago denegado o fallido.");
             }
 
             toast.success("Pago realizado con éxito");
@@ -134,7 +145,8 @@ export const NiubizCheckout = ({
 
         } catch (error) {
             console.error("Niubiz Auth Error:", error);
-            toast.error("Error al procesar el pago. Por favor verifique sus datos.");
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            toast.error((error as any).message || "Error al procesar el pago. Por favor verifique sus datos.");
             onError?.(error);
         } finally {
             setLoading(false);

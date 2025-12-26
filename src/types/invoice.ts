@@ -31,6 +31,7 @@ export type InvoiceWithDetails = Prisma.InvoiceGetPayload<{
             id: true
             name: true
             slug: true
+            sku: true
           }
         }
         plan: {
@@ -53,6 +54,7 @@ export type InvoiceItemWithDetails = Prisma.InvoiceItemGetPayload<{
         id: true
         name: true
         slug: true
+        sku: true
       }
     }
     plan: {

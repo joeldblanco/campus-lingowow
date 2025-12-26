@@ -76,7 +76,7 @@ export async function createLesson(data: z.infer<typeof CreateLessonSchema>) {
   try {
     // Validate input data
     const validatedData = CreateLessonSchema.parse(data)
-    
+
     const lesson = await prisma.lesson.create({
       data: {
         title: validatedData.title,
@@ -107,23 +107,20 @@ export async function createLesson(data: z.infer<typeof CreateLessonSchema>) {
     return lesson
   } catch (error) {
     console.error('Error creating lesson:', error)
-    
+
     if (error instanceof z.ZodError) {
-      throw new Error(error.errors.map(e => e.message).join(', '))
+      throw new Error(error.errors.map((e) => e.message).join(', '))
     }
-    
+
     throw new Error('Error al crear la lección')
   }
 }
 
-export async function updateLesson(
-  id: string,
-  data: z.infer<typeof EditLessonSchema>
-) {
+export async function updateLesson(id: string, data: z.infer<typeof EditLessonSchema>) {
   try {
     // Validate input data
     const validatedData = EditLessonSchema.parse(data)
-    
+
     const lesson = await prisma.lesson.update({
       where: { id },
       data: {
@@ -152,11 +149,11 @@ export async function updateLesson(
     return lesson
   } catch (error) {
     console.error('Error updating lesson:', error)
-    
+
     if (error instanceof z.ZodError) {
-      throw new Error(error.errors.map(e => e.message).join(', '))
+      throw new Error(error.errors.map((e) => e.message).join(', '))
     }
-    
+
     throw new Error('Error al actualizar la lección')
   }
 }
@@ -221,6 +218,99 @@ export async function getLessonById(id: string) {
   } catch (error) {
     console.error('Error fetching lesson:', error)
     throw new Error('Failed to fetch lesson')
+  }
+}
+
+import type { LessonForView } from '@/types/lesson'
+
+export async function getLessonForStudent(
+  lessonId: string,
+  userId: string
+): Promise<LessonForView | null> {
+  try {
+    const lesson = await prisma.lesson.findUnique({
+      where: { id: lessonId },
+      include: {
+        module: {
+          select: {
+            id: true,
+            title: true,
+            course: {
+              select: {
+                id: true,
+                title: true,
+              },
+            },
+          },
+        },
+        contents: {
+          where: { parentId: null }, // Only get top-level content (roots)
+          orderBy: { order: 'asc' },
+          include: {
+            children: {
+              orderBy: { order: 'asc' },
+              include: {
+                children: {
+                  // 2 levels deep should be enough for Tabs > Item > Content
+                  orderBy: { order: 'asc' },
+                },
+              },
+            },
+            // Include legacy relations for backward compatibility if needed,
+            // though we prefer 'data'
+            grammarCard: true,
+            leveledText: true,
+            thematicGlossary: true,
+            downloadableResource: true,
+            activity: true,
+          },
+        },
+        activities: {
+          include: {
+            activity: {
+              select: {
+                id: true,
+                title: true,
+                activityType: true,
+                points: true,
+              },
+            },
+          },
+          orderBy: {
+            order: 'asc',
+          },
+        },
+      },
+    })
+
+    if (!lesson) return null
+
+    // Fetch user progress for activities
+    const userActivities = await prisma.userActivity.findMany({
+      where: {
+        userId,
+        activityId: {
+          in: lesson.activities.map((a) => a.activityId),
+        },
+      },
+    })
+
+    const completedActivityIds = new Set(
+      userActivities.filter((ua) => ua.status === 'COMPLETED').map((ua) => ua.activityId)
+    )
+
+    const lessonForView = {
+      ...lesson,
+      activities: lesson.activities.map((activity) => ({
+        ...activity,
+        isCompleted: completedActivityIds.has(activity.activityId),
+      })),
+    }
+
+    return lessonForView as unknown as LessonForView
+  } catch (error) {
+    console.error('Error fetching lesson for student:', error)
+    throw new Error('Failed to fetch lesson for student')
   }
 }
 

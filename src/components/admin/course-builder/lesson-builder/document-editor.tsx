@@ -149,73 +149,73 @@ export function DocumentEditor({
       </div>
 
       {/* Document-style editor */}
-      <div className="flex-1 max-w-4xl">
+      <div className="flex-1 w-full">
         <Card className="min-h-[800px] p-12 shadow-lg">
-        <div className="space-y-6">
-          {/* Main content editor */}
-          <div className="prose prose-lg max-w-none">
-            <RichTextEditor
-              value={content}
-              onChange={onContentChange}
-              placeholder="Comienza a escribir el contenido de tu lección..."
-            />
-          </div>
+          <div className="space-y-6">
+            {/* Main content editor */}
+            <div className="prose prose-lg max-w-none">
+              <RichTextEditor
+                value={content}
+                onChange={onContentChange}
+                placeholder="Comienza a escribir el contenido de tu lección..."
+              />
+            </div>
 
-          {/* Embedded blocks */}
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-          >
-            <SortableContext items={blocks.map((b) => b.id)} strategy={verticalListSortingStrategy}>
-              <div className="space-y-4 mt-8">
-                {blocks.map((block, index) => (
-                  <div key={block.id}>
-                    <SortableBlockItem
-                      block={block}
-                      isEditing={editingBlockId === block.id}
-                      onEdit={() => setEditingBlockId(block.id)}
-                      onSave={() => setEditingBlockId(null)}
-                      onCancel={() => setEditingBlockId(null)}
-                      onUpdate={(updates) => onUpdateBlock(block.id, updates)}
-                      onRemove={() => onRemoveBlock(block.id)}
-                    />
-                    {/* Insert button between blocks */}
-                    <div className="flex justify-center my-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="opacity-0 hover:opacity-100 transition-opacity"
-                        onClick={() => {
-                          setInsertPosition(index + 1)
-                          setShowBlockMenu(true)
-                        }}
-                      >
-                        <Plus className="h-4 w-4 mr-2" />
-                        Insertar bloque
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </SortableContext>
-          </DndContext>
-
-          {/* Add block button at the end */}
-          <div className="flex justify-center pt-8 border-t">
-            <Button
-              variant="outline"
-              onClick={() => {
-                setInsertPosition(blocks.length)
-                setShowBlockMenu(true)
-              }}
+            {/* Embedded blocks */}
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
             >
-              <Plus className="h-4 w-4 mr-2" />
-              Agregar bloque
-            </Button>
+              <SortableContext items={blocks.map((b) => b.id)} strategy={verticalListSortingStrategy}>
+                <div className="space-y-4 mt-8">
+                  {blocks.map((block, index) => (
+                    <div key={block.id}>
+                      <SortableBlockItem
+                        block={block}
+                        isEditing={editingBlockId === block.id}
+                        onEdit={() => setEditingBlockId(block.id)}
+                        onSave={() => setEditingBlockId(null)}
+                        onCancel={() => setEditingBlockId(null)}
+                        onUpdate={(updates) => onUpdateBlock(block.id, updates)}
+                        onRemove={() => onRemoveBlock(block.id)}
+                      />
+                      {/* Insert button between blocks */}
+                      <div className="flex justify-center my-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="opacity-0 hover:opacity-100 transition-opacity"
+                          onClick={() => {
+                            setInsertPosition(index + 1)
+                            setShowBlockMenu(true)
+                          }}
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Insertar bloque
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </SortableContext>
+            </DndContext>
+
+            {/* Add block button at the end */}
+            <div className="flex justify-center pt-8 border-t">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setInsertPosition(blocks.length)
+                  setShowBlockMenu(true)
+                }}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Agregar bloque
+              </Button>
+            </div>
           </div>
-        </div>
-      </Card>
+        </Card>
       </div>
 
       {/* Block insertion menu */}
@@ -281,7 +281,7 @@ function SortableBlockItem({
 
   return (
     <div ref={setNodeRef} style={style} className="group relative">
-      <Card className="p-4 hover:shadow-md transition-shadow">
+      <div className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg transition-colors border border-transparent hover:border-slate-200 dark:hover:border-slate-800">
         {/* Drag handle */}
         {!isEditing && (
           <div
@@ -334,7 +334,7 @@ function SortableBlockItem({
             </Button>
           </div>
         )}
-      </Card>
+      </div>
     </div>
   )
 }

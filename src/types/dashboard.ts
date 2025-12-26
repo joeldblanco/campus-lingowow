@@ -46,7 +46,10 @@ export interface StudentDashboardData {
     link: string
   }[]
   enrollments: {
+    id: string
+    courseId: string
     title: string
+    image: string | null
     progress: number
   }[]
 }

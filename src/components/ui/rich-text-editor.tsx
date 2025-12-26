@@ -70,116 +70,105 @@ export function RichTextEditor({ value, onChange, placeholder, className }: Rich
     <div className={cn('', className)}>
       {/* Fixed Toolbar */}
       <div className="sticky top-0 z-10 bg-background border-b">
-        <div className="flex items-center gap-0.5 p-2"
+        <div className="flex flex-wrap items-center gap-1 p-2"
           onMouseDown={(e) => e.preventDefault()}
         >
 
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className={cn('h-8 w-8 p-0', isCommandActive('bold') && 'bg-accent')}
-          onClick={() => execCommand('bold')}
-        >
-          <Bold className="h-4 w-4" />
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className={cn('h-8 w-8 p-0', isCommandActive('italic') && 'bg-accent')}
-          onClick={() => execCommand('italic')}
-        >
-          <Italic className="h-4 w-4" />
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className={cn('h-8 w-8 p-0', isCommandActive('underline') && 'bg-accent')}
-          onClick={() => execCommand('underline')}
-        >
-          <Underline className="h-4 w-4" />
-        </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className={cn('h-8 w-8 p-0', isCommandActive('bold') && 'bg-accent')}
+            onClick={() => execCommand('bold')}
+          >
+            <Bold className="h-4 w-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className={cn('h-8 w-8 p-0', isCommandActive('italic') && 'bg-accent')}
+            onClick={() => execCommand('italic')}
+          >
+            <Italic className="h-4 w-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className={cn('h-8 w-8 p-0', isCommandActive('underline') && 'bg-accent')}
+            onClick={() => execCommand('underline')}
+          >
+            <Underline className="h-4 w-4" />
+          </Button>
 
-        <div className="w-px h-6 bg-border mx-1" />
+          <div className="w-px h-6 bg-border mx-1" />
 
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="h-8 w-8 p-0"
-          onClick={() => execCommand('justifyLeft')}
-        >
-          <AlignLeft className="h-4 w-4" />
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="h-8 w-8 p-0"
-          onClick={() => execCommand('justifyCenter')}
-        >
-          <AlignCenter className="h-4 w-4" />
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="h-8 w-8 p-0"
-          onClick={() => execCommand('justifyRight')}
-        >
-          <AlignRight className="h-4 w-4" />
-        </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
+            onClick={() => execCommand('justifyLeft')}
+          >
+            <AlignLeft className="h-4 w-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
+            onClick={() => execCommand('justifyCenter')}
+          >
+            <AlignCenter className="h-4 w-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
+            onClick={() => execCommand('justifyRight')}
+          >
+            <AlignRight className="h-4 w-4" />
+          </Button>
 
-        <div className="w-px h-6 bg-border mx-1" />
+          <div className="w-px h-6 bg-border mx-1" />
 
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="h-8 w-8 p-0"
-          onClick={() => execCommand('insertUnorderedList')}
-        >
-          <List className="h-4 w-4" />
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="h-8 w-8 p-0"
-          onClick={() => execCommand('insertOrderedList')}
-        >
-          <ListOrdered className="h-4 w-4" />
-        </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
+            onClick={() => execCommand('insertUnorderedList')}
+          >
+            <List className="h-4 w-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
+            onClick={() => execCommand('insertOrderedList')}
+          >
+            <ListOrdered className="h-4 w-4" />
+          </Button>
 
-        <div className="w-px h-6 bg-border mx-1" />
+          <div className="w-px h-6 bg-border mx-1" />
 
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="h-8 w-8 p-0"
-          onClick={() => {
-            const url = prompt('Ingresa la URL:')
-            if (url) execCommand('createLink', url)
-          }}
-        >
-          <LinkIcon className="h-4 w-4" />
-        </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
+            onClick={() => {
+              const url = prompt('Ingresa la URL:')
+              if (url) execCommand('createLink', url)
+            }}
+          >
+            <LinkIcon className="h-4 w-4" />
+          </Button>
 
-        <input
-          type="color"
-          className="h-8 w-8 cursor-pointer border-0 bg-transparent"
-          onChange={(e) => execCommand('foreColor', e.target.value)}
-          title="Color de texto"
-        />
-        <input
-          type="color"
-          className="h-8 w-8 cursor-pointer border-0 bg-transparent"
-          onChange={(e) => execCommand('hiliteColor', e.target.value)}
-          title="Color de fondo"
-        />
+
         </div>
       </div>
 

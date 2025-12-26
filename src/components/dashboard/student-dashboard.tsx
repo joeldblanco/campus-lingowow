@@ -13,7 +13,7 @@ import {
   isBefore,
 } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { Play } from 'lucide-react'
+import { Play, BookOpen } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -61,9 +61,9 @@ export default function Dashboard() {
         </h1>
         <p className="text-muted-foreground">Mira cómo vas y tus próximas clases.</p>
       </div>
-      
+
       {/* Notification for students with no active enrollments */}
-      {dashboardData?.enrollments && dashboardData.enrollments.filter(e => e.progress > 0).length === 0 && (
+      {dashboardData?.enrollments && dashboardData.enrollments.length === 0 && (
         <Card className="border-yellow-200 bg-yellow-50">
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
@@ -84,10 +84,10 @@ export default function Dashboard() {
           </CardContent>
         </Card>
       )}
-      
+
       {/* Banner de horarios pendientes */}
       <PendingScheduleBanner />
-      
+
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="pb-2">
@@ -123,7 +123,7 @@ export default function Dashboard() {
             <p className="text-xs text-muted-foreground">{dashboardData?.totalPoints || 0} XP</p>
           </CardContent>
         </Card>
-        </div>
+      </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <Card className="lg:col-span-4">
           <CardHeader className="flex flex-row items-center justify-between">
@@ -155,30 +155,48 @@ export default function Dashboard() {
         </Card>
         <Card className="lg:col-span-3">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Mis materiales</CardTitle>
-            <Button variant="outline" size="sm" asChild>
-              <Link href="#">Ver Todos</Link>
-            </Button>
+            <CardTitle>Mis Cursos</CardTitle>
           </CardHeader>
-          <CardContent>
-            <Tabs defaultValue="all">
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="all">Todos</TabsTrigger>
-                <TabsTrigger value="recent">Recientes</TabsTrigger>
-                <TabsTrigger value="bookmarks">Marcadores</TabsTrigger>
-              </TabsList>
-              <TabsContent value="all" className="mt-4 space-y-4">
-                <p className="text-muted-foreground">
-                  Tus materiales aparecerán aquí pronto.
-                </p>
-              </TabsContent>
-              <TabsContent value="recent" className="mt-4 space-y-4">
-                <p className="text-muted-foreground">No hay materiales nuevos.</p>
-              </TabsContent>
-              <TabsContent value="bookmarks" className="mt-4 space-y-4">
-                <p className="text-muted-foreground">No tienes materiales guardados.</p>
-              </TabsContent>
-            </Tabs>
+          <CardContent className="max-h-[400px] overflow-y-auto pr-2">
+            <div className="flex flex-col gap-4">
+              {dashboardData?.enrollments && dashboardData.enrollments.length > 0 ? (
+                dashboardData.enrollments.map((enrollment) => (
+                  <div key={enrollment.id} className="flex flex-col gap-3 rounded-lg border p-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="font-semibold text-sm line-clamp-2">{enrollment.title}</div>
+                      {enrollment.image && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={enrollment.image}
+                          alt={enrollment.title}
+                          className="h-10 w-10 rounded object-cover"
+                        />
+                      )}
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between text-xs text-muted-foreground">
+                        <span>Progreso</span>
+                        <span>{Math.round(enrollment.progress)}%</span>
+                      </div>
+                      <Progress value={enrollment.progress} className="h-2" />
+                    </div>
+                    <Button variant="secondary" size="sm" className="w-full" asChild>
+                      <Link href={`/my-courses/${enrollment.courseId}`}>
+                        {enrollment.progress > 0 ? 'Continuar' : 'Empezar'}
+                      </Link>
+                    </Button>
+                  </div>
+                ))
+              ) : (
+                <div className="flex flex-col items-center justify-center gap-2 py-8 text-center text-muted-foreground">
+                  <BookOpen className="h-8 w-8 opacity-50" />
+                  <p>No estás inscrito en ningún curso.</p>
+                  <Button variant="link" asChild>
+                    <Link href="/courses">Explorar cursos</Link>
+                  </Button>
+                </div>
+              )}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -283,7 +301,7 @@ function UpcomingClassCard({
 
     // Calcular tiempo total en segundos
     const totalSeconds = Math.max(0, differenceInSeconds(startDate, currentTime))
-    
+
     // Calcular días, horas, minutos y segundos
     const days = Math.floor(totalSeconds / (24 * 60 * 60))
     const hours = Math.floor((totalSeconds % (24 * 60 * 60)) / (60 * 60))

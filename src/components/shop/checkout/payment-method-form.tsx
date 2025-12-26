@@ -100,6 +100,7 @@ export function PaymentMethodForm({
             userLastName={userLastName}
             // Logic for 'isRecurrent' passed from parent
             isRecurrent={isRecurrent}
+            invoiceData={paypalData}
           />
         </div>
       </div>

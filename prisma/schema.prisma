@@ -332,6 +332,11 @@ model Lesson {
   duration    Int     @default(30) // Duración estimada de la lección en minutos
   content     String  @default("[]") // JSON con bloques de contenido para Course Builder
   isPublished Boolean @default(false) // Estado de publicación de la lección
+  
+  // Nuevos campos para el diseño del reproductor
+  videoUrl      String? // URL del video/audio principal
+  summary       String? // Subtítulo o resumen corto
+  transcription String? // Transcripción del audio/video
 
   // Relaciones
   module     Module           @relation(fields: [moduleId], references: [id], onDelete: Cascade)
@@ -349,16 +354,20 @@ model Lesson {
 model Content {
   id          String      @id @default(cuid())
   title       String
-  description String
+  description String?     // Hecho opcional
   order       Int         @default(0)
   contentType ContentType
   lessonId    String
+  parentId    String?     // Para estructura recursiva (Tabs, Contenedores)
+  data        Json?       // Datos flexibles del contenido (Video URL, Texto HTML, Preguntas Quiz, etc.)
 
   // Relaciones
   lesson       Lesson        @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  parent       Content?      @relation("ContentHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children     Content[]     @relation("ContentHierarchy")
   userProgress UserContent[]
 
-  // Tipos específicos de contenido - relaciones 1:1
+  // Relaciones específicas (Mantenidas por compatibilidad temporal, pero se migrarán a `data`)
   grammarCard          GrammarCard?
   leveledText          LeveledText?
   thematicGlossary     ThematicGlossary?
@@ -369,6 +378,7 @@ model Content {
   updatedAt DateTime @updatedAt
 
   @@index([lessonId])
+  @@index([parentId])
   @@map("contents")
 }
 
@@ -1110,6 +1120,10 @@ model Invoice {
   paypalCaptureId String?     // ID de captura de PayPal
   paypalPayerEmail String?    // Email del pagador en PayPal
 
+  // Campos para Niubiz
+  niubizTransactionId String? // Token de transacción de Niubiz
+  niubizOrderId       String? // ID de orden de Niubiz
+
   // Relaciones
   user                  User                    @relation(fields: [userId], references: [id])
   coupon                Coupon?                 @relation(fields: [couponId], references: [id])
@@ -1266,12 +1280,23 @@ enum EnrollmentStatus {
 }
 
 enum ContentType {
+  // Tipos Estructurales
+  TAB_GROUP
+  TAB_ITEM
+  CONTAINER
+
+  // Tipos de Contenido
+  RICH_TEXT
+  IMAGE
+  VIDEO
+  AUDIO
+  
+  // Tipos Legacy / Específicos
   GRAMMAR_CARD
   LEVELED_TEXT
   THEMATIC_GLOSSARY
   DOWNLOADABLE_RESOURCE
   ACTIVITY
-  VIDEO
   PODCAST
   OTHER
 }

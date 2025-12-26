@@ -29,9 +29,7 @@ import {
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
-} from '@dnd-kit/sortable'
-import {
-  useSortable,
+  useSortable
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import {
@@ -39,17 +37,17 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
-import { GripVertical, Plus, Edit2, Trash2, BookOpen, ChevronDown, ChevronRight } from 'lucide-react'
+import { GripVertical, Plus, Edit2, Trash2, BookOpen, ChevronDown, ChevronRight, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface ModulesTabProps {
   modules: Module[]
   courseId: string
   onModulesChange: (modules: Module[]) => void
-  onAddModule: (module: Module) => void
-  onUpdateModule: (moduleId: string, updates: Partial<Module>) => void
-  onRemoveModule: (moduleId: string) => void
-  onReorderModules: (modules: Module[]) => void
+  onAddModule: (module: Module) => Promise<void>
+  onUpdateModule: (moduleId: string, updates: Partial<Module>) => Promise<void>
+  onRemoveModule: (moduleId: string) => Promise<void>
+  onReorderModules: (modules: Module[]) => Promise<void>
 }
 
 // Sortable Module Item Component
@@ -65,7 +63,7 @@ function SortableModuleItem({
   onRemoveModule: (moduleId: string) => void
   onEditModule: (moduleId: string) => void
   editingModuleId: string | null
-  onUpdateModule: (moduleId: string, updates: Partial<Module>) => void
+  onUpdateModule: (moduleId: string, updates: Partial<Module>) => Promise<void>
   onCancelEdit: () => void
 }) {
   const [editValues, setEditValues] = useState({
@@ -76,11 +74,14 @@ function SortableModuleItem({
     objectives: module.objectives,
     isPublished: module.isPublished,
   })
+  const [isSaving, setIsSaving] = useState(false)
 
   const isEditing = editingModuleId === module.id
 
-  const handleSave = () => {
-    onUpdateModule(module.id, editValues)
+  const handleSave = async () => {
+    setIsSaving(true)
+    await onUpdateModule(module.id, editValues)
+    setIsSaving(false)
   }
 
   const handleCancel = () => {
@@ -95,7 +96,7 @@ function SortableModuleItem({
     onCancelEdit()
   }
   const [isExpanded, setIsExpanded] = useState(false)
-  
+
   const {
     attributes,
     listeners,
@@ -130,30 +131,6 @@ function SortableModuleItem({
             value={editValues.description}
             onChange={(e) => setEditValues({ ...editValues, description: e.target.value })}
           />
-          <div className="grid grid-cols-2 gap-4">
-            <Select
-              value={editValues.level.toString()}
-              onValueChange={(value) => setEditValues({ ...editValues, level: parseInt(value) })}
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {Array.from({ length: 10 }, (_, i) => i + 1).map((level) => (
-                  <SelectItem key={level} value={level.toString()}>
-                    Nivel {level}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Input
-              type="number"
-              placeholder="Orden"
-              min="1"
-              value={editValues.order}
-              onChange={(e) => setEditValues({ ...editValues, order: parseInt(e.target.value) || 1 })}
-            />
-          </div>
           <Textarea
             placeholder="Objetivos de aprendizaje del módulo"
             rows={3}
@@ -168,10 +145,17 @@ function SortableModuleItem({
             <label>Publicar módulo</label>
           </div>
           <div className="flex gap-2">
-            <Button onClick={handleSave}>
-              Guardar Cambios
+            <Button onClick={handleSave} disabled={isSaving}>
+              {isSaving ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Guardando...
+                </>
+              ) : (
+                'Guardar Cambios'
+              )}
             </Button>
-            <Button variant="outline" onClick={handleCancel}>
+            <Button variant="outline" onClick={handleCancel} disabled={isSaving}>
               Cancelar
             </Button>
           </div>
@@ -187,75 +171,47 @@ function SortableModuleItem({
               >
                 <GripVertical className="h-4 w-4 text-muted-foreground" />
               </div>
-              <Collapsible open={isExpanded} onOpenChange={setIsExpanded} className="flex-1">
-                <CollapsibleTrigger asChild>
-                  <div className="flex items-center gap-2 cursor-pointer hover:text-foreground">
-                    {isExpanded ? (
-                      <ChevronDown className="h-4 w-4" />
-                    ) : (
-                      <ChevronRight className="h-4 w-4" />
-                    )}
-                    <CardTitle className="text-lg">{module.title}</CardTitle>
-                  </div>
-                </CollapsibleTrigger>
-                <div className="flex items-center gap-2 ml-auto">
-                  <Badge variant={module.isPublished ? 'default' : 'secondary'}>
-                    {module.isPublished ? 'Publicado' : 'Borrador'}
-                  </Badge>
-                  <Badge variant="outline">Nivel {module.level}</Badge>
-                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
+
+              <div className="flex flex-col">
+                <CardTitle className="text-lg">{module.title}</CardTitle>
+                <div className="flex items-center gap-2 mt-1">
+                  <Badge variant="outline" className="text-xs font-normal">Nivel {module.level}</Badge>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <BookOpen className="h-3 w-3" />
                     {module.lessons.length} lecciones
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => onEditModule(module.id)}
-                  >
-                    <Edit2 className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => onRemoveModule(module.id)}
-                    className="text-destructive hover:text-destructive"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
                 </div>
-                <CollapsibleContent className="mt-4">
-                  <div className="space-y-3">
-                    <p className="text-sm text-muted-foreground">
-                      {module.description || 'Sin descripción'}
-                    </p>
-                    {module.objectives && (
-                      <div>
-                        <p className="text-sm font-medium mb-1">Objetivos:</p>
-                        <p className="text-sm text-muted-foreground">{module.objectives}</p>
-                      </div>
-                    )}
-                    {module.lessons.length > 0 && (
-                      <div>
-                        <p className="text-sm font-medium mb-2">Lecciones:</p>
-                        <div className="space-y-1">
-                          {module.lessons.map((lesson: Lesson) => (
-                            <div
-                              key={lesson.id}
-                              className="flex items-center gap-2 text-sm text-muted-foreground p-2 bg-muted/50 rounded"
-                            >
-                              <span className="w-4 h-4 bg-primary/10 text-primary text-xs rounded flex items-center justify-center">
-                                {lesson.order}
-                              </span>
-                              {lesson.title}
-                              <span className="ml-auto">{lesson.duration}min</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={module.isPublished}
+                  onCheckedChange={(checked) => onUpdateModule(module.id, { isPublished: checked })}
+                />
+                <span className="text-sm text-muted-foreground w-16">
+                  {module.isPublished ? 'Publicado' : 'Borrador'}
+                </span>
+              </div>
+
+              <div className="flex items-center border-l pl-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onEditModule(module.id)}
+                >
+                  <Edit2 className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onRemoveModule(module.id)}
+                  className="text-destructive hover:text-destructive"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </div>
         </CardHeader>
@@ -273,6 +229,7 @@ export function ModulesTab({
   onReorderModules,
 }: ModulesTabProps) {
   const [isCreatingNew, setIsCreatingNew] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
   const [editingModuleId, setEditingModuleId] = useState<string | null>(null)
   const [newModule, setNewModule] = useState({
     title: '',
@@ -290,7 +247,7 @@ export function ModulesTab({
     })
   )
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event
 
     if (active.id !== over?.id) {
@@ -299,12 +256,12 @@ export function ModulesTab({
 
       if (oldIndex !== -1 && newIndex !== -1) {
         const reorderedModules = arrayMove(modules, oldIndex, newIndex)
-        onReorderModules(reorderedModules)
+        await onReorderModules(reorderedModules)
       }
     }
   }
 
-  const handleCreateModule = () => {
+  const handleCreateModule = async () => {
     if (!newModule.title.trim()) {
       toast.error('El título es requerido')
       return
@@ -314,36 +271,43 @@ export function ModulesTab({
       return
     }
 
-    const newModuleData: Module = {
-      id: `module-${Date.now()}`, // Temporary ID, will be replaced by backend
-      title: newModule.title,
-      description: newModule.description,
-      level: newModule.level,
-      order: newModule.order,
-      objectives: newModule.objectives,
-      isPublished: newModule.isPublished,
-      lessons: [],
-      courseId: courseId,
-    }
+    setIsSaving(true)
+    try {
+      const newModuleData: Module = {
+        id: `module-${Date.now()}`, // Placeholder, ignored by backend action for creation
+        title: newModule.title,
+        description: newModule.description,
+        level: newModule.level,
+        order: newModule.order,
+        objectives: newModule.objectives,
+        isPublished: newModule.isPublished,
+        lessons: [],
+        courseId: courseId,
+      }
 
-    onAddModule(newModuleData)
-    setIsCreatingNew(false)
-    setNewModule({
-      title: '',
-      description: '',
-      level: 1,
-      order: modules.length + 2,
-      objectives: '',
-      isPublished: false,
-    })
-    toast.success('Módulo creado exitosamente')
+      await onAddModule(newModuleData)
+      setIsCreatingNew(false)
+      setNewModule({
+        title: '',
+        description: '',
+        level: 1,
+        order: modules.length + 2,
+        objectives: '',
+        isPublished: false,
+      })
+      toast.success('Módulo creado exitosamente')
+    } catch (error) {
+      toast.error('Error al crear el módulo')
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   const handleEditModule = (moduleId: string) => {
     setEditingModuleId(moduleId)
   }
 
-  const handleUpdateModule = (moduleId: string, updates: Partial<Module>) => {
+  const handleUpdateModule = async (moduleId: string, updates: Partial<Module>) => {
     if (!updates.title?.trim()) {
       toast.error('El título es requerido')
       return
@@ -353,14 +317,16 @@ export function ModulesTab({
       return
     }
 
-    onUpdateModule(moduleId, updates)
+    await onUpdateModule(moduleId, updates)
     setEditingModuleId(null)
     toast.success('Módulo actualizado exitosamente')
   }
 
-  const handleRemoveModule = (moduleId: string) => {
-    onRemoveModule(moduleId)
-    toast.success('Módulo eliminado exitosamente')
+  const handleRemoveModule = async (moduleId: string) => {
+    if (confirm('¿Estás seguro de eliminar este módulo?')) {
+      await onRemoveModule(moduleId)
+      toast.success('Módulo eliminado exitosamente')
+    }
   }
 
   const handleCancelCreate = () => {
@@ -490,10 +456,17 @@ export function ModulesTab({
               <label>Publicar inmediatamente</label>
             </div>
             <div className="flex gap-2">
-              <Button onClick={handleCreateModule}>
-                Crear Módulo
+              <Button onClick={handleCreateModule} disabled={isSaving}>
+                {isSaving ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Creando...
+                  </>
+                ) : (
+                  'Crear Módulo'
+                )}
               </Button>
-              <Button variant="outline" onClick={handleCancelCreate}>
+              <Button variant="outline" onClick={handleCancelCreate} disabled={isSaving}>
                 Cancelar
               </Button>
             </div>

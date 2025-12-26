@@ -1,21 +1,10 @@
 'use client'
 
-import { useState } from 'react'
-import { 
-  Block, 
-  TextBlock, 
-  VideoBlock, 
-  ImageBlock, 
-  AudioBlock, 
-  QuizBlock, 
-  AssignmentBlock, 
-  FileBlock, 
-  EmbedBlock 
-} from '@/types/course-builder'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { FileUpload } from '@/components/ui/file-upload'
+import { Input } from '@/components/ui/input'
+import { RichTextEditor } from '@/components/ui/rich-text-editor'
 import {
   Select,
   SelectContent,
@@ -23,26 +12,45 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Textarea } from '@/components/ui/textarea'
+import {
+  AssignmentBlock,
+  AudioBlock,
+  Block,
+  BLOCK_TEMPLATES,
+  ColumnBlock,
+  EmbedBlock,
+  DownloadableFile,
+  FileBlock,
+  ImageBlock,
+  LayoutBlock,
+  QuizBlock,
+  TabGroupBlock,
+  TabItemBlock,
+  TextBlock,
+  VideoBlock
+} from '@/types/course-builder'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import {
-  GripVertical,
   Edit3,
-  Save,
-  X,
-  Trash2,
-  Video,
+  FileText,
+  GripVertical,
+  HelpCircle,
+  Link,
   Image as LucideImage,
   Music,
-  HelpCircle,
-  FileText,
   Paperclip,
-  Link,
+  Plus,
+  Save,
+  Trash2,
+  Video,
+  X
 } from 'lucide-react'
-import { FileUpload } from '@/components/ui/file-upload'
-import { RichTextEditor } from '@/components/ui/rich-text-editor'
-import { toast } from 'sonner'
 import Image from 'next/image'
+import { useState } from 'react'
+import { toast } from 'sonner'
+import { NestedBlockList } from './nested-block-list'
 
 interface BlockEditorProps {
   block: Block
@@ -138,6 +146,12 @@ export function BlockEditor({
         return <Paperclip className="h-4 w-4" />
       case 'embed':
         return <Link className="h-4 w-4" />
+      case 'tab_group':
+        return (
+          <div className="h-4 w-4" title="Pestañas">
+            📑
+          </div>
+        )
       default:
         return <div className="h-4 w-4" />
     }
@@ -161,6 +175,10 @@ export function BlockEditor({
         return 'Archivo'
       case 'embed':
         return 'Contenido Embebido'
+      case 'tab_group':
+        return 'Grupo de Pestañas'
+      case 'layout':
+        return 'Estructura de Columnas'
       default:
         return 'Bloque'
     }
@@ -184,6 +202,10 @@ export function BlockEditor({
         return <FileBlockEditor block={localBlock as FileBlock} onUpdate={handleUpdate} />
       case 'embed':
         return <EmbedBlockEditor block={localBlock as EmbedBlock} onUpdate={handleUpdate} />
+      case 'tab_group':
+        return <TabGroupBlockEditor block={localBlock as TabGroupBlock} onUpdate={handleUpdate} />
+      case 'layout':
+        return <LayoutBlockEditor block={localBlock as LayoutBlock} onUpdate={handleUpdate} />
       default:
         return <div>Tipo de bloque no soportado</div>
     }
@@ -207,6 +229,10 @@ export function BlockEditor({
         return <FileBlockPreview block={block as FileBlock} />
       case 'embed':
         return <EmbedBlockPreview block={block as EmbedBlock} />
+      case 'tab_group':
+        return <TabGroupBlockPreview block={block as TabGroupBlock} />
+      case 'layout':
+        return <LayoutBlockPreview block={block as LayoutBlock} />
       default:
         return <div>Tipo de bloque no soportado</div>
     }
@@ -615,42 +641,64 @@ function FileBlockEditor({
   block: FileBlock
   onUpdate: (updates: Partial<Block>) => void
 }) {
+  const firstFile = block.files?.[0] || { title: '', url: '', size: 0, fileType: '', id: '' }
+
+  const updateFile = (updates: Partial<DownloadableFile>) => {
+    const updatedFile = { ...firstFile, ...updates }
+    // If it's a new file (no ID), give it one
+    if (!updatedFile.id) updatedFile.id = `file-${Date.now()}`
+
+    // Replace the first file or add it
+    const newFiles = block.files?.length ? [updatedFile, ...block.files.slice(1)] : [updatedFile]
+    onUpdate({ files: newFiles })
+  }
+
   return (
     <div className="space-y-4">
       <div>
         <label className="text-sm font-medium">URL del Archivo</label>
         <Input
-          value={block.url || ''}
-          onChange={(e) => onUpdate({ url: e.target.value })}
+          value={firstFile.url || ''}
+          onChange={(e) => updateFile({ url: e.target.value })}
           placeholder="https://example.com/file.pdf"
         />
       </div>
       <div>
         <label className="text-sm font-medium">Nombre del Archivo</label>
         <Input
-          value={block.filename || ''}
-          onChange={(e) => onUpdate({ filename: e.target.value })}
+          value={firstFile.title || ''}
+          onChange={(e) => updateFile({ title: e.target.value })}
           placeholder="documento.pdf"
         />
+      </div>
+      <div className="text-xs text-muted-foreground">
+        * Actualmente este editor solo soporta gestionar el primer archivo.
       </div>
     </div>
   )
 }
 
 function FileBlockPreview({ block }: { block: FileBlock }) {
+  const firstFile = block.files?.[0]
+
   return (
     <div className="space-y-2">
       <div className="bg-muted rounded-lg p-4 flex items-center gap-3">
         <Paperclip className="h-8 w-8 text-muted-foreground" />
         <div className="flex-1">
-          <p className="font-medium">{block.filename || 'Archivo sin nombre'}</p>
-          {block.filesize && (
+          <p className="font-medium">{firstFile?.title || 'Archivo sin nombre'}</p>
+          {firstFile?.size ? (
             <p className="text-sm text-muted-foreground">
-              {(block.filesize / 1024 / 1024).toFixed(2)} MB
+              {(firstFile.size / 1024 / 1024).toFixed(2)} MB
             </p>
-          )}
+          ) : null}
         </div>
       </div>
+      {block.files?.length > 1 && (
+        <p className="text-xs text-muted-foreground pl-2">
+          + {block.files.length - 1} archivo(s) más
+        </p>
+      )}
     </div>
   )
 }
@@ -715,4 +763,252 @@ function EmbedBlockPreview({ block }: { block: EmbedBlock }) {
       </div>
     </div>
   )
+}
+
+// Tab Group Block Components
+function TabGroupBlockEditor({
+  block,
+  onUpdate,
+}: {
+  block: TabGroupBlock
+  onUpdate: (updates: Partial<Block>) => void
+}) {
+  const handleTabTitleChange = (tabId: string, newTitle: string) => {
+    const updatedChildren = block.children?.map(child =>
+      child.id === tabId ? { ...child, title: newTitle } : child
+    )
+    onUpdate({ children: updatedChildren as Block[] })
+  }
+
+  const addTab = () => {
+    const newTab: TabItemBlock = {
+      id: `tab-${Date.now()}`,
+      type: 'tab_item',
+      order: (block.children?.length || 0),
+      title: `Nueva Pestaña`,
+      children: []
+    }
+    onUpdate({ children: [...(block.children || []), newTab] })
+  }
+
+  const removeTab = (tabId: string) => {
+    const updatedChildren = block.children?.filter(child => child.id !== tabId)
+    onUpdate({ children: updatedChildren })
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <label className="text-sm font-medium">Pestañas</label>
+        <Button size="sm" variant="outline" onClick={addTab}>
+          <Plus className="h-4 w-4 mr-2" />
+          Agregar Pestaña
+        </Button>
+      </div>
+      <div className="space-y-2">
+        {block.children?.map((tab: any) => (
+          <div key={tab.id} className="flex items-center gap-2">
+            <Input
+              value={tab.title}
+              onChange={(e) => handleTabTitleChange(tab.id, e.target.value)}
+              placeholder="Título de la pestaña"
+            />
+            <Button size="icon" variant="ghost" onClick={() => removeTab(tab.id)}>
+              <Trash2 className="h-4 w-4 text-destructive" />
+            </Button>
+          </div>
+        ))}
+      </div>
+      <div className="text-sm text-muted-foreground mt-4 p-4 bg-muted rounded-md">
+        Nota: El contenido de cada pestaña se edita en la vista de detalle de la lección o guardando este bloque primero.
+        (Actualmente simplificado para gestión de estructura).
+      </div>
+    </div>
+  )
+}
+
+function TabGroupBlockPreview({ block }: { block: TabGroupBlock }) {
+  return (
+    <div className="space-y-2">
+      <div className="border rounded-lg overflow-hidden">
+        <div className="flex bg-muted border-b">
+          {block.children?.map((tab: any) => (
+            <div key={tab.id} className="px-4 py-2 text-sm font-medium border-r bg-background first:rounded-tl-lg">
+              {tab.title}
+            </div>
+          ))}
+        </div>
+        <div className="p-8 text-center text-muted-foreground">
+          Contenido de pestañas (Vista Previa)
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Layout Block Components
+function LayoutBlockEditor({
+  block,
+  onUpdate,
+}: {
+  block: LayoutBlock
+  onUpdate: (updates: Partial<Block>) => void
+}) {
+  const handleColumnsChange = (num: number) => {
+    let newChildren = [...(block.children || [])];
+    const currentCount = newChildren.length;
+
+    if (num > currentCount) {
+      // Add columns
+      for (let i = currentCount; i < num; i++) {
+        newChildren.push({
+          id: `col-${Date.now()}-${i}`,
+          type: 'column',
+          order: i,
+          children: []
+        });
+      }
+    } else if (num < currentCount) {
+      // Remove columns (simple truncation for now, might need confirmation if content exists)
+      newChildren = newChildren.slice(0, num);
+    }
+    onUpdate({ columns: num, children: newChildren });
+  }
+
+  const handleColumnUpdate = (colId: string, updates: Partial<Block>) => {
+    const newChildren = block.children?.map(child =>
+      child.id === colId ? { ...child, ...updates } : child
+    );
+    onUpdate({ children: newChildren as Block[] });
+  }
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <label className="text-sm font-medium mb-2 block">Número de Columnas</label>
+        <div className="flex gap-2">
+          {[1, 2, 3, 4].map(num => (
+            <Button
+              key={num}
+              variant={block.columns === num ? "default" : "outline"}
+              onClick={() => handleColumnsChange(num)}
+              size="sm"
+            >
+              {num} Columna{num > 1 ? 's' : ''}
+            </Button>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid gap-4 mt-6" style={{ gridTemplateColumns: `repeat(${block.columns}, 1fr)` }}>
+        {block.children?.map(col => (
+          <ColumnBlockEditor
+            key={col.id}
+            block={col as ColumnBlock}
+            onUpdate={(updates) => handleColumnUpdate(col.id, updates)}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function ColumnBlockEditor({ block, onUpdate }: { block: ColumnBlock, onUpdate: (updates: Partial<Block>) => void }) {
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [showMenu, setShowMenu] = useState(false);
+
+  // We need a mini "add block" function for this column
+  const handleAddBlock = (position?: number) => {
+    setShowMenu(true);
+  }
+
+  const insertBlock = (template: typeof BLOCK_TEMPLATES[0]) => {
+    const newBlock: Block = {
+      ...template.defaultData,
+      id: `nested-${Date.now()}`,
+      order: (block.children?.length || 0)
+    }
+    // Deep clone to avoid reference issues
+    const clonedBlock = JSON.parse(JSON.stringify(newBlock));
+
+    const newChildren = [...(block.children || []), clonedBlock];
+    onUpdate({ children: newChildren });
+    setShowMenu(false);
+  }
+
+  const handleChildUpdate = (childId: string, updates: Partial<Block>) => {
+    const newChildren = block.children?.map(child =>
+      child.id === childId ? { ...child, ...updates } : child
+    ) as Block[];
+    onUpdate({ children: newChildren });
+  }
+
+  const handleChildRemove = (childId: string) => {
+    const newChildren = block.children?.filter(child => child.id !== childId);
+    onUpdate({ children: newChildren });
+  }
+
+  return (
+    <div className="border rounded-md p-2 min-h-[100px] bg-slate-50/50 dark:bg-slate-900/20 relative">
+      <div className="text-xs text-muted-foreground mb-2 px-1">Columna</div>
+
+      <NestedBlockList
+        blocks={block.children || []}
+        onBlocksChange={(blocks) => onUpdate({ children: blocks })}
+        onAddBlock={handleAddBlock}
+        editingBlockId={editingId}
+        setEditingBlockId={setEditingId}
+        onUpdateBlock={handleChildUpdate}
+        onRemoveBlock={handleChildRemove}
+      />
+
+      {/* Mini Menu for Column */}
+      {showMenu && (
+        <div className="absolute top-10 left-0 z-50 bg-popover border rounded shadow-lg p-2 grid grid-cols-2 gap-2 w-64">
+          {BLOCK_TEMPLATES.filter(t => t.type !== 'layout' && t.type !== 'tab_group').map(t => {
+            const Icon = t.icon
+            return (
+              <Button key={t.type} variant="ghost" size="sm" className="justify-start h-auto" onClick={() => insertBlock(t)}>
+                <span className="mr-2"><Icon className="h-4 w-4" /></span> <span className="text-xs">{t.label}</span>
+              </Button>
+            )
+          })}
+          <Button variant="ghost" size="sm" className="col-span-2 text-xs" onClick={() => setShowMenu(false)}>Cancelar</Button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function LayoutBlockPreview({ block }: { block: LayoutBlock }) {
+  return (
+    <div className="grid gap-6" style={{ gridTemplateColumns: `repeat(${block.columns}, 1fr)` }}>
+      {block.children?.map(col => (
+        <div key={col.id} className="min-h-[50px]">
+          {col.children?.map(child => (
+            <div key={child.id} className="mb-4 last:mb-0">
+              {/* We call a helper that dispatches to specific previews */}
+              <SimpleBlockPreview block={child} />
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function SimpleBlockPreview({ block }: { block: Block }) {
+  switch (block.type) {
+    case 'text': return <TextBlockPreview block={block as TextBlock} />
+    case 'video': return <VideoBlockPreview block={block as VideoBlock} />
+    case 'image': return <ImageBlockPreview block={block as ImageBlock} />
+    case 'audio': return <AudioBlockPreview block={block as AudioBlock} />
+    case 'quiz': return <QuizBlockPreview block={block as QuizBlock} />
+    case 'assignment': return <AssignmentBlockPreview block={block as AssignmentBlock} />
+    case 'file': return <FileBlockPreview block={block as FileBlock} />
+    case 'embed': return <EmbedBlockPreview block={block as EmbedBlock} />
+    case 'tab_group': return <TabGroupBlockPreview block={block as TabGroupBlock} />
+    case 'layout': return <LayoutBlockPreview block={block as LayoutBlock} />
+    default: return <div>Unknown</div>
+  }
 }

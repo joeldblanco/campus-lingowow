@@ -3,6 +3,12 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 import { Progress } from '@/components/ui/progress'
 import { ArrowLeft, Calendar, CheckCircle, Play, Target, Trophy } from 'lucide-react'
 import Link from 'next/link'
@@ -11,7 +17,7 @@ interface CourseViewProps {
   course: {
     id: string
     title: string
-    description: string
+    description: string | null
     language: string
     level: string
     createdBy: {
@@ -28,12 +34,12 @@ interface CourseViewProps {
       lessons: Array<{
         id: string
         title: string
-        description: string
+        description: string | null
         order: number
         contents: Array<{
           id: string
           title: string
-          description: string
+          description: string | null
           contentType: string
           order: number
         }>
@@ -215,119 +221,124 @@ export function CourseView({ course, progress }: CourseViewProps) {
       <div className="space-y-6">
         <h2 className="text-2xl font-semibold">Contenido del Curso</h2>
 
-        <div className="space-y-4">
-          {course.modules.map((module, moduleIndex) => {
-            const moduleProgress = module.lessons.reduce((total, lesson) => {
-              const completedInLesson = lesson.contents.filter((content) =>
-                isContentCompleted(content.id)
-              ).length
-              return total + completedInLesson
-            }, 0)
+        {course.modules.length > 0 ? (
+          <div className="space-y-4">
+            <Accordion type="multiple" className="space-y-4">
+              {course.modules.map((module, moduleIndex) => {
+                const moduleProgress = module.lessons.reduce((total, lesson) => {
+                  const completedInLesson = lesson.contents.filter((content) =>
+                    isContentCompleted(content.id)
+                  ).length
+                  return total + completedInLesson
+                }, 0)
 
-            const totalModuleContents = module.lessons.reduce(
-              (total, lesson) => total + lesson.contents.length,
-              0
-            )
+                const totalModuleContents = module.lessons.reduce(
+                  (total, lesson) => total + lesson.contents.length,
+                  0
+                )
 
-            const moduleProgressPercentage =
-              totalModuleContents > 0 ? (moduleProgress / totalModuleContents) * 100 : 0
+                const moduleProgressPercentage =
+                  totalModuleContents > 0 ? (moduleProgress / totalModuleContents) * 100 : 0
 
-            return (
-              <Card key={module.id} className="overflow-hidden">
-                <CardHeader className="bg-gray-50">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-2">
-                      <CardTitle className="text-lg">
-                        Módulo {moduleIndex + 1}: {module.title}
-                      </CardTitle>
-                      {module.description && (
-                        <p className="text-sm text-gray-600">{module.description}</p>
-                      )}
-
-                      {/* Module Progress */}
-                      <div className="space-y-1">
-                        <div className="flex justify-between text-xs text-gray-500">
-                          <span>Progreso del módulo</span>
-                          <span>{Math.round(moduleProgressPercentage)}%</span>
+                return (
+                  <AccordionItem
+                    key={module.id}
+                    value={module.id}
+                    className="border rounded-lg bg-white px-4"
+                  >
+                    <AccordionTrigger className="hover:no-underline py-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-4 pr-4 text-left">
+                        <div className="space-y-1 flex-1">
+                          <div className="font-semibold text-lg">
+                            Módulo {moduleIndex + 1}: {module.title}
+                          </div>
+                          {module.description && (
+                            <p className="text-sm text-gray-600 font-normal">{module.description}</p>
+                          )}
                         </div>
-                        <Progress value={moduleProgressPercentage} className="h-1" />
-                      </div>
-                    </div>
 
-                    <div className="text-right">
-                      <div className="text-sm text-gray-500">
-                        {moduleProgress} de {totalModuleContents}
-                      </div>
-                      <div className="text-xs text-gray-400">{module._count.lessons} lecciones</div>
-                    </div>
-                  </div>
-                </CardHeader>
-
-                <CardContent className="p-0">
-                  <div className="space-y-0">
-                    {module.lessons.map((lesson, lessonIndex) => {
-                      const lessonProgress = lesson.contents.filter((content) =>
-                        isContentCompleted(content.id)
-                      ).length
-                      const isLessonCompleted = lessonProgress === lesson.contents.length
-
-                      return (
-                        <div
-                          key={lesson.id}
-                          className="p-4 border-b last:border-b-0 hover:bg-gray-50 transition-colors"
-                        >
-                          <div className="flex items-center justify-between">
-                            <div className="space-y-2 flex-1">
-                              <div className="flex items-center gap-2">
-                                <h4 className="font-medium">
-                                  {lessonIndex + 1}. {lesson.title}
-                                </h4>
-                                {isLessonCompleted && (
-                                  <CheckCircle className="w-4 h-4 text-green-600" />
-                                )}
-                              </div>
-                              <p className="text-sm text-gray-600">{lesson.description}</p>
-
-                              {/* Content List */}
-                              <div className="space-y-1">
-                                {lesson.contents.map((content) => (
-                                  <div key={content.id} className="flex items-center gap-2 text-xs">
-                                    <span>{getContentTypeIcon(content.contentType)}</span>
-                                    <span
-                                      className={`flex-1 ${isContentCompleted(content.id) ? 'line-through text-gray-400' : ''}`}
-                                    >
-                                      {content.title}
-                                    </span>
-                                    {isContentCompleted(content.id) && (
-                                      <CheckCircle className="w-3 h-3 text-green-600" />
-                                    )}
-                                  </div>
-                                ))}
-                              </div>
-
-                              <div className="text-xs text-gray-500">
-                                {lessonProgress} de {lesson.contents.length} contenidos completados
-                              </div>
+                        <div className="flex flex-col items-end gap-2 min-w-[200px]">
+                          <div className="w-full space-y-1">
+                            <div className="flex justify-between text-xs text-gray-500">
+                              <span>Progreso</span>
+                              <span>{Math.round(moduleProgressPercentage)}%</span>
                             </div>
-
-                            <div className="ml-4">
-                              <Button asChild size="sm">
-                                <Link href={`/my-courses/${course.id}/lessons/${lesson.id}`}>
-                                  <Play className="w-4 h-4 mr-2" />
-                                  {lessonProgress > 0 ? 'Continuar' : 'Comenzar'}
-                                </Link>
-                              </Button>
-                            </div>
+                            <Progress value={moduleProgressPercentage} className="h-2" />
+                          </div>
+                          <div className="text-xs text-gray-400 font-normal">
+                            {moduleProgress} de {totalModuleContents} contenidos • {module._count.lessons} lecciones
                           </div>
                         </div>
-                      )
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-            )
-          })}
-        </div>
+                      </div>
+                    </AccordionTrigger>
+
+                    <AccordionContent className="pt-0 pb-4">
+                      <div className="pl-4 border-l-2 border-gray-100 ml-2 space-y-0 mt-2">
+                        {module.lessons.map((lesson, lessonIndex) => {
+                          const lessonProgress = lesson.contents.filter((content) =>
+                            isContentCompleted(content.id)
+                          ).length
+                          const isLessonCompleted = lessonProgress === lesson.contents.length
+
+                          return (
+                            <div
+                              key={lesson.id}
+                              className="p-4 border-b last:border-b-0 hover:bg-gray-50 transition-colors rounded-r-lg"
+                            >
+                              <div className="flex items-center justify-between gap-4">
+                                <div className="space-y-2 flex-1">
+                                  <div className="flex items-center gap-2">
+                                    <h4 className="font-medium">
+                                      {lessonIndex + 1}. {lesson.title}
+                                    </h4>
+                                    {isLessonCompleted && (
+                                      <CheckCircle className="w-4 h-4 text-green-600" />
+                                    )}
+                                  </div>
+                                  <p className="text-sm text-gray-600 line-clamp-2">{lesson.description}</p>
+
+                                  {/* Content List Preview (Optional - maybe hidden in refined view or kept minimal) */}
+                                  <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                                    {lesson.contents.slice(0, 3).map((content) => (
+                                      <span key={content.id} className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full">
+                                        {getContentTypeIcon(content.contentType)} {content.title}
+                                      </span>
+                                    ))}
+                                    {lesson.contents.length > 3 && (
+                                      <span className="px-2 py-1">+ {lesson.contents.length - 3} más</span>
+                                    )}
+                                  </div>
+                                </div>
+
+                                <div className="shrink-0">
+                                  <Button asChild size="sm" variant={lessonProgress > 0 && !isLessonCompleted ? "default" : "outline"}>
+                                    <Link href={`/my-courses/${course.id}/lessons/${lesson.id}`}>
+                                      <Play className="w-4 h-4 mr-2" />
+                                      {lessonProgress > 0 ? 'Continuar' : 'Comenzar'}
+                                    </Link>
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                )
+              })}
+            </Accordion>          </div>
+        ) : (
+          <Card className="bg-gray-50 border-dashed">
+            <CardContent className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">
+              <div className="bg-white p-4 rounded-full shadow-sm mb-4">
+                <Target className="w-8 h-8 opacity-50" />
+              </div>
+              <p className="font-medium">Este curso aún no tiene contenido publicado.</p>
+              <p className="text-sm">Vuelve pronto para ver las lecciones.</p>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   )

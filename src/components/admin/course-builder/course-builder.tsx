@@ -10,18 +10,25 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { 
-  BookOpen, 
-  Layers, 
-  FileText, 
-  Users, 
-  Eye, 
-  Save,
+import {
+  BookOpen,
+  Layers,
+  FileText,
+  Users,
+  Eye,
   Globe,
   Clock,
   Target
 } from 'lucide-react'
 import { toast } from 'sonner'
+import {
+  updateCourseInfo,
+  upsertModule,
+  deleteModule,
+  upsertLesson,
+  deleteLesson,
+  reorderModules as reorderModulesAction
+} from '@/lib/actions/course-builder'
 
 interface CourseBuilderProps {
   initialCourse: CourseBuilderData
@@ -30,103 +37,229 @@ interface CourseBuilderProps {
 export function CourseBuilder({ initialCourse }: CourseBuilderProps) {
   const [course, setCourse] = useState<CourseBuilderData>(initialCourse)
   const [activeTab, setActiveTab] = useState('info')
-  const [hasChanges, setHasChanges] = useState(false)
-  const [isSaving, setIsSaving] = useState(false)
 
-  const updateCourse = useCallback((updates: Partial<CourseBuilderData>) => {
-    setCourse(prev => ({ ...prev, ...updates }))
-    setHasChanges(true)
+  const updateCourse = useCallback(async (updates: Partial<CourseBuilderData>) => {
+    try {
+      const result = await updateCourseInfo(course.id, updates)
+      if (!result.success || !result.course) {
+        throw new Error(result.error || 'Error al actualizar el curso')
+      }
+      setCourse(result.course)
+      toast.success('Información del curso actualizada')
+    } catch (error) {
+      console.error('Error updating course:', error)
+      toast.error('Error al actualizar la información del curso')
+    }
+  }, [course.id])
+
+  const updateModule = useCallback(async (moduleId: string, updates: Partial<Module>) => {
+    try {
+      // Optimistic update
+      setCourse(prev => ({
+        ...prev,
+        modules: prev.modules.map(module =>
+          module.id === moduleId ? { ...module, ...updates } : module
+        )
+      }))
+
+      const result = await upsertModule(course.id, { id: moduleId, ...updates })
+      if (!result.success || !result.module) {
+        throw new Error(result.error || 'Error saving module')
+      }
+
+      // Update with server data
+      setCourse(prev => ({
+        ...prev,
+        modules: prev.modules.map(module =>
+          module.id === moduleId ? {
+            ...module,
+            ...result.module!,
+            description: result.module!.description || '',
+            objectives: result.module!.objectives || ''
+          } : module
+        )
+      }))
+    } catch (error) {
+      console.error('Error updating module:', error)
+      toast.error('Error al actualizar el módulo')
+    }
+  }, [course.id])
+
+  const addModule = useCallback(async (module: Module) => {
+    try {
+      const result = await upsertModule(course.id, {
+        title: module.title,
+        description: module.description,
+        level: module.level,
+        order: module.order,
+        objectives: module.objectives,
+        isPublished: module.isPublished,
+      })
+
+      if (!result.success || !result.module) {
+        throw new Error(result.error || 'Error creating module')
+      }
+
+      setCourse(prev => ({
+        ...prev,
+        modules: [...prev.modules, {
+          ...module,
+          ...result.module!,
+          description: result.module!.description || '',
+          objectives: result.module!.objectives || '',
+          lessons: []
+        }]
+      }))
+    } catch (error) {
+      console.error('Error adding module:', error)
+      throw error // Propagate to child to handle UI feedback
+    }
+  }, [course.id])
+
+  const removeModule = useCallback(async (moduleId: string) => {
+    try {
+      // Optimistic update
+      setCourse(prev => ({
+        ...prev,
+        modules: prev.modules.filter(module => module.id !== moduleId)
+      }))
+
+      const result = await deleteModule(moduleId)
+      if (!result.success) {
+        throw new Error(result.error || 'Error deleting module')
+      }
+    } catch (error) {
+      console.error('Error deleting module:', error)
+      toast.error('Error al eliminar el módulo')
+    }
   }, [])
 
-  const updateModule = useCallback((moduleId: string, updates: Partial<Module>) => {
-    setCourse(prev => ({
-      ...prev,
-      modules: prev.modules.map(module =>
-        module.id === moduleId ? { ...module, ...updates } : module
-      )
-    }))
-    setHasChanges(true)
-  }, [])
+  const reorderModules = useCallback(async (modules: Module[]) => {
+    try {
+      // Optimistic update
+      const reorderedModules = modules.map((module, index) => ({
+        ...module,
+        order: index + 1
+      }))
+      setCourse(prev => ({ ...prev, modules: reorderedModules }))
 
-  const addModule = useCallback((module: Module) => {
-    setCourse(prev => ({
-      ...prev,
-      modules: [...prev.modules, module]
-    }))
-    setHasChanges(true)
-  }, [])
+      const result = await reorderModulesAction(course.id, modules.map(m => m.id))
+      if (!result.success) {
+        throw new Error(result.error || 'Error reordering modules')
+      }
+    } catch (error) {
+      console.error('Error reordering modules:', error)
+      toast.error('Error al reordenar los módulos')
+    }
+  }, [course.id])
 
-  const removeModule = useCallback((moduleId: string) => {
-    setCourse(prev => ({
-      ...prev,
-      modules: prev.modules.filter(module => module.id !== moduleId)
-    }))
-    setHasChanges(true)
-  }, [])
-
-  const reorderModules = useCallback((modules: Module[]) => {
-    setCourse(prev => ({ ...prev, modules }))
-    setHasChanges(true)
-  }, [])
-
-  const updateLesson = useCallback((moduleId: string, lessonId: string, updates: Partial<Lesson>) => {
-    setCourse(prev => ({
-      ...prev,
-      modules: prev.modules.map(module =>
-        module.id === moduleId
-          ? {
+  const updateLesson = useCallback(async (moduleId: string, lessonId: string, updates: Partial<Lesson>) => {
+    try {
+      // Optimistic update
+      setCourse(prev => ({
+        ...prev,
+        modules: prev.modules.map(module =>
+          module.id === moduleId
+            ? {
               ...module,
               lessons: module.lessons.map(lesson =>
                 lesson.id === lessonId ? { ...lesson, ...updates } : lesson
               )
             }
-          : module
-      )
-    }))
-    setHasChanges(true)
-  }, [])
+            : module
+        )
+      }))
 
-  const addLesson = useCallback((moduleId: string, lesson: Lesson) => {
-    setCourse(prev => ({
-      ...prev,
-      modules: prev.modules.map(module =>
-        module.id === moduleId
-          ? { ...module, lessons: [...module.lessons, lesson] }
-          : module
-      )
-    }))
-    setHasChanges(true)
-  }, [])
+      const result = await upsertLesson(moduleId, { id: lessonId, ...updates })
+      if (!result.success || !result.lesson) {
+        throw new Error(result.error || 'Error updating lesson')
+      }
 
-  const removeLesson = useCallback((moduleId: string, lessonId: string) => {
-    setCourse(prev => ({
-      ...prev,
-      modules: prev.modules.map(module =>
-        module.id === moduleId
-          ? { ...module, lessons: module.lessons.filter(lesson => lesson.id !== lessonId) }
-          : module
-      )
-    }))
-    setHasChanges(true)
-  }, [])
-
-  const handleSave = async () => {
-    setIsSaving(true)
-    try {
-      // TODO: Implement save action
-      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate save
-      setHasChanges(false)
-      toast.success('Curso guardado exitosamente')
+      // Update with server data (ensure blocks objects are preserved if not returned or different)
+      setCourse(prev => ({
+        ...prev,
+        modules: prev.modules.map(module =>
+          module.id === moduleId
+            ? {
+              ...module,
+              lessons: module.lessons.map(lesson =>
+                lesson.id === lessonId ? {
+                  ...lesson,
+                  ...result.lesson!,
+                  description: result.lesson!.description || '',
+                  blocks: lesson.blocks
+                } : lesson
+              )
+            }
+            : module
+        )
+      }))
     } catch (error) {
-      console.error('Error saving course:', error)
-      toast.error('Error al guardar el curso')
-    } finally {
-      setIsSaving(false)
+      console.error('Error updating lesson:', error)
+      toast.error('Error al actualizar la lección')
     }
-  }
+  }, [])
+
+  const addLesson = useCallback(async (moduleId: string, lesson: Lesson) => {
+    try {
+      const result = await upsertLesson(moduleId, {
+        title: lesson.title,
+        description: lesson.description,
+        order: lesson.order,
+        duration: lesson.duration,
+        blocks: lesson.blocks,
+        isPublished: lesson.isPublished
+      })
+
+      if (!result.success || !result.lesson) {
+        throw new Error(result.error || 'Error creating lesson')
+      }
+
+      setCourse(prev => ({
+        ...prev,
+        modules: prev.modules.map(module =>
+          module.id === moduleId
+            ? {
+              ...module, lessons: [...module.lessons, {
+                ...lesson,
+                ...result.lesson!,
+                description: result.lesson!.description || '',
+                blocks: lesson.blocks
+              }]
+            }
+            : module
+        )
+      }))
+    } catch (error) {
+      console.error('Error adding lesson:', error)
+      throw error
+    }
+  }, [])
+
+  const removeLesson = useCallback(async (moduleId: string, lessonId: string) => {
+    try {
+      // Optimistic update
+      setCourse(prev => ({
+        ...prev,
+        modules: prev.modules.map(module =>
+          module.id === moduleId
+            ? { ...module, lessons: module.lessons.filter(lesson => lesson.id !== lessonId) }
+            : module
+        )
+      }))
+
+      const result = await deleteLesson(lessonId)
+      if (!result.success) {
+        throw new Error(result.error || 'Error deleting lesson')
+      }
+    } catch (error) {
+      console.error('Error deleting lesson:', error)
+      toast.error('Error al eliminar la lección')
+    }
+  }, [])
 
   const totalLessons = course.modules.reduce((sum, module) => sum + module.lessons.length, 0)
-  const totalDuration = course.modules.reduce((sum, module) => 
+  const totalDuration = course.modules.reduce((sum, module) =>
     sum + module.lessons.reduce((moduleSum, lesson) => moduleSum + lesson.duration, 0), 0
   )
 
@@ -172,14 +305,6 @@ export function CourseBuilder({ initialCourse }: CourseBuilderProps) {
                 <Eye className="h-4 w-4 mr-2" />
                 Vista Previa
               </Button>
-              <Button 
-                onClick={handleSave} 
-                disabled={!hasChanges || isSaving}
-                size="sm"
-              >
-                <Save className="h-4 w-4 mr-2" />
-                {isSaving ? 'Guardando...' : 'Guardar'}
-              </Button>
             </div>
           </div>
         </CardHeader>
@@ -207,14 +332,14 @@ export function CourseBuilder({ initialCourse }: CourseBuilderProps) {
         </TabsList>
 
         <TabsContent value="info" className="space-y-4">
-          <CourseInfoTab 
+          <CourseInfoTab
             course={course}
             onUpdateCourse={updateCourse}
           />
         </TabsContent>
 
         <TabsContent value="modules" className="space-y-4">
-          <ModulesTab 
+          <ModulesTab
             modules={course.modules}
             courseId={course.id}
             onModulesChange={(modules) => setCourse({ ...course, modules })}
@@ -226,7 +351,7 @@ export function CourseBuilder({ initialCourse }: CourseBuilderProps) {
         </TabsContent>
 
         <TabsContent value="lessons" className="space-y-4">
-          <LessonsTab 
+          <LessonsTab
             modules={course.modules}
             onUpdateLesson={updateLesson}
             onAddLesson={addLesson}
