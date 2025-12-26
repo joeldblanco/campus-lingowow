@@ -9,11 +9,11 @@ import { formatDateNumeric } from '@/lib/utils/date'
 export default async function StudentInvoicesPage() {
     const session = await auth()
 
-    if (!session?.user) {
+    if (!session?.user?.id) {
         redirect('/auth/login')
     }
 
-    const invoices = await getUserInvoices(session.user.id!)
+    const invoices = await getUserInvoices(session.user.id)
 
     const getStatusBadge = (status: string) => {
         const statusConfig: Record<string, { label: string; variant: "secondary" | "default" | "destructive" | "outline" }> = {
