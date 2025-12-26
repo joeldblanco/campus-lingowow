@@ -834,7 +834,7 @@ function TabGroupBlockPreview({ block }: { block: TabGroupBlock }) {
         <div className="flex bg-muted border-b">
           {block.children?.map((tab) => (
             <div key={tab.id} className="px-4 py-2 text-sm font-medium border-r bg-background first:rounded-tl-lg">
-              {(activeTab as TabItemBlock).title}
+              {(tab as TabItemBlock).title}
             </div>
           ))}
         </div>
