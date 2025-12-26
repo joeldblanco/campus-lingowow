@@ -7,7 +7,7 @@ import { LessonBuilder } from '@/components/admin/course-builder/lesson-builder/
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
-import { getLessonForBuilder, updateLessonBlocks } from '@/lib/actions/course-builder'
+import { getLessonForBuilder } from '@/lib/actions/course-builder'
 
 export default function LessonBuilderPage() {
   const params = useParams()

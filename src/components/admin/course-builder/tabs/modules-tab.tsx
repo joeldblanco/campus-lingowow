@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Module, Lesson } from '@/types/course-builder'
+import { Module } from '@/types/course-builder'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -29,15 +29,10 @@ import {
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
-  useSortable
+  useSortable,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible'
-import { GripVertical, Plus, Edit2, Trash2, BookOpen, ChevronDown, ChevronRight, Loader2 } from 'lucide-react'
+import { GripVertical, Plus, Edit2, Trash2, BookOpen, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface ModulesTabProps {
@@ -95,16 +90,10 @@ function SortableModuleItem({
     })
     onCancelEdit()
   }
-  const [isExpanded, setIsExpanded] = useState(false)
 
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: module.id })
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: module.id,
+  })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -175,7 +164,9 @@ function SortableModuleItem({
               <div className="flex flex-col">
                 <CardTitle className="text-lg">{module.title}</CardTitle>
                 <div className="flex items-center gap-2 mt-1">
-                  <Badge variant="outline" className="text-xs font-normal">Nivel {module.level}</Badge>
+                  <Badge variant="outline" className="text-xs font-normal">
+                    Nivel {module.level}
+                  </Badge>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <BookOpen className="h-3 w-3" />
                     {module.lessons.length} lecciones
@@ -196,11 +187,7 @@ function SortableModuleItem({
               </div>
 
               <div className="flex items-center border-l pl-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onEditModule(module.id)}
-                >
+                <Button variant="ghost" size="sm" onClick={() => onEditModule(module.id)}>
                   <Edit2 className="h-4 w-4" />
                 </Button>
                 <Button
@@ -297,6 +284,7 @@ export function ModulesTab({
       })
       toast.success('Módulo creado exitosamente')
     } catch (error) {
+      console.error(error)
       toast.error('Error al crear el módulo')
     } finally {
       setIsSaving(false)
@@ -373,15 +361,8 @@ export function ModulesTab({
           </CardContent>
         </Card>
       ) : (
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext
-            items={modules.map(m => m.id)}
-            strategy={verticalListSortingStrategy}
-          >
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext items={modules.map((m) => m.id)} strategy={verticalListSortingStrategy}>
             {modules.map((module) => (
               <SortableModuleItem
                 key={module.id}
@@ -439,7 +420,9 @@ export function ModulesTab({
                 placeholder="Orden"
                 min="1"
                 value={newModule.order}
-                onChange={(e) => setNewModule({ ...newModule, order: parseInt(e.target.value) || 1 })}
+                onChange={(e) =>
+                  setNewModule({ ...newModule, order: parseInt(e.target.value) || 1 })
+                }
               />
             </div>
             <Textarea
@@ -472,13 +455,15 @@ export function ModulesTab({
             </div>
           </CardContent>
         </Card>
-      ) : modules.length > 0 && (
-        <div className="flex justify-center">
-          <Button variant="outline" onClick={() => setIsCreatingNew(true)}>
-            <Plus className="h-4 w-4 mr-2" />
-            Agregar Módulo
-          </Button>
-        </div>
+      ) : (
+        modules.length > 0 && (
+          <div className="flex justify-center">
+            <Button variant="outline" onClick={() => setIsCreatingNew(true)}>
+              <Plus className="h-4 w-4 mr-2" />
+              Agregar Módulo
+            </Button>
+          </div>
+        )
       )}
     </div>
   )

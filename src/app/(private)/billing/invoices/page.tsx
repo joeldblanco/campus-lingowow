@@ -71,7 +71,7 @@ export default async function StudentInvoicesPage() {
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex flex-col gap-1">
-                                            {invoice.items.map((item, i) => (
+                                            {invoice.items.map((item) => (
                                                 <span key={item.id} className="text-sm truncate max-w-[200px]" title={item.name}>
                                                     {item.quantity > 1 ? `${item.quantity}x ` : ''}{item.name}
                                                 </span>

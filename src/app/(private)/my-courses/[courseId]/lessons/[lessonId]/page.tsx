@@ -28,7 +28,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
     }
 
     // Check if all activities are completed
-    const areActivitiesCompleted = lesson.activities.length === 0 || lesson.activities.every(a => a.isCompleted)
+    // const areActivitiesCompleted = lesson.activities.length === 0 || lesson.activities.every(a => a.isCompleted)
 
     return (
         <div className="min-h-screen bg-gray-50 pb-20">

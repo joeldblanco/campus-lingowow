@@ -6,8 +6,7 @@ import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-
 import { CSS } from '@dnd-kit/utilities'
 import { cn } from '@/lib/utils'
 import { BlockPreview } from './block-preview'
-import { GripVertical, Trash2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { GripVertical } from 'lucide-react'
 
 interface CanvasProps {
     blocks: Block[]

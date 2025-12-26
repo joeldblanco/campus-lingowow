@@ -48,7 +48,6 @@ interface LessonsTabProps {
 function SortableLessonItem({
   lesson,
   moduleId,
-  moduleName,
   onRemove,
   onEdit,
   onUpdate,
@@ -365,7 +364,7 @@ export function LessonsTab({
           // router.refresh() 
           // Actually the action calls revalidatePath, so router.refresh might be needed to see changes if client cache is strong.
 
-        } catch (error) {
+        } catch {
           toast.error('Error al reordenar lecciones')
         }
       }
@@ -409,7 +408,7 @@ export function LessonsTab({
         order: 1,
       })
       toast.success('Lección creada exitosamente')
-    } catch (error) {
+    } catch {
       toast.error('Error al crear la lección')
     } finally {
       setIsSaving(false)

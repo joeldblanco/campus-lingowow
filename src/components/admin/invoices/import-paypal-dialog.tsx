@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { importPaypalInvoice } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
-import { Download, Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 
 export function ImportPaypalDialog({ children }: { children: React.ReactNode }) {
     const [open, setOpen] = useState(false)

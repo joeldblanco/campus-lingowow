@@ -1,26 +1,37 @@
 'use client'
 
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Block, Lesson } from '@/types/course-builder'
-import { Clock, Edit3, Eye, Layers, Save, CheckCircle, Loader2, AlertCircle, ArrowLeft, LayoutGrid } from 'lucide-react'
-import { useState, useEffect, useRef } from 'react'
-import { toast } from 'sonner'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { updateLessonBlocks } from '@/lib/actions/course-builder'
-import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors, closestCenter } from '@dnd-kit/core'
-import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { BlockLibrary } from './block-library'
+import { cn } from '@/lib/utils'
+import { Block, Lesson, FileBlock, BlockTemplate } from '@/types/course-builder'
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  DragOverlay,
+  DragStartEvent,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core'
+import { arrayMove } from '@dnd-kit/sortable'
+import {
+  AlertCircle,
+  ArrowLeft,
+  CheckCircle,
+  Edit3,
+  Eye,
+  LayoutGrid,
+  Loader2,
+  Save,
+} from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useEffect, useRef, useState, useCallback } from 'react'
+import { toast } from 'sonner'
+import { BlockLibrary, BlockSelectionGrid, DraggableBlock } from './block-library'
 import { Canvas } from './canvas'
 import { PropertiesPanel } from './properties-panel'
-import { useRouter } from 'next/navigation'
-import { cn } from '@/lib/utils'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
-import { BlockSelectionGrid } from './block-library'
 
 interface LessonBuilderProps {
   lesson: Lesson
@@ -33,7 +44,7 @@ interface LessonBuilderProps {
 
 export function LessonBuilder({
   lesson,
-  onUpdateLesson, // eslint-disable-line @typescript-eslint/no-unused-vars
+  onUpdateLesson,
   onAddBlock,
   onUpdateBlock,
   onRemoveBlock,
@@ -67,7 +78,7 @@ export function LessonBuilder({
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null)
 
   // DnD States
-  const [activeDragItem, setActiveDragItem] = useState<any>(null)
+  const [activeDragItem, setActiveDragItem] = useState<{ type: string; template?: BlockTemplate; block?: Block } | null>(null)
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -82,7 +93,7 @@ export function LessonBuilder({
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'error'>('saved')
   const isFirstRender = useRef(true)
 
-  const debouncedSave = (blocks: Block[]) => {
+  const debouncedSave = useCallback((blocks: Block[]) => {
     setSaveStatus('saving')
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current)
@@ -102,7 +113,7 @@ export function LessonBuilder({
         console.error(error)
       }
     }, 1500)
-  }
+  }, [lesson.id])
 
   // Trigger auto-save when blocks change
   useEffect(() => {
@@ -111,17 +122,16 @@ export function LessonBuilder({
       return
     }
     debouncedSave(lesson.blocks)
-  }, [lesson.blocks])
-
+  }, [lesson.blocks, debouncedSave])
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event
     // Check if it's a library item or a canvas item
     if (active.data.current?.type === 'new-block') {
-      setActiveDragItem(active.data.current)
+      setActiveDragItem({ type: 'new-block', template: active.data.current.template })
     } else {
       // It's a sortable item from the canvas
-      const block = lesson.blocks.find(b => b.id === active.id)
+      const block = lesson.blocks.find((b) => b.id === active.id)
       if (block) {
         setActiveDragItem({ type: 'sortable-block', block })
       }
@@ -144,7 +154,7 @@ export function LessonBuilder({
     if (over.id === 'cancel-zone') {
       if (active.data.current?.type !== 'new-block') {
         // It's an existing block being dragged back to library -> Remove it
-        // We should probably ask for confirmation? Or just do it. 
+        // We should probably ask for confirmation? Or just do it.
         // "Drag-to-cancel" usually implies immediate action or visual cue.
         // The library shows "Drop to remove", so it's explicit.
         handleRemoveBlockWrapper(active.id as string)
@@ -158,7 +168,7 @@ export function LessonBuilder({
       const newBlock: Block = {
         ...template.defaultData,
         id: `block_${Date.now()}`,
-        order: lesson.blocks.length // Temporary order
+        order: lesson.blocks.length, // Temporary order
       }
 
       // Determine insertion index
@@ -167,15 +177,15 @@ export function LessonBuilder({
       if (over.id !== 'canvas-droppable') {
         // Dropped over an existing block
         const overId = over.id
-        const overIndex = lesson.blocks.findIndex(b => b.id === overId)
+        const overIndex = lesson.blocks.findIndex((b) => b.id === overId)
         if (overIndex !== -1) {
-          // Decide if before or after based on collision rect? 
+          // Decide if before or after based on collision rect?
           // Dnd-kit's closestCenter usually snaps to center.
           // A simple logic: Always insert AFTER the target block for now, or use complex vertical coordinate check.
           // But sorting strategy uses transform.
           // Let's just insert AT the index (pushing the target down) or after.
           // Standard behavior: effectively taking the position of the over item if swapping.
-          // But here we insert. 
+          // But here we insert.
           // Let's insert AFTER.
           insertIndex = overIndex + 1
         }
@@ -219,7 +229,10 @@ export function LessonBuilder({
       const newIndex = lesson.blocks.findIndex((b) => b.id === over.id)
 
       if (oldIndex !== -1 && newIndex !== -1) {
-        const newBlocks = arrayMove(lesson.blocks, oldIndex, newIndex).map((b, idx) => ({ ...b, order: idx }))
+        const newBlocks = arrayMove(lesson.blocks, oldIndex, newIndex).map((b, idx) => ({
+          ...b,
+          order: idx,
+        }))
         onReorderBlocks(newBlocks)
       }
     }
@@ -227,84 +240,108 @@ export function LessonBuilder({
 
   const handleRemoveBlockWrapper = async (blockId: string) => {
     // Check if block has Cloudinary files (file, video, audio blocks)
-    const blockToRemove = lesson.blocks.find(b => b.id === blockId);
+    const blockToRemove = lesson.blocks.find((b) => b.id === blockId)
 
     // Only proceed with cleanup if it's a file block for now
-    if (blockToRemove && (blockToRemove.type === 'file')) {
-      const files = (blockToRemove as any).files || [];
+    if (blockToRemove && blockToRemove.type === 'file') {
+      const files = (blockToRemove as FileBlock).files || []
       // Delete all associated files from Cloudinary
       for (const file of files) {
         if (file.url && file.url.includes('cloudinary.com')) {
           try {
             // Basic extraction logic similar to properties-panel
-            const parts = file.url.split('/upload/');
+            const parts = file.url.split('/upload/')
             if (parts.length === 2) {
-              const pathParts = parts[1].split('/');
-              const versionIndex = pathParts.findIndex((p: string) => p.startsWith('v') && !isNaN(Number(p.substring(1))));
-              const relevantParts = pathParts.slice(versionIndex + 1);
-              let publicId = decodeURIComponent(relevantParts.join('/'));
+              const pathParts = parts[1].split('/')
+              const versionIndex = pathParts.findIndex(
+                (p: string) => p.startsWith('v') && !isNaN(Number(p.substring(1)))
+              )
+              const relevantParts = pathParts.slice(versionIndex + 1)
+              const publicId = decodeURIComponent(relevantParts.join('/'))
               // Clean fl_attachment if present (though backend handles clean publicIds usually)
               if (publicId.startsWith('fl_attachment')) {
                 // Logic to strip if needed, typically standard uploads are cleaner now
               }
 
               // Determine resource type
-              let resourceType: 'image' | 'video' | 'raw' = 'image';
-              if ((file as any).resourceType) {
-                resourceType = (file as any).resourceType;
+              let resourceType: 'image' | 'video' | 'raw' = 'image'
+              const fileWithResource = file as { resourceType?: 'image' | 'video' | 'raw' }
+              if (fileWithResource.resourceType) {
+                resourceType = fileWithResource.resourceType
               } else {
-                const ext = publicId.split('.').pop()?.toLowerCase();
-                if (['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', 'rar', 'txt', 'csv'].includes(ext || '')) {
-                  resourceType = 'raw';
-                } else if (['mp4', 'webm', 'mov', 'avi', 'mkv', 'mp3', 'wav', 'ogg'].includes(ext || '')) {
-                  resourceType = 'video';
+                const ext = publicId.split('.').pop()?.toLowerCase()
+                if (
+                  [
+                    'pdf',
+                    'doc',
+                    'docx',
+                    'xls',
+                    'xlsx',
+                    'ppt',
+                    'pptx',
+                    'zip',
+                    'rar',
+                    'txt',
+                    'csv',
+                  ].includes(ext || '')
+                ) {
+                  resourceType = 'raw'
+                } else if (
+                  ['mp4', 'webm', 'mov', 'avi', 'mkv', 'mp3', 'wav', 'ogg'].includes(ext || '')
+                ) {
+                  resourceType = 'video'
                 }
               }
 
               // Call server action to delete
-              const { deleteCloudinaryFile } = await import('@/lib/actions/cloudinary');
-              await deleteCloudinaryFile(publicId, resourceType);
+              const { deleteCloudinaryFile } = await import('@/lib/actions/cloudinary')
+              await deleteCloudinaryFile(publicId, resourceType)
             }
           } catch (e) {
-            console.error("Error deleting file from Cloudinary during block removal", e);
+            console.error('Error deleting file from Cloudinary during block removal', e)
           }
         }
       }
     }
 
     // Also handle single file blocks like video/audio/image
-    if (blockToRemove && (blockToRemove.type === 'video' || blockToRemove.type === 'audio' || blockToRemove.type === 'image')) {
-      const url = (blockToRemove as any).url;
+    if (
+      blockToRemove &&
+      (blockToRemove.type === 'video' ||
+        blockToRemove.type === 'audio' ||
+        blockToRemove.type === 'image')
+    ) {
+      const url = (blockToRemove as { url?: string }).url
       if (url && url.includes('cloudinary.com')) {
         try {
-          const parts = url.split('/upload/');
+          const parts = url.split('/upload/')
           if (parts.length === 2) {
-            const pathParts = parts[1].split('/');
-            const versionIndex = pathParts.findIndex((p: string) => p.startsWith('v') && !isNaN(Number(p.substring(1))));
-            const relevantParts = pathParts.slice(versionIndex + 1);
-            let publicId = decodeURIComponent(relevantParts.join('/'));
+            const pathParts = parts[1].split('/')
+            const versionIndex = pathParts.findIndex(
+              (p: string) => p.startsWith('v') && !isNaN(Number(p.substring(1)))
+            )
+            const relevantParts = pathParts.slice(versionIndex + 1)
+            let publicId = decodeURIComponent(relevantParts.join('/'))
 
-            let resourceType: 'image' | 'video' | 'raw' = 'image';
+            let resourceType: 'image' | 'video' | 'raw' = 'image'
             if (blockToRemove.type === 'video' || blockToRemove.type === 'audio') {
-              resourceType = 'video';
+              resourceType = 'video'
             } else if (blockToRemove.type === 'image') {
-              resourceType = 'image';
+              resourceType = 'image'
             }
 
             // Fix: Cloudinary public_ids for images/video do not include extension
             // We must strip it from the URL-derived ID
-            if (resourceType !== 'raw') {
-              const lastDotIndex = publicId.lastIndexOf('.')
-              if (lastDotIndex !== -1) {
-                publicId = publicId.substring(0, lastDotIndex)
-              }
+            const lastDotIndex = publicId.lastIndexOf('.')
+            if (lastDotIndex !== -1) {
+              publicId = publicId.substring(0, lastDotIndex)
             }
 
-            const { deleteCloudinaryFile } = await import('@/lib/actions/cloudinary');
-            await deleteCloudinaryFile(publicId, resourceType);
+            const { deleteCloudinaryFile } = await import('@/lib/actions/cloudinary')
+            await deleteCloudinaryFile(publicId, resourceType)
           }
         } catch (e) {
-          console.error("Error deleting media from Cloudinary during block removal", e);
+          console.error('Error deleting media from Cloudinary during block removal', e)
         }
       }
     }
@@ -319,21 +356,24 @@ export function LessonBuilder({
     onUpdateLesson({ isPublished: !lesson.isPublished })
   }
 
-  const handleAddBlockFromModal = (template: any) => {
+  const handleAddBlockFromModal = (template: BlockTemplate) => {
+    // Assuming template is an object with a defaultData property and type
     const newBlock: Block = {
       ...template.defaultData,
       id: `block_${Date.now()}`,
-      order: lesson.blocks.length
-    }
+      order: lesson.blocks.length,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      type: template.type as any, // We trust the template has the correct type
+    } as Block
     onAddBlock(newBlock)
     setSelectedBlockId(newBlock.id)
     setIsAddBlockModalOpen(false)
-    toast.success("Bloque agregado")
+    toast.success('Bloque agregado')
   }
 
   const router = useRouter()
 
-  const selectedBlock = lesson.blocks.find(b => b.id === selectedBlockId) || null
+  const selectedBlock = lesson.blocks.find((b) => b.id === selectedBlockId) || null
   const OverlayIcon = activeDragItem?.template?.icon
 
   return (
@@ -371,8 +411,13 @@ export function LessonBuilder({
                   </div>
                 ) : (
                   <>
-                    <span className="font-medium max-w-[200px] truncate block" title={lesson.title}>{lesson.title}</span>
-                    <Edit3 className="h-3 w-3 text-muted-foreground ml-1 cursor-pointer hover:text-foreground" onClick={() => setIsEditingTitle(true)} />
+                    <span className="font-medium max-w-[200px] truncate block" title={lesson.title}>
+                      {lesson.title}
+                    </span>
+                    <Edit3
+                      className="h-3 w-3 text-muted-foreground ml-1 cursor-pointer hover:text-foreground"
+                      onClick={() => setIsEditingTitle(true)}
+                    />
                   </>
                 )}
               </div>
@@ -401,7 +446,7 @@ export function LessonBuilder({
               )}
 
               <Button
-                variant={isPreviewMode ? "secondary" : "outline"}
+                variant={isPreviewMode ? 'secondary' : 'outline'}
                 size="sm"
                 className="gap-2"
                 onClick={() => {
@@ -410,42 +455,50 @@ export function LessonBuilder({
                 }}
               >
                 <Eye className="h-4 w-4" />
-                {isPreviewMode ? "Salir de Vista Previa" : "Vista Previa"}
+                {isPreviewMode ? 'Salir de Vista Previa' : 'Vista Previa'}
               </Button>
 
               {!isPreviewMode && (
-                <Button
-                  size="sm"
-                  className={cn("gap-2 min-w-[100px]", lesson.isPublished ? "bg-green-600 hover:bg-green-700" : "")}
-                  onClick={handlePublishToggle}
-                >
-                  {lesson.isPublished ? (
-                    <>
-                      <CheckCircle className="h-4 w-4" />
-                      Publicado
-                    </>
-                  ) : (
-                    <>
-                      <Save className="h-4 w-4" />
-                      Publicar
-                    </>
-                  )}
-                </Button>
+                <>
+                  <div className="p-2 bg-muted rounded-md pointer-events-none">
+                    {activeDragItem?.template?.icon && <div className="h-4 w-4" />}
+                  </div>
+                  <Button
+                    size="sm"
+                    className={cn(
+                      'gap-2 min-w-[100px]',
+                      lesson.isPublished ? 'bg-green-600 hover:bg-green-700' : ''
+                    )}
+                    onClick={handlePublishToggle}
+                  >
+                    {lesson.isPublished ? (
+                      <>
+                        <CheckCircle className="h-4 w-4" />
+                        Publicado
+                      </>
+                    ) : (
+                      <>
+                        <Save className="h-4 w-4" />
+                        Publicar
+                      </>
+                    )}
+                  </Button>
+                </>
               )}
             </div>
           </div>
 
           <div className="flex flex-1 overflow-hidden relative">
             {/* Left Sidebar: Block Library */}
-            {!isPreviewMode && (
-              <BlockLibrary />
-            )}
+            {!isPreviewMode && <BlockLibrary />}
 
             {/* Center: Canvas */}
-            <div className={cn(
-              "flex-1 h-full transition-all duration-300",
-              isPreviewMode ? "mx-auto max-w-5xl border-x bg-background shadow-sm" : ""
-            )}>
+            <div
+              className={cn(
+                'flex-1 h-full transition-all duration-300',
+                isPreviewMode ? 'mx-auto max-w-5xl border-x bg-background shadow-sm' : ''
+              )}
+            >
               <Canvas
                 blocks={lesson.blocks}
                 title={lesson.title}
@@ -475,8 +528,10 @@ export function LessonBuilder({
         <DragOverlay>
           {activeDragItem?.type === 'new-block' && OverlayIcon ? (
             <div className="p-3 bg-background border rounded shadow-lg w-32 flex flex-col items-center gap-2 cursor-grabbing opacity-80 z-50">
-              <div className="text-2xl text-primary"><OverlayIcon className="size-8" /></div>
-              <span className="text-xs font-medium">{activeDragItem.template.label}</span>
+              <div className="text-2xl text-primary">
+                <OverlayIcon className="size-8" />
+              </div>
+              <DraggableBlock template={activeDragItem.template as BlockTemplate} variant="list" />
             </div>
           ) : null}
           {activeDragItem?.type === 'sortable-block' ? (

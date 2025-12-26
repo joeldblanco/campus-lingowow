@@ -120,8 +120,6 @@ export async function POST(req: NextRequest) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let purchases: any[] = []
     let needsScheduleSetup = false
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let enrollments: any[] = []
 
     if (invoiceData) {
       const invoiceNumber = `INV-${Date.now().toString().slice(-8)}`

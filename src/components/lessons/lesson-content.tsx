@@ -19,7 +19,7 @@ export function LessonContent({ lesson }: LessonContentProps) {
     }
 
     // Map Prisma contents to Blocks used by the preview component
-    const blocks: Block[] = lesson.contents.map(content => mapContentToBlock(content as any))
+    const blocks: Block[] = lesson.contents.map(content => mapContentToBlock(content as Parameters<typeof mapContentToBlock>[0]))
 
     return (
         <div className="space-y-8">

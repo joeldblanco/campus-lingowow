@@ -1,7 +1,7 @@
 'use client'
 
 import { Card } from '@/components/ui/card'
-import { BLOCK_TEMPLATES } from '@/types/course-builder'
+import { BLOCK_TEMPLATES, BlockTemplate } from '@/types/course-builder'
 import { useDraggable } from '@dnd-kit/core'
 import { cn } from '@/lib/utils'
 
@@ -78,7 +78,7 @@ export function BlockLibrary() {
     )
 }
 
-export function BlockSelectionGrid({ onSelect }: { onSelect: (template: any) => void }) {
+export function BlockSelectionGrid({ onSelect }: { onSelect: (template: BlockTemplate) => void }) {
     return (
         <div className="space-y-6">
             {/* Core Content: Grid Layout */}
@@ -124,7 +124,7 @@ function isCoreCategory(type: string) {
     return ['text', 'image', 'video', 'title', 'file', 'embed'].includes(type) || type === 'heading'
 }
 
-function DraggableBlock({ template, variant, onClick, disableDrag }: { template: any, variant: 'grid' | 'list', onClick?: () => void, disableDrag?: boolean }) {
+export function DraggableBlock({ template, variant, onClick, disableDrag }: { template: BlockTemplate, variant: 'grid' | 'list', onClick?: () => void, disableDrag?: boolean }) {
     const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
         id: `library-${template.type}`,
         data: {
@@ -177,8 +177,4 @@ function DraggableBlock({ template, variant, onClick, disableDrag }: { template:
     )
 }
 
-function getCategory(type: string) {
-    if (['grammar', 'vocabulary', 'audio'].includes(type)) return 'language'
-    if (['quiz', 'assignment', 'fill_blanks', 'match', 'true_false', 'essay', 'recording'].includes(type)) return 'interactive'
-    return 'core'
-}
+

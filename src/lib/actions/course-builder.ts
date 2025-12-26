@@ -1,6 +1,7 @@
 'use server'
 
 import { db } from '@/lib/db'
+import { Prisma } from '@prisma/client'
 import { auth } from '@/auth'
 import { revalidatePath } from 'next/cache'
 import type {
@@ -247,7 +248,7 @@ export async function reorderLessons(moduleId: string, lessonIds: string[]) {
     const userId = session.user.id
 
     // Verify user owns the module (and thus the lessons)
-    const module = await db.module.findUnique({
+    const moduleRecord = await db.module.findUnique({
       where: { id: moduleId },
       include: {
         course: {
@@ -258,7 +259,7 @@ export async function reorderLessons(moduleId: string, lessonIds: string[]) {
       },
     })
 
-    if (!module || module.course.createdById !== userId) {
+    if (!moduleRecord || moduleRecord.course.createdById !== userId) {
       throw new Error('Module not found or unauthorized')
     }
 
@@ -395,7 +396,7 @@ async function saveBlocks(
   lessonId: string,
   blocks: Block[],
   parentId: string | null = null,
-  tx: any
+  tx: Prisma.TransactionClient
 ) {
   for (let i = 0; i < blocks.length; i++) {
     const block = blocks[i]
@@ -405,6 +406,10 @@ async function saveBlocks(
     // Prepare data payload (excluding id, order, children)
     // We explicitly include 'type' in the data payload so it can be restored correctly
     const { id, order, children, ...rest } = block
+    // Prevent unused variable errors
+    void id
+    void order
+    void children
     const blockData = { ...rest }
     const type = block.type
 
@@ -429,15 +434,15 @@ async function saveBlocks(
         parentId,
         order: i,
         contentType,
-        title: (block as any).title || '',
-        data: blockData,
+        title: (block as { title?: string }).title || '',
+        data: blockData as Prisma.InputJsonValue,
       },
       update: {
         order: i,
         contentType,
         parentId,
-        title: (block as any).title || '',
-        data: blockData,
+        title: (block as { title?: string }).title || '',
+        data: blockData as Prisma.InputJsonValue,
       },
     })
 
@@ -564,9 +569,10 @@ const mapContentToBlock = (
       break
     case 'CONTAINER':
       // Differentiate based on stored type in data, or default
-      if ((content.data as any)?.type === 'layout') {
+      const data = content.data as { type?: string } | null
+      if (data?.type === 'layout') {
         type = 'layout'
-      } else if ((content.data as any)?.type === 'column') {
+      } else if (data?.type === 'column') {
         type = 'column'
       } else {
         type = 'container'
@@ -574,7 +580,7 @@ const mapContentToBlock = (
       break
   }
 
-  const data = (content.data as any) || {}
+  const data = (content.data as Record<string, unknown>) || {}
 
   return {
     id: content.id,
@@ -585,7 +591,7 @@ const mapContentToBlock = (
     content: data.content || data.html || '',
     // Recursive children
     children: content.children
-      ? content.children.sort((a, b) => a.order - b.order).map((c: any) => mapContentToBlock(c))
+      ? content.children.sort((a, b) => a.order - b.order).map((c) => mapContentToBlock(c))
       : [],
   } as Block
 }
@@ -675,7 +681,7 @@ export async function getCourseForBuilder(courseId: string) {
           order: lesson.order,
           duration: lesson.duration,
           // Map contents to blocks
-          blocks: lesson.contents.map((c) => mapContentToBlock(c as any)),
+          blocks: lesson.contents.map((c) => mapContentToBlock(c)),
           moduleId: lesson.moduleId,
           isPublished: lesson.isPublished,
         })),
@@ -739,7 +745,7 @@ export async function getLessonForBuilder(lessonId: string) {
       description: lesson.description || '',
       order: lesson.order,
       duration: lesson.duration,
-      blocks: lesson.contents.map((c) => mapContentToBlock(c as any)),
+      blocks: lesson.contents.map((c) => mapContentToBlock(c)),
       moduleId: lesson.moduleId,
       isPublished: lesson.isPublished,
     }

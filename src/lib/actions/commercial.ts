@@ -1001,7 +1001,7 @@ export async function importPaypalInvoice(resourceId: string) {
   try {
     let type = 'ORDER'
     console.log(`[Import] Attempting to fetch as ORDER: ${resourceId}`)
-    let data: any = await getPayPalOrder(resourceId)
+    let data = await getPayPalOrder(resourceId)
 
     if (!data) {
       console.log(`[Import] ORDER failed. Attempting as INVOICE: ${resourceId}`)
@@ -1030,7 +1030,7 @@ export async function importPaypalInvoice(resourceId: string) {
     }
 
     // Normalize Data
-    let email, firstName, lastName, amount, currency, status, items, date
+    let email, firstName, lastName, amount, currency, items, date
 
     if (type === 'ORDER') {
       if (data.status !== 'COMPLETED' && data.status !== 'APPROVED') {
@@ -1142,12 +1142,14 @@ export async function importPaypalInvoice(resourceId: string) {
         paypalPayerEmail: email,
         notes: `Imported from PayPal (${type}): ${resourceId}`,
         items: {
-          create: items.map((item: any) => ({
-            name: item.name,
-            price: parseFloat(item.unit_amount.value),
-            quantity: parseInt(item.quantity) || 1,
-            total: parseFloat(item.unit_amount.value) * (parseInt(item.quantity) || 1),
-          })),
+          create: items.map(
+            (item: { name: string; quantity: string; unit_amount: { value: string } }) => ({
+              name: item.name,
+              price: parseFloat(item.unit_amount.value),
+              quantity: parseInt(item.quantity) || 1,
+              total: parseFloat(item.unit_amount.value) * (parseInt(item.quantity) || 1),
+            })
+          ),
         },
       },
     })

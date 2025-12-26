@@ -10,7 +10,6 @@ import { CSS } from '@dnd-kit/utilities'
 import { BlockEditor } from './block-editor'
 import { BlockPreview as BlockPreviewComponent } from './block-preview'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 import { GripVertical, Edit3, Trash2, Plus } from 'lucide-react'
 
 interface NestedBlockListProps {
@@ -25,7 +24,7 @@ interface NestedBlockListProps {
 
 export function NestedBlockList({
     blocks,
-    onBlocksChange, // Not directly used here for reorder, handled by parent DndContext but IDs needed for SortableContext
+    onBlocksChange, // eslint-disable-line @typescript-eslint/no-unused-vars
     onAddBlock,
     editingBlockId,
     setEditingBlockId,

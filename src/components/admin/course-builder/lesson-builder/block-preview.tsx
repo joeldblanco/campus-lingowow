@@ -14,7 +14,6 @@ import {
   VideoBlock,
   TabGroupBlock,
   LayoutBlock,
-  ColumnBlock,
   GrammarBlock,
   VocabularyBlock,
   FillBlanksBlock,
@@ -22,6 +21,8 @@ import {
   TrueFalseBlock,
   EssayBlock,
   RecordingBlock,
+  TitleBlock,
+  TabItemBlock,
 } from '@/types/course-builder'
 import {
   Download,
@@ -42,6 +43,7 @@ import {
   FileSignature,
   Edit3,
 } from 'lucide-react'
+import * as LucideIcons from 'lucide-react'
 import { useState, useRef } from 'react'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
@@ -54,7 +56,7 @@ export function BlockPreview({ block }: BlockPreviewProps) {
   const renderBlockContent = () => {
     switch (block.type) {
       case 'title':
-        return <TitleBlockPreview block={block as any} />
+        return <TitleBlockPreview block={block as TitleBlock} />
       case 'text':
         return <TextBlockPreview block={block as TextBlock} />
       case 'video':
@@ -109,7 +111,7 @@ export function BlockPreview({ block }: BlockPreviewProps) {
   )
 }
 
-function TitleBlockPreview({ block }: { block: { title: string } }) {
+function TitleBlockPreview({ block }: { block: TitleBlock }) {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2 text-primary font-semibold text-sm">
@@ -719,7 +721,7 @@ function AssignmentBlockPreview({ block }: { block: AssignmentBlock }) {
 // File Block Preview
 // File Block Preview
 function FileBlockPreview({ block }: { block: FileBlock }) {
-  const b = block as any
+  const b = block as unknown as { url?: string; filename?: string; fileType?: string; filesize?: number }
   const files = block.files?.length > 0
     ? block.files
     : (b.url ? [{ id: 'legacy', title: b.filename || 'Archivo', url: b.url, fileType: b.fileType || 'file', size: b.filesize || 0 }] : [])
@@ -741,7 +743,7 @@ function FileBlockPreview({ block }: { block: FileBlock }) {
 
       {/* File Buttons */}
       <div className="flex flex-col gap-2 w-full md:w-1/3 min-w-[220px]">
-        {files.map((file: any, i: number) => (
+        {files.map((file, i) => (
           <a
             key={i}
             href={file.url}
@@ -770,7 +772,7 @@ function FileBlockPreview({ block }: { block: FileBlock }) {
   )
 }
 
-function getFileExtension(file: any) {
+function getFileExtension(file: { fileType?: string, url?: string }) {
   if (file.fileType && !file.fileType.includes('/')) return file.fileType;
   // try to get from url
   const ext = file.url?.split('.').pop()?.split('?')[0];
@@ -839,13 +841,15 @@ function TabGroupBlockPreview({ block }: { block: TabGroupBlock }) {
   // Update active tab if block children change (e.g. new tab added)
   // But be careful not to reset user selection unnecessarily.
   // We can use a simple effect or just default if current selection invalid.
-  const activeTab = block.children?.find(tab => tab.id === activeTabId) || block.children?.[0]
+  // Filter children to ensure they are TabItemBlocks
+  const tabs = (block.children?.filter((child): child is TabItemBlock => child.type === 'tab_item') || [])
+  const activeTab = tabs.find((tab) => tab.id === activeTabId) || tabs[0]
 
   return (
     <div className="space-y-2">
       <div className="border rounded-lg overflow-hidden bg-background shadow-sm">
         <div className="flex bg-muted/50 border-b overflow-x-auto no-scrollbar">
-          {block.children?.map((tab: any) => (
+          {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTabId(tab.id)}
@@ -864,7 +868,7 @@ function TabGroupBlockPreview({ block }: { block: TabGroupBlock }) {
           {activeTab ? (
             <div className="space-y-6 animate-in fade-in duration-300">
               {activeTab.children && activeTab.children.length > 0 ? (
-                activeTab.children.map((child: any) => (
+                activeTab.children.map((child: Block) => (
                   <div key={child.id} className="relative">
                     <BlockPreview block={child} />
                   </div>
@@ -891,7 +895,7 @@ function LayoutBlockPreview({ block }: { block: LayoutBlock }) {
     <div className="grid gap-6" style={{ gridTemplateColumns: `repeat(${block.columns}, 1fr)` }}>
       {block.children?.map(col => (
         <div key={col.id} className="min-h-[50px]">
-          {col.children?.map(child => (
+          {col.children?.map((child: Block) => (
             <div key={child.id} className="mb-4 last:mb-0">
               <BlockPreview block={child} />
             </div>
@@ -952,10 +956,10 @@ function GrammarBlockPreview({ block }: { block: GrammarBlock }) {
         <div className="w-full md:w-1/3 aspect-video bg-muted/30 rounded-lg flex items-center justify-center border relative overflow-hidden">
           {block.image ? (
             block.image.includes('/') || block.image.includes('http') ? (
-              <img src={block.image} alt="Grammar illustration" className="w-full h-full object-cover" />
+              <Image src={block.image} alt="Grammar illustration" fill className="object-cover" />
             ) : (
               (() => {
-                const Icon = (LucideIcons as any)[block.image] || LucideIcons.Book
+                const Icon = (LucideIcons as unknown as Record<string, React.ElementType>)[block.image] || Book
                 return <Icon className="h-32 w-32 text-blue-500/80" />
               })()
             )
@@ -971,7 +975,7 @@ function GrammarBlockPreview({ block }: { block: GrammarBlock }) {
   )
 }
 
-import * as LucideIcons from 'lucide-react'
+
 
 // ... existing imports ...
 
@@ -1011,8 +1015,8 @@ function VocabularyBlockPreview({ block }: { block: VocabularyBlock }) {
       <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
         {block.items?.map((item) => {
           // Dynamic Icon Rendering
-          const iconName = (item as any).icon || 'Book'
-          const IconComponent = (LucideIcons as any)[iconName] || LucideIcons.Book
+          const iconName = item.icon || 'Book'
+          const IconComponent = (LucideIcons as unknown as Record<string, React.ElementType>)[iconName] || Book
 
           return (
             <Card key={item.id}>

@@ -8,11 +8,8 @@ import {
   Mic,
   CheckSquare,
   Edit3,
-  FileText,
   Download,
   Link as LinkIcon,
-  Layout,
-  Columns,
   Shuffle,
   CheckCircle2,
   FileSignature,
@@ -49,7 +46,7 @@ export interface BaseBlock {
   order: number
   // Recursive structure for new content model
   children?: Block[]
-  data?: any // Flexible payload for new types
+  data?: Record<string, unknown> // Flexible payload for new types
 }
 
 export interface TitleBlock extends BaseBlock {
@@ -111,6 +108,7 @@ export interface DownloadableFile {
   url: string
   fileType: string
   size: number
+  resourceType?: string
 }
 
 export interface FileBlock extends BaseBlock {

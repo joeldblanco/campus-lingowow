@@ -29,6 +29,37 @@ export const mapBlockTypeToContentType = (type: BlockType): ContentType => {
   }
 }
 
+// Helper to map Block to Content data (excluding id, type, order, children)
+export const mapBlockToContentData = (block: Block): Record<string, unknown> => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { id, type, order, children, ...rest } = block
+  return rest
+}
+
+// Helper to map ContentType to BlockType (for the new `base.type` logic)
+const mapContentTypeToBlockType = (contentType: ContentType): BlockType => {
+  switch (contentType) {
+    case 'RICH_TEXT':
+      return 'text'
+    case 'VIDEO':
+      return 'video'
+    case 'IMAGE':
+      return 'image'
+    case 'AUDIO':
+      return 'audio'
+    case 'ACTIVITY':
+      return 'quiz'
+    case 'TAB_GROUP':
+      return 'tab_group'
+    case 'TAB_ITEM':
+      return 'tab_item'
+    case 'CONTAINER':
+      return 'container'
+    default:
+      return 'text'
+  }
+}
+
 // Helper to map Content to Block
 export const mapContentToBlock = (
   content: PrismaContent & { children?: (PrismaContent & { children?: PrismaContent[] })[] }
@@ -59,40 +90,42 @@ export const mapContentToBlock = (
       break
     case 'CONTAINER':
       // Differentiate based on stored type in data, or default
-      if ((content.data as any)?.type === 'layout') {
+      const data = content.data as { type?: string } | null
+      if (data?.type === 'layout') {
         type = 'layout'
-      } else if ((content.data as any)?.type === 'column') {
+      } else if (data?.type === 'column') {
         type = 'column'
       } else {
         type = 'container'
       }
       break
     default:
-      // Handle legacy or mapped types
-      if (content.contentType === ('GRAMMAR_CARD' as any)) type = 'grammar' as any
-      else if (content.contentType === ('VOCABULARY_LIST' as any)) type = 'vocabulary' as any
-      else if (content.contentType === ('ASSIGNMENT' as any)) type = 'assignment' as any
-      else type = 'text'
+      type = 'text'
       break
   }
 
-  const data = (content.data as any) || {}
+  const data = (content.data as Record<string, unknown>) || {}
+
+  const base = {
+    id: content.id,
+    type: mapContentTypeToBlockType(content.contentType),
+    order: content.order,
+  }
 
   // Override type from data if it exists (e.g. for specific custom blocks stored as RICH_TEXT or CONTAINER)
   if (data.type) {
-    type = data.type
+    type = data.type as BlockType
   }
 
   return {
-    id: content.id,
-    order: content.order,
-    type,
+    ...base,
     ...data,
+    type, // Ensure type is correct
     // If content has legacy text content or HTML, ensure it's mapped
-    content: data.content || data.html || '',
+    content: (data.content as string) || (data.html as string) || '',
     // Recursive children
     children: content.children
-      ? content.children.sort((a, b) => a.order - b.order).map((c: any) => mapContentToBlock(c))
+      ? content.children.sort((a, b) => a.order - b.order).map((c) => mapContentToBlock(c))
       : [],
   } as Block
 }

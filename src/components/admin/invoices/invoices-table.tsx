@@ -22,46 +22,10 @@ import { EditInvoiceDialog } from './edit-invoice-dialog'
 import { deleteInvoice } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
 import { formatDateNumeric } from '@/lib/utils/date'
-
-interface InvoiceItem {
-  id: string
-  productId: string
-  planId?: string
-  name: string
-  price: number
-  quantity: number
-  total: number
-  unitPrice: number
-  product: {
-    name: string
-  }
-}
-
-interface Invoice {
-  id: string
-  number: string
-  userId: string
-  status: 'DRAFT' | 'SENT' | 'PAID' | 'OVERDUE' | 'CANCELLED'
-  subtotal: number
-  taxAmount: number
-  discountAmount: number
-  total: number
-  dueDate: Date | null
-  paidAt: Date | null
-  createdAt: Date
-  updatedAt: Date
-  user: {
-    name: string | null
-    email: string
-  }
-  coupon: {
-    code: string
-  } | null
-  items: InvoiceItem[]
-}
+import { InvoiceWithDetails } from '@/types/invoice'
 
 interface InvoicesTableProps {
-  invoices: Invoice[]
+  invoices: InvoiceWithDetails[]
 }
 
 import { ViewInvoiceDialog } from './view-invoice-dialog'
@@ -69,8 +33,8 @@ import { ViewInvoiceDialog } from './view-invoice-dialog'
 // ... existing imports
 
 export function InvoicesTable({ invoices }: InvoicesTableProps) {
-  const [editingInvoice, setEditingInvoice] = useState<Invoice | null>(null)
-  const [viewingInvoice, setViewingInvoice] = useState<Invoice | null>(null)
+  const [editingInvoice, setEditingInvoice] = useState<InvoiceWithDetails | null>(null)
+  const [viewingInvoice, setViewingInvoice] = useState<InvoiceWithDetails | null>(null)
 
   const handleDelete = async (id: string) => {
     if (confirm('¿Estás seguro de que quieres eliminar esta factura?')) {
@@ -128,7 +92,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
               invoices.map((invoice) => (
                 <TableRow key={invoice.id}>
                   <TableCell>
-                    <div className="font-medium">{invoice.number}</div>
+                    <div className="font-medium">{invoice.invoiceNumber}</div>
                     {invoice.coupon && (
                       <div className="text-sm text-muted-foreground">
                         Cupón: {invoice.coupon.code}
@@ -147,9 +111,9 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
                   <TableCell>
                     <div>
                       <div className="font-medium">{formatCurrency(invoice.total)}</div>
-                      {invoice.discountAmount > 0 && (
+                      {invoice.discount > 0 && (
                         <div className="text-sm text-green-600">
-                          Desc: -{formatCurrency(invoice.discountAmount)}
+                          Desc: -{formatCurrency(invoice.discount)}
                         </div>
                       )}
                     </div>

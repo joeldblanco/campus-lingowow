@@ -806,10 +806,10 @@ function TabGroupBlockEditor({
         </Button>
       </div>
       <div className="space-y-2">
-        {block.children?.map((tab: any) => (
+        {block.children?.map((tab) => (
           <div key={tab.id} className="flex items-center gap-2">
             <Input
-              value={tab.title}
+              value={(tab as TabItemBlock).title}
               onChange={(e) => handleTabTitleChange(tab.id, e.target.value)}
               placeholder="Título de la pestaña"
             />
@@ -832,9 +832,9 @@ function TabGroupBlockPreview({ block }: { block: TabGroupBlock }) {
     <div className="space-y-2">
       <div className="border rounded-lg overflow-hidden">
         <div className="flex bg-muted border-b">
-          {block.children?.map((tab: any) => (
+          {block.children?.map((tab) => (
             <div key={tab.id} className="px-4 py-2 text-sm font-medium border-r bg-background first:rounded-tl-lg">
-              {tab.title}
+              {(activeTab as TabItemBlock).title}
             </div>
           ))}
         </div>
@@ -918,7 +918,7 @@ function ColumnBlockEditor({ block, onUpdate }: { block: ColumnBlock, onUpdate: 
   const [showMenu, setShowMenu] = useState(false);
 
   // We need a mini "add block" function for this column
-  const handleAddBlock = (position?: number) => {
+  const handleAddBlock = () => {
     setShowMenu(true);
   }
 

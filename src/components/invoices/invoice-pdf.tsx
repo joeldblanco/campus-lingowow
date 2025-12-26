@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Invoice, InvoiceItem, Product, Plan, User, Coupon } from '@prisma/client'
+
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 import { Download, Loader2 } from 'lucide-react'

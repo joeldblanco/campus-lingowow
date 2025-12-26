@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { CourseBuilder } from '@/components/admin/course-builder/course-builder'
 import { getCourseForBuilder } from '@/lib/actions/course-builder'

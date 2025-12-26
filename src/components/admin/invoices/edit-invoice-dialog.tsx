@@ -31,6 +31,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { updateInvoice } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
+import { InvoiceWithDetails } from '@/types/invoice'
 
 const invoiceSchema = z.object({
   number: z.string().min(1, 'Número de factura requerido'),
@@ -41,41 +42,8 @@ const invoiceSchema = z.object({
 
 type InvoiceFormData = z.infer<typeof invoiceSchema>
 
-interface InvoiceItem {
-  id: string
-  productId: string
-  quantity: number
-  unitPrice: number
-  product: {
-    name: string
-  }
-}
-
-interface Invoice {
-  id: string
-  number: string
-  userId: string
-  status: 'DRAFT' | 'SENT' | 'PAID' | 'OVERDUE' | 'CANCELLED'
-  subtotal: number
-  taxAmount: number
-  discountAmount: number
-  total: number
-  dueDate: Date | null
-  paidAt: Date | null
-  createdAt: Date
-  updatedAt: Date
-  user: {
-    name: string | null
-    email: string
-  }
-  coupon: {
-    code: string
-  } | null
-  items: InvoiceItem[]
-}
-
 interface EditInvoiceDialogProps {
-  invoice: Invoice
+  invoice: InvoiceWithDetails
   open: boolean
   onOpenChange: (open: boolean) => void
 }
@@ -96,7 +64,7 @@ export function EditInvoiceDialog({ invoice, open, onOpenChange }: EditInvoiceDi
   useEffect(() => {
     if (invoice) {
       form.reset({
-        number: invoice.number,
+        number: invoice.invoiceNumber,
         status: invoice.status,
         dueDate: invoice.dueDate ? new Date(invoice.dueDate).toISOString().slice(0, 10) : '',
         paidAt: invoice.paidAt ? new Date(invoice.paidAt).toISOString().slice(0, 16) : '',
@@ -158,8 +126,8 @@ export function EditInvoiceDialog({ invoice, open, onOpenChange }: EditInvoiceDi
           <div className="space-y-2">
             {invoice.items.map((item) => (
               <div key={item.id} className="flex justify-between text-sm">
-                <span>{item.product.name} x {item.quantity}</span>
-                <span>{formatCurrency(item.quantity * item.unitPrice)}</span>
+                <span>{item.product?.name || item.plan?.name || item.name} x {item.quantity}</span>
+                <span>{formatCurrency(item.total)}</span>
               </div>
             ))}
           </div>
@@ -170,12 +138,12 @@ export function EditInvoiceDialog({ invoice, open, onOpenChange }: EditInvoiceDi
             </div>
             <div className="flex justify-between text-sm">
               <span>Impuestos:</span>
-              <span>{formatCurrency(invoice.taxAmount)}</span>
+              <span>{formatCurrency(invoice.tax)}</span>
             </div>
-            {invoice.discountAmount > 0 && (
+            {invoice.discount > 0 && (
               <div className="flex justify-between text-sm text-green-600">
                 <span>Descuento:</span>
-                <span>-{formatCurrency(invoice.discountAmount)}</span>
+                <span>-{formatCurrency(invoice.discount)}</span>
               </div>
             )}
             <div className="flex justify-between font-semibold">

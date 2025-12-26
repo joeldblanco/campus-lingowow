@@ -40,10 +40,10 @@ async function getPayPalAccessToken() {
   if (!response.ok) {
     const errorText = await response.text()
     console.error(`[PayPal Token] Error ${response.status}: ${errorText}`)
-    throw new Error(`PayPal Token Error: ${response.status}`)
+    throw new Error(`Failed to get access token: ${errorText}`)
   }
 
-  const data = await response.json()
+  const data = (await response.json()) as { access_token: string; [key: string]: unknown }
   return data.access_token
 }
 
@@ -54,8 +54,9 @@ async function getPayPalOrder(orderId: string) {
     })
     return JSON.parse(response.body as string)
   } catch (error) {
-    if ((error as any).statusCode !== 404) {
-      console.error('[PayPal Order] Error:', (error as any).message || error)
+    const err = error as { statusCode?: number; message?: string }
+    if (err.statusCode !== 404) {
+      console.error('[PayPal Order] Error:', err.message || error)
     }
     return null
   }
@@ -112,13 +113,15 @@ async function searchPayPalInvoice(invoiceNumber: string) {
 
     if (!response.ok) {
       console.error(`[PayPal Search] Search failed with status: ${response.status}`)
-      return null
+      const errorText = await response.text()
+      throw new Error(`Failed to search invoice: ${errorText}`)
     }
 
-    const data = await response.json()
-    console.log(`[PayPal Search] Results found: ${data.items?.length || 0}`)
-    if (data.items && data.items.length > 0) {
-      return data.items[0]
+    const data = (await response.json()) as Record<string, unknown>
+    const items = data.items as unknown as Array<Record<string, unknown>>
+    console.log(`[PayPal Search] Results found: ${items?.length || 0}`)
+    if (items && items.length > 0) {
+      return items[0]
     }
     return null
   } catch (error) {
@@ -134,8 +137,9 @@ async function getPayPalPayment(paymentId: string) {
     })
     return JSON.parse(response.body as string)
   } catch (error) {
-    if ((error as any).statusCode !== 404) {
-      console.error('[PayPal Payment] Error:', (error as any).message || error)
+    const err = error as { statusCode?: number; message?: string }
+    if (err.statusCode !== 404) {
+      console.error('[PayPal Payment] Error:', err.message || error)
     }
     return null
   }

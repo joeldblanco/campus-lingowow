@@ -59,7 +59,7 @@ export type ContentWithHierarchy = Prisma.ContentGetPayload<{
   }
 }> & {
   parentId?: string | null
-  data?: any
+  data?: Record<string, unknown>
   children?: ContentWithHierarchy[]
 }
 
