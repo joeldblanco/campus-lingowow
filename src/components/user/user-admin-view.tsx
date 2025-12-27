@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { UserCreateDialog } from '@/components/user/user-create-dialog'
 import { UserStatsCards } from '@/components/user/user-stats-cards'
 import { UsersDataTable } from '@/components/user/users-data-table'
-import { createUser, deleteUser, updateUser, getAllUsers } from '@/lib/actions/user'
+import { createUser, deleteUser, updateUser, getAllUsers, deleteMultipleUsers } from '@/lib/actions/user'
 import { CreateUserSchema } from '@/schemas/user'
 import { User, UserRole } from '@prisma/client'
 import { PlusCircle } from 'lucide-react'
@@ -64,7 +64,14 @@ export default function UserAdminView() {
   }
 
   const handleDeleteMultiple = (userIds: string[]) => {
-    setUsers(users.filter((user) => !userIds.includes(user.id)))
+    deleteMultipleUsers(userIds).then((response) => {
+      if (response && 'error' in response) {
+        toast.error(response.error)
+      } else {
+        toast.success('Usuarios eliminados correctamente')
+        setUsers(users.filter((user) => !userIds.includes(user.id)))
+      }
+    })
   }
 
   const handleUpdateUser = (updatedUser: User) => {
