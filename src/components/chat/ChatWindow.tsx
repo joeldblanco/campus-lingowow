@@ -1,40 +1,7 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import {
-  Search,
-  MoreVertical,
-  Paperclip,
-  Smile,
-  Send,
-  FileText,
-  Download,
-  Check,
-  CheckCheck,
-  Loader2,
-  Trash2,
-  Archive,
-  User,
-  X,
-  Mic,
-  Maximize2,
-  Play,
-  Pause,
-} from 'lucide-react'
-import { format } from 'date-fns'
-import { cn } from '@/lib/utils'
-import { pusherClient } from '@/lib/pusher'
-import {
-  sendFloatingMessage,
-  getConversationMessages,
-  markMessagesAsRead,
-} from '@/lib/actions/floating-chat'
-import { uploadFileByType } from '@/lib/actions/cloudinary'
-import EmojiPicker from 'emoji-picker-react'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import {
   DropdownMenu,
@@ -44,13 +11,79 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { Input } from '@/components/ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Textarea } from '@/components/ui/textarea'
+import { uploadFileByType } from '@/lib/actions/cloudinary'
+import {
+  getConversationMessages,
+  markMessagesAsRead,
+  sendFloatingMessage,
+} from '@/lib/actions/floating-chat'
+import { pusherClient } from '@/lib/pusher'
+import { cn } from '@/lib/utils'
+import { format } from 'date-fns'
+import EmojiPicker from 'emoji-picker-react'
+import {
+  Archive,
+  Check,
+  CheckCheck,
+  Download,
+  FileText,
+  Loader2,
+  Maximize2,
+  Mic,
+  MoreVertical,
+  Paperclip,
+  Pause,
+  Play,
+  Search,
+  Send,
+  Smile,
+  Trash2,
+  User,
+  X,
+} from 'lucide-react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { MessageType, TeamBadge } from '@prisma/client'
+
+interface ChatUser {
+  id: string
+  name: string
+  lastName: string
+  image: string | null
+  teamBadge: TeamBadge | null
+}
+
+interface FileMetadata {
+  url: string
+  name: string
+  size: number
+  type: string
+  isVoice?: boolean
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type MessageMetadata = any
+
+interface ChatMessage {
+  id: string
+  conversationId: string
+  senderId: string
+  content: string
+  type: MessageType
+  metadata: MessageMetadata
+  timestamp: Date
+  isRead: boolean
+  sender: ChatUser
+  isSending?: boolean
+}
 
 interface ChatWindowProps {
   conversationId: string
-  currentUser: any
-  otherUser: any
-  initialMessages?: any[]
+  currentUser: ChatUser
+  otherUser: ChatUser
+  initialMessages?: ChatMessage[]
 }
 
 export const ChatWindow: React.FC<ChatWindowProps> = ({
@@ -60,9 +93,9 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
   initialMessages = [],
 }) => {
   // --- Existing States ---
-  const [messages, setMessages] = useState<any[]>(initialMessages)
+  const [messages, setMessages] = useState<ChatMessage[]>(initialMessages)
   const [newMessage, setNewMessage] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [, setIsLoading] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
@@ -97,7 +130,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
       setIsLoading(true)
       const res = await getConversationMessages(conversationId, currentUser.id)
       if (res.success && res.messages) {
-        setMessages(res.messages)
+        setMessages(res.messages as ChatMessage[])
         await markMessagesAsRead(conversationId, currentUser.id)
       }
       setIsLoading(false)
@@ -113,7 +146,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
   useEffect(() => {
     const channel = pusherClient.subscribe(`conversation-${conversationId}`)
 
-    channel.bind('new-message', (message: any) => {
+    channel.bind('new-message', (message: ChatMessage) => {
       setMessages((prev) => {
         if (prev.find((m) => m.id === message.id)) return prev
         const pendingMatch = prev.find(
@@ -150,11 +183,12 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
   const sendMessageInternal = async (
     content: string,
     type: 'TEXT' | 'FILE' = 'TEXT',
-    metadata: any = null
+    metadata?: FileMetadata
   ) => {
     const tempId = `temp-${Date.now()}`
-    const tempMessage = {
+    const tempMessage: ChatMessage = {
       id: tempId,
+      conversationId: conversationId,
       content: content,
       senderId: currentUser.id,
       timestamp: new Date(),
@@ -176,7 +210,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
         if (prev.find((m) => m.id === res.message.id)) {
           return prev.filter((m) => m.id !== tempId)
         }
-        return prev.map((m) => (m.id === tempId ? res.message : m))
+        return prev.map((m) => (m.id === tempId ? (res.message as ChatMessage) : m))
       })
     } else {
       console.error('Failed to send message')
@@ -208,10 +242,10 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
       const res = await uploadFileByType(formData, fileType, 'chat-files')
       if (res.success && res.data) {
         await sendMessageInternal(file.name, 'FILE', {
-          fileName: file.name,
+          name: file.name,
           url: res.data.secure_url,
           size: file.size,
-          mimeType: file.type,
+          type: file.type,
         })
       } else {
         console.error('Upload failed', res.error)
@@ -252,10 +286,10 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
           const res = await uploadFileByType(formData, 'audio', 'chat-audio')
           if (res.success && res.data) {
             await sendMessageInternal('Mensaje de voz', 'FILE', {
-              fileName: audioFile.name,
+              name: audioFile.name,
               url: res.data.secure_url,
               size: audioFile.size,
-              mimeType: 'audio/webm',
+              type: 'audio/webm',
               isVoice: true,
             })
           } else {
@@ -339,7 +373,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 
     const generateWaveform = async () => {
       try {
-        const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+        const audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)()
         const response = await fetch(audioUrl)
         const arrayBuffer = await response.arrayBuffer()
         const audioBuffer = await audioContext.decodeAudioData(arrayBuffer)
@@ -368,7 +402,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
       }
     }
 
-    const drawWaveform = () => {
+    const drawWaveform = useCallback(() => {
       if (!canvasRef.current) return
 
       const canvas = canvasRef.current
@@ -396,7 +430,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 
         ctx.fillRect(x, y, barWidth - 1, barHeight)
       })
-    }
+    }, [waveformData, duration, currentTime])
 
     const handlePlay = () => {
       if (!audioRef.current) return
@@ -434,7 +468,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 
     useEffect(() => {
       drawWaveform()
-    }, [waveformData, currentTime])
+    }, [drawWaveform])
 
     useEffect(() => {
       const animate = () => {
@@ -455,7 +489,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
           cancelAnimationFrame(animationRef.current)
         }
       }
-    }, [isPlaying, currentTime])
+    }, [isPlaying, drawWaveform])
 
     return (
       <div className="flex items-center gap-3 p-0 bg-gray-50 rounded-lg">
@@ -465,11 +499,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
           onClick={handlePlay}
           className="h-8 w-8 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex-shrink-0"
         >
-          {isPlaying ? (
-            <Pause className="h-3.5 w-3.5" />
-          ) : (
-            <Play className="h-3.5 w-3.5" />
-          )}
+          {isPlaying ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
         </Button>
 
         <div className="flex-1 flex flex-col gap-1">
@@ -511,7 +541,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
     ? messages.filter((m) => m.content?.toLowerCase().includes(searchTerm.toLowerCase()))
     : messages
 
-  const renderMessageContent = (msg: any) => {
+  const renderMessageContent = (msg: ChatMessage) => {
     if (msg.type === 'FILE' || msg.metadata) {
       const mime = msg.metadata?.mimeType || ''
       const isImage = mime.startsWith('image/')
@@ -521,6 +551,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
       if (isImage) {
         return (
           <div className="relative group max-w-[280px]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={msg.metadata.url}
               alt={msg.metadata.fileName}
@@ -633,7 +664,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
       <div className="flex items-center justify-between p-4 border-b h-20 shrink-0">
         <div className="flex items-center gap-3">
           <Avatar className="h-10 w-10">
-            <AvatarImage src={otherUser.image} />
+            <AvatarImage src={otherUser.image || undefined} />
             <AvatarFallback>{otherUser.name[0]}</AvatarFallback>
           </Avatar>
           <div>
@@ -719,7 +750,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
                 <div className="w-8 flex-shrink-0">
                   {showAvatar && (
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={otherUser.image} />
+                      <AvatarImage src={otherUser.image || undefined} />
                       <AvatarFallback>{otherUser.name[0]}</AvatarFallback>
                     </Avatar>
                   )}
@@ -774,7 +805,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
               {isMe && (
                 <div className="w-8 flex-shrink-0">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={currentUser.image} />
+                    <AvatarImage src={currentUser.image || undefined} />
                     <AvatarFallback>{currentUser.name[0]}</AvatarFallback>
                   </Avatar>
                 </div>
@@ -918,6 +949,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
           </Button>
           <div className="relative w-full h-full flex flex-col items-center justify-center p-4">
             {lightboxMedia?.type === 'image' && (
+              // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={lightboxMedia.url}
                 alt="Vista previa"

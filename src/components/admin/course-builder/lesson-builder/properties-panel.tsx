@@ -1,37 +1,30 @@
 'use client'
 
-import {
-  Block,
-  GrammarBlock,
-  VocabularyBlock,
-  FillBlanksBlock,
-  MatchBlock,
-  TrueFalseBlock,
-  EssayBlock,
-  RecordingBlock,
-  FileBlock,
-  AudioBlock,
-  QuizBlock,
-  QuizQuestion,
-  DownloadableFile,
-  TextBlock,
-  VideoBlock,
-  ImageBlock,
-  StructuredContentBlock,
-  GrammarVisualizerBlock,
-} from '@/types/course-builder'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
 import { RichTextEditor } from '@/components/ui/rich-text-editor'
+import { Textarea } from '@/components/ui/textarea'
+import {
+  AudioBlock,
+  Block,
+  DownloadableFile,
+  EssayBlock,
+  FileBlock,
+  FillBlanksBlock,
+  GrammarBlock,
+  ImageBlock,
+  MatchBlock,
+  QuizBlock,
+  QuizQuestion,
+  RecordingBlock,
+  StructuredContentBlock,
+  TextBlock,
+  TrueFalseBlock,
+  VideoBlock,
+  VocabularyBlock,
+} from '@/types/course-builder'
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Switch } from '@/components/ui/switch'
-import { Card, CardContent } from '@/components/ui/card'
-import { Trash2, Plus, ArrowUp, ArrowDown, X, Mic, Square, Loader2, Play } from 'lucide-react'
-import { useCallback, useEffect, useState, useRef } from 'react'
-import { FileUpload } from '@/components/ui/file-upload'
-import { cn } from '@/lib/utils'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -42,7 +35,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { uploadFileByType, deleteCloudinaryFile } from '@/lib/actions/cloudinary'
+import { Card, CardContent } from '@/components/ui/card'
+import { FileUpload } from '@/components/ui/file-upload'
+import { Switch } from '@/components/ui/switch'
+import { deleteCloudinaryFile, uploadFileByType } from '@/lib/actions/cloudinary'
+import { cn } from '@/lib/utils'
+import { ArrowDown, ArrowUp, Loader2, Mic, Play, Plus, Square, Trash2, X } from 'lucide-react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 // Helper helper to clean up old files when replacing them
 const deleteFileFromUrl = async (url: string, resourceType: 'image' | 'video' | 'raw') => {
@@ -67,7 +66,9 @@ const deleteFileFromUrl = async (url: string, resourceType: 'image' | 'video' | 
 
       // Attempt removal
       // We don't await strictly or throw error to avoid blocking the UI update if this background task fails
-      deleteCloudinaryFile(publicId, resourceType).catch(e => console.error("Background delete failed", e))
+      deleteCloudinaryFile(publicId, resourceType).catch((e) =>
+        console.error('Background delete failed', e)
+      )
     }
   } catch (error) {
     console.error('Error parsing URL for deletion:', error)
@@ -107,7 +108,12 @@ export function PropertiesPanel({ block, onUpdate, onRemove, onClose }: Properti
       case 'recording':
         return <RecordingProperties block={block as RecordingBlock} onUpdate={onUpdate} />
       case 'structured-content':
-        return <StructuredContentProperties block={block as StructuredContentBlock} onUpdate={onUpdate} />
+        return (
+          <StructuredContentProperties
+            block={block as StructuredContentBlock}
+            onUpdate={onUpdate}
+          />
+        )
       default:
         return <GenericProperties block={block} onUpdate={onUpdate} />
     }
@@ -147,7 +153,7 @@ function StructuredContentProperties({
   onUpdate: (updates: Partial<Block>) => void
 }) {
   const [showAllTemplates, setShowAllTemplates] = useState(false)
-  const [pendingTemplate, setPendingTemplate] = useState<typeof templates[0] | null>(null)
+  const [pendingTemplate, setPendingTemplate] = useState<(typeof templates)[0] | null>(null)
 
   const templates = [
     {
@@ -162,10 +168,10 @@ function StructuredContentProperties({
           headers: ['Encabezado 1', 'Encabezado 2'],
           rows: [
             ['Celda 1', 'Celda 2'],
-            ['Celda 3', 'Celda 4']
-          ]
-        }
-      }
+            ['Celda 3', 'Celda 4'],
+          ],
+        },
+      },
     },
     {
       id: 'comparison',
@@ -180,10 +186,10 @@ function StructuredContentProperties({
           rows: [
             ['Precio', '$10', '$20'],
             ['Calidad', 'Alta', 'Media'],
-            ['Disponibilidad', 'Inmediata', 'Baja']
-          ]
-        }
-      }
+            ['Disponibilidad', 'Inmediata', 'Baja'],
+          ],
+        },
+      },
     },
     {
       id: 'vocab-list',
@@ -198,10 +204,10 @@ function StructuredContentProperties({
           rows: [
             ['Término 1', 'Definición 1'],
             ['Término 2', 'Definición 2'],
-            ['Término 3', 'Definición 3']
-          ]
-        }
-      }
+            ['Término 3', 'Definición 3'],
+          ],
+        },
+      },
     },
     {
       id: 'phrase-pairs',
@@ -216,10 +222,10 @@ function StructuredContentProperties({
           rows: [
             ['Hello', 'Hola'],
             ['How are you?', '¿Cómo estás?'],
-            ['Good morning', 'Buenos días']
-          ]
-        }
-      }
+            ['Good morning', 'Buenos días'],
+          ],
+        },
+      },
     },
     {
       id: 'irregular-verbs',
@@ -234,10 +240,10 @@ function StructuredContentProperties({
           rows: [
             ['Be', 'Was/Were', 'Been'],
             ['Go', 'Went', 'Gone'],
-            ['See', 'Saw', 'Seen']
-          ]
-        }
-      }
+            ['See', 'Saw', 'Seen'],
+          ],
+        },
+      },
     },
     {
       id: 'conjugation',
@@ -254,10 +260,10 @@ function StructuredContentProperties({
             ['You', 'Play'],
             ['He/She/It', 'Plays'],
             ['We', 'Play'],
-            ['They', 'Play']
-          ]
-        }
-      }
+            ['They', 'Play'],
+          ],
+        },
+      },
     },
     {
       id: 'travel-vocab',
@@ -272,26 +278,27 @@ function StructuredContentProperties({
           rows: [
             ['Airport', 'Aeropuerto', ''],
             ['Ticket', 'Boleto', ''],
-            ['Hotel', 'Hotel', 'Alojamiento']
-          ]
-        }
-      }
-    }
+            ['Hotel', 'Hotel', 'Alojamiento'],
+          ],
+        },
+      },
+    },
   ]
 
-  const applyTemplate = (template: typeof templates[0]) => {
+  const applyTemplate = (template: (typeof templates)[0]) => {
     onUpdate({
       title: template.data.title,
       subtitle: template.data.subtitle,
       content: template.data.content,
       config: {
         ...block.config,
-      }
+      },
     })
   }
 
-  const handleTemplateClick = (template: typeof templates[0]) => {
-    const hasContent = (block.content?.headers?.length ?? 0) > 0 || (block.content?.rows?.length ?? 0) > 0
+  const handleTemplateClick = (template: (typeof templates)[0]) => {
+    const hasContent =
+      (block.content?.headers?.length ?? 0) > 0 || (block.content?.rows?.length ?? 0) > 0
     if (hasContent) {
       setPendingTemplate(template)
     } else {
@@ -310,13 +317,54 @@ function StructuredContentProperties({
 
   // Simple icons for the properties panel local to this component
   const TypeIcon = ({ className }: { className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="4 7 4 4 20 4 20 7" /><line x1="9" x2="15" y1="20" y2="20" /><line x1="12" x2="12" y1="4" y2="20" /></svg>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <polyline points="4 7 4 4 20 4 20 7" />
+      <line x1="9" x2="15" y1="20" y2="20" />
+      <line x1="12" x2="12" y1="4" y2="20" />
+    </svg>
   )
   const RowsIcon = ({ className }: { className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="18" height="18" x="3" y="3" rx="2" ry="2" /><line x1="3" x2="21" y1="9" y2="9" /><line x1="3" x2="21" y1="15" y2="15" /></svg>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+      <line x1="3" x2="21" y1="9" y2="9" />
+      <line x1="3" x2="21" y1="15" y2="15" />
+    </svg>
   )
   const GridIcon = ({ className }: { className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="18" height="18" x="3" y="3" rx="2" ry="2" /><line x1="3" x2="21" y1="9" y2="9" /><line x1="3" x2="21" y1="15" y2="15" /><line x1="9" x2="9" y1="3" y2="21" /><line x1="15" x2="15" y1="3" y2="21" /></svg>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+      <line x1="3" x2="21" y1="9" y2="9" />
+      <line x1="3" x2="21" y1="15" y2="15" />
+      <line x1="9" x2="9" y1="3" y2="21" />
+      <line x1="15" x2="15" y1="3" y2="21" />
+    </svg>
   )
 
   return (
@@ -342,12 +390,16 @@ function StructuredContentProperties({
       <div>
         <div className="flex items-center justify-between mb-4">
           <Label className="text-xs uppercase text-muted-foreground font-bold">Plantillas</Label>
-          <Button variant="link" className="h-auto p-0 text-xs text-primary" onClick={() => setShowAllTemplates(!showAllTemplates)}>
+          <Button
+            variant="link"
+            className="h-auto p-0 text-xs text-primary"
+            onClick={() => setShowAllTemplates(!showAllTemplates)}
+          >
             {showAllTemplates ? 'Ver menos' : 'Ver todas'}
           </Button>
         </div>
         <div className="grid grid-cols-2 gap-2">
-          {displayedTemplates.map(t => (
+          {displayedTemplates.map((t) => (
             <div
               key={t.id}
               className="border rounded-lg p-3 cursor-pointer hover:border-primary hover:bg-primary/5 transition-all text-center flex flex-col items-center gap-2"
@@ -367,57 +419,73 @@ function StructuredContentProperties({
       </div>
 
       <div>
-        <Label className="text-xs uppercase text-muted-foreground font-bold mb-4 block">Configuración de Tabla</Label>
+        <Label className="text-xs uppercase text-muted-foreground font-bold mb-4 block">
+          Configuración de Tabla
+        </Label>
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <TypeIcon className="h-4 w-4 text-muted-foreground" />
-              <Label htmlFor="header-row" className="font-normal cursor-pointer">Fila de Encabezado</Label>
+              <Label htmlFor="header-row" className="font-normal cursor-pointer">
+                Fila de Encabezado
+              </Label>
             </div>
             <Switch
               id="header-row"
               checked={block.config?.hasHeaderRow ?? true}
-              onCheckedChange={(checked) => onUpdate({ config: { ...block.config, hasHeaderRow: checked } })}
+              onCheckedChange={(checked) =>
+                onUpdate({ config: { ...block.config, hasHeaderRow: checked } })
+              }
             />
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <RowsIcon className="h-4 w-4 text-muted-foreground" />
-              <Label htmlFor="striped-rows" className="font-normal cursor-pointer">Filas Alternas</Label>
+              <Label htmlFor="striped-rows" className="font-normal cursor-pointer">
+                Filas Alternas
+              </Label>
             </div>
             <Switch
               id="striped-rows"
               checked={block.config?.hasStripedRows ?? false}
-              onCheckedChange={(checked) => onUpdate({ config: { ...block.config, hasStripedRows: checked } })}
+              onCheckedChange={(checked) =>
+                onUpdate({ config: { ...block.config, hasStripedRows: checked } })
+              }
             />
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <GridIcon className="h-4 w-4 text-muted-foreground" />
-              <Label htmlFor="borders" className="font-normal cursor-pointer">Bordes</Label>
+              <Label htmlFor="borders" className="font-normal cursor-pointer">
+                Bordes
+              </Label>
             </div>
             <Switch
               id="borders"
               checked={block.config?.hasBorders ?? true}
-              onCheckedChange={(checked) => onUpdate({ config: { ...block.config, hasBorders: checked } })}
+              onCheckedChange={(checked) =>
+                onUpdate({ config: { ...block.config, hasBorders: checked } })
+              }
             />
           </div>
         </div>
       </div>
 
-      <AlertDialog open={!!pendingTemplate} onOpenChange={(open) => !open && setPendingTemplate(null)}>
+      <AlertDialog
+        open={!!pendingTemplate}
+        onOpenChange={(open) => !open && setPendingTemplate(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>¿Cambiar plantilla?</AlertDialogTitle>
             <AlertDialogDescription>
-              Esta acción reemplazará todo el contenido actual de la tabla con la plantilla seleccionada. Esta acción no se puede deshacer.
+              Esta acción reemplazará todo el contenido actual de la tabla con la plantilla
+              seleccionada. Esta acción no se puede deshacer.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmTemplateChange}>
-              Confirmar
-            </AlertDialogAction>
+            <AlertDialogAction onClick={confirmTemplateChange}>Confirmar</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -1816,12 +1884,14 @@ function AudioProperties({
 
         <div className="space-y-2">
           <Label className="text-xs text-muted-foreground">Grabar Micrófono</Label>
-          <AudioRecorder onUploadComplete={async (url) => {
-            if (block.url) {
-              await deleteFileFromUrl(block.url, 'video')
-            }
-            onUpdate({ url })
-          }} />
+          <AudioRecorder
+            onUploadComplete={async (url) => {
+              if (block.url) {
+                await deleteFileFromUrl(block.url, 'video')
+              }
+              onUpdate({ url })
+            }}
+          />
         </div>
       </div>
 

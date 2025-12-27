@@ -1,89 +1,146 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import { pusherClient } from '@/lib/pusher'
+import { MessageType, TeamBadge, UserRole } from '@prisma/client'
+import React, { useEffect, useState } from 'react'
 import { ChatSidebar } from './ChatSidebar'
 import { ChatWindow } from './ChatWindow'
-import { pusherClient } from '@/lib/pusher'
-import { cn } from '@/lib/utils'
 
-interface MessagesClientProps {
-    initialConversations: any[]
-    currentUser: any
+interface ChatUser {
+  id: string
+  name: string
+  lastName: string
+  image: string | null
+  teamBadge: TeamBadge | null
+  roles?: UserRole[]
 }
 
-export const MessagesClient: React.FC<MessagesClientProps> = ({ initialConversations, currentUser }) => {
-    const [conversations, setConversations] = useState(initialConversations)
-    const [selectedId, setSelectedId] = useState<string | null>(null)
+interface ChatParticipant {
+  id: string
+  conversationId: string
+  userId: string
+  joinedAt: Date
+  lastReadAt: Date | null
+  isArchived: boolean
+  user: ChatUser
+}
 
-    const selectedConversation = conversations.find(c => c.id === selectedId)
-    const otherUser = selectedConversation?.participants.find((p: any) => p.userId !== currentUser.id)?.user
+interface ChatMessage {
+  id: string
+  conversationId: string
+  senderId: string
+  content: string
+  type: MessageType
+  metadata: Record<string, unknown> | null
+  timestamp: Date
+  isRead: boolean
+  sender: ChatUser
+}
 
-    useEffect(() => {
-        // Listen for new conversations or updates to sidebar list
-        const channel = pusherClient.subscribe(`user-${currentUser.id}`)
+interface Conversation {
+  id: string
+  title: string | null
+  isGroup: boolean
+  lastMessage: string | null
+  lastMessageAt: Date | null
+  createdAt: Date
+  updatedAt: Date
+  participants: ChatParticipant[]
+  messages: ChatMessage[]
+}
 
-        channel.bind('conversation-update', (data: any) => {
-            setConversations(prev => {
-                const index = prev.findIndex(c => c.id === data.conversationId)
-                if (index > -1) {
-                    const updated = [...prev]
-                    updated[index] = {
-                        ...updated[index],
-                        lastMessage: data.lastMessage,
-                        lastMessageAt: data.lastMessageAt
-                        // Unread count needing logic update in backend or here
-                    }
-                    // Move to top
-                    updated.sort((a, b) => new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime())
-                    return updated
-                }
-                return prev
-            })
-        })
+interface ConversationUpdateEvent {
+  conversationId: string
+  lastMessage: string | null
+  lastMessageAt: Date | null
+  unreadCount: number
+}
 
-        channel.bind('new-conversation', (data: any) => {
-            setConversations(prev => [data, ...prev])
-        })
+interface MessagesClientProps {
+  initialConversations: Conversation[]
+  currentUser: ChatUser
+}
 
-        return () => {
-            pusherClient.unsubscribe(`user-${currentUser.id}`)
+export const MessagesClient: React.FC<MessagesClientProps> = ({
+  initialConversations,
+  currentUser,
+}) => {
+  const [conversations, setConversations] = useState(initialConversations)
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+
+  const selectedConversation = conversations.find((c) => c.id === selectedId)
+  const otherUser = selectedConversation?.participants.find(
+    (p) => p.userId !== currentUser.id
+  )?.user
+
+  useEffect(() => {
+    // Listen for new conversations or updates to sidebar list
+    const channel = pusherClient.subscribe(`user-${currentUser.id}`)
+
+    channel.bind('conversation-update', (data: ConversationUpdateEvent) => {
+      setConversations((prev) => {
+        const index = prev.findIndex((c) => c.id === data.conversationId)
+        if (index > -1) {
+          const updated = [...prev]
+          updated[index] = {
+            ...updated[index],
+            lastMessage: data.lastMessage,
+            lastMessageAt: data.lastMessageAt,
+            // Unread count needing logic update in backend or here
+          }
+          // Move to top
+          updated.sort(
+            (a, b) => new Date(b.lastMessageAt || 0).getTime() - new Date(a.lastMessageAt || 0).getTime()
+          )
+          return updated
         }
-    }, [currentUser.id])
+        return prev
+      })
+    })
 
-    const handleNewConversation = (conversation: any) => {
-        setConversations(prev => {
-            // Check if already exists
-            if (prev.find(c => c.id === conversation.id)) return prev
-            return [conversation, ...prev]
-        })
-        setSelectedId(conversation.id)
+    channel.bind('new-conversation', (data: Conversation) => {
+      setConversations((prev) => [data, ...prev])
+    })
+
+    return () => {
+      pusherClient.unsubscribe(`user-${currentUser.id}`)
     }
+  }, [currentUser.id])
 
-    return (
-        <div className="flex h-[calc(100vh-6rem)] bg-white border rounded-lg shadow-sm overflow-hidden">
-            <ChatSidebar
-                conversations={conversations}
-                selectedId={selectedId}
-                onSelect={setSelectedId}
-                onNewConversation={handleNewConversation}
-                user={currentUser}
-            />
-            <div className="flex-1 min-w-0">
-                {selectedId && otherUser ? (
-                    <ChatWindow
-                        key={selectedId} // Force remount on change
-                        conversationId={selectedId}
-                        currentUser={currentUser}
-                        otherUser={otherUser}
-                    />
-                ) : (
-                    <div className="flex items-center justify-center h-full text-gray-400 bg-gray-50/50">
-                        <div className="text-center">
-                            <p>Selecciona una conversación para empezar a chatear</p>
-                        </div>
-                    </div>
-                )}
+  const handleNewConversation = (conversation: Conversation) => {
+    setConversations((prev) => {
+      // Check if already exists
+      if (prev.find((c) => c.id === conversation.id)) return prev
+      return [conversation, ...prev]
+    })
+    setSelectedId(conversation.id)
+  }
+
+  return (
+    <div className="flex h-[calc(100vh-6rem)] bg-white border rounded-lg shadow-sm overflow-hidden">
+      <ChatSidebar
+        conversations={conversations}
+        selectedId={selectedId}
+        onSelect={setSelectedId}
+        onNewConversation={handleNewConversation}
+        user={currentUser}
+      />
+      <div className="flex-1 min-w-0">
+        {selectedId && otherUser ? (
+          <ChatWindow
+            key={selectedId} // Force remount on change
+            conversationId={selectedId}
+            currentUser={currentUser}
+            otherUser={otherUser}
+          />
+        ) : (
+          <div className="flex items-center justify-center h-full text-gray-400 bg-gray-50/50">
+            <div className="text-center">
+              <p>Selecciona una conversación para empezar a chatear</p>
             </div>
-        </div>
-    )
+          </div>
+        )}
+      </div>
+    </div>
+  )
 }

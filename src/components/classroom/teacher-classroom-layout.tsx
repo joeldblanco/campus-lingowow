@@ -1,13 +1,12 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
 import { ClassroomContainer } from '@/components/classroom/classroom-container'
-import { createJitsiMeeting, endJitsiMeeting } from '@/lib/actions/jitsi'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
 import { checkTeacherAttendance, markTeacherAttendance } from '@/lib/actions/attendance'
+import { createJitsiMeeting, endJitsiMeeting } from '@/lib/actions/jitsi'
 import { Loader2 } from 'lucide-react'
-import { LessonForView } from '@/types/lesson'
+import { useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 interface TeacherClassroomLayoutProps {
   classId: string
@@ -24,17 +23,16 @@ interface TeacherClassroomLayoutProps {
 export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
   classId,
   teacherId,
-  studentId,
-  courseName,
-  lessonName,
   bookingId,
   day,
   timeSlot,
-  currentUserName
+  currentUserName,
 }) => {
   const router = useRouter()
   const [isInitializing, setIsInitializing] = useState(true)
-  const [roomDetails, setRoomDetails] = useState<{ roomName: string, jwt: string | null } | null>(null)
+  const [roomDetails, setRoomDetails] = useState<{ roomName: string; jwt: string | null } | null>(
+    null
+  )
   const [attendanceChecked, setAttendanceChecked] = useState(false)
 
   // 1. Mark Attendance
@@ -77,7 +75,7 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
           body: JSON.stringify({
             roomName: roomName,
             bookingId: bookingId,
-          })
+          }),
         })
 
         if (!tokenResponse.ok) {
@@ -91,7 +89,6 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
         }
 
         setRoomDetails({ roomName, jwt: token }) // Token can be null now
-
       } catch (error) {
         console.error('Error initializing classroom:', error)
         toast.error('Error al conectar con el aula virtual')
@@ -109,6 +106,7 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
       await endJitsiMeeting(bookingId)
       router.push('/dashboard')
     } catch (error) {
+      console.error('Error ending meeting:', error)
       toast.error('Error al guardar el estado de la clase')
     }
   }

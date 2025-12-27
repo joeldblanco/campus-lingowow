@@ -2,9 +2,17 @@
 
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
-import { getCurrentDate } from '@/lib/utils/date'
 import { pusherServer } from '@/lib/pusher'
-import { MessageType } from '@prisma/client'
+import { getCurrentDate } from '@/lib/utils/date'
+import { MessageType, Prisma } from '@prisma/client'
+
+// Tipo para metadata de archivos en mensajes
+type FileMetadata = {
+  url: string
+  name: string
+  size: number
+  type: string
+}
 
 export async function getFloatingConversations(userId: string) {
   try {
@@ -181,7 +189,7 @@ export async function sendFloatingMessage(
   senderId: string,
   content: string,
   type: MessageType = 'TEXT',
-  metadata: any = null
+  metadata?: FileMetadata
 ) {
   try {
     const session = await auth()
@@ -210,7 +218,7 @@ export async function sendFloatingMessage(
         senderId,
         content,
         type,
-        metadata,
+        metadata: metadata ? (metadata as Prisma.InputJsonValue) : Prisma.JsonNull,
       },
       include: {
         sender: {
