@@ -245,7 +245,7 @@ export function InlineAuthForm({ onSuccess }: InlineAuthFormProps) {
           </TabsContent>
 
           <TabsContent value="register">
-            <form onSubmit={handleRegister} className="space-y-4">
+            <form onSubmit={handleRegister} className="relative space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="register-name">Nombre</Label>
