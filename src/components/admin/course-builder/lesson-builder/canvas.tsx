@@ -183,9 +183,9 @@ function SortableBlockItem({
                 <GripVertical className="h-4 w-4 text-muted-foreground" />
             </div>
 
-            {/* Block Content - Editable if selected, otherwise Preview */}
-            <div>
-                {isSelected && onUpdate ? (
+            {/* Block Content - Only structured-content edits inline, others use panel */}
+            <div className={block.type !== 'structured-content' ? 'pointer-events-none' : ''}>
+                {isSelected && onUpdate && block.type === 'structured-content' ? (
                     <BlockContentEditor block={block} onUpdate={onUpdate} />
                 ) : (
                     <BlockPreview block={block} />

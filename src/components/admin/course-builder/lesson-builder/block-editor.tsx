@@ -21,24 +21,21 @@ import {
   Block,
   BLOCK_TEMPLATES,
   ColumnBlock,
-  EmbedBlock,
   DownloadableFile,
+  EmbedBlock,
   FileBlock,
   ImageBlock,
   LayoutBlock,
   QuizBlock,
+  StructuredContentBlock,
   TabGroupBlock,
   TabItemBlock,
   TextBlock,
   VideoBlock,
-  StructuredContentBlock
 } from '@/types/course-builder'
-import { useSortable } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
 import {
   Edit3,
   FileText,
-  GripVertical,
   HelpCircle,
   Link,
   Image as LucideImage,
@@ -66,12 +63,10 @@ interface BlockEditorProps {
   onCancel: () => void
 }
 
-
-
 // Exported component for use in other parts of the builder (e.g. Canvas)
 export function BlockContentEditor({
   block,
-  onUpdate
+  onUpdate,
 }: {
   block: Block
   onUpdate: (updates: Partial<Block>) => void
@@ -211,7 +206,9 @@ export function BlockEditor({
       case 'quiz':
         return <QuizBlockEditor block={localBlock as QuizBlock} onUpdate={handleUpdate} />
       case 'assignment':
-        return <AssignmentBlockEditor block={localBlock as AssignmentBlock} onUpdate={handleUpdate} />
+        return (
+          <AssignmentBlockEditor block={localBlock as AssignmentBlock} onUpdate={handleUpdate} />
+        )
       case 'file':
         return <FileBlockEditor block={localBlock as FileBlock} onUpdate={handleUpdate} />
       case 'embed':
@@ -221,7 +218,12 @@ export function BlockEditor({
       case 'layout':
         return <LayoutBlockEditor block={localBlock as LayoutBlock} onUpdate={handleUpdate} />
       case 'structured-content':
-        return <StructuredContentEditor block={localBlock as StructuredContentBlock} onUpdate={handleUpdate} />
+        return (
+          <StructuredContentEditor
+            block={localBlock as StructuredContentBlock}
+            onUpdate={handleUpdate}
+          />
+        )
       default:
         return <div>Tipo de bloque no soportado</div>
     }
@@ -288,7 +290,7 @@ export function BlockEditor({
                 {getBlockIcon(block.type)}
                 <span className="font-medium">{getBlockTitle(block.type)}</span>
               </div>
-              <div className="flex items-center gap-2 opaciy-0 group-hover:opacity-100 transition-opacity">
+              <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <Button size="sm" variant="outline" onClick={onEdit}>
                   <Edit3 className="h-4 w-4" />
                 </Button>
@@ -790,7 +792,7 @@ function TabGroupBlockEditor({
   onUpdate: (updates: Partial<Block>) => void
 }) {
   const handleTabTitleChange = (tabId: string, newTitle: string) => {
-    const updatedChildren = block.children?.map(child =>
+    const updatedChildren = block.children?.map((child) =>
       child.id === tabId ? { ...child, title: newTitle } : child
     )
     onUpdate({ children: updatedChildren as Block[] })
@@ -800,15 +802,15 @@ function TabGroupBlockEditor({
     const newTab: TabItemBlock = {
       id: `tab-${Date.now()}`,
       type: 'tab_item',
-      order: (block.children?.length || 0),
+      order: block.children?.length || 0,
       title: `Nueva Pestaña`,
-      children: []
+      children: [],
     }
     onUpdate({ children: [...(block.children || []), newTab] })
   }
 
   const removeTab = (tabId: string) => {
-    const updatedChildren = block.children?.filter(child => child.id !== tabId)
+    const updatedChildren = block.children?.filter((child) => child.id !== tabId)
     onUpdate({ children: updatedChildren })
   }
 
@@ -836,8 +838,8 @@ function TabGroupBlockEditor({
         ))}
       </div>
       <div className="text-sm text-muted-foreground mt-4 p-4 bg-muted rounded-md">
-        Nota: El contenido de cada pestaña se edita en la vista de detalle de la lección o guardando este bloque primero.
-        (Actualmente simplificado para gestión de estructura).
+        Nota: El contenido de cada pestaña se edita en la vista de detalle de la lección o guardando
+        este bloque primero. (Actualmente simplificado para gestión de estructura).
       </div>
     </div>
   )
@@ -849,7 +851,10 @@ function TabGroupBlockPreview({ block }: { block: TabGroupBlock }) {
       <div className="border rounded-lg overflow-hidden">
         <div className="flex bg-muted border-b">
           {block.children?.map((tab) => (
-            <div key={tab.id} className="px-4 py-2 text-sm font-medium border-r bg-background first:rounded-tl-lg">
+            <div
+              key={tab.id}
+              className="px-4 py-2 text-sm font-medium border-r bg-background first:rounded-tl-lg"
+            >
               {(tab as TabItemBlock).title}
             </div>
           ))}
@@ -871,8 +876,8 @@ function LayoutBlockEditor({
   onUpdate: (updates: Partial<Block>) => void
 }) {
   const handleColumnsChange = (num: number) => {
-    let newChildren = [...(block.children || [])];
-    const currentCount = newChildren.length;
+    let newChildren = [...(block.children || [])]
+    const currentCount = newChildren.length
 
     if (num > currentCount) {
       // Add columns
@@ -881,21 +886,21 @@ function LayoutBlockEditor({
           id: `col-${Date.now()}-${i}`,
           type: 'column',
           order: i,
-          children: []
-        });
+          children: [],
+        })
       }
     } else if (num < currentCount) {
       // Remove columns (simple truncation for now, might need confirmation if content exists)
-      newChildren = newChildren.slice(0, num);
+      newChildren = newChildren.slice(0, num)
     }
-    onUpdate({ columns: num, children: newChildren });
+    onUpdate({ columns: num, children: newChildren })
   }
 
   const handleColumnUpdate = (colId: string, updates: Partial<Block>) => {
-    const newChildren = block.children?.map(child =>
+    const newChildren = block.children?.map((child) =>
       child.id === colId ? { ...child, ...updates } : child
-    );
-    onUpdate({ children: newChildren as Block[] });
+    )
+    onUpdate({ children: newChildren as Block[] })
   }
 
   return (
@@ -903,10 +908,10 @@ function LayoutBlockEditor({
       <div>
         <label className="text-sm font-medium mb-2 block">Número de Columnas</label>
         <div className="flex gap-2">
-          {[1, 2, 3, 4].map(num => (
+          {[1, 2, 3, 4].map((num) => (
             <Button
               key={num}
-              variant={block.columns === num ? "default" : "outline"}
+              variant={block.columns === num ? 'default' : 'outline'}
               onClick={() => handleColumnsChange(num)}
               size="sm"
             >
@@ -916,8 +921,11 @@ function LayoutBlockEditor({
         </div>
       </div>
 
-      <div className="grid gap-4 mt-6" style={{ gridTemplateColumns: `repeat(${block.columns}, 1fr)` }}>
-        {block.children?.map(col => (
+      <div
+        className="grid gap-4 mt-6"
+        style={{ gridTemplateColumns: `repeat(${block.columns}, 1fr)` }}
+      >
+        {block.children?.map((col) => (
           <ColumnBlockEditor
             key={col.id}
             block={col as ColumnBlock}
@@ -929,39 +937,45 @@ function LayoutBlockEditor({
   )
 }
 
-function ColumnBlockEditor({ block, onUpdate }: { block: ColumnBlock, onUpdate: (updates: Partial<Block>) => void }) {
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [showMenu, setShowMenu] = useState(false);
+function ColumnBlockEditor({
+  block,
+  onUpdate,
+}: {
+  block: ColumnBlock
+  onUpdate: (updates: Partial<Block>) => void
+}) {
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [showMenu, setShowMenu] = useState(false)
 
   // We need a mini "add block" function for this column
   const handleAddBlock = () => {
-    setShowMenu(true);
+    setShowMenu(true)
   }
 
-  const insertBlock = (template: typeof BLOCK_TEMPLATES[0]) => {
+  const insertBlock = (template: (typeof BLOCK_TEMPLATES)[0]) => {
     const newBlock: Block = {
       ...template.defaultData,
       id: `nested-${Date.now()}`,
-      order: (block.children?.length || 0)
+      order: block.children?.length || 0,
     }
     // Deep clone to avoid reference issues
-    const clonedBlock = JSON.parse(JSON.stringify(newBlock));
+    const clonedBlock = JSON.parse(JSON.stringify(newBlock))
 
-    const newChildren = [...(block.children || []), clonedBlock];
-    onUpdate({ children: newChildren });
-    setShowMenu(false);
+    const newChildren = [...(block.children || []), clonedBlock]
+    onUpdate({ children: newChildren })
+    setShowMenu(false)
   }
 
   const handleChildUpdate = (childId: string, updates: Partial<Block>) => {
-    const newChildren = block.children?.map(child =>
+    const newChildren = block.children?.map((child) =>
       child.id === childId ? { ...child, ...updates } : child
-    ) as Block[];
-    onUpdate({ children: newChildren });
+    ) as Block[]
+    onUpdate({ children: newChildren })
   }
 
   const handleChildRemove = (childId: string) => {
-    const newChildren = block.children?.filter(child => child.id !== childId);
-    onUpdate({ children: newChildren });
+    const newChildren = block.children?.filter((child) => child.id !== childId)
+    onUpdate({ children: newChildren })
   }
 
   return (
@@ -981,15 +995,31 @@ function ColumnBlockEditor({ block, onUpdate }: { block: ColumnBlock, onUpdate: 
       {/* Mini Menu for Column */}
       {showMenu && (
         <div className="absolute top-10 left-0 z-50 bg-popover border rounded shadow-lg p-2 grid grid-cols-2 gap-2 w-64">
-          {BLOCK_TEMPLATES.filter(t => t.type !== 'layout' && t.type !== 'tab_group').map(t => {
+          {BLOCK_TEMPLATES.filter((t) => t.type !== 'layout' && t.type !== 'tab_group').map((t) => {
             const Icon = t.icon
             return (
-              <Button key={t.type} variant="ghost" size="sm" className="justify-start h-auto" onClick={() => insertBlock(t)}>
-                <span className="mr-2"><Icon className="h-4 w-4" /></span> <span className="text-xs">{t.label}</span>
+              <Button
+                key={t.type}
+                variant="ghost"
+                size="sm"
+                className="justify-start h-auto"
+                onClick={() => insertBlock(t)}
+              >
+                <span className="mr-2">
+                  <Icon className="h-4 w-4" />
+                </span>{' '}
+                <span className="text-xs">{t.label}</span>
               </Button>
             )
           })}
-          <Button variant="ghost" size="sm" className="col-span-2 text-xs" onClick={() => setShowMenu(false)}>Cancelar</Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="col-span-2 text-xs"
+            onClick={() => setShowMenu(false)}
+          >
+            Cancelar
+          </Button>
         </div>
       )}
     </div>
@@ -999,9 +1029,9 @@ function ColumnBlockEditor({ block, onUpdate }: { block: ColumnBlock, onUpdate: 
 function LayoutBlockPreview({ block }: { block: LayoutBlock }) {
   return (
     <div className="grid gap-6" style={{ gridTemplateColumns: `repeat(${block.columns}, 1fr)` }}>
-      {block.children?.map(col => (
+      {block.children?.map((col) => (
         <div key={col.id} className="min-h-[50px]">
-          {col.children?.map(child => (
+          {col.children?.map((child) => (
             <div key={child.id} className="mb-4 last:mb-0">
               {/* We call a helper that dispatches to specific previews */}
               <SimpleBlockPreview block={child} />
@@ -1015,16 +1045,27 @@ function LayoutBlockPreview({ block }: { block: LayoutBlock }) {
 
 function SimpleBlockPreview({ block }: { block: Block }) {
   switch (block.type) {
-    case 'text': return <TextBlockPreview block={block as TextBlock} />
-    case 'video': return <VideoBlockPreview block={block as VideoBlock} />
-    case 'image': return <ImageBlockPreview block={block as ImageBlock} />
-    case 'audio': return <AudioBlockPreview block={block as AudioBlock} />
-    case 'quiz': return <QuizBlockPreview block={block as QuizBlock} />
-    case 'assignment': return <AssignmentBlockPreview block={block as AssignmentBlock} />
-    case 'file': return <FileBlockPreview block={block as FileBlock} />
-    case 'embed': return <EmbedBlockPreview block={block as EmbedBlock} />
-    case 'tab_group': return <TabGroupBlockPreview block={block as TabGroupBlock} />
-    case 'layout': return <LayoutBlockPreview block={block as LayoutBlock} />
-    default: return <div>Unknown</div>
+    case 'text':
+      return <TextBlockPreview block={block as TextBlock} />
+    case 'video':
+      return <VideoBlockPreview block={block as VideoBlock} />
+    case 'image':
+      return <ImageBlockPreview block={block as ImageBlock} />
+    case 'audio':
+      return <AudioBlockPreview block={block as AudioBlock} />
+    case 'quiz':
+      return <QuizBlockPreview block={block as QuizBlock} />
+    case 'assignment':
+      return <AssignmentBlockPreview block={block as AssignmentBlock} />
+    case 'file':
+      return <FileBlockPreview block={block as FileBlock} />
+    case 'embed':
+      return <EmbedBlockPreview block={block as EmbedBlock} />
+    case 'tab_group':
+      return <TabGroupBlockPreview block={block as TabGroupBlock} />
+    case 'layout':
+      return <LayoutBlockPreview block={block as LayoutBlock} />
+    default:
+      return <div>Unknown</div>
   }
 }
