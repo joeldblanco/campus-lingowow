@@ -31,6 +31,16 @@ import { Trash2, Plus, ArrowUp, ArrowDown, X, Mic, Square, Loader2, Play } from 
 import { useCallback, useEffect, useState, useRef } from 'react'
 import { FileUpload } from '@/components/ui/file-upload'
 import { cn } from '@/lib/utils'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import { uploadFileByType, deleteCloudinaryFile } from '@/lib/actions/cloudinary'
 
 interface PropertiesPanelProps {
@@ -106,6 +116,7 @@ function StructuredContentProperties({
   onUpdate: (updates: Partial<Block>) => void
 }) {
   const [showAllTemplates, setShowAllTemplates] = useState(false)
+  const [pendingTemplate, setPendingTemplate] = useState<typeof templates[0] | null>(null)
 
   const templates = [
     {
@@ -242,11 +253,26 @@ function StructuredContentProperties({
       title: template.data.title,
       subtitle: template.data.subtitle,
       content: template.data.content,
-      // Config is NOT overwritten by default to respect user choice.
       config: {
         ...block.config,
       }
     })
+  }
+
+  const handleTemplateClick = (template: typeof templates[0]) => {
+    const hasContent = (block.content?.headers?.length ?? 0) > 0 || (block.content?.rows?.length ?? 0) > 0
+    if (hasContent) {
+      setPendingTemplate(template)
+    } else {
+      applyTemplate(template)
+    }
+  }
+
+  const confirmTemplateChange = () => {
+    if (pendingTemplate) {
+      applyTemplate(pendingTemplate)
+      setPendingTemplate(null)
+    }
   }
 
   const displayedTemplates = showAllTemplates ? templates : templates.slice(0, 4)
@@ -294,7 +320,7 @@ function StructuredContentProperties({
             <div
               key={t.id}
               className="border rounded-lg p-3 cursor-pointer hover:border-primary hover:bg-primary/5 transition-all text-center flex flex-col items-center gap-2"
-              onClick={() => applyTemplate(t)}
+              onClick={() => handleTemplateClick(t)}
             >
               <div className="h-8 w-8 bg-muted rounded-full flex items-center justify-center">
                 {/* Simple icon placeholder logic */}
@@ -347,6 +373,23 @@ function StructuredContentProperties({
           </div>
         </div>
       </div>
+
+      <AlertDialog open={!!pendingTemplate} onOpenChange={(open) => !open && setPendingTemplate(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>¿Cambiar plantilla?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta acción reemplazará todo el contenido actual de la tabla con la plantilla seleccionada. Esta acción no se puede deshacer.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmTemplateChange}>
+              Confirmar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

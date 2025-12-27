@@ -184,7 +184,7 @@ function SortableBlockItem({
             </div>
 
             {/* Block Content - Editable if selected, otherwise Preview */}
-            <div className={cn(!isSelected && "pointer-events-none")}>
+            <div>
                 {isSelected && onUpdate ? (
                     <BlockContentEditor block={block} onUpdate={onUpdate} />
                 ) : (

@@ -510,6 +510,7 @@ export function LessonBuilder({
                   // Functionality for + button in empty state
                   setIsAddBlockModalOpen(true)
                 }}
+                onUpdateBlock={onUpdateBlock}
               />
             </div>
 

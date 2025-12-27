@@ -66,41 +66,7 @@ interface BlockEditorProps {
   onCancel: () => void
 }
 
-// Sortable wrapper for blocks
-function SortableBlockWrapper({
-  block,
-  children,
-  isEditing,
-}: {
-  block: Block
-  children: React.ReactNode
-  isEditing: boolean
-}) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-    id: block.id,
-  })
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  }
-
-  return (
-    <div ref={setNodeRef} style={style} className={isEditing ? '' : 'group'}>
-      {!isEditing && (
-        <div
-          {...attributes}
-          {...listeners}
-          className="absolute left-2 top-1/2 transform -translate-y-1/2 cursor-grab active:cursor-grabbing p-1 opacity-0 group-hover:opacity-100 transition-opacity bg-background border rounded shadow-sm z-10 hover:bg-muted"
-        >
-          <GripVertical className="h-4 w-4 text-muted-foreground pointer-events-none" />
-        </div>
-      )}
-      {children}
-    </div>
-  )
-}
 
 // Exported component for use in other parts of the builder (e.g. Canvas)
 export function BlockContentEditor({
@@ -291,58 +257,56 @@ export function BlockEditor({
   }
 
   return (
-    <SortableBlockWrapper block={block} isEditing={isEditing}>
-      <Card
-        className={`${isEditing ? 'ring-2 ring-primary' : 'hover:shadow-md transition-shadow'} relative`}
-      >
-        {isEditing ? (
-          <>
-            <CardHeader className="pb-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  {getBlockIcon(block.type)}
-                  <span className="font-medium">{getBlockTitle(block.type)}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Button size="sm" variant="outline" onClick={handleCancel}>
-                    <X className="h-4 w-4" />
-                  </Button>
-                  <Button size="sm" onClick={handleSave}>
-                    <Save className="h-4 w-4" />
-                  </Button>
-                </div>
+    <Card
+      className={`${isEditing ? 'ring-2 ring-primary' : 'hover:shadow-md transition-shadow'} relative`}
+    >
+      {isEditing ? (
+        <>
+          <CardHeader className="pb-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                {getBlockIcon(block.type)}
+                <span className="font-medium">{getBlockTitle(block.type)}</span>
               </div>
-            </CardHeader>
-            <CardContent>{renderEditingContent()}</CardContent>
-          </>
-        ) : (
-          <>
-            <CardHeader className="pb-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  {getBlockIcon(block.type)}
-                  <span className="font-medium">{getBlockTitle(block.type)}</span>
-                </div>
-                <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Button size="sm" variant="outline" onClick={onEdit}>
-                    <Edit3 className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={onRemove}
-                    className="text-destructive hover:text-destructive"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
+              <div className="flex items-center gap-2">
+                <Button size="sm" variant="outline" onClick={handleCancel}>
+                  <X className="h-4 w-4" />
+                </Button>
+                <Button size="sm" onClick={handleSave}>
+                  <Save className="h-4 w-4" />
+                </Button>
               </div>
-            </CardHeader>
-            <CardContent>{renderPreviewContent()}</CardContent>
-          </>
-        )}
-      </Card>
-    </SortableBlockWrapper>
+            </div>
+          </CardHeader>
+          <CardContent>{renderEditingContent()}</CardContent>
+        </>
+      ) : (
+        <>
+          <CardHeader className="pb-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                {getBlockIcon(block.type)}
+                <span className="font-medium">{getBlockTitle(block.type)}</span>
+              </div>
+              <div className="flex items-center gap-2 opaciy-0 group-hover:opacity-100 transition-opacity">
+                <Button size="sm" variant="outline" onClick={onEdit}>
+                  <Edit3 className="h-4 w-4" />
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={onRemove}
+                  className="text-destructive hover:text-destructive"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>{renderPreviewContent()}</CardContent>
+        </>
+      )}
+    </Card>
   )
 }
 

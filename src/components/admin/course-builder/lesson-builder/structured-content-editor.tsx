@@ -3,6 +3,7 @@
 import React from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
 
 import { Plus, Trash2 } from 'lucide-react'
 import { StructuredContentBlock } from '@/types/course-builder'
@@ -120,6 +121,8 @@ export function StructuredContentEditor({ block, onUpdate }: StructuredContentEd
                                         <Input
                                             value={header}
                                             onChange={(e) => updateHeader(i, e.target.value)}
+                                            onPointerDown={(e) => e.stopPropagation()}
+                                            onKeyDown={(e) => e.stopPropagation()}
                                             className="h-8 text-xs font-semibold text-center bg-transparent border-transparent hover:border-input focus:border-ring"
                                             placeholder={`Encabezado ${i + 1}`}
                                         />
@@ -135,11 +138,21 @@ export function StructuredContentEditor({ block, onUpdate }: StructuredContentEd
                             <tr key={`r-${rowIndex}`} className={`group ${hasStripedRows && rowIndex % 2 === 1 ? 'bg-muted/20' : ''}`}>
                                 {row.map((cell, colIndex) => (
                                     <td key={`c-${rowIndex}-${colIndex}`} className={`p-2 w-[150px] min-w-[150px] ${hasBorders ? 'border' : 'border-b border-transparent'}`}>
-                                        <Input
+                                        <Textarea
                                             value={cell}
-                                            onChange={(e) => updateCell(rowIndex, colIndex, e.target.value)}
-                                            className="h-9 w-full min-w-[100px] text-sm border-transparent hover:border-input focus:border-ring bg-transparent px-2"
+                                            onChange={(e) => {
+                                                updateCell(rowIndex, colIndex, e.target.value)
+                                            }}
+                                            onPointerDown={(e) => e.stopPropagation()}
+                                            onKeyDown={(e) => e.stopPropagation()}
+                                            className="min-h-[40px] w-full min-w-[150px] text-sm border-transparent hover:border-input focus:border-ring bg-transparent px-2 resize-none overflow-hidden"
                                             placeholder="..."
+                                            rows={1}
+                                            onInput={(e) => {
+                                                const target = e.target as HTMLTextAreaElement;
+                                                target.style.height = 'auto';
+                                                target.style.height = `${target.scrollHeight}px`;
+                                            }}
                                         />
                                     </td>
                                 ))}
