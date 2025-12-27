@@ -28,6 +28,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 import {
     Plus,
     Trash2,
@@ -38,83 +39,42 @@ import {
     Info,
     Check,
     ChevronUp,
+    GripVertical,
+    RotateCcw,
+    X,
+    Blocks,
 } from 'lucide-react'
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover'
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from '@/components/ui/collapsible'
 import { cn } from '@/lib/utils'
 import { v4 as uuidv4 } from 'uuid'
-import { Badge } from '@/components/ui/badge'
 
 // --- Grammar Types Configuration ---
-// Matching the colors from the mockup roughly:
-// Subject: Yellowish
-// Verb: Greenish
-// Object: Blueish
-// Other: Gray/White
-const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: string; border: string }[] = [
-    { type: 'subject', label: 'Subject', color: 'text-amber-700', bg: 'bg-amber-50', border: 'border-amber-200' },
-    { type: 'verb', label: 'Verb', color: 'text-emerald-700', bg: 'bg-emerald-50', border: 'border-emerald-200' },
-    { type: 'object', label: 'Object', color: 'text-blue-700', bg: 'bg-blue-50', border: 'border-blue-200' },
-    { type: 'adverb', label: 'Adverb', color: 'text-purple-700', bg: 'bg-purple-50', border: 'border-purple-200' },
-    { type: 'negation', label: 'Negation', color: 'text-red-700', bg: 'bg-red-50', border: 'border-red-200' },
-    { type: 'preposition', label: 'Preposition', color: 'text-orange-700', bg: 'bg-orange-50', border: 'border-orange-200' },
-    { type: 'article', label: 'Article', color: 'text-stone-600', bg: 'bg-stone-50', border: 'border-stone-200' },
-    { type: 'pronoun', label: 'Pronoun', color: 'text-indigo-700', bg: 'bg-indigo-50', border: 'border-indigo-200' },
-    { type: 'punctuation', label: 'Punct', color: 'text-slate-600', bg: 'bg-slate-50', border: 'border-slate-200' },
-    { type: 'other', label: 'Other', color: 'text-gray-700', bg: 'bg-gray-50', border: 'border-gray-200' },
+const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: string; border: string; strip: string }[] = [
+    { type: 'subject', label: 'Sujeto', color: 'text-amber-700', bg: 'bg-amber-50', border: 'border-amber-300', strip: 'bg-amber-400' },
+    { type: 'verb', label: 'Verbo', color: 'text-emerald-700', bg: 'bg-emerald-50', border: 'border-emerald-300', strip: 'bg-emerald-500' },
+    { type: 'object', label: 'Objeto', color: 'text-blue-700', bg: 'bg-blue-50', border: 'border-blue-300', strip: 'bg-blue-500' },
+    { type: 'adverb', label: 'Adverbio', color: 'text-purple-700', bg: 'bg-purple-50', border: 'border-purple-300', strip: 'bg-purple-500' },
+    { type: 'negation', label: 'Negación', color: 'text-red-700', bg: 'bg-red-50', border: 'border-red-300', strip: 'bg-red-500' },
+    { type: 'preposition', label: 'Preposición', color: 'text-orange-700', bg: 'bg-orange-50', border: 'border-orange-300', strip: 'bg-orange-500' },
+    { type: 'article', label: 'Artículo', color: 'text-stone-600', bg: 'bg-stone-50', border: 'border-stone-300', strip: 'bg-stone-400' },
+    { type: 'pronoun', label: 'Pronombre', color: 'text-indigo-700', bg: 'bg-indigo-50', border: 'border-indigo-300', strip: 'bg-indigo-500' },
+    { type: 'punctuation', label: 'Puntuación', color: 'text-slate-600', bg: 'bg-slate-100', border: 'border-slate-300', strip: 'bg-slate-400' },
+    { type: 'other', label: 'Otro', color: 'text-gray-600', bg: 'bg-gray-50', border: 'border-gray-300', strip: 'bg-gray-400' },
 ]
 
 const getGrammarStyle = (type?: GrammarType) => {
     const match = GRAMMAR_TYPES.find((t) => t.type === type)
     return match || GRAMMAR_TYPES.find((t) => t.type === 'other')!
 }
-
-// --- Preview Component (Internal) ---
-function StudentPreviewCard({ set }: { set: SentenceSet }) {
-    return (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 space-y-6">
-            <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">Live</Badge>
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500">Student Preview</h3>
-                </div>
-            </div>
-
-            <div className="p-4 bg-slate-50 rounded-lg border border-dashed border-slate-200 text-center py-8">
-                <p className="text-sm text-slate-400 mb-2">Drag blocks here</p>
-                <div className="h-12 border-2 border-slate-200 border-dashed rounded bg-slate-100/50 w-full max-w-md mx-auto" />
-            </div>
-
-            <div className="space-y-4">
-                {set.variants.map((v) => (
-                    <div key={v.id} className="flex flex-wrap gap-2 justify-center">
-                        {v.tokens.map(t => (
-                            <div key={t.id} className="bg-white border rounded shadow-sm px-3 py-2 text-sm font-medium">
-                                {t.content}
-                            </div>
-                        ))}
-                    </div>
-                ))}
-            </div>
-
-            <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 flex gap-3">
-                <div className="bg-blue-100 p-2 rounded-full h-fit text-blue-600">
-                    <Info className='w-4 h-4' />
-                </div>
-                <div>
-                    <h4 className="font-bold text-blue-900 text-sm mb-1">Pro Tip</h4>
-                    <p className="text-xs text-blue-700 leading-relaxed">
-                        Use the color-coded tokens to help students visualize grammar patterns. Consistent colors (e.g., all verbs are green) improve retention.
-                    </p>
-                </div>
-            </div>
-        </div>
-    )
-}
-
 
 // --- Draggable Token Component ---
 interface SortableTokenProps {
@@ -155,71 +115,82 @@ function SortableToken({
         >
             <div
                 className={cn(
-                    'flex flex-col min-w-[100px] rounded-md border-2 transition-all cursor-grab active:cursor-grabbing bg-white shadow-sm overflow-hidden',
+                    'flex flex-col min-w-[80px] rounded-lg border-2 transition-all bg-white shadow-sm overflow-hidden',
                     isSelected ? 'ring-2 ring-primary border-primary' : gStyle.border
                 )}
-                onClick={onToggleSelect}
             >
-                {/* Header Color Strip */}
-                <div className={cn("h-1.5 w-full", gStyle.bg.replace('bg-', 'bg-').replace('50', '500'))} />
-
-                <div className="p-3 flex flex-col items-center gap-1">
-                    {/* Role Selector Trigger */}
-                    <Popover>
-                        <PopoverTrigger asChild>
-                            <button
-                                className={cn(
-                                    "text-[10px] uppercase font-bold tracking-wider flex items-center gap-1 hover:bg-slate-100 px-1.5 py-0.5 rounded transition-colors",
-                                    gStyle.color
-                                )}
-                                onClick={(e) => e.stopPropagation()} // Prevent selection when clicking dropdown
-                            >
+                {/* Header Color Strip with Role Selector */}
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <button
+                            className={cn(
+                                "h-6 w-full flex items-center justify-center gap-1 transition-colors relative z-10",
+                                gStyle.strip,
+                                "hover:opacity-80"
+                            )}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <span className="text-[9px] uppercase font-bold tracking-wider text-white drop-shadow-sm">
                                 {gStyle.label}
-                                <ChevronDown className="w-3 h-3" />
-                            </button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-56 p-2" align="center">
-                            <p className="text-xs font-semibold text-muted-foreground mb-2 px-2 uppercase">Assign Role</p>
+                            </span>
+                            <ChevronDown className="w-3 h-3 text-white drop-shadow-sm" />
+                        </button>
+                    </PopoverTrigger>
+                        <PopoverContent className="w-56 p-2" align="center" sideOffset={5}>
+                            <div className="flex items-center justify-between mb-2 px-2">
+                                <p className="text-xs font-semibold text-muted-foreground uppercase">Asignar Rol</p>
+                                {isMultiWord && onSplit && (
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="h-6 text-xs gap-1"
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            onSplit()
+                                        }}
+                                    >
+                                        <Split className="w-3 h-3" />
+                                        Separar
+                                    </Button>
+                                )}
+                            </div>
                             <div className="grid grid-cols-1 gap-1">
                                 {GRAMMAR_TYPES.map((t) => (
                                     <button
                                         key={t.type}
-                                        onClick={() => {
-                                            onAssignType(t.type)
-                                            // Close popover logic handled by radix usually, but we might need controlled if strict
-                                        }}
+                                        onClick={() => onAssignType(t.type)}
                                         className={cn(
                                             "flex items-center gap-3 px-2 py-1.5 rounded-md text-sm hover:bg-slate-100 transition-colors text-left",
-                                            token.grammarType === t.type && "bg-slate-50"
+                                            token.grammarType === t.type && "bg-slate-100"
                                         )}
                                     >
-                                        <div className={cn("w-3 h-3 rounded-full", t.bg.replace('bg-', 'bg-').replace('50', '500'))} />
+                                        <div className={cn("w-3 h-3 rounded-full", t.strip)} />
                                         <span className="flex-1">{t.label}</span>
                                         {token.grammarType === t.type && <Check className="w-3 h-3 text-primary" />}
                                     </button>
                                 ))}
                             </div>
                         </PopoverContent>
-                    </Popover>
+                </Popover>
 
-                    <span className="text-base font-medium text-slate-900">
+                <div className="p-2 flex flex-col items-center gap-1">
+                    <span className="text-base font-medium text-slate-900 text-center">
                         {token.content}
                     </span>
                 </div>
+
+                {/* Drag handle indicator */}
+                <div className="absolute left-1 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-50 transition-opacity">
+                    <GripVertical className="w-3 h-3 text-slate-400" />
+                </div>
             </div>
 
-            {/* Drag Handle Overlay - using the whole card as handle via listeners, but keeping explicit Grip for affordance if needed. 
-          Actually listeners are on the div, so the whole card is draggable. 
-          We need to stop propagation on the Popover trigger above.
-      */}
+            {/* Drag Handle Overlay */}
             <div
                 {...attributes}
                 {...listeners}
-                className="absolute inset-0 z-0"
-                onClick={(e) => {
-                    // Forward click to selection
-                    onToggleSelect(e)
-                }}
+                className="absolute inset-0 z-0 cursor-grab active:cursor-grabbing"
+                onClick={(e) => onToggleSelect(e)}
             />
         </div>
     )
@@ -230,9 +201,10 @@ function SortableToken({
 interface GrammarVisualizerEditorProps {
     block: GrammarVisualizerBlock
     onUpdate: (updates: Partial<GrammarVisualizerBlock>) => void
+    onRemove?: () => void
 }
 
-export function GrammarVisualizerEditor({ block, onUpdate }: GrammarVisualizerEditorProps) {
+export function GrammarVisualizerEditor({ block, onUpdate, onRemove }: GrammarVisualizerEditorProps) {
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
@@ -245,19 +217,35 @@ export function GrammarVisualizerEditor({ block, onUpdate }: GrammarVisualizerEd
     )
 
     const [selectedTokens, setSelectedTokens] = useState<Set<string>>(new Set())
+    const [collapsedSets, setCollapsedSets] = useState<Set<string>>(new Set())
+
+    // Ensure sets array exists
+    const sets = block.sets || []
 
     // --- Helpers ---
     const updateSet = (setId: string, updates: Partial<SentenceSet>) => {
         onUpdate({
-            sets: block.sets.map((s) => (s.id === setId ? { ...s, ...updates } : s)),
+            sets: sets.map((s) => (s.id === setId ? { ...s, ...updates } : s)),
         })
     }
 
     const updateVariant = (setId: string, variantId: string, updates: Partial<SentenceVariant>) => {
-        const set = block.sets.find((s) => s.id === setId)
+        const set = sets.find((s) => s.id === setId)
         if (!set) return
         updateSet(setId, {
             variants: set.variants.map((v) => (v.id === variantId ? { ...v, ...updates } : v)),
+        })
+    }
+
+    const toggleSetCollapse = (setId: string) => {
+        setCollapsedSets(prev => {
+            const newSet = new Set(prev)
+            if (newSet.has(setId)) {
+                newSet.delete(setId)
+            } else {
+                newSet.add(setId)
+            }
+            return newSet
         })
     }
 
@@ -270,11 +258,11 @@ export function GrammarVisualizerEditor({ block, onUpdate }: GrammarVisualizerEd
                 { id: uuidv4(), label: 'Affirmative', rawSentence: '', tokens: [] }
             ]
         }
-        onUpdate({ sets: [...block.sets, newSet] })
+        onUpdate({ sets: [...sets, newSet] })
     }
 
     const handleDeleteSet = (id: string) => {
-        onUpdate({ sets: block.sets.filter(s => s.id !== id) })
+        onUpdate({ sets: sets.filter(s => s.id !== id) })
     }
 
     const handleTokenize = (setId: string, variantId: string, sentence: string) => {
@@ -288,12 +276,25 @@ export function GrammarVisualizerEditor({ block, onUpdate }: GrammarVisualizerEd
         updateVariant(setId, variantId, { tokens })
     }
 
+    const handleResetVariant = (setId: string, variantId: string) => {
+        updateVariant(setId, variantId, { tokens: [], rawSentence: '' })
+        setSelectedTokens(new Set())
+    }
+
+    const handleRemoveVariant = (setId: string, variantId: string) => {
+        const set = sets.find((s) => s.id === setId)
+        if (!set || set.variants.length <= 1) return
+        updateSet(setId, {
+            variants: set.variants.filter((v) => v.id !== variantId),
+        })
+    }
+
     // DND Logic
     const handleDragEnd = (event: DragEndEvent, setId: string, variantId: string) => {
         const { active, over } = event
         if (!over || active.id === over.id) return
 
-        const set = block.sets.find((s) => s.id === setId)
+        const set = sets.find((s) => s.id === setId)
         const variant = set?.variants.find((v) => v.id === variantId)
         if (!variant) return
 
@@ -306,8 +307,7 @@ export function GrammarVisualizerEditor({ block, onUpdate }: GrammarVisualizerEd
 
     // Merging Logic
     const mergeSelectedTokens = (setId: string, variantId: string) => {
-        // (Simplified reuse of previous logic)
-        const set = block.sets.find((s) => s.id === setId)
+        const set = sets.find((s) => s.id === setId)
         const variant = set?.variants.find((v) => v.id === variantId)
         if (!variant) return
 
@@ -337,8 +337,32 @@ export function GrammarVisualizerEditor({ block, onUpdate }: GrammarVisualizerEd
         setSelectedTokens(new Set())
     }
 
+    // Split Logic
+    const handleSplitToken = (setId: string, variantId: string, tokenId: string) => {
+        const set = sets.find((s) => s.id === setId)
+        const variant = set?.variants.find((v) => v.id === variantId)
+        if (!variant) return
+
+        const tokenIndex = variant.tokens.findIndex((t) => t.id === tokenId)
+        const token = variant.tokens[tokenIndex]
+        if (!token || !token.content.includes(' ')) return
+
+        const words = token.content.split(' ')
+        const newTokens: TokenBlock[] = words.map((word) => ({
+            id: uuidv4(),
+            content: word,
+            grammarType: 'other',
+        }))
+
+        const updatedTokens = [...variant.tokens]
+        updatedTokens.splice(tokenIndex, 1, ...newTokens)
+
+        updateVariant(setId, variantId, { tokens: updatedTokens })
+        setSelectedTokens(new Set())
+    }
+
     const handleAssignType = (setId: string, variantId: string, tokenId: string, type: GrammarType) => {
-        const set = block.sets.find((s) => s.id === setId)
+        const set = sets.find((s) => s.id === setId)
         const variant = set?.variants.find((v) => v.id === variantId)
         if (!variant) return
         const newTokens = variant.tokens.map(t => t.id === tokenId ? { ...t, grammarType: type } : t)
@@ -349,151 +373,265 @@ export function GrammarVisualizerEditor({ block, onUpdate }: GrammarVisualizerEd
     return (
         <div className="w-full bg-slate-50/50 p-6 rounded-xl border border-slate-200">
 
-            {/* Main Header inside the block editor area to mimic the 'Page' feel from mockup, 
-            although typically this is part of the modal. We'll add a block-level header 
-        */}
-            <div className="mb-6 flex items-center justify-between">
-                <div>
-                    <Label className="text-xs font-bold uppercase text-slate-400 mb-1">Block Title</Label>
+            {/* Block Header - Icon + Fixed Title + Delete Button */}
+            <div className="mb-4 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-primary/10 rounded-lg">
+                        <Blocks className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-lg font-semibold text-primary">
+                        Visualizador Gramatical
+                    </span>
+                </div>
+                {onRemove && (
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-slate-400 hover:text-red-500 hover:bg-red-50"
+                        onClick={onRemove}
+                    >
+                        <Trash2 className="w-4 h-4 mr-1" />
+                        Eliminar Bloque
+                    </Button>
+                )}
+            </div>
+
+            {/* Title and Description */}
+            <div className="mb-6 space-y-3 bg-white p-4 rounded-lg border border-slate-200">
+                <div className="space-y-1">
+                    <Label className="text-xs text-slate-500">Título del bloque</Label>
                     <Input
                         value={block.title || ''}
                         onChange={(e) => onUpdate({ title: e.target.value })}
-                        className="text-2xl font-bold border-none bg-transparent p-0 h-auto focus-visible:ring-0 placeholder:text-slate-300"
-                        placeholder="Sentence Structure Builder"
+                        className="font-semibold"
+                        placeholder="Ej: Estructura del Presente Simple"
                     />
                 </div>
-                {/* Mockup buttons "Cancel" "Save Template" would go here conceptually, 
-                but we are inside a larger form. We can add "Block Actions" if needed. 
-            */}
+                <div className="space-y-1">
+                    <Label className="text-xs text-slate-500">Descripción (opcional)</Label>
+                    <Textarea
+                        value={block.description || ''}
+                        onChange={(e) => onUpdate({ description: e.target.value })}
+                        className="text-sm min-h-[60px] resize-none"
+                        placeholder="Describe brevemente qué aprenderán los estudiantes..."
+                    />
+                </div>
             </div>
 
-            {block.sets.map((set, index) => (
-                <div key={set.id} className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12 pb-12 border-b last:border-0 last:pb-0 last:mb-0">
-
-                    {/* LEFT COLUMN: EDITOR */}
-                    <div className="lg:col-span-2 space-y-6">
-
-                        {/* Set Header */}
-                        <div className="flex items-start justify-between group">
-                            <div className="flex-1 mr-4">
-                                <Label className="text-xs font-bold uppercase text-slate-400 mb-2 block">Set Name</Label>
-                                <Input
-                                    value={set.title}
-                                    onChange={(e) => updateSet(set.id, { title: e.target.value })}
-                                    className="font-bold text-lg border-transparent hover:border-slate-200 transition-colors bg-white shadow-sm"
-                                />
-                            </div>
-                            <Button variant="ghost" size="icon" className="text-slate-400 hover:text-red-500" onClick={() => handleDeleteSet(set.id)}>
-                                <Trash2 className="w-4 h-4" />
-                            </Button>
+            <div className="space-y-6">
+                {sets.length === 0 && (
+                    <div className="text-center py-12 border-2 border-dashed border-slate-200 rounded-xl bg-white">
+                        <div className="text-slate-400 mb-4">
+                            <Plus className="w-12 h-12 mx-auto opacity-50" />
                         </div>
-
-                        {/* Variants */}
-                        <div className="space-y-8">
-                            {set.variants.map((variant) => (
-                                <div key={variant.id} className="space-y-4">
-                                    <div className="flex items-center justify-between">
-                                        <h3 className="text-sm font-semibold text-slate-700">
-                                            Variant {index + 1}: {variant.label}
-                                        </h3>
-                                        <div className="flex items-center gap-2">
-                                            <Button variant="ghost" size="sm" className="h-6 text-xs text-slate-400 hover:text-red-500">Reset</Button>
-                                            <Button variant="ghost" size="sm" className="h-6 text-xs text-slate-400 hover:text-red-500">Remove</Button>
-                                        </div>
-                                    </div>
-
-                                    {/* Sentence Input */}
-                                    <div className="flex gap-2">
-                                        <Input
-                                            value={variant.rawSentence}
-                                            onChange={(e) => updateVariant(set.id, variant.id, { rawSentence: e.target.value })}
-                                            className="bg-white"
-                                            placeholder="Type a sentence..."
-                                        />
-                                        <Button
-                                            variant="secondary"
-                                            onClick={() => handleTokenize(set.id, variant.id, variant.rawSentence)}
-                                            className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium"
-                                        >
-                                            <RefreshCcw className="w-3 h-3 mr-2" />
-                                            {variant.tokens.length > 0 ? 'Re-Tokenize' : 'Tokenize'}
-                                        </Button>
-                                    </div>
-
-                                    {/* Token Editor Canvas */}
-                                    <div className="bg-slate-100/50 rounded-xl border border-slate-200 p-6 relative">
-                                        <div className="flex items-center justify-between mb-4">
-                                            <div className="flex items-center gap-2 text-xs text-slate-500">
-                                                <Info className="w-3 h-3" />
-                                                <span>Select multiple to <strong>Merge</strong>. Assign roles via dropdown.</span>
-                                            </div>
-
-                                            {selectedTokens.size > 1 && (
-                                                <Button size="sm" className="h-7 text-xs bg-slate-800 text-white hover:bg-slate-700 shadow-md animate-in fade-in zoom-in" onClick={() => mergeSelectedTokens(set.id, variant.id)}>
-                                                    <Merge className="w-3 h-3 mr-1" />
-                                                    Merge Blocks
-                                                </Button>
+                        <p className="text-slate-500 mb-2">No hay conjuntos de oraciones</p>
+                        <p className="text-sm text-slate-400 mb-4">Crea tu primer conjunto para comenzar a construir visualizaciones gramaticales</p>
+                        <Button onClick={handleAddNewSet} variant="outline">
+                            <Plus className="w-4 h-4 mr-2" />
+                            Crear Primer Conjunto
+                        </Button>
+                    </div>
+                )}
+                {sets.map((set) => (
+                    <Collapsible
+                        key={set.id}
+                        open={!collapsedSets.has(set.id)}
+                        onOpenChange={() => toggleSetCollapse(set.id)}
+                    >
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                            {/* Set Header - Always visible */}
+                            <div className="p-4 border-b border-slate-100 bg-slate-50/50">
+                                <div className="flex items-center gap-3">
+                                    <CollapsibleTrigger asChild>
+                                        <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0">
+                                            {collapsedSets.has(set.id) ? (
+                                                <ChevronDown className="w-4 h-4" />
+                                            ) : (
+                                                <ChevronUp className="w-4 h-4" />
                                             )}
-                                        </div>
+                                        </Button>
+                                    </CollapsibleTrigger>
+                                    <div className="flex-1">
+                                        <Input
+                                            value={set.title}
+                                            onChange={(e) => updateSet(set.id, { title: e.target.value })}
+                                            className="font-semibold text-lg border-transparent hover:border-slate-200 transition-colors bg-transparent h-8 p-0 focus-visible:ring-0"
+                                            placeholder="Nombre del conjunto..."
+                                        />
+                                    </div>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-red-50"
+                                        onClick={() => handleDeleteSet(set.id)}
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </Button>
+                                </div>
+                            </div>
 
-                                        <DndContext
-                                            sensors={sensors}
-                                            collisionDetection={closestCenter}
-                                            onDragEnd={(e) => handleDragEnd(e, set.id, variant.id)}
-                                        >
-                                            <SortableContext items={variant.tokens.map(t => t.id)} strategy={horizontalListSortingStrategy}>
-                                                <div className="flex flex-wrap gap-3 min-h-[80px] p-2">
-                                                    {variant.tokens.map(token => (
-                                                        <SortableToken
-                                                            key={token.id}
-                                                            token={token}
-                                                            isSelected={selectedTokens.has(token.id)}
-                                                            onToggleSelect={(e) => {
-                                                                if (e.ctrlKey || e.metaKey) {
-                                                                    const newSet = new Set(selectedTokens);
-                                                                    newSet.has(token.id) ? newSet.delete(token.id) : newSet.add(token.id);
-                                                                    setSelectedTokens(newSet);
-                                                                } else {
-                                                                    // Exclusive select
-                                                                    setSelectedTokens(new Set(selectedTokens.has(token.id) && selectedTokens.size === 1 ? [] : [token.id]))
-                                                                }
-                                                            }}
-                                                            onAssignType={(t) => handleAssignType(set.id, variant.id, token.id, t)}
+                            <CollapsibleContent>
+                                <div className="p-6">
+                                    {/* MAIN CONTENT */}
+                                    <div className="space-y-6">
+                                        {/* Variants */}
+                                        {set.variants.map((variant, variantIndex) => (
+                                            <div key={variant.id} className="space-y-4 p-4 border-l-4 border-blue-200 bg-blue-50/30 rounded-r-lg">
+                                                <div className="flex items-center justify-between">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-sm text-slate-500">Variante {variantIndex + 1}:</span>
+                                                        <Input
+                                                            value={variant.label}
+                                                            onChange={(e) => updateVariant(set.id, variant.id, { label: e.target.value })}
+                                                            className="font-semibold text-sm border-transparent hover:border-slate-200 bg-transparent h-7 w-32 p-1 focus-visible:ring-1"
+                                                            placeholder="Etiqueta..."
                                                         />
-                                                    ))}
+                                                    </div>
+                                                    <div className="flex items-center gap-1">
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            className="h-7 text-xs text-slate-500 hover:text-blue-600 gap-1"
+                                                            onClick={() => handleResetVariant(set.id, variant.id)}
+                                                        >
+                                                            <RotateCcw className="w-3 h-3" />
+                                                            Reiniciar
+                                                        </Button>
+                                                        {set.variants.length > 1 && (
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="sm"
+                                                                className="h-7 text-xs text-slate-500 hover:text-red-500 gap-1"
+                                                                onClick={() => handleRemoveVariant(set.id, variant.id)}
+                                                            >
+                                                                <X className="w-3 h-3" />
+                                                                Eliminar
+                                                            </Button>
+                                                        )}
+                                                    </div>
                                                 </div>
-                                            </SortableContext>
-                                        </DndContext>
+
+                                                {/* Sentence Input */}
+                                                <div className="space-y-2">
+                                                    <Input
+                                                        value={variant.rawSentence}
+                                                        onChange={(e) => updateVariant(set.id, variant.id, { rawSentence: e.target.value })}
+                                                        className="bg-white"
+                                                        placeholder="Escribe una oración..."
+                                                    />
+                                                    <Button
+                                                        variant="secondary"
+                                                        size="sm"
+                                                        onClick={() => handleTokenize(set.id, variant.id, variant.rawSentence)}
+                                                        className="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium"
+                                                        disabled={!variant.rawSentence.trim()}
+                                                    >
+                                                        <RefreshCcw className="w-3 h-3 mr-2" />
+                                                        {variant.tokens.length > 0 ? 'Re-tokenizar' : 'Tokenizar Oración'}
+                                                    </Button>
+                                                </div>
+
+                                                {/* Token Editor Canvas */}
+                                                {variant.tokens.length > 0 && (
+                                                    <div className="bg-slate-100/80 rounded-xl border border-slate-200 p-4 relative">
+                                                        <DndContext
+                                                            sensors={sensors}
+                                                            collisionDetection={closestCenter}
+                                                            onDragEnd={(e) => handleDragEnd(e, set.id, variant.id)}
+                                                        >
+                                                            <SortableContext items={variant.tokens.map(t => t.id)} strategy={horizontalListSortingStrategy}>
+                                                                <div className="flex flex-wrap gap-3 min-h-[80px] p-2 relative">
+                                                                    {/* Merge Button - positioned above selected tokens */}
+                                                                    {selectedTokens.size > 1 && (
+                                                                        <div className="absolute -top-2 left-1/2 -translate-x-1/2 z-20">
+                                                                            <Button
+                                                                                size="sm"
+                                                                                className="h-7 text-xs bg-slate-800 text-white hover:bg-slate-700 shadow-lg animate-in fade-in zoom-in"
+                                                                                onClick={() => mergeSelectedTokens(set.id, variant.id)}
+                                                                            >
+                                                                                <Merge className="w-3 h-3 mr-1" />
+                                                                                Unir Bloques
+                                                                            </Button>
+                                                                        </div>
+                                                                    )}
+                                                                    {variant.tokens.map(token => (
+                                                                        <SortableToken
+                                                                            key={token.id}
+                                                                            token={token}
+                                                                            isSelected={selectedTokens.has(token.id)}
+                                                                            onToggleSelect={(e) => {
+                                                                                if (e.ctrlKey || e.metaKey) {
+                                                                                    const newSet = new Set(selectedTokens);
+                                                                                    if (newSet.has(token.id)) {
+                                                                                        newSet.delete(token.id);
+                                                                                    } else {
+                                                                                        newSet.add(token.id);
+                                                                                    }
+                                                                                    setSelectedTokens(newSet);
+                                                                                } else {
+                                                                                    setSelectedTokens(new Set(selectedTokens.has(token.id) && selectedTokens.size === 1 ? [] : [token.id]))
+                                                                                }
+                                                                            }}
+                                                                            onAssignType={(t) => handleAssignType(set.id, variant.id, token.id, t)}
+                                                                            onSplit={() => handleSplitToken(set.id, variant.id, token.id)}
+                                                                        />
+                                                                    ))}
+                                                                </div>
+                                                            </SortableContext>
+                                                        </DndContext>
+                                                    </div>
+                                                )}
+
+                                                {/* Hint field for variant */}
+                                                <div className="space-y-1">
+                                                    <Label className="text-xs text-slate-500">Pista / Explicación (opcional)</Label>
+                                                    <Textarea
+                                                        value={variant.hint || ''}
+                                                        onChange={(e) => updateVariant(set.id, variant.id, { hint: e.target.value })}
+                                                        className="bg-white text-sm min-h-[60px] resize-none"
+                                                        placeholder="Agrega una pista o explicación para los estudiantes..."
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+
+                                        <Button
+                                            variant="outline"
+                                            className="w-full border-dashed border-slate-300 text-slate-500 hover:bg-slate-50"
+                                            onClick={() => {
+                                                updateSet(set.id, {
+                                                    variants: [...set.variants, { id: uuidv4(), label: 'Nueva Variante', rawSentence: '', tokens: [] }]
+                                                })
+                                            }}
+                                        >
+                                            <Plus className="w-4 h-4 mr-2" />
+                                            Agregar Variante
+                                        </Button>
+
+                                        {/* Pro Tip */}
+                                        <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                                            <div className="flex items-start gap-3">
+                                                <Info className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                                                <div>
+                                                    <p className="text-sm font-medium text-amber-800">Consejo</p>
+                                                    <p className="text-xs text-amber-700 mt-1">
+                                                        Haz clic en los bloques para asignar roles gramaticales. Usa <strong>Ctrl+Clic</strong> para seleccionar múltiples bloques y unirlos. Haz clic en bloques con varias palabras para separarlos.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            ))}
-
-                            <Button variant="outline" className="w-full border-dashed border-slate-300 text-slate-500 hover:bg-slate-50" onClick={() => {
-                                updateSet(set.id, {
-                                    variants: [...set.variants, { id: uuidv4(), label: 'New Variant', rawSentence: '', tokens: [] }]
-                                })
-                            }}>
-                                <Plus className="w-4 h-4 mr-2" />
-                                Add Sentence Variant
-                            </Button>
+                            </CollapsibleContent>
                         </div>
-                    </div>
-
-
-                    {/* RIGHT COLUMN: PREVIEW */}
-                    <div className="lg:col-span-1">
-                        <div className="sticky top-6">
-                            <StudentPreviewCard set={set} />
-                        </div>
-                    </div>
-
-                </div>
-            ))}
+                    </Collapsible>
+                ))}
+            </div>
 
             <div className="flex justify-center mt-8 pt-8 border-t border-slate-200">
                 <Button onClick={handleAddNewSet} size="lg" className="shadow-lg">
                     <Plus className="w-5 h-5 mr-2" />
-                    Create New Sentence Set
+                    Crear Nuevo Conjunto
                 </Button>
             </div>
 

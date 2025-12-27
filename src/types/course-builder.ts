@@ -256,6 +256,7 @@ export interface SentenceSet {
 export interface GrammarVisualizerBlock extends BaseBlock {
   type: 'grammar-visualizer'
   title?: string
+  description?: string
   sets: SentenceSet[]
 }
 
@@ -555,7 +556,7 @@ export const BLOCK_TEMPLATES: BlockTemplate[] = [
   },
   {
     type: 'structured-content',
-    label: 'Contenido Estructurado',
+    label: 'Tabla',
     icon: Table,
     description: 'Tablas y contenido organizado',
     defaultData: {
@@ -592,7 +593,6 @@ export const BLOCK_TEMPLATES: BlockTemplate[] = [
         {
           id: 'set-default',
           title: 'Presente Simple - To Be',
-          hint: 'Úsalo para describir estados o identidades.',
           variants: [
             {
               id: 'var-default-1',

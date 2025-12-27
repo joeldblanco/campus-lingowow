@@ -18,6 +18,7 @@ interface CanvasProps {
     readOnly?: boolean
     onAddBlockClick?: () => void
     onUpdateBlock?: (blockId: string, updates: Partial<Block>) => void
+    onRemoveBlock?: (blockId: string) => void
 }
 
 export function Canvas({
@@ -28,7 +29,8 @@ export function Canvas({
     onSelectBlock,
     readOnly = false,
     onAddBlockClick,
-    onUpdateBlock
+    onUpdateBlock,
+    onRemoveBlock
 }: CanvasProps) {
     const { setNodeRef, isOver } = useDroppable({
         id: 'canvas-droppable',
@@ -107,6 +109,7 @@ export function Canvas({
                                             onSelect={() => !readOnly && onSelectBlock(block.id)}
                                             readOnly={readOnly}
                                             onUpdate={onUpdateBlock ? (updates) => onUpdateBlock(block.id, updates) : undefined}
+                                            onRemove={onRemoveBlock ? () => onRemoveBlock(block.id) : undefined}
                                         />
                                     </div>
                                 ))}
@@ -124,13 +127,15 @@ function SortableBlockItem({
     isSelected,
     onSelect,
     readOnly,
-    onUpdate
+    onUpdate,
+    onRemove
 }: {
     block: Block
     isSelected: boolean
     onSelect: () => void
     readOnly?: boolean
     onUpdate?: (updates: Partial<Block>) => void
+    onRemove?: () => void
 }) {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
         id: block.id,
@@ -183,10 +188,10 @@ function SortableBlockItem({
                 <GripVertical className="h-4 w-4 text-muted-foreground" />
             </div>
 
-            {/* Block Content - Only structured-content edits inline, others use panel */}
-            <div className={block.type !== 'structured-content' ? 'pointer-events-none' : ''}>
-                {isSelected && onUpdate && block.type === 'structured-content' ? (
-                    <BlockContentEditor block={block} onUpdate={onUpdate} />
+            {/* Block Content - structured-content and grammar-visualizer edit inline, others use panel */}
+            <div className={block.type !== 'structured-content' && block.type !== 'grammar-visualizer' ? 'pointer-events-none' : ''}>
+                {isSelected && onUpdate && (block.type === 'structured-content' || block.type === 'grammar-visualizer') ? (
+                    <BlockContentEditor block={block} onUpdate={onUpdate} onRemove={onRemove} />
                 ) : (
                     <BlockPreview block={block} />
                 )}

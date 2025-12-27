@@ -71,9 +71,11 @@ interface BlockEditorProps {
 export function BlockContentEditor({
   block,
   onUpdate,
+  onRemove,
 }: {
   block: Block
   onUpdate: (updates: Partial<Block>) => void
+  onRemove?: () => void
 }) {
   switch (block.type) {
     case 'text':
@@ -99,7 +101,7 @@ export function BlockContentEditor({
     case 'structured-content':
       return <StructuredContentEditor block={block as StructuredContentBlock} onUpdate={onUpdate} />
     case 'grammar-visualizer':
-      return <GrammarVisualizerEditor block={block as GrammarVisualizerBlock} onUpdate={onUpdate} />
+      return <GrammarVisualizerEditor block={block as GrammarVisualizerBlock} onUpdate={onUpdate} onRemove={onRemove} />
     default:
       return <div>Tipo de bloque no soportado</div>
   }
@@ -195,7 +197,7 @@ export function BlockEditor({
       case 'layout':
         return 'Estructura de Columnas'
       case 'structured-content':
-        return 'Contenido Estructurado'
+        return 'Tabla'
       case 'grammar-visualizer':
         return 'Visualizador Gramatical'
       default:

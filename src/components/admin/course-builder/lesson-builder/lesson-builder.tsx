@@ -511,11 +511,12 @@ export function LessonBuilder({
                   setIsAddBlockModalOpen(true)
                 }}
                 onUpdateBlock={onUpdateBlock}
+                onRemoveBlock={handleRemoveBlockWrapper}
               />
             </div>
 
-            {/* Right Sidebar: Properties Panel */}
-            {!isPreviewMode && selectedBlock && (
+            {/* Right Sidebar: Properties Panel - Hide for grammar-visualizer (edits inline) */}
+            {!isPreviewMode && selectedBlock && selectedBlock.type !== 'grammar-visualizer' && (
               <PropertiesPanel
                 block={selectedBlock}
                 onUpdate={(updates) => onUpdateBlock(selectedBlock.id, updates)}

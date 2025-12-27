@@ -859,15 +859,15 @@ export function GrammarVisualizerBlockPreview({ block }: { block: GrammarVisuali
                     )
                   })}
                 </div>
+
+                {variant.hint && (
+                  <div className="flex items-start gap-2 bg-amber-50 text-amber-800 p-3 rounded-lg text-sm border border-amber-100 mt-3">
+                    <LucideIcons.Lightbulb className="h-4 w-4 shrink-0 mt-0.5" />
+                    <p>{variant.hint}</p>
+                  </div>
+                )}
               </div>
             ))}
-
-            {set.hint && (
-              <div className="flex items-start gap-2 bg-yellow-50 text-yellow-800 p-3 rounded-lg text-sm border border-yellow-100">
-                <LucideIcons.Lightbulb className="h-4 w-4 shrink-0 mt-0.5" />
-                <p>{set.hint}</p>
-              </div>
-            )}
           </div>
         </div>
       ))}
@@ -1576,7 +1576,7 @@ function EssayBlockPreview({ block }: { block: EssayBlock }) {
     <div className="space-y-4">
       <div className="flex items-center gap-2 text-primary font-semibold text-sm">
         <FileSignature className="h-5 w-5" />
-        <span>Respuesta Larga</span>
+        <span>Ensayo</span>
       </div>
 
       <div className="space-y-2">
@@ -1645,7 +1645,7 @@ function RecordingBlockPreview({ block }: { block: RecordingBlock }) {
     <div className="space-y-4">
       <div className="flex items-center gap-2 text-primary font-semibold text-sm">
         <Mic className="h-5 w-5" />
-        <span>Grabación de Audio</span>
+        <span>Grabación</span>
       </div>
 
       <div className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl space-y-6 text-center">
@@ -1699,8 +1699,18 @@ export function StructuredContentBlockPreview({ block }: { block: StructuredCont
   const hasBorders = config?.hasBorders !== false // default true
 
   return (
-    <div className="space-y-4">
-      {/* Header Section */}
+    <div className="space-y-4 p-4">
+      {/* Block Header - Icon + Fixed Title */}
+      <div className="flex items-center gap-3">
+        <div className="p-2 bg-primary/10 rounded-lg">
+          <LucideIcons.Table className="w-5 h-5 text-primary" />
+        </div>
+        <span className="text-lg font-semibold text-primary">
+          Tabla
+        </span>
+      </div>
+
+      {/* Title/Subtitle Section */}
       {(title || subtitle) && (
         <div className="space-y-1">
           {title && <h3 className="text-xl font-bold">{title}</h3>}

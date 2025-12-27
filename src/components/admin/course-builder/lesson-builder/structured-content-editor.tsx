@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 
-import { Plus, Trash2 } from 'lucide-react'
+import { Plus, Trash2, Table } from 'lucide-react'
 import { StructuredContentBlock } from '@/types/course-builder'
 
 interface StructuredContentEditorProps {
@@ -67,6 +67,16 @@ export function StructuredContentEditor({ block, onUpdate }: StructuredContentEd
 
     return (
         <div className="space-y-6 p-4">
+            {/* Block Header - Icon + Fixed Title */}
+            <div className="flex items-center gap-3">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                    <Table className="w-5 h-5 text-primary" />
+                </div>
+                <span className="text-lg font-semibold text-primary">
+                    Tabla
+                </span>
+            </div>
+
             {/* Read-only Title/Subtitle (Edited in Properties Panel) */}
             {(block.title || block.subtitle) && (
                 <div className="space-y-1">
@@ -74,7 +84,6 @@ export function StructuredContentEditor({ block, onUpdate }: StructuredContentEd
                     {block.subtitle && <p className="text-muted-foreground">{block.subtitle}</p>}
                 </div>
             )}
-
 
             <div className={`rounded-md overflow-x-auto bg-card ${hasBorders ? 'border' : ''}`}>
                 <table className={`w-full text-sm border-collapse`}>

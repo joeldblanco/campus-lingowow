@@ -55,8 +55,7 @@ export async function POST(request: NextRequest) {
 
     // Determinar si es moderador (solo TEACHER y ADMIN son anfitriones/moderadores)
     // STUDENT y GUEST son participantes regulares sin permisos de moderador
-    // DEBUG: Force TRUE to test connection
-    const isModerator = true // user.roles.includes('TEACHER') || user.roles.includes('ADMIN')
+    const isModerator = user.roles.includes('TEACHER') || user.roles.includes('ADMIN')
 
     // Usar clave privada desde variable de entorno (compatible con Vercel)
     let privateKey = process.env.JAAS_PRIVATE_KEY
