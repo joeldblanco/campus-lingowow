@@ -16,5 +16,12 @@ export default async function MessagesPage() {
     return <div>Error loading messages</div>
   }
 
-  return <MessagesClient initialConversations={conversations || []} currentUser={session.user} />
+  return (
+    <MessagesClient
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      initialConversations={(conversations || []) as any}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      currentUser={session.user as any}
+    />
+  )
 }

@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getLessonContent } from '@/lib/actions/classroom'
 import { LessonForView } from '@/types/lesson'
 import { Loader2 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { ActiveLessonViewer } from './active-lesson-viewer'
 import { ClassroomLayout } from './classroom-layout'
@@ -82,6 +82,25 @@ function ClassroomInner({
     }
   }, [isInitialized, connectionStatus, joinRoom, roomName, jwt])
 
+  const fetchAndSetLesson = useCallback(async (lessonId: string) => {
+    try {
+      setIsLoadingLesson(true)
+      const content = await getLessonContent(lessonId)
+      if (content) {
+        // Cast to match expected type (temporary until strict types are aligned)
+        setActiveLesson(content as unknown as LessonForView)
+        if (!isTeacher) {
+          toast.info('El profesor ha cambiado la lección.')
+        }
+      }
+    } catch (error) {
+      console.error('Failed to sync lesson', error)
+      toast.error('Error al sincronizar la lección')
+    } finally {
+      setIsLoadingLesson(false)
+    }
+  }, [isTeacher])
+
   // Listen for lesson change commands
   useEffect(() => {
     const handleCommand = async (data: Record<string, unknown>) => {
@@ -101,26 +120,7 @@ function ClassroomInner({
     return () => {
       // Cleanup if possible
     }
-  }, [connectionStatus, addCommandListener])
-
-  const fetchAndSetLesson = async (lessonId: string) => {
-    try {
-      setIsLoadingLesson(true)
-      const content = await getLessonContent(lessonId)
-      if (content) {
-        // Cast to match expected type (temporary until strict types are aligned)
-        setActiveLesson(content as unknown as LessonForView)
-        if (!isTeacher) {
-          toast.info('El profesor ha cambiado la lección.')
-        }
-      }
-    } catch (error) {
-      console.error('Failed to sync lesson', error)
-      toast.error('Error al sincronizar la lección')
-    } finally {
-      setIsLoadingLesson(false)
-    }
-  }
+  }, [connectionStatus, addCommandListener, fetchAndSetLesson])
 
   const handleLessonSelect = async (lessonId: string) => {
     await fetchAndSetLesson(lessonId)

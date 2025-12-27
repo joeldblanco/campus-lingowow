@@ -31,7 +31,8 @@ interface ChatMessage {
   senderId: string
   content: string
   type: MessageType
-  metadata: Record<string, unknown> | null
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  metadata: any
   timestamp: Date
   isRead: boolean
   sender: ChatUser

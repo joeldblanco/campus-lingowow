@@ -46,6 +46,8 @@ export function JitsiProvider({ children }: { children: React.ReactNode }) {
   const [connectionStatus, setConnectionStatus] = useState<
     'disconnected' | 'connecting' | 'connected' | 'failed'
   >('disconnected')
+  const connectionStatusRef = useRef(connectionStatus)
+  connectionStatusRef.current = connectionStatus
 
   // Raw Jitsi Objects
   const connectionRef = useRef<JitsiConnection | null>(null)
@@ -212,7 +214,7 @@ export function JitsiProvider({ children }: { children: React.ReactNode }) {
           JitsiMeetJSRef.current.events.connection.CONNECTION_DISCONNECTED,
           () => {
             console.log('[Jitsi] Connection Disconnected')
-            if (connectionStatus !== 'failed') {
+            if (connectionStatusRef.current !== 'failed') {
               setConnectionStatus('disconnected')
             }
           }
