@@ -25,7 +25,8 @@ interface SearchUser {
 }
 
 interface NewChatDialogProps {
-  onConversationCreated: (conversation: unknown) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onConversationCreated: (conversation: any) => void
   children?: React.ReactNode
 }
 
