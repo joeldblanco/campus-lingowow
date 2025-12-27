@@ -15,13 +15,23 @@ import { AuthError } from 'next-auth'
 import * as z from 'zod'
 import { getCurrentDate, isBeforeDate } from '@/lib/utils/date'
 import { checkForSpam } from '@/lib/utils/spam-protection'
+import { verifyRecaptcha } from '@/lib/utils/recaptcha'
 
-export const register = async (values: z.infer<typeof SignUpSchema>) => {
+export const register = async (values: z.infer<typeof SignUpSchema>, recaptchaToken?: string | null) => {
   const validatedFields = SignUpSchema.safeParse(values)
 
   if (!validatedFields.success) return { error: 'Campos inválidos' }
 
   const validatedData = validatedFields.data
+
+  // Verificación reCAPTCHA v3
+  if (recaptchaToken) {
+    const recaptchaResult = await verifyRecaptcha(recaptchaToken, 'register')
+    if (!recaptchaResult.success) {
+      console.log(`[RECAPTCHA BLOCKED] Reason: ${recaptchaResult.error}, Email: ${validatedData.email}`)
+      return { error: recaptchaResult.error || 'Verificación de seguridad fallida' }
+    }
+  }
 
   // Verificación anti-spam
   const spamCheck = checkForSpam({

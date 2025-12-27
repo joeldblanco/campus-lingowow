@@ -19,14 +19,17 @@ import { Loader2, ChevronLeft } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useTransition } from 'react'
+import { useTransition, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import * as z from 'zod'
 
 export function RegisterForm() {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
+  const { executeRecaptcha } = useGoogleReCaptcha()
+  
   const registerForm = useForm<z.infer<typeof SignUpSchema>>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
@@ -39,9 +42,18 @@ export function RegisterForm() {
     },
   })
 
+  const handleReCaptchaVerify = useCallback(async () => {
+    if (!executeRecaptcha) {
+      return null
+    }
+    return await executeRecaptcha('register')
+  }, [executeRecaptcha])
+
   const onSubmit = async (data: z.infer<typeof SignUpSchema>) => {
+    const recaptchaToken = await handleReCaptchaVerify()
+    
     startTransition(() => {
-      register(data)
+      register(data, recaptchaToken)
         .then((data) => {
           if ('error' in data) {
             toast.error(data.error as string)

@@ -43,6 +43,36 @@ import {
 } from '@/components/ui/alert-dialog'
 import { uploadFileByType, deleteCloudinaryFile } from '@/lib/actions/cloudinary'
 
+// Helper helper to clean up old files when replacing them
+const deleteFileFromUrl = async (url: string, resourceType: 'image' | 'video' | 'raw') => {
+  if (!url || !url.includes('cloudinary.com')) return
+
+  try {
+    const parts = url.split('/upload/')
+    if (parts.length === 2) {
+      const pathParts = parts[1].split('/')
+      // Find version segment (e.g., v123456789)
+      const versionIndex = pathParts.findIndex(
+        (p) => p.startsWith('v') && !isNaN(Number(p.substring(1)))
+      )
+
+      // Get the path after version
+      const relevantParts = versionIndex !== -1 ? pathParts.slice(versionIndex + 1) : pathParts
+      // Look for public_id.
+      // Note: For video/audio (resource_type: video), Cloudinary usually works with public_id sans extension.
+      // But standard URLs have extension. We try to handle it.
+      let publicId = relevantParts.join('/')
+      publicId = decodeURIComponent(publicId)
+
+      // Attempt removal
+      // We don't await strictly or throw error to avoid blocking the UI update if this background task fails
+      deleteCloudinaryFile(publicId, resourceType).catch(e => console.error("Background delete failed", e))
+    }
+  } catch (error) {
+    console.error('Error parsing URL for deletion:', error)
+  }
+}
+
 interface PropertiesPanelProps {
   block: Block | null
   onUpdate: (updates: Partial<Block>) => void
@@ -1514,9 +1544,12 @@ function VocabularyProperties({
                       <FileUpload
                         fileType="audio"
                         folder="course-vocabulary-audio"
-                        onUploadComplete={(res: { secure_url: string }) =>
+                        onUploadComplete={async (res: { secure_url: string }) => {
+                          if (item.audioUrl) {
+                            await deleteFileFromUrl(item.audioUrl, 'video')
+                          }
                           updateItem(item.id, 'audioUrl', res.secure_url)
-                        }
+                        }}
                       />
                     </div>
                     {item.audioUrl && (
@@ -1762,7 +1795,12 @@ function AudioProperties({
           <FileUpload
             fileType="audio"
             folder="course-audio"
-            onUploadComplete={(res: { secure_url: string }) => onUpdate({ url: res.secure_url })}
+            onUploadComplete={async (res: { secure_url: string }) => {
+              if (block.url) {
+                await deleteFileFromUrl(block.url, 'video')
+              }
+              onUpdate({ url: res.secure_url })
+            }}
           />
         </div>
 
@@ -1777,7 +1815,12 @@ function AudioProperties({
 
         <div className="space-y-2">
           <Label className="text-xs text-muted-foreground">Grabar Micrófono</Label>
-          <AudioRecorder onUploadComplete={(url) => onUpdate({ url })} />
+          <AudioRecorder onUploadComplete={async (url) => {
+            if (block.url) {
+              await deleteFileFromUrl(block.url, 'video')
+            }
+            onUpdate({ url })
+          }} />
         </div>
       </div>
 
