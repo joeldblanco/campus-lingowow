@@ -13,6 +13,7 @@ import {
   Shuffle,
   CheckCircle2,
   FileSignature,
+  Table,
 } from 'lucide-react'
 import React from 'react'
 
@@ -38,6 +39,7 @@ export type BlockType =
   | 'true_false'
   | 'essay'
   | 'recording'
+  | 'structured-content'
 
 // Base block type with discriminated union for different content types
 export interface BaseBlock {
@@ -200,6 +202,21 @@ export interface RecordingBlock extends BaseBlock {
   timeLimit?: number // in seconds
 }
 
+export interface StructuredContentBlock extends BaseBlock {
+  type: 'structured-content'
+  title?: string
+  subtitle?: string
+  config?: {
+    hasHeaderRow?: boolean
+    hasStripedRows?: boolean
+    hasBorders?: boolean
+  }
+  content?: {
+    headers: string[]
+    rows: string[][]
+  }
+}
+
 export type Block =
   | TitleBlock
   | TextBlock
@@ -222,6 +239,7 @@ export type Block =
   | TrueFalseBlock
   | EssayBlock
   | RecordingBlock
+  | StructuredContentBlock
 
 // Quiz question types
 export interface QuizQuestion {
@@ -490,6 +508,31 @@ export const BLOCK_TEMPLATES: BlockTemplate[] = [
       order: 0,
       url: '',
       title: 'Embedded Content',
+    },
+  },
+  {
+    type: 'structured-content',
+    label: 'Contenido Estructurado',
+    icon: Table,
+    description: 'Tablas y contenido organizado',
+    defaultData: {
+      id: '',
+      type: 'structured-content',
+      order: 0,
+      title: 'Nueva Tabla',
+      subtitle: 'Descripción opcional',
+      config: {
+        hasHeaderRow: true,
+        hasStripedRows: false,
+        hasBorders: true,
+      },
+      content: {
+        headers: ['Columna 1', 'Columna 2'],
+        rows: [
+          ['Dato 1', 'Dato 2'],
+          ['Dato 3', 'Dato 4'],
+        ],
+      },
     },
   },
 ]

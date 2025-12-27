@@ -15,6 +15,7 @@ import {
   Search,
   Type,
   Video,
+  Table,
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -40,6 +41,8 @@ const getBlockIcon = (type: string) => {
       return <Paperclip className="h-4 w-4" />
     case 'embed':
       return <Link className="h-4 w-4" />
+    case 'structured-content':
+      return <Table className="h-4 w-4" />
     default:
       return <Plus className="h-4 w-4" />
   }
@@ -82,7 +85,7 @@ export function BlockToolbar({ onAddBlock }: BlockToolbarProps) {
             <div className="text-xs font-semibold text-muted-foreground mb-3">Content</div>
             <div className="grid grid-cols-3 gap-2">
               {filteredTemplates
-                .filter((t) => ['text', 'video', 'image'].includes(t.type))
+                .filter((t) => ['text', 'video', 'image', 'structured-content'].includes(t.type))
                 .map((template) => (
                   <BlockTemplateCard
                     key={template.type}

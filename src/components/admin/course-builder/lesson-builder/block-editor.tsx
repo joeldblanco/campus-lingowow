@@ -1,5 +1,7 @@
 'use client'
 
+import { StructuredContentBlockPreview } from './block-preview'
+
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { FileUpload } from '@/components/ui/file-upload'
@@ -28,7 +30,8 @@ import {
   TabGroupBlock,
   TabItemBlock,
   TextBlock,
-  VideoBlock
+  VideoBlock,
+  StructuredContentBlock
 } from '@/types/course-builder'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
@@ -51,6 +54,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { NestedBlockList } from './nested-block-list'
+import { StructuredContentEditor } from './structured-content-editor'
 
 interface BlockEditorProps {
   block: Block
@@ -96,6 +100,42 @@ function SortableBlockWrapper({
       {children}
     </div>
   )
+}
+
+// Exported component for use in other parts of the builder (e.g. Canvas)
+export function BlockContentEditor({
+  block,
+  onUpdate
+}: {
+  block: Block
+  onUpdate: (updates: Partial<Block>) => void
+}) {
+  switch (block.type) {
+    case 'text':
+      return <TextBlockEditor block={block as TextBlock} onUpdate={onUpdate} />
+    case 'video':
+      return <VideoBlockEditor block={block as VideoBlock} onUpdate={onUpdate} />
+    case 'image':
+      return <ImageBlockEditor block={block as ImageBlock} onUpdate={onUpdate} />
+    case 'audio':
+      return <AudioBlockEditor block={block as AudioBlock} onUpdate={onUpdate} />
+    case 'quiz':
+      return <QuizBlockEditor block={block as QuizBlock} onUpdate={onUpdate} />
+    case 'assignment':
+      return <AssignmentBlockEditor block={block as AssignmentBlock} onUpdate={onUpdate} />
+    case 'file':
+      return <FileBlockEditor block={block as FileBlock} onUpdate={onUpdate} />
+    case 'embed':
+      return <EmbedBlockEditor block={block as EmbedBlock} onUpdate={onUpdate} />
+    case 'tab_group':
+      return <TabGroupBlockEditor block={block as TabGroupBlock} onUpdate={onUpdate} />
+    case 'layout':
+      return <LayoutBlockEditor block={block as LayoutBlock} onUpdate={onUpdate} />
+    case 'structured-content':
+      return <StructuredContentEditor block={block as StructuredContentBlock} onUpdate={onUpdate} />
+    default:
+      return <div>Tipo de bloque no soportado</div>
+  }
 }
 
 export function BlockEditor({
@@ -152,6 +192,12 @@ export function BlockEditor({
             📑
           </div>
         )
+      case 'structured-content':
+        return (
+          <div className="h-4 w-4" title="Tabla">
+            📊
+          </div>
+        )
       default:
         return <div className="h-4 w-4" />
     }
@@ -179,6 +225,8 @@ export function BlockEditor({
         return 'Grupo de Pestañas'
       case 'layout':
         return 'Estructura de Columnas'
+      case 'structured-content':
+        return 'Contenido Estructurado'
       default:
         return 'Bloque'
     }
@@ -206,6 +254,8 @@ export function BlockEditor({
         return <TabGroupBlockEditor block={localBlock as TabGroupBlock} onUpdate={handleUpdate} />
       case 'layout':
         return <LayoutBlockEditor block={localBlock as LayoutBlock} onUpdate={handleUpdate} />
+      case 'structured-content':
+        return <StructuredContentEditor block={localBlock as StructuredContentBlock} onUpdate={handleUpdate} />
       default:
         return <div>Tipo de bloque no soportado</div>
     }
@@ -233,6 +283,8 @@ export function BlockEditor({
         return <TabGroupBlockPreview block={block as TabGroupBlock} />
       case 'layout':
         return <LayoutBlockPreview block={block as LayoutBlock} />
+      case 'structured-content':
+        return <StructuredContentBlockPreview block={block as StructuredContentBlock} />
       default:
         return <div>Tipo de bloque no soportado</div>
     }

@@ -121,7 +121,7 @@ export function BlockSelectionGrid({ onSelect }: { onSelect: (template: BlockTem
 }
 
 function isCoreCategory(type: string) {
-    return ['text', 'image', 'video', 'title', 'file', 'embed'].includes(type) || type === 'heading'
+    return ['text', 'image', 'video', 'title', 'file', 'embed', 'structured-content'].includes(type) || type === 'heading'
 }
 
 export function DraggableBlock({ template, variant, onClick, disableDrag }: { template: BlockTemplate, variant: 'grid' | 'list', onClick?: () => void, disableDrag?: boolean }) {

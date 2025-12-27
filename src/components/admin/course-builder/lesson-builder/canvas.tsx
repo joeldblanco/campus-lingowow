@@ -6,6 +6,7 @@ import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-
 import { CSS } from '@dnd-kit/utilities'
 import { cn } from '@/lib/utils'
 import { BlockPreview } from './block-preview'
+import { BlockContentEditor } from './block-editor'
 import { GripVertical } from 'lucide-react'
 
 interface CanvasProps {
@@ -16,6 +17,7 @@ interface CanvasProps {
     onSelectBlock: (id: string | null) => void
     readOnly?: boolean
     onAddBlockClick?: () => void
+    onUpdateBlock?: (blockId: string, updates: Partial<Block>) => void
 }
 
 export function Canvas({
@@ -25,7 +27,8 @@ export function Canvas({
     selectedBlockId,
     onSelectBlock,
     readOnly = false,
-    onAddBlockClick
+    onAddBlockClick,
+    onUpdateBlock
 }: CanvasProps) {
     const { setNodeRef, isOver } = useDroppable({
         id: 'canvas-droppable',
@@ -103,6 +106,7 @@ export function Canvas({
                                             isSelected={selectedBlockId === block.id}
                                             onSelect={() => !readOnly && onSelectBlock(block.id)}
                                             readOnly={readOnly}
+                                            onUpdate={onUpdateBlock ? (updates) => onUpdateBlock(block.id, updates) : undefined}
                                         />
                                     </div>
                                 ))}
@@ -119,12 +123,14 @@ function SortableBlockItem({
     block,
     isSelected,
     onSelect,
-    readOnly
+    readOnly,
+    onUpdate
 }: {
     block: Block
     isSelected: boolean
     onSelect: () => void
     readOnly?: boolean
+    onUpdate?: (updates: Partial<Block>) => void
 }) {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
         id: block.id,
@@ -177,9 +183,13 @@ function SortableBlockItem({
                 <GripVertical className="h-4 w-4 text-muted-foreground" />
             </div>
 
-            {/* Block Content */}
-            <div className="pointer-events-none">
-                <BlockPreview block={block} />
+            {/* Block Content - Editable if selected, otherwise Preview */}
+            <div className={cn(!isSelected && "pointer-events-none")}>
+                {isSelected && onUpdate ? (
+                    <BlockContentEditor block={block} onUpdate={onUpdate} />
+                ) : (
+                    <BlockPreview block={block} />
+                )}
             </div>
         </div>
     )

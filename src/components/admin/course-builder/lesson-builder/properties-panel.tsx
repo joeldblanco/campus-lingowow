@@ -17,6 +17,7 @@ import {
   TextBlock,
   VideoBlock,
   ImageBlock,
+  StructuredContentBlock,
 } from '@/types/course-builder'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -64,6 +65,8 @@ export function PropertiesPanel({ block, onUpdate, onRemove, onClose }: Properti
         return <EssayProperties block={block as EssayBlock} onUpdate={onUpdate} />
       case 'recording':
         return <RecordingProperties block={block as RecordingBlock} onUpdate={onUpdate} />
+      case 'structured-content':
+        return <StructuredContentProperties block={block as StructuredContentBlock} onUpdate={onUpdate} />
       default:
         return <GenericProperties block={block} onUpdate={onUpdate} />
     }
@@ -91,6 +94,259 @@ export function PropertiesPanel({ block, onUpdate, onRemove, onClose }: Properti
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-6">{renderContent()}</div>
+    </div>
+  )
+}
+
+function StructuredContentProperties({
+  block,
+  onUpdate,
+}: {
+  block: StructuredContentBlock
+  onUpdate: (updates: Partial<Block>) => void
+}) {
+  const [showAllTemplates, setShowAllTemplates] = useState(false)
+
+  const templates = [
+    {
+      id: 'default',
+      label: 'Dos Columnas',
+      icon: 'Columns',
+      data: {
+        title: 'Nueva Tabla',
+        subtitle: 'Descripción opcional',
+        config: { hasHeaderRow: true, hasStripedRows: false, hasBorders: true },
+        content: {
+          headers: ['Encabezado 1', 'Encabezado 2'],
+          rows: [
+            ['Celda 1', 'Celda 2'],
+            ['Celda 3', 'Celda 4']
+          ]
+        }
+      }
+    },
+    {
+      id: 'comparison',
+      label: 'Comparación',
+      icon: 'Table',
+      data: {
+        title: 'Comparación',
+        subtitle: 'Comparar elementos',
+        config: { hasHeaderRow: true, hasStripedRows: true, hasBorders: true },
+        content: {
+          headers: ['Característica', 'Opción A', 'Opción B'],
+          rows: [
+            ['Precio', '$10', '$20'],
+            ['Calidad', 'Alta', 'Media'],
+            ['Disponibilidad', 'Inmediata', 'Baja']
+          ]
+        }
+      }
+    },
+    {
+      id: 'vocab-list',
+      label: 'Lista de Vocabulario',
+      icon: 'List',
+      data: {
+        title: 'Vocabulario Útil',
+        subtitle: '',
+        config: { hasHeaderRow: false, hasStripedRows: true, hasBorders: false },
+        content: {
+          headers: ['Término', 'Definición'],
+          rows: [
+            ['Término 1', 'Definición 1'],
+            ['Término 2', 'Definición 2'],
+            ['Término 3', 'Definición 3']
+          ]
+        }
+      }
+    },
+    {
+      id: 'phrase-pairs',
+      label: 'Frases Comunes',
+      icon: 'Columns',
+      data: {
+        title: 'Frases Comunes',
+        subtitle: 'Emparejar significados',
+        config: { hasHeaderRow: true, hasStripedRows: true, hasBorders: false },
+        content: {
+          headers: ['Inglés', 'Español'],
+          rows: [
+            ['Hello', 'Hola'],
+            ['How are you?', '¿Cómo estás?'],
+            ['Good morning', 'Buenos días']
+          ]
+        }
+      }
+    },
+    {
+      id: 'irregular-verbs',
+      label: 'Verbos Irregulares',
+      icon: 'Table',
+      data: {
+        title: 'Verbos Irregulares',
+        subtitle: 'Lista de referencia',
+        config: { hasHeaderRow: true, hasStripedRows: true, hasBorders: true },
+        content: {
+          headers: ['Infinitivo', 'Pasado Simple', 'Participio'],
+          rows: [
+            ['Be', 'Was/Were', 'Been'],
+            ['Go', 'Went', 'Gone'],
+            ['See', 'Saw', 'Seen']
+          ]
+        }
+      }
+    },
+    {
+      id: 'conjugation',
+      label: 'Conjugación',
+      icon: 'Grid',
+      data: {
+        title: 'Conjugación de Verbos',
+        subtitle: 'Presente Simple',
+        config: { hasHeaderRow: true, hasStripedRows: false, hasBorders: true },
+        content: {
+          headers: ['Pronombre', 'Verbo'],
+          rows: [
+            ['I', 'Play'],
+            ['You', 'Play'],
+            ['He/She/It', 'Plays'],
+            ['We', 'Play'],
+            ['They', 'Play']
+          ]
+        }
+      }
+    },
+    {
+      id: 'travel-vocab',
+      label: 'Vocabulario de Viaje',
+      icon: 'List',
+      data: {
+        title: 'Palabras para Viajar',
+        subtitle: 'Esenciales',
+        config: { hasHeaderRow: true, hasStripedRows: true, hasBorders: false },
+        content: {
+          headers: ['Palabra', 'Traducción', 'Nota'],
+          rows: [
+            ['Airport', 'Aeropuerto', ''],
+            ['Ticket', 'Boleto', ''],
+            ['Hotel', 'Hotel', 'Alojamiento']
+          ]
+        }
+      }
+    }
+  ]
+
+  const applyTemplate = (template: typeof templates[0]) => {
+    onUpdate({
+      title: template.data.title,
+      subtitle: template.data.subtitle,
+      content: template.data.content,
+      // Config is NOT overwritten by default to respect user choice.
+      config: {
+        ...block.config,
+      }
+    })
+  }
+
+  const displayedTemplates = showAllTemplates ? templates : templates.slice(0, 4)
+
+  // Simple icons for the properties panel local to this component
+  const TypeIcon = ({ className }: { className?: string }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="4 7 4 4 20 4 20 7" /><line x1="9" x2="15" y1="20" y2="20" /><line x1="12" x2="12" y1="4" y2="20" /></svg>
+  )
+  const RowsIcon = ({ className }: { className?: string }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="18" height="18" x="3" y="3" rx="2" ry="2" /><line x1="3" x2="21" y1="9" y2="9" /><line x1="3" x2="21" y1="15" y2="15" /></svg>
+  )
+  const GridIcon = ({ className }: { className?: string }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="18" height="18" x="3" y="3" rx="2" ry="2" /><line x1="3" x2="21" y1="9" y2="9" /><line x1="3" x2="21" y1="15" y2="15" /><line x1="9" x2="9" y1="3" y2="21" /><line x1="15" x2="15" y1="3" y2="21" /></svg>
+  )
+
+  return (
+    <div className="space-y-6">
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Label>Título del Bloque</Label>
+          <Input
+            value={block.title || ''}
+            onChange={(e) => onUpdate({ title: e.target.value })}
+            placeholder="Ej. Conjugación de Verbos"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label>Subtítulo (Opcional)</Label>
+          <Input
+            value={block.subtitle || ''}
+            onChange={(e) => onUpdate({ subtitle: e.target.value })}
+            placeholder="Ej. Completa la tabla..."
+          />
+        </div>
+      </div>
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <Label className="text-xs uppercase text-muted-foreground font-bold">Plantillas</Label>
+          <Button variant="link" className="h-auto p-0 text-xs text-primary" onClick={() => setShowAllTemplates(!showAllTemplates)}>
+            {showAllTemplates ? 'Ver menos' : 'Ver todas'}
+          </Button>
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          {displayedTemplates.map(t => (
+            <div
+              key={t.id}
+              className="border rounded-lg p-3 cursor-pointer hover:border-primary hover:bg-primary/5 transition-all text-center flex flex-col items-center gap-2"
+              onClick={() => applyTemplate(t)}
+            >
+              <div className="h-8 w-8 bg-muted rounded-full flex items-center justify-center">
+                {/* Simple icon placeholder logic */}
+                {t.icon === 'Table' && <span className="text-lg">TT</span>}
+                {t.icon === 'Grid' && <span className="text-lg">▦</span>}
+                {t.icon === 'List' && <span className="text-lg">☰</span>}
+                {t.icon === 'Columns' && <span className="text-lg">|||</span>}
+              </div>
+              <span className="text-xs font-medium">{t.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <Label className="text-xs uppercase text-muted-foreground font-bold mb-4 block">Configuración de Tabla</Label>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <TypeIcon className="h-4 w-4 text-muted-foreground" />
+              <Label htmlFor="header-row" className="font-normal cursor-pointer">Fila de Encabezado</Label>
+            </div>
+            <Switch
+              id="header-row"
+              checked={block.config?.hasHeaderRow ?? true}
+              onCheckedChange={(checked) => onUpdate({ config: { ...block.config, hasHeaderRow: checked } })}
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <RowsIcon className="h-4 w-4 text-muted-foreground" />
+              <Label htmlFor="striped-rows" className="font-normal cursor-pointer">Filas Alternas</Label>
+            </div>
+            <Switch
+              id="striped-rows"
+              checked={block.config?.hasStripedRows ?? false}
+              onCheckedChange={(checked) => onUpdate({ config: { ...block.config, hasStripedRows: checked } })}
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <GridIcon className="h-4 w-4 text-muted-foreground" />
+              <Label htmlFor="borders" className="font-normal cursor-pointer">Bordes</Label>
+            </div>
+            <Switch
+              id="borders"
+              checked={block.config?.hasBorders ?? true}
+              onCheckedChange={(checked) => onUpdate({ config: { ...block.config, hasBorders: checked } })}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

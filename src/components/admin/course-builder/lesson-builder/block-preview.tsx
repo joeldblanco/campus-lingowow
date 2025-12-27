@@ -23,6 +23,7 @@ import {
   RecordingBlock,
   TitleBlock,
   TabItemBlock,
+  StructuredContentBlock,
 } from '@/types/course-builder'
 import {
   Download,
@@ -91,6 +92,8 @@ export function BlockPreview({ block }: BlockPreviewProps) {
         return <EssayBlockPreview block={block as EssayBlock} />
       case 'recording':
         return <RecordingBlockPreview block={block as RecordingBlock} />
+      case 'structured-content':
+        return <StructuredContentBlockPreview block={block as StructuredContentBlock} />
       default:
         return (
           <div className="p-4 bg-yellow-50 border border-yellow-200 rounded text-yellow-800 text-sm">
@@ -1589,6 +1592,79 @@ function RecordingBlockPreview({ block }: { block: RecordingBlock }) {
         {hasRecorded && !isRecording && (
           <Button size="sm" className="mt-2">Enviar Grabación</Button>
         )}
+      </div>
+    </div>
+  )
+}
+
+// Structured Content (Table) Block Preview
+export function StructuredContentBlockPreview({ block }: { block: StructuredContentBlock }) {
+  const { config, content, title, subtitle } = block
+  const hasHeaderRow = config?.hasHeaderRow !== false // default true
+  const hasStripedRows = config?.hasStripedRows // default false
+  const hasBorders = config?.hasBorders !== false // default true
+
+  return (
+    <div className="space-y-4">
+      {/* Header Section */}
+      {(title || subtitle) && (
+        <div className="space-y-1">
+          {title && <h3 className="text-xl font-bold">{title}</h3>}
+          {subtitle && <p className="text-muted-foreground">{subtitle}</p>}
+        </div>
+      )}
+
+      {/* Table Container */}
+      <div className={cn("overflow-hidden", hasBorders ? "border rounded-lg" : "")}>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm text-left">
+            {/* Table Header */}
+            {hasHeaderRow && content?.headers && content.headers.length > 0 && (
+              <thead className={cn(
+                "bg-muted/50 text-muted-foreground font-medium uppercase text-xs tracking-wider",
+                hasBorders ? "border-b" : ""
+              )}>
+                <tr>
+                  {content.headers.map((header, i) => (
+                    <th key={i} className={cn("px-4 py-3", hasBorders && i < content.headers.length - 1 ? "border-r" : "")}>
+                      {header}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+            )}
+
+            {/* Table Body */}
+            <tbody className="divide-y">
+              {content?.rows?.map((row, rowIndex) => (
+                <tr
+                  key={rowIndex}
+                  className={cn(
+                    "transition-colors hover:bg-muted/30",
+                    hasStripedRows && rowIndex % 2 === 1 ? "bg-muted/20" : "",
+                    !hasBorders ? "border-none" : "divide-x"
+                  )}
+                >
+                  {row.map((cell, cellIndex) => (
+                    <td
+                      key={cellIndex}
+                      className="px-4 py-3 whitespace-pre-wrap"
+                    >
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+              {(!content?.rows || content.rows.length === 0) && (
+                <tr>
+                  <td colSpan={content?.headers?.length || 1} className="px-4 py-8 text-center text-muted-foreground italic">
+                    Sin datos en la tabla
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   )
