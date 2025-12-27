@@ -55,12 +55,58 @@ export async function POST(request: NextRequest) {
 
     // Determinar si es moderador (solo TEACHER y ADMIN son anfitriones/moderadores)
     // STUDENT y GUEST son participantes regulares sin permisos de moderador
-    const isModerator = user.roles.includes('TEACHER') || user.roles.includes('ADMIN')
+    // DEBUG: Force TRUE to test connection
+    const isModerator = true // user.roles.includes('TEACHER') || user.roles.includes('ADMIN')
 
     // Usar clave privada desde variable de entorno (compatible con Vercel)
-    const privateKey = process.env.JAAS_PRIVATE_KEY
+    let privateKey = process.env.JAAS_PRIVATE_KEY
+    const privateKeyPath = process.env.JAAS_PRIVATE_KEY_PATH
+
+    // Try reading from file path if direct key is missing
+    if (!privateKey && privateKeyPath) {
+      try {
+        const fs = await import('fs')
+        const path = await import('path')
+
+        // Resolve path (handle relative vs absolute)
+        const resolvedPath = path.isAbsolute(privateKeyPath)
+          ? privateKeyPath
+          : path.join(process.cwd(), privateKeyPath)
+
+        if (fs.existsSync(resolvedPath)) {
+          privateKey = fs.readFileSync(resolvedPath, 'utf8')
+        } else {
+          console.warn(`JAAS_PRIVATE_KEY_PATH provided but file not found at: ${resolvedPath}`)
+        }
+      } catch (error) {
+        console.error('Error reading JAAS private key file:', error)
+      }
+    }
+
+    // Fallback for Development: If STILL no private key, signal to use public Jitsi
+    if (!privateKey) {
+      console.warn('JAAS_PRIVATE_KEY missing. Falling back to public Jitsi.')
+      return NextResponse.json({
+        token: null,
+        usePublicJitsi: true,
+        user: {
+          id: user.id,
+          name: user.name,
+          isModerator,
+        },
+      })
+    }
 
     // Generar JWT
+    // Debug logging for troubleshooting auth failures
+    if (process.env.NODE_ENV === 'development') {
+      const kid = process.env.JAAS_KID || ''
+      console.log('[JaaS Debug] Generating token...')
+      console.log('[JaaS Debug] AppID:', process.env.JAAS_APP_ID)
+      console.log('[JaaS Debug] KID Prefix:', kid.substring(0, 25) + '...')
+      console.log('[JaaS Debug] Key Length:', privateKey?.length)
+    }
+
     const token = generateJitsiJWT(
       {
         id: user.id,

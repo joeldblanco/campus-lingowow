@@ -14,6 +14,7 @@ import {
   CheckCircle2,
   FileSignature,
   Table,
+  Blocks,
 } from 'lucide-react'
 import React from 'react'
 
@@ -40,6 +41,7 @@ export type BlockType =
   | 'essay'
   | 'recording'
   | 'structured-content'
+  | 'grammar-visualizer'
 
 // Base block type with discriminated union for different content types
 export interface BaseBlock {
@@ -217,6 +219,46 @@ export interface StructuredContentBlock extends BaseBlock {
   }
 }
 
+export type GrammarType =
+  | 'subject'
+  | 'verb'
+  | 'object'
+  | 'adverb'
+  | 'negation'
+  | 'preposition'
+  | 'article'
+  | 'pronoun'
+  | 'punctuation'
+  | 'other'
+
+export interface TokenBlock {
+  id: string
+  content: string // The text content (can be multiple words if merged)
+  grammarType?: GrammarType
+  color?: string // Optional, can be derived from GrammarType
+}
+
+export interface SentenceVariant {
+  id: string
+  label: string // e.g. "Affirmative", "Negative"
+  rawSentence: string
+  tokens: TokenBlock[]
+  hint?: string
+}
+
+export interface SentenceSet {
+  id: string
+  title: string
+  variants: SentenceVariant[]
+  hint?: string
+}
+
+export interface GrammarVisualizerBlock extends BaseBlock {
+  type: 'grammar-visualizer'
+  title?: string
+  sets: SentenceSet[]
+}
+
 export type Block =
   | TitleBlock
   | TextBlock
@@ -240,6 +282,7 @@ export type Block =
   | EssayBlock
   | RecordingBlock
   | StructuredContentBlock
+  | GrammarVisualizerBlock
 
 // Quiz question types
 export interface QuizQuestion {
@@ -533,6 +576,39 @@ export const BLOCK_TEMPLATES: BlockTemplate[] = [
           ['Dato 3', 'Dato 4'],
         ],
       },
+    },
+  },
+  {
+    type: 'grammar-visualizer',
+    label: 'Visualizador Gramatical',
+    icon: Blocks,
+    description: 'Constructor de oraciones interactivo',
+    defaultData: {
+      id: '',
+      type: 'grammar-visualizer',
+      order: 0,
+      title: 'Nuevo Visualizador Gramatical',
+      sets: [
+        {
+          id: 'set-default',
+          title: 'Presente Simple - To Be',
+          hint: 'Úsalo para describir estados o identidades.',
+          variants: [
+            {
+              id: 'var-default-1',
+              label: 'Afirmativo',
+              rawSentence: 'I am a student.',
+              tokens: [
+                { id: 't1', content: 'I', grammarType: 'subject' },
+                { id: 't2', content: 'am', grammarType: 'verb' },
+                { id: 't3', content: 'a', grammarType: 'article' },
+                { id: 't4', content: 'student', grammarType: 'object' },
+                { id: 't5', content: '.', grammarType: 'punctuation' },
+              ],
+            },
+          ],
+        },
+      ],
     },
   },
 ]

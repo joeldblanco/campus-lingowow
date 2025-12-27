@@ -24,6 +24,7 @@ import {
   TitleBlock,
   TabItemBlock,
   StructuredContentBlock,
+  GrammarVisualizerBlock,
 } from '@/types/course-builder'
 import {
   Download,
@@ -94,6 +95,8 @@ export function BlockPreview({ block }: BlockPreviewProps) {
         return <RecordingBlockPreview block={block as RecordingBlock} />
       case 'structured-content':
         return <StructuredContentBlockPreview block={block as StructuredContentBlock} />
+      case 'grammar-visualizer':
+        return <GrammarVisualizerBlockPreview block={block as GrammarVisualizerBlock} />
       default:
         return (
           <div className="p-4 bg-yellow-50 border border-yellow-200 rounded text-yellow-800 text-sm">
@@ -797,7 +800,98 @@ function FileIconByType({ type, url }: { type: string, url?: string }) {
 }
 
 
+
 // Embed Block Preview
+
+// Grammar Visualizer Preview
+export function GrammarVisualizerBlockPreview({ block }: { block: GrammarVisualizerBlock }) {
+  if (!block.sets || block.sets.length === 0) {
+    return (
+      <div className="p-8 border-2 border-dashed rounded-lg text-center text-muted-foreground bg-muted/20">
+        <p className="mb-2">No hay patrones gramaticales configurados.</p>
+        <p className="text-sm">Edita este bloque para agregar patrones y oraciones.</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-8">
+      {block.title && (
+        <h3 className="text-xl font-bold text-center border-b pb-2">{block.title}</h3>
+      )}
+
+      {block.sets.map((set, setIndex) => (
+        <div key={set.id} className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Badge variant="outline" className="h-6 w-6 rounded-full flex items-center justify-center p-0 shrink-0">
+              {setIndex + 1}
+            </Badge>
+            <h4 className="font-semibold text-lg">{set.title}</h4>
+          </div>
+
+          <div className="space-y-4 pl-8">
+            {set.variants.map((variant) => (
+              <div key={variant.id} className="bg-white rounded-xl p-4 shadow-sm border border-slate-100">
+                <div className="mb-3">
+                  <Badge variant="secondary" className="text-xs uppercase tracking-wider mb-2">
+                    {variant.label}
+                  </Badge>
+                </div>
+
+                <div className="flex flex-wrap gap-2 items-center">
+                  {variant.tokens.map((token) => {
+                    const grammarInfo = getGrammarVisualizerColor(token.grammarType)
+                    return (
+                      <div
+                        key={token.id}
+                        className={cn(
+                          "flex flex-col items-center gap-1 p-2 rounded-lg border-2 border-transparent transition-all min-w-[60px]",
+                          grammarInfo.bg
+                        )}
+                      >
+                        <span className={cn("px-2 py-1 rounded text-lg font-medium bg-white/80 w-full text-center shadow-sm", grammarInfo.color)}>
+                          {token.content}
+                        </span>
+                        <span className="text-[9px] uppercase font-bold tracking-wider opacity-60">
+                          {grammarInfo.label}
+                        </span>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            ))}
+
+            {set.hint && (
+              <div className="flex items-start gap-2 bg-yellow-50 text-yellow-800 p-3 rounded-lg text-sm border border-yellow-100">
+                <LucideIcons.Lightbulb className="h-4 w-4 shrink-0 mt-0.5" />
+                <p>{set.hint}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function getGrammarVisualizerColor(type?: string) {
+  // Determine color/label based on type string used in editor
+  // Ideally share this logic, but for preview we can duplicate or import
+  const map: Record<string, { label: string, color: string, bg: string }> = {
+    'subject': { label: 'Sujeto', color: 'text-yellow-700', bg: 'bg-yellow-100' },
+    'verb': { label: 'Verbo', color: 'text-green-700', bg: 'bg-green-100' },
+    'object': { label: 'Objeto', color: 'text-blue-700', bg: 'bg-blue-100' },
+    'adverb': { label: 'Adverbio', color: 'text-purple-700', bg: 'bg-purple-100' },
+    'negation': { label: 'Negación', color: 'text-red-700', bg: 'bg-red-100' },
+    'preposition': { label: 'Preposición', color: 'text-orange-700', bg: 'bg-orange-100' },
+    'article': { label: 'Artículo', color: 'text-gray-700', bg: 'bg-gray-100' },
+    'pronoun': { label: 'Pronombre', color: 'text-indigo-700', bg: 'bg-indigo-100' },
+    'punctuation': { label: 'Puntuación', color: 'text-slate-700', bg: 'bg-slate-100' },
+    'other': { label: 'Otro', color: 'text-zinc-700', bg: 'bg-zinc-100' }
+  }
+  return map[type || 'other'] || map['other']
+}
 function EmbedBlockPreview({ block }: { block: EmbedBlock }) {
   return (
     <div className="space-y-4">

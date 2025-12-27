@@ -38,8 +38,8 @@ export async function createJitsiMeeting(bookingId: string) {
       throw new Error('No tienes permisos para crear esta videollamada')
     }
 
-    // Generar nombre de sala único
-    const roomName = generateRoomName(bookingId)
+    // Generar nombre de sala único (por defecto)
+    let roomName = generateRoomName(bookingId)
 
     // Buscar videollamada existente por bookingId
     const existingVideoCall = await db.videoCall.findFirst({
@@ -48,12 +48,16 @@ export async function createJitsiMeeting(bookingId: string) {
 
     let videoCall
     if (existingVideoCall) {
-      // Actualizar videollamada existente
+      // Reuse existing room name to prevent splitting participants into different rooms
+      roomName = existingVideoCall.roomId
+
+      // Actualizar estado de videollamada existente (reactivar si es necesario)
       videoCall = await db.videoCall.update({
         where: { id: existingVideoCall.id },
         data: {
-          roomId: roomName,
-          status: 'SCHEDULED',
+          status: 'SCHEDULED', // Reactivate if it was ended
+          // Don't update startTime to preserve original start? Or update to now?
+          // Let's update startTime to track this new session
           startTime: getCurrentDate(),
         },
       })

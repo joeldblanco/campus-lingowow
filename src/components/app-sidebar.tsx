@@ -31,6 +31,7 @@ import { NavMain } from '@/components/nav-main'
 import { NavUser } from '@/components/nav-user'
 import CompanySidebarHeader from '@/components/sidebar/company-sidebar-header'
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@/components/ui/sidebar'
+import { NavMessages } from '@/components/nav-messages'
 import { hasRole } from '@/lib/utils/roles'
 import { UserRole } from '@prisma/client'
 import { useSession } from 'next-auth/react'
@@ -202,6 +203,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
+        <NavMessages />
         {hasRole(user.roles, UserRole.STUDENT) && <NavClasses />}
         {hasRole(user.roles, UserRole.TEACHER) && <NavMain items={data.navTeacher} />}
         {user.roles.includes(UserRole.ADMIN) && <NavAdmin sections={data.navAdmin} />}

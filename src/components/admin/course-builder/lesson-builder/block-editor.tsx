@@ -24,6 +24,7 @@ import {
   DownloadableFile,
   EmbedBlock,
   FileBlock,
+  GrammarVisualizerBlock,
   ImageBlock,
   LayoutBlock,
   QuizBlock,
@@ -45,13 +46,16 @@ import {
   Save,
   Trash2,
   Video,
-  X
+  X,
+  Blocks,
 } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { NestedBlockList } from './nested-block-list'
 import { StructuredContentEditor } from './structured-content-editor'
+import { GrammarVisualizerEditor } from './grammar-visualizer-editor'
+import { GrammarVisualizerBlockPreview } from './block-preview'
 
 interface BlockEditorProps {
   block: Block
@@ -94,6 +98,8 @@ export function BlockContentEditor({
       return <LayoutBlockEditor block={block as LayoutBlock} onUpdate={onUpdate} />
     case 'structured-content':
       return <StructuredContentEditor block={block as StructuredContentBlock} onUpdate={onUpdate} />
+    case 'grammar-visualizer':
+      return <GrammarVisualizerEditor block={block as GrammarVisualizerBlock} onUpdate={onUpdate} />
     default:
       return <div>Tipo de bloque no soportado</div>
   }
@@ -159,6 +165,8 @@ export function BlockEditor({
             📊
           </div>
         )
+      case 'grammar-visualizer':
+        return <Blocks className="h-4 w-4" />
       default:
         return <div className="h-4 w-4" />
     }
@@ -188,6 +196,8 @@ export function BlockEditor({
         return 'Estructura de Columnas'
       case 'structured-content':
         return 'Contenido Estructurado'
+      case 'grammar-visualizer':
+        return 'Visualizador Gramatical'
       default:
         return 'Bloque'
     }
@@ -224,6 +234,13 @@ export function BlockEditor({
             onUpdate={handleUpdate}
           />
         )
+      case 'grammar-visualizer':
+        return (
+          <GrammarVisualizerEditor
+            block={localBlock as GrammarVisualizerBlock}
+            onUpdate={handleUpdate}
+          />
+        )
       default:
         return <div>Tipo de bloque no soportado</div>
     }
@@ -253,6 +270,8 @@ export function BlockEditor({
         return <LayoutBlockPreview block={block as LayoutBlock} />
       case 'structured-content':
         return <StructuredContentBlockPreview block={block as StructuredContentBlock} />
+      case 'grammar-visualizer':
+        return <GrammarVisualizerBlockPreview block={block as GrammarVisualizerBlock} />
       default:
         return <div>Tipo de bloque no soportado</div>
     }

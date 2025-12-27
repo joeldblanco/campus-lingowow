@@ -18,6 +18,7 @@ import {
   VideoBlock,
   ImageBlock,
   StructuredContentBlock,
+  GrammarVisualizerBlock,
 } from '@/types/course-builder'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'

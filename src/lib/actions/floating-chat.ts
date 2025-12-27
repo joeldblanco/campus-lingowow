@@ -3,6 +3,8 @@
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
 import { getCurrentDate } from '@/lib/utils/date'
+import { pusherServer } from '@/lib/pusher'
+import { MessageType } from '@prisma/client'
 
 export async function getFloatingConversations(userId: string) {
   try {
@@ -15,9 +17,9 @@ export async function getFloatingConversations(userId: string) {
       where: {
         participants: {
           some: {
-            userId: userId
-          }
-        }
+            userId: userId,
+          },
+        },
       },
       include: {
         participants: {
@@ -28,19 +30,14 @@ export async function getFloatingConversations(userId: string) {
                 name: true,
                 lastName: true,
                 image: true,
-                teamBadge: true
-              }
-            }
+                teamBadge: true,
+              },
+            },
           },
-          where: {
-            userId: {
-              not: userId
-            }
-          }
         },
         messages: {
           orderBy: {
-            timestamp: 'desc'
+            timestamp: 'desc',
           },
           take: 1,
           include: {
@@ -50,15 +47,15 @@ export async function getFloatingConversations(userId: string) {
                 name: true,
                 lastName: true,
                 image: true,
-                teamBadge: true
-              }
-            }
-          }
-        }
+                teamBadge: true,
+              },
+            },
+          },
+        },
       },
       orderBy: {
-        lastMessageAt: 'desc'
-      }
+        lastMessageAt: 'desc',
+      },
     })
 
     return { success: true, conversations }
@@ -81,27 +78,27 @@ export async function searchUsers(query: string) {
           {
             name: {
               contains: query,
-              mode: 'insensitive'
-            }
+              mode: 'insensitive',
+            },
           },
           {
             lastName: {
               contains: query,
-              mode: 'insensitive'
-            }
+              mode: 'insensitive',
+            },
           },
           {
             email: {
               contains: query,
-              mode: 'insensitive'
-            }
-          }
+              mode: 'insensitive',
+            },
+          },
         ],
         AND: {
           id: {
-            not: session.user.id
-          }
-        }
+            not: session.user.id,
+          },
+        },
       },
       select: {
         id: true,
@@ -109,9 +106,9 @@ export async function searchUsers(query: string) {
         lastName: true,
         image: true,
         teamBadge: true,
-        roles: true
+        roles: true,
       },
-      take: 20
+      take: 20,
     })
 
     return { success: true, users }
@@ -136,11 +133,11 @@ export async function createFloatingConversation(participantIds: string[]) {
           participants: {
             every: {
               userId: {
-                in: [session.user.id, participantIds[0]]
-              }
-            }
-          }
-        }
+                in: [session.user.id, participantIds[0]],
+              },
+            },
+          },
+        },
       })
 
       if (existingConversation) {
@@ -153,22 +150,39 @@ export async function createFloatingConversation(participantIds: string[]) {
       data: {
         isGroup: participantIds.length > 1,
         participants: {
-          create: [
-            { userId: session.user.id },
-            ...participantIds.map(id => ({ userId: id }))
-          ]
-        }
-      }
+          create: [{ userId: session.user.id }, ...participantIds.map((id) => ({ userId: id }))],
+        },
+      },
+      include: {
+        participants: {
+          include: {
+            user: true,
+          },
+        },
+      },
     })
 
-    return { success: true, conversationId: conversation.id }
+    // Notify participants about new conversation
+    for (const participant of conversation.participants) {
+      if (participant.userId !== session.user.id) {
+        await pusherServer.trigger(`user-${participant.userId}`, 'new-conversation', conversation)
+      }
+    }
+
+    return { success: true, conversationId: conversation.id, conversation }
   } catch (error) {
     console.error('Error creating conversation:', error)
     return { success: false, error: 'Error al crear conversación' }
   }
 }
 
-export async function sendFloatingMessage(conversationId: string, senderId: string, content: string) {
+export async function sendFloatingMessage(
+  conversationId: string,
+  senderId: string,
+  content: string,
+  type: MessageType = 'TEXT',
+  metadata: any = null
+) {
   try {
     const session = await auth()
     if (!session?.user?.id || session.user.id !== senderId) {
@@ -176,12 +190,14 @@ export async function sendFloatingMessage(conversationId: string, senderId: stri
     }
 
     // Verify user is participant in conversation
-    const participant = await db.conversationParticipant.findFirst({
-      where: {
-        conversationId,
-        userId: senderId
-      }
+    const conversation = await db.floatingConversation.findUnique({
+      where: { id: conversationId },
+      include: {
+        participants: true,
+      },
     })
+
+    const participant = conversation?.participants.find((p) => p.userId === senderId)
 
     if (!participant) {
       return { success: false, error: 'No tienes acceso a esta conversación' }
@@ -193,7 +209,8 @@ export async function sendFloatingMessage(conversationId: string, senderId: stri
         conversationId,
         senderId,
         content,
-        type: 'TEXT'
+        type,
+        metadata,
       },
       include: {
         sender: {
@@ -202,20 +219,67 @@ export async function sendFloatingMessage(conversationId: string, senderId: stri
             name: true,
             lastName: true,
             image: true,
-            teamBadge: true
-          }
-        }
-      }
+            teamBadge: true,
+          },
+        },
+      },
     })
 
     // Update conversation's last message
-    await db.floatingConversation.update({
+    const updatedConversation = await db.floatingConversation.update({
       where: { id: conversationId },
       data: {
-        lastMessage: content,
-        lastMessageAt: getCurrentDate()
-      }
+        lastMessage: type === 'FILE' ? 'Archivo adjunto' : content,
+        lastMessageAt: getCurrentDate(),
+      },
+      include: {
+        participants: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                lastName: true,
+                image: true,
+                teamBadge: true,
+              },
+            },
+          },
+        },
+        messages: {
+          take: 1,
+          orderBy: {
+            timestamp: 'desc',
+          },
+          include: {
+            sender: {
+              select: {
+                id: true,
+                name: true,
+                lastName: true,
+                image: true,
+                teamBadge: true,
+              },
+            },
+          },
+        },
+      },
     })
+
+    // Trigger Pusher events
+    // 1. New message in the conversation channel
+    await pusherServer.trigger(`conversation-${conversationId}`, 'new-message', message)
+
+    // 2. Update conversation list for all participants
+    const participants = updatedConversation.participants
+    for (const p of participants) {
+      await pusherServer.trigger(`user-${p.userId}`, 'conversation-update', {
+        conversationId,
+        lastMessage: updatedConversation.lastMessage,
+        lastMessageAt: updatedConversation.lastMessageAt,
+        unreadCount: p.userId !== senderId ? 1 : 0, // Simplified unread logic for now
+      })
+    }
 
     return { success: true, message }
   } catch (error) {
@@ -235,8 +299,8 @@ export async function getConversationMessages(conversationId: string, userId: st
     const participant = await db.conversationParticipant.findFirst({
       where: {
         conversationId,
-        userId
-      }
+        userId,
+      },
     })
 
     if (!participant) {
@@ -245,7 +309,7 @@ export async function getConversationMessages(conversationId: string, userId: st
 
     const messages = await db.floatingChatMessage.findMany({
       where: {
-        conversationId
+        conversationId,
       },
       include: {
         sender: {
@@ -254,13 +318,13 @@ export async function getConversationMessages(conversationId: string, userId: st
             name: true,
             lastName: true,
             image: true,
-            teamBadge: true
-          }
-        }
+            teamBadge: true,
+          },
+        },
       },
       orderBy: {
-        timestamp: 'asc'
-      }
+        timestamp: 'asc',
+      },
     })
 
     // Mark messages as read
@@ -268,13 +332,13 @@ export async function getConversationMessages(conversationId: string, userId: st
       where: {
         conversationId,
         senderId: {
-          not: userId
+          not: userId,
         },
-        isRead: false
+        isRead: false,
       },
       data: {
-        isRead: true
-      }
+        isRead: true,
+      },
     })
 
     return { success: true, messages }
@@ -295,29 +359,78 @@ export async function markMessagesAsRead(conversationId: string, userId: string)
       where: {
         conversationId,
         senderId: {
-          not: userId
+          not: userId,
         },
-        isRead: false
+        isRead: false,
       },
       data: {
-        isRead: true
-      }
+        isRead: true,
+      },
     })
 
     // Update participant's last read time
     await db.conversationParticipant.updateMany({
       where: {
         conversationId,
-        userId
+        userId,
       },
       data: {
-        lastReadAt: getCurrentDate()
-      }
+        lastReadAt: getCurrentDate(),
+      },
     })
+
+    // Trigger Pusher event for the user to update sidebar
+    await pusherServer.trigger(`user-${userId}`, 'conversation-read', { conversationId })
 
     return { success: true }
   } catch (error) {
     console.error('Error marking messages as read:', error)
-    return { success: false, error: 'Error al marcar mensajes como leídos' }
+    return { success: false, error: 'Error al marcar como leídos' }
+  }
+}
+
+export async function getTotalUnreadCount(userId: string) {
+  try {
+    const count = await db.floatingChatMessage.count({
+      where: {
+        conversation: {
+          participants: {
+            some: { userId },
+          },
+        },
+        senderId: { not: userId },
+        isRead: false,
+      },
+    })
+    return { success: true, count }
+  } catch (error) {
+    console.error('Error getting unread count:', error)
+    return { success: false, error: 'Error al obtener conteo' }
+  }
+}
+
+export async function archiveConversation(conversationId: string, userId: string) {
+  try {
+    const session = await auth()
+    if (!session?.user?.id || session.user.id !== userId) {
+      return { success: false, error: 'No autorizado' }
+    }
+
+    await db.conversationParticipant.update({
+      where: {
+        conversationId_userId: {
+          conversationId,
+          userId,
+        },
+      },
+      data: {
+        isArchived: true,
+      },
+    })
+
+    return { success: true }
+  } catch (error) {
+    console.error('Error archiving conversation:', error)
+    return { success: false, error: 'Error al archivar conversación' }
   }
 }

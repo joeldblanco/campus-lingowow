@@ -1725,6 +1725,8 @@ model ConversationParticipant {
   joinedAt       DateTime  @default(now())
   lastReadAt     DateTime?
 
+  isArchived     Boolean   @default(false)
+
   // Relaciones
   conversation FloatingConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   user         User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -1739,6 +1741,7 @@ model FloatingChatMessage {
   senderId       String
   content        String
   type           MessageType @default(TEXT)
+  metadata       Json?       // Metadata for files (url, name, size, type)
   timestamp      DateTime    @default(now())
   isRead         Boolean     @default(false)
 

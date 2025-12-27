@@ -1,6 +1,7 @@
 'use client'
 
-import { ClassroomLayout } from '@/components/classroom/classroom-layout'
+import { TeacherClassroomLayout } from '@/components/classroom/teacher-classroom-layout'
+import { StudentClassroomLayout } from '@/components/classroom/student-classroom-layout'
 import { useCurrentClass } from '@/context/current-class'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -33,7 +34,7 @@ export default function ClassroomPage() {
   const [classroomData, setClassroomData] = useState<ClassroomData | null>(null)
   const [loading, setLoading] = useState(true)
   const [accessValidation, setAccessValidation] = useState<ReturnType<typeof validateClassAccess> | null>(null)
-  
+
   const urlClassId = searchParams.get('classId')
   const effectiveClassId = urlClassId || currentClassId
   const isTeacher = session?.user?.roles?.includes(UserRole.TEACHER) || false
@@ -53,7 +54,7 @@ export default function ClassroomPage() {
         try {
           const data = await getClassroomData(effectiveClassId, session.user.id)
           setClassroomData(data)
-          
+
           // Validar acceso a la clase usando datos UTC
           const validation = validateClassAccess(data.dayUTC, data.timeSlotUTC, isTeacher)
           setAccessValidation(validation)
@@ -77,7 +78,7 @@ export default function ClassroomPage() {
     const interval = setInterval(() => {
       const validation = validateClassAccess(classroomData.dayUTC, classroomData.timeSlotUTC, isTeacher)
       setAccessValidation(validation)
-      
+
       // Si la clase ya puede accederse, recargar la página
       if (validation.canAccess && accessValidation && !accessValidation.canAccess) {
         window.location.reload()
@@ -145,24 +146,38 @@ export default function ClassroomPage() {
     )
   }
 
+  // Render Teacher Layout
+  if (isTeacher) {
+    return (
+      <div data-testid="teacher-dashboard">
+        <TeacherClassroomLayout
+          classId={effectiveClassId}
+          studentId={classroomData.studentId}
+          teacherId={classroomData.teacherId}
+          courseName={classroomData.courseName}
+          lessonName={classroomData.lessonName}
+          bookingId={classroomData.bookingId}
+          day={classroomData.day}
+          timeSlot={classroomData.timeSlot}
+          currentUserName={session?.user?.name || 'Profesor'}
+        />
+      </div>
+    )
+  }
+
+  // Render Student Layout (Default)
   return (
-    <div data-testid="teacher-dashboard">
-      <ClassroomLayout
+    <div data-testid="student-dashboard">
+      <StudentClassroomLayout
         classId={effectiveClassId}
         studentId={classroomData.studentId}
         teacherId={classroomData.teacherId}
-        studentName={classroomData.studentName}
-        studentImage={classroomData.studentImage}
-        teacherName={classroomData.teacherName}
-        teacherImage={classroomData.teacherImage}
         courseName={classroomData.courseName}
         lessonName={classroomData.lessonName}
         bookingId={classroomData.bookingId}
-        currentUserId={session?.user?.id || ''}
-        currentUserName={session?.user?.name || 'Usuario'}
-        currentUserImage={session?.user?.image}
         day={classroomData.day}
         timeSlot={classroomData.timeSlot}
+        currentUserName={session?.user?.name || 'Estudiante'}
       />
     </div>
   )
