@@ -35,6 +35,7 @@ export function RegisterForm() {
       email: '',
       password: '',
       confirmPassword: '',
+      website: '', // Honeypot field
     },
   })
 
@@ -169,6 +170,25 @@ export function RegisterForm() {
                     />
                   </FormControl>
                   <FormMessage data-testid="confirm-password-error" />
+                </FormItem>
+              )}
+            />
+
+            {/* Campo honeypot - invisible para usuarios, los bots lo llenan */}
+            <FormField
+              control={registerForm.control}
+              name="website"
+              render={({ field }) => (
+                <FormItem className="absolute -left-[9999px] opacity-0 pointer-events-none" aria-hidden="true">
+                  <FormLabel>Website</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      {...field}
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />

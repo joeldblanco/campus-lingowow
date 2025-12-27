@@ -2,12 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
+import { checkForSpam } from '@/lib/utils/spam-protection'
 
 const registerSchema = z.object({
   name: z.string().min(1, 'El nombre es requerido'),
   lastName: z.string().min(1, 'El apellido es requerido'),
   email: z.string().email('Email inválido'),
   password: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres'),
+  website: z.string().optional(), // Campo honeypot
 })
 
 export async function POST(req: NextRequest) {
@@ -16,6 +18,22 @@ export async function POST(req: NextRequest) {
     
     // Validar datos
     const validatedData = registerSchema.parse(body)
+
+    // Verificación anti-spam
+    const spamCheck = checkForSpam({
+      name: validatedData.name,
+      lastName: validatedData.lastName,
+      email: validatedData.email,
+      honeypot: validatedData.website,
+    })
+
+    if (spamCheck.isSpam) {
+      console.log(`[SPAM BLOCKED] Reason: ${spamCheck.reason}, Email: ${validatedData.email}`)
+      return NextResponse.json(
+        { error: 'No se pudo completar el registro. Intenta más tarde.' },
+        { status: 400 }
+      )
+    }
     
     // Verificar si el usuario ya existe
     const existingUser = await db.user.findUnique({

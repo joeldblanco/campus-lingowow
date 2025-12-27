@@ -69,6 +69,9 @@ export const SignUpSchema = z
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9])(?!.*\s).{8,32}$/,
         'Debe tener minúscula, mayúscula, número y símbolo.'
       ),
+
+    // Campo honeypot - debe estar vacío (los bots lo llenan automáticamente)
+    website: z.string().optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Las contraseñas no coinciden',

@@ -31,6 +31,7 @@ export function InlineAuthForm({ onSuccess }: InlineAuthFormProps) {
   const [registerEmail, setRegisterEmail] = useState('')
   const [registerPassword, setRegisterPassword] = useState('')
   const [registerConfirmPassword, setRegisterConfirmPassword] = useState('')
+  const [honeypot, setHoneypot] = useState('') // Campo honeypot anti-spam
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -94,6 +95,7 @@ export function InlineAuthForm({ onSuccess }: InlineAuthFormProps) {
           lastName: registerLastName,
           email: registerEmail,
           password: registerPassword,
+          website: honeypot, // Campo honeypot
         }),
       })
 
@@ -310,6 +312,19 @@ export function InlineAuthForm({ onSuccess }: InlineAuthFormProps) {
                   onChange={(e) => setRegisterConfirmPassword(e.target.value)}
                   required
                   disabled={isLoading}
+                />
+              </div>
+
+              {/* Campo honeypot - invisible para usuarios, los bots lo llenan */}
+              <div className="absolute -left-[9999px] opacity-0 pointer-events-none" aria-hidden="true">
+                <Label htmlFor="register-website">Website</Label>
+                <Input
+                  id="register-website"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
                 />
               </div>
 

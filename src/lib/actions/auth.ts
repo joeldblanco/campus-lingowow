@@ -14,6 +14,7 @@ import bcrypt from 'bcryptjs'
 import { AuthError } from 'next-auth'
 import * as z from 'zod'
 import { getCurrentDate, isBeforeDate } from '@/lib/utils/date'
+import { checkForSpam } from '@/lib/utils/spam-protection'
 
 export const register = async (values: z.infer<typeof SignUpSchema>) => {
   const validatedFields = SignUpSchema.safeParse(values)
@@ -21,6 +22,20 @@ export const register = async (values: z.infer<typeof SignUpSchema>) => {
   if (!validatedFields.success) return { error: 'Campos inválidos' }
 
   const validatedData = validatedFields.data
+
+  // Verificación anti-spam
+  const spamCheck = checkForSpam({
+    name: validatedData.name,
+    lastName: validatedData.lastName,
+    email: validatedData.email,
+    honeypot: validatedData.website,
+  })
+
+  if (spamCheck.isSpam) {
+    // No revelar que detectamos spam - mensaje genérico
+    console.log(`[SPAM BLOCKED] Reason: ${spamCheck.reason}, Email: ${validatedData.email}`)
+    return { error: 'No se pudo completar el registro. Intenta más tarde.' }
+  }
 
   const hashedPassword = await bcrypt.hash(validatedData.password, 10)
 
