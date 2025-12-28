@@ -3,6 +3,11 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
 import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/ui/hover-card'
+import {
   AssignmentBlock,
   AudioBlock,
   Block,
@@ -852,9 +857,28 @@ export function GrammarVisualizerBlockPreview({ block }: { block: GrammarVisuali
                         <span className={cn("px-2 py-1 rounded text-lg font-medium bg-white/80 w-full text-center shadow-sm", grammarInfo.color)}>
                           {token.content}
                         </span>
-                        <span className="text-[9px] uppercase font-bold tracking-wider opacity-60">
-                          {grammarInfo.label}
-                        </span>
+                        <div className="flex items-center gap-1">
+                          <span className="text-[9px] uppercase font-bold tracking-wider opacity-60">
+                            {grammarInfo.label}
+                          </span>
+                          <HoverCard openDelay={1000}>
+                            <HoverCardTrigger asChild>
+                              <div className="cursor-help opacity-40 hover:opacity-100 transition-opacity">
+                                <HelpCircle className="h-2.5 w-2.5" />
+                              </div>
+                            </HoverCardTrigger>
+                            <HoverCardContent className="w-64 p-3" side="top">
+                              <div className="space-y-1">
+                                <p className="text-xs font-bold uppercase tracking-wider text-primary">
+                                  {grammarInfo.label}
+                                </p>
+                                <p className="text-sm text-slate-600">
+                                  {grammarInfo.explanation}
+                                </p>
+                              </div>
+                            </HoverCardContent>
+                          </HoverCard>
+                        </div>
                       </div>
                     )
                   })}
@@ -876,19 +900,174 @@ export function GrammarVisualizerBlockPreview({ block }: { block: GrammarVisuali
 }
 
 function getGrammarVisualizerColor(type?: string) {
-  // Determine color/label based on type string used in editor
-  // Ideally share this logic, but for preview we can duplicate or import
-  const map: Record<string, { label: string, color: string, bg: string }> = {
-    'subject': { label: 'Sujeto', color: 'text-yellow-700', bg: 'bg-yellow-100' },
-    'verb': { label: 'Verbo', color: 'text-green-700', bg: 'bg-green-100' },
-    'object': { label: 'Objeto', color: 'text-blue-700', bg: 'bg-blue-100' },
-    'adverb': { label: 'Adverbio', color: 'text-purple-700', bg: 'bg-purple-100' },
-    'negation': { label: 'Negación', color: 'text-red-700', bg: 'bg-red-100' },
-    'preposition': { label: 'Preposición', color: 'text-orange-700', bg: 'bg-orange-100' },
-    'article': { label: 'Artículo', color: 'text-gray-700', bg: 'bg-gray-100' },
-    'pronoun': { label: 'Pronombre', color: 'text-indigo-700', bg: 'bg-indigo-100' },
-    'punctuation': { label: 'Puntuación', color: 'text-slate-700', bg: 'bg-slate-100' },
-    'other': { label: 'Otro', color: 'text-zinc-700', bg: 'bg-zinc-100' }
+  const map: Record<string, { label: string, color: string, bg: string, explanation: string }> = {
+    // Sujeto
+    'subject': { 
+      label: 'Sujeto', 
+      color: 'text-yellow-700', 
+      bg: 'bg-yellow-100',
+      explanation: 'Quien realiza la acción o de quien se habla en la oración.'
+    },
+    // Verbos
+    'action-verb': { 
+      label: 'Verbo de acción', 
+      color: 'text-green-700', 
+      bg: 'bg-green-100',
+      explanation: 'Palabra que expresa una acción física o mental.'
+    },
+    'auxiliary-verb': { 
+      label: 'Verbo auxiliar', 
+      color: 'text-green-800', 
+      bg: 'bg-green-200',
+      explanation: 'Ayuda al verbo principal a formar tiempos verbales, preguntas o negaciones.'
+    },
+    'linking-verb': { 
+      label: 'Verbo copulativo', 
+      color: 'text-green-600', 
+      bg: 'bg-green-50',
+      explanation: 'Une al sujeto con una descripción o estado (ej: be, seem, become).'
+    },
+    // Objetos
+    'direct-object': { 
+      label: 'Objeto directo', 
+      color: 'text-blue-700', 
+      bg: 'bg-blue-100',
+      explanation: 'Persona o cosa que recibe directamente la acción del verbo.'
+    },
+    'indirect-object': { 
+      label: 'Objeto indirecto', 
+      color: 'text-blue-800', 
+      bg: 'bg-blue-200',
+      explanation: 'Indica a quién o para quién se realiza la acción del verbo.'
+    },
+    // Complementos
+    'subject-complement': { 
+      label: 'Complemento del sujeto', 
+      color: 'text-purple-700', 
+      bg: 'bg-purple-100',
+      explanation: 'Palabra o frase que sigue a un verbo copulativo y describe al sujeto.'
+    },
+    'object-complement': { 
+      label: 'Complemento del objeto', 
+      color: 'text-fuchsia-700', 
+      bg: 'bg-fuchsia-100',
+      explanation: 'Describe o renombra al objeto directo.'
+    },
+    // Modificadores
+    'adjective': { 
+      label: 'Adjetivo', 
+      color: 'text-pink-700', 
+      bg: 'bg-pink-100',
+      explanation: 'Palabra que describe o modifica a un sustantivo o pronombre.'
+    },
+    'adverb': { 
+      label: 'Adverbio', 
+      color: 'text-teal-700', 
+      bg: 'bg-teal-100',
+      explanation: 'Modifica a un verbo, adjetivo u otro adverbio, indicando cómo, cuándo o dónde.'
+    },
+    'adverbial-complement': { 
+      label: 'Complemento adverbial', 
+      color: 'text-emerald-600', 
+      bg: 'bg-emerald-100',
+      explanation: 'Información obligatoria o adicional sobre el lugar, tiempo o modo.'
+    },
+    // Determinantes y artículos
+    'determiner': { 
+      label: 'Determinante', 
+      color: 'text-orange-700', 
+      bg: 'bg-orange-100',
+      explanation: 'Palabra que introduce un sustantivo y especifica su referencia.'
+    },
+    'article': { 
+      label: 'Artículo', 
+      color: 'text-orange-500', 
+      bg: 'bg-orange-50',
+      explanation: 'Indica si el sustantivo es específico (el, la) o general (un, una).'
+    },
+    // Pronombres
+    'pronoun': { 
+      label: 'Pronombre', 
+      color: 'text-violet-700', 
+      bg: 'bg-violet-100',
+      explanation: 'Palabra que se usa en lugar de un sustantivo.'
+    },
+    'possessive-pronoun': { 
+      label: 'Pronombre posesivo', 
+      color: 'text-violet-500', 
+      bg: 'bg-violet-50',
+      explanation: 'Indica posesión o pertenencia (ej: mine, yours, theirs).'
+    },
+    // Preposiciones
+    'preposition': { 
+      label: 'Preposición', 
+      color: 'text-orange-800', 
+      bg: 'bg-orange-200',
+      explanation: 'Muestra la relación (espacial, temporal o lógica) entre palabras.'
+    },
+    'prepositional-object': { 
+      label: 'Objeto de la preposición', 
+      color: 'text-amber-800', 
+      bg: 'bg-amber-200',
+      explanation: 'Sustantivo o pronombre que sigue a una preposición.'
+    },
+    // Conectores
+    'conjunction': { 
+      label: 'Conjunción', 
+      color: 'text-gray-700', 
+      bg: 'bg-gray-100',
+      explanation: 'Une palabras, frases u oraciones (ej: and, but, or).'
+    },
+    'interjection': { 
+      label: 'Interjección', 
+      color: 'text-red-700', 
+      bg: 'bg-red-100',
+      explanation: 'Palabra que expresa una emoción fuerte o exclamación.'
+    },
+    // Otros elementos
+    'negation': { 
+      label: 'Negación', 
+      color: 'text-red-800', 
+      bg: 'bg-red-200',
+      explanation: 'Palabra usada para negar o expresar lo opuesto.'
+    },
+    'modal-verb': { 
+      label: 'Modal verb', 
+      color: 'text-lime-700', 
+      bg: 'bg-lime-100',
+      explanation: 'Tipo de auxiliar que indica posibilidad, habilidad, permiso u obligación.'
+    },
+    'infinitive': { 
+      label: 'Infinitivo', 
+      color: 'text-sky-600', 
+      bg: 'bg-sky-100',
+      explanation: 'La forma básica del verbo, generalmente precedida por "to".'
+    },
+    'gerund': { 
+      label: 'Gerundio', 
+      color: 'text-cyan-600', 
+      bg: 'bg-cyan-100',
+      explanation: 'Forma verbal terminada en -ing que funciona como sustantivo.'
+    },
+    'relative-pronoun': { 
+      label: 'Pronombre relativo', 
+      color: 'text-indigo-700', 
+      bg: 'bg-indigo-100',
+      explanation: 'Introduce una oración que describe a un sustantivo previo (ej: who, which).'
+    },
+    // Puntuación
+    'punctuation': { 
+      label: 'Puntuación', 
+      color: 'text-slate-500', 
+      bg: 'bg-slate-100',
+      explanation: 'Signos que ayudan a estructurar y dar sentido al texto.'
+    },
+    'other': { 
+      label: 'Otro', 
+      color: 'text-zinc-700', 
+      bg: 'bg-zinc-100',
+      explanation: 'Otros elementos gramaticales.'
+    }
   }
   return map[type || 'other'] || map['other']
 }

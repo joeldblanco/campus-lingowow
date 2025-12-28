@@ -50,25 +50,266 @@ import {
     PopoverTrigger,
 } from '@/components/ui/popover'
 import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from '@/components/ui/hover-card'
+import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
 } from '@/components/ui/collapsible'
 import { cn } from '@/lib/utils'
 import { v4 as uuidv4 } from 'uuid'
+import { HelpCircle } from 'lucide-react'
 
 // --- Grammar Types Configuration ---
-const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: string; border: string; strip: string }[] = [
-    { type: 'subject', label: 'Sujeto', color: 'text-amber-700', bg: 'bg-amber-50', border: 'border-amber-300', strip: 'bg-amber-400' },
-    { type: 'verb', label: 'Verbo', color: 'text-emerald-700', bg: 'bg-emerald-50', border: 'border-emerald-300', strip: 'bg-emerald-500' },
-    { type: 'object', label: 'Objeto', color: 'text-blue-700', bg: 'bg-blue-50', border: 'border-blue-300', strip: 'bg-blue-500' },
-    { type: 'adverb', label: 'Adverbio', color: 'text-purple-700', bg: 'bg-purple-50', border: 'border-purple-300', strip: 'bg-purple-500' },
-    { type: 'negation', label: 'Negación', color: 'text-red-700', bg: 'bg-red-50', border: 'border-red-300', strip: 'bg-red-500' },
-    { type: 'preposition', label: 'Preposición', color: 'text-orange-700', bg: 'bg-orange-50', border: 'border-orange-300', strip: 'bg-orange-500' },
-    { type: 'article', label: 'Artículo', color: 'text-stone-600', bg: 'bg-stone-50', border: 'border-stone-300', strip: 'bg-stone-400' },
-    { type: 'pronoun', label: 'Pronombre', color: 'text-indigo-700', bg: 'bg-indigo-50', border: 'border-indigo-300', strip: 'bg-indigo-500' },
-    { type: 'punctuation', label: 'Puntuación', color: 'text-slate-600', bg: 'bg-slate-100', border: 'border-slate-300', strip: 'bg-slate-400' },
-    { type: 'other', label: 'Otro', color: 'text-gray-600', bg: 'bg-gray-50', border: 'border-gray-300', strip: 'bg-gray-400' },
+const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: string; border: string; strip: string; explanation: string }[] = [
+    // Sujeto
+    { 
+        type: 'subject', 
+        label: 'Sujeto', 
+        color: 'text-yellow-700', 
+        bg: 'bg-yellow-50', 
+        border: 'border-yellow-300', 
+        strip: 'bg-yellow-400',
+        explanation: 'Quien realiza la acción o de quien se habla en la oración.'
+    },
+    // Verbos
+    { 
+        type: 'action-verb', 
+        label: 'Verbo de acción', 
+        color: 'text-green-700', 
+        bg: 'bg-green-50', 
+        border: 'border-green-300', 
+        strip: 'bg-green-500',
+        explanation: 'Palabra que expresa una acción física o mental.'
+    },
+    { 
+        type: 'auxiliary-verb', 
+        label: 'Verbo auxiliar', 
+        color: 'text-green-800', 
+        bg: 'bg-green-100', 
+        border: 'border-green-400', 
+        strip: 'bg-green-700',
+        explanation: 'Ayuda al verbo principal a formar tiempos verbales, preguntas o negaciones.'
+    },
+    { 
+        type: 'linking-verb', 
+        label: 'Verbo copulativo', 
+        color: 'text-green-600', 
+        bg: 'bg-green-50', 
+        border: 'border-green-200', 
+        strip: 'bg-green-400',
+        explanation: 'Une al sujeto con una descripción o estado (ej: be, seem, become).'
+    },
+    // Objetos
+    { 
+        type: 'direct-object', 
+        label: 'Objeto directo', 
+        color: 'text-blue-700', 
+        bg: 'bg-blue-50', 
+        border: 'border-blue-300', 
+        strip: 'bg-blue-500',
+        explanation: 'Persona o cosa que recibe directamente la acción del verbo.'
+    },
+    { 
+        type: 'indirect-object', 
+        label: 'Objeto indirecto', 
+        color: 'text-blue-800', 
+        bg: 'bg-blue-100', 
+        border: 'border-blue-400', 
+        strip: 'bg-blue-700',
+        explanation: 'Indica a quién o para quién se realiza la acción del verbo.'
+    },
+    // Complementos
+    { 
+        type: 'subject-complement', 
+        label: 'Complemento del sujeto', 
+        color: 'text-purple-700', 
+        bg: 'bg-purple-50', 
+        border: 'border-purple-300', 
+        strip: 'bg-purple-500',
+        explanation: 'Palabra o frase que sigue a un verbo copulativo y describe al sujeto.'
+    },
+    { 
+        type: 'object-complement', 
+        label: 'Complemento del objeto', 
+        color: 'text-fuchsia-700', 
+        bg: 'bg-fuchsia-50', 
+        border: 'border-fuchsia-300', 
+        strip: 'bg-fuchsia-500',
+        explanation: 'Describe o renombra al objeto directo.'
+    },
+    // Modificadores
+    { 
+        type: 'adjective', 
+        label: 'Adjetivo', 
+        color: 'text-pink-700', 
+        bg: 'bg-pink-50', 
+        border: 'border-pink-300', 
+        strip: 'bg-pink-500',
+        explanation: 'Palabra que describe o modifica a un sustantivo o pronombre.'
+    },
+    { 
+        type: 'adverb', 
+        label: 'Adverbio', 
+        color: 'text-teal-700', 
+        bg: 'bg-teal-50', 
+        border: 'border-teal-300', 
+        strip: 'bg-teal-500',
+        explanation: 'Modifica a un verbo, adjetivo u otro adverbio, indicando cómo, cuándo o dónde.'
+    },
+    { 
+        type: 'adverbial-complement', 
+        label: 'Complemento adverbial', 
+        color: 'text-emerald-600', 
+        bg: 'bg-emerald-50', 
+        border: 'border-emerald-200', 
+        strip: 'bg-emerald-400',
+        explanation: 'Información obligatoria o adicional sobre el lugar, tiempo o modo.'
+    },
+    // Determinantes y artículos
+    { 
+        type: 'determiner', 
+        label: 'Determinante', 
+        color: 'text-orange-700', 
+        bg: 'bg-orange-50', 
+        border: 'border-orange-300', 
+        strip: 'bg-orange-500',
+        explanation: 'Palabra que introduce un sustantivo y especifica su referencia.'
+    },
+    { 
+        type: 'article', 
+        label: 'Artículo', 
+        color: 'text-orange-500', 
+        bg: 'bg-orange-50', 
+        border: 'border-orange-200', 
+        strip: 'bg-orange-300',
+        explanation: 'Indica si el sustantivo es específico (el, la) o general (un, una).'
+    },
+    // Pronombres
+    { 
+        type: 'pronoun', 
+        label: 'Pronombre', 
+        color: 'text-violet-700', 
+        bg: 'bg-violet-50', 
+        border: 'border-violet-300', 
+        strip: 'bg-violet-500',
+        explanation: 'Palabra que se usa en lugar de un sustantivo.'
+    },
+    { 
+        type: 'possessive-pronoun', 
+        label: 'Pronombre posesivo', 
+        color: 'text-violet-500', 
+        bg: 'bg-violet-50', 
+        border: 'border-violet-200', 
+        strip: 'bg-violet-300',
+        explanation: 'Indica posesión o pertenencia (ej: mine, yours, theirs).'
+    },
+    // Preposiciones
+    { 
+        type: 'preposition', 
+        label: 'Preposición', 
+        color: 'text-orange-800', 
+        bg: 'bg-orange-100', 
+        border: 'border-orange-400', 
+        strip: 'bg-orange-700',
+        explanation: 'Muestra la relación (espacial, temporal o lógica) entre palabras.'
+    },
+    { 
+        type: 'prepositional-object', 
+        label: 'Objeto de la preposición', 
+        color: 'text-amber-800', 
+        bg: 'bg-amber-100', 
+        border: 'border-amber-400', 
+        strip: 'bg-amber-700',
+        explanation: 'Sustantivo o pronombre que sigue a una preposición.'
+    },
+    // Conectores
+    { 
+        type: 'conjunction', 
+        label: 'Conjunción', 
+        color: 'text-gray-700', 
+        bg: 'bg-gray-50', 
+        border: 'border-gray-300', 
+        strip: 'bg-gray-500',
+        explanation: 'Une palabras, frases u oraciones (ej: and, but, or).'
+    },
+    { 
+        type: 'interjection', 
+        label: 'Interjección', 
+        color: 'text-red-700', 
+        bg: 'bg-red-50', 
+        border: 'border-red-300', 
+        strip: 'bg-red-500',
+        explanation: 'Palabra que expresa una emoción fuerte o exclamación.'
+    },
+    // Otros elementos
+    { 
+        type: 'negation', 
+        label: 'Negación', 
+        color: 'text-red-800', 
+        bg: 'bg-red-100', 
+        border: 'border-red-400', 
+        strip: 'bg-red-700',
+        explanation: 'Palabra usada para negar o expresar lo opuesto.'
+    },
+    { 
+        type: 'modal-verb', 
+        label: 'Modal verb', 
+        color: 'text-lime-700', 
+        bg: 'bg-lime-50', 
+        border: 'border-lime-300', 
+        strip: 'bg-lime-600',
+        explanation: 'Tipo de auxiliar que indica posibilidad, habilidad, permiso u obligación.'
+    },
+    { 
+        type: 'infinitive', 
+        label: 'Infinitivo', 
+        color: 'text-sky-600', 
+        bg: 'bg-sky-50', 
+        border: 'border-sky-200', 
+        strip: 'bg-sky-400',
+        explanation: 'La forma básica del verbo, generalmente precedida por "to".'
+    },
+    { 
+        type: 'gerund', 
+        label: 'Gerundio', 
+        color: 'text-cyan-600', 
+        bg: 'bg-cyan-50', 
+        border: 'border-cyan-200', 
+        strip: 'bg-cyan-400',
+        explanation: 'Forma verbal terminada en -ing que funciona como sustantivo.'
+    },
+    { 
+        type: 'relative-pronoun', 
+        label: 'Pronombre relativo', 
+        color: 'text-indigo-700', 
+        bg: 'bg-indigo-50', 
+        border: 'border-indigo-300', 
+        strip: 'bg-indigo-500',
+        explanation: 'Introduce una oración que describe a un sustantivo previo (ej: who, which).'
+    },
+    // Puntuación
+    { 
+        type: 'punctuation', 
+        label: 'Puntuación', 
+        color: 'text-slate-500', 
+        bg: 'bg-slate-50', 
+        border: 'border-slate-200', 
+        strip: 'bg-slate-300',
+        explanation: 'Signos que ayudan a estructurar y dar sentido al texto.'
+    },
+    { 
+        type: 'other', 
+        label: 'Otro', 
+        color: 'text-gray-600', 
+        bg: 'bg-gray-50', 
+        border: 'border-gray-300', 
+        strip: 'bg-gray-400',
+        explanation: 'Otros elementos gramaticales.'
+    },
 ]
 
 const getGrammarStyle = (type?: GrammarType) => {
@@ -156,18 +397,37 @@ function SortableToken({
                             </div>
                             <div className="grid grid-cols-1 gap-1">
                                 {GRAMMAR_TYPES.map((t) => (
-                                    <button
-                                        key={t.type}
-                                        onClick={() => onAssignType(t.type)}
-                                        className={cn(
-                                            "flex items-center gap-3 px-2 py-1.5 rounded-md text-sm hover:bg-slate-100 transition-colors text-left",
-                                            token.grammarType === t.type && "bg-slate-100"
-                                        )}
-                                    >
-                                        <div className={cn("w-3 h-3 rounded-full", t.strip)} />
-                                        <span className="flex-1">{t.label}</span>
-                                        {token.grammarType === t.type && <Check className="w-3 h-3 text-primary" />}
-                                    </button>
+                                    <div key={t.type} className="flex items-center gap-1">
+                                        <button
+                                            onClick={() => onAssignType(t.type)}
+                                            className={cn(
+                                                "flex items-center gap-3 px-2 py-1.5 rounded-md text-sm hover:bg-slate-100 transition-colors text-left flex-1",
+                                                token.grammarType === t.type && "bg-slate-100"
+                                            )}
+                                        >
+                                            <div className={cn("w-3 h-3 rounded-full", t.strip)} />
+                                            <span className="flex-1">{t.label}</span>
+                                            {token.grammarType === t.type && <Check className="w-3 h-3 text-primary" />}
+                                        </button>
+                                        
+                                        <HoverCard openDelay={1000}>
+                                            <HoverCardTrigger asChild>
+                                                <div className="p-1 cursor-help text-slate-400 hover:text-primary transition-colors">
+                                                    <HelpCircle className="w-3.5 h-3.5" />
+                                                </div>
+                                            </HoverCardTrigger>
+                                            <HoverCardContent className="w-64 p-3" side="right" align="start">
+                                                <div className="space-y-1">
+                                                    <p className="text-xs font-bold uppercase tracking-wider text-primary">
+                                                        {t.label}
+                                                    </p>
+                                                    <p className="text-sm text-slate-600">
+                                                        {t.explanation}
+                                                    </p>
+                                                </div>
+                                            </HoverCardContent>
+                                        </HoverCard>
+                                    </div>
                                 ))}
                             </div>
                         </PopoverContent>

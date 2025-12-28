@@ -221,13 +221,29 @@ export interface StructuredContentBlock extends BaseBlock {
 
 export type GrammarType =
   | 'subject'
-  | 'verb'
-  | 'object'
+  | 'action-verb'
+  | 'auxiliary-verb'
+  | 'linking-verb'
+  | 'direct-object'
+  | 'indirect-object'
+  | 'subject-complement'
+  | 'object-complement'
+  | 'adjective'
   | 'adverb'
-  | 'negation'
-  | 'preposition'
+  | 'adverbial-complement'
+  | 'determiner'
   | 'article'
   | 'pronoun'
+  | 'possessive-pronoun'
+  | 'preposition'
+  | 'prepositional-object'
+  | 'conjunction'
+  | 'interjection'
+  | 'negation'
+  | 'modal-verb'
+  | 'infinitive'
+  | 'gerund'
+  | 'relative-pronoun'
   | 'punctuation'
   | 'other'
 
@@ -600,9 +616,9 @@ export const BLOCK_TEMPLATES: BlockTemplate[] = [
               rawSentence: 'I am a student.',
               tokens: [
                 { id: 't1', content: 'I', grammarType: 'subject' },
-                { id: 't2', content: 'am', grammarType: 'verb' },
+                { id: 't2', content: 'am', grammarType: 'linking-verb' },
                 { id: 't3', content: 'a', grammarType: 'article' },
-                { id: 't4', content: 'student', grammarType: 'object' },
+                { id: 't4', content: 'student', grammarType: 'subject-complement' },
                 { id: 't5', content: '.', grammarType: 'punctuation' },
               ],
             },
