@@ -386,7 +386,7 @@ export function LessonBuilder({
       >
         <div className="flex flex-col h-full bg-background">
           {/* Header */}
-          <div className="h-16 border-b flex items-center justify-between px-4 shrink-0 bg-background z-10">
+          <div className="h-16 border-b flex items-center justify-between px-4 shrink-0 bg-background z-[60]">
             <div className="flex items-center gap-4">
               <Button variant="ghost" size="icon" onClick={() => router.back()}>
                 <ArrowLeft className="h-5 w-5" />

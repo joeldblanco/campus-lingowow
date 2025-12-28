@@ -395,7 +395,7 @@ function SortableToken({
                                     </Button>
                                 )}
                             </div>
-                            <div className="grid grid-cols-1 gap-1">
+                            <div className="grid grid-cols-1 gap-1 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
                                 {GRAMMAR_TYPES.map((t) => (
                                     <div key={t.type} className="flex items-center gap-1">
                                         <button
