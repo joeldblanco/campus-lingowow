@@ -236,9 +236,10 @@ function MultipleChoiceEditor({
   }
 
   const removeOption = (id: string) => {
+    const filteredOptions = options.filter((opt) => opt.id !== id)
     onUpdate({
-      options: options.filter((opt) => opt.id !== id),
-      correctOptionId: question.correctOptionId === id ? options[0]?.id : question.correctOptionId,
+      options: filteredOptions,
+      correctOptionId: question.correctOptionId === id ? filteredOptions[0]?.id : question.correctOptionId,
     })
   }
 

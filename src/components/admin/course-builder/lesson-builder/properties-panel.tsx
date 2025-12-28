@@ -2504,9 +2504,10 @@ function MultipleChoiceProperties({
   }
 
   const removeOption = (id: string) => {
+    const filteredOptions = options.filter((opt) => opt.id !== id)
     onUpdate({
-      options: options.filter((opt) => opt.id !== id),
-      correctOptionId: block.correctOptionId === id ? options[0]?.id : block.correctOptionId,
+      options: filteredOptions,
+      correctOptionId: block.correctOptionId === id ? filteredOptions[0]?.id : block.correctOptionId,
     })
   }
 

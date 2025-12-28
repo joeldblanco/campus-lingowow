@@ -32,16 +32,17 @@ export function ViewExamDialog({ exam, open, onOpenChange }: ViewExamDialogProps
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
+      <DialogContent className="max-w-4xl max-h-[90vh] flex flex-col p-0 gap-0">
+        <DialogHeader className="p-6 pb-4 border-b">
           <DialogTitle className="flex items-center space-x-2">
             <span>{exam.title}</span>
             <Badge variant={exam.isPublished ? 'default' : 'secondary'}>
+              {exam.isPublished ? 'Publicado' : 'Borrador'}
             </Badge>
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6">
+        <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {/* Exam Info */}
           <Card>
             <CardHeader>
@@ -256,7 +257,7 @@ export function ViewExamDialog({ exam, open, onOpenChange }: ViewExamDialogProps
           )}
         </div>
 
-        <div className="flex justify-end">
+        <div className="p-6 pt-4 border-t flex justify-end">
           <Button onClick={() => onOpenChange(false)}>Cerrar</Button>
         </div>
       </DialogContent>

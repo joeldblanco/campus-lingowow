@@ -287,6 +287,11 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
       return
     }
 
+    if (!description.trim()) {
+      toast.error('Por favor, ingresa una descripción para el examen')
+      return
+    }
+
     if (questions.length === 0) {
       toast.error('Por favor, agrega al menos una pregunta')
       return
@@ -418,23 +423,25 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
                   Configuración
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-lg">
-                <DialogHeader>
+              <DialogContent className="max-w-lg max-h-[90vh] flex flex-col p-0 gap-0">
+                <DialogHeader className="p-6 pb-4 border-b">
                   <DialogTitle>Configuración del Examen</DialogTitle>
                 </DialogHeader>
-                <ExamSettingsForm
-                  settings={settings}
-                  onUpdate={setSettings}
-                  courses={courses}
-                  courseId={courseId}
-                  setCourseId={setCourseId}
-                  moduleId={moduleId}
-                  setModuleId={setModuleId}
-                  lessonId={lessonId}
-                  setLessonId={setLessonId}
-                  selectedCourse={selectedCourse}
-                  selectedModule={selectedModule}
-                />
+                <div className="flex-1 overflow-y-auto p-6">
+                  <ExamSettingsForm
+                    settings={settings}
+                    onUpdate={setSettings}
+                    courses={courses}
+                    courseId={courseId}
+                    setCourseId={setCourseId}
+                    moduleId={moduleId}
+                    setModuleId={setModuleId}
+                    lessonId={lessonId}
+                    setLessonId={setLessonId}
+                    selectedCourse={selectedCourse}
+                    selectedModule={selectedModule}
+                  />
+                </div>
               </DialogContent>
             </Dialog>
           </div>

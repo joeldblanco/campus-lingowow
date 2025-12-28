@@ -213,11 +213,12 @@ export function EditExamDialog({ exam, open, onOpenChange }: EditExamDialogProps
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
+      <DialogContent className="max-w-4xl max-h-[90vh] flex flex-col p-0 gap-0">
+        <DialogHeader className="p-6 pb-4 border-b">
           <DialogTitle>Editar Examen: {exam.title}</DialogTitle>
         </DialogHeader>
-        <Form {...form}>
+        <div className="flex-1 overflow-y-auto p-6">
+          <Form {...form}>
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Basic Information */}
             <div className="grid grid-cols-2 gap-4">
@@ -445,7 +446,8 @@ export function EditExamDialog({ exam, open, onOpenChange }: EditExamDialogProps
               </Button>
             </div>
           </form>
-        </Form>
+          </Form>
+        </div>
       </DialogContent>
     </Dialog>
   )

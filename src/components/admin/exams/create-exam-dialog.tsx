@@ -201,12 +201,13 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
+      <DialogContent className="max-w-4xl max-h-[90vh] flex flex-col p-0 gap-0">
+        <DialogHeader className="p-6 pb-4 border-b">
           <DialogTitle>Crear Examen</DialogTitle>
         </DialogHeader>
 
-        <Form {...form}>
+        <div className="flex-1 overflow-y-auto p-6">
+          <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* Basic Information */}
             <div className="grid grid-cols-2 gap-4">
@@ -509,7 +510,8 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
               </Button>
             </div>
           </form>
-        </Form>
+          </Form>
+        </div>
       </DialogContent>
     </Dialog>
   )

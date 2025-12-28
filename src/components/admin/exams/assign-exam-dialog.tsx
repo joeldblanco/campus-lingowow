@@ -208,15 +208,16 @@ export function AssignExamDialog({ exam, open, onOpenChange }: AssignExamDialogP
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
+      <DialogContent className="max-w-3xl max-h-[90vh] flex flex-col p-0 gap-0">
+        <DialogHeader className="p-6 pb-4 border-b">
           <DialogTitle className="flex items-center space-x-2">
             <Users className="h-5 w-5" />
             <span>Asignar Examen: {exam.title}</span>
           </DialogTitle>
         </DialogHeader>
 
-        <Form {...form}>
+        <div className="flex-1 overflow-y-auto p-6">
+          <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* Exam Info */}
             <Card>
@@ -420,7 +421,8 @@ export function AssignExamDialog({ exam, open, onOpenChange }: AssignExamDialogP
               </Button>
             </div>
           </form>
-        </Form>
+          </Form>
+        </div>
       </DialogContent>
     </Dialog>
   )
