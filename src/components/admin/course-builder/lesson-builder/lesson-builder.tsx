@@ -78,7 +78,11 @@ export function LessonBuilder({
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null)
 
   // DnD States
-  const [activeDragItem, setActiveDragItem] = useState<{ type: string; template?: BlockTemplate; block?: Block } | null>(null)
+  const [activeDragItem, setActiveDragItem] = useState<{
+    type: string
+    template?: BlockTemplate
+    block?: Block
+  } | null>(null)
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -93,27 +97,30 @@ export function LessonBuilder({
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'error'>('saved')
   const isFirstRender = useRef(true)
 
-  const debouncedSave = useCallback((blocks: Block[]) => {
-    setSaveStatus('saving')
-    if (saveTimeoutRef.current) {
-      clearTimeout(saveTimeoutRef.current)
-    }
-
-    saveTimeoutRef.current = setTimeout(async () => {
-      try {
-        const result = await updateLessonBlocks(lesson.id, blocks)
-        if (result.success) {
-          setSaveStatus('saved')
-        } else {
-          setSaveStatus('error')
-          toast.error('Error al guardar automáticamente')
-        }
-      } catch (error) {
-        setSaveStatus('error')
-        console.error(error)
+  const debouncedSave = useCallback(
+    (blocks: Block[]) => {
+      setSaveStatus('saving')
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current)
       }
-    }, 1500)
-  }, [lesson.id])
+
+      saveTimeoutRef.current = setTimeout(async () => {
+        try {
+          const result = await updateLessonBlocks(lesson.id, blocks)
+          if (result.success) {
+            setSaveStatus('saved')
+          } else {
+            setSaveStatus('error')
+            toast.error('Error al guardar automáticamente')
+          }
+        } catch (error) {
+          setSaveStatus('error')
+          console.error(error)
+        }
+      }, 1500)
+    },
+    [lesson.id]
+  )
 
   // Trigger auto-save when blocks change
   useEffect(() => {
@@ -386,7 +393,7 @@ export function LessonBuilder({
       >
         <div className="flex flex-col h-full bg-background">
           {/* Header */}
-          <div className="h-16 border-b flex items-center justify-between px-4 shrink-0 bg-background z-[60]">
+          <div className="h-16 border-b flex items-center justify-between px-4 shrink-0 bg-background z-40">
             <div className="flex items-center gap-4">
               <Button variant="ghost" size="icon" onClick={() => router.back()}>
                 <ArrowLeft className="h-5 w-5" />
@@ -504,7 +511,7 @@ export function LessonBuilder({
                 title={lesson.title}
                 description={lesson.description || ''}
                 selectedBlockId={isPreviewMode ? null : selectedBlockId}
-                onSelectBlock={!isPreviewMode ? setSelectedBlockId : () => { }}
+                onSelectBlock={!isPreviewMode ? setSelectedBlockId : () => {}}
                 readOnly={isPreviewMode}
                 onAddBlockClick={() => {
                   // Functionality for + button in empty state

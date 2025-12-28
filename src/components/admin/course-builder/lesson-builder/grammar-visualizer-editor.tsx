@@ -73,7 +73,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-yellow-50', 
         border: 'border-yellow-300', 
         strip: 'bg-yellow-400',
-        explanation: 'Quien realiza la acción o de quien se habla en la oración.'
+        explanation: 'Quien realiza la acción o de quien se habla en la oración. (Ej: *She* runs, *The dog* barks).'
     },
     // Verbos
     { 
@@ -83,7 +83,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-green-50', 
         border: 'border-green-300', 
         strip: 'bg-green-500',
-        explanation: 'Palabra que expresa una acción física o mental.'
+        explanation: 'Palabra que expresa una acción física o mental. (Ej: She *runs*, He *thinks*).'
     },
     { 
         type: 'auxiliary-verb', 
@@ -92,7 +92,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-green-100', 
         border: 'border-green-400', 
         strip: 'bg-green-700',
-        explanation: 'Ayuda al verbo principal a formar tiempos verbales, preguntas o negaciones.'
+        explanation: 'Ayuda al verbo principal a formar tiempos verbales, preguntas o negaciones. (Ej: I *have* eaten, She *will* go).'
     },
     { 
         type: 'linking-verb', 
@@ -101,7 +101,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-green-50', 
         border: 'border-green-200', 
         strip: 'bg-green-400',
-        explanation: 'Une al sujeto con una descripción o estado (ej: be, seem, become).'
+        explanation: 'Une al sujeto con una descripción o estado (ej: be, seem, become). (Ej: He *is* happy, She *seems* tired).'
     },
     // Objetos
     { 
@@ -111,7 +111,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-blue-50', 
         border: 'border-blue-300', 
         strip: 'bg-blue-500',
-        explanation: 'Persona o cosa que recibe directamente la acción del verbo.'
+        explanation: 'Persona o cosa que recibe directamente la acción del verbo. (Ej: I read a *book*, She loves her *dog*).'
     },
     { 
         type: 'indirect-object', 
@@ -120,7 +120,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-blue-100', 
         border: 'border-blue-400', 
         strip: 'bg-blue-700',
-        explanation: 'Indica a quién o para quién se realiza la acción del verbo.'
+        explanation: 'Indica a quién o para quién se realiza la acción del verbo. (Ej: He gave *me* a gift, She sent *her* a letter).'
     },
     // Complementos
     { 
@@ -130,7 +130,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-purple-50', 
         border: 'border-purple-300', 
         strip: 'bg-purple-500',
-        explanation: 'Palabra o frase que sigue a un verbo copulativo y describe al sujeto.'
+        explanation: 'Palabra o frase que sigue a un verbo copulativo y describe al sujeto. (Ej: She is a *teacher*, He seems *happy*).'
     },
     { 
         type: 'object-complement', 
@@ -139,7 +139,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-fuchsia-50', 
         border: 'border-fuchsia-300', 
         strip: 'bg-fuchsia-500',
-        explanation: 'Describe o renombra al objeto directo.'
+        explanation: 'Describe o renombra al objeto directo. (Ej: We named him *Jack*, She called him *honey*).'
     },
     // Modificadores
     { 
@@ -149,7 +149,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-pink-50', 
         border: 'border-pink-300', 
         strip: 'bg-pink-500',
-        explanation: 'Palabra que describe o modifica a un sustantivo o pronombre.'
+        explanation: 'Palabra que describe o modifica a un sustantivo o pronombre. (Ej: *Blue* sky, *Happy* birthday).'
     },
     { 
         type: 'adverb', 
@@ -158,7 +158,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-teal-50', 
         border: 'border-teal-300', 
         strip: 'bg-teal-500',
-        explanation: 'Modifica a un verbo, adjetivo u otro adverbio, indicando cómo, cuándo o dónde.'
+        explanation: 'Modifica a un verbo, adjetivo u otro adverbio, indicando cómo, cuándo o dónde. (Ej: Run *fast*, She sings *beautifully*).'
     },
     { 
         type: 'adverbial-complement', 
@@ -167,7 +167,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-emerald-50', 
         border: 'border-emerald-200', 
         strip: 'bg-emerald-400',
-        explanation: 'Información obligatoria o adicional sobre el lugar, tiempo o modo.'
+        explanation: 'Información obligatoria o adicional sobre el lugar, tiempo o modo. (Ej: He lives *in Paris*, She will arrive *tomorrow*).'
     },
     // Determinantes y artículos
     { 
@@ -177,7 +177,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-orange-50', 
         border: 'border-orange-300', 
         strip: 'bg-orange-500',
-        explanation: 'Palabra que introduce un sustantivo y especifica su referencia.'
+        explanation: 'Palabra que introduce un sustantivo y especifica su referencia. (Ej: *That* car, *This* book).'
     },
     { 
         type: 'article', 
@@ -186,7 +186,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-orange-50', 
         border: 'border-orange-200', 
         strip: 'bg-orange-300',
-        explanation: 'Indica si el sustantivo es específico (el, la) o general (un, una).'
+        explanation: 'Indica si el sustantivo es específico (el, la) o general (un, una). (Ej: *The* sun, *A* dog).'
     },
     // Pronombres
     { 
@@ -196,7 +196,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-violet-50', 
         border: 'border-violet-300', 
         strip: 'bg-violet-500',
-        explanation: 'Palabra que se usa en lugar de un sustantivo.'
+        explanation: 'Palabra que se usa en lugar de un sustantivo. (Ej: *They* are friends, *He* is happy).'
     },
     { 
         type: 'possessive-pronoun', 
@@ -205,7 +205,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-violet-50', 
         border: 'border-violet-200', 
         strip: 'bg-violet-300',
-        explanation: 'Indica posesión o pertenencia (ej: mine, yours, theirs).'
+        explanation: 'Indica posesión o pertenencia (ej: mine, yours, theirs). (Ej: This is *mine*, That is *hers*).'
     },
     // Preposiciones
     { 
@@ -215,7 +215,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-orange-100', 
         border: 'border-orange-400', 
         strip: 'bg-orange-700',
-        explanation: 'Muestra la relación (espacial, temporal o lógica) entre palabras.'
+        explanation: 'Muestra la relación (espacial, temporal o lógica) entre palabras. (Ej: The cat is *under* the table, The book is *on* the shelf).'
     },
     { 
         type: 'prepositional-object', 
@@ -224,7 +224,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-amber-100', 
         border: 'border-amber-400', 
         strip: 'bg-amber-700',
-        explanation: 'Sustantivo o pronombre que sigue a una preposición.'
+        explanation: 'Sustantivo o pronombre que sigue a una preposición. (Ej: Under the *table*, On the *shelf*).'
     },
     // Conectores
     { 
@@ -234,7 +234,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-gray-50', 
         border: 'border-gray-300', 
         strip: 'bg-gray-500',
-        explanation: 'Une palabras, frases u oraciones (ej: and, but, or).'
+        explanation: 'Une palabras, frases u oraciones (ej: and, but, or). (Ej: Salt *and* pepper, I like reading *but* I don\'t like writing).'
     },
     { 
         type: 'interjection', 
@@ -243,7 +243,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-red-50', 
         border: 'border-red-300', 
         strip: 'bg-red-500',
-        explanation: 'Palabra que expresa una emoción fuerte o exclamación.'
+        explanation: 'Palabra que expresa una emoción fuerte o exclamación. (Ej: *Wow*!, *Oh no*!).'
     },
     // Otros elementos
     { 
@@ -253,7 +253,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-red-100', 
         border: 'border-red-400', 
         strip: 'bg-red-700',
-        explanation: 'Palabra usada para negar o expresar lo opuesto.'
+        explanation: 'Palabra usada para negar o expresar lo opuesto. (Ej: I do *not* know, She is *not* happy).'
     },
     { 
         type: 'modal-verb', 
@@ -262,7 +262,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-lime-50', 
         border: 'border-lime-300', 
         strip: 'bg-lime-600',
-        explanation: 'Tipo de auxiliar que indica posibilidad, habilidad, permiso u obligación.'
+        explanation: 'Tipo de auxiliar que indica posibilidad, habilidad, permiso u obligación. (Ej: I *can* swim, She *must* go).'
     },
     { 
         type: 'infinitive', 
@@ -271,7 +271,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-sky-50', 
         border: 'border-sky-200', 
         strip: 'bg-sky-400',
-        explanation: 'La forma básica del verbo, generalmente precedida por "to".'
+        explanation: 'La forma básica del verbo, generalmente precedida por "to". (Ej: To *learn*, To *go*).'
     },
     { 
         type: 'gerund', 
@@ -280,7 +280,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-cyan-50', 
         border: 'border-cyan-200', 
         strip: 'bg-cyan-400',
-        explanation: 'Forma verbal terminada en -ing que funciona como sustantivo.'
+        explanation: 'Forma verbal terminada en -ing que funciona como sustantivo. (Ej: *Swimming* is fun, *Eating* is healthy).'
     },
     { 
         type: 'relative-pronoun', 
@@ -289,7 +289,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-indigo-50', 
         border: 'border-indigo-300', 
         strip: 'bg-indigo-500',
-        explanation: 'Introduce una oración que describe a un sustantivo previo (ej: who, which).'
+        explanation: 'Introduce una oración que describe a un sustantivo previo (ej: who, which). (Ej: The man *who* called, The book *that* I read).'
     },
     // Puntuación
     { 
@@ -299,7 +299,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-slate-50', 
         border: 'border-slate-200', 
         strip: 'bg-slate-300',
-        explanation: 'Signos que ayudan a estructurar y dar sentido al texto.'
+        explanation: 'Signos que ayudan a estructurar y dar sentido al texto. (Ej: Hello*.*, I love reading*!*).'
     },
     { 
         type: 'other', 
@@ -308,7 +308,7 @@ const GRAMMAR_TYPES: { type: GrammarType; label: string; color: string; bg: stri
         bg: 'bg-gray-50', 
         border: 'border-gray-300', 
         strip: 'bg-gray-400',
-        explanation: 'Otros elementos gramaticales.'
+        explanation: 'Otros elementos gramaticales. (Ej: *etc*).'
     },
 ]
 

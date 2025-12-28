@@ -906,171 +906,172 @@ function getGrammarVisualizerColor(type?: string) {
       label: 'Sujeto', 
       color: 'text-yellow-700', 
       bg: 'bg-yellow-100',
-      explanation: 'Quien realiza la acción o de quien se habla en la oración.'
+      explanation: 'Quien realiza la acción o de quien se habla en la oración. (Ej: *She* runs, *The dog* barks).'
     },
     // Verbos
     'action-verb': { 
       label: 'Verbo de acción', 
       color: 'text-green-700', 
       bg: 'bg-green-100',
-      explanation: 'Palabra que expresa una acción física o mental.'
+      explanation: 'Palabra que expresa una acción física o mental. (Ej: She *runs*, He *thinks*).'
     },
     'auxiliary-verb': { 
       label: 'Verbo auxiliar', 
       color: 'text-green-800', 
       bg: 'bg-green-200',
-      explanation: 'Ayuda al verbo principal a formar tiempos verbales, preguntas o negaciones.'
+      explanation: 'Ayuda al verbo principal a formar tiempos verbales, preguntas o negaciones. (Ej: I *have* eaten, She *will* go).'
     },
     'linking-verb': { 
       label: 'Verbo copulativo', 
       color: 'text-green-600', 
       bg: 'bg-green-50',
-      explanation: 'Une al sujeto con una descripción o estado (ej: be, seem, become).'
+      explanation: 'Une al sujeto con una descripción o estado (ej: be, seem, become). (Ej: He *is* happy, She *seems* tired).'
     },
     // Objetos
     'direct-object': { 
       label: 'Objeto directo', 
       color: 'text-blue-700', 
       bg: 'bg-blue-100',
-      explanation: 'Persona o cosa que recibe directamente la acción del verbo.'
+      explanation: 'Persona o cosa que recibe directamente la acción del verbo. (Ej: I read a *book*, She loves her *dog*).'
     },
     'indirect-object': { 
       label: 'Objeto indirecto', 
       color: 'text-blue-800', 
       bg: 'bg-blue-200',
-      explanation: 'Indica a quién o para quién se realiza la acción del verbo.'
+      explanation: 'Indica a quién o para quién se realiza la acción del verbo. (Ej: He gave *me* a gift, She sent *her* a letter).'
     },
     // Complementos
     'subject-complement': { 
       label: 'Complemento del sujeto', 
       color: 'text-purple-700', 
       bg: 'bg-purple-100',
-      explanation: 'Palabra o frase que sigue a un verbo copulativo y describe al sujeto.'
+      explanation: 'Palabra o frase que sigue a un verbo copulativo y describe al sujeto. (Ej: She is a *teacher*, He seems *happy*).'
     },
     'object-complement': { 
       label: 'Complemento del objeto', 
       color: 'text-fuchsia-700', 
       bg: 'bg-fuchsia-100',
-      explanation: 'Describe o renombra al objeto directo.'
+      explanation: 'Describe o renombra al objeto directo. (Ej: We named him *Jack*, She called him *honey*).'
     },
     // Modificadores
     'adjective': { 
       label: 'Adjetivo', 
       color: 'text-pink-700', 
       bg: 'bg-pink-100',
-      explanation: 'Palabra que describe o modifica a un sustantivo o pronombre.'
+      explanation: 'Palabra que describe o modifica a un sustantivo o pronombre. (Ej: *Blue* sky, *Happy* birthday).'
     },
     'adverb': { 
       label: 'Adverbio', 
       color: 'text-teal-700', 
       bg: 'bg-teal-100',
-      explanation: 'Modifica a un verbo, adjetivo u otro adverbio, indicando cómo, cuándo o dónde.'
+      explanation: 'Modifica a un verbo, adjetivo u otro adverbio, indicando cómo, cuándo o dónde. (Ej: Run *fast*, She sings *beautifully*).'
     },
     'adverbial-complement': { 
       label: 'Complemento adverbial', 
       color: 'text-emerald-600', 
       bg: 'bg-emerald-100',
-      explanation: 'Información obligatoria o adicional sobre el lugar, tiempo o modo.'
+      explanation: 'Información obligatoria o adicional sobre el lugar, tiempo o modo. (Ej: He lives *in Paris*, She will arrive *tomorrow*).'
     },
     // Determinantes y artículos
     'determiner': { 
       label: 'Determinante', 
       color: 'text-orange-700', 
       bg: 'bg-orange-100',
-      explanation: 'Palabra que introduce un sustantivo y especifica su referencia.'
+      explanation: 'Palabra que introduce un sustantivo y especifica su referencia. (Ej: *That* car, *This* book).'
     },
     'article': { 
       label: 'Artículo', 
       color: 'text-orange-500', 
       bg: 'bg-orange-50',
-      explanation: 'Indica si el sustantivo es específico (el, la) o general (un, una).'
+      explanation: 'Indica si el sustantivo es específico (el, la) o general (un, una). (Ej: *The* sun, *A* dog).'
     },
     // Pronombres
     'pronoun': { 
       label: 'Pronombre', 
       color: 'text-violet-700', 
       bg: 'bg-violet-100',
-      explanation: 'Palabra que se usa en lugar de un sustantivo.'
+      explanation: 'Palabra que se usa en lugar de un sustantivo. (Ej: *They* are friends, *He* is happy).'
     },
     'possessive-pronoun': { 
       label: 'Pronombre posesivo', 
       color: 'text-violet-500', 
       bg: 'bg-violet-50',
-      explanation: 'Indica posesión o pertenencia (ej: mine, yours, theirs).'
+      explanation: 'Indica posesión o pertenencia (ej: mine, yours, theirs). (Ej: This is *mine*, That is *hers*).'
     },
     // Preposiciones
     'preposition': { 
       label: 'Preposición', 
       color: 'text-orange-800', 
       bg: 'bg-orange-200',
-      explanation: 'Muestra la relación (espacial, temporal o lógica) entre palabras.'
+      explanation: 'Muestra la relación (espacial, temporal o lógica) entre palabras. (Ej: The cat is *under* the table, The book is *on* the shelf).'
     },
     'prepositional-object': { 
       label: 'Objeto de la preposición', 
       color: 'text-amber-800', 
       bg: 'bg-amber-200',
-      explanation: 'Sustantivo o pronombre que sigue a una preposición.'
+      explanation: 'Sustantivo o pronombre que sigue a una preposición. (Ej: Under the *table*, On the *shelf*).'
     },
     // Conectores
     'conjunction': { 
       label: 'Conjunción', 
       color: 'text-gray-700', 
       bg: 'bg-gray-100',
-      explanation: 'Une palabras, frases u oraciones (ej: and, but, or).'
+      explanation: 'Une palabras, frases u oraciones (ej: and, but, or). (Ej: Salt *and* pepper, I like reading *but* I don\'t like writing).'
     },
     'interjection': { 
       label: 'Interjección', 
       color: 'text-red-700', 
       bg: 'bg-red-100',
-      explanation: 'Palabra que expresa una emoción fuerte o exclamación.'
+      explanation: 'Palabra que expresa una emoción fuerte o exclamación. (Ej: *Wow*!, *Oh no*!).'
     },
     // Otros elementos
     'negation': { 
       label: 'Negación', 
       color: 'text-red-800', 
       bg: 'bg-red-200',
-      explanation: 'Palabra usada para negar o expresar lo opuesto.'
+      explanation: 'Palabra usada para negar o expresar lo opuesto. (Ej: I do *not* know, She is *not* happy).'
     },
     'modal-verb': { 
       label: 'Modal verb', 
       color: 'text-lime-700', 
       bg: 'bg-lime-100',
-      explanation: 'Tipo de auxiliar que indica posibilidad, habilidad, permiso u obligación.'
+      explanation: 'Tipo de auxiliar que indica posibilidad, habilidad, permiso u obligación. (Ej: I *can* swim, She *must* go).'
     },
     'infinitive': { 
       label: 'Infinitivo', 
       color: 'text-sky-600', 
       bg: 'bg-sky-100',
-      explanation: 'La forma básica del verbo, generalmente precedida por "to".'
+      explanation: 'La forma básica del verbo, generalmente precedida por "to". (Ej: To *learn*, To *go*).'
     },
     'gerund': { 
       label: 'Gerundio', 
       color: 'text-cyan-600', 
       bg: 'bg-cyan-100',
-      explanation: 'Forma verbal terminada en -ing que funciona como sustantivo.'
+      explanation: 'Forma verbal terminada en -ing que funciona como sustantivo. (Ej: *Swimming* is fun, *Eating* is healthy).'
     },
     'relative-pronoun': { 
       label: 'Pronombre relativo', 
       color: 'text-indigo-700', 
       bg: 'bg-indigo-100',
-      explanation: 'Introduce una oración que describe a un sustantivo previo (ej: who, which).'
+      explanation: 'Introduce una oración que describe a un sustantivo previo (ej: who, which). (Ej: The man *who* called, The book *that* I read).'
     },
     // Puntuación
     'punctuation': { 
       label: 'Puntuación', 
       color: 'text-slate-500', 
       bg: 'bg-slate-100',
-      explanation: 'Signos que ayudan a estructurar y dar sentido al texto.'
+      explanation: 'Signos que ayudan a estructurar y dar sentido al texto. (Ej: Hello*.*, I love reading*!*).'
     },
     'other': { 
       label: 'Otro', 
       color: 'text-zinc-700', 
       bg: 'bg-zinc-100',
-      explanation: 'Otros elementos gramaticales.'
+      explanation: 'Otros elementos gramaticales. (Ej: *etc*).'
     }
   }
   return map[type || 'other'] || map['other']
 }
+
 function EmbedBlockPreview({ block }: { block: EmbedBlock }) {
   return (
     <div className="space-y-4">
