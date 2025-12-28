@@ -23,6 +23,10 @@ import {
   TrueFalseBlock,
   VideoBlock,
   VocabularyBlock,
+  MultipleChoiceBlock,
+  ShortAnswerBlock,
+  OrderingBlock,
+  DragDropBlock,
 } from '@/types/course-builder'
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import {
@@ -111,6 +115,34 @@ export function PropertiesPanel({ block, onUpdate, onRemove, onClose }: Properti
         return (
           <StructuredContentProperties
             block={block as StructuredContentBlock}
+            onUpdate={onUpdate}
+          />
+        )
+      case 'multiple_choice':
+        return (
+          <MultipleChoiceProperties
+            block={block as MultipleChoiceBlock}
+            onUpdate={onUpdate}
+          />
+        )
+      case 'short_answer':
+        return (
+          <ShortAnswerProperties
+            block={block as ShortAnswerBlock}
+            onUpdate={onUpdate}
+          />
+        )
+      case 'ordering':
+        return (
+          <OrderingProperties
+            block={block as OrderingBlock}
+            onUpdate={onUpdate}
+          />
+        )
+      case 'drag_drop':
+        return (
+          <DragDropProperties
+            block={block as DragDropBlock}
             onUpdate={onUpdate}
           />
         )
@@ -2444,6 +2476,501 @@ function RecordingProperties({
         <p className="text-xs text-muted-foreground">
           Recomendado: 60-120 segundos para respuestas cortas.
         </p>
+      </div>
+    </div>
+  )
+}
+
+function MultipleChoiceProperties({
+  block,
+  onUpdate,
+}: {
+  block: MultipleChoiceBlock
+  onUpdate: (updates: Partial<Block>) => void
+}) {
+  const options = block.options || []
+
+  const addOption = () => {
+    const newId = `opt${Date.now()}`
+    onUpdate({
+      options: [...options, { id: newId, text: `Opción ${options.length + 1}` }],
+    })
+  }
+
+  const updateOption = (id: string, text: string) => {
+    onUpdate({
+      options: options.map((opt) => (opt.id === id ? { ...opt, text } : opt)),
+    })
+  }
+
+  const removeOption = (id: string) => {
+    onUpdate({
+      options: options.filter((opt) => opt.id !== id),
+      correctOptionId: block.correctOptionId === id ? options[0]?.id : block.correctOptionId,
+    })
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <Label>Pregunta</Label>
+        <Textarea
+          value={block.question || ''}
+          onChange={(e) => onUpdate({ question: e.target.value })}
+          placeholder="Escribe la pregunta..."
+          rows={3}
+        />
+      </div>
+
+      <div className="space-y-3">
+        <Label>Opciones de Respuesta</Label>
+        <p className="text-xs text-muted-foreground">
+          Haz clic en el círculo para marcar la respuesta correcta.
+        </p>
+
+        <div className="space-y-2">
+          {options.map((option, index) => (
+            <div key={option.id} className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => onUpdate({ correctOptionId: option.id })}
+                className={cn(
+                  'w-5 h-5 rounded-full border-2 flex-shrink-0 transition-colors',
+                  block.correctOptionId === option.id
+                    ? 'border-green-500 bg-green-500'
+                    : 'border-muted-foreground/30 hover:border-primary'
+                )}
+              />
+              <Input
+                value={option.text}
+                onChange={(e) => updateOption(option.id, e.target.value)}
+                placeholder={`Opción ${index + 1}`}
+                className="flex-1"
+              />
+              {options.length > 2 && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={() => removeOption(option.id)}
+                >
+                  <Trash2 className="h-4 w-4 text-destructive" />
+                </Button>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <Button variant="outline" size="sm" onClick={addOption} className="w-full">
+          <Plus className="h-4 w-4 mr-2" />
+          Agregar Opción
+        </Button>
+      </div>
+
+      <div className="space-y-2">
+        <Label>Puntos</Label>
+        <Input
+          type="number"
+          min={0}
+          value={block.points || 10}
+          onChange={(e) => onUpdate({ points: parseInt(e.target.value) || 10 })}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label>Explicación (opcional)</Label>
+        <Textarea
+          value={block.explanation || ''}
+          onChange={(e) => onUpdate({ explanation: e.target.value })}
+          placeholder="Explicación de la respuesta correcta..."
+          rows={2}
+        />
+      </div>
+    </div>
+  )
+}
+
+function ShortAnswerProperties({
+  block,
+  onUpdate,
+}: {
+  block: ShortAnswerBlock
+  onUpdate: (updates: Partial<Block>) => void
+}) {
+  const answers = block.correctAnswers || []
+
+  const addAnswer = () => {
+    onUpdate({ correctAnswers: [...answers, ''] })
+  }
+
+  const updateAnswer = (index: number, value: string) => {
+    const newAnswers = [...answers]
+    newAnswers[index] = value
+    onUpdate({ correctAnswers: newAnswers })
+  }
+
+  const removeAnswer = (index: number) => {
+    onUpdate({ correctAnswers: answers.filter((_, i) => i !== index) })
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <Label>Pregunta</Label>
+        <Textarea
+          value={block.question || ''}
+          onChange={(e) => onUpdate({ question: e.target.value })}
+          placeholder="Escribe la pregunta..."
+          rows={3}
+        />
+      </div>
+
+      <div className="space-y-3">
+        <Label>Respuestas Aceptadas</Label>
+        <p className="text-xs text-muted-foreground">
+          Agrega todas las variaciones de respuestas correctas.
+        </p>
+
+        <div className="space-y-2">
+          {answers.map((answer, index) => (
+            <div key={index} className="flex items-center gap-2">
+              <Input
+                value={answer}
+                onChange={(e) => updateAnswer(index, e.target.value)}
+                placeholder={`Respuesta ${index + 1}`}
+                className="flex-1"
+              />
+              {answers.length > 1 && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={() => removeAnswer(index)}
+                >
+                  <Trash2 className="h-4 w-4 text-destructive" />
+                </Button>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <Button variant="outline" size="sm" onClick={addAnswer} className="w-full">
+          <Plus className="h-4 w-4 mr-2" />
+          Agregar Respuesta Alternativa
+        </Button>
+      </div>
+
+      <div className="flex items-center justify-between">
+        <div>
+          <Label>Sensible a Mayúsculas</Label>
+          <p className="text-xs text-muted-foreground">Distinguir mayúsculas/minúsculas</p>
+        </div>
+        <Switch
+          checked={block.caseSensitive || false}
+          onCheckedChange={(checked) => onUpdate({ caseSensitive: checked })}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label>Puntos</Label>
+        <Input
+          type="number"
+          min={0}
+          value={block.points || 10}
+          onChange={(e) => onUpdate({ points: parseInt(e.target.value) || 10 })}
+        />
+      </div>
+    </div>
+  )
+}
+
+function OrderingProperties({
+  block,
+  onUpdate,
+}: {
+  block: OrderingBlock
+  onUpdate: (updates: Partial<Block>) => void
+}) {
+  const items = block.items || []
+
+  const addItem = () => {
+    const newId = `item${Date.now()}`
+    onUpdate({
+      items: [...items, { id: newId, text: '', correctPosition: items.length }],
+    })
+  }
+
+  const updateItem = (id: string, text: string) => {
+    onUpdate({
+      items: items.map((item) => (item.id === id ? { ...item, text } : item)),
+    })
+  }
+
+  const removeItem = (id: string) => {
+    const newItems = items
+      .filter((item) => item.id !== id)
+      .map((item, index) => ({ ...item, correctPosition: index }))
+    onUpdate({ items: newItems })
+  }
+
+  const moveItem = (index: number, direction: 'up' | 'down') => {
+    const newIndex = direction === 'up' ? index - 1 : index + 1
+    if (newIndex < 0 || newIndex >= items.length) return
+
+    const newItems = [...items]
+    const temp = newItems[index]
+    newItems[index] = newItems[newIndex]
+    newItems[newIndex] = temp
+
+    onUpdate({
+      items: newItems.map((item, i) => ({ ...item, correctPosition: i })),
+    })
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <Label>Título (opcional)</Label>
+        <Input
+          value={block.title || ''}
+          onChange={(e) => onUpdate({ title: e.target.value })}
+          placeholder="Título del ejercicio"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label>Instrucciones</Label>
+        <Textarea
+          value={block.instruction || ''}
+          onChange={(e) => onUpdate({ instruction: e.target.value })}
+          placeholder="Ordena los elementos correctamente..."
+          rows={2}
+        />
+      </div>
+
+      <div className="space-y-3">
+        <Label>Elementos a Ordenar</Label>
+        <p className="text-xs text-muted-foreground">
+          El orden actual es el orden correcto. Usa las flechas para reordenar.
+        </p>
+
+        <div className="space-y-2">
+          {items.map((item, index) => (
+            <div key={item.id} className="flex items-center gap-2">
+              <div className="flex flex-col">
+                <button
+                  type="button"
+                  onClick={() => moveItem(index, 'up')}
+                  disabled={index === 0}
+                  className="p-0.5 hover:bg-muted rounded disabled:opacity-30"
+                >
+                  <ArrowUp className="h-3 w-3" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => moveItem(index, 'down')}
+                  disabled={index === items.length - 1}
+                  className="p-0.5 hover:bg-muted rounded disabled:opacity-30"
+                >
+                  <ArrowDown className="h-3 w-3" />
+                </button>
+              </div>
+              <span className="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs flex items-center justify-center font-medium flex-shrink-0">
+                {index + 1}
+              </span>
+              <Input
+                value={item.text}
+                onChange={(e) => updateItem(item.id, e.target.value)}
+                placeholder={`Elemento ${index + 1}`}
+                className="flex-1"
+              />
+              {items.length > 2 && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={() => removeItem(item.id)}
+                >
+                  <Trash2 className="h-4 w-4 text-destructive" />
+                </Button>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <Button variant="outline" size="sm" onClick={addItem} className="w-full">
+          <Plus className="h-4 w-4 mr-2" />
+          Agregar Elemento
+        </Button>
+      </div>
+
+      <div className="space-y-2">
+        <Label>Puntos</Label>
+        <Input
+          type="number"
+          min={0}
+          value={block.points || 10}
+          onChange={(e) => onUpdate({ points: parseInt(e.target.value) || 10 })}
+        />
+      </div>
+    </div>
+  )
+}
+
+function DragDropProperties({
+  block,
+  onUpdate,
+}: {
+  block: DragDropBlock
+  onUpdate: (updates: Partial<Block>) => void
+}) {
+  const categories = block.categories || []
+  const items = block.items || []
+
+  const addCategory = () => {
+    const newId = `cat${Date.now()}`
+    onUpdate({
+      categories: [...categories, { id: newId, name: '' }],
+    })
+  }
+
+  const updateCategory = (id: string, name: string) => {
+    onUpdate({
+      categories: categories.map((cat) => (cat.id === id ? { ...cat, name } : cat)),
+    })
+  }
+
+  const removeCategory = (id: string) => {
+    onUpdate({
+      categories: categories.filter((cat) => cat.id !== id),
+      items: items.filter((item) => item.correctCategoryId !== id),
+    })
+  }
+
+  const addItem = () => {
+    const newId = `item${Date.now()}`
+    onUpdate({
+      items: [...items, { id: newId, text: '', correctCategoryId: categories[0]?.id || '' }],
+    })
+  }
+
+  const updateItem = (id: string, field: 'text' | 'correctCategoryId', value: string) => {
+    onUpdate({
+      items: items.map((item) => (item.id === id ? { ...item, [field]: value } : item)),
+    })
+  }
+
+  const removeItem = (id: string) => {
+    onUpdate({ items: items.filter((item) => item.id !== id) })
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <Label>Título (opcional)</Label>
+        <Input
+          value={block.title || ''}
+          onChange={(e) => onUpdate({ title: e.target.value })}
+          placeholder="Título del ejercicio"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label>Instrucciones</Label>
+        <Textarea
+          value={block.instruction || ''}
+          onChange={(e) => onUpdate({ instruction: e.target.value })}
+          placeholder="Arrastra cada elemento a la categoría correcta..."
+          rows={2}
+        />
+      </div>
+
+      {/* Categories */}
+      <div className="space-y-3">
+        <Label>Categorías</Label>
+        <div className="space-y-2">
+          {categories.map((cat, index) => (
+            <div key={cat.id} className="flex items-center gap-2">
+              <Input
+                value={cat.name}
+                onChange={(e) => updateCategory(cat.id, e.target.value)}
+                placeholder={`Categoría ${index + 1}`}
+                className="flex-1"
+              />
+              {categories.length > 2 && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={() => removeCategory(cat.id)}
+                >
+                  <Trash2 className="h-4 w-4 text-destructive" />
+                </Button>
+              )}
+            </div>
+          ))}
+        </div>
+        <Button variant="outline" size="sm" onClick={addCategory} className="w-full">
+          <Plus className="h-4 w-4 mr-2" />
+          Agregar Categoría
+        </Button>
+      </div>
+
+      {/* Items */}
+      <div className="space-y-3">
+        <Label>Elementos a Clasificar</Label>
+        <div className="space-y-2">
+          {items.map((item, index) => (
+            <div key={item.id} className="space-y-2 p-3 border rounded-lg bg-muted/30">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium text-muted-foreground">
+                  Elemento {index + 1}
+                </span>
+                {items.length > 1 && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    onClick={() => removeItem(item.id)}
+                  >
+                    <Trash2 className="h-3 w-3 text-destructive" />
+                  </Button>
+                )}
+              </div>
+              <Input
+                value={item.text}
+                onChange={(e) => updateItem(item.id, 'text', e.target.value)}
+                placeholder="Texto del elemento"
+              />
+              <select
+                value={item.correctCategoryId}
+                onChange={(e) => updateItem(item.id, 'correctCategoryId', e.target.value)}
+                className="w-full p-2 border rounded-md text-sm"
+              >
+                <option value="">Seleccionar categoría</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name || 'Sin nombre'}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ))}
+        </div>
+        <Button variant="outline" size="sm" onClick={addItem} className="w-full">
+          <Plus className="h-4 w-4 mr-2" />
+          Agregar Elemento
+        </Button>
+      </div>
+
+      <div className="space-y-2">
+        <Label>Puntos</Label>
+        <Input
+          type="number"
+          min={0}
+          value={block.points || 10}
+          onChange={(e) => onUpdate({ points: parseInt(e.target.value) || 10 })}
+        />
       </div>
     </div>
   )

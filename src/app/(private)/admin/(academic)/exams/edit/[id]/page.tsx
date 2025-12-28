@@ -1,6 +1,6 @@
 'use client'
 
-import { ExamBuilder } from '@/components/admin/exams/exam-builder'
+import { ExamBuilderV2 } from '@/components/admin/exams/exam-builder-v2'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { getExamById } from '@/lib/actions/exams'
@@ -43,9 +43,5 @@ export default function EditExamPage() {
     )
   }
 
-  return (
-    <div className="container mx-auto py-6">
-      <ExamBuilder mode="edit" exam={exam} />
-    </div>
-  )
+  return <ExamBuilderV2 mode="edit" exam={exam} />
 }

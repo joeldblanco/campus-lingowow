@@ -1,11 +1,7 @@
 'use client'
 
-import { ExamBuilder } from '@/components/admin/exams/exam-builder'
+import { ExamBuilderV2 } from '@/components/admin/exams/exam-builder-v2'
 
 export default function CreateExamPage() {
-  return (
-    <div className="container mx-auto py-6">
-      <ExamBuilder mode="create" />
-    </div>
-  )
+  return <ExamBuilderV2 mode="create" />
 }

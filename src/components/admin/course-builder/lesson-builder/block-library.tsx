@@ -67,7 +67,7 @@ export function BlockLibrary() {
                         Interactivo
                     </h3>
                     <div className="flex flex-col gap-2">
-                        {BLOCK_TEMPLATES.filter(t => ['quiz', 'assignment', 'fill_blanks', 'match', 'true_false', 'essay', 'recording'].includes(t.type)).map(template => (
+                        {BLOCK_TEMPLATES.filter(t => ['multiple_choice', 'true_false', 'short_answer', 'fill_blanks', 'match', 'ordering', 'drag_drop', 'essay', 'recording', 'quiz', 'assignment'].includes(t.type)).map(template => (
                             <DraggableBlock key={template.type} template={template} variant="list" />
                         ))}
                     </div>
@@ -111,7 +111,7 @@ export function BlockSelectionGrid({ onSelect }: { onSelect: (template: BlockTem
                     Interactivo
                 </h3>
                 <div className="flex flex-col gap-2">
-                    {BLOCK_TEMPLATES.filter(t => ['quiz', 'assignment', 'fill_blanks', 'match', 'true_false', 'essay', 'recording'].includes(t.type)).map(template => (
+                    {BLOCK_TEMPLATES.filter(t => ['multiple_choice', 'true_false', 'short_answer', 'fill_blanks', 'match', 'ordering', 'drag_drop', 'essay', 'recording', 'quiz', 'assignment'].includes(t.type)).map(template => (
                         <DraggableBlock key={template.type} template={template} variant="list" onClick={() => onSelect(template)} disableDrag />
                     ))}
                 </div>

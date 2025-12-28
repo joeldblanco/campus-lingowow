@@ -15,6 +15,10 @@ import {
   FileSignature,
   Table,
   Blocks,
+  CircleDot,
+  MessageSquare,
+  ArrowUpDown,
+  GripHorizontal,
 } from 'lucide-react'
 import React from 'react'
 
@@ -42,6 +46,10 @@ export type BlockType =
   | 'recording'
   | 'structured-content'
   | 'grammar-visualizer'
+  | 'multiple_choice'
+  | 'short_answer'
+  | 'ordering'
+  | 'drag_drop'
 
 // Base block type with discriminated union for different content types
 export interface BaseBlock {
@@ -198,6 +206,41 @@ export interface EssayBlock extends BaseBlock {
   maxWords?: number
 }
 
+export interface MultipleChoiceBlock extends BaseBlock {
+  type: 'multiple_choice'
+  question: string
+  options: { id: string; text: string }[]
+  correctOptionId: string
+  explanation?: string
+  points?: number
+}
+
+export interface ShortAnswerBlock extends BaseBlock {
+  type: 'short_answer'
+  question: string
+  correctAnswers: string[] // Multiple accepted answers
+  caseSensitive?: boolean
+  explanation?: string
+  points?: number
+}
+
+export interface OrderingBlock extends BaseBlock {
+  type: 'ordering'
+  title?: string
+  instruction?: string
+  items: { id: string; text: string; correctPosition: number }[]
+  points?: number
+}
+
+export interface DragDropBlock extends BaseBlock {
+  type: 'drag_drop'
+  title?: string
+  instruction?: string
+  categories: { id: string; name: string }[]
+  items: { id: string; text: string; correctCategoryId: string }[]
+  points?: number
+}
+
 export interface RecordingBlock extends BaseBlock {
   type: 'recording'
   instruction: string
@@ -297,6 +340,10 @@ export type Block =
   | MatchBlock
   | TrueFalseBlock
   | EssayBlock
+  | MultipleChoiceBlock
+  | ShortAnswerBlock
+  | OrderingBlock
+  | DragDropBlock
   | RecordingBlock
   | StructuredContentBlock
   | GrammarVisualizerBlock
@@ -625,6 +672,82 @@ export const BLOCK_TEMPLATES: BlockTemplate[] = [
           ],
         },
       ],
+    },
+  },
+  {
+    type: 'multiple_choice',
+    label: 'Opción Múltiple',
+    icon: CircleDot,
+    description: 'Pregunta con opciones de respuesta',
+    defaultData: {
+      id: '',
+      type: 'multiple_choice',
+      order: 0,
+      question: '¿Cuál es la respuesta correcta?',
+      options: [
+        { id: 'opt1', text: 'Opción A' },
+        { id: 'opt2', text: 'Opción B' },
+        { id: 'opt3', text: 'Opción C' },
+        { id: 'opt4', text: 'Opción D' },
+      ],
+      correctOptionId: 'opt1',
+      points: 10,
+    },
+  },
+  {
+    type: 'short_answer',
+    label: 'Respuesta Corta',
+    icon: MessageSquare,
+    description: 'Pregunta con respuesta de texto breve',
+    defaultData: {
+      id: '',
+      type: 'short_answer',
+      order: 0,
+      question: 'Escribe tu respuesta:',
+      correctAnswers: ['respuesta'],
+      caseSensitive: false,
+      points: 10,
+    },
+  },
+  {
+    type: 'ordering',
+    label: 'Ordenar',
+    icon: ArrowUpDown,
+    description: 'Ordenar elementos en la secuencia correcta',
+    defaultData: {
+      id: '',
+      type: 'ordering',
+      order: 0,
+      title: 'Ordena los elementos',
+      instruction: 'Arrastra los elementos para ordenarlos correctamente.',
+      items: [
+        { id: 'item1', text: 'Primero', correctPosition: 0 },
+        { id: 'item2', text: 'Segundo', correctPosition: 1 },
+        { id: 'item3', text: 'Tercero', correctPosition: 2 },
+      ],
+      points: 10,
+    },
+  },
+  {
+    type: 'drag_drop',
+    label: 'Arrastrar y Soltar',
+    icon: GripHorizontal,
+    description: 'Clasificar elementos en categorías',
+    defaultData: {
+      id: '',
+      type: 'drag_drop',
+      order: 0,
+      title: 'Clasifica los elementos',
+      instruction: 'Arrastra cada elemento a la categoría correcta.',
+      categories: [
+        { id: 'cat1', name: 'Categoría A' },
+        { id: 'cat2', name: 'Categoría B' },
+      ],
+      items: [
+        { id: 'item1', text: 'Elemento 1', correctCategoryId: 'cat1' },
+        { id: 'item2', text: 'Elemento 2', correctCategoryId: 'cat2' },
+      ],
+      points: 10,
     },
   },
 ]
