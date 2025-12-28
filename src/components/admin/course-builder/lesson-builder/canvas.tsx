@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Block } from '@/types/course-builder'
 import { useDroppable } from '@dnd-kit/core'
@@ -19,6 +19,7 @@ interface CanvasProps {
     onAddBlockClick?: () => void
     onUpdateBlock?: (blockId: string, updates: Partial<Block>) => void
     onRemoveBlock?: (blockId: string) => void
+    onUpdateMetadata?: (updates: { title?: string; description?: string }) => void
 }
 
 export function Canvas({
@@ -30,7 +31,8 @@ export function Canvas({
     readOnly = false,
     onAddBlockClick,
     onUpdateBlock,
-    onRemoveBlock
+    onRemoveBlock,
+    onUpdateMetadata
 }: CanvasProps) {
     const { setNodeRef, isOver } = useDroppable({
         id: 'canvas-droppable',
@@ -54,16 +56,34 @@ export function Canvas({
                     <div className="flex items-start justify-between">
                         <div>
                             <span className="inline-block px-2 py-1 bg-blue-100 text-primary text-xs font-bold uppercase tracking-wide rounded mb-2">Borrador</span>
-                            <h1 className={cn(
-                                "text-4xl font-bold tracking-tight mb-2 outline-none rounded p-1 -ml-1 transition-colors",
-                                !readOnly && "hover:bg-muted/50 cursor-text"
-                            )} contentEditable={!readOnly} suppressContentEditableWarning>
+                            <h1 
+                                className={cn(
+                                    "text-4xl font-bold tracking-tight mb-2 outline-none rounded p-1 -ml-1 transition-colors",
+                                    !readOnly && "hover:bg-muted/50 cursor-text"
+                                )} 
+                                contentEditable={!readOnly} 
+                                suppressContentEditableWarning
+                                onBlur={(e) => {
+                                    if (onUpdateMetadata) {
+                                        onUpdateMetadata({ title: e.currentTarget.textContent || '' })
+                                    }
+                                }}
+                            >
                                 {title}
                             </h1>
-                            <p className={cn(
-                                "text-muted-foreground text-lg max-w-2xl outline-none rounded p-1 -ml-1 transition-colors",
-                                !readOnly && "hover:bg-muted/50 cursor-text"
-                            )} contentEditable={!readOnly} suppressContentEditableWarning>
+                            <p 
+                                className={cn(
+                                    "text-muted-foreground text-lg max-w-2xl outline-none rounded p-1 -ml-1 transition-colors",
+                                    !readOnly && "hover:bg-muted/50 cursor-text"
+                                )} 
+                                contentEditable={!readOnly} 
+                                suppressContentEditableWarning
+                                onBlur={(e) => {
+                                    if (onUpdateMetadata) {
+                                        onUpdateMetadata({ description: e.currentTarget.textContent || '' })
+                                    }
+                                }}
+                            >
                                 {description}
                             </p>
                         </div>

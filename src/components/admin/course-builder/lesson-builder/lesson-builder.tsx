@@ -1,8 +1,8 @@
-'use client'
+﻿'use client'
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { updateLessonBlocks } from '@/lib/actions/course-builder'
+import { updateLessonBlocks, upsertLesson } from '@/lib/actions/course-builder'
 import { cn } from '@/lib/utils'
 import { Block, Lesson, FileBlock, BlockTemplate } from '@/types/course-builder'
 import {
@@ -62,7 +62,7 @@ export function LessonBuilder({
 
   const handleTitleSave = () => {
     if (titleInput.trim() !== lesson.title) {
-      onUpdateLesson({ title: titleInput })
+      handleUpdateMetadata({ title: titleInput })
     }
     setIsEditingTitle(false)
   }
@@ -122,7 +122,37 @@ export function LessonBuilder({
     [lesson.id]
   )
 
-  // Trigger auto-save when blocks change
+  // Auto-save metadata logic
+  const metadataSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  
+  const debouncedMetadataSave = useCallback((updates: Partial<Lesson>) => {
+    setSaveStatus('saving')
+    if (metadataSaveTimeoutRef.current) {
+      clearTimeout(metadataSaveTimeoutRef.current)
+    }
+
+    metadataSaveTimeoutRef.current = setTimeout(async () => {
+      try {
+        const result = await upsertLesson(lesson.moduleId, { id: lesson.id, ...updates })
+        if (result.success) {
+          setSaveStatus('saved')
+        } else {
+          setSaveStatus('error')
+          toast.error('Error al guardar metadatos')
+        }
+      } catch (error) {
+        setSaveStatus('error')
+        console.error(error)
+      }
+    }, 1500)
+  }, [lesson.id, lesson.moduleId])
+
+  const handleUpdateMetadata = (updates: { title?: string; description?: string }) => {
+    onUpdateLesson(updates)
+    debouncedMetadataSave(updates)
+  }
+
+
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false
@@ -507,6 +537,7 @@ export function LessonBuilder({
               )}
             >
               <Canvas
+                onUpdateMetadata={handleUpdateMetadata}
                 blocks={lesson.blocks}
                 title={lesson.title}
                 description={lesson.description || ''}
@@ -564,3 +595,8 @@ export function LessonBuilder({
     </>
   )
 }
+
+
+
+
+
