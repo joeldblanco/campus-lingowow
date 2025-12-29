@@ -2,12 +2,11 @@
 
 import { Button } from '@/components/ui/button'
 import { UserCreateDialog } from '@/components/user/user-create-dialog'
-import { UserStatsCards } from '@/components/user/user-stats-cards'
 import { UsersDataTable } from '@/components/user/users-data-table'
 import { createUser, deleteUser, updateUser, getAllUsers, deleteMultipleUsers } from '@/lib/actions/user'
 import { CreateUserSchema } from '@/schemas/user'
 import { User, UserRole } from '@prisma/client'
-import { PlusCircle } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
@@ -24,7 +23,6 @@ export default function UserAdminView() {
         if ('error' in response) {
           toast.error(response.error)
         } else {
-          // Filtrar profesores - se gestionan en vista separada
           const usersWithoutTeachers = response.filter(
             (user) => !user.roles.includes(UserRole.TEACHER)
           )
@@ -87,11 +85,16 @@ export default function UserAdminView() {
 
   if (loading) {
     return (
-      <div className="space-y-8">
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold tracking-tight">Usuarios</h1>
+      <div className="space-y-6">
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">Gestión de Usuarios</h1>
+            <p className="text-muted-foreground">
+              Administra todos los usuarios de la plataforma.
+            </p>
+          </div>
         </div>
-        <div className="flex justify-center py-8">
+        <div className="flex justify-center py-12">
           <div className="text-muted-foreground">Cargando usuarios...</div>
         </div>
       </div>
@@ -99,16 +102,19 @@ export default function UserAdminView() {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold tracking-tight">Usuarios</h1>
-        <Button onClick={() => setOpen(true)}>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Añadir usuario
+    <div className="space-y-6">
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Gestión de Usuarios</h1>
+          <p className="text-muted-foreground">
+            Administra todos los usuarios de la plataforma.
+          </p>
+        </div>
+        <Button onClick={() => setOpen(true)} className="bg-primary hover:bg-primary/80 text-white">
+          <Plus className="mr-2 h-4 w-4" />
+          Nuevo Usuario
         </Button>
       </div>
-
-      <UserStatsCards users={users} />
 
       <UsersDataTable
         users={users}

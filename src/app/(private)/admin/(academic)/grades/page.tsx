@@ -4,16 +4,7 @@ import { GradesLoadingSkeleton } from '@/components/admin/grades/grades-loading-
 
 const GradesAdminPage = () => {
   return (
-    <div className="container py-8">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-3xl font-bold">Gestión de Calificaciones</h1>
-          <p className="text-muted-foreground mt-2">
-            Administra y visualiza las calificaciones de todos los estudiantes
-          </p>
-        </div>
-      </div>
-      
+    <div className="space-y-6">
       <Suspense fallback={<GradesLoadingSkeleton />}>
         <GradesContainer />
       </Suspense>

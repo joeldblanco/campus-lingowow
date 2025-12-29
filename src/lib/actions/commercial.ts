@@ -789,11 +789,15 @@ export async function updateInvoice(
 
 export async function deleteInvoice(id: string) {
   try {
-    await db.invoice.delete({
-      where: { id },
-    })
-    revalidatePath('/admin/invoices')
-    return { success: true }
+    // await db.invoice.delete({
+    //   where: { id },
+    // })
+    // revalidatePath('/admin/invoices')
+    // return { success: true }
+    return {
+      success: false,
+      error: 'La eliminación de facturas está deshabilitada por motivos de integridad de datos.',
+    }
   } catch (error) {
     console.error('Error deleting invoice:', error)
     return { success: false, error: 'Error al eliminar la factura' }
@@ -997,27 +1001,26 @@ export async function createProductWithMixedPlans(
 // PAYPAL IMPORT
 // =============================================
 
-export async function importPaypalInvoice(resourceId: string) {
+export async function verifyPaypalTransaction(resourceId: string) {
   try {
     let type = 'ORDER'
-    console.log(`[Import] Attempting to fetch as ORDER: ${resourceId}`)
+    console.log(`[Verify] Attempting to fetch as ORDER: ${resourceId}`)
     let data = await getPayPalOrder(resourceId)
 
     if (!data) {
-      console.log(`[Import] ORDER failed. Attempting as INVOICE: ${resourceId}`)
+      console.log(`[Verify] ORDER failed. Attempting as INVOICE: ${resourceId}`)
       type = 'INVOICE'
       data = await getPayPalInvoice(resourceId)
     }
 
     if (!data) {
-      console.log(`[Import] INVOICE failed. Attempting as PAYMENT: ${resourceId}`)
+      console.log(`[Verify] INVOICE failed. Attempting as PAYMENT: ${resourceId}`)
       type = 'PAYMENT'
       data = await getPayPalPayment(resourceId)
     }
 
     if (!data) {
-      console.log(`[Import] PAYMENT failed. Attempting SEARCH by Invoice Number: ${resourceId}`)
-      // Try searching by Invoice Number logic
+      console.log(`[Verify] PAYMENT failed. Attempting SEARCH by Invoice Number: ${resourceId}`)
       type = 'INVOICE'
       data = await searchPayPalInvoice(resourceId)
     }
@@ -1069,29 +1072,16 @@ export async function importPaypalInvoice(resourceId: string) {
       items = data.items || []
       date = new Date(data.detail.payment_date || data.detail.metadata.create_time)
     } else if (type === 'PAYMENT') {
-      // Capture
       if (data.status !== 'COMPLETED') {
         return {
           success: false,
           error: `El pago de PayPal no está completado (Estado: ${data.status})`,
         }
       }
-      // Payments (Captures) might not have payer info directly if isolated,
-      // but typically have links. However, for simplicity let's check what we have.
-      // Captures usually have limited info.
-      // If we can't find email, we might fail or ask to input manually?
-      // Let's assume we can't always get full payer info from a raw capture without looking up the parent order.
-      // But let's try.
-      // Actually, often captures have "supplementary_data" or similar.
-      // If we can't find it, we return error.
-
-      // Better approach: If payment, get the order_id from it and fetch the order!
       const supplementOrderId = data.supplementary_data?.related_ids?.order_id
       if (supplementOrderId) {
-        return importPaypalInvoice(supplementOrderId)
+        return verifyPaypalTransaction(supplementOrderId)
       }
-
-      // Fallback if no order link (unlikely)
       return { success: false, error: 'No se pudo rastrear la orden original de este pago.' }
     }
 
@@ -1099,7 +1089,97 @@ export async function importPaypalInvoice(resourceId: string) {
       return { success: false, error: 'No se encontró el email del cliente en la transacción' }
     }
 
-    // 2. Find or Create User
+    // Check availability locally
+    const existingInvoice = await db.invoice.findFirst({
+      where: { paypalOrderId: resourceId },
+    })
+
+    if (existingInvoice) {
+      return { success: false, error: 'Ya existe una factura registrada para este ID localmente' }
+    }
+
+    return {
+      success: true,
+      data: {
+        type,
+        resourceId,
+        email,
+        firstName,
+        lastName,
+        amount: amount || 0,
+        currency: currency || 'USD',
+        items: items || [],
+        date: date || new Date(),
+      },
+    }
+  } catch (error) {
+    console.error('Error verifying PayPal transaction:', error)
+    return { success: false, error: 'Error al verificar la transacción de PayPal' }
+  }
+}
+
+export async function createInvoiceFromPaypal(
+  transactionData: {
+    type: string
+    resourceId: string
+    email: string
+    firstName: string
+    lastName: string
+    amount: number
+    currency: string
+    items: any[]
+    date: Date
+  },
+  userId: string
+) {
+  try {
+    const invoiceNumber = `INV-${Date.now().toString().slice(-8)}`
+
+    const invoice = await db.invoice.create({
+      data: {
+        invoiceNumber,
+        userId: userId,
+        subtotal: transactionData.amount || 0,
+        discount: 0,
+        tax: 0,
+        total: transactionData.amount || 0,
+        status: 'PAID',
+        currency: transactionData.currency,
+        paidAt: transactionData.date || new Date(),
+        paymentMethod: 'paypal',
+        paypalOrderId: transactionData.resourceId,
+        paypalPayerEmail: transactionData.email,
+        notes: `Imported from PayPal (${transactionData.type}): ${transactionData.resourceId}`,
+        items: {
+          create: transactionData.items.map(
+            (item: { name: string; quantity: string; unit_amount: { value: string } }) => ({
+              name: item.name,
+              price: parseFloat(item.unit_amount.value),
+              quantity: parseInt(item.quantity) || 1,
+              total: parseFloat(item.unit_amount.value) * (parseInt(item.quantity) || 1),
+            })
+          ),
+        },
+      },
+    })
+
+    return { success: true, data: invoice }
+  } catch (error) {
+    console.error('Error creating invoice from PayPal data:', error)
+    return { success: false, error: 'Error al crear la factura' }
+  }
+}
+
+export async function importPaypalInvoice(resourceId: string) {
+  try {
+    const check = await verifyPaypalTransaction(resourceId)
+    if (!check.success || !check.data) {
+      return { success: false, error: check.error }
+    }
+
+    const { email, firstName, lastName } = check.data
+
+    // Find or Create User (Legacy behavior for the standalone button)
     let user = await db.user.findUnique({
       where: { email },
     })
@@ -1115,47 +1195,13 @@ export async function importPaypalInvoice(resourceId: string) {
       })
     }
 
-    // 3. Check if invoice already exists
-    const existingInvoice = await db.invoice.findFirst({
-      where: { paypalOrderId: resourceId }, // We store the ID used to import
-    })
-
-    if (existingInvoice) {
-      return { success: false, error: 'Ya existe una factura registrada para este ID' }
+    const result = await createInvoiceFromPaypal(check.data, user.id)
+    if (result.success) {
+      revalidatePath('/admin/invoices')
+      return { success: true, data: result.data }
+    } else {
+      return { success: false, error: result.error }
     }
-
-    const invoiceNumber = `INV-${Date.now().toString().slice(-8)}`
-
-    const invoice = await db.invoice.create({
-      data: {
-        invoiceNumber,
-        userId: user.id,
-        subtotal: amount || 0,
-        discount: 0,
-        tax: 0,
-        total: amount || 0,
-        status: 'PAID',
-        currency,
-        paidAt: date || new Date(),
-        paymentMethod: 'paypal',
-        paypalOrderId: resourceId,
-        paypalPayerEmail: email,
-        notes: `Imported from PayPal (${type}): ${resourceId}`,
-        items: {
-          create: items.map(
-            (item: { name: string; quantity: string; unit_amount: { value: string } }) => ({
-              name: item.name,
-              price: parseFloat(item.unit_amount.value),
-              quantity: parseInt(item.quantity) || 1,
-              total: parseFloat(item.unit_amount.value) * (parseInt(item.quantity) || 1),
-            })
-          ),
-        },
-      },
-    })
-
-    revalidatePath('/admin/invoices')
-    return { success: true, data: invoice }
   } catch (error) {
     console.error('Error importing PayPal invoice:', error)
     return { success: false, error: 'Error al importar la factura de PayPal' }

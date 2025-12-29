@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { ArrowUpDown, ChevronDown, MoreHorizontal, Pencil, Trash, Eye, BookOpen } from 'lucide-react'
+import { ArrowUpDown, ChevronDown, MoreVertical, Pencil, Trash, Eye, BookOpen, Search } from 'lucide-react'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { impersonateUser } from '@/lib/actions/impersonate'
@@ -191,12 +191,14 @@ export function UsersDataTable({
       },
       cell: ({ row }) => {
         const status = row.getValue('status') as UserStatus
+        const statusStyles: Record<string, string> = {
+          ACTIVE: 'bg-emerald-100 text-emerald-700 hover:bg-emerald-100',
+          INACTIVE: 'bg-gray-100 text-gray-700 hover:bg-gray-100',
+          SUSPENDED: 'bg-red-100 text-red-700 hover:bg-red-100',
+        }
         return (
           <div className="w-full flex justify-center">
-            <Badge
-              variant={status === UserStatus.ACTIVE ? 'default' : 'secondary'}
-              className="capitalize"
-            >
+            <Badge className={`${statusStyles[status] || 'bg-gray-100 text-gray-700'} border-0 font-medium`}>
               {StatusNames[status]}
             </Badge>
           </div>
@@ -212,9 +214,9 @@ export function UsersDataTable({
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
+              <Button variant="ghost" size="icon" className="h-8 w-8">
                 <span className="sr-only">Abrir menú</span>
-                <MoreHorizontal className="h-4 w-4" />
+                <MoreVertical className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -283,12 +285,15 @@ export function UsersDataTable({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Input
-            placeholder="Filtrar por nombre..."
-            value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-            onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
-            className="max-w-sm"
-          />
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Filtrar por nombre..."
+              value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+              onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
+              className="max-w-sm pl-9"
+            />
+          </div>
           {table.getFilteredSelectedRowModel().rows.length > 0 && (
             <Button variant="destructive" size="sm" onClick={handleDeleteSelected}>
               Eliminar Seleccionados
@@ -320,14 +325,14 @@ export function UsersDataTable({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-lg border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="bg-muted/50">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="font-semibold text-xs uppercase text-muted-foreground">
                       {header.isPlaceholder
                         ? null
                         : flexRender(header.column.columnDef.header, header.getContext())}

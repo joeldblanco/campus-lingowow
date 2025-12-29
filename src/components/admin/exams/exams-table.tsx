@@ -453,9 +453,15 @@ export function ExamsTable({ exams }: ExamsTableProps) {
       {/* Pagination */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
-          Mostrando <span className="font-medium">{((currentPage - 1) * ITEMS_PER_PAGE) + 1}</span> a{' '}
-          <span className="font-medium">{Math.min(currentPage * ITEMS_PER_PAGE, filteredExams.length)}</span> de{' '}
-          <span className="font-medium">{filteredExams.length}</span> resultados
+          {filteredExams.length === 0 ? (
+            'No hay resultados'
+          ) : (
+            <>
+              Mostrando <span className="font-medium">{((currentPage - 1) * ITEMS_PER_PAGE) + 1}</span> a{' '}
+              <span className="font-medium">{Math.min(currentPage * ITEMS_PER_PAGE, filteredExams.length)}</span> de{' '}
+              <span className="font-medium">{filteredExams.length}</span> resultados
+            </>
+          )}
         </p>
         
         <div className="flex items-center gap-1">

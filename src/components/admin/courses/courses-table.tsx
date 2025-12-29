@@ -12,8 +12,15 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,8 +38,8 @@ import {
 } from '@/components/ui/select'
 import { deleteCourse, toggleCoursePublished } from '@/lib/actions/courses'
 import { CourseWithDetails } from '@/types/course'
-import { Archive, BookOpen, Edit, Eye, Globe, MoreHorizontal, Trash2, Users, Settings } from 'lucide-react'
-import { useCallback, useEffect, useState } from 'react'
+import { Archive, Edit, Eye, Globe, MoreVertical, Trash2, Settings, Search, ChevronLeft, ChevronRight, SlidersHorizontal, BookOpen, Users } from 'lucide-react'
+import { useEffect, useState, useMemo } from 'react'
 import { toast } from 'sonner'
 import { EditCourseDialog } from './edit-course-dialog'
 import { ViewCourseDialog } from './view-course-dialog'
@@ -43,11 +50,13 @@ interface CoursesTableProps {
   'data-testid'?: string
 }
 
+const ITEMS_PER_PAGE = 5
+
 export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }: CoursesTableProps) {
-  const [filteredCourses, setFilteredCourses] = useState(courses)
   const [searchTerm, setSearchTerm] = useState('')
   const [languageFilter, setLanguageFilter] = useState('all')
   const [statusFilter, setStatusFilter] = useState('all')
+  const [currentPage, setCurrentPage] = useState(1)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [courseToDelete, setCourseToDelete] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -55,7 +64,7 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
   const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false)
 
   // Filter courses based on search and filters
-  const handleFilter = useCallback(() => {
+  const filteredCourses = useMemo(() => {
     let filtered = courses
 
     if (searchTerm) {
@@ -76,13 +85,20 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
       )
     }
 
-    setFilteredCourses(filtered)
+    return filtered
   }, [courses, searchTerm, languageFilter, statusFilter])
 
-  // Apply filters when search term or filters change
+  // Pagination
+  const totalPages = Math.ceil(filteredCourses.length / ITEMS_PER_PAGE)
+  const paginatedCourses = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE
+    return filteredCourses.slice(start, start + ITEMS_PER_PAGE)
+  }, [filteredCourses, currentPage])
+
+  // Reset page when filters change
   useEffect(() => {
-    handleFilter()
-  }, [handleFilter])
+    setCurrentPage(1)
+  }, [searchTerm, languageFilter, statusFilter])
 
   const handleDeleteCourse = async () => {
     if (!courseToDelete) return
@@ -94,8 +110,7 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
         toast.success('Curso eliminado exitosamente')
         setDeleteDialogOpen(false)
         setCourseToDelete(null)
-        // Refresh the page or update the courses list
-        setFilteredCourses(courses.filter((course) => course.id !== courseToDelete))
+        onCourseUpdated?.()
       } else {
         toast.error(result.error || 'Error al eliminar el curso')
       }
@@ -134,6 +149,14 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
     }
   }
 
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      setSelectedCourses(paginatedCourses.map(c => c.id))
+    } else {
+      setSelectedCourses([])
+    }
+  }
+
   const handleBulkPublish = async () => {
     try {
       for (const courseId of selectedCourses) {
@@ -164,213 +187,261 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
     }
   }
 
+  const clearFilters = () => {
+    setSearchTerm('')
+    setLanguageFilter('all')
+    setStatusFilter('all')
+  }
+
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = []
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i)
+    } else {
+      if (currentPage <= 3) {
+        pages.push(1, 2, 3, '...', totalPages)
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1, '...', totalPages - 2, totalPages - 1, totalPages)
+      } else {
+        pages.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages)
+      }
+    }
+    return pages
+  }
+
+  const getStatusBadge = (isPublished: boolean) => {
+    return isPublished ? (
+      <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 border-0 font-medium">Publicado</Badge>
+    ) : (
+      <Badge className="bg-amber-100 text-amber-700 hover:bg-amber-100 border-0 font-medium">Borrador</Badge>
+    )
+  }
+
   return (
     <div className="space-y-4" data-testid={testId}>
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <Input
-          placeholder="Buscar cursos..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="max-w-sm"
-          data-testid="search-input"
-        />
+      <div className="flex items-center gap-3">
+        <div className="relative flex-1 max-w-sm">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Buscar cursos..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-9"
+            data-testid="search-input"
+          />
+        </div>
         <Select value={languageFilter} onValueChange={setLanguageFilter}>
-          <SelectTrigger className="w-[180px]" data-testid="language-filter">
+          <SelectTrigger className="w-[140px]" data-testid="language-filter">
             <SelectValue placeholder="Idioma" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Todos los idiomas</SelectItem>
+            <SelectItem value="all">Todos</SelectItem>
             {getLanguages().map((language) => (
               <SelectItem key={language} value={language} data-testid={`language-option-${language.toLowerCase()}`}>
                 {language}
               </SelectItem>
             ))}
-            <SelectItem value="Inglés" data-testid="language-option-english">Inglés</SelectItem>
           </SelectContent>
         </Select>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[180px]" data-testid="level-filter">
+          <SelectTrigger className="w-[140px]" data-testid="level-filter">
             <SelectValue placeholder="Estado" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos</SelectItem>
             <SelectItem value="published">Publicados</SelectItem>
-            <SelectItem value="unpublished">No publicados</SelectItem>
-            <SelectItem value="Beginner" data-testid="level-option-beginner">Beginner</SelectItem>
+            <SelectItem value="unpublished">Borradores</SelectItem>
           </SelectContent>
         </Select>
-        <Button
-          variant="outline"
-          onClick={() => {
-            setSearchTerm('')
-            setLanguageFilter('all')
-            setStatusFilter('all')
-          }}
-          data-testid="clear-filters-button"
-        >
-          Limpiar Filtros
+        <Button variant="outline" size="icon" onClick={clearFilters} className="shrink-0" data-testid="clear-filters-button">
+          <SlidersHorizontal className="h-4 w-4" />
         </Button>
+        {selectedCourses.length > 0 && (
+          <div className="flex items-center gap-2 ml-auto">
+            <Button variant="outline" size="sm" onClick={handleBulkPublish}>
+              <Globe className="h-4 w-4 mr-2" />
+              Publicar ({selectedCourses.length})
+            </Button>
+            <Button variant="destructive" size="sm" onClick={() => setBulkDeleteDialogOpen(true)}>
+              <Trash2 className="h-4 w-4 mr-2" />
+              Eliminar ({selectedCourses.length})
+            </Button>
+          </div>
+        )}
       </div>
 
-      {/* Bulk Actions */}
-      {selectedCourses.length > 0 && (
-        <div className="flex items-center gap-4 p-4 bg-muted rounded-lg" data-testid="bulk-actions">
-          <span data-testid="selected-count">{selectedCourses.length} selected</span>
-          <Button
-            variant="outline"
-            onClick={handleBulkPublish}
-            data-testid="bulk-publish-button"
-          >
-            Publicar Seleccionados
-          </Button>
-          <Button
-            variant="destructive"
-            onClick={() => setBulkDeleteDialogOpen(true)}
-            data-testid="bulk-delete-button"
-          >
-            Eliminar Seleccionados
-          </Button>
-        </div>
-      )}
-
-      {/* Courses Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div style={{ display: 'none' }}>
-          {/* Hidden table structure for tests */}
-          <table>
-            <tbody>
-              {filteredCourses.map((course) => (
-                <tr key={`test-row-${course.id}`} data-course-id={course.id}>
-                  <td data-testid="title-cell">{course.title}</td>
-                  <td data-testid="language-cell">{course.language}</td>
-                  <td data-testid="level-cell">{course.level}</td>
-                  <td data-testid="status-cell">{course.isPublished ? 'Published' : 'Draft'}</td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      data-testid="row-checkbox"
+      {/* Table */}
+      <div className="border rounded-lg">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-muted/50">
+              <TableHead className="w-12">
+                <Checkbox
+                  checked={selectedCourses.length === paginatedCourses.length && paginatedCourses.length > 0}
+                  onCheckedChange={handleSelectAll}
+                />
+              </TableHead>
+              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Curso</TableHead>
+              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Idioma</TableHead>
+              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Estado</TableHead>
+              <TableHead className="font-semibold text-xs uppercase text-muted-foreground text-center">Módulos</TableHead>
+              <TableHead className="font-semibold text-xs uppercase text-muted-foreground text-center">Estudiantes</TableHead>
+              <TableHead className="font-semibold text-xs uppercase text-muted-foreground text-center">Acciones</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {paginatedCourses.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
+                  No se encontraron cursos que coincidan con los filtros.
+                </TableCell>
+              </TableRow>
+            ) : (
+              paginatedCourses.map((course) => (
+                <TableRow key={course.id} className="hover:bg-muted/30" data-course-id={course.id}>
+                  <TableCell>
+                    <Checkbox
                       checked={selectedCourses.includes(course.id)}
-                      onChange={(e) => handleSelectCourse(course.id, e.target.checked)}
+                      onCheckedChange={(checked) => handleSelectCourse(course.id, !!checked)}
+                      data-testid="row-checkbox"
                     />
-                    <button data-testid="edit-button" onClick={() => { }}>Edit</button>
-                    <button data-testid="view-button" onClick={() => { }}>View</button>
-                    <button data-testid="delete-button" onClick={() => {
-                      setCourseToDelete(course.id)
-                      setDeleteDialogOpen(true)
-                    }}>Delete</button>
-                    <button
-                      data-testid={course.isPublished ? "unpublish-button" : "publish-button"}
-                      onClick={() => handleTogglePublished(course.id)}
-                    >
-                      {course.isPublished ? 'Unpublish' : 'Publish'}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {filteredCourses.map((course) => (
-          <Card key={course.id} className="hover:shadow-md transition-shadow">
-            <CardHeader className="pb-3">
-              <div className="flex items-start justify-between">
-                <div className="flex items-start gap-3 flex-1">
-                  <Checkbox
-                    checked={selectedCourses.includes(course.id)}
-                    onCheckedChange={(checked) => handleSelectCourse(course.id, checked as boolean)}
-                    data-testid="row-checkbox"
-                  />
-                  <div className="space-y-1 flex-1">
-                    <CardTitle className="text-lg line-clamp-2">{course.title}</CardTitle>
-                    <div className="flex items-center gap-2">
-                      <Badge variant="secondary">{course.language}</Badge>
-                      <Badge variant="outline">{course.level}</Badge>
-                      <Badge variant={course.isPublished ? 'default' : 'secondary'}>
-                        {course.isPublished ? 'Publicado' : 'Borrador'}
-                      </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <div className="font-medium text-sm">{course.title}</div>
+                      <div className="text-xs text-muted-foreground line-clamp-1">
+                        {course.description}
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" data-testid="course-actions-button">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <ViewCourseDialog course={course}>
-                      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                        <Eye className="h-4 w-4 mr-2" />
-                        Ver detalles
-                      </DropdownMenuItem>
-                    </ViewCourseDialog>
-                    <EditCourseDialog course={course} onCourseUpdated={onCourseUpdated}>
-                      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                        <Edit className="h-4 w-4 mr-2" />
-                        Editar
-                      </DropdownMenuItem>
-                    </EditCourseDialog>
-                    <DropdownMenuItem asChild>
-                      <a href={`/admin/courses/${course.id}/builder`}>
-                        <Settings className="h-4 w-4 mr-2" />
-                        Course Builder
-                      </a>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleTogglePublished(course.id)}>
-                      {course.isPublished ? (
-                        <>
-                          <Archive className="h-4 w-4 mr-2" />
-                          Despublicar
-                        </>
-                      ) : (
-                        <>
-                          <Globe className="h-4 w-4 mr-2" />
-                          Publicar
-                        </>
-                      )}
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      className="text-red-600"
-                      onClick={() => {
-                        setCourseToDelete(course.id)
-                        setDeleteDialogOpen(true)
-                      }}
-                    >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Eliminar
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
-                {course.description}
-              </p>
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-1">
-                    <BookOpen className="h-4 w-4" />
-                    <span>{course._count.modules} módulos</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Users className="h-4 w-4" />
-                    <span>{course._count.enrollments} estudiantes</span>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="outline">{course.language}</Badge>
+                  </TableCell>
+                  <TableCell>{getStatusBadge(course.isPublished)}</TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex items-center justify-center gap-1">
+                      <BookOpen className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">{course._count.modules}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex items-center justify-center gap-1">
+                      <Users className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">{course._count.enrollments}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center justify-center gap-1">
+                      <EditCourseDialog course={course} onCourseUpdated={onCourseUpdated}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8" data-testid="edit-button">
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </EditCourseDialog>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon" className="h-8 w-8" data-testid="course-actions-button">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <ViewCourseDialog course={course}>
+                            <DropdownMenuItem onSelect={(e) => e.preventDefault()} data-testid="view-button">
+                              <Eye className="h-4 w-4 mr-2" />
+                              Ver detalles
+                            </DropdownMenuItem>
+                          </ViewCourseDialog>
+                          <DropdownMenuItem asChild>
+                            <a href={`/admin/courses/${course.id}/builder`}>
+                              <Settings className="h-4 w-4 mr-2" />
+                              Course Builder
+                            </a>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem 
+                            onClick={() => handleTogglePublished(course.id)}
+                            data-testid={course.isPublished ? "unpublish-button" : "publish-button"}
+                          >
+                            {course.isPublished ? (
+                              <>
+                                <Archive className="h-4 w-4 mr-2" />
+                                Despublicar
+                              </>
+                            ) : (
+                              <>
+                                <Globe className="h-4 w-4 mr-2" />
+                                Publicar
+                              </>
+                            )}
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            className="text-destructive"
+                            onClick={() => {
+                              setCourseToDelete(course.id)
+                              setDeleteDialogOpen(true)
+                            }}
+                            data-testid="delete-button"
+                          >
+                            <Trash2 className="h-4 w-4 mr-2" />
+                            Eliminar
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
       </div>
 
-      {filteredCourses.length === 0 && (
-        <div className="text-center py-8">
-          <p className="text-muted-foreground">
-            No se encontraron cursos que coincidan con los filtros.
+      {/* Pagination */}
+      {filteredCourses.length > 0 && (
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-muted-foreground">
+            Mostrando <span className="font-medium">{((currentPage - 1) * ITEMS_PER_PAGE) + 1}</span> a{' '}
+            <span className="font-medium">{Math.min(currentPage * ITEMS_PER_PAGE, filteredCourses.length)}</span> de{' '}
+            <span className="font-medium">{filteredCourses.length}</span> resultados
           </p>
+          
+          <div className="flex items-center gap-1">
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            
+            {getPageNumbers().map((page, index) => (
+              typeof page === 'number' ? (
+                <Button
+                  key={index}
+                  variant={currentPage === page ? 'default' : 'outline'}
+                  size="icon"
+                  className={`h-8 w-8 ${currentPage === page ? 'bg-blue-500 hover:bg-blue-600' : ''}`}
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </Button>
+              ) : (
+                <span key={index} className="px-2 text-muted-foreground">...</span>
+              )
+            ))}
+            
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages || totalPages === 0}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       )}
 

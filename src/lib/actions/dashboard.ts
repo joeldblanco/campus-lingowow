@@ -17,6 +17,16 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
       where: { roles: { has: UserRole.STUDENT } },
     })
 
+    // Get active teachers count
+    const activeTeachers = await db.user.count({
+      where: { roles: { has: UserRole.TEACHER }, status: 'ACTIVE' },
+    })
+
+    // Get active courses count
+    const activeCourses = await db.course.count({
+      where: { isPublished: true },
+    })
+
     // Get total classes (completed bookings)
     const totalClasses = await db.classBooking.count({
       where: { status: 'COMPLETED' },
@@ -39,7 +49,7 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
       orderBy: { enrollmentDate: 'desc' },
       include: {
         student: {
-          select: { name: true, lastName: true },
+          select: { name: true, lastName: true, image: true },
         },
         course: {
           select: { title: true, language: true },
@@ -56,6 +66,60 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
       },
     })
 
+    const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
+
+    // Get upcoming confirmed classes globally
+    const upcomingClasses = await db.classBooking.findMany({
+      where: {
+        status: BookingStatus.CONFIRMED,
+        day: {
+          gte: formatToISO(getCurrentDate()),
+        },
+      },
+      take: 3,
+      orderBy: [{ day: 'asc' }, { timeSlot: 'asc' }],
+      include: {
+        student: {
+          select: { name: true, lastName: true, image: true },
+        },
+        teacher: {
+          select: { name: true, lastName: true, image: true },
+        },
+        enrollment: {
+          select: {
+            course: {
+              select: { title: true },
+            },
+          },
+        },
+      },
+    })
+
+    // Get enrollment stats (mocked aggregation for now using recent data, or simple count grouping)
+    // For a real chart, we'd group by week/month. Let's do a simple grouping by created date of enrollments last 30 days.
+    const thirtyDaysAgo = new Date()
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+
+    const enrollmentsLast30Days = await db.enrollment.groupBy({
+      by: ['enrollmentDate'],
+      where: {
+        enrollmentDate: {
+          gte: thirtyDaysAgo,
+        },
+      },
+      _count: {
+        id: true,
+      },
+    })
+
+    // Normalize for chart (simple map, in real app needs date filling)
+    const enrollmentStats = enrollmentsLast30Days
+      .map((item) => ({
+        name: formatDateNumeric(item.enrollmentDate.toISOString()),
+        students: item._count.id,
+      }))
+      .sort((a, b) => new Date(a.name).getTime() - new Date(b.name).getTime())
+
     // Get classes by language (approximation based on course enrollments)
     const languageStats = await db.course.groupBy({
       by: ['language'],
@@ -68,13 +132,29 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
       totalStudents,
       totalClasses,
       totalRevenue,
+      activeTeachers,
+      activeCourses,
       recentEnrollments: recentEnrollments.map((enrollment) => {
         const invoiceTotal = enrollment.purchases[0]?.invoice?.total
         return {
           studentName: `${enrollment.student.name} ${enrollment.student.lastName}`,
+          studentImage: enrollment.student.image,
           courseName: enrollment.course.title,
           date: formatDateNumeric(enrollment.enrollmentDate),
-          amount: invoiceTotal ? `$${invoiceTotal.toFixed(2)}` : 'N/A',
+          amount: invoiceTotal ? `$${invoiceTotal.toFixed(2)}` : '-',
+          status: 'Completado', // Asumimos completado si hay enrollment activo por ahora
+        }
+      }),
+      enrollmentStats,
+      upcomingClasses: upcomingClasses.map((booking) => {
+        const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot)
+        return {
+          id: booking.id,
+          title: booking.enrollment.course.title,
+          teacherName: `${booking.teacher.name} ${booking.teacher.lastName}`,
+          teacherImage: booking.teacher.image,
+          startTime: `${formatDateNumeric(localData.day)} ${localData.timeSlot}`,
+          platform: 'Zoom', // Placeholder or derived
         }
       }),
       languageStats: languageStats.map((stat) => ({

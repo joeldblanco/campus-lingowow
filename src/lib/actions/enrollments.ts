@@ -4,6 +4,7 @@ import { db } from '@/lib/db'
 import { EnrollmentStatus } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import { getCurrentDate, isAfterDate, getTodayStart } from '@/lib/utils/date'
+import { verifyPaypalTransaction, createInvoiceFromPaypal } from '@/lib/actions/commercial'
 
 export interface EnrollmentWithDetails {
   id: string
@@ -195,9 +196,33 @@ export async function createEnrollment(data: {
   studentId: string
   courseId: string
   academicPeriodId: string
+  paypalOrderId: string
 }) {
   try {
-    // Check if enrollment already exists
+    // 1. Verify PayPal Transaction FIRST
+    console.log('[Enrollment] Verifying PayPal Order:', data.paypalOrderId)
+    const paypalCheck = await verifyPaypalTransaction(data.paypalOrderId)
+
+    if (!paypalCheck.success || !paypalCheck.data) {
+      return {
+        success: false,
+        error: paypalCheck.error || 'Error al verificar el pago de PayPal.',
+      }
+    }
+
+    // Check if invoice already exists (Double check, though verifyPaypalTransaction does it)
+    const existingInvoice = await db.invoice.findFirst({
+      where: { paypalOrderId: data.paypalOrderId },
+    })
+
+    if (existingInvoice) {
+      return {
+        success: false,
+        error: 'Este pago de PayPal ya está asociado a otra factura/inscripción.',
+      }
+    }
+
+    // 2. Check if enrollment already exists
     const existingEnrollment = await db.enrollment.findUnique({
       where: {
         studentId_courseId_academicPeriodId: {
@@ -244,23 +269,47 @@ export async function createEnrollment(data: {
 
     // Determinar el estado según la fecha de inicio del período
     const today = getCurrentDate()
-    const status = isAfterDate(academicPeriod.startDate, today) ? EnrollmentStatus.PENDING : EnrollmentStatus.ACTIVE
+    const status = isAfterDate(academicPeriod.startDate, today)
+      ? EnrollmentStatus.PENDING
+      : EnrollmentStatus.ACTIVE
 
-    const enrollment = await db.enrollment.create({
-      data: {
-        studentId: data.studentId,
-        courseId: data.courseId,
-        academicPeriodId: data.academicPeriodId,
-        status: status,
-        progress: 0,
-      },
-    })
+    // 3. Create Enrollment and Invoice "Atomically" (Sequential with rollback)
+    // We create Enrollment first.
+    let enrollment
+    try {
+      enrollment = await db.enrollment.create({
+        data: {
+          studentId: data.studentId,
+          courseId: data.courseId,
+          academicPeriodId: data.academicPeriodId,
+          status: status,
+          progress: 0,
+        },
+      })
+    } catch (err) {
+      console.error('Error creating enrollment record:', err)
+      return { success: false, error: 'Error al crear el registro de inscripción' }
+    }
+
+    // 4. Create Invoice linked to this user
+    const invoiceResult = await createInvoiceFromPaypal(paypalCheck.data, data.studentId)
+
+    if (!invoiceResult.success) {
+      // ROLLBACK Enrollment
+      console.error('Invoice creation failed. Rolling back enrollment...')
+      await db.enrollment.delete({ where: { id: enrollment.id } })
+      return {
+        success: false,
+        error: 'Error al generar la factura. La inscripción ha sido revertida.',
+      }
+    }
 
     revalidatePath('/admin/enrollments')
+    revalidatePath('/admin/invoices')
     return { success: true, enrollment }
   } catch (error) {
     console.error('Error creating enrollment:', error)
-    return { success: false, error: 'Error al crear la inscripción' }
+    return { success: false, error: 'Error inesperado al procesar la inscripción' }
   }
 }
 

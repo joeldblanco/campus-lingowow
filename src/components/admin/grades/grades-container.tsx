@@ -1,19 +1,18 @@
-import { getAllStudentGrades, getGradeStats } from '@/lib/actions/grades'
+import { getAllStudentGrades } from '@/lib/actions/grades'
 import { GradesTable } from './grades-table'
-import { GradesStats } from './grades-stats'
 
 export async function GradesContainer() {
-  const [grades, stats] = await Promise.all([
-    getAllStudentGrades(),
-    getGradeStats(),
-  ])
+  const grades = await getAllStudentGrades()
 
   return (
     <div className="space-y-6">
-      <GradesStats stats={stats} />
-      
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold">Calificaciones por Estudiante</h2>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Gestión de Calificaciones</h1>
+          <p className="text-muted-foreground">
+            Administra y visualiza las calificaciones de todos los estudiantes.
+          </p>
+        </div>
       </div>
 
       <GradesTable grades={grades} />

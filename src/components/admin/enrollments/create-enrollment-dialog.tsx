@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createEnrollment, getAllStudents, getPublishedCourses, getActiveAndFutureAcademicPeriods } from '@/lib/actions/enrollments'
+import { verifyPaypalTransaction } from '@/lib/actions/commercial'
 import { Button } from '@/components/ui/button'
 import {
   Select,
@@ -10,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Input } from '@/components/ui/input'
 import {
   Dialog,
   DialogContent,
@@ -38,6 +40,7 @@ const CreateEnrollmentSchema = z.object({
   studentId: z.string().min(1, 'Debes seleccionar un estudiante'),
   courseId: z.string().min(1, 'Debes seleccionar un curso'),
   academicPeriodId: z.string().min(1, 'Debes seleccionar un período académico'),
+  paypalOrderId: z.string().min(1, 'El ID de pago de PayPal es obligatorio'),
 })
 
 interface CreateEnrollmentDialogProps {
@@ -58,6 +61,8 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
     Array<{ id: string; name: string; startDate: Date; endDate: Date; isActive: boolean }>
   >([])
   const [loadingData, setLoadingData] = useState(true)
+  const [isVerifyingPayment, setIsVerifyingPayment] = useState(false)
+  const [verifiedPaymentAmount, setVerifiedPaymentAmount] = useState<number | null>(null)
 
   const form = useForm<z.infer<typeof CreateEnrollmentSchema>>({
     resolver: zodResolver(CreateEnrollmentSchema),
@@ -65,8 +70,43 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
       studentId: '',
       courseId: '',
       academicPeriodId: '',
+      paypalOrderId: '',
     },
   })
+
+  // Watch for changes in paypalOrderId to reset verification if changed
+  const paypalOrderId = form.watch('paypalOrderId')
+
+  useEffect(() => {
+    if (verifiedPaymentAmount !== null) {
+      setVerifiedPaymentAmount(null)
+    }
+  }, [paypalOrderId])
+
+  const verifyPayment = async () => {
+    const orderId = form.getValues('paypalOrderId')
+    if (!orderId || orderId.length < 5) {
+      toast.error('Ingresa un ID de PayPal válido')
+      return
+    }
+
+    setIsVerifyingPayment(true)
+    try {
+      const result = await verifyPaypalTransaction(orderId)
+      if (result.success && result.data) {
+        setVerifiedPaymentAmount(result.data.amount)
+        toast.success(`Pago verificado: ${result.data.amount} ${result.data.currency}`)
+      } else {
+        setVerifiedPaymentAmount(null)
+        toast.error(result.error || 'No se pudo verificar el pago')
+      }
+    } catch (error) {
+      console.error(error)
+      toast.error('Error al verificar el pago')
+    } finally {
+      setIsVerifyingPayment(false)
+    }
+  }
 
   useEffect(() => {
     if (open) {
@@ -120,7 +160,9 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>Nueva Inscripción</DialogTitle>
-          <DialogDescription>Inscribe a un estudiante en un curso disponible.</DialogDescription>
+          <DialogDescription>
+            Inscribe a un estudiante. Se requiere un pago de PayPal válido.
+          </DialogDescription>
         </DialogHeader>
 
         {loadingData ? (
@@ -260,11 +302,71 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
                 )}
               />
 
+              <FormField
+                control={form.control}
+                name="paypalOrderId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>ID de Pago / Factura PayPal</FormLabel>
+                    <div className="flex gap-2">
+                      <FormControl>
+                        <Input
+                          placeholder="Ej: 5W840924G1436423K"
+                          {...field}
+                          onChange={(e) => {
+                            // Basic URL extraction logic
+                            let val = e.target.value
+                            if (val.includes('http')) {
+                              const invoiceMatch = val.match(/invoice\/p\/#([A-Za-z0-9]+)|invoice\/s\/([A-Za-z0-9]+)/)
+                              if (invoiceMatch) {
+                                val = invoiceMatch[1] || invoiceMatch[2]
+                              } else {
+                                const tokenMatch = val.match(/token=([A-Za-z0-9]+)/)
+                                if (tokenMatch) {
+                                  val = tokenMatch[1]
+                                } else {
+                                  const parts = val.split('/')
+                                  const last = parts[parts.length - 1].replace('#', '')
+                                  if (last && last.length > 5) {
+                                    val = last
+                                  }
+                                }
+                              }
+                            }
+                            field.onChange(val)
+                          }}
+                        />
+                      </FormControl>
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={verifyPayment}
+                        disabled={isVerifyingPayment || !field.value || verifiedPaymentAmount !== null}
+                      >
+                        {isVerifyingPayment ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : verifiedPaymentAmount !== null ? (
+                          'Verificado'
+                        ) : (
+                          'Verificar'
+                        )}
+                      </Button>
+                    </div>
+                    {verifiedPaymentAmount !== null && (
+                      <p className="text-xs text-green-600 font-medium">
+                        Pago confirmado por monto de {verifiedPaymentAmount}
+                      </p>
+                    )}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>
                   Cancelar
                 </Button>
-                <Button type="submit" disabled={isLoading}>
+                <Button type="submit" disabled={isLoading || verifiedPaymentAmount === null}>
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />

@@ -24,12 +24,14 @@ export interface ClassBookingWithDetails {
     name: string
     lastName: string
     email: string
+    image: string | null
   }
   teacher: {
     id: string
     name: string
     lastName: string
     email: string
+    image: string | null
   }
   enrollment: {
     id: string
@@ -104,6 +106,7 @@ export async function getAllClasses(filters?: ClassFilters): Promise<ClassBookin
             name: true,
             lastName: true,
             email: true,
+            image: true,
           },
         },
         teacher: {
@@ -112,6 +115,7 @@ export async function getAllClasses(filters?: ClassFilters): Promise<ClassBookin
             name: true,
             lastName: true,
             email: true,
+            image: true,
           },
         },
         enrollment: {
@@ -170,6 +174,7 @@ export async function getClassById(id: string): Promise<ClassBookingWithDetails 
             name: true,
             lastName: true,
             email: true,
+            image: true,
           },
         },
         teacher: {
@@ -178,6 +183,7 @@ export async function getClassById(id: string): Promise<ClassBookingWithDetails 
             name: true,
             lastName: true,
             email: true,
+            image: true,
           },
         },
         enrollment: {

@@ -8,11 +8,16 @@ const CategoriesAdminPage = async () => {
   const categories = await getCategories()
 
   return (
-    <div className="container py-8">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold">Categorías</h1>
+    <div className="space-y-6">
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Gestión de Categorías</h1>
+          <p className="text-muted-foreground">
+            Administra las categorías de productos de la tienda.
+          </p>
+        </div>
         <CreateCategoryDialog>
-          <Button>
+          <Button className="bg-primary hover:bg-primary/80 text-white">
             <Plus className="h-4 w-4 mr-2" />
             Nueva Categoría
           </Button>

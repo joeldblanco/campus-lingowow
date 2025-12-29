@@ -1,9 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { Button } from '@/components/ui/button'
 import { TeachersDataTable } from '@/components/admin/teachers/teachers-data-table'
 import { getAllUsers, deleteUser, updateUser } from '@/lib/actions/user'
 import { User, UserRole } from '@prisma/client'
+import { Plus } from 'lucide-react'
 import { toast } from 'sonner'
 
 export default function TeachersAdminView() {
@@ -17,7 +19,6 @@ export default function TeachersAdminView() {
         if ('error' in response) {
           toast.error(response.error)
         } else {
-          // Filtrar solo usuarios que tengan el rol TEACHER
           const teachersOnly = response.filter((user) =>
             user.roles.includes(UserRole.TEACHER)
           )
@@ -59,11 +60,16 @@ export default function TeachersAdminView() {
 
   if (loading) {
     return (
-      <div className="space-y-8">
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold tracking-tight">Profesores</h1>
+      <div className="space-y-6">
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">Gestión de Profesores</h1>
+            <p className="text-muted-foreground">
+              Administra los profesores y sus cursos asignados.
+            </p>
+          </div>
         </div>
-        <div className="flex justify-center py-8">
+        <div className="flex justify-center py-12">
           <div className="text-muted-foreground">Cargando profesores...</div>
         </div>
       </div>
@@ -71,14 +77,18 @@ export default function TeachersAdminView() {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="flex justify-between items-center">
+    <div className="space-y-6">
+      <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Profesores</h1>
-          <p className="text-muted-foreground mt-2">
-            Gestiona los profesores y sus cursos asignados
+          <h1 className="text-2xl font-bold tracking-tight">Gestión de Profesores</h1>
+          <p className="text-muted-foreground">
+            Administra los profesores y sus cursos asignados.
           </p>
         </div>
+        <Button className="bg-primary hover:bg-primary/80 text-white">
+          <Plus className="mr-2 h-4 w-4" />
+          Nuevo Profesor
+        </Button>
       </div>
 
       <TeachersDataTable 

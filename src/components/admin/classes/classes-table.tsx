@@ -1,12 +1,20 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { ClassBookingWithDetails, deleteClass, updateClass } from '@/lib/actions/classes'
 import { getTodayString } from '@/lib/utils/date'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 import {
   Select,
   SelectContent,
@@ -34,15 +42,18 @@ import {
 import { EditClassDialog } from './edit-class-dialog'
 import { ViewClassDialog } from './view-class-dialog'
 import { RescheduleClassDialog } from './reschedule-class-dialog'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
-  MoreHorizontal,
+  MoreVertical,
   Eye,
   Edit,
   Trash2,
   Calendar,
   Clock,
-  User,
-  GraduationCap,
+  Search,
+  ChevronLeft,
+  ChevronRight,
+  SlidersHorizontal,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { BookingStatus } from '@prisma/client'
@@ -51,18 +62,21 @@ interface ClassesTableProps {
   classes: ClassBookingWithDetails[]
 }
 
+const ITEMS_PER_PAGE = 5
+
 export function ClassesTable({ classes }: ClassesTableProps) {
-  const [filteredClasses, setFilteredClasses] = useState(classes)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [teacherFilter, setTeacherFilter] = useState('all')
   const [dateFilter, setDateFilter] = useState('all')
+  const [currentPage, setCurrentPage] = useState(1)
+  const [selectedClasses, setSelectedClasses] = useState<string[]>([])
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [classToDelete, setClassToDelete] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
 
   // Filter classes based on search and filters
-  const handleFilter = useCallback(() => {
+  const filteredClasses = useMemo(() => {
     let filtered = classes
 
     if (searchTerm) {
@@ -94,13 +108,20 @@ export function ClassesTable({ classes }: ClassesTableProps) {
       }
     }
 
-    setFilteredClasses(filtered)
+    return filtered
   }, [classes, searchTerm, statusFilter, teacherFilter, dateFilter])
 
-  // Apply filters when search term or filters change
+  // Pagination
+  const totalPages = Math.ceil(filteredClasses.length / ITEMS_PER_PAGE)
+  const paginatedClasses = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE
+    return filteredClasses.slice(start, start + ITEMS_PER_PAGE)
+  }, [filteredClasses, currentPage])
+
+  // Reset page when filters change
   useEffect(() => {
-    handleFilter()
-  }, [searchTerm, statusFilter, teacherFilter, dateFilter, classes, handleFilter])
+    setCurrentPage(1)
+  }, [searchTerm, statusFilter, teacherFilter, dateFilter])
 
   const handleDeleteClass = async () => {
     if (!classToDelete) return
@@ -151,26 +172,23 @@ export function ClassesTable({ classes }: ClassesTableProps) {
   }
 
   const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'CONFIRMED':
-        return <Badge variant="default">Confirmada</Badge>
-      case 'COMPLETED':
-        return (
-          <Badge variant="secondary" className="bg-green-100 text-green-800">
-            Completada
-          </Badge>
-        )
-      case 'CANCELLED':
-        return <Badge variant="destructive">Cancelada</Badge>
-      case 'NO_SHOW':
-        return (
-          <Badge variant="outline" className="border-orange-500 text-orange-700">
-            No asistió
-          </Badge>
-        )
-      default:
-        return <Badge variant="outline">{status}</Badge>
+    const statusStyles: Record<string, string> = {
+      CONFIRMED: 'bg-blue-100 text-blue-700 hover:bg-blue-100',
+      COMPLETED: 'bg-emerald-100 text-emerald-700 hover:bg-emerald-100',
+      CANCELLED: 'bg-red-100 text-red-700 hover:bg-red-100',
+      NO_SHOW: 'bg-orange-100 text-orange-700 hover:bg-orange-100',
     }
+    const statusLabels: Record<string, string> = {
+      CONFIRMED: 'Confirmada',
+      COMPLETED: 'Completada',
+      CANCELLED: 'Cancelada',
+      NO_SHOW: 'No asistió',
+    }
+    return (
+      <Badge className={`${statusStyles[status] || 'bg-gray-100 text-gray-700'} border-0 font-medium`}>
+        {statusLabels[status] || status}
+      </Badge>
+    )
   }
 
   const getUniqueTeachers = () => {
@@ -181,33 +199,73 @@ export function ClassesTable({ classes }: ClassesTableProps) {
   }
 
   const formatDate = (dateString: string) => {
-    // dateString viene como YYYY-MM-DD, lo mostramos en formato local
     const [year, month, day] = dateString.split('-').map(Number)
     const date = new Date(year, month - 1, day)
     return date.toLocaleDateString('es-ES', {
-      weekday: 'short',
-      year: 'numeric',
-      month: 'short',
       day: 'numeric',
+      month: 'short',
+      year: 'numeric',
     })
+  }
+
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      setSelectedClasses(paginatedClasses.map(c => c.id))
+    } else {
+      setSelectedClasses([])
+    }
+  }
+
+  const handleSelectClass = (id: string, checked: boolean) => {
+    if (checked) {
+      setSelectedClasses(prev => [...prev, id])
+    } else {
+      setSelectedClasses(prev => prev.filter(i => i !== id))
+    }
+  }
+
+  const clearFilters = () => {
+    setStatusFilter('all')
+    setTeacherFilter('all')
+    setDateFilter('all')
+    setSearchTerm('')
+  }
+
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = []
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i)
+    } else {
+      if (currentPage <= 3) {
+        pages.push(1, 2, 3, '...', totalPages)
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1, '...', totalPages - 2, totalPages - 1, totalPages)
+      } else {
+        pages.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages)
+      }
+    }
+    return pages
   }
 
   return (
     <div className="space-y-4">
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
-        <Input
-          placeholder="Buscar por estudiante o profesor..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="max-w-sm"
-        />
+      <div className="flex items-center gap-3">
+        <div className="relative flex-1 max-w-sm">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Buscar por estudiante o profesor..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-9"
+          />
+        </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-[140px]">
             <SelectValue placeholder="Estado" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Todos los estados</SelectItem>
+            <SelectItem value="all">Todos</SelectItem>
             <SelectItem value="CONFIRMED">Confirmadas</SelectItem>
             <SelectItem value="COMPLETED">Completadas</SelectItem>
             <SelectItem value="CANCELLED">Canceladas</SelectItem>
@@ -215,11 +273,11 @@ export function ClassesTable({ classes }: ClassesTableProps) {
           </SelectContent>
         </Select>
         <Select value={teacherFilter} onValueChange={setTeacherFilter}>
-          <SelectTrigger className="w-[200px]">
+          <SelectTrigger className="w-[140px]">
             <SelectValue placeholder="Profesor" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Todos los profesores</SelectItem>
+            <SelectItem value="all">Todos</SelectItem>
             {getUniqueTeachers().map((teacher) => (
               <SelectItem key={teacher.id} value={teacher.id}>
                 {teacher.name}
@@ -228,121 +286,199 @@ export function ClassesTable({ classes }: ClassesTableProps) {
           </SelectContent>
         </Select>
         <Select value={dateFilter} onValueChange={setDateFilter}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-[140px]">
             <SelectValue placeholder="Fecha" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Todas las fechas</SelectItem>
+            <SelectItem value="all">Todas</SelectItem>
             <SelectItem value="past">Pasadas</SelectItem>
             <SelectItem value="today">Hoy</SelectItem>
             <SelectItem value="future">Futuras</SelectItem>
           </SelectContent>
         </Select>
+        <Button variant="outline" size="icon" onClick={clearFilters} className="shrink-0">
+          <SlidersHorizontal className="h-4 w-4" />
+        </Button>
       </div>
 
-      {/* Classes List */}
-      <div className="space-y-4">
-        {filteredClasses.map((classItem) => (
-          <Card key={classItem.id} className="hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-3">
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <span className="font-medium">{formatDate(classItem.day)}</span>
+      {/* Table */}
+      <div className="border rounded-lg">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-muted/50">
+              <TableHead className="w-12">
+                <Checkbox
+                  checked={selectedClasses.length === paginatedClasses.length && paginatedClasses.length > 0}
+                  onCheckedChange={handleSelectAll}
+                />
+              </TableHead>
+              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Clase</TableHead>
+              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Estudiante</TableHead>
+              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Profesor</TableHead>
+              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Estado</TableHead>
+              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Horario</TableHead>
+              <TableHead className="font-semibold text-xs uppercase text-muted-foreground text-center">Acciones</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {paginatedClasses.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
+                  No se encontraron clases que coincidan con los filtros.
+                </TableCell>
+              </TableRow>
+            ) : (
+              paginatedClasses.map((classItem) => (
+                <TableRow key={classItem.id} className="hover:bg-muted/30">
+                  <TableCell>
+                    <Checkbox
+                      checked={selectedClasses.includes(classItem.id)}
+                      onCheckedChange={(checked) => handleSelectClass(classItem.id, !!checked)}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <div className="font-medium text-sm">{formatDate(classItem.day)}</div>
+                      <div className="text-xs text-muted-foreground">ID: {classItem.id.slice(0, 8)}...</div>
                     </div>
+                  </TableCell>
+                  <TableCell>
                     <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-muted-foreground" />
-                      <span>{classItem.timeSlot}</span>
-                    </div>
-                    {getStatusBadge(classItem.status)}
-                  </div>
-
-                  <div className="flex items-center gap-6">
-                    <div className="flex items-center gap-2">
-                      <GraduationCap className="h-4 w-4 text-muted-foreground" />
+                      <Avatar className="h-7 w-7">
+                        <AvatarImage src={classItem.student.image || ''} />
+                        <AvatarFallback className="text-xs bg-slate-200">
+                          {classItem.student.name[0]}{classItem.student.lastName[0]}
+                        </AvatarFallback>
+                      </Avatar>
                       <div>
-                        <p className="text-sm font-medium">Estudiante</p>
-                        <p className="text-sm text-muted-foreground">
+                        <div className="font-medium text-sm">
                           {classItem.student.name} {classItem.student.lastName}
-                        </p>
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {classItem.student.email}
+                        </div>
                       </div>
                     </div>
-
+                  </TableCell>
+                  <TableCell>
                     <div className="flex items-center gap-2">
-                      <User className="h-4 w-4 text-muted-foreground" />
+                      <Avatar className="h-7 w-7">
+                        <AvatarImage src={classItem.teacher.image || ''} />
+                        <AvatarFallback className="text-xs bg-slate-200">
+                          {classItem.teacher.name[0]}{classItem.teacher.lastName[0]}
+                        </AvatarFallback>
+                      </Avatar>
                       <div>
-                        <p className="text-sm font-medium">Profesor</p>
-                        <p className="text-sm text-muted-foreground">
+                        <div className="font-medium text-sm">
                           {classItem.teacher.name} {classItem.teacher.lastName}
-                        </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-
-                  {classItem.notes && (
-                    <p className="text-sm text-muted-foreground">
-                      <strong>Notas:</strong> {classItem.notes}
-                    </p>
-                  )}
-                </div>
-
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <ViewClassDialog classItem={classItem}>
-                      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                        <Eye className="h-4 w-4 mr-2" />
-                        Ver detalles
-                      </DropdownMenuItem>
-                    </ViewClassDialog>
-                    <EditClassDialog classItem={classItem}>
-                      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                        <Edit className="h-4 w-4 mr-2" />
-                        Editar
-                      </DropdownMenuItem>
-                    </EditClassDialog>
-                    <RescheduleClassDialog classItem={classItem}>
-                      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                        <Calendar className="h-4 w-4 mr-2" />
-                        Reagendar
-                      </DropdownMenuItem>
-                    </RescheduleClassDialog>
-                    {classItem.status === 'CONFIRMED' && (
-                      <DropdownMenuItem onClick={() => handleMarkCompleted(classItem.id)}>
-                        <Clock className="h-4 w-4 mr-2" />
-                        Marcar completada
-                      </DropdownMenuItem>
-                    )}
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      className="text-red-600"
-                      onClick={() => {
-                        setClassToDelete(classItem.id)
-                        setDeleteDialogOpen(true)
-                      }}
-                    >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Eliminar
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+                  </TableCell>
+                  <TableCell>{getStatusBadge(classItem.status)}</TableCell>
+                  <TableCell>
+                    <div className="text-sm">{classItem.timeSlot}</div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center justify-center gap-1">
+                      <EditClassDialog classItem={classItem}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </EditClassDialog>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon" className="h-8 w-8">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <ViewClassDialog classItem={classItem}>
+                            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                              <Eye className="h-4 w-4 mr-2" />
+                              Ver detalles
+                            </DropdownMenuItem>
+                          </ViewClassDialog>
+                          <RescheduleClassDialog classItem={classItem}>
+                            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                              <Calendar className="h-4 w-4 mr-2" />
+                              Reagendar
+                            </DropdownMenuItem>
+                          </RescheduleClassDialog>
+                          {classItem.status === 'CONFIRMED' && (
+                            <DropdownMenuItem onClick={() => handleMarkCompleted(classItem.id)}>
+                              <Clock className="h-4 w-4 mr-2" />
+                              Marcar completada
+                            </DropdownMenuItem>
+                          )}
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            className="text-destructive"
+                            onClick={() => {
+                              setClassToDelete(classItem.id)
+                              setDeleteDialogOpen(true)
+                            }}
+                          >
+                            <Trash2 className="h-4 w-4 mr-2" />
+                            Eliminar
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
       </div>
 
-      {filteredClasses.length === 0 && (
-        <div className="text-center py-8">
-          <p className="text-muted-foreground">
-            No se encontraron clases que coincidan con los filtros.
+      {/* Pagination */}
+      {filteredClasses.length > 0 && (
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-muted-foreground">
+            Mostrando <span className="font-medium">{((currentPage - 1) * ITEMS_PER_PAGE) + 1}</span> a{' '}
+            <span className="font-medium">{Math.min(currentPage * ITEMS_PER_PAGE, filteredClasses.length)}</span> de{' '}
+            <span className="font-medium">{filteredClasses.length}</span> resultados
           </p>
+          
+          <div className="flex items-center gap-1">
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            
+            {getPageNumbers().map((page, index) => (
+              typeof page === 'number' ? (
+                <Button
+                  key={index}
+                  variant={currentPage === page ? 'default' : 'outline'}
+                  size="icon"
+                  className={`h-8 w-8 ${currentPage === page ? 'bg-blue-500 hover:bg-blue-600' : ''}`}
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </Button>
+              ) : (
+                <span key={index} className="px-2 text-muted-foreground">...</span>
+              )
+            ))}
+            
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages || totalPages === 0}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       )}
 

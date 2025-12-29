@@ -682,3 +682,31 @@ export async function getCourseProgress(
     throw new Error('Failed to fetch course progress')
   }
 }
+
+export async function archiveCourse(id: string) {
+  try {
+    await db.course.update({
+      where: { id },
+      data: { isPublished: false },
+    })
+    revalidatePath(`/admin/courses/${id}`)
+    return { success: true }
+  } catch (error) {
+    console.error('Error archiving course:', error)
+    return { success: false, error: 'Failed to archive course' }
+  }
+}
+
+export async function updateCourseImage(id: string, imageUrl: string) {
+  try {
+    await db.course.update({
+      where: { id },
+      data: { image: imageUrl },
+    })
+    revalidatePath(`/admin/courses/${id}`)
+    return { success: true }
+  } catch (error) {
+    console.error('Error updating course image:', error)
+    return { success: false, error: 'Failed to update course image' }
+  }
+}

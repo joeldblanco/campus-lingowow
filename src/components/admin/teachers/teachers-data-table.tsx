@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { ArrowUpDown, BookOpen, Eye, Mail, MoreHorizontal, Pencil, Trash } from 'lucide-react'
+import { ArrowUpDown, BookOpen, Eye, Mail, MoreVertical, Pencil, Trash, Search } from 'lucide-react'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { impersonateUser } from '@/lib/actions/impersonate'
@@ -140,12 +140,11 @@ export function TeachersDataTable({ teachers, onDeleteTeacher, onUpdateTeacher }
         const status = row.getValue('status') as string
         return (
           <div className="flex justify-center">
-            <Badge
-              variant={status === 'ACTIVE' ? 'default' : 'secondary'}
-              className="capitalize"
-            >
-              {status === 'ACTIVE' ? 'Activo' : 'Inactivo'}
-            </Badge>
+            {status === 'ACTIVE' ? (
+              <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 border-0 font-medium">Activo</Badge>
+            ) : (
+              <Badge className="bg-gray-100 text-gray-700 hover:bg-gray-100 border-0 font-medium">Inactivo</Badge>
+            )}
           </div>
         )
       },
@@ -158,9 +157,9 @@ export function TeachersDataTable({ teachers, onDeleteTeacher, onUpdateTeacher }
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
+              <Button variant="ghost" size="icon" className="h-8 w-8">
                 <span className="sr-only">Abrir menú</span>
-                <MoreHorizontal className="h-4 w-4" />
+                <MoreVertical className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -217,25 +216,28 @@ export function TeachersDataTable({ teachers, onDeleteTeacher, onUpdateTeacher }
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <Input
-          placeholder="Buscar por nombre o correo..."
-          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-          onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
-          className="max-w-sm"
-        />
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Buscar por nombre o correo..."
+            value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+            onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
+            className="max-w-sm pl-9"
+          />
+        </div>
         <div className="text-sm text-muted-foreground">
           {teachers.length} profesor{teachers.length !== 1 ? 'es' : ''} en total
         </div>
       </div>
       
-      <div className="rounded-md border">
+      <div className="rounded-lg border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="bg-muted/50">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="font-semibold text-xs uppercase text-muted-foreground">
                       {header.isPlaceholder
                         ? null
                         : flexRender(header.column.columnDef.header, header.getContext())}

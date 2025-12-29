@@ -2,11 +2,27 @@ export interface AdminDashboardData {
   totalStudents: number
   totalClasses: number
   totalRevenue: number
+  activeTeachers: number
+  activeCourses: number
   recentEnrollments: {
     studentName: string
     courseName: string
     date: string
     amount: string
+    status: string
+    studentImage: string | null
+  }[]
+  enrollmentStats: {
+    name: string
+    students: number
+  }[]
+  upcomingClasses: {
+    id: string
+    title: string
+    teacherName: string
+    startTime: string
+    teacherImage: string | null
+    platform: string
   }[]
   languageStats: {
     name: string
