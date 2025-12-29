@@ -787,10 +787,11 @@ export async function updateInvoice(
   }
 }
 
-export async function deleteInvoice(id: string) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function deleteInvoice(_id: string) {
   try {
     // await db.invoice.delete({
-    //   where: { id },
+    //   where: { _id },
     // })
     // revalidatePath('/admin/invoices')
     // return { success: true }
@@ -1127,7 +1128,7 @@ export async function createInvoiceFromPaypal(
     lastName: string
     amount: number
     currency: string
-    items: any[]
+    items: Array<{ name: string; quantity: string; unit_amount: { value: string } }>
     date: Date
   },
   userId: string
@@ -1151,14 +1152,12 @@ export async function createInvoiceFromPaypal(
         paypalPayerEmail: transactionData.email,
         notes: `Imported from PayPal (${transactionData.type}): ${transactionData.resourceId}`,
         items: {
-          create: transactionData.items.map(
-            (item: { name: string; quantity: string; unit_amount: { value: string } }) => ({
-              name: item.name,
-              price: parseFloat(item.unit_amount.value),
-              quantity: parseInt(item.quantity) || 1,
-              total: parseFloat(item.unit_amount.value) * (parseInt(item.quantity) || 1),
-            })
-          ),
+          create: transactionData.items.map((item) => ({
+            name: item.name,
+            price: parseFloat(item.unit_amount.value),
+            quantity: parseInt(item.quantity) || 1,
+            total: parseFloat(item.unit_amount.value) * (parseInt(item.quantity) || 1),
+          })),
         },
       },
     })

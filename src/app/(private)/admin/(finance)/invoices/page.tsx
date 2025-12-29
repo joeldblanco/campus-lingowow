@@ -1,8 +1,5 @@
-import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
-import { getInvoices } from '@/lib/actions/commercial'
 import { InvoicesTable } from '@/components/admin/invoices/invoices-table'
-import { ImportPaypalDialog } from '@/components/admin/invoices/import-paypal-dialog'
+import { getInvoices } from '@/lib/actions/commercial'
 
 const InvoicesAdminPage = async () => {
   const invoices = await getInvoices()

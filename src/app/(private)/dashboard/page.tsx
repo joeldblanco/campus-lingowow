@@ -2,6 +2,9 @@
 
 import { CalendarApp } from '@/components/calendar/calendar-component'
 import StudentDashboard from '@/components/dashboard/student-dashboard'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
@@ -11,48 +14,36 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { getAdminDashboardStats, getTeacherDashboardStats } from '@/lib/actions/dashboard'
+import type { AdminDashboardData, TeacherDashboardData } from '@/types/dashboard'
 import { UserRole } from '@prisma/client'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import {
+  Activity,
+  BookOpen,
+  Calendar,
+  Calendar as CalendarIcon,
+  DollarSign,
+  Download,
+  type LucideIcon,
+  MoreVertical,
+  School,
+  Users,
+  Video,
+} from 'lucide-react'
+import { useSession } from 'next-auth/react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import {
   Area,
   AreaChart,
-  CartesianGrid,
-  Tooltip,
   Bar,
   BarChart,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
-  YAxis
+  YAxis,
 } from 'recharts'
-import {
-  BookOpen,
-  Calendar,
-  DollarSign,
-  Users,
-  Video,
-  TrendingUp,
-  MoreVertical,
-  Search,
-  Bell,
-  Settings,
-  HelpCircle,
-  LogOut,
-  Plus,
-  Calendar as CalendarIcon,
-  Download,
-  School,
-  Activity,
-  FileText // Added missing icon for StudentDashboard if needed, or remove usage
-} from 'lucide-react'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { getAdminDashboardStats, getTeacherDashboardStats } from '@/lib/actions/dashboard'
-import type { AdminDashboardData, TeacherDashboardData } from '@/types/dashboard'
 
 const Dashboard = () => {
   const { data: session } = useSession()
@@ -126,38 +117,26 @@ const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData |
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatCard
-            title="Estudiantes Totales"
             value={dashboardData.totalStudents}
             icon={Users}
-            trend="+12%" // Mocked trend
-            trendUp={true} // Mocked trend
             color="blue"
             label="Total de estudiantes"
           />
           <StatCard
-            title="Cursos Activos"
             value={dashboardData.activeCourses}
             icon={School}
-            trend="+5%" // Mocked trend
-            trendUp={true}
             color="purple"
             label="Cursos publicados"
           />
           <StatCard
-            title="Ingresos Totales"
             value={`$${dashboardData.totalRevenue.toFixed(2)}`}
             icon={DollarSign}
-            trend="+8%" // Mocked trend
-            trendUp={true}
             color="amber"
             label="Total facturado"
           />
           <StatCard
-            title="Profesores Activos"
             value={dashboardData.activeTeachers}
             icon={Activity}
-            trend="En línea" // Mocked status
-            trendUp={true}
             color="green"
             label="Instructores verificados"
           />
@@ -244,9 +223,7 @@ const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData |
                   </div>
                 ))
               ) : (
-                <p className="text-sm text-slate-500 text-center py-4">
-                  No hay clases próximas
-                </p>
+                <p className="text-sm text-slate-500 text-center py-4">No hay clases próximas</p>
               )}
             </div>
             <Button
@@ -335,19 +312,13 @@ const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData |
 }
 
 function StatCard({
-  title,
   value,
   icon: Icon,
-  trend,
-  trendUp,
   color,
   label,
 }: {
-  title: string
   value: string | number
-  icon: any
-  trend: string
-  trendUp: boolean
+  icon: LucideIcon
   color: 'blue' | 'purple' | 'amber' | 'slate' | 'green'
   label: string
 }) {
@@ -389,16 +360,6 @@ function StatCard({
         <div className={`p-2 rounded-lg ${styles.bg}`}>
           <Icon className={`w-6 h-6 ${styles.text}`} />
         </div>
-        {/* <span
-          className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full ${
-            trendUp
-              ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400'
-              : 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400'
-          }`}
-        >
-          <TrendingUp className="w-3.5 h-3.5" />
-          {trend}
-        </span> */}
       </div>
       <div>
         <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{label}</p>
@@ -643,9 +604,14 @@ const GuestDashboard = () => {
           <div className="flex flex-col items-center text-center space-y-4">
             <div>
               <h3 className="text-2xl font-bold mb-2">¡Comienza tu Aprendizaje Hoy!</h3>
-              <p className="text-blue-100">Únete a miles de estudiantes aprendiendo idiomas con los mejores profesores</p>
+              <p className="text-blue-100">
+                Únete a miles de estudiantes aprendiendo idiomas con los mejores profesores
+              </p>
             </div>
-            <Link href="/shop" className="px-8 py-4 bg-white text-blue-600 rounded-lg hover:bg-blue-50 font-bold text-lg shadow-lg transform transition hover:scale-105 inline-block">
+            <Link
+              href="/shop"
+              className="px-8 py-4 bg-white text-blue-600 rounded-lg hover:bg-blue-50 font-bold text-lg shadow-lg transform transition hover:scale-105 inline-block"
+            >
               Regístrate Ahora
             </Link>
           </div>
@@ -688,7 +654,10 @@ const GuestDashboard = () => {
               </CardHeader>
               <CardContent>
                 <p>Próximamente - Cursos de francés</p>
-                <button className="mt-4 px-4 py-2 bg-gray-400 text-white rounded cursor-not-allowed" disabled>
+                <button
+                  className="mt-4 px-4 py-2 bg-gray-400 text-white rounded cursor-not-allowed"
+                  disabled
+                >
                   Próximamente
                 </button>
               </CardContent>

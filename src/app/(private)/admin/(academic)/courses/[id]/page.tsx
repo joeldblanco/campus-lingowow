@@ -7,13 +7,14 @@ import { cn } from "@/lib/utils";
 const lexend = Lexend({ subsets: ["latin"] });
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function CourseDetailsPage({ params }: PageProps) {
-  const course = await getCourseById(params.id);
+  const { id } = await params;
+  const course = await getCourseById(id);
 
   if (!course) {
     notFound();

@@ -78,9 +78,7 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
   const paypalOrderId = form.watch('paypalOrderId')
 
   useEffect(() => {
-    if (verifiedPaymentAmount !== null) {
-      setVerifiedPaymentAmount(null)
-    }
+    setVerifiedPaymentAmount(null)
   }, [paypalOrderId])
 
   const verifyPayment = async () => {
