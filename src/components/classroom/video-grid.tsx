@@ -2,10 +2,11 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card } from '@/components/ui/card'
-import { MicOff } from 'lucide-react'
+import { Hand, MicOff } from 'lucide-react'
 import React from 'react'
+import { cn } from '@/lib/utils'
 
-// Placeholder for a track object from Jitsi
+// Track interface compatible with both Jitsi and LiveKit
 export interface VideoTrack {
   participantId: string
   name: string
@@ -14,7 +15,9 @@ export interface VideoTrack {
   isMuted: boolean
   isVideoMuted: boolean
   isTeacher?: boolean
-  videoTrack?: unknown // JitsiLocalTrack | JitsiRemoteTrack
+  isHandRaised?: boolean
+  isSpeaking?: boolean
+  videoTrack?: unknown // LiveKit Track or Jitsi Track
   audioTrack?: unknown
 }
 
@@ -25,16 +28,20 @@ interface VideoGridProps {
 }
 
 // Helper to render a single video tile
-function VideoTile({ track, isTeacher }: { track: VideoTrack; isTeacher: boolean }) {
+function VideoTile({ track }: { track: VideoTrack; isTeacher: boolean }) {
   const videoRef = React.useRef<HTMLVideoElement>(null)
 
   React.useEffect(() => {
     const videoElement = videoRef.current
     if (track?.videoTrack && videoElement) {
-      const jitsiTrack = track.videoTrack as { attach: (el: HTMLVideoElement) => void; detach: (el: HTMLVideoElement) => void }
-      jitsiTrack.attach(videoElement)
-      return () => {
-        jitsiTrack.detach(videoElement)
+      const liveKitTrack = track.videoTrack as { attach: (el: HTMLVideoElement) => HTMLVideoElement; detach: (el: HTMLVideoElement) => HTMLVideoElement }
+      if (typeof liveKitTrack.attach === 'function') {
+        liveKitTrack.attach(videoElement)
+        return () => {
+          if (typeof liveKitTrack.detach === 'function') {
+            liveKitTrack.detach(videoElement)
+          }
+        }
       }
     }
   }, [track?.videoTrack])
@@ -42,39 +49,56 @@ function VideoTile({ track, isTeacher }: { track: VideoTrack; isTeacher: boolean
   if (!track) return null
 
   return (
-    <Card className="relative w-full aspect-video bg-gray-900 rounded-xl overflow-hidden border-0 shadow-lg group">
+    <Card className="relative w-full aspect-video bg-gray-900 rounded-xl overflow-hidden border-0 shadow-md">
       {/* Video Element */}
       {track?.videoTrack && !track.isVideoMuted ? (
         <video
           ref={videoRef}
           autoPlay
           playsInline
-          muted={track.isLocal} // Always mute local to avoid echo
+          muted={track.isLocal}
           className="w-full h-full object-cover"
         />
       ) : (
-        /* Avatar Fallback when video is off */
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
-          <Avatar className="w-20 h-20 border-4 border-gray-700">
+        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-700 to-gray-900">
+          <Avatar className="w-16 h-16 border-2 border-white/20">
             <AvatarImage src={track.avatar} />
-            <AvatarFallback className="text-2xl font-bold bg-blue-600 text-white">
+            <AvatarFallback className="text-xl font-bold bg-blue-600 text-white">
               {track.name.substring(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
         </div>
       )}
 
-      {/* Overlays / Status Icons */}
-      <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg flex items-center gap-2 text-white text-sm font-medium">
-        {track.isMuted && <MicOff className="w-3.5 h-3.5 text-red-400" />}
-        <span>
-          {track.isLocal ? 'Tú' : track.name}
-          {isTeacher && <span className="text-blue-300 ml-1">(Profesor)</span>}
-        </span>
+      {/* Speaking Badge - Top Right */}
+      {track.isSpeaking && (
+        <div className="absolute top-2 right-2 bg-blue-500 text-white text-xs font-semibold px-2 py-0.5 rounded">
+          SPEAKING
+        </div>
+      )}
+
+      {/* Hand Raised Indicator */}
+      {track.isHandRaised && (
+        <div className="absolute top-2 right-2 bg-yellow-500 text-white p-1.5 rounded-full shadow-lg animate-bounce">
+          <Hand className="w-4 h-4" />
+        </div>
+      )}
+
+      {/* Name Badge - Bottom Left */}
+      <div className="absolute bottom-2 left-2 bg-black/70 backdrop-blur-sm px-2 py-1 rounded flex items-center gap-1.5 text-white text-xs font-medium">
+        {track.isMuted && <MicOff className="w-3 h-3 text-red-400" />}
+        <span>{track.isLocal ? 'You' : track.name}</span>
       </div>
 
-      {/* Speaking Indicator Border */}
-      <div className="absolute inset-0 border-4 border-blue-500 rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none" />
+      {/* Speaking Border */}
+      <div 
+        className={cn(
+          "absolute inset-0 rounded-xl pointer-events-none transition-all duration-200",
+          track.isSpeaking 
+            ? "ring-2 ring-blue-500 ring-offset-1" 
+            : ""
+        )} 
+      />
     </Card>
   )
 }
@@ -112,18 +136,11 @@ export function VideoGrid({ localTrack, remoteTracks = [], isTeacher }: VideoGri
     : localTrack || safeStudentMock
 
   return (
-    <div className="flex flex-col gap-4 h-full">
-      {/* Teacher View (Top usually) */}
-      <div className="flex-none">
-        <VideoTile track={teacherTrack!} isTeacher={true} />
-      </div>
-
-      {/* Student View (Bottom usually) */}
-      <div className="flex-none">
-        <VideoTile track={studentTrack!} isTeacher={false} />
-      </div>
-
-      {/* Removed internal Chat placeholder to avoid duplication with sidebar tabs */}
+    <div className="flex flex-col gap-2">
+      {/* Teacher Video */}
+      <VideoTile track={teacherTrack!} isTeacher={true} />
+      {/* Student Video */}
+      <VideoTile track={studentTrack!} isTeacher={false} />
     </div>
   )
 }

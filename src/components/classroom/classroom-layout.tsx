@@ -11,6 +11,7 @@ interface ClassroomLayoutProps {
   children: React.ReactNode // This will be the Lesson Content
   rightSidebar: React.ReactNode // This will be the Video/Chat Sidebar
   bottomControls: React.ReactNode // This will be the Control Bar
+  contentTabs?: React.ReactNode // Tabs for switching between lesson/whiteboard/screenshare
   className?: string
   lessonTitle?: string
   timeLeft?: string
@@ -20,6 +21,7 @@ export function ClassroomLayout({
   children,
   rightSidebar,
   bottomControls,
+  contentTabs,
   className = '',
   lessonTitle = 'English Lesson',
   timeLeft = '45:00'
@@ -56,11 +58,18 @@ export function ClassroomLayout({
       {/* Main Content Grid */}
       <main className="flex-1 overflow-hidden p-4 grid grid-cols-12 gap-4">
         {/* Left Panel: Lesson Content */}
-        <div className="col-span-8 flex flex-col h-full overflow-hidden">
+        <div className="col-span-8 flex flex-col h-full overflow-hidden gap-3">
+          {/* Content Tabs - Top Right of Left Panel */}
+          {contentTabs && (
+            <div className="flex-none flex justify-end">
+              {contentTabs}
+            </div>
+          )}
+          
           {/* The Card wrapper gives it the white paper look from the design */}
           <Card className="flex-1 h-full shadow-sm border border-gray-100 overflow-hidden bg-white rounded-xl">
             <ScrollArea className="h-full w-full">
-              <div className="p-8">
+              <div className="p-8 h-full">
                 {children}
               </div>
             </ScrollArea>

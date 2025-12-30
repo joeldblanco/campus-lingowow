@@ -157,8 +157,8 @@ export default function ClassroomPage() {
           courseName={classroomData.courseName}
           lessonName={classroomData.lessonName}
           bookingId={classroomData.bookingId}
-          day={classroomData.day}
-          timeSlot={classroomData.timeSlot}
+          day={classroomData.dayUTC}
+          timeSlot={classroomData.timeSlotUTC}
           currentUserName={session?.user?.name || 'Profesor'}
         />
       </div>
@@ -175,8 +175,8 @@ export default function ClassroomPage() {
         courseName={classroomData.courseName}
         lessonName={classroomData.lessonName}
         bookingId={classroomData.bookingId}
-        day={classroomData.day}
-        timeSlot={classroomData.timeSlot}
+        day={classroomData.dayUTC}
+        timeSlot={classroomData.timeSlotUTC}
         currentUserName={session?.user?.name || 'Estudiante'}
       />
     </div>

@@ -1,34 +1,50 @@
 'use client'
 
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
-import {
-  addMinutes,
-  differenceInSeconds,
-  format,
-  isAfter,
-  isBefore,
-} from 'date-fns'
+import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { Play, BookOpen } from 'lucide-react'
+import {
+  ArrowRight,
+  BookOpen,
+  Calendar,
+  Download,
+  Flame,
+  GraduationCap,
+  Play,
+  Puzzle,
+  Trophy,
+} from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { getStudentDashboardStats } from '@/lib/actions/dashboard'
-import { useCurrentClass } from '@/context/current-class'
 import type { StudentDashboardData } from '@/types/dashboard'
 import { PendingScheduleBanner } from '@/components/enrollments/pending-schedule-banner'
+
+const levelColors: Record<string, string> = {
+  'A1': 'bg-yellow-100 text-yellow-800',
+  'A2': 'bg-orange-100 text-orange-800',
+  'B1': 'bg-blue-100 text-blue-800',
+  'B2': 'bg-indigo-100 text-indigo-800',
+  'C1': 'bg-purple-100 text-purple-800',
+  'C2': 'bg-pink-100 text-pink-800',
+  'default': 'bg-slate-100 text-slate-800',
+}
+
+const getLevelColor = (level: string) => {
+  const upperLevel = level?.toUpperCase() || ''
+  for (const key of Object.keys(levelColors)) {
+    if (upperLevel.includes(key)) return levelColors[key]
+  }
+  return levelColors['default']
+}
 
 export default function Dashboard() {
   const { data: session } = useSession()
   const user = session?.user
-  const router = useRouter()
-  const { setCurrentClass } = useCurrentClass()
-  const [nextClassLink, setNextClassLink] = useState<string | null>(null)
   const [dashboardData, setDashboardData] = useState<StudentDashboardData | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -36,15 +52,10 @@ export default function Dashboard() {
         try {
           const data = await getStudentDashboardStats(session.user.id)
           setDashboardData(data)
-
-          console.log(data)
-
-          // Set next class link if there are upcoming classes
-          if (data.upcomingClasses.length > 0) {
-            setNextClassLink(data.upcomingClasses[0].link)
-          }
         } catch (error) {
           console.error('Error loading dashboard data:', error)
+        } finally {
+          setLoading(false)
         }
       }
     }
@@ -52,331 +63,280 @@ export default function Dashboard() {
     loadDashboardData()
   }, [session])
 
+  // Get the first enrollment for "Resume Learning" section
+  const currentEnrollment = dashboardData?.enrollments?.[0]
+  const nextClass = dashboardData?.upcomingClasses?.[0]
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    )
+  }
+
   return (
-    <div className="flex flex-1 flex-col gap-4 md:gap-8">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-bold tracking-tight">
-          Bienvenido de nuevo, {user?.name ?? 'Usuario'}
-        </h1>
-        <p className="text-muted-foreground">Mira cómo vas y tus próximas clases.</p>
+    <div className="space-y-8 max-w-7xl mx-auto">
+      {/* Page Heading */}
+      <div className="flex flex-wrap justify-between items-end gap-3">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-3xl md:text-4xl font-black leading-tight tracking-tight text-slate-900 dark:text-white">
+            ¡Hola, {user?.name ?? 'Estudiante'}! 👋
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400 text-base">
+            ¿Listo para continuar tu aprendizaje hoy?
+          </p>
+        </div>
       </div>
 
       {/* Notification for students with no active enrollments */}
       {dashboardData?.enrollments && dashboardData.enrollments.length === 0 && (
-        <Card className="border-yellow-200 bg-yellow-50">
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <div className="text-yellow-600">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="12" y1="8" x2="12" y2="12"></line>
-                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                </svg>
-              </div>
-              <div>
-                <p className="font-medium text-yellow-800">No tienes cursos activos</p>
-                <p className="text-sm text-yellow-700">
-                  Para empezar a aprender, <Link href="/courses" className="underline font-medium">inscríbete en un curso</Link>.
-                </p>
-              </div>
+        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-4">
+          <div className="flex items-center gap-3">
+            <div className="text-yellow-600 dark:text-yellow-400">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
             </div>
-          </CardContent>
-        </Card>
+            <div>
+              <p className="font-medium text-yellow-800 dark:text-yellow-200">No tienes cursos activos</p>
+              <p className="text-sm text-yellow-700 dark:text-yellow-300">
+                Para empezar a aprender, <Link href="/shop" className="underline font-medium">inscríbete en un curso</Link>.
+              </p>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Banner de horarios pendientes */}
       <PendingScheduleBanner />
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle>Mi próxima clase</CardTitle>
-            <CardDescription>
-              Cuando tengas una clase, este botón se activará para que puedas entrar
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {nextClassLink ? (
-              <Button variant="default" size="lg" asChild className="w-full">
-                <Link href={nextClassLink} className="flex items-center justify-center gap-2">
-                  <Play />
-                  <span>Unirse a la Clase</span>
-                </Link>
-              </Button>
-            ) : (
-              <Button disabled variant="default" size="lg" className="w-full">
-                <Play />
-                <span>Unirse a la Clase</span>
-              </Button>
-            )}
-          </CardContent>
-        </Card>
-        <Card className="lg:col-span-3">
-          <CardHeader className="pb-2">
-            <CardTitle>¿Cómo voy?</CardTitle>
-            <CardDescription>Mi nivel actual</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="text-2xl font-bold">Nivel {dashboardData?.currentLevel || 1}</div>
-            <Progress value={(dashboardData?.totalPoints || 0) % 100} className="h-2" />
-            <p className="text-xs text-muted-foreground">{dashboardData?.totalPoints || 0} XP</p>
-          </CardContent>
-        </Card>
-      </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="lg:col-span-4">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Mis próximas clases</CardTitle>
-            <Button variant="outline" size="sm" asChild>
-              <Link href="/classes">Ver Todas</Link>
-            </Button>
-          </CardHeader>
-          <CardContent className="grid gap-4">
-            {dashboardData?.upcomingClasses.length && dashboardData?.upcomingClasses.length > 0 ? (
-              dashboardData.upcomingClasses.map((classItem, index: number) => (
-                <UpcomingClassCard
-                  key={index}
-                  className={classItem.course}
-                  startDate={new Date(`${classItem.date}T${classItem.time.split('-')[0]}:00`)}
-                  endDate={new Date(`${classItem.date}T${classItem.time.split('-')[1]}:00`)}
-                  instructor={classItem.teacher}
-                  classLink={classItem.link}
-                  onJoinClass={(classId: string) => {
-                    setCurrentClass(classId)
-                    router.push(classItem.link)
-                  }}
-                />
-              ))
-            ) : (
-              <p className="text-muted-foreground">No tienes clases próximas.</p>
-            )}
-          </CardContent>
-        </Card>
-        <Card className="lg:col-span-3">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Mis Cursos</CardTitle>
-          </CardHeader>
-          <CardContent className="max-h-[400px] overflow-y-auto pr-2">
-            <div className="flex flex-col gap-4">
-              {dashboardData?.enrollments && dashboardData.enrollments.length > 0 ? (
-                dashboardData.enrollments.map((enrollment) => (
-                  <div key={enrollment.id} className="flex flex-col gap-3 rounded-lg border p-3">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="font-semibold text-sm line-clamp-2">{enrollment.title}</div>
-                      {enrollment.image && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={enrollment.image}
-                          alt={enrollment.title}
-                          className="h-10 w-10 rounded object-cover"
-                        />
-                      )}
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>Progreso</span>
-                        <span>{Math.round(enrollment.progress)}%</span>
-                      </div>
-                      <Progress value={enrollment.progress} className="h-2" />
-                    </div>
-                    <Button variant="secondary" size="sm" className="w-full" asChild>
-                      <Link href={`/my-courses/${enrollment.courseId}`}>
-                        {enrollment.progress > 0 ? 'Continuar' : 'Empezar'}
-                      </Link>
-                    </Button>
-                  </div>
-                ))
-              ) : (
-                <div className="flex flex-col items-center justify-center gap-2 py-8 text-center text-muted-foreground">
-                  <BookOpen className="h-8 w-8 opacity-50" />
-                  <p>No estás inscrito en ningún curso.</p>
-                  <Button variant="link" asChild>
-                    <Link href="/courses">Explorar cursos</Link>
-                  </Button>
-                </div>
-              )}
+      {/* Hero Section: Resume Learning */}
+      {currentEnrollment && (
+        <div className="w-full">
+          <div className="flex flex-col items-stretch justify-start rounded-xl overflow-hidden md:flex-row md:items-center shadow-md bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-700 group transition-all hover:shadow-lg">
+            <div 
+              className="w-full md:w-1/3 h-48 md:h-auto md:aspect-[4/3] bg-cover bg-center relative"
+              style={{ backgroundImage: currentEnrollment.image ? `url("${currentEnrollment.image}")` : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
+            >
+              <div className="absolute inset-0 bg-black/10"></div>
+              <div className="absolute top-3 left-3 bg-white/90 dark:bg-black/50 backdrop-blur-sm px-2 py-1 rounded text-xs font-bold text-slate-900 dark:text-white shadow-sm">
+                Lección Actual
+              </div>
             </div>
-          </CardContent>
-        </Card>
-      </div>
-      <Card>
-        <CardHeader>
-          <CardTitle>Mis clases esta semana</CardTitle>
-          <CardDescription>Tus clases para los próximos 7 días</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {(() => {
-              const upcomingClasses = dashboardData?.upcomingClasses || []
-              if (upcomingClasses.length === 0) {
-                return <p className="text-muted-foreground">No tienes clases para esta semana.</p>
-              }
-
-              // Get current week dates
-              const today = new Date()
-              const currentWeek = []
-              for (let i = 0; i < 7; i++) {
-                const date = new Date(today)
-                date.setDate(today.getDate() - today.getDay() + i)
-                currentWeek.push(date)
-              }
-
-              // Filter classes for current week and group by day
-              const weekDays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
-              const classesByDay = currentWeek.map((date, index) => {
-                const dateStr = format(date, 'yyyy-MM-dd')
-                const dayClasses = upcomingClasses.filter(cls => cls.date === dateStr)
-                return {
-                  dayName: weekDays[index],
-                  date: format(date, 'dd/MM'),
-                  classes: dayClasses
-                }
-              })
-
-              return (
-                <div className="grid grid-cols-7 gap-2">
-                  {classesByDay.map(({ dayName, date, classes }) => (
-                    <div key={dayName} className="text-center">
-                      <div className="font-medium text-sm mb-2">
-                        <div>{dayName}</div>
-                        <div className="text-xs text-muted-foreground">{date}</div>
-                      </div>
-                      <div className="space-y-1">
-                        {classes.length > 0 ? (
-                          classes.map((cls, idx) => (
-                            <div key={idx} className="bg-muted rounded p-2 text-xs">
-                              <div className="font-medium">{cls.course}</div>
-                              <div className="text-muted-foreground">{cls.time.split('-')[0]}</div>
-                              <div className="text-muted-foreground">{cls.teacher}</div>
-                            </div>
-                          ))
-                        ) : (
-                          <div className="text-xs text-muted-foreground">Libre</div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
+            <div className="flex w-full md:w-2/3 flex-col justify-center gap-3 p-6">
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="text-primary text-sm font-bold uppercase tracking-wider mb-1">Continuar Aprendiendo</p>
+                  <h2 className="text-slate-900 dark:text-white text-xl md:text-2xl font-bold leading-tight">
+                    {currentEnrollment.title}
+                  </h2>
                 </div>
-              )
-            })()}
+              </div>
+              <div className="flex flex-col gap-2 mt-2">
+                <div className="flex justify-between text-sm font-medium text-slate-500 dark:text-slate-400">
+                  <span>Progreso</span>
+                  <span>{Math.round(currentEnrollment.progress)}%</span>
+                </div>
+                <Progress value={currentEnrollment.progress} className="h-2.5" />
+              </div>
+              <div className="flex items-center gap-4 mt-2">
+                <Button asChild className="flex-1 md:flex-none md:w-48">
+                  <Link href={`/my-courses/${currentEnrollment.courseId}`}>
+                    {currentEnrollment.progress > 0 ? 'Continuar Lección' : 'Empezar Curso'}
+                  </Link>
+                </Button>
+                <Button variant="outline" size="icon" title="Descargar Materiales">
+                  <Download className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
           </div>
-        </CardContent>
-      </Card>
-    </div>
-  )
-}
-
-function UpcomingClassCard({
-  className,
-  startDate,
-  endDate,
-  instructor,
-  classLink,
-  onJoinClass,
-}: {
-  className: string
-  startDate: Date
-  endDate: Date
-  instructor: string
-  classLink: string
-  onJoinClass?: (classId: string) => void
-}) {
-  const [currentTime, setCurrentTime] = useState(new Date())
-
-  // Actualiza el tiempo actual cada segundo
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(new Date())
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [])
-  const timeRemaining = useMemo(() => {
-    const isPastClass = isAfter(currentTime, endDate)
-    const isInProgress = !isBefore(currentTime, startDate) && !isAfter(currentTime, endDate)
-
-    if (isPastClass) return 'Esta clase ya terminó'
-    if (isInProgress) return 'La clase está ahora'
-
-    // Calcular tiempo total en segundos
-    const totalSeconds = Math.max(0, differenceInSeconds(startDate, currentTime))
-
-    // Calcular días, horas, minutos y segundos
-    const days = Math.floor(totalSeconds / (24 * 60 * 60))
-    const hours = Math.floor((totalSeconds % (24 * 60 * 60)) / (60 * 60))
-    const minutes = Math.floor((totalSeconds % (60 * 60)) / 60)
-    const seconds = totalSeconds % 60
-
-    // Construir mensaje según el tiempo restante
-    if (days > 0) {
-      return `Empieza en ${days} días, ${hours} horas y ${minutes} minutos`
-    } else if (hours > 0) {
-      return `Empieza en ${hours} horas y ${minutes} minutos`
-    } else if (minutes > 0) {
-      return `Empieza en ${minutes} minutos`
-    } else {
-      return `Empieza en ${seconds} segundos`
-    }
-  }, [startDate, currentTime, endDate])
-
-  const getStatus = () => {
-    if (isBefore(currentTime, startDate)) return 'upcoming'
-    if (isBefore(currentTime, endDate)) return 'in-progress'
-    return 'completed'
-  }
-
-  const canJoinClass = useMemo(() => {
-    const fiveMinutesBefore = addMinutes(startDate, -5)
-    return !isAfter(currentTime, endDate) && !isBefore(currentTime, fiveMinutesBefore)
-  }, [startDate, endDate, currentTime])
-
-  const status = getStatus()
-
-  return (
-    <div className="flex flex-col gap-2 rounded-lg border p-4 md:flex-row md:items-center">
-      <div className="flex flex-1 flex-col gap-1">
-        <div className="flex items-center gap-2">
-          <span className="font-semibold">{className}</span>
-          {status === 'in-progress' && <Badge className="bg-destructive">Ahora</Badge>}
-          {status === 'completed' && <Badge variant="secondary">Terminada</Badge>}
-          {status === 'upcoming' && <Badge variant="default">Pronto</Badge>}
         </div>
-        <div className="text-sm text-muted-foreground">
-          <span>{format(startDate, 'dd/MM/yyyy HH:mm', { locale: es })}</span> •{' '}
-          <span>{timeRemaining}</span>
-        </div>
-        <div className="text-sm text-muted-foreground">
-          <span>Profesor/a: {instructor}</span>
+      )}
+
+      {/* Quick Actions Bar */}
+      <div>
+        <h3 className="text-slate-900 dark:text-white text-lg font-bold mb-4">Acciones Rápidas</h3>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <Link href="/my-courses" className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer">
+            <div className="rounded-full bg-blue-50 dark:bg-blue-900/30 p-3 text-primary">
+              <BookOpen className="w-5 h-5" />
+            </div>
+            <span className="text-slate-900 dark:text-white text-sm font-medium">Mis Cursos</span>
+          </Link>
+          <Link href="/activities" className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer">
+            <div className="rounded-full bg-orange-50 dark:bg-orange-900/30 p-3 text-orange-600 dark:text-orange-400">
+              <Puzzle className="w-5 h-5" />
+            </div>
+            <span className="text-slate-900 dark:text-white text-sm font-medium">Actividades</span>
+          </Link>
+          <Link href="/calendar" className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer">
+            <div className="rounded-full bg-green-50 dark:bg-green-900/30 p-3 text-green-600 dark:text-green-400">
+              <Calendar className="w-5 h-5" />
+            </div>
+            <span className="text-slate-900 dark:text-white text-sm font-medium">Mi Horario</span>
+          </Link>
+          <Link href="/achievements" className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer">
+            <div className="rounded-full bg-purple-50 dark:bg-purple-900/30 p-3 text-purple-600 dark:text-purple-400">
+              <Trophy className="w-5 h-5" />
+            </div>
+            <span className="text-slate-900 dark:text-white text-sm font-medium">Logros</span>
+          </Link>
         </div>
       </div>
-      <div className="flex flex-col gap-2 sm:flex-row">
-        <Button
-          size="sm"
-          disabled={!canJoinClass || isAfter(currentTime, endDate)}
-          onClick={() => {
-            if (onJoinClass && canJoinClass && !isAfter(currentTime, endDate)) {
-              // Extraer classId del link
-              const urlParams = new URLSearchParams(classLink.split('?')[1])
-              const classId = urlParams.get('classId')
-              if (classId) {
-                onJoinClass(classId)
-              }
-            }
-          }}
-          asChild={!onJoinClass && !isAfter(currentTime, endDate) && canJoinClass}
-        >
-          {!onJoinClass && !isAfter(currentTime, endDate) && canJoinClass ? (
-            <Link href={classLink} className="flex items-center gap-2">
-              <Play size={16} />
-              <span>Unirse a la Clase</span>
+
+      {/* Main Grid Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Left Column: Courses (2/3 width) */}
+        <div className="lg:col-span-2 flex flex-col gap-6">
+          <div className="flex items-center justify-between">
+            <h3 className="text-slate-900 dark:text-white text-xl font-bold">Mis Cursos</h3>
+            <Link href="/my-courses" className="text-primary text-sm font-medium hover:underline flex items-center gap-1">
+              Ver Todos <ArrowRight className="w-4 h-4" />
             </Link>
+          </div>
+
+          {dashboardData?.enrollments && dashboardData.enrollments.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {dashboardData.enrollments.slice(0, 4).map((enrollment) => (
+                <div 
+                  key={enrollment.id} 
+                  className="flex flex-col bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-md transition-shadow"
+                >
+                  <div 
+                    className="h-32 w-full bg-cover bg-center"
+                    style={{ backgroundImage: enrollment.image ? `url("${enrollment.image}")` : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
+                  />
+                  <div className="p-4 flex flex-col flex-1">
+                    <div className="flex justify-between items-start mb-2">
+                      <span className={`text-xs font-bold px-2 py-1 rounded ${getLevelColor('')}`}>
+                        {enrollment.progress > 80 ? 'Avanzado' : enrollment.progress > 40 ? 'Intermedio' : 'Principiante'}
+                      </span>
+                    </div>
+                    <h4 className="text-slate-900 dark:text-white font-bold text-lg mb-1 line-clamp-1">{enrollment.title}</h4>
+                    <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700">
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="text-slate-500 dark:text-slate-400">{Math.round(enrollment.progress)}% Completado</span>
+                      </div>
+                      <Progress 
+                        value={enrollment.progress} 
+                        className="h-1.5"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : (
-            <div className="flex items-center gap-2">
-              <Play size={16} />
-              <span>Unirse a la Clase</span>
+            <div className="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-700 p-8 text-center">
+              <GraduationCap className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+              <p className="text-slate-500 dark:text-slate-400 mb-4">No estás inscrito en ningún curso.</p>
+              <Button asChild>
+                <Link href="/shop">Explorar Cursos</Link>
+              </Button>
             </div>
           )}
-        </Button>
+        </div>
+
+        {/* Right Column: Goals & Schedule (1/3 width) */}
+        <div className="flex flex-col gap-6">
+          {/* Daily Goals Widget */}
+          <div className="bg-white dark:bg-card-dark p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+            <h3 className="text-slate-900 dark:text-white text-lg font-bold mb-4">Meta Diaria</h3>
+            <div className="flex items-center gap-4 mb-4">
+              <div className="relative size-16 flex-shrink-0">
+                <svg className="size-full -rotate-90" viewBox="0 0 36 36">
+                  <path
+                    className="text-slate-100 dark:text-slate-700"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="text-primary"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeDasharray={`${Math.min((dashboardData?.totalPoints || 0) % 100, 100)}, 100`}
+                    strokeWidth="4"
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center flex-col">
+                  <span className="text-xs font-bold text-primary">{(dashboardData?.totalPoints || 0) % 100}%</span>
+                </div>
+              </div>
+              <div>
+                <p className="text-sm font-bold text-slate-900 dark:text-white">
+                  Nivel {dashboardData?.currentLevel || 1}
+                </p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                  {dashboardData?.currentStreak || 0} días de racha <Flame className="w-3 h-3 text-orange-500" />
+                </p>
+              </div>
+            </div>
+            <div className="text-center text-sm text-slate-500 dark:text-slate-400 mb-3">
+              {dashboardData?.totalPoints || 0} XP totales
+            </div>
+            <Button variant="outline" className="w-full">
+              Ver Estadísticas
+            </Button>
+          </div>
+
+          {/* Upcoming Schedule Widget */}
+          <div className="bg-white dark:bg-card-dark p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-slate-900 dark:text-white text-lg font-bold">Próximas Clases</h3>
+              <Link href="/calendar" className="text-slate-500 dark:text-slate-400 hover:text-primary">
+                <Calendar className="w-5 h-5" />
+              </Link>
+            </div>
+            
+            {dashboardData?.upcomingClasses && dashboardData.upcomingClasses.length > 0 ? (
+              <div className="flex flex-col gap-4">
+                {dashboardData.upcomingClasses.slice(0, 2).map((classItem, index) => (
+                  <div key={index} className="flex gap-3 items-start p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                    <div className="flex flex-col items-center bg-white dark:bg-slate-700 rounded p-1.5 min-w-[50px] shadow-sm">
+                      <span className="text-xs font-bold text-red-500 uppercase">
+                        {format(new Date(classItem.date), 'EEE', { locale: es })}
+                      </span>
+                      <span className="text-lg font-bold text-slate-900 dark:text-white">
+                        {format(new Date(classItem.date), 'd')}
+                      </span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold text-slate-900 dark:text-white leading-tight truncate">
+                        {classItem.course}
+                      </p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                        {classItem.time} • {classItem.teacher}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-6">
+                <Calendar className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  No tienes clases próximas.
+                </p>
+              </div>
+            )}
+
+            {nextClass && (
+              <Button className="w-full mt-4" asChild>
+                <Link href={nextClass.link}>
+                  <Play className="w-4 h-4 mr-2" />
+                  Unirse a Clase
+                </Link>
+              </Button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )

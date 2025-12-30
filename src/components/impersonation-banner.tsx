@@ -31,7 +31,7 @@ export function ImpersonationBanner() {
               description: 'Has vuelto a tu cuenta de administrador',
             })
             // Recargar la página completamente para actualizar la sesión
-            window.location.href = '/admin'
+            window.location.href = '/dashboard'
           }
         })
         .catch((error) => {

@@ -2,7 +2,7 @@
 
 import { ClassroomContainer } from '@/components/classroom/classroom-container'
 import { checkTeacherAttendance, markTeacherAttendance } from '@/lib/actions/attendance'
-import { createJitsiMeeting, endJitsiMeeting } from '@/lib/actions/jitsi'
+import { createLiveKitMeeting, endLiveKitMeeting } from '@/lib/actions/livekit'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -60,7 +60,7 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
 
       try {
         // A. Create/Get Room from Server Action
-        const meetingResult = await createJitsiMeeting(bookingId)
+        const meetingResult = await createLiveKitMeeting(bookingId)
         if (!meetingResult.success || !meetingResult.roomName) {
           toast.error(meetingResult.error || 'Error creando sala')
           return
@@ -69,7 +69,7 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
         const roomName = meetingResult.roomName
 
         // B. Get JWT Token from API Route
-        const tokenResponse = await fetch('/api/jitsi/token', {
+        const tokenResponse = await fetch('/api/livekit/token', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -82,11 +82,7 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
           throw new Error('Error obteniendo token de acceso')
         }
 
-        const { token, usePublicJitsi } = await tokenResponse.json()
-
-        if (usePublicJitsi) {
-          toast.warning('JAAS Key faltante: Usando modo demostración público')
-        }
+        const { token } = await tokenResponse.json()
 
         setRoomDetails({ roomName, jwt: token }) // Token can be null now
       } catch (error) {
@@ -103,7 +99,7 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
   const handleMeetingEnd = async () => {
     toast.info('Finalizando clase...')
     try {
-      await endJitsiMeeting(bookingId)
+      await endLiveKitMeeting(bookingId)
       router.push('/dashboard')
     } catch (error) {
       console.error('Error ending meeting:', error)
@@ -121,42 +117,38 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
     )
   }
 
-  // Calculate end time based on booking slot vs current time
-  // timeSlot format expected: "09:00 - 09:45" (UTC? Or Local? User says DB is UTC)
-  // Assuming day is "YYYY-MM-DD"
-  const getEndTime = () => {
-    try {
-      if (!day || !timeSlot) return new Date(new Date().getTime() + 45 * 60000)
-
-      const parts = timeSlot.split('-')
-      if (parts.length < 2) return new Date(new Date().getTime() + 45 * 60000)
-
-      const endTimeStr = parts[1].trim() // "09:45"
-      const [hours, minutes] = endTimeStr.split(':').map(Number)
-
-      // Parse day string "YYYY-MM-DD" safely
-      // We assume day comes as "YYYY-MM-DD"
-      const dateParts = day.split('-')
-      if (dateParts.length !== 3) return new Date(new Date().getTime() + 45 * 60000)
-
-      const year = parseInt(dateParts[0])
-      const month = parseInt(dateParts[1]) - 1 // Month is 0-indexed in JS
-      const dayOfMonth = parseInt(dateParts[2])
-
-      // Create Date object assuming inputs are UTC
-      // Date.UTC returns timestamp in ms
-      const utcTimestamp = Date.UTC(year, month, dayOfMonth, hours, minutes, 0)
-      const endDate = new Date(utcTimestamp)
-
-      // FALLBACK: If class is already over (endDate < now), timer handles it (00:00).
-      // If result is Invalid, fallback
-      if (isNaN(endDate.getTime())) return new Date(new Date().getTime() + 45 * 60000)
-
-      return endDate
-    } catch (e) {
-      console.error('Error parsing meeting end time', e)
-      return new Date(new Date().getTime() + 45 * 60000)
+  // Calculate end time based on booking slot
+  // timeSlot format: "09:00 - 09:45", day format: "YYYY-MM-DD" (UTC from DB)
+  const getEndTime = (): Date => {
+    if (!day || !timeSlot) {
+      return new Date(Date.now() + 45 * 60000)
     }
+
+    const parts = timeSlot.split('-')
+    if (parts.length < 2) {
+      return new Date(Date.now() + 45 * 60000)
+    }
+
+    const endTimeStr = parts[1].trim()
+    const [hours, minutes] = endTimeStr.split(':').map(Number)
+    const dateParts = day.split('-')
+    
+    if (dateParts.length !== 3 || isNaN(hours) || isNaN(minutes)) {
+      return new Date(Date.now() + 45 * 60000)
+    }
+
+    const year = parseInt(dateParts[0])
+    const month = parseInt(dateParts[1]) - 1
+    const dayOfMonth = parseInt(dateParts[2])
+
+    const utcTimestamp = Date.UTC(year, month, dayOfMonth, hours, minutes, 0)
+    const endDate = new Date(utcTimestamp)
+
+    if (isNaN(endDate.getTime())) {
+      return new Date(Date.now() + 45 * 60000)
+    }
+
+    return endDate
   }
 
   const endTime = getEndTime()

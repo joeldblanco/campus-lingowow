@@ -35,8 +35,8 @@ export interface TeacherDashboardData {
     percentage: number
     trend: number
   }
-  totalHoursTaught: {
-    hours: number
+  periodEarnings: {
+    amount: number
     trend: number
   }
   activeStudents: {
@@ -65,6 +65,7 @@ export interface TeacherDashboardData {
     id: string
     studentName: string
     studentImage: string | null
+    courseId: string
     course: string
     date: string
     time: string
@@ -92,5 +93,36 @@ export interface StudentDashboardData {
     title: string
     image: string | null
     progress: number
+  }[]
+}
+
+export interface GuestDashboardData {
+  stats: {
+    languagesAvailable: number
+    certifiedTeachers: number
+    freeTrialAvailable: boolean
+  }
+  popularCourses: {
+    id: string
+    language: string
+    title: string
+    level: string
+    studentCount: number
+    rating: number
+    image: string | null
+  }[]
+  upcomingWebinars: {
+    id: string
+    title: string
+    date: string
+    time: string
+    language: string
+  }[]
+  freeResources: {
+    id: string
+    title: string
+    type: string
+    language: string
+    url: string
   }[]
 }

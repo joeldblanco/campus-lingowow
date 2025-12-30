@@ -6,6 +6,7 @@ import type {
   AdminDashboardData,
   TeacherDashboardData,
   StudentDashboardData,
+  GuestDashboardData,
 } from '@/types/dashboard'
 import { formatDateNumeric, getCurrentDate, formatToISO, getStartOfMonth } from '@/lib/utils/date'
 
@@ -199,11 +200,32 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
     // A. Trend (Compare with previous week - simplified mock for now: +2.1%)
     const attendanceTrend = 2.1
 
-    // B. Total Hours Taught
-    const { totalDuration } = await calculateTeacherTotalRevenue(teacherId)
-    const totalHours = Math.round(totalDuration / 60)
-    // B. Trend (Compare with previous period - simplified mock: +5%)
-    const hoursTrend = 5.0
+    // B. Period Earnings (Current month)
+    const currentMonthStart = getStartOfMonth(getCurrentDate().toISOString())
+    const { totalRevenue: currentMonthRevenue } = await calculateTeacherTotalRevenue(
+      teacherId,
+      formatToISO(currentMonthStart)
+    )
+    
+    // Calculate previous month revenue for trend
+    const previousMonthStart = new Date(currentMonthStart)
+    previousMonthStart.setMonth(previousMonthStart.getMonth() - 1)
+    const previousMonthEnd = new Date(currentMonthStart)
+    previousMonthEnd.setDate(previousMonthEnd.getDate() - 1)
+    
+    const { totalRevenue: previousMonthRevenue } = await calculateTeacherTotalRevenue(
+      teacherId,
+      formatToISO(previousMonthStart),
+      formatToISO(previousMonthEnd)
+    )
+    
+    // Calculate trend percentage
+    let earningsTrend = 0
+    if (previousMonthRevenue > 0) {
+      earningsTrend = Math.round(((currentMonthRevenue - previousMonthRevenue) / previousMonthRevenue) * 100 * 10) / 10
+    } else if (currentMonthRevenue > 0) {
+      earningsTrend = 100 // 100% increase if previous was 0
+    }
 
     // C. Active Students (Unique students in ACTIVE enrollments for this teacher's courses, or just students taught)
     // Let's count students who have had a class with this teacher in the last 30 days or are enrolled in a course where this user is creator/teacher (if applicable).
@@ -249,7 +271,7 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
         enrollment: {
           select: {
             course: {
-              select: { title: true },
+              select: { id: true, title: true },
             },
           },
         },
@@ -260,6 +282,7 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
       const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot)
       return {
         id: booking.id,
+        courseId: booking.enrollment.course.id, // Using existing relation
         studentName: `${booking.student.name} ${booking.student.lastName}`,
         studentImage: booking.student.image,
         course: booking.enrollment.course.title,
@@ -330,9 +353,9 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
         percentage: weeklyAttendanceRate,
         trend: attendanceTrend,
       },
-      totalHoursTaught: {
-        hours: totalHours,
-        trend: hoursTrend,
+      periodEarnings: {
+        amount: currentMonthRevenue,
+        trend: earningsTrend,
       },
       activeStudents: {
         count: activeStudentsCount,
@@ -806,5 +829,68 @@ export async function getClassroomData(classId: string, userId: string) {
   } catch (error) {
     console.error('Error getting classroom data:', error)
     throw new Error('No se pudieron obtener los datos del aula')
+  }
+}
+
+// Guest Dashboard Statistics
+export async function getGuestDashboardStats(): Promise<GuestDashboardData> {
+  try {
+    // Get distinct languages from published courses
+    const languages = await db.course.groupBy({
+      by: ['language'],
+      where: { isPublished: true },
+    })
+
+    // Get certified teachers count
+    const certifiedTeachers = await db.user.count({
+      where: { roles: { has: UserRole.TEACHER }, status: 'ACTIVE' },
+    })
+
+    // Get popular courses (published courses with most enrollments)
+    const popularCourses = await db.course.findMany({
+      where: { isPublished: true },
+      include: {
+        _count: {
+          select: {
+            enrollments: {
+              where: { status: 'ACTIVE' },
+            },
+          },
+        },
+      },
+      orderBy: {
+        enrollments: {
+          _count: 'desc',
+        },
+      },
+      take: 4,
+    })
+
+    // For now, webinars and resources are empty arrays since we don't have those models
+    // These can be populated when the corresponding features are implemented
+    const upcomingWebinars: GuestDashboardData['upcomingWebinars'] = []
+    const freeResources: GuestDashboardData['freeResources'] = []
+
+    return {
+      stats: {
+        languagesAvailable: languages.length,
+        certifiedTeachers,
+        freeTrialAvailable: true,
+      },
+      popularCourses: popularCourses.map((course) => ({
+        id: course.id,
+        language: course.language,
+        title: course.title,
+        level: course.level || 'Todos los niveles',
+        studentCount: course._count.enrollments,
+        rating: 4.8, // TODO: Implement rating system
+        image: course.image,
+      })),
+      upcomingWebinars,
+      freeResources,
+    }
+  } catch (error) {
+    console.error('Error getting guest dashboard stats:', error)
+    throw new Error('No se pudieron obtener las estadísticas del dashboard')
   }
 }

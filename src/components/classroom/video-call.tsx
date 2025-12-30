@@ -2,14 +2,14 @@
 'use client'
 
 import React, { useState, useCallback } from 'react'
-import { JitsiMeeting } from '@/components/jitsi/JitsiMeeting'
+import { LiveKitMeeting } from '@/components/livekit/LiveKitMeeting'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { 
   Video, 
   Users
 } from 'lucide-react'
-import { createJitsiMeeting } from '@/lib/actions/jitsi'
+import { createLiveKitMeeting } from '@/lib/actions/livekit'
 import { toast } from 'sonner'
 
 interface VideoCallProps {
@@ -34,7 +34,7 @@ export const VideoCall: React.FC<VideoCallProps> = ({
 
     setIsInitializing(true)
     try {
-      const result = await createJitsiMeeting(bookingId)
+      const result = await createLiveKitMeeting(bookingId)
       if (result.success && result.roomName) {
         setRoomName(result.roomName)
         setIsInMeeting(true)
@@ -76,9 +76,9 @@ export const VideoCall: React.FC<VideoCallProps> = ({
           </Button>
         </div>
 
-        {/* Jitsi Meeting - Pantalla completa */}
+        {/* LiveKit Meeting - Pantalla completa */}
         <div className="flex-grow">
-          <JitsiMeeting
+          <LiveKitMeeting
             roomName={roomName}
             bookingId={bookingId}
             studentName={studentName}

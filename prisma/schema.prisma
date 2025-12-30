@@ -672,6 +672,7 @@ model ClassBooking {
   teacherAttendances TeacherAttendance[]
   videoCalls         VideoCall[]
   meetingMessages    MeetingMessage[]
+  whiteboardData     WhiteboardData?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -1699,6 +1700,20 @@ model MeetingMessage {
   @@index([senderId])
   @@index([createdAt])
   @@map("meeting_messages")
+}
+
+// Whiteboard data for classroom sessions
+model WhiteboardData {
+  id        String   @id @default(cuid())
+  bookingId String   @unique
+  data      Json     // JSON with all drawing actions
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relaciones
+  booking ClassBooking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@map("whiteboard_data")
 }
 
 // Modelos para chat flotante

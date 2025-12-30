@@ -116,7 +116,7 @@ function getRoleBasedRedirect(primaryRole: string, callbackUrl: string | null): 
   // Redirección por defecto basada en rol
   switch (primaryRole) {
     case ROLES.ADMIN:
-      return '/admin'
+      return '/dashboard'
     case ROLES.TEACHER:
       return '/classroom'
     case ROLES.STUDENT:

@@ -77,7 +77,7 @@ export function UsersDataTable({
               description: 'Redirigiendo...',
             })
             // Redirigir después de suplantación exitosa
-            router.push('/')
+            router.push('/dashboard')
             router.refresh()
           }
         })

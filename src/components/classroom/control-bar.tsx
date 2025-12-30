@@ -19,6 +19,7 @@ interface ControlBarProps {
     isVideoMuted?: boolean
     isScreenSharing?: boolean
     isHandRaised?: boolean
+    isRecording?: boolean
     onToggleMic?: () => void
     onToggleVideo?: () => void
     onToggleScreenShare?: () => void
@@ -31,6 +32,7 @@ export function ControlBar({
     isVideoMuted = false,
     isScreenSharing = false,
     isHandRaised = false,
+    isRecording = false,
     onToggleMic,
     onToggleVideo,
     onToggleScreenShare,
@@ -119,6 +121,14 @@ export function ControlBar({
                         <p>{isHandRaised ? 'Bajar la mano' : 'Levantar la mano'}</p>
                     </TooltipContent>
                 </Tooltip>
+
+                {/* Recording Indicator - Automatic, no manual control */}
+                {isRecording && (
+                    <div className="flex items-center gap-2 px-3 py-1.5 bg-red-100 rounded-full">
+                        <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                        <span className="text-xs font-medium text-red-600">REC</span>
+                    </div>
+                )}
 
                 <div className="w-px h-8 bg-gray-200 mx-2" />
 

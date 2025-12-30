@@ -172,7 +172,7 @@ function getRoleBasedRedirect(roles: UserRole[], callbackUrl?: string | null): s
   // Orden de prioridad: ADMIN > TEACHER > STUDENT > GUEST
   // Un usuario con múltiples roles será redirigido según su rol de mayor privilegio
   if (hasRole(roles, UserRole.ADMIN)) {
-    return '/admin'
+    return '/dashboard'
   }
   if (hasRole(roles, UserRole.TEACHER)) {
     return '/classroom'

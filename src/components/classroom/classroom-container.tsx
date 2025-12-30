@@ -1,18 +1,20 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getLessonContent } from '@/lib/actions/classroom'
 import { LessonForView } from '@/types/lesson'
-import { Loader2 } from 'lucide-react'
-import { useCallback, useEffect, useState } from 'react'
+import { BookOpen, Loader2, Monitor, PenTool } from 'lucide-react'
+import { useCallback, useEffect, useState, useRef } from 'react'
 import { toast } from 'sonner'
+import { startRecording, stopRecording } from '@/lib/actions/classroom-recording'
 import { ActiveLessonViewer } from './active-lesson-viewer'
 import { ClassroomLayout } from './classroom-layout'
 import { ControlBar } from './control-bar'
-import { JitsiProvider, useJitsi } from './jitsi-context'
+import { LiveKitProvider, useLiveKit } from './livekit-context'
 import { LessonSelector } from './lesson-selector'
 import { VideoGrid } from './video-grid'
+import { ExcalidrawWhiteboard } from './excalidraw-whiteboard'
+import { ClassroomChat } from './classroom-chat'
 
 interface ClassroomContainerProps {
   roomName: string
@@ -47,31 +49,47 @@ function ClassroomInner({
     leaveRoom,
     sendCommand,
     addCommandListener,
-        toggleScreenShare,
+    toggleScreenShare,
     toggleRaiseHand,
     isScreenSharing,
     isHandRaised,
-  } = useJitsi()
+  } = useLiveKit()
 
   const [timeLeft, setTimeLeft] = useState('')
   const [activeLesson, setActiveLesson] = useState<LessonForView | undefined>(initialLessonData)
   const [isLoadingLesson, setIsLoadingLesson] = useState(false)
+  const [mainContentTab, setMainContentTab] = useState<'lesson' | 'whiteboard' | 'screenshare'>('lesson')
+  const [isRecording, setIsRecording] = useState(false)
+  const [egressId, setEgressId] = useState<string | null>(null)
+  const recordingRef = useRef(false)
 
-  // Timer Logic
+  // Timer Logic - Calculate time remaining until class end
   useEffect(() => {
+    const endTimestamp = endTime instanceof Date ? endTime.getTime() : new Date(endTime).getTime()
+    
     const calculateTimeLeft = () => {
-      const now = new Date().getTime()
-      const end = new Date(endTime).getTime()
-      const diff = end - now
+      const now = Date.now()
+      const diff = endTimestamp - now
+      
       if (diff <= 0) return '00:00'
+      
+      const hours = Math.floor(diff / (1000 * 60 * 60))
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
       const seconds = Math.floor((diff % (1000 * 60)) / 1000)
+      
+      if (hours > 0) {
+        return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+      }
+      
       return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
     }
+    
     setTimeLeft(calculateTimeLeft())
+    
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft())
     }, 1000)
+    
     return () => clearInterval(timer)
   }, [endTime])
 
@@ -81,6 +99,25 @@ function ClassroomInner({
       joinRoom(roomName, jwt)
     }
   }, [isInitialized, connectionStatus, joinRoom, roomName, jwt])
+
+  // Auto-start recording when teacher connects (automatic, no manual control)
+  useEffect(() => {
+    const autoStartRecording = async () => {
+      if (connectionStatus === 'connected' && isTeacher && bookingId && !isRecording && !recordingRef.current) {
+        recordingRef.current = true
+        try {
+          const result = await startRecording(bookingId, roomName)
+          if (result.success && result.egressId) {
+            setIsRecording(true)
+            setEgressId(result.egressId)
+          }
+        } catch (error) {
+          console.error('Auto-recording failed:', error)
+        }
+      }
+    }
+    autoStartRecording()
+  }, [connectionStatus, isTeacher, bookingId, roomName, isRecording])
 
   const fetchAndSetLesson = useCallback(async (lessonId: string) => {
     try {
@@ -129,6 +166,14 @@ function ClassroomInner({
   }
 
   const handleEndCall = async () => {
+    // Stop recording automatically when call ends
+    if (isRecording && egressId) {
+      try {
+        await stopRecording(egressId)
+      } catch (error) {
+        console.error('Failed to stop recording:', error)
+      }
+    }
     await leaveRoom()
     onMeetingEnd()
   }
@@ -157,45 +202,68 @@ function ClassroomInner({
     )
   }
 
-  // Fix: Render Sidebar content directly to avoid re-mounting on every render (which causes flickering)
+  // Sidebar: Videos arriba + Chat abajo (diseño según imagen)
   const renderSidebar = (
-    <div className="h-full flex flex-col gap-4">
-      <div className="flex-none h-auto max-h-[60%] aspect-video w-full mx-auto">
-        {/* Adjusted height/layout for videos */}
+    <div className="h-full flex flex-col">
+      {/* Header */}
+      <div className="flex-none p-3 border-b bg-white flex items-center justify-between">
+        <div>
+          <h3 className="font-semibold text-gray-900">Lesson Chat</h3>
+          <p className="text-xs text-gray-500">Corrections & Vocabulary</p>
+        </div>
+      </div>
+
+      {/* Videos - Stacked vertically */}
+      <div className="flex-none p-3 space-y-2">
         <VideoGrid localTrack={localTracks} remoteTracks={remoteTracks} isTeacher={isTeacher} />
       </div>
 
+      {/* Chat - Takes remaining space */}
       <div className="flex-1 min-h-0">
-        {isTeacher && bookingId ? (
-          <Tabs defaultValue="content" className="h-full flex flex-col">
-            <TabsList className="w-full grid grid-cols-2">
-              <TabsTrigger value="content">Contenido</TabsTrigger>
-              <TabsTrigger value="chat">Chat</TabsTrigger>
-            </TabsList>
-            <TabsContent value="content" className="flex-1 mt-2 min-h-0">
-              <LessonSelector bookingId={bookingId} onLessonSelect={handleLessonSelect} />
-            </TabsContent>
-            <TabsContent
-              value="chat"
-              className="flex-1 mt-2 min-h-0 bg-white rounded-xl border p-4"
-            >
-              <div className="flex items-center justify-center h-full text-gray-400 text-sm">
-                Chat Próximamente
-              </div>
-            </TabsContent>
-          </Tabs>
+        {bookingId ? (
+          <ClassroomChat bookingId={bookingId} />
         ) : (
-          // Student View: Only Chat (or other student tools later)
-          <div className="h-full bg-white rounded-xl border flex flex-col">
-            <div className="p-3 border-b font-medium bg-gray-50">Chat de Clase</div>
-            <div className="flex-1 flex items-center justify-center text-gray-400 text-sm">
-              El chat estará disponible próximamente
-            </div>
+          <div className="h-full flex items-center justify-center text-gray-400 text-sm">
+            Chat no disponible
           </div>
         )}
       </div>
+
+      {/* Teacher: Lesson Selector (collapsible or separate) */}
+      {isTeacher && bookingId && (
+        <div className="flex-none border-t p-2 bg-gray-50">
+          <LessonSelector bookingId={bookingId} onLessonSelect={handleLessonSelect} />
+        </div>
+      )}
     </div>
   )
+
+  const renderMainContent = () => {
+    if (isLoadingLesson) {
+      return (
+        <div className="w-full h-full flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+        </div>
+      )
+    }
+
+    switch (mainContentTab) {
+      case 'whiteboard':
+        return <ExcalidrawWhiteboard bookingId={bookingId} />
+      case 'screenshare':
+        return (
+          <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-xl">
+            <div className="text-center text-gray-500">
+              <Monitor className="w-16 h-16 mx-auto mb-4 opacity-50" />
+              <p className="text-lg font-medium">Compartir Pantalla</p>
+              <p className="text-sm">Usa el botón de compartir pantalla en la barra de controles</p>
+            </div>
+          </div>
+        )
+      default:
+        return <ActiveLessonViewer lessonData={activeLesson} />
+    }
+  }
 
   return (
     <ClassroomLayout
@@ -213,24 +281,41 @@ function ClassroomInner({
           onToggleHand={toggleRaiseHand}
           isScreenSharing={isScreenSharing}
           isHandRaised={isHandRaised}
+          isRecording={isRecording}
         />
       }
-    >
-      {isLoadingLesson ? (
-        <div className="w-full h-full flex items-center justify-center">
-          <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+      contentTabs={
+        <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg">
+          <Button
+            variant={mainContentTab === 'lesson' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => setMainContentTab('lesson')}
+            className="gap-2"
+          >
+            <BookOpen className="w-4 h-4" />
+            Lección
+          </Button>
+          <Button
+            variant={mainContentTab === 'whiteboard' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => setMainContentTab('whiteboard')}
+            className="gap-2"
+          >
+            <PenTool className="w-4 h-4" />
+            Pizarra
+          </Button>
         </div>
-      ) : (
-        <ActiveLessonViewer lessonData={activeLesson} />
-      )}
+      }
+    >
+      {renderMainContent()}
     </ClassroomLayout>
   )
 }
 
 export function ClassroomContainer(props: ClassroomContainerProps) {
   return (
-    <JitsiProvider>
+    <LiveKitProvider>
       <ClassroomInner {...props} />
-    </JitsiProvider>
+    </LiveKitProvider>
   )
 }
