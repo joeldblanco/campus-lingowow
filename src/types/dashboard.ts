@@ -31,19 +31,44 @@ export interface AdminDashboardData {
 }
 
 export interface TeacherDashboardData {
-  totalStudents: number
-  classesThisMonth: number
-  monthlyRevenue: number
+  weeklyAttendance: {
+    percentage: number
+    trend: number
+  }
+  totalHoursTaught: {
+    hours: number
+    trend: number
+  }
+  activeStudents: {
+    count: number
+    trend: number
+  }
+  unreadMessages: {
+    count: number
+  }
+  activeCourses: {
+    id: string
+    title: string
+    level: string
+    progress: number
+    studentCount: number
+    image: string
+  }[]
+  needsAttention: {
+    id: string
+    studentName: string
+    studentImage: string
+    issue: string
+    courseName: string
+  }[]
   upcomingClasses: {
     id: string
     studentName: string
+    studentImage: string | null
     course: string
     date: string
     time: string
-  }[]
-  revenueData: {
-    name: string
-    income: number
+    room?: string
   }[]
 }
 
