@@ -313,6 +313,215 @@ export async function createEnrollment(data: {
   }
 }
 
+// Interfaces para crear inscripción con horario
+interface ScheduleSlot {
+  teacherId: string
+  dayOfWeek: number
+  startTime: string
+  endTime: string
+}
+
+interface ScheduledClass {
+  date: string // YYYY-MM-DD
+  dayOfWeek: number
+  startTime: string
+  endTime: string
+  teacherId: string
+}
+
+interface CreateEnrollmentWithScheduleData {
+  studentId: string
+  courseId: string
+  academicPeriodId: string
+  paypalOrderId: string
+  teacherId?: string
+  scheduledClasses: ScheduledClass[]
+  isRecurring: boolean
+  weeklySchedule: ScheduleSlot[]
+}
+
+// Create enrollment with schedule (for synchronous courses)
+export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithScheduleData) {
+  try {
+    // 1. Verify PayPal Transaction FIRST
+    console.log('[Enrollment] Verifying PayPal Order:', data.paypalOrderId)
+    const paypalCheck = await verifyPaypalTransaction(data.paypalOrderId)
+
+    if (!paypalCheck.success || !paypalCheck.data) {
+      return {
+        success: false,
+        error: paypalCheck.error || 'Error al verificar el pago de PayPal.',
+      }
+    }
+
+    // Check if invoice already exists
+    const existingInvoice = await db.invoice.findFirst({
+      where: { paypalOrderId: data.paypalOrderId },
+    })
+
+    if (existingInvoice) {
+      return {
+        success: false,
+        error: 'Este pago de PayPal ya está asociado a otra factura/inscripción.',
+      }
+    }
+
+    // 2. Check if enrollment already exists
+    const existingEnrollment = await db.enrollment.findUnique({
+      where: {
+        studentId_courseId_academicPeriodId: {
+          studentId: data.studentId,
+          courseId: data.courseId,
+          academicPeriodId: data.academicPeriodId,
+        },
+      },
+    })
+
+    if (existingEnrollment) {
+      return {
+        success: false,
+        error: 'El estudiante ya está inscrito en este curso para este período académico',
+      }
+    }
+
+    // Verify student exists
+    const student = await db.user.findUnique({
+      where: { id: data.studentId },
+    })
+
+    if (!student) {
+      return { success: false, error: 'Estudiante no encontrado' }
+    }
+
+    // Verify course exists
+    const course = await db.course.findUnique({
+      where: { id: data.courseId },
+    })
+
+    if (!course) {
+      return { success: false, error: 'Curso no encontrado' }
+    }
+
+    // Verify academic period exists
+    const academicPeriod = await db.academicPeriod.findUnique({
+      where: { id: data.academicPeriodId },
+    })
+
+    if (!academicPeriod) {
+      return { success: false, error: 'Período académico no encontrado' }
+    }
+
+    // Determinar el estado según la fecha de inicio del período
+    const today = getCurrentDate()
+    const status = isAfterDate(academicPeriod.startDate, today)
+      ? EnrollmentStatus.PENDING
+      : EnrollmentStatus.ACTIVE
+
+    // 3. Create Enrollment, Invoice, and Schedule in a transaction
+    let enrollment
+    try {
+      enrollment = await db.enrollment.create({
+        data: {
+          studentId: data.studentId,
+          courseId: data.courseId,
+          academicPeriodId: data.academicPeriodId,
+          status: status,
+          progress: 0,
+          classesTotal: data.scheduledClasses.length || 8,
+          classesAttended: 0,
+          classesMissed: 0,
+        },
+      })
+    } catch (err) {
+      console.error('Error creating enrollment record:', err)
+      return { success: false, error: 'Error al crear el registro de inscripción' }
+    }
+
+    // 4. Create Invoice linked to this user
+    const invoiceResult = await createInvoiceFromPaypal(paypalCheck.data, data.studentId)
+
+    if (!invoiceResult.success) {
+      // ROLLBACK Enrollment
+      console.error('Invoice creation failed. Rolling back enrollment...')
+      await db.enrollment.delete({ where: { id: enrollment.id } })
+      return {
+        success: false,
+        error: 'Error al generar la factura. La inscripción ha sido revertida.',
+      }
+    }
+
+    // 5. Create class schedules and bookings if this is a synchronous course
+    if (data.teacherId && data.scheduledClasses.length > 0) {
+      try {
+        // Create recurring schedule entries if applicable
+        if (data.isRecurring && data.weeklySchedule.length > 0) {
+          for (const slot of data.weeklySchedule) {
+            await db.classSchedule.create({
+              data: {
+                enrollmentId: enrollment.id,
+                teacherId: slot.teacherId,
+                dayOfWeek: slot.dayOfWeek,
+                startTime: slot.startTime,
+                endTime: slot.endTime,
+              },
+            })
+          }
+        }
+
+        // Create individual class bookings
+        for (const cls of data.scheduledClasses) {
+          const timeSlot = `${cls.startTime}-${cls.endTime}`
+          
+          // Check if the slot is already booked
+          const existingBooking = await db.classBooking.findUnique({
+            where: {
+              teacherId_day_timeSlot: {
+                teacherId: cls.teacherId,
+                day: cls.date,
+                timeSlot: timeSlot,
+              },
+            },
+          })
+
+          if (!existingBooking) {
+            await db.classBooking.create({
+              data: {
+                studentId: data.studentId,
+                teacherId: cls.teacherId,
+                enrollmentId: enrollment.id,
+                day: cls.date,
+                timeSlot: timeSlot,
+                status: 'CONFIRMED',
+              },
+            })
+          } else {
+            console.warn(`Slot already booked: ${cls.date} ${timeSlot} for teacher ${cls.teacherId}`)
+          }
+        }
+
+        console.log(`[Enrollment] Created ${data.scheduledClasses.length} class bookings`)
+      } catch (scheduleError) {
+        console.error('Error creating class schedules:', scheduleError)
+        // Don't rollback the enrollment, just log the error
+        // The admin can manually add classes later
+      }
+    }
+
+    revalidatePath('/admin/enrollments')
+    revalidatePath('/admin/invoices')
+    revalidatePath('/admin/classes')
+    
+    return { 
+      success: true, 
+      enrollment,
+      classesCreated: data.scheduledClasses.length,
+    }
+  } catch (error) {
+    console.error('Error creating enrollment with schedule:', error)
+    return { success: false, error: 'Error inesperado al procesar la inscripción' }
+  }
+}
+
 // Update enrollment
 export async function updateEnrollment(
   id: string,
@@ -510,9 +719,35 @@ export async function getPublishedCourses() {
         title: true,
         description: true,
         level: true,
+        classDuration: true,
         _count: {
           select: {
             modules: true,
+            teacherCourses: true,
+          },
+        },
+        // Buscar planes que incluyen clases (directamente asociados al curso)
+        plans: {
+          where: {
+            includesClasses: true,
+          },
+          select: {
+            id: true,
+          },
+          take: 1,
+        },
+        // También buscar a través de productos asociados al curso
+        products: {
+          select: {
+            plans: {
+              where: {
+                includesClasses: true,
+              },
+              select: {
+                id: true,
+              },
+              take: 1,
+            },
           },
         },
       },
@@ -521,7 +756,18 @@ export async function getPublishedCourses() {
       },
     })
 
-    return courses
+    // Un curso es sincrónico si tiene planes que incluyen clases (directamente o a través de productos)
+    // Y tiene profesores asignados
+    return courses.map((course) => {
+      const hasPlansWithClasses = course.plans.length > 0 || 
+        course.products.some(p => p.plans.length > 0)
+      const hasTeachers = course._count.teacherCourses > 0
+      
+      return {
+        ...course,
+        isSynchronous: hasPlansWithClasses && hasTeachers,
+      }
+    })
   } catch (error) {
     console.error('Error fetching published courses:', error)
     throw new Error('Failed to fetch published courses')

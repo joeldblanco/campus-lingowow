@@ -1,194 +1,105 @@
 'use client'
 
-import { FilterSidebar } from '@/components/filters/filter-sidebar'
-import { SearchBar } from '@/components/filters/search-bar'
 import Header from '@/components/public-components/header'
 import Footer from '@/components/public-components/footer'
-// import { ComingSoonProduct } from '@/components/shop/product/coming-soon-product-card'
-import { ProductRow } from '@/components/shop/product/product-row'
+import { HeroSection } from '@/components/shop/hero-section'
+import { SearchFilters } from '@/components/shop/search-filters'
+import { ShopProductCard } from '@/components/shop/product/shop-product-card'
 import { Pagination } from '@/components/shop/pagination'
 import { ExitIntentPopup } from '@/components/shop/exit-intent-popup'
 import { CartAbandonmentTracker } from '@/components/shop/cart-abandonment-tracker'
-import { ImageSlider } from '@/components/shop/image-slider'
 import { useFilterCourses } from '@/hooks/use-filter-courses'
-import { useIsMobile } from '@/hooks/use-mobile'
 import { useShopStore } from '@/stores/useShopStore'
 import { Button } from '@/components/ui/button'
-import { X, SlidersHorizontal } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
-
+import { ChevronDown } from 'lucide-react'
 export default function ShopPage() {
-  const { courses: filteredCourses, totalPages, loading } = useFilterCourses()
-  const isMobile = useIsMobile()
-  const filters = useShopStore((state) => state.filters)
-  const searchQuery = useShopStore((state) => state.searchQuery)
+  const { courses: filteredCourses, totalPages, loading, totalResults } = useFilterCourses()
   const currentPage = useShopStore((state) => state.currentPage)
   const setCurrentPage = useShopStore((state) => state.setCurrentPage)
   const clearFilters = useShopStore((state) => state.clearFilters)
-  const toggleFilter = useShopStore((state) => state.toggleFilter)
-
-  // Slider data
-  const sliderSlides = [
-    {
-      id: '1',
-      image: '/media/images/hero-img.png',
-      title: 'Aprende Inglés con los Mejores',
-      subtitle: 'Cursos online para todos los niveles',
-      cta: {
-        text: 'Explorar Cursos',
-        url: '/courses'
-      }
-    }
-  ]
-
-  // Get all active filters
-  const activeFilters = [
-    ...filters.levels.map((f) => ({ type: 'levels' as const, value: f })),
-    ...filters.languages.map((f) => ({ type: 'languages' as const, value: f })),
-    ...filters.categories.map((f) => ({ type: 'categories' as const, value: f })),
-    ...filters.tags.map((f) => ({ type: 'tags' as const, value: f })),
-  ]
-
-  const hasActiveFilters = activeFilters.length > 0 || searchQuery
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50/50">
       <Header />
 
-      <div className="container py-6">
-        {/* Image Slider */}
-        <div className="mb-6">
-          <ImageSlider slides={sliderSlides} />
-        </div>
+      <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Hero Section */}
+        <section className="mb-16">
+          <HeroSection />
+        </section>
 
-        {/* Social Proof Banner */}
-        <div className="bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-lg p-4 mb-6">
-          <div className="flex items-center justify-center gap-4 text-center">
-            <div className="flex items-center gap-2">
-              <div className="flex -space-x-2">
-                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">M</div>
-                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-bold">S</div>
-                <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs font-bold">L</div>
-              </div>
-              <p className="text-sm font-medium text-gray-800">
-                <strong>5 estudiantes</strong> se inscribieron hoy
-              </p>
-            </div>
-            <div className="text-gray-400">|</div>
-            <p className="text-sm text-gray-600">
-              ⭐ <strong>4.9/5</strong> de calificación
-            </p>
-            <div className="text-gray-400">|</div>
-            <p className="text-sm text-gray-600">
-              🎯 <strong>95%</strong> de satisfacción
-            </p>
-          </div>
-        </div>
+        {/* Search and Filters */}
+        <section className="mb-12">
+          <SearchFilters />
+        </section>
 
-        {/* Search and Filter Controls */}
-        <div className="mb-6 space-y-4 hidden">
-          <div className="flex gap-3">
-            <div className="flex-1">
-              <SearchBar />
-            </div>
-            {isMobile && (
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="outline" size="icon">
-                    <SlidersHorizontal className="h-4 w-4" />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="left">
-                  <SheetHeader>
-                    <SheetTitle>Filtros</SheetTitle>
-                  </SheetHeader>
-                  <div className="mt-6">
-                    <FilterSidebar />
-                  </div>
-                </SheetContent>
-              </Sheet>
-            )}
-          </div>
-
-          {/* Active Filters */}
-          {hasActiveFilters && (
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-sm text-muted-foreground">Filtros activos:</span>
-              {activeFilters.map((filter) => (
-                <Badge key={`${filter.type}-${filter.value}`} variant="secondary" className="gap-1">
-                  {filter.value}
-                  <button
-                    onClick={() => toggleFilter(filter.type, filter.value)}
-                    className="ml-1 hover:text-destructive"
-                  >
-                    <X className="h-3 w-3" />
-                  </button>
-                </Badge>
-              ))}
-              <Button variant="ghost" size="sm" onClick={clearFilters}>
-                Limpiar todo
+        {/* Content Section */}
+        <section className="mb-16">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
+                Paquetes Destacados
+              </h2>
+              <Button variant="link" className="text-blue-600 hover:text-blue-700 font-bold text-base no-underline hover:underline">
+                Ver Todos
               </Button>
             </div>
-          )}
-        </div>
-
-        <div className="container py-6">
-          <main>
-            {/* Header with controls */}
-            {/* <div className="flex flex-col gap-4 mb-6">
-              <div className="flex items-center justify-between flex-wrap gap-4">
-                <p className="text-sm text-muted-foreground">
-                  {totalResults} {totalResults === 1 ? 'producto encontrado' : 'productos encontrados'}
-                </p>
-              </div>
-            </div> */}
 
             {loading ? (
-              <div className="space-y-6">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="h-64 bg-muted animate-pulse rounded-lg" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="h-[500px] bg-gray-200 animate-pulse rounded-3xl" />
                 ))}
               </div>
             ) : filteredCourses.length > 0 ? (
               <>
-                <div className="space-y-6">
-                  {filteredCourses.map((product) => (
-                    <ProductRow key={product.id} product={product} />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                  {filteredCourses.map((product, index) => (
+                    <ShopProductCard
+                      key={product.id}
+                      product={product}
+                      variant={index === 0 ? 'featured' : 'default'}
+                    />
                   ))}
                 </div>
 
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={setCurrentPage}
-                />
+                {totalPages > 1 && (
+                  <div className="mt-12">
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={setCurrentPage}
+                    />
+                  </div>
+                )}
+
+                {/* Show More Button */}
+                {totalResults > filteredCourses.length && (
+                  <div className="flex justify-center mt-12">
+                    <Button
+                      variant="outline"
+                      className="px-8 py-3 rounded-full border-gray-300 hover:bg-gray-50 text-gray-600 font-semibold"
+                    >
+                      Mostrar Más Productos
+                      <ChevronDown className="ml-2 h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
               </>
             ) : (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground">
-                  No se encontraron productos que coincidan con tu búsqueda.
+              <div className="text-center py-24 bg-white rounded-3xl border border-gray-100 shadow-sm">
+                <div className="text-gray-200 text-7xl mb-6">📦</div>
+                <h3 className="text-gray-900 text-xl font-bold mb-2">No encontramos resultados</h3>
+                <p className="text-gray-500 text-lg mb-8 max-w-md mx-auto">
+                  Intenta ajustar tus filtros o búsqueda para encontrar lo que necesitas.
                 </p>
-                <Button variant="link" onClick={clearFilters} className="mt-2">
+                <Button variant="outline" onClick={clearFilters} className="rounded-full px-8">
                   Limpiar filtros
                 </Button>
               </div>
             )}
-
-            {/* {!searchQuery && !hasActiveFilters && filteredCourses.length > 0 && (
-              <div className="mt-12">
-                <h2 className="text-2xl font-bold mb-6">Próximamente</h2>
-                <div className="grid grid-cols-1 gap-6">
-                  {[1, 2].map((_, index) => (
-                    <ComingSoonProduct key={index} />
-                  ))}
-                </div>
-              </div>
-            )} */}
-          </main>
-        </div>
+          </section>
       </div>
-      
+
       <ExitIntentPopup />
       <CartAbandonmentTracker />
       <Footer />

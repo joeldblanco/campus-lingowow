@@ -374,6 +374,12 @@ export async function getPlans() {
             name: true,
           },
         },
+        course: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
         features: {
           include: {
             feature: true,
@@ -386,6 +392,31 @@ export async function getPlans() {
     })
   } catch (error) {
     console.error('Error fetching plans:', error)
+    return []
+  }
+}
+
+export async function getPricingPlansForProduct(productId: string) {
+  try {
+    return await db.plan.findMany({
+      where: { productId, isActive: true },
+      orderBy: { sortOrder: 'asc' },
+      include: {
+        product: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        features: {
+          include: {
+            feature: true,
+          },
+        },
+      },
+    })
+  } catch (error) {
+    console.error('Error fetching pricing plans for product:', error)
     return []
   }
 }
@@ -1099,6 +1130,117 @@ export async function verifyPaypalTransaction(resourceId: string) {
       return { success: false, error: 'Ya existe una factura registrada para este ID localmente' }
     }
 
+    // Try to match items with plans in our database by SKU
+    let matchedPlan = null
+    let matchedProduct = null
+    let matchedCourse = null
+
+    if (items && items.length > 0) {
+      for (const item of items) {
+        // PayPal items can have sku field
+        const sku = item.sku || item.name
+
+        if (sku) {
+          // First try to find by paypalSku
+          const planBySku = await db.plan.findFirst({
+            where: { paypalSku: sku },
+            include: {
+              product: {
+                include: { course: true },
+              },
+              course: true,
+            },
+          })
+
+          if (planBySku) {
+            matchedPlan = {
+              id: planBySku.id,
+              name: planBySku.name,
+              slug: planBySku.slug,
+              price: planBySku.price,
+              includesClasses: planBySku.includesClasses,
+              classesPerPeriod: planBySku.classesPerPeriod,
+              classesPerWeek: planBySku.classesPerWeek,
+            }
+
+            if (planBySku.product) {
+              matchedProduct = {
+                id: planBySku.product.id,
+                name: planBySku.product.name,
+                slug: planBySku.product.slug,
+              }
+              if (planBySku.product.course) {
+                matchedCourse = {
+                  id: planBySku.product.course.id,
+                  title: planBySku.product.course.title,
+                  classDuration: planBySku.product.course.classDuration,
+                }
+              }
+            }
+
+            // If plan has direct course relation
+            if (!matchedCourse && planBySku.course) {
+              matchedCourse = {
+                id: planBySku.course.id,
+                title: planBySku.course.title,
+                classDuration: planBySku.course.classDuration,
+              }
+            }
+
+            break // Found a match, stop searching
+          }
+
+          // Fallback: try to find by slug match
+          const planBySlug = await db.plan.findFirst({
+            where: { slug: sku.toLowerCase().replace(/\s+/g, '-') },
+            include: {
+              product: {
+                include: { course: true },
+              },
+              course: true,
+            },
+          })
+
+          if (planBySlug) {
+            matchedPlan = {
+              id: planBySlug.id,
+              name: planBySlug.name,
+              slug: planBySlug.slug,
+              price: planBySlug.price,
+              includesClasses: planBySlug.includesClasses,
+              classesPerPeriod: planBySlug.classesPerPeriod,
+              classesPerWeek: planBySlug.classesPerWeek,
+            }
+
+            if (planBySlug.product) {
+              matchedProduct = {
+                id: planBySlug.product.id,
+                name: planBySlug.product.name,
+                slug: planBySlug.product.slug,
+              }
+              if (planBySlug.product.course) {
+                matchedCourse = {
+                  id: planBySlug.product.course.id,
+                  title: planBySlug.product.course.title,
+                  classDuration: planBySlug.product.course.classDuration,
+                }
+              }
+            }
+
+            if (!matchedCourse && planBySlug.course) {
+              matchedCourse = {
+                id: planBySlug.course.id,
+                title: planBySlug.course.title,
+                classDuration: planBySlug.course.classDuration,
+              }
+            }
+
+            break
+          }
+        }
+      }
+    }
+
     return {
       success: true,
       data: {
@@ -1111,6 +1253,10 @@ export async function verifyPaypalTransaction(resourceId: string) {
         currency: currency || 'USD',
         items: items || [],
         date: date || new Date(),
+        // Matched data from our database
+        matchedPlan,
+        matchedProduct,
+        matchedCourse,
       },
     }
   } catch (error) {

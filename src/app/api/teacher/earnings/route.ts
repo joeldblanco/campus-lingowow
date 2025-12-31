@@ -19,6 +19,7 @@ export async function GET(request: NextRequest) {
         name: true,
         lastName: true,
         email: true,
+        image: true,
         teacherRank: {
           select: {
             name: true,
@@ -39,6 +40,13 @@ export async function GET(request: NextRequest) {
     const startDate = searchParams.get('startDate')
     const endDate = searchParams.get('endDate')
     const periodId = searchParams.get('periodId')
+
+    // Calcular fechas del mes actual si no hay filtros
+    const now = new Date()
+    const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1)
+    const currentMonthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0)
+    const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+    const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0)
 
     // Construir filtros
     const whereClause: {
@@ -73,6 +81,7 @@ export async function GET(request: NextRequest) {
             id: true,
             name: true,
             lastName: true,
+            image: true,
           },
         },
         enrollment: {
@@ -151,6 +160,7 @@ export async function GET(request: NextRequest) {
         date: classBooking.day,
         timeSlot: classBooking.timeSlot,
         studentName: `${classBooking.student.name} ${classBooking.student.lastName}`,
+        studentImage: classBooking.student.image,
         courseName: classBooking.enrollment.course.title,
         duration,
         earnings: Math.round(classEarnings * 100) / 100,
@@ -162,11 +172,111 @@ export async function GET(request: NextRequest) {
 
     const averagePerClass = payableClasses.length > 0 ? totalEarnings / payableClasses.length : 0
 
+    // Obtener bonificaciones del profesor
+    const incentives = await db.teacherIncentive.findMany({
+      where: { teacherId },
+      include: {
+        period: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    })
+
+    // Calcular bonificaciones totales
+    const totalBonuses = incentives.reduce((sum, i) => sum + i.bonusAmount, 0)
+    const paidBonuses = incentives.filter(i => i.paid).reduce((sum, i) => sum + i.bonusAmount, 0)
+    const pendingBonuses = incentives.filter(i => !i.paid).reduce((sum, i) => sum + i.bonusAmount, 0)
+
+    // Obtener clases del mes pasado para calcular tendencia
+    const lastMonthClasses = await db.classBooking.findMany({
+      where: {
+        teacherId,
+        status: BookingStatus.COMPLETED,
+        day: {
+          gte: lastMonthStart.toISOString().split('T')[0],
+          lte: lastMonthEnd.toISOString().split('T')[0],
+        },
+      },
+      include: {
+        attendances: { select: { id: true } },
+        teacherAttendances: { select: { id: true } },
+        enrollment: {
+          select: {
+            course: { select: { classDuration: true } },
+          },
+        },
+        videoCalls: { select: { duration: true } },
+      },
+    })
+
+    const lastMonthPayableClasses = lastMonthClasses.filter(
+      (c) => c.teacherAttendances.length > 0 && c.attendances.length > 0
+    )
+
+    let lastMonthEarnings = 0
+    lastMonthPayableClasses.forEach((classBooking) => {
+      const duration = classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+      const hours = duration / 60
+      lastMonthEarnings += hours * BASE_RATE_PER_HOUR * rateMultiplier
+    })
+
+    // Calcular tendencia (porcentaje de cambio)
+    const earningsTrend = lastMonthEarnings > 0 
+      ? Math.round(((totalEarnings - lastMonthEarnings) / lastMonthEarnings) * 100)
+      : totalEarnings > 0 ? 100 : 0
+
+    // Calcular ganancias por semana del mes actual
+    const weeklyEarnings: { week: number; earnings: number; label: string }[] = []
+    const currentMonthClassDetails = classDetails.filter(c => {
+      const classDate = new Date(c.date)
+      return classDate >= currentMonthStart && classDate <= currentMonthEnd
+    })
+
+    for (let week = 1; week <= 4; week++) {
+      const weekStart = new Date(currentMonthStart)
+      weekStart.setDate(weekStart.getDate() + (week - 1) * 7)
+      const weekEnd = new Date(weekStart)
+      weekEnd.setDate(weekEnd.getDate() + 6)
+
+      const weekClasses = currentMonthClassDetails.filter(c => {
+        const classDate = new Date(c.date)
+        return classDate >= weekStart && classDate <= weekEnd
+      })
+
+      const weekEarnings = weekClasses.reduce((sum, c) => sum + c.earnings, 0)
+      weeklyEarnings.push({
+        week,
+        earnings: Math.round(weekEarnings * 100) / 100,
+        label: `Semana ${week}`,
+      })
+    }
+
+    // Historial de pagos recientes (últimos 3 meses de incentivos pagados)
+    const recentPayouts = incentives
+      .filter(i => i.paid && i.paidAt)
+      .slice(0, 5)
+      .map(i => ({
+        id: i.id,
+        amount: i.bonusAmount,
+        date: i.paidAt,
+        periodName: i.period.name,
+        type: i.type,
+      }))
+
+    // Calcular próximo pago estimado
+    const nextPayoutDate = new Date(now.getFullYear(), now.getMonth() + 1, 1)
+    const nextPayoutAmount = totalEarnings + pendingBonuses
+
     return NextResponse.json({
       success: true,
       teacherId,
       teacherName: `${user.name} ${user.lastName}`,
       teacherEmail: user.email,
+      teacherImage: user.image,
       rank: user.teacherRank?.name || null,
       rateMultiplier,
       totalClasses: payableClasses.length,
@@ -174,6 +284,23 @@ export async function GET(request: NextRequest) {
       totalEarnings: Math.round(totalEarnings * 100) / 100,
       averagePerClass: Math.round(averagePerClass * 100) / 100,
       classes: classDetails,
+      // Nuevos campos para el diseño mejorado
+      bonuses: {
+        total: Math.round(totalBonuses * 100) / 100,
+        paid: Math.round(paidBonuses * 100) / 100,
+        pending: Math.round(pendingBonuses * 100) / 100,
+      },
+      trends: {
+        earningsChange: earningsTrend,
+        classIncomeChange: earningsTrend, // Mismo que earnings por ahora
+        bonusChange: 0, // Se puede calcular comparando con mes anterior
+      },
+      weeklyEarnings,
+      recentPayouts,
+      nextPayout: {
+        amount: Math.round(nextPayoutAmount * 100) / 100,
+        estimatedDate: nextPayoutDate.toISOString(),
+      },
       filters: {
         startDate,
         endDate,

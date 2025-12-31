@@ -31,6 +31,11 @@ export type Product = Prisma.ProductGetPayload<{
     courseId: true
     maxScheduleSlots: true
     scheduleDuration: true
+    pricingType: true
+    paymentType: true
+    creditPrice: true
+    acceptsCredits: true
+    acceptsRealMoney: true
     createdAt: true
     updatedAt: true
   }

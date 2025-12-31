@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { TeacherEarningsReport } from '@/components/teacher/teacher-earnings-report'
+import { TeacherEarningsOverview } from '@/components/teacher/teacher-earnings-overview'
 
 export const metadata: Metadata = {
   title: 'Mis Ganancias | Profesor',
@@ -8,15 +8,8 @@ export const metadata: Metadata = {
 
 export default function TeacherEarningsPage() {
   return (
-    <div className="container mx-auto py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Mis Ganancias</h1>
-        <p className="text-muted-foreground">
-          Visualiza tus ganancias basadas en las clases donde tanto tú como el estudiante asistieron.
-        </p>
-      </div>
-
-      <TeacherEarningsReport />
+    <div className="min-h-screen bg-background py-8 px-4 md:px-8">
+      <TeacherEarningsOverview />
     </div>
   )
 }

@@ -3,7 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { FileText, Video, Clock } from 'lucide-react'
+import { FileText, Video, CheckCircle, Clock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { StudentScheduleLesson } from '@/lib/actions/student-schedule'
 
@@ -28,12 +28,12 @@ function isWithin10MinutesOfStart(lesson: StudentScheduleLesson): boolean {
 }
 
 function getLessonColorClasses(color: string) {
-  const colorMap: Record<string, { bg: string; text: string; border: string }> = {
-    blue: { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-700 dark:text-blue-300', border: 'border-l-blue-500' },
-    purple: { bg: 'bg-purple-100 dark:bg-purple-900/30', text: 'text-purple-700 dark:text-purple-300', border: 'border-l-purple-500' },
-    orange: { bg: 'bg-orange-100 dark:bg-orange-900/30', text: 'text-orange-700 dark:text-orange-300', border: 'border-l-orange-500' },
-    green: { bg: 'bg-green-100 dark:bg-green-900/30', text: 'text-green-700 dark:text-green-300', border: 'border-l-green-500' },
-    pink: { bg: 'bg-pink-100 dark:bg-pink-900/30', text: 'text-pink-700 dark:text-pink-300', border: 'border-l-pink-500' },
+  const colorMap: Record<string, { bg: string; text: string }> = {
+    blue: { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-700 dark:text-blue-300' },
+    purple: { bg: 'bg-purple-100 dark:bg-purple-900/30', text: 'text-purple-700 dark:text-purple-300' },
+    orange: { bg: 'bg-orange-100 dark:bg-orange-900/30', text: 'text-orange-700 dark:text-orange-300' },
+    green: { bg: 'bg-green-100 dark:bg-green-900/30', text: 'text-green-700 dark:text-green-300' },
+    pink: { bg: 'bg-pink-100 dark:bg-pink-900/30', text: 'text-pink-700 dark:text-pink-300' },
   }
   return colorMap[color] || colorMap.blue
 }
@@ -110,8 +110,7 @@ export function StudentDayView({
           isLive
             ? "border-l-4 border-l-primary border-y border-r bg-blue-50/30 dark:bg-blue-900/5 shadow-sm"
             : "bg-card hover:shadow-md",
-          isCancelled && "opacity-50",
-          !isLive && !isCompleted && !isCancelled && "opacity-80 hover:opacity-100"
+          !isLive && !isCompleted && "opacity-80 hover:opacity-100"
         )}
       >
         <div className="flex items-center gap-4 min-w-[200px]">
@@ -162,7 +161,16 @@ export function StudentDayView({
             <FileText className="h-4 w-4 mr-1" />
             Materiales
           </Button>
-          {canJoin && !isCancelled ? (
+          {isCompleted ? (
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-9 px-3 text-xs font-bold text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/10 border-green-200 dark:border-green-800"
+            >
+              <CheckCircle className="h-4 w-4 mr-1" />
+              Completada
+            </Button>
+          ) : canJoin && !isCancelled ? (
             <Button
               size="sm"
               className="h-9 px-3 text-xs font-bold shadow-sm"
@@ -175,15 +183,11 @@ export function StudentDayView({
               Unirse
             </Button>
           ) : isCancelled ? (
-            <Badge variant="destructive" className="text-xs">
-              Cancelada
-            </Badge>
-          ) : isCompleted ? (
-            <Badge variant="secondary" className="text-xs">
-              Completada
+            <Badge variant="destructive" className="text-xs font-bold">
+              CANCELADA
             </Badge>
           ) : (
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="outline" className="text-xs font-medium">
               Próximamente
             </Badge>
           )}

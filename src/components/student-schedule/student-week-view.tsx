@@ -2,7 +2,8 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { Video } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { MoreVertical, FileText } from 'lucide-react'
 import { format, startOfWeek, addDays, isSameDay, isToday } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { cn } from '@/lib/utils'
@@ -12,6 +13,7 @@ interface StudentWeekViewProps {
   currentDate: Date
   lessons: StudentScheduleLesson[]
   onJoinClass?: (lessonId: string) => void
+  onViewMaterials?: (lessonId: string) => void
   onLessonClick?: (lesson: StudentScheduleLesson) => void
   isCompact?: boolean
 }
@@ -40,14 +42,14 @@ function isWithin10MinutesOfStart(lesson: StudentScheduleLesson): boolean {
   return diffMinutes <= 10 && diffMinutes >= -60
 }
 
-// Get color classes based on lesson color
+// Get color classes based on lesson color (matching teacher schedule)
 function getLessonColorClasses(color: string) {
-  const colorMap: Record<string, { bg: string; text: string; border: string }> = {
-    blue: { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-700 dark:text-blue-300', border: 'border-l-blue-500' },
-    purple: { bg: 'bg-purple-100 dark:bg-purple-900/30', text: 'text-purple-700 dark:text-purple-300', border: 'border-l-purple-500' },
-    orange: { bg: 'bg-orange-100 dark:bg-orange-900/30', text: 'text-orange-700 dark:text-orange-300', border: 'border-l-orange-500' },
-    green: { bg: 'bg-green-100 dark:bg-green-900/30', text: 'text-green-700 dark:text-green-300', border: 'border-l-green-500' },
-    pink: { bg: 'bg-pink-100 dark:bg-pink-900/30', text: 'text-pink-700 dark:text-pink-300', border: 'border-l-pink-500' },
+  const colorMap: Record<string, { bg: string; text: string; accent: string }> = {
+    blue: { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-700 dark:text-blue-300', accent: 'border-l-blue-500' },
+    purple: { bg: 'bg-purple-100 dark:bg-purple-900/30', text: 'text-purple-700 dark:text-purple-300', accent: 'border-l-purple-500' },
+    orange: { bg: 'bg-orange-100 dark:bg-orange-900/30', text: 'text-orange-700 dark:text-orange-300', accent: 'border-l-orange-500' },
+    green: { bg: 'bg-green-100 dark:bg-green-900/30', text: 'text-green-700 dark:text-green-300', accent: 'border-l-green-500' },
+    pink: { bg: 'bg-pink-100 dark:bg-pink-900/30', text: 'text-pink-700 dark:text-pink-300', accent: 'border-l-pink-500' },
   }
   return colorMap[color] || colorMap.blue
 }
@@ -62,6 +64,7 @@ export function StudentWeekView({
   currentDate,
   lessons,
   onJoinClass,
+  onViewMaterials,
   onLessonClick,
   isCompact = false,
 }: StudentWeekViewProps) {
@@ -78,65 +81,121 @@ export function StudentWeekView({
   const renderLessonCard = (lesson: StudentScheduleLesson) => {
     const colors = getLessonColorClasses(lesson.color)
     const isLive = lesson.status === 'in_progress'
-    const canJoin = isLive || isWithin10MinutesOfStart(lesson)
+    const isCompleted = lesson.status === 'completed'
     const isCancelled = lesson.status === 'cancelled'
+    const canJoin = isLive || isWithin10MinutesOfStart(lesson)
+
+    if (isCancelled) {
+      return (
+        <div 
+          onClick={() => onLessonClick?.(lesson)}
+          className="group relative flex h-full cursor-pointer flex-col gap-2 rounded-lg border-l-4 border-l-gray-300 dark:border-l-gray-600 bg-gray-50 dark:bg-muted p-3 transition-all hover:bg-background shadow-sm">
+          <div className="flex items-start justify-between">
+            <Badge variant="secondary" className="text-[10px] font-bold uppercase">
+              {lesson.courseTitle}
+            </Badge>
+            <Badge variant="destructive" className="text-[9px] font-bold">
+              CANCELADA
+            </Badge>
+          </div>
+          <div className="flex items-center gap-2 opacity-50">
+            <Avatar className="h-6 w-6">
+              <AvatarImage src={lesson.teacher.image || ''} />
+              <AvatarFallback className="text-xs">
+                {getInitials(lesson.teacher.name, lesson.teacher.lastName)}
+              </AvatarFallback>
+            </Avatar>
+            <span className="text-sm font-medium text-muted-foreground line-through">
+              {lesson.teacher.name}
+            </span>
+          </div>
+        </div>
+      )
+    }
+
+    if (isCompleted) {
+      return (
+        <div 
+          onClick={() => onLessonClick?.(lesson)}
+          className="group flex h-full cursor-pointer flex-col gap-2 rounded-lg bg-muted border p-3 opacity-70 hover:opacity-100 transition-all">
+          <div className="flex items-start justify-between">
+            <Badge variant="secondary" className="text-[10px] font-bold uppercase">
+              {lesson.courseTitle}
+            </Badge>
+            <span className="text-green-600">
+              <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Avatar className="h-6 w-6 grayscale">
+              <AvatarImage src={lesson.teacher.image || ''} />
+              <AvatarFallback className="text-xs">
+                {getInitials(lesson.teacher.name, lesson.teacher.lastName)}
+              </AvatarFallback>
+            </Avatar>
+            <span className="text-sm font-medium text-muted-foreground">
+              {lesson.teacher.name}
+            </span>
+          </div>
+          <div className="mt-auto text-xs text-muted-foreground">Completada</div>
+        </div>
+      )
+    }
 
     return (
-      <div
+      <div 
         onClick={() => onLessonClick?.(lesson)}
         className={cn(
-          "group h-full cursor-pointer flex flex-col rounded-lg border-l-4 p-2 transition-all hover:shadow-md",
-          colors.border,
-          colors.bg,
-          isCancelled && "opacity-50 line-through",
-          isLive && "ring-2 ring-primary ring-offset-1"
-        )}
-      >
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-1">
-            <span className={cn("text-xs font-bold truncate", colors.text)}>
-              {lesson.courseTitle}
-            </span>
-            {isLive && (
-              <span className="relative flex h-2 w-2 flex-shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-              </span>
-            )}
-          </div>
-          
-          <p className="text-[10px] text-muted-foreground mt-0.5">
-            {lesson.startTime} - {lesson.endTime}
-          </p>
-
-          {!isCompact && (
-            <div className="flex items-center gap-1.5 mt-2">
-              <Avatar className="h-5 w-5">
-                <AvatarImage src={lesson.teacher.image || ''} />
-                <AvatarFallback className="text-[8px] bg-muted">
-                  {getInitials(lesson.teacher.name, lesson.teacher.lastName)}
-                </AvatarFallback>
-              </Avatar>
-              <span className="text-[10px] text-muted-foreground truncate">
-                {lesson.teacher.name}
-              </span>
-            </div>
-          )}
+          "group relative flex h-full cursor-pointer flex-col gap-2 rounded-lg border-l-4 bg-card p-3 shadow-sm hover:shadow-md transition-all ring-1 ring-border",
+          colors.accent
+        )}>
+        <div className="flex items-start justify-between">
+          <Badge className={cn("text-[10px] font-bold uppercase", colors.bg, colors.text, "border-0")}>
+            {lesson.courseTitle}
+          </Badge>
+          <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground">
+            <MoreVertical className="h-4 w-4" />
+          </Button>
         </div>
-
-        {canJoin && !isCancelled && (
+        <div className="flex items-center gap-2">
+          <Avatar className="h-6 w-6">
+            <AvatarImage src={lesson.teacher.image || ''} />
+            <AvatarFallback className={cn("text-xs", colors.bg, colors.text)}>
+              {getInitials(lesson.teacher.name, lesson.teacher.lastName)}
+            </AvatarFallback>
+          </Avatar>
+          <span className="text-sm font-bold text-foreground">
+            {lesson.teacher.name}
+          </span>
+        </div>
+        <div className="mt-auto flex gap-2">
           <Button
+            variant="outline"
             size="sm"
-            className="w-full h-6 text-[10px] mt-2"
+            className="h-7 px-2 text-[10px] font-medium"
             onClick={(e) => {
               e.stopPropagation()
-              onJoinClass?.(lesson.id)
+              onViewMaterials?.(lesson.id)
             }}
           >
-            <Video className="h-3 w-3 mr-1" />
-            Unirse
+            <FileText className="h-3 w-3 mr-1" />
+            Materiales
           </Button>
-        )}
+          {canJoin && (
+            <Button
+              size="sm"
+              className="h-7 px-2 text-[10px] font-bold"
+              onClick={(e) => {
+                e.stopPropagation()
+                onJoinClass?.(lesson.id)
+              }}
+            >
+              Unirse
+            </Button>
+          )}
+        </div>
       </div>
     )
   }

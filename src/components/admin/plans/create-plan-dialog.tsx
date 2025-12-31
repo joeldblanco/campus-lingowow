@@ -46,6 +46,7 @@ const planSchema = z.object({
   isActive: z.boolean().default(true),
   isPopular: z.boolean().default(false),
   sortOrder: z.number().min(0).default(0),
+  paypalSku: z.string().optional(),
   includesClasses: z.boolean().default(false),
   classesPerPeriod: z.number().optional(),
   classesPerWeek: z.number().optional(),
@@ -80,6 +81,7 @@ export function CreatePlanDialog({ children }: CreatePlanDialogProps) {
       isActive: true,
       isPopular: false,
       sortOrder: 0,
+      paypalSku: '',
       includesClasses: false,
       classesPerPeriod: undefined,
       classesPerWeek: undefined,
@@ -107,6 +109,7 @@ export function CreatePlanDialog({ children }: CreatePlanDialogProps) {
         isPopular: data.isPopular,
         sortOrder: data.sortOrder,
         productId: null,
+        paypalSku: data.paypalSku || null,
         includesClasses: data.includesClasses,
         classesPerPeriod: data.classesPerPeriod || null,
         classesPerWeek: data.classesPerWeek || null,
@@ -245,25 +248,47 @@ export function CreatePlanDialog({ children }: CreatePlanDialogProps) {
                 )}
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="duration"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Duración (días)</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="number"
-                        placeholder="30"
-                        {...field}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 30)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            {/* Solo mostrar duración si el plan NO incluye clases (no está ligado a período académico) */}
+            {!form.watch('includesClasses') ? (
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="duration"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Duración (días)</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="number"
+                          placeholder="30"
+                          {...field}
+                          onChange={(e) => field.onChange(parseInt(e.target.value) || 30)}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="sortOrder"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Orden</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="number"
+                          placeholder="0"
+                          {...field}
+                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            ) : (
               <FormField
                 control={form.control}
                 name="sortOrder"
@@ -282,7 +307,28 @@ export function CreatePlanDialog({ children }: CreatePlanDialogProps) {
                   </FormItem>
                 )}
               />
-            </div>
+            )}
+            {/* PayPal SKU */}
+            <FormField
+              control={form.control}
+              name="paypalSku"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>PayPal SKU</FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="sku-plan-regular (opcional)"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    SKU configurado en PayPal para identificar este plan automáticamente al verificar pagos
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}

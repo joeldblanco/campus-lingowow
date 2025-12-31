@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { createEnrollment, getAllStudents, getPublishedCourses, getActiveAndFutureAcademicPeriods } from '@/lib/actions/enrollments'
+import { createEnrollmentWithSchedule, getAllStudents, getPublishedCourses, getActiveAndFutureAcademicPeriods } from '@/lib/actions/enrollments'
 import { verifyPaypalTransaction } from '@/lib/actions/commercial'
 import { Button } from '@/components/ui/button'
 import {
@@ -34,7 +34,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Loader2 } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { Loader2, ArrowRight, Video } from 'lucide-react'
+import { ScheduleSelectorStep } from './schedule-selector-step'
 
 const CreateEnrollmentSchema = z.object({
   studentId: z.string().min(1, 'Debes seleccionar un estudiante'),
@@ -48,14 +50,32 @@ interface CreateEnrollmentDialogProps {
   onEnrollmentCreated?: () => void
 }
 
+interface ScheduleSlot {
+  teacherId: string
+  dayOfWeek: number
+  startTime: string
+  endTime: string
+}
+
+interface ScheduledClass {
+  date: string
+  dayOfWeek: number
+  startTime: string
+  endTime: string
+  teacherId: string
+}
+
+type Step = 'basic' | 'schedule'
+
 export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: CreateEnrollmentDialogProps) {
   const [open, setOpen] = useState(false)
+  const [currentStep, setCurrentStep] = useState<Step>('basic')
   const [isLoading, setIsLoading] = useState(false)
   const [students, setStudents] = useState<
     Array<{ id: string; name: string; lastName: string; email: string; image: string | null }>
   >([])
   const [courses, setCourses] = useState<
-    Array<{ id: string; title: string; description: string; level: string; _count: { modules: number } }>
+    Array<{ id: string; title: string; description: string; level: string; classDuration: number; isSynchronous: boolean; _count: { modules: number; teacherCourses: number } }>
   >([])
   const [academicPeriods, setAcademicPeriods] = useState<
     Array<{ id: string; name: string; startDate: Date; endDate: Date; isActive: boolean }>
@@ -81,6 +101,15 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
     setVerifiedPaymentAmount(null)
   }, [paypalOrderId])
 
+  // Obtener el curso seleccionado
+  const selectedCourseId = form.watch('courseId')
+  const selectedCourse = courses.find((c) => c.id === selectedCourseId)
+  const isSynchronousCourse = selectedCourse?.isSynchronous ?? false
+
+  // Obtener el período seleccionado
+  const selectedPeriodId = form.watch('academicPeriodId')
+  const selectedPeriod = academicPeriods.find((p) => p.id === selectedPeriodId)
+
   const verifyPayment = async () => {
     const orderId = form.getValues('paypalOrderId')
     if (!orderId || orderId.length < 5) {
@@ -93,7 +122,35 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
       const result = await verifyPaypalTransaction(orderId)
       if (result.success && result.data) {
         setVerifiedPaymentAmount(result.data.amount)
-        toast.success(`Pago verificado: ${result.data.amount} ${result.data.currency}`)
+        
+        // Auto-complete fields if plan/course was matched
+        const messages: string[] = [`Pago verificado: ${result.data.amount} ${result.data.currency}`]
+        
+        if (result.data.matchedCourse) {
+          // Find the course in our loaded courses
+          const matchedCourseInList = courses.find(c => c.id === result.data.matchedCourse?.id)
+          if (matchedCourseInList) {
+            form.setValue('courseId', result.data.matchedCourse.id)
+            messages.push(`Curso detectado: ${result.data.matchedCourse.title}`)
+          }
+        }
+        
+        if (result.data.matchedPlan) {
+          messages.push(`Plan: ${result.data.matchedPlan.name}`)
+        }
+
+        // Try to find student by email
+        if (result.data.email) {
+          const matchedStudent = students.find(s => 
+            s.email.toLowerCase() === result.data.email.toLowerCase()
+          )
+          if (matchedStudent) {
+            form.setValue('studentId', matchedStudent.id)
+            messages.push(`Estudiante detectado: ${matchedStudent.name} ${matchedStudent.lastName}`)
+          }
+        }
+        
+        toast.success(messages.join(' • '))
       } else {
         setVerifiedPaymentAmount(null)
         toast.error(result.error || 'No se pudo verificar el pago')
@@ -131,15 +188,34 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
     }
   }
 
-  const onSubmit = async (values: z.infer<typeof CreateEnrollmentSchema>) => {
+  // Manejar el paso siguiente para cursos sincrónicos
+  const handleNextStep = () => {
+    if (!form.getValues('studentId') || !form.getValues('courseId') || !form.getValues('academicPeriodId') || !form.getValues('paypalOrderId')) {
+      toast.error('Por favor completa todos los campos')
+      return
+    }
+    if (verifiedPaymentAmount === null) {
+      toast.error('Por favor verifica el pago de PayPal')
+      return
+    }
+    setCurrentStep('schedule')
+  }
+
+  // Crear inscripción sin horario (cursos asincrónicos)
+  const onSubmitAsync = async (values: z.infer<typeof CreateEnrollmentSchema>) => {
     setIsLoading(true)
     try {
-      const result = await createEnrollment(values)
+      const result = await createEnrollmentWithSchedule({
+        ...values,
+        teacherId: undefined,
+        scheduledClasses: [],
+        isRecurring: false,
+        weeklySchedule: [],
+      })
 
       if (result.success) {
         toast.success('Inscripción creada exitosamente')
-        setOpen(false)
-        form.reset()
+        handleClose()
         onEnrollmentCreated?.()
       } else {
         toast.error(result.error || 'Error al crear la inscripción')
@@ -152,14 +228,63 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
     }
   }
 
+  // Crear inscripción con horario (cursos sincrónicos)
+  const handleScheduleConfirmed = async (
+    teacherId: string,
+    scheduledClasses: ScheduledClass[],
+    isRecurring: boolean,
+    weeklySchedule: ScheduleSlot[]
+  ) => {
+    setIsLoading(true)
+    try {
+      const values = form.getValues()
+      const result = await createEnrollmentWithSchedule({
+        ...values,
+        teacherId,
+        scheduledClasses,
+        isRecurring,
+        weeklySchedule,
+      })
+
+      if (result.success) {
+        toast.success(`Inscripción creada exitosamente con ${scheduledClasses.length} clases programadas`)
+        handleClose()
+        onEnrollmentCreated?.()
+      } else {
+        toast.error(result.error || 'Error al crear la inscripción')
+      }
+    } catch (error) {
+      console.error(error)
+      toast.error('Error al crear la inscripción')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // Cerrar y resetear el modal
+  const handleClose = () => {
+    setOpen(false)
+    setCurrentStep('basic')
+    form.reset()
+    setVerifiedPaymentAmount(null)
+  }
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={(isOpen) => {
+      if (!isOpen) handleClose()
+      else setOpen(true)
+    }}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className={currentStep === 'schedule' ? 'sm:max-w-[1000px] max-h-[90vh] overflow-y-auto' : 'sm:max-w-[500px]'}>
         <DialogHeader>
-          <DialogTitle>Nueva Inscripción</DialogTitle>
+          <DialogTitle>
+            {currentStep === 'basic' ? 'Nueva Inscripción' : 'Seleccionar Horario de Clases'}
+          </DialogTitle>
           <DialogDescription>
-            Inscribe a un estudiante. Se requiere un pago de PayPal válido.
+            {currentStep === 'basic' 
+              ? 'Inscribe a un estudiante. Se requiere un pago de PayPal válido.'
+              : `Configura el horario de clases para ${selectedCourse?.title}`
+            }
           </DialogDescription>
         </DialogHeader>
 
@@ -167,9 +292,20 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
           <div className="flex items-center justify-center py-8">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           </div>
+        ) : currentStep === 'schedule' && selectedCourse && selectedPeriod ? (
+          <ScheduleSelectorStep
+            courseId={selectedCourse.id}
+            courseName={selectedCourse.title}
+            classDuration={selectedCourse.classDuration || 40}
+            academicPeriodId={selectedPeriod.id}
+            periodStartDate={new Date(selectedPeriod.startDate)}
+            periodEndDate={new Date(selectedPeriod.endDate)}
+            onScheduleConfirmed={handleScheduleConfirmed}
+            onBack={() => setCurrentStep('basic')}
+          />
         ) : (
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form onSubmit={isSynchronousCourse ? (e) => { e.preventDefault(); handleNextStep(); } : form.handleSubmit(onSubmitAsync)} className="space-y-4">
               <FormField
                 control={form.control}
                 name="studentId"
@@ -232,10 +368,21 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
                         ) : (
                           courses.map((course) => (
                             <SelectItem key={course.id} value={course.id}>
-                              <div>
-                                <div className="font-medium">{course.title}</div>
-                                <div className="text-xs text-muted-foreground">
-                                  Nivel {course.level} • {course._count.modules} módulos
+                              <div className="flex items-center gap-2">
+                                <div className="flex-1">
+                                  <div className="font-medium flex items-center gap-2">
+                                    {course.title}
+                                    {course.isSynchronous && (
+                                      <Badge variant="secondary" className="text-xs">
+                                        <Video className="h-3 w-3 mr-1" />
+                                        Sincrónico
+                                      </Badge>
+                                    )}
+                                  </div>
+                                  <div className="text-xs text-muted-foreground">
+                                    Nivel {course.level} • {course._count.modules} módulos
+                                    {course.isSynchronous && ` • ${course.classDuration || 40} min/clase`}
+                                  </div>
                                 </div>
                               </div>
                             </SelectItem>
@@ -361,19 +508,26 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
               />
 
               <DialogFooter>
-                <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>
+                <Button type="button" variant="outline" onClick={handleClose} disabled={isLoading}>
                   Cancelar
                 </Button>
-                <Button type="submit" disabled={isLoading || verifiedPaymentAmount === null}>
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Creando...
-                    </>
-                  ) : (
-                    'Crear Inscripción'
-                  )}
-                </Button>
+                {isSynchronousCourse ? (
+                  <Button type="submit" disabled={verifiedPaymentAmount === null}>
+                    Siguiente: Seleccionar Horario
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                ) : (
+                  <Button type="submit" disabled={isLoading || verifiedPaymentAmount === null}>
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Creando...
+                      </>
+                    ) : (
+                      'Crear Inscripción'
+                    )}
+                  </Button>
+                )}
               </DialogFooter>
             </form>
           </Form>

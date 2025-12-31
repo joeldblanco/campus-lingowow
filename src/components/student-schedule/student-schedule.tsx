@@ -190,6 +190,7 @@ export function StudentSchedule({ initialData }: StudentScheduleProps) {
             currentDate={currentDate}
             lessons={filteredData.lessons}
             onJoinClass={handleJoinClass}
+            onViewMaterials={handleViewMaterials}
             onLessonClick={handleLessonClick}
             isCompact={isCompact}
           />

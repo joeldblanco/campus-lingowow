@@ -41,6 +41,7 @@ const planSchema = z.object({
   isActive: z.boolean().default(true),
   isPopular: z.boolean().default(false),
   sortOrder: z.number().min(0).default(0),
+  paypalSku: z.string().optional(),
 })
 
 type PlanFormData = z.infer<typeof planSchema>
@@ -56,6 +57,8 @@ interface Plan {
   isActive: boolean
   isPopular: boolean
   sortOrder: number
+  paypalSku: string | null
+  includesClasses: boolean
   createdAt: Date
   updatedAt: Date
   features: Array<{
@@ -104,6 +107,7 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
       isActive: plan.isActive,
       isPopular: plan.isPopular,
       sortOrder: plan.sortOrder,
+      paypalSku: plan.paypalSku || '',
     },
   })
 
@@ -118,6 +122,7 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
       isActive: plan.isActive,
       isPopular: plan.isPopular,
       sortOrder: plan.sortOrder,
+      paypalSku: plan.paypalSku || '',
     })
     
     // Load features and set selected ones
@@ -144,6 +149,7 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
       const result = await updatePlan(plan.id, {
         ...data,
         comparePrice: data.comparePrice || null,
+        paypalSku: data.paypalSku || null,
       })
       
       if (!result.success) {
@@ -185,7 +191,7 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px] max-h-[90vh]">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Editar Plan</DialogTitle>
           <DialogDescription>
@@ -276,25 +282,48 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
                 )}
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="duration"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Duración (días)</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="number"
-                        placeholder="30"
-                        {...field}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 30)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            {/* Solo mostrar duración si el plan NO tiene curso asociado */}
+            {!plan.includesClasses && (
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="duration"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Duración (días)</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="number"
+                          placeholder="30"
+                          {...field}
+                          onChange={(e) => field.onChange(parseInt(e.target.value) || 30)}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="sortOrder"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Orden</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="number"
+                          placeholder="0"
+                          {...field}
+                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
+            {plan.includesClasses && (
               <FormField
                 control={form.control}
                 name="sortOrder"
@@ -313,7 +342,28 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
                   </FormItem>
                 )}
               />
-            </div>
+            )}
+            {/* PayPal SKU */}
+            <FormField
+              control={form.control}
+              name="paypalSku"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>PayPal SKU</FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="sku-plan-regular (opcional)"
+                      {...field}
+                    />
+                  </FormControl>
+                  <p className="text-xs text-muted-foreground">
+                    SKU configurado en PayPal para identificar este plan automáticamente
+                  </p>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}

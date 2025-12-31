@@ -26,7 +26,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { MoreVertical, Edit, Trash2, Zap, Search, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react'
+import { MoreVertical, Edit, Trash2, Zap, Search, ChevronLeft, ChevronRight, SlidersHorizontal, Package } from 'lucide-react'
 import { EditPlanDialog } from './edit-plan-dialog'
 import { deletePlan } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
@@ -42,6 +42,8 @@ interface Plan {
   isActive: boolean
   isPopular: boolean
   sortOrder: number
+  paypalSku: string | null
+  includesClasses: boolean
   createdAt: Date
   updatedAt: Date
   productId: string | null
@@ -76,8 +78,18 @@ export function PlansTable({ plans }: PlansTableProps) {
   const [editingPlan, setEditingPlan] = useState<Plan | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
+  const [typeFilter, setTypeFilter] = useState('all')
+  const [productFilter, setProductFilter] = useState('all')
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedPlans, setSelectedPlans] = useState<string[]>([])
+
+  // Get unique products for filter
+  const uniqueProducts = useMemo(() => {
+    const products = plans
+      .filter(p => p.product)
+      .map(p => ({ id: p.product!.id, name: p.product!.name }))
+    return Array.from(new Map(products.map(p => [p.id, p])).values())
+  }, [plans])
 
   // Filter plans
   const filteredPlans = useMemo(() => {
@@ -94,8 +106,18 @@ export function PlansTable({ plans }: PlansTableProps) {
         statusFilter === 'active' ? p.isActive : !p.isActive
       )
     }
+    if (typeFilter !== 'all') {
+      filtered = filtered.filter((p) => 
+        typeFilter === 'academic' ? p.includesClasses : !p.includesClasses
+      )
+    }
+    if (productFilter !== 'all') {
+      filtered = filtered.filter((p) => 
+        productFilter === 'none' ? !p.product : p.product?.id === productFilter
+      )
+    }
     return filtered
-  }, [plans, searchTerm, statusFilter])
+  }, [plans, searchTerm, statusFilter, typeFilter, productFilter])
 
   // Pagination
   const totalPages = Math.ceil(filteredPlans.length / ITEMS_PER_PAGE)
@@ -106,7 +128,7 @@ export function PlansTable({ plans }: PlansTableProps) {
 
   useEffect(() => {
     setCurrentPage(1)
-  }, [searchTerm, statusFilter])
+  }, [searchTerm, statusFilter, typeFilter, productFilter])
 
   const handleDelete = async (id: string) => {
     if (confirm('¿Estás seguro de que quieres eliminar este plan?')) {
@@ -162,6 +184,8 @@ export function PlansTable({ plans }: PlansTableProps) {
   const clearFilters = () => {
     setSearchTerm('')
     setStatusFilter('all')
+    setTypeFilter('all')
+    setProductFilter('all')
   }
 
   const getPageNumbers = () => {
@@ -194,13 +218,37 @@ export function PlansTable({ plans }: PlansTableProps) {
           />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[140px]">
+          <SelectTrigger className="w-[130px]">
             <SelectValue placeholder="Estado" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos</SelectItem>
             <SelectItem value="active">Activo</SelectItem>
             <SelectItem value="inactive">Inactivo</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={typeFilter} onValueChange={setTypeFilter}>
+          <SelectTrigger className="w-[160px]">
+            <SelectValue placeholder="Tipo" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Todos los tipos</SelectItem>
+            <SelectItem value="academic">Período académico</SelectItem>
+            <SelectItem value="duration">Duración fija</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={productFilter} onValueChange={setProductFilter}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Producto" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Todos los productos</SelectItem>
+            <SelectItem value="none">Sin producto</SelectItem>
+            {uniqueProducts.map((product) => (
+              <SelectItem key={product.id} value={product.id}>
+                {product.name}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
         <Button variant="outline" size="icon" onClick={clearFilters} className="shrink-0">
@@ -220,8 +268,9 @@ export function PlansTable({ plans }: PlansTableProps) {
                 />
               </TableHead>
               <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Plan</TableHead>
+              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Producto</TableHead>
               <TableHead className="font-semibold text-xs uppercase text-muted-foreground text-right">Precio</TableHead>
-              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Duración</TableHead>
+              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Tipo</TableHead>
               <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Estado</TableHead>
               <TableHead className="font-semibold text-xs uppercase text-muted-foreground text-center">Características</TableHead>
               <TableHead className="font-semibold text-xs uppercase text-muted-foreground text-center">Acciones</TableHead>
@@ -230,7 +279,7 @@ export function PlansTable({ plans }: PlansTableProps) {
           <TableBody>
             {paginatedPlans.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
+                <TableCell colSpan={8} className="text-center py-12 text-muted-foreground">
                   No hay planes registrados
                 </TableCell>
               </TableRow>
@@ -251,6 +300,16 @@ export function PlansTable({ plans }: PlansTableProps) {
                       )}
                     </div>
                   </TableCell>
+                  <TableCell>
+                    {plan.product ? (
+                      <Badge variant="outline" className="text-xs bg-amber-50 text-amber-700 border-amber-200">
+                        <Package className="h-3 w-3 mr-1" />
+                        {plan.product.name}
+                      </Badge>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">Sin producto</span>
+                    )}
+                  </TableCell>
                   <TableCell className="text-right">
                     <div className="font-medium text-sm">{formatPrice(plan.price)}</div>
                     {plan.comparePrice && (
@@ -258,7 +317,13 @@ export function PlansTable({ plans }: PlansTableProps) {
                     )}
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm">{formatDuration(plan.duration)}</span>
+                    {plan.includesClasses ? (
+                      <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
+                        Período académico
+                      </Badge>
+                    ) : (
+                      <span className="text-sm">{formatDuration(plan.duration)}</span>
+                    )}
                   </TableCell>
                   <TableCell>{getStatusBadge(plan.isActive, plan.isPopular)}</TableCell>
                   <TableCell className="text-center">

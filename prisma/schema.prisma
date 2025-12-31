@@ -666,7 +666,7 @@ model ClassBooking {
   // Relaciones
   student            User                @relation("StudentBookings", fields: [studentId], references: [id])
   teacher            User                @relation("TeacherBookings", fields: [teacherId], references: [id])
-  enrollment         Enrollment          @relation(fields: [enrollmentId], references: [id])
+  enrollment         Enrollment          @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
   studentCredit      StudentCredit?      @relation(fields: [creditId], references: [id])
   attendances        ClassAttendance[]
   teacherAttendances TeacherAttendance[]
@@ -853,7 +853,7 @@ model ClassAttendance {
   // Relations
   student    User         @relation(fields: [studentId], references: [id], onDelete: Cascade)
   booking    ClassBooking @relation(fields: [classId], references: [id], onDelete: Cascade)
-  enrollment Enrollment   @relation(fields: [enrollmentId], references: [id])
+  enrollment Enrollment   @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
 
   // Indexes
   @@unique([classId, studentId])
@@ -1031,6 +1031,9 @@ model Plan {
   isPopular    Boolean @default(false)
   sortOrder    Int     @default(0)
   productId    String?
+  
+  // Campos para integración con PayPal
+  paypalSku    String? @unique // SKU configurado en PayPal para identificar este plan
   
   // Campos para planes con clases
   includesClasses     Boolean @default(false) // Si el plan incluye clases
@@ -1373,7 +1376,7 @@ model ProductPurchase {
   product      Product              @relation(fields: [productId], references: [id])
   invoice      Invoice              @relation(fields: [invoiceId], references: [id])
   scheduleSlot ProductScheduleSlot? @relation(fields: [scheduleSlotId], references: [id])
-  enrollment   Enrollment?          @relation(fields: [enrollmentId], references: [id])
+  enrollment   Enrollment?          @relation(fields: [enrollmentId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

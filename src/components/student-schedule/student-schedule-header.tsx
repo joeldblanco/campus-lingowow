@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { ChevronLeft, ChevronRight, Plus, Rows3, Rows4 } from 'lucide-react'
+import { ChevronLeft, ChevronRight, CalendarPlus, Rows3, Rows4 } from 'lucide-react'
 import { format, addDays, addWeeks, addMonths, startOfWeek, endOfWeek } from 'date-fns'
 import { es } from 'date-fns/locale'
 import type { ScheduleViewType } from '@/types/schedule'
@@ -60,14 +60,12 @@ export function StudentScheduleHeader({
   const getDateDisplay = () => {
     switch (viewType) {
       case 'day':
-        return format(currentDate, "EEEE, d 'de' MMMM", { locale: es })
-      case 'week':
+        return format(currentDate, "EEEE, d 'de' MMMM yyyy", { locale: es })
+      case 'week': {
         const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 })
         const weekEnd = endOfWeek(currentDate, { weekStartsOn: 1 })
-        if (weekStart.getMonth() === weekEnd.getMonth()) {
-          return `${format(weekStart, 'd')} - ${format(weekEnd, "d 'de' MMMM", { locale: es })}`
-        }
-        return `${format(weekStart, "d 'de' MMM", { locale: es })} - ${format(weekEnd, "d 'de' MMM", { locale: es })}`
+        return `${format(weekStart, 'd', { locale: es })} - ${format(weekEnd, "d 'de' MMMM yyyy", { locale: es })}`
+      }
       case 'month':
         return format(currentDate, "MMMM yyyy", { locale: es })
     }
@@ -76,9 +74,8 @@ export function StudentScheduleHeader({
   const getSubtitle = () => {
     switch (viewType) {
       case 'day':
-        return lessonsCount !== undefined ? `${lessonsCount} clases programadas` : null
+        return lessonsCount !== undefined ? `${lessonsCount} clases programadas` : undefined
       case 'week':
-        return 'Zona horaria: America/Lima (GMT-5)'
       case 'month':
         return 'Zona horaria: America/Lima (GMT-5)'
     }
@@ -101,7 +98,7 @@ export function StudentScheduleHeader({
         </div>
         <div className="flex gap-3">
           <Button onClick={onBookLesson} className="shadow-md">
-            <Plus className="mr-2 h-4 w-4" />
+            <CalendarPlus className="mr-2 h-4 w-4" />
             <span className="truncate">Reservar Clase</span>
           </Button>
         </div>

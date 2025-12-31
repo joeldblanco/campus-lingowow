@@ -126,9 +126,25 @@ export function useFilterCourses() {
       if (filters.languages.length > 0 && !filters.languages.includes(course.language)) 
         return false
       
-      // Category filter
-      if (filters.categories.length > 0 && !filters.categories.includes(course.category)) 
-        return false
+      // Category filter based on paymentType and courseId
+      if (filters.categories.length > 0) {
+        const categoryFilter = filters.categories[0]
+        
+        // subscriptions: productos con pago recurrente
+        if (categoryFilter === 'subscriptions' && course.paymentType !== 'RECURRING') {
+          return false
+        }
+        
+        // events: productos con pago único Y que tienen curso asociado (eventos, webinars, clases)
+        if (categoryFilter === 'events' && (course.paymentType !== 'ONE_TIME' || !course.courseId)) {
+          return false
+        }
+        
+        // materials: productos con pago único Y sin curso asociado (merchandising, PDFs, etc.)
+        if (categoryFilter === 'materials' && (course.paymentType !== 'ONE_TIME' || course.courseId)) {
+          return false
+        }
+      }
       
       // Tags filter
       if (filters.tags.length > 0) {
