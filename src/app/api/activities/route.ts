@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
         points: points || 10,
         duration: duration || 5,
         isPublished: isPublished || false,
-        createdById: session.user.id,
+        createdById: session.user.id!,
         activityData: {
           tags: tags || [],
           questions,

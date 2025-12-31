@@ -31,6 +31,12 @@ const createMockProduct = (id: string) => ({
   levels: ['BEGINNER'],
   language: 'es',
   category: 'test',
+  // Payment fields
+  pricingType: 'SINGLE_PRICE' as const,
+  paymentType: 'ONE_TIME' as const,
+  creditPrice: null,
+  acceptsCredits: false,
+  acceptsRealMoney: true,
 })
 
 const createMockPlan = (id: string, price: number = 100) => ({

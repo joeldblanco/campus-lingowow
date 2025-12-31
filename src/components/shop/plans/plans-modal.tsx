@@ -8,8 +8,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Badge } from '@/components/ui/badge'
-import { Check, X } from 'lucide-react'
 import { useShopStore } from '@/stores/useShopStore'
 import { Course, Merge, Product } from '@/types/shop'
 import { cn } from '@/lib/utils'

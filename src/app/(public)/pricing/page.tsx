@@ -3,9 +3,8 @@
 import React, { useEffect, useState } from 'react'
 import Header from '@/components/public-components/header'
 import Footer from '@/components/public-components/footer'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { CheckCircle, X, ChevronDown, GraduationCap, Globe, Rocket, Languages, Loader2 } from 'lucide-react'
+import { CheckCircle, ChevronDown, GraduationCap, Globe, Rocket, Languages, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useSearchParams } from 'next/navigation'
 import { getPlans, getPricingPlansForProduct } from '@/lib/actions/commercial'
@@ -30,7 +29,7 @@ export default function PricingPage() {
     const fetchPlans = async () => {
       try {
         setLoading(true)
-        let fetchedPlans: any[] = []
+        let fetchedPlans: PlanWithFeatures[] = []
 
         if (productId) {
           fetchedPlans = await getPricingPlansForProduct(productId)
@@ -44,13 +43,13 @@ export default function PricingPage() {
           fetchedPlans = await getPlans()
         }
 
-        setPlans(fetchedPlans as any)
+        setPlans(fetchedPlans)
 
         // Extract unique feature names for the table
         const featureSet = new Set<string>()
-        fetchedPlans.forEach((plan: any) => {
+        fetchedPlans.forEach((plan) => {
           if (plan.features) {
-            plan.features.forEach((pf: any) => {
+            plan.features.forEach((pf) => {
               if (pf.feature?.name) featureSet.add(pf.feature.name)
             })
           }
@@ -65,7 +64,7 @@ export default function PricingPage() {
     }
 
     fetchPlans()
-  }, [])
+  }, [productId])
 
   return (
     <div className="min-h-screen bg-background-light dark:bg-background-dark flex flex-col">
@@ -105,7 +104,7 @@ export default function PricingPage() {
                     No hay planes disponibles en este momento.
                   </div>
                 )}
-                {plans.map((plan, index) => {
+                {plans.map((plan) => {
                   const isPopular = plan.isPopular
 
                   return (
@@ -214,7 +213,7 @@ export default function PricingPage() {
                       <tr key={idx} className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
                         <td className="py-4 px-6 font-medium text-slate-900 dark:text-white">{featureName}</td>
                         {plans.map(plan => {
-                          const pf = plan.features?.find((f: any) => f.feature.name === featureName)
+                          const pf = plan.features?.find((f) => f.feature.name === featureName)
                           const included = pf?.included
                           return (
                             <td key={plan.id} className="py-4 px-6 text-center">

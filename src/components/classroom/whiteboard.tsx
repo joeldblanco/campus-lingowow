@@ -93,6 +93,19 @@ export function Whiteboard({ bookingId }: WhiteboardProps) {
     loadData()
   }, [bookingId])
 
+  const redrawCanvas = useCallback(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    ctx.fillStyle = '#FFFFFF'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+    actions.forEach((action) => drawAction(ctx, action))
+    if (currentAction) drawAction(ctx, currentAction)
+  }, [actions, currentAction])
+
   // Initialize canvas
   useEffect(() => {
     const canvas = canvasRef.current
@@ -109,20 +122,7 @@ export function Whiteboard({ bookingId }: WhiteboardProps) {
     resizeCanvas()
     window.addEventListener('resize', resizeCanvas)
     return () => window.removeEventListener('resize', resizeCanvas)
-  }, [])
-
-  const redrawCanvas = useCallback(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    ctx.fillStyle = '#FFFFFF'
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-    actions.forEach((action) => drawAction(ctx, action))
-    if (currentAction) drawAction(ctx, currentAction)
-  }, [actions, currentAction])
+  }, [redrawCanvas])
 
   useEffect(() => {
     redrawCanvas()
