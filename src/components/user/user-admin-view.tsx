@@ -5,7 +5,7 @@ import { UserCreateDialog } from '@/components/user/user-create-dialog'
 import { UsersDataTable } from '@/components/user/users-data-table'
 import { createUser, deleteUser, updateUser, getAllUsers, deleteMultipleUsers } from '@/lib/actions/user'
 import { CreateUserSchema } from '@/schemas/user'
-import { User, UserRole } from '@prisma/client'
+import { User } from '@prisma/client'
 import { Plus } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
@@ -23,10 +23,7 @@ export default function UserAdminView() {
         if ('error' in response) {
           toast.error(response.error)
         } else {
-          const usersWithoutTeachers = response.filter(
-            (user) => !user.roles.includes(UserRole.TEACHER)
-          )
-          setUsers(usersWithoutTeachers)
+          setUsers(response)
         }
       } catch {
         toast.error('Error al cargar los usuarios')

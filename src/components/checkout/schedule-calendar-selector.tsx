@@ -184,6 +184,14 @@ export function ScheduleCalendarSelector({
   const handleSlotClick = (day: string, time: string) => {
     // Limpiar el formato del time - solo tomar la hora de inicio si viene con rango
     const cleanTime = time.includes('-') ? time.split('-')[0].trim() : time
+    
+    // Verificar que el slot comienza en hora puntual (XX:00)
+    const [, minutes] = cleanTime.split(':').map(Number)
+    if (minutes !== 0) {
+      toast.error('Solo puedes seleccionar clases que comiencen en horas puntuales (XX:00)')
+      return
+    }
+    
     const slotKey = `${day}_${cleanTime}`
 
     const newSelectedSlots = new Set(selectedSlots)
@@ -373,7 +381,7 @@ export function ScheduleCalendarSelector({
               onStartDrag={() => {}}
               onDrag={() => {}}
               onEndDrag={() => {}}
-              bookingMode={classDuration === 40 ? '40min' : '90min'}
+              bookingMode={`${classDuration}min`}
               is12HourFormat={false}
             />
 

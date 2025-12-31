@@ -15,7 +15,6 @@ import {
 } from '@tanstack/react-table'
 import { ArrowUpDown, ChevronDown, MoreVertical, Pencil, Trash, Eye, BookOpen, Search } from 'lucide-react'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
 import { impersonateUser } from '@/lib/actions/impersonate'
 
 import { Button } from '@/components/ui/button'
@@ -64,7 +63,6 @@ export function UsersDataTable({
   const [editingUser, setEditingUser] = useState<User | null>(null)
 
   const [isPending, startTransition] = useTransition()
-  const router = useRouter()
 
   const handleImpersonate = (userId: string) => {
     startTransition(() => {
@@ -76,9 +74,8 @@ export function UsersDataTable({
             toast.success('Suplantación iniciada', {
               description: 'Redirigiendo...',
             })
-            // Redirigir después de suplantación exitosa
-            router.push('/dashboard')
-            router.refresh()
+            // Forzar recarga completa para actualizar la sesión
+            window.location.href = '/dashboard'
           }
         })
         .catch((error) => {

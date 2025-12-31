@@ -6,7 +6,7 @@ export interface AvailabilityRange {
   endTime: string // formato "HH:MM"
 }
 
-// Función modificada para generar slots que comienzan en horas exactas
+// Función para generar slots que comienzan solo en horas exactas (XX:00)
 export function generateTimeSlots(
   slotDuration: number,
   startHour: number = 8,
@@ -17,15 +17,15 @@ export function generateTimeSlots(
     return `${Math.floor(hour).toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
   }
 
-  // Recorrer cada hora del rango
+  // Recorrer cada hora del rango, pero solo en horas exactas
   for (let hour = Math.floor(startHour); hour < Math.ceil(endHour); hour++) {
-    // Solo crear un slot por hora que comience en punto (minuto 0)
+    // Solo crear slots que comiencen en horas puntuales (minuto 0)
     const startMinute = 0
 
     // Comprobar que la hora de inicio está dentro del rango
     if (hour < startHour) continue
 
-    // Calcular hora y minuto final
+    // Calcular hora y minuto final basado en la duración del slot
     const endTimeMinutes = hour * 60 + startMinute + slotDuration
     const endHourValue = Math.floor(endTimeMinutes / 60)
     const endMinuteValue = endTimeMinutes % 60

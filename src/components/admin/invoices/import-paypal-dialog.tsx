@@ -74,7 +74,13 @@ export function ImportPaypalDialog({ children }: { children: React.ReactNode }) 
                                 // Matches patterns like: invoice/p/#ID, invoice/s/ID, checking out with token=ID, etc.
                                 // Simple approach: if contains http/https, try to find the last alphanumeric segment or specific patterns
                                 if (val.includes('http')) {
-                                    const invoiceMatch = val.match(/invoice\/p\/#([A-Za-z0-9]+)|invoice\/s\/([A-Za-z0-9]+)/)
+                                    // Handle invoice URLs like /invoice/s/details/INV2-YJGW-N96E-PM2E-WG9V
+                                    const invoiceDetailsMatch = val.match(/invoice\/s\/details\/(INV2-[A-Za-z0-9-]+)/)
+                                    if (invoiceDetailsMatch) {
+                                        setOrderId(invoiceDetailsMatch[1])
+                                        return
+                                    }
+                                    const invoiceMatch = val.match(/invoice\/p\/#([A-Za-z0-9-]+)|invoice\/s\/([A-Za-z0-9-]+)/)
                                     if (invoiceMatch) {
                                         setOrderId(invoiceMatch[1] || invoiceMatch[2])
                                         return

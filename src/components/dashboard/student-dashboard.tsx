@@ -173,7 +173,7 @@ export default function Dashboard() {
             </div>
             <span className="text-slate-900 dark:text-white text-sm font-medium">Actividades</span>
           </Link>
-          <Link href="/calendar" className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer">
+          <Link href="/schedule" className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer">
             <div className="rounded-full bg-green-50 dark:bg-green-900/30 p-3 text-green-600 dark:text-green-400">
               <Calendar className="w-5 h-5" />
             </div>
@@ -290,7 +290,7 @@ export default function Dashboard() {
           <div className="bg-white dark:bg-card-dark p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-slate-900 dark:text-white text-lg font-bold">Próximas Clases</h3>
-              <Link href="/calendar" className="text-slate-500 dark:text-slate-400 hover:text-primary">
+              <Link href="/schedule" className="text-slate-500 dark:text-slate-400 hover:text-primary">
                 <Calendar className="w-5 h-5" />
               </Link>
             </div>

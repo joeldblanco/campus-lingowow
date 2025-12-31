@@ -47,7 +47,9 @@ type FormData = z.infer<typeof RescheduleClassSchema>
 
 export function RescheduleClassDialog({ classItem, children }: RescheduleClassDialogProps) {
   const [open, setOpen] = useState(false)
-  const [availableTeachers, setAvailableTeachers] = useState<Array<{ id: string; name: string; lastName: string; email: string }>>([])
+  const [availableTeachers, setAvailableTeachers] = useState<
+    Array<{ id: string; name: string; lastName: string; email: string }>
+  >([])
 
   const form = useForm<FormData>({
     resolver: zodResolver(RescheduleClassSchema),
@@ -78,14 +80,23 @@ export function RescheduleClassDialog({ classItem, children }: RescheduleClassDi
 
   const generateTimeSlots = () => {
     const slots = []
+    // Solo generar slots que comiencen en horas puntuales (XX:00)
     for (let hour = 8; hour <= 20; hour++) {
-      for (let minute = 0; minute < 60; minute += 30) {
-        const startTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
-        const endHour = minute === 30 ? hour + 1 : hour
-        const endMinute = minute === 30 ? 0 : 30
-        const endTime = `${endHour.toString().padStart(2, '0')}:${endMinute.toString().padStart(2, '0')}`
-        slots.push(`${startTime}-${endTime}`)
-      }
+      // Solo usar minuto 0 (hora puntual)
+      const minute = 0
+      const startTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
+
+      // Obtener la duración real de la clase desde el objeto classItem
+      // Si no está disponible, usar 40 minutos como valor predeterminado
+      const classDuration = classItem.enrollment?.course?.classDuration || 40 // Duración en minutos
+
+      // Calcular hora y minuto final
+      const totalMinutes = hour * 60 + minute + classDuration
+      const endHour = Math.floor(totalMinutes / 60)
+      const endMinute = totalMinutes % 60
+      const endTime = `${endHour.toString().padStart(2, '0')}:${endMinute.toString().padStart(2, '0')}`
+
+      slots.push(`${startTime}-${endTime}`)
     }
     return slots
   }
@@ -191,7 +202,10 @@ export function RescheduleClassDialog({ classItem, children }: RescheduleClassDi
               </Button>
               <Button
                 type="submit"
-                disabled={form.formState.isSubmitting || (watchedDate && watchedTimeSlot ? !isTeacherAvailable() : false)}
+                disabled={
+                  form.formState.isSubmitting ||
+                  (watchedDate && watchedTimeSlot ? !isTeacherAvailable() : false)
+                }
               >
                 {form.formState.isSubmitting ? 'Reagendando...' : 'Reagendar'}
               </Button>

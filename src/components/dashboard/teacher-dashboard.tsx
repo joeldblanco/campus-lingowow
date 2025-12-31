@@ -27,9 +27,9 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
   // Funciones de navegación
   const handleStartClass = (classId: string) => router.push(`/classroom?classId=${classId}`)
   const handlePrepareClass = (courseId: string) => router.push(`/admin/courses/${courseId}/edit`)
-  const handleNewActivity = () => router.push('/admin/activities/new')
-  const handleEditSchedule = () => router.push('/admin/schedule')
-  const handleViewAllSchedule = () => router.push('/calendar')
+  const handleNewActivity = () => router.push('/activities')
+  const handleEditSchedule = () => router.push('/schedule')
+  const handleViewAllSchedule = () => router.push('/schedule')
   
   // Obtener la próxima clase para el botón de acción rápida
   const nextClass = dashboardData.upcomingClasses[0]

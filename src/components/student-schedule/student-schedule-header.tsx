@@ -1,0 +1,186 @@
+'use client'
+
+import { Button } from '@/components/ui/button'
+import { ChevronLeft, ChevronRight, Plus, Rows3, Rows4 } from 'lucide-react'
+import { format, addDays, addWeeks, addMonths, startOfWeek, endOfWeek } from 'date-fns'
+import { es } from 'date-fns/locale'
+import type { ScheduleViewType } from '@/types/schedule'
+
+interface StudentScheduleHeaderProps {
+  currentDate: Date
+  viewType: ScheduleViewType
+  onDateChange: (date: Date) => void
+  onViewChange: (view: ScheduleViewType) => void
+  onBookLesson?: () => void
+  lessonsCount?: number
+  isCompact?: boolean
+  onToggleCompact?: () => void
+}
+
+export function StudentScheduleHeader({
+  currentDate,
+  viewType,
+  onDateChange,
+  onViewChange,
+  onBookLesson,
+  lessonsCount,
+  isCompact = false,
+  onToggleCompact,
+}: StudentScheduleHeaderProps) {
+  const goToToday = () => onDateChange(new Date())
+
+  const goToPrevious = () => {
+    switch (viewType) {
+      case 'day':
+        onDateChange(addDays(currentDate, -1))
+        break
+      case 'week':
+        onDateChange(addWeeks(currentDate, -1))
+        break
+      case 'month':
+        onDateChange(addMonths(currentDate, -1))
+        break
+    }
+  }
+
+  const goToNext = () => {
+    switch (viewType) {
+      case 'day':
+        onDateChange(addDays(currentDate, 1))
+        break
+      case 'week':
+        onDateChange(addWeeks(currentDate, 1))
+        break
+      case 'month':
+        onDateChange(addMonths(currentDate, 1))
+        break
+    }
+  }
+
+  const getDateDisplay = () => {
+    switch (viewType) {
+      case 'day':
+        return format(currentDate, "EEEE, d 'de' MMMM", { locale: es })
+      case 'week':
+        const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 })
+        const weekEnd = endOfWeek(currentDate, { weekStartsOn: 1 })
+        if (weekStart.getMonth() === weekEnd.getMonth()) {
+          return `${format(weekStart, 'd')} - ${format(weekEnd, "d 'de' MMMM", { locale: es })}`
+        }
+        return `${format(weekStart, "d 'de' MMM", { locale: es })} - ${format(weekEnd, "d 'de' MMM", { locale: es })}`
+      case 'month':
+        return format(currentDate, "MMMM yyyy", { locale: es })
+    }
+  }
+
+  const getSubtitle = () => {
+    switch (viewType) {
+      case 'day':
+        return lessonsCount !== undefined ? `${lessonsCount} clases programadas` : null
+      case 'week':
+        return 'Zona horaria: America/Lima (GMT-5)'
+      case 'month':
+        return 'Zona horaria: America/Lima (GMT-5)'
+    }
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Page Title */}
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex min-w-72 flex-col gap-1">
+          <h1 className="text-3xl font-black leading-tight tracking-tight text-foreground">
+            Mi Horario
+          </h1>
+          <p className="text-muted-foreground text-base font-normal">
+            {viewType === 'day' 
+              ? `Vista Diaria - ${format(currentDate, "EEEE, d 'de' MMMM yyyy", { locale: es })}`
+              : 'Visualiza tus clases programadas y materiales de estudio.'
+            }
+          </p>
+        </div>
+        <div className="flex gap-3">
+          <Button onClick={onBookLesson} className="shadow-md">
+            <Plus className="mr-2 h-4 w-4" />
+            <span className="truncate">Reservar Clase</span>
+          </Button>
+        </div>
+      </div>
+
+      {/* Toolbar */}
+      <div className="flex flex-col gap-4 rounded-xl bg-card p-4 shadow-sm border md:flex-row md:items-center md:justify-between">
+        {/* Date Navigation */}
+        <div className="flex items-center gap-4">
+          <div className="flex items-center rounded-lg border bg-background p-1 shadow-sm">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={goToPrevious}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              className="px-3 h-8 text-sm font-bold"
+              onClick={goToToday}
+            >
+              Hoy
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={goToNext}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-lg font-bold text-foreground capitalize">
+              {getDateDisplay()}
+            </span>
+            {getSubtitle() && (
+              <span className="text-xs font-medium text-muted-foreground">
+                {getSubtitle()}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* View Switcher and Compact Toggle */}
+        <div className="flex items-center gap-2">
+          {/* Compact Toggle */}
+          {viewType === 'week' && onToggleCompact && (
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-10 w-10"
+              onClick={onToggleCompact}
+              title={isCompact ? 'Vista normal' : 'Vista compacta'}
+            >
+              {isCompact ? <Rows4 className="h-4 w-4" /> : <Rows3 className="h-4 w-4" />}
+            </Button>
+          )}
+          
+          {/* View Switcher */}
+          <div className="flex h-10 items-center rounded-lg bg-muted p-1">
+            {(['day', 'week', 'month'] as const).map((view) => (
+              <button
+                key={view}
+                onClick={() => onViewChange(view)}
+                className={`h-full px-4 flex items-center justify-center rounded-md text-sm font-medium transition-all ${
+                  viewType === view
+                    ? 'bg-background shadow-sm text-foreground font-bold'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                {view === 'day' ? 'Día' : view === 'week' ? 'Semana' : 'Mes'}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

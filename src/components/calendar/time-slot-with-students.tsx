@@ -21,7 +21,7 @@ interface TimeSlotWithStudentProps {
   onMouseDown?: () => void
   onMouseUp?: () => void
   studentInfo?: { name: string; color: string; bookingId?: string } | null
-  bookingMode?: '40min' | '90min'
+  bookingMode?: string // Identificador del modo de reserva (puede ser cualquier string)
   is12HourFormat?: boolean
   showStudentNames?: boolean
 }
@@ -46,7 +46,19 @@ export function TimeSlotWithStudent({
   const bookedSlotsForDay = bookedSlots[day] || []
 
   // Duración en minutos según el modo seleccionado (para estudiantes)
-  const durationMinutes = userRole === UserRole.STUDENT ? (bookingMode === '40min' ? 40 : 90) : 60 // Profesores usan 60 minutos
+  // Extraer la duración directamente del bookingMode si es posible
+  let durationMinutes = 60; // Valor por defecto para profesores
+  
+  if (userRole === UserRole.STUDENT) {
+    // Intentar extraer la duración del bookingMode (formato: '40min', '90min', etc.)
+    const durationMatch = bookingMode?.match(/^(\d+)min$/);
+    if (durationMatch && durationMatch[1]) {
+      durationMinutes = parseInt(durationMatch[1], 10);
+    } else {
+      // Si no se puede extraer, usar valores predeterminados
+      durationMinutes = bookingMode === '40min' ? 40 : (bookingMode === '90min' ? 90 : 60);
+    }
+  }
 
   // Verificar disponibilidad según duración para estudiantes
   const isAvailable =

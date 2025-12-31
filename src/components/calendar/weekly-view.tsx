@@ -11,7 +11,7 @@ interface WeeklyViewProps {
   teacherAvailability: Record<string, AvailabilityRange[]>
   bookedSlots: Record<string, string[]>
   onSlotAction: (day: string, time: string) => void
-  slotDuration: number
+  slotDuration: number // Duración real de la clase en minutos
   startHour: number
   endHour: number
   isDragging: boolean
@@ -20,7 +20,7 @@ interface WeeklyViewProps {
   onEndDrag: () => void
   showStudentNames?: boolean
   getStudentInfo?: (day: string, time: string) => { name: string; color: string } | null
-  bookingMode?: '40min' | '90min'
+  bookingMode?: string // Identificador del modo de reserva (puede ser cualquier string)
   is12HourFormat?: boolean
 }
 
@@ -29,6 +29,7 @@ export function WeeklyView({
   teacherAvailability,
   bookedSlots,
   onSlotAction,
+  slotDuration,
   startHour,
   endHour,
   isDragging,
@@ -43,10 +44,14 @@ export function WeeklyView({
   const weekDaysEs = ['LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO', 'DOMINGO']
   const weekDaysEn = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
-  // Para profesores, siempre usamos slots de 60 minutos
-  // Para estudiantes, usamos slots que empiezan en hora exacta (independientemente de la duración)
+  // Usar la duración real de la clase para generar los slots
+  // Para profesores, usamos slots de 60 minutos
+  // Para estudiantes, usamos la duración específica del curso pasada como prop
+  const actualDuration = userRole === UserRole.TEACHER ? 60 : slotDuration
+  
+  // Generar slots que solo comiencen en horas puntuales (XX:00)
   const allTimeSlots = generateTimeSlots(
-    userRole === UserRole.TEACHER ? 60 : 60, // Siempre generar slots de 60 min para la visualización
+    actualDuration,
     startHour,
     endHour
   )

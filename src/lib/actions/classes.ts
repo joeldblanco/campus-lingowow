@@ -40,6 +40,7 @@ export interface ClassBookingWithDetails {
       title: string
       language: string
       level: string
+      classDuration?: number
     }
     academicPeriod: {
       id: string
