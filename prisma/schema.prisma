@@ -117,6 +117,11 @@ model User {
   // Relación de blog posts (para editores)
   blogPosts BlogPost[] @relation("BlogAuthor")
 
+  // Relaciones de biblioteca de recursos
+  libraryResources    LibraryResource[]     @relation("LibraryAuthor")
+  libraryLikes        LibraryResourceLike[] @relation("LibraryLikes")
+  librarySaves        LibraryResourceSave[] @relation("LibrarySaves")
+
   // Relaciones de administración de archivos
   uploadedFiles    FileAsset[]       @relation("FileUploader")
   fileUsageLogs    FileUsageLog[]    @relation("FileUser")
@@ -1974,4 +1979,133 @@ enum UsageAction {
   TRANSFORM       // Transformación aplicada
   SHARE           // Compartido
   DELETE          // Eliminado
+}
+
+// =============================================
+// MODELOS DE BIBLIOTECA DE RECURSOS
+// =============================================
+
+model LibraryResource {
+  id              String                @id @default(cuid())
+  title           String
+  slug            String                @unique
+  description     String?
+  excerpt         String?               // Resumen corto para listados
+  type            LibraryResourceType
+  status          LibraryResourceStatus @default(DRAFT)
+  
+  // Contenido según el tipo
+  content         String?               // Contenido HTML para artículos
+  fileUrl         String?               // URL del archivo (PDF, imagen, audio, video)
+  fileSize        Int?                  // Tamaño en bytes
+  fileFormat      String?               // Extensión del archivo (pdf, mp3, mp4, etc.)
+  thumbnailUrl    String?               // Imagen de portada/miniatura
+  duration        Int?                  // Duración en segundos (para audio/video)
+  
+  // Metadatos
+  language        String                @default("es") // Idioma del recurso
+  level           String?               // Nivel de dificultad (A1, A2, B1, B2, C1, C2)
+  tags            String[]              @default([])
+  categoryId      String?
+  authorId        String
+  
+  // Estadísticas
+  viewCount       Int                   @default(0)
+  downloadCount   Int                   @default(0)
+  likeCount       Int                   @default(0)
+  
+  // SEO
+  metaTitle       String?
+  metaDescription String?
+  
+  // Fechas
+  publishedAt     DateTime?
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+
+  // Relaciones
+  category        LibraryCategory?      @relation(fields: [categoryId], references: [id])
+  author          User                  @relation("LibraryAuthor", fields: [authorId], references: [id])
+  userLikes       LibraryResourceLike[]
+  userSaves       LibraryResourceSave[]
+
+  @@index([type])
+  @@index([status])
+  @@index([categoryId])
+  @@index([authorId])
+  @@index([language])
+  @@index([level])
+  @@index([publishedAt])
+  @@map("library_resources")
+}
+
+model LibraryCategory {
+  id              String              @id @default(cuid())
+  name            String
+  slug            String              @unique
+  description     String?
+  icon            String?             // Nombre del icono (lucide)
+  color           String?             // Color para UI
+  sortOrder       Int                 @default(0)
+  isActive        Boolean             @default(true)
+  
+  // Relaciones
+  resources       LibraryResource[]
+
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  @@map("library_categories")
+}
+
+model LibraryResourceLike {
+  id              String              @id @default(cuid())
+  userId          String
+  resourceId      String
+  createdAt       DateTime            @default(now())
+
+  // Relaciones
+  user            User                @relation("LibraryLikes", fields: [userId], references: [id], onDelete: Cascade)
+  resource        LibraryResource     @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, resourceId])
+  @@index([userId])
+  @@index([resourceId])
+  @@map("library_resource_likes")
+}
+
+model LibraryResourceSave {
+  id              String              @id @default(cuid())
+  userId          String
+  resourceId      String
+  createdAt       DateTime            @default(now())
+
+  // Relaciones
+  user            User                @relation("LibrarySaves", fields: [userId], references: [id], onDelete: Cascade)
+  resource        LibraryResource     @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, resourceId])
+  @@index([userId])
+  @@index([resourceId])
+  @@map("library_resource_saves")
+}
+
+enum LibraryResourceType {
+  ARTICLE         // Artículo de blog redactado en la plataforma
+  PDF             // Documento PDF
+  IMAGE           // Imagen
+  AUDIO           // Audio/Podcast
+  VIDEO           // Video
+  INFOGRAPHIC     // Infografía
+  TEMPLATE        // Plantilla descargable
+  EXERCISE_SHEET  // Hoja de ejercicios
+  GRAMMAR_GUIDE   // Guía de gramática
+  VOCABULARY_LIST // Lista de vocabulario
+  OTHER           // Otros
+}
+
+enum LibraryResourceStatus {
+  DRAFT           // Borrador
+  PUBLISHED       // Publicado
+  ARCHIVED        // Archivado
 }

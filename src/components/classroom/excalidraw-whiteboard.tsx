@@ -1,11 +1,12 @@
 'use client'
 
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import { Button } from '@/components/ui/button'
-import { Save, Loader2 } from 'lucide-react'
+import { Save, Loader2, Users } from 'lucide-react'
 import { saveWhiteboardData, getWhiteboardData } from '@/lib/actions/classroom-whiteboard'
 import { toast } from 'sonner'
+import { useLiveKit } from './livekit-context'
 
 // Dynamic import for Excalidraw (client-side only)
 const Excalidraw = dynamic(
@@ -15,15 +16,22 @@ const Excalidraw = dynamic(
 
 interface ExcalidrawWhiteboardProps {
   bookingId?: string
+  isTeacher?: boolean
 }
 
-export function ExcalidrawWhiteboard({ bookingId }: ExcalidrawWhiteboardProps) {
+export function ExcalidrawWhiteboard({ bookingId, isTeacher = false }: ExcalidrawWhiteboardProps) {
+  const { sendCommand, addCommandListener, removeCommandListener, connectionStatus } = useLiveKit()
+  
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
+  const [isCollaborating, setIsCollaborating] = useState(false)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [initialData, setInitialData] = useState<any[] | null>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [excalidrawAPI, setExcalidrawAPI] = useState<any>(null)
+  
+  const lastSyncRef = useRef<number>(0)
+  const syncThrottleRef = useRef<NodeJS.Timeout | null>(null)
 
   // Load saved data
   useEffect(() => {
@@ -45,6 +53,55 @@ export function ExcalidrawWhiteboard({ bookingId }: ExcalidrawWhiteboardProps) {
     }
     loadData()
   }, [bookingId])
+
+  // Listen for remote whiteboard updates
+  useEffect(() => {
+    if (connectionStatus !== 'connected') return
+
+    const handleWhiteboardSync = (data: Record<string, unknown>) => {
+      if (data.type === 'WHITEBOARD_UPDATE' && excalidrawAPI) {
+        // Prevent processing our own updates
+        if (Date.now() - lastSyncRef.current < 100) return
+        
+        const elements = data.elements as unknown[]
+        if (elements && Array.isArray(elements)) {
+          excalidrawAPI.updateScene({ elements })
+          setIsCollaborating(true)
+          // Reset collaborating indicator after 2 seconds
+          setTimeout(() => setIsCollaborating(false), 2000)
+        }
+      }
+    }
+
+    addCommandListener('whiteboard-sync', handleWhiteboardSync)
+    return () => removeCommandListener('whiteboard-sync', handleWhiteboardSync)
+  }, [connectionStatus, excalidrawAPI, addCommandListener, removeCommandListener])
+
+  // Send whiteboard updates to remote participants (throttled)
+  const syncWhiteboardElements = useCallback(() => {
+    if (!excalidrawAPI) return
+    
+    // Clear existing throttle
+    if (syncThrottleRef.current) {
+      clearTimeout(syncThrottleRef.current)
+    }
+
+    // Throttle to max 10 updates per second
+    syncThrottleRef.current = setTimeout(() => {
+      const elements = excalidrawAPI.getSceneElements()
+      lastSyncRef.current = Date.now()
+      sendCommand('whiteboard-sync', {
+        type: 'WHITEBOARD_UPDATE',
+        elements,
+        participantId: isTeacher ? 'teacher' : 'student',
+      })
+    }, 100)
+  }, [excalidrawAPI, sendCommand, isTeacher])
+
+  // Handle Excalidraw onChange
+  const handleChange = useCallback(() => {
+    syncWhiteboardElements()
+  }, [syncWhiteboardElements])
 
   const handleSave = useCallback(async () => {
     if (!bookingId || !excalidrawAPI) {
@@ -79,9 +136,23 @@ export function ExcalidrawWhiteboard({ bookingId }: ExcalidrawWhiteboardProps) {
 
   return (
     <div className="h-full flex flex-col bg-white rounded-xl overflow-hidden border">
-      {/* Save Button */}
+      {/* Header with Save Button and Collaboration Indicator */}
       {bookingId && (
-        <div className="flex-none p-2 border-b bg-gray-50 flex justify-end z-10">
+        <div className="flex-none p-2 border-b bg-gray-50 flex items-center justify-between z-10">
+          <div className="flex items-center gap-2">
+            {isCollaborating && (
+              <div className="flex items-center gap-1.5 text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full animate-pulse">
+                <Users className="w-3 h-3" />
+                <span>Colaborando...</span>
+              </div>
+            )}
+            {connectionStatus === 'connected' && !isCollaborating && (
+              <div className="flex items-center gap-1.5 text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
+                <Users className="w-3 h-3" />
+                <span>Pizarra compartida</span>
+              </div>
+            )}
+          </div>
           <Button
             variant="outline"
             size="sm"
@@ -111,6 +182,7 @@ export function ExcalidrawWhiteboard({ bookingId }: ExcalidrawWhiteboardProps) {
           }}
           langCode="es-ES"
           theme="light"
+          onChange={handleChange}
         />
       </div>
     </div>

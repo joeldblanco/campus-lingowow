@@ -1,10 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import {
   ClassBookingWithDetails,
   rescheduleClass,
   getAvailableTeachers,
+  getTeacherAvailableTimeSlots,
 } from '@/lib/actions/classes'
 import { Button } from '@/components/ui/button'
 import {
@@ -46,10 +48,12 @@ interface RescheduleClassDialogProps {
 type FormData = z.infer<typeof RescheduleClassSchema>
 
 export function RescheduleClassDialog({ classItem, children }: RescheduleClassDialogProps) {
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const [availableTeachers, setAvailableTeachers] = useState<
     Array<{ id: string; name: string; lastName: string; email: string }>
   >([])
+  const [availableTimeSlots, setAvailableTimeSlots] = useState<string[]>([])
 
   const form = useForm<FormData>({
     resolver: zodResolver(RescheduleClassSchema),
@@ -62,6 +66,33 @@ export function RescheduleClassDialog({ classItem, children }: RescheduleClassDi
 
   const watchedDate = form.watch('newDate')
   const watchedTimeSlot = form.watch('newTimeSlot')
+
+  useEffect(() => {
+    const fetchAvailableTimeSlots = async () => {
+      try {
+        const courseId = classItem.enrollment?.course?.id
+        if (courseId) {
+          const slots = await getTeacherAvailableTimeSlots(
+            classItem.teacherId,
+            watchedDate,
+            courseId
+          )
+          setAvailableTimeSlots(slots)
+          // Si el slot actual no está en los disponibles, limpiar la selección
+          if (slots.length > 0 && !slots.includes(form.getValues('newTimeSlot'))) {
+            form.setValue('newTimeSlot', '')
+          }
+        }
+      } catch {
+        console.error('Error fetching available time slots')
+        setAvailableTimeSlots([])
+      }
+    }
+
+    if (watchedDate) {
+      fetchAvailableTimeSlots()
+    }
+  }, [watchedDate, classItem.teacherId, classItem.enrollment?.course?.id, form])
 
   useEffect(() => {
     const checkTeacherAvailability = async () => {
@@ -78,29 +109,6 @@ export function RescheduleClassDialog({ classItem, children }: RescheduleClassDi
     }
   }, [watchedDate, watchedTimeSlot])
 
-  const generateTimeSlots = () => {
-    const slots = []
-    // Solo generar slots que comiencen en horas puntuales (XX:00)
-    for (let hour = 8; hour <= 20; hour++) {
-      // Solo usar minuto 0 (hora puntual)
-      const minute = 0
-      const startTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
-
-      // Obtener la duración real de la clase desde el objeto classItem
-      // Si no está disponible, usar 40 minutos como valor predeterminado
-      const classDuration = classItem.enrollment?.course?.classDuration || 40 // Duración en minutos
-
-      // Calcular hora y minuto final
-      const totalMinutes = hour * 60 + minute + classDuration
-      const endHour = Math.floor(totalMinutes / 60)
-      const endMinute = totalMinutes % 60
-      const endTime = `${endHour.toString().padStart(2, '0')}:${endMinute.toString().padStart(2, '0')}`
-
-      slots.push(`${startTime}-${endTime}`)
-    }
-    return slots
-  }
-
   const onSubmit = async (values: FormData) => {
     try {
       const result = await rescheduleClass(classItem.id, values.newDate, values.newTimeSlot)
@@ -108,7 +116,7 @@ export function RescheduleClassDialog({ classItem, children }: RescheduleClassDi
       if (result.success) {
         toast.success('Clase reagendada exitosamente')
         setOpen(false)
-        window.location.reload()
+        router.refresh()
       } else {
         toast.error(result.error || 'Error al reagendar la clase')
       }
@@ -170,11 +178,17 @@ export function RescheduleClassDialog({ classItem, children }: RescheduleClassDi
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {generateTimeSlots().map((slot) => (
-                          <SelectItem key={slot} value={slot}>
-                            {slot}
-                          </SelectItem>
-                        ))}
+                        {availableTimeSlots.length > 0 ? (
+                          availableTimeSlots.map((slot) => (
+                            <SelectItem key={slot} value={slot}>
+                              {slot}
+                            </SelectItem>
+                          ))
+                        ) : (
+                          <div className="px-2 py-4 text-sm text-muted-foreground text-center">
+                            No hay horarios disponibles para este día
+                          </div>
+                        )}
                       </SelectContent>
                     </Select>
                     <FormMessage />

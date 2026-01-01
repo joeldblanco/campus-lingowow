@@ -8,9 +8,10 @@ interface ActiveLessonViewerProps {
   lessonId?: string
   lessonData?: LessonForView
   isLoading?: boolean
+  isTeacher?: boolean
 }
 
-export function ActiveLessonViewer({ lessonData, isLoading }: ActiveLessonViewerProps) {
+export function ActiveLessonViewer({ lessonData, isLoading, isTeacher }: ActiveLessonViewerProps) {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-gray-400">
@@ -36,7 +37,7 @@ export function ActiveLessonViewer({ lessonData, isLoading }: ActiveLessonViewer
   return (
     <div className="w-full h-full">
       {/* We reuse the existing LessonContent component which handles displaying blocks */}
-      <LessonContent lesson={lessonData} />
+      <LessonContent lesson={lessonData} isTeacher={isTeacher} />
     </div>
   )
 }

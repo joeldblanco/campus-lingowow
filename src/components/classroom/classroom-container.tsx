@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { getLessonContent } from '@/lib/actions/classroom'
 import { LessonForView } from '@/types/lesson'
-import { BookOpen, Loader2, Monitor, PenTool } from 'lucide-react'
+import { BookOpen, Loader2, PenTool, Monitor } from 'lucide-react'
 import { useCallback, useEffect, useState, useRef } from 'react'
 import { toast } from 'sonner'
 import { startRecording, stopRecording } from '@/lib/actions/classroom-recording'
@@ -15,6 +15,9 @@ import { LessonSelector } from './lesson-selector'
 import { VideoGrid } from './video-grid'
 import { ExcalidrawWhiteboard } from './excalidraw-whiteboard'
 import { ClassroomChat } from './classroom-chat'
+import { CollaborationProvider } from './collaboration-context'
+import { CollaborativeContentWrapper } from './collaborative-content-wrapper'
+import { ScreenShareViewer } from './screen-share-viewer'
 
 interface ClassroomContainerProps {
   roomName: string
@@ -249,19 +252,15 @@ function ClassroomInner({
 
     switch (mainContentTab) {
       case 'whiteboard':
-        return <ExcalidrawWhiteboard bookingId={bookingId} />
+        return <ExcalidrawWhiteboard bookingId={bookingId} isTeacher={isTeacher} />
       case 'screenshare':
-        return (
-          <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-xl">
-            <div className="text-center text-gray-500">
-              <Monitor className="w-16 h-16 mx-auto mb-4 opacity-50" />
-              <p className="text-lg font-medium">Compartir Pantalla</p>
-              <p className="text-sm">Usa el botón de compartir pantalla en la barra de controles</p>
-            </div>
-          </div>
-        )
+        return <ScreenShareViewer isTeacher={isTeacher} />
       default:
-        return <ActiveLessonViewer lessonData={activeLesson} />
+        return (
+          <CollaborativeContentWrapper className="h-full overflow-auto">
+            <ActiveLessonViewer lessonData={activeLesson} isTeacher={isTeacher} />
+          </CollaborativeContentWrapper>
+        )
     }
   }
 
@@ -304,6 +303,15 @@ function ClassroomInner({
             <PenTool className="w-4 h-4" />
             Pizarra
           </Button>
+          <Button
+            variant={mainContentTab === 'screenshare' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => setMainContentTab('screenshare')}
+            className="gap-2"
+          >
+            <Monitor className="w-4 h-4" />
+            Pantalla
+          </Button>
         </div>
       }
     >
@@ -315,7 +323,12 @@ function ClassroomInner({
 export function ClassroomContainer(props: ClassroomContainerProps) {
   return (
     <LiveKitProvider>
-      <ClassroomInner {...props} />
+      <CollaborationProvider 
+        isTeacher={props.isTeacher} 
+        participantName={props.userDisplayName}
+      >
+        <ClassroomInner {...props} />
+      </CollaborationProvider>
     </LiveKitProvider>
   )
 }

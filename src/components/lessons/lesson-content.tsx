@@ -7,9 +7,10 @@ import { Block } from '@/types/course-builder'
 
 interface LessonContentProps {
     lesson: LessonForView
+    isTeacher?: boolean
 }
 
-export function LessonContent({ lesson }: LessonContentProps) {
+export function LessonContent({ lesson, isTeacher }: LessonContentProps) {
     if (!lesson.contents || lesson.contents.length === 0) {
         return (
             <div className="text-center py-12 text-gray-500">
@@ -36,8 +37,8 @@ export function LessonContent({ lesson }: LessonContentProps) {
             )}
 
             {blocks.map((block) => (
-                <div key={block.id} className="scroll-mt-20">
-                    <BlockPreview block={block} />
+                <div key={block.id} className="scroll-mt-20" data-block-id={block.id}>
+                    <BlockPreview block={block} isTeacher={isTeacher} />
                 </div>
             ))}
         </div>
