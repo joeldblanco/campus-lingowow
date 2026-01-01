@@ -57,6 +57,7 @@ import { cn } from '@/lib/utils'
 
 interface BlockPreviewProps {
   block: Block
+  isTeacher?: boolean
 }
 
 export function BlockPreview({ block }: BlockPreviewProps) {

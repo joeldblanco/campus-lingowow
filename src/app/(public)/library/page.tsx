@@ -31,18 +31,18 @@ import {
   Globe,
   Briefcase,
   Calendar,
-  Image,
+  Image as ImageIcon,
   BarChart3,
   FileCode,
   ClipboardList,
   List,
   File,
   Eye,
-  Download,
   Heart,
 } from 'lucide-react'
 import Link from 'next/link'
-import { useSearchParams, useRouter } from 'next/navigation'
+import NextImage from 'next/image'
+import { useSearchParams } from 'next/navigation'
 import { LibraryResourceType } from '@prisma/client'
 import type { LibraryResource, LibraryCategory, LibraryResourcesResponse } from '@/lib/types/library'
 import { RESOURCE_TYPE_LABELS } from '@/lib/types/library'
@@ -56,7 +56,7 @@ const resourceFormats: { id: LibraryResourceType; label: string; icon: string }[
   { id: 'VIDEO', label: 'Video', icon: 'Video' },
   { id: 'PDF', label: 'PDF', icon: 'FileIcon' },
   { id: 'AUDIO', label: 'Audio', icon: 'Headphones' },
-  { id: 'IMAGE', label: 'Imagen', icon: 'Image' },
+  { id: 'IMAGE', label: 'Imagen', icon: 'ImageIcon' },
   { id: 'INFOGRAPHIC', label: 'Infografía', icon: 'BarChart3' },
 ]
 
@@ -66,7 +66,7 @@ const IconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Video,
   FileIcon,
   Headphones,
-  Image,
+  ImageIcon,
   BarChart3,
   FileCode,
   ClipboardList,
@@ -80,7 +80,7 @@ const getTypeIcon = (type: LibraryResourceType) => {
   const iconMap: Record<LibraryResourceType, React.ReactNode> = {
     ARTICLE: <FileText className="h-3.5 w-3.5" />,
     PDF: <FileIcon className="h-3.5 w-3.5" />,
-    IMAGE: <Image className="h-3.5 w-3.5" />,
+    IMAGE: <ImageIcon className="h-3.5 w-3.5" />,
     AUDIO: <Headphones className="h-3.5 w-3.5" />,
     VIDEO: <Video className="h-3.5 w-3.5" />,
     INFOGRAPHIC: <BarChart3 className="h-3.5 w-3.5" />,
@@ -119,7 +119,6 @@ const formatDuration = (seconds: number | null) => {
 }
 
 export default function LibraryPage() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   
   const [resources, setResources] = useState<LibraryResource[]>([])
@@ -406,9 +405,11 @@ export default function LibraryPage() {
                     <div className="flex items-center gap-4 text-sm text-slate-300">
                       <div className="flex items-center gap-2">
                         {featuredResource.author.image ? (
-                          <img 
+                          <NextImage 
                             src={featuredResource.author.image} 
                             alt={featuredResource.author.name}
+                            width={24}
+                            height={24}
                             className="size-6 rounded-full object-cover"
                           />
                         ) : (
@@ -506,9 +507,11 @@ export default function LibraryPage() {
                         <div className="pt-4 border-t flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             {resource.author.image ? (
-                              <img 
+                              <NextImage 
                                 src={resource.author.image} 
                                 alt={resource.author.name}
+                                width={24}
+                                height={24}
                                 className="size-6 rounded-full object-cover"
                               />
                             ) : (
