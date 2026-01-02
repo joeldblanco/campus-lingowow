@@ -2,7 +2,20 @@ import { Prisma } from '@prisma/client'
 
 // Prisma-generated types for courses with relations
 export type CourseWithDetails = Prisma.CourseGetPayload<{
-  include: {
+  select: {
+    id: true
+    title: true
+    description: true
+    language: true
+    level: true
+    isPublished: true
+    classDuration: true
+    image: true
+    isPersonalized: true
+    isSynchronous: true
+    createdById: true
+    createdAt: true
+    updatedAt: true
     createdBy: {
       select: {
         name: true
@@ -22,9 +35,6 @@ export type CourseWithDetails = Prisma.CourseGetPayload<{
             lessons: true
           }
         }
-      }
-      orderBy: {
-        order: 'asc'
       }
     }
     enrollments: {

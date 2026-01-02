@@ -9,7 +9,20 @@ import * as z from 'zod'
 export async function getAllCourses(): Promise<CourseWithDetails[]> {
   try {
     const courses = await db.course.findMany({
-      include: {
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        language: true,
+        level: true,
+        isPublished: true,
+        classDuration: true,
+        image: true,
+        isPersonalized: true,
+        isSynchronous: true,
+        createdById: true,
+        createdAt: true,
+        updatedAt: true,
         createdBy: {
           select: {
             name: true,
@@ -69,7 +82,20 @@ export async function getCourseById(id: string): Promise<CourseWithDetails | nul
   try {
     const course = await db.course.findUnique({
       where: { id },
-      include: {
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        language: true,
+        level: true,
+        isPublished: true,
+        classDuration: true,
+        image: true,
+        isPersonalized: true,
+        isSynchronous: true,
+        createdById: true,
+        createdAt: true,
+        updatedAt: true,
         createdBy: {
           select: {
             name: true,
