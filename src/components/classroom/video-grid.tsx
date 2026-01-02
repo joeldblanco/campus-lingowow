@@ -49,7 +49,7 @@ function VideoTile({ track }: { track: VideoTrack; isTeacher: boolean }) {
   if (!track) return null
 
   return (
-    <Card className="relative w-full aspect-[4/3] bg-gray-900 rounded-lg overflow-hidden border-0 shadow-md">
+    <Card className="relative w-full aspect-[16/10] bg-gray-900 rounded-lg overflow-hidden border-0 shadow-sm">
       {/* Video Element */}
       {track?.videoTrack && !track.isVideoMuted ? (
         <video
@@ -61,9 +61,9 @@ function VideoTile({ track }: { track: VideoTrack; isTeacher: boolean }) {
         />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-700 to-gray-900">
-          <Avatar className="w-12 h-12 border-2 border-white/20">
+          <Avatar className="w-10 h-10 border-2 border-white/20">
             <AvatarImage src={track.avatar} />
-            <AvatarFallback className="text-base font-bold bg-blue-600 text-white">
+            <AvatarFallback className="text-sm font-bold bg-blue-600 text-white">
               {track.name.substring(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
@@ -72,21 +72,21 @@ function VideoTile({ track }: { track: VideoTrack; isTeacher: boolean }) {
 
       {/* Speaking Badge - Top Right */}
       {track.isSpeaking && (
-        <div className="absolute top-2 right-2 bg-blue-500 text-white text-xs font-semibold px-2 py-0.5 rounded">
+        <div className="absolute top-1 right-1 bg-blue-500 text-white text-[10px] font-semibold px-1.5 py-0.5 rounded">
           SPEAKING
         </div>
       )}
 
       {/* Hand Raised Indicator */}
       {track.isHandRaised && (
-        <div className="absolute top-2 right-2 bg-yellow-500 text-white p-1.5 rounded-full shadow-lg animate-bounce">
-          <Hand className="w-4 h-4" />
+        <div className="absolute top-1 right-1 bg-yellow-500 text-white p-1 rounded-full shadow-lg animate-bounce">
+          <Hand className="w-3 h-3" />
         </div>
       )}
 
       {/* Name Badge - Bottom Left */}
-      <div className="absolute bottom-2 left-2 bg-black/70 backdrop-blur-sm px-2 py-1 rounded flex items-center gap-1.5 text-white text-xs font-medium">
-        {track.isMuted && <MicOff className="w-3 h-3 text-red-400" />}
+      <div className="absolute bottom-1 left-1 bg-black/70 backdrop-blur-sm px-1.5 py-0.5 rounded flex items-center gap-1 text-white text-[10px] font-medium">
+        {track.isMuted && <MicOff className="w-2.5 h-2.5 text-red-400" />}
         <span>{track.isLocal ? 'You' : track.name}</span>
       </div>
 
@@ -136,11 +136,15 @@ export function VideoGrid({ localTrack, remoteTracks = [], isTeacher }: VideoGri
     : localTrack || safeStudentMock
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-row gap-2">
       {/* Teacher Video */}
+      <div className="flex-1">
       <VideoTile track={teacherTrack!} isTeacher={true} />
+      </div>
       {/* Student Video */}
+      <div className="flex-1">
       <VideoTile track={studentTrack!} isTeacher={false} />
+      </div>
     </div>
   )
 }

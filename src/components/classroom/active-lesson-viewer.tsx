@@ -1,17 +1,24 @@
 'use client'
 
+import { useState } from 'react'
 import { LessonContent } from '@/components/lessons/lesson-content'
 import { LessonForView } from '@/types/lesson'
-import { Loader2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Loader2, Plus, BookOpen } from 'lucide-react'
+import { ContentPicker } from './content-picker'
+import { ShareableContent } from '@/lib/actions/classroom'
 
 interface ActiveLessonViewerProps {
   lessonId?: string
   lessonData?: LessonForView
   isLoading?: boolean
   isTeacher?: boolean
+  onContentSelect?: (contentId: string, contentType: ShareableContent['type']) => void
 }
 
-export function ActiveLessonViewer({ lessonData, isLoading, isTeacher }: ActiveLessonViewerProps) {
+export function ActiveLessonViewer({ lessonData, isLoading, isTeacher, onContentSelect }: ActiveLessonViewerProps) {
+  const [showContentPicker, setShowContentPicker] = useState(false)
+
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-gray-400">
@@ -21,14 +28,46 @@ export function ActiveLessonViewer({ lessonData, isLoading, isTeacher }: ActiveL
     )
   }
 
+  // Show content picker when teacher clicks the button
+  if (showContentPicker && isTeacher) {
+    return (
+      <ContentPicker
+        onSelect={(contentId, contentType) => {
+          onContentSelect?.(contentId, contentType)
+          setShowContentPicker(false)
+        }}
+        onCancel={() => setShowContentPicker(false)}
+      />
+    )
+  }
+
   if (!lessonData) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-gray-400 bg-white/50 rounded-xl border border-dashed border-gray-300">
         <div className="text-center max-w-sm px-6">
+          <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
+            <BookOpen className="w-8 h-8 text-blue-600" />
+          </div>
           <h3 className="text-lg font-semibold text-gray-700 mb-2">Bienvenido al Aula</h3>
-          <p className="text-sm text-gray-500">
-            El profesor seleccionará el contenido de la clase en breve. Por favor espera un momento.
-          </p>
+          
+          {isTeacher ? (
+            <>
+              <p className="text-sm text-gray-500 mb-6">
+                Selecciona un contenido de la biblioteca para compartirlo con tu estudiante durante la clase.
+              </p>
+              <Button 
+                onClick={() => setShowContentPicker(true)}
+                className="gap-2"
+              >
+                <Plus className="w-4 h-4" />
+                Compartir Contenido
+              </Button>
+            </>
+          ) : (
+            <p className="text-sm text-gray-500">
+              El profesor seleccionará el contenido de la clase en breve. Por favor espera un momento.
+            </p>
+          )}
         </div>
       </div>
     )
@@ -36,7 +75,6 @@ export function ActiveLessonViewer({ lessonData, isLoading, isTeacher }: ActiveL
 
   return (
     <div className="w-full h-full">
-      {/* We reuse the existing LessonContent component which handles displaying blocks */}
       <LessonContent lesson={lessonData} isTeacher={isTeacher} />
     </div>
   )

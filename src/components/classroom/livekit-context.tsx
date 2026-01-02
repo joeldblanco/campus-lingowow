@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useCallback, useContext, useRef, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import {
   Room,
   RoomEvent,
@@ -372,6 +372,17 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
           audioTrack: localAudioTrack,
         }
       : undefined
+
+  // Cleanup on unmount - disconnect from room when navigating away
+  useEffect(() => {
+    return () => {
+      if (roomRef.current) {
+        console.log('[LiveKit] Cleaning up - disconnecting from room')
+        roomRef.current.disconnect()
+        roomRef.current = null
+      }
+    }
+  }, [])
 
   return (
     <LiveKitContext.Provider

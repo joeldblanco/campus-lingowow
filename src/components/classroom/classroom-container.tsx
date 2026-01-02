@@ -11,7 +11,6 @@ import { ActiveLessonViewer } from './active-lesson-viewer'
 import { ClassroomLayout } from './classroom-layout'
 import { ControlBar } from './control-bar'
 import { LiveKitProvider, useLiveKit } from './livekit-context'
-import { LessonSelector } from './lesson-selector'
 import { VideoGrid } from './video-grid'
 import { ExcalidrawWhiteboard } from './excalidraw-whiteboard'
 import { ClassroomChat } from './classroom-chat'
@@ -162,10 +161,10 @@ function ClassroomInner({
     }
   }, [connectionStatus, addCommandListener, fetchAndSetLesson])
 
-  const handleLessonSelect = async (lessonId: string) => {
-    await fetchAndSetLesson(lessonId)
+  const handleContentSelect = async (contentId: string) => {
+    await fetchAndSetLesson(contentId)
     // Broadcast change to students
-    sendCommand('set-lesson', { type: 'SET_LESSON', lessonId })
+    sendCommand('set-lesson', { type: 'SET_LESSON', lessonId: contentId })
   }
 
   const handleEndCall = async () => {
@@ -238,9 +237,7 @@ function ClassroomInner({
     </div>
   )
 
-  const renderLeftSidebar = isTeacher && bookingId ? (
-    <LessonSelector bookingId={bookingId} onLessonSelect={handleLessonSelect} />
-  ) : null
+  const renderLeftSidebar = null
 
   const renderMainContent = () => {
     if (isLoadingLesson) {
@@ -259,7 +256,11 @@ function ClassroomInner({
       default:
         return (
           <CollaborativeContentWrapper className="h-full overflow-auto">
-            <ActiveLessonViewer lessonData={activeLesson} isTeacher={isTeacher} />
+            <ActiveLessonViewer 
+              lessonData={activeLesson} 
+              isTeacher={isTeacher} 
+              onContentSelect={handleContentSelect}
+            />
           </CollaborativeContentWrapper>
         )
     }

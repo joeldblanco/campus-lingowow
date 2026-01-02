@@ -40,7 +40,7 @@ export function ControlBar({
     onEndCall
 }: ControlBarProps) {
     return (
-        <div className="bg-white/90 backdrop-blur-sm border border-gray-200 shadow-xl rounded-full px-6 py-3 flex items-center gap-4 transition-all duration-300 hover:shadow-2xl">
+        <div className="flex items-center gap-1">
             <TooltipProvider>
                 {/* Microphone */}
                 <Tooltip>
@@ -49,12 +49,12 @@ export function ControlBar({
                             variant={isMicMuted ? "destructive" : "ghost"}
                             size="icon"
                             className={cn(
-                                "rounded-full w-12 h-12 transition-all",
+                                "rounded-full w-9 h-9 transition-all",
                                 !isMicMuted && "bg-gray-100 hover:bg-gray-200 text-gray-700"
                             )}
                             onClick={onToggleMic}
                         >
-                            {isMicMuted ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+                            {isMicMuted ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -69,12 +69,12 @@ export function ControlBar({
                             variant={isVideoMuted ? "destructive" : "ghost"}
                             size="icon"
                             className={cn(
-                                "rounded-full w-12 h-12 transition-all",
+                                "rounded-full w-9 h-9 transition-all",
                                 !isVideoMuted && "bg-gray-100 hover:bg-gray-200 text-gray-700"
                             )}
                             onClick={onToggleVideo}
                         >
-                            {isVideoMuted ? <VideoOff className="w-5 h-5" /> : <Video className="w-5 h-5" />}
+                            {isVideoMuted ? <VideoOff className="w-4 h-4" /> : <Video className="w-4 h-4" />}
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -89,12 +89,12 @@ export function ControlBar({
                             variant={isScreenSharing ? "default" : "ghost"}
                             size="icon"
                             className={cn(
-                                "rounded-full w-12 h-12 transition-all",
+                                "rounded-full w-9 h-9 transition-all",
                                 !isScreenSharing && "bg-gray-100 hover:bg-gray-200 text-gray-700"
                             )}
                             onClick={onToggleScreenShare}
                         >
-                            <MonitorUp className="w-5 h-5" />
+                            <MonitorUp className="w-4 h-4" />
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -109,12 +109,12 @@ export function ControlBar({
                             variant={isHandRaised ? "default" : "ghost"}
                             size="icon"
                             className={cn(
-                                "rounded-full w-12 h-12 transition-all",
+                                "rounded-full w-9 h-9 transition-all",
                                 isHandRaised ? "bg-yellow-400 hover:bg-yellow-500 text-white" : "bg-gray-100 hover:bg-gray-200 text-gray-700"
                             )}
                             onClick={onToggleHand}
                         >
-                            <Hand className="w-5 h-5" />
+                            <Hand className="w-4 h-4" />
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -124,23 +124,24 @@ export function ControlBar({
 
                 {/* Recording Indicator - Automatic, no manual control */}
                 {isRecording && (
-                    <div className="flex items-center gap-2 px-3 py-1.5 bg-red-100 rounded-full">
+                    <div className="flex items-center gap-1.5 px-2 py-1 bg-red-100 rounded-full">
                         <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
                         <span className="text-xs font-medium text-red-600">REC</span>
                     </div>
                 )}
 
-                <div className="w-px h-8 bg-gray-200 mx-2" />
+                <div className="w-px h-6 bg-gray-200 mx-1" />
 
                 {/* End Call */}
                 <Tooltip>
                     <TooltipTrigger asChild>
                         <Button
                             variant="destructive"
-                            className="rounded-full px-6 h-12 gap-2 font-semibold shadow-red-200 shadow-lg hover:bg-red-600 transition-all"
+                            size="sm"
+                            className="rounded-full px-3 h-9 gap-1.5 font-medium hover:bg-red-600 transition-all"
                             onClick={onEndCall}
                         >
-                            <PhoneOff className="w-5 h-5" />
+                            <PhoneOff className="w-4 h-4" />
                             <span>Finalizar</span>
                         </Button>
                     </TooltipTrigger>
