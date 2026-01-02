@@ -8,6 +8,15 @@ interface SlackNotificationData {
   message?: string
 }
 
+interface TeacherPaymentConfirmationData {
+  teacherId: string
+  teacherName: string
+  teacherEmail: string
+  amount: number
+  hasProof: boolean
+  confirmedAt: string
+}
+
 export async function sendSlackNotification(data: SlackNotificationData): Promise<void> {
   const webhookUrl = process.env.SLACK_WEBHOOK_URL
 
@@ -109,5 +118,83 @@ export async function sendSlackNotification(data: SlackNotificationData): Promis
     }
   } catch (error) {
     console.error('Error sending Slack notification:', error)
+  }
+}
+
+export async function sendTeacherPaymentConfirmationSlack(
+  data: TeacherPaymentConfirmationData
+): Promise<void> {
+  const webhookUrl = process.env.SLACK_WEBHOOK_URL
+
+  if (!webhookUrl) {
+    console.warn('SLACK_WEBHOOK_URL not configured, skipping Slack notification')
+    return
+  }
+
+  const blocks = [
+    {
+      type: 'header',
+      text: {
+        type: 'plain_text',
+        text: '💰 Confirmación de Pago de Profesor',
+        emoji: true,
+      },
+    },
+    {
+      type: 'section',
+      fields: [
+        {
+          type: 'mrkdwn',
+          text: `*Profesor:*\n${data.teacherName}`,
+        },
+        {
+          type: 'mrkdwn',
+          text: `*Email:*\n${data.teacherEmail}`,
+        },
+        {
+          type: 'mrkdwn',
+          text: `*Monto:*\n$${data.amount.toFixed(2)}`,
+        },
+        {
+          type: 'mrkdwn',
+          text: `*Recibo adjunto:*\n${data.hasProof ? '✅ Sí' : '❌ No'}`,
+        },
+      ],
+    },
+    {
+      type: 'context',
+      elements: [
+        {
+          type: 'mrkdwn',
+          text: `📅 Confirmado: ${new Date(data.confirmedAt).toLocaleString('es-PE', { timeZone: 'America/Lima' })}`,
+        },
+      ],
+    },
+    {
+      type: 'divider',
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: '⚠️ *Acción requerida:* Procesar el pago al profesor y marcar como pagado en el sistema.',
+      },
+    },
+  ]
+
+  try {
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ blocks }),
+    })
+
+    if (!response.ok) {
+      console.error('Failed to send teacher payment Slack notification:', response.statusText)
+    }
+  } catch (error) {
+    console.error('Error sending teacher payment Slack notification:', error)
   }
 }

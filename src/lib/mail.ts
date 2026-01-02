@@ -384,6 +384,69 @@ interface ContactFormData {
   message: string
 }
 
+interface TeacherPaymentConfirmationEmailData {
+  teacherName: string
+  teacherEmail: string
+  amount: number
+  hasProof: boolean
+  confirmedAt: string
+}
+
+export const sendTeacherPaymentConfirmationAdminEmail = async (
+  data: TeacherPaymentConfirmationEmailData
+) => {
+  const adminDashboardLink = `${process.env.NEXT_PUBLIC_DOMAIN}/admin/teacher-payments`
+
+  await resend.emails.send({
+    from: 'hello@lingowow.com',
+    to: 'info@lingowow.com',
+    subject: `[Pago Profesor] ${data.teacherName} confirmó $${data.amount.toFixed(2)}`,
+    html: `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
+      <div style="padding: 20px; background-color: #10b981; text-align: center;">
+        <h2 style="margin: 0; font-size: 24px; color: #ffffff;">💰 Confirmación de Pago</h2>
+        <p style="color: #d1fae5; font-size: 14px; margin-top: 8px;">Un profesor ha confirmado su monto de pago</p>
+      </div>
+      <div style="padding: 20px;">
+        <div style="background-color: #f9fafb; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+          <div style="margin-bottom: 12px;">
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Profesor</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827; font-weight: bold;">${data.teacherName}</p>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Email</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;"><a href="mailto:${data.teacherEmail}" style="color: #3b82f6;">${data.teacherEmail}</a></p>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Monto Confirmado</p>
+            <p style="margin: 4px 0 0 0; font-size: 24px; color: #10b981; font-weight: bold;">$${data.amount.toFixed(2)}</p>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Recibo por Honorarios</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;">${data.hasProof ? '✅ Adjuntado' : '❌ No adjuntado'}</p>
+          </div>
+          <div>
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Fecha de Confirmación</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;">${new Date(data.confirmedAt).toLocaleString('es-PE', { timeZone: 'America/Lima' })}</p>
+          </div>
+        </div>
+        
+        <div style="background-color: #fef3c7; border-radius: 8px; padding: 16px; margin-bottom: 20px; border-left: 4px solid #f59e0b;">
+          <p style="margin: 0; font-size: 14px; color: #92400e; font-weight: bold;">⚠️ Acción Requerida</p>
+          <p style="margin: 8px 0 0 0; font-size: 14px; color: #92400e;">Procesar el pago al profesor y marcar como pagado en el sistema.</p>
+        </div>
+
+        <div style="text-align: center; margin: 24px 0;">
+          <a href="${adminDashboardLink}" style="display: inline-block; background-color: #10b981; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 16px;">Ver Panel de Pagos</a>
+        </div>
+      </div>
+      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
+        Notificación automática del sistema de pagos de Lingowow
+      </div>
+    </div>`,
+  })
+}
+
 export const sendContactFormEmail = async (data: ContactFormData) => {
   const subjectLabels: Record<string, string> = {
     informacion: 'Información General',

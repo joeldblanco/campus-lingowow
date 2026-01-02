@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
+import { sendTeacherPaymentConfirmationSlack } from '@/lib/slack'
+import { sendTeacherPaymentConfirmationAdminEmail } from '@/lib/mail'
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,7 +34,7 @@ export async function POST(request: NextRequest) {
     // Get teacher info
     const teacher = await db.user.findUnique({
       where: { id: teacherId },
-      select: { name: true, email: true },
+      select: { name: true, lastName: true, email: true },
     })
 
     if (!teacher) {
@@ -40,24 +42,38 @@ export async function POST(request: NextRequest) {
     }
 
     // Handle file upload if provided
-    let fileUrl: string | null = null
+    let hasProof = false
     if (paymentProof && paymentProof.size > 0) {
       // For now, we'll just note that a file was provided
       // In production, you would upload to a storage service
-      fileUrl = `payment-proof-${teacherId}-${Date.now()}.pdf`
+      hasProof = true
     }
 
-    // Log the payment confirmation (notification model doesn't exist yet)
-    // In production, you could send an email or create a record in a payments table
-    console.log('Payment confirmation:', {
+    const confirmedAt = new Date().toISOString()
+    const parsedAmount = parseFloat(amount)
+    const teacherFullName = `${teacher.name || ''} ${teacher.lastName || ''}`.trim() || 'Sin nombre'
+
+    // Send notifications to administrators
+    const notificationData = {
       teacherId,
-      teacherName: teacher.name,
-      teacherEmail: teacher.email,
-      amount: parseFloat(amount),
-      confirmedAt: new Date().toISOString(),
-      hasProof: !!fileUrl,
-      proofUrl: fileUrl,
+      teacherName: teacherFullName,
+      teacherEmail: teacher.email || '',
+      amount: parsedAmount,
+      hasProof,
+      confirmedAt,
+    }
+
+    // Send Slack notification (non-blocking)
+    sendTeacherPaymentConfirmationSlack(notificationData).catch((error) => {
+      console.error('Error sending Slack notification:', error)
     })
+
+    // Send email notification (non-blocking)
+    sendTeacherPaymentConfirmationAdminEmail(notificationData).catch((error) => {
+      console.error('Error sending admin email notification:', error)
+    })
+
+    console.log('Payment confirmation processed:', notificationData)
 
     return NextResponse.json({
       success: true,
