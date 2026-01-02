@@ -1,14 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
-import { Switch } from '@/components/ui/switch'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -16,33 +12,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import {
-  FileText,
-  Video,
-  FileIcon,
-  Headphones,
-  BookOpen,
-  Tag,
-  Settings,
-  Lightbulb,
-  Eye,
-  Upload,
-  X,
-  Bold,
-  Italic,
-  Underline,
-  Heading1,
-  Heading2,
-  List,
-  ListOrdered,
-  Link as LinkIcon,
-  Image as ImageIcon,
-  Save,
-  Loader2,
-} from 'lucide-react'
-import Link from 'next/link'
-import Image from 'next/image'
+import { Switch } from '@/components/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
 import type { LibraryCategory } from '@/lib/types/library'
+import {
+  BookOpen,
+  FileIcon,
+  FileText,
+  Headphones,
+  Loader2,
+  Save,
+  Settings,
+  Tag,
+  Upload,
+  Video,
+  X,
+} from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 type ResourceType = 'article' | 'video' | 'pdf' | 'audio' | 'lesson-plan'
 type AccessLevel = 'public' | 'private' | 'premium'
@@ -106,12 +95,12 @@ export default function PublishResourcePage() {
   useEffect(() => {
     // Fetch categories
     fetch('/api/library/categories')
-      .then(res => {
+      .then((res) => {
         if (res.ok) return res.json()
         return []
       })
-      .then(data => setCategories(data))
-      .catch(err => console.error("Error fetching categories", err))
+      .then((data) => setCategories(data))
+      .catch((err) => console.error('Error fetching categories', err))
   }, [])
 
   const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -130,7 +119,7 @@ export default function PublishResourcePage() {
 
   const handleSubmit = async (status: 'DRAFT' | 'PUBLISHED') => {
     if (!title) {
-      alert("Por favor ingresa un título")
+      alert('Por favor ingresa un título')
       return
     }
 
@@ -141,31 +130,31 @@ export default function PublishResourcePage() {
         excerpt: description,
         description: description,
         type: resourceType.toUpperCase(),
-        content: (resourceType === 'article' || resourceType === 'lesson-plan') ? content : null,
-        fileUrl: (resourceType !== 'article' && resourceType !== 'lesson-plan') ? fileUrl : null,
+        content: resourceType === 'article' || resourceType === 'lesson-plan' ? content : null,
+        fileUrl: resourceType !== 'article' && resourceType !== 'lesson-plan' ? fileUrl : null,
         thumbnailUrl,
         tags,
         language,
         level,
         categoryId: categoryId || null,
-        status
+        status,
       }
 
       const res = await fetch('/api/library', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       })
 
       if (res.ok) {
         router.push('/admin/library')
       } else {
         const err = await res.json()
-        alert(err.error || "Error al crear el recurso")
+        alert(err.error || 'Error al crear el recurso')
       }
     } catch (error) {
       console.error(error)
-      alert("Error al conectar con el servidor")
+      alert('Error al conectar con el servidor')
     } finally {
       setLoading(false)
     }
@@ -205,14 +194,23 @@ export default function PublishResourcePage() {
             <span className="text-xs text-muted-foreground mr-2">
               {/* Status indicator could go here */}
             </span>
-            <Button variant="outline" size="sm" onClick={() => handleSubmit('DRAFT')} disabled={loading}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleSubmit('DRAFT')}
+              disabled={loading}
+            >
               <Save className="h-4 w-4 mr-2" />
               Guardar Borrador
             </Button>
             {/* Preview button could be added if we implement preview mode */}
 
             <Button size="sm" onClick={() => handleSubmit('PUBLISHED')} disabled={loading}>
-              {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Upload className="h-4 w-4 mr-2" />}
+              {loading ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : (
+                <Upload className="h-4 w-4 mr-2" />
+              )}
               Publicar
             </Button>
           </div>
@@ -239,10 +237,11 @@ export default function PublishResourcePage() {
                       <button
                         key={type.id}
                         onClick={() => setResourceType(type.id)}
-                        className={`relative flex flex-col items-center justify-center p-4 rounded-lg border transition-all ${isSelected
+                        className={`relative flex flex-col items-center justify-center p-4 rounded-lg border transition-all ${
+                          isSelected
                             ? 'border-primary bg-primary/5 text-primary'
                             : 'border-border hover:bg-muted'
-                          }`}
+                        }`}
                         type="button"
                       >
                         <Icon
@@ -370,10 +369,11 @@ export default function PublishResourcePage() {
                     <button
                       key={lvl.value}
                       onClick={() => setAccessLevel(lvl.value as AccessLevel)}
-                      className={`p-4 rounded-lg border text-left transition-all ${accessLevel === lvl.value
+                      className={`p-4 rounded-lg border text-left transition-all ${
+                        accessLevel === lvl.value
                           ? 'border-primary bg-primary/5'
                           : 'border-border hover:bg-muted'
-                        }`}
+                      }`}
                       type="button"
                     >
                       <p
