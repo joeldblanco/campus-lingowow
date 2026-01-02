@@ -251,13 +251,14 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
     // ----------------------------
 
     // Upcoming Classes (Limit 5)
-    // Convertir de UTC a hora local
+    // Convertir de UTC a hora local del usuario
     const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
 
     const upcomingClassesRaw = await db.classBooking.findMany({
       where: {
         teacherId,
         status: 'CONFIRMED',
+        cancelledAt: null, // Exclude cancelled classes
         day: {
           gte: formatToISO(getCurrentDate()),
         },
@@ -280,15 +281,16 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
 
     const upcomingClasses = upcomingClassesRaw.map((booking) => {
       const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot)
+      const [startTime] = localData.timeSlot.split('-')
       return {
         id: booking.id,
-        courseId: booking.enrollment.course.id, // Using existing relation
+        courseId: booking.enrollment.course.id,
         studentName: `${booking.student.name} ${booking.student.lastName}`,
         studentImage: booking.student.image,
         course: booking.enrollment.course.title,
-        date: formatDateNumeric(localData.day),
-        time: localData.timeSlot,
-        room: 'Sala 1', // Placeholder
+        date: localData.day,
+        time: startTime,
+        room: 'Sala 1',
       }
     })
 

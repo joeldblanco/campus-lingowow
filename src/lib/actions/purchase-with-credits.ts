@@ -278,16 +278,34 @@ export async function purchasePlanWithCredits(
       })
       enrollmentId = enrollment.id
 
-      // Crear horarios si se proporcionaron
+      // Crear horarios si se proporcionaron (con conversión a UTC)
       if (selectedSchedule && selectedSchedule.length > 0) {
+        const { convertRecurringScheduleToUTC } = await import('@/lib/utils/date')
+        
+        // Obtener timezones de los profesores
+        const teacherIds = [...new Set(selectedSchedule.map(s => s.teacherId))]
+        const teachers = await db.user.findMany({
+          where: { id: { in: teacherIds } },
+          select: { id: true, timezone: true },
+        })
+        const teacherTimezones = new Map(teachers.map(t => [t.id, t.timezone || 'America/Lima']))
+        
         await Promise.all(
           selectedSchedule.map(async (slot) => {
+            const timezone = teacherTimezones.get(slot.teacherId) || 'America/Lima'
+            const utcData = convertRecurringScheduleToUTC(
+              slot.dayOfWeek,
+              slot.startTime,
+              slot.endTime,
+              timezone
+            )
+            
             const existingSchedule = await db.classSchedule.findUnique({
               where: {
                 enrollmentId_dayOfWeek_startTime: {
                   enrollmentId: enrollment.id,
-                  dayOfWeek: slot.dayOfWeek,
-                  startTime: slot.startTime,
+                  dayOfWeek: utcData.dayOfWeek,
+                  startTime: utcData.startTime,
                 },
               },
             })
@@ -297,9 +315,9 @@ export async function purchasePlanWithCredits(
                 data: {
                   enrollmentId: enrollment.id,
                   teacherId: slot.teacherId,
-                  dayOfWeek: slot.dayOfWeek,
-                  startTime: slot.startTime,
-                  endTime: slot.endTime,
+                  dayOfWeek: utcData.dayOfWeek,
+                  startTime: utcData.startTime,
+                  endTime: utcData.endTime,
                 },
               })
             }

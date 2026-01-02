@@ -17,7 +17,6 @@ interface WeekViewProps {
   blockedSlots: BlockedSlot[]
   onJoinClass?: (lessonId: string) => void
   onViewMaterials?: (lessonId: string) => void
-  onSlotClick?: (date: Date, time: string) => void
   onLessonClick?: (lesson: ScheduleLesson) => void
   isCompact?: boolean
 }
@@ -53,7 +52,6 @@ export function WeekView({
   blockedSlots,
   onJoinClass,
   onViewMaterials,
-  onSlotClick,
   onLessonClick,
   isCompact = false,
 }: WeekViewProps) {
@@ -89,24 +87,24 @@ export function WeekView({
       return (
         <div
           onClick={() => onLessonClick?.(lesson)}
-          className="group relative flex h-full cursor-pointer flex-col gap-2 rounded-lg border-l-4 border-l-gray-300 dark:border-l-gray-600 bg-gray-50 dark:bg-muted p-3 transition-all hover:bg-background shadow-sm"
+          className="group relative flex h-full w-full cursor-pointer flex-col gap-2 rounded-lg border-l-4 border-l-gray-300 dark:border-l-gray-600 bg-gray-50 dark:bg-muted p-3 transition-all hover:bg-background shadow-sm overflow-hidden"
         >
-          <div className="flex items-start justify-between">
-            <Badge variant="secondary" className="text-[10px] font-bold uppercase">
-              {lesson.courseTitle}
+          <div className="flex items-start justify-between gap-1 min-w-0">
+            <Badge variant="secondary" className="text-[10px] font-bold uppercase max-w-[calc(100%-70px)]">
+              <span className="truncate block">{lesson.courseTitle}</span>
             </Badge>
-            <Badge variant="destructive" className="text-[9px] font-bold">
+            <Badge variant="destructive" className="text-[9px] font-bold flex-shrink-0">
               CANCELADA
             </Badge>
           </div>
-          <div className="flex items-center gap-2 opacity-50">
-            <Avatar className="h-6 w-6">
+          <div className="flex items-center gap-2 opacity-50 min-w-0">
+            <Avatar className="h-6 w-6 flex-shrink-0">
               <AvatarImage src={lesson.student.image || ''} />
               <AvatarFallback className="text-xs">
                 {getInitials(lesson.student.name, lesson.student.lastName)}
               </AvatarFallback>
             </Avatar>
-            <span className="text-sm font-medium text-muted-foreground line-through">
+            <span className="text-sm font-medium text-muted-foreground line-through truncate">
               {lesson.student.name}
             </span>
           </div>
@@ -304,12 +302,11 @@ export function WeekView({
                   <td
                     key={`${day.toISOString()}-${time}`}
                     className={cn(
-                      'align-top border-r border-dashed hover:bg-muted/50 transition-colors',
+                      'align-top border-r border-dashed transition-colors',
                       cellPadding,
                       rowHeight,
                       isCurrentDay && 'bg-primary/5'
                     )}
-                    onClick={() => !lesson && onSlotClick?.(day, time)}
                   >
                     {lesson && renderLessonCard(lesson)}
                     {!lesson && available && renderAvailableSlot()}

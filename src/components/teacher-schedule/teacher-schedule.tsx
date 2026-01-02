@@ -21,7 +21,22 @@ interface TeacherScheduleProps {
   }
 }
 
-// Transform server data to component types
+// Parse date string as local date (not UTC)
+function parseLocalDate(dateInput: Date | string): Date {
+  if (dateInput instanceof Date) {
+    // If it's already a Date, extract the date parts and create a local date
+    const year = dateInput.getFullYear()
+    const month = dateInput.getMonth()
+    const day = dateInput.getDate()
+    return new Date(year, month, day, 12, 0, 0, 0) // Use noon to avoid DST issues
+  }
+  // If it's a string like "2026-01-02", parse as local date
+  const dateStr = typeof dateInput === 'string' ? dateInput : String(dateInput)
+  const [year, month, day] = dateStr.split('T')[0].split('-').map(Number)
+  return new Date(year, month - 1, day, 12, 0, 0, 0) // Use noon to avoid DST issues
+}
+
+// Transform server lessons to client format
 function transformLessons(serverLessons: TeacherScheduleLesson[]): ScheduleLesson[] {
   return serverLessons.map((lesson) => ({
     id: lesson.id,
@@ -36,7 +51,7 @@ function transformLessons(serverLessons: TeacherScheduleLesson[]): ScheduleLesso
     },
     startTime: lesson.startTime,
     endTime: lesson.endTime,
-    date: new Date(lesson.date),
+    date: parseLocalDate(lesson.date),
     status: lesson.status,
     topic: lesson.topic,
     duration: lesson.duration,
@@ -163,12 +178,6 @@ export function TeacherSchedule({ initialData }: TeacherScheduleProps) {
     setIsEditMode(true)
   }
 
-  const handleSlotClick = () => {
-    // In normal mode, clicking a slot opens edit mode
-    if (!isEditMode) {
-      setIsEditMode(true)
-    }
-  }
 
   const handleDiscardChanges = () => {
     setIsEditMode(false)
@@ -267,7 +276,6 @@ export function TeacherSchedule({ initialData }: TeacherScheduleProps) {
           blockedSlots={filteredData.blockedSlots}
           onJoinClass={handleJoinClass}
           onViewMaterials={handleViewMaterials}
-          onSlotClick={handleSlotClick}
           onLessonClick={handleLessonClick}
           isCompact={isCompact}
         />

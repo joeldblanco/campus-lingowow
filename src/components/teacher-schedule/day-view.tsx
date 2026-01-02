@@ -117,7 +117,7 @@ export function DayView({
             </AvatarFallback>
           </Avatar>
           <div>
-            <h4 className="font-bold text-foreground">{lesson.student.name}</h4>
+            <h4 className="font-bold text-foreground">{lesson.student.name} {lesson.student.lastName}</h4>
             <Badge className={cn("text-xs font-medium", colors.bg, colors.text, "border-0")}>
               {lesson.courseTitle}
             </Badge>

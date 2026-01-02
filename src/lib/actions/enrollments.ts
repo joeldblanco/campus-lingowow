@@ -455,14 +455,32 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
       try {
         // Create recurring schedule entries if applicable
         if (data.isRecurring && data.weeklySchedule.length > 0) {
+          // Obtener timezone del profesor para convertir a UTC
+          const { convertRecurringScheduleToUTC } = await import('@/lib/utils/date')
+          
           for (const slot of data.weeklySchedule) {
+            // Obtener timezone del profesor
+            const teacher = await db.user.findUnique({
+              where: { id: slot.teacherId },
+              select: { timezone: true },
+            })
+            const teacherTimezone = teacher?.timezone || 'America/Lima'
+            
+            // Convertir horario recurrente a UTC
+            const utcSchedule = convertRecurringScheduleToUTC(
+              slot.dayOfWeek,
+              slot.startTime,
+              slot.endTime,
+              teacherTimezone
+            )
+            
             await db.classSchedule.create({
               data: {
                 enrollmentId: enrollment.id,
                 teacherId: slot.teacherId,
-                dayOfWeek: slot.dayOfWeek,
-                startTime: slot.startTime,
-                endTime: slot.endTime,
+                dayOfWeek: utcSchedule.dayOfWeek,
+                startTime: utcSchedule.startTime,
+                endTime: utcSchedule.endTime,
               },
             })
           }
@@ -632,16 +650,37 @@ export async function updateEnrollmentSchedules(
       where: { enrollmentId },
     })
 
-    // Crear nuevos horarios
+    // Crear nuevos horarios con conversión a UTC
     if (schedules.length > 0) {
-      await db.classSchedule.createMany({
-        data: schedules.map((schedule) => ({
+      const { convertRecurringScheduleToUTC } = await import('@/lib/utils/date')
+      
+      // Obtener timezones de los profesores
+      const teacherIds = [...new Set(schedules.map(s => s.teacherId))]
+      const teachers = await db.user.findMany({
+        where: { id: { in: teacherIds } },
+        select: { id: true, timezone: true },
+      })
+      const teacherTimezones = new Map(teachers.map(t => [t.id, t.timezone || 'America/Lima']))
+      
+      const utcSchedules = schedules.map((schedule) => {
+        const timezone = teacherTimezones.get(schedule.teacherId) || 'America/Lima'
+        const utcData = convertRecurringScheduleToUTC(
+          schedule.dayOfWeek,
+          schedule.startTime,
+          schedule.endTime,
+          timezone
+        )
+        return {
           enrollmentId,
           teacherId: schedule.teacherId,
-          dayOfWeek: schedule.dayOfWeek,
-          startTime: schedule.startTime,
-          endTime: schedule.endTime,
-        })),
+          dayOfWeek: utcData.dayOfWeek,
+          startTime: utcData.startTime,
+          endTime: utcData.endTime,
+        }
+      })
+      
+      await db.classSchedule.createMany({
+        data: utcSchedules,
       })
     }
 

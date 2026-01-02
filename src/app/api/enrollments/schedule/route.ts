@@ -52,19 +52,36 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    // Crear los nuevos horarios
+    // Crear los nuevos horarios con conversión a UTC
+    const { convertRecurringScheduleToUTC } = await import('@/lib/utils/date')
+    
+    // Obtener timezones de los profesores
+    const teacherIds = [...new Set(schedule.map(s => s.teacherId))]
+    const teachers = await db.user.findMany({
+      where: { id: { in: teacherIds } },
+      select: { id: true, timezone: true },
+    })
+    const teacherTimezones = new Map(teachers.map(t => [t.id, t.timezone || 'America/Lima']))
+    
     const createdSchedules = await Promise.all(
-      schedule.map((slot) =>
-        db.classSchedule.create({
+      schedule.map((slot) => {
+        const timezone = teacherTimezones.get(slot.teacherId) || 'America/Lima'
+        const utcData = convertRecurringScheduleToUTC(
+          slot.dayOfWeek,
+          slot.startTime,
+          slot.endTime,
+          timezone
+        )
+        return db.classSchedule.create({
           data: {
             enrollmentId,
             teacherId: slot.teacherId,
-            dayOfWeek: slot.dayOfWeek,
-            startTime: slot.startTime,
-            endTime: slot.endTime,
+            dayOfWeek: utcData.dayOfWeek,
+            startTime: utcData.startTime,
+            endTime: utcData.endTime,
           },
         })
-      )
+      })
     )
 
     return NextResponse.json({

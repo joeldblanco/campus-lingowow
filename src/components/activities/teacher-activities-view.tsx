@@ -123,10 +123,11 @@ export function TeacherActivitiesView() {
 
   const fetchStudents = async () => {
     try {
-      const response = await fetch('/api/users?role=STUDENT')
+      // Usar endpoint específico para profesores que trae solo sus estudiantes
+      const response = await fetch('/api/teacher/students')
       if (response.ok) {
         const data = await response.json()
-        setStudents(data.users || [])
+        setStudents(data.students || [])
       }
     } catch (error) {
       console.error('Error fetching students:', error)

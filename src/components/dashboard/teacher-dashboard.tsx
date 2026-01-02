@@ -13,14 +13,48 @@ import {
   Plus,
   Users,
   Video,
+  BookOpen,
 } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { useMemo } from 'react'
+
+// Helper to check if class is within 10 minutes of starting
+function isWithin10MinutesOfStart(classDate: string, classTime: string): boolean {
+  const now = new Date()
+  const [hours, minutes] = classTime.split(':').map(Number)
+  const [year, month, day] = classDate.split('-').map(Number)
+  const classDateTime = new Date(year, month - 1, day, hours, minutes, 0, 0)
+  
+  const diffMs = classDateTime.getTime() - now.getTime()
+  const diffMinutes = diffMs / (1000 * 60)
+  
+  // Can join if within 10 minutes before or up to 60 minutes after start
+  return diffMinutes <= 10 && diffMinutes >= -60
+}
+
+// Helper to check if class is today
+function isToday(classDate: string): boolean {
+  const today = new Date()
+  const [year, month, day] = classDate.split('-').map(Number)
+  return (
+    today.getFullYear() === year &&
+    today.getMonth() === month - 1 &&
+    today.getDate() === day
+  )
+}
 
 const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardData | null }) => {
   const { data: session } = useSession()
   const router = useRouter()
   const userName = session?.user?.name || 'Profesor'
+
+  // Filter classes to only show today's classes
+  const todaysClasses = useMemo(() => {
+    if (!dashboardData) return []
+    return dashboardData.upcomingClasses.filter(c => isToday(c.date))
+  }, [dashboardData])
 
   if (!dashboardData) return <div>Cargando datos...</div>
 
@@ -31,8 +65,8 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
   const handleEditSchedule = () => router.push('/schedule')
   const handleViewAllSchedule = () => router.push('/schedule')
   
-  // Obtener la próxima clase para el botón de acción rápida
-  const nextClass = dashboardData.upcomingClasses[0]
+  // Obtener la próxima clase para el botón de acción rápida (only if within 10 minutes)
+  const nextClass = todaysClasses.find(c => isWithin10MinutesOfStart(c.date, c.time))
 
   // Obtener fecha actual
   const today = new Date().toLocaleDateString('es-ES', {
@@ -55,7 +89,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
             Buenos días, {userName}.
           </h1>
           <p className="text-slate-500 dark:text-slate-400 mt-1">
-            Tienes {dashboardData.upcomingClasses.length} clases hoy.
+            Tienes {todaysClasses.length} {todaysClasses.length === 1 ? 'clase' : 'clases'} hoy.
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -168,52 +202,55 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
               {/* Timeline Line */}
               <div className="absolute left-[39px] top-6 bottom-6 w-0.5 bg-slate-100 dark:bg-slate-800 hidden sm:block"></div>
 
-              {dashboardData.upcomingClasses.length > 0 ? (
-                dashboardData.upcomingClasses.map((item, index) => (
-                  <div key={item.id} className="relative flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 z-10">
+              {todaysClasses.length > 0 ? (
+                todaysClasses.map((item) => {
+                  const canJoin = isWithin10MinutesOfStart(item.date, item.time)
+                  return (
+                    <div key={item.id} className="relative flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 z-10">
 
-                    {/* Icon */}
-                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-500 border-4 border-white dark:border-card-dark">
-                      <Video className="w-5 h-5" />
-                    </div>
-
-                    {/* Content */}
-                    <div className="flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                      <div>
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-sm font-bold text-slate-900 dark:text-white w-20">{item.time}</span>
-                          <span className="text-sm font-bold text-slate-800 dark:text-white">- {item.course}</span>
-                        </div>
-                        <div className="text-xs text-slate-500 flex items-center gap-2 ml-20 md:ml-0 lg:ml-22 xl:ml-0 pl-0 sm:pl-22 md:pl-0">
-                          <span className="hidden sm:inline">•</span>
-                          <span>{item.studentName}</span>
-                          <span>•</span>
-                          <span>{item.room || 'Aula Virtual'}</span>
-                        </div>
-                        <div className="mt-2 flex -space-x-2 overflow-hidden ml-0 sm:ml-22 md:ml-0">
-                          {/* Student Avatar + Counter if group */}
-                          <Avatar className="inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-card-dark">
-                            <AvatarImage src={item.studentImage || ''} />
-                            <AvatarFallback className="bg-indigo-100 text-indigo-600 text-xs">{item.studentName.substring(0, 2)}</AvatarFallback>
-                          </Avatar>
-                        </div>
+                      {/* Icon */}
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-500 border-4 border-white dark:border-card-dark">
+                        <Video className="w-5 h-5" />
                       </div>
 
-                      {/* Action */}
-                      <div className="ml-10 sm:ml-0">
-                        {index === 0 ? (
-                          <Button onClick={() => handleStartClass(item.id)} className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-6">
-                            Iniciar Clase
-                          </Button>
-                        ) : (
-                          <Button variant="outline" onClick={() => handlePrepareClass(item.courseId)} className="text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 bg-transparent hover:bg-slate-50 dark:hover:bg-slate-800">
-                            Preparar
-                          </Button>
-                        )}
+                      {/* Content */}
+                      <div className="flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-sm font-bold text-slate-900 dark:text-white w-20">{item.time}</span>
+                            <span className="text-sm font-bold text-slate-800 dark:text-white">- {item.course}</span>
+                          </div>
+                          <div className="text-xs text-slate-500 flex items-center gap-2 ml-20 md:ml-0 lg:ml-22 xl:ml-0 pl-0 sm:pl-22 md:pl-0">
+                            <span className="hidden sm:inline">•</span>
+                            <span>{item.studentName}</span>
+                            <span>•</span>
+                            <span>{item.room || 'Aula Virtual'}</span>
+                          </div>
+                          <div className="mt-2 flex -space-x-2 overflow-hidden ml-0 sm:ml-22 md:ml-0">
+                            {/* Student Avatar + Counter if group */}
+                            <Avatar className="inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-card-dark">
+                              <AvatarImage src={item.studentImage || ''} />
+                              <AvatarFallback className="bg-indigo-100 text-indigo-600 text-xs">{item.studentName.substring(0, 2)}</AvatarFallback>
+                            </Avatar>
+                          </div>
+                        </div>
+
+                        {/* Action */}
+                        <div className="ml-10 sm:ml-0">
+                          {canJoin ? (
+                            <Button onClick={() => handleStartClass(item.id)} className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-6">
+                              Iniciar Clase
+                            </Button>
+                          ) : (
+                            <Button variant="outline" onClick={() => handlePrepareClass(item.courseId)} className="text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 bg-transparent hover:bg-slate-50 dark:hover:bg-slate-800">
+                              Preparar
+                            </Button>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))
+                  )
+                })
               ) : (
                 <div className="text-center py-10 text-slate-500">
                   No tienes clases programadas para hoy.
@@ -273,22 +310,42 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                 </div>
                 Nueva Actividad
               </button>
-              <button 
-                onClick={() => nextClass && handleStartClass(nextClass.id)} 
-                disabled={!nextClass}
-                className="w-full flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-3 rounded-lg text-sm font-medium backdrop-blur-sm border border-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <div className="bg-white/20 p-1.5 rounded">
-                  <Video className="w-4 h-4" />
-                </div>
-                Ingresar a Próxima Clase
-              </button>
+              {nextClass ? (
+                <button 
+                  onClick={() => handleStartClass(nextClass.id)} 
+                  className="w-full flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-3 rounded-lg text-sm font-medium backdrop-blur-sm border border-white/10"
+                >
+                  <div className="bg-white/20 p-1.5 rounded">
+                    <Video className="w-4 h-4" />
+                  </div>
+                  Entrar a la Próxima Clase
+                </button>
+              ) : (
+                <Link 
+                  href="/teacher/earnings" 
+                  className="w-full flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-3 rounded-lg text-sm font-medium backdrop-blur-sm border border-white/10"
+                >
+                  <div className="bg-white/20 p-1.5 rounded">
+                    <DollarSign className="w-4 h-4" />
+                  </div>
+                  Ver Mis Ganancias
+                </Link>
+              )}
               <button onClick={handleEditSchedule} className="w-full flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-3 rounded-lg text-sm font-medium backdrop-blur-sm border border-white/10">
                 <div className="bg-white/20 p-1.5 rounded">
                   <Edit className="w-4 h-4" />
                 </div>
                 Editar Horario
               </button>
+              <Link 
+                href="/teacher/students" 
+                className="w-full flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-3 rounded-lg text-sm font-medium backdrop-blur-sm border border-white/10"
+              >
+                <div className="bg-white/20 p-1.5 rounded">
+                  <BookOpen className="w-4 h-4" />
+                </div>
+                Lecciones Personalizadas
+              </Link>
             </div>
           </div>
 

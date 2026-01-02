@@ -4,7 +4,7 @@ import { auth } from '@/auth'
 import { db } from '@/lib/db'
 import { UserRole, BookingStatus } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
-import { startOfWeek, endOfWeek, startOfMonth, endOfMonth, format, addDays } from 'date-fns'
+import { startOfWeek, endOfWeek, startOfMonth, endOfMonth, format } from 'date-fns'
 
 export interface TeacherScheduleLesson {
   id: string
@@ -139,35 +139,6 @@ export async function getTeacherScheduleData(
       ],
     })
 
-    // Get recurring schedules and generate instances for the date range
-    const recurringSchedules = await db.classSchedule.findMany({
-      where: {
-        teacherId,
-      },
-      include: {
-        enrollment: {
-          include: {
-            student: {
-              select: {
-                id: true,
-                name: true,
-                lastName: true,
-                email: true,
-                image: true,
-              },
-            },
-            course: {
-              select: {
-                title: true,
-                level: true,
-                classDuration: true,
-              },
-            },
-          },
-        },
-      },
-    })
-
     // Get teacher availability
     const availability = await db.teacherAvailability.findMany({
       where: {
@@ -180,13 +151,17 @@ export async function getTeacherScheduleData(
     })
 
     // Transform bookings to lessons
-    // Importar función para convertir de UTC a hora local
+    // Convertir de UTC a hora local del usuario
     const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
     
     const lessons: TeacherScheduleLesson[] = bookings.map((booking) => {
       // Convertir de UTC a hora local
       const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot)
       const [startTime, endTime] = localData.timeSlot.split('-')
+      
+      // Parsear la fecha local
+      const [year, month, day] = localData.day.split('-').map(Number)
+      const lessonDate = new Date(year, month - 1, day, 12, 0, 0, 0)
       
       return {
         id: booking.id,
@@ -201,7 +176,7 @@ export async function getTeacherScheduleData(
         },
         startTime,
         endTime,
-        date: new Date(localData.day), // Usar la fecha convertida a hora local
+        date: lessonDate,
         status: getBookingStatus(booking),
         topic: booking.notes || undefined,
         duration: booking.enrollment.course.classDuration,
@@ -210,44 +185,10 @@ export async function getTeacherScheduleData(
       }
     })
 
-    // Generate lessons from recurring schedules (for days without explicit bookings)
-    let currentDate = new Date(startDate)
-    while (currentDate <= endDate) {
-      const dayOfWeek = currentDate.getDay() // 0 = Sunday
-      const dateStr = format(currentDate, 'yyyy-MM-dd')
-      
-      for (const schedule of recurringSchedules) {
-        if (schedule.dayOfWeek === dayOfWeek) {
-          // Check if there's already a booking for this slot
-          const existingBooking = bookings.find(
-            (b) => b.day === dateStr && b.timeSlot === `${schedule.startTime}-${schedule.endTime}`
-          )
-          
-          if (!existingBooking) {
-            lessons.push({
-              id: `recurring-${schedule.id}-${dateStr}`,
-              courseTitle: schedule.enrollment.course.title,
-              courseLevel: schedule.enrollment.course.level,
-              student: {
-                id: schedule.enrollment.student.id,
-                name: schedule.enrollment.student.name,
-                lastName: schedule.enrollment.student.lastName || undefined,
-                email: schedule.enrollment.student.email,
-                image: schedule.enrollment.student.image,
-              },
-              startTime: schedule.startTime,
-              endTime: schedule.endTime,
-              date: new Date(dateStr),
-              status: 'scheduled',
-              duration: schedule.enrollment.course.classDuration,
-              color: getCourseColor(schedule.enrollment.course.title),
-              enrollmentId: schedule.enrollmentId,
-            })
-          }
-        }
-      }
-      currentDate = addDays(currentDate, 1)
-    }
+    // NOTA: ClassSchedule representa horarios recurrentes/disponibilidad ocupada,
+    // NO clases reales. Solo ClassBooking representa clases programadas.
+    // Los ClassSchedule se usan para mostrar qué bloques están ocupados cuando
+    // alguien quiere agendar una clase, pero no se muestran como clases en el calendario.
 
     // Sort lessons by date and time
     lessons.sort((a, b) => {
@@ -256,13 +197,26 @@ export async function getTeacherScheduleData(
       return a.startTime.localeCompare(b.startTime)
     })
 
-    // Transform availability
-    const availabilitySlots: TeacherAvailabilitySlot[] = availability.map((slot) => ({
-      id: slot.id,
-      day: slot.day,
-      startTime: slot.startTime,
-      endTime: slot.endTime,
-    }))
+    // Transform availability - convertir de UTC a hora local del usuario
+    const { convertAvailabilityFromUTC } = await import('@/lib/utils/date')
+    
+    // Obtener timezone del usuario
+    const user = await db.user.findUnique({
+      where: { id: teacherId },
+      select: { timezone: true },
+    })
+    const userTimezone = user?.timezone || 'America/Lima'
+    
+    const availabilitySlots: TeacherAvailabilitySlot[] = availability.map((slot) => {
+      // Convertir de UTC a hora local
+      const localData = convertAvailabilityFromUTC(slot.day, slot.startTime, slot.endTime, userTimezone)
+      return {
+        id: slot.id,
+        day: localData.day,
+        startTime: localData.startTime,
+        endTime: localData.endTime,
+      }
+    })
 
     return {
       success: true,
@@ -312,17 +266,28 @@ export async function updateTeacherAvailabilitySlot(params: {
 
   const userId = session.user.id
   const { day, startTime, endTime, available } = params
-  const normalizedDay = day.toLowerCase()
 
   try {
+    // Obtener timezone del usuario
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { timezone: true },
+    })
+    const userTimezone = user?.timezone || 'America/Lima'
+    
+    // Convertir a UTC
+    const { convertAvailabilityToUTC } = await import('@/lib/utils/date')
+    const utcData = convertAvailabilityToUTC(day, startTime, endTime, userTimezone)
+    const utcDay = utcData.day.toLowerCase()
+    
     if (available) {
       // Check if slot already exists
       const existing = await db.teacherAvailability.findFirst({
         where: {
           userId,
-          day: normalizedDay,
-          startTime,
-          endTime,
+          day: utcDay,
+          startTime: utcData.startTime,
+          endTime: utcData.endTime,
         },
       })
 
@@ -330,9 +295,9 @@ export async function updateTeacherAvailabilitySlot(params: {
         await db.teacherAvailability.create({
           data: {
             userId,
-            day: normalizedDay,
-            startTime,
-            endTime,
+            day: utcDay,
+            startTime: utcData.startTime,
+            endTime: utcData.endTime,
           },
         })
       }
@@ -340,9 +305,9 @@ export async function updateTeacherAvailabilitySlot(params: {
       await db.teacherAvailability.deleteMany({
         where: {
           userId,
-          day: normalizedDay,
-          startTime,
-          endTime,
+          day: utcDay,
+          startTime: utcData.startTime,
+          endTime: utcData.endTime,
         },
       })
     }
@@ -368,38 +333,59 @@ export async function bulkUpdateTeacherAvailability(
   const userId = session.user.id
 
   try {
-    // Group by day
-    const slotsByDay: Record<string, Array<{ startTime: string; endTime: string }>> = {}
+    // Obtener timezone del usuario
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { timezone: true },
+    })
+    const userTimezone = user?.timezone || 'America/Lima'
+    
+    // Importar función de conversión
+    const { convertAvailabilityToUTC } = await import('@/lib/utils/date')
+    
+    // Convertir slots a UTC y agrupar por día UTC
+    const slotsByDayUTC: Record<string, Array<{ startTime: string; endTime: string }>> = {}
+    const allUtcDays = new Set<string>()
     
     for (const slot of slots) {
       const normalizedDay = slot.day.toLowerCase()
+      
       if (slot.available) {
-        if (!slotsByDay[normalizedDay]) {
-          slotsByDay[normalizedDay] = []
+        // Convertir a UTC
+        const utcData = convertAvailabilityToUTC(normalizedDay, slot.startTime, slot.endTime, userTimezone)
+        const utcDay = utcData.day.toLowerCase()
+        
+        if (!slotsByDayUTC[utcDay]) {
+          slotsByDayUTC[utcDay] = []
         }
-        slotsByDay[normalizedDay].push({
-          startTime: slot.startTime,
-          endTime: slot.endTime,
+        slotsByDayUTC[utcDay].push({
+          startTime: utcData.startTime,
+          endTime: utcData.endTime,
         })
+        allUtcDays.add(utcDay)
       }
+      
+      // También necesitamos rastrear qué días UTC corresponden a los días locales
+      // para poder eliminar correctamente
+      const utcDataForDelete = convertAvailabilityToUTC(normalizedDay, '00:00', '23:59', userTimezone)
+      allUtcDays.add(utcDataForDelete.day.toLowerCase())
     }
 
     await db.$transaction(async (tx) => {
-      // Get unique days from the update
-      const uniqueDays = [...new Set(slots.map((s) => s.day.toLowerCase()))]
-
-      // Delete existing availability for those days
-      if (uniqueDays.length > 0) {
+      // Delete existing availability for those UTC days
+      const uniqueUtcDays = [...allUtcDays]
+      
+      if (uniqueUtcDays.length > 0) {
         await tx.teacherAvailability.deleteMany({
           where: {
             userId,
-            day: { in: uniqueDays },
+            day: { in: uniqueUtcDays },
           },
         })
       }
 
-      // Create new availability records
-      for (const [day, daySlots] of Object.entries(slotsByDay)) {
+      // Create new availability records in UTC
+      for (const [day, daySlots] of Object.entries(slotsByDayUTC)) {
         for (const slot of daySlots) {
           await tx.teacherAvailability.create({
             data: {

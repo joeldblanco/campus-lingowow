@@ -296,10 +296,11 @@ export function AvailabilityEditView({
     const isSingleSelected = selectedSingleSlot?.day === dayKey && selectedSingleSlot?.time === time
 
     if (bookedLesson) {
+      const fullName = `${bookedLesson.student.name} ${bookedLesson.student.lastName || ''}`.trim()
       return (
         <div className="w-full h-full flex flex-col items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 cursor-not-allowed opacity-70">
-          <span className="text-xs font-medium text-blue-700 dark:text-blue-300">
-            {bookedLesson.student.name.split(' ')[0]}
+          <span className="text-xs font-medium text-blue-700 dark:text-blue-300 text-center truncate w-full px-1">
+            {fullName}
           </span>
           <Badge variant="secondary" className="text-[9px] mt-1">
             Reservado

@@ -76,9 +76,22 @@ export function validateClassAccess(
     // Profesores pueden acceder 10 minutos antes
     if (isTeacher) {
       if (minutesUntilStart > 10) {
+        const waitMinutes = minutesUntilStart - 10
+        const hours = Math.floor(waitMinutes / 60)
+        const mins = waitMinutes % 60
+        
+        let reason = 'Faltan '
+        if (hours > 0) {
+          reason += `${hours} ${hours === 1 ? 'hora' : 'horas'}`
+          if (mins > 0) reason += ` y ${mins} ${mins === 1 ? 'minuto' : 'minutos'}`
+        } else {
+          reason += `${mins} ${mins === 1 ? 'minuto' : 'minutos'}`
+        }
+        reason += ' para poder acceder a la clase'
+        
         return {
           canAccess: false,
-          reason: `Podrás acceder ${minutesUntilStart - 10} minutos antes de la clase`,
+          reason,
           minutesUntilStart,
           minutesUntilEnd,
           secondsUntilStart,

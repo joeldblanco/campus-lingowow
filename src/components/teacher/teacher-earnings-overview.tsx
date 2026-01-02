@@ -19,6 +19,10 @@ import {
   DollarSign,
   GraduationCap,
   Star,
+  Upload,
+  FileText,
+  CheckCircle,
+  X,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -35,6 +39,17 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/ui/tabs'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 interface ClassDetail {
   bookingId: string
@@ -120,6 +135,62 @@ export function TeacherEarningsOverview() {
   const [activeTab, setActiveTab] = useState('classes')
   const itemsPerPage = 4
 
+  // Payment confirmation state
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false)
+  const [paymentFile, setPaymentFile] = useState<File | null>(null)
+  const [isConfirming, setIsConfirming] = useState(false)
+  const [paymentConfirmed, setPaymentConfirmed] = useState(false)
+
+  // Handle payment confirmation
+  const handleConfirmPayment = async () => {
+    if (!earningsData) return
+    
+    setIsConfirming(true)
+    try {
+      const formData = new FormData()
+      formData.append('amount', earningsData.nextPayout.amount.toString())
+      formData.append('teacherId', earningsData.teacherId)
+      if (paymentFile) {
+        formData.append('paymentProof', paymentFile)
+      }
+
+      const response = await fetch('/api/teacher/confirm-payment', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (response.ok) {
+        toast.success('Pago confirmado. Los administradores han sido notificados.')
+        setPaymentConfirmed(true)
+        setConfirmDialogOpen(false)
+        setPaymentFile(null)
+      } else {
+        const data = await response.json()
+        toast.error(data.error || 'Error al confirmar el pago')
+      }
+    } catch (error) {
+      console.error('Error confirming payment:', error)
+      toast.error('Error al confirmar el pago')
+    } finally {
+      setIsConfirming(false)
+    }
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      if (file.type !== 'application/pdf') {
+        toast.error('Solo se permiten archivos PDF')
+        return
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('El archivo no puede superar 5MB')
+        return
+      }
+      setPaymentFile(file)
+    }
+  }
+
   // Cargar períodos académicos
   useEffect(() => {
     async function loadAcademicPeriods() {
@@ -197,29 +268,40 @@ export function TeacherEarningsOverview() {
     if (!earningsData) return
 
     const rows: string[] = []
+    // Add BOM for Excel UTF-8 compatibility
+    const BOM = '\uFEFF'
     rows.push('Fecha,Hora,Estudiante,Curso,Duración (min),Ganancias,Período Académico')
 
     earningsData.classes.forEach((classDetail) => {
+      // Escape fields that might contain commas or quotes
+      const escapeField = (field: string | number) => {
+        const str = String(field)
+        if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+          return `"${str.replace(/"/g, '""')}"`
+        }
+        return str
+      }
+      
       rows.push(
         [
-          classDetail.date,
-          classDetail.timeSlot,
-          classDetail.studentName,
-          classDetail.courseName,
-          classDetail.duration,
-          classDetail.earnings.toFixed(2),
-          classDetail.academicPeriod,
+          escapeField(classDetail.date),
+          escapeField(classDetail.timeSlot),
+          escapeField(classDetail.studentName),
+          escapeField(classDetail.courseName),
+          escapeField(classDetail.duration),
+          escapeField(classDetail.earnings.toFixed(2)),
+          escapeField(classDetail.academicPeriod),
         ].join(',')
       )
     })
 
-    const csv = rows.join('\n')
+    const csv = BOM + rows.join('\n')
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
     const link = document.createElement('a')
     const url = URL.createObjectURL(blob)
 
     link.setAttribute('href', url)
-    link.setAttribute('download', `mis-ganancias-${format(new Date(), 'yyyy-MM-dd')}.csv`)
+    link.setAttribute('download', `earnings-${format(new Date(), 'yyyy-MM-dd')}.csv`)
     link.style.visibility = 'hidden'
     document.body.appendChild(link)
     link.click()
@@ -626,12 +708,30 @@ export function TeacherEarningsOverview() {
                       locale: es,
                     })}
                   </div>
+                  {paymentConfirmed ? (
+                    <div className="flex items-center gap-2 text-sm bg-white/20 rounded-lg p-2">
+                      <CheckCircle className="h-4 w-4" />
+                      <span>Pago confirmado - Pendiente de procesamiento</span>
+                    </div>
+                  ) : (
+                    <Button
+                      onClick={() => setConfirmDialogOpen(true)}
+                      variant="secondary"
+                      className="w-full bg-white/20 hover:bg-white/30 text-primary-foreground border-0"
+                    >
+                      <Check className="h-4 w-4 mr-2" />
+                      Confirmar Monto
+                    </Button>
+                  )}
                 </div>
                 <div className="bg-black/10 p-4 relative z-10">
-                  <button className="w-full flex items-center justify-center gap-2 text-sm font-bold hover:text-primary-foreground/80 transition-colors">
+                  <a 
+                    href="/teacher/settings/payment"
+                    className="w-full flex items-center justify-center gap-2 text-sm font-bold hover:text-primary-foreground/80 transition-colors"
+                  >
                     Configuración de Pagos
                     <ChevronRight className="h-4 w-4" />
-                  </button>
+                  </a>
                 </div>
               </div>
 
@@ -689,6 +789,76 @@ export function TeacherEarningsOverview() {
           </div>
         </>
       )}
+
+      {/* Payment Confirmation Dialog */}
+      <Dialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Confirmar Monto de Pago</DialogTitle>
+            <DialogDescription>
+              Revisa el monto y confirma que estás de acuerdo. Opcionalmente puedes adjuntar un comprobante.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="bg-muted/50 rounded-lg p-4 text-center">
+              <p className="text-sm text-muted-foreground">Monto a recibir</p>
+              <p className="text-3xl font-bold text-primary">
+                ${earningsData?.nextPayout.amount.toFixed(2) || '0.00'}
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Fecha estimada: {earningsData?.nextPayout.estimatedDate 
+                  ? format(new Date(earningsData.nextPayout.estimatedDate), 'dd MMM, yyyy', { locale: es })
+                  : '-'}
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="paymentProof">Comprobante de pago (opcional)</Label>
+              <div className="flex items-center gap-2">
+                <Input
+                  id="paymentProof"
+                  type="file"
+                  accept=".pdf"
+                  onChange={handleFileChange}
+                  className="flex-1"
+                />
+              </div>
+              {paymentFile && (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 p-2 rounded">
+                  <FileText className="h-4 w-4" />
+                  <span className="truncate flex-1">{paymentFile.name}</span>
+                  <button onClick={() => setPaymentFile(null)} className="hover:text-foreground">
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              )}
+              <p className="text-xs text-muted-foreground">
+                Solo archivos PDF, máximo 5MB
+              </p>
+            </div>
+          </div>
+
+          <DialogFooter className="flex gap-2">
+            <Button variant="outline" onClick={() => setConfirmDialogOpen(false)}>
+              Cancelar
+            </Button>
+            <Button onClick={handleConfirmPayment} disabled={isConfirming}>
+              {isConfirming ? (
+                <>
+                  <Upload className="h-4 w-4 mr-2 animate-spin" />
+                  Confirmando...
+                </>
+              ) : (
+                <>
+                  <Check className="h-4 w-4 mr-2" />
+                  Confirmar Pago
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

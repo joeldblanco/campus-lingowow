@@ -30,7 +30,7 @@ import {
   isWithinInterval,
 } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { toZonedTime, format as formatTz } from 'date-fns-tz'
+import { toZonedTime, fromZonedTime, format as formatTz } from 'date-fns-tz'
 
 /**
  * Parsea una fecha en formato ISO (YYYY-MM-DD) a objeto Date
@@ -435,32 +435,38 @@ export function isFutureDate(dateString: string): boolean {
 
 /**
  * Convierte un timeSlot de hora local a UTC
- * @param day - Fecha en formato YYYY-MM-DD (en hora local)
- * @param timeSlot - Horario en formato HH:MM-HH:MM (en hora local)
+ * @param day - Fecha en formato YYYY-MM-DD (en hora local del usuario)
+ * @param timeSlot - Horario en formato HH:MM-HH:MM (en hora local del usuario)
+ * @param timezone - Zona horaria del usuario (default: America/Lima)
  * @returns Objeto con day y timeSlot en UTC
  */
 export function convertTimeSlotToUTC(
   day: string,
-  timeSlot: string
+  timeSlot: string,
+  timezone: string = 'America/Lima'
 ): { day: string; timeSlot: string } {
   const [startTime, endTime] = timeSlot.split('-')
   const [startHour, startMinute] = startTime.split(':').map(Number)
   const [endHour, endMinute] = endTime.split(':').map(Number)
-  const [year, month, dayOfMonth] = day.split('-').map(Number)
 
-  // Crear fechas en hora local
-  const startLocal = new Date(year, month - 1, dayOfMonth, startHour, startMinute, 0, 0)
-  const endLocal = new Date(year, month - 1, dayOfMonth, endHour, endMinute, 0, 0)
+  // Crear string ISO con la hora local y parsear considerando la zona horaria
+  // Formato: YYYY-MM-DDTHH:mm:ss
+  const startISOString = `${day}T${String(startHour).padStart(2, '0')}:${String(startMinute).padStart(2, '0')}:00`
+  const endISOString = `${day}T${String(endHour).padStart(2, '0')}:${String(endMinute).padStart(2, '0')}:00`
+
+  // fromZonedTime convierte una fecha en una zona horaria específica a UTC
+  const startUTC = fromZonedTime(startISOString, timezone)
+  const endUTC = fromZonedTime(endISOString, timezone)
 
   // Obtener componentes UTC
-  const utcStartYear = startLocal.getUTCFullYear()
-  const utcStartMonth = String(startLocal.getUTCMonth() + 1).padStart(2, '0')
-  const utcStartDay = String(startLocal.getUTCDate()).padStart(2, '0')
-  const utcStartHour = String(startLocal.getUTCHours()).padStart(2, '0')
-  const utcStartMinute = String(startLocal.getUTCMinutes()).padStart(2, '0')
+  const utcStartYear = startUTC.getUTCFullYear()
+  const utcStartMonth = String(startUTC.getUTCMonth() + 1).padStart(2, '0')
+  const utcStartDay = String(startUTC.getUTCDate()).padStart(2, '0')
+  const utcStartHour = String(startUTC.getUTCHours()).padStart(2, '0')
+  const utcStartMinute = String(startUTC.getUTCMinutes()).padStart(2, '0')
 
-  const utcEndHour = String(endLocal.getUTCHours()).padStart(2, '0')
-  const utcEndMinute = String(endLocal.getUTCMinutes()).padStart(2, '0')
+  const utcEndHour = String(endUTC.getUTCHours()).padStart(2, '0')
+  const utcEndMinute = String(endUTC.getUTCMinutes()).padStart(2, '0')
 
   return {
     day: `${utcStartYear}-${utcStartMonth}-${utcStartDay}`,
@@ -472,30 +478,51 @@ export function convertTimeSlotToUTC(
  * Convierte un timeSlot de UTC a hora local
  * @param day - Fecha en formato YYYY-MM-DD (en UTC)
  * @param timeSlot - Horario en formato HH:MM-HH:MM (en UTC)
- * @returns Objeto con day y timeSlot en hora local
+ * @param timezone - Zona horaria del usuario (default: America/Lima)
+ * @returns Objeto con day y timeSlot en hora local del usuario
  */
 export function convertTimeSlotFromUTC(
   day: string,
-  timeSlot: string
+  timeSlot: string,
+  timezone: string = 'America/Lima'
 ): { day: string; timeSlot: string } {
   const [startTime, endTime] = timeSlot.split('-')
   const [startHour, startMinute] = startTime.split(':').map(Number)
   const [endHour, endMinute] = endTime.split(':').map(Number)
-  const [year, month, dayOfMonth] = day.split('-').map(Number)
 
-  // Crear fechas en UTC
-  const startUTC = new Date(Date.UTC(year, month - 1, dayOfMonth, startHour, startMinute, 0, 0))
-  const endUTC = new Date(Date.UTC(year, month - 1, dayOfMonth, endHour, endMinute, 0, 0))
+  // Crear fechas UTC
+  const startUTC = new Date(Date.UTC(
+    parseInt(day.split('-')[0]),
+    parseInt(day.split('-')[1]) - 1,
+    parseInt(day.split('-')[2]),
+    startHour,
+    startMinute,
+    0,
+    0
+  ))
+  const endUTC = new Date(Date.UTC(
+    parseInt(day.split('-')[0]),
+    parseInt(day.split('-')[1]) - 1,
+    parseInt(day.split('-')[2]),
+    endHour,
+    endMinute,
+    0,
+    0
+  ))
 
-  // Obtener componentes en hora local
-  const localStartYear = startUTC.getFullYear()
-  const localStartMonth = String(startUTC.getMonth() + 1).padStart(2, '0')
-  const localStartDay = String(startUTC.getDate()).padStart(2, '0')
-  const localStartHour = String(startUTC.getHours()).padStart(2, '0')
-  const localStartMinute = String(startUTC.getMinutes()).padStart(2, '0')
+  // Convertir a la zona horaria del usuario usando date-fns-tz
+  const localStart = toZonedTime(startUTC, timezone)
+  const localEnd = toZonedTime(endUTC, timezone)
 
-  const localEndHour = String(endUTC.getHours()).padStart(2, '0')
-  const localEndMinute = String(endUTC.getMinutes()).padStart(2, '0')
+  // Formatear los componentes
+  const localStartYear = localStart.getFullYear()
+  const localStartMonth = String(localStart.getMonth() + 1).padStart(2, '0')
+  const localStartDay = String(localStart.getDate()).padStart(2, '0')
+  const localStartHour = String(localStart.getHours()).padStart(2, '0')
+  const localStartMinute = String(localStart.getMinutes()).padStart(2, '0')
+
+  const localEndHour = String(localEnd.getHours()).padStart(2, '0')
+  const localEndMinute = String(localEnd.getMinutes()).padStart(2, '0')
 
   return {
     day: `${localStartYear}-${localStartMonth}-${localStartDay}`,
@@ -506,6 +533,163 @@ export function convertTimeSlotFromUTC(
 // =============================================
 // UTILIDADES PARA ZONA HORARIA (NUEVO)
 // =============================================
+
+/**
+ * Convierte un horario recurrente (dayOfWeek + time) de hora local a UTC
+ * Usa una fecha de referencia para calcular el offset correcto (considera DST)
+ * 
+ * @param dayOfWeek - Día de la semana (0=Domingo, 1=Lunes, ..., 6=Sábado) en hora local
+ * @param startTime - Hora de inicio en formato HH:MM (hora local)
+ * @param endTime - Hora de fin en formato HH:MM (hora local)
+ * @param timezone - Zona horaria del usuario (ej: 'America/Lima')
+ * @param referenceDate - Fecha de referencia para calcular offset (default: hoy)
+ * @returns Objeto con dayOfWeek, startTime y endTime en UTC
+ */
+export function convertRecurringScheduleToUTC(
+  dayOfWeek: number,
+  startTime: string,
+  endTime: string,
+  timezone: string = 'America/Lima',
+  referenceDate: Date = new Date()
+): { dayOfWeek: number; startTime: string; endTime: string } {
+  // Encontrar la próxima fecha que corresponda a ese día de la semana
+  const refDay = referenceDate.getDay()
+  let daysUntilTarget = dayOfWeek - refDay
+  if (daysUntilTarget < 0) daysUntilTarget += 7
+  
+  const targetDate = new Date(referenceDate)
+  targetDate.setDate(targetDate.getDate() + daysUntilTarget)
+  const dateStr = format(targetDate, 'yyyy-MM-dd')
+  
+  // Usar convertTimeSlotToUTC para la conversión
+  const utcData = convertTimeSlotToUTC(dateStr, `${startTime}-${endTime}`, timezone)
+  
+  // Extraer el día de la semana UTC de la fecha convertida
+  const [year, month, day] = utcData.day.split('-').map(Number)
+  const utcDate = new Date(Date.UTC(year, month - 1, day, 12, 0, 0))
+  const utcDayOfWeek = utcDate.getUTCDay()
+  
+  const [utcStartTime, utcEndTime] = utcData.timeSlot.split('-')
+  
+  return {
+    dayOfWeek: utcDayOfWeek,
+    startTime: utcStartTime,
+    endTime: utcEndTime,
+  }
+}
+
+/**
+ * Convierte un horario recurrente (dayOfWeek + time) de UTC a hora local
+ * Usa una fecha de referencia para calcular el offset correcto (considera DST)
+ * 
+ * @param dayOfWeek - Día de la semana (0=Domingo, 1=Lunes, ..., 6=Sábado) en UTC
+ * @param startTime - Hora de inicio en formato HH:MM (UTC)
+ * @param endTime - Hora de fin en formato HH:MM (UTC)
+ * @param timezone - Zona horaria del usuario (ej: 'America/Lima')
+ * @param referenceDate - Fecha de referencia para calcular offset (default: hoy)
+ * @returns Objeto con dayOfWeek, startTime y endTime en hora local
+ */
+export function convertRecurringScheduleFromUTC(
+  dayOfWeek: number,
+  startTime: string,
+  endTime: string,
+  timezone: string = 'America/Lima',
+  referenceDate: Date = new Date()
+): { dayOfWeek: number; startTime: string; endTime: string } {
+  // Encontrar la próxima fecha UTC que corresponda a ese día de la semana
+  const refDay = referenceDate.getUTCDay()
+  let daysUntilTarget = dayOfWeek - refDay
+  if (daysUntilTarget < 0) daysUntilTarget += 7
+  
+  const targetDate = new Date(referenceDate)
+  targetDate.setUTCDate(targetDate.getUTCDate() + daysUntilTarget)
+  const dateStr = `${targetDate.getUTCFullYear()}-${String(targetDate.getUTCMonth() + 1).padStart(2, '0')}-${String(targetDate.getUTCDate()).padStart(2, '0')}`
+  
+  // Usar convertTimeSlotFromUTC para la conversión
+  const localData = convertTimeSlotFromUTC(dateStr, `${startTime}-${endTime}`, timezone)
+  
+  // Extraer el día de la semana local de la fecha convertida
+  const [year, month, day] = localData.day.split('-').map(Number)
+  const localDate = new Date(year, month - 1, day, 12, 0, 0)
+  const localDayOfWeek = localDate.getDay()
+  
+  const [localStartTime, localEndTime] = localData.timeSlot.split('-')
+  
+  return {
+    dayOfWeek: localDayOfWeek,
+    startTime: localStartTime,
+    endTime: localEndTime,
+  }
+}
+
+/**
+ * Convierte un día de la semana en texto a número y viceversa
+ */
+export const DAY_NAME_TO_NUMBER: Record<string, number> = {
+  sunday: 0,
+  monday: 1,
+  tuesday: 2,
+  wednesday: 3,
+  thursday: 4,
+  friday: 5,
+  saturday: 6,
+}
+
+export const DAY_NUMBER_TO_NAME: Record<number, string> = {
+  0: 'sunday',
+  1: 'monday',
+  2: 'tuesday',
+  3: 'wednesday',
+  4: 'thursday',
+  5: 'friday',
+  6: 'saturday',
+}
+
+/**
+ * Convierte disponibilidad (day name + time) de hora local a UTC
+ */
+export function convertAvailabilityToUTC(
+  dayName: string,
+  startTime: string,
+  endTime: string,
+  timezone: string = 'America/Lima'
+): { day: string; startTime: string; endTime: string } {
+  const dayOfWeek = DAY_NAME_TO_NUMBER[dayName.toLowerCase()]
+  if (dayOfWeek === undefined) {
+    throw new Error(`Invalid day name: ${dayName}`)
+  }
+  
+  const utcData = convertRecurringScheduleToUTC(dayOfWeek, startTime, endTime, timezone)
+  
+  return {
+    day: DAY_NUMBER_TO_NAME[utcData.dayOfWeek],
+    startTime: utcData.startTime,
+    endTime: utcData.endTime,
+  }
+}
+
+/**
+ * Convierte disponibilidad (day name + time) de UTC a hora local
+ */
+export function convertAvailabilityFromUTC(
+  dayName: string,
+  startTime: string,
+  endTime: string,
+  timezone: string = 'America/Lima'
+): { day: string; startTime: string; endTime: string } {
+  const dayOfWeek = DAY_NAME_TO_NUMBER[dayName.toLowerCase()]
+  if (dayOfWeek === undefined) {
+    throw new Error(`Invalid day name: ${dayName}`)
+  }
+  
+  const localData = convertRecurringScheduleFromUTC(dayOfWeek, startTime, endTime, timezone)
+  
+  return {
+    day: DAY_NUMBER_TO_NAME[localData.dayOfWeek],
+    startTime: localData.startTime,
+    endTime: localData.endTime,
+  }
+}
 
 /**
  * Formatea una fecha en la zona horaria especificada

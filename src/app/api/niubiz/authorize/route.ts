@@ -228,14 +228,32 @@ export async function POST(req: NextRequest) {
 
             // Create schedules and bookings
             if (enrollment) {
+              const { convertRecurringScheduleToUTC } = await import('@/lib/utils/date')
+              
+              // Obtener timezones de los profesores
+              const teacherIds = [...new Set(item.selectedSchedule.map(s => s.teacherId))]
+              const teachers = await db.user.findMany({
+                where: { id: { in: teacherIds } },
+                select: { id: true, timezone: true },
+              })
+              const teacherTimezones = new Map(teachers.map(t => [t.id, t.timezone || 'America/Lima']))
+              
               await Promise.all(
                 item.selectedSchedule.map(async (slot) => {
+                  const timezone = teacherTimezones.get(slot.teacherId) || 'America/Lima'
+                  const utcData = convertRecurringScheduleToUTC(
+                    slot.dayOfWeek,
+                    slot.startTime,
+                    slot.endTime,
+                    timezone
+                  )
+                  
                   const existingSchedule = await db.classSchedule.findUnique({
                     where: {
                       enrollmentId_dayOfWeek_startTime: {
                         enrollmentId: enrollment!.id,
-                        dayOfWeek: slot.dayOfWeek,
-                        startTime: slot.startTime,
+                        dayOfWeek: utcData.dayOfWeek,
+                        startTime: utcData.startTime,
                       },
                     },
                   })
@@ -245,9 +263,9 @@ export async function POST(req: NextRequest) {
                       data: {
                         enrollmentId: enrollment!.id,
                         teacherId: slot.teacherId,
-                        dayOfWeek: slot.dayOfWeek,
-                        startTime: slot.startTime,
-                        endTime: slot.endTime,
+                        dayOfWeek: utcData.dayOfWeek,
+                        startTime: utcData.startTime,
+                        endTime: utcData.endTime,
                       },
                     })
                   }
