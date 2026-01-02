@@ -1,22 +1,24 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
-import { ArrowLeft, Save, Loader2, CreditCard, Building2, Wallet, AlertCircle, Smartphone, Coins } from 'lucide-react'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+  AlertCircle,
+  ArrowLeft,
+  Building2,
+  Coins,
+  Loader2,
+  Save,
+  Smartphone,
+  Wallet,
+} from 'lucide-react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import { Alert, AlertDescription } from '@/components/ui/alert'
 
 type PaymentMethod = 'bank_transfer' | 'binance' | 'paypal' | 'pago_movil'
 
@@ -91,7 +93,7 @@ export default function PaymentSettingsPage() {
   }
 
   const handleChange = (field: keyof PaymentSettings, value: string) => {
-    setSettings(prev => ({ ...prev, [field]: value }))
+    setSettings((prev) => ({ ...prev, [field]: value }))
   }
 
   if (isLoading) {
@@ -112,9 +114,7 @@ export default function PaymentSettingsPage() {
           </Button>
           <div>
             <h1 className="text-2xl font-bold">Configuración de Pagos</h1>
-            <p className="text-muted-foreground">
-              Configura cómo deseas recibir tus pagos
-            </p>
+            <p className="text-muted-foreground">Configura cómo deseas recibir tus pagos</p>
           </div>
         </div>
         <Button onClick={handleSave} disabled={isSaving}>
@@ -130,7 +130,8 @@ export default function PaymentSettingsPage() {
       <Alert>
         <AlertCircle className="h-4 w-4" />
         <AlertDescription>
-          Esta información se utilizará para procesar tus pagos. Asegúrate de que los datos sean correctos.
+          Esta información se utilizará para procesar tus pagos. Asegúrate de que los datos sean
+          correctos.
         </AlertDescription>
       </Alert>
 
@@ -138,57 +139,65 @@ export default function PaymentSettingsPage() {
       <Card>
         <CardHeader>
           <CardTitle>Método de Pago</CardTitle>
-          <CardDescription>
-            Selecciona cómo prefieres recibir tus pagos
-          </CardDescription>
+          <CardDescription>Selecciona cómo prefieres recibir tus pagos</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <button
               onClick={() => handleChange('paymentMethod', 'bank_transfer')}
-              className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${settings.paymentMethod === 'bank_transfer'
+              className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${
+                settings.paymentMethod === 'bank_transfer'
                   ? 'border-primary bg-primary/5'
                   : 'border-border hover:border-primary/50'
-                }`}
+              }`}
             >
-              <Building2 className={`h-8 w-8 ${settings.paymentMethod === 'bank_transfer' ? 'text-primary' : 'text-muted-foreground'}`} />
+              <Building2
+                className={`h-8 w-8 ${settings.paymentMethod === 'bank_transfer' ? 'text-primary' : 'text-muted-foreground'}`}
+              />
               <span className="text-sm font-medium text-center">Transferencia (Perú)</span>
             </button>
 
             <button
               onClick={() => handleChange('paymentMethod', 'binance')}
-              className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${settings.paymentMethod === 'binance'
+              className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${
+                settings.paymentMethod === 'binance'
                   ? 'border-primary bg-primary/5'
                   : 'border-border hover:border-primary/50'
-                }`}
+              }`}
             >
-              <Coins className={`h-8 w-8 ${settings.paymentMethod === 'binance' ? 'text-primary' : 'text-muted-foreground'}`} />
+              <Coins
+                className={`h-8 w-8 ${settings.paymentMethod === 'binance' ? 'text-primary' : 'text-muted-foreground'}`}
+              />
               <span className="text-sm font-medium">Binance</span>
             </button>
 
             <button
               onClick={() => handleChange('paymentMethod', 'paypal')}
-              className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${settings.paymentMethod === 'paypal'
+              className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${
+                settings.paymentMethod === 'paypal'
                   ? 'border-primary bg-primary/5'
                   : 'border-border hover:border-primary/50'
-                }`}
+              }`}
             >
-              <Wallet className={`h-8 w-8 ${settings.paymentMethod === 'paypal' ? 'text-primary' : 'text-muted-foreground'}`} />
+              <Wallet
+                className={`h-8 w-8 ${settings.paymentMethod === 'paypal' ? 'text-primary' : 'text-muted-foreground'}`}
+              />
               <span className="text-sm font-medium">PayPal</span>
             </button>
 
             <button
               onClick={() => handleChange('paymentMethod', 'pago_movil')}
-              className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${settings.paymentMethod === 'pago_movil'
+              className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${
+                settings.paymentMethod === 'pago_movil'
                   ? 'border-primary bg-primary/5'
                   : 'border-border hover:border-primary/50'
-                }`}
+              }`}
             >
-              <Smartphone className={`h-8 w-8 ${settings.paymentMethod === 'pago_movil' ? 'text-primary' : 'text-muted-foreground'}`} />
+              <Smartphone
+                className={`h-8 w-8 ${settings.paymentMethod === 'pago_movil' ? 'text-primary' : 'text-muted-foreground'}`}
+              />
               <span className="text-sm font-medium text-center">Pago Móvil (Venezuela)</span>
             </button>
-
-
           </div>
         </CardContent>
       </Card>
@@ -198,9 +207,7 @@ export default function PaymentSettingsPage() {
         <Card>
           <CardHeader>
             <CardTitle>Cuenta Bancaria (Perú)</CardTitle>
-            <CardDescription>
-              Ingresa los datos de tu cuenta bancaria en Perú
-            </CardDescription>
+            <CardDescription>Ingresa los datos de tu cuenta bancaria en Perú</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -253,9 +260,7 @@ export default function PaymentSettingsPage() {
         <Card>
           <CardHeader>
             <CardTitle>Datos de Binance</CardTitle>
-            <CardDescription>
-              Ingresa los datos de tu cuenta Binance (Binance Pay)
-            </CardDescription>
+            <CardDescription>Ingresa los datos de tu cuenta Binance (Binance Pay)</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -287,9 +292,7 @@ export default function PaymentSettingsPage() {
         <Card>
           <CardHeader>
             <CardTitle>Datos de PayPal</CardTitle>
-            <CardDescription>
-              Ingresa tu correo electrónico de PayPal
-            </CardDescription>
+            <CardDescription>Ingresa tu correo electrónico de PayPal</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
@@ -311,9 +314,7 @@ export default function PaymentSettingsPage() {
         <Card>
           <CardHeader>
             <CardTitle>Pago Móvil (Venezuela)</CardTitle>
-            <CardDescription>
-              Ingresa los datos para recibir Pago Móvil
-            </CardDescription>
+            <CardDescription>Ingresa los datos para recibir Pago Móvil</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -348,8 +349,6 @@ export default function PaymentSettingsPage() {
           </CardContent>
         </Card>
       )}
-
-
     </div>
   )
 }
