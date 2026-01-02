@@ -49,7 +49,7 @@ function VideoTile({ track }: { track: VideoTrack; isTeacher: boolean }) {
   if (!track) return null
 
   return (
-    <Card className="relative w-full aspect-video bg-gray-900 rounded-xl overflow-hidden border-0 shadow-md">
+    <Card className="relative w-full aspect-[4/3] bg-gray-900 rounded-lg overflow-hidden border-0 shadow-md">
       {/* Video Element */}
       {track?.videoTrack && !track.isVideoMuted ? (
         <video
@@ -61,9 +61,9 @@ function VideoTile({ track }: { track: VideoTrack; isTeacher: boolean }) {
         />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-700 to-gray-900">
-          <Avatar className="w-16 h-16 border-2 border-white/20">
+          <Avatar className="w-12 h-12 border-2 border-white/20">
             <AvatarImage src={track.avatar} />
-            <AvatarFallback className="text-xl font-bold bg-blue-600 text-white">
+            <AvatarFallback className="text-base font-bold bg-blue-600 text-white">
               {track.name.substring(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>

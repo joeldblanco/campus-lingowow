@@ -206,6 +206,10 @@ function ClassroomInner({
   }
 
   // Sidebar: Videos arriba + Chat abajo (diseño según imagen)
+  const handleBackClick = async () => {
+    await leaveRoom()
+  }
+
   const renderSidebar = (
     <div className="h-full flex flex-col">
       {/* Header */}
@@ -231,15 +235,12 @@ function ClassroomInner({
           </div>
         )}
       </div>
-
-      {/* Teacher: Lesson Selector (collapsible or separate) */}
-      {isTeacher && bookingId && (
-        <div className="flex-none border-t p-2 bg-gray-50">
-          <LessonSelector bookingId={bookingId} onLessonSelect={handleLessonSelect} />
-        </div>
-      )}
     </div>
   )
+
+  const renderLeftSidebar = isTeacher && bookingId ? (
+    <LessonSelector bookingId={bookingId} onLessonSelect={handleLessonSelect} />
+  ) : null
 
   const renderMainContent = () => {
     if (isLoadingLesson) {
@@ -269,6 +270,8 @@ function ClassroomInner({
       lessonTitle={activeLesson?.title || 'Aula Virtual'}
       timeLeft={timeLeft}
       rightSidebar={renderSidebar}
+      leftSidebar={renderLeftSidebar}
+      onBackClick={handleBackClick}
       bottomControls={
         <ControlBar
           isMicMuted={isAudioMuted}

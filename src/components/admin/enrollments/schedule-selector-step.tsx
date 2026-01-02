@@ -132,7 +132,9 @@ export function ScheduleSelectorStep({
   const fetchTeachers = useCallback(async () => {
     try {
       setLoading(true)
-      const response = await fetch(`/api/teachers/availability?courseId=${courseId}`)
+      // Obtener la zona horaria del navegador del usuario
+      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+      const response = await fetch(`/api/teachers/availability?courseId=${courseId}&timezone=${encodeURIComponent(userTimezone)}`)
       if (!response.ok) throw new Error('Error al cargar profesores')
       const data = await response.json()
       setTeachers(data)

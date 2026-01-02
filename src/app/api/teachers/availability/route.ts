@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { convertAvailabilityFromUTC } from '@/lib/utils/date'
 
 export async function GET(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams
     const courseId = searchParams.get('courseId')
+    const timezone = searchParams.get('timezone') || 'America/Lima'
 
     if (!courseId) {
       return NextResponse.json(
@@ -13,7 +15,7 @@ export async function GET(req: NextRequest) {
       )
     }
 
-    console.log(`[API] Buscando profesores para curso: ${courseId}`)
+    console.log(`[API] Buscando profesores para curso: ${courseId}, timezone: ${timezone}`)
 
     // Obtener profesores que pueden enseñar este curso
     const teacherCourses = await db.teacherCourse.findMany({
@@ -44,26 +46,38 @@ export async function GET(req: NextRequest) {
       console.log(`[API] Procesando profesor: ${teacher.name} ${teacher.lastName || ''} (${teacher.id})`)
       console.log(`[API] Registros de disponibilidad: ${teacher.teacherAvailability.length}`)
       
-      // Agrupar disponibilidad por día de la semana
+      // Agrupar disponibilidad por día de la semana (convertir de UTC a hora local)
       const availabilityByDay: Record<string, Array<{ startTime: string; endTime: string }>> = {}
       
       teacher.teacherAvailability.forEach((avail) => {
-        console.log(`[API] - Disponibilidad: ${avail.day} ${avail.startTime}-${avail.endTime}`)
+        console.log(`[API] - Disponibilidad UTC: ${avail.day} ${avail.startTime}-${avail.endTime}`)
         
         // Si es un día de la semana (no una fecha específica)
         if (avail.day.length <= 10 && !avail.day.includes('-')) {
           // Es un día de la semana como "monday", "tuesday", etc. (en minúsculas)
-          // Normalizar a minúsculas por si acaso
-          const dayKey = avail.day.toLowerCase()
-          if (!availabilityByDay[dayKey]) {
-            availabilityByDay[dayKey] = []
+          // Convertir de UTC a hora local del usuario
+          try {
+            const localData = convertAvailabilityFromUTC(
+              avail.day.toLowerCase(),
+              avail.startTime,
+              avail.endTime,
+              timezone
+            )
+            console.log(`[API] - Disponibilidad Local (${timezone}): ${localData.day} ${localData.startTime}-${localData.endTime}`)
+            
+            const dayKey = localData.day.toLowerCase()
+            if (!availabilityByDay[dayKey]) {
+              availabilityByDay[dayKey] = []
+            }
+            availabilityByDay[dayKey].push({
+              startTime: localData.startTime,
+              endTime: localData.endTime,
+            })
+          } catch (error) {
+            console.error(`[API] Error converting availability: ${error}`)
           }
-          availabilityByDay[dayKey].push({
-            startTime: avail.startTime,
-            endTime: avail.endTime,
-          })
         } else if (avail.day.match(/^\d{4}-\d{2}-\d{2}$/)) {
-          // Es una fecha específica YYYY-MM-DD
+          // Es una fecha específica YYYY-MM-DD - mantener como está por ahora
           const date = new Date(avail.day)
           const dayName = date.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase()
           if (!availabilityByDay[dayName]) {

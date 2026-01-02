@@ -12,9 +12,11 @@ interface ClassroomLayoutProps {
   rightSidebar: React.ReactNode // This will be the Video/Chat Sidebar
   bottomControls: React.ReactNode // This will be the Control Bar
   contentTabs?: React.ReactNode // Tabs for switching between lesson/whiteboard/screenshare
+  leftSidebar?: React.ReactNode // This will be the Lesson Selector (for teachers)
   className?: string
   lessonTitle?: string
   timeLeft?: string
+  onBackClick?: () => void // Callback when back button is clicked
 }
 
 export function ClassroomLayout({
@@ -22,11 +24,21 @@ export function ClassroomLayout({
   rightSidebar,
   bottomControls,
   contentTabs,
+  leftSidebar,
   className = '',
   lessonTitle = 'English Lesson',
-  timeLeft = '45:00'
+  timeLeft = '45:00',
+  onBackClick
 }: ClassroomLayoutProps) {
   const router = useRouter()
+
+  const handleBackClick = () => {
+    if (onBackClick) {
+      onBackClick()
+    } else {
+      router.back()
+    }
+  }
 
   return (
     <div className={`flex flex-col h-screen bg-gray-50 ${className}`}>
@@ -36,7 +48,7 @@ export function ClassroomLayout({
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => router.back()}
+            onClick={handleBackClick}
             className="text-gray-500 hover:text-gray-900"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -57,9 +69,16 @@ export function ClassroomLayout({
 
       {/* Main Content Grid */}
       <main className="flex-1 overflow-hidden p-4 grid grid-cols-12 gap-4">
-        {/* Left Panel: Lesson Content */}
-        <div className="col-span-8 flex flex-col h-full overflow-hidden gap-3">
-          {/* Content Tabs - Top Right of Left Panel */}
+        {/* Left Panel: Lesson Selector (for teachers) */}
+        {leftSidebar && (
+          <div className="col-span-2 flex flex-col h-full overflow-hidden">
+            {leftSidebar}
+          </div>
+        )}
+
+        {/* Center Panel: Lesson Content */}
+        <div className={`${leftSidebar ? 'col-span-6' : 'col-span-8'} flex flex-col h-full overflow-hidden gap-3`}>
+          {/* Content Tabs - Top Right of Center Panel */}
           {contentTabs && (
             <div className="flex-none flex justify-end">
               {contentTabs}
