@@ -18,7 +18,7 @@ interface FloatingChatProps {
 interface User {
   id: string
   name: string
-  lastName: string
+  lastName: string | null
   image?: string | null
   teamBadge?: TeamBadge | null
 }
@@ -385,7 +385,7 @@ export const FloatingChat: React.FC<FloatingChatProps> = ({ userId }) => {
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">
                           {conversation.title || 
-                           `${conversation.participants[0]?.user.name} ${conversation.participants[0]?.user.lastName}`}
+                           `${conversation.participants[0]?.user.name} ${conversation.participants[0]?.user.lastName || ''}`}
                         </p>
                         <p className="text-xs text-gray-500 truncate">
                           {conversation.lastMessage || 'Sin mensajes'}

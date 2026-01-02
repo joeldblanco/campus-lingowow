@@ -232,7 +232,7 @@ export function TeacherActivitiesView() {
   return (
     <div className="flex h-full w-full flex-row bg-slate-50 dark:bg-slate-950">
       {/* Sidebar Filters */}
-      <aside className="w-72 bg-white border-r border-slate-200 flex flex-col overflow-y-auto hidden lg:flex flex-none dark:bg-slate-900 dark:border-slate-800">
+      <aside className="hidden lg:flex w-72 bg-white border-r border-slate-200 flex-col overflow-y-auto flex-none dark:bg-slate-900 dark:border-slate-800">
         <div className="p-5 border-b border-slate-200 dark:border-slate-800">
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-slate-900 dark:text-white text-lg font-bold">Filtros</h1>

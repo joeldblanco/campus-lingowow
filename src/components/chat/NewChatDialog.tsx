@@ -19,7 +19,7 @@ import React, { useEffect, useState } from 'react'
 interface SearchUser {
   id: string
   name: string
-  lastName: string
+  lastName: string | null
   image: string | null
   roles: UserRole[]
 }

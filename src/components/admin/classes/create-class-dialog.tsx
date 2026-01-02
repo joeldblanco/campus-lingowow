@@ -54,7 +54,7 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
     Array<{
       id: string
       name: string
-      lastName: string
+      lastName: string | null
       email: string
       enrollments: Array<{
         id: string
@@ -82,7 +82,7 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
     Array<{ id: string; title: string; language: string; level: string }>
   >([])
   const [courseTeachers, setCourseTeachers] = useState<
-    Array<{ id: string; name: string; lastName: string; email: string }>
+    Array<{ id: string; name: string; lastName: string | null; email: string }>
   >([])
   const [teacherAvailableSlots, setTeacherAvailableSlots] = useState<string[]>([])
   const [teacherAvailableDays, setTeacherAvailableDays] = useState<string[]>([])

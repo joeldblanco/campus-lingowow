@@ -7,7 +7,7 @@ interface StudentProgressData {
   student: {
     id: string
     name: string
-    lastName: string
+    lastName: string | null
     email: string
   }
   courses: Array<{

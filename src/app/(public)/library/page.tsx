@@ -120,8 +120,9 @@ const formatDuration = (seconds: number | null) => {
 
 export default function LibraryPage() {
   const searchParams = useSearchParams()
-  
+
   const [resources, setResources] = useState<LibraryResource[]>([])
+  const [popularResources, setPopularResources] = useState<LibraryResource[]>([])
   const [featuredResource, setFeaturedResource] = useState<LibraryResource | null>(null)
   const [categories, setCategories] = useState<LibraryCategory[]>([])
   const [loading, setLoading] = useState(true)
@@ -159,7 +160,7 @@ export default function LibraryPage() {
       params.set('limit', pagination.limit.toString())
       params.set('sort', sortBy)
       params.set('featured', 'true')
-      
+
       if (selectedCategory !== 'all') {
         params.set('category', selectedCategory)
       }
@@ -180,6 +181,7 @@ export default function LibraryPage() {
       if (response.ok) {
         const data: LibraryResourcesResponse = await response.json()
         setResources(data.resources)
+        setPopularResources(data.popularResources)
         setFeaturedResource(data.featuredResource)
         setPagination(data.pagination)
       }
@@ -220,6 +222,7 @@ export default function LibraryPage() {
     setPagination(prev => ({ ...prev, page: newPage }))
   }
 
+
   const allCategories = [
     ...defaultCategories,
     ...categories.map(cat => ({
@@ -230,8 +233,7 @@ export default function LibraryPage() {
     })),
   ]
 
-  const popularResources = resources.slice(0, 3)
-  const latestResources = resources.slice(3)
+
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -257,11 +259,10 @@ export default function LibraryPage() {
                       setSelectedCategory(cat.id)
                       setPagination(prev => ({ ...prev, page: 1 }))
                     }}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors ${
-                      isSelected
+                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors ${isSelected
                         ? 'bg-primary/10 text-primary font-medium'
                         : 'hover:bg-muted text-muted-foreground'
-                    }`}
+                      }`}
                   >
                     <Icon className="h-5 w-5" />
                     <span className="text-sm">{cat.name}</span>
@@ -308,11 +309,10 @@ export default function LibraryPage() {
                   <button
                     key={format.id}
                     onClick={() => toggleFormat(format.id)}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
-                      isSelected
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${isSelected
                         ? 'bg-primary/10 text-primary border-primary/20'
                         : 'bg-muted border-transparent hover:border-primary/50'
-                    }`}
+                      }`}
                   >
                     <Icon className="h-4 w-4" />
                     {format.label}
@@ -384,7 +384,7 @@ export default function LibraryPage() {
                   <div
                     className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                     style={{
-                      backgroundImage: featuredResource.thumbnailUrl 
+                      backgroundImage: featuredResource.thumbnailUrl
                         ? `url('${featuredResource.thumbnailUrl}')`
                         : "url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1200')",
                     }}
@@ -405,8 +405,8 @@ export default function LibraryPage() {
                     <div className="flex items-center gap-4 text-sm text-slate-300">
                       <div className="flex items-center gap-2">
                         {featuredResource.author.image ? (
-                          <NextImage 
-                            src={featuredResource.author.image} 
+                          <NextImage
+                            src={featuredResource.author.image}
                             alt={featuredResource.author.name}
                             width={24}
                             height={24}
@@ -434,111 +434,113 @@ export default function LibraryPage() {
             </section>
           ) : null}
 
-          {/* Popular Resources Section */}
-          <section className="mb-12">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold flex items-center gap-2">
-                <Star className="h-5 w-5 text-yellow-500" />
-                Recursos Populares
-              </h2>
-              <button
-                onClick={() => setSortBy('popular')}
-                className="text-sm font-medium text-primary hover:underline flex items-center gap-1 group"
-              >
-                Ver todos{' '}
-                <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
-
-            {loading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[1, 2, 3].map((i) => (
-                  <Card key={i} className="overflow-hidden">
-                    <Skeleton className="aspect-video" />
-                    <CardContent className="p-5">
-                      <Skeleton className="h-4 w-20 mb-2" />
-                      <Skeleton className="h-6 w-full mb-2" />
-                      <Skeleton className="h-4 w-full mb-4" />
-                      <Skeleton className="h-8 w-full" />
-                    </CardContent>
-                  </Card>
-                ))}
+          {/* Popular Resources Section - Only show if not sorting by popular to avoid duplication */}
+          {sortBy !== 'popular' && (
+            <section className="mb-12">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold flex items-center gap-2">
+                  <Star className="h-5 w-5 text-yellow-500" />
+                  Recursos Populares
+                </h2>
+                <button
+                  onClick={() => setSortBy('popular')}
+                  className="text-sm font-medium text-primary hover:underline flex items-center gap-1 group"
+                >
+                  Ver todos{' '}
+                  <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </button>
               </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {popularResources.map((resource) => (
-                  <Link key={resource.id} href={`/library/${resource.slug}`}>
-                    <Card className="group overflow-hidden hover:shadow-xl hover:border-primary/30 transition-all duration-300 h-full">
-                      <div className="relative aspect-video overflow-hidden">
-                        <div
-                          className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-                          style={{
-                            backgroundImage: resource.thumbnailUrl
-                              ? `url('${resource.thumbnailUrl}')`
-                              : `url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600')`,
-                          }}
-                        />
-                        <div className="absolute top-3 left-3">
-                          <Badge variant="secondary" className="gap-1 bg-white/90 text-foreground">
-                            {getTypeIcon(resource.type)}
-                            {RESOURCE_TYPE_LABELS[resource.type]}
-                          </Badge>
-                        </div>
-                        {resource.duration && (
-                          <div className="absolute bottom-3 right-3">
-                            <Badge variant="secondary" className="bg-black/70 text-white">
-                              {formatDuration(resource.duration)}
-                            </Badge>
-                          </div>
-                        )}
-                      </div>
+
+              {loading ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {[1, 2, 3].map((i) => (
+                    <Card key={i} className="overflow-hidden">
+                      <Skeleton className="aspect-video" />
                       <CardContent className="p-5">
-                        {resource.category && (
-                          <Badge variant="outline" className="mb-2 text-primary">
-                            {resource.category.name}
-                          </Badge>
-                        )}
-                        <h3 className="text-lg font-bold mb-2 leading-snug group-hover:text-primary transition-colors">
-                          {resource.title}
-                        </h3>
-                        <p className="text-muted-foreground text-sm line-clamp-2 mb-4">
-                          {resource.excerpt || resource.description}
-                        </p>
-                        <div className="pt-4 border-t flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            {resource.author.image ? (
-                              <NextImage 
-                                src={resource.author.image} 
-                                alt={resource.author.name}
-                                width={24}
-                                height={24}
-                                className="size-6 rounded-full object-cover"
-                              />
-                            ) : (
-                              <div className="size-6 rounded-full bg-primary/20" />
-                            )}
-                            <span className="text-xs text-muted-foreground">
-                              {resource.author.name}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <Eye className="h-3 w-3" />
-                              {resource.viewCount}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Heart className="h-3 w-3" />
-                              {resource.likeCount}
-                            </span>
-                          </div>
-                        </div>
+                        <Skeleton className="h-4 w-20 mb-2" />
+                        <Skeleton className="h-6 w-full mb-2" />
+                        <Skeleton className="h-4 w-full mb-4" />
+                        <Skeleton className="h-8 w-full" />
                       </CardContent>
                     </Card>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </section>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {popularResources.map((resource) => (
+                    <Link key={resource.id} href={`/library/${resource.slug}`}>
+                      <Card className="group overflow-hidden hover:shadow-xl hover:border-primary/30 transition-all duration-300 h-full">
+                        <div className="relative aspect-video overflow-hidden">
+                          <div
+                            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                            style={{
+                              backgroundImage: resource.thumbnailUrl
+                                ? `url('${resource.thumbnailUrl}')`
+                                : `url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600')`,
+                            }}
+                          />
+                          <div className="absolute top-3 left-3">
+                            <Badge variant="secondary" className="gap-1 bg-white/90 text-foreground">
+                              {getTypeIcon(resource.type)}
+                              {RESOURCE_TYPE_LABELS[resource.type]}
+                            </Badge>
+                          </div>
+                          {resource.duration && (
+                            <div className="absolute bottom-3 right-3">
+                              <Badge variant="secondary" className="bg-black/70 text-white">
+                                {formatDuration(resource.duration)}
+                              </Badge>
+                            </div>
+                          )}
+                        </div>
+                        <CardContent className="p-5">
+                          {resource.category && (
+                            <Badge variant="outline" className="mb-2 text-primary">
+                              {resource.category.name}
+                            </Badge>
+                          )}
+                          <h3 className="text-lg font-bold mb-2 leading-snug group-hover:text-primary transition-colors">
+                            {resource.title}
+                          </h3>
+                          <p className="text-muted-foreground text-sm line-clamp-2 mb-4">
+                            {resource.excerpt || resource.description}
+                          </p>
+                          <div className="pt-4 border-t flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              {resource.author.image ? (
+                                <NextImage
+                                  src={resource.author.image}
+                                  alt={resource.author.name}
+                                  width={24}
+                                  height={24}
+                                  className="size-6 rounded-full object-cover"
+                                />
+                              ) : (
+                                <div className="size-6 rounded-full bg-primary/20" />
+                              )}
+                              <span className="text-xs text-muted-foreground">
+                                {resource.author.name}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <Eye className="h-3 w-3" />
+                                {resource.viewCount}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Heart className="h-3 w-3" />
+                                {resource.likeCount}
+                              </span>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </section>
+          )}
 
           {/* Latest Additions Section */}
           <section>
@@ -577,9 +579,9 @@ export default function LibraryPage() {
                   </Card>
                 ))}
               </div>
-            ) : latestResources.length > 0 ? (
+            ) : resources.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {latestResources.map((resource) => (
+                {resources.map((resource) => (
                   <Link key={resource.id} href={`/library/${resource.slug}`}>
                     <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full group">
                       <div
@@ -631,15 +633,15 @@ export default function LibraryPage() {
             {/* Pagination */}
             {pagination.totalPages > 1 && (
               <div className="mt-12 flex items-center justify-center gap-2">
-                <Button 
-                  variant="outline" 
-                  size="icon" 
+                <Button
+                  variant="outline"
+                  size="icon"
                   disabled={pagination.page === 1}
                   onClick={() => handlePageChange(pagination.page - 1)}
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
-                
+
                 {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => {
                   let pageNum: number
                   if (pagination.totalPages <= 5) {
@@ -651,7 +653,7 @@ export default function LibraryPage() {
                   } else {
                     pageNum = pagination.page - 2 + i
                   }
-                  
+
                   return (
                     <Button
                       key={pageNum}
@@ -663,12 +665,12 @@ export default function LibraryPage() {
                     </Button>
                   )
                 })}
-                
+
                 {pagination.totalPages > 5 && pagination.page < pagination.totalPages - 2 && (
                   <>
                     <span className="px-2 text-muted-foreground">...</span>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       size="icon"
                       onClick={() => handlePageChange(pagination.totalPages)}
                     >
@@ -676,9 +678,9 @@ export default function LibraryPage() {
                     </Button>
                   </>
                 )}
-                
-                <Button 
-                  variant="outline" 
+
+                <Button
+                  variant="outline"
                   size="icon"
                   disabled={pagination.page === pagination.totalPages}
                   onClick={() => handlePageChange(pagination.page + 1)}

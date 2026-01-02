@@ -27,6 +27,8 @@ export type Product = Prisma.ProductGetPayload<{
     categoryId: true
     tags: true
     sortOrder: true
+    publishedAt: true
+    expiresAt: true
     requiresScheduling: true
     courseId: true
     maxScheduleSlots: true
@@ -126,7 +128,7 @@ export interface CheckoutInfo {
 // Tipos específicos para la información del cliente
 export interface CustomerInfo {
   firstName: string
-  lastName: string
+  lastName?: string | null
   email: string
   phone: string
   address?: string

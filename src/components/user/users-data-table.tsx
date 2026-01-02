@@ -122,11 +122,11 @@ export function UsersDataTable({
         )
       },
       cell: ({ row }) => {
-        const fullName = `${row.original.name} ${row.original.lastName}`
+        const fullName = `${row.original.name} ${row.original.lastName || ''}`.trim()
         return <div>{fullName}</div>
       },
       filterFn: (row, columnId, filterValue) => {
-        const fullName = `${row.original.name} ${row.original.lastName}`.toLowerCase()
+        const fullName = `${row.original.name} ${row.original.lastName || ''}`.toLowerCase()
         return fullName.includes(filterValue.toLowerCase())
       },
     },
@@ -225,7 +225,7 @@ export function UsersDataTable({
               {user.roles.includes(UserRole.TEACHER) && (
                 <ManageTeacherCoursesDialog
                   teacherId={user.id}
-                  teacherName={`${user.name} ${user.lastName}`}
+                  teacherName={`${user.name} ${user.lastName || ''}`}
                 >
                   <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                     <BookOpen className="mr-2 h-4 w-4" />
@@ -238,7 +238,7 @@ export function UsersDataTable({
                 Eliminar
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem 
+              <DropdownMenuItem
                 onClick={() => handleImpersonate(user.id)}
                 disabled={isPending}
               >

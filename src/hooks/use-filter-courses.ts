@@ -17,11 +17,8 @@ export function useFilterCourses() {
     const loadCourses = async () => {
       try {
         setLoading(true)
-        const [products, plans] = await Promise.all([
-          getProducts({ isActive: true }),
-          getPlans()
-        ])
-        
+        const [products, plans] = await Promise.all([getProducts({ isActive: true }), getPlans()])
+
         // Transform database products to merged Product & Course format
         const transformedCourses: Array<Merge<Product, Course>> = products.map((product) => ({
           // Product fields
@@ -52,6 +49,8 @@ export function useFilterCourses() {
           acceptsRealMoney: product.acceptsRealMoney,
           createdAt: product.createdAt,
           updatedAt: product.updatedAt,
+          publishedAt: product.publishedAt,
+          expiresAt: product.expiresAt,
           // Course fields
           title: product.name,
           levels: ['Principiante', 'Intermedio', 'Avanzado'],
@@ -78,14 +77,14 @@ export function useFilterCourses() {
               autoRenewal: plan.autoRenewal,
               billingCycle: plan.billingCycle,
               courseId: plan.courseId,
-              features: (plan.features || []).map((f: string | { feature: { name: string } }) => 
-  typeof f === 'string' ? f : f.feature?.name || ''
-),
+              features: (plan.features || []).map((f: string | { feature: { name: string } }) =>
+                typeof f === 'string' ? f : f.feature?.name || ''
+              ),
               createdAt: plan.createdAt,
               updatedAt: plan.updatedAt,
             })),
         }))
-        
+
         setCourses(transformedCourses)
       } catch (error) {
         console.error('Error loading courses:', error)
@@ -105,11 +104,11 @@ export function useFilterCourses() {
       // Search filter
       if (searchQuery) {
         const query = searchQuery.toLowerCase()
-        const matchesSearch = 
+        const matchesSearch =
           course.name.toLowerCase().includes(query) ||
           course.description?.toLowerCase().includes(query) ||
           course.shortDesc?.toLowerCase().includes(query)
-        
+
         if (!matchesSearch) return false
       }
 
@@ -119,40 +118,48 @@ export function useFilterCourses() {
       }
 
       // Level filter
-      if (filters.levels.length > 0 && !filters.levels.some((level) => course.levels.includes(level)))
+      if (
+        filters.levels.length > 0 &&
+        !filters.levels.some((level) => course.levels.includes(level))
+      )
         return false
-      
+
       // Language filter
-      if (filters.languages.length > 0 && !filters.languages.includes(course.language)) 
-        return false
-      
+      if (filters.languages.length > 0 && !filters.languages.includes(course.language)) return false
+
       // Category filter based on paymentType and courseId
       if (filters.categories.length > 0) {
         const categoryFilter = filters.categories[0]
-        
+
         // subscriptions: productos con pago recurrente
         if (categoryFilter === 'subscriptions' && course.paymentType !== 'RECURRING') {
           return false
         }
-        
+
         // events: productos con pago único Y que tienen curso asociado (eventos, webinars, clases)
-        if (categoryFilter === 'events' && (course.paymentType !== 'ONE_TIME' || !course.courseId)) {
+        if (
+          categoryFilter === 'events' &&
+          (course.paymentType !== 'ONE_TIME' || !course.courseId)
+        ) {
           return false
         }
-        
+
         // materials: productos con pago único Y sin curso asociado (merchandising, PDFs, etc.)
-        if (categoryFilter === 'materials' && (course.paymentType !== 'ONE_TIME' || course.courseId)) {
+        if (
+          categoryFilter === 'materials' &&
+          (course.paymentType !== 'ONE_TIME' || course.courseId)
+        ) {
           return false
         }
       }
-      
+
       // Tags filter
       if (filters.tags.length > 0) {
         const courseTags = course.tags || []
         const hasMatchingTag = filters.tags.some((tag) => courseTags.includes(tag))
         if (!hasMatchingTag) return false
       }
-      
+
       return true
     })
 
@@ -191,11 +198,11 @@ export function useFilterCourses() {
     }
   }, [courses, searchQuery, priceRange, filters, sortBy, currentPage, itemsPerPage])
 
-  return { 
-    courses: paginatedCourses, 
+  return {
+    courses: paginatedCourses,
     allCourses: filteredCourses,
     totalPages,
     totalResults: filteredCourses.length,
-    loading 
+    loading,
   }
 }

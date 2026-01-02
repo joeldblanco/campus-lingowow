@@ -9,6 +9,9 @@ import type {
   GuestDashboardData,
 } from '@/types/dashboard'
 import { formatDateNumeric, getCurrentDate, formatToISO, getStartOfMonth } from '@/lib/utils/date'
+import { getPeriodByDate } from '@/lib/actions/academic-period'
+import { es } from 'date-fns/locale'
+import { format } from 'date-fns'
 
 // Admin Dashboard Statistics
 export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
@@ -129,7 +132,7 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
       },
     })
 
-    return {
+    const baseStats = {
       totalStudents,
       totalClasses,
       totalRevenue,
@@ -138,7 +141,7 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
       recentEnrollments: recentEnrollments.map((enrollment) => {
         const invoiceTotal = enrollment.purchases[0]?.invoice?.total
         return {
-          studentName: `${enrollment.student.name} ${enrollment.student.lastName}`,
+          studentName: `${enrollment.student.name} ${enrollment.student.lastName || ''}`,
           studentImage: enrollment.student.image,
           courseName: enrollment.course.title,
           date: formatDateNumeric(enrollment.enrollmentDate),
@@ -152,7 +155,7 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
         return {
           id: booking.id,
           title: booking.enrollment.course.title,
-          teacherName: `${booking.teacher.name} ${booking.teacher.lastName}`,
+          teacherName: `${booking.teacher.name} ${booking.teacher.lastName || ''}`,
           teacherImage: booking.teacher.image,
           startTime: `${formatDateNumeric(localData.day)} ${localData.timeSlot}`,
           platform: 'Zoom', // Placeholder or derived
@@ -162,7 +165,26 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
         name: stat.language,
         classes: stat._count?.id || 0,
       })),
+      currentPeriod: null as { id: string; name: string; dates: string } | null,
     }
+
+    // Fetch current period
+    const periodResult = await getPeriodByDate(new Date())
+    if (periodResult.success && periodResult.period) {
+      const startDate = format(periodResult.period.startDate, "d 'de' MMMM", { locale: es })
+      const endDate = format(periodResult.period.endDate, "d 'de' MMMM", { locale: es })
+
+      return {
+        ...baseStats,
+        currentPeriod: {
+          id: periodResult.period.id,
+          name: periodResult.period.name,
+          dates: `${startDate} - ${endDate}`,
+        },
+      }
+    }
+
+    return baseStats
   } catch (error) {
     console.error('Error getting admin dashboard stats:', error)
     throw new Error('No se pudieron obtener las estadísticas del dashboard')
@@ -206,23 +228,26 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
       teacherId,
       formatToISO(currentMonthStart)
     )
-    
+
     // Calculate previous month revenue for trend
     const previousMonthStart = new Date(currentMonthStart)
     previousMonthStart.setMonth(previousMonthStart.getMonth() - 1)
     const previousMonthEnd = new Date(currentMonthStart)
     previousMonthEnd.setDate(previousMonthEnd.getDate() - 1)
-    
+
     const { totalRevenue: previousMonthRevenue } = await calculateTeacherTotalRevenue(
       teacherId,
       formatToISO(previousMonthStart),
       formatToISO(previousMonthEnd)
     )
-    
+
     // Calculate trend percentage
     let earningsTrend = 0
     if (previousMonthRevenue > 0) {
-      earningsTrend = Math.round(((currentMonthRevenue - previousMonthRevenue) / previousMonthRevenue) * 100 * 10) / 10
+      earningsTrend =
+        Math.round(
+          ((currentMonthRevenue - previousMonthRevenue) / previousMonthRevenue) * 100 * 10
+        ) / 10
     } else if (currentMonthRevenue > 0) {
       earningsTrend = 100 // 100% increase if previous was 0
     }
@@ -285,7 +310,7 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
       return {
         id: booking.id,
         courseId: booking.enrollment.course.id,
-        studentName: `${booking.student.name} ${booking.student.lastName}`,
+        studentName: `${booking.student.name} ${booking.student.lastName || ''}`,
         studentImage: booking.student.image,
         course: booking.enrollment.course.title,
         date: localData.day,
@@ -344,13 +369,13 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
 
     const needsAttention = missedClasses.map((booking) => ({
       id: booking.id,
-      studentName: `${booking.student.name} ${booking.student.lastName}`,
+      studentName: `${booking.student.name} ${booking.student.lastName || ''}`,
       studentImage: booking.student.image || '',
       issue: booking.status === BookingStatus.NO_SHOW ? 'Faltó a clase' : 'Clase cancelada',
       courseName: booking.enrollment.course.title,
     }))
 
-    return {
+    const baseStats = {
       weeklyAttendance: {
         percentage: weeklyAttendanceRate,
         trend: attendanceTrend,
@@ -369,7 +394,26 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
       upcomingClasses,
       activeCourses,
       needsAttention,
+      currentPeriod: null as { id: string; name: string; dates: string } | null,
     }
+
+    // Fetch current period
+    const periodResult = await getPeriodByDate(new Date())
+    if (periodResult.success && periodResult.period) {
+      const startDate = format(periodResult.period.startDate, "d 'de' MMMM", { locale: es })
+      const endDate = format(periodResult.period.endDate, "d 'de' MMMM", { locale: es })
+
+      return {
+        ...baseStats,
+        currentPeriod: {
+          id: periodResult.period.id,
+          name: periodResult.period.name,
+          dates: `${startDate} - ${endDate}`,
+        },
+      }
+    }
+
+    return baseStats
   } catch (error) {
     console.error('Error getting teacher dashboard stats:', error)
     throw new Error('No se pudieron obtener las estadísticas del profesor')
@@ -470,7 +514,7 @@ export async function getStudentDashboardStats(studentId: string): Promise<Stude
         const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot)
         return {
           course: booking.enrollment.course.title,
-          teacher: `${booking.teacher.name} ${booking.teacher.lastName}`,
+          teacher: `${booking.teacher.name} ${booking.teacher.lastName || ''}`,
           date: localData.day,
           time: localData.timeSlot,
           link: `/classroom?classId=${booking.id}`,

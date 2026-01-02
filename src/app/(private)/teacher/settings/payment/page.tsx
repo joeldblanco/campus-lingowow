@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Save, Loader2, CreditCard, Building2, Wallet, AlertCircle } from 'lucide-react'
+import { ArrowLeft, Save, Loader2, CreditCard, Building2, Wallet, AlertCircle, Smartphone, Coins } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -15,28 +15,27 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { toast } from 'sonner'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 
-type PaymentMethod = 'bank_transfer' | 'paypal' | 'wise' | 'other'
+type PaymentMethod = 'bank_transfer' | 'binance' | 'paypal' | 'pago_movil'
 
 interface PaymentSettings {
   paymentMethod: PaymentMethod
+  // Bank Transfer
   bankName?: string
   bankAccountNumber?: string
-  bankAccountType?: string
   bankAccountHolder?: string
   bankRoutingNumber?: string
+  // PayPal
   paypalEmail?: string
-  wiseEmail?: string
-  otherDetails?: string
+  // Binance
+  binanceEmail?: string
+  binanceId?: string
+  // Pago Móvil
+  pmBankName?: string
+  pmPhoneNumber?: string
+  pmIdNumber?: string // Cédula
 }
 
 export default function PaymentSettingsPage() {
@@ -147,59 +146,60 @@ export default function PaymentSettingsPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <button
               onClick={() => handleChange('paymentMethod', 'bank_transfer')}
-              className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${
-                settings.paymentMethod === 'bank_transfer'
+              className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${settings.paymentMethod === 'bank_transfer'
                   ? 'border-primary bg-primary/5'
                   : 'border-border hover:border-primary/50'
-              }`}
+                }`}
             >
               <Building2 className={`h-8 w-8 ${settings.paymentMethod === 'bank_transfer' ? 'text-primary' : 'text-muted-foreground'}`} />
-              <span className="text-sm font-medium">Transferencia</span>
+              <span className="text-sm font-medium text-center">Transferencia (Perú)</span>
             </button>
+
+            <button
+              onClick={() => handleChange('paymentMethod', 'binance')}
+              className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${settings.paymentMethod === 'binance'
+                  ? 'border-primary bg-primary/5'
+                  : 'border-border hover:border-primary/50'
+                }`}
+            >
+              <Coins className={`h-8 w-8 ${settings.paymentMethod === 'binance' ? 'text-primary' : 'text-muted-foreground'}`} />
+              <span className="text-sm font-medium">Binance</span>
+            </button>
+
             <button
               onClick={() => handleChange('paymentMethod', 'paypal')}
-              className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${
-                settings.paymentMethod === 'paypal'
+              className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${settings.paymentMethod === 'paypal'
                   ? 'border-primary bg-primary/5'
                   : 'border-border hover:border-primary/50'
-              }`}
+                }`}
             >
-              <CreditCard className={`h-8 w-8 ${settings.paymentMethod === 'paypal' ? 'text-primary' : 'text-muted-foreground'}`} />
+              <Wallet className={`h-8 w-8 ${settings.paymentMethod === 'paypal' ? 'text-primary' : 'text-muted-foreground'}`} />
               <span className="text-sm font-medium">PayPal</span>
             </button>
+
             <button
-              onClick={() => handleChange('paymentMethod', 'wise')}
-              className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${
-                settings.paymentMethod === 'wise'
+              onClick={() => handleChange('paymentMethod', 'pago_movil')}
+              className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${settings.paymentMethod === 'pago_movil'
                   ? 'border-primary bg-primary/5'
                   : 'border-border hover:border-primary/50'
-              }`}
+                }`}
             >
-              <Wallet className={`h-8 w-8 ${settings.paymentMethod === 'wise' ? 'text-primary' : 'text-muted-foreground'}`} />
-              <span className="text-sm font-medium">Wise</span>
+              <Smartphone className={`h-8 w-8 ${settings.paymentMethod === 'pago_movil' ? 'text-primary' : 'text-muted-foreground'}`} />
+              <span className="text-sm font-medium text-center">Pago Móvil (Venezuela)</span>
             </button>
-            <button
-              onClick={() => handleChange('paymentMethod', 'other')}
-              className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${
-                settings.paymentMethod === 'other'
-                  ? 'border-primary bg-primary/5'
-                  : 'border-border hover:border-primary/50'
-              }`}
-            >
-              <CreditCard className={`h-8 w-8 ${settings.paymentMethod === 'other' ? 'text-primary' : 'text-muted-foreground'}`} />
-              <span className="text-sm font-medium">Otro</span>
-            </button>
+
+
           </div>
         </CardContent>
       </Card>
 
-      {/* Bank Transfer Details */}
+      {/* Bank Transfer Details (Peru) */}
       {settings.paymentMethod === 'bank_transfer' && (
         <Card>
           <CardHeader>
-            <CardTitle>Datos Bancarios</CardTitle>
+            <CardTitle>Cuenta Bancaria (Perú)</CardTitle>
             <CardDescription>
-              Ingresa los datos de tu cuenta bancaria
+              Ingresa los datos de tu cuenta bancaria en Perú
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -210,34 +210,20 @@ export default function PaymentSettingsPage() {
                   id="bankName"
                   value={settings.bankName || ''}
                   onChange={(e) => handleChange('bankName', e.target.value)}
-                  placeholder="Ej: Banco de Crédito del Perú"
+                  placeholder="Ej: BCP, Interbank..."
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="bankAccountType">Tipo de Cuenta</Label>
-                <Select
-                  value={settings.bankAccountType || ''}
-                  onValueChange={(value) => handleChange('bankAccountType', value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Seleccionar tipo" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="savings">Cuenta de Ahorros</SelectItem>
-                    <SelectItem value="checking">Cuenta Corriente</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Label htmlFor="bankAccountHolder">Titular de la Cuenta</Label>
+                <Input
+                  id="bankAccountHolder"
+                  value={settings.bankAccountHolder || ''}
+                  onChange={(e) => handleChange('bankAccountHolder', e.target.value)}
+                  placeholder="Nombre completo del titular"
+                />
               </div>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="bankAccountHolder">Titular de la Cuenta</Label>
-              <Input
-                id="bankAccountHolder"
-                value={settings.bankAccountHolder || ''}
-                onChange={(e) => handleChange('bankAccountHolder', e.target.value)}
-                placeholder="Nombre completo del titular"
-              />
-            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="bankAccountNumber">Número de Cuenta</Label>
@@ -249,12 +235,46 @@ export default function PaymentSettingsPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="bankRoutingNumber">CCI / Código Interbancario</Label>
+                <Label htmlFor="bankRoutingNumber">CCI (Código de Cuenta Interbancario)</Label>
                 <Input
                   id="bankRoutingNumber"
                   value={settings.bankRoutingNumber || ''}
                   onChange={(e) => handleChange('bankRoutingNumber', e.target.value)}
-                  placeholder="Código interbancario (opcional)"
+                  placeholder="CCI (20 dígitos)"
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Binance Details */}
+      {settings.paymentMethod === 'binance' && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Datos de Binance</CardTitle>
+            <CardDescription>
+              Ingresa los datos de tu cuenta Binance (Binance Pay)
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="binanceEmail">Correo de Binance / Pay ID</Label>
+                <Input
+                  id="binanceEmail"
+                  value={settings.binanceEmail || ''}
+                  onChange={(e) => handleChange('binanceEmail', e.target.value)}
+                  placeholder="correo@ejemplo.com o Pay ID"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="binanceId">Binance ID (Opcional)</Label>
+                <Input
+                  id="binanceId"
+                  value={settings.binanceId || ''}
+                  onChange={(e) => handleChange('binanceId', e.target.value)}
+                  placeholder="Tu User ID de Binance"
                 />
               </div>
             </div>
@@ -286,53 +306,50 @@ export default function PaymentSettingsPage() {
         </Card>
       )}
 
-      {/* Wise Details */}
-      {settings.paymentMethod === 'wise' && (
+      {/* Pago Móvil Details (Venezuela) */}
+      {settings.paymentMethod === 'pago_movil' && (
         <Card>
           <CardHeader>
-            <CardTitle>Datos de Wise</CardTitle>
+            <CardTitle>Pago Móvil (Venezuela)</CardTitle>
             <CardDescription>
-              Ingresa tu correo electrónico de Wise
+              Ingresa los datos para recibir Pago Móvil
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="pmBankName">Banco</Label>
+                <Input
+                  id="pmBankName"
+                  value={settings.pmBankName || ''}
+                  onChange={(e) => handleChange('pmBankName', e.target.value)}
+                  placeholder="Ej: Banesco, Banco de Venezuela..."
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="pmIdNumber">Cédula de Identidad</Label>
+                <Input
+                  id="pmIdNumber"
+                  value={settings.pmIdNumber || ''}
+                  onChange={(e) => handleChange('pmIdNumber', e.target.value)}
+                  placeholder="V-12345678"
+                />
+              </div>
+            </div>
             <div className="space-y-2">
-              <Label htmlFor="wiseEmail">Correo de Wise</Label>
+              <Label htmlFor="pmPhoneNumber">Número de Teléfono</Label>
               <Input
-                id="wiseEmail"
-                type="email"
-                value={settings.wiseEmail || ''}
-                onChange={(e) => handleChange('wiseEmail', e.target.value)}
-                placeholder="tu-correo@ejemplo.com"
+                id="pmPhoneNumber"
+                value={settings.pmPhoneNumber || ''}
+                onChange={(e) => handleChange('pmPhoneNumber', e.target.value)}
+                placeholder="0414-1234567"
               />
             </div>
           </CardContent>
         </Card>
       )}
 
-      {/* Other Payment Method */}
-      {settings.paymentMethod === 'other' && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Otro Método de Pago</CardTitle>
-            <CardDescription>
-              Describe cómo prefieres recibir tus pagos
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <Label htmlFor="otherDetails">Detalles del método de pago</Label>
-              <Textarea
-                id="otherDetails"
-                value={settings.otherDetails || ''}
-                onChange={(e) => handleChange('otherDetails', e.target.value)}
-                placeholder="Describe el método de pago que prefieres y los datos necesarios..."
-                rows={4}
-              />
-            </div>
-          </CardContent>
-        </Card>
-      )}
+
     </div>
   )
 }

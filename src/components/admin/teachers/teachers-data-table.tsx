@@ -95,8 +95,8 @@ export function TeachersDataTable({ teachers, onDeleteTeacher, onUpdateTeacher }
       },
       cell: ({ row }) => {
         const teacher = row.original
-        const fullName = `${teacher.name} ${teacher.lastName}`
-        const initials = `${teacher.name[0]}${teacher.lastName[0] || ''}`.toUpperCase()
+        const fullName = `${teacher.name} ${teacher.lastName || ''}`
+        const initials = `${teacher.name[0]}${teacher.lastName?.[0] || ''}`.toUpperCase()
         
         return (
           <div className="flex items-center gap-3">
@@ -115,7 +115,7 @@ export function TeachersDataTable({ teachers, onDeleteTeacher, onUpdateTeacher }
         )
       },
       filterFn: (row, columnId, filterValue) => {
-        const fullName = `${row.original.name} ${row.original.lastName}`.toLowerCase()
+        const fullName = `${row.original.name} ${row.original.lastName || ''}`.toLowerCase()
         const email = row.original.email.toLowerCase()
         const searchValue = filterValue.toLowerCase()
         return fullName.includes(searchValue) || email.includes(searchValue)
@@ -170,7 +170,7 @@ export function TeachersDataTable({ teachers, onDeleteTeacher, onUpdateTeacher }
               </DropdownMenuItem>
               <ManageTeacherCoursesDialog
                 teacherId={teacher.id}
-                teacherName={`${teacher.name} ${teacher.lastName}`}
+                teacherName={`${teacher.name} ${teacher.lastName || ''}`}
               >
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                   <BookOpen className="mr-2 h-4 w-4" />

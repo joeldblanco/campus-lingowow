@@ -10,6 +10,7 @@ import {
   FileText,
   GraduationCap,
   LayoutDashboard,
+  Library,
   Package,
   Receipt,
   Shapes,
@@ -53,6 +54,11 @@ const data = {
       title: 'Actividades',
       url: '/activities',
       icon: Shapes,
+    },
+    {
+      title: 'Biblioteca',
+      url: '/library',
+      icon: Library,
     },
   ],
   navTeacher: [
@@ -119,6 +125,11 @@ const data = {
           icon: Shapes,
         },
         {
+          title: 'Biblioteca',
+          url: '/admin/library',
+          icon: Library,
+        },
+        {
           title: 'Calendario',
           url: '/admin/calendar-settings',
           icon: CalendarCog,
@@ -172,6 +183,19 @@ const data = {
       url: '/admin/files',
     },
   ],
+  navEditor: [
+    {
+      title: 'Gestión de Contenido',
+      icon: Book,
+      subItems: [
+        {
+          title: 'Biblioteca',
+          url: '/admin/library',
+          icon: Library,
+        },
+      ],
+    },
+  ],
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -191,7 +215,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       name: session.user.name ?? placeholderUser.name,
       email: session.user.email ?? placeholderUser.email,
       image: session.user.image ?? placeholderUser.image,
-      lastName: session.user.lastName,
+      lastName: session.user.lastName || '',
       roles: session.user.roles ?? placeholderUser.roles,
     }
   }
@@ -207,6 +231,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {hasRole(user.roles, UserRole.STUDENT) && <NavClasses />}
         {hasRole(user.roles, UserRole.TEACHER) && <NavMain items={data.navTeacher} />}
         {user.roles.includes(UserRole.ADMIN) && <NavAdmin sections={data.navAdmin} />}
+        {hasRole(user.roles, UserRole.EDITOR) && !user.roles.includes(UserRole.ADMIN) && (
+          <NavAdmin sections={data.navEditor} />
+        )}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />

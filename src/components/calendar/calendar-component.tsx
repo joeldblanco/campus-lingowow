@@ -40,7 +40,7 @@ interface Booking {
   studentId: string
   student?: {
     name: string
-    lastName: string
+    lastName: string | null
     email: string
     image?: string | null
   }
@@ -60,7 +60,7 @@ interface RecurringSchedule {
   enrollment: {
     student: {
       name: string
-      lastName: string
+      lastName: string | null
       email: string
       image?: string | null
     }
@@ -621,7 +621,7 @@ export function CalendarApp() {
 
       if (schedule && schedule.enrollment.student) {
         return {
-          name: `${schedule.enrollment.student.name} ${schedule.enrollment.student.lastName}`.trim(),
+          name: `${schedule.enrollment.student.name} ${schedule.enrollment.student.lastName || ''}`.trim(),
           color: studentColors[schedule.enrollment.student.email] || '',
           bookingId: schedule.id,
         }
@@ -632,7 +632,7 @@ export function CalendarApp() {
 
       if (booking && booking.student) {
         return {
-          name: `${booking.student.name} ${booking.student.lastName}`.trim(),
+          name: `${booking.student.name} ${booking.student.lastName || ''}`.trim(),
           color: studentColors[booking.studentId] || '',
           bookingId: booking.id,
         }

@@ -85,6 +85,8 @@ interface Product {
   _count: {
     invoiceItems: number
   }
+  publishedAt: Date | null
+  expiresAt: Date | null
 }
 
 interface ProductsTableProps {
@@ -167,9 +169,8 @@ function SortableRow({
       <TableCell>
         {product.stock !== null ? (
           <span
-            className={`text-sm font-medium ${
-              product.stock > 0 ? 'text-green-600' : 'text-red-600'
-            }`}
+            className={`text-sm font-medium ${product.stock > 0 ? 'text-green-600' : 'text-red-600'
+              }`}
           >
             {product.stock} unidades
           </span>

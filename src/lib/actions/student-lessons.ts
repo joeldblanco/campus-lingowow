@@ -589,7 +589,7 @@ export async function getStudentLessonsForCourse(
   courseId: string
 ): Promise<StudentLessonActionResult<{
   lessons: StudentLessonListItem[]
-  teacher: { name: string; lastName: string; image: string | null } | null
+  teacher: { name: string; lastName: string | null; image: string | null } | null
 }>> {
   try {
     // Buscar la inscripción activa del estudiante en el curso

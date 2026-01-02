@@ -1,6 +1,6 @@
 'use server'
 
-import { signIn, signOut } from '@/auth'
+import { auth, signIn, signOut } from '@/auth'
 import { getUserByEmail } from '@/lib/actions/user'
 import { db } from '@/lib/db'
 import handleError from '@/lib/handleError'
@@ -17,7 +17,10 @@ import { getCurrentDate, isBeforeDate } from '@/lib/utils/date'
 import { checkForSpam } from '@/lib/utils/spam-protection'
 import { verifyRecaptcha } from '@/lib/utils/recaptcha'
 
-export const register = async (values: z.infer<typeof SignUpSchema>, recaptchaToken?: string | null) => {
+export const register = async (
+  values: z.infer<typeof SignUpSchema>,
+  recaptchaToken?: string | null
+) => {
   const validatedFields = SignUpSchema.safeParse(values)
 
   if (!validatedFields.success) return { error: 'Campos inválidos' }
@@ -28,7 +31,9 @@ export const register = async (values: z.infer<typeof SignUpSchema>, recaptchaTo
   if (recaptchaToken) {
     const recaptchaResult = await verifyRecaptcha(recaptchaToken, 'register')
     if (!recaptchaResult.success) {
-      console.log(`[RECAPTCHA BLOCKED] Reason: ${recaptchaResult.error}, Email: ${validatedData.email}`)
+      console.log(
+        `[RECAPTCHA BLOCKED] Reason: ${recaptchaResult.error}, Email: ${validatedData.email}`
+      )
       return { error: recaptchaResult.error || 'Verificación de seguridad fallida' }
     }
   }
@@ -404,7 +409,7 @@ export const impersonateUser = async (userId: string) => {
     const redirectUrl = getRoleBasedRedirect(userToImpersonate.roles, null)
 
     return {
-      success: `Suplantando a ${userToImpersonate.name} ${userToImpersonate.lastName}`,
+      success: `Suplantando a ${userToImpersonate.name} ${userToImpersonate.lastName || ''}`.trim(),
       userId: userToImpersonate.id,
       redirect: redirectUrl,
     }
@@ -413,4 +418,9 @@ export const impersonateUser = async (userId: string) => {
       error: handleError(error) || 'Error al suplantar usuario',
     }
   }
+}
+
+export const getCurrentUserRoles = async () => {
+  const session = await auth()
+  return session?.user?.roles || []
 }

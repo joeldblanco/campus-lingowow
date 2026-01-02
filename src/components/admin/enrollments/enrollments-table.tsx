@@ -80,7 +80,7 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
       filtered = filtered.filter(
         (enrollment) =>
           enrollment.student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          enrollment.student.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (enrollment.student.lastName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
           enrollment.student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
           enrollment.course.title.toLowerCase().includes(searchTerm.toLowerCase())
       )
@@ -299,12 +299,12 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
                       <Avatar className="h-7 w-7">
                         <AvatarImage src={enrollment.student.image || ''} />
                         <AvatarFallback className="text-xs bg-slate-200">
-                          {enrollment.student.name[0]}{enrollment.student.lastName[0]}
+                          {enrollment.student.name[0]}{enrollment.student.lastName?.[0] || ''}
                         </AvatarFallback>
                       </Avatar>
                       <div>
                         <div className="font-medium text-sm">
-                          {enrollment.student.name} {enrollment.student.lastName}
+                          {enrollment.student.name} {enrollment.student.lastName || ''}
                         </div>
                         <div className="text-xs text-muted-foreground">
                           {enrollment.student.email}

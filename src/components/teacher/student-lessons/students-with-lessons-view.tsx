@@ -31,7 +31,7 @@ export function StudentsWithLessonsView({
   )
 
   const filteredStudents = students.filter((s) => {
-    const fullName = `${s.student.name} ${s.student.lastName}`.toLowerCase()
+    const fullName = `${s.student.name} ${s.student.lastName || ''}`.toLowerCase()
     const email = s.student.email.toLowerCase()
     const query = searchQuery.toLowerCase()
     return fullName.includes(query) || email.includes(query)
@@ -134,23 +134,22 @@ export function StudentsWithLessonsView({
                   <button
                     key={studentData.enrollment.id}
                     onClick={() => setSelectedStudent(studentData)}
-                    className={`w-full p-4 text-left hover:bg-accent/50 transition-colors ${
-                      selectedStudent?.enrollment.id === studentData.enrollment.id
+                    className={`w-full p-4 text-left hover:bg-accent/50 transition-colors ${selectedStudent?.enrollment.id === studentData.enrollment.id
                         ? 'bg-accent'
                         : ''
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <Avatar className="h-10 w-10">
                         <AvatarImage src={studentData.student.image || undefined} />
                         <AvatarFallback>
                           {studentData.student.name[0]}
-                          {studentData.student.lastName[0]}
+                          {(studentData.student.lastName || '')[0]}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1 min-w-0">
                         <p className="font-medium truncate">
-                          {studentData.student.name} {studentData.student.lastName}
+                          {studentData.student.name} {studentData.student.lastName || ''}
                         </p>
                         <p className="text-sm text-muted-foreground truncate">
                           {studentData.enrollment.courseName}
@@ -177,7 +176,7 @@ export function StudentsWithLessonsView({
           {selectedStudent ? (
             <StudentLessonsList
               studentId={selectedStudent.student.id}
-              studentName={`${selectedStudent.student.name} ${selectedStudent.student.lastName}`}
+              studentName={`${selectedStudent.student.name} ${selectedStudent.student.lastName || ''}`}
               enrollmentId={selectedStudent.enrollment.id}
               courseName={selectedStudent.enrollment.courseName}
               lessons={selectedStudent.lessons}

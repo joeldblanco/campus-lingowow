@@ -50,7 +50,7 @@ import { MessageType, TeamBadge } from '@prisma/client'
 interface ChatUser {
   id: string
   name: string
-  lastName: string
+  lastName: string | null
   image: string | null
   teamBadge: TeamBadge | null
 }

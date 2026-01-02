@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
       customerInfo?: {
         email: string
         firstName: string
-        lastName: string
+        lastName?: string | null
       }
     }
 

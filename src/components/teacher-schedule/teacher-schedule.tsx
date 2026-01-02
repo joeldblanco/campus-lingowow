@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect, useCallback } from 'react'
+import { useState, useMemo, useEffect, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { ScheduleHeader } from './schedule-header'
 import { WeekView } from './week-view'
@@ -9,7 +9,7 @@ import { MonthView } from './month-view'
 import { LessonDetailsDialog } from './lesson-details-dialog'
 import { AvailabilityEditView } from './availability-edit-view'
 import type { ScheduleViewType, ScheduleLesson, AvailableSlot, BlockedSlot } from '@/types/schedule'
-import { isSameDay, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isWithinInterval } from 'date-fns'
+import { isSameDay, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isWithinInterval, format } from 'date-fns'
 import { getTeacherScheduleData, bulkUpdateTeacherAvailability, type TeacherScheduleLesson, type TeacherAvailabilitySlot } from '@/lib/actions/teacher-schedule'
 import { Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -19,6 +19,11 @@ interface TeacherScheduleProps {
     lessons: TeacherScheduleLesson[]
     availability: TeacherAvailabilitySlot[]
   }
+  currentPeriod?: {
+    id: string
+    name: string
+    dates: string
+  } | null
 }
 
 // Parse date string as local date (not UTC)
@@ -60,7 +65,7 @@ function transformLessons(serverLessons: TeacherScheduleLesson[]): ScheduleLesso
   }))
 }
 
-export function TeacherSchedule({ initialData }: TeacherScheduleProps) {
+export function TeacherSchedule({ initialData, currentPeriod }: TeacherScheduleProps) {
   const router = useRouter()
   const [currentDate, setCurrentDate] = useState(new Date())
   const [viewType, setViewType] = useState<ScheduleViewType>('week')
@@ -71,32 +76,43 @@ export function TeacherSchedule({ initialData }: TeacherScheduleProps) {
   const [availability, setAvailability] = useState<TeacherAvailabilitySlot[]>(
     initialData?.availability || []
   )
-  
+
   // Dialog states
   const [selectedLesson, setSelectedLesson] = useState<ScheduleLesson | null>(null)
   const [lessonDialogOpen, setLessonDialogOpen] = useState(false)
-  
+
   // Edit mode state
   const [isEditMode, setIsEditMode] = useState(false)
   const [isSavingAvailability, setIsSavingAvailability] = useState(false)
-  
+
   // Compact mode state
   const [isCompact, setIsCompact] = useState(false)
 
+  // Track loaded month to prevent unnecessary refetches
+  const lastFetchedMonth = useRef<string>(initialData ? format(currentDate, 'yyyy-MM') : '')
+
   // Fetch data - always fetch for the full month to have all data available
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (force = false) => {
+    const monthStart = startOfMonth(currentDate)
+    const monthKey = format(monthStart, 'yyyy-MM')
+
+    // If we're in the same month and not forcing a refresh, don't fetch
+    if (!force && lastFetchedMonth.current === monthKey) {
+      return
+    }
+
     setIsLoading(true)
     try {
       // Always fetch the full month to ensure we have all lessons
       // This prevents data from disappearing when switching views
-      const monthStart = startOfMonth(currentDate)
       const monthEnd = endOfMonth(currentDate)
 
       const result = await getTeacherScheduleData(monthStart, monthEnd)
-      
+
       if (result.success && result.data) {
         setLessons(transformLessons(result.data.lessons))
         setAvailability(result.data.availability)
+        lastFetchedMonth.current = monthKey
       }
     } catch (error) {
       console.error('Error fetching schedule data:', error)
@@ -190,7 +206,7 @@ export function TeacherSchedule({ initialData }: TeacherScheduleProps) {
       if (result.success) {
         toast.success('Disponibilidad guardada correctamente')
         setIsEditMode(false)
-        fetchData()
+        fetchData(true)
       } else {
         toast.error(result.error || 'Error al guardar')
       }
@@ -247,6 +263,7 @@ export function TeacherSchedule({ initialData }: TeacherScheduleProps) {
         isSaving={isSavingAvailability}
         isCompact={isCompact}
         onToggleCompact={() => setIsCompact(!isCompact)}
+        currentPeriod={currentPeriod}
       />
 
       {isLoading && (

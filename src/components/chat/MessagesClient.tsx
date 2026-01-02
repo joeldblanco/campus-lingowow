@@ -9,7 +9,7 @@ import { ChatWindow } from './ChatWindow'
 interface ChatUser {
   id: string
   name: string
-  lastName: string
+  lastName: string | null
   image: string | null
   teamBadge: TeamBadge | null
   roles?: UserRole[]

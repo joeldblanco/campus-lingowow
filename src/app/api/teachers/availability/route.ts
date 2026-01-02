@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
     const teachersWithAvailability = teacherCourses.map((tc) => {
       const teacher = tc.teacher
       
-      console.log(`[API] Procesando profesor: ${teacher.name} ${teacher.lastName} (${teacher.id})`)
+      console.log(`[API] Procesando profesor: ${teacher.name} ${teacher.lastName || ''} (${teacher.id})`)
       console.log(`[API] Registros de disponibilidad: ${teacher.teacherAvailability.length}`)
       
       // Agrupar disponibilidad por día de la semana
@@ -80,7 +80,7 @@ export async function GET(req: NextRequest) {
 
       return {
         id: teacher.id,
-        name: `${teacher.name} ${teacher.lastName}`,
+        name: `${teacher.name} ${teacher.lastName || ''}`,
         email: teacher.email,
         image: teacher.image,
         bio: teacher.bio,

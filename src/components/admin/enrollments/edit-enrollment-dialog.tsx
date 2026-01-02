@@ -244,7 +244,7 @@ export function EditEnrollmentDialog({
           </DialogTitle>
           <DialogDescription>
             {currentStep === 'basic' 
-              ? `Modifica la inscripción de ${enrollment.student.name} ${enrollment.student.lastName}`
+              ? `Modifica la inscripción de ${enrollment.student.name} ${enrollment.student.lastName || ''}`
               : `Configura el nuevo horario de clases para ${selectedCourse?.title}. Las clases futuras actuales serán canceladas.`
             }
           </DialogDescription>

@@ -6,9 +6,7 @@ export const CreateUserSchema = z
     name: z.string().min(2, {
       message: 'Name must be at least 2 characters.',
     }),
-    lastName: z.string().min(2, {
-      message: 'Last name must be at least 2 characters.',
-    }),
+    lastName: z.string().optional(),
     email: z.string().email({
       message: 'Please enter a valid email address.',
     }),
@@ -21,7 +19,15 @@ export const CreateUserSchema = z
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9])(?!.*\s).{8,32}$/,
         'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.'
       ),
-    roles: z.array(z.enum([UserRole.ADMIN, UserRole.TEACHER, UserRole.STUDENT, UserRole.EDITOR, UserRole.GUEST] as const)),
+    roles: z.array(
+      z.enum([
+        UserRole.ADMIN,
+        UserRole.TEACHER,
+        UserRole.STUDENT,
+        UserRole.EDITOR,
+        UserRole.GUEST,
+      ] as const)
+    ),
     status: z.enum([UserStatus.ACTIVE, UserStatus.INACTIVE] as const),
     image: z.string().optional().nullable(),
   })

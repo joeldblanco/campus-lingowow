@@ -271,7 +271,7 @@ export function StudentLessonBuilder({
     setLesson(prev => ({
       ...prev,
       blocks: prev.blocks.map((b) =>
-        b.id === blockId ? { ...b, ...updates } : b
+        b.id === blockId ? { ...b, ...updates } as Block : b
       ),
     }))
   }

@@ -21,6 +21,11 @@ interface ScheduleHeaderProps {
   // Compact mode props
   isCompact?: boolean
   onToggleCompact?: () => void
+  currentPeriod?: {
+    id: string
+    name: string
+    dates: string
+  } | null
 }
 
 export function ScheduleHeader({
@@ -36,6 +41,7 @@ export function ScheduleHeader({
   isSaving = false,
   isCompact = false,
   onToggleCompact,
+  currentPeriod,
 }: ScheduleHeaderProps) {
   const goToToday = () => onDateChange(new Date())
 
@@ -96,13 +102,18 @@ export function ScheduleHeader({
       {/* Page Title */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex min-w-72 flex-col gap-1">
-          <h1 className="text-3xl font-black leading-tight tracking-tight text-foreground">
+          <h1 className="flex items-center gap-3 text-3xl font-black leading-tight tracking-tight text-foreground">
             {isEditMode ? 'Configurar Disponibilidad' : 'Horario del Profesor'}
+            {currentPeriod && !isEditMode && (
+              <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary/10 text-primary hover:bg-primary/20">
+                {currentPeriod.name}
+              </span>
+            )}
           </h1>
           <p className="text-muted-foreground text-base font-normal">
-            {isEditMode 
+            {isEditMode
               ? 'Define tu horario semanal y los slots disponibles para reservas.'
-              : viewType === 'day' 
+              : viewType === 'day'
                 ? `Vista Diaria - ${format(currentDate, "EEEE, d 'de' MMMM yyyy", { locale: es })}`
                 : 'Administra tus clases, asistencia y disponibilidad.'
             }
@@ -184,7 +195,7 @@ export function ScheduleHeader({
               {isCompact ? <Rows4 className="h-4 w-4" /> : <Rows3 className="h-4 w-4" />}
             </Button>
           )}
-          
+
           {/* View Switcher */}
           {!isEditMode && (
             <div className="flex h-10 items-center rounded-lg bg-muted p-1">
@@ -192,11 +203,10 @@ export function ScheduleHeader({
                 <button
                   key={view}
                   onClick={() => onViewChange(view)}
-                  className={`h-full px-4 flex items-center justify-center rounded-md text-sm font-medium transition-all ${
-                    viewType === view
-                      ? 'bg-background shadow-sm text-foreground font-bold'
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
+                  className={`h-full px-4 flex items-center justify-center rounded-md text-sm font-medium transition-all ${viewType === view
+                    ? 'bg-background shadow-sm text-foreground font-bold'
+                    : 'text-muted-foreground hover:text-foreground'
+                    }`}
                 >
                   {view === 'day' ? 'Día' : view === 'week' ? 'Semana' : 'Mes'}
                 </button>
@@ -206,5 +216,6 @@ export function ScheduleHeader({
         </div>
       </div>
     </div>
+
   )
 }

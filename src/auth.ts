@@ -16,7 +16,7 @@ declare module 'next-auth' {
       roles: UserRole[]
 
       /** The user's last name. */
-      lastName: string
+      lastName: string | null
 
       /** Datos de suplantación */
       isImpersonating?: boolean
@@ -38,7 +38,7 @@ declare module 'next-auth/jwt' {
     /** OpenID ID Token */
     roles: UserRole[]
     lastName?: string
-    
+
     /** Datos de suplantación */
     isImpersonating?: boolean
     originalUserId?: string
@@ -89,7 +89,7 @@ export const {
 
         if (token.roles) session.user.roles = token.roles
 
-        if (token.lastName) session.user.lastName = token.lastName as string
+        session.user.lastName = token.lastName as string | null
 
         // Pasar datos de suplantación a la sesión
         if (token.isImpersonating) {
@@ -120,7 +120,7 @@ export const {
 
       // Actualizar token con datos del usuario
       token.roles = existingUser.roles
-      token.lastName = existingUser.lastName
+      token.lastName = existingUser.lastName ?? undefined
 
       return token
     },
@@ -132,9 +132,10 @@ export const {
   },
   cookies: {
     sessionToken: {
-      name: process.env.NODE_ENV === 'production' 
-        ? '__Secure-authjs.session-token'
-        : 'authjs.session-token',
+      name:
+        process.env.NODE_ENV === 'production'
+          ? '__Secure-authjs.session-token'
+          : 'authjs.session-token',
       options: {
         httpOnly: true,
         sameSite: 'lax',

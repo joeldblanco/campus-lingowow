@@ -154,7 +154,7 @@ export async function getAllStudentGrades(filters?: GradeFilters): Promise<Stude
 
       gradesData.push({
         studentId: enrollment.studentId,
-        studentName: `${enrollment.student.name} ${enrollment.student.lastName}`,
+        studentName: `${enrollment.student.name} ${enrollment.student.lastName || ''}`,
         studentEmail: enrollment.student.email,
         courseId: enrollment.courseId,
         courseTitle: enrollment.course.title,
@@ -299,7 +299,7 @@ export async function getStudentGradesByCourse(
 
     return {
       studentId: enrollmentWithDetails.studentId,
-      studentName: `${enrollmentWithDetails.student.name} ${enrollmentWithDetails.student.lastName}`,
+      studentName: `${enrollmentWithDetails.student.name} ${enrollmentWithDetails.student.lastName || ''}`,
       studentEmail: enrollmentWithDetails.student.email,
       courseId: enrollmentWithDetails.courseId,
       courseTitle: enrollmentWithDetails.course.title,

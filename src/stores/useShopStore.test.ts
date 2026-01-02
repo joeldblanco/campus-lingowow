@@ -27,6 +27,8 @@ const createMockProduct = (id: string) => ({
   sortOrder: 0,
   createdAt: new Date(),
   updatedAt: new Date(),
+  publishedAt: null,
+  expiresAt: null,
   // Course fields for compatibility
   levels: ['BEGINNER'],
   language: 'es',

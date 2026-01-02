@@ -48,8 +48,8 @@ interface EditClassDialogProps {
 export function EditClassDialog({ classItem, children }: EditClassDialogProps) {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [students, setStudents] = useState<Array<{ id: string; name: string; lastName: string; email: string }>>([])
-  const [teachers, setTeachers] = useState<Array<{ id: string; name: string; lastName: string; email: string }>>([])
+  const [students, setStudents] = useState<Array<{ id: string; name: string; lastName: string | null; email: string }>>([])
+  const [teachers, setTeachers] = useState<Array<{ id: string; name: string; lastName: string | null; email: string }>>([])
   const form = useForm<z.infer<typeof EditClassSchema>>({
     resolver: zodResolver(EditClassSchema),
     defaultValues: {

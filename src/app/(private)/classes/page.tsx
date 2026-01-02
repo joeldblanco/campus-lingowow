@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { db } from '@/lib/db'
 import { ClassesView } from '@/components/classes/classes-view'
 import { Metadata } from 'next'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
 export const metadata: Metadata = {
   title: 'Mis Clases | Lingowow',
@@ -75,7 +76,7 @@ export default async function ClassesPage() {
         </p>
       </div>
 
-      <Suspense fallback={<div>Cargando...</div>}>
+      <Suspense fallback={<LoadingSpinner />}>
         <ClassesView enrollments={enrollments} userId={session.user.id} />
       </Suspense>
     </div>

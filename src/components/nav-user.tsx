@@ -28,7 +28,7 @@ export function NavUser({
     name: string
     email: string
     image: string
-    lastName: string
+    lastName: string | null
     roles: UserRole[]
   }
 }) {

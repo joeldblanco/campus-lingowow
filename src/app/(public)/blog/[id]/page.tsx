@@ -38,7 +38,7 @@ export default async function BlogPostDetail({ params }: { params: Promise<{ id:
     excerpt: blogPost.excerpt || '',
     content: <BlogContentRenderer content={content} />,
     category: blogPost.category || 'Sin categoría',
-    author: `${blogPost.author.name} ${blogPost.author.lastName}`,
+    author: `${blogPost.author.name} ${blogPost.author.lastName || ''}`,
     authorRole: 'Editor',
     authorBio: blogPost.author.bio || 'Editor de contenido en Lingowow',
     authorImage: blogPost.author.image || '/api/placeholder/80/80',

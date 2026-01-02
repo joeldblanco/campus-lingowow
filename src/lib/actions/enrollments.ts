@@ -18,7 +18,7 @@ export interface EnrollmentWithDetails {
   student: {
     id: string
     name: string
-    lastName: string
+    lastName: string | null
     email: string
     image: string | null
   }

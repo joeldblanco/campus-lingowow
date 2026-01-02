@@ -40,7 +40,7 @@ model Account {
 model User {
   id            String     @id @default(cuid())
   name          String
-  lastName      String     @default("")
+  lastName      String?
   email         String     @unique
   password      String?
   emailVerified DateTime?
@@ -1009,6 +1009,10 @@ model Product {
   categoryId   String?
   tags         String[] @default([])
   sortOrder    Int      @default(0) // Orden de aparición en la tienda
+
+  // Campos para programación de publicación
+  publishedAt  DateTime? // Fecha de inicio de publicación
+  expiresAt    DateTime? // Fecha de fin de publicación
 
   // Campos para programación y cursos
   requiresScheduling Boolean @default(false)

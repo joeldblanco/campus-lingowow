@@ -28,9 +28,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { ChevronDown, Filter, Loader2, PlusCircle } from 'lucide-react'
+import { ChevronDown, Filter, PlusCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -150,10 +151,7 @@ export function ActivitiesDataTable<TData, TValue>({
             {isLoading ? (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  <div className="flex justify-center items-center">
-                    <Loader2 className="h-6 w-6 animate-spin mr-2" />
-                    Cargando...
-                  </div>
+                  <LoadingSpinner />
                 </TableCell>
               </TableRow>
             ) : table.getRowModel().rows?.length ? (

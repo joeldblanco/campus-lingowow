@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Plus, X, Tag as TagIcon } from 'lucide-react'
 import { getAllProductTags, getProducts, updateProduct } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
 export default function TagsPage() {
   const [tags, setTags] = useState<string[]>([])
@@ -45,13 +46,13 @@ export default function TagsPage() {
     if (!newTag || oldTag === newTag) return
 
     const productsWithTag = getProductsWithTag(oldTag)
-    
+
     try {
       for (const product of productsWithTag) {
         const updatedTags = product.tags?.map((t: string) => t === oldTag ? newTag : t) || []
         await updateProduct(product.id, { tags: updatedTags })
       }
-      
+
       toast.success(`Tag "${oldTag}" renombrado a "${newTag}"`)
       loadData()
       setSelectedTag(null)
@@ -65,13 +66,13 @@ export default function TagsPage() {
     if (!confirm(`¿Eliminar el tag "${tag}" de todos los productos?`)) return
 
     const productsWithTag = getProductsWithTag(tag)
-    
+
     try {
       for (const product of productsWithTag) {
         const updatedTags = product.tags?.filter((t: string) => t !== tag) || []
         await updateProduct(product.id, { tags: updatedTags })
       }
-      
+
       toast.success(`Tag "${tag}" eliminado`)
       loadData()
     } catch (error) {
@@ -100,7 +101,9 @@ export default function TagsPage() {
           </CardHeader>
           <CardContent>
             {loading ? (
-              <div className="text-center py-8">Cargando...</div>
+              <div className="h-64 flex items-center justify-center">
+                <LoadingSpinner />
+              </div>
             ) : tags.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
                 No hay etiquetas creadas

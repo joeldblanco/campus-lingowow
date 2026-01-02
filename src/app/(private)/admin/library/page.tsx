@@ -56,6 +56,9 @@ import Image from 'next/image'
 import { LibraryResourceType, LibraryResourceStatus } from '@prisma/client'
 import type { LibraryResource } from '@/lib/types/library'
 import { RESOURCE_TYPE_LABELS } from '@/lib/types/library'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { getCurrentUserRoles } from '@/lib/actions/auth'
+import { UserRole } from '@prisma/client'
 
 const getTypeIcon = (type: LibraryResourceType) => {
   const iconMap: Record<LibraryResourceType, React.ReactNode> = {
@@ -110,6 +113,11 @@ export default function AdminLibraryPage() {
     total: 0,
     totalPages: 0,
   })
+  const [userRoles, setUserRoles] = useState<UserRole[]>([])
+
+  useEffect(() => {
+    getCurrentUserRoles().then(setUserRoles)
+  }, [])
 
   const fetchResources = useCallback(async () => {
     setLoading(true)
@@ -117,7 +125,7 @@ export default function AdminLibraryPage() {
       const params = new URLSearchParams()
       params.set('page', pagination.page.toString())
       params.set('limit', pagination.limit.toString())
-      
+
       if (searchQuery) {
         params.set('search', searchQuery)
       }
@@ -176,12 +184,22 @@ export default function AdminLibraryPage() {
             Gestiona los recursos educativos de la biblioteca
           </p>
         </div>
-        <Link href="/admin/library/new">
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Nuevo Recurso
-          </Button>
-        </Link>
+        <div className="flex gap-2">
+          {(userRoles.includes('EDITOR') || userRoles.includes('ADMIN')) && (
+            <Link href="/admin/resources/new">
+              <Button variant="outline">
+                <Plus className="h-4 w-4 mr-2" />
+                Nuevo Recurso (Editor)
+              </Button>
+            </Link>
+          )}
+          <Link href="/admin/library/new">
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              Nuevo Recurso
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Filters */}
@@ -236,8 +254,8 @@ export default function AdminLibraryPage() {
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-8">
-                  Cargando...
+                <TableCell colSpan={7} className="h-64 text-center">
+                  <LoadingSpinner />
                 </TableCell>
               </TableRow>
             ) : filteredResources.length === 0 ? (
@@ -333,31 +351,33 @@ export default function AdminLibraryPage() {
       </div>
 
       {/* Pagination */}
-      {pagination.totalPages > 1 && (
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-muted-foreground">
-            Mostrando {((pagination.page - 1) * pagination.limit) + 1} - {Math.min(pagination.page * pagination.limit, pagination.total)} de {pagination.total} recursos
-          </p>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={pagination.page === 1}
-              onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
-            >
-              Anterior
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={pagination.page === pagination.totalPages}
-              onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
-            >
-              Siguiente
-            </Button>
+      {
+        pagination.totalPages > 1 && (
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-muted-foreground">
+              Mostrando {((pagination.page - 1) * pagination.limit) + 1} - {Math.min(pagination.page * pagination.limit, pagination.total)} de {pagination.total} recursos
+            </p>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={pagination.page === 1}
+                onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
+              >
+                Anterior
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={pagination.page === pagination.totalPages}
+                onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
+              >
+                Siguiente
+              </Button>
+            </div>
           </div>
-        </div>
-      )}
+        )
+      }
 
       {/* Delete Dialog */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
@@ -376,6 +396,6 @@ export default function AdminLibraryPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </div >
   )
 }

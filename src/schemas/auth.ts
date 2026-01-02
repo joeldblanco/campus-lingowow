@@ -42,10 +42,7 @@ export const SignUpSchema = z
       .min(1, 'El nombre es requerido')
       .max(255, 'El nombre debe tener menos de 255 caracteres'),
 
-    lastName: z
-      .string({ required_error: 'El apellido es requerido' })
-      .min(1, 'El apellido es requerido')
-      .max(255, 'El apellido debe tener menos de 255 caracteres'),
+    lastName: z.string().optional(),
 
     email: z
       .string({ required_error: 'Correo electrónico requerido' })

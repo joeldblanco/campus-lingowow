@@ -6,7 +6,7 @@ import { LibraryResourceStatus, LibraryResourceType } from '@prisma/client'
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
-    
+
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '12')
     const type = searchParams.get('type') as LibraryResourceType | null
@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
         orderBy = { publishedAt: 'desc' }
     }
 
-    const [resources, total] = await Promise.all([
+    const [resources, total, popularResources] = await Promise.all([
       db.libraryResource.findMany({
         where,
         include: {
@@ -89,6 +89,28 @@ export async function GET(request: NextRequest) {
         take: limit,
       }),
       db.libraryResource.count({ where }),
+      db.libraryResource.findMany({
+        where,
+        include: {
+          category: true,
+          author: {
+            select: {
+              id: true,
+              name: true,
+              lastName: true,
+              image: true,
+            },
+          },
+          _count: {
+            select: {
+              userLikes: true,
+              userSaves: true,
+            },
+          },
+        },
+        orderBy: { viewCount: 'desc' },
+        take: 3,
+      }),
     ])
 
     // Get featured resource if requested
@@ -116,6 +138,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       resources,
       featuredResource,
+      popularResources,
       pagination: {
         page,
         limit,
@@ -125,22 +148,16 @@ export async function GET(request: NextRequest) {
     })
   } catch (error) {
     console.error('Error fetching library resources:', error)
-    return NextResponse.json(
-      { error: 'Error al obtener los recursos' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error al obtener los recursos' }, { status: 500 })
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
     const session = await auth()
-    
+
     if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: 'No autorizado' },
-        { status: 401 }
-      )
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
     // Check if user has permission to create resources
@@ -149,19 +166,16 @@ export async function POST(request: NextRequest) {
       select: { roles: true, permissions: true },
     })
 
-    const hasPermission = user?.roles.some(role => 
-      ['ADMIN', 'EDITOR', 'TEACHER'].includes(role)
-    ) || user?.permissions?.includes('library:create')
+    const hasPermission =
+      user?.roles.some((role) => ['ADMIN', 'EDITOR', 'TEACHER'].includes(role)) ||
+      user?.permissions?.includes('library:create')
 
     if (!hasPermission) {
-      return NextResponse.json(
-        { error: 'No tienes permisos para crear recursos' },
-        { status: 403 }
-      )
+      return NextResponse.json({ error: 'No tienes permisos para crear recursos' }, { status: 403 })
     }
 
     const body = await request.json()
-    
+
     const {
       title,
       description,
@@ -237,9 +251,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(resource, { status: 201 })
   } catch (error) {
     console.error('Error creating library resource:', error)
-    return NextResponse.json(
-      { error: 'Error al crear el recurso' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error al crear el recurso' }, { status: 500 })
   }
 }

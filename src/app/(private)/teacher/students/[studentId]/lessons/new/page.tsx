@@ -63,7 +63,7 @@ export default async function NewStudentLessonPage({
   return (
     <CreateLessonWrapper
       studentId={studentId}
-      studentName={`${enrollment.student.name} ${enrollment.student.lastName}`}
+      studentName={`${enrollment.student.name} ${enrollment.student.lastName || ''}`}
       teacherId={session.user.id}
       enrollmentId={enrollmentId}
       courseName={enrollment.course.title}

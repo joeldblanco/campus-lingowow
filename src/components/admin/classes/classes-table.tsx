@@ -194,7 +194,7 @@ export function ClassesTable({ classes }: ClassesTableProps) {
   const getUniqueTeachers = () => {
     const teachers = Array.from(new Set(classes.map((c) => c.teacherId)))
       .map((id) => classes.find((c) => c.teacherId === id)!)
-      .map((c) => ({ id: c.teacherId, name: `${c.teacher.name} ${c.teacher.lastName}` }))
+      .map((c) => ({ id: c.teacherId, name: `${c.teacher.name} ${c.teacher.lastName || ''}` }))
     return teachers
   }
 
@@ -347,12 +347,12 @@ export function ClassesTable({ classes }: ClassesTableProps) {
                       <Avatar className="h-7 w-7">
                         <AvatarImage src={classItem.student.image || ''} />
                         <AvatarFallback className="text-xs bg-slate-200">
-                          {classItem.student.name[0]}{classItem.student.lastName[0]}
+                          {classItem.student.name[0]}{classItem.student.lastName?.[0] || ''}
                         </AvatarFallback>
                       </Avatar>
                       <div>
                         <div className="font-medium text-sm">
-                          {classItem.student.name} {classItem.student.lastName}
+                          {classItem.student.name} {classItem.student.lastName || ''}
                         </div>
                         <div className="text-xs text-muted-foreground">
                           {classItem.student.email}
@@ -365,12 +365,12 @@ export function ClassesTable({ classes }: ClassesTableProps) {
                       <Avatar className="h-7 w-7">
                         <AvatarImage src={classItem.teacher.image || ''} />
                         <AvatarFallback className="text-xs bg-slate-200">
-                          {classItem.teacher.name[0]}{classItem.teacher.lastName[0]}
+                          {classItem.teacher.name[0]}{classItem.teacher.lastName?.[0] || ''}
                         </AvatarFallback>
                       </Avatar>
                       <div>
                         <div className="font-medium text-sm">
-                          {classItem.teacher.name} {classItem.teacher.lastName}
+                          {classItem.teacher.name} {classItem.teacher.lastName || ''}
                         </div>
                       </div>
                     </div>

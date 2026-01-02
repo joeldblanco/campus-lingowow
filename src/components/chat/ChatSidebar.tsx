@@ -13,7 +13,7 @@ import { MessageType, TeamBadge, UserRole } from '@prisma/client'
 interface ChatUser {
   id: string
   name: string
-  lastName: string
+  lastName: string | null
   image: string | null
   teamBadge: TeamBadge | null
   roles?: UserRole[]
@@ -74,7 +74,7 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
   const filteredConversations = conversations.filter((conv) => {
     // Filter by search
     const otherParticipant = conv.participants.find((p) => p.userId !== user.id)?.user
-    const name = `${otherParticipant?.name} ${otherParticipant?.lastName}`.toLowerCase()
+    const name = `${otherParticipant?.name || ''} ${otherParticipant?.lastName || ''}`.toLowerCase()
     const matchesSearch = name.includes(search.toLowerCase())
 
     // Filter by tab

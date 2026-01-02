@@ -51,7 +51,7 @@ export function RescheduleClassDialog({ classItem, children }: RescheduleClassDi
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [availableTeachers, setAvailableTeachers] = useState<
-    Array<{ id: string; name: string; lastName: string; email: string }>
+    Array<{ id: string; name: string; lastName: string | null; email: string }>
   >([])
   const [availableTimeSlots, setAvailableTimeSlots] = useState<string[]>([])
 

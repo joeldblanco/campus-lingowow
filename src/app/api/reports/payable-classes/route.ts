@@ -160,7 +160,7 @@ export async function GET(request: NextRequest) {
 
     payableClasses.forEach((classBooking) => {
       const teacherId = classBooking.teacherId
-      const teacherName = `${classBooking.teacher.name} ${classBooking.teacher.lastName}`
+      const teacherName = `${classBooking.teacher.name} ${classBooking.teacher.lastName || ''}`
       const rateMultiplier = classBooking.teacher.teacherRank?.rateMultiplier || 1.0
       
       if (!teacherStats.has(teacherId)) {
@@ -193,7 +193,7 @@ export async function GET(request: NextRequest) {
         bookingId: classBooking.id,
         date: classBooking.day,
         timeSlot: classBooking.timeSlot,
-        studentName: `${classBooking.student.name} ${classBooking.student.lastName}`,
+        studentName: `${classBooking.student.name} ${classBooking.student.lastName || ''}`,
         courseName: classBooking.enrollment.course.title,
         duration,
         earnings: Math.round(classEarnings * 100) / 100,

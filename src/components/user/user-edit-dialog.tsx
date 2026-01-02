@@ -45,7 +45,7 @@ export function UserEditDialog({ user, open, onOpenChange, onUpdateUser }: UserE
     resolver: zodResolver(UpdateUserSchema),
     defaultValues: {
       name: user.name,
-      lastName: user.lastName,
+      lastName: user.lastName || '',
       email: user.email,
       roles: user.roles,
       status: user.status,
@@ -117,8 +117,8 @@ export function UserEditDialog({ user, open, onOpenChange, onUpdateUser }: UserE
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Rol</FormLabel>
-                  <Select 
-                    onValueChange={(value) => field.onChange([value as UserRole])} 
+                  <Select
+                    onValueChange={(value) => field.onChange([value as UserRole])}
                     defaultValue={field.value?.[0]}
                   >
                     <FormControl>

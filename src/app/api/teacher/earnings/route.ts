@@ -159,7 +159,7 @@ export async function GET(request: NextRequest) {
         bookingId: classBooking.id,
         date: classBooking.day,
         timeSlot: classBooking.timeSlot,
-        studentName: `${classBooking.student.name} ${classBooking.student.lastName}`,
+        studentName: `${classBooking.student.name} ${classBooking.student.lastName || ''}`,
         studentImage: classBooking.student.image,
         courseName: classBooking.enrollment.course.title,
         duration,
@@ -274,7 +274,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: true,
       teacherId,
-      teacherName: `${user.name} ${user.lastName}`,
+      teacherName: `${user.name} ${user.lastName || ''}`,
       teacherEmail: user.email,
       teacherImage: user.image,
       rank: user.teacherRank?.name || null,

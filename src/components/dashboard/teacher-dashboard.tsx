@@ -15,6 +15,7 @@ import {
   Video,
   BookOpen,
 } from 'lucide-react'
+import { DashboardSkeleton } from './dashboard-skeleton'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -26,10 +27,10 @@ function isWithin10MinutesOfStart(classDate: string, classTime: string): boolean
   const [hours, minutes] = classTime.split(':').map(Number)
   const [year, month, day] = classDate.split('-').map(Number)
   const classDateTime = new Date(year, month - 1, day, hours, minutes, 0, 0)
-  
+
   const diffMs = classDateTime.getTime() - now.getTime()
   const diffMinutes = diffMs / (1000 * 60)
-  
+
   // Can join if within 10 minutes before or up to 60 minutes after start
   return diffMinutes <= 10 && diffMinutes >= -60
 }
@@ -56,7 +57,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
     return dashboardData.upcomingClasses.filter(c => isToday(c.date))
   }, [dashboardData])
 
-  if (!dashboardData) return <div>Cargando datos...</div>
+  if (!dashboardData) return <DashboardSkeleton />
 
   // Funciones de navegación
   const handleStartClass = (classId: string) => router.push(`/classroom?classId=${classId}`)
@@ -64,7 +65,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
   const handleNewActivity = () => router.push('/activities')
   const handleEditSchedule = () => router.push('/schedule')
   const handleViewAllSchedule = () => router.push('/schedule')
-  
+
   // Obtener la próxima clase para el botón de acción rápida (only if within 10 minutes)
   const nextClass = todaysClasses.find(c => isWithin10MinutesOfStart(c.date, c.time))
 
@@ -91,6 +92,15 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
           <p className="text-slate-500 dark:text-slate-400 mt-1">
             Tienes {todaysClasses.length} {todaysClasses.length === 1 ? 'clase' : 'clases'} hoy.
           </p>
+          {dashboardData.currentPeriod && (
+            <div className="mt-2 inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
+              <span className="relative flex h-2 w-2 mr-1">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+              </span>
+              Período: {dashboardData.currentPeriod.name}
+            </div>
+          )}
         </div>
         <div className="flex items-center gap-3">
           <Button
@@ -311,8 +321,8 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                 Nueva Actividad
               </button>
               {nextClass ? (
-                <button 
-                  onClick={() => handleStartClass(nextClass.id)} 
+                <button
+                  onClick={() => handleStartClass(nextClass.id)}
                   className="w-full flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-3 rounded-lg text-sm font-medium backdrop-blur-sm border border-white/10"
                 >
                   <div className="bg-white/20 p-1.5 rounded">
@@ -321,8 +331,8 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                   Entrar a la Próxima Clase
                 </button>
               ) : (
-                <Link 
-                  href="/teacher/earnings" 
+                <Link
+                  href="/teacher/earnings"
                   className="w-full flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-3 rounded-lg text-sm font-medium backdrop-blur-sm border border-white/10"
                 >
                   <div className="bg-white/20 p-1.5 rounded">
@@ -337,8 +347,8 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                 </div>
                 Editar Horario
               </button>
-              <Link 
-                href="/teacher/students" 
+              <Link
+                href="/teacher/students"
                 className="w-full flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-3 rounded-lg text-sm font-medium backdrop-blur-sm border border-white/10"
               >
                 <div className="bg-white/20 p-1.5 rounded">

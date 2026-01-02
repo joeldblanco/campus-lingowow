@@ -36,7 +36,7 @@ interface PersonalizedLessonsViewProps {
   lessons: StudentLessonListItem[]
   teacher?: {
     name: string
-    lastName: string
+    lastName: string | null
     image?: string | null
   }
 }
@@ -125,7 +125,7 @@ export function PersonalizedLessonsView({
             <div>
               <p className="text-sm text-gray-500">Tu profesor(a)</p>
               <p className="font-medium">
-                {teacher.name} {teacher.lastName}
+                {teacher.name} {teacher.lastName || ''}
               </p>
             </div>
           </div>
@@ -189,19 +189,17 @@ export function PersonalizedLessonsView({
               return (
                 <Card
                   key={lesson.id}
-                  className={`transition-all hover:shadow-md ${
-                    isCompleted ? 'bg-green-50 border-green-200' : ''
-                  }`}
+                  className={`transition-all hover:shadow-md ${isCompleted ? 'bg-green-50 border-green-200' : ''
+                    }`}
                 >
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between gap-4">
                       <div className="flex items-center gap-4 flex-1">
                         <div
-                          className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold ${
-                            isCompleted
+                          className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold ${isCompleted
                               ? 'bg-green-500 text-white'
                               : 'bg-primary/10 text-primary'
-                          }`}
+                            }`}
                         >
                           {isCompleted ? <CheckCircle className="w-6 h-6" /> : index + 1}
                         </div>
@@ -247,8 +245,8 @@ export function PersonalizedLessonsView({
                             {isCompleted
                               ? 'Revisar'
                               : progressPercentage > 0
-                              ? 'Continuar'
-                              : 'Comenzar'}
+                                ? 'Continuar'
+                                : 'Comenzar'}
                           </Link>
                         </Button>
                       </div>

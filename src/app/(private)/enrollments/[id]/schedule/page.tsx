@@ -3,6 +3,7 @@ import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 import { db } from '@/lib/db'
 import { ScheduleSetup } from '@/components/enrollments/schedule-setup'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
 interface PageProps {
   params: Promise<{
@@ -64,7 +65,7 @@ export default async function EnrollmentSchedulePage({ params }: PageProps) {
         </p>
       </div>
 
-      <Suspense fallback={<div>Cargando...</div>}>
+      <Suspense fallback={<LoadingSpinner />}>
         <ScheduleSetup
           enrollment={enrollment}
           hasExistingSchedules={hasSchedules}

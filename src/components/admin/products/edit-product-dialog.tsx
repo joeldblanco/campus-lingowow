@@ -53,6 +53,8 @@ const productSchema = z.object({
   courseId: z.string().optional(),
   pricingType: z.enum(['SINGLE_PRICE', 'MULTIPLE_PLANS']).default('SINGLE_PRICE'),
   paymentType: z.enum(['ONE_TIME', 'RECURRING']).default('ONE_TIME'),
+  publishedAt: z.date().optional().nullable(),
+  expiresAt: z.date().optional().nullable(),
 })
 
 type ProductFormData = z.infer<typeof productSchema>
@@ -83,6 +85,8 @@ interface Product {
   _count: {
     invoiceItems: number
   }
+  publishedAt?: Date | null
+  expiresAt?: Date | null
 }
 
 interface EditProductDialogProps {
@@ -113,6 +117,8 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
       categoryId: product.categoryId || '',
       pricingType: product.pricingType || 'SINGLE_PRICE',
       paymentType: product.paymentType || 'ONE_TIME',
+      publishedAt: product.publishedAt || null,
+      expiresAt: product.expiresAt || null,
     },
   })
 
@@ -120,7 +126,7 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
     const loadData = async () => {
       const cats = await getCategories()
       setCategories(cats)
-      
+
       const coursesData = await getCoursesForProducts()
       setCourses(coursesData.map(c => ({ id: c.id, title: c.title, isSynchronous: c.isSynchronous })))
     }
@@ -144,6 +150,8 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
       courseId: (product as { courseId?: string }).courseId || '',
       pricingType: product.pricingType || 'SINGLE_PRICE',
       paymentType: product.paymentType || 'ONE_TIME',
+      publishedAt: product.publishedAt || null,
+      expiresAt: product.expiresAt || null,
     })
   }, [product, form])
 
@@ -160,6 +168,8 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
         stock: data.isDigital ? null : data.stock || 0,
         pricingType: data.pricingType,
         paymentType: data.paymentType,
+        publishedAt: data.publishedAt || null,
+        expiresAt: data.expiresAt || null,
       })
       if (result.success) {
         toast.success('Producto actualizado correctamente')
@@ -321,14 +331,14 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                 )}
               />
             </div>
-            
+
             <FormField
               control={form.control}
               name="courseId"
               render={({ field }) => {
                 const selectedCourse = courses.find(c => c.id === field.value)
                 const isSynchronousCourse = selectedCourse?.isSynchronous ?? false
-                
+
                 return (
                   <FormItem>
                     <FormLabel>Curso Asociado</FormLabel>
@@ -376,9 +386,9 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                       onChange={field.onChange}
                     />
                     <FormControl>
-                      <Input 
-                        placeholder="O ingresa una URL personalizada (opcional)" 
-                        {...field} 
+                      <Input
+                        placeholder="O ingresa una URL personalizada (opcional)"
+                        {...field}
                       />
                     </FormControl>
                   </div>
@@ -445,10 +455,59 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
               />
             )}
 
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="publishedAt"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Publicar desde</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="datetime-local"
+                        value={field.value ? new Date(field.value.getTime() - field.value.getTimezoneOffset() * 60000).toISOString().slice(0, 16) : ''}
+                        onChange={(e) => {
+                          const date = e.target.value ? new Date(e.target.value) : null;
+                          field.onChange(date);
+                        }}
+                      />
+                    </FormControl>
+                    <div className="text-xs text-muted-foreground">
+                      Dejar vacío para publicar inmediatamente
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="expiresAt"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Expira el</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="datetime-local"
+                        value={field.value ? new Date(field.value.getTime() - field.value.getTimezoneOffset() * 60000).toISOString().slice(0, 16) : ''}
+                        onChange={(e) => {
+                          const date = e.target.value ? new Date(e.target.value) : null;
+                          field.onChange(date);
+                        }}
+                      />
+                    </FormControl>
+                    <div className="text-xs text-muted-foreground">
+                      Dejar vacío para que no expire
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
             {/* Product Type Configuration */}
             <div className="border-t pt-6 space-y-4">
               <h3 className="text-lg font-medium">Configuración del Producto</h3>
-              
+
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
@@ -468,7 +527,7 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                         </SelectContent>
                       </Select>
                       <div className="text-xs text-muted-foreground">
-                        {field.value === 'SINGLE_PRICE' 
+                        {field.value === 'SINGLE_PRICE'
                           ? 'Producto con un solo precio (ej: franela, gorra)'
                           : 'Producto con distintos planes de pago (ej: programa regular con planes simple, regular, intensivo)'}
                       </div>
@@ -476,7 +535,7 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField
                   control={form.control}
                   name="paymentType"

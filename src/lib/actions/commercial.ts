@@ -183,7 +183,20 @@ export async function getProducts(filters?: {
     const where: Prisma.ProductWhereInput = {}
 
     if (filters?.isActive !== undefined) {
-      where.isActive = filters.isActive
+      if (filters.isActive) {
+        // Para productos activos, verificar también las fechas
+        where.AND = [
+          { isActive: true },
+          {
+            OR: [{ publishedAt: null }, { publishedAt: { lte: new Date() } }],
+          },
+          {
+            OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
+          },
+        ]
+      } else {
+        where.isActive = false
+      }
     }
 
     if (filters?.categoryId) {
@@ -263,7 +276,11 @@ export async function getProductById(id: string) {
 export async function createProduct(data: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>) {
   try {
     const product = await db.product.create({
-      data,
+      data: {
+        ...data,
+        publishedAt: data.publishedAt ? new Date(data.publishedAt) : null,
+        expiresAt: data.expiresAt ? new Date(data.expiresAt) : null,
+      },
     })
     revalidatePath('/admin/products')
     return { success: true, data: product }
@@ -320,9 +337,14 @@ export async function updateProduct(
   data: Partial<Omit<Product, 'id' | 'createdAt' | 'updatedAt'>>
 ) {
   try {
+    
     const product = await db.product.update({
       where: { id },
-      data,
+      data: {
+        ...data,
+        publishedAt: data.publishedAt ? new Date(data.publishedAt) : undefined,
+        expiresAt: data.expiresAt ? new Date(data.expiresAt) : undefined,
+      },
     })
     revalidatePath('/admin/products')
     return { success: true, data: product }
@@ -1271,7 +1293,7 @@ export async function createInvoiceFromPaypal(
     resourceId: string
     email: string
     firstName: string
-    lastName: string
+    lastName?: string | null
     amount: number
     currency: string
     items: Array<{ name: string; quantity: string; unit_amount: { value: string } }>

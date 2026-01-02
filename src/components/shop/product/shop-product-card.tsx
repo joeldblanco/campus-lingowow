@@ -2,162 +2,162 @@
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { useShopStore } from '@/stores/useShopStore'
+import { Card, CardFooter } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
 import { Course, Merge, Product } from '@/types/shop'
-import { CheckCircle } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { PlansModal } from '../plans/plans-modal'
+import { ShoppingCart, Star, Video, BookOpen, Calendar } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { ProductPriceDisplay } from '../product-price-display'
+import { ProductCountdown } from './product-countdown'
+import { isAfter, isBefore } from 'date-fns'
 
 interface ShopProductCardProps {
   product: Merge<Product, Course>
-  variant?: 'default' | 'featured' | 'subscription'
+  variant?: 'default' | 'featured'
 }
 
 export function ShopProductCard({ product, variant = 'default' }: ShopProductCardProps) {
-  const router = useRouter()
-  const [showPlansModal, setShowPlansModal] = useState(false)
-  const { addToCart, cart } = useShopStore()
+  const isFeatured = variant === 'featured'
 
-  const hasPlans = product.plans && product.plans.length > 1
-  const singlePlan = product.plans?.[0]
-  const lowestPrice = product.plans?.length
-    ? Math.min(...product.plans.map((p) => p.price))
-    : product.price
-  const isSubscription = product.plans?.some((p) => p.billingCycle)
-  const popularPlan = product.plans?.find((p) => p.isPopular)
+  // Determine availability status
+  const now = new Date()
+  const publishedAt = product.publishedAt ? new Date(product.publishedAt) : null
+  const expiresAt = product.expiresAt ? new Date(product.expiresAt) : null
 
-  const isInCart = cart.some((item) => item.product.id === product.id)
-
-  const handleAddToCart = () => {
-    if (isSubscription) {
-      router.push(`/pricing?productId=${product.id}`)
-      return
-    }
-
-    if (hasPlans) {
-      setShowPlansModal(true)
-    } else if (singlePlan) {
-      addToCart({
-        product: {
-          id: product.id,
-          title: product.title,
-          description: product.description,
-        },
-        plan: {
-          id: singlePlan.id,
-          name: singlePlan.name,
-          price: singlePlan.price,
-        },
-      })
-    }
-  }
-
-  // Get features from the first plan or popular plan
-  const displayPlan = popularPlan || singlePlan
-  const features = displayPlan?.features?.slice(0, 3) || []
+  const isScheduled = publishedAt && isAfter(publishedAt, now)
+  const isExpired = expiresAt && isBefore(expiresAt, now)
+  const isAvailable = !isScheduled && !isExpired
 
   return (
-    <>
-      <div className="flex flex-col rounded-xl border border-solid border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group h-full">
-        {/* Image Container */}
-        <div
-          className="relative h-48 w-full bg-cover bg-center"
-          style={{ backgroundImage: product.image ? `url(${product.image})` : undefined }}
-        >
-          {!product.image && (
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600" />
-          )}
-
-          {/* Badges */}
-          {popularPlan && (
-            <Badge className="absolute top-3 right-3 bg-amber-500 text-white text-xs font-bold px-2 py-1 rounded shadow-sm hover:bg-amber-600 border-none">
-              Popular
-            </Badge>
-          )}
-          {variant === 'featured' && (
-            <Badge className="absolute top-3 right-3 bg-primary text-white text-xs font-bold px-2 py-1 rounded shadow-sm hover:bg-blue-600 border-none">
-              Mejor Valor
-            </Badge>
-          )}
-          {product.comparePrice && product.comparePrice > lowestPrice && (
-            <Badge className="absolute top-3 right-3 bg-indigo-500 text-white text-xs font-bold px-2 py-1 rounded shadow-sm hover:bg-indigo-600 border-none">
-              Nuevo
-            </Badge>
-          )}
+    <Card className={cn(
+      "group relative flex flex-col overflow-hidden transition-all duration-300",
+      "border-border/50 hover:border-primary/20",
+      "hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] dark:hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)]",
+      isFeatured ? "md:col-span-2 md:flex-row bg-gradient-to-br from-primary/5 via-background to-background" : "bg-card"
+    )}>
+      {/* Featured Badge */}
+      {isFeatured && (
+        <div className="absolute top-4 left-4 z-20">
+          <Badge className="bg-primary hover:bg-primary text-primary-foreground border-none px-3 py-1 shadow-lg shadow-primary/20">
+            <Star className="w-3 h-3 mr-1 fill-current" />
+            Destacado
+          </Badge>
         </div>
+      )}
 
-        {/* Content */}
-        <div className="p-5 flex flex-col flex-1 gap-4">
-          <div className="flex flex-col gap-1">
-            <h3 className="text-slate-900 text-lg font-bold leading-tight group-hover:text-primary transition-colors line-clamp-2">
-              {product.title}
-            </h3>
-            <p className="text-slate-500 text-sm line-clamp-2">
+      {/* Image Section */}
+      <div className={cn(
+        "relative overflow-hidden bg-muted",
+        isFeatured ? "w-full md:w-2/5 aspect-[4/3] md:aspect-auto" : "aspect-[4/3]"
+      )}>
+        {product.image ? (
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center bg-gray-100 dark:bg-gray-800">
+            <span className="text-4xl">📚</span>
+          </div>
+        )}
+
+        {/* Overlay Gradients */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      </div>
+
+      {/* Content Section */}
+      <div className="flex flex-col flex-1 p-5">
+        <div className="flex-1 space-y-4">
+          {/* Tags & Meta */}
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="secondary" className="bg-secondary/50 text-secondary-foreground hover:bg-secondary/60">
+              {product.category || 'General'}
+            </Badge>
+            {product.requiresScheduling && (
+              <Badge variant="outline" className="border-blue-200 text-blue-700 bg-blue-50 dark:bg-blue-950/30 dark:text-blue-300 dark:border-blue-800">
+                <Calendar className="w-3 h-3 mr-1" />
+                Agendable
+              </Badge>
+            )}
+            {/* Countdown for Scheduled or Expiring products */}
+            {(isScheduled || expiresAt) && !isExpired && (
+              <ProductCountdown
+                publishedAt={product.publishedAt}
+                expiresAt={product.expiresAt}
+                className="text-xs py-0.5 px-2"
+              />
+            )}
+            {isExpired && (
+              <Badge variant="destructive">Expirado</Badge>
+            )}
+          </div>
+
+          {/* Title & Description */}
+          <div>
+            <Link href={`/checkout/${product.id}`} className={cn(
+              "block font-bold text-foreground hover:text-primary transition-colors line-clamp-2",
+              isFeatured ? "text-2xl mb-2" : "text-lg mb-1"
+            )}>
+              {product.name}
+            </Link>
+            <p className={cn(
+              "text-muted-foreground line-clamp-2 text-sm",
+              isFeatured && "text-base line-clamp-3"
+            )}>
               {product.shortDesc || product.description}
             </p>
           </div>
 
-          {/* Price */}
-          <div className="flex flex-col items-start mt-auto">
-            {hasPlans && (
-              <span className="text-slate-500 text-sm font-medium mb-1">Desde</span>
-            )}
-            <div className="flex items-baseline gap-1">
-              <span className="text-slate-900 text-3xl font-black leading-tight tracking-tight">
-                ${lowestPrice.toFixed(2)}
-              </span>
-              {isSubscription && <span className="text-slate-500 text-sm font-medium">/mes</span>}
-              {product.comparePrice && product.comparePrice > lowestPrice && (
-                <span className="text-sm text-slate-400 line-through ml-2">
-                  ${product.comparePrice.toFixed(2)}
-                </span>
-              )}
-            </div>
-          </div>
-
-          {/* Features */}
-          <div className="flex flex-col gap-2 pt-2 border-t border-slate-100">
-            {features.map((feature, idx) => {
-              const featureName =
-                typeof feature === 'string'
-                  ? feature
-                  : (feature as { feature?: { name?: string }; name?: string }).feature?.name ||
-                    (feature as { name?: string }).name ||
-                    ''
-              return (
-                <div
-                  key={idx}
-                  className="text-[13px] font-normal leading-normal flex gap-2 text-slate-600 items-start"
-                >
-                  <CheckCircle
-                    className="text-green-500 w-[18px] h-[18px] shrink-0"
-                    strokeWidth={2.5}
-                  />
-                  <span className="line-clamp-1">{featureName}</span>
+          {/* Features Grid (Only for Featured) */}
+          {isFeatured && (
+            <div className="grid grid-cols-2 gap-3 py-2">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <div className="p-1.5 rounded-full bg-primary/10 text-primary">
+                  <Video className="w-4 h-4" />
                 </div>
-              )
-            })}
-          </div>
-
-          {/* Action Button */}
-          <Button
-            variant={isSubscription ? 'default' : 'outline'}
-            className={`w-full mt-2 cursor-pointer items-center justify-center rounded-lg h-10 px-4 text-sm font-bold leading-normal transition-colors ${
-              isSubscription
-                ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-blue-500/20 shadow-md'
-                : 'border border-slate-300 bg-transparent text-slate-900 hover:bg-slate-50'
-            }`}
-            onClick={handleAddToCart}
-          >
-            {isInCart ? '✓ En el Carrito' : isSubscription ? 'Ver planes' : 'Agregar al Carrito'}
-          </Button>
+                <span>Clases en vivo</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <div className="p-1.5 rounded-full bg-primary/10 text-primary">
+                  <BookOpen className="w-4 h-4" />
+                </div>
+                <span>Material digital</span>
+              </div>
+            </div>
+          )}
         </div>
-      </div>
 
-      {hasPlans && (
-        <PlansModal product={product} open={showPlansModal} onOpenChange={setShowPlansModal} />
-      )}
-    </>
+        {/* Price & CTA */}
+        <CardFooter className="p-0 pt-4 mt-auto">
+          <div className="flex items-center justify-between w-full gap-4">
+            <ProductPriceDisplay
+              price={product.price}
+              comparePrice={product.comparePrice}
+              creditPrice={product.creditPrice}
+              acceptsCredits={product.acceptsCredits}
+              acceptsRealMoney={product.acceptsRealMoney}
+              size={isFeatured ? 'lg' : 'md'}
+            />
+            <Button
+              asChild
+              size={isFeatured ? 'lg' : 'default'}
+              className={cn(
+                "gap-2 shadow-sm",
+                !isAvailable && "opacity-50 pointer-events-none"
+              )}
+              disabled={!isAvailable}
+            >
+              <Link href={`/checkout/${product.id}`}>
+                <ShoppingCart className="w-4 h-4" />
+                {isScheduled ? 'Próximamente' : isExpired ? 'No disponible' : 'Comprar'}
+              </Link>
+            </Button>
+          </div>
+        </CardFooter>
+      </div>
+    </Card>
   )
 }

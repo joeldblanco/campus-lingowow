@@ -11,7 +11,7 @@ interface Message {
   sender: {
     id: string
     name: string
-    lastName: string
+    lastName: string | null
     image?: string | null
     teamBadge?: string | null
   }

@@ -73,6 +73,8 @@ const productSchema = z.object({
   creditPrice: z.number().optional(),
   acceptsCredits: z.boolean().default(false),
   acceptsRealMoney: z.boolean().default(true),
+  publishedAt: z.date().optional().nullable(),
+  expiresAt: z.date().optional().nullable(),
 })
 
 type ProductFormData = z.infer<typeof productSchema>
@@ -113,6 +115,8 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
       creditPrice: undefined,
       acceptsCredits: false,
       acceptsRealMoney: true,
+      publishedAt: null,
+      expiresAt: null,
     },
   })
 
@@ -153,6 +157,8 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
         acceptsCredits: data.acceptsCredits,
         acceptsRealMoney: data.acceptsRealMoney,
         sortOrder: 0,
+        publishedAt: data.publishedAt || null,
+        expiresAt: data.expiresAt || null,
       }
 
       // Validar que si es MULTIPLE_PLANS, debe tener al menos un plan
@@ -454,6 +460,55 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
               />
             </div>
 
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="publishedAt"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Publicar desde</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="datetime-local"
+                        value={field.value ? new Date(field.value.getTime() - field.value.getTimezoneOffset() * 60000).toISOString().slice(0, 16) : ''}
+                        onChange={(e) => {
+                          const date = e.target.value ? new Date(e.target.value) : null;
+                          field.onChange(date);
+                        }}
+                      />
+                    </FormControl>
+                    <div className="text-xs text-muted-foreground">
+                      Dejar vacío para publicar inmediatamente
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="expiresAt"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Expira el</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="datetime-local"
+                        value={field.value ? new Date(field.value.getTime() - field.value.getTimezoneOffset() * 60000).toISOString().slice(0, 16) : ''}
+                        onChange={(e) => {
+                          const date = e.target.value ? new Date(e.target.value) : null;
+                          field.onChange(date);
+                        }}
+                      />
+                    </FormControl>
+                    <div className="text-xs text-muted-foreground">
+                      Dejar vacío para que no expire
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
             {!form.watch('isDigital') && (
               <FormField
                 control={form.control}
@@ -482,7 +537,7 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
                 render={({ field }) => {
                   const selectedCourse = courses.find(c => c.id === field.value)
                   const isSynchronousCourse = selectedCourse?.isSynchronous ?? false
-                  
+
                   return (
                     <FormItem>
                       <FormLabel>Curso asociado</FormLabel>

@@ -47,7 +47,7 @@ interface BlogPost {
   author: {
     id: string
     name: string
-    lastName: string
+    lastName: string | null
     image: string | null
   }
 }
@@ -189,13 +189,13 @@ export default function BlogClient({
                         ) : (
                           <span className="text-xs font-medium">
                             {post.author.name.charAt(0)}
-                            {post.author.lastName.charAt(0)}
+                            {post.author.lastName?.charAt(0) || ''}
                           </span>
                         )}
                       </div>
                       <div>
                         <p className="text-sm font-medium">
-                          {post.author.name} {post.author.lastName}
+                          {post.author.name} {post.author.lastName || ''}
                         </p>
                       </div>
                     </div>
@@ -293,12 +293,12 @@ export default function BlogClient({
                                 ) : (
                                   <span className="text-xs font-medium">
                                     {post.author.name.charAt(0)}
-                                    {post.author.lastName.charAt(0)}
+                                    {post.author.lastName?.charAt(0) || ''}
                                   </span>
                                 )}
                               </div>
                               <span className="text-sm font-medium">
-                                {post.author.name} {post.author.lastName}
+                                {post.author.name} {post.author.lastName || ''}
                               </span>
                             </div>
                             <Button variant="ghost" size="sm" asChild>

@@ -36,7 +36,7 @@ interface ProrationResult {
 interface Teacher {
   id: string
   name: string
-  lastName: string
+  lastName: string | null
   image: string | null
 }
 

@@ -72,7 +72,7 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
   const [currentStep, setCurrentStep] = useState<Step>('basic')
   const [isLoading, setIsLoading] = useState(false)
   const [students, setStudents] = useState<
-    Array<{ id: string; name: string; lastName: string; email: string; image: string | null }>
+    Array<{ id: string; name: string; lastName: string | null; email: string; image: string | null }>
   >([])
   const [courses, setCourses] = useState<
     Array<{ id: string; title: string; description: string; level: string; classDuration: number; isSynchronous: boolean; _count: { modules: number; teacherCourses: number } }>
@@ -146,7 +146,7 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
           )
           if (matchedStudent) {
             form.setValue('studentId', matchedStudent.id)
-            messages.push(`Estudiante detectado: ${matchedStudent.name} ${matchedStudent.lastName}`)
+            messages.push(`Estudiante detectado: ${matchedStudent.name} ${matchedStudent.lastName || ''}`)
           }
         }
         
@@ -331,11 +331,11 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
                                   <AvatarImage src={student.image || ''} />
                                   <AvatarFallback className="text-xs">
                                     {student.name[0]}
-                                    {student.lastName[0]}
+                                    {student.lastName?.[0] || ''}
                                   </AvatarFallback>
                                 </Avatar>
                                 <span>
-                                  {student.name} {student.lastName} - {student.email}
+                                  {student.name} {student.lastName || ''} - {student.email}
                                 </span>
                               </div>
                             </SelectItem>

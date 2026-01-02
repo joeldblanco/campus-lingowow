@@ -22,14 +22,14 @@ export interface ClassBookingWithDetails {
   student: {
     id: string
     name: string
-    lastName: string
+    lastName: string | null
     email: string
     image: string | null
   }
   teacher: {
     id: string
     name: string
-    lastName: string
+    lastName: string | null
     email: string
     image: string | null
   }

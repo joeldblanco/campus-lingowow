@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -37,8 +38,11 @@ import {
   Link as LinkIcon,
   Image as ImageIcon,
   Save,
+  Loader2,
 } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
+import type { LibraryCategory } from '@/lib/types/library'
 
 type ResourceType = 'article' | 'video' | 'pdf' | 'audio' | 'lesson-plan'
 type AccessLevel = 'public' | 'private' | 'premium'
@@ -60,22 +64,12 @@ const languages = [
 ]
 
 const proficiencyLevels = [
-  { value: 'a1', label: 'Principiante (A1)' },
-  { value: 'a2', label: 'Elemental (A2)' },
-  { value: 'b1', label: 'Intermedio (B1)' },
-  { value: 'b2', label: 'Intermedio Alto (B2)' },
-  { value: 'c1', label: 'Avanzado (C1)' },
-  { value: 'c2', label: 'Maestría (C2)' },
-]
-
-const categories = [
-  { value: 'grammar', label: 'Gramática' },
-  { value: 'vocabulary', label: 'Vocabulario' },
-  { value: 'reading', label: 'Comprensión Lectora' },
-  { value: 'listening', label: 'Comprensión Auditiva' },
-  { value: 'culture', label: 'Cultura' },
-  { value: 'business', label: 'Negocios' },
-  { value: 'conversation', label: 'Conversación' },
+  { value: 'A1', label: 'Principiante (A1)' },
+  { value: 'A2', label: 'Elemental (A2)' },
+  { value: 'B1', label: 'Intermedio (B1)' },
+  { value: 'B2', label: 'Intermedio Alto (B2)' },
+  { value: 'C1', label: 'Avanzado (C1)' },
+  { value: 'C2', label: 'Maestría (C2)' },
 ]
 
 const accessLevels = [
@@ -85,16 +79,40 @@ const accessLevels = [
 ]
 
 export default function PublishResourcePage() {
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+
+  // Data State
+  const [categories, setCategories] = useState<LibraryCategory[]>([])
+
+  // Form State
   const [resourceType, setResourceType] = useState<ResourceType>('article')
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [tags, setTags] = useState<string[]>(['verbos', 'práctica'])
+  const [content, setContent] = useState('')
+  const [fileUrl, setFileUrl] = useState('')
+  const [thumbnailUrl, setThumbnailUrl] = useState('')
+
+  const [tags, setTags] = useState<string[]>([])
   const [newTag, setNewTag] = useState('')
+
   const [isFeatured, setIsFeatured] = useState(false)
   const [accessLevel, setAccessLevel] = useState<AccessLevel>('public')
+
   const [language, setLanguage] = useState('es')
-  const [level, setLevel] = useState('a1')
-  const [category, setCategory] = useState('grammar')
+  const [level, setLevel] = useState('A1')
+  const [categoryId, setCategoryId] = useState('')
+
+  useEffect(() => {
+    // Fetch categories
+    fetch('/api/library/categories')
+      .then(res => {
+        if (res.ok) return res.json()
+        return []
+      })
+      .then(data => setCategories(data))
+      .catch(err => console.error("Error fetching categories", err))
+  }, [])
 
   const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && newTag.trim()) {
@@ -110,6 +128,49 @@ export default function PublishResourcePage() {
     setTags(tags.filter((tag) => tag !== tagToRemove))
   }
 
+  const handleSubmit = async (status: 'DRAFT' | 'PUBLISHED') => {
+    if (!title) {
+      alert("Por favor ingresa un título")
+      return
+    }
+
+    setLoading(true)
+    try {
+      const payload = {
+        title,
+        excerpt: description,
+        description: description,
+        type: resourceType.toUpperCase(),
+        content: (resourceType === 'article' || resourceType === 'lesson-plan') ? content : null,
+        fileUrl: (resourceType !== 'article' && resourceType !== 'lesson-plan') ? fileUrl : null,
+        thumbnailUrl,
+        tags,
+        language,
+        level,
+        categoryId: categoryId || null,
+        status
+      }
+
+      const res = await fetch('/api/library', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+
+      if (res.ok) {
+        router.push('/admin/library')
+      } else {
+        const err = await res.json()
+        alert(err.error || "Error al crear el recurso")
+      }
+    } catch (error) {
+      console.error(error)
+      alert("Error al conectar con el servidor")
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-background-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -123,7 +184,7 @@ export default function PublishResourcePage() {
             </li>
             <li className="text-muted-foreground">/</li>
             <li>
-              <Link href="/admin/resources" className="hover:text-primary">
+              <Link href="/admin/library" className="hover:text-primary">
                 Recursos
               </Link>
             </li>
@@ -141,17 +202,17 @@ export default function PublishResourcePage() {
             </p>
           </div>
           <div className="flex items-center gap-3 shrink-0">
-            <span className="text-xs text-muted-foreground mr-2">Borrador guardado hace 2m</span>
-            <Button variant="outline" size="sm">
+            <span className="text-xs text-muted-foreground mr-2">
+              {/* Status indicator could go here */}
+            </span>
+            <Button variant="outline" size="sm" onClick={() => handleSubmit('DRAFT')} disabled={loading}>
               <Save className="h-4 w-4 mr-2" />
               Guardar Borrador
             </Button>
-            <Button variant="outline" size="sm">
-              <Eye className="h-4 w-4 mr-2" />
-              Vista Previa
-            </Button>
-            <Button size="sm">
-              <Upload className="h-4 w-4 mr-2" />
+            {/* Preview button could be added if we implement preview mode */}
+
+            <Button size="sm" onClick={() => handleSubmit('PUBLISHED')} disabled={loading}>
+              {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Upload className="h-4 w-4 mr-2" />}
               Publicar
             </Button>
           </div>
@@ -178,11 +239,11 @@ export default function PublishResourcePage() {
                       <button
                         key={type.id}
                         onClick={() => setResourceType(type.id)}
-                        className={`relative flex flex-col items-center justify-center p-4 rounded-lg border transition-all ${
-                          isSelected
+                        className={`relative flex flex-col items-center justify-center p-4 rounded-lg border transition-all ${isSelected
                             ? 'border-primary bg-primary/5 text-primary'
                             : 'border-border hover:bg-muted'
-                        }`}
+                          }`}
+                        type="button"
                       >
                         <Icon
                           className={`h-6 w-6 mb-2 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`}
@@ -243,104 +304,54 @@ export default function PublishResourcePage() {
 
                   {resourceType === 'article' || resourceType === 'lesson-plan' ? (
                     <div className="mt-1.5 border rounded-lg overflow-hidden bg-background">
-                      {/* Toolbar */}
-                      <div className="flex flex-wrap items-center gap-1 p-2 border-b bg-muted/50">
-                        <button className="p-2 rounded hover:bg-muted transition-colors" title="Negrita">
-                          <Bold className="h-4 w-4" />
-                        </button>
-                        <button className="p-2 rounded hover:bg-muted transition-colors" title="Cursiva">
-                          <Italic className="h-4 w-4" />
-                        </button>
-                        <button
-                          className="p-2 rounded hover:bg-muted transition-colors"
-                          title="Subrayado"
-                        >
-                          <Underline className="h-4 w-4" />
-                        </button>
-                        <div className="w-px h-5 bg-border mx-1" />
-                        <button
-                          className="p-2 rounded hover:bg-muted transition-colors"
-                          title="Encabezado 1"
-                        >
-                          <Heading1 className="h-4 w-4" />
-                        </button>
-                        <button
-                          className="p-2 rounded hover:bg-muted transition-colors"
-                          title="Encabezado 2"
-                        >
-                          <Heading2 className="h-4 w-4" />
-                        </button>
-                        <div className="w-px h-5 bg-border mx-1" />
-                        <button
-                          className="p-2 rounded hover:bg-muted transition-colors"
-                          title="Lista con viñetas"
-                        >
-                          <List className="h-4 w-4" />
-                        </button>
-                        <button
-                          className="p-2 rounded hover:bg-muted transition-colors"
-                          title="Lista numerada"
-                        >
-                          <ListOrdered className="h-4 w-4" />
-                        </button>
-                        <div className="w-px h-5 bg-border mx-1" />
-                        <button className="p-2 rounded hover:bg-muted transition-colors" title="Enlace">
-                          <LinkIcon className="h-4 w-4" />
-                        </button>
-                        <button className="p-2 rounded hover:bg-muted transition-colors" title="Imagen">
-                          <ImageIcon className="h-4 w-4" />
-                        </button>
-                      </div>
                       {/* Editor Area */}
-                      <div
-                        className="p-4 min-h-[300px] outline-none"
-                        contentEditable
-                        suppressContentEditableWarning
-                      >
-                        <p className="text-muted-foreground">
-                          Comienza a escribir el contenido de tu artículo aquí...
-                        </p>
-                      </div>
+                      <Textarea
+                        className="p-4 min-h-[300px] border-0 focus-visible:ring-0 resize-y"
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        placeholder="Escribe el contenido aquí (soporta HTML básico)..."
+                      />
                     </div>
                   ) : (
-                    <div className="mt-1.5 border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center text-center bg-muted/30 hover:bg-muted/50 transition-colors cursor-pointer">
-                      <div className="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-3">
-                        <Upload className="h-6 w-6" />
+                    <div className="space-y-4">
+                      <div className="mt-1.5 border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center text-center bg-muted/30 hover:bg-muted/50 transition-colors">
+                        <div className="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-3">
+                          <Upload className="h-6 w-6" />
+                        </div>
+                        <p className="text-sm font-medium">Sube tu archivo (PDF, Video, Audio)</p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          (Funcionalidad de subida directa pendiente)
+                        </p>
                       </div>
-                      <p className="text-sm font-medium">Haz clic para subir o arrastra y suelta</p>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {resourceType === 'pdf' && 'PDF hasta 10MB'}
-                        {resourceType === 'video' && 'MP4, MOV hasta 500MB o enlace de YouTube/Vimeo'}
-                        {resourceType === 'audio' && 'MP3, WAV hasta 50MB'}
-                      </p>
+                      <div>
+                        <Label htmlFor="fileUrl">O ingresa URL del recurso *</Label>
+                        <Input
+                          id="fileUrl"
+                          value={fileUrl}
+                          onChange={(e) => setFileUrl(e.target.value)}
+                          placeholder="https://..."
+                          className="mt-1.5"
+                        />
+                      </div>
                     </div>
                   )}
                 </div>
 
-                {/* Video/Audio URL input */}
-                {(resourceType === 'video' || resourceType === 'audio') && (
-                  <div>
-                    <Label htmlFor="mediaUrl">O ingresa una URL externa</Label>
-                    <Input
-                      id="mediaUrl"
-                      placeholder={
-                        resourceType === 'video'
-                          ? 'https://youtube.com/watch?v=...'
-                          : 'https://soundcloud.com/...'
-                      }
-                      className="mt-1.5"
-                    />
-                  </div>
-                )}
-
                 {/* Thumbnail Upload */}
                 <div>
-                  <Label>Imagen de Portada</Label>
-                  <div className="mt-1.5 border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center text-center bg-muted/30 hover:bg-muted/50 transition-colors cursor-pointer">
-                    <ImageIcon className="h-8 w-8 text-muted-foreground mb-2" />
-                    <p className="text-sm font-medium">Subir imagen de portada</p>
-                    <p className="text-xs text-muted-foreground mt-1">PNG, JPG hasta 2MB</p>
+                  <Label>Imagen de Portada (URL)</Label>
+                  <div className="flex gap-4 items-start mt-1.5">
+                    <Input
+                      value={thumbnailUrl}
+                      onChange={(e) => setThumbnailUrl(e.target.value)}
+                      placeholder="https://... (URL de la imagen)"
+                    />
                   </div>
+                  {thumbnailUrl && (
+                    <div className="mt-2 relative w-32 h-20 rounded overflow-hidden border">
+                      <Image src={thumbnailUrl} alt="Preview" fill className="object-cover" />
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -355,22 +366,22 @@ export default function PublishResourcePage() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  {accessLevels.map((level) => (
+                  {accessLevels.map((lvl) => (
                     <button
-                      key={level.value}
-                      onClick={() => setAccessLevel(level.value as AccessLevel)}
-                      className={`p-4 rounded-lg border text-left transition-all ${
-                        accessLevel === level.value
+                      key={lvl.value}
+                      onClick={() => setAccessLevel(lvl.value as AccessLevel)}
+                      className={`p-4 rounded-lg border text-left transition-all ${accessLevel === lvl.value
                           ? 'border-primary bg-primary/5'
                           : 'border-border hover:bg-muted'
-                      }`}
+                        }`}
+                      type="button"
                     >
                       <p
-                        className={`font-medium ${accessLevel === level.value ? 'text-primary' : ''}`}
+                        className={`font-medium ${accessLevel === lvl.value ? 'text-primary' : ''}`}
                       >
-                        {level.label}
+                        {lvl.label}
                       </p>
-                      <p className="text-xs text-muted-foreground mt-1">{level.description}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{lvl.description}</p>
                     </button>
                   ))}
                 </div>
@@ -423,14 +434,14 @@ export default function PublishResourcePage() {
 
                 <div>
                   <Label>Categoría</Label>
-                  <Select value={category} onValueChange={setCategory}>
+                  <Select value={categoryId} onValueChange={setCategoryId}>
                     <SelectTrigger className="mt-1.5 w-full">
-                      <SelectValue />
+                      <SelectValue placeholder="Seleccionar categoría" />
                     </SelectTrigger>
                     <SelectContent>
                       {categories.map((cat) => (
-                        <SelectItem key={cat.value} value={cat.value}>
-                          {cat.label}
+                        <SelectItem key={cat.id} value={cat.id}>
+                          {cat.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -446,6 +457,7 @@ export default function PublishResourcePage() {
                         <button
                           onClick={() => handleRemoveTag(tag)}
                           className="ml-1 hover:text-destructive"
+                          type="button"
                         >
                           <X className="h-3 w-3" />
                         </button>
@@ -476,15 +488,7 @@ export default function PublishResourcePage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-5">
-                <div>
-                  <Label>Autor</Label>
-                  <div className="mt-1.5 flex items-center gap-2 p-2 border rounded-lg bg-muted/50">
-                    <div className="size-8 rounded-full bg-primary/20 flex items-center justify-center text-primary text-sm font-medium">
-                      AM
-                    </div>
-                    <span className="text-sm font-medium">Alex Morgan</span>
-                  </div>
-                </div>
+                {/* Author display could go here if available */}
 
                 <div className="flex items-center justify-between py-2">
                   <div>
@@ -493,31 +497,6 @@ export default function PublishResourcePage() {
                   </div>
                   <Switch checked={isFeatured} onCheckedChange={setIsFeatured} />
                 </div>
-
-                <div className="border-t pt-4">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                    Publicando en
-                  </p>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <BookOpen className="h-4 w-4" />
-                    <span>Biblioteca Principal</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Tips Card */}
-            <Card className="bg-blue-50 border-blue-100">
-              <CardContent className="pt-6">
-                <h4 className="text-sm font-bold text-primary mb-2 flex items-center gap-2">
-                  <Lightbulb className="h-4 w-4" />
-                  Consejos Rápidos
-                </h4>
-                <ul className="text-sm text-muted-foreground space-y-2 list-disc pl-4">
-                  <li>Usa títulos claros y descriptivos.</li>
-                  <li>Agrega al menos 3 etiquetas relevantes para mejor visibilidad.</li>
-                  <li>Verifica los derechos de autor del contenido multimedia.</li>
-                </ul>
               </CardContent>
             </Card>
           </div>

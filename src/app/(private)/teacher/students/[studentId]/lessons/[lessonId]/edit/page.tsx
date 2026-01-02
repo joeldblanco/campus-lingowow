@@ -47,7 +47,7 @@ export default async function EditStudentLessonPage({
           transcription: lesson.transcription,
           isPublished: lesson.isPublished,
         }}
-        studentName={`${lesson.student.name} ${lesson.student.lastName}`}
+        studentName={`${lesson.student.name} ${lesson.student.lastName || ''}`}
         courseName={lesson.enrollment.course.title}
       />
     </div>

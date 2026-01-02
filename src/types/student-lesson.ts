@@ -200,7 +200,7 @@ export interface StudentWithLessons {
   student: {
     id: string
     name: string
-    lastName: string
+    lastName: string | null
     email: string
     image: string | null
   }

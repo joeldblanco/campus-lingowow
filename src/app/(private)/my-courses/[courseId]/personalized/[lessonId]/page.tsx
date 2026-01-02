@@ -69,7 +69,7 @@ export default async function PersonalizedLessonPage({
         title={lesson.title}
         subtitle={lesson.summary}
         courseTitle={lesson.enrollment.course.title}
-        moduleTitle={`Contenido de ${lesson.teacher.name} ${lesson.teacher.lastName}`}
+        moduleTitle={`Contenido de ${lesson.teacher.name} ${lesson.teacher.lastName || ''}`}
         courseId={courseId}
         progress={lesson.progress?.percentage ?? 0}
       />

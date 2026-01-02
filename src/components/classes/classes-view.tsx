@@ -10,7 +10,7 @@ import { es } from 'date-fns/locale'
 interface Teacher {
   id: string
   name: string
-  lastName: string
+  lastName: string | null
   image: string | null
 }
 
@@ -154,7 +154,7 @@ export function ClassesView({ enrollments }: ClassesViewProps) {
                           <AvatarImage src={schedule.teacher.image || undefined} />
                           <AvatarFallback>
                             {schedule.teacher.name[0]}
-                            {schedule.teacher.lastName[0]}
+                            {schedule.teacher.lastName?.[0] || ''}
                           </AvatarFallback>
                         </Avatar>
                         <div>
@@ -162,7 +162,7 @@ export function ClassesView({ enrollments }: ClassesViewProps) {
                             {DAYS_OF_WEEK[schedule.dayOfWeek]}
                           </div>
                           <div className="text-sm text-muted-foreground">
-                            {schedule.teacher.name} {schedule.teacher.lastName}
+                            {schedule.teacher.name} {schedule.teacher.lastName || ''}
                           </div>
                         </div>
                       </div>
@@ -194,7 +194,7 @@ export function ClassesView({ enrollments }: ClassesViewProps) {
                           <AvatarImage src={booking.teacher.image || undefined} />
                           <AvatarFallback>
                             {booking.teacher.name[0]}
-                            {booking.teacher.lastName[0]}
+                            {booking.teacher.lastName?.[0] || ''}
                           </AvatarFallback>
                         </Avatar>
                         <div>
@@ -203,7 +203,7 @@ export function ClassesView({ enrollments }: ClassesViewProps) {
                           </div>
                           <div className="text-sm text-muted-foreground flex items-center gap-2">
                             <User className="h-3 w-3" />
-                            {booking.teacher.name} {booking.teacher.lastName}
+                            {booking.teacher.name} {booking.teacher.lastName || ''}
                           </div>
                         </div>
                       </div>

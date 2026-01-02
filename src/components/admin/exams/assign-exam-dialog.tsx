@@ -36,7 +36,7 @@ interface AssignExamDialogProps {
 interface Student {
   id: string
   name: string
-  lastName: string
+  lastName: string | null
   email: string
   enrollments: {
     course: {
@@ -140,7 +140,7 @@ export function AssignExamDialog({ exam, open, onOpenChange }: AssignExamDialogP
       filtered = filtered.filter(
         (student) =>
           student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          student.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (student.lastName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
           student.email.toLowerCase().includes(searchTerm.toLowerCase())
       )
     }

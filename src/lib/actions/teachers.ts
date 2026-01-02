@@ -189,7 +189,7 @@ export async function getAvailableTeachers(options?: {
 
         return {
           id: teacher.id,
-          name: `${teacher.name} ${teacher.lastName}`.trim(),
+          name: `${teacher.name} ${teacher.lastName || ''}`.trim(),
           avatarUrl:
             teacher.image || `https://api.dicebear.com/9.x/lorelei/svg?seed=${teacher.name}`,
           specialties,
@@ -242,7 +242,7 @@ export async function getTeachersForLanding(limit: number = 4) {
 
     return teachers.map((teacher) => ({
       id: teacher.id,
-      name: `${teacher.name} ${teacher.lastName}`.trim(),
+      name: `${teacher.name} ${teacher.lastName || ''}`.trim(),
       image: teacher.image || `https://api.dicebear.com/9.x/lorelei/svg?seed=${teacher.name}`,
       bio: teacher.bio || 'Profesor certificado con amplia experiencia docente',
       rank: teacher.teacherRank?.name || 'Profesor',

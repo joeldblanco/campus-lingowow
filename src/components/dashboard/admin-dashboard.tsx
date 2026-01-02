@@ -28,6 +28,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from 'recharts'
+import { DashboardSkeleton } from './dashboard-skeleton'
 
 function StatCard({
   value,
@@ -88,7 +89,7 @@ function StatCard({
 }
 
 const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData | null }) => {
-  if (!dashboardData) return <div>Cargando datos...</div>
+  if (!dashboardData) return <DashboardSkeleton />
 
   // Calcular fecha actual formateada
   const today = new Date().toLocaleDateString('es-ES', {
@@ -110,9 +111,17 @@ const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData |
               Bienvenido de nuevo. Aquí está lo que sucede en tu plataforma hoy.
             </p>
           </div>
-          <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 bg-white dark:bg-card-dark px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm">
-            <CalendarIcon className="w-4 h-4" />
-            <span className="capitalize">{today}</span>
+          <div className="flex gap-2">
+            {dashboardData.currentPeriod && (
+              <div className="flex items-center gap-2 text-sm text-primary bg-blue-50 dark:bg-blue-900/20 px-3 py-1.5 rounded-lg border border-blue-100 dark:border-blue-800 shadow-sm font-medium">
+                <CalendarIcon className="w-4 h-4" />
+                <span>{dashboardData.currentPeriod.name}</span>
+              </div>
+            )}
+            <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 bg-white dark:bg-card-dark px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm">
+              <CalendarIcon className="w-4 h-4" />
+              <span className="capitalize">{today}</span>
+            </div>
           </div>
         </div>
 

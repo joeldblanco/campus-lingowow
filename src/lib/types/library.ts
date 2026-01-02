@@ -17,7 +17,7 @@ export interface LibraryCategory {
 export interface LibraryResourceAuthor {
   id: string
   name: string
-  lastName: string
+  lastName: string | null
   image: string | null
   bio?: string | null
 }
@@ -60,6 +60,7 @@ export interface LibraryResource {
 export interface LibraryResourcesResponse {
   resources: LibraryResource[]
   featuredResource: LibraryResource | null
+  popularResources: LibraryResource[]
   pagination: {
     page: number
     limit: number

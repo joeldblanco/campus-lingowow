@@ -28,6 +28,11 @@ export interface AdminDashboardData {
     name: string
     classes: number
   }[]
+  currentPeriod: {
+    id: string
+    name: string
+    dates: string
+  } | null
 }
 
 export interface TeacherDashboardData {
@@ -71,6 +76,11 @@ export interface TeacherDashboardData {
     time: string
     room?: string
   }[]
+  currentPeriod: {
+    id: string
+    name: string
+    dates: string
+  } | null
 }
 
 export interface StudentDashboardData {
