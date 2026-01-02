@@ -528,9 +528,42 @@ export async function updateEnrollment(
   data: {
     status?: EnrollmentStatus
     progress?: number
+    courseId?: string
+    academicPeriodId?: string
   }
 ) {
   try {
+    // Si se cambia el curso o período, verificar que no exista duplicado
+    if (data.courseId || data.academicPeriodId) {
+      const currentEnrollment = await db.enrollment.findUnique({
+        where: { id },
+      })
+
+      if (!currentEnrollment) {
+        return { success: false, error: 'Inscripción no encontrada' }
+      }
+
+      const newCourseId = data.courseId || currentEnrollment.courseId
+      const newPeriodId = data.academicPeriodId || currentEnrollment.academicPeriodId
+
+      // Verificar si ya existe otra inscripción con la misma combinación
+      const existingEnrollment = await db.enrollment.findFirst({
+        where: {
+          studentId: currentEnrollment.studentId,
+          courseId: newCourseId,
+          academicPeriodId: newPeriodId,
+          id: { not: id },
+        },
+      })
+
+      if (existingEnrollment) {
+        return {
+          success: false,
+          error: 'El estudiante ya tiene una inscripción en este curso para este período',
+        }
+      }
+    }
+
     const enrollment = await db.enrollment.update({
       where: { id },
       data: {
@@ -544,6 +577,257 @@ export async function updateEnrollment(
   } catch (error) {
     console.error('Error updating enrollment:', error)
     return { success: false, error: 'Error al actualizar la inscripción' }
+  }
+}
+
+// Get enrollment schedules (ClassSchedule) for an enrollment
+export async function getEnrollmentSchedules(enrollmentId: string) {
+  try {
+    const schedules = await db.classSchedule.findMany({
+      where: { enrollmentId },
+      include: {
+        teacher: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            email: true,
+            image: true,
+          },
+        },
+      },
+      orderBy: [{ dayOfWeek: 'asc' }, { startTime: 'asc' }],
+    })
+
+    return { success: true, schedules }
+  } catch (error) {
+    console.error('Error fetching enrollment schedules:', error)
+    return { success: false, error: 'Error al obtener los horarios', schedules: [] }
+  }
+}
+
+// Update enrollment schedules
+export async function updateEnrollmentSchedules(
+  enrollmentId: string,
+  schedules: Array<{
+    id?: string
+    teacherId: string
+    dayOfWeek: number
+    startTime: string
+    endTime: string
+  }>
+) {
+  try {
+    // Verificar que la inscripción existe
+    const enrollment = await db.enrollment.findUnique({
+      where: { id: enrollmentId },
+    })
+
+    if (!enrollment) {
+      return { success: false, error: 'Inscripción no encontrada' }
+    }
+
+    // Eliminar horarios existentes
+    await db.classSchedule.deleteMany({
+      where: { enrollmentId },
+    })
+
+    // Crear nuevos horarios
+    if (schedules.length > 0) {
+      await db.classSchedule.createMany({
+        data: schedules.map((schedule) => ({
+          enrollmentId,
+          teacherId: schedule.teacherId,
+          dayOfWeek: schedule.dayOfWeek,
+          startTime: schedule.startTime,
+          endTime: schedule.endTime,
+        })),
+      })
+    }
+
+    revalidatePath('/admin/enrollments')
+    revalidatePath('/admin/classes')
+
+    return { success: true, message: 'Horarios actualizados exitosamente' }
+  } catch (error) {
+    console.error('Error updating enrollment schedules:', error)
+    return { success: false, error: 'Error al actualizar los horarios' }
+  }
+}
+
+// Interfaces for schedule update with classes
+interface ScheduledClass {
+  date: string // YYYY-MM-DD
+  dayOfWeek: number
+  startTime: string
+  endTime: string
+  teacherId: string
+}
+
+interface WeeklyScheduleSlot {
+  teacherId: string
+  dayOfWeek: number
+  startTime: string
+  endTime: string
+}
+
+// Update enrollment with new schedule and classes
+export async function updateEnrollmentWithSchedule(
+  enrollmentId: string,
+  data: {
+    status?: EnrollmentStatus
+    progress?: number
+    courseId?: string
+    academicPeriodId?: string
+    teacherId: string
+    scheduledClasses: ScheduledClass[]
+    isRecurring: boolean
+    weeklySchedule: WeeklyScheduleSlot[]
+  }
+) {
+  try {
+    // Verificar que la inscripción existe
+    const enrollment = await db.enrollment.findUnique({
+      where: { id: enrollmentId },
+      include: {
+        student: { select: { id: true } },
+      },
+    })
+
+    if (!enrollment) {
+      return { success: false, error: 'Inscripción no encontrada' }
+    }
+
+    // Si se cambia el curso o período, verificar que no exista duplicado
+    if (data.courseId || data.academicPeriodId) {
+      const newCourseId = data.courseId || enrollment.courseId
+      const newPeriodId = data.academicPeriodId || enrollment.academicPeriodId
+
+      const existingEnrollment = await db.enrollment.findFirst({
+        where: {
+          studentId: enrollment.studentId,
+          courseId: newCourseId,
+          academicPeriodId: newPeriodId,
+          id: { not: enrollmentId },
+        },
+      })
+
+      if (existingEnrollment) {
+        return {
+          success: false,
+          error: 'El estudiante ya tiene una inscripción en este curso para este período',
+        }
+      }
+    }
+
+    // 1. Actualizar la inscripción
+    await db.enrollment.update({
+      where: { id: enrollmentId },
+      data: {
+        status: data.status,
+        progress: data.progress,
+        courseId: data.courseId,
+        academicPeriodId: data.academicPeriodId,
+        classesTotal: data.scheduledClasses.length || 8,
+        lastAccessed: getCurrentDate(),
+      },
+    })
+
+    // 2. Cancelar todas las clases futuras existentes (CONFIRMED o PENDING)
+    const today = getTodayStart()
+    const cancelledBookings = await db.classBooking.updateMany({
+      where: {
+        enrollmentId,
+        day: { gte: today.toISOString().split('T')[0] },
+        status: { in: ['CONFIRMED', 'PENDING'] },
+      },
+      data: {
+        status: 'CANCELLED',
+        cancelledAt: getCurrentDate(),
+        cancelledBy: 'ADMIN_RESCHEDULE',
+      },
+    })
+
+    console.log(`[Enrollment Update] Cancelled ${cancelledBookings.count} future bookings`)
+
+    // 3. Eliminar horarios recurrentes existentes
+    await db.classSchedule.deleteMany({
+      where: { enrollmentId },
+    })
+
+    // 4. Crear nuevos horarios recurrentes si aplica
+    if (data.isRecurring && data.weeklySchedule.length > 0) {
+      await db.classSchedule.createMany({
+        data: data.weeklySchedule.map((slot) => ({
+          enrollmentId,
+          teacherId: slot.teacherId,
+          dayOfWeek: slot.dayOfWeek,
+          startTime: slot.startTime,
+          endTime: slot.endTime,
+        })),
+      })
+    }
+
+    // 5. Crear nuevas clases programadas
+    let classesCreated = 0
+    for (const cls of data.scheduledClasses) {
+      const timeSlot = `${cls.startTime}-${cls.endTime}`
+
+      // Verificar si el slot ya está ocupado por otra reserva
+      const existingBooking = await db.classBooking.findUnique({
+        where: {
+          teacherId_day_timeSlot: {
+            teacherId: cls.teacherId,
+            day: cls.date,
+            timeSlot: timeSlot,
+          },
+        },
+      })
+
+      if (!existingBooking) {
+        await db.classBooking.create({
+          data: {
+            studentId: enrollment.studentId,
+            teacherId: cls.teacherId,
+            enrollmentId: enrollmentId,
+            day: cls.date,
+            timeSlot: timeSlot,
+            status: 'CONFIRMED',
+          },
+        })
+        classesCreated++
+      } else if (existingBooking.enrollmentId === enrollmentId && existingBooking.status === 'CANCELLED') {
+        // Reactivar la clase si era de esta misma inscripción y estaba cancelada
+        await db.classBooking.update({
+          where: { id: existingBooking.id },
+          data: {
+            status: 'CONFIRMED',
+            cancelledAt: null,
+            cancelledBy: null,
+          },
+        })
+        classesCreated++
+      } else {
+        console.warn(`Slot already booked: ${cls.date} ${timeSlot} for teacher ${cls.teacherId}`)
+      }
+    }
+
+    console.log(`[Enrollment Update] Created ${classesCreated} new class bookings`)
+
+    revalidatePath('/admin/enrollments')
+    revalidatePath('/admin/classes')
+    revalidatePath('/teacher/classes')
+    revalidatePath('/student/classes')
+
+    return {
+      success: true,
+      message: `Inscripción actualizada. ${cancelledBookings.count} clases canceladas, ${classesCreated} clases nuevas programadas.`,
+      cancelledCount: cancelledBookings.count,
+      createdCount: classesCreated,
+    }
+  } catch (error) {
+    console.error('Error updating enrollment with schedule:', error)
+    return { success: false, error: 'Error al actualizar la inscripción con horarios' }
   }
 }
 
@@ -720,34 +1004,11 @@ export async function getPublishedCourses() {
         description: true,
         level: true,
         classDuration: true,
+        isSynchronous: true,
         _count: {
           select: {
             modules: true,
             teacherCourses: true,
-          },
-        },
-        // Buscar planes que incluyen clases (directamente asociados al curso)
-        plans: {
-          where: {
-            includesClasses: true,
-          },
-          select: {
-            id: true,
-          },
-          take: 1,
-        },
-        // También buscar a través de productos asociados al curso
-        products: {
-          select: {
-            plans: {
-              where: {
-                includesClasses: true,
-              },
-              select: {
-                id: true,
-              },
-              take: 1,
-            },
           },
         },
       },
@@ -756,18 +1017,7 @@ export async function getPublishedCourses() {
       },
     })
 
-    // Un curso es sincrónico si tiene planes que incluyen clases (directamente o a través de productos)
-    // Y tiene profesores asignados
-    return courses.map((course) => {
-      const hasPlansWithClasses = course.plans.length > 0 || 
-        course.products.some(p => p.plans.length > 0)
-      const hasTeachers = course._count.teacherCourses > 0
-      
-      return {
-        ...course,
-        isSynchronous: hasPlansWithClasses && hasTeachers,
-      }
-    })
+    return courses
   } catch (error) {
     console.error('Error fetching published courses:', error)
     throw new Error('Failed to fetch published courses')

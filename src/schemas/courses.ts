@@ -7,6 +7,8 @@ export const CreateCourseSchema = z.object({
   level: z.string().min(1, 'El nivel es requerido'),
   classDuration: z.number().int().min(30).max(90).default(40),
   image: z.string().optional(),
+  isPersonalized: z.boolean().default(false),
+  isSynchronous: z.boolean().default(false),
   createdById: z.string(),
 })
 
@@ -17,4 +19,6 @@ export const EditCourseSchema = z.object({
   level: z.string().min(1, 'El nivel es requerido'),
   classDuration: z.number().int().min(30).max(90),
   image: z.string().optional(),
+  isPersonalized: z.boolean().default(false),
+  isSynchronous: z.boolean().default(false),
 })

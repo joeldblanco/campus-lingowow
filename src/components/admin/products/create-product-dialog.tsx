@@ -47,6 +47,7 @@ interface Course {
   level: string
   language: string
   classDuration: number
+  isSynchronous: boolean
 }
 
 const productSchema = z.object({
@@ -477,78 +478,69 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
             <div className="grid grid-cols-1 gap-4">
               <FormField
                 control={form.control}
-                name="requiresScheduling"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                    <div className="space-y-0.5">
-                      <FormLabel>Requiere agendar un horario</FormLabel>
-                      <div className="text-sm text-muted-foreground">
-                        Los estudiantes deberán seleccionar un horario
-                      </div>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={(checked) => {
-                          field.onChange(checked)
-                          if (!checked) {
-                            form.setValue('courseId', undefined)
+                name="courseId"
+                render={({ field }) => {
+                  const selectedCourse = courses.find(c => c.id === field.value)
+                  const isSynchronousCourse = selectedCourse?.isSynchronous ?? false
+                  
+                  return (
+                    <FormItem>
+                      <FormLabel>Curso asociado</FormLabel>
+                      <Select
+                        onValueChange={(value) => {
+                          if (value === 'none') {
+                            field.onChange(undefined)
+                            form.setValue('requiresScheduling', false)
+                          } else {
+                            field.onChange(value)
+                            const course = courses.find(c => c.id === value)
+                            if (course) {
+                              form.setValue('scheduleDuration', course.classDuration)
+                              // Inferir requiresScheduling del tipo de curso
+                              form.setValue('requiresScheduling', course.isSynchronous)
+                            }
                           }
                         }}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
+                        value={field.value || undefined}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Seleccionar curso (opcional)" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {courses.length === 0 ? (
+                            <SelectItem value="no-courses" disabled>
+                              No hay cursos publicados
+                            </SelectItem>
+                          ) : (
+                            <>
+                              <SelectItem value="none">Sin curso asociado</SelectItem>
+                              {courses.map((course) => (
+                                <SelectItem key={course.id} value={course.id}>
+                                  {course.title} ({course.level}) {course.isSynchronous ? '🔴 Sincrónico' : '🟢 Asíncrono'}
+                                </SelectItem>
+                              ))}
+                            </>
+                          )}
+                        </SelectContent>
+                      </Select>
+                      {isSynchronousCourse && (
+                        <div className="flex items-center gap-2 p-2 bg-amber-50 border border-amber-200 rounded-md text-sm text-amber-800">
+                          <span>⚠️</span>
+                          <span>
+                            Este producto <strong>requerirá selección de horario</strong> porque está asociado a un curso sincrónico.
+                          </span>
+                        </div>
+                      )}
+                      <FormMessage />
+                    </FormItem>
+                  )
+                }}
               />
 
               {form.watch('requiresScheduling') && (
                 <>
-                  <FormField
-                    control={form.control}
-                    name="courseId"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Curso para inscripción automática</FormLabel>
-                        <Select
-                          onValueChange={(value) => {
-                            if (value === 'none') {
-                              field.onChange(undefined)
-                            } else {
-                              field.onChange(value)
-                              const selectedCourse = courses.find(c => c.id === value)
-                              if (selectedCourse) {
-                                form.setValue('scheduleDuration', selectedCourse.classDuration)
-                              }
-                            }
-                          }}
-                          value={field.value || undefined}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Seleccionar curso" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {courses.length === 0 ? (
-                              <SelectItem value="no-courses" disabled>
-                                No hay cursos publicados
-                              </SelectItem>
-                            ) : (
-                              <>
-                                <SelectItem value="none">Ninguno</SelectItem>
-                                {courses.map((course) => (
-                                  <SelectItem key={course.id} value={course.id}>
-                                    {course.title} ({course.level})
-                                  </SelectItem>
-                                ))}
-                              </>
-                            )}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
 
                   <div className={`grid gap-4 ${form.watch('pricingType') === 'SINGLE_PRICE' ? 'grid-cols-2' : 'grid-cols-1'}`}>
                     {form.watch('pricingType') === 'SINGLE_PRICE' && (

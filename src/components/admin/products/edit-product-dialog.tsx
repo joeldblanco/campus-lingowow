@@ -32,7 +32,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { updateProduct, getCategories } from '@/lib/actions/commercial'
-import { getAllCourses } from '@/lib/actions/courses'
+import { getCoursesForProducts } from '@/lib/actions/courses'
 import { toast } from 'sonner'
 import { Category } from '@/types/category'
 import { ImageSelector } from './image-selector'
@@ -94,7 +94,7 @@ interface EditProductDialogProps {
 export function EditProductDialog({ product, open, onOpenChange }: EditProductDialogProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [categories, setCategories] = useState<Category[]>([])
-  const [courses, setCourses] = useState<Array<{ id: string; title: string }>>([])
+  const [courses, setCourses] = useState<Array<{ id: string; title: string; isSynchronous: boolean }>>([])
 
   const form = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
@@ -121,8 +121,8 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
       const cats = await getCategories()
       setCategories(cats)
       
-      const coursesData = await getAllCourses()
-      setCourses(coursesData.map(c => ({ id: c.id, title: c.title })))
+      const coursesData = await getCoursesForProducts()
+      setCourses(coursesData.map(c => ({ id: c.id, title: c.title, isSynchronous: c.isSynchronous })))
     }
     loadData()
   }, [])
@@ -325,30 +325,43 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
             <FormField
               control={form.control}
               name="courseId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Curso Asociado</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Seleccionar curso (opcional)" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="no-course">Sin curso asociado</SelectItem>
-                      {courses.map((course) => (
-                        <SelectItem key={course.id} value={course.id}>
-                          {course.title}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <div className="text-xs text-muted-foreground mt-1">
-                    Al comprar este producto, el usuario será enrolado en el curso seleccionado
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
+              render={({ field }) => {
+                const selectedCourse = courses.find(c => c.id === field.value)
+                const isSynchronousCourse = selectedCourse?.isSynchronous ?? false
+                
+                return (
+                  <FormItem>
+                    <FormLabel>Curso Asociado</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccionar curso (opcional)" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="no-course">Sin curso asociado</SelectItem>
+                        {courses.map((course) => (
+                          <SelectItem key={course.id} value={course.id}>
+                            {course.title} {course.isSynchronous ? '🔴 Sincrónico' : '🟢 Asíncrono'}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {isSynchronousCourse && (
+                      <div className="flex items-center gap-2 p-2 bg-amber-50 border border-amber-200 rounded-md text-sm text-amber-800">
+                        <span>⚠️</span>
+                        <span>
+                          Este producto <strong>requiere selección de horario</strong> porque está asociado a un curso sincrónico.
+                        </span>
+                      </div>
+                    )}
+                    <div className="text-xs text-muted-foreground mt-1">
+                      Al comprar este producto, el usuario será enrolado en el curso seleccionado
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )
+              }}
             />
 
             <FormField

@@ -32,6 +32,7 @@ import {
 } from '@/components/ui/form'
 import { toast } from 'sonner'
 import { FileUpload } from '@/components/ui/file-upload'
+import { Switch } from '@/components/ui/switch'
 import Image from 'next/image'
 import { CreateCourseSchema } from '@/schemas/courses'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -57,6 +58,8 @@ export function CreateCourseDialog({ children, onCourseCreated }: CreateCourseDi
       level: '',
       classDuration: 40,
       image: '',
+      isPersonalized: false,
+      isSynchronous: false,
       createdById: session?.user?.id || '',
     },
   })
@@ -250,6 +253,48 @@ export function CreateCourseDialog({ children, onCourseCreated }: CreateCourseDi
                       </div>
                     )}
                     <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="isSynchronous"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                    <div className="space-y-0.5">
+                      <FormLabel>Curso Sincrónico</FormLabel>
+                      <p className="text-xs text-muted-foreground">
+                        Activa si el curso requiere clases en vivo con horario programado.
+                      </p>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="isPersonalized"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                    <div className="space-y-0.5">
+                      <FormLabel>Programa Personalizado</FormLabel>
+                      <p className="text-xs text-muted-foreground">
+                        Activa esta opción si cada estudiante tendrá contenido único creado por su profesor.
+                      </p>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
                   </FormItem>
                 )}
               />

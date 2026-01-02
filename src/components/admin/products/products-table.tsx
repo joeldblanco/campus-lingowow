@@ -41,11 +41,19 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
-import {
-  useSortable,
-} from '@dnd-kit/sortable'
+import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { MoreVertical, Edit, Trash2, ListTree, GripVertical, Search, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react'
+import {
+  MoreVertical,
+  Edit,
+  Trash2,
+  ListTree,
+  GripVertical,
+  Search,
+  ChevronLeft,
+  ChevronRight,
+  SlidersHorizontal,
+} from 'lucide-react'
 import { EditProductDialog } from './edit-product-dialog'
 import { ProductPlansDialog } from './product-plans-dialog'
 import { deleteProduct, updateProductSortOrder } from '@/lib/actions/commercial'
@@ -84,20 +92,20 @@ interface ProductsTableProps {
 }
 
 // Sortable row component
-function SortableRow({ product, onEdit, onDelete, onManagePlans }: {
+function SortableRow({
+  product,
+  onEdit,
+  onDelete,
+  onManagePlans,
+}: {
   product: Product
   onEdit: (product: Product) => void
   onDelete: (id: string) => void
   onManagePlans: (product: Product) => void
 }) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: product.id })
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: product.id,
+  })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -128,12 +136,10 @@ function SortableRow({ product, onEdit, onDelete, onManagePlans }: {
               height={40}
             />
           )}
-          <div>
-            <div className="font-medium">{product.name}</div>
+          <div className="min-w-0">
+            <div className="font-medium truncate max-w-[200px]">{product.name}</div>
             {product.shortDesc && (
-              <div className="text-sm text-muted-foreground">
-                {product.shortDesc}
-              </div>
+              <div className="text-sm text-muted-foreground truncate max-w-[200px]">{product.shortDesc}</div>
             )}
           </div>
         </div>
@@ -160,9 +166,11 @@ function SortableRow({ product, onEdit, onDelete, onManagePlans }: {
       </TableCell>
       <TableCell>
         {product.stock !== null ? (
-          <span className={`text-sm font-medium ${
-            product.stock > 0 ? 'text-green-600' : 'text-red-600'
-          }`}>
+          <span
+            className={`text-sm font-medium ${
+              product.stock > 0 ? 'text-green-600' : 'text-red-600'
+            }`}
+          >
             {product.stock} unidades
           </span>
         ) : (
@@ -171,9 +179,13 @@ function SortableRow({ product, onEdit, onDelete, onManagePlans }: {
       </TableCell>
       <TableCell>
         {product.isActive ? (
-          <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 border-0 font-medium">Activo</Badge>
+          <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 border-0 font-medium">
+            Activo
+          </Badge>
         ) : (
-          <Badge className="bg-gray-100 text-gray-700 hover:bg-gray-100 border-0 font-medium">Inactivo</Badge>
+          <Badge className="bg-gray-100 text-gray-700 hover:bg-gray-100 border-0 font-medium">
+            Inactivo
+          </Badge>
         )}
       </TableCell>
       <TableCell>
@@ -231,9 +243,7 @@ export function ProductsTable({ products }: ProductsTableProps) {
       )
     }
     if (statusFilter !== 'all') {
-      filtered = filtered.filter((p) => 
-        statusFilter === 'active' ? p.isActive : !p.isActive
-      )
+      filtered = filtered.filter((p) => (statusFilter === 'active' ? p.isActive : !p.isActive))
     }
     return filtered
   }, [productsList, searchTerm, statusFilter])
@@ -285,10 +295,10 @@ export function ProductsTable({ products }: ProductsTableProps) {
 
       // Batch update all products
       try {
-        const updatePromises = updates.map(update => 
+        const updatePromises = updates.map((update) =>
           updateProductSortOrder(update.id, update.sortOrder)
         )
-        
+
         await Promise.all(updatePromises)
         toast.success('Orden de productos actualizado correctamente')
       } catch {
@@ -301,7 +311,7 @@ export function ProductsTable({ products }: ProductsTableProps) {
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      setSelectedProducts(paginatedProducts.map(p => p.id))
+      setSelectedProducts(paginatedProducts.map((p) => p.id))
     } else {
       setSelectedProducts([])
     }
@@ -358,26 +368,37 @@ export function ProductsTable({ products }: ProductsTableProps) {
 
       {/* Table */}
       <div className="border rounded-lg">
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50">
                 <TableHead className="w-12">
                   <Checkbox
-                    checked={selectedProducts.length === paginatedProducts.length && paginatedProducts.length > 0}
+                    checked={
+                      selectedProducts.length === paginatedProducts.length &&
+                      paginatedProducts.length > 0
+                    }
                     onCheckedChange={handleSelectAll}
                   />
                 </TableHead>
-                <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Producto</TableHead>
-                <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Categoría</TableHead>
-                <TableHead className="font-semibold text-xs uppercase text-muted-foreground text-right">Precio</TableHead>
-                <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Stock</TableHead>
-                <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Estado</TableHead>
-                <TableHead className="font-semibold text-xs uppercase text-muted-foreground text-center">Acciones</TableHead>
+                <TableHead className="font-semibold text-xs uppercase text-muted-foreground">
+                  Producto
+                </TableHead>
+                <TableHead className="font-semibold text-xs uppercase text-muted-foreground">
+                  Categoría
+                </TableHead>
+                <TableHead className="font-semibold text-xs uppercase text-muted-foreground text-right">
+                  Precio
+                </TableHead>
+                <TableHead className="font-semibold text-xs uppercase text-muted-foreground">
+                  Stock
+                </TableHead>
+                <TableHead className="font-semibold text-xs uppercase text-muted-foreground">
+                  Estado
+                </TableHead>
+                <TableHead className="font-semibold text-xs uppercase text-muted-foreground text-center">
+                  Acciones
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -389,7 +410,7 @@ export function ProductsTable({ products }: ProductsTableProps) {
                 </TableRow>
               ) : (
                 <SortableContext
-                  items={paginatedProducts.map(product => product.id)}
+                  items={paginatedProducts.map((product) => product.id)}
                   strategy={verticalListSortingStrategy}
                 >
                   {paginatedProducts.map((product) => (
@@ -412,24 +433,47 @@ export function ProductsTable({ products }: ProductsTableProps) {
       {filteredProducts.length > 0 && (
         <div className="flex items-center justify-between mt-4">
           <p className="text-sm text-muted-foreground">
-            Mostrando <span className="font-medium">{((currentPage - 1) * ITEMS_PER_PAGE) + 1}</span> a{' '}
-            <span className="font-medium">{Math.min(currentPage * ITEMS_PER_PAGE, filteredProducts.length)}</span> de{' '}
-            <span className="font-medium">{filteredProducts.length}</span> resultados
+            Mostrando <span className="font-medium">{(currentPage - 1) * ITEMS_PER_PAGE + 1}</span>{' '}
+            a{' '}
+            <span className="font-medium">
+              {Math.min(currentPage * ITEMS_PER_PAGE, filteredProducts.length)}
+            </span>{' '}
+            de <span className="font-medium">{filteredProducts.length}</span> resultados
           </p>
           <div className="flex items-center gap-1">
-            <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))} disabled={currentPage === 1}>
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+            >
               <ChevronLeft className="h-4 w-4" />
             </Button>
-            {getPageNumbers().map((page, index) => (
+            {getPageNumbers().map((page, index) =>
               typeof page === 'number' ? (
-                <Button key={index} variant={currentPage === page ? 'default' : 'outline'} size="icon" className={`h-8 w-8 ${currentPage === page ? 'bg-blue-500 hover:bg-blue-600' : ''}`} onClick={() => setCurrentPage(page)}>
+                <Button
+                  key={index}
+                  variant={currentPage === page ? 'default' : 'outline'}
+                  size="icon"
+                  className={`h-8 w-8 ${currentPage === page ? 'bg-blue-500 hover:bg-blue-600' : ''}`}
+                  onClick={() => setCurrentPage(page)}
+                >
                   {page}
                 </Button>
               ) : (
-                <span key={index} className="px-2 text-muted-foreground">...</span>
+                <span key={index} className="px-2 text-muted-foreground">
+                  ...
+                </span>
               )
-            ))}
-            <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))} disabled={currentPage === totalPages || totalPages === 0}>
+            )}
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages || totalPages === 0}
+            >
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>

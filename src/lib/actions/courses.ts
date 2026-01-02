@@ -368,6 +368,7 @@ export async function getCoursesForProducts() {
         level: true,
         language: true,
         classDuration: true,
+        isSynchronous: true,
       },
       orderBy: {
         title: 'asc',

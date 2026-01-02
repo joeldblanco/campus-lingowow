@@ -294,7 +294,8 @@ model Course {
   image         String? // Imagen del curso para Course Builder
   
   // Configuración de contenido personalizado
-  isPersonalized Boolean @default(false) // Si usa lecciones personalizadas por estudiante (programas sincrónicos)
+  isPersonalized Boolean @default(false) // Si usa lecciones personalizadas por estudiante
+  isSynchronous  Boolean @default(false) // Si es un curso sincrónico (requiere clases en vivo con horario)
 
   // Relaciones
   createdBy        User            @relation(fields: [createdById], references: [id])
