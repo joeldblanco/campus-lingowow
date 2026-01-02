@@ -69,6 +69,8 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
     level: course.level,
     language: course.language,
     classDuration: course.classDuration || 40,
+    isPersonalized: course.isPersonalized ?? false,
+    isSynchronous: course.isSynchronous ?? false,
   })
 
   // Smooth scrolling and Active Section Observer
