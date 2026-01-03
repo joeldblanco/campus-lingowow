@@ -94,7 +94,7 @@ export const {
         if (token.roles) session.user.roles = token.roles
 
         session.user.lastName = token.lastName as string | null
-        session.user.timezone = (token.timezone as string) || 'America/Lima'
+        session.user.timezone = (token.timezone as string) ?? 'America/Lima'
 
         // Pasar datos de suplantación a la sesión
         if (token.isImpersonating) {
