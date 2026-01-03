@@ -135,6 +135,92 @@ export async function getLessonContent(lessonId: string) {
   }
 }
 
+// Fetch content by ID and type - supports all shareable content types
+export async function getContentById(contentId: string, contentType: 'lesson' | 'student_lesson' | 'library_resource') {
+  try {
+    if (contentType === 'lesson') {
+      const lesson = await db.lesson.findUnique({
+        where: { id: contentId },
+        include: {
+          contents: { orderBy: { order: 'asc' } },
+        },
+      })
+      return lesson
+    }
+
+    if (contentType === 'student_lesson') {
+      const studentLesson = await db.studentLesson.findUnique({
+        where: { id: contentId },
+        include: {
+          contents: { orderBy: { order: 'asc' } },
+        },
+      })
+      if (studentLesson) {
+        return {
+          id: studentLesson.id,
+          title: studentLesson.title,
+          description: studentLesson.description,
+          order: studentLesson.order,
+          duration: studentLesson.duration,
+          content: studentLesson.content,
+          isPublished: studentLesson.isPublished,
+          videoUrl: studentLesson.videoUrl,
+          summary: studentLesson.summary,
+          transcription: studentLesson.transcription,
+          contents: studentLesson.contents,
+          createdAt: studentLesson.createdAt,
+          updatedAt: studentLesson.updatedAt,
+        }
+      }
+    }
+
+    if (contentType === 'library_resource') {
+      const resource = await db.libraryResource.findUnique({
+        where: { id: contentId },
+      })
+      if (resource) {
+        // Create a synthetic content block from the library resource
+        const syntheticContent = {
+          id: `content-${resource.id}`,
+          type: 'text',
+          order: 0,
+          data: { html: resource.content || `<p>${resource.description || ''}</p>` },
+          lessonId: resource.id,
+          parentId: null,
+          createdAt: resource.createdAt,
+          updatedAt: resource.updatedAt,
+          children: [],
+        }
+
+        // Map LibraryResource to a lesson-like format for the viewer
+        return {
+          id: resource.id,
+          title: resource.title,
+          description: resource.description || '',
+          order: 0,
+          duration: resource.duration ? Math.floor(resource.duration / 60) : null,
+          content: null,
+          isPublished: true,
+          videoUrl: resource.fileUrl,
+          summary: resource.excerpt,
+          transcription: null,
+          contents: [syntheticContent],
+          createdAt: resource.createdAt,
+          updatedAt: resource.updatedAt,
+          // Extra fields for library resources
+          thumbnailUrl: resource.thumbnailUrl,
+          resourceType: resource.type,
+        }
+      }
+    }
+
+    return null
+  } catch (error) {
+    console.error('Error fetching content by ID:', error)
+    return null
+  }
+}
+
 // Types for content picker
 export interface ShareableContent {
   id: string
@@ -147,131 +233,131 @@ export interface ShareableContent {
   category?: string | null
 }
 
-// Get all shareable content for the teacher in classroom
-// Includes: library resources, admin-created lessons, and teacher's own student lessons
-export async function getShareableContent(searchQuery?: string): Promise<ShareableContent[]> {
+// Get shareable content for the teacher in classroom
+// Optimized: minimal initial load, search triggers server query
+export async function getShareableContent(
+  searchQuery?: string,
+  contentType?: 'all' | 'lesson' | 'student_lesson' | 'library_resource'
+): Promise<ShareableContent[]> {
   const session = await auth()
+  
   if (!session?.user?.id) {
     return []
   }
 
+  const limit = 6 // Fast initial load with few items
+
+  const searchFilter = searchQuery ? {
+    OR: [
+      { title: { contains: searchQuery, mode: 'insensitive' as const } },
+      { description: { contains: searchQuery, mode: 'insensitive' as const } },
+    ]
+  } : {}
+
   try {
     const results: ShareableContent[] = []
 
-    // 1. Get published library resources (articles, etc.)
-    const libraryResources = await db.libraryResource.findMany({
-      where: {
-        status: 'PUBLISHED',
-        ...(searchQuery ? {
-          OR: [
-            { title: { contains: searchQuery, mode: 'insensitive' } },
-            { description: { contains: searchQuery, mode: 'insensitive' } },
-          ]
-        } : {})
-      },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        thumbnailUrl: true,
-        duration: true,
-        level: true,
-        category: { select: { name: true } },
-      },
-      orderBy: { title: 'asc' },
-      take: 50,
-    })
+    // Only fetch requested types (or all if not specified)
+    const fetchLibrary = !contentType || contentType === 'all' || contentType === 'library_resource'
+    const fetchLessons = !contentType || contentType === 'all' || contentType === 'lesson'
+    const fetchStudentLessons = !contentType || contentType === 'all' || contentType === 'student_lesson'
 
-    for (const resource of libraryResources) {
-      results.push({
-        id: resource.id,
-        title: resource.title,
-        description: resource.description,
-        type: 'library_resource',
-        thumbnailUrl: resource.thumbnailUrl,
-        duration: resource.duration,
-        level: resource.level,
-        category: resource.category?.name,
-      })
-    }
+    // Run queries in parallel
+    const promises: Promise<void>[] = []
 
-    // 2. Get published lessons from courses (admin-created)
-    const lessons = await db.lesson.findMany({
-      where: {
-        isPublished: true,
-        ...(searchQuery ? {
-          OR: [
-            { title: { contains: searchQuery, mode: 'insensitive' } },
-            { description: { contains: searchQuery, mode: 'insensitive' } },
-          ]
-        } : {})
-      },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        duration: true,
-        videoUrl: true,
-        module: {
+    if (fetchLibrary) {
+      promises.push(
+        db.libraryResource.findMany({
+          where: { status: 'PUBLISHED', ...searchFilter },
           select: {
+            id: true,
             title: true,
-            course: { select: { title: true, level: true } }
-          }
-        }
-      },
-      orderBy: { title: 'asc' },
-      take: 50,
-    })
-
-    for (const lesson of lessons) {
-      results.push({
-        id: lesson.id,
-        title: lesson.title,
-        description: lesson.description,
-        type: 'lesson',
-        thumbnailUrl: lesson.videoUrl,
-        duration: lesson.duration,
-        level: lesson.module.course.level,
-        category: `${lesson.module.course.title} - ${lesson.module.title}`,
-      })
+            description: true,
+            thumbnailUrl: true,
+            duration: true,
+            level: true,
+            category: { select: { name: true } },
+          },
+          orderBy: { createdAt: 'desc' },
+          take: limit,
+        }).then(items => {
+          results.push(...items.map(r => ({
+            id: r.id,
+            title: r.title,
+            description: r.description,
+            type: 'library_resource' as const,
+            thumbnailUrl: r.thumbnailUrl,
+            duration: r.duration,
+            level: r.level,
+            category: r.category?.name,
+          })))
+        })
+      )
     }
 
-    // 3. Get teacher's own student lessons (personalized content)
-    const studentLessons = await db.studentLesson.findMany({
-      where: {
-        teacherId: session.user.id,
-        isPublished: true,
-        ...(searchQuery ? {
-          OR: [
-            { title: { contains: searchQuery, mode: 'insensitive' } },
-            { description: { contains: searchQuery, mode: 'insensitive' } },
-          ]
-        } : {})
-      },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        duration: true,
-        videoUrl: true,
-        student: { select: { name: true } },
-      },
-      orderBy: { title: 'asc' },
-      take: 50,
-    })
-
-    for (const lesson of studentLessons) {
-      results.push({
-        id: lesson.id,
-        title: lesson.title,
-        description: lesson.description,
-        type: 'student_lesson',
-        thumbnailUrl: lesson.videoUrl,
-        duration: lesson.duration,
-        category: `Creado para: ${lesson.student.name}`,
-      })
+    if (fetchLessons) {
+      promises.push(
+        db.lesson.findMany({
+          where: { isPublished: true, ...searchFilter },
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            duration: true,
+            videoUrl: true,
+            module: {
+              select: {
+                title: true,
+                course: { select: { title: true, level: true } }
+              }
+            }
+          },
+          orderBy: { createdAt: 'desc' },
+          take: limit,
+        }).then(items => {
+          results.push(...items.map(l => ({
+            id: l.id,
+            title: l.title,
+            description: l.description,
+            type: 'lesson' as const,
+            thumbnailUrl: l.videoUrl,
+            duration: l.duration,
+            level: l.module.course.level,
+            category: `${l.module.course.title} - ${l.module.title}`,
+          })))
+        })
+      )
     }
 
+    if (fetchStudentLessons) {
+      promises.push(
+        db.studentLesson.findMany({
+          where: { teacherId: session.user.id, isPublished: true, ...searchFilter },
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            duration: true,
+            videoUrl: true,
+            student: { select: { name: true } },
+          },
+          orderBy: { createdAt: 'desc' },
+          take: limit,
+        }).then(items => {
+          results.push(...items.map(s => ({
+            id: s.id,
+            title: s.title,
+            description: s.description,
+            type: 'student_lesson' as const,
+            thumbnailUrl: s.videoUrl,
+            duration: s.duration,
+            category: `Creado para: ${s.student.name}`,
+          })))
+        })
+      )
+    }
+
+    await Promise.all(promises)
     return results
   } catch (error) {
     console.error('Error fetching shareable content:', error)

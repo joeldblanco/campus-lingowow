@@ -5,6 +5,8 @@ import { EnrollmentStatus } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import { getCurrentDate, isAfterDate, getTodayStart } from '@/lib/utils/date'
 import { verifyPaypalTransaction, createInvoiceFromPaypal } from '@/lib/actions/commercial'
+import { notifyNewEnrollment } from '@/lib/actions/notifications'
+import { sendNewEnrollmentTeacherEmail } from '@/lib/mail'
 
 export interface EnrollmentWithDetails {
   id: string
@@ -523,6 +525,55 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
         // Don't rollback the enrollment, just log the error
         // The admin can manually add classes later
       }
+    }
+
+    // 6. Send notifications to teacher and admins
+    try {
+      const studentFullName = `${student.name}${student.lastName ? ' ' + student.lastName : ''}`
+      
+      // If there's a teacher assigned, notify them
+      if (data.teacherId) {
+        const teacher = await db.user.findUnique({
+          where: { id: data.teacherId },
+          select: { id: true, name: true, email: true },
+        })
+        
+        if (teacher) {
+          // Platform notification
+          await notifyNewEnrollment({
+            studentId: data.studentId,
+            studentName: studentFullName,
+            teacherId: teacher.id,
+            courseName: course.title,
+            enrollmentId: enrollment.id,
+          })
+          
+          // Email notification to teacher
+          await sendNewEnrollmentTeacherEmail(teacher.email, {
+            teacherName: teacher.name,
+            studentName: studentFullName,
+            courseName: course.title,
+            enrollmentDate: new Date().toLocaleDateString('es-PE', { 
+              timeZone: 'America/Lima',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            }),
+          })
+        }
+      } else {
+        // If no specific teacher, just notify admins
+        await notifyNewEnrollment({
+          studentId: data.studentId,
+          studentName: studentFullName,
+          teacherId: '', // Empty, will only notify admins
+          courseName: course.title,
+          enrollmentId: enrollment.id,
+        })
+      }
+    } catch (notifError) {
+      console.error('Error sending enrollment notifications:', notifError)
+      // Don't fail the enrollment if notifications fail
     }
 
     revalidatePath('/admin/enrollments')

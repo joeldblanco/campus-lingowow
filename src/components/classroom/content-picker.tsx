@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
@@ -11,50 +11,59 @@ import { getShareableContent, ShareableContent } from '@/lib/actions/classroom'
 import { cn } from '@/lib/utils'
 
 interface ContentPickerProps {
+  initialContent?: ShareableContent[] | null
   onSelect: (contentId: string, contentType: ShareableContent['type']) => void
   onCancel: () => void
 }
 
-export function ContentPicker({ onSelect, onCancel }: ContentPickerProps) {
+export function ContentPicker({ initialContent, onSelect, onCancel }: ContentPickerProps) {
   const [searchQuery, setSearchQuery] = useState('')
-  const [content, setContent] = useState<ShareableContent[]>([])
-  const [filteredContent, setFilteredContent] = useState<ShareableContent[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [content, setContent] = useState<ShareableContent[]>(initialContent || [])
+  const [isLoading, setIsLoading] = useState(!initialContent)
+  const [isSearching, setIsSearching] = useState(false)
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [activeFilter, setActiveFilter] = useState<'all' | 'lesson' | 'student_lesson' | 'library_resource'>('all')
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const isFirstRender = useRef(true)
 
-  const loadContent = useCallback(async () => {
-    setIsLoading(true)
-    const data = await getShareableContent()
-    setContent(data)
-    setFilteredContent(data)
-    setIsLoading(false)
-  }, [])
-
+  // Initial load (skip if we have preloaded content)
   useEffect(() => {
-    loadContent()
-  }, [loadContent])
+    if (initialContent) return
+    
+    const load = async () => {
+      setIsLoading(true)
+      const data = await getShareableContent()
+      setContent(data)
+      setIsLoading(false)
+    }
+    load()
+  }, [initialContent])
 
+  // Handle filter/search change with debounce
   useEffect(() => {
-    let filtered = content
-
-    // Apply type filter
-    if (activeFilter !== 'all') {
-      filtered = filtered.filter(item => item.type === activeFilter)
+    // Skip on first render (initial load handles it)
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
     }
 
-    // Apply search filter
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase()
-      filtered = filtered.filter(item =>
-        item.title.toLowerCase().includes(query) ||
-        item.description?.toLowerCase().includes(query) ||
-        item.category?.toLowerCase().includes(query)
-      )
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current)
     }
 
-    setFilteredContent(filtered)
-  }, [searchQuery, activeFilter, content])
+    searchTimeoutRef.current = setTimeout(async () => {
+      setIsSearching(true)
+      const data = await getShareableContent(searchQuery || undefined, activeFilter)
+      setContent(data)
+      setIsSearching(false)
+    }, 300)
+
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current)
+      }
+    }
+  }, [activeFilter, searchQuery])
 
   const getTypeIcon = (type: ShareableContent['type']) => {
     switch (type) {
@@ -124,11 +133,14 @@ export function ContentPicker({ onSelect, onCancel }: ContentPickerProps) {
         <div className="relative mb-4">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
-            placeholder="Buscar por título, descripción o categoría..."
+            placeholder="Buscar por título o descripción..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10"
           />
+          {isSearching && (
+            <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-gray-400" />
+          )}
         </div>
 
         {/* Filters */}
@@ -172,7 +184,7 @@ export function ContentPicker({ onSelect, onCancel }: ContentPickerProps) {
 
       {/* Content Grid */}
       <ScrollArea className="flex-1 pt-4">
-        {filteredContent.length === 0 ? (
+        {content.length === 0 ? (
           <div className="text-center py-12 text-gray-500">
             <FileText className="w-12 h-12 mx-auto mb-4 opacity-50" />
             <p>No se encontró contenido</p>
@@ -182,7 +194,7 @@ export function ContentPicker({ onSelect, onCancel }: ContentPickerProps) {
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {filteredContent.map((item) => (
+            {content.map((item) => (
               <Card
                 key={item.id}
                 className={cn(

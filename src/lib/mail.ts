@@ -447,6 +447,122 @@ export const sendTeacherPaymentConfirmationAdminEmail = async (
   })
 }
 
+// =============================================
+// EMAILS DE NOTIFICACIONES DEL SISTEMA
+// =============================================
+
+interface NewEnrollmentTeacherEmailData {
+  teacherName: string
+  studentName: string
+  courseName: string
+  enrollmentDate: string
+}
+
+export const sendNewEnrollmentTeacherEmail = async (
+  email: string,
+  data: NewEnrollmentTeacherEmailData
+) => {
+  const dashboardLink = `${process.env.NEXT_PUBLIC_DOMAIN}/teacher/students`
+
+  await resend.emails.send({
+    from: 'hello@lingowow.com',
+    to: email,
+    subject: `Nuevo estudiante inscrito: ${data.studentName}`,
+    html: `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
+      <div style="padding: 20px; background-color: #3b82f6; text-align: center;">
+        <h2 style="margin: 0; font-size: 24px; color: #ffffff;">👤 Nuevo Estudiante</h2>
+        <p style="color: #dbeafe; font-size: 14px; margin-top: 8px;">Un nuevo estudiante se ha inscrito en tu curso</p>
+      </div>
+      <div style="padding: 20px;">
+        <h3 style="font-size: 18px; color: #111827;">Hola ${data.teacherName},</h3>
+        <p style="font-size: 16px; color: #374151;">Te informamos que tienes un nuevo estudiante inscrito.</p>
+        
+        <div style="background-color: #eff6ff; border-radius: 8px; padding: 20px; margin: 20px 0; border-left: 4px solid #3b82f6;">
+          <div style="margin-bottom: 12px;">
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Estudiante</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; font-weight: bold; color: #111827;">${data.studentName}</p>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Curso</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: #374151;">${data.courseName}</p>
+          </div>
+          <div>
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Fecha de inscripción</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: #374151;">${data.enrollmentDate}</p>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin: 24px 0;">
+          <a href="${dashboardLink}" style="display: inline-block; background-color: #020617; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 16px;">Ver mis estudiantes</a>
+        </div>
+      </div>
+      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
+        Go wow with us! 🚀
+      </div>
+    </div>`,
+  })
+}
+
+interface NewPurchaseAdminEmailData {
+  customerName: string
+  customerEmail: string
+  productName: string
+  amount: number
+  currency: string
+  invoiceNumber: string
+  purchaseDate: string
+}
+
+export const sendNewPurchaseAdminEmail = async (data: NewPurchaseAdminEmailData) => {
+  const adminLink = `${process.env.NEXT_PUBLIC_DOMAIN}/admin/invoices`
+
+  await resend.emails.send({
+    from: 'hello@lingowow.com',
+    to: 'info@lingowow.com',
+    subject: `💰 Nueva compra: ${data.customerName} - $${data.amount.toFixed(2)}`,
+    html: `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
+      <div style="padding: 20px; background-color: #10b981; text-align: center;">
+        <h2 style="margin: 0; font-size: 24px; color: #ffffff;">💰 Nueva Compra</h2>
+        <p style="color: #d1fae5; font-size: 14px; margin-top: 8px;">Se ha registrado un nuevo pago</p>
+      </div>
+      <div style="padding: 20px;">
+        <div style="background-color: #f9fafb; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+          <div style="margin-bottom: 12px;">
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Cliente</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827; font-weight: bold;">${data.customerName}</p>
+            <p style="margin: 2px 0 0 0; font-size: 14px; color: #6b7280;">${data.customerEmail}</p>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Producto</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;">${data.productName}</p>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Monto</p>
+            <p style="margin: 4px 0 0 0; font-size: 24px; color: #10b981; font-weight: bold;">$${data.amount.toFixed(2)} ${data.currency}</p>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Factura</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;">${data.invoiceNumber}</p>
+          </div>
+          <div>
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Fecha</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;">${data.purchaseDate}</p>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin: 24px 0;">
+          <a href="${adminLink}" style="display: inline-block; background-color: #10b981; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 16px;">Ver Facturas</a>
+        </div>
+      </div>
+      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
+        Notificación automática del sistema de ventas de Lingowow
+      </div>
+    </div>`,
+  })
+}
+
 export const sendContactFormEmail = async (data: ContactFormData) => {
   const subjectLabels: Record<string, string> = {
     informacion: 'Información General',

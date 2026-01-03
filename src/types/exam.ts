@@ -336,6 +336,12 @@ export interface CreateExamQuestionData {
   maxAudioPlays?: number
   audioAutoplay?: boolean
   audioPausable?: boolean
+  // AI Grading configuration for essays
+  aiGrading?: boolean
+  aiGradingConfig?: {
+    language: 'english' | 'spanish'
+    targetLevel: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
+  }
 }
 
 export interface UpdateExamData {

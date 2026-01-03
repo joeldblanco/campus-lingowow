@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { sendClassReminderEmail } from '@/lib/mail'
+import { notifyClassReminder } from '@/lib/actions/notifications'
 
 export async function GET(req: NextRequest) {
   try {
@@ -76,6 +77,15 @@ export async function GET(req: NextRequest) {
           classDate: formatInTimeZone(utcDate, "EEEE d 'de' MMMM", userTimeZone),
           classTime: formatInTimeZone(utcDate, 'HH:mm', userTimeZone),
           classLink,
+        })
+
+        // Send platform notifications to both student and teacher
+        await notifyClassReminder({
+          studentId: classBooking.student.id,
+          teacherId: classBooking.teacher.id,
+          courseName: classBooking.enrollment.course.title,
+          classTime: formatInTimeZone(utcDate, 'HH:mm', userTimeZone),
+          bookingId: classBooking.id,
         })
 
         await db.classBooking.update({

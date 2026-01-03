@@ -1,0 +1,137 @@
+'use client'
+
+import { useState } from 'react'
+import { Sparkles, Loader2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { toast } from 'sonner'
+import { EssayFeedbackDisplay } from '@/components/exams/essay-feedback-display'
+import type { EssayGradingResult } from '@/lib/services/essay-grading'
+
+interface EssayAIGradingProps {
+  essayText: string
+  prompt: string
+  maxPoints?: number
+  language?: 'english' | 'spanish'
+  targetLevel?: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
+  onGraded?: (result: {
+    pointsEarned: number
+    feedback: string
+    detailedResult: EssayGradingResult
+  }) => void
+  disabled?: boolean
+  variant?: 'default' | 'outline' | 'ghost'
+  size?: 'default' | 'sm' | 'lg' | 'icon'
+  className?: string
+}
+
+export function EssayAIGrading({
+  essayText,
+  prompt,
+  maxPoints = 100,
+  language = 'spanish',
+  targetLevel = 'B1',
+  onGraded,
+  disabled = false,
+  variant = 'default',
+  size = 'default',
+  className,
+}: EssayAIGradingProps) {
+  const [isLoading, setIsLoading] = useState(false)
+  const [showResult, setShowResult] = useState(false)
+  const [gradingResult, setGradingResult] = useState<{
+    pointsEarned: number
+    feedback: string
+    detailedResult: EssayGradingResult
+  } | null>(null)
+
+  const handleGrade = async () => {
+    if (!essayText.trim()) {
+      toast.error('El ensayo está vacío')
+      return
+    }
+
+    if (essayText.trim().split(/\s+/).length < 5) {
+      toast.error('El ensayo es demasiado corto para ser evaluado')
+      return
+    }
+
+    setIsLoading(true)
+    try {
+      const response = await fetch('/api/lessons/grade-essay', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          essayText,
+          prompt,
+          maxPoints,
+          language,
+          targetLevel,
+        }),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Error al calificar el ensayo')
+      }
+
+      const data = await response.json()
+      setGradingResult(data.gradingResult)
+      setShowResult(true)
+      
+      if (onGraded) {
+        onGraded(data.gradingResult)
+      }
+
+      toast.success('Ensayo calificado exitosamente')
+    } catch (error) {
+      console.error('Error grading essay:', error)
+      toast.error(error instanceof Error ? error.message : 'Error al calificar el ensayo')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <>
+      <Button
+        onClick={handleGrade}
+        disabled={disabled || isLoading || !essayText.trim()}
+        variant={variant}
+        size={size}
+        className={className}
+      >
+        {isLoading ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+            Calificando...
+          </>
+        ) : (
+          <>
+            <Sparkles className="h-4 w-4 mr-2" />
+            Calificar con IA
+          </>
+        )}
+      </Button>
+
+      <Dialog open={showResult} onOpenChange={setShowResult}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-primary" />
+              Resultado de la Calificación
+            </DialogTitle>
+          </DialogHeader>
+          {gradingResult?.detailedResult && (
+            <EssayFeedbackDisplay result={gradingResult.detailedResult} />
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
+  )
+}

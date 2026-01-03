@@ -204,6 +204,17 @@ export interface EssayBlock extends BaseBlock {
   prompt: string
   minWords?: number
   maxWords?: number
+  aiGrading?: boolean
+  aiGradingConfig?: {
+    language: 'english' | 'spanish'
+    targetLevel: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
+    rubric?: {
+      grammar: number
+      vocabulary: number
+      coherence: number
+      taskCompletion: number
+    }
+  }
 }
 
 export interface MultipleChoiceBlock extends BaseBlock {
@@ -575,6 +586,11 @@ export const BLOCK_TEMPLATES: BlockTemplate[] = [
       order: 0,
       prompt: 'Describe tus vacaciones ideales.',
       minWords: 50,
+      aiGrading: false,
+      aiGradingConfig: {
+        language: 'spanish',
+        targetLevel: 'B1',
+      },
     },
   },
   {

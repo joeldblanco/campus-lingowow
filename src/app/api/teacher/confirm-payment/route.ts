@@ -3,6 +3,7 @@ import { auth } from '@/auth'
 import { db } from '@/lib/db'
 import { sendTeacherPaymentConfirmationSlack } from '@/lib/slack'
 import { sendTeacherPaymentConfirmationAdminEmail } from '@/lib/mail'
+import { notifyTeacherPaymentConfirmed } from '@/lib/actions/notifications'
 
 export async function POST(request: NextRequest) {
   try {
@@ -71,6 +72,16 @@ export async function POST(request: NextRequest) {
     // Send email notification (non-blocking)
     sendTeacherPaymentConfirmationAdminEmail(notificationData).catch((error) => {
       console.error('Error sending admin email notification:', error)
+    })
+
+    // Send platform notification to admins (non-blocking)
+    notifyTeacherPaymentConfirmed({
+      teacherId,
+      teacherName: teacherFullName,
+      periodName: 'Período actual',
+      amount: parsedAmount,
+    }).catch((error) => {
+      console.error('Error sending platform notification:', error)
     })
 
     console.log('Payment confirmation processed:', notificationData)

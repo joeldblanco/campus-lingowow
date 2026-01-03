@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { CreateExamSectionData } from '@/types/exam'
-import { Clock, FileText, Award, RotateCcw, CheckCircle2, XCircle, AlertCircle } from 'lucide-react'
+import { Clock, FileText, Award, RotateCcw, CheckCircle2, XCircle, AlertCircle, Sparkles } from 'lucide-react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { gradeExam, ExamGradingResult } from '@/lib/utils/exam-grading'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -280,12 +280,20 @@ export function ExamPreviewInteractive({
                               )}
 
                               {question.type === 'ESSAY' && (
-                                <Textarea
-                                  value={answers[questionKey] || ''}
-                                  onChange={(e) => handleAnswerChange(questionKey, e.target.value)}
-                                  placeholder="Escribe tu ensayo aquí..."
-                                  className="mt-2 min-h-[150px]"
-                                />
+                                <div className="space-y-2">
+                                  {question.aiGrading && (
+                                    <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 text-xs font-medium w-fit">
+                                      <Sparkles className="h-3 w-3" />
+                                      <span>Corrección con IA</span>
+                                    </div>
+                                  )}
+                                  <Textarea
+                                    value={answers[questionKey] || ''}
+                                    onChange={(e) => handleAnswerChange(questionKey, e.target.value)}
+                                    placeholder="Escribe tu ensayo aquí..."
+                                    className="min-h-[150px]"
+                                  />
+                                </div>
                               )}
 
                               {question.type === 'FILL_BLANK' && (
@@ -319,14 +327,25 @@ export function ExamPreviewInteractive({
                                   </div>
                                 )}
                                 {question.type === 'ESSAY' && (
-                                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                                    <div className="flex items-start gap-2">
-                                      <AlertCircle className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                                      <p className="text-sm text-blue-900">
-                                        Los ensayos requieren corrección manual por un profesor
-                                      </p>
+                                  question.aiGrading ? (
+                                    <div className="p-3 bg-violet-50 border border-violet-200 rounded-lg">
+                                      <div className="flex items-start gap-2">
+                                        <Sparkles className="h-4 w-4 text-violet-600 mt-0.5 flex-shrink-0" />
+                                        <p className="text-sm text-violet-900">
+                                          Este ensayo será corregido automáticamente con IA
+                                        </p>
+                                      </div>
                                     </div>
-                                  </div>
+                                  ) : (
+                                    <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                      <div className="flex items-start gap-2">
+                                        <AlertCircle className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                                        <p className="text-sm text-blue-900">
+                                          Los ensayos requieren corrección manual por un profesor
+                                        </p>
+                                      </div>
+                                    </div>
+                                  )
                                 )}
                               </div>
                             )}

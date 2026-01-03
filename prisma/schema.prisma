@@ -134,6 +134,9 @@ model User {
   studentLessons        StudentLesson[] @relation("StudentLessons")
   createdStudentLessons StudentLesson[] @relation("TeacherCreatedLessons")
 
+  // Relaciones de notificaciones
+  notifications         Notification[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -2216,4 +2219,57 @@ model StudentLessonProgress {
 
   @@index([studentId])
   @@map("student_lesson_progress")
+}
+
+// =============================================
+// MODELOS DE NOTIFICACIONES
+// =============================================
+
+model Notification {
+  id          String             @id @default(cuid())
+  userId      String             // Usuario que recibe la notificación
+  type        NotificationType
+  title       String
+  message     String
+  link        String?            // URL para navegar al hacer clic
+  isRead      Boolean            @default(false)
+  readAt      DateTime?
+  metadata    Json?              // Datos adicionales (IDs relacionados, etc.)
+  
+  // Relaciones
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@index([userId])
+  @@index([isRead])
+  @@index([type])
+  @@index([createdAt])
+  @@map("notifications")
+}
+
+enum NotificationType {
+  // Inscripciones
+  NEW_ENROLLMENT           // Nuevo estudiante inscrito (para profesor/admin)
+  ENROLLMENT_CONFIRMED     // Inscripción confirmada (para estudiante)
+  
+  // Tareas y actividades
+  TASK_ASSIGNED            // Tarea asignada (para estudiante)
+  TASK_SUBMITTED           // Tarea enviada (para profesor)
+  TASK_GRADED              // Tarea calificada (para estudiante)
+  
+  // Pagos y finanzas
+  PAYMENT_RECEIVED         // Nuevo pago recibido (para admin)
+  PAYMENT_CONFIRMED        // Pago confirmado (para estudiante)
+  TEACHER_PAYMENT_CONFIRMED // Profesor confirmó su monto (para admin)
+  
+  // Clases
+  CLASS_REMINDER           // Recordatorio de clase (para estudiante/profesor)
+  CLASS_CANCELLED          // Clase cancelada
+  CLASS_RESCHEDULED        // Clase reprogramada
+  
+  // Sistema
+  SYSTEM_ANNOUNCEMENT      // Anuncio del sistema
+  ACCOUNT_UPDATE           // Actualización de cuenta
 }

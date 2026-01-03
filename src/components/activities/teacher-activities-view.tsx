@@ -85,6 +85,26 @@ const ICON_COLORS = [
   'text-lime-600',
 ]
 
+const TYPE_CONFIG: Record<string, { label: string; icon: string }> = {
+  VOCABULARY: { label: 'Vocabulario', icon: '📚' },
+  READING: { label: 'Lectura', icon: '📖' },
+  LISTENING: { label: 'Escucha', icon: '🎧' },
+  SPEAKING: { label: 'Habla', icon: '🎤' },
+  WRITING: { label: 'Escritura', icon: '✍️' },
+  GRAMMAR: { label: 'Gramática', icon: '📝' },
+  PRONUNCIATION: { label: 'Pronunciación', icon: '🗣️' },
+  COMPREHENSION: { label: 'Comprensión', icon: '🧠' },
+  MULTIPLE_CHOICE: { label: 'Opción Múltiple', icon: '✅' },
+  FILL_IN_BLANK: { label: 'Completar', icon: '📋' },
+  MATCHING: { label: 'Emparejar', icon: '🔗' },
+  ORDERING: { label: 'Ordenar', icon: '🔢' },
+  DICTATION: { label: 'Dictado', icon: '✏️' },
+  TRANSLATION: { label: 'Traducción', icon: '🌐' },
+  OTHER: { label: 'Otro', icon: '📄' },
+}
+
+const ACTIVITY_TYPES = ['GRAMMAR', 'VOCABULARY', 'READING', 'LISTENING', 'SPEAKING', 'WRITING'] as const
+
 export function TeacherActivitiesView() {
   const { data: session } = useSession()
   const [activities, setActivities] = useState<Activity[]>([])
@@ -93,6 +113,8 @@ export function TeacherActivitiesView() {
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedDifficulties, setSelectedDifficulties] = useState<number[]>([])
   const [selectedTypes, setSelectedTypes] = useState<string[]>([])
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [tagSearchQuery, setTagSearchQuery] = useState('')
   const [activeFilters, setActiveFilters] = useState<string[]>([])
   const [assignDialogOpen, setAssignDialogOpen] = useState(false)
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null)
@@ -143,6 +165,7 @@ export function TeacherActivitiesView() {
       newFilters.push(DIFFICULTY_CONFIG[d]?.label || '')
     })
     setActiveFilters(newFilters)
+    setCurrentPage(1)
   }
 
   const removeFilter = (filter: string) => {
@@ -157,18 +180,42 @@ export function TeacherActivitiesView() {
     setSearchQuery('')
     setSelectedDifficulties([])
     setSelectedTypes([])
+    setSelectedTags([])
+    setTagSearchQuery('')
+    setCurrentPage(1)
   }
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    )
+    setCurrentPage(1)
+  }
+
+  // Extraer todas las etiquetas únicas de las actividades
+  const allTags = Array.from(
+    new Set(
+      activities.flatMap((activity) => activity.activityData?.tags || [])
+    )
+  ).sort()
+
+  // Filtrar etiquetas por búsqueda
+  const filteredTags = allTags.filter((tag) =>
+    tag.toLowerCase().includes(tagSearchQuery.toLowerCase())
+  )
 
   const toggleDifficulty = (level: number) => {
     setSelectedDifficulties((prev) =>
       prev.includes(level) ? prev.filter((d) => d !== level) : [...prev, level]
     )
+    setCurrentPage(1)
   }
 
   const toggleType = (type: string) => {
     setSelectedTypes((prev) =>
       prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
     )
+    setCurrentPage(1)
   }
 
   const filteredActivities = activities.filter((activity) => {
@@ -184,7 +231,12 @@ export function TeacherActivitiesView() {
     const matchesType =
       selectedTypes.length === 0 || selectedTypes.includes(activity.activityType)
 
-    return matchesSearch && matchesDifficulty && matchesType
+    const activityTags = activity.activityData?.tags || []
+    const matchesTags =
+      selectedTags.length === 0 ||
+      selectedTags.some((tag) => activityTags.includes(tag))
+
+    return matchesSearch && matchesDifficulty && matchesType && matchesTags
   })
 
   const totalPages = Math.ceil(filteredActivities.length / itemsPerPage)
@@ -298,7 +350,7 @@ export function TeacherActivitiesView() {
               </span>
             </summary>
             <div className="px-4 pb-4 pt-1 flex flex-col gap-2">
-              {['Completar espacios', 'Emparejar', 'Opción Múltiple', 'Lectura y Quiz'].map(
+              {ACTIVITY_TYPES.map(
                 (type) => (
                   <label
                     key={type}
@@ -308,8 +360,14 @@ export function TeacherActivitiesView() {
                       checked={selectedTypes.includes(type)}
                       onCheckedChange={() => toggleType(type)}
                     />
-                    <span className="text-sm text-slate-500 dark:text-slate-400 group-hover/item:text-slate-900 dark:group-hover/item:text-white">
-                      {type}
+                    <span className={cn(
+                      'text-sm flex items-center gap-2',
+                      selectedTypes.includes(type)
+                        ? 'text-slate-900 dark:text-white font-medium'
+                        : 'text-slate-500 dark:text-slate-400 group-hover/item:text-slate-900 dark:group-hover/item:text-white'
+                    )}>
+                      <span>{TYPE_CONFIG[type]?.icon}</span>
+                      {TYPE_CONFIG[type]?.label}
                     </span>
                   </label>
                 )
@@ -323,22 +381,41 @@ export function TeacherActivitiesView() {
               <span className="text-slate-900 dark:text-white text-sm font-semibold flex items-center gap-2">
                 <Tag className="h-5 w-5 text-slate-500" />
                 Etiquetas
+                {selectedTags.length > 0 && (
+                  <span className="ml-1 px-1.5 py-0.5 text-xs bg-primary text-white rounded-full">
+                    {selectedTags.length}
+                  </span>
+                )}
               </span>
             </summary>
             <div className="px-4 pb-4 pt-1 flex flex-col gap-2">
               <Input
+                value={tagSearchQuery}
+                onChange={(e) => setTagSearchQuery(e.target.value)}
                 placeholder="Buscar etiquetas..."
                 className="w-full text-xs border border-slate-200 dark:border-slate-700 rounded px-2 py-1.5 mb-2"
               />
-              <div className="flex flex-wrap gap-2">
-                {['Gramática', 'Vocabulario', 'Verbos'].map((tag) => (
-                  <span
-                    key={tag}
-                    className="px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-700 text-xs font-medium text-slate-500 dark:text-slate-400 hover:bg-primary/10 hover:text-primary cursor-pointer"
-                  >
-                    {tag}
+              <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
+                {filteredTags.length > 0 ? (
+                  filteredTags.map((tag) => (
+                    <button
+                      key={tag}
+                      onClick={() => toggleTag(tag)}
+                      className={cn(
+                        'px-2 py-1 rounded-md text-xs font-medium cursor-pointer transition-colors',
+                        selectedTags.includes(tag)
+                          ? 'bg-primary text-white'
+                          : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-primary/10 hover:text-primary'
+                      )}
+                    >
+                      {tag}
+                    </button>
+                  ))
+                ) : (
+                  <span className="text-xs text-slate-400">
+                    {allTags.length === 0 ? 'No hay etiquetas disponibles' : 'No se encontraron etiquetas'}
                   </span>
-                ))}
+                )}
               </div>
             </div>
           </details>

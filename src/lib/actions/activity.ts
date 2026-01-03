@@ -4,6 +4,7 @@ import { UserActivityUpdateData } from '@/types/activity'
 import { ActivityFormValues } from '@/schemas/activity'
 import { db } from '@/lib/db'
 import { getCurrentDate, getTodayStart, addDaysToDate, getDayOfWeek, isSameDayDate } from '@/lib/utils/date'
+import { notifyTaskAssigned } from '@/lib/actions/notifications'
 
 // Crear una nueva actividad
 export async function createActivity(data: ActivityFormValues) {
@@ -133,7 +134,7 @@ export async function getActivityForPlayer(activityId: string) {
 // Asignar una actividad a un usuario
 export async function assignActivityToUser(userId: string, activityId: string, assignedBy: string) {
   try {
-    return await db.userActivity.create({
+    const userActivity = await db.userActivity.create({
       data: {
         userId,
         activityId,
@@ -141,6 +142,35 @@ export async function assignActivityToUser(userId: string, activityId: string, a
         status: 'ASSIGNED',
       },
     })
+
+    // Send notification to the student
+    try {
+      const [activity, teacher] = await Promise.all([
+        db.activity.findUnique({
+          where: { id: activityId },
+          select: { title: true },
+        }),
+        db.user.findUnique({
+          where: { id: assignedBy },
+          select: { name: true, lastName: true },
+        }),
+      ])
+
+      if (activity && teacher) {
+        const teacherName = `${teacher.name}${teacher.lastName ? ' ' + teacher.lastName : ''}`
+        await notifyTaskAssigned({
+          studentId: userId,
+          taskTitle: activity.title,
+          teacherName,
+          taskId: activityId,
+        })
+      }
+    } catch (notifError) {
+      console.error('Error sending task assignment notification:', notifError)
+      // Don't fail the assignment if notification fails
+    }
+
+    return userActivity
   } catch (error) {
     console.error('Error asignando actividad:', error)
     throw new Error('No se pudo asignar la actividad')

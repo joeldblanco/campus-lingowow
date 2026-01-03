@@ -306,7 +306,7 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
 
     const upcomingClasses = upcomingClassesRaw.map((booking) => {
       const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot)
-      const [startTime] = localData.timeSlot.split('-')
+      const [startTime, endTime] = localData.timeSlot.split('-')
       return {
         id: booking.id,
         courseId: booking.enrollment.course.id,
@@ -315,6 +315,7 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
         course: booking.enrollment.course.title,
         date: localData.day,
         time: startTime,
+        endTime: endTime,
         room: 'Sala 1',
       }
     })

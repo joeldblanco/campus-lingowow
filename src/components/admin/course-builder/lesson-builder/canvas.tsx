@@ -120,7 +120,7 @@ export function Canvas({
                         )
                     ) : (
                         <SortableContext items={blocks.map(b => b.id)} strategy={verticalListSortingStrategy}>
-                            <div className="space-y-6">
+                            <div className={cn("space-y-6", readOnly && "space-y-0")}>
                                 {blocks.map(block => (
                                     <div key={block.id} className="relative">
                                         <SortableBlockItem
@@ -170,7 +170,7 @@ function SortableBlockItem({
 
     if (readOnly) {
         return (
-            <div className="bg-card rounded-xl border border-transparent shadow-sm">
+            <div>
                 <BlockPreview block={block} />
             </div>
         )

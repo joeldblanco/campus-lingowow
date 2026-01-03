@@ -74,6 +74,7 @@ export interface TeacherDashboardData {
     course: string
     date: string
     time: string
+    endTime: string
     room?: string
   }[]
   currentPeriod: {

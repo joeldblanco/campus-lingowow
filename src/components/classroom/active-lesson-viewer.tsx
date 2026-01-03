@@ -1,12 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { LessonContent } from '@/components/lessons/lesson-content'
 import { LessonForView } from '@/types/lesson'
 import { Button } from '@/components/ui/button'
 import { Loader2, Plus, BookOpen } from 'lucide-react'
 import { ContentPicker } from './content-picker'
-import { ShareableContent } from '@/lib/actions/classroom'
+import { ShareableContent, getShareableContent } from '@/lib/actions/classroom'
 
 interface ActiveLessonViewerProps {
   lessonId?: string
@@ -18,6 +18,14 @@ interface ActiveLessonViewerProps {
 
 export function ActiveLessonViewer({ lessonData, isLoading, isTeacher, onContentSelect }: ActiveLessonViewerProps) {
   const [showContentPicker, setShowContentPicker] = useState(false)
+  const [preloadedContent, setPreloadedContent] = useState<ShareableContent[] | null>(null)
+
+  // Pre-load content for teachers to eliminate loading state when opening picker
+  useEffect(() => {
+    if (isTeacher && !lessonData && !preloadedContent) {
+      getShareableContent().then(setPreloadedContent)
+    }
+  }, [isTeacher, lessonData, preloadedContent])
 
   if (isLoading) {
     return (
@@ -32,6 +40,7 @@ export function ActiveLessonViewer({ lessonData, isLoading, isTeacher, onContent
   if (showContentPicker && isTeacher) {
     return (
       <ContentPicker
+        initialContent={preloadedContent}
         onSelect={(contentId, contentType) => {
           onContentSelect?.(contentId, contentType)
           setShowContentPicker(false)

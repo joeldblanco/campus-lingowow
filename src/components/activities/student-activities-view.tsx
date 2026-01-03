@@ -46,6 +46,33 @@ const TYPE_ICONS: Record<string, string> = {
   SPEAKING: '🎤',
   WRITING: '✍️',
   GRAMMAR: '📝',
+  PRONUNCIATION: '🗣️',
+  COMPREHENSION: '🧠',
+  MULTIPLE_CHOICE: '✅',
+  FILL_IN_BLANK: '📋',
+  MATCHING: '🔗',
+  ORDERING: '🔢',
+  DICTATION: '✏️',
+  TRANSLATION: '🌐',
+  OTHER: '📄',
+}
+
+const TYPE_LABELS: Record<string, string> = {
+  VOCABULARY: 'Vocabulario',
+  READING: 'Lectura',
+  LISTENING: 'Escucha',
+  SPEAKING: 'Habla',
+  WRITING: 'Escritura',
+  GRAMMAR: 'Gramática',
+  PRONUNCIATION: 'Pronunciación',
+  COMPREHENSION: 'Comprensión',
+  MULTIPLE_CHOICE: 'Opción Múltiple',
+  FILL_IN_BLANK: 'Completar',
+  MATCHING: 'Emparejar',
+  ORDERING: 'Ordenar',
+  DICTATION: 'Dictado',
+  TRANSLATION: 'Traducción',
+  OTHER: 'Otro',
 }
 
 export function StudentActivitiesView({ initialActivities }: StudentActivitiesViewProps) {
@@ -175,9 +202,9 @@ export function StudentActivitiesView({ initialActivities }: StudentActivitiesVi
           {/* Filters */}
           <div className="flex flex-col gap-4 pt-4 border-t border-slate-100 dark:border-slate-800">
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider pl-4">
-              Filtros
+              Tipo de Actividad
             </p>
-            {['GRAMMAR', 'VOCABULARY', 'READING'].map((filter) => (
+            {['GRAMMAR', 'VOCABULARY', 'READING', 'LISTENING', 'SPEAKING', 'WRITING'].map((filter) => (
               <label
                 key={filter}
                 className="flex items-center gap-3 px-4 cursor-pointer group"
@@ -186,8 +213,9 @@ export function StudentActivitiesView({ initialActivities }: StudentActivitiesVi
                   checked={selectedFilters.includes(filter)}
                   onCheckedChange={() => toggleFilter(filter)}
                 />
-                <span className="text-sm text-slate-700 dark:text-slate-300">
-                  {filter === 'GRAMMAR' ? 'Gramática' : filter === 'VOCABULARY' ? 'Vocabulario' : 'Lectura'}
+                <span className="text-sm text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                  <span>{TYPE_ICONS[filter]}</span>
+                  {TYPE_LABELS[filter]}
                 </span>
               </label>
             ))}

@@ -35,6 +35,17 @@ function isWithin10MinutesOfStart(classDate: string, classTime: string): boolean
   return diffMinutes <= 10 && diffMinutes >= -60
 }
 
+// Helper to check if class has already passed (after end time)
+function hasClassPassed(classDate: string, endTime: string): boolean {
+  const now = new Date()
+  const [hours, minutes] = endTime.split(':').map(Number)
+  const [year, month, day] = classDate.split('-').map(Number)
+  const classEndDateTime = new Date(year, month - 1, day, hours, minutes, 0, 0)
+
+  // Class has passed if current time is after the end time
+  return now.getTime() > classEndDateTime.getTime()
+}
+
 // Helper to check if class is today
 function isToday(classDate: string): boolean {
   const today = new Date()
@@ -61,7 +72,6 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
 
   // Funciones de navegación
   const handleStartClass = (classId: string) => router.push(`/classroom?classId=${classId}`)
-  const handlePrepareClass = (courseId: string) => router.push(`/admin/courses/${courseId}/edit`)
   const handleNewActivity = () => router.push('/activities')
   const handleEditSchedule = () => router.push('/schedule')
   const handleViewAllSchedule = () => router.push('/schedule')
@@ -251,11 +261,11 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                             <Button onClick={() => handleStartClass(item.id)} className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-6">
                               Iniciar Clase
                             </Button>
-                          ) : (
-                            <Button variant="outline" onClick={() => handlePrepareClass(item.courseId)} className="text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 bg-transparent hover:bg-slate-50 dark:hover:bg-slate-800">
-                              Preparar
-                            </Button>
-                          )}
+                          ) : hasClassPassed(item.date, item.endTime) ? (
+                            <Badge variant="secondary" className="text-slate-500">
+                              Finalizada
+                            </Badge>
+                          ) : null}
                         </div>
                       </div>
                     </div>

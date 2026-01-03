@@ -48,12 +48,14 @@ import {
   Shuffle,
   CheckCircle2,
   FileSignature,
+  Sparkles,
   Edit3,
 } from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
 import { useState, useRef } from 'react'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
+import { EssayAIGrading as EssayAIGradingButton } from '@/components/lessons/essay-ai-grading'
 
 interface BlockPreviewProps {
   block: Block
@@ -117,9 +119,7 @@ export function BlockPreview({ block }: BlockPreviewProps) {
   }
 
   return (
-    <Card className="overflow-hidden shadow-none">
-      <CardContent className="p-6">{renderBlockContent()}</CardContent>
-    </Card>
+    <div className="p-6">{renderBlockContent()}</div>
   )
 }
 
@@ -1752,17 +1752,31 @@ function TrueFalseExercise({ item }: { item: { id: string, statement: string, co
 function EssayBlockPreview({ block }: { block: EssayBlock }) {
   const [text, setText] = useState('')
   const wordCount = text.trim().split(/\s+/).filter(w => w.length > 0).length
+  const meetsMinWords = !block.minWords || wordCount >= block.minWords
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-        <FileSignature className="h-5 w-5" />
-        <span>Ensayo</span>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+          <FileSignature className="h-5 w-5" />
+          <span>Ensayo</span>
+        </div>
+        {block.aiGrading && (
+          <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 text-xs font-medium">
+            <Sparkles className="h-3 w-3" />
+            <span>Corrección con IA</span>
+          </div>
+        )}
       </div>
 
       <div className="space-y-2">
         <h3 className="font-bold text-lg">{block.prompt || 'Escribe tu respuesta aquí...'}</h3>
-        {block.minWords && <p className="text-xs text-muted-foreground">Mínimo {block.minWords} palabras</p>}
+        <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+          {block.minWords && <span>Mínimo {block.minWords} palabras</span>}
+          {block.aiGradingConfig?.targetLevel && (
+            <span className="px-1.5 py-0.5 rounded bg-muted">Nivel: {block.aiGradingConfig.targetLevel}</span>
+          )}
+        </div>
       </div>
 
       <textarea
@@ -1777,8 +1791,17 @@ function EssayBlockPreview({ block }: { block: EssayBlock }) {
         </span>
         {block.maxWords && <span>Máx {block.maxWords}</span>}
       </div>
-      <div className="flex justify-end">
-        <Button size="sm">Enviar Ensayo</Button>
+      <div className="flex justify-end gap-2">
+        {block.aiGrading && (
+          <EssayAIGradingButton
+            essayText={text}
+            prompt={block.prompt || ''}
+            language={block.aiGradingConfig?.language}
+            targetLevel={block.aiGradingConfig?.targetLevel}
+            disabled={!meetsMinWords || !text.trim()}
+          />
+        )}
+        <Button size="sm" disabled={!meetsMinWords}>Enviar Ensayo</Button>
       </div>
     </div>
   )

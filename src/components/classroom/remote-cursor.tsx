@@ -24,37 +24,30 @@ export function RemoteCursor({ containerRef }: RemoteCursorProps) {
       style={{
         left: x,
         top: y,
-        transform: 'translate(-2px, -2px)',
       }}
     >
-      {/* Cursor SVG */}
+      {/* Cursor SVG - proper pointer cursor shape */}
       <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
         fill="none"
-        className={cn(
-          "drop-shadow-md",
-          remoteCursor.isTeacher ? "text-blue-500" : "text-green-500"
-        )}
+        className="drop-shadow-md"
+        style={{ transform: 'translate(-1px, -1px)' }}
       >
         <path
-          d="M5.65376 12.4563L5.65376 5.65376L12.4563 5.65376L5.65376 12.4563Z"
-          fill="currentColor"
+          d="M4 4L4 16L8.5 12.5L11 18L13 17L10.5 11.5L16 11L4 4Z"
+          fill={remoteCursor.isTeacher ? "#3b82f6" : "#22c55e"}
           stroke="white"
           strokeWidth="1.5"
-        />
-        <path
-          d="M5.65376 5.65376L12.4563 12.4563"
-          stroke="white"
-          strokeWidth="1.5"
+          strokeLinejoin="round"
         />
       </svg>
       
       {/* Name label */}
       <div
         className={cn(
-          "absolute left-4 top-4 px-2 py-1 rounded-md text-xs font-medium text-white whitespace-nowrap shadow-lg",
+          "absolute left-5 top-3 px-2 py-1 rounded-md text-xs font-medium text-white whitespace-nowrap shadow-lg",
           remoteCursor.isTeacher ? "bg-blue-500" : "bg-green-500"
         )}
       >

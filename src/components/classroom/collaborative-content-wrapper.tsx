@@ -85,11 +85,18 @@ export function CollaborativeContentWrapper({
       <RemoteCursor containerRef={containerRef as React.RefObject<HTMLDivElement>} />
       
       {/* Remote selection highlight */}
-      {remoteSelection && (
+      {remoteSelection && remoteSelection.text && (
         <RemoteSelectionHighlight 
           selection={remoteSelection} 
           containerRef={containerRef as React.RefObject<HTMLDivElement>}
         />
+      )}
+      
+      {/* Debug: Show if we have remote selection data */}
+      {process.env.NODE_ENV === 'development' && remoteSelection && (
+        <div className="fixed top-4 right-4 bg-yellow-100 p-2 rounded text-xs z-50">
+          Remote selection: {remoteSelection.text?.substring(0, 20)}...
+        </div>
       )}
     </div>
   )
@@ -106,41 +113,110 @@ interface RemoteSelectionHighlightProps {
 }
 
 function RemoteSelectionHighlight({ selection, containerRef }: RemoteSelectionHighlightProps) {
-  // Find the block element and highlight the text
+  const markElementsRef = useRef<HTMLElement[]>([])
+
+  // Find and highlight the selected text using mark elements
   useEffect(() => {
-    const container = containerRef.current
-    if (!container || !selection.text) return
-
-    const blockElement = container.querySelector(`[data-block-id="${selection.blockId}"]`)
-    if (!blockElement) return
-
-    // Create a highlight mark for the selected text
-    const walker = document.createTreeWalker(
-      blockElement,
-      NodeFilter.SHOW_TEXT,
-      null
-    )
-
-    let node: Node | null
-    while ((node = walker.nextNode())) {
-      const textContent = node.textContent || ''
-      const index = textContent.indexOf(selection.text)
-      
-      if (index !== -1) {
-        // Found the text - we'll use CSS to highlight it
-        // For simplicity, we'll add a data attribute to mark it
-        const parent = node.parentElement
-        if (parent && !parent.classList.contains('remote-selection')) {
-          parent.setAttribute('data-remote-selection', 'true')
-        }
-        break
+    // Cleanup previous highlights
+    markElementsRef.current.forEach(el => {
+      const parent = el.parentNode
+      if (parent) {
+        parent.replaceChild(document.createTextNode(el.textContent || ''), el)
+        parent.normalize()
       }
+    })
+    markElementsRef.current = []
+
+    const container = containerRef.current
+    if (!container || !selection.text || selection.text.length < 2) {
+      return
     }
 
+    const searchText = selection.text
+    
+    // Search in the entire container for the text
+    const walker = document.createTreeWalker(
+      container,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: (node) => {
+          // Skip script and style elements
+          const parent = node.parentElement
+          if (parent?.tagName === 'SCRIPT' || parent?.tagName === 'STYLE') {
+            return NodeFilter.FILTER_REJECT
+          }
+          return NodeFilter.FILTER_ACCEPT
+        }
+      }
+    )
+
+    const textNodes: Text[] = []
+    let node: Node | null
+    while ((node = walker.nextNode())) {
+      textNodes.push(node as Text)
+    }
+
+    // Build full text and find the selection
+    let fullText = ''
+    const nodeMap: { node: Text; start: number; end: number }[] = []
+    
+    textNodes.forEach(textNode => {
+      const start = fullText.length
+      fullText += textNode.textContent || ''
+      nodeMap.push({ node: textNode, start, end: fullText.length })
+    })
+
+    const matchIndex = fullText.indexOf(searchText)
+    if (matchIndex === -1) return
+
+    const matchEnd = matchIndex + searchText.length
+
+    // Find which text nodes contain the match
+    nodeMap.forEach(({ node: textNode, start, end }) => {
+      if (end <= matchIndex || start >= matchEnd) return // No overlap
+
+      const nodeText = textNode.textContent || ''
+      const highlightStart = Math.max(0, matchIndex - start)
+      const highlightEnd = Math.min(nodeText.length, matchEnd - start)
+
+      if (highlightStart >= highlightEnd) return
+
+      // Split the text node and wrap the matched part
+      const before = nodeText.slice(0, highlightStart)
+      const matched = nodeText.slice(highlightStart, highlightEnd)
+      const after = nodeText.slice(highlightEnd)
+
+      const parent = textNode.parentNode
+      if (!parent) return
+
+      const fragment = document.createDocumentFragment()
+      
+      if (before) fragment.appendChild(document.createTextNode(before))
+      
+      const mark = document.createElement('mark')
+      mark.textContent = matched
+      mark.className = selection.isTeacher 
+        ? 'bg-blue-300/70 rounded-sm px-0.5 remote-highlight' 
+        : 'bg-green-300/70 rounded-sm px-0.5 remote-highlight'
+      mark.style.backgroundColor = selection.isTeacher ? 'rgba(147, 197, 253, 0.7)' : 'rgba(134, 239, 172, 0.7)'
+      fragment.appendChild(mark)
+      markElementsRef.current.push(mark)
+      
+      if (after) fragment.appendChild(document.createTextNode(after))
+
+      parent.replaceChild(fragment, textNode)
+    })
+
     return () => {
-      // Cleanup
-      const marked = container.querySelector('[data-remote-selection]')
-      marked?.removeAttribute('data-remote-selection')
+      // Cleanup on unmount
+      markElementsRef.current.forEach(el => {
+        const parent = el.parentNode
+        if (parent) {
+          parent.replaceChild(document.createTextNode(el.textContent || ''), el)
+          parent.normalize()
+        }
+      })
+      markElementsRef.current = []
     }
   }, [selection, containerRef])
 

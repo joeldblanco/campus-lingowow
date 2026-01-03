@@ -96,7 +96,8 @@ export function gradeQuestion(
       break
 
     case 'ESSAY':
-      // Los ensayos no se pueden autocorregir
+      // Los ensayos requieren corrección con IA o manual
+      // Marcar como pendiente de revisión (se corrige vía API /api/exams/grade-essay)
       isCorrect = false
       pointsEarned = 0
       break
@@ -205,7 +206,7 @@ export function gradeExam(
           maxPoints: question.points,
           userAnswer,
           correctAnswer: '',
-          explanation: 'Los ensayos requieren corrección manual',
+          explanation: 'Los ensayos requieren corrección con IA o manual. Usa /api/exams/grade-essay para calificar.',
         })
       }
     })

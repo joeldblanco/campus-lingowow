@@ -3,8 +3,9 @@ import { auth } from '@/auth'
 import { getToken } from 'next-auth/jwt'
 import { ordersController } from '@/lib/paypal'
 import { db } from '@/lib/db'
-import { sendPaymentConfirmationEmail } from '@/lib/mail'
+import { sendPaymentConfirmationEmail, sendNewPurchaseAdminEmail } from '@/lib/mail'
 import { rateLimit, getRateLimitHeaders } from '@/lib/rate-limit'
+import { notifyNewPurchase } from '@/lib/actions/notifications'
 
 interface ScheduleSlot {
   teacherId: string
@@ -364,8 +365,12 @@ export async function POST(req: NextRequest) {
         })
         
         if (user?.email) {
+          const customerName = `${user.name || ''} ${user.lastName || ''}`.trim() || 'Cliente'
+          const productNames = invoiceData.items.map(item => item.name).join(', ')
+          
+          // Email to customer
           await sendPaymentConfirmationEmail(user.email, {
-            customerName: `${user.name || ''} ${user.lastName || ''}`.trim() || 'Cliente',
+            customerName,
             invoiceNumber: invoice.invoiceNumber,
             items: invoiceData.items.map(item => ({
               name: item.name,
@@ -377,6 +382,33 @@ export async function POST(req: NextRequest) {
             tax: invoiceData.tax || 0,
             total: invoiceData.total,
             currency: invoiceData.currency || 'USD',
+          })
+          
+          // Email notification to admins
+          await sendNewPurchaseAdminEmail({
+            customerName,
+            customerEmail: user.email,
+            productName: productNames,
+            amount: invoiceData.total,
+            currency: invoiceData.currency || 'USD',
+            invoiceNumber: invoice.invoiceNumber,
+            purchaseDate: new Date().toLocaleDateString('es-PE', {
+              timeZone: 'America/Lima',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+            }),
+          })
+          
+          // Platform notification to admins
+          await notifyNewPurchase({
+            userId: userId!,
+            userName: customerName,
+            productName: productNames,
+            amount: invoiceData.total,
+            invoiceId: invoice.id,
           })
         }
       } catch (emailError) {
