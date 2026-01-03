@@ -16,7 +16,7 @@ interface ShopProductCardProps {
 
 export function ShopProductCard({ product }: ShopProductCardProps) {
   const hasPlans = product.plans && product.plans.length > 0
-  const minPrice = hasPlans ? Math.min(...product.plans.map((p) => p.price)) : product.price
+  const minPrice = hasPlans ? Math.min(...product.plans.map((p) => p.price)) : (product.price ?? 0)
   const productUrl = hasPlans ? `/pricing/?productId=${product.id}` : `/checkout/${product.id}`
   const isSubscription = product.paymentType === 'RECURRING'
 
