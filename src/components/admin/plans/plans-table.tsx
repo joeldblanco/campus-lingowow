@@ -293,8 +293,8 @@ export function PlansTable({ plans }: PlansTableProps) {
                     />
                   </TableCell>
                   <TableCell>
-                    <div>
-                      <div className="font-medium text-sm">{plan.name}</div>
+                    <div className="max-w-[200px]">
+                      <div className="font-medium text-sm truncate">{plan.name}</div>
                       {plan.description && (
                         <div className="text-xs text-muted-foreground line-clamp-1">{plan.description}</div>
                       )}
