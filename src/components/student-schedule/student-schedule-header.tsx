@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, CalendarPlus, Rows3, Rows4 } from 'lucide-re
 import { format, addDays, addWeeks, addMonths, startOfWeek, endOfWeek } from 'date-fns'
 import { es } from 'date-fns/locale'
 import type { ScheduleViewType } from '@/types/schedule'
+import { useTimezone } from '@/hooks/use-timezone'
 
 interface StudentScheduleHeaderProps {
   currentDate: Date
@@ -27,6 +28,8 @@ export function StudentScheduleHeader({
   isCompact = false,
   onToggleCompact,
 }: StudentScheduleHeaderProps) {
+  const { displayText } = useTimezone()
+  
   const goToToday = () => onDateChange(new Date())
 
   const goToPrevious = () => {
@@ -77,7 +80,7 @@ export function StudentScheduleHeader({
         return lessonsCount !== undefined ? `${lessonsCount} clases programadas` : undefined
       case 'week':
       case 'month':
-        return 'Zona horaria: America/Lima (GMT-5)'
+        return displayText
     }
   }
 

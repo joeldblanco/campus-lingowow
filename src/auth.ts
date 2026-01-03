@@ -18,6 +18,9 @@ declare module 'next-auth' {
       /** The user's last name. */
       lastName: string | null
 
+      /** The user's timezone. */
+      timezone: string
+
       /** Datos de suplantación */
       isImpersonating?: boolean
       originalUserId?: string
@@ -38,6 +41,7 @@ declare module 'next-auth/jwt' {
     /** OpenID ID Token */
     roles: UserRole[]
     lastName?: string
+    timezone?: string
 
     /** Datos de suplantación */
     isImpersonating?: boolean
@@ -90,6 +94,7 @@ export const {
         if (token.roles) session.user.roles = token.roles
 
         session.user.lastName = token.lastName as string | null
+        session.user.timezone = (token.timezone as string) || 'America/Lima'
 
         // Pasar datos de suplantación a la sesión
         if (token.isImpersonating) {
@@ -121,6 +126,7 @@ export const {
       // Actualizar token con datos del usuario
       token.roles = existingUser.roles
       token.lastName = existingUser.lastName ?? undefined
+      token.timezone = existingUser.timezone ?? 'America/Lima'
 
       return token
     },

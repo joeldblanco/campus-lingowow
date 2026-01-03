@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, CalendarPlus, X, Save, Rows3, Rows4 } from '
 import { format, addDays, addWeeks, addMonths, startOfWeek, endOfWeek } from 'date-fns'
 import { es } from 'date-fns/locale'
 import type { ScheduleViewType } from '@/types/schedule'
+import { useTimezone } from '@/hooks/use-timezone'
 
 interface ScheduleHeaderProps {
   currentDate: Date
@@ -43,6 +44,8 @@ export function ScheduleHeader({
   onToggleCompact,
   currentPeriod,
 }: ScheduleHeaderProps) {
+  const { displayText } = useTimezone()
+  
   const goToToday = () => onDateChange(new Date())
 
   const goToPrevious = () => {
@@ -93,7 +96,7 @@ export function ScheduleHeader({
         return lessonsCount !== undefined ? `${lessonsCount} clases programadas` : undefined
       case 'week':
       case 'month':
-        return 'Zona horaria: America/Lima (GMT-5)'
+        return displayText
     }
   }
 

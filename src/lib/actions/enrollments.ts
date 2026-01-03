@@ -535,7 +535,7 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
       if (data.teacherId) {
         const teacher = await db.user.findUnique({
           where: { id: data.teacherId },
-          select: { id: true, name: true, email: true },
+          select: { id: true, name: true, email: true, timezone: true },
         })
         
         if (teacher) {
@@ -548,13 +548,14 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
             enrollmentId: enrollment.id,
           })
           
-          // Email notification to teacher
+          // Email notification to teacher (use teacher's timezone)
+          const teacherTimezone = teacher.timezone || 'America/Lima'
           await sendNewEnrollmentTeacherEmail(teacher.email, {
             teacherName: teacher.name,
             studentName: studentFullName,
             courseName: course.title,
             enrollmentDate: new Date().toLocaleDateString('es-PE', { 
-              timeZone: 'America/Lima',
+              timeZone: teacherTimezone,
               year: 'numeric',
               month: 'long',
               day: 'numeric',
