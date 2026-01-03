@@ -50,11 +50,7 @@ function hasClassPassed(classDate: string, endTime: string): boolean {
 function isToday(classDate: string): boolean {
   const today = new Date()
   const [year, month, day] = classDate.split('-').map(Number)
-  return (
-    today.getFullYear() === year &&
-    today.getMonth() === month - 1 &&
-    today.getDate() === day
-  )
+  return today.getFullYear() === year && today.getMonth() === month - 1 && today.getDate() === day
 }
 
 const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardData | null }) => {
@@ -65,7 +61,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
   // Filter classes to only show today's classes
   const todaysClasses = useMemo(() => {
     if (!dashboardData) return []
-    return dashboardData.upcomingClasses.filter(c => isToday(c.date))
+    return dashboardData.upcomingClasses.filter((c) => isToday(c.date))
   }, [dashboardData])
 
   if (!dashboardData) return <DashboardSkeleton />
@@ -77,7 +73,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
   const handleViewAllSchedule = () => router.push('/schedule')
 
   // Obtener la próxima clase para el botón de acción rápida (only if within 10 minutes)
-  const nextClass = todaysClasses.find(c => isWithin10MinutesOfStart(c.date, c.time))
+  const nextClass = todaysClasses.find((c) => isWithin10MinutesOfStart(c.date, c.time))
 
   // Obtener fecha actual
   const today = new Date().toLocaleDateString('es-ES', {
@@ -114,15 +110,9 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
         </div>
         <div className="flex items-center gap-3">
           <Button
-            variant="outline"
-            className="hidden md:flex gap-2 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800"
+            onClick={handleViewAllSchedule}
+            className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 border-0 font-medium px-4"
           >
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-            </span>
-          </Button>
-          <Button onClick={handleViewAllSchedule} className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 border-0 font-medium px-4">
             Ver Horario Completo
           </Button>
         </div>
@@ -161,8 +151,11 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
               ${dashboardData.periodEarnings.amount.toFixed(2)}
             </span>
             {dashboardData.periodEarnings.trend !== 0 && (
-              <Badge className={`${dashboardData.periodEarnings.trend >= 0 ? 'bg-green-100 hover:bg-green-100 text-green-700' : 'bg-red-100 hover:bg-red-100 text-red-700'} border-none px-1.5 py-0.5 mb-1 text-[10px] font-bold`}>
-                {dashboardData.periodEarnings.trend >= 0 ? '+' : ''}{dashboardData.periodEarnings.trend}%
+              <Badge
+                className={`${dashboardData.periodEarnings.trend >= 0 ? 'bg-green-100 hover:bg-green-100 text-green-700' : 'bg-red-100 hover:bg-red-100 text-red-700'} border-none px-1.5 py-0.5 mb-1 text-[10px] font-bold`}
+              >
+                {dashboardData.periodEarnings.trend >= 0 ? '+' : ''}
+                {dashboardData.periodEarnings.trend}%
               </Badge>
             )}
           </div>
@@ -197,19 +190,17 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
             <span className="text-3xl font-bold text-slate-900 dark:text-white">
               {dashboardData.unreadMessages.count}
             </span>
-            <button className="text-xs text-blue-500 hover:text-blue-600 font-bold mb-1 ml-auto">
+            <Link href="/messages" className="text-xs text-blue-500 hover:text-blue-600 font-bold mb-1 ml-auto cursor-pointer">
               Ver todos
-            </button>
+            </Link>
           </div>
         </div>
       </div>
 
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
         {/* Left Column (2/3 width) */}
         <div className="lg:col-span-2 space-y-6">
-
           {/* Today's Schedule */}
           <div className="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
             <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
@@ -226,8 +217,10 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                 todaysClasses.map((item) => {
                   const canJoin = isWithin10MinutesOfStart(item.date, item.time)
                   return (
-                    <div key={item.id} className="relative flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 z-10">
-
+                    <div
+                      key={item.id}
+                      className="relative flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 z-10"
+                    >
                       {/* Icon */}
                       <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-500 border-4 border-white dark:border-card-dark">
                         <Video className="w-5 h-5" />
@@ -237,8 +230,12 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                       <div className="flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="text-sm font-bold text-slate-900 dark:text-white w-20">{item.time}</span>
-                            <span className="text-sm font-bold text-slate-800 dark:text-white">- {item.course}</span>
+                            <span className="text-sm font-bold text-slate-900 dark:text-white w-20">
+                              {item.time}
+                            </span>
+                            <span className="text-sm font-bold text-slate-800 dark:text-white">
+                              - {item.course}
+                            </span>
                           </div>
                           <div className="text-xs text-slate-500 flex items-center gap-2 ml-20 md:ml-0 lg:ml-22 xl:ml-0 pl-0 sm:pl-22 md:pl-0">
                             <span className="hidden sm:inline">•</span>
@@ -250,7 +247,9 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                             {/* Student Avatar + Counter if group */}
                             <Avatar className="inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-card-dark">
                               <AvatarImage src={item.studentImage || ''} />
-                              <AvatarFallback className="bg-indigo-100 text-indigo-600 text-xs">{item.studentName.substring(0, 2)}</AvatarFallback>
+                              <AvatarFallback className="bg-indigo-100 text-indigo-600 text-xs">
+                                {item.studentName.substring(0, 2)}
+                              </AvatarFallback>
                             </Avatar>
                           </div>
                         </div>
@@ -258,7 +257,10 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                         {/* Action */}
                         <div className="ml-10 sm:ml-0">
                           {canJoin ? (
-                            <Button onClick={() => handleStartClass(item.id)} className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-6">
+                            <Button
+                              onClick={() => handleStartClass(item.id)}
+                              className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-6"
+                            >
                               Iniciar Clase
                             </Button>
                           ) : hasClassPassed(item.date, item.endTime) ? (
@@ -281,19 +283,29 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
 
           {/* Active Courses */}
           <div>
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Cursos Activos</h3>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">
+              Cursos Activos
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {dashboardData.activeCourses.map((course) => (
-                <div key={course.id} className="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                <Link
+                  key={course.id}
+                  href={`/my-courses/${course.id}`}
+                  className="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer group block"
+                >
                   <div className="flex justify-between items-start mb-4">
-                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg ${course.title.includes('Español') ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600'}`}>
+                    <div
+                      className={`w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg ${course.title.includes('Español') ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600'}`}
+                    >
                       {course.title.substring(0, 2).toUpperCase()}
                     </div>
-                    <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
                       <MoreVertical className="w-5 h-5" />
                     </button>
                   </div>
-                  <h4 className="text-base font-bold text-slate-900 dark:text-white mb-1 group-hover:text-primary transition-colors">{course.title}</h4>
+                  <h4 className="text-base font-bold text-slate-900 dark:text-white mb-1 group-hover:text-primary transition-colors">
+                    {course.title}
+                  </h4>
                   <p className="text-xs text-slate-500 mb-4">{course.level}</p>
 
                   <div className="space-y-2">
@@ -302,7 +314,10 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                       <span className="text-slate-900 dark:text-white">{course.progress}%</span>
                     </div>
                     <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5">
-                      <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: `${course.progress}%` }}></div>
+                      <div
+                        className="bg-blue-500 h-1.5 rounded-full"
+                        style={{ width: `${course.progress}%` }}
+                      ></div>
                     </div>
                   </div>
 
@@ -310,21 +325,22 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                     <Users className="w-3.5 h-3.5" />
                     <span>{course.studentCount} Estudiantes</span>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
-
         </div>
 
         {/* Right Column (1/3 width) */}
         <div className="space-y-6">
-
           {/* Quick Actions */}
           <div className="bg-blue-500 dark:bg-blue-600 rounded-xl p-6 text-white shadow-lg shadow-blue-500/20">
             <h3 className="text-lg font-bold mb-4">Acciones Rápidas</h3>
             <div className="space-y-3">
-              <button onClick={handleNewActivity} className="w-full flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-3 rounded-lg text-sm font-medium backdrop-blur-sm border border-white/10">
+              <button
+                onClick={handleNewActivity}
+                className="w-full flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-3 rounded-lg text-sm font-medium backdrop-blur-sm border border-white/10 cursor-pointer"
+              >
                 <div className="bg-white/20 p-1.5 rounded">
                   <Plus className="w-4 h-4" />
                 </div>
@@ -333,7 +349,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
               {nextClass ? (
                 <button
                   onClick={() => handleStartClass(nextClass.id)}
-                  className="w-full flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-3 rounded-lg text-sm font-medium backdrop-blur-sm border border-white/10"
+                  className="w-full flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-3 rounded-lg text-sm font-medium backdrop-blur-sm border border-white/10 cursor-pointer"
                 >
                   <div className="bg-white/20 p-1.5 rounded">
                     <Video className="w-4 h-4" />
@@ -342,7 +358,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                 </button>
               ) : (
                 <Link
-                  href="/teacher/earnings"
+                  href="/earnings"
                   className="w-full flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-3 rounded-lg text-sm font-medium backdrop-blur-sm border border-white/10"
                 >
                   <div className="bg-white/20 p-1.5 rounded">
@@ -351,14 +367,17 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                   Ver Mis Ganancias
                 </Link>
               )}
-              <button onClick={handleEditSchedule} className="w-full flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-3 rounded-lg text-sm font-medium backdrop-blur-sm border border-white/10">
+              <button
+                onClick={handleEditSchedule}
+                className="w-full flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-3 rounded-lg text-sm font-medium backdrop-blur-sm border border-white/10 cursor-pointer"
+              >
                 <div className="bg-white/20 p-1.5 rounded">
                   <Edit className="w-4 h-4" />
                 </div>
                 Editar Horario
               </button>
               <Link
-                href="/teacher/students"
+                href="/students"
                 className="w-full flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-3 rounded-lg text-sm font-medium backdrop-blur-sm border border-white/10"
               >
                 <div className="bg-white/20 p-1.5 rounded">
@@ -373,22 +392,34 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
           <div className="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
             <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800">
               <h3 className="font-bold text-slate-900 dark:text-white">Atención Requerida</h3>
-              <button className="text-xs font-bold text-blue-500 hover:text-blue-600">Ver Todo</button>
+              <Link href="/messages" className="text-xs font-bold text-blue-500 hover:text-blue-600 cursor-pointer">
+                Ver Todo
+              </Link>
             </div>
             <div className="divide-y divide-slate-100 dark:divide-slate-800">
               {dashboardData.needsAttention.length > 0 ? (
                 dashboardData.needsAttention.map((item) => (
-                  <div key={item.id} className="p-4 flex items-center gap-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <div
+                    key={item.id}
+                    className="p-4 flex items-center gap-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                  >
                     <Avatar className="h-10 w-10 border border-slate-100 dark:border-slate-700">
                       <AvatarImage src={item.studentImage} />
-                      <AvatarFallback className="bg-orange-50 text-orange-600 font-bold text-xs">{item.studentName.substring(0, 2)}</AvatarFallback>
+                      <AvatarFallback className="bg-orange-50 text-orange-600 font-bold text-xs">
+                        {item.studentName.substring(0, 2)}
+                      </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-bold text-slate-900 dark:text-white truncate">{item.studentName}</h4>
-                      <p className="text-xs text-slate-500 truncate">{item.courseName} • <span className="text-red-500 font-medium">{item.issue}</span></p>
+                      <h4 className="text-sm font-bold text-slate-900 dark:text-white truncate">
+                        {item.studentName}
+                      </h4>
+                      <p className="text-xs text-slate-500 truncate">
+                        {item.courseName} •{' '}
+                        <span className="text-red-500 font-medium">{item.issue}</span>
+                      </p>
                     </div>
-                    <button className="text-slate-400 hover:text-blue-500 p-2 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors">
-                      <Activity className="w-4 h-4" /> {/* Using Mail icon equivalent */}
+                    <button className="text-slate-400 hover:text-blue-500 p-2 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors cursor-pointer">
+                      <Activity className="w-4 h-4" />
                     </button>
                   </div>
                 ))
