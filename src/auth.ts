@@ -115,6 +115,10 @@ export const {
         const impersonationData = JSON.parse(user.impersonationData as string)
         token.isImpersonating = true
         token.originalUserId = impersonationData.originalUserId
+        // Preservar la timezone del usuario suplantado desde impersonationData
+        if (impersonationData.targetTimezone) {
+          token.timezone = impersonationData.targetTimezone
+        }
       }
 
       // Obtener datos del usuario actual
@@ -126,7 +130,11 @@ export const {
       // Actualizar token con datos del usuario
       token.roles = existingUser.roles
       token.lastName = existingUser.lastName ?? undefined
-      token.timezone = existingUser.timezone ?? 'America/Lima'
+      
+      // Durante suplantación, NO actualizar timezone (usar la guardada en impersonationData)
+      if (!token.isImpersonating) {
+        token.timezone = existingUser.timezone ?? 'America/Lima'
+      }
 
       return token
     },

@@ -27,11 +27,12 @@ export const impersonateUser = async (userId: string) => {
       return { error: 'Usuario no encontrado' }
     }
 
-    // Preparar datos de suplantación
+    // Preparar datos de suplantación (incluir timezone del usuario suplantado)
     const impersonationData = {
       originalUserId: session.user.id,
       targetUserId: userId,
       isImpersonating: true,
+      targetTimezone: targetUser.timezone ?? 'America/Lima',
     }
 
     // Crear nueva sesión para el usuario suplantado con flag de suplantación
