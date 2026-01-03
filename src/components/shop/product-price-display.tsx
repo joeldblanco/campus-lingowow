@@ -1,7 +1,7 @@
 'use client'
 
 import { Badge } from '@/components/ui/badge'
-import { Coins, DollarSign } from 'lucide-react'
+import { Coins } from 'lucide-react'
 
 interface ProductPriceDisplayProps {
   price: number
@@ -10,6 +10,7 @@ interface ProductPriceDisplayProps {
   acceptsRealMoney?: boolean
   comparePrice?: number | null
   size?: 'sm' | 'md' | 'lg'
+  showFromLabel?: boolean
 }
 
 export function ProductPriceDisplay({
@@ -19,6 +20,7 @@ export function ProductPriceDisplay({
   acceptsRealMoney = true,
   comparePrice,
   size = 'md',
+  showFromLabel = false,
 }: ProductPriceDisplayProps) {
   const sizeClasses = {
     sm: {
@@ -48,15 +50,15 @@ export function ProductPriceDisplay({
       {/* Precio en dinero real */}
       {acceptsRealMoney && (
         <div className="flex items-baseline gap-2">
-          <DollarSign className={classes.icon} />
-          <div className="flex items-baseline gap-2">
-            <span className={`font-bold ${classes.price}`}>${price}</span>
-            {comparePrice && comparePrice > price && (
-              <span className={`line-through text-muted-foreground ${classes.compare}`}>
-                ${comparePrice}
-              </span>
-            )}
-          </div>
+          <span className={`font-bold ${classes.price}`}>
+            {showFromLabel && <span className="text-sm font-normal text-muted-foreground mr-1">Desde</span>}
+            ${price}
+          </span>
+          {comparePrice && comparePrice > price && (
+            <span className={`line-through text-muted-foreground ${classes.compare}`}>
+              ${comparePrice}
+            </span>
+          )}
         </div>
       )}
 

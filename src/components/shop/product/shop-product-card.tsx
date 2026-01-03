@@ -2,23 +2,23 @@
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardFooter } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { Course, Merge, Product } from '@/types/shop'
-import { ShoppingCart, Star, Video, BookOpen, Calendar } from 'lucide-react'
+import { Check } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ProductPriceDisplay } from '../product-price-display'
-import { ProductCountdown } from './product-countdown'
 import { isAfter, isBefore } from 'date-fns'
 
 interface ShopProductCardProps {
   product: Merge<Product, Course>
-  variant?: 'default' | 'featured'
 }
 
-export function ShopProductCard({ product, variant = 'default' }: ShopProductCardProps) {
-  const isFeatured = variant === 'featured'
+export function ShopProductCard({ product }: ShopProductCardProps) {
+  const hasPlans = product.plans && product.plans.length > 0
+  const minPrice = hasPlans ? Math.min(...product.plans.map((p) => p.price)) : product.price
+  const productUrl = hasPlans ? `/pricing/?productId=${product.id}` : `/checkout/${product.id}`
+  const isSubscription = product.paymentType === 'RECURRING'
 
   // Determine availability status
   const now = new Date()
@@ -29,28 +29,26 @@ export function ShopProductCard({ product, variant = 'default' }: ShopProductCar
   const isExpired = expiresAt && isBefore(expiresAt, now)
   const isAvailable = !isScheduled && !isExpired
 
-  return (
-    <Card className={cn(
-      "group relative flex flex-col overflow-hidden transition-all duration-300",
-      "border-border/50 hover:border-primary/20",
-      "hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] dark:hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)]",
-      isFeatured ? "md:col-span-2 md:flex-row bg-gradient-to-br from-primary/5 via-background to-background" : "bg-card"
-    )}>
-      {/* Featured Badge */}
-      {isFeatured && (
-        <div className="absolute top-4 left-4 z-20">
-          <Badge className="bg-primary hover:bg-primary text-primary-foreground border-none px-3 py-1 shadow-lg shadow-primary/20">
-            <Star className="w-3 h-3 mr-1 fill-current" />
-            Destacado
-          </Badge>
-        </div>
-      )}
+  // Get badge info based on product properties
+  const getBadgeInfo = () => {
+    if (isSubscription) return { text: 'Mejor Precio', color: 'bg-emerald-500' }
+    else return { text: 'Popular', color: 'bg-orange-500' }
+  }
+  const badgeInfo = getBadgeInfo()
 
+  // Get features from product tags or plans
+  const features = product.tags?.slice(0, 3) || []
+
+  return (
+    <Card
+      className={cn(
+        'group relative flex flex-col overflow-hidden transition-all duration-300 rounded-2xl',
+        'border border-gray-100 hover:border-gray-200',
+        'hover:shadow-lg bg-white'
+      )}
+    >
       {/* Image Section */}
-      <div className={cn(
-        "relative overflow-hidden bg-muted",
-        isFeatured ? "w-full md:w-2/5 aspect-[4/3] md:aspect-auto" : "aspect-[4/3]"
-      )}>
+      <div className="relative overflow-hidden bg-gray-100 aspect-[4/3] rounded-t-2xl">
         {product.image ? (
           <Image
             src={product.image}
@@ -59,104 +57,83 @@ export function ShopProductCard({ product, variant = 'default' }: ShopProductCar
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gray-100 dark:bg-gray-800">
+          <div className="flex h-full w-full items-center justify-center bg-gray-100">
             <span className="text-4xl">📚</span>
           </div>
         )}
 
-        {/* Overlay Gradients */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        {/* Status Badge */}
+        {badgeInfo && (
+          <Badge
+            className={cn(
+              'absolute top-3 right-3 text-white border-none px-3 py-1 text-xs font-medium rounded-full',
+              badgeInfo.color
+            )}
+          >
+            {badgeInfo.text}
+          </Badge>
+        )}
       </div>
 
       {/* Content Section */}
       <div className="flex flex-col flex-1 p-5">
-        <div className="flex-1 space-y-4">
-          {/* Tags & Meta */}
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="secondary" className="bg-secondary/50 text-secondary-foreground hover:bg-secondary/60">
-              {product.category || 'General'}
-            </Badge>
-            {product.requiresScheduling && (
-              <Badge variant="outline" className="border-blue-200 text-blue-700 bg-blue-50 dark:bg-blue-950/30 dark:text-blue-300 dark:border-blue-800">
-                <Calendar className="w-3 h-3 mr-1" />
-                Agendable
-              </Badge>
-            )}
-            {/* Countdown for Scheduled or Expiring products */}
-            {(isScheduled || expiresAt) && !isExpired && (
-              <ProductCountdown
-                publishedAt={product.publishedAt}
-                expiresAt={product.expiresAt}
-                className="text-xs py-0.5 px-2"
-              />
-            )}
-            {isExpired && (
-              <Badge variant="destructive">Expirado</Badge>
-            )}
-          </div>
+        {/* Title */}
+        <Link
+          href={productUrl}
+          className="block font-bold text-gray-900 hover:text-blue-600 transition-colors line-clamp-2 text-lg mb-1"
+        >
+          {product.name}
+        </Link>
 
-          {/* Title & Description */}
-          <div>
-            <Link href={`/checkout/${product.id}`} className={cn(
-              "block font-bold text-foreground hover:text-primary transition-colors line-clamp-2",
-              isFeatured ? "text-2xl mb-2" : "text-lg mb-1"
-            )}>
-              {product.name}
-            </Link>
-            <p className={cn(
-              "text-muted-foreground line-clamp-2 text-sm",
-              isFeatured && "text-base line-clamp-3"
-            )}>
-              {product.shortDesc || product.description}
-            </p>
-          </div>
+        {/* Description */}
+        <p className="text-gray-500 text-sm line-clamp-2 mb-4">
+          {product.shortDesc || product.description}
+        </p>
 
-          {/* Features Grid (Only for Featured) */}
-          {isFeatured && (
-            <div className="grid grid-cols-2 gap-3 py-2">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <div className="p-1.5 rounded-full bg-primary/10 text-primary">
-                  <Video className="w-4 h-4" />
-                </div>
-                <span>Clases en vivo</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <div className="p-1.5 rounded-full bg-primary/10 text-primary">
-                  <BookOpen className="w-4 h-4" />
-                </div>
-                <span>Material digital</span>
-              </div>
-            </div>
-          )}
+        {/* Price */}
+        <div className='flex flex-col'>
+          {isSubscription && <span className="text-gray-500 text-sm">Desde</span>}
+          <div className="mb-4">
+            <span className="text-2xl font-bold text-gray-900">${minPrice.toFixed(2)}</span>
+            {isSubscription && <span className="text-gray-500 text-sm">/mes</span>}
+          </div>
         </div>
 
-        {/* Price & CTA */}
-        <CardFooter className="p-0 pt-4 mt-auto">
-          <div className="flex items-center justify-between w-full gap-4">
-            <ProductPriceDisplay
-              price={product.price}
-              comparePrice={product.comparePrice}
-              creditPrice={product.creditPrice}
-              acceptsCredits={product.acceptsCredits}
-              acceptsRealMoney={product.acceptsRealMoney}
-              size={isFeatured ? 'lg' : 'md'}
-            />
-            <Button
-              asChild
-              size={isFeatured ? 'lg' : 'default'}
-              className={cn(
-                "gap-2 shadow-sm",
-                !isAvailable && "opacity-50 pointer-events-none"
-              )}
-              disabled={!isAvailable}
-            >
-              <Link href={`/checkout/${product.id}`}>
-                <ShoppingCart className="w-4 h-4" />
-                {isScheduled ? 'Próximamente' : isExpired ? 'No disponible' : 'Comprar'}
-              </Link>
-            </Button>
-          </div>
-        </CardFooter>
+        {/* Features List */}
+        {features.length > 0 && (
+          <ul className="space-y-2 mb-4 flex-1">
+            {features.map((feature, index) => (
+              <li key={index} className="flex items-center gap-2 text-sm text-gray-600">
+                <Check className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                <span className="line-clamp-1">{feature}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {/* CTA Button */}
+        <Button
+          asChild
+          variant={isSubscription ? 'default' : 'outline'}
+          className={cn(
+            'w-full mt-auto',
+            isSubscription
+              ? 'bg-blue-500 hover:bg-blue-600 text-white'
+              : 'border-gray-300 text-gray-700 hover:bg-gray-50',
+            !isAvailable && 'opacity-50 pointer-events-none'
+          )}
+          disabled={!isAvailable}
+        >
+          <Link href={productUrl}>
+            {isScheduled
+              ? 'Próximamente'
+              : isExpired
+                ? 'No disponible'
+                : isSubscription
+                  ? 'Ver Planes'
+                  : 'Agregar al carrito'}
+          </Link>
+        </Button>
       </div>
     </Card>
   )

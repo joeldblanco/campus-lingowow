@@ -274,7 +274,10 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
                         step="0.01"
                         placeholder="0.00 (opcional)"
                         {...field}
-                        onChange={(e) => field.onChange(parseFloat(e.target.value) || undefined)}
+                        onChange={(e) => {
+                          const value = e.target.value === '' ? undefined : parseFloat(e.target.value);
+                          field.onChange(value);
+                        }}
                       />
                     </FormControl>
                     <FormMessage />

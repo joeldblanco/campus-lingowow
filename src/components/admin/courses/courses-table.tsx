@@ -308,8 +308,8 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
                     />
                   </TableCell>
                   <TableCell>
-                    <div>
-                      <div className="font-medium text-sm">{course.title}</div>
+                    <div className="max-w-[200px]">
+                      <div className="font-medium text-sm truncate">{course.title}</div>
                       <div className="text-xs text-muted-foreground line-clamp-1">
                         {course.description}
                       </div>
