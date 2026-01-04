@@ -330,7 +330,7 @@ describe('Auth Schemas - SignInSchema', () => {
     }
   })
 
-  it('should reject weak password', () => {
+  it('should reject password shorter than 8 characters', () => {
     const data = {
       email: 'user@example.com',
       password: 'weak',
@@ -338,6 +338,24 @@ describe('Auth Schemas - SignInSchema', () => {
 
     const result = SignInSchema.safeParse(data)
     expect(result.success).toBe(false)
+  })
+
+  it('should accept simple passwords with 8+ characters (for legacy compatibility)', () => {
+    const simplePasswords = [
+      'password',
+      '12345678',
+      'abcdefgh',
+      'simple12',
+    ]
+
+    simplePasswords.forEach((password) => {
+      const data = {
+        email: 'user@example.com',
+        password,
+      }
+      const result = SignInSchema.safeParse(data)
+      expect(result.success).toBe(true)
+    })
   })
 
   it('should reject empty fields', () => {

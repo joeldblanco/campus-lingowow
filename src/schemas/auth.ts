@@ -26,12 +26,7 @@ export const SignInSchema = z.object({
 
   password: z
     .string({ required_error: 'La contraseña es requerida' })
-    .min(8, 'La contraseña debe tener al menos 8 caracteres')
-    .max(32, 'La contraseña debe tener menos de 32 caracteres')
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9])(?!.*\s).{8,32}$/,
-      'Debe tener minúscula, mayúscula, número y símbolo.'
-    ),
+    .min(8, 'La contraseña debe tener al menos 8 caracteres'),
   timezone: z.string().optional(),
 })
 
