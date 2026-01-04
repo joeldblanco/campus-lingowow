@@ -11,6 +11,22 @@ import { PayPalButton } from './paypal-button'
 import { NiubizCheckout } from '@/components/payments/NiubizCheckout'
 import { useEffect, useState } from 'react'
 
+interface CartItemForNiubiz {
+  product: {
+    id: string
+    title: string
+    description: string | null
+    image?: string | null
+    type?: string
+  }
+  plan: {
+    id: string
+    name: string
+    price: number
+  }
+  quantity?: number
+}
+
 interface PaymentMethodFormProps {
   paymentMethod: string
   onSubmit: (data: PaymentFormData) => void
@@ -34,6 +50,8 @@ interface PaymentMethodFormProps {
   userFirstName?: string
   userLastName?: string
   isRecurrent?: boolean
+  allowGuestCheckout?: boolean
+  cartItems?: CartItemForNiubiz[]
 }
 
 type PaymentFormData = Record<string, never>
@@ -55,7 +73,9 @@ export function PaymentMethodForm({
   userEmail,
   userFirstName,
   userLastName,
-  isRecurrent = false
+  isRecurrent = false,
+  allowGuestCheckout = false,
+  cartItems = []
 }: PaymentMethodFormProps) {
   const schema = createPaymentSchema(paymentMethod)
 
@@ -64,8 +84,11 @@ export function PaymentMethodForm({
 
   useEffect(() => {
     // Generate order ID on client side to ensure it's unique per attempt
-    // Format: ORD-{timestamp}-{random}
-    setPurchaseNumber(`ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`)
+    // Niubiz requires purchaseNumber to be NUMERIC ONLY (max 12 digits)
+    // Format: last 9 digits of timestamp + 3 random digits = 12 digits
+    const timestamp = Date.now().toString().slice(-9)
+    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0')
+    setPurchaseNumber(`${timestamp}${random}`)
   }, [])
 
   const form = useForm<PaymentFormData>({
@@ -98,9 +121,10 @@ export function PaymentMethodForm({
             userEmail={userEmail}
             userFirstName={userFirstName}
             userLastName={userLastName}
-            // Logic for 'isRecurrent' passed from parent
             isRecurrent={isRecurrent}
             invoiceData={paypalData}
+            allowGuest={allowGuestCheckout}
+            cartItems={cartItems}
           />
         </div>
       </div>

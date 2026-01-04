@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useMemo, useState, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useMemo, useState, useCallback, useRef } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { PaymentMethodForm } from '@/components/shop/checkout/payment-method-form'
+import { CheckoutLoginModal } from '@/components/shop/checkout/login-modal'
 import { CheckoutScheduleSelector } from '@/components/checkout/checkout-schedule-selector'
 import {
   Loader2,
@@ -65,6 +66,8 @@ interface PlanDetails {
   classesPerWeek: number | null
   classDuration: number
   billingCycle: string | null
+  includesClasses: boolean
+  isDigital: boolean
 }
 
 type CheckoutStep = 'schedule' | 'review' | 'payment'
@@ -78,7 +81,9 @@ const DAY_NAMES = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
 
 export default function CheckoutPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { data: session, status: authStatus } = useSession()
+  const niubizProcessedRef = useRef(false)
   
   const [currentStep, setCurrentStep] = useState<CheckoutStep>('review')
   const [paymentMethod, setPaymentMethod] = useState<'creditCard' | 'paypal'>('creditCard')
@@ -86,6 +91,7 @@ export default function CheckoutPage() {
   const [checkingAuth, setCheckingAuth] = useState(true)
   const [loadingPlans, setLoadingPlans] = useState(true)
   const [saveInfo, setSaveInfo] = useState(false)
+  const [showLoginModal, setShowLoginModal] = useState(false)
 
   const [formData, setFormData] = useState({
     email: '',
@@ -131,6 +137,13 @@ export default function CheckoutPage() {
     })
   }, [cartItems, planDetails])
 
+  const requiresPlatformAccess = useMemo(() => {
+    return cartItems.some(item => {
+      const details = planDetails[item.plan.id]
+      return details?.courseId || details?.includesClasses || details?.isDigital
+    })
+  }, [cartItems, planDetails])
+
   const { subtotal, taxes, total } = useMemo(() => {
     const subtotalAmount = cartItems.reduce((sum, item) => {
       const proration = scheduleSelections[item.plan.id]?.proration
@@ -150,27 +163,46 @@ export default function CheckoutPage() {
       const details: Record<string, PlanDetails> = {}
       for (const item of cartItems) {
         try {
-          const response = await fetch(`/api/plans/${item.plan.id}`)
-          if (response.ok) {
-            const plan = await response.json()
-            const course = plan.course || plan.product?.course || null
-            const courseId = plan.courseId || course?.id || null
-            const isSynchronous = course?.isSynchronous || false
-            console.log('Plan loaded:', plan.name, {
-              courseId,
-              isSynchronous,
-              classesPerWeek: plan.classesPerWeek,
-              course,
-              productCourse: plan.product?.course,
-            })
+          // Skip synthetic plans (products without real plans use "{productId}-default")
+          if (item.plan.id.endsWith('-default')) {
             details[item.plan.id] = {
-              id: plan.id,
-              courseId,
-              isSynchronous,
-              classesPerWeek: plan.classesPerWeek || null,
-              classDuration: course?.classDuration || 40,
-              billingCycle: plan.billingCycle || null,
+              id: item.plan.id,
+              courseId: null,
+              isSynchronous: false,
+              classesPerWeek: null,
+              classDuration: 0,
+              billingCycle: null,
+              includesClasses: false,
+              isDigital: false, // Products without plans are typically physical/merchandise
             }
+            continue
+          }
+          
+          const response = await fetch(`/api/plans/${item.plan.id}`)
+          if (!response.ok) {
+            console.warn(`Plan ${item.plan.id} not found (${response.status})`)
+            continue
+          }
+          const plan = await response.json()
+          const course = plan.course || plan.product?.course || null
+          const courseId = plan.courseId || course?.id || null
+          const isSynchronous = course?.isSynchronous || false
+          console.log('Plan loaded:', plan.name, {
+            courseId,
+            isSynchronous,
+            classesPerWeek: plan.classesPerWeek,
+            course,
+            productCourse: plan.product?.course,
+          })
+          details[item.plan.id] = {
+            id: plan.id,
+            courseId,
+            isSynchronous,
+            classesPerWeek: plan.classesPerWeek || null,
+            classDuration: course?.classDuration || 40,
+            billingCycle: plan.billingCycle || null,
+            includesClasses: plan.includesClasses || false,
+            isDigital: plan.product?.isDigital ?? true,
           }
         } catch (error) {
           console.error(`Error loading plan ${item.plan.id}:`, error)
@@ -207,6 +239,40 @@ export default function CheckoutPage() {
     }
   }, [authStatus, session])
 
+  // Handle Niubiz error returns (success is handled by /api/niubiz/checkout)
+  useEffect(() => {
+    const niubizError = searchParams.get('niubiz_error')
+    const errorMessage = searchParams.get('message')
+    
+    if (niubizError && !niubizProcessedRef.current) {
+      niubizProcessedRef.current = true
+      
+      // Clean up pending payment data
+      sessionStorage.removeItem('niubiz-pending-payment')
+      
+      // Show appropriate error message
+      switch (niubizError) {
+        case 'missing_token':
+          toast.error('No se recibió el token de transacción. Por favor intente de nuevo.')
+          break
+        case 'missing_params':
+          toast.error('Faltan parámetros de la transacción. Por favor intente de nuevo.')
+          break
+        case 'auth_failed':
+          toast.error(errorMessage ? decodeURIComponent(errorMessage) : 'El pago fue rechazado.')
+          break
+        case 'server_error':
+          toast.error('Error del servidor al procesar el pago. Por favor intente de nuevo.')
+          break
+        default:
+          toast.error('Error al procesar el pago. Por favor intente de nuevo.')
+      }
+      
+      // Clean URL params
+      router.replace('/shop/cart/checkout')
+    }
+  }, [searchParams, router])
+
   const handleInputChange = useCallback((field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
   }, [])
@@ -234,9 +300,15 @@ export default function CheckoutPage() {
         ...formData,
         fullName: `${formData.firstName} ${formData.lastName}`,
       }))
+      
+      if (requiresPlatformAccess && !session?.user) {
+        setShowLoginModal(true)
+        return
+      }
+      
       setCurrentStep('payment')
     }
-  }, [currentStep, allSchedulesSelected, formData])
+  }, [currentStep, allSchedulesSelected, formData, requiresPlatformAccess, session])
 
   const handleBack = useCallback(() => {
     if (currentStep === 'review' && requiresScheduleSelection) {
@@ -360,9 +432,9 @@ export default function CheckoutPage() {
                 <Image src="/branding/logo.png" alt="Logo" width={32} height={32} />
                 <span className="text-xl font-bold">Lingowow</span>
               </Link>
-              <div className="flex items-center gap-2 text-slate-500">
-                <Lock className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium hidden sm:block">Pago Seguro</span>
+              <div className="flex items-center gap-2">
+                <Lock className="h-4 w-4 text-green-600" />
+                <span className="text-sm font-medium hidden sm:block text-green-600">Pago Seguro</span>
               </div>
             </div>
           </div>
@@ -529,6 +601,8 @@ export default function CheckoutPage() {
                     userFirstName={formData.firstName}
                     userLastName={formData.lastName}
                     isRecurrent={isRecurrentData}
+                    allowGuestCheckout={!requiresPlatformAccess}
+                    cartItems={cartItems}
                   />
                   <Button variant="ghost" onClick={handleBack} className="mt-6"><ArrowLeft className="h-4 w-4 mr-2" />Volver</Button>
                 </section>
@@ -636,6 +710,17 @@ export default function CheckoutPage() {
           </div>
         </main>
       </div>
+      
+      <CheckoutLoginModal
+        open={showLoginModal}
+        onOpenChange={setShowLoginModal}
+        onSuccess={() => {
+          setShowLoginModal(false)
+          setCurrentStep('payment')
+        }}
+        title="Inicia sesión para continuar"
+        description="Este producto incluye acceso a contenido de la plataforma. Necesitas una cuenta para acceder después de la compra."
+      />
     </PayPalScriptProvider>
   )
 }

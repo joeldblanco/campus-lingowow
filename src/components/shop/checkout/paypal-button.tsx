@@ -52,11 +52,13 @@ export function PayPalButton({
         }),
       })
 
-      const data = await response.json()
-
       if (!response.ok) {
-        throw new Error(data.error || 'Error al crear la orden')
+        const errorText = await response.text()
+        console.error('PayPal create-order error:', response.status, errorText)
+        throw new Error('Error al crear la orden')
       }
+
+      const data = await response.json()
 
       return data.orderID
     } catch (error) {
@@ -90,11 +92,13 @@ export function PayPalButton({
         }),
       })
 
-      const result = await response.json()
-
       if (!response.ok) {
-        throw new Error(result.error || 'Error al capturar el pago')
+        const errorText = await response.text()
+        console.error('PayPal capture-order error:', response.status, errorText)
+        throw new Error('Error al capturar el pago')
       }
+
+      const result = await response.json()
 
       toast.success('¡Pago completado exitosamente!')
       onSuccess(result)

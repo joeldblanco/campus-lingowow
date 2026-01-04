@@ -1,36 +1,99 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
+import { Card, CardContent } from '@/components/ui/card'
 import { OrderDetails } from '@/types/shop'
-import { Check, Download, ExternalLink, Loader2, PackageOpen, ShoppingBag } from 'lucide-react'
+import { Check, ChevronRight, FileText, LayoutDashboard, Loader2, Mail } from 'lucide-react'
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { useShopStore } from '@/stores/useShopStore'
 
 export default function ConfirmationPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { data: session } = useSession()
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-
-  // Verificamos si hay cursos o merchandising en la orden
-  const hasCourses = orderDetails?.items.some((item) => item.product.type === 'course') || false
-  const hasMerchandise =
-    orderDetails?.items.some((item) => item.product.type === 'merchandise') || false
+  const clearCart = useShopStore((state) => state.clearCart)
 
   useEffect(() => {
+    // Check if we came from Niubiz redirect with URL params
+    const successFromUrl = searchParams.get('success') === 'true'
+    const orderNumberFromUrl = searchParams.get('orderNumber')
+    const amountFromUrl = searchParams.get('amount')
+    
     // Recuperamos los detalles del pedido del sessionStorage
     const orderData = sessionStorage.getItem('last-order')
+
+    // If we have URL params from Niubiz redirect, create order details from them
+    if (successFromUrl && orderNumberFromUrl) {
+      // Try to get cart items from niubiz-pending-payment (saved before opening modal)
+      let items: OrderDetails['items'] = []
+      let customerEmail = session?.user?.email || ''
+      let customerFirstName = session?.user?.name?.split(' ')[0] || ''
+      let customerLastName = session?.user?.name?.split(' ').slice(1).join(' ') || ''
+      
+      const pendingPaymentData = sessionStorage.getItem('niubiz-pending-payment')
+      if (pendingPaymentData) {
+        try {
+          const parsed = JSON.parse(pendingPaymentData)
+          if (parsed.cartItems && Array.isArray(parsed.cartItems)) {
+            items = parsed.cartItems
+          }
+          if (parsed.customerInfo) {
+            customerEmail = parsed.customerInfo.email || customerEmail
+            customerFirstName = parsed.customerInfo.firstName || customerFirstName
+            customerLastName = parsed.customerInfo.lastName || customerLastName
+          }
+        } catch (e) {
+          console.error('Error parsing pending payment data:', e)
+        }
+      }
+      
+      // Fallback: try to get from lingowow-shop store
+      if (items.length === 0) {
+        const cartData = sessionStorage.getItem('lingowow-shop')
+        if (cartData) {
+          try {
+            const parsed = JSON.parse(cartData)
+            if (parsed.state?.items) {
+              items = parsed.state.items
+            }
+          } catch (e) {
+            console.error('Error parsing cart data:', e)
+          }
+        }
+      }
+      
+      const order: OrderDetails = {
+        orderNumber: orderNumberFromUrl,
+        orderDate: new Date().toISOString(),
+        totalAmount: amountFromUrl ? parseFloat(amountFromUrl) : 0,
+        items: items,
+        customer: { 
+          firstName: customerFirstName, 
+          lastName: customerLastName,
+          email: customerEmail, 
+          phone: '' 
+        },
+        paymentMethod: 'creditCard',
+      }
+      
+      setOrderDetails(order)
+      
+      // Save to sessionStorage for future reference
+      sessionStorage.setItem('last-order', JSON.stringify(order))
+      
+      // Clear the pending payment data and cart
+      sessionStorage.removeItem('niubiz-pending-payment')
+      clearCart()
+      
+      setIsLoading(false)
+      return
+    }
 
     if (!orderData) {
       // Si no hay datos de pedido, redirigimos a la tienda
@@ -40,21 +103,29 @@ export default function ConfirmationPage() {
 
     try {
       const parsedOrder = JSON.parse(orderData) as OrderDetails
-      // Validación adicional de tipos podría implementarse aquí
       setOrderDetails(parsedOrder)
     } catch (error) {
       console.error('Error al analizar los datos del pedido:', error)
     } finally {
       setIsLoading(false)
     }
-  }, [router])
+  }, [router, searchParams, clearCart, session])
 
   // Función auxiliar para formatear moneda
   const formatCurrency = (amount: number): string => {
-    return new Intl.NumberFormat('es-ES', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
     }).format(amount)
+  }
+
+  // Función para formatear fecha
+  const formatDate = (dateString: string): string => {
+    return new Date(dateString).toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
   }
 
   if (isLoading) {
@@ -67,200 +138,201 @@ export default function ConfirmationPage() {
 
   if (!orderDetails) {
     return (
-      <div className="container mx-auto py-8 text-center">
-        <Card>
-          <CardHeader>
-            <CardTitle>Pedido no encontrado</CardTitle>
-            <CardDescription>No se encontraron detalles del pedido</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-6">Ha ocurrido un error al recuperar los detalles de tu pedido.</p>
-          </CardContent>
-          <CardFooter className="flex justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <Card className="max-w-md w-full">
+          <CardContent className="pt-6 text-center">
+            <h2 className="text-xl font-semibold mb-2">Pedido no encontrado</h2>
+            <p className="text-muted-foreground mb-6">
+              No se encontraron detalles del pedido.
+            </p>
             <Button onClick={() => router.push('/shop')}>Volver a la Tienda</Button>
-          </CardFooter>
+          </CardContent>
         </Card>
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="max-w-3xl mx-auto">
-        <div className="flex items-center justify-center mb-8">
-          <div className="bg-primary/10 rounded-full p-4">
-            <Check className="h-12 w-12 text-primary" />
-          </div>
-        </div>
-
-        <Card>
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl">¡Pedido completado con éxito!</CardTitle>
-            <CardDescription>
-              Tu pedido #{orderDetails.orderNumber} ha sido recibido y está siendo procesado
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent className="space-y-6">
-            {/* Información general del pedido */}
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <h3 className="font-medium">Información del pedido</h3>
-                <p className="text-sm text-muted-foreground">Pedido: #{orderDetails.orderNumber}</p>
-                <p className="text-sm text-muted-foreground">
-                  Fecha: {new Date(orderDetails.orderDate).toLocaleDateString()}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Total: {formatCurrency(orderDetails.totalAmount)}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Método de pago:{' '}
-                  {orderDetails.paymentMethod === 'creditCard'
-                    ? 'Tarjeta de Crédito/Débito'
-                    : orderDetails.paymentMethod === 'paypal'
-                      ? 'PayPal'
-                      : 'Transferencia Bancaria'}
-                </p>
+    <div className="min-h-screen bg-gray-50">
+      {/* Main Content */}
+      <div className="max-w-5xl mx-auto px-4 py-8">
+        <Card className="overflow-hidden">
+          <CardContent className="p-0">
+            {/* Success Header */}
+            <div className="text-center py-10 px-6">
+              <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                <Check className="h-8 w-8 text-green-600" />
               </div>
-              <div>
-                <h3 className="font-medium">Información del cliente</h3>
-                <p className="text-sm text-muted-foreground">
-                  Nombre: {orderDetails.customer.firstName} {orderDetails.customer.lastName}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Email: {orderDetails.customer.email}
-                </p>
-                {orderDetails.customer.phone && (
-                  <p className="text-sm text-muted-foreground">
-                    Teléfono: {orderDetails.customer.phone}
-                  </p>
+              <h1 className="text-3xl font-bold text-gray-900 mb-3">
+                ¡Gracias por tu compra!
+              </h1>
+              <p className="text-gray-600 max-w-md mx-auto">
+                Tu pago ha sido procesado exitosamente. 
+                {orderDetails.customer.email && (
+                  <> Se ha enviado un correo de confirmación a <strong>{orderDetails.customer.email}</strong>.</>
                 )}
-              </div>
+              </p>
             </div>
 
-            <Separator />
+            {/* Content Grid */}
+            <div className="grid lg:grid-cols-5 gap-0 border-t">
+              {/* Order Details - Left Side */}
+              <div className="lg:col-span-3 p-6 lg:p-8">
+                <h2 className="text-lg font-semibold text-gray-900 mb-6">
+                  Detalles del Pedido
+                </h2>
 
-            {/* Resumen de productos */}
-            <div>
-              <h3 className="font-medium mb-3">Productos</h3>
-              <ul className="space-y-3">
-                {orderDetails.items.map((item, index) => (
-                  <li key={index} className="flex items-start justify-between border-b pb-3">
-                    <div>
-                      <p className="font-medium">{item.product.title}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {item.plan.name}{' '}
-                        {item.quantity && item.quantity > 1 ? `(x${item.quantity})` : ''}
-                      </p>
-                      <div className="mt-1 inline-flex items-center text-xs bg-secondary text-secondary-foreground rounded-full px-2 py-1">
-                        {item.product.type === 'course' ? 'Curso' : 'Merchandising'}
-                      </div>
-                    </div>
-                    <p className="text-right">
-                      {formatCurrency(item.plan.price * (item.quantity || 1))}
+                {/* Order Info Grid */}
+                <div className="grid sm:grid-cols-2 gap-6 mb-8">
+                  <div>
+                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                      Número de Orden
                     </p>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-4 text-right">
-                <p className="text-sm text-muted-foreground">
-                  Subtotal: {formatCurrency(orderDetails.totalAmount * 0.93)}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Impuestos (7%): {formatCurrency(orderDetails.totalAmount * 0.07)}
-                </p>
-                <p className="font-medium">Total: {formatCurrency(orderDetails.totalAmount)}</p>
-              </div>
-            </div>
-
-            <Separator />
-
-            {/* Sección específica para cursos */}
-            {hasCourses && (
-              <div className="bg-primary/5 p-4 rounded-md">
-                <div className="flex items-start gap-3">
-                  <div className="mt-1">
-                    <ExternalLink className="h-5 w-5 text-primary" />
+                    <p className="text-sm font-semibold text-primary">
+                      #{orderDetails.orderNumber}
+                    </p>
                   </div>
                   <div>
-                    <h3 className="font-medium mb-1">Acceso a tus cursos</h3>
-                    <p className="text-sm mb-3">
-                      {session ? (
-                        <>Ya puedes acceder a tus cursos desde tu cuenta en la plataforma.</>
-                      ) : (
-                        <>Para acceder a tus cursos, inicia sesión en tu cuenta.</>
-                      )}
+                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                      Fecha
                     </p>
-                    <Button asChild>
-                      <Link href="/my-courses">Ir a Mis Cursos</Link>
-                    </Button>
+                    <p className="text-sm text-gray-900">
+                      {formatDate(orderDetails.orderDate)}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                      Método de Pago
+                    </p>
+                    <p className="text-sm text-gray-900 flex items-center gap-2">
+                      <span className="w-8 h-5 bg-gradient-to-r from-blue-600 to-blue-800 rounded text-white text-[8px] flex items-center justify-center font-bold">
+                        VISA
+                      </span>
+                      {orderDetails.paymentMethod === 'creditCard'
+                        ? 'Tarjeta de Crédito'
+                        : orderDetails.paymentMethod === 'paypal'
+                          ? 'PayPal'
+                          : 'Transferencia'}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                      Total
+                    </p>
+                    <p className="text-sm font-semibold text-gray-900">
+                      {formatCurrency(orderDetails.totalAmount)}
+                    </p>
                   </div>
                 </div>
-              </div>
-            )}
 
-            {/* Sección específica para merchandising */}
-            {hasMerchandise && orderDetails.customer.needsShipping && (
-              <div className="bg-primary/5 p-4 rounded-md">
-                <div className="flex items-start gap-3">
-                  <div className="mt-1">
-                    <PackageOpen className="h-5 w-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium mb-1">Envío de productos</h3>
-                    <p className="text-sm mb-1">
-                      Tu pedido de merchandising será procesado y enviado en las próximas 24-48
-                      horas hábiles.
-                    </p>
-                    <p className="text-sm mb-3">
-                      Recibirás un email con la información de seguimiento cuando tu pedido sea
-                      enviado.
-                    </p>
-                    {orderDetails.customer.address && (
-                      <div className="text-sm text-muted-foreground border p-2 rounded mb-3">
-                        <p className="font-medium">Dirección de envío:</p>
-                        <p>{orderDetails.customer.address}</p>
-                        {orderDetails.customer.city && orderDetails.customer.postalCode && (
-                          <p>
-                            {orderDetails.customer.city}, {orderDetails.customer.postalCode}
+                {/* Items Purchased */}
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-900 mb-4">
+                    Productos Adquiridos
+                  </h3>
+                  <div className="space-y-4">
+                    {orderDetails.items.length > 0 ? (
+                      orderDetails.items.map((item, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg"
+                        >
+                          <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                            {item.product.image ? (
+                              <Image
+                                src={item.product.image}
+                                alt={item.product.title}
+                                width={48}
+                                height={48}
+                                className="rounded-lg object-cover"
+                              />
+                            ) : (
+                              <span className="text-white text-lg font-bold">
+                                {item.product.title.charAt(0)}
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium text-gray-900 truncate">
+                              {item.product.title}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {item.plan?.name || 'Acceso completo'}
+                            </p>
+                          </div>
+                          <p className="font-semibold text-gray-900">
+                            {formatCurrency(item.plan?.price || 0)}
                           </p>
-                        )}
-                        {orderDetails.customer.country && <p>{orderDetails.customer.country}</p>}
+                        </div>
+                      ))
+                    ) : (
+                      <div className="p-4 bg-gray-50 rounded-lg text-center text-gray-500">
+                        <p>Detalles de productos no disponibles</p>
+                        <p className="text-sm">Total: {formatCurrency(orderDetails.totalAmount)}</p>
                       </div>
                     )}
                   </div>
                 </div>
               </div>
-            )}
 
-            {/* Factura */}
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <Download className="h-4 w-4" />
-                <span className="text-sm font-medium">¿Necesitas una factura?</span>
+              {/* What's Next - Right Side */}
+              <div className="lg:col-span-2 bg-gray-50 p-6 lg:p-8 border-t lg:border-t-0 lg:border-l">
+                <h2 className="text-lg font-semibold text-gray-900 mb-6">
+                  ¿Qué sigue?
+                </h2>
+
+                <div className="space-y-4">
+                  {/* Go to Dashboard */}
+                  <Link
+                    href="/dashboard"
+                    className="flex items-center gap-4 p-4 bg-white rounded-xl border hover:border-primary hover:shadow-sm transition-all group"
+                  >
+                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <LayoutDashboard className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-medium text-gray-900">Ir a Mi Dashboard</p>
+                      <p className="text-sm text-gray-500">Comienza a aprender ahora</p>
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-primary transition-colors" />
+                  </Link>
+
+                  {/* View Invoice */}
+                  <button
+                    className="w-full flex items-center gap-4 p-4 bg-white rounded-xl border hover:border-primary hover:shadow-sm transition-all group text-left"
+                    onClick={() => {
+                      // TODO: Implement invoice download
+                      console.log('Download invoice')
+                    }}
+                  >
+                    <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <FileText className="h-5 w-5 text-purple-600" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-medium text-gray-900">Ver Factura</p>
+                      <p className="text-sm text-gray-500">Descarga tu recibo</p>
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-primary transition-colors" />
+                  </button>
+                </div>
+
+                {/* Need Help Section */}
+                <div className="mt-8 p-4 bg-white rounded-xl border">
+                  <h3 className="font-medium text-gray-900 mb-2">¿Necesitas ayuda?</h3>
+                  <p className="text-sm text-gray-500 mb-3">
+                    Si tienes alguna pregunta sobre tu pedido, contacta a nuestro equipo de soporte.
+                  </p>
+                  <a
+                    href="mailto:payments@lingowow.com"
+                    className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
+                  >
+                    <Mail className="h-4 w-4" />
+                    payments@lingowow.com
+                  </a>
+                </div>
               </div>
-              <Button variant="outline" size="sm">
-                Descargar Factura
-              </Button>
             </div>
           </CardContent>
-
-          <CardFooter className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button
-              variant="outline"
-              onClick={() => router.push('/shop')}
-              className="flex items-center gap-2"
-            >
-              <ShoppingBag className="h-4 w-4" />
-              Volver a la tienda
-            </Button>
-            {session && (
-              <Button asChild>
-                <Link href="/dashboard">Ir al Dashboard</Link>
-              </Button>
-            )}
-          </CardFooter>
         </Card>
       </div>
     </div>

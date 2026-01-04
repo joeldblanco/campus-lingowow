@@ -5,15 +5,16 @@ import { NextResponse } from 'next/server'
 export async function POST(req: Request) {
   try {
     const session = await auth()
-    if (!session || !session.user) {
-      return new NextResponse('Unauthorized', { status: 401 })
-    }
-
+    
     const body = await req.json()
-    const { amount } = body
+    const { amount, allowGuest } = body
 
     if (!amount) {
       return new NextResponse('Amount is required', { status: 400 })
+    }
+    
+    if (!session?.user && !allowGuest) {
+      return new NextResponse('Unauthorized', { status: 401 })
     }
 
     // 1. Get Access Token
