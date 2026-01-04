@@ -34,6 +34,6 @@ export const adminPrefix = '/admin'
 
 export const apiAuthPrefix = '/api/auth'
 
-export const apiPublicRoutes = ['/api/contact', '/api/trial-class']
+export const apiPublicRoutes = ['/api/contact', '/api/trial-class', '/api/plans', '/api/teachers/availability']
 
 export const DEFAULT_LOGIN_REDIRECT = '/dashboard'

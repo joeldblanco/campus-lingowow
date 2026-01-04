@@ -181,6 +181,17 @@ export default function CheckoutPage() {
           const response = await fetch(`/api/plans/${item.plan.id}`)
           if (!response.ok) {
             console.warn(`Plan ${item.plan.id} not found (${response.status})`)
+            // Fail-safe: if we can't load plan details, assume it requires platform access
+            details[item.plan.id] = {
+              id: item.plan.id,
+              courseId: null,
+              isSynchronous: false,
+              classesPerWeek: null,
+              classDuration: 0,
+              billingCycle: null,
+              includesClasses: false,
+              isDigital: true, // Assume digital product requires login
+            }
             continue
           }
           const plan = await response.json()
@@ -206,6 +217,17 @@ export default function CheckoutPage() {
           }
         } catch (error) {
           console.error(`Error loading plan ${item.plan.id}:`, error)
+          // Fail-safe: if we can't load plan details, assume it requires platform access
+          details[item.plan.id] = {
+            id: item.plan.id,
+            courseId: null,
+            isSynchronous: false,
+            classesPerWeek: null,
+            classDuration: 0,
+            billingCycle: null,
+            includesClasses: false,
+            isDigital: true, // Assume digital product requires login
+          }
         }
       }
       console.log('All plan details:', details)

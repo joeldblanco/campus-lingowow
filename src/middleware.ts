@@ -62,8 +62,11 @@ export default auth(async (req) => {
     return NextResponse.next()
   }
 
-  // Permitir rutas de API públicas (formularios de contacto)
-  if (apiPublicRoutes.includes(nextUrl.pathname)) {
+  // Permitir rutas de API públicas (formularios de contacto, planes, etc.)
+  const isApiPublicRoute = apiPublicRoutes.some(route => 
+    nextUrl.pathname === route || nextUrl.pathname.startsWith(route + '/')
+  )
+  if (isApiPublicRoute) {
     return NextResponse.next()
   }
 
