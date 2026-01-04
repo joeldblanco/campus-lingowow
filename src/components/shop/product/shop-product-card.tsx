@@ -4,8 +4,9 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
+import { useShopStore } from '@/stores/useShopStore'
 import { Course, Merge, Product } from '@/types/shop'
-import { Check } from 'lucide-react'
+import { Check, ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { isAfter, isBefore } from 'date-fns'
@@ -15,10 +16,36 @@ interface ShopProductCardProps {
 }
 
 export function ShopProductCard({ product }: ShopProductCardProps) {
+  const { addToCart, cart } = useShopStore()
   const hasPlans = product.plans && product.plans.length > 0
   const minPrice = hasPlans ? Math.min(...product.plans.map((p) => p.price)) : (product.price ?? 0)
   const productUrl = hasPlans ? `/pricing/?productId=${product.id}` : `/checkout/${product.id}`
   const isSubscription = product.paymentType === 'RECURRING'
+  
+  // Check if product is in cart
+  const isInCart = cart.some(item => item.product.id === product.id)
+
+  // Handle add to cart for products without plans
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    // For products without plans, create a default plan entry
+    addToCart({
+      product: {
+        id: product.id,
+        title: product.name,
+        description: product.description,
+        image: product.image,
+      },
+      plan: {
+        id: `${product.id}-default`,
+        name: product.name,
+        price: product.price ?? 0,
+      },
+      quantity: 1,
+    })
+  }
 
   // Determine availability status
   const now = new Date()
@@ -112,28 +139,57 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
         )}
 
         {/* CTA Button */}
-        <Button
-          asChild
-          variant={isSubscription ? 'default' : 'outline'}
-          className={cn(
-            'w-full mt-auto',
-            isSubscription
-              ? 'bg-blue-500 hover:bg-blue-600 text-white'
-              : 'border-gray-300 text-gray-700 hover:bg-gray-50',
-            !isAvailable && 'opacity-50 pointer-events-none'
-          )}
-          disabled={!isAvailable}
-        >
-          <Link href={productUrl}>
-            {isScheduled
-              ? 'Próximamente'
-              : isExpired
-                ? 'No disponible'
-                : isSubscription
-                  ? 'Ver Planes'
-                  : 'Agregar al carrito'}
-          </Link>
-        </Button>
+        {hasPlans ? (
+          <Button
+            asChild
+            variant={isSubscription ? 'default' : 'outline'}
+            className={cn(
+              'w-full mt-auto',
+              isSubscription
+                ? 'bg-blue-500 hover:bg-blue-600 text-white'
+                : 'border-gray-300 text-gray-700 hover:bg-gray-50',
+              !isAvailable && 'opacity-50 pointer-events-none'
+            )}
+            disabled={!isAvailable}
+          >
+            <Link href={productUrl}>
+              {isScheduled
+                ? 'Próximamente'
+                : isExpired
+                  ? 'No disponible'
+                  : 'Ver Planes'}
+            </Link>
+          </Button>
+        ) : (
+          <Button
+            variant={isInCart ? 'secondary' : 'outline'}
+            className={cn(
+              'w-full mt-auto',
+              isInCart
+                ? 'bg-green-500 hover:bg-green-600 text-white'
+                : 'border-gray-300 text-gray-700 hover:bg-gray-50',
+              !isAvailable && 'opacity-50 pointer-events-none'
+            )}
+            disabled={!isAvailable}
+            onClick={handleAddToCart}
+          >
+            {isScheduled ? (
+              'Próximamente'
+            ) : isExpired ? (
+              'No disponible'
+            ) : isInCart ? (
+              <>
+                <Check className="mr-2 h-4 w-4" />
+                Added to Cart
+              </>
+            ) : (
+              <>
+                <ShoppingCart className="mr-2 h-4 w-4" />
+                Add to Cart
+              </>
+            )}
+          </Button>
+        )}
       </div>
     </Card>
   )

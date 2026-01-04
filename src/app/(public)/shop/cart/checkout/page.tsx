@@ -1,24 +1,38 @@
 'use client'
 
-import { OrderSummary } from '@/components/shop/checkout/order-summary'
-import { PaymentMethodForm } from '@/components/shop/checkout/payment-method-form'
-import { PersonalInfoForm } from '@/components/shop/checkout/personal-info-form'
-import { InlineAuthForm } from '@/components/shop/checkout/inline-auth-form'
-import { ScheduleCalendarSelector } from '@/components/checkout/schedule-calendar-selector'
-import { CheckoutProgress } from '@/components/checkout/checkout-progress'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { useShopStore } from '@/stores/useShopStore'
-import { Loader2, AlertCircle, ShoppingCart } from 'lucide-react'
+import { useEffect, useMemo, useState, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useEffect, useMemo, useState } from 'react'
-import { toast } from 'sonner'
+import Image from 'next/image'
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
+import { toast } from 'sonner'
+
+import { useShopStore } from '@/stores/useShopStore'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Checkbox } from '@/components/ui/checkbox'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { PaymentMethodForm } from '@/components/shop/checkout/payment-method-form'
+import { CheckoutScheduleSelector } from '@/components/checkout/checkout-schedule-selector'
+import {
+  Loader2,
+  Lock,
+  Trash2,
+  ChevronRight,
+  CreditCard,
+  Wallet,
+  ArrowLeft,
+  Check,
+  Info,
+} from 'lucide-react'
 
 interface ScheduleSlot {
   teacherId: string
@@ -46,65 +60,63 @@ interface ProrationResult {
 
 interface PlanDetails {
   id: string
-  includesClasses: boolean
   courseId: string | null
+  isSynchronous: boolean
   classesPerWeek: number | null
-  duration: number // Duración de cada clase en minutos
+  classDuration: number
   billingCycle: string | null
 }
+
+type CheckoutStep = 'schedule' | 'review' | 'payment'
+
+const COUNTRIES = [
+  'Perú', 'Argentina', 'Bolivia', 'Brasil', 'Chile', 'Colombia', 'Ecuador',
+  'España', 'Estados Unidos', 'México', 'Paraguay', 'Uruguay', 'Venezuela',
+]
+
+const DAY_NAMES = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
 
 export default function CheckoutPage() {
   const router = useRouter()
   const { data: session, status: authStatus } = useSession()
-  const [step, setStep] = useState<number>(0) // 0: auth, 1: personal info, 1.5: schedule (si aplica), 2: payment
-  const [paymentMethod, setPaymentMethod] = useState<string>('creditCard')
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [checkingAuth, setCheckingAuth] = useState<boolean>(true)
-  const [loadingPlans, setLoadingPlans] = useState<boolean>(true)
+  
+  const [currentStep, setCurrentStep] = useState<CheckoutStep>('review')
+  const [paymentMethod, setPaymentMethod] = useState<'creditCard' | 'paypal'>('creditCard')
+  const [isLoading, setIsLoading] = useState(false)
+  const [checkingAuth, setCheckingAuth] = useState(true)
+  const [loadingPlans, setLoadingPlans] = useState(true)
+  const [saveInfo, setSaveInfo] = useState(false)
 
-  // Estado para horarios y prorrateo
+  const [formData, setFormData] = useState({
+    email: '',
+    firstName: '',
+    lastName: '',
+    phone: '',
+    address: '',
+    city: '',
+    zipCode: '',
+    country: 'Perú',
+  })
+
   const [scheduleSelections, setScheduleSelections] = useState<Record<string, {
     schedule: ScheduleSlot[]
     proration: ProrationResult
   }>>({})
 
-  // Estado para detalles de planes
   const [planDetails, setPlanDetails] = useState<Record<string, PlanDetails>>({})
 
-  // Obtenemos los items del carrito desde el store
   const cartItems = useShopStore((state) => state.cart)
+  const removeFromCart = useShopStore((state) => state.removeFromCart)
 
-  // Verificar si algún plan requiere selección de horario
   const plansRequiringSchedule = useMemo(() => {
     return cartItems.filter(item => {
       const details = planDetails[item.plan.id]
-      return details?.includesClasses && details?.courseId
-    })
-  }, [cartItems, planDetails])
-
-  // Check if any plan in the cart is recurrent aka has a billing cycle
-  const isRecurrentData = useMemo(() => {
-    return cartItems.some(item => {
-      const details = planDetails[item.plan.id]
-      return !!details?.billingCycle
+      return details?.isSynchronous && details?.courseId
     })
   }, [cartItems, planDetails])
 
   const requiresScheduleSelection = plansRequiringSchedule.length > 0
 
-  // Mobile detection
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
-  // Verificar si todos los planes requeridos tienen horario seleccionado
   const allSchedulesSelected = useMemo(() => {
     if (!requiresScheduleSelection) return true
     return plansRequiringSchedule.every(item => {
@@ -112,23 +124,51 @@ export default function CheckoutPage() {
     })
   }, [plansRequiringSchedule, scheduleSelections, requiresScheduleSelection])
 
-  // Cargar detalles de los planes al montar
+  const isRecurrentData = useMemo(() => {
+    return cartItems.some(item => {
+      const details = planDetails[item.plan.id]
+      return !!details?.billingCycle
+    })
+  }, [cartItems, planDetails])
+
+  const { subtotal, taxes, total } = useMemo(() => {
+    const subtotalAmount = cartItems.reduce((sum, item) => {
+      const proration = scheduleSelections[item.plan.id]?.proration
+      const price = proration?.proratedPrice ?? item.plan.price
+      return sum + price * (item.quantity || 1)
+    }, 0)
+    return {
+      subtotal: subtotalAmount,
+      taxes: 0,
+      total: subtotalAmount,
+    }
+  }, [cartItems, scheduleSelections])
+
   useEffect(() => {
     const loadPlanDetails = async () => {
       setLoadingPlans(true)
       const details: Record<string, PlanDetails> = {}
-
       for (const item of cartItems) {
         try {
           const response = await fetch(`/api/plans/${item.plan.id}`)
           if (response.ok) {
             const plan = await response.json()
+            const course = plan.course || plan.product?.course || null
+            const courseId = plan.courseId || course?.id || null
+            const isSynchronous = course?.isSynchronous || false
+            console.log('Plan loaded:', plan.name, {
+              courseId,
+              isSynchronous,
+              classesPerWeek: plan.classesPerWeek,
+              course,
+              productCourse: plan.product?.course,
+            })
             details[item.plan.id] = {
               id: plan.id,
-              includesClasses: plan.includesClasses || false,
-              courseId: plan.courseId || null,
+              courseId,
+              isSynchronous,
               classesPerWeek: plan.classesPerWeek || null,
-              duration: 40, // Por defecto 40 minutos
+              classDuration: course?.classDuration || 40,
               billingCycle: plan.billingCycle || null,
             }
           }
@@ -136,134 +176,83 @@ export default function CheckoutPage() {
           console.error(`Error loading plan ${item.plan.id}:`, error)
         }
       }
-
+      console.log('All plan details:', details)
       setPlanDetails(details)
       setLoadingPlans(false)
     }
-
     if (cartItems.length > 0) {
       loadPlanDetails()
+    } else {
+      setLoadingPlans(false)
     }
   }, [cartItems])
 
-  // Cuando se complete la carga de la sesión, decidimos qué hacer
+  useEffect(() => {
+    if (!loadingPlans && requiresScheduleSelection) {
+      setCurrentStep('schedule')
+    }
+  }, [loadingPlans, requiresScheduleSelection])
+
   useEffect(() => {
     if (authStatus !== 'loading') {
-      // SIEMPRE requerimos autenticación para el checkout (necesario para PayPal)
-      if (authStatus === 'unauthenticated') {
-        setStep(0)
-      } else {
-        // Si hay sesión, avanzamos al paso 1
-        setStep(1)
+      if (session?.user) {
+        setFormData(prev => ({
+          ...prev,
+          email: session.user?.email || '',
+          firstName: session.user?.name?.split(' ')[0] || '',
+          lastName: session.user?.name?.split(' ').slice(1).join(' ') || '',
+        }))
       }
       setCheckingAuth(false)
     }
-  }, [authStatus])
+  }, [authStatus, session])
 
-  // Calculamos los totales usando useMemo para optimizar rendimiento (con prorrateo)
-  const { products, subtotal, discount, total } = useMemo(() => {
-    // Transformamos los CartItems a OrderSummaryProducts para el componente OrderSummary
-    const orderSummaryProducts = cartItems.map((item) => {
-      // Usar precio prorrateado si existe
-      const proration = scheduleSelections[item.plan.id]?.proration
-      const price = proration?.proratedPrice ?? item.plan.price
+  const handleInputChange = useCallback((field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }))
+  }, [])
 
-      return {
-        id: item.product.id,
-        name: item.product.title,
-        description: item.cartItemDescription || item.product.description || item.plan.name,
-        price,
-        quantity: item.quantity || 1,
-      }
-    })
-
-    // Calculamos el subtotal sumando todos los precios (con prorrateo si aplica)
-    const subtotalAmount = cartItems.reduce((sum, item) => {
-      const proration = scheduleSelections[item.plan.id]?.proration
-      const price = proration?.proratedPrice ?? item.plan.price
-      return sum + price * (item.quantity || 1)
-    }, 0)
-
-    // Por ahora no hay descuento
-    const discountAmount = 0
-
-    // Total final (sin impuestos)
-    const totalAmount = subtotalAmount - discountAmount
-
-    return {
-      products: orderSummaryProducts,
-      subtotal: subtotalAmount,
-      discount: discountAmount,
-      total: totalAmount,
-    }
-  }, [cartItems, scheduleSelections])
-
-  const handleSubmitPersonalInfo = () => {
-    // Si requiere selección de horario, ir al paso 1.5, sino al paso 2
-    if (requiresScheduleSelection) {
-      setStep(1.5)
-    } else {
-      setStep(2)
-    }
-  }
-
-  const handleScheduleSelected = (planId: string, schedule: ScheduleSlot[], proration: ProrationResult) => {
+  const handleScheduleSelected = useCallback((planId: string, schedule: ScheduleSlot[], proration: ProrationResult) => {
     setScheduleSelections(prev => ({
       ...prev,
       [planId]: { schedule, proration }
     }))
-  }
+  }, [])
 
-  const handleContinueToPayment = () => {
-    if (!allSchedulesSelected) {
-      toast.error('Debes seleccionar un horario para todos los planes que incluyen clases')
-      return
+  const handleContinue = useCallback(() => {
+    if (currentStep === 'schedule') {
+      if (!allSchedulesSelected) {
+        toast.error('Debes seleccionar un horario para todos los cursos')
+        return
+      }
+      setCurrentStep('review')
+    } else if (currentStep === 'review') {
+      if (!formData.email || !formData.firstName || !formData.phone) {
+        toast.error('Por favor completa todos los campos requeridos')
+        return
+      }
+      sessionStorage.setItem('customer-info', JSON.stringify({
+        ...formData,
+        fullName: `${formData.firstName} ${formData.lastName}`,
+      }))
+      setCurrentStep('payment')
     }
-    setStep(2)
-  }
+  }, [currentStep, allSchedulesSelected, formData])
 
-  const handlePaymentSubmit = () => {
-    // Si es PayPal, no hacemos nada aquí, el botón de PayPal maneja el proceso
-    if (paymentMethod === 'paypal') {
-      return
+  const handleBack = useCallback(() => {
+    if (currentStep === 'review' && requiresScheduleSelection) {
+      setCurrentStep('schedule')
+    } else if (currentStep === 'payment') {
+      setCurrentStep('review')
+    } else {
+      router.push('/shop')
     }
+  }, [currentStep, requiresScheduleSelection, router])
 
-    setIsLoading(true)
-
-    // Preparamos los datos del pedido
-    const orderData = {
-      orderNumber: `ORD-${Date.now().toString().slice(-8)}`,
-      orderDate: new Date().toISOString(),
-      totalAmount: total,
-      items: cartItems,
-      customer: JSON.parse(sessionStorage.getItem('customer-info') || '{}'),
-      paymentMethod: paymentMethod,
-      user: session?.user ? { id: session.user.id, email: session.user.email } : undefined,
-    }
-
-    // Guardamos en sessionStorage para la página de confirmación
-    sessionStorage.setItem('last-order', JSON.stringify(orderData))
-
-    // Simulación de procesamiento de pago
-    setTimeout(() => {
-      setIsLoading(false)
-      // Limpiamos el carrito
-      useShopStore.getState().clearCart()
-
-      toast.success('¡Pago procesado correctamente!')
-      // Redirigir a página de confirmación
-      router.push('/shop/cart/checkout/confirmation')
-    }, 2000)
-  }
-
-  const handlePaymentSuccess = (data: unknown) => {
-    // Determine order number based on provider data
+  const handlePaymentSuccess = useCallback((data: unknown) => {
     const anyData = data as { invoice?: { invoiceNumber?: string }; orderId?: string }
     const orderNumber = anyData.invoice?.invoiceNumber || anyData.orderId || `ORD-${Date.now()}`
-
-    // Preparamos los datos del pedido
     const orderData = {
-      orderNumber: orderNumber,
+      orderNumber,
       orderDate: new Date().toISOString(),
       totalAmount: total,
       items: cartItems,
@@ -272,125 +261,38 @@ export default function CheckoutPage() {
       user: session?.user ? { id: session.user.id, email: session.user.email } : undefined,
       paypalData: data,
     }
-
-    // Guardamos en sessionStorage para la página de confirmación
     sessionStorage.setItem('last-order', JSON.stringify(orderData))
-
-    // Limpiamos el carrito
     useShopStore.getState().clearCart()
-
-    // Pequeño delay para que PayPal cierre la ventana antes de redirigir
     setTimeout(() => {
       router.push('/shop/cart/checkout/confirmation')
     }, 500)
-  }
+  }, [total, cartItems, session, router])
 
-  // Si el carrito está vacío, redirigimos a la página del carrito
-  if (cartItems.length === 0) {
-    return (
-      <div className="container mx-auto py-8 text-center">
-        <h1 className="text-3xl font-bold mb-4">Tu carrito está vacío</h1>
-        <p className="mb-6">Debes agregar productos al carrito antes de proceder al checkout.</p>
-        <Button onClick={() => router.push('/shop')}>Ir a la Tienda</Button>
-      </div>
-    )
-  }
+  const handlePaymentSubmit = useCallback(() => {
+    if (paymentMethod === 'paypal') return
+    setIsLoading(true)
+    const orderData = {
+      orderNumber: `ORD-${Date.now().toString().slice(-8)}`,
+      orderDate: new Date().toISOString(),
+      totalAmount: total,
+      items: cartItems,
+      customer: JSON.parse(sessionStorage.getItem('customer-info') || '{}'),
+      paymentMethod,
+      user: session?.user ? { id: session.user.id, email: session.user.email } : undefined,
+    }
+    sessionStorage.setItem('last-order', JSON.stringify(orderData))
+    setTimeout(() => {
+      setIsLoading(false)
+      useShopStore.getState().clearCart()
+      toast.success('¡Pago procesado correctamente!')
+      router.push('/shop/cart/checkout/confirmation')
+    }, 2000)
+  }, [paymentMethod, total, cartItems, session, router])
 
-  // Definir pasos dinámicamente según si se requiere selección de horario
-  const checkoutSteps = requiresScheduleSelection
-    ? ['Autenticación', 'Información Personal', 'Horario', 'Pago']
-    : ['Autenticación', 'Información Personal', 'Pago']
-
-  // Mientras verificamos la autenticación
-  if (checkingAuth) {
-    return (
-      <div className="container mx-auto py-8 text-center">
-        <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
-        <p className="mt-4">Verificando información de sesión...</p>
-      </div>
-    )
-  }
-
-  // Paso 0: Verificación de autenticación
-  if (step === 0) {
-    return (
-      <div className="container mx-auto py-8">
-        <h1 className="text-3xl font-bold mb-8 text-center">Finalizar Compra</h1>
-
-        <CheckoutProgress currentStep={0} steps={checkoutSteps} />
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          <div>
-            {/* Guest Checkout Option */}
-            <Card className="mb-4 border-green-200 bg-green-50">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-bold text-green-800 flex items-center gap-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" />
-                      </svg>
-                      Checkout Rápido como Invitado
-                    </h3>
-                    <p className="text-sm text-green-600 mt-1">
-                      Compra sin crear cuenta. Más rápido y privado.
-                    </p>
-                  </div>
-                  {!useShopStore.getState().getRequiresAuth() && (
-                    <Button
-                      onClick={() => setStep(1)}
-                      className="bg-green-600 hover:bg-green-700"
-                    >
-                      Continuar como Invitado
-                    </Button>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Divider */}
-            <div className="relative my-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">O regístrate/inicia sesión</span>
-              </div>
-            </div>
-
-            {/* Existing Login/Register Form */}
-            <InlineAuthForm
-              onSuccess={() => {
-                // Cuando el login/registro sea exitoso, el useEffect detectará
-                // el cambio en authStatus y avanzará automáticamente al paso 1
-              }}
-            />
-
-            <div className="mt-4 text-center">
-              <Button variant="ghost" onClick={() => router.push('/shop')}>
-                ← Volver a la tienda
-              </Button>
-            </div>
-          </div>
-
-          <div>
-            <OrderSummary
-              products={products}
-              subtotal={subtotal}
-              discount={discount}
-              total={total}
-            />
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  const paypalItems = cartItems.map((item) => {
+  const paypalItems = useMemo(() => cartItems.map((item) => {
     const selection = scheduleSelections[item.plan.id]
     const proration = selection?.proration
     const price = proration?.proratedPrice ?? item.plan.price
-
     return {
       productId: item.product.id,
       planId: item.plan.id,
@@ -402,206 +304,338 @@ export default function CheckoutPage() {
       proratedClasses: proration?.classesFromNow,
       proratedPrice: proration?.proratedPrice,
     }
-  })
+  }), [cartItems, scheduleSelections])
 
-  return (
-    <PayPalScriptProvider
-      options={{
-        clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '',
-        currency: 'USD',
-      }}
-    >
-      <div className="container mx-auto py-8">
-        <h1 className="text-3xl font-bold mb-8 text-center">Finalizar Compra</h1>
+  const getStepNumber = useCallback((step: CheckoutStep) => {
+    if (requiresScheduleSelection) {
+      switch (step) {
+        case 'schedule': return 1
+        case 'review': return 2
+        case 'payment': return 3
+      }
+    } else {
+      switch (step) {
+        case 'review': return 1
+        case 'payment': return 2
+        default: return 1
+      }
+    }
+  }, [requiresScheduleSelection])
 
-        <CheckoutProgress
-          currentStep={requiresScheduleSelection
-            ? step === 1 ? 1
-              : step === 1.5 ? 2
-                : step === 2 ? 3
-                  : 0
-            : step === 1 ? 1
-              : step === 2 ? 2
-                : 0
-          }
-          steps={checkoutSteps}
-        />
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="md:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-xl">
-                  {step === 1 && 'Información Personal'}
-                  {step === 1.5 && 'Seleccionar Horario'}
-                  {step === 2 && 'Método de Pago'}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {step === 1 && <PersonalInfoForm onSubmit={handleSubmitPersonalInfo} />}
-
-                {step === 1.5 && (
-                  <div className="space-y-6">
-                    <div>
-                      <CardTitle className="mb-2">Selecciona tu Horario de Clases</CardTitle>
-                      <p className="text-sm text-muted-foreground">
-                        Elige los días y horarios que mejor se adapten a tu disponibilidad. El precio se ajustará automáticamente según las clases restantes en el período académico actual.
-                      </p>
-                    </div>
-
-                    {loadingPlans ? (
-                      <div className="py-12 text-center">
-                        <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
-                        <p className="text-muted-foreground">Cargando información de planes...</p>
-                      </div>
-                    ) : (
-                      <div className="space-y-8">
-                        {plansRequiringSchedule.map((item) => {
-                          const details = planDetails[item.plan.id]
-                          if (!details?.courseId || !details?.classesPerWeek) return null
-
-                          return (
-                            <div key={item.plan.id} className="space-y-4">
-                              <div className="border-b pb-2">
-                                <h3 className="font-semibold text-lg">{item.product.title}</h3>
-                                <p className="text-sm text-muted-foreground">{item.plan.name}</p>
-                              </div>
-
-                              <ScheduleCalendarSelector
-                                planId={item.plan.id}
-                                courseId={details.courseId}
-                                classesPerWeek={details.classesPerWeek}
-                                classDuration={details.duration}
-                                onScheduleSelected={(schedule: ScheduleSlot[], proration: ProrationResult) =>
-                                  handleScheduleSelected(item.plan.id, schedule, proration)
-                                }
-                              />
-                            </div>
-                          )
-                        })}
-
-                        {!allSchedulesSelected && (
-                          <Alert>
-                            <AlertCircle className="h-4 w-4" />
-                            <AlertDescription>
-                              Debes seleccionar un horario para cada curso antes de continuar al pago.
-                            </AlertDescription>
-                          </Alert>
-                        )}
-
-                        <div className="flex gap-4">
-                          <Button variant="outline" onClick={() => setStep(1)}>
-                            Volver
-                          </Button>
-                          <Button
-                            onClick={handleContinueToPayment}
-                            disabled={!allSchedulesSelected}
-                            className="flex-1"
-                          >
-                            Continuar al Pago
-                          </Button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {step === 2 && (
-                  <div>
-                    <CardTitle className="mb-4">Método de Pago</CardTitle>
-                    <RadioGroup
-                      value={paymentMethod}
-                      onValueChange={setPaymentMethod}
-                      className="mb-6"
-                    >
-                      <div className="flex items-center space-x-2 border p-4 rounded-md mb-2">
-                        <RadioGroupItem value="creditCard" id="creditCard" />
-                        <Label htmlFor="creditCard">Tarjeta de Crédito/Débito</Label>
-                      </div>
-                      <div className="flex items-center space-x-2 border p-4 rounded-md mb-2">
-                        <RadioGroupItem value="paypal" id="paypal" />
-                        <Label htmlFor="paypal">PayPal</Label>
-                      </div>
-                    </RadioGroup>
-
-                    <PaymentMethodForm
-                      paymentMethod={paymentMethod}
-                      onSubmit={handlePaymentSubmit}
-                      isLoading={isLoading}
-                      paypalData={{
-                        items: paypalItems,
-                        total,
-                        subtotal,
-                        discount,
-                      }}
-                      onPayPalSuccess={handlePaymentSuccess}
-                      onNiubizSuccess={handlePaymentSuccess} // Reusing the success handler as logic is similar (saving order, redirecting)
-                      userEmail={session?.user?.email || undefined}
-                      userFirstName={session?.user?.name?.split(' ')[0] || undefined} // Basic heuristic
-                      userLastName={session?.user?.name?.split(' ').slice(1).join(' ') || undefined}
-                      isRecurrent={isRecurrentData}
-                    />
-
-                    <div className="mt-6">
-                      <Button
-                        variant="outline"
-                        onClick={() => setStep(requiresScheduleSelection ? 1.5 : 1)}
-                      >
-                        Volver
-                      </Button>
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="md:col-span-1">
-            <OrderSummary
-              products={products}
-              subtotal={subtotal}
-              discount={discount}
-              total={total}
-            />
-
-            <div className="mt-4">
-              <Link href={'/shop'}>
-                <Button variant="outline" className="w-full">
-                  Volver a la Tienda
-                </Button>
-              </Link>
-            </div>
-          </div>
+  if (checkingAuth || loadingPlans) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary mb-4" />
+          <p className="text-slate-600">Cargando...</p>
         </div>
       </div>
+    )
+  }
 
-      {/* Mobile Floating Checkout Button */}
-      {isMobile && step > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg z-40 md:hidden">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Total</p>
-              <p className="text-lg font-bold">${total.toFixed(2)}</p>
-            </div>
-            <Button
-              size="lg"
-              className="bg-green-600 hover:bg-green-700"
-              onClick={() => {
-                if (step === 1) {
-                  (document.getElementById('personal-info-form')?.querySelector('button[type="submit"]') as HTMLButtonElement)?.click()
-                } else if (step === 1.5) {
-                  (document.getElementById('schedule-form')?.querySelector('button') as HTMLButtonElement)?.click()
-                } else if (step === 2) {
-                  (document.getElementById('payment-form')?.querySelector('button[type="submit"]') as HTMLButtonElement)?.click()
-                }
-              }}
-            >
-              <ShoppingCart className="w-4 h-4 mr-2" />
-              {step === 2 ? 'Pagar Ahora' : 'Continuar'}
-            </Button>
-          </div>
+  if (cartItems.length === 0) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Tu carrito está vacío</h1>
+          <p className="text-slate-600 mb-6">Agrega productos antes de continuar</p>
+          <Button onClick={() => router.push('/shop')}>Ir a la Tienda</Button>
         </div>
-      )}
+      </div>
+    )
+  }
+
+  const steps = requiresScheduleSelection
+    ? [{ key: 'schedule', label: 'Horario' }, { key: 'review', label: 'Revisión' }, { key: 'payment', label: 'Pago' }]
+    : [{ key: 'review', label: 'Revisión' }, { key: 'payment', label: 'Pago' }]
+
+  return (
+    <PayPalScriptProvider options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '', currency: 'USD' }}>
+      <div className="min-h-screen bg-gray-50">
+        {/* Header */}
+        <header className="sticky top-0 z-50 bg-white border-b border-slate-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-16">
+              <Link href="/" className="flex items-center gap-3">
+                <Image src="/branding/logo.png" alt="Logo" width={32} height={32} />
+                <span className="text-xl font-bold">Lingowow</span>
+              </Link>
+              <div className="flex items-center gap-2 text-slate-500">
+                <Lock className="h-4 w-4 text-primary" />
+                <span className="text-sm font-medium hidden sm:block">Pago Seguro</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Stepper */}
+          <div className="flex flex-wrap items-center gap-2 text-sm font-medium mb-8">
+            {steps.map((step, index) => {
+              const stepNum = index + 1
+              const currentNum = getStepNumber(currentStep)
+              const isActive = step.key === currentStep
+              const isCompleted = stepNum < currentNum
+              return (
+                <div key={step.key} className="flex items-center">
+                  <div className={`flex items-center ${isActive ? 'text-primary' : isCompleted ? 'text-primary' : 'text-slate-400'}`}>
+                    <span className={`flex items-center justify-center w-6 h-6 rounded-full text-xs mr-2 ${isActive || isCompleted ? 'bg-primary text-white' : 'border border-slate-300 text-slate-400'}`}>
+                      {isCompleted ? <Check className="h-3 w-3" /> : stepNum}
+                    </span>
+                    <span className={isActive ? 'font-semibold' : ''}>{step.label}</span>
+                  </div>
+                  {index < steps.length - 1 && <ChevronRight className="h-4 w-4 text-slate-300 mx-2" />}
+                </div>
+              )
+            })}
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {/* Left Column */}
+            <div className="lg:col-span-7 xl:col-span-8 space-y-6">
+              {/* Schedule Step */}
+              {currentStep === 'schedule' && (
+                <div className="space-y-6">
+                  <div>
+                    <h1 className="text-2xl md:text-3xl font-bold text-slate-900">Programa tus Sesiones</h1>
+                    <p className="text-slate-600 mt-2">Elige horarios convenientes para tus clases en vivo.</p>
+                  </div>
+                  {plansRequiringSchedule.map((item) => {
+                    const details = planDetails[item.plan.id]
+                    if (!details?.courseId || !details?.isSynchronous) return null
+                    return (
+                      <div key={item.plan.id} className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className="w-16 h-16 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
+                            {item.product.image ? (
+                              <Image src={item.product.image} alt={item.product.title} width={64} height={64} className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-2xl">📚</div>
+                            )}
+                          </div>
+                          <div>
+                            <h3 className="font-bold text-slate-900">{item.product.title}</h3>
+                            <p className="text-sm text-slate-500">{item.plan.name}</p>
+                          </div>
+                        </div>
+                        <CheckoutScheduleSelector
+                          planId={item.plan.id}
+                          courseId={details.courseId!}
+                          classDuration={details.classDuration}
+                          onScheduleSelected={(schedule, proration) => handleScheduleSelected(item.plan.id, schedule, proration)}
+                        />
+                      </div>
+                    )
+                  })}
+                  <div className="bg-blue-50 rounded-lg p-4 flex items-start gap-3 text-sm text-blue-800">
+                    <Info className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <p>¿No encuentras un horario que te funcione? <Link href="/contact" className="underline font-bold hover:text-blue-600">Contacta al profesor</Link> directamente.</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Review Step */}
+              {currentStep === 'review' && (
+                <>
+                  <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8">
+                    <div className="flex justify-between items-center mb-6">
+                      <h3 className="text-lg font-bold text-slate-900">Información del Cliente</h3>
+                      {!session?.user && (
+                        <p className="text-sm text-slate-500">¿Ya tienes cuenta? <Link href="/auth/signin" className="text-primary hover:underline">Inicia sesión</Link></p>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="md:col-span-2">
+                        <Label htmlFor="email" className="text-sm font-medium text-slate-700 mb-1 block">Correo Electrónico *</Label>
+                        <Input id="email" type="email" placeholder="tu@ejemplo.com" value={formData.email} onChange={(e) => handleInputChange('email', e.target.value)} />
+                      </div>
+                      <div>
+                        <Label htmlFor="firstName" className="text-sm font-medium text-slate-700 mb-1 block">Nombre *</Label>
+                        <Input id="firstName" type="text" value={formData.firstName} onChange={(e) => handleInputChange('firstName', e.target.value)} />
+                      </div>
+                      <div>
+                        <Label htmlFor="lastName" className="text-sm font-medium text-slate-700 mb-1 block">Apellidos</Label>
+                        <Input id="lastName" type="text" value={formData.lastName} onChange={(e) => handleInputChange('lastName', e.target.value)} />
+                      </div>
+                      <div className="md:col-span-2">
+                        <Label htmlFor="phone" className="text-sm font-medium text-slate-700 mb-1 block">Teléfono *</Label>
+                        <Input id="phone" type="tel" value={formData.phone} onChange={(e) => handleInputChange('phone', e.target.value)} />
+                      </div>
+                    </div>
+                  </section>
+
+                  <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8">
+                    <h3 className="text-lg font-bold text-slate-900 mb-6">Dirección de Facturación</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="md:col-span-2">
+                        <Label htmlFor="address" className="text-sm font-medium text-slate-700 mb-1 block">Dirección</Label>
+                        <Input id="address" type="text" value={formData.address} onChange={(e) => handleInputChange('address', e.target.value)} />
+                      </div>
+                      <div>
+                        <Label htmlFor="city" className="text-sm font-medium text-slate-700 mb-1 block">Ciudad</Label>
+                        <Input id="city" type="text" value={formData.city} onChange={(e) => handleInputChange('city', e.target.value)} />
+                      </div>
+                      <div>
+                        <Label htmlFor="zipCode" className="text-sm font-medium text-slate-700 mb-1 block">Código Postal</Label>
+                        <Input id="zipCode" type="text" value={formData.zipCode} onChange={(e) => handleInputChange('zipCode', e.target.value)} />
+                      </div>
+                      <div className="md:col-span-2">
+                        <Label htmlFor="country" className="text-sm font-medium text-slate-700 mb-1 block">País</Label>
+                        <Select value={formData.country} onValueChange={(value) => handleInputChange('country', value)}>
+                          <SelectTrigger><SelectValue placeholder="Selecciona un país" /></SelectTrigger>
+                          <SelectContent>
+                            {COUNTRIES.map((country) => (<SelectItem key={country} value={country}>{country}</SelectItem>))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="mt-4 flex items-center gap-2">
+                      <Checkbox id="saveInfo" checked={saveInfo} onCheckedChange={(checked) => setSaveInfo(checked === true)} />
+                      <Label htmlFor="saveInfo" className="text-sm text-slate-700 cursor-pointer">Guardar esta información para la próxima vez</Label>
+                    </div>
+                  </section>
+
+                  <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8">
+                    <h3 className="text-lg font-bold text-slate-900 mb-6">Método de Pago</h3>
+                    <p className="text-slate-500 text-sm mb-4">Elige cómo deseas pagar. Ingresarás los detalles en el siguiente paso.</p>
+                    <div className="space-y-3">
+                      <label className={`relative flex cursor-pointer rounded-lg border p-4 transition-all ${paymentMethod === 'creditCard' ? 'border-primary ring-1 ring-primary bg-white' : 'border-slate-300 bg-white hover:border-slate-400'}`}>
+                        <input type="radio" name="payment-method" value="creditCard" checked={paymentMethod === 'creditCard'} onChange={() => setPaymentMethod('creditCard')} className="sr-only" />
+                        <span className="flex flex-1"><span className="flex flex-col"><span className="block text-sm font-medium text-slate-900">Tarjeta de Crédito o Débito</span><span className="mt-1 text-sm text-slate-500">Transferencia segura usando tu cuenta bancaria.</span></span></span>
+                        <CreditCard className={`h-6 w-6 ${paymentMethod === 'creditCard' ? 'text-primary' : 'text-slate-400'}`} />
+                      </label>
+                      <label className={`relative flex cursor-pointer rounded-lg border p-4 transition-all ${paymentMethod === 'paypal' ? 'border-primary ring-1 ring-primary bg-white' : 'border-slate-300 bg-white hover:border-slate-400'}`}>
+                        <input type="radio" name="payment-method" value="paypal" checked={paymentMethod === 'paypal'} onChange={() => setPaymentMethod('paypal')} className="sr-only" />
+                        <span className="flex flex-1"><span className="flex flex-col"><span className="block text-sm font-medium text-slate-900">PayPal</span><span className="mt-1 text-sm text-slate-500">Serás redirigido al sitio web de PayPal.</span></span></span>
+                        <Wallet className={`h-6 w-6 ${paymentMethod === 'paypal' ? 'text-primary' : 'text-slate-400'}`} />
+                      </label>
+                    </div>
+                  </section>
+                </>
+              )}
+
+              {/* Payment Step */}
+              {currentStep === 'payment' && (
+                <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8">
+                  <h3 className="text-lg font-bold text-slate-900 mb-6">Detalles del Pago</h3>
+                  <PaymentMethodForm
+                    paymentMethod={paymentMethod}
+                    onSubmit={handlePaymentSubmit}
+                    isLoading={isLoading}
+                    paypalData={{ items: paypalItems, total, subtotal, discount: 0 }}
+                    onPayPalSuccess={handlePaymentSuccess}
+                    onNiubizSuccess={handlePaymentSuccess}
+                    userEmail={session?.user?.email || formData.email}
+                    userFirstName={formData.firstName}
+                    userLastName={formData.lastName}
+                    isRecurrent={isRecurrentData}
+                  />
+                  <Button variant="ghost" onClick={handleBack} className="mt-6"><ArrowLeft className="h-4 w-4 mr-2" />Volver</Button>
+                </section>
+              )}
+
+              {/* Navigation Buttons */}
+              {currentStep !== 'payment' && (
+                <div className="flex justify-between items-center pt-4">
+                  <Button variant="ghost" onClick={handleBack}><ArrowLeft className="h-4 w-4 mr-2" />Volver</Button>
+                  <Button onClick={handleContinue} size="lg" className="bg-primary hover:bg-primary/90">
+                    {currentStep === 'review' ? 'Continuar al Pago' : 'Continuar'}
+                    <ChevronRight className="h-4 w-4 ml-2" />
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            {/* Right Column - Order Summary */}
+            <div className="lg:col-span-5 xl:col-span-4">
+              <div className="sticky top-24 space-y-6">
+                <div className="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+                  <div className="p-6 border-b border-slate-100 bg-slate-50/50">
+                    <h3 className="text-lg font-bold text-slate-900">Resumen del Pedido</h3>
+                  </div>
+                  <div className="p-6 space-y-4 max-h-[400px] overflow-y-auto">
+                    {cartItems.map((item) => {
+                      const proration = scheduleSelections[item.plan.id]?.proration
+                      const price = proration?.proratedPrice ?? item.plan.price
+                      return (
+                        <div key={`${item.product.id}-${item.plan.id}`} className="flex gap-4">
+                          <div className="w-16 h-16 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
+                            {item.product.image ? (
+                              <Image src={item.product.image} alt={item.product.title} width={64} height={64} className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-2xl">📚</div>
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex justify-between items-start gap-2">
+                              <p className="text-sm font-semibold text-slate-900 line-clamp-2">{item.product.title}</p>
+                              <p className="text-sm font-bold text-slate-900">${price.toFixed(2)}</p>
+                            </div>
+                            <p className="text-xs text-slate-500 mt-1">{item.plan.name}</p>
+                            <div className="mt-2 flex items-center justify-end">
+                              <button onClick={() => removeFromCart(item.product.id, item.plan.id)} className="text-xs text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1">
+                                <Trash2 className="h-4 w-4" /><span>Eliminar</span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+
+                  {/* Schedule Summary */}
+                  {Object.keys(scheduleSelections).length > 0 && (
+                    <div className="px-6 pb-4">
+                      <div className="bg-slate-50 rounded-lg p-3 border border-slate-100">
+                        <div className="text-xs font-bold text-slate-400 uppercase mb-2">Horarios Seleccionados</div>
+                        {Object.entries(scheduleSelections).map(([planId, selection]) => (
+                          selection.schedule.map((slot, idx) => (
+                            <div key={`${planId}-${idx}`} className="flex justify-between items-center bg-white p-2 rounded border border-slate-200 mb-2 last:mb-0">
+                              <div className="flex flex-col">
+                                <span className="text-xs font-bold text-slate-700">{DAY_NAMES[slot.dayOfWeek]}</span>
+                                <span className="text-xs text-slate-500">{slot.startTime} - {slot.endTime}</span>
+                              </div>
+                            </div>
+                          ))
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Cost Breakdown */}
+                  <div className="bg-slate-50 p-6 border-t border-slate-200 space-y-3">
+                    <div className="flex justify-between text-sm text-slate-600">
+                      <span>Subtotal</span>
+                      <span className="font-medium text-slate-900">${subtotal.toFixed(2)}</span>
+                    </div>
+                    {taxes > 0 && (
+                      <div className="flex justify-between text-sm text-slate-600">
+                        <span>Impuestos</span>
+                        <span className="font-medium text-slate-900">${taxes.toFixed(2)}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between text-lg font-bold text-slate-900 pt-3 border-t border-slate-200">
+                      <span>Total</span>
+                      <span>${total.toFixed(2)}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Trust Badges */}
+                <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+                  <div className="flex items-center gap-3 text-sm text-slate-600">
+                    <Lock className="h-5 w-5 text-green-600" />
+                    <div>
+                      <p className="font-medium text-slate-900">Pago 100% Seguro</p>
+                      <p className="text-xs">Tus datos están protegidos con encriptación SSL</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
     </PayPalScriptProvider>
   )
 }

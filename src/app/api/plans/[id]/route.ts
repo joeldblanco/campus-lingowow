@@ -11,6 +11,11 @@ export async function GET(
       where: { id },
       include: {
         course: true,
+        product: {
+          include: {
+            course: true,
+          },
+        },
         features: {
           include: {
             feature: true,

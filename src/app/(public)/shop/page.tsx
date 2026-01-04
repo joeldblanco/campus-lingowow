@@ -3,6 +3,7 @@
 import Footer from '@/components/public-components/footer'
 import Header from '@/components/public-components/header'
 import { CartAbandonmentTracker } from '@/components/shop/cart-abandonment-tracker'
+import { CartDrawer } from '@/components/shop/cart/cart-drawer'
 import { ExitIntentPopup } from '@/components/shop/exit-intent-popup'
 import { HeroSection } from '@/components/shop/hero-section'
 import { Pagination } from '@/components/shop/pagination'
@@ -12,12 +13,34 @@ import { Button } from '@/components/ui/button'
 import { useFilterCourses } from '@/hooks/use-filter-courses'
 import { useShopStore } from '@/stores/useShopStore'
 import { ChevronDown } from 'lucide-react'
+import { useEffect } from 'react'
+import { toast } from 'sonner'
 
 export default function ShopPage() {
-  const { courses: filteredCourses, totalPages, loading, totalResults } = useFilterCourses()
+  const { courses: filteredCourses, allCourses, totalPages, loading, totalResults } = useFilterCourses()
   const currentPage = useShopStore((state) => state.currentPage)
   const setCurrentPage = useShopStore((state) => state.setCurrentPage)
   const clearFilters = useShopStore((state) => state.clearFilters)
+  const isCartDrawerOpen = useShopStore((state) => state.isCartDrawerOpen)
+  const setCartDrawerOpen = useShopStore((state) => state.setCartDrawerOpen)
+  const lastAddedItem = useShopStore((state) => state.lastAddedItem)
+  const cart = useShopStore((state) => state.cart)
+
+  // Mostrar toast cuando se añade un producto
+  useEffect(() => {
+    if (lastAddedItem) {
+      toast.success('¡Añadido correctamente!', {
+        description: `"${lastAddedItem.plan.name}" ha sido añadido a tu carrito.`,
+        duration: 4000,
+        position: 'bottom-left',
+      })
+    }
+  }, [lastAddedItem])
+
+  // Obtener productos sugeridos (excluyendo los que ya están en el carrito)
+  const suggestedProducts = allCourses
+    .filter(product => !cart.some(item => item.product.id === product.id))
+    .slice(0, 3)
 
   return (
     <div className="min-h-screen bg-gray-50/50">
@@ -102,6 +125,11 @@ export default function ShopPage() {
 
       <ExitIntentPopup />
       <CartAbandonmentTracker />
+      <CartDrawer 
+        open={isCartDrawerOpen} 
+        onOpenChange={setCartDrawerOpen}
+        suggestedProducts={suggestedProducts}
+      />
       <Footer />
     </div>
   )

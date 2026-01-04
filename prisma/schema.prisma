@@ -137,11 +137,35 @@ model User {
   // Relaciones de notificaciones
   notifications         Notification[]
 
+  // API Keys para acceso programático
+  apiKeys               ApiKey[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([roles])
   @@index([teacherRankId])
+}
+
+model ApiKey {
+  id          String    @id @default(cuid())
+  name        String    // Nombre descriptivo de la API Key
+  key         String    @unique // Hash de la API Key
+  prefix      String    // Prefijo visible (ej: "lw_live_abc...")
+  userId      String
+  scopes      String[]  @default(["lessons:read", "lessons:write"]) // Permisos
+  lastUsedAt  DateTime?
+  expiresAt   DateTime?
+  isActive    Boolean   @default(true)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([key])
+  @@index([userId])
+  @@map("api_keys")
 }
 
 model UserStreak {

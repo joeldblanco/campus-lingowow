@@ -106,6 +106,7 @@ export type CartItem = {
     title: string // Compatibilidad con Course legacy
     description: string | null
     type?: ProductType
+    image?: string | null
   }
   plan: Pick<Plan, 'id' | 'name' | 'price'>
   cartItemDescription?: string

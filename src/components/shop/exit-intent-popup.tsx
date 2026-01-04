@@ -9,6 +9,9 @@ import { useShopStore } from '@/stores/useShopStore'
 import { toast } from 'sonner'
 
 export function ExitIntentPopup() {
+  // Temporalmente deshabilitado
+  return null
+  
   const [isVisible, setIsVisible] = useState(false)
   const [hasShown, setHasShown] = useState(false)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)

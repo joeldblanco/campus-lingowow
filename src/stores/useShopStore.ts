@@ -22,10 +22,15 @@ type ShopState = {
   comparePlans: { product: Merge<Product, Course> | null }
   checkoutInfo: CheckoutInfo
   appliedCoupon: AppliedCoupon | null
+  isCartDrawerOpen: boolean
+  lastAddedItem: CartItem | null
 
   // Acciones
   addToCart: (item: CartItem) => void
   removeFromCart: (productId: string, planId: string) => void
+  openCartDrawer: () => void
+  closeCartDrawer: () => void
+  setCartDrawerOpen: (open: boolean) => void
   toggleFilter: (type: keyof Filters, value: string) => void
   setSearchQuery: (query: string) => void
   setSortBy: (sort: SortOption) => void
@@ -66,21 +71,48 @@ export const useShopStore = create<ShopState>()(
         redirectAfterAuth: false,
       },
       appliedCoupon: null,
+      isCartDrawerOpen: false,
+      lastAddedItem: null,
 
       addToCart: (item) =>
         set((state) => {
-          const existingIndex = state.cart.findIndex(
+          // Verificar si el mismo plan ya está en el carrito
+          const existingPlanIndex = state.cart.findIndex(
             (cartItem) =>
               cartItem.product.id === item.product.id && cartItem.plan.id === item.plan.id
           )
 
-          if (existingIndex >= 0) {
-            // Si el mismo plan ya está en el carrito, lo removemos
-            return { cart: state.cart.filter((_, index) => index !== existingIndex) }
+          if (existingPlanIndex >= 0) {
+            // Si el mismo plan ya está en el carrito, lo removemos (toggle)
+            return { 
+              cart: state.cart.filter((_, index) => index !== existingPlanIndex),
+              lastAddedItem: null,
+              isCartDrawerOpen: state.cart.length > 1
+            }
           }
           
-          // Solo permitir un plan en el carrito - limpiamos el carrito completamente antes de agregar
-          return { cart: [item] }
+          // Verificar si ya hay otro plan del mismo producto en el carrito
+          const existingProductIndex = state.cart.findIndex(
+            (cartItem) => cartItem.product.id === item.product.id
+          )
+          
+          if (existingProductIndex >= 0) {
+            // Reemplazar el plan existente del mismo producto
+            const newCart = [...state.cart]
+            newCart[existingProductIndex] = item
+            return { 
+              cart: newCart,
+              lastAddedItem: item,
+              isCartDrawerOpen: true
+            }
+          }
+          
+          // Añadir el nuevo item al carrito (producto nuevo)
+          return { 
+            cart: [...state.cart, item],
+            lastAddedItem: item,
+            isCartDrawerOpen: true
+          }
         }),
 
       removeFromCart: (productId, planId) =>
@@ -145,6 +177,10 @@ export const useShopStore = create<ShopState>()(
         set(() => ({
           appliedCoupon: null,
         })),
+
+      openCartDrawer: () => set({ isCartDrawerOpen: true }),
+      closeCartDrawer: () => set({ isCartDrawerOpen: false }),
+      setCartDrawerOpen: (open) => set({ isCartDrawerOpen: open }),
 
       // Función para verificar si el carrito requiere autenticación
       getRequiresAuth: () => {

@@ -3,11 +3,14 @@
 import React, { useEffect, useState } from 'react'
 import Header from '@/components/public-components/header'
 import Footer from '@/components/public-components/footer'
+import { CartDrawer } from '@/components/shop/cart/cart-drawer'
 import { Button } from '@/components/ui/button'
-import { CheckCircle, ChevronDown, GraduationCap, Globe, Rocket, Languages, Loader2 } from 'lucide-react'
+import { CheckCircle, ChevronDown, GraduationCap, Globe, Rocket, Languages, Loader2, Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useSearchParams } from 'next/navigation'
-import { getPlans, getPricingPlansForProduct } from '@/lib/actions/commercial'
+import { getPlans, getPricingPlansForProduct, getProducts } from '@/lib/actions/commercial'
+import { useShopStore } from '@/stores/useShopStore'
+import { toast } from 'sonner'
 import type { Plan, Feature } from '@prisma/client'
 
 // Extended type to include relations matching the getPlans return type
@@ -22,8 +25,44 @@ export default function PricingPage() {
   const searchParams = useSearchParams()
   const productId = searchParams.get('productId')
   const [plans, setPlans] = useState<PlanWithFeatures[]>([])
+  const [product, setProduct] = useState<{ id: string; name: string; description: string | null; image: string | null } | null>(null)
   const [loading, setLoading] = useState(true)
   const [uniqueFeatures, setUniqueFeatures] = useState<string[]>([])
+  
+  // Shop store
+  const { addToCart, cart, isCartDrawerOpen, setCartDrawerOpen, lastAddedItem } = useShopStore()
+
+  // Mostrar toast cuando se añade un producto
+  useEffect(() => {
+    if (lastAddedItem) {
+      toast.success('¡Añadido correctamente!', {
+        description: `"${lastAddedItem.plan.name}" ha sido añadido a tu carrito.`,
+        duration: 4000,
+        position: 'bottom-left',
+      })
+    }
+  }, [lastAddedItem])
+
+  const isInCart = (planId: string) => {
+    return cart.some((item) => item.plan.id === planId)
+  }
+
+  const handleAddToCart = (plan: PlanWithFeatures) => {
+    addToCart({
+      product: {
+        id: product?.id || productId || 'unknown',
+        title: product?.name || 'Plan de Aprendizaje',
+        description: product?.description || plan.description,
+        image: product?.image || null,
+      },
+      plan: {
+        id: plan.id,
+        name: plan.name,
+        price: Number(plan.price),
+      },
+      quantity: 1,
+    })
+  }
 
   useEffect(() => {
     const fetchPlans = async () => {
@@ -33,13 +72,18 @@ export default function PricingPage() {
 
         if (productId) {
           fetchedPlans = await getPricingPlansForProduct(productId)
+          // Fetch product info
+          const products = await getProducts({ isActive: true })
+          const foundProduct = products.find(p => p.id === productId)
+          if (foundProduct) {
+            setProduct({
+              id: foundProduct.id,
+              name: foundProduct.name,
+              description: foundProduct.description,
+              image: foundProduct.image,
+            })
+          }
         } else {
-          // Fallback if no product selected, maybe fetch all simple plans or show error/empty
-          // For now, let's fetch all to avoid empty page if visited directly, 
-          // BUT user said "solo los planes asociados". 
-          // If I visit /pricing directly, I might want to see general plans. 
-          // I'll stick to 'getPlans()' if no ID, or maybe just empty.
-          // Let's use getPlans() as fallback for now.
           fetchedPlans = await getPlans()
         }
 
@@ -137,18 +181,23 @@ export default function PricingPage() {
                       </div>
 
                       <Button
-                        variant={isPopular ? "default" : "outline"}
+                        variant={isInCart(plan.id) ? "secondary" : isPopular ? "default" : "outline"}
                         className={cn(
                           "w-full py-3 h-auto mb-8 font-bold",
-                          isPopular
-                            ? "bg-primary hover:bg-blue-600 text-white shadow-lg shadow-blue-500/30"
-                            : "bg-slate-100 border-none hover:bg-slate-200 text-slate-900"
+                          isInCart(plan.id)
+                            ? "bg-green-500 hover:bg-green-600 text-white"
+                            : isPopular
+                              ? "bg-primary hover:bg-blue-600 text-white shadow-lg shadow-blue-500/30"
+                              : "bg-slate-100 border-none hover:bg-slate-200 text-slate-900"
                         )}
-                        onClick={() => {
-                          // Link to checkout or similar. For now just standard button behavior.
-                        }}
+                        onClick={() => handleAddToCart(plan)}
                       >
-                        {isPopular ? "Obtener Plan" : "Empezar Ahora"}
+                        {isInCart(plan.id) ? (
+                          <>
+                            <Check className="mr-2 h-4 w-4" />
+                            Añadido al Carrito
+                          </>
+                        ) : isPopular ? "Obtener Plan" : "Empezar Ahora"}
                       </Button>
 
                       <div className="space-y-4">
@@ -286,6 +335,11 @@ export default function PricingPage() {
         </section>
       </main>
 
+      <CartDrawer 
+        open={isCartDrawerOpen} 
+        onOpenChange={setCartDrawerOpen}
+        suggestedProducts={[]}
+      />
       <Footer />
     </div>
   )
