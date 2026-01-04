@@ -52,6 +52,7 @@ interface CheckoutScheduleSelectorProps {
   planId: string
   courseId: string
   classDuration?: number
+  maxClassesPerWeek?: number
   onScheduleSelected: (schedule: ScheduleSlot[], proration: ProrationResult) => void
 }
 
@@ -93,6 +94,7 @@ export function CheckoutScheduleSelector({
   planId,
   courseId,
   classDuration = 40,
+  maxClassesPerWeek,
   onScheduleSelected,
 }: CheckoutScheduleSelectorProps) {
   const [teachers, setTeachers] = useState<Teacher[]>([])
@@ -200,6 +202,12 @@ export function CheckoutScheduleSelector({
           if (newSet.has(slotKey)) {
             newSet.delete(slotKey)
           } else {
+            // Check max classes limit before adding
+            const maxSlots = maxClassesPerWeek || Infinity
+            if (newSet.size >= maxSlots) {
+              toast.error(`Máximo ${maxSlots} clases por semana permitidas`)
+              return prev
+            }
             newSet.add(slotKey)
           }
           return newSet
@@ -212,7 +220,7 @@ export function CheckoutScheduleSelector({
     }
     
     setDragStart(null)
-  }, [isDragging, tempSelectedSlots])
+  }, [isDragging, tempSelectedSlots, maxClassesPerWeek])
 
   useEffect(() => {
     const handleGlobalMouseUp = (e: MouseEvent) => {
@@ -226,7 +234,18 @@ export function CheckoutScheduleSelector({
   const applyMultiAdd = () => {
     setSelectedSlots(prev => {
       const newSet = new Set(prev)
-      tempSelectedSlots.forEach(slot => newSet.add(slot))
+      const maxSlots = maxClassesPerWeek || Infinity
+      
+      for (const slot of tempSelectedSlots) {
+        if (newSet.size >= maxSlots) {
+          toast.error(`Máximo ${maxSlots} clases por semana permitidas`)
+          break
+        }
+        if (!newSet.has(slot)) {
+          newSet.add(slot)
+        }
+      }
+      
       return newSet
     })
     setShowMultiEditPopover(false)
@@ -274,6 +293,12 @@ export function CheckoutScheduleSelector({
   const handleConfirmSchedule = async () => {
     if (!selectedTeacher || selectedSlots.size === 0) {
       toast.error('Debes seleccionar al menos un horario')
+      return
+    }
+
+    // Validar que se seleccione exactamente el número de clases requerido
+    if (maxClassesPerWeek && selectedSlots.size !== maxClassesPerWeek) {
+      toast.error(`Debes seleccionar exactamente ${maxClassesPerWeek} clases por semana`)
       return
     }
 
@@ -442,12 +467,20 @@ export function CheckoutScheduleSelector({
       {selectedTeacher && (
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base flex items-center gap-2">
-              <Calendar className="h-4 w-4" />
-              Seleccionar Horario
+            <CardTitle className="text-base flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4" />
+                Seleccionar Horario
+              </div>
+              {maxClassesPerWeek && (
+                <Badge variant={selectedSlots.size >= maxClassesPerWeek ? "default" : "secondary"}>
+                  {selectedSlots.size} / {maxClassesPerWeek} clases
+                </Badge>
+              )}
             </CardTitle>
             <CardDescription>
               Arrastra para seleccionar múltiples bloques. Cada clase dura {classDuration} minutos.
+              {maxClassesPerWeek && ` Máximo ${maxClassesPerWeek} clases por semana.`}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -641,24 +674,31 @@ export function CheckoutScheduleSelector({
 
       {/* Botón Confirmar */}
       {selectedSlots.size > 0 && (
-        <Button
-          onClick={handleConfirmSchedule}
-          disabled={calculating}
-          className="w-full"
-          size="lg"
-        >
-          {calculating ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Calculando precio...
-            </>
-          ) : (
-            <>
-              <Check className="mr-2 h-4 w-4" />
-              Confirmar Horario
-            </>
+        <div className="space-y-2">
+          {maxClassesPerWeek && selectedSlots.size !== maxClassesPerWeek && (
+            <p className="text-sm text-amber-600 dark:text-amber-400 text-center">
+              Debes seleccionar exactamente {maxClassesPerWeek} clases ({selectedSlots.size} seleccionadas)
+            </p>
           )}
-        </Button>
+          <Button
+            onClick={handleConfirmSchedule}
+            disabled={calculating || (maxClassesPerWeek ? selectedSlots.size !== maxClassesPerWeek : false)}
+            className="w-full"
+            size="lg"
+          >
+            {calculating ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Calculando precio...
+              </>
+            ) : (
+              <>
+                <Check className="mr-2 h-4 w-4" />
+                Confirmar Horario
+              </>
+            )}
+          </Button>
+        </div>
       )}
 
       {isDragging && (

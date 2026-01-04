@@ -79,11 +79,30 @@ const COUNTRIES = [
 
 const DAY_NAMES = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
 
+const CHECKOUT_STATE_KEY = 'checkout-state'
+
+interface CheckoutPersistedState {
+  currentStep: CheckoutStep
+  scheduleSelections: Record<string, { schedule: ScheduleSlot[]; proration: ProrationResult }>
+  formData: {
+    email: string
+    firstName: string
+    lastName: string
+    phone: string
+    address: string
+    city: string
+    zipCode: string
+    country: string
+  }
+  timestamp: number
+}
+
 export default function CheckoutPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { data: session, status: authStatus } = useSession()
   const niubizProcessedRef = useRef(false)
+  const initialStateLoaded = useRef(false)
   
   const [currentStep, setCurrentStep] = useState<CheckoutStep>('review')
   const [paymentMethod, setPaymentMethod] = useState<'creditCard' | 'paypal'>('creditCard')
@@ -241,11 +260,67 @@ export default function CheckoutPage() {
     }
   }, [cartItems])
 
+  // Load persisted checkout state on mount
+  useEffect(() => {
+    if (initialStateLoaded.current) return
+    
+    try {
+      const savedState = sessionStorage.getItem(CHECKOUT_STATE_KEY)
+      if (savedState) {
+        const parsed: CheckoutPersistedState = JSON.parse(savedState)
+        // Only restore if saved within the last 30 minutes
+        const thirtyMinutes = 30 * 60 * 1000
+        if (Date.now() - parsed.timestamp < thirtyMinutes) {
+          console.log('[Checkout] Restoring saved state:', parsed.currentStep)
+          setScheduleSelections(parsed.scheduleSelections)
+          setFormData(prev => ({
+            ...prev,
+            ...parsed.formData,
+          }))
+          // Restore step after plans are loaded
+          if (parsed.currentStep) {
+            setCurrentStep(parsed.currentStep)
+          }
+        } else {
+          // Clear expired state
+          sessionStorage.removeItem(CHECKOUT_STATE_KEY)
+        }
+      }
+    } catch (error) {
+      console.error('[Checkout] Error loading saved state:', error)
+    }
+    
+    initialStateLoaded.current = true
+  }, [])
+
+  // Save checkout state when it changes
+  useEffect(() => {
+    if (!initialStateLoaded.current) return
+    
+    const stateToSave: CheckoutPersistedState = {
+      currentStep,
+      scheduleSelections,
+      formData,
+      timestamp: Date.now(),
+    }
+    
+    try {
+      sessionStorage.setItem(CHECKOUT_STATE_KEY, JSON.stringify(stateToSave))
+    } catch (error) {
+      console.error('[Checkout] Error saving state:', error)
+    }
+  }, [currentStep, scheduleSelections, formData])
+
+  // Only set to schedule step if no saved state was restored
   useEffect(() => {
     if (!loadingPlans && requiresScheduleSelection) {
-      setCurrentStep('schedule')
+      // Check if we have a saved schedule selection - if so, don't force back to schedule step
+      const hasRestoredSchedules = Object.keys(scheduleSelections).length > 0
+      if (!hasRestoredSchedules) {
+        setCurrentStep('schedule')
+      }
     }
-  }, [loadingPlans, requiresScheduleSelection])
+  }, [loadingPlans, requiresScheduleSelection, scheduleSelections])
 
   useEffect(() => {
     if (authStatus !== 'loading') {
@@ -356,6 +431,8 @@ export default function CheckoutPage() {
       paypalData: data,
     }
     sessionStorage.setItem('last-order', JSON.stringify(orderData))
+    // Clear checkout state after successful payment
+    sessionStorage.removeItem(CHECKOUT_STATE_KEY)
     useShopStore.getState().clearCart()
     setTimeout(() => {
       router.push('/shop/cart/checkout/confirmation')
@@ -516,6 +593,7 @@ export default function CheckoutPage() {
                           planId={item.plan.id}
                           courseId={details.courseId!}
                           classDuration={details.classDuration}
+                          maxClassesPerWeek={details.classesPerWeek || undefined}
                           onScheduleSelected={(schedule, proration) => handleScheduleSelected(item.plan.id, schedule, proration)}
                         />
                       </div>

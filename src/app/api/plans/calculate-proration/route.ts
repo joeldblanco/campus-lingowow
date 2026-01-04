@@ -87,27 +87,64 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Obtener el período académico actual
-    const currentPeriod = await db.academicPeriod.findFirst({
-      where: { isActive: true },
+    // Obtener el período académico actual o el próximo (excluyendo special weeks)
+    const today = new Date()
+    
+    // Primero buscar período activo que NO sea special week
+    let currentPeriod = await db.academicPeriod.findFirst({
+      where: { 
+        isActive: true,
+        isSpecialWeek: false,
+      },
     })
 
-    if (!currentPeriod) {
-      return NextResponse.json(
-        { error: 'No hay período académico activo' },
-        { status: 404 }
-      )
-    }
+    let periodStart: Date = new Date(today)
+    let periodEnd: Date = new Date(today)
+    periodEnd.setDate(periodEnd.getDate() + 28) // Default: 4 semanas
+    let useDefaultPeriod = true
+    let periodName = 'Período por defecto'
 
-    // Calcular fechas
-    const today = new Date()
-    const periodStart = new Date(currentPeriod.startDate)
-    const periodEnd = new Date(currentPeriod.endDate)
+    if (currentPeriod) {
+      const tempPeriodEnd = new Date(currentPeriod.endDate)
+      
+      // Solo usar el período académico si aún no ha terminado
+      if (tempPeriodEnd >= today) {
+        periodStart = new Date(currentPeriod.startDate)
+        periodEnd = tempPeriodEnd
+        useDefaultPeriod = false
+        periodName = currentPeriod.name
+      } else {
+        console.log('[Proration] Active period has ended, looking for next period')
+        currentPeriod = null // Reset para buscar el próximo
+      }
+    }
+    
+    // Si no hay período activo válido, buscar el próximo período regular (no special week)
+    if (!currentPeriod || useDefaultPeriod) {
+      const nextPeriod = await db.academicPeriod.findFirst({
+        where: {
+          startDate: { gte: today },
+          isSpecialWeek: false,
+        },
+        orderBy: { startDate: 'asc' },
+      })
+      
+      if (nextPeriod) {
+        periodStart = new Date(nextPeriod.startDate)
+        periodEnd = new Date(nextPeriod.endDate)
+        useDefaultPeriod = false
+        periodName = nextPeriod.name
+        console.log('[Proration] Using next period:', nextPeriod.name)
+      } else {
+        console.log('[Proration] No active or upcoming period found, using default period')
+      }
+    }
     
     console.log('[Proration] Period:', {
       periodStart: periodStart.toISOString(),
       periodEnd: periodEnd.toISOString(),
       today: today.toISOString(),
+      useDefaultPeriod,
     })
     
     // La fecha de inicio es hoy o el inicio del período, lo que sea más tarde
@@ -137,12 +174,17 @@ export async function POST(req: NextRequest) {
     let proratedPrice = plan.price
     const proratedClasses = classesFromNow
 
-    if (plan.allowProration && totalClassesInFullPeriod > 0) {
+    // Si no hay período académico o el prorrateo está deshabilitado, usar precio completo
+    // Si hay clases calculadas, calcular el prorrateo
+    if (plan.allowProration && totalClassesInFullPeriod > 0 && !useDefaultPeriod) {
       // Calcular el precio por clase
       const pricePerClass = plan.price / totalClassesInFullPeriod
       
       // Calcular el precio prorrateado
       proratedPrice = pricePerClass * classesFromNow
+    } else if (useDefaultPeriod) {
+      // Sin período académico, usar precio completo
+      proratedPrice = plan.price
     }
 
     // Calcular días restantes en el período
@@ -161,6 +203,7 @@ export async function POST(req: NextRequest) {
       classesFromNow: proratedClasses,
       totalClassesInFullPeriod,
       classesPerWeek: schedule.length,
+      periodName,
       periodStart: periodStart.toISOString(),
       periodEnd: periodEnd.toISOString(),
       enrollmentStart: enrollmentStart.toISOString(),
