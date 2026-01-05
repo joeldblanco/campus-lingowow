@@ -25,7 +25,7 @@ export async function getStudentLessonsForEnrollment(
 ): Promise<StudentLessonActionResult<StudentLessonListItem[]>> {
   try {
     const lessons = await db.studentLesson.findMany({
-      where: { enrollmentId },
+      where: { enrollmentId, isPublished: true },
       select: {
         id: true,
         title: true,

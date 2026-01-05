@@ -556,6 +556,20 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
                 progress: true,
                 enrollmentDate: true,
                 lastAccessed: true,
+                studentLessons: {
+                  where: { isPublished: true },
+                  select: {
+                    id: true,
+                    title: true,
+                    description: true,
+                    order: true,
+                    duration: true,
+                    isPublished: true,
+                    videoUrl: true,
+                    summary: true,
+                  },
+                  orderBy: { order: 'asc' },
+                },
               },
             }
           : false,

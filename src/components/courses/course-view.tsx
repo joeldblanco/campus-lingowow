@@ -10,7 +10,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Progress } from '@/components/ui/progress'
-import { ArrowLeft, Calendar, CheckCircle, Play, Target, Trophy } from 'lucide-react'
+import { ArrowLeft, BookOpen, Calendar, CheckCircle, Clock, Play, Target, Trophy, User } from 'lucide-react'
 import Link from 'next/link'
 
 interface CourseViewProps {
@@ -20,6 +20,7 @@ interface CourseViewProps {
     description: string | null
     language: string
     level: string
+    isPersonalized?: boolean
     createdBy: {
       name: string
       bio?: string | null
@@ -59,6 +60,16 @@ interface CourseViewProps {
       progress: number
       enrollmentDate: Date
       lastAccessed?: Date | null
+      studentLessons?: Array<{
+        id: string
+        title: string
+        description: string | null
+        order: number
+        duration: number
+        isPublished: boolean
+        videoUrl?: string | null
+        summary?: string | null
+      }>
     } | null
   }
   progress?: {
@@ -216,6 +227,60 @@ export function CourseView({ course, progress }: CourseViewProps) {
           </CardContent>
         </Card>
       </div>
+
+      {/* Personalized Lessons Section - Only for personalized courses */}
+      {course.isPersonalized && course.enrollment?.studentLessons && course.enrollment.studentLessons.length > 0 && (
+        <div className="space-y-6">
+          <h2 className="text-2xl font-semibold flex items-center gap-2">
+            <BookOpen className="w-6 h-6" />
+            Mis Lecciones Personalizadas
+          </h2>
+          <div className="space-y-4">
+            {course.enrollment.studentLessons.map((lesson, index) => (
+              <Card
+                key={lesson.id}
+                className="transition-all hover:shadow-md"
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-4 flex-1">
+                      <div className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold bg-purple-100 text-purple-700">
+                        {index + 1}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-lg">{lesson.title}</h3>
+                        {lesson.description && (
+                          <p className="text-sm text-gray-600 line-clamp-2 mt-1">
+                            {lesson.description}
+                          </p>
+                        )}
+                        <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                          <span className="flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            {lesson.duration} min
+                          </span>
+                          <Badge className="bg-purple-100 text-purple-800">
+                            <User className="w-3 h-3 mr-1" />
+                            Personalizado
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="shrink-0">
+                      <Button asChild>
+                        <Link href={`/my-courses/${course.id}/personalized/${lesson.id}`}>
+                          <Play className="w-4 h-4 mr-2" />
+                          Comenzar
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Course Modules */}
       <div className="space-y-6">
