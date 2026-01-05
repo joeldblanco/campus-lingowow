@@ -70,7 +70,17 @@ export const NiubizCheckout = ({
             const res = await fetch("/api/niubiz/session", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ amount, allowGuest }),
+                body: JSON.stringify({ 
+                    amount, 
+                    allowGuest,
+                    purchaseNumber,
+                    invoiceData,
+                    customerInfo: customerInfo || (userEmail ? {
+                        email: userEmail,
+                        firstName: userFirstName || '',
+                        lastName: userLastName || '',
+                    } : undefined),
+                }),
             });
 
             console.log("Niubiz Session Response:", res.status);
@@ -172,6 +182,8 @@ export const NiubizCheckout = ({
                 lastName: userLastName || '',
             } : undefined);
 
+            console.log('[NiubizCheckout] Sending invoiceData:', JSON.stringify(invoiceData, null, 2));
+            
             const res = await fetch("/api/niubiz/authorize", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

@@ -104,6 +104,7 @@ export default function CheckoutPage() {
   const niubizProcessedRef = useRef(false)
   const initialStateLoaded = useRef(false)
   
+  const [stateRestored, setStateRestored] = useState(false)
   const [currentStep, setCurrentStep] = useState<CheckoutStep>('review')
   const [paymentMethod, setPaymentMethod] = useState<'creditCard' | 'paypal'>('creditCard')
   const [isLoading, setIsLoading] = useState(false)
@@ -271,7 +272,7 @@ export default function CheckoutPage() {
         // Only restore if saved within the last 30 minutes
         const thirtyMinutes = 30 * 60 * 1000
         if (Date.now() - parsed.timestamp < thirtyMinutes) {
-          console.log('[Checkout] Restoring saved state:', parsed.currentStep)
+          console.log('[Checkout] Restoring saved state:', parsed.currentStep, 'scheduleSelections:', parsed.scheduleSelections)
           setScheduleSelections(parsed.scheduleSelections)
           setFormData(prev => ({
             ...prev,
@@ -291,6 +292,7 @@ export default function CheckoutPage() {
     }
     
     initialStateLoaded.current = true
+    setStateRestored(true)
   }, [])
 
   // Save checkout state when it changes
@@ -387,6 +389,11 @@ export default function CheckoutPage() {
         toast.error('Debes seleccionar un horario para todos los cursos')
         return
       }
+      // Require login before proceeding to review
+      if (requiresPlatformAccess && !session?.user) {
+        setShowLoginModal(true)
+        return
+      }
       setCurrentStep('review')
     } else if (currentStep === 'review') {
       if (!formData.email || !formData.firstName || !formData.phone) {
@@ -419,25 +426,20 @@ export default function CheckoutPage() {
 
   const handlePaymentSuccess = useCallback((data: unknown) => {
     const anyData = data as { invoice?: { invoiceNumber?: string }; orderId?: string }
-    const orderNumber = anyData.invoice?.invoiceNumber || anyData.orderId || `ORD-${Date.now()}`
-    const orderData = {
-      orderNumber,
-      orderDate: new Date().toISOString(),
-      totalAmount: total,
-      items: cartItems,
-      customer: JSON.parse(sessionStorage.getItem('customer-info') || '{}'),
-      paymentMethod: anyData.orderId ? 'creditCard' : 'paypal',
-      user: session?.user ? { id: session.user.id, email: session.user.email } : undefined,
-      paypalData: data,
-    }
-    sessionStorage.setItem('last-order', JSON.stringify(orderData))
+    const invoiceNumber = anyData.invoice?.invoiceNumber
+    
     // Clear checkout state after successful payment
     sessionStorage.removeItem(CHECKOUT_STATE_KEY)
     useShopStore.getState().clearCart()
+    
+    // Redirect to confirmation page with invoice number
     setTimeout(() => {
-      router.push('/shop/cart/checkout/confirmation')
+      const url = invoiceNumber 
+        ? `/shop/cart/checkout/confirmation?orderNumber=${invoiceNumber}`
+        : '/shop/cart/checkout/confirmation'
+      router.push(url)
     }, 500)
-  }, [total, cartItems, session, router])
+  }, [router])
 
   const handlePaymentSubmit = useCallback(() => {
     if (paymentMethod === 'paypal') return
@@ -460,22 +462,26 @@ export default function CheckoutPage() {
     }, 2000)
   }, [paymentMethod, total, cartItems, session, router])
 
-  const paypalItems = useMemo(() => cartItems.map((item) => {
-    const selection = scheduleSelections[item.plan.id]
-    const proration = selection?.proration
-    const price = proration?.proratedPrice ?? item.plan.price
-    return {
-      productId: item.product.id,
-      planId: item.plan.id,
-      name: item.product.title,
-      description: item.cartItemDescription || item.product.description || item.plan.name,
-      price,
-      quantity: item.quantity || 1,
-      selectedSchedule: selection?.schedule,
-      proratedClasses: proration?.classesFromNow,
-      proratedPrice: proration?.proratedPrice,
-    }
-  }), [cartItems, scheduleSelections])
+  const paypalItems = useMemo(() => {
+    console.log('[Checkout] Building paypalItems with scheduleSelections:', scheduleSelections)
+    return cartItems.map((item) => {
+      const selection = scheduleSelections[item.plan.id]
+      const proration = selection?.proration
+      const price = proration?.proratedPrice ?? item.plan.price
+      console.log('[Checkout] Item:', item.plan.id, 'schedule:', selection?.schedule)
+      return {
+        productId: item.product.id,
+        planId: item.plan.id,
+        name: item.product.title,
+        description: item.cartItemDescription || item.product.description || item.plan.name,
+        price,
+        quantity: item.quantity || 1,
+        selectedSchedule: selection?.schedule,
+        proratedClasses: proration?.classesFromNow,
+        proratedPrice: proration?.proratedPrice,
+      }
+    })
+  }, [cartItems, scheduleSelections])
 
   const getStepNumber = useCallback((step: CheckoutStep) => {
     if (requiresScheduleSelection) {
@@ -493,7 +499,7 @@ export default function CheckoutPage() {
     }
   }, [requiresScheduleSelection])
 
-  if (checkingAuth || loadingPlans) {
+  if (checkingAuth || loadingPlans || !stateRestored) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">

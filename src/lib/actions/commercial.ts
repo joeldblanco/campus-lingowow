@@ -774,6 +774,45 @@ export async function getInvoiceById(id: string): Promise<Invoice | null> {
   }
 }
 
+export async function getInvoiceByNumber(invoiceNumber: string): Promise<Invoice | null> {
+  try {
+    return await db.invoice.findFirst({
+      where: { invoiceNumber },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        items: {
+          include: {
+            product: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+              },
+            },
+            plan: {
+              select: {
+                id: true,
+                name: true,
+                price: true,
+              },
+            },
+          },
+        },
+      },
+    })
+  } catch (error) {
+    console.error('Error fetching invoice by number:', error)
+    return null
+  }
+}
+
 export async function createInvoice(data: {
   invoiceNumber: string
   userId: string

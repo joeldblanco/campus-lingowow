@@ -154,10 +154,25 @@ export async function POST(req: NextRequest) {
         },
       })
 
-      // Obtener el período académico actual
-      const currentPeriod = await db.academicPeriod.findFirst({
-        where: { isActive: true },
+      // Obtener el período académico actual (excluyendo special weeks)
+      const today = new Date()
+      let currentPeriod = await db.academicPeriod.findFirst({
+        where: { 
+          isActive: true,
+          isSpecialWeek: false,
+        },
       })
+
+      // Si no hay período activo o ya terminó, buscar el próximo
+      if (!currentPeriod || new Date(currentPeriod.endDate) < today) {
+        currentPeriod = await db.academicPeriod.findFirst({
+          where: {
+            startDate: { gte: today },
+            isSpecialWeek: false,
+          },
+          orderBy: { startDate: 'asc' },
+        })
+      }
 
       // Procesar las compras de productos
       const purchases = await Promise.all(

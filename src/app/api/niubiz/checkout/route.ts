@@ -1,5 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { authorizeNiubizTransaction, getNiubizAccessToken } from '@/lib/niubiz'
+import { db } from '@/lib/db'
+import { sendPaymentConfirmationEmail } from '@/lib/mail'
+
+interface ScheduleSlot {
+  teacherId: string
+  dayOfWeek: number
+  startTime: string
+  endTime: string
+}
+
+interface InvoiceItem {
+  productId: string
+  planId?: string
+  name: string
+  price: number
+  quantity: number
+  selectedSchedule?: ScheduleSlot[]
+  proratedClasses?: number
+  proratedPrice?: number
+}
+
+interface InvoiceData {
+  items: InvoiceItem[]
+  subtotal: number
+  tax: number
+  discount: number
+  total: number
+  currency?: string
+}
 
 // This endpoint receives the POST from Niubiz after 3DS authentication
 // Niubiz sends transactionToken in the body as application/x-www-form-urlencoded
@@ -49,7 +78,6 @@ export async function POST(request: NextRequest) {
     
     if (!transactionToken) {
       console.error('[NIUBIZ CHECKOUT] No transactionToken in POST body')
-      // Redirect to checkout with error
       return NextResponse.redirect(
         new URL('/shop/cart/checkout?niubiz_error=missing_token', request.url)
       )
@@ -88,13 +116,340 @@ export async function POST(request: NextRequest) {
       )
     }
     
-    // Payment successful - redirect to confirmation
-    // Note: Invoice creation is handled by the existing /api/niubiz/authorize endpoint
-    // or can be done on the confirmation page with the stored cart data
+    // Payment successful - Now create invoice and enrollment
+    console.log('[NIUBIZ CHECKOUT] Payment successful, processing order...')
     
-    const invoiceNumber = `INV-${purchaseNumber}`
+    // Get pending order data
+    const pendingOrder = await db.pendingOrder.findUnique({
+      where: { purchaseNumber }
+    }).catch(() => null)
     
-    // Redirect to confirmation page with success params
+    let invoiceNumber = `INV-${purchaseNumber}`
+    
+    if (pendingOrder && pendingOrder.status === 'PENDING') {
+      console.log('[NIUBIZ CHECKOUT] Found pending order, creating invoice and enrollment...')
+      
+      const invoiceData = pendingOrder.invoiceData as unknown as InvoiceData
+      let userId = pendingOrder.userId
+      
+      // If no user but have customer email, find or create user
+      if (!userId && pendingOrder.customerEmail) {
+        const existingUser = await db.user.findUnique({
+          where: { email: pendingOrder.customerEmail },
+        })
+        
+        if (existingUser) {
+          userId = existingUser.id
+        } else {
+          const guestUser = await db.user.create({
+            data: {
+              name: pendingOrder.customerName || 'Guest',
+              email: pendingOrder.customerEmail,
+              roles: ['GUEST'],
+            },
+          })
+          userId = guestUser.id
+        }
+      }
+      
+      if (userId && invoiceData) {
+        // Create invoice
+        invoiceNumber = `INV-${Date.now().toString().slice(-8)}`
+        
+        const invoice = await db.invoice.create({
+          data: {
+            invoiceNumber,
+            userId: userId,
+            subtotal: invoiceData.subtotal,
+            discount: invoiceData.discount || 0,
+            tax: invoiceData.tax || 0,
+            total: invoiceData.total,
+            status: 'PAID',
+            currency: invoiceData.currency || 'USD',
+            paidAt: new Date(),
+            paymentMethod: 'niubiz',
+            niubizTransactionId: transactionToken,
+            niubizOrderId: purchaseNumber,
+            notes: `Niubiz Order ID: ${purchaseNumber}, Auth: ${authorization?.header?.ecoreTransactionUUID}`,
+            items: {
+              create: invoiceData.items.map((item) => ({
+                productId: item.productId,
+                planId: item.planId,
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity || 1,
+                total: item.price * (item.quantity || 1),
+              })),
+            },
+          },
+          include: { items: true },
+        })
+        
+        console.log('[NIUBIZ CHECKOUT] Invoice created:', invoice.invoiceNumber)
+        
+        // Get current academic period (excluding special weeks)
+        const today = new Date()
+        let currentPeriod = await db.academicPeriod.findFirst({
+          where: { 
+            isActive: true,
+            isSpecialWeek: false,
+          },
+        })
+
+        // If no active period or it has ended, look for the next one
+        if (!currentPeriod || new Date(currentPeriod.endDate) < today) {
+          currentPeriod = await db.academicPeriod.findFirst({
+            where: {
+              startDate: { gte: today },
+              isSpecialWeek: false,
+            },
+            orderBy: { startDate: 'asc' },
+          })
+        }
+        
+        console.log('[NIUBIZ CHECKOUT] Academic period:', currentPeriod?.name || 'None found')
+        
+        // Process each item for enrollment
+        for (const item of invoiceData.items) {
+          let plan = null
+          let courseId: string | null = null
+          
+          if (item.planId) {
+            plan = await db.plan.findUnique({
+              where: { id: item.planId },
+              include: { 
+                course: true,
+                product: {
+                  include: { course: true }
+                }
+              },
+            })
+            // Get courseId from plan, or from product if plan doesn't have it
+            courseId = plan?.courseId || plan?.product?.courseId || null
+          }
+          
+          // If still no courseId, try to get it from the product directly
+          if (!courseId && item.productId) {
+            const product = await db.product.findUnique({
+              where: { id: item.productId },
+              select: { courseId: true }
+            })
+            courseId = product?.courseId || null
+          }
+          
+          // Create product purchase
+          const purchase = await db.productPurchase.create({
+            data: {
+              userId: userId!,
+              productId: item.productId,
+              invoiceId: invoice.id,
+              status: 'CONFIRMED',
+              selectedSchedule: item.selectedSchedule
+                ? JSON.parse(JSON.stringify(item.selectedSchedule))
+                : undefined,
+              proratedClasses: item.proratedClasses || undefined,
+              proratedPrice: item.proratedPrice || undefined,
+            },
+          })
+          
+          console.log('[NIUBIZ CHECKOUT] Enrollment check:', {
+            planId: item.planId,
+            includesClasses: plan?.includesClasses,
+            planCourseId: plan?.courseId,
+            productCourseId: plan?.product?.courseId,
+            resolvedCourseId: courseId,
+            selectedSchedule: item.selectedSchedule?.length,
+            currentPeriodId: currentPeriod?.id,
+          })
+          
+          // Create enrollment if plan includes classes
+          if (
+            plan?.includesClasses &&
+            courseId &&
+            item.selectedSchedule &&
+            item.selectedSchedule.length > 0 &&
+            currentPeriod
+          ) {
+            console.log('[NIUBIZ CHECKOUT] Creating enrollment for student:', userId, 'in course:', courseId)
+            
+            const enrollment = await db.enrollment.upsert({
+              where: {
+                studentId_courseId_academicPeriodId: {
+                  studentId: userId!,
+                  courseId: courseId!,
+                  academicPeriodId: currentPeriod.id,
+                },
+              },
+              create: {
+                studentId: userId!,
+                courseId: courseId!,
+                academicPeriodId: currentPeriod.id,
+                status: 'ACTIVE',
+                classesTotal: item.proratedClasses || plan.classesPerPeriod || 8,
+                classesAttended: 0,
+                classesMissed: 0,
+              },
+              update: {
+                status: 'ACTIVE',
+                classesTotal: item.proratedClasses || plan.classesPerPeriod || 8,
+              },
+            })
+            
+            console.log('[NIUBIZ CHECKOUT] Enrollment created:', enrollment.id)
+            
+            // Update purchase with enrollment
+            await db.productPurchase.update({
+              where: { id: purchase.id },
+              data: {
+                enrollmentId: enrollment.id,
+                status: 'ENROLLED',
+              },
+            })
+            
+            // Create schedules
+            const { convertRecurringScheduleToUTC } = await import('@/lib/utils/date')
+            
+            const teacherIds = [...new Set(item.selectedSchedule.map(s => s.teacherId))]
+            const teachers = await db.user.findMany({
+              where: { id: { in: teacherIds } },
+              select: { id: true, timezone: true },
+            })
+            const teacherTimezones = new Map(teachers.map(t => [t.id, t.timezone || 'America/Lima']))
+            
+            for (const slot of item.selectedSchedule) {
+              const timezone = teacherTimezones.get(slot.teacherId) || 'America/Lima'
+              const utcData = convertRecurringScheduleToUTC(
+                slot.dayOfWeek,
+                slot.startTime,
+                slot.endTime,
+                timezone
+              )
+              
+              const existingSchedule = await db.classSchedule.findUnique({
+                where: {
+                  enrollmentId_dayOfWeek_startTime: {
+                    enrollmentId: enrollment.id,
+                    dayOfWeek: utcData.dayOfWeek,
+                    startTime: utcData.startTime,
+                  },
+                },
+              })
+
+              if (!existingSchedule) {
+                await db.classSchedule.create({
+                  data: {
+                    enrollmentId: enrollment.id,
+                    teacherId: slot.teacherId,
+                    dayOfWeek: utcData.dayOfWeek,
+                    startTime: utcData.startTime,
+                    endTime: utcData.endTime,
+                  },
+                })
+                console.log('[NIUBIZ CHECKOUT] Schedule created for day:', utcData.dayOfWeek)
+              }
+            }
+            
+            // Create bookings for current period
+            const periodStart = new Date(currentPeriod.startDate)
+            const periodEnd = new Date(currentPeriod.endDate)
+            const startDate = today > periodStart ? today : periodStart
+            const currentDate = new Date(startDate)
+
+            while (currentDate <= periodEnd) {
+              const dayOfWeek = currentDate.getDay()
+              const scheduleForDay = item.selectedSchedule.find(
+                (slot) => slot.dayOfWeek === dayOfWeek
+              )
+
+              if (scheduleForDay) {
+                const dayString = currentDate.toISOString().split('T')[0]
+                const existingBooking = await db.classBooking.findFirst({
+                  where: {
+                    studentId: userId!,
+                    teacherId: scheduleForDay.teacherId,
+                    day: dayString,
+                    timeSlot: `${scheduleForDay.startTime}-${scheduleForDay.endTime}`,
+                  },
+                })
+
+                if (!existingBooking) {
+                  await db.classBooking.create({
+                    data: {
+                      studentId: userId!,
+                      teacherId: scheduleForDay.teacherId,
+                      enrollmentId: enrollment.id,
+                      day: dayString,
+                      timeSlot: `${scheduleForDay.startTime}-${scheduleForDay.endTime}`,
+                      status: 'CONFIRMED',
+                    },
+                  })
+                }
+              }
+              currentDate.setDate(currentDate.getDate() + 1)
+            }
+            
+            console.log('[NIUBIZ CHECKOUT] Bookings created for period')
+            
+            // Update user role to STUDENT
+            const user = await db.user.findUnique({
+              where: { id: userId },
+              select: { roles: true },
+            })
+
+            if (user && user.roles.includes('GUEST') && !user.roles.includes('STUDENT')) {
+              const updatedRoles = user.roles.filter((role) => role !== 'GUEST')
+              updatedRoles.push('STUDENT')
+              await db.user.update({
+                where: { id: userId },
+                data: { roles: updatedRoles },
+              })
+            } else if (user && !user.roles.includes('STUDENT')) {
+              await db.user.update({
+                where: { id: userId },
+                data: { roles: { push: 'STUDENT' } },
+              })
+            }
+          }
+        }
+        
+        // Send confirmation email
+        try {
+          const user = await db.user.findUnique({
+            where: { id: userId },
+            select: { email: true, name: true, lastName: true },
+          })
+
+          if (user?.email) {
+            await sendPaymentConfirmationEmail(user.email, {
+              customerName: `${user.name || ''} ${user.lastName || ''}`.trim() || 'Cliente',
+              invoiceNumber: invoice.invoiceNumber,
+              items: invoiceData.items.map((item) => ({
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity || 1,
+              })),
+              subtotal: invoiceData.subtotal,
+              discount: invoiceData.discount || 0,
+              tax: invoiceData.tax || 0,
+              total: invoiceData.total,
+              currency: invoiceData.currency || 'USD',
+            })
+          }
+        } catch (emailError) {
+          console.error('[NIUBIZ CHECKOUT] Error sending email:', emailError)
+        }
+        
+        // Mark pending order as completed
+        await db.pendingOrder.update({
+          where: { purchaseNumber },
+          data: { status: 'COMPLETED' },
+        })
+      }
+    } else {
+      console.log('[NIUBIZ CHECKOUT] No pending order found for:', purchaseNumber)
+    }
+    
+    // Redirect to confirmation page
     const confirmationUrl = new URL('/shop/cart/checkout/confirmation', request.url)
     confirmationUrl.searchParams.set('success', 'true')
     confirmationUrl.searchParams.set('orderNumber', invoiceNumber)

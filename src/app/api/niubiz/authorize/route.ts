@@ -122,6 +122,7 @@ export async function POST(req: NextRequest) {
     let needsScheduleSetup = false
 
     if (invoiceData) {
+      console.log('[NIUBIZ] Processing invoiceData:', JSON.stringify(invoiceData, null, 2))
       const invoiceNumber = `INV-${Date.now().toString().slice(-8)}`
 
       invoice = await db.invoice.create({
@@ -155,22 +156,54 @@ export async function POST(req: NextRequest) {
         },
       })
 
-      // Get current academic period
-      const currentPeriod = await db.academicPeriod.findFirst({
-        where: { isActive: true },
+      // Get current academic period (excluding special weeks)
+      const today = new Date()
+      let currentPeriod = await db.academicPeriod.findFirst({
+        where: { 
+          isActive: true,
+          isSpecialWeek: false,
+        },
       })
+
+      // If no active period or it has ended, look for the next one
+      if (!currentPeriod || new Date(currentPeriod.endDate) < today) {
+        currentPeriod = await db.academicPeriod.findFirst({
+          where: {
+            startDate: { gte: today },
+            isSpecialWeek: false,
+          },
+          orderBy: { startDate: 'asc' },
+        })
+      }
 
       // Process purchases
       purchases = await Promise.all(
         invoiceData.items.map(async (item) => {
           let plan = null
           let enrollment: { id: string; course?: { title?: string } } | null = null
+          let courseId: string | null = null
 
           if (item.planId) {
             plan = await db.plan.findUnique({
               where: { id: item.planId },
-              include: { course: true },
+              include: { 
+                course: true,
+                product: {
+                  include: { course: true }
+                }
+              },
             })
+            // Get courseId from plan, or from product if plan doesn't have it
+            courseId = plan?.courseId || plan?.product?.courseId || null
+          }
+          
+          // If still no courseId, try to get it from the product directly
+          if (!courseId && item.productId) {
+            const product = await db.product.findUnique({
+              where: { id: item.productId },
+              select: { courseId: true }
+            })
+            courseId = product?.courseId || null
           }
 
           const purchase = await db.productPurchase.create({
@@ -188,24 +221,36 @@ export async function POST(req: NextRequest) {
           })
 
           // Enrollment logic
+          console.log('[NIUBIZ] Enrollment check:', {
+            planId: item.planId,
+            includesClasses: plan?.includesClasses,
+            planCourseId: plan?.courseId,
+            productCourseId: plan?.product?.courseId,
+            resolvedCourseId: courseId,
+            selectedSchedule: item.selectedSchedule,
+            selectedScheduleLength: item.selectedSchedule?.length,
+            currentPeriodId: currentPeriod?.id,
+          })
+          
           if (
             plan?.includesClasses &&
-            plan.courseId &&
+            courseId &&
             item.selectedSchedule &&
             item.selectedSchedule.length > 0 &&
             currentPeriod
           ) {
+            console.log('[NIUBIZ] Creating enrollment for student:', userId, 'in course:', courseId)
             enrollment = await db.enrollment.upsert({
               where: {
                 studentId_courseId_academicPeriodId: {
                   studentId: userId!,
-                  courseId: plan.courseId,
+                  courseId: courseId!,
                   academicPeriodId: currentPeriod.id,
                 },
               },
               create: {
                 studentId: userId!,
-                courseId: plan.courseId,
+                courseId: courseId!,
                 academicPeriodId: currentPeriod.id,
                 status: 'ACTIVE',
                 classesTotal: item.proratedClasses || plan.classesPerPeriod || 8,

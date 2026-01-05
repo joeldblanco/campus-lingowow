@@ -1,117 +1,102 @@
-'use client'
-
-import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { OrderDetails } from '@/types/shop'
-import { Check, ChevronRight, FileText, LayoutDashboard, Loader2, Mail } from 'lucide-react'
-import { useSession } from 'next-auth/react'
+import { Check, ChevronRight, FileText, LayoutDashboard, Mail } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { useShopStore } from '@/stores/useShopStore'
+import { redirect } from 'next/navigation'
+import { auth } from '@/auth'
+import { db } from '@/lib/db'
+import { ClearCartOnMount } from './clear-cart-client'
 
-export default function ConfirmationPage() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const { data: session } = useSession()
-  const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const clearCart = useShopStore((state) => state.clearCart)
+interface ConfirmationPageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
 
-  useEffect(() => {
-    // Check if we came from Niubiz redirect with URL params
-    const successFromUrl = searchParams.get('success') === 'true'
-    const orderNumberFromUrl = searchParams.get('orderNumber')
-    const amountFromUrl = searchParams.get('amount')
-    
-    // Recuperamos los detalles del pedido del sessionStorage
-    const orderData = sessionStorage.getItem('last-order')
-
-    // If we have URL params from Niubiz redirect, create order details from them
-    if (successFromUrl && orderNumberFromUrl) {
-      // Try to get cart items from niubiz-pending-payment (saved before opening modal)
-      let items: OrderDetails['items'] = []
-      let customerEmail = session?.user?.email || ''
-      let customerFirstName = session?.user?.name?.split(' ')[0] || ''
-      let customerLastName = session?.user?.name?.split(' ').slice(1).join(' ') || ''
-      
-      const pendingPaymentData = sessionStorage.getItem('niubiz-pending-payment')
-      if (pendingPaymentData) {
-        try {
-          const parsed = JSON.parse(pendingPaymentData)
-          if (parsed.cartItems && Array.isArray(parsed.cartItems)) {
-            items = parsed.cartItems
-          }
-          if (parsed.customerInfo) {
-            customerEmail = parsed.customerInfo.email || customerEmail
-            customerFirstName = parsed.customerInfo.firstName || customerFirstName
-            customerLastName = parsed.customerInfo.lastName || customerLastName
-          }
-        } catch (e) {
-          console.error('Error parsing pending payment data:', e)
-        }
-      }
-      
-      // Fallback: try to get from lingowow-shop store
-      if (items.length === 0) {
-        const cartData = sessionStorage.getItem('lingowow-shop')
-        if (cartData) {
-          try {
-            const parsed = JSON.parse(cartData)
-            if (parsed.state?.items) {
-              items = parsed.state.items
-            }
-          } catch (e) {
-            console.error('Error parsing cart data:', e)
-          }
-        }
-      }
-      
-      const order: OrderDetails = {
-        orderNumber: orderNumberFromUrl,
-        orderDate: new Date().toISOString(),
-        totalAmount: amountFromUrl ? parseFloat(amountFromUrl) : 0,
-        items: items,
-        customer: { 
-          firstName: customerFirstName, 
-          lastName: customerLastName,
-          email: customerEmail, 
-          phone: '' 
+export default async function ConfirmationPage({ searchParams }: ConfirmationPageProps) {
+  const params = await searchParams
+  const session = await auth()
+  
+  // Get invoice number from URL params
+  const invoiceNumber = params.orderNumber as string | undefined
+  
+  let invoice = null
+  
+  if (invoiceNumber) {
+    invoice = await db.invoice.findFirst({
+      where: { invoiceNumber },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            email: true,
+          },
         },
-        paymentMethod: 'creditCard',
-      }
-      
-      setOrderDetails(order)
-      
-      // Save to sessionStorage for future reference
-      sessionStorage.setItem('last-order', JSON.stringify(order))
-      
-      // Clear the pending payment data and cart
-      sessionStorage.removeItem('niubiz-pending-payment')
-      clearCart()
-      
-      setIsLoading(false)
-      return
-    }
+        items: {
+          include: {
+            product: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+              },
+            },
+            plan: {
+              select: {
+                id: true,
+                name: true,
+                price: true,
+              },
+            },
+          },
+        },
+      },
+    })
+  }
+  
+  // If no invoice found by number and user is logged in, get their most recent paid invoice
+  if (!invoice && session?.user?.id) {
+    invoice = await db.invoice.findFirst({
+      where: { 
+        userId: session.user.id,
+        status: 'PAID',
+      },
+      orderBy: { createdAt: 'desc' },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        items: {
+          include: {
+            product: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+              },
+            },
+            plan: {
+              select: {
+                id: true,
+                name: true,
+                price: true,
+              },
+            },
+          },
+        },
+      },
+    })
+  }
+  
+  if (!invoice) {
+    redirect('/shop')
+  }
 
-    if (!orderData) {
-      // Si no hay datos de pedido, redirigimos a la tienda
-      router.push('/shop')
-      return
-    }
-
-    try {
-      const parsedOrder = JSON.parse(orderData) as OrderDetails
-      setOrderDetails(parsedOrder)
-    } catch (error) {
-      console.error('Error al analizar los datos del pedido:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [router, searchParams, clearCart, session])
-
-  // Función auxiliar para formatear moneda
   const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -119,41 +104,22 @@ export default function ConfirmationPage() {
     }).format(amount)
   }
 
-  // Función para formatear fecha
-  const formatDate = (dateString: string): string => {
-    return new Date(dateString).toLocaleDateString('es-ES', {
+  const formatDate = (date: Date): string => {
+    return date.toLocaleDateString('es-ES', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     })
   }
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    )
-  }
-
-  if (!orderDetails) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <Card className="max-w-md w-full">
-          <CardContent className="pt-6 text-center">
-            <h2 className="text-xl font-semibold mb-2">Pedido no encontrado</h2>
-            <p className="text-muted-foreground mb-6">
-              No se encontraron detalles del pedido.
-            </p>
-            <Button onClick={() => router.push('/shop')}>Volver a la Tienda</Button>
-          </CardContent>
-        </Card>
-      </div>
-    )
-  }
+  const userEmail = invoice.user?.email || ''
+  const paymentMethod = invoice.paymentMethod || 'creditCard'
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Client component to clear cart on mount */}
+      <ClearCartOnMount />
+      
       {/* Main Content */}
       <div className="max-w-5xl mx-auto px-4 py-8">
         <Card className="overflow-hidden">
@@ -168,8 +134,8 @@ export default function ConfirmationPage() {
               </h1>
               <p className="text-gray-600 max-w-md mx-auto">
                 Tu pago ha sido procesado exitosamente. 
-                {orderDetails.customer.email && (
-                  <> Se ha enviado un correo de confirmación a <strong>{orderDetails.customer.email}</strong>.</>
+                {userEmail && (
+                  <> Se ha enviado un correo de confirmación a <strong>{userEmail}</strong>.</>
                 )}
               </p>
             </div>
@@ -189,7 +155,7 @@ export default function ConfirmationPage() {
                       Número de Orden
                     </p>
                     <p className="text-sm font-semibold text-primary">
-                      #{orderDetails.orderNumber}
+                      #{invoice.invoiceNumber}
                     </p>
                   </div>
                   <div>
@@ -197,7 +163,7 @@ export default function ConfirmationPage() {
                       Fecha
                     </p>
                     <p className="text-sm text-gray-900">
-                      {formatDate(orderDetails.orderDate)}
+                      {formatDate(invoice.createdAt)}
                     </p>
                   </div>
                   <div>
@@ -206,11 +172,11 @@ export default function ConfirmationPage() {
                     </p>
                     <p className="text-sm text-gray-900 flex items-center gap-2">
                       <span className="w-8 h-5 bg-gradient-to-r from-blue-600 to-blue-800 rounded text-white text-[8px] flex items-center justify-center font-bold">
-                        VISA
+                        {paymentMethod === 'paypal' ? 'PP' : 'VISA'}
                       </span>
-                      {orderDetails.paymentMethod === 'creditCard'
+                      {paymentMethod === 'niubiz' || paymentMethod === 'creditCard'
                         ? 'Tarjeta de Crédito'
-                        : orderDetails.paymentMethod === 'paypal'
+                        : paymentMethod === 'paypal'
                           ? 'PayPal'
                           : 'Transferencia'}
                     </p>
@@ -220,7 +186,7 @@ export default function ConfirmationPage() {
                       Total
                     </p>
                     <p className="text-sm font-semibold text-gray-900">
-                      {formatCurrency(orderDetails.totalAmount)}
+                      {formatCurrency(invoice.total)}
                     </p>
                   </div>
                 </div>
@@ -231,46 +197,39 @@ export default function ConfirmationPage() {
                     Productos Adquiridos
                   </h3>
                   <div className="space-y-4">
-                    {orderDetails.items.length > 0 ? (
-                      orderDetails.items.map((item, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg"
-                        >
-                          <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
-                            {item.product.image ? (
-                              <Image
-                                src={item.product.image}
-                                alt={item.product.title}
-                                width={48}
-                                height={48}
-                                className="rounded-lg object-cover"
-                              />
-                            ) : (
-                              <span className="text-white text-lg font-bold">
-                                {item.product.title.charAt(0)}
-                              </span>
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="font-medium text-gray-900 truncate">
-                              {item.product.title}
-                            </p>
-                            <p className="text-sm text-gray-500">
-                              {item.plan?.name || 'Acceso completo'}
-                            </p>
-                          </div>
-                          <p className="font-semibold text-gray-900">
-                            {formatCurrency(item.plan?.price || 0)}
+                    {invoice.items.map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg"
+                      >
+                        <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                          {item.product?.image ? (
+                            <Image
+                              src={item.product.image}
+                              alt={item.name}
+                              width={48}
+                              height={48}
+                              className="rounded-lg object-cover"
+                            />
+                          ) : (
+                            <span className="text-white text-lg font-bold">
+                              {item.name.charAt(0)}
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-gray-900 truncate">
+                            {item.product?.name || item.name}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            {item.plan?.name || 'Acceso completo'}
                           </p>
                         </div>
-                      ))
-                    ) : (
-                      <div className="p-4 bg-gray-50 rounded-lg text-center text-gray-500">
-                        <p>Detalles de productos no disponibles</p>
-                        <p className="text-sm">Total: {formatCurrency(orderDetails.totalAmount)}</p>
+                        <p className="font-semibold text-gray-900">
+                          {formatCurrency(item.price || 0)}
+                        </p>
                       </div>
-                    )}
+                    ))}
                   </div>
                 </div>
               </div>
@@ -298,12 +257,9 @@ export default function ConfirmationPage() {
                   </Link>
 
                   {/* View Invoice */}
-                  <button
-                    className="w-full flex items-center gap-4 p-4 bg-white rounded-xl border hover:border-primary hover:shadow-sm transition-all group text-left"
-                    onClick={() => {
-                      // TODO: Implement invoice download
-                      console.log('Download invoice')
-                    }}
+                  <Link
+                    href={`/billing/invoices/${invoice.id}`}
+                    className="w-full flex items-center gap-4 p-4 bg-white rounded-xl border hover:border-primary hover:shadow-sm transition-all group text-left cursor-pointer"
                   >
                     <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <FileText className="h-5 w-5 text-purple-600" />
@@ -313,7 +269,7 @@ export default function ConfirmationPage() {
                       <p className="text-sm text-gray-500">Descarga tu recibo</p>
                     </div>
                     <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-primary transition-colors" />
-                  </button>
+                  </Link>
                 </div>
 
                 {/* Need Help Section */}

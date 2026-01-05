@@ -10,6 +10,7 @@ import { Loader2, AlertCircle, Calendar, Check, User, X, GripVertical, Ban } fro
 import { toast } from 'sonner'
 import { addDays, startOfWeek, isToday } from 'date-fns'
 import { cn } from '@/lib/utils'
+import { convertRecurringScheduleToUTC } from '@/lib/utils/date'
 
 interface Teacher {
   id: string
@@ -271,6 +272,8 @@ export function CheckoutScheduleSelector({
   const getWeeklySchedule = (): ScheduleSlot[] => {
     if (!selectedTeacher) return []
     
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+    
     return Array.from(selectedSlots).map((slotKey) => {
       const [day, time] = slotKey.split('-')
       const dayOfWeek = DAYS_OF_WEEK_MAP[day]
@@ -281,11 +284,19 @@ export function CheckoutScheduleSelector({
       const endMinutes = totalMinutes % 60
       const endTime = `${String(endHours).padStart(2, '0')}:${String(endMinutes).padStart(2, '0')}`
 
+      // Convert local time to UTC before sending to server
+      const utcSchedule = convertRecurringScheduleToUTC(
+        dayOfWeek,
+        time,
+        endTime,
+        userTimezone
+      )
+
       return {
         teacherId: selectedTeacher.id,
-        dayOfWeek,
-        startTime: time,
-        endTime,
+        dayOfWeek: utcSchedule.dayOfWeek,
+        startTime: utcSchedule.startTime,
+        endTime: utcSchedule.endTime,
       }
     })
   }

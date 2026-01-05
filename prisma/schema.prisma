@@ -140,6 +140,9 @@ model User {
   // API Keys para acceso programático
   apiKeys               ApiKey[]
 
+  // Órdenes pendientes de pago
+  pendingOrders         PendingOrder[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -2296,4 +2299,38 @@ enum NotificationType {
   // Sistema
   SYSTEM_ANNOUNCEMENT      // Anuncio del sistema
   ACCOUNT_UPDATE           // Actualización de cuenta
+}
+
+// =============================================
+// MODELOS DE ÓRDENES PENDIENTES (CHECKOUT)
+// =============================================
+
+model PendingOrder {
+  id              String   @id @default(cuid())
+  purchaseNumber  String   @unique
+  userId          String?
+  customerEmail   String?
+  customerName    String?
+  amount          Float
+  currency        String   @default("USD")
+  invoiceData     Json
+  status          PendingOrderStatus @default(PENDING)
+  expiresAt       DateTime
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user            User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([purchaseNumber])
+  @@index([userId])
+  @@index([status])
+  @@index([expiresAt])
+  @@map("pending_orders")
+}
+
+enum PendingOrderStatus {
+  PENDING
+  COMPLETED
+  EXPIRED
+  CANCELLED
 }
