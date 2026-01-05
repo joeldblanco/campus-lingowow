@@ -11,6 +11,7 @@ import { toast } from 'sonner'
 import { addDays, startOfWeek, isToday } from 'date-fns'
 import { cn } from '@/lib/utils'
 import { convertRecurringScheduleToUTC } from '@/lib/utils/date'
+import { getBrowserTimezone } from '@/hooks/use-timezone'
 
 interface Teacher {
   id: string
@@ -98,6 +99,8 @@ export function CheckoutScheduleSelector({
   maxClassesPerWeek,
   onScheduleSelected,
 }: CheckoutScheduleSelectorProps) {
+  // Usar timezone del navegador directamente porque usuarios en checkout no están necesariamente autenticados
+  const userTimezone = getBrowserTimezone()
   const [teachers, setTeachers] = useState<Teacher[]>([])
   const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null)
   const [loading, setLoading] = useState(true)
@@ -117,7 +120,6 @@ export function CheckoutScheduleSelector({
   const fetchTeachers = useCallback(async () => {
     try {
       setLoading(true)
-      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
       const response = await fetch(`/api/teachers/availability?courseId=${courseId}&timezone=${encodeURIComponent(userTimezone)}`)
       if (!response.ok) throw new Error('Error al cargar profesores')
       const data = await response.json()
@@ -131,7 +133,7 @@ export function CheckoutScheduleSelector({
     } finally {
       setLoading(false)
     }
-  }, [courseId])
+  }, [courseId, userTimezone])
 
   useEffect(() => {
     fetchTeachers()
@@ -271,8 +273,6 @@ export function CheckoutScheduleSelector({
 
   const getWeeklySchedule = (): ScheduleSlot[] => {
     if (!selectedTeacher) return []
-    
-    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
     
     return Array.from(selectedSlots).map((slotKey) => {
       const [day, time] = slotKey.split('-')

@@ -57,6 +57,7 @@ import {
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { BookingStatus } from '@prisma/client'
+import { useTimezone } from '@/hooks/use-timezone'
 
 interface ClassesTableProps {
   classes: ClassBookingWithDetails[]
@@ -65,6 +66,7 @@ interface ClassesTableProps {
 const ITEMS_PER_PAGE = 5
 
 export function ClassesTable({ classes }: ClassesTableProps) {
+  const { timezone: userTimezone } = useTimezone()
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [teacherFilter, setTeacherFilter] = useState('all')
@@ -152,8 +154,6 @@ export function ClassesTable({ classes }: ClassesTableProps) {
         return
       }
 
-      // Obtener timezone del navegador del usuario
-      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
       const result = await updateClass(classId, {
         studentId: classItem.studentId,
         teacherId: classItem.teacherId,

@@ -39,6 +39,7 @@ import { RescheduleClassSchema } from '@/schemas/classes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
+import { useTimezone } from '@/hooks/use-timezone'
 
 interface RescheduleClassDialogProps {
   classItem: ClassBookingWithDetails
@@ -67,8 +68,8 @@ export function RescheduleClassDialog({ classItem, children }: RescheduleClassDi
   const watchedDate = form.watch('newDate')
   const watchedTimeSlot = form.watch('newTimeSlot')
   
-  // Obtener timezone del navegador del usuario
-  const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+  // Obtener timezone del usuario (de la sesión, sincronizada con la DB)
+  const { timezone: userTimezone } = useTimezone()
 
   useEffect(() => {
     const fetchAvailableTimeSlots = async () => {

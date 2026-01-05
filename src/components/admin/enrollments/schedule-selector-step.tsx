@@ -13,6 +13,7 @@ import { toast } from 'sonner'
 import { format, isBefore, parseISO, eachDayOfInterval, getDay, addDays, startOfWeek, isToday } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { cn } from '@/lib/utils'
+import { useTimezone } from '@/hooks/use-timezone'
 
 interface Teacher {
   id: string
@@ -102,6 +103,7 @@ export function ScheduleSelectorStep({
   onScheduleConfirmed,
   onBack,
 }: ScheduleSelectorStepProps) {
+  const { timezone: userTimezone } = useTimezone()
   const [teachers, setTeachers] = useState<Teacher[]>([])
   const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null)
   const [loading, setLoading] = useState(true)
@@ -132,8 +134,6 @@ export function ScheduleSelectorStep({
   const fetchTeachers = useCallback(async () => {
     try {
       setLoading(true)
-      // Obtener la zona horaria del navegador del usuario
-      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
       const response = await fetch(`/api/teachers/availability?courseId=${courseId}&timezone=${encodeURIComponent(userTimezone)}`)
       if (!response.ok) throw new Error('Error al cargar profesores')
       const data = await response.json()
@@ -147,7 +147,7 @@ export function ScheduleSelectorStep({
     } finally {
       setLoading(false)
     }
-  }, [courseId])
+  }, [courseId, userTimezone])
 
   useEffect(() => {
     fetchTeachers()

@@ -42,12 +42,14 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { formatDateLong, getTodayString } from '@/lib/utils/date'
+import { useTimezone } from '@/hooks/use-timezone'
 
 interface CreateClassDialogProps {
   children: React.ReactNode
 }
 
 export function CreateClassDialog({ children }: CreateClassDialogProps) {
+  const { timezone: userTimezone } = useTimezone()
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [students, setStudents] = useState<
@@ -312,8 +314,6 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
 
     try {
       // Si el crédito es "no-credit" o está vacío, lo convertimos a undefined
-      // Obtener timezone del navegador del usuario
-      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
       const submitValues = {
         ...values,
         creditId: values.creditId === 'no-credit' || !values.creditId ? undefined : values.creditId,

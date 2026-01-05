@@ -1,7 +1,8 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
-import { useMemo } from 'react'
+import { useMemo, useEffect, useRef } from 'react'
+import { updateUserTimezone } from '@/lib/actions/user-timezone'
 
 /**
  * Obtiene el offset GMT de una zona horaria
@@ -66,18 +67,56 @@ export interface TimezoneInfo {
 /**
  * Hook para obtener la zona horaria del usuario actual
  * Usa la zona horaria de la sesión si está disponible,
- * de lo contrario usa la zona horaria del navegador
+ * de lo contrario usa la zona horaria del navegador.
+ * 
+ * Si el usuario está autenticado y la timezone del navegador difiere
+ * de la almacenada en la DB, se actualiza automáticamente la DB.
  */
 export function useTimezone(): TimezoneInfo {
   const { data: session, status } = useSession()
+  const hasSyncedRef = useRef(false)
+  
+  // Obtener timezone del navegador (solo en cliente)
+  const browserTimezone = typeof window !== 'undefined' 
+    ? Intl.DateTimeFormat().resolvedOptions().timeZone 
+    : 'America/Lima'
+  
+  // La timezone final: de la sesión si existe, sino del navegador
+  const timezone = session?.user?.timezone || browserTimezone
+  
+  // Auto-sincronizar timezone con la DB si difiere del navegador
+  // NO sincronizar si el usuario está siendo impersonado (para no cambiar la timezone del usuario real)
+  useEffect(() => {
+    const syncTimezone = async () => {
+      // Solo sincronizar si:
+      // 1. El usuario está autenticado
+      // 2. La sesión ya cargó
+      // 3. No hemos sincronizado ya en esta sesión
+      // 4. La timezone de la DB difiere del navegador
+      // 5. NO es una sesión de impersonación
+      if (
+        session?.user?.id && 
+        status === 'authenticated' && 
+        !hasSyncedRef.current &&
+        session.user.timezone !== browserTimezone &&
+        !session.user.isImpersonating
+      ) {
+        hasSyncedRef.current = true
+        try {
+          const result = await updateUserTimezone(browserTimezone)
+          if (result.updated) {
+            console.log(`Timezone actualizada: ${session.user.timezone} -> ${browserTimezone}`)
+          }
+        } catch (error) {
+          console.error('Error syncing timezone:', error)
+        }
+      }
+    }
+    
+    syncTimezone()
+  }, [session?.user?.id, session?.user?.timezone, session?.user?.isImpersonating, status, browserTimezone])
   
   const timezoneInfo = useMemo(() => {
-    // Obtener timezone: primero de la sesión, luego del navegador
-    const timezone = session?.user?.timezone || 
-      (typeof window !== 'undefined' 
-        ? Intl.DateTimeFormat().resolvedOptions().timeZone 
-        : 'America/Lima')
-    
     const offset = getGMTOffset(timezone)
     const shortName = getTimezoneShortName(timezone)
     
@@ -88,7 +127,7 @@ export function useTimezone(): TimezoneInfo {
       shortName,
       isLoading: status === 'loading',
     }
-  }, [session?.user?.timezone, status])
+  }, [timezone, status])
   
   return timezoneInfo
 }

@@ -37,6 +37,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Loader2, ArrowRight, Video } from 'lucide-react'
 import { ScheduleSelectorStep } from './schedule-selector-step'
+import { useTimezone } from '@/hooks/use-timezone'
 
 const CreateEnrollmentSchema = z.object({
   studentId: z.string().min(1, 'Debes seleccionar un estudiante'),
@@ -68,6 +69,7 @@ interface ScheduledClass {
 type Step = 'basic' | 'schedule'
 
 export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: CreateEnrollmentDialogProps) {
+  const { timezone: userTimezone } = useTimezone()
   const [open, setOpen] = useState(false)
   const [currentStep, setCurrentStep] = useState<Step>('basic')
   const [isLoading, setIsLoading] = useState(false)
@@ -238,8 +240,6 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
     setIsLoading(true)
     try {
       const values = form.getValues()
-      // Obtener timezone del navegador del usuario para conversión correcta a UTC
-      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
       const result = await createEnrollmentWithSchedule({
         ...values,
         teacherId,

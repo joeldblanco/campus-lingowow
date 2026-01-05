@@ -39,6 +39,7 @@ import { EditClassSchema } from '@/schemas/classes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
+import { useTimezone } from '@/hooks/use-timezone'
 
 interface EditClassDialogProps {
   classItem: ClassBookingWithDetails
@@ -46,6 +47,7 @@ interface EditClassDialogProps {
 }
 
 export function EditClassDialog({ classItem, children }: EditClassDialogProps) {
+  const { timezone: userTimezone } = useTimezone()
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [students, setStudents] = useState<Array<{ id: string; name: string; lastName: string | null; email: string }>>([])
@@ -98,8 +100,6 @@ export function EditClassDialog({ classItem, children }: EditClassDialogProps) {
     setIsLoading(true)
 
     try {
-      // Obtener timezone del navegador del usuario
-      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
       const result = await updateClass(classItem.id, { ...values, timezone: userTimezone })
 
       if (result.success) {

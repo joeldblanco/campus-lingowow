@@ -41,6 +41,7 @@ import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Loader2, Video, Calendar, CalendarClock } from 'lucide-react'
 import { ScheduleSelectorStep } from './schedule-selector-step'
+import { useTimezone } from '@/hooks/use-timezone'
 
 const EditEnrollmentSchema = z.object({
   status: z.enum(['PENDING', 'ACTIVE', 'COMPLETED', 'PAUSED', 'CANCELLED']),
@@ -94,6 +95,7 @@ export function EditEnrollmentDialog({
   enrollment,
   onEnrollmentUpdated,
 }: EditEnrollmentDialogProps) {
+  const { timezone: userTimezone } = useTimezone()
   const [open, setOpen] = useState(false)
   const [currentStep, setCurrentStep] = useState<Step>('basic')
   const [isLoading, setIsLoading] = useState(false)
@@ -199,8 +201,6 @@ export function EditEnrollmentDialog({
     setIsLoading(true)
     try {
       const values = form.getValues()
-      // Obtener timezone del navegador del usuario para conversión correcta a UTC
-      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
       const result = await updateEnrollmentWithSchedule(enrollment.id, {
         status: values.status,
         progress: values.progress,
