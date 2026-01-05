@@ -103,7 +103,6 @@ export function GuidedTour() {
       scrollToFirstStep
       showProgress
       showSkipButton
-      stepIndex={state.stepIndex}
       steps={steps}
       styles={tourStyles}
       locale={{

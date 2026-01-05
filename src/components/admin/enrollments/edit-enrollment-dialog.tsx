@@ -199,6 +199,8 @@ export function EditEnrollmentDialog({
     setIsLoading(true)
     try {
       const values = form.getValues()
+      // Obtener timezone del navegador del usuario para conversión correcta a UTC
+      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
       const result = await updateEnrollmentWithSchedule(enrollment.id, {
         status: values.status,
         progress: values.progress,
@@ -208,6 +210,7 @@ export function EditEnrollmentDialog({
         scheduledClasses,
         isRecurring,
         weeklySchedule,
+        userTimezone,
       })
 
       if (result.success) {

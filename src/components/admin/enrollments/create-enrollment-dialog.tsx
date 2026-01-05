@@ -238,12 +238,15 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
     setIsLoading(true)
     try {
       const values = form.getValues()
+      // Obtener timezone del navegador del usuario para conversión correcta a UTC
+      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
       const result = await createEnrollmentWithSchedule({
         ...values,
         teacherId,
         scheduledClasses,
         isRecurring,
         weeklySchedule,
+        userTimezone,
       })
 
       if (result.success) {
