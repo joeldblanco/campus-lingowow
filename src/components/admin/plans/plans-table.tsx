@@ -44,6 +44,11 @@ interface Plan {
   sortOrder: number
   paypalSku: string | null
   includesClasses: boolean
+  classesPerPeriod: number | null
+  classesPerWeek: number | null
+  allowProration: boolean
+  autoRenewal: boolean
+  billingCycle: string | null
   createdAt: Date
   updatedAt: Date
   productId: string | null
