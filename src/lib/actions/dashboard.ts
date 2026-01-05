@@ -12,10 +12,26 @@ import { formatDateNumeric, getCurrentDate, formatToISO, getStartOfMonth } from 
 import { getPeriodByDate } from '@/lib/actions/academic-period'
 import { es } from 'date-fns/locale'
 import { format } from 'date-fns'
+import { auth } from '@/auth'
+
+// Helper para obtener la timezone del usuario autenticado
+async function getUserTimezone(): Promise<string> {
+  const session = await auth()
+  if (!session?.user?.id) return 'America/Lima'
+  
+  const user = await db.user.findUnique({
+    where: { id: session.user.id },
+    select: { timezone: true },
+  })
+  return user?.timezone || 'America/Lima'
+}
 
 // Admin Dashboard Statistics
 export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
   try {
+    // Obtener timezone del usuario autenticado
+    const userTimezone = await getUserTimezone()
+    
     // Get total students count
     const totalStudents = await db.user.count({
       where: { roles: { has: UserRole.STUDENT } },
@@ -151,7 +167,7 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
       }),
       enrollmentStats,
       upcomingClasses: upcomingClasses.map((booking) => {
-        const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot)
+        const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot, userTimezone)
         return {
           id: booking.id,
           title: booking.enrollment.course.title,
@@ -194,6 +210,13 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
 // Teacher Dashboard Statistics
 export async function getTeacherDashboardStats(teacherId: string): Promise<TeacherDashboardData> {
   try {
+    // Obtener timezone del profesor
+    const teacherData = await db.user.findUnique({
+      where: { id: teacherId },
+      select: { timezone: true },
+    })
+    const teacherTimezone = teacherData?.timezone || 'America/Lima'
+    
     // ----------------------------
     // 1. Stats Calculation
     // ----------------------------
@@ -305,7 +328,7 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
     })
 
     const upcomingClasses = upcomingClassesRaw.map((booking) => {
-      const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot)
+      const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot, teacherTimezone)
       const [startTime, endTime] = localData.timeSlot.split('-')
       return {
         id: booking.id,
@@ -424,6 +447,13 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
 // Student Dashboard Statistics
 export async function getStudentDashboardStats(studentId: string): Promise<StudentDashboardData> {
   try {
+    // Obtener timezone del estudiante
+    const studentData = await db.user.findUnique({
+      where: { id: studentId },
+      select: { timezone: true },
+    })
+    const studentTimezone = studentData?.timezone || 'America/Lima'
+    
     // Get student's enrollments
     const enrollments = await db.enrollment.findMany({
       where: {
@@ -512,7 +542,7 @@ export async function getStudentDashboardStats(studentId: string): Promise<Stude
       currentStreak: streak?.currentStreak || 0,
       longestStreak: streak?.longestStreak || 0,
       upcomingClasses: upcomingClasses.map((booking) => {
-        const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot)
+        const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot, studentTimezone)
         return {
           course: booking.enrollment.course.title,
           teacher: `${booking.teacher.name} ${booking.teacher.lastName || ''}`,
@@ -538,6 +568,13 @@ export async function getStudentDashboardStats(studentId: string): Promise<Stude
 // Get user's available classes for sidebar
 export async function getUserClasses(userId: string) {
   try {
+    // Obtener timezone del usuario
+    const userData = await db.user.findUnique({
+      where: { id: userId },
+      select: { timezone: true },
+    })
+    const userTimezone = userData?.timezone || 'America/Lima'
+    
     const classes = await db.classBooking.findMany({
       where: {
         OR: [{ studentId: userId }, { teacherId: userId }],
@@ -569,7 +606,7 @@ export async function getUserClasses(userId: string) {
     const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
 
     return classes.map((booking) => {
-      const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot)
+      const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot, userTimezone)
       return {
         id: booking.id,
         name: `Clase ${localData.day} - ${localData.timeSlot}`,
@@ -818,6 +855,13 @@ export async function calculateTeacherTotalRevenue(
 // Get classroom data for a specific class
 export async function getClassroomData(classId: string, userId: string) {
   try {
+    // Obtener timezone del usuario
+    const userData = await db.user.findUnique({
+      where: { id: userId },
+      select: { timezone: true },
+    })
+    const userTimezone = userData?.timezone || 'America/Lima'
+    
     // Get class booking details
     const classBooking = await db.classBooking.findFirst({
       where: {
@@ -847,7 +891,7 @@ export async function getClassroomData(classId: string, userId: string) {
 
     // Convertir de UTC a hora local para mostrar
     const { convertTimeSlotFromUTC, formatDateNumeric } = await import('@/lib/utils/date')
-    const localData = convertTimeSlotFromUTC(classBooking.day, classBooking.timeSlot)
+    const localData = convertTimeSlotFromUTC(classBooking.day, classBooking.timeSlot, userTimezone)
 
     // Formatear la fecha para mostrar (DD/MM/YYYY)
     const formattedDate = formatDateNumeric(localData.day)

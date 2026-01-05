@@ -3,9 +3,22 @@ import { ClassesTable } from './classes-table'
 import { CreateClassDialog } from './create-class-dialog'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
+import { auth } from '@/auth'
+import { db } from '@/lib/db'
 
 export async function ClassesContainer() {
-  const classes = await getAllClasses()
+  // Obtener timezone del usuario autenticado para mostrar horarios correctamente
+  const session = await auth()
+  let userTimezone = 'America/Lima'
+  if (session?.user?.id) {
+    const user = await db.user.findUnique({
+      where: { id: session.user.id },
+      select: { timezone: true },
+    })
+    userTimezone = user?.timezone || 'America/Lima'
+  }
+  
+  const classes = await getAllClasses({ timezone: userTimezone })
 
   return (
     <div className="space-y-6">

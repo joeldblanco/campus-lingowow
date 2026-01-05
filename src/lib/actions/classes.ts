@@ -63,6 +63,7 @@ export interface ClassFilters {
   status?: string
   courseId?: string
   periodId?: string
+  timezone?: string // Timezone del usuario para conversión de horarios
 }
 
 export async function getAllClasses(filters?: ClassFilters): Promise<ClassBookingWithDetails[]> {
@@ -148,8 +149,9 @@ export async function getAllClasses(filters?: ClassFilters): Promise<ClassBookin
 
     // Convertir day y timeSlot de UTC a hora local antes de devolver
     const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
+    const userTimezone = filters?.timezone || 'America/Lima'
     const classesWithLocalTime = classes.map(classItem => {
-      const localData = convertTimeSlotFromUTC(classItem.day, classItem.timeSlot)
+      const localData = convertTimeSlotFromUTC(classItem.day, classItem.timeSlot, userTimezone)
       return {
         ...classItem,
         day: localData.day,

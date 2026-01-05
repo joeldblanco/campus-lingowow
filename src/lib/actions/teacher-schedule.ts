@@ -98,6 +98,13 @@ export async function getTeacherScheduleData(
   const teacherId = session.user.id
 
   try {
+    // Obtener timezone del profesor desde la base de datos
+    const teacherData = await db.user.findUnique({
+      where: { id: teacherId },
+      select: { timezone: true },
+    })
+    const teacherTimezone = teacherData?.timezone || 'America/Lima'
+    
     // Format dates for query
     const startDateStr = format(startDate, 'yyyy-MM-dd')
     const endDateStr = format(endDate, 'yyyy-MM-dd')
@@ -151,12 +158,12 @@ export async function getTeacherScheduleData(
     })
 
     // Transform bookings to lessons
-    // Convertir de UTC a hora local del usuario
+    // Convertir de UTC a hora local del profesor
     const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
     
     const lessons: TeacherScheduleLesson[] = bookings.map((booking) => {
-      // Convertir de UTC a hora local
-      const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot)
+      // Convertir de UTC a hora local del profesor
+      const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot, teacherTimezone)
       const [startTime, endTime] = localData.timeSlot.split('-')
       
       // Parsear la fecha local
@@ -197,19 +204,12 @@ export async function getTeacherScheduleData(
       return a.startTime.localeCompare(b.startTime)
     })
 
-    // Transform availability - convertir de UTC a hora local del usuario
+    // Transform availability - convertir de UTC a hora local del profesor
     const { convertAvailabilityFromUTC } = await import('@/lib/utils/date')
     
-    // Obtener timezone del usuario
-    const user = await db.user.findUnique({
-      where: { id: teacherId },
-      select: { timezone: true },
-    })
-    const userTimezone = user?.timezone || 'America/Lima'
-    
     const availabilitySlots: TeacherAvailabilitySlot[] = availability.map((slot) => {
-      // Convertir de UTC a hora local
-      const localData = convertAvailabilityFromUTC(slot.day, slot.startTime, slot.endTime, userTimezone)
+      // Convertir de UTC a hora local del profesor (usando teacherTimezone obtenido arriba)
+      const localData = convertAvailabilityFromUTC(slot.day, slot.startTime, slot.endTime, teacherTimezone)
       return {
         id: slot.id,
         day: localData.day,

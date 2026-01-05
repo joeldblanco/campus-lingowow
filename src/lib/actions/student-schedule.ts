@@ -110,6 +110,14 @@ export async function getStudentScheduleData(startDate: Date, endDate: Date) {
     }
 
     const studentId = session.user.id
+    
+    // Obtener timezone del estudiante desde la base de datos
+    const studentData = await db.user.findUnique({
+      where: { id: studentId },
+      select: { timezone: true },
+    })
+    const studentTimezone = studentData?.timezone || 'America/Lima'
+    
     const startDateStr = format(startDate, 'yyyy-MM-dd')
     const endDateStr = format(endDate, 'yyyy-MM-dd')
 
@@ -154,8 +162,8 @@ export async function getStudentScheduleData(startDate: Date, endDate: Date) {
     const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
     
     const lessons: StudentScheduleLesson[] = bookings.map((booking: BookingWithRelations) => {
-      // Convertir de UTC a hora local
-      const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot)
+      // Convertir de UTC a hora local del estudiante
+      const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot, studentTimezone)
       const { startTime, endTime } = parseTimeSlot(localData.timeSlot)
       const bookingDate = new Date(localData.day + 'T' + startTime + ':00')
       
