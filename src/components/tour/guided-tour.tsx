@@ -100,6 +100,7 @@ export function GuidedTour() {
       continuous
       hideCloseButton={false}
       run={state.run}
+      stepIndex={state.stepIndex}
       scrollToFirstStep
       showProgress
       showSkipButton
