@@ -59,8 +59,10 @@ export function ExitIntentPopup() {
   const handleApplyDiscount = () => {
     // Apply the coupon to the store
     applyCoupon({
+      id: 'exit-intent-coupon',
       code: discountCode,
-      percentage: 10,
+      type: 'PERCENTAGE',
+      value: 10,
     })
     
     // Show success toast
