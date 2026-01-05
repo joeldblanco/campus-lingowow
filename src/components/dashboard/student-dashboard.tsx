@@ -8,12 +8,14 @@ import {
   ArrowRight,
   BookOpen,
   Calendar,
+  Clock,
   Download,
   Flame,
   GraduationCap,
   Play,
   Puzzle,
   Trophy,
+  Video,
 } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -112,6 +114,45 @@ export default function Dashboard() {
 
       {/* Banner de horarios pendientes */}
       <PendingScheduleBanner />
+
+      {/* Hero CTA: Próxima Clase - Prominente */}
+      {nextClass && (
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 p-1 shadow-lg shadow-emerald-500/25">
+          <div className="relative flex flex-col md:flex-row items-center justify-between gap-4 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 p-6 md:p-8">
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iNCIvPjwvZz48L2c+PC9zdmc+')] opacity-50"></div>
+            <div className="relative flex items-center gap-4 md:gap-6">
+              <div className="flex-shrink-0 rounded-2xl bg-white/20 backdrop-blur-sm p-4 md:p-5">
+                <Video className="w-8 h-8 md:w-10 md:h-10 text-white" />
+              </div>
+              <div className="text-white">
+                <p className="text-sm md:text-base font-medium text-white/80 mb-1">Tu próxima clase</p>
+                <h2 className="text-xl md:text-2xl font-bold mb-2">{nextClass.course}</h2>
+                <div className="flex flex-wrap items-center gap-3 text-sm text-white/90">
+                  <span className="flex items-center gap-1.5">
+                    <Calendar className="w-4 h-4" />
+                    {format(new Date(nextClass.date), "EEEE d 'de' MMMM", { locale: es })}
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Clock className="w-4 h-4" />
+                    {nextClass.time}
+                  </span>
+                </div>
+                <p className="text-sm text-white/70 mt-1">con {nextClass.teacher}</p>
+              </div>
+            </div>
+            <Button 
+              asChild 
+              size="lg" 
+              className="relative w-full md:w-auto bg-white text-emerald-700 hover:bg-white/90 hover:text-emerald-800 font-bold text-base md:text-lg px-8 py-6 shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+            >
+              <Link href={nextClass.link}>
+                <Play className="w-5 h-5 mr-2 fill-current" />
+                Entrar al Aula
+              </Link>
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Hero Section: Resume Learning */}
       {currentEnrollment && (
@@ -328,10 +369,10 @@ export default function Dashboard() {
             )}
 
             {nextClass && (
-              <Button className="w-full mt-4" asChild>
+              <Button variant="outline" className="w-full mt-4" asChild>
                 <Link href={nextClass.link}>
                   <Play className="w-4 h-4 mr-2" />
-                  Unirse a Clase
+                  Ver Detalles
                 </Link>
               </Button>
             )}

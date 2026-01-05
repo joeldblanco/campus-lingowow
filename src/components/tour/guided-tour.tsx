@@ -66,7 +66,7 @@ const tourStyles = {
 }
 
 export function GuidedTour() {
-  const { state, stopTour, setStepIndex, markTourAsCompleted } = useTour()
+  const { state, stopTour, markTourAsCompleted } = useTour()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -75,7 +75,7 @@ export function GuidedTour() {
 
   const handleJoyrideCallback = useCallback(
     (data: CallBackProps) => {
-      const { status, index, type } = data
+      const { status } = data
       const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED]
 
       if (finishedStatuses.includes(status as string)) {
@@ -84,12 +84,8 @@ export function GuidedTour() {
         }
         stopTour()
       }
-
-      if (type === 'step:after') {
-        setStepIndex(index + 1)
-      }
     },
-    [state.tourType, stopTour, setStepIndex, markTourAsCompleted]
+    [state.tourType, stopTour, markTourAsCompleted]
   )
 
   if (!mounted || !state.run || !state.tourType) {
