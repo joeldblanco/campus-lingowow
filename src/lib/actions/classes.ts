@@ -71,15 +71,18 @@ export async function getAllClasses(filters?: ClassFilters): Promise<ClassBookin
     const where: Record<string, unknown> = {}
 
     // Nota: Los filtros de fecha vienen en hora local, necesitamos convertirlos a UTC
+    // Usar la timezone del usuario si se proporciona
+    const userTimezone = filters?.timezone || 'America/Lima'
+    
     if (filters?.startDate || filters?.endDate) {
       const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
       
       if (filters?.startDate) {
-        const utcStart = convertTimeSlotToUTC(filters.startDate, '00:00-00:00')
+        const utcStart = convertTimeSlotToUTC(filters.startDate, '00:00-00:00', userTimezone)
         where.day = { gte: utcStart.day }
       }
       if (filters?.endDate) {
-        const utcEnd = convertTimeSlotToUTC(filters.endDate, '23:59-23:59')
+        const utcEnd = convertTimeSlotToUTC(filters.endDate, '23:59-23:59', userTimezone)
         where.day = { ...(where.day as object), lte: utcEnd.day }
       }
     }
@@ -149,7 +152,7 @@ export async function getAllClasses(filters?: ClassFilters): Promise<ClassBookin
 
     // Convertir day y timeSlot de UTC a hora local antes de devolver
     const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
-    const userTimezone = filters?.timezone || 'America/Lima'
+    // userTimezone ya está definido arriba
     const classesWithLocalTime = classes.map(classItem => {
       const localData = convertTimeSlotFromUTC(classItem.day, classItem.timeSlot, userTimezone)
       return {
@@ -166,8 +169,9 @@ export async function getAllClasses(filters?: ClassFilters): Promise<ClassBookin
   }
 }
 
-export async function getClassById(id: string): Promise<ClassBookingWithDetails | null> {
+export async function getClassById(id: string, timezone?: string): Promise<ClassBookingWithDetails | null> {
   try {
+    const userTimezone = timezone || 'America/Lima'
     const classBooking = await db.classBooking.findUnique({
       where: { id },
       include: {
@@ -221,7 +225,7 @@ export async function getClassById(id: string): Promise<ClassBookingWithDetails 
 
     // Convertir day y timeSlot de UTC a hora local antes de devolver
     const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
-    const localData = convertTimeSlotFromUTC(classBooking.day, classBooking.timeSlot)
+    const localData = convertTimeSlotFromUTC(classBooking.day, classBooking.timeSlot, userTimezone)
     
     return {
       ...classBooking,
@@ -234,14 +238,15 @@ export async function getClassById(id: string): Promise<ClassBookingWithDetails 
   }
 }
 
-export async function createClass(data: z.infer<typeof CreateClassSchema>) {
+export async function createClass(data: z.infer<typeof CreateClassSchema> & { timezone?: string }) {
   try {
     // Validate input data
     const validatedData = CreateClassSchema.parse(data)
+    const userTimezone = data.timezone || 'America/Lima'
 
     // Convertir day y timeSlot de hora local a UTC antes de guardar
     const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
-    const utcData = convertTimeSlotToUTC(validatedData.day, validatedData.timeSlot)
+    const utcData = convertTimeSlotToUTC(validatedData.day, validatedData.timeSlot, userTimezone)
 
     // 1. Validar que la fecha esté dentro del período académico de la inscripción
     const enrollment = await db.enrollment.findUnique({
@@ -364,10 +369,11 @@ export interface UpdateClassData {
   completedAt?: Date
 }
 
-export async function updateClass(id: string, data: z.infer<typeof EditClassSchema>) {
+export async function updateClass(id: string, data: z.infer<typeof EditClassSchema> & { timezone?: string }) {
   try {
     // Validate input data
     const validatedData = EditClassSchema.parse(data)
+    const userTimezone = data.timezone || 'America/Lima'
 
     // Convertir day y timeSlot a UTC si se están actualizando
     let utcDay = validatedData.day
@@ -375,7 +381,7 @@ export async function updateClass(id: string, data: z.infer<typeof EditClassSche
     
     if (validatedData.day && validatedData.timeSlot) {
       const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
-      const utcData = convertTimeSlotToUTC(validatedData.day, validatedData.timeSlot)
+      const utcData = convertTimeSlotToUTC(validatedData.day, validatedData.timeSlot, userTimezone)
       utcDay = utcData.day
       utcTimeSlot = utcData.timeSlot
     }
@@ -477,11 +483,12 @@ export async function deleteClass(id: string) {
   }
 }
 
-export async function rescheduleClass(id: string, newDay: string, newTimeSlot: string) {
+export async function rescheduleClass(id: string, newDay: string, newTimeSlot: string, timezone?: string) {
   try {
     // Convertir day y timeSlot a UTC
     const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
-    const utcData = convertTimeSlotToUTC(newDay, newTimeSlot)
+    const userTimezone = timezone || 'America/Lima'
+    const utcData = convertTimeSlotToUTC(newDay, newTimeSlot, userTimezone)
 
     const currentClass = await db.classBooking.findUnique({
       where: { id },
