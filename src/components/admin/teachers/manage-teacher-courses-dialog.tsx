@@ -130,11 +130,16 @@ export function ManageTeacherCoursesDialog({
         return newSet
       })
     } else {
-      // Deseleccionar todos los cursos del idioma
+      // Deseleccionar todos los cursos del idioma y limpiar pagos
       setSelectedCourses((prev) => {
         const newSet = new Set(prev)
         languageCourseIds.forEach((id) => newSet.delete(id))
         return newSet
+      })
+      setCoursePayments((prev) => {
+        const newPayments = new Map(prev)
+        languageCourseIds.forEach((id) => newPayments.delete(id))
+        return newPayments
       })
     }
   }
