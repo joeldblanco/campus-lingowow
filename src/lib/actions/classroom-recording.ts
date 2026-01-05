@@ -131,12 +131,15 @@ export async function stopRecording(egressId: string, bookingId?: string) {
         let endedAt: Date | null = null
 
         if (info.startedAt && info.endedAt) {
-          // LiveKit timestamps are in nanoseconds
-          const startNs = typeof info.startedAt === 'bigint' ? Number(info.startedAt) : info.startedAt
-          const endNs = typeof info.endedAt === 'bigint' ? Number(info.endedAt) : info.endedAt
-          startedAt = new Date(startNs / 1000000)
-          endedAt = new Date(endNs / 1000000)
-          duration = Math.round((endNs - startNs) / 1000000000)
+          // LiveKit timestamps are in nanoseconds (can be BigInt)
+          // Use BigInt arithmetic to avoid precision loss before converting to Number
+          const startNs = typeof info.startedAt === 'bigint' ? info.startedAt : BigInt(info.startedAt)
+          const endNs = typeof info.endedAt === 'bigint' ? info.endedAt : BigInt(info.endedAt)
+          
+          // Convert nanoseconds to milliseconds using BigInt division, then to Number
+          startedAt = new Date(Number(startNs / BigInt(1000000)))
+          endedAt = new Date(Number(endNs / BigInt(1000000)))
+          duration = Number((endNs - startNs) / BigInt(1000000000))
         }
 
         await db.classRecording.upsert({
