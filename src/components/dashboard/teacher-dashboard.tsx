@@ -88,7 +88,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
     'bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-5'
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-[1600px] mx-auto">
+    <div className="flex flex-col gap-6 w-full max-w-[1600px] mx-auto" data-tour="dashboard">
       {/* 1. Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
@@ -119,7 +119,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
       </div>
 
       {/* 2. Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" data-tour="stats">
         {/* Asistencia Semanal */}
         <div className={cardStyle}>
           <div className="flex justify-between items-start mb-4">
@@ -202,7 +202,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
         {/* Left Column (2/3 width) */}
         <div className="lg:col-span-2 space-y-6">
           {/* Today's Schedule */}
-          <div className="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+          <div className="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden" data-tour="schedule">
             <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
               <h3 className="text-lg font-bold text-slate-900 dark:text-white">Horario de Hoy</h3>
               <span className="text-sm text-slate-500 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-lg capitalize">
@@ -286,7 +286,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
             <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">
               Cursos Activos
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4" data-tour="courses">
               {dashboardData.activeCourses.map((course) => (
                 <Link
                   key={course.id}
@@ -334,7 +334,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
         {/* Right Column (1/3 width) */}
         <div className="space-y-6">
           {/* Quick Actions */}
-          <div className="bg-blue-500 dark:bg-blue-600 rounded-xl p-6 text-white shadow-lg shadow-blue-500/20">
+          <div className="bg-blue-500 dark:bg-blue-600 rounded-xl p-6 text-white shadow-lg shadow-blue-500/20" data-tour="quick-actions">
             <h3 className="text-lg font-bold mb-4">Acciones Rápidas</h3>
             <div className="space-y-3">
               <button

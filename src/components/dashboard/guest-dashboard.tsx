@@ -72,7 +72,7 @@ const GuestDashboard = () => {
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
       {/* Hero Banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary to-blue-600 shadow-lg">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary to-blue-600 shadow-lg" data-tour="hero-banner">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+CjxyZWN0IHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgZmlsbD0iIzAwMDAwMDA1Ij48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDMwaDYwTTMwIDB2NjAiIHN0cm9rZT0iI2ZmZmZmZjEwIiBzdHJva2Utd2lkdGg9IjEiPjwvcGF0aD4KPC9zdmc+')] opacity-20"></div>
         <div className="relative p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6 text-white">
           <div className="max-w-xl space-y-4">
@@ -109,7 +109,7 @@ const GuestDashboard = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6" data-tour="stats-cards">
         <div className="bg-white dark:bg-card-dark p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center shrink-0">
             <Languages className="w-6 h-6" />
@@ -145,7 +145,7 @@ const GuestDashboard = () => {
 
       {/* Popular Courses Section */}
       <div>
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-6" data-tour="popular-courses">
           <div>
             <h3 className="text-xl font-bold text-slate-900 dark:text-white">Cursos Populares</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -210,7 +210,7 @@ const GuestDashboard = () => {
       {/* Two Column Section: Webinars & Resources */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Upcoming Webinars */}
-        <div className="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <div className="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm" data-tour="webinars">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <Video className="w-5 h-5 text-primary" /> Próximos Webinars Gratuitos
@@ -261,7 +261,7 @@ const GuestDashboard = () => {
         </div>
 
         {/* Free Resources */}
-        <div className="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <div className="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm" data-tour="resources">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <FileText className="w-5 h-5 text-purple-500" /> Recursos Gratuitos
@@ -308,7 +308,7 @@ const GuestDashboard = () => {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-8 text-center">
+      <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-8 text-center" data-tour="cta-section">
         <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
           ¿Listo para comenzar tu viaje?
         </h3>

@@ -76,7 +76,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto">
+    <div className="space-y-8 max-w-7xl mx-auto" data-tour="dashboard">
       {/* Page Heading */}
       <div className="flex flex-wrap justify-between items-end gap-3">
         <div className="flex flex-col gap-1">
@@ -115,7 +115,7 @@ export default function Dashboard() {
 
       {/* Hero Section: Resume Learning */}
       {currentEnrollment && (
-        <div className="w-full">
+        <div className="w-full" data-tour="continue-learning">
           <div className="flex flex-col items-stretch justify-start rounded-xl overflow-hidden md:flex-row md:items-center shadow-md bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-700 group transition-all hover:shadow-lg">
             <div 
               className="w-full md:w-1/3 h-48 md:h-auto md:aspect-[4/3] bg-cover bg-center relative"
@@ -160,7 +160,7 @@ export default function Dashboard() {
       {/* Quick Actions Bar */}
       <div>
         <h3 className="text-slate-900 dark:text-white text-lg font-bold mb-4">Acciones Rápidas</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4" data-tour="quick-actions">
           <Link href="/my-courses" className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer">
             <div className="rounded-full bg-blue-50 dark:bg-blue-900/30 p-3 text-primary">
               <BookOpen className="w-5 h-5" />
@@ -192,7 +192,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Courses (2/3 width) */}
         <div className="lg:col-span-2 flex flex-col gap-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between" data-tour="my-courses">
             <h3 className="text-slate-900 dark:text-white text-xl font-bold">Mis Cursos</h3>
             <Link href="/my-courses" className="text-primary text-sm font-medium hover:underline flex items-center gap-1">
               Ver Todos <ArrowRight className="w-4 h-4" />
@@ -244,7 +244,7 @@ export default function Dashboard() {
         {/* Right Column: Goals & Schedule (1/3 width) */}
         <div className="flex flex-col gap-6">
           {/* Daily Goals Widget */}
-          <div className="bg-white dark:bg-card-dark p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+          <div className="bg-white dark:bg-card-dark p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700" data-tour="daily-goal">
             <h3 className="text-slate-900 dark:text-white text-lg font-bold mb-4">Meta Diaria</h3>
             <div className="flex items-center gap-4 mb-4">
               <div className="relative size-16 flex-shrink-0">
@@ -287,7 +287,7 @@ export default function Dashboard() {
           </div>
 
           {/* Upcoming Schedule Widget */}
-          <div className="bg-white dark:bg-card-dark p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+          <div className="bg-white dark:bg-card-dark p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700" data-tour="upcoming-classes">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-slate-900 dark:text-white text-lg font-bold">Próximas Clases</h3>
               <Link href="/schedule" className="text-slate-500 dark:text-slate-400 hover:text-primary">
