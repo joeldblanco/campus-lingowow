@@ -9,6 +9,7 @@ import {
   AudioBlock,
   Block,
   DownloadableFile,
+  EmbedBlock,
   EssayBlock,
   FileBlock,
   FillBlanksBlock,
@@ -146,6 +147,8 @@ export function PropertiesPanel({ block, onUpdate, onRemove, onClose }: Properti
             onUpdate={onUpdate}
           />
         )
+      case 'embed':
+        return <EmbedProperties block={block as EmbedBlock} onUpdate={onUpdate} />
       default:
         return <GenericProperties block={block} onUpdate={onUpdate} />
     }
@@ -3042,6 +3045,158 @@ function DragDropProperties({
           min={0}
           value={block.points || 10}
           onChange={(e) => onUpdate({ points: parseInt(e.target.value) || 10 })}
+        />
+      </div>
+    </div>
+  )
+}
+
+// Embed Block Properties
+function getEmbedType(url: string): 'youtube' | 'vimeo' | 'google-docs' | 'google-slides' | 'google-forms' | 'spotify' | 'iframe' {
+  if (!url) return 'iframe'
+  const lowerUrl = url.toLowerCase()
+  if (lowerUrl.includes('youtube.com') || lowerUrl.includes('youtu.be')) return 'youtube'
+  if (lowerUrl.includes('vimeo.com')) return 'vimeo'
+  if (lowerUrl.includes('docs.google.com/document')) return 'google-docs'
+  if (lowerUrl.includes('docs.google.com/presentation')) return 'google-slides'
+  if (lowerUrl.includes('docs.google.com/forms')) return 'google-forms'
+  if (lowerUrl.includes('spotify.com')) return 'spotify'
+  return 'iframe'
+}
+
+function getEmbedTypeLabel(type: string): string {
+  const labels: Record<string, string> = {
+    'youtube': 'YouTube',
+    'vimeo': 'Vimeo',
+    'google-docs': 'Google Docs',
+    'google-slides': 'Google Slides',
+    'google-forms': 'Google Forms',
+    'spotify': 'Spotify',
+    'iframe': 'Contenido Web',
+  }
+  return labels[type] || 'Contenido Web'
+}
+
+function EmbedProperties({
+  block,
+  onUpdate,
+}: {
+  block: EmbedBlock
+  onUpdate: (updates: Partial<Block>) => void
+}) {
+  const embedType = getEmbedType(block.url || '')
+  const isGoogleSlides = embedType === 'google-slides'
+
+  return (
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <Label>URL a Embeber</Label>
+        <Input
+          value={block.url || ''}
+          onChange={(e) => onUpdate({ url: e.target.value })}
+          placeholder="https://docs.google.com/presentation/d/.../edit"
+        />
+        <p className="text-xs text-muted-foreground">
+          Soporta: Google Slides, YouTube, Vimeo, Google Docs/Forms, Spotify, Figma, Canva, Genially
+        </p>
+      </div>
+
+      {block.url && (
+        <div className="flex items-center gap-2 p-2 bg-muted rounded-md">
+          <div className={`h-2 w-2 rounded-full ${isGoogleSlides ? 'bg-yellow-500' : 'bg-green-500'}`} />
+          <span className="text-sm">Detectado: <strong>{getEmbedTypeLabel(embedType)}</strong></span>
+        </div>
+      )}
+
+      <div className="space-y-2">
+        <Label>Título (opcional)</Label>
+        <Input
+          value={block.title || ''}
+          onChange={(e) => onUpdate({ title: e.target.value })}
+          placeholder="Título del contenido embebido"
+        />
+      </div>
+
+      {isGoogleSlides && (
+        <div className="border rounded-lg p-4 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-950/20 dark:to-orange-950/20 space-y-4">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium">⚙️ Opciones de Google Slides</span>
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <Switch
+                id="embed-autoplay"
+                checked={block.autoplay || false}
+                onCheckedChange={(checked) => onUpdate({ autoplay: checked })}
+              />
+              <label htmlFor="embed-autoplay" className="text-sm cursor-pointer">
+                <span className="font-medium">Reproducción automática</span>
+                <p className="text-xs text-muted-foreground">Inicia la presentación al cargar</p>
+              </label>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <Switch
+                id="embed-loop"
+                checked={block.loop || false}
+                onCheckedChange={(checked) => onUpdate({ loop: checked })}
+              />
+              <label htmlFor="embed-loop" className="text-sm cursor-pointer">
+                <span className="font-medium">Repetir en bucle</span>
+                <p className="text-xs text-muted-foreground">Reinicia al terminar</p>
+              </label>
+            </div>
+          </div>
+
+          {block.autoplay && (
+            <div className="space-y-2">
+              <Label>Tiempo entre diapositivas</Label>
+              <div className="flex gap-2 flex-wrap">
+                {[
+                  { value: 1000, label: '1s' },
+                  { value: 2000, label: '2s' },
+                  { value: 3000, label: '3s' },
+                  { value: 5000, label: '5s' },
+                  { value: 10000, label: '10s' },
+                ].map((opt) => (
+                  <Button
+                    key={opt.value}
+                    type="button"
+                    size="sm"
+                    variant={(block.delayMs || 3000) === opt.value ? 'default' : 'outline'}
+                    onClick={() => onUpdate({ delayMs: opt.value })}
+                  >
+                    {opt.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="space-y-2">
+        <Label>Altura (px)</Label>
+        <div className="flex gap-2 flex-wrap">
+          {[300, 400, 500, 600].map((h) => (
+            <Button
+              key={h}
+              type="button"
+              size="sm"
+              variant={(block.height || 400) === h ? 'default' : 'outline'}
+              onClick={() => onUpdate({ height: h })}
+            >
+              {h}px
+            </Button>
+          ))}
+        </div>
+        <Input
+          type="number"
+          value={block.height || 400}
+          onChange={(e) => onUpdate({ height: parseInt(e.target.value) || 400 })}
+          placeholder="400"
+          className="mt-2"
         />
       </div>
     </div>
