@@ -718,7 +718,7 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                   Clases personalizadas 1 a 1 con tutores certificados. Mejora tu fluidez con
                   práctica real.
                 </p>
-                <Link href="/teachers">
+                <Link href="/demo">
                   <Button size="lg" className="gap-2 px-8">
                     <GraduationCap className="h-5 w-5" />
                     Comienza Ahora
@@ -886,7 +886,7 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                   Reserva una sesión 1 a 1 con un tutor para practicar tus habilidades de
                   conversación.
                 </p>
-                <Link href="/teachers">
+                <Link href="/demo">
                   <Button variant="secondary" className="w-full">
                     Encontrar un Tutor
                   </Button>

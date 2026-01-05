@@ -297,7 +297,7 @@ export default async function LandingPage() {
               ))}
             </div>
             <div className="flex justify-center mt-8">
-              <Link href="/cursos">
+              <Link href="/courses">
                 <Button variant="outline">Ver Todos los Profesores</Button>
               </Link>
             </div>

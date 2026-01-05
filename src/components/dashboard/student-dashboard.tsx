@@ -179,11 +179,11 @@ export default function Dashboard() {
             </div>
             <span className="text-slate-900 dark:text-white text-sm font-medium">Mi Horario</span>
           </Link>
-          <Link href="/achievements" className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer">
+          <Link href="/my-courses" className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer">
             <div className="rounded-full bg-purple-50 dark:bg-purple-900/30 p-3 text-purple-600 dark:text-purple-400">
               <Trophy className="w-5 h-5" />
             </div>
-            <span className="text-slate-900 dark:text-white text-sm font-medium">Logros</span>
+            <span className="text-slate-900 dark:text-white text-sm font-medium">Mi Progreso</span>
           </Link>
         </div>
       </div>

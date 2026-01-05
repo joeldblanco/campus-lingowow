@@ -358,7 +358,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                 </button>
               ) : (
                 <Link
-                  href="/earnings"
+                  href="/teacher/earnings"
                   className="w-full flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-3 rounded-lg text-sm font-medium backdrop-blur-sm border border-white/10"
                 >
                   <div className="bg-white/20 p-1.5 rounded">
@@ -377,7 +377,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                 Editar Horario
               </button>
               <Link
-                href="/students"
+                href="/teacher/students"
                 className="w-full flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-3 rounded-lg text-sm font-medium backdrop-blur-sm border border-white/10"
               >
                 <div className="bg-white/20 p-1.5 rounded">

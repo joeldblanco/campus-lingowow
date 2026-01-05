@@ -136,7 +136,7 @@ export default function CartPage() {
                     </div>
                   </div>
 
-                  <Link href="/checkout" passHref>
+                  <Link href="/shop/cart/checkout" passHref>
                     <Button className="w-full">Finalizar Compra</Button>
                   </Link>
 

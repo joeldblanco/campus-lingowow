@@ -109,8 +109,8 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/resources/exercises" className="text-muted-foreground hover:text-foreground">
-                  Ejercicios
+                <Link href="/library" className="text-muted-foreground hover:text-foreground">
+                  Biblioteca Digital
                 </Link>
               </li>
               <li>

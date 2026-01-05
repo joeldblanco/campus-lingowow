@@ -88,7 +88,7 @@ export function ResetForm() {
               </Button>
               <div className="text-center text-sm">
                 ¿Recordaste tu contraseña?{' '}
-                <Link href="/signin" className="underline underline-offset-4">
+                <Link href="/auth/signin" className="underline underline-offset-4">
                   Inicia sesión
                 </Link>
               </div>

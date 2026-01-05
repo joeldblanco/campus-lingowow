@@ -215,7 +215,7 @@ const GuestDashboard = () => {
             <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <Video className="w-5 h-5 text-primary" /> Próximos Webinars Gratuitos
             </h3>
-            <Link href="/events" className="text-xs font-medium text-slate-500 hover:text-primary">
+            <Link href="/schedule" className="text-xs font-medium text-slate-500 hover:text-primary">
               Ver Calendario
             </Link>
           </div>
