@@ -76,10 +76,13 @@ export function useTimezone(): TimezoneInfo {
   const { data: session, status } = useSession()
   const hasSyncedRef = useRef(false)
   
-  // Obtener timezone del navegador (solo en cliente)
-  const browserTimezone = typeof window !== 'undefined' 
-    ? Intl.DateTimeFormat().resolvedOptions().timeZone 
-    : 'America/Lima'
+  // Memoizar timezone del navegador para evitar re-renders innecesarios
+  const browserTimezone = useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return Intl.DateTimeFormat().resolvedOptions().timeZone
+    }
+    return 'America/Lima'
+  }, [])
   
   // La timezone final: de la sesión si existe, sino del navegador
   const timezone = session?.user?.timezone || browserTimezone
