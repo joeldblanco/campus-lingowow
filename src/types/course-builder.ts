@@ -135,6 +135,10 @@ export interface EmbedBlock extends BaseBlock {
   url: string
   title?: string
   height?: number
+  // Google Slides specific options
+  autoplay?: boolean
+  loop?: boolean
+  delayMs?: number // Delay between slides in milliseconds (default 3000)
 }
 
 export interface TabGroupBlock extends BaseBlock {

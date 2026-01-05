@@ -1073,12 +1073,169 @@ function getGrammarVisualizerColor(type?: string) {
   return map[type || 'other'] || map['other']
 }
 
+// Embed Block Utility Functions
+function getEmbedType(url: string): 'youtube' | 'vimeo' | 'google-docs' | 'google-slides' | 'google-forms' | 'spotify' | 'soundcloud' | 'codepen' | 'figma' | 'canva' | 'genially' | 'iframe' {
+  if (!url) return 'iframe'
+  
+  const lowerUrl = url.toLowerCase()
+  
+  if (lowerUrl.includes('youtube.com') || lowerUrl.includes('youtu.be')) return 'youtube'
+  if (lowerUrl.includes('vimeo.com')) return 'vimeo'
+  if (lowerUrl.includes('docs.google.com/document')) return 'google-docs'
+  if (lowerUrl.includes('docs.google.com/presentation')) return 'google-slides'
+  if (lowerUrl.includes('docs.google.com/forms')) return 'google-forms'
+  if (lowerUrl.includes('spotify.com')) return 'spotify'
+  if (lowerUrl.includes('soundcloud.com')) return 'soundcloud'
+  if (lowerUrl.includes('codepen.io')) return 'codepen'
+  if (lowerUrl.includes('figma.com')) return 'figma'
+  if (lowerUrl.includes('canva.com')) return 'canva'
+  if (lowerUrl.includes('genial.ly') || lowerUrl.includes('genially')) return 'genially'
+  
+  return 'iframe'
+}
+
+function getGoogleSlidesEmbedUrl(url: string, options?: { autoplay?: boolean; loop?: boolean; delayMs?: number }): string {
+  let baseUrl = url
+  
+  // Remove any existing query parameters and hash
+  baseUrl = baseUrl.split('?')[0].split('#')[0]
+  
+  // Convert /edit or /preview to /embed for proper embedding
+  if (baseUrl.includes('/edit')) {
+    baseUrl = baseUrl.replace('/edit', '/embed')
+  } else if (baseUrl.includes('/preview')) {
+    baseUrl = baseUrl.replace('/preview', '/embed')
+  } else if (baseUrl.includes('/pub')) {
+    baseUrl = baseUrl.replace('/pub', '/embed')
+  } else if (!baseUrl.endsWith('/embed')) {
+    baseUrl = baseUrl.replace(/\/?$/, '/embed')
+  }
+  
+  // Build query parameters for Google Slides
+  const params = new URLSearchParams()
+  
+  if (options?.autoplay) {
+    params.set('start', 'true')
+  }
+  
+  if (options?.loop) {
+    params.set('loop', 'true')
+  }
+  
+  if (options?.delayMs) {
+    params.set('delayms', options.delayMs.toString())
+  }
+  
+  const queryString = params.toString()
+  return queryString ? `${baseUrl}?${queryString}` : baseUrl
+}
+
+function getEmbedUrl(url: string, options?: { autoplay?: boolean; loop?: boolean; delayMs?: number }): string {
+  if (!url) return ''
+  
+  const embedType = getEmbedType(url)
+  
+  switch (embedType) {
+    case 'youtube': {
+      let videoId = ''
+      if (url.includes('youtu.be/')) {
+        videoId = url.split('youtu.be/')[1]?.split(/[?&#]/)[0] || ''
+      } else if (url.includes('youtube.com/watch')) {
+        const urlParams = new URLSearchParams(url.split('?')[1])
+        videoId = urlParams.get('v') || ''
+      } else if (url.includes('youtube.com/embed/')) {
+        videoId = url.split('youtube.com/embed/')[1]?.split(/[?&#]/)[0] || ''
+      }
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : url
+    }
+    case 'vimeo': {
+      const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?(\d+)/)
+      const videoId = vimeoMatch?.[1]
+      return videoId ? `https://player.vimeo.com/video/${videoId}` : url
+    }
+    case 'google-slides': {
+      return getGoogleSlidesEmbedUrl(url, options)
+    }
+    case 'google-docs':
+    case 'google-forms': {
+      if (url.includes('/edit')) {
+        return url.replace('/edit', '/preview')
+      }
+      if (!url.includes('/preview') && !url.includes('/embed') && !url.includes('/pub')) {
+        return url + '/preview'
+      }
+      return url
+    }
+    case 'spotify': {
+      if (url.includes('open.spotify.com') && !url.includes('/embed/')) {
+        return url.replace('open.spotify.com/', 'open.spotify.com/embed/')
+      }
+      return url
+    }
+    case 'figma': {
+      if (url.includes('figma.com/file/') || url.includes('figma.com/design/')) {
+        return `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(url)}`
+      }
+      return url
+    }
+    case 'canva':
+    case 'genially':
+    default:
+      return url
+  }
+}
+
+function getEmbedTypeLabel(type: string): string {
+  const labels: Record<string, string> = {
+    'youtube': 'YouTube',
+    'vimeo': 'Vimeo',
+    'google-docs': 'Google Docs',
+    'google-slides': 'Google Slides',
+    'google-forms': 'Google Forms',
+    'spotify': 'Spotify',
+    'soundcloud': 'SoundCloud',
+    'codepen': 'CodePen',
+    'figma': 'Figma',
+    'canva': 'Canva',
+    'genially': 'Genially',
+    'iframe': 'Contenido Web',
+  }
+  return labels[type] || 'Contenido Web'
+}
+
 function EmbedBlockPreview({ block }: { block: EmbedBlock }) {
+  const embedType = getEmbedType(block.url || '')
+  const isGoogleSlides = embedType === 'google-slides'
+  const embedUrl = getEmbedUrl(block.url || '', {
+    autoplay: block.autoplay,
+    loop: block.loop,
+    delayMs: block.delayMs,
+  })
+
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-        <Link className="h-5 w-5" />
-        <span>Embebido</span>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+          <Link className="h-5 w-5" />
+          <span>Contenido Embebido</span>
+        </div>
+        <div className="flex items-center gap-2">
+          {isGoogleSlides && block.autoplay && (
+            <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">
+              Auto
+            </span>
+          )}
+          {isGoogleSlides && block.loop && (
+            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
+              Loop
+            </span>
+          )}
+          {block.url && (
+            <span className="text-xs bg-muted px-2 py-1 rounded font-medium">
+              {getEmbedTypeLabel(embedType)}
+            </span>
+          )}
+        </div>
       </div>
 
       {block.title && (
@@ -1091,21 +1248,21 @@ function EmbedBlockPreview({ block }: { block: EmbedBlock }) {
         <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
           <Link className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
           <p className="text-muted-foreground">Contenido embebido no configurado</p>
+          <p className="text-xs text-muted-foreground mt-2">
+            Soporta Google Slides, YouTube, Vimeo, Google Docs, Spotify, Figma, Canva, Genially y más
+          </p>
         </div>
       ) : (
-        <div className="border rounded-lg overflow-hidden">
-          <div
-            className="bg-muted flex items-center justify-center"
+        <div className="rounded-lg overflow-hidden border bg-black/5 shadow-sm">
+          <iframe
+            src={embedUrl}
+            title={block.title || 'Contenido embebido'}
+            className="w-full border-0"
             style={{ height: block.height || 400 }}
-          >
-            <div className="text-center space-y-4">
-              <Link className="h-16 w-16 text-muted-foreground mx-auto" />
-              <div>
-                <p className="text-sm text-muted-foreground">Contenido embebido</p>
-                <p className="text-xs text-muted-foreground truncate max-w-xs">{block.url}</p>
-              </div>
-            </div>
-          </div>
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            loading="lazy"
+          />
         </div>
       )}
     </div>

@@ -742,7 +742,154 @@ function FileBlockPreview({ block }: { block: FileBlock }) {
   )
 }
 
-// Embed Block Components
+// Embed Block Components - Utility functions
+function getEmbedType(url: string): 'youtube' | 'vimeo' | 'google-docs' | 'google-slides' | 'google-forms' | 'spotify' | 'soundcloud' | 'codepen' | 'figma' | 'canva' | 'genially' | 'iframe' {
+  if (!url) return 'iframe'
+  
+  const lowerUrl = url.toLowerCase()
+  
+  if (lowerUrl.includes('youtube.com') || lowerUrl.includes('youtu.be')) return 'youtube'
+  if (lowerUrl.includes('vimeo.com')) return 'vimeo'
+  if (lowerUrl.includes('docs.google.com/document')) return 'google-docs'
+  if (lowerUrl.includes('docs.google.com/presentation')) return 'google-slides'
+  if (lowerUrl.includes('docs.google.com/forms')) return 'google-forms'
+  if (lowerUrl.includes('spotify.com')) return 'spotify'
+  if (lowerUrl.includes('soundcloud.com')) return 'soundcloud'
+  if (lowerUrl.includes('codepen.io')) return 'codepen'
+  if (lowerUrl.includes('figma.com')) return 'figma'
+  if (lowerUrl.includes('canva.com')) return 'canva'
+  if (lowerUrl.includes('genial.ly') || lowerUrl.includes('genially')) return 'genially'
+  
+  return 'iframe'
+}
+
+function getGoogleSlidesEmbedUrl(url: string, options?: { autoplay?: boolean; loop?: boolean; delayMs?: number }): string {
+  // Extract the presentation ID from various Google Slides URL formats
+  // Formats: 
+  // - https://docs.google.com/presentation/d/PRESENTATION_ID/edit
+  // - https://docs.google.com/presentation/d/PRESENTATION_ID/pub
+  // - https://docs.google.com/presentation/d/PRESENTATION_ID/preview
+  // - https://docs.google.com/presentation/d/e/PRESENTATION_ID/pub
+  
+  let baseUrl = url
+  
+  // Remove any existing query parameters and hash
+  baseUrl = baseUrl.split('?')[0].split('#')[0]
+  
+  // Convert /edit or /preview to /embed for proper embedding
+  if (baseUrl.includes('/edit')) {
+    baseUrl = baseUrl.replace('/edit', '/embed')
+  } else if (baseUrl.includes('/preview')) {
+    baseUrl = baseUrl.replace('/preview', '/embed')
+  } else if (baseUrl.includes('/pub')) {
+    baseUrl = baseUrl.replace('/pub', '/embed')
+  } else if (!baseUrl.endsWith('/embed')) {
+    // Add /embed if not present
+    baseUrl = baseUrl.replace(/\/?$/, '/embed')
+  }
+  
+  // Build query parameters for Google Slides
+  const params = new URLSearchParams()
+  
+  if (options?.autoplay) {
+    params.set('start', 'true')
+  }
+  
+  if (options?.loop) {
+    params.set('loop', 'true')
+  }
+  
+  if (options?.delayMs) {
+    params.set('delayms', options.delayMs.toString())
+  }
+  
+  const queryString = params.toString()
+  return queryString ? `${baseUrl}?${queryString}` : baseUrl
+}
+
+function getEmbedUrl(url: string, options?: { autoplay?: boolean; loop?: boolean; delayMs?: number }): string {
+  if (!url) return ''
+  
+  const embedType = getEmbedType(url)
+  
+  switch (embedType) {
+    case 'youtube': {
+      // Handle various YouTube URL formats
+      let videoId = ''
+      if (url.includes('youtu.be/')) {
+        videoId = url.split('youtu.be/')[1]?.split(/[?&#]/)[0] || ''
+      } else if (url.includes('youtube.com/watch')) {
+        const urlParams = new URLSearchParams(url.split('?')[1])
+        videoId = urlParams.get('v') || ''
+      } else if (url.includes('youtube.com/embed/')) {
+        videoId = url.split('youtube.com/embed/')[1]?.split(/[?&#]/)[0] || ''
+      }
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : url
+    }
+    case 'vimeo': {
+      const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?(\d+)/)
+      const videoId = vimeoMatch?.[1]
+      return videoId ? `https://player.vimeo.com/video/${videoId}` : url
+    }
+    case 'google-slides': {
+      return getGoogleSlidesEmbedUrl(url, options)
+    }
+    case 'google-docs':
+    case 'google-forms': {
+      // Ensure the URL ends with /preview or /embed for proper embedding
+      if (url.includes('/edit')) {
+        return url.replace('/edit', '/preview')
+      }
+      if (!url.includes('/preview') && !url.includes('/embed') && !url.includes('/pub')) {
+        return url + '/preview'
+      }
+      return url
+    }
+    case 'spotify': {
+      // Convert Spotify URLs to embed format
+      if (url.includes('open.spotify.com') && !url.includes('/embed/')) {
+        return url.replace('open.spotify.com/', 'open.spotify.com/embed/')
+      }
+      return url
+    }
+    case 'figma': {
+      // Figma embed URL format
+      if (url.includes('figma.com/file/') || url.includes('figma.com/design/')) {
+        return `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(url)}`
+      }
+      return url
+    }
+    case 'canva': {
+      // Canva URLs usually work directly if they're share links
+      return url
+    }
+    case 'genially': {
+      // Genially embed URLs
+      return url
+    }
+    default:
+      return url
+  }
+}
+
+function getEmbedTypeLabel(type: string): string {
+  const labels: Record<string, string> = {
+    'youtube': 'YouTube',
+    'vimeo': 'Vimeo',
+    'google-docs': 'Google Docs',
+    'google-slides': 'Google Slides',
+    'google-forms': 'Google Forms',
+    'spotify': 'Spotify',
+    'soundcloud': 'SoundCloud',
+    'codepen': 'CodePen',
+    'figma': 'Figma',
+    'canva': 'Canva',
+    'genially': 'Genially',
+    'iframe': 'Contenido Web',
+  }
+  return labels[type] || 'Contenido Web'
+}
+
 function EmbedBlockEditor({
   block,
   onUpdate,
@@ -750,33 +897,161 @@ function EmbedBlockEditor({
   block: EmbedBlock
   onUpdate: (updates: Partial<Block>) => void
 }) {
+  const embedType = getEmbedType(block.url || '')
+  const isGoogleSlides = embedType === 'google-slides'
+  const embedUrl = getEmbedUrl(block.url || '', {
+    autoplay: block.autoplay,
+    loop: block.loop,
+    delayMs: block.delayMs,
+  })
+  
   return (
     <div className="space-y-4">
       <div>
-        <label className="text-sm font-medium">URL a Embeber</label>
+        <label className="text-sm font-medium block mb-1">URL a Embeber</label>
         <Input
           value={block.url || ''}
           onChange={(e) => onUpdate({ url: e.target.value })}
-          placeholder="https://example.com/embed"
+          placeholder="https://docs.google.com/presentation/d/.../edit o cualquier URL"
         />
+        <p className="text-xs text-muted-foreground mt-1">
+          Soporta: Google Slides, YouTube, Vimeo, Google Docs/Forms, Spotify, Figma, Canva, Genially y más
+        </p>
       </div>
+      
+      {block.url && (
+        <div className="flex items-center gap-2 p-2 bg-muted rounded-md">
+          <div className={`h-2 w-2 rounded-full ${isGoogleSlides ? 'bg-yellow-500' : 'bg-green-500'}`} />
+          <span className="text-sm">Detectado: <strong>{getEmbedTypeLabel(embedType)}</strong></span>
+          {isGoogleSlides && (
+            <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded ml-auto">
+              Presentación
+            </span>
+          )}
+        </div>
+      )}
+      
       <div>
-        <label className="text-sm font-medium">Título</label>
+        <label className="text-sm font-medium block mb-1">Título (opcional)</label>
         <Input
           value={block.title || ''}
           onChange={(e) => onUpdate({ title: e.target.value })}
           placeholder="Título del contenido embebido"
         />
       </div>
+      
+      {/* Google Slides specific options */}
+      {isGoogleSlides && (
+        <div className="border rounded-lg p-4 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-950/20 dark:to-orange-950/20 space-y-4">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium">⚙️ Opciones de Google Slides</span>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="autoplay"
+                checked={block.autoplay || false}
+                onChange={(e) => onUpdate({ autoplay: e.target.checked })}
+                className="h-4 w-4 rounded border-gray-300"
+              />
+              <label htmlFor="autoplay" className="text-sm">
+                <span className="font-medium">Reproducción automática</span>
+                <p className="text-xs text-muted-foreground">Inicia la presentación al cargar</p>
+              </label>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="loop"
+                checked={block.loop || false}
+                onChange={(e) => onUpdate({ loop: e.target.checked })}
+                className="h-4 w-4 rounded border-gray-300"
+              />
+              <label htmlFor="loop" className="text-sm">
+                <span className="font-medium">Repetir en bucle</span>
+                <p className="text-xs text-muted-foreground">Reinicia al terminar</p>
+              </label>
+            </div>
+          </div>
+          
+          {block.autoplay && (
+            <div>
+              <label className="text-sm font-medium block mb-2">Tiempo entre diapositivas</label>
+              <div className="flex gap-2 flex-wrap">
+                {[
+                  { value: 1000, label: '1s' },
+                  { value: 2000, label: '2s' },
+                  { value: 3000, label: '3s' },
+                  { value: 5000, label: '5s' },
+                  { value: 10000, label: '10s' },
+                ].map((opt) => (
+                  <Button
+                    key={opt.value}
+                    type="button"
+                    size="sm"
+                    variant={(block.delayMs || 3000) === opt.value ? 'default' : 'outline'}
+                    onClick={() => onUpdate({ delayMs: opt.value })}
+                  >
+                    {opt.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+      
       <div>
-        <label className="text-sm font-medium">Altura (px)</label>
+        <label className="text-sm font-medium block mb-1">Altura (px)</label>
+        <div className="flex gap-2">
+          {[300, 400, 500, 600].map((h) => (
+            <Button
+              key={h}
+              type="button"
+              size="sm"
+              variant={(block.height || 400) === h ? 'default' : 'outline'}
+              onClick={() => onUpdate({ height: h })}
+            >
+              {h}px
+            </Button>
+          ))}
+        </div>
         <Input
           type="number"
-          value={block.height || ''}
+          value={block.height || 400}
           onChange={(e) => onUpdate({ height: parseInt(e.target.value) || 400 })}
           placeholder="400"
+          className="mt-2"
         />
       </div>
+      
+      {block.url && (
+        <div className="border rounded-lg overflow-hidden">
+          <div className="bg-muted px-3 py-2 text-sm font-medium border-b flex items-center justify-between">
+            <span>Vista Previa</span>
+            <a 
+              href={block.url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-xs text-primary hover:underline"
+            >
+              Abrir en nueva pestaña
+            </a>
+          </div>
+          <iframe
+            src={embedUrl}
+            title={block.title || 'Contenido embebido'}
+            className="w-full border-0"
+            style={{ height: Math.min(block.height || 400, 300) }}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            loading="lazy"
+          />
+        </div>
+      )}
     </div>
   )
 }
@@ -787,18 +1062,39 @@ function EmbedBlockPreview({ block }: { block: EmbedBlock }) {
       <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
         <Link className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
         <p className="text-muted-foreground">No hay URL para embeber configurada</p>
+        <p className="text-xs text-muted-foreground mt-2">
+          Haz clic en editar para agregar una URL de YouTube, Vimeo, Google Docs, etc.
+        </p>
       </div>
     )
   }
 
+  const embedType = getEmbedType(block.url)
+  const embedUrl = getEmbedUrl(block.url)
+
   return (
     <div className="space-y-2">
-      {block.title && <p className="font-medium">{block.title}</p>}
-      <div
-        className="bg-muted rounded-lg flex items-center justify-center"
-        style={{ height: block.height || 400 }}
-      >
-        <Link className="h-12 w-12 text-muted-foreground" />
+      {block.title && (
+        <div className="flex items-center justify-between">
+          <p className="font-medium">{block.title}</p>
+          <span className="text-xs bg-muted px-2 py-1 rounded">{getEmbedTypeLabel(embedType)}</span>
+        </div>
+      )}
+      {!block.title && (
+        <div className="flex justify-end">
+          <span className="text-xs bg-muted px-2 py-1 rounded">{getEmbedTypeLabel(embedType)}</span>
+        </div>
+      )}
+      <div className="rounded-lg overflow-hidden border bg-black/5">
+        <iframe
+          src={embedUrl}
+          title={block.title || 'Contenido embebido'}
+          className="w-full border-0"
+          style={{ height: block.height || 400 }}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+          loading="lazy"
+        />
       </div>
     </div>
   )
