@@ -595,10 +595,24 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
             {!accessRestricted && resource.content && (
               <>
                 {(() => {
-                  const parsedContent = parseArticleContent(resource.content)
-                  if (parsedContent.blocks.length > 0) {
-                    return <ArticleBlockRenderer content={parsedContent} />
+                  // Check if content is JSON (new block format) or HTML (old format)
+                  const isJsonContent = resource.content.trim().startsWith('{')
+                  
+                  if (isJsonContent) {
+                    const parsedContent = parseArticleContent(resource.content)
+                    if (parsedContent.blocks.length > 0) {
+                      return <ArticleBlockRenderer content={parsedContent} />
+                    }
+                    // JSON content but no blocks - show placeholder
+                    return (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <p>El contenido no está disponible en este momento.</p>
+                        <p className="text-sm">El formato del contenido no es válido.</p>
+                      </div>
+                    )
                   }
+                  
+                  // Old HTML content - render safely
                   return (
                     <div
                       className="prose prose-lg max-w-none"
