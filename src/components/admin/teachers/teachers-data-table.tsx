@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { ArrowUpDown, BookOpen, Eye, Mail, MoreVertical, Pencil, Trash, Search } from 'lucide-react'
+import { ArrowUpDown, BookOpen, Calendar, Eye, Mail, MoreVertical, Pencil, Trash, Search } from 'lucide-react'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { impersonateUser } from '@/lib/actions/impersonate'
@@ -39,6 +39,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { UserAvatar } from '@/components/ui/user-avatar'
 import { ManageTeacherCoursesDialog } from '@/components/admin/teachers/manage-teacher-courses-dialog'
+import { TeacherScheduleDialog } from '@/components/admin/teachers/teacher-schedule-dialog'
 import { UserEditDialog } from '@/components/user/user-edit-dialog'
 import { User } from '@prisma/client'
 
@@ -53,6 +54,7 @@ export function TeachersDataTable({ teachers, onDeleteTeacher, onUpdateTeacher }
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [editingTeacher, setEditingTeacher] = useState<User | null>(null)
+  const [scheduleTeacher, setScheduleTeacher] = useState<User | null>(null)
 
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
@@ -179,6 +181,10 @@ export function TeachersDataTable({ teachers, onDeleteTeacher, onUpdateTeacher }
                   Gestionar Cursos
                 </DropdownMenuItem>
               </ManageTeacherCoursesDialog>
+              <DropdownMenuItem onClick={() => setScheduleTeacher(teacher)}>
+                <Calendar className="mr-2 h-4 w-4" />
+                Ver Horario
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => onDeleteTeacher(teacher.id)}>
                 <Trash className="mr-2 h-4 w-4" />
                 Eliminar
@@ -305,6 +311,15 @@ export function TeachersDataTable({ teachers, onDeleteTeacher, onUpdateTeacher }
             onUpdateTeacher(updatedTeacher)
             setEditingTeacher(null)
           }}
+        />
+      )}
+
+      {scheduleTeacher && (
+        <TeacherScheduleDialog
+          teacherId={scheduleTeacher.id}
+          teacherName={`${scheduleTeacher.name} ${scheduleTeacher.lastName || ''}`}
+          open={!!scheduleTeacher}
+          onOpenChange={(open) => !open && setScheduleTeacher(null)}
         />
       )}
     </div>

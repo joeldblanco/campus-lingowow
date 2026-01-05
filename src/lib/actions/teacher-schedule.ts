@@ -407,6 +407,148 @@ export async function bulkUpdateTeacherAvailability(
   }
 }
 
+// Get teacher schedule data for admin view (using admin's timezone)
+export async function getTeacherScheduleForAdmin(
+  teacherId: string,
+  startDate: Date,
+  endDate: Date
+): Promise<{ success: boolean; data?: TeacherScheduleData; error?: string }> {
+  const session = await auth()
+
+  if (!session?.user?.id || !session.user.roles.includes(UserRole.ADMIN)) {
+    return { success: false, error: 'No autorizado' }
+  }
+
+  const adminId = session.user.id
+
+  try {
+    // Obtener timezone del admin (quien está viendo)
+    const adminData = await db.user.findUnique({
+      where: { id: adminId },
+      select: { timezone: true },
+    })
+    const adminTimezone = adminData?.timezone || 'America/Lima'
+    
+    // Format dates for query
+    const startDateStr = format(startDate, 'yyyy-MM-dd')
+    const endDateStr = format(endDate, 'yyyy-MM-dd')
+
+    // Get class bookings for the teacher in the date range
+    const bookings = await db.classBooking.findMany({
+      where: {
+        teacherId,
+        day: {
+          gte: startDateStr,
+          lte: endDateStr,
+        },
+      },
+      include: {
+        student: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            email: true,
+            image: true,
+          },
+        },
+        enrollment: {
+          include: {
+            course: {
+              select: {
+                title: true,
+                level: true,
+                classDuration: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: [
+        { day: 'asc' },
+        { timeSlot: 'asc' },
+      ],
+    })
+
+    // Get teacher availability
+    const availability = await db.teacherAvailability.findMany({
+      where: {
+        userId: teacherId,
+      },
+      orderBy: [
+        { day: 'asc' },
+        { startTime: 'asc' },
+      ],
+    })
+
+    // Transform bookings to lessons using admin's timezone
+    const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
+    
+    const lessons: TeacherScheduleLesson[] = bookings.map((booking) => {
+      // Convertir de UTC a hora local del admin
+      const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot, adminTimezone)
+      const [startTime, endTime] = localData.timeSlot.split('-')
+      
+      // Parsear la fecha local
+      const [year, month, day] = localData.day.split('-').map(Number)
+      const lessonDate = new Date(year, month - 1, day, 12, 0, 0, 0)
+      
+      return {
+        id: booking.id,
+        courseTitle: booking.enrollment.course.title,
+        courseLevel: booking.enrollment.course.level,
+        student: {
+          id: booking.student.id,
+          name: booking.student.name,
+          lastName: booking.student.lastName || undefined,
+          email: booking.student.email,
+          image: booking.student.image,
+        },
+        startTime,
+        endTime,
+        date: lessonDate,
+        status: getBookingStatus(booking),
+        topic: booking.notes || undefined,
+        duration: booking.enrollment.course.classDuration,
+        color: booking.status === BookingStatus.CANCELLED ? 'gray' : getCourseColor(booking.enrollment.course.title),
+        enrollmentId: booking.enrollmentId,
+      }
+    })
+
+    // Sort lessons by date and time
+    lessons.sort((a, b) => {
+      const dateCompare = a.date.getTime() - b.date.getTime()
+      if (dateCompare !== 0) return dateCompare
+      return a.startTime.localeCompare(b.startTime)
+    })
+
+    // Transform availability using admin's timezone
+    const { convertAvailabilityFromUTC } = await import('@/lib/utils/date')
+    
+    const availabilitySlots: TeacherAvailabilitySlot[] = availability.map((slot) => {
+      const localData = convertAvailabilityFromUTC(slot.day, slot.startTime, slot.endTime, adminTimezone)
+      return {
+        id: slot.id,
+        day: localData.day,
+        startTime: localData.startTime,
+        endTime: localData.endTime,
+      }
+    })
+
+    return {
+      success: true,
+      data: {
+        lessons,
+        availability: availabilitySlots,
+        blockedDays: [],
+      },
+    }
+  } catch (error) {
+    console.error('Error fetching teacher schedule for admin:', error)
+    return { success: false, error: 'Error al cargar el horario del profesor' }
+  }
+}
+
 // Get lesson details
 export async function getLessonDetails(lessonId: string) {
   const session = await auth()
