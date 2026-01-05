@@ -77,15 +77,15 @@ export function useTimezone(): TimezoneInfo {
   const hasSyncedRef = useRef(false)
   
   // Usar estado para timezone del navegador para evitar SSR hydration mismatch
-  // Se inicializa con fallback y se actualiza en cliente después de la hidratación
-  const [browserTimezone, setBrowserTimezone] = useState('America/Lima')
+  // Se inicializa con null y se actualiza en cliente después de la hidratación
+  const [browserTimezone, setBrowserTimezone] = useState<string | null>(null)
   
   useEffect(() => {
     setBrowserTimezone(Intl.DateTimeFormat().resolvedOptions().timeZone)
   }, [])
   
-  // La timezone final: de la sesión si existe, sino del navegador
-  const timezone = session?.user?.timezone || browserTimezone
+  // La timezone final: de la sesión si existe, sino del navegador, sino fallback
+  const timezone = session?.user?.timezone || browserTimezone || 'America/Lima'
   
   // Auto-sincronizar timezone con la DB si difiere del navegador
   // NO sincronizar si el usuario está siendo impersonado (para no cambiar la timezone del usuario real)
@@ -95,12 +95,15 @@ export function useTimezone(): TimezoneInfo {
       // 1. El usuario está autenticado
       // 2. La sesión ya cargó
       // 3. No hemos sincronizado ya en esta sesión
-      // 4. La timezone de la DB difiere del navegador
-      // 5. NO es una sesión de impersonación
+      // 4. browserTimezone ya se cargó (no es null)
+      // 5. La timezone de la DB EXISTE y difiere del navegador
+      // 6. NO es una sesión de impersonación
       if (
         session?.user?.id && 
         status === 'authenticated' && 
         !hasSyncedRef.current &&
+        browserTimezone && // Asegurar que browserTimezone ya se cargó
+        session.user.timezone && // Asegurar que existe timezone en sesión
         session.user.timezone !== browserTimezone &&
         !session.user.isImpersonating
       ) {
