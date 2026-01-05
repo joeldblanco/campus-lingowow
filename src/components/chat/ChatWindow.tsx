@@ -1,6 +1,6 @@
 'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/ui/user-avatar'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import {
@@ -663,10 +663,13 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b h-20 shrink-0">
         <div className="flex items-center gap-3">
-          <Avatar className="h-10 w-10">
-            <AvatarImage src={otherUser.image || undefined} />
-            <AvatarFallback>{otherUser.name[0]}</AvatarFallback>
-          </Avatar>
+          <UserAvatar
+            userId={otherUser.id}
+            userName={otherUser.name}
+            userLastName={otherUser.lastName}
+            userImage={otherUser.image}
+            className="h-10 w-10"
+          />
           <div>
             <h3 className="font-semibold text-sm">
               {otherUser.name} {otherUser.lastName}
@@ -749,10 +752,13 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
               {!isMe && (
                 <div className="w-8 flex-shrink-0">
                   {showAvatar && (
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={otherUser.image || undefined} />
-                      <AvatarFallback>{otherUser.name[0]}</AvatarFallback>
-                    </Avatar>
+                    <UserAvatar
+                      userId={otherUser.id}
+                      userName={otherUser.name}
+                      userLastName={otherUser.lastName}
+                      userImage={otherUser.image}
+                      className="h-8 w-8"
+                    />
                   )}
                 </div>
               )}
@@ -804,10 +810,13 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 
               {isMe && (
                 <div className="w-8 flex-shrink-0">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={currentUser.image || undefined} />
-                    <AvatarFallback>{currentUser.name[0]}</AvatarFallback>
-                  </Avatar>
+                  <UserAvatar
+                    userId={currentUser.id}
+                    userName={currentUser.name}
+                    userLastName={currentUser.lastName}
+                    userImage={currentUser.image}
+                    className="h-8 w-8"
+                  />
                 </div>
               )}
             </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/ui/user-avatar'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -115,10 +115,12 @@ export const NewChatDialog: React.FC<NewChatDialogProps> = ({
                     disabled={creating}
                     className="w-full flex items-center gap-3 p-3 hover:bg-gray-100 rounded-lg transition-colors text-left"
                   >
-                    <Avatar>
-                      <AvatarImage src={user.image || undefined} />
-                      <AvatarFallback>{user.name[0]}</AvatarFallback>
-                    </Avatar>
+                    <UserAvatar
+                      userId={user.id}
+                      userName={user.name}
+                      userLastName={user.lastName}
+                      userImage={user.image}
+                    />
                     <div className="flex-1">
                       <p className="font-medium text-sm">
                         {user.name} {user.lastName}

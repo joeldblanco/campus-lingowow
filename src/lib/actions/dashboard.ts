@@ -9,6 +9,7 @@ import type {
   GuestDashboardData,
 } from '@/types/dashboard'
 import { formatDateNumeric, getCurrentDate, formatToISO, getStartOfMonth } from '@/lib/utils/date'
+import { getUserAvatarUrl } from '@/lib/utils'
 import { getPeriodByDate } from '@/lib/actions/academic-period'
 import { es } from 'date-fns/locale'
 import { format } from 'date-fns'
@@ -69,7 +70,7 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
       orderBy: { enrollmentDate: 'desc' },
       include: {
         student: {
-          select: { name: true, lastName: true, image: true },
+          select: { id: true, name: true, lastName: true, image: true },
         },
         course: {
           select: { title: true, language: true },
@@ -100,10 +101,10 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
       orderBy: [{ day: 'asc' }, { timeSlot: 'asc' }],
       include: {
         student: {
-          select: { name: true, lastName: true, image: true },
+          select: { id: true, name: true, lastName: true, image: true },
         },
         teacher: {
-          select: { name: true, lastName: true, image: true },
+          select: { id: true, name: true, lastName: true, image: true },
         },
         enrollment: {
           select: {
@@ -157,12 +158,13 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
       recentEnrollments: recentEnrollments.map((enrollment) => {
         const invoiceTotal = enrollment.purchases[0]?.invoice?.total
         return {
+          studentId: enrollment.student.id,
           studentName: `${enrollment.student.name} ${enrollment.student.lastName || ''}`,
           studentImage: enrollment.student.image,
           courseName: enrollment.course.title,
           date: formatDateNumeric(enrollment.enrollmentDate),
           amount: invoiceTotal ? `$${invoiceTotal.toFixed(2)}` : '-',
-          status: 'Completado', // Asumimos completado si hay enrollment activo por ahora
+          status: 'Completado',
         }
       }),
       enrollmentStats,
@@ -171,10 +173,11 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
         return {
           id: booking.id,
           title: booking.enrollment.course.title,
+          teacherId: booking.teacher.id,
           teacherName: `${booking.teacher.name} ${booking.teacher.lastName || ''}`,
           teacherImage: booking.teacher.image,
           startTime: `${formatDateNumeric(localData.day)} ${localData.timeSlot}`,
-          platform: 'Zoom', // Placeholder or derived
+          platform: 'Zoom',
         }
       }),
       languageStats: languageStats.map((stat) => ({
@@ -315,7 +318,7 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
       orderBy: [{ day: 'asc' }, { timeSlot: 'asc' }],
       include: {
         student: {
-          select: { name: true, lastName: true, image: true },
+          select: { id: true, name: true, lastName: true, image: true },
         },
         enrollment: {
           select: {
@@ -333,6 +336,7 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
       return {
         id: booking.id,
         courseId: booking.enrollment.course.id,
+        studentId: booking.student.id,
         studentName: `${booking.student.name} ${booking.student.lastName || ''}`,
         studentImage: booking.student.image,
         course: booking.enrollment.course.title,
@@ -393,6 +397,7 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
 
     const needsAttention = missedClasses.map((booking) => ({
       id: booking.id,
+      studentId: booking.student.id,
       studentName: `${booking.student.name} ${booking.student.lastName || ''}`,
       studentImage: booking.student.image || '',
       issue: booking.status === BookingStatus.NO_SHOW ? 'Faltó a clase' : 'Clase cancelada',
@@ -900,13 +905,9 @@ export async function getClassroomData(classId: string, userId: string) {
       studentId: classBooking.student.id,
       teacherId: classBooking.teacher.id,
       studentName: classBooking.student.name || 'Estudiante',
-      studentImage:
-        classBooking.student.image ||
-        `https://api.dicebear.com/7.x/personas/svg?seed=${classBooking.student.id}`,
+      studentImage: getUserAvatarUrl(classBooking.student.id, classBooking.student.image),
       teacherName: classBooking.teacher.name || 'Profesor',
-      teacherImage:
-        classBooking.teacher.image ||
-        `https://api.dicebear.com/7.x/personas/svg?seed=${classBooking.teacher.id}`,
+      teacherImage: getUserAvatarUrl(classBooking.teacher.id, classBooking.teacher.image),
       courseName: classBooking.enrollment.course.title,
       lessonName: `Clase del ${formattedDate} - ${localData.timeSlot}`,
       bookingId: classBooking.id,

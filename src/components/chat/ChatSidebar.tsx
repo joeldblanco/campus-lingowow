@@ -1,6 +1,6 @@
 'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/ui/user-avatar'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { formatDistanceToNow } from 'date-fns'
@@ -157,10 +157,13 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
               )}
             >
               <div className="relative">
-                <Avatar className="h-10 w-10">
-                  <AvatarImage src={otherParticipant?.image || undefined} />
-                  <AvatarFallback>{otherParticipant?.name[0]}</AvatarFallback>
-                </Avatar>
+                <UserAvatar
+                  userId={otherParticipant?.id || ''}
+                  userName={otherParticipant?.name || ''}
+                  userLastName={otherParticipant?.lastName}
+                  userImage={otherParticipant?.image}
+                  className="h-10 w-10"
+                />
                 {/* Online indicator placeholder - needs real status logic */}
                 {/* Removed misleading indicator for now or need real logic, user asked about fake status in window but sidebar had it too */}
               </div>

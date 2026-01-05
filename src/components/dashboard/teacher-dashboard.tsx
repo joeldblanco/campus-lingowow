@@ -1,6 +1,7 @@
 'use client'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { getUserAvatarUrl } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import type { TeacherDashboardData } from '@/types/dashboard'
@@ -246,7 +247,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                           <div className="mt-2 flex -space-x-2 overflow-hidden ml-0 sm:ml-22 md:ml-0">
                             {/* Student Avatar + Counter if group */}
                             <Avatar className="inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-card-dark">
-                              <AvatarImage src={item.studentImage || ''} />
+                              <AvatarImage src={item.studentId ? getUserAvatarUrl(item.studentId, item.studentImage) : (item.studentImage || '')} />
                               <AvatarFallback className="bg-indigo-100 text-indigo-600 text-xs">
                                 {item.studentName.substring(0, 2)}
                               </AvatarFallback>
@@ -404,7 +405,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                     className="p-4 flex items-center gap-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
                   >
                     <Avatar className="h-10 w-10 border border-slate-100 dark:border-slate-700">
-                      <AvatarImage src={item.studentImage} />
+                      <AvatarImage src={item.studentId ? getUserAvatarUrl(item.studentId, item.studentImage) : item.studentImage} />
                       <AvatarFallback className="bg-orange-50 text-orange-600 font-bold text-xs">
                         {item.studentName.substring(0, 2)}
                       </AvatarFallback>

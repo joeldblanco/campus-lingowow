@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { getDiceBearAvatar } from '@/lib/utils'
 import { Send } from 'lucide-react'
 
 interface ClassChatProps {
@@ -82,7 +83,7 @@ export const ClassChat: React.FC<ClassChatProps> = ({ classId, studentId, teache
           <div key={message.id} className="flex items-start gap-2">
             <Avatar>
               <AvatarImage
-                src={`https://api.dicebear.com/7.x/personas/svg?seed=${message.sender.id}`}
+                src={getDiceBearAvatar(message.sender.id)}
               />
               <AvatarFallback>
                 {message.sender.name

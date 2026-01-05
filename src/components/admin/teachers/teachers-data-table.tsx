@@ -37,7 +37,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Badge } from '@/components/ui/badge'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/ui/user-avatar'
 import { ManageTeacherCoursesDialog } from '@/components/admin/teachers/manage-teacher-courses-dialog'
 import { UserEditDialog } from '@/components/user/user-edit-dialog'
 import { User } from '@prisma/client'
@@ -96,14 +96,16 @@ export function TeachersDataTable({ teachers, onDeleteTeacher, onUpdateTeacher }
       cell: ({ row }) => {
         const teacher = row.original
         const fullName = `${teacher.name} ${teacher.lastName || ''}`
-        const initials = `${teacher.name[0]}${teacher.lastName?.[0] || ''}`.toUpperCase()
         
         return (
           <div className="flex items-center gap-3">
-            <Avatar className="h-10 w-10">
-              <AvatarImage src={teacher.image || undefined} alt={fullName} />
-              <AvatarFallback>{initials}</AvatarFallback>
-            </Avatar>
+            <UserAvatar
+              userId={teacher.id}
+              userName={teacher.name}
+              userLastName={teacher.lastName}
+              userImage={teacher.image}
+              className="h-10 w-10"
+            />
             <div>
               <div className="font-medium">{fullName}</div>
               <div className="text-sm text-muted-foreground flex items-center gap-1">

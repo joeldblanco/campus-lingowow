@@ -42,7 +42,7 @@ import { useEffect, useState, useMemo } from 'react'
 import { toast } from 'sonner'
 import { EditEnrollmentDialog } from './edit-enrollment-dialog'
 import { CreateEnrollmentDialog } from './create-enrollment-dialog'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/ui/user-avatar'
 import { Progress } from '@/components/ui/progress'
 import { EnrollmentStatus } from '@prisma/client'
 import { formatDateShort } from '@/lib/utils/date'
@@ -296,12 +296,14 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <Avatar className="h-7 w-7">
-                        <AvatarImage src={enrollment.student.image || ''} />
-                        <AvatarFallback className="text-xs bg-slate-200">
-                          {enrollment.student.name[0]}{enrollment.student.lastName?.[0] || ''}
-                        </AvatarFallback>
-                      </Avatar>
+                      <UserAvatar
+                        userId={enrollment.student.id}
+                        userName={enrollment.student.name}
+                        userLastName={enrollment.student.lastName}
+                        userImage={enrollment.student.image}
+                        className="h-7 w-7"
+                        fallbackClassName="text-xs bg-slate-200"
+                      />
                       <div>
                         <div className="font-medium text-sm">
                           {enrollment.student.name} {enrollment.student.lastName || ''}

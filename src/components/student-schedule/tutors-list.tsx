@@ -1,6 +1,6 @@
 'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/ui/user-avatar'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { MessageSquare } from 'lucide-react'
@@ -9,12 +9,6 @@ import type { StudentTutor } from '@/lib/actions/student-schedule'
 interface TutorsListProps {
   tutors: StudentTutor[]
   onContactTutor?: (email: string) => void
-}
-
-function getInitials(name: string, lastName?: string | null): string {
-  const first = name?.charAt(0) || ''
-  const last = lastName?.charAt(0) || name?.split(' ')[1]?.charAt(0) || ''
-  return (first + last).toUpperCase()
 }
 
 export function TutorsList({ tutors, onContactTutor }: TutorsListProps) {
@@ -48,12 +42,14 @@ export function TutorsList({ tutors, onContactTutor }: TutorsListProps) {
             className="flex items-center justify-between gap-3"
           >
             <div className="flex items-center gap-3">
-              <Avatar className="h-10 w-10">
-                <AvatarImage src={tutor.image || ''} />
-                <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">
-                  {getInitials(tutor.name, tutor.lastName)}
-                </AvatarFallback>
-              </Avatar>
+              <UserAvatar
+                userId={tutor.id}
+                userName={tutor.name}
+                userLastName={tutor.lastName}
+                userImage={tutor.image}
+                className="h-10 w-10"
+                fallbackClassName="bg-primary/10 text-primary text-xs font-bold"
+              />
               <div>
                 <p className="text-sm font-medium">
                   {tutor.name} {tutor.lastName}

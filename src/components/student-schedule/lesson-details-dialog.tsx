@@ -1,6 +1,6 @@
 'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/ui/user-avatar'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -33,12 +33,6 @@ function getLessonColorClasses(color: string) {
     pink: { bg: 'bg-pink-100 dark:bg-pink-900/30', text: 'text-pink-700 dark:text-pink-300' },
   }
   return colorMap[color] || colorMap.blue
-}
-
-function getInitials(name: string, lastName?: string | null): string {
-  const first = name?.charAt(0) || ''
-  const last = lastName?.charAt(0) || name?.split(' ')[1]?.charAt(0) || ''
-  return (first + last).toUpperCase()
 }
 
 function getStatusBadge(status: StudentScheduleLesson['status']) {
@@ -109,12 +103,14 @@ export function LessonDetailsDialog({
 
           {/* Teacher Info */}
           <div className="flex items-center gap-4 p-4 rounded-lg bg-muted/50">
-            <Avatar className="h-12 w-12">
-              <AvatarImage src={lesson.teacher.image || ''} />
-              <AvatarFallback className={cn("font-bold", colors.bg, colors.text)}>
-                {getInitials(lesson.teacher.name, lesson.teacher.lastName)}
-              </AvatarFallback>
-            </Avatar>
+            <UserAvatar
+              userId={lesson.teacher.id}
+              userName={lesson.teacher.name}
+              userLastName={lesson.teacher.lastName}
+              userImage={lesson.teacher.image}
+              className="h-12 w-12"
+              fallbackClassName={cn("font-bold", colors.bg, colors.text)}
+            />
             <div className="flex-1">
               <p className="font-medium">
                 {lesson.teacher.name} {lesson.teacher.lastName}

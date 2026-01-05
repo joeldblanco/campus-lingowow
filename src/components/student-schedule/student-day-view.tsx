@@ -1,6 +1,6 @@
 'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/ui/user-avatar'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { FileText, Video, CheckCircle, Clock } from 'lucide-react'
@@ -36,12 +36,6 @@ function getLessonColorClasses(color: string) {
     pink: { bg: 'bg-pink-100 dark:bg-pink-900/30', text: 'text-pink-700 dark:text-pink-300' },
   }
   return colorMap[color] || colorMap.blue
-}
-
-function getInitials(name: string, lastName?: string | null): string {
-  const first = name?.charAt(0) || ''
-  const last = lastName?.charAt(0) || name?.split(' ')[1]?.charAt(0) || ''
-  return (first + last).toUpperCase()
 }
 
 export function StudentDayView({
@@ -114,12 +108,14 @@ export function StudentDayView({
         )}
       >
         <div className="flex items-center gap-4 min-w-[200px]">
-          <Avatar className={cn("h-12 w-12 ring-2 ring-border", isCompleted && "grayscale")}>
-            <AvatarImage src={lesson.teacher.image || ''} />
-            <AvatarFallback className={cn("text-sm font-bold", colors.bg, colors.text)}>
-              {getInitials(lesson.teacher.name, lesson.teacher.lastName)}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar
+            userId={lesson.teacher.id}
+            userName={lesson.teacher.name}
+            userLastName={lesson.teacher.lastName}
+            userImage={lesson.teacher.image}
+            className={cn("h-12 w-12 ring-2 ring-border", isCompleted && "grayscale")}
+            fallbackClassName={cn("text-sm font-bold", colors.bg, colors.text)}
+          />
           <div>
             <h4 className="font-bold text-foreground">{lesson.teacher.name}</h4>
             <Badge className={cn("text-xs font-medium", colors.bg, colors.text, "border-0")}>

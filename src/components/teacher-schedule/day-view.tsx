@@ -1,11 +1,11 @@
 'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/ui/user-avatar'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { FileText, Video, CheckCircle, Clock, Plus, Pencil } from 'lucide-react'
 import type { ScheduleLesson, AvailableSlot } from '@/types/schedule'
-import { getLessonColorClasses, getInitials } from '@/types/schedule'
+import { getLessonColorClasses } from '@/types/schedule'
 import { cn } from '@/lib/utils'
 
 interface DayViewProps {
@@ -110,12 +110,14 @@ export function DayView({
         )}
       >
         <div className="flex items-center gap-4 min-w-[200px]">
-          <Avatar className={cn("h-12 w-12 ring-2 ring-border", isCompleted && "grayscale")}>
-            <AvatarImage src={lesson.student.image || ''} />
-            <AvatarFallback className={cn("text-sm font-bold", colors.bg, colors.text)}>
-              {getInitials(lesson.student.name, lesson.student.lastName)}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar
+            userId={lesson.student.id}
+            userName={lesson.student.name}
+            userLastName={lesson.student.lastName}
+            userImage={lesson.student.image}
+            className={cn("h-12 w-12 ring-2 ring-border", isCompleted && "grayscale")}
+            fallbackClassName={cn("text-sm font-bold", colors.bg, colors.text)}
+          />
           <div>
             <h4 className="font-bold text-foreground">{lesson.student.name} {lesson.student.lastName}</h4>
             <Badge className={cn("text-xs font-medium", colors.bg, colors.text, "border-0")}>

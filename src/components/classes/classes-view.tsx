@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/ui/user-avatar'
 import { Calendar, Clock, User, BookOpen } from 'lucide-react'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
@@ -150,13 +150,13 @@ export function ClassesView({ enrollments }: ClassesViewProps) {
                       className="flex items-center justify-between p-3 bg-muted rounded-lg"
                     >
                       <div className="flex items-center gap-3">
-                        <Avatar className="h-8 w-8">
-                          <AvatarImage src={schedule.teacher.image || undefined} />
-                          <AvatarFallback>
-                            {schedule.teacher.name[0]}
-                            {schedule.teacher.lastName?.[0] || ''}
-                          </AvatarFallback>
-                        </Avatar>
+                        <UserAvatar
+                          userId={schedule.teacher.id}
+                          userName={schedule.teacher.name}
+                          userLastName={schedule.teacher.lastName}
+                          userImage={schedule.teacher.image}
+                          className="h-8 w-8"
+                        />
                         <div>
                           <div className="font-medium">
                             {DAYS_OF_WEEK[schedule.dayOfWeek]}
@@ -190,13 +190,13 @@ export function ClassesView({ enrollments }: ClassesViewProps) {
                       className="flex items-center justify-between p-3 border rounded-lg"
                     >
                       <div className="flex items-center gap-3">
-                        <Avatar className="h-8 w-8">
-                          <AvatarImage src={booking.teacher.image || undefined} />
-                          <AvatarFallback>
-                            {booking.teacher.name[0]}
-                            {booking.teacher.lastName?.[0] || ''}
-                          </AvatarFallback>
-                        </Avatar>
+                        <UserAvatar
+                          userId={booking.teacher.id}
+                          userName={booking.teacher.name}
+                          userLastName={booking.teacher.lastName}
+                          userImage={booking.teacher.image}
+                          className="h-8 w-8"
+                        />
                         <div>
                           <div className="font-medium">
                             {format(new Date(booking.day), 'PPP', { locale: es })}

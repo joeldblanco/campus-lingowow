@@ -31,6 +31,7 @@ import {
 import { ViewGradesDialog } from './view-grades-dialog'
 import { StudentProgressDialog } from './student-progress-dialog'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { getUserAvatarUrl } from '@/lib/utils'
 import { MoreVertical, Eye, TrendingUp, Search, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react'
 
 interface GradesTableProps {
@@ -237,7 +238,7 @@ export function GradesTable({ grades }: GradesTableProps) {
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <Avatar className="h-7 w-7">
-                          <AvatarImage src="" />
+                          <AvatarImage src={getUserAvatarUrl(grade.studentId)} />
                           <AvatarFallback className="text-xs bg-slate-200">
                             {grade.studentName.split(' ').map(n => n[0]).join('').slice(0, 2)}
                           </AvatarFallback>

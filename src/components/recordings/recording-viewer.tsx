@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { VideoPlayer } from './video-player'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/ui/user-avatar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
@@ -197,13 +197,14 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
             <div>
               <h1 className="text-2xl font-bold">{course.title}</h1>
               <div className="flex items-center gap-2 mt-2">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={teacher.image || undefined} />
-                  <AvatarFallback className="bg-blue-100 text-blue-700">
-                    {teacher.name.charAt(0)}
-                    {teacher.lastName?.charAt(0) || ''}
-                  </AvatarFallback>
-                </Avatar>
+                <UserAvatar
+                  userId={teacher.id}
+                  userName={teacher.name}
+                  userLastName={teacher.lastName}
+                  userImage={teacher.image}
+                  className="h-8 w-8"
+                  fallbackClassName="bg-blue-100 text-blue-700"
+                />
                 <span className="text-muted-foreground">
                   {teacher.name} {teacher.lastName}
                 </span>
@@ -295,13 +296,14 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
 
                   {/* Profesor */}
                   <div className="flex items-center gap-3">
-                    <Avatar className="h-10 w-10">
-                      <AvatarImage src={teacher.image || undefined} />
-                      <AvatarFallback className="bg-blue-100 text-blue-700">
-                        {teacher.name.charAt(0)}
-                        {teacher.lastName?.charAt(0) || ''}
-                      </AvatarFallback>
-                    </Avatar>
+                    <UserAvatar
+                      userId={teacher.id}
+                      userName={teacher.name}
+                      userLastName={teacher.lastName}
+                      userImage={teacher.image}
+                      className="h-10 w-10"
+                      fallbackClassName="bg-blue-100 text-blue-700"
+                    />
                     <div>
                       <p className="text-sm text-muted-foreground">Profesor</p>
                       <p className="font-medium">{teacher.name} {teacher.lastName}</p>

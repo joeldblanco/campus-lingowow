@@ -5,6 +5,7 @@ export interface AdminDashboardData {
   activeTeachers: number
   activeCourses: number
   recentEnrollments: {
+    studentId?: string
     studentName: string
     courseName: string
     date: string
@@ -19,6 +20,7 @@ export interface AdminDashboardData {
   upcomingClasses: {
     id: string
     title: string
+    teacherId?: string
     teacherName: string
     startTime: string
     teacherImage: string | null
@@ -61,6 +63,7 @@ export interface TeacherDashboardData {
   }[]
   needsAttention: {
     id: string
+    studentId?: string
     studentName: string
     studentImage: string
     issue: string
@@ -68,6 +71,7 @@ export interface TeacherDashboardData {
   }[]
   upcomingClasses: {
     id: string
+    studentId?: string
     studentName: string
     studentImage: string | null
     courseId: string

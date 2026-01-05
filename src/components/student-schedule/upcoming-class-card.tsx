@@ -1,6 +1,6 @@
 'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/ui/user-avatar'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Video, FileText, Clock } from 'lucide-react'
@@ -25,12 +25,6 @@ interface UpcomingClassCardProps {
   lesson: UpcomingLesson | null
   onJoinClass?: (lessonId: string) => void
   onViewMaterials?: (lessonId: string) => void
-}
-
-function getInitials(name: string, lastName?: string | null): string {
-  const first = name?.charAt(0) || ''
-  const last = lastName?.charAt(0) || name?.split(' ')[1]?.charAt(0) || ''
-  return (first + last).toUpperCase()
 }
 
 export function UpcomingClassCard({
@@ -74,12 +68,14 @@ export function UpcomingClassCard({
               {lesson.topic}
             </p>
           </div>
-          <Avatar className="h-10 w-10 ring-2 ring-primary-foreground/20">
-            <AvatarImage src={lesson.teacher.image || ''} />
-            <AvatarFallback className="bg-primary-foreground/20 text-primary-foreground text-xs font-bold">
-              {getInitials(lesson.teacher.name, lesson.teacher.lastName)}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar
+            userId={lesson.teacher.id}
+            userName={lesson.teacher.name}
+            userLastName={lesson.teacher.lastName}
+            userImage={lesson.teacher.image}
+            className="h-10 w-10 ring-2 ring-primary-foreground/20"
+            fallbackClassName="bg-primary-foreground/20 text-primary-foreground text-xs font-bold"
+          />
         </div>
         <div className="mt-3 flex items-center justify-between text-sm text-primary-foreground/90">
           <div className="flex items-center gap-1">

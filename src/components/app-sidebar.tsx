@@ -207,9 +207,10 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: session } = useSession()
   const placeholderUser = {
+    id: 'guest',
     name: 'Anónimo',
     email: 'usuario@ejemplo.com',
-    image: '/avatars/usuario.jpg',
+    image: '',
     lastName: '',
     roles: [UserRole.GUEST] as UserRole[],
   }
@@ -218,6 +219,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   if (session?.user) {
     user = {
+      id: session.user.id ?? placeholderUser.id,
       name: session.user.name ?? placeholderUser.name,
       email: session.user.email ?? placeholderUser.email,
       image: session.user.image ?? placeholderUser.image,

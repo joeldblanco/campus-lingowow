@@ -1,6 +1,7 @@
 'use client'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { getUserAvatarUrl } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -215,7 +216,7 @@ const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData |
                     className="flex gap-4 p-3 rounded-lg border border-slate-100 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors bg-slate-50/50 dark:bg-slate-800/30 items-center"
                   >
                     <Avatar className="h-10 w-10 border border-slate-200">
-                      <AvatarImage src={booking.teacherImage || ''} alt={booking.teacherName} />
+                      <AvatarImage src={booking.teacherId ? getUserAvatarUrl(booking.teacherId, booking.teacherImage) : (booking.teacherImage || '')} alt={booking.teacherName} />
                       <AvatarFallback className="bg-primary/10 text-primary">
                         {booking.teacherName.charAt(0)}
                       </AvatarFallback>
@@ -281,7 +282,7 @@ const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData |
                     <TableCell className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <Avatar className="h-8 w-8 bg-indigo-100 text-indigo-600">
-                          <AvatarImage src={enrollment.studentImage || ''} />
+                          <AvatarImage src={enrollment.studentId ? getUserAvatarUrl(enrollment.studentId, enrollment.studentImage) : (enrollment.studentImage || '')} />
                           <AvatarFallback className="text-xs font-bold">
                             {enrollment.studentName.substring(0, 2).toUpperCase()}
                           </AvatarFallback>

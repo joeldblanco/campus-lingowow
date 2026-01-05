@@ -33,3 +33,14 @@ export function formatDate(date: Date | string): string {
 export function formatNumber(num: number): string {
   return new Intl.NumberFormat('en-US').format(num)
 }
+
+// Generate DiceBear avatar URL based on user ID
+export function getDiceBearAvatar(userId: string, style: 'initials' | 'avataaars' | 'bottts' | 'lorelei' | 'notionists' = 'initials'): string {
+  return `https://api.dicebear.com/9.x/${style}/svg?seed=${encodeURIComponent(userId)}`
+}
+
+// Get user avatar URL - returns user image if exists, otherwise DiceBear
+export function getUserAvatarUrl(userId: string, userImage?: string | null): string {
+  if (userImage) return userImage
+  return getDiceBearAvatar(userId)
+}

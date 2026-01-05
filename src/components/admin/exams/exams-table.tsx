@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { getUserAvatarUrl } from '@/lib/utils'
 import {
   Select,
   SelectContent,
@@ -373,7 +374,7 @@ export function ExamsTable({ exams }: ExamsTableProps) {
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <Avatar className="h-7 w-7">
-                        <AvatarImage src="" />
+                        <AvatarImage src={exam.creator?.email ? getUserAvatarUrl(exam.creator.email) : ''} />
                         <AvatarFallback className="text-xs bg-slate-200">
                           {getCreatorInitials(exam.creator)}
                         </AvatarFallback>

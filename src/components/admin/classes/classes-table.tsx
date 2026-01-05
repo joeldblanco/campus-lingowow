@@ -42,7 +42,7 @@ import {
 import { EditClassDialog } from './edit-class-dialog'
 import { ViewClassDialog } from './view-class-dialog'
 import { RescheduleClassDialog } from './reschedule-class-dialog'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/ui/user-avatar'
 import {
   MoreVertical,
   Eye,
@@ -347,12 +347,14 @@ export function ClassesTable({ classes }: ClassesTableProps) {
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <Avatar className="h-7 w-7">
-                        <AvatarImage src={classItem.student.image || ''} />
-                        <AvatarFallback className="text-xs bg-slate-200">
-                          {classItem.student.name[0]}{classItem.student.lastName?.[0] || ''}
-                        </AvatarFallback>
-                      </Avatar>
+                      <UserAvatar
+                        userId={classItem.student.id}
+                        userName={classItem.student.name}
+                        userLastName={classItem.student.lastName}
+                        userImage={classItem.student.image}
+                        className="h-7 w-7"
+                        fallbackClassName="text-xs bg-slate-200"
+                      />
                       <div>
                         <div className="font-medium text-sm">
                           {classItem.student.name} {classItem.student.lastName || ''}
@@ -365,12 +367,14 @@ export function ClassesTable({ classes }: ClassesTableProps) {
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <Avatar className="h-7 w-7">
-                        <AvatarImage src={classItem.teacher.image || ''} />
-                        <AvatarFallback className="text-xs bg-slate-200">
-                          {classItem.teacher.name[0]}{classItem.teacher.lastName?.[0] || ''}
-                        </AvatarFallback>
-                      </Avatar>
+                      <UserAvatar
+                        userId={classItem.teacher.id}
+                        userName={classItem.teacher.name}
+                        userLastName={classItem.teacher.lastName}
+                        userImage={classItem.teacher.image}
+                        className="h-7 w-7"
+                        fallbackClassName="text-xs bg-slate-200"
+                      />
                       <div>
                         <div className="font-medium text-sm">
                           {classItem.teacher.name} {classItem.teacher.lastName || ''}

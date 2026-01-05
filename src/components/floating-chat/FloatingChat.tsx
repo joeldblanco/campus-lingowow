@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/ui/user-avatar'
 import { getFloatingConversations, searchUsers, sendFloatingMessage, createFloatingConversation, getConversationMessages } from '@/lib/actions/floating-chat'
 import { TeamBadge } from '@prisma/client'
 import { io, Socket } from 'socket.io-client'
@@ -376,12 +376,13 @@ export const FloatingChat: React.FC<FloatingChatProps> = ({ userId }) => {
                     onClick={() => handleSelectConversation(conversation.id)}
                   >
                     <div className="flex items-center gap-2">
-                      <Avatar className="w-8 h-8">
-                        <AvatarImage src={conversation.participants[0]?.user.image || undefined} />
-                        <AvatarFallback className="text-xs">
-                          {conversation.participants[0]?.user.name[0]}
-                        </AvatarFallback>
-                      </Avatar>
+                      <UserAvatar
+                        userId={conversation.participants[0]?.user.id || ''}
+                        userName={conversation.participants[0]?.user.name || ''}
+                        userLastName={conversation.participants[0]?.user.lastName}
+                        userImage={conversation.participants[0]?.user.image}
+                        className="w-8 h-8"
+                      />
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">
                           {conversation.title || 
@@ -428,12 +429,13 @@ export const FloatingChat: React.FC<FloatingChatProps> = ({ userId }) => {
                   onClick={() => handleStartConversation(user.id)}
                 >
                   <div className="flex items-center gap-2">
-                    <Avatar className="w-8 h-8">
-                      <AvatarImage src={user.image || undefined} />
-                      <AvatarFallback className="text-xs">
-                        {user.name[0]}
-                      </AvatarFallback>
-                    </Avatar>
+                    <UserAvatar
+                      userId={user.id}
+                      userName={user.name}
+                      userLastName={user.lastName}
+                      userImage={user.image}
+                      className="w-8 h-8"
+                    />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium">
                         {user.name} {user.lastName}

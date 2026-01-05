@@ -1,6 +1,6 @@
 'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/ui/user-avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -174,10 +174,12 @@ function TeacherCard({
   return (
     <Card className="mb-4">
       <CardHeader className="flex flex-row items-start gap-4 pb-2">
-        <Avatar className="h-12 w-12 border">
-          <AvatarImage src={teacher.avatarUrl} alt={teacher.name} />
-          <AvatarFallback>{teacher.name.substring(0, 2).toUpperCase()}</AvatarFallback>
-        </Avatar>
+        <UserAvatar
+          userId={teacher.id}
+          userName={teacher.name}
+          userImage={teacher.avatarUrl}
+          className="h-12 w-12 border"
+        />
         <div className="space-y-1">
           <CardTitle>{teacher.name}</CardTitle>
           <CardDescription className="flex items-center">

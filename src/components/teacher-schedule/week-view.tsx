@@ -1,11 +1,11 @@
 'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/ui/user-avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import type { AvailableSlot, BlockedSlot, ScheduleLesson } from '@/types/schedule'
-import { getInitials, getLessonColorClasses } from '@/types/schedule'
+import { getLessonColorClasses } from '@/types/schedule'
 import { addDays, format, isSameDay, isToday, startOfWeek } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { FileText, Plus } from 'lucide-react'
@@ -98,12 +98,14 @@ export function WeekView({
             </Badge>
           </div>
           <div className="flex items-center gap-2 opacity-50 min-w-0">
-            <Avatar className="h-6 w-6 flex-shrink-0">
-              <AvatarImage src={lesson.student.image || ''} />
-              <AvatarFallback className="text-xs">
-                {getInitials(lesson.student.name, lesson.student.lastName)}
-              </AvatarFallback>
-            </Avatar>
+            <UserAvatar
+              userId={lesson.student.id}
+              userName={lesson.student.name}
+              userLastName={lesson.student.lastName}
+              userImage={lesson.student.image}
+              className="h-6 w-6 flex-shrink-0"
+              fallbackClassName="text-xs"
+            />
             <span className="text-sm font-medium text-muted-foreground line-through truncate">
               {lesson.student.name}
             </span>
@@ -133,12 +135,14 @@ export function WeekView({
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <Avatar className="h-6 w-6 grayscale">
-              <AvatarImage src={lesson.student.image || ''} />
-              <AvatarFallback className="text-xs">
-                {getInitials(lesson.student.name, lesson.student.lastName)}
-              </AvatarFallback>
-            </Avatar>
+            <UserAvatar
+              userId={lesson.student.id}
+              userName={lesson.student.name}
+              userLastName={lesson.student.lastName}
+              userImage={lesson.student.image}
+              className="h-6 w-6 grayscale"
+              fallbackClassName="text-xs"
+            />
             <span className="text-sm font-medium text-muted-foreground">{lesson.student.name}</span>
           </div>
           <div className="mt-auto text-xs text-muted-foreground">Completada</div>
@@ -167,12 +171,14 @@ export function WeekView({
           </Badge>
         </div>
         <div className="flex items-center gap-1 min-w-0">
-          <Avatar className="h-5 w-5 flex-shrink-0">
-            <AvatarImage src={lesson.student.image || ''} />
-            <AvatarFallback className={cn('text-[10px]', colors.bg, colors.text)}>
-              {getInitials(lesson.student.name, lesson.student.lastName)}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar
+            userId={lesson.student.id}
+            userName={lesson.student.name}
+            userLastName={lesson.student.lastName}
+            userImage={lesson.student.image}
+            className="h-5 w-5 flex-shrink-0"
+            fallbackClassName={cn('text-[10px]', colors.bg, colors.text)}
+          />
           <span className="text-xs font-bold text-foreground truncate">
             {lesson.student.name} {lesson.student.lastName}
           </span>
