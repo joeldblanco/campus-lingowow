@@ -132,14 +132,14 @@ export async function stopRecording(egressId: string, bookingId?: string) {
 
         if (info.startedAt && info.endedAt) {
           try {
-            // LiveKit timestamps are in nanoseconds (can be BigInt)
-            // Use BigInt arithmetic to avoid precision loss before converting to Number
+            // LiveKit timestamps are in nanoseconds (can be BigInt or string)
+            // Convert directly to BigInt to preserve full precision
             const startNs = typeof info.startedAt === 'bigint' 
               ? info.startedAt 
-              : BigInt(Math.floor(Number(info.startedAt)))
+              : BigInt(String(info.startedAt))
             const endNs = typeof info.endedAt === 'bigint' 
               ? info.endedAt 
-              : BigInt(Math.floor(Number(info.endedAt)))
+              : BigInt(String(info.endedAt))
             
             // Convert nanoseconds to milliseconds using BigInt division, then to Number
             startedAt = new Date(Number(startNs / BigInt(1000000)))
