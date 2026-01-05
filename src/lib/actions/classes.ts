@@ -315,12 +315,13 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
     }
 
     // 3. Check if the time slot is available for the teacher (no conflicting bookings)
+    // Usar valores UTC para la búsqueda ya que la DB almacena en UTC
     const existingBooking = await db.classBooking.findUnique({
       where: {
         teacherId_day_timeSlot: {
           teacherId: validatedData.teacherId,
-          day: validatedData.day,
-          timeSlot: validatedData.timeSlot,
+          day: utcData.day,
+          timeSlot: utcData.timeSlot,
         },
       },
     })
