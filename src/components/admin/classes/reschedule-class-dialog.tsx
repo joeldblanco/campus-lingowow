@@ -66,6 +66,9 @@ export function RescheduleClassDialog({ classItem, children }: RescheduleClassDi
 
   const watchedDate = form.watch('newDate')
   const watchedTimeSlot = form.watch('newTimeSlot')
+  
+  // Obtener timezone del navegador del usuario
+  const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
   useEffect(() => {
     const fetchAvailableTimeSlots = async () => {
@@ -97,7 +100,7 @@ export function RescheduleClassDialog({ classItem, children }: RescheduleClassDi
   useEffect(() => {
     const checkTeacherAvailability = async () => {
       try {
-        const available = await getAvailableTeachers(watchedDate, watchedTimeSlot)
+        const available = await getAvailableTeachers(watchedDate, watchedTimeSlot, userTimezone)
         setAvailableTeachers(available)
       } catch {
         console.error('Error checking teacher availability')
@@ -107,11 +110,11 @@ export function RescheduleClassDialog({ classItem, children }: RescheduleClassDi
     if (watchedDate && watchedTimeSlot) {
       checkTeacherAvailability()
     }
-  }, [watchedDate, watchedTimeSlot])
+  }, [watchedDate, watchedTimeSlot, userTimezone])
 
   const onSubmit = async (values: FormData) => {
     try {
-      const result = await rescheduleClass(classItem.id, values.newDate, values.newTimeSlot)
+      const result = await rescheduleClass(classItem.id, values.newDate, values.newTimeSlot, userTimezone)
 
       if (result.success) {
         toast.success('Clase reagendada exitosamente')

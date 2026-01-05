@@ -152,6 +152,8 @@ export function ClassesTable({ classes }: ClassesTableProps) {
         return
       }
 
+      // Obtener timezone del navegador del usuario
+      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
       const result = await updateClass(classId, {
         studentId: classItem.studentId,
         teacherId: classItem.teacherId,
@@ -159,6 +161,7 @@ export function ClassesTable({ classes }: ClassesTableProps) {
         timeSlot: classItem.timeSlot,
         status: BookingStatus.COMPLETED,
         completedAt: new Date(), // Se guardará en UTC automáticamente por Prisma
+        timezone: userTimezone,
       })
       if (result.success) {
         toast.success('Clase marcada como completada')

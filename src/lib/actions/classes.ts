@@ -553,8 +553,13 @@ export async function getClassStats() {
   }
 }
 
-export async function getAvailableTeachers(day: string, timeSlot: string) {
+export async function getAvailableTeachers(day: string, timeSlot: string, timezone?: string) {
   try {
+    // Convertir día y horario de hora local a UTC para consultar la DB
+    const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
+    const userTimezone = timezone || 'America/Lima'
+    const utcData = convertTimeSlotToUTC(day, timeSlot, userTimezone)
+    
     // Get all teachers
     const allTeachers = await db.user.findMany({
       where: {
@@ -571,11 +576,11 @@ export async function getAvailableTeachers(day: string, timeSlot: string) {
       },
     })
 
-    // Get teachers who already have bookings at this time
+    // Get teachers who already have bookings at this time (usando UTC)
     const busyTeachers = await db.classBooking.findMany({
       where: {
-        day,
-        timeSlot,
+        day: utcData.day,
+        timeSlot: utcData.timeSlot,
         status: { not: 'CANCELLED' },
       },
       select: {

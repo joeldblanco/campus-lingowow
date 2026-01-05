@@ -98,7 +98,9 @@ export function EditClassDialog({ classItem, children }: EditClassDialogProps) {
     setIsLoading(true)
 
     try {
-      const result = await updateClass(classItem.id, values)
+      // Obtener timezone del navegador del usuario
+      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+      const result = await updateClass(classItem.id, { ...values, timezone: userTimezone })
 
       if (result.success) {
         toast.success('Clase actualizada exitosamente')
