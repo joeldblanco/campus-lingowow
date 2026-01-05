@@ -77,11 +77,7 @@ export function ClassroomChat({ bookingId }: ClassroomChatProps) {
   }
 
   return (
-    <div className="h-full flex flex-col bg-white rounded-xl border overflow-hidden">
-      <div className="flex-none p-3 border-b bg-gray-50 font-medium">
-        Chat de Clase
-      </div>
-      
+    <div className="h-full flex flex-col overflow-hidden">
       <ScrollArea className="flex-1 p-3" ref={scrollRef}>
         <div className="space-y-3">
           {messages.length === 0 ? (

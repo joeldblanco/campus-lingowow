@@ -18,6 +18,7 @@ interface ClassroomLayoutProps {
   timeLeft?: string
   isGracePeriod?: boolean // Whether the class is in grace period (extra 10 min)
   onBackClick?: () => void // Callback when back button is clicked
+  fullscreenContent?: boolean // When true, children render without ScrollArea wrapper (for whiteboard/canvas)
 }
 
 export function ClassroomLayout({
@@ -31,6 +32,7 @@ export function ClassroomLayout({
   timeLeft = '45:00',
   isGracePeriod = false,
   onBackClick,
+  fullscreenContent = false,
 }: ClassroomLayoutProps) {
   const router = useRouter()
 
@@ -90,10 +92,16 @@ export function ClassroomLayout({
           {contentTabs && <div className="flex-none flex justify-end">{contentTabs}</div>}
 
           {/* The Card wrapper gives it the white paper look from the design */}
-          <Card className="flex-1 h-full shadow-sm border border-gray-100 overflow-hidden bg-white rounded-xl">
-            <ScrollArea className="h-full w-full">
-              <div className="p-8 h-full">{children}</div>
-            </ScrollArea>
+          <Card className="flex-1 h-full shadow-sm border border-gray-100 overflow-hidden bg-white rounded-xl flex flex-col">
+            {fullscreenContent ? (
+              <div className="h-full w-full">{children}</div>
+            ) : (
+              <div className="h-full w-full flex flex-col">
+                <ScrollArea className="flex-1 w-full">
+                  <div className="p-8 min-h-full">{children}</div>
+                </ScrollArea>
+              </div>
+            )}
           </Card>
         </div>
 

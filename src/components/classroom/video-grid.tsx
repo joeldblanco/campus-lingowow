@@ -25,6 +25,7 @@ interface VideoGridProps {
   localTrack?: VideoTrack
   remoteTracks?: VideoTrack[]
   isTeacher?: boolean
+  stacked?: boolean // When true, videos are stacked vertically taking full height
 }
 
 // Helper to render a single video tile
@@ -73,7 +74,7 @@ function VideoTile({ track }: { track: VideoTrack; isTeacher: boolean }) {
       {/* Speaking Badge - Top Right */}
       {track.isSpeaking && (
         <div className="absolute top-1 right-1 bg-blue-500 text-white text-[10px] font-semibold px-1.5 py-0.5 rounded">
-          SPEAKING
+          HABLANDO
         </div>
       )}
 
@@ -87,7 +88,7 @@ function VideoTile({ track }: { track: VideoTrack; isTeacher: boolean }) {
       {/* Name Badge - Bottom Left */}
       <div className="absolute bottom-1 left-1 bg-black/70 backdrop-blur-sm px-1.5 py-0.5 rounded flex items-center gap-1 text-white text-[10px] font-medium">
         {track.isMuted && <MicOff className="w-2.5 h-2.5 text-red-400" />}
-        <span>{track.isLocal ? 'You' : track.name}</span>
+        <span>{track.isLocal ? 'Tú' : track.name}</span>
       </div>
 
       {/* Speaking Border */}
@@ -103,7 +104,7 @@ function VideoTile({ track }: { track: VideoTrack; isTeacher: boolean }) {
   )
 }
 
-export function VideoGrid({ localTrack, remoteTracks = [], isTeacher }: VideoGridProps) {
+export function VideoGrid({ localTrack, remoteTracks = [], isTeacher, stacked = false }: VideoGridProps) {
   // Mock data for visualization if no tracks provided
   const mockTeacher: VideoTrack = {
     participantId: 't1',
@@ -136,14 +137,14 @@ export function VideoGrid({ localTrack, remoteTracks = [], isTeacher }: VideoGri
     : localTrack || safeStudentMock
 
   return (
-    <div className="flex flex-row gap-2">
-      {/* Teacher Video */}
-      <div className="flex-1">
-      <VideoTile track={teacherTrack!} isTeacher={true} />
+    <div className={stacked ? "flex flex-col gap-3 h-full" : "flex flex-row gap-2"}>
+      {/* Teacher Video - Always on top when stacked */}
+      <div className={stacked ? "flex-1 min-h-0" : "flex-1"}>
+        <VideoTile track={teacherTrack!} isTeacher={true} />
       </div>
       {/* Student Video */}
-      <div className="flex-1">
-      <VideoTile track={studentTrack!} isTeacher={false} />
+      <div className={stacked ? "flex-1 min-h-0" : "flex-1"}>
+        <VideoTile track={studentTrack!} isTeacher={false} />
       </div>
     </div>
   )

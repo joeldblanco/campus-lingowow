@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { getLessonContent, getContentById, ShareableContent } from '@/lib/actions/classroom'
 import { LessonForView } from '@/types/lesson'
-import { BookOpen, Loader2, PenTool, Monitor, X } from 'lucide-react'
+import { BookOpen, Loader2, PenTool, Monitor, X, ChevronDown, ChevronUp, MessageSquare } from 'lucide-react'
 import { useEffect, useState, useRef } from 'react'
 import { toast } from 'sonner'
 import { startRecording, stopRecording } from '@/lib/actions/classroom-recording'
@@ -66,6 +66,7 @@ function ClassroomInner({
   const [isLoadingLesson, setIsLoadingLesson] = useState(false)
   const [mainContentTab, setMainContentTab] = useState<'lesson' | 'whiteboard' | 'screenshare'>('lesson')
   const [isRecording, setIsRecording] = useState(false)
+  const [isChatMinimized, setIsChatMinimized] = useState(false)
   const [egressId, setEgressId] = useState<string | null>(null)
   const recordingRef = useRef(false)
   const activeLessonRef = useRef<{ id: string; type: ShareableContent['type'] } | null>(null)
@@ -334,29 +335,55 @@ function ClassroomInner({
   }
 
   const renderSidebar = (
-    <div className="h-full flex flex-col">
-      {/* Header */}
-      <div className="flex-none p-3 border-b bg-white flex items-center justify-between">
-        <div>
-          <h3 className="font-semibold text-gray-900">Lesson Chat</h3>
-          <p className="text-xs text-gray-500">Corrections & Vocabulary</p>
-        </div>
+    <div className="h-full flex flex-col bg-white rounded-xl border overflow-hidden">
+      {/* Videos - When chat is minimized, videos take full height stacked vertically */}
+      <div className={isChatMinimized ? "flex-1 flex flex-col p-3 gap-3" : "flex-none p-3 space-y-2"}>
+        <VideoGrid 
+          localTrack={localTracks} 
+          remoteTracks={remoteTracks} 
+          isTeacher={isTeacher}
+          stacked={isChatMinimized}
+        />
       </div>
 
-      {/* Videos - Stacked vertically */}
-      <div className="flex-none p-3 space-y-2">
-        <VideoGrid localTrack={localTracks} remoteTracks={remoteTracks} isTeacher={isTeacher} />
-      </div>
-
-      {/* Chat - Takes remaining space */}
-      <div className="flex-1 min-h-0">
-        {bookingId ? (
-          <ClassroomChat bookingId={bookingId} />
-        ) : (
-          <div className="h-full flex items-center justify-center text-gray-400 text-sm">
-            Chat no disponible
+      {/* Chat Section */}
+      <div className="flex flex-col transition-all duration-300 ease-in-out" style={{ flex: isChatMinimized ? '0 0 auto' : '1 1 0%', minHeight: 0 }}>
+        {/* Chat Header with minimize button */}
+        <div className="flex-none p-3 border-t bg-gray-50 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <MessageSquare className="w-4 h-4 text-gray-600" />
+            <div>
+              <h3 className="font-semibold text-gray-900 text-sm">Chat de Clase</h3>
+              <p className={`text-xs text-gray-500 transition-all duration-300 overflow-hidden ${isChatMinimized ? 'max-h-0 opacity-0' : 'max-h-5 opacity-100'}`}>
+                Correcciones y Vocabulario
+              </p>
+            </div>
           </div>
-        )}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsChatMinimized(!isChatMinimized)}
+            className="h-8 w-8"
+            title={isChatMinimized ? "Expandir chat" : "Minimizar chat"}
+          >
+            {isChatMinimized ? (
+              <ChevronUp className="w-4 h-4" />
+            ) : (
+              <ChevronDown className="w-4 h-4" />
+            )}
+          </Button>
+        </div>
+
+        {/* Chat Content - Animated visibility */}
+        <div className={`flex-1 min-h-0 transition-all duration-300 ease-in-out overflow-hidden ${isChatMinimized ? 'max-h-0 opacity-0' : 'max-h-[1000px] opacity-100'}`}>
+          {bookingId ? (
+            <ClassroomChat bookingId={bookingId} />
+          ) : (
+            <div className="h-full flex items-center justify-center text-gray-400 text-sm">
+              Chat no disponible
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
@@ -398,6 +425,7 @@ function ClassroomInner({
       rightSidebar={renderSidebar}
       leftSidebar={renderLeftSidebar}
       onBackClick={handleBackClick}
+      fullscreenContent={mainContentTab === 'whiteboard' || mainContentTab === 'screenshare'}
       bottomControls={
         <ControlBar
           isMicMuted={isAudioMuted}

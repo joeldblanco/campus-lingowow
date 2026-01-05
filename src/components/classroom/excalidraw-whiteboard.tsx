@@ -8,9 +8,10 @@ import { saveWhiteboardData, getWhiteboardData } from '@/lib/actions/classroom-w
 import { toast } from 'sonner'
 import { useLiveKit } from './livekit-context'
 
-// Dynamic import for Excalidraw (client-side only)
-const Excalidraw = dynamic(
-  async () => (await import('@excalidraw/excalidraw')).Excalidraw,
+// Dynamic import for the Excalidraw wrapper (client-side only)
+// The wrapper imports the CSS and Excalidraw component together
+const ExcalidrawWrapper = dynamic(
+  () => import('./excalidraw-wrapper'),
   { ssr: false, loading: () => <div className="h-full flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-blue-600" /></div> }
 )
 
@@ -171,19 +172,21 @@ export function ExcalidrawWhiteboard({ bookingId, isTeacher = false }: Excalidra
       )}
 
       {/* Excalidraw Canvas */}
-      <div className="flex-1 min-h-0">
-        <Excalidraw
-          excalidrawAPI={(api) => setExcalidrawAPI(api)}
-          initialData={{
-            elements: initialData || [],
-            appState: {
-              viewBackgroundColor: '#ffffff',
-            },
-          }}
-          langCode="es-ES"
-          theme="light"
-          onChange={handleChange}
-        />
+      <div className="flex-1 min-h-0 relative" style={{ height: '100%', width: '100%' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+          <ExcalidrawWrapper
+            excalidrawAPI={(api) => setExcalidrawAPI(api)}
+            initialData={{
+              elements: initialData || [],
+              appState: {
+                viewBackgroundColor: '#ffffff',
+              },
+            }}
+            langCode="es-ES"
+            theme="light"
+            onChange={handleChange}
+          />
+        </div>
       </div>
     </div>
   )
