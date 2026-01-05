@@ -38,6 +38,7 @@ import * as z from 'zod'
 import { FileUpload } from '@/components/ui/file-upload'
 import { Switch } from '@/components/ui/switch'
 import Image from 'next/image'
+import { DollarSign } from 'lucide-react'
 
 interface EditCourseDialogProps {
   course: CourseWithDetails
@@ -61,6 +62,7 @@ export function EditCourseDialog({ course, children, onCourseUpdated }: EditCour
       image: course.image || '',
       isPersonalized: course.isPersonalized || false,
       isSynchronous: course.isSynchronous || false,
+      defaultPaymentPerClass: course.defaultPaymentPerClass ?? null,
     },
   })
 
@@ -236,6 +238,37 @@ export function EditCourseDialog({ course, children, onCourseUpdated }: EditCour
                         />
                       </div>
                     )}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="defaultPaymentPerClass"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Pago por Clase (Por Defecto)</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          type="number"
+                          placeholder="Ej: 10.00"
+                          className="pl-9"
+                          value={field.value ?? ''}
+                          onChange={(e) => {
+                            const value = e.target.value
+                            field.onChange(value === '' ? null : parseFloat(value))
+                          }}
+                          min={0}
+                          step={0.01}
+                        />
+                      </div>
+                    </FormControl>
+                    <p className="text-xs text-muted-foreground">
+                      Monto que recibirá el profesor por cada clase de este curso. Puede personalizarse por profesor.
+                    </p>
                     <FormMessage />
                   </FormItem>
                 )}

@@ -92,6 +92,7 @@ export async function GET(request: NextRequest) {
                 id: true,
                 title: true,
                 classDuration: true,
+                defaultPaymentPerClass: true,
               },
             },
             academicPeriod: {
@@ -139,7 +140,20 @@ export async function GET(request: NextRequest) {
       return hasTeacherAttendance && hasStudentAttendance
     })
 
+    // Obtener los pagos personalizados por curso para este profesor
+    const teacherCourses = await db.teacherCourse.findMany({
+      where: { teacherId },
+      select: {
+        courseId: true,
+        paymentPerClass: true,
+      },
+    })
+    const teacherCoursePayments = new Map(
+      teacherCourses.map((tc) => [tc.courseId, tc.paymentPerClass])
+    )
+
     // Calcular ganancias
+    // Prioridad: 1) Pago personalizado del profesor, 2) Pago por defecto del curso, 3) Cálculo por hora
     const BASE_RATE_PER_HOUR = 10
     const rateMultiplier = user.teacherRank?.rateMultiplier || 1.0
 
@@ -151,8 +165,22 @@ export async function GET(request: NextRequest) {
       const duration = classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
       totalDuration += duration
 
-      const hours = duration / 60
-      const classEarnings = hours * BASE_RATE_PER_HOUR * rateMultiplier
+      const courseId = classBooking.enrollment.course.id
+      const teacherPayment = teacherCoursePayments.get(courseId)
+      const defaultPayment = classBooking.enrollment.course.defaultPaymentPerClass
+
+      let classEarnings: number
+      if (teacherPayment !== null && teacherPayment !== undefined) {
+        // Usar pago personalizado del profesor para este curso
+        classEarnings = teacherPayment
+      } else if (defaultPayment !== null && defaultPayment !== undefined) {
+        // Usar pago por defecto del curso
+        classEarnings = defaultPayment
+      } else {
+        // Fallback: calcular por hora con multiplicador de rango
+        const hours = duration / 60
+        classEarnings = hours * BASE_RATE_PER_HOUR * rateMultiplier
+      }
       totalEarnings += classEarnings
 
       return {

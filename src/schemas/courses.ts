@@ -9,6 +9,7 @@ export const CreateCourseSchema = z.object({
   image: z.string().optional(),
   isPersonalized: z.boolean().default(false),
   isSynchronous: z.boolean().default(false),
+  defaultPaymentPerClass: z.number().min(0).nullable().optional(),
   createdById: z.string(),
 })
 
@@ -21,4 +22,5 @@ export const EditCourseSchema = z.object({
   image: z.string().optional(),
   isPersonalized: z.boolean().default(false),
   isSynchronous: z.boolean().default(false),
+  defaultPaymentPerClass: z.number().min(0).nullable().optional(),
 })

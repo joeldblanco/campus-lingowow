@@ -65,11 +65,11 @@ export function ClassroomLayout({
           {bottomControls}
 
           {/* Timer */}
-          <div className={`px-3 py-1.5 rounded-full flex items-center gap-2 font-medium text-sm ${
-            isGracePeriod 
-              ? 'bg-orange-50 text-orange-600' 
-              : 'bg-blue-50 text-blue-600'
-          }`}>
+          <div
+            className={`px-3 py-1.5 rounded-full flex items-center gap-2 font-medium text-sm ${
+              isGracePeriod ? 'bg-orange-50 text-orange-600' : 'bg-blue-50 text-blue-600'
+            }`}
+          >
             <Clock className="w-4 h-4" />
             <span>{timeLeft}</span>
             {isGracePeriod && <span className="text-xs">(gracia)</span>}
@@ -98,7 +98,7 @@ export function ClassroomLayout({
             ) : (
               <div className="h-full w-full flex flex-col">
                 <ScrollArea className="flex-1 w-full">
-                  <div className="p-8 min-h-full">{children}</div>
+                  <div className="p-8 h-full">{children}</div>
                 </ScrollArea>
               </div>
             )}

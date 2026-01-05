@@ -11,6 +11,7 @@ export type CourseWithDetails = Prisma.CourseGetPayload<{
     isPublished: true
     classDuration: true
     image: true
+    defaultPaymentPerClass: true
     isPersonalized: true
     isSynchronous: true
     createdById: true

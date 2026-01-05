@@ -85,6 +85,7 @@ export async function GET(request: NextRequest) {
                 id: true,
                 title: true,
                 classDuration: true,
+                defaultPaymentPerClass: true,
               },
             },
             academicPeriod: {
@@ -131,6 +132,18 @@ export async function GET(request: NextRequest) {
       const hasStudentAttendance = classBooking.attendances.length > 0
       return hasTeacherAttendance && hasStudentAttendance
     })
+
+    // Obtener todos los pagos personalizados por profesor-curso
+    const allTeacherCourses = await db.teacherCourse.findMany({
+      select: {
+        teacherId: true,
+        courseId: true,
+        paymentPerClass: true,
+      },
+    })
+    const teacherCoursePayments = new Map(
+      allTeacherCourses.map((tc) => [`${tc.teacherId}-${tc.courseId}`, tc.paymentPerClass])
+    )
 
     // Calcular estadísticas por profesor
     const BASE_RATE_PER_HOUR = 10
@@ -185,8 +198,20 @@ export async function GET(request: NextRequest) {
       stats.totalDuration += duration
 
       // Calcular ganancias de esta clase
-      const hours = duration / 60
-      const classEarnings = hours * BASE_RATE_PER_HOUR * rateMultiplier
+      // Prioridad: 1) Pago personalizado del profesor, 2) Pago por defecto del curso, 3) Cálculo por hora
+      const courseId = classBooking.enrollment.course.id
+      const teacherPayment = teacherCoursePayments.get(`${teacherId}-${courseId}`)
+      const defaultPayment = classBooking.enrollment.course.defaultPaymentPerClass
+
+      let classEarnings: number
+      if (teacherPayment !== null && teacherPayment !== undefined) {
+        classEarnings = teacherPayment
+      } else if (defaultPayment !== null && defaultPayment !== undefined) {
+        classEarnings = defaultPayment
+      } else {
+        const hours = duration / 60
+        classEarnings = hours * BASE_RATE_PER_HOUR * rateMultiplier
+      }
       stats.totalEarnings += classEarnings
 
       stats.classes.push({
