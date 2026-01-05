@@ -129,6 +129,16 @@ export function ManageTeacherCoursesDialog({
         languageCourseIds.forEach((id) => newSet.add(id))
         return newSet
       })
+      // Inicializar pagos para los cursos recién seleccionados
+      setCoursePayments((prev) => {
+        const newPayments = new Map(prev)
+        languageCourseIds.forEach((id) => {
+          if (!newPayments.has(id)) {
+            newPayments.set(id, null)
+          }
+        })
+        return newPayments
+      })
     } else {
       // Deseleccionar todos los cursos del idioma y limpiar pagos
       setSelectedCourses((prev) => {
