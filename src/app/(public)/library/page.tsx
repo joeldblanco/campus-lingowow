@@ -39,13 +39,15 @@ import {
   File,
   Eye,
   Heart,
+  Lock,
+  Crown,
 } from 'lucide-react'
 import Link from 'next/link'
 import NextImage from 'next/image'
 import { useSearchParams } from 'next/navigation'
-import { LibraryResourceType } from '@prisma/client'
+import { LibraryResourceType, LibraryResourceAccess } from '@prisma/client'
 import type { LibraryResource, LibraryCategory, LibraryResourcesResponse } from '@/lib/types/library'
-import { RESOURCE_TYPE_LABELS } from '@/lib/types/library'
+import { RESOURCE_TYPE_LABELS, ACCESS_LEVEL_LABELS } from '@/lib/types/library'
 
 const defaultCategories = [
   { id: 'all', slug: 'all', name: 'Todos los Recursos', icon: 'BookOpen' },
@@ -116,6 +118,27 @@ const formatDuration = (seconds: number | null) => {
   const hours = Math.floor(minutes / 60)
   const remainingMinutes = minutes % 60
   return `${hours}h ${remainingMinutes}min`
+}
+
+const getAccessBadge = (accessLevel: LibraryResourceAccess) => {
+  switch (accessLevel) {
+    case 'PRIVATE':
+      return (
+        <Badge className="gap-1 bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-100">
+          <Lock className="h-3 w-3" />
+          {ACCESS_LEVEL_LABELS.PRIVATE}
+        </Badge>
+      )
+    case 'PREMIUM':
+      return (
+        <Badge className="gap-1 bg-purple-100 text-purple-800 border-purple-300 hover:bg-purple-100">
+          <Crown className="h-3 w-3" />
+          {ACCESS_LEVEL_LABELS.PREMIUM}
+        </Badge>
+      )
+    default:
+      return null
+  }
 }
 
 export default function LibraryPage() {
@@ -479,11 +502,12 @@ export default function LibraryPage() {
                                 : `url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600')`,
                             }}
                           />
-                          <div className="absolute top-3 left-3">
+                          <div className="absolute top-3 left-3 flex gap-2">
                             <Badge variant="secondary" className="gap-1 bg-white/90 text-foreground">
                               {getTypeIcon(resource.type)}
                               {RESOURCE_TYPE_LABELS[resource.type]}
                             </Badge>
+                            {getAccessBadge(resource.accessLevel)}
                           </div>
                           {resource.duration && (
                             <div className="absolute bottom-3 right-3">
@@ -585,13 +609,19 @@ export default function LibraryPage() {
                   <Link key={resource.id} href={`/library/${resource.slug}`}>
                     <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full group">
                       <div
-                        className="h-40 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                        className="h-40 bg-cover bg-center transition-transform duration-500 group-hover:scale-105 relative"
                         style={{
                           backgroundImage: resource.thumbnailUrl
                             ? `url('${resource.thumbnailUrl}')`
                             : `url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400')`,
                         }}
-                      />
+                      >
+                        {resource.accessLevel !== 'PUBLIC' && (
+                          <div className="absolute top-2 right-2">
+                            {getAccessBadge(resource.accessLevel)}
+                          </div>
+                        )}
+                      </div>
                       <CardContent className="p-4">
                         <div className="flex justify-between items-start mb-2">
                           <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">

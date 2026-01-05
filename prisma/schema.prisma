@@ -2052,6 +2052,7 @@ model LibraryResource {
   excerpt         String?               // Resumen corto para listados
   type            LibraryResourceType
   status          LibraryResourceStatus @default(DRAFT)
+  accessLevel     LibraryResourceAccess @default(PUBLIC) // Nivel de acceso: PUBLIC, PRIVATE (Go/Lingo), PREMIUM (Wow)
   
   // Contenido según el tipo
   content         String?               // Contenido HTML para artículos
@@ -2090,6 +2091,7 @@ model LibraryResource {
 
   @@index([type])
   @@index([status])
+  @@index([accessLevel])
   @@index([categoryId])
   @@index([authorId])
   @@index([language])
@@ -2167,6 +2169,12 @@ enum LibraryResourceStatus {
   DRAFT           // Borrador
   PUBLISHED       // Publicado
   ARCHIVED        // Archivado
+}
+
+enum LibraryResourceAccess {
+  PUBLIC          // Acceso público (todos pueden ver)
+  PRIVATE         // Solo usuarios con suscripción activa (Go, Lingo, Wow)
+  PREMIUM         // Solo usuarios con plan Wow
 }
 
 // =============================================

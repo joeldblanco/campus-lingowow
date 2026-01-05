@@ -1,4 +1,4 @@
-import { LibraryResourceType, LibraryResourceStatus } from '@prisma/client'
+import { LibraryResourceType, LibraryResourceStatus, LibraryResourceAccess } from '@prisma/client'
 
 export interface LibraryCategory {
   id: string
@@ -30,6 +30,7 @@ export interface LibraryResource {
   excerpt: string | null
   type: LibraryResourceType
   status: LibraryResourceStatus
+  accessLevel: LibraryResourceAccess
   content: string | null
   fileUrl: string | null
   fileSize: number | null
@@ -113,4 +114,16 @@ export const LEVEL_LABELS: Record<string, string> = {
   B2: 'Intermedio Alto (B2)',
   C1: 'Avanzado (C1)',
   C2: 'Maestría (C2)',
+}
+
+export const ACCESS_LEVEL_LABELS: Record<string, string> = {
+  PUBLIC: 'Público',
+  PRIVATE: 'Suscriptores',
+  PREMIUM: 'Premium',
+}
+
+export const ACCESS_LEVEL_DESCRIPTIONS: Record<string, string> = {
+  PUBLIC: 'Disponible para todos',
+  PRIVATE: 'Solo para suscriptores (Go, Lingo, Wow)',
+  PREMIUM: 'Exclusivo para plan Wow',
 }

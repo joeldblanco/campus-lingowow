@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { auth } from '@/auth'
 import { LibraryResourceStatus } from '@prisma/client'
+import { getUserAccessInfo, canAccessResource } from '@/lib/library-access'
 
 export async function GET(
   request: NextRequest,
@@ -73,6 +74,50 @@ export async function GET(
       }
     }
 
+    // Check access level for the resource
+    const userAccessInfo = await getUserAccessInfo(session?.user?.id || null)
+    const hasAccess = canAccessResource(resource.accessLevel, userAccessInfo)
+
+    // If user doesn't have access, return limited info with access restriction message
+    if (!hasAccess) {
+      return NextResponse.json({
+        resource: {
+          id: resource.id,
+          title: resource.title,
+          slug: resource.slug,
+          description: resource.description,
+          excerpt: resource.excerpt,
+          type: resource.type,
+          status: resource.status,
+          accessLevel: resource.accessLevel,
+          thumbnailUrl: resource.thumbnailUrl,
+          duration: resource.duration,
+          language: resource.language,
+          level: resource.level,
+          tags: resource.tags,
+          category: resource.category,
+          author: resource.author,
+          viewCount: resource.viewCount,
+          likeCount: resource.likeCount,
+          publishedAt: resource.publishedAt,
+          // Restricted fields - not included
+          content: null,
+          fileUrl: null,
+          fileSize: null,
+          fileFormat: null,
+        },
+        userInteraction: null,
+        relatedResources: [],
+        accessRestricted: true,
+        requiredAccess: resource.accessLevel,
+        userAccess: {
+          accessibleLevels: userAccessInfo.accessibleLevels,
+          hasActiveSubscription: userAccessInfo.hasActiveSubscription,
+          hasPremiumPlan: userAccessInfo.hasPremiumPlan,
+        },
+      })
+    }
+
     // Increment view count for published resources
     if (resource.status === LibraryResourceStatus.PUBLISHED) {
       await db.libraryResource.update({
@@ -138,6 +183,12 @@ export async function GET(
       resource,
       userInteraction,
       relatedResources,
+      accessRestricted: false,
+      userAccess: {
+        accessibleLevels: userAccessInfo.accessibleLevels,
+        hasActiveSubscription: userAccessInfo.hasActiveSubscription,
+        hasPremiumPlan: userAccessInfo.hasPremiumPlan,
+      },
     })
   } catch (error) {
     console.error('Error fetching library resource:', error)
@@ -212,6 +263,7 @@ export async function PATCH(
       metaTitle,
       metaDescription,
       status,
+      accessLevel,
     } = body
 
     // Handle slug update if title changed
@@ -261,6 +313,7 @@ export async function PATCH(
         metaTitle,
         metaDescription,
         status,
+        accessLevel,
         publishedAt,
       },
       include: {

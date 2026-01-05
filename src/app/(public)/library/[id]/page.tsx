@@ -29,13 +29,26 @@ import {
   Eye,
   Calendar,
   ArrowLeft,
+  Lock,
+  Crown,
+  Sparkles,
 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { LibraryResourceType } from '@prisma/client'
+import { LibraryResourceType, LibraryResourceAccess } from '@prisma/client'
 import type { LibraryResource, LibraryResourceDetailResponse } from '@/lib/types/library'
-import { RESOURCE_TYPE_LABELS } from '@/lib/types/library'
+import { RESOURCE_TYPE_LABELS, ACCESS_LEVEL_DESCRIPTIONS } from '@/lib/types/library'
+
+interface ExtendedLibraryResourceDetailResponse extends LibraryResourceDetailResponse {
+  accessRestricted?: boolean
+  requiredAccess?: LibraryResourceAccess
+  userAccess?: {
+    accessibleLevels: LibraryResourceAccess[]
+    hasActiveSubscription: boolean
+    hasPremiumPlan: boolean
+  }
+}
 
 const getTypeIcon = (type: LibraryResourceType, className = "h-4 w-4") => {
   const iconMap: Record<LibraryResourceType, React.ReactNode> = {
@@ -98,6 +111,8 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
   const [error, setError] = useState<string | null>(null)
   const [isLiking, setIsLiking] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+  const [accessRestricted, setAccessRestricted] = useState(false)
+  const [requiredAccess, setRequiredAccess] = useState<LibraryResourceAccess | null>(null)
 
   useEffect(() => {
     const fetchResource = async () => {
@@ -114,10 +129,12 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
           return
         }
 
-        const data: LibraryResourceDetailResponse = await response.json()
+        const data: ExtendedLibraryResourceDetailResponse = await response.json()
         setResource(data.resource)
         setRelatedResources(data.relatedResources)
         setUserInteraction(data.userInteraction)
+        setAccessRestricted(data.accessRestricted || false)
+        setRequiredAccess(data.requiredAccess || null)
       } catch (err) {
         console.error('Error fetching resource:', err)
         setError('Error al cargar el recurso')
@@ -507,8 +524,50 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
             {/* Main Media */}
             {renderMediaContent()}
 
-            {/* Content Area */}
-            {resource.content && (
+            {/* Access Restriction Banner */}
+            {accessRestricted && (
+              <Card className="border-2 border-dashed border-amber-300 bg-gradient-to-br from-amber-50 to-orange-50">
+                <CardContent className="pt-6">
+                  <div className="flex flex-col items-center text-center py-8">
+                    <div className="size-16 rounded-full bg-amber-100 flex items-center justify-center mb-4">
+                      {requiredAccess === 'PREMIUM' ? (
+                        <Crown className="h-8 w-8 text-amber-600" />
+                      ) : (
+                        <Lock className="h-8 w-8 text-amber-600" />
+                      )}
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">
+                      {requiredAccess === 'PREMIUM' 
+                        ? 'Contenido Premium' 
+                        : 'Contenido para Suscriptores'}
+                    </h3>
+                    <p className="text-muted-foreground mb-6 max-w-md">
+                      {requiredAccess === 'PREMIUM' 
+                        ? ACCESS_LEVEL_DESCRIPTIONS.PREMIUM
+                        : ACCESS_LEVEL_DESCRIPTIONS.PRIVATE}
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <Link href="/pricing">
+                        <Button className="gap-2">
+                          <Sparkles className="h-4 w-4" />
+                          {requiredAccess === 'PREMIUM' 
+                            ? 'Obtener Plan Wow' 
+                            : 'Ver Planes'}
+                        </Button>
+                      </Link>
+                      <Link href="/library">
+                        <Button variant="outline">
+                          Explorar Recursos Gratuitos
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Content Area - Only show if not restricted */}
+            {!accessRestricted && resource.content && (
               <div 
                 className="prose prose-lg max-w-none"
                 dangerouslySetInnerHTML={{ __html: resource.content }}

@@ -2,10 +2,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { auth } from '@/auth'
 import { LibraryResourceStatus, LibraryResourceType } from '@prisma/client'
+import { getUserAccessInfo } from '@/lib/library-access'
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
+    const session = await auth()
 
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '12')
@@ -19,35 +21,8 @@ export async function GET(request: NextRequest) {
 
     const skip = (page - 1) * limit
 
-    const where: Record<string, unknown> = {
-      status: LibraryResourceStatus.PUBLISHED,
-    }
-
-    if (type) {
-      where.type = type
-    }
-
-    if (category) {
-      where.category = {
-        slug: category,
-      }
-    }
-
-    if (level) {
-      where.level = level
-    }
-
-    if (language) {
-      where.language = language
-    }
-
-    if (search) {
-      where.OR = [
-        { title: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } },
-        { tags: { has: search } },
-      ]
-    }
+    // Get user access info to determine which resources they can see
+    const userAccessInfo = await getUserAccessInfo(session?.user?.id || null)
 
     let orderBy: Record<string, string> = {}
     switch (sort) {
@@ -64,59 +39,79 @@ export async function GET(request: NextRequest) {
         orderBy = { publishedAt: 'desc' }
     }
 
-    const [resources, total, popularResources] = await Promise.all([
-      db.libraryResource.findMany({
-        where,
-        include: {
-          category: true,
-          author: {
-            select: {
-              id: true,
-              name: true,
-              lastName: true,
-              image: true,
-            },
-          },
-          _count: {
-            select: {
-              userLikes: true,
-              userSaves: true,
-            },
-          },
-        },
-        orderBy,
-        skip,
-        take: limit,
-      }),
-      db.libraryResource.count({ where }),
-      db.libraryResource.findMany({
-        where,
-        include: {
-          category: true,
-          author: {
-            select: {
-              id: true,
-              name: true,
-              lastName: true,
-              image: true,
-            },
-          },
-          _count: {
-            select: {
-              userLikes: true,
-              userSaves: true,
-            },
-          },
-        },
-        orderBy: { viewCount: 'desc' },
-        take: 3,
-      }),
-    ])
+    // Fetch all resources (including restricted) for display with access badges
+    const allResourcesWhere: Record<string, unknown> = {
+      status: LibraryResourceStatus.PUBLISHED,
+    }
+    if (type) allResourcesWhere.type = type
+    if (category) allResourcesWhere.category = { slug: category }
+    if (level) allResourcesWhere.level = level
+    if (language) allResourcesWhere.language = language
+    if (search) {
+      allResourcesWhere.OR = [
+        { title: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } },
+        { tags: { has: search } },
+      ]
+    }
 
-    // Get featured resource if requested
-    let featuredResource = null
+    // Get all resources for display (with access level info)
+    const allResources = await db.libraryResource.findMany({
+      where: allResourcesWhere,
+      include: {
+        category: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            image: true,
+          },
+        },
+        _count: {
+          select: {
+            userLikes: true,
+            userSaves: true,
+          },
+        },
+      },
+      orderBy,
+      skip,
+      take: limit,
+    })
+
+    const allTotal = await db.libraryResource.count({ where: allResourcesWhere })
+
+    // Get all popular resources (including restricted)
+    const allPopularResources = await db.libraryResource.findMany({
+      where: {
+        status: LibraryResourceStatus.PUBLISHED,
+      },
+      include: {
+        category: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            image: true,
+          },
+        },
+        _count: {
+          select: {
+            userLikes: true,
+            userSaves: true,
+          },
+        },
+      },
+      orderBy: { viewCount: 'desc' },
+      take: 3,
+    })
+
+    // Get featured resource from all resources (including restricted)
+    let allFeaturedResource = null
     if (featured) {
-      featuredResource = await db.libraryResource.findFirst({
+      allFeaturedResource = await db.libraryResource.findFirst({
         where: {
           status: LibraryResourceStatus.PUBLISHED,
         },
@@ -136,14 +131,19 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({
-      resources,
-      featuredResource,
-      popularResources,
+      resources: allResources,
+      featuredResource: allFeaturedResource,
+      popularResources: allPopularResources,
       pagination: {
         page,
         limit,
-        total,
-        totalPages: Math.ceil(total / limit),
+        total: allTotal,
+        totalPages: Math.ceil(allTotal / limit),
+      },
+      userAccess: {
+        accessibleLevels: userAccessInfo.accessibleLevels,
+        hasActiveSubscription: userAccessInfo.hasActiveSubscription,
+        hasPremiumPlan: userAccessInfo.hasPremiumPlan,
       },
     })
   } catch (error) {
@@ -194,6 +194,7 @@ export async function POST(request: NextRequest) {
       metaTitle,
       metaDescription,
       status,
+      accessLevel,
     } = body
 
     // Generate slug from title
@@ -233,6 +234,7 @@ export async function POST(request: NextRequest) {
         metaTitle,
         metaDescription,
         status: status || LibraryResourceStatus.DRAFT,
+        accessLevel: accessLevel || 'PUBLIC',
         publishedAt: status === LibraryResourceStatus.PUBLISHED ? new Date() : null,
       },
       include: {
