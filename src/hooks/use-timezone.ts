@@ -1,7 +1,7 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
-import { useMemo, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { updateUserTimezone } from '@/lib/actions/user-timezone'
 
 /**
@@ -76,12 +76,12 @@ export function useTimezone(): TimezoneInfo {
   const { data: session, status } = useSession()
   const hasSyncedRef = useRef(false)
   
-  // Memoizar timezone del navegador para evitar re-renders innecesarios
-  const browserTimezone = useMemo(() => {
-    if (typeof window !== 'undefined') {
-      return Intl.DateTimeFormat().resolvedOptions().timeZone
-    }
-    return 'America/Lima'
+  // Usar estado para timezone del navegador para evitar SSR hydration mismatch
+  // Se inicializa con fallback y se actualiza en cliente después de la hidratación
+  const [browserTimezone, setBrowserTimezone] = useState('America/Lima')
+  
+  useEffect(() => {
+    setBrowserTimezone(Intl.DateTimeFormat().resolvedOptions().timeZone)
   }, [])
   
   // La timezone final: de la sesión si existe, sino del navegador
