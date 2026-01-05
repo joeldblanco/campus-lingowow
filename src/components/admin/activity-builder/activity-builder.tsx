@@ -3,20 +3,35 @@
 import { useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { Play, Save, Loader2, GraduationCap } from 'lucide-react'
+import { Eye, EyeOff, Loader2, Plus } from 'lucide-react'
 import { toast } from 'sonner'
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core'
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ActivitySettingsSidebar } from './activity-settings-sidebar'
 import { QuestionBlock } from './question-block'
+import { ActivityRenderer } from '@/components/activities/activity-renderer'
 import {
   ActivityQuestion,
   ActivitySettings,
   QuestionType,
   DEFAULT_ACTIVITY_SETTINGS,
   createDefaultQuestion,
-  QUESTION_TYPES,
 } from './types'
 
 interface ActivityBuilderProps {
@@ -46,6 +61,36 @@ export function ActivityBuilder({ mode, activityId, initialData }: ActivityBuild
   // UI State
   const [isSaving, setIsSaving] = useState(false)
   const [lastSaved, setLastSaved] = useState<Date | null>(null)
+  const [showPreview, setShowPreview] = useState(false)
+
+  // DnD sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
+
+  // Handle drag end for reordering questions
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
+    const { active, over } = event
+
+    if (over && active.id !== over.id) {
+      const oldIndex = questions.findIndex((q) => q.id === active.id)
+      const newIndex = questions.findIndex((q) => q.id === over.id)
+
+      const newQuestions = arrayMove(questions, oldIndex, newIndex).map((q, index) => ({
+        ...q,
+        order: index,
+      }))
+
+      setQuestions(newQuestions)
+    }
+  }, [questions])
 
   // Add a new question
   const handleAddQuestion = useCallback((type: QuestionType = 'multiple_choice') => {
@@ -87,15 +132,65 @@ export function ActivityBuilder({ mode, activityId, initialData }: ActivityBuild
     )
   }, [])
 
+  // Validate if a question is complete
+  const isQuestionComplete = (question: ActivityQuestion): boolean => {
+    switch (question.type) {
+      case 'multiple_choice': {
+        const hasQuestionText = Boolean(question.questionText?.trim())
+        const hasOptions = Boolean(question.options && question.options.length >= 2)
+        const hasCorrectAnswer = Boolean(question.options?.some(opt => opt.isCorrect))
+        const allOptionsHaveText = Boolean(question.options?.every(opt => opt.text.trim()))
+        return hasQuestionText && hasOptions && hasCorrectAnswer && allOptionsHaveText
+      }
+      
+      case 'fill_blanks': {
+        const hasSentence = !!question.sentenceWithBlanks?.trim()
+        const hasBlanks = !!(question.blanks && question.blanks.length > 0)
+        return hasSentence && hasBlanks
+      }
+      
+      case 'matching_pairs': {
+        const hasPairs = !!(question.pairs && question.pairs.length >= 2)
+        const allPairsComplete = !!(question.pairs?.every(pair => pair.left.trim() && pair.right.trim()))
+        return hasPairs && allPairsComplete
+      }
+      
+      case 'sentence_unscramble':
+        return !!question.correctSentence?.trim()
+      
+      default:
+        return false
+    }
+  }
+
+  // Get incomplete questions
+  const getIncompleteQuestions = (): number[] => {
+    return questions
+      .map((q, index) => ({ question: q, index }))
+      .filter(({ question }) => !isQuestionComplete(question))
+      .map(({ index }) => index + 1)
+  }
+
   // Save activity
   const handleSave = async (publish: boolean = false) => {
     if (!title.trim()) {
-      toast.error('Por favor, ingresa un nombre para la actividad')
+      toast.error('Please enter a name for the activity')
       return
     }
 
     if (questions.length === 0) {
-      toast.error('Por favor, agrega al menos una pregunta')
+      toast.error('Please add at least one question')
+      return
+    }
+
+    // Validate incomplete questions
+    const incompleteQuestions = getIncompleteQuestions()
+    if (incompleteQuestions.length > 0) {
+      if (incompleteQuestions.length === 1) {
+        toast.error(`Question ${incompleteQuestions[0]} is incomplete. Please fill in all required fields.`)
+      } else {
+        toast.error(`Questions ${incompleteQuestions.join(', ')} are incomplete. Please fill in all required fields.`)
+      }
       return
     }
 
@@ -157,126 +252,176 @@ export function ActivityBuilder({ mode, activityId, initialData }: ActivityBuild
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+    <div className="min-h-screen bg-slate-100 dark:bg-slate-950">
       {/* Sticky Header */}
-      <header className="sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 py-3 shadow-sm">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center justify-center size-10 rounded-lg bg-primary/10 text-primary">
-              <GraduationCap className="h-6 w-6" />
+      <header className="sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 py-3">
+        <div className="max-w-[1400px] mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {/* Logo Icon */}
+            <div className="flex items-center justify-center size-9 rounded-lg bg-primary text-white">
+              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                <path d="M2 17l10 5 10-5" />
+                <path d="M2 12l10 5 10-5" />
+              </svg>
             </div>
             <div>
-              <h1 className="text-lg font-bold leading-tight tracking-tight text-slate-900 dark:text-white">
-                Constructor de Actividades
+              <h1 className="text-base font-semibold text-slate-900 dark:text-white">
+                Activity Builder
               </h1>
-              <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-                <span>{formatLastSaved()}</span>
-                <span className="size-1 rounded-full bg-slate-300 dark:bg-slate-600" />
-                <span>{questions.length} pregunta(s)</span>
-              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                {formatLastSaved()}
+              </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Preview Button */}
             <Button
-              variant="ghost"
+              variant={showPreview ? "default" : "ghost"}
               size="icon"
-              className="size-10 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
-              title="Vista Previa"
+              className="size-9 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
+              title={showPreview ? "Edit" : "Preview"}
+              onClick={() => setShowPreview(!showPreview)}
             >
-              <Play className="h-5 w-5" />
+              {showPreview ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4 text-slate-600" />
+              )}
             </Button>
 
-            <div className="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-1" />
-
+            {/* Save Draft Button */}
             <Button
               variant="outline"
               onClick={() => handleSave(false)}
               disabled={isSaving}
-              className="hidden sm:flex"
-            >
-              {isSaving ? (
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              ) : (
-                <Save className="h-4 w-4 mr-2" />
-              )}
-              Guardar Borrador
-            </Button>
-
-            <Button
-              onClick={() => handleSave(true)}
-              disabled={isSaving}
-              className="bg-primary hover:bg-primary/90 text-white shadow-md shadow-blue-500/20"
+              className="hidden sm:flex h-9 px-4 text-sm font-medium border-slate-200 hover:bg-slate-50"
             >
               {isSaving ? (
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />
               ) : null}
-              Publicar Actividad
+              Save Draft
+            </Button>
+
+            {/* Publish Button */}
+            <Button
+              onClick={() => handleSave(true)}
+              disabled={isSaving}
+              className="h-9 px-4 text-sm font-medium bg-primary hover:bg-primary/90 text-white rounded-lg"
+            >
+              {isSaving ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : null}
+              Publish Activity
             </Button>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <div className="flex-1 max-w-7xl mx-auto w-full p-6 lg:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Sidebar: Settings */}
-          <ActivitySettingsSidebar
-            settings={settings}
-            onUpdateSettings={setSettings}
-          />
-
-          {/* Main Canvas: Question Builder */}
-          <main className="lg:col-span-8 xl:col-span-9 space-y-6 order-1 lg:order-2">
-            {/* Activity Title */}
-            <div className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-800">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
-                Nombre de la Actividad
-              </label>
-              <Input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Actividad sin título"
-                className="w-full text-2xl lg:text-3xl font-bold border-0 border-b-2 border-slate-100 dark:border-slate-800 focus:border-primary focus:ring-0 px-0 bg-transparent placeholder:text-slate-300 dark:placeholder:text-slate-700 transition-colors h-auto py-2"
+      {showPreview ? (
+        <div className="flex-1 max-w-[900px] mx-auto w-full p-4 sm:p-6 lg:p-8">
+          <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+            <div className="bg-slate-50 dark:bg-slate-800 px-4 py-3 border-b border-slate-200 dark:border-slate-700">
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                Preview Mode — This is how students will see the activity
+              </p>
+            </div>
+            {questions.length > 0 ? (
+              <ActivityRenderer
+                activity={{
+                  id: 'preview',
+                  title: title || 'Untitled Activity',
+                  description: settings.description,
+                  questions: questions,
+                  difficulty: settings.difficulty,
+                  tags: settings.tags,
+                  points: questions.length * 10,
+                }}
+                onClose={() => setShowPreview(false)}
               />
-            </div>
-
-            {/* Questions List */}
-            <div className="space-y-6">
-              {questions.map((question, index) => (
-                <QuestionBlock
-                  key={question.id}
-                  question={question}
-                  index={index}
-                  onUpdate={handleUpdateQuestion}
-                  onDelete={() => handleDeleteQuestion(question.id)}
-                  onDuplicate={() => handleDuplicateQuestion(question)}
-                  onTypeChange={(type) => handleTypeChange(question.id, type)}
-                />
-              ))}
-            </div>
-
-            {/* Add Block Action */}
-            <div className="py-4">
-              <button
-                type="button"
-                onClick={() => handleAddQuestion('multiple_choice')}
-                className="w-full group relative flex flex-col items-center justify-center p-8 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl hover:border-primary hover:bg-primary/5 transition-all"
-              >
-                <div className="size-12 rounded-full bg-slate-100 dark:bg-slate-800 group-hover:bg-primary group-hover:text-white text-slate-400 flex items-center justify-center mb-3 transition-colors">
-                  <span className="text-3xl">+</span>
-                </div>
-                <h3 className="text-base font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">
-                  Agregar Bloque de Pregunta
-                </h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                  {QUESTION_TYPES.map((t) => t.label).join(', ')}, etc.
+            ) : (
+              <div className="p-8 text-center">
+                <p className="text-slate-500 dark:text-slate-400">
+                  Add some questions to preview the activity
                 </p>
-              </button>
-            </div>
-          </main>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="flex-1 max-w-[1400px] mx-auto w-full p-4 sm:p-6 lg:p-8">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+            {/* Left Sidebar: Settings */}
+            <ActivitySettingsSidebar
+              settings={settings}
+              onUpdateSettings={setSettings}
+            />
+
+            {/* Main Canvas: Question Builder */}
+            <main className="flex-1 min-w-0 space-y-5">
+              {/* Activity Name Section */}
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-800">
+                <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3">
+                  Activity Name
+                </label>
+                <Input
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Basic Introduction: Greetings & Introductions"
+                  className="w-full text-xl sm:text-2xl lg:text-[28px] font-bold border-0 focus:ring-0 px-0 bg-transparent placeholder:text-slate-300 dark:placeholder:text-slate-600 text-slate-900 dark:text-white h-auto py-1"
+                />
+              </div>
+
+              {/* Questions List */}
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+              >
+                <SortableContext
+                  items={questions.map(q => q.id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  <div className="space-y-5">
+                    {questions.map((question, index) => (
+                      <QuestionBlock
+                        key={question.id}
+                        question={question}
+                        index={index}
+                        onUpdate={handleUpdateQuestion}
+                        onDelete={() => handleDeleteQuestion(question.id)}
+                        onDuplicate={() => handleDuplicateQuestion(question)}
+                        onTypeChange={(type) => handleTypeChange(question.id, type)}
+                      />
+                    ))}
+                  </div>
+                </SortableContext>
+              </DndContext>
+
+              {/* Add Question Block Button */}
+              <div className="py-4">
+                <button
+                  type="button"
+                  onClick={() => handleAddQuestion('multiple_choice')}
+                  className="w-full group flex flex-col items-center justify-center py-8 px-6 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl hover:border-primary/50 hover:bg-white dark:hover:bg-slate-900 transition-all"
+                >
+                  <div className="size-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center mb-3 group-hover:bg-slate-200 dark:group-hover:bg-slate-700 transition-colors">
+                    <Plus className="h-5 w-5" />
+                  </div>
+                  <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                    Add Question Block
+                  </h3>
+                  <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
+                    Multiple Choice, Fill in Blanks, Matching, etc.
+                  </p>
+                </button>
+              </div>
+            </main>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

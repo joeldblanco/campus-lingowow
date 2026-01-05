@@ -32,6 +32,14 @@ import {
   Lock,
   Crown,
   Sparkles,
+  Facebook,
+  Twitter,
+  Linkedin,
+  Link2,
+  MessageCircle,
+  GraduationCap,
+  Users,
+  Globe,
 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -39,6 +47,8 @@ import { useRouter } from 'next/navigation'
 import { LibraryResourceType, LibraryResourceAccess } from '@prisma/client'
 import type { LibraryResource, LibraryResourceDetailResponse } from '@/lib/types/library'
 import { RESOURCE_TYPE_LABELS, ACCESS_LEVEL_DESCRIPTIONS } from '@/lib/types/library'
+import { ArticleBlockRenderer } from '@/components/library/article-editor'
+import { parseArticleContent } from '@/lib/types/article-blocks'
 
 interface ExtendedLibraryResourceDetailResponse extends LibraryResourceDetailResponse {
   accessRestricted?: boolean
@@ -50,7 +60,7 @@ interface ExtendedLibraryResourceDetailResponse extends LibraryResourceDetailRes
   }
 }
 
-const getTypeIcon = (type: LibraryResourceType, className = "h-4 w-4") => {
+const getTypeIcon = (type: LibraryResourceType, className = 'h-4 w-4') => {
   const iconMap: Record<LibraryResourceType, React.ReactNode> = {
     ARTICLE: <FileText className={className} />,
     PDF: <FileIcon className={className} />,
@@ -103,10 +113,13 @@ const LANGUAGE_LABELS: Record<string, string> = {
 export default function ResourceDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
   const router = useRouter()
-  
+
   const [resource, setResource] = useState<LibraryResource | null>(null)
   const [relatedResources, setRelatedResources] = useState<LibraryResource[]>([])
-  const [userInteraction, setUserInteraction] = useState<{ hasLiked: boolean; hasSaved: boolean } | null>(null)
+  const [userInteraction, setUserInteraction] = useState<{
+    hasLiked: boolean
+    hasSaved: boolean
+  } | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isLiking, setIsLiking] = useState(false)
@@ -119,7 +132,7 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
       try {
         setLoading(true)
         const response = await fetch(`/api/library/${id}`)
-        
+
         if (!response.ok) {
           if (response.status === 404) {
             setError('Recurso no encontrado')
@@ -148,20 +161,26 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
 
   const handleLike = async () => {
     if (!resource || isLiking) return
-    
+
     setIsLiking(true)
     try {
       const response = await fetch(`/api/library/${resource.id}/like`, {
         method: 'POST',
       })
-      
+
       if (response.ok) {
         const data = await response.json()
-        setUserInteraction(prev => prev ? { ...prev, hasLiked: data.liked } : { hasLiked: data.liked, hasSaved: false })
-        setResource(prev => prev ? { 
-          ...prev, 
-          likeCount: data.liked ? prev.likeCount + 1 : prev.likeCount - 1 
-        } : null)
+        setUserInteraction((prev) =>
+          prev ? { ...prev, hasLiked: data.liked } : { hasLiked: data.liked, hasSaved: false }
+        )
+        setResource((prev) =>
+          prev
+            ? {
+                ...prev,
+                likeCount: data.liked ? prev.likeCount + 1 : prev.likeCount - 1,
+              }
+            : null
+        )
       }
     } catch (err) {
       console.error('Error toggling like:', err)
@@ -172,16 +191,18 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
 
   const handleSave = async () => {
     if (!resource || isSaving) return
-    
+
     setIsSaving(true)
     try {
       const response = await fetch(`/api/library/${resource.id}/save`, {
         method: 'POST',
       })
-      
+
       if (response.ok) {
         const data = await response.json()
-        setUserInteraction(prev => prev ? { ...prev, hasSaved: data.saved } : { hasLiked: false, hasSaved: data.saved })
+        setUserInteraction((prev) =>
+          prev ? { ...prev, hasSaved: data.saved } : { hasLiked: false, hasSaved: data.saved }
+        )
       }
     } catch (err) {
       console.error('Error toggling save:', err)
@@ -264,9 +285,9 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
         return (
           <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-lg bg-muted group">
             {resource.fileUrl ? (
-              <video 
-                src={resource.fileUrl} 
-                controls 
+              <video
+                src={resource.fileUrl}
+                controls
                 className="w-full h-full object-cover"
                 poster={resource.thumbnailUrl || undefined}
               />
@@ -275,7 +296,7 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                 <div
                   className="absolute inset-0 bg-center bg-cover"
                   style={{
-                    backgroundImage: resource.thumbnailUrl 
+                    backgroundImage: resource.thumbnailUrl
                       ? `url('${resource.thumbnailUrl}')`
                       : "url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1200')",
                   }}
@@ -290,7 +311,7 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
             )}
           </div>
         )
-      
+
       case 'AUDIO':
         return (
           <div className="w-full p-8 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 text-white">
@@ -305,18 +326,16 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                 )}
               </div>
             </div>
-            {resource.fileUrl && (
-              <audio src={resource.fileUrl} controls className="w-full" />
-            )}
+            {resource.fileUrl && <audio src={resource.fileUrl} controls className="w-full" />}
           </div>
         )
-      
+
       case 'IMAGE':
       case 'INFOGRAPHIC':
         return (
           <div className="w-full rounded-xl overflow-hidden shadow-lg">
-            <Image 
-              src={resource.fileUrl || resource.thumbnailUrl || ''} 
+            <Image
+              src={resource.fileUrl || resource.thumbnailUrl || ''}
               alt={resource.title}
               width={1200}
               height={800}
@@ -324,7 +343,7 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
             />
           </div>
         )
-      
+
       case 'PDF':
         return (
           <div className="w-full p-8 rounded-xl bg-gradient-to-br from-red-500 to-orange-500 text-white">
@@ -339,25 +358,20 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                   {resource.fileFormat && <span className="uppercase">{resource.fileFormat}</span>}
                 </div>
               </div>
-              <Button 
-                variant="secondary" 
-                size="lg"
-                onClick={handleDownload}
-                className="shrink-0"
-              >
+              <Button variant="secondary" size="lg" onClick={handleDownload} className="shrink-0">
                 <Download className="h-5 w-5 mr-2" />
                 Descargar
               </Button>
             </div>
           </div>
         )
-      
+
       default:
         if (resource.thumbnailUrl) {
           return (
             <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-lg">
-              <Image 
-                src={resource.thumbnailUrl} 
+              <Image
+                src={resource.thumbnailUrl}
                 alt={resource.title}
                 fill
                 className="object-cover"
@@ -389,7 +403,10 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
             <li>
               <div className="flex items-center">
                 <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                <Link href="/library" className="ml-1 text-muted-foreground hover:text-primary md:ml-2">
+                <Link
+                  href="/library"
+                  className="ml-1 text-muted-foreground hover:text-primary md:ml-2"
+                >
                   Biblioteca
                 </Link>
               </div>
@@ -425,20 +442,21 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
             <div className="space-y-4">
               <div className="flex flex-wrap gap-2 mb-2">
                 <Badge variant="secondary" className="gap-1">
-                  {getTypeIcon(resource.type, "h-3 w-3")}
+                  {getTypeIcon(resource.type, 'h-3 w-3')}
                   {RESOURCE_TYPE_LABELS[resource.type]}
                 </Badge>
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200">
                   {LANGUAGE_LABELS[resource.language] || resource.language}
                 </Badge>
                 {resource.level && (
-                  <Badge variant="secondary" className="bg-purple-100 text-purple-800 border-purple-200">
+                  <Badge
+                    variant="secondary"
+                    className="bg-purple-100 text-purple-800 border-purple-200"
+                  >
                     {resource.level}
                   </Badge>
                 )}
-                {resource.category && (
-                  <Badge variant="outline">{resource.category.name}</Badge>
-                )}
+                {resource.category && <Badge variant="outline">{resource.category.name}</Badge>}
               </div>
 
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
@@ -455,8 +473,8 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 border-b">
                 <div className="flex items-center gap-3">
                   {resource.author.image ? (
-                    <Image 
-                      src={resource.author.image} 
+                    <Image
+                      src={resource.author.image}
                       alt={resource.author.name}
                       width={48}
                       height={48}
@@ -464,7 +482,8 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                     />
                   ) : (
                     <div className="size-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
-                      {resource.author.name.charAt(0)}{resource.author.lastName?.charAt(0) || ''}
+                      {resource.author.name.charAt(0)}
+                      {resource.author.lastName?.charAt(0) || ''}
                     </div>
                   )}
                   <div>
@@ -494,10 +513,12 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                     disabled={isLiking}
                     title="Me gusta"
                   >
-                    <Heart className={`h-5 w-5 ${userInteraction?.hasLiked ? 'fill-red-500 text-red-500' : ''}`} />
+                    <Heart
+                      className={`h-5 w-5 ${userInteraction?.hasLiked ? 'fill-red-500 text-red-500' : ''}`}
+                    />
                   </Button>
                   <span className="text-sm text-muted-foreground">{resource.likeCount}</span>
-                  
+
                   <Button
                     variant="ghost"
                     size="icon"
@@ -505,18 +526,26 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                     disabled={isSaving}
                     title="Guardar para después"
                   >
-                    <Bookmark className={`h-5 w-5 ${userInteraction?.hasSaved ? 'fill-current' : ''}`} />
+                    <Bookmark
+                      className={`h-5 w-5 ${userInteraction?.hasSaved ? 'fill-current' : ''}`}
+                    />
                   </Button>
-                  
+
                   <Button variant="ghost" size="icon" onClick={handleShare} title="Compartir">
                     <Share2 className="h-5 w-5" />
                   </Button>
-                  
-                  {resource.fileUrl && ['PDF', 'TEMPLATE', 'EXERCISE_SHEET'].includes(resource.type) && (
-                    <Button variant="ghost" size="icon" onClick={handleDownload} title="Descargar">
-                      <Download className="h-5 w-5" />
-                    </Button>
-                  )}
+
+                  {resource.fileUrl &&
+                    ['PDF', 'TEMPLATE', 'EXERCISE_SHEET'].includes(resource.type) && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={handleDownload}
+                        title="Descargar"
+                      >
+                        <Download className="h-5 w-5" />
+                      </Button>
+                    )}
                 </div>
               </div>
             </div>
@@ -537,12 +566,12 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                       )}
                     </div>
                     <h3 className="text-xl font-bold mb-2">
-                      {requiredAccess === 'PREMIUM' 
-                        ? 'Contenido Premium' 
+                      {requiredAccess === 'PREMIUM'
+                        ? 'Contenido Premium'
                         : 'Contenido para Suscriptores'}
                     </h3>
                     <p className="text-muted-foreground mb-6 max-w-md">
-                      {requiredAccess === 'PREMIUM' 
+                      {requiredAccess === 'PREMIUM'
                         ? ACCESS_LEVEL_DESCRIPTIONS.PREMIUM
                         : ACCESS_LEVEL_DESCRIPTIONS.PRIVATE}
                     </p>
@@ -550,15 +579,11 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                       <Link href="/pricing">
                         <Button className="gap-2">
                           <Sparkles className="h-4 w-4" />
-                          {requiredAccess === 'PREMIUM' 
-                            ? 'Obtener Plan Wow' 
-                            : 'Ver Planes'}
+                          {requiredAccess === 'PREMIUM' ? 'Obtener Plan Wow' : 'Ver Planes'}
                         </Button>
                       </Link>
                       <Link href="/library">
-                        <Button variant="outline">
-                          Explorar Recursos Gratuitos
-                        </Button>
+                        <Button variant="outline">Explorar Recursos Gratuitos</Button>
                       </Link>
                     </div>
                   </div>
@@ -568,10 +593,20 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
 
             {/* Content Area - Only show if not restricted */}
             {!accessRestricted && resource.content && (
-              <div 
-                className="prose prose-lg max-w-none"
-                dangerouslySetInnerHTML={{ __html: resource.content }}
-              />
+              <>
+                {(() => {
+                  const parsedContent = parseArticleContent(resource.content)
+                  if (parsedContent.blocks.length > 0) {
+                    return <ArticleBlockRenderer content={parsedContent} />
+                  }
+                  return (
+                    <div
+                      className="prose prose-lg max-w-none"
+                      dangerouslySetInnerHTML={{ __html: resource.content }}
+                    />
+                  )
+                })()}
+              </>
             )}
 
             {/* Tags */}
@@ -586,6 +621,174 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                 ))}
               </div>
             )}
+
+            {/* Social Share Buttons */}
+            <div className="pt-6 border-t">
+              <h4 className="text-sm font-semibold text-muted-foreground mb-3">
+                Compartir este recurso
+              </h4>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-2"
+                  onClick={() => {
+                    const url = encodeURIComponent(window.location.href)
+                    window.open(
+                      `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+                      '_blank',
+                      'width=600,height=400'
+                    )
+                  }}
+                >
+                  <Facebook className="h-4 w-4" />
+                  Facebook
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-2"
+                  onClick={() => {
+                    const url = encodeURIComponent(window.location.href)
+                    const text = encodeURIComponent(resource.title)
+                    window.open(
+                      `https://twitter.com/intent/tweet?url=${url}&text=${text}`,
+                      '_blank',
+                      'width=600,height=400'
+                    )
+                  }}
+                >
+                  <Twitter className="h-4 w-4" />
+                  Twitter
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-2"
+                  onClick={() => {
+                    const url = encodeURIComponent(window.location.href)
+                    window.open(
+                      `https://linkedin.com/sharing/share-offsite/?url=${url}`,
+                      '_blank',
+                      'width=600,height=400'
+                    )
+                  }}
+                >
+                  <Linkedin className="h-4 w-4" />
+                  LinkedIn
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-2"
+                  onClick={() => {
+                    const url = encodeURIComponent(window.location.href)
+                    const text = encodeURIComponent(resource.title)
+                    window.open(`https://wa.me/?text=${text}%20${url}`, '_blank')
+                  }}
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  WhatsApp
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-2"
+                  onClick={() => {
+                    navigator.clipboard.writeText(window.location.href)
+                    alert('¡Enlace copiado!')
+                  }}
+                >
+                  <Link2 className="h-4 w-4" />
+                  Copiar
+                </Button>
+              </div>
+            </div>
+
+            {/* Lingowow CTA Banner */}
+            <div className="mt-8 p-8 rounded-2xl bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 border-2 border-primary/20">
+              <div className="text-center max-w-2xl mx-auto">
+                <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
+                  Aprende inglés con profesores expertos
+                </h3>
+                <p className="text-muted-foreground mb-6">
+                  Clases personalizadas 1 a 1 con tutores certificados. Mejora tu fluidez con
+                  práctica real.
+                </p>
+                <Link href="/teachers">
+                  <Button size="lg" className="gap-2 px-8">
+                    <GraduationCap className="h-5 w-5" />
+                    Comienza Ahora
+                  </Button>
+                </Link>
+                <div className="flex items-center justify-center gap-6 mt-6 text-sm text-muted-foreground">
+                  <span className="flex items-center gap-1.5">
+                    <Users className="h-4 w-4" />
+                    +500 estudiantes
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Globe className="h-4 w-4" />
+                    Tutores de todo el mundo
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Sparkles className="h-4 w-4" />
+                    Clases personalizadas
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Related Articles Section (Full Width) */}
+            {relatedResources.length > 0 && (
+              <div className="mt-12 pt-8 border-t">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-bold">Artículos Relacionados</h3>
+                  <Link
+                    href="/library"
+                    className="text-primary text-sm font-medium hover:underline"
+                  >
+                    Ver más recursos →
+                  </Link>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {relatedResources.slice(0, 3).map((related) => (
+                    <Link key={related.id} href={`/library/${related.slug}`} className="group">
+                      <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full">
+                        <div
+                          className="h-40 bg-cover bg-center relative"
+                          style={{
+                            backgroundImage: related.thumbnailUrl
+                              ? `url('${related.thumbnailUrl}')`
+                              : `url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400')`,
+                          }}
+                        >
+                          {related.type === 'VIDEO' && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                              <div className="size-12 bg-white/90 rounded-full flex items-center justify-center">
+                                <Play className="h-5 w-5 text-primary fill-primary" />
+                              </div>
+                            </div>
+                          )}
+                          <Badge className="absolute top-3 left-3" variant="secondary">
+                            {RESOURCE_TYPE_LABELS[related.type]}
+                          </Badge>
+                        </div>
+                        <CardContent className="p-4">
+                          <h4 className="font-semibold group-hover:text-primary transition-colors line-clamp-2 mb-2">
+                            {related.title}
+                          </h4>
+                          {related.excerpt && (
+                            <p className="text-sm text-muted-foreground line-clamp-2">
+                              {related.excerpt}
+                            </p>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
           </article>
 
           {/* Sidebar */}
@@ -596,8 +799,8 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                 <h3 className="text-lg font-bold mb-4">Sobre el Autor</h3>
                 <div className="flex items-start gap-4 mb-4">
                   {resource.author.image ? (
-                    <Image 
-                      src={resource.author.image} 
+                    <Image
+                      src={resource.author.image}
                       alt={resource.author.name}
                       width={64}
                       height={64}
@@ -605,11 +808,14 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                     />
                   ) : (
                     <div className="size-16 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xl">
-                      {resource.author.name.charAt(0)}{resource.author.lastName?.charAt(0) || ''}
+                      {resource.author.name.charAt(0)}
+                      {resource.author.lastName?.charAt(0) || ''}
                     </div>
                   )}
                   <div>
-                    <h4 className="font-bold">{resource.author.name} {resource.author.lastName}</h4>
+                    <h4 className="font-bold">
+                      {resource.author.name} {resource.author.lastName}
+                    </h4>
                     {resource.author.bio && (
                       <p className="text-sm text-muted-foreground mt-1">{resource.author.bio}</p>
                     )}
@@ -624,7 +830,10 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-bold">Recursos Relacionados</h3>
-                    <Link href="/library" className="text-primary text-sm font-medium hover:underline">
+                    <Link
+                      href="/library"
+                      className="text-primary text-sm font-medium hover:underline"
+                    >
                       Ver todos
                     </Link>
                   </div>
@@ -638,7 +847,7 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                         <div
                           className="rounded-md w-24 h-16 shrink-0 shadow-sm bg-cover bg-center group-hover:opacity-90 transition-opacity relative"
                           style={{
-                            backgroundImage: related.thumbnailUrl 
+                            backgroundImage: related.thumbnailUrl
                               ? `url('${related.thumbnailUrl}')`
                               : `url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=200')`,
                           }}
@@ -654,7 +863,7 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                             {related.title}
                           </h4>
                           <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-                            {getTypeIcon(related.type, "h-3 w-3")}
+                            {getTypeIcon(related.type, 'h-3 w-3')}
                             {RESOURCE_TYPE_LABELS[related.type]}
                           </p>
                         </div>

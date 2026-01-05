@@ -14,12 +14,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { ArrowLeft, Save, Eye } from 'lucide-react'
+import { ArrowLeft, Save, Eye, FileText } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { LibraryResourceType, LibraryResourceStatus } from '@prisma/client'
 import type { LibraryCategory } from '@/lib/types/library'
 import { RESOURCE_TYPE_LABELS } from '@/lib/types/library'
+import { ArticleBlockEditor } from '@/components/library/article-editor'
+import { ArticleContent, serializeArticleContent } from '@/lib/types/article-blocks'
 
 const LANGUAGES = [
   { value: 'es', label: 'Español' },
@@ -42,6 +44,7 @@ export default function NewResourcePage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [categories, setCategories] = useState<LibraryCategory[]>([])
+  const [articleContent, setArticleContent] = useState<ArticleContent>({ blocks: [], version: 1 })
   
   const [formData, setFormData] = useState({
     title: '',
@@ -87,8 +90,13 @@ export default function NewResourcePage() {
     setLoading(true)
 
     try {
+      const contentToSave = formData.type === 'ARTICLE'
+        ? serializeArticleContent(articleContent)
+        : formData.content
+
       const payload = {
         ...formData,
+        content: contentToSave,
         tags: formData.tags ? formData.tags.split(',').map(t => t.trim()) : [],
         fileSize: formData.fileSize ? parseInt(formData.fileSize) : null,
         duration: formData.duration ? parseInt(formData.duration) * 60 : null,
@@ -183,23 +191,18 @@ export default function NewResourcePage() {
             {showContentField && (
               <Card>
                 <CardHeader>
-                  <CardTitle>Contenido del Artículo</CardTitle>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="flex items-center gap-2">
+                      <FileText className="h-5 w-5" />
+                      Contenido del Artículo
+                    </CardTitle>
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-2">
-                    <Label htmlFor="content">Contenido HTML</Label>
-                    <Textarea
-                      id="content"
-                      value={formData.content}
-                      onChange={(e) => handleChange('content', e.target.value)}
-                      placeholder="<h2>Título</h2><p>Contenido del artículo...</p>"
-                      rows={15}
-                      className="font-mono text-sm"
+                  <ArticleBlockEditor
+                      content={articleContent}
+                      onChange={setArticleContent}
                     />
-                    <p className="text-xs text-muted-foreground">
-                      Puedes usar HTML para dar formato al contenido
-                    </p>
-                  </div>
                 </CardContent>
               </Card>
             )}

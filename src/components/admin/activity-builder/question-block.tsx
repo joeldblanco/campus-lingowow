@@ -1,6 +1,6 @@
 'use client'
 
-import { Trash2, Copy, Plus, X, GripVertical, HelpCircle, Info } from 'lucide-react'
+import { Trash2, Copy, Plus, X, HelpCircle, Info, Check, GripVertical } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -12,6 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import {
   ActivityQuestion,
   QuestionType,
@@ -38,35 +40,60 @@ export function QuestionBlock({
 }: QuestionBlockProps) {
   const questionTypeLabel = QUESTION_TYPES.find((t) => t.type === question.type)?.label || ''
 
-  return (
-    <div className="group relative bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm transition-shadow hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700">
-      {/* Drag Handle */}
-      <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-slate-200 dark:bg-slate-800 rounded-l-xl cursor-move group-hover:bg-primary/50 transition-colors flex items-center justify-center">
-        <GripVertical className="h-4 w-4 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" />
-      </div>
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: question.id })
 
-      <div className="p-6 pl-8">
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  }
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={cn(
+        "bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm",
+        isDragging && "opacity-50 shadow-lg ring-2 ring-primary"
+      )}
+    >
+      <div className="p-5 sm:p-6">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <div className="flex items-center gap-3">
-            <span className="flex items-center justify-center size-6 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 text-xs font-bold">
+        <div className="flex items-center justify-between gap-4 mb-5">
+          <div className="flex items-center gap-2.5">
+            {/* Drag Handle */}
+            <button
+              type="button"
+              className="cursor-grab active:cursor-grabbing p-1 -ml-1 text-slate-400 hover:text-slate-600 transition-colors"
+              {...attributes}
+              {...listeners}
+            >
+              <GripVertical className="h-4 w-4" />
+            </button>
+            <span className="flex items-center justify-center size-6 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 text-xs font-semibold">
               {index + 1}
             </span>
-            <h3 className="font-bold text-slate-800 dark:text-slate-200">
+            <h3 className="font-semibold text-slate-800 dark:text-slate-200 text-sm">
               {questionTypeLabel}
             </h3>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <Select
               value={question.type}
               onValueChange={(value) => onTypeChange(value as QuestionType)}
             >
-              <SelectTrigger className="text-sm py-1.5 pl-3 pr-8 rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-primary focus:border-primary w-[180px]">
+              <SelectTrigger className="text-xs h-8 pl-3 pr-7 rounded-md border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-primary focus:border-primary w-[140px]">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 {QUESTION_TYPES.map((type) => (
-                  <SelectItem key={type.type} value={type.type}>
+                  <SelectItem key={type.type} value={type.type} className="text-xs">
                     {type.label}
                   </SelectItem>
                 ))}
@@ -76,17 +103,17 @@ export function QuestionBlock({
               type="button"
               onClick={onDelete}
               className="p-1.5 text-slate-400 hover:text-red-500 transition-colors rounded-md hover:bg-red-50 dark:hover:bg-red-900/20"
-              title="Eliminar"
+              title="Delete"
             >
-              <Trash2 className="h-5 w-5" />
+              <Trash2 className="h-4 w-4" />
             </button>
             <button
               type="button"
               onClick={onDuplicate}
               className="p-1.5 text-slate-400 hover:text-primary transition-colors rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/20"
-              title="Duplicar"
+              title="Duplicate"
             >
-              <Copy className="h-5 w-5" />
+              <Copy className="h-4 w-4" />
             </button>
           </div>
         </div>
@@ -163,59 +190,64 @@ function MultipleChoiceEditor({
     <div className="space-y-4">
       {/* Question Text */}
       <div>
-        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-          Texto de la Pregunta
+        <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">
+          Question Text
         </label>
         <div className="relative">
           <Input
             value={question.questionText || ''}
             onChange={(e) => handleQuestionTextChange(e.target.value)}
-            placeholder="¿Cuál es la respuesta correcta?"
-            className="w-full pl-10 pr-4 py-3 rounded-lg border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-primary focus:border-primary"
+            placeholder="Which phrase is correct for greeting someone in the morning?"
+            className="w-full pl-10 pr-4 py-2.5 rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm"
           />
-          <HelpCircle className="absolute left-3 top-3.5 h-5 w-5 text-slate-400" />
+          <HelpCircle className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
         </div>
       </div>
 
-      {/* Options */}
+      {/* Answers */}
       <div>
-        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
-          Respuestas
+        <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2.5">
+          Answers
         </label>
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           {options.map((option) => (
             <div key={option.id} className="flex items-center gap-3">
-              <input
-                type="radio"
-                name={`correct-${question.id}`}
-                checked={option.isCorrect}
-                onChange={() => handleCorrectChange(option.id)}
-                className="size-5 text-primary border-slate-300 focus:ring-primary cursor-pointer"
-              />
+              <button
+                type="button"
+                onClick={() => handleCorrectChange(option.id)}
+                className={cn(
+                  'size-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors',
+                  option.isCorrect
+                    ? 'border-primary bg-primary'
+                    : 'border-slate-300 dark:border-slate-600 hover:border-slate-400'
+                )}
+              >
+                {option.isCorrect && (
+                  <div className="size-2 rounded-full bg-white" />
+                )}
+              </button>
               <div className="flex-1 relative">
                 <Input
                   value={option.text}
                   onChange={(e) => handleOptionChange(option.id, e.target.value)}
-                  placeholder="Escribe una opción..."
+                  placeholder="Enter an option..."
                   className={cn(
-                    'w-full px-4 py-2.5 rounded-lg text-sm',
+                    'w-full px-4 py-2.5 rounded-lg text-sm transition-colors',
                     option.isCorrect
-                      ? 'border-primary bg-blue-50/50 dark:bg-blue-900/10 focus:ring-primary focus:border-primary font-medium pr-10'
-                      : 'border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-primary focus:border-primary'
+                      ? 'border-primary/50 bg-primary/5 dark:bg-primary/10 focus:ring-primary focus:border-primary pr-10'
+                      : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-primary focus:border-primary'
                   )}
                 />
                 {option.isCorrect && (
-                  <span className="absolute right-3 top-3 text-green-500">
-                    ✓
-                  </span>
+                  <Check className="absolute right-3 top-2.5 h-4 w-4 text-green-500" />
                 )}
               </div>
               <button
                 type="button"
                 onClick={() => handleRemoveOption(option.id)}
-                className="text-slate-300 hover:text-red-400"
+                className="text-slate-300 hover:text-red-400 transition-colors"
               >
-                <X className="h-5 w-5" />
+                <X className="h-4 w-4" />
               </button>
             </div>
           ))}
@@ -223,9 +255,9 @@ function MultipleChoiceEditor({
           <button
             type="button"
             onClick={handleAddOption}
-            className="flex items-center gap-2 text-sm text-primary font-medium hover:underline pl-8 mt-2"
+            className="flex items-center gap-1.5 text-xs text-primary font-medium hover:underline pl-8 pt-1"
           >
-            <Plus className="h-4 w-4" /> Agregar otra opción
+            <Plus className="h-3.5 w-3.5" /> Add another option
           </button>
         </div>
       </div>
@@ -261,7 +293,7 @@ function FillBlanksEditor({
         return (
           <span
             key={index}
-            className="inline-block px-3 py-1 bg-white border border-slate-300 rounded text-base text-slate-400 min-w-[60px] text-center shadow-inner mx-1"
+            className="inline-flex items-center justify-center px-3 py-0.5 mx-1 min-w-[50px] bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded text-sm text-primary font-medium"
           >
             {part}
           </span>
@@ -274,34 +306,33 @@ function FillBlanksEditor({
   return (
     <div className="space-y-4">
       {/* Info Box */}
-      <div className="bg-blue-50 dark:bg-blue-900/10 p-4 rounded-lg border border-blue-100 dark:border-blue-800/50">
-        <p className="text-xs text-blue-700 dark:text-blue-300 flex items-center gap-2">
-          <Info className="h-4 w-4" />
-          Escribe tu oración abajo. Usa corchetes <strong>[respuesta]</strong>{' '}
-          para crear un espacio en blanco.
+      <div className="bg-blue-50 dark:bg-blue-900/10 px-4 py-3 rounded-lg border border-blue-100 dark:border-blue-800/50">
+        <p className="text-xs text-blue-600 dark:text-blue-300 flex items-center gap-2">
+          <Info className="h-4 w-4 flex-shrink-0" />
+          Type your sentence below. Use square brackets <strong className="text-blue-700 dark:text-blue-200">[answer]</strong> to create a blank.
         </p>
       </div>
 
       {/* Sentence Editor */}
       <div>
         <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-          Editor de Oración
+          Sentence Editor
         </label>
         <Textarea
           value={question.sentenceWithBlanks || ''}
           onChange={(e) => handleSentenceChange(e.target.value)}
-          placeholder="Ej: El gato [está] durmiendo en el [sofá]."
-          className="w-full p-4 rounded-lg border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-primary focus:border-primary min-h-[120px] font-mono text-sm leading-relaxed"
+          placeholder="Hello, my name [is] John and I [am] from London."
+          className="w-full p-4 rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-primary focus:border-primary min-h-[100px] font-mono text-sm leading-relaxed"
         />
       </div>
 
       {/* Preview */}
       {question.sentenceWithBlanks && (
-        <div className="border-t border-slate-100 dark:border-slate-800 pt-4">
-          <h4 className="text-xs font-bold uppercase text-slate-400 mb-3">
-            Vista Previa
+        <div className="pt-2">
+          <h4 className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-3">
+            Preview
           </h4>
-          <div className="text-lg text-slate-800 dark:text-slate-200 leading-loose">
+          <div className="text-base text-slate-800 dark:text-slate-200 leading-relaxed">
             {renderPreview()}
           </div>
         </div>
@@ -350,16 +381,16 @@ function MatchingPairsEditor({
   return (
     <div className="space-y-4">
       <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-        Pares
+        Pairs
       </label>
 
       {/* Headers */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4 pr-8">
         <div className="text-xs font-semibold text-slate-500">
-          Elemento Izquierdo
+          Left Item
         </div>
         <div className="text-xs font-semibold text-slate-500">
-          Elemento Derecho (Coincidencia)
+          Right Item (Match)
         </div>
       </div>
 
@@ -367,33 +398,37 @@ function MatchingPairsEditor({
       {pairs.map((pair) => (
         <div
           key={pair.id}
-          className="flex flex-col md:flex-row gap-2 md:items-center"
+          className="flex items-center gap-2"
         >
           <div className="flex-1">
             <Input
               value={pair.left}
               onChange={(e) => handlePairChange(pair.id, 'left', e.target.value)}
-              placeholder="Elemento izquierdo"
-              className="w-full px-4 py-2.5 rounded-lg border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm"
+              placeholder="Apple"
+              className="w-full px-4 py-2.5 rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm"
             />
           </div>
-          <span className="hidden md:block text-slate-300">⇄</span>
+          <div className="flex-shrink-0 text-slate-300 dark:text-slate-600">
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M7 16l-4-4m0 0l4-4m-4 4h18M17 8l4 4m0 0l-4 4" />
+            </svg>
+          </div>
           <div className="flex-1">
             <Input
               value={pair.right}
               onChange={(e) =>
                 handlePairChange(pair.id, 'right', e.target.value)
               }
-              placeholder="Elemento derecho"
-              className="w-full px-4 py-2.5 rounded-lg border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm"
+              placeholder="Manzana"
+              className="w-full px-4 py-2.5 rounded-lg border-slate-200 dark:border-slate-700 bg-blue-50/50 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm"
             />
           </div>
           <button
             type="button"
             onClick={() => handleRemovePair(pair.id)}
-            className="self-end md:self-center text-slate-300 hover:text-red-400 p-1"
+            className="flex-shrink-0 text-slate-300 hover:text-red-400 transition-colors p-1"
           >
-            <X className="h-5 w-5" />
+            <X className="h-4 w-4" />
           </button>
         </div>
       ))}
@@ -401,9 +436,9 @@ function MatchingPairsEditor({
       <button
         type="button"
         onClick={handleAddPair}
-        className="flex items-center gap-2 text-sm text-primary font-medium hover:underline mt-2"
+        className="flex items-center gap-1.5 text-xs text-primary font-medium hover:underline pt-1"
       >
-        <Plus className="h-4 w-4" /> Agregar otro par
+        <Plus className="h-3.5 w-3.5" /> Add another pair
       </button>
     </div>
   )
@@ -441,49 +476,48 @@ function SentenceUnscrambleEditor({
   return (
     <div className="space-y-4">
       {/* Info Box */}
-      <div className="bg-blue-50 dark:bg-blue-900/10 p-4 rounded-lg border border-blue-100 dark:border-blue-800/50">
-        <p className="text-xs text-blue-700 dark:text-blue-300 flex items-center gap-2">
-          <Info className="h-4 w-4" />
-          Escribe la oración correcta. Las palabras se desordenarán
-          automáticamente para el estudiante.
+      <div className="bg-blue-50 dark:bg-blue-900/10 px-4 py-3 rounded-lg border border-blue-100 dark:border-blue-800/50">
+        <p className="text-xs text-blue-600 dark:text-blue-300 flex items-center gap-2">
+          <Info className="h-4 w-4 flex-shrink-0" />
+          Write the correct sentence. Words will be automatically scrambled for the student.
         </p>
       </div>
 
       {/* Correct Sentence */}
       <div>
         <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-          Oración Correcta
+          Correct Sentence
         </label>
         <Textarea
           value={question.correctSentence || ''}
           onChange={(e) => handleSentenceChange(e.target.value)}
-          placeholder="Escribe la oración en el orden correcto..."
-          className="w-full p-4 rounded-lg border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-primary focus:border-primary min-h-[80px] text-sm"
+          placeholder="Write the sentence in the correct order..."
+          className="w-full p-4 rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-primary focus:border-primary min-h-[80px] text-sm"
         />
       </div>
 
       {/* Scrambled Preview */}
       {question.scrambledWords && question.scrambledWords.length > 0 && (
-        <div className="border-t border-slate-100 dark:border-slate-800 pt-4">
+        <div className="pt-2">
           <div className="flex items-center justify-between mb-3">
-            <h4 className="text-xs font-bold uppercase text-slate-400">
-              Vista Previa (Desordenado)
+            <h4 className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+              Preview (Scrambled)
             </h4>
             <Button
               type="button"
               variant="ghost"
               size="sm"
               onClick={handleReshuffle}
-              className="text-xs"
+              className="text-xs h-7 px-2"
             >
-              Reordenar
+              Reshuffle
             </Button>
           </div>
           <div className="flex flex-wrap gap-2">
             {question.scrambledWords.map((word, idx) => (
               <span
                 key={idx}
-                className="px-3 py-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700"
+                className="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700"
               >
                 {word}
               </span>

@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { ArrowLeft, Save, Eye, Trash2 } from 'lucide-react'
+import { ArrowLeft, Save, Eye, Trash2, FileText } from 'lucide-react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -32,6 +32,8 @@ import Image from 'next/image'
 import { LibraryResourceType, LibraryResourceStatus } from '@prisma/client'
 import type { LibraryCategory, LibraryResource } from '@/lib/types/library'
 import { RESOURCE_TYPE_LABELS } from '@/lib/types/library'
+import { ArticleBlockEditor } from '@/components/library/article-editor'
+import { ArticleContent, parseArticleContent, serializeArticleContent } from '@/lib/types/article-blocks'
 
 const LANGUAGES = [
   { value: 'es', label: 'Español' },
@@ -56,6 +58,7 @@ export default function EditResourcePage({ params }: { params: Promise<{ id: str
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [categories, setCategories] = useState<LibraryCategory[]>([])
+  const [articleContent, setArticleContent] = useState<ArticleContent>({ blocks: [], version: 1 })
   
   const [formData, setFormData] = useState({
     title: '',
@@ -93,6 +96,11 @@ export default function EditResourcePage({ params }: { params: Promise<{ id: str
         if (resourceRes.ok) {
           const data = await resourceRes.json()
           const resource: LibraryResource = data.resource
+          
+          const parsedContent = parseArticleContent(resource.content)
+          if (parsedContent.blocks.length > 0) {
+            setArticleContent(parsedContent)
+          }
           
           setFormData({
             title: resource.title,
@@ -135,8 +143,13 @@ export default function EditResourcePage({ params }: { params: Promise<{ id: str
     setSaving(true)
 
     try {
+      const contentToSave = formData.type === 'ARTICLE'
+        ? serializeArticleContent(articleContent)
+        : formData.content
+
       const payload = {
         ...formData,
+        content: contentToSave,
         tags: formData.tags ? formData.tags.split(',').map(t => t.trim()) : [],
         fileSize: formData.fileSize ? parseInt(formData.fileSize) : null,
         duration: formData.duration ? parseInt(formData.duration) * 60 : null,
@@ -298,20 +311,18 @@ export default function EditResourcePage({ params }: { params: Promise<{ id: str
             {showContentField && (
               <Card>
                 <CardHeader>
-                  <CardTitle>Contenido del Artículo</CardTitle>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="flex items-center gap-2">
+                      <FileText className="h-5 w-5" />
+                      Contenido del Artículo
+                    </CardTitle>
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-2">
-                    <Label htmlFor="content">Contenido HTML</Label>
-                    <Textarea
-                      id="content"
-                      value={formData.content}
-                      onChange={(e) => handleChange('content', e.target.value)}
-                      placeholder="<h2>Título</h2><p>Contenido...</p>"
-                      rows={15}
-                      className="font-mono text-sm"
+                  <ArticleBlockEditor
+                      content={articleContent}
+                      onChange={setArticleContent}
                     />
-                  </div>
                 </CardContent>
               </Card>
             )}

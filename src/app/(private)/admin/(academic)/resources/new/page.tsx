@@ -32,6 +32,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { ArticleBlockEditor } from '@/components/library/article-editor'
+import { ArticleContent, serializeArticleContent } from '@/lib/types/article-blocks'
 
 type ResourceType = 'article' | 'video' | 'pdf' | 'audio' | 'lesson-plan'
 type AccessLevel = 'public' | 'private' | 'premium'
@@ -78,7 +80,8 @@ export default function PublishResourcePage() {
   const [resourceType, setResourceType] = useState<ResourceType>('article')
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [content, setContent] = useState('')
+  const [content] = useState('')
+  const [articleContent, setArticleContent] = useState<ArticleContent>({ blocks: [], version: 1 })
   const [fileUrl, setFileUrl] = useState('')
   const [thumbnailUrl, setThumbnailUrl] = useState('')
 
@@ -125,12 +128,16 @@ export default function PublishResourcePage() {
 
     setLoading(true)
     try {
+      const contentToSave = (resourceType === 'article' || resourceType === 'lesson-plan')
+        ? serializeArticleContent(articleContent)
+        : content
+
       const payload = {
         title,
         excerpt: description,
         description: description,
         type: resourceType.toUpperCase(),
-        content: resourceType === 'article' || resourceType === 'lesson-plan' ? content : null,
+        content: resourceType === 'article' || resourceType === 'lesson-plan' ? contentToSave : null,
         fileUrl: resourceType !== 'article' && resourceType !== 'lesson-plan' ? fileUrl : null,
         thumbnailUrl,
         tags,
@@ -302,14 +309,11 @@ export default function PublishResourcePage() {
                   <Label>Contenido Principal</Label>
 
                   {resourceType === 'article' || resourceType === 'lesson-plan' ? (
-                    <div className="mt-1.5 border rounded-lg overflow-hidden bg-background">
-                      {/* Editor Area */}
-                      <Textarea
-                        className="p-4 min-h-[300px] border-0 focus-visible:ring-0 resize-y"
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        placeholder="Escribe el contenido aquí (soporta HTML básico)..."
-                      />
+                    <div className="mt-1.5">
+                      <ArticleBlockEditor
+                          content={articleContent}
+                          onChange={setArticleContent}
+                        />
                     </div>
                   ) : (
                     <div className="space-y-4">

@@ -38,16 +38,16 @@ export const DEFAULT_ACTIVITY_SETTINGS: ActivitySettings = {
 }
 
 export const QUESTION_TYPES: { type: QuestionType; label: string; description: string }[] = [
-  { type: 'multiple_choice', label: 'Opción Múltiple', description: 'Seleccionar la respuesta correcta' },
-  { type: 'fill_blanks', label: 'Completar Espacios', description: 'Llenar los espacios en blanco' },
-  { type: 'matching_pairs', label: 'Emparejar', description: 'Conectar elementos relacionados' },
-  { type: 'sentence_unscramble', label: 'Ordenar Oraciones', description: 'Reordenar palabras' },
+  { type: 'multiple_choice', label: 'Multiple Choice', description: 'Select the correct answer' },
+  { type: 'fill_blanks', label: 'Fill in the Blanks', description: 'Fill in the missing words' },
+  { type: 'matching_pairs', label: 'Matching Pairs', description: 'Connect related items' },
+  { type: 'sentence_unscramble', label: 'Sentence Unscramble', description: 'Reorder words' },
 ]
 
 export const DIFFICULTY_LEVELS: { value: DifficultyLevel; label: string; sublabel: string }[] = [
-  { value: 'beginner', label: 'Principiante', sublabel: 'Nivel A1 - A2' },
-  { value: 'intermediate', label: 'Intermedio', sublabel: 'Nivel B1 - B2' },
-  { value: 'advanced', label: 'Avanzado', sublabel: 'Nivel C1 - C2' },
+  { value: 'beginner', label: 'Beginner', sublabel: 'A1 - A2 Level' },
+  { value: 'intermediate', label: 'Intermediate', sublabel: 'B1 - B2 Level' },
+  { value: 'advanced', label: 'Advanced', sublabel: 'C1 - C2 Level' },
 ]
 
 export function createDefaultQuestion(type: QuestionType, order: number): ActivityQuestion {

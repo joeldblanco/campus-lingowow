@@ -28,8 +28,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { ChevronDown, Filter, PlusCircle } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { ChevronDown, Filter } from 'lucide-react'
 import { useState } from 'react'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
@@ -44,7 +43,6 @@ export function ActivitiesDataTable<TData, TValue>({
   data,
   isLoading = false,
 }: DataTableProps<TData, TValue>) {
-  const router = useRouter()
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -69,66 +67,55 @@ export function ActivitiesDataTable<TData, TValue>({
     },
   })
 
-  // Función para crear una nueva actividad
-  const handleNewActivity = () => {
-    router.push('/admin/activities/create')
-  }
-
   return (
     <div className="w-full">
-      <div className="flex items-center justify-between py-4">
-        <div className="flex items-center gap-2">
-          <Input
-            placeholder="Filtrar por título..."
-            value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
-            onChange={(event) => table.getColumn('title')?.setFilterValue(event.target.value)}
-            className="max-w-sm"
-          />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="ml-auto">
-                <Filter className="mr-2 h-4 w-4" />
-                Filtros
-                <ChevronDown className="ml-2 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                    >
-                      {column.id === 'title'
-                        ? 'Título'
-                        : column.id === 'type'
-                          ? 'Tipo'
-                          : column.id === 'level'
-                            ? 'Nivel'
-                            : column.id === 'points'
-                              ? 'Puntos'
-                              : column.id === 'duration'
-                                ? 'Duración'
-                                : column.id === 'isPublished'
-                                  ? 'Estado'
-                                  : column.id === 'createdAt'
-                                    ? 'Creado'
-                                    : column.id}
-                    </DropdownMenuCheckboxItem>
-                  )
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        <Button onClick={handleNewActivity}>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Nueva Actividad
-        </Button>
+      <div className="flex items-center gap-2 py-4">
+        <Input
+          placeholder="Filtrar por título..."
+          value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
+          onChange={(event) => table.getColumn('title')?.setFilterValue(event.target.value)}
+          className="max-w-sm"
+        />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="ml-auto">
+              <Filter className="mr-2 h-4 w-4" />
+              Filtros
+              <ChevronDown className="ml-2 h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {table
+              .getAllColumns()
+              .filter((column) => column.getCanHide())
+              .map((column) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                  >
+                    {column.id === 'title'
+                      ? 'Título'
+                      : column.id === 'type'
+                        ? 'Tipo'
+                        : column.id === 'level'
+                          ? 'Nivel'
+                          : column.id === 'points'
+                            ? 'Puntos'
+                            : column.id === 'duration'
+                              ? 'Duración'
+                              : column.id === 'isPublished'
+                                ? 'Estado'
+                                : column.id === 'createdAt'
+                                  ? 'Creado'
+                                  : column.id}
+                  </DropdownMenuCheckboxItem>
+                )
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <div className="rounded-md border">
         <Table>
