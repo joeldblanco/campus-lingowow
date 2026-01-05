@@ -70,10 +70,23 @@ function ClassroomInner({
   const recordingRef = useRef(false)
   const activeLessonRef = useRef<{ id: string; type: ShareableContent['type'] } | null>(null)
 
+  // Refs to access current recording values without triggering effect restarts
+  const isRecordingRef = useRef(isRecording)
+  const egressIdRef = useRef(egressId)
+
   // Ref to track grace period start time
   const gracePeriodStartRef = useRef<number | null>(null)
   // Ref to track if we've already triggered end call
   const hasEndedRef = useRef(false)
+
+  // Update refs when state changes
+  useEffect(() => {
+    isRecordingRef.current = isRecording
+  }, [isRecording])
+
+  useEffect(() => {
+    egressIdRef.current = egressId
+  }, [egressId])
 
   // Timer Logic - Calculate time remaining until class end with 10-minute grace period
   useEffect(() => {
@@ -136,10 +149,10 @@ function ClassroomInner({
       
       if (result.shouldEnd && !hasEndedRef.current) {
         hasEndedRef.current = true
-        // Stop recording automatically when grace period ends
-        if (isRecording && egressId) {
+        // Stop recording automatically when grace period ends (use refs to avoid dependency issues)
+        if (isRecordingRef.current && egressIdRef.current) {
           try {
-            await stopRecording(egressId)
+            await stopRecording(egressIdRef.current)
           } catch (error) {
             console.error('Failed to stop recording:', error)
           }
@@ -154,7 +167,7 @@ function ClassroomInner({
     const timer = setInterval(updateTimer, 1000)
     
     return () => clearInterval(timer)
-  }, [endTime, isRecording, egressId, leaveRoom, onMeetingEnd])
+  }, [endTime, leaveRoom, onMeetingEnd])
 
   // Auto-join when initialized
   useEffect(() => {
