@@ -2,7 +2,7 @@
 
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
-import { S3Client, GetObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3'
+import { S3Client, GetObjectCommand, ListObjectsV2Command, DeleteObjectsCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 // Cloudflare R2 Configuration (S3-compatible)
@@ -87,32 +87,28 @@ export async function getStudentRecordings(options?: {
     const limit = options?.limit || 12
     const skip = (page - 1) * limit
 
-    // Construir filtros
-    const where: Record<string, unknown> = {
-      booking: {
-        studentId: session.user.id,
-        status: 'COMPLETED',
-      },
-      status: options?.status || 'READY',
+    // Construir filtros para booking
+    const bookingFilter: Record<string, unknown> = {
+      studentId: session.user.id,
+      status: 'COMPLETED',
     }
 
     if (options?.courseId) {
-      where.booking = {
-        ...where.booking as Record<string, unknown>,
-        enrollment: {
-          courseId: options.courseId,
-        },
+      bookingFilter.enrollment = {
+        courseId: options.courseId,
       }
     }
 
     if (options?.dateFrom || options?.dateTo) {
-      where.booking = {
-        ...where.booking as Record<string, unknown>,
-        day: {
-          ...(options?.dateFrom && { gte: options.dateFrom }),
-          ...(options?.dateTo && { lte: options.dateTo }),
-        },
+      bookingFilter.day = {
+        ...(options?.dateFrom && { gte: options.dateFrom }),
+        ...(options?.dateTo && { lte: options.dateTo }),
       }
+    }
+
+    const where: Record<string, unknown> = {
+      booking: bookingFilter,
+      status: options?.status || 'READY',
     }
 
     const [recordings, total] = await Promise.all([
@@ -427,5 +423,56 @@ export async function markRecordingAsViewed(recordingId: string) {
   } catch (error) {
     console.error('Error marking recording as viewed:', error)
     return { success: false, error: 'Error al registrar vista' }
+  }
+}
+
+// Eliminar carpeta de grabaciones de R2 para una clase específica
+export async function deleteRecordingFolder(classId: string) {
+  try {
+    const prefix = `classes/${classId}/`
+    
+    // Listar todos los objetos en la carpeta
+    const listCommand = new ListObjectsV2Command({
+      Bucket: r2BucketName,
+      Prefix: prefix,
+    })
+
+    const listResponse = await s3Client.send(listCommand)
+    
+    if (!listResponse.Contents || listResponse.Contents.length === 0) {
+      // No hay archivos que eliminar
+      return { success: true, message: 'No hay grabaciones para eliminar' }
+    }
+
+    // Preparar lista de objetos a eliminar
+    const objectsToDelete = listResponse.Contents
+      .filter(obj => obj.Key)
+      .map(obj => ({ Key: obj.Key! }))
+
+    if (objectsToDelete.length === 0) {
+      return { success: true, message: 'No hay grabaciones para eliminar' }
+    }
+
+    // Eliminar todos los objetos
+    const deleteCommand = new DeleteObjectsCommand({
+      Bucket: r2BucketName,
+      Delete: {
+        Objects: objectsToDelete,
+        Quiet: false,
+      },
+    })
+
+    const deleteResponse = await s3Client.send(deleteCommand)
+
+    console.log(`Deleted ${deleteResponse.Deleted?.length || 0} recording files for class ${classId}`)
+
+    return { 
+      success: true, 
+      deletedCount: deleteResponse.Deleted?.length || 0,
+      message: `Se eliminaron ${deleteResponse.Deleted?.length || 0} archivos de grabación`
+    }
+  } catch (error) {
+    console.error('Error deleting recording folder from R2:', error)
+    return { success: false, error: 'Error al eliminar grabaciones de R2' }
   }
 }

@@ -450,6 +450,19 @@ export async function updateClass(id: string, data: z.infer<typeof EditClassSche
 
 export async function deleteClass(id: string) {
   try {
+    // Eliminar grabaciones de R2 antes de eliminar la clase
+    const { deleteRecordingFolder } = await import('@/lib/actions/recordings')
+    const r2Result = await deleteRecordingFolder(id)
+    
+    if (!r2Result.success) {
+      console.warn(`Warning: Could not delete R2 recordings for class ${id}:`, r2Result.error)
+      // Continuamos con la eliminación de la clase aunque falle R2
+    } else if (r2Result.deletedCount && r2Result.deletedCount > 0) {
+      console.log(`Deleted ${r2Result.deletedCount} recording files from R2 for class ${id}`)
+    }
+
+    // Eliminar la clase de la base de datos
+    // La grabación en ClassRecording se eliminará automáticamente por onDelete: Cascade
     await db.classBooking.delete({
       where: { id },
     })
