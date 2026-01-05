@@ -153,7 +153,7 @@ function ClassroomInner({
         // Stop recording automatically when grace period ends (use refs to avoid dependency issues)
         if (isRecordingRef.current && egressIdRef.current) {
           try {
-            await stopRecording(egressIdRef.current)
+            await stopRecording(egressIdRef.current, bookingId)
           } catch (error) {
             console.error('Failed to stop recording:', error)
           }
@@ -168,7 +168,7 @@ function ClassroomInner({
     const timer = setInterval(updateTimer, 1000)
     
     return () => clearInterval(timer)
-  }, [endTime, leaveRoom, onMeetingEnd])
+  }, [endTime, leaveRoom, onMeetingEnd, bookingId])
 
   // Auto-join when initialized
   useEffect(() => {
@@ -296,7 +296,7 @@ function ClassroomInner({
     // Stop recording automatically when call ends
     if (isRecording && egressId) {
       try {
-        await stopRecording(egressId)
+        await stopRecording(egressId, bookingId)
       } catch (error) {
         console.error('Failed to stop recording:', error)
       }

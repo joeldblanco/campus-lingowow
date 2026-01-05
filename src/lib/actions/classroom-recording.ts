@@ -85,7 +85,7 @@ export async function startRecording(bookingId: string, roomName: string) {
   }
 }
 
-export async function stopRecording(egressId: string) {
+export async function stopRecording(egressId: string, bookingId?: string) {
   try {
     const session = await auth()
     if (!session?.user?.id) {
@@ -99,6 +99,79 @@ export async function stopRecording(egressId: string) {
     const egressClient = new EgressClient(livekitHost, apiKey, apiSecret)
     
     const info = await egressClient.stopEgress(egressId)
+
+    // Get bookingId from VideoCall if not provided
+    let resolvedBookingId = bookingId
+    if (!resolvedBookingId) {
+      const videoCall = await db.videoCall.findFirst({
+        where: { recordingUrl: egressId },
+        select: { bookingId: true }
+      })
+      resolvedBookingId = videoCall?.bookingId || undefined
+    }
+
+    // Create ClassRecording record automatically
+    if (resolvedBookingId) {
+      try {
+        const fileResult = info.fileResults?.[0]
+        const filename = fileResult?.filename
+        
+        // Extract r2Key from the filename path
+        // Format: classes/{bookingId}/{roomName}-{time}.mp4
+        let r2Key: string | null = null
+        if (filename) {
+          // The filename from LiveKit includes the full path
+          const match = filename.match(/(classes\/[^/]+\/[^/]+\.mp4)/)
+          r2Key = match ? match[1] : filename
+        }
+
+        // Calculate duration from egress info
+        let duration: number | null = null
+        let startedAt: Date | null = null
+        let endedAt: Date | null = null
+
+        if (info.startedAt && info.endedAt) {
+          // LiveKit timestamps are in nanoseconds
+          const startNs = typeof info.startedAt === 'bigint' ? Number(info.startedAt) : info.startedAt
+          const endNs = typeof info.endedAt === 'bigint' ? Number(info.endedAt) : info.endedAt
+          startedAt = new Date(startNs / 1000000)
+          endedAt = new Date(endNs / 1000000)
+          duration = Math.round((endNs - startNs) / 1000000000)
+        }
+
+        await db.classRecording.upsert({
+          where: { bookingId: resolvedBookingId },
+          create: {
+            bookingId: resolvedBookingId,
+            egressId: egressId,
+            roomName: info.roomName || null,
+            filename: filename?.split('/').pop() || null,
+            r2Key: r2Key,
+            r2Bucket: r2BucketName,
+            duration,
+            startedAt,
+            endedAt,
+            status: 'READY',
+          },
+          update: {
+            egressId: egressId,
+            roomName: info.roomName || null,
+            filename: filename?.split('/').pop() || null,
+            r2Key: r2Key,
+            r2Bucket: r2BucketName,
+            duration,
+            startedAt,
+            endedAt,
+            status: 'READY',
+          },
+        })
+
+        console.log(`ClassRecording created/updated for booking ${resolvedBookingId}`)
+      } catch (dbError) {
+        console.error('Error creating ClassRecording record:', dbError)
+        // Don't fail the whole operation if DB insert fails
+      }
+    }
 
     return { 
       success: true, 
