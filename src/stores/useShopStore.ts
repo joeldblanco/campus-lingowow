@@ -3,8 +3,13 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 export interface AppliedCoupon {
+  id: string
   code: string
-  percentage: number
+  type: 'PERCENTAGE' | 'FIXED_AMOUNT'
+  value: number
+  name?: string | null
+  maxDiscount?: number | null
+  restrictedToPlanId?: string | null
 }
 
 export type SortOption = 'name-asc' | 'name-desc' | 'price-asc' | 'price-desc' | 'date-desc' | 'date-asc' | 'custom-order'

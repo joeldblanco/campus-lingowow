@@ -584,6 +584,51 @@ export async function updatePlanFeatures(
 // COUPONS
 // =============================================
 
+export async function searchUsersForCoupon(query: string) {
+  try {
+    if (!query || query.length < 2) return []
+    
+    return await db.user.findMany({
+      where: {
+        OR: [
+          { name: { contains: query, mode: 'insensitive' } },
+          { email: { contains: query, mode: 'insensitive' } },
+        ],
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+      take: 10,
+    })
+  } catch (error) {
+    console.error('Error searching users:', error)
+    return []
+  }
+}
+
+export async function getPlansForCoupon() {
+  try {
+    return await db.plan.findMany({
+      where: { isActive: true },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        price: true,
+        product: {
+          select: { name: true },
+        },
+      },
+      orderBy: { name: 'asc' },
+    })
+  } catch (error) {
+    console.error('Error fetching plans for coupon:', error)
+    return []
+  }
+}
+
 export async function getCoupons() {
   try {
     return await db.coupon.findMany({
@@ -591,6 +636,12 @@ export async function getCoupons() {
       include: {
         _count: {
           select: { invoices: true },
+        },
+        restrictedUser: {
+          select: { id: true, name: true, email: true },
+        },
+        restrictedPlan: {
+          select: { id: true, name: true, slug: true },
         },
       },
     })
@@ -606,11 +657,65 @@ export async function getCouponById(id: string) {
       where: { id },
       include: {
         invoices: true,
+        restrictedUser: {
+          select: { id: true, name: true, email: true },
+        },
+        restrictedPlan: {
+          select: { id: true, name: true, slug: true },
+        },
       },
     })
   } catch (error) {
     console.error('Error fetching coupon:', error)
     return null
+  }
+}
+
+export async function validateCoupon(
+  code: string,
+  userId?: string,
+  planId?: string
+): Promise<{ valid: boolean; coupon?: Coupon; error?: string }> {
+  try {
+    const coupon = await db.coupon.findUnique({
+      where: { code },
+    })
+
+    if (!coupon) {
+      return { valid: false, error: 'Cupón no encontrado' }
+    }
+
+    if (!coupon.isActive) {
+      return { valid: false, error: 'Este cupón no está activo' }
+    }
+
+    const now = new Date()
+    if (coupon.startsAt && now < coupon.startsAt) {
+      return { valid: false, error: 'Este cupón aún no está vigente' }
+    }
+
+    if (coupon.expiresAt && now > coupon.expiresAt) {
+      return { valid: false, error: 'Este cupón ha expirado' }
+    }
+
+    if (coupon.usageLimit && coupon.usageCount >= coupon.usageLimit) {
+      return { valid: false, error: 'Este cupón ha alcanzado su límite de uso' }
+    }
+
+    // Validar restricción de usuario
+    if (coupon.restrictedToUserId && coupon.restrictedToUserId !== userId) {
+      return { valid: false, error: 'Este cupón no es válido para tu cuenta' }
+    }
+
+    // Validar restricción de plan
+    if (coupon.restrictedToPlanId && coupon.restrictedToPlanId !== planId) {
+      return { valid: false, error: 'Este cupón no aplica para el plan seleccionado' }
+    }
+
+    return { valid: true, coupon }
+  } catch (error) {
+    console.error('Error validating coupon:', error)
+    return { valid: false, error: 'Error al validar el cupón' }
   }
 }
 

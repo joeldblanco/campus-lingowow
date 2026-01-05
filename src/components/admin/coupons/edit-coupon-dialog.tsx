@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -13,6 +13,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,14 +26,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
+import { Badge } from '@/components/ui/badge'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { updateCoupon } from '@/lib/actions/commercial'
+import { updateCoupon, searchUsersForCoupon, getPlansForCoupon } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
+import { Check, ChevronsUpDown, X, User, Package } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 const couponSchema = z.object({
   code: z.string().min(1, 'El código es requerido').toUpperCase(),
@@ -47,9 +64,25 @@ const couponSchema = z.object({
   isActive: z.boolean().default(true),
   startsAt: z.string().optional(),
   expiresAt: z.string().optional(),
+  restrictedToUserId: z.string().optional(),
+  restrictedToPlanId: z.string().optional(),
 })
 
 type CouponFormData = z.infer<typeof couponSchema>
+
+interface UserOption {
+  id: string
+  name: string
+  email: string
+}
+
+interface PlanOption {
+  id: string
+  name: string
+  slug: string
+  price: number
+  product: { name: string } | null
+}
 
 interface Coupon {
   id: string
@@ -68,6 +101,10 @@ interface Coupon {
   expiresAt: Date | null
   createdAt: Date
   updatedAt: Date
+  restrictedToUserId?: string | null
+  restrictedToPlanId?: string | null
+  restrictedUser?: { id: string; name: string; email: string } | null
+  restrictedPlan?: { id: string; name: string; slug: string } | null
 }
 
 interface EditCouponDialogProps {
@@ -78,6 +115,15 @@ interface EditCouponDialogProps {
 
 export function EditCouponDialog({ coupon, open, onOpenChange }: EditCouponDialogProps) {
   const [isLoading, setIsLoading] = useState(false)
+  
+  const [userSearchOpen, setUserSearchOpen] = useState(false)
+  const [userSearchQuery, setUserSearchQuery] = useState('')
+  const [userOptions, setUserOptions] = useState<UserOption[]>([])
+  const [selectedUser, setSelectedUser] = useState<UserOption | null>(null)
+  const [isSearchingUsers, setIsSearchingUsers] = useState(false)
+  
+  const [planOptions, setPlanOptions] = useState<PlanOption[]>([])
+  const [selectedPlan, setSelectedPlan] = useState<PlanOption | null>(null)
 
   const form = useForm<CouponFormData>({
     resolver: zodResolver(couponSchema),
@@ -94,8 +140,16 @@ export function EditCouponDialog({ coupon, open, onOpenChange }: EditCouponDialo
       isActive: true,
       startsAt: '',
       expiresAt: '',
+      restrictedToUserId: undefined,
+      restrictedToPlanId: undefined,
     },
   })
+
+  useEffect(() => {
+    if (open) {
+      getPlansForCoupon().then(setPlanOptions)
+    }
+  }, [open])
 
   useEffect(() => {
     if (coupon) {
@@ -112,9 +166,45 @@ export function EditCouponDialog({ coupon, open, onOpenChange }: EditCouponDialo
         isActive: coupon.isActive,
         startsAt: coupon.startsAt ? new Date(coupon.startsAt).toISOString().slice(0, 16) : '',
         expiresAt: coupon.expiresAt ? new Date(coupon.expiresAt).toISOString().slice(0, 16) : '',
+        restrictedToUserId: coupon.restrictedToUserId || undefined,
+        restrictedToPlanId: coupon.restrictedToPlanId || undefined,
       })
+      
+      if (coupon.restrictedUser) {
+        setSelectedUser(coupon.restrictedUser)
+      } else {
+        setSelectedUser(null)
+      }
+      
+      if (coupon.restrictedPlan) {
+        setSelectedPlan({
+          id: coupon.restrictedPlan.id,
+          name: coupon.restrictedPlan.name,
+          slug: coupon.restrictedPlan.slug,
+          price: 0,
+          product: null,
+        })
+      } else {
+        setSelectedPlan(null)
+      }
     }
   }, [coupon, form])
+
+  const searchUsers = useCallback(async (query: string) => {
+    if (query.length < 2) {
+      setUserOptions([])
+      return
+    }
+    setIsSearchingUsers(true)
+    try {
+      const users = await searchUsersForCoupon(query)
+      setUserOptions(users)
+    } catch {
+      setUserOptions([])
+    } finally {
+      setIsSearchingUsers(false)
+    }
+  }, [])
 
   const onSubmit = async (data: CouponFormData) => {
     setIsLoading(true)
@@ -129,6 +219,8 @@ export function EditCouponDialog({ coupon, open, onOpenChange }: EditCouponDialo
         userLimit: data.userLimit || null,
         startsAt: data.startsAt ? new Date(data.startsAt) : null,
         expiresAt: data.expiresAt ? new Date(data.expiresAt) : null,
+        restrictedToUserId: data.restrictedToUserId || null,
+        restrictedToPlanId: data.restrictedToPlanId || null,
       })
       if (result.success) {
         toast.success('Cupón actualizado correctamente')
@@ -396,6 +488,179 @@ export function EditCouponDialog({ coupon, open, onOpenChange }: EditCouponDialo
                 </FormItem>
               )}
             />
+
+            <div className="border rounded-lg p-4 space-y-4 bg-muted/30">
+              <div className="flex items-center gap-2 text-sm font-medium">
+                <User className="h-4 w-4" />
+                Restricciones (Opcional)
+              </div>
+              
+              <FormField
+                control={form.control}
+                name="restrictedToUserId"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Usuario Específico</FormLabel>
+                    <Popover open={userSearchOpen} onOpenChange={setUserSearchOpen}>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            className={cn(
+                              "justify-between",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {selectedUser ? (
+                              <span className="flex items-center gap-2">
+                                <span>{selectedUser.name}</span>
+                                <Badge variant="secondary" className="text-xs">{selectedUser.email}</Badge>
+                              </span>
+                            ) : (
+                              "Buscar usuario..."
+                            )}
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[400px] p-0" align="start">
+                        <Command shouldFilter={false}>
+                          <CommandInput
+                            placeholder="Buscar por nombre o email..."
+                            value={userSearchQuery}
+                            onValueChange={(value) => {
+                              setUserSearchQuery(value)
+                              searchUsers(value)
+                            }}
+                          />
+                          <CommandList>
+                            <CommandEmpty>
+                              {isSearchingUsers ? "Buscando..." : userSearchQuery.length < 2 ? "Escribe al menos 2 caracteres" : "No se encontraron usuarios"}
+                            </CommandEmpty>
+                            <CommandGroup>
+                              {userOptions.map((user) => (
+                                <CommandItem
+                                  key={user.id}
+                                  value={user.id}
+                                  onSelect={() => {
+                                    setSelectedUser(user)
+                                    field.onChange(user.id)
+                                    setUserSearchOpen(false)
+                                    setUserSearchQuery('')
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-4 w-4",
+                                      field.value === user.id ? "opacity-100" : "opacity-0"
+                                    )}
+                                  />
+                                  <div className="flex flex-col">
+                                    <span>{user.name}</span>
+                                    <span className="text-xs text-muted-foreground">{user.email}</span>
+                                  </div>
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                    {selectedUser && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="w-fit text-xs text-muted-foreground"
+                        onClick={() => {
+                          setSelectedUser(null)
+                          field.onChange(undefined)
+                        }}
+                      >
+                        <X className="h-3 w-3 mr-1" /> Quitar restricción de usuario
+                      </Button>
+                    )}
+                    <FormDescription>
+                      Si se selecciona, solo este usuario podrá usar el cupón
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="restrictedToPlanId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Plan Específico</FormLabel>
+                    <div className="flex gap-2">
+                      <Select
+                        value={field.value || ''}
+                        onValueChange={(value) => {
+                          field.onChange(value || undefined)
+                          const plan = planOptions.find(p => p.id === value)
+                          setSelectedPlan(plan || null)
+                        }}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Seleccionar plan...">
+                              {selectedPlan && (
+                                <span className="flex items-center gap-2">
+                                  <Package className="h-4 w-4" />
+                                  {selectedPlan.name}
+                                  {selectedPlan.product && (
+                                    <Badge variant="outline" className="text-xs">
+                                      {selectedPlan.product.name}
+                                    </Badge>
+                                  )}
+                                </span>
+                              )}
+                            </SelectValue>
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {planOptions.map((plan) => (
+                            <SelectItem key={plan.id} value={plan.id}>
+                              <div className="flex items-center gap-2">
+                                <span>{plan.name}</span>
+                                {plan.product && (
+                                  <Badge variant="outline" className="text-xs">
+                                    {plan.product.name}
+                                  </Badge>
+                                )}
+                                <span className="text-xs text-muted-foreground">
+                                  ${plan.price}
+                                </span>
+                              </div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {selectedPlan && (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => {
+                            setSelectedPlan(null)
+                            field.onChange(undefined)
+                          }}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                    <FormDescription>
+                      Si se selecciona, el cupón solo aplicará a este plan
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <div className="bg-muted p-3 rounded-lg">
               <div className="text-sm text-muted-foreground">

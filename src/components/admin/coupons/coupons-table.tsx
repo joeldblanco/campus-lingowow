@@ -26,7 +26,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { MoreVertical, Edit, Trash2, Copy, Search, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react'
+import { MoreVertical, Edit, Trash2, Copy, Search, ChevronLeft, ChevronRight, SlidersHorizontal, User, Package } from 'lucide-react'
 import { EditCouponDialog } from './edit-coupon-dialog'
 import { deleteCoupon } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
@@ -48,6 +48,10 @@ interface Coupon {
   expiresAt: Date | null
   createdAt: Date
   updatedAt: Date
+  restrictedToUserId?: string | null
+  restrictedToPlanId?: string | null
+  restrictedUser?: { id: string; name: string; email: string } | null
+  restrictedPlan?: { id: string; name: string; slug: string } | null
   _count: {
     invoices: number
   }
@@ -237,6 +241,7 @@ export function CouponsTable({ coupons }: CouponsTableProps) {
               <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Código</TableHead>
               <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Nombre</TableHead>
               <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Descuento</TableHead>
+              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Restricciones</TableHead>
               <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Estado</TableHead>
               <TableHead className="font-semibold text-xs uppercase text-muted-foreground text-center">Uso</TableHead>
               <TableHead className="font-semibold text-xs uppercase text-muted-foreground text-center">Acciones</TableHead>
@@ -245,7 +250,7 @@ export function CouponsTable({ coupons }: CouponsTableProps) {
           <TableBody>
             {paginatedCoupons.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
+                <TableCell colSpan={8} className="text-center py-12 text-muted-foreground">
                   No hay cupones registrados
                 </TableCell>
               </TableRow>
@@ -276,6 +281,25 @@ export function CouponsTable({ coupons }: CouponsTableProps) {
                   </TableCell>
                   <TableCell>
                     <div className="font-medium text-sm">{formatDiscount(coupon.type, coupon.value)}</div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-col gap-1">
+                      {coupon.restrictedUser && (
+                        <Badge variant="outline" className="text-xs w-fit flex items-center gap-1">
+                          <User className="h-3 w-3" />
+                          {coupon.restrictedUser.name}
+                        </Badge>
+                      )}
+                      {coupon.restrictedPlan && (
+                        <Badge variant="outline" className="text-xs w-fit flex items-center gap-1">
+                          <Package className="h-3 w-3" />
+                          {coupon.restrictedPlan.name}
+                        </Badge>
+                      )}
+                      {!coupon.restrictedUser && !coupon.restrictedPlan && (
+                        <span className="text-xs text-muted-foreground">Sin restricciones</span>
+                      )}
+                    </div>
                   </TableCell>
                   <TableCell>{getStatusBadge(coupon)}</TableCell>
                   <TableCell className="text-center">

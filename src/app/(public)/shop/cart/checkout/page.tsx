@@ -8,7 +8,7 @@ import Image from 'next/image'
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 import { toast } from 'sonner'
 
-import { useShopStore } from '@/stores/useShopStore'
+import { useShopStore, AppliedCoupon } from '@/stores/useShopStore'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -23,6 +23,7 @@ import {
 import { PaymentMethodForm } from '@/components/shop/checkout/payment-method-form'
 import { CheckoutLoginModal } from '@/components/shop/checkout/login-modal'
 import { CheckoutScheduleSelector } from '@/components/checkout/checkout-schedule-selector'
+import { CouponInput } from '@/components/shop/checkout/coupon-input'
 import {
   Loader2,
   Lock,
@@ -133,6 +134,7 @@ export default function CheckoutPage() {
 
   const cartItems = useShopStore((state) => state.cart)
   const removeFromCart = useShopStore((state) => state.removeFromCart)
+  const appliedCoupon = useShopStore((state) => state.appliedCoupon)
 
   const plansRequiringSchedule = useMemo(() => {
     return cartItems.filter(item => {
@@ -164,18 +166,34 @@ export default function CheckoutPage() {
     })
   }, [cartItems, planDetails])
 
-  const { subtotal, taxes, total } = useMemo(() => {
+  const calculateCouponDiscount = useCallback((coupon: AppliedCoupon | null, amount: number): number => {
+    if (!coupon) return 0
+    if (coupon.type === 'PERCENTAGE') {
+      const discount = (amount * coupon.value) / 100
+      if (coupon.maxDiscount && discount > coupon.maxDiscount) {
+        return coupon.maxDiscount
+      }
+      return discount
+    }
+    return Math.min(coupon.value, amount)
+  }, [])
+
+  const { subtotal, discount, taxes, total } = useMemo(() => {
     const subtotalAmount = cartItems.reduce((sum, item) => {
       const proration = scheduleSelections[item.plan.id]?.proration
       const price = proration?.proratedPrice ?? item.plan.price
       return sum + price * (item.quantity || 1)
     }, 0)
+    
+    const discountAmount = calculateCouponDiscount(appliedCoupon, subtotalAmount)
+    
     return {
       subtotal: subtotalAmount,
+      discount: discountAmount,
       taxes: 0,
-      total: subtotalAmount,
+      total: subtotalAmount - discountAmount,
     }
-  }, [cartItems, scheduleSelections])
+  }, [cartItems, scheduleSelections, appliedCoupon, calculateCouponDiscount])
 
   useEffect(() => {
     const loadPlanDetails = async () => {
@@ -700,7 +718,7 @@ export default function CheckoutPage() {
                     paymentMethod={paymentMethod}
                     onSubmit={handlePaymentSubmit}
                     isLoading={isLoading}
-                    paypalData={{ items: paypalItems, total, subtotal, discount: 0 }}
+                    paypalData={{ items: paypalItems, total, subtotal, discount }}
                     onPayPalSuccess={handlePaymentSuccess}
                     onNiubizSuccess={handlePaymentSuccess}
                     userEmail={session?.user?.email || formData.email}
@@ -782,12 +800,26 @@ export default function CheckoutPage() {
                     </div>
                   )}
 
+                  {/* Coupon Input */}
+                  <div className="px-6 py-4 border-t border-slate-100">
+                    <CouponInput 
+                      planIds={cartItems.map(item => item.plan.id)} 
+                      subtotal={subtotal} 
+                    />
+                  </div>
+
                   {/* Cost Breakdown */}
                   <div className="bg-slate-50 p-6 border-t border-slate-200 space-y-3">
                     <div className="flex justify-between text-sm text-slate-600">
                       <span>Subtotal</span>
                       <span className="font-medium text-slate-900">${subtotal.toFixed(2)}</span>
                     </div>
+                    {discount > 0 && (
+                      <div className="flex justify-between text-sm text-green-600">
+                        <span>Descuento {appliedCoupon?.code && `(${appliedCoupon.code})`}</span>
+                        <span className="font-medium">-${discount.toFixed(2)}</span>
+                      </div>
+                    )}
                     {taxes > 0 && (
                       <div className="flex justify-between text-sm text-slate-600">
                         <span>Impuestos</span>

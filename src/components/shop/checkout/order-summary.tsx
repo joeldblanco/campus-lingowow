@@ -1,6 +1,9 @@
+'use client'
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
+import { CouponInput } from './coupon-input'
 
 type OrderSummaryProduct = {
   id: string
@@ -8,6 +11,7 @@ type OrderSummaryProduct = {
   description: string
   price: number
   quantity: number
+  planId?: string
 }
 
 interface OrderSummaryProps {
@@ -15,6 +19,8 @@ interface OrderSummaryProps {
   subtotal: number
   discount?: number
   total: number
+  showCouponInput?: boolean
+  onDiscountChange?: (discount: number) => void
 }
 
 export function OrderSummary({
@@ -22,7 +28,10 @@ export function OrderSummary({
   subtotal,
   discount = 0,
   total,
+  showCouponInput = true,
+  onDiscountChange,
 }: OrderSummaryProps) {
+  const planIds = products.map(p => p.planId).filter(Boolean) as string[]
   const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -72,6 +81,17 @@ export function OrderSummary({
           <p>Total</p>
           <p>{formatCurrency(total)}</p>
         </div>
+
+        {showCouponInput && (
+          <>
+            <Separator className="my-4" />
+            <CouponInput 
+              planIds={planIds} 
+              subtotal={subtotal} 
+              onDiscountChange={onDiscountChange} 
+            />
+          </>
+        )}
 
         <div className="mt-4 text-sm text-muted-foreground">
           <p>Los precios incluyen IVA cuando aplica.</p>
