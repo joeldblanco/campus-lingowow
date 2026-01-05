@@ -23,6 +23,7 @@ import {
   UserCog,
   Zap,
   FolderOpen,
+  Video,
 } from 'lucide-react'
 import * as React from 'react'
 
@@ -59,6 +60,11 @@ const data = {
       title: 'Biblioteca',
       url: '/library',
       icon: Library,
+    },
+    {
+      title: 'Grabaciones',
+      url: '/recordings',
+      icon: Video,
     },
   ],
   navTeacher: [

@@ -725,6 +725,7 @@ model ClassBooking {
   videoCalls         VideoCall[]
   meetingMessages    MeetingMessage[]
   whiteboardData     WhiteboardData?
+  recording          ClassRecording?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -2333,4 +2334,55 @@ enum PendingOrderStatus {
   COMPLETED
   EXPIRED
   CANCELLED
+}
+
+// =============================================
+// MODELOS DE GRABACIONES DE CLASES
+// =============================================
+
+model ClassRecording {
+  id           String          @id @default(cuid())
+  bookingId    String          @unique
+  egressId     String?         // LiveKit egress ID
+  roomId       String?
+  roomName     String?
+  
+  // Información del archivo
+  filename     String?
+  fileUrl      String?         // URL pública o presigned URL
+  fileSize     Int?            // Tamaño en bytes
+  duration     Int?            // Duración en segundos
+  
+  // Metadatos de R2
+  r2Key        String?         // Key en R2 bucket
+  r2Bucket     String?         @default("lingowow-recordings")
+  
+  // Timestamps de la grabación
+  startedAt    DateTime?
+  endedAt      DateTime?
+  
+  // Estado de la grabación
+  status       RecordingStatus @default(PROCESSING)
+  
+  // Metadatos adicionales (JSON del webhook de LiveKit)
+  metadata     Json?
+  
+  // Relaciones
+  booking      ClassBooking    @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  @@index([bookingId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("class_recordings")
+}
+
+enum RecordingStatus {
+  PROCESSING    // En proceso de grabación o procesamiento
+  READY         // Lista para visualizar
+  FAILED        // Error en la grabación
+  ARCHIVED      // Archivada (no disponible temporalmente)
+  DELETED       // Eliminada
 }
