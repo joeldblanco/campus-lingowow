@@ -104,6 +104,14 @@ export function ManageTeacherCoursesDialog({
         })
       } else {
         newSet.add(courseId)
+        // Inicializar el pago cuando se selecciona
+        setCoursePayments((prevPayments) => {
+          const newPayments = new Map(prevPayments)
+          if (!newPayments.has(courseId)) {
+            newPayments.set(courseId, null)
+          }
+          return newPayments
+        })
       }
       return newSet
     })
