@@ -1149,8 +1149,18 @@ export async function getActiveAndFutureAcademicPeriods() {
       where: {
         OR: [
           { isActive: true },
+          // Future periods (haven't started yet)
           {
             startDate: {
+              gte: today,
+            },
+          },
+          // Current periods (already started but not ended)
+          {
+            startDate: {
+              lte: today,
+            },
+            endDate: {
               gte: today,
             },
           },
