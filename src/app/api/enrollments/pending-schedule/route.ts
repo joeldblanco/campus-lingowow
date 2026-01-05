@@ -14,13 +14,15 @@ export async function GET() {
     }
 
     // Buscar inscripciones activas sin horario configurado
+    // Debe verificar tanto schedules (horarios recurrentes) como bookings (clases reservadas)
     const enrollmentsWithoutSchedule = await db.enrollment.findMany({
       where: {
         studentId: session.user.id,
         status: 'ACTIVE',
-        schedules: {
-          none: {}, // No tiene ningún horario configurado
-        },
+        AND: [
+          { schedules: { none: {} } }, // No tiene horarios recurrentes
+          { bookings: { none: {} } },  // No tiene clases reservadas
+        ],
       },
       include: {
         course: {
