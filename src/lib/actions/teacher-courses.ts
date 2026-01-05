@@ -34,6 +34,7 @@ export async function getCoursesForTeacher(teacherId: string) {
         language: course.language,
         level: course.level,
         isAssigned: course.teacherCourses.length > 0,
+        paymentPerClass: course.teacherCourses[0]?.paymentPerClass ?? null,
       })),
     }
   } catch (error) {
@@ -141,11 +142,11 @@ export async function unassignCourseFromTeacher(teacherId: string, courseId: str
 }
 
 /**
- * Asigna múltiples cursos a un profesor
+ * Asigna múltiples cursos a un profesor con sus pagos por clase
  */
 export async function assignMultipleCoursesToTeacher(
   teacherId: string,
-  courseIds: string[]
+  courseAssignments: Array<{ courseId: string; paymentPerClass?: number | null }>
 ) {
   try {
     // Eliminar todas las asignaciones actuales
@@ -155,12 +156,13 @@ export async function assignMultipleCoursesToTeacher(
       },
     })
 
-    // Crear las nuevas asignaciones
-    if (courseIds.length > 0) {
+    // Crear las nuevas asignaciones con pago por clase
+    if (courseAssignments.length > 0) {
       await db.teacherCourse.createMany({
-        data: courseIds.map((courseId) => ({
+        data: courseAssignments.map(({ courseId, paymentPerClass }) => ({
           teacherId,
           courseId,
+          paymentPerClass: paymentPerClass ?? null,
         })),
       })
     }
@@ -177,6 +179,43 @@ export async function assignMultipleCoursesToTeacher(
     return {
       success: false,
       error: 'Error al actualizar los cursos del profesor',
+    }
+  }
+}
+
+/**
+ * Actualiza el pago por clase de un profesor para un curso específico
+ */
+export async function updateTeacherCoursePayment(
+  teacherId: string,
+  courseId: string,
+  paymentPerClass: number | null
+) {
+  try {
+    await db.teacherCourse.update({
+      where: {
+        teacherId_courseId: {
+          teacherId,
+          courseId,
+        },
+      },
+      data: {
+        paymentPerClass,
+      },
+    })
+
+    revalidatePath('/admin/teachers')
+    revalidatePath('/admin/classes')
+
+    return {
+      success: true,
+      message: 'Pago por clase actualizado exitosamente',
+    }
+  } catch (error) {
+    console.error('Error updating teacher course payment:', error)
+    return {
+      success: false,
+      error: 'Error al actualizar el pago por clase',
     }
   }
 }

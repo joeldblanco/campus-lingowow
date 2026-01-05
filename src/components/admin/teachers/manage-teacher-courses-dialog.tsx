@@ -7,6 +7,7 @@ import {
 } from '@/lib/actions/teacher-courses'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Input } from '@/components/ui/input'
 import {
   Dialog,
   DialogContent,
@@ -18,7 +19,7 @@ import {
 } from '@/components/ui/dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { toast } from 'sonner'
-import { Loader2 } from 'lucide-react'
+import { Loader2, DollarSign } from 'lucide-react'
 
 interface ManageTeacherCoursesDialogProps {
   teacherId: string
@@ -33,6 +34,12 @@ interface Course {
   language: string
   level: string
   isAssigned: boolean
+  paymentPerClass: number | null
+}
+
+interface CoursePayment {
+  courseId: string
+  paymentPerClass: number | null
 }
 
 export function ManageTeacherCoursesDialog({
@@ -45,6 +52,7 @@ export function ManageTeacherCoursesDialog({
   const [isSaving, setIsSaving] = useState(false)
   const [groupedCourses, setGroupedCourses] = useState<Record<string, Course[]>>({})
   const [selectedCourses, setSelectedCourses] = useState<Set<string>>(new Set())
+  const [coursePayments, setCoursePayments] = useState<Map<string, number | null>>(new Map())
 
   const loadCourses = useCallback(async () => {
     setIsLoading(true)
@@ -53,16 +61,19 @@ export function ManageTeacherCoursesDialog({
       if (result.success && 'groupedCourses' in result && result.groupedCourses) {
         setGroupedCourses(result.groupedCourses)
         
-        // Inicializar cursos seleccionados
+        // Inicializar cursos seleccionados y pagos
         const assigned = new Set<string>()
+        const payments = new Map<string, number | null>()
         Object.values(result.groupedCourses).forEach((courses: Course[]) => {
           courses.forEach((course: Course) => {
             if (course.isAssigned) {
               assigned.add(course.id)
+              payments.set(course.id, course.paymentPerClass)
             }
           })
         })
         setSelectedCourses(assigned)
+        setCoursePayments(payments)
       } else {
         toast.error('error' in result ? result.error : 'Error al cargar cursos')
       }
@@ -85,10 +96,25 @@ export function ManageTeacherCoursesDialog({
       const newSet = new Set(prev)
       if (newSet.has(courseId)) {
         newSet.delete(courseId)
+        // Limpiar el pago cuando se deselecciona
+        setCoursePayments((prevPayments) => {
+          const newPayments = new Map(prevPayments)
+          newPayments.delete(courseId)
+          return newPayments
+        })
       } else {
         newSet.add(courseId)
       }
       return newSet
+    })
+  }
+
+  const handlePaymentChange = (courseId: string, value: string) => {
+    const numValue = value === '' ? null : parseFloat(value)
+    setCoursePayments((prev) => {
+      const newPayments = new Map(prev)
+      newPayments.set(courseId, numValue)
+      return newPayments
     })
   }
 
@@ -129,9 +155,13 @@ export function ManageTeacherCoursesDialog({
   const handleSave = async () => {
     setIsSaving(true)
     try {
+      const courseAssignments: CoursePayment[] = Array.from(selectedCourses).map((courseId) => ({
+        courseId,
+        paymentPerClass: coursePayments.get(courseId) ?? null,
+      }))
       const result = await assignMultipleCoursesToTeacher(
         teacherId,
-        Array.from(selectedCourses)
+        courseAssignments
       )
 
       if (result.success) {
@@ -220,6 +250,20 @@ export function ManageTeacherCoursesDialog({
                               Nivel: {course.level}
                             </p>
                           </div>
+                          {selectedCourses.has(course.id) && (
+                            <div className="flex items-center gap-1 min-w-[120px]">
+                              <DollarSign className="h-4 w-4 text-muted-foreground" />
+                              <Input
+                                type="number"
+                                placeholder="Pago"
+                                className="h-7 w-20 text-sm"
+                                value={coursePayments.get(course.id) ?? ''}
+                                onChange={(e) => handlePaymentChange(course.id, e.target.value)}
+                                min={0}
+                                step={0.01}
+                              />
+                            </div>
+                          )}
                         </div>
                       ))}
                     </div>
