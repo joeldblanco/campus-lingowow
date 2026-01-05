@@ -16,6 +16,7 @@ interface ClassroomLayoutProps {
   className?: string
   lessonTitle?: string
   timeLeft?: string
+  isGracePeriod?: boolean // Whether the class is in grace period (extra 10 min)
   onBackClick?: () => void // Callback when back button is clicked
 }
 
@@ -28,6 +29,7 @@ export function ClassroomLayout({
   className = '',
   lessonTitle = 'English Lesson',
   timeLeft = '45:00',
+  isGracePeriod = false,
   onBackClick,
 }: ClassroomLayoutProps) {
   const router = useRouter()
@@ -61,9 +63,14 @@ export function ClassroomLayout({
           {bottomControls}
 
           {/* Timer */}
-          <div className="bg-blue-50 text-blue-600 px-3 py-1.5 rounded-full flex items-center gap-2 font-medium text-sm">
+          <div className={`px-3 py-1.5 rounded-full flex items-center gap-2 font-medium text-sm ${
+            isGracePeriod 
+              ? 'bg-orange-50 text-orange-600' 
+              : 'bg-blue-50 text-blue-600'
+          }`}>
             <Clock className="w-4 h-4" />
             <span>{timeLeft}</span>
+            {isGracePeriod && <span className="text-xs">(gracia)</span>}
           </div>
         </div>
       </header>

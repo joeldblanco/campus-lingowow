@@ -18,6 +18,9 @@ import { CollaborationProvider } from './collaboration-context'
 import { CollaborativeContentWrapper } from './collaborative-content-wrapper'
 import { ScreenShareViewer } from './screen-share-viewer'
 
+// Grace period constant - 10 minutes in milliseconds
+const GRACE_PERIOD_MS = 10 * 60 * 1000
+
 interface ClassroomContainerProps {
   roomName: string
   jwt: string | null
@@ -58,6 +61,7 @@ function ClassroomInner({
   } = useLiveKit()
 
   const [timeLeft, setTimeLeft] = useState('')
+  const [isGracePeriod, setIsGracePeriod] = useState(false)
   const [activeLesson, setActiveLesson] = useState<LessonForView | undefined>(initialLessonData)
   const [isLoadingLesson, setIsLoadingLesson] = useState(false)
   const [mainContentTab, setMainContentTab] = useState<'lesson' | 'whiteboard' | 'screenshare'>('lesson')
@@ -66,7 +70,12 @@ function ClassroomInner({
   const recordingRef = useRef(false)
   const activeLessonRef = useRef<{ id: string; type: ShareableContent['type'] } | null>(null)
 
-  // Timer Logic - Calculate time remaining until class end
+  // Ref to track grace period start time
+  const gracePeriodStartRef = useRef<number | null>(null)
+  // Ref to track if we've already triggered end call
+  const hasEndedRef = useRef(false)
+
+  // Timer Logic - Calculate time remaining until class end with 10-minute grace period
   useEffect(() => {
     const endTimestamp = endTime instanceof Date ? endTime.getTime() : new Date(endTime).getTime()
     
@@ -74,27 +83,78 @@ function ClassroomInner({
       const now = Date.now()
       const diff = endTimestamp - now
       
-      if (diff <= 0) return '00:00'
+      // Class time has ended, check grace period
+      if (diff <= 0) {
+        // Initialize grace period start time if not set
+        if (gracePeriodStartRef.current === null) {
+          gracePeriodStartRef.current = now
+        }
+        
+        const graceElapsed = now - gracePeriodStartRef.current
+        const graceRemaining = GRACE_PERIOD_MS - graceElapsed
+        
+        // Grace period has ended - close the class
+        if (graceRemaining <= 0) {
+          return { time: '00:00', isGrace: true, shouldEnd: true }
+        }
+        
+        // Still in grace period
+        const graceMinutes = Math.floor(graceRemaining / (1000 * 60))
+        const graceSeconds = Math.floor((graceRemaining % (1000 * 60)) / 1000)
+        
+        return {
+          time: `${graceMinutes.toString().padStart(2, '0')}:${graceSeconds.toString().padStart(2, '0')}`,
+          isGrace: true,
+          shouldEnd: false
+        }
+      }
       
+      // Normal class time
       const hours = Math.floor(diff / (1000 * 60 * 60))
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
       const seconds = Math.floor((diff % (1000 * 60)) / 1000)
       
       if (hours > 0) {
-        return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+        return {
+          time: `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`,
+          isGrace: false,
+          shouldEnd: false
+        }
       }
       
-      return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+      return {
+        time: `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`,
+        isGrace: false,
+        shouldEnd: false
+      }
     }
     
-    setTimeLeft(calculateTimeLeft())
+    const updateTimer = async () => {
+      const result = calculateTimeLeft()
+      setTimeLeft(result.time)
+      setIsGracePeriod(result.isGrace)
+      
+      if (result.shouldEnd && !hasEndedRef.current) {
+        hasEndedRef.current = true
+        // Stop recording automatically when grace period ends
+        if (isRecording && egressId) {
+          try {
+            await stopRecording(egressId)
+          } catch (error) {
+            console.error('Failed to stop recording:', error)
+          }
+        }
+        await leaveRoom()
+        onMeetingEnd()
+      }
+    }
     
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft())
-    }, 1000)
+    updateTimer()
+    
+    const timer = setInterval(updateTimer, 1000)
     
     return () => clearInterval(timer)
-  }, [endTime])
+  }, [endTime, isRecording, egressId, leaveRoom, onMeetingEnd])
 
   // Auto-join when initialized
   useEffect(() => {
@@ -321,6 +381,7 @@ function ClassroomInner({
     <ClassroomLayout
       lessonTitle={activeLesson?.title || 'Aula Virtual'}
       timeLeft={timeLeft}
+      isGracePeriod={isGracePeriod}
       rightSidebar={renderSidebar}
       leftSidebar={renderLeftSidebar}
       onBackClick={handleBackClick}

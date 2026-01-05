@@ -19,8 +19,8 @@ import type {
 // (Programas sincrónicos con contenido individual por estudiante)
 // =============================================
 
-// Obtener todas las lecciones personalizadas de un estudiante para una inscripción específica
-export async function getStudentLessonsForEnrollment(
+// Obtener las lecciones personalizadas publicadas de un estudiante para una inscripción específica
+export async function getPublishedStudentLessonsForEnrollment(
   enrollmentId: string
 ): Promise<StudentLessonActionResult<StudentLessonListItem[]>> {
   try {
