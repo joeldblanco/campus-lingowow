@@ -73,6 +73,7 @@ type CouponFormData = z.infer<typeof couponSchema>
 interface UserOption {
   id: string
   name: string
+  lastName?: string | null
   email: string
 }
 
@@ -514,7 +515,7 @@ export function EditCouponDialog({ coupon, open, onOpenChange }: EditCouponDialo
                           >
                             {selectedUser ? (
                               <span className="flex items-center gap-2">
-                                <span>{selectedUser.name}</span>
+                                <span>{selectedUser.name} {selectedUser.lastName || ''}</span>
                                 <Badge variant="secondary" className="text-xs">{selectedUser.email}</Badge>
                               </span>
                             ) : (
@@ -557,7 +558,7 @@ export function EditCouponDialog({ coupon, open, onOpenChange }: EditCouponDialo
                                     )}
                                   />
                                   <div className="flex flex-col">
-                                    <span>{user.name}</span>
+                                    <span>{user.name} {user.lastName || ''}</span>
                                     <span className="text-xs text-muted-foreground">{user.email}</span>
                                   </div>
                                 </CommandItem>

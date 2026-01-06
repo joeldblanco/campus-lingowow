@@ -593,12 +593,14 @@ export async function searchUsersForCoupon(query: string) {
       where: {
         OR: [
           { name: { contains: query, mode: 'insensitive' } },
+          { lastName: { contains: query, mode: 'insensitive' } },
           { email: { contains: query, mode: 'insensitive' } },
         ],
       },
       select: {
         id: true,
         name: true,
+        lastName: true,
         email: true,
       },
       take: 10,

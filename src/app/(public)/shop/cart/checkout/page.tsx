@@ -135,6 +135,7 @@ export default function CheckoutPage() {
   const cartItems = useShopStore((state) => state.cart)
   const removeFromCart = useShopStore((state) => state.removeFromCart)
   const appliedCoupon = useShopStore((state) => state.appliedCoupon)
+  const removeCoupon = useShopStore((state) => state.removeCoupon)
 
   const plansRequiringSchedule = useMemo(() => {
     return cartItems.filter(item => {
@@ -194,6 +195,23 @@ export default function CheckoutPage() {
       total: subtotalAmount - discountAmount,
     }
   }, [cartItems, scheduleSelections, appliedCoupon, calculateCouponDiscount])
+
+  // Validar cupón cuando cambian los items del carrito
+  useEffect(() => {
+    if (!appliedCoupon) return
+    
+    // Si el cupón está restringido a un plan específico, verificar que ese plan esté en el carrito
+    if (appliedCoupon.restrictedToPlanId) {
+      const planIds = cartItems.map(item => item.plan.id)
+      const isValidForCurrentPlans = planIds.includes(appliedCoupon.restrictedToPlanId)
+      
+      if (!isValidForCurrentPlans) {
+        // El cupón no es válido para los planes actuales, removerlo
+        removeCoupon()
+        toast.info('El cupón ha sido removido porque no aplica para los productos actuales del carrito')
+      }
+    }
+  }, [cartItems, appliedCoupon, removeCoupon])
 
   useEffect(() => {
     const loadPlanDetails = async () => {
