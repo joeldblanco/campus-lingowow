@@ -130,6 +130,38 @@ async function searchPayPalInvoice(invoiceNumber: string) {
   }
 }
 
+/**
+ * Normalizes a PayPal invoice identifier to the standard INV2-XXXX-XXXX-XXXX-XXXX format.
+ * Handles:
+ * - Full URLs: https://www.paypal.com/invoice/p/#HTN5SK8DF7VFPNWY
+ * - Short codes: HTN5SK8DF7VFPNWY
+ * - Already formatted IDs: INV2-HTN5-SK8D-F7VF-PNWY
+ */
+function normalizePayPalInvoiceId(input: string): string {
+  // Remove whitespace
+  let id = input.trim()
+
+  // Extract from URL if present
+  const urlMatch = id.match(/\/invoice\/(?:p\/#?|s\/details\/)?([A-Z0-9-]+)/i)
+  if (urlMatch) {
+    id = urlMatch[1]
+  }
+
+  // If already in INV2-XXXX-XXXX-XXXX-XXXX format, return as-is
+  if (/^INV2-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/i.test(id)) {
+    return id.toUpperCase()
+  }
+
+  // If it's a 16-character code without dashes, format it
+  const cleanId = id.replace(/[^A-Z0-9]/gi, '').toUpperCase()
+  if (cleanId.length === 16) {
+    return `INV2-${cleanId.slice(0, 4)}-${cleanId.slice(4, 8)}-${cleanId.slice(8, 12)}-${cleanId.slice(12, 16)}`
+  }
+
+  // Return original if we can't normalize
+  return id
+}
+
 async function getPayPalPayment(paymentId: string) {
   try {
     const response = await paymentsController.getCapturedPayment({
@@ -153,4 +185,5 @@ export {
   getPayPalInvoice,
   getPayPalPayment,
   searchPayPalInvoice,
+  normalizePayPalInvoiceId,
 }

@@ -9,6 +9,7 @@ import {
   getPayPalInvoice,
   getPayPalPayment,
   searchPayPalInvoice,
+  normalizePayPalInvoiceId,
 } from '@/lib/paypal'
 
 // =============================================
@@ -1201,26 +1202,37 @@ export async function createProductWithMixedPlans(
 
 export async function verifyPaypalTransaction(resourceId: string) {
   try {
+    // Normalize the input - handles URLs, short codes, and full IDs
+    const normalizedId = normalizePayPalInvoiceId(resourceId)
+    const originalId = resourceId.trim()
+
     let type = 'ORDER'
-    console.log(`[Verify] Attempting to fetch as ORDER: ${resourceId}`)
-    let data = await getPayPalOrder(resourceId)
+    console.log(`[Verify] Attempting to fetch as ORDER: ${originalId}`)
+    let data = await getPayPalOrder(originalId)
 
     if (!data) {
-      console.log(`[Verify] ORDER failed. Attempting as INVOICE: ${resourceId}`)
+      // Try with normalized invoice ID (handles URLs like /invoice/p/#HTN5SK8DF7VFPNWY)
+      console.log(`[Verify] ORDER failed. Attempting as INVOICE: ${normalizedId}`)
       type = 'INVOICE'
-      data = await getPayPalInvoice(resourceId)
+      data = await getPayPalInvoice(normalizedId)
+    }
+
+    if (!data && normalizedId !== originalId) {
+      // If normalized ID is different, also try with original
+      console.log(`[Verify] INVOICE failed with normalized ID. Trying original: ${originalId}`)
+      data = await getPayPalInvoice(originalId)
     }
 
     if (!data) {
-      console.log(`[Verify] INVOICE failed. Attempting as PAYMENT: ${resourceId}`)
+      console.log(`[Verify] INVOICE failed. Attempting as PAYMENT: ${originalId}`)
       type = 'PAYMENT'
-      data = await getPayPalPayment(resourceId)
+      data = await getPayPalPayment(originalId)
     }
 
     if (!data) {
-      console.log(`[Verify] PAYMENT failed. Attempting SEARCH by Invoice Number: ${resourceId}`)
+      console.log(`[Verify] PAYMENT failed. Attempting SEARCH by Invoice Number: ${originalId}`)
       type = 'INVOICE'
-      data = await searchPayPalInvoice(resourceId)
+      data = await searchPayPalInvoice(originalId)
     }
 
     if (!data) {
@@ -1255,7 +1267,8 @@ export async function verifyPaypalTransaction(resourceId: string) {
       ]
       date = new Date(data.create_time)
     } else if (type === 'INVOICE') {
-      if (data.status !== 'PAID') {
+      // PAID = payer paid online, MARKED_AS_PAID = invoicer recorded payment manually
+      if (data.status !== 'PAID' && data.status !== 'MARKED_AS_PAID') {
         return {
           success: false,
           error: `La factura de PayPal no está pagada (Estado: ${data.status})`,
