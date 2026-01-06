@@ -251,7 +251,13 @@ export function ScheduleCalendarSelector({
       if (!bookedSlots[day]) {
         bookedSlots[day] = []
       }
-      bookedSlots[day].push(time)
+      // Calcular hora de fin basada en classDuration para el formato HH:MM-HH:MM
+      const [startHour, startMin] = time.split(':').map(Number)
+      const endMinutes = startHour * 60 + startMin + classDuration
+      const endHour = Math.floor(endMinutes / 60)
+      const endMin = endMinutes % 60
+      const endTime = `${String(endHour).padStart(2, '0')}:${String(endMin).padStart(2, '0')}`
+      bookedSlots[day].push(`${time}-${endTime}`)
     }
   })
 
