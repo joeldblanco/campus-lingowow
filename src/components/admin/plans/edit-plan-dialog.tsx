@@ -264,7 +264,8 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
       // Update pricing by language
       for (const langCode of Object.keys(pricingByLanguage)) {
         const pricing = pricingByLanguage[langCode]
-        if (pricing.isActive) {
+        // Update if active OR if it already exists in DB (to allow deactivation)
+        if (pricing.isActive || pricing.id) {
           await upsertPlanPricing({
             planId: plan.id,
             language: pricing.language,
