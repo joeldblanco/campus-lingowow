@@ -338,3 +338,82 @@ export interface ExportOptions {
   dateRange: DateRange
   includeCharts: boolean
 }
+
+// =============================================
+// SALUD FINANCIERA (SEMÁFORO)
+// =============================================
+
+export type HealthStatus = 'healthy' | 'warning' | 'critical'
+
+export interface FinancialHealthMetric {
+  name: string
+  value: number
+  target: number
+  status: HealthStatus
+  description: string
+  trend: number
+}
+
+export interface FinancialHealth {
+  overallStatus: HealthStatus
+  score: number // 0-100
+  metrics: {
+    profitMargin: FinancialHealthMetric
+    revenueGrowth: FinancialHealthMetric
+    expenseRatio: FinancialHealthMetric
+    studentRetention: FinancialHealthMetric
+    classUtilization: FinancialHealthMetric
+    cashFlow: FinancialHealthMetric
+  }
+  recommendations: string[]
+}
+
+// =============================================
+// ANÁLISIS DE COHORTES
+// =============================================
+
+export interface CohortData {
+  cohortMonth: string // "2024-01"
+  cohortSize: number
+  retentionByMonth: number[] // [100, 85, 70, 65, ...] porcentajes
+}
+
+export interface CohortAnalytics {
+  cohorts: CohortData[]
+  averageRetentionByMonth: number[]
+  bestCohort: { month: string; retention: number }
+  worstCohort: { month: string; retention: number }
+}
+
+// =============================================
+// LTV (LIFETIME VALUE)
+// =============================================
+
+export interface StudentLTV {
+  averageLTV: number
+  medianLTV: number
+  ltvByPlan: { planName: string; ltv: number }[]
+  ltvByProduct: { productName: string; ltv: number }[]
+  ltvDistribution: { range: string; count: number }[]
+  projectedLTV: number
+}
+
+// =============================================
+// MAPA DE CALOR DE HORARIOS
+// =============================================
+
+export interface HourlyDemand {
+  hour: number // 0-23
+  day: string // "Lunes", "Martes", etc.
+  bookings: number
+  completedClasses: number
+  cancellations: number
+  demand: 'low' | 'medium' | 'high' | 'peak'
+}
+
+export interface ScheduleHeatmap {
+  data: HourlyDemand[]
+  peakHours: { hour: number; day: string; bookings: number }[]
+  lowDemandHours: { hour: number; day: string; bookings: number }[]
+  averageBookingsPerSlot: number
+}

@@ -1394,3 +1394,438 @@ function calculateAverageGrowth(values: number[]): number {
   
   return count > 0 ? Math.round((totalGrowth / count) * 10) / 10 : 0
 }
+
+// =============================================
+// SALUD FINANCIERA (SEMÁFORO)
+// =============================================
+
+import type {
+  FinancialHealth,
+  HealthStatus,
+  CohortAnalytics,
+  CohortData,
+  StudentLTV,
+  ScheduleHeatmap,
+  HourlyDemand,
+} from '@/types/analytics'
+
+function getHealthStatus(value: number, target: number, higherIsBetter: boolean = true): HealthStatus {
+  const ratio = value / target
+  if (higherIsBetter) {
+    if (ratio >= 0.9) return 'healthy'
+    if (ratio >= 0.7) return 'warning'
+    return 'critical'
+  } else {
+    if (ratio <= 1.1) return 'healthy'
+    if (ratio <= 1.3) return 'warning'
+    return 'critical'
+  }
+}
+
+export async function getFinancialHealth(): Promise<FinancialHealth> {
+  const now = new Date()
+  const currentMonthStart = startOfMonth(now)
+  const currentMonthEnd = endOfMonth(now)
+  const previousMonthStart = startOfMonth(subMonths(now, 1))
+  const previousMonthEnd = endOfMonth(subMonths(now, 1))
+
+  // Ingresos actuales y anteriores
+  const currentRevenue = await db.invoice.aggregate({
+    where: { status: 'PAID', paidAt: { gte: currentMonthStart, lte: currentMonthEnd } },
+    _sum: { total: true },
+  })
+  const previousRevenue = await db.invoice.aggregate({
+    where: { status: 'PAID', paidAt: { gte: previousMonthStart, lte: previousMonthEnd } },
+    _sum: { total: true },
+  })
+
+  // Gastos (pagos a profesores)
+  const currentExpenses = await calculateMonthlyTeacherPayments(currentMonthStart, currentMonthEnd)
+  const previousExpenses = await calculateMonthlyTeacherPayments(previousMonthStart, previousMonthEnd)
+
+  const revenue = currentRevenue._sum.total || 0
+  const prevRevenue = previousRevenue._sum.total || 0
+  const expenses = currentExpenses
+  const prevExpenses = previousExpenses
+
+  // Calcular métricas
+  const profitMargin = revenue > 0 ? ((revenue - expenses) / revenue) * 100 : 0
+  const revenueGrowth = prevRevenue > 0 ? ((revenue - prevRevenue) / prevRevenue) * 100 : 0
+  const expenseRatio = revenue > 0 ? (expenses / revenue) * 100 : 0
+
+  // Retención de estudiantes
+  const activeStudents = await db.enrollment.groupBy({
+    by: ['studentId'],
+    where: { status: 'ACTIVE' },
+  })
+  const totalStudents = await db.user.count({ where: { roles: { has: UserRole.STUDENT } } })
+  const retentionRate = totalStudents > 0 ? (activeStudents.length / totalStudents) * 100 : 0
+
+  // Utilización de clases
+  const totalClasses = await db.classBooking.count({
+    where: { day: { gte: format(currentMonthStart, 'yyyy-MM-dd'), lte: format(currentMonthEnd, 'yyyy-MM-dd') } },
+  })
+  const completedClasses = await db.classBooking.count({
+    where: {
+      day: { gte: format(currentMonthStart, 'yyyy-MM-dd'), lte: format(currentMonthEnd, 'yyyy-MM-dd') },
+      status: BookingStatus.COMPLETED,
+    },
+  })
+  const classUtilization = totalClasses > 0 ? (completedClasses / totalClasses) * 100 : 0
+
+  // Cash flow (ingresos - gastos)
+  const cashFlow = revenue - expenses
+
+  const metrics: FinancialHealth['metrics'] = {
+    profitMargin: {
+      name: 'Margen de Beneficio',
+      value: Math.round(profitMargin * 10) / 10,
+      target: 40,
+      status: getHealthStatus(profitMargin, 40),
+      description: 'Porcentaje de ingresos que queda después de gastos',
+      trend: prevRevenue > 0 ? profitMargin - ((prevRevenue - prevExpenses) / prevRevenue) * 100 : 0,
+    },
+    revenueGrowth: {
+      name: 'Crecimiento de Ingresos',
+      value: Math.round(revenueGrowth * 10) / 10,
+      target: 10,
+      status: getHealthStatus(revenueGrowth, 10),
+      description: 'Crecimiento mensual de ingresos',
+      trend: revenueGrowth,
+    },
+    expenseRatio: {
+      name: 'Ratio de Gastos',
+      value: Math.round(expenseRatio * 10) / 10,
+      target: 60,
+      status: getHealthStatus(expenseRatio, 60, false),
+      description: 'Porcentaje de ingresos destinado a gastos',
+      trend: 0,
+    },
+    studentRetention: {
+      name: 'Retención de Estudiantes',
+      value: Math.round(retentionRate * 10) / 10,
+      target: 80,
+      status: getHealthStatus(retentionRate, 80),
+      description: 'Porcentaje de estudiantes activos',
+      trend: 0,
+    },
+    classUtilization: {
+      name: 'Utilización de Clases',
+      value: Math.round(classUtilization * 10) / 10,
+      target: 85,
+      status: getHealthStatus(classUtilization, 85),
+      description: 'Porcentaje de clases completadas vs programadas',
+      trend: 0,
+    },
+    cashFlow: {
+      name: 'Flujo de Caja',
+      value: Math.round(cashFlow * 100) / 100,
+      target: revenue * 0.3,
+      status: cashFlow > 0 ? (cashFlow >= revenue * 0.2 ? 'healthy' : 'warning') : 'critical',
+      description: 'Diferencia entre ingresos y gastos',
+      trend: 0,
+    },
+  }
+
+  // Calcular score general (promedio ponderado)
+  const statusScores: Record<HealthStatus, number> = { healthy: 100, warning: 60, critical: 20 }
+  const metricValues = Object.values(metrics)
+  const overallScore = Math.round(
+    metricValues.reduce((sum, m) => sum + statusScores[m.status], 0) / metricValues.length
+  )
+
+  const overallStatus: HealthStatus = overallScore >= 80 ? 'healthy' : overallScore >= 50 ? 'warning' : 'critical'
+
+  // Generar recomendaciones
+  const recommendations: string[] = []
+  if (metrics.profitMargin.status !== 'healthy') {
+    recommendations.push('Considera revisar los costos operativos para mejorar el margen de beneficio')
+  }
+  if (metrics.revenueGrowth.status === 'critical') {
+    recommendations.push('Implementa estrategias de marketing para aumentar las ventas')
+  }
+  if (metrics.studentRetention.status !== 'healthy') {
+    recommendations.push('Mejora la experiencia del estudiante para aumentar la retención')
+  }
+  if (metrics.classUtilization.status !== 'healthy') {
+    recommendations.push('Reduce las cancelaciones mejorando la comunicación con estudiantes')
+  }
+  if (metrics.cashFlow.status === 'critical') {
+    recommendations.push('¡Atención! El flujo de caja es negativo. Revisa urgentemente los gastos')
+  }
+
+  return {
+    overallStatus,
+    score: overallScore,
+    metrics,
+    recommendations,
+  }
+}
+
+// =============================================
+// ANÁLISIS DE COHORTES
+// =============================================
+
+export async function getCohortAnalytics(monthsBack: number = 12): Promise<CohortAnalytics> {
+  const now = new Date()
+  const cohorts: CohortData[] = []
+
+  for (let i = monthsBack - 1; i >= 0; i--) {
+    const cohortDate = subMonths(now, i)
+    const cohortStart = startOfMonth(cohortDate)
+    const cohortEnd = endOfMonth(cohortDate)
+    const cohortMonth = format(cohortDate, 'yyyy-MM')
+
+    // Estudiantes que se inscribieron en este mes
+    const cohortStudents = await db.user.findMany({
+      where: {
+        roles: { has: UserRole.STUDENT },
+        createdAt: { gte: cohortStart, lte: cohortEnd },
+      },
+      select: { id: true },
+    })
+
+    const cohortSize = cohortStudents.length
+    if (cohortSize === 0) continue
+
+    const studentIds = cohortStudents.map(s => s.id)
+    const retentionByMonth: number[] = [100] // Mes 0 siempre es 100%
+
+    // Calcular retención para cada mes siguiente
+    for (let m = 1; m <= i; m++) {
+      const checkDate = subMonths(now, i - m)
+      const checkStart = startOfMonth(checkDate)
+      const checkEnd = endOfMonth(checkDate)
+
+      // Estudiantes del cohorte que tuvieron clases en ese mes
+      const activeInMonth = await db.classBooking.groupBy({
+        by: ['studentId'],
+        where: {
+          studentId: { in: studentIds },
+          day: { gte: format(checkStart, 'yyyy-MM-dd'), lte: format(checkEnd, 'yyyy-MM-dd') },
+          status: { in: [BookingStatus.COMPLETED, BookingStatus.CONFIRMED] },
+        },
+      })
+
+      const retention = Math.round((activeInMonth.length / cohortSize) * 100)
+      retentionByMonth.push(retention)
+    }
+
+    cohorts.push({ cohortMonth, cohortSize, retentionByMonth })
+  }
+
+  // Calcular promedio de retención por mes
+  const maxMonths = Math.max(...cohorts.map(c => c.retentionByMonth.length))
+  const averageRetentionByMonth: number[] = []
+
+  for (let m = 0; m < maxMonths; m++) {
+    const values = cohorts
+      .filter(c => c.retentionByMonth[m] !== undefined)
+      .map(c => c.retentionByMonth[m])
+    
+    if (values.length > 0) {
+      averageRetentionByMonth.push(Math.round(values.reduce((a, b) => a + b, 0) / values.length))
+    }
+  }
+
+  // Encontrar mejor y peor cohorte (basado en retención al mes 3 si existe)
+  const cohortsWithRetention = cohorts.filter(c => c.retentionByMonth.length >= 4)
+  const sortedByRetention = [...cohortsWithRetention].sort(
+    (a, b) => (b.retentionByMonth[3] || 0) - (a.retentionByMonth[3] || 0)
+  )
+
+  return {
+    cohorts,
+    averageRetentionByMonth,
+    bestCohort: sortedByRetention[0] 
+      ? { month: sortedByRetention[0].cohortMonth, retention: sortedByRetention[0].retentionByMonth[3] || 0 }
+      : { month: '', retention: 0 },
+    worstCohort: sortedByRetention[sortedByRetention.length - 1]
+      ? { month: sortedByRetention[sortedByRetention.length - 1].cohortMonth, retention: sortedByRetention[sortedByRetention.length - 1].retentionByMonth[3] || 0 }
+      : { month: '', retention: 0 },
+  }
+}
+
+// =============================================
+// LTV (LIFETIME VALUE)
+// =============================================
+
+export async function getStudentLTV(): Promise<StudentLTV> {
+  // Obtener todos los estudiantes con sus pagos
+  const students = await db.user.findMany({
+    where: { roles: { has: UserRole.STUDENT } },
+    select: {
+      id: true,
+      createdAt: true,
+      invoices: {
+        where: { status: 'PAID' },
+        select: { total: true, items: { select: { planId: true, productId: true } } },
+      },
+    },
+  })
+
+  const ltvValues: number[] = []
+  const ltvByPlanMap = new Map<string, { total: number; count: number }>()
+  const ltvByProductMap = new Map<string, { total: number; count: number }>()
+
+  for (const student of students) {
+    const totalSpent = student.invoices.reduce((sum, inv) => sum + (inv.total || 0), 0)
+    ltvValues.push(totalSpent)
+
+    // Agrupar por plan y producto
+    for (const invoice of student.invoices) {
+      for (const item of invoice.items) {
+        if (item.planId) {
+          const current = ltvByPlanMap.get(item.planId) || { total: 0, count: 0 }
+          ltvByPlanMap.set(item.planId, { total: current.total + (invoice.total || 0), count: current.count + 1 })
+        }
+        if (item.productId) {
+          const current = ltvByProductMap.get(item.productId) || { total: 0, count: 0 }
+          ltvByProductMap.set(item.productId, { total: current.total + (invoice.total || 0), count: current.count + 1 })
+        }
+      }
+    }
+  }
+
+  // Calcular promedio y mediana
+  const sortedLTV = [...ltvValues].sort((a, b) => a - b)
+  const averageLTV = ltvValues.length > 0 ? ltvValues.reduce((a, b) => a + b, 0) / ltvValues.length : 0
+  const medianLTV = sortedLTV.length > 0 
+    ? sortedLTV.length % 2 === 0
+      ? (sortedLTV[sortedLTV.length / 2 - 1] + sortedLTV[sortedLTV.length / 2]) / 2
+      : sortedLTV[Math.floor(sortedLTV.length / 2)]
+    : 0
+
+  // Obtener nombres de planes y productos
+  const planIds = Array.from(ltvByPlanMap.keys())
+  const productIds = Array.from(ltvByProductMap.keys())
+
+  const plans = await db.plan.findMany({
+    where: { id: { in: planIds } },
+    select: { id: true, name: true },
+  })
+  const products = await db.product.findMany({
+    where: { id: { in: productIds } },
+    select: { id: true, name: true },
+  })
+
+  const planNameMap = new Map(plans.map(p => [p.id, p.name]))
+  const productNameMap = new Map(products.map(p => [p.id, p.name]))
+
+  const ltvByPlan = Array.from(ltvByPlanMap.entries()).map(([planId, data]) => ({
+    planName: planNameMap.get(planId) || 'Plan desconocido',
+    ltv: data.count > 0 ? Math.round((data.total / data.count) * 100) / 100 : 0,
+  })).sort((a, b) => b.ltv - a.ltv)
+
+  const ltvByProduct = Array.from(ltvByProductMap.entries()).map(([productId, data]) => ({
+    productName: productNameMap.get(productId) || 'Producto desconocido',
+    ltv: data.count > 0 ? Math.round((data.total / data.count) * 100) / 100 : 0,
+  })).sort((a, b) => b.ltv - a.ltv)
+
+  // Distribución de LTV
+  const ranges = [
+    { min: 0, max: 50, label: '$0-50' },
+    { min: 50, max: 100, label: '$50-100' },
+    { min: 100, max: 200, label: '$100-200' },
+    { min: 200, max: 500, label: '$200-500' },
+    { min: 500, max: 1000, label: '$500-1000' },
+    { min: 1000, max: Infinity, label: '$1000+' },
+  ]
+
+  const ltvDistribution = ranges.map(range => ({
+    range: range.label,
+    count: ltvValues.filter(v => v >= range.min && v < range.max).length,
+  }))
+
+  return {
+    averageLTV: Math.round(averageLTV * 100) / 100,
+    medianLTV: Math.round(medianLTV * 100) / 100,
+    ltvByPlan,
+    ltvByProduct,
+    ltvDistribution,
+    projectedLTV: Math.round(averageLTV * 1.1 * 100) / 100, // Proyección simple +10%
+  }
+}
+
+// =============================================
+// MAPA DE CALOR DE HORARIOS
+// =============================================
+
+export async function getScheduleHeatmap(monthsBack: number = 3): Promise<ScheduleHeatmap> {
+  const now = new Date()
+  const startDate = startOfMonth(subMonths(now, monthsBack - 1))
+
+  const bookings = await db.classBooking.findMany({
+    where: {
+      day: { gte: format(startDate, 'yyyy-MM-dd') },
+    },
+    select: {
+      day: true,
+      timeSlot: true,
+      status: true,
+    },
+  })
+
+  const dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+  const heatmapData = new Map<string, HourlyDemand>()
+
+  // Inicializar todas las combinaciones hora-día
+  for (let hour = 6; hour <= 22; hour++) {
+    for (const day of dayNames) {
+      const key = `${hour}-${day}`
+      heatmapData.set(key, {
+        hour,
+        day,
+        bookings: 0,
+        completedClasses: 0,
+        cancellations: 0,
+        demand: 'low',
+      })
+    }
+  }
+
+  // Procesar bookings
+  for (const booking of bookings) {
+    const date = new Date(booking.day)
+    const dayName = dayNames[date.getDay()]
+    const hour = parseInt(booking.timeSlot.split(':')[0])
+    const key = `${hour}-${dayName}`
+
+    const data = heatmapData.get(key)
+    if (data) {
+      data.bookings++
+      if (booking.status === BookingStatus.COMPLETED) {
+        data.completedClasses++
+      } else if (booking.status === BookingStatus.CANCELLED || booking.status === BookingStatus.NO_SHOW) {
+        data.cancellations++
+      }
+    }
+  }
+
+  // Calcular niveles de demanda
+  const allBookings = Array.from(heatmapData.values()).map(d => d.bookings)
+  const maxBookings = Math.max(...allBookings)
+  const avgBookings = allBookings.reduce((a, b) => a + b, 0) / allBookings.length
+
+  for (const data of heatmapData.values()) {
+    if (data.bookings >= maxBookings * 0.8) {
+      data.demand = 'peak'
+    } else if (data.bookings >= avgBookings * 1.2) {
+      data.demand = 'high'
+    } else if (data.bookings >= avgBookings * 0.5) {
+      data.demand = 'medium'
+    } else {
+      data.demand = 'low'
+    }
+  }
+
+  const dataArray = Array.from(heatmapData.values())
+  const sortedByBookings = [...dataArray].sort((a, b) => b.bookings - a.bookings)
+
+  return {
+    data: dataArray,
+    peakHours: sortedByBookings.slice(0, 5).map(d => ({ hour: d.hour, day: d.day, bookings: d.bookings })),
+    lowDemandHours: sortedByBookings.slice(-5).reverse().map(d => ({ hour: d.hour, day: d.day, bookings: d.bookings })),
+    averageBookingsPerSlot: Math.round(avgBookings * 10) / 10,
+  }
+}

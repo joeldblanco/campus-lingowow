@@ -232,6 +232,11 @@ const data = {
           url: '/admin/analytics/projections',
           icon: LineChart,
         },
+        {
+          title: 'Avanzado',
+          url: '/admin/analytics/advanced',
+          icon: BarChart3,
+        },
       ],
     },
   ],

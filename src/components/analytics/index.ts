@@ -47,3 +47,18 @@ export { DateRangePicker, TimeFrameSelector } from './date-range-picker'
 
 // Export Button
 export { ExportButton, downloadCSV, downloadExcel } from './export-button'
+
+// Financial Health
+export { FinancialHealthDashboard } from './financial-health'
+
+// Cohort Analysis
+export { CohortAnalysis } from './cohort-analysis'
+
+// LTV Analysis
+export { LTVAnalysis } from './ltv-analysis'
+
+// Schedule Heatmap
+export { ScheduleHeatmapChart } from './schedule-heatmap'
+
+// Product Charts
+export { ProductAnalyticsCharts } from './product-charts'
