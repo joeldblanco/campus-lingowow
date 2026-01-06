@@ -1300,9 +1300,11 @@ export async function verifyPaypalTransaction(resourceId: string) {
       return { success: false, error: 'No se encontró el email del cliente en la transacción' }
     }
 
-    // Check availability locally
+    // Check availability locally (check both original and normalized IDs to prevent duplicates)
     const existingInvoice = await db.invoice.findFirst({
-      where: { paypalOrderId: resourceId },
+      where: {
+        OR: [{ paypalOrderId: originalId }, { paypalOrderId: normalizedId }],
+      },
     })
 
     if (existingInvoice) {
