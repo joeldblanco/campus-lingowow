@@ -54,6 +54,7 @@ interface Teacher {
     level: number
   } | null
   availability: Record<string, Array<{ startTime: string; endTime: string }>>
+  bookedSlots?: Record<string, Array<{ startTime: string; endTime: string }>>
 }
 
 interface ScheduleCalendarSelectorProps {
@@ -226,7 +227,23 @@ export function ScheduleCalendarSelector({
     : {}
 
   // Convertir slots seleccionados al formato de bookedSlots
+  // También incluir los slots ya ocupados del profesor para que se muestren como no disponibles
   const bookedSlots: Record<string, string[]> = {}
+  
+  // Primero agregar los slots ocupados del profesor
+  if (selectedTeacher?.bookedSlots) {
+    Object.entries(selectedTeacher.bookedSlots).forEach(([day, slots]) => {
+      if (!bookedSlots[day]) {
+        bookedSlots[day] = []
+      }
+      slots.forEach((slot) => {
+        // Agregar solo la hora de inicio para el formato esperado
+        bookedSlots[day].push(slot.startTime)
+      })
+    })
+  }
+  
+  // Luego agregar los slots seleccionados por el usuario
   selectedSlots.forEach((slotKey) => {
     const [day, time] = slotKey.split('_')
     // Validar que day y time existan

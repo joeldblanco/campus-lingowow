@@ -602,7 +602,7 @@ export async function getAvailableTeachers(day: string, timeSlot: string, timezo
 
 /**
  * Obtiene los horarios disponibles de un profesor para una fecha específica
- * basándose en su disponibilidad configurada y la duración del curso
+ * basándose en su disponibilidad configurada, la duración del curso y las clases ya agendadas
  */
 export async function getTeacherAvailableTimeSlots(
   teacherId: string,
@@ -610,7 +610,7 @@ export async function getTeacherAvailableTimeSlots(
   courseId: string
 ) {
   try {
-    const { getDayName } = await import('@/lib/utils/date')
+    const { getDayName, convertTimeSlotToUTC } = await import('@/lib/utils/date')
 
     // Obtener el nombre del día de la semana
     const dayOfWeek = getDayName(date)
@@ -639,6 +639,23 @@ export async function getTeacherAvailableTimeSlots(
       return []
     }
 
+    // Obtener clases ya agendadas para este profesor en esta fecha
+    // Convertir la fecha a UTC para buscar en la DB
+    const utcDateData = convertTimeSlotToUTC(date, '00:00-23:59', 'America/Lima')
+    const bookedClasses = await db.classBooking.findMany({
+      where: {
+        teacherId,
+        day: utcDateData.day,
+        status: { not: 'CANCELLED' },
+      },
+      select: {
+        timeSlot: true,
+      },
+    })
+
+    // Crear un Set de slots ocupados para búsqueda rápida
+    const bookedSlotsSet = new Set(bookedClasses.map(c => c.timeSlot))
+
     // Generar slots según la duración del curso
     // Usar Set para evitar duplicados
     const timeSlotsSet = new Set<string>()
@@ -661,7 +678,11 @@ export async function getTeacherAvailableTimeSlots(
         // Solo agregar si el slot completo cabe en el rango de disponibilidad
         if (slotEndMinutes <= endMinutes) {
           const timeSlot = `${slotStartHour.toString().padStart(2, '0')}:${slotStartMinute.toString().padStart(2, '0')}-${slotEndHour.toString().padStart(2, '0')}:${slotEndMinute.toString().padStart(2, '0')}`
-          timeSlotsSet.add(timeSlot)
+          
+          // Solo agregar si el slot NO está ocupado
+          if (!bookedSlotsSet.has(timeSlot)) {
+            timeSlotsSet.add(timeSlot)
+          }
         }
       }
     })

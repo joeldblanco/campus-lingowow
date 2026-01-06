@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { convertAvailabilityFromUTC } from '@/lib/utils/date'
+import { convertAvailabilityFromUTC, convertTimeSlotFromUTC } from '@/lib/utils/date'
 
 export async function GET(req: NextRequest) {
   try {
@@ -27,6 +27,16 @@ export async function GET(req: NextRequest) {
           include: {
             teacherAvailability: true,
             teacherRank: true,
+            // Incluir clases agendadas (no canceladas) para restarlas de la disponibilidad
+            bookingsAsTeacher: {
+              where: {
+                status: { not: 'CANCELLED' },
+              },
+              select: {
+                day: true,
+                timeSlot: true,
+              },
+            },
           },
         },
       },
@@ -92,6 +102,38 @@ export async function GET(req: NextRequest) {
 
       console.log(`[API] Disponibilidad agrupada:`, availabilityByDay)
 
+      // Procesar clases agendadas para obtener horarios ocupados por día de la semana
+      // Las clases están en UTC, convertir a hora local
+      const bookedSlotsByDay: Record<string, Array<{ startTime: string; endTime: string }>> = {}
+      
+      teacher.bookingsAsTeacher.forEach((classItem) => {
+        try {
+          // Convertir de UTC a hora local
+          const localData = convertTimeSlotFromUTC(classItem.day, classItem.timeSlot, timezone)
+          
+          // Obtener el día de la semana de la fecha
+          const classDate = new Date(localData.day + 'T12:00:00')
+          const dayName = classDate.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase()
+          
+          // Parsear el timeSlot (formato "HH:MM-HH:MM")
+          const [startTime, endTime] = localData.timeSlot.split('-')
+          
+          if (!bookedSlotsByDay[dayName]) {
+            bookedSlotsByDay[dayName] = []
+          }
+          bookedSlotsByDay[dayName].push({
+            startTime: startTime.trim(),
+            endTime: endTime.trim(),
+          })
+          
+          console.log(`[API] - Clase ocupada: ${localData.day} (${dayName}) ${localData.timeSlot}`)
+        } catch (error) {
+          console.error(`[API] Error converting booked class: ${error}`)
+        }
+      })
+
+      console.log(`[API] Horarios ocupados:`, bookedSlotsByDay)
+
       return {
         id: teacher.id,
         name: `${teacher.name} ${teacher.lastName || ''}`,
@@ -100,6 +142,7 @@ export async function GET(req: NextRequest) {
         bio: teacher.bio,
         rank: teacher.teacherRank,
         availability: availabilityByDay,
+        bookedSlots: bookedSlotsByDay,
       }
     })
 

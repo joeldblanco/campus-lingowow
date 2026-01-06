@@ -26,6 +26,7 @@ interface Teacher {
     level: number
   } | null
   availability: Record<string, Array<{ startTime: string; endTime: string }>>
+  bookedSlots?: Record<string, Array<{ startTime: string; endTime: string }>>
 }
 
 interface ScheduleSlot {
@@ -153,19 +154,39 @@ export function ScheduleSelectorStep({
     fetchTeachers()
   }, [fetchTeachers])
 
-  // Check if a time slot is within teacher's availability
+  // Check if a time slot is within teacher's availability and not already booked
   const isSlotAvailable = useCallback((dayKey: string, time: string): boolean => {
     if (!selectedTeacher) return false
     const dayAvailability = selectedTeacher.availability[dayKey] || []
     
-    const [slotHour] = time.split(':').map(Number)
-    const slotEndHour = slotHour + Math.ceil(classDuration / 60)
+    const [slotHour, slotMinute = 0] = time.split(':').map(Number)
+    const slotStartMinutes = slotHour * 60 + slotMinute
+    const slotEndMinutes = slotStartMinutes + classDuration
     
-    return dayAvailability.some((range) => {
-      const [startHour] = range.startTime.split(':').map(Number)
-      const [endHour] = range.endTime.split(':').map(Number)
-      return slotHour >= startHour && slotEndHour <= endHour
+    // Check if within availability range
+    const isWithinAvailability = dayAvailability.some((range) => {
+      const [startHour, startMin = 0] = range.startTime.split(':').map(Number)
+      const [endHour, endMin = 0] = range.endTime.split(':').map(Number)
+      const rangeStartMinutes = startHour * 60 + startMin
+      const rangeEndMinutes = endHour * 60 + endMin
+      return slotStartMinutes >= rangeStartMinutes && slotEndMinutes <= rangeEndMinutes
     })
+    
+    if (!isWithinAvailability) return false
+    
+    // Check if slot is already booked
+    const bookedSlots = selectedTeacher.bookedSlots?.[dayKey] || []
+    const isBooked = bookedSlots.some((booked) => {
+      const [bookedStartHour, bookedStartMin = 0] = booked.startTime.split(':').map(Number)
+      const [bookedEndHour, bookedEndMin = 0] = booked.endTime.split(':').map(Number)
+      const bookedStartMinutes = bookedStartHour * 60 + bookedStartMin
+      const bookedEndMinutes = bookedEndHour * 60 + bookedEndMin
+      
+      // Check for overlap: slot overlaps with booked if they intersect
+      return slotStartMinutes < bookedEndMinutes && slotEndMinutes > bookedStartMinutes
+    })
+    
+    return !isBooked
   }, [selectedTeacher, classDuration])
 
   // Calculate selected slots based on drag start and end

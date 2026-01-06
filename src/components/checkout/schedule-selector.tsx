@@ -28,6 +28,7 @@ interface Teacher {
     level: number
   } | null
   availability: Record<string, Array<{ startTime: string; endTime: string }>>
+  bookedSlots?: Record<string, Array<{ startTime: string; endTime: string }>>
 }
 
 interface ProrationResult {
