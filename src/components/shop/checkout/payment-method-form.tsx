@@ -15,7 +15,7 @@ interface CartItemForNiubiz {
   product: {
     id: string
     title: string
-    description: string | null
+    description?: string | null
     image?: string | null
     type?: string
   }
