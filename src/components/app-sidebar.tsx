@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  BarChart3,
   Book,
   BookOpenText,
   Calendar,
@@ -11,16 +12,20 @@ import {
   GraduationCap,
   LayoutDashboard,
   Library,
+  LineChart,
   Package,
+  PieChart,
   Receipt,
   Shapes,
   ShoppingCart,
   Store,
   Tag,
+  TrendingUp,
   Trophy,
   UserCheck,
   Users,
   UserCog,
+  Wallet,
   Zap,
   FolderOpen,
   Video,
@@ -187,6 +192,47 @@ const data = {
       title: 'Gestión de Archivos',
       icon: FolderOpen,
       url: '/admin/files',
+    },
+    {
+      title: 'Analytics',
+      icon: BarChart3,
+      subItems: [
+        {
+          title: 'Dashboard',
+          url: '/admin/analytics',
+          icon: LayoutDashboard,
+        },
+        {
+          title: 'Ingresos',
+          url: '/admin/analytics/revenue',
+          icon: TrendingUp,
+        },
+        {
+          title: 'Gastos',
+          url: '/admin/analytics/expenses',
+          icon: Wallet,
+        },
+        {
+          title: 'Productos',
+          url: '/admin/analytics/products',
+          icon: PieChart,
+        },
+        {
+          title: 'Profesores',
+          url: '/admin/analytics/teachers',
+          icon: GraduationCap,
+        },
+        {
+          title: 'Estudiantes',
+          url: '/admin/analytics/students',
+          icon: Users,
+        },
+        {
+          title: 'Proyecciones',
+          url: '/admin/analytics/projections',
+          icon: LineChart,
+        },
+      ],
     },
   ],
   navEditor: [
