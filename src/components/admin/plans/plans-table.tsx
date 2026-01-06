@@ -46,6 +46,7 @@ interface PlanPricing {
   currency: string
   isActive: boolean
   paypalSku: string | null
+  courseId: string | null
 }
 
 interface Plan {

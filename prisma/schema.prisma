@@ -346,6 +346,7 @@ model Course {
   plans            Plan[]
   exams            Exam[]
   teacherCourses   TeacherCourse[] // Profesores que pueden enseñar este curso
+  planPricing      PlanPricing[]   // Precios de planes que apuntan a este curso
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -1160,8 +1161,12 @@ model PlanPricing {
   // Campos opcionales para PayPal por idioma
   paypalSku    String? // SKU de PayPal específico para este idioma
 
+  // Curso asociado a este idioma (determina a qué curso se inscribe el estudiante)
+  courseId     String? // Curso específico para este idioma
+
   // Relaciones
-  plan Plan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  plan   Plan    @relation(fields: [planId], references: [id], onDelete: Cascade)
+  course Course? @relation(fields: [courseId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -1169,6 +1174,7 @@ model PlanPricing {
   @@unique([planId, language])
   @@index([planId])
   @@index([language])
+  @@index([courseId])
   @@map("plan_pricing")
 }
 

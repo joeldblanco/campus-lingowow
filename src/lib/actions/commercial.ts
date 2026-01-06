@@ -439,6 +439,10 @@ export async function getPricingPlansForProduct(productId: string) {
             feature: true,
           },
         },
+        pricing: {
+          where: { isActive: true },
+          orderBy: { language: 'asc' },
+        },
       },
     })
   } catch (error) {
@@ -1640,6 +1644,7 @@ export async function upsertPlanPricing(data: {
   currency?: string
   isActive?: boolean
   paypalSku?: string | null
+  courseId?: string | null
 }) {
   try {
     const pricing = await db.planPricing.upsert({
@@ -1655,6 +1660,7 @@ export async function upsertPlanPricing(data: {
         currency: data.currency || 'USD',
         isActive: data.isActive ?? true,
         paypalSku: data.paypalSku || null,
+        courseId: data.courseId || null,
       },
       create: {
         planId: data.planId,
@@ -1664,6 +1670,7 @@ export async function upsertPlanPricing(data: {
         currency: data.currency || 'USD',
         isActive: data.isActive ?? true,
         paypalSku: data.paypalSku || null,
+        courseId: data.courseId || null,
       },
     })
     revalidatePath('/admin/plans')
@@ -1770,6 +1777,39 @@ export async function getPlanPriceForLanguage(
     return null
   } catch (error) {
     console.error('Error getting plan price for language:', error)
+    return null
+  }
+}
+
+export async function getCourseIdForPlanAndLanguage(
+  planId: string,
+  language: string
+): Promise<string | null> {
+  try {
+    // Primero buscar en PlanPricing para el idioma específico
+    const pricing = await db.planPricing.findUnique({
+      where: {
+        planId_language: {
+          planId,
+          language,
+        },
+      },
+      select: { courseId: true, isActive: true },
+    })
+
+    if (pricing?.isActive && pricing.courseId) {
+      return pricing.courseId
+    }
+
+    // Fallback: usar el courseId directo del plan
+    const plan = await db.plan.findUnique({
+      where: { id: planId },
+      select: { courseId: true },
+    })
+
+    return plan?.courseId || null
+  } catch (error) {
+    console.error('Error getting course for plan and language:', error)
     return null
   }
 }

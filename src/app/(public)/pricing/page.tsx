@@ -6,12 +6,14 @@ import Footer from '@/components/public-components/footer'
 import { CartDrawer } from '@/components/shop/cart/cart-drawer'
 import { Button } from '@/components/ui/button'
 import { CheckCircle, ChevronDown, GraduationCap, Globe, Rocket, Languages, Loader2, Check } from 'lucide-react'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { SUPPORTED_LANGUAGES } from '@/lib/constants/languages'
 import { cn } from '@/lib/utils'
 import { useSearchParams } from 'next/navigation'
 import { getPlans, getPricingPlansForProduct, getProducts } from '@/lib/actions/commercial'
 import { useShopStore } from '@/stores/useShopStore'
 import { toast } from 'sonner'
-import type { Plan, Feature } from '@prisma/client'
+import type { Plan, Feature, PlanPricing } from '@prisma/client'
 
 // Extended type to include relations matching the getPlans return type
 type PlanWithFeatures = Plan & {
@@ -19,6 +21,7 @@ type PlanWithFeatures = Plan & {
     included: boolean
     feature: Feature
   }[]
+  pricing?: PlanPricing[]
 }
 
 export default function PricingPage() {
@@ -28,6 +31,7 @@ export default function PricingPage() {
   const [product, setProduct] = useState<{ id: string; name: string; description: string | null; image: string | null } | null>(null)
   const [loading, setLoading] = useState(true)
   const [uniqueFeatures, setUniqueFeatures] = useState<string[]>([])
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('en')
   
   // Shop store
   const { addToCart, cart, isCartDrawerOpen, setCartDrawerOpen, lastAddedItem } = useShopStore()
@@ -47,7 +51,17 @@ export default function PricingPage() {
     return cart.some((item) => item.plan.id === planId)
   }
 
+  const getPriceForLanguage = (plan: PlanWithFeatures, language: string) => {
+    const pricing = plan.pricing?.find(p => p.language === language)
+    if (pricing) {
+      return { price: pricing.price, comparePrice: pricing.comparePrice }
+    }
+    // Fallback to base price
+    return { price: plan.price, comparePrice: plan.comparePrice }
+  }
+
   const handleAddToCart = (plan: PlanWithFeatures) => {
+    const { price } = getPriceForLanguage(plan, selectedLanguage)
     addToCart({
       product: {
         id: product?.id || productId || 'unknown',
@@ -58,9 +72,10 @@ export default function PricingPage() {
       plan: {
         id: plan.id,
         name: plan.name,
-        price: Number(plan.price),
+        price: Number(price),
       },
       quantity: 1,
+      language: selectedLanguage,
     })
   }
 
@@ -125,8 +140,23 @@ export default function PricingPage() {
               Elige el plan que se adapte a tus objetivos. Mejora, cambia o cancela en cualquier momento.
             </p>
 
-            {/* Monthly Label (No Toggle) */}
-            <div className="flex items-center justify-center gap-4 mb-8">
+            {/* Language Tabs */}
+            <div className="flex flex-col items-center gap-4 mb-8">
+              <span className="text-sm text-slate-500 dark:text-slate-400">Selecciona el idioma que deseas aprender:</span>
+              <Tabs value={selectedLanguage} onValueChange={setSelectedLanguage} className="w-auto">
+                <TabsList className="grid grid-cols-2 w-[300px]">
+                  {SUPPORTED_LANGUAGES.map((lang) => (
+                    <TabsTrigger 
+                      key={lang.code} 
+                      value={lang.code}
+                      className="gap-2 text-base"
+                    >
+                      <span className="text-lg">{lang.flag}</span>
+                      {lang.code === 'en' ? 'Inglés' : 'Español'}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </Tabs>
               <span className="font-bold text-slate-900 dark:text-white bg-blue-100 dark:bg-blue-900/30 px-4 py-2 rounded-full">
                 Planes Mensuales Flexibles
               </span>
@@ -172,12 +202,22 @@ export default function PricingPage() {
                         <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">
                           {plan.description || "Plan de aprendizaje completo"}
                         </p>
-                        <div className="flex items-baseline gap-1">
-                          <span className="text-4xl font-bold text-slate-900 dark:text-white font-lexend">
-                            ${Number(plan.price).toFixed(0)}
-                          </span>
-                          <span className="text-slate-500 dark:text-slate-400 font-medium">/mes</span>
-                        </div>
+                        {(() => {
+                          const { price, comparePrice } = getPriceForLanguage(plan, selectedLanguage)
+                          return (
+                            <div className="flex items-baseline gap-2">
+                              <span className="text-4xl font-bold text-slate-900 dark:text-white font-lexend">
+                                ${Number(price).toFixed(0)}
+                              </span>
+                              <span className="text-slate-500 dark:text-slate-400 font-medium">/mes</span>
+                              {comparePrice && comparePrice > price && (
+                                <span className="text-lg text-slate-400 line-through">
+                                  ${Number(comparePrice).toFixed(0)}
+                                </span>
+                              )}
+                            </div>
+                          )
+                        })()}
                       </div>
 
                       <Button

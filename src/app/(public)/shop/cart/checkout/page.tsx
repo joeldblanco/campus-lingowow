@@ -504,7 +504,7 @@ export default function CheckoutPage() {
       const selection = scheduleSelections[item.plan.id]
       const proration = selection?.proration
       const price = proration?.proratedPrice ?? item.plan.price
-      console.log('[Checkout] Item:', item.plan.id, 'schedule:', selection?.schedule)
+      console.log('[Checkout] Item:', item.plan.id, 'schedule:', selection?.schedule, 'language:', item.language)
       return {
         productId: item.product.id,
         planId: item.plan.id,
@@ -515,6 +515,7 @@ export default function CheckoutPage() {
         selectedSchedule: selection?.schedule,
         proratedClasses: proration?.classesFromNow,
         proratedPrice: proration?.proratedPrice,
+        language: item.language, // Idioma seleccionado para determinar el curso
       }
     })
   }, [cartItems, scheduleSelections])

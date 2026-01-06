@@ -36,6 +36,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { updatePlan, updatePlanFeatures, getFeatures, getPlanPricing, upsertPlanPricing } from '@/lib/actions/commercial'
+import { getAllCourses } from '@/lib/actions/courses'
 import { SUPPORTED_LANGUAGES } from '@/lib/constants/languages'
 import { toast } from 'sonner'
 import { Loader2, Globe } from 'lucide-react'
@@ -71,6 +72,7 @@ interface PlanPricingData {
   currency: string
   isActive: boolean
   paypalSku: string | null
+  courseId: string | null
 }
 
 interface Plan {
@@ -127,17 +129,22 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
   }>>([])
   const [selectedFeatures, setSelectedFeatures] = useState<Set<string>>(new Set())
   const [loadingFeatures, setLoadingFeatures] = useState(true)
+  const [availableCourses, setAvailableCourses] = useState<Array<{ id: string; title: string; language: string }>>([])
   const [pricingByLanguage, setPricingByLanguage] = useState<Record<string, PlanPricingData>>(() => {
     const initial: Record<string, PlanPricingData> = {}
     for (const lang of SUPPORTED_LANGUAGES) {
       const existing = plan.pricing?.find(p => p.language === lang.code)
-      initial[lang.code] = existing || {
+      initial[lang.code] = existing ? {
+        ...existing,
+        courseId: existing.courseId || null,
+      } : {
         language: lang.code,
         price: plan.price,
         comparePrice: plan.comparePrice,
         currency: 'USD',
         isActive: false,
         paypalSku: null,
+        courseId: null,
       }
     }
     return initial
@@ -212,6 +219,7 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
           currency: existing.currency,
           isActive: existing.isActive,
           paypalSku: existing.paypalSku,
+          courseId: existing.courseId || null,
         } : {
           language: lang.code,
           price: plan.price,
@@ -219,14 +227,22 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
           currency: 'USD',
           isActive: false,
           paypalSku: null,
+          courseId: null,
         }
       }
       setPricingByLanguage(newPricing)
     }
     
+    // Load available courses
+    const loadCourses = async () => {
+      const courses = await getAllCourses()
+      setAvailableCourses(courses.map((c: { id: string; title: string; language: string }) => ({ id: c.id, title: c.title, language: c.language })))
+    }
+    
     if (open) {
       loadFeatures()
       loadPricing()
+      loadCourses()
     }
   }, [plan, form, open])
 
@@ -275,6 +291,7 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
             currency: pricing.currency,
             isActive: pricing.isActive,
             paypalSku: pricing.paypalSku,
+            courseId: pricing.courseId,
           })
         }
       }
@@ -765,6 +782,29 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
                       />
                       <p className="text-xs text-muted-foreground mt-1">
                         SKU específico para PayPal para clases de {lang.name.toLowerCase()}
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <FormLabel>Curso Asociado</FormLabel>
+                      <Select
+                        value={pricingByLanguage[lang.code]?.courseId || 'none'}
+                        onValueChange={(value) => handlePricingChange(lang.code, 'courseId', value === 'none' ? null : value)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccionar curso..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="none">Sin curso asignado</SelectItem>
+                          {availableCourses.map((course) => (
+                            <SelectItem key={course.id} value={course.id}>
+                              {course.title} ({course.language})
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Curso al que se inscribirá el estudiante que compre este plan en {lang.name.toLowerCase()}
                       </p>
                     </div>
                   </TabsContent>

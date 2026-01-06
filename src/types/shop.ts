@@ -86,6 +86,7 @@ export type PlanPricing = Prisma.PlanPricingGetPayload<{
     currency: true
     isActive: true
     paypalSku: true
+    courseId: true
     createdAt: true
     updatedAt: true
   }
@@ -125,13 +126,14 @@ export type CartItem = {
   product: {
     id: string
     title: string // Compatibilidad con Course legacy
-    description: string | null
+    description?: string | null
     type?: ProductType
     image?: string | null
   }
   plan: Pick<Plan, 'id' | 'name' | 'price'>
   cartItemDescription?: string
   quantity?: number
+  language?: string // Idioma seleccionado para el plan (en, es, etc.)
 }
 
 export type Filters = {
