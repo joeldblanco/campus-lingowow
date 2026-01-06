@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { UserAvatar } from '@/components/ui/user-avatar'
 import { cn } from '@/lib/utils'
-import { getTeacherScheduleForAdmin, type TeacherScheduleLesson } from '@/lib/actions/teacher-schedule'
+import { getTeacherScheduleForAdmin, type TeacherScheduleLesson, type TeacherAvailabilitySlot } from '@/lib/actions/teacher-schedule'
 import type { ScheduleLesson } from '@/types/schedule'
 import { getLessonColorClasses } from '@/types/schedule'
 import { 
@@ -89,6 +89,7 @@ export function TeacherScheduleDialog({
   const [currentDate, setCurrentDate] = useState(new Date())
   const [isLoading, setIsLoading] = useState(false)
   const [lessons, setLessons] = useState<ScheduleLesson[]>([])
+  const [availability, setAvailability] = useState<TeacherAvailabilitySlot[]>([])
   const lastFetchedMonth = useRef<string>('')
 
   const fetchData = useCallback(async (force = false) => {
@@ -108,6 +109,7 @@ export function TeacherScheduleDialog({
 
       if (result.success && result.data) {
         setLessons(transformLessons(result.data.lessons))
+        setAvailability(result.data.availability)
         lastFetchedMonth.current = monthKey
       }
     } catch (error) {
@@ -127,8 +129,27 @@ export function TeacherScheduleDialog({
     if (!open) {
       lastFetchedMonth.current = ''
       setLessons([])
+      setAvailability([])
     }
   }, [open])
+
+  const DAY_MAP: Record<string, number> = {
+    monday: 1, tuesday: 2, wednesday: 3, thursday: 4,
+    friday: 5, saturday: 6, sunday: 0,
+    lunes: 1, martes: 2, miércoles: 3, jueves: 4,
+    viernes: 5, sábado: 6, domingo: 0,
+  }
+
+  const isSlotAvailable = (date: Date, time: string) => {
+    const dayOfWeek = date.getDay()
+    return availability.some((slot) => {
+      const slotDayNum = DAY_MAP[slot.day.toLowerCase()]
+      if (slotDayNum !== dayOfWeek) return false
+      const slotStart = slot.startTime
+      const slotEnd = slot.endTime
+      return time >= slotStart && time < slotEnd
+    })
+  }
 
   const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 })
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i))
@@ -239,7 +260,7 @@ export function TeacherScheduleDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
+      <DialogContent className="w-[95vw] max-w-[95vw] h-[95vh] max-h-[95vh] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Calendar className="h-5 w-5" />
@@ -262,6 +283,16 @@ export function TeacherScheduleDialog({
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 text-xs">
+              <div className="w-3 h-3 rounded bg-green-100 dark:bg-green-900/40 border border-green-300 dark:border-green-700" />
+              <span className="text-muted-foreground">Disponible</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs">
+              <div className="w-3 h-3 rounded bg-blue-100 dark:bg-blue-900/40 border border-blue-300 dark:border-blue-700" />
+              <span className="text-muted-foreground">Clase programada</span>
+            </div>
+          </div>
           <div className="text-sm font-medium">
             {format(weekStart, "d 'de' MMMM", { locale: es })} - {format(addDays(weekStart, 6), "d 'de' MMMM yyyy", { locale: es })}
           </div>
@@ -273,8 +304,8 @@ export function TeacherScheduleDialog({
             <p className="text-muted-foreground">Cargando horario...</p>
           </div>
         ) : (
-          <div className="flex-1 overflow-auto" style={{ maxHeight: '500px' }}>
-            <table className="w-full min-w-[800px] border-collapse table-fixed">
+          <div className="flex-1 overflow-auto">
+            <table className="w-full border-collapse table-fixed">
               <colgroup>
                 <col className="w-14" />
                 {weekDays.map((day) => (
@@ -333,11 +364,18 @@ export function TeacherScheduleDialog({
                         <td
                           key={`${day.toISOString()}-${time}`}
                           className={cn(
-                            'align-top border-r border-dashed p-0.5 h-14',
-                            isCurrentDay && 'bg-primary/5'
+                            'align-top border-r border-dashed p-0.5 h-16',
+                            isCurrentDay && 'bg-primary/5',
+                            !lesson && isSlotAvailable(day, time) && 'bg-green-50 dark:bg-green-900/20'
                           )}
                         >
-                          {lesson && renderLessonCard(lesson)}
+                          {lesson ? renderLessonCard(lesson) : (
+                            isSlotAvailable(day, time) && (
+                              <div className="h-full flex items-center justify-center">
+                                <span className="text-[9px] text-green-600 dark:text-green-400 font-medium">Disponible</span>
+                              </div>
+                            )
+                          )}
                         </td>
                       )
                     })}
