@@ -122,7 +122,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
       {/* 2. Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" data-tour="stats">
         {/* Asistencia Semanal */}
-        <div className={cardStyle}>
+        <Link href="/schedule" className={`${cardStyle} hover:shadow-md transition-shadow cursor-pointer block`}>
           <div className="flex justify-between items-start mb-4">
             <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
               Asistencia Semanal
@@ -137,10 +137,10 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
               +{dashboardData.weeklyAttendance.trend}%
             </Badge>
           </div>
-        </div>
+        </Link>
 
         {/* Ganancias del Período */}
-        <div className={cardStyle}>
+        <Link href="/teacher/earnings" className={`${cardStyle} hover:shadow-md transition-shadow cursor-pointer block`}>
           <div className="flex justify-between items-start mb-4">
             <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
               Ganancias del Mes
@@ -160,10 +160,10 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
               </Badge>
             )}
           </div>
-        </div>
+        </Link>
 
         {/* Estudiantes Activos */}
-        <div className={cardStyle}>
+        <Link href="/teacher/active-students" className={`${cardStyle} hover:shadow-md transition-shadow cursor-pointer block`}>
           <div className="flex justify-between items-start mb-4">
             <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
               Estudiantes Activos
@@ -174,13 +174,12 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
             <span className="text-3xl font-bold text-slate-900 dark:text-white">
               {dashboardData.activeStudents.count}
             </span>
-            {/* Assuming trending up generally */}
-            <span className="text-xs text-slate-400 mb-1 font-medium">Estudiantes totales</span>
+            <span className="text-xs text-blue-500 hover:text-blue-600 font-bold mb-1 ml-auto">Ver lista</span>
           </div>
-        </div>
+        </Link>
 
         {/* Mensajes sin leer */}
-        <div className={cardStyle}>
+        <Link href="/messages" className={`${cardStyle} hover:shadow-md transition-shadow cursor-pointer block`}>
           <div className="flex justify-between items-start mb-4">
             <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
               Mensajes sin leer
@@ -191,11 +190,11 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
             <span className="text-3xl font-bold text-slate-900 dark:text-white">
               {dashboardData.unreadMessages.count}
             </span>
-            <Link href="/messages" className="text-xs text-blue-500 hover:text-blue-600 font-bold mb-1 ml-auto cursor-pointer">
+            <span className="text-xs text-blue-500 hover:text-blue-600 font-bold mb-1 ml-auto">
               Ver todos
-            </Link>
+            </span>
           </div>
-        </div>
+        </Link>
       </div>
 
       {/* Main Content Grid */}
@@ -291,7 +290,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
               {dashboardData.activeCourses.map((course) => (
                 <Link
                   key={course.id}
-                  href={`/my-courses/${course.id}`}
+                  href={`/teacher/courses/${course.id}`}
                   className="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer group block"
                 >
                   <div className="flex justify-between items-start mb-4">

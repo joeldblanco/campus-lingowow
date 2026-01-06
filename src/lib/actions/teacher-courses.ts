@@ -322,6 +322,334 @@ export async function unassignLanguageCoursesFromTeacher(
 }
 
 /**
+ * Obtiene los cursos activos del profesor (donde ha dado clases recientemente)
+ * con información completa del curso y estadísticas
+ */
+export async function getTeacherActiveCourses(teacherId: string) {
+  try {
+    const sixtyDaysAgo = new Date()
+    sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60)
+
+    // Obtener cursos donde el profesor ha dado clases recientemente
+    const coursesWithBookings = await db.course.findMany({
+      where: {
+        enrollments: {
+          some: {
+            bookings: {
+              some: {
+                teacherId: teacherId,
+                day: { gte: sixtyDaysAgo.toISOString().split('T')[0] },
+              },
+            },
+          },
+        },
+      },
+      include: {
+        _count: {
+          select: {
+            enrollments: {
+              where: { status: 'ACTIVE' },
+            },
+            modules: {
+              where: { isPublished: true },
+            },
+          },
+        },
+        modules: {
+          where: { isPublished: true },
+          select: {
+            _count: {
+              select: { lessons: { where: { isPublished: true } } },
+            },
+          },
+        },
+      },
+      orderBy: { title: 'asc' },
+    })
+
+    // También obtener cursos asignados al profesor que aún no ha enseñado
+    const assignedCourses = await db.course.findMany({
+      where: {
+        teacherCourses: {
+          some: { teacherId },
+        },
+        NOT: {
+          id: { in: coursesWithBookings.map((c) => c.id) },
+        },
+      },
+      include: {
+        _count: {
+          select: {
+            enrollments: {
+              where: { status: 'ACTIVE' },
+            },
+            modules: {
+              where: { isPublished: true },
+            },
+          },
+        },
+        modules: {
+          where: { isPublished: true },
+          select: {
+            _count: {
+              select: { lessons: { where: { isPublished: true } } },
+            },
+          },
+        },
+      },
+      orderBy: { title: 'asc' },
+    })
+
+    const allCourses = [...coursesWithBookings, ...assignedCourses]
+
+    return {
+      success: true,
+      courses: allCourses.map((course) => ({
+        id: course.id,
+        title: course.title,
+        description: course.description,
+        language: course.language,
+        level: course.level,
+        image: course.image,
+        isPersonalized: course.isPersonalized,
+        isSynchronous: course.isSynchronous,
+        studentCount: course._count.enrollments,
+        moduleCount: course._count.modules,
+        lessonCount: course.modules.reduce((acc, m) => acc + m._count.lessons, 0),
+        isActive: coursesWithBookings.some((c) => c.id === course.id),
+      })),
+    }
+  } catch (error) {
+    console.error('Error fetching teacher active courses:', error)
+    return {
+      success: false,
+      error: 'Error al obtener los cursos activos',
+      courses: [],
+    }
+  }
+}
+
+/**
+ * Obtiene el contenido completo de un curso para un profesor
+ * Si es personalizado, solo muestra el material creado por el profesor
+ * Si no es personalizado, muestra todo el material
+ */
+export async function getCourseContentForTeacher(courseId: string, teacherId: string) {
+  try {
+    const course = await db.course.findUnique({
+      where: { id: courseId },
+      include: {
+        createdBy: {
+          select: { id: true, name: true },
+        },
+        modules: {
+          where: { isPublished: true },
+          orderBy: { order: 'asc' },
+          include: {
+            lessons: {
+              where: { isPublished: true },
+              orderBy: { order: 'asc' },
+              include: {
+                contents: {
+                  orderBy: { order: 'asc' },
+                },
+              },
+            },
+          },
+        },
+        _count: {
+          select: {
+            enrollments: { where: { status: 'ACTIVE' } },
+          },
+        },
+      },
+    })
+
+    if (!course) {
+      return { success: false, error: 'Curso no encontrado', course: null }
+    }
+
+    // Si el curso es personalizado, obtener las lecciones personalizadas creadas por este profesor
+    let personalizedLessons: Array<{
+      id: string
+      title: string
+      description: string | null
+      order: number
+      duration: number
+      isPublished: boolean
+      videoUrl: string | null
+      summary: string | null
+      studentName: string
+      enrollmentId: string
+    }> = []
+
+    if (course.isPersonalized) {
+      const lessons = await db.studentLesson.findMany({
+        where: {
+          teacherId: teacherId,
+          enrollment: {
+            courseId: courseId,
+          },
+          isPublished: true,
+        },
+        include: {
+          enrollment: {
+            include: {
+              student: {
+                select: { name: true, lastName: true },
+              },
+            },
+          },
+        },
+        orderBy: { order: 'asc' },
+      })
+
+      personalizedLessons = lessons.map((l) => ({
+        id: l.id,
+        title: l.title,
+        description: l.description,
+        order: l.order,
+        duration: l.duration,
+        isPublished: l.isPublished,
+        videoUrl: l.videoUrl,
+        summary: l.summary,
+        studentName: `${l.enrollment.student.name} ${l.enrollment.student.lastName || ''}`.trim(),
+        enrollmentId: l.enrollmentId,
+      }))
+    }
+
+    return {
+      success: true,
+      course: {
+        id: course.id,
+        title: course.title,
+        description: course.description,
+        language: course.language,
+        level: course.level,
+        image: course.image,
+        isPersonalized: course.isPersonalized,
+        isSynchronous: course.isSynchronous,
+        createdBy: course.createdBy,
+        studentCount: course._count.enrollments,
+        modules: course.isPersonalized ? [] : course.modules,
+        personalizedLessons: course.isPersonalized ? personalizedLessons : [],
+      },
+    }
+  } catch (error) {
+    console.error('Error fetching course content for teacher:', error)
+    return {
+      success: false,
+      error: 'Error al obtener el contenido del curso',
+      course: null,
+    }
+  }
+}
+
+/**
+ * Obtiene la lista de estudiantes activos del profesor
+ */
+export async function getTeacherActiveStudents(teacherId: string) {
+  try {
+    const sixtyDaysAgo = new Date()
+    sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60)
+
+    // Obtener estudiantes únicos que han tenido clases con este profesor
+    const bookings = await db.classBooking.findMany({
+      where: {
+        teacherId,
+        day: { gte: sixtyDaysAgo.toISOString().split('T')[0] },
+      },
+      include: {
+        student: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            email: true,
+            image: true,
+          },
+        },
+        enrollment: {
+          include: {
+            course: {
+              select: {
+                id: true,
+                title: true,
+                language: true,
+                level: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: { day: 'desc' },
+    })
+
+    // Agrupar por estudiante
+    const studentMap = new Map<
+      string,
+      {
+        student: {
+          id: string
+          name: string | null
+          lastName: string | null
+          email: string | null
+          image: string | null
+        }
+        courses: Set<string>
+        courseDetails: Array<{ id: string; title: string; language: string; level: string }>
+        totalClasses: number
+        lastClassDate: string
+      }
+    >()
+
+    for (const booking of bookings) {
+      const existing = studentMap.get(booking.studentId)
+      if (existing) {
+        existing.totalClasses++
+        if (!existing.courses.has(booking.enrollment.course.id)) {
+          existing.courses.add(booking.enrollment.course.id)
+          existing.courseDetails.push(booking.enrollment.course)
+        }
+      } else {
+        studentMap.set(booking.studentId, {
+          student: booking.student,
+          courses: new Set([booking.enrollment.course.id]),
+          courseDetails: [booking.enrollment.course],
+          totalClasses: 1,
+          lastClassDate: booking.day,
+        })
+      }
+    }
+
+    const students = Array.from(studentMap.values()).map((s) => ({
+      id: s.student.id,
+      name: s.student.name,
+      lastName: s.student.lastName,
+      email: s.student.email,
+      image: s.student.image,
+      courses: s.courseDetails,
+      totalClasses: s.totalClasses,
+      lastClassDate: s.lastClassDate,
+    }))
+
+    return {
+      success: true,
+      students,
+      totalCount: students.length,
+    }
+  } catch (error) {
+    console.error('Error fetching teacher active students:', error)
+    return {
+      success: false,
+      error: 'Error al obtener los estudiantes activos',
+      students: [],
+      totalCount: 0,
+    }
+  }
+}
+
+/**
  * Obtiene los profesores que pueden enseñar un curso específico
  */
 export async function getTeachersForCourse(courseId: string) {
