@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Image as ImageIcon } from 'lucide-react'
+import Image from 'next/image'
 
 interface ImageBlockEditorProps {
   block: ImageBlock
@@ -75,10 +76,13 @@ export function ImageBlockEditor({ block, onUpdate }: ImageBlockEditorProps) {
         }`}>
           <figure className="max-w-lg">
             <div className="rounded-lg overflow-hidden border">
-              <img
+              <Image
                 src={block.url}
                 alt={block.alt || 'Imagen del articulo'}
                 className="max-h-64 w-auto object-contain"
+                width={500}
+                height={300}
+                unoptimized
               />
             </div>
             {block.caption && (

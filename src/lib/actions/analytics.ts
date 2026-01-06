@@ -60,7 +60,8 @@ function getMonthNameFull(date: Date): string {
 // DASHBOARD KPIs
 // =============================================
 
-export async function getDashboardKPIs(_dateRange?: DateRange): Promise<DashboardKPIs> {
+export async function getDashboardKPIs(dateRange?: DateRange): Promise<DashboardKPIs> {
+  void dateRange
   const now = new Date()
   const currentMonthStart = startOfMonth(now)
   const currentMonthEnd = endOfMonth(now)
@@ -598,7 +599,7 @@ export async function getExpenseAnalytics(months: number = 12): Promise<ExpenseA
 
 export async function getProductAnalytics(): Promise<ProductAnalytics> {
   const now = new Date()
-  const _currentMonthStart = startOfMonth(now)
+  void startOfMonth(now)
   const previousMonthStart = startOfMonth(subMonths(now, 1))
   const previousMonthEnd = endOfMonth(subMonths(now, 1))
 
@@ -912,7 +913,7 @@ export async function getTeacherAnalytics(): Promise<TeacherAnalytics> {
 
 export async function getStudentAnalytics(months: number = 12): Promise<StudentAnalytics> {
   const now = new Date()
-  const _startDate = startOfMonth(subMonths(now, months - 1))
+  void startOfMonth(subMonths(now, months - 1))
 
   // Crecimiento mensual
   const growth: StudentGrowth[] = []
@@ -1090,7 +1091,7 @@ export async function getStudentAnalytics(months: number = 12): Promise<StudentA
 
   // Lifetime promedio (días desde primera inscripción hasta última clase)
   // Se puede calcular mejor con más datos históricos
-  const _lifetimeData = await db.enrollment.aggregate({
+  await db.enrollment.aggregate({
     _avg: {
       progress: true,
     },
