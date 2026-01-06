@@ -18,16 +18,18 @@ export interface ClassAccessValidation {
  * @param day - Fecha de la clase en formato ISO (YYYY-MM-DD) en UTC
  * @param timeSlot - Horario de la clase (ej: "14:00-15:00") en UTC
  * @param isTeacher - Si el usuario es profesor
+ * @param timezone - Zona horaria del usuario (default: America/Lima)
  * @returns Objeto con información de acceso
  */
 export function validateClassAccess(
   day: string,
   timeSlot: string,
-  isTeacher: boolean
+  isTeacher: boolean,
+  timezone: string = 'America/Lima'
 ): ClassAccessValidation {
   try {
-    // Convertir de UTC a hora local para validar
-    const localData = convertTimeSlotFromUTC(day, timeSlot)
+    // Convertir de UTC a hora local del usuario para validar
+    const localData = convertTimeSlotFromUTC(day, timeSlot, timezone)
     
     // Parsear el timeSlot local para obtener hora de inicio y fin
     const [startTime, endTime] = localData.timeSlot.split('-')

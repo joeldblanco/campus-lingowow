@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
-import { format } from 'date-fns'
+import { format, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
 import {
   ArrowRight,
@@ -130,7 +130,7 @@ export default function Dashboard() {
                 <div className="flex flex-wrap items-center gap-3 text-sm text-white/90">
                   <span className="flex items-center gap-1.5">
                     <Calendar className="w-4 h-4" />
-                    {format(new Date(nextClass.date), "EEEE d 'de' MMMM", { locale: es })}
+                    {format(parseISO(nextClass.date), "EEEE d 'de' MMMM", { locale: es })}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Clock className="w-4 h-4" />
@@ -342,10 +342,10 @@ export default function Dashboard() {
                   <div key={index} className="flex gap-3 items-start p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
                     <div className="flex flex-col items-center bg-white dark:bg-slate-700 rounded p-1.5 min-w-[50px] shadow-sm">
                       <span className="text-xs font-bold text-red-500 uppercase">
-                        {format(new Date(classItem.date), 'EEE', { locale: es })}
+                        {format(parseISO(classItem.date), 'EEE', { locale: es })}
                       </span>
                       <span className="text-lg font-bold text-slate-900 dark:text-white">
-                        {format(new Date(classItem.date), 'd')}
+                        {format(parseISO(classItem.date), 'd')}
                       </span>
                     </div>
                     <div className="flex-1 min-w-0">

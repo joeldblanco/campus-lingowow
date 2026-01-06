@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { getClassroomData } from '@/lib/actions/dashboard'
 import { validateClassAccess } from '@/lib/utils/class-access'
+import { useTimezone } from '@/hooks/use-timezone'
 import { UserRole } from '@prisma/client'
 import { Clock } from 'lucide-react'
 
@@ -31,6 +32,7 @@ export default function ClassroomPage() {
   const searchParams = useSearchParams()
   const { currentClassId, setCurrentClass } = useCurrentClass()
   const { data: session } = useSession()
+  const { timezone } = useTimezone()
   const [classroomData, setClassroomData] = useState<ClassroomData | null>(null)
   const [loading, setLoading] = useState(true)
   const [accessValidation, setAccessValidation] = useState<ReturnType<typeof validateClassAccess> | null>(null)
@@ -55,8 +57,8 @@ export default function ClassroomPage() {
           const data = await getClassroomData(effectiveClassId, session.user.id)
           setClassroomData(data)
 
-          // Validar acceso a la clase usando datos UTC
-          const validation = validateClassAccess(data.dayUTC, data.timeSlotUTC, isTeacher)
+          // Validar acceso a la clase usando datos UTC y timezone del usuario
+          const validation = validateClassAccess(data.dayUTC, data.timeSlotUTC, isTeacher, timezone)
           setAccessValidation(validation)
         } catch (error) {
           console.error('Error cargando datos del aula:', error)
@@ -69,14 +71,14 @@ export default function ClassroomPage() {
     }
 
     loadClassroomData()
-  }, [effectiveClassId, session?.user?.id, isTeacher])
+  }, [effectiveClassId, session?.user?.id, isTeacher, timezone])
 
   // Actualizar validación cada segundo y recargar cuando llegue la hora
   useEffect(() => {
     if (!classroomData) return
 
     const interval = setInterval(() => {
-      const validation = validateClassAccess(classroomData.dayUTC, classroomData.timeSlotUTC, isTeacher)
+      const validation = validateClassAccess(classroomData.dayUTC, classroomData.timeSlotUTC, isTeacher, timezone)
       setAccessValidation(validation)
 
       // Si la clase ya puede accederse, recargar la página
@@ -86,7 +88,7 @@ export default function ClassroomPage() {
     }, 1000)
 
     return () => clearInterval(interval)
-  }, [classroomData, isTeacher, accessValidation])
+  }, [classroomData, isTeacher, accessValidation, timezone])
 
   if (loading) {
     return (
