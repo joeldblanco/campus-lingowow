@@ -52,7 +52,7 @@ export default function PricingPage() {
   }
 
   const getPriceForLanguage = (plan: PlanWithFeatures, language: string) => {
-    const pricing = plan.pricing?.find(p => p.language === language)
+    const pricing = plan.pricing?.find(p => p.language === language && p.isActive)
     if (pricing) {
       return { price: pricing.price, comparePrice: pricing.comparePrice }
     }
