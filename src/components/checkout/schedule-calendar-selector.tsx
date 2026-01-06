@@ -237,8 +237,8 @@ export function ScheduleCalendarSelector({
         bookedSlots[day] = []
       }
       slots.forEach((slot) => {
-        // Agregar solo la hora de inicio para el formato esperado
-        bookedSlots[day].push(slot.startTime)
+        // Agregar el rango completo HH:MM-HH:MM para que isSlotOverlappingWithBookings funcione correctamente
+        bookedSlots[day].push(`${slot.startTime}-${slot.endTime}`)
       })
     })
   }
