@@ -146,6 +146,10 @@ model User {
   // Cupones restringidos a este usuario
   restrictedCoupons     Coupon[] @relation("UserCoupons")
 
+  // Relaciones para app móvil
+  deviceTokens          DeviceToken[]
+  refreshTokens         RefreshToken[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -2434,4 +2438,43 @@ enum RecordingStatus {
   FAILED        // Error en la grabación
   ARCHIVED      // Archivada (no disponible temporalmente)
   DELETED       // Eliminada
+}
+
+// =============================================
+// MODELOS PARA APP MÓVIL
+// =============================================
+
+model DeviceToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  platform  String   // 'ios' | 'android' | 'web'
+  deviceId  String?
+  isActive  Boolean  @default(true)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([token])
+  @@map("device_tokens")
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  deviceId  String?
+  expiresAt DateTime
+  isRevoked Boolean  @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([token])
+  @@map("refresh_tokens")
 }

@@ -10,7 +10,8 @@ import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Globe, DollarSign, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
-import { upsertPlanPricing, SUPPORTED_LANGUAGES } from '@/lib/actions/commercial'
+import { upsertPlanPricing } from '@/lib/actions/commercial'
+import { SUPPORTED_LANGUAGES } from '@/lib/constants/languages'
 
 export interface PricingData {
   id?: string

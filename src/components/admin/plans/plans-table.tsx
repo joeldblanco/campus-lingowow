@@ -28,7 +28,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { MoreVertical, Edit, Trash2, Zap, Search, ChevronLeft, ChevronRight, SlidersHorizontal, Package, Globe } from 'lucide-react'
 import { EditPlanDialog } from './edit-plan-dialog'
-import { deletePlan, SUPPORTED_LANGUAGES } from '@/lib/actions/commercial'
+import { deletePlan } from '@/lib/actions/commercial'
+import { SUPPORTED_LANGUAGES } from '@/lib/constants/languages'
 import { toast } from 'sonner'
 import {
   Tooltip,

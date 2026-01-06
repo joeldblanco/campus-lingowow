@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
-import { validateCoupon } from '@/lib/actions/commercial'
+import { validateCoupon } from '@/lib/coupon-utils'
 
 export async function POST(request: NextRequest) {
   try {
