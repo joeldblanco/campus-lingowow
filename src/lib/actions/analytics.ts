@@ -1091,7 +1091,7 @@ export async function getStudentAnalytics(months: number = 12): Promise<StudentA
 
   // Lifetime promedio (días desde primera inscripción hasta última clase)
   // Se puede calcular mejor con más datos históricos
-  await db.enrollment.aggregate({
+  void db.enrollment.aggregate({
     _avg: {
       progress: true,
     },

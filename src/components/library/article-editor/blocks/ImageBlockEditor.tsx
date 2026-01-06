@@ -75,13 +75,12 @@ export function ImageBlockEditor({ block, onUpdate }: ImageBlockEditorProps) {
           'justify-center'
         }`}>
           <figure className="max-w-lg">
-            <div className="rounded-lg overflow-hidden border">
+            <div className="rounded-lg overflow-hidden border relative h-64">
               <Image
                 src={block.url}
                 alt={block.alt || 'Imagen del articulo'}
-                className="max-h-64 w-auto object-contain"
-                width={500}
-                height={300}
+                className="object-contain"
+                fill
                 unoptimized
               />
             </div>
