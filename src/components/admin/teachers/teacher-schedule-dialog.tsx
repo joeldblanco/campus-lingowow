@@ -109,7 +109,7 @@ export function TeacherScheduleDialog({
 
       if (result.success && result.data) {
         setLessons(transformLessons(result.data.lessons))
-        setAvailability(result.data.availability)
+        setAvailability(result.data.availability ?? [])
         lastFetchedMonth.current = monthKey
       }
     } catch (error) {
