@@ -35,9 +35,11 @@ import { Separator } from '@/components/ui/separator'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { updatePlan, updatePlanFeatures, getFeatures } from '@/lib/actions/commercial'
+import { updatePlan, updatePlanFeatures, getFeatures, getPlanPricing, upsertPlanPricing, SUPPORTED_LANGUAGES } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Globe } from 'lucide-react'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Badge } from '@/components/ui/badge'
 
 const planSchema = z.object({
   name: z.string().min(1, 'El nombre es requerido'),
@@ -59,6 +61,16 @@ const planSchema = z.object({
 })
 
 type PlanFormData = z.infer<typeof planSchema>
+
+interface PlanPricingData {
+  id?: string
+  language: string
+  price: number
+  comparePrice: number | null
+  currency: string
+  isActive: boolean
+  paypalSku: string | null
+}
 
 interface Plan {
   id: string
@@ -92,6 +104,7 @@ interface Plan {
       icon: string | null
     }
   }>
+  pricing?: PlanPricingData[]
   _count: {
     invoiceItems: number
   }
@@ -113,6 +126,22 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
   }>>([])
   const [selectedFeatures, setSelectedFeatures] = useState<Set<string>>(new Set())
   const [loadingFeatures, setLoadingFeatures] = useState(true)
+  const [pricingByLanguage, setPricingByLanguage] = useState<Record<string, PlanPricingData>>(() => {
+    const initial: Record<string, PlanPricingData> = {}
+    for (const lang of SUPPORTED_LANGUAGES) {
+      const existing = plan.pricing?.find(p => p.language === lang.code)
+      initial[lang.code] = existing || {
+        language: lang.code,
+        price: plan.price,
+        comparePrice: plan.comparePrice,
+        currency: 'USD',
+        isActive: false,
+        paypalSku: null,
+      }
+    }
+    return initial
+  })
+  const [activePricingTab, setActivePricingTab] = useState<string>(SUPPORTED_LANGUAGES[0].code)
 
   const form = useForm<PlanFormData>({
     resolver: zodResolver(planSchema),
@@ -168,8 +197,35 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
       setLoadingFeatures(false)
     }
     
+    // Load pricing data
+    const loadPricing = async () => {
+      const pricingData = await getPlanPricing(plan.id)
+      const newPricing: Record<string, PlanPricingData> = {}
+      for (const lang of SUPPORTED_LANGUAGES) {
+        const existing = pricingData.find(p => p.language === lang.code)
+        newPricing[lang.code] = existing ? {
+          id: existing.id,
+          language: existing.language,
+          price: existing.price,
+          comparePrice: existing.comparePrice,
+          currency: existing.currency,
+          isActive: existing.isActive,
+          paypalSku: existing.paypalSku,
+        } : {
+          language: lang.code,
+          price: plan.price,
+          comparePrice: plan.comparePrice,
+          currency: 'USD',
+          isActive: false,
+          paypalSku: null,
+        }
+      }
+      setPricingByLanguage(newPricing)
+    }
+    
     if (open) {
       loadFeatures()
+      loadPricing()
     }
   }, [plan, form, open])
 
@@ -200,17 +256,55 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
       
       const featuresResult = await updatePlanFeatures(plan.id, features)
       
-      if (featuresResult.success) {
-        toast.success('Plan actualizado correctamente')
-        onOpenChange(false)
-      } else {
+      if (!featuresResult.success) {
         toast.error(featuresResult.error || 'Error al actualizar las características')
+        return
       }
+      
+      // Update pricing by language
+      for (const langCode of Object.keys(pricingByLanguage)) {
+        const pricing = pricingByLanguage[langCode]
+        if (pricing.isActive) {
+          await upsertPlanPricing({
+            planId: plan.id,
+            language: pricing.language,
+            price: pricing.price,
+            comparePrice: pricing.comparePrice,
+            currency: pricing.currency,
+            isActive: pricing.isActive,
+            paypalSku: pricing.paypalSku,
+          })
+        }
+      }
+      
+      toast.success('Plan actualizado correctamente')
+      onOpenChange(false)
     } catch {
       toast.error('Error inesperado al actualizar el plan')
     } finally {
       setIsLoading(false)
     }
+  }
+  
+  const handlePricingChange = (
+    language: string,
+    field: keyof PlanPricingData,
+    value: string | number | boolean | null
+  ) => {
+    setPricingByLanguage(prev => ({
+      ...prev,
+      [language]: {
+        ...prev[language],
+        [field]: value,
+      },
+    }))
+  }
+  
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('es-ES', {
+      style: 'currency',
+      currency: 'USD',
+    }).format(price)
   }
   
   const toggleFeature = (featureId: string) => {
@@ -588,6 +682,92 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
                   </div>
                 </>
               )}
+            </div>
+            
+            <Separator className="my-4" />
+            
+            {/* Sección de Precios por Idioma */}
+            <div className="border-t pt-4">
+              <div className="flex items-center gap-2 mb-4">
+                <Globe className="h-4 w-4" />
+                <h3 className="text-sm font-medium">Precios por Idioma</h3>
+              </div>
+              <p className="text-xs text-muted-foreground mb-4">
+                Configura precios diferentes para cada idioma. Si un idioma no está activo, se usará el precio base.
+              </p>
+              
+              <Tabs value={activePricingTab} onValueChange={setActivePricingTab}>
+                <TabsList className="grid w-full grid-cols-2">
+                  {SUPPORTED_LANGUAGES.map((lang) => (
+                    <TabsTrigger key={lang.code} value={lang.code} className="gap-2">
+                      <span>{lang.flag}</span>
+                      {lang.name}
+                      {pricingByLanguage[lang.code]?.isActive && (
+                        <Badge variant="secondary" className="ml-1 text-xs">
+                          {formatPrice(pricingByLanguage[lang.code].price)}
+                        </Badge>
+                      )}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+                {SUPPORTED_LANGUAGES.map((lang) => (
+                  <TabsContent key={lang.code} value={lang.code} className="mt-4 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl">{lang.flag}</span>
+                        <span className="font-medium">Precio para {lang.name}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-muted-foreground">Activo</span>
+                        <Switch
+                          checked={pricingByLanguage[lang.code]?.isActive || false}
+                          onCheckedChange={(checked) => handlePricingChange(lang.code, 'isActive', checked)}
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <FormLabel>Precio</FormLabel>
+                        <Input
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          value={pricingByLanguage[lang.code]?.price || 0}
+                          onChange={(e) => handlePricingChange(lang.code, 'price', parseFloat(e.target.value) || 0)}
+                          placeholder="0.00"
+                        />
+                      </div>
+                      <div>
+                        <FormLabel>Precio de Comparación</FormLabel>
+                        <Input
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          value={pricingByLanguage[lang.code]?.comparePrice || ''}
+                          onChange={(e) => {
+                            const val = e.target.value === '' ? null : parseFloat(e.target.value)
+                            handlePricingChange(lang.code, 'comparePrice', val)
+                          }}
+                          placeholder="Opcional"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <FormLabel>PayPal SKU (opcional)</FormLabel>
+                      <Input
+                        value={pricingByLanguage[lang.code]?.paypalSku || ''}
+                        onChange={(e) => handlePricingChange(lang.code, 'paypalSku', e.target.value || null)}
+                        placeholder={`sku-${plan.slug}-${lang.code}`}
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        SKU específico para PayPal para clases de {lang.name.toLowerCase()}
+                      </p>
+                    </div>
+                  </TabsContent>
+                ))}
+              </Tabs>
             </div>
             
             <Separator className="my-4" />

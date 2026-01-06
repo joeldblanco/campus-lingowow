@@ -76,6 +76,27 @@ export type Plan = Prisma.PlanGetPayload<{
   }
 }>
 
+export type PlanPricing = Prisma.PlanPricingGetPayload<{
+  select: {
+    id: true
+    planId: true
+    language: true
+    price: true
+    comparePrice: true
+    currency: true
+    isActive: true
+    paypalSku: true
+    createdAt: true
+    updatedAt: true
+  }
+}>
+
+export type PlanWithPricing = Prisma.PlanGetPayload<{
+  include: {
+    pricing: true
+  }
+}>
+
 export type PlanWithFeatures = Prisma.PlanGetPayload<{
   include: {
     features: {

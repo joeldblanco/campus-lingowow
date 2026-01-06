@@ -1087,7 +1087,8 @@ model Plan {
   name         String
   slug         String  @unique
   description  String?
-  price        Float
+  // Precio base (legacy/default) - se mantiene para compatibilidad
+  price        Float   @default(0)
   comparePrice Float?
   duration     Int // en días (duración del período de facturación)
   isActive     Boolean @default(true)
@@ -1119,6 +1120,7 @@ model Plan {
   invoiceItems  InvoiceItem[]
   subscriptions Subscription[]
   coupons       Coupon[]      @relation("PlanCoupons")
+  pricing       PlanPricing[] // Precios por idioma
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -1140,6 +1142,30 @@ model PlanFeature {
 
   @@id([planId, featureId])
   @@map("plan_features")
+}
+
+model PlanPricing {
+  id           String  @id @default(cuid())
+  planId       String
+  language     String  // Código de idioma: "en" (inglés), "es" (español), etc.
+  price        Float   // Precio para este idioma
+  comparePrice Float?  // Precio de comparación (tachado)
+  currency     String  @default("USD") // Moneda del precio
+  isActive     Boolean @default(true)
+  
+  // Campos opcionales para PayPal por idioma
+  paypalSku    String? // SKU de PayPal específico para este idioma
+
+  // Relaciones
+  plan Plan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([planId, language])
+  @@index([planId])
+  @@index([language])
+  @@map("plan_pricing")
 }
 
 model Coupon {

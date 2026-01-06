@@ -26,10 +26,26 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { MoreVertical, Edit, Trash2, Zap, Search, ChevronLeft, ChevronRight, SlidersHorizontal, Package } from 'lucide-react'
+import { MoreVertical, Edit, Trash2, Zap, Search, ChevronLeft, ChevronRight, SlidersHorizontal, Package, Globe } from 'lucide-react'
 import { EditPlanDialog } from './edit-plan-dialog'
-import { deletePlan } from '@/lib/actions/commercial'
+import { deletePlan, SUPPORTED_LANGUAGES } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+
+interface PlanPricing {
+  id: string
+  language: string
+  price: number
+  comparePrice: number | null
+  currency: string
+  isActive: boolean
+  paypalSku: string | null
+}
 
 interface Plan {
   id: string
@@ -56,6 +72,7 @@ interface Plan {
     id: string
     name: string
   } | null
+  pricing?: PlanPricing[]
   features: Array<{
     planId: string
     featureId: string
@@ -319,6 +336,41 @@ export function PlansTable({ plans }: PlansTableProps) {
                     <div className="font-medium text-sm">{formatPrice(plan.price)}</div>
                     {plan.comparePrice && (
                       <div className="text-xs text-muted-foreground line-through">{formatPrice(plan.comparePrice)}</div>
+                    )}
+                    {plan.pricing && plan.pricing.filter(p => p.isActive).length > 0 && (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className="flex items-center justify-end gap-1 mt-1">
+                              <Globe className="h-3 w-3 text-muted-foreground" />
+                              <div className="flex gap-0.5">
+                                {plan.pricing.filter(p => p.isActive).map((pricing) => {
+                                  const lang = SUPPORTED_LANGUAGES.find(l => l.code === pricing.language)
+                                  return (
+                                    <span key={pricing.language} className="text-xs" title={`${lang?.name}: ${formatPrice(pricing.price)}`}>
+                                      {lang?.flag}
+                                    </span>
+                                  )
+                                })}
+                              </div>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent side="left" className="p-2">
+                            <div className="text-xs space-y-1">
+                              <div className="font-medium mb-1">Precios por idioma:</div>
+                              {plan.pricing.filter(p => p.isActive).map((pricing) => {
+                                const lang = SUPPORTED_LANGUAGES.find(l => l.code === pricing.language)
+                                return (
+                                  <div key={pricing.language} className="flex items-center justify-between gap-4">
+                                    <span>{lang?.flag} {lang?.name}</span>
+                                    <span className="font-medium">{formatPrice(pricing.price)}</span>
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     )}
                   </TableCell>
                   <TableCell>

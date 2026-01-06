@@ -408,6 +408,9 @@ export async function getPlans() {
             feature: true,
           },
         },
+        pricing: {
+          orderBy: { language: 'asc' },
+        },
         _count: {
           select: { invoiceItems: true },
         },
@@ -1533,5 +1536,290 @@ export async function importPaypalInvoice(resourceId: string) {
   } catch (error) {
     console.error('Error importing PayPal invoice:', error)
     return { success: false, error: 'Error al importar la factura de PayPal' }
+  }
+}
+
+// =============================================
+// PLAN PRICING (Precios por idioma)
+// =============================================
+
+// Idiomas soportados
+export const SUPPORTED_LANGUAGES = [
+  { code: 'en', name: 'Inglés', flag: '🇺🇸' },
+  { code: 'es', name: 'Español', flag: '🇪🇸' },
+] as const
+
+export type SupportedLanguageCode = (typeof SUPPORTED_LANGUAGES)[number]['code']
+
+export async function getPlanPricing(planId: string) {
+  try {
+    return await db.planPricing.findMany({
+      where: { planId },
+      orderBy: { language: 'asc' },
+    })
+  } catch (error) {
+    console.error('Error fetching plan pricing:', error)
+    return []
+  }
+}
+
+export async function getPlanPricingByLanguage(planId: string, language: string) {
+  try {
+    return await db.planPricing.findUnique({
+      where: {
+        planId_language: {
+          planId,
+          language,
+        },
+      },
+    })
+  } catch (error) {
+    console.error('Error fetching plan pricing by language:', error)
+    return null
+  }
+}
+
+export async function getPlansWithPricing(productId?: string) {
+  try {
+    const where = productId ? { productId } : {}
+    return await db.plan.findMany({
+      where,
+      orderBy: { sortOrder: 'asc' },
+      include: {
+        pricing: {
+          orderBy: { language: 'asc' },
+        },
+        product: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        course: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+        features: {
+          include: {
+            feature: true,
+          },
+        },
+        _count: {
+          select: { invoiceItems: true },
+        },
+      },
+    })
+  } catch (error) {
+    console.error('Error fetching plans with pricing:', error)
+    return []
+  }
+}
+
+export async function createPlanPricing(data: {
+  planId: string
+  language: string
+  price: number
+  comparePrice?: number | null
+  currency?: string
+  isActive?: boolean
+  paypalSku?: string | null
+}) {
+  try {
+    const pricing = await db.planPricing.create({
+      data: {
+        planId: data.planId,
+        language: data.language,
+        price: data.price,
+        comparePrice: data.comparePrice || null,
+        currency: data.currency || 'USD',
+        isActive: data.isActive ?? true,
+        paypalSku: data.paypalSku || null,
+      },
+    })
+    revalidatePath('/admin/plans')
+    return { success: true, data: pricing }
+  } catch (error) {
+    console.error('Error creating plan pricing:', error)
+    return { success: false, error: 'Error al crear el precio del plan' }
+  }
+}
+
+export async function updatePlanPricing(
+  id: string,
+  data: {
+    price?: number
+    comparePrice?: number | null
+    currency?: string
+    isActive?: boolean
+    paypalSku?: string | null
+  }
+) {
+  try {
+    const pricing = await db.planPricing.update({
+      where: { id },
+      data,
+    })
+    revalidatePath('/admin/plans')
+    return { success: true, data: pricing }
+  } catch (error) {
+    console.error('Error updating plan pricing:', error)
+    return { success: false, error: 'Error al actualizar el precio del plan' }
+  }
+}
+
+export async function deletePlanPricing(id: string) {
+  try {
+    await db.planPricing.delete({
+      where: { id },
+    })
+    revalidatePath('/admin/plans')
+    return { success: true }
+  } catch (error) {
+    console.error('Error deleting plan pricing:', error)
+    return { success: false, error: 'Error al eliminar el precio del plan' }
+  }
+}
+
+export async function upsertPlanPricing(data: {
+  planId: string
+  language: string
+  price: number
+  comparePrice?: number | null
+  currency?: string
+  isActive?: boolean
+  paypalSku?: string | null
+}) {
+  try {
+    const pricing = await db.planPricing.upsert({
+      where: {
+        planId_language: {
+          planId: data.planId,
+          language: data.language,
+        },
+      },
+      update: {
+        price: data.price,
+        comparePrice: data.comparePrice || null,
+        currency: data.currency || 'USD',
+        isActive: data.isActive ?? true,
+        paypalSku: data.paypalSku || null,
+      },
+      create: {
+        planId: data.planId,
+        language: data.language,
+        price: data.price,
+        comparePrice: data.comparePrice || null,
+        currency: data.currency || 'USD',
+        isActive: data.isActive ?? true,
+        paypalSku: data.paypalSku || null,
+      },
+    })
+    revalidatePath('/admin/plans')
+    return { success: true, data: pricing }
+  } catch (error) {
+    console.error('Error upserting plan pricing:', error)
+    return { success: false, error: 'Error al guardar el precio del plan' }
+  }
+}
+
+export async function updatePlanWithPricing(
+  planId: string,
+  planData: Partial<Omit<Plan, 'id' | 'createdAt' | 'updatedAt'>>,
+  pricingData: Array<{
+    language: string
+    price: number
+    comparePrice?: number | null
+    currency?: string
+    isActive?: boolean
+    paypalSku?: string | null
+  }>
+) {
+  try {
+    // Actualizar datos del plan
+    await db.plan.update({
+      where: { id: planId },
+      data: planData,
+    })
+
+    // Actualizar precios por idioma
+    for (const pricing of pricingData) {
+      await db.planPricing.upsert({
+        where: {
+          planId_language: {
+            planId,
+            language: pricing.language,
+          },
+        },
+        update: {
+          price: pricing.price,
+          comparePrice: pricing.comparePrice || null,
+          currency: pricing.currency || 'USD',
+          isActive: pricing.isActive ?? true,
+          paypalSku: pricing.paypalSku || null,
+        },
+        create: {
+          planId,
+          language: pricing.language,
+          price: pricing.price,
+          comparePrice: pricing.comparePrice || null,
+          currency: pricing.currency || 'USD',
+          isActive: pricing.isActive ?? true,
+          paypalSku: pricing.paypalSku || null,
+        },
+      })
+    }
+
+    revalidatePath('/admin/plans')
+    return { success: true }
+  } catch (error) {
+    console.error('Error updating plan with pricing:', error)
+    return { success: false, error: 'Error al actualizar el plan con precios' }
+  }
+}
+
+// Función helper para obtener el precio de un plan según el idioma
+export async function getPlanPriceForLanguage(
+  planId: string,
+  language: string
+): Promise<{ price: number; comparePrice: number | null; currency: string } | null> {
+  try {
+    // Primero intentar obtener el precio específico del idioma
+    const pricing = await db.planPricing.findUnique({
+      where: {
+        planId_language: {
+          planId,
+          language,
+        },
+      },
+    })
+
+    if (pricing && pricing.isActive) {
+      return {
+        price: pricing.price,
+        comparePrice: pricing.comparePrice,
+        currency: pricing.currency,
+      }
+    }
+
+    // Si no hay precio específico, usar el precio base del plan
+    const plan = await db.plan.findUnique({
+      where: { id: planId },
+      select: { price: true, comparePrice: true },
+    })
+
+    if (plan) {
+      return {
+        price: plan.price,
+        comparePrice: plan.comparePrice,
+        currency: 'USD',
+      }
+    }
+
+    return null
+  } catch (error) {
+    console.error('Error getting plan price for language:', error)
+    return null
   }
 }
