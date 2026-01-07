@@ -42,7 +42,7 @@ export function CollaborativeContentWrapper({
 
       // Only process if there's a non-collapsed selection
       if (!selection || selection.isCollapsed || !containerRef.current) {
-        // Don't send deselect - let the remote selection persist
+        updateTextSelection(null)
         return
       }
 
