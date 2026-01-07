@@ -167,13 +167,13 @@ export function TeacherCourseContentView({ course }: TeacherCourseContentViewPro
       {course.isPersonalized ? (
         <PersonalizedContent lessons={course.personalizedLessons} />
       ) : (
-        <StandardContent modules={course.modules} courseId={course.id} />
+        <StandardContent modules={course.modules} />
       )}
     </div>
   )
 }
 
-function StandardContent({ modules, courseId }: { modules: Module[]; courseId: string }) {
+function StandardContent({ modules }: { modules: Module[] }) {
   if (modules.length === 0) {
     return (
       <Card>
@@ -214,7 +214,7 @@ function StandardContent({ modules, courseId }: { modules: Module[]; courseId: s
             <AccordionContent>
               <div className="space-y-2 pt-2 pb-4">
                 {module.lessons.map((lesson) => (
-                  <LessonCard key={lesson.id} lesson={lesson} courseId={courseId} />
+                  <LessonCard key={lesson.id} lesson={lesson} />
                 ))}
               </div>
             </AccordionContent>
@@ -225,7 +225,7 @@ function StandardContent({ modules, courseId }: { modules: Module[]; courseId: s
   )
 }
 
-function LessonCard({ lesson, courseId }: { lesson: Lesson; courseId: string }) {
+function LessonCard({ lesson }: { lesson: Lesson }) {
   return (
     <Card className="bg-muted/30">
       <CardHeader className="py-3 px-4">
@@ -241,17 +241,9 @@ function LessonCard({ lesson, courseId }: { lesson: Lesson; courseId: string }) 
               </CardDescription>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <Clock className="w-3 h-3" />
-              <span>{lesson.duration} min</span>
-            </div>
-            <Link href={`/my-courses/${courseId}/lessons/${lesson.id}`}>
-              <Button variant="outline" size="sm">
-                <BookOpen className="w-3 h-3 mr-1" />
-                Ver Lección
-              </Button>
-            </Link>
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <Clock className="w-3 h-3" />
+            <span>{lesson.duration} min</span>
           </div>
         </div>
       </CardHeader>
