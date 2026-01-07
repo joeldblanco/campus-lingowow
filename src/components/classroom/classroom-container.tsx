@@ -433,9 +433,7 @@ function ClassroomInner({
           onToggleMic={toggleAudio}
           onToggleVideo={toggleVideo}
           onEndCall={handleEndCall}
-          onToggleScreenShare={toggleScreenShare}
           onToggleHand={toggleRaiseHand}
-          isScreenSharing={isScreenSharing}
           isHandRaised={isHandRaised}
           isRecording={isRecording}
         />

@@ -5,55 +5,35 @@ import { useLiveKit } from './livekit-context'
 import { Monitor, Maximize2, Minimize2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { Track, RemoteTrackPublication } from 'livekit-client'
+import { Track } from 'livekit-client'
 
 interface ScreenShareViewerProps {
   isTeacher: boolean
 }
 
 export function ScreenShareViewer({ isTeacher }: ScreenShareViewerProps) {
-  const { remoteTracks, isScreenSharing, toggleScreenShare } = useLiveKit()
+  const { isScreenSharing, toggleScreenShare, localScreenShareTrack, remoteScreenShareTrack } = useLiveKit()
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
-  const [hasRemoteScreenShare, setHasRemoteScreenShare] = useState(false)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [screenTrack, setScreenTrack] = useState<any>(null)
 
-  // Find screen share track from remote participants
-  useEffect(() => {
-    let foundScreenTrack = null
-    
-    for (const participant of remoteTracks) {
-      // Check if this participant has a screen share track
-      // The track would be of source Screen
-      const participantData = participant as unknown as { 
-        screenTrack?: Track
-        trackPublications?: Map<string, RemoteTrackPublication>
-      }
-      
-      if (participantData.screenTrack) {
-        foundScreenTrack = participantData.screenTrack
-        break
-      }
-    }
-
-    setScreenTrack(foundScreenTrack)
-    setHasRemoteScreenShare(!!foundScreenTrack)
-  }, [remoteTracks])
+  // Determine which track to show
+  const screenTrack = isTeacher ? localScreenShareTrack : remoteScreenShareTrack
+  const hasScreenShare = !!screenTrack
 
   // Attach screen share track to video element
   useEffect(() => {
     if (!videoRef.current || !screenTrack) return
 
     const video = videoRef.current
+    const track = screenTrack as Track & { attach: (el: HTMLVideoElement) => void; detach: (el: HTMLVideoElement) => void }
     
-    if (screenTrack.attach) {
-      screenTrack.attach(video)
+    if (track.attach) {
+      track.attach(video)
     }
 
     return () => {
-      if (screenTrack.detach) {
-        screenTrack.detach(video)
+      if (track.detach) {
+        track.detach(video)
       }
     }
   }, [screenTrack])
@@ -80,8 +60,8 @@ export function ScreenShareViewer({ isTeacher }: ScreenShareViewerProps) {
     return () => document.removeEventListener('fullscreenchange', handleFullscreenChange)
   }, [])
 
-  // If there's a remote screen share, show it
-  if (hasRemoteScreenShare && screenTrack) {
+  // If there's a screen share track, show it
+  if (hasScreenShare) {
     return (
       <div className="w-full h-full flex flex-col bg-gray-900 rounded-xl overflow-hidden">
         <div className="flex-none p-2 bg-gray-800 flex items-center justify-between">

@@ -7,7 +7,6 @@ import {
     MicOff,
     Video,
     VideoOff,
-    MonitorUp,
     Hand,
     PhoneOff
 } from 'lucide-react'
@@ -17,12 +16,10 @@ import { cn } from '@/lib/utils'
 interface ControlBarProps {
     isMicMuted?: boolean
     isVideoMuted?: boolean
-    isScreenSharing?: boolean
     isHandRaised?: boolean
     isRecording?: boolean
     onToggleMic?: () => void
     onToggleVideo?: () => void
-    onToggleScreenShare?: () => void
     onToggleHand?: () => void
     onEndCall?: () => void
 }
@@ -30,12 +27,10 @@ interface ControlBarProps {
 export function ControlBar({
     isMicMuted = false,
     isVideoMuted = false,
-    isScreenSharing = false,
     isHandRaised = false,
     isRecording = false,
     onToggleMic,
     onToggleVideo,
-    onToggleScreenShare,
     onToggleHand,
     onEndCall
 }: ControlBarProps) {
@@ -79,26 +74,6 @@ export function ControlBar({
                     </TooltipTrigger>
                     <TooltipContent>
                         <p>{isVideoMuted ? 'Activar cámara' : 'Apagar cámara'}</p>
-                    </TooltipContent>
-                </Tooltip>
-
-                {/* Screen Share */}
-                <Tooltip>
-                    <TooltipTrigger asChild>
-                        <Button
-                            variant={isScreenSharing ? "default" : "ghost"}
-                            size="icon"
-                            className={cn(
-                                "rounded-full w-9 h-9 transition-all",
-                                !isScreenSharing && "bg-gray-100 hover:bg-gray-200 text-gray-700"
-                            )}
-                            onClick={onToggleScreenShare}
-                        >
-                            <MonitorUp className="w-4 h-4" />
-                        </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        <p>{isScreenSharing ? 'Dejar de compartir' : 'Compartir pantalla'}</p>
                     </TooltipContent>
                 </Tooltip>
 

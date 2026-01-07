@@ -78,7 +78,7 @@ function VideoTile({ track }: { track: VideoTrack; isTeacher: boolean }) {
           autoPlay
           playsInline
           muted={track.isLocal}
-          className="w-full h-full object-cover"
+          className={`w-full h-full object-cover ${track.isLocal ? 'scale-x-[-1]' : ''}`}
         />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-700 to-gray-900">

@@ -29,6 +29,8 @@ interface LiveKitContextType {
   isHandRaised: boolean
   addCommandListener: (command: string, handler: (values: Record<string, unknown>) => void) => void
   removeCommandListener: (command: string, handler: (values: Record<string, unknown>) => void) => void
+  localScreenShareTrack: Track | undefined
+  remoteScreenShareTrack: Track | undefined
 }
 
 const LiveKitContext = createContext<LiveKitContextType | null>(null)
@@ -53,6 +55,8 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
 
   const [localVideoTrack, setLocalVideoTrack] = useState<Track | undefined>(undefined)
   const [localAudioTrack, setLocalAudioTrack] = useState<Track | undefined>(undefined)
+  const [localScreenShareTrack, setLocalScreenShareTrack] = useState<Track | undefined>(undefined)
+  const [remoteScreenShareTrack, setRemoteScreenShareTrack] = useState<Track | undefined>(undefined)
   const [remoteParticipants, setRemoteParticipants] = useState<Map<string, VideoTrack>>(new Map())
 
   const [isAudioMuted, setIsAudioMuted] = useState(false)
@@ -80,6 +84,8 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
           } else if (pub.track.kind === Track.Kind.Audio) {
             audioTrack = pub.track
             isMuted = pub.isMuted
+          } else if (pub.track.kind === Track.Kind.Video && pub.source === Track.Source.ScreenShare) {
+            setRemoteScreenShareTrack(pub.track)
           }
         }
       })
@@ -217,6 +223,8 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
             setLocalVideoTrack(track)
           } else if (track.kind === Track.Kind.Audio) {
             setLocalAudioTrack(track)
+          } else if (track.kind === Track.Kind.Video && publication.source === Track.Source.ScreenShare) {
+            setLocalScreenShareTrack(track)
           }
         }
       })
@@ -226,6 +234,8 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
           setLocalVideoTrack(undefined)
         } else if (publication.track?.kind === Track.Kind.Audio) {
           setLocalAudioTrack(undefined)
+        } else if (publication.source === Track.Source.ScreenShare) {
+          setLocalScreenShareTrack(undefined)
         }
       })
 
@@ -265,6 +275,8 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
     isConnectingRef.current = false
     setLocalVideoTrack(undefined)
     setLocalAudioTrack(undefined)
+    setLocalScreenShareTrack(undefined)
+    setRemoteScreenShareTrack(undefined)
     setRemoteParticipants(new Map())
     setConnectionStatus('disconnected')
   }, [])
@@ -404,6 +416,8 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
         sendCommand,
         addCommandListener,
         removeCommandListener,
+        localScreenShareTrack,
+        remoteScreenShareTrack,
       }}
     >
       {children}

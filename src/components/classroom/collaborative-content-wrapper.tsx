@@ -91,13 +91,6 @@ export function CollaborativeContentWrapper({
           containerRef={containerRef as React.RefObject<HTMLDivElement>}
         />
       )}
-      
-      {/* Debug: Show if we have remote selection data */}
-      {process.env.NODE_ENV === 'development' && remoteSelection && (
-        <div className="fixed top-4 right-4 bg-yellow-100 p-2 rounded text-xs z-50">
-          Remote selection: {remoteSelection.text?.substring(0, 20)}...
-        </div>
-      )}
     </div>
   )
 }
@@ -220,25 +213,5 @@ function RemoteSelectionHighlight({ selection, containerRef }: RemoteSelectionHi
     }
   }, [selection, containerRef])
 
-  // Show a floating indicator of what's selected
-  if (!selection.text) return null
-
-  return (
-    <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-bottom-2">
-      <div 
-        className={cn(
-          "px-3 py-2 rounded-lg shadow-lg text-sm flex items-center gap-2",
-          selection.isTeacher 
-            ? "bg-blue-500 text-white" 
-            : "bg-green-500 text-white"
-        )}
-      >
-        <span className="font-medium">{selection.participantName}</span>
-        <span className="opacity-75">seleccionó:</span>
-        <span className="font-mono bg-white/20 px-2 py-0.5 rounded max-w-[200px] truncate">
-          &quot;{selection.text}&quot;
-        </span>
-      </div>
-    </div>
-  )
+  return null
 }
