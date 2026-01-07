@@ -75,8 +75,6 @@ function ClassroomInner({
   const isRecordingRef = useRef(isRecording)
   const egressIdRef = useRef(egressId)
 
-  // Ref to track grace period start time
-  const gracePeriodStartRef = useRef<number | null>(null)
   // Ref to track if we've already triggered end call
   const hasEndedRef = useRef(false)
 
@@ -92,29 +90,24 @@ function ClassroomInner({
   // Timer Logic - Calculate time remaining until class end with 10-minute grace period
   useEffect(() => {
     const endTimestamp = endTime instanceof Date ? endTime.getTime() : new Date(endTime).getTime()
+    // Grace period ends exactly 10 minutes after the scheduled class end time
+    const graceEndTimestamp = endTimestamp + GRACE_PERIOD_MS
     
     const calculateTimeLeft = () => {
       const now = Date.now()
-      const diff = endTimestamp - now
+      const diffToEnd = endTimestamp - now
+      const diffToGraceEnd = graceEndTimestamp - now
       
-      // Class time has ended, check grace period
-      if (diff <= 0) {
-        // Initialize grace period start time if not set
-        if (gracePeriodStartRef.current === null) {
-          gracePeriodStartRef.current = now
-        }
-        
-        const graceElapsed = now - gracePeriodStartRef.current
-        const graceRemaining = GRACE_PERIOD_MS - graceElapsed
-        
-        // Grace period has ended - close the class
-        if (graceRemaining <= 0) {
-          return { time: '00:00', isGrace: true, shouldEnd: true }
-        }
-        
-        // Still in grace period
-        const graceMinutes = Math.floor(graceRemaining / (1000 * 60))
-        const graceSeconds = Math.floor((graceRemaining % (1000 * 60)) / 1000)
+      // Grace period has ended - close the class
+      if (diffToGraceEnd <= 0) {
+        return { time: '00:00', isGrace: true, shouldEnd: true }
+      }
+      
+      // Class time has ended, but still in grace period
+      if (diffToEnd <= 0) {
+        // Show countdown of grace period remaining (from 10:00 down to 00:00)
+        const graceMinutes = Math.floor(diffToGraceEnd / (1000 * 60))
+        const graceSeconds = Math.floor((diffToGraceEnd % (1000 * 60)) / 1000)
         
         return {
           time: `${graceMinutes.toString().padStart(2, '0')}:${graceSeconds.toString().padStart(2, '0')}`,
@@ -123,10 +116,10 @@ function ClassroomInner({
         }
       }
       
-      // Normal class time
-      const hours = Math.floor(diff / (1000 * 60 * 60))
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000)
+      // Normal class time - show time remaining until scheduled end
+      const hours = Math.floor(diffToEnd / (1000 * 60 * 60))
+      const minutes = Math.floor((diffToEnd % (1000 * 60 * 60)) / (1000 * 60))
+      const seconds = Math.floor((diffToEnd % (1000 * 60)) / 1000)
       
       if (hours > 0) {
         return {

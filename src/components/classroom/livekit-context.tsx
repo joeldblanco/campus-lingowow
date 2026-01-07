@@ -73,6 +73,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       
       let videoTrack: Track | undefined
       let audioTrack: Track | undefined
+      let screenShareTrack: Track | undefined
       let isMuted = true
       let isVideoMuted = true
 
@@ -85,10 +86,18 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
             audioTrack = pub.track
             isMuted = pub.isMuted
           } else if (pub.track.kind === Track.Kind.Video && pub.source === Track.Source.ScreenShare) {
-            setRemoteScreenShareTrack(pub.track)
+            screenShareTrack = pub.track
           }
         }
       })
+
+      // Update remote screen share track - set if found, clear if this participant stopped sharing
+      if (screenShareTrack) {
+        setRemoteScreenShareTrack(screenShareTrack)
+      } else {
+        // Clear screen share if no participant has one
+        setRemoteScreenShareTrack(undefined)
+      }
 
       newMap.set(participant.identity, {
         participantId: participant.identity,
@@ -106,6 +115,9 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const removeRemoteParticipant = useCallback((participant: RemoteParticipant) => {
+    // Clear remote screen share if this participant was sharing
+    setRemoteScreenShareTrack(undefined)
+    
     setRemoteParticipants((prev) => {
       const newMap = new Map(prev)
       newMap.delete(participant.identity)

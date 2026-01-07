@@ -16,8 +16,8 @@ export function ScreenShareViewer({ isTeacher }: ScreenShareViewerProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
 
-  // Determine which track to show
-  const screenTrack = isTeacher ? localScreenShareTrack : remoteScreenShareTrack
+  // Determine which track to show - prioritize remote screen share, fallback to local for preview
+  const screenTrack = remoteScreenShareTrack || (isTeacher ? localScreenShareTrack : undefined)
   const hasScreenShare = !!screenTrack
 
   // Attach screen share track to video element
