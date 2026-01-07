@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { getStartOfDayUTC, getEndOfDayUTC } from '@/lib/utils/date'
 
 interface ScheduleSlot {
   dayOfWeek: number // 0-6, 0 = Sunday
@@ -87,43 +88,52 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Obtener el período académico actual o el próximo (excluyendo special weeks)
-    const today = new Date()
+    // Obtener el período académico actual basándose en el RANGO DE FECHAS (no en isActive)
+    // Las fechas en la DB están en UTC, así que comparamos en UTC
+    const now = new Date()
+    // Obtener el inicio del día actual en UTC para comparaciones consistentes
+    const todayStartUTC = getStartOfDayUTC(now)
+    const todayEndUTC = getEndOfDayUTC(now)
     
-    // Primero buscar período activo que NO sea special week
-    let currentPeriod = await db.academicPeriod.findFirst({
+    console.log('[Proration] Today UTC range:', {
+      todayStartUTC: todayStartUTC.toISOString(),
+      todayEndUTC: todayEndUTC.toISOString(),
+    })
+    
+    // PASO 1: Buscar el período que CONTIENE la fecha actual (por rango de fechas)
+    // Un período es "actual" si: startDate <= hoy <= endDate
+    const currentPeriod = await db.academicPeriod.findFirst({
       where: { 
-        isActive: true,
-        isSpecialWeek: false,
+        startDate: { lte: todayEndUTC },
+        endDate: { gte: todayStartUTC },
+        isSpecialWeek: false, // Excluir semanas especiales
       },
+      orderBy: { startDate: 'desc' }, // Si hay múltiples, tomar el más reciente
     })
 
-    let periodStart: Date = new Date(today)
-    let periodEnd: Date = new Date(today)
+    let periodStart: Date = new Date(now)
+    let periodEnd: Date = new Date(now)
     periodEnd.setDate(periodEnd.getDate() + 28) // Default: 4 semanas
     let useDefaultPeriod = true
     let periodName = 'Período por defecto'
 
     if (currentPeriod) {
-      const tempPeriodEnd = new Date(currentPeriod.endDate)
-      
-      // Solo usar el período académico si aún no ha terminado
-      if (tempPeriodEnd >= today) {
-        periodStart = new Date(currentPeriod.startDate)
-        periodEnd = tempPeriodEnd
-        useDefaultPeriod = false
-        periodName = currentPeriod.name
-      } else {
-        console.log('[Proration] Active period has ended, looking for next period')
-        currentPeriod = null // Reset para buscar el próximo
-      }
+      periodStart = new Date(currentPeriod.startDate)
+      periodEnd = new Date(currentPeriod.endDate)
+      useDefaultPeriod = false
+      periodName = currentPeriod.name
+      console.log('[Proration] Found current period by date range:', currentPeriod.name, {
+        periodStart: periodStart.toISOString(),
+        periodEnd: periodEnd.toISOString(),
+      })
     }
     
-    // Si no hay período activo válido, buscar el próximo período regular (no special week)
-    if (!currentPeriod || useDefaultPeriod) {
+    // PASO 2: Si no hay período actual, buscar el próximo período futuro
+    if (!currentPeriod) {
+      console.log('[Proration] No current period found, looking for next future period')
       const nextPeriod = await db.academicPeriod.findFirst({
         where: {
-          startDate: { gte: today },
+          startDate: { gt: todayEndUTC },
           isSpecialWeek: false,
         },
         orderBy: { startDate: 'asc' },
@@ -134,21 +144,21 @@ export async function POST(req: NextRequest) {
         periodEnd = new Date(nextPeriod.endDate)
         useDefaultPeriod = false
         periodName = nextPeriod.name
-        console.log('[Proration] Using next period:', nextPeriod.name)
+        console.log('[Proration] Using next future period:', nextPeriod.name)
       } else {
-        console.log('[Proration] No active or upcoming period found, using default period')
+        console.log('[Proration] No current or upcoming period found, using default period')
       }
     }
     
     console.log('[Proration] Period:', {
       periodStart: periodStart.toISOString(),
       periodEnd: periodEnd.toISOString(),
-      today: today.toISOString(),
+      today: now.toISOString(),
       useDefaultPeriod,
     })
     
     // La fecha de inicio es hoy o el inicio del período, lo que sea más tarde
-    const enrollmentStart = today > periodStart ? today : periodStart
+    const enrollmentStart = now > periodStart ? now : periodStart
 
     console.log('[Proration] Schedule received:', schedule)
 

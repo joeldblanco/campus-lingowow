@@ -56,13 +56,15 @@ export async function calculatePlanProration(
         where: { id: academicPeriodId },
       })
     } else {
-      // Buscar el período activo actual
+      // Buscar el período que CONTIENE la fecha de compra (por rango de fechas)
+      // No dependemos de isActive, sino del rango de fechas real
       currentPeriod = await db.academicPeriod.findFirst({
         where: {
-          isActive: true,
           startDate: { lte: purchaseDate },
           endDate: { gte: purchaseDate },
+          isSpecialWeek: false, // Excluir semanas especiales
         },
+        orderBy: { startDate: 'desc' }, // Si hay múltiples, tomar el más reciente
       })
     }
 

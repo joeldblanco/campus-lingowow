@@ -358,6 +358,36 @@ export function getCurrentUTCDate(): Date {
 }
 
 /**
+ * Obtiene el inicio del día en UTC (00:00:00 UTC)
+ * Útil para comparaciones con fechas de la DB que están en UTC
+ */
+export function getStartOfDayUTC(date: Date = new Date()): Date {
+  return new Date(
+    Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      0, 0, 0, 0
+    )
+  )
+}
+
+/**
+ * Obtiene el fin del día en UTC (23:59:59.999 UTC)
+ * Útil para comparaciones con fechas de la DB que están en UTC
+ */
+export function getEndOfDayUTC(date: Date = new Date()): Date {
+  return new Date(
+    Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      23, 59, 59, 999
+    )
+  )
+}
+
+/**
  * Convierte una fecha string YYYY-MM-DD a UTC Date (inicio del día en UTC)
  * Útil para guardar fechas de clases en la DB
  */

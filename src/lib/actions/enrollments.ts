@@ -3,7 +3,7 @@
 import { db } from '@/lib/db'
 import { EnrollmentStatus } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
-import { getCurrentDate, isAfterDate, getTodayStart } from '@/lib/utils/date'
+import { getCurrentDate, isAfterDate, getTodayStart, getStartOfDayUTC, getEndOfDayUTC } from '@/lib/utils/date'
 import { verifyPaypalTransaction, createInvoiceFromPaypal } from '@/lib/actions/commercial'
 import { notifyNewEnrollment } from '@/lib/actions/notifications'
 import { sendNewEnrollmentTeacherEmail } from '@/lib/mail'
@@ -1141,12 +1141,19 @@ export async function getPublishedCourses() {
   }
 }
 
-// Get active academic periods
+// Get active academic periods (current period by date range)
 export async function getActiveAcademicPeriods() {
   try {
+    // Buscar el período que CONTIENE la fecha actual (por rango de fechas)
+    // Usamos UTC para comparaciones consistentes con la DB
+    const now = new Date()
+    const todayStartUTC = getStartOfDayUTC(now)
+    const todayEndUTC = getEndOfDayUTC(now)
     const periods = await db.academicPeriod.findMany({
       where: {
-        isActive: true,
+        startDate: { lte: todayEndUTC },
+        endDate: { gte: todayStartUTC },
+        isSpecialWeek: false, // Excluir semanas especiales
       },
       select: {
         id: true,
@@ -1168,29 +1175,27 @@ export async function getActiveAcademicPeriods() {
 }
 
 // Get active and future academic periods (for pre-enrollments)
+// Busca períodos actuales (por rango de fechas) y futuros
 export async function getActiveAndFutureAcademicPeriods() {
   try {
-    const today = getCurrentDate()
+    // Usamos UTC para comparaciones consistentes con la DB
+    const now = new Date()
+    const todayStartUTC = getStartOfDayUTC(now)
+    const todayEndUTC = getEndOfDayUTC(now)
     const periods = await db.academicPeriod.findMany({
       where: {
         OR: [
-          { isActive: true },
+          // Current periods (already started but not ended) - by date range
+          {
+            startDate: { lte: todayEndUTC },
+            endDate: { gte: todayStartUTC },
+          },
           // Future periods (haven't started yet)
           {
-            startDate: {
-              gte: today,
-            },
-          },
-          // Current periods (already started but not ended)
-          {
-            startDate: {
-              lte: today,
-            },
-            endDate: {
-              gte: today,
-            },
+            startDate: { gt: todayEndUTC },
           },
         ],
+        isSpecialWeek: false, // Excluir semanas especiales
       },
       select: {
         id: true,
