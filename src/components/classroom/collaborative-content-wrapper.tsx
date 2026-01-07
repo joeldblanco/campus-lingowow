@@ -40,9 +40,10 @@ export function CollaborativeContentWrapper({
     const handleSelectionChange = () => {
       const selection = window.getSelection()
 
-      // Only process if there's a non-collapsed selection
+      // Clear local selection when text is deselected (collapsed)
       if (!selection || selection.isCollapsed || !containerRef.current) {
-        // Don't send deselect - let the remote selection persist
+        // Clear local selection state, but don't broadcast to remote
+        updateTextSelection(null)
         return
       }
 
