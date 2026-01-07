@@ -266,6 +266,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
           setLocalAudioTrack(undefined)
         } else if (publication.source === Track.Source.ScreenShare) {
           setLocalScreenShareTrack(undefined)
+          setIsScreenSharing(false)
         }
       })
 

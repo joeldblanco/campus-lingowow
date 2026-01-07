@@ -399,7 +399,7 @@ function ClassroomInner({
         return <ScreenShareViewer isTeacher={isTeacher} />
       default:
         return (
-          <CollaborativeContentWrapper className="h-full overflow-auto">
+          <CollaborativeContentWrapper className="min-h-full">
             <ActiveLessonViewer 
               lessonData={activeLesson} 
               isTeacher={isTeacher} 

@@ -32,7 +32,9 @@ export function ExcalidrawWhiteboard({ bookingId, isTeacher = false }: Excalidra
   const [excalidrawAPI, setExcalidrawAPI] = useState<any>(null)
   
   const lastSyncRef = useRef<number>(0)
+  const lastReceivedRef = useRef<number>(0)
   const syncThrottleRef = useRef<NodeJS.Timeout | null>(null)
+  const collaboratingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Load saved data
   useEffect(() => {
@@ -61,42 +63,63 @@ export function ExcalidrawWhiteboard({ bookingId, isTeacher = false }: Excalidra
 
     const handleWhiteboardSync = (data: Record<string, unknown>) => {
       if (data.type === 'WHITEBOARD_UPDATE' && excalidrawAPI) {
-        // Prevent processing our own updates
-        if (Date.now() - lastSyncRef.current < 100) return
+        // Prevent processing our own updates (check if we sent this recently)
+        const now = Date.now()
+        if (now - lastSyncRef.current < 50) return
+        
+        // Mark that we received an update
+        lastReceivedRef.current = now
         
         const elements = data.elements as unknown[]
         if (elements && Array.isArray(elements)) {
           excalidrawAPI.updateScene({ elements })
+          
+          // Show collaborating indicator with debounce
           setIsCollaborating(true)
-          // Reset collaborating indicator after 2 seconds
-          setTimeout(() => setIsCollaborating(false), 2000)
+          if (collaboratingTimeoutRef.current) {
+            clearTimeout(collaboratingTimeoutRef.current)
+          }
+          collaboratingTimeoutRef.current = setTimeout(() => {
+            setIsCollaborating(false)
+          }, 3000)
         }
       }
     }
 
     addCommandListener('whiteboard-sync', handleWhiteboardSync)
-    return () => removeCommandListener('whiteboard-sync', handleWhiteboardSync)
+    return () => {
+      removeCommandListener('whiteboard-sync', handleWhiteboardSync)
+      if (collaboratingTimeoutRef.current) {
+        clearTimeout(collaboratingTimeoutRef.current)
+      }
+    }
   }, [connectionStatus, excalidrawAPI, addCommandListener, removeCommandListener])
 
   // Send whiteboard updates to remote participants (throttled)
   const syncWhiteboardElements = useCallback(() => {
     if (!excalidrawAPI) return
     
+    // Don't send if we just received an update (prevents echo)
+    if (Date.now() - lastReceivedRef.current < 100) return
+    
     // Clear existing throttle
     if (syncThrottleRef.current) {
       clearTimeout(syncThrottleRef.current)
     }
 
-    // Throttle to max 10 updates per second
+    // Throttle to max 5 updates per second for stability
     syncThrottleRef.current = setTimeout(() => {
       const elements = excalidrawAPI.getSceneElements()
-      lastSyncRef.current = Date.now()
-      sendCommand('whiteboard-sync', {
-        type: 'WHITEBOARD_UPDATE',
-        elements,
-        participantId: isTeacher ? 'teacher' : 'student',
-      })
-    }, 100)
+      // Only send if there are elements
+      if (elements && elements.length > 0) {
+        lastSyncRef.current = Date.now()
+        sendCommand('whiteboard-sync', {
+          type: 'WHITEBOARD_UPDATE',
+          elements,
+          participantId: isTeacher ? 'teacher' : 'student',
+        })
+      }
+    }, 200)
   }, [excalidrawAPI, sendCommand, isTeacher])
 
   // Handle Excalidraw onChange

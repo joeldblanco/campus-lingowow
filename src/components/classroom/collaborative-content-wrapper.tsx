@@ -1,9 +1,10 @@
 'use client'
 
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useCollaboration } from './collaboration-context'
 import { RemoteCursor } from './remote-cursor'
 import { cn } from '@/lib/utils'
+import { ChevronUp, ChevronDown } from 'lucide-react'
 
 interface CollaborativeContentWrapperProps {
   children: React.ReactNode
@@ -33,13 +34,14 @@ export function CollaborativeContentWrapper({
     // Send cursor leave event - handled by the context
   }, [])
 
-  // Track text selection
+  // Track text selection - only send when there's actual selected text
   useEffect(() => {
     const handleSelectionChange = () => {
       const selection = window.getSelection()
       
+      // Only process if there's a non-collapsed selection
       if (!selection || selection.isCollapsed || !containerRef.current) {
-        updateTextSelection(null)
+        // Don't send deselect - let the remote selection persist
         return
       }
 
@@ -48,6 +50,11 @@ export function CollaborativeContentWrapper({
       
       // Check if selection is within our container
       if (!container.contains(range.commonAncestorContainer)) {
+        return
+      }
+
+      const selectedText = selection.toString().trim()
+      if (!selectedText || selectedText.length < 2) {
         return
       }
 
@@ -61,7 +68,7 @@ export function CollaborativeContentWrapper({
         startOffset: range.startOffset,
         endOffset: range.endOffset,
         blockId,
-        text: selection.toString(),
+        text: selectedText,
         participantId: '',
         participantName: '',
         isTeacher: false,
@@ -107,6 +114,35 @@ interface RemoteSelectionHighlightProps {
 
 function RemoteSelectionHighlight({ selection, containerRef }: RemoteSelectionHighlightProps) {
   const markElementsRef = useRef<HTMLElement[]>([])
+  const [scrollIndicator, setScrollIndicator] = useState<'above' | 'below' | null>(null)
+
+  // Check if highlight is visible and update scroll indicator
+  const checkVisibility = useCallback(() => {
+    if (markElementsRef.current.length === 0) {
+      setScrollIndicator(null)
+      return
+    }
+
+    const firstMark = markElementsRef.current[0]
+    const rect = firstMark.getBoundingClientRect()
+    const viewportHeight = window.innerHeight
+
+    if (rect.bottom < 100) {
+      setScrollIndicator('above')
+    } else if (rect.top > viewportHeight - 100) {
+      setScrollIndicator('below')
+    } else {
+      setScrollIndicator(null)
+    }
+  }, [])
+
+  // Scroll to highlight when clicking the indicator
+  const scrollToHighlight = useCallback(() => {
+    if (markElementsRef.current.length > 0) {
+      markElementsRef.current[0].scrollIntoView({ behavior: 'smooth', block: 'center' })
+      setScrollIndicator(null)
+    }
+  }, [])
 
   // Find and highlight the selected text using mark elements
   useEffect(() => {
@@ -122,6 +158,7 @@ function RemoteSelectionHighlight({ selection, containerRef }: RemoteSelectionHi
 
     const container = containerRef.current
     if (!container || !selection.text || selection.text.length < 2) {
+      setScrollIndicator(null)
       return
     }
 
@@ -200,7 +237,15 @@ function RemoteSelectionHighlight({ selection, containerRef }: RemoteSelectionHi
       parent.replaceChild(fragment, textNode)
     })
 
+    // Check visibility after highlighting
+    setTimeout(checkVisibility, 100)
+
+    // Listen for scroll events to update indicator
+    const handleScroll = () => checkVisibility()
+    window.addEventListener('scroll', handleScroll, true)
+
     return () => {
+      window.removeEventListener('scroll', handleScroll, true)
       // Cleanup on unmount
       markElementsRef.current.forEach(el => {
         const parent = el.parentNode
@@ -211,7 +256,28 @@ function RemoteSelectionHighlight({ selection, containerRef }: RemoteSelectionHi
       })
       markElementsRef.current = []
     }
-  }, [selection, containerRef])
+  }, [selection, containerRef, checkVisibility])
 
-  return null
+  // Render scroll indicator if highlight is out of view
+  if (!scrollIndicator) return null
+
+  return (
+    <button
+      onClick={scrollToHighlight}
+      className={cn(
+        "fixed left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full shadow-lg flex items-center gap-2 text-sm font-medium transition-all hover:scale-105",
+        selection.isTeacher 
+          ? "bg-blue-500 text-white hover:bg-blue-600" 
+          : "bg-green-500 text-white hover:bg-green-600",
+        scrollIndicator === 'above' ? "top-20" : "bottom-20"
+      )}
+    >
+      {scrollIndicator === 'above' ? (
+        <ChevronUp className="w-4 h-4" />
+      ) : (
+        <ChevronDown className="w-4 h-4" />
+      )}
+      <span>{selection.participantName} seleccionó texto {scrollIndicator === 'above' ? 'arriba' : 'abajo'}</span>
+    </button>
+  )
 }
