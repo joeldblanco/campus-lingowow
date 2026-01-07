@@ -603,12 +603,19 @@ export async function getProductAnalytics(): Promise<ProductAnalytics> {
   const previousMonthStart = startOfMonth(subMonths(now, 1))
   const previousMonthEnd = endOfMonth(subMonths(now, 1))
 
+  // Obtener IDs de facturas pagadas para evitar ambigüedad en columna 'total'
+  const paidInvoices = await db.invoice.findMany({
+    where: { status: 'PAID' },
+    select: { id: true },
+  })
+  const paidInvoiceIds = paidInvoices.map(i => i.id)
+
   // Ventas por producto
   const productSales = await db.invoiceItem.groupBy({
     by: ['productId'],
     where: {
       productId: { not: null },
-      invoice: { status: 'PAID' },
+      invoiceId: { in: paidInvoiceIds },
     },
     _sum: { total: true },
     _count: true,
@@ -622,14 +629,20 @@ export async function getProductAnalytics(): Promise<ProductAnalytics> {
   const productMap = new Map<string, typeof products[0]>(products.map(p => [p.id, p]))
 
   // Ventas del mes anterior para calcular tendencia
+  const previousPaidInvoices = await db.invoice.findMany({
+    where: {
+      status: 'PAID',
+      paidAt: { gte: previousMonthStart, lte: previousMonthEnd },
+    },
+    select: { id: true },
+  })
+  const previousPaidInvoiceIds = previousPaidInvoices.map(i => i.id)
+
   const previousProductSales = await db.invoiceItem.groupBy({
     by: ['productId'],
     where: {
       productId: { not: null },
-      invoice: { 
-        status: 'PAID',
-        paidAt: { gte: previousMonthStart, lte: previousMonthEnd },
-      },
+      invoiceId: { in: previousPaidInvoiceIds },
     },
     _sum: { total: true },
   })
@@ -660,7 +673,7 @@ export async function getProductAnalytics(): Promise<ProductAnalytics> {
     by: ['planId'],
     where: {
       planId: { not: null },
-      invoice: { status: 'PAID' },
+      invoiceId: { in: paidInvoiceIds },
     },
     _sum: { total: true },
     _count: true,

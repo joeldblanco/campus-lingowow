@@ -150,7 +150,7 @@ export function VideoGrid({ localTrack, remoteTracks = [], isTeacher, stacked = 
 
   const teacherTrack = isTeacher
     ? localTrack || safeTeacherMock
-    : remoteTracks.find((t) => t.isTeacher) || safeTeacherMock
+    : remoteTracks[0] || safeTeacherMock
 
   const studentTrack = isTeacher
     ? remoteTracks[0] || safeStudentMock
