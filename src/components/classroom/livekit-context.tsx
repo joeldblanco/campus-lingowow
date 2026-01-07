@@ -198,6 +198,10 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
 
       room.on(RoomEvent.TrackUnsubscribed, (track, publication, participant) => {
         console.log('[LiveKit] Track unsubscribed:', track.kind, participant.identity)
+        // Clear remote screen share if this was the screen share track being unsubscribed
+        if (publication.source === Track.Source.ScreenShare) {
+          setRemoteScreenShareTrack((current) => current === track ? undefined : current)
+        }
         updateRemoteParticipant(participant)
       })
 
