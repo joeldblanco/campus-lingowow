@@ -368,7 +368,7 @@ function ClassroomInner({
         </div>
 
         {/* Chat Content - Animated visibility */}
-        <div className={`flex-1 min-h-0 transition-all duration-300 ease-in-out overflow-hidden ${isChatMinimized ? 'max-h-0 opacity-0' : 'max-h-[1000px] opacity-100'}`}>
+        <div className={`flex-1 min-h-0 transition-all duration-300 ease-in-out ${isChatMinimized ? 'max-h-0 opacity-0 overflow-hidden' : 'opacity-100 overflow-hidden'}`}>
           {bookingId ? (
             <ClassroomChat bookingId={bookingId} />
           ) : (

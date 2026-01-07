@@ -2691,6 +2691,19 @@ function ShortAnswerProperties({
   return (
     <div className="space-y-6">
       <div className="space-y-2">
+        <Label>Contexto (opcional)</Label>
+        <p className="text-xs text-muted-foreground">
+          Texto de lectura o contexto para la pregunta.
+        </p>
+        <Textarea
+          value={block.context || ''}
+          onChange={(e) => onUpdate({ context: e.target.value })}
+          placeholder="Ej: Lee el siguiente texto y responde..."
+          rows={4}
+        />
+      </div>
+
+      <div className="space-y-2">
         <Label>Pregunta</Label>
         <Textarea
           value={block.question || ''}

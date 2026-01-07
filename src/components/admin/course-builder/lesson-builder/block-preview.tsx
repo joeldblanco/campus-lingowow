@@ -30,6 +30,7 @@ import {
   TabItemBlock,
   StructuredContentBlock,
   GrammarVisualizerBlock,
+  ShortAnswerBlock,
 } from '@/types/course-builder'
 import {
   Download,
@@ -50,6 +51,7 @@ import {
   FileSignature,
   Sparkles,
   Edit3,
+  MessageSquare,
 } from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
 import { useState, useRef } from 'react'
@@ -99,6 +101,8 @@ export function BlockPreview({ block }: BlockPreviewProps) {
         return <TrueFalseBlockPreview block={block as TrueFalseBlock} />
       case 'essay':
         return <EssayBlockPreview block={block as EssayBlock} />
+      case 'short_answer':
+        return <ShortAnswerBlockPreview block={block as ShortAnswerBlock} />
       case 'recording':
         return <RecordingBlockPreview block={block as RecordingBlock} />
       case 'structured-content':
@@ -2130,6 +2134,79 @@ export function StructuredContentBlockPreview({ block }: { block: StructuredCont
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
+  )
+}
+
+function ShortAnswerBlockPreview({ block }: { block: ShortAnswerBlock }) {
+  const [answer, setAnswer] = useState('')
+  const [showResult, setShowResult] = useState(false)
+
+  const checkAnswer = () => setShowResult(true)
+  const reset = () => {
+    setAnswer('')
+    setShowResult(false)
+  }
+
+  const isCorrect = block.correctAnswers?.some(correct => 
+    block.caseSensitive 
+      ? answer.trim() === correct.trim()
+      : answer.trim().toLowerCase() === correct.trim().toLowerCase()
+  )
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+        <MessageSquare className="h-5 w-5" />
+        <span>Respuesta Corta</span>
+      </div>
+
+      {block.context && (
+        <div className="bg-muted/30 p-4 rounded-lg border text-sm leading-relaxed">
+          {block.context}
+        </div>
+      )}
+
+      <div className="font-medium text-lg">{block.question || 'Pregunta sin configurar'}</div>
+
+      <div className="space-y-3">
+        <input
+          type="text"
+          value={answer}
+          onChange={(e) => setAnswer(e.target.value)}
+          disabled={showResult}
+          placeholder="Escribe tu respuesta..."
+          className={cn(
+            "w-full px-4 py-3 border rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors",
+            showResult
+              ? isCorrect
+                ? "border-green-500 bg-green-50 text-green-700"
+                : "border-red-500 bg-red-50 text-red-700"
+              : "border-gray-200"
+          )}
+        />
+
+        {showResult && !isCorrect && block.correctAnswers && block.correctAnswers.length > 0 && (
+          <div className="text-sm text-green-600 bg-green-50 p-2 rounded">
+            <span className="font-medium">Respuesta correcta:</span> {block.correctAnswers[0]}
+          </div>
+        )}
+
+        {showResult && block.explanation && (
+          <div className="text-sm text-muted-foreground bg-muted/30 p-3 rounded-lg">
+            <span className="font-medium">Explicación:</span> {block.explanation}
+          </div>
+        )}
+      </div>
+
+      <div className="flex gap-2">
+        <Button onClick={checkAnswer} disabled={showResult || !answer.trim()} size="sm">
+          Verificar
+        </Button>
+        <Button variant="outline" onClick={reset} disabled={!showResult} size="sm">
+          Reintentar
+        </Button>
       </div>
     </div>
   )

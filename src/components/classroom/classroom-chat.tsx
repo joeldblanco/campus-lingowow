@@ -78,7 +78,7 @@ export function ClassroomChat({ bookingId }: ClassroomChatProps) {
 
   return (
     <div className="h-full flex flex-col overflow-hidden">
-      <ScrollArea className="flex-1 p-3" ref={scrollRef}>
+      <ScrollArea className="flex-1 min-h-0 p-3" ref={scrollRef}>
         <div className="space-y-3">
           {messages.length === 0 ? (
             <div className="text-center text-gray-400 text-sm py-8">

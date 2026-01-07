@@ -236,6 +236,7 @@ export interface ShortAnswerBlock extends BaseBlock {
   correctAnswers: string[] // Multiple accepted answers
   caseSensitive?: boolean
   explanation?: string
+  context?: string // Reading passage or context for the question
   points?: number
 }
 
