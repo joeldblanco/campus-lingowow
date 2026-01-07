@@ -113,171 +113,178 @@ interface RemoteSelectionHighlightProps {
 }
 
 function RemoteSelectionHighlight({ selection, containerRef }: RemoteSelectionHighlightProps) {
-  const markElementsRef = useRef<HTMLElement[]>([])
+  const [highlightRects, setHighlightRects] = useState<DOMRect[]>([])
   const [scrollIndicator, setScrollIndicator] = useState<'above' | 'below' | null>(null)
+  const overlayRef = useRef<HTMLDivElement>(null)
 
-  // Check if highlight is visible and update scroll indicator
-  const checkVisibility = useCallback(() => {
-    if (markElementsRef.current.length === 0) {
-      setScrollIndicator(null)
-      return
-    }
-
-    const firstMark = markElementsRef.current[0]
-    const rect = firstMark.getBoundingClientRect()
-    const viewportHeight = window.innerHeight
-
-    if (rect.bottom < 100) {
-      setScrollIndicator('above')
-    } else if (rect.top > viewportHeight - 100) {
-      setScrollIndicator('below')
-    } else {
-      setScrollIndicator(null)
-    }
-  }, [])
-
-  // Scroll to highlight when clicking the indicator
-  const scrollToHighlight = useCallback(() => {
-    if (markElementsRef.current.length > 0) {
-      markElementsRef.current[0].scrollIntoView({ behavior: 'smooth', block: 'center' })
-      setScrollIndicator(null)
-    }
-  }, [])
-
-  // Find and highlight the selected text using mark elements
+  // Find text and calculate highlight rectangles (without modifying DOM)
   useEffect(() => {
-    // Cleanup previous highlights
-    markElementsRef.current.forEach(el => {
-      const parent = el.parentNode
-      if (parent) {
-        parent.replaceChild(document.createTextNode(el.textContent || ''), el)
-        parent.normalize()
-      }
-    })
-    markElementsRef.current = []
-
     const container = containerRef.current
     if (!container || !selection.text || selection.text.length < 2) {
+      setHighlightRects([])
       setScrollIndicator(null)
       return
     }
 
     const searchText = selection.text
     
-    // Search in the entire container for the text
-    const walker = document.createTreeWalker(
-      container,
-      NodeFilter.SHOW_TEXT,
-      {
-        acceptNode: (node) => {
-          // Skip script and style elements
-          const parent = node.parentElement
-          if (parent?.tagName === 'SCRIPT' || parent?.tagName === 'STYLE') {
-            return NodeFilter.FILTER_REJECT
+    const findTextRange = (): Range | null => {
+      const walker = document.createTreeWalker(
+        container,
+        NodeFilter.SHOW_TEXT,
+        {
+          acceptNode: (node) => {
+            const parent = node.parentElement
+            if (parent?.tagName === 'SCRIPT' || parent?.tagName === 'STYLE') {
+              return NodeFilter.FILTER_REJECT
+            }
+            return NodeFilter.FILTER_ACCEPT
           }
-          return NodeFilter.FILTER_ACCEPT
+        }
+      )
+
+      const textNodes: Text[] = []
+      let node: Node | null
+      while ((node = walker.nextNode())) {
+        textNodes.push(node as Text)
+      }
+
+      let fullText = ''
+      const nodeMap: { node: Text; start: number; end: number }[] = []
+      
+      textNodes.forEach(textNode => {
+        const start = fullText.length
+        fullText += textNode.textContent || ''
+        nodeMap.push({ node: textNode, start, end: fullText.length })
+      })
+
+      const matchIndex = fullText.indexOf(searchText)
+      if (matchIndex === -1) return null
+
+      const matchEnd = matchIndex + searchText.length
+
+      let startNode: Text | null = null
+      let startOffset = 0
+      let endNode: Text | null = null
+      let endOffset = 0
+
+      for (const { node: textNode, start, end } of nodeMap) {
+        if (!startNode && matchIndex >= start && matchIndex < end) {
+          startNode = textNode
+          startOffset = matchIndex - start
+        }
+        if (matchEnd > start && matchEnd <= end) {
+          endNode = textNode
+          endOffset = matchEnd - start
+          break
         }
       }
-    )
 
-    const textNodes: Text[] = []
-    let node: Node | null
-    while ((node = walker.nextNode())) {
-      textNodes.push(node as Text)
+      if (!startNode || !endNode) return null
+
+      const range = document.createRange()
+      range.setStart(startNode, startOffset)
+      range.setEnd(endNode, endOffset)
+      return range
     }
 
-    // Build full text and find the selection
-    let fullText = ''
-    const nodeMap: { node: Text; start: number; end: number }[] = []
-    
-    textNodes.forEach(textNode => {
-      const start = fullText.length
-      fullText += textNode.textContent || ''
-      nodeMap.push({ node: textNode, start, end: fullText.length })
-    })
+    const updateRects = () => {
+      const range = findTextRange()
+      if (!range) {
+        setHighlightRects([])
+        return
+      }
 
-    const matchIndex = fullText.indexOf(searchText)
-    if (matchIndex === -1) return
-
-    const matchEnd = matchIndex + searchText.length
-
-    // Find which text nodes contain the match
-    nodeMap.forEach(({ node: textNode, start, end }) => {
-      if (end <= matchIndex || start >= matchEnd) return // No overlap
-
-      const nodeText = textNode.textContent || ''
-      const highlightStart = Math.max(0, matchIndex - start)
-      const highlightEnd = Math.min(nodeText.length, matchEnd - start)
-
-      if (highlightStart >= highlightEnd) return
-
-      // Split the text node and wrap the matched part
-      const before = nodeText.slice(0, highlightStart)
-      const matched = nodeText.slice(highlightStart, highlightEnd)
-      const after = nodeText.slice(highlightEnd)
-
-      const parent = textNode.parentNode
-      if (!parent) return
-
-      const fragment = document.createDocumentFragment()
+      const rects = Array.from(range.getClientRects())
+      const containerRect = container.getBoundingClientRect()
       
-      if (before) fragment.appendChild(document.createTextNode(before))
-      
-      const mark = document.createElement('mark')
-      mark.textContent = matched
-      mark.className = selection.isTeacher 
-        ? 'bg-blue-300/70 rounded-sm px-0.5 remote-highlight' 
-        : 'bg-green-300/70 rounded-sm px-0.5 remote-highlight'
-      mark.style.backgroundColor = selection.isTeacher ? 'rgba(147, 197, 253, 0.7)' : 'rgba(134, 239, 172, 0.7)'
-      fragment.appendChild(mark)
-      markElementsRef.current.push(mark)
-      
-      if (after) fragment.appendChild(document.createTextNode(after))
+      const relativeRects = rects.map(rect => 
+        new DOMRect(
+          rect.left - containerRect.left,
+          rect.top - containerRect.top,
+          rect.width,
+          rect.height
+        )
+      )
 
-      parent.replaceChild(fragment, textNode)
-    })
+      setHighlightRects(relativeRects)
 
-    // Check visibility after highlighting
-    setTimeout(checkVisibility, 100)
+      // Check visibility for scroll indicator
+      if (rects.length > 0) {
+        const firstRect = rects[0]
+        const viewportHeight = window.innerHeight
+        if (firstRect.bottom < 100) {
+          setScrollIndicator('above')
+        } else if (firstRect.top > viewportHeight - 100) {
+          setScrollIndicator('below')
+        } else {
+          setScrollIndicator(null)
+        }
+      }
+    }
 
-    // Listen for scroll events to update indicator
-    const handleScroll = () => checkVisibility()
+    updateRects()
+
+    // Update on scroll
+    const handleScroll = () => updateRects()
     window.addEventListener('scroll', handleScroll, true)
+    container.addEventListener('scroll', handleScroll)
 
     return () => {
       window.removeEventListener('scroll', handleScroll, true)
-      // Cleanup on unmount
-      markElementsRef.current.forEach(el => {
-        const parent = el.parentNode
-        if (parent) {
-          parent.replaceChild(document.createTextNode(el.textContent || ''), el)
-          parent.normalize()
-        }
-      })
-      markElementsRef.current = []
+      container.removeEventListener('scroll', handleScroll)
     }
-  }, [selection, containerRef, checkVisibility])
+  }, [selection, containerRef])
 
-  // Render scroll indicator if highlight is out of view
-  if (!scrollIndicator) return null
+  const scrollToHighlight = useCallback(() => {
+    if (overlayRef.current && highlightRects.length > 0) {
+      overlayRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      setScrollIndicator(null)
+    }
+  }, [highlightRects])
+
+  const bgColor = selection.isTeacher 
+    ? 'rgba(147, 197, 253, 0.5)' 
+    : 'rgba(134, 239, 172, 0.5)'
 
   return (
-    <button
-      onClick={scrollToHighlight}
-      className={cn(
-        "fixed left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full shadow-lg flex items-center gap-2 text-sm font-medium transition-all hover:scale-105",
-        selection.isTeacher 
-          ? "bg-blue-500 text-white hover:bg-blue-600" 
-          : "bg-green-500 text-white hover:bg-green-600",
-        scrollIndicator === 'above' ? "top-20" : "bottom-20"
+    <>
+      {/* Highlight overlay rectangles */}
+      {highlightRects.map((rect, i) => (
+        <div
+          key={i}
+          ref={i === 0 ? overlayRef : undefined}
+          className="absolute pointer-events-none rounded-sm"
+          style={{
+            left: rect.left,
+            top: rect.top,
+            width: rect.width,
+            height: rect.height,
+            backgroundColor: bgColor,
+          }}
+        />
+      ))}
+
+      {/* Scroll indicator */}
+      {scrollIndicator && (
+        <button
+          onClick={scrollToHighlight}
+          className={cn(
+            "fixed left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full shadow-lg flex items-center gap-2 text-sm font-medium transition-all hover:scale-105",
+            selection.isTeacher 
+              ? "bg-blue-500 text-white hover:bg-blue-600" 
+              : "bg-green-500 text-white hover:bg-green-600",
+            scrollIndicator === 'above' ? "top-20" : "bottom-20"
+          )}
+        >
+          {scrollIndicator === 'above' ? (
+            <ChevronUp className="w-4 h-4" />
+          ) : (
+            <ChevronDown className="w-4 h-4" />
+          )}
+          <span>{selection.participantName} seleccionó texto {scrollIndicator === 'above' ? 'arriba' : 'abajo'}</span>
+        </button>
       )}
-    >
-      {scrollIndicator === 'above' ? (
-        <ChevronUp className="w-4 h-4" />
-      ) : (
-        <ChevronDown className="w-4 h-4" />
-      )}
-      <span>{selection.participantName} seleccionó texto {scrollIndicator === 'above' ? 'arriba' : 'abajo'}</span>
-    </button>
+    </>
   )
 }

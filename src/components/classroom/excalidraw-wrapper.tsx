@@ -4,6 +4,11 @@ import { Excalidraw } from '@excalidraw/excalidraw'
 import { useEffect, useState } from 'react'
 import { Loader2 } from 'lucide-react'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ExcalidrawElement = any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AppState = any
+
 interface ExcalidrawWrapperProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   excalidrawAPI?: (api: any) => void
@@ -11,7 +16,7 @@ interface ExcalidrawWrapperProps {
   initialData?: any
   langCode?: string
   theme?: 'light' | 'dark'
-  onChange?: () => void
+  onChange?: (elements: readonly ExcalidrawElement[], appState: AppState) => void
 }
 
 export default function ExcalidrawWrapper({

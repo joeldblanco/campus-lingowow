@@ -9,11 +9,13 @@ import { toast } from 'sonner'
 import { useLiveKit } from './livekit-context'
 
 // Dynamic import for the Excalidraw wrapper (client-side only)
-// The wrapper imports the CSS and Excalidraw component together
 const ExcalidrawWrapper = dynamic(
   () => import('./excalidraw-wrapper'),
   { ssr: false, loading: () => <div className="h-full flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-blue-600" /></div> }
 )
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ExcalidrawElement = any
 
 interface ExcalidrawWhiteboardProps {
   bookingId?: string
@@ -35,6 +37,8 @@ export function ExcalidrawWhiteboard({ bookingId, isTeacher = false }: Excalidra
   const lastReceivedRef = useRef<number>(0)
   const syncThrottleRef = useRef<NodeJS.Timeout | null>(null)
   const collaboratingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const lastElementsRef = useRef<Map<string, number>>(new Map()) // id -> version
+  const isProcessingRemoteRef = useRef(false)
 
   // Load saved data
   useEffect(() => {
@@ -57,6 +61,37 @@ export function ExcalidrawWhiteboard({ bookingId, isTeacher = false }: Excalidra
     loadData()
   }, [bookingId])
 
+  // Merge remote elements with local elements intelligently
+  const mergeElements = useCallback((remoteElements: ExcalidrawElement[]): ExcalidrawElement[] => {
+    if (!excalidrawAPI) return remoteElements
+    
+    const localElements = excalidrawAPI.getSceneElements() as ExcalidrawElement[]
+    const elementMap = new Map<string, ExcalidrawElement>()
+    
+    // Add all local elements first
+    localElements.forEach((el: ExcalidrawElement) => {
+      elementMap.set(el.id, el)
+    })
+    
+    // Merge remote elements - remote wins if version is higher or equal
+    remoteElements.forEach((remoteEl: ExcalidrawElement) => {
+      const localEl = elementMap.get(remoteEl.id)
+      if (!localEl) {
+        // New element from remote
+        elementMap.set(remoteEl.id, remoteEl)
+      } else {
+        // Compare versions - remote wins on tie to ensure consistency
+        const localVersion = localEl.version || 0
+        const remoteVersion = remoteEl.version || 0
+        if (remoteVersion >= localVersion) {
+          elementMap.set(remoteEl.id, remoteEl)
+        }
+      }
+    })
+    
+    return Array.from(elementMap.values())
+  }, [excalidrawAPI])
+
   // Listen for remote whiteboard updates
   useEffect(() => {
     if (connectionStatus !== 'connected') return
@@ -67,12 +102,20 @@ export function ExcalidrawWhiteboard({ bookingId, isTeacher = false }: Excalidra
         const now = Date.now()
         if (now - lastSyncRef.current < 50) return
         
-        // Mark that we received an update
+        // Mark that we're processing remote update
+        isProcessingRemoteRef.current = true
         lastReceivedRef.current = now
         
-        const elements = data.elements as unknown[]
-        if (elements && Array.isArray(elements)) {
-          excalidrawAPI.updateScene({ elements })
+        const remoteElements = data.elements as ExcalidrawElement[]
+        if (remoteElements && Array.isArray(remoteElements)) {
+          // Merge instead of replace
+          const mergedElements = mergeElements(remoteElements)
+          excalidrawAPI.updateScene({ elements: mergedElements })
+          
+          // Update our version tracking
+          mergedElements.forEach((el: ExcalidrawElement) => {
+            lastElementsRef.current.set(el.id, el.version || 0)
+          })
           
           // Show collaborating indicator with debounce
           setIsCollaborating(true)
@@ -83,6 +126,11 @@ export function ExcalidrawWhiteboard({ bookingId, isTeacher = false }: Excalidra
             setIsCollaborating(false)
           }, 3000)
         }
+        
+        // Reset processing flag after a short delay
+        setTimeout(() => {
+          isProcessingRemoteRef.current = false
+        }, 50)
       }
     }
 
@@ -93,33 +141,56 @@ export function ExcalidrawWhiteboard({ bookingId, isTeacher = false }: Excalidra
         clearTimeout(collaboratingTimeoutRef.current)
       }
     }
-  }, [connectionStatus, excalidrawAPI, addCommandListener, removeCommandListener])
+  }, [connectionStatus, excalidrawAPI, addCommandListener, removeCommandListener, mergeElements])
 
   // Send whiteboard updates to remote participants (throttled)
   const syncWhiteboardElements = useCallback(() => {
     if (!excalidrawAPI) return
     
-    // Don't send if we just received an update (prevents echo)
-    if (Date.now() - lastReceivedRef.current < 100) return
+    // Don't send if we're processing a remote update or just received one
+    if (isProcessingRemoteRef.current) return
+    if (Date.now() - lastReceivedRef.current < 150) return
     
     // Clear existing throttle
     if (syncThrottleRef.current) {
       clearTimeout(syncThrottleRef.current)
     }
 
-    // Throttle to max 5 updates per second for stability
+    // Throttle to max 4 updates per second for stability
     syncThrottleRef.current = setTimeout(() => {
-      const elements = excalidrawAPI.getSceneElements()
-      // Only send if there are elements
-      if (elements && elements.length > 0) {
-        lastSyncRef.current = Date.now()
-        sendCommand('whiteboard-sync', {
-          type: 'WHITEBOARD_UPDATE',
-          elements,
-          participantId: isTeacher ? 'teacher' : 'student',
+      const elements = excalidrawAPI.getSceneElements() as ExcalidrawElement[]
+      if (!elements || elements.length === 0) return
+      
+      // Check if anything actually changed
+      let hasChanges = false
+      for (const el of elements) {
+        const lastVersion = lastElementsRef.current.get(el.id)
+        if (lastVersion === undefined || el.version > lastVersion) {
+          hasChanges = true
+          lastElementsRef.current.set(el.id, el.version || 0)
+        }
+      }
+      
+      // Also check for deleted elements
+      if (lastElementsRef.current.size > elements.length) {
+        hasChanges = true
+        const currentIds = new Set(elements.map((el: ExcalidrawElement) => el.id))
+        lastElementsRef.current.forEach((_, id) => {
+          if (!currentIds.has(id)) {
+            lastElementsRef.current.delete(id)
+          }
         })
       }
-    }, 200)
+      
+      if (!hasChanges) return
+      
+      lastSyncRef.current = Date.now()
+      sendCommand('whiteboard-sync', {
+        type: 'WHITEBOARD_UPDATE',
+        elements,
+        participantId: isTeacher ? 'teacher' : 'student',
+      })
+    }, 250)
   }, [excalidrawAPI, sendCommand, isTeacher])
 
   // Handle Excalidraw onChange

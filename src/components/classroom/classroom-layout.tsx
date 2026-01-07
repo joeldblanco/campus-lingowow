@@ -96,11 +96,9 @@ export function ClassroomLayout({
             {fullscreenContent ? (
               <div className="h-full w-full">{children}</div>
             ) : (
-              <div className="h-full w-full flex flex-col">
-                <ScrollArea className="flex-1 w-full">
-                  <div className="p-8 h-full">{children}</div>
-                </ScrollArea>
-              </div>
+              <ScrollArea className="h-full w-full">
+                <div className="p-8">{children}</div>
+              </ScrollArea>
             )}
           </Card>
         </div>
