@@ -31,6 +31,7 @@ interface VideoGridProps {
 // Helper to render a single video tile
 function VideoTile({ track }: { track: VideoTrack; isTeacher: boolean }) {
   const videoRef = React.useRef<HTMLVideoElement>(null)
+  const audioRef = React.useRef<HTMLAudioElement>(null)
 
   React.useEffect(() => {
     const videoElement = videoRef.current
@@ -47,10 +48,29 @@ function VideoTile({ track }: { track: VideoTrack; isTeacher: boolean }) {
     }
   }, [track?.videoTrack])
 
+  React.useEffect(() => {
+    const audioElement = audioRef.current
+    if (track?.audioTrack && audioElement && !track.isLocal) {
+      const liveKitTrack = track.audioTrack as { attach: (el: HTMLAudioElement) => HTMLAudioElement; detach: (el: HTMLAudioElement) => HTMLAudioElement }
+      if (typeof liveKitTrack.attach === 'function') {
+        liveKitTrack.attach(audioElement)
+        return () => {
+          if (typeof liveKitTrack.detach === 'function') {
+            liveKitTrack.detach(audioElement)
+          }
+        }
+      }
+    }
+  }, [track?.audioTrack, track?.isLocal])
+
   if (!track) return null
 
   return (
     <Card className="relative w-full aspect-[16/10] bg-gray-900 rounded-lg overflow-hidden border-0 shadow-sm">
+      {/* Audio Element for remote participants */}
+      {!track.isLocal && !!track.audioTrack && (
+        <audio ref={audioRef} autoPlay />
+      )}
       {/* Video Element */}
       {track?.videoTrack && !track.isVideoMuted ? (
         <video

@@ -177,7 +177,7 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
           teacherName: `${booking.teacher.name} ${booking.teacher.lastName || ''}`,
           teacherImage: booking.teacher.image,
           startTime: `${formatDateNumeric(localData.day)} ${localData.timeSlot}`,
-          platform: 'Zoom',
+          platform: 'Virtual',
         }
       }),
       languageStats: languageStats.map((stat) => ({
@@ -245,8 +245,23 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
       weeklyAttendanceRate = 100 // Default to 100% if no recent classes (positive spin)
     }
 
-    // A. Trend (Compare with previous week - simplified mock for now: +2.1%)
-    const attendanceTrend = 2.1
+    // A. Trend (Compare with previous week)
+    const fourteenDaysAgo = new Date()
+    fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14)
+    const previousWeekBookings = await db.classBooking.findMany({
+      where: {
+        teacherId,
+        day: { gte: formatToISO(fourteenDaysAgo), lt: formatToISO(sevenDaysAgo) },
+        status: { in: [BookingStatus.COMPLETED, BookingStatus.NO_SHOW, BookingStatus.CANCELLED] },
+      },
+    })
+    
+    let previousWeekAttendanceRate = 100
+    if (previousWeekBookings.length > 0) {
+      const prevCompletedClasses = previousWeekBookings.filter((b) => b.status === 'COMPLETED').length
+      previousWeekAttendanceRate = Math.round((prevCompletedClasses / previousWeekBookings.length) * 100)
+    }
+    const attendanceTrend = Math.round((weeklyAttendanceRate - previousWeekAttendanceRate) * 10) / 10
 
     // B. Period Earnings (Current month)
     const currentMonthStart = getStartOfMonth(getCurrentDate().toISOString())
@@ -291,11 +306,26 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
       },
     })
     const activeStudentsCount = distinctStudents.length
-    // C. Trend (Compare - simplified mock: +3)
-    const studentsTrend = 3
+    
+    // C. Trend (Compare with previous 60-day period)
+    const oneHundredTwentyDaysAgo = new Date()
+    oneHundredTwentyDaysAgo.setDate(oneHundredTwentyDaysAgo.getDate() - 120)
+    const previousDistinctStudents = await db.classBooking.groupBy({
+      by: ['studentId'],
+      where: {
+        teacherId,
+        day: { gte: formatToISO(oneHundredTwentyDaysAgo), lt: formatToISO(sixtyDaysAgo) },
+      },
+    })
+    const studentsTrend = activeStudentsCount - previousDistinctStudents.length
 
-    // D. Unread Messages (Mocked for now as we don't have message status readily available in simple queries without extra schema info)
-    const unreadMessagesCount = 3
+    // D. Unread Notifications - Count from database
+    const unreadMessagesCount = await db.notification.count({
+      where: {
+        userId: teacherId,
+        isRead: false,
+      },
+    })
 
     // ----------------------------
     // 2. Main Content Data
@@ -343,7 +373,6 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
         date: localData.day,
         time: startTime,
         endTime: endTime,
-        room: 'Sala 1',
       }
     })
 
@@ -368,17 +397,27 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
         _count: {
           select: { enrollments: true },
         },
+        enrollments: {
+          where: { status: 'ACTIVE' },
+          select: { progress: true },
+        },
       },
     })
 
-    const activeCourses = activeCoursesRaw.map((course) => ({
-      id: course.id,
-      title: course.title,
-      level: course.level || 'Intermedio', // Default if missing
-      progress: 65, // Mocked progress avg
-      studentCount: course._count.enrollments,
-      image: course.image || '',
-    }))
+    const activeCourses = activeCoursesRaw.map((course) => {
+      // Calculate average progress from active enrollments
+      const avgProgress = course.enrollments.length > 0
+        ? Math.round(course.enrollments.reduce((sum, e) => sum + e.progress, 0) / course.enrollments.length)
+        : 0
+      return {
+        id: course.id,
+        title: course.title,
+        level: course.level || 'Intermedio',
+        progress: avgProgress,
+        studentCount: course._count.enrollments,
+        image: course.image || '',
+      }
+    })
 
     // Needs Attention (Students with low attendance or recent missed classes)
     // Find recent missed classes
@@ -643,20 +682,6 @@ export async function calculateTeacherMonthlyRevenue(
     const endDate = new Date(startDate)
     endDate.setMonth(endDate.getMonth() + 1)
 
-    // Obtener el rango del profesor
-    const teacher = await db.user.findUnique({
-      where: { id: teacherId },
-      select: {
-        teacherRank: {
-          select: {
-            rateMultiplier: true,
-          },
-        },
-      },
-    })
-
-    const rateMultiplier = teacher?.teacherRank?.rateMultiplier || 1.0
-
     // Obtener clases completadas en el período
     const completedClasses = await db.classBooking.findMany({
       where: {
@@ -676,8 +701,12 @@ export async function calculateTeacherMonthlyRevenue(
         },
         enrollment: {
           select: {
+            courseId: true,
             course: {
-              select: { classDuration: true },
+              select: { 
+                classDuration: true,
+                defaultPaymentPerClass: true,
+              },
             },
           },
         },
@@ -694,18 +723,36 @@ export async function calculateTeacherMonthlyRevenue(
       return hasTeacherAttendance && hasStudentAttendance
     })
 
-    // Calcular ingresos basados en duración y multiplicador
-    // Tarifa base: $10 por hora
-    const BASE_RATE_PER_HOUR = 10
+    // Obtener los courseIds únicos para buscar tarifas específicas del profesor
+    const courseIds = [...new Set(payableClasses.map(c => c.enrollment.courseId))]
+    
+    // Buscar tarifas específicas del profesor por curso
+    const teacherCourses = await db.teacherCourse.findMany({
+      where: {
+        teacherId,
+        courseId: { in: courseIds },
+      },
+      select: {
+        courseId: true,
+        paymentPerClass: true,
+      },
+    })
+    
+    // Crear mapa de tarifas por curso
+    const teacherRatesByCourse = new Map(
+      teacherCourses.map(tc => [tc.courseId, tc.paymentPerClass])
+    )
 
+    // Calcular ingresos usando: TeacherCourse.paymentPerClass > Course.defaultPaymentPerClass > 0
     let totalRevenue = 0
     for (const classBooking of payableClasses) {
-      // Usar duración de videollamada si está disponible, sino usar duración del curso
-      const duration =
-        classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
-      const hours = duration / 60
-      const classRevenue = hours * BASE_RATE_PER_HOUR * rateMultiplier
-      totalRevenue += classRevenue
+      const courseId = classBooking.enrollment.courseId
+      const teacherRate = teacherRatesByCourse.get(courseId)
+      const courseRate = classBooking.enrollment.course.defaultPaymentPerClass
+      
+      // Prioridad: tarifa específica del profesor > tarifa del curso > 0
+      const paymentPerClass = teacherRate ?? courseRate ?? 0
+      totalRevenue += paymentPerClass
     }
 
     return Math.round(totalRevenue * 100) / 100 // Redondear a 2 decimales
@@ -764,20 +811,6 @@ export async function calculateTeacherTotalRevenue(
   averagePerClass: number
 }> {
   try {
-    // Obtener el rango del profesor
-    const teacher = await db.user.findUnique({
-      where: { id: teacherId },
-      select: {
-        teacherRank: {
-          select: {
-            rateMultiplier: true,
-          },
-        },
-      },
-    })
-
-    const rateMultiplier = teacher?.teacherRank?.rateMultiplier || 1.0
-
     // Construir filtros
     const whereClause: {
       teacherId: string
@@ -806,8 +839,12 @@ export async function calculateTeacherTotalRevenue(
         },
         enrollment: {
           select: {
+            courseId: true,
             course: {
-              select: { classDuration: true },
+              select: { 
+                classDuration: true,
+                defaultPaymentPerClass: true,
+              },
             },
           },
         },
@@ -824,8 +861,27 @@ export async function calculateTeacherTotalRevenue(
       return hasTeacherAttendance && hasStudentAttendance
     })
 
+    // Obtener los courseIds únicos para buscar tarifas específicas del profesor
+    const courseIds = [...new Set(payableClasses.map(c => c.enrollment.courseId))]
+    
+    // Buscar tarifas específicas del profesor por curso
+    const teacherCourses = await db.teacherCourse.findMany({
+      where: {
+        teacherId,
+        courseId: { in: courseIds },
+      },
+      select: {
+        courseId: true,
+        paymentPerClass: true,
+      },
+    })
+    
+    // Crear mapa de tarifas por curso
+    const teacherRatesByCourse = new Map(
+      teacherCourses.map(tc => [tc.courseId, tc.paymentPerClass])
+    )
+
     // Calcular estadísticas
-    const BASE_RATE_PER_HOUR = 10
     let totalRevenue = 0
     let totalDuration = 0
 
@@ -833,9 +889,14 @@ export async function calculateTeacherTotalRevenue(
       const duration =
         classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
       totalDuration += duration
-      const hours = duration / 60
-      const classRevenue = hours * BASE_RATE_PER_HOUR * rateMultiplier
-      totalRevenue += classRevenue
+      
+      const courseId = classBooking.enrollment.courseId
+      const teacherRate = teacherRatesByCourse.get(courseId)
+      const courseRate = classBooking.enrollment.course.defaultPaymentPerClass
+      
+      // Prioridad: tarifa específica del profesor > tarifa del curso > 0
+      const paymentPerClass = teacherRate ?? courseRate ?? 0
+      totalRevenue += paymentPerClass
     }
 
     const averagePerClass = payableClasses.length > 0 ? totalRevenue / payableClasses.length : 0
@@ -975,7 +1036,7 @@ export async function getGuestDashboardStats(): Promise<GuestDashboardData> {
         title: course.title,
         level: course.level || 'Todos los niveles',
         studentCount: course._count.enrollments,
-        rating: 4.8, // TODO: Implement rating system
+        rating: 0, // No rating system implemented yet
         image: course.image,
       })),
       upcomingWebinars,
