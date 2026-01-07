@@ -20,6 +20,7 @@ export function CollaborativeContentWrapper({
     updateCursorPosition,
     updateTextSelection,
     remoteSelection,
+    localSelection,
   } = useCollaboration()
 
   // Track mouse movement
@@ -136,6 +137,14 @@ export function CollaborativeContentWrapper({
       {remoteSelection && (
         <RemoteSelectionHighlight
           selection={remoteSelection}
+          containerRef={containerRef as React.RefObject<HTMLDivElement>}
+        />
+      )}
+
+      {/* Local selection highlight (persistent) */}
+      {localSelection && (
+        <RemoteSelectionHighlight
+          selection={localSelection}
           containerRef={containerRef as React.RefObject<HTMLDivElement>}
         />
       )}

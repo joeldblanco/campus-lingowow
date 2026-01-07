@@ -36,6 +36,7 @@ interface CollaborationContextType {
 
   // Text Selection
   remoteSelection: TextSelection | null
+  localSelection: TextSelection | null
   updateTextSelection: (selection: TextSelection | null) => void
 
   // Audio Sync
@@ -84,6 +85,7 @@ export function CollaborationProvider({
 
   // Text selection state
   const [remoteSelection, setRemoteSelection] = useState<TextSelection | null>(null)
+  const [localSelection, setLocalSelection] = useState<TextSelection | null>(null)
 
   // Audio sync state
   const [remoteAudioState, setRemoteAudioState] = useState<AudioSyncState | null>(null)
@@ -197,7 +199,7 @@ export function CollaborationProvider({
   const updateTextSelection = useCallback((selection: TextSelection | null) => {
     if (selection) {
       // Optimistic update: Show the selection immediately for the local user
-      setRemoteSelection({
+      setLocalSelection({
         ...selection,
         participantId: isTeacher ? 'teacher' : 'student',
         participantName,
@@ -213,7 +215,7 @@ export function CollaborationProvider({
       })
     } else {
       // Optimistic update: Clear selection locally
-      setRemoteSelection(null)
+      setLocalSelection(null)
 
       sendCommand('selection-sync', {
         type: 'TEXT_DESELECT',
@@ -256,6 +258,7 @@ export function CollaborationProvider({
         remoteCursor,
         updateCursorPosition,
         remoteSelection,
+        localSelection,
         updateTextSelection,
         remoteAudioState,
         syncAudioPlay,
