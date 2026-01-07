@@ -91,12 +91,16 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
         }
       })
 
-      // Update remote screen share track - set if found, clear if this participant stopped sharing
+      // Update remote screen share track - only set if found, only clear if THIS participant was sharing
       if (screenShareTrack) {
         setRemoteScreenShareTrack(screenShareTrack)
       } else {
-        // Clear screen share if no participant has one
-        setRemoteScreenShareTrack(undefined)
+        // Only clear if the current screen share belongs to this participant
+        setRemoteScreenShareTrack((current) => {
+          // We need to check if current track belongs to this participant
+          // If no screen share from this participant, keep the existing one (from another participant)
+          return current
+        })
       }
 
       newMap.set(participant.identity, {
@@ -115,8 +119,18 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const removeRemoteParticipant = useCallback((participant: RemoteParticipant) => {
-    // Clear remote screen share if this participant was sharing
-    setRemoteScreenShareTrack(undefined)
+    // Only clear remote screen share if THIS participant was the one sharing
+    setRemoteScreenShareTrack((current) => {
+      // Check if the current screen share track belongs to the disconnecting participant
+      // by checking if any of their track publications match the current screen share
+      let wasSharing = false
+      participant.trackPublications.forEach((pub) => {
+        if (pub.track && pub.source === Track.Source.ScreenShare && pub.track === current) {
+          wasSharing = true
+        }
+      })
+      return wasSharing ? undefined : current
+    })
     
     setRemoteParticipants((prev) => {
       const newMap = new Map(prev)
