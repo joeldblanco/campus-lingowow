@@ -50,7 +50,12 @@ export function CollaborativeContentWrapper({
       const container = containerRef.current
 
       // Check if selection is within our container
-      if (!container.contains(range.commonAncestorContainer)) {
+      // Handle text nodes by checking their parent element
+      const nodeToCheck = range.commonAncestorContainer.nodeType === Node.TEXT_NODE 
+        ? range.commonAncestorContainer.parentElement 
+        : range.commonAncestorContainer;
+      
+      if (!nodeToCheck || !container.contains(nodeToCheck)) {
         updateTextSelection(null)
         return
       }
