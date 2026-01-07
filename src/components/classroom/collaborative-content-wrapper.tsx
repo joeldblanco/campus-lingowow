@@ -51,6 +51,7 @@ export function CollaborativeContentWrapper({
 
       // Check if selection is within our container
       if (!container.contains(range.commonAncestorContainer)) {
+        updateTextSelection(null)
         return
       }
 
