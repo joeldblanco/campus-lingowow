@@ -33,23 +33,23 @@ interface CollaborationContextType {
   // Cursor
   remoteCursor: CursorPosition | null
   updateCursorPosition: (x: number, y: number, containerRect: DOMRect) => void
-  
+
   // Text Selection
   remoteSelection: TextSelection | null
   updateTextSelection: (selection: TextSelection | null) => void
-  
+
   // Audio Sync
   remoteAudioState: AudioSyncState | null
   syncAudioPlay: (blockId: string, currentTime: number) => void
   syncAudioPause: (blockId: string, currentTime: number) => void
   syncAudioSeek: (blockId: string, currentTime: number) => void
-  
+
   // Whiteboard (handled separately by Excalidraw collaboration)
-  
+
   // Screen Share
   isRemoteScreenSharing: boolean
   remoteScreenTrack: MediaStreamTrack | null
-  
+
   // Configuration
   isTeacher: boolean
   participantName: string
@@ -71,23 +71,23 @@ interface CollaborationProviderProps {
   participantName: string
 }
 
-export function CollaborationProvider({ 
-  children, 
-  isTeacher, 
-  participantName 
+export function CollaborationProvider({
+  children,
+  isTeacher,
+  participantName
 }: CollaborationProviderProps) {
   const { sendCommand, addCommandListener, removeCommandListener, connectionStatus } = useLiveKit()
-  
+
   // Cursor state
   const [remoteCursor, setRemoteCursor] = useState<CursorPosition | null>(null)
   const cursorThrottleRef = useRef<number>(0)
-  
+
   // Text selection state
   const [remoteSelection, setRemoteSelection] = useState<TextSelection | null>(null)
-  
+
   // Audio sync state
   const [remoteAudioState, setRemoteAudioState] = useState<AudioSyncState | null>(null)
-  
+
   // Screen share state (will be used when screen share listener is implemented)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isRemoteScreenSharing, _setIsRemoteScreenSharing] = useState(false)
@@ -163,7 +163,7 @@ export function CollaborationProvider({
   // Clear stale cursor after 3 seconds of inactivity
   useEffect(() => {
     if (!remoteCursor) return
-    
+
     const timeout = setTimeout(() => {
       if (remoteCursor && Date.now() - remoteCursor.timestamp > 3000) {
         setRemoteCursor(null)
@@ -196,6 +196,14 @@ export function CollaborationProvider({
   // Update text selection
   const updateTextSelection = useCallback((selection: TextSelection | null) => {
     if (selection) {
+      // Optimistic update: Show the selection immediately for the local user
+      setRemoteSelection({
+        ...selection,
+        participantId: isTeacher ? 'teacher' : 'student',
+        participantName,
+        isTeacher,
+      })
+
       sendCommand('selection-sync', {
         type: 'TEXT_SELECT',
         ...selection,
@@ -204,6 +212,9 @@ export function CollaborationProvider({
         isTeacher,
       })
     } else {
+      // Optimistic update: Clear selection locally
+      setRemoteSelection(null)
+
       sendCommand('selection-sync', {
         type: 'TEXT_DESELECT',
         participantId: isTeacher ? 'teacher' : 'student',

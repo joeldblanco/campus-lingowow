@@ -11,13 +11,13 @@ interface CollaborativeContentWrapperProps {
   className?: string
 }
 
-export function CollaborativeContentWrapper({ 
-  children, 
-  className 
+export function CollaborativeContentWrapper({
+  children,
+  className
 }: CollaborativeContentWrapperProps) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const { 
-    updateCursorPosition, 
+  const {
+    updateCursorPosition,
     updateTextSelection,
     remoteSelection,
   } = useCollaboration()
@@ -38,7 +38,7 @@ export function CollaborativeContentWrapper({
   useEffect(() => {
     const handleSelectionChange = () => {
       const selection = window.getSelection()
-      
+
       // Only process if there's a non-collapsed selection
       if (!selection || selection.isCollapsed || !containerRef.current) {
         // Don't send deselect - let the remote selection persist
@@ -47,32 +47,73 @@ export function CollaborativeContentWrapper({
 
       const range = selection.getRangeAt(0)
       const container = containerRef.current
-      
+
       // Check if selection is within our container
       if (!container.contains(range.commonAncestorContainer)) {
         return
       }
 
       const selectedText = selection.toString().trim()
-      if (!selectedText || selectedText.length < 2) {
+      if (!selectedText || selectedText.length < 1) {
         return
       }
 
       // Find the block ID from the closest parent with data-block-id
-      const blockElement = (range.commonAncestorContainer as Element).closest?.('[data-block-id]') 
+      const blockElement = (range.commonAncestorContainer as Element).closest?.('[data-block-id]')
         || (range.commonAncestorContainer.parentElement as Element)?.closest?.('[data-block-id]')
-      
+
       const blockId = blockElement?.getAttribute('data-block-id') || 'unknown'
 
-      updateTextSelection({
-        startOffset: range.startOffset,
-        endOffset: range.endOffset,
-        blockId,
-        text: selectedText,
-        participantId: '',
-        participantName: '',
-        isTeacher: false,
-      })
+      // Calculate absolute offsets within the container/block
+      // This is crucial for multi-line support and avoiding string-matching ambiguity
+      const walker = document.createTreeWalker(
+        container,
+        NodeFilter.SHOW_TEXT,
+        {
+          acceptNode: (node) => {
+            const parent = node.parentElement
+            if (parent?.tagName === 'SCRIPT' || parent?.tagName === 'STYLE') {
+              return NodeFilter.FILTER_REJECT
+            }
+            return NodeFilter.FILTER_ACCEPT
+          }
+        }
+      )
+
+      let currentOffset = 0
+      let startOffset = -1
+      let endOffset = -1
+      let node: Node | null
+
+      while ((node = walker.nextNode())) {
+        const length = node.textContent?.length || 0
+
+        // Check if this node contains the start of selection
+        if (startOffset === -1 && node === range.startContainer) {
+          startOffset = currentOffset + range.startOffset
+        }
+
+        // Check if this node contains the end of selection
+        if (endOffset === -1 && node === range.endContainer) {
+          endOffset = currentOffset + range.endOffset
+        }
+
+        currentOffset += length
+
+        if (startOffset !== -1 && endOffset !== -1) break
+      }
+
+      if (startOffset !== -1 && endOffset !== -1) {
+        updateTextSelection({
+          startOffset,
+          endOffset,
+          blockId,
+          text: selectedText,
+          participantId: '',
+          participantName: '',
+          isTeacher: false,
+        })
+      }
     }
 
     document.addEventListener('selectionchange', handleSelectionChange)
@@ -87,14 +128,14 @@ export function CollaborativeContentWrapper({
       onMouseLeave={handleMouseLeave}
     >
       {children}
-      
+
       {/* Remote cursor overlay */}
       <RemoteCursor containerRef={containerRef as React.RefObject<HTMLDivElement>} />
-      
+
       {/* Remote selection highlight */}
-      {remoteSelection && remoteSelection.text && (
-        <RemoteSelectionHighlight 
-          selection={remoteSelection} 
+      {remoteSelection && (
+        <RemoteSelectionHighlight
+          selection={remoteSelection}
           containerRef={containerRef as React.RefObject<HTMLDivElement>}
         />
       )}
@@ -104,6 +145,8 @@ export function CollaborativeContentWrapper({
 
 interface RemoteSelectionHighlightProps {
   selection: {
+    startOffset: number
+    endOffset: number
     blockId: string
     text: string
     participantName: string
@@ -117,17 +160,15 @@ function RemoteSelectionHighlight({ selection, containerRef }: RemoteSelectionHi
   const [scrollIndicator, setScrollIndicator] = useState<'above' | 'below' | null>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
 
-  // Find text and calculate highlight rectangles (without modifying DOM)
+  // Find text and calculate highlight rectangles using absolute offsets
   useEffect(() => {
     const container = containerRef.current
-    if (!container || !selection.text || selection.text.length < 2) {
+    if (!container || selection.startOffset === undefined || selection.endOffset === undefined) {
       setHighlightRects([])
       setScrollIndicator(null)
       return
     }
 
-    const searchText = selection.text
-    
     const findTextRange = (): Range | null => {
       const walker = document.createTreeWalker(
         container,
@@ -143,49 +184,45 @@ function RemoteSelectionHighlight({ selection, containerRef }: RemoteSelectionHi
         }
       )
 
-      const textNodes: Text[] = []
+      let currentOffset = 0
+      let startNode: Node | null = null
+      let startNodeOffset = 0
+      let endNode: Node | null = null
+      let endNodeOffset = 0
+
       let node: Node | null
       while ((node = walker.nextNode())) {
-        textNodes.push(node as Text)
-      }
+        const length = node.textContent?.length || 0
+        const nodeEnd = currentOffset + length
 
-      let fullText = ''
-      const nodeMap: { node: Text; start: number; end: number }[] = []
-      
-      textNodes.forEach(textNode => {
-        const start = fullText.length
-        fullText += textNode.textContent || ''
-        nodeMap.push({ node: textNode, start, end: fullText.length })
-      })
-
-      const matchIndex = fullText.indexOf(searchText)
-      if (matchIndex === -1) return null
-
-      const matchEnd = matchIndex + searchText.length
-
-      let startNode: Text | null = null
-      let startOffset = 0
-      let endNode: Text | null = null
-      let endOffset = 0
-
-      for (const { node: textNode, start, end } of nodeMap) {
-        if (!startNode && matchIndex >= start && matchIndex < end) {
-          startNode = textNode
-          startOffset = matchIndex - start
+        // Find start node
+        if (!startNode && selection.startOffset >= currentOffset && selection.startOffset <= nodeEnd) {
+          startNode = node
+          startNodeOffset = selection.startOffset - currentOffset
         }
-        if (matchEnd > start && matchEnd <= end) {
-          endNode = textNode
-          endOffset = matchEnd - start
-          break
+
+        // Find end node
+        if (!endNode && selection.endOffset >= currentOffset && selection.endOffset <= nodeEnd) {
+          endNode = node
+          endNodeOffset = selection.endOffset - currentOffset
         }
+
+        currentOffset += length
+
+        if (startNode && endNode) break
       }
 
       if (!startNode || !endNode) return null
 
       const range = document.createRange()
-      range.setStart(startNode, startOffset)
-      range.setEnd(endNode, endOffset)
-      return range
+      try {
+        range.setStart(startNode, startNodeOffset)
+        range.setEnd(endNode, endNodeOffset)
+        return range
+      } catch (e) {
+        console.error('Error setting range:', e)
+        return null
+      }
     }
 
     const updateRects = () => {
@@ -197,8 +234,8 @@ function RemoteSelectionHighlight({ selection, containerRef }: RemoteSelectionHi
 
       const rects = Array.from(range.getClientRects())
       const containerRect = container.getBoundingClientRect()
-      
-      const relativeRects = rects.map(rect => 
+
+      const relativeRects = rects.map(rect =>
         new DOMRect(
           rect.left - containerRect.left,
           rect.top - containerRect.top,
@@ -243,8 +280,8 @@ function RemoteSelectionHighlight({ selection, containerRef }: RemoteSelectionHi
     }
   }, [highlightRects])
 
-  const bgColor = selection.isTeacher 
-    ? 'rgba(147, 197, 253, 0.5)' 
+  const bgColor = selection.isTeacher
+    ? 'rgba(147, 197, 253, 0.5)'
     : 'rgba(134, 239, 172, 0.5)'
 
   return (
@@ -271,8 +308,8 @@ function RemoteSelectionHighlight({ selection, containerRef }: RemoteSelectionHi
           onClick={scrollToHighlight}
           className={cn(
             "fixed left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full shadow-lg flex items-center gap-2 text-sm font-medium transition-all hover:scale-105",
-            selection.isTeacher 
-              ? "bg-blue-500 text-white hover:bg-blue-600" 
+            selection.isTeacher
+              ? "bg-blue-500 text-white hover:bg-blue-600"
               : "bg-green-500 text-white hover:bg-green-600",
             scrollIndicator === 'above' ? "top-20" : "bottom-20"
           )}
