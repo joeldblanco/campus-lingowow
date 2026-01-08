@@ -78,7 +78,7 @@ export default function CartPage() {
                           variant="ghost"
                           size="sm"
                           className="mt-2"
-                          onClick={() => removeFromCart(item.product.id, item.plan.id)}
+                          onClick={() => removeFromCart(item.product.id, item.plan.id, item.language)}
                         >
                           <Trash2 className="h-4 w-4 mr-2" />
                           Eliminar
