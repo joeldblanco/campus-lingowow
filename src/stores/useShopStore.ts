@@ -32,7 +32,7 @@ type ShopState = {
 
   // Acciones
   addToCart: (item: CartItem) => void
-  removeFromCart: (productId: string, planId: string) => void
+  removeFromCart: (productId: string, planId: string, language?: string) => void
   openCartDrawer: () => void
   closeCartDrawer: () => void
   setCartDrawerOpen: (open: boolean) => void
@@ -122,10 +122,10 @@ export const useShopStore = create<ShopState>()(
           }
         }),
 
-      removeFromCart: (productId, planId) =>
+      removeFromCart: (productId, planId, language) =>
         set((state) => ({
           cart: state.cart.filter(
-            (item) => !(item.product.id === productId && item.plan.id === planId)
+            (item) => !(item.product.id === productId && item.plan.id === planId && item.language === language)
           ),
         })),
 

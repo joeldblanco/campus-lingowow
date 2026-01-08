@@ -35,7 +35,9 @@ import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { Loader2, ArrowRight, Video } from 'lucide-react'
+import { Loader2, ArrowRight, Video, CreditCard, FileText } from 'lucide-react'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Label } from '@/components/ui/label'
 import { ScheduleSelectorStep } from './schedule-selector-step'
 import { useTimezone } from '@/hooks/use-timezone'
 
@@ -43,7 +45,20 @@ const CreateEnrollmentSchema = z.object({
   studentId: z.string().min(1, 'Debes seleccionar un estudiante'),
   courseId: z.string().min(1, 'Debes seleccionar un curso'),
   academicPeriodId: z.string().min(1, 'Debes seleccionar un período académico'),
-  paypalOrderId: z.string().min(1, 'El ID de pago de PayPal es obligatorio'),
+  invoiceType: z.enum(['paypal', 'lingowow']),
+  paypalOrderId: z.string().optional(),
+  lingowowInvoiceNumber: z.string().optional(),
+}).refine((data) => {
+  if (data.invoiceType === 'paypal') {
+    return data.paypalOrderId && data.paypalOrderId.length > 0
+  }
+  if (data.invoiceType === 'lingowow') {
+    return data.lingowowInvoiceNumber && data.lingowowInvoiceNumber.length > 0
+  }
+  return false
+}, {
+  message: 'Debes proporcionar un ID de factura válido',
+  path: ['paypalOrderId'],
 })
 
 interface CreateEnrollmentDialogProps {
@@ -92,9 +107,14 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
       studentId: '',
       courseId: '',
       academicPeriodId: '',
+      invoiceType: 'paypal',
       paypalOrderId: '',
+      lingowowInvoiceNumber: '',
     },
   })
+
+  // Watch invoice type
+  const invoiceType = form.watch('invoiceType')
 
   // Watch for changes in paypalOrderId to reset verification if changed
   const paypalOrderId = form.watch('paypalOrderId')
@@ -102,6 +122,11 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
   useEffect(() => {
     setVerifiedPaymentAmount(null)
   }, [paypalOrderId])
+
+  // Reset verification when switching invoice type
+  useEffect(() => {
+    setVerifiedPaymentAmount(null)
+  }, [invoiceType])
 
   // Obtener el curso seleccionado
   const selectedCourseId = form.watch('courseId')
@@ -192,15 +217,42 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
 
   // Manejar el paso siguiente para cursos sincrónicos
   const handleNextStep = () => {
-    if (!form.getValues('studentId') || !form.getValues('courseId') || !form.getValues('academicPeriodId') || !form.getValues('paypalOrderId')) {
+    const values = form.getValues()
+    if (!values.studentId || !values.courseId || !values.academicPeriodId) {
       toast.error('Por favor completa todos los campos')
       return
     }
-    if (verifiedPaymentAmount === null) {
-      toast.error('Por favor verifica el pago de PayPal')
-      return
+    
+    // Validar según tipo de factura
+    if (values.invoiceType === 'paypal') {
+      if (!values.paypalOrderId) {
+        toast.error('Por favor ingresa el ID de PayPal')
+        return
+      }
+      if (verifiedPaymentAmount === null) {
+        toast.error('Por favor verifica el pago de PayPal')
+        return
+      }
+    } else if (values.invoiceType === 'lingowow') {
+      if (!values.lingowowInvoiceNumber) {
+        toast.error('Por favor ingresa el número de factura Lingowow')
+        return
+      }
     }
+    
     setCurrentStep('schedule')
+  }
+
+  // Determinar si el formulario está listo para enviar
+  const isFormReady = () => {
+    const values = form.getValues()
+    if (values.invoiceType === 'paypal') {
+      return verifiedPaymentAmount !== null
+    }
+    if (values.invoiceType === 'lingowow') {
+      return !!values.lingowowInvoiceNumber && values.lingowowInvoiceNumber.length > 0
+    }
+    return false
   }
 
   // Crear inscripción sin horario (cursos asincrónicos)
@@ -452,75 +504,132 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
 
               <FormField
                 control={form.control}
-                name="paypalOrderId"
+                name="invoiceType"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>ID de Pago / Factura PayPal</FormLabel>
-                    <div className="flex gap-2">
-                      <FormControl>
-                        <Input
-                          placeholder="Ej: 5W840924G1436423K"
-                          {...field}
-                          onChange={(e) => {
-                            // Basic URL extraction logic
-                            let val = e.target.value
-                            if (val.includes('http')) {
-                              const invoiceMatch = val.match(/invoice\/p\/#([A-Za-z0-9]+)|invoice\/s\/([A-Za-z0-9]+)/)
-                              if (invoiceMatch) {
-                                val = invoiceMatch[1] || invoiceMatch[2]
-                              } else {
-                                const tokenMatch = val.match(/token=([A-Za-z0-9]+)/)
-                                if (tokenMatch) {
-                                  val = tokenMatch[1]
-                                } else {
-                                  const parts = val.split('/')
-                                  const last = parts[parts.length - 1].replace('#', '')
-                                  if (last && last.length > 5) {
-                                    val = last
-                                  }
-                                }
-                              }
-                            }
-                            field.onChange(val)
-                          }}
-                        />
-                      </FormControl>
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        onClick={verifyPayment}
-                        disabled={isVerifyingPayment || !field.value || verifiedPaymentAmount !== null}
+                  <FormItem className="space-y-3">
+                    <FormLabel>Tipo de Factura</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex gap-4"
                       >
-                        {isVerifyingPayment ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : verifiedPaymentAmount !== null ? (
-                          'Verificado'
-                        ) : (
-                          'Verificar'
-                        )}
-                      </Button>
-                    </div>
-                    {verifiedPaymentAmount !== null && (
-                      <p className="text-xs text-green-600 font-medium">
-                        Pago confirmado por monto de {verifiedPaymentAmount}
-                      </p>
-                    )}
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="paypal" id="paypal" />
+                          <Label htmlFor="paypal" className="flex items-center gap-2 cursor-pointer">
+                            <CreditCard className="h-4 w-4" />
+                            PayPal
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="lingowow" id="lingowow" />
+                          <Label htmlFor="lingowow" className="flex items-center gap-2 cursor-pointer">
+                            <FileText className="h-4 w-4" />
+                            Factura Lingowow
+                          </Label>
+                        </div>
+                      </RadioGroup>
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
+              {invoiceType === 'paypal' && (
+                <FormField
+                  control={form.control}
+                  name="paypalOrderId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>ID de Pago / Factura PayPal</FormLabel>
+                      <div className="flex gap-2">
+                        <FormControl>
+                          <Input
+                            placeholder="Ej: 5W840924G1436423K"
+                            {...field}
+                            onChange={(e) => {
+                              // Basic URL extraction logic
+                              let val = e.target.value
+                              if (val.includes('http')) {
+                                const invoiceMatch = val.match(/invoice\/p\/#([A-Za-z0-9]+)|invoice\/s\/([A-Za-z0-9]+)/)
+                                if (invoiceMatch) {
+                                  val = invoiceMatch[1] || invoiceMatch[2]
+                                } else {
+                                  const tokenMatch = val.match(/token=([A-Za-z0-9]+)/)
+                                  if (tokenMatch) {
+                                    val = tokenMatch[1]
+                                  } else {
+                                    const parts = val.split('/')
+                                    const last = parts[parts.length - 1].replace('#', '')
+                                    if (last && last.length > 5) {
+                                      val = last
+                                    }
+                                  }
+                                }
+                              }
+                              field.onChange(val)
+                            }}
+                          />
+                        </FormControl>
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          onClick={verifyPayment}
+                          disabled={isVerifyingPayment || !field.value || verifiedPaymentAmount !== null}
+                        >
+                          {isVerifyingPayment ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : verifiedPaymentAmount !== null ? (
+                            'Verificado'
+                          ) : (
+                            'Verificar'
+                          )}
+                        </Button>
+                      </div>
+                      {verifiedPaymentAmount !== null && (
+                        <p className="text-xs text-green-600 font-medium">
+                          Pago confirmado por monto de {verifiedPaymentAmount}
+                        </p>
+                      )}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              {invoiceType === 'lingowow' && (
+                <FormField
+                  control={form.control}
+                  name="lingowowInvoiceNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Número de Factura Lingowow</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Ej: LW-2024-001"
+                          {...field}
+                        />
+                      </FormControl>
+                      <p className="text-xs text-muted-foreground">
+                        Esta factura ya existe en el sistema de Lingowow. No se creará una factura adicional.
+                      </p>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
 
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={handleClose} disabled={isLoading}>
                   Cancelar
                 </Button>
                 {isSynchronousCourse ? (
-                  <Button type="submit" disabled={verifiedPaymentAmount === null}>
+                  <Button type="submit" disabled={!isFormReady()}>
                     Siguiente: Seleccionar Horario
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 ) : (
-                  <Button type="submit" disabled={isLoading || verifiedPaymentAmount === null}>
+                  <Button type="submit" disabled={isLoading || !isFormReady()}>
                     {isLoading ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />

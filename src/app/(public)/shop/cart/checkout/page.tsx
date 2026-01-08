@@ -98,6 +98,11 @@ interface CheckoutPersistedState {
   timestamp: number
 }
 
+// Helper function to create unique key for cart items (planId + language)
+const getCartItemKey = (planId: string, language?: string) => {
+  return language ? `${planId}:${language}` : planId
+}
+
 export default function CheckoutPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -139,7 +144,8 @@ export default function CheckoutPage() {
 
   const plansRequiringSchedule = useMemo(() => {
     return cartItems.filter(item => {
-      const details = planDetails[item.plan.id]
+      const itemKey = getCartItemKey(item.plan.id, item.language)
+      const details = planDetails[itemKey]
       return details?.isSynchronous && details?.courseId
     })
   }, [cartItems, planDetails])
@@ -149,20 +155,23 @@ export default function CheckoutPage() {
   const allSchedulesSelected = useMemo(() => {
     if (!requiresScheduleSelection) return true
     return plansRequiringSchedule.every(item => {
-      return scheduleSelections[item.plan.id]?.schedule?.length > 0
+      const itemKey = getCartItemKey(item.plan.id, item.language)
+      return scheduleSelections[itemKey]?.schedule?.length > 0
     })
   }, [plansRequiringSchedule, scheduleSelections, requiresScheduleSelection])
 
   const isRecurrentData = useMemo(() => {
     return cartItems.some(item => {
-      const details = planDetails[item.plan.id]
+      const itemKey = getCartItemKey(item.plan.id, item.language)
+      const details = planDetails[itemKey]
       return !!details?.billingCycle
     })
   }, [cartItems, planDetails])
 
   const requiresPlatformAccess = useMemo(() => {
     return cartItems.some(item => {
-      const details = planDetails[item.plan.id]
+      const itemKey = getCartItemKey(item.plan.id, item.language)
+      const details = planDetails[itemKey]
       return details?.courseId || details?.includesClasses || details?.isDigital
     })
   }, [cartItems, planDetails])
@@ -181,7 +190,8 @@ export default function CheckoutPage() {
 
   const { subtotal, discount, taxes, total } = useMemo(() => {
     const subtotalAmount = cartItems.reduce((sum, item) => {
-      const proration = scheduleSelections[item.plan.id]?.proration
+      const itemKey = getCartItemKey(item.plan.id, item.language)
+      const proration = scheduleSelections[itemKey]?.proration
       const price = proration?.proratedPrice ?? item.plan.price
       return sum + price * (item.quantity || 1)
     }, 0)
@@ -218,10 +228,13 @@ export default function CheckoutPage() {
       setLoadingPlans(true)
       const details: Record<string, PlanDetails> = {}
       for (const item of cartItems) {
+        // Create unique key for this cart item (planId + language)
+        const itemKey = getCartItemKey(item.plan.id, item.language)
+        
         try {
           // Skip synthetic plans (products without real plans use "{productId}-default")
           if (item.plan.id.endsWith('-default')) {
-            details[item.plan.id] = {
+            details[itemKey] = {
               id: item.plan.id,
               courseId: null,
               isSynchronous: false,
@@ -240,7 +253,7 @@ export default function CheckoutPage() {
           if (!response.ok) {
             console.warn(`Plan ${item.plan.id} not found (${response.status})`)
             // Fail-safe: if we can't load plan details, assume it requires platform access
-            details[item.plan.id] = {
+            details[itemKey] = {
               id: item.plan.id,
               courseId: null,
               isSynchronous: false,
@@ -263,8 +276,9 @@ export default function CheckoutPage() {
             classesPerWeek: plan.classesPerWeek,
             course,
             productCourse: plan.product?.course,
+            language: item.language,
           })
-          details[item.plan.id] = {
+          details[itemKey] = {
             id: plan.id,
             courseId,
             isSynchronous,
@@ -277,7 +291,7 @@ export default function CheckoutPage() {
         } catch (error) {
           console.error(`Error loading plan ${item.plan.id}:`, error)
           // Fail-safe: if we can't load plan details, assume it requires platform access
-          details[item.plan.id] = {
+          details[itemKey] = {
             id: item.plan.id,
             courseId: null,
             isSynchronous: false,
@@ -415,10 +429,10 @@ export default function CheckoutPage() {
     setFormData(prev => ({ ...prev, [field]: value }))
   }, [])
 
-  const handleScheduleSelected = useCallback((planId: string, schedule: ScheduleSlot[], proration: ProrationResult) => {
+  const handleScheduleSelected = useCallback((itemKey: string, schedule: ScheduleSlot[], proration: ProrationResult) => {
     setScheduleSelections(prev => ({
       ...prev,
-      [planId]: { schedule, proration }
+      [itemKey]: { schedule, proration }
     }))
   }, [])
 
@@ -504,7 +518,8 @@ export default function CheckoutPage() {
   const paypalItems = useMemo(() => {
     console.log('[Checkout] Building paypalItems with scheduleSelections:', scheduleSelections)
     return cartItems.map((item) => {
-      const selection = scheduleSelections[item.plan.id]
+      const itemKey = getCartItemKey(item.plan.id, item.language)
+      const selection = scheduleSelections[itemKey]
       const proration = selection?.proration
       const price = proration?.proratedPrice ?? item.plan.price
       console.log('[Checkout] Item:', item.plan.id, 'schedule:', selection?.schedule, 'language:', item.language)
@@ -618,10 +633,11 @@ export default function CheckoutPage() {
                     <p className="text-slate-600 mt-2">Elige horarios convenientes para tus clases en vivo.</p>
                   </div>
                   {plansRequiringSchedule.map((item) => {
-                    const details = planDetails[item.plan.id]
+                    const itemKey = getCartItemKey(item.plan.id, item.language)
+                    const details = planDetails[itemKey]
                     if (!details?.courseId || !details?.isSynchronous) return null
                     return (
-                      <div key={item.plan.id} className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                      <div key={itemKey} className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                         <div className="flex items-center gap-4 mb-6">
                           <div className="w-16 h-16 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
                             {item.product.image ? (
@@ -640,7 +656,7 @@ export default function CheckoutPage() {
                           courseId={details.courseId!}
                           classDuration={details.classDuration}
                           maxClassesPerWeek={details.classesPerWeek || undefined}
-                          onScheduleSelected={(schedule, proration) => handleScheduleSelected(item.plan.id, schedule, proration)}
+                          onScheduleSelected={(schedule, proration) => handleScheduleSelected(itemKey, schedule, proration)}
                         />
                       </div>
                     )
@@ -775,10 +791,11 @@ export default function CheckoutPage() {
                   </div>
                   <div className="p-6 space-y-4 max-h-[400px] overflow-y-auto">
                     {cartItems.map((item) => {
-                      const proration = scheduleSelections[item.plan.id]?.proration
+                      const itemKey = getCartItemKey(item.plan.id, item.language)
+                      const proration = scheduleSelections[itemKey]?.proration
                       const price = proration?.proratedPrice ?? item.plan.price
                       return (
-                        <div key={`${item.product.id}-${item.plan.id}`} className="flex gap-4">
+                        <div key={itemKey} className="flex gap-4">
                           <div className="w-16 h-16 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
                             {item.product.image ? (
                               <Image src={item.product.image} alt={item.product.title} width={64} height={64} className="w-full h-full object-cover" />
@@ -793,7 +810,7 @@ export default function CheckoutPage() {
                             </div>
                             <p className="text-xs text-slate-500 mt-1">{item.plan.name}</p>
                             <div className="mt-2 flex items-center justify-end">
-                              <button onClick={() => removeFromCart(item.product.id, item.plan.id)} className="text-xs text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1">
+                              <button onClick={() => removeFromCart(item.product.id, item.plan.id, item.language)} className="text-xs text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1">
                                 <Trash2 className="h-4 w-4" /><span>Eliminar</span>
                               </button>
                             </div>

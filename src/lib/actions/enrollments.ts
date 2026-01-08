@@ -335,7 +335,9 @@ interface CreateEnrollmentWithScheduleData {
   studentId: string
   courseId: string
   academicPeriodId: string
-  paypalOrderId: string
+  invoiceType: 'paypal' | 'lingowow'
+  paypalOrderId?: string
+  lingowowInvoiceNumber?: string
   teacherId?: string
   scheduledClasses: ScheduledClass[]
   isRecurring: boolean
@@ -346,27 +348,43 @@ interface CreateEnrollmentWithScheduleData {
 // Create enrollment with schedule (for synchronous courses)
 export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithScheduleData) {
   try {
-    // 1. Verify PayPal Transaction FIRST
-    console.log('[Enrollment] Verifying PayPal Order:', data.paypalOrderId)
-    const paypalCheck = await verifyPaypalTransaction(data.paypalOrderId)
+    // Variables para el flujo de PayPal
+    let paypalCheck: { success: boolean; data?: unknown; error?: string } | null = null
 
-    if (!paypalCheck.success || !paypalCheck.data) {
-      return {
-        success: false,
-        error: paypalCheck.error || 'Error al verificar el pago de PayPal.',
+    // 1. Verificar según tipo de factura
+    if (data.invoiceType === 'paypal') {
+      if (!data.paypalOrderId) {
+        return { success: false, error: 'El ID de PayPal es requerido' }
       }
-    }
+      
+      console.log('[Enrollment] Verifying PayPal Order:', data.paypalOrderId)
+      paypalCheck = await verifyPaypalTransaction(data.paypalOrderId)
 
-    // Check if invoice already exists
-    const existingInvoice = await db.invoice.findFirst({
-      where: { paypalOrderId: data.paypalOrderId },
-    })
-
-    if (existingInvoice) {
-      return {
-        success: false,
-        error: 'Este pago de PayPal ya está asociado a otra factura/inscripción.',
+      if (!paypalCheck.success || !paypalCheck.data) {
+        return {
+          success: false,
+          error: paypalCheck.error || 'Error al verificar el pago de PayPal.',
+        }
       }
+
+      // Check if invoice already exists
+      const existingInvoice = await db.invoice.findFirst({
+        where: { paypalOrderId: data.paypalOrderId },
+      })
+
+      if (existingInvoice) {
+        return {
+          success: false,
+          error: 'Este pago de PayPal ya está asociado a otra factura/inscripción.',
+        }
+      }
+    } else if (data.invoiceType === 'lingowow') {
+      if (!data.lingowowInvoiceNumber) {
+        return { success: false, error: 'El número de factura Lingowow es requerido' }
+      }
+      console.log('[Enrollment] Using Lingowow Invoice:', data.lingowowInvoiceNumber)
+      // Las facturas Lingowow no requieren verificación externa
+      // Solo se usa como referencia para validar la inscripción
     }
 
     // 2. Check if enrollment already exists
@@ -440,18 +458,24 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
       return { success: false, error: 'Error al crear el registro de inscripción' }
     }
 
-    // 4. Create Invoice linked to this user
-    const invoiceResult = await createInvoiceFromPaypal(paypalCheck.data, data.studentId)
+    // 4. Create Invoice linked to this user (only for PayPal invoices)
+    if (data.invoiceType === 'paypal' && paypalCheck?.data) {
+      const invoiceResult = await createInvoiceFromPaypal(
+        paypalCheck.data as Parameters<typeof createInvoiceFromPaypal>[0],
+        data.studentId
+      )
 
-    if (!invoiceResult.success) {
-      // ROLLBACK Enrollment
-      console.error('Invoice creation failed. Rolling back enrollment...')
-      await db.enrollment.delete({ where: { id: enrollment.id } })
-      return {
-        success: false,
-        error: 'Error al generar la factura. La inscripción ha sido revertida.',
+      if (!invoiceResult.success) {
+        // ROLLBACK Enrollment
+        console.error('Invoice creation failed. Rolling back enrollment...')
+        await db.enrollment.delete({ where: { id: enrollment.id } })
+        return {
+          success: false,
+          error: 'Error al generar la factura. La inscripción ha sido revertida.',
+        }
       }
     }
+    // Para facturas Lingowow, no se crea factura adicional - solo se registra la inscripción
 
     // 5. Create class schedules and bookings if this is a synchronous course
     if (data.teacherId && data.scheduledClasses.length > 0) {

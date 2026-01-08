@@ -1,6 +1,6 @@
 'use client'
 
-import { ShoppingCart, Trash2, ArrowRight, Globe } from 'lucide-react'
+import { ShoppingCart, Trash2, ArrowRight } from 'lucide-react'
 import { SUPPORTED_LANGUAGES } from '@/lib/constants/languages'
 import { Button } from '@/components/ui/button'
 import {
@@ -113,7 +113,7 @@ export function CartDrawer({ open, onOpenChange, suggestedProducts = [] }: CartD
                             <p className="text-xs text-muted-foreground">{item.plan.name}</p>
                             {item.language && (
                               <span className="inline-flex items-center gap-1 text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
-                                <Globe className="h-3 w-3" />
+                                <span>{SUPPORTED_LANGUAGES.find(l => l.code === item.language)?.flag}</span>
                                 {SUPPORTED_LANGUAGES.find(l => l.code === item.language)?.name || item.language}
                               </span>
                             )}
@@ -123,7 +123,7 @@ export function CartDrawer({ open, onOpenChange, suggestedProducts = [] }: CartD
                           variant="ghost"
                           size="icon"
                           className="h-6 w-6 text-gray-400 hover:text-red-500"
-                          onClick={() => removeFromCart(item.product.id, item.plan.id)}
+                          onClick={() => removeFromCart(item.product.id, item.plan.id, item.language)}
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
