@@ -245,10 +245,9 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
     const userTimezone = data.timezone || 'America/Lima'
 
     // Extraer day y timeSlot del datetime (formato: YYYY-MM-DDTHH:MM)
-    const datetimeLocal = new Date(validatedData.datetime)
-    const day = validatedData.datetime.split('T')[0] // YYYY-MM-DD
-    const hours = datetimeLocal.getHours().toString().padStart(2, '0')
-    const minutes = datetimeLocal.getMinutes().toString().padStart(2, '0')
+    // Parsear directamente el string sin usar Date constructor para evitar conversiones de timezone
+    const [day, timePart] = validatedData.datetime.split('T') // YYYY-MM-DD y HH:MM
+    const [hours, minutes] = timePart.split(':') // Extraer horas y minutos tal como el usuario los ingresó
     
     // Obtener la inscripción para saber la duración de la clase
     const enrollmentForDuration = await db.enrollment.findUnique({
@@ -259,7 +258,9 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
     })
     
     const classDuration = enrollmentForDuration?.course?.classDuration || 40
-    const endMinutes = datetimeLocal.getHours() * 60 + datetimeLocal.getMinutes() + classDuration
+    const startHours = parseInt(hours, 10)
+    const startMins = parseInt(minutes, 10)
+    const endMinutes = startHours * 60 + startMins + classDuration
     const endHours = Math.floor(endMinutes / 60) % 24
     const endMins = endMinutes % 60
     const timeSlot = `${hours}:${minutes}-${endHours.toString().padStart(2, '0')}:${endMins.toString().padStart(2, '0')}`
