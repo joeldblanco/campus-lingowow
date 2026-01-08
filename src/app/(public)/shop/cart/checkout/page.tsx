@@ -234,7 +234,9 @@ export default function CheckoutPage() {
             continue
           }
           
-          const response = await fetch(`/api/plans/${item.plan.id}`)
+          // Pass language to get language-specific courseId from PlanPricing
+          const languageParam = item.language ? `?language=${encodeURIComponent(item.language)}` : ''
+          const response = await fetch(`/api/plans/${item.plan.id}${languageParam}`)
           if (!response.ok) {
             console.warn(`Plan ${item.plan.id} not found (${response.status})`)
             // Fail-safe: if we can't load plan details, assume it requires platform access
@@ -251,8 +253,9 @@ export default function CheckoutPage() {
             continue
           }
           const plan = await response.json()
-          const course = plan.course || plan.product?.course || null
-          const courseId = plan.courseId || course?.id || null
+          // Use effectiveCourse/effectiveCourseId which considers language-specific pricing
+          const course = plan.effectiveCourse || plan.course || plan.product?.course || null
+          const courseId = plan.effectiveCourseId || plan.courseId || course?.id || null
           const isSynchronous = course?.isSynchronous || false
           console.log('Plan loaded:', plan.name, {
             courseId,

@@ -7,6 +7,9 @@ export async function GET(
 ) {
   try {
     const { id } = await params
+    const { searchParams } = new URL(req.url)
+    const language = searchParams.get('language')
+
     const plan = await db.plan.findUnique({
       where: { id },
       include: {
@@ -21,6 +24,7 @@ export async function GET(
             feature: true,
           },
         },
+        pricing: true,
       },
     })
 
@@ -31,7 +35,30 @@ export async function GET(
       )
     }
 
-    return NextResponse.json(plan)
+    // If language is specified, check for language-specific courseId from PlanPricing
+    let effectiveCourseId = plan.courseId || plan.course?.id || plan.product?.course?.id || null
+    let effectiveCourse = plan.course || plan.product?.course || null
+
+    if (language) {
+      const languagePricing = plan.pricing?.find(p => p.language === language && p.isActive)
+      if (languagePricing?.courseId) {
+        // Fetch the course for this language
+        const languageCourse = await db.course.findUnique({
+          where: { id: languagePricing.courseId },
+        })
+        if (languageCourse) {
+          effectiveCourseId = languageCourse.id
+          effectiveCourse = languageCourse
+        }
+      }
+    }
+
+    return NextResponse.json({
+      ...plan,
+      // Override courseId and course with language-specific values if applicable
+      effectiveCourseId,
+      effectiveCourse,
+    })
   } catch (error) {
     console.error('Error fetching plan:', error)
     return NextResponse.json(

@@ -1,6 +1,7 @@
 'use client'
 
-import { ShoppingCart, Trash2, ArrowRight } from 'lucide-react'
+import { ShoppingCart, Trash2, ArrowRight, Globe } from 'lucide-react'
+import { SUPPORTED_LANGUAGES } from '@/lib/constants/languages'
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
@@ -107,7 +108,15 @@ export function CartDrawer({ open, onOpenChange, suggestedProducts = [] }: CartD
                       <div className="flex items-start justify-between gap-2">
                         <div>
                           <h4 className="font-medium text-sm line-clamp-1">{item.product.title}</h4>
-                          <p className="text-xs text-muted-foreground mt-0.5">{item.plan.name}</p>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <p className="text-xs text-muted-foreground">{item.plan.name}</p>
+                            {item.language && (
+                              <span className="inline-flex items-center gap-1 text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
+                                <Globe className="h-3 w-3" />
+                                {SUPPORTED_LANGUAGES.find(l => l.code === item.language)?.name || item.language}
+                              </span>
+                            )}
+                          </div>
                         </div>
                         <Button
                           variant="ghost"

@@ -47,8 +47,8 @@ export default function PricingPage() {
     }
   }, [lastAddedItem])
 
-  const isInCart = (planId: string) => {
-    return cart.some((item) => item.plan.id === planId)
+  const isInCart = (planId: string, language: string) => {
+    return cart.some((item) => item.plan.id === planId && item.language === language)
   }
 
   const getPriceForLanguage = (plan: PlanWithFeatures, language: string) => {
@@ -235,10 +235,10 @@ export default function PricingPage() {
                       </div>
 
                       <Button
-                        variant={isInCart(plan.id) ? "secondary" : isPopular ? "default" : "outline"}
+                        variant={isInCart(plan.id, selectedLanguage) ? "secondary" : isPopular ? "default" : "outline"}
                         className={cn(
                           "w-full py-3 h-auto mb-8 font-bold",
-                          isInCart(plan.id)
+                          isInCart(plan.id, selectedLanguage)
                             ? "bg-green-500 hover:bg-green-600 text-white"
                             : isPopular
                               ? "bg-primary hover:bg-blue-600 text-white shadow-lg shadow-blue-500/30"
@@ -246,7 +246,7 @@ export default function PricingPage() {
                         )}
                         onClick={() => handleAddToCart(plan)}
                       >
-                        {isInCart(plan.id) ? (
+                        {isInCart(plan.id, selectedLanguage) ? (
                           <>
                             <Check className="mr-2 h-4 w-4" />
                             Añadido al Carrito
@@ -292,7 +292,7 @@ export default function PricingPage() {
         </section>
 
         {/* Comparison Table */}
-        {uniqueFeatures.length > 0 && !loading && (
+        {filteredPlans.length > 0 && !loading && (
           <section className="py-20 px-4">
             <div className="max-w-5xl mx-auto">
               <div className="text-center mb-12">

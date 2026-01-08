@@ -81,14 +81,16 @@ export const useShopStore = create<ShopState>()(
 
       addToCart: (item) =>
         set((state) => {
-          // Verificar si el mismo plan ya está en el carrito
+          // Verificar si el mismo plan + idioma ya está en el carrito
           const existingPlanIndex = state.cart.findIndex(
             (cartItem) =>
-              cartItem.product.id === item.product.id && cartItem.plan.id === item.plan.id
+              cartItem.product.id === item.product.id && 
+              cartItem.plan.id === item.plan.id &&
+              cartItem.language === item.language
           )
 
           if (existingPlanIndex >= 0) {
-            // Si el mismo plan ya está en el carrito, lo removemos (toggle)
+            // Si el mismo plan + idioma ya está en el carrito, lo removemos (toggle)
             return { 
               cart: state.cart.filter((_, index) => index !== existingPlanIndex),
               lastAddedItem: null,
@@ -96,15 +98,15 @@ export const useShopStore = create<ShopState>()(
             }
           }
           
-          // Verificar si ya hay otro plan del mismo producto en el carrito
-          const existingProductIndex = state.cart.findIndex(
-            (cartItem) => cartItem.product.id === item.product.id
+          // Verificar si ya hay otro plan del mismo producto + idioma en el carrito
+          const existingProductLanguageIndex = state.cart.findIndex(
+            (cartItem) => cartItem.product.id === item.product.id && cartItem.language === item.language
           )
           
-          if (existingProductIndex >= 0) {
-            // Reemplazar el plan existente del mismo producto
+          if (existingProductLanguageIndex >= 0) {
+            // Reemplazar el plan existente del mismo producto + idioma
             const newCart = [...state.cart]
-            newCart[existingProductIndex] = item
+            newCart[existingProductLanguageIndex] = item
             return { 
               cart: newCart,
               lastAddedItem: item,
@@ -112,7 +114,7 @@ export const useShopStore = create<ShopState>()(
             }
           }
           
-          // Añadir el nuevo item al carrito (producto nuevo)
+          // Añadir el nuevo item al carrito (producto nuevo o idioma diferente)
           return { 
             cart: [...state.cart, item],
             lastAddedItem: item,
