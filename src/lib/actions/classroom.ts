@@ -104,12 +104,31 @@ export async function getLessonContent(lessonId: string) {
       where: { id: lessonId },
       include: {
         contents: {
+          where: { parentId: null },
           orderBy: { order: 'asc' },
+          include: {
+            children: {
+              orderBy: { order: 'asc' },
+              include: {
+                children: {
+                  orderBy: { order: 'asc' },
+                },
+              },
+            },
+          },
         },
       },
     })
 
     if (studentLesson) {
+      // Map StudentLessonContent to Content format (studentLessonId -> lessonId)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const mapStudentContent = (content: any): unknown => ({
+        ...content,
+        lessonId: content.studentLessonId,
+        children: content.children?.map(mapStudentContent) || [],
+      })
+
       // Map StudentLesson to the same format as Lesson for compatibility
       return {
         id: studentLesson.id,
@@ -122,7 +141,7 @@ export async function getLessonContent(lessonId: string) {
         videoUrl: studentLesson.videoUrl,
         summary: studentLesson.summary,
         transcription: studentLesson.transcription,
-        contents: studentLesson.contents,
+        contents: studentLesson.contents.map(mapStudentContent),
         createdAt: studentLesson.createdAt,
         updatedAt: studentLesson.updatedAt,
       }
@@ -152,10 +171,31 @@ export async function getContentById(contentId: string, contentType: 'lesson' | 
       const studentLesson = await db.studentLesson.findUnique({
         where: { id: contentId },
         include: {
-          contents: { orderBy: { order: 'asc' } },
+          contents: {
+            where: { parentId: null },
+            orderBy: { order: 'asc' },
+            include: {
+              children: {
+                orderBy: { order: 'asc' },
+                include: {
+                  children: {
+                    orderBy: { order: 'asc' },
+                  },
+                },
+              },
+            },
+          },
         },
       })
       if (studentLesson) {
+        // Map StudentLessonContent to Content format (studentLessonId -> lessonId)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const mapStudentContent = (content: any): unknown => ({
+          ...content,
+          lessonId: content.studentLessonId,
+          children: content.children?.map(mapStudentContent) || [],
+        })
+
         return {
           id: studentLesson.id,
           title: studentLesson.title,
@@ -167,7 +207,7 @@ export async function getContentById(contentId: string, contentType: 'lesson' | 
           videoUrl: studentLesson.videoUrl,
           summary: studentLesson.summary,
           transcription: studentLesson.transcription,
-          contents: studentLesson.contents,
+          contents: studentLesson.contents.map(mapStudentContent),
           createdAt: studentLesson.createdAt,
           updatedAt: studentLesson.updatedAt,
         }
