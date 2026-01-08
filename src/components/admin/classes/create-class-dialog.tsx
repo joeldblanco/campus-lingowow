@@ -124,6 +124,17 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
     }
   }, [open, form])
 
+  // Sync selectedEnrollment with form field changes using watch for reactivity
+  const watchedEnrollmentId = form.watch('enrollmentId')
+  useEffect(() => {
+    if (watchedEnrollmentId && !selectedEnrollment) {
+      const enrollment = enrollments.find((e) => e.id === watchedEnrollmentId)
+      setSelectedEnrollment(enrollment || null)
+    } else if (!watchedEnrollmentId && selectedEnrollment) {
+      setSelectedEnrollment(null)
+    }
+  }, [watchedEnrollmentId, enrollments, selectedEnrollment])
+
   const handleEnrollmentSelect = (enrollmentId: string) => {
     const enrollment = enrollments.find((e) => e.id === enrollmentId)
     setSelectedEnrollment(enrollment || null)
