@@ -2016,7 +2016,7 @@ function RecordingBlockPreview({ block }: { block: RecordingBlock }) {
       <div className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl space-y-6 text-center">
         <div className="space-y-2">
           <h3 className="font-medium text-lg text-blue-900">
-            {block.instruction || 'Graba tu respuesta...'}
+            {block.instruction || block.prompt || 'Graba tu respuesta...'}
           </h3>
           {block.timeLimit && (
             <span className="inline-block px-2 py-1 bg-white rounded text-xs font-mono text-blue-600 border border-blue-200">
@@ -2140,26 +2140,62 @@ export function StructuredContentBlockPreview({ block }: { block: StructuredCont
 }
 
 function ShortAnswerBlockPreview({ block }: { block: ShortAnswerBlock }) {
-  const [answer, setAnswer] = useState('')
-  const [showResult, setShowResult] = useState(false)
+  const items = block.items || []
+  const [currentStep, setCurrentStep] = useState(0)
+  const [answers, setAnswers] = useState<Record<string, string>>({})
+  const [results, setResults] = useState<Record<string, boolean | null>>({})
 
-  const checkAnswer = () => setShowResult(true)
-  const reset = () => {
-    setAnswer('')
-    setShowResult(false)
+  const currentItem = items[currentStep]
+
+  const checkAnswer = () => {
+    if (!currentItem) return
+    const userAnswer = answers[currentItem.id] || ''
+    const isCorrect = block.caseSensitive
+      ? userAnswer.trim() === currentItem.correctAnswer.trim()
+      : userAnswer.trim().toLowerCase() === currentItem.correctAnswer.trim().toLowerCase()
+    setResults(prev => ({ ...prev, [currentItem.id]: isCorrect }))
   }
 
-  const isCorrect = block.correctAnswers?.some(correct => 
-    block.caseSensitive 
-      ? answer.trim() === correct.trim()
-      : answer.trim().toLowerCase() === correct.trim().toLowerCase()
-  )
+  const nextStep = () => {
+    if (currentStep < items.length - 1) {
+      setCurrentStep(currentStep + 1)
+    }
+  }
+
+  const prevStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1)
+    }
+  }
+
+  const reset = () => {
+    setAnswers({})
+    setResults({})
+    setCurrentStep(0)
+  }
+
+  if (items.length === 0) {
+    return (
+      <div className="text-muted-foreground text-center py-8">
+        No hay preguntas configuradas
+      </div>
+    )
+  }
+
+  const currentResult = currentItem ? results[currentItem.id] : null
+  const answeredCount = Object.keys(results).length
+  const correctCount = Object.values(results).filter(r => r === true).length
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-        <MessageSquare className="h-5 w-5" />
-        <span>Respuesta Corta</span>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+          <MessageSquare className="h-5 w-5" />
+          <span>Respuesta Corta</span>
+        </div>
+        <div className="text-sm text-muted-foreground">
+          Pregunta {currentStep + 1} de {items.length}
+        </div>
       </div>
 
       {block.context && (
@@ -2168,46 +2204,66 @@ function ShortAnswerBlockPreview({ block }: { block: ShortAnswerBlock }) {
         </div>
       )}
 
-      <div className="font-medium text-lg">{block.question || 'Pregunta sin configurar'}</div>
+      {currentItem && (
+        <div className="space-y-4">
+          <div className="font-medium text-lg">
+            {currentStep + 1}. {currentItem.question}
+          </div>
 
-      <div className="space-y-3">
-        <input
-          type="text"
-          value={answer}
-          onChange={(e) => setAnswer(e.target.value)}
-          disabled={showResult}
-          placeholder="Escribe tu respuesta..."
-          className={cn(
-            "w-full px-4 py-3 border rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors",
-            showResult
-              ? isCorrect
-                ? "border-green-500 bg-green-50 text-green-700"
-                : "border-red-500 bg-red-50 text-red-700"
-              : "border-gray-200"
+          <input
+            type="text"
+            value={answers[currentItem.id] || ''}
+            onChange={(e) => setAnswers(prev => ({ ...prev, [currentItem.id]: e.target.value }))}
+            disabled={currentResult !== null && currentResult !== undefined}
+            placeholder="Escribe tu respuesta..."
+            className={cn(
+              "w-full px-4 py-3 border rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors",
+              currentResult === true && "border-green-500 bg-green-50 text-green-700",
+              currentResult === false && "border-red-500 bg-red-50 text-red-700",
+              currentResult === null || currentResult === undefined ? "border-gray-200" : ""
+            )}
+          />
+
+          {currentResult === false && (
+            <div className="text-sm text-green-600 bg-green-50 p-2 rounded">
+              <span className="font-medium">Respuesta correcta:</span> {currentItem.correctAnswer}
+            </div>
           )}
-        />
+        </div>
+      )}
 
-        {showResult && !isCorrect && block.correctAnswers && block.correctAnswers.length > 0 && (
-          <div className="text-sm text-green-600 bg-green-50 p-2 rounded">
-            <span className="font-medium">Respuesta correcta:</span> {block.correctAnswers[0]}
-          </div>
-        )}
+      <div className="flex items-center justify-between">
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={prevStep} disabled={currentStep === 0} size="sm">
+            Anterior
+          </Button>
+          <Button variant="outline" onClick={nextStep} disabled={currentStep >= items.length - 1} size="sm">
+            Siguiente
+          </Button>
+        </div>
 
-        {showResult && block.explanation && (
-          <div className="text-sm text-muted-foreground bg-muted/30 p-3 rounded-lg">
-            <span className="font-medium">Explicación:</span> {block.explanation}
-          </div>
-        )}
+        <div className="flex gap-2">
+          {currentResult === null || currentResult === undefined ? (
+            <Button onClick={checkAnswer} disabled={!answers[currentItem?.id || '']} size="sm">
+              Verificar
+            </Button>
+          ) : currentStep < items.length - 1 ? (
+            <Button onClick={nextStep} size="sm">
+              Siguiente Pregunta
+            </Button>
+          ) : (
+            <Button variant="outline" onClick={reset} size="sm">
+              Reintentar Todo
+            </Button>
+          )}
+        </div>
       </div>
 
-      <div className="flex gap-2">
-        <Button onClick={checkAnswer} disabled={showResult || !answer.trim()} size="sm">
-          Verificar
-        </Button>
-        <Button variant="outline" onClick={reset} disabled={!showResult} size="sm">
-          Reintentar
-        </Button>
-      </div>
+      {answeredCount === items.length && (
+        <div className="bg-muted/30 p-3 rounded-lg text-center">
+          <span className="font-medium">Resultado:</span> {correctCount} de {items.length} correctas
+        </div>
+      )}
     </div>
   )
 }

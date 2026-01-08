@@ -230,13 +230,18 @@ export interface MultipleChoiceBlock extends BaseBlock {
   points?: number
 }
 
+export interface ShortAnswerItem {
+  id: string
+  question: string
+  correctAnswer: string
+}
+
 export interface ShortAnswerBlock extends BaseBlock {
   type: 'short_answer'
-  question: string
-  correctAnswers: string[] // Multiple accepted answers
+  items: ShortAnswerItem[] // Multiple questions as steps
+  context?: string // Reading passage or context for the questions
   caseSensitive?: boolean
   explanation?: string
-  context?: string // Reading passage or context for the question
   points?: number
 }
 
@@ -259,7 +264,8 @@ export interface DragDropBlock extends BaseBlock {
 
 export interface RecordingBlock extends BaseBlock {
   type: 'recording'
-  instruction: string
+  instruction?: string
+  prompt?: string // Alternative to instruction (from import script)
   timeLimit?: number // in seconds
 }
 
@@ -724,8 +730,8 @@ export const BLOCK_TEMPLATES: BlockTemplate[] = [
       id: '',
       type: 'short_answer',
       order: 0,
-      question: 'Escribe tu respuesta:',
-      correctAnswers: ['respuesta'],
+      items: [{ id: 'item1', question: 'Escribe tu respuesta:', correctAnswer: 'respuesta' }],
+      context: '',
       caseSensitive: false,
       points: 10,
     },

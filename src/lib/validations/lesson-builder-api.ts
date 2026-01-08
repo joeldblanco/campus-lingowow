@@ -250,10 +250,16 @@ const multipleChoiceBlockSchema = baseBlockSchema.extend({
   points: z.number().optional(),
 })
 
+const shortAnswerItemSchema = z.object({
+  id: z.string(),
+  question: z.string(),
+  correctAnswer: z.string(),
+})
+
 const shortAnswerBlockSchema = baseBlockSchema.extend({
   type: z.literal('short_answer'),
-  question: z.string(),
-  correctAnswers: z.array(z.string()),
+  items: z.array(shortAnswerItemSchema),
+  context: z.string().optional(),
   caseSensitive: z.boolean().optional(),
   explanation: z.string().optional(),
   points: z.number().optional(),

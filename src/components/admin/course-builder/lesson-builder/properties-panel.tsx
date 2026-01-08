@@ -2672,20 +2672,21 @@ function ShortAnswerProperties({
   block: ShortAnswerBlock
   onUpdate: (updates: Partial<Block>) => void
 }) {
-  const answers = block.correctAnswers || []
+  const items = block.items || []
 
-  const addAnswer = () => {
-    onUpdate({ correctAnswers: [...answers, ''] })
+  const addItem = () => {
+    const newId = `item${Date.now()}`
+    onUpdate({ items: [...items, { id: newId, question: '', correctAnswer: '' }] })
   }
 
-  const updateAnswer = (index: number, value: string) => {
-    const newAnswers = [...answers]
-    newAnswers[index] = value
-    onUpdate({ correctAnswers: newAnswers })
+  const updateItem = (id: string, field: 'question' | 'correctAnswer', value: string) => {
+    onUpdate({
+      items: items.map((item) => (item.id === id ? { ...item, [field]: value } : item)),
+    })
   }
 
-  const removeAnswer = (index: number) => {
-    onUpdate({ correctAnswers: answers.filter((_, i) => i !== index) })
+  const removeItem = (id: string) => {
+    onUpdate({ items: items.filter((item) => item.id !== id) })
   }
 
   return (
@@ -2693,7 +2694,7 @@ function ShortAnswerProperties({
       <div className="space-y-2">
         <Label>Contexto (opcional)</Label>
         <p className="text-xs text-muted-foreground">
-          Texto de lectura o contexto para la pregunta.
+          Texto de lectura o contexto para las preguntas.
         </p>
         <Textarea
           value={block.context || ''}
@@ -2703,48 +2704,46 @@ function ShortAnswerProperties({
         />
       </div>
 
-      <div className="space-y-2">
-        <Label>Pregunta</Label>
-        <Textarea
-          value={block.question || ''}
-          onChange={(e) => onUpdate({ question: e.target.value })}
-          placeholder="Escribe la pregunta..."
-          rows={3}
-        />
-      </div>
-
       <div className="space-y-3">
-        <Label>Respuestas Aceptadas</Label>
+        <Label>Preguntas</Label>
         <p className="text-xs text-muted-foreground">
-          Agrega todas las variaciones de respuestas correctas.
+          Cada pregunta se mostrará como un paso separado.
         </p>
 
-        <div className="space-y-2">
-          {answers.map((answer, index) => (
-            <div key={index} className="flex items-center gap-2">
+        <div className="space-y-4">
+          {items.map((item, index) => (
+            <div key={item.id} className="p-3 border rounded-lg space-y-2 bg-muted/20">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Pregunta {index + 1}</span>
+                {items.length > 1 && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    onClick={() => removeItem(item.id)}
+                  >
+                    <Trash2 className="h-3 w-3 text-destructive" />
+                  </Button>
+                )}
+              </div>
               <Input
-                value={answer}
-                onChange={(e) => updateAnswer(index, e.target.value)}
-                placeholder={`Respuesta ${index + 1}`}
-                className="flex-1"
+                value={item.question}
+                onChange={(e) => updateItem(item.id, 'question', e.target.value)}
+                placeholder="Escribe la pregunta..."
               />
-              {answers.length > 1 && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={() => removeAnswer(index)}
-                >
-                  <Trash2 className="h-4 w-4 text-destructive" />
-                </Button>
-              )}
+              <Input
+                value={item.correctAnswer}
+                onChange={(e) => updateItem(item.id, 'correctAnswer', e.target.value)}
+                placeholder="Respuesta correcta"
+                className="text-sm"
+              />
             </div>
           ))}
         </div>
 
-        <Button variant="outline" size="sm" onClick={addAnswer} className="w-full">
+        <Button variant="outline" size="sm" onClick={addItem} className="w-full">
           <Plus className="h-4 w-4 mr-2" />
-          Agregar Respuesta Alternativa
+          Agregar Pregunta
         </Button>
       </div>
 
