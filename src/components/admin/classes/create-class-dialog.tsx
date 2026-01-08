@@ -1,14 +1,7 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
-import {
-  createClass,
-  getStudentsWithEnrollments,
-  getTeacherAvailableTimeSlots,
-  getTeacherAvailableDays,
-} from '@/lib/actions/classes'
-import { getStudentCredits } from '@/lib/actions/student-credits'
-import { getTeachersForCourse } from '@/lib/actions/teacher-courses'
+import { useState, useEffect, useMemo } from 'react'
+import { createClass, getEnrollmentsWithTeachers } from '@/lib/actions/classes'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -41,8 +34,40 @@ import { CreateClassSchema } from '@/schemas/classes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import { formatDateLong } from '@/lib/utils/date'
 import { useTimezone } from '@/hooks/use-timezone'
+import { Search } from 'lucide-react'
+
+interface EnrollmentWithTeachers {
+  id: string
+  classesTotal: number
+  classesAttended: number
+  student: {
+    id: string
+    name: string
+    lastName: string | null
+    email: string
+  }
+  course: {
+    id: string
+    title: string
+    language: string
+    level: string
+    classDuration: number | null
+  }
+  academicPeriod: {
+    id: string
+    name: string
+    startDate: Date
+    endDate: Date
+    isActive: boolean
+  }
+  teachers: Array<{
+    id: string
+    name: string
+    lastName: string | null
+    email: string
+  }>
+}
 
 interface CreateClassDialogProps {
   children: React.ReactNode
@@ -52,280 +77,85 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
   const { timezone: userTimezone } = useTimezone()
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [students, setStudents] = useState<
-    Array<{
-      id: string
-      name: string
-      lastName: string | null
-      email: string
-      enrollments: Array<{
-        id: string
-        courseId: string
-        academicPeriodId: string
-        classesTotal: number
-        classesAttended: number
-        course: {
-          id: string
-          title: string
-          language: string
-          level: string
-        }
-        academicPeriod: {
-          id: string
-          name: string
-          startDate: Date
-          endDate: Date
-          isActive: boolean
-        }
-      }>
-    }>
-  >([])
-  const [courses, setCourses] = useState<
-    Array<{ id: string; title: string; language: string; level: string }>
-  >([])
-  const [courseTeachers, setCourseTeachers] = useState<
-    Array<{ id: string; name: string; lastName: string | null; email: string }>
-  >([])
-  const [teacherAvailableSlots, setTeacherAvailableSlots] = useState<string[]>([])
-  const [teacherAvailableDays, setTeacherAvailableDays] = useState<string[]>([])
-  const [studentCredits, setStudentCredits] = useState<
-    Array<{ id: string; amount: number; isUsed: boolean; source: string }>
-  >([])
-  const [enrollmentInfo, setEnrollmentInfo] = useState<{
-    enrollment: {
-      id: string
-      courseId: string
-      academicPeriodId: string
-      classesTotal: number
-      classesAttended: number
-      course: { title: string }
-      academicPeriod: {
-        name: string
-        startDate: Date
-        endDate: Date
-      }
-    } | null
-    error: string | null
-  }>({ enrollment: null, error: null })
+  const [enrollments, setEnrollments] = useState<EnrollmentWithTeachers[]>([])
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedEnrollment, setSelectedEnrollment] = useState<EnrollmentWithTeachers | null>(null)
+
   const form = useForm<z.infer<typeof CreateClassSchema>>({
     resolver: zodResolver(CreateClassSchema),
     defaultValues: {
-      studentId: '',
-      courseId: '',
       enrollmentId: '',
       teacherId: '',
-      day: '',
-      timeSlot: '',
+      datetime: '',
       notes: '',
-      creditId: 'no-credit',
     },
   })
 
   const loadData = async () => {
     try {
-      const studentsData = await getStudentsWithEnrollments()
-
-      setStudents(studentsData)
-
-      // Extraer cursos únicos de las inscripciones
-      const uniqueCourses = new Map()
-      studentsData.forEach((student) => {
-        student.enrollments.forEach((enrollment) => {
-          if (!uniqueCourses.has(enrollment.course.id)) {
-            uniqueCourses.set(enrollment.course.id, enrollment.course)
-          }
-        })
-      })
-      setCourses(Array.from(uniqueCourses.values()))
+      const data = await getEnrollmentsWithTeachers()
+      setEnrollments(data)
     } catch {
-      console.error('Error loading data')
+      console.error('Error loading enrollments')
+      toast.error('Error al cargar inscripciones')
     }
   }
-
-  const loadStudentCredits = useCallback(async (studentId: string) => {
-    try {
-      const creditsResult = await getStudentCredits(studentId)
-      if (creditsResult.success && creditsResult.credits) {
-        setStudentCredits(creditsResult.credits.filter((c) => !c.isUsed))
-      }
-    } catch {
-      toast.error('Error al cargar créditos del estudiante')
-    }
-  }, [])
-
-  const findEnrollment = useCallback(
-    (studentId: string, courseId: string) => {
-      if (!studentId || !courseId) {
-        setEnrollmentInfo({ enrollment: null, error: null })
-        return
-      }
-
-      const student = students.find((s) => s.id === studentId)
-      if (!student) {
-        setEnrollmentInfo({ enrollment: null, error: 'Estudiante no encontrado' })
-        return
-      }
-
-      const enrollment = student.enrollments.find((e) => e.courseId === courseId)
-      if (!enrollment) {
-        setEnrollmentInfo({
-          enrollment: null,
-          error: 'El estudiante no está inscrito en este curso',
-        })
-        form.setValue('enrollmentId', '')
-        toast.error('El estudiante no está inscrito en este curso')
-        return
-      }
-
-      // Mapear el enrollment con las fechas del período académico
-      const mappedEnrollment = {
-        id: enrollment.id,
-        courseId: enrollment.courseId,
-        academicPeriodId: enrollment.academicPeriodId,
-        classesTotal: enrollment.classesTotal,
-        classesAttended: enrollment.classesAttended,
-        course: enrollment.course,
-        academicPeriod: {
-          name: enrollment.academicPeriod.name,
-          startDate: enrollment.academicPeriod.startDate,
-          endDate: enrollment.academicPeriod.endDate,
-        },
-      }
-
-      setEnrollmentInfo({ enrollment: mappedEnrollment, error: null })
-      form.setValue('enrollmentId', enrollment.id)
-    },
-    [students, form]
-  )
 
   useEffect(() => {
     if (open) {
       loadData()
+      setSearchQuery('')
+      setSelectedEnrollment(null)
+      form.reset()
     }
-  }, [open])
+  }, [open, form])
 
-  const loadCourseTeachers = useCallback(async (courseId: string) => {
-    try {
-      const result = await getTeachersForCourse(courseId)
-      if (result.success && result.teachers) {
-        setCourseTeachers(result.teachers)
-      } else {
-        setCourseTeachers([])
-      }
-    } catch {
-      toast.error('Error al cargar profesores del curso')
-      setCourseTeachers([])
-    }
-  }, [])
+  const filteredEnrollments = useMemo(() => {
+    if (!searchQuery.trim()) return enrollments
 
-  const loadTeacherAvailableDays = useCallback(async () => {
-    const teacherId = form.watch('teacherId')
+    const query = searchQuery.toLowerCase()
+    return enrollments.filter((enrollment) => {
+      const studentName = `${enrollment.student.name} ${enrollment.student.lastName || ''}`.toLowerCase()
+      const studentEmail = enrollment.student.email.toLowerCase()
+      const courseTitle = enrollment.course.title.toLowerCase()
+      const courseLanguage = enrollment.course.language.toLowerCase()
+      const periodName = enrollment.academicPeriod.name.toLowerCase()
+      const teacherNames = enrollment.teachers
+        .map((t) => `${t.name} ${t.lastName || ''}`.toLowerCase())
+        .join(' ')
 
-    if (!teacherId || !enrollmentInfo.enrollment) {
-      setTeacherAvailableDays([])
-      return
-    }
-
-    try {
-      const periodStart = new Date(enrollmentInfo.enrollment.academicPeriod.startDate)
-      const periodEnd = new Date(enrollmentInfo.enrollment.academicPeriod.endDate)
-
-      const periodStartStr = periodStart.toISOString().split('T')[0]
-      const periodEndStr = periodEnd.toISOString().split('T')[0]
-
-      const startDate = periodStartStr
-      const endDate = periodEndStr
-
-      const days = await getTeacherAvailableDays(teacherId, startDate, endDate)
-      setTeacherAvailableDays(days)
-    } catch (error) {
-      console.error('Error al cargar días disponibles:', error)
-      toast.error('Error al cargar días disponibles del profesor')
-      setTeacherAvailableDays([])
-    }
-  }, [form, enrollmentInfo])
-
-  const loadTeacherAvailableSlots = useCallback(async () => {
-    const teacherId = form.watch('teacherId')
-    const day = form.watch('day')
-    const courseId = form.watch('courseId')
-
-    if (!teacherId || !day || !courseId) {
-      setTeacherAvailableSlots([])
-      return
-    }
-
-    try {
-      const slots = await getTeacherAvailableTimeSlots(teacherId, day, courseId)
-      setTeacherAvailableSlots(slots)
-    } catch (error) {
-      console.error('Error al cargar horarios disponibles:', error)
-      toast.error('Error al cargar horarios disponibles del profesor')
-      setTeacherAvailableSlots([])
-    }
-  }, [form])
-
-  useEffect(() => {
-    const subscription = form.watch((value, { name }) => {
-      if (name === 'studentId' && value.studentId) {
-        loadStudentCredits(value.studentId)
-        // Reset dependent fields
-        form.setValue('enrollmentId', '')
-        form.setValue('creditId', 'no-credit')
-        setEnrollmentInfo({ enrollment: null, error: null })
-      }
-      if ((name === 'studentId' || name === 'courseId') && value.studentId && value.courseId) {
-        findEnrollment(value.studentId, value.courseId)
-      }
-      if (name === 'courseId' && value.courseId) {
-        loadCourseTeachers(value.courseId)
-        // Reset teacher selection
-        form.setValue('teacherId', '')
-        form.setValue('day', '')
-        form.setValue('timeSlot', '')
-        setTeacherAvailableDays([])
-        setTeacherAvailableSlots([])
-      }
-      if (name === 'teacherId' && value.teacherId) {
-        loadTeacherAvailableDays()
-        // Reset day and timeSlot when teacher changes
-        form.setValue('day', '')
-        form.setValue('timeSlot', '')
-      }
-      if (name === 'day' && value.day && value.teacherId) {
-        loadTeacherAvailableSlots()
-        // Reset timeSlot when day changes
-        form.setValue('timeSlot', '')
-      }
+      return (
+        studentName.includes(query) ||
+        studentEmail.includes(query) ||
+        courseTitle.includes(query) ||
+        courseLanguage.includes(query) ||
+        periodName.includes(query) ||
+        teacherNames.includes(query)
+      )
     })
-    return () => subscription.unsubscribe()
-  }, [
-    form,
-    loadStudentCredits,
-    findEnrollment,
-    loadCourseTeachers,
-    loadTeacherAvailableDays,
-    loadTeacherAvailableSlots,
-  ])
+  }, [enrollments, searchQuery])
+
+  const handleEnrollmentChange = (enrollmentId: string) => {
+    const enrollment = enrollments.find((e) => e.id === enrollmentId)
+    setSelectedEnrollment(enrollment || null)
+    form.setValue('enrollmentId', enrollmentId)
+    form.setValue('teacherId', '')
+  }
 
   const onSubmit = async (values: z.infer<typeof CreateClassSchema>) => {
     setIsLoading(true)
 
     try {
-      // Si el crédito es "no-credit" o está vacío, lo convertimos a undefined
-      const submitValues = {
+      const result = await createClass({
         ...values,
-        creditId: values.creditId === 'no-credit' || !values.creditId ? undefined : values.creditId,
         timezone: userTimezone,
-      }
-      const result = await createClass(submitValues)
+      })
 
       if (result.success) {
         toast.success('Clase programada exitosamente')
         setOpen(false)
         form.reset()
-        setEnrollmentInfo({ enrollment: null, error: null })
-        setStudentCredits([])
+        setSelectedEnrollment(null)
         window.location.reload()
       } else {
         toast.error(result.error || 'Error al programar la clase')
@@ -341,131 +171,88 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[550px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Programar Nueva Clase</DialogTitle>
           <DialogDescription>
-            Completa la información para programar una nueva clase.
+            Selecciona una inscripción y programa la fecha y hora de la clase.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="grid gap-4 py-4">
-              <FormField
-                control={form.control}
-                name="studentId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Estudiante</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecciona un estudiante" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {students.length === 0 ? (
-                          <SelectItem value="no-students" disabled>
-                            No hay estudiantes con inscripciones activas
-                          </SelectItem>
-                        ) : (
-                          students.map((student) => (
-                            <SelectItem key={student.id} value={student.id}>
-                              {student.name} {student.lastName}
-                              <span className="text-xs text-muted-foreground">
-                                {' '}
-                                - {student.enrollments.length} inscripción
-                                {student.enrollments.length > 1 ? 'es' : ''}
-                              </span>
-                            </SelectItem>
-                          ))
-                        )}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="courseId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Curso</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      disabled={!form.watch('studentId')}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue
-                            placeholder={
-                              !form.watch('studentId')
-                                ? 'Primero selecciona un estudiante'
-                                : 'Selecciona un curso'
-                            }
-                          />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {!form.watch('studentId') ? (
-                          <SelectItem value="no-student-selected" disabled>
-                            Selecciona un estudiante primero
-                          </SelectItem>
-                        ) : courses.length === 0 ? (
-                          <SelectItem value="no-courses" disabled>
-                            No hay cursos disponibles
-                          </SelectItem>
-                        ) : (
-                          courses.map((course) => (
-                            <SelectItem key={course.id} value={course.id}>
-                              {course.title} ({course.language} - {course.level})
-                            </SelectItem>
-                          ))
-                        )}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {enrollmentInfo.enrollment && (
-                <div className="rounded-lg border border-green-200 bg-green-50 p-3">
-                  <p className="text-sm font-medium text-green-900">
-                    {enrollmentInfo.enrollment.course.title} -{' '}
-                    {enrollmentInfo.enrollment.academicPeriod.name}
-                  </p>
-                  <p className="text-xs text-green-700">
-                    Progreso: {enrollmentInfo.enrollment.classesAttended}/
-                    {enrollmentInfo.enrollment.classesTotal} clases
-                  </p>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Buscar inscripción</label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Buscar por estudiante, curso o profesor..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-9"
+                  />
                 </div>
-              )}
-
-              {enrollmentInfo.error && (
-                <div className="rounded-lg border border-red-200 bg-red-50 p-3">
-                  <p className="text-sm font-medium text-red-900">⚠️ {enrollmentInfo.error}</p>
-                  <p className="text-xs text-red-700 mt-1">
-                    Verifica que el estudiante esté inscrito en este curso.
-                  </p>
-                </div>
-              )}
+              </div>
 
               <FormField
                 control={form.control}
                 name="enrollmentId"
                 render={({ field }) => (
-                  <FormItem className="hidden">
-                    <FormControl>
-                      <Input type="hidden" {...field} />
-                    </FormControl>
+                  <FormItem>
+                    <FormLabel>Inscripción</FormLabel>
+                    <Select onValueChange={handleEnrollmentChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecciona una inscripción" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className="max-h-[300px]">
+                        {filteredEnrollments.length === 0 ? (
+                          <SelectItem value="no-enrollments" disabled>
+                            {searchQuery ? 'No se encontraron inscripciones' : 'No hay inscripciones activas'}
+                          </SelectItem>
+                        ) : (
+                          filteredEnrollments.map((enrollment) => (
+                            <SelectItem key={enrollment.id} value={enrollment.id}>
+                              <div className="flex flex-col">
+                                <span className="font-medium">
+                                  {enrollment.student.name} {enrollment.student.lastName}
+                                </span>
+                                <span className="text-xs text-muted-foreground">
+                                  {enrollment.course.title} ({enrollment.course.language}) - {enrollment.academicPeriod.name}
+                                </span>
+                              </div>
+                            </SelectItem>
+                          ))
+                        )}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
+              {selectedEnrollment && (
+                <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 space-y-1">
+                  <p className="text-sm font-medium text-blue-900">
+                    {selectedEnrollment.student.name} {selectedEnrollment.student.lastName}
+                  </p>
+                  <p className="text-xs text-blue-700">
+                    {selectedEnrollment.course.title} ({selectedEnrollment.course.language} - {selectedEnrollment.course.level})
+                  </p>
+                  <p className="text-xs text-blue-700">
+                    Período: {selectedEnrollment.academicPeriod.name}
+                  </p>
+                  <p className="text-xs text-blue-700">
+                    Progreso: {selectedEnrollment.classesAttended}/{selectedEnrollment.classesTotal} clases
+                  </p>
+                  {selectedEnrollment.teachers.length === 0 && (
+                    <p className="text-xs text-amber-600 mt-2">
+                      ⚠️ No hay profesores asignados a este curso
+                    </p>
+                  )}
+                </div>
+              )}
 
               <FormField
                 control={form.control}
@@ -476,30 +263,30 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                     <Select
                       onValueChange={field.onChange}
                       value={field.value}
-                      disabled={!form.watch('courseId')}
+                      disabled={!selectedEnrollment}
                     >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue
                             placeholder={
-                              !form.watch('courseId')
-                                ? 'Primero selecciona un curso'
+                              !selectedEnrollment
+                                ? 'Primero selecciona una inscripción'
                                 : 'Selecciona un profesor'
                             }
                           />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {!form.watch('courseId') ? (
-                          <SelectItem value="no-course-selected" disabled>
-                            Selecciona un curso primero
+                        {!selectedEnrollment ? (
+                          <SelectItem value="no-enrollment" disabled>
+                            Selecciona una inscripción primero
                           </SelectItem>
-                        ) : courseTeachers.length === 0 ? (
+                        ) : selectedEnrollment.teachers.length === 0 ? (
                           <SelectItem value="no-teachers" disabled>
                             No hay profesores asignados a este curso
                           </SelectItem>
                         ) : (
-                          courseTeachers.map((teacher) => (
+                          selectedEnrollment.teachers.map((teacher) => (
                             <SelectItem key={teacher.id} value={teacher.id}>
                               {teacher.name} {teacher.lastName}
                             </SelectItem>
@@ -507,12 +294,6 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                         )}
                       </SelectContent>
                     </Select>
-                    {form.watch('courseId') && courseTeachers.length === 0 && (
-                      <p className="text-sm text-amber-600">
-                        No hay profesores asignados a este curso. Asigna profesores desde la gestión
-                        de usuarios.
-                      </p>
-                    )}
                     <FormMessage />
                   </FormItem>
                 )}
@@ -520,148 +301,22 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
 
               <FormField
                 control={form.control}
-                name="day"
-                render={({ field }) => {
-                  const teacherId = form.watch('teacherId')
-                  const hasTeacher = !!teacherId
-
-                  return (
-                    <FormItem>
-                      <FormLabel>Fecha</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                        disabled={!hasTeacher}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue
-                              placeholder={
-                                !hasTeacher
-                                  ? 'Selecciona un profesor primero'
-                                  : 'Selecciona una fecha'
-                              }
-                            />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {!hasTeacher ? (
-                            <SelectItem value="no-teacher" disabled>
-                              Selecciona un profesor primero
-                            </SelectItem>
-                          ) : teacherAvailableDays.length === 0 ? (
-                            <SelectItem value="no-availability" disabled>
-                              El profesor no tiene disponibilidad configurada
-                            </SelectItem>
-                          ) : (
-                            teacherAvailableDays.map((date) => {
-                              // Usar utilidad de fecha para formatear correctamente
-                              const formattedDate = formatDateLong(date)
-                              
-                              return (
-                                <SelectItem key={date} value={date}>
-                                  {formattedDate}
-                                </SelectItem>
-                              )
-                            })
-                          )}
-                        </SelectContent>
-                      </Select>
-                      {hasTeacher && teacherAvailableDays.length === 0 && (
-                        <p className="text-xs text-amber-600">
-                          El profesor no tiene disponibilidad configurada en el período académico
-                        </p>
-                      )}
-                      {hasTeacher && teacherAvailableDays.length > 0 && (
-                        <p className="text-xs text-muted-foreground">
-                          Mostrando solo fechas con disponibilidad del profesor
-                        </p>
-                      )}
-                      <FormMessage />
-                    </FormItem>
-                  )
-                }}
-              />
-
-              <FormField
-                control={form.control}
-                name="timeSlot"
-                render={({ field }) => {
-                  const day = form.watch('day')
-                  const hasDay = !!day
-
-                  return (
-                    <FormItem>
-                      <FormLabel>Horario</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value} disabled={!hasDay}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue
-                              placeholder={
-                                !hasDay ? 'Selecciona una fecha primero' : 'Selecciona un horario'
-                              }
-                            />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {!hasDay ? (
-                            <SelectItem value="no-date" disabled>
-                              Selecciona una fecha primero
-                            </SelectItem>
-                          ) : teacherAvailableSlots.length === 0 ? (
-                            <SelectItem value="no-availability" disabled>
-                              El profesor no tiene horarios disponibles para este día
-                            </SelectItem>
-                          ) : (
-                            teacherAvailableSlots.map((slot) => (
-                              <SelectItem key={slot} value={slot}>
-                                {slot}
-                              </SelectItem>
-                            ))
-                          )}
-                        </SelectContent>
-                      </Select>
-                      {hasDay && teacherAvailableSlots.length > 0 && (
-                        <p className="text-xs text-muted-foreground">
-                          Mostrando solo horarios disponibles del profesor
-                        </p>
-                      )}
-                      {hasDay && teacherAvailableSlots.length === 0 && (
-                        <p className="text-xs text-amber-600">
-                          El profesor no tiene bloques de horario configurados para este día
-                        </p>
-                      )}
-                      <FormMessage />
-                    </FormItem>
-                  )
-                }}
-              />
-
-              <FormField
-                control={form.control}
-                name="creditId"
+                name="datetime"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Crédito (opcional)</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      disabled={!form.watch('studentId')}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Sin crédito" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="no-credit">Sin crédito</SelectItem>
-                        {studentCredits.map((credit) => (
-                          <SelectItem key={credit.id} value={credit.id}>
-                            {credit.source} - {credit.amount} crédito(s)
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormLabel>Fecha y Hora</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="datetime-local"
+                        {...field}
+                        disabled={!selectedEnrollment}
+                      />
+                    </FormControl>
+                    {selectedEnrollment && (
+                      <p className="text-xs text-muted-foreground">
+                        Duración de clase: {selectedEnrollment.course.classDuration || 40} minutos
+                      </p>
+                    )}
                     <FormMessage />
                   </FormItem>
                 )}

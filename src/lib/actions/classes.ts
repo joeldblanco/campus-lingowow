@@ -244,9 +244,29 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
     const validatedData = CreateClassSchema.parse(data)
     const userTimezone = data.timezone || 'America/Lima'
 
+    // Extraer day y timeSlot del datetime (formato: YYYY-MM-DDTHH:MM)
+    const datetimeLocal = new Date(validatedData.datetime)
+    const day = validatedData.datetime.split('T')[0] // YYYY-MM-DD
+    const hours = datetimeLocal.getHours().toString().padStart(2, '0')
+    const minutes = datetimeLocal.getMinutes().toString().padStart(2, '0')
+    
+    // Obtener la inscripción para saber la duración de la clase
+    const enrollmentForDuration = await db.enrollment.findUnique({
+      where: { id: validatedData.enrollmentId },
+      include: {
+        course: { select: { classDuration: true } },
+      },
+    })
+    
+    const classDuration = enrollmentForDuration?.course?.classDuration || 40
+    const endMinutes = datetimeLocal.getHours() * 60 + datetimeLocal.getMinutes() + classDuration
+    const endHours = Math.floor(endMinutes / 60) % 24
+    const endMins = endMinutes % 60
+    const timeSlot = `${hours}:${minutes}-${endHours.toString().padStart(2, '0')}:${endMins.toString().padStart(2, '0')}`
+
     // Convertir day y timeSlot de hora local a UTC antes de guardar
     const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
-    const utcData = convertTimeSlotToUTC(validatedData.day, validatedData.timeSlot, userTimezone)
+    const utcData = convertTimeSlotToUTC(day, timeSlot, userTimezone)
 
     // 1. Validar que la fecha esté dentro del período académico de la inscripción
     const enrollment = await db.enrollment.findUnique({
@@ -271,7 +291,7 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
     const { getDayName } = await import('@/lib/utils/date')
 
     // Validar usando la fecha local original (la que el usuario seleccionó)
-    const classDate = parseISO(validatedData.day)
+    const classDate = parseISO(day)
     const periodStart = parseISO(enrollment.academicPeriod.startDate.toISOString().split('T')[0])
     const periodEnd = parseISO(enrollment.academicPeriod.endDate.toISOString().split('T')[0])
 
@@ -284,8 +304,8 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
     }
 
     // 2. Validar que el horario esté dentro de la disponibilidad del profesor
-    const [startTime, endTime] = validatedData.timeSlot.split('-')
-    const dayOfWeek = getDayName(validatedData.day)
+    const [startTime, endTime] = timeSlot.split('-')
+    const dayOfWeek = getDayName(day)
 
     // Buscar disponibilidad del profesor para ese día de la semana
     const teacherAvailability = await db.teacherAvailability.findMany({
@@ -310,7 +330,7 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
     if (!isWithinAvailability) {
       return {
         success: false,
-        error: `El horario ${validatedData.timeSlot} está fuera de la disponibilidad del profesor para este día`,
+        error: `El horario ${timeSlot} está fuera de la disponibilidad del profesor para este día`,
       }
     }
 
@@ -332,13 +352,12 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
 
     const classBooking = await db.classBooking.create({
       data: {
-        studentId: validatedData.studentId,
+        studentId: enrollment.studentId, // Obtener de la inscripción
         teacherId: validatedData.teacherId,
         enrollmentId: validatedData.enrollmentId,
         day: utcData.day, // Guardar en UTC
         timeSlot: utcData.timeSlot, // Guardar en UTC
         notes: validatedData.notes,
-        ...(validatedData.creditId && { creditId: validatedData.creditId }),
         status: 'CONFIRMED',
       },
     })
@@ -986,5 +1005,84 @@ export async function getTeacherAvailableDays(
   } catch (error) {
     console.error('Error fetching teacher available days:', error)
     return []
+  }
+}
+
+/**
+ * Obtiene todas las inscripciones activas con información del estudiante, curso y profesores disponibles
+ * Útil para el formulario de creación de clases
+ */
+export async function getEnrollmentsWithTeachers() {
+  try {
+    // Obtener inscripciones activas con información completa
+    const enrollments = await db.enrollment.findMany({
+      where: {
+        status: 'ACTIVE',
+      },
+      include: {
+        student: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        course: {
+          select: {
+            id: true,
+            title: true,
+            language: true,
+            level: true,
+            classDuration: true,
+            teacherCourses: {
+              include: {
+                teacher: {
+                  select: {
+                    id: true,
+                    name: true,
+                    lastName: true,
+                    email: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+        academicPeriod: {
+          select: {
+            id: true,
+            name: true,
+            startDate: true,
+            endDate: true,
+            isActive: true,
+          },
+        },
+      },
+      orderBy: [
+        { student: { name: 'asc' } },
+        { enrollmentDate: 'desc' },
+      ],
+    })
+
+    // Transformar los datos para incluir profesores directamente
+    return enrollments.map((enrollment) => ({
+      id: enrollment.id,
+      classesTotal: enrollment.classesTotal,
+      classesAttended: enrollment.classesAttended,
+      student: enrollment.student,
+      course: {
+        id: enrollment.course.id,
+        title: enrollment.course.title,
+        language: enrollment.course.language,
+        level: enrollment.course.level,
+        classDuration: enrollment.course.classDuration,
+      },
+      academicPeriod: enrollment.academicPeriod,
+      teachers: enrollment.course.teacherCourses.map((tc) => tc.teacher),
+    }))
+  } catch (error) {
+    console.error('Error fetching enrollments with teachers:', error)
+    throw new Error('Failed to fetch enrollments with teachers')
   }
 }

@@ -1,14 +1,10 @@
 import * as z from 'zod'
 
 export const CreateClassSchema = z.object({
-  studentId: z.string().min(1, 'El estudiante es requerido'),
-  courseId: z.string().min(1, 'El curso es requerido'),
   enrollmentId: z.string().min(1, 'La inscripción es requerida'),
   teacherId: z.string().min(1, 'El profesor es requerido'),
-  day: z.string().min(1, 'La fecha es requerida'),
-  timeSlot: z.string().min(1, 'El horario es requerido'),
+  datetime: z.string().min(1, 'La fecha y hora son requeridas'),
   notes: z.string().optional(),
-  creditId: z.string().min(1).optional().or(z.literal('')),
 })
 
 export const EditClassSchema = z.object({
