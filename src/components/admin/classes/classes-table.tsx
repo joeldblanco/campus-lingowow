@@ -115,9 +115,19 @@ export function ClassesTable({ classes }: ClassesTableProps) {
     filtered = [...filtered].sort((a, b) => {
       const timeA = a.timeSlot.split('-')[0]
       const timeB = b.timeSlot.split('-')[0]
-      const dateTimeA = new Date(`${a.day}T${timeA}`).getTime()
-      const dateTimeB = new Date(`${b.day}T${timeB}`).getTime()
-      return sortOrder === 'asc' ? dateTimeA - dateTimeB : dateTimeB - dateTimeA
+      const dateA = new Date(`${a.day}T${timeA}`)
+      const dateB = new Date(`${b.day}T${timeB}`)
+      
+      // Check if dates are valid, fallback to string comparison if not
+      if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
+        const dateTimeA = `${a.day} ${timeA}`
+        const dateTimeB = `${b.day} ${timeB}`
+        return sortOrder === 'asc' 
+          ? dateTimeA.localeCompare(dateTimeB)
+          : dateTimeB.localeCompare(dateTimeA)
+      }
+      
+      return sortOrder === 'asc' ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime()
     })
 
     return filtered
