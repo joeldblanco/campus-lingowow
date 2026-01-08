@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { createClass, getEnrollmentsWithTeachers } from '@/lib/actions/classes'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -29,13 +29,27 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import { toast } from 'sonner'
 import { CreateClassSchema } from '@/schemas/classes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { useTimezone } from '@/hooks/use-timezone'
-import { Search } from 'lucide-react'
+import { Check, ChevronsUpDown } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface EnrollmentWithTeachers {
   id: string
@@ -78,8 +92,8 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [enrollments, setEnrollments] = useState<EnrollmentWithTeachers[]>([])
-  const [searchQuery, setSearchQuery] = useState('')
   const [selectedEnrollment, setSelectedEnrollment] = useState<EnrollmentWithTeachers | null>(null)
+  const [enrollmentPopoverOpen, setEnrollmentPopoverOpen] = useState(false)
 
   const form = useForm<z.infer<typeof CreateClassSchema>>({
     resolver: zodResolver(CreateClassSchema),
@@ -104,42 +118,24 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
   useEffect(() => {
     if (open) {
       loadData()
-      setSearchQuery('')
       setSelectedEnrollment(null)
+      setEnrollmentPopoverOpen(false)
       form.reset()
     }
   }, [open, form])
 
-  const filteredEnrollments = useMemo(() => {
-    if (!searchQuery.trim()) return enrollments
-
-    const query = searchQuery.toLowerCase()
-    return enrollments.filter((enrollment) => {
-      const studentName = `${enrollment.student.name} ${enrollment.student.lastName || ''}`.toLowerCase()
-      const studentEmail = enrollment.student.email.toLowerCase()
-      const courseTitle = enrollment.course.title.toLowerCase()
-      const courseLanguage = enrollment.course.language.toLowerCase()
-      const periodName = enrollment.academicPeriod.name.toLowerCase()
-      const teacherNames = enrollment.teachers
-        .map((t) => `${t.name} ${t.lastName || ''}`.toLowerCase())
-        .join(' ')
-
-      return (
-        studentName.includes(query) ||
-        studentEmail.includes(query) ||
-        courseTitle.includes(query) ||
-        courseLanguage.includes(query) ||
-        periodName.includes(query) ||
-        teacherNames.includes(query)
-      )
-    })
-  }, [enrollments, searchQuery])
-
-  const handleEnrollmentChange = (enrollmentId: string) => {
+  const handleEnrollmentSelect = (enrollmentId: string) => {
     const enrollment = enrollments.find((e) => e.id === enrollmentId)
     setSelectedEnrollment(enrollment || null)
     form.setValue('enrollmentId', enrollmentId)
     form.setValue('teacherId', '')
+    setEnrollmentPopoverOpen(false)
+  }
+
+  const getEnrollmentSearchString = (enrollment: EnrollmentWithTeachers) => {
+    const studentName = `${enrollment.student.name} ${enrollment.student.lastName || ''}`
+    const teacherNames = enrollment.teachers.map((t) => `${t.name} ${t.lastName || ''}`).join(' ')
+    return `${studentName} ${enrollment.student.email} ${enrollment.course.title} ${enrollment.course.language} ${enrollment.academicPeriod.name} ${teacherNames}`.toLowerCase()
   }
 
   const onSubmit = async (values: z.infer<typeof CreateClassSchema>) => {
@@ -181,52 +177,76 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="grid gap-4 py-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Buscar inscripción</label>
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Buscar por estudiante, curso o profesor..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9"
-                  />
-                </div>
-              </div>
-
               <FormField
                 control={form.control}
                 name="enrollmentId"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="flex flex-col">
                     <FormLabel>Inscripción</FormLabel>
-                    <Select onValueChange={handleEnrollmentChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecciona una inscripción" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="max-h-[300px]">
-                        {filteredEnrollments.length === 0 ? (
-                          <SelectItem value="no-enrollments" disabled>
-                            {searchQuery ? 'No se encontraron inscripciones' : 'No hay inscripciones activas'}
-                          </SelectItem>
-                        ) : (
-                          filteredEnrollments.map((enrollment) => (
-                            <SelectItem key={enrollment.id} value={enrollment.id}>
-                              <div className="flex flex-col">
-                                <span className="font-medium">
-                                  {enrollment.student.name} {enrollment.student.lastName}
-                                </span>
-                                <span className="text-xs text-muted-foreground">
-                                  {enrollment.course.title} ({enrollment.course.language}) - {enrollment.academicPeriod.name}
-                                </span>
-                              </div>
-                            </SelectItem>
-                          ))
-                        )}
-                      </SelectContent>
-                    </Select>
+                    <Popover open={enrollmentPopoverOpen} onOpenChange={setEnrollmentPopoverOpen}>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={enrollmentPopoverOpen}
+                            className={cn(
+                              'w-full justify-between font-normal',
+                              !field.value && 'text-muted-foreground'
+                            )}
+                          >
+                            {selectedEnrollment ? (
+                              <span className="truncate">
+                                {selectedEnrollment.student.name} {selectedEnrollment.student.lastName} - {selectedEnrollment.course.title}
+                              </span>
+                            ) : (
+                              'Buscar inscripción...'
+                            )}
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[500px] p-0" align="start">
+                        <Command>
+                          <CommandInput placeholder="Buscar por estudiante, curso o profesor..." />
+                          <CommandList>
+                            <CommandEmpty>No se encontraron inscripciones.</CommandEmpty>
+                            <CommandGroup>
+                              {enrollments.map((enrollment) => (
+                                <CommandItem
+                                  key={enrollment.id}
+                                  value={getEnrollmentSearchString(enrollment)}
+                                  onSelect={() => handleEnrollmentSelect(enrollment.id)}
+                                  className="flex flex-col items-start gap-1 py-2"
+                                >
+                                  <div className="flex w-full items-center">
+                                    <Check
+                                      className={cn(
+                                        'mr-2 h-4 w-4',
+                                        field.value === enrollment.id ? 'opacity-100' : 'opacity-0'
+                                      )}
+                                    />
+                                    <div className="flex flex-col">
+                                      <span className="font-medium">
+                                        {enrollment.student.name} {enrollment.student.lastName}
+                                      </span>
+                                      <span className="text-xs text-muted-foreground">
+                                        {enrollment.course.title} ({enrollment.course.language}) - {enrollment.academicPeriod.name}
+                                      </span>
+                                      {enrollment.teachers.length > 0 && (
+                                        <span className="text-xs text-muted-foreground">
+                                          Profesores: {enrollment.teachers.map((t) => `${t.name} ${t.lastName || ''}`).join(', ')}
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
                     <FormMessage />
                   </FormItem>
                 )}
