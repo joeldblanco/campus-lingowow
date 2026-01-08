@@ -123,11 +123,14 @@ export async function getLessonContent(lessonId: string) {
     if (studentLesson) {
       // Map StudentLessonContent to Content format (studentLessonId -> lessonId)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const mapStudentContent = (content: any): unknown => ({
-        ...content,
-        lessonId: content.studentLessonId,
-        children: content.children?.map(mapStudentContent) || [],
-      })
+      const mapStudentContent = (content: any): unknown => {
+        const { studentLessonId, ...rest } = content
+        return {
+          ...rest,
+          lessonId: studentLessonId,
+          children: content.children?.map(mapStudentContent) || [],
+        }
+      }
 
       // Map StudentLesson to the same format as Lesson for compatibility
       return {
@@ -190,11 +193,14 @@ export async function getContentById(contentId: string, contentType: 'lesson' | 
       if (studentLesson) {
         // Map StudentLessonContent to Content format (studentLessonId -> lessonId)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const mapStudentContent = (content: any): unknown => ({
-          ...content,
-          lessonId: content.studentLessonId,
-          children: content.children?.map(mapStudentContent) || [],
-        })
+        const mapStudentContent = (content: any): unknown => {
+          const { studentLessonId, ...rest } = content
+          return {
+            ...rest,
+            lessonId: studentLessonId,
+            children: content.children?.map(mapStudentContent) || [],
+          }
+        }
 
         return {
           id: studentLesson.id,
