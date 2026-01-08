@@ -1,11 +1,11 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { ChevronLeft, ChevronRight, CalendarPlus, Rows3, Rows4 } from 'lucide-react'
-import { format, addDays, addWeeks, addMonths, startOfWeek, endOfWeek } from 'date-fns'
-import { es } from 'date-fns/locale'
-import type { ScheduleViewType } from '@/types/schedule'
 import { useTimezone } from '@/hooks/use-timezone'
+import type { ScheduleViewType } from '@/types/schedule'
+import { addDays, addMonths, addWeeks, endOfWeek, format, startOfWeek } from 'date-fns'
+import { es } from 'date-fns/locale'
+import { ChevronLeft, ChevronRight, Rows3, Rows4 } from 'lucide-react'
 
 interface StudentScheduleHeaderProps {
   currentDate: Date
@@ -23,7 +23,7 @@ export function StudentScheduleHeader({
   viewType,
   onDateChange,
   onViewChange,
-  onBookLesson,
+  // onBookLesson,
   lessonsCount,
   isCompact = false,
   onToggleCompact,
@@ -99,12 +99,12 @@ export function StudentScheduleHeader({
             }
           </p>
         </div>
-        <div className="flex gap-3">
+        {/* <div className="flex gap-3">
           <Button onClick={onBookLesson} className="shadow-md">
             <CalendarPlus className="mr-2 h-4 w-4" />
             <span className="truncate">Reservar Clase</span>
           </Button>
-        </div>
+        </div> */}
       </div>
 
       {/* Toolbar */}
