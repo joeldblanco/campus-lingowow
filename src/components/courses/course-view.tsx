@@ -29,7 +29,7 @@ interface CourseViewProps {
       id: string
       title: string
       description?: string | null
-      level: number
+      level: string
       order: number
       isPublished: boolean
       lessons: Array<{

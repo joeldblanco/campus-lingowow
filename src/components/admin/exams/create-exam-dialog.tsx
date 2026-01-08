@@ -48,7 +48,7 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
       modules: Array<{
         id: string
         title: string
-        level: number
+        level: string
         order: number
         lessons: Array<{
           id: string

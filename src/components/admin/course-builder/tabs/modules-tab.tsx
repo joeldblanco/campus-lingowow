@@ -221,7 +221,7 @@ export function ModulesTab({
   const [newModule, setNewModule] = useState({
     title: '',
     description: '',
-    level: 1,
+    level: 'A1',
     order: modules.length + 1,
     objectives: '',
     isPublished: false,
@@ -277,7 +277,7 @@ export function ModulesTab({
       setNewModule({
         title: '',
         description: '',
-        level: 1,
+        level: 'A1',
         order: modules.length + 2,
         objectives: '',
         isPublished: false,
@@ -322,7 +322,7 @@ export function ModulesTab({
     setNewModule({
       title: '',
       description: '',
-      level: 1,
+      level: 'A1',
       order: modules.length + 1,
       objectives: '',
       isPublished: false,
@@ -399,32 +399,22 @@ export function ModulesTab({
               value={newModule.description}
               onChange={(e) => setNewModule({ ...newModule, description: e.target.value })}
             />
-            <div className="grid grid-cols-2 gap-4">
-              <Select
-                value={newModule.level.toString()}
-                onValueChange={(value) => setNewModule({ ...newModule, level: parseInt(value) })}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {Array.from({ length: 10 }, (_, i) => i + 1).map((level) => (
-                    <SelectItem key={level} value={level.toString()}>
-                      Nivel {level}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Input
-                type="number"
-                placeholder="Orden"
-                min="1"
-                value={newModule.order}
-                onChange={(e) =>
-                  setNewModule({ ...newModule, order: parseInt(e.target.value) || 1 })
-                }
-              />
-            </div>
+            <Select
+              value={newModule.level}
+              onValueChange={(value) => setNewModule({ ...newModule, level: value })}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Seleccionar nivel MCER" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="A1">A1 - Principiante</SelectItem>
+                <SelectItem value="A2">A2 - Elemental</SelectItem>
+                <SelectItem value="B1">B1 - Intermedio</SelectItem>
+                <SelectItem value="B2">B2 - Intermedio Alto</SelectItem>
+                <SelectItem value="C1">C1 - Avanzado</SelectItem>
+                <SelectItem value="C2">C2 - Maestría</SelectItem>
+              </SelectContent>
+            </Select>
             <Textarea
               placeholder="Objetivos de aprendizaje del módulo"
               rows={3}

@@ -71,6 +71,7 @@ export function ClassesTable({ classes }: ClassesTableProps) {
   const [statusFilter, setStatusFilter] = useState('all')
   const [teacherFilter, setTeacherFilter] = useState('all')
   const [dateFilter, setDateFilter] = useState('all')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedClasses, setSelectedClasses] = useState<string[]>([])
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -110,8 +111,17 @@ export function ClassesTable({ classes }: ClassesTableProps) {
       }
     }
 
+    // Sort by date and time
+    filtered = [...filtered].sort((a, b) => {
+      const dateTimeA = `${a.day} ${a.timeSlot.split('-')[0]}`
+      const dateTimeB = `${b.day} ${b.timeSlot.split('-')[0]}`
+      return sortOrder === 'asc' 
+        ? dateTimeA.localeCompare(dateTimeB)
+        : dateTimeB.localeCompare(dateTimeA)
+    })
+
     return filtered
-  }, [classes, searchTerm, statusFilter, teacherFilter, dateFilter])
+  }, [classes, searchTerm, statusFilter, teacherFilter, dateFilter, sortOrder])
 
   // Pagination
   const totalPages = Math.ceil(filteredClasses.length / ITEMS_PER_PAGE)
@@ -297,6 +307,15 @@ export function ClassesTable({ classes }: ClassesTableProps) {
             <SelectItem value="past">Pasadas</SelectItem>
             <SelectItem value="today">Hoy</SelectItem>
             <SelectItem value="future">Futuras</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={sortOrder} onValueChange={(v) => setSortOrder(v as 'asc' | 'desc')}>
+          <SelectTrigger className="w-[140px]">
+            <SelectValue placeholder="Ordenar" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="asc">Más antiguas</SelectItem>
+            <SelectItem value="desc">Más recientes</SelectItem>
           </SelectContent>
         </Select>
         <Button variant="outline" size="icon" onClick={clearFilters} className="shrink-0">

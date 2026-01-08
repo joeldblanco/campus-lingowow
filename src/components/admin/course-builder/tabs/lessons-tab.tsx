@@ -42,6 +42,7 @@ interface LessonsTabProps {
   onUpdateLesson: (moduleId: string, lessonId: string, updates: Partial<Lesson>) => Promise<void>
   onAddLesson: (moduleId: string, lesson: Lesson) => Promise<void>
   onRemoveLesson: (moduleId: string, lessonId: string) => Promise<void>
+  onReorderLessons: (moduleId: string, newLessonIds: string[]) => void
 }
 
 // Sortable Lesson Item Component
@@ -272,6 +273,7 @@ export function LessonsTab({
   onUpdateLesson,
   onAddLesson,
   onRemoveLesson,
+  onReorderLessons,
 }: LessonsTabProps) {
   const router = useRouter()
   const [isCreatingNew, setIsCreatingNew] = useState(false)
@@ -335,35 +337,13 @@ export function LessonsTab({
         // Calculate new optimistic order
         const newOrder = arrayMove(sourceLessonIds, oldIndex, newIndex)
 
-        // Call server action
+        // Optimistic update first for smooth UI
+        onReorderLessons(sourceModuleId, newOrder)
+
+        // Then persist to server
         try {
-          // We need to update the parent state locally first for smooth animation?
-          // The parent 'CourseBuilder' handles 'onUpdateLesson' but not a bulk reorder.
-          // We should probably expose onReorderLessons prop or call action directly.
-          // Given the architecture, it's better to call action directly OR add a prop.
-          // I'll call the action imported directly to avoid changing parent interface too much, 
-          // BUT we need to update the UI state optimistically.
-
-          // We can't easily update parent state without a prop.
-          // Let's assume onUpdateLesson can work but that's one by one.
-          // I will add a method to update the local modules state if possible, 
-          // but modules comes from props.
-          // Ideally, 'LessonsTab' should accept 'onReorderLessons'.
-          // Since I cannot easily change the parent 'CourseBuilder' logic without touching it,
-          // I will use `router.refresh()` or rely on revalidatePath in the action.
-          // However, for DnD, optimistic update is critical.
-
-          // Warning: without optimistic update on 'modules' prop, the item will snap back until server responds.
-          // I will rely on the fact that `CourseBuilder` manages state.
-          // I will perform the action and trigger a router refresh.
-
           await reorderLessons(sourceModuleId, newOrder)
           toast.success('Orden de lecciones actualizado')
-
-          // Forcing router refresh to get new data
-          // router.refresh() 
-          // Actually the action calls revalidatePath, so router.refresh might be needed to see changes if client cache is strong.
-
         } catch {
           toast.error('Error al reordenar lecciones')
         }

@@ -359,7 +359,7 @@ model Module {
   id          String  @id @default(cuid())
   title       String
   description String?
-  level       Int     @default(1)
+  level       String  @default("A1")
   order       Int     @default(0)
   isPublished Boolean @default(false)
   courseId    String
@@ -2447,6 +2447,30 @@ enum RecordingStatus {
   FAILED        // Error en la grabación
   ARCHIVED      // Archivada (no disponible temporalmente)
   DELETED       // Eliminada
+}
+
+// =============================================
+// MODELOS DE NEWSLETTER
+// =============================================
+
+model NewsletterSubscription {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  userId       String?   // Opcional, puede ser suscriptor anónimo
+  isSubscribed Boolean   @default(true)
+  source       String?   // Fuente de suscripción: 'enrollment', 'landing', 'checkout', etc.
+  
+  // Historial de cambios
+  subscribedAt   DateTime  @default(now())
+  unsubscribedAt DateTime?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([userId])
+  @@index([isSubscribed])
+  @@map("newsletter_subscriptions")
 }
 
 // =============================================

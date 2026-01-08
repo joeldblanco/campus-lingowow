@@ -147,7 +147,7 @@ export function LessonBuilder({
     }, 1500)
   }, [lesson.id, lesson.moduleId])
 
-  const handleUpdateMetadata = (updates: { title?: string; description?: string }) => {
+  const handleUpdateMetadata = (updates: Partial<Lesson>) => {
     onUpdateLesson(updates)
     debouncedMetadataSave(updates)
   }
@@ -390,7 +390,7 @@ export function LessonBuilder({
   }
 
   const handlePublishToggle = () => {
-    onUpdateLesson({ isPublished: !lesson.isPublished })
+    handleUpdateMetadata({ isPublished: !lesson.isPublished })
   }
 
   const handleAddBlockFromModal = (template: BlockTemplate) => {

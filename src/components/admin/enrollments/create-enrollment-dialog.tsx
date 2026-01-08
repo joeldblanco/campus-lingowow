@@ -77,7 +77,7 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
     Array<{ id: string; name: string; lastName: string | null; email: string; image: string | null }>
   >([])
   const [courses, setCourses] = useState<
-    Array<{ id: string; title: string; description: string; level: string; classDuration: number; isSynchronous: boolean; _count: { modules: number; teacherCourses: number } }>
+    Array<{ id: string; title: string; description: string; language: string; level: string; classDuration: number; isSynchronous: boolean; _count: { modules: number; teacherCourses: number } }>
   >([])
   const [academicPeriods, setAcademicPeriods] = useState<
     Array<{ id: string; name: string; startDate: Date; endDate: Date; isActive: boolean }>
@@ -383,7 +383,7 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
                                     )}
                                   </div>
                                   <div className="text-xs text-muted-foreground">
-                                    Nivel {course.level} • {course._count.modules} módulos
+                                    {course.language} • Nivel {course.level} • {course._count.modules} módulos
                                     {course.isSynchronous && ` • ${course.classDuration || 40} min/clase`}
                                   </div>
                                 </div>

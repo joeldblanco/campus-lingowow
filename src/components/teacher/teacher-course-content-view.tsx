@@ -45,7 +45,7 @@ interface Module {
   id: string
   title: string
   description: string | null
-  level: number
+  level: string
   order: number
   lessons: Lesson[]
 }

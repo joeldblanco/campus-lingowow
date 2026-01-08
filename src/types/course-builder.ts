@@ -397,7 +397,7 @@ export interface Module {
   id: string
   title: string
   description: string
-  level: number
+  level: string
   order: number
   objectives: string
   isPublished: boolean

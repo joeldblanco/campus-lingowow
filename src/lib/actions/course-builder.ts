@@ -106,6 +106,10 @@ export async function updateCourseInfo(courseId: string, updates: Partial<Course
       })),
     }
 
+    revalidatePath('/admin/courses')
+    revalidatePath(`/admin/courses/${courseId}`)
+    revalidatePath(`/admin/courses/${courseId}/builder`)
+
     return { success: true, course: courseBuilderData }
   } catch (error) {
     console.error('Error updating course:', error)
@@ -151,7 +155,7 @@ export async function upsertModule(courseId: string, moduleData: Partial<Module>
         data: {
           title: moduleData.title || '',
           description: moduleData.description || '',
-          level: moduleData.level || 1,
+          level: moduleData.level || 'A1',
           order: moduleData.order || 1,
           objectives: moduleData.objectives || '',
           isPublished: moduleData.isPublished || false,

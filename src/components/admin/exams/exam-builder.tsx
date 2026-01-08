@@ -48,7 +48,7 @@ interface CourseForExam {
   modules: Array<{
     id: string
     title: string
-    level: number
+    level: string
     lessons: Array<{
       id: string
       title: string

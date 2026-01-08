@@ -178,6 +178,10 @@ export async function createCourse(data: z.infer<typeof CreateCourseSchema>) {
         description: validatedData.description,
         language: validatedData.language,
         level: validatedData.level,
+        classDuration: validatedData.classDuration,
+        isSynchronous: validatedData.isSynchronous,
+        isPersonalized: validatedData.isPersonalized,
+        defaultPaymentPerClass: validatedData.defaultPaymentPerClass,
         ...(validatedData.image && { image: validatedData.image }),
         createdById: validatedData.createdById,
         isPublished: false,
@@ -313,7 +317,7 @@ export async function getCourseStats() {
 export interface CreateModuleData {
   title: string
   description?: string
-  level: number
+  level: string
   order: number
   courseId: string
 }

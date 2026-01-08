@@ -66,6 +66,7 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [courseFilter, setCourseFilter] = useState('all')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedEnrollments, setSelectedEnrollments] = useState<string[]>([])
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -94,8 +95,15 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
       filtered = filtered.filter((enrollment) => enrollment.courseId === courseFilter)
     }
 
+    // Sort by enrollment date
+    filtered = [...filtered].sort((a, b) => {
+      const dateA = new Date(a.enrollmentDate).getTime()
+      const dateB = new Date(b.enrollmentDate).getTime()
+      return sortOrder === 'asc' ? dateA - dateB : dateB - dateA
+    })
+
     return filtered
-  }, [enrollments, searchTerm, statusFilter, courseFilter])
+  }, [enrollments, searchTerm, statusFilter, courseFilter, sortOrder])
 
   // Pagination
   const totalPages = Math.ceil(filteredEnrollments.length / ITEMS_PER_PAGE)
@@ -251,6 +259,16 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
                 {course.title}
               </SelectItem>
             ))}
+          </SelectContent>
+        </Select>
+
+        <Select value={sortOrder} onValueChange={(v) => setSortOrder(v as 'asc' | 'desc')}>
+          <SelectTrigger className="w-[140px]">
+            <SelectValue placeholder="Ordenar" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="asc">Más antiguas</SelectItem>
+            <SelectItem value="desc">Más recientes</SelectItem>
           </SelectContent>
         </Select>
 

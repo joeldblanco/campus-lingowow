@@ -58,7 +58,7 @@ export function CreateModuleDialog({ children, onModuleCreated }: CreateModuleDi
     defaultValues: {
       title: '',
       description: '',
-      level: 1,
+      level: 'A1',
       order: 1,
       courseId: '',
       objectives: '',
@@ -181,19 +181,20 @@ export function CreateModuleDialog({ children, onModuleCreated }: CreateModuleDi
                   name="level"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Nivel</FormLabel>
-                      <Select onValueChange={(value) => field.onChange(parseInt(value))} value={field.value.toString()}>
+                      <FormLabel>Nivel MCER</FormLabel>
+                      <Select onValueChange={(value) => field.onChange(value)} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue />
+                            <SelectValue placeholder="Seleccionar nivel" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {Array.from({ length: 10 }, (_, i) => i + 1).map((level) => (
-                            <SelectItem key={level} value={level.toString()}>
-                              Nivel {level}
-                            </SelectItem>
-                          ))}
+                          <SelectItem value="A1">A1 - Principiante</SelectItem>
+                          <SelectItem value="A2">A2 - Elemental</SelectItem>
+                          <SelectItem value="B1">B1 - Intermedio</SelectItem>
+                          <SelectItem value="B2">B2 - Intermedio Alto</SelectItem>
+                          <SelectItem value="C1">C1 - Avanzado</SelectItem>
+                          <SelectItem value="C2">C2 - Maestría</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />

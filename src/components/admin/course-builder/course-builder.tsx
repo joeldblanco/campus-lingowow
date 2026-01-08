@@ -258,6 +258,26 @@ export function CourseBuilder({ initialCourse }: CourseBuilderProps) {
     }
   }, [])
 
+  const reorderLessonsInModule = useCallback((moduleId: string, newLessonIds: string[]) => {
+    // Optimistic update - reorder lessons in the module
+    setCourse(prev => ({
+      ...prev,
+      modules: prev.modules.map(module => {
+        if (module.id !== moduleId) return module
+        
+        // Reorder lessons based on newLessonIds
+        const reorderedLessons = newLessonIds
+          .map((id, index) => {
+            const lesson = module.lessons.find(l => l.id === id)
+            return lesson ? { ...lesson, order: index + 1 } : null
+          })
+          .filter((l): l is Lesson => l !== null)
+        
+        return { ...module, lessons: reorderedLessons }
+      })
+    }))
+  }, [])
+
   const totalLessons = course.modules.reduce((sum, module) => sum + module.lessons.length, 0)
   const totalDuration = course.modules.reduce((sum, module) =>
     sum + module.lessons.reduce((moduleSum, lesson) => moduleSum + lesson.duration, 0), 0
@@ -356,6 +376,7 @@ export function CourseBuilder({ initialCourse }: CourseBuilderProps) {
             onUpdateLesson={updateLesson}
             onAddLesson={addLesson}
             onRemoveLesson={removeLesson}
+            onReorderLessons={reorderLessonsInModule}
           />
         </TabsContent>
 

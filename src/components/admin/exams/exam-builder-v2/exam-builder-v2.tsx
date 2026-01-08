@@ -65,7 +65,7 @@ interface CourseForExam {
   modules: Array<{
     id: string
     title: string
-    level: number
+    level: string
     lessons: Array<{
       id: string
       title: string
@@ -582,7 +582,7 @@ function ExamSettingsForm({
   lessonId: string
   setLessonId: (id: string) => void
   selectedCourse?: CourseForExam
-  selectedModule?: { id: string; title: string; level: number; lessons: { id: string; title: string }[] }
+  selectedModule?: { id: string; title: string; level: string; lessons: { id: string; title: string }[] }
 }) {
   return (
     <div className="space-y-6 py-4">

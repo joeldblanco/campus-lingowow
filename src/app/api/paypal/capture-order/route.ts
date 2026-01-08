@@ -32,6 +32,7 @@ interface InvoiceData {
   discount: number
   total: number
   currency?: string
+  couponId?: string
 }
 
 export async function POST(req: NextRequest) {
@@ -137,6 +138,7 @@ export async function POST(req: NextRequest) {
           paypalOrderId: orderID,
           paypalCaptureId: captureData.id,
           paypalPayerEmail: captureData.payer?.emailAddress,
+          couponId: invoiceData.couponId || null,
           notes: `PayPal Order ID: ${orderID}, Capture ID: ${captureData.id}`,
           items: {
             create: invoiceData.items.map((item) => ({
@@ -153,6 +155,14 @@ export async function POST(req: NextRequest) {
           items: true,
         },
       })
+
+      // Incrementar el contador de uso del cupón si se usó uno
+      if (invoiceData.couponId) {
+        await db.coupon.update({
+          where: { id: invoiceData.couponId },
+          data: { usageCount: { increment: 1 } },
+        })
+      }
 
       // Obtener el período académico actual (excluyendo special weeks)
       const today = new Date()

@@ -1119,6 +1119,7 @@ export async function getPublishedCourses() {
         id: true,
         title: true,
         description: true,
+        language: true,
         level: true,
         classDuration: true,
         isSynchronous: true,

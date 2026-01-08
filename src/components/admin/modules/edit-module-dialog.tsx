@@ -39,7 +39,7 @@ interface ModuleData {
   id: string
   title: string
   description: string | null
-  level: number
+  level: string
   order: number
   isPublished: boolean
   courseId: string
@@ -52,6 +52,16 @@ interface EditModuleDialogProps {
 }
 
 type FormData = z.infer<typeof EditModuleSchema>
+type CEFRLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
+
+const VALID_LEVELS: CEFRLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+
+function getValidLevel(level: string | number | null | undefined): CEFRLevel {
+  if (typeof level === 'string' && VALID_LEVELS.includes(level as CEFRLevel)) {
+    return level as CEFRLevel
+  }
+  return 'A1'
+}
 
 export function EditModuleDialog({ children, module, onModuleUpdated }: EditModuleDialogProps) {
   const [open, setOpen] = useState(false)
@@ -61,7 +71,7 @@ export function EditModuleDialog({ children, module, onModuleUpdated }: EditModu
     defaultValues: {
       title: module.title || '',
       description: module.description || '',
-      level: module.level || 1,
+      level: getValidLevel(module.level),
       order: module.order || 1,
       objectives: '',
     },
@@ -72,7 +82,7 @@ export function EditModuleDialog({ children, module, onModuleUpdated }: EditModu
     form.reset({
       title: module.title || '',
       description: module.description || '',
-      level: module.level || 1,
+      level: getValidLevel(module.level),
       order: module.order || 1,
       objectives: '',
     })
@@ -143,19 +153,20 @@ export function EditModuleDialog({ children, module, onModuleUpdated }: EditModu
                   name="level"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Nivel</FormLabel>
-                      <Select onValueChange={(value) => field.onChange(parseInt(value))} value={field.value.toString()}>
+                      <FormLabel>Nivel MCER</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue />
+                            <SelectValue placeholder="Seleccionar nivel" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {Array.from({ length: 10 }, (_, i) => i + 1).map((level) => (
-                            <SelectItem key={level} value={level.toString()}>
-                              Nivel {level}
-                            </SelectItem>
-                          ))}
+                          <SelectItem value="A1">A1 - Principiante</SelectItem>
+                          <SelectItem value="A2">A2 - Elemental</SelectItem>
+                          <SelectItem value="B1">B1 - Intermedio</SelectItem>
+                          <SelectItem value="B2">B2 - Intermedio Alto</SelectItem>
+                          <SelectItem value="C1">C1 - Avanzado</SelectItem>
+                          <SelectItem value="C2">C2 - Maestría</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />

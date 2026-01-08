@@ -39,7 +39,7 @@ export type ModuleForEdit = {
   id: string
   title: string
   description: string | null
-  level: number
+  level: string
   order: number
   isPublished: boolean
   courseId: string
