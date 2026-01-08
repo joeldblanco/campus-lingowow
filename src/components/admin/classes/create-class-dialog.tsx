@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { createClass, getEnrollmentsWithTeachers } from '@/lib/actions/classes'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -94,6 +94,7 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
   const [enrollments, setEnrollments] = useState<EnrollmentWithTeachers[]>([])
   const [selectedEnrollment, setSelectedEnrollment] = useState<EnrollmentWithTeachers | null>(null)
   const [enrollmentPopoverOpen, setEnrollmentPopoverOpen] = useState(false)
+  const [enrollmentSearch, setEnrollmentSearch] = useState('')
 
   const form = useForm<z.infer<typeof CreateClassSchema>>({
     resolver: zodResolver(CreateClassSchema),
@@ -120,6 +121,7 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
       loadData()
       setSelectedEnrollment(null)
       setEnrollmentPopoverOpen(false)
+      setEnrollmentSearch('')
       form.reset()
     }
   }, [open, form])
@@ -146,11 +148,24 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
     setEnrollmentPopoverOpen(false)
   }
 
-  const getEnrollmentSearchString = (enrollment: EnrollmentWithTeachers) => {
-    const studentName = `${enrollment.student.name} ${enrollment.student.lastName || ''}`
-    const teacherNames = enrollment.teachers.map((t) => `${t.name} ${t.lastName || ''}`).join(' ')
-    return `${studentName} ${enrollment.student.email} ${enrollment.course.title} ${enrollment.course.language} ${enrollment.academicPeriod.name} ${teacherNames}`.toLowerCase()
-  }
+  const filteredEnrollments = useMemo(() => {
+    if (!enrollmentSearch.trim()) return enrollments
+
+    const query = enrollmentSearch.toLowerCase()
+    return enrollments.filter((enrollment) => {
+      const studentName = `${enrollment.student.name} ${enrollment.student.lastName || ''}`.toLowerCase()
+      const courseTitle = enrollment.course.title.toLowerCase()
+      const teacherNames = enrollment.teachers
+        .map((t) => `${t.name} ${t.lastName || ''}`.toLowerCase())
+        .join(' ')
+
+      return (
+        studentName.includes(query) ||
+        courseTitle.includes(query) ||
+        teacherNames.includes(query)
+      )
+    })
+  }, [enrollments, enrollmentSearch])
 
   const onSubmit = async (values: z.infer<typeof CreateClassSchema>) => {
     setIsLoading(true)
@@ -221,15 +236,19 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                         </FormControl>
                       </PopoverTrigger>
                       <PopoverContent className="w-[500px] p-0" align="start">
-                        <Command>
-                          <CommandInput placeholder="Buscar por estudiante, curso o profesor..." />
+                        <Command shouldFilter={false}>
+                          <CommandInput
+                            placeholder="Buscar por estudiante, curso o profesor..."
+                            value={enrollmentSearch}
+                            onValueChange={setEnrollmentSearch}
+                          />
                           <CommandList>
                             <CommandEmpty>No se encontraron inscripciones.</CommandEmpty>
                             <CommandGroup>
-                              {enrollments.map((enrollment) => (
+                              {filteredEnrollments.map((enrollment) => (
                                 <CommandItem
                                   key={enrollment.id}
-                                  value={getEnrollmentSearchString(enrollment)}
+                                  value={enrollment.id}
                                   onSelect={() => handleEnrollmentSelect(enrollment.id)}
                                   className="flex flex-col items-start gap-1 py-2"
                                 >
