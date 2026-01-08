@@ -60,6 +60,18 @@ export default function PricingPage() {
     return { price: plan.price, comparePrice: plan.comparePrice }
   }
 
+  // Check if any plan has language-specific pricing configured
+  const hasLanguagePricing = plans.some(plan => 
+    plan.pricing && plan.pricing.length > 0 && plan.pricing.some(p => p.isActive)
+  )
+
+  // Filter plans based on selected language - only show plans that have pricing for that language
+  const filteredPlans = hasLanguagePricing 
+    ? plans.filter(plan => 
+        plan.pricing?.some(p => p.language === selectedLanguage && p.isActive)
+      )
+    : plans
+
   const handleAddToCart = (plan: PlanWithFeatures) => {
     const { price } = getPriceForLanguage(plan, selectedLanguage)
     addToCart({
@@ -140,27 +152,29 @@ export default function PricingPage() {
               Elige el plan que se adapte a tus objetivos. Mejora, cambia o cancela en cualquier momento.
             </p>
 
-            {/* Language Tabs */}
-            <div className="flex flex-col items-center gap-4 mb-8">
-              <span className="text-sm text-slate-500 dark:text-slate-400">Selecciona el idioma que deseas aprender:</span>
-              <Tabs value={selectedLanguage} onValueChange={setSelectedLanguage} className="w-auto">
-                <TabsList className="grid grid-cols-2 w-[300px]">
-                  {SUPPORTED_LANGUAGES.map((lang) => (
-                    <TabsTrigger 
-                      key={lang.code} 
-                      value={lang.code}
-                      className="gap-2 text-base"
-                    >
-                      <span className="text-lg">{lang.flag}</span>
-                      {lang.code === 'en' ? 'Inglés' : 'Español'}
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
-              </Tabs>
-              <span className="font-bold text-slate-900 dark:text-white bg-blue-100 dark:bg-blue-900/30 px-4 py-2 rounded-full">
-                Planes Mensuales Flexibles
-              </span>
-            </div>
+            {/* Language Tabs - only show if plans have language-specific pricing */}
+            {hasLanguagePricing && (
+              <div className="flex flex-col items-center gap-4 mb-8">
+                <span className="text-sm text-slate-500 dark:text-slate-400">Selecciona el idioma que deseas aprender:</span>
+                <Tabs value={selectedLanguage} onValueChange={setSelectedLanguage} className="w-auto">
+                  <TabsList className="grid grid-cols-2 w-[300px]">
+                    {SUPPORTED_LANGUAGES.map((lang) => (
+                      <TabsTrigger 
+                        key={lang.code} 
+                        value={lang.code}
+                        className="gap-2 text-base"
+                      >
+                        <span className="text-lg">{lang.flag}</span>
+                        {lang.code === 'en' ? 'Inglés' : 'Español'}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                </Tabs>
+              </div>
+            )}
+            <span className="font-bold text-slate-900 dark:text-white bg-blue-100 dark:bg-blue-900/30 px-4 py-2 rounded-full">
+              Planes Mensuales Flexibles
+            </span>
           </div>
         </section>
 
@@ -172,13 +186,13 @@ export default function PricingPage() {
                 <Loader2 className="h-10 w-10 animate-spin text-primary" />
               </div>
             ) : (
-              <div className={`grid grid-cols-1 md:grid-cols-${Math.min(plans.length, 3)} gap-8 items-start justify-center`}>
-                {plans.length === 0 && (
+              <div className={`grid grid-cols-1 md:grid-cols-${Math.min(filteredPlans.length, 3)} gap-8 items-start justify-center`}>
+                {filteredPlans.length === 0 && (
                   <div className="col-span-full text-center text-slate-500">
                     No hay planes disponibles en este momento.
                   </div>
                 )}
-                {plans.map((plan) => {
+                {filteredPlans.map((plan) => {
                   const isPopular = plan.isPopular
 
                   return (
@@ -290,7 +304,7 @@ export default function PricingPage() {
                   <thead>
                     <tr className="border-b border-slate-200 dark:border-slate-700">
                       <th className="py-4 px-6 text-sm font-semibold text-slate-500 dark:text-slate-400 w-1/4">Características</th>
-                      {plans.map(plan => (
+                      {filteredPlans.map(plan => (
                         <th key={plan.id} className={cn("py-4 px-6 text-lg font-bold w-1/4 text-center font-lexend", plan.isPopular ? "text-primary" : "text-slate-900 dark:text-white")}>
                           {plan.name}
                         </th>
@@ -301,7 +315,7 @@ export default function PricingPage() {
                     {uniqueFeatures.map((featureName, idx) => (
                       <tr key={idx} className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
                         <td className="py-4 px-6 font-medium text-slate-900 dark:text-white">{featureName}</td>
-                        {plans.map(plan => {
+                        {filteredPlans.map(plan => {
                           const pf = plan.features?.find((f) => f.feature.name === featureName)
                           const included = pf?.included
                           return (
