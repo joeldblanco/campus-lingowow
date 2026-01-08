@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { UserAvatar } from '@/components/ui/user-avatar'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -9,11 +10,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Video, FileText, Clock, Calendar, Mail } from 'lucide-react'
+import { Video, FileText, Clock, Calendar, Mail, CalendarClock } from 'lucide-react'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { cn } from '@/lib/utils'
 import type { StudentScheduleLesson } from '@/lib/actions/student-schedule'
+import { StudentRescheduleDialog } from './student-reschedule-dialog'
 
 interface LessonDetailsDialogProps {
   lesson: StudentScheduleLesson | null
@@ -22,6 +24,7 @@ interface LessonDetailsDialogProps {
   onJoinClass?: (lessonId: string) => void
   onViewMaterials?: (lessonId: string) => void
   onContactTeacher?: (email: string) => void
+  onRescheduleSuccess?: () => void
 }
 
 function getLessonColorClasses(color: string) {
@@ -55,15 +58,21 @@ export function LessonDetailsDialog({
   onJoinClass,
   onViewMaterials,
   onContactTeacher,
+  onRescheduleSuccess,
 }: LessonDetailsDialogProps) {
+  const [rescheduleOpen, setRescheduleOpen] = useState(false)
+  
   if (!lesson) return null
 
   const colors = getLessonColorClasses(lesson.color)
   const lessonDate = new Date(lesson.date)
   const isLive = lesson.status === 'in_progress'
   const isCancelled = lesson.status === 'cancelled'
+  const isCompleted = lesson.status === 'completed'
+  const canReschedule = lesson.status === 'scheduled' && !isCancelled && !isCompleted
 
   return (
+    <>
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
@@ -135,28 +144,58 @@ export function LessonDetailsDialog({
           )}
 
           {/* Actions */}
-          <div className="flex gap-3 pt-4">
-            <Button
-              variant="outline"
-              className="flex-1"
-              onClick={() => onViewMaterials?.(lesson.id)}
-            >
-              <FileText className="h-4 w-4 mr-2" />
-              Materiales
-            </Button>
-            {!isCancelled && (
+          <div className="flex flex-col gap-3 pt-4">
+            <div className="flex gap-3">
               <Button
+                variant="outline"
                 className="flex-1"
-                onClick={() => onJoinClass?.(lesson.id)}
-                disabled={!isLive && lesson.status !== 'scheduled'}
+                onClick={() => onViewMaterials?.(lesson.id)}
               >
-                <Video className="h-4 w-4 mr-2" />
-                {isLive ? 'Unirse Ahora' : 'Unirse a Clase'}
+                <FileText className="h-4 w-4 mr-2" />
+                Materiales
+              </Button>
+              {!isCancelled && (
+                <Button
+                  className="flex-1"
+                  onClick={() => onJoinClass?.(lesson.id)}
+                  disabled={!isLive && lesson.status !== 'scheduled'}
+                >
+                  <Video className="h-4 w-4 mr-2" />
+                  {isLive ? 'Unirse Ahora' : 'Unirse a Clase'}
+                </Button>
+              )}
+            </div>
+            
+            {/* Botón de Reagendar */}
+            {canReschedule && (
+              <Button
+                variant="secondary"
+                className="w-full"
+                onClick={() => setRescheduleOpen(true)}
+              >
+                <CalendarClock className="h-4 w-4 mr-2" />
+                Reagendar Clase
               </Button>
             )}
           </div>
         </div>
       </DialogContent>
     </Dialog>
+    
+    {/* Diálogo de Reagendamiento */}
+    <StudentRescheduleDialog
+      bookingId={lesson.id}
+      currentDate={lessonDate}
+      currentTimeSlot={`${lesson.startTime}-${lesson.endTime}`}
+      courseName={lesson.courseTitle}
+      open={rescheduleOpen}
+      onOpenChange={setRescheduleOpen}
+      onSuccess={() => {
+        setRescheduleOpen(false)
+        onOpenChange(false)
+        onRescheduleSuccess?.()
+      }}
+    />
+    </>
   )
 }

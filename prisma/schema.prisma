@@ -636,6 +636,9 @@ model Enrollment {
   enrollmentType   EnrollmentType   @default(AUTOMATIC) // Tipo de inscripción
   enrolledBy       String?          // ID del admin que inscribió manualmente (null si fue automática)
   notes            String?          // Notas adicionales de la inscripción
+  
+  // Campos para reagendamiento de clases
+  reschedulesUsed  Int              @default(0) // Cantidad de reagendamientos usados en este período
 
   // Relaciones
   student        User              @relation(fields: [studentId], references: [id], onDelete: Cascade)

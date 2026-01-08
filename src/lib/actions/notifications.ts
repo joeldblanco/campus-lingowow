@@ -228,23 +228,25 @@ export async function notifyAdmins(params: Omit<CreateNotificationParams, 'userI
 export async function notifyNewEnrollment(data: {
   studentId: string
   studentName: string
-  teacherId: string
+  teacherId?: string
   courseName: string
   enrollmentId: string
 }) {
   const { studentId, studentName, teacherId, courseName, enrollmentId } = data
 
-  // Notificar al profesor
-  await createNotification({
-    userId: teacherId,
-    type: NotificationType.NEW_ENROLLMENT,
-    title: 'Nuevo estudiante inscrito',
-    message: `${studentName} se ha inscrito en ${courseName}`,
-    link: `/teacher/students`,
-    metadata: { studentId, enrollmentId, courseName },
-  })
+  // Notificar al profesor solo si hay un teacherId válido
+  if (teacherId && teacherId.trim() !== '') {
+    await createNotification({
+      userId: teacherId,
+      type: NotificationType.NEW_ENROLLMENT,
+      title: 'Nuevo estudiante inscrito',
+      message: `${studentName} se ha inscrito en ${courseName}`,
+      link: `/teacher/students`,
+      metadata: { studentId, enrollmentId, courseName },
+    })
+  }
 
-  // Notificar a los administradores
+  // Notificar a los administradores (siempre)
   await notifyAdmins({
     type: NotificationType.NEW_ENROLLMENT,
     title: 'Nueva inscripción',
@@ -341,5 +343,61 @@ export async function notifyClassReminder(data: {
     message: `Tu clase de ${courseName} comienza en 1 hora (${classTime})`,
     link: `/teacher/schedule`,
     metadata: { bookingId, classTime },
+  })
+}
+
+// Notificar clase reagendada
+export async function notifyClassRescheduled(data: {
+  studentId: string
+  studentName: string
+  teacherId: string
+  teacherName: string
+  courseName: string
+  oldDay: string
+  oldTimeSlot: string
+  newDay: string
+  newTimeSlot: string
+  bookingId: string
+}) {
+  const { 
+    studentId, 
+    studentName, 
+    teacherId, 
+    teacherName, 
+    courseName, 
+    oldDay, 
+    oldTimeSlot, 
+    newDay, 
+    newTimeSlot, 
+    bookingId 
+  } = data
+
+  // Notificar al estudiante (confirmación)
+  await createNotification({
+    userId: studentId,
+    type: NotificationType.CLASS_RESCHEDULED,
+    title: 'Clase reagendada',
+    message: `Tu clase de ${courseName} ha sido reagendada de ${oldDay} ${oldTimeSlot} a ${newDay} ${newTimeSlot}`,
+    link: `/dashboard/schedule`,
+    metadata: { bookingId, oldDay, oldTimeSlot, newDay, newTimeSlot, teacherName },
+  })
+
+  // Notificar al profesor
+  await createNotification({
+    userId: teacherId,
+    type: NotificationType.CLASS_RESCHEDULED,
+    title: 'Clase reagendada por estudiante',
+    message: `${studentName} ha reagendado su clase de ${courseName} de ${oldDay} ${oldTimeSlot} a ${newDay} ${newTimeSlot}`,
+    link: `/teacher/schedule`,
+    metadata: { bookingId, oldDay, oldTimeSlot, newDay, newTimeSlot, studentId, studentName },
+  })
+
+  // Notificar a los administradores
+  await notifyAdmins({
+    type: NotificationType.CLASS_RESCHEDULED,
+    title: 'Clase reagendada',
+    message: `${studentName} reagendó su clase de ${courseName} con ${teacherName}`,
+    link: `/admin/bookings`,
+    metadata: { bookingId, studentId, teacherId, oldDay, oldTimeSlot, newDay, newTimeSlot },
   })
 }

@@ -5,6 +5,51 @@ import { revalidatePath } from 'next/cache'
 import { AttendanceStatus } from '@prisma/client'
 import { getCurrentDate } from '@/lib/utils/date'
 
+const EARLY_ENTRY_MINUTES = 15
+const LATE_ENTRY_MINUTES = 15
+
+function isWithinClassSchedule(day: string, timeSlot: string): { isValid: boolean; message?: string } {
+  const now = new Date()
+  
+  const [startTimeStr, endTimeStr] = timeSlot.split('-').map(t => t.trim())
+  if (!startTimeStr || !endTimeStr) {
+    return { isValid: false, message: 'Formato de horario inválido' }
+  }
+
+  const [startHour, startMin] = startTimeStr.split(':').map(Number)
+  const [endHour, endMin] = endTimeStr.split(':').map(Number)
+  const [year, month, dayOfMonth] = day.split('-').map(Number)
+
+  if (isNaN(startHour) || isNaN(startMin) || isNaN(endHour) || isNaN(endMin)) {
+    return { isValid: false, message: 'Formato de hora inválido' }
+  }
+
+  const classStartUTC = Date.UTC(year, month - 1, dayOfMonth, startHour, startMin, 0)
+  const classEndUTC = Date.UTC(year, month - 1, dayOfMonth, endHour, endMin, 0)
+
+  const allowedStartTime = classStartUTC - (EARLY_ENTRY_MINUTES * 60 * 1000)
+  const allowedEndTime = classEndUTC + (LATE_ENTRY_MINUTES * 60 * 1000)
+
+  const nowUTC = now.getTime()
+
+  if (nowUTC < allowedStartTime) {
+    const minutesUntilStart = Math.ceil((allowedStartTime - nowUTC) / 60000)
+    return { 
+      isValid: false, 
+      message: `La clase aún no ha comenzado. Podrás ingresar en ${minutesUntilStart} minutos.` 
+    }
+  }
+
+  if (nowUTC > allowedEndTime) {
+    return { 
+      isValid: false, 
+      message: 'El horario de la clase ya ha finalizado.' 
+    }
+  }
+
+  return { isValid: true }
+}
+
 export async function checkStudentAttendance(
   classId: string,
   studentId: string
@@ -27,7 +72,7 @@ export async function checkStudentAttendance(
 export async function markStudentAttendance(
   classId: string,
   studentId: string
-): Promise<{ success: boolean; error?: string }> {
+): Promise<{ success: boolean; error?: string; outsideSchedule?: boolean }> {
   try {
     // Check if attendance is already marked
     const existingAttendance = await prisma.classAttendance.findFirst({
@@ -41,14 +86,24 @@ export async function markStudentAttendance(
       return { success: true } // Already marked attendance
     }
 
-    // Get the class booking to find the enrollmentId
+    // Get the class booking to find the enrollmentId and schedule
     const classBooking = await prisma.classBooking.findUnique({
       where: { id: classId },
-      select: { enrollmentId: true },
+      select: { 
+        enrollmentId: true,
+        day: true,
+        timeSlot: true,
+      },
     })
 
     if (!classBooking || !classBooking.enrollmentId) {
       return { success: false, error: 'No se encontró información de la inscripción' }
+    }
+
+    // Validate that we are within the class schedule
+    const scheduleCheck = isWithinClassSchedule(classBooking.day, classBooking.timeSlot)
+    if (!scheduleCheck.isValid) {
+      return { success: false, error: scheduleCheck.message, outsideSchedule: true }
     }
 
     // Mark attendance
@@ -92,7 +147,7 @@ export async function checkTeacherAttendance(
 export async function markTeacherAttendance(
   classId: string,
   teacherId: string
-): Promise<{ success: boolean; error?: string }> {
+): Promise<{ success: boolean; error?: string; outsideSchedule?: boolean }> {
   try {
     // Check if attendance is already marked
     const existingAttendance = await prisma.teacherAttendance.findFirst({
@@ -104,6 +159,25 @@ export async function markTeacherAttendance(
 
     if (existingAttendance) {
       return { success: true } // Already marked attendance
+    }
+
+    // Get the class booking to find the schedule
+    const classBooking = await prisma.classBooking.findUnique({
+      where: { id: classId },
+      select: { 
+        day: true,
+        timeSlot: true,
+      },
+    })
+
+    if (!classBooking) {
+      return { success: false, error: 'No se encontró la reserva de clase' }
+    }
+
+    // Validate that we are within the class schedule
+    const scheduleCheck = isWithinClassSchedule(classBooking.day, classBooking.timeSlot)
+    if (!scheduleCheck.isValid) {
+      return { success: false, error: scheduleCheck.message, outsideSchedule: true }
     }
 
     // Mark teacher attendance

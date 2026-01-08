@@ -35,14 +35,18 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
   )
   const [attendanceChecked, setAttendanceChecked] = useState(false)
 
-  // 1. Mark Attendance
+  // 1. Mark Attendance (only within class schedule)
   useEffect(() => {
     const initAttendance = async () => {
       try {
         const { attendanceMarked } = await checkTeacherAttendance(classId, teacherId)
         if (!attendanceMarked) {
-          await markTeacherAttendance(classId, teacherId)
-          toast.success('Asistencia registrada automáticamente')
+          const result = await markTeacherAttendance(classId, teacherId)
+          if (result.success) {
+            toast.success('Asistencia registrada automáticamente')
+          } else if (result.outsideSchedule) {
+            toast.info(result.error || 'Fuera del horario de clase')
+          }
         }
         setAttendanceChecked(true)
       } catch (e) {

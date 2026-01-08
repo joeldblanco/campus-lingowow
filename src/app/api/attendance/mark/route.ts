@@ -4,6 +4,51 @@ import { db } from '@/lib/db'
 import { AttendanceStatus } from '@prisma/client'
 import { getCurrentDate } from '@/lib/utils/date'
 
+const EARLY_ENTRY_MINUTES = 15
+const LATE_ENTRY_MINUTES = 15
+
+function isWithinClassSchedule(day: string, timeSlot: string): { isValid: boolean; message?: string } {
+  const now = new Date()
+  
+  const [startTimeStr, endTimeStr] = timeSlot.split('-').map(t => t.trim())
+  if (!startTimeStr || !endTimeStr) {
+    return { isValid: false, message: 'Formato de horario inválido' }
+  }
+
+  const [startHour, startMin] = startTimeStr.split(':').map(Number)
+  const [endHour, endMin] = endTimeStr.split(':').map(Number)
+  const [year, month, dayOfMonth] = day.split('-').map(Number)
+
+  if (isNaN(startHour) || isNaN(startMin) || isNaN(endHour) || isNaN(endMin)) {
+    return { isValid: false, message: 'Formato de hora inválido' }
+  }
+
+  const classStartUTC = Date.UTC(year, month - 1, dayOfMonth, startHour, startMin, 0)
+  const classEndUTC = Date.UTC(year, month - 1, dayOfMonth, endHour, endMin, 0)
+
+  const allowedStartTime = classStartUTC - (EARLY_ENTRY_MINUTES * 60 * 1000)
+  const allowedEndTime = classEndUTC + (LATE_ENTRY_MINUTES * 60 * 1000)
+
+  const nowUTC = now.getTime()
+
+  if (nowUTC < allowedStartTime) {
+    const minutesUntilStart = Math.ceil((allowedStartTime - nowUTC) / 60000)
+    return { 
+      isValid: false, 
+      message: `La clase aún no ha comenzado. Podrás ingresar en ${minutesUntilStart} minutos.` 
+    }
+  }
+
+  if (nowUTC > allowedEndTime) {
+    return { 
+      isValid: false, 
+      message: 'El horario de la clase ya ha finalizado.' 
+    }
+  }
+
+  return { isValid: true }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const session = await auth()
@@ -18,7 +63,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Datos incompletos' }, { status: 400 })
     }
 
-    // Obtener información de la reserva
+    // Obtener información de la reserva incluyendo día y horario
     const booking = await db.classBooking.findUnique({
       where: { id: bookingId },
       select: {
@@ -26,11 +71,22 @@ export async function POST(request: NextRequest) {
         teacherId: true,
         studentId: true,
         enrollmentId: true,
+        day: true,
+        timeSlot: true,
       },
     })
 
     if (!booking) {
       return NextResponse.json({ error: 'Reserva no encontrada' }, { status: 404 })
+    }
+
+    // Validar que estamos dentro del horario de la clase
+    const scheduleCheck = isWithinClassSchedule(booking.day, booking.timeSlot)
+    if (!scheduleCheck.isValid) {
+      return NextResponse.json({ 
+        error: scheduleCheck.message,
+        outsideSchedule: true 
+      }, { status: 400 })
     }
 
     // Verificar que el usuario sea parte de la reserva

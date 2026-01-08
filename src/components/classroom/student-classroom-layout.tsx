@@ -53,11 +53,21 @@ export const StudentClassroomLayout: React.FC<StudentClassroomLayoutProps> = (pr
 
                 setRoomDetails({ roomName, jwt: token }) // Token can be null
 
-                // Mark Attendance
-                await fetch('/api/attendance/mark', {
+                // Mark Attendance (only within class schedule)
+                const attendanceRes = await fetch('/api/attendance/mark', {
                     method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ bookingId, userType: 'student' })
                 })
+                
+                if (attendanceRes.ok) {
+                    toast.success('Asistencia registrada automáticamente')
+                } else {
+                    const attendanceData = await attendanceRes.json()
+                    if (attendanceData.outsideSchedule) {
+                        toast.info(attendanceData.error || 'Fuera del horario de clase')
+                    }
+                }
 
             } catch (e) {
                 console.error(e)

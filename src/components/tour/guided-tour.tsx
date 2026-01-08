@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic'
 import { useCallback, useEffect, useState } from 'react'
 import type { CallBackProps } from 'react-joyride'
-import { STATUS } from 'react-joyride'
+import { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { useTour } from './tour-context'
 import { getTourSteps } from './tour-steps'
 
@@ -66,7 +66,7 @@ const tourStyles = {
 }
 
 export function GuidedTour() {
-  const { state, stopTour, markTourAsCompleted } = useTour()
+  const { state, stopTour, markTourAsCompleted, setStepIndex } = useTour()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -75,7 +75,7 @@ export function GuidedTour() {
 
   const handleJoyrideCallback = useCallback(
     (data: CallBackProps) => {
-      const { status } = data
+      const { status, action, index, type } = data
       const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED]
 
       if (finishedStatuses.includes(status as string)) {
@@ -83,9 +83,22 @@ export function GuidedTour() {
           markTourAsCompleted(state.tourType)
         }
         stopTour()
+        return
+      }
+
+      if (type === EVENTS.STEP_AFTER) {
+        if (action === ACTIONS.NEXT) {
+          setStepIndex(index + 1)
+        } else if (action === ACTIONS.PREV) {
+          setStepIndex(index - 1)
+        }
+      }
+
+      if (action === ACTIONS.CLOSE) {
+        stopTour()
       }
     },
-    [state.tourType, stopTour, markTourAsCompleted]
+    [state.tourType, stopTour, markTourAsCompleted, setStepIndex]
   )
 
   if (!mounted || !state.run || !state.tourType) {
