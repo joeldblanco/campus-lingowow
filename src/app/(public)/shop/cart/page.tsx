@@ -28,7 +28,7 @@ export default function CartPage() {
   const handleEmptyCart = () => {
     // Eliminar cada item del carrito
     cart.forEach((item: CartItem) => {
-      removeFromCart(item.product.id, item.plan.id)
+      removeFromCart(item.product.id, item.plan.id, item.language)
     })
 
     toast.success('Carrito vaciado con éxito')
