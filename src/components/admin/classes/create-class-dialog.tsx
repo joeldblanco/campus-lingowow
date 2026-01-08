@@ -146,6 +146,7 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
     form.setValue('enrollmentId', enrollmentId)
     form.setValue('teacherId', '')
     setEnrollmentPopoverOpen(false)
+    setEnrollmentSearch('')
   }
 
   const filteredEnrollments = useMemo(() => {
