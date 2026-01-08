@@ -137,7 +137,7 @@ export function RescheduleClassDialog({ classItem, children }: RescheduleClassDi
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Reagendar Clase</DialogTitle>
           <DialogDescription>
@@ -155,14 +155,7 @@ export function RescheduleClassDialog({ classItem, children }: RescheduleClassDi
                   <FormItem>
                     <FormLabel>Nueva Fecha</FormLabel>
                     <FormControl>
-                      <Input
-                        type="date"
-                        min={(() => {
-                          const today = new Date()
-                          return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
-                        })()}
-                        {...field}
-                      />
+                      <Input type="date" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

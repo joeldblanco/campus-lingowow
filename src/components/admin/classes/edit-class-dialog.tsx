@@ -120,7 +120,7 @@ export function EditClassDialog({ classItem, children }: EditClassDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Editar Clase</DialogTitle>
           <DialogDescription>Modifica la información de la clase.</DialogDescription>

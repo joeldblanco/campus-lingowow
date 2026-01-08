@@ -206,6 +206,15 @@ export async function createProductPurchase(data: {
   enrollmentId?: string
 }): Promise<ProcessProductPurchaseResult> {
   try {
+    let scheduledDate: Date | null = null
+    if (data.scheduleSlotId) {
+      const slot = await db.productScheduleSlot.findUnique({
+        where: { id: data.scheduleSlotId },
+        select: { date: true },
+      })
+      scheduledDate = slot?.date ?? null
+    }
+
     const purchase = await db.productPurchase.create({
       data: {
         userId: data.userId,
@@ -214,14 +223,7 @@ export async function createProductPurchase(data: {
         scheduleSlotId: data.scheduleSlotId,
         enrollmentId: data.enrollmentId,
         status: data.scheduleSlotId ? 'SCHEDULED' : 'CONFIRMED',
-        scheduledDate: data.scheduleSlotId
-          ? (
-              await db.productScheduleSlot.findUnique({
-                where: { id: data.scheduleSlotId },
-                select: { date: true },
-              })
-            )?.date
-          : null,
+        scheduledDate,
       },
     })
 

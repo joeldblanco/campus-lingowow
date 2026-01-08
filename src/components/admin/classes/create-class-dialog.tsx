@@ -41,7 +41,7 @@ import { CreateClassSchema } from '@/schemas/classes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import { formatDateLong, getTodayString } from '@/lib/utils/date'
+import { formatDateLong } from '@/lib/utils/date'
 import { useTimezone } from '@/hooks/use-timezone'
 
 interface CreateClassDialogProps {
@@ -229,12 +229,11 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
     try {
       const periodStart = new Date(enrollmentInfo.enrollment.academicPeriod.startDate)
       const periodEnd = new Date(enrollmentInfo.enrollment.academicPeriod.endDate)
-      const today = getTodayString()
 
       const periodStartStr = periodStart.toISOString().split('T')[0]
       const periodEndStr = periodEnd.toISOString().split('T')[0]
 
-      const startDate = periodStartStr > today ? periodStartStr : today
+      const startDate = periodStartStr
       const endDate = periodEndStr
 
       const days = await getTeacherAvailableDays(teacherId, startDate, endDate)
@@ -342,7 +341,7 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Programar Nueva Clase</DialogTitle>
           <DialogDescription>
