@@ -111,13 +111,13 @@ export function ClassesTable({ classes }: ClassesTableProps) {
       }
     }
 
-    // Sort by date and time
+    // Sort by date and time using proper Date comparison
     filtered = [...filtered].sort((a, b) => {
-      const dateTimeA = `${a.day} ${a.timeSlot.split('-')[0]}`
-      const dateTimeB = `${b.day} ${b.timeSlot.split('-')[0]}`
-      return sortOrder === 'asc' 
-        ? dateTimeA.localeCompare(dateTimeB)
-        : dateTimeB.localeCompare(dateTimeA)
+      const timeA = a.timeSlot.split('-')[0]
+      const timeB = b.timeSlot.split('-')[0]
+      const dateTimeA = new Date(`${a.day}T${timeA}`).getTime()
+      const dateTimeB = new Date(`${b.day}T${timeB}`).getTime()
+      return sortOrder === 'asc' ? dateTimeA - dateTimeB : dateTimeB - dateTimeA
     })
 
     return filtered
