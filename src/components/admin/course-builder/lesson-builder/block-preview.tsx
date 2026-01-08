@@ -54,7 +54,7 @@ import {
   MessageSquare,
 } from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { EssayAIGrading as EssayAIGradingButton } from '@/components/lessons/essay-ai-grading'
@@ -2000,11 +2000,11 @@ function RecordingBlockPreview({ block }: { block: RecordingBlock }) {
   }
 
   // Cleanup
-  useState(() => {
+  useEffect(() => {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current)
     }
-  })
+  }, [])
 
   return (
     <div className="space-y-4">
