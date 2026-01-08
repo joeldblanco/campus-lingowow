@@ -118,16 +118,25 @@ export function ClassesTable({ classes }: ClassesTableProps) {
       const dateA = new Date(`${a.day}T${timeA}`)
       const dateB = new Date(`${b.day}T${timeB}`)
       
-      // Check if dates are valid, fallback to string comparison if not
-      if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
-        const dateTimeA = `${a.day} ${timeA}`
-        const dateTimeB = `${b.day} ${timeB}`
-        return sortOrder === 'asc' 
-          ? dateTimeA.localeCompare(dateTimeB)
-          : dateTimeB.localeCompare(dateTimeA)
+      const isValidA = !isNaN(dateA.getTime())
+      const isValidB = !isNaN(dateB.getTime())
+      
+      // If both dates are valid, use numeric timestamp comparison
+      if (isValidA && isValidB) {
+        return sortOrder === 'asc' ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime()
       }
       
-      return sortOrder === 'asc' ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime()
+      // If one date is valid and the other is invalid, sort invalid dates to the end
+      if (isValidA !== isValidB) {
+        return isValidA ? -1 : 1
+      }
+      
+      // If both dates are invalid, fallback to string comparison
+      const dateTimeA = `${a.day} ${timeA}`
+      const dateTimeB = `${b.day} ${timeB}`
+      return sortOrder === 'asc' 
+        ? dateTimeA.localeCompare(dateTimeB)
+        : dateTimeB.localeCompare(dateTimeA)
     })
 
     return filtered
