@@ -128,9 +128,10 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
   const watchedEnrollmentId = form.watch('enrollmentId')
   useEffect(() => {
     if (watchedEnrollmentId) {
-      const enrollment = enrollments.find((e) => e.id === watchedEnrollmentId)
-      if (enrollment?.id !== selectedEnrollment?.id) {
-        setSelectedEnrollment(enrollment || null)
+      const enrollment = enrollments.find((e) => e.id === watchedEnrollmentId) || null
+      // Update if enrollment changed or if enrollment not found but selectedEnrollment exists
+      if (enrollment !== selectedEnrollment && (enrollment?.id !== selectedEnrollment?.id || !enrollment)) {
+        setSelectedEnrollment(enrollment)
       }
     } else if (selectedEnrollment) {
       setSelectedEnrollment(null)
