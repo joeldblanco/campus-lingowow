@@ -388,8 +388,12 @@ export interface Lesson {
   order: number
   duration: number
   blocks: Block[]
-  moduleId: string
+  moduleId: string | null
   isPublished: boolean
+  // Optional fields for personalized lessons
+  studentId?: string | null
+  teacherId?: string | null
+  enrollmentId?: string | null
 }
 
 // Module structure

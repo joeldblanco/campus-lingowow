@@ -44,7 +44,7 @@ export type LessonForEdit = {
   title: string
   description: string
   order: number
-  moduleId: string
+  moduleId: string | null
 }
 
 // Definición recursiva para contenido anidado

@@ -35,7 +35,7 @@ export function ViewLessonDialog({ children, lessonId }: ViewLessonDialogProps) 
         id: string
         title: string
       }
-    }
+    } | null
     contents: Array<{
       id: string
       title: string
@@ -108,12 +108,12 @@ export function ViewLessonDialog({ children, lessonId }: ViewLessonDialogProps) 
               <CardContent className="space-y-4">
                 <div>
                   <h4 className="font-medium mb-2">Módulo</h4>
-                  <p className="text-sm text-muted-foreground">{lesson.module.title}</p>
+                  <p className="text-sm text-muted-foreground">{lesson.module?.title || 'N/A'}</p>
                 </div>
 
                 <div>
                   <h4 className="font-medium mb-2">Curso</h4>
-                  <p className="text-sm text-muted-foreground">{lesson.module.course.title}</p>
+                  <p className="text-sm text-muted-foreground">{lesson.module?.course.title || 'N/A'}</p>
                 </div>
 
                 <div>

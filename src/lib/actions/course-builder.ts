@@ -352,7 +352,7 @@ export async function deleteLesson(lessonId: string) {
       },
     })
 
-    if (!lesson || lesson.module.course.createdById !== userId) {
+    if (!lesson || !lesson.module || lesson.module.course.createdById !== userId) {
       throw new Error('Lesson not found or unauthorized')
     }
 
@@ -489,11 +489,11 @@ export async function updateLessonBlocks(lessonId: string, blocks: Block[]) {
 
     // console.log('Auth check:', {
     //   userId,
-    //   courseOwnerId: lesson.module.course.createdById,
+    //   courseOwnerId: lesson.module?.course.createdById,
     //   lessonId
     // })
 
-    if (lesson.module.course.createdById !== userId) {
+    if (lesson.module && lesson.module.course.createdById !== userId) {
       console.error(
         `Unauthorized: User ${userId} is not owner of course ${lesson.module.course.createdById}`
       )
@@ -738,7 +738,7 @@ export async function getLessonForBuilder(lessonId: string) {
       },
     })
 
-    if (!lesson || lesson.module.course.createdById !== userId) {
+    if (!lesson || !lesson.module || lesson.module.course.createdById !== userId) {
       throw new Error('Lesson not found or unauthorized')
     }
 

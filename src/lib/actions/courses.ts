@@ -562,7 +562,7 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
                 progress: true,
                 enrollmentDate: true,
                 lastAccessed: true,
-                studentLessons: {
+                personalizedLessons: {
                   where: { isPublished: true },
                   select: {
                     id: true,

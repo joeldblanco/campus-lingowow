@@ -484,9 +484,10 @@ export async function getCourseContentForTeacher(courseId: string, teacherId: st
     }> = []
 
     if (course.isPersonalized) {
-      const lessons = await db.studentLesson.findMany({
+      const lessons = await db.lesson.findMany({
         where: {
           teacherId: teacherId,
+          studentId: { not: null }, // Only personalized lessons
           enrollment: {
             courseId: courseId,
           },
@@ -504,7 +505,7 @@ export async function getCourseContentForTeacher(courseId: string, teacherId: st
         orderBy: { order: 'asc' },
       })
 
-      personalizedLessons = lessons.map((l) => ({
+      personalizedLessons = lessons.map((l: { id: string; title: string; description: string; order: number; duration: number; isPublished: boolean; videoUrl: string | null; summary: string | null; enrollmentId: string | null; enrollment: { student: { name: string; lastName: string | null } } | null }) => ({
         id: l.id,
         title: l.title,
         description: l.description,
@@ -513,8 +514,8 @@ export async function getCourseContentForTeacher(courseId: string, teacherId: st
         isPublished: l.isPublished,
         videoUrl: l.videoUrl,
         summary: l.summary,
-        studentName: `${l.enrollment.student.name} ${l.enrollment.student.lastName || ''}`.trim(),
-        enrollmentId: l.enrollmentId,
+        studentName: l.enrollment ? `${l.enrollment.student.name} ${l.enrollment.student.lastName || ''}`.trim() : '',
+        enrollmentId: l.enrollmentId || '',
       }))
     }
 

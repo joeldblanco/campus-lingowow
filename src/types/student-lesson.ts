@@ -2,11 +2,11 @@ import { Prisma } from '@prisma/client'
 
 // =============================================
 // TIPOS PARA LECCIONES PERSONALIZADAS
-// (Programas sincrónicos con contenido individual por estudiante)
+// (Ahora unificadas en el modelo Lesson con studentId != null)
 // =============================================
 
-// Tipo base para StudentLesson con relaciones completas
-export type StudentLessonWithDetails = Prisma.StudentLessonGetPayload<{
+// Tipo base para lección personalizada con relaciones completas
+export type StudentLessonWithDetails = Prisma.LessonGetPayload<{
   include: {
     student: {
       select: {
@@ -58,7 +58,7 @@ export type StudentLessonWithDetails = Prisma.StudentLessonGetPayload<{
 }>
 
 // Tipo para listar lecciones de un estudiante
-export type StudentLessonListItem = Prisma.StudentLessonGetPayload<{
+export type StudentLessonListItem = Prisma.LessonGetPayload<{
   select: {
     id: true
     title: true
@@ -81,7 +81,7 @@ export type StudentLessonListItem = Prisma.StudentLessonGetPayload<{
 }>
 
 // Tipo para vista de lección personalizada (similar a LessonForView)
-export type StudentLessonForView = Prisma.StudentLessonGetPayload<{
+export type StudentLessonForView = Prisma.LessonGetPayload<{
   include: {
     student: {
       select: {
@@ -161,8 +161,8 @@ export interface UpdateStudentLessonInput {
   isPublished?: boolean
 }
 
-// Tipo para el contenido de una lección personalizada
-export type StudentLessonContentWithHierarchy = Prisma.StudentLessonContentGetPayload<{
+// Tipo para el contenido de una lección personalizada (ahora usa Content)
+export type StudentLessonContentWithHierarchy = Prisma.ContentGetPayload<{
   include: {
     children: {
       include: {
@@ -184,8 +184,8 @@ export interface StudentLessonStats {
   averageProgress: number
 }
 
-// Tipo para el progreso de una lección
-export type StudentLessonProgressData = Prisma.StudentLessonProgressGetPayload<{
+// Tipo para el progreso de una lección (ahora usa LessonProgress)
+export type StudentLessonProgressData = Prisma.LessonProgressGetPayload<{
   select: {
     id: true
     completed: true

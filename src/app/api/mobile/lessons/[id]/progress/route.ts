@@ -55,7 +55,7 @@ export async function POST(
     const enrollment = await db.enrollment.findFirst({
       where: {
         studentId: user.id,
-        courseId: content.lesson.module.courseId,
+        courseId: content.lesson.module?.courseId,
         status: { in: ['ACTIVE', 'COMPLETED'] },
       },
     })
@@ -94,7 +94,7 @@ export async function POST(
       where: {
         lesson: {
           module: {
-            courseId: content.lesson.module.courseId,
+            courseId: content.lesson.module?.courseId,
           },
         },
       },

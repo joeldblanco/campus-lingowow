@@ -133,7 +133,7 @@ export function LessonBuilder({
 
     metadataSaveTimeoutRef.current = setTimeout(async () => {
       try {
-        const result = await upsertLesson(lesson.moduleId, { id: lesson.id, ...updates })
+        const result = await upsertLesson(lesson.moduleId || '', { id: lesson.id, ...updates })
         if (result.success) {
           setSaveStatus('saved')
         } else {

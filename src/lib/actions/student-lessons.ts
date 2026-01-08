@@ -24,8 +24,8 @@ export async function getPublishedStudentLessonsForEnrollment(
   enrollmentId: string
 ): Promise<StudentLessonActionResult<StudentLessonListItem[]>> {
   try {
-    const lessons = await db.studentLesson.findMany({
-      where: { enrollmentId, isPublished: true },
+    const lessons = await db.lesson.findMany({
+      where: { enrollmentId, isPublished: true, studentId: { not: null } },
       select: {
         id: true,
         title: true,
@@ -61,7 +61,7 @@ export async function getStudentLessonForView(
   studentId: string
 ): Promise<StudentLessonActionResult<StudentLessonForView>> {
   try {
-    const lesson = await db.studentLesson.findFirst({
+    const lesson = await db.lesson.findFirst({
       where: {
         id: lessonId,
         studentId: studentId, // Asegurar que el estudiante solo vea sus propias lecciones
@@ -116,11 +116,11 @@ export async function getStudentLessonForView(
     }
 
     // Actualizar último acceso
-    await db.studentLessonProgress.upsert({
-      where: { studentLessonId: lessonId },
+    await db.lessonProgress.upsert({
+      where: { lessonId: lessonId },
       update: { lastAccessed: new Date() },
       create: {
-        studentLessonId: lessonId,
+        lessonId: lessonId,
         studentId: studentId,
         lastAccessed: new Date(),
       },
@@ -139,7 +139,7 @@ export async function getStudentLessonForEdit(
   teacherId: string
 ): Promise<StudentLessonActionResult<StudentLessonWithDetails>> {
   try {
-    const lesson = await db.studentLesson.findFirst({
+    const lesson = await db.lesson.findFirst({
       where: {
         id: lessonId,
         teacherId: teacherId, // Solo el profesor que la creó puede editarla
@@ -236,12 +236,12 @@ export async function createStudentLesson(
     }
 
     // Obtener el orden máximo actual
-    const maxOrder = await db.studentLesson.aggregate({
+    const maxOrder = await db.lesson.aggregate({
       where: { enrollmentId: data.enrollmentId },
       _max: { order: true },
     })
 
-    const lesson = await db.studentLesson.create({
+    const lesson = await db.lesson.create({
       data: {
         title: data.title,
         description: data.description || '',
@@ -273,7 +273,7 @@ export async function updateStudentLesson(
   data: UpdateStudentLessonInput
 ): Promise<StudentLessonActionResult<{ id: string }>> {
   try {
-    const lesson = await db.studentLesson.update({
+    const lesson = await db.lesson.update({
       where: { id: data.id },
       data: {
         ...(data.title !== undefined && { title: data.title }),
@@ -310,7 +310,7 @@ export async function deleteStudentLesson(
 ): Promise<StudentLessonActionResult> {
   try {
     // Verificar que el profesor es el creador
-    const lesson = await db.studentLesson.findFirst({
+    const lesson = await db.lesson.findFirst({
       where: {
         id: lessonId,
         teacherId: teacherId,
@@ -325,7 +325,7 @@ export async function deleteStudentLesson(
       return { success: false, error: 'Lección no encontrada o no tienes permiso para eliminarla' }
     }
 
-    await db.studentLesson.delete({
+    await db.lesson.delete({
       where: { id: lessonId },
     })
 
@@ -345,7 +345,7 @@ export async function toggleStudentLessonPublished(
   teacherId: string
 ): Promise<StudentLessonActionResult<{ isPublished: boolean }>> {
   try {
-    const lesson = await db.studentLesson.findFirst({
+    const lesson = await db.lesson.findFirst({
       where: {
         id: lessonId,
         teacherId: teacherId,
@@ -361,7 +361,7 @@ export async function toggleStudentLessonPublished(
       return { success: false, error: 'Lección no encontrada' }
     }
 
-    const updated = await db.studentLesson.update({
+    const updated = await db.lesson.update({
       where: { id: lessonId },
       data: { isPublished: !lesson.isPublished },
       select: { isPublished: true },
@@ -385,7 +385,7 @@ export async function reorderStudentLessons(
   try {
     await db.$transaction(
       lessonIds.map((id, index) =>
-        db.studentLesson.update({
+        db.lesson.update({
           where: { id },
           data: { order: index + 1 },
         })
@@ -410,8 +410,8 @@ export async function updateStudentLessonProgress(
   completed?: boolean
 ): Promise<StudentLessonActionResult> {
   try {
-    await db.studentLessonProgress.upsert({
-      where: { studentLessonId: lessonId },
+    await db.lessonProgress.upsert({
+      where: { lessonId: lessonId },
       update: {
         percentage,
         completed: completed ?? percentage >= 100,
@@ -419,7 +419,7 @@ export async function updateStudentLessonProgress(
         ...(completed || percentage >= 100 ? { completedAt: new Date() } : {}),
       },
       create: {
-        studentLessonId: lessonId,
+        lessonId: lessonId,
         studentId: studentId,
         percentage,
         completed: completed ?? percentage >= 100,
@@ -487,7 +487,7 @@ export async function getTeacherStudentsWithLessons(
             name: true,
           },
         },
-        studentLessons: {
+        personalizedLessons: {
           where: { teacherId },
           select: {
             id: true,
@@ -514,7 +514,7 @@ export async function getTeacherStudentsWithLessons(
     })
 
     const studentsWithLessons: StudentWithLessons[] = enrollments.map((enrollment) => {
-      const lessons = enrollment.studentLessons
+      const lessons = enrollment.personalizedLessons
       const completedLessons = lessons.filter((l) => l.progress?.completed).length
       const totalProgress = lessons.reduce((sum, l) => sum + (l.progress?.percentage ?? 0), 0)
 
@@ -550,7 +550,7 @@ export async function getTeacherStudentLessonStats(
   teacherId: string
 ): Promise<StudentLessonActionResult<StudentLessonStats>> {
   try {
-    const lessons = await db.studentLesson.findMany({
+    const lessons = await db.lesson.findMany({
       where: { teacherId },
       select: {
         isPublished: true,
@@ -600,7 +600,7 @@ export async function getStudentLessonsForCourse(
         status: { in: ['ACTIVE', 'PENDING'] },
       },
       include: {
-        studentLessons: {
+        personalizedLessons: {
           where: { isPublished: true },
           select: {
             id: true,
@@ -638,12 +638,12 @@ export async function getStudentLessonsForCourse(
     }
 
     // Obtener el profesor (del primer lesson o de los bookings)
-    const teacher = enrollment.studentLessons[0]?.teacher || null
+    const teacher = enrollment.personalizedLessons[0]?.teacher || null
 
     return {
       success: true,
       data: {
-        lessons: enrollment.studentLessons as StudentLessonListItem[],
+        lessons: enrollment.personalizedLessons as StudentLessonListItem[],
         teacher,
       },
     }
@@ -661,7 +661,7 @@ export async function duplicateStudentLesson(
 ): Promise<StudentLessonActionResult<{ id: string }>> {
   try {
     // Obtener la lección original
-    const originalLesson = await db.studentLesson.findFirst({
+    const originalLesson = await db.lesson.findFirst({
       where: {
         id: lessonId,
         teacherId: teacherId,
@@ -697,13 +697,13 @@ export async function duplicateStudentLesson(
     }
 
     // Obtener el orden máximo en la inscripción destino
-    const maxOrder = await db.studentLesson.aggregate({
+    const maxOrder = await db.lesson.aggregate({
       where: { enrollmentId: targetEnrollmentId },
       _max: { order: true },
     })
 
     // Crear la nueva lección
-    const newLesson = await db.studentLesson.create({
+    const newLesson = await db.lesson.create({
       data: {
         title: `${originalLesson.title} (copia)`,
         description: originalLesson.description,
@@ -722,13 +722,13 @@ export async function duplicateStudentLesson(
 
     // Duplicar los contenidos si existen
     if (originalLesson.contents.length > 0) {
-      await db.studentLessonContent.createMany({
+      await db.content.createMany({
         data: originalLesson.contents.map((content) => ({
           title: content.title,
           description: content.description,
           order: content.order,
           contentType: content.contentType,
-          studentLessonId: newLesson.id,
+          lessonId: newLesson.id,
           parentId: null, // Los contenidos raíz no tienen padre
           data: content.data === null ? Prisma.JsonNull : content.data,
         })),

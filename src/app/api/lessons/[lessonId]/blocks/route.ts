@@ -50,7 +50,7 @@ async function verifyLessonAccess(lessonId: string, userId: string) {
     return { error: 'Lesson not found', status: 404 }
   }
 
-  if (lesson.module.course.createdById !== userId) {
+  if (lesson.module && lesson.module.course.createdById !== userId) {
     return { error: 'Unauthorized', status: 403 }
   }
 

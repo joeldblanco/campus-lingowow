@@ -32,8 +32,9 @@ export async function getBookingCourseStructure(bookingId: string) {
                 },
               },
             },
-            // Include personalized student lessons for this enrollment
-            studentLessons: {
+            // Include personalized lessons for this enrollment
+            personalizedLessons: {
+              where: { isPublished: true },
               orderBy: { order: 'asc' },
               select: {
                 id: true,
@@ -52,19 +53,19 @@ export async function getBookingCourseStructure(bookingId: string) {
     if (!booking) throw new Error('Booking not found')
 
     // Build the structure with regular modules
-    const modules = booking.enrollment.course.modules.map((module) => ({
+    const modules = booking.enrollment.course.modules.map((module: { id: string; title: string; lessons: Array<{ id: string; title: string; description: string; duration: number; videoUrl: string | null }> }) => ({
       id: module.id,
       title: module.title,
       lessons: module.lessons,
     }))
 
     // Add personalized lessons as a separate "module" if they exist
-    const studentLessons = booking.enrollment.studentLessons
-    if (studentLessons && studentLessons.length > 0) {
+    const personalizedLessons = booking.enrollment.personalizedLessons
+    if (personalizedLessons && personalizedLessons.length > 0) {
       modules.unshift({
         id: 'personalized',
         title: '📚 Programa Personalizado',
-        lessons: studentLessons.map((lesson) => ({
+        lessons: personalizedLessons.map((lesson: { id: string; title: string; description: string; duration: number; videoUrl: string | null }) => ({
           id: lesson.id,
           title: lesson.title,
           description: lesson.description,
@@ -82,25 +83,10 @@ export async function getBookingCourseStructure(bookingId: string) {
 }
 
 // Fetch a specific lesson's full content for view
-// Supports both regular Lesson and personalized StudentLesson
+// Now unified: both regular and personalized lessons are in the same table
 export async function getLessonContent(lessonId: string) {
   try {
-    // First try to find a regular lesson
     const lesson = await db.lesson.findUnique({
-      where: { id: lessonId },
-      include: {
-        contents: {
-          orderBy: { order: 'asc' },
-        },
-      },
-    })
-
-    if (lesson) {
-      return lesson
-    }
-
-    // If not found, try to find a personalized student lesson
-    const studentLesson = await db.studentLesson.findUnique({
       where: { id: lessonId },
       include: {
         contents: {
@@ -120,37 +106,7 @@ export async function getLessonContent(lessonId: string) {
       },
     })
 
-    if (studentLesson) {
-      // Map StudentLessonContent to Content format (studentLessonId -> lessonId)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const mapStudentContent = (content: any): unknown => {
-        const { studentLessonId, ...rest } = content
-        return {
-          ...rest,
-          lessonId: studentLessonId,
-          children: content.children?.map(mapStudentContent) || [],
-        }
-      }
-
-      // Map StudentLesson to the same format as Lesson for compatibility
-      return {
-        id: studentLesson.id,
-        title: studentLesson.title,
-        description: studentLesson.description,
-        order: studentLesson.order,
-        duration: studentLesson.duration,
-        content: studentLesson.content,
-        isPublished: studentLesson.isPublished,
-        videoUrl: studentLesson.videoUrl,
-        summary: studentLesson.summary,
-        transcription: studentLesson.transcription,
-        contents: studentLesson.contents.map(mapStudentContent),
-        createdAt: studentLesson.createdAt,
-        updatedAt: studentLesson.updatedAt,
-      }
-    }
-
-    return null
+    return lesson
   } catch (error) {
     console.error('Error fetching lesson content:', error)
     return null
@@ -170,8 +126,9 @@ export async function getContentById(contentId: string, contentType: 'lesson' | 
       return lesson
     }
 
+    // student_lesson type now uses the same Lesson table (personalized lessons have studentId set)
     if (contentType === 'student_lesson') {
-      const studentLesson = await db.studentLesson.findUnique({
+      const lesson = await db.lesson.findUnique({
         where: { id: contentId },
         include: {
           contents: {
@@ -190,34 +147,7 @@ export async function getContentById(contentId: string, contentType: 'lesson' | 
           },
         },
       })
-      if (studentLesson) {
-        // Map StudentLessonContent to Content format (studentLessonId -> lessonId)
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const mapStudentContent = (content: any): unknown => {
-          const { studentLessonId, ...rest } = content
-          return {
-            ...rest,
-            lessonId: studentLessonId,
-            children: content.children?.map(mapStudentContent) || [],
-          }
-        }
-
-        return {
-          id: studentLesson.id,
-          title: studentLesson.title,
-          description: studentLesson.description,
-          order: studentLesson.order,
-          duration: studentLesson.duration,
-          content: studentLesson.content,
-          isPublished: studentLesson.isPublished,
-          videoUrl: studentLesson.videoUrl,
-          summary: studentLesson.summary,
-          transcription: studentLesson.transcription,
-          contents: studentLesson.contents.map(mapStudentContent),
-          createdAt: studentLesson.createdAt,
-          updatedAt: studentLesson.updatedAt,
-        }
-      }
+      return lesson
     }
 
     if (contentType === 'library_resource') {
@@ -342,9 +272,10 @@ export async function getShareableContent(
     }
 
     if (fetchLessons) {
+      // Fetch regular course lessons (moduleId is not null)
       promises.push(
         db.lesson.findMany({
-          where: { isPublished: true, ...searchFilter },
+          where: { isPublished: true, moduleId: { not: null }, ...searchFilter },
           select: {
             id: true,
             title: true,
@@ -361,24 +292,25 @@ export async function getShareableContent(
           orderBy: { createdAt: 'desc' },
           take: limit,
         }).then(items => {
-          results.push(...items.map(l => ({
+          results.push(...items.map((l: { id: string; title: string; description: string; duration: number; videoUrl: string | null; module: { title: string; course: { title: string; level: string } } | null }) => ({
             id: l.id,
             title: l.title,
             description: l.description,
             type: 'lesson' as const,
             thumbnailUrl: l.videoUrl,
             duration: l.duration,
-            level: l.module.course.level,
-            category: `${l.module.course.title} - ${l.module.title}`,
+            level: l.module?.course.level,
+            category: l.module ? `${l.module.course.title} - ${l.module.title}` : undefined,
           })))
         })
       )
     }
 
     if (fetchStudentLessons) {
+      // Fetch personalized lessons (studentId is not null)
       promises.push(
-        db.studentLesson.findMany({
-          where: { teacherId: session.user.id, isPublished: true, ...searchFilter },
+        db.lesson.findMany({
+          where: { teacherId: session.user.id, isPublished: true, studentId: { not: null }, ...searchFilter },
           select: {
             id: true,
             title: true,
@@ -390,14 +322,14 @@ export async function getShareableContent(
           orderBy: { createdAt: 'desc' },
           take: limit,
         }).then(items => {
-          results.push(...items.map(s => ({
+          results.push(...items.map((s: { id: string; title: string; description: string; duration: number; videoUrl: string | null; student: { name: string } | null }) => ({
             id: s.id,
             title: s.title,
             description: s.description,
             type: 'student_lesson' as const,
             thumbnailUrl: s.videoUrl,
             duration: s.duration,
-            category: `Creado para: ${s.student.name}`,
+            category: s.student ? `Creado para: ${s.student.name}` : undefined,
           })))
         })
       )

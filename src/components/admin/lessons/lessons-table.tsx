@@ -16,7 +16,7 @@ interface LessonWithDetails {
   title: string
   description: string
   order: number
-  moduleId: string
+  moduleId: string | null
   createdAt: Date
   updatedAt: Date
   module: {
@@ -26,7 +26,7 @@ interface LessonWithDetails {
       id: string
       title: string
     }
-  }
+  } | null
   contentsCount: number
   activitiesCount: number
 }
@@ -43,8 +43,8 @@ export function LessonsTable({ lessons, onLessonUpdated }: LessonsTableProps) {
   const filteredLessons = lessons.filter(
     (lesson) =>
       lesson.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lesson.module.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lesson.module.course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lesson.module?.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lesson.module?.course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       lesson.description?.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
@@ -106,7 +106,7 @@ export function LessonsTable({ lessons, onLessonUpdated }: LessonsTableProps) {
                     <Badge variant="outline">Orden {lesson.order}</Badge>
                   </div>
                   <p className="text-sm text-muted-foreground mt-1">
-                    Módulo: {lesson.module.title} • Curso: {lesson.module.course.title}
+                    Módulo: {lesson.module?.title || 'N/A'} • Curso: {lesson.module?.course.title || 'N/A'}
                   </p>
                   {lesson.description && (
                     <p className="text-sm text-muted-foreground mt-1">{lesson.description}</p>

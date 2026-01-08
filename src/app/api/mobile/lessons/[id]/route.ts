@@ -83,7 +83,7 @@ export async function GET(
     const enrollment = await db.enrollment.findFirst({
       where: {
         studentId: user.id,
-        courseId: lesson.module.courseId,
+        courseId: lesson.module?.courseId,
         status: { in: ['ACTIVE', 'COMPLETED'] },
       },
     })
@@ -160,11 +160,11 @@ export async function GET(
         videoUrl: lesson.videoUrl,
         summary: lesson.summary,
         transcription: lesson.transcription,
-        module: {
+        module: lesson.module ? {
           id: lesson.module.id,
           title: lesson.module.title,
-        },
-        course: lesson.module.course,
+        } : null,
+        course: lesson.module?.course || null,
         contents: contentsWithProgress,
         activities: activitiesWithProgress,
       },

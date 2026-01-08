@@ -48,10 +48,10 @@ export default async function PersonalizedLessonPage({
     updatedAt: lesson.updatedAt,
     module: {
       id: '',
-      title: `Lección de ${lesson.teacher.name}`,
+      title: `Lección de ${lesson.teacher?.name || 'Profesor'}`,
       course: {
         id: courseId,
-        title: lesson.enrollment.course.title,
+        title: lesson.enrollment?.course.title || '',
       },
     },
     contents: lesson.contents.map((content: typeof lesson.contents[number]) => ({
@@ -68,8 +68,8 @@ export default async function PersonalizedLessonPage({
       <LessonHeader
         title={lesson.title}
         subtitle={lesson.summary}
-        courseTitle={lesson.enrollment.course.title}
-        moduleTitle={`Contenido de ${lesson.teacher.name} ${lesson.teacher.lastName || ''}`}
+        courseTitle={lesson.enrollment?.course.title || ''}
+        moduleTitle={`Contenido de ${lesson.teacher?.name || ''} ${lesson.teacher?.lastName || ''}`}
         courseId={courseId}
         progress={lesson.progress?.percentage ?? 0}
       />

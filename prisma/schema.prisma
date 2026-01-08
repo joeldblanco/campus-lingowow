@@ -130,9 +130,9 @@ model User {
   fileUsageLogs    FileUsageLog[]    @relation("FileUser")
   createdFolders   FileFolder[]      @relation("FolderCreator")
 
-  // Relaciones de lecciones personalizadas (programas sincrónicos)
-  studentLessons        StudentLesson[] @relation("StudentLessons")
-  createdStudentLessons StudentLesson[] @relation("TeacherCreatedLessons")
+  // Relaciones de lecciones personalizadas
+  personalizedLessons        Lesson[] @relation("StudentLessons")
+  createdPersonalizedLessons Lesson[] @relation("TeacherCreatedLessons")
 
   // Relaciones de notificaciones
   notifications         Notification[]
@@ -381,29 +381,62 @@ model Module {
 model Lesson {
   id          String  @id @default(cuid())
   title       String
-  description String
+  description String  @default("")
   order       Int     @default(0)
-  moduleId    String
+  moduleId    String? // Opcional: null para lecciones personalizadas
   duration    Int     @default(30) // Duración estimada de la lección en minutos
   content     String  @default("[]") // JSON con bloques de contenido para Course Builder
   isPublished Boolean @default(false) // Estado de publicación de la lección
   
-  // Nuevos campos para el diseño del reproductor
+  // Campos para el diseño del reproductor
   videoUrl      String? // URL del video/audio principal
   summary       String? // Subtítulo o resumen corto
   transcription String? // Transcripción del audio/video
 
+  // Campos para lecciones personalizadas (null para lecciones de curso)
+  studentId    String? // El estudiante dueño de esta lección (si es personalizada)
+  teacherId    String? // El profesor que la creó (si es personalizada)
+  enrollmentId String? // La inscripción asociada (si es personalizada)
+
   // Relaciones
-  module     Module           @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  module     Module?          @relation(fields: [moduleId], references: [id], onDelete: Cascade)
   contents   Content[]
   activities LessonActivity[]
   exams      Exam[]
+  
+  // Relaciones para lecciones personalizadas
+  student    User?            @relation("StudentLessons", fields: [studentId], references: [id], onDelete: Cascade)
+  teacher    User?            @relation("TeacherCreatedLessons", fields: [teacherId], references: [id])
+  enrollment Enrollment?      @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  progress   LessonProgress?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([moduleId])
+  @@index([studentId])
+  @@index([teacherId])
+  @@index([enrollmentId])
   @@map("lessons")
+}
+
+model LessonProgress {
+  id        String    @id @default(cuid())
+  lessonId  String    @unique
+  studentId String
+  completed Boolean   @default(false)
+  percentage Float    @default(0)
+  lastAccessed DateTime?
+  completedAt  DateTime?
+
+  // Relaciones
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([studentId])
+  @@map("lesson_progress")
 }
 
 model Content {
@@ -648,7 +681,7 @@ model Enrollment {
   bookings       ClassBooking[]    // Clases programadas para esta inscripción
   attendances    ClassAttendance[] // Asistencias para esta inscripción
   schedules      ClassSchedule[]   // Horarios recurrentes para esta inscripción
-  studentLessons StudentLesson[]   // Lecciones personalizadas para esta inscripción
+  personalizedLessons Lesson[]     // Lecciones personalizadas para esta inscripción
 
   @@unique([studentId, courseId, academicPeriodId])
   @@index([studentId])
@@ -2229,87 +2262,6 @@ enum LibraryResourceAccess {
   PREMIUM         // Solo usuarios con plan Wow
 }
 
-// =============================================
-// MODELOS DE LECCIONES PERSONALIZADAS
-// (Para programas sincrónicos con contenido individual por estudiante)
-// =============================================
-
-model StudentLesson {
-  id          String  @id @default(cuid())
-  title       String
-  description String  @default("")
-  order       Int     @default(0)
-  duration    Int     @default(30) // Duración estimada en minutos
-  content     String  @default("[]") // JSON con bloques de contenido (mismo formato que Lesson)
-  isPublished Boolean @default(false)
-  
-  // Campos para el reproductor (igual que Lesson)
-  videoUrl      String?
-  summary       String?
-  transcription String?
-
-  // Relaciones clave
-  studentId    String     // El estudiante dueño de esta lección
-  teacherId    String     // El profesor que la creó
-  enrollmentId String     // La inscripción asociada
-  
-  // Relaciones
-  student    User                   @relation("StudentLessons", fields: [studentId], references: [id], onDelete: Cascade)
-  teacher    User                   @relation("TeacherCreatedLessons", fields: [teacherId], references: [id])
-  enrollment Enrollment             @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
-  contents   StudentLessonContent[]
-  progress   StudentLessonProgress?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([studentId])
-  @@index([teacherId])
-  @@index([enrollmentId])
-  @@map("student_lessons")
-}
-
-model StudentLessonContent {
-  id              String      @id @default(cuid())
-  title           String
-  description     String?
-  order           Int         @default(0)
-  contentType     ContentType
-  studentLessonId String
-  parentId        String?     // Para estructura recursiva (Tabs, Contenedores)
-  data            Json?       // Datos flexibles del contenido
-
-  // Relaciones
-  studentLesson StudentLessonContent?  @relation("StudentContentHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
-  children      StudentLessonContent[] @relation("StudentContentHierarchy")
-  lesson        StudentLesson          @relation(fields: [studentLessonId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([studentLessonId])
-  @@index([parentId])
-  @@map("student_lesson_contents")
-}
-
-model StudentLessonProgress {
-  id              String    @id @default(cuid())
-  studentLessonId String    @unique
-  studentId       String
-  completed       Boolean   @default(false)
-  percentage      Float     @default(0)
-  lastAccessed    DateTime?
-  completedAt     DateTime?
-
-  // Relaciones
-  studentLesson StudentLesson @relation(fields: [studentLessonId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([studentId])
-  @@map("student_lesson_progress")
-}
 
 // =============================================
 // MODELOS DE NOTIFICACIONES

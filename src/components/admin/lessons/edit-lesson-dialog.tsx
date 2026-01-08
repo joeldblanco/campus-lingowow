@@ -40,7 +40,7 @@ interface LessonData {
   title: string
   description: string
   order: number
-  moduleId: string
+  moduleId: string | null
 }
 
 interface EditLessonDialogProps {
@@ -76,7 +76,7 @@ export function EditLessonDialog({ children, lesson, onLessonUpdated }: EditLess
       try {
         const [coursesData, courseId] = await Promise.all([
           getCoursesForLessons(),
-          getCourseIdByModule(lesson.moduleId)
+          lesson.moduleId ? getCourseIdByModule(lesson.moduleId) : Promise.resolve(null)
         ])
         setCourses(coursesData)
         if (courseId) {

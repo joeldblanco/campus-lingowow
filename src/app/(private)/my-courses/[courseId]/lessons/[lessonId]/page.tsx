@@ -35,8 +35,8 @@ export default async function LessonPage({ params }: LessonPageProps) {
             <LessonHeader
                 title={lesson.title}
                 subtitle={lesson.summary}
-                courseTitle={lesson.module.course.title}
-                moduleTitle={lesson.module.title}
+                courseTitle={lesson.module?.course.title || ''}
+                moduleTitle={lesson.module?.title || ''}
                 courseId={courseId}
                 progress={40} // Example progress, we need to fetch real progress
             />
