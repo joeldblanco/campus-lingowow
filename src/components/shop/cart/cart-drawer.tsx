@@ -44,6 +44,7 @@ export function CartDrawer({ open, onOpenChange, suggestedProducts = [] }: CartD
           price: plan.price,
         },
         quantity: 1,
+        language: 'en', // Default language for suggested products
       })
     }
   }
