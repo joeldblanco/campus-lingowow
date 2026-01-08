@@ -247,7 +247,9 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
     // Extraer day y timeSlot del datetime (formato: YYYY-MM-DDTHH:MM)
     // Parsear directamente el string sin usar Date constructor para evitar conversiones de timezone
     const [day, timePart] = validatedData.datetime.split('T') // YYYY-MM-DD y HH:MM
-    const [hours, minutes] = timePart.split(':') // Extraer horas y minutos tal como el usuario los ingresó
+    const [rawHours, rawMinutes] = timePart.split(':') // Extraer horas y minutos tal como el usuario los ingresó
+    const hours = rawHours.padStart(2, '0')
+    const minutes = rawMinutes.padStart(2, '0')
     
     // Obtener la inscripción para saber la duración de la clase
     const enrollmentForDuration = await db.enrollment.findUnique({
