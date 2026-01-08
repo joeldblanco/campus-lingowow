@@ -127,10 +127,12 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
   // Sync selectedEnrollment with form field changes using watch for reactivity
   const watchedEnrollmentId = form.watch('enrollmentId')
   useEffect(() => {
-    if (watchedEnrollmentId && !selectedEnrollment) {
+    if (watchedEnrollmentId) {
       const enrollment = enrollments.find((e) => e.id === watchedEnrollmentId)
-      setSelectedEnrollment(enrollment || null)
-    } else if (!watchedEnrollmentId && selectedEnrollment) {
+      if (enrollment?.id !== selectedEnrollment?.id) {
+        setSelectedEnrollment(enrollment || null)
+      }
+    } else if (selectedEnrollment) {
       setSelectedEnrollment(null)
     }
   }, [watchedEnrollmentId, enrollments, selectedEnrollment])
