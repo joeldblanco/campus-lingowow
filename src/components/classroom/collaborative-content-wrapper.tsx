@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, memo } from 'react'
 import { useCollaboration } from './collaboration-context'
 import { RemoteCursor } from './remote-cursor'
 import { cn } from '@/lib/utils'
@@ -19,6 +19,11 @@ interface PendingSelection {
   text: string
   rect: { top: number; left: number }
 }
+
+// Memoized content wrapper to prevent re-renders from affecting text selection
+const MemoizedContent = memo(function MemoizedContent({ children }: { children: React.ReactNode }) {
+  return <>{children}</>
+})
 
 export function CollaborativeContentWrapper({
   children,
@@ -42,15 +47,20 @@ export function CollaborativeContentWrapper({
   
   // Track last processed selection to avoid redundant state updates
   const lastSelectionRef = useRef<{start: number, end: number} | null>(null)
+  
+  // Ref for cursor position updates to avoid re-renders
+  const updateCursorPositionRef = useRef(updateCursorPosition)
+  updateCursorPositionRef.current = updateCursorPosition
 
   // Track mouse movement - PAUSE while selecting to avoid interference
+  // Use ref to avoid dependency on updateCursorPosition which changes frequently
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     // Don't update cursor while user is selecting text
     if (isSelectingRef.current) return
     if (!containerRef.current) return
     const rect = containerRef.current.getBoundingClientRect()
-    updateCursorPosition(e.clientX, e.clientY, rect)
-  }, [updateCursorPosition])
+    updateCursorPositionRef.current(e.clientX, e.clientY, rect)
+  }, [])
 
   // Track mouse leave
   const handleMouseLeave = useCallback(() => {
@@ -263,7 +273,7 @@ export function CollaborativeContentWrapper({
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      {children}
+      <MemoizedContent>{children}</MemoizedContent>
 
       {/* Remote cursor overlay */}
       <RemoteCursor containerRef={containerRef as React.RefObject<HTMLDivElement>} />
