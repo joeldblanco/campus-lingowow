@@ -153,52 +153,52 @@ export function CourseBuilder({ initialCourse }: CourseBuilderProps) {
     }
   }, [course.id])
 
-  // const updateLesson = useCallback(async (moduleId: string, lessonId: string, updates: Partial<Lesson>) => {
-  //   try {
-  //     // Optimistic update
-  //     setCourse(prev => ({
-  //       ...prev,
-  //       modules: prev.modules.map(module =>
-  //         module.id === moduleId
-  //           ? {
-  //             ...module,
-  //             lessons: module.lessons.map(lesson =>
-  //               lesson.id === lessonId ? { ...lesson, ...updates } : lesson
-  //             )
-  //           }
-  //           : module
-  //       )
-  //     }))
+  const updateLesson = useCallback(async (moduleId: string, lessonId: string, updates: Partial<Lesson>) => {
+    try {
+      // Optimistic update
+      setCourse(prev => ({
+        ...prev,
+        modules: prev.modules.map(module =>
+          module.id === moduleId
+            ? {
+              ...module,
+              lessons: module.lessons.map(lesson =>
+                lesson.id === lessonId ? { ...lesson, ...updates } : lesson
+              )
+            }
+            : module
+        )
+      }))
 
-  //     const result = await upsertLesson(moduleId, { id: lessonId, ...updates })
-  //     if (!result.success || !result.lesson) {
-  //       throw new Error(result.error || 'Error updating lesson')
-  //     }
+      const result = await upsertLesson(moduleId, { id: lessonId, ...updates })
+      if (!result.success || !result.lesson) {
+        throw new Error(result.error || 'Error updating lesson')
+      }
 
-  //     // Update with server data (ensure blocks objects are preserved if not returned or different)
-  //     setCourse(prev => ({
-  //       ...prev,
-  //       modules: prev.modules.map(module =>
-  //         module.id === moduleId
-  //           ? {
-  //             ...module,
-  //             lessons: module.lessons.map(lesson =>
-  //               lesson.id === lessonId ? {
-  //                 ...lesson,
-  //                 ...result.lesson!,
-  //                 description: result.lesson!.description || '',
-  //                 blocks: lesson.blocks
-  //               } : lesson
-  //             )
-  //           }
-  //           : module
-  //       )
-  //     }))
-  //   } catch (error) {
-  //     console.error('Error updating lesson:', error)
-  //     toast.error('Error al actualizar la lección')
-  //   }
-  // }, [])
+      // Update with server data (ensure blocks objects are preserved if not returned or different)
+      setCourse(prev => ({
+        ...prev,
+        modules: prev.modules.map(module =>
+          module.id === moduleId
+            ? {
+              ...module,
+              lessons: module.lessons.map(lesson =>
+                lesson.id === lessonId ? {
+                  ...lesson,
+                  ...result.lesson!,
+                  description: result.lesson!.description || '',
+                  blocks: lesson.blocks
+                } : lesson
+              )
+            }
+            : module
+        )
+      }))
+    } catch (error) {
+      console.error('Error updating lesson:', error)
+      toast.error('Error al actualizar la lección')
+    }
+  }, [])
 
   const addLesson = useCallback(async (moduleId: string, lesson: Lesson) => {
     try {
@@ -376,6 +376,7 @@ export function CourseBuilder({ initialCourse }: CourseBuilderProps) {
             onAddLesson={addLesson}
             onRemoveLesson={removeLesson}
             onReorderLessons={reorderLessonsInModule}
+            onUpdateLesson={updateLesson}
           />
         </TabsContent>
 

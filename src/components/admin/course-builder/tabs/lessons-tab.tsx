@@ -42,6 +42,7 @@ interface LessonsTabProps {
   onAddLesson: (moduleId: string, lesson: Lesson) => Promise<void>
   onRemoveLesson: (moduleId: string, lessonId: string) => Promise<void>
   onReorderLessons: (moduleId: string, newLessonIds: string[]) => void
+  onUpdateLesson: (moduleId: string, lessonId: string, updates: Partial<Lesson>) => Promise<void>
 }
 
 // Sortable Lesson Item Component
@@ -50,6 +51,7 @@ function SortableLessonItem({
   moduleId,
   onRemove,
   onLessonUpdated,
+  onOptimisticUpdate,
   router,
 }: {
   lesson: Lesson
@@ -57,6 +59,7 @@ function SortableLessonItem({
   moduleName: string
   onRemove: (moduleId: string, lessonId: string) => Promise<void>
   onLessonUpdated: () => void
+  onOptimisticUpdate: (lessonId: string, moduleId: string, updates: { title: string; description: string; order: number; moduleId: string }) => Promise<void>
   router: ReturnType<typeof useRouter>
 }) {
   const {
@@ -124,6 +127,7 @@ function SortableLessonItem({
                 moduleId: moduleId,
               }}
               onLessonUpdated={onLessonUpdated}
+              onOptimisticUpdate={onOptimisticUpdate}
             >
               <Button variant="ghost" size="sm">
                 <Edit2 className="h-4 w-4" />
@@ -153,11 +157,13 @@ function ModuleLessonsList({
   module,
   onRemoveLesson,
   onLessonUpdated,
+  onOptimisticUpdate,
   router
 }: {
   module: Module
   onRemoveLesson: (moduleId: string, lessonId: string) => Promise<void>
   onLessonUpdated: () => void
+  onOptimisticUpdate: (lessonId: string, moduleId: string, updates: { title: string; description: string; order: number; moduleId: string }) => Promise<void>
   router: ReturnType<typeof useRouter>
 }) {
   return (
@@ -188,6 +194,7 @@ function ModuleLessonsList({
                 moduleName={module.title}
                 onRemove={onRemoveLesson}
                 onLessonUpdated={onLessonUpdated}
+                onOptimisticUpdate={onOptimisticUpdate}
                 router={router}
               />
             ))}
@@ -203,6 +210,7 @@ export function LessonsTab({
   onAddLesson,
   onRemoveLesson,
   onReorderLessons,
+  onUpdateLesson,
 }: LessonsTabProps) {
   const router = useRouter()
   const [isCreatingNew, setIsCreatingNew] = useState(false)
@@ -327,6 +335,10 @@ export function LessonsTab({
     router.refresh()
   }
 
+  const handleOptimisticUpdate = async (lessonId: string, moduleId: string, updates: { title: string; description: string; order: number; moduleId: string }) => {
+    await onUpdateLesson(moduleId, lessonId, updates)
+  }
+
   const handleRemoveLesson = async (moduleId: string, lessonId: string) => {
     if (confirm('¿Estás seguro de eliminar esta lección?')) {
       await onRemoveLesson(moduleId, lessonId)
@@ -379,6 +391,7 @@ export function LessonsTab({
                 module={module}
                 onRemoveLesson={handleRemoveLesson}
                 onLessonUpdated={handleLessonUpdated}
+                onOptimisticUpdate={handleOptimisticUpdate}
                 router={router}
               />
             ))}

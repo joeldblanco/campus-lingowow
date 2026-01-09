@@ -47,11 +47,12 @@ interface EditLessonDialogProps {
   children: React.ReactNode
   lesson: LessonData
   onLessonUpdated: () => void
+  onOptimisticUpdate?: (lessonId: string, moduleId: string, updates: { title: string; description: string; order: number; moduleId: string }) => Promise<void>
 }
 
 type FormData = z.infer<typeof EditLessonSchema>
 
-export function EditLessonDialog({ children, lesson, onLessonUpdated }: EditLessonDialogProps) {
+export function EditLessonDialog({ children, lesson, onLessonUpdated, onOptimisticUpdate }: EditLessonDialogProps) {
   const [open, setOpen] = useState(false)
   const [courses, setCourses] = useState<Array<{ id: string; title: string }>>([])
   const [selectedCourseId, setSelectedCourseId] = useState<string>('')
@@ -128,10 +129,19 @@ export function EditLessonDialog({ children, lesson, onLessonUpdated }: EditLess
 
   const onSubmit = async (values: FormData) => {
     try {
-      await updateLesson(lesson.id, values)
+      if (onOptimisticUpdate && values.moduleId) {
+        await onOptimisticUpdate(lesson.id, values.moduleId, {
+          title: values.title,
+          description: values.description || '',
+          order: values.order,
+          moduleId: values.moduleId,
+        })
+      } else {
+        await updateLesson(lesson.id, values)
+        onLessonUpdated()
+      }
       toast.success('Lección actualizada exitosamente')
       setOpen(false)
-      onLessonUpdated()
     } catch (error) {
       console.error('Error updating lesson:', error)
       toast.error('Error al actualizar la lección')
