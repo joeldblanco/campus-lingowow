@@ -84,7 +84,7 @@ export function LessonBuilder({
     duration: lesson.duration,
   })
 
-  // Sync internal state when initialLesson prop changes (by id)
+  // Sync internal state when a different lesson is loaded (by id)
   useEffect(() => {
     setLesson({
       ...initialLesson,
@@ -95,6 +95,7 @@ export function LessonBuilder({
       description: initialLesson.description,
       duration: initialLesson.duration,
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialLesson.id])
 
   // DnD States
