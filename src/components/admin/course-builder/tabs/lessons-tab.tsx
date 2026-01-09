@@ -12,7 +12,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { Switch } from '@/components/ui/switch'
 import { Lesson, Module } from '@/types/course-builder'
 import { BookOpen, Edit2, FileText, ImageIcon, Play, Plus, Trash2, Video, Loader2, GripVertical } from 'lucide-react'
 import { useState } from 'react'
@@ -36,10 +35,10 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { reorderLessons } from '@/lib/actions/course-builder'
+import { EditLessonDialog } from '@/components/admin/lessons/edit-lesson-dialog'
 
 interface LessonsTabProps {
   modules: Module[]
-  onUpdateLesson: (moduleId: string, lessonId: string, updates: Partial<Lesson>) => Promise<void>
   onAddLesson: (moduleId: string, lesson: Lesson) => Promise<void>
   onRemoveLesson: (moduleId: string, lessonId: string) => Promise<void>
   onReorderLessons: (moduleId: string, newLessonIds: string[]) => void
@@ -50,28 +49,16 @@ function SortableLessonItem({
   lesson,
   moduleId,
   onRemove,
-  onEdit,
-  onUpdate,
-  isEditing,
-  onCancelEdit,
+  onLessonUpdated,
   router,
 }: {
   lesson: Lesson
   moduleId: string
   moduleName: string
   onRemove: (moduleId: string, lessonId: string) => Promise<void>
-  onEdit: (lessonId: string) => void
-  onUpdate: (lessonId: string, moduleId: string, updates: Partial<Lesson>) => Promise<void>
-  isEditing: boolean
-  onCancelEdit: () => void
+  onLessonUpdated: () => void
   router: ReturnType<typeof useRouter>
 }) {
-  const [editValues, setEditValues] = useState({
-    title: lesson.title,
-    description: lesson.description,
-  })
-  const [isSaving, setIsSaving] = useState(false)
-
   const {
     attributes,
     listeners,
@@ -87,20 +74,6 @@ function SortableLessonItem({
     opacity: isDragging ? 0.5 : 1,
   }
 
-  const handleSave = async () => {
-    setIsSaving(true)
-    await onUpdate(lesson.id, moduleId, editValues)
-    setIsSaving(false)
-  }
-
-  const handleCancel = () => {
-    setEditValues({
-      title: lesson.title,
-      description: lesson.description,
-    })
-    onCancelEdit()
-  }
-
   const getLessonIcon = (lesson: Lesson) => {
     const hasVideo = lesson.blocks.some((block) => block.type === 'video')
     const hasImage = lesson.blocks.some((block) => block.type === 'image')
@@ -112,119 +85,79 @@ function SortableLessonItem({
 
   return (
     <Card ref={setNodeRef} style={style} className="mb-2">
-      {isEditing ? (
-        <CardContent className="pt-6 space-y-4">
-          <div className="flex items-center gap-3">
-            <Edit2 className="h-5 w-5 text-primary" />
-            <h3 className="text-lg font-semibold">Editando Lección</h3>
-          </div>
-          <Input
-            placeholder="Título de la lección"
-            value={editValues.title}
-            onChange={(e) => setEditValues({ ...editValues, title: e.target.value })}
-          />
-          <Textarea
-            placeholder="Descripción de la lección"
-            rows={3}
-            value={editValues.description}
-            onChange={(e) => setEditValues({ ...editValues, description: e.target.value })}
-          />
-          <div className="flex gap-2">
-            <Button onClick={handleSave} disabled={isSaving}>
-              {isSaving ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Guardando...
-                </>
-              ) : (
-                'Guardar Cambios'
-              )}
-            </Button>
-            <Button variant="outline" onClick={handleCancel} disabled={isSaving}>
-              Cancelar
-            </Button>
-          </div>
-        </CardContent>
-      ) : (
-        <CardContent className="pt-2 pb-2 pl-2 pr-4 flex items-center">
-          <div
-            {...attributes}
-            {...listeners}
-            className="cursor-grab active:cursor-grabbing p-2 hover:bg-muted rounded mr-2"
-          >
-            <GripVertical className="h-4 w-4 text-muted-foreground" />
-          </div>
+      <CardContent className="pt-2 pb-2 pl-2 pr-4 flex items-center">
+        <div
+          {...attributes}
+          {...listeners}
+          className="cursor-grab active:cursor-grabbing p-2 hover:bg-muted rounded mr-2"
+        >
+          <GripVertical className="h-4 w-4 text-muted-foreground" />
+        </div>
 
-          <div className="flex-1 min-w-0 mr-4">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="w-6 h-6 bg-primary/10 text-primary text-xs rounded flex items-center justify-center font-medium flex-shrink-0">
-                {lesson.order}
-              </span>
-              {getLessonIcon(lesson)}
-              <h4 className="font-medium truncate" title={lesson.title}>{lesson.title}</h4>
-            </div>
-            <div className="flex items-center gap-2 text-xs text-muted-foreground truncate">
-              <span className="flex items-center gap-1">
-                <Play className="h-3 w-3" />
-                {lesson.blocks.length} bloques
-              </span>
-              {lesson.description && (
-                <span className="truncate max-w-[300px]" title={lesson.description}>- {lesson.description}</span>
-              )}
-            </div>
+        <div className="flex-1 min-w-0 mr-4">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="w-6 h-6 bg-primary/10 text-primary text-xs rounded flex items-center justify-center font-medium flex-shrink-0">
+              {lesson.order}
+            </span>
+            {getLessonIcon(lesson)}
+            <h4 className="font-medium truncate" title={lesson.title}>{lesson.title}</h4>
           </div>
+          <div className="flex items-center gap-2 text-xs text-muted-foreground truncate">
+            <span className="flex items-center gap-1">
+              <Play className="h-3 w-3" />
+              {lesson.blocks.length} bloques
+            </span>
+            {lesson.description && (
+              <span className="truncate max-w-[300px]" title={lesson.description}>- {lesson.description}</span>
+            )}
+          </div>
+        </div>
 
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Switch
-                checked={lesson.isPublished}
-                onCheckedChange={(checked) => onUpdate(lesson.id, moduleId, { isPublished: checked })}
-              />
-              <span className="text-sm text-muted-foreground w-16">
-                {lesson.isPublished ? 'Publicado' : 'Borrador'}
-              </span>
-            </div>
-
-            <div className="flex items-center border-l pl-2">
-              <Button variant="ghost" size="sm" onClick={() => onEdit(lesson.id)}>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center border-l pl-2">
+            <EditLessonDialog
+              lesson={{
+                id: lesson.id,
+                title: lesson.title,
+                description: lesson.description,
+                order: lesson.order,
+                moduleId: moduleId,
+              }}
+              onLessonUpdated={onLessonUpdated}
+            >
+              <Button variant="ghost" size="sm">
                 <Edit2 className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="sm" onClick={() => {
-                router.push(`/admin/courses/${moduleId}/lessons/${lesson.id}/builder`)
-              }}>
-                <FileText className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => onRemove(moduleId, lesson.id)}
-                className="text-destructive hover:text-destructive"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
+            </EditLessonDialog>
+            <Button variant="ghost" size="sm" onClick={() => {
+              router.push(`/admin/courses/${moduleId}/lessons/${lesson.id}/builder`)
+            }}>
+              <FileText className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onRemove(moduleId, lesson.id)}
+              className="text-destructive hover:text-destructive"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
           </div>
-        </CardContent>
-      )}
+        </div>
+      </CardContent>
     </Card>
   )
 }
 
 function ModuleLessonsList({
   module,
-  onUpdateLesson,
   onRemoveLesson,
-  onEditLesson,
-  editingLessonId,
-  onCancelEdit,
+  onLessonUpdated,
   router
 }: {
   module: Module
-  onUpdateLesson: (moduleId: string, lessonId: string, updates: Partial<Lesson>) => Promise<void>
   onRemoveLesson: (moduleId: string, lessonId: string) => Promise<void>
-  onEditLesson: (lessonId: string) => void
-  editingLessonId: string | null
-  onCancelEdit: () => void
+  onLessonUpdated: () => void
   router: ReturnType<typeof useRouter>
 }) {
   return (
@@ -254,10 +187,7 @@ function ModuleLessonsList({
                 moduleId={module.id}
                 moduleName={module.title}
                 onRemove={onRemoveLesson}
-                onEdit={onEditLesson}
-                onUpdate={onUpdateLesson}
-                isEditing={editingLessonId === lesson.id}
-                onCancelEdit={onCancelEdit}
+                onLessonUpdated={onLessonUpdated}
                 router={router}
               />
             ))}
@@ -270,7 +200,6 @@ function ModuleLessonsList({
 
 export function LessonsTab({
   modules,
-  onUpdateLesson,
   onAddLesson,
   onRemoveLesson,
   onReorderLessons,
@@ -278,7 +207,6 @@ export function LessonsTab({
   const router = useRouter()
   const [isCreatingNew, setIsCreatingNew] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
-  const [editingLessonId, setEditingLessonId] = useState<string | null>(null)
 
   // State for drag and drop to work immediately with optimistic updates
   // In a real app we might want to lift this state up or sync better with the parent 'modules' prop
@@ -395,24 +323,8 @@ export function LessonsTab({
     }
   }
 
-  const handleEditLesson = (lessonId: string) => {
-    setEditingLessonId(lessonId)
-  }
-
-  const handleUpdateLesson = async (lessonId: string, moduleId: string, updates: Partial<Lesson>) => {
-    if (updates.title !== undefined && !updates.title.trim()) {
-      toast.error('El título es requerido')
-      return
-    }
-    if (updates.description !== undefined && !updates.description.trim()) {
-      toast.error('La descripción es requerida')
-      return
-    }
-    // Note: Order update might come from DnD, handled separately or via this if manual edit remained
-
-    await onUpdateLesson(moduleId, lessonId, updates)
-    setEditingLessonId(null)
-    toast.success('Lección actualizada exitosamente')
+  const handleLessonUpdated = () => {
+    router.refresh()
   }
 
   const handleRemoveLesson = async (moduleId: string, lessonId: string) => {
@@ -430,10 +342,6 @@ export function LessonsTab({
       moduleId: '',
       order: 1,
     })
-  }
-
-  const handleCancelEdit = () => {
-    setEditingLessonId(null)
   }
 
   return (
@@ -469,11 +377,8 @@ export function LessonsTab({
               <ModuleLessonsList
                 key={module.id}
                 module={module}
-                onUpdateLesson={handleUpdateLesson}
                 onRemoveLesson={handleRemoveLesson}
-                onEditLesson={handleEditLesson}
-                editingLessonId={editingLessonId}
-                onCancelEdit={handleCancelEdit}
+                onLessonUpdated={handleLessonUpdated}
                 router={router}
               />
             ))}
