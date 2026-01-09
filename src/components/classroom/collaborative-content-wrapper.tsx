@@ -98,6 +98,7 @@ export function CollaborativeContentWrapper({
         // Only process if there's a non-collapsed selection
         if (!selection || selection.isCollapsed || !containerRef.current) {
           setPendingSelection(null)
+          lastSelectionRef.current = null
           return
         }
 
@@ -111,12 +112,14 @@ export function CollaborativeContentWrapper({
         
         if (!nodeToCheck || !container.contains(nodeToCheck)) {
           setPendingSelection(null)
+          lastSelectionRef.current = null
           return
         }
 
         const selectedText = selection.toString().trim()
         if (!selectedText || selectedText.length < 1) {
           setPendingSelection(null)
+          lastSelectionRef.current = null
           return
         }
 
