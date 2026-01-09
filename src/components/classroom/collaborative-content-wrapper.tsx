@@ -4,11 +4,20 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useCollaboration } from './collaboration-context'
 import { RemoteCursor } from './remote-cursor'
 import { cn } from '@/lib/utils'
-import { ChevronUp, ChevronDown } from 'lucide-react'
+import { ChevronUp, ChevronDown, Highlighter, X } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 interface CollaborativeContentWrapperProps {
   children: React.ReactNode
   className?: string
+}
+
+interface PendingSelection {
+  startOffset: number
+  endOffset: number
+  blockId: string
+  text: string
+  rect: { top: number; left: number }
 }
 
 export function CollaborativeContentWrapper({
@@ -23,11 +32,8 @@ export function CollaborativeContentWrapper({
     localSelection,
   } = useCollaboration()
 
-  // Track if user is actively selecting (mouse is down) - use ref to avoid re-renders
-  // and to access current value in selectionchange callback
-  const isSelectingRef = useRef(false)
-  const [isSelecting, setIsSelecting] = useState(false)
-  const selectionTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  // Pending selection waiting for user to click "Highlight" button
+  const [pendingSelection, setPendingSelection] = useState<PendingSelection | null>(null)
 
   // Track mouse movement
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
@@ -41,50 +47,14 @@ export function CollaborativeContentWrapper({
     // Send cursor leave event - handled by the context
   }, [])
 
-  // Track mouse down/up to know when user is actively selecting
-  useEffect(() => {
-    const handleMouseDown = () => {
-      // Cancel any pending timeout from previous selection
-      if (selectionTimeoutRef.current) {
-        clearTimeout(selectionTimeoutRef.current)
-        selectionTimeoutRef.current = null
-      }
-      isSelectingRef.current = true
-      setIsSelecting(true)
-    }
-    const handleMouseUp = () => {
-      // Set ref to false immediately so selectionchange can process
-      isSelectingRef.current = false
-      // Small delay for the UI state to avoid flickering
-      selectionTimeoutRef.current = setTimeout(() => setIsSelecting(false), 50)
-    }
-
-    document.addEventListener('mousedown', handleMouseDown)
-    document.addEventListener('mouseup', handleMouseUp)
-
-    return () => {
-      document.removeEventListener('mousedown', handleMouseDown)
-      document.removeEventListener('mouseup', handleMouseUp)
-      if (selectionTimeoutRef.current) {
-        clearTimeout(selectionTimeoutRef.current)
-      }
-    }
-  }, [])
-
-  // Track text selection - only send when there's actual selected text
+  // Track text selection - store locally but don't send until user clicks Highlight
   useEffect(() => {
     const handleSelectionChange = () => {
-      // Don't process selection changes while user is actively selecting (mouse down)
-      // This prevents interference with the native browser selection
-      if (isSelectingRef.current) {
-        return
-      }
-
       const selection = window.getSelection()
 
       // Only process if there's a non-collapsed selection
       if (!selection || selection.isCollapsed || !containerRef.current) {
-        updateTextSelection(null)
+        setPendingSelection(null)
         return
       }
 
@@ -92,18 +62,18 @@ export function CollaborativeContentWrapper({
       const container = containerRef.current
 
       // Check if selection is within our container
-      // Handle text nodes by checking their parent element
       const nodeToCheck = range.commonAncestorContainer.nodeType === Node.TEXT_NODE 
         ? range.commonAncestorContainer.parentElement 
         : range.commonAncestorContainer;
       
       if (!nodeToCheck || !container.contains(nodeToCheck)) {
-        updateTextSelection(null)
+        setPendingSelection(null)
         return
       }
 
       const selectedText = selection.toString().trim()
       if (!selectedText || selectedText.length < 1) {
+        setPendingSelection(null)
         return
       }
 
@@ -113,8 +83,7 @@ export function CollaborativeContentWrapper({
 
       const blockId = blockElement?.getAttribute('data-block-id') || 'unknown'
 
-      // Calculate absolute offsets within the container/block
-      // This is crucial for multi-line support and avoiding string-matching ambiguity
+      // Calculate absolute offsets within the container
       const walker = document.createTreeWalker(
         container,
         NodeFilter.SHOW_TEXT,
@@ -137,12 +106,10 @@ export function CollaborativeContentWrapper({
       while ((node = walker.nextNode())) {
         const length = node.textContent?.length || 0
 
-        // Check if this node contains the start of selection
         if (startOffset === -1 && node === range.startContainer) {
           startOffset = currentOffset + range.startOffset
         }
 
-        // Check if this node contains the end of selection
         if (endOffset === -1 && node === range.endContainer) {
           endOffset = currentOffset + range.endOffset
         }
@@ -153,20 +120,51 @@ export function CollaborativeContentWrapper({
       }
 
       if (startOffset !== -1 && endOffset !== -1) {
-        updateTextSelection({
+        // Get position for the floating button
+        const rangeRect = range.getBoundingClientRect()
+        const containerRect = container.getBoundingClientRect()
+
+        setPendingSelection({
           startOffset,
           endOffset,
           blockId,
           text: selectedText,
-          participantId: '',
-          participantName: '',
-          isTeacher: false,
+          rect: {
+            top: rangeRect.bottom - containerRect.top + 8,
+            left: rangeRect.left - containerRect.left + (rangeRect.width / 2),
+          }
         })
       }
     }
 
     document.addEventListener('selectionchange', handleSelectionChange)
     return () => document.removeEventListener('selectionchange', handleSelectionChange)
+  }, [])
+
+  // Handle highlight button click
+  const handleHighlight = useCallback(() => {
+    if (!pendingSelection) return
+
+    updateTextSelection({
+      startOffset: pendingSelection.startOffset,
+      endOffset: pendingSelection.endOffset,
+      blockId: pendingSelection.blockId,
+      text: pendingSelection.text,
+      participantId: '',
+      participantName: '',
+      isTeacher: false,
+    })
+
+    // Clear the native selection
+    window.getSelection()?.removeAllRanges()
+    setPendingSelection(null)
+  }, [pendingSelection, updateTextSelection])
+
+  // Handle clear highlight
+  const handleClearHighlight = useCallback(() => {
+    updateTextSelection(null)
+    window.getSelection()?.removeAllRanges()
+    setPendingSelection(null)
   }, [updateTextSelection])
 
   return (
@@ -181,6 +179,26 @@ export function CollaborativeContentWrapper({
       {/* Remote cursor overlay */}
       <RemoteCursor containerRef={containerRef as React.RefObject<HTMLDivElement>} />
 
+      {/* Floating Highlight button - appears when text is selected */}
+      {pendingSelection && (
+        <div
+          className="absolute z-50 -translate-x-1/2 animate-in fade-in zoom-in-95 duration-150"
+          style={{
+            top: pendingSelection.rect.top,
+            left: pendingSelection.rect.left,
+          }}
+        >
+          <Button
+            size="sm"
+            onClick={handleHighlight}
+            className="gap-1.5 shadow-lg bg-yellow-500 hover:bg-yellow-600 text-white"
+          >
+            <Highlighter className="w-3.5 h-3.5" />
+            Highlight
+          </Button>
+        </div>
+      )}
+
       {/* Remote selection highlight */}
       {remoteSelection && (
         <RemoteSelectionHighlight
@@ -189,11 +207,13 @@ export function CollaborativeContentWrapper({
         />
       )}
 
-      {/* Local selection highlight (persistent) - only show when not actively selecting to avoid interference */}
-      {localSelection && !isSelecting && (
+      {/* Local selection highlight (persistent) with clear button */}
+      {localSelection && (
         <RemoteSelectionHighlight
           selection={localSelection}
           containerRef={containerRef as React.RefObject<HTMLDivElement>}
+          onClear={handleClearHighlight}
+          showClearButton
         />
       )}
     </div>
@@ -210,9 +230,11 @@ interface RemoteSelectionHighlightProps {
     isTeacher: boolean
   }
   containerRef: React.RefObject<HTMLDivElement>
+  onClear?: () => void
+  showClearButton?: boolean
 }
 
-function RemoteSelectionHighlight({ selection, containerRef }: RemoteSelectionHighlightProps) {
+function RemoteSelectionHighlight({ selection, containerRef, onClear, showClearButton }: RemoteSelectionHighlightProps) {
   const [highlightRects, setHighlightRects] = useState<DOMRect[]>([])
   const [scrollIndicator, setScrollIndicator] = useState<'above' | 'below' | null>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
@@ -358,6 +380,21 @@ function RemoteSelectionHighlight({ selection, containerRef }: RemoteSelectionHi
           }}
         />
       ))}
+
+      {/* Clear button for local highlight */}
+      {showClearButton && onClear && highlightRects.length > 0 && (
+        <button
+          onClick={onClear}
+          className="absolute z-50 p-1 rounded-full bg-red-500 hover:bg-red-600 text-white shadow-lg transition-colors"
+          style={{
+            top: highlightRects[0].top - 12,
+            left: highlightRects[0].left + highlightRects[0].width - 4,
+          }}
+          title="Quitar highlight"
+        >
+          <X className="w-3 h-3" />
+        </button>
+      )}
 
       {/* Scroll indicator */}
       {scrollIndicator && (
