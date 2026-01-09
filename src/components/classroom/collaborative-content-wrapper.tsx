@@ -23,6 +23,11 @@ export function CollaborativeContentWrapper({
     localSelection,
   } = useCollaboration()
 
+  // Track if user is actively selecting (mouse is down) - use ref to avoid re-renders
+  // and to access current value in selectionchange callback
+  const isSelectingRef = useRef(false)
+  const [isSelecting, setIsSelecting] = useState(false)
+
   // Track mouse movement
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!containerRef.current) return
@@ -35,9 +40,38 @@ export function CollaborativeContentWrapper({
     // Send cursor leave event - handled by the context
   }, [])
 
+  // Track mouse down/up to know when user is actively selecting
+  useEffect(() => {
+    const handleMouseDown = () => {
+      isSelectingRef.current = true
+      setIsSelecting(true)
+    }
+    const handleMouseUp = () => {
+      // Small delay to let the final selection settle before processing
+      setTimeout(() => {
+        isSelectingRef.current = false
+        setIsSelecting(false)
+      }, 100)
+    }
+
+    document.addEventListener('mousedown', handleMouseDown)
+    document.addEventListener('mouseup', handleMouseUp)
+
+    return () => {
+      document.removeEventListener('mousedown', handleMouseDown)
+      document.removeEventListener('mouseup', handleMouseUp)
+    }
+  }, [])
+
   // Track text selection - only send when there's actual selected text
   useEffect(() => {
     const handleSelectionChange = () => {
+      // Don't process selection changes while user is actively selecting (mouse down)
+      // This prevents interference with the native browser selection
+      if (isSelectingRef.current) {
+        return
+      }
+
       const selection = window.getSelection()
 
       // Only process if there's a non-collapsed selection
@@ -147,8 +181,8 @@ export function CollaborativeContentWrapper({
         />
       )}
 
-      {/* Local selection highlight (persistent) */}
-      {localSelection && (
+      {/* Local selection highlight (persistent) - only show when not actively selecting to avoid interference */}
+      {localSelection && !isSelecting && (
         <RemoteSelectionHighlight
           selection={localSelection}
           containerRef={containerRef as React.RefObject<HTMLDivElement>}
