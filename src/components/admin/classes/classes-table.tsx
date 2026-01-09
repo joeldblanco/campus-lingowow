@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useMemo } from 'react'
-import { ClassBookingWithDetails, deleteClass, updateClass } from '@/lib/actions/classes'
+import { ClassBookingWithDetails, deleteClass, updateClass, toggleClassPayable } from '@/lib/actions/classes'
 import { getTodayString } from '@/lib/utils/date'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -54,6 +54,7 @@ import {
   ChevronLeft,
   ChevronRight,
   SlidersHorizontal,
+  DollarSign,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { BookingStatus } from '@prisma/client'
@@ -86,7 +87,9 @@ export function ClassesTable({ classes }: ClassesTableProps) {
       filtered = filtered.filter(
         (classItem) =>
           classItem.student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          classItem.student.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
           classItem.teacher.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          classItem.teacher.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
           classItem.student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
           classItem.teacher.email.toLowerCase().includes(searchTerm.toLowerCase())
       )
@@ -200,6 +203,20 @@ export function ClassesTable({ classes }: ClassesTableProps) {
       }
     } catch {
       toast.error('Error al actualizar la clase')
+    }
+  }
+
+  const handleTogglePayable = async (classId: string, isPayable: boolean) => {
+    try {
+      const result = await toggleClassPayable(classId, isPayable)
+      if (result.success) {
+        toast.success(result.message)
+        window.location.reload()
+      } else {
+        toast.error(result.error || 'Error al actualizar el estado de pago')
+      }
+    } catch {
+      toast.error('Error al actualizar el estado de pago')
     }
   }
 
@@ -420,7 +437,17 @@ export function ClassesTable({ classes }: ClassesTableProps) {
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell>{getStatusBadge(classItem.status)}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      {getStatusBadge(classItem.status)}
+                      {classItem.isPayable && (
+                        <Badge className="bg-green-100 text-green-700 hover:bg-green-100 border-0 font-medium">
+                          <DollarSign className="h-3 w-3 mr-1" />
+                          Pagable
+                        </Badge>
+                      )}
+                    </div>
+                  </TableCell>
                   <TableCell>
                     <div className="text-sm">{classItem.timeSlot}</div>
                   </TableCell>
@@ -454,6 +481,12 @@ export function ClassesTable({ classes }: ClassesTableProps) {
                             <DropdownMenuItem onClick={() => handleMarkCompleted(classItem.id)}>
                               <Clock className="h-4 w-4 mr-2" />
                               Marcar completada
+                            </DropdownMenuItem>
+                          )}
+                          {classItem.status === 'COMPLETED' && (
+                            <DropdownMenuItem onClick={() => handleTogglePayable(classItem.id, !classItem.isPayable)}>
+                              <DollarSign className="h-4 w-4 mr-2" />
+                              {classItem.isPayable ? 'Desmarcar como pagable' : 'Marcar como pagable'}
                             </DropdownMenuItem>
                           )}
                           <DropdownMenuSeparator />

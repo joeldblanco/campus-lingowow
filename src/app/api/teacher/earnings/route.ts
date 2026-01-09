@@ -133,11 +133,11 @@ export async function GET(request: NextRequest) {
       },
     })
 
-    // Filtrar solo las clases donde AMBOS asistieron
+    // Filtrar clases pagables: una clase es pagable si el profesor asistió
+    // (si el estudiante no vino, no es culpa del profesor)
     const payableClasses = completedClasses.filter((classBooking) => {
       const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
-      const hasStudentAttendance = classBooking.attendances.length > 0
-      return hasTeacherAttendance && hasStudentAttendance
+      return hasTeacherAttendance
     })
 
     // Obtener los pagos personalizados por curso para este profesor

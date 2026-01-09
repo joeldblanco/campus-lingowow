@@ -760,6 +760,7 @@ model ClassBooking {
   cancelledBy  String?
   completedAt  DateTime?
   creditId     String?
+  isPayable    Boolean       @default(false) // Marcar manualmente como válida para pago al profesor
 
   // Relaciones
   student            User                @relation("StudentBookings", fields: [studentId], references: [id])

@@ -716,11 +716,11 @@ export async function calculateTeacherMonthlyRevenue(
       },
     })
 
-    // Filtrar solo clases pagables (donde ambos asistieron)
+    // Filtrar clases pagables: una clase es pagable si el profesor asistió
+    // (si el estudiante no vino, no es culpa del profesor)
     const payableClasses = completedClasses.filter((classBooking) => {
       const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
-      const hasStudentAttendance = classBooking.attendances.length > 0
-      return hasTeacherAttendance && hasStudentAttendance
+      return hasTeacherAttendance
     })
 
     // Obtener los courseIds únicos para buscar tarifas específicas del profesor
@@ -854,11 +854,11 @@ export async function calculateTeacherTotalRevenue(
       },
     })
 
-    // Filtrar solo clases pagables
+    // Filtrar clases pagables: una clase es pagable si el profesor asistió
+    // (si el estudiante no vino, no es culpa del profesor)
     const payableClasses = completedClasses.filter((classBooking) => {
       const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
-      const hasStudentAttendance = classBooking.attendances.length > 0
-      return hasTeacherAttendance && hasStudentAttendance
+      return hasTeacherAttendance
     })
 
     // Obtener los courseIds únicos para buscar tarifas específicas del profesor

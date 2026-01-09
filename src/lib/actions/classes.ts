@@ -1089,3 +1089,33 @@ export async function getEnrollmentsWithTeachers() {
     throw new Error('Failed to fetch enrollments with teachers')
   }
 }
+
+/**
+ * Marca o desmarca una clase como válida para pago al profesor
+ * Esto permite a los administradores marcar manualmente clases como pagables
+ * incluso si no se cumplieron los criterios automáticos (ambas asistencias)
+ */
+export async function toggleClassPayable(classId: string, isPayable: boolean) {
+  try {
+    await db.classBooking.update({
+      where: { id: classId },
+      data: { isPayable },
+    })
+
+    revalidatePath('/admin/classes')
+    revalidatePath('/admin/reports')
+    
+    return { 
+      success: true, 
+      message: isPayable 
+        ? 'Clase marcada como válida para pago' 
+        : 'Clase desmarcada como válida para pago'
+    }
+  } catch (error) {
+    console.error('Error toggling class payable status:', error)
+    return { 
+      success: false, 
+      error: 'Error al actualizar el estado de pago de la clase' 
+    }
+  }
+}
