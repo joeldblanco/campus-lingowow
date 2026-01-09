@@ -70,111 +70,131 @@ export function CollaborativeContentWrapper({
 
   // Track text selection - store locally but don't send until user clicks Highlight
   useEffect(() => {
+    let selectionTimeout: NodeJS.Timeout | null = null
+
     const handleSelectionChange = () => {
+      // Clear any pending timeout
+      if (selectionTimeout) {
+        clearTimeout(selectionTimeout)
+      }
+
       // Don't show button while user is actively selecting
       if (isSelectingRef.current) {
         return
       }
 
-      const selection = window.getSelection()
-
-      // Only process if there's a non-collapsed selection
-      if (!selection || selection.isCollapsed || !containerRef.current) {
-        setPendingSelection(null)
-        return
-      }
-
-      const range = selection.getRangeAt(0)
-      const container = containerRef.current
-
-      // Check if selection is within our container
-      const nodeToCheck = range.commonAncestorContainer.nodeType === Node.TEXT_NODE 
-        ? range.commonAncestorContainer.parentElement 
-        : range.commonAncestorContainer;
-      
-      if (!nodeToCheck || !container.contains(nodeToCheck)) {
-        setPendingSelection(null)
-        return
-      }
-
-      const selectedText = selection.toString().trim()
-      if (!selectedText || selectedText.length < 1) {
-        setPendingSelection(null)
-        return
-      }
-
-      // Find the block ID from the closest parent with data-block-id
-      const blockElement = (range.commonAncestorContainer as Element).closest?.('[data-block-id]')
-        || (range.commonAncestorContainer.parentElement as Element)?.closest?.('[data-block-id]')
-
-      const blockId = blockElement?.getAttribute('data-block-id') || 'unknown'
-
-      // Calculate absolute offsets within the container
-      const walker = document.createTreeWalker(
-        container,
-        NodeFilter.SHOW_TEXT,
-        {
-          acceptNode: (node) => {
-            const parent = node.parentElement
-            if (parent?.tagName === 'SCRIPT' || parent?.tagName === 'STYLE') {
-              return NodeFilter.FILTER_REJECT
-            }
-            return NodeFilter.FILTER_ACCEPT
-          }
-        }
-      )
-
-      let currentOffset = 0
-      let startOffset = -1
-      let endOffset = -1
-      let node: Node | null
-
-      while ((node = walker.nextNode())) {
-        const length = node.textContent?.length || 0
-
-        if (startOffset === -1 && node === range.startContainer) {
-          startOffset = currentOffset + range.startOffset
+      // Small delay to ensure mouseup has fired (race condition fix)
+      selectionTimeout = setTimeout(() => {
+        // Double-check mouse is up
+        if (isSelectingRef.current) {
+          return
         }
 
-        if (endOffset === -1 && node === range.endContainer) {
-          endOffset = currentOffset + range.endOffset
+        const selection = window.getSelection()
+
+        // Only process if there's a non-collapsed selection
+        if (!selection || selection.isCollapsed || !containerRef.current) {
+          setPendingSelection(null)
+          return
         }
 
-        currentOffset += length
+        const range = selection.getRangeAt(0)
+        const container = containerRef.current
 
-        if (startOffset !== -1 && endOffset !== -1) break
-      }
-
-      if (startOffset !== -1 && endOffset !== -1) {
-        // Get position for the floating button
-        const rangeRect = range.getBoundingClientRect()
-        const containerRect = container.getBoundingClientRect()
-
-        // Calculate button position with boundary checking
-        const buttonWidth = 100 // Approximate button width
-        const buttonHalfWidth = buttonWidth / 2
-        let leftPos = rangeRect.left - containerRect.left + (rangeRect.width / 2)
+        // Check if selection is within our container
+        const nodeToCheck = range.commonAncestorContainer.nodeType === Node.TEXT_NODE 
+          ? range.commonAncestorContainer.parentElement 
+          : range.commonAncestorContainer;
         
-        // Clamp to container bounds
-        const minLeft = buttonHalfWidth + 8
-        const maxLeft = containerRect.width - buttonHalfWidth - 8
-        leftPos = Math.max(minLeft, Math.min(maxLeft, leftPos))
+        if (!nodeToCheck || !container.contains(nodeToCheck)) {
+          setPendingSelection(null)
+          return
+        }
 
-        setPendingSelection({
-          startOffset,
-          endOffset,
-          blockId,
-          text: selectedText,
-          rect: {
-            top: rangeRect.bottom - containerRect.top + 8,
-            left: leftPos,
+        const selectedText = selection.toString().trim()
+        if (!selectedText || selectedText.length < 1) {
+          setPendingSelection(null)
+          return
+        }
+
+        // Find the block ID from the closest parent with data-block-id
+        const blockElement = (range.commonAncestorContainer as Element).closest?.('[data-block-id]')
+          || (range.commonAncestorContainer.parentElement as Element)?.closest?.('[data-block-id]')
+
+        const blockId = blockElement?.getAttribute('data-block-id') || 'unknown'
+
+        // Calculate absolute offsets within the container
+        const walker = document.createTreeWalker(
+          container,
+          NodeFilter.SHOW_TEXT,
+          {
+            acceptNode: (node) => {
+              const parent = node.parentElement
+              if (parent?.tagName === 'SCRIPT' || parent?.tagName === 'STYLE') {
+                return NodeFilter.FILTER_REJECT
+              }
+              return NodeFilter.FILTER_ACCEPT
+            }
           }
-        })
-      }
+        )
+
+        let currentOffset = 0
+        let startOffset = -1
+        let endOffset = -1
+        let node: Node | null
+
+        while ((node = walker.nextNode())) {
+          const length = node.textContent?.length || 0
+
+          if (startOffset === -1 && node === range.startContainer) {
+            startOffset = currentOffset + range.startOffset
+          }
+
+          if (endOffset === -1 && node === range.endContainer) {
+            endOffset = currentOffset + range.endOffset
+          }
+
+          currentOffset += length
+
+          if (startOffset !== -1 && endOffset !== -1) break
+        }
+
+        if (startOffset !== -1 && endOffset !== -1) {
+          // Get position for the floating button
+          const rangeRect = range.getBoundingClientRect()
+          const containerRect = container.getBoundingClientRect()
+
+          // Calculate button position with boundary checking
+          const buttonWidth = 100 // Approximate button width
+          const buttonHalfWidth = buttonWidth / 2
+          let leftPos = rangeRect.left - containerRect.left + (rangeRect.width / 2)
+          
+          // Clamp to container bounds
+          const minLeft = buttonHalfWidth + 8
+          const maxLeft = containerRect.width - buttonHalfWidth - 8
+          leftPos = Math.max(minLeft, Math.min(maxLeft, leftPos))
+
+          setPendingSelection({
+            startOffset,
+            endOffset,
+            blockId,
+            text: selectedText,
+            rect: {
+              top: rangeRect.bottom - containerRect.top + 8,
+              left: leftPos,
+            }
+          })
+        }
+      }, 10) // Small delay to handle race condition
     }
 
     document.addEventListener('selectionchange', handleSelectionChange)
-    return () => document.removeEventListener('selectionchange', handleSelectionChange)
+    return () => {
+      document.removeEventListener('selectionchange', handleSelectionChange)
+      if (selectionTimeout) {
+        clearTimeout(selectionTimeout)
+      }
+    }
   }, [])
 
   // Handle highlight button click
