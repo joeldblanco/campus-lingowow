@@ -17,7 +17,6 @@ export function ScreenShareViewer({ isTeacher }: ScreenShareViewerProps) {
     toggleScreenShare, 
     localScreenShareTrack, 
     remoteScreenShareTrack,
-    localScreenShareAudioTrack,
     remoteScreenShareAudioTrack 
   } = useLiveKit()
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -26,7 +25,9 @@ export function ScreenShareViewer({ isTeacher }: ScreenShareViewerProps) {
 
   // Determine which track to show - prioritize remote screen share, fallback to local for preview
   const screenTrack = remoteScreenShareTrack || (isTeacher ? localScreenShareTrack : undefined)
-  const screenAudioTrack = remoteScreenShareAudioTrack || (isTeacher ? localScreenShareAudioTrack : undefined)
+  // Only play audio from REMOTE screen share to avoid audio loop
+  // The person sharing can hear their own audio directly from the source
+  const screenAudioTrack = remoteScreenShareAudioTrack
   const hasScreenShare = !!screenTrack
 
   // Attach screen share track to video element
