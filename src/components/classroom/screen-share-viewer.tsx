@@ -12,12 +12,21 @@ interface ScreenShareViewerProps {
 }
 
 export function ScreenShareViewer({ isTeacher }: ScreenShareViewerProps) {
-  const { isScreenSharing, toggleScreenShare, localScreenShareTrack, remoteScreenShareTrack } = useLiveKit()
+  const { 
+    isScreenSharing, 
+    toggleScreenShare, 
+    localScreenShareTrack, 
+    remoteScreenShareTrack,
+    localScreenShareAudioTrack,
+    remoteScreenShareAudioTrack 
+  } = useLiveKit()
   const videoRef = useRef<HTMLVideoElement>(null)
+  const audioRef = useRef<HTMLAudioElement>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
 
   // Determine which track to show - prioritize remote screen share, fallback to local for preview
   const screenTrack = remoteScreenShareTrack || (isTeacher ? localScreenShareTrack : undefined)
+  const screenAudioTrack = remoteScreenShareAudioTrack || (isTeacher ? localScreenShareAudioTrack : undefined)
   const hasScreenShare = !!screenTrack
 
   // Attach screen share track to video element
@@ -37,6 +46,24 @@ export function ScreenShareViewer({ isTeacher }: ScreenShareViewerProps) {
       }
     }
   }, [screenTrack])
+
+  // Attach screen share audio track to audio element
+  useEffect(() => {
+    if (!audioRef.current || !screenAudioTrack) return
+
+    const audio = audioRef.current
+    const track = screenAudioTrack as Track & { attach: (el: HTMLAudioElement) => void; detach: (el: HTMLAudioElement) => void }
+    
+    if (track.attach) {
+      track.attach(audio)
+    }
+
+    return () => {
+      if (track.detach) {
+        track.detach(audio)
+      }
+    }
+  }, [screenAudioTrack])
 
   const toggleFullscreen = () => {
     if (!videoRef.current) return
@@ -89,6 +116,7 @@ export function ScreenShareViewer({ isTeacher }: ScreenShareViewerProps) {
             playsInline
             className="max-w-full max-h-full object-contain"
           />
+          <audio ref={audioRef} autoPlay />
         </div>
       </div>
     )

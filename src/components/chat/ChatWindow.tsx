@@ -20,7 +20,7 @@ import {
   markMessagesAsRead,
   sendFloatingMessage,
 } from '@/lib/actions/floating-chat'
-import { pusherClient } from '@/lib/pusher'
+import { usePusherChannel } from '@/hooks/use-pusher-channel'
 import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import EmojiPicker from 'emoji-picker-react'
@@ -44,7 +44,7 @@ import {
   User,
   X,
 } from 'lucide-react'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { MessageType, TeamBadge } from '@prisma/client'
 
 interface ChatUser {
@@ -143,41 +143,40 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
     }
   }, [conversationId, currentUser.id])
 
-  useEffect(() => {
-    const channel = pusherClient.subscribe(`conversation-${conversationId}`)
-
-    channel.bind('new-message', (message: ChatMessage) => {
-      setMessages((prev) => {
-        if (prev.find((m) => m.id === message.id)) return prev
-        const pendingMatch = prev.find(
-          (m) =>
-            m.isSending &&
-            m.content === message.content &&
-            m.senderId === message.senderId &&
-            m.type === message.type &&
-            new Date(message.timestamp).getTime() - new Date(m.timestamp).getTime() < 10000
-        )
-        if (pendingMatch) {
-          return prev.map((m) => (m.id === pendingMatch.id ? message : m))
-        }
-        return [...prev, message]
-      })
-
-      if (scrollRef.current) {
-        setTimeout(() => {
-          scrollRef.current!.scrollTop = scrollRef.current!.scrollHeight
-        }, 100)
+  const handleNewMessage = useCallback((data: unknown) => {
+    const message = data as ChatMessage
+    setMessages((prev) => {
+      if (prev.find((m) => m.id === message.id)) return prev
+      const pendingMatch = prev.find(
+        (m) =>
+          m.isSending &&
+          m.content === message.content &&
+          m.senderId === message.senderId &&
+          m.type === message.type &&
+          new Date(message.timestamp).getTime() - new Date(m.timestamp).getTime() < 10000
+      )
+      if (pendingMatch) {
+        return prev.map((m) => (m.id === pendingMatch.id ? message : m))
       }
-
-      if (message.senderId !== currentUser.id) {
-        markMessagesAsRead(conversationId, currentUser.id)
-      }
+      return [...prev, message]
     })
 
-    return () => {
-      pusherClient.unsubscribe(`conversation-${conversationId}`)
+    if (scrollRef.current) {
+      setTimeout(() => {
+        scrollRef.current!.scrollTop = scrollRef.current!.scrollHeight
+      }, 100)
+    }
+
+    if (message.senderId !== currentUser.id) {
+      markMessagesAsRead(conversationId, currentUser.id)
     }
   }, [conversationId, currentUser.id])
+
+  const conversationPusherEvents = useMemo(() => [
+    { event: 'new-message', callback: handleNewMessage },
+  ], [handleNewMessage])
+
+  usePusherChannel(`conversation-${conversationId}`, conversationPusherEvents)
 
   // --- Message Sending Logic ---
   const sendMessageInternal = async (

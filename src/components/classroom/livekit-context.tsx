@@ -31,6 +31,8 @@ interface LiveKitContextType {
   removeCommandListener: (command: string, handler: (values: Record<string, unknown>) => void) => void
   localScreenShareTrack: Track | undefined
   remoteScreenShareTrack: Track | undefined
+  localScreenShareAudioTrack: Track | undefined
+  remoteScreenShareAudioTrack: Track | undefined
 }
 
 const LiveKitContext = createContext<LiveKitContextType | null>(null)
@@ -57,6 +59,8 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   const [localAudioTrack, setLocalAudioTrack] = useState<Track | undefined>(undefined)
   const [localScreenShareTrack, setLocalScreenShareTrack] = useState<Track | undefined>(undefined)
   const [remoteScreenShareTrack, setRemoteScreenShareTrack] = useState<Track | undefined>(undefined)
+  const [localScreenShareAudioTrack, setLocalScreenShareAudioTrack] = useState<Track | undefined>(undefined)
+  const [remoteScreenShareAudioTrack, setRemoteScreenShareAudioTrack] = useState<Track | undefined>(undefined)
   const [remoteParticipants, setRemoteParticipants] = useState<Map<string, VideoTrack>>(new Map())
 
   const [isAudioMuted, setIsAudioMuted] = useState(false)
@@ -74,6 +78,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       let videoTrack: Track | undefined
       let audioTrack: Track | undefined
       let screenShareTrack: Track | undefined
+      let screenShareAudioTrack: Track | undefined
       let isMuted = true
       let isVideoMuted = true
 
@@ -82,16 +87,18 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
           if (pub.track.kind === Track.Kind.Video && pub.source === Track.Source.Camera) {
             videoTrack = pub.track
             isVideoMuted = pub.isMuted
-          } else if (pub.track.kind === Track.Kind.Audio) {
+          } else if (pub.track.kind === Track.Kind.Audio && pub.source === Track.Source.Microphone) {
             audioTrack = pub.track
             isMuted = pub.isMuted
           } else if (pub.track.kind === Track.Kind.Video && pub.source === Track.Source.ScreenShare) {
             screenShareTrack = pub.track
+          } else if (pub.track.kind === Track.Kind.Audio && pub.source === Track.Source.ScreenShareAudio) {
+            screenShareAudioTrack = pub.track
           }
         }
       })
 
-      // Update remote screen share track - only set if found, only clear if THIS participant was sharing
+      // Update remote screen share tracks - only set if found, only clear if THIS participant was sharing
       if (screenShareTrack) {
         setRemoteScreenShareTrack(screenShareTrack)
       } else {
@@ -101,6 +108,13 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
           // If no screen share from this participant, keep the existing one (from another participant)
           return current
         })
+      }
+
+      // Update remote screen share audio track
+      if (screenShareAudioTrack) {
+        setRemoteScreenShareAudioTrack(screenShareAudioTrack)
+      } else {
+        setRemoteScreenShareAudioTrack((current) => current)
       }
 
       newMap.set(participant.identity, {
@@ -126,6 +140,17 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       let wasSharing = false
       participant.trackPublications.forEach((pub) => {
         if (pub.track && pub.source === Track.Source.ScreenShare && pub.track === current) {
+          wasSharing = true
+        }
+      })
+      return wasSharing ? undefined : current
+    })
+    
+    // Also clear screen share audio if this participant was sharing
+    setRemoteScreenShareAudioTrack((current) => {
+      let wasSharing = false
+      participant.trackPublications.forEach((pub) => {
+        if (pub.track && pub.source === Track.Source.ScreenShareAudio && pub.track === current) {
           wasSharing = true
         }
       })
@@ -202,6 +227,10 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
         if (publication.source === Track.Source.ScreenShare) {
           setRemoteScreenShareTrack((current) => current === track ? undefined : current)
         }
+        // Clear remote screen share audio if this was the audio track being unsubscribed
+        if (publication.source === Track.Source.ScreenShareAudio) {
+          setRemoteScreenShareAudioTrack((current) => current === track ? undefined : current)
+        }
         updateRemoteParticipant(participant)
       })
 
@@ -251,10 +280,12 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
         if (track) {
           if (track.kind === Track.Kind.Video && publication.source === Track.Source.Camera) {
             setLocalVideoTrack(track)
-          } else if (track.kind === Track.Kind.Audio) {
-            setLocalAudioTrack(track)
           } else if (track.kind === Track.Kind.Video && publication.source === Track.Source.ScreenShare) {
             setLocalScreenShareTrack(track)
+          } else if (track.kind === Track.Kind.Audio && publication.source === Track.Source.ScreenShareAudio) {
+            setLocalScreenShareAudioTrack(track)
+          } else if (track.kind === Track.Kind.Audio && publication.source === Track.Source.Microphone) {
+            setLocalAudioTrack(track)
           }
         }
       })
@@ -267,6 +298,8 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
         } else if (publication.source === Track.Source.ScreenShare) {
           setLocalScreenShareTrack(undefined)
           setIsScreenSharing(false)
+        } else if (publication.source === Track.Source.ScreenShareAudio) {
+          setLocalScreenShareAudioTrack(undefined)
         }
       })
 
@@ -308,6 +341,8 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
     setLocalAudioTrack(undefined)
     setLocalScreenShareTrack(undefined)
     setRemoteScreenShareTrack(undefined)
+    setLocalScreenShareAudioTrack(undefined)
+    setRemoteScreenShareAudioTrack(undefined)
     setRemoteParticipants(new Map())
     setConnectionStatus('disconnected')
   }, [])
@@ -356,7 +391,12 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       setIsScreenSharing(false)
     } else {
       try {
-        await localParticipant.setScreenShareEnabled(true)
+        await localParticipant.setScreenShareEnabled(true, {
+          audio: true,
+          selfBrowserSurface: 'include',
+          surfaceSwitching: 'include',
+          systemAudio: 'include',
+        })
         setIsScreenSharing(true)
       } catch (e) {
         console.error('[LiveKit] Error starting screen share', e)
@@ -449,6 +489,8 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
         removeCommandListener,
         localScreenShareTrack,
         remoteScreenShareTrack,
+        localScreenShareAudioTrack,
+        remoteScreenShareAudioTrack,
       }}
     >
       {children}

@@ -7,13 +7,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
+import { usePusherChannel } from '@/hooks/use-pusher-channel'
 import { getTotalUnreadCount } from '@/lib/actions/floating-chat'
-import { pusherClient } from '@/lib/pusher'
 import { MessageCircle } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 interface ConversationUpdateEvent {
   conversationId: string
@@ -29,33 +29,35 @@ export function NavMessages() {
 
   const userId = session?.user?.id
 
-  useEffect(() => {
+  const fetchCount = useCallback(async () => {
     if (!userId) return
-
-    const fetchCount = async () => {
-      const res = await getTotalUnreadCount(userId)
-      if (res.success && typeof res.count === 'number') {
-        setUnreadCount(res.count)
-      }
-    }
-    fetchCount()
-
-    const channel = pusherClient.subscribe(`user-${userId}`)
-
-    channel.bind('conversation-update', (data: ConversationUpdateEvent) => {
-      if (data.unreadCount > 0) {
-        setUnreadCount((prev) => prev + 1)
-      }
-    })
-
-    channel.bind('conversation-read', () => {
-      fetchCount()
-    })
-
-    return () => {
-      pusherClient.unsubscribe(`user-${userId}`)
+    const res = await getTotalUnreadCount(userId)
+    if (res.success && typeof res.count === 'number') {
+      setUnreadCount(res.count)
     }
   }, [userId])
+
+  useEffect(() => {
+    fetchCount()
+  }, [fetchCount])
+
+  const handleConversationUpdate = useCallback((data: unknown) => {
+    const event = data as ConversationUpdateEvent
+    if (event.unreadCount > 0) {
+      setUnreadCount((prev) => prev + 1)
+    }
+  }, [])
+
+  const handleConversationRead = useCallback(() => {
+    fetchCount()
+  }, [fetchCount])
+
+  const pusherEvents = useMemo(() => [
+    { event: 'conversation-update', callback: handleConversationUpdate },
+    { event: 'conversation-read', callback: handleConversationRead },
+  ], [handleConversationUpdate, handleConversationRead])
+
+  usePusherChannel(userId ? `user-${userId}` : null, pusherEvents)
 
   const isActive = pathname.startsWith('/messages')
 

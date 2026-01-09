@@ -1,8 +1,8 @@
 'use client'
 
-import { pusherClient } from '@/lib/pusher'
+import { usePusherChannel } from '@/hooks/use-pusher-channel'
 import { MessageType, TeamBadge, UserRole } from '@prisma/client'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { ChatSidebar } from './ChatSidebar'
 import { ChatWindow } from './ChatWindow'
 
@@ -74,43 +74,39 @@ export const MessagesClient: React.FC<MessagesClientProps> = ({
     (p) => p.userId !== currentUser.id
   )?.user
 
-  useEffect(() => {
-    // Listen for new conversations or updates to sidebar list
-    const channel = pusherClient.subscribe(`user-${currentUser.id}`)
-
-    channel.bind('conversation-update', (data: ConversationUpdateEvent) => {
-      setConversations((prev) => {
-        const index = prev.findIndex((c) => c.id === data.conversationId)
-        if (index > -1) {
-          const updated = [...prev]
-          updated[index] = {
-            ...updated[index],
-            lastMessage: data.lastMessage,
-            lastMessageAt: data.lastMessageAt,
-            // Unread count needing logic update in backend or here
-          }
-          // Move to top
-          updated.sort(
-            (a, b) => new Date(b.lastMessageAt || 0).getTime() - new Date(a.lastMessageAt || 0).getTime()
-          )
-          return updated
+  const handleConversationUpdate = useCallback((data: unknown) => {
+    const event = data as ConversationUpdateEvent
+    setConversations((prev) => {
+      const index = prev.findIndex((c) => c.id === event.conversationId)
+      if (index > -1) {
+        const updated = [...prev]
+        updated[index] = {
+          ...updated[index],
+          lastMessage: event.lastMessage,
+          lastMessageAt: event.lastMessageAt,
         }
-        return prev
-      })
+        updated.sort(
+          (a, b) => new Date(b.lastMessageAt || 0).getTime() - new Date(a.lastMessageAt || 0).getTime()
+        )
+        return updated
+      }
+      return prev
     })
+  }, [])
 
-    channel.bind('new-conversation', (data: Conversation) => {
-      setConversations((prev) => [data, ...prev])
-    })
+  const handlePusherNewConversation = useCallback((data: unknown) => {
+    setConversations((prev) => [data as Conversation, ...prev])
+  }, [])
 
-    return () => {
-      pusherClient.unsubscribe(`user-${currentUser.id}`)
-    }
-  }, [currentUser.id])
+  const pusherEvents = useMemo(() => [
+    { event: 'conversation-update', callback: handleConversationUpdate },
+    { event: 'new-conversation', callback: handlePusherNewConversation },
+  ], [handleConversationUpdate, handlePusherNewConversation])
+
+  usePusherChannel(`user-${currentUser.id}`, pusherEvents)
 
   const handleNewConversation = (conversation: Conversation) => {
     setConversations((prev) => {
-      // Check if already exists
       if (prev.find((c) => c.id === conversation.id)) return prev
       return [conversation, ...prev]
     })
