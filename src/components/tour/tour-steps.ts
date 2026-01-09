@@ -21,7 +21,7 @@ export const teacherTourSteps: TourStep[] = [
   },
   {
     target: '[data-tour="schedule"]',
-    content: 'En tu horario de hoy puedes ver todas las clases programadas. Cuando sea hora de iniciar, aparecerá el botón "Iniciar Clase".',
+    content: 'En tu horario de hoy puedes ver todas las clases programadas. Cuando sea hora de iniciar, aparecerá el botón "Entrar al Aula".',
     placement: 'bottom',
     disableBeacon: true,
   },

@@ -33,7 +33,9 @@ export function CollaborativeContentWrapper({
   } = useCollaboration()
 
   // Pending selection waiting for user to click "Highlight" button
-  const [pendingSelection, setPendingSelection] = useState<PendingSelection | null>(null)
+  // Using ref + state to avoid re-renders that break native selection
+  const pendingSelectionRef = useRef<PendingSelection | null>(null)
+  const [pendingSelectionState, setPendingSelectionState] = useState<PendingSelection | null>(null)
   
   // Track if user is actively selecting (mouse is down)
   const isSelectingRef = useRef(false)
@@ -41,8 +43,10 @@ export function CollaborativeContentWrapper({
   // Track last processed selection to avoid redundant state updates
   const lastSelectionRef = useRef<{start: number, end: number} | null>(null)
 
-  // Track mouse movement
+  // Track mouse movement - PAUSE while selecting to avoid interference
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    // Don't update cursor while user is selecting text
+    if (isSelectingRef.current) return
     if (!containerRef.current) return
     const rect = containerRef.current.getBoundingClientRect()
     updateCursorPosition(e.clientX, e.clientY, rect)
@@ -86,7 +90,7 @@ export function CollaborativeContentWrapper({
         return
       }
 
-      // Small delay to ensure mouseup has fired (race condition fix)
+      // Longer delay to ensure selection is stable and mouseup has fired
       selectionTimeout = setTimeout(() => {
         // Double-check mouse is up
         if (isSelectingRef.current) {
@@ -97,7 +101,10 @@ export function CollaborativeContentWrapper({
 
         // Only process if there's a non-collapsed selection
         if (!selection || selection.isCollapsed || !containerRef.current) {
-          setPendingSelection(null)
+          if (pendingSelectionRef.current !== null) {
+            pendingSelectionRef.current = null
+            setPendingSelectionState(null)
+          }
           lastSelectionRef.current = null
           return
         }
@@ -111,14 +118,20 @@ export function CollaborativeContentWrapper({
           : range.commonAncestorContainer;
         
         if (!nodeToCheck || !container.contains(nodeToCheck)) {
-          setPendingSelection(null)
+          if (pendingSelectionRef.current !== null) {
+            pendingSelectionRef.current = null
+            setPendingSelectionState(null)
+          }
           lastSelectionRef.current = null
           return
         }
 
         const selectedText = selection.toString().trim()
         if (!selectedText || selectedText.length < 1) {
-          setPendingSelection(null)
+          if (pendingSelectionRef.current !== null) {
+            pendingSelectionRef.current = null
+            setPendingSelectionState(null)
+          }
           lastSelectionRef.current = null
           return
         }
@@ -187,7 +200,7 @@ export function CollaborativeContentWrapper({
           const maxLeft = containerRect.width - buttonHalfWidth - 8
           leftPos = Math.max(minLeft, Math.min(maxLeft, leftPos))
 
-          setPendingSelection({
+          const newPending = {
             startOffset,
             endOffset,
             blockId,
@@ -196,9 +209,11 @@ export function CollaborativeContentWrapper({
               top: rangeRect.bottom - containerRect.top + 8,
               left: leftPos,
             }
-          })
+          }
+          pendingSelectionRef.current = newPending
+          setPendingSelectionState(newPending)
         }
-      }, 10) // Small delay to handle race condition
+      }, 50) // Delay to ensure selection is stable
     }
 
     document.addEventListener('selectionchange', handleSelectionChange)
@@ -212,28 +227,33 @@ export function CollaborativeContentWrapper({
 
   // Handle highlight button click
   const handleHighlight = useCallback(() => {
-    if (!pendingSelection) return
+    const pending = pendingSelectionRef.current
+    if (!pending) return
 
     updateTextSelection({
-      startOffset: pendingSelection.startOffset,
-      endOffset: pendingSelection.endOffset,
-      blockId: pendingSelection.blockId,
-      text: pendingSelection.text,
+      startOffset: pending.startOffset,
+      endOffset: pending.endOffset,
+      blockId: pending.blockId,
+      text: pending.text,
       participantId: '',
       participantName: '',
       isTeacher: false,
     })
 
-    // Clear the native selection
+    // Clear the native selection and pending state
     window.getSelection()?.removeAllRanges()
-    setPendingSelection(null)
-  }, [pendingSelection, updateTextSelection])
+    pendingSelectionRef.current = null
+    lastSelectionRef.current = null
+    setPendingSelectionState(null)
+  }, [updateTextSelection])
 
   // Handle clear highlight
   const handleClearHighlight = useCallback(() => {
     updateTextSelection(null)
     window.getSelection()?.removeAllRanges()
-    setPendingSelection(null)
+    pendingSelectionRef.current = null
+    lastSelectionRef.current = null
+    setPendingSelectionState(null)
   }, [updateTextSelection])
 
   return (
@@ -249,12 +269,12 @@ export function CollaborativeContentWrapper({
       <RemoteCursor containerRef={containerRef as React.RefObject<HTMLDivElement>} />
 
       {/* Floating Highlight button - appears when text is selected */}
-      {pendingSelection && (
+      {pendingSelectionState && (
         <div
           className="absolute z-50 -translate-x-1/2 animate-in fade-in zoom-in-95 duration-150"
           style={{
-            top: pendingSelection.rect.top,
-            left: pendingSelection.rect.left,
+            top: pendingSelectionState.rect.top,
+            left: pendingSelectionState.rect.left,
           }}
         >
           <Button

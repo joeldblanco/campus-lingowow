@@ -169,7 +169,7 @@ export function LessonDetailsDialog({
                 onClick={() => onJoinClass?.(lesson.id)}
               >
                 <Video className="h-4 w-4 mr-2" />
-                {isLive ? 'Unirse Ahora' : 'Iniciar Clase'}
+                {isLive ? 'Unirse Ahora' : 'Entrar al Aula'}
               </Button>
             )}
           </div>

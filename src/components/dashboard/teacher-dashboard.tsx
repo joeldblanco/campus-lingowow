@@ -261,7 +261,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                               onClick={() => handleStartClass(item.id)}
                               className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-6"
                             >
-                              Iniciar Clase
+                              Entrar al Aula
                             </Button>
                           ) : hasClassPassed(item.date, item.endTime) ? (
                             <Badge variant="secondary" className="text-slate-500">

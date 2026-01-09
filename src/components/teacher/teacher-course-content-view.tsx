@@ -168,13 +168,13 @@ export function TeacherCourseContentView({ course }: TeacherCourseContentViewPro
       {course.isPersonalized ? (
         <PersonalizedContent lessons={course.personalizedLessons} />
       ) : (
-        <StandardContent modules={course.modules} />
+        <StandardContent modules={course.modules} courseId={course.id} />
       )}
     </div>
   )
 }
 
-function StandardContent({ modules }: { modules: Module[] }) {
+function StandardContent({ modules, courseId }: { modules: Module[]; courseId: string }) {
   if (modules.length === 0) {
     return (
       <Card>
@@ -215,7 +215,7 @@ function StandardContent({ modules }: { modules: Module[] }) {
             <AccordionContent>
               <div className="space-y-2 pt-2 pb-4">
                 {module.lessons.map((lesson) => (
-                  <LessonCard key={lesson.id} lesson={lesson} />
+                  <LessonCard key={lesson.id} lesson={lesson} courseId={courseId} />
                 ))}
               </div>
             </AccordionContent>
@@ -226,9 +226,10 @@ function StandardContent({ modules }: { modules: Module[] }) {
   )
 }
 
-function LessonCard({ lesson }: { lesson: Lesson }) {
+function LessonCard({ lesson, courseId }: { lesson: Lesson; courseId: string }) {
   return (
-    <Card className="bg-muted/30">
+    <Link href={`/my-courses/${courseId}/lessons/${lesson.id}`}>
+      <Card className="bg-muted/30 cursor-pointer hover:bg-muted/50 transition-colors">
       <CardHeader className="py-3 px-4">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
@@ -264,6 +265,7 @@ function LessonCard({ lesson }: { lesson: Lesson }) {
         </CardContent>
       )}
     </Card>
+    </Link>
   )
 }
 
