@@ -341,30 +341,28 @@ function ClassroomInner({
 
       {/* Chat Section */}
       <div className="flex flex-col transition-all duration-300 ease-in-out" style={{ flex: isChatMinimized ? '0 0 auto' : '1 1 0%', minHeight: 0 }}>
-        {/* Chat Header with minimize button */}
-        <div className="flex-none p-3 border-t bg-gray-50 flex items-center justify-between">
+        {/* Chat Header with minimize button - clickable */}
+        <div 
+          className="flex-none p-3 border-t bg-blue-600 flex items-center justify-between cursor-pointer hover:bg-blue-700 transition-colors"
+          onClick={() => setIsChatMinimized(!isChatMinimized)}
+          title={isChatMinimized ? "Expandir chat" : "Minimizar chat"}
+        >
           <div className="flex items-center gap-2">
-            <MessageSquare className="w-4 h-4 text-gray-600" />
+            <MessageSquare className="w-4 h-4 text-white" />
             <div>
-              <h3 className="font-semibold text-gray-900 text-sm">Chat de Clase</h3>
-              <p className={`text-xs text-gray-500 transition-all duration-300 overflow-hidden ${isChatMinimized ? 'max-h-0 opacity-0' : 'max-h-5 opacity-100'}`}>
+              <h3 className="font-semibold text-white text-sm">Chat de Clase</h3>
+              <p className={`text-xs text-blue-100 transition-all duration-300 overflow-hidden ${isChatMinimized ? 'max-h-0 opacity-0' : 'max-h-5 opacity-100'}`}>
                 Correcciones y Vocabulario
               </p>
             </div>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsChatMinimized(!isChatMinimized)}
-            className="h-8 w-8"
-            title={isChatMinimized ? "Expandir chat" : "Minimizar chat"}
-          >
+          <div className="h-8 w-8 flex items-center justify-center">
             {isChatMinimized ? (
-              <ChevronUp className="w-4 h-4" />
+              <ChevronUp className="w-4 h-4 text-white" />
             ) : (
-              <ChevronDown className="w-4 h-4" />
+              <ChevronDown className="w-4 h-4 text-white" />
             )}
-          </Button>
+          </div>
         </div>
 
         {/* Chat Content - Animated visibility */}
