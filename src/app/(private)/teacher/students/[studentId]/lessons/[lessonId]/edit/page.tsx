@@ -1,7 +1,7 @@
 import { auth } from '@/auth'
 import { redirect, notFound } from 'next/navigation'
 import { getStudentLessonForEdit } from '@/lib/actions/student-lessons'
-import { StudentLessonBuilder } from '@/components/teacher/student-lessons/student-lesson-builder'
+import { LessonBuilder } from '@/components/admin/course-builder/lesson-builder/lesson-builder'
 import { mapContentToBlock } from '@/lib/content-mapper'
 
 interface EditLessonPageProps {
@@ -39,18 +39,21 @@ export default async function EditStudentLessonPage({
 
   return (
     <div className="h-[calc(100vh-4rem)]">
-      <StudentLessonBuilder
+      <LessonBuilder
         lesson={{
           id: lesson.id,
           title: lesson.title,
           description: lesson.description,
           duration: lesson.duration,
           blocks: blocks,
-          videoUrl: lesson.videoUrl,
-          summary: lesson.summary,
-          transcription: lesson.transcription,
+          order: lesson.order,
+          moduleId: null,
           isPublished: lesson.isPublished,
+          studentId: lesson.studentId,
+          teacherId: lesson.teacherId,
+          enrollmentId: lesson.enrollmentId,
         }}
+        lessonType="personalized"
         studentName={`${lesson.student?.name || ''} ${lesson.student?.lastName || ''}`}
         courseName={lesson.enrollment?.course.title || ''}
       />

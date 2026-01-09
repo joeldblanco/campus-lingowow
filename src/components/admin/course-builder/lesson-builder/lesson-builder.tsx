@@ -2,7 +2,19 @@
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet'
 import { updateLessonBlocks, upsertLesson } from '@/lib/actions/course-builder'
+import { updateStudentLesson } from '@/lib/actions/student-lessons'
 import { cn } from '@/lib/utils'
 import { Block, Lesson, FileBlock, BlockTemplate } from '@/types/course-builder'
 import {
@@ -22,9 +34,11 @@ import {
   CheckCircle,
   Edit3,
   Eye,
+  EyeOff,
   LayoutGrid,
   Loader2,
   Save,
+  Settings,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState, useCallback } from 'react'
@@ -35,47 +49,40 @@ import { PropertiesPanel } from './properties-panel'
 
 interface LessonBuilderProps {
   lesson: Lesson
-  onUpdateLesson: (updates: Partial<Lesson>) => void
-  onAddBlock: (block: Block) => void
-  onUpdateBlock: (blockId: string, updates: Partial<Block>) => void
-  onRemoveBlock: (blockId: string) => void
-  onReorderBlocks: (blocks: Block[]) => void
+  lessonType?: 'course' | 'personalized'
+  studentName?: string
+  courseName?: string
+  onBack?: () => void
 }
 
 export function LessonBuilder({
-  lesson,
-  onUpdateLesson,
-  onAddBlock,
-  onUpdateBlock,
-  onRemoveBlock,
-  onReorderBlocks,
+  lesson: initialLesson,
+  lessonType = 'course',
+  studentName,
+  courseName,
+  onBack,
 }: LessonBuilderProps) {
+  const router = useRouter()
+  const isPersonalized = lessonType === 'personalized'
+
+  // Internal state management
+  const [lesson, setLesson] = useState({
+    ...initialLesson,
+    blocks: initialLesson.blocks || [],
+  })
+
   const [isEditingTitle, setIsEditingTitle] = useState(false)
   const [titleInput, setTitleInput] = useState(lesson.title)
   const [isPreviewMode, setIsPreviewMode] = useState(false)
   const [isAddBlockModalOpen, setIsAddBlockModalOpen] = useState(false)
-
-  // Sync title input if lesson title updates externally
-  useEffect(() => {
-    setTitleInput(lesson.title)
-  }, [lesson.title])
-
-  const handleTitleSave = () => {
-    if (titleInput.trim() !== lesson.title) {
-      handleUpdateMetadata({ title: titleInput })
-    }
-    setIsEditingTitle(false)
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') handleTitleSave()
-    if (e.key === 'Escape') {
-      setTitleInput(lesson.title)
-      setIsEditingTitle(false)
-    }
-  }
-
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+
+  // Settings form state (for personalized lessons)
+  const [settingsForm, setSettingsForm] = useState({
+    description: lesson.description,
+    duration: lesson.duration,
+  })
 
   // DnD States
   const [activeDragItem, setActiveDragItem] = useState<{
@@ -124,35 +131,46 @@ export function LessonBuilder({
 
   // Auto-save metadata logic
   const metadataSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-  
-  const debouncedMetadataSave = useCallback((updates: Partial<Lesson>) => {
-    setSaveStatus('saving')
-    if (metadataSaveTimeoutRef.current) {
-      clearTimeout(metadataSaveTimeoutRef.current)
-    }
 
-    metadataSaveTimeoutRef.current = setTimeout(async () => {
-      try {
-        const result = await upsertLesson(lesson.moduleId || '', { id: lesson.id, ...updates })
-        if (result.success) {
-          setSaveStatus('saved')
-        } else {
-          setSaveStatus('error')
-          toast.error('Error al guardar metadatos')
-        }
-      } catch (error) {
-        setSaveStatus('error')
-        console.error(error)
+  const debouncedMetadataSave = useCallback(
+    (updates: Partial<Lesson>) => {
+      setSaveStatus('saving')
+      if (metadataSaveTimeoutRef.current) {
+        clearTimeout(metadataSaveTimeoutRef.current)
       }
-    }, 1500)
-  }, [lesson.id, lesson.moduleId])
+
+      metadataSaveTimeoutRef.current = setTimeout(async () => {
+        try {
+          let result
+          if (isPersonalized) {
+            result = await updateStudentLesson({
+              id: lesson.id,
+              ...updates,
+            })
+          } else {
+            result = await upsertLesson(lesson.moduleId || '', { id: lesson.id, ...updates })
+          }
+          if (result.success) {
+            setSaveStatus('saved')
+          } else {
+            setSaveStatus('error')
+            toast.error('Error al guardar metadatos')
+          }
+        } catch (error) {
+          setSaveStatus('error')
+          console.error(error)
+        }
+      }, 1500)
+    },
+    [lesson.id, lesson.moduleId, isPersonalized]
+  )
 
   const handleUpdateMetadata = (updates: Partial<Lesson>) => {
-    onUpdateLesson(updates)
+    setLesson((prev) => ({ ...prev, ...updates }))
     debouncedMetadataSave(updates)
   }
 
-
+  // Auto-save on blocks change
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false
@@ -161,13 +179,26 @@ export function LessonBuilder({
     debouncedSave(lesson.blocks)
   }, [lesson.blocks, debouncedSave])
 
+  const handleTitleSave = () => {
+    if (titleInput.trim() !== lesson.title) {
+      handleUpdateMetadata({ title: titleInput })
+    }
+    setIsEditingTitle(false)
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') handleTitleSave()
+    if (e.key === 'Escape') {
+      setTitleInput(lesson.title)
+      setIsEditingTitle(false)
+    }
+  }
+
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event
-    // Check if it's a library item or a canvas item
     if (active.data.current?.type === 'new-block') {
       setActiveDragItem({ type: 'new-block', template: active.data.current.template })
     } else {
-      // It's a sortable item from the canvas
       const block = lesson.blocks.find((b) => b.id === active.id)
       if (block) {
         setActiveDragItem({ type: 'sortable-block', block })
@@ -179,89 +210,42 @@ export function LessonBuilder({
     const { active, over } = event
     setActiveDragItem(null)
 
-    if (!over) {
-      // If dropped outside everything, should we remove?
-      // Usually, dnd-kit returns null over if dropped outside droppable zones.
-      // If we want "drop outside to cancel" for existing blocks, we can do it here.
-      // But users might accidentally drop. Safer to only remove on explicit cancel zone.
-      return
-    }
+    if (!over) return
 
-    // 0. Handle Cancel Zone (Block Library)
     if (over.id === 'cancel-zone') {
       if (active.data.current?.type !== 'new-block') {
-        // It's an existing block being dragged back to library -> Remove it
-        // We should probably ask for confirmation? Or just do it.
-        // "Drag-to-cancel" usually implies immediate action or visual cue.
-        // The library shows "Drop to remove", so it's explicit.
-        handleRemoveBlockWrapper(active.id as string)
+        handleRemoveBlock(active.id as string)
       }
       return
     }
 
-    // 1. Handling dropping a new block from library
     if (active.data.current?.type === 'new-block') {
       const template = active.data.current.template
       const newBlock: Block = {
         ...template.defaultData,
         id: `block_${Date.now()}`,
-        order: lesson.blocks.length, // Temporary order
+        order: lesson.blocks.length,
       }
 
-      // Determine insertion index
-      let insertIndex = lesson.blocks.length // Default to end
+      let insertIndex = lesson.blocks.length
 
       if (over.id !== 'canvas-droppable') {
-        // Dropped over an existing block
-        const overId = over.id
-        const overIndex = lesson.blocks.findIndex((b) => b.id === overId)
+        const overIndex = lesson.blocks.findIndex((b) => b.id === over.id)
         if (overIndex !== -1) {
-          // Decide if before or after based on collision rect?
-          // Dnd-kit's closestCenter usually snaps to center.
-          // A simple logic: Always insert AFTER the target block for now, or use complex vertical coordinate check.
-          // But sorting strategy uses transform.
-          // Let's just insert AT the index (pushing the target down) or after.
-          // Standard behavior: effectively taking the position of the over item if swapping.
-          // But here we insert.
-          // Let's insert AFTER.
           insertIndex = overIndex + 1
         }
       }
 
-      // Construct new blocks array locally
       const newBlocks = [...lesson.blocks]
       newBlocks.splice(insertIndex, 0, newBlock)
-
-      // Update orders
       const reordered = newBlocks.map((b, idx) => ({ ...b, order: idx }))
 
-      // We need to use onReorderBlocks because we are changing the structure, not just adding to end.
-      // But wait, onAddBlock is usually for "Create".
-      // If we use onReorderBlocks, we need to ensure the DB knows about the new block?
-      // Actually, onReorderBlocks (updateLessonBlocks) expects full block objects usually?
-      // The backend `updateLessonBlocks` performs a transaction: delete all blocks (or diff) and re-create?
-      // Or upsert. If upsert, it's fine.
-      // Checking `updateLessonBlocks` implementation (not visible here but usually safe to pass full list)
-      // However, safely, we might want to call onAddBlock to save it, then reorder?
-      // But persistence is async.
-      // Let's simpler: Just call onReorderBlocks with the new array including the new block.
-      // Assuming onReorderBlocks handles persistence of new items or parent component handles it.
-      // The `debouncedSave` inside LessonBuilder maps `lesson.blocks`.
-      // `onReorderBlocks` updates the `lesson` state in parent.
-      // YES. `onReorderBlocks` (which calls `onUpdateLesson` via parent probably) updates local state.
-      // Then `debouncedSave` kicks in and sends `lesson.blocks` to backend.
-      // So yes, we should update local state fully.
-
-      onReorderBlocks(reordered)
+      setLesson((prev) => ({ ...prev, blocks: reordered }))
       setSelectedBlockId(newBlock.id)
       return
     }
 
-    // 2. Handling Reordering of existing blocks
     if (active.id !== over.id) {
-      // If dropping on Canvas Droppable (empty space) moves to end?
-      // Usually Sortable handles collisions with items.
-
       const oldIndex = lesson.blocks.findIndex((b) => b.id === active.id)
       const newIndex = lesson.blocks.findIndex((b) => b.id === over.id)
 
@@ -270,23 +254,34 @@ export function LessonBuilder({
           ...b,
           order: idx,
         }))
-        onReorderBlocks(newBlocks)
+        setLesson((prev) => ({ ...prev, blocks: newBlocks }))
       }
     }
   }
 
-  const handleRemoveBlockWrapper = async (blockId: string) => {
-    // Check if block has Cloudinary files (file, video, audio blocks)
+  const handleAddBlock = (block: Block) => {
+    setLesson((prev) => ({
+      ...prev,
+      blocks: [...prev.blocks, { ...block, order: prev.blocks.length }],
+    }))
+  }
+
+  const handleUpdateBlock = (blockId: string, updates: Partial<Block>) => {
+    setLesson((prev) => ({
+      ...prev,
+      blocks: prev.blocks.map((b) => (b.id === blockId ? ({ ...b, ...updates } as Block) : b)),
+    }))
+  }
+
+  const handleRemoveBlock = async (blockId: string) => {
     const blockToRemove = lesson.blocks.find((b) => b.id === blockId)
 
-    // Only proceed with cleanup if it's a file block for now
+    // Cloudinary cleanup for file blocks
     if (blockToRemove && blockToRemove.type === 'file') {
       const files = (blockToRemove as FileBlock).files || []
-      // Delete all associated files from Cloudinary
       for (const file of files) {
         if (file.url && file.url.includes('cloudinary.com')) {
           try {
-            // Basic extraction logic similar to properties-panel
             const parts = file.url.split('/upload/')
             if (parts.length === 2) {
               const pathParts = parts[1].split('/')
@@ -295,12 +290,7 @@ export function LessonBuilder({
               )
               const relevantParts = pathParts.slice(versionIndex + 1)
               const publicId = decodeURIComponent(relevantParts.join('/'))
-              // Clean fl_attachment if present (though backend handles clean publicIds usually)
-              if (publicId.startsWith('fl_attachment')) {
-                // Logic to strip if needed, typically standard uploads are cleaner now
-              }
 
-              // Determine resource type
               let resourceType: 'image' | 'video' | 'raw' = 'image'
               const fileWithResource = file as { resourceType?: 'image' | 'video' | 'raw' }
               if (fileWithResource.resourceType) {
@@ -308,29 +298,14 @@ export function LessonBuilder({
               } else {
                 const ext = publicId.split('.').pop()?.toLowerCase()
                 if (
-                  [
-                    'pdf',
-                    'doc',
-                    'docx',
-                    'xls',
-                    'xlsx',
-                    'ppt',
-                    'pptx',
-                    'zip',
-                    'rar',
-                    'txt',
-                    'csv',
-                  ].includes(ext || '')
+                  ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', 'rar', 'txt', 'csv'].includes(ext || '')
                 ) {
                   resourceType = 'raw'
-                } else if (
-                  ['mp4', 'webm', 'mov', 'avi', 'mkv', 'mp3', 'wav', 'ogg'].includes(ext || '')
-                ) {
+                } else if (['mp4', 'webm', 'mov', 'avi', 'mkv', 'mp3', 'wav', 'ogg'].includes(ext || '')) {
                   resourceType = 'video'
                 }
               }
 
-              // Call server action to delete
               const { deleteCloudinaryFile } = await import('@/lib/actions/cloudinary')
               await deleteCloudinaryFile(publicId, resourceType)
             }
@@ -341,12 +316,10 @@ export function LessonBuilder({
       }
     }
 
-    // Also handle single file blocks like video/audio/image
+    // Cloudinary cleanup for media blocks
     if (
       blockToRemove &&
-      (blockToRemove.type === 'video' ||
-        blockToRemove.type === 'audio' ||
-        blockToRemove.type === 'image')
+      (blockToRemove.type === 'video' || blockToRemove.type === 'audio' || blockToRemove.type === 'image')
     ) {
       const url = (blockToRemove as { url?: string }).url
       if (url && url.includes('cloudinary.com')) {
@@ -363,12 +336,8 @@ export function LessonBuilder({
             let resourceType: 'image' | 'video' | 'raw' = 'image'
             if (blockToRemove.type === 'video' || blockToRemove.type === 'audio') {
               resourceType = 'video'
-            } else if (blockToRemove.type === 'image') {
-              resourceType = 'image'
             }
 
-            // Fix: Cloudinary public_ids for images/video do not include extension
-            // We must strip it from the URL-derived ID
             const lastDotIndex = publicId.lastIndexOf('.')
             if (lastDotIndex !== -1) {
               publicId = publicId.substring(0, lastDotIndex)
@@ -383,32 +352,90 @@ export function LessonBuilder({
       }
     }
 
-    onRemoveBlock(blockId)
+    setLesson((prev) => ({
+      ...prev,
+      blocks: prev.blocks.filter((b) => b.id !== blockId).map((b, idx) => ({ ...b, order: idx })),
+    }))
     if (selectedBlockId === blockId) {
       setSelectedBlockId(null)
     }
   }
 
-  const handlePublishToggle = () => {
-    handleUpdateMetadata({ isPublished: !lesson.isPublished })
+  const handlePublishToggle = async () => {
+    const newPublished = !lesson.isPublished
+    setLesson((prev) => ({ ...prev, isPublished: newPublished }))
+    setSaveStatus('saving')
+    try {
+      let result
+      if (isPersonalized) {
+        result = await updateStudentLesson({
+          id: lesson.id,
+          isPublished: newPublished,
+        })
+      } else {
+        result = await upsertLesson(lesson.moduleId || '', { id: lesson.id, isPublished: newPublished })
+      }
+      if (result.success) {
+        setSaveStatus('saved')
+        toast.success(newPublished ? 'Lección publicada' : 'Lección despublicada')
+      } else {
+        setSaveStatus('error')
+        setLesson((prev) => ({ ...prev, isPublished: !newPublished }))
+      }
+    } catch {
+      setSaveStatus('error')
+      setLesson((prev) => ({ ...prev, isPublished: !newPublished }))
+    }
   }
 
   const handleAddBlockFromModal = (template: BlockTemplate) => {
-    // Assuming template is an object with a defaultData property and type
     const newBlock: Block = {
       ...template.defaultData,
       id: `block_${Date.now()}`,
       order: lesson.blocks.length,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      type: template.type as any, // We trust the template has the correct type
+      type: template.type as Block['type'],
     } as Block
-    onAddBlock(newBlock)
+    handleAddBlock(newBlock)
     setSelectedBlockId(newBlock.id)
     setIsAddBlockModalOpen(false)
     toast.success('Bloque agregado')
   }
 
-  const router = useRouter()
+  const handleSaveSettings = async () => {
+    setLesson((prev) => ({
+      ...prev,
+      description: settingsForm.description,
+      duration: settingsForm.duration,
+    }))
+
+    setSaveStatus('saving')
+    try {
+      const result = await updateStudentLesson({
+        id: lesson.id,
+        description: settingsForm.description,
+        duration: settingsForm.duration,
+      })
+      if (result.success) {
+        setSaveStatus('saved')
+        toast.success('Configuración guardada')
+        setIsSettingsOpen(false)
+      } else {
+        setSaveStatus('error')
+        toast.error('Error al guardar la configuración')
+      }
+    } catch {
+      setSaveStatus('error')
+      toast.error('Error al guardar la configuración')
+    }
+  }
+
+  const handleBack = () => {
+    if (onBack) {
+      onBack()
+    } else {
+      router.back()
+    }
+  }
 
   const selectedBlock = lesson.blocks.find((b) => b.id === selectedBlockId) || null
   const OverlayIcon = activeDragItem?.template?.icon
@@ -425,7 +452,7 @@ export function LessonBuilder({
           {/* Header */}
           <div className="h-16 border-b flex items-center justify-between px-4 shrink-0 bg-background z-40">
             <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon" onClick={() => router.back()}>
+              <Button variant="ghost" size="icon" onClick={handleBack}>
                 <ArrowLeft className="h-5 w-5" />
               </Button>
               <div className="flex items-center gap-2 px-3 py-1 bg-muted/30 rounded-md">
@@ -433,10 +460,9 @@ export function LessonBuilder({
                 <span className="font-semibold">Lesson Builder</span>
               </div>
               <div className="h-6 w-px bg-border mx-2" />
-              <div className="flex items-center gap-2 bg-muted/50 px-3 py-1.5 rounded-full text-sm">
-                <span className="text-muted-foreground hidden sm:inline">Lección Actual:</span>
-                {isEditingTitle ? (
-                  <div className="flex items-center gap-1">
+              <div className="flex flex-col">
+                <div className="flex items-center gap-2 text-sm">
+                  {isEditingTitle ? (
                     <input
                       className="bg-transparent border-b border-primary outline-none font-medium w-[200px]"
                       value={titleInput}
@@ -445,17 +471,22 @@ export function LessonBuilder({
                       onKeyDown={handleKeyDown}
                       autoFocus
                     />
-                  </div>
-                ) : (
-                  <>
-                    <span className="font-medium max-w-[200px] truncate block" title={lesson.title}>
-                      {lesson.title}
-                    </span>
-                    <Edit3
-                      className="h-3 w-3 text-muted-foreground ml-1 cursor-pointer hover:text-foreground"
-                      onClick={() => setIsEditingTitle(true)}
-                    />
-                  </>
+                  ) : (
+                    <>
+                      <span className="font-medium max-w-[200px] truncate" title={lesson.title}>
+                        {lesson.title}
+                      </span>
+                      <Edit3
+                        className="h-3 w-3 text-muted-foreground cursor-pointer hover:text-foreground"
+                        onClick={() => setIsEditingTitle(true)}
+                      />
+                    </>
+                  )}
+                </div>
+                {isPersonalized && studentName && courseName && (
+                  <span className="text-xs text-muted-foreground">
+                    Para {studentName} • {courseName}
+                  </span>
                 )}
               </div>
             </div>
@@ -471,7 +502,7 @@ export function LessonBuilder({
                   ) : saveStatus === 'error' ? (
                     <>
                       <AlertCircle className="h-4 w-4 text-destructive" />
-                      <span className="text-destructive">Error al guardar</span>
+                      <span className="text-destructive">Error</span>
                     </>
                   ) : (
                     <>
@@ -480,6 +511,51 @@ export function LessonBuilder({
                     </>
                   )}
                 </div>
+              )}
+
+              {isPersonalized && (
+                <Sheet open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="outline" size="sm" className="gap-2">
+                      <Settings className="h-4 w-4" />
+                      <span className="hidden sm:inline">Configuración</span>
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent className="overflow-y-auto">
+                    <SheetHeader>
+                      <SheetTitle>Configuración de la Lección</SheetTitle>
+                      <SheetDescription>Configura los detalles adicionales de la lección</SheetDescription>
+                    </SheetHeader>
+                    <div className="space-y-4 mt-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="description">Descripción</Label>
+                        <Textarea
+                          id="description"
+                          value={settingsForm.description}
+                          onChange={(e) => setSettingsForm((prev) => ({ ...prev, description: e.target.value }))}
+                          placeholder="Describe el contenido de esta lección..."
+                          rows={3}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="duration">Duración (minutos)</Label>
+                        <Input
+                          id="duration"
+                          type="number"
+                          min={1}
+                          value={settingsForm.duration}
+                          onChange={(e) =>
+                            setSettingsForm((prev) => ({ ...prev, duration: parseInt(e.target.value) || 30 }))
+                          }
+                        />
+                      </div>
+                      <Button onClick={handleSaveSettings} className="w-full">
+                        <Save className="h-4 w-4 mr-2" />
+                        Guardar Configuración
+                      </Button>
+                    </div>
+                  </SheetContent>
+                </Sheet>
               )}
 
               <Button
@@ -492,35 +568,27 @@ export function LessonBuilder({
                 }}
               >
                 <Eye className="h-4 w-4" />
-                {isPreviewMode ? 'Salir de Vista Previa' : 'Vista Previa'}
+                {isPreviewMode ? 'Editar' : 'Vista Previa'}
               </Button>
 
               {!isPreviewMode && (
-                <>
-                  <div className="p-2 bg-muted rounded-md pointer-events-none">
-                    {activeDragItem?.template?.icon && <div className="h-4 w-4" />}
-                  </div>
-                  <Button
-                    size="sm"
-                    className={cn(
-                      'gap-2 min-w-[100px]',
-                      lesson.isPublished ? 'bg-green-600 hover:bg-green-700' : ''
-                    )}
-                    onClick={handlePublishToggle}
-                  >
-                    {lesson.isPublished ? (
-                      <>
-                        <CheckCircle className="h-4 w-4" />
-                        Publicado
-                      </>
-                    ) : (
-                      <>
-                        <Save className="h-4 w-4" />
-                        Publicar
-                      </>
-                    )}
-                  </Button>
-                </>
+                <Button
+                  size="sm"
+                  className={cn('gap-2 min-w-[100px]', lesson.isPublished ? 'bg-green-600 hover:bg-green-700' : '')}
+                  onClick={handlePublishToggle}
+                >
+                  {lesson.isPublished ? (
+                    <>
+                      <EyeOff className="h-4 w-4" />
+                      Despublicar
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle className="h-4 w-4" />
+                      Publicar
+                    </>
+                  )}
+                </Button>
               )}
             </div>
           </div>
@@ -544,21 +612,18 @@ export function LessonBuilder({
                 selectedBlockId={isPreviewMode ? null : selectedBlockId}
                 onSelectBlock={!isPreviewMode ? setSelectedBlockId : () => {}}
                 readOnly={isPreviewMode}
-                onAddBlockClick={() => {
-                  // Functionality for + button in empty state
-                  setIsAddBlockModalOpen(true)
-                }}
-                onUpdateBlock={onUpdateBlock}
-                onRemoveBlock={handleRemoveBlockWrapper}
+                onAddBlockClick={() => setIsAddBlockModalOpen(true)}
+                onUpdateBlock={handleUpdateBlock}
+                onRemoveBlock={handleRemoveBlock}
               />
             </div>
 
-            {/* Right Sidebar: Properties Panel - Hide for grammar-visualizer (edits inline) */}
+            {/* Right Sidebar: Properties Panel */}
             {!isPreviewMode && selectedBlock && selectedBlock.type !== 'grammar-visualizer' && (
               <PropertiesPanel
                 block={selectedBlock}
-                onUpdate={(updates) => onUpdateBlock(selectedBlock.id, updates)}
-                onRemove={() => handleRemoveBlockWrapper(selectedBlock.id)}
+                onUpdate={(updates) => handleUpdateBlock(selectedBlock.id, updates)}
+                onRemove={() => handleRemoveBlock(selectedBlock.id)}
                 onClose={() => setSelectedBlockId(null)}
               />
             )}
@@ -576,11 +641,12 @@ export function LessonBuilder({
           ) : null}
           {activeDragItem?.type === 'sortable-block' ? (
             <div className="p-4 bg-background border border-primary rounded-lg shadow-xl w-64 opacity-90 z-50">
-              Drag to reorder
+              Arrastra para reordenar
             </div>
           ) : null}
         </DragOverlay>
       </DndContext>
+
       {/* Add Block Modal */}
       <Dialog open={isAddBlockModalOpen} onOpenChange={setIsAddBlockModalOpen}>
         <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">

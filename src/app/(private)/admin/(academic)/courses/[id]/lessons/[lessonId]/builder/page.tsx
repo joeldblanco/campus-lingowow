@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { Lesson, Block } from '@/types/course-builder'
+import { Lesson } from '@/types/course-builder'
 import { LessonBuilder } from '@/components/admin/course-builder/lesson-builder/lesson-builder'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, Loader2 } from 'lucide-react'
@@ -25,9 +25,6 @@ export default function LessonBuilderPage() {
           setLesson(result.lesson)
         } else {
           toast.error(result.error || 'Error al cargar la lección')
-          if (result.error === 'Lesson not found or unauthorized') {
-            // Optionally redirect or show specific error
-          }
         }
       } catch (error) {
         console.error(error)
@@ -39,36 +36,6 @@ export default function LessonBuilderPage() {
 
     fetchLesson()
   }, [params.lessonId])
-
-  const handleUpdateLesson = (updates: Partial<Lesson>) => {
-    if (!lesson) return
-    setLesson({ ...lesson, ...updates })
-  }
-
-  const handleAddBlock = (block: Block) => {
-    if (!lesson) return
-    const newBlocks = [...lesson.blocks, block]
-    setLesson({ ...lesson, blocks: newBlocks })
-  }
-
-  const handleUpdateBlock = (blockId: string, updates: Partial<Block>) => {
-    if (!lesson) return
-    const newBlocks = lesson.blocks.map(block =>
-      block.id === blockId ? { ...block, ...updates } as Block : block
-    )
-    setLesson({ ...lesson, blocks: newBlocks })
-  }
-
-  const handleRemoveBlock = (blockId: string) => {
-    if (!lesson) return
-    const newBlocks = lesson.blocks.filter(block => block.id !== blockId)
-    setLesson({ ...lesson, blocks: newBlocks })
-  }
-
-  const handleReorderBlocks = (blocks: Block[]) => {
-    if (!lesson) return
-    setLesson({ ...lesson, blocks })
-  }
 
   if (isLoading) {
     return (
@@ -97,14 +64,7 @@ export default function LessonBuilderPage() {
 
   return (
     <div className="h-[calc(100vh-64px)] overflow-hidden flex flex-col">
-      <LessonBuilder
-        lesson={lesson}
-        onUpdateLesson={handleUpdateLesson}
-        onAddBlock={handleAddBlock}
-        onUpdateBlock={handleUpdateBlock}
-        onRemoveBlock={handleRemoveBlock}
-        onReorderBlocks={handleReorderBlocks}
-      />
+      <LessonBuilder lesson={lesson} lessonType="course" />
     </div>
   )
 }
