@@ -27,6 +27,7 @@ export function CollaborativeContentWrapper({
   // and to access current value in selectionchange callback
   const isSelectingRef = useRef(false)
   const [isSelecting, setIsSelecting] = useState(false)
+  const selectionTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Track mouse movement
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
@@ -43,6 +44,11 @@ export function CollaborativeContentWrapper({
   // Track mouse down/up to know when user is actively selecting
   useEffect(() => {
     const handleMouseDown = () => {
+      // Cancel any pending timeout from previous selection
+      if (selectionTimeoutRef.current) {
+        clearTimeout(selectionTimeoutRef.current)
+        selectionTimeoutRef.current = null
+      }
       isSelectingRef.current = true
       setIsSelecting(true)
     }
@@ -50,7 +56,7 @@ export function CollaborativeContentWrapper({
       // Set ref to false immediately so selectionchange can process
       isSelectingRef.current = false
       // Small delay for the UI state to avoid flickering
-      setTimeout(() => setIsSelecting(false), 50)
+      selectionTimeoutRef.current = setTimeout(() => setIsSelecting(false), 50)
     }
 
     document.addEventListener('mousedown', handleMouseDown)
@@ -59,6 +65,9 @@ export function CollaborativeContentWrapper({
     return () => {
       document.removeEventListener('mousedown', handleMouseDown)
       document.removeEventListener('mouseup', handleMouseUp)
+      if (selectionTimeoutRef.current) {
+        clearTimeout(selectionTimeoutRef.current)
+      }
     }
   }, [])
 
