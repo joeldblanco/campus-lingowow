@@ -84,6 +84,19 @@ export function LessonBuilder({
     duration: lesson.duration,
   })
 
+  // Sync internal state when initialLesson prop changes
+  useEffect(() => {
+    setLesson({
+      ...initialLesson,
+      blocks: initialLesson.blocks || [],
+    })
+    setTitleInput(initialLesson.title)
+    setSettingsForm({
+      description: initialLesson.description,
+      duration: initialLesson.duration,
+    })
+  }, [initialLesson])
+
   // DnD States
   const [activeDragItem, setActiveDragItem] = useState<{
     type: string
