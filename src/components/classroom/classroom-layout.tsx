@@ -72,7 +72,7 @@ export function ClassroomLayout({
           >
             <Clock className="w-4 h-4" />
             <span>{timeLeft}</span>
-            {isGracePeriod && <span className="text-xs">(gracia)</span>}
+            {isGracePeriod && <span className="text-xs">(10 min adicionales)</span>}
           </div>
         </div>
       </header>
