@@ -84,7 +84,7 @@ export function LessonBuilder({
     duration: lesson.duration,
   })
 
-  // Sync internal state when initialLesson prop changes
+  // Sync internal state when initialLesson prop changes (by id)
   useEffect(() => {
     setLesson({
       ...initialLesson,
@@ -95,7 +95,7 @@ export function LessonBuilder({
       description: initialLesson.description,
       duration: initialLesson.duration,
     })
-  }, [initialLesson])
+  }, [initialLesson.id])
 
   // DnD States
   const [activeDragItem, setActiveDragItem] = useState<{
