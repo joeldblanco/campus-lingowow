@@ -47,11 +47,10 @@ export function CollaborativeContentWrapper({
       setIsSelecting(true)
     }
     const handleMouseUp = () => {
-      // Small delay to let the final selection settle before processing
-      setTimeout(() => {
-        isSelectingRef.current = false
-        setIsSelecting(false)
-      }, 100)
+      // Set ref to false immediately so selectionchange can process
+      isSelectingRef.current = false
+      // Small delay for the UI state to avoid flickering
+      setTimeout(() => setIsSelecting(false), 50)
     }
 
     document.addEventListener('mousedown', handleMouseDown)
