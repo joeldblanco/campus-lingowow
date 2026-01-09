@@ -34,6 +34,9 @@ export function CollaborativeContentWrapper({
 
   // Pending selection waiting for user to click "Highlight" button
   const [pendingSelection, setPendingSelection] = useState<PendingSelection | null>(null)
+  
+  // Track if user is actively selecting (mouse is down)
+  const isSelectingRef = useRef(false)
 
   // Track mouse movement
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
@@ -47,9 +50,32 @@ export function CollaborativeContentWrapper({
     // Send cursor leave event - handled by the context
   }, [])
 
+  // Track mouse down/up to know when user is actively selecting
+  useEffect(() => {
+    const handleMouseDown = () => {
+      isSelectingRef.current = true
+    }
+    const handleMouseUp = () => {
+      isSelectingRef.current = false
+    }
+
+    document.addEventListener('mousedown', handleMouseDown)
+    document.addEventListener('mouseup', handleMouseUp)
+
+    return () => {
+      document.removeEventListener('mousedown', handleMouseDown)
+      document.removeEventListener('mouseup', handleMouseUp)
+    }
+  }, [])
+
   // Track text selection - store locally but don't send until user clicks Highlight
   useEffect(() => {
     const handleSelectionChange = () => {
+      // Don't show button while user is actively selecting
+      if (isSelectingRef.current) {
+        return
+      }
+
       const selection = window.getSelection()
 
       // Only process if there's a non-collapsed selection
@@ -124,6 +150,16 @@ export function CollaborativeContentWrapper({
         const rangeRect = range.getBoundingClientRect()
         const containerRect = container.getBoundingClientRect()
 
+        // Calculate button position with boundary checking
+        const buttonWidth = 100 // Approximate button width
+        const buttonHalfWidth = buttonWidth / 2
+        let leftPos = rangeRect.left - containerRect.left + (rangeRect.width / 2)
+        
+        // Clamp to container bounds
+        const minLeft = buttonHalfWidth + 8
+        const maxLeft = containerRect.width - buttonHalfWidth - 8
+        leftPos = Math.max(minLeft, Math.min(maxLeft, leftPos))
+
         setPendingSelection({
           startOffset,
           endOffset,
@@ -131,7 +167,7 @@ export function CollaborativeContentWrapper({
           text: selectedText,
           rect: {
             top: rangeRect.bottom - containerRect.top + 8,
-            left: rangeRect.left - containerRect.left + (rangeRect.width / 2),
+            left: leftPos,
           }
         })
       }
