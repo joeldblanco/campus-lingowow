@@ -1,7 +1,7 @@
 'use client'
 
 import { pusherClient } from '@/lib/pusher'
-import { useEffect, useRef, useMemo } from 'react'
+import { useEffect, useRef } from 'react'
 
 type EventCallback<T = unknown> = (data: T) => void
 
@@ -14,10 +14,8 @@ export function usePusherChannel(
   channelName: string | null,
   events: EventBinding[]
 ) {
-  const boundEventsRef = useRef<Map<string, EventCallback>>(new Map())
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const stableEvents = useMemo(() => events, [JSON.stringify(events.map(e => e.event))])
+  const eventsRef = useRef(events)
+  eventsRef.current = events
 
   useEffect(() => {
     if (!channelName) return
@@ -27,23 +25,24 @@ export function usePusherChannel(
       channel = pusherClient.subscribe(channelName)
     }
 
-    const currentBoundEvents = boundEventsRef.current
+    const handlers = new Map<string, EventCallback>()
 
-    stableEvents.forEach(({ event, callback }) => {
-      if (currentBoundEvents.has(event)) {
-        channel.unbind(event, currentBoundEvents.get(event))
+    eventsRef.current.forEach(({ event, callback }) => {
+      const handler: EventCallback = (data) => {
+        const currentCallback = eventsRef.current.find(e => e.event === event)?.callback
+        if (currentCallback) {
+          currentCallback(data)
+        } else {
+          callback(data)
+        }
       }
-      channel.bind(event, callback)
-      currentBoundEvents.set(event, callback)
+      channel.bind(event, handler)
+      handlers.set(event, handler)
     })
 
     return () => {
-      stableEvents.forEach(({ event }) => {
-        const cb = currentBoundEvents.get(event)
-        if (cb) {
-          channel.unbind(event, cb)
-          currentBoundEvents.delete(event)
-        }
+      handlers.forEach((handler, event) => {
+        channel.unbind(event, handler)
       })
 
       const allChannels = pusherClient.allChannels()
@@ -53,7 +52,7 @@ export function usePusherChannel(
         pusherClient.unsubscribe(channelName)
       }
     }
-  }, [channelName, stableEvents])
+  }, [channelName])
 }
 
 export type { EventBinding, EventCallback }
