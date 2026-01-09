@@ -37,6 +37,9 @@ export function CollaborativeContentWrapper({
   
   // Track if user is actively selecting (mouse is down)
   const isSelectingRef = useRef(false)
+  
+  // Track last processed selection to avoid redundant state updates
+  const lastSelectionRef = useRef<{start: number, end: number} | null>(null)
 
   // Track mouse movement
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
@@ -160,6 +163,13 @@ export function CollaborativeContentWrapper({
         }
 
         if (startOffset !== -1 && endOffset !== -1) {
+          // Skip if this is the same selection we already processed
+          if (lastSelectionRef.current?.start === startOffset && 
+              lastSelectionRef.current?.end === endOffset) {
+            return
+          }
+          lastSelectionRef.current = { start: startOffset, end: endOffset }
+
           // Get position for the floating button
           const rangeRect = range.getBoundingClientRect()
           const containerRect = container.getBoundingClientRect()
