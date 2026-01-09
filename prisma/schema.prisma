@@ -385,7 +385,6 @@ model Lesson {
   order       Int     @default(0)
   moduleId    String? // Opcional: null para lecciones personalizadas
   duration    Int     @default(30) // Duración estimada de la lección en minutos
-  content     String  @default("[]") // JSON con bloques de contenido para Course Builder
   isPublished Boolean @default(false) // Estado de publicación de la lección
   
   // Campos para el diseño del reproductor

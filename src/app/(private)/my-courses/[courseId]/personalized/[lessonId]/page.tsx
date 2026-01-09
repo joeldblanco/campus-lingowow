@@ -31,38 +31,6 @@ export default async function PersonalizedLessonPage({
 
   const lesson = result.data
 
-  // Adaptar el formato de la lección personalizada al formato esperado por LessonContent
-  const adaptedLesson = {
-    id: lesson.id,
-    title: lesson.title,
-    description: lesson.description,
-    order: lesson.order,
-    moduleId: '', // No tiene módulo, es personalizada
-    duration: lesson.duration,
-    content: lesson.content,
-    isPublished: lesson.isPublished,
-    videoUrl: lesson.videoUrl,
-    summary: lesson.summary,
-    transcription: lesson.transcription,
-    createdAt: lesson.createdAt,
-    updatedAt: lesson.updatedAt,
-    module: {
-      id: '',
-      title: `Lección de ${lesson.teacher?.name || 'Profesor'}`,
-      course: {
-        id: courseId,
-        title: lesson.enrollment?.course.title || '',
-      },
-    },
-    contents: lesson.contents.map((content: typeof lesson.contents[number]) => ({
-      ...content,
-      lessonId: lesson.id,
-      createdAt: content.createdAt,
-      updatedAt: content.updatedAt,
-    })),
-    activities: [],
-  }
-
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       <LessonHeader
@@ -76,7 +44,7 @@ export default async function PersonalizedLessonPage({
 
       <main className="container mx-auto px-4 py-8 max-w-5xl space-y-8">
         <Suspense fallback={<LessonLoadingSkeleton />}>
-          <LessonContent lesson={adaptedLesson as never} />
+          <LessonContent lesson={lesson as never} />
         </Suspense>
       </main>
     </div>

@@ -52,7 +52,6 @@ export function CreateLessonWrapper({
         studentId,
         teacherId,
         enrollmentId,
-        content: '[]',
         isPublished: false,
       })
 

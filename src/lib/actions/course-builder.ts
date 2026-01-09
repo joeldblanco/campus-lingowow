@@ -1,16 +1,14 @@
 'use server'
 
-import { db } from '@/lib/db'
-import { Prisma } from '@prisma/client'
 import { auth } from '@/auth'
-import { revalidatePath } from 'next/cache'
+import { db } from '@/lib/db'
+import { Block, BlockType, CourseBuilderData, Lesson, Module } from '@/types/course-builder'
 import type {
-  Module as PrismaModule,
-  Lesson as PrismaLesson,
-  Content as PrismaContent,
   ContentType,
+  Content as PrismaContent
 } from '@prisma/client'
-import { CourseBuilderData, Module, Lesson, Block, BlockType } from '@/types/course-builder'
+import { Prisma } from '@prisma/client'
+import { revalidatePath } from 'next/cache'
 
 // Update course information
 export async function updateCourseInfo(courseId: string, updates: Partial<CourseBuilderData>) {
@@ -27,7 +25,24 @@ export async function updateCourseInfo(courseId: string, updates: Partial<Course
       include: {
         modules: {
           include: {
-            lessons: true,
+            lessons: {
+              include: {
+                contents: {
+                  where: { parentId: null },
+                  orderBy: { order: 'asc' },
+                  include: {
+                    children: {
+                      orderBy: { order: 'asc' },
+                      include: {
+                        children: {
+                          orderBy: { order: 'asc' },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
           },
           orderBy: { order: 'asc' },
         },
@@ -52,7 +67,24 @@ export async function updateCourseInfo(courseId: string, updates: Partial<Course
       include: {
         modules: {
           include: {
-            lessons: true,
+            lessons: {
+              include: {
+                contents: {
+                  where: { parentId: null },
+                  orderBy: { order: 'asc' },
+                  include: {
+                    children: {
+                      orderBy: { order: 'asc' },
+                      include: {
+                        children: {
+                          orderBy: { order: 'asc' },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
           },
           orderBy: { order: 'asc' },
         },
@@ -84,7 +116,7 @@ export async function updateCourseInfo(courseId: string, updates: Partial<Course
       image: updatedCourse.image || '',
       isPublished: updatedCourse.isPublished,
       createdById: updatedCourse.createdById,
-      modules: updatedCourse.modules.map((module: PrismaModule & { lessons: PrismaLesson[] }) => ({
+      modules: updatedCourse.modules.map((module) => ({
         id: module.id,
         title: module.title,
         description: module.description || '',
@@ -92,13 +124,13 @@ export async function updateCourseInfo(courseId: string, updates: Partial<Course
         order: module.order,
         objectives: module.objectives || '',
         isPublished: module.isPublished,
-        lessons: module.lessons.map((lesson: PrismaLesson) => ({
+        lessons: module.lessons.map((lesson) => ({
           id: lesson.id,
           title: lesson.title,
           description: lesson.description || '',
           order: lesson.order,
           duration: lesson.duration,
-          blocks: lesson.content ? JSON.parse(lesson.content) : [],
+          blocks: lesson.contents.map((c) => mapContentToBlock(c)),
           moduleId: lesson.moduleId,
           isPublished: lesson.isPublished,
         })),
@@ -298,7 +330,6 @@ export async function upsertLesson(moduleId: string, lessonData: Partial<Lesson>
           description: lessonData.description,
           order: lessonData.order,
           duration: lessonData.duration,
-          content: lessonData.blocks ? JSON.stringify(lessonData.blocks) : undefined,
           isPublished: lessonData.isPublished,
         },
       })
@@ -310,7 +341,6 @@ export async function upsertLesson(moduleId: string, lessonData: Partial<Lesson>
           description: lessonData.description || '',
           order: lessonData.order || 1,
           duration: lessonData.duration || 30,
-          content: lessonData.blocks ? JSON.stringify(lessonData.blocks) : '[]',
           isPublished: lessonData.isPublished || false,
           moduleId,
         },
@@ -487,18 +517,20 @@ export async function updateLessonBlocks(lessonId: string, blocks: Block[]) {
       throw new Error('Lesson not found')
     }
 
-    // console.log('Auth check:', {
-    //   userId,
-    //   courseOwnerId: lesson.module?.course.createdById,
-    //   lessonId
-    // })
+    // Authorization check: either course owner (for module lessons) or teacher (for personalized lessons)
+    const isModuleLesson = lesson.module !== null
+    const isPersonalizedLesson = lesson.teacherId !== null
 
-    if (lesson.module && lesson.module.course.createdById !== userId) {
-      console.error(
-        `Unauthorized: User ${userId} is not owner of course ${lesson.module.course.createdById}`
-      )
-      // Temporary bypass for debugging if needed, or check for ADMIN role
-      // throw new Error('Unauthorized')
+    if (isModuleLesson && lesson.module!.course.createdById !== userId) {
+      throw new Error('Unauthorized')
+    }
+
+    if (isPersonalizedLesson && lesson.teacherId !== userId) {
+      throw new Error('Unauthorized')
+    }
+
+    if (!isModuleLesson && !isPersonalizedLesson) {
+      throw new Error('Unauthorized')
     }
 
     await db.$transaction(async (tx) => {
@@ -738,7 +770,23 @@ export async function getLessonForBuilder(lessonId: string) {
       },
     })
 
-    if (!lesson || !lesson.module || lesson.module.course.createdById !== userId) {
+    if (!lesson) {
+      throw new Error('Lesson not found or unauthorized')
+    }
+
+    // Authorization check: either course owner (for module lessons) or teacher (for personalized lessons)
+    const isModuleLesson = lesson.module !== null
+    const isPersonalizedLesson = lesson.teacherId !== null
+
+    if (isModuleLesson && lesson.module!.course.createdById !== userId) {
+      throw new Error('Lesson not found or unauthorized')
+    }
+
+    if (isPersonalizedLesson && lesson.teacherId !== userId) {
+      throw new Error('Lesson not found or unauthorized')
+    }
+
+    if (!isModuleLesson && !isPersonalizedLesson) {
       throw new Error('Lesson not found or unauthorized')
     }
 

@@ -137,7 +137,6 @@ export interface CreateStudentLessonInput {
   description?: string
   order?: number
   duration?: number
-  content?: string // JSON string de bloques
   videoUrl?: string
   summary?: string
   transcription?: string
@@ -154,7 +153,6 @@ export interface UpdateStudentLessonInput {
   description?: string
   order?: number
   duration?: number
-  content?: string
   videoUrl?: string
   summary?: string
   transcription?: string

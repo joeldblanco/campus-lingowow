@@ -2,6 +2,7 @@ import { auth } from '@/auth'
 import { redirect, notFound } from 'next/navigation'
 import { getStudentLessonForEdit } from '@/lib/actions/student-lessons'
 import { StudentLessonBuilder } from '@/components/teacher/student-lessons/student-lesson-builder'
+import { mapContentToBlock } from '@/lib/content-mapper'
 
 interface EditLessonPageProps {
   params: Promise<{
@@ -33,6 +34,9 @@ export default async function EditStudentLessonPage({
 
   const lesson = result.data
 
+  // Map contents to blocks
+  const blocks = lesson.contents?.map((c) => mapContentToBlock(c as Parameters<typeof mapContentToBlock>[0])) || []
+
   return (
     <div className="h-[calc(100vh-4rem)]">
       <StudentLessonBuilder
@@ -41,7 +45,7 @@ export default async function EditStudentLessonPage({
           title: lesson.title,
           description: lesson.description,
           duration: lesson.duration,
-          content: lesson.content,
+          blocks: blocks,
           videoUrl: lesson.videoUrl,
           summary: lesson.summary,
           transcription: lesson.transcription,

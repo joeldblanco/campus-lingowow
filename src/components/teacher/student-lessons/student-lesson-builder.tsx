@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { updateStudentLesson } from '@/lib/actions/student-lessons'
+import { updateLessonBlocks } from '@/lib/actions/course-builder'
 import { cn } from '@/lib/utils'
 import { Block, BlockTemplate } from '@/types/course-builder'
 import {
@@ -50,7 +51,7 @@ interface StudentLessonData {
   id: string
   title: string
   description: string
-  content: string // JSON string of blocks
+  blocks: Block[] // Blocks from contents relation
   duration: number
   videoUrl: string | null
   summary: string | null
@@ -72,20 +73,10 @@ export function StudentLessonBuilder({
   onBack,
 }: StudentLessonBuilderProps) {
   const router = useRouter()
-  
-  // Parse blocks from content JSON
-  const parseBlocks = (content: string): Block[] => {
-    try {
-      const parsed = JSON.parse(content)
-      return Array.isArray(parsed) ? parsed : []
-    } catch {
-      return []
-    }
-  }
 
   const [lesson, setLesson] = useState({
     ...initialLesson,
-    blocks: parseBlocks(initialLesson.content),
+    blocks: initialLesson.blocks || [],
   })
 
   const [isEditingTitle, setIsEditingTitle] = useState(false)
@@ -133,16 +124,22 @@ export function StudentLessonBuilder({
 
       saveTimeoutRef.current = setTimeout(async () => {
         try {
-          const result = await updateStudentLesson({
-            id: lesson.id,
-            content: JSON.stringify(blocks),
-            ...(metadata?.description !== undefined && { description: metadata.description }),
-            ...(metadata?.duration !== undefined && { duration: metadata.duration }),
-            ...(metadata?.videoUrl !== undefined && { videoUrl: metadata.videoUrl || undefined }),
-            ...(metadata?.summary !== undefined && { summary: metadata.summary || undefined }),
-            ...(metadata?.transcription !== undefined && { transcription: metadata.transcription || undefined }),
-          })
-          if (result.success) {
+          // Save blocks to contents table
+          const blocksResult = await updateLessonBlocks(lesson.id, blocks)
+          
+          // Save metadata if provided
+          if (metadata && Object.keys(metadata).length > 0) {
+            await updateStudentLesson({
+              id: lesson.id,
+              ...(metadata?.description !== undefined && { description: metadata.description }),
+              ...(metadata?.duration !== undefined && { duration: metadata.duration }),
+              ...(metadata?.videoUrl !== undefined && { videoUrl: metadata.videoUrl || undefined }),
+              ...(metadata?.summary !== undefined && { summary: metadata.summary || undefined }),
+              ...(metadata?.transcription !== undefined && { transcription: metadata.transcription || undefined }),
+            })
+          }
+          
+          if (blocksResult.success) {
             setSaveStatus('saved')
           } else {
             setSaveStatus('error')
