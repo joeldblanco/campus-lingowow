@@ -480,6 +480,7 @@ export async function getCourseContentForTeacher(courseId: string, teacherId: st
       videoUrl: string | null
       summary: string | null
       studentName: string
+      studentId: string
       enrollmentId: string
     }> = []
 
@@ -505,7 +506,7 @@ export async function getCourseContentForTeacher(courseId: string, teacherId: st
         orderBy: { order: 'asc' },
       })
 
-      personalizedLessons = lessons.map((l: { id: string; title: string; description: string; order: number; duration: number; isPublished: boolean; videoUrl: string | null; summary: string | null; enrollmentId: string | null; enrollment: { student: { name: string; lastName: string | null } } | null }) => ({
+      personalizedLessons = lessons.map((l: { id: string; title: string; description: string; order: number; duration: number; isPublished: boolean; videoUrl: string | null; summary: string | null; studentId: string | null; enrollmentId: string | null; enrollment: { student: { name: string; lastName: string | null } } | null }) => ({
         id: l.id,
         title: l.title,
         description: l.description,
@@ -515,6 +516,7 @@ export async function getCourseContentForTeacher(courseId: string, teacherId: st
         videoUrl: l.videoUrl,
         summary: l.summary,
         studentName: l.enrollment ? `${l.enrollment.student.name} ${l.enrollment.student.lastName || ''}`.trim() : '',
+        studentId: l.studentId || '',
         enrollmentId: l.enrollmentId || '',
       }))
     }

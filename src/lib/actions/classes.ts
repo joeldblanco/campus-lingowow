@@ -19,6 +19,7 @@ export interface ClassBookingWithDetails {
   cancelledBy: string | null
   completedAt: Date | null
   creditId: string | null
+  isPayable: boolean
   student: {
     id: string
     name: string
@@ -1092,8 +1093,6 @@ export async function getEnrollmentsWithTeachers() {
 
 /**
  * Marca o desmarca una clase como válida para pago al profesor
- * Esto permite a los administradores marcar manualmente clases como pagables
- * incluso si no se cumplieron los criterios automáticos (ambas asistencias)
  */
 export async function toggleClassPayable(classId: string, isPayable: boolean) {
   try {

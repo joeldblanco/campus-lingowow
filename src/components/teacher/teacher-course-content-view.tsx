@@ -60,6 +60,7 @@ interface PersonalizedLesson {
   videoUrl: string | null
   summary: string | null
   studentName: string
+  studentId: string
   enrollmentId: string
 }
 
@@ -300,7 +301,7 @@ function PersonalizedContent({ lessons }: { lessons: PersonalizedLesson[] }) {
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">Lecciones Personalizadas</h2>
         <Link href="/teacher/students">
-          <Button variant="outline" size="sm">
+          <Button size="sm">
             Crear Nueva Lección
           </Button>
         </Link>
@@ -319,9 +320,10 @@ function PersonalizedContent({ lessons }: { lessons: PersonalizedLesson[] }) {
             <CardContent>
               <div className="space-y-2">
                 {studentLessons.map((lesson) => (
-                  <div
+                  <Link
                     key={lesson.id}
-                    className="flex items-center justify-between p-3 rounded-lg bg-muted/30"
+                    href={`/teacher/students/${lesson.studentId}/lessons/${lesson.id}/edit`}
+                    className="flex items-center justify-between p-3 rounded-lg bg-muted/30 cursor-pointer"
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-6 h-6 rounded bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 text-xs font-medium">
@@ -347,7 +349,7 @@ function PersonalizedContent({ lessons }: { lessons: PersonalizedLesson[] }) {
                         {lesson.duration} min
                       </span>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </CardContent>

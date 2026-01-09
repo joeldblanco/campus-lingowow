@@ -716,9 +716,11 @@ export async function calculateTeacherMonthlyRevenue(
       },
     })
 
-    // Filtrar clases pagables: una clase es pagable si el profesor asistió
-    // (si el estudiante no vino, no es culpa del profesor)
+    // Filtrar clases pagables:
+    // 1. Si está marcada manualmente como pagable (isPayable = true), es pagable
+    // 2. Si no, es pagable si el profesor asistió (sin importar si el estudiante asistió)
     const payableClasses = completedClasses.filter((classBooking) => {
+      if (classBooking.isPayable) return true
       const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
       return hasTeacherAttendance
     })
@@ -854,9 +856,11 @@ export async function calculateTeacherTotalRevenue(
       },
     })
 
-    // Filtrar clases pagables: una clase es pagable si el profesor asistió
-    // (si el estudiante no vino, no es culpa del profesor)
+    // Filtrar clases pagables:
+    // 1. Si está marcada manualmente como pagable (isPayable = true), es pagable
+    // 2. Si no, es pagable si el profesor asistió (sin importar si el estudiante asistió)
     const payableClasses = completedClasses.filter((classBooking) => {
+      if (classBooking.isPayable) return true
       const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
       return hasTeacherAttendance
     })
