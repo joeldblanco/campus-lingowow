@@ -3,6 +3,12 @@ import { notFound } from "next/navigation";
 import CourseDetailsClient from "./course-details-client";
 import { Lexend } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Detalles del Curso | Admin | Lingowow',
+  description: 'Ver y gestionar los detalles del curso',
+};
 
 const lexend = Lexend({ subsets: ["latin"] });
 

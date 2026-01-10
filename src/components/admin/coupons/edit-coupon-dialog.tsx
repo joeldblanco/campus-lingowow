@@ -152,6 +152,16 @@ export function EditCouponDialog({ coupon, open, onOpenChange }: EditCouponDialo
     }
   }, [open])
 
+  // Función para convertir fecha UTC a formato local para datetime-local input
+  const formatDateToLocalInput = (date: Date | null): string => {
+    if (!date) return ''
+    const d = new Date(date)
+    // Ajustar a la zona horaria local
+    const offset = d.getTimezoneOffset()
+    const localDate = new Date(d.getTime() - offset * 60 * 1000)
+    return localDate.toISOString().slice(0, 16)
+  }
+
   useEffect(() => {
     if (coupon) {
       form.reset({
@@ -165,8 +175,8 @@ export function EditCouponDialog({ coupon, open, onOpenChange }: EditCouponDialo
         usageLimit: coupon.usageLimit || undefined,
         userLimit: coupon.userLimit || undefined,
         isActive: coupon.isActive,
-        startsAt: coupon.startsAt ? new Date(coupon.startsAt).toISOString().slice(0, 16) : '',
-        expiresAt: coupon.expiresAt ? new Date(coupon.expiresAt).toISOString().slice(0, 16) : '',
+        startsAt: formatDateToLocalInput(coupon.startsAt),
+        expiresAt: formatDateToLocalInput(coupon.expiresAt),
         restrictedToUserId: coupon.restrictedToUserId || undefined,
         restrictedToPlanId: coupon.restrictedToPlanId || undefined,
       })

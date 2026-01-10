@@ -6,12 +6,14 @@ import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Checkbox } from '@/components/ui/checkbox'
 import { register } from '@/lib/actions/auth'
 import { SignUpSchema } from '@/schemas/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -39,6 +41,7 @@ export function RegisterForm() {
       password: '',
       confirmPassword: '',
       website: '', // Honeypot field
+      subscribeNewsletter: true, // Opt-in preseleccionado
     },
   })
 
@@ -201,6 +204,31 @@ export function RegisterForm() {
                       {...field}
                     />
                   </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {/* Opt-in para newsletter */}
+            <FormField
+              control={registerForm.control}
+              name="subscribeNewsletter"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      disabled={isPending}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel className="text-sm font-normal cursor-pointer">
+                      Quiero recibir novedades, tips y ofertas exclusivas de Lingowow
+                    </FormLabel>
+                    <FormDescription className="text-xs">
+                      Puedes darte de baja en cualquier momento.
+                    </FormDescription>
+                  </div>
                 </FormItem>
               )}
             />

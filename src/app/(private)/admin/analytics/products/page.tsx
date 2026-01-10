@@ -1,5 +1,11 @@
 import { Suspense } from 'react'
+import { Metadata } from 'next'
 import { getProductAnalytics } from '@/lib/actions/analytics'
+
+export const metadata: Metadata = {
+  title: 'Análisis de Productos | Analytics | Lingowow',
+  description: 'Rendimiento de productos, distribución de planes y conversiones',
+}
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import Link from 'next/link'

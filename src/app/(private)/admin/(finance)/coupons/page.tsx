@@ -3,6 +3,12 @@ import { CouponsTable } from '@/components/admin/coupons/coupons-table'
 import { CreateCouponDialog } from '@/components/admin/coupons/create-coupon-dialog'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Gestión de Cupones | Admin | Lingowow',
+  description: 'Administra los cupones de descuento de la plataforma',
+}
 
 const CouponsAdminPage = async () => {
   const coupons = await getCoupons()

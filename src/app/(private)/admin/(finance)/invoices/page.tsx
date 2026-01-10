@@ -1,5 +1,11 @@
 import { InvoicesTable } from '@/components/admin/invoices/invoices-table'
 import { getInvoices } from '@/lib/actions/commercial'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Gestión de Facturas | Admin | Lingowow',
+  description: 'Administra todas las facturas y pagos de la plataforma',
+}
 
 const InvoicesAdminPage = async () => {
   const invoices = await getInvoices()

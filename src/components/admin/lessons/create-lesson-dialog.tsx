@@ -251,25 +251,6 @@ export function CreateLessonDialog({ children, onLessonCreated }: CreateLessonDi
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
-                  name="order"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Orden</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          min="1"
-                          {...field}
-                          onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
                   name="duration"
                   render={({ field }) => (
                     <FormItem>

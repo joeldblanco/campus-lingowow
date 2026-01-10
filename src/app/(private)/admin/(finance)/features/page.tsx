@@ -3,6 +3,12 @@ import { FeaturesTable } from '@/components/admin/features/features-table'
 import { CreateFeatureDialog } from '@/components/admin/features/create-feature-dialog'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Gestión de Características | Admin | Lingowow',
+  description: 'Administra las características disponibles para los planes',
+}
 
 const FeaturesAdminPage = async () => {
   const features = await getFeatures()

@@ -296,18 +296,26 @@ export function ModulesTab({
   }
 
   const handleUpdateModule = async (moduleId: string, updates: Partial<Module>) => {
-    if (!updates.title?.trim()) {
-      toast.error('El título es requerido')
-      return
-    }
-    if (!updates.description?.trim()) {
-      toast.error('La descripción es requerida')
-      return
+    // Solo validar título y descripción si se están editando (no para cambios de isPublished)
+    const isFullEdit = 'title' in updates && 'description' in updates
+    if (isFullEdit) {
+      if (!updates.title?.trim()) {
+        toast.error('El título es requerido')
+        return
+      }
+      if (!updates.description?.trim()) {
+        toast.error('La descripción es requerida')
+        return
+      }
     }
 
     await onUpdateModule(moduleId, updates)
-    setEditingModuleId(null)
-    toast.success('Módulo actualizado exitosamente')
+    
+    // Solo cerrar el modo edición y mostrar toast si es una edición completa
+    if (isFullEdit) {
+      setEditingModuleId(null)
+      toast.success('Módulo actualizado exitosamente')
+    }
   }
 
   const handleRemoveModule = async (moduleId: string) => {

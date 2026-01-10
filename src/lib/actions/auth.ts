@@ -6,6 +6,7 @@ import { db } from '@/lib/db'
 import handleError from '@/lib/handleError'
 import { sendPasswordResetEmail, sendVerificationEmail } from '@/lib/mail'
 import { generatePasswordResetToken, generateVerificationToken } from '@/lib/tokens'
+import { subscribeToNewsletter } from '@/lib/actions/newsletter'
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes'
 import { NewPasswordSchema, ResetSchema, SignInSchema, SignUpSchema } from '@/schemas/auth'
 import { hasRole } from '@/lib/utils/roles'
@@ -61,7 +62,7 @@ export const register = async (
   }
 
   try {
-    await db.user.create({
+    const newUser = await db.user.create({
       data: {
         name: validatedData.name,
         lastName: validatedData.lastName,
@@ -70,6 +71,11 @@ export const register = async (
         roles: [UserRole.GUEST],
       },
     })
+
+    // Suscribir a newsletter si el usuario optó por ello
+    if (validatedData.subscribeNewsletter) {
+      await subscribeToNewsletter(validatedData.email, newUser.id, 'registration')
+    }
 
     const verificationToken = await generateVerificationToken(validatedData.email)
 

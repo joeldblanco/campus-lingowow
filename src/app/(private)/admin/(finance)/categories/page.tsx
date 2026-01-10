@@ -3,6 +3,12 @@ import { CategoriesTable } from '@/components/admin/categories/categories-table'
 import { CreateCategoryDialog } from '@/components/admin/categories/create-category-dialog'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Gestión de Categorías | Admin | Lingowow',
+  description: 'Administra las categorías de productos de la tienda',
+}
 
 const CategoriesAdminPage = async () => {
   const categories = await getCategories()

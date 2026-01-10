@@ -1,5 +1,11 @@
 import { Suspense } from 'react'
+import { Metadata } from 'next'
 import { getExpenseAnalytics } from '@/lib/actions/analytics'
+
+export const metadata: Metadata = {
+  title: 'Análisis de Gastos | Analytics | Lingowow',
+  description: 'Desglose de pagos a profesores, costos por clase e incentivos',
+}
 import { 
   MonthlyExpenseChart, 
   TeacherPaymentsTable,

@@ -1,6 +1,12 @@
 import { Suspense } from 'react'
 import { ModulesContainer } from '@/components/admin/modules/modules-container'
 import { ModulesLoadingSkeleton } from '@/components/admin/modules/modules-loading-skeleton'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Gestión de Módulos | Admin | Lingowow',
+  description: 'Administra los módulos del sistema educativo',
+}
 
 export default function ModulesPage() {
   return (

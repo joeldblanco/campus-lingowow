@@ -1,6 +1,12 @@
 import { Suspense } from 'react'
 import { LessonsContainer } from '@/components/admin/lessons/lessons-container'
 import { LessonsLoadingSkeleton } from '@/components/admin/lessons/lessons-loading-skeleton'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Gestión de Lecciones | Admin | Lingowow',
+  description: 'Administra las lecciones del sistema educativo',
+}
 
 export default function LessonsPage() {
   return (

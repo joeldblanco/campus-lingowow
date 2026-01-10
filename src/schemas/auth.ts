@@ -64,6 +64,9 @@ export const SignUpSchema = z
 
     // Campo honeypot - debe estar vacío (los bots lo llenan automáticamente)
     website: z.string().optional(),
+
+    // Opt-in para newsletter
+    subscribeNewsletter: z.boolean().default(true),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Las contraseñas no coinciden',

@@ -1,10 +1,16 @@
 import { Suspense } from 'react'
+import { Metadata } from 'next'
 import { 
   getFinancialHealth, 
   getCohortAnalytics, 
   getStudentLTV, 
   getScheduleHeatmap 
 } from '@/lib/actions/analytics'
+
+export const metadata: Metadata = {
+  title: 'Analytics Avanzado | Admin | Lingowow',
+  description: 'Salud financiera, análisis de cohortes, LTV y mapa de calor de horarios',
+}
 import { FinancialHealthDashboard } from '@/components/analytics/financial-health'
 import { CohortAnalysis } from '@/components/analytics/cohort-analysis'
 import { LTVAnalysis } from '@/components/analytics/ltv-analysis'
