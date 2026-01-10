@@ -36,7 +36,7 @@ export const ExamQuestionSchema = z.object({
     z.null()
   ]).optional(),
   explanation: z.string().optional(),
-  points: z.number().min(0.1, 'Los puntos deben ser mayor a 0').default(1),
+  points: z.number().min(0, 'Los puntos deben ser mayor o igual a 0').default(1),
   order: z.number().default(0),
   difficulty: QuestionDifficultyEnum.default('MEDIUM'),
   tags: z.array(z.string()).default([]),
