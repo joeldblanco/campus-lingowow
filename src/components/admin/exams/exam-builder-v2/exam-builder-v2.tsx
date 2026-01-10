@@ -734,6 +734,7 @@ export function ExamBuilderV2({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
       if (result.success) {
         setValidationErrors([])
         if (publish && !isPublished) {
+          setIsPublished(true)
           toast.success('Examen publicado exitosamente')
         } else {
           toast.success(
@@ -899,12 +900,7 @@ export function ExamBuilderV2({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
                 'gap-2',
                 isPublished ? 'bg-green-600 hover:bg-green-700' : ''
               )}
-              onClick={() => {
-                if (!isPublished) {
-                  setIsPublished(true)
-                }
-                handleSave(true)
-              }}
+              onClick={() => handleSave(true)}
               disabled={loading}
             >
               {loading ? (
