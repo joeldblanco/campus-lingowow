@@ -20,7 +20,7 @@ import {
   Check,
 } from 'lucide-react'
 import Image from 'next/image'
-import { ExamQuestion, QUESTION_TYPE_LABELS } from './types'
+import { ExamQuestion, QUESTION_TYPE_LABELS, QuestionValidationError } from './types'
 
 const QUESTION_ICONS: Record<string, React.ElementType> = {
   multiple_choice: CircleDot,
@@ -44,6 +44,7 @@ interface QuestionCanvasProps {
   onUpdateTitle: (title: string) => void
   onUpdateDescription: (description: string) => void
   readOnly?: boolean
+  validationErrors?: QuestionValidationError[]
 }
 
 export function QuestionCanvas({
@@ -55,6 +56,7 @@ export function QuestionCanvas({
   onUpdateTitle,
   onUpdateDescription,
   readOnly = false,
+  validationErrors = [],
 }: QuestionCanvasProps) {
   const { setNodeRef } = useDroppable({
     id: 'canvas-droppable',
@@ -108,6 +110,7 @@ export function QuestionCanvas({
                 isSelected={selectedQuestionId === question.id}
                 onSelect={() => onSelectQuestion(question.id)}
                 readOnly={readOnly}
+                errors={validationErrors.filter(e => e.questionIndex === index)}
               />
             ))}
           </SortableContext>
@@ -139,6 +142,7 @@ interface SortableQuestionCardProps {
   isSelected: boolean
   onSelect: () => void
   readOnly?: boolean
+  errors?: QuestionValidationError[]
 }
 
 function SortableQuestionCard({
@@ -147,6 +151,7 @@ function SortableQuestionCard({
   isSelected,
   onSelect,
   readOnly,
+  errors = [],
 }: SortableQuestionCardProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: question.id,
@@ -161,20 +166,27 @@ function SortableQuestionCard({
   const Icon = QUESTION_ICONS[question.type] || CircleDot
   const typeLabel = QUESTION_TYPE_LABELS[question.type] || question.type
 
+  const hasErrors = errors.length > 0
+
   return (
     <div
       ref={setNodeRef}
       style={style}
+      data-question-index={index}
       className={cn(
         'bg-background rounded-lg border transition-all',
         isSelected && 'ring-2 ring-primary border-primary',
         isDragging && 'opacity-50 shadow-lg',
-        !readOnly && 'cursor-pointer'
+        !readOnly && 'cursor-pointer',
+        hasErrors && !isSelected && 'border-red-500 ring-2 ring-red-200'
       )}
       onClick={onSelect}
     >
       {/* Question Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b bg-muted/30">
+      <div className={cn(
+        "flex items-center justify-between px-4 py-3 border-b bg-muted/30",
+        hasErrors && "bg-red-50"
+      )}>
         <div className="flex items-center gap-3">
           {!readOnly && (
             <div
@@ -214,10 +226,22 @@ function SortableQuestionCard({
         {/* Preview based on question type */}
         <QuestionPreview question={question} />
 
-        {!readOnly && (
+        {!readOnly && !hasErrors && (
           <p className="text-xs text-muted-foreground mt-4 text-center">
             Vista previa del estudiante
           </p>
+        )}
+
+        {/* Validation Errors */}
+        {hasErrors && (
+          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
+            {errors.map((error, i) => (
+              <p key={i} className="text-sm text-red-600 flex items-start gap-2">
+                <span className="text-red-500 mt-0.5">•</span>
+                <span>{error.message}</span>
+              </p>
+            ))}
+          </div>
         )}
       </div>
     </div>

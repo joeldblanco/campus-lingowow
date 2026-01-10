@@ -49,7 +49,7 @@ import { cn } from '@/lib/utils'
 import { QuestionLibrary, QuestionTemplate, DraggableQuestion } from './question-library'
 import { QuestionCanvas } from './question-canvas'
 import { QuestionProperties } from './question-properties'
-import { ExamQuestion, ExamSettings, DEFAULT_EXAM_SETTINGS } from './types'
+import { ExamQuestion, ExamSettings, DEFAULT_EXAM_SETTINGS, QuestionValidationError } from './types'
 import { createExam, updateExam, getCoursesForExams } from '@/lib/actions/exams'
 import { ExamWithDetails } from '@/types/exam'
 
@@ -144,6 +144,7 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'error'>('saved')
   const [loading, setLoading] = useState(false)
+  const [validationErrors, setValidationErrors] = useState<QuestionValidationError[]>([])
 
   // DnD State
   const [activeDragItem, setActiveDragItem] = useState<{
@@ -278,6 +279,11 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
     setQuestions((prev) =>
       prev.map((q) => (q.id === selectedQuestionId ? { ...q, ...updates } : q))
     )
+    // Clear validation errors for this question when it's edited
+    const questionIndex = questions.findIndex(q => q.id === selectedQuestionId)
+    if (questionIndex !== -1) {
+      setValidationErrors(prev => prev.filter(e => e.questionIndex !== questionIndex))
+    }
   }
 
   // Save handler
@@ -299,6 +305,74 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
 
     setLoading(true)
     try {
+      // Map internal question types to schema types
+      const mapQuestionType = (type: string): 'MULTIPLE_CHOICE' | 'TRUE_FALSE' | 'SHORT_ANSWER' | 'ESSAY' | 'FILL_BLANK' | 'MATCHING' | 'ORDERING' | 'DRAG_DROP' => {
+        const typeMap: Record<string, 'MULTIPLE_CHOICE' | 'TRUE_FALSE' | 'SHORT_ANSWER' | 'ESSAY' | 'FILL_BLANK' | 'MATCHING' | 'ORDERING' | 'DRAG_DROP'> = {
+          'multiple_choice': 'MULTIPLE_CHOICE',
+          'true_false': 'TRUE_FALSE',
+          'short_answer': 'SHORT_ANSWER',
+          'essay': 'ESSAY',
+          'fill_blanks': 'FILL_BLANK', // Note: internal uses fill_blanks, schema uses FILL_BLANK
+          'fill_blank': 'FILL_BLANK',
+          'matching': 'MATCHING',
+          'ordering': 'ORDERING',
+          'drag_drop': 'DRAG_DROP',
+          // Map audio/image questions to SHORT_ANSWER as fallback (they need proper schema support)
+          'audio_question': 'SHORT_ANSWER',
+          'image_question': 'SHORT_ANSWER',
+        }
+        return typeMap[type.toLowerCase()] || 'SHORT_ANSWER'
+      }
+
+      // Get correct answer based on question type
+      const getCorrectAnswer = (q: ExamQuestion): string | string[] => {
+        switch (q.type) {
+          case 'multiple_choice':
+            return q.options?.find((opt) => opt.id === q.correctOptionId)?.text || ''
+          case 'true_false':
+            return q.correctAnswer === true ? 'Verdadero' : 'Falso'
+          case 'short_answer':
+            return q.correctAnswers?.[0] || ''
+          case 'fill_blanks':
+          case 'fill_blank':
+            // Extract answers from content like "The [answer] is correct"
+            if (q.content) {
+              const matches = q.content.match(/\[([^\]]+)\]/g)
+              if (matches) {
+                return matches.map(m => m.slice(1, -1))
+              }
+            }
+            return ''
+          case 'matching':
+            // For matching, return pairs as JSON or first pair
+            if (q.pairs && q.pairs.length > 0) {
+              return JSON.stringify(q.pairs.map(p => ({ left: p.left, right: p.right })))
+            }
+            return ''
+          case 'ordering':
+            // For ordering, return items in correct order
+            if (q.items && q.items.length > 0) {
+              return q.items.map(i => i.text)
+            }
+            return ''
+          case 'drag_drop':
+            // For drag_drop, return mapping
+            if (q.dragItems && q.dragItems.length > 0) {
+              return JSON.stringify(q.dragItems.map(i => ({ item: i.text, category: i.correctCategoryId })))
+            }
+            return ''
+          case 'essay':
+            // Essays don't have a correct answer, use placeholder
+            return 'N/A'
+          case 'audio_question':
+          case 'image_question':
+            // These need the actual answer from the question
+            return q.correctAnswers?.[0] || q.correctAnswer?.toString() || ''
+          default:
+            return ''
+        }
+      }
+
       // Convert questions to old section format for compatibility
       const sectionsData = [
         {
@@ -306,19 +380,10 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
           description: '',
           order: 1,
           questions: questions.map((q, index) => ({
-            type: q.type.toUpperCase() as 'MULTIPLE_CHOICE' | 'TRUE_FALSE' | 'SHORT_ANSWER' | 'ESSAY' | 'FILL_BLANK' | 'MATCHING' | 'ORDERING' | 'DRAG_DROP',
+            type: mapQuestionType(q.type),
             question: q.question || q.instruction || '',
             options: q.options?.map((opt) => opt.text),
-            correctAnswer:
-              q.type === 'multiple_choice'
-                ? q.options?.find((opt) => opt.id === q.correctOptionId)?.text || ''
-                : q.type === 'true_false'
-                  ? q.correctAnswer
-                    ? 'Verdadero'
-                    : 'Falso'
-                  : q.type === 'short_answer'
-                    ? q.correctAnswers?.[0] || ''
-                    : '',
+            correctAnswer: getCorrectAnswer(q),
             explanation: q.explanation || '',
             points: q.points,
             order: index,
@@ -328,6 +393,9 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
             partialCredit: q.partialCredit || false,
             minLength: q.minWords,
             maxLength: q.maxWords,
+            audioUrl: q.audioUrl,
+            imageUrl: q.imageUrl,
+            maxAudioPlays: q.maxPlays,
           })),
         },
       ]
@@ -363,12 +431,49 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
       }
 
       if (result.success) {
+        setValidationErrors([])
         toast.success(
           mode === 'create' ? 'Examen creado exitosamente' : 'Examen actualizado exitosamente'
         )
         router.push('/admin/exams')
       } else {
-        toast.error(result.error || 'Error al guardar el examen')
+        // Process validation errors from Zod
+        if (result.details && result.details.length > 0) {
+          const errors: QuestionValidationError[] = []
+          
+          result.details.forEach((issue) => {
+            // Path format: ["sections", 0, "questions", 3, "correctAnswer"]
+            const path = issue.path
+            if (path[0] === 'sections' && path[2] === 'questions') {
+              const questionIndex = path[3] as number
+              const field = path[4] as string
+              errors.push({
+                questionIndex,
+                field,
+                message: issue.message,
+              })
+            }
+          })
+          
+          setValidationErrors(errors)
+          
+          // Scroll to first error
+          if (errors.length > 0) {
+            const firstErrorIndex = Math.min(...errors.map(e => e.questionIndex))
+            setTimeout(() => {
+              const element = document.querySelector(`[data-question-index="${firstErrorIndex}"]`)
+              if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+              }
+            }, 100)
+            
+            toast.error(`Hay ${errors.length} error(es) de validación. Revisa las preguntas marcadas en rojo.`)
+          } else {
+            toast.error(result.error || 'Error al guardar el examen')
+          }
+        } else {
+          toast.error(result.error || 'Error al guardar el examen')
+        }
       }
     } catch (error) {
       console.error('Error saving exam:', error)
@@ -524,6 +629,7 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
             onUpdateTitle={setTitle}
             onUpdateDescription={setDescription}
             readOnly={isPreviewMode}
+            validationErrors={validationErrors}
           />
 
           {/* Right Sidebar: Properties Panel */}

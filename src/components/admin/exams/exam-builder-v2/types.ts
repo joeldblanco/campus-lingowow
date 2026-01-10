@@ -111,3 +111,9 @@ export const QUESTION_TYPE_ICONS: Record<string, string> = {
   audio_question: 'Mic',
   image_question: 'Image',
 }
+
+export interface QuestionValidationError {
+  questionIndex: number
+  field: string
+  message: string
+}
