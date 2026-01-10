@@ -6,6 +6,7 @@ import {
   BookOpenText,
   Calendar,
   CalendarCog,
+  ClipboardList,
   CreditCard,
   DollarSign,
   FileText,
@@ -70,6 +71,11 @@ const data = {
       title: 'Grabaciones',
       url: '/recordings',
       icon: Video,
+    },
+    {
+      title: 'Mis Exámenes',
+      url: '/student/exams',
+      icon: ClipboardList,
     },
   ],
   navTeacher: [
