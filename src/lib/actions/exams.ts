@@ -9,7 +9,7 @@ import {
   AssignExamSchema
 } from '@/schemas/exams'
 import * as z from 'zod'
-import { AttemptStatus, AssignmentStatus } from '@prisma/client'
+import { AttemptStatus, AssignmentStatus, Prisma } from '@prisma/client'
 import type {
   ExamWithDetails,
   ExamStats,
@@ -232,13 +232,18 @@ export async function createExam(data: z.infer<typeof CreateExamSchema>): Promis
 
         // Crear las preguntas de cada sección
         for (const questionData of sectionData.questions) {
+          // ESSAY type doesn't require correctAnswer (includes audio/image questions)
+          const correctAnswer: Prisma.InputJsonValue | typeof Prisma.JsonNull = questionData.type === 'ESSAY' 
+            ? Prisma.JsonNull 
+            : (questionData.correctAnswer ?? '')
+          
           await tx.examQuestion.create({
             data: {
               sectionId: section.id,
               type: questionData.type,
               question: questionData.question,
               options: questionData.options,
-              correctAnswer: questionData.correctAnswer ?? '',
+              correctAnswer,
               explanation: questionData.explanation,
               points: questionData.points,
               order: questionData.order,
@@ -323,13 +328,18 @@ export async function updateExam(id: string, data: z.infer<typeof EditExamSchema
 
           // Crear preguntas de la sección
           for (const questionData of sectionData.questions) {
+            // ESSAY type doesn't require correctAnswer (includes audio/image questions)
+            const correctAnswer: Prisma.InputJsonValue | typeof Prisma.JsonNull = questionData.type === 'ESSAY' 
+              ? Prisma.JsonNull 
+              : (questionData.correctAnswer ?? '')
+            
             await tx.examQuestion.create({
               data: {
                 sectionId: section.id,
                 type: questionData.type,
                 question: questionData.question,
                 options: questionData.options,
-                correctAnswer: questionData.correctAnswer ?? '',
+                correctAnswer,
                 explanation: questionData.explanation,
                 points: questionData.points,
                 order: questionData.order,
