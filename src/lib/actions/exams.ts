@@ -336,9 +336,19 @@ export async function updateExamQuestions(
           }
         } else if (questionData.type === 'FILL_BLANK' && questionData.content) {
           optionsData = { content: questionData.content }
-        } else if (questionData.imageUrl) {
-          // Store imageUrl in options for image_question type
-          optionsData = { imageUrl: questionData.imageUrl }
+        }
+        
+        // Handle imageUrl - only for IMAGE type, or merge with existing options for other types
+        if (questionData.imageUrl) {
+          if (questionData.type === 'DRAG_DROP' || questionData.type === 'MATCHING' || 
+              questionData.type === 'ORDERING' || questionData.type === 'FILL_BLANK') {
+            // Already handled above, add imageUrl to existing object
+            optionsData = { ...(optionsData as object), imageUrl: questionData.imageUrl }
+          } else if (!optionsData || (Array.isArray(optionsData) && optionsData.length === 0)) {
+            // Only set imageUrl as options if no other options exist (e.g., image_question type)
+            optionsData = { imageUrl: questionData.imageUrl }
+          }
+          // For MULTIPLE_CHOICE etc., keep original options array - imageUrl not stored in options
         }
 
         await tx.examQuestion.create({
