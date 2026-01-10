@@ -121,33 +121,53 @@ export function QuestionProperties({ question, onUpdate, onClose, onDelete }: Qu
             <DragDropEditor question={question} onUpdate={onUpdate} />
           )}
 
-          {/* Points */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>Puntos</Label>
-              <Input
-                type="number"
-                min={0}
-                value={question.points || 0}
-                onChange={(e) => onUpdate({ points: parseInt(e.target.value) || 0 })}
-              />
+          {/* Audio/Image specific editors */}
+          {question.type === 'audio_question' && (
+            <AudioQuestionEditor question={question} onUpdate={onUpdate} />
+          )}
+
+          {question.type === 'image_question' && (
+            <ImageQuestionEditor question={question} onUpdate={onUpdate} />
+          )}
+
+          {/* Points - Only show for non-informative question types */}
+          {question.type !== 'audio_question' && question.type !== 'image_question' && (
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Puntos</Label>
+                <Input
+                  type="number"
+                  min={0}
+                  value={question.points || 0}
+                  onChange={(e) => onUpdate({ points: parseInt(e.target.value) || 0 })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Crédito Parcial</Label>
+                <Select
+                  value={question.partialCredit ? 'allow' : 'none'}
+                  onValueChange={(v) => onUpdate({ partialCredit: v === 'allow' })}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="allow">Permitir</SelectItem>
+                    <SelectItem value="none">No permitir</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <div className="space-y-2">
-              <Label>Crédito Parcial</Label>
-              <Select
-                value={question.partialCredit ? 'allow' : 'none'}
-                onValueChange={(v) => onUpdate({ partialCredit: v === 'allow' })}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="allow">Permitir</SelectItem>
-                  <SelectItem value="none">No permitir</SelectItem>
-                </SelectContent>
-              </Select>
+          )}
+
+          {/* Informative block notice */}
+          {(question.type === 'audio_question' || question.type === 'image_question') && (
+            <div className="p-3 bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg">
+              <p className="text-sm text-blue-700 dark:text-blue-300">
+                Este es un bloque informativo. No requiere respuesta del estudiante ni otorga puntos.
+              </p>
             </div>
-          </div>
+          )}
 
           {/* Hint / Feedback */}
           <Collapsible open={hintOpen} onOpenChange={setHintOpen}>
@@ -760,6 +780,85 @@ function DragDropEditor({
           Agregar Elemento
         </Button>
       </div>
+    </div>
+  )
+}
+
+// Audio Question Editor
+function AudioQuestionEditor({
+  question,
+  onUpdate,
+}: {
+  question: ExamQuestion
+  onUpdate: (updates: Partial<ExamQuestion>) => void
+}) {
+  return (
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <Label>URL del Audio</Label>
+        <Input
+          value={question.audioUrl || ''}
+          onChange={(e) => onUpdate({ audioUrl: e.target.value })}
+          placeholder="https://ejemplo.com/audio.mp3"
+        />
+        <p className="text-xs text-muted-foreground">
+          Ingresa la URL del archivo de audio (MP3, WAV, etc.)
+        </p>
+      </div>
+
+      <div className="space-y-2">
+        <Label>Reproducciones Máximas</Label>
+        <Input
+          type="number"
+          min={1}
+          value={question.maxPlays || 3}
+          onChange={(e) => onUpdate({ maxPlays: parseInt(e.target.value) || 3 })}
+        />
+        <p className="text-xs text-muted-foreground">
+          Número máximo de veces que el estudiante puede reproducir el audio.
+        </p>
+      </div>
+    </div>
+  )
+}
+
+// Image Question Editor
+function ImageQuestionEditor({
+  question,
+  onUpdate,
+}: {
+  question: ExamQuestion
+  onUpdate: (updates: Partial<ExamQuestion>) => void
+}) {
+  return (
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <Label>URL de la Imagen</Label>
+        <Input
+          value={question.imageUrl || ''}
+          onChange={(e) => onUpdate({ imageUrl: e.target.value })}
+          placeholder="https://ejemplo.com/imagen.jpg"
+        />
+        <p className="text-xs text-muted-foreground">
+          Ingresa la URL de la imagen (JPG, PNG, GIF, etc.)
+        </p>
+      </div>
+
+      {question.imageUrl && (
+        <div className="space-y-2">
+          <Label>Vista Previa</Label>
+          <div className="border rounded-lg overflow-hidden bg-muted/30">
+            <img
+              src={question.imageUrl}
+              alt="Vista previa"
+              className="max-w-full h-auto max-h-48 mx-auto"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = 'none'
+              }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
