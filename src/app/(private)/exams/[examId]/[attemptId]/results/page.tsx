@@ -4,7 +4,7 @@ import { getExamResultsForStudent } from '@/lib/actions/exams'
 import { ExamResults } from '@/components/exams/student'
 
 interface PageProps {
-  params: Promise<{ attemptId: string }>
+  params: Promise<{ examId: string; attemptId: string }>
 }
 
 export default async function ExamResultsPage({ params }: PageProps) {

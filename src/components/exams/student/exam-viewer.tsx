@@ -53,6 +53,7 @@ interface ExamViewerProps {
 }
 
 export function ExamViewer({
+  examId,
   attemptId,
   title,
   description,
@@ -198,14 +199,14 @@ export function ExamViewer({
     try {
       await onSubmitExam()
       toast.success('Examen enviado correctamente')
-      router.push(`/exams/${attemptId}/results`)
+      router.push(`/exams/${examId}/${attemptId}/results`)
     } catch (error) {
       console.error('Error submitting exam:', error)
       toast.error('Error al enviar el examen')
     } finally {
       setIsSubmitting(false)
     }
-  }, [onSubmitExam, router, attemptId])
+  }, [onSubmitExam, router, examId, attemptId])
 
   const handleSubmitExam = useCallback(async () => {
     setIsSubmitting(true)
@@ -215,7 +216,7 @@ export function ExamViewer({
       }
       await onSubmitExam()
       toast.success('Examen enviado correctamente')
-      router.push(`/exams/${attemptId}/results`)
+      router.push(`/exams/${examId}/${attemptId}/results`)
     } catch (error) {
       console.error('Error submitting exam:', error)
       toast.error('Error al enviar el examen')
@@ -223,7 +224,7 @@ export function ExamViewer({
       setIsSubmitting(false)
       setShowSubmitDialog(false)
     }
-  }, [onSubmitExam, router, attemptId, proctoringEnabled, endProctoring])
+  }, [onSubmitExam, router, examId, attemptId, proctoringEnabled, endProctoring])
 
   const unansweredCount = totalQuestions - answeredCount
 
