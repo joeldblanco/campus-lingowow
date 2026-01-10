@@ -21,6 +21,9 @@ export const AudioPositionEnum = z.enum([
   'SECTION_TOP'
 ])
 
+// Types that don't require a correct answer (manually graded)
+const TYPES_WITHOUT_CORRECT_ANSWER = ['ESSAY'] as const
+
 // Schema para preguntas de examen
 export const ExamQuestionSchema = z.object({
   id: z.string().optional(), // Para edición
@@ -30,12 +33,7 @@ export const ExamQuestionSchema = z.object({
   correctAnswer: z.union([
     z.string(),
     z.array(z.string())
-  ]).refine(val => {
-    if (Array.isArray(val)) {
-      return val.length > 0
-    }
-    return val.length > 0
-  }, 'La respuesta correcta es requerida'),
+  ]).optional(),
   explanation: z.string().optional(),
   points: z.number().min(0.1, 'Los puntos deben ser mayor a 0').default(1),
   order: z.number().default(0),
@@ -50,7 +48,25 @@ export const ExamQuestionSchema = z.object({
   audioPosition: AudioPositionEnum.optional(),
   maxAudioPlays: z.number().min(1, 'Mínimo 1 reproducción').optional(),
   audioAutoplay: z.boolean().optional(),
-  audioPausable: z.boolean().optional()
+  audioPausable: z.boolean().optional(),
+  // Image URL for image-based questions
+  imageUrl: z.string().url('URL de imagen inválida').optional().or(z.literal(''))
+}).superRefine((data, ctx) => {
+  // Validate correctAnswer is required for types that need it
+  const needsCorrectAnswer = !TYPES_WITHOUT_CORRECT_ANSWER.includes(data.type as typeof TYPES_WITHOUT_CORRECT_ANSWER[number])
+  
+  if (needsCorrectAnswer) {
+    const answer = data.correctAnswer
+    const isEmpty = !answer || (Array.isArray(answer) ? answer.length === 0 : answer.length === 0)
+    
+    if (isEmpty) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'La respuesta correcta es requerida',
+        path: ['correctAnswer']
+      })
+    }
+  }
 })
 
 // Schema para secciones de examen

@@ -149,44 +149,32 @@ export const QUESTION_TEMPLATES: QuestionTemplate[] = [
       points: 10,
     },
   },
-  // Media Questions
+  // Media Questions (informative only, no answer expected)
   {
     type: 'audio_question',
     label: 'Audio',
     icon: Mic,
-    description: 'Pregunta con audio adjunto',
+    description: 'Contenido de audio informativo',
     category: 'media',
     defaultData: {
       type: 'audio_question',
-      question: 'Escucha el audio y responde:',
+      question: 'Escucha el siguiente audio:',
       audioUrl: '',
-      maxPlays: 2,
-      questionType: 'multiple_choice',
-      options: [
-        { id: 'opt1', text: 'Opción A' },
-        { id: 'opt2', text: 'Opción B' },
-      ],
-      correctOptionId: 'opt1',
-      points: 10,
+      maxPlays: 3,
+      points: 0,
     },
   },
   {
     type: 'image_question',
     label: 'Imagen',
     icon: ImageIcon,
-    description: 'Pregunta con imagen adjunta',
+    description: 'Contenido de imagen informativo',
     category: 'media',
     defaultData: {
       type: 'image_question',
-      question: 'Observa la imagen y responde:',
+      question: 'Observa la siguiente imagen:',
       imageUrl: '',
-      questionType: 'multiple_choice',
-      options: [
-        { id: 'opt1', text: 'Opción A' },
-        { id: 'opt2', text: 'Opción B' },
-      ],
-      correctOptionId: 'opt1',
-      points: 10,
+      points: 0,
     },
   },
 ]

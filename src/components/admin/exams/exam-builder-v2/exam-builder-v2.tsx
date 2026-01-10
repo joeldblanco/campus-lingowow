@@ -276,14 +276,14 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
   // Question handlers
   const updateQuestion = (updates: Partial<ExamQuestion>) => {
     if (!selectedQuestionId) return
-    setQuestions((prev) =>
-      prev.map((q) => (q.id === selectedQuestionId ? { ...q, ...updates } : q))
-    )
-    // Clear validation errors for this question when it's edited
-    const questionIndex = questions.findIndex(q => q.id === selectedQuestionId)
-    if (questionIndex !== -1) {
-      setValidationErrors(prev => prev.filter(e => e.questionIndex !== questionIndex))
-    }
+    setQuestions((prev) => {
+      const questionIndex = prev.findIndex(q => q.id === selectedQuestionId)
+      // Clear validation errors for this question when it's edited
+      if (questionIndex !== -1) {
+        setValidationErrors(errors => errors.filter(e => e.questionIndex !== questionIndex))
+      }
+      return prev.map((q) => (q.id === selectedQuestionId ? { ...q, ...updates } : q))
+    })
   }
 
   // Save handler
@@ -317,9 +317,9 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
           'matching': 'MATCHING',
           'ordering': 'ORDERING',
           'drag_drop': 'DRAG_DROP',
-          // Map audio/image questions to SHORT_ANSWER as fallback (they need proper schema support)
-          'audio_question': 'SHORT_ANSWER',
-          'image_question': 'SHORT_ANSWER',
+          // Map audio/image questions to ESSAY (manually graded, no correct answer required)
+          'audio_question': 'ESSAY',
+          'image_question': 'ESSAY',
         }
         return typeMap[type.toLowerCase()] || 'SHORT_ANSWER'
       }
@@ -362,12 +362,10 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
             }
             return ''
           case 'essay':
-            // Essays don't have a correct answer, use placeholder
-            return 'N/A'
           case 'audio_question':
           case 'image_question':
-            // These need the actual answer from the question
-            return q.correctAnswers?.[0] || q.correctAnswer?.toString() || ''
+            // These are manually graded and don't need a correct answer
+            return ''
           default:
             return ''
         }
@@ -442,11 +440,11 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
           const errors: QuestionValidationError[] = []
           
           result.details.forEach((issue) => {
-            // Path format: ["sections", 0, "questions", 3, "correctAnswer"]
+            // Path format: ["sections", 0, "questions", 3, "correctAnswer"] or ["sections", 0, "questions", 3]
             const path = issue.path
-            if (path[0] === 'sections' && path[2] === 'questions') {
+            if (path[0] === 'sections' && path[2] === 'questions' && typeof path[3] === 'number') {
               const questionIndex = path[3] as number
-              const field = path[4] as string
+              const field = (path[4] as string) || 'question' // Default to 'question' if no specific field
               errors.push({
                 questionIndex,
                 field,
