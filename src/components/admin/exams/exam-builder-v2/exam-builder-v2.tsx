@@ -55,6 +55,7 @@ import { ExamWithDetails } from '@/types/exam'
 interface ExamBuilderV2Props {
   mode: 'create' | 'edit'
   exam?: ExamWithDetails
+  backUrl?: string
 }
 
 interface CourseForExam {
@@ -72,7 +73,7 @@ interface CourseForExam {
   }>
 }
 
-export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
+export function ExamBuilderV2({ mode, exam, backUrl = '/admin/exams' }: ExamBuilderV2Props) {
   const router = useRouter()
   const { data: session } = useSession()
 
@@ -735,7 +736,7 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
         toast.success(
           mode === 'create' ? 'Examen creado exitosamente' : 'Examen actualizado exitosamente'
         )
-        router.push('/admin/exams')
+        router.push(backUrl)
       } else {
         // Process validation errors from Zod
         if (result.details && result.details.length > 0) {
@@ -800,7 +801,7 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
         {/* Header */}
         <div className="h-16 border-b flex items-center justify-between px-4 shrink-0 bg-background z-40">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => router.push('/admin/exams')}>
+            <Button variant="ghost" size="icon" onClick={() => router.push(backUrl)}>
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div className="flex items-center gap-2 px-3 py-1 bg-muted/30 rounded-md">

@@ -70,5 +70,7 @@ export default function TeacherEditExamPage() {
     )
   }
 
-  return <ExamBuilderV2 mode="edit" exam={exam} />
+  const backUrl = exam.courseId ? `/teacher/courses/${exam.courseId}` : '/teacher/courses'
+  
+  return <ExamBuilderV2 mode="edit" exam={exam} backUrl={backUrl} />
 }
