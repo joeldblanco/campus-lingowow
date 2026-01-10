@@ -32,6 +32,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import { ArticleBlockEditor } from '@/components/library/article-editor'
 import { ArticleContent, serializeArticleContent } from '@/lib/types/article-blocks'
 
@@ -122,7 +123,7 @@ export default function PublishResourcePage() {
 
   const handleSubmit = async (status: 'DRAFT' | 'PUBLISHED') => {
     if (!title) {
-      alert('Por favor ingresa un título')
+      toast.error('Por favor ingresa un título')
       return
     }
 
@@ -157,11 +158,11 @@ export default function PublishResourcePage() {
         router.push('/admin/library')
       } else {
         const err = await res.json()
-        alert(err.error || 'Error al crear el recurso')
+        toast.error(err.error || 'Error al crear el recurso')
       }
     } catch (error) {
       console.error(error)
-      alert('Error al conectar con el servidor')
+      toast.error('Error al conectar con el servidor')
     } finally {
       setLoading(false)
     }

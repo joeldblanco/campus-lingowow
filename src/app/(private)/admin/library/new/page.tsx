@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { ArrowLeft, Save, Eye, FileText } from 'lucide-react'
+import { toast } from 'sonner'
 import Link from 'next/link'
 import Image from 'next/image'
 import { LibraryResourceType, LibraryResourceStatus } from '@prisma/client'
@@ -114,11 +115,11 @@ export default function NewResourcePage() {
         router.push('/admin/library')
       } else {
         const error = await response.json()
-        alert(error.error || 'Error al crear el recurso')
+        toast.error(error.error || 'Error al crear el recurso')
       }
     } catch (error) {
       console.error('Error creating resource:', error)
-      alert('Error al crear el recurso')
+      toast.error('Error al crear el recurso')
     } finally {
       setLoading(false)
     }

@@ -91,6 +91,7 @@ export const CreateExamSchema = z.object({
   maxAttempts: z.number().min(1, 'Los intentos deben ser mayor a 0').default(3),
   isBlocking: z.boolean().default(false),
   isOptional: z.boolean().default(false),
+  isPublished: z.boolean().default(false),
   shuffleQuestions: z.boolean().default(false),
   shuffleOptions: z.boolean().default(false),
   showResults: z.boolean().default(true),

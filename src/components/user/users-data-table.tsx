@@ -38,6 +38,16 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import { UserEditDialog } from '@/components/user/user-edit-dialog'
 import { ManageTeacherCoursesDialog } from '@/components/admin/teachers/manage-teacher-courses-dialog'
 import { User, UserRole, UserStatus } from '@prisma/client'
@@ -61,6 +71,7 @@ export function UsersDataTable({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
   const [editingUser, setEditingUser] = useState<User | null>(null)
+  const [userToDelete, setUserToDelete] = useState<User | null>(null)
 
   const [isPending, startTransition] = useTransition()
 
@@ -233,7 +244,7 @@ export function UsersDataTable({
                   </DropdownMenuItem>
                 </ManageTeacherCoursesDialog>
               )}
-              <DropdownMenuItem onClick={() => onDeleteUser(user.id)}>
+              <DropdownMenuItem onClick={() => setUserToDelete(user)}>
                 <Trash className="mr-2 h-4 w-4" />
                 Eliminar
               </DropdownMenuItem>
@@ -396,6 +407,32 @@ export function UsersDataTable({
           }}
         />
       )}
+
+      <AlertDialog open={!!userToDelete} onOpenChange={(open) => !open && setUserToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta acción no se puede deshacer. Se eliminará permanentemente el usuario{' '}
+              <strong>{userToDelete?.name} {userToDelete?.lastName}</strong> y todos sus datos asociados.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={() => {
+                if (userToDelete) {
+                  onDeleteUser(userToDelete.id)
+                  setUserToDelete(null)
+                }
+              }}
+            >
+              Eliminar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

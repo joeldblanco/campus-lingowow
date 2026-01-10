@@ -47,6 +47,7 @@ import { deleteCloudinaryFile, uploadFileByType } from '@/lib/actions/cloudinary
 import { cn } from '@/lib/utils'
 import { ArrowDown, ArrowUp, Loader2, Mic, Play, Plus, Square, Trash2, X } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { toast } from 'sonner'
 
 // Helper helper to clean up old files when replacing them
 const deleteFileFromUrl = async (url: string, resourceType: 'image' | 'video' | 'raw') => {
@@ -1996,7 +1997,7 @@ function AudioRecorder({ onUploadComplete }: { onUploadComplete: (url: string) =
       }, 1000)
     } catch (error) {
       console.error('Error accessing microphone:', error)
-      alert('No se pudo acceder al micrófono.')
+      toast.error('No se pudo acceder al micrófono.')
     }
   }
 
@@ -2018,11 +2019,11 @@ function AudioRecorder({ onUploadComplete }: { onUploadComplete: (url: string) =
         onUploadComplete(result.data.secure_url)
       } else {
         console.error('Upload failed', result.error)
-        alert('Error al subir la grabación')
+        toast.error('Error al subir la grabación')
       }
     } catch (e) {
       console.error(e)
-      alert('Error al subir la grabación')
+      toast.error('Error al subir la grabación')
     } finally {
       setIsUploading(false)
     }

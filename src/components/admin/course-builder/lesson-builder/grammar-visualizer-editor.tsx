@@ -60,6 +60,7 @@ import {
     CollapsibleTrigger,
 } from '@/components/ui/collapsible'
 import { cn } from '@/lib/utils'
+import { toast } from 'sonner'
 import { v4 as uuidv4 } from 'uuid'
 import { HelpCircle } from 'lucide-react'
 
@@ -578,7 +579,7 @@ export function GrammarVisualizerEditor({ block, onUpdate, onRemove }: GrammarVi
         const isAdjacent = indices.every((val, i, arr) => i === 0 || val === arr[i - 1] + 1)
 
         if (!isAdjacent) {
-            alert('Blocks must be adjacent to merge.')
+            toast.error('Los bloques deben ser adyacentes para fusionarlos.')
             return
         }
 

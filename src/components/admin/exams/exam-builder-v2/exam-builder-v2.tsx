@@ -719,16 +719,14 @@ export function ExamBuilderV2({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
         lessonId: lessonId || undefined,
         sections: sectionsData,
         createdById: session?.user?.id || 'anonymous',
+        isPublished: publish || isPublished,
       }
 
       let result
       if (mode === 'create') {
         result = await createExam(examData)
       } else {
-        result = await updateExam(exam!.id, {
-          ...examData,
-          isPublished: publish || isPublished,
-        })
+        result = await updateExam(exam!.id, examData)
       }
 
       if (result.success) {

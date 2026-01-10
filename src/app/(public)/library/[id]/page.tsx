@@ -44,6 +44,7 @@ import {
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { LibraryResourceType, LibraryResourceAccess } from '@prisma/client'
 import type { LibraryResource, LibraryResourceDetailResponse } from '@/lib/types/library'
 import { RESOURCE_TYPE_LABELS, ACCESS_LEVEL_DESCRIPTIONS } from '@/lib/types/library'
@@ -699,7 +700,7 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                   className="gap-2"
                   onClick={() => {
                     navigator.clipboard.writeText(window.location.href)
-                    alert('¡Enlace copiado!')
+                    toast.success('¡Enlace copiado!')
                   }}
                 >
                   <Link2 className="h-4 w-4" />

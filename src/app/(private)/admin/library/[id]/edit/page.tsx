@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { ArrowLeft, Save, Eye, Trash2, FileText } from 'lucide-react'
+import { toast } from 'sonner'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -167,11 +168,11 @@ export default function EditResourcePage({ params }: { params: Promise<{ id: str
         router.push('/admin/library')
       } else {
         const error = await response.json()
-        alert(error.error || 'Error al actualizar el recurso')
+        toast.error(error.error || 'Error al actualizar el recurso')
       }
     } catch (error) {
       console.error('Error updating resource:', error)
-      alert('Error al actualizar el recurso')
+      toast.error('Error al actualizar el recurso')
     } finally {
       setSaving(false)
     }
@@ -187,11 +188,11 @@ export default function EditResourcePage({ params }: { params: Promise<{ id: str
         router.push('/admin/library')
       } else {
         const error = await response.json()
-        alert(error.error || 'Error al eliminar el recurso')
+        toast.error(error.error || 'Error al eliminar el recurso')
       }
     } catch (error) {
       console.error('Error deleting resource:', error)
-      alert('Error al eliminar el recurso')
+      toast.error('Error al eliminar el recurso')
     }
   }
 
