@@ -28,6 +28,9 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '50mb',
     },
   },
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
 }
 
 export default withSentryConfig(nextConfig, {
@@ -45,7 +48,8 @@ export default withSentryConfig(nextConfig, {
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
 
   // Upload a larger set of source maps for prettier stack traces (increases build time)
-  widenClientFileUpload: true,
+  // Disabled to reduce memory usage during build (OOM fix)
+  widenClientFileUpload: false,
 
   // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
   // This can increase your server load as well as your hosting bill.
