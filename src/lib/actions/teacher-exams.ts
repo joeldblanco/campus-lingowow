@@ -437,3 +437,76 @@ export async function getExamStatistics(examId: string) {
     return { success: false, error: 'Error al obtener estadísticas' }
   }
 }
+
+/**
+ * Obtiene los resultados de un examen para el profesor
+ */
+export async function getExamResultsForTeacher(examId: string) {
+  try {
+    const session = await auth()
+    if (!session?.user?.id) {
+      return { success: false, error: 'No autorizado' }
+    }
+
+    const exam = await db.exam.findFirst({
+      where: {
+        id: examId,
+        createdById: session.user.id,
+      },
+      include: {
+        attempts: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                lastName: true,
+                email: true,
+              },
+            },
+          },
+          orderBy: { startedAt: 'desc' },
+        },
+      },
+    })
+
+    if (!exam) {
+      return { success: false, error: 'Examen no encontrado o no tienes permiso' }
+    }
+
+    const completedAttempts = exam.attempts.filter((a) => a.status === 'COMPLETED')
+    const scores = completedAttempts.map((a) => a.score || 0)
+    const averageScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0
+    const passedCount = scores.filter((s) => s >= exam.passingScore).length
+
+    return {
+      success: true,
+      results: {
+        id: exam.id,
+        title: exam.title,
+        description: exam.description,
+        passingScore: exam.passingScore,
+        courseId: exam.courseId,
+        attempts: exam.attempts.map((a) => ({
+          id: a.id,
+          status: a.status,
+          score: a.score,
+          startedAt: a.startedAt,
+          completedAt: a.submittedAt,
+          user: a.user,
+        })),
+        stats: {
+          totalAttempts: exam.attempts.length,
+          completedAttempts: completedAttempts.length,
+          averageScore,
+          passRate: completedAttempts.length > 0
+            ? (passedCount / completedAttempts.length) * 100
+            : 0,
+        },
+      },
+    }
+  } catch (error) {
+    console.error('Error fetching exam results for teacher:', error)
+    return { success: false, error: 'Error al obtener los resultados' }
+  }
+}
