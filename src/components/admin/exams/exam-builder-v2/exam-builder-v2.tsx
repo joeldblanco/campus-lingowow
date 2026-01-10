@@ -37,7 +37,6 @@ import {
   ArrowLeft,
   Settings,
   Eye,
-  Cloud,
   Loader2,
   AlertCircle,
   CheckCircle,
@@ -50,7 +49,7 @@ import { QuestionLibrary, QuestionTemplate, DraggableQuestion } from './question
 import { QuestionCanvas } from './question-canvas'
 import { QuestionProperties } from './question-properties'
 import { ExamQuestion, ExamSettings, DEFAULT_EXAM_SETTINGS, QuestionValidationError } from './types'
-import { createExam, updateExam, getCoursesForExams } from '@/lib/actions/exams'
+import { createExam, updateExam, getCoursesForExams, updateExamDraft, updateExamQuestions } from '@/lib/actions/exams'
 import { ExamWithDetails } from '@/types/exam'
 
 interface ExamBuilderV2Props {
@@ -162,8 +161,10 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
   )
 
   // Auto-save
-  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const metadataSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const questionsSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const isFirstRender = useRef(true)
+  const isFirstQuestionsRender = useRef(true)
 
   useEffect(() => {
     loadCourses()
@@ -178,31 +179,243 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
     }
   }
 
-  const debouncedSave = useCallback(() => {
-    if (mode === 'edit' && exam?.id) {
+  // Auto-save metadata (title, description, settings)
+  const debouncedMetadataSave = useCallback(
+    (updates: { title?: string; description?: string }) => {
+      if (!exam?.id) return
+
       setSaveStatus('saving')
-      if (saveTimeoutRef.current) {
-        clearTimeout(saveTimeoutRef.current)
+      if (metadataSaveTimeoutRef.current) {
+        clearTimeout(metadataSaveTimeoutRef.current)
       }
 
-      saveTimeoutRef.current = setTimeout(async () => {
+      metadataSaveTimeoutRef.current = setTimeout(async () => {
         try {
-          // Auto-save logic would go here
-          setSaveStatus('saved')
+          const result = await updateExamDraft(exam.id, updates)
+          if (result.success) {
+            setSaveStatus('saved')
+          } else {
+            setSaveStatus('error')
+            toast.error('Error al guardar automáticamente')
+          }
+        } catch {
+          setSaveStatus('error')
+        }
+      }, 1500)
+    },
+    [exam?.id]
+  )
+
+  // Auto-save questions
+  const debouncedQuestionsSave = useCallback(
+    (questionsToSave: ExamQuestion[]) => {
+      if (!exam?.id) return
+
+      setSaveStatus('saving')
+      if (questionsSaveTimeoutRef.current) {
+        clearTimeout(questionsSaveTimeoutRef.current)
+      }
+
+      questionsSaveTimeoutRef.current = setTimeout(async () => {
+        try {
+          // Map internal question types to schema types
+          const mapQuestionType = (type: string): 'MULTIPLE_CHOICE' | 'TRUE_FALSE' | 'SHORT_ANSWER' | 'ESSAY' | 'FILL_BLANK' | 'MATCHING' | 'ORDERING' | 'DRAG_DROP' => {
+            const typeMap: Record<string, 'MULTIPLE_CHOICE' | 'TRUE_FALSE' | 'SHORT_ANSWER' | 'ESSAY' | 'FILL_BLANK' | 'MATCHING' | 'ORDERING' | 'DRAG_DROP'> = {
+              'multiple_choice': 'MULTIPLE_CHOICE',
+              'true_false': 'TRUE_FALSE',
+              'short_answer': 'SHORT_ANSWER',
+              'essay': 'ESSAY',
+              'fill_blanks': 'FILL_BLANK',
+              'fill_blank': 'FILL_BLANK',
+              'matching': 'MATCHING',
+              'ordering': 'ORDERING',
+              'drag_drop': 'DRAG_DROP',
+              'audio_question': 'ESSAY',
+              'image_question': 'ESSAY',
+            }
+            return typeMap[type.toLowerCase()] || 'SHORT_ANSWER'
+          }
+
+          // Get correct answer based on question type
+          const getCorrectAnswer = (q: ExamQuestion): string | string[] | null => {
+            switch (q.type) {
+              case 'multiple_choice':
+                return q.options?.find((opt) => opt.id === q.correctOptionId)?.text || ''
+              case 'true_false':
+                return q.correctAnswer === true ? 'Verdadero' : 'Falso'
+              case 'short_answer':
+                return q.correctAnswers?.[0] || ''
+              case 'fill_blanks':
+              case 'fill_blank':
+                if (q.content) {
+                  const matches = q.content.match(/\[([^\]]+)\]/g)
+                  if (matches) {
+                    return matches.map(m => m.slice(1, -1))
+                  }
+                }
+                return ''
+              case 'matching':
+                if (q.pairs && q.pairs.length > 0) {
+                  return JSON.stringify(q.pairs.map(p => ({ left: p.left, right: p.right })))
+                }
+                return ''
+              case 'ordering':
+                if (q.items && q.items.length > 0) {
+                  return q.items.map(i => i.text)
+                }
+                return ''
+              case 'drag_drop':
+                if (q.dragItems && q.dragItems.length > 0) {
+                  return JSON.stringify(q.dragItems.map(i => ({ item: i.text, category: i.correctCategoryId })))
+                }
+                return ''
+              case 'essay':
+              case 'audio_question':
+              case 'image_question':
+                return null
+              default:
+                return ''
+            }
+          }
+
+          const questionsData = questionsToSave.map((q, index) => ({
+            type: mapQuestionType(q.type),
+            question: q.question || q.instruction || '',
+            options: q.options?.map((opt) => opt.text),
+            correctAnswer: getCorrectAnswer(q),
+            explanation: q.explanation || '',
+            points: q.points,
+            order: index,
+            difficulty: 'MEDIUM' as const,
+            tags: [] as string[],
+            caseSensitive: q.caseSensitive || false,
+            partialCredit: q.partialCredit || false,
+            minLength: q.minWords,
+            maxLength: q.maxWords,
+            audioUrl: q.audioUrl,
+            maxAudioPlays: q.maxPlays,
+          }))
+
+          const result = await updateExamQuestions(exam.id, questionsData)
+          if (result.success) {
+            setSaveStatus('saved')
+          } else {
+            setSaveStatus('error')
+            toast.error('Error al guardar las preguntas')
+          }
         } catch {
           setSaveStatus('error')
         }
       }, 2000)
-    }
-  }, [mode, exam?.id])
+    },
+    [exam?.id]
+  )
 
+  // Auto-save on title/description change
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false
       return
     }
-    debouncedSave()
-  }, [questions, title, description, debouncedSave])
+    debouncedMetadataSave({ title, description })
+  }, [title, description, debouncedMetadataSave])
+
+  // Auto-save on questions change
+  useEffect(() => {
+    if (isFirstQuestionsRender.current) {
+      isFirstQuestionsRender.current = false
+      return
+    }
+    debouncedQuestionsSave(questions)
+  }, [questions, debouncedQuestionsSave])
+
+  // Auto-save settings
+  const settingsSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const isFirstSettingsRender = useRef(true)
+
+  const debouncedSettingsSave = useCallback(
+    (settingsToSave: ExamSettings) => {
+      if (!exam?.id) return
+
+      setSaveStatus('saving')
+      if (settingsSaveTimeoutRef.current) {
+        clearTimeout(settingsSaveTimeoutRef.current)
+      }
+
+      settingsSaveTimeoutRef.current = setTimeout(async () => {
+        try {
+          const result = await updateExamDraft(exam.id, {
+            timeLimit: settingsToSave.timeLimit,
+            passingScore: settingsToSave.passingScore,
+            maxAttempts: settingsToSave.maxAttempts,
+            shuffleQuestions: settingsToSave.shuffleQuestions,
+            shuffleOptions: settingsToSave.shuffleOptions,
+            showResults: settingsToSave.showResults,
+            allowReview: settingsToSave.allowReview,
+            isBlocking: settingsToSave.isBlocking,
+            isOptional: settingsToSave.isOptional,
+          })
+          if (result.success) {
+            setSaveStatus('saved')
+          } else {
+            setSaveStatus('error')
+          }
+        } catch {
+          setSaveStatus('error')
+        }
+      }, 1500)
+    },
+    [exam?.id]
+  )
+
+  useEffect(() => {
+    if (isFirstSettingsRender.current) {
+      isFirstSettingsRender.current = false
+      return
+    }
+    debouncedSettingsSave(settings)
+  }, [settings, debouncedSettingsSave])
+
+  // Auto-save course assignment
+  const courseSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const isFirstCourseRender = useRef(true)
+
+  const debouncedCourseSave = useCallback(
+    (course: string, module: string, lesson: string) => {
+      if (!exam?.id) return
+
+      setSaveStatus('saving')
+      if (courseSaveTimeoutRef.current) {
+        clearTimeout(courseSaveTimeoutRef.current)
+      }
+
+      courseSaveTimeoutRef.current = setTimeout(async () => {
+        try {
+          const result = await updateExamDraft(exam.id, {
+            courseId: course || null,
+            moduleId: module || null,
+            lessonId: lesson || null,
+          })
+          if (result.success) {
+            setSaveStatus('saved')
+          } else {
+            setSaveStatus('error')
+          }
+        } catch {
+          setSaveStatus('error')
+        }
+      }, 1500)
+    },
+    [exam?.id]
+  )
+
+  useEffect(() => {
+    if (isFirstCourseRender.current) {
+      isFirstCourseRender.current = false
+      return
+    }
+    debouncedCourseSave(courseId, moduleId, lessonId)
+  }, [courseId, moduleId, lessonId, debouncedCourseSave])
 
   // DnD Handlers
   const handleDragStart = (event: DragStartEvent) => {
@@ -552,7 +765,7 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
           {/* Right Actions */}
           <div className="flex items-center gap-2">
             {/* Save Status */}
-            {!isPreviewMode && mode === 'edit' && (
+            {!isPreviewMode && exam?.id && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground mr-2">
                 {saveStatus === 'saving' ? (
                   <>
@@ -562,12 +775,12 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
                 ) : saveStatus === 'error' ? (
                   <>
                     <AlertCircle className="h-4 w-4 text-destructive" />
-                    <span className="text-destructive">Error</span>
+                    <span className="text-destructive">Error al guardar</span>
                   </>
                 ) : (
                   <>
-                    <Cloud className="h-4 w-4" />
-                    <span>Borrador guardado</span>
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    <span>Guardado</span>
                   </>
                 )}
               </div>

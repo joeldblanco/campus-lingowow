@@ -185,6 +185,175 @@ export async function getExamById(id: string): Promise<ExamWithDetails | null> {
   }
 }
 
+export async function createDraftExam(createdById: string): Promise<ExamCreateResponse> {
+  try {
+    const exam = await db.exam.create({
+      data: {
+        title: 'Nuevo Examen',
+        description: '',
+        instructions: '',
+        timeLimit: 60,
+        passingScore: 70,
+        maxAttempts: 3,
+        isBlocking: false,
+        isOptional: false,
+        shuffleQuestions: false,
+        shuffleOptions: false,
+        showResults: true,
+        allowReview: true,
+        isPublished: false,
+        createdById,
+      }
+    })
+
+    // Create a default section
+    await db.examSection.create({
+      data: {
+        examId: exam.id,
+        title: 'Sección Principal',
+        description: '',
+        order: 1,
+        points: 0
+      }
+    })
+
+    revalidatePath('/admin/exams')
+    return { success: true, exam }
+  } catch (error) {
+    console.error('Error creating draft exam:', error)
+    return { success: false, error: 'Error al crear el borrador del examen' }
+  }
+}
+
+export async function updateExamDraft(
+  id: string, 
+  data: {
+    title?: string
+    description?: string
+    instructions?: string
+    timeLimit?: number
+    passingScore?: number
+    maxAttempts?: number
+    isBlocking?: boolean
+    isOptional?: boolean
+    shuffleQuestions?: boolean
+    shuffleOptions?: boolean
+    showResults?: boolean
+    allowReview?: boolean
+    isPublished?: boolean
+    courseId?: string | null
+    moduleId?: string | null
+    lessonId?: string | null
+  }
+): Promise<ExamUpdateResponse> {
+  try {
+    const exam = await db.exam.update({
+      where: { id },
+      data: {
+        ...data,
+        courseId: data.courseId || null,
+        moduleId: data.moduleId || null,
+        lessonId: data.lessonId || null,
+      }
+    })
+
+    return { success: true, exam }
+  } catch (error) {
+    console.error('Error updating exam draft:', error)
+    return { success: false, error: 'Error al actualizar el borrador' }
+  }
+}
+
+export async function updateExamQuestions(
+  examId: string,
+  questions: Array<{
+    type: 'MULTIPLE_CHOICE' | 'TRUE_FALSE' | 'SHORT_ANSWER' | 'ESSAY' | 'FILL_BLANK' | 'MATCHING' | 'ORDERING' | 'DRAG_DROP'
+    question: string
+    options?: string[]
+    correctAnswer: string | string[] | null
+    explanation?: string
+    points: number
+    order: number
+    difficulty?: 'EASY' | 'MEDIUM' | 'HARD'
+    tags?: string[]
+    caseSensitive?: boolean
+    partialCredit?: boolean
+    minLength?: number
+    maxLength?: number
+    audioUrl?: string
+    maxAudioPlays?: number
+  }>
+): Promise<ExamUpdateResponse> {
+  try {
+    const result = await db.$transaction(async (tx) => {
+      // Get or create the main section
+      let section = await tx.examSection.findFirst({
+        where: { examId },
+        orderBy: { order: 'asc' }
+      })
+
+      if (!section) {
+        section = await tx.examSection.create({
+          data: {
+            examId,
+            title: 'Sección Principal',
+            description: '',
+            order: 1,
+            points: 0
+          }
+        })
+      }
+
+      // Delete existing questions
+      await tx.examQuestion.deleteMany({
+        where: { sectionId: section.id }
+      })
+
+      // Create new questions
+      for (const questionData of questions) {
+        const correctAnswer = questionData.type === 'ESSAY' 
+          ? Prisma.JsonNull 
+          : (questionData.correctAnswer ?? '')
+
+        await tx.examQuestion.create({
+          data: {
+            sectionId: section.id,
+            type: questionData.type,
+            question: questionData.question,
+            options: questionData.options,
+            correctAnswer,
+            explanation: questionData.explanation,
+            points: questionData.points,
+            order: questionData.order,
+            difficulty: questionData.difficulty || 'MEDIUM',
+            tags: questionData.tags || [],
+            caseSensitive: questionData.caseSensitive || false,
+            partialCredit: questionData.partialCredit || false,
+            minLength: questionData.minLength,
+            maxLength: questionData.maxLength,
+            audioUrl: questionData.audioUrl,
+            maxAudioPlays: questionData.maxAudioPlays,
+          }
+        })
+      }
+
+      // Update section points
+      const totalPoints = questions.reduce((sum, q) => sum + q.points, 0)
+      await tx.examSection.update({
+        where: { id: section.id },
+        data: { points: totalPoints }
+      })
+
+      return await tx.exam.findUnique({ where: { id: examId } })
+    })
+
+    return { success: true, exam: result! }
+  } catch (error) {
+    console.error('Error updating exam questions:', error)
+    return { success: false, error: 'Error al actualizar las preguntas' }
+  }
+}
+
 export async function createExam(data: z.infer<typeof CreateExamSchema>): Promise<ExamCreateResponse> {
   try {
     // Validar datos de entrada
