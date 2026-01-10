@@ -1,10 +1,10 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Switch } from '@/components/ui/switch'
-import { Textarea } from '@/components/ui/textarea'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import {
   Select,
   SelectContent,
@@ -12,16 +12,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { X, Plus, Trash2, ChevronDown } from 'lucide-react'
-import { ExamQuestion, QUESTION_TYPE_LABELS } from './types'
-import { useState } from 'react'
+import { Switch } from '@/components/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
+import { ChevronDown, Plus, Trash2, X } from 'lucide-react'
+import { useState } from 'react'
+import { ExamQuestion, QUESTION_TYPE_LABELS } from './types'
 
 interface QuestionPropertiesProps {
   question: ExamQuestion | null
@@ -30,7 +26,12 @@ interface QuestionPropertiesProps {
   onDelete?: () => void
 }
 
-export function QuestionProperties({ question, onUpdate, onClose, onDelete }: QuestionPropertiesProps) {
+export function QuestionProperties({
+  question,
+  onUpdate,
+  onClose,
+  onDelete,
+}: QuestionPropertiesProps) {
   const [hintOpen, setHintOpen] = useState(false)
 
   if (!question) return null
@@ -164,7 +165,8 @@ export function QuestionProperties({ question, onUpdate, onClose, onDelete }: Qu
           {(question.type === 'audio_question' || question.type === 'image_question') && (
             <div className="p-3 bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg">
               <p className="text-sm text-blue-700 dark:text-blue-300">
-                Este es un bloque informativo. No requiere respuesta del estudiante ni otorga puntos.
+                Este es un bloque informativo. No requiere respuesta del estudiante ni otorga
+                puntos.
               </p>
             </div>
           )}
@@ -259,7 +261,8 @@ function MultipleChoiceEditor({
     const filteredOptions = options.filter((opt) => opt.id !== id)
     onUpdate({
       options: filteredOptions,
-      correctOptionId: question.correctOptionId === id ? filteredOptions[0]?.id : question.correctOptionId,
+      correctOptionId:
+        question.correctOptionId === id ? filteredOptions[0]?.id : question.correctOptionId,
     })
   }
 
@@ -853,7 +856,7 @@ function ImageQuestionEditor({
               alt="Vista previa"
               className="max-w-full h-auto max-h-48 mx-auto"
               onError={(e) => {
-                (e.target as HTMLImageElement).style.display = 'none'
+                ;(e.target as HTMLImageElement).style.display = 'none'
               }}
             />
           </div>
