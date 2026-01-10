@@ -410,6 +410,7 @@ export async function createExam(data: z.infer<typeof CreateExamSchema>): Promis
           maxAttempts: validatedData.maxAttempts,
           isBlocking: validatedData.isBlocking,
           isOptional: validatedData.isOptional,
+          isPublished: validatedData.isPublished,
           shuffleQuestions: validatedData.shuffleQuestions,
           shuffleOptions: validatedData.shuffleOptions,
           showResults: validatedData.showResults,
