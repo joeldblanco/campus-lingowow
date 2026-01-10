@@ -51,6 +51,19 @@ export function gradeQuestion(
   let isCorrect = false
   let pointsEarned = 0
 
+  // Handle null correctAnswer (ESSAY and similar types that don't have correct answers)
+  if (question.correctAnswer === null || question.correctAnswer === undefined) {
+    return {
+      questionKey,
+      isCorrect: false,
+      pointsEarned: 0,
+      maxPoints: question.points,
+      userAnswer,
+      correctAnswer: null,
+      explanation: question.explanation,
+    }
+  }
+
   switch (question.type) {
     case 'MULTIPLE_CHOICE':
     case 'TRUE_FALSE':
