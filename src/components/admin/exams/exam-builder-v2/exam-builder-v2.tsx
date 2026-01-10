@@ -212,7 +212,7 @@ export function ExamBuilderV2({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
     isOptional: exam?.isOptional || DEFAULT_EXAM_SETTINGS.isOptional,
   })
 
-  const [isPublished] = useState(exam?.isPublished || false)
+  const [isPublished, setIsPublished] = useState(exam?.isPublished || false)
 
   // Course assignment
   const [courseId, setCourseId] = useState(exam?.courseId || '')
@@ -590,7 +590,7 @@ export function ExamBuilderV2({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
   }
 
   // Save handler
-  const handleSave = async () => {
+  const handleSave = async (publish: boolean = false) => {
     if (!title.trim()) {
       toast.error('Por favor, ingresa un título para el examen')
       return
@@ -727,15 +727,19 @@ export function ExamBuilderV2({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
       } else {
         result = await updateExam(exam!.id, {
           ...examData,
-          isPublished,
+          isPublished: publish || isPublished,
         })
       }
 
       if (result.success) {
         setValidationErrors([])
-        toast.success(
-          mode === 'create' ? 'Examen creado exitosamente' : 'Examen actualizado exitosamente'
-        )
+        if (publish && !isPublished) {
+          toast.success('Examen publicado exitosamente')
+        } else {
+          toast.success(
+            mode === 'create' ? 'Examen creado exitosamente' : 'Examen actualizado exitosamente'
+          )
+        }
         router.push(backUrl)
       } else {
         // Process validation errors from Zod
@@ -895,7 +899,12 @@ export function ExamBuilderV2({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
                 'gap-2',
                 isPublished ? 'bg-green-600 hover:bg-green-700' : ''
               )}
-              onClick={handleSave}
+              onClick={() => {
+                if (!isPublished) {
+                  setIsPublished(true)
+                }
+                handleSave(true)
+              }}
               disabled={loading}
             >
               {loading ? (
