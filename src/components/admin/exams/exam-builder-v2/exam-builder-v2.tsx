@@ -84,33 +84,115 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
       // Convert old section-based format to flat questions
       let order = 0
       return exam.sections.flatMap((section) =>
-        section.questions.map((q): ExamQuestion => ({
-          id: `q-${order++}-${Date.now()}`,
-          type: q.type.toLowerCase(),
-          order: order,
-          points: q.points,
-          question: q.question,
-          options: q.options
-            ? (q.options as string[]).map((text, i) => ({ id: `opt${i}`, text }))
-            : undefined,
-          correctOptionId:
-            q.type === 'MULTIPLE_CHOICE'
-              ? `opt${(q.options as string[])?.indexOf(q.correctAnswer as string)}`
-              : undefined,
-          correctAnswer:
-            q.type === 'TRUE_FALSE' ? q.correctAnswer === 'Verdadero' : undefined,
-          correctAnswers:
-            q.type === 'SHORT_ANSWER'
-              ? Array.isArray(q.correctAnswer)
+        section.questions.map((q): ExamQuestion => {
+          const qType = q.type.toLowerCase()
+          const optionsData = q.options as Record<string, unknown> | string[] | null
+          
+          // Base question data
+          const baseQuestion: ExamQuestion = {
+            id: `q-${order++}-${Date.now()}`,
+            type: qType,
+            order: order,
+            points: q.points,
+            question: q.question,
+            explanation: q.explanation || undefined,
+            caseSensitive: q.caseSensitive,
+            partialCredit: q.partialCredit,
+            minWords: q.minLength || undefined,
+            maxWords: q.maxLength || undefined,
+            audioUrl: q.audioUrl || undefined,
+            maxPlays: q.maxAudioPlays || undefined,
+          }
+
+          // Handle type-specific data
+          switch (qType) {
+            case 'multiple_choice':
+              if (Array.isArray(optionsData)) {
+                baseQuestion.options = optionsData.map((text, i) => ({ id: `opt${i}`, text: text as string }))
+                baseQuestion.correctOptionId = `opt${optionsData.indexOf(q.correctAnswer as string)}`
+              }
+              break
+            
+            case 'true_false':
+              baseQuestion.correctAnswer = q.correctAnswer === 'Verdadero'
+              break
+            
+            case 'short_answer':
+              baseQuestion.correctAnswers = Array.isArray(q.correctAnswer)
                 ? (q.correctAnswer as string[])
                 : [q.correctAnswer as string]
-              : undefined,
-          explanation: q.explanation || undefined,
-          caseSensitive: q.caseSensitive,
-          partialCredit: q.partialCredit,
-          minWords: q.minLength || undefined,
-          maxWords: q.maxLength || undefined,
-        }))
+              break
+            
+            case 'fill_blank':
+            case 'fill_blanks':
+              // Content is stored in options.content
+              if (optionsData && typeof optionsData === 'object' && !Array.isArray(optionsData)) {
+                baseQuestion.content = (optionsData as { content?: string }).content || ''
+              }
+              break
+            
+            case 'matching':
+              // Pairs are stored in options.pairs
+              if (optionsData && typeof optionsData === 'object' && !Array.isArray(optionsData)) {
+                const pairs = (optionsData as { pairs?: Array<{ left: string; right: string }> }).pairs
+                if (pairs) {
+                  baseQuestion.pairs = pairs.map((p, i) => ({ id: `pair${i}`, left: p.left, right: p.right }))
+                }
+              }
+              break
+            
+            case 'ordering':
+              // Items are stored in options.items
+              if (optionsData && typeof optionsData === 'object' && !Array.isArray(optionsData)) {
+                const items = (optionsData as { items?: Array<{ text: string; correctPosition: number }> }).items
+                if (items) {
+                  baseQuestion.items = items.map((item, i) => ({ 
+                    id: `item${i}`, 
+                    text: item.text, 
+                    correctPosition: item.correctPosition 
+                  }))
+                }
+              }
+              break
+            
+            case 'drag_drop':
+              // Categories and dragItems are stored in options
+              if (optionsData && typeof optionsData === 'object' && !Array.isArray(optionsData)) {
+                const data = optionsData as { 
+                  categories?: Array<{ id: string; name: string }>
+                  dragItems?: Array<{ text: string; correctCategoryId: string }>
+                }
+                if (data.categories) {
+                  baseQuestion.categories = data.categories.map((c, i) => ({ 
+                    id: c.id || `cat${i}`, 
+                    name: c.name 
+                  }))
+                }
+                if (data.dragItems) {
+                  baseQuestion.dragItems = data.dragItems.map((d, i) => ({ 
+                    id: `item${i}`, 
+                    text: d.text, 
+                    correctCategoryId: d.correctCategoryId 
+                  }))
+                }
+              }
+              break
+            
+            case 'audio_question':
+              baseQuestion.audioUrl = q.audioUrl || undefined
+              baseQuestion.maxPlays = q.maxAudioPlays || 3
+              break
+            
+            case 'image_question':
+              // imageUrl might be stored in options or as a separate field
+              if (optionsData && typeof optionsData === 'object' && !Array.isArray(optionsData)) {
+                baseQuestion.imageUrl = (optionsData as { imageUrl?: string }).imageUrl
+              }
+              break
+          }
+
+          return baseQuestion
+        })
       )
     }
     return []
@@ -294,6 +376,13 @@ export function ExamBuilderV2({ mode, exam }: ExamBuilderV2Props) {
             maxLength: q.maxWords,
             audioUrl: q.audioUrl,
             maxAudioPlays: q.maxPlays,
+            imageUrl: q.imageUrl,
+            // Interactive question data
+            content: q.content,
+            pairs: q.pairs?.map(p => ({ left: p.left, right: p.right })),
+            items: q.items?.map(i => ({ text: i.text, correctPosition: i.correctPosition })),
+            categories: q.categories?.map(c => ({ id: c.id, name: c.name })),
+            dragItems: q.dragItems?.map(d => ({ text: d.text, correctCategoryId: d.correctCategoryId })),
           }))
 
           const result = await updateExamQuestions(exam.id, questionsData)

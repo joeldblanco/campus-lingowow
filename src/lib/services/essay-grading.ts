@@ -153,13 +153,13 @@ Respond ONLY with valid JSON, no additional text or markdown.`
       (aiResponse.coherence?.score || 0) +
       (aiResponse.taskCompletion?.score || 0)
 
-    const percentage = (totalScore / maxPoints) * 100
+    const percentage = maxPoints > 0 ? (totalScore / maxPoints) * 100 : 0
 
     return {
       score: totalScore,
       maxScore: maxPoints,
       percentage: Math.round(percentage * 100) / 100,
-      passed: percentage >= 60,
+      passed: maxPoints > 0 ? percentage >= 60 : true,
       feedback: {
         overall: aiResponse.overall || '',
         grammar: {

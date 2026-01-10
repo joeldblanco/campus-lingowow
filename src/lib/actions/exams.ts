@@ -269,7 +269,7 @@ export async function updateExamQuestions(
   questions: Array<{
     type: 'MULTIPLE_CHOICE' | 'TRUE_FALSE' | 'SHORT_ANSWER' | 'ESSAY' | 'FILL_BLANK' | 'MATCHING' | 'ORDERING' | 'DRAG_DROP'
     question: string
-    options?: string[]
+    options?: string[] | object
     correctAnswer: string | string[] | null
     explanation?: string
     points: number
@@ -282,6 +282,13 @@ export async function updateExamQuestions(
     maxLength?: number
     audioUrl?: string
     maxAudioPlays?: number
+    imageUrl?: string
+    // Interactive question data
+    content?: string
+    pairs?: Array<{ left: string; right: string }>
+    items?: Array<{ text: string; correctPosition: number }>
+    categories?: Array<{ id: string; name: string }>
+    dragItems?: Array<{ text: string; correctCategoryId: string }>
   }>
 ): Promise<ExamUpdateResponse> {
   try {
@@ -315,12 +322,28 @@ export async function updateExamQuestions(
           ? Prisma.JsonNull 
           : (questionData.correctAnswer ?? '')
 
+        // Build options object for interactive types
+        let optionsData: unknown = questionData.options
+        
+        if (questionData.type === 'MATCHING' && questionData.pairs) {
+          optionsData = { pairs: questionData.pairs }
+        } else if (questionData.type === 'ORDERING' && questionData.items) {
+          optionsData = { items: questionData.items }
+        } else if (questionData.type === 'DRAG_DROP' && (questionData.categories || questionData.dragItems)) {
+          optionsData = { 
+            categories: questionData.categories || [],
+            dragItems: questionData.dragItems || []
+          }
+        } else if (questionData.type === 'FILL_BLANK' && questionData.content) {
+          optionsData = { content: questionData.content }
+        }
+
         await tx.examQuestion.create({
           data: {
             sectionId: section.id,
             type: questionData.type,
             question: questionData.question,
-            options: questionData.options,
+            options: optionsData as Prisma.InputJsonValue,
             correctAnswer,
             explanation: questionData.explanation,
             points: questionData.points,
