@@ -13,6 +13,7 @@ interface DeviceErrorBannerProps {
 
 export function DeviceErrorBanner({
   type,
+  message,
   canRetry,
   onRetry,
   onDismiss,
@@ -33,7 +34,7 @@ export function DeviceErrorBanner({
     }
   }
 
-  const getMessage = () => {
+  const getDefaultMessage = () => {
     switch (type) {
       case 'camera':
         return 'Cámara en uso por otra app. Continuarás sin video.'
@@ -48,7 +49,7 @@ export function DeviceErrorBanner({
     <div className="flex items-center justify-between gap-4 px-4 py-2 bg-amber-50 border-b border-amber-200 text-amber-800 text-sm animate-in slide-in-from-top-1 duration-200">
       <div className="flex items-center gap-2">
         <span className="text-amber-600">{getIcon()}</span>
-        <span>{getMessage()}</span>
+        <span>{message || getDefaultMessage()}</span>
       </div>
       <div className="flex items-center gap-1">
         {canRetry && (
