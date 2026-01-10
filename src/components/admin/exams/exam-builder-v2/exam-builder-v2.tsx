@@ -210,6 +210,11 @@ export function ExamBuilderV2({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
     allowReview: exam?.allowReview ?? DEFAULT_EXAM_SETTINGS.allowReview,
     isBlocking: exam?.isBlocking || DEFAULT_EXAM_SETTINGS.isBlocking,
     isOptional: exam?.isOptional || DEFAULT_EXAM_SETTINGS.isOptional,
+    proctoringEnabled: exam?.proctoringEnabled ?? DEFAULT_EXAM_SETTINGS.proctoringEnabled,
+    requireFullscreen: exam?.requireFullscreen ?? DEFAULT_EXAM_SETTINGS.requireFullscreen,
+    blockCopyPaste: exam?.blockCopyPaste ?? DEFAULT_EXAM_SETTINGS.blockCopyPaste,
+    blockRightClick: exam?.blockRightClick ?? DEFAULT_EXAM_SETTINGS.blockRightClick,
+    maxWarnings: exam?.maxWarnings ?? DEFAULT_EXAM_SETTINGS.maxWarnings,
   })
 
   const [isPublished, setIsPublished] = useState(exam?.isPublished || false)
@@ -714,6 +719,11 @@ export function ExamBuilderV2({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
         shuffleOptions: settings.shuffleOptions,
         showResults: settings.showResults,
         allowReview: settings.allowReview,
+        proctoringEnabled: settings.proctoringEnabled ?? true,
+        requireFullscreen: settings.requireFullscreen ?? true,
+        blockCopyPaste: settings.blockCopyPaste ?? true,
+        blockRightClick: settings.blockRightClick ?? true,
+        maxWarnings: settings.maxWarnings ?? 5,
         courseId: courseId || undefined,
         moduleId: moduleId || undefined,
         lessonId: lessonId || undefined,

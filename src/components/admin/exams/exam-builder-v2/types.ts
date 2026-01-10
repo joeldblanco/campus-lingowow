@@ -72,6 +72,12 @@ export interface ExamSettings {
   allowReview: boolean
   isBlocking: boolean
   isOptional: boolean
+  // Proctoring
+  proctoringEnabled: boolean
+  requireFullscreen: boolean
+  blockCopyPaste: boolean
+  blockRightClick: boolean
+  maxWarnings: number
 }
 
 export const DEFAULT_EXAM_SETTINGS: ExamSettings = {
@@ -84,6 +90,12 @@ export const DEFAULT_EXAM_SETTINGS: ExamSettings = {
   allowReview: true,
   isBlocking: false,
   isOptional: false,
+  // Proctoring - activado por defecto
+  proctoringEnabled: true,
+  requireFullscreen: true,
+  blockCopyPaste: true,
+  blockRightClick: true,
+  maxWarnings: 5,
 }
 
 export const QUESTION_TYPE_LABELS: Record<string, string> = {
