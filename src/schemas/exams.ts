@@ -53,7 +53,7 @@ export const ExamQuestionSchema = z.object({
   imageUrl: z.string().url('URL de imagen inválida').optional().or(z.literal(''))
 }).superRefine((data, ctx) => {
   // Validate correctAnswer is required for types that need it
-  const needsCorrectAnswer = !TYPES_WITHOUT_CORRECT_ANSWER.includes(data.type as typeof TYPES_WITHOUT_CORRECT_ANSWER[number])
+  const needsCorrectAnswer = !(TYPES_WITHOUT_CORRECT_ANSWER as readonly string[]).includes(data.type)
   
   if (needsCorrectAnswer) {
     const answer = data.correctAnswer
