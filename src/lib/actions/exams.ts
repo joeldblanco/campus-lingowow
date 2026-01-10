@@ -1,6 +1,7 @@
 'use server'
 
 import { db } from '@/lib/db'
+import { auth } from '@/auth'
 import { revalidatePath } from 'next/cache'
 import { 
   CreateExamSchema, 
@@ -448,6 +449,12 @@ export async function getCoursesForExams() {
 
 export async function assignExamToStudents(data: z.infer<typeof AssignExamSchema>): Promise<ExamAssignResponse> {
   try {
+    const session = await auth()
+    if (!session?.user?.id) {
+      return { success: false, error: 'No autorizado' }
+    }
+
+    const currentUserId = session.user.id
     const validatedData = AssignExamSchema.parse(data)
 
     const assignments = await Promise.all(
@@ -467,7 +474,7 @@ export async function assignExamToStudents(data: z.infer<typeof AssignExamSchema
           create: {
             examId: validatedData.examId,
             userId: studentId,
-            assignedBy: 'current-user-id', // TODO: Obtener del contexto de sesión
+            assignedBy: currentUserId,
             dueDate: validatedData.dueDate ? new Date(validatedData.dueDate) : null,
             instructions: validatedData.instructions,
             status: AssignmentStatus.ASSIGNED,
