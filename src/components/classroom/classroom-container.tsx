@@ -11,6 +11,7 @@ import { ActiveLessonViewer } from './active-lesson-viewer'
 import { ClassroomLayout } from './classroom-layout'
 import { ControlBar } from './control-bar'
 import { LiveKitProvider, useLiveKit } from './livekit-context'
+import { DeviceErrorBanner } from './device-error-banner'
 import { VideoGrid } from './video-grid'
 import { ExcalidrawWhiteboard } from './excalidraw-whiteboard'
 import { ClassroomChat } from './classroom-chat'
@@ -58,6 +59,9 @@ function ClassroomInner({
     toggleRaiseHand,
     isScreenSharing,
     isHandRaised,
+    deviceError,
+    clearDeviceError,
+    retryDeviceAccess,
   } = useLiveKit()
 
   const [timeLeft, setTimeLeft] = useState('')
@@ -417,6 +421,17 @@ function ClassroomInner({
       leftSidebar={renderLeftSidebar}
       onBackClick={handleBackClick}
       fullscreenContent={mainContentTab === 'whiteboard' || mainContentTab === 'screenshare'}
+      topBanner={
+        deviceError ? (
+          <DeviceErrorBanner
+            type={deviceError.type}
+            message={deviceError.message}
+            canRetry={deviceError.canRetry}
+            onRetry={retryDeviceAccess}
+            onDismiss={clearDeviceError}
+          />
+        ) : null
+      }
       bottomControls={
         <ControlBar
           isMicMuted={isAudioMuted}

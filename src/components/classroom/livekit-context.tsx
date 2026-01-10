@@ -11,6 +11,12 @@ import {
 } from 'livekit-client'
 import { VideoTrack } from './video-grid'
 
+interface DeviceError {
+  type: 'camera' | 'microphone' | 'both'
+  message: string
+  canRetry: boolean
+}
+
 interface LiveKitContextType {
   isInitialized: boolean
   connectionStatus: 'disconnected' | 'connecting' | 'connected' | 'failed'
@@ -33,6 +39,11 @@ interface LiveKitContextType {
   remoteScreenShareTrack: Track | undefined
   localScreenShareAudioTrack: Track | undefined
   remoteScreenShareAudioTrack: Track | undefined
+  deviceError: DeviceError | null
+  clearDeviceError: () => void
+  retryDeviceAccess: () => Promise<void>
+  cameraUnavailable: boolean
+  microphoneUnavailable: boolean
 }
 
 const LiveKitContext = createContext<LiveKitContextType | null>(null)
@@ -70,6 +81,10 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   const [isSpeaking, setIsSpeaking] = useState(false)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [speakingParticipants, setSpeakingParticipants] = useState<Set<string>>(new Set())
+  
+  const [deviceError, setDeviceError] = useState<DeviceError | null>(null)
+  const [cameraUnavailable, setCameraUnavailable] = useState(false)
+  const [microphoneUnavailable, setMicrophoneUnavailable] = useState(false)
 
   const updateRemoteParticipant = useCallback((participant: RemoteParticipant) => {
     setRemoteParticipants((prev) => {
@@ -217,8 +232,25 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       })
 
       room.on(RoomEvent.TrackSubscribed, (track, publication, participant) => {
-        console.log('[LiveKit] Track subscribed:', track.kind, participant.identity)
+        console.log('[LiveKit] Track subscribed:', track.kind, 'source:', publication.source, 'from:', participant.identity)
         updateRemoteParticipant(participant)
+      })
+
+      // Manejar cuando un participante remoto publica un nuevo track
+      room.on(RoomEvent.TrackPublished, (publication, participant) => {
+        console.log('[LiveKit] Track published:', publication.kind, 'source:', publication.source, 'from:', participant.identity)
+        // Forzar actualización del participante cuando publica un track
+        if (participant instanceof RemoteParticipant) {
+          updateRemoteParticipant(participant)
+        }
+      })
+
+      // Manejar cambios en el estado de suscripción (importante para reconexiones)
+      room.on(RoomEvent.TrackSubscriptionStatusChanged, (publication, status, participant) => {
+        console.log('[LiveKit] Track subscription status changed:', publication.kind, 'status:', status, 'from:', participant?.identity)
+        if (participant instanceof RemoteParticipant) {
+          updateRemoteParticipant(participant)
+        }
       })
 
       room.on(RoomEvent.TrackUnsubscribed, (track, publication, participant) => {
@@ -305,11 +337,66 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
 
       await room.connect(serverUrl, token)
 
-      await room.localParticipant.enableCameraAndMicrophone()
+      // Habilitar cámara y micrófono por separado con fallback graceful (estilo Google Meet)
+      let cameraError: string | null = null
+      let micError: string | null = null
 
-      room.remoteParticipants.forEach((participant) => {
-        updateRemoteParticipant(participant)
-      })
+      // Intentar habilitar micrófono primero (más importante para comunicación)
+      try {
+        await room.localParticipant.setMicrophoneEnabled(true)
+        setIsAudioMuted(false)
+        setMicrophoneUnavailable(false)
+      } catch (micException) {
+        console.warn('[LiveKit] No se pudo habilitar el micrófono:', micException)
+        micError = getDeviceErrorMessage(micException, 'microphone')
+        setIsAudioMuted(true)
+        setMicrophoneUnavailable(true)
+      }
+
+      // Intentar habilitar cámara
+      try {
+        await room.localParticipant.setCameraEnabled(true)
+        setIsVideoMuted(false)
+        setCameraUnavailable(false)
+      } catch (camException) {
+        console.warn('[LiveKit] No se pudo habilitar la cámara:', camException)
+        cameraError = getDeviceErrorMessage(camException, 'camera')
+        setIsVideoMuted(true)
+        setCameraUnavailable(true)
+      }
+
+      // Notificar al usuario sobre problemas de dispositivos (pero permitir continuar)
+      if (cameraError || micError) {
+        const errorType: DeviceError['type'] = 
+          cameraError && micError ? 'both' : 
+          cameraError ? 'camera' : 'microphone'
+        
+        const messages: string[] = []
+        if (micError) messages.push(micError)
+        if (cameraError) messages.push(cameraError)
+        
+        setDeviceError({
+          type: errorType,
+          message: messages.join(' '),
+          canRetry: true
+        })
+      }
+
+      // Forzar actualización de participantes remotos existentes con delay para asegurar tracks
+      const syncRemoteParticipants = () => {
+        room.remoteParticipants.forEach((participant) => {
+          console.log('[LiveKit] Sincronizando participante remoto:', participant.identity, 
+            'tracks:', participant.trackPublications.size)
+          updateRemoteParticipant(participant)
+        })
+      }
+      
+      // Sincronizar inmediatamente
+      syncRemoteParticipants()
+      
+      // Sincronizar de nuevo después de un pequeño delay para capturar tracks tardíos
+      setTimeout(syncRemoteParticipants, 500)
+      setTimeout(syncRemoteParticipants, 1500)
 
       const localParticipant = room.localParticipant
       localParticipant.trackPublications.forEach((pub) => {
@@ -330,6 +417,77 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       roomRef.current = null
     }
   }, [updateRemoteParticipant, removeRemoteParticipant])
+
+  // Helper para obtener mensajes de error amigables
+  const getDeviceErrorMessage = (error: unknown, device: 'camera' | 'microphone'): string => {
+    const deviceName = device === 'camera' ? 'cámara' : 'micrófono'
+    const err = error as Error
+    
+    if (err?.name === 'NotAllowedError' || err?.name === 'PermissionDeniedError') {
+      return `Permiso denegado para ${deviceName}. Verifica los permisos del navegador.`
+    }
+    if (err?.name === 'NotFoundError' || err?.name === 'DevicesNotFoundError') {
+      return `No se encontró ${deviceName}. Verifica que esté conectado.`
+    }
+    if (err?.name === 'NotReadableError' || err?.name === 'TrackStartError') {
+      return `${deviceName.charAt(0).toUpperCase() + deviceName.slice(1)} en uso por otra aplicación. Cierra otras apps que la usen.`
+    }
+    if (err?.name === 'OverconstrainedError') {
+      return `${deviceName.charAt(0).toUpperCase() + deviceName.slice(1)} no soporta la configuración solicitada.`
+    }
+    return `Error al acceder a ${deviceName}. Intenta de nuevo.`
+  }
+
+  const clearDeviceError = useCallback(() => {
+    setDeviceError(null)
+  }, [])
+
+  const retryDeviceAccess = useCallback(async () => {
+    if (!roomRef.current) return
+    const localParticipant = roomRef.current.localParticipant
+    
+    setDeviceError(null)
+    let newCameraError: string | null = null
+    let newMicError: string | null = null
+
+    // Reintentar micrófono si estaba no disponible
+    if (microphoneUnavailable) {
+      try {
+        await localParticipant.setMicrophoneEnabled(true)
+        setIsAudioMuted(false)
+        setMicrophoneUnavailable(false)
+      } catch (e) {
+        newMicError = getDeviceErrorMessage(e, 'microphone')
+      }
+    }
+
+    // Reintentar cámara si estaba no disponible
+    if (cameraUnavailable) {
+      try {
+        await localParticipant.setCameraEnabled(true)
+        setIsVideoMuted(false)
+        setCameraUnavailable(false)
+      } catch (e) {
+        newCameraError = getDeviceErrorMessage(e, 'camera')
+      }
+    }
+
+    if (newCameraError || newMicError) {
+      const errorType: DeviceError['type'] = 
+        newCameraError && newMicError ? 'both' : 
+        newCameraError ? 'camera' : 'microphone'
+      
+      const messages: string[] = []
+      if (newMicError) messages.push(newMicError)
+      if (newCameraError) messages.push(newCameraError)
+      
+      setDeviceError({
+        type: errorType,
+        message: messages.join(' '),
+        canRetry: true
+      })
+    }
+  }, [cameraUnavailable, microphoneUnavailable])
 
   const leaveRoom = useCallback(async () => {
     if (roomRef.current) {
@@ -352,35 +510,76 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
     const localParticipant = roomRef.current.localParticipant
     
     if (isAudioMuted) {
-      await localParticipant.setMicrophoneEnabled(true)
+      try {
+        await localParticipant.setMicrophoneEnabled(true)
+        setIsAudioMuted(false)
+        setMicrophoneUnavailable(false)
+        // Limpiar error si se resolvió
+        setDeviceError((prev) => {
+          if (!prev) return null
+          if (prev.type === 'microphone') return null
+          if (prev.type === 'both' && !cameraUnavailable) return null
+          if (prev.type === 'both') return { ...prev, type: 'camera' }
+          return prev
+        })
+      } catch (e) {
+        console.warn('[LiveKit] Error al habilitar micrófono:', e)
+        setMicrophoneUnavailable(true)
+        setDeviceError({
+          type: cameraUnavailable ? 'both' : 'microphone',
+          message: getDeviceErrorMessage(e, 'microphone'),
+          canRetry: true
+        })
+      }
     } else {
       await localParticipant.setMicrophoneEnabled(false)
+      setIsAudioMuted(true)
     }
-    setIsAudioMuted(!isAudioMuted)
-  }, [isAudioMuted])
+  }, [isAudioMuted, cameraUnavailable])
 
   const toggleVideo = useCallback(async () => {
     if (!roomRef.current) return
     const localParticipant = roomRef.current.localParticipant
     
     const newMutedState = !isVideoMuted
-    await localParticipant.setCameraEnabled(!newMutedState)
-    setIsVideoMuted(newMutedState)
     
-    // Update local video track reference after toggling
     if (!newMutedState) {
-      // Camera enabled - wait a bit for track to be ready
-      setTimeout(() => {
-        localParticipant.trackPublications.forEach((pub) => {
-          if (pub.track && pub.track.kind === Track.Kind.Video && pub.source === Track.Source.Camera) {
-            setLocalVideoTrack(pub.track)
-          }
+      // Intentando habilitar cámara
+      try {
+        await localParticipant.setCameraEnabled(true)
+        setIsVideoMuted(false)
+        setCameraUnavailable(false)
+        // Limpiar error si se resolvió
+        setDeviceError((prev) => {
+          if (!prev) return null
+          if (prev.type === 'camera') return null
+          if (prev.type === 'both' && !microphoneUnavailable) return null
+          if (prev.type === 'both') return { ...prev, type: 'microphone' }
+          return prev
         })
-      }, 100)
+        // Camera enabled - wait a bit for track to be ready
+        setTimeout(() => {
+          localParticipant.trackPublications.forEach((pub) => {
+            if (pub.track && pub.track.kind === Track.Kind.Video && pub.source === Track.Source.Camera) {
+              setLocalVideoTrack(pub.track)
+            }
+          })
+        }, 100)
+      } catch (e) {
+        console.warn('[LiveKit] Error al habilitar cámara:', e)
+        setCameraUnavailable(true)
+        setDeviceError({
+          type: microphoneUnavailable ? 'both' : 'camera',
+          message: getDeviceErrorMessage(e, 'camera'),
+          canRetry: true
+        })
+      }
     } else {
+      await localParticipant.setCameraEnabled(false)
+      setIsVideoMuted(true)
       setLocalVideoTrack(undefined)
     }
-  }, [isVideoMuted])
+  }, [isVideoMuted, microphoneUnavailable])
 
   const toggleScreenShare = useCallback(async () => {
     if (!roomRef.current) return
@@ -491,6 +690,11 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
         remoteScreenShareTrack,
         localScreenShareAudioTrack,
         remoteScreenShareAudioTrack,
+        deviceError,
+        clearDeviceError,
+        retryDeviceAccess,
+        cameraUnavailable,
+        microphoneUnavailable,
       }}
     >
       {children}

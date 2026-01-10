@@ -13,6 +13,7 @@ interface ClassroomLayoutProps {
   bottomControls: React.ReactNode // This will be the Control Bar
   contentTabs?: React.ReactNode // Tabs for switching between lesson/whiteboard/screenshare
   leftSidebar?: React.ReactNode // This will be the Lesson Selector (for teachers)
+  topBanner?: React.ReactNode // Banner for device errors or notifications
   className?: string
   lessonTitle?: string
   timeLeft?: string
@@ -27,6 +28,7 @@ export function ClassroomLayout({
   bottomControls,
   contentTabs,
   leftSidebar,
+  topBanner,
   className = '',
   lessonTitle = 'English Lesson',
   timeLeft = '45:00',
@@ -46,6 +48,13 @@ export function ClassroomLayout({
 
   return (
     <div className={`flex flex-col h-screen bg-gray-50 ${className}`}>
+      {/* Top Banner for device errors */}
+      {topBanner && (
+        <div className="flex-none px-4 py-2 bg-white border-b border-gray-200">
+          {topBanner}
+        </div>
+      )}
+
       {/* Header */}
       <header className="flex-none h-16 bg-white border-b border-gray-200 px-4 flex items-center justify-between z-10">
         <div className="flex items-center gap-4">
