@@ -72,6 +72,8 @@ const data = {
       url: '/recordings',
       icon: Video,
     },
+  ],
+  navStudent: [
     {
       title: 'Mis Exámenes',
       url: '/student/exams',
@@ -294,6 +296,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
         <NavMessages />
         {hasRole(user.roles, UserRole.STUDENT) && <NavClasses />}
+        {hasRole(user.roles, UserRole.STUDENT) && <NavMain items={data.navStudent} />}
         {hasRole(user.roles, UserRole.TEACHER) && <NavMain items={data.navTeacher} />}
         {user.roles.includes(UserRole.ADMIN) && <NavAdmin sections={data.navAdmin} />}
         {hasRole(user.roles, UserRole.EDITOR) && !user.roles.includes(UserRole.ADMIN) && (
