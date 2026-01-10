@@ -97,6 +97,13 @@ export const CreateExamSchema = z.object({
   showResults: z.boolean().default(true),
   allowReview: z.boolean().default(true),
   
+  // Proctoring
+  proctoringEnabled: z.boolean().default(true),
+  requireFullscreen: z.boolean().default(true),
+  blockCopyPaste: z.boolean().default(true),
+  blockRightClick: z.boolean().default(true),
+  maxWarnings: z.number().min(1).max(20).default(5),
+  
   // Contexto (opcional)
   courseId: z.string().optional(),
   moduleId: z.string().optional(), 
