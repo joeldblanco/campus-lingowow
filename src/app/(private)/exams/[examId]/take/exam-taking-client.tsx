@@ -20,6 +20,14 @@ interface ExamSection {
   }[]
 }
 
+interface ProctoringConfig {
+  enabled: boolean
+  requireFullscreen: boolean
+  blockCopyPaste: boolean
+  blockRightClick: boolean
+  maxWarnings: number
+}
+
 interface ExamTakingClientProps {
   examId: string
   attemptId: string
@@ -29,6 +37,7 @@ interface ExamTakingClientProps {
   sections: ExamSection[]
   timeLimit: number
   initialAnswers: Record<string, unknown>
+  proctoring: ProctoringConfig
 }
 
 export function ExamTakingClient({
@@ -39,7 +48,8 @@ export function ExamTakingClient({
   courseName,
   sections,
   timeLimit,
-  initialAnswers
+  initialAnswers,
+  proctoring
 }: ExamTakingClientProps) {
   const handleSaveAnswer = async (questionId: string, answer: unknown) => {
     await saveExamAnswer(attemptId, questionId, answer)
@@ -61,6 +71,7 @@ export function ExamTakingClient({
       initialAnswers={initialAnswers}
       onSaveAnswer={handleSaveAnswer}
       onSubmitExam={handleSubmitExam}
+      proctoring={proctoring}
     />
   )
 }

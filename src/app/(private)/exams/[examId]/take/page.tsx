@@ -53,6 +53,14 @@ export default async function TakeExamPage({ params }: PageProps) {
     }))
   }))
 
+  const proctoring = {
+    enabled: result.exam.proctoringEnabled,
+    requireFullscreen: result.exam.requireFullscreen,
+    blockCopyPaste: result.exam.blockCopyPaste,
+    blockRightClick: result.exam.blockRightClick,
+    maxWarnings: result.exam.maxWarnings
+  }
+
   let courseName: string | undefined
   if (result.exam.courseId) {
     const course = await db.course.findUnique({
@@ -72,6 +80,7 @@ export default async function TakeExamPage({ params }: PageProps) {
       sections={sections}
       timeLimit={result.exam.timeLimit || 60}
       initialAnswers={initialAnswers}
+      proctoring={proctoring}
     />
   )
 }

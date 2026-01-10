@@ -125,6 +125,13 @@ export const EditExamSchema = z.object({
   allowReview: z.boolean().optional(),
   isPublished: z.boolean().optional(),
   
+  // Proctoring
+  proctoringEnabled: z.boolean().optional(),
+  requireFullscreen: z.boolean().optional(),
+  blockCopyPaste: z.boolean().optional(),
+  blockRightClick: z.boolean().optional(),
+  maxWarnings: z.number().min(1).max(20).optional(),
+  
   // Contexto
   courseId: z.string().optional(),
   moduleId: z.string().optional(),

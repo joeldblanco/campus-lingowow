@@ -16,7 +16,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Plus, Trash2 } from 'lucide-react'
+import { Plus, Trash2, ShieldAlert } from 'lucide-react'
 import { updateExam } from '@/lib/actions/exams'
 import { toast } from 'sonner'
 import { EditExamSchema } from '@/schemas/exams'
@@ -71,6 +71,11 @@ export function EditExamDialog({ exam, open, onOpenChange }: EditExamDialogProps
       isBlocking: exam.isBlocking || false,
       isOptional: exam.isOptional || false,
       isPublished: exam.isPublished,
+      proctoringEnabled: exam.proctoringEnabled ?? true,
+      requireFullscreen: exam.requireFullscreen ?? true,
+      blockCopyPaste: exam.blockCopyPaste ?? true,
+      blockRightClick: exam.blockRightClick ?? true,
+      maxWarnings: exam.maxWarnings ?? 5,
     },
   })
 
@@ -85,6 +90,11 @@ export function EditExamDialog({ exam, open, onOpenChange }: EditExamDialogProps
         isBlocking: exam.isBlocking || false,
         isOptional: exam.isOptional || false,
         isPublished: exam.isPublished,
+        proctoringEnabled: exam.proctoringEnabled ?? true,
+        requireFullscreen: exam.requireFullscreen ?? true,
+        blockCopyPaste: exam.blockCopyPaste ?? true,
+        blockRightClick: exam.blockRightClick ?? true,
+        maxWarnings: exam.maxWarnings ?? 5,
       })
       setSections(exam.sections.map(s => ({
         title: s.title,
@@ -131,6 +141,11 @@ export function EditExamDialog({ exam, open, onOpenChange }: EditExamDialogProps
         isBlocking: formValues.isBlocking,
         isOptional: formValues.isOptional,
         isPublished: formValues.isPublished,
+        proctoringEnabled: formValues.proctoringEnabled,
+        requireFullscreen: formValues.requireFullscreen,
+        blockCopyPaste: formValues.blockCopyPaste,
+        blockRightClick: formValues.blockRightClick,
+        maxWarnings: formValues.maxWarnings,
       })
 
       if (result.success) {
@@ -307,6 +322,109 @@ export function EditExamDialog({ exam, open, onOpenChange }: EditExamDialogProps
                 </FormItem>
               )}
             />
+
+            {/* Proctoring Settings */}
+            <Card className="border-amber-200 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-900/10">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-2">
+                  <ShieldAlert className="h-5 w-5 text-amber-600" />
+                  <h3 className="text-lg font-semibold">Configuración de Proctoring</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Controla la supervisión y restricciones durante el examen
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="proctoringEnabled"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between rounded-lg border p-3 bg-white dark:bg-gray-900">
+                      <div className="space-y-0.5">
+                        <FormLabel className="font-medium">Habilitar Proctoring</FormLabel>
+                        <p className="text-xs text-muted-foreground">
+                          Activa la supervisión del examen con alertas y registro de eventos
+                        </p>
+                      </div>
+                      <FormControl>
+                        <Switch checked={field.value} onCheckedChange={field.onChange} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
+                <div className="grid grid-cols-2 gap-3">
+                  <FormField
+                    control={form.control}
+                    name="requireFullscreen"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center justify-between rounded-lg border p-3 bg-white dark:bg-gray-900">
+                        <div className="space-y-0.5">
+                          <FormLabel className="text-sm">Pantalla Completa</FormLabel>
+                          <p className="text-xs text-muted-foreground">Requiere modo fullscreen</p>
+                        </div>
+                        <FormControl>
+                          <Switch checked={field.value} onCheckedChange={field.onChange} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="blockCopyPaste"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center justify-between rounded-lg border p-3 bg-white dark:bg-gray-900">
+                        <div className="space-y-0.5">
+                          <FormLabel className="text-sm">Bloquear Copiar/Pegar</FormLabel>
+                          <p className="text-xs text-muted-foreground">Impide Ctrl+C/V</p>
+                        </div>
+                        <FormControl>
+                          <Switch checked={field.value} onCheckedChange={field.onChange} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="blockRightClick"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center justify-between rounded-lg border p-3 bg-white dark:bg-gray-900">
+                        <div className="space-y-0.5">
+                          <FormLabel className="text-sm">Bloquear Clic Derecho</FormLabel>
+                          <p className="text-xs text-muted-foreground">Deshabilita menú contextual</p>
+                        </div>
+                        <FormControl>
+                          <Switch checked={field.value} onCheckedChange={field.onChange} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="maxWarnings"
+                    render={({ field }) => (
+                      <FormItem className="rounded-lg border p-3 bg-white dark:bg-gray-900">
+                        <FormLabel className="text-sm">Máx. Advertencias</FormLabel>
+                        <FormControl>
+                          <Input 
+                            type="number" 
+                            min="1" 
+                            max="20" 
+                            {...field} 
+                            onChange={e => field.onChange(parseInt(e.target.value))} 
+                            className="h-8"
+                          />
+                        </FormControl>
+                        <p className="text-xs text-muted-foreground">Antes de marcar para revisión</p>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Sections */}
             <div className="space-y-4">

@@ -1704,6 +1704,14 @@ model Exam {
   shuffleOptions  Boolean     @default(false) // Mezclar opciones
   showResults     Boolean     @default(true) // Mostrar resultados al finalizar
   allowReview     Boolean     @default(true) // Permitir revisar respuestas
+  
+  // Configuración de Proctoring
+  proctoringEnabled   Boolean @default(true) // Habilitar proctoring
+  requireFullscreen   Boolean @default(true)  // Requerir pantalla completa
+  blockCopyPaste      Boolean @default(true)  // Bloquear copiar/pegar
+  blockRightClick     Boolean @default(true)  // Bloquear clic derecho
+  maxWarnings         Int     @default(5)     // Máximo de advertencias antes de marcar
+  
   createdById     String
 
   // Relaciones de contexto (opcional - puede estar en curso, módulo o lección)
