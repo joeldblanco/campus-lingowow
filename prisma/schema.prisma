@@ -111,6 +111,10 @@ model User {
   assignedExams    ExamAssignment[] @relation("ExamAssigner")
   reviewedAnswers  ExamAnswer[]     @relation("ExamReviewer")
 
+  // Relaciones de respuestas de bloques en lecciones
+  blockResponses   BlockResponse[]
+  aiGradingUsage   AIGradingUsage[]
+
   // Relación de cursos que puede enseñar (para profesores)
   teachableCourses TeacherCourse[]
 
@@ -449,10 +453,11 @@ model Content {
   data        Json?       // Datos flexibles del contenido (Video URL, Texto HTML, Preguntas Quiz, etc.)
 
   // Relaciones
-  lesson       Lesson        @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  parent       Content?      @relation("ContentHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
-  children     Content[]     @relation("ContentHierarchy")
-  userProgress UserContent[]
+  lesson         Lesson          @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  parent         Content?        @relation("ContentHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children       Content[]       @relation("ContentHierarchy")
+  userProgress   UserContent[]
+  blockResponses BlockResponse[]
 
   // Relaciones específicas (Mantenidas por compatibilidad temporal, pero se migrarán a `data`)
   grammarCard          GrammarCard?
@@ -597,6 +602,69 @@ model UserContent {
   @@index([userId])
   @@index([contentId])
   @@map("user_contents")
+}
+
+model BlockResponse {
+  id          String   @id @default(cuid())
+  userId      String
+  contentId   String
+  blockId     String
+  blockType   String
+  response    Json
+  score       Float?
+  maxScore    Float?
+  isCorrect   Boolean?
+  feedback    String?  @db.Text
+  gradedBy    String?
+  gradedAt    DateTime?
+  submittedAt DateTime @default(now())
+  
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content Content @relation(fields: [contentId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, contentId, blockId])
+  @@index([userId])
+  @@index([contentId])
+  @@index([blockId])
+  @@map("block_responses")
+}
+
+model AIGradingUsage {
+  id          String   @id @default(cuid())
+  userId      String
+  usageType   String   // "essay_lesson", "essay_exam", "recording"
+  entityId    String?  // ID del bloque, pregunta, etc.
+  entityType  String?  // "block", "exam_question"
+  tokensUsed  Int?     // Tokens consumidos (opcional para tracking)
+  periodStart DateTime // Inicio del período de facturación
+  periodEnd   DateTime // Fin del período de facturación
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([userId, usageType, periodStart, periodEnd])
+  @@map("ai_grading_usage")
+}
+
+model ProctorEvent {
+  id          String   @id @default(cuid())
+  attemptId   String
+  eventType   String   // "tab_switch", "fullscreen_exit", "copy_attempt", "paste_attempt", "right_click", "window_blur"
+  severity    String   @default("warning") // "info", "warning", "critical"
+  description String?
+  metadata    Json?    // Datos adicionales del evento
+  timestamp   DateTime @default(now())
+  
+  attempt ExamAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@index([attemptId])
+  @@index([attemptId, eventType])
+  @@map("proctor_events")
 }
 
 model UserActivity {
@@ -1742,6 +1810,7 @@ model ExamAttempt {
   exam            Exam            @relation(fields: [examId], references: [id], onDelete: Cascade)
   user            User            @relation("ExamAttempts", fields: [userId], references: [id], onDelete: Cascade)
   answers         ExamAnswer[]
+  proctorEvents   ProctorEvent[]
 
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt

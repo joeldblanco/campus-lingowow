@@ -486,3 +486,448 @@ export async function assignExamToStudents(data: z.infer<typeof AssignExamSchema
     return { success: false, error: 'Error al asignar examen a estudiantes' }
   }
 }
+
+// =============================================
+// FUNCIONES PARA INTENTOS DE EXAMEN (ESTUDIANTES)
+// =============================================
+
+export async function startExamAttempt(examId: string, userId: string) {
+  try {
+    const exam = await db.exam.findUnique({
+      where: { id: examId },
+      include: {
+        sections: {
+          include: {
+            questions: {
+              orderBy: { order: 'asc' }
+            }
+          },
+          orderBy: { order: 'asc' }
+        }
+      }
+    })
+
+    if (!exam) {
+      return { success: false, error: 'Examen no encontrado' }
+    }
+
+    if (!exam.isPublished) {
+      return { success: false, error: 'Este examen no está disponible' }
+    }
+
+    const existingAttempts = await db.examAttempt.count({
+      where: { examId, userId }
+    })
+
+    if (existingAttempts >= exam.maxAttempts) {
+      return { success: false, error: 'Has alcanzado el número máximo de intentos' }
+    }
+
+    const inProgressAttempt = await db.examAttempt.findFirst({
+      where: { examId, userId, status: AttemptStatus.IN_PROGRESS }
+    })
+
+    if (inProgressAttempt) {
+      return { 
+        success: true, 
+        attempt: inProgressAttempt,
+        exam,
+        isResuming: true
+      }
+    }
+
+    const attempt = await db.examAttempt.create({
+      data: {
+        examId,
+        userId,
+        attemptNumber: existingAttempts + 1,
+        status: AttemptStatus.IN_PROGRESS,
+        startedAt: new Date()
+      }
+    })
+
+    return { success: true, attempt, exam, isResuming: false }
+  } catch (error) {
+    console.error('Error starting exam attempt:', error)
+    return { success: false, error: 'Error al iniciar el intento de examen' }
+  }
+}
+
+export async function saveExamAnswer(
+  attemptId: string, 
+  questionId: string, 
+  answer: unknown,
+  timeSpent?: number
+) {
+  try {
+    const attempt = await db.examAttempt.findUnique({
+      where: { id: attemptId },
+      include: { exam: true }
+    })
+
+    if (!attempt) {
+      return { success: false, error: 'Intento no encontrado' }
+    }
+
+    if (attempt.status !== AttemptStatus.IN_PROGRESS) {
+      return { success: false, error: 'Este intento ya fue enviado' }
+    }
+
+    const question = await db.examQuestion.findUnique({
+      where: { id: questionId }
+    })
+
+    if (!question) {
+      return { success: false, error: 'Pregunta no encontrada' }
+    }
+
+    const isAutoGradable = ['MULTIPLE_CHOICE', 'TRUE_FALSE', 'FILL_BLANK', 'SHORT_ANSWER'].includes(question.type)
+    let isCorrect: boolean | null = null
+    let pointsEarned = 0
+    let needsReview = false
+
+    if (isAutoGradable && answer !== null && answer !== undefined) {
+      const correctAnswer = question.correctAnswer as string | string[]
+      const userAnswer = String(answer).trim()
+      
+      if (Array.isArray(correctAnswer)) {
+        isCorrect = correctAnswer.some(ca => 
+          question.caseSensitive 
+            ? ca === userAnswer 
+            : ca.toLowerCase() === userAnswer.toLowerCase()
+        )
+      } else {
+        isCorrect = question.caseSensitive 
+          ? correctAnswer === userAnswer 
+          : correctAnswer.toLowerCase() === userAnswer.toLowerCase()
+      }
+      
+      pointsEarned = isCorrect ? question.points : 0
+    } else {
+      needsReview = true
+    }
+
+    const savedAnswer = await db.examAnswer.upsert({
+      where: {
+        attemptId_questionId: {
+          attemptId,
+          questionId
+        }
+      },
+      update: {
+        answer: answer as object,
+        isCorrect,
+        pointsEarned,
+        needsReview,
+        timeSpent
+      },
+      create: {
+        attemptId,
+        questionId,
+        answer: answer as object,
+        isCorrect,
+        pointsEarned,
+        needsReview,
+        timeSpent
+      }
+    })
+
+    return { success: true, answer: savedAnswer }
+  } catch (error) {
+    console.error('Error saving exam answer:', error)
+    return { success: false, error: 'Error al guardar la respuesta' }
+  }
+}
+
+export async function submitExamAttempt(attemptId: string) {
+  try {
+    const attempt = await db.examAttempt.findUnique({
+      where: { id: attemptId },
+      include: {
+        answers: {
+          include: { question: true }
+        },
+        exam: {
+          include: {
+            sections: {
+              include: { questions: true }
+            }
+          }
+        }
+      }
+    })
+
+    if (!attempt) {
+      return { success: false, error: 'Intento no encontrado' }
+    }
+
+    if (attempt.status !== AttemptStatus.IN_PROGRESS) {
+      return { success: false, error: 'Este intento ya fue enviado' }
+    }
+
+    const allQuestions = attempt.exam.sections.flatMap(s => s.questions)
+    const maxPoints = allQuestions.reduce((sum, q) => sum + q.points, 0)
+    const totalPoints = attempt.answers.reduce((sum, a) => sum + a.pointsEarned, 0)
+    const hasPendingReview = attempt.answers.some(a => a.needsReview)
+    
+    const score = maxPoints > 0 ? (totalPoints / maxPoints) * 100 : 0
+    const timeSpent = Math.round((new Date().getTime() - attempt.startedAt.getTime()) / 60000)
+
+    const updatedAttempt = await db.examAttempt.update({
+      where: { id: attemptId },
+      data: {
+        status: hasPendingReview ? AttemptStatus.SUBMITTED : AttemptStatus.COMPLETED,
+        score: Math.round(score * 100) / 100,
+        totalPoints,
+        maxPoints,
+        timeSpent,
+        submittedAt: new Date()
+      }
+    })
+
+    revalidatePath('/exams')
+    return { success: true, attempt: updatedAttempt }
+  } catch (error) {
+    console.error('Error submitting exam attempt:', error)
+    return { success: false, error: 'Error al enviar el examen' }
+  }
+}
+
+export async function getExamAttemptWithAnswers(attemptId: string) {
+  try {
+    const attempt = await db.examAttempt.findUnique({
+      where: { id: attemptId },
+      include: {
+        exam: {
+          include: {
+            course: { select: { title: true } },
+            sections: {
+              include: {
+                questions: {
+                  orderBy: { order: 'asc' }
+                }
+              },
+              orderBy: { order: 'asc' }
+            }
+          }
+        },
+        answers: {
+          include: {
+            question: true
+          }
+        },
+        user: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            email: true
+          }
+        }
+      }
+    })
+
+    if (!attempt) {
+      return { success: false, error: 'Intento no encontrado' }
+    }
+
+    return { success: true, attempt }
+  } catch (error) {
+    console.error('Error fetching exam attempt:', error)
+    return { success: false, error: 'Error al obtener el intento de examen' }
+  }
+}
+
+export async function getExamResultsForStudent(attemptId: string, userId: string) {
+  try {
+    const attempt = await db.examAttempt.findFirst({
+      where: { 
+        id: attemptId,
+        userId
+      },
+      include: {
+        exam: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            passingScore: true,
+            showResults: true,
+            allowReview: true
+          }
+        },
+        answers: {
+          include: {
+            question: {
+              select: {
+                id: true,
+                type: true,
+                question: true,
+                correctAnswer: true,
+                explanation: true,
+                points: true,
+                tags: true
+              }
+            }
+          }
+        }
+      }
+    })
+
+    if (!attempt) {
+      return { success: false, error: 'Resultados no encontrados' }
+    }
+
+    if (attempt.status === AttemptStatus.IN_PROGRESS) {
+      return { success: false, error: 'El examen aún no ha sido enviado' }
+    }
+
+    return { success: true, attempt }
+  } catch (error) {
+    console.error('Error fetching exam results:', error)
+    return { success: false, error: 'Error al obtener los resultados' }
+  }
+}
+
+// =============================================
+// FUNCIONES PARA CALIFICACIÓN (PROFESORES)
+// =============================================
+
+export async function getAttemptsForGrading(examId: string) {
+  try {
+    const attempts = await db.examAttempt.findMany({
+      where: { 
+        examId,
+        status: { in: [AttemptStatus.SUBMITTED, AttemptStatus.COMPLETED] }
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            email: true
+          }
+        },
+        answers: {
+          where: { needsReview: true }
+        }
+      },
+      orderBy: { submittedAt: 'desc' }
+    })
+
+    return { success: true, attempts }
+  } catch (error) {
+    console.error('Error fetching attempts for grading:', error)
+    return { success: false, error: 'Error al obtener intentos para calificar' }
+  }
+}
+
+export async function gradeExamAnswer(
+  answerId: string,
+  pointsEarned: number,
+  feedback: string,
+  reviewerId: string
+) {
+  try {
+    const answer = await db.examAnswer.findUnique({
+      where: { id: answerId },
+      include: { question: true }
+    })
+
+    if (!answer) {
+      return { success: false, error: 'Respuesta no encontrada' }
+    }
+
+    if (pointsEarned > answer.question.points) {
+      return { success: false, error: 'Los puntos no pueden exceder el máximo de la pregunta' }
+    }
+
+    const updatedAnswer = await db.examAnswer.update({
+      where: { id: answerId },
+      data: {
+        pointsEarned,
+        feedback,
+        isCorrect: pointsEarned >= answer.question.points * 0.6,
+        needsReview: false,
+        reviewedBy: reviewerId,
+        reviewedAt: new Date()
+      }
+    })
+
+    const allAnswers = await db.examAnswer.findMany({
+      where: { attemptId: answer.attemptId },
+      include: { question: true }
+    })
+
+    const hasPendingReview = allAnswers.some(a => a.needsReview)
+    
+    if (!hasPendingReview) {
+      const totalPoints = allAnswers.reduce((sum, a) => sum + a.pointsEarned, 0)
+      const maxPoints = allAnswers.reduce((sum, a) => sum + a.question.points, 0)
+      const score = maxPoints > 0 ? (totalPoints / maxPoints) * 100 : 0
+
+      await db.examAttempt.update({
+        where: { id: answer.attemptId },
+        data: {
+          status: AttemptStatus.COMPLETED,
+          score: Math.round(score * 100) / 100,
+          totalPoints,
+          reviewedAt: new Date()
+        }
+      })
+    }
+
+    revalidatePath('/teacher/grading')
+    return { success: true, answer: updatedAnswer }
+  } catch (error) {
+    console.error('Error grading exam answer:', error)
+    return { success: false, error: 'Error al calificar la respuesta' }
+  }
+}
+
+export async function finalizeExamReview(attemptId: string) {
+  try {
+    const attempt = await db.examAttempt.findUnique({
+      where: { id: attemptId },
+      include: {
+        answers: {
+          include: { question: true }
+        }
+      }
+    })
+
+    if (!attempt) {
+      return { success: false, error: 'Intento no encontrado' }
+    }
+
+    const pendingAnswers = attempt.answers.filter(a => a.needsReview)
+    if (pendingAnswers.length > 0) {
+      return { 
+        success: false, 
+        error: `Aún hay ${pendingAnswers.length} pregunta(s) pendientes de revisión` 
+      }
+    }
+
+    const totalPoints = attempt.answers.reduce((sum, a) => sum + a.pointsEarned, 0)
+    const maxPoints = attempt.answers.reduce((sum, a) => sum + a.question.points, 0)
+    const score = maxPoints > 0 ? (totalPoints / maxPoints) * 100 : 0
+
+    const updatedAttempt = await db.examAttempt.update({
+      where: { id: attemptId },
+      data: {
+        status: AttemptStatus.COMPLETED,
+        score: Math.round(score * 100) / 100,
+        totalPoints,
+        maxPoints,
+        reviewedAt: new Date()
+      }
+    })
+
+    revalidatePath('/teacher/grading')
+    return { success: true, attempt: updatedAttempt }
+  } catch (error) {
+    console.error('Error finalizing exam review:', error)
+    return { success: false, error: 'Error al finalizar la revisión' }
+  }
+}

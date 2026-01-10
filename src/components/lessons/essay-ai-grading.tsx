@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Sparkles, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -12,6 +12,7 @@ import {
 import { toast } from 'sonner'
 import { EssayFeedbackDisplay } from '@/components/exams/essay-feedback-display'
 import type { EssayGradingResult } from '@/lib/services/essay-grading'
+import { canUseAIGrading, recordAIGradingUsage } from '@/lib/actions/ai-grading-limits'
 
 interface EssayAIGradingProps {
   essayText: string
@@ -28,6 +29,8 @@ interface EssayAIGradingProps {
   variant?: 'default' | 'outline' | 'ghost'
   size?: 'default' | 'sm' | 'lg' | 'icon'
   className?: string
+  usageType?: 'essay_lesson' | 'essay_exam'
+  entityId?: string
 }
 
 export function EssayAIGrading({
@@ -41,6 +44,8 @@ export function EssayAIGrading({
   variant = 'default',
   size = 'default',
   className,
+  usageType = 'essay_lesson',
+  entityId,
 }: EssayAIGradingProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [showResult, setShowResult] = useState(false)
@@ -49,6 +54,15 @@ export function EssayAIGrading({
     feedback: string
     detailedResult: EssayGradingResult
   } | null>(null)
+  const [usageInfo, setUsageInfo] = useState<{ allowed: boolean; remaining: number; limit: number } | null>(null)
+
+  useEffect(() => {
+    const checkUsage = async () => {
+      const info = await canUseAIGrading(usageType)
+      setUsageInfo(info)
+    }
+    checkUsage()
+  }, [usageType])
 
   const handleGrade = async () => {
     if (!essayText.trim()) {
@@ -58,6 +72,11 @@ export function EssayAIGrading({
 
     if (essayText.trim().split(/\s+/).length < 5) {
       toast.error('El ensayo es demasiado corto para ser evaluado')
+      return
+    }
+
+    if (usageInfo && !usageInfo.allowed) {
+      toast.error(`Has alcanzado el límite de ${usageInfo.limit} correcciones con IA este mes`)
       return
     }
 
@@ -81,6 +100,16 @@ export function EssayAIGrading({
       }
 
       const data = await response.json()
+      
+      await recordAIGradingUsage(usageType, entityId, 'block')
+      
+      if (usageInfo) {
+        setUsageInfo({
+          ...usageInfo,
+          remaining: usageInfo.limit === -1 ? -1 : usageInfo.remaining - 1
+        })
+      }
+
       setGradingResult(data.gradingResult)
       setShowResult(true)
       
@@ -97,11 +126,13 @@ export function EssayAIGrading({
     }
   }
 
+  const isDisabled = disabled || isLoading || !essayText.trim() || (usageInfo !== null && !usageInfo.allowed)
+
   return (
     <>
       <Button
         onClick={handleGrade}
-        disabled={disabled || isLoading || !essayText.trim()}
+        disabled={isDisabled}
         variant={variant}
         size={size}
         className={className}

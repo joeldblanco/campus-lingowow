@@ -1,0 +1,6 @@
+export { MultipleChoiceBlock } from './multiple-choice-block'
+export { TrueFalseBlock } from './true-false-block'
+export { FillBlankBlock } from './fill-blank-block'
+export { MatchingBlock } from './matching-block'
+export { EssayBlock } from './essay-block'
+export { ShortAnswerBlock } from './short-answer-block'

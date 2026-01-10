@@ -1,2 +1,5 @@
 export { EssayFeedbackDisplay } from './essay-feedback-display'
 export { EssayGradingButton } from './essay-grading-button'
+export * from './student'
+export * from './teacher'
+export * from './proctoring'
