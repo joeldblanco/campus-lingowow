@@ -14,10 +14,15 @@ export default async function ExamResultsPage({ params }: PageProps) {
     redirect('/auth/login')
   }
 
-  const { attemptId } = await params
+  const { examId, attemptId } = await params
   const result = await getExamResultsForStudent(attemptId, session.user.id)
 
   if (!result.success || !result.attempt) {
+    notFound()
+  }
+
+  // Validate that the examId in URL matches the attempt's examId
+  if (result.attempt.exam.id !== examId) {
     notFound()
   }
 
