@@ -5,7 +5,7 @@ export const CreateLessonSchema = z.object({
   description: z.string().min(1, 'La descripción es requerida'),
   content: z.string().optional(),
   moduleId: z.string().min(1, 'El módulo es requerido'),
-  order: z.number().min(1, 'El orden debe ser mayor a 0'),
+  order: z.number().min(1, 'El orden debe ser mayor a 0').optional(),
   duration: z.number().min(1, 'La duración debe ser mayor a 0').optional(),
   videoUrl: z.string().optional(),
   resources: z.string().optional(),

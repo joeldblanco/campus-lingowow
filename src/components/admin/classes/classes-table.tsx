@@ -1,20 +1,13 @@
 'use client'
 
-import { useEffect, useState, useMemo } from 'react'
+import { useState, useMemo } from 'react'
+import { ColumnDef } from '@tanstack/react-table'
 import { ClassBookingWithDetails, deleteClass, updateClass, toggleClassPayable } from '@/lib/actions/classes'
 import { getTodayString } from '@/lib/utils/date'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
 import {
   Select,
   SelectContent,
@@ -39,6 +32,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { DataTable, DataTableColumnHeader } from '@/components/ui/data-table'
 import { EditClassDialog } from './edit-class-dialog'
 import { ViewClassDialog } from './view-class-dialog'
 import { RescheduleClassDialog } from './reschedule-class-dialog'
@@ -51,8 +45,6 @@ import {
   Calendar,
   Clock,
   Search,
-  ChevronLeft,
-  ChevronRight,
   SlidersHorizontal,
   DollarSign,
 } from 'lucide-react'
@@ -64,8 +56,6 @@ interface ClassesTableProps {
   classes: ClassBookingWithDetails[]
 }
 
-const ITEMS_PER_PAGE = 5
-
 export function ClassesTable({ classes }: ClassesTableProps) {
   const { timezone: userTimezone } = useTimezone()
   const [searchTerm, setSearchTerm] = useState('')
@@ -73,13 +63,10 @@ export function ClassesTable({ classes }: ClassesTableProps) {
   const [teacherFilter, setTeacherFilter] = useState('all')
   const [dateFilter, setDateFilter] = useState('all')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
-  const [currentPage, setCurrentPage] = useState(1)
-  const [selectedClasses, setSelectedClasses] = useState<string[]>([])
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [classToDelete, setClassToDelete] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  // Filter classes based on search and filters
   const filteredClasses = useMemo(() => {
     let filtered = classes
 
@@ -114,48 +101,32 @@ export function ClassesTable({ classes }: ClassesTableProps) {
       }
     }
 
-    // Sort by date and time using proper Date comparison
     filtered = [...filtered].sort((a, b) => {
       const timeA = a.timeSlot.split('-')[0]
       const timeB = b.timeSlot.split('-')[0]
       const dateA = new Date(`${a.day}T${timeA}`)
       const dateB = new Date(`${b.day}T${timeB}`)
-      
+
       const isValidA = !isNaN(dateA.getTime())
       const isValidB = !isNaN(dateB.getTime())
-      
-      // If both dates are valid, use numeric timestamp comparison
+
       if (isValidA && isValidB) {
         return sortOrder === 'asc' ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime()
       }
-      
-      // If one date is valid and the other is invalid, sort invalid dates to the end
+
       if (isValidA !== isValidB) {
         return isValidA ? -1 : 1
       }
-      
-      // If both dates are invalid, fallback to string comparison
+
       const dateTimeA = `${a.day} ${timeA}`
       const dateTimeB = `${b.day} ${timeB}`
-      return sortOrder === 'asc' 
+      return sortOrder === 'asc'
         ? dateTimeA.localeCompare(dateTimeB)
         : dateTimeB.localeCompare(dateTimeA)
     })
 
     return filtered
   }, [classes, searchTerm, statusFilter, teacherFilter, dateFilter, sortOrder])
-
-  // Pagination
-  const totalPages = Math.ceil(filteredClasses.length / ITEMS_PER_PAGE)
-  const paginatedClasses = useMemo(() => {
-    const start = (currentPage - 1) * ITEMS_PER_PAGE
-    return filteredClasses.slice(start, start + ITEMS_PER_PAGE)
-  }, [filteredClasses, currentPage])
-
-  // Reset page when filters change
-  useEffect(() => {
-    setCurrentPage(1)
-  }, [searchTerm, statusFilter, teacherFilter, dateFilter])
 
   const handleDeleteClass = async () => {
     if (!classToDelete) return
@@ -192,7 +163,7 @@ export function ClassesTable({ classes }: ClassesTableProps) {
         day: classItem.day,
         timeSlot: classItem.timeSlot,
         status: BookingStatus.COMPLETED,
-        completedAt: new Date(), // Se guardará en UTC automáticamente por Prisma
+        completedAt: new Date(),
         timezone: userTimezone,
       })
       if (result.success) {
@@ -257,22 +228,6 @@ export function ClassesTable({ classes }: ClassesTableProps) {
     })
   }
 
-  const handleSelectAll = (checked: boolean) => {
-    if (checked) {
-      setSelectedClasses(paginatedClasses.map(c => c.id))
-    } else {
-      setSelectedClasses([])
-    }
-  }
-
-  const handleSelectClass = (id: string, checked: boolean) => {
-    if (checked) {
-      setSelectedClasses(prev => [...prev, id])
-    } else {
-      setSelectedClasses(prev => prev.filter(i => i !== id))
-    }
-  }
-
   const clearFilters = () => {
     setStatusFilter('all')
     setTeacherFilter('all')
@@ -280,287 +235,232 @@ export function ClassesTable({ classes }: ClassesTableProps) {
     setSearchTerm('')
   }
 
-  const getPageNumbers = () => {
-    const pages: (number | string)[] = []
-    if (totalPages <= 7) {
-      for (let i = 1; i <= totalPages; i++) pages.push(i)
-    } else {
-      if (currentPage <= 3) {
-        pages.push(1, 2, 3, '...', totalPages)
-      } else if (currentPage >= totalPages - 2) {
-        pages.push(1, '...', totalPages - 2, totalPages - 1, totalPages)
-      } else {
-        pages.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages)
-      }
-    }
-    return pages
-  }
+  const columns: ColumnDef<ClassBookingWithDetails>[] = [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Seleccionar todo"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Seleccionar fila"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: 'day',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Clase" />,
+      cell: ({ row }) => (
+        <div>
+          <div className="font-medium text-sm">{formatDate(row.original.day)}</div>
+          <div className="text-xs text-muted-foreground">ID: {row.original.id.slice(0, 8)}...</div>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'student',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Estudiante" />,
+      cell: ({ row }) => (
+        <div className="flex items-center gap-2">
+          <UserAvatar
+            userId={row.original.student.id}
+            userName={row.original.student.name}
+            userLastName={row.original.student.lastName}
+            userImage={row.original.student.image}
+            className="h-7 w-7"
+            fallbackClassName="text-xs bg-slate-200"
+          />
+          <div>
+            <div className="font-medium text-sm">
+              {row.original.student.name} {row.original.student.lastName || ''}
+            </div>
+            <div className="text-xs text-muted-foreground">{row.original.student.email}</div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'teacher',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Profesor" />,
+      cell: ({ row }) => (
+        <div className="flex items-center gap-2">
+          <UserAvatar
+            userId={row.original.teacher.id}
+            userName={row.original.teacher.name}
+            userLastName={row.original.teacher.lastName}
+            userImage={row.original.teacher.image}
+            className="h-7 w-7"
+            fallbackClassName="text-xs bg-slate-200"
+          />
+          <div>
+            <div className="font-medium text-sm">
+              {row.original.teacher.name} {row.original.teacher.lastName || ''}
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'status',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Estado" />,
+      cell: ({ row }) => (
+        <div className="flex items-center gap-2">
+          {getStatusBadge(row.original.status)}
+          {row.original.isPayable && (
+            <Badge className="bg-green-100 text-green-700 hover:bg-green-100 border-0 font-medium">
+              <DollarSign className="h-3 w-3 mr-1" />
+              Pagable
+            </Badge>
+          )}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'timeSlot',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Horario" />,
+      cell: ({ row }) => <div className="text-sm">{row.original.timeSlot}</div>,
+    },
+    {
+      id: 'actions',
+      header: () => <div className="text-center">Acciones</div>,
+      cell: ({ row }) => {
+        const classItem = row.original
+        return (
+          <div className="flex items-center justify-center gap-1">
+            <EditClassDialog classItem={classItem}>
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <Edit className="h-4 w-4" />
+              </Button>
+            </EditClassDialog>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <MoreVertical className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <ViewClassDialog classItem={classItem}>
+                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                    <Eye className="h-4 w-4 mr-2" />
+                    Ver detalles
+                  </DropdownMenuItem>
+                </ViewClassDialog>
+                <RescheduleClassDialog classItem={classItem}>
+                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                    <Calendar className="h-4 w-4 mr-2" />
+                    Reagendar
+                  </DropdownMenuItem>
+                </RescheduleClassDialog>
+                {classItem.status === 'CONFIRMED' && (
+                  <DropdownMenuItem onClick={() => handleMarkCompleted(classItem.id)}>
+                    <Clock className="h-4 w-4 mr-2" />
+                    Marcar completada
+                  </DropdownMenuItem>
+                )}
+                {classItem.status === 'COMPLETED' && (
+                  <DropdownMenuItem onClick={() => handleTogglePayable(classItem.id, !classItem.isPayable)}>
+                    <DollarSign className="h-4 w-4 mr-2" />
+                    {classItem.isPayable ? 'Desmarcar como pagable' : 'Marcar como pagable'}
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="text-destructive"
+                  onClick={() => {
+                    setClassToDelete(classItem.id)
+                    setDeleteDialogOpen(true)
+                  }}
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Eliminar
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )
+      },
+    },
+  ]
+
+  const toolbar = (
+    <div className="flex items-center gap-3">
+      <div className="relative flex-1 max-w-sm">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          placeholder="Buscar por estudiante o profesor..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="pl-9"
+        />
+      </div>
+      <Select value={statusFilter} onValueChange={setStatusFilter}>
+        <SelectTrigger className="w-[140px]">
+          <SelectValue placeholder="Estado" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Todos</SelectItem>
+          <SelectItem value="CONFIRMED">Confirmadas</SelectItem>
+          <SelectItem value="COMPLETED">Completadas</SelectItem>
+          <SelectItem value="CANCELLED">Canceladas</SelectItem>
+          <SelectItem value="NO_SHOW">No asistió</SelectItem>
+        </SelectContent>
+      </Select>
+      <Select value={teacherFilter} onValueChange={setTeacherFilter}>
+        <SelectTrigger className="w-[140px]">
+          <SelectValue placeholder="Profesor" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Todos</SelectItem>
+          {getUniqueTeachers().map((teacher) => (
+            <SelectItem key={teacher.id} value={teacher.id}>
+              {teacher.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <Select value={dateFilter} onValueChange={setDateFilter}>
+        <SelectTrigger className="w-[140px]">
+          <SelectValue placeholder="Fecha" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Todas</SelectItem>
+          <SelectItem value="past">Pasadas</SelectItem>
+          <SelectItem value="today">Hoy</SelectItem>
+          <SelectItem value="future">Futuras</SelectItem>
+        </SelectContent>
+      </Select>
+      <Select value={sortOrder} onValueChange={(v) => setSortOrder(v as 'asc' | 'desc')}>
+        <SelectTrigger className="w-[140px]">
+          <SelectValue placeholder="Ordenar" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="asc">Más antiguas</SelectItem>
+          <SelectItem value="desc">Más recientes</SelectItem>
+        </SelectContent>
+      </Select>
+      <Button variant="outline" size="icon" onClick={clearFilters} className="shrink-0">
+        <SlidersHorizontal className="h-4 w-4" />
+      </Button>
+    </div>
+  )
 
   return (
     <div className="space-y-4">
-      {/* Filters */}
-      <div className="flex items-center gap-3">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Buscar por estudiante o profesor..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-9"
-          />
-        </div>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="Estado" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos</SelectItem>
-            <SelectItem value="CONFIRMED">Confirmadas</SelectItem>
-            <SelectItem value="COMPLETED">Completadas</SelectItem>
-            <SelectItem value="CANCELLED">Canceladas</SelectItem>
-            <SelectItem value="NO_SHOW">No asistió</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select value={teacherFilter} onValueChange={setTeacherFilter}>
-          <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="Profesor" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos</SelectItem>
-            {getUniqueTeachers().map((teacher) => (
-              <SelectItem key={teacher.id} value={teacher.id}>
-                {teacher.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Select value={dateFilter} onValueChange={setDateFilter}>
-          <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="Fecha" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todas</SelectItem>
-            <SelectItem value="past">Pasadas</SelectItem>
-            <SelectItem value="today">Hoy</SelectItem>
-            <SelectItem value="future">Futuras</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select value={sortOrder} onValueChange={(v) => setSortOrder(v as 'asc' | 'desc')}>
-          <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="Ordenar" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="asc">Más antiguas</SelectItem>
-            <SelectItem value="desc">Más recientes</SelectItem>
-          </SelectContent>
-        </Select>
-        <Button variant="outline" size="icon" onClick={clearFilters} className="shrink-0">
-          <SlidersHorizontal className="h-4 w-4" />
-        </Button>
-      </div>
+      <DataTable
+        columns={columns}
+        data={filteredClasses}
+        toolbar={toolbar}
+        emptyMessage="No se encontraron clases que coincidan con los filtros."
+      />
 
-      {/* Table */}
-      <div className="border rounded-lg">
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-muted/50">
-              <TableHead className="w-12">
-                <Checkbox
-                  checked={selectedClasses.length === paginatedClasses.length && paginatedClasses.length > 0}
-                  onCheckedChange={handleSelectAll}
-                />
-              </TableHead>
-              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Clase</TableHead>
-              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Estudiante</TableHead>
-              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Profesor</TableHead>
-              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Estado</TableHead>
-              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Horario</TableHead>
-              <TableHead className="font-semibold text-xs uppercase text-muted-foreground text-center">Acciones</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {paginatedClasses.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
-                  No se encontraron clases que coincidan con los filtros.
-                </TableCell>
-              </TableRow>
-            ) : (
-              paginatedClasses.map((classItem) => (
-                <TableRow key={classItem.id} className="hover:bg-muted/30">
-                  <TableCell>
-                    <Checkbox
-                      checked={selectedClasses.includes(classItem.id)}
-                      onCheckedChange={(checked) => handleSelectClass(classItem.id, !!checked)}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <div>
-                      <div className="font-medium text-sm">{formatDate(classItem.day)}</div>
-                      <div className="text-xs text-muted-foreground">ID: {classItem.id.slice(0, 8)}...</div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <UserAvatar
-                        userId={classItem.student.id}
-                        userName={classItem.student.name}
-                        userLastName={classItem.student.lastName}
-                        userImage={classItem.student.image}
-                        className="h-7 w-7"
-                        fallbackClassName="text-xs bg-slate-200"
-                      />
-                      <div>
-                        <div className="font-medium text-sm">
-                          {classItem.student.name} {classItem.student.lastName || ''}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          {classItem.student.email}
-                        </div>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <UserAvatar
-                        userId={classItem.teacher.id}
-                        userName={classItem.teacher.name}
-                        userLastName={classItem.teacher.lastName}
-                        userImage={classItem.teacher.image}
-                        className="h-7 w-7"
-                        fallbackClassName="text-xs bg-slate-200"
-                      />
-                      <div>
-                        <div className="font-medium text-sm">
-                          {classItem.teacher.name} {classItem.teacher.lastName || ''}
-                        </div>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      {getStatusBadge(classItem.status)}
-                      {classItem.isPayable && (
-                        <Badge className="bg-green-100 text-green-700 hover:bg-green-100 border-0 font-medium">
-                          <DollarSign className="h-3 w-3 mr-1" />
-                          Pagable
-                        </Badge>
-                      )}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="text-sm">{classItem.timeSlot}</div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center justify-center gap-1">
-                      <EditClassDialog classItem={classItem}>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                      </EditClassDialog>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <ViewClassDialog classItem={classItem}>
-                            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                              <Eye className="h-4 w-4 mr-2" />
-                              Ver detalles
-                            </DropdownMenuItem>
-                          </ViewClassDialog>
-                          <RescheduleClassDialog classItem={classItem}>
-                            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                              <Calendar className="h-4 w-4 mr-2" />
-                              Reagendar
-                            </DropdownMenuItem>
-                          </RescheduleClassDialog>
-                          {classItem.status === 'CONFIRMED' && (
-                            <DropdownMenuItem onClick={() => handleMarkCompleted(classItem.id)}>
-                              <Clock className="h-4 w-4 mr-2" />
-                              Marcar completada
-                            </DropdownMenuItem>
-                          )}
-                          {classItem.status === 'COMPLETED' && (
-                            <DropdownMenuItem onClick={() => handleTogglePayable(classItem.id, !classItem.isPayable)}>
-                              <DollarSign className="h-4 w-4 mr-2" />
-                              {classItem.isPayable ? 'Desmarcar como pagable' : 'Marcar como pagable'}
-                            </DropdownMenuItem>
-                          )}
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem
-                            className="text-destructive"
-                            onClick={() => {
-                              setClassToDelete(classItem.id)
-                              setDeleteDialogOpen(true)
-                            }}
-                          >
-                            <Trash2 className="h-4 w-4 mr-2" />
-                            Eliminar
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </div>
-
-      {/* Pagination */}
-      {filteredClasses.length > 0 && (
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-muted-foreground">
-            Mostrando <span className="font-medium">{((currentPage - 1) * ITEMS_PER_PAGE) + 1}</span> a{' '}
-            <span className="font-medium">{Math.min(currentPage * ITEMS_PER_PAGE, filteredClasses.length)}</span> de{' '}
-            <span className="font-medium">{filteredClasses.length}</span> resultados
-          </p>
-          
-          <div className="flex items-center gap-1">
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-              disabled={currentPage === 1}
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            
-            {getPageNumbers().map((page, index) => (
-              typeof page === 'number' ? (
-                <Button
-                  key={index}
-                  variant={currentPage === page ? 'default' : 'outline'}
-                  size="icon"
-                  className={`h-8 w-8 ${currentPage === page ? 'bg-blue-500 hover:bg-blue-600' : ''}`}
-                  onClick={() => setCurrentPage(page)}
-                >
-                  {page}
-                </Button>
-              ) : (
-                <span key={index} className="px-2 text-muted-foreground">...</span>
-              )
-            ))}
-            
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-              disabled={currentPage === totalPages || totalPages === 0}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      )}
-
-      {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>

@@ -49,11 +49,7 @@ export function ClassroomLayout({
   return (
     <div className={`flex flex-col h-screen bg-gray-50 ${className}`}>
       {/* Top Banner for device errors */}
-      {topBanner && (
-        <div className="flex-none px-4 py-2 bg-white border-b border-gray-200">
-          {topBanner}
-        </div>
-      )}
+      {topBanner}
 
       {/* Header */}
       <header className="flex-none h-16 bg-white border-b border-gray-200 px-4 flex items-center justify-between z-10">

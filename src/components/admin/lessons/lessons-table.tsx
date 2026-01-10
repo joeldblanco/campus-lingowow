@@ -1,11 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
+import { ColumnDef } from '@tanstack/react-table'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { Eye, Edit, Trash2, Search, BookOpen, FileText, Activity } from 'lucide-react'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Eye, Edit, Trash2, Search, FileText, Activity } from 'lucide-react'
+import { DataTable, DataTableColumnHeader } from '@/components/ui/data-table'
 import { EditLessonDialog } from './edit-lesson-dialog'
 import { ViewLessonDialog } from './view-lesson-dialog'
 import { deleteLesson } from '@/lib/actions/lessons'
@@ -40,13 +42,15 @@ export function LessonsTable({ lessons, onLessonUpdated }: LessonsTableProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [isDeleting, setIsDeleting] = useState<string | null>(null)
 
-  const filteredLessons = lessons.filter(
-    (lesson) =>
-      lesson.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lesson.module?.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lesson.module?.course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lesson.description?.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const filteredLessons = useMemo(() => {
+    return lessons.filter(
+      (lesson) =>
+        lesson.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        lesson.module?.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        lesson.module?.course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        lesson.description?.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  }, [lessons, searchTerm])
 
   const handleDelete = async (id: string, title: string) => {
     if (!confirm(`¿Estás seguro de que quieres eliminar la lección "${title}"?`)) {
@@ -66,91 +70,121 @@ export function LessonsTable({ lessons, onLessonUpdated }: LessonsTableProps) {
     }
   }
 
-  return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle>Lecciones</CardTitle>
-          <div className="relative w-64">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Buscar lecciones..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-8"
-            />
+  const columns: ColumnDef<LessonWithDetails>[] = [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Seleccionar todo"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Seleccionar fila"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: 'title',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Lección" />,
+      cell: ({ row }) => (
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="font-medium">{row.original.title}</span>
+            <Badge variant="outline">Orden {row.original.order}</Badge>
           </div>
+          {row.original.description && (
+            <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{row.original.description}</p>
+          )}
         </div>
-      </CardHeader>
-      <CardContent>
-        {filteredLessons.length === 0 ? (
-          <div className="text-center py-8">
-            <BookOpen className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="mt-2 text-sm font-semibold text-gray-900">No hay lecciones</h3>
-            <p className="mt-1 text-sm text-gray-500">
-              {searchTerm
-                ? 'No se encontraron lecciones con ese término de búsqueda.'
-                : 'Comienza creando una nueva lección.'}
-            </p>
+      ),
+    },
+    {
+      accessorKey: 'module',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Módulo / Curso" />,
+      cell: ({ row }) => (
+        <div>
+          <div className="font-medium text-sm">{row.original.module?.title || 'N/A'}</div>
+          <div className="text-xs text-muted-foreground">{row.original.module?.course.title || 'N/A'}</div>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'contentsCount',
+      header: () => <div className="text-center">Contenidos</div>,
+      cell: ({ row }) => (
+        <div className="flex items-center justify-center gap-1 text-sm">
+          <FileText className="h-3 w-3" />
+          {row.original.contentsCount}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'activitiesCount',
+      header: () => <div className="text-center">Actividades</div>,
+      cell: ({ row }) => (
+        <div className="flex items-center justify-center gap-1 text-sm">
+          <Activity className="h-3 w-3" />
+          {row.original.activitiesCount}
+        </div>
+      ),
+    },
+    {
+      id: 'actions',
+      header: () => <div className="text-center">Acciones</div>,
+      cell: ({ row }) => {
+        const lesson = row.original
+        return (
+          <div className="flex items-center justify-center gap-1">
+            <ViewLessonDialog lessonId={lesson.id}>
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <Eye className="h-4 w-4" />
+              </Button>
+            </ViewLessonDialog>
+            <EditLessonDialog lesson={lesson} onLessonUpdated={onLessonUpdated}>
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <Edit className="h-4 w-4" />
+              </Button>
+            </EditLessonDialog>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50"
+              onClick={() => handleDelete(lesson.id, lesson.title)}
+              disabled={isDeleting === lesson.id}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
           </div>
-        ) : (
-          <div className="space-y-4">
-            {filteredLessons.map((lesson) => (
-              <div
-                key={lesson.id}
-                className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50"
-              >
-                <div className="flex-1">
-                  <div className="flex items-center gap-3">
-                    <h3 className="font-semibold">{lesson.title}</h3>
-                    <Badge variant="outline">Orden {lesson.order}</Badge>
-                  </div>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Módulo: {lesson.module?.title || 'N/A'} • Curso: {lesson.module?.course.title || 'N/A'}
-                  </p>
-                  {lesson.description && (
-                    <p className="text-sm text-muted-foreground mt-1">{lesson.description}</p>
-                  )}
-                  <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <FileText className="h-3 w-3" />
-                      {lesson.contentsCount} contenidos
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Activity className="h-3 w-3" />
-                      {lesson.activitiesCount} actividades
-                    </div>
-                  </div>
-                </div>
+        )
+      },
+    },
+  ]
 
-                <div className="flex items-center gap-2">
-                  <ViewLessonDialog lessonId={lesson.id}>
-                    <Button variant="ghost" size="sm">
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                  </ViewLessonDialog>
+  const toolbar = (
+    <div className="relative flex-1 max-w-sm">
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <Input
+        placeholder="Buscar lecciones..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="pl-9"
+      />
+    </div>
+  )
 
-                  <EditLessonDialog lesson={lesson} onLessonUpdated={onLessonUpdated}>
-                    <Button variant="ghost" size="sm">
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                  </EditLessonDialog>
-
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleDelete(lesson.id, lesson.title)}
-                    disabled={isDeleting === lesson.id}
-                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </CardContent>
-    </Card>
+  return (
+    <DataTable
+      columns={columns}
+      data={filteredLessons}
+      toolbar={toolbar}
+      emptyMessage="No hay lecciones"
+    />
   )
 }

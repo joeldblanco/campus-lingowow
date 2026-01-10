@@ -1,5 +1,7 @@
 'use client'
 
+import { useState, useMemo } from 'react'
+import { ColumnDef } from '@tanstack/react-table'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,23 +24,15 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { DataTable, DataTableColumnHeader } from '@/components/ui/data-table'
 import { deleteEnrollment } from '@/lib/actions/enrollments'
 import { EnrollmentWithDetails } from '@/lib/actions/enrollments'
-import { Edit, MoreVertical, Search, Trash2, Plus, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react'
-import { useEffect, useState, useMemo } from 'react'
+import { Edit, MoreVertical, Search, Trash2, Plus, SlidersHorizontal } from 'lucide-react'
 import { toast } from 'sonner'
 import { EditEnrollmentDialog } from './edit-enrollment-dialog'
 import { CreateEnrollmentDialog } from './create-enrollment-dialog'
@@ -51,8 +45,6 @@ interface EnrollmentsTableProps {
   enrollments: EnrollmentWithDetails[]
   onEnrollmentUpdated?: () => void
 }
-
-const ITEMS_PER_PAGE = 5
 
 const statusLabels: Record<EnrollmentStatus, string> = {
   PENDING: 'Pre-inscripción',
@@ -67,13 +59,10 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
   const [statusFilter, setStatusFilter] = useState('all')
   const [courseFilter, setCourseFilter] = useState('all')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
-  const [currentPage, setCurrentPage] = useState(1)
-  const [selectedEnrollments, setSelectedEnrollments] = useState<string[]>([])
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [enrollmentToDelete, setEnrollmentToDelete] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  // Filter enrollments based on search and filters
   const filteredEnrollments = useMemo(() => {
     let filtered = enrollments
 
@@ -95,7 +84,6 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
       filtered = filtered.filter((enrollment) => enrollment.courseId === courseFilter)
     }
 
-    // Sort by enrollment date
     filtered = [...filtered].sort((a, b) => {
       const dateA = new Date(a.enrollmentDate).getTime()
       const dateB = new Date(b.enrollmentDate).getTime()
@@ -104,18 +92,6 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
 
     return filtered
   }, [enrollments, searchTerm, statusFilter, courseFilter, sortOrder])
-
-  // Pagination
-  const totalPages = Math.ceil(filteredEnrollments.length / ITEMS_PER_PAGE)
-  const paginatedEnrollments = useMemo(() => {
-    const start = (currentPage - 1) * ITEMS_PER_PAGE
-    return filteredEnrollments.slice(start, start + ITEMS_PER_PAGE)
-  }, [filteredEnrollments, currentPage])
-
-  // Reset to first page when filters change
-  useEffect(() => {
-    setCurrentPage(1)
-  }, [searchTerm, statusFilter, courseFilter])
 
   const handleDeleteEnrollment = async () => {
     if (!enrollmentToDelete) return
@@ -147,10 +123,6 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
     )
   }
 
-  const formatDate = (date: Date) => {
-    return formatDateShort(date)
-  }
-
   const getStatusBadge = (status: EnrollmentStatus) => {
     const statusStyles: Record<EnrollmentStatus, string> = {
       PENDING: 'bg-amber-100 text-amber-700 hover:bg-amber-100',
@@ -166,47 +138,175 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
     )
   }
 
-  const handleSelectAll = (checked: boolean) => {
-    if (checked) {
-      setSelectedEnrollments(paginatedEnrollments.map(e => e.id))
-    } else {
-      setSelectedEnrollments([])
-    }
-  }
-
-  const handleSelectEnrollment = (id: string, checked: boolean) => {
-    if (checked) {
-      setSelectedEnrollments(prev => [...prev, id])
-    } else {
-      setSelectedEnrollments(prev => prev.filter(i => i !== id))
-    }
-  }
-
   const clearFilters = () => {
     setStatusFilter('all')
     setCourseFilter('all')
     setSearchTerm('')
   }
 
-  const getPageNumbers = () => {
-    const pages: (number | string)[] = []
-    if (totalPages <= 7) {
-      for (let i = 1; i <= totalPages; i++) pages.push(i)
-    } else {
-      if (currentPage <= 3) {
-        pages.push(1, 2, 3, '...', totalPages)
-      } else if (currentPage >= totalPages - 2) {
-        pages.push(1, '...', totalPages - 2, totalPages - 1, totalPages)
-      } else {
-        pages.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages)
-      }
-    }
-    return pages
-  }
+  const columns: ColumnDef<EnrollmentWithDetails>[] = [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Seleccionar todo"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Seleccionar fila"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: 'student',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Estudiante" />,
+      cell: ({ row }) => (
+        <div className="flex items-center gap-2">
+          <UserAvatar
+            userId={row.original.student.id}
+            userName={row.original.student.name}
+            userLastName={row.original.student.lastName}
+            userImage={row.original.student.image}
+            className="h-7 w-7"
+            fallbackClassName="text-xs bg-slate-200"
+          />
+          <div>
+            <div className="font-medium text-sm">
+              {row.original.student.name} {row.original.student.lastName || ''}
+            </div>
+            <div className="text-xs text-muted-foreground">{row.original.student.email}</div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'course',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Curso" />,
+      cell: ({ row }) => (
+        <div>
+          <div className="font-medium text-sm">{row.original.course.title}</div>
+          <div className="text-xs text-muted-foreground">Nivel {row.original.course.level}</div>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'status',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Estado" />,
+      cell: ({ row }) => getStatusBadge(row.original.status),
+    },
+    {
+      accessorKey: 'progress',
+      header: () => <div className="text-center">Progreso</div>,
+      cell: ({ row }) => (
+        <div className="flex items-center justify-center gap-2">
+          <Progress value={row.original.progress} className="w-[60px] h-2" />
+          <span className="text-xs font-medium">{row.original.progress}%</span>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'enrollmentDate',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Fecha Inscripción" />,
+      cell: ({ row }) => <span className="text-sm">{formatDateShort(row.original.enrollmentDate)}</span>,
+    },
+    {
+      id: 'actions',
+      header: () => <div className="text-center">Acciones</div>,
+      cell: ({ row }) => {
+        const enrollment = row.original
+        return (
+          <div className="flex items-center justify-center gap-1">
+            <EditEnrollmentDialog enrollment={enrollment} onEnrollmentUpdated={onEnrollmentUpdated}>
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <Edit className="h-4 w-4" />
+              </Button>
+            </EditEnrollmentDialog>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <MoreVertical className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem
+                  className="text-destructive"
+                  onSelect={() => {
+                    setEnrollmentToDelete(enrollment.id)
+                    setDeleteDialogOpen(true)
+                  }}
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Eliminar
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )
+      },
+    },
+  ]
+
+  const toolbar = (
+    <div className="flex items-center gap-3">
+      <div className="relative flex-1 max-w-sm">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          placeholder="Buscar por estudiante o curso..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="pl-9"
+        />
+      </div>
+      <Select value={statusFilter} onValueChange={setStatusFilter}>
+        <SelectTrigger className="w-[140px]">
+          <SelectValue placeholder="Estado" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Todos</SelectItem>
+          <SelectItem value="PENDING">Pre-inscripción</SelectItem>
+          <SelectItem value="ACTIVE">Activo</SelectItem>
+          <SelectItem value="COMPLETED">Completado</SelectItem>
+          <SelectItem value="PAUSED">Pausado</SelectItem>
+          <SelectItem value="CANCELLED">Cancelado</SelectItem>
+        </SelectContent>
+      </Select>
+      <Select value={courseFilter} onValueChange={setCourseFilter}>
+        <SelectTrigger className="w-[140px]">
+          <SelectValue placeholder="Curso" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Todos</SelectItem>
+          {getCourses().map((course) => (
+            <SelectItem key={course.id} value={course.id}>
+              {course.title}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <Select value={sortOrder} onValueChange={(v) => setSortOrder(v as 'asc' | 'desc')}>
+        <SelectTrigger className="w-[140px]">
+          <SelectValue placeholder="Ordenar" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="asc">Más antiguas</SelectItem>
+          <SelectItem value="desc">Más recientes</SelectItem>
+        </SelectContent>
+      </Select>
+      <Button variant="outline" size="icon" onClick={clearFilters} className="shrink-0">
+        <SlidersHorizontal className="h-4 w-4" />
+      </Button>
+    </div>
+  )
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Gestión de Inscripciones</h1>
@@ -222,217 +322,13 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
         </CreateEnrollmentDialog>
       </div>
 
-      {/* Search and Filters */}
-      <div className="flex items-center gap-3">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Buscar por estudiante o curso..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-9"
-          />
-        </div>
+      <DataTable
+        columns={columns}
+        data={filteredEnrollments}
+        toolbar={toolbar}
+        emptyMessage="No se encontraron inscripciones"
+      />
 
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="Estado" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos</SelectItem>
-            <SelectItem value="PENDING">Pre-inscripción</SelectItem>
-            <SelectItem value="ACTIVE">Activo</SelectItem>
-            <SelectItem value="COMPLETED">Completado</SelectItem>
-            <SelectItem value="PAUSED">Pausado</SelectItem>
-            <SelectItem value="CANCELLED">Cancelado</SelectItem>
-          </SelectContent>
-        </Select>
-
-        <Select value={courseFilter} onValueChange={setCourseFilter}>
-          <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="Curso" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos</SelectItem>
-            {getCourses().map((course) => (
-              <SelectItem key={course.id} value={course.id}>
-                {course.title}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <Select value={sortOrder} onValueChange={(v) => setSortOrder(v as 'asc' | 'desc')}>
-          <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="Ordenar" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="asc">Más antiguas</SelectItem>
-            <SelectItem value="desc">Más recientes</SelectItem>
-          </SelectContent>
-        </Select>
-
-        <Button variant="outline" size="icon" onClick={clearFilters} className="shrink-0">
-          <SlidersHorizontal className="h-4 w-4" />
-        </Button>
-      </div>
-
-      {/* Table */}
-      <div className="border rounded-lg">
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-muted/50">
-              <TableHead className="w-12">
-                <Checkbox
-                  checked={selectedEnrollments.length === paginatedEnrollments.length && paginatedEnrollments.length > 0}
-                  onCheckedChange={handleSelectAll}
-                />
-              </TableHead>
-              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Estudiante</TableHead>
-              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Curso</TableHead>
-              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Estado</TableHead>
-              <TableHead className="font-semibold text-xs uppercase text-muted-foreground text-center">Progreso</TableHead>
-              <TableHead className="font-semibold text-xs uppercase text-muted-foreground">Fecha Inscripción</TableHead>
-              <TableHead className="font-semibold text-xs uppercase text-muted-foreground text-center">Acciones</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {paginatedEnrollments.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
-                  No se encontraron inscripciones
-                </TableCell>
-              </TableRow>
-            ) : (
-              paginatedEnrollments.map((enrollment) => (
-                <TableRow key={enrollment.id} className="hover:bg-muted/30">
-                  <TableCell>
-                    <Checkbox
-                      checked={selectedEnrollments.includes(enrollment.id)}
-                      onCheckedChange={(checked) => handleSelectEnrollment(enrollment.id, !!checked)}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <UserAvatar
-                        userId={enrollment.student.id}
-                        userName={enrollment.student.name}
-                        userLastName={enrollment.student.lastName}
-                        userImage={enrollment.student.image}
-                        className="h-7 w-7"
-                        fallbackClassName="text-xs bg-slate-200"
-                      />
-                      <div>
-                        <div className="font-medium text-sm">
-                          {enrollment.student.name} {enrollment.student.lastName || ''}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          {enrollment.student.email}
-                        </div>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div>
-                      <div className="font-medium text-sm">{enrollment.course.title}</div>
-                      <div className="text-xs text-muted-foreground">
-                        Nivel {enrollment.course.level}
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>{getStatusBadge(enrollment.status)}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center justify-center gap-2">
-                      <Progress value={enrollment.progress} className="w-[60px] h-2" />
-                      <span className="text-xs font-medium">{enrollment.progress}%</span>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">{formatDate(enrollment.enrollmentDate)}</span>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center justify-center gap-1">
-                      <EditEnrollmentDialog enrollment={enrollment} onEnrollmentUpdated={onEnrollmentUpdated}>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                      </EditEnrollmentDialog>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem
-                            className="text-destructive"
-                            onSelect={() => {
-                              setEnrollmentToDelete(enrollment.id)
-                              setDeleteDialogOpen(true)
-                            }}
-                          >
-                            <Trash2 className="h-4 w-4 mr-2" />
-                            Eliminar
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </div>
-
-      {/* Pagination */}
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">
-          Mostrando <span className="font-medium">{((currentPage - 1) * ITEMS_PER_PAGE) + 1}</span> a{' '}
-          <span className="font-medium">{Math.min(currentPage * ITEMS_PER_PAGE, filteredEnrollments.length)}</span> de{' '}
-          <span className="font-medium">{filteredEnrollments.length}</span> resultados
-        </p>
-        
-        <div className="flex items-center gap-1">
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-8 w-8"
-            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-            disabled={currentPage === 1}
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          
-          {getPageNumbers().map((page, index) => (
-            typeof page === 'number' ? (
-              <Button
-                key={index}
-                variant={currentPage === page ? 'default' : 'outline'}
-                size="icon"
-                className={`h-8 w-8 ${currentPage === page ? 'bg-blue-500 hover:bg-blue-600' : ''}`}
-                onClick={() => setCurrentPage(page)}
-              >
-                {page}
-              </Button>
-            ) : (
-              <span key={index} className="px-2 text-muted-foreground">...</span>
-            )
-          ))}
-          
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-8 w-8"
-            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-            disabled={currentPage === totalPages || totalPages === 0}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
-
-      {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>

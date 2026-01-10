@@ -77,11 +77,19 @@ export async function createLesson(data: z.infer<typeof CreateLessonSchema>) {
     // Validate input data
     const validatedData = CreateLessonSchema.parse(data)
 
+    // Calcular el orden automáticamente basándose en las lecciones existentes en el módulo
+    const maxOrderLesson = await prisma.lesson.findFirst({
+      where: { moduleId: validatedData.moduleId },
+      orderBy: { order: 'desc' },
+      select: { order: true },
+    })
+    const nextOrder = (maxOrderLesson?.order ?? 0) + 1
+
     const lesson = await prisma.lesson.create({
       data: {
         title: validatedData.title,
         description: validatedData.description,
-        order: validatedData.order,
+        order: nextOrder,
         moduleId: validatedData.moduleId,
         ...(validatedData.duration && { duration: validatedData.duration }),
         ...(validatedData.videoUrl && { videoUrl: validatedData.videoUrl }),
