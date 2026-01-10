@@ -320,7 +320,7 @@ export interface CreateExamQuestionData {
   type: 'MULTIPLE_CHOICE' | 'TRUE_FALSE' | 'SHORT_ANSWER' | 'ESSAY' | 'FILL_BLANK' | 'MATCHING' | 'ORDERING' | 'DRAG_DROP'
   question: string
   options?: string[]
-  correctAnswer: string | string[]
+  correctAnswer?: string | string[] | null
   explanation?: string
   points: number
   order: number

@@ -9,7 +9,7 @@ export interface QuestionGradingResult {
   pointsEarned: number
   maxPoints: number
   userAnswer: string
-  correctAnswer: string | string[]
+  correctAnswer: string | string[] | null
   explanation?: string
 }
 
@@ -113,7 +113,7 @@ export function gradeQuestion(
     pointsEarned,
     maxPoints: question.points,
     userAnswer,
-    correctAnswer: question.correctAnswer,
+    correctAnswer: question.correctAnswer ?? null,
     explanation: question.explanation,
   }
 }

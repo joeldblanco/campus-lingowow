@@ -32,7 +32,8 @@ export const ExamQuestionSchema = z.object({
   options: z.array(z.string()).optional(), // Para preguntas de opción múltiple
   correctAnswer: z.union([
     z.string(),
-    z.array(z.string())
+    z.array(z.string()),
+    z.null()
   ]).optional(),
   explanation: z.string().optional(),
   points: z.number().min(0.1, 'Los puntos deben ser mayor a 0').default(1),
