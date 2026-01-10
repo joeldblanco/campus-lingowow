@@ -179,6 +179,26 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
     })
   }, [])
 
+  // Helper para obtener mensajes de error amigables (definido antes de joinRoom para evitar problemas de hoisting)
+  const getDeviceErrorMessage = (error: unknown, device: 'camera' | 'microphone'): string => {
+    const deviceName = device === 'camera' ? 'cámara' : 'micrófono'
+    const err = error as Error
+    
+    if (err?.name === 'NotAllowedError' || err?.name === 'PermissionDeniedError') {
+      return `Permiso denegado para ${deviceName}. Verifica los permisos del navegador.`
+    }
+    if (err?.name === 'NotFoundError' || err?.name === 'DevicesNotFoundError') {
+      return `No se encontró ${deviceName}. Verifica que esté conectado.`
+    }
+    if (err?.name === 'NotReadableError' || err?.name === 'TrackStartError') {
+      return `${deviceName.charAt(0).toUpperCase() + deviceName.slice(1)} en uso por otra aplicación. Cierra otras apps que la usen.`
+    }
+    if (err?.name === 'OverconstrainedError') {
+      return `${deviceName.charAt(0).toUpperCase() + deviceName.slice(1)} no soporta la configuración solicitada.`
+    }
+    return `Error al acceder a ${deviceName}. Intenta de nuevo.`
+  }
+
   const joinRoom = useCallback(async (roomName: string, token: string | null) => {
     if (!token) {
       console.error('[LiveKit] No token provided')
@@ -417,26 +437,6 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       roomRef.current = null
     }
   }, [updateRemoteParticipant, removeRemoteParticipant])
-
-  // Helper para obtener mensajes de error amigables
-  const getDeviceErrorMessage = (error: unknown, device: 'camera' | 'microphone'): string => {
-    const deviceName = device === 'camera' ? 'cámara' : 'micrófono'
-    const err = error as Error
-    
-    if (err?.name === 'NotAllowedError' || err?.name === 'PermissionDeniedError') {
-      return `Permiso denegado para ${deviceName}. Verifica los permisos del navegador.`
-    }
-    if (err?.name === 'NotFoundError' || err?.name === 'DevicesNotFoundError') {
-      return `No se encontró ${deviceName}. Verifica que esté conectado.`
-    }
-    if (err?.name === 'NotReadableError' || err?.name === 'TrackStartError') {
-      return `${deviceName.charAt(0).toUpperCase() + deviceName.slice(1)} en uso por otra aplicación. Cierra otras apps que la usen.`
-    }
-    if (err?.name === 'OverconstrainedError') {
-      return `${deviceName.charAt(0).toUpperCase() + deviceName.slice(1)} no soporta la configuración solicitada.`
-    }
-    return `Error al acceder a ${deviceName}. Intenta de nuevo.`
-  }
 
   const clearDeviceError = useCallback(() => {
     setDeviceError(null)
