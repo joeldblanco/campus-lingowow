@@ -20,7 +20,10 @@ import {
   Clock,
   User,
   Play,
+  ClipboardList,
 } from 'lucide-react'
+import { CreateExamDialog } from '@/components/teacher/exams/create-exam-dialog'
+import { ExamList } from '@/components/teacher/exams/exam-list'
 
 interface Content {
   id: string
@@ -64,6 +67,47 @@ interface PersonalizedLesson {
   enrollmentId: string
 }
 
+interface ExamAssignment {
+  id: string
+  student: {
+    id: string
+    name: string
+    lastName: string | null
+    email: string
+  }
+  status: string
+  dueDate: Date | null
+}
+
+interface ExamAttempt {
+  id: string
+  status: string
+  score: number | null
+  user: {
+    id: string
+    name: string
+    lastName: string | null
+  }
+}
+
+interface Exam {
+  id: string
+  title: string
+  description: string
+  timeLimit: number | null
+  passingScore: number
+  maxAttempts: number
+  isPublished: boolean
+  questionCount: number
+  totalPoints: number
+  assignments: ExamAssignment[]
+  attempts: ExamAttempt[]
+  _count: {
+    assignments: number
+    attempts: number
+  }
+}
+
 interface Course {
   id: string
   title: string
@@ -77,6 +121,7 @@ interface Course {
   studentCount: number
   modules: Module[]
   personalizedLessons: PersonalizedLesson[]
+  exams: Exam[]
 }
 
 interface TeacherCourseContentViewProps {
@@ -170,6 +215,23 @@ export function TeacherCourseContentView({ course }: TeacherCourseContentViewPro
       ) : (
         <StandardContent modules={course.modules} courseId={course.id} />
       )}
+
+      <ExamsSection exams={course.exams} courseId={course.id} />
+    </div>
+  )
+}
+
+function ExamsSection({ exams, courseId }: { exams: Exam[]; courseId: string }) {
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-semibold flex items-center gap-2">
+          <ClipboardList className="w-5 h-5" />
+          Exámenes
+        </h2>
+        <CreateExamDialog courseId={courseId} />
+      </div>
+      <ExamList exams={exams} courseId={courseId} />
     </div>
   )
 }

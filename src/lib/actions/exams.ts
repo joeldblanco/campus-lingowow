@@ -336,6 +336,9 @@ export async function updateExamQuestions(
           }
         } else if (questionData.type === 'FILL_BLANK' && questionData.content) {
           optionsData = { content: questionData.content }
+        } else if (questionData.imageUrl) {
+          // Store imageUrl in options for image_question type
+          optionsData = { imageUrl: questionData.imageUrl }
         }
 
         await tx.examQuestion.create({

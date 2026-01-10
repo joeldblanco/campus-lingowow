@@ -457,6 +457,46 @@ export async function getCourseContentForTeacher(courseId: string, teacherId: st
             },
           },
         },
+        exams: {
+          where: { createdById: teacherId },
+          include: {
+            sections: {
+              include: {
+                questions: true,
+              },
+            },
+            assignments: {
+              include: {
+                student: {
+                  select: {
+                    id: true,
+                    name: true,
+                    lastName: true,
+                    email: true,
+                  },
+                },
+              },
+            },
+            attempts: {
+              include: {
+                user: {
+                  select: {
+                    id: true,
+                    name: true,
+                    lastName: true,
+                  },
+                },
+              },
+            },
+            _count: {
+              select: {
+                assignments: true,
+                attempts: true,
+              },
+            },
+          },
+          orderBy: { createdAt: 'desc' },
+        },
         _count: {
           select: {
             enrollments: { where: { status: 'ACTIVE' } },
@@ -521,6 +561,15 @@ export async function getCourseContentForTeacher(courseId: string, teacherId: st
       }))
     }
 
+    const examsWithStats = course.exams.map((exam) => ({
+      ...exam,
+      questionCount: exam.sections.reduce((acc, s) => acc + s.questions.length, 0),
+      totalPoints: exam.sections.reduce(
+        (acc, s) => acc + s.questions.reduce((qAcc, q) => qAcc + q.points, 0),
+        0
+      ),
+    }))
+
     return {
       success: true,
       course: {
@@ -536,6 +585,7 @@ export async function getCourseContentForTeacher(courseId: string, teacherId: st
         studentCount: course._count.enrollments,
         modules: course.isPersonalized ? [] : course.modules,
         personalizedLessons: course.isPersonalized ? personalizedLessons : [],
+        exams: examsWithStats,
       },
     }
   } catch (error) {
