@@ -55,7 +55,6 @@ import {
   GripVertical,
   LayoutDashboard,
   Loader2,
-  MoreVertical,
   Plus,
   PlusCircle,
   Settings,
@@ -865,19 +864,67 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
               <div>
                 <h3 className="text-xl font-bold">Evaluaciones</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Cuestionarios, exámenes y certificaciones.
+                  {course.exams.length} examen(es) en este curso.
                 </p>
               </div>
               <div className="flex gap-2">
-                <Button variant="secondary">
-                  <PlusCircle className="w-5 h-5 mr-2" /> Agregar Examen
-                </Button>
+                <Link href={`/admin/exams/new?courseId=${course.id}`}>
+                  <Button variant="secondary">
+                    <PlusCircle className="w-5 h-5 mr-2" /> Agregar Examen
+                  </Button>
+                </Link>
               </div>
             </div>
-            {/* Placeholder for Exams as they are not eagerly fetched in CourseWithDetails fully */}
-            <Card className="p-8 text-center text-muted-foreground border-dashed">
-              <p>Gestión de exámenes próximamente.</p>
-            </Card>
+            {course.exams.length === 0 ? (
+              <Card className="p-8 text-center text-muted-foreground border-dashed">
+                <p>No hay exámenes creados para este curso.</p>
+                <Link href={`/admin/exams/new?courseId=${course.id}`}>
+                  <Button variant="link" className="mt-2">
+                    Crear primer examen
+                  </Button>
+                </Link>
+              </Card>
+            ) : (
+              <div className="grid gap-4">
+                {course.exams.map((exam) => (
+                  <Card key={exam.id} className="overflow-hidden">
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-bold truncate">{exam.title}</h4>
+                            <Badge variant={exam.isPublished ? 'default' : 'secondary'}>
+                              {exam.isPublished ? 'Publicado' : 'Borrador'}
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-muted-foreground line-clamp-1 mt-1">
+                            {exam.description}
+                          </p>
+                          <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
+                            <span>{exam._count.sections} secciones</span>
+                            <span>{exam.timeLimit ? `${exam.timeLimit} min` : 'Sin límite'}</span>
+                            <span>Aprobación: {exam.passingScore}%</span>
+                            <span>{exam._count.attempts} intentos</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Link href={`/admin/exams/${exam.id}`}>
+                            <Button variant="outline" size="sm">
+                              <Eye className="w-4 h-4 mr-1" /> Ver
+                            </Button>
+                          </Link>
+                          <Link href={`/admin/exams/${exam.id}/edit`}>
+                            <Button variant="ghost" size="sm">
+                              <Edit2 className="w-4 h-4" />
+                            </Button>
+                          </Link>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </section>
 
           {/* Students Section */}
@@ -886,19 +933,26 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
               <div>
                 <h3 className="text-xl font-bold">Estudiantes Inscritos</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Monitorea el progreso y gestiona inscripciones.
+                  {course.enrollments.length} estudiante(s) inscrito(s).
                 </p>
               </div>
               <div className="flex items-center gap-3">
-                <Button variant="secondary">
-                  <UserPlus className="w-5 h-5 mr-2" /> Inscribir Estudiante
-                </Button>
+                <Link href={`/admin/enrollments/new?courseId=${course.id}`}>
+                  <Button variant="secondary">
+                    <UserPlus className="w-5 h-5 mr-2" /> Inscribir Estudiante
+                  </Button>
+                </Link>
               </div>
             </div>
 
             {course.enrollments.length === 0 ? (
               <Card className="p-8 text-center text-muted-foreground">
-                <p>No hay estudiantes inscritos.</p>
+                <p>No hay estudiantes inscritos en este curso.</p>
+                <Link href={`/admin/enrollments/new?courseId=${course.id}`}>
+                  <Button variant="link" className="mt-2">
+                    Inscribir primer estudiante
+                  </Button>
+                </Link>
               </Card>
             ) : (
               <Card className="overflow-hidden">
@@ -906,18 +960,28 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
                   <TableHeader className="bg-muted/50">
                     <TableRow>
                       <TableHead>Estudiante</TableHead>
+                      <TableHead>Progreso</TableHead>
                       <TableHead className="w-32">Estado</TableHead>
+                      <TableHead>Fecha Inscripción</TableHead>
                       <TableHead className="text-right">Acciones</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {course.enrollments.slice(0, 5).map((enrollment) => (
+                    {course.enrollments.slice(0, 10).map((enrollment) => (
                       <TableRow key={enrollment.id} className="group">
                         <TableCell>
                           <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
-                              {enrollment.student.name?.[0] || 'U'}
-                            </div>
+                            {enrollment.student.image ? (
+                              <img 
+                                src={enrollment.student.image} 
+                                alt={enrollment.student.name || ''} 
+                                className="w-8 h-8 rounded-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+                                {enrollment.student.name?.[0] || 'U'}
+                              </div>
+                            )}
                             <div>
                               <p className="text-sm font-bold">
                                 {enrollment.student.name || 'Usuario'}
@@ -929,6 +993,19 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
                           </div>
                         </TableCell>
                         <TableCell>
+                          <div className="flex items-center gap-2">
+                            <div className="w-24 h-2 bg-muted rounded-full overflow-hidden">
+                              <div 
+                                className="h-full bg-primary rounded-full" 
+                                style={{ width: `${enrollment.progress}%` }}
+                              />
+                            </div>
+                            <span className="text-xs text-muted-foreground">
+                              {Math.round(enrollment.progress)}%
+                            </span>
+                          </div>
+                        </TableCell>
+                        <TableCell>
                           <Badge
                             variant="secondary"
                             className={cn(
@@ -936,24 +1013,40 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
                                 ? 'bg-green-100 text-green-800'
                                 : enrollment.status === 'PENDING'
                                   ? 'bg-yellow-100 text-yellow-800'
-                                  : 'bg-gray-100 text-gray-800'
+                                  : enrollment.status === 'COMPLETED'
+                                    ? 'bg-blue-100 text-blue-800'
+                                    : 'bg-gray-100 text-gray-800'
                             )}
                           >
-                            {enrollment.status}
+                            {enrollment.status === 'ACTIVE' ? 'Activo' : 
+                             enrollment.status === 'PENDING' ? 'Pendiente' :
+                             enrollment.status === 'COMPLETED' ? 'Completado' :
+                             enrollment.status === 'CANCELLED' ? 'Cancelado' : enrollment.status}
                           </Badge>
                         </TableCell>
+                        <TableCell className="text-sm text-muted-foreground">
+                          {new Date(enrollment.enrollmentDate).toLocaleDateString('es-ES', {
+                            day: '2-digit',
+                            month: 'short',
+                            year: 'numeric'
+                          })}
+                        </TableCell>
                         <TableCell className="text-right">
-                          <Button variant="ghost" size="icon">
-                            <MoreVertical className="w-4 h-4 text-muted-foreground" />
-                          </Button>
+                          <Link href={`/admin/students/${enrollment.student.id}`}>
+                            <Button variant="ghost" size="sm">
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                          </Link>
                         </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
-                {course.enrollments.length > 5 && (
+                {course.enrollments.length > 10 && (
                   <div className="p-4 text-center border-t">
-                    <Button variant="link">Ver todos los estudiantes</Button>
+                    <Link href={`/admin/enrollments?courseId=${course.id}`}>
+                      <Button variant="link">Ver todos los {course.enrollments.length} estudiantes</Button>
+                    </Link>
                   </div>
                 )}
               </Card>
@@ -966,31 +1059,61 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
               <div>
                 <h3 className="text-xl font-bold">Instructores</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Gestiona el personal docente asignado a este curso.
+                  {course.teacherCourses.length} profesor(es) asignado(s) a este curso.
                 </p>
               </div>
-              <Button variant="secondary">
-                <UserPlus className="w-5 h-5 mr-2" /> Asignar Profesor
-              </Button>
+              <Link href={`/admin/courses/${course.id}/teachers`}>
+                <Button variant="secondary">
+                  <UserPlus className="w-5 h-5 mr-2" /> Asignar Profesor
+                </Button>
+              </Link>
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Card>
-                <CardContent className="flex items-center gap-4 p-4">
-                  <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl">
-                    {course.createdBy.name?.[0] || 'A'}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-bold truncate">{course.createdBy.name}</h4>
-                    <p className="text-xs text-muted-foreground truncate">Creador del Curso</p>
-                    <div className="flex mt-2 gap-3">
-                      <button className="text-xs font-medium text-primary hover:underline">
-                        Perfil
-                      </button>
-                    </div>
-                  </div>
-                </CardContent>
+            {course.teacherCourses.length === 0 ? (
+              <Card className="p-8 text-center text-muted-foreground border-dashed">
+                <p>No hay profesores asignados a este curso.</p>
+                <Link href={`/admin/courses/${course.id}/teachers`}>
+                  <Button variant="link" className="mt-2">
+                    Asignar primer profesor
+                  </Button>
+                </Link>
               </Card>
-            </div>
+            ) : (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {course.teacherCourses.map((tc) => (
+                  <Card key={tc.teacherId}>
+                    <CardContent className="flex items-center gap-4 p-4">
+                      {tc.teacher.image ? (
+                        <img 
+                          src={tc.teacher.image} 
+                          alt={tc.teacher.name || ''} 
+                          className="w-14 h-14 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl">
+                          {tc.teacher.name?.[0] || 'P'}
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-bold truncate">{tc.teacher.name}</h4>
+                        <p className="text-xs text-muted-foreground truncate">{tc.teacher.email}</p>
+                        {tc.paymentPerClass && (
+                          <p className="text-xs text-muted-foreground mt-1">
+                            ${tc.paymentPerClass.toFixed(2)} / clase
+                          </p>
+                        )}
+                        <div className="flex mt-2 gap-3">
+                          <Link href={`/admin/teachers/${tc.teacherId}`}>
+                            <button className="text-xs font-medium text-primary hover:underline">
+                              Ver Perfil
+                            </button>
+                          </Link>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </section>
 
           {/* Settings Section */}

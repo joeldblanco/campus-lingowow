@@ -26,8 +26,10 @@ export async function getAllCourses(): Promise<CourseWithDetails[]> {
         updatedAt: true,
         createdBy: {
           select: {
+            id: true,
             name: true,
             email: true,
+            image: true,
           },
         },
         modules: {
@@ -52,18 +54,60 @@ export async function getAllCourses(): Promise<CourseWithDetails[]> {
           select: {
             id: true,
             status: true,
+            enrollmentDate: true,
+            progress: true,
             student: {
               select: {
+                id: true,
                 name: true,
                 email: true,
+                image: true,
               },
             },
+          },
+        },
+        teacherCourses: {
+          select: {
+            teacherId: true,
+            paymentPerClass: true,
+            createdAt: true,
+            teacher: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                image: true,
+              },
+            },
+          },
+        },
+        exams: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            timeLimit: true,
+            passingScore: true,
+            maxAttempts: true,
+            isPublished: true,
+            createdAt: true,
+            _count: {
+              select: {
+                sections: true,
+                attempts: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: 'desc',
           },
         },
         _count: {
           select: {
             modules: true,
             enrollments: true,
+            teacherCourses: true,
+            exams: true,
           },
         },
       },
@@ -100,8 +144,10 @@ export async function getCourseById(id: string): Promise<CourseWithDetails | nul
         updatedAt: true,
         createdBy: {
           select: {
+            id: true,
             name: true,
             email: true,
+            image: true,
           },
         },
         modules: {
@@ -126,18 +172,60 @@ export async function getCourseById(id: string): Promise<CourseWithDetails | nul
           select: {
             id: true,
             status: true,
+            enrollmentDate: true,
+            progress: true,
             student: {
               select: {
+                id: true,
                 name: true,
                 email: true,
+                image: true,
               },
             },
+          },
+        },
+        teacherCourses: {
+          select: {
+            teacherId: true,
+            paymentPerClass: true,
+            createdAt: true,
+            teacher: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                image: true,
+              },
+            },
+          },
+        },
+        exams: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            timeLimit: true,
+            passingScore: true,
+            maxAttempts: true,
+            isPublished: true,
+            createdAt: true,
+            _count: {
+              select: {
+                sections: true,
+                attempts: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: 'desc',
           },
         },
         _count: {
           select: {
             modules: true,
             enrollments: true,
+            teacherCourses: true,
+            exams: true,
           },
         },
       },

@@ -19,8 +19,10 @@ export type CourseWithDetails = Prisma.CourseGetPayload<{
     updatedAt: true
     createdBy: {
       select: {
+        id: true
         name: true
         email: true
+        image: true
       }
     }
     modules: {
@@ -42,10 +44,47 @@ export type CourseWithDetails = Prisma.CourseGetPayload<{
       select: {
         id: true
         status: true
+        enrollmentDate: true
+        progress: true
         student: {
           select: {
+            id: true
             name: true
             email: true
+            image: true
+          }
+        }
+      }
+    }
+    teacherCourses: {
+      select: {
+        teacherId: true
+        paymentPerClass: true
+        createdAt: true
+        teacher: {
+          select: {
+            id: true
+            name: true
+            email: true
+            image: true
+          }
+        }
+      }
+    }
+    exams: {
+      select: {
+        id: true
+        title: true
+        description: true
+        timeLimit: true
+        passingScore: true
+        maxAttempts: true
+        isPublished: true
+        createdAt: true
+        _count: {
+          select: {
+            sections: true
+            attempts: true
           }
         }
       }
@@ -54,6 +93,8 @@ export type CourseWithDetails = Prisma.CourseGetPayload<{
       select: {
         modules: true
         enrollments: true
+        teacherCourses: true
+        exams: true
       }
     }
   }
