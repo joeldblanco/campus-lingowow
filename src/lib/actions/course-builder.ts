@@ -140,7 +140,6 @@ export async function updateCourseInfo(courseId: string, updates: Partial<Course
 
     revalidatePath('/admin/courses')
     revalidatePath(`/admin/courses/${courseId}`)
-    revalidatePath(`/admin/courses/${courseId}/builder`)
 
     return { success: true, course: courseBuilderData }
   } catch (error) {

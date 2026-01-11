@@ -33,7 +33,8 @@ import {
 import { DataTable, DataTableColumnHeader } from '@/components/ui/data-table'
 import { deleteCourse, toggleCoursePublished } from '@/lib/actions/courses'
 import { CourseWithDetails } from '@/types/course'
-import { Archive, Edit, Eye, Globe, MoreVertical, Trash2, Settings, Search, SlidersHorizontal, BookOpen, Users } from 'lucide-react'
+import { Archive, Edit, Eye, Globe, MoreVertical, Trash2, Search, SlidersHorizontal, BookOpen, Users } from 'lucide-react'
+import Link from 'next/link'
 import { toast } from 'sonner'
 import { EditCourseDialog } from './edit-course-dialog'
 import { ViewCourseDialog } from './view-course-dialog'
@@ -180,7 +181,12 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
       header: ({ column }) => <DataTableColumnHeader column={column} title="Curso" />,
       cell: ({ row }) => (
         <div className="max-w-[200px]">
-          <div className="font-medium text-sm truncate">{row.original.title}</div>
+          <Link 
+            href={`/admin/courses/${row.original.id}`}
+            className="font-medium text-sm truncate hover:text-primary hover:underline transition-colors block"
+          >
+            {row.original.title}
+          </Link>
           <div className="text-xs text-muted-foreground line-clamp-1">{row.original.description}</div>
         </div>
       ),
@@ -245,12 +251,6 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
                     Ver detalles
                   </DropdownMenuItem>
                 </ViewCourseDialog>
-                <DropdownMenuItem asChild>
-                  <a href={`/admin/courses/${course.id}/builder`}>
-                    <Settings className="h-4 w-4 mr-2" />
-                    Course Builder
-                  </a>
-                </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => handleTogglePublished(course.id)}
                   data-testid={course.isPublished ? 'unpublish-button' : 'publish-button'}

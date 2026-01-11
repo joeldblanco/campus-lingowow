@@ -13,9 +13,17 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import {
   Table,
   TableBody,
@@ -30,15 +38,23 @@ import {
   toggleCoursePublished,
   updateCourse,
 } from '@/lib/actions/courses'
+import {
+  upsertModule,
+  deleteModule,
+  reorderModules,
+} from '@/lib/actions/course-builder'
 import { cn } from '@/lib/utils'
 import { CourseWithDetails } from '@/types/course'
 import {
   BookOpen,
   Cast,
   CheckCircle,
-  Edit,
+  Edit2,
+  Eye,
   Globe,
+  GripVertical,
   LayoutDashboard,
+  Loader2,
   MoreVertical,
   Plus,
   PlusCircle,
@@ -52,6 +68,221 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core'
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+  useSortable,
+} from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+
+// Types for module from CourseWithDetails
+type ModuleType = {
+  id: string
+  title: string
+  description: string | null
+  level: string
+  order: number
+  isPublished: boolean
+  _count: { lessons: number }
+}
+
+// Sortable Module Card Component
+function SortableModuleCard({
+  module: mod,
+  courseId,
+  editingModuleId,
+  onEdit,
+  onCancelEdit,
+  onSave,
+  onDelete,
+  onTogglePublished,
+}: {
+  module: ModuleType
+  courseId: string
+  editingModuleId: string | null
+  onEdit: () => void
+  onCancelEdit: () => void
+  onSave: (moduleId: string, updates: Partial<ModuleType>) => Promise<void>
+  onDelete: (moduleId: string) => Promise<void>
+  onTogglePublished: (moduleId: string, isPublished: boolean) => Promise<void>
+}) {
+  const [editValues, setEditValues] = useState({
+    title: mod.title,
+    description: mod.description || '',
+    level: mod.level,
+    isPublished: mod.isPublished,
+  })
+  const [isSaving, setIsSaving] = useState(false)
+
+  const isEditing = editingModuleId === mod.id
+
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: mod.id })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  }
+
+  const handleSave = async () => {
+    if (!editValues.title.trim()) {
+      toast.error('El título es requerido')
+      return
+    }
+    setIsSaving(true)
+    await onSave(mod.id, editValues)
+    setIsSaving(false)
+  }
+
+  const handleCancel = () => {
+    setEditValues({
+      title: mod.title,
+      description: mod.description || '',
+      level: mod.level,
+      isPublished: mod.isPublished,
+    })
+    onCancelEdit()
+  }
+
+  if (isEditing) {
+    return (
+      <Card ref={setNodeRef} style={style} className="border-primary">
+        <CardContent className="pt-6 space-y-4">
+          <div className="flex items-center gap-3">
+            <Edit2 className="h-5 w-5 text-primary" />
+            <h3 className="text-lg font-semibold">Editando Módulo</h3>
+          </div>
+          <Input
+            placeholder="Título del módulo"
+            value={editValues.title}
+            onChange={(e) => setEditValues({ ...editValues, title: e.target.value })}
+          />
+          <Textarea
+            placeholder="Descripción del módulo"
+            rows={3}
+            value={editValues.description}
+            onChange={(e) => setEditValues({ ...editValues, description: e.target.value })}
+          />
+          <Select
+            value={editValues.level}
+            onValueChange={(value) => setEditValues({ ...editValues, level: value })}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Seleccionar nivel MCER" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="A1">A1 - Principiante</SelectItem>
+              <SelectItem value="A2">A2 - Elemental</SelectItem>
+              <SelectItem value="B1">B1 - Intermedio</SelectItem>
+              <SelectItem value="B2">B2 - Intermedio Alto</SelectItem>
+              <SelectItem value="C1">C1 - Avanzado</SelectItem>
+              <SelectItem value="C2">C2 - Maestría</SelectItem>
+            </SelectContent>
+          </Select>
+          <div className="flex items-center space-x-2">
+            <Switch
+              checked={editValues.isPublished}
+              onCheckedChange={(checked) => setEditValues({ ...editValues, isPublished: checked })}
+            />
+            <label className="text-sm">Publicar módulo</label>
+          </div>
+          <div className="flex gap-2">
+            <Button onClick={handleSave} disabled={isSaving}>
+              {isSaving ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Guardando...
+                </>
+              ) : (
+                'Guardar Cambios'
+              )}
+            </Button>
+            <Button variant="outline" onClick={handleCancel} disabled={isSaving}>
+              Cancelar
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  return (
+    <Card ref={setNodeRef} style={style} className="overflow-hidden">
+      <div className="bg-muted/30 px-4 py-3 border-b flex justify-between items-center">
+        <div className="flex items-center gap-3">
+          <div
+            {...attributes}
+            {...listeners}
+            className="cursor-grab active:cursor-grabbing p-1 hover:bg-muted rounded"
+          >
+            <GripVertical className="h-4 w-4 text-muted-foreground" />
+          </div>
+          <div>
+            <h4 className="font-bold text-sm">{mod.title}</h4>
+            <div className="flex items-center gap-2 mt-0.5">
+              <Badge variant="outline" className="text-xs font-normal">
+                Nivel {mod.level}
+              </Badge>
+              <span className="text-xs text-muted-foreground">
+                {mod._count.lessons} lecciones
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Switch
+            checked={mod.isPublished}
+            onCheckedChange={(checked) => onTogglePublished(mod.id, checked)}
+          />
+          <span className="text-xs text-muted-foreground w-16">
+            {mod.isPublished ? 'Publicado' : 'Borrador'}
+          </span>
+        </div>
+      </div>
+      <div className="p-4">
+        <p className="text-sm text-muted-foreground line-clamp-2">
+          {mod.description || 'Sin descripción'}
+        </p>
+        <div className="mt-4 flex gap-2">
+          <Button variant="outline" size="sm" asChild>
+            <Link href={`/admin/courses/${courseId}/modules/${mod.id}`}>
+              <Eye className="w-4 h-4 mr-2" /> Ver Lecciones ({mod._count.lessons})
+            </Link>
+          </Button>
+          <Button variant="ghost" size="sm" onClick={onEdit}>
+            <Edit2 className="w-4 h-4 mr-2" /> Editar
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => onDelete(mod.id)}
+            className="text-destructive hover:text-destructive"
+          >
+            <Trash2 className="w-4 h-4" />
+          </Button>
+        </div>
+      </div>
+    </Card>
+  )
+}
 
 interface CourseDetailsClientProps {
   course: CourseWithDetails
@@ -72,6 +303,26 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
     isPersonalized: course.isPersonalized ?? false,
     isSynchronous: course.isSynchronous ?? false,
   })
+
+  // Module State
+  const [modules, setModules] = useState(course.modules)
+  const [isCreatingModule, setIsCreatingModule] = useState(false)
+  const [isModuleSaving, setIsModuleSaving] = useState(false)
+  const [editingModuleId, setEditingModuleId] = useState<string | null>(null)
+  const [newModule, setNewModule] = useState({
+    title: '',
+    description: '',
+    level: 'A1',
+    isPublished: false,
+  })
+
+  // DnD Sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
 
   // Smooth scrolling and Active Section Observer
   useEffect(() => {
@@ -171,6 +422,128 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
       router.refresh()
     } else {
       toast.error('Error al actualizar estado')
+    }
+  }
+
+  // Module Handlers
+  const handleCreateModule = async () => {
+    if (!newModule.title.trim()) {
+      toast.error('El título es requerido')
+      return
+    }
+    if (!newModule.description.trim()) {
+      toast.error('La descripción es requerida')
+      return
+    }
+
+    setIsModuleSaving(true)
+    try {
+      const maxOrder = modules.reduce((max, m) => Math.max(max, m.order), 0)
+      const result = await upsertModule(course.id, {
+        title: newModule.title,
+        description: newModule.description,
+        level: newModule.level,
+        order: maxOrder + 1,
+        isPublished: newModule.isPublished,
+      })
+
+      if (!result.success || !result.module) {
+        throw new Error(result.error || 'Error al crear el módulo')
+      }
+
+      setModules([...modules, { ...result.module, _count: { lessons: 0 } }])
+      setIsCreatingModule(false)
+      setNewModule({
+        title: '',
+        description: '',
+        level: 'A1',
+        isPublished: false,
+      })
+      toast.success('Módulo creado exitosamente')
+    } catch (error) {
+      console.error(error)
+      toast.error('Error al crear el módulo')
+    } finally {
+      setIsModuleSaving(false)
+    }
+  }
+
+  const handleCancelCreateModule = () => {
+    setIsCreatingModule(false)
+    setNewModule({
+      title: '',
+      description: '',
+      level: 'A1',
+      isPublished: false,
+    })
+  }
+
+  const handleUpdateModule = async (moduleId: string, updates: Partial<ModuleType>) => {
+    const originalModules = [...modules]
+    setModules(modules.map(m => m.id === moduleId ? { ...m, ...updates } : m))
+    setEditingModuleId(null)
+
+    try {
+      const result = await upsertModule(course.id, { 
+        id: moduleId, 
+        title: updates.title,
+        description: updates.description || undefined,
+        level: updates.level,
+        isPublished: updates.isPublished,
+      })
+      if (!result.success) {
+        throw new Error(result.error)
+      }
+      toast.success('Módulo actualizado')
+    } catch {
+      toast.error('Error al actualizar el módulo')
+      setModules(originalModules)
+    }
+  }
+
+  const handleDeleteModule = async (moduleId: string) => {
+    if (!confirm('¿Estás seguro de eliminar este módulo? Se eliminarán todas sus lecciones.')) return
+
+    const originalModules = [...modules]
+    setModules(modules.filter(m => m.id !== moduleId))
+
+    try {
+      const result = await deleteModule(moduleId)
+      if (!result.success) {
+        throw new Error(result.error)
+      }
+      toast.success('Módulo eliminado')
+    } catch {
+      toast.error('Error al eliminar el módulo')
+      setModules(originalModules)
+    }
+  }
+
+  const handleToggleModulePublished = async (moduleId: string, isPublished: boolean) => {
+    await handleUpdateModule(moduleId, { isPublished })
+  }
+
+  const handleModuleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event
+    if (!over || active.id === over.id) return
+
+    const oldIndex = modules.findIndex(m => m.id === active.id)
+    const newIndex = modules.findIndex(m => m.id === over.id)
+
+    if (oldIndex !== -1 && newIndex !== -1) {
+      const reorderedModules = arrayMove(modules, oldIndex, newIndex).map((m, idx) => ({
+        ...m,
+        order: idx + 1
+      }))
+      setModules(reorderedModules)
+
+      try {
+        await reorderModules(course.id, reorderedModules.map(m => m.id))
+        toast.success('Orden actualizado')
+      } catch {
+        toast.error('Error al reordenar módulos')
+        setModules(modules)
+      }
     }
   }
 
@@ -307,16 +680,16 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
         </Card>
 
         {/* Sticky Sub-navigation */}
-        <div className="sticky top-[4rem] z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 pt-2 pb-4 -mx-4 px-4 lg:-mx-10 lg:px-10 mb-2 transition-all duration-300 border-b">
+        <div className="sticky top-[4rem] z-40 bg-primary/95 backdrop-blur supports-[backdrop-filter]:bg-primary/80 pt-2 pb-4 -mx-4 px-4 lg:-mx-10 lg:px-10 mb-2 transition-all duration-300 border-b border-primary-foreground/20 rounded-lg">
           <nav className="flex gap-1 overflow-x-auto max-w-full pb-1">
             <Link
               href="#lessons"
               onClick={(e) => scrollToSection(e, 'lessons')}
               className={cn(
-                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors',
+                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors text-white',
                 activeSection === 'lessons'
-                  ? 'bg-primary/10 text-primary'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
+                  ? 'bg-white/20'
+                  : 'hover:bg-white/10'
               )}
             >
               <BookOpen className="w-4 h-4" /> Lecciones
@@ -325,10 +698,10 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
               href="#exams"
               onClick={(e) => scrollToSection(e, 'exams')}
               className={cn(
-                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors',
+                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors text-white',
                 activeSection === 'exams'
-                  ? 'bg-primary/10 text-primary'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
+                  ? 'bg-white/20'
+                  : 'hover:bg-white/10'
               )}
             >
               <CheckCircle className="w-4 h-4" /> Exámenes
@@ -337,10 +710,10 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
               href="#students"
               onClick={(e) => scrollToSection(e, 'students')}
               className={cn(
-                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors',
+                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors text-white',
                 activeSection === 'students'
-                  ? 'bg-primary/10 text-primary'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
+                  ? 'bg-white/20'
+                  : 'hover:bg-white/10'
               )}
             >
               <Users className="w-4 h-4" /> Estudiantes
@@ -349,10 +722,10 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
               href="#teachers"
               onClick={(e) => scrollToSection(e, 'teachers')}
               className={cn(
-                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors',
+                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors text-white',
                 activeSection === 'teachers'
-                  ? 'bg-primary/10 text-primary'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
+                  ? 'bg-white/20'
+                  : 'hover:bg-white/10'
               )}
             >
               <Cast className="w-4 h-4" /> Profesores
@@ -361,10 +734,10 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
               href="#settings"
               onClick={(e) => scrollToSection(e, 'settings')}
               className={cn(
-                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors',
+                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors text-white',
                 activeSection === 'settings'
-                  ? 'bg-primary/10 text-primary'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
+                  ? 'bg-white/20'
+                  : 'hover:bg-white/10'
               )}
             >
               <Settings className="w-4 h-4" /> Configuración
@@ -373,50 +746,116 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
         </div>
 
         <div className="space-y-12">
-          {/* Lessons Section */}
+          {/* Lessons Section - Módulos */}
           <section id="lessons" className="scroll-mt-32">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h3 className="text-xl font-bold">Plan de Estudios</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Gestiona lecciones, módulos y materiales de aprendizaje.
+                  Gestiona módulos y lecciones del curso. Arrastra para reordenar.
                 </p>
               </div>
-              <Button>
+              <Button onClick={() => setIsCreatingModule(true)} disabled={isCreatingModule}>
                 <Plus className="w-5 h-5 mr-2" /> Agregar Módulo
               </Button>
             </div>
 
-            {course.modules.length === 0 ? (
+            {/* Formulario de nuevo módulo */}
+            {isCreatingModule && (
+              <Card className="border-2 border-dashed border-primary mb-6">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center gap-3">
+                    <Plus className="h-5 w-5 text-primary" />
+                    <CardTitle className="text-lg">Nuevo Módulo</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Input
+                    placeholder="Título del módulo"
+                    value={newModule.title}
+                    onChange={(e) => setNewModule({ ...newModule, title: e.target.value })}
+                  />
+                  <Textarea
+                    placeholder="Descripción del módulo"
+                    rows={3}
+                    value={newModule.description}
+                    onChange={(e) => setNewModule({ ...newModule, description: e.target.value })}
+                  />
+                  <Select
+                    value={newModule.level}
+                    onValueChange={(value) => setNewModule({ ...newModule, level: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Seleccionar nivel MCER" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="A1">A1 - Principiante</SelectItem>
+                      <SelectItem value="A2">A2 - Elemental</SelectItem>
+                      <SelectItem value="B1">B1 - Intermedio</SelectItem>
+                      <SelectItem value="B2">B2 - Intermedio Alto</SelectItem>
+                      <SelectItem value="C1">C1 - Avanzado</SelectItem>
+                      <SelectItem value="C2">C2 - Maestría</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      checked={newModule.isPublished}
+                      onCheckedChange={(checked) => setNewModule({ ...newModule, isPublished: checked })}
+                    />
+                    <label className="text-sm">Publicar inmediatamente</label>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button onClick={handleCreateModule} disabled={isModuleSaving}>
+                      {isModuleSaving ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Creando...
+                        </>
+                      ) : (
+                        'Crear Módulo'
+                      )}
+                    </Button>
+                    <Button variant="outline" onClick={handleCancelCreateModule} disabled={isModuleSaving}>
+                      Cancelar
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {modules.length === 0 && !isCreatingModule ? (
               <Card className="p-8 text-center text-muted-foreground">
-                <p>No hay módulos creados aún.</p>
+                <BookOpen className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                <p className="font-medium">No hay módulos creados aún</p>
+                <p className="text-sm mt-1">Crea tu primer módulo para estructurar el contenido del curso</p>
               </Card>
             ) : (
-              <div className="space-y-4">
-                {course.modules.map((module) => (
-                  <Card key={module.id} className="overflow-hidden">
-                    <div className="bg-muted/30 px-6 py-3 border-b flex justify-between items-center">
-                      <h4 className="font-bold text-sm">{module.title}</h4>
-                      <Badge variant={module.isPublished ? 'secondary' : 'outline'}>
-                        {module.isPublished ? 'Publicado' : 'Borrador'}
-                      </Badge>
-                    </div>
-                    <div className="p-6">
-                      <p className="text-sm text-muted-foreground">
-                        {module.description || 'Sin descripción'}
-                      </p>
-                      <div className="mt-4 flex gap-2">
-                        <Button variant="outline" size="sm">
-                          Ver Lecciones ({module._count.lessons})
-                        </Button>
-                        <Button variant="ghost" size="sm">
-                          <Edit className="w-4 h-4 mr-2" /> Editar
-                        </Button>
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-              </div>
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleModuleDragEnd}
+              >
+                <SortableContext
+                  items={modules.map((m) => m.id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  <div className="space-y-4">
+                    {modules.map((mod) => (
+                      <SortableModuleCard
+                        key={mod.id}
+                        module={mod}
+                        courseId={course.id}
+                        editingModuleId={editingModuleId}
+                        onEdit={() => setEditingModuleId(mod.id)}
+                        onCancelEdit={() => setEditingModuleId(null)}
+                        onSave={handleUpdateModule}
+                        onDelete={handleDeleteModule}
+                        onTogglePublished={handleToggleModulePublished}
+                      />
+                    ))}
+                  </div>
+                </SortableContext>
+              </DndContext>
             )}
           </section>
 
