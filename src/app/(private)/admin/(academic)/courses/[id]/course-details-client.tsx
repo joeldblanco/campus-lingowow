@@ -680,16 +680,16 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
         </Card>
 
         {/* Sticky Sub-navigation */}
-        <div className="sticky top-[4rem] z-40 bg-primary/95 backdrop-blur supports-[backdrop-filter]:bg-primary/80 pt-2 pb-4 -mx-4 px-4 lg:-mx-10 lg:px-10 mb-2 transition-all duration-300 border-b border-primary-foreground/20 rounded-lg">
+        <div className="sticky top-[4rem] z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 pt-2 pb-4 -mx-4 px-4 lg:-mx-10 lg:px-10 mb-2 transition-all duration-300 border-b">
           <nav className="flex gap-1 overflow-x-auto max-w-full pb-1">
             <Link
               href="#lessons"
               onClick={(e) => scrollToSection(e, 'lessons')}
               className={cn(
-                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors text-white',
+                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors',
                 activeSection === 'lessons'
-                  ? 'bg-white/20'
-                  : 'hover:bg-white/10'
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
               )}
             >
               <BookOpen className="w-4 h-4" /> Lecciones
@@ -698,10 +698,10 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
               href="#exams"
               onClick={(e) => scrollToSection(e, 'exams')}
               className={cn(
-                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors text-white',
+                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors',
                 activeSection === 'exams'
-                  ? 'bg-white/20'
-                  : 'hover:bg-white/10'
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
               )}
             >
               <CheckCircle className="w-4 h-4" /> Exámenes
@@ -710,10 +710,10 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
               href="#students"
               onClick={(e) => scrollToSection(e, 'students')}
               className={cn(
-                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors text-white',
+                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors',
                 activeSection === 'students'
-                  ? 'bg-white/20'
-                  : 'hover:bg-white/10'
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
               )}
             >
               <Users className="w-4 h-4" /> Estudiantes
@@ -722,10 +722,10 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
               href="#teachers"
               onClick={(e) => scrollToSection(e, 'teachers')}
               className={cn(
-                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors text-white',
+                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors',
                 activeSection === 'teachers'
-                  ? 'bg-white/20'
-                  : 'hover:bg-white/10'
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
               )}
             >
               <Cast className="w-4 h-4" /> Profesores
@@ -734,10 +734,10 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
               href="#settings"
               onClick={(e) => scrollToSection(e, 'settings')}
               className={cn(
-                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors text-white',
+                'flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors',
                 activeSection === 'settings'
-                  ? 'bg-white/20'
-                  : 'hover:bg-white/10'
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
               )}
             >
               <Settings className="w-4 h-4" /> Configuración
