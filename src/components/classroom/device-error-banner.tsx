@@ -5,7 +5,7 @@ import { Camera, Mic, RefreshCw, X } from 'lucide-react'
 
 interface DeviceErrorBannerProps {
   type: 'camera' | 'microphone' | 'both'
-  message: string
+  message?: string
   canRetry: boolean
   onRetry: () => void
   onDismiss: () => void
