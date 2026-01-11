@@ -199,7 +199,6 @@ export function UsersDataTable({
         const statusStyles: Record<UserStatus, string> = {
           ACTIVE: 'bg-emerald-100 text-emerald-700',
           INACTIVE: 'bg-gray-100 text-gray-700',
-          SUSPENDED: 'bg-red-100 text-red-700',
         }
         return (
           <Badge className={`${statusStyles[status]} border-0 font-medium`}>
@@ -317,7 +316,6 @@ export function UsersDataTable({
           <SelectItem value="all">Todos</SelectItem>
           <SelectItem value={UserStatus.ACTIVE}>Activo</SelectItem>
           <SelectItem value={UserStatus.INACTIVE}>Inactivo</SelectItem>
-          <SelectItem value={UserStatus.SUSPENDED}>Suspendido</SelectItem>
         </SelectContent>
       </Select>
       {hasActiveFilters && (
@@ -341,6 +339,7 @@ export function UsersDataTable({
         data={filteredUsers}
         toolbar={toolbar}
         emptyMessage="No se encontraron usuarios"
+        onRowSelectionChange={(rows) => setSelectedUsers(rows.map((r) => r.id))}
       />
 
       {editingUser && (
