@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useTransition } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { ClassBookingWithDetails, deleteClass, updateClass, toggleClassPayable } from '@/lib/actions/classes'
 import { getTodayString } from '@/lib/utils/date'
@@ -51,13 +51,16 @@ import {
 import { toast } from 'sonner'
 import { BookingStatus } from '@prisma/client'
 import { useTimezone } from '@/hooks/use-timezone'
+import { useRouter } from 'next/navigation'
 
 interface ClassesTableProps {
   classes: ClassBookingWithDetails[]
 }
 
 export function ClassesTable({ classes }: ClassesTableProps) {
+  const router = useRouter()
   const { timezone: userTimezone } = useTimezone()
+  const [, startTransition] = useTransition()
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [teacherFilter, setTeacherFilter] = useState('all')
@@ -138,7 +141,9 @@ export function ClassesTable({ classes }: ClassesTableProps) {
         toast.success('Clase eliminada exitosamente')
         setDeleteDialogOpen(false)
         setClassToDelete(null)
-        window.location.reload()
+        startTransition(() => {
+          router.refresh()
+        })
       } else {
         toast.error(result.error || 'Error al eliminar la clase')
       }
@@ -168,7 +173,9 @@ export function ClassesTable({ classes }: ClassesTableProps) {
       })
       if (result.success) {
         toast.success('Clase marcada como completada')
-        window.location.reload()
+        startTransition(() => {
+          router.refresh()
+        })
       } else {
         toast.error(result.error || 'Error al actualizar la clase')
       }
@@ -182,7 +189,9 @@ export function ClassesTable({ classes }: ClassesTableProps) {
       const result = await toggleClassPayable(classId, isPayable)
       if (result.success) {
         toast.success(result.message)
-        window.location.reload()
+        startTransition(() => {
+          router.refresh()
+        })
       } else {
         toast.error(result.error || 'Error al actualizar el estado de pago')
       }
