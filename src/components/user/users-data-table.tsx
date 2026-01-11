@@ -1,19 +1,8 @@
 'use client'
 
-import { useState, useTransition } from 'react'
-import {
-  type ColumnDef,
-  type ColumnFiltersState,
-  type SortingState,
-  type VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from '@tanstack/react-table'
-import { ArrowUpDown, ChevronDown, MoreVertical, Pencil, Trash, Eye, BookOpen, Search } from 'lucide-react'
+import { useState, useMemo, useTransition } from 'react'
+import { ColumnDef } from '@tanstack/react-table'
+import { MoreVertical, Pencil, Trash, Eye, BookOpen, Search, SlidersHorizontal, Clock } from 'lucide-react'
 import { toast } from 'sonner'
 import { impersonateUser } from '@/lib/actions/impersonate'
 
@@ -21,7 +10,6 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
@@ -30,13 +18,12 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
 import {
   AlertDialog,
@@ -48,10 +35,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { DataTable, DataTableColumnHeader } from '@/components/ui/data-table'
+import { UserAvatar } from '@/components/ui/user-avatar'
 import { UserEditDialog } from '@/components/user/user-edit-dialog'
 import { ManageTeacherCoursesDialog } from '@/components/admin/teachers/manage-teacher-courses-dialog'
 import { User, UserRole, UserStatus } from '@prisma/client'
 import { RoleNames, StatusNames } from '@/types/user'
+import { formatDateShort } from '@/lib/utils/date'
 
 interface UsersDataTableProps {
   users: User[]
@@ -66,14 +56,37 @@ export function UsersDataTable({
   onDeleteMultiple,
   onUpdateUser,
 }: UsersDataTableProps) {
-  const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = useState({})
+  const [searchTerm, setSearchTerm] = useState('')
+  const [roleFilter, setRoleFilter] = useState('all')
+  const [statusFilter, setStatusFilter] = useState('all')
   const [editingUser, setEditingUser] = useState<User | null>(null)
   const [userToDelete, setUserToDelete] = useState<User | null>(null)
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([])
 
   const [isPending, startTransition] = useTransition()
+
+  const filteredUsers = useMemo(() => {
+    let filtered = users
+
+    if (searchTerm) {
+      filtered = filtered.filter(
+        (user) =>
+          user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (user.lastName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+          user.email.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    }
+
+    if (roleFilter !== 'all') {
+      filtered = filtered.filter((user) => user.roles.includes(roleFilter as UserRole))
+    }
+
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter((user) => user.status === statusFilter)
+    }
+
+    return filtered
+  }, [users, searchTerm, roleFilter, statusFilter])
 
   const handleImpersonate = (userId: string) => {
     startTransition(() => {
@@ -85,7 +98,6 @@ export function UsersDataTable({
             toast.success('Suplantación iniciada', {
               description: 'Redirigiendo...',
             })
-            // Forzar recarga completa para actualizar la sesión
             window.location.href = '/dashboard'
           }
         })
@@ -96,15 +108,27 @@ export function UsersDataTable({
     })
   }
 
+  const handleDeleteSelected = () => {
+    if (selectedUsers.length > 0) {
+      onDeleteMultiple(selectedUsers)
+      setSelectedUsers([])
+    }
+  }
+
+  const clearFilters = () => {
+    setSearchTerm('')
+    setRoleFilter('all')
+    setStatusFilter('all')
+  }
+
+  const hasActiveFilters = searchTerm || roleFilter !== 'all' || statusFilter !== 'all'
+
   const columns: ColumnDef<User>[] = [
     {
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Seleccionar todo"
         />
@@ -121,280 +145,203 @@ export function UsersDataTable({
     },
     {
       accessorKey: 'name',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Nombre
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        )
-      },
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Usuario" />,
       cell: ({ row }) => {
-        const fullName = `${row.original.name} ${row.original.lastName || ''}`.trim()
-        return <div>{fullName}</div>
-      },
-      filterFn: (row, columnId, filterValue) => {
-        const fullName = `${row.original.name} ${row.original.lastName || ''}`.toLowerCase()
-        return fullName.includes(filterValue.toLowerCase())
-      },
-    },
-    {
-      accessorKey: 'email',
-      header: ({ column }) => {
+        const user = row.original
+        const fullName = `${user.name} ${user.lastName || ''}`.trim()
         return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Correo
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
+          <div className="flex items-center gap-3">
+            <UserAvatar
+              userId={user.id}
+              userName={user.name}
+              userLastName={user.lastName}
+              userImage={user.image}
+              className="h-9 w-9"
+            />
+            <div className="min-w-0">
+              <div className="font-medium truncate">{fullName}</div>
+              <div className="text-xs text-muted-foreground truncate">{user.email}</div>
+            </div>
+          </div>
         )
       },
-      cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
     },
     {
       accessorKey: 'roles',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Roles
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        )
-      },
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Roles" />,
       cell: ({ row }) => {
         const roles = row.getValue('roles') as UserRole[]
         return (
           <div className="flex flex-wrap gap-1">
-            {roles.map((role) => (
-              <Badge key={role} variant="outline" className="text-xs">
-                {RoleNames[role]}
-              </Badge>
-            ))}
+            {roles.map((role) => {
+              const roleColors: Record<UserRole, string> = {
+                ADMIN: 'bg-purple-100 text-purple-700',
+                TEACHER: 'bg-blue-100 text-blue-700',
+                STUDENT: 'bg-green-100 text-green-700',
+                EDITOR: 'bg-orange-100 text-orange-700',
+                GUEST: 'bg-gray-100 text-gray-700',
+              }
+              return (
+                <Badge key={role} className={`${roleColors[role]} border-0 text-xs font-medium`}>
+                  {RoleNames[role]}
+                </Badge>
+              )
+            })}
           </div>
         )
       },
     },
     {
       accessorKey: 'status',
-      header: ({ column }) => {
-        return (
-          <div className="w-full flex justify-center">
-            <Button
-              variant="ghost"
-              onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-            >
-              Estado
-              <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-        )
-      },
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Estado" />,
       cell: ({ row }) => {
         const status = row.getValue('status') as UserStatus
-        const statusStyles: Record<string, string> = {
-          ACTIVE: 'bg-emerald-100 text-emerald-700 hover:bg-emerald-100',
-          INACTIVE: 'bg-gray-100 text-gray-700 hover:bg-gray-100',
-          SUSPENDED: 'bg-red-100 text-red-700 hover:bg-red-100',
+        const statusStyles: Record<UserStatus, string> = {
+          ACTIVE: 'bg-emerald-100 text-emerald-700',
+          INACTIVE: 'bg-gray-100 text-gray-700',
+          SUSPENDED: 'bg-red-100 text-red-700',
         }
         return (
-          <div className="w-full flex justify-center">
-            <Badge className={`${statusStyles[status] || 'bg-gray-100 text-gray-700'} border-0 font-medium`}>
-              {StatusNames[status]}
-            </Badge>
+          <Badge className={`${statusStyles[status]} border-0 font-medium`}>
+            {StatusNames[status]}
+          </Badge>
+        )
+      },
+    },
+    {
+      accessorKey: 'lastLoginAt',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Último acceso" />,
+      cell: ({ row }) => {
+        const lastLogin = row.original.lastLoginAt
+        if (!lastLogin) {
+          return <span className="text-sm text-muted-foreground">Nunca</span>
+        }
+        return (
+          <div className="flex items-center gap-1.5 text-sm">
+            <Clock className="h-3.5 w-3.5 text-muted-foreground" />
+            {formatDateShort(lastLogin)}
           </div>
         )
       },
     },
     {
+      accessorKey: 'createdAt',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Registro" />,
+      cell: ({ row }) => (
+        <span className="text-sm text-muted-foreground">
+          {formatDateShort(row.original.createdAt)}
+        </span>
+      ),
+    },
+    {
       id: 'actions',
-      enableHiding: false,
+      header: () => <div className="text-center">Acciones</div>,
       cell: ({ row }) => {
         const user = row.original
 
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <span className="sr-only">Abrir menú</span>
-                <MoreVertical className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => setEditingUser(user)}>
-                <Pencil className="mr-2 h-4 w-4" />
-                Editar
-              </DropdownMenuItem>
-              {user.roles.includes(UserRole.TEACHER) && (
-                <ManageTeacherCoursesDialog
-                  teacherId={user.id}
-                  teacherName={`${user.name} ${user.lastName || ''}`}
+          <div className="flex items-center justify-center">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <span className="sr-only">Abrir menú</span>
+                  <MoreVertical className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                <DropdownMenuItem onClick={() => setEditingUser(user)}>
+                  <Pencil className="mr-2 h-4 w-4" />
+                  Editar
+                </DropdownMenuItem>
+                {user.roles.includes(UserRole.TEACHER) && (
+                  <ManageTeacherCoursesDialog
+                    teacherId={user.id}
+                    teacherName={`${user.name} ${user.lastName || ''}`}
+                  >
+                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                      <BookOpen className="mr-2 h-4 w-4" />
+                      Gestionar Cursos
+                    </DropdownMenuItem>
+                  </ManageTeacherCoursesDialog>
+                )}
+                <DropdownMenuItem onClick={() => setUserToDelete(user)}>
+                  <Trash className="mr-2 h-4 w-4" />
+                  Eliminar
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => handleImpersonate(user.id)}
+                  disabled={isPending}
                 >
-                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                    <BookOpen className="mr-2 h-4 w-4" />
-                    Gestionar Cursos
-                  </DropdownMenuItem>
-                </ManageTeacherCoursesDialog>
-              )}
-              <DropdownMenuItem onClick={() => setUserToDelete(user)}>
-                <Trash className="mr-2 h-4 w-4" />
-                Eliminar
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => handleImpersonate(user.id)}
-                disabled={isPending}
-              >
-                <Eye className="mr-2 h-4 w-4" />
-                {isPending ? 'Suplantando...' : 'Suplantar'}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  <Eye className="mr-2 h-4 w-4" />
+                  {isPending ? 'Suplantando...' : 'Suplantar'}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         )
       },
     },
   ]
 
-  const table = useReactTable({
-    data: users,
-    columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
-  })
-
-  const handleDeleteSelected = () => {
-    const selectedRows = table.getFilteredSelectedRowModel().rows
-    const selectedUserIds = selectedRows.map((row) => row.original.id)
-    onDeleteMultiple(selectedUserIds)
-    setRowSelection({})
-  }
+  const toolbar = (
+    <div className="flex items-center gap-3 flex-wrap">
+      <div className="relative flex-1 min-w-[200px] max-w-sm">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          placeholder="Buscar por nombre o email..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="pl-9"
+        />
+      </div>
+      <Select value={roleFilter} onValueChange={setRoleFilter}>
+        <SelectTrigger className="w-[140px]">
+          <SelectValue placeholder="Rol" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Todos los roles</SelectItem>
+          <SelectItem value={UserRole.ADMIN}>Administrador</SelectItem>
+          <SelectItem value={UserRole.TEACHER}>Profesor</SelectItem>
+          <SelectItem value={UserRole.STUDENT}>Estudiante</SelectItem>
+          <SelectItem value={UserRole.EDITOR}>Editor</SelectItem>
+          <SelectItem value={UserRole.GUEST}>Invitado</SelectItem>
+        </SelectContent>
+      </Select>
+      <Select value={statusFilter} onValueChange={setStatusFilter}>
+        <SelectTrigger className="w-[140px]">
+          <SelectValue placeholder="Estado" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Todos</SelectItem>
+          <SelectItem value={UserStatus.ACTIVE}>Activo</SelectItem>
+          <SelectItem value={UserStatus.INACTIVE}>Inactivo</SelectItem>
+          <SelectItem value={UserStatus.SUSPENDED}>Suspendido</SelectItem>
+        </SelectContent>
+      </Select>
+      {hasActiveFilters && (
+        <Button variant="ghost" size="sm" onClick={clearFilters}>
+          <SlidersHorizontal className="mr-2 h-4 w-4" />
+          Limpiar filtros
+        </Button>
+      )}
+      {selectedUsers.length > 0 && (
+        <Button variant="destructive" size="sm" onClick={handleDeleteSelected}>
+          Eliminar ({selectedUsers.length})
+        </Button>
+      )}
+    </div>
+  )
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Filtrar por nombre..."
-              value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-              onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
-              className="max-w-sm pl-9"
-            />
-          </div>
-          {table.getFilteredSelectedRowModel().rows.length > 0 && (
-            <Button variant="destructive" size="sm" onClick={handleDeleteSelected}>
-              Eliminar Seleccionados
-            </Button>
-          )}
-        </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columnas <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                )
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <div className="rounded-lg border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="bg-muted/50">
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} className="font-semibold text-xs uppercase text-muted-foreground">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
-                  )
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  Sin resultados.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-between space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} de{' '}
-          {table.getFilteredRowModel().rows.length} fila(s) seleccionada(s).
-        </div>
-        <div className="flex items-center space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Anterior
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Siguiente
-          </Button>
-        </div>
-      </div>
+    <>
+      <DataTable
+        columns={columns}
+        data={filteredUsers}
+        toolbar={toolbar}
+        emptyMessage="No se encontraron usuarios"
+      />
 
       {editingUser && (
         <UserEditDialog
@@ -433,6 +380,6 @@ export function UsersDataTable({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </>
   )
 }

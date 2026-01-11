@@ -83,6 +83,14 @@ export const {
         if (!existingUser || 'error' in existingUser || !existingUser.emailVerified) return false
       }
 
+      // Actualizar último inicio de sesión (solo si no es suplantación)
+      if (user.id && !('impersonationData' in user && user.impersonationData)) {
+        await db.user.update({
+          where: { id: user.id },
+          data: { lastLoginAt: new Date() },
+        })
+      }
+
       // TODO: Add 2FA check
 
       return true
