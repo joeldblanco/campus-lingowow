@@ -302,10 +302,10 @@ export function LessonsTab({
 
     setIsSaving(true)
     try {
-      // Logic from before
-      // Calcular el orden automáticamente basándose en las lecciones existentes del módulo
+      // Calcular el orden automáticamente usando el máximo orden existente (igual que el backend)
       const selectedModule = modules.find(m => m.id === newLesson.moduleId)
-      const nextOrder = selectedModule ? selectedModule.lessons.length + 1 : 1
+      const maxOrder = selectedModule?.lessons.reduce((max, l) => Math.max(max, l.order), 0) ?? 0
+      const nextOrder = maxOrder + 1
 
       const lesson: Lesson = {
         id: `lesson-${Date.now()}`,
