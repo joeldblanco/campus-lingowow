@@ -225,7 +225,6 @@ export function LessonsTab({
     title: '',
     description: '',
     moduleId: '',
-    order: 1,
   })
 
   const sensors = useSensors(
@@ -304,11 +303,15 @@ export function LessonsTab({
     setIsSaving(true)
     try {
       // Logic from before
+      // Calcular el orden automáticamente basándose en las lecciones existentes del módulo
+      const selectedModule = modules.find(m => m.id === newLesson.moduleId)
+      const nextOrder = selectedModule ? selectedModule.lessons.length + 1 : 1
+
       const lesson: Lesson = {
         id: `lesson-${Date.now()}`,
         title: newLesson.title,
         description: newLesson.description,
-        order: newLesson.order,
+        order: nextOrder,
         duration: 0,
         blocks: [],
         moduleId: newLesson.moduleId,
@@ -321,7 +324,6 @@ export function LessonsTab({
         title: '',
         description: '',
         moduleId: '',
-        order: 1,
       })
       toast.success('Lección creada exitosamente')
     } catch {
@@ -352,7 +354,6 @@ export function LessonsTab({
       title: '',
       description: '',
       moduleId: '',
-      order: 1,
     })
   }
 
@@ -420,38 +421,27 @@ export function LessonsTab({
               value={newLesson.description}
               onChange={(e) => setNewLesson({ ...newLesson, description: e.target.value })}
             />
-            <div className="grid grid-cols-2 gap-4">
-              <Select
-                value={newLesson.moduleId}
-                onValueChange={(value) => setNewLesson({ ...newLesson, moduleId: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Seleccionar módulo" />
-                </SelectTrigger>
-                <SelectContent>
-                  {modules.length === 0 ? (
-                    <SelectItem value="no-modules" disabled>
-                      No hay módulos disponibles
+            <Select
+              value={newLesson.moduleId}
+              onValueChange={(value) => setNewLesson({ ...newLesson, moduleId: value })}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Seleccionar módulo" />
+              </SelectTrigger>
+              <SelectContent>
+                {modules.length === 0 ? (
+                  <SelectItem value="no-modules" disabled>
+                    No hay módulos disponibles
+                  </SelectItem>
+                ) : (
+                  modules.map((module) => (
+                    <SelectItem key={module.id} value={module.id}>
+                      {module.title}
                     </SelectItem>
-                  ) : (
-                    modules.map((module) => (
-                      <SelectItem key={module.id} value={module.id}>
-                        {module.title}
-                      </SelectItem>
-                    ))
-                  )}
-                </SelectContent>
-              </Select>
-              <Input
-                type="number"
-                placeholder="Orden"
-                min="1"
-                value={newLesson.order}
-                onChange={(e) =>
-                  setNewLesson({ ...newLesson, order: parseInt(e.target.value) || 1 })
-                }
-              />
-            </div>
+                  ))
+                )}
+              </SelectContent>
+            </Select>
             <div className="flex gap-2">
               <Button onClick={handleCreateLesson} disabled={!newLesson.moduleId || isSaving}>
                 {isSaving ? (

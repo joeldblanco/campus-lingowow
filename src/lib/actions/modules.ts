@@ -88,7 +88,7 @@ export async function createModule(data: z.infer<typeof CreateModuleSchema>) {
       },
     })
 
-    revalidatePath('/admin/lessons')
+    revalidatePath('/admin/courses')
     return moduleItem
   } catch (error) {
     console.error('Error creating module:', error)
@@ -116,7 +116,7 @@ export async function updateModule(id: string, data: z.infer<typeof EditModuleSc
       },
     })
 
-    revalidatePath('/admin/lessons')
+    revalidatePath('/admin/courses')
     return moduleItem
   } catch (error) {
     console.error('Error updating module:', error)
@@ -130,7 +130,7 @@ export async function deleteModule(id: string) {
       where: { id },
     })
 
-    revalidatePath('/admin/lessons')
+    revalidatePath('/admin/courses')
     return { success: true }
   } catch (error) {
     console.error('Error deleting module:', error)

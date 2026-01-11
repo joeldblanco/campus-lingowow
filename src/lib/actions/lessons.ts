@@ -111,7 +111,7 @@ export async function createLesson(data: z.infer<typeof CreateLessonSchema>) {
       },
     })
 
-    revalidatePath('/admin/lessons')
+    revalidatePath('/admin/courses')
     return lesson
   } catch (error) {
     console.error('Error creating lesson:', error)
@@ -153,7 +153,7 @@ export async function updateLesson(id: string, data: z.infer<typeof EditLessonSc
       },
     })
 
-    revalidatePath('/admin/lessons')
+    revalidatePath('/admin/courses')
     return lesson
   } catch (error) {
     console.error('Error updating lesson:', error)
@@ -172,7 +172,7 @@ export async function deleteLesson(id: string) {
       where: { id },
     })
 
-    revalidatePath('/admin/lessons')
+    revalidatePath('/admin/courses')
     return { success: true }
   } catch (error) {
     console.error('Error deleting lesson:', error)
