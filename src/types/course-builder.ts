@@ -267,8 +267,8 @@ export interface MultiSelectBlock extends BaseBlock {
   type: 'multi_select'
   title?: string
   instruction?: string
-  correctOptions: { id: string; text: string }[]
-  incorrectOptions: { id: string; text: string }[]
+  correctOptions?: { id: string; text: string }[]
+  incorrectOptions?: { id: string; text: string }[]
   points?: number
   explanation?: string
 }
