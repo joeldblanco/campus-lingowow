@@ -148,12 +148,16 @@ export function VideoGrid({ localTrack, remoteTracks = [], isTeacher, stacked = 
   const safeTeacherMock = { ...mockTeacher, name: isTeacher ? 'Tú (Profesor)' : 'Profesor' }
   const safeStudentMock = { ...mockStudent, name: isTeacher ? 'Estudiante' : 'Tú' }
 
+  // Buscar el profesor por su flag isTeacher en lugar de asumir remoteTracks[0]
+  const remoteTeacher = remoteTracks.find(t => t.isTeacher)
+  const remoteStudent = remoteTracks.find(t => !t.isTeacher)
+
   const teacherTrack = isTeacher
     ? localTrack || safeTeacherMock
-    : remoteTracks[0] || safeTeacherMock
+    : remoteTeacher || remoteTracks[0] || safeTeacherMock
 
   const studentTrack = isTeacher
-    ? remoteTracks[0] || safeStudentMock
+    ? remoteStudent || remoteTracks[0] || safeStudentMock
     : localTrack || safeStudentMock
 
   return (

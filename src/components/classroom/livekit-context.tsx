@@ -97,6 +97,17 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       let isMuted = true
       let isVideoMuted = true
 
+      // Leer metadata del participante para determinar si es profesor
+      let isTeacherRole = false
+      try {
+        if (participant.metadata) {
+          const meta = JSON.parse(participant.metadata)
+          isTeacherRole = meta.isModerator === true
+        }
+      } catch {
+        // Ignorar errores de parseo
+      }
+
       participant.trackPublications.forEach((pub) => {
         if (pub.track) {
           if (pub.track.kind === Track.Kind.Video && pub.source === Track.Source.Camera) {
@@ -139,6 +150,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
         isMuted,
         isVideoMuted,
         isSpeaking: participant.isSpeaking,
+        isTeacher: isTeacherRole,
         videoTrack,
         audioTrack,
       })
