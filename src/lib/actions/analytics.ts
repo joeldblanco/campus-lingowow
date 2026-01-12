@@ -30,6 +30,8 @@ import type {
   TrendAlert,
   HistoricalComparison,
   DateRange,
+  ProjectedPayrollAnalytics,
+  ProjectedTeacherPayment,
 } from '@/types/analytics'
 import { startOfMonth, endOfMonth, subMonths, format, differenceInDays } from 'date-fns'
 import { es } from 'date-fns/locale'
@@ -1840,5 +1842,122 @@ export async function getScheduleHeatmap(monthsBack: number = 3): Promise<Schedu
     peakHours: sortedByBookings.slice(0, 5).map(d => ({ hour: d.hour, day: d.day, bookings: d.bookings })),
     lowDemandHours: sortedByBookings.slice(-5).reverse().map(d => ({ hour: d.hour, day: d.day, bookings: d.bookings })),
     averageBookingsPerSlot: Math.round(avgBookings * 10) / 10,
+  }
+}
+
+// =============================================
+// PROYECCIÓN DE NÓMINA (PAGOS SI TODAS LAS CLASES SE COMPLETAN)
+// =============================================
+
+export async function getProjectedPayrollAnalytics(
+  month?: Date
+): Promise<ProjectedPayrollAnalytics> {
+  const targetDate = month || new Date()
+  const monthStart = startOfMonth(targetDate)
+  const monthEnd = endOfMonth(targetDate)
+  const BASE_RATE_PER_HOUR = 10
+
+  // Obtener TODAS las clases programadas del mes (cualquier status excepto CANCELLED)
+  const scheduledClasses = await db.classBooking.findMany({
+    where: {
+      day: { gte: format(monthStart, 'yyyy-MM-dd'), lte: format(monthEnd, 'yyyy-MM-dd') },
+      status: { notIn: [BookingStatus.CANCELLED] },
+    },
+    include: {
+      teacher: {
+        select: {
+          id: true,
+          name: true,
+          lastName: true,
+          image: true,
+          teacherRank: { select: { name: true, rateMultiplier: true } },
+        },
+      },
+      attendances: { select: { status: true } },
+      teacherAttendances: { select: { status: true } },
+      enrollment: {
+        select: {
+          course: { select: { classDuration: true, defaultPaymentPerClass: true } },
+        },
+      },
+      videoCalls: { select: { duration: true } },
+    },
+  })
+
+  const teacherPaymentMap = new Map<string, ProjectedTeacherPayment>()
+
+  for (const classBooking of scheduledClasses) {
+    const teacher = classBooking.teacher
+    
+    if (!teacherPaymentMap.has(teacher.id)) {
+      teacherPaymentMap.set(teacher.id, {
+        teacherId: teacher.id,
+        teacherName: `${teacher.name} ${teacher.lastName || ''}`.trim(),
+        teacherImage: teacher.image,
+        rankName: teacher.teacherRank?.name || null,
+        rateMultiplier: teacher.teacherRank?.rateMultiplier || 1.0,
+        scheduledClasses: 0,
+        completedClasses: 0,
+        pendingClasses: 0,
+        projectedPayment: 0,
+        currentPayment: 0,
+        pendingPayment: 0,
+      })
+    }
+
+    const tp = teacherPaymentMap.get(teacher.id)!
+    const duration = classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+    const hours = duration / 60
+    
+    const paymentPerClass = classBooking.enrollment.course.defaultPaymentPerClass
+    const classPayment = paymentPerClass 
+      ? paymentPerClass * tp.rateMultiplier
+      : hours * BASE_RATE_PER_HOUR * tp.rateMultiplier
+
+    tp.scheduledClasses += 1
+    tp.projectedPayment += classPayment
+
+    // Verificar si la clase ya fue completada y pagable
+    const isCompleted = classBooking.status === BookingStatus.COMPLETED
+    const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
+    const hasStudentAttendance = classBooking.attendances.length > 0
+
+    if (isCompleted && hasTeacherAttendance && hasStudentAttendance) {
+      tp.completedClasses += 1
+      tp.currentPayment += classPayment
+    } else if (classBooking.status !== BookingStatus.NO_SHOW) {
+      // Clases pendientes (CONFIRMED, PENDING, etc.)
+      tp.pendingClasses += 1
+      tp.pendingPayment += classPayment
+    }
+  }
+
+  const teacherPayments = Array.from(teacherPaymentMap.values())
+    .map(tp => ({
+      ...tp,
+      projectedPayment: Math.round(tp.projectedPayment * 100) / 100,
+      currentPayment: Math.round(tp.currentPayment * 100) / 100,
+      pendingPayment: Math.round(tp.pendingPayment * 100) / 100,
+    }))
+    .sort((a, b) => b.projectedPayment - a.projectedPayment)
+
+  const totalScheduledClasses = teacherPayments.reduce((sum, tp) => sum + tp.scheduledClasses, 0)
+  const totalCompletedClasses = teacherPayments.reduce((sum, tp) => sum + tp.completedClasses, 0)
+  const totalPendingClasses = teacherPayments.reduce((sum, tp) => sum + tp.pendingClasses, 0)
+  const totalProjectedPayment = teacherPayments.reduce((sum, tp) => sum + tp.projectedPayment, 0)
+  const totalCurrentPayment = teacherPayments.reduce((sum, tp) => sum + tp.currentPayment, 0)
+  const totalPendingPayment = teacherPayments.reduce((sum, tp) => sum + tp.pendingPayment, 0)
+
+  return {
+    teacherPayments,
+    totalScheduledClasses,
+    totalCompletedClasses,
+    totalPendingClasses,
+    totalProjectedPayment: Math.round(totalProjectedPayment * 100) / 100,
+    totalCurrentPayment: Math.round(totalCurrentPayment * 100) / 100,
+    totalPendingPayment: Math.round(totalPendingPayment * 100) / 100,
+    completionRate: totalScheduledClasses > 0 
+      ? Math.round((totalCompletedClasses / totalScheduledClasses) * 1000) / 10 
+      : 0,
   }
 }

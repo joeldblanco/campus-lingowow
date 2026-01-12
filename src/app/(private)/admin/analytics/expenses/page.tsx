@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { Metadata } from 'next'
-import { getExpenseAnalytics } from '@/lib/actions/analytics'
+import { getExpenseAnalytics, getProjectedPayrollAnalytics } from '@/lib/actions/analytics'
 
 export const metadata: Metadata = {
   title: 'Análisis de Gastos | Analytics | Lingowow',
@@ -9,7 +9,8 @@ export const metadata: Metadata = {
 import { 
   MonthlyExpenseChart, 
   TeacherPaymentsTable,
-  TeacherPaymentsBarChart 
+  TeacherPaymentsBarChart,
+  ProjectedPayrollTable,
 } from '@/components/analytics/expense-chart'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -52,7 +53,10 @@ function LoadingSkeleton() {
 }
 
 async function ExpenseAnalyticsDashboard() {
-  const data = await getExpenseAnalytics(12)
+  const [data, projectedPayroll] = await Promise.all([
+    getExpenseAnalytics(12),
+    getProjectedPayrollAnalytics(),
+  ])
 
   return (
     <div className="space-y-6">
@@ -170,6 +174,66 @@ async function ExpenseAnalyticsDashboard() {
         data={data.teacherPayments} 
         title="Desglose de Pagos por Profesor"
         description="Detalle de clases y pagos del mes actual"
+      />
+
+      {/* Proyección de Nómina */}
+      <Card className="border-2 border-primary/20 bg-primary/5">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Target className="h-5 w-5 text-primary" />
+            Proyección de Nómina del Mes
+          </CardTitle>
+          <p className="text-sm text-muted-foreground">
+            Cuánto deberías pagar si todos los profesores dan todas sus clases programadas
+          </p>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 md:grid-cols-4 mb-6">
+            <div className="p-4 bg-background rounded-lg border">
+              <p className="text-sm text-muted-foreground">Total Proyectado</p>
+              <p className="text-2xl font-bold text-primary">
+                ${projectedPayroll.totalProjectedPayment.toFixed(2)}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {projectedPayroll.totalScheduledClasses} clases programadas
+              </p>
+            </div>
+            <div className="p-4 bg-background rounded-lg border">
+              <p className="text-sm text-muted-foreground">Ya Pagado</p>
+              <p className="text-2xl font-bold text-green-600">
+                ${projectedPayroll.totalCurrentPayment.toFixed(2)}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {projectedPayroll.totalCompletedClasses} clases completadas
+              </p>
+            </div>
+            <div className="p-4 bg-background rounded-lg border">
+              <p className="text-sm text-muted-foreground">Por Pagar</p>
+              <p className="text-2xl font-bold text-amber-600">
+                ${projectedPayroll.totalPendingPayment.toFixed(2)}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {projectedPayroll.totalPendingClasses} clases pendientes
+              </p>
+            </div>
+            <div className="p-4 bg-background rounded-lg border">
+              <p className="text-sm text-muted-foreground">Tasa de Completado</p>
+              <p className="text-2xl font-bold">
+                {projectedPayroll.completionRate}%
+              </p>
+              <p className="text-xs text-muted-foreground">
+                del mes actual
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Tabla de Proyección por Profesor */}
+      <ProjectedPayrollTable 
+        data={projectedPayroll.teacherPayments} 
+        title="Proyección de Nómina por Profesor"
+        description="Desglose de pagos proyectados si todas las clases se completan"
       />
     </div>
   )

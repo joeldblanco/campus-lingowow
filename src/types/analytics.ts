@@ -145,6 +145,31 @@ export interface ExpenseAnalytics {
   totalIncentives: number
 }
 
+export interface ProjectedTeacherPayment {
+  teacherId: string
+  teacherName: string
+  teacherImage: string | null
+  rankName: string | null
+  rateMultiplier: number
+  scheduledClasses: number
+  completedClasses: number
+  pendingClasses: number
+  projectedPayment: number
+  currentPayment: number
+  pendingPayment: number
+}
+
+export interface ProjectedPayrollAnalytics {
+  teacherPayments: ProjectedTeacherPayment[]
+  totalScheduledClasses: number
+  totalCompletedClasses: number
+  totalPendingClasses: number
+  totalProjectedPayment: number
+  totalCurrentPayment: number
+  totalPendingPayment: number
+  completionRate: number
+}
+
 // =============================================
 // ANÁLISIS DE PRODUCTOS Y PLANES
 // =============================================

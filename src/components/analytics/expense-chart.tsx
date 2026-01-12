@@ -24,7 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import type { MonthlyExpense, TeacherPayment } from '@/types/analytics'
+import type { MonthlyExpense, TeacherPayment, ProjectedTeacherPayment } from '@/types/analytics'
 import { getUserAvatarUrl } from '@/lib/utils'
 
 interface MonthlyExpenseChartProps {
@@ -266,6 +266,89 @@ export function TeacherPaymentsBarChart({
             </BarChart>
           </ResponsiveContainer>
         </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+interface ProjectedPayrollTableProps {
+  data: ProjectedTeacherPayment[]
+  title?: string
+  description?: string
+}
+
+export function ProjectedPayrollTable({ 
+  data, 
+  title = 'Proyección de Nómina',
+  description = 'Pagos proyectados si todas las clases se completan'
+}: ProjectedPayrollTableProps) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Profesor</TableHead>
+              <TableHead>Rango</TableHead>
+              <TableHead className="text-right">Programadas</TableHead>
+              <TableHead className="text-right">Completadas</TableHead>
+              <TableHead className="text-right">Pendientes</TableHead>
+              <TableHead className="text-right">Pagado</TableHead>
+              <TableHead className="text-right">Por Pagar</TableHead>
+              <TableHead className="text-right">Total Proyectado</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data.map((teacher) => (
+              <TableRow key={teacher.teacherId}>
+                <TableCell>
+                  <div className="flex items-center gap-3">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage 
+                        src={getUserAvatarUrl(teacher.teacherId, teacher.teacherImage)} 
+                        alt={teacher.teacherName} 
+                      />
+                      <AvatarFallback>
+                        {teacher.teacherName.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="font-medium">{teacher.teacherName}</span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  {teacher.rankName ? (
+                    <Badge variant="outline">{teacher.rankName}</Badge>
+                  ) : (
+                    <span className="text-muted-foreground">-</span>
+                  )}
+                </TableCell>
+                <TableCell className="text-right">{teacher.scheduledClasses}</TableCell>
+                <TableCell className="text-right text-green-600">{teacher.completedClasses}</TableCell>
+                <TableCell className="text-right text-amber-600">{teacher.pendingClasses}</TableCell>
+                <TableCell className="text-right text-green-600">
+                  ${teacher.currentPayment.toFixed(2)}
+                </TableCell>
+                <TableCell className="text-right text-amber-600">
+                  ${teacher.pendingPayment.toFixed(2)}
+                </TableCell>
+                <TableCell className="text-right font-bold">
+                  ${teacher.projectedPayment.toFixed(2)}
+                </TableCell>
+              </TableRow>
+            ))}
+            {data.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={8} className="text-center text-muted-foreground py-8">
+                  No hay clases programadas para este período
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </CardContent>
     </Card>
   )

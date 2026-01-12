@@ -16,6 +16,7 @@ export {
   TeacherPaymentsTable,
   ExpenseTrendChart,
   TeacherPaymentsBarChart,
+  ProjectedPayrollTable,
 } from './expense-chart'
 
 // Teacher Analytics

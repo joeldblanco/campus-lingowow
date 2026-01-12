@@ -151,8 +151,8 @@ export function AIBlockChat({
 
   return (
     <Card className={cn(
-      "fixed bottom-6 right-6 w-[420px] shadow-2xl z-50 border-violet-200 transition-all duration-300",
-      isMinimized ? "h-14" : "h-[600px]"
+      "fixed bottom-6 right-6 w-[420px] shadow-2xl z-50 border-violet-200 transition-all duration-300 max-h-[calc(100vh-48px)]",
+      isMinimized ? "h-14" : "h-[min(600px,calc(100vh-48px))]"
     )}>
       <CardHeader className="p-3 border-b bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30 rounded-t-lg cursor-pointer" onClick={() => setIsMinimized(!isMinimized)}>
         <div className="flex items-center justify-between">
@@ -362,10 +362,10 @@ function getBlockPreviewText(block: Block): string {
     case 'true_false':
       const tfItems = (block as { items?: unknown[] }).items || []
       return `${tfItems.length} pregunta(s)`
-    case 'multiple_choice':
-      return (block as { question?: string }).question?.slice(0, 25) + '...' || 'Pregunta'
     case 'multi_select':
-      return (block as { title?: string }).title || 'Selección múltiple'
+      const correctOpts = (block as { correctOptions?: unknown[] }).correctOptions || []
+      const incorrectOpts = (block as { incorrectOptions?: unknown[] }).incorrectOptions || []
+      return `${correctOpts.length + incorrectOpts.length} opciones`
     default:
       return block.type
   }

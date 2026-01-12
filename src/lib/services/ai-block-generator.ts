@@ -86,21 +86,7 @@ Available block types and their structure:
   ]
 }
 
-8. multiple_choice - Multiple choice question
-{
-  "type": "multiple_choice",
-  "question": "Question text",
-  "options": [
-    { "id": "opt1", "text": "Option A" },
-    { "id": "opt2", "text": "Option B" },
-    { "id": "opt3", "text": "Option C" },
-    { "id": "opt4", "text": "Option D" }
-  ],
-  "correctOptionId": "opt1",
-  "explanation": "Why this is correct"
-}
-
-9. short_answer - Short answer questions
+8. short_answer - Short answer questions
 {
   "type": "short_answer",
   "items": [
@@ -110,14 +96,17 @@ Available block types and their structure:
   "caseSensitive": false
 }
 
-10. multi_select - Multiple selection (select all correct)
+9. multi_select - IMPORTANT: Use this for selecting MULTIPLE correct options from a list. The user selects ALL that apply.
+   USE THIS when: user wants to select multiple phrases, words, or options that are correct.
+   DO NOT create multiple blocks - create ONE multi_select block with all options.
 {
   "type": "multi_select",
   "title": "Select all correct options",
   "instruction": "Select all that apply",
   "correctOptions": [
     { "id": "correct1", "text": "Correct option 1" },
-    { "id": "correct2", "text": "Correct option 2" }
+    { "id": "correct2", "text": "Correct option 2" },
+    { "id": "correct3", "text": "Correct option 3" }
   ],
   "incorrectOptions": [
     { "id": "incorrect1", "text": "Incorrect option 1" },
@@ -126,7 +115,7 @@ Available block types and their structure:
   "explanation": "Explanation of why these are correct"
 }
 
-11. essay - Essay/writing prompt
+10. essay - Essay/writing prompt
 {
   "type": "essay",
   "prompt": "Writing prompt",
