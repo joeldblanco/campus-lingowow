@@ -1,26 +1,17 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { VideoPlayer } from './video-player'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { UserAvatar } from '@/components/ui/user-avatar'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import {
-  ArrowLeft,
-  Calendar,
-  Clock,
-  Download,
-  CheckCircle,
-  MessageCircle,
-  Loader2,
-  AlertCircle
-} from 'lucide-react'
-import Link from 'next/link'
+import { UserAvatar } from '@/components/ui/user-avatar'
+import { getRecordingById, markRecordingAsViewed } from '@/lib/actions/recordings'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { getRecordingById, markRecordingAsViewed } from '@/lib/actions/recordings'
+import { AlertCircle, ArrowLeft, Calendar, Clock, Download, Loader2 } from 'lucide-react'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import { VideoPlayer } from './video-player'
 
 interface RecordingViewerProps {
   recordingId: string
@@ -71,7 +62,7 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
     const fetchRecording = async () => {
       try {
         const result = await getRecordingById(recordingId)
-        
+
         if (result.success && result.data) {
           setRecording(result.data as RecordingData)
           // Marcar como vista
@@ -104,7 +95,7 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
     const hours = Math.floor(seconds / 3600)
     const mins = Math.floor((seconds % 3600) / 60)
     const secs = seconds % 60
-    
+
     if (hours > 0) {
       return `${hours}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
     }
@@ -179,10 +170,7 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
         <div className="lg:col-span-2 space-y-4">
           {/* Video Player */}
           {videoUrl ? (
-            <VideoPlayer
-              src={videoUrl}
-              title={course.title}
-            />
+            <VideoPlayer src={videoUrl} title={course.title} />
           ) : (
             <div className="aspect-video bg-slate-900 rounded-lg flex items-center justify-center">
               <div className="text-center text-white">
@@ -209,13 +197,11 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
                   {teacher.name} {teacher.lastName}
                 </span>
                 <span className="text-muted-foreground">•</span>
-                <span className="text-muted-foreground capitalize">
-                  {formatDate(booking.day)}
-                </span>
+                <span className="text-muted-foreground capitalize">{formatDate(booking.day)}</span>
               </div>
             </div>
 
-            <div className="flex gap-2">
+            {/* <div className="flex gap-2">
               <Button variant="outline">
                 <MessageCircle className="w-4 h-4 mr-2" />
                 Hacer Pregunta
@@ -224,7 +210,7 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
                 <CheckCircle className="w-4 h-4 mr-2" />
                 Marcar Completa
               </Button>
-            </div>
+            </div> */}
           </div>
 
           {/* Level Badge */}
@@ -241,8 +227,9 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                Clase grabada el {formatDate(booking.day)} a las {booking.timeSlot}.
-                Esta grabación corresponde al curso de {course.title} con el profesor {teacher.name} {teacher.lastName}.
+                Clase grabada el {formatDate(booking.day)} a las {booking.timeSlot}. Esta grabación
+                corresponde al curso de {course.title} con el profesor {teacher.name}{' '}
+                {teacher.lastName}.
               </p>
             </CardContent>
           </Card>
@@ -258,7 +245,7 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
                 <TabsTrigger value="materials">Materiales</TabsTrigger>
                 <TabsTrigger value="transcript">Transcripción</TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="info" className="p-4">
                 <div className="space-y-4">
                   {/* Fecha */}
@@ -306,18 +293,20 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
                     />
                     <div>
                       <p className="text-sm text-muted-foreground">Profesor</p>
-                      <p className="font-medium">{teacher.name} {teacher.lastName}</p>
+                      <p className="font-medium">
+                        {teacher.name} {teacher.lastName}
+                      </p>
                     </div>
                   </div>
                 </div>
               </TabsContent>
-              
+
               <TabsContent value="materials" className="p-4">
                 <div className="text-center py-8 text-muted-foreground">
                   <p>No hay materiales disponibles para esta clase.</p>
                 </div>
               </TabsContent>
-              
+
               <TabsContent value="transcript" className="p-4">
                 <div className="text-center py-8 text-muted-foreground">
                   <p>Transcripción no disponible.</p>

@@ -31,6 +31,7 @@ import {
   StructuredContentBlock,
   GrammarVisualizerBlock,
   ShortAnswerBlock,
+  MultiSelectBlock,
 } from '@/types/course-builder'
 import {
   Download,
@@ -103,6 +104,8 @@ export function BlockPreview({ block }: BlockPreviewProps) {
         return <EssayBlockPreview block={block as EssayBlock} />
       case 'short_answer':
         return <ShortAnswerBlockPreview block={block as ShortAnswerBlock} />
+      case 'multi_select':
+        return <MultiSelectBlockPreview block={block as MultiSelectBlock} />
       case 'recording':
         return <RecordingBlockPreview block={block as RecordingBlock} />
       case 'structured-content':
@@ -550,41 +553,98 @@ function QuizBlockPreview({ block }: { block: QuizBlock }) {
     const { score, totalPoints } = calculateScore()
     const percentage = totalPoints > 0 ? Math.round((score / totalPoints) * 100) : 0
     const passed = !block.passingScore || percentage >= block.passingScore
+    const correctCount = Object.keys(answers).filter(qid => {
+      const q = block.questions?.find(que => que.id === qid)
+      return q && answers[qid] === q.correctAnswer
+    }).length
 
     return (
-      <div className="space-y-6 text-center animate-in fade-in duration-500">
-        <div className="space-y-2">
+      <div className="space-y-6 animate-in fade-in duration-500">
+        <div className="space-y-2 text-center">
           <h3 className="text-2xl font-bold">Resumen del Quiz</h3>
           <p className="text-muted-foreground">Has completado el cuestionario</p>
         </div>
 
-        <div className={cn(
-          "p-8 rounded-full h-40 w-40 flex flex-col items-center justify-center mx-auto border-4",
-          passed ? "bg-green-50 border-green-500 text-green-700" : "bg-red-50 border-red-500 text-red-700"
-        )}>
-          <span className="text-4xl font-bold">{percentage}%</span>
-          <span className="text-xs font-semibold uppercase mt-1">{passed ? 'Aprobado' : 'Reprobado'}</span>
+        <div className="flex justify-center">
+          <div className={cn(
+            "p-8 rounded-full h-32 w-32 flex flex-col items-center justify-center border-4",
+            passed ? "bg-green-50 border-green-500 text-green-700" : "bg-red-50 border-red-500 text-red-700"
+          )}>
+            <span className="text-3xl font-bold">{percentage}%</span>
+            <span className="text-xs font-semibold uppercase mt-1">{passed ? 'Aprobado' : 'Reprobado'}</span>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4 max-w-sm mx-auto text-sm">
-          <div className="bg-muted p-3 rounded">
+          <div className="bg-muted p-3 rounded text-center">
             <p className="text-muted-foreground">Puntaje</p>
             <p className="font-bold text-lg">{score} / {totalPoints}</p>
           </div>
-          <div className="bg-muted p-3 rounded">
+          <div className="bg-muted p-3 rounded text-center">
             <p className="text-muted-foreground">Correctas</p>
-            <p className="font-bold text-lg">
-              {Object.keys(answers).filter(qid => {
-                const q = block.questions?.find(que => que.id === qid)
-                return q && answers[qid] === q.correctAnswer
-              }).length} / {questionCount}
-            </p>
+            <p className="font-bold text-lg">{correctCount} / {questionCount}</p>
           </div>
         </div>
 
-        <Button onClick={handleStart} variant="outline">
-          Intentar de nuevo
-        </Button>
+        {/* Detalle de cada pregunta */}
+        <div className="space-y-3 border-t pt-4">
+          <h4 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider">
+            Revisión de respuestas
+          </h4>
+          {block.questions?.map((q, idx) => {
+            const userAnswer = answers[q.id]
+            const isCorrect = userAnswer === q.correctAnswer
+            
+            return (
+              <div 
+                key={q.id}
+                className={cn(
+                  "p-4 rounded-lg border-2 space-y-2",
+                  isCorrect 
+                    ? "bg-green-50 border-green-200" 
+                    : "bg-red-50 border-red-200"
+                )}
+              >
+                <div className="flex items-start gap-2">
+                  <span className={cn(
+                    "shrink-0 h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold",
+                    isCorrect ? "bg-green-500 text-white" : "bg-red-500 text-white"
+                  )}>
+                    {isCorrect ? '✓' : '✗'}
+                  </span>
+                  <div className="flex-1">
+                    <p className="font-medium text-sm">
+                      {idx + 1}. {q.question}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="ml-8 space-y-1 text-sm">
+                  <p className={cn(
+                    "flex items-center gap-2",
+                    isCorrect ? "text-green-700" : "text-red-700"
+                  )}>
+                    <span className="font-medium">Tu respuesta:</span>
+                    <span>{userAnswer || '(Sin respuesta)'}</span>
+                  </p>
+                  
+                  {!isCorrect && (
+                    <p className="flex items-center gap-2 text-green-700">
+                      <span className="font-medium">Respuesta correcta:</span>
+                      <span className="font-bold">{q.correctAnswer}</span>
+                    </p>
+                  )}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
+        <div className="text-center pt-2">
+          <Button onClick={handleStart} variant="outline">
+            Intentar de nuevo
+          </Button>
+        </div>
       </div>
     )
   }
@@ -1592,6 +1652,18 @@ function FillBlanksExercise({ item }: { item: { id: string, content: string } })
     setShowResult(false)
   }
 
+  // Calculate results
+  const blanks = parts.filter(part => part.startsWith('[') && part.endsWith(']'))
+  const results = blanks.map((part) => {
+    const answer = part.slice(1, -1)
+    const partIndex = parts.indexOf(part)
+    const userAnswer = inputs[partIndex] || ''
+    return userAnswer.toLowerCase().trim() === answer.toLowerCase().trim()
+  })
+  const correctCount = results.filter(r => r).length
+  const totalBlanks = blanks.length
+  const allCorrect = correctCount === totalBlanks
+
   return (
     <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
       <div className="p-6 bg-white rounded-xl border shadow-sm leading-loose text-lg">
@@ -1628,6 +1700,25 @@ function FillBlanksExercise({ item }: { item: { id: string, content: string } })
           <div className="text-muted-foreground italic text-sm">Contenido no configurado</div>
         )}
       </div>
+
+      {showResult && (
+        <div className={cn(
+          "p-4 rounded-lg text-center",
+          allCorrect ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"
+        )}>
+          <p className="font-bold">
+            {allCorrect 
+              ? "¡Excelente! Todas las respuestas son correctas" 
+              : `${correctCount} de ${totalBlanks} respuestas correctas`}
+          </p>
+          {!allCorrect && (
+            <p className="text-sm mt-1">
+              Las respuestas correctas se muestran en verde sobre los espacios incorrectos
+            </p>
+          )}
+        </div>
+      )}
+
       <div className="flex gap-2">
         <Button onClick={checkAnswers} disabled={showResult} size="sm">
           Verificar
@@ -1782,6 +1873,78 @@ function MatchBlockPreview({ block }: { block: MatchBlock }) {
         </Button>
       </div>
 
+      {showResult && block.pairs && block.pairs.length > 0 && (() => {
+        const correctMatches = Object.keys(matches).filter(leftId => matches[leftId] === leftId).length
+        const totalPairs = block.pairs.length
+        const allCorrect = correctMatches === totalPairs
+        
+        return (
+          <div className="space-y-4">
+            <div className={cn(
+              "p-4 rounded-lg text-center",
+              allCorrect ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"
+            )}>
+              <p className="font-bold">
+                {allCorrect 
+                  ? "¡Perfecto! Todos los pares están correctos" 
+                  : `${correctMatches} de ${totalPairs} pares correctos`}
+              </p>
+            </div>
+
+            {/* Detalle de cada par */}
+            {!allCorrect && (
+              <div className="space-y-2 border-t pt-4">
+                <h4 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider">
+                  Revisión de pares
+                </h4>
+                {block.pairs.map((pair) => {
+                  const userMatchedRightId = matches[pair.id]
+                  const userMatchedRight = shuffledRight.find(r => r.id === userMatchedRightId)
+                  const isCorrect = userMatchedRightId === pair.id
+                  
+                  return (
+                    <div 
+                      key={pair.id}
+                      className={cn(
+                        "p-3 rounded-lg border-2 flex items-center gap-3",
+                        isCorrect 
+                          ? "bg-green-50 border-green-200" 
+                          : "bg-red-50 border-red-200"
+                      )}
+                    >
+                      <span className={cn(
+                        "shrink-0 h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold",
+                        isCorrect ? "bg-green-500 text-white" : "bg-red-500 text-white"
+                      )}>
+                        {isCorrect ? '✓' : '✗'}
+                      </span>
+                      
+                      <div className="flex-1 text-sm">
+                        <div className="flex items-center gap-2 font-medium">
+                          <span>{pair.left}</span>
+                          <span className="text-muted-foreground">→</span>
+                          {isCorrect ? (
+                            <span className="text-green-700">{pair.right}</span>
+                          ) : (
+                            <span className="text-red-600 line-through">{userMatchedRight?.text || '(sin emparejar)'}</span>
+                          )}
+                        </div>
+                        
+                        {!isCorrect && (
+                          <p className="text-green-700 mt-1">
+                            <span className="font-medium">Correcto:</span> {pair.left} → <strong>{pair.right}</strong>
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        )
+      })()}
+
       {(!block.pairs || block.pairs.length === 0) && (
         <div className="text-center p-4 border border-dashed rounded text-muted-foreground">
           Sin pares definidos
@@ -1896,14 +2059,30 @@ function TrueFalseExercise({ item }: { item: { id: string, statement: string, co
       </div>
 
       {showResult && (
-        <div className={cn("p-2 rounded font-bold", selected === item.correctAnswer ? "text-green-600 bg-green-100" : "text-red-600 bg-red-100")}>
-          {selected === item.correctAnswer ? "¡Correcto!" : "Incorrecto"}
+        <div className={cn(
+          "p-4 rounded-lg text-center space-y-2",
+          selected === item.correctAnswer ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+        )}>
+          <p className="font-bold text-lg">
+            {selected === item.correctAnswer ? "¡Correcto!" : "Incorrecto"}
+          </p>
+          {selected !== item.correctAnswer && (
+            <p className="text-sm">
+              La respuesta correcta es: <strong>{item.correctAnswer ? "Verdadero" : "Falso"}</strong>
+            </p>
+          )}
         </div>
       )}
 
       {!showResult && (
         <Button onClick={checkAnswer} disabled={selected === null} size="sm">
           Enviar Respuesta
+        </Button>
+      )}
+
+      {showResult && (
+        <Button variant="outline" onClick={() => { setSelected(null); setShowResult(false); }} size="sm">
+          Reintentar
         </Button>
       )}
     </div>
@@ -2264,6 +2443,162 @@ function ShortAnswerBlockPreview({ block }: { block: ShortAnswerBlock }) {
           <span className="font-medium">Resultado:</span> {correctCount} de {items.length} correctas
         </div>
       )}
+    </div>
+  )
+}
+
+function MultiSelectBlockPreview({ block }: { block: MultiSelectBlock }) {
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+  const [showResult, setShowResult] = useState(false)
+
+  const allOptions = [
+    ...(block.correctOptions || []).map(opt => ({ ...opt, isCorrect: true })),
+    ...(block.incorrectOptions || []).map(opt => ({ ...opt, isCorrect: false })),
+  ]
+
+  const [shuffledOptions] = useState(() => 
+    [...allOptions].sort(() => Math.random() - 0.5)
+  )
+
+  const toggleOption = (id: string) => {
+    if (showResult) return
+    const newSelected = new Set(selectedIds)
+    if (newSelected.has(id)) {
+      newSelected.delete(id)
+    } else {
+      newSelected.add(id)
+    }
+    setSelectedIds(newSelected)
+  }
+
+  const checkAnswers = () => {
+    setShowResult(true)
+  }
+
+  const reset = () => {
+    setSelectedIds(new Set())
+    setShowResult(false)
+  }
+
+  const correctIds = new Set((block.correctOptions || []).map(opt => opt.id))
+  const selectedCorrect = [...selectedIds].filter(id => correctIds.has(id)).length
+  const selectedIncorrect = [...selectedIds].filter(id => !correctIds.has(id)).length
+  const totalCorrect = block.correctOptions?.length || 0
+
+  if (!block.correctOptions?.length && !block.incorrectOptions?.length) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+          <CheckCircle2 className="h-5 w-5" />
+          <span>Selección Múltiple</span>
+        </div>
+        <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
+          <p className="text-muted-foreground">Sin opciones configuradas</p>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+        <CheckCircle2 className="h-5 w-5" />
+        <span>Selección Múltiple</span>
+      </div>
+
+      {block.title && <h3 className="text-xl font-bold">{block.title}</h3>}
+      
+      {block.instruction && (
+        <p className="text-muted-foreground text-sm">{block.instruction}</p>
+      )}
+
+      <div className="grid gap-2 sm:grid-cols-2">
+        {shuffledOptions.map((option) => {
+          const isSelected = selectedIds.has(option.id)
+          const isCorrectOption = option.isCorrect
+
+          let optionClass = "border-gray-200 bg-white hover:border-primary/50 hover:bg-primary/5"
+          
+          if (showResult) {
+            if (isCorrectOption && isSelected) {
+              optionClass = "border-green-500 bg-green-50 text-green-700"
+            } else if (isCorrectOption && !isSelected) {
+              optionClass = "border-green-300 bg-green-50/50 text-green-600 border-dashed"
+            } else if (!isCorrectOption && isSelected) {
+              optionClass = "border-red-500 bg-red-50 text-red-700"
+            } else {
+              optionClass = "border-gray-200 bg-gray-50 text-gray-500"
+            }
+          } else if (isSelected) {
+            optionClass = "border-primary bg-primary/10 ring-2 ring-primary/20"
+          }
+
+          return (
+            <div
+              key={option.id}
+              onClick={() => toggleOption(option.id)}
+              className={cn(
+                "p-4 border-2 rounded-lg cursor-pointer transition-all flex items-center gap-3",
+                optionClass
+              )}
+            >
+              <div className={cn(
+                "h-5 w-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors",
+                isSelected ? "border-current bg-current" : "border-gray-300"
+              )}>
+                {isSelected && (
+                  <svg className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 12 12">
+                    <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
+                  </svg>
+                )}
+              </div>
+              <span className="flex-1 font-medium">{option.text}</span>
+              {showResult && (
+                <span className="text-xs font-bold">
+                  {isCorrectOption ? '✓' : '✗'}
+                </span>
+              )}
+            </div>
+          )
+        })}
+      </div>
+
+      {showResult && (
+        <div className={cn(
+          "p-4 rounded-lg text-center space-y-2",
+          selectedIncorrect === 0 && selectedCorrect === totalCorrect
+            ? "bg-green-100 text-green-700"
+            : "bg-amber-100 text-amber-700"
+        )}>
+          <p className="font-bold">
+            {selectedIncorrect === 0 && selectedCorrect === totalCorrect
+              ? "¡Perfecto! Seleccionaste todas las correctas"
+              : `${selectedCorrect} de ${totalCorrect} correctas seleccionadas`}
+          </p>
+          {selectedIncorrect > 0 && (
+            <p className="text-sm">
+              {selectedIncorrect} opción(es) incorrecta(s) seleccionada(s)
+            </p>
+          )}
+          {block.explanation && (
+            <p className="text-sm mt-2 pt-2 border-t border-current/20">
+              {block.explanation}
+            </p>
+          )}
+        </div>
+      )}
+
+      <div className="flex gap-2 justify-center">
+        {!showResult ? (
+          <Button onClick={checkAnswers} disabled={selectedIds.size === 0} size="sm">
+            Verificar Respuestas
+          </Button>
+        ) : (
+          <Button variant="outline" onClick={reset} size="sm">
+            Reintentar
+          </Button>
+        )}
+      </div>
     </div>
   )
 }

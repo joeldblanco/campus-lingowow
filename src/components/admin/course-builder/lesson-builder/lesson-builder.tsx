@@ -46,6 +46,9 @@ import { toast } from 'sonner'
 import { BlockLibrary, BlockSelectionGrid, DraggableBlock } from './block-library'
 import { Canvas } from './canvas'
 import { PropertiesPanel } from './properties-panel'
+import { AIBlockChat } from './ai-block-chat'
+import { useSession } from 'next-auth/react'
+import { isAdmin, UserWithRoles } from '@/lib/utils/role-helpers'
 
 interface LessonBuilderProps {
   lesson: Lesson
@@ -63,6 +66,8 @@ export function LessonBuilder({
   onBack,
 }: LessonBuilderProps) {
   const router = useRouter()
+  const { data: session } = useSession()
+  const userIsAdmin = isAdmin(session?.user as UserWithRoles | null)
   const isPersonalized = lessonType === 'personalized'
 
   // Internal state management
@@ -672,6 +677,22 @@ export function LessonBuilder({
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* AI Block Chat - Solo para administradores */}
+      {userIsAdmin && !isPreviewMode && (
+        <AIBlockChat
+          lessonTitle={lesson.title}
+          lessonDescription={lesson.description || undefined}
+          existingBlocksCount={lesson.blocks.length}
+          onAddBlocks={(newBlocks) => {
+            setLesson(prev => ({
+              ...prev,
+              blocks: [...prev.blocks, ...newBlocks],
+            }))
+            toast.success(`${newBlocks.length} bloque(s) agregado(s)`)
+          }}
+        />
+      )}
     </>
   )
 }

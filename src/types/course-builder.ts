@@ -50,6 +50,7 @@ export type BlockType =
   | 'short_answer'
   | 'ordering'
   | 'drag_drop'
+  | 'multi_select'
 
 // Base block type with discriminated union for different content types
 export interface BaseBlock {
@@ -262,6 +263,16 @@ export interface DragDropBlock extends BaseBlock {
   points?: number
 }
 
+export interface MultiSelectBlock extends BaseBlock {
+  type: 'multi_select'
+  title?: string
+  instruction?: string
+  correctOptions: { id: string; text: string }[]
+  incorrectOptions: { id: string; text: string }[]
+  points?: number
+  explanation?: string
+}
+
 export interface RecordingBlock extends BaseBlock {
   type: 'recording'
   instruction?: string
@@ -366,6 +377,7 @@ export type Block =
   | ShortAnswerBlock
   | OrderingBlock
   | DragDropBlock
+  | MultiSelectBlock
   | RecordingBlock
   | StructuredContentBlock
   | GrammarVisualizerBlock
@@ -779,6 +791,29 @@ export const BLOCK_TEMPLATES: BlockTemplate[] = [
         { id: 'item2', text: 'Elemento 2', correctCategoryId: 'cat2' },
       ],
       points: 10,
+    },
+  },
+  {
+    type: 'multi_select',
+    label: 'Selección Múltiple',
+    icon: CheckSquare,
+    description: 'Seleccionar varias opciones correctas de un grupo',
+    defaultData: {
+      id: '',
+      type: 'multi_select',
+      order: 0,
+      title: 'Selecciona las opciones correctas',
+      instruction: 'Selecciona todas las opciones que sean correctas.',
+      correctOptions: [
+        { id: 'correct1', text: 'Opción correcta 1' },
+        { id: 'correct2', text: 'Opción correcta 2' },
+      ],
+      incorrectOptions: [
+        { id: 'incorrect1', text: 'Opción incorrecta 1' },
+        { id: 'incorrect2', text: 'Opción incorrecta 2' },
+      ],
+      points: 10,
+      explanation: 'Las opciones correctas son aquellas que cumplen con el criterio.',
     },
   },
 ]

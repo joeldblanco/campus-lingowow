@@ -28,6 +28,7 @@ import {
   ShortAnswerBlock,
   OrderingBlock,
   DragDropBlock,
+  MultiSelectBlock,
 } from '@/types/course-builder'
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import {
@@ -145,6 +146,13 @@ export function PropertiesPanel({ block, onUpdate, onRemove, onClose }: Properti
         return (
           <DragDropProperties
             block={block as DragDropBlock}
+            onUpdate={onUpdate}
+          />
+        )
+      case 'multi_select':
+        return (
+          <MultiSelectProperties
+            block={block as MultiSelectBlock}
             onUpdate={onUpdate}
           />
         )
@@ -3210,6 +3218,177 @@ function EmbedProperties({
           onChange={(e) => onUpdate({ height: parseInt(e.target.value) || 400 })}
           placeholder="400"
           className="mt-2"
+        />
+      </div>
+    </div>
+  )
+}
+
+function MultiSelectProperties({
+  block,
+  onUpdate,
+}: {
+  block: MultiSelectBlock
+  onUpdate: (updates: Partial<Block>) => void
+}) {
+  const addCorrectOption = () => {
+    const newOption = {
+      id: `correct_${Date.now()}`,
+      text: 'Nueva opción correcta',
+    }
+    onUpdate({
+      correctOptions: [...(block.correctOptions || []), newOption],
+    })
+  }
+
+  const addIncorrectOption = () => {
+    const newOption = {
+      id: `incorrect_${Date.now()}`,
+      text: 'Nueva opción incorrecta',
+    }
+    onUpdate({
+      incorrectOptions: [...(block.incorrectOptions || []), newOption],
+    })
+  }
+
+  const updateCorrectOption = (id: string, text: string) => {
+    onUpdate({
+      correctOptions: block.correctOptions?.map((opt) =>
+        opt.id === id ? { ...opt, text } : opt
+      ),
+    })
+  }
+
+  const updateIncorrectOption = (id: string, text: string) => {
+    onUpdate({
+      incorrectOptions: block.incorrectOptions?.map((opt) =>
+        opt.id === id ? { ...opt, text } : opt
+      ),
+    })
+  }
+
+  const removeCorrectOption = (id: string) => {
+    onUpdate({
+      correctOptions: block.correctOptions?.filter((opt) => opt.id !== id),
+    })
+  }
+
+  const removeIncorrectOption = (id: string) => {
+    onUpdate({
+      incorrectOptions: block.incorrectOptions?.filter((opt) => opt.id !== id),
+    })
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <Label>Título</Label>
+        <Input
+          value={block.title || ''}
+          onChange={(e) => onUpdate({ title: e.target.value })}
+          placeholder="Selecciona las opciones correctas"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label>Instrucciones</Label>
+        <Textarea
+          value={block.instruction || ''}
+          onChange={(e) => onUpdate({ instruction: e.target.value })}
+          placeholder="Selecciona todas las opciones que sean correctas..."
+          rows={2}
+        />
+      </div>
+
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <Label className="text-green-600 flex items-center gap-2">
+            ✓ Opciones Correctas
+          </Label>
+          <Button variant="outline" size="sm" onClick={addCorrectOption}>
+            <Plus className="h-3 w-3 mr-1" /> Agregar
+          </Button>
+        </div>
+        <div className="space-y-2 pl-2 border-l-2 border-green-200">
+          {block.correctOptions?.map((opt) => (
+            <div key={opt.id} className="flex items-center gap-2">
+              <Input
+                value={opt.text}
+                onChange={(e) => updateCorrectOption(opt.id, e.target.value)}
+                placeholder="Opción correcta..."
+                className="flex-1 border-green-200 focus:border-green-500"
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-destructive"
+                onClick={() => removeCorrectOption(opt.id)}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+          ))}
+          {(!block.correctOptions || block.correctOptions.length === 0) && (
+            <p className="text-xs text-muted-foreground italic py-2">
+              No hay opciones correctas. Agrega al menos una.
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <Label className="text-red-600 flex items-center gap-2">
+            ✗ Opciones Incorrectas
+          </Label>
+          <Button variant="outline" size="sm" onClick={addIncorrectOption}>
+            <Plus className="h-3 w-3 mr-1" /> Agregar
+          </Button>
+        </div>
+        <div className="space-y-2 pl-2 border-l-2 border-red-200">
+          {block.incorrectOptions?.map((opt) => (
+            <div key={opt.id} className="flex items-center gap-2">
+              <Input
+                value={opt.text}
+                onChange={(e) => updateIncorrectOption(opt.id, e.target.value)}
+                placeholder="Opción incorrecta..."
+                className="flex-1 border-red-200 focus:border-red-500"
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-destructive"
+                onClick={() => removeIncorrectOption(opt.id)}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+          ))}
+          {(!block.incorrectOptions || block.incorrectOptions.length === 0) && (
+            <p className="text-xs text-muted-foreground italic py-2">
+              No hay opciones incorrectas. Agrega al menos una.
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label>Explicación (opcional)</Label>
+        <Textarea
+          value={block.explanation || ''}
+          onChange={(e) => onUpdate({ explanation: e.target.value })}
+          placeholder="Explicación que se mostrará después de verificar..."
+          rows={3}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label>Puntos</Label>
+        <Input
+          type="number"
+          value={block.points || 10}
+          onChange={(e) => onUpdate({ points: parseInt(e.target.value) || 10 })}
+          min={1}
         />
       </div>
     </div>
