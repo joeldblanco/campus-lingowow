@@ -85,6 +85,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   const [deviceError, setDeviceError] = useState<DeviceError | null>(null)
   const [cameraUnavailable, setCameraUnavailable] = useState(false)
   const [microphoneUnavailable, setMicrophoneUnavailable] = useState(false)
+  const [isLocalTeacher, setIsLocalTeacher] = useState(false)
 
   const updateRemoteParticipant = useCallback((participant: RemoteParticipant) => {
     setRemoteParticipants((prev) => {
@@ -431,6 +432,17 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       setTimeout(syncRemoteParticipants, 1500)
 
       const localParticipant = room.localParticipant
+      
+      // Leer metadata del participante local para determinar si es profesor
+      try {
+        if (localParticipant.metadata) {
+          const meta = JSON.parse(localParticipant.metadata)
+          setIsLocalTeacher(meta.isModerator === true)
+        }
+      } catch {
+        // Ignorar errores de parseo
+      }
+      
       localParticipant.trackPublications.forEach((pub) => {
         if (pub.track) {
           if (pub.track.kind === Track.Kind.Video && pub.source === Track.Source.Camera) {
@@ -662,6 +674,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
           isVideoMuted: isVideoMuted,
           isHandRaised: isHandRaised,
           isSpeaking: isSpeaking,
+          isTeacher: isLocalTeacher,
           videoTrack: localVideoTrack,
           audioTrack: localAudioTrack,
         }
