@@ -17,6 +17,7 @@ import { canUseAIGrading, recordAIGradingUsage } from '@/lib/actions/ai-grading-
 interface EssayAIGradingProps {
   essayText: string
   prompt: string
+  blockId?: string // Block ID for classroom sync
   maxPoints?: number
   language?: 'english' | 'spanish'
   targetLevel?: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
@@ -25,6 +26,7 @@ interface EssayAIGradingProps {
     feedback: string
     detailedResult: EssayGradingResult
   }) => void
+  onSyncResponse?: (blockId: string, blockType: string, response: unknown, isCorrect?: boolean, score?: number) => void
   disabled?: boolean
   variant?: 'default' | 'outline' | 'ghost'
   size?: 'default' | 'sm' | 'lg' | 'icon'
@@ -36,10 +38,12 @@ interface EssayAIGradingProps {
 export function EssayAIGrading({
   essayText,
   prompt,
+  blockId,
   maxPoints = 100,
   language = 'spanish',
   targetLevel = 'B1',
   onGraded,
+  onSyncResponse,
   disabled = false,
   variant = 'default',
   size = 'default',
@@ -117,6 +121,17 @@ export function EssayAIGrading({
         onGraded(data.gradingResult)
       }
 
+      // Sync response to teacher in classroom mode
+      if (onSyncResponse && blockId) {
+        const score = data.gradingResult.pointsEarned
+        const isCorrect = score >= (maxPoints * 0.6) // 60% threshold for "correct"
+        onSyncResponse(blockId, 'essay', {
+          text: essayText,
+          score,
+          feedback: data.gradingResult.feedback,
+        }, isCorrect, score)
+      }
+
       toast.success('Ensayo calificado exitosamente')
     } catch (error) {
       console.error('Error grading essay:', error)
@@ -140,12 +155,12 @@ export function EssayAIGrading({
         {isLoading ? (
           <>
             <Loader2 className="h-4 w-4 animate-spin mr-2" />
-            Calificando...
+            Corrigiendo...
           </>
         ) : (
           <>
             <Sparkles className="h-4 w-4 mr-2" />
-            Calificar con IA
+            Enviar
           </>
         )}
       </Button>

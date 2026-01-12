@@ -41,6 +41,16 @@ export interface InteractiveBlockResponse {
   score?: number // For scored blocks
 }
 
+export interface BlockNavigationState {
+  blockId: string
+  currentStep: number
+  totalSteps: number
+  hasStarted: boolean
+  isCompleted: boolean
+  participantName: string
+  timestamp: number
+}
+
 interface CollaborationContextType {
   // Cursor
   remoteCursor: CursorPosition | null
@@ -61,6 +71,10 @@ interface CollaborationContextType {
   remoteBlockResponses: Map<string, InteractiveBlockResponse>
   sendBlockResponse: (blockId: string, blockType: string, response: unknown, isCorrect?: boolean, score?: number) => void
   clearBlockResponse: (blockId: string) => void
+
+  // Block Navigation State (for multi-step blocks like Quiz, FillBlanks, etc.)
+  remoteBlockNavigation: Map<string, BlockNavigationState>
+  syncBlockNavigation: (blockId: string, currentStep: number, totalSteps: number, hasStarted: boolean, isCompleted: boolean) => void
 
   // Whiteboard (handled separately by Excalidraw collaboration)
 
@@ -109,6 +123,9 @@ export function CollaborationProvider({
 
   // Interactive block responses state (for student answers to exercises)
   const [remoteBlockResponses, setRemoteBlockResponses] = useState<Map<string, InteractiveBlockResponse>>(new Map())
+
+  // Block navigation state (for multi-step blocks like Quiz, FillBlanks, etc.)
+  const [remoteBlockNavigation, setRemoteBlockNavigation] = useState<Map<string, BlockNavigationState>>(new Map())
 
   // Screen share state (will be used when screen share listener is implemented)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -215,6 +232,33 @@ export function CollaborationProvider({
 
     addCommandListener('block-response', handleBlockResponse)
     return () => removeCommandListener('block-response', handleBlockResponse)
+  }, [connectionStatus, addCommandListener, removeCommandListener])
+
+  // Handle incoming block navigation updates (for multi-step blocks)
+  useEffect(() => {
+    if (connectionStatus !== 'connected') return
+
+    const handleBlockNavigation = (data: Record<string, unknown>) => {
+      if (data.type === 'BLOCK_NAVIGATION') {
+        const navState: BlockNavigationState = {
+          blockId: data.blockId as string,
+          currentStep: data.currentStep as number,
+          totalSteps: data.totalSteps as number,
+          hasStarted: data.hasStarted as boolean,
+          isCompleted: data.isCompleted as boolean,
+          participantName: data.participantName as string,
+          timestamp: Date.now(),
+        }
+        setRemoteBlockNavigation(prev => {
+          const newMap = new Map(prev)
+          newMap.set(navState.blockId, navState)
+          return newMap
+        })
+      }
+    }
+
+    addCommandListener('block-navigation', handleBlockNavigation)
+    return () => removeCommandListener('block-navigation', handleBlockNavigation)
   }, [connectionStatus, addCommandListener, removeCommandListener])
 
   // Clear stale cursor after 3 seconds of inactivity
@@ -337,6 +381,25 @@ export function CollaborationProvider({
     })
   }, [sendCommand, isTeacher])
 
+  // Sync block navigation state (for multi-step blocks)
+  const syncBlockNavigation = useCallback((
+    blockId: string,
+    currentStep: number,
+    totalSteps: number,
+    hasStarted: boolean,
+    isCompleted: boolean
+  ) => {
+    sendCommand('block-navigation', {
+      type: 'BLOCK_NAVIGATION',
+      blockId,
+      currentStep,
+      totalSteps,
+      hasStarted,
+      isCompleted,
+      participantName,
+    })
+  }, [sendCommand, participantName])
+
   return (
     <CollaborationContext.Provider
       value={{
@@ -352,6 +415,8 @@ export function CollaborationProvider({
         remoteBlockResponses,
         sendBlockResponse,
         clearBlockResponse,
+        remoteBlockNavigation,
+        syncBlockNavigation,
         isRemoteScreenSharing,
         remoteScreenTrack,
         isTeacher,

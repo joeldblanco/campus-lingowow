@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { LessonContent } from '@/components/lessons/lesson-content'
 import { LessonForView } from '@/types/lesson'
 import { Button } from '@/components/ui/button'
@@ -8,6 +8,8 @@ import { Loader2, Plus, BookOpen } from 'lucide-react'
 import { ContentPicker } from './content-picker'
 import { ShareableContent, getShareableContent } from '@/lib/actions/classroom'
 import { StudentResponsesPanel } from './interactive-block-wrapper'
+import { ClassroomSyncContext } from './use-classroom-sync'
+import { useCollaboration } from './collaboration-context'
 
 interface ActiveLessonViewerProps {
   lessonId?: string
@@ -20,6 +22,27 @@ interface ActiveLessonViewerProps {
 export function ActiveLessonViewer({ lessonData, isLoading, isTeacher, onContentSelect }: ActiveLessonViewerProps) {
   const [showContentPicker, setShowContentPicker] = useState(false)
   const [preloadedContent, setPreloadedContent] = useState<ShareableContent[] | null>(null)
+  
+  // Get collaboration context for syncing block responses
+  const { 
+    sendBlockResponse, 
+    syncBlockNavigation,
+    remoteBlockNavigation,
+    isTeacher: isTeacherFromContext 
+  } = useCollaboration()
+  
+  // Use context isTeacher if available, otherwise use prop
+  const effectiveIsTeacher = isTeacher ?? isTeacherFromContext
+  
+  // Memoize the sync context value
+  // Only students should be able to send responses (not teachers)
+  const syncContextValue = useMemo(() => ({
+    sendBlockResponse,
+    syncBlockNavigation,
+    remoteBlockNavigation,
+    isInClassroom: true,
+    isTeacher: effectiveIsTeacher,
+  }), [sendBlockResponse, syncBlockNavigation, remoteBlockNavigation, effectiveIsTeacher])
 
   // Pre-load content for teachers to eliminate loading state when opening picker
   useEffect(() => {
@@ -84,10 +107,12 @@ export function ActiveLessonViewer({ lessonData, isLoading, isTeacher, onContent
   }
 
   return (
-    <div className="w-full h-full">
-      <LessonContent lesson={lessonData} isTeacher={isTeacher} isClassroom={true} />
-      {/* Panel for teachers to see student responses in real-time */}
-      {isTeacher && <StudentResponsesPanel />}
-    </div>
+    <ClassroomSyncContext.Provider value={syncContextValue}>
+      <div className="w-full h-full">
+        <LessonContent lesson={lessonData} isTeacher={isTeacher} isClassroom={true} />
+        {/* Panel for teachers to see student responses in real-time */}
+        {isTeacher && <StudentResponsesPanel />}
+      </div>
+    </ClassroomSyncContext.Provider>
   )
 }

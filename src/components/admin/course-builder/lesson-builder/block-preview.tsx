@@ -60,6 +60,7 @@ import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { EssayAIGrading as EssayAIGradingButton } from '@/components/lessons/essay-ai-grading'
+import { useClassroomSync } from '@/components/classroom/use-classroom-sync'
 
 interface BlockPreviewProps {
   block: Block
@@ -455,33 +456,101 @@ function QuizBlockPreview({ block }: { block: QuizBlock }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string>>({}) // questionId -> answer
   const [showResults, setShowResults] = useState(false)
+  
+  // Get classroom sync if available
+  const classroomSync = useClassroomSync()
+  
+  // Get remote navigation state for teachers to follow student's progress
+  const remoteNav = classroomSync.getRemoteNavigation(block.id)
 
   const questionCount = block.questions?.length || 0
   const currentQuestion = block.questions?.[currentQuestionIndex]
+  
+  // For teachers in classroom: follow student's navigation
+  const displayQuestionIndex = (classroomSync.isInClassroom && classroomSync.isTeacher && remoteNav) 
+    ? remoteNav.currentStep 
+    : currentQuestionIndex
+  const displayHasStarted = (classroomSync.isInClassroom && classroomSync.isTeacher && remoteNav)
+    ? remoteNav.hasStarted
+    : hasStarted
+  const displayShowResults = (classroomSync.isInClassroom && classroomSync.isTeacher && remoteNav)
+    ? remoteNav.isCompleted
+    : showResults
+  const displayCurrentQuestion = block.questions?.[displayQuestionIndex]
 
   const handleStart = () => {
     setHasStarted(true)
     setCurrentQuestionIndex(0)
     setAnswers({})
     setShowResults(false)
+    
+    // Sync navigation state to teacher
+    if (classroomSync.canInteract) {
+      classroomSync.syncBlockNavigation(block.id, 0, questionCount, true, false)
+    }
   }
 
   const handleAnswerSelect = (answer: string) => {
     if (!currentQuestion) return
+    // Teachers in classroom mode cannot interact
+    if (classroomSync.isInClassroom && classroomSync.isTeacher) return
     setAnswers(prev => ({ ...prev, [currentQuestion.id]: answer }))
   }
 
   const handleNext = () => {
     if (currentQuestionIndex < (block.questions?.length || 0) - 1) {
-      setCurrentQuestionIndex(prev => prev + 1)
+      const newIndex = currentQuestionIndex + 1
+      setCurrentQuestionIndex(newIndex)
+      
+      // Sync navigation state to teacher
+      if (classroomSync.canInteract) {
+        classroomSync.syncBlockNavigation(block.id, newIndex, questionCount, true, false)
+      }
     } else {
+      // Calculate score and sync to teacher
+      const { score, totalPoints } = calculateScoreInternal()
+      const percentage = totalPoints > 0 ? Math.round((score / totalPoints) * 100) : 0
+      const passed = !block.passingScore || percentage >= block.passingScore
+      
+      // Sync result to teacher in classroom mode (only students)
+      if (classroomSync.canInteract) {
+        classroomSync.sendBlockResponse(block.id, 'quiz', {
+          answers,
+          score,
+          totalPoints,
+          percentage,
+        }, passed, score)
+        
+        // Mark as completed
+        classroomSync.syncBlockNavigation(block.id, currentQuestionIndex, questionCount, true, true)
+      }
+      
       setShowResults(true)
     }
+  }
+  
+  const calculateScoreInternal = () => {
+    let score = 0
+    let totalPoints = 0
+    block.questions?.forEach(q => {
+      totalPoints += q.points || 0
+      const userAnswer = answers[q.id]
+      if (userAnswer === q.correctAnswer) {
+        score += q.points || 0
+      }
+    })
+    return { score, totalPoints }
   }
 
   const handlePrev = () => {
     if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(prev => prev - 1)
+      const newIndex = currentQuestionIndex - 1
+      setCurrentQuestionIndex(newIndex)
+      
+      // Sync navigation state to teacher
+      if (classroomSync.canInteract) {
+        classroomSync.syncBlockNavigation(block.id, newIndex, questionCount, true, false)
+      }
     }
   }
 
@@ -501,8 +570,8 @@ function QuizBlockPreview({ block }: { block: QuizBlock }) {
     return { score, totalPoints }
   }
 
-  // Initial View
-  if (!hasStarted) {
+  // Not started yet - show intro
+  if (!displayHasStarted) {
     return (
       <div className="space-y-4">
         <div className="flex items-center gap-2 text-primary font-semibold text-sm">
@@ -559,7 +628,7 @@ function QuizBlockPreview({ block }: { block: QuizBlock }) {
   }
 
   // Results View
-  if (showResults) {
+  if (displayShowResults) {
     const { score, totalPoints } = calculateScore()
     const percentage = totalPoints > 0 ? Math.round((score / totalPoints) * 100) : 0
     const passed = !block.passingScore || percentage >= block.passingScore
@@ -659,54 +728,60 @@ function QuizBlockPreview({ block }: { block: QuizBlock }) {
     )
   }
 
-  // Question View
+  // Question View - use display variables for teacher sync with smooth animations
   return (
     <div className="space-y-6">
       {/* Progress Header */}
       <div className="flex items-center justify-between text-sm text-muted-foreground">
-        <span>Pregunta {currentQuestionIndex + 1} de {questionCount}</span>
-        <span>{Math.round(((currentQuestionIndex + 1) / questionCount) * 100)}% completado</span>
+        <span>Pregunta {displayQuestionIndex + 1} de {questionCount}</span>
+        <span>{Math.round(((displayQuestionIndex + 1) / questionCount) * 100)}% completado</span>
       </div>
       <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
         <div
-          className="h-full bg-primary transition-all duration-300 ease-out"
-          style={{ width: `${((currentQuestionIndex + 1) / questionCount) * 100}%` }}
+          className="h-full bg-primary transition-all duration-500 ease-out"
+          style={{ width: `${((displayQuestionIndex + 1) / questionCount) * 100}%` }}
         />
       </div>
 
-      {/* Question Card */}
-      <div className="bg-card border rounded-xl p-6 shadow-sm min-h-[300px] flex flex-col">
-        <h3 className="text-xl font-bold mb-6">{currentQuestion?.question}</h3>
+      {/* Question Card with smooth transition */}
+      <div 
+        key={displayQuestionIndex}
+        className="bg-card border rounded-xl p-6 shadow-sm min-h-[300px] flex flex-col animate-in fade-in slide-in-from-right-4 duration-300"
+      >
+        <h3 className="text-xl font-bold mb-6">{displayCurrentQuestion?.question}</h3>
 
         <div className="flex-1 space-y-3">
-          {currentQuestion?.type === 'multiple-choice' && currentQuestion.options?.map((opt, i) => (
+          {displayCurrentQuestion?.type === 'multiple-choice' && displayCurrentQuestion.options?.map((opt, i) => (
             <div
               key={i}
               onClick={() => handleAnswerSelect(opt)}
               className={cn(
-                "p-4 border rounded-lg cursor-pointer transition-all flex items-center gap-3 hover:bg-muted/50",
-                answers[currentQuestion.id] === opt ? "border-primary bg-primary/5 ring-1 ring-primary" : "border-input"
+                "p-4 border rounded-lg transition-all flex items-center gap-3",
+                classroomSync.isTeacher ? "cursor-default" : "cursor-pointer hover:bg-muted/50",
+                answers[displayCurrentQuestion.id] === opt ? "border-primary bg-primary/5 ring-1 ring-primary" : "border-input"
               )}
             >
               <div className={cn(
                 "h-5 w-5 rounded-full border-2 flex items-center justify-center shrink-0",
-                answers[currentQuestion.id] === opt ? "border-primary" : "border-muted-foreground"
+                answers[displayCurrentQuestion.id] === opt ? "border-primary" : "border-muted-foreground"
               )}>
-                {answers[currentQuestion.id] === opt && <div className="h-2.5 w-2.5 rounded-full bg-primary" />}
+                {answers[displayCurrentQuestion.id] === opt && <div className="h-2.5 w-2.5 rounded-full bg-primary" />}
               </div>
               <span className="text-base">{opt}</span>
             </div>
           ))}
 
-          {currentQuestion?.type === 'true-false' && (
+          {displayCurrentQuestion?.type === 'true-false' && (
             <div className="grid grid-cols-2 gap-4">
               {['Verdadero', 'Falso'].map((opt) => (
                 <button
                   key={opt}
                   onClick={() => handleAnswerSelect(opt)}
+                  disabled={classroomSync.isInClassroom && classroomSync.isTeacher}
                   className={cn(
-                    "p-8 border-2 rounded-xl font-bold text-lg transition-all hover:scale-[1.02]",
-                    answers[currentQuestion.id] === opt
+                    "p-8 border-2 rounded-xl font-bold text-lg transition-all",
+                    !classroomSync.isTeacher && "hover:scale-[1.02]",
+                    answers[displayCurrentQuestion.id] === opt
                       ? (opt === 'Verdadero' ? "border-green-500 bg-green-50 text-green-700" : "border-red-500 bg-red-50 text-red-700")
                       : "border-muted bg-card hover:bg-muted/50"
                   )}
@@ -717,29 +792,29 @@ function QuizBlockPreview({ block }: { block: QuizBlock }) {
             </div>
           )}
 
-          {currentQuestion?.type === 'short-answer' && (
+          {displayCurrentQuestion?.type === 'short-answer' && (
             <Textarea
-              placeholder="Escribe tu respuesta aquí..."
+              placeholder={classroomSync.isTeacher ? "El estudiante escribirá aquí..." : "Escribe tu respuesta aquí..."}
               className="min-h-[150px] text-lg p-4"
-              value={answers[currentQuestion.id] || ''}
+              value={answers[displayCurrentQuestion.id] || ''}
               onChange={(e) => handleAnswerSelect(e.target.value)}
+              disabled={classroomSync.isInClassroom && classroomSync.isTeacher}
             />
           )}
         </div>
       </div>
 
-      {/* Navigation */}
-      <div className="flex justify-between pt-4">
-        <Button variant="ghost" onClick={handlePrev} disabled={currentQuestionIndex === 0}>
-          Anterior
-        </Button>
-        <Button onClick={handleNext} disabled={!answers[currentQuestion?.id || '']}>
-          {currentQuestionIndex === questionCount - 1 ? 'Finalizar' : 'Siguiente'}
-        </Button>
-      </div>
-
-      {/* Debug Info (Optional, can be removed) */}
-      {/* <pre className="text-xs bg-muted p-2 rounded">{JSON.stringify(answers, null, 2)}</pre> */}
+      {/* Navigation - hidden for teachers in classroom */}
+      {!(classroomSync.isInClassroom && classroomSync.isTeacher) && (
+        <div className="flex justify-between pt-4">
+          <Button variant="ghost" onClick={handlePrev} disabled={currentQuestionIndex === 0}>
+            Anterior
+          </Button>
+          <Button onClick={handleNext} disabled={!answers[currentQuestion?.id || '']}>
+            {currentQuestionIndex === questionCount - 1 ? 'Finalizar' : 'Siguiente'}
+          </Button>
+        </div>
+      )}
     </div>
   )
 }
@@ -2103,6 +2178,9 @@ function EssayBlockPreview({ block }: { block: EssayBlock }) {
   const [text, setText] = useState('')
   const wordCount = text.trim().split(/\s+/).filter(w => w.length > 0).length
   const meetsMinWords = !block.minWords || wordCount >= block.minWords
+  
+  // Get classroom sync if available
+  const classroomSync = useClassroomSync()
 
   return (
     <div className="space-y-4">
@@ -2114,7 +2192,7 @@ function EssayBlockPreview({ block }: { block: EssayBlock }) {
         {block.aiGrading && (
           <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 text-xs font-medium">
             <Sparkles className="h-3 w-3" />
-            <span>Corrección con IA</span>
+            <span>Autocorrección</span>
           </div>
         )}
       </div>
@@ -2130,10 +2208,11 @@ function EssayBlockPreview({ block }: { block: EssayBlock }) {
       </div>
 
       <textarea
-        className="w-full p-4 rounded-lg border bg-background min-h-[150px] focus:outline-none focus:ring-2 focus:ring-primary/20"
-        placeholder="Escribe tu respuesta..."
+        className="w-full p-4 rounded-lg border bg-background min-h-[150px] focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
+        placeholder={classroomSync.isTeacher ? "El estudiante escribirá aquí..." : "Escribe tu respuesta..."}
         value={text}
         onChange={(e) => setText(e.target.value)}
+        disabled={classroomSync.isInClassroom && classroomSync.isTeacher}
       />
       <div className="flex justify-between text-xs text-muted-foreground">
         <span className={cn(block.minWords && wordCount < block.minWords ? "text-red-500" : "text-green-600")}>
@@ -2141,17 +2220,20 @@ function EssayBlockPreview({ block }: { block: EssayBlock }) {
         </span>
         {block.maxWords && <span>Máx {block.maxWords}</span>}
       </div>
-      <div className="flex justify-end gap-2">
-        {block.aiGrading && (
+      <div className="flex justify-end">
+        {block.aiGrading ? (
           <EssayAIGradingButton
             essayText={text}
             prompt={block.prompt || ''}
+            blockId={block.id}
             language={block.aiGradingConfig?.language}
             targetLevel={block.aiGradingConfig?.targetLevel}
-            disabled={!meetsMinWords || !text.trim()}
+            disabled={!meetsMinWords || !text.trim() || (classroomSync.isInClassroom && classroomSync.isTeacher)}
+            onSyncResponse={classroomSync.canInteract ? classroomSync.sendBlockResponse : undefined}
           />
+        ) : (
+          <Button size="sm" disabled={!meetsMinWords}>Enviar</Button>
         )}
-        <Button size="sm" disabled={!meetsMinWords}>Enviar Ensayo</Button>
       </div>
     </div>
   )
