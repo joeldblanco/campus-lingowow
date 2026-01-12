@@ -5,7 +5,7 @@ import { BlockNavigationState } from './collaboration-context'
 
 interface ClassroomSyncContextType {
   sendBlockResponse: (blockId: string, blockType: string, response: unknown, isCorrect?: boolean, score?: number) => void
-  syncBlockNavigation: (blockId: string, currentStep: number, totalSteps: number, hasStarted: boolean, isCompleted: boolean) => void
+  syncBlockNavigation: (blockId: string, currentStep: number, totalSteps: number, hasStarted: boolean, isCompleted: boolean, currentAnswers?: Record<string, string>) => void
   remoteBlockNavigation: Map<string, BlockNavigationState>
   isInClassroom: boolean
   isTeacher: boolean
@@ -41,11 +41,12 @@ export function useClassroomSync() {
     currentStep: number,
     totalSteps: number,
     hasStarted: boolean,
-    isCompleted: boolean
+    isCompleted: boolean,
+    currentAnswers?: Record<string, string>
   ) => {
     // Only students sync their navigation state
     if (canInteract) {
-      context?.syncBlockNavigation(blockId, currentStep, totalSteps, hasStarted, isCompleted)
+      context?.syncBlockNavigation(blockId, currentStep, totalSteps, hasStarted, isCompleted, currentAnswers)
     }
   }, [context, canInteract])
 

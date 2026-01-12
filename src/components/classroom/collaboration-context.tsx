@@ -49,6 +49,7 @@ export interface BlockNavigationState {
   isCompleted: boolean
   participantName: string
   timestamp: number
+  currentAnswers?: Record<string, string> // Current answers for multi-step blocks like Quiz
 }
 
 interface CollaborationContextType {
@@ -74,7 +75,7 @@ interface CollaborationContextType {
 
   // Block Navigation State (for multi-step blocks like Quiz, FillBlanks, etc.)
   remoteBlockNavigation: Map<string, BlockNavigationState>
-  syncBlockNavigation: (blockId: string, currentStep: number, totalSteps: number, hasStarted: boolean, isCompleted: boolean) => void
+  syncBlockNavigation: (blockId: string, currentStep: number, totalSteps: number, hasStarted: boolean, isCompleted: boolean, currentAnswers?: Record<string, string>) => void
 
   // Whiteboard (handled separately by Excalidraw collaboration)
 
@@ -248,6 +249,7 @@ export function CollaborationProvider({
           isCompleted: data.isCompleted as boolean,
           participantName: data.participantName as string,
           timestamp: Date.now(),
+          currentAnswers: data.currentAnswers as Record<string, string> | undefined,
         }
         setRemoteBlockNavigation(prev => {
           const newMap = new Map(prev)
@@ -387,7 +389,8 @@ export function CollaborationProvider({
     currentStep: number,
     totalSteps: number,
     hasStarted: boolean,
-    isCompleted: boolean
+    isCompleted: boolean,
+    currentAnswers?: Record<string, string>
   ) => {
     sendCommand('block-navigation', {
       type: 'BLOCK_NAVIGATION',
@@ -396,6 +399,7 @@ export function CollaborationProvider({
       totalSteps,
       hasStarted,
       isCompleted,
+      currentAnswers,
       participantName,
     })
   }, [sendCommand, participantName])

@@ -466,17 +466,14 @@ function QuizBlockPreview({ block }: { block: QuizBlock }) {
   const questionCount = block.questions?.length || 0
   const currentQuestion = block.questions?.[currentQuestionIndex]
   
-  // For teachers in classroom: follow student's navigation
-  const displayQuestionIndex = (classroomSync.isInClassroom && classroomSync.isTeacher && remoteNav) 
-    ? remoteNav.currentStep 
-    : currentQuestionIndex
-  const displayHasStarted = (classroomSync.isInClassroom && classroomSync.isTeacher && remoteNav)
-    ? remoteNav.hasStarted
-    : hasStarted
-  const displayShowResults = (classroomSync.isInClassroom && classroomSync.isTeacher && remoteNav)
-    ? remoteNav.isCompleted
-    : showResults
+  // For teachers in classroom: follow student's navigation and answers
+  const isTeacherViewing = classroomSync.isInClassroom && classroomSync.isTeacher && remoteNav
+  const displayQuestionIndex = isTeacherViewing ? remoteNav.currentStep : currentQuestionIndex
+  const displayHasStarted = isTeacherViewing ? remoteNav.hasStarted : hasStarted
+  const displayShowResults = isTeacherViewing ? remoteNav.isCompleted : showResults
   const displayCurrentQuestion = block.questions?.[displayQuestionIndex]
+  // Use remote answers for teacher, local answers for student
+  const displayAnswers = isTeacherViewing && remoteNav.currentAnswers ? remoteNav.currentAnswers : answers
 
   const handleStart = () => {
     setHasStarted(true)
@@ -494,7 +491,14 @@ function QuizBlockPreview({ block }: { block: QuizBlock }) {
     if (!currentQuestion) return
     // Teachers in classroom mode cannot interact
     if (classroomSync.isInClassroom && classroomSync.isTeacher) return
-    setAnswers(prev => ({ ...prev, [currentQuestion.id]: answer }))
+    
+    const newAnswers = { ...answers, [currentQuestion.id]: answer }
+    setAnswers(newAnswers)
+    
+    // Sync answer to teacher in real-time
+    if (classroomSync.canInteract) {
+      classroomSync.syncBlockNavigation(block.id, currentQuestionIndex, questionCount, true, false, newAnswers)
+    }
   }
 
   const handleNext = () => {
@@ -502,9 +506,9 @@ function QuizBlockPreview({ block }: { block: QuizBlock }) {
       const newIndex = currentQuestionIndex + 1
       setCurrentQuestionIndex(newIndex)
       
-      // Sync navigation state to teacher
+      // Sync navigation state to teacher (include current answers)
       if (classroomSync.canInteract) {
-        classroomSync.syncBlockNavigation(block.id, newIndex, questionCount, true, false)
+        classroomSync.syncBlockNavigation(block.id, newIndex, questionCount, true, false, answers)
       }
     } else {
       // Calculate score and sync to teacher
@@ -547,9 +551,9 @@ function QuizBlockPreview({ block }: { block: QuizBlock }) {
       const newIndex = currentQuestionIndex - 1
       setCurrentQuestionIndex(newIndex)
       
-      // Sync navigation state to teacher
+      // Sync navigation state to teacher (include current answers)
       if (classroomSync.canInteract) {
-        classroomSync.syncBlockNavigation(block.id, newIndex, questionCount, true, false)
+        classroomSync.syncBlockNavigation(block.id, newIndex, questionCount, true, false, answers)
       }
     }
   }
@@ -758,14 +762,14 @@ function QuizBlockPreview({ block }: { block: QuizBlock }) {
               className={cn(
                 "p-4 border rounded-lg transition-all flex items-center gap-3",
                 classroomSync.isTeacher ? "cursor-default" : "cursor-pointer hover:bg-muted/50",
-                answers[displayCurrentQuestion.id] === opt ? "border-primary bg-primary/5 ring-1 ring-primary" : "border-input"
+                displayAnswers[displayCurrentQuestion.id] === opt ? "border-primary bg-primary/5 ring-1 ring-primary" : "border-input"
               )}
             >
               <div className={cn(
                 "h-5 w-5 rounded-full border-2 flex items-center justify-center shrink-0",
-                answers[displayCurrentQuestion.id] === opt ? "border-primary" : "border-muted-foreground"
+                displayAnswers[displayCurrentQuestion.id] === opt ? "border-primary" : "border-muted-foreground"
               )}>
-                {answers[displayCurrentQuestion.id] === opt && <div className="h-2.5 w-2.5 rounded-full bg-primary" />}
+                {displayAnswers[displayCurrentQuestion.id] === opt && <div className="h-2.5 w-2.5 rounded-full bg-primary" />}
               </div>
               <span className="text-base">{opt}</span>
             </div>
@@ -781,7 +785,7 @@ function QuizBlockPreview({ block }: { block: QuizBlock }) {
                   className={cn(
                     "p-8 border-2 rounded-xl font-bold text-lg transition-all",
                     !classroomSync.isTeacher && "hover:scale-[1.02]",
-                    answers[displayCurrentQuestion.id] === opt
+                    displayAnswers[displayCurrentQuestion.id] === opt
                       ? (opt === 'Verdadero' ? "border-green-500 bg-green-50 text-green-700" : "border-red-500 bg-red-50 text-red-700")
                       : "border-muted bg-card hover:bg-muted/50"
                   )}
@@ -796,7 +800,7 @@ function QuizBlockPreview({ block }: { block: QuizBlock }) {
             <Textarea
               placeholder={classroomSync.isTeacher ? "El estudiante escribirá aquí..." : "Escribe tu respuesta aquí..."}
               className="min-h-[150px] text-lg p-4"
-              value={answers[displayCurrentQuestion.id] || ''}
+              value={displayAnswers[displayCurrentQuestion.id] || ''}
               onChange={(e) => handleAnswerSelect(e.target.value)}
               disabled={classroomSync.isInClassroom && classroomSync.isTeacher}
             />
