@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
                 },
                 taxTotal: {
                   currencyCode: currency,
-                  value: tax.toFixed(2),
+                  value: (tax ?? 0).toFixed(2),
                 },
               },
             },
