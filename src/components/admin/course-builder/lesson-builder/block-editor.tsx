@@ -33,6 +33,7 @@ import {
   TabItemBlock,
   TextBlock,
   VideoBlock,
+  TeacherNotesBlock,
 } from '@/types/course-builder'
 import {
   Edit3,
@@ -48,6 +49,7 @@ import {
   Video,
   X,
   Blocks,
+  StickyNote,
 } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -102,6 +104,8 @@ export function BlockContentEditor({
       return <StructuredContentEditor block={block as StructuredContentBlock} onUpdate={onUpdate} />
     case 'grammar-visualizer':
       return <GrammarVisualizerEditor block={block as GrammarVisualizerBlock} onUpdate={onUpdate} onRemove={onRemove} />
+    case 'teacher_notes':
+      return <TeacherNotesBlockEditor block={block as TeacherNotesBlock} onUpdate={onUpdate} />
     default:
       return <div>Tipo de bloque no soportado</div>
   }
@@ -169,6 +173,8 @@ export function BlockEditor({
         )
       case 'grammar-visualizer':
         return <Blocks className="h-4 w-4" />
+      case 'teacher_notes':
+        return <StickyNote className="h-4 w-4" />
       default:
         return <div className="h-4 w-4" />
     }
@@ -200,6 +206,8 @@ export function BlockEditor({
         return 'Tabla'
       case 'grammar-visualizer':
         return 'Visualizador Gramatical'
+      case 'teacher_notes':
+        return 'Notas del Profesor'
       default:
         return 'Bloque'
     }
@@ -243,6 +251,8 @@ export function BlockEditor({
             onUpdate={handleUpdate}
           />
         )
+      case 'teacher_notes':
+        return <TeacherNotesBlockEditor block={localBlock as TeacherNotesBlock} onUpdate={handleUpdate} />
       default:
         return <div>Tipo de bloque no soportado</div>
     }
@@ -274,6 +284,8 @@ export function BlockEditor({
         return <StructuredContentBlockPreview block={block as StructuredContentBlock} />
       case 'grammar-visualizer':
         return <GrammarVisualizerBlockPreview block={block as GrammarVisualizerBlock} />
+      case 'teacher_notes':
+        return <TeacherNotesBlockPreview block={block as TeacherNotesBlock} />
       default:
         return <div>Tipo de bloque no soportado</div>
     }
@@ -1382,7 +1394,130 @@ function SimpleBlockPreview({ block }: { block: Block }) {
       return <TabGroupBlockPreview block={block as TabGroupBlock} />
     case 'layout':
       return <LayoutBlockPreview block={block as LayoutBlock} />
+    case 'teacher_notes':
+      return <TeacherNotesBlockPreview block={block as TeacherNotesBlock} />
     default:
       return <div>Unknown</div>
   }
+}
+
+function TeacherNotesBlockEditor({
+  block,
+  onUpdate,
+}: {
+  block: TeacherNotesBlock
+  onUpdate: (updates: Partial<Block>) => void
+}) {
+  const colorOptions = [
+    { value: 'yellow', label: 'Amarillo', bg: 'bg-yellow-100' },
+    { value: 'blue', label: 'Azul', bg: 'bg-blue-100' },
+    { value: 'green', label: 'Verde', bg: 'bg-green-100' },
+    { value: 'purple', label: 'Morado', bg: 'bg-purple-100' },
+    { value: 'orange', label: 'Naranja', bg: 'bg-orange-100' },
+  ]
+
+  return (
+    <div className="space-y-4">
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm text-yellow-800">
+        <strong>💡 Nota:</strong> Este bloque solo será visible para ti (el profesor) durante la clase en vivo.
+        Los estudiantes no podrán ver este contenido.
+      </div>
+      
+      <div>
+        <label className="text-sm font-medium block mb-1">Título (opcional)</label>
+        <Input
+          value={block.title || ''}
+          onChange={(e) => onUpdate({ title: e.target.value })}
+          placeholder="Ej: Preguntas para hacer al estudiante"
+        />
+      </div>
+      
+      <div>
+        <label className="text-sm font-medium block mb-1">Indicaciones</label>
+        <RichTextEditor
+          value={block.content || ''}
+          onChange={(content) => onUpdate({ content })}
+          placeholder="Escribe aquí las indicaciones, preguntas sugeridas, notas o recordatorios para la clase..."
+        />
+      </div>
+      
+      <div>
+        <label className="text-sm font-medium block mb-2">Color de resaltado</label>
+        <div className="flex gap-2">
+          {colorOptions.map((color) => (
+            <button
+              key={color.value}
+              type="button"
+              onClick={() => onUpdate({ highlightColor: color.value as TeacherNotesBlock['highlightColor'] })}
+              className={`w-8 h-8 rounded-full border-2 transition-all ${color.bg} ${
+                block.highlightColor === color.value 
+                  ? 'border-gray-800 ring-2 ring-offset-2 ring-gray-400' 
+                  : 'border-gray-300 hover:border-gray-500'
+              }`}
+              title={color.label}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function TeacherNotesBlockPreview({ block }: { block: TeacherNotesBlock }) {
+  const colorClasses: Record<string, { bg: string; border: string; icon: string; title: string }> = {
+    yellow: {
+      bg: 'bg-yellow-50',
+      border: 'border-yellow-300',
+      icon: 'text-yellow-600',
+      title: 'text-yellow-800',
+    },
+    blue: {
+      bg: 'bg-blue-50',
+      border: 'border-blue-300',
+      icon: 'text-blue-600',
+      title: 'text-blue-800',
+    },
+    green: {
+      bg: 'bg-green-50',
+      border: 'border-green-300',
+      icon: 'text-green-600',
+      title: 'text-green-800',
+    },
+    purple: {
+      bg: 'bg-purple-50',
+      border: 'border-purple-300',
+      icon: 'text-purple-600',
+      title: 'text-purple-800',
+    },
+    orange: {
+      bg: 'bg-orange-50',
+      border: 'border-orange-300',
+      icon: 'text-orange-600',
+      title: 'text-orange-800',
+    },
+  }
+
+  const colors = colorClasses[block.highlightColor || 'yellow']
+
+  return (
+    <div className={`rounded-xl border-2 border-dashed p-4 space-y-2 ${colors.bg} ${colors.border}`}>
+      <div className="flex items-center gap-2">
+        <StickyNote className={`h-5 w-5 ${colors.icon}`} />
+        <span className={`text-xs font-bold uppercase tracking-wider ${colors.icon}`}>
+          Solo para el profesor
+        </span>
+      </div>
+      {block.title && (
+        <h3 className={`font-semibold ${colors.title}`}>{block.title}</h3>
+      )}
+      {block.content ? (
+        <div 
+          className="prose prose-sm max-w-none text-gray-700"
+          dangerouslySetInnerHTML={{ __html: block.content }}
+        />
+      ) : (
+        <p className="text-gray-500 italic text-sm">Sin contenido</p>
+      )}
+    </div>
+  )
 }

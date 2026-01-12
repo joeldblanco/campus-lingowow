@@ -19,6 +19,7 @@ import {
   MessageSquare,
   ArrowUpDown,
   GripHorizontal,
+  StickyNote,
 } from 'lucide-react'
 import React from 'react'
 
@@ -51,6 +52,7 @@ export type BlockType =
   | 'ordering'
   | 'drag_drop'
   | 'multi_select'
+  | 'teacher_notes'
 
 // Base block type with discriminated union for different content types
 export interface BaseBlock {
@@ -273,6 +275,13 @@ export interface MultiSelectBlock extends BaseBlock {
   explanation?: string
 }
 
+export interface TeacherNotesBlock extends BaseBlock {
+  type: 'teacher_notes'
+  title?: string
+  content: string // HTML content with instructions for the teacher
+  highlightColor?: 'yellow' | 'blue' | 'green' | 'purple' | 'orange' // Visual indicator color
+}
+
 export interface RecordingBlock extends BaseBlock {
   type: 'recording'
   instruction?: string
@@ -381,6 +390,7 @@ export type Block =
   | RecordingBlock
   | StructuredContentBlock
   | GrammarVisualizerBlock
+  | TeacherNotesBlock
 
 // Quiz question types
 export interface QuizQuestion {
@@ -814,6 +824,20 @@ export const BLOCK_TEMPLATES: BlockTemplate[] = [
       ],
       points: 10,
       explanation: 'Las opciones correctas son aquellas que cumplen con el criterio.',
+    },
+  },
+  {
+    type: 'teacher_notes',
+    label: 'Notas del Profesor',
+    icon: StickyNote,
+    description: 'Indicaciones visibles solo para el profesor durante la clase',
+    defaultData: {
+      id: '',
+      type: 'teacher_notes',
+      order: 0,
+      title: 'Indicaciones para el profesor',
+      content: '<p>Escribe aquí las indicaciones, preguntas sugeridas o notas que solo tú verás durante la clase.</p>',
+      highlightColor: 'yellow',
     },
   },
 ]

@@ -365,23 +365,22 @@ export async function deleteLesson(lessonId: string) {
     }
     const userId = session.user.id
 
-    // Verify user owns the lesson through the module
-    const lesson = await db.lesson.findUnique({
-      where: { id: lessonId },
-      include: {
-        module: {
-          include: {
-            course: {
-              select: {
-                createdById: true,
-              },
-            },
-          },
-        },
-      },
-    })
+    // Optimized auth check: single query with joins instead of nested includes
+    const lessonAuth = await db.$queryRaw<
+      { id: string; moduleId: string | null; courseCreatedById: string | null }[]
+    >`
+      SELECT 
+        l.id,
+        l."moduleId",
+        c."createdById" as "courseCreatedById"
+      FROM "Lesson" l
+      LEFT JOIN "Module" m ON l."moduleId" = m.id
+      LEFT JOIN "Course" c ON m."courseId" = c.id
+      WHERE l.id = ${lessonId}
+      LIMIT 1
+    `
 
-    if (!lesson || !lesson.module || lesson.module.course.createdById !== userId) {
+    if (!lessonAuth || lessonAuth.length === 0 || !lessonAuth[0].moduleId || lessonAuth[0].courseCreatedById !== userId) {
       throw new Error('Lesson not found or unauthorized')
     }
 
@@ -495,32 +494,35 @@ export async function updateLessonBlocks(lessonId: string, blocks: Block[]) {
     }
     const userId = session.user.id
 
-    // Verify user owns the lesson through the module
-    const lesson = await db.lesson.findUnique({
-      where: { id: lessonId },
-      include: {
-        module: {
-          include: {
-            course: {
-              select: {
-                createdById: true,
-              },
-            },
-          },
-        },
-      },
-    })
+    // Optimized auth check: use raw query to get only necessary fields in a single query
+    // This avoids N+1 queries from nested includes on every auto-save
+    const lessonAuth = await db.$queryRaw<
+      { id: string; moduleId: string | null; teacherId: string | null; courseCreatedById: string | null }[]
+    >`
+      SELECT 
+        l.id,
+        l."moduleId",
+        l."teacherId",
+        c."createdById" as "courseCreatedById"
+      FROM "Lesson" l
+      LEFT JOIN "Module" m ON l."moduleId" = m.id
+      LEFT JOIN "Course" c ON m."courseId" = c.id
+      WHERE l.id = ${lessonId}
+      LIMIT 1
+    `
 
-    if (!lesson) {
+    if (!lessonAuth || lessonAuth.length === 0) {
       console.error(`Lesson not found: ${lessonId}`)
       throw new Error('Lesson not found')
     }
 
+    const lesson = lessonAuth[0]
+
     // Authorization check: either course owner (for module lessons) or teacher (for personalized lessons)
-    const isModuleLesson = lesson.module !== null
+    const isModuleLesson = lesson.moduleId !== null
     const isPersonalizedLesson = lesson.teacherId !== null
 
-    if (isModuleLesson && lesson.module!.course.createdById !== userId) {
+    if (isModuleLesson && lesson.courseCreatedById !== userId) {
       throw new Error('Unauthorized')
     }
 

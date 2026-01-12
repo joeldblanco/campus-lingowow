@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Loader2, Plus, BookOpen } from 'lucide-react'
 import { ContentPicker } from './content-picker'
 import { ShareableContent, getShareableContent } from '@/lib/actions/classroom'
+import { StudentResponsesPanel } from './interactive-block-wrapper'
 
 interface ActiveLessonViewerProps {
   lessonId?: string
@@ -84,7 +85,9 @@ export function ActiveLessonViewer({ lessonData, isLoading, isTeacher, onContent
 
   return (
     <div className="w-full h-full">
-      <LessonContent lesson={lessonData} isTeacher={isTeacher} />
+      <LessonContent lesson={lessonData} isTeacher={isTeacher} isClassroom={true} />
+      {/* Panel for teachers to see student responses in real-time */}
+      {isTeacher && <StudentResponsesPanel />}
     </div>
   )
 }

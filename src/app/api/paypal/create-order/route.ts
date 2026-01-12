@@ -22,10 +22,10 @@ export async function POST(req: NextRequest) {
     // Obtener datos del request body para usuarios invitados
     const body = await req.json()
     
-    const { items, subtotal, tax, total, currency = 'USD', customerInfo } = body as {
+    const { items, subtotal, tax = 0, total, currency = 'USD', customerInfo } = body as {
       items: CartItem[]
       subtotal: number
-      tax: number
+      tax?: number
       total: number
       currency?: string
       customerInfo?: {

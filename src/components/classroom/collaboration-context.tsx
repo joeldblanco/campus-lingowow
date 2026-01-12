@@ -29,6 +29,18 @@ interface AudioSyncState {
   timestamp: number
 }
 
+export interface InteractiveBlockResponse {
+  blockId: string
+  blockType: string
+  participantId: string
+  participantName: string
+  isTeacher: boolean
+  timestamp: number
+  response: unknown // The actual response data varies by block type
+  isCorrect?: boolean // For blocks that have correct/incorrect answers
+  score?: number // For scored blocks
+}
+
 interface CollaborationContextType {
   // Cursor
   remoteCursor: CursorPosition | null
@@ -44,6 +56,11 @@ interface CollaborationContextType {
   syncAudioPlay: (blockId: string, currentTime: number) => void
   syncAudioPause: (blockId: string, currentTime: number) => void
   syncAudioSeek: (blockId: string, currentTime: number) => void
+
+  // Interactive Block Responses (student answers to exercises)
+  remoteBlockResponses: Map<string, InteractiveBlockResponse>
+  sendBlockResponse: (blockId: string, blockType: string, response: unknown, isCorrect?: boolean, score?: number) => void
+  clearBlockResponse: (blockId: string) => void
 
   // Whiteboard (handled separately by Excalidraw collaboration)
 
@@ -89,6 +106,9 @@ export function CollaborationProvider({
 
   // Audio sync state
   const [remoteAudioState, setRemoteAudioState] = useState<AudioSyncState | null>(null)
+
+  // Interactive block responses state (for student answers to exercises)
+  const [remoteBlockResponses, setRemoteBlockResponses] = useState<Map<string, InteractiveBlockResponse>>(new Map())
 
   // Screen share state (will be used when screen share listener is implemented)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -160,6 +180,41 @@ export function CollaborationProvider({
 
     addCommandListener('audio-sync', handleAudioSync)
     return () => removeCommandListener('audio-sync', handleAudioSync)
+  }, [connectionStatus, addCommandListener, removeCommandListener])
+
+  // Handle incoming interactive block responses
+  useEffect(() => {
+    if (connectionStatus !== 'connected') return
+
+    const handleBlockResponse = (data: Record<string, unknown>) => {
+      if (data.type === 'BLOCK_RESPONSE') {
+        const response: InteractiveBlockResponse = {
+          blockId: data.blockId as string,
+          blockType: data.blockType as string,
+          participantId: data.participantId as string,
+          participantName: data.participantName as string,
+          isTeacher: data.isTeacher as boolean,
+          timestamp: Date.now(),
+          response: data.response,
+          isCorrect: data.isCorrect as boolean | undefined,
+          score: data.score as number | undefined,
+        }
+        setRemoteBlockResponses(prev => {
+          const newMap = new Map(prev)
+          newMap.set(response.blockId, response)
+          return newMap
+        })
+      } else if (data.type === 'BLOCK_RESPONSE_CLEAR') {
+        setRemoteBlockResponses(prev => {
+          const newMap = new Map(prev)
+          newMap.delete(data.blockId as string)
+          return newMap
+        })
+      }
+    }
+
+    addCommandListener('block-response', handleBlockResponse)
+    return () => removeCommandListener('block-response', handleBlockResponse)
   }, [connectionStatus, addCommandListener, removeCommandListener])
 
   // Clear stale cursor after 3 seconds of inactivity
@@ -252,6 +307,36 @@ export function CollaborationProvider({
     })
   }, [sendCommand, isTeacher])
 
+  // Send interactive block response (student answers)
+  const sendBlockResponse = useCallback((
+    blockId: string,
+    blockType: string,
+    response: unknown,
+    isCorrect?: boolean,
+    score?: number
+  ) => {
+    sendCommand('block-response', {
+      type: 'BLOCK_RESPONSE',
+      blockId,
+      blockType,
+      response,
+      isCorrect,
+      score,
+      participantId: isTeacher ? 'teacher' : 'student',
+      participantName,
+      isTeacher,
+    })
+  }, [sendCommand, isTeacher, participantName])
+
+  // Clear a block response
+  const clearBlockResponse = useCallback((blockId: string) => {
+    sendCommand('block-response', {
+      type: 'BLOCK_RESPONSE_CLEAR',
+      blockId,
+      participantId: isTeacher ? 'teacher' : 'student',
+    })
+  }, [sendCommand, isTeacher])
+
   return (
     <CollaborationContext.Provider
       value={{
@@ -264,6 +349,9 @@ export function CollaborationProvider({
         syncAudioPlay,
         syncAudioPause,
         syncAudioSeek,
+        remoteBlockResponses,
+        sendBlockResponse,
+        clearBlockResponse,
         isRemoteScreenSharing,
         remoteScreenTrack,
         isTeacher,

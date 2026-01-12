@@ -32,6 +32,7 @@ import {
   GrammarVisualizerBlock,
   ShortAnswerBlock,
   MultiSelectBlock,
+  TeacherNotesBlock,
 } from '@/types/course-builder'
 import {
   Download,
@@ -63,9 +64,16 @@ import { EssayAIGrading as EssayAIGradingButton } from '@/components/lessons/ess
 interface BlockPreviewProps {
   block: Block
   isTeacher?: boolean
+  isClassroom?: boolean // When true, enables interactive block synchronization in classroom
 }
 
-export function BlockPreview({ block }: BlockPreviewProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function BlockPreview({ block, isTeacher, isClassroom }: BlockPreviewProps) {
+  // Teacher notes are only visible to teachers
+  if (block.type === 'teacher_notes' && !isTeacher) {
+    return null
+  }
+
   const renderBlockContent = () => {
     switch (block.type) {
       case 'title':
@@ -112,6 +120,8 @@ export function BlockPreview({ block }: BlockPreviewProps) {
         return <StructuredContentBlockPreview block={block as StructuredContentBlock} />
       case 'grammar-visualizer':
         return <GrammarVisualizerBlockPreview block={block as GrammarVisualizerBlock} />
+      case 'teacher_notes':
+        return <TeacherNotesBlockPreview block={block as TeacherNotesBlock} />
       default:
         return (
           <div className="p-4 bg-yellow-50 border border-yellow-200 rounded text-yellow-800 text-sm">
@@ -2599,6 +2609,83 @@ function MultiSelectBlockPreview({ block }: { block: MultiSelectBlock }) {
           </Button>
         )}
       </div>
+    </div>
+  )
+}
+
+function TeacherNotesBlockPreview({ block }: { block: TeacherNotesBlock }) {
+  const colorClasses = {
+    yellow: {
+      bg: 'bg-yellow-50',
+      border: 'border-yellow-300',
+      icon: 'text-yellow-600',
+      title: 'text-yellow-800',
+    },
+    blue: {
+      bg: 'bg-blue-50',
+      border: 'border-blue-300',
+      icon: 'text-blue-600',
+      title: 'text-blue-800',
+    },
+    green: {
+      bg: 'bg-green-50',
+      border: 'border-green-300',
+      icon: 'text-green-600',
+      title: 'text-green-800',
+    },
+    purple: {
+      bg: 'bg-purple-50',
+      border: 'border-purple-300',
+      icon: 'text-purple-600',
+      title: 'text-purple-800',
+    },
+    orange: {
+      bg: 'bg-orange-50',
+      border: 'border-orange-300',
+      icon: 'text-orange-600',
+      title: 'text-orange-800',
+    },
+  }
+
+  const colors = colorClasses[block.highlightColor || 'yellow']
+
+  return (
+    <div className={cn(
+      "rounded-xl border-2 border-dashed p-5 space-y-3",
+      colors.bg,
+      colors.border
+    )}>
+      <div className="flex items-center gap-2">
+        <div className={cn("p-1.5 rounded-lg", colors.bg)}>
+          <LucideIcons.StickyNote className={cn("h-5 w-5", colors.icon)} />
+        </div>
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <span className={cn("text-xs font-bold uppercase tracking-wider", colors.icon)}>
+              Solo para el profesor
+            </span>
+            <Badge variant="outline" className={cn("text-[10px] px-1.5 py-0", colors.border, colors.icon)}>
+              No visible para estudiantes
+            </Badge>
+          </div>
+          {block.title && (
+            <h3 className={cn("font-semibold text-lg mt-1", colors.title)}>
+              {block.title}
+            </h3>
+          )}
+        </div>
+      </div>
+
+      {block.content ? (
+        <div 
+          className="prose prose-sm max-w-none text-gray-700 leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: block.content }}
+        />
+      ) : (
+        <p className="text-gray-500 italic text-sm">
+          Sin contenido. Edita este bloque para agregar indicaciones.
+        </p>
+      )}
     </div>
   )
 }

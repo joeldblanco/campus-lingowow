@@ -8,9 +8,10 @@ import { Block } from '@/types/course-builder'
 interface LessonContentProps {
     lesson: LessonForView
     isTeacher?: boolean
+    isClassroom?: boolean // When true, enables interactive block synchronization
 }
 
-export function LessonContent({ lesson, isTeacher }: LessonContentProps) {
+export function LessonContent({ lesson, isTeacher, isClassroom }: LessonContentProps) {
     if (!lesson.contents || lesson.contents.length === 0) {
         return (
             <div className="text-center py-12 text-gray-500">
@@ -38,7 +39,7 @@ export function LessonContent({ lesson, isTeacher }: LessonContentProps) {
 
             {blocks.map((block) => (
                 <div key={block.id} className="scroll-mt-20" data-block-id={block.id}>
-                    <BlockPreview block={block} isTeacher={isTeacher} />
+                    <BlockPreview block={block} isTeacher={isTeacher} isClassroom={isClassroom} />
                 </div>
             ))}
         </div>
