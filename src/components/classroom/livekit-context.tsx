@@ -66,6 +66,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   const commandListenersRef = useRef<Map<string, Set<(values: Record<string, unknown>) => void>>>(new Map())
   const isConnectingRef = useRef(false)
   const isScreenSharingRef = useRef(false)
+  const wasScreenSharingBeforeReconnectRef = useRef(false)
 
   const [localVideoTrack, setLocalVideoTrack] = useState<Track | undefined>(undefined)
   const [localAudioTrack, setLocalAudioTrack] = useState<Track | undefined>(undefined)
@@ -260,9 +261,10 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       // Handle reconnection events to prevent InvalidAccessError from stale RTCRtpSender references
       room.on(RoomEvent.Reconnecting, () => {
         console.log('[LiveKit] Reconnecting - clearing screen share state to prevent stale sender errors')
+        // Save user's screen sharing intent before clearing state
+        wasScreenSharingBeforeReconnectRef.current = isScreenSharingRef.current
         // Clear screen share state immediately when reconnection starts
         // This prevents LiveKit from trying to remove tracks with stale RTCRtpSender references
-        // Use ref to get current value (avoids stale closure)
         if (isScreenSharingRef.current) {
           setIsScreenSharing(false)
         }
@@ -285,13 +287,20 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
             } else if (pub.track.kind === Track.Kind.Audio && pub.source === Track.Source.Microphone) {
               setLocalAudioTrack(pub.track)
             } else if (pub.track.kind === Track.Kind.Video && pub.source === Track.Source.ScreenShare) {
-              setLocalScreenShareTrack(pub.track)
-              setIsScreenSharing(true)
+              // Only restore screen share state if user was actually sharing before reconnection
+              if (wasScreenSharingBeforeReconnectRef.current) {
+                setLocalScreenShareTrack(pub.track)
+                setIsScreenSharing(true)
+              }
             } else if (pub.track.kind === Track.Kind.Audio && pub.source === Track.Source.ScreenShareAudio) {
-              setLocalScreenShareAudioTrack(pub.track)
+              if (wasScreenSharingBeforeReconnectRef.current) {
+                setLocalScreenShareAudioTrack(pub.track)
+              }
             }
           }
         })
+        // Reset the flag after reconnection is complete
+        wasScreenSharingBeforeReconnectRef.current = false
       })
 
       room.on(RoomEvent.ParticipantConnected, (participant: RemoteParticipant) => {
