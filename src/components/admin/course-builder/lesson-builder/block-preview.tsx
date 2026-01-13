@@ -1882,9 +1882,10 @@ function MatchBlockPreview({ block }: { block: MatchBlock }) {
   }
 
   // Initialize on mount or block change
-  useState(() => {
+  useEffect(() => {
     init()
-  })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // Re-shuffle when block pairs change effectively (or manual reset)
   const handleReset = () => {
