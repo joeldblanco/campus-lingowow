@@ -466,8 +466,11 @@ function QuizBlockPreview({ block }: { block: QuizBlock }) {
   const questionCount = block.questions?.length || 0
   const currentQuestion = block.questions?.[currentQuestionIndex]
   
-  // For teachers in classroom: follow student's navigation and answers
-  const isTeacherViewing = classroomSync.isInClassroom && classroomSync.isTeacher && remoteNav
+  // Check if this is a teacher in classroom mode
+  const isTeacherInClassroom = classroomSync.isInClassroom && classroomSync.isTeacher
+  
+  // For teachers in classroom: follow student's navigation and answers (when available)
+  const isTeacherViewing = isTeacherInClassroom && remoteNav
   const displayQuestionIndex = isTeacherViewing ? remoteNav.currentStep : currentQuestionIndex
   const displayHasStarted = isTeacherViewing ? remoteNav.hasStarted : hasStarted
   const displayShowResults = isTeacherViewing ? remoteNav.isCompleted : showResults
@@ -476,21 +479,24 @@ function QuizBlockPreview({ block }: { block: QuizBlock }) {
   const displayAnswers = isTeacherViewing && remoteNav.currentAnswers ? remoteNav.currentAnswers : answers
 
   const handleStart = () => {
+    // Teachers in classroom mode cannot start the quiz
+    if (isTeacherInClassroom) return
+    
     setHasStarted(true)
     setCurrentQuestionIndex(0)
     setAnswers({})
     setShowResults(false)
     
-    // Sync navigation state to teacher
+    // Sync navigation state to teacher (with empty answers)
     if (classroomSync.canInteract) {
-      classroomSync.syncBlockNavigation(block.id, 0, questionCount, true, false)
+      classroomSync.syncBlockNavigation(block.id, 0, questionCount, true, false, {})
     }
   }
 
   const handleAnswerSelect = (answer: string) => {
     if (!currentQuestion) return
     // Teachers in classroom mode cannot interact
-    if (classroomSync.isInClassroom && classroomSync.isTeacher) return
+    if (isTeacherInClassroom) return
     
     const newAnswers = { ...answers, [currentQuestion.id]: answer }
     setAnswers(newAnswers)
@@ -525,8 +531,8 @@ function QuizBlockPreview({ block }: { block: QuizBlock }) {
           percentage,
         }, passed, score)
         
-        // Mark as completed
-        classroomSync.syncBlockNavigation(block.id, currentQuestionIndex, questionCount, true, true)
+        // Mark as completed (include final answers)
+        classroomSync.syncBlockNavigation(block.id, currentQuestionIndex, questionCount, true, true, answers)
       }
       
       setShowResults(true)
@@ -622,10 +628,16 @@ function QuizBlockPreview({ block }: { block: QuizBlock }) {
         </div>
 
         <div className="text-center">
-          <Button onClick={handleStart} disabled={questionCount === 0}>
-            <Play className="h-4 w-4 mr-2" />
-            Comenzar Quiz
-          </Button>
+          {isTeacherInClassroom ? (
+            <p className="text-sm text-muted-foreground italic">
+              Esperando a que el estudiante comience el quiz...
+            </p>
+          ) : (
+            <Button onClick={handleStart} disabled={questionCount === 0}>
+              <Play className="h-4 w-4 mr-2" />
+              Comenzar Quiz
+            </Button>
+          )}
         </div>
       </div>
     )
@@ -1666,11 +1678,72 @@ function VocabularyBlockPreview({ block }: { block: VocabularyBlock }) {
 
 function FillBlanksBlockPreview({ block }: { block: FillBlanksBlock }) {
   const [index, setIndex] = useState(0)
+  const [allInputs, setAllInputs] = useState<Record<string, Record<number, string>>>({})
+  const [allResults, setAllResults] = useState<Record<string, boolean>>({})
   const items = block.items || []
   const currentItem = items[index]
+  
+  // Get classroom sync
+  const classroomSync = useClassroomSync()
+  const remoteNav = classroomSync.getRemoteNavigation(block.id)
+  const isTeacherInClassroom = classroomSync.isInClassroom && classroomSync.isTeacher
+  
+  // For teachers: follow student's navigation
+  const displayIndex = isTeacherInClassroom && remoteNav ? remoteNav.currentStep : index
+  const displayItem = items[displayIndex]
+  
+  // Parse remote answers for display
+  const displayInputs = isTeacherInClassroom && remoteNav?.currentAnswers 
+    ? Object.fromEntries(Object.entries(remoteNav.currentAnswers).map(([k, v]) => [parseInt(k), v]))
+    : (allInputs[displayItem?.id] || {})
 
-  // If no items but legacy content exists (migration fallback logic not strictly needed if we assume clean state, 
-  // but good for dev). We'll assuming items are populated.
+  const handleInputChange = (partIndex: number, value: string) => {
+    if (isTeacherInClassroom || !currentItem) return
+    const newInputs = { ...allInputs[currentItem.id], [partIndex]: value }
+    setAllInputs(prev => ({ ...prev, [currentItem.id]: newInputs }))
+    
+    // Sync to teacher
+    if (classroomSync.canInteract) {
+      const answersForSync = Object.fromEntries(Object.entries(newInputs).map(([k, v]) => [k, v]))
+      classroomSync.syncBlockNavigation(block.id, index, items.length, true, false, answersForSync)
+    }
+  }
+
+  const handleCheck = () => {
+    if (isTeacherInClassroom || !currentItem) return
+    const parts = currentItem.content ? currentItem.content.split(/(\[[^\]]+\])/g) : []
+    const inputs = allInputs[currentItem.id] || {}
+    const blanks = parts.filter(part => part.startsWith('[') && part.endsWith(']'))
+    let correctCount = 0
+    blanks.forEach((part) => {
+      const answer = part.slice(1, -1)
+      const partIndex = parts.indexOf(part)
+      const userAnswer = inputs[partIndex] || ''
+      if (userAnswer.toLowerCase().trim() === answer.toLowerCase().trim()) correctCount++
+    })
+    const allCorrect = correctCount === blanks.length
+    setAllResults(prev => ({ ...prev, [currentItem.id]: allCorrect }))
+    
+    // Sync result to teacher
+    if (classroomSync.canInteract) {
+      classroomSync.sendBlockResponse(block.id, 'fill_blanks', {
+        itemId: currentItem.id,
+        correctCount,
+        totalBlanks: blanks.length,
+      }, allCorrect, correctCount)
+    }
+  }
+
+  const handleNav = (newIndex: number) => {
+    if (isTeacherInClassroom) return
+    setIndex(newIndex)
+    
+    if (classroomSync.canInteract) {
+      const currentInputs = allInputs[items[newIndex]?.id] || {}
+      const answersForSync = Object.fromEntries(Object.entries(currentInputs).map(([k, v]) => [k, v]))
+      classroomSync.syncBlockNavigation(block.id, newIndex, items.length, true, false, answersForSync)
+    }
+  }
 
   if (!items.length) {
     return (
@@ -1686,6 +1759,9 @@ function FillBlanksBlockPreview({ block }: { block: FillBlanksBlock }) {
     )
   }
 
+  const parts = displayItem?.content ? displayItem.content.split(/(\[[^\]]+\])/g) : []
+  const showResult = displayItem ? allResults[displayItem.id] !== undefined : false
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -1695,7 +1771,7 @@ function FillBlanksBlockPreview({ block }: { block: FillBlanksBlock }) {
         </div>
         {items.length > 1 && (
           <span className="text-xs text-muted-foreground">
-            Ejercicio {index + 1} de {items.length}
+            Ejercicio {displayIndex + 1} de {items.length}
           </span>
         )}
       </div>
@@ -1703,14 +1779,63 @@ function FillBlanksBlockPreview({ block }: { block: FillBlanksBlock }) {
       {block.title && <h3 className="text-xl font-bold">{block.title}</h3>}
 
       <div className="relative">
-        <FillBlanksExercise item={currentItem} key={currentItem.id} />
+        <div key={displayItem?.id} className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
+          <div className="p-6 bg-white rounded-xl border shadow-sm leading-loose text-lg">
+            {parts.map((part, i) => {
+              if (part.startsWith('[') && part.endsWith(']')) {
+                const answer = part.slice(1, -1)
+                const userAnswer = displayInputs[i] || ''
+                const isCorrect = userAnswer.toLowerCase().trim() === answer.toLowerCase().trim()
 
-        {items.length > 1 && (
+                return (
+                  <span key={i} className="mx-1 inline-block relative">
+                    <input
+                      value={userAnswer}
+                      onChange={(e) => handleInputChange(i, e.target.value)}
+                      disabled={showResult || isTeacherInClassroom}
+                      placeholder={isTeacherInClassroom ? "..." : ""}
+                      className={cn(
+                        "border-b-2 px-2 py-0.5 text-center min-w-[80px] font-medium focus:outline-none rounded-t transition-colors",
+                        showResult
+                          ? (isCorrect ? "border-green-500 bg-green-50 text-green-700" : "border-red-500 bg-red-50 text-red-700")
+                          : "border-primary/50 bg-primary/5 text-primary",
+                        isTeacherInClassroom && "cursor-default"
+                      )}
+                    />
+                    {showResult && !isCorrect && (
+                      <span className="absolute -top-6 left-0 text-xs text-green-600 font-bold bg-green-100 px-1 rounded whitespace-nowrap z-10">
+                        {answer}
+                      </span>
+                    )}
+                  </span>
+                )
+              }
+              return <span key={i}>{part}</span>
+            })}
+            {(!displayItem?.content) && (
+              <div className="text-muted-foreground italic text-sm">Contenido no configurado</div>
+            )}
+          </div>
+
+          {!isTeacherInClassroom && (
+            <div className="flex gap-2">
+              <Button onClick={handleCheck} disabled={showResult} size="sm">
+                Verificar
+              </Button>
+            </div>
+          )}
+          
+          {isTeacherInClassroom && !showResult && (
+            <p className="text-sm text-muted-foreground italic text-center">Esperando respuesta del estudiante...</p>
+          )}
+        </div>
+
+        {items.length > 1 && !isTeacherInClassroom && (
           <div className="flex justify-between mt-4">
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setIndex(prev => Math.max(0, prev - 1))}
+              onClick={() => handleNav(Math.max(0, index - 1))}
               disabled={index === 0}
             >
               Anterior
@@ -1718,7 +1843,7 @@ function FillBlanksBlockPreview({ block }: { block: FillBlanksBlock }) {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setIndex(prev => Math.min(items.length - 1, prev + 1))}
+              onClick={() => handleNav(Math.min(items.length - 1, index + 1))}
               disabled={index === items.length - 1}
             >
               Siguiente
@@ -1730,101 +1855,19 @@ function FillBlanksBlockPreview({ block }: { block: FillBlanksBlock }) {
   )
 }
 
-function FillBlanksExercise({ item }: { item: { id: string, content: string } }) {
-  const parts = item.content ? item.content.split(/(\[[^\]]+\])/g) : []
-  const [inputs, setInputs] = useState<Record<number, string>>({})
-  const [showResult, setShowResult] = useState(false)
-
-  const checkAnswers = () => setShowResult(true)
-  const reset = () => {
-    setInputs({})
-    setShowResult(false)
-  }
-
-  // Calculate results
-  const blanks = parts.filter(part => part.startsWith('[') && part.endsWith(']'))
-  const results = blanks.map((part) => {
-    const answer = part.slice(1, -1)
-    const partIndex = parts.indexOf(part)
-    const userAnswer = inputs[partIndex] || ''
-    return userAnswer.toLowerCase().trim() === answer.toLowerCase().trim()
-  })
-  const correctCount = results.filter(r => r).length
-  const totalBlanks = blanks.length
-  const allCorrect = correctCount === totalBlanks
-
-  return (
-    <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
-      <div className="p-6 bg-white rounded-xl border shadow-sm leading-loose text-lg">
-        {parts.map((part, i) => {
-          if (part.startsWith('[') && part.endsWith(']')) {
-            const answer = part.slice(1, -1)
-            const userAnswer = inputs[i] || ''
-            const isCorrect = userAnswer.toLowerCase().trim() === answer.toLowerCase().trim()
-
-            return (
-              <span key={i} className="mx-1 inline-block relative">
-                <input
-                  value={userAnswer}
-                  onChange={(e) => setInputs(prev => ({ ...prev, [i]: e.target.value }))}
-                  disabled={showResult}
-                  className={cn(
-                    "border-b-2 px-2 py-0.5 text-center min-w-[80px] font-medium focus:outline-none rounded-t transition-colors",
-                    showResult
-                      ? (isCorrect ? "border-green-500 bg-green-50 text-green-700" : "border-red-500 bg-red-50 text-red-700")
-                      : "border-primary/50 bg-primary/5 text-primary"
-                  )}
-                />
-                {showResult && !isCorrect && (
-                  <span className="absolute -top-6 left-0 text-xs text-green-600 font-bold bg-green-100 px-1 rounded whitespace-nowrap z-10">
-                    {answer}
-                  </span>
-                )}
-              </span>
-            )
-          }
-          return <span key={i}>{part}</span>
-        })}
-        {(!item.content) && (
-          <div className="text-muted-foreground italic text-sm">Contenido no configurado</div>
-        )}
-      </div>
-
-      {showResult && (
-        <div className={cn(
-          "p-4 rounded-lg text-center",
-          allCorrect ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"
-        )}>
-          <p className="font-bold">
-            {allCorrect 
-              ? "¡Excelente! Todas las respuestas son correctas" 
-              : `${correctCount} de ${totalBlanks} respuestas correctas`}
-          </p>
-          {!allCorrect && (
-            <p className="text-sm mt-1">
-              Las respuestas correctas se muestran en verde sobre los espacios incorrectos
-            </p>
-          )}
-        </div>
-      )}
-
-      <div className="flex gap-2">
-        <Button onClick={checkAnswers} disabled={showResult} size="sm">
-          Verificar
-        </Button>
-        <Button variant="outline" onClick={reset} disabled={!showResult} size="sm">
-          Reintentar
-        </Button>
-      </div>
-    </div>
-  )
-}
-
 function MatchBlockPreview({ block }: { block: MatchBlock }) {
   const [selectedLeft, setSelectedLeft] = useState<string | null>(null)
   const [matches, setMatches] = useState<Record<string, string>>({}) // leftId -> rightId
   const [shuffledRight, setShuffledRight] = useState<Array<{ id: string, text: string }>>([])
   const [showResult, setShowResult] = useState(false)
+  
+  // Get classroom sync
+  const classroomSync = useClassroomSync()
+  const remoteNav = classroomSync.getRemoteNavigation(block.id)
+  const isTeacherInClassroom = classroomSync.isInClassroom && classroomSync.isTeacher
+  
+  // For teachers: use remote matches
+  const displayMatches = isTeacherInClassroom && remoteNav?.currentAnswers ? remoteNav.currentAnswers : matches
 
   // Shuffle effects
   const init = () => {
@@ -1845,31 +1888,53 @@ function MatchBlockPreview({ block }: { block: MatchBlock }) {
 
   // Re-shuffle when block pairs change effectively (or manual reset)
   const handleReset = () => {
+    if (isTeacherInClassroom) return
     init()
   }
 
   const handleLeftClick = (id: string) => {
-    if (showResult) return
+    if (showResult || isTeacherInClassroom) return
     if (matches[id]) {
-      // Unselect if already matched? Or just reselect to change?
-      // Simple: Allow re-selection
       const newMatches = { ...matches }
       delete newMatches[id]
       setMatches(newMatches)
+      
+      // Sync to teacher
+      if (classroomSync.canInteract) {
+        classroomSync.syncBlockNavigation(block.id, 0, block.pairs?.length || 0, true, false, newMatches)
+      }
     }
     setSelectedLeft(id)
   }
 
   const handleRightClick = (rightId: string) => {
-    if (showResult) return
+    if (showResult || isTeacherInClassroom) return
     if (selectedLeft) {
-      setMatches(prev => ({ ...prev, [selectedLeft]: rightId }))
+      const newMatches = { ...matches, [selectedLeft]: rightId }
+      setMatches(newMatches)
       setSelectedLeft(null)
+      
+      // Sync to teacher
+      if (classroomSync.canInteract) {
+        classroomSync.syncBlockNavigation(block.id, 0, block.pairs?.length || 0, true, false, newMatches)
+      }
     }
   }
 
   const checkAnswers = () => {
+    if (isTeacherInClassroom) return
     setShowResult(true)
+    
+    // Calculate and sync result
+    if (classroomSync.canInteract && block.pairs) {
+      const correctMatches = Object.keys(matches).filter(leftId => matches[leftId] === leftId).length
+      const allCorrect = correctMatches === block.pairs.length
+      classroomSync.sendBlockResponse(block.id, 'match', {
+        matches,
+        correctCount: correctMatches,
+        totalPairs: block.pairs.length,
+      }, allCorrect, correctMatches)
+    }
   }
 
   return (
@@ -1884,20 +1949,17 @@ function MatchBlockPreview({ block }: { block: MatchBlock }) {
         {/* Left Side */}
         <div className="space-y-4">
           {block.pairs?.map(pair => {
-            const isMatched = !!matches[pair.id]
+            const isMatched = !!displayMatches[pair.id]
             const isSelected = selectedLeft === pair.id
-            const matchedRightId = matches[pair.id]
+            const matchedRightId = displayMatches[pair.id]
 
             // Check correctness if showing result
             let statusClass = "border-gray-200 bg-white"
             if (showResult && isMatched) {
-              // The correct right ID for this left ID is... pair.id (assuming ids match in pair object source) 
-              // Wait, pair structure is {id, left, right}. So if I matched pair.id(Left) with pair.id(Right from shuffled), it is correct.
-              // But wait, shuffledRight has same IDs? Yes, created from block.pairs.
               statusClass = matchedRightId === pair.id
                 ? "border-green-500 bg-green-50"
                 : "border-red-500 bg-red-50"
-            } else if (isSelected) {
+            } else if (isSelected && !isTeacherInClassroom) {
               statusClass = "border-blue-500 bg-blue-50 ring-2 ring-blue-200"
             } else if (isMatched) {
               statusClass = "border-blue-200 bg-blue-50/50"
@@ -1908,7 +1970,8 @@ function MatchBlockPreview({ block }: { block: MatchBlock }) {
                 key={`l-${pair.id}`}
                 onClick={() => handleLeftClick(pair.id)}
                 className={cn(
-                  "p-4 border rounded-lg shadow-sm font-medium flex items-center justify-between cursor-pointer transition-all hover:shadow-md",
+                  "p-4 border rounded-lg shadow-sm font-medium flex items-center justify-between transition-all",
+                  isTeacherInClassroom ? "cursor-default" : "cursor-pointer hover:shadow-md",
                   statusClass
                 )}
               >
@@ -1923,12 +1986,11 @@ function MatchBlockPreview({ block }: { block: MatchBlock }) {
         <div className="space-y-4">
           {shuffledRight.map(item => {
             // Find which left ID is connected to this right ID
-            const connectedLeftId = Object.keys(matches).find(key => matches[key] === item.id)
+            const connectedLeftId = Object.keys(displayMatches).find(key => displayMatches[key] === item.id)
             const isConnected = !!connectedLeftId
 
             let statusClass = "border-2 border-dashed border-gray-200 bg-muted/30"
             if (showResult && isConnected) {
-              // Correct logic: The left side 'connectedLeftId' should match this item.id
               statusClass = connectedLeftId === item.id
                 ? "border-green-500 bg-green-50 border-solid"
                 : "border-red-500 bg-red-50 border-solid"
@@ -2045,8 +2107,59 @@ function MatchBlockPreview({ block }: { block: MatchBlock }) {
 
 function TrueFalseBlockPreview({ block }: { block: TrueFalseBlock }) {
   const [index, setIndex] = useState(0)
+  const [answers, setAnswers] = useState<Record<string, boolean | null>>({})
+  const [results, setResults] = useState<Record<string, boolean>>({})
   const items = block.items || []
   const currentItem = items[index]
+  
+  // Get classroom sync
+  const classroomSync = useClassroomSync()
+  const remoteNav = classroomSync.getRemoteNavigation(block.id)
+  const isTeacherInClassroom = classroomSync.isInClassroom && classroomSync.isTeacher
+  
+  // For teachers: follow student's navigation
+  const displayIndex = isTeacherInClassroom && remoteNav ? remoteNav.currentStep : index
+  const displayItem = items[displayIndex]
+  const displayAnswers = isTeacherInClassroom && remoteNav?.currentAnswers 
+    ? Object.fromEntries(Object.entries(remoteNav.currentAnswers).map(([k, v]) => [k, v === 'true']))
+    : answers
+
+  const handleSelect = (value: boolean) => {
+    if (isTeacherInClassroom || !currentItem) return
+    const newAnswers = { ...answers, [currentItem.id]: value }
+    setAnswers(newAnswers)
+    
+    // Sync to teacher
+    if (classroomSync.canInteract) {
+      const answersForSync = Object.fromEntries(Object.entries(newAnswers).map(([k, v]) => [k, String(v)]))
+      classroomSync.syncBlockNavigation(block.id, index, items.length, true, false, answersForSync)
+    }
+  }
+
+  const handleCheck = () => {
+    if (isTeacherInClassroom || !currentItem) return
+    const isCorrect = answers[currentItem.id] === currentItem.correctAnswer
+    setResults(prev => ({ ...prev, [currentItem.id]: isCorrect }))
+    
+    // Sync result to teacher
+    if (classroomSync.canInteract) {
+      classroomSync.sendBlockResponse(block.id, 'true_false', {
+        itemId: currentItem.id,
+        answer: answers[currentItem.id],
+        isCorrect,
+      }, isCorrect, isCorrect ? 1 : 0)
+    }
+  }
+
+  const handleNav = (newIndex: number) => {
+    if (isTeacherInClassroom) return
+    setIndex(newIndex)
+    
+    if (classroomSync.canInteract) {
+      const answersForSync = Object.fromEntries(Object.entries(answers).map(([k, v]) => [k, String(v)]))
+      classroomSync.syncBlockNavigation(block.id, newIndex, items.length, true, false, answersForSync)
+    }
+  }
 
   if (!items.length) {
     return (
@@ -2062,6 +2175,10 @@ function TrueFalseBlockPreview({ block }: { block: TrueFalseBlock }) {
     )
   }
 
+  const currentAnswer = displayAnswers[displayItem?.id]
+  const currentResult = results[displayItem?.id]
+  const showResult = currentResult !== undefined
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -2071,7 +2188,7 @@ function TrueFalseBlockPreview({ block }: { block: TrueFalseBlock }) {
         </div>
         {items.length > 1 && (
           <span className="text-xs text-muted-foreground">
-            Pregunta {index + 1} de {items.length}
+            Pregunta {displayIndex + 1} de {items.length}
           </span>
         )}
       </div>
@@ -2079,14 +2196,73 @@ function TrueFalseBlockPreview({ block }: { block: TrueFalseBlock }) {
       {block.title && <h3 className="text-xl font-bold">{block.title}</h3>}
 
       <div className="relative">
-        <TrueFalseExercise item={currentItem} key={currentItem.id} />
+        <div key={displayItem?.id} className="p-6 bg-white border rounded-xl shadow-sm text-center space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
+          <h3 className="text-xl font-medium leading-relaxed">
+            {displayItem?.statement || "Afirmación..."}
+          </h3>
 
-        {items.length > 1 && (
+          <div className="flex justify-center gap-4">
+            <button
+              onClick={() => handleSelect(true)}
+              disabled={showResult || isTeacherInClassroom}
+              className={cn(
+                "px-8 py-3 rounded-lg border-2 font-bold transition-all flex items-center gap-2",
+                currentAnswer === true
+                  ? "bg-green-600 text-white border-green-600"
+                  : "bg-green-50 text-green-700 border-green-100 hover:bg-green-100",
+                isTeacherInClassroom && "cursor-default"
+              )}
+            >
+              Verdadero
+            </button>
+            <button
+              onClick={() => handleSelect(false)}
+              disabled={showResult || isTeacherInClassroom}
+              className={cn(
+                "px-8 py-3 rounded-lg border-2 font-bold transition-all flex items-center gap-2",
+                currentAnswer === false
+                  ? "bg-red-600 text-white border-red-600"
+                  : "bg-red-50 text-red-700 border-red-100 hover:bg-red-100",
+                isTeacherInClassroom && "cursor-default"
+              )}
+            >
+              Falso
+            </button>
+          </div>
+
+          {showResult && (
+            <div className={cn(
+              "p-4 rounded-lg text-center space-y-2",
+              currentResult ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+            )}>
+              <p className="font-bold text-lg">
+                {currentResult ? "¡Correcto!" : "Incorrecto"}
+              </p>
+              {!currentResult && displayItem && (
+                <p className="text-sm">
+                  La respuesta correcta es: <strong>{displayItem.correctAnswer ? "Verdadero" : "Falso"}</strong>
+                </p>
+              )}
+            </div>
+          )}
+
+          {!showResult && !isTeacherInClassroom && (
+            <Button onClick={handleCheck} disabled={currentAnswer === null || currentAnswer === undefined} size="sm">
+              Enviar Respuesta
+            </Button>
+          )}
+          
+          {isTeacherInClassroom && !showResult && (
+            <p className="text-sm text-muted-foreground italic">Esperando respuesta del estudiante...</p>
+          )}
+        </div>
+
+        {items.length > 1 && !isTeacherInClassroom && (
           <div className="flex justify-between mt-4">
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setIndex(prev => Math.max(0, prev - 1))}
+              onClick={() => handleNav(Math.max(0, index - 1))}
               disabled={index === 0}
             >
               Anterior
@@ -2094,7 +2270,7 @@ function TrueFalseBlockPreview({ block }: { block: TrueFalseBlock }) {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setIndex(prev => Math.min(items.length - 1, prev + 1))}
+              onClick={() => handleNav(Math.min(items.length - 1, index + 1))}
               disabled={index === items.length - 1}
             >
               Siguiente
@@ -2106,85 +2282,31 @@ function TrueFalseBlockPreview({ block }: { block: TrueFalseBlock }) {
   )
 }
 
-function TrueFalseExercise({ item }: { item: { id: string, statement: string, correctAnswer: boolean } }) {
-  const [selected, setSelected] = useState<boolean | null>(null)
-  const [showResult, setShowResult] = useState(false)
-
-  const checkAnswer = () => {
-    setShowResult(true)
-  }
-
-  return (
-    <div className="p-6 bg-white border rounded-xl shadow-sm text-center space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
-      <h3 className="text-xl font-medium leading-relaxed">
-        {item.statement || "Afirmación..."}
-      </h3>
-
-      <div className="flex justify-center gap-4">
-        <button
-          onClick={() => setSelected(true)}
-          disabled={showResult}
-          className={cn(
-            "px-8 py-3 rounded-lg border-2 font-bold transition-all flex items-center gap-2",
-            selected === true
-              ? "bg-green-600 text-white border-green-600"
-              : "bg-green-50 text-green-700 border-green-100 hover:bg-green-100"
-          )}
-        >
-          Verdadero
-        </button>
-        <button
-          onClick={() => setSelected(false)}
-          disabled={showResult}
-          className={cn(
-            "px-8 py-3 rounded-lg border-2 font-bold transition-all flex items-center gap-2",
-            selected === false
-              ? "bg-red-600 text-white border-red-600"
-              : "bg-red-50 text-red-700 border-red-100 hover:bg-red-100"
-          )}
-        >
-          Falso
-        </button>
-      </div>
-
-      {showResult && (
-        <div className={cn(
-          "p-4 rounded-lg text-center space-y-2",
-          selected === item.correctAnswer ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-        )}>
-          <p className="font-bold text-lg">
-            {selected === item.correctAnswer ? "¡Correcto!" : "Incorrecto"}
-          </p>
-          {selected !== item.correctAnswer && (
-            <p className="text-sm">
-              La respuesta correcta es: <strong>{item.correctAnswer ? "Verdadero" : "Falso"}</strong>
-            </p>
-          )}
-        </div>
-      )}
-
-      {!showResult && (
-        <Button onClick={checkAnswer} disabled={selected === null} size="sm">
-          Enviar Respuesta
-        </Button>
-      )}
-
-      {showResult && (
-        <Button variant="outline" onClick={() => { setSelected(null); setShowResult(false); }} size="sm">
-          Reintentar
-        </Button>
-      )}
-    </div>
-  )
-}
-
 function EssayBlockPreview({ block }: { block: EssayBlock }) {
   const [text, setText] = useState('')
-  const wordCount = text.trim().split(/\s+/).filter(w => w.length > 0).length
-  const meetsMinWords = !block.minWords || wordCount >= block.minWords
   
-  // Get classroom sync if available
+  // Get classroom sync
   const classroomSync = useClassroomSync()
+  const remoteNav = classroomSync.getRemoteNavigation(block.id)
+  const isTeacherInClassroom = classroomSync.isInClassroom && classroomSync.isTeacher
+  
+  // For teachers: show student's text
+  const displayText = isTeacherInClassroom && remoteNav?.currentAnswers?.text 
+    ? remoteNav.currentAnswers.text 
+    : text
+  
+  const wordCount = displayText.trim().split(/\s+/).filter(w => w.length > 0).length
+  const meetsMinWords = !block.minWords || wordCount >= block.minWords
+
+  const handleTextChange = (value: string) => {
+    if (isTeacherInClassroom) return
+    setText(value)
+    
+    // Sync to teacher (debounced would be better but simple for now)
+    if (classroomSync.canInteract) {
+      classroomSync.syncBlockNavigation(block.id, 0, 1, true, false, { text: value })
+    }
+  }
 
   return (
     <div className="space-y-4">
@@ -2212,11 +2334,14 @@ function EssayBlockPreview({ block }: { block: EssayBlock }) {
       </div>
 
       <textarea
-        className="w-full p-4 rounded-lg border bg-background min-h-[150px] focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
-        placeholder={classroomSync.isTeacher ? "El estudiante escribirá aquí..." : "Escribe tu respuesta..."}
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        disabled={classroomSync.isInClassroom && classroomSync.isTeacher}
+        className={cn(
+          "w-full p-4 rounded-lg border bg-background min-h-[150px] focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50",
+          isTeacherInClassroom && "cursor-default"
+        )}
+        placeholder={isTeacherInClassroom ? "El estudiante escribirá aquí..." : "Escribe tu respuesta..."}
+        value={displayText}
+        onChange={(e) => handleTextChange(e.target.value)}
+        disabled={isTeacherInClassroom}
       />
       <div className="flex justify-between text-xs text-muted-foreground">
         <span className={cn(block.minWords && wordCount < block.minWords ? "text-red-500" : "text-green-600")}>
@@ -2224,21 +2349,28 @@ function EssayBlockPreview({ block }: { block: EssayBlock }) {
         </span>
         {block.maxWords && <span>Máx {block.maxWords}</span>}
       </div>
-      <div className="flex justify-end">
-        {block.aiGrading ? (
-          <EssayAIGradingButton
-            essayText={text}
-            prompt={block.prompt || ''}
-            blockId={block.id}
-            language={block.aiGradingConfig?.language}
-            targetLevel={block.aiGradingConfig?.targetLevel}
-            disabled={!meetsMinWords || !text.trim() || (classroomSync.isInClassroom && classroomSync.isTeacher)}
-            onSyncResponse={classroomSync.canInteract ? classroomSync.sendBlockResponse : undefined}
-          />
-        ) : (
-          <Button size="sm" disabled={!meetsMinWords}>Enviar</Button>
-        )}
-      </div>
+      
+      {isTeacherInClassroom && !displayText && (
+        <p className="text-sm text-muted-foreground italic text-center">Esperando que el estudiante escriba...</p>
+      )}
+      
+      {!isTeacherInClassroom && (
+        <div className="flex justify-end">
+          {block.aiGrading ? (
+            <EssayAIGradingButton
+              essayText={text}
+              prompt={block.prompt || ''}
+              blockId={block.id}
+              language={block.aiGradingConfig?.language}
+              targetLevel={block.aiGradingConfig?.targetLevel}
+              disabled={!meetsMinWords || !text.trim()}
+              onSyncResponse={classroomSync.canInteract ? classroomSync.sendBlockResponse : undefined}
+            />
+          ) : (
+            <Button size="sm" disabled={!meetsMinWords}>Enviar</Button>
+          )}
+        </div>
+      )}
     </div>
   )
 }
@@ -2420,30 +2552,57 @@ function ShortAnswerBlockPreview({ block }: { block: ShortAnswerBlock }) {
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [results, setResults] = useState<Record<string, boolean | null>>({})
 
+  // Get classroom sync
+  const classroomSync = useClassroomSync()
+  const remoteNav = classroomSync.getRemoteNavigation(block.id)
+  const isTeacherInClassroom = classroomSync.isInClassroom && classroomSync.isTeacher
+  
+  // For teachers: follow student's navigation and answers
+  const displayStep = isTeacherInClassroom && remoteNav ? remoteNav.currentStep : currentStep
+  const displayAnswers = isTeacherInClassroom && remoteNav?.currentAnswers ? remoteNav.currentAnswers : answers
   const currentItem = items[currentStep]
+  const displayItem = items[displayStep]
+
+  const handleAnswerChange = (value: string) => {
+    if (isTeacherInClassroom || !currentItem) return
+    const newAnswers = { ...answers, [currentItem.id]: value }
+    setAnswers(newAnswers)
+    
+    // Sync to teacher
+    if (classroomSync.canInteract) {
+      classroomSync.syncBlockNavigation(block.id, currentStep, items.length, true, false, newAnswers)
+    }
+  }
 
   const checkAnswer = () => {
-    if (!currentItem) return
+    if (isTeacherInClassroom || !currentItem) return
     const userAnswer = answers[currentItem.id] || ''
     const isCorrect = block.caseSensitive
       ? userAnswer.trim() === currentItem.correctAnswer.trim()
       : userAnswer.trim().toLowerCase() === currentItem.correctAnswer.trim().toLowerCase()
     setResults(prev => ({ ...prev, [currentItem.id]: isCorrect }))
-  }
-
-  const nextStep = () => {
-    if (currentStep < items.length - 1) {
-      setCurrentStep(currentStep + 1)
+    
+    // Sync result to teacher
+    if (classroomSync.canInteract) {
+      classroomSync.sendBlockResponse(block.id, 'short_answer', {
+        itemId: currentItem.id,
+        answer: userAnswer,
+        isCorrect,
+      }, isCorrect, isCorrect ? 1 : 0)
     }
   }
 
-  const prevStep = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1)
+  const handleNav = (newStep: number) => {
+    if (isTeacherInClassroom) return
+    setCurrentStep(newStep)
+    
+    if (classroomSync.canInteract) {
+      classroomSync.syncBlockNavigation(block.id, newStep, items.length, true, false, answers)
     }
   }
 
   const reset = () => {
+    if (isTeacherInClassroom) return
     setAnswers({})
     setResults({})
     setCurrentStep(0)
@@ -2457,7 +2616,7 @@ function ShortAnswerBlockPreview({ block }: { block: ShortAnswerBlock }) {
     )
   }
 
-  const currentResult = currentItem ? results[currentItem.id] : null
+  const currentResult = displayItem ? results[displayItem.id] : null
   const answeredCount = Object.keys(results).length
   const correctCount = Object.values(results).filter(r => r === true).length
 
@@ -2469,7 +2628,7 @@ function ShortAnswerBlockPreview({ block }: { block: ShortAnswerBlock }) {
           <span>Respuesta Corta</span>
         </div>
         <div className="text-sm text-muted-foreground">
-          Pregunta {currentStep + 1} de {items.length}
+          Pregunta {displayStep + 1} de {items.length}
         </div>
       </div>
 
@@ -2479,60 +2638,63 @@ function ShortAnswerBlockPreview({ block }: { block: ShortAnswerBlock }) {
         </div>
       )}
 
-      {currentItem && (
-        <div className="space-y-4">
+      {displayItem && (
+        <div key={displayItem.id} className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
           <div className="font-medium text-lg">
-            {currentStep + 1}. {currentItem.question}
+            {displayStep + 1}. {displayItem.question}
           </div>
 
           <input
             type="text"
-            value={answers[currentItem.id] || ''}
-            onChange={(e) => setAnswers(prev => ({ ...prev, [currentItem.id]: e.target.value }))}
-            disabled={currentResult !== null && currentResult !== undefined}
-            placeholder="Escribe tu respuesta..."
+            value={displayAnswers[displayItem.id] || ''}
+            onChange={(e) => handleAnswerChange(e.target.value)}
+            disabled={(currentResult !== null && currentResult !== undefined) || isTeacherInClassroom}
+            placeholder={isTeacherInClassroom ? "Esperando respuesta del estudiante..." : "Escribe tu respuesta..."}
             className={cn(
               "w-full px-4 py-3 border rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors",
               currentResult === true && "border-green-500 bg-green-50 text-green-700",
               currentResult === false && "border-red-500 bg-red-50 text-red-700",
-              currentResult === null || currentResult === undefined ? "border-gray-200" : ""
+              (currentResult === null || currentResult === undefined) && "border-gray-200",
+              isTeacherInClassroom && "cursor-default"
             )}
           />
 
-          {currentResult === false && (
+          {currentResult === false && displayItem && (
             <div className="text-sm text-green-600 bg-green-50 p-2 rounded">
-              <span className="font-medium">Respuesta correcta:</span> {currentItem.correctAnswer}
+              <span className="font-medium">Respuesta correcta:</span> {displayItem.correctAnswer}
             </div>
           )}
         </div>
       )}
 
-      <div className="flex items-center justify-between">
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={prevStep} disabled={currentStep === 0} size="sm">
-            Anterior
-          </Button>
-          <Button variant="outline" onClick={nextStep} disabled={currentStep >= items.length - 1} size="sm">
-            Siguiente
-          </Button>
-        </div>
+      {!isTeacherInClassroom && (
+        <div className="flex items-center justify-between">
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => handleNav(currentStep - 1)} disabled={currentStep === 0} size="sm">
+              Anterior
+            </Button>
+            <Button variant="outline" onClick={() => handleNav(currentStep + 1)} disabled={currentStep >= items.length - 1} size="sm">
+              Siguiente
+            </Button>
+          </div>
 
-        <div className="flex gap-2">
-          {currentResult === null || currentResult === undefined ? (
-            <Button onClick={checkAnswer} disabled={!answers[currentItem?.id || '']} size="sm">
-              Verificar
-            </Button>
-          ) : currentStep < items.length - 1 ? (
-            <Button onClick={nextStep} size="sm">
-              Siguiente Pregunta
-            </Button>
-          ) : (
-            <Button variant="outline" onClick={reset} size="sm">
-              Reintentar Todo
-            </Button>
-          )}
+          <div className="flex gap-2">
+            {currentResult === null || currentResult === undefined ? (
+              <Button onClick={checkAnswer} disabled={!answers[currentItem?.id || '']} size="sm">
+                Verificar
+              </Button>
+            ) : currentStep < items.length - 1 ? (
+              <Button onClick={() => handleNav(currentStep + 1)} size="sm">
+                Siguiente Pregunta
+              </Button>
+            ) : (
+              <Button variant="outline" onClick={reset} size="sm">
+                Reintentar Todo
+              </Button>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {answeredCount === items.length && (
         <div className="bg-muted/30 p-3 rounded-lg text-center">
@@ -2547,6 +2709,16 @@ function MultiSelectBlockPreview({ block }: { block: MultiSelectBlock }) {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [showResult, setShowResult] = useState(false)
 
+  // Get classroom sync
+  const classroomSync = useClassroomSync()
+  const remoteNav = classroomSync.getRemoteNavigation(block.id)
+  const isTeacherInClassroom = classroomSync.isInClassroom && classroomSync.isTeacher
+  
+  // For teachers: use remote selections
+  const displaySelectedIds = isTeacherInClassroom && remoteNav?.currentAnswers 
+    ? new Set(Object.keys(remoteNav.currentAnswers).filter(k => remoteNav.currentAnswers![k] === 'true'))
+    : selectedIds
+
   const allOptions = [
     ...(block.correctOptions || []).map(opt => ({ ...opt, isCorrect: true })),
     ...(block.incorrectOptions || []).map(opt => ({ ...opt, isCorrect: false })),
@@ -2557,7 +2729,7 @@ function MultiSelectBlockPreview({ block }: { block: MultiSelectBlock }) {
   )
 
   const toggleOption = (id: string) => {
-    if (showResult) return
+    if (showResult || isTeacherInClassroom) return
     const newSelected = new Set(selectedIds)
     if (newSelected.has(id)) {
       newSelected.delete(id)
@@ -2565,20 +2737,43 @@ function MultiSelectBlockPreview({ block }: { block: MultiSelectBlock }) {
       newSelected.add(id)
     }
     setSelectedIds(newSelected)
+    
+    // Sync to teacher
+    if (classroomSync.canInteract) {
+      const answersForSync = Object.fromEntries([...newSelected].map(id => [id, 'true']))
+      classroomSync.syncBlockNavigation(block.id, 0, 1, true, false, answersForSync)
+    }
   }
 
   const checkAnswers = () => {
+    if (isTeacherInClassroom) return
     setShowResult(true)
+    
+    // Sync result to teacher
+    if (classroomSync.canInteract) {
+      const correctIds = new Set((block.correctOptions || []).map(opt => opt.id))
+      const selectedCorrectCount = [...selectedIds].filter(id => correctIds.has(id)).length
+      const selectedIncorrectCount = [...selectedIds].filter(id => !correctIds.has(id)).length
+      const totalCorrectCount = block.correctOptions?.length || 0
+      const isAllCorrect = selectedCorrectCount === totalCorrectCount && selectedIncorrectCount === 0
+      
+      classroomSync.sendBlockResponse(block.id, 'multi_select', {
+        selectedIds: [...selectedIds],
+        correctCount: selectedCorrectCount,
+        incorrectCount: selectedIncorrectCount,
+      }, isAllCorrect, selectedCorrectCount)
+    }
   }
 
   const reset = () => {
+    if (isTeacherInClassroom) return
     setSelectedIds(new Set())
     setShowResult(false)
   }
 
   const correctIds = new Set((block.correctOptions || []).map(opt => opt.id))
-  const selectedCorrect = [...selectedIds].filter(id => correctIds.has(id)).length
-  const selectedIncorrect = [...selectedIds].filter(id => !correctIds.has(id)).length
+  const selectedCorrect = [...displaySelectedIds].filter(id => correctIds.has(id)).length
+  const selectedIncorrect = [...displaySelectedIds].filter(id => !correctIds.has(id)).length
   const totalCorrect = block.correctOptions?.length || 0
 
   if (!block.correctOptions?.length && !block.incorrectOptions?.length) {
@@ -2610,7 +2805,7 @@ function MultiSelectBlockPreview({ block }: { block: MultiSelectBlock }) {
 
       <div className="grid gap-2 sm:grid-cols-2">
         {shuffledOptions.map((option) => {
-          const isSelected = selectedIds.has(option.id)
+          const isSelected = displaySelectedIds.has(option.id)
           const isCorrectOption = option.isCorrect
 
           let optionClass = "border-gray-200 bg-white hover:border-primary/50 hover:bg-primary/5"
@@ -2634,7 +2829,8 @@ function MultiSelectBlockPreview({ block }: { block: MultiSelectBlock }) {
               key={option.id}
               onClick={() => toggleOption(option.id)}
               className={cn(
-                "p-4 border-2 rounded-lg cursor-pointer transition-all flex items-center gap-3",
+                "p-4 border-2 rounded-lg transition-all flex items-center gap-3",
+                isTeacherInClassroom ? "cursor-default" : "cursor-pointer",
                 optionClass
               )}
             >
@@ -2658,6 +2854,10 @@ function MultiSelectBlockPreview({ block }: { block: MultiSelectBlock }) {
           )
         })}
       </div>
+      
+      {isTeacherInClassroom && !showResult && (
+        <p className="text-sm text-muted-foreground italic text-center">Esperando selección del estudiante...</p>
+      )}
 
       {showResult && (
         <div className={cn(
