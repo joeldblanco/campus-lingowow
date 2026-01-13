@@ -127,7 +127,7 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
     description: string | null
     icon: string | null
   }>>([])
-  const [selectedFeatures, setSelectedFeatures] = useState<Set<string>>(new Set())
+  const [selectedFeatures, setSelectedFeatures] = useState<Map<string, string | null>>(new Map())
   const [loadingFeatures, setLoadingFeatures] = useState(true)
   const [availableCourses, setAvailableCourses] = useState<Array<{ id: string; title: string; language: string }>>([])
   const [pricingByLanguage, setPricingByLanguage] = useState<Record<string, PlanPricingData>>(() => {
@@ -199,8 +199,9 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
       const features = await getFeatures()
       setAllFeatures(features)
       
-      // Set currently selected features
-      const selected = new Set(plan.features.map(f => f.featureId))
+      // Set currently selected features with their values
+      const selected = new Map<string, string | null>()
+      plan.features.forEach(f => selected.set(f.featureId, f.value))
       setSelectedFeatures(selected)
       setLoadingFeatures(false)
     }
@@ -265,10 +266,10 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
       }
       
       // Update plan features
-      const features = Array.from(selectedFeatures).map(featureId => ({
+      const features = Array.from(selectedFeatures.entries()).map(([featureId, value]) => ({
         featureId,
         included: true,
-        value: null,
+        value: value || null,
       }))
       
       const featuresResult = await updatePlanFeatures(plan.id, features)
@@ -327,12 +328,18 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
   }
   
   const toggleFeature = (featureId: string) => {
-    const newSelected = new Set(selectedFeatures)
+    const newSelected = new Map(selectedFeatures)
     if (newSelected.has(featureId)) {
       newSelected.delete(featureId)
     } else {
-      newSelected.add(featureId)
+      newSelected.set(featureId, null)
     }
+    setSelectedFeatures(newSelected)
+  }
+
+  const updateFeatureValue = (featureId: string, value: string) => {
+    const newSelected = new Map(selectedFeatures)
+    newSelected.set(featureId, value || null)
     setSelectedFeatures(newSelected)
   }
 
@@ -821,31 +828,49 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
                   <Loader2 className="h-6 w-6 animate-spin" />
                 </div>
               ) : (
-                <ScrollArea className="h-[200px] border rounded-md p-4">
-                  <div className="space-y-3">
-                    {allFeatures.map((feature) => (
-                      <div key={feature.id} className="flex items-start space-x-3">
-                        <Checkbox
-                          id={`feature-${feature.id}`}
-                          checked={selectedFeatures.has(feature.id)}
-                          onCheckedChange={() => toggleFeature(feature.id)}
-                        />
-                        <div className="grid gap-1.5 leading-none">
-                          <label
-                            htmlFor={`feature-${feature.id}`}
-                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer flex items-center gap-2"
-                          >
-                            {feature.icon && <span>{feature.icon}</span>}
-                            {feature.name}
-                          </label>
-                          {feature.description && (
-                            <p className="text-sm text-muted-foreground">
-                              {feature.description}
-                            </p>
+                <ScrollArea className="h-[300px] border rounded-md p-4">
+                  <div className="space-y-4">
+                    {allFeatures.map((feature) => {
+                      const isSelected = selectedFeatures.has(feature.id)
+                      const currentValue = selectedFeatures.get(feature.id) || ''
+                      return (
+                        <div key={feature.id} className="space-y-2">
+                          <div className="flex items-start space-x-3">
+                            <Checkbox
+                              id={`feature-${feature.id}`}
+                              checked={isSelected}
+                              onCheckedChange={() => toggleFeature(feature.id)}
+                            />
+                            <div className="grid gap-1.5 leading-none flex-1">
+                              <label
+                                htmlFor={`feature-${feature.id}`}
+                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                              >
+                                {feature.name}
+                              </label>
+                              {feature.description && (
+                                <p className="text-xs text-muted-foreground">
+                                  {feature.description}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                          {isSelected && (
+                            <div className="ml-7">
+                              <Input
+                                placeholder="Valor específico (ej: 12 clases, Uso ilimitado...)"
+                                value={currentValue}
+                                onChange={(e) => updateFeatureValue(feature.id, e.target.value)}
+                                className="h-8 text-sm"
+                              />
+                              <p className="text-xs text-muted-foreground mt-1">
+                                Deja vacío para mostrar solo ✓
+                              </p>
+                            </div>
                           )}
                         </div>
-                      </div>
-                    ))}
+                      )
+                    })}
                   </div>
                 </ScrollArea>
               )}

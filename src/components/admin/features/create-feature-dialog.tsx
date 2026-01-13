@@ -27,12 +27,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createFeature } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
-import { IconPicker } from './icon-picker'
-
 const featureSchema = z.object({
   name: z.string().min(1, 'El nombre es requerido'),
   description: z.string().optional(),
-  icon: z.string().optional(),
   isActive: z.boolean().default(true),
 })
 
@@ -51,7 +48,6 @@ export function CreateFeatureDialog({ children }: CreateFeatureDialogProps) {
     defaultValues: {
       name: '',
       description: '',
-      icon: '',
       isActive: true,
     },
   })
@@ -62,7 +58,7 @@ export function CreateFeatureDialog({ children }: CreateFeatureDialogProps) {
       const result = await createFeature({
         ...data,
         description: data.description || null,
-        icon: data.icon || null,
+        icon: null,
       })
       if (result.success) {
         toast.success('Característica creada correctamente')
@@ -83,7 +79,7 @@ export function CreateFeatureDialog({ children }: CreateFeatureDialogProps) {
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Nueva Característica</DialogTitle>
           <DialogDescription>
@@ -115,22 +111,6 @@ export function CreateFeatureDialog({ children }: CreateFeatureDialogProps) {
                     <Textarea 
                       placeholder="Descripción de la característica (opcional)"
                       {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="icon"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Icono</FormLabel>
-                  <FormControl>
-                    <IconPicker
-                      value={field.value}
-                      onChange={field.onChange}
                     />
                   </FormControl>
                   <FormMessage />

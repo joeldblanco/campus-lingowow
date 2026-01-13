@@ -20,7 +20,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { DataTable, DataTableColumnHeader } from '@/components/ui/data-table'
-import { MoreVertical, Edit, Trash2, Zap, Search, SlidersHorizontal } from 'lucide-react'
+import { MoreVertical, Edit, Trash2, Search, SlidersHorizontal } from 'lucide-react'
 import { EditFeatureDialog } from './edit-feature-dialog'
 import { deleteFeature } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
@@ -104,14 +104,7 @@ export function FeaturesTable({ features }: FeaturesTableProps) {
       accessorKey: 'name',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Característica" />,
       cell: ({ row }) => (
-        <div className="flex items-center gap-2">
-          {row.original.icon ? (
-            <div className="text-lg">{row.original.icon}</div>
-          ) : (
-            <Zap className="h-4 w-4 text-muted-foreground" />
-          )}
-          <span className="font-medium text-sm">{row.original.name}</span>
-        </div>
+        <span className="font-medium text-sm">{row.original.name}</span>
       ),
     },
     {

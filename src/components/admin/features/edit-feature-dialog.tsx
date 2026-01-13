@@ -26,12 +26,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { updateFeature } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
-import { IconPicker } from './icon-picker'
-
 const featureSchema = z.object({
   name: z.string().min(1, 'El nombre es requerido'),
   description: z.string().optional(),
-  icon: z.string().optional(),
   isActive: z.boolean().default(true),
 })
 
@@ -64,7 +61,6 @@ export function EditFeatureDialog({ feature, open, onOpenChange }: EditFeatureDi
     defaultValues: {
       name: feature.name,
       description: feature.description || '',
-      icon: feature.icon || '',
       isActive: feature.isActive,
     },
   })
@@ -73,7 +69,6 @@ export function EditFeatureDialog({ feature, open, onOpenChange }: EditFeatureDi
     form.reset({
       name: feature.name,
       description: feature.description || '',
-      icon: feature.icon || '',
       isActive: feature.isActive,
     })
   }, [feature, form])
@@ -84,7 +79,7 @@ export function EditFeatureDialog({ feature, open, onOpenChange }: EditFeatureDi
       const result = await updateFeature(feature.id, {
         ...data,
         description: data.description || null,
-        icon: data.icon || null,
+        icon: null,
       })
       if (result.success) {
         toast.success('Característica actualizada correctamente')
@@ -101,7 +96,7 @@ export function EditFeatureDialog({ feature, open, onOpenChange }: EditFeatureDi
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Editar Característica</DialogTitle>
           <DialogDescription>
@@ -133,22 +128,6 @@ export function EditFeatureDialog({ feature, open, onOpenChange }: EditFeatureDi
                     <Textarea 
                       placeholder="Descripción de la característica (opcional)"
                       {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="icon"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Icono</FormLabel>
-                  <FormControl>
-                    <IconPicker
-                      value={field.value}
-                      onChange={field.onChange}
                     />
                   </FormControl>
                   <FormMessage />
