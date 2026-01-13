@@ -98,6 +98,14 @@ export type PlanWithPricing = Prisma.PlanGetPayload<{
   }
 }>
 
+// Tipo para PlanFeature con feature incluido
+export type PlanFeatureWithFeature = Prisma.PlanFeatureGetPayload<{
+  include: {
+    feature: true
+  }
+}>
+
+// Tipo para Plan con features y pricing incluidos
 export type PlanWithFeatures = Prisma.PlanGetPayload<{
   include: {
     features: {
@@ -105,6 +113,7 @@ export type PlanWithFeatures = Prisma.PlanGetPayload<{
         feature: true
       }
     }
+    pricing: true
   }
 }>
 

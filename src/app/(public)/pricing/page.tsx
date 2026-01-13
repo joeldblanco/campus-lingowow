@@ -13,16 +13,7 @@ import { useSearchParams } from 'next/navigation'
 import { getPlans, getPricingPlansForProduct, getProducts } from '@/lib/actions/commercial'
 import { useShopStore } from '@/stores/useShopStore'
 import { toast } from 'sonner'
-import type { Plan, Feature, PlanPricing } from '@prisma/client'
-
-// Extended type to include relations matching the getPlans return type
-type PlanWithFeatures = Plan & {
-  features: {
-    included: boolean
-    feature: Feature
-  }[]
-  pricing?: PlanPricing[]
-}
+import type { PlanWithFeatures } from '@/types/shop'
 
 export default function PricingPage() {
   const searchParams = useSearchParams()
@@ -258,7 +249,10 @@ export default function PricingPage() {
                         {plan.features?.filter(f => f.included).map((pf, idx) => (
                           <div key={idx} className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300">
                             <CheckCircle className="text-primary h-5 w-5 shrink-0" />
-                            <span>{pf.feature.name}</span>
+                            <span>
+                              {pf.feature.name}
+                              {pf.value && <span className="text-slate-500 dark:text-slate-400">: {pf.value}</span>}
+                            </span>
                           </div>
                         ))}
                       </div>
@@ -318,11 +312,16 @@ export default function PricingPage() {
                         {filteredPlans.map(plan => {
                           const pf = plan.features?.find((f) => f.feature.name === featureName)
                           const included = pf?.included
+                          const value = pf?.value
                           return (
                             <td key={plan.id} className="py-4 px-6 text-center">
-                              <div className="flex justify-center">
+                              <div className="flex justify-center items-center">
                                 {included ? (
-                                  <CheckCircle className="text-primary h-5 w-5" />
+                                  value ? (
+                                    <span className="text-slate-700 dark:text-slate-300 text-xs font-medium">{value}</span>
+                                  ) : (
+                                    <CheckCircle className="text-primary h-5 w-5" />
+                                  )
                                 ) : (
                                   <span className="text-slate-300 font-bold">—</span>
                                 )}
