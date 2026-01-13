@@ -251,7 +251,7 @@ export default function PricingPage() {
                             <CheckCircle className="text-primary h-5 w-5 shrink-0" />
                             <span>
                               {pf.feature.name}
-                              {pf.value && <span className="text-slate-500 dark:text-slate-400">: {pf.value}</span>}
+                              {pf.value != null && <span className="text-slate-500 dark:text-slate-400">: {pf.value}</span>}
                             </span>
                           </div>
                         ))}
@@ -317,7 +317,7 @@ export default function PricingPage() {
                             <td key={plan.id} className="py-4 px-6 text-center">
                               <div className="flex justify-center items-center">
                                 {included ? (
-                                  value ? (
+                                  value != null ? (
                                     <span className="text-slate-700 dark:text-slate-300 text-xs font-medium">{value}</span>
                                   ) : (
                                     <CheckCircle className="text-primary h-5 w-5" />
