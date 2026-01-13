@@ -65,6 +65,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   const roomRef = useRef<Room | null>(null)
   const commandListenersRef = useRef<Map<string, Set<(values: Record<string, unknown>) => void>>>(new Map())
   const isConnectingRef = useRef(false)
+  const isScreenSharingRef = useRef(false)
 
   const [localVideoTrack, setLocalVideoTrack] = useState<Track | undefined>(undefined)
   const [localAudioTrack, setLocalAudioTrack] = useState<Track | undefined>(undefined)
@@ -77,6 +78,8 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   const [isAudioMuted, setIsAudioMuted] = useState(false)
   const [isVideoMuted, setIsVideoMuted] = useState(false)
   const [isScreenSharing, setIsScreenSharing] = useState(false)
+  // Keep ref in sync with state for use in event handlers
+  isScreenSharingRef.current = isScreenSharing
   const [isHandRaised, setIsHandRaised] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -254,6 +257,43 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
         }
       })
 
+      // Handle reconnection events to prevent InvalidAccessError from stale RTCRtpSender references
+      room.on(RoomEvent.Reconnecting, () => {
+        console.log('[LiveKit] Reconnecting - clearing screen share state to prevent stale sender errors')
+        // Clear screen share state immediately when reconnection starts
+        // This prevents LiveKit from trying to remove tracks with stale RTCRtpSender references
+        // Use ref to get current value (avoids stale closure)
+        if (isScreenSharingRef.current) {
+          setIsScreenSharing(false)
+        }
+        setLocalScreenShareTrack(undefined)
+        setLocalScreenShareAudioTrack(undefined)
+      })
+
+      room.on(RoomEvent.Reconnected, () => {
+        console.log('[LiveKit] Reconnected - re-syncing participant state')
+        // Re-sync all remote participants after reconnection
+        room.remoteParticipants.forEach((participant) => {
+          updateRemoteParticipant(participant)
+        })
+        // Re-sync local tracks
+        const localParticipant = room.localParticipant
+        localParticipant.trackPublications.forEach((pub) => {
+          if (pub.track) {
+            if (pub.track.kind === Track.Kind.Video && pub.source === Track.Source.Camera) {
+              setLocalVideoTrack(pub.track)
+            } else if (pub.track.kind === Track.Kind.Audio && pub.source === Track.Source.Microphone) {
+              setLocalAudioTrack(pub.track)
+            } else if (pub.track.kind === Track.Kind.Video && pub.source === Track.Source.ScreenShare) {
+              setLocalScreenShareTrack(pub.track)
+              setIsScreenSharing(true)
+            } else if (pub.track.kind === Track.Kind.Audio && pub.source === Track.Source.ScreenShareAudio) {
+              setLocalScreenShareAudioTrack(pub.track)
+            }
+          }
+        })
+      })
+
       room.on(RoomEvent.ParticipantConnected, (participant: RemoteParticipant) => {
         console.log('[LiveKit] Participant connected:', participant.identity)
         updateRemoteParticipant(participant)
@@ -356,9 +396,10 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       })
 
       room.on(RoomEvent.LocalTrackUnpublished, (publication: LocalTrackPublication) => {
+        console.log('[LiveKit] Local track unpublished:', publication.source)
         if (publication.source === Track.Source.Camera) {
           setLocalVideoTrack(undefined)
-        } else if (publication.track?.kind === Track.Kind.Audio) {
+        } else if (publication.source === Track.Source.Microphone) {
           setLocalAudioTrack(undefined)
         } else if (publication.source === Track.Source.ScreenShare) {
           setLocalScreenShareTrack(undefined)
