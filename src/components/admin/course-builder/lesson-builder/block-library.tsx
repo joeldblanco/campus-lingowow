@@ -55,7 +55,7 @@ export function BlockLibrary() {
                         Herramientas de Lenguaje
                     </h3>
                     <div className="flex flex-col gap-2">
-                        {BLOCK_TEMPLATES.filter(t => t.type === 'grammar' || t.type === 'vocabulary' || t.type === 'audio' || t.type === 'grammar-visualizer').map(template => (
+                        {BLOCK_TEMPLATES.filter(t => t.type === 'grammar' || t.type === 'vocabulary' || t.type === 'audio' || t.type === 'grammar-visualizer' || t.type === 'teacher_notes').map(template => (
                             <DraggableBlock key={template.type} template={template} variant="list" />
                         ))}
                     </div>
@@ -99,7 +99,7 @@ export function BlockSelectionGrid({ onSelect }: { onSelect: (template: BlockTem
                     Herramientas de Lenguaje
                 </h3>
                 <div className="flex flex-col gap-2">
-                    {BLOCK_TEMPLATES.filter(t => t.type === 'grammar' || t.type === 'vocabulary' || t.type === 'audio' || t.type === 'grammar-visualizer').map(template => (
+                    {BLOCK_TEMPLATES.filter(t => t.type === 'grammar' || t.type === 'vocabulary' || t.type === 'audio' || t.type === 'grammar-visualizer' || t.type === 'teacher_notes').map(template => (
                         <DraggableBlock key={template.type} template={template} variant="list" onClick={() => onSelect(template)} disableDrag />
                     ))}
                 </div>
