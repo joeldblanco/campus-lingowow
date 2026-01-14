@@ -134,7 +134,53 @@ function convertExamToBlocks(exam: ExamWithDetails): Block[] {
           } as Block
 
         case 'essay':
-          // Check if this is actually an audio block saved before the originalBlockType fix
+          // First check if options contains originalBlockType to restore non-standard blocks
+          if (optionsData && typeof optionsData === 'object' && !Array.isArray(optionsData)) {
+            const opts = optionsData as { originalBlockType?: string; url?: string; content?: string; instruction?: string; timeLimit?: number; aiGrading?: boolean; maxReplays?: number }
+            if (opts.originalBlockType === 'audio') {
+              return {
+                ...baseBlock,
+                type: 'audio',
+                title: q.question,
+                url: opts.url || q.audioUrl || '',
+                maxReplays: opts.maxReplays || q.maxAudioPlays || 3,
+              } as Block
+            }
+            if (opts.originalBlockType === 'image') {
+              return {
+                ...baseBlock,
+                type: 'image',
+                url: opts.url || '',
+                alt: q.question,
+              } as Block
+            }
+            if (opts.originalBlockType === 'video') {
+              return {
+                ...baseBlock,
+                type: 'video',
+                url: opts.url || '',
+                title: q.question,
+              } as Block
+            }
+            if (opts.originalBlockType === 'text') {
+              return {
+                ...baseBlock,
+                type: 'text',
+                content: opts.content || q.question,
+                format: 'html',
+              } as Block
+            }
+            if (opts.originalBlockType === 'recording') {
+              return {
+                ...baseBlock,
+                type: 'recording',
+                instruction: opts.instruction || q.question,
+                timeLimit: opts.timeLimit,
+                aiGrading: opts.aiGrading,
+              } as Block
+            }
+          }
+          // Fallback: Check if this is actually an audio block saved before the originalBlockType fix
           // Audio blocks have audioUrl set but essay blocks don't
           if (q.audioUrl && !q.minLength && !q.maxLength) {
             return {
@@ -235,52 +281,6 @@ function convertExamToBlocks(exam: ExamWithDetails): Block[] {
           } as Block
 
         default:
-          // Check if options contains originalBlockType to restore non-standard blocks
-          if (optionsData && typeof optionsData === 'object' && !Array.isArray(optionsData)) {
-            const opts = optionsData as { originalBlockType?: string; url?: string; content?: string; instruction?: string; timeLimit?: number; aiGrading?: boolean; maxReplays?: number }
-            if (opts.originalBlockType === 'audio') {
-              return {
-                ...baseBlock,
-                type: 'audio',
-                title: q.question,
-                url: opts.url || q.audioUrl || '',
-                maxReplays: opts.maxReplays || q.maxAudioPlays || 3,
-              } as Block
-            }
-            if (opts.originalBlockType === 'image') {
-              return {
-                ...baseBlock,
-                type: 'image',
-                url: opts.url || '',
-                alt: q.question,
-              } as Block
-            }
-            if (opts.originalBlockType === 'video') {
-              return {
-                ...baseBlock,
-                type: 'video',
-                url: opts.url || '',
-                title: q.question,
-              } as Block
-            }
-            if (opts.originalBlockType === 'text') {
-              return {
-                ...baseBlock,
-                type: 'text',
-                content: opts.content || q.question,
-                format: 'html',
-              } as Block
-            }
-            if (opts.originalBlockType === 'recording') {
-              return {
-                ...baseBlock,
-                type: 'recording',
-                instruction: opts.instruction || q.question,
-                timeLimit: opts.timeLimit,
-                aiGrading: opts.aiGrading,
-              } as Block
-            }
-          }
           // Default to text block for unknown types
           return {
             ...baseBlock,
@@ -329,6 +329,7 @@ function mapBlockTypeToExamType(type: string): 'MULTIPLE_CHOICE' | 'TRUE_FALSE' 
     'image': 'ESSAY',
     'audio': 'ESSAY',
     'video': 'ESSAY',
+    'recording': 'ESSAY',
     'quiz': 'MULTIPLE_CHOICE',
   }
   return typeMap[type.toLowerCase()] || 'SHORT_ANSWER'
