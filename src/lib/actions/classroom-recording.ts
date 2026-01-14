@@ -25,8 +25,8 @@ export async function startRecording(bookingId: string, roomName: string) {
     const booking = await db.classBooking.findFirst({
       where: {
         id: bookingId,
-        teacherId: session.user.id
-      }
+        teacherId: session.user.id,
+      },
     })
 
     if (!booking) {
@@ -41,7 +41,7 @@ export async function startRecording(bookingId: string, roomName: string) {
 
     // Configure output - use Cloudflare R2 if configured, otherwise local
     let output: EncodedFileOutput
-    
+
     if (r2AccountId && r2AccessKeyId && r2SecretAccessKey) {
       // Cloudflare R2 storage (S3-compatible)
       const s3Upload = new S3Upload({
@@ -66,18 +66,30 @@ export async function startRecording(bookingId: string, roomName: string) {
       })
     }
 
-    const info = await egressClient.startRoomCompositeEgress(roomName, { file: output })
+    // Get custom template URL for full classroom recording (content, whiteboard, screen share)
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.lingowow.com'
+    const templateUrl = `${appUrl}/record`
+
+    const info = await egressClient.startRoomCompositeEgress(
+      roomName,
+      { file: output },
+      {
+        layout: 'grid', // Fallback layout if template fails
+        customBaseUrl: templateUrl,
+        videoOnly: false, // Include audio
+      }
+    )
 
     // Store egress ID in video call record
     await db.videoCall.updateMany({
       where: { bookingId },
-      data: { recordingUrl: info.egressId }
+      data: { recordingUrl: info.egressId },
     })
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       egressId: info.egressId,
-      message: 'Grabación iniciada'
+      message: 'Grabación iniciada',
     }
   } catch (error) {
     console.error('Error starting recording:', error)
@@ -97,7 +109,7 @@ export async function stopRecording(egressId: string, bookingId?: string) {
     }
 
     const egressClient = new EgressClient(livekitHost, apiKey, apiSecret)
-    
+
     const info = await egressClient.stopEgress(egressId)
 
     // Get bookingId from VideoCall if not provided
@@ -105,7 +117,7 @@ export async function stopRecording(egressId: string, bookingId?: string) {
     if (!resolvedBookingId) {
       const videoCall = await db.videoCall.findFirst({
         where: { recordingUrl: egressId },
-        select: { bookingId: true }
+        select: { bookingId: true },
       })
       resolvedBookingId = videoCall?.bookingId || undefined
     }
@@ -115,7 +127,7 @@ export async function stopRecording(egressId: string, bookingId?: string) {
       try {
         const fileResult = info.fileResults?.[0]
         const filename = fileResult?.filename
-        
+
         // Extract r2Key from the filename path
         // Format: classes/{bookingId}/{roomName}-{time}.mp4
         let r2Key: string | null = null
@@ -134,13 +146,11 @@ export async function stopRecording(egressId: string, bookingId?: string) {
           try {
             // LiveKit timestamps are in nanoseconds (can be BigInt or string)
             // Convert directly to BigInt to preserve full precision
-            const startNs = typeof info.startedAt === 'bigint' 
-              ? info.startedAt 
-              : BigInt(String(info.startedAt))
-            const endNs = typeof info.endedAt === 'bigint' 
-              ? info.endedAt 
-              : BigInt(String(info.endedAt))
-            
+            const startNs =
+              typeof info.startedAt === 'bigint' ? info.startedAt : BigInt(String(info.startedAt))
+            const endNs =
+              typeof info.endedAt === 'bigint' ? info.endedAt : BigInt(String(info.endedAt))
+
             // Convert nanoseconds to milliseconds using BigInt division, then to Number
             startedAt = new Date(Number(startNs / BigInt(1000000)))
             endedAt = new Date(Number(endNs / BigInt(1000000)))
@@ -192,10 +202,10 @@ export async function stopRecording(egressId: string, bookingId?: string) {
       }
     }
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       message: 'Grabación detenida',
-      fileUrl: info.fileResults?.[0]?.filename
+      fileUrl: info.fileResults?.[0]?.filename,
     }
   } catch (error) {
     console.error('Error stopping recording:', error)
@@ -210,20 +220,20 @@ export async function getRecordingStatus(egressId: string) {
     }
 
     const egressClient = new EgressClient(livekitHost, apiKey, apiSecret)
-    
+
     const egresses = await egressClient.listEgress({ egressId })
-    
+
     if (egresses.length === 0) {
       return { success: false, error: 'Grabación no encontrada' }
     }
 
     const egress = egresses[0]
-    
-    return { 
-      success: true, 
+
+    return {
+      success: true,
       status: egress.status,
       startedAt: egress.startedAt,
-      endedAt: egress.endedAt
+      endedAt: egress.endedAt,
     }
   } catch (error) {
     console.error('Error getting recording status:', error)

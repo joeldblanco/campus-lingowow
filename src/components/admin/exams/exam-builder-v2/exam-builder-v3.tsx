@@ -425,7 +425,13 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
   // Keyboard shortcut for Delete key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Delete' && selectedBlockIds.size > 0 && !isPreviewMode) {
+      // Skip if user is typing in an input, textarea, or contenteditable
+      const activeElement = document.activeElement
+      const isEditing = activeElement instanceof HTMLInputElement ||
+                        activeElement instanceof HTMLTextAreaElement ||
+                        activeElement?.getAttribute('contenteditable') === 'true'
+      
+      if (e.key === 'Delete' && selectedBlockIds.size > 0 && !isPreviewMode && !isEditing) {
         e.preventDefault()
         deleteSelectedBlocks()
       }
