@@ -179,6 +179,25 @@ function convertExamToBlocks(exam: ExamWithDetails): Block[] {
                 aiGrading: opts.aiGrading,
               } as Block
             }
+            if (opts.originalBlockType === 'multi_select') {
+              const multiSelectOpts = optionsData as { correctOptions?: Array<{ id: string; text: string }>; incorrectOptions?: Array<{ id: string; text: string }>; instruction?: string }
+              return {
+                ...baseBlock,
+                type: 'multi_select',
+                title: q.question,
+                instruction: multiSelectOpts.instruction,
+                correctOptions: multiSelectOpts.correctOptions || [],
+                incorrectOptions: multiSelectOpts.incorrectOptions || [],
+              } as Block
+            }
+            if (opts.originalBlockType === 'title') {
+              const titleOpts = optionsData as { title?: string }
+              return {
+                ...baseBlock,
+                type: 'title',
+                title: titleOpts.title || q.question,
+              } as Block
+            }
           }
           // Fallback: Check if this is actually an audio block saved before the originalBlockType fix
           // Audio blocks have audioUrl set but essay blocks don't
@@ -330,6 +349,8 @@ function mapBlockTypeToExamType(type: string): 'MULTIPLE_CHOICE' | 'TRUE_FALSE' 
     'audio': 'ESSAY',
     'video': 'ESSAY',
     'recording': 'ESSAY',
+    'multi_select': 'ESSAY',
+    'title': 'ESSAY',
     'quiz': 'MULTIPLE_CHOICE',
   }
   return typeMap[type.toLowerCase()] || 'SHORT_ANSWER'
@@ -358,6 +379,10 @@ function getBlockQuestion(block: Block): string {
     case 'image':
       return block.alt || block.caption || ''
     case 'audio':
+      return block.title || ''
+    case 'multi_select':
+      return block.instruction || block.title || ''
+    case 'title':
       return block.title || ''
     default:
       return ''
@@ -397,6 +422,18 @@ function getBlockOptions(block: Block): string[] | Record<string, unknown> | und
         timeLimit: block.timeLimit,
         aiGrading: block.aiGrading,
       }
+    case 'multi_select':
+      return {
+        originalBlockType: 'multi_select',
+        instruction: block.instruction,
+        correctOptions: block.correctOptions,
+        incorrectOptions: block.incorrectOptions,
+      }
+    case 'title':
+      return {
+        originalBlockType: 'title',
+        title: block.title,
+      }
     default:
       return undefined
   }
@@ -420,6 +457,8 @@ function getBlockCorrectAnswer(block: Block): string | string[] | null {
       return block.items?.map(i => i.text) || []
     case 'drag_drop':
       return JSON.stringify(block.items?.map(i => ({ item: i.text, category: i.correctCategoryId })) || [])
+    case 'multi_select':
+      return block.correctOptions?.map(opt => opt.text) || []
     default:
       return null
   }

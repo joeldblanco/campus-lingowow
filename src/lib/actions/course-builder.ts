@@ -3,10 +3,7 @@
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
 import { Block, BlockType, CourseBuilderData, Lesson, Module } from '@/types/course-builder'
-import type {
-  ContentType,
-  Content as PrismaContent
-} from '@prisma/client'
+import type { ContentType, Content as PrismaContent } from '@prisma/client'
 import { Prisma } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 
@@ -373,14 +370,19 @@ export async function deleteLesson(lessonId: string) {
         l.id,
         l."moduleId",
         c."createdById" as "courseCreatedById"
-      FROM "Lesson" l
-      LEFT JOIN "Module" m ON l."moduleId" = m.id
-      LEFT JOIN "Course" c ON m."courseId" = c.id
+      FROM "lessons" l
+      LEFT JOIN "modules" m ON l."moduleId" = m.id
+      LEFT JOIN "courses" c ON m."courseId" = c.id
       WHERE l.id = ${lessonId}
       LIMIT 1
     `
 
-    if (!lessonAuth || lessonAuth.length === 0 || !lessonAuth[0].moduleId || lessonAuth[0].courseCreatedById !== userId) {
+    if (
+      !lessonAuth ||
+      lessonAuth.length === 0 ||
+      !lessonAuth[0].moduleId ||
+      lessonAuth[0].courseCreatedById !== userId
+    ) {
       throw new Error('Lesson not found or unauthorized')
     }
 
@@ -497,16 +499,21 @@ export async function updateLessonBlocks(lessonId: string, blocks: Block[]) {
     // Optimized auth check: use raw query to get only necessary fields in a single query
     // This avoids N+1 queries from nested includes on every auto-save
     const lessonAuth = await db.$queryRaw<
-      { id: string; moduleId: string | null; teacherId: string | null; courseCreatedById: string | null }[]
+      {
+        id: string
+        moduleId: string | null
+        teacherId: string | null
+        courseCreatedById: string | null
+      }[]
     >`
       SELECT 
         l.id,
         l."moduleId",
         l."teacherId",
         c."createdById" as "courseCreatedById"
-      FROM "Lesson" l
-      LEFT JOIN "Module" m ON l."moduleId" = m.id
-      LEFT JOIN "Course" c ON m."courseId" = c.id
+      FROM "lessons" l
+      LEFT JOIN "modules" m ON l."moduleId" = m.id
+      LEFT JOIN "courses" c ON m."courseId" = c.id
       WHERE l.id = ${lessonId}
       LIMIT 1
     `
