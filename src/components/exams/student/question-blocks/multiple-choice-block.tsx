@@ -6,7 +6,7 @@ import { CheckCircle } from 'lucide-react'
 interface MultipleChoiceItem {
   id: string
   question: string
-  options: string[]
+  options: { id: string; text: string }[]
 }
 
 interface MultipleChoiceBlockProps {
@@ -38,10 +38,10 @@ export function MultipleChoiceBlock({
     const currentAnswers = (selectedOption as Record<string, string>) || {}
     const currentAnswer = currentAnswers[currentItem.id]
 
-    const handleSelect = (option: string) => {
+    const handleSelect = (optionValue: string) => {
       onSelect({
         ...currentAnswers,
-        [currentItem.id]: option
+        [currentItem.id]: optionValue
       })
     }
 
@@ -72,10 +72,12 @@ export function MultipleChoiceBlock({
 
           <div className="space-y-3">
             {currentItem.options.map((option, index) => {
-              const isSelected = currentAnswer === option
+              // Option value is the text for student answers compatibility
+              const optionValue = option.text
+              const isSelected = currentAnswer === optionValue
               return (
                 <label
-                  key={index}
+                  key={option.id || index}
                   className={cn(
                     "flex items-center p-4 border rounded-lg cursor-pointer transition-colors group/option",
                     isSelected
@@ -87,9 +89,9 @@ export function MultipleChoiceBlock({
                   <input
                     type="radio"
                     name={`${questionId}-${currentItem.id}`}
-                    value={option}
+                    value={optionValue}
                     checked={isSelected}
-                    onChange={() => !disabled && handleSelect(option)}
+                    onChange={() => !disabled && handleSelect(optionValue)}
                     disabled={disabled}
                     className="w-5 h-5 text-primary border-gray-300 focus:ring-primary"
                   />
@@ -99,7 +101,7 @@ export function MultipleChoiceBlock({
                       ? "text-foreground font-medium"
                       : "text-gray-700 dark:text-gray-200 group-hover/option:text-foreground"
                   )}>
-                    {option}
+                    {option.text}
                   </span>
                   {isSelected && (
                     <CheckCircle className="ml-auto h-5 w-5 text-primary" />

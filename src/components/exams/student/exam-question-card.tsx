@@ -18,7 +18,7 @@ export interface ExamQuestionData {
   type: QuestionType
   question: string
   options?: string[] | null
-  multipleChoiceItems?: { id: string; question: string; options: string[] }[] | null
+  multipleChoiceItems?: { id: string; question: string; options: { id: string; text: string }[] }[] | null
   points: number
   minLength?: number | null
   maxLength?: number | null
