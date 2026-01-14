@@ -1,6 +1,14 @@
-import { CartItem, CheckoutInfo, Filters, Course, Merge, Product, ProductTypeEnum } from '@/types/shop'
+import {
+  CartItem,
+  CheckoutInfo,
+  Filters,
+  Course,
+  Merge,
+  Product,
+  ProductTypeEnum,
+} from '@/types/shop'
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { persist, createJSONStorage } from 'zustand/middleware'
 
 export interface AppliedCoupon {
   id: string
@@ -12,7 +20,14 @@ export interface AppliedCoupon {
   restrictedToPlanId?: string | null
 }
 
-export type SortOption = 'name-asc' | 'name-desc' | 'price-asc' | 'price-desc' | 'date-desc' | 'date-asc' | 'custom-order'
+export type SortOption =
+  | 'name-asc'
+  | 'name-desc'
+  | 'price-asc'
+  | 'price-desc'
+  | 'date-desc'
+  | 'date-asc'
+  | 'custom-order'
 export type ViewMode = 'grid' | 'list'
 
 type ShopState = {
@@ -84,48 +99,54 @@ export const useShopStore = create<ShopState>()(
           // Verificar si el mismo plan + idioma ya está en el carrito
           const existingPlanIndex = state.cart.findIndex(
             (cartItem) =>
-              cartItem.product.id === item.product.id && 
+              cartItem.product.id === item.product.id &&
               cartItem.plan.id === item.plan.id &&
               cartItem.language === item.language
           )
 
           if (existingPlanIndex >= 0) {
             // Si el mismo plan + idioma ya está en el carrito, lo removemos (toggle)
-            return { 
+            return {
               cart: state.cart.filter((_, index) => index !== existingPlanIndex),
               lastAddedItem: null,
-              isCartDrawerOpen: state.cart.length > 1
+              isCartDrawerOpen: state.cart.length > 1,
             }
           }
-          
+
           // Verificar si ya hay otro plan del mismo producto + idioma en el carrito
           const existingProductLanguageIndex = state.cart.findIndex(
-            (cartItem) => cartItem.product.id === item.product.id && cartItem.language === item.language
+            (cartItem) =>
+              cartItem.product.id === item.product.id && cartItem.language === item.language
           )
-          
+
           if (existingProductLanguageIndex >= 0) {
             // Reemplazar el plan existente del mismo producto + idioma
             const newCart = [...state.cart]
             newCart[existingProductLanguageIndex] = item
-            return { 
+            return {
               cart: newCart,
               lastAddedItem: item,
-              isCartDrawerOpen: true
+              isCartDrawerOpen: true,
             }
           }
-          
+
           // Añadir el nuevo item al carrito (producto nuevo o idioma diferente)
-          return { 
+          return {
             cart: [...state.cart, item],
             lastAddedItem: item,
-            isCartDrawerOpen: true
+            isCartDrawerOpen: true,
           }
         }),
 
       removeFromCart: (productId, planId, language) =>
         set((state) => ({
           cart: state.cart.filter(
-            (item) => !(item.product.id === productId && item.plan.id === planId && item.language === language)
+            (item) =>
+              !(
+                item.product.id === productId &&
+                item.plan.id === planId &&
+                item.language === language
+              )
           ),
         })),
 
@@ -205,6 +226,22 @@ export const useShopStore = create<ShopState>()(
     }),
     {
       name: 'lingowow-shop', // Nombre para localStorage
+      storage: createJSONStorage(() => ({
+        getItem: (name: string) => {
+          if (typeof window === 'undefined' || !window.localStorage) return null
+          return window.localStorage.getItem(name)
+        },
+        setItem: (name: string, value: string) => {
+          if (typeof window !== 'undefined' && window.localStorage) {
+            window.localStorage.setItem(name, value)
+          }
+        },
+        removeItem: (name: string) => {
+          if (typeof window !== 'undefined' && window.localStorage) {
+            window.localStorage.removeItem(name)
+          }
+        },
+      })),
       partialize: (state) => ({
         cart: state.cart,
         checkoutInfo: state.checkoutInfo,
