@@ -740,6 +740,7 @@ export async function getCourseForBuilder(courseId: string) {
   }
 }
 // Get single lesson for builder
+// Get single lesson for builder
 export async function getLessonForBuilder(lessonId: string) {
   try {
     const session = await auth()
@@ -748,19 +749,61 @@ export async function getLessonForBuilder(lessonId: string) {
     }
     const userId = session.user.id
 
+    // Optimized auth check: use raw query to avoid deep nested includes for just checking permissions
+    // This dramatically reduces query cost on page load
+    const lessonAuth = await db.$queryRaw<
+      {
+        id: string
+        moduleId: string | null
+        teacherId: string | null
+        courseCreatedById: string | null
+      }[]
+    >`
+      SELECT 
+        l.id,
+        l."moduleId",
+        l."teacherId",
+        c."createdById" as "courseCreatedById"
+      FROM "lessons" l
+      LEFT JOIN "modules" m ON l."moduleId" = m.id
+      LEFT JOIN "courses" c ON m."courseId" = c.id
+      WHERE l.id = ${lessonId}
+      LIMIT 1
+    `
+
+    if (!lessonAuth || lessonAuth.length === 0) {
+      throw new Error('Lesson not found')
+    }
+
+    const lessonInfo = lessonAuth[0]
+
+    // Authorization check
+    const isModuleLesson = lessonInfo.moduleId !== null
+    const isPersonalizedLesson = lessonInfo.teacherId !== null
+
+    if (isModuleLesson && lessonInfo.courseCreatedById !== userId) {
+      throw new Error('Unauthorized')
+    }
+
+    if (isPersonalizedLesson && lessonInfo.teacherId !== userId) {
+      throw new Error('Unauthorized')
+    }
+
+    if (!isModuleLesson && !isPersonalizedLesson) {
+      throw new Error('Unauthorized')
+    }
+
+    // Fetch only the data we need for the builder, avoiding unnecessary joins
     const lesson = await db.lesson.findUnique({
       where: { id: lessonId },
-      include: {
-        module: {
-          include: {
-            course: {
-              select: {
-                createdById: true,
-              },
-            },
-          },
-        },
-        // Load content recursively (2 levels deep for Tabs)
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        order: true,
+        duration: true,
+        moduleId: true,
+        isPublished: true,
         contents: {
           where: { parentId: null },
           orderBy: { order: 'asc' },
@@ -779,23 +822,7 @@ export async function getLessonForBuilder(lessonId: string) {
     })
 
     if (!lesson) {
-      throw new Error('Lesson not found or unauthorized')
-    }
-
-    // Authorization check: either course owner (for module lessons) or teacher (for personalized lessons)
-    const isModuleLesson = lesson.module !== null
-    const isPersonalizedLesson = lesson.teacherId !== null
-
-    if (isModuleLesson && lesson.module!.course.createdById !== userId) {
-      throw new Error('Lesson not found or unauthorized')
-    }
-
-    if (isPersonalizedLesson && lesson.teacherId !== userId) {
-      throw new Error('Lesson not found or unauthorized')
-    }
-
-    if (!isModuleLesson && !isPersonalizedLesson) {
-      throw new Error('Lesson not found or unauthorized')
+      throw new Error('Lesson not found')
     }
 
     // Map to Lesson object
