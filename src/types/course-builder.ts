@@ -72,7 +72,6 @@ export interface BaseBlock {
 
 // Blocks that can have points in exams (interactive blocks)
 export const INTERACTIVE_BLOCK_TYPES: BlockType[] = [
-  'quiz',
   'multiple_choice',
   'true_false',
   'short_answer',
@@ -87,6 +86,7 @@ export const INTERACTIVE_BLOCK_TYPES: BlockType[] = [
 
 // Blocks excluded from exams
 export const LESSON_ONLY_BLOCK_TYPES: BlockType[] = [
+  'quiz',
   'grammar',
   'vocabulary',
   'grammar-visualizer',

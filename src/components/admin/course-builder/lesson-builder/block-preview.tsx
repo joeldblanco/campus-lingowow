@@ -33,6 +33,9 @@ import {
   ShortAnswerBlock,
   MultiSelectBlock,
   TeacherNotesBlock,
+  MultipleChoiceBlock,
+  OrderingBlock,
+  DragDropBlock,
 } from '@/types/course-builder'
 import {
   Download,
@@ -115,6 +118,12 @@ export function BlockPreview({ block, isTeacher, isClassroom }: BlockPreviewProp
         return <ShortAnswerBlockPreview block={block as ShortAnswerBlock} />
       case 'multi_select':
         return <MultiSelectBlockPreview block={block as MultiSelectBlock} />
+      case 'multiple_choice':
+        return <MultipleChoiceBlockPreview block={block as MultipleChoiceBlock} />
+      case 'ordering':
+        return <OrderingBlockPreview block={block as OrderingBlock} />
+      case 'drag_drop':
+        return <DragDropBlockPreview block={block as DragDropBlock} />
       case 'recording':
         return <RecordingBlockPreview block={block as RecordingBlock} />
       case 'structured-content':
@@ -2892,6 +2901,322 @@ function MultiSelectBlockPreview({ block }: { block: MultiSelectBlock }) {
           </Button>
         ) : (
           <Button variant="outline" onClick={reset} size="sm">
+            Reintentar
+          </Button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function MultipleChoiceBlockPreview({ block }: { block: MultipleChoiceBlock }) {
+  const [selectedOption, setSelectedOption] = useState<string | null>(null)
+  const [showResult, setShowResult] = useState(false)
+
+  const handleCheck = () => {
+    setShowResult(true)
+  }
+
+  const handleReset = () => {
+    setSelectedOption(null)
+    setShowResult(false)
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+        <CheckCircle2 className="h-5 w-5" />
+        <span>Opción Múltiple</span>
+      </div>
+
+      {block.question && (
+        <h3 className="font-bold text-lg">{block.question}</h3>
+      )}
+
+      <div className="space-y-2">
+        {block.options?.map((option) => {
+          const isSelected = selectedOption === option.id
+          const isCorrect = option.id === block.correctOptionId
+
+          let statusClass = "border-gray-200 bg-white hover:border-primary/50"
+          if (showResult) {
+            if (isCorrect) {
+              statusClass = "border-green-500 bg-green-50"
+            } else if (isSelected && !isCorrect) {
+              statusClass = "border-red-500 bg-red-50"
+            }
+          } else if (isSelected) {
+            statusClass = "border-primary bg-primary/5"
+          }
+
+          return (
+            <div
+              key={option.id}
+              onClick={() => !showResult && setSelectedOption(option.id)}
+              className={cn(
+                "p-3 border rounded-lg cursor-pointer transition-all flex items-center gap-3",
+                statusClass
+              )}
+            >
+              <div className={cn(
+                "w-5 h-5 rounded-full border-2 flex items-center justify-center",
+                isSelected ? "border-primary" : "border-gray-300",
+                showResult && isCorrect && "border-green-500 bg-green-500",
+                showResult && isSelected && !isCorrect && "border-red-500 bg-red-500"
+              )}>
+                {(isSelected || (showResult && isCorrect)) && (
+                  <div className={cn(
+                    "w-2.5 h-2.5 rounded-full",
+                    showResult && isCorrect ? "bg-white" : showResult && isSelected ? "bg-white" : "bg-primary"
+                  )} />
+                )}
+              </div>
+              <span className="flex-1">{option.text}</span>
+              {showResult && isCorrect && (
+                <CheckCircle2 className="h-5 w-5 text-green-500" />
+              )}
+            </div>
+          )
+        })}
+      </div>
+
+      <div className="flex gap-2">
+        {!showResult ? (
+          <Button onClick={handleCheck} disabled={!selectedOption} size="sm">
+            Verificar
+          </Button>
+        ) : (
+          <Button variant="outline" onClick={handleReset} size="sm">
+            Reintentar
+          </Button>
+        )}
+      </div>
+
+      {showResult && block.explanation && (
+        <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
+          <strong>Explicación:</strong> {block.explanation}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function OrderingBlockPreview({ block }: { block: OrderingBlock }) {
+  const [items, setItems] = useState(() => 
+    block.items ? [...block.items].sort(() => Math.random() - 0.5) : []
+  )
+  const [showResult, setShowResult] = useState(false)
+
+  const moveItem = (index: number, direction: 'up' | 'down') => {
+    if (showResult) return
+    const newItems = [...items]
+    const targetIndex = direction === 'up' ? index - 1 : index + 1
+    if (targetIndex < 0 || targetIndex >= items.length) return
+    ;[newItems[index], newItems[targetIndex]] = [newItems[targetIndex], newItems[index]]
+    setItems(newItems)
+  }
+
+  const handleCheck = () => {
+    setShowResult(true)
+  }
+
+  const handleReset = () => {
+    setItems(block.items ? [...block.items].sort(() => Math.random() - 0.5) : [])
+    setShowResult(false)
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+        <LucideIcons.ArrowUpDown className="h-5 w-5" />
+        <span>Ordenar</span>
+      </div>
+
+      {block.title && <h3 className="font-bold text-lg">{block.title}</h3>}
+      {block.instruction && <p className="text-muted-foreground">{block.instruction}</p>}
+
+      <div className="space-y-2">
+        {items.map((item, index) => {
+          const isCorrectPosition = showResult && item.correctPosition === index + 1
+
+          return (
+            <div
+              key={item.id}
+              className={cn(
+                "p-3 border rounded-lg flex items-center gap-3 transition-all",
+                showResult
+                  ? isCorrectPosition
+                    ? "border-green-500 bg-green-50"
+                    : "border-red-500 bg-red-50"
+                  : "border-gray-200 bg-white"
+              )}
+            >
+              <span className="font-bold text-muted-foreground w-6">{index + 1}.</span>
+              <span className="flex-1">{item.text}</span>
+              {!showResult && (
+                <div className="flex flex-col gap-1">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    onClick={() => moveItem(index, 'up')}
+                    disabled={index === 0}
+                  >
+                    <LucideIcons.ChevronUp className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    onClick={() => moveItem(index, 'down')}
+                    disabled={index === items.length - 1}
+                  >
+                    <LucideIcons.ChevronDown className="h-4 w-4" />
+                  </Button>
+                </div>
+              )}
+              {showResult && (
+                isCorrectPosition
+                  ? <CheckCircle2 className="h-5 w-5 text-green-500" />
+                  : <LucideIcons.X className="h-5 w-5 text-red-500" />
+              )}
+            </div>
+          )
+        })}
+      </div>
+
+      <div className="flex gap-2">
+        {!showResult ? (
+          <Button onClick={handleCheck} size="sm">
+            Verificar
+          </Button>
+        ) : (
+          <Button variant="outline" onClick={handleReset} size="sm">
+            Reintentar
+          </Button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function DragDropBlockPreview({ block }: { block: DragDropBlock }) {
+  const [assignments, setAssignments] = useState<Record<string, string>>({}) // itemId -> categoryId
+  const [showResult, setShowResult] = useState(false)
+
+  const handleAssign = (itemId: string, categoryId: string) => {
+    if (showResult) return
+    setAssignments(prev => ({ ...prev, [itemId]: categoryId }))
+  }
+
+  const handleCheck = () => {
+    setShowResult(true)
+  }
+
+  const handleReset = () => {
+    setAssignments({})
+    setShowResult(false)
+  }
+
+  const unassignedItems = block.items?.filter(item => !assignments[item.id]) || []
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+        <LucideIcons.MousePointerSquareDashed className="h-5 w-5" />
+        <span>Arrastrar y Soltar</span>
+      </div>
+
+      {block.title && <h3 className="font-bold text-lg">{block.title}</h3>}
+      {block.instruction && <p className="text-muted-foreground">{block.instruction}</p>}
+
+      {/* Unassigned items */}
+      {unassignedItems.length > 0 && (
+        <div className="p-3 bg-muted/30 rounded-lg border-2 border-dashed">
+          <p className="text-xs text-muted-foreground mb-2 font-medium">Elementos por clasificar:</p>
+          <div className="flex flex-wrap gap-2">
+            {unassignedItems.map(item => (
+              <Badge key={item.id} variant="secondary" className="cursor-pointer hover:bg-primary/20">
+                {item.text}
+              </Badge>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Categories */}
+      <div className="grid grid-cols-2 gap-4">
+        {block.categories?.map(category => {
+          const categoryItems = block.items?.filter(item => assignments[item.id] === category.id) || []
+
+          return (
+            <div
+              key={category.id}
+              className="p-3 border-2 border-dashed rounded-lg min-h-[100px]"
+            >
+              <h4 className="font-semibold text-sm mb-2 text-center">{category.name}</h4>
+              <div className="space-y-1">
+                {categoryItems.map(item => {
+                  const isCorrect = item.correctCategoryId === category.id
+
+                  return (
+                    <div
+                      key={item.id}
+                      onClick={() => !showResult && handleAssign(item.id, '')}
+                      className={cn(
+                        "p-2 rounded text-sm cursor-pointer transition-all",
+                        showResult
+                          ? isCorrect
+                            ? "bg-green-100 border border-green-300"
+                            : "bg-red-100 border border-red-300"
+                          : "bg-primary/10 border border-primary/20 hover:bg-primary/20"
+                      )}
+                    >
+                      {item.text}
+                      {showResult && (
+                        isCorrect
+                          ? <CheckCircle2 className="h-4 w-4 text-green-500 inline ml-2" />
+                          : <LucideIcons.X className="h-4 w-4 text-red-500 inline ml-2" />
+                      )}
+                    </div>
+                  )
+                })}
+                {categoryItems.length === 0 && (
+                  <p className="text-xs text-muted-foreground text-center py-4">
+                    Arrastra elementos aquí
+                  </p>
+                )}
+              </div>
+              {/* Click to assign buttons for unassigned items */}
+              {!showResult && unassignedItems.length > 0 && (
+                <div className="mt-2 pt-2 border-t border-dashed">
+                  <p className="text-xs text-muted-foreground mb-1">Clic para agregar:</p>
+                  <div className="flex flex-wrap gap-1">
+                    {unassignedItems.map(item => (
+                      <Badge
+                        key={item.id}
+                        variant="outline"
+                        className="cursor-pointer hover:bg-primary/10 text-xs"
+                        onClick={() => handleAssign(item.id, category.id)}
+                      >
+                        + {item.text}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+
+      <div className="flex gap-2">
+        {!showResult ? (
+          <Button onClick={handleCheck} disabled={unassignedItems.length > 0} size="sm">
+            Verificar
+          </Button>
+        ) : (
+          <Button variant="outline" onClick={handleReset} size="sm">
             Reintentar
           </Button>
         )}

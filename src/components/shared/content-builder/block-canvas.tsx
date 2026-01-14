@@ -15,7 +15,8 @@ interface BlockCanvasProps {
   title: string
   description: string
   selectedBlockId: string | null
-  onSelectBlock: (id: string | null) => void
+  selectedBlockIds?: Set<string>
+  onSelectBlock: (id: string | null, event?: React.MouseEvent) => void
   onUpdateTitle: (title: string) => void
   onUpdateDescription: (description: string) => void
   onUpdateBlock?: (blockId: string, updates: Partial<Block>) => void
@@ -31,6 +32,7 @@ export function BlockCanvas({
   title,
   description,
   selectedBlockId,
+  selectedBlockIds = new Set(),
   onSelectBlock,
   onUpdateTitle,
   onUpdateDescription,
@@ -148,7 +150,7 @@ export function BlockCanvas({
               <div className={cn('space-y-6', readOnly && 'space-y-0')}>
                 {blocks.map((block, index) => {
                   const blockErrors = validationErrors.filter((e) => e.blockId === block.id)
-                  const isSelected = selectedBlockId === block.id
+                  const isSelected = selectedBlockIds.has(block.id) || selectedBlockId === block.id
 
                   if (readOnly) {
                     return (
@@ -164,7 +166,7 @@ export function BlockCanvas({
                       block={block}
                       index={index}
                       isSelected={isSelected}
-                      onSelect={() => onSelectBlock(block.id)}
+                      onSelect={(e) => onSelectBlock(block.id, e)}
                       readOnly={readOnly}
                       mode={mode}
                       errors={blockErrors}

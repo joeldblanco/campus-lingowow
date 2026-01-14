@@ -12,7 +12,7 @@ interface BlockItemProps {
   block: Block
   index: number
   isSelected: boolean
-  onSelect: () => void
+  onSelect: (event?: React.MouseEvent) => void
   readOnly?: boolean
   mode: ContentBuilderMode
   errors?: BlockValidationError[]
@@ -59,9 +59,9 @@ export function BlockItem({
         isDragging && 'z-50 shadow-xl opacity-50',
         hasErrors && !isSelected && 'border-red-500 ring-2 ring-red-200'
       )}
-      onClick={(e) => {
+      onClick={(e: React.MouseEvent) => {
         e.stopPropagation()
-        onSelect()
+        onSelect(e)
       }}
     >
       {/* Header with drag handle and badges */}

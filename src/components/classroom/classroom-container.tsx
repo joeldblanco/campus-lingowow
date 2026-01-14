@@ -96,35 +96,35 @@ function ClassroomInner({
     const endTimestamp = endTime instanceof Date ? endTime.getTime() : new Date(endTime).getTime()
     // Grace period ends exactly 10 minutes after the scheduled class end time
     const graceEndTimestamp = endTimestamp + GRACE_PERIOD_MS
-    
+
     const calculateTimeLeft = () => {
       const now = Date.now()
       const diffToEnd = endTimestamp - now
       const diffToGraceEnd = graceEndTimestamp - now
-      
+
       // Grace period has ended - close the class
       if (diffToGraceEnd <= 0) {
         return { time: '00:00', isGrace: true, shouldEnd: true }
       }
-      
+
       // Class time has ended, but still in grace period
       if (diffToEnd <= 0) {
         // Show countdown of grace period remaining (from 10:00 down to 00:00)
         const graceMinutes = Math.floor(diffToGraceEnd / (1000 * 60))
         const graceSeconds = Math.floor((diffToGraceEnd % (1000 * 60)) / 1000)
-        
+
         return {
           time: `${graceMinutes.toString().padStart(2, '0')}:${graceSeconds.toString().padStart(2, '0')}`,
           isGrace: true,
           shouldEnd: false
         }
       }
-      
+
       // Normal class time - show time remaining until scheduled end
       const hours = Math.floor(diffToEnd / (1000 * 60 * 60))
       const minutes = Math.floor((diffToEnd % (1000 * 60 * 60)) / (1000 * 60))
       const seconds = Math.floor((diffToEnd % (1000 * 60)) / 1000)
-      
+
       if (hours > 0) {
         return {
           time: `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`,
@@ -132,19 +132,19 @@ function ClassroomInner({
           shouldEnd: false
         }
       }
-      
+
       return {
         time: `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`,
         isGrace: false,
         shouldEnd: false
       }
     }
-    
+
     const updateTimer = async () => {
       const result = calculateTimeLeft()
       setTimeLeft(result.time)
       setIsGracePeriod(result.isGrace)
-      
+
       if (result.shouldEnd && !hasEndedRef.current) {
         hasEndedRef.current = true
         // Stop recording automatically when grace period ends (use refs to avoid dependency issues)
@@ -159,11 +159,11 @@ function ClassroomInner({
         onMeetingEnd()
       }
     }
-    
+
     updateTimer()
-    
+
     const timer = setInterval(updateTimer, 1000)
-    
+
     return () => clearInterval(timer)
   }, [endTime, leaveRoom, onMeetingEnd, bookingId])
 
@@ -193,25 +193,25 @@ function ClassroomInner({
     autoStartRecording()
   }, [connectionStatus, isTeacher, bookingId, roomName, isRecording])
 
-  
+
   // Listen for lesson change commands and sync requests
   useEffect(() => {
     const handleSetLesson = async (data: Record<string, unknown>) => {
       if (data.type === 'SET_LESSON') {
         const lessonId = data.lessonId
         const contentType = data.contentType as ShareableContent['type'] | undefined
-        
+
         // Handle stop sharing
         if (!lessonId) {
           setActiveLesson(undefined)
           toast.info('El profesor ha detenido la compartición.')
           return
         }
-        
+
         if (typeof lessonId === 'string') {
           try {
             setIsLoadingLesson(true)
-            const content = contentType 
+            const content = contentType
               ? await getContentById(lessonId, contentType)
               : await getLessonContent(lessonId)
             if (content) {
@@ -230,10 +230,10 @@ function ClassroomInner({
     // Teacher responds to sync requests from students
     const handleSyncRequest = (data: Record<string, unknown>) => {
       if (data.type === 'REQUEST_SYNC' && isTeacher && activeLessonRef.current) {
-        sendCommand('set-lesson', { 
-          type: 'SET_LESSON', 
-          lessonId: activeLessonRef.current.id, 
-          contentType: activeLessonRef.current.type 
+        sendCommand('set-lesson', {
+          type: 'SET_LESSON',
+          lessonId: activeLessonRef.current.id,
+          contentType: activeLessonRef.current.type
         })
       }
     }
@@ -241,7 +241,7 @@ function ClassroomInner({
     if (connectionStatus === 'connected') {
       addCommandListener('set-lesson', handleSetLesson)
       addCommandListener('sync-request', handleSyncRequest)
-      
+
       // Student requests current state when connecting
       if (!isTeacher) {
         sendCommand('sync-request', { type: 'REQUEST_SYNC' })
@@ -335,9 +335,9 @@ function ClassroomInner({
     <div className="h-full flex flex-col bg-white rounded-xl border overflow-hidden">
       {/* Videos - When chat is minimized, videos take full height stacked vertically */}
       <div className={isChatMinimized ? "flex-1 flex flex-col p-3 gap-3" : "flex-none p-3 space-y-2"}>
-        <VideoGrid 
-          localTrack={localTracks} 
-          remoteTracks={remoteTracks} 
+        <VideoGrid
+          localTrack={localTracks}
+          remoteTracks={remoteTracks}
           isTeacher={isTeacher}
           stacked={isChatMinimized}
         />
@@ -346,7 +346,7 @@ function ClassroomInner({
       {/* Chat Section */}
       <div className="flex flex-col transition-all duration-300 ease-in-out" style={{ flex: isChatMinimized ? '0 0 auto' : '1 1 0%', minHeight: 0 }}>
         {/* Chat Header with minimize button - clickable */}
-        <div 
+        <div
           className="flex-none p-3 border-t bg-blue-600 flex items-center justify-between cursor-pointer hover:bg-blue-700 transition-colors"
           onClick={() => setIsChatMinimized(!isChatMinimized)}
           title={isChatMinimized ? "Expandir chat" : "Minimizar chat"}
@@ -398,13 +398,13 @@ function ClassroomInner({
       case 'whiteboard':
         return <ExcalidrawWhiteboard bookingId={bookingId} isTeacher={isTeacher} />
       case 'screenshare':
-        return <ScreenShareViewer isTeacher={isTeacher} />
+        return <ScreenShareViewer />
       default:
         return (
           <CollaborativeContentWrapper className="min-h-full">
-            <ActiveLessonViewer 
-              lessonData={activeLesson} 
-              isTeacher={isTeacher} 
+            <ActiveLessonViewer
+              lessonData={activeLesson}
+              isTeacher={isTeacher}
               onContentSelect={handleContentSelect}
             />
           </CollaborativeContentWrapper>
@@ -475,7 +475,7 @@ function ClassroomInner({
               Pantalla
             </Button>
           </div>
-          
+
           {/* Stop sharing buttons */}
           {isTeacher && activeLesson && (
             <Button
@@ -488,7 +488,7 @@ function ClassroomInner({
               Detener Contenido
             </Button>
           )}
-          {isTeacher && isScreenSharing && (
+          {isScreenSharing && (
             <Button
               variant="outline"
               size="sm"
@@ -510,8 +510,8 @@ function ClassroomInner({
 export function ClassroomContainer(props: ClassroomContainerProps) {
   return (
     <LiveKitProvider>
-      <CollaborationProvider 
-        isTeacher={props.isTeacher} 
+      <CollaborationProvider
+        isTeacher={props.isTeacher}
         participantName={props.userDisplayName}
       >
         <ClassroomInner {...props} />

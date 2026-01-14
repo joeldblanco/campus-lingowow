@@ -41,6 +41,7 @@ import {
   AlertCircle,
   CheckCircle,
   LayoutGrid,
+  Trash2,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
@@ -378,12 +379,61 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
   const [courses, setCourses] = useState<CourseForExam[]>([])
 
   // UI State
-  const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null)
+  const [selectedBlockIds, setSelectedBlockIds] = useState<Set<string>>(new Set())
   const [isPreviewMode, setIsPreviewMode] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'error'>('saved')
   const [loading, setLoading] = useState(false)
   const [validationErrors, setValidationErrors] = useState<BlockValidationError[]>([])
+
+  // Helper to get single selected block (for properties panel)
+  const selectedBlockId = selectedBlockIds.size === 1 ? Array.from(selectedBlockIds)[0] : null
+
+  // Handle block selection with Ctrl support for multi-select
+  const handleBlockSelect = (blockId: string | null, event?: React.MouseEvent) => {
+    if (!blockId) {
+      setSelectedBlockIds(new Set())
+      return
+    }
+
+    if (event?.ctrlKey || event?.metaKey) {
+      // Toggle selection with Ctrl/Cmd
+      setSelectedBlockIds(prev => {
+        const newSet = new Set(prev)
+        if (newSet.has(blockId)) {
+          newSet.delete(blockId)
+        } else {
+          newSet.add(blockId)
+        }
+        return newSet
+      })
+    } else {
+      // Single selection
+      setSelectedBlockIds(new Set([blockId]))
+    }
+  }
+
+  // Delete selected blocks
+  const deleteSelectedBlocks = useCallback(() => {
+    if (selectedBlockIds.size === 0) return
+    
+    setBlocks(prev => prev.filter(b => !selectedBlockIds.has(b.id)))
+    setSelectedBlockIds(new Set())
+    toast.success(`${selectedBlockIds.size} bloque(s) eliminado(s)`)
+  }, [selectedBlockIds])
+
+  // Keyboard shortcut for Delete key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Delete' && selectedBlockIds.size > 0 && !isPreviewMode) {
+        e.preventDefault()
+        deleteSelectedBlocks()
+      }
+    }
+    
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [deleteSelectedBlocks, selectedBlockIds.size, isPreviewMode])
 
   // DnD State
   const [activeDragItem, setActiveDragItem] = useState<{
@@ -476,8 +526,8 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
     if (over.id === 'cancel-zone') {
       if (active.data.current?.type !== 'new-block') {
         setBlocks((prev) => prev.filter((b) => b.id !== active.id))
-        if (selectedBlockId === active.id) {
-          setSelectedBlockId(null)
+        if (selectedBlockIds.has(active.id as string)) {
+          setSelectedBlockIds(new Set())
         }
       }
       return
@@ -505,7 +555,7 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
       const newBlocks = [...blocks]
       newBlocks.splice(insertIndex, 0, newBlock)
       setBlocks(newBlocks.map((b, i) => ({ ...b, order: i })))
-      setSelectedBlockId(newBlock.id)
+      setSelectedBlockIds(new Set([newBlock.id]))
       return
     }
 
@@ -533,8 +583,12 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
 
   const removeBlock = (blockId: string) => {
     setBlocks((prev) => prev.filter((b) => b.id !== blockId))
-    if (selectedBlockId === blockId) {
-      setSelectedBlockId(null)
+    if (selectedBlockIds.has(blockId)) {
+      setSelectedBlockIds(prev => {
+        const newSet = new Set(prev)
+        newSet.delete(blockId)
+        return newSet
+      })
     }
   }
 
@@ -698,6 +752,24 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
 
           {/* Right Actions */}
           <div className="flex items-center gap-2">
+            {/* Multi-select indicator */}
+            {!isPreviewMode && selectedBlockIds.size > 1 && (
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-md">
+                <span className="text-sm font-medium text-primary">
+                  {selectedBlockIds.size} seleccionados
+                </span>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  className="h-7 px-2 gap-1"
+                  onClick={deleteSelectedBlocks}
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                  Eliminar
+                </Button>
+              </div>
+            )}
+
             {/* Save Status */}
             {!isPreviewMode && exam?.id && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground mr-2">
@@ -726,7 +798,7 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
               className="gap-2"
               onClick={() => {
                 setIsPreviewMode(!isPreviewMode)
-                setSelectedBlockId(null)
+                setSelectedBlockIds(new Set())
               }}
             >
               <Eye className="h-4 w-4" />
@@ -770,7 +842,8 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
             title={title}
             description={description}
             selectedBlockId={isPreviewMode ? null : selectedBlockId}
-            onSelectBlock={!isPreviewMode ? setSelectedBlockId : () => {}}
+            selectedBlockIds={isPreviewMode ? new Set() : selectedBlockIds}
+            onSelectBlock={!isPreviewMode ? handleBlockSelect : () => {}}
             onUpdateTitle={setTitle}
             onUpdateDescription={setDescription}
             onUpdateBlock={updateBlock}
@@ -786,7 +859,7 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
               block={selectedBlock}
               onUpdate={(updates) => updateBlock(selectedBlock.id, updates)}
               onRemove={() => removeBlock(selectedBlock.id)}
-              onClose={() => setSelectedBlockId(null)}
+              onClose={() => setSelectedBlockIds(new Set())}
               mode="exam"
             />
           )}
