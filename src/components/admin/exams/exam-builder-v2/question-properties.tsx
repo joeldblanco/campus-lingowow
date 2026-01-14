@@ -243,8 +243,43 @@ function MultipleChoiceEditor({
   question: ExamQuestion
   onUpdate: (updates: Partial<ExamQuestion>) => void
 }) {
+  const isMultiStep = (question.multipleChoiceItems?.length || 0) > 0
+
+  // Single step state
   const options = question.options || []
 
+  // Multi-step helpers
+  const items = question.multipleChoiceItems || []
+
+  const toggleMultiStep = (checked: boolean) => {
+    if (checked) {
+      // Initialize with current single question data if converting
+      const initialItem = {
+        id: `item${Date.now()}`,
+        question: question.question || '',
+        options: question.options?.length ? question.options : [
+          { id: `opt${Date.now()}1`, text: 'Opción 1' },
+          { id: `opt${Date.now()}2`, text: 'Opción 2' }
+        ],
+        correctOptionId: question.correctOptionId || ''
+      }
+      onUpdate({
+        multipleChoiceItems: [initialItem],
+        question: 'Preguntas Múltiples' // Default title for the block
+      })
+    } else {
+      // Revert to single step - take first item or default
+      const firstItem = items[0]
+      onUpdate({
+        multipleChoiceItems: undefined,
+        question: firstItem?.question || question.question,
+        options: firstItem?.options || options,
+        correctOptionId: firstItem?.correctOptionId || question.correctOptionId
+      })
+    }
+  }
+
+  // Single step option handlers
   const addOption = () => {
     const newId = `opt${Date.now()}`
     onUpdate({
@@ -267,50 +302,190 @@ function MultipleChoiceEditor({
     })
   }
 
-  return (
-    <div className="space-y-3">
-      <Label>Constructor de Respuestas</Label>
-      <p className="text-xs text-muted-foreground">
-        Haz clic en el círculo para marcar la respuesta correcta.
-      </p>
+  // Multi-step item handlers
+  const addItem = () => {
+    const newItem = {
+      id: `item${Date.now()}`,
+      question: '',
+      options: [
+        { id: `opt${Date.now()}1`, text: 'Opción 1' },
+        { id: `opt${Date.now()}2`, text: 'Opción 2' }
+      ],
+      correctOptionId: ''
+    }
+    onUpdate({
+      multipleChoiceItems: [...items, newItem]
+    })
+  }
 
-      <div className="space-y-2">
-        {options.map((option, index) => (
-          <div key={option.id} className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => onUpdate({ correctOptionId: option.id })}
-              className={cn(
-                'w-5 h-5 rounded-full border-2 flex-shrink-0 transition-colors',
-                question.correctOptionId === option.id
-                  ? 'border-green-500 bg-green-500'
-                  : 'border-muted-foreground/30 hover:border-primary'
-              )}
-            />
-            <Input
-              value={option.text}
-              onChange={(e) => updateOption(option.id, e.target.value)}
-              placeholder={`Opción ${index + 1}`}
-              className="flex-1"
-            />
-            {options.length > 2 && (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                onClick={() => removeOption(option.id)}
-              >
-                <Trash2 className="h-4 w-4 text-destructive" />
-              </Button>
-            )}
-          </div>
-        ))}
+  const removeItem = (index: number) => {
+    const newItems = items.filter((_, i) => i !== index)
+    onUpdate({ multipleChoiceItems: newItems })
+  }
+
+  const updateItem = (index: number, updates: Partial<typeof items[0]>) => {
+    const newItems = [...items]
+    newItems[index] = { ...newItems[index], ...updates }
+    onUpdate({ multipleChoiceItems: newItems })
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <Label>Múltiples Preguntas</Label>
+          <p className="text-xs text-muted-foreground">
+            Crear una secuencia de preguntas
+          </p>
+        </div>
+        <Switch
+          checked={isMultiStep}
+          onCheckedChange={toggleMultiStep}
+        />
       </div>
 
-      <Button variant="outline" size="sm" onClick={addOption} className="w-full">
-        <Plus className="h-4 w-4 mr-2" />
-        Agregar Opción
-      </Button>
+      {!isMultiStep ? (
+        <div className="space-y-3">
+          <Label>Constructor de Respuestas</Label>
+          <p className="text-xs text-muted-foreground">
+            Haz clic en el círculo para marcar la respuesta correcta.
+          </p>
+
+          <div className="space-y-2">
+            {options.map((option, index) => (
+              <div key={option.id} className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => onUpdate({ correctOptionId: option.id })}
+                  className={cn(
+                    'w-5 h-5 rounded-full border-2 flex-shrink-0 transition-colors',
+                    question.correctOptionId === option.id
+                      ? 'border-green-500 bg-green-500'
+                      : 'border-muted-foreground/30 hover:border-primary'
+                  )}
+                />
+                <Input
+                  value={option.text}
+                  onChange={(e) => updateOption(option.id, e.target.value)}
+                  placeholder={`Opción ${index + 1}`}
+                  className="flex-1"
+                />
+                {options.length > 2 && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={() => removeOption(option.id)}
+                  >
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <Button variant="outline" size="sm" onClick={addOption} className="w-full">
+            <Plus className="h-4 w-4 mr-2" />
+            Agregar Opción
+          </Button>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {items.map((item, index) => (
+            <Collapsible key={item.id} className="border rounded-lg p-3 bg-muted/20">
+              <div className="flex items-center justify-between">
+                <CollapsibleTrigger className="flex items-center gap-2 text-sm font-medium hover:text-primary">
+                  <ChevronDown className="h-4 w-4" />
+                  Pregunta {index + 1}
+                </CollapsibleTrigger>
+                {items.length > 1 && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7 text-destructive"
+                    onClick={() => removeItem(index)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+
+              <CollapsibleContent className="pt-3 space-y-3">
+                <div className="space-y-2">
+                  <Label className="text-xs">Pregunta</Label>
+                  <Textarea
+                    value={item.question}
+                    onChange={(e) => updateItem(index, { question: e.target.value })}
+                    placeholder="Escribe la pregunta..."
+                    rows={2}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-xs">Opciones</Label>
+                  {item.options.map((opt, optIndex) => (
+                    <div key={opt.id} className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => updateItem(index, { correctOptionId: opt.id })}
+                        className={cn(
+                          'w-4 h-4 rounded-full border-2 flex-shrink-0 transition-colors',
+                          item.correctOptionId === opt.id
+                            ? 'border-green-500 bg-green-500'
+                            : 'border-muted-foreground/30 hover:border-primary'
+                        )}
+                      />
+                      <Input
+                        value={opt.text}
+                        onChange={(e) => {
+                          const newOpts = [...item.options]
+                          newOpts[optIndex] = { ...opt, text: e.target.value }
+                          updateItem(index, { options: newOpts })
+                        }}
+                        className="h-8 text-sm"
+                        placeholder={`Opción ${optIndex + 1}`}
+                      />
+                      {item.options.length > 2 && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-7 w-7"
+                          onClick={() => {
+                            const newOpts = item.options.filter(o => o.id !== opt.id)
+                            updateItem(index, {
+                              options: newOpts,
+                              correctOptionId: item.correctOptionId === opt.id ? newOpts[0]?.id : item.correctOptionId
+                            })
+                          }}
+                        >
+                          <Trash2 className="h-3 w-3 text-destructive" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full h-8 text-xs"
+                    onClick={() => {
+                      const newId = `opt${Date.now()}`
+                      updateItem(index, {
+                        options: [...item.options, { id: newId, text: `Opción ${item.options.length + 1}` }]
+                      })
+                    }}
+                  >
+                    <Plus className="h-3 w-3 mr-1" /> Agregar Opción
+                  </Button>
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
+          ))}
+          <Button variant="outline" size="sm" onClick={addItem} className="w-full">
+            <Plus className="h-4 w-4 mr-2" />
+            Agregar Pregunta
+          </Button>
+        </div>
+      )}
     </div>
   )
 }
@@ -869,7 +1044,7 @@ function ImageQuestionEditor({
               alt="Vista previa"
               className="max-w-full h-auto max-h-48 mx-auto"
               onError={(e) => {
-                ;(e.target as HTMLImageElement).style.display = 'none'
+                ; (e.target as HTMLImageElement).style.display = 'none'
               }}
             />
           </div>

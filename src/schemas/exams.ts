@@ -31,6 +31,17 @@ export const ExamQuestionSchema = z
     type: QuestionTypeEnum,
     question: z.string().min(1, 'La pregunta es requerida'),
     options: z.union([z.array(z.string()), z.record(z.unknown())]).optional(), // For multiple choice (string[]) or block type metadata (object)
+    // Multi-step multiple choice items
+    multipleChoiceItems: z
+      .array(
+        z.object({
+          id: z.string(),
+          question: z.string(),
+          options: z.array(z.object({ id: z.string(), text: z.string() })),
+          correctOptionId: z.string(),
+        })
+      )
+      .optional(),
     correctAnswer: z.union([z.string(), z.array(z.string()), z.null()]).optional(),
     explanation: z.string().optional(),
     points: z.number().min(0, 'Los puntos deben ser mayor o igual a 0').default(1),

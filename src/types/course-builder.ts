@@ -63,11 +63,11 @@ export interface BaseBlock {
   children?: Block[]
   data?: Record<string, unknown> // Flexible payload for new types
   // Exam-specific fields (only for interactive blocks in exams)
-  points?: number              // Points for this block (exams only)
-  required?: boolean           // Whether answer is required (exams only)
-  explanation?: string         // Explanation shown after answering (exams only)
-  hint?: string               // Optional hint for the student (exams only)
-  partialCredit?: boolean     // Allow partial credit (exams only)
+  points?: number // Points for this block (exams only)
+  required?: boolean // Whether answer is required (exams only)
+  explanation?: string // Explanation shown after answering (exams only)
+  hint?: string // Optional hint for the student (exams only)
+  partialCredit?: boolean // Allow partial credit (exams only)
 }
 
 // Blocks that can have points in exams (interactive blocks)
@@ -263,11 +263,21 @@ export interface EssayBlock extends BaseBlock {
   }
 }
 
-export interface MultipleChoiceBlock extends BaseBlock {
-  type: 'multiple_choice'
+export interface MultipleChoiceItem {
+  id: string
   question: string
   options: { id: string; text: string }[]
   correctOptionId: string
+}
+
+export interface MultipleChoiceBlock extends BaseBlock {
+  type: 'multiple_choice'
+  // Single question mode (backward compatible)
+  question?: string
+  options?: { id: string; text: string }[]
+  correctOptionId?: string
+  // Multi-step mode
+  items?: MultipleChoiceItem[]
   explanation?: string
   points?: number
 }
@@ -877,7 +887,8 @@ export const BLOCK_TEMPLATES: BlockTemplate[] = [
       type: 'teacher_notes',
       order: 0,
       title: 'Indicaciones para el profesor',
-      content: '<p>Escribe aquí las indicaciones, preguntas sugeridas o notas que solo tú verás durante la clase.</p>',
+      content:
+        '<p>Escribe aquí las indicaciones, preguntas sugeridas o notas que solo tú verás durante la clase.</p>',
       highlightColor: 'yellow',
     },
   },

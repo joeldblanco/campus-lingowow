@@ -46,7 +46,7 @@ import {
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 
-import { Block, BlockTemplate, isInteractiveBlock } from '@/types/course-builder'
+import { Block, BlockTemplate, isInteractiveBlock, MultipleChoiceBlock } from '@/types/course-builder'
 import { BlockLibrary, BlockCanvas, DraggableBlock } from '@/components/shared/content-builder'
 import { BlockValidationError } from '@/components/shared/content-builder/types'
 import { PropertiesPanel } from '@/components/admin/course-builder/lesson-builder/properties-panel'
@@ -136,7 +136,16 @@ function convertExamToBlocks(exam: ExamWithDetails): Block[] {
         case 'essay':
           // First check if options contains originalBlockType to restore non-standard blocks
           if (optionsData && typeof optionsData === 'object' && !Array.isArray(optionsData)) {
-            const opts = optionsData as { originalBlockType?: string; url?: string; content?: string; instruction?: string; timeLimit?: number; aiGrading?: boolean; maxReplays?: number }
+            const opts = optionsData as {
+              originalBlockType?: string;
+              url?: string;
+              content?: string;
+              instruction?: string;
+              timeLimit?: number;
+              aiGrading?: boolean;
+              maxReplays?: number;
+              multipleChoiceItems?: { id: string; question: string; options: { id: string; text: string }[]; correctOptionId: string }[]
+            }
             if (opts.originalBlockType === 'audio') {
               return {
                 ...baseBlock,
@@ -177,6 +186,16 @@ function convertExamToBlocks(exam: ExamWithDetails): Block[] {
                 instruction: opts.instruction || q.question,
                 timeLimit: opts.timeLimit,
                 aiGrading: opts.aiGrading,
+              } as Block
+            }
+            if (opts.originalBlockType === 'multiple_choice' && opts.multipleChoiceItems) {
+              return {
+                ...baseBlock,
+                type: 'multiple_choice',
+                question: q.question,
+                options: [], // Empty for multi-step
+                correctOptionId: '',
+                items: opts.multipleChoiceItems
               } as Block
             }
             if (opts.originalBlockType === 'multi_select') {
@@ -335,7 +354,11 @@ function convertBlocksToExamFormat(blocks: Block[]) {
 
 function mapBlockTypeToExamType(type: string): 'MULTIPLE_CHOICE' | 'TRUE_FALSE' | 'SHORT_ANSWER' | 'ESSAY' | 'FILL_BLANK' | 'MATCHING' | 'ORDERING' | 'DRAG_DROP' {
   const typeMap: Record<string, 'MULTIPLE_CHOICE' | 'TRUE_FALSE' | 'SHORT_ANSWER' | 'ESSAY' | 'FILL_BLANK' | 'MATCHING' | 'ORDERING' | 'DRAG_DROP'> = {
-    'multiple_choice': 'MULTIPLE_CHOICE',
+    'multiple_choice': 'MULTIPLE_CHOICE', // Will be overridden in logic if needed, but here we just return default mapping. IMPORTANT: Logic in component decides if it's ESSAY based on content.
+    // Actually this function only takes type string. We handle the split logic in the caller usually, OR we need to accept the block itself.
+    // However, looking at usage: const examQuestion = { type: mapBlockTypeToExamType(block.type) ... }
+    // If we want to map "multiple_choice" to "ESSAY" strictly when it's multi-step, we need to handle that in the loop where this is called.
+    // But since this function is simple, let's keep it and handle exception where it's used.
     'true_false': 'TRUE_FALSE',
     'short_answer': 'SHORT_ANSWER',
     'essay': 'ESSAY',
@@ -392,6 +415,12 @@ function getBlockQuestion(block: Block): string {
 function getBlockOptions(block: Block): string[] | Record<string, unknown> | undefined {
   switch (block.type) {
     case 'multiple_choice':
+      if ((block as MultipleChoiceBlock).items?.length) {
+        return {
+          originalBlockType: 'multiple_choice',
+          multipleChoiceItems: (block as MultipleChoiceBlock).items
+        }
+      }
       return block.options?.map(opt => opt.text)
     // Store original block type and data for non-standard blocks so they can be restored on reload
     case 'audio':
@@ -442,6 +471,9 @@ function getBlockOptions(block: Block): string[] | Record<string, unknown> | und
 function getBlockCorrectAnswer(block: Block): string | string[] | null {
   switch (block.type) {
     case 'multiple_choice':
+      if ((block as MultipleChoiceBlock).items?.length) {
+        return null // Multi-step answer handles its own validation or stored in items
+      }
       return block.options?.find(opt => opt.id === block.correctOptionId)?.text || ''
     case 'true_false':
       return block.items?.[0]?.correctAnswer ? 'Verdadero' : 'Falso'

@@ -18,6 +18,7 @@ export interface ExamQuestionData {
   type: QuestionType
   question: string
   options?: string[] | null
+  multipleChoiceItems?: { id: string; question: string; options: string[] }[] | null
   points: number
   minLength?: number | null
   maxLength?: number | null
@@ -50,7 +51,8 @@ export function ExamQuestionCard({
           <MultipleChoiceBlock
             questionId={question.id}
             options={question.options || []}
-            selectedOption={answer as string | null}
+            items={question.multipleChoiceItems || undefined}
+            selectedOption={answer as string | Record<string, string> | null}
             onSelect={(option) => onAnswerChange(option)}
           />
         )
@@ -135,7 +137,7 @@ export function ExamQuestionCard({
         <h3 className="text-primary text-sm font-bold uppercase tracking-wider">
           Pregunta {questionNumber}
         </h3>
-        
+
         {question.type !== 'FILL_BLANK' && (
           <p className="text-lg text-foreground font-medium leading-relaxed">
             {question.question}

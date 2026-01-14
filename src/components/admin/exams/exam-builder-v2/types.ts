@@ -13,6 +13,13 @@ export interface ExamQuestion {
   // Multiple choice
   options?: { id: string; text: string }[]
   correctOptionId?: string
+  // Multi-step multiple choice
+  multipleChoiceItems?: {
+    id: string
+    question: string
+    options: { id: string; text: string }[]
+    correctOptionId: string
+  }[]
   // True/False
   correctAnswer?: boolean | string | string[]
   // Short answer
