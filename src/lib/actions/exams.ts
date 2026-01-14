@@ -3,11 +3,7 @@
 import { db } from '@/lib/db'
 import { auth } from '@/auth'
 import { revalidatePath } from 'next/cache'
-import { 
-  CreateExamSchema, 
-  EditExamSchema, 
-  AssignExamSchema
-} from '@/schemas/exams'
+import { CreateExamSchema, EditExamSchema, AssignExamSchema } from '@/schemas/exams'
 import * as z from 'zod'
 import { AttemptStatus, AssignmentStatus, Prisma } from '@prisma/client'
 import type {
@@ -16,7 +12,7 @@ import type {
   ExamCreateResponse,
   ExamUpdateResponse,
   ExamDeleteResponse,
-  ExamAssignResponse
+  ExamAssignResponse,
 } from '@/types/exam'
 
 // =============================================
@@ -31,37 +27,37 @@ export async function getAllExams(): Promise<ExamWithDetails[]> {
           select: {
             name: true,
             lastName: true,
-            email: true
-          }
+            email: true,
+          },
         },
         course: {
           select: {
             id: true,
             title: true,
             language: true,
-            level: true
-          }
+            level: true,
+          },
         },
         module: {
           select: {
             id: true,
             title: true,
-            level: true
-          }
+            level: true,
+          },
         },
         lesson: {
           select: {
             id: true,
-            title: true
-          }
+            title: true,
+          },
         },
         sections: {
           include: {
             questions: {
-              orderBy: { order: 'asc' }
-            }
+              orderBy: { order: 'asc' },
+            },
           },
-          orderBy: { order: 'asc' }
+          orderBy: { order: 'asc' },
         },
         attempts: {
           include: {
@@ -70,32 +66,32 @@ export async function getAllExams(): Promise<ExamWithDetails[]> {
                 id: true,
                 name: true,
                 lastName: true,
-                email: true
-              }
-            }
-          }
+                email: true,
+              },
+            },
+          },
         },
         _count: {
           select: {
             attempts: true,
-            assignments: true
-          }
-        }
+            assignments: true,
+          },
+        },
       },
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' },
     })
 
-    return exams.map(exam => ({
+    return exams.map((exam) => ({
       ...exam,
-      sections: exam.sections.map(section => ({
+      sections: exam.sections.map((section) => ({
         ...section,
-        questions: section.questions.map(question => ({
+        questions: section.questions.map((question) => ({
           ...question,
           options: question.options as string[] | null,
-          correctAnswer: question.correctAnswer as string | string[]
-        }))
+          correctAnswer: question.correctAnswer as string | string[],
+        })),
       })),
-      attempts: exam.attempts
+      attempts: exam.attempts,
     }))
   } catch (error) {
     console.error('Error fetching exams:', error)
@@ -112,37 +108,37 @@ export async function getExamById(id: string): Promise<ExamWithDetails | null> {
           select: {
             name: true,
             lastName: true,
-            email: true
-          }
+            email: true,
+          },
         },
         course: {
           select: {
             id: true,
             title: true,
             language: true,
-            level: true
-          }
+            level: true,
+          },
         },
         module: {
           select: {
             id: true,
             title: true,
-            level: true
-          }
+            level: true,
+          },
         },
         lesson: {
           select: {
             id: true,
-            title: true
-          }
+            title: true,
+          },
         },
         sections: {
           include: {
             questions: {
-              orderBy: { order: 'asc' }
-            }
+              orderBy: { order: 'asc' },
+            },
           },
-          orderBy: { order: 'asc' }
+          orderBy: { order: 'asc' },
         },
         attempts: {
           include: {
@@ -151,33 +147,33 @@ export async function getExamById(id: string): Promise<ExamWithDetails | null> {
                 id: true,
                 name: true,
                 lastName: true,
-                email: true
-              }
-            }
-          }
+                email: true,
+              },
+            },
+          },
         },
         _count: {
           select: {
             attempts: true,
-            assignments: true
-          }
-        }
-      }
+            assignments: true,
+          },
+        },
+      },
     })
 
     if (!exam) return null
 
     return {
       ...exam,
-      sections: exam.sections.map(section => ({
+      sections: exam.sections.map((section) => ({
         ...section,
-        questions: section.questions.map(question => ({
+        questions: section.questions.map((question) => ({
           ...question,
           options: question.options as string[] | null,
-          correctAnswer: question.correctAnswer as string | string[]
-        }))
+          correctAnswer: question.correctAnswer as string | string[],
+        })),
       })),
-      attempts: exam.attempts
+      attempts: exam.attempts,
     }
   } catch (error) {
     console.error('Error fetching exam:', error)
@@ -203,7 +199,7 @@ export async function createDraftExam(createdById: string): Promise<ExamCreateRe
         allowReview: true,
         isPublished: false,
         createdById,
-      }
+      },
     })
 
     // Create a default section
@@ -213,8 +209,8 @@ export async function createDraftExam(createdById: string): Promise<ExamCreateRe
         title: 'Sección Principal',
         description: '',
         order: 1,
-        points: 0
-      }
+        points: 0,
+      },
     })
 
     revalidatePath('/admin/exams')
@@ -226,7 +222,7 @@ export async function createDraftExam(createdById: string): Promise<ExamCreateRe
 }
 
 export async function updateExamDraft(
-  id: string, 
+  id: string,
   data: {
     title?: string
     description?: string
@@ -254,7 +250,7 @@ export async function updateExamDraft(
         courseId: data.courseId || null,
         moduleId: data.moduleId || null,
         lessonId: data.lessonId || null,
-      }
+      },
     })
 
     return { success: true, exam }
@@ -267,7 +263,15 @@ export async function updateExamDraft(
 export async function updateExamQuestions(
   examId: string,
   questions: Array<{
-    type: 'MULTIPLE_CHOICE' | 'TRUE_FALSE' | 'SHORT_ANSWER' | 'ESSAY' | 'FILL_BLANK' | 'MATCHING' | 'ORDERING' | 'DRAG_DROP'
+    type:
+      | 'MULTIPLE_CHOICE'
+      | 'TRUE_FALSE'
+      | 'SHORT_ANSWER'
+      | 'ESSAY'
+      | 'FILL_BLANK'
+      | 'MATCHING'
+      | 'ORDERING'
+      | 'DRAG_DROP'
     question: string
     options?: string[] | object
     correctAnswer: string | string[] | null
@@ -296,7 +300,7 @@ export async function updateExamQuestions(
       // Get or create the main section
       let section = await tx.examSection.findFirst({
         where: { examId },
-        orderBy: { order: 'asc' }
+        orderBy: { order: 'asc' },
       })
 
       if (!section) {
@@ -306,42 +310,48 @@ export async function updateExamQuestions(
             title: 'Sección Principal',
             description: '',
             order: 1,
-            points: 0
-          }
+            points: 0,
+          },
         })
       }
 
       // Delete existing questions
       await tx.examQuestion.deleteMany({
-        where: { sectionId: section.id }
+        where: { sectionId: section.id },
       })
 
       // Create new questions
       for (const questionData of questions) {
-        const correctAnswer = questionData.type === 'ESSAY' 
-          ? Prisma.JsonNull 
-          : (questionData.correctAnswer ?? '')
+        const correctAnswer =
+          questionData.type === 'ESSAY' ? Prisma.JsonNull : (questionData.correctAnswer ?? '')
 
         // Build options object for interactive types
         let optionsData: unknown = questionData.options
-        
+
         if (questionData.type === 'MATCHING' && questionData.pairs) {
           optionsData = { pairs: questionData.pairs }
         } else if (questionData.type === 'ORDERING' && questionData.items) {
           optionsData = { items: questionData.items }
-        } else if (questionData.type === 'DRAG_DROP' && (questionData.categories || questionData.dragItems)) {
-          optionsData = { 
+        } else if (
+          questionData.type === 'DRAG_DROP' &&
+          (questionData.categories || questionData.dragItems)
+        ) {
+          optionsData = {
             categories: questionData.categories || [],
-            dragItems: questionData.dragItems || []
+            dragItems: questionData.dragItems || [],
           }
         } else if (questionData.type === 'FILL_BLANK' && questionData.content) {
           optionsData = { content: questionData.content }
         }
-        
+
         // Handle imageUrl - only for IMAGE type, or merge with existing options for other types
         if (questionData.imageUrl) {
-          if (questionData.type === 'DRAG_DROP' || questionData.type === 'MATCHING' || 
-              questionData.type === 'ORDERING' || questionData.type === 'FILL_BLANK') {
+          if (
+            questionData.type === 'DRAG_DROP' ||
+            questionData.type === 'MATCHING' ||
+            questionData.type === 'ORDERING' ||
+            questionData.type === 'FILL_BLANK'
+          ) {
             // Already handled above, add imageUrl to existing object
             optionsData = { ...(optionsData as object), imageUrl: questionData.imageUrl }
           } else if (!optionsData || (Array.isArray(optionsData) && optionsData.length === 0)) {
@@ -369,7 +379,7 @@ export async function updateExamQuestions(
             maxLength: questionData.maxLength,
             audioUrl: questionData.audioUrl,
             maxAudioPlays: questionData.maxAudioPlays,
-          }
+          },
         })
       }
 
@@ -377,7 +387,7 @@ export async function updateExamQuestions(
       const totalPoints = questions.reduce((sum, q) => sum + q.points, 0)
       await tx.examSection.update({
         where: { id: section.id },
-        data: { points: totalPoints }
+        data: { points: totalPoints },
       })
 
       return await tx.exam.findUnique({ where: { id: examId } })
@@ -390,11 +400,13 @@ export async function updateExamQuestions(
   }
 }
 
-export async function createExam(data: z.infer<typeof CreateExamSchema>): Promise<ExamCreateResponse> {
+export async function createExam(
+  data: z.infer<typeof CreateExamSchema>
+): Promise<ExamCreateResponse> {
   try {
     // Validar datos de entrada
     const validatedData = CreateExamSchema.parse(data)
-    
+
     // Los puntos totales se calculan automáticamente en cada sección
 
     // Crear el examen usando transacción para consistencia
@@ -424,7 +436,7 @@ export async function createExam(data: z.infer<typeof CreateExamSchema>): Promis
           courseId: validatedData.courseId || null,
           moduleId: validatedData.moduleId || null,
           lessonId: validatedData.lessonId || null,
-        }
+        },
       })
 
       // Crear las secciones del examen
@@ -437,23 +449,22 @@ export async function createExam(data: z.infer<typeof CreateExamSchema>): Promis
             instructions: sectionData.instructions,
             timeLimit: sectionData.timeLimit,
             order: sectionData.order,
-            points: sectionData.questions.reduce((sum, q) => sum + q.points, 0)
-          }
+            points: sectionData.questions.reduce((sum, q) => sum + q.points, 0),
+          },
         })
 
         // Crear las preguntas de cada sección
         for (const questionData of sectionData.questions) {
           // ESSAY type doesn't require correctAnswer (includes audio/image questions)
-          const correctAnswer: Prisma.InputJsonValue | typeof Prisma.JsonNull = questionData.type === 'ESSAY' 
-            ? Prisma.JsonNull 
-            : (questionData.correctAnswer ?? '')
-          
+          const correctAnswer: Prisma.InputJsonValue | typeof Prisma.JsonNull =
+            questionData.type === 'ESSAY' ? Prisma.JsonNull : (questionData.correctAnswer ?? '')
+
           await tx.examQuestion.create({
             data: {
               sectionId: section.id,
               type: questionData.type,
               question: questionData.question,
-              options: questionData.options,
+              options: questionData.options as Prisma.InputJsonValue,
               correctAnswer,
               explanation: questionData.explanation,
               points: questionData.points,
@@ -468,8 +479,8 @@ export async function createExam(data: z.infer<typeof CreateExamSchema>): Promis
               audioPosition: questionData.audioPosition || 'BEFORE_QUESTION',
               maxAudioPlays: questionData.maxAudioPlays,
               audioAutoplay: questionData.audioAutoplay || false,
-              audioPausable: questionData.audioPausable || false
-            }
+              audioPausable: questionData.audioPausable || false,
+            },
           })
         }
       }
@@ -488,7 +499,10 @@ export async function createExam(data: z.infer<typeof CreateExamSchema>): Promis
   }
 }
 
-export async function updateExam(id: string, data: z.infer<typeof EditExamSchema>): Promise<ExamUpdateResponse> {
+export async function updateExam(
+  id: string,
+  data: z.infer<typeof EditExamSchema>
+): Promise<ExamUpdateResponse> {
   try {
     const validatedData = EditExamSchema.parse(data)
 
@@ -518,14 +532,14 @@ export async function updateExam(id: string, data: z.infer<typeof EditExamSchema
           courseId: validatedData.courseId || undefined,
           moduleId: validatedData.moduleId || undefined,
           lessonId: validatedData.lessonId || undefined,
-        }
+        },
       })
 
       // Si se proporcionan secciones, actualizar completamente
       if (validatedData.sections) {
         // Eliminar secciones existentes (cascade eliminará preguntas)
         await tx.examSection.deleteMany({
-          where: { examId: id }
+          where: { examId: id },
         })
 
         // Crear nuevas secciones
@@ -538,23 +552,22 @@ export async function updateExam(id: string, data: z.infer<typeof EditExamSchema
               instructions: sectionData.instructions,
               timeLimit: sectionData.timeLimit,
               order: sectionData.order,
-              points: sectionData.questions.reduce((sum, q) => sum + q.points, 0)
-            }
+              points: sectionData.questions.reduce((sum, q) => sum + q.points, 0),
+            },
           })
 
           // Crear preguntas de la sección
           for (const questionData of sectionData.questions) {
             // ESSAY type doesn't require correctAnswer (includes audio/image questions)
-            const correctAnswer: Prisma.InputJsonValue | typeof Prisma.JsonNull = questionData.type === 'ESSAY' 
-              ? Prisma.JsonNull 
-              : (questionData.correctAnswer ?? '')
-            
+            const correctAnswer: Prisma.InputJsonValue | typeof Prisma.JsonNull =
+              questionData.type === 'ESSAY' ? Prisma.JsonNull : (questionData.correctAnswer ?? '')
+
             await tx.examQuestion.create({
               data: {
                 sectionId: section.id,
                 type: questionData.type,
                 question: questionData.question,
-                options: questionData.options,
+                options: questionData.options as Prisma.InputJsonValue,
                 correctAnswer,
                 explanation: questionData.explanation,
                 points: questionData.points,
@@ -569,8 +582,8 @@ export async function updateExam(id: string, data: z.infer<typeof EditExamSchema
                 audioPosition: questionData.audioPosition || 'BEFORE_QUESTION',
                 maxAudioPlays: questionData.maxAudioPlays,
                 audioAutoplay: questionData.audioAutoplay || false,
-                audioPausable: questionData.audioPausable || false
-              }
+                audioPausable: questionData.audioPausable || false,
+              },
             })
           }
         }
@@ -594,7 +607,7 @@ export async function deleteExam(id: string): Promise<ExamDeleteResponse> {
   try {
     // Verificar si el examen tiene intentos de estudiantes
     const attemptCount = await db.examAttempt.count({
-      where: { examId: id }
+      where: { examId: id },
     })
 
     if (attemptCount > 0) {
@@ -602,7 +615,7 @@ export async function deleteExam(id: string): Promise<ExamDeleteResponse> {
     }
 
     await db.exam.delete({
-      where: { id }
+      where: { id },
     })
 
     revalidatePath('/admin/exams')
@@ -618,15 +631,15 @@ export async function getExamStats(): Promise<ExamStats> {
     const [totalExams, publishedExams, totalAttempts, passedAttempts] = await Promise.all([
       db.exam.count(),
       db.exam.count({
-        where: { isPublished: true }
+        where: { isPublished: true },
       }),
       db.examAttempt.count(),
       db.examAttempt.count({
         where: {
           status: AttemptStatus.COMPLETED,
-          score: { gte: 70 } // Asumiendo 70% como aprobatorio
-        }
-      })
+          score: { gte: 70 }, // Asumiendo 70% como aprobatorio
+        },
+      }),
     ])
 
     return {
@@ -658,12 +671,12 @@ export async function getCoursesForExams() {
                 id: true,
                 title: true,
                 order: true,
-              }
-            }
-          }
-        }
+              },
+            },
+          },
+        },
       },
-      orderBy: { title: 'asc' }
+      orderBy: { title: 'asc' },
     })
 
     return courses
@@ -673,7 +686,9 @@ export async function getCoursesForExams() {
   }
 }
 
-export async function assignExamToStudents(data: z.infer<typeof AssignExamSchema>): Promise<ExamAssignResponse> {
+export async function assignExamToStudents(
+  data: z.infer<typeof AssignExamSchema>
+): Promise<ExamAssignResponse> {
   try {
     const session = await auth()
     if (!session?.user?.id) {
@@ -684,13 +699,13 @@ export async function assignExamToStudents(data: z.infer<typeof AssignExamSchema
     const validatedData = AssignExamSchema.parse(data)
 
     const assignments = await Promise.all(
-      validatedData.studentIds.map(studentId =>
+      validatedData.studentIds.map((studentId) =>
         db.examAssignment.upsert({
           where: {
             examId_userId: {
               examId: validatedData.examId,
               userId: studentId,
-            }
+            },
           },
           update: {
             dueDate: validatedData.dueDate ? new Date(validatedData.dueDate) : null,
@@ -704,7 +719,7 @@ export async function assignExamToStudents(data: z.infer<typeof AssignExamSchema
             dueDate: validatedData.dueDate ? new Date(validatedData.dueDate) : null,
             instructions: validatedData.instructions,
             status: AssignmentStatus.ASSIGNED,
-          }
+          },
         })
       )
     )
@@ -732,12 +747,12 @@ export async function startExamAttempt(examId: string, userId: string) {
         sections: {
           include: {
             questions: {
-              orderBy: { order: 'asc' }
-            }
+              orderBy: { order: 'asc' },
+            },
           },
-          orderBy: { order: 'asc' }
-        }
-      }
+          orderBy: { order: 'asc' },
+        },
+      },
     })
 
     if (!exam) {
@@ -749,7 +764,7 @@ export async function startExamAttempt(examId: string, userId: string) {
     }
 
     const existingAttempts = await db.examAttempt.count({
-      where: { examId, userId }
+      where: { examId, userId },
     })
 
     if (existingAttempts >= exam.maxAttempts) {
@@ -757,15 +772,15 @@ export async function startExamAttempt(examId: string, userId: string) {
     }
 
     const inProgressAttempt = await db.examAttempt.findFirst({
-      where: { examId, userId, status: AttemptStatus.IN_PROGRESS }
+      where: { examId, userId, status: AttemptStatus.IN_PROGRESS },
     })
 
     if (inProgressAttempt) {
-      return { 
-        success: true, 
+      return {
+        success: true,
         attempt: inProgressAttempt,
         exam,
-        isResuming: true
+        isResuming: true,
       }
     }
 
@@ -775,8 +790,8 @@ export async function startExamAttempt(examId: string, userId: string) {
         userId,
         attemptNumber: existingAttempts + 1,
         status: AttemptStatus.IN_PROGRESS,
-        startedAt: new Date()
-      }
+        startedAt: new Date(),
+      },
     })
 
     return { success: true, attempt, exam, isResuming: false }
@@ -787,15 +802,15 @@ export async function startExamAttempt(examId: string, userId: string) {
 }
 
 export async function saveExamAnswer(
-  attemptId: string, 
-  questionId: string, 
+  attemptId: string,
+  questionId: string,
   answer: unknown,
   timeSpent?: number
 ) {
   try {
     const attempt = await db.examAttempt.findUnique({
       where: { id: attemptId },
-      include: { exam: true }
+      include: { exam: true },
     })
 
     if (!attempt) {
@@ -807,14 +822,16 @@ export async function saveExamAnswer(
     }
 
     const question = await db.examQuestion.findUnique({
-      where: { id: questionId }
+      where: { id: questionId },
     })
 
     if (!question) {
       return { success: false, error: 'Pregunta no encontrada' }
     }
 
-    const isAutoGradable = ['MULTIPLE_CHOICE', 'TRUE_FALSE', 'FILL_BLANK', 'SHORT_ANSWER'].includes(question.type)
+    const isAutoGradable = ['MULTIPLE_CHOICE', 'TRUE_FALSE', 'FILL_BLANK', 'SHORT_ANSWER'].includes(
+      question.type
+    )
     let isCorrect: boolean | null = null
     let pointsEarned = 0
     let needsReview = false
@@ -822,19 +839,17 @@ export async function saveExamAnswer(
     if (isAutoGradable && answer !== null && answer !== undefined) {
       const correctAnswer = question.correctAnswer as string | string[]
       const userAnswer = String(answer).trim()
-      
+
       if (Array.isArray(correctAnswer)) {
-        isCorrect = correctAnswer.some(ca => 
-          question.caseSensitive 
-            ? ca === userAnswer 
-            : ca.toLowerCase() === userAnswer.toLowerCase()
+        isCorrect = correctAnswer.some((ca) =>
+          question.caseSensitive ? ca === userAnswer : ca.toLowerCase() === userAnswer.toLowerCase()
         )
       } else {
-        isCorrect = question.caseSensitive 
-          ? correctAnswer === userAnswer 
+        isCorrect = question.caseSensitive
+          ? correctAnswer === userAnswer
           : correctAnswer.toLowerCase() === userAnswer.toLowerCase()
       }
-      
+
       pointsEarned = isCorrect ? question.points : 0
     } else {
       needsReview = true
@@ -844,15 +859,15 @@ export async function saveExamAnswer(
       where: {
         attemptId_questionId: {
           attemptId,
-          questionId
-        }
+          questionId,
+        },
       },
       update: {
         answer: answer as object,
         isCorrect,
         pointsEarned,
         needsReview,
-        timeSpent
+        timeSpent,
       },
       create: {
         attemptId,
@@ -861,8 +876,8 @@ export async function saveExamAnswer(
         isCorrect,
         pointsEarned,
         needsReview,
-        timeSpent
-      }
+        timeSpent,
+      },
     })
 
     return { success: true, answer: savedAnswer }
@@ -878,16 +893,16 @@ export async function submitExamAttempt(attemptId: string) {
       where: { id: attemptId },
       include: {
         answers: {
-          include: { question: true }
+          include: { question: true },
         },
         exam: {
           include: {
             sections: {
-              include: { questions: true }
-            }
-          }
-        }
-      }
+              include: { questions: true },
+            },
+          },
+        },
+      },
     })
 
     if (!attempt) {
@@ -898,11 +913,11 @@ export async function submitExamAttempt(attemptId: string) {
       return { success: false, error: 'Este intento ya fue enviado' }
     }
 
-    const allQuestions = attempt.exam.sections.flatMap(s => s.questions)
+    const allQuestions = attempt.exam.sections.flatMap((s) => s.questions)
     const maxPoints = allQuestions.reduce((sum, q) => sum + q.points, 0)
     const totalPoints = attempt.answers.reduce((sum, a) => sum + a.pointsEarned, 0)
-    const hasPendingReview = attempt.answers.some(a => a.needsReview)
-    
+    const hasPendingReview = attempt.answers.some((a) => a.needsReview)
+
     const score = maxPoints > 0 ? (totalPoints / maxPoints) * 100 : 0
     const timeSpent = Math.round((new Date().getTime() - attempt.startedAt.getTime()) / 60000)
 
@@ -914,8 +929,8 @@ export async function submitExamAttempt(attemptId: string) {
         totalPoints,
         maxPoints,
         timeSpent,
-        submittedAt: new Date()
-      }
+        submittedAt: new Date(),
+      },
     })
 
     revalidatePath('/exams')
@@ -937,27 +952,27 @@ export async function getExamAttemptWithAnswers(attemptId: string) {
             sections: {
               include: {
                 questions: {
-                  orderBy: { order: 'asc' }
-                }
+                  orderBy: { order: 'asc' },
+                },
               },
-              orderBy: { order: 'asc' }
-            }
-          }
+              orderBy: { order: 'asc' },
+            },
+          },
         },
         answers: {
           include: {
-            question: true
-          }
+            question: true,
+          },
         },
         user: {
           select: {
             id: true,
             name: true,
             lastName: true,
-            email: true
-          }
-        }
-      }
+            email: true,
+          },
+        },
+      },
     })
 
     if (!attempt) {
@@ -974,9 +989,9 @@ export async function getExamAttemptWithAnswers(attemptId: string) {
 export async function getExamResultsForStudent(attemptId: string, userId: string) {
   try {
     const attempt = await db.examAttempt.findFirst({
-      where: { 
+      where: {
         id: attemptId,
-        userId
+        userId,
       },
       include: {
         exam: {
@@ -986,8 +1001,8 @@ export async function getExamResultsForStudent(attemptId: string, userId: string
             description: true,
             passingScore: true,
             showResults: true,
-            allowReview: true
-          }
+            allowReview: true,
+          },
         },
         answers: {
           include: {
@@ -999,12 +1014,12 @@ export async function getExamResultsForStudent(attemptId: string, userId: string
                 correctAnswer: true,
                 explanation: true,
                 points: true,
-                tags: true
-              }
-            }
-          }
-        }
-      }
+                tags: true,
+              },
+            },
+          },
+        },
+      },
     })
 
     if (!attempt) {
@@ -1029,9 +1044,9 @@ export async function getExamResultsForStudent(attemptId: string, userId: string
 export async function getAttemptsForGrading(examId: string) {
   try {
     const attempts = await db.examAttempt.findMany({
-      where: { 
+      where: {
         examId,
-        status: { in: [AttemptStatus.SUBMITTED, AttemptStatus.COMPLETED] }
+        status: { in: [AttemptStatus.SUBMITTED, AttemptStatus.COMPLETED] },
       },
       include: {
         user: {
@@ -1039,14 +1054,14 @@ export async function getAttemptsForGrading(examId: string) {
             id: true,
             name: true,
             lastName: true,
-            email: true
-          }
+            email: true,
+          },
         },
         answers: {
-          where: { needsReview: true }
-        }
+          where: { needsReview: true },
+        },
       },
-      orderBy: { submittedAt: 'desc' }
+      orderBy: { submittedAt: 'desc' },
     })
 
     return { success: true, attempts }
@@ -1065,7 +1080,7 @@ export async function gradeExamAnswer(
   try {
     const answer = await db.examAnswer.findUnique({
       where: { id: answerId },
-      include: { question: true }
+      include: { question: true },
     })
 
     if (!answer) {
@@ -1084,17 +1099,17 @@ export async function gradeExamAnswer(
         isCorrect: pointsEarned >= answer.question.points * 0.6,
         needsReview: false,
         reviewedBy: reviewerId,
-        reviewedAt: new Date()
-      }
+        reviewedAt: new Date(),
+      },
     })
 
     const allAnswers = await db.examAnswer.findMany({
       where: { attemptId: answer.attemptId },
-      include: { question: true }
+      include: { question: true },
     })
 
-    const hasPendingReview = allAnswers.some(a => a.needsReview)
-    
+    const hasPendingReview = allAnswers.some((a) => a.needsReview)
+
     if (!hasPendingReview) {
       const totalPoints = allAnswers.reduce((sum, a) => sum + a.pointsEarned, 0)
       const maxPoints = allAnswers.reduce((sum, a) => sum + a.question.points, 0)
@@ -1106,8 +1121,8 @@ export async function gradeExamAnswer(
           status: AttemptStatus.COMPLETED,
           score: Math.round(score * 100) / 100,
           totalPoints,
-          reviewedAt: new Date()
-        }
+          reviewedAt: new Date(),
+        },
       })
     }
 
@@ -1125,20 +1140,20 @@ export async function finalizeExamReview(attemptId: string) {
       where: { id: attemptId },
       include: {
         answers: {
-          include: { question: true }
-        }
-      }
+          include: { question: true },
+        },
+      },
     })
 
     if (!attempt) {
       return { success: false, error: 'Intento no encontrado' }
     }
 
-    const pendingAnswers = attempt.answers.filter(a => a.needsReview)
+    const pendingAnswers = attempt.answers.filter((a) => a.needsReview)
     if (pendingAnswers.length > 0) {
-      return { 
-        success: false, 
-        error: `Aún hay ${pendingAnswers.length} pregunta(s) pendientes de revisión` 
+      return {
+        success: false,
+        error: `Aún hay ${pendingAnswers.length} pregunta(s) pendientes de revisión`,
       }
     }
 
@@ -1153,8 +1168,8 @@ export async function finalizeExamReview(attemptId: string) {
         score: Math.round(score * 100) / 100,
         totalPoints,
         maxPoints,
-        reviewedAt: new Date()
-      }
+        reviewedAt: new Date(),
+      },
     })
 
     revalidatePath('/teacher/grading')

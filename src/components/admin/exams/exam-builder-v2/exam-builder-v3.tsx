@@ -134,6 +134,17 @@ function convertExamToBlocks(exam: ExamWithDetails): Block[] {
           } as Block
 
         case 'essay':
+          // Check if this is actually an audio block saved before the originalBlockType fix
+          // Audio blocks have audioUrl set but essay blocks don't
+          if (q.audioUrl && !q.minLength && !q.maxLength) {
+            return {
+              ...baseBlock,
+              type: 'audio',
+              title: q.question,
+              url: q.audioUrl,
+              maxReplays: q.maxAudioPlays || 3,
+            } as Block
+          }
           return {
             ...baseBlock,
             type: 'essay',
@@ -163,10 +174,10 @@ function convertExamToBlocks(exam: ExamWithDetails): Block[] {
             title: q.question,
             pairs: optionsData && typeof optionsData === 'object' && !Array.isArray(optionsData)
               ? ((optionsData as { pairs?: Array<{ left: string; right: string }> }).pairs || []).map((p, i) => ({
-                  id: `pair${i}`,
-                  left: p.left,
-                  right: p.right,
-                }))
+                id: `pair${i}`,
+                left: p.left,
+                right: p.right,
+              }))
               : [],
           } as Block
 
@@ -177,10 +188,10 @@ function convertExamToBlocks(exam: ExamWithDetails): Block[] {
             title: q.question,
             items: optionsData && typeof optionsData === 'object' && !Array.isArray(optionsData)
               ? ((optionsData as { items?: Array<{ text: string; correctPosition: number }> }).items || []).map((item, i) => ({
-                  id: `item${i}`,
-                  text: item.text,
-                  correctPosition: item.correctPosition,
-                }))
+                id: `item${i}`,
+                text: item.text,
+                correctPosition: item.correctPosition,
+              }))
               : [],
           } as Block
 
@@ -224,6 +235,52 @@ function convertExamToBlocks(exam: ExamWithDetails): Block[] {
           } as Block
 
         default:
+          // Check if options contains originalBlockType to restore non-standard blocks
+          if (optionsData && typeof optionsData === 'object' && !Array.isArray(optionsData)) {
+            const opts = optionsData as { originalBlockType?: string; url?: string; content?: string; instruction?: string; timeLimit?: number; aiGrading?: boolean; maxReplays?: number }
+            if (opts.originalBlockType === 'audio') {
+              return {
+                ...baseBlock,
+                type: 'audio',
+                title: q.question,
+                url: opts.url || q.audioUrl || '',
+                maxReplays: opts.maxReplays || q.maxAudioPlays || 3,
+              } as Block
+            }
+            if (opts.originalBlockType === 'image') {
+              return {
+                ...baseBlock,
+                type: 'image',
+                url: opts.url || '',
+                alt: q.question,
+              } as Block
+            }
+            if (opts.originalBlockType === 'video') {
+              return {
+                ...baseBlock,
+                type: 'video',
+                url: opts.url || '',
+                title: q.question,
+              } as Block
+            }
+            if (opts.originalBlockType === 'text') {
+              return {
+                ...baseBlock,
+                type: 'text',
+                content: opts.content || q.question,
+                format: 'html',
+              } as Block
+            }
+            if (opts.originalBlockType === 'recording') {
+              return {
+                ...baseBlock,
+                type: 'recording',
+                instruction: opts.instruction || q.question,
+                timeLimit: opts.timeLimit,
+                aiGrading: opts.aiGrading,
+              } as Block
+            }
+          }
           // Default to text block for unknown types
           return {
             ...baseBlock,
@@ -306,10 +363,39 @@ function getBlockQuestion(block: Block): string {
   }
 }
 
-function getBlockOptions(block: Block): string[] | undefined {
+function getBlockOptions(block: Block): string[] | Record<string, unknown> | undefined {
   switch (block.type) {
     case 'multiple_choice':
       return block.options?.map(opt => opt.text)
+    // Store original block type and data for non-standard blocks so they can be restored on reload
+    case 'audio':
+      return {
+        originalBlockType: 'audio',
+        url: block.url,
+        maxReplays: block.maxReplays,
+      }
+    case 'image':
+      return {
+        originalBlockType: 'image',
+        url: block.url,
+      }
+    case 'video':
+      return {
+        originalBlockType: 'video',
+        url: block.url,
+      }
+    case 'text':
+      return {
+        originalBlockType: 'text',
+        content: block.content,
+      }
+    case 'recording':
+      return {
+        originalBlockType: 'recording',
+        instruction: block.instruction || block.prompt,
+        timeLimit: block.timeLimit,
+        aiGrading: block.aiGrading,
+      }
     default:
       return undefined
   }
@@ -416,7 +502,7 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
   // Delete selected blocks
   const deleteSelectedBlocks = useCallback(() => {
     if (selectedBlockIds.size === 0) return
-    
+
     setBlocks(prev => prev.filter(b => !selectedBlockIds.has(b.id)))
     setSelectedBlockIds(new Set())
     toast.success(`${selectedBlockIds.size} bloque(s) eliminado(s)`)
@@ -428,15 +514,15 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
       // Skip if user is typing in an input, textarea, or contenteditable
       const activeElement = document.activeElement
       const isEditing = activeElement instanceof HTMLInputElement ||
-                        activeElement instanceof HTMLTextAreaElement ||
-                        activeElement?.getAttribute('contenteditable') === 'true'
-      
+        activeElement instanceof HTMLTextAreaElement ||
+        activeElement?.getAttribute('contenteditable') === 'true'
+
       if (e.key === 'Delete' && selectedBlockIds.size > 0 && !isPreviewMode && !isEditing) {
         e.preventDefault()
         deleteSelectedBlocks()
       }
     }
-    
+
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [deleteSelectedBlocks, selectedBlockIds.size, isPreviewMode])
@@ -849,7 +935,7 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
             description={description}
             selectedBlockId={isPreviewMode ? null : selectedBlockId}
             selectedBlockIds={isPreviewMode ? new Set() : selectedBlockIds}
-            onSelectBlock={!isPreviewMode ? handleBlockSelect : () => {}}
+            onSelectBlock={!isPreviewMode ? handleBlockSelect : () => { }}
             onUpdateTitle={setTitle}
             onUpdateDescription={setDescription}
             onUpdateBlock={updateBlock}
