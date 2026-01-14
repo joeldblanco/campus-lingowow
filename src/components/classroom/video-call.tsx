@@ -57,7 +57,7 @@ export const VideoCall: React.FC<VideoCallProps> = ({
     toast.success('Videollamada finalizada')
   }, [])
 
-  // Si está en reunión y tenemos roomName, mostrar Jitsi embebido
+  // Si está en reunión y tenemos roomName, mostrar LiveKit embebido
   if (isInMeeting && roomName && bookingId) {
     return (
       <div className="flex flex-col h-full border rounded-lg overflow-hidden">

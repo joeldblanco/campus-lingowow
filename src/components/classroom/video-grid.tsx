@@ -6,7 +6,7 @@ import { Hand, MicOff } from 'lucide-react'
 import React from 'react'
 import { cn } from '@/lib/utils'
 
-// Track interface compatible with both Jitsi and LiveKit
+// Track interface for LiveKit
 export interface VideoTrack {
   participantId: string
   name: string
@@ -17,7 +17,7 @@ export interface VideoTrack {
   isTeacher?: boolean
   isHandRaised?: boolean
   isSpeaking?: boolean
-  videoTrack?: unknown // LiveKit Track or Jitsi Track
+  videoTrack?: unknown // LiveKit Track
   audioTrack?: unknown
 }
 

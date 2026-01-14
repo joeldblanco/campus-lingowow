@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { FileUpload } from '@/components/ui/file-upload'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -15,7 +16,7 @@ import {
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
-import { ChevronDown, Plus, Trash2, X } from 'lucide-react'
+import { ChevronDown, Music, Plus, Trash2, X } from 'lucide-react'
 import { useState } from 'react'
 import { ExamQuestion, QUESTION_TYPE_LABELS } from './types'
 
@@ -798,15 +799,27 @@ function AudioQuestionEditor({
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label>URL del Audio</Label>
-        <Input
-          value={question.audioUrl || ''}
-          onChange={(e) => onUpdate({ audioUrl: e.target.value })}
-          placeholder="https://ejemplo.com/audio.mp3"
+        <Label>Archivo de Audio</Label>
+        <FileUpload
+          fileType="audio"
+          folder="exams"
+          onUploadComplete={(result) => onUpdate({ audioUrl: result.secure_url })}
+          onUploadError={(error) => {
+            console.error('Upload error:', error)
+          }}
         />
-        <p className="text-xs text-muted-foreground">
-          Ingresa la URL del archivo de audio (MP3, WAV, etc.)
-        </p>
+        {question.audioUrl && (
+          <div className="mt-3 p-3 bg-muted rounded-lg">
+            <div className="flex items-center gap-3">
+              <Music className="h-5 w-5 text-muted-foreground" />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium truncate">Audio cargado</p>
+                <p className="text-xs text-muted-foreground truncate">{question.audioUrl}</p>
+              </div>
+            </div>
+            <audio src={question.audioUrl} controls className="w-full mt-2" />
+          </div>
+        )}
       </div>
 
       <div className="space-y-2">

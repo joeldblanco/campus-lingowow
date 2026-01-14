@@ -62,6 +62,45 @@ export interface BaseBlock {
   // Recursive structure for new content model
   children?: Block[]
   data?: Record<string, unknown> // Flexible payload for new types
+  // Exam-specific fields (only for interactive blocks in exams)
+  points?: number              // Points for this block (exams only)
+  required?: boolean           // Whether answer is required (exams only)
+  explanation?: string         // Explanation shown after answering (exams only)
+  hint?: string               // Optional hint for the student (exams only)
+  partialCredit?: boolean     // Allow partial credit (exams only)
+}
+
+// Blocks that can have points in exams (interactive blocks)
+export const INTERACTIVE_BLOCK_TYPES: BlockType[] = [
+  'quiz',
+  'multiple_choice',
+  'true_false',
+  'short_answer',
+  'fill_blanks',
+  'match',
+  'essay',
+  'ordering',
+  'drag_drop',
+  'multi_select',
+  'recording',
+]
+
+// Blocks excluded from exams
+export const LESSON_ONLY_BLOCK_TYPES: BlockType[] = [
+  'grammar',
+  'vocabulary',
+  'grammar-visualizer',
+  'teacher_notes',
+]
+
+// Helper to check if a block type is interactive (can have points)
+export function isInteractiveBlock(type: BlockType): boolean {
+  return INTERACTIVE_BLOCK_TYPES.includes(type)
+}
+
+// Helper to check if a block type is allowed in exams
+export function isExamAllowedBlock(type: BlockType): boolean {
+  return !LESSON_ONLY_BLOCK_TYPES.includes(type)
 }
 
 export interface TitleBlock extends BaseBlock {

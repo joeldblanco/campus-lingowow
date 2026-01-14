@@ -29,6 +29,7 @@ import {
   OrderingBlock,
   DragDropBlock,
   MultiSelectBlock,
+  isInteractiveBlock,
 } from '@/types/course-builder'
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import {
@@ -87,10 +88,13 @@ interface PropertiesPanelProps {
   onUpdate: (updates: Partial<Block>) => void
   onRemove?: () => void
   onClose: () => void
+  mode?: 'lesson' | 'exam'
 }
 
-export function PropertiesPanel({ block, onUpdate, onRemove, onClose }: PropertiesPanelProps) {
+export function PropertiesPanel({ block, onUpdate, onRemove, onClose, mode = 'lesson' }: PropertiesPanelProps) {
   if (!block) return null
+
+  const showExamFields = mode === 'exam' && isInteractiveBlock(block.type)
 
   const renderContent = () => {
     switch (block.type) {
@@ -184,7 +188,82 @@ export function PropertiesPanel({ block, onUpdate, onRemove, onClose }: Properti
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-6">{renderContent()}</div>
+      <div className="flex-1 overflow-y-auto p-4 space-y-6">
+        {renderContent()}
+        
+        {/* Exam-specific fields */}
+        {showExamFields && (
+          <ExamFieldsSection block={block} onUpdate={onUpdate} />
+        )}
+      </div>
+    </div>
+  )
+}
+
+// Exam-specific fields section
+function ExamFieldsSection({ block, onUpdate }: { block: Block; onUpdate: (updates: Partial<Block>) => void }) {
+  return (
+    <div className="space-y-4 pt-4 border-t">
+      <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+        Configuración de Examen
+      </h3>
+
+      {/* Points */}
+      <div className="space-y-2">
+        <Label>Puntos</Label>
+        <Input
+          type="number"
+          min={0}
+          value={block.points || 0}
+          onChange={(e) => onUpdate({ points: parseInt(e.target.value) || 0 })}
+        />
+      </div>
+
+      {/* Required */}
+      <div className="flex items-center justify-between">
+        <div>
+          <Label>Requerida</Label>
+          <p className="text-xs text-muted-foreground">El estudiante debe responder</p>
+        </div>
+        <Switch
+          checked={block.required !== false}
+          onCheckedChange={(checked) => onUpdate({ required: checked })}
+        />
+      </div>
+
+      {/* Partial Credit */}
+      <div className="flex items-center justify-between">
+        <div>
+          <Label>Crédito Parcial</Label>
+          <p className="text-xs text-muted-foreground">Permitir puntuación parcial</p>
+        </div>
+        <Switch
+          checked={block.partialCredit || false}
+          onCheckedChange={(checked) => onUpdate({ partialCredit: checked })}
+        />
+      </div>
+
+      {/* Hint */}
+      <div className="space-y-2">
+        <Label>Pista (opcional)</Label>
+        <Textarea
+          value={block.hint || ''}
+          onChange={(e) => onUpdate({ hint: e.target.value })}
+          placeholder="Pista para ayudar al estudiante..."
+          rows={2}
+        />
+      </div>
+
+      {/* Explanation */}
+      <div className="space-y-2">
+        <Label>Explicación (se muestra después)</Label>
+        <Textarea
+          value={block.explanation || ''}
+          onChange={(e) => onUpdate({ explanation: e.target.value })}
+          placeholder="Explicación de la respuesta correcta..."
+          rows={2}
+        />
+      </div>
     </div>
   )
 }

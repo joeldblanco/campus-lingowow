@@ -1,4 +1,5 @@
 export { ExamBuilderV2 } from './exam-builder-v2'
+export { ExamBuilderV3 } from './exam-builder-v3'
 export { QuestionLibrary, QUESTION_TEMPLATES } from './question-library'
 export { QuestionCanvas } from './question-canvas'
 export { QuestionProperties } from './question-properties'
