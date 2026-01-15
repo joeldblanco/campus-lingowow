@@ -22,6 +22,7 @@ export const AudioPositionEnum = z.enum([
 ])
 
 // Types that don't require a correct answer (manually graded)
+// ESSAY, RECORDING (mapped to ESSAY), and other content blocks don't have a "correct" answer
 const TYPES_WITHOUT_CORRECT_ANSWER = ['ESSAY'] as const
 
 // Schema para preguntas de examen

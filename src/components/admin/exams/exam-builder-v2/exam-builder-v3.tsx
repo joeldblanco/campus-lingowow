@@ -406,6 +406,10 @@ function getBlockQuestion(block: Block): string {
       return block.instruction || block.title || ''
     case 'title':
       return block.title || ''
+    case 'recording':
+      return block.instruction || block.prompt || 'Grabación de audio/video'
+    case 'video':
+      return block.title || 'Video'
     default:
       return ''
   }
@@ -471,7 +475,9 @@ function getBlockCorrectAnswer(block: Block): string | string[] | null {
   switch (block.type) {
     case 'multiple_choice':
       if ((block as MultipleChoiceBlock).items?.length) {
-        return null // Multi-step answer handles its own validation or stored in items
+        // For multi-step, extract correct answers from items
+        const items = (block as MultipleChoiceBlock).items || []
+        return items.map(item => item.correctOptionId).join(',') || 'multi-step'
       }
       return block.options?.find(opt => opt.id === block.correctOptionId)?.text || ''
     case 'true_false':
@@ -490,6 +496,15 @@ function getBlockCorrectAnswer(block: Block): string | string[] | null {
       return JSON.stringify(block.items?.map(i => ({ item: i.text, category: i.correctCategoryId })) || [])
     case 'multi_select':
       return block.correctOptions?.map(opt => opt.text) || []
+    case 'essay':
+    case 'recording':
+    case 'text':
+    case 'image':
+    case 'audio':
+    case 'video':
+    case 'title':
+      // These types don't have a correct answer - they're manually graded
+      return null
     default:
       return null
   }
