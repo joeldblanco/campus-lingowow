@@ -71,10 +71,12 @@ interface BlockPreviewProps {
   isTeacher?: boolean
   isClassroom?: boolean // When true, enables interactive block synchronization in classroom
   isExamMode?: boolean // When true, disables interactive verification (feedback only at exam end)
+  answer?: unknown // Current answer value (for exam mode)
+  onAnswerChange?: (answer: unknown) => void // Callback when answer changes (for exam mode)
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function BlockPreview({ block, isTeacher, isClassroom, isExamMode }: BlockPreviewProps) {
+export function BlockPreview({ block, isTeacher, isClassroom, isExamMode, answer, onAnswerChange }: BlockPreviewProps) {
   // Teacher notes are only visible to teachers
   if (block.type === 'teacher_notes' && !isTeacher) {
     return null
@@ -115,13 +117,13 @@ export function BlockPreview({ block, isTeacher, isClassroom, isExamMode }: Bloc
       case 'true_false':
         return <TrueFalseBlockPreview block={block as TrueFalseBlock} isExamMode={isExamMode} />
       case 'essay':
-        return <EssayBlockPreview block={block as EssayBlock} isExamMode={isExamMode} />
+        return <EssayBlockPreview block={block as EssayBlock} isExamMode={isExamMode} answer={answer} onAnswerChange={onAnswerChange} />
       case 'short_answer':
         return <ShortAnswerBlockPreview block={block as ShortAnswerBlock} isExamMode={isExamMode} />
       case 'multi_select':
         return <MultiSelectBlockPreview block={block as MultiSelectBlock} isExamMode={isExamMode} />
       case 'multiple_choice':
-        return <MultipleChoiceBlockPreview block={block as MultipleChoiceBlock} isExamMode={isExamMode} />
+        return <MultipleChoiceBlockPreview block={block as MultipleChoiceBlock} isExamMode={isExamMode} answer={answer} onAnswerChange={onAnswerChange} />
       case 'ordering':
         return <OrderingBlockPreview block={block as OrderingBlock} isExamMode={isExamMode} />
       case 'drag_drop':
@@ -2313,8 +2315,25 @@ function TrueFalseBlockPreview({ block, isExamMode }: { block: TrueFalseBlock; i
   )
 }
 
-function EssayBlockPreview({ block, isExamMode }: { block: EssayBlock; isExamMode?: boolean }) {
-  const [text, setText] = useState('')
+function EssayBlockPreview({ 
+  block, 
+  isExamMode,
+  answer,
+  onAnswerChange 
+}: { 
+  block: EssayBlock; 
+  isExamMode?: boolean;
+  answer?: unknown;
+  onAnswerChange?: (answer: unknown) => void;
+}) {
+  const [localText, setLocalText] = useState('')
+  
+  // En modo examen, usar las respuestas externas; de lo contrario, usar estado local
+  const externalText = (answer as string) || ''
+  const text = isExamMode && onAnswerChange ? externalText : localText
+  const setText = isExamMode && onAnswerChange 
+    ? (value: string) => onAnswerChange(value)
+    : setLocalText
   
   // Get classroom sync
   const classroomSync = useClassroomSync()
@@ -2935,9 +2954,28 @@ function MultiSelectBlockPreview({ block, isExamMode }: { block: MultiSelectBloc
   )
 }
 
-function MultipleChoiceBlockPreview({ block, isExamMode }: { block: MultipleChoiceBlock; isExamMode?: boolean }) {
+function MultipleChoiceBlockPreview({ 
+  block, 
+  isExamMode,
+  answer,
+  onAnswerChange 
+}: { 
+  block: MultipleChoiceBlock; 
+  isExamMode?: boolean;
+  answer?: unknown;
+  onAnswerChange?: (answer: unknown) => void;
+}) {
   const [currentItemIndex, setCurrentItemIndex] = useState(0)
-  const [selectedOptions, setSelectedOptions] = useState<Record<string, string | null>>({})
+  // En modo examen, usar las respuestas externas; de lo contrario, usar estado local
+  const externalAnswers = (answer as Record<string, string | null>) || {}
+  const [localSelectedOptions, setLocalSelectedOptions] = useState<Record<string, string | null>>({})
+  const selectedOptions = isExamMode && onAnswerChange ? externalAnswers : localSelectedOptions
+  const setSelectedOptions = isExamMode && onAnswerChange 
+    ? (updater: Record<string, string | null> | ((prev: Record<string, string | null>) => Record<string, string | null>)) => {
+        const newValue = typeof updater === 'function' ? updater(externalAnswers) : updater
+        onAnswerChange(newValue)
+      }
+    : setLocalSelectedOptions
   const [showResults, setShowResults] = useState<Record<string, boolean>>({})
 
   const items = block.items || []

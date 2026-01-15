@@ -166,6 +166,13 @@ export function ExamViewer({
     return indices
   }, [allQuestions])
 
+  // Determinar si estamos en el último grupo de navegación
+  const isLastGroup = useMemo(() => {
+    if (navigationIndices.length === 0) return true
+    // Buscar si hay algún índice de navegación mayor que el currentQuestionIndex
+    return navigationIndices.findIndex(idx => idx > currentQuestionIndex) === -1
+  }, [navigationIndices, currentQuestionIndex])
+
   const questionStatuses = useMemo(() => {
     return allQuestions.map((q, index) => {
       const hasAnswer = answers[q.id] !== null && answers[q.id] !== undefined && answers[q.id] !== ''
@@ -401,14 +408,14 @@ export function ExamViewer({
               <Button
                 variant="ghost"
                 onClick={handlePrevious}
-                disabled={currentQuestionIndex === 0}
+                disabled={navigationIndices.length === 0 || currentQuestionIndex <= navigationIndices[0]}
                 className="flex items-center gap-2"
               >
                 <ArrowLeft className="h-4 w-4" />
                 Anterior
               </Button>
               <div className="flex gap-4 w-full sm:w-auto">
-                {currentQuestionIndex < totalQuestions - 1 ? (
+                {!isLastGroup ? (
                   <Button
                     variant="secondary"
                     onClick={handleNext}

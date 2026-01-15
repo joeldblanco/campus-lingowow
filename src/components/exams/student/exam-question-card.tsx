@@ -180,7 +180,7 @@ export function ExamQuestionCard({
               </span>
             </div>
           )}
-          <BlockPreview block={block} isExamMode={true} />
+          <BlockPreview block={block} isExamMode={true} answer={answer} onAnswerChange={onAnswerChange} />
         </div>
       )
     }

@@ -30,6 +30,7 @@ interface QuestionResult {
   maxPoints: number
   explanation?: string | null
   audioUrl?: string | null
+  needsReview?: boolean
 }
 
 interface ExamResultsProps {
@@ -272,21 +273,27 @@ export function ExamResults({
 function QuestionResultCard({ result }: { result: QuestionResult }) {
   const [expanded, setExpanded] = useState(true)
 
+  const isPendingReview = result.needsReview === true
+  
   return (
     <div className={cn(
       "bg-white dark:bg-[#1a2632] rounded-xl shadow-sm border border-l-4 overflow-hidden",
-      result.isCorrect 
-        ? "border-gray-200 dark:border-gray-700 border-l-green-500"
-        : "border-gray-200 dark:border-gray-700 border-l-red-500"
+      isPendingReview
+        ? "border-gray-200 dark:border-gray-700 border-l-yellow-500"
+        : result.isCorrect 
+          ? "border-gray-200 dark:border-gray-700 border-l-green-500"
+          : "border-gray-200 dark:border-gray-700 border-l-red-500"
     )}>
       <div className="p-6">
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex items-center gap-3">
             <span className={cn(
               "flex items-center justify-center size-8 rounded-full font-bold text-sm",
-              result.isCorrect 
-                ? "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400"
-                : "bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400"
+              isPendingReview
+                ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400"
+                : result.isCorrect 
+                  ? "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400"
+                  : "bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400"
             )}>
               {result.questionNumber}
             </span>
@@ -299,11 +306,18 @@ function QuestionResultCard({ result }: { result: QuestionResult }) {
           <div className="flex items-center gap-2">
             <span className={cn(
               "flex items-center gap-1 font-bold text-sm",
-              result.isCorrect 
-                ? "text-green-600 dark:text-green-400"
-                : "text-red-600 dark:text-red-400"
+              isPendingReview
+                ? "text-yellow-600 dark:text-yellow-400"
+                : result.isCorrect 
+                  ? "text-green-600 dark:text-green-400"
+                  : "text-red-600 dark:text-red-400"
             )}>
-              {result.isCorrect ? (
+              {isPendingReview ? (
+                <>
+                  <Timer className="h-4 w-4" />
+                  Pendiente de Revisión
+                </>
+              ) : result.isCorrect ? (
                 <>
                   <CheckCircle className="h-4 w-4" />
                   Correcta
@@ -340,29 +354,41 @@ function QuestionResultCard({ result }: { result: QuestionResult }) {
             <div className="grid md:grid-cols-2 gap-4 mb-4">
               <div className={cn(
                 "p-4 rounded-lg border",
-                result.isCorrect
-                  ? "bg-green-50 dark:bg-green-900/10 border-green-200 dark:border-green-900/30"
-                  : "bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-900/30"
+                isPendingReview
+                  ? "bg-yellow-50 dark:bg-yellow-900/10 border-yellow-200 dark:border-yellow-900/30"
+                  : result.isCorrect
+                    ? "bg-green-50 dark:bg-green-900/10 border-green-200 dark:border-green-900/30"
+                    : "bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-900/30"
               )}>
                 <span className={cn(
                   "text-xs font-bold uppercase mb-1 block",
-                  result.isCorrect
-                    ? "text-green-700 dark:text-green-400"
-                    : "text-red-700 dark:text-red-400"
+                  isPendingReview
+                    ? "text-yellow-700 dark:text-yellow-400"
+                    : result.isCorrect
+                      ? "text-green-700 dark:text-green-400"
+                      : "text-red-700 dark:text-red-400"
                 )}>
                   Tu Respuesta
                 </span>
                 <p className={cn(
                   "text-foreground font-medium",
-                  !result.isCorrect && "line-through decoration-red-500"
+                  !result.isCorrect && !isPendingReview && "line-through decoration-red-500"
                 )}>
                   {result.userAnswer || '(Sin respuesta)'}
                 </p>
               </div>
-              {!result.isCorrect && (
+              {!result.isCorrect && !isPendingReview && (
                 <div className="p-4 rounded-lg bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-900/30">
                   <span className="text-xs font-bold text-green-700 dark:text-green-400 uppercase mb-1 block">
                     Respuesta Correcta
+                  </span>
+                  <p className="text-foreground font-medium">{result.correctAnswer}</p>
+                </div>
+              )}
+              {isPendingReview && (
+                <div className="p-4 rounded-lg bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-900/30">
+                  <span className="text-xs font-bold text-yellow-700 dark:text-yellow-400 uppercase mb-1 block">
+                    Estado
                   </span>
                   <p className="text-foreground font-medium">{result.correctAnswer}</p>
                 </div>

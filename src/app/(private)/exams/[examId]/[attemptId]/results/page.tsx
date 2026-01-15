@@ -89,6 +89,18 @@ export default async function ExamResultsPage({ params }: PageProps) {
     
     // Respuesta normal (no expandida)
     questionNumber++
+    
+    // Para preguntas tipo ESSAY, no mostrar "null" como respuesta correcta
+    const isEssayType = answer.question.type === 'ESSAY'
+    const displayCorrectAnswer = isEssayType 
+      ? 'Requiere revisión manual del profesor'
+      : (Array.isArray(correctAnswer) ? correctAnswer.join(', ') : (correctAnswer ? String(correctAnswer) : 'N/A'))
+    
+    // Para Essay, si está pendiente de revisión, no marcar como incorrecta
+    const displayIsCorrect = isEssayType && answer.needsReview 
+      ? null // Pendiente de revisión
+      : (answer.isCorrect ?? false)
+    
     return [{
       id: answer.id,
       questionNumber,
@@ -96,11 +108,12 @@ export default async function ExamResultsPage({ params }: PageProps) {
       category: answer.question.tags?.[0] || undefined,
       question: answer.question.question,
       userAnswer: answer.answer ? String(answer.answer) : null,
-      correctAnswer: Array.isArray(correctAnswer) ? correctAnswer.join(', ') : String(correctAnswer),
-      isCorrect: answer.isCorrect ?? false,
+      correctAnswer: displayCorrectAnswer,
+      isCorrect: displayIsCorrect ?? false,
       pointsEarned: answer.pointsEarned,
       maxPoints: answer.question.points,
-      explanation: answer.question.explanation
+      explanation: answer.question.explanation,
+      needsReview: answer.needsReview
     }]
   })
 
