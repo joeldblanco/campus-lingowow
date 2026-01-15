@@ -69,10 +69,11 @@ interface BlockPreviewProps {
   block: Block
   isTeacher?: boolean
   isClassroom?: boolean // When true, enables interactive block synchronization in classroom
+  isExamMode?: boolean // When true, disables interactive verification (feedback only at exam end)
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function BlockPreview({ block, isTeacher, isClassroom }: BlockPreviewProps) {
+export function BlockPreview({ block, isTeacher, isClassroom, isExamMode }: BlockPreviewProps) {
   // Teacher notes are only visible to teachers
   if (block.type === 'teacher_notes' && !isTeacher) {
     return null
@@ -107,23 +108,23 @@ export function BlockPreview({ block, isTeacher, isClassroom }: BlockPreviewProp
       case 'vocabulary':
         return <VocabularyBlockPreview block={block as VocabularyBlock} />
       case 'fill_blanks':
-        return <FillBlanksBlockPreview block={block as FillBlanksBlock} />
+        return <FillBlanksBlockPreview block={block as FillBlanksBlock} isExamMode={isExamMode} />
       case 'match':
-        return <MatchBlockPreview block={block as MatchBlock} />
+        return <MatchBlockPreview block={block as MatchBlock} isExamMode={isExamMode} />
       case 'true_false':
-        return <TrueFalseBlockPreview block={block as TrueFalseBlock} />
+        return <TrueFalseBlockPreview block={block as TrueFalseBlock} isExamMode={isExamMode} />
       case 'essay':
-        return <EssayBlockPreview block={block as EssayBlock} />
+        return <EssayBlockPreview block={block as EssayBlock} isExamMode={isExamMode} />
       case 'short_answer':
-        return <ShortAnswerBlockPreview block={block as ShortAnswerBlock} />
+        return <ShortAnswerBlockPreview block={block as ShortAnswerBlock} isExamMode={isExamMode} />
       case 'multi_select':
-        return <MultiSelectBlockPreview block={block as MultiSelectBlock} />
+        return <MultiSelectBlockPreview block={block as MultiSelectBlock} isExamMode={isExamMode} />
       case 'multiple_choice':
-        return <MultipleChoiceBlockPreview block={block as MultipleChoiceBlock} />
+        return <MultipleChoiceBlockPreview block={block as MultipleChoiceBlock} isExamMode={isExamMode} />
       case 'ordering':
-        return <OrderingBlockPreview block={block as OrderingBlock} />
+        return <OrderingBlockPreview block={block as OrderingBlock} isExamMode={isExamMode} />
       case 'drag_drop':
-        return <DragDropBlockPreview block={block as DragDropBlock} />
+        return <DragDropBlockPreview block={block as DragDropBlock} isExamMode={isExamMode} />
       case 'recording':
         return <RecordingBlockPreview block={block as RecordingBlock} />
       case 'structured-content':
@@ -1685,7 +1686,7 @@ function VocabularyBlockPreview({ block }: { block: VocabularyBlock }) {
   )
 }
 
-function FillBlanksBlockPreview({ block }: { block: FillBlanksBlock }) {
+function FillBlanksBlockPreview({ block, isExamMode }: { block: FillBlanksBlock; isExamMode?: boolean }) {
   const [index, setIndex] = useState(0)
   const [allInputs, setAllInputs] = useState<Record<string, Record<number, string>>>({})
   const [allResults, setAllResults] = useState<Record<string, boolean>>({})
@@ -1769,7 +1770,7 @@ function FillBlanksBlockPreview({ block }: { block: FillBlanksBlock }) {
   }
 
   const parts = displayItem?.content ? displayItem.content.split(/(\[[^\]]+\])/g) : []
-  const showResult = displayItem ? allResults[displayItem.id] !== undefined : false
+  const showResult = !isExamMode && displayItem ? allResults[displayItem.id] !== undefined : false
 
   return (
     <div className="space-y-4">
@@ -1826,7 +1827,7 @@ function FillBlanksBlockPreview({ block }: { block: FillBlanksBlock }) {
             )}
           </div>
 
-          {!isTeacherInClassroom && (
+          {!isTeacherInClassroom && !isExamMode && (
             <div className="flex gap-2">
               <Button onClick={handleCheck} disabled={showResult} size="sm">
                 Verificar
@@ -1864,11 +1865,12 @@ function FillBlanksBlockPreview({ block }: { block: FillBlanksBlock }) {
   )
 }
 
-function MatchBlockPreview({ block }: { block: MatchBlock }) {
+function MatchBlockPreview({ block, isExamMode }: { block: MatchBlock; isExamMode?: boolean }) {
   const [selectedLeft, setSelectedLeft] = useState<string | null>(null)
   const [matches, setMatches] = useState<Record<string, string>>({}) // leftId -> rightId
   const [shuffledRight, setShuffledRight] = useState<Array<{ id: string, text: string }>>([])
-  const [showResult, setShowResult] = useState(false)
+  const [showResultState, setShowResultState] = useState(false)
+  const showResult = !isExamMode && showResultState
   
   // Get classroom sync
   const classroomSync = useClassroomSync()
@@ -1885,7 +1887,7 @@ function MatchBlockPreview({ block }: { block: MatchBlock }) {
       // Simple shuffle
       setShuffledRight([...rightSide].sort(() => Math.random() - 0.5))
       setMatches({})
-      setShowResult(false)
+      setShowResultState(false)
       setSelectedLeft(null)
     }
   }
@@ -1932,8 +1934,8 @@ function MatchBlockPreview({ block }: { block: MatchBlock }) {
   }
 
   const checkAnswers = () => {
-    if (isTeacherInClassroom) return
-    setShowResult(true)
+    if (isTeacherInClassroom || isExamMode) return
+    setShowResultState(true)
     
     // Calculate and sync result
     if (classroomSync.canInteract && block.pairs) {
@@ -2025,14 +2027,16 @@ function MatchBlockPreview({ block }: { block: MatchBlock }) {
         </div>
       </div>
 
-      <div className="flex gap-2 justify-center">
-        <Button onClick={checkAnswers} disabled={showResult} size="sm">
-          Verificar
-        </Button>
-        <Button variant="outline" onClick={handleReset} size="sm">
-          Reiniciar
-        </Button>
-      </div>
+      {!isExamMode && (
+        <div className="flex gap-2 justify-center">
+          <Button onClick={checkAnswers} disabled={showResult} size="sm">
+            Verificar
+          </Button>
+          <Button variant="outline" onClick={handleReset} size="sm">
+            Reiniciar
+          </Button>
+        </div>
+      )}
 
       {showResult && block.pairs && block.pairs.length > 0 && (() => {
         const correctMatches = Object.keys(matches).filter(leftId => matches[leftId] === leftId).length
@@ -2115,7 +2119,7 @@ function MatchBlockPreview({ block }: { block: MatchBlock }) {
   )
 }
 
-function TrueFalseBlockPreview({ block }: { block: TrueFalseBlock }) {
+function TrueFalseBlockPreview({ block, isExamMode }: { block: TrueFalseBlock; isExamMode?: boolean }) {
   const [index, setIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, boolean | null>>({})
   const [results, setResults] = useState<Record<string, boolean>>({})
@@ -2187,7 +2191,7 @@ function TrueFalseBlockPreview({ block }: { block: TrueFalseBlock }) {
 
   const currentAnswer = displayAnswers[displayItem?.id]
   const currentResult = results[displayItem?.id]
-  const showResult = currentResult !== undefined
+  const showResult = !isExamMode && currentResult !== undefined
 
   return (
     <div className="space-y-4">
@@ -2256,7 +2260,7 @@ function TrueFalseBlockPreview({ block }: { block: TrueFalseBlock }) {
             </div>
           )}
 
-          {!showResult && !isTeacherInClassroom && (
+          {!showResult && !isTeacherInClassroom && !isExamMode && (
             <Button onClick={handleCheck} disabled={currentAnswer === null || currentAnswer === undefined} size="sm">
               Enviar Respuesta
             </Button>
@@ -2292,7 +2296,7 @@ function TrueFalseBlockPreview({ block }: { block: TrueFalseBlock }) {
   )
 }
 
-function EssayBlockPreview({ block }: { block: EssayBlock }) {
+function EssayBlockPreview({ block, isExamMode }: { block: EssayBlock; isExamMode?: boolean }) {
   const [text, setText] = useState('')
   
   // Get classroom sync
@@ -2364,7 +2368,7 @@ function EssayBlockPreview({ block }: { block: EssayBlock }) {
         <p className="text-sm text-muted-foreground italic text-center">Esperando que el estudiante escriba...</p>
       )}
       
-      {!isTeacherInClassroom && (
+      {!isTeacherInClassroom && !isExamMode && (
         <div className="flex justify-end">
           {block.aiGrading ? (
             <EssayAIGradingButton
@@ -2556,7 +2560,7 @@ export function StructuredContentBlockPreview({ block }: { block: StructuredCont
   )
 }
 
-function ShortAnswerBlockPreview({ block }: { block: ShortAnswerBlock }) {
+function ShortAnswerBlockPreview({ block, isExamMode }: { block: ShortAnswerBlock; isExamMode?: boolean }) {
   const items = block.items || []
   const [currentStep, setCurrentStep] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string>>({})
@@ -2626,7 +2630,7 @@ function ShortAnswerBlockPreview({ block }: { block: ShortAnswerBlock }) {
     )
   }
 
-  const currentResult = displayItem ? results[displayItem.id] : null
+  const currentResult = !isExamMode && displayItem ? results[displayItem.id] : null
   const answeredCount = Object.keys(results).length
   const correctCount = Object.values(results).filter(r => r === true).length
 
@@ -2688,21 +2692,23 @@ function ShortAnswerBlockPreview({ block }: { block: ShortAnswerBlock }) {
             </Button>
           </div>
 
-          <div className="flex gap-2">
-            {currentResult === null || currentResult === undefined ? (
-              <Button onClick={checkAnswer} disabled={!answers[currentItem?.id || '']} size="sm">
-                Verificar
-              </Button>
-            ) : currentStep < items.length - 1 ? (
-              <Button onClick={() => handleNav(currentStep + 1)} size="sm">
-                Siguiente Pregunta
-              </Button>
-            ) : (
-              <Button variant="outline" onClick={reset} size="sm">
-                Reintentar Todo
-              </Button>
-            )}
-          </div>
+          {!isExamMode && (
+            <div className="flex gap-2">
+              {currentResult === null || currentResult === undefined ? (
+                <Button onClick={checkAnswer} disabled={!answers[currentItem?.id || '']} size="sm">
+                  Verificar
+                </Button>
+              ) : currentStep < items.length - 1 ? (
+                <Button onClick={() => handleNav(currentStep + 1)} size="sm">
+                  Siguiente Pregunta
+                </Button>
+              ) : (
+                <Button variant="outline" onClick={reset} size="sm">
+                  Reintentar Todo
+                </Button>
+              )}
+            </div>
+          )}
         </div>
       )}
 
@@ -2715,9 +2721,10 @@ function ShortAnswerBlockPreview({ block }: { block: ShortAnswerBlock }) {
   )
 }
 
-function MultiSelectBlockPreview({ block }: { block: MultiSelectBlock }) {
+function MultiSelectBlockPreview({ block, isExamMode }: { block: MultiSelectBlock; isExamMode?: boolean }) {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
-  const [showResult, setShowResult] = useState(false)
+  const [showResultState, setShowResultState] = useState(false)
+  const showResult = !isExamMode && showResultState
 
   // Get classroom sync
   const classroomSync = useClassroomSync()
@@ -2756,8 +2763,8 @@ function MultiSelectBlockPreview({ block }: { block: MultiSelectBlock }) {
   }
 
   const checkAnswers = () => {
-    if (isTeacherInClassroom) return
-    setShowResult(true)
+    if (isTeacherInClassroom || isExamMode) return
+    setShowResultState(true)
     
     // Sync result to teacher
     if (classroomSync.canInteract) {
@@ -2778,7 +2785,7 @@ function MultiSelectBlockPreview({ block }: { block: MultiSelectBlock }) {
   const reset = () => {
     if (isTeacherInClassroom) return
     setSelectedIds(new Set())
-    setShowResult(false)
+    setShowResultState(false)
   }
 
   const correctIds = new Set((block.correctOptions || []).map(opt => opt.id))
@@ -2909,18 +2916,16 @@ function MultiSelectBlockPreview({ block }: { block: MultiSelectBlock }) {
   )
 }
 
-function MultipleChoiceBlockPreview({ block }: { block: MultipleChoiceBlock }) {
+function MultipleChoiceBlockPreview({ block, isExamMode }: { block: MultipleChoiceBlock; isExamMode?: boolean }) {
   const [currentItemIndex, setCurrentItemIndex] = useState(0)
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string | null>>({})
   const [showResults, setShowResults] = useState<Record<string, boolean>>({})
 
-  // Use items array directly
   const items = block.items || []
-
   const currentItem = items[currentItemIndex]
 
   const handleCheck = () => {
-    if (currentItem) {
+    if (currentItem && !isExamMode) {
       setShowResults(prev => ({ ...prev, [currentItem.id]: true }))
     }
   }
@@ -2952,7 +2957,7 @@ function MultipleChoiceBlockPreview({ block }: { block: MultipleChoiceBlock }) {
   }
 
   const selectedOption = selectedOptions[currentItem.id] || null
-  const showResult = showResults[currentItem.id] || false
+  const showResult = !isExamMode && (showResults[currentItem.id] || false)
 
   return (
     <div className="space-y-4">
@@ -3019,26 +3024,45 @@ function MultipleChoiceBlockPreview({ block }: { block: MultipleChoiceBlock }) {
         })}
       </div>
 
-      <div className="flex gap-2">
-        {items.length > 1 && currentItemIndex > 0 && (
-          <Button variant="outline" onClick={handlePrev} size="sm">
-            Anterior
-          </Button>
-        )}
-        {!showResult ? (
-          <Button onClick={handleCheck} disabled={!selectedOption} size="sm">
-            Verificar
-          </Button>
-        ) : items.length > 1 && currentItemIndex < items.length - 1 ? (
-          <Button onClick={handleNext} size="sm">
-            Siguiente
-          </Button>
-        ) : (
-          <Button variant="outline" onClick={handleReset} size="sm">
-            Reintentar
-          </Button>
-        )}
-      </div>
+      {/* Navigation and verification buttons - hidden in exam mode */}
+      {!isExamMode && (
+        <div className="flex gap-2">
+          {items.length > 1 && currentItemIndex > 0 && (
+            <Button variant="outline" onClick={handlePrev} size="sm">
+              Anterior
+            </Button>
+          )}
+          {!showResult ? (
+            <Button onClick={handleCheck} disabled={!selectedOption} size="sm">
+              Verificar
+            </Button>
+          ) : items.length > 1 && currentItemIndex < items.length - 1 ? (
+            <Button onClick={handleNext} size="sm">
+              Siguiente
+            </Button>
+          ) : (
+            <Button variant="outline" onClick={handleReset} size="sm">
+              Reintentar
+            </Button>
+          )}
+        </div>
+      )}
+
+      {/* Navigation only in exam mode */}
+      {isExamMode && items.length > 1 && (
+        <div className="flex gap-2">
+          {currentItemIndex > 0 && (
+            <Button variant="outline" onClick={handlePrev} size="sm">
+              Anterior
+            </Button>
+          )}
+          {currentItemIndex < items.length - 1 && (
+            <Button onClick={handleNext} size="sm">
+              Siguiente
+            </Button>
+          )}
+        </div>
+      )}
 
       {showResult && block.explanation && (
         <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
@@ -3049,11 +3073,12 @@ function MultipleChoiceBlockPreview({ block }: { block: MultipleChoiceBlock }) {
   )
 }
 
-function OrderingBlockPreview({ block }: { block: OrderingBlock }) {
+function OrderingBlockPreview({ block, isExamMode }: { block: OrderingBlock; isExamMode?: boolean }) {
   const [items, setItems] = useState(() => 
     block.items ? [...block.items].sort(() => Math.random() - 0.5) : []
   )
-  const [showResult, setShowResult] = useState(false)
+  const [showResultState, setShowResultState] = useState(false)
+  const showResult = !isExamMode && showResultState
 
   const moveItem = (index: number, direction: 'up' | 'down') => {
     if (showResult) return
@@ -3065,12 +3090,13 @@ function OrderingBlockPreview({ block }: { block: OrderingBlock }) {
   }
 
   const handleCheck = () => {
-    setShowResult(true)
+    if (isExamMode) return
+    setShowResultState(true)
   }
 
   const handleReset = () => {
     setItems(block.items ? [...block.items].sort(() => Math.random() - 0.5) : [])
-    setShowResult(false)
+    setShowResultState(false)
   }
 
   return (
@@ -3133,24 +3159,27 @@ function OrderingBlockPreview({ block }: { block: OrderingBlock }) {
         })}
       </div>
 
-      <div className="flex gap-2">
-        {!showResult ? (
-          <Button onClick={handleCheck} size="sm">
-            Verificar
-          </Button>
-        ) : (
-          <Button variant="outline" onClick={handleReset} size="sm">
-            Reintentar
-          </Button>
-        )}
-      </div>
+      {!isExamMode && (
+        <div className="flex gap-2">
+          {!showResult ? (
+            <Button onClick={handleCheck} size="sm">
+              Verificar
+            </Button>
+          ) : (
+            <Button variant="outline" onClick={handleReset} size="sm">
+              Reintentar
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   )
 }
 
-function DragDropBlockPreview({ block }: { block: DragDropBlock }) {
+function DragDropBlockPreview({ block, isExamMode }: { block: DragDropBlock; isExamMode?: boolean }) {
   const [assignments, setAssignments] = useState<Record<string, string>>({}) // itemId -> categoryId
-  const [showResult, setShowResult] = useState(false)
+  const [showResultState, setShowResultState] = useState(false)
+  const showResult = !isExamMode && showResultState
 
   const handleAssign = (itemId: string, categoryId: string) => {
     if (showResult) return
@@ -3158,12 +3187,13 @@ function DragDropBlockPreview({ block }: { block: DragDropBlock }) {
   }
 
   const handleCheck = () => {
-    setShowResult(true)
+    if (isExamMode) return
+    setShowResultState(true)
   }
 
   const handleReset = () => {
     setAssignments({})
-    setShowResult(false)
+    setShowResultState(false)
   }
 
   const unassignedItems = block.items?.filter(item => !assignments[item.id]) || []
@@ -3258,17 +3288,19 @@ function DragDropBlockPreview({ block }: { block: DragDropBlock }) {
         })}
       </div>
 
-      <div className="flex gap-2">
-        {!showResult ? (
-          <Button onClick={handleCheck} disabled={unassignedItems.length > 0} size="sm">
-            Verificar
-          </Button>
-        ) : (
-          <Button variant="outline" onClick={handleReset} size="sm">
-            Reintentar
-          </Button>
-        )}
-      </div>
+      {!isExamMode && (
+        <div className="flex gap-2">
+          {!showResult ? (
+            <Button onClick={handleCheck} disabled={unassignedItems.length > 0} size="sm">
+              Verificar
+            </Button>
+          ) : (
+            <Button variant="outline" onClick={handleReset} size="sm">
+              Reintentar
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   )
 }

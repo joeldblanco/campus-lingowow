@@ -50,7 +50,7 @@ import { Block, BlockTemplate, isInteractiveBlock, MultipleChoiceBlock } from '@
 import { BlockLibrary, BlockCanvas, DraggableBlock } from '@/components/shared/content-builder'
 import { BlockValidationError } from '@/components/shared/content-builder/types'
 import { PropertiesPanel } from '@/components/admin/course-builder/lesson-builder/properties-panel'
-import { ExamSettings, DEFAULT_EXAM_SETTINGS } from './types'
+import { ExamSettings, DEFAULT_EXAM_SETTINGS } from '@/components/admin/exams/exam-builder-v2/types'
 import { createExam, updateExam, getCoursesForExams, updateExamQuestions } from '@/lib/actions/exams'
 import { ExamWithDetails } from '@/types/exam'
 
@@ -96,18 +96,17 @@ function convertExamToBlocks(exam: ExamWithDetails): Block[] {
 
       // Handle type-specific conversion
       switch (qType) {
-        case 'multiple_choice':
+        case 'multiple_choice': {
+          const opts = optionsData as { originalBlockType?: string; multipleChoiceItems?: MultipleChoiceBlock['items'] } | null
           return {
             ...baseBlock,
             type: 'multiple_choice',
             question: q.question,
-            options: Array.isArray(optionsData)
-              ? optionsData.map((text, i) => ({ id: `opt${i}`, text: text as string }))
-              : [],
-            correctOptionId: Array.isArray(optionsData)
-              ? `opt${optionsData.indexOf(q.correctAnswer as string)}`
-              : '',
+            options: [],
+            correctOptionId: '',
+            items: opts?.multipleChoiceItems || []
           } as Block
+        }
 
         case 'true_false':
           return {

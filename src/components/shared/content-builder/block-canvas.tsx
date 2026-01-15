@@ -155,7 +155,7 @@ export function BlockCanvas({
                   if (readOnly) {
                     return (
                       <div key={block.id}>
-                        <BlockPreview block={block} />
+                        <BlockPreview block={block} isExamMode={mode === 'exam'} />
                       </div>
                     )
                   }
@@ -178,7 +178,7 @@ export function BlockCanvas({
                           onRemove={onRemoveBlock ? () => onRemoveBlock(block.id) : undefined}
                         />
                       ) : (
-                        <BlockPreview block={block} />
+                        <BlockPreview block={block} isExamMode={mode === 'exam'} />
                       )}
                     </BlockItem>
                   )
