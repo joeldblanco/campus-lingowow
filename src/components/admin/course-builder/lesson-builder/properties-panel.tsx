@@ -190,7 +190,7 @@ export function PropertiesPanel({ block, onUpdate, onRemove, onClose, mode = 'le
 
       <div className="flex-1 overflow-y-auto p-4 space-y-6">
         {renderContent()}
-        
+
         {/* Exam-specific fields */}
         {showExamFields && (
           <ExamFieldsSection block={block} onUpdate={onUpdate} />
@@ -2650,8 +2650,40 @@ function MultipleChoiceProperties({
   block: MultipleChoiceBlock
   onUpdate: (updates: Partial<Block>) => void
 }) {
+  const isMultiStep = (block.items?.length || 0) > 0
   const options = block.options || []
+  const items = block.items || []
 
+  // Toggle multi-step mode
+  const toggleMultiStep = (enabled: boolean) => {
+    if (enabled) {
+      // Convert current single question to first item
+      const initialItem = {
+        id: `item${Date.now()}`,
+        question: block.question || '',
+        options: options.length ? options : [
+          { id: `opt${Date.now()}1`, text: 'Opción 1' },
+          { id: `opt${Date.now()}2`, text: 'Opción 2' }
+        ],
+        correctOptionId: block.correctOptionId || ''
+      }
+      onUpdate({
+        items: [initialItem],
+        question: 'Preguntas Múltiples'
+      })
+    } else {
+      // Revert to single step
+      const firstItem = items[0]
+      onUpdate({
+        items: undefined,
+        question: firstItem?.question || block.question,
+        options: firstItem?.options || options,
+        correctOptionId: firstItem?.correctOptionId || block.correctOptionId
+      })
+    }
+  }
+
+  // Single step handlers
   const addOption = () => {
     const newId = `opt${Date.now()}`
     onUpdate({
@@ -2673,62 +2705,197 @@ function MultipleChoiceProperties({
     })
   }
 
+  // Multi-step handlers
+  const addItem = () => {
+    const newItem = {
+      id: `item${Date.now()}`,
+      question: '',
+      options: [
+        { id: `opt${Date.now()}1`, text: 'Opción 1' },
+        { id: `opt${Date.now()}2`, text: 'Opción 2' }
+      ],
+      correctOptionId: ''
+    }
+    onUpdate({ items: [...items, newItem] })
+  }
+
+  const updateItem = (itemId: string, updates: Partial<{
+    question: string
+    options: { id: string; text: string }[]
+    correctOptionId: string
+  }>) => {
+    onUpdate({
+      items: items.map((item) => item.id === itemId ? { ...item, ...updates } : item)
+    })
+  }
+
+  const removeItem = (itemId: string) => {
+    onUpdate({ items: items.filter((item) => item.id !== itemId) })
+  }
+
   return (
     <div className="space-y-6">
-      <div className="space-y-2">
-        <Label>Pregunta</Label>
-        <Textarea
-          value={block.question || ''}
-          onChange={(e) => onUpdate({ question: e.target.value })}
-          placeholder="Escribe la pregunta..."
-          rows={3}
+      {/* Multi-step toggle */}
+      <div className="flex items-center justify-between p-3 border rounded-lg bg-muted/30">
+        <div>
+          <Label>Múltiples Preguntas</Label>
+          <p className="text-xs text-muted-foreground">Crear secuencia de preguntas</p>
+        </div>
+        <Switch
+          checked={isMultiStep}
+          onCheckedChange={toggleMultiStep}
         />
       </div>
 
-      <div className="space-y-3">
-        <Label>Opciones de Respuesta</Label>
-        <p className="text-xs text-muted-foreground">
-          Haz clic en el círculo para marcar la respuesta correcta.
-        </p>
+      {!isMultiStep ? (
+        <>
+          <div className="space-y-2">
+            <Label>Pregunta</Label>
+            <Textarea
+              value={block.question || ''}
+              onChange={(e) => onUpdate({ question: e.target.value })}
+              placeholder="Escribe la pregunta..."
+              rows={3}
+            />
+          </div>
 
-        <div className="space-y-2">
-          {options.map((option, index) => (
-            <div key={option.id} className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => onUpdate({ correctOptionId: option.id })}
-                className={cn(
-                  'w-5 h-5 rounded-full border-2 flex-shrink-0 transition-colors',
-                  block.correctOptionId === option.id
-                    ? 'border-green-500 bg-green-500'
-                    : 'border-muted-foreground/30 hover:border-primary'
+          <div className="space-y-3">
+            <Label>Opciones de Respuesta</Label>
+            <p className="text-xs text-muted-foreground">
+              Haz clic en el círculo para marcar la respuesta correcta.
+            </p>
+
+            <div className="space-y-2">
+              {options.map((option, index) => (
+                <div key={option.id} className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => onUpdate({ correctOptionId: option.id })}
+                    className={cn(
+                      'w-5 h-5 rounded-full border-2 flex-shrink-0 transition-colors',
+                      block.correctOptionId === option.id
+                        ? 'border-green-500 bg-green-500'
+                        : 'border-muted-foreground/30 hover:border-primary'
+                    )}
+                  />
+                  <Input
+                    value={option.text}
+                    onChange={(e) => updateOption(option.id, e.target.value)}
+                    placeholder={`Opción ${index + 1}`}
+                    className="flex-1"
+                  />
+                  {options.length > 2 && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => removeOption(option.id)}
+                    >
+                      <Trash2 className="h-4 w-4 text-destructive" />
+                    </Button>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <Button variant="outline" size="sm" onClick={addOption} className="w-full">
+              <Plus className="h-4 w-4 mr-2" />
+              Agregar Opción
+            </Button>
+          </div>
+        </>
+      ) : (
+        <div className="space-y-4">
+          <Label>Preguntas</Label>
+          <p className="text-xs text-muted-foreground">Cada pregunta se mostrará como un paso separado.</p>
+
+          {items.map((item, itemIndex) => (
+            <div key={item.id} className="p-3 border rounded-lg space-y-3 bg-muted/20">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Pregunta {itemIndex + 1}</span>
+                {items.length > 1 && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    onClick={() => removeItem(item.id)}
+                  >
+                    <Trash2 className="h-3 w-3 text-destructive" />
+                  </Button>
                 )}
+              </div>
+
+              <Textarea
+                value={item.question}
+                onChange={(e) => updateItem(item.id, { question: e.target.value })}
+                placeholder="Escribe la pregunta..."
+                rows={2}
               />
-              <Input
-                value={option.text}
-                onChange={(e) => updateOption(option.id, e.target.value)}
-                placeholder={`Opción ${index + 1}`}
-                className="flex-1"
-              />
-              {options.length > 2 && (
+
+              <div className="space-y-2">
+                <Label className="text-xs">Opciones</Label>
+                {item.options.map((opt, optIndex) => (
+                  <div key={opt.id} className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => updateItem(item.id, { correctOptionId: opt.id })}
+                      className={cn(
+                        'w-4 h-4 rounded-full border-2 flex-shrink-0 transition-colors',
+                        item.correctOptionId === opt.id
+                          ? 'border-green-500 bg-green-500'
+                          : 'border-muted-foreground/30 hover:border-primary'
+                      )}
+                    />
+                    <Input
+                      value={opt.text}
+                      onChange={(e) => {
+                        const newOpts = item.options.map(o => o.id === opt.id ? { ...o, text: e.target.value } : o)
+                        updateItem(item.id, { options: newOpts })
+                      }}
+                      placeholder={`Opción ${optIndex + 1}`}
+                      className="flex-1 h-8 text-sm"
+                    />
+                    {item.options.length > 2 && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7"
+                        onClick={() => {
+                          const newOpts = item.options.filter(o => o.id !== opt.id)
+                          updateItem(item.id, {
+                            options: newOpts,
+                            correctOptionId: item.correctOptionId === opt.id ? newOpts[0]?.id : item.correctOptionId
+                          })
+                        }}
+                      >
+                        <Trash2 className="h-3 w-3 text-destructive" />
+                      </Button>
+                    )}
+                  </div>
+                ))}
                 <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={() => removeOption(option.id)}
+                  variant="outline"
+                  size="sm"
+                  className="w-full h-7 text-xs"
+                  onClick={() => {
+                    const newId = `opt${Date.now()}`
+                    updateItem(item.id, {
+                      options: [...item.options, { id: newId, text: `Opción ${item.options.length + 1}` }]
+                    })
+                  }}
                 >
-                  <Trash2 className="h-4 w-4 text-destructive" />
+                  <Plus className="h-3 w-3 mr-1" /> Agregar Opción
                 </Button>
-              )}
+              </div>
             </div>
           ))}
-        </div>
 
-        <Button variant="outline" size="sm" onClick={addOption} className="w-full">
-          <Plus className="h-4 w-4 mr-2" />
-          Agregar Opción
-        </Button>
-      </div>
+          <Button variant="outline" size="sm" onClick={addItem} className="w-full">
+            <Plus className="h-4 w-4 mr-2" />
+            Agregar Pregunta
+          </Button>
+        </div>
+      )}
 
       <div className="space-y-2">
         <Label>Puntos</Label>
