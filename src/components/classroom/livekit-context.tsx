@@ -306,6 +306,19 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       room.on(RoomEvent.ParticipantConnected, (participant: RemoteParticipant) => {
         console.log('[LiveKit] Participant connected:', participant.identity)
         updateRemoteParticipant(participant)
+        
+        // Sincronizar TODOS los participantes remotos cuando alguien se conecta
+        // Esto asegura que los tracks existentes se sincronicen correctamente
+        // con delays escalonados para capturar suscripciones tardías
+        setTimeout(() => {
+          room.remoteParticipants.forEach((p) => {
+            console.log('[LiveKit] Re-syncing participant after new connection:', p.identity)
+            updateRemoteParticipant(p)
+          })
+        }, 500)
+        setTimeout(() => {
+          room.remoteParticipants.forEach((p) => updateRemoteParticipant(p))
+        }, 1500)
       })
 
       room.on(RoomEvent.ParticipantDisconnected, (participant: RemoteParticipant) => {
@@ -474,58 +487,9 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
         })
       }
 
-      // Sincronizar inmediatamente
+      // Sincronizar participantes remotos existentes al conectarse
+      // (para el caso donde ya hay alguien en la sala)
       syncRemoteParticipants()
-
-      // Sincronizar de nuevo después de un pequeño delay para capturar tracks tardíos
-      setTimeout(syncRemoteParticipants, 500)
-      setTimeout(syncRemoteParticipants, 1500)
-      setTimeout(syncRemoteParticipants, 3000) // Additional sync at 3s for slow connections
-
-      // Periodic verification of tracks - runs every 5 seconds to catch any missed subscriptions
-      const trackVerificationInterval = setInterval(() => {
-        if (room.state !== ConnectionState.Connected) {
-          return
-        }
-
-        room.remoteParticipants.forEach((participant) => {
-          let hasVideoTrack = false
-          let hasAudioTrack = false
-          let hasUnsubscribedTracks = false
-
-          participant.trackPublications.forEach((pub) => {
-            if (pub.source === Track.Source.Camera && pub.kind === Track.Kind.Video) {
-              if (pub.isSubscribed && pub.track) {
-                hasVideoTrack = true
-              } else if (!pub.isSubscribed) {
-                hasUnsubscribedTracks = true
-              }
-            }
-            if (pub.source === Track.Source.Microphone && pub.kind === Track.Kind.Audio) {
-              if (pub.isSubscribed && pub.track) {
-                hasAudioTrack = true
-              } else if (!pub.isSubscribed) {
-                hasUnsubscribedTracks = true
-              }
-            }
-          })
-
-          // If participant has publications but missing subscribed tracks, force update
-          if (hasUnsubscribedTracks || (participant.trackPublications.size > 0 && !hasVideoTrack && !hasAudioTrack)) {
-            console.log('[LiveKit] Detected missing tracks for participant:', participant.identity,
-              '- forcing re-sync')
-            updateRemoteParticipant(participant)
-          }
-        })
-      }, 5000)
-
-      // Store interval reference for cleanup
-      const cleanupTrackVerification = () => {
-        clearInterval(trackVerificationInterval)
-      }
-
-      // Clean up on disconnect
-      room.once(RoomEvent.Disconnected, cleanupTrackVerification)
 
       const localParticipant = room.localParticipant
 
