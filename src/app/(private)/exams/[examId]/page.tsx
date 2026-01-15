@@ -38,15 +38,14 @@ export default async function ExamPage({ params, searchParams }: PageProps) {
 
   // Obtener información del curso si existe
   let courseName: string | undefined
-  let courseUrl = '/dashboard'
+  // Usar la página de mis cursos en lugar de una ruta dinámica que no existe
+  const courseUrl = '/my-courses'
   if (exam.courseId) {
     const course = await db.course.findUnique({
       where: { id: exam.courseId },
       select: { title: true }
     })
     courseName = course?.title
-    // Usar courseId en lugar de slug para la URL
-    courseUrl = exam.courseId ? `/courses/${exam.courseId}` : '/dashboard'
   }
 
   return (
