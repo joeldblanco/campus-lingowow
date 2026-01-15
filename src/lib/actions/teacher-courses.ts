@@ -458,7 +458,6 @@ export async function getCourseContentForTeacher(courseId: string, teacherId: st
           },
         },
         exams: {
-          where: { createdById: teacherId },
           include: {
             sections: {
               include: {
@@ -561,7 +560,13 @@ export async function getCourseContentForTeacher(courseId: string, teacherId: st
       }))
     }
 
-    const examsWithStats = course.exams.map((exam) => ({
+    // Para programas personalizados, solo mostrar exámenes creados por el profesor
+    // Para programas no personalizados, mostrar todos los exámenes del curso
+    const filteredExams = course.isPersonalized
+      ? course.exams.filter((exam) => exam.createdById === teacherId)
+      : course.exams
+
+    const examsWithStats = filteredExams.map((exam) => ({
       ...exam,
       questionCount: exam.sections.reduce((acc, s) => acc + s.questions.length, 0),
       totalPoints: exam.sections.reduce(

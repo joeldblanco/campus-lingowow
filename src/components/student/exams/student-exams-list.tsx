@@ -34,11 +34,11 @@ interface ExamTeacher {
 }
 
 interface ExamAssignment {
-  id: string
+  id: string | null
   status: string
   dueDate: Date | null
   instructions: string | null
-  assignedAt: Date
+  assignedAt: Date | null
 }
 
 interface ExamAttempts {
@@ -76,9 +76,9 @@ export function StudentExamsList({ exams }: StudentExamsListProps) {
       <Card>
         <CardContent className="py-12 text-center">
           <ClipboardList className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-          <h3 className="text-lg font-semibold mb-2">Sin exámenes asignados</h3>
+          <h3 className="text-lg font-semibold mb-2">Sin exámenes disponibles</h3>
           <p className="text-muted-foreground">
-            Aún no tienes exámenes asignados por tus profesores.
+            Aún no tienes exámenes disponibles en tus cursos.
           </p>
         </CardContent>
       </Card>

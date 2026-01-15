@@ -125,7 +125,9 @@ export function ExamList({ exams, courseId, isPersonalized = false }: ExamListPr
           <ClipboardList className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
           <h3 className="text-lg font-semibold mb-2">Sin exámenes</h3>
           <p className="text-muted-foreground">
-            Aún no has creado exámenes para este curso.
+            {isPersonalized
+              ? 'Aún no has creado exámenes para este curso.'
+              : 'Este curso aún no tiene exámenes configurados por los administradores.'}
           </p>
         </CardContent>
       </Card>
