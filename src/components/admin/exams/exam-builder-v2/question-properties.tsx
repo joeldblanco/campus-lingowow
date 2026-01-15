@@ -17,7 +17,7 @@ import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
 import { ChevronDown, Music, Plus, Trash2, X } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ExamQuestion, QUESTION_TYPE_LABELS } from './types'
 
 interface QuestionPropertiesProps {
@@ -246,22 +246,30 @@ function MultipleChoiceEditor({
   // Always use multipleChoiceItems array - initialize if empty
   const items = question.multipleChoiceItems || []
 
-  // Initialize with one item if empty (migrate from old single-question format)
-  if (items.length === 0) {
-    const initialItem = {
-      id: `item${Date.now()}`,
-      question: question.question || '',
-      options: question.options?.length ? question.options : [
-        { id: `opt${Date.now()}1`, text: 'Opción 1' },
-        { id: `opt${Date.now()}2`, text: 'Opción 2' }
-      ],
-      correctOptionId: question.correctOptionId || ''
-    }
-    // Use setTimeout to avoid updating during render
-    setTimeout(() => {
+  // Use ref to track if migration has been attempted
+  const migrationAttemptedRef = useRef(false)
+
+  // Handle migration from legacy format in useEffect
+  useEffect(() => {
+    // Only run migration once and only if needed
+    if (items.length === 0 && !migrationAttemptedRef.current) {
+      migrationAttemptedRef.current = true
+
+      const initialItem = {
+        id: `item${Date.now()}`,
+        question: question.question || '',
+        options: question.options?.length
+          ? question.options
+          : [
+              { id: `opt${Date.now()}1`, text: 'Opción 1' },
+              { id: `opt${Date.now()}2`, text: 'Opción 2' },
+            ],
+        correctOptionId: question.correctOptionId || '',
+      }
+
       onUpdate({ multipleChoiceItems: [initialItem] })
-    }, 0)
-  }
+    }
+  }, [items.length, question.question, question.options, question.correctOptionId, onUpdate])
 
   // Item handlers
   const addItem = () => {
@@ -270,12 +278,12 @@ function MultipleChoiceEditor({
       question: '',
       options: [
         { id: `opt${Date.now()}1`, text: 'Opción 1' },
-        { id: `opt${Date.now()}2`, text: 'Opción 2' }
+        { id: `opt${Date.now()}2`, text: 'Opción 2' },
       ],
-      correctOptionId: ''
+      correctOptionId: '',
     }
     onUpdate({
-      multipleChoiceItems: [...items, newItem]
+      multipleChoiceItems: [...items, newItem],
     })
   }
 
@@ -284,7 +292,7 @@ function MultipleChoiceEditor({
     onUpdate({ multipleChoiceItems: newItems.length > 0 ? newItems : undefined })
   }
 
-  const updateItem = (index: number, updates: Partial<typeof items[0]>) => {
+  const updateItem = (index: number, updates: Partial<(typeof items)[0]>) => {
     const newItems = [...items]
     newItems[index] = { ...newItems[index], ...updates }
     onUpdate({ multipleChoiceItems: newItems })
@@ -295,20 +303,26 @@ function MultipleChoiceEditor({
       <div>
         <Label>Constructor de Preguntas</Label>
         <p className="text-xs text-muted-foreground">
-          Agrega preguntas de opción múltiple. Haz clic en el círculo para marcar la respuesta correcta.
+          Agrega preguntas de opción múltiple. Haz clic en el círculo para marcar la respuesta
+          correcta.
         </p>
       </div>
 
       <div className="space-y-4">
         {items.map((item, index) => (
-          <Collapsible key={item.id} defaultOpen={items.length === 1 || index === items.length - 1} className="border rounded-lg p-3 bg-muted/20">
+          <Collapsible
+            key={item.id}
+            defaultOpen={items.length === 1 || index === items.length - 1}
+            className="border rounded-lg p-3 bg-muted/20"
+          >
             <div className="flex items-center justify-between">
               <CollapsibleTrigger className="flex items-center gap-2 text-sm font-medium hover:text-primary">
                 <ChevronDown className="h-4 w-4" />
                 Pregunta {index + 1}
                 {item.question && (
                   <span className="text-xs text-muted-foreground truncate max-w-[150px]">
-                    - {item.question.substring(0, 30)}{item.question.length > 30 ? '...' : ''}
+                    - {item.question.substring(0, 30)}
+                    {item.question.length > 30 ? '...' : ''}
                   </span>
                 )}
               </CollapsibleTrigger>
@@ -365,10 +379,13 @@ function MultipleChoiceEditor({
                         size="icon"
                         className="h-7 w-7"
                         onClick={() => {
-                          const newOpts = item.options.filter(o => o.id !== opt.id)
+                          const newOpts = item.options.filter((o) => o.id !== opt.id)
                           updateItem(index, {
                             options: newOpts,
-                            correctOptionId: item.correctOptionId === opt.id ? newOpts[0]?.id : item.correctOptionId
+                            correctOptionId:
+                              item.correctOptionId === opt.id
+                                ? newOpts[0]?.id
+                                : item.correctOptionId,
                           })
                         }}
                       >
@@ -384,7 +401,10 @@ function MultipleChoiceEditor({
                   onClick={() => {
                     const newId = `opt${Date.now()}`
                     updateItem(index, {
-                      options: [...item.options, { id: newId, text: `Opción ${item.options.length + 1}` }]
+                      options: [
+                        ...item.options,
+                        { id: newId, text: `Opción ${item.options.length + 1}` },
+                      ],
                     })
                   }}
                 >
@@ -958,7 +978,7 @@ function ImageQuestionEditor({
               alt="Vista previa"
               className="max-w-full h-auto max-h-48 mx-auto"
               onError={(e) => {
-                ; (e.target as HTMLImageElement).style.display = 'none'
+                ;(e.target as HTMLImageElement).style.display = 'none'
               }}
             />
           </div>
