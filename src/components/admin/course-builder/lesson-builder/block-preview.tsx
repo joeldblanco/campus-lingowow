@@ -405,9 +405,14 @@ function AudioBlockPreview({ block }: { block: AudioBlock }) {
               <div className="flex-1 space-y-2">
                 {/* Waveform Visualization */}
                 <div
-                  className="h-12 flex items-center justify-between gap-0.5 cursor-pointer"
+                  className={cn(
+                    "h-12 flex items-center justify-between gap-0.5",
+                    // Solo permitir navegación si puede reproducir o está reproduciendo
+                    (canPlay || isPlaying) ? "cursor-pointer" : "cursor-not-allowed opacity-60"
+                  )}
                   onClick={(e) => {
-                    if (!canPlay && !isPlaying) return; // Prevent seeking if locked
+                    // Bloquear navegación si alcanzó límite de reproducciones y no está reproduciendo
+                    if (!canPlay && !isPlaying) return;
                     if (audioRef.current && duration) {
                       const rect = e.currentTarget.getBoundingClientRect()
                       const x = e.clientX - rect.left

@@ -581,7 +581,7 @@ export async function getExamResultsForTeacher(examId: string) {
     const exam = await db.exam.findFirst({
       where: {
         id: examId,
-        createdById: session.user.id,
+        OR: [{ createdById: session.user.id }, { course: { isPersonalized: false } }],
       },
       include: {
         attempts: {

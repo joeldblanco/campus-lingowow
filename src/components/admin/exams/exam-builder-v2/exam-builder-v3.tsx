@@ -80,18 +80,24 @@ function convertExamToBlocks(exam: ExamWithDetails): Block[] {
   if (!exam?.sections) return []
 
   let order = 0
-  return exam.sections.flatMap((section) =>
-    section.questions.map((q): Block => {
+  const flatBlocks: (Block & { _groupId?: string | null })[] = exam.sections.flatMap((section) =>
+    section.questions.map((q): Block & { _groupId?: string | null } => {
       const qType = q.type.toLowerCase()
       const optionsData = q.options as Record<string, unknown> | string[] | null
+      
+      // Extraer groupId de las opciones
+      const groupId = optionsData && typeof optionsData === 'object' && !Array.isArray(optionsData)
+        ? (optionsData as { groupId?: string }).groupId || null
+        : null
 
       // Base block data
-      const baseBlock: Partial<Block> = {
+      const baseBlock: Partial<Block> & { _groupId?: string | null } = {
         id: `block-${order++}-${Date.now()}`,
         order: order,
         points: q.points,
         explanation: q.explanation || undefined,
         required: true,
+        _groupId: groupId,
       }
 
       // Handle type-specific conversion
@@ -324,10 +330,50 @@ function convertExamToBlocks(exam: ExamWithDetails): Block[] {
             type: 'text',
             content: q.question,
             format: 'html',
-          } as Block
+          } as Block & { _groupId?: string | null }
       }
     })
   )
+
+  // Reconstruir grupos a partir de _groupId
+  const groupedBlocks: Block[] = []
+  const processedGroupIds = new Set<string>()
+  
+  for (let i = 0; i < flatBlocks.length; i++) {
+    const block = flatBlocks[i]
+    const groupId = block._groupId
+    
+    if (groupId && !processedGroupIds.has(groupId)) {
+      // Encontrar todos los bloques con el mismo groupId
+      const groupChildren = flatBlocks.filter(b => b._groupId === groupId)
+      
+      // Crear bloque de grupo
+      const groupBlock: Block = {
+        id: groupId,
+        type: 'block_group',
+        order: groupedBlocks.length,
+        title: 'Grupo de bloques',
+        children: groupChildren.map((child) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { _groupId, ...rest } = child
+          return rest as Block
+        }),
+        points: groupChildren.reduce((sum, b) => sum + (b.points || 0), 0),
+      } as Block
+      
+      groupedBlocks.push(groupBlock)
+      processedGroupIds.add(groupId)
+    } else if (!groupId) {
+      // Bloque sin grupo, añadir directamente
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { _groupId, ...blockWithoutGroupId } = block
+      groupedBlocks.push(blockWithoutGroupId as Block)
+    }
+    // Si tiene groupId pero ya fue procesado, saltarlo
+  }
+  
+  // Reordenar
+  return groupedBlocks.map((b, i) => ({ ...b, order: i }))
 }
 
 // Flatten blocks, expanding block_group into its children with a groupId
@@ -354,10 +400,18 @@ function convertBlocksToExamFormat(blocks: Block[]) {
   const flatBlocks = flattenBlocks(blocks)
   
   return flatBlocks.map((block, index) => {
+    const groupId = (block as Block & { groupId?: string }).groupId || null
+    const blockOptions = getBlockOptions(block)
+    
+    // Incluir groupId en las opciones para que se pueda recuperar al cargar
+    const optionsWithGroup = blockOptions 
+      ? { ...blockOptions, groupId }
+      : groupId ? { groupId } : undefined
+    
     const baseQuestion = {
       type: mapBlockTypeToExamType(block.type),
       question: getBlockQuestion(block),
-      options: getBlockOptions(block),
+      options: optionsWithGroup,
       correctAnswer: getBlockCorrectAnswer(block),
       explanation: block.explanation || '',
       points: block.points || 0,
@@ -366,7 +420,6 @@ function convertBlocksToExamFormat(blocks: Block[]) {
       tags: [] as string[],
       caseSensitive: (block as { caseSensitive?: boolean }).caseSensitive || false,
       partialCredit: block.partialCredit || false,
-      groupId: (block as Block & { groupId?: string }).groupId || null,
     }
 
     return baseQuestion

@@ -66,11 +66,12 @@ export default async function TakeExamPage({ params }: PageProps) {
     
     // Función auxiliar para procesar objeto
     const processObject = (obj: Record<string, unknown>): ParsedOptions => {
-      // Si tiene originalBlockType, es un bloque no interactivo
+      // Si tiene originalBlockType, es un bloque con metadata
       if (obj.originalBlockType) {
         return {
           options: null,
-          multipleChoiceItems: null,
+          // Incluir multipleChoiceItems si existen (para bloques multiple_choice)
+          multipleChoiceItems: obj.multipleChoiceItems as ParsedOptions['multipleChoiceItems'] || null,
           originalBlockType: obj.originalBlockType as string,
           blockData: {
             url: obj.url as string | undefined,
@@ -83,7 +84,7 @@ export default async function TakeExamPage({ params }: PageProps) {
           }
         }
       }
-      // Si tiene multipleChoiceItems
+      // Si tiene multipleChoiceItems sin originalBlockType
       if (obj.multipleChoiceItems) {
         return {
           ...defaultResult,

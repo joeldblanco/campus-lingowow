@@ -157,6 +157,45 @@ export async function getProctorEvents(attemptId: string): Promise<{
   }
 }
 
+export async function getViolationCount(attemptId: string): Promise<{
+  success: boolean
+  count?: number
+  error?: string
+}> {
+  try {
+    const session = await auth()
+    if (!session?.user?.id) {
+      return { success: false, error: 'No autorizado' }
+    }
+
+    const attempt = await db.examAttempt.findUnique({
+      where: { id: attemptId },
+      select: { userId: true }
+    })
+
+    if (!attempt) {
+      return { success: false, error: 'Intento no encontrado' }
+    }
+
+    if (attempt.userId !== session.user.id) {
+      return { success: false, error: 'No tienes permiso' }
+    }
+
+    // Contar solo eventos de warning y critical (violaciones)
+    const count = await db.proctorEvent.count({
+      where: {
+        attemptId,
+        severity: { in: ['warning', 'critical'] }
+      }
+    })
+
+    return { success: true, count }
+  } catch (error) {
+    console.error('Error getting violation count:', error)
+    return { success: false, error: 'Error al obtener conteo' }
+  }
+}
+
 export async function getProctoringSummaryForAttempts(attemptIds: string[]): Promise<{
   success: boolean
   summaries?: Record<string, {

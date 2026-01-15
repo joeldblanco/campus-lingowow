@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useCallback, useState, useRef } from 'react'
-import { recordProctorEvent, ProctorEventType } from '@/lib/actions/proctoring'
+import { recordProctorEvent, getViolationCount, ProctorEventType } from '@/lib/actions/proctoring'
 
 interface UseProctoringOptions {
   attemptId: string
@@ -42,6 +42,26 @@ export function useProctoring({
 
   const violationCountRef = useRef(0)
   const hasStartedRef = useRef(false)
+  const hasLoadedInitialCountRef = useRef(false)
+
+  // Cargar el conteo inicial de violaciones al montar
+  useEffect(() => {
+    if (!enabled || hasLoadedInitialCountRef.current) return
+    
+    const loadInitialCount = async () => {
+      const result = await getViolationCount(attemptId)
+      if (result.success && result.count !== undefined) {
+        violationCountRef.current = result.count
+        setState(prev => ({
+          ...prev,
+          violationCount: result.count!
+        }))
+        hasLoadedInitialCountRef.current = true
+      }
+    }
+    
+    loadInitialCount()
+  }, [attemptId, enabled])
 
   const logEvent = useCallback(async (eventType: ProctorEventType, metadata?: Record<string, unknown>) => {
     if (!enabled) return

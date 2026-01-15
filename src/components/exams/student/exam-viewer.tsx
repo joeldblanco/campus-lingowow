@@ -132,8 +132,11 @@ export function ExamViewer({
   
   // Obtener todas las preguntas del grupo actual (si pertenece a un grupo)
   const currentGroupQuestions = useMemo(() => {
-    const currentGroupId = (currentQuestion as typeof currentQuestion & { groupId?: string | null })?.groupId
-    if (!currentGroupId) return [currentQuestion].filter(Boolean)
+    // Si no hay pregunta actual, retornar array vacío
+    if (!currentQuestion) return []
+    
+    const currentGroupId = (currentQuestion as typeof currentQuestion & { groupId?: string | null }).groupId
+    if (!currentGroupId) return [currentQuestion]
     
     return allQuestions.filter(q => 
       (q as typeof q & { groupId?: string | null }).groupId === currentGroupId
