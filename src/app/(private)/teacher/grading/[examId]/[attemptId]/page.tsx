@@ -40,24 +40,57 @@ export default async function GradingPage({ params }: PageProps) {
     score: a.score ?? 0
   }))
 
-  const answers = attempt.answers.map((answer, index) => ({
-    id: answer.id,
-    questionId: answer.questionId,
-    questionNumber: index + 1,
-    questionType: answer.question.type,
-    questionText: answer.question.question,
-    category: answer.question.tags?.[0],
-    maxPoints: answer.question.points,
-    userAnswer: answer.answer ? String(answer.answer) : null,
-    correctAnswer: Array.isArray(answer.question.correctAnswer) 
-      ? (answer.question.correctAnswer as string[]).join(', ') 
-      : String(answer.question.correctAnswer),
-    isCorrect: answer.isCorrect,
-    pointsEarned: answer.pointsEarned,
-    needsReview: answer.needsReview,
-    feedback: answer.feedback,
-    isAutoGraded: !answer.needsReview && answer.reviewedBy !== session.user.id
-  }))
+  // Crear un mapa de respuestas por questionId para acceso rápido
+  const answersMap = new Map(attempt.answers.map(a => [a.questionId, a]))
+
+  // Obtener TODAS las preguntas del examen (no solo las respondidas)
+  const allQuestions = attempt.exam.sections.flatMap(section => 
+    section.questions.map(q => {
+      // Extraer groupId de las opciones
+      let groupId: string | null = null
+      if (q.options && typeof q.options === 'object' && !Array.isArray(q.options)) {
+        groupId = (q.options as Record<string, unknown>).groupId as string || null
+      } else if (typeof q.options === 'string') {
+        try {
+          const parsed = JSON.parse(q.options)
+          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+            groupId = parsed.groupId || null
+          }
+        } catch {
+          // Ignorar errores de parsing
+        }
+      }
+      return { ...q, sectionTitle: section.title, groupId }
+    })
+  )
+
+  // Mapear todas las preguntas, incluyendo las no respondidas
+  let questionNumber = 0
+  const answers = allQuestions.map((question) => {
+    questionNumber++
+    const answer = answersMap.get(question.id)
+    
+    return {
+      id: answer?.id || `no-answer-${question.id}`,
+      questionId: question.id,
+      questionNumber,
+      questionType: question.type,
+      questionText: question.question,
+      category: question.tags?.[0],
+      maxPoints: question.points,
+      userAnswer: answer?.answer ? String(answer.answer) : null,
+      correctAnswer: Array.isArray(question.correctAnswer) 
+        ? (question.correctAnswer as string[]).join(', ') 
+        : String(question.correctAnswer),
+      isCorrect: answer?.isCorrect ?? null,
+      pointsEarned: answer?.pointsEarned ?? 0,
+      needsReview: answer?.needsReview ?? (question.type === 'ESSAY'),
+      feedback: answer?.feedback ?? null,
+      isAutoGraded: answer ? (!answer.needsReview && answer.reviewedBy !== session.user.id) : false,
+      groupId: question.groupId,
+      sectionTitle: question.sectionTitle,
+    }
+  })
 
   const totalScore = attempt.totalPoints ?? 0
   const maxScore = attempt.maxPoints ?? answers.reduce((sum, a) => sum + a.maxPoints, 0)

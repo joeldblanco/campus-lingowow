@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { 
@@ -50,6 +50,8 @@ interface QuestionAnswer {
   needsReview: boolean
   feedback?: string | null
   isAutoGraded: boolean
+  groupId?: string | null
+  sectionTitle?: string
 }
 
 interface ExamGradingViewProps {
@@ -90,6 +92,37 @@ export function ExamGradingView({
   const currentAnswer = answers[currentQuestionIndex]
   const pendingReviewCount = answers.filter(a => a.needsReview).length
   const needsReview = pendingReviewCount > 0
+
+  // Obtener todas las preguntas del grupo actual (si pertenece a un grupo)
+  const currentGroupAnswers = useMemo(() => {
+    if (!currentAnswer) return []
+    
+    const currentGroupId = currentAnswer.groupId
+    if (!currentGroupId) return [currentAnswer]
+    
+    return answers.filter(a => a.groupId === currentGroupId)
+  }, [currentAnswer, answers])
+
+  // Calcular índices de navegación (primer índice de cada grupo o pregunta individual)
+  const navigationIndices = useMemo(() => {
+    const indices: number[] = []
+    const processedGroupIds = new Set<string>()
+    
+    answers.forEach((a, index) => {
+      const groupId = a.groupId
+      
+      if (groupId) {
+        if (!processedGroupIds.has(groupId)) {
+          indices.push(index)
+          processedGroupIds.add(groupId)
+        }
+      } else {
+        indices.push(index)
+      }
+    })
+    
+    return indices
+  }, [answers])
 
   const getQuestionStatus = (answer: QuestionAnswer): 'pending' | 'correct' | 'incorrect' | 'unanswered' => {
     if (answer.needsReview) return 'pending'
@@ -270,159 +303,193 @@ export function ExamGradingView({
           </aside>
 
           <div className="lg:col-span-9 space-y-6">
-            {currentAnswer && (
-              <div className="bg-white dark:bg-[#1a2632] rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-                <div className="flex items-start justify-between gap-4 mb-4">
-                  <div className="flex items-center gap-3">
-                    <span className="text-muted-foreground font-medium">Pregunta {currentQuestionIndex + 1}</span>
-                    {currentAnswer.needsReview ? (
-                      <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300">
-                        Pendiente de Revisión
-                      </Badge>
-                    ) : currentAnswer.isAutoGraded ? (
-                      <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">
-                        Auto-calificada: {currentAnswer.isCorrect ? 'Correcta' : 'Incorrecta'}
-                      </Badge>
-                    ) : (
-                      <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300">
-                        Calificada Manualmente
-                      </Badge>
-                    )}
-                  </div>
-                  <span className="text-sm text-muted-foreground">{currentAnswer.maxPoints} Puntos</span>
-                </div>
-
-                {currentAnswer.category && (
-                  <p className="text-sm text-muted-foreground mb-2">{currentAnswer.category}</p>
+            {currentGroupAnswers.length > 0 ? (
+              <div className="space-y-6">
+                {currentGroupAnswers.length > 1 && (
+                  <Badge variant="secondary" className="mb-2">
+                    Grupo de {currentGroupAnswers.length} preguntas
+                  </Badge>
                 )}
-
-                <h3 className="text-xl font-bold text-foreground mb-6">{currentAnswer.questionText}</h3>
-
-                <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900 rounded-lg p-4 mb-6">
-                  <div className="flex items-start justify-between mb-2">
-                    <span className="text-sm font-bold text-amber-800 dark:text-amber-400 uppercase">Respuesta del Estudiante</span>
-                    <span className="text-xs text-muted-foreground">Enviado a las {attempt.submittedAt}</span>
-                  </div>
-                  <p className="text-foreground italic leading-relaxed">
-                    &quot;{currentAnswer.userAnswer || '(Sin respuesta)'}&quot;
-                  </p>
-                </div>
-
-                {currentAnswer.needsReview && (
-                  <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-                    <div className="flex items-center gap-2 mb-4">
-                      <FileText className="h-5 w-5 text-primary" />
-                      <h4 className="font-bold text-foreground">Calificación y Retroalimentación del Profesor</h4>
-                    </div>
-
-                    <div className="grid md:grid-cols-3 gap-6">
-                      <div className="md:col-span-2">
-                        <label className="text-sm font-medium text-muted-foreground mb-2 block">
-                          Retroalimentación Cualitativa
-                        </label>
-                        <Textarea
-                          placeholder="Agregar retroalimentación para el estudiante..."
-                          value={localGrades[currentAnswer.id]?.feedback ?? currentAnswer.feedback ?? ''}
-                          onChange={(e) => updateLocalGrade(currentAnswer.id, 'feedback', e.target.value)}
-                          className="min-h-[120px]"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium text-muted-foreground mb-2 block">
-                          Ajuste de Puntaje
-                        </label>
-                        <div className="flex items-center gap-2">
-                          <Input
-                            type="number"
-                            min={0}
-                            max={currentAnswer.maxPoints}
-                            value={localGrades[currentAnswer.id]?.points ?? currentAnswer.pointsEarned}
-                            onChange={(e) => updateLocalGrade(currentAnswer.id, 'points', parseFloat(e.target.value) || 0)}
-                            className="w-20"
-                          />
-                          <span className="text-muted-foreground">/ {currentAnswer.maxPoints}</span>
+                
+                {currentGroupAnswers.map((answer) => {
+                  const answerIndex = answers.findIndex(a => a.id === answer.id)
+                  return (
+                    <div key={answer.id} className="bg-white dark:bg-[#1a2632] rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                      <div className="flex items-start justify-between gap-4 mb-4">
+                        <div className="flex items-center gap-3">
+                          <span className="text-muted-foreground font-medium">Pregunta {answerIndex + 1}</span>
+                          {answer.needsReview ? (
+                            <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300">
+                              Pendiente de Revisión
+                            </Badge>
+                          ) : answer.isAutoGraded ? (
+                            <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">
+                              Auto-calificada: {answer.isCorrect ? 'Correcta' : 'Incorrecta'}
+                            </Badge>
+                          ) : answer.userAnswer === null ? (
+                            <Badge variant="outline" className="bg-gray-50 text-gray-700 border-gray-300">
+                              Sin respuesta
+                            </Badge>
+                          ) : (
+                            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300">
+                              Calificada Manualmente
+                            </Badge>
+                          )}
                         </div>
-                        <div className="flex gap-2 mt-3">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => updateLocalGrade(currentAnswer.id, 'points', currentAnswer.maxPoints)}
-                          >
-                            Excelente
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => updateLocalGrade(currentAnswer.id, 'points', currentAnswer.maxPoints * 0.5)}
-                          >
-                            Más detalle
-                          </Button>
+                        <span className="text-sm text-muted-foreground">{answer.maxPoints} Puntos</span>
+                      </div>
+
+                      {answer.category && (
+                        <p className="text-sm text-muted-foreground mb-2">{answer.category}</p>
+                      )}
+
+                      <h3 className="text-xl font-bold text-foreground mb-6">{answer.questionText}</h3>
+
+                      <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900 rounded-lg p-4 mb-6">
+                        <div className="flex items-start justify-between mb-2">
+                          <span className="text-sm font-bold text-amber-800 dark:text-amber-400 uppercase">Respuesta del Estudiante</span>
+                          <span className="text-xs text-muted-foreground">Enviado a las {attempt.submittedAt}</span>
                         </div>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-end mt-4">
-                      <Button
-                        onClick={() => handleSaveGrade(currentAnswer.id)}
-                        disabled={isSaving}
-                        className="flex items-center gap-2"
-                      >
-                        <Save className="h-4 w-4" />
-                        {isSaving ? 'Guardando...' : 'Guardar Calificación'}
-                        <CheckCircle className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                )}
-
-                {!currentAnswer.needsReview && currentAnswer.isAutoGraded && (
-                  <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-                    <div className={cn(
-                      "p-4 rounded-lg",
-                      currentAnswer.isCorrect 
-                        ? "bg-green-50 dark:bg-green-900/20 border border-green-200"
-                        : "bg-red-50 dark:bg-red-900/20 border border-red-200"
-                    )}>
-                      <div className="flex items-center gap-2 mb-2">
-                        {currentAnswer.isCorrect ? (
-                          <CheckCircle className="h-5 w-5 text-green-600" />
-                        ) : (
-                          <XCircle className="h-5 w-5 text-red-600" />
-                        )}
-                        <span className="font-bold text-foreground">
-                          {currentAnswer.isCorrect ? 'Respuesta Correcta' : 'Respuesta Incorrecta'}
-                        </span>
-                      </div>
-                      {currentAnswer.correctAnswer && !currentAnswer.isCorrect && (
-                        <p className="text-sm text-muted-foreground">
-                          <strong>Respuesta correcta:</strong> {currentAnswer.correctAnswer}
+                        <p className="text-foreground italic leading-relaxed">
+                          &quot;{answer.userAnswer || '(Sin respuesta)'}&quot;
                         </p>
+                      </div>
+
+                      {answer.needsReview && (
+                        <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+                          <div className="flex items-center gap-2 mb-4">
+                            <FileText className="h-5 w-5 text-primary" />
+                            <h4 className="font-bold text-foreground">Calificación y Retroalimentación del Profesor</h4>
+                          </div>
+
+                          <div className="grid md:grid-cols-3 gap-6">
+                            <div className="md:col-span-2">
+                              <label className="text-sm font-medium text-muted-foreground mb-2 block">
+                                Retroalimentación Cualitativa
+                              </label>
+                              <Textarea
+                                placeholder="Agregar retroalimentación para el estudiante..."
+                                value={localGrades[answer.id]?.feedback ?? answer.feedback ?? ''}
+                                onChange={(e) => updateLocalGrade(answer.id, 'feedback', e.target.value)}
+                                className="min-h-[120px]"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground mb-2 block">
+                                Ajuste de Puntaje
+                              </label>
+                              <div className="flex items-center gap-2">
+                                <Input
+                                  type="number"
+                                  min={0}
+                                  max={answer.maxPoints}
+                                  value={localGrades[answer.id]?.points ?? answer.pointsEarned}
+                                  onChange={(e) => updateLocalGrade(answer.id, 'points', parseFloat(e.target.value) || 0)}
+                                  className="w-20"
+                                />
+                                <span className="text-muted-foreground">/ {answer.maxPoints}</span>
+                              </div>
+                              <div className="flex gap-2 mt-3">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => updateLocalGrade(answer.id, 'points', answer.maxPoints)}
+                                >
+                                  Excelente
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => updateLocalGrade(answer.id, 'points', answer.maxPoints * 0.5)}
+                                >
+                                  Más detalle
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex justify-end mt-4">
+                            <Button
+                              onClick={() => handleSaveGrade(answer.id)}
+                              disabled={isSaving}
+                              className="flex items-center gap-2"
+                            >
+                              <Save className="h-4 w-4" />
+                              {isSaving ? 'Guardando...' : 'Guardar Calificación'}
+                              <CheckCircle className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+
+                      {!answer.needsReview && answer.isAutoGraded && (
+                        <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+                          <div className={cn(
+                            "p-4 rounded-lg",
+                            answer.isCorrect 
+                              ? "bg-green-50 dark:bg-green-900/20 border border-green-200"
+                              : "bg-red-50 dark:bg-red-900/20 border border-red-200"
+                          )}>
+                            <div className="flex items-center gap-2 mb-2">
+                              {answer.isCorrect ? (
+                                <CheckCircle className="h-5 w-5 text-green-600" />
+                              ) : (
+                                <XCircle className="h-5 w-5 text-red-600" />
+                              )}
+                              <span className="font-bold text-foreground">
+                                {answer.isCorrect ? 'Respuesta Correcta' : 'Respuesta Incorrecta'}
+                              </span>
+                            </div>
+                            {answer.correctAnswer && !answer.isCorrect && (
+                              <p className="text-sm text-muted-foreground">
+                                <strong>Respuesta correcta:</strong> {answer.correctAnswer}
+                              </p>
+                            )}
+                          </div>
+
+                          <div className="mt-4">
+                            <button 
+                              className="text-sm text-primary hover:underline flex items-center gap-1"
+                              onClick={() => {
+                                updateLocalGrade(answer.id, 'points', answer.pointsEarned)
+                                updateLocalGrade(answer.id, 'feedback', answer.feedback || '')
+                                toast.info('Ahora puedes modificar el puntaje y agregar comentarios')
+                              }}
+                            >
+                              <AlertCircle className="h-4 w-4" />
+                              Anular Puntaje o Agregar Comentario
+                            </button>
+                          </div>
+                        </div>
                       )}
                     </div>
-
-                    <div className="mt-4">
-                      <button 
-                        className="text-sm text-primary hover:underline flex items-center gap-1"
-                        onClick={() => {
-                          // Habilitar edición manual para esta respuesta
-                          updateLocalGrade(currentAnswer.id, 'points', currentAnswer.pointsEarned)
-                          updateLocalGrade(currentAnswer.id, 'feedback', currentAnswer.feedback || '')
-                          toast.info('Ahora puedes modificar el puntaje y agregar comentarios')
-                        }}
-                      >
-                        <AlertCircle className="h-4 w-4" />
-                        Anular Puntaje o Agregar Comentario
-                      </button>
-                    </div>
-                  </div>
-                )}
+                  )
+                })}
+              </div>
+            ) : (
+              <div className="bg-white dark:bg-[#1a2632] rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 text-center">
+                <p className="text-muted-foreground">No hay preguntas para mostrar</p>
               </div>
             )}
 
             <div className="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 pt-6">
               <Button
                 variant="ghost"
-                onClick={() => setCurrentQuestionIndex(Math.max(0, currentQuestionIndex - 1))}
+                onClick={() => {
+                  // Encontrar el grupo actual y navegar al anterior
+                  let currentNavIndex = -1
+                  for (let i = 0; i < navigationIndices.length; i++) {
+                    if (navigationIndices[i] <= currentQuestionIndex) {
+                      currentNavIndex = i
+                    } else {
+                      break
+                    }
+                  }
+                  const prevNavIndex = currentNavIndex > 0 ? currentNavIndex - 1 : -1
+                  if (prevNavIndex >= 0) {
+                    setCurrentQuestionIndex(navigationIndices[prevNavIndex])
+                  }
+                }}
                 disabled={currentQuestionIndex === 0}
                 className="flex items-center gap-2"
               >
@@ -431,14 +498,34 @@ export function ExamGradingView({
               </Button>
 
               <span className="text-sm text-muted-foreground">
-                Pregunta {currentQuestionIndex + 1} de {answers.length}
+                {currentGroupAnswers.length > 1 
+                  ? `Grupo de ${currentGroupAnswers.length} preguntas`
+                  : `Pregunta ${currentQuestionIndex + 1} de ${answers.length}`
+                }
               </span>
 
               <div className="flex items-center gap-3">
                 <Button
                   variant="ghost"
-                  onClick={() => setCurrentQuestionIndex(Math.min(answers.length - 1, currentQuestionIndex + 1))}
-                  disabled={currentQuestionIndex === answers.length - 1}
+                  onClick={() => {
+                    // Encontrar el grupo actual y navegar al siguiente
+                    let currentNavIndex = -1
+                    for (let i = 0; i < navigationIndices.length; i++) {
+                      if (navigationIndices[i] <= currentQuestionIndex) {
+                        currentNavIndex = i
+                      } else {
+                        break
+                      }
+                    }
+                    const nextNavIndex = currentNavIndex >= 0 && currentNavIndex < navigationIndices.length - 1 
+                      ? currentNavIndex + 1 
+                      : -1
+                    if (nextNavIndex >= 0) {
+                      setCurrentQuestionIndex(navigationIndices[nextNavIndex])
+                    }
+                  }}
+                  disabled={navigationIndices.indexOf(currentQuestionIndex) === navigationIndices.length - 1 || 
+                    (navigationIndices.findIndex(idx => idx > currentQuestionIndex) === -1 && currentQuestionIndex >= navigationIndices[navigationIndices.length - 1])}
                   className="flex items-center gap-2"
                 >
                   Siguiente

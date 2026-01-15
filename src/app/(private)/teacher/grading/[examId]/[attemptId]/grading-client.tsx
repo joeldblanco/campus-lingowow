@@ -33,6 +33,8 @@ interface QuestionAnswer {
   needsReview: boolean
   feedback?: string | null
   isAutoGraded: boolean
+  groupId?: string | null
+  sectionTitle?: string
 }
 
 interface GradingClientProps {
