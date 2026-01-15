@@ -439,6 +439,139 @@ export async function getExamStatistics(examId: string) {
 }
 
 /**
+ * Obtiene los intentos de examen filtrados por estudiantes del profesor actual
+ */
+export async function getExamAttemptsForTeacherStudents(examId: string, courseId: string) {
+  try {
+    const session = await auth()
+    if (!session?.user?.id) {
+      return { success: false, error: 'No autorizado', attempts: [] }
+    }
+
+    const teacherId = session.user.id
+
+    // Obtener IDs de estudiantes que tienen clases con este profesor en este curso
+    const bookings = await db.classBooking.findMany({
+      where: {
+        teacherId,
+        enrollment: {
+          courseId,
+          status: 'ACTIVE',
+        },
+      },
+      select: {
+        studentId: true,
+      },
+      distinct: ['studentId'],
+    })
+
+    const studentIds = bookings.map((b) => b.studentId)
+
+    if (studentIds.length === 0) {
+      return { success: true, attempts: [] }
+    }
+
+    // Obtener intentos solo de estos estudiantes
+    const attempts = await db.examAttempt.findMany({
+      where: {
+        examId,
+        userId: { in: studentIds },
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            email: true,
+            image: true,
+          },
+        },
+        answers: {
+          where: { needsReview: true },
+        },
+      },
+      orderBy: { submittedAt: 'desc' },
+    })
+
+    return {
+      success: true,
+      attempts: attempts.map((a) => ({
+        id: a.id,
+        status: a.status,
+        score: a.score,
+        startedAt: a.startedAt,
+        submittedAt: a.submittedAt,
+        attemptNumber: a.attemptNumber,
+        user: a.user,
+        pendingReviewCount: a.answers.length,
+      })),
+    }
+  } catch (error) {
+    console.error('Error fetching exam attempts for teacher students:', error)
+    return { success: false, error: 'Error al obtener intentos', attempts: [] }
+  }
+}
+
+/**
+ * Obtiene un examen para previsualización (sin guardar en DB)
+ */
+export async function getExamForPreview(examId: string) {
+  try {
+    const session = await auth()
+    if (!session?.user?.id) {
+      return { success: false, error: 'No autorizado' }
+    }
+
+    const exam = await db.exam.findFirst({
+      where: {
+        id: examId,
+        OR: [
+          { createdById: session.user.id },
+          { course: { createdById: session.user.id } },
+        ],
+      },
+      include: {
+        course: {
+          select: {
+            id: true,
+            title: true,
+            language: true,
+          },
+        },
+        sections: {
+          include: {
+            questions: {
+              orderBy: { order: 'asc' },
+            },
+          },
+          orderBy: { order: 'asc' },
+        },
+      },
+    })
+
+    if (!exam) {
+      return { success: false, error: 'Examen no encontrado o no tienes permiso' }
+    }
+
+    return {
+      success: true,
+      exam: {
+        ...exam,
+        questionCount: exam.sections.reduce((acc, s) => acc + s.questions.length, 0),
+        totalPoints: exam.sections.reduce(
+          (acc, s) => acc + s.questions.reduce((qAcc, q) => qAcc + q.points, 0),
+          0
+        ),
+      },
+    }
+  } catch (error) {
+    console.error('Error fetching exam for preview:', error)
+    return { success: false, error: 'Error al obtener el examen' }
+  }
+}
+
+/**
  * Obtiene los resultados de un examen para el profesor
  */
 export async function getExamResultsForTeacher(examId: string) {

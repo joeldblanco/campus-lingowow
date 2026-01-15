@@ -216,12 +216,12 @@ export function TeacherCourseContentView({ course }: TeacherCourseContentViewPro
         <StandardContent modules={course.modules} courseId={course.id} />
       )}
 
-      <ExamsSection exams={course.exams} courseId={course.id} />
+      <ExamsSection exams={course.exams} courseId={course.id} isPersonalized={course.isPersonalized} />
     </div>
   )
 }
 
-function ExamsSection({ exams, courseId }: { exams: Exam[]; courseId: string }) {
+function ExamsSection({ exams, courseId, isPersonalized }: { exams: Exam[]; courseId: string; isPersonalized: boolean }) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -229,9 +229,9 @@ function ExamsSection({ exams, courseId }: { exams: Exam[]; courseId: string }) 
           <ClipboardList className="w-5 h-5" />
           Exámenes
         </h2>
-        <CreateExamDialog courseId={courseId} />
+        {isPersonalized && <CreateExamDialog courseId={courseId} />}
       </div>
-      <ExamList exams={exams} courseId={courseId} />
+      <ExamList exams={exams} courseId={courseId} isPersonalized={isPersonalized} />
     </div>
   )
 }

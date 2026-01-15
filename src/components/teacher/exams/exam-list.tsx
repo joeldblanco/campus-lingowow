@@ -34,6 +34,7 @@ import {
   Clock,
   Target,
   CheckCircle2,
+  PlayCircle,
 } from 'lucide-react'
 import { toggleExamPublished, deleteTeacherExam } from '@/lib/actions/teacher-exams'
 import { toast } from 'sonner'
@@ -83,9 +84,10 @@ interface Exam {
 interface ExamListProps {
   exams: Exam[]
   courseId: string
+  isPersonalized?: boolean
 }
 
-export function ExamList({ exams, courseId }: ExamListProps) {
+export function ExamList({ exams, courseId, isPersonalized = false }: ExamListProps) {
   const [deleteExamId, setDeleteExamId] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
   const [assignExamId, setAssignExamId] = useState<string | null>(null)
@@ -196,11 +198,19 @@ export function ExamList({ exams, courseId }: ExamListProps) {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem asChild>
-                          <Link href={`/teacher/exams/${exam.id}/edit`}>
-                            <Edit className="w-4 h-4 mr-2" />
-                            Editar
+                          <Link href={`/teacher/exams/${exam.id}/preview`}>
+                            <PlayCircle className="w-4 h-4 mr-2" />
+                            Previsualizar
                           </Link>
                         </DropdownMenuItem>
+                        {isPersonalized && (
+                          <DropdownMenuItem asChild>
+                            <Link href={`/teacher/exams/${exam.id}/edit`}>
+                              <Edit className="w-4 h-4 mr-2" />
+                              Editar
+                            </Link>
+                          </DropdownMenuItem>
+                        )}
                         <DropdownMenuItem onClick={() => handleTogglePublish(exam.id)}>
                           {exam.isPublished ? (
                             <>

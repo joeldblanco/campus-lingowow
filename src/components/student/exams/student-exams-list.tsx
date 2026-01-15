@@ -166,9 +166,11 @@ export function StudentExamsList({ exams }: StudentExamsListProps) {
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-2">
-                  <CardTitle className="text-base font-medium">
-                    {exam.title}
-                  </CardTitle>
+                  <Link href={`/student/exams/${exam.id}`}>
+                    <CardTitle className="text-base font-medium hover:text-primary hover:underline cursor-pointer">
+                      {exam.title}
+                    </CardTitle>
+                  </Link>
                   {getStatusBadge(exam)}
                 </div>
 
