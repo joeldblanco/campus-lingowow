@@ -490,7 +490,7 @@ export function ExamGradingView({
                     setCurrentQuestionIndex(navigationIndices[prevNavIndex])
                   }
                 }}
-                disabled={currentQuestionIndex === 0}
+                disabled={navigationIndices.length === 0 || currentQuestionIndex <= navigationIndices[0]}
                 className="flex items-center gap-2"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -524,8 +524,8 @@ export function ExamGradingView({
                       setCurrentQuestionIndex(navigationIndices[nextNavIndex])
                     }
                   }}
-                  disabled={navigationIndices.indexOf(currentQuestionIndex) === navigationIndices.length - 1 || 
-                    (navigationIndices.findIndex(idx => idx > currentQuestionIndex) === -1 && currentQuestionIndex >= navigationIndices[navigationIndices.length - 1])}
+                  disabled={navigationIndices.length === 0 || 
+                    navigationIndices.findIndex(idx => idx > currentQuestionIndex) === -1}
                   className="flex items-center gap-2"
                 >
                   Siguiente
