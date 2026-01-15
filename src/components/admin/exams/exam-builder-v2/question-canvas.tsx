@@ -251,6 +251,60 @@ function SortableQuestionCard({
 function QuestionPreview({ question }: { question: ExamQuestion }) {
   switch (question.type) {
     case 'multiple_choice':
+      // Use multipleChoiceItems if available, otherwise fall back to legacy options
+      const items = question.multipleChoiceItems
+      if (items && items.length > 0) {
+        return (
+          <div className="space-y-4">
+            {items.map((item, itemIndex) => (
+              <div key={item.id} className="space-y-2">
+                {items.length > 1 && (
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Pregunta {itemIndex + 1}: {item.question || 'Sin pregunta'}
+                  </p>
+                )}
+                {items.length === 1 && item.question && (
+                  <p className="text-sm font-medium text-muted-foreground mb-2">
+                    {item.question}
+                  </p>
+                )}
+                {item.options?.map((option) => (
+                  <div
+                    key={option.id}
+                    className={cn(
+                      'flex items-center gap-3 p-3 rounded-lg border',
+                      option.id === item.correctOptionId
+                        ? 'bg-green-50 border-green-200'
+                        : 'bg-muted/30'
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        'w-4 h-4 rounded-full border-2',
+                        option.id === item.correctOptionId
+                          ? 'border-green-500 bg-green-500'
+                          : 'border-muted-foreground/30'
+                      )}
+                    >
+                      {option.id === item.correctOptionId && (
+                        <Check className="h-3 w-3 text-white" />
+                      )}
+                    </div>
+                    <span>{option.text}</span>
+                    {option.id === item.correctOptionId && (
+                      <Badge variant="outline" className="ml-auto text-green-600 border-green-300">
+                        <Check className="h-3 w-3 mr-1" />
+                        Correcta
+                      </Badge>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )
+      }
+      // Legacy format fallback
       return (
         <div className="space-y-2">
           {question.options?.map((option) => (
