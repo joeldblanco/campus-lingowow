@@ -129,14 +129,6 @@ export function ExamPreviewClient({
     })
   }, [allQuestions, answers, currentQuestionIndex])
 
-  const handleAnswerChange = async (answer: unknown) => {
-    if (!currentQuestion) return
-    setAnswers((prev) => ({
-      ...prev,
-      [currentQuestion.id]: answer
-    }))
-  }
-
   const handleNavigate = (index: number) => {
     if (index >= 0 && index < totalQuestions) {
       setCurrentQuestionIndex(index)
@@ -144,18 +136,33 @@ export function ExamPreviewClient({
   }
 
   const handlePrevious = () => {
-    // Encontrar el índice de navegación anterior (saltar grupos completos)
-    const currentNavIndex = navigationIndices.findIndex(idx => idx >= currentQuestionIndex)
-    const prevNavIndex = currentNavIndex > 0 ? currentNavIndex - 1 : -1
+    // Encontrar el grupo actual: buscar el último índice que es <= currentQuestionIndex
+    let currentNavIndex = -1
+    for (let i = 0; i < navigationIndices.length; i++) {
+      if (navigationIndices[i] <= currentQuestionIndex) {
+        currentNavIndex = i
+      } else {
+        break
+      }
+    }
     
+    const prevNavIndex = currentNavIndex > 0 ? currentNavIndex - 1 : -1
     if (prevNavIndex >= 0) {
       handleNavigate(navigationIndices[prevNavIndex])
     }
   }
 
   const handleNext = () => {
-    // Encontrar el siguiente índice de navegación (saltar grupos completos)
-    const currentNavIndex = navigationIndices.findIndex(idx => idx >= currentQuestionIndex)
+    // Encontrar el grupo actual: buscar el último índice que es <= currentQuestionIndex
+    let currentNavIndex = -1
+    for (let i = 0; i < navigationIndices.length; i++) {
+      if (navigationIndices[i] <= currentQuestionIndex) {
+        currentNavIndex = i
+      } else {
+        break
+      }
+    }
+    
     const nextNavIndex = currentNavIndex >= 0 && currentNavIndex < navigationIndices.length - 1 
       ? currentNavIndex + 1 
       : -1

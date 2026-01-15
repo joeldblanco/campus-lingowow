@@ -9,7 +9,27 @@ export const pusherServer = new PusherServer({
   useTLS: true,
 })
 
-export const pusherClient = new PusherClient(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
-  cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
-  enabledTransports: ['ws', 'wss'],
-})
+declare global {
+  // eslint-disable-next-line no-var
+  var pusherClientInstance: PusherClient | undefined
+}
+
+function getPusherClient(): PusherClient {
+  if (typeof window === 'undefined') {
+    return new PusherClient(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
+      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
+      enabledTransports: ['ws', 'wss'],
+    })
+  }
+
+  if (!globalThis.pusherClientInstance) {
+    globalThis.pusherClientInstance = new PusherClient(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
+      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
+      enabledTransports: ['ws', 'wss'],
+    })
+  }
+
+  return globalThis.pusherClientInstance
+}
+
+export const pusherClient = getPusherClient()
