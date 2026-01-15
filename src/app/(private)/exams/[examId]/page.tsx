@@ -6,7 +6,7 @@ import { AlertTriangle, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
 interface PageProps {
-  params: Promise<{ examId: string }>
+  params: { examId: string }
   searchParams: { error?: string }
 }
 
@@ -17,7 +17,7 @@ export default async function ExamPage({ params, searchParams }: PageProps) {
     redirect('/auth/login')
   }
 
-  const { examId } = await params
+  const { examId } = params
   const { error } = searchParams
 
   // Obtener información del examen
