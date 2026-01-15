@@ -477,7 +477,8 @@ function getBlockCorrectAnswer(block: Block): string | string[] | null {
       if ((block as MultipleChoiceBlock).items?.length) {
         // For multi-step, extract correct answers from items
         const items = (block as MultipleChoiceBlock).items || []
-        return items.map(item => item.correctOptionId).join(',') || 'multi-step'
+        // No fallback needed - return the actual joined correctOptionIds
+        return items.map(item => item.correctOptionId).join(',')
       }
       return block.options?.find(opt => opt.id === block.correctOptionId)?.text || ''
     case 'true_false':
