@@ -5,13 +5,20 @@ import { Timer } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface ExamTimerProps {
-  initialSeconds: number
+  timeLimit: number
+  startedAt: string
   onTimeUp?: () => void
   className?: string
 }
 
-export function ExamTimer({ initialSeconds, onTimeUp, className }: ExamTimerProps) {
-  const [timeLeft, setTimeLeft] = useState(initialSeconds)
+export function ExamTimer({ timeLimit, startedAt, onTimeUp, className }: ExamTimerProps) {
+  // Calcular tiempo restante basado en el tiempo actual del cliente
+  const calculateRemainingSeconds = useCallback(() => {
+    const elapsed = Math.floor((Date.now() - new Date(startedAt).getTime()) / 1000)
+    return Math.max(0, (timeLimit * 60) - elapsed)
+  }, [timeLimit, startedAt])
+
+  const [timeLeft, setTimeLeft] = useState(calculateRemainingSeconds)
 
   const formatTime = useCallback((totalSeconds: number) => {
     const hours = Math.floor(totalSeconds / 3600)

@@ -155,11 +155,7 @@ export default async function TakeExamPage({ params }: PageProps) {
     courseName = course?.title
   }
 
-  // Calcular tiempo restante basado en cuándo empezó el intento
   const timeLimit = result.exam.timeLimit || 60
-  const startedAt = result.attempt.startedAt
-  const elapsedSeconds = Math.floor((Date.now() - new Date(startedAt).getTime()) / 1000)
-  const remainingSeconds = Math.max(0, (timeLimit * 60) - elapsedSeconds)
 
   return (
     <ExamTakingClient
@@ -170,7 +166,7 @@ export default async function TakeExamPage({ params }: PageProps) {
       courseName={courseName}
       sections={sections}
       timeLimit={timeLimit}
-      remainingSeconds={remainingSeconds}
+      startedAt={result.attempt.startedAt.toISOString()}
       initialAnswers={initialAnswers}
       proctoring={proctoring}
     />

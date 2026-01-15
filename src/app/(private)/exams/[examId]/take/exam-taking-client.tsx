@@ -47,7 +47,7 @@ interface ExamTakingClientProps {
   courseName?: string
   sections: ExamSection[]
   timeLimit: number
-  remainingSeconds?: number
+  startedAt: string
   initialAnswers: Record<string, unknown>
   proctoring: ProctoringConfig
 }
@@ -60,7 +60,7 @@ export function ExamTakingClient({
   courseName,
   sections,
   timeLimit,
-  remainingSeconds,
+  startedAt,
   initialAnswers,
   proctoring
 }: ExamTakingClientProps) {
@@ -81,7 +81,7 @@ export function ExamTakingClient({
       courseName={courseName}
       sections={sections}
       timeLimit={timeLimit}
-      remainingSeconds={remainingSeconds}
+      startedAt={startedAt}
       initialAnswers={initialAnswers}
       onSaveAnswer={handleSaveAnswer}
       onSubmitExam={handleSubmitExam}

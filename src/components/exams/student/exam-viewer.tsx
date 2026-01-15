@@ -46,7 +46,7 @@ interface ExamViewerProps {
   courseName?: string
   sections: ExamSection[]
   timeLimit: number
-  remainingSeconds?: number
+  startedAt: string
   initialAnswers?: Record<string, unknown>
   onSaveAnswer: (questionId: string, answer: unknown) => Promise<void>
   onSubmitExam: () => Promise<void>
@@ -61,7 +61,7 @@ export function ExamViewer({
   courseName,
   sections,
   timeLimit,
-  remainingSeconds,
+  startedAt,
   initialAnswers = {},
   onSaveAnswer,
   onSubmitExam,
@@ -337,7 +337,8 @@ export function ExamViewer({
           <aside className="lg:col-span-4 w-full lg:max-w-[360px] space-y-6">
             <div className="sticky top-24 space-y-6">
               <ExamTimer
-                initialSeconds={remainingSeconds ?? (timeLimit * 60)}
+                timeLimit={timeLimit}
+                startedAt={startedAt}
                 onTimeUp={handleTimeUp}
               />
 
