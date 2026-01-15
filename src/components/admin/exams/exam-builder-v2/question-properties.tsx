@@ -246,14 +246,15 @@ function MultipleChoiceEditor({
   // Always use multipleChoiceItems array - initialize if empty
   const items = question.multipleChoiceItems || []
 
-  // Use ref to track if migration has been attempted
-  const migrationAttemptedRef = useRef(false)
+  // Use ref to track which question IDs have been migrated
+  const migratedQuestionIdsRef = useRef<string[]>([])
 
   // Handle migration from legacy format in useEffect
   useEffect(() => {
-    // Only run migration once and only if needed
-    if (items.length === 0 && !migrationAttemptedRef.current) {
-      migrationAttemptedRef.current = true
+    // Only run migration if needed and this specific question hasn't been migrated yet
+    if (items.length === 0 && question.id && !migratedQuestionIdsRef.current.includes(question.id)) {
+      // Add this question ID to the list of migrated questions
+      migratedQuestionIdsRef.current.push(question.id)
 
       const initialItem = {
         id: `item${Date.now()}`,
@@ -269,7 +270,7 @@ function MultipleChoiceEditor({
 
       onUpdate({ multipleChoiceItems: [initialItem] })
     }
-  }, [items.length, question.question, question.options, question.correctOptionId, onUpdate])
+  }, [items.length, question.id, question.question, question.options, question.correctOptionId, onUpdate])
 
   // Item handlers
   const addItem = () => {
