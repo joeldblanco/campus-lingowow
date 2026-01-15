@@ -85,7 +85,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   const [isSpeaking, setIsSpeaking] = useState(false)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [speakingParticipants, setSpeakingParticipants] = useState<Set<string>>(new Set())
-  
+
   const [deviceError, setDeviceError] = useState<DeviceError | null>(null)
   const [cameraUnavailable, setCameraUnavailable] = useState(false)
   const [microphoneUnavailable, setMicrophoneUnavailable] = useState(false)
@@ -94,7 +94,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   const updateRemoteParticipant = useCallback((participant: RemoteParticipant) => {
     setRemoteParticipants((prev) => {
       const newMap = new Map(prev)
-      
+
       let videoTrack: Track | undefined
       let audioTrack: Track | undefined
       let screenShareTrack: Track | undefined
@@ -177,7 +177,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       })
       return wasSharing ? undefined : current
     })
-    
+
     // Also clear screen share audio if this participant was sharing
     setRemoteScreenShareAudioTrack((current) => {
       let wasSharing = false
@@ -188,7 +188,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       })
       return wasSharing ? undefined : current
     })
-    
+
     setRemoteParticipants((prev) => {
       const newMap = new Map(prev)
       newMap.delete(participant.identity)
@@ -200,7 +200,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   const getDeviceErrorMessage = (error: unknown, device: 'camera' | 'microphone'): string => {
     const deviceName = device === 'camera' ? 'cámara' : 'micrófono'
     const err = error as Error
-    
+
     if (err?.name === 'NotAllowedError' || err?.name === 'PermissionDeniedError') {
       return `Permiso denegado para ${deviceName}. Verifica los permisos del navegador.`
     }
@@ -365,7 +365,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
         const speakingIds = new Set(speakers.map(s => s.identity))
         setSpeakingParticipants(speakingIds)
         setIsSpeaking(speakingIds.has(room.localParticipant.identity))
-        
+
         // Update remote participants with speaking status
         room.remoteParticipants.forEach((participant) => {
           updateRemoteParticipant(participant)
@@ -450,14 +450,14 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
 
       // Notificar al usuario sobre problemas de dispositivos (pero permitir continuar)
       if (cameraError || micError) {
-        const errorType: DeviceError['type'] = 
-          cameraError && micError ? 'both' : 
-          cameraError ? 'camera' : 'microphone'
-        
+        const errorType: DeviceError['type'] =
+          cameraError && micError ? 'both' :
+            cameraError ? 'camera' : 'microphone'
+
         const messages: string[] = []
         if (micError) messages.push(micError)
         if (cameraError) messages.push(cameraError)
-        
+
         setDeviceError({
           type: errorType,
           message: messages.join(' '),
@@ -468,21 +468,67 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       // Forzar actualización de participantes remotos existentes con delay para asegurar tracks
       const syncRemoteParticipants = () => {
         room.remoteParticipants.forEach((participant) => {
-          console.log('[LiveKit] Sincronizando participante remoto:', participant.identity, 
+          console.log('[LiveKit] Sincronizando participante remoto:', participant.identity,
             'tracks:', participant.trackPublications.size)
           updateRemoteParticipant(participant)
         })
       }
-      
+
       // Sincronizar inmediatamente
       syncRemoteParticipants()
-      
+
       // Sincronizar de nuevo después de un pequeño delay para capturar tracks tardíos
       setTimeout(syncRemoteParticipants, 500)
       setTimeout(syncRemoteParticipants, 1500)
+      setTimeout(syncRemoteParticipants, 3000) // Additional sync at 3s for slow connections
+
+      // Periodic verification of tracks - runs every 5 seconds to catch any missed subscriptions
+      const trackVerificationInterval = setInterval(() => {
+        if (room.state !== ConnectionState.Connected) {
+          return
+        }
+
+        room.remoteParticipants.forEach((participant) => {
+          let hasVideoTrack = false
+          let hasAudioTrack = false
+          let hasUnsubscribedTracks = false
+
+          participant.trackPublications.forEach((pub) => {
+            if (pub.source === Track.Source.Camera && pub.kind === Track.Kind.Video) {
+              if (pub.isSubscribed && pub.track) {
+                hasVideoTrack = true
+              } else if (!pub.isSubscribed) {
+                hasUnsubscribedTracks = true
+              }
+            }
+            if (pub.source === Track.Source.Microphone && pub.kind === Track.Kind.Audio) {
+              if (pub.isSubscribed && pub.track) {
+                hasAudioTrack = true
+              } else if (!pub.isSubscribed) {
+                hasUnsubscribedTracks = true
+              }
+            }
+          })
+
+          // If participant has publications but missing subscribed tracks, force update
+          if (hasUnsubscribedTracks || (participant.trackPublications.size > 0 && !hasVideoTrack && !hasAudioTrack)) {
+            console.log('[LiveKit] Detected missing tracks for participant:', participant.identity,
+              '- forcing re-sync')
+            updateRemoteParticipant(participant)
+          }
+        })
+      }, 5000)
+
+      // Store interval reference for cleanup
+      const cleanupTrackVerification = () => {
+        clearInterval(trackVerificationInterval)
+      }
+
+      // Clean up on disconnect
+      room.once(RoomEvent.Disconnected, cleanupTrackVerification)
 
       const localParticipant = room.localParticipant
-      
+
       // Leer metadata del participante local para determinar si es profesor
       try {
         if (localParticipant.metadata) {
@@ -492,7 +538,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       } catch {
         // Ignorar errores de parseo
       }
-      
+
       localParticipant.trackPublications.forEach((pub) => {
         if (pub.track) {
           if (pub.track.kind === Track.Kind.Video && pub.source === Track.Source.Camera) {
@@ -519,7 +565,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   const retryDeviceAccess = useCallback(async () => {
     if (!roomRef.current) return
     const localParticipant = roomRef.current.localParticipant
-    
+
     setDeviceError(null)
     let newCameraError: string | null = null
     let newMicError: string | null = null
@@ -547,14 +593,14 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
     }
 
     if (newCameraError || newMicError) {
-      const errorType: DeviceError['type'] = 
-        newCameraError && newMicError ? 'both' : 
-        newCameraError ? 'camera' : 'microphone'
-      
+      const errorType: DeviceError['type'] =
+        newCameraError && newMicError ? 'both' :
+          newCameraError ? 'camera' : 'microphone'
+
       const messages: string[] = []
       if (newMicError) messages.push(newMicError)
       if (newCameraError) messages.push(newCameraError)
-      
+
       setDeviceError({
         type: errorType,
         message: messages.join(' '),
@@ -582,7 +628,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   const toggleAudio = useCallback(async () => {
     if (!roomRef.current) return
     const localParticipant = roomRef.current.localParticipant
-    
+
     if (isAudioMuted) {
       try {
         await localParticipant.setMicrophoneEnabled(true)
@@ -614,9 +660,9 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   const toggleVideo = useCallback(async () => {
     if (!roomRef.current) return
     const localParticipant = roomRef.current.localParticipant
-    
+
     const newMutedState = !isVideoMuted
-    
+
     if (!newMutedState) {
       // Intentando habilitar cámara
       try {
@@ -680,26 +726,26 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   const toggleRaiseHand = useCallback(async () => {
     if (!roomRef.current) return
     const newStatus = !isHandRaised
-    
+
     const encoder = new TextEncoder()
     const data = encoder.encode(JSON.stringify({
       command: 'raise-hand',
       values: { raised: newStatus }
     }))
-    
+
     await roomRef.current.localParticipant.publishData(data, { reliable: true })
     setIsHandRaised(newStatus)
   }, [isHandRaised])
 
   const sendCommand = useCallback((name: string, values: Record<string, unknown>) => {
     if (!roomRef.current) return
-    
+
     const encoder = new TextEncoder()
     const data = encoder.encode(JSON.stringify({
       command: name,
       values
     }))
-    
+
     roomRef.current.localParticipant.publishData(data, { reliable: true })
   }, [])
 
@@ -717,17 +763,17 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   const localTrackFormatted: VideoTrack | undefined =
     localVideoTrack || localAudioTrack
       ? {
-          participantId: 'local',
-          name: 'You',
-          isLocal: true,
-          isMuted: isAudioMuted,
-          isVideoMuted: isVideoMuted,
-          isHandRaised: isHandRaised,
-          isSpeaking: isSpeaking,
-          isTeacher: isLocalTeacher,
-          videoTrack: localVideoTrack,
-          audioTrack: localAudioTrack,
-        }
+        participantId: 'local',
+        name: 'You',
+        isLocal: true,
+        isMuted: isAudioMuted,
+        isVideoMuted: isVideoMuted,
+        isHandRaised: isHandRaised,
+        isSpeaking: isSpeaking,
+        isTeacher: isLocalTeacher,
+        videoTrack: localVideoTrack,
+        audioTrack: localAudioTrack,
+      }
       : undefined
 
   // Cleanup on unmount - disconnect from room when navigating away

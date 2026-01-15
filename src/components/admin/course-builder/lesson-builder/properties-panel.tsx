@@ -2806,6 +2806,15 @@ function MultipleChoiceProperties({
         </>
       ) : (
         <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Título del Bloque</Label>
+            <Input
+              value={block.question || ''}
+              onChange={(e) => onUpdate({ question: e.target.value })}
+              placeholder="Ej: Preguntas de Vocabulario"
+            />
+          </div>
+
           <Label>Preguntas</Label>
           <p className="text-xs text-muted-foreground">Cada pregunta se mostrará como un paso separado.</p>
 

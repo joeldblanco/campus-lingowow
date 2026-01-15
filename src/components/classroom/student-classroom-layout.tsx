@@ -59,7 +59,7 @@ export const StudentClassroomLayout: React.FC<StudentClassroomLayoutProps> = (pr
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ bookingId, userType: 'student' })
                 })
-                
+
                 if (attendanceRes.ok) {
                     toast.success('Asistencia registrada automáticamente')
                 } else {
@@ -107,7 +107,7 @@ export const StudentClassroomLayout: React.FC<StudentClassroomLayoutProps> = (pr
         const endTimeStr = parts[1].trim()
         const [hours, minutes] = endTimeStr.split(':').map(Number)
         const dateParts = day.split('-')
-        
+
         if (dateParts.length !== 3 || isNaN(hours) || isNaN(minutes)) {
             return new Date(Date.now() + 45 * 60000)
         }
@@ -126,7 +126,42 @@ export const StudentClassroomLayout: React.FC<StudentClassroomLayoutProps> = (pr
         return endDate
     }
 
+    // Calculate start time based on booking slot
+    // timeSlot format: "09:00 - 09:45", day format: "YYYY-MM-DD" (UTC from DB)
+    const getStartTime = (): Date => {
+        if (!day || !timeSlot) {
+            return new Date(Date.now())
+        }
+
+        const parts = timeSlot.split('-')
+        if (parts.length < 2) {
+            return new Date(Date.now())
+        }
+
+        const startTimeStr = parts[0].trim()
+        const [hours, minutes] = startTimeStr.split(':').map(Number)
+        const dateParts = day.split('-')
+
+        if (dateParts.length !== 3 || isNaN(hours) || isNaN(minutes)) {
+            return new Date(Date.now())
+        }
+
+        const year = parseInt(dateParts[0])
+        const month = parseInt(dateParts[1]) - 1
+        const dayOfMonth = parseInt(dateParts[2])
+
+        const utcTimestamp = Date.UTC(year, month, dayOfMonth, hours, minutes, 0)
+        const startDate = new Date(utcTimestamp)
+
+        if (isNaN(startDate.getTime())) {
+            return new Date(Date.now())
+        }
+
+        return startDate
+    }
+
     const endTime = getEndTime()
+    const startTime = getStartTime()
 
     return (
         <ClassroomContainer
@@ -134,6 +169,7 @@ export const StudentClassroomLayout: React.FC<StudentClassroomLayoutProps> = (pr
             roomName={roomDetails.roomName}
             jwt={roomDetails.jwt}
             lessonData={undefined} // Start with no lesson
+            startTime={startTime}
             endTime={endTime}
             userDisplayName={currentUserName}
             isTeacher={false}

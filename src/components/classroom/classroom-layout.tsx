@@ -18,6 +18,7 @@ interface ClassroomLayoutProps {
   lessonTitle?: string
   timeLeft?: string
   isGracePeriod?: boolean // Whether the class is in grace period (extra 10 min)
+  isPreClass?: boolean // Whether the class hasn't started yet (countdown to start)
   onBackClick?: () => void // Callback when back button is clicked
   fullscreenContent?: boolean // When true, children render without ScrollArea wrapper (for whiteboard/canvas)
 }
@@ -33,6 +34,7 @@ export function ClassroomLayout({
   lessonTitle = 'English Lesson',
   timeLeft = '45:00',
   isGracePeriod = false,
+  isPreClass = false,
   onBackClick,
   fullscreenContent = false,
 }: ClassroomLayoutProps) {
@@ -71,13 +73,17 @@ export function ClassroomLayout({
 
           {/* Timer */}
           <div
-            className={`px-3 py-1.5 rounded-full flex items-center gap-2 font-medium text-sm ${
-              isGracePeriod ? 'bg-orange-50 text-orange-600' : 'bg-blue-50 text-blue-600'
-            }`}
+            className={`px-3 py-1.5 rounded-full flex items-center gap-2 font-medium text-sm ${isGracePeriod
+                ? 'bg-orange-50 text-orange-600'
+                : isPreClass
+                  ? 'bg-purple-50 text-purple-600'
+                  : 'bg-blue-50 text-blue-600'
+              }`}
           >
             <Clock className="w-4 h-4" />
             <span>{timeLeft}</span>
             {isGracePeriod && <span className="text-xs">(10 min adicionales)</span>}
+            {isPreClass && <span className="text-xs">(Inicia en)</span>}
           </div>
         </div>
       </header>

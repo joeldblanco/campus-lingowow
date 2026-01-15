@@ -27,6 +27,7 @@ interface ClassroomContainerProps {
   jwt: string | null
   bookingId?: string // Now optional for syncing context
   lessonData?: LessonForView // Initial/Default (can be null)
+  startTime: Date
   endTime: Date
   userDisplayName: string
   isTeacher: boolean
@@ -38,6 +39,7 @@ function ClassroomInner({
   jwt,
   bookingId,
   lessonData: initialLessonData,
+  startTime,
   endTime,
   isTeacher,
   onMeetingEnd,
@@ -66,6 +68,7 @@ function ClassroomInner({
 
   const [timeLeft, setTimeLeft] = useState('')
   const [isGracePeriod, setIsGracePeriod] = useState(false)
+  const [isPreClass, setIsPreClass] = useState(false)
   const [activeLesson, setActiveLesson] = useState<LessonForView | undefined>(initialLessonData)
   const [isLoadingLesson, setIsLoadingLesson] = useState(false)
   const [mainContentTab, setMainContentTab] = useState<'lesson' | 'whiteboard' | 'screenshare'>('lesson')
@@ -92,19 +95,22 @@ function ClassroomInner({
   }, [egressId])
 
   // Timer Logic - Calculate time remaining until class end with 10-minute grace period
+  // Now considers startTime: shows countdown to start if before class, then countdown to end
   useEffect(() => {
+    const startTimestamp = startTime instanceof Date ? startTime.getTime() : new Date(startTime).getTime()
     const endTimestamp = endTime instanceof Date ? endTime.getTime() : new Date(endTime).getTime()
     // Grace period ends exactly 10 minutes after the scheduled class end time
     const graceEndTimestamp = endTimestamp + GRACE_PERIOD_MS
 
     const calculateTimeLeft = () => {
       const now = Date.now()
+      const diffToStart = startTimestamp - now
       const diffToEnd = endTimestamp - now
       const diffToGraceEnd = graceEndTimestamp - now
 
       // Grace period has ended - close the class
       if (diffToGraceEnd <= 0) {
-        return { time: '00:00', isGrace: true, shouldEnd: true }
+        return { time: '00:00', isGrace: true, isPreClass: false, shouldEnd: true }
       }
 
       // Class time has ended, but still in grace period
@@ -116,6 +122,30 @@ function ClassroomInner({
         return {
           time: `${graceMinutes.toString().padStart(2, '0')}:${graceSeconds.toString().padStart(2, '0')}`,
           isGrace: true,
+          isPreClass: false,
+          shouldEnd: false
+        }
+      }
+
+      // Before class start time - show countdown to class start
+      if (diffToStart > 0) {
+        const hours = Math.floor(diffToStart / (1000 * 60 * 60))
+        const minutes = Math.floor((diffToStart % (1000 * 60 * 60)) / (1000 * 60))
+        const seconds = Math.floor((diffToStart % (1000 * 60)) / 1000)
+
+        if (hours > 0) {
+          return {
+            time: `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`,
+            isGrace: false,
+            isPreClass: true,
+            shouldEnd: false
+          }
+        }
+
+        return {
+          time: `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`,
+          isGrace: false,
+          isPreClass: true,
           shouldEnd: false
         }
       }
@@ -129,6 +159,7 @@ function ClassroomInner({
         return {
           time: `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`,
           isGrace: false,
+          isPreClass: false,
           shouldEnd: false
         }
       }
@@ -136,6 +167,7 @@ function ClassroomInner({
       return {
         time: `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`,
         isGrace: false,
+        isPreClass: false,
         shouldEnd: false
       }
     }
@@ -144,6 +176,7 @@ function ClassroomInner({
       const result = calculateTimeLeft()
       setTimeLeft(result.time)
       setIsGracePeriod(result.isGrace)
+      setIsPreClass(result.isPreClass)
 
       if (result.shouldEnd && !hasEndedRef.current) {
         hasEndedRef.current = true
@@ -165,7 +198,7 @@ function ClassroomInner({
     const timer = setInterval(updateTimer, 1000)
 
     return () => clearInterval(timer)
-  }, [endTime, leaveRoom, onMeetingEnd, bookingId])
+  }, [startTime, endTime, leaveRoom, onMeetingEnd, bookingId])
 
   // Auto-join when initialized
   useEffect(() => {
@@ -417,6 +450,7 @@ function ClassroomInner({
       lessonTitle={activeLesson?.title || 'Aula Virtual'}
       timeLeft={timeLeft}
       isGracePeriod={isGracePeriod}
+      isPreClass={isPreClass}
       rightSidebar={renderSidebar}
       leftSidebar={renderLeftSidebar}
       onBackClick={handleBackClick}
