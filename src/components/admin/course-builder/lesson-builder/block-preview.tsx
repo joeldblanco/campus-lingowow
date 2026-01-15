@@ -2910,33 +2910,72 @@ function MultiSelectBlockPreview({ block }: { block: MultiSelectBlock }) {
 }
 
 function MultipleChoiceBlockPreview({ block }: { block: MultipleChoiceBlock }) {
-  const [selectedOption, setSelectedOption] = useState<string | null>(null)
-  const [showResult, setShowResult] = useState(false)
+  const [currentItemIndex, setCurrentItemIndex] = useState(0)
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string | null>>({})
+  const [showResults, setShowResults] = useState<Record<string, boolean>>({})
+
+  // Use items array directly
+  const items = block.items || []
+
+  const currentItem = items[currentItemIndex]
 
   const handleCheck = () => {
-    setShowResult(true)
+    if (currentItem) {
+      setShowResults(prev => ({ ...prev, [currentItem.id]: true }))
+    }
+  }
+
+  const handleNext = () => {
+    if (currentItemIndex < items.length - 1) {
+      setCurrentItemIndex(prev => prev + 1)
+    }
+  }
+
+  const handlePrev = () => {
+    if (currentItemIndex > 0) {
+      setCurrentItemIndex(prev => prev - 1)
+    }
   }
 
   const handleReset = () => {
-    setSelectedOption(null)
-    setShowResult(false)
+    setSelectedOptions({})
+    setShowResults({})
+    setCurrentItemIndex(0)
   }
+
+  if (!currentItem) {
+    return (
+      <div className="p-4 text-center text-muted-foreground">
+        No hay preguntas configuradas
+      </div>
+    )
+  }
+
+  const selectedOption = selectedOptions[currentItem.id] || null
+  const showResult = showResults[currentItem.id] || false
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-        <CheckCircle2 className="h-5 w-5" />
-        <span>Opción Múltiple</span>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+          <CheckCircle2 className="h-5 w-5" />
+          <span>Opción Múltiple</span>
+        </div>
+        {items.length > 1 && (
+          <span className="text-xs text-muted-foreground">
+            Pregunta {currentItemIndex + 1} de {items.length}
+          </span>
+        )}
       </div>
 
-      {block.question && (
-        <h3 className="font-bold text-lg">{block.question}</h3>
+      {currentItem.question && (
+        <h3 className="font-bold text-lg">{currentItem.question}</h3>
       )}
 
       <div className="space-y-2">
-        {block.options?.map((option) => {
+        {currentItem.options?.map((option) => {
           const isSelected = selectedOption === option.id
-          const isCorrect = option.id === block.correctOptionId
+          const isCorrect = option.id === currentItem.correctOptionId
 
           let statusClass = "border-gray-200 bg-white hover:border-primary/50"
           if (showResult) {
@@ -2952,7 +2991,7 @@ function MultipleChoiceBlockPreview({ block }: { block: MultipleChoiceBlock }) {
           return (
             <div
               key={option.id}
-              onClick={() => !showResult && setSelectedOption(option.id)}
+              onClick={() => !showResult && setSelectedOptions(prev => ({ ...prev, [currentItem.id]: option.id }))}
               className={cn(
                 "p-3 border rounded-lg cursor-pointer transition-all flex items-center gap-3",
                 statusClass
@@ -2981,9 +3020,18 @@ function MultipleChoiceBlockPreview({ block }: { block: MultipleChoiceBlock }) {
       </div>
 
       <div className="flex gap-2">
+        {items.length > 1 && currentItemIndex > 0 && (
+          <Button variant="outline" onClick={handlePrev} size="sm">
+            Anterior
+          </Button>
+        )}
         {!showResult ? (
           <Button onClick={handleCheck} disabled={!selectedOption} size="sm">
             Verificar
+          </Button>
+        ) : items.length > 1 && currentItemIndex < items.length - 1 ? (
+          <Button onClick={handleNext} size="sm">
+            Siguiente
           </Button>
         ) : (
           <Button variant="outline" onClick={handleReset} size="sm">

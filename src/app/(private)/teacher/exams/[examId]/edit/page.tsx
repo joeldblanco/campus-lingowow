@@ -1,6 +1,6 @@
 'use client'
 
-import { ExamBuilderV2 } from '@/components/admin/exams/exam-builder-v2'
+import { ExamBuilderV3 } from '@/components/admin/exams/exam-builder-v2'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { getExamById } from '@/lib/actions/exams'
@@ -72,5 +72,5 @@ export default function TeacherEditExamPage() {
 
   const backUrl = exam.courseId ? `/teacher/courses/${exam.courseId}` : '/teacher/courses'
   
-  return <ExamBuilderV2 mode="edit" exam={exam} backUrl={backUrl} />
+  return <ExamBuilderV3 mode="edit" exam={exam} backUrl={backUrl} />
 }
