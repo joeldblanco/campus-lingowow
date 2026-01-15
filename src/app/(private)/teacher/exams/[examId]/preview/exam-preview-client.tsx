@@ -20,6 +20,17 @@ interface ExamSection {
     type: QuestionType
     question: string
     options?: string[] | null
+    multipleChoiceItems?: { id: string; question: string; options: { id: string; text: string }[] }[] | null
+    originalBlockType?: string | null
+    blockData?: {
+      url?: string
+      content?: string
+      title?: string
+      instruction?: string
+      timeLimit?: number
+      aiGrading?: boolean
+      maxReplays?: number
+    } | null
     correctAnswer: unknown
     explanation?: string | null
     points: number

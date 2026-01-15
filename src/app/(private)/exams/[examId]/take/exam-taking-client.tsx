@@ -13,6 +13,17 @@ interface ExamSection {
     type: QuestionType
     question: string
     options?: string[] | null
+    multipleChoiceItems?: { id: string; question: string; options: { id: string; text: string }[] }[] | null
+    originalBlockType?: string | null
+    blockData?: {
+      url?: string
+      content?: string
+      title?: string
+      instruction?: string
+      timeLimit?: number
+      aiGrading?: boolean
+      maxReplays?: number
+    } | null
     points: number
     minLength?: number | null
     maxLength?: number | null
@@ -36,6 +47,7 @@ interface ExamTakingClientProps {
   courseName?: string
   sections: ExamSection[]
   timeLimit: number
+  remainingSeconds?: number
   initialAnswers: Record<string, unknown>
   proctoring: ProctoringConfig
 }
@@ -48,6 +60,7 @@ export function ExamTakingClient({
   courseName,
   sections,
   timeLimit,
+  remainingSeconds,
   initialAnswers,
   proctoring
 }: ExamTakingClientProps) {
@@ -68,6 +81,7 @@ export function ExamTakingClient({
       courseName={courseName}
       sections={sections}
       timeLimit={timeLimit}
+      remainingSeconds={remainingSeconds}
       initialAnswers={initialAnswers}
       onSaveAnswer={handleSaveAnswer}
       onSubmitExam={handleSubmitExam}

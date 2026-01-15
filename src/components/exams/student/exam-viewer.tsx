@@ -46,6 +46,7 @@ interface ExamViewerProps {
   courseName?: string
   sections: ExamSection[]
   timeLimit: number
+  remainingSeconds?: number
   initialAnswers?: Record<string, unknown>
   onSaveAnswer: (questionId: string, answer: unknown) => Promise<void>
   onSubmitExam: () => Promise<void>
@@ -60,6 +61,7 @@ export function ExamViewer({
   courseName,
   sections,
   timeLimit,
+  remainingSeconds,
   initialAnswers = {},
   onSaveAnswer,
   onSubmitExam,
@@ -319,14 +321,15 @@ export function ExamViewer({
                     Siguiente
                     <ArrowRight className="h-4 w-4" />
                   </Button>
-                ) : null}
-                <Button
-                  onClick={() => setShowSubmitDialog(true)}
-                  className="flex-1 sm:flex-none flex items-center justify-center gap-2 shadow-lg shadow-primary/30"
-                >
-                  <Send className="h-4 w-4" />
-                  Enviar Examen
-                </Button>
+                ) : (
+                  <Button
+                    onClick={() => setShowSubmitDialog(true)}
+                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 shadow-lg shadow-primary/30"
+                  >
+                    <Send className="h-4 w-4" />
+                    Enviar Examen
+                  </Button>
+                )}
               </div>
             </div>
           </div>
@@ -334,7 +337,7 @@ export function ExamViewer({
           <aside className="lg:col-span-4 w-full lg:max-w-[360px] space-y-6">
             <div className="sticky top-24 space-y-6">
               <ExamTimer
-                initialSeconds={timeLimit * 60}
+                initialSeconds={remainingSeconds ?? (timeLimit * 60)}
                 onTimeUp={handleTimeUp}
               />
 

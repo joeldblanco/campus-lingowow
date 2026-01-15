@@ -10,8 +10,20 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Progress } from '@/components/ui/progress'
-import { ArrowLeft, BookOpen, Calendar, CheckCircle, Clock, Play, Target, Trophy, User } from 'lucide-react'
+import { ArrowLeft, BookOpen, Calendar, CheckCircle, Clock, ClipboardList, Play, Target, Trophy, User } from 'lucide-react'
 import Link from 'next/link'
+
+interface CourseExam {
+  id: string
+  title: string
+  description: string
+  timeLimit: number | null
+  passingScore: number
+  maxAttempts: number
+  questionCount: number
+  totalPoints: number
+  isPublished: boolean
+}
 
 interface CourseViewProps {
   course: {
@@ -21,6 +33,7 @@ interface CourseViewProps {
     language: string
     level: string
     isPersonalized?: boolean
+    exams?: CourseExam[]
     createdBy: {
       name: string
       bio?: string | null
@@ -405,6 +418,61 @@ export function CourseView({ course, progress }: CourseViewProps) {
           </Card>
         )}
       </div>
+
+      {/* Exams Section */}
+      {course.exams && course.exams.length > 0 && (
+        <div className="space-y-6">
+          <h2 className="text-2xl font-semibold flex items-center gap-2">
+            <ClipboardList className="w-6 h-6" />
+            Exámenes
+          </h2>
+          <div className="grid gap-4">
+            {course.exams.filter(exam => exam.isPublished).map((exam) => (
+              <Card key={exam.id} className="hover:shadow-md transition-shadow">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-lg">{exam.title}</h3>
+                      {exam.description && (
+                        <p className="text-sm text-gray-600 line-clamp-2 mt-1">
+                          {exam.description}
+                        </p>
+                      )}
+                      <div className="flex flex-wrap items-center gap-4 mt-3 text-xs text-gray-500">
+                        {exam.timeLimit && (
+                          <span className="flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            {exam.timeLimit} min
+                          </span>
+                        )}
+                        <span className="flex items-center gap-1">
+                          <Target className="w-3 h-3" />
+                          {exam.questionCount} preguntas
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Trophy className="w-3 h-3" />
+                          {exam.passingScore}% para aprobar
+                        </span>
+                        <Badge variant="outline">
+                          {exam.maxAttempts} intento{exam.maxAttempts !== 1 ? 's' : ''}
+                        </Badge>
+                      </div>
+                    </div>
+                    <div className="shrink-0">
+                      <Button asChild>
+                        <Link href={`/exams/${exam.id}/take`}>
+                          <Play className="w-4 h-4 mr-2" />
+                          Comenzar
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -184,14 +184,16 @@ export function ExamList({ exams, courseId, isPersonalized = false }: ExamListPr
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setAssignExamId(exam.id)}
-                    >
-                      <Users className="w-4 h-4 mr-1" />
-                      Asignar
-                    </Button>
+                    {isPersonalized && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setAssignExamId(exam.id)}
+                      >
+                        <Users className="w-4 h-4 mr-1" />
+                        Asignar
+                      </Button>
+                    )}
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -213,19 +215,21 @@ export function ExamList({ exams, courseId, isPersonalized = false }: ExamListPr
                             </Link>
                           </DropdownMenuItem>
                         )}
-                        <DropdownMenuItem onClick={() => handleTogglePublish(exam.id)}>
-                          {exam.isPublished ? (
-                            <>
-                              <EyeOff className="w-4 h-4 mr-2" />
-                              Despublicar
-                            </>
-                          ) : (
-                            <>
-                              <Eye className="w-4 h-4 mr-2" />
-                              Publicar
-                            </>
-                          )}
-                        </DropdownMenuItem>
+                        {isPersonalized && (
+                          <DropdownMenuItem onClick={() => handleTogglePublish(exam.id)}>
+                            {exam.isPublished ? (
+                              <>
+                                <EyeOff className="w-4 h-4 mr-2" />
+                                Despublicar
+                              </>
+                            ) : (
+                              <>
+                                <Eye className="w-4 h-4 mr-2" />
+                                Publicar
+                              </>
+                            )}
+                          </DropdownMenuItem>
+                        )}
                         {exam._count.attempts > 0 && (
                           <DropdownMenuItem asChild>
                             <Link href={`/teacher/exams/${exam.id}/results`}>
@@ -234,15 +238,19 @@ export function ExamList({ exams, courseId, isPersonalized = false }: ExamListPr
                             </Link>
                           </DropdownMenuItem>
                         )}
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          className="text-destructive focus:text-destructive"
-                          onClick={() => setDeleteExamId(exam.id)}
-                          disabled={exam._count.attempts > 0}
-                        >
-                          <Trash2 className="w-4 h-4 mr-2" />
-                          Eliminar
-                        </DropdownMenuItem>
+                        {isPersonalized && (
+                          <>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                              className="text-destructive focus:text-destructive"
+                              onClick={() => setDeleteExamId(exam.id)}
+                              disabled={exam._count.attempts > 0}
+                            >
+                              <Trash2 className="w-4 h-4 mr-2" />
+                              Eliminar
+                            </DropdownMenuItem>
+                          </>
+                        )}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>

@@ -19,6 +19,16 @@ export interface ExamQuestionData {
   question: string
   options?: string[] | null
   multipleChoiceItems?: { id: string; question: string; options: { id: string; text: string }[] }[] | null
+  originalBlockType?: string | null
+  blockData?: {
+    url?: string
+    content?: string
+    title?: string
+    instruction?: string
+    timeLimit?: number
+    aiGrading?: boolean
+    maxReplays?: number
+  } | null
   points: number
   minLength?: number | null
   maxLength?: number | null
@@ -44,6 +54,116 @@ export function ExamQuestionCard({
   onToggleFlag,
   sectionTitle
 }: ExamQuestionCardProps) {
+  // Renderizar bloques no interactivos (contenido informativo)
+  const renderNonInteractiveBlock = () => {
+    const blockType = question.originalBlockType
+    const data = question.blockData
+
+    switch (blockType) {
+      case 'title':
+        return (
+          <div className="py-4">
+            <h2 className="text-2xl font-bold text-foreground">
+              {data?.title || question.question}
+            </h2>
+          </div>
+        )
+      case 'text':
+        return (
+          <div 
+            className="prose prose-sm dark:prose-invert max-w-none"
+            dangerouslySetInnerHTML={{ __html: data?.content || question.question }}
+          />
+        )
+      case 'audio':
+        return (
+          <div className="space-y-4">
+            {question.question && (
+              <p className="text-lg font-medium">{question.question}</p>
+            )}
+            {data?.url && (
+              <audio controls className="w-full">
+                <source src={data.url} type="audio/mpeg" />
+                Tu navegador no soporta el elemento de audio.
+              </audio>
+            )}
+            {data?.maxReplays && (
+              <p className="text-sm text-muted-foreground">
+                Máximo de reproducciones: {data.maxReplays}
+              </p>
+            )}
+          </div>
+        )
+      case 'video':
+        return (
+          <div className="space-y-4">
+            {question.question && (
+              <p className="text-lg font-medium">{question.question}</p>
+            )}
+            {data?.url && (
+              <video controls className="w-full rounded-lg">
+                <source src={data.url} type="video/mp4" />
+                Tu navegador no soporta el elemento de video.
+              </video>
+            )}
+          </div>
+        )
+      case 'image':
+        return (
+          <div className="space-y-4">
+            {question.question && (
+              <p className="text-lg font-medium">{question.question}</p>
+            )}
+            {data?.url && (
+              <img 
+                src={data.url} 
+                alt={question.question || 'Imagen del examen'}
+                className="max-w-full rounded-lg"
+              />
+            )}
+          </div>
+        )
+      case 'recording':
+        return (
+          <div className="space-y-4 p-4 bg-muted/50 rounded-lg border">
+            <div className="flex items-center gap-2 text-primary">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+              </svg>
+              <span className="font-semibold">Grabación de Audio</span>
+            </div>
+            {(data?.instruction || question.question) && (
+              <p className="text-foreground">{data?.instruction || question.question}</p>
+            )}
+            {data?.timeLimit && (
+              <p className="text-sm text-muted-foreground">
+                Tiempo límite: {data.timeLimit} segundos
+              </p>
+            )}
+            <div className="p-4 bg-background rounded border border-dashed border-muted-foreground/30 text-center text-muted-foreground">
+              [Aquí aparecerá el grabador de audio]
+            </div>
+          </div>
+        )
+      default:
+        return null
+    }
+  }
+
+  // Si es un bloque no interactivo, renderizarlo de forma especial
+  if (question.originalBlockType && ['title', 'text', 'audio', 'video', 'image', 'recording'].includes(question.originalBlockType)) {
+    const isContentOnly = question.originalBlockType === 'title' || question.originalBlockType === 'text'
+    
+    return (
+      <div className={cn(
+        "bg-white dark:bg-[#1a2632] rounded-xl p-6 md:p-8 shadow-sm border border-gray-200 dark:border-gray-700",
+        isContentOnly && "border-dashed border-muted-foreground/30"
+      )}>
+        {renderNonInteractiveBlock()}
+      </div>
+    )
+  }
+
   const renderQuestionBlock = () => {
     switch (question.type) {
       case 'MULTIPLE_CHOICE':

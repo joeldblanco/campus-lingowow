@@ -24,13 +24,16 @@ import { ArrowLeft, ArrowRight } from 'lucide-react'
 
 export function MultipleChoiceBlock({
   questionId,
-  options,
+  options: rawOptions,
   items,
   selectedOption,
   onSelect,
   disabled = false
 }: MultipleChoiceBlockProps) {
   const [currentStep, setCurrentStep] = useState(0)
+
+  // Asegurar que options sea siempre un array
+  const options = Array.isArray(rawOptions) ? rawOptions : []
 
   // Multi-step render
   if (items && items.length > 0) {

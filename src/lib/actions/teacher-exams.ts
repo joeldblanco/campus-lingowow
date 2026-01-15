@@ -526,10 +526,7 @@ export async function getExamForPreview(examId: string) {
     const exam = await db.exam.findFirst({
       where: {
         id: examId,
-        OR: [
-          { createdById: session.user.id },
-          { course: { createdById: session.user.id } },
-        ],
+        OR: [{ createdById: session.user.id }, { course: { isPersonalized: false } }],
       },
       include: {
         course: {
@@ -632,9 +629,8 @@ export async function getExamResultsForTeacher(examId: string) {
           totalAttempts: exam.attempts.length,
           completedAttempts: completedAttempts.length,
           averageScore,
-          passRate: completedAttempts.length > 0
-            ? (passedCount / completedAttempts.length) * 100
-            : 0,
+          passRate:
+            completedAttempts.length > 0 ? (passedCount / completedAttempts.length) * 100 : 0,
         },
       },
     }

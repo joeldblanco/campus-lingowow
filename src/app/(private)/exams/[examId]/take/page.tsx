@@ -37,20 +37,105 @@ export default async function TakeExamPage({ params }: PageProps) {
     }
   }
 
+  // Tipo para los datos parseados de opciones
+  type ParsedOptions = {
+    options: string[] | null
+    multipleChoiceItems: { id: string; question: string; options: { id: string; text: string }[] }[] | null
+    originalBlockType: string | null
+    blockData: {
+      url?: string
+      content?: string
+      title?: string
+      instruction?: string
+      timeLimit?: number
+      aiGrading?: boolean
+      maxReplays?: number
+    } | null
+  }
+
+  // Función para parsear opciones que pueden venir como JSON string, array u objeto
+  const parseQuestionOptions = (options: unknown): ParsedOptions => {
+    const defaultResult: ParsedOptions = { options: null, multipleChoiceItems: null, originalBlockType: null, blockData: null }
+    
+    if (!options) return defaultResult
+    
+    // Si es un array de strings, son opciones simples
+    if (Array.isArray(options)) {
+      return { ...defaultResult, options: options as string[] }
+    }
+    
+    // Función auxiliar para procesar objeto
+    const processObject = (obj: Record<string, unknown>): ParsedOptions => {
+      // Si tiene originalBlockType, es un bloque no interactivo
+      if (obj.originalBlockType) {
+        return {
+          options: null,
+          multipleChoiceItems: null,
+          originalBlockType: obj.originalBlockType as string,
+          blockData: {
+            url: obj.url as string | undefined,
+            content: obj.content as string | undefined,
+            title: obj.title as string | undefined,
+            instruction: obj.instruction as string | undefined,
+            timeLimit: obj.timeLimit as number | undefined,
+            aiGrading: obj.aiGrading as boolean | undefined,
+            maxReplays: obj.maxReplays as number | undefined,
+          }
+        }
+      }
+      // Si tiene multipleChoiceItems
+      if (obj.multipleChoiceItems) {
+        return {
+          ...defaultResult,
+          multipleChoiceItems: obj.multipleChoiceItems as ParsedOptions['multipleChoiceItems']
+        }
+      }
+      return defaultResult
+    }
+    
+    // Si es un string, intentar parsear como JSON
+    if (typeof options === 'string') {
+      try {
+        const parsed = JSON.parse(options)
+        if (Array.isArray(parsed)) {
+          return { ...defaultResult, options: parsed }
+        }
+        if (typeof parsed === 'object' && parsed !== null) {
+          return processObject(parsed)
+        }
+      } catch {
+        return defaultResult
+      }
+    }
+    
+    // Si es un objeto
+    if (typeof options === 'object' && options !== null) {
+      return processObject(options as Record<string, unknown>)
+    }
+    
+    return defaultResult
+  }
+
   const sections = result.exam.sections.map(section => ({
     id: section.id,
     title: section.title,
     description: section.description,
-    questions: section.questions.map(q => ({
-      id: q.id,
-      type: q.type,
-      question: q.question,
-      options: q.options as string[] | null,
-      points: q.points,
-      minLength: q.minLength,
-      maxLength: q.maxLength,
-      audioUrl: q.audioUrl
-    }))
+    questions: section.questions.map(q => {
+      const parsed = parseQuestionOptions(q.options)
+      return {
+        id: q.id,
+        type: q.type,
+        question: q.question,
+        options: parsed.options,
+        multipleChoiceItems: parsed.multipleChoiceItems,
+        originalBlockType: parsed.originalBlockType,
+        blockData: parsed.blockData,
+        points: q.points,
+        minLength: q.minLength,
+        maxLength: q.maxLength,
+        audioUrl: q.audioUrl
+      }
+    })
   }))
 
   const proctoring = {
@@ -70,6 +155,12 @@ export default async function TakeExamPage({ params }: PageProps) {
     courseName = course?.title
   }
 
+  // Calcular tiempo restante basado en cuándo empezó el intento
+  const timeLimit = result.exam.timeLimit || 60
+  const startedAt = result.attempt.startedAt
+  const elapsedSeconds = Math.floor((Date.now() - new Date(startedAt).getTime()) / 1000)
+  const remainingSeconds = Math.max(0, (timeLimit * 60) - elapsedSeconds)
+
   return (
     <ExamTakingClient
       examId={examId}
@@ -78,7 +169,8 @@ export default async function TakeExamPage({ params }: PageProps) {
       description={result.exam.description}
       courseName={courseName}
       sections={sections}
-      timeLimit={result.exam.timeLimit || 60}
+      timeLimit={timeLimit}
+      remainingSeconds={remainingSeconds}
       initialAnswers={initialAnswers}
       proctoring={proctoring}
     />

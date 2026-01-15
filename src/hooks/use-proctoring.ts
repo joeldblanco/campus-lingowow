@@ -74,7 +74,11 @@ export function useProctoring({
         await document.documentElement.requestFullscreen()
       }
     } catch (error) {
-      console.error('Error entering fullscreen:', error)
+      // Silenciar errores de permisos - el navegador puede bloquear fullscreen
+      // si no hay interacción del usuario o si el usuario lo rechaza
+      if (error instanceof Error && !error.message.includes('permissions')) {
+        console.error('Error entering fullscreen:', error)
+      }
     }
   }, [])
 

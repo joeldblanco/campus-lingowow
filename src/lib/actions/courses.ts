@@ -667,6 +667,37 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
               },
             }
           : false,
+        exams: {
+          where: {
+            isPublished: true,
+          },
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            timeLimit: true,
+            passingScore: true,
+            maxAttempts: true,
+            isPublished: true,
+            sections: {
+              select: {
+                _count: {
+                  select: {
+                    questions: true,
+                  },
+                },
+                questions: {
+                  select: {
+                    points: true,
+                  },
+                },
+              },
+            },
+          },
+          orderBy: {
+            createdAt: 'asc',
+          },
+        },
         _count: {
           select: {
             modules: {
@@ -688,10 +719,32 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
       return null
     }
 
+    // Calcular questionCount y totalPoints para cada examen
+    const examsWithStats = course.exams.map(exam => {
+      const questionCount = exam.sections.reduce((total, section) => total + section._count.questions, 0)
+      const totalPoints = exam.sections.reduce((total, section) => 
+        total + section.questions.reduce((sum, q) => sum + q.points, 0), 0)
+      
+      return {
+        id: exam.id,
+        title: exam.title,
+        description: exam.description,
+        timeLimit: exam.timeLimit,
+        passingScore: exam.passingScore,
+        maxAttempts: exam.maxAttempts,
+        isPublished: exam.isPublished,
+        questionCount,
+        totalPoints,
+      }
+    })
+
+    const enrollments = userId ? course.enrollments : []
+
     return {
       ...course,
-      isEnrolled: userId ? course.enrollments.length > 0 : false,
-      enrollment: userId && course.enrollments.length > 0 ? course.enrollments[0] : null,
+      exams: examsWithStats,
+      isEnrolled: userId ? enrollments.length > 0 : false,
+      enrollment: userId && enrollments.length > 0 ? enrollments[0] : null,
     }
   } catch (error) {
     console.error('Error fetching course for public view:', error)
