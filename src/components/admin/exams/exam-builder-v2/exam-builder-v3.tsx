@@ -330,9 +330,30 @@ function convertExamToBlocks(exam: ExamWithDetails): Block[] {
   )
 }
 
+// Flatten blocks, expanding block_group into its children with a groupId
+function flattenBlocks(blocks: Block[]): (Block & { groupId?: string })[] {
+  const result: (Block & { groupId?: string })[] = []
+  
+  for (const block of blocks) {
+    if (block.type === 'block_group' && block.children) {
+      // Add children with groupId to link them together
+      for (const child of block.children) {
+        result.push({ ...child, groupId: block.id })
+      }
+    } else {
+      result.push(block)
+    }
+  }
+  
+  return result
+}
+
 // Convert Block[] back to exam question format for saving
 function convertBlocksToExamFormat(blocks: Block[]) {
-  return blocks.map((block, index) => {
+  // Flatten groups first
+  const flatBlocks = flattenBlocks(blocks)
+  
+  return flatBlocks.map((block, index) => {
     const baseQuestion = {
       type: mapBlockTypeToExamType(block.type),
       question: getBlockQuestion(block),
@@ -345,6 +366,7 @@ function convertBlocksToExamFormat(blocks: Block[]) {
       tags: [] as string[],
       caseSensitive: (block as { caseSensitive?: boolean }).caseSensitive || false,
       partialCredit: block.partialCredit || false,
+      groupId: (block as Block & { groupId?: string }).groupId || null,
     }
 
     return baseQuestion
@@ -596,7 +618,67 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
     toast.success(`${selectedBlockIds.size} bloque(s) eliminado(s)`)
   }, [selectedBlockIds])
 
-  // Keyboard shortcut for Delete key
+  // Group selected blocks
+  const groupSelectedBlocks = useCallback(() => {
+    if (selectedBlockIds.size < 2) {
+      toast.error('Selecciona al menos 2 bloques para agrupar (Ctrl+Click)')
+      return
+    }
+
+    setBlocks(prev => {
+      // Find the indices of selected blocks
+      const selectedIndices = prev
+        .map((b, i) => selectedBlockIds.has(b.id) ? i : -1)
+        .filter(i => i !== -1)
+        .sort((a, b) => a - b)
+
+      // Get the selected blocks in order
+      const selectedBlocks = selectedIndices.map(i => prev[i])
+      
+      // Create the group block at the position of the first selected block
+      const groupBlock: Block = {
+        id: `group-${Date.now()}`,
+        type: 'block_group',
+        order: selectedIndices[0],
+        title: 'Grupo de bloques',
+        children: selectedBlocks,
+        points: selectedBlocks.reduce((sum, b) => sum + (b.points || 0), 0),
+      } as Block
+
+      // Create new array without selected blocks, then insert group
+      const newBlocks = prev.filter(b => !selectedBlockIds.has(b.id))
+      newBlocks.splice(selectedIndices[0], 0, groupBlock)
+      
+      // Reorder
+      return newBlocks.map((b, i) => ({ ...b, order: i }))
+    })
+
+    setSelectedBlockIds(new Set())
+    toast.success(`${selectedBlockIds.size} bloques agrupados`)
+  }, [selectedBlockIds])
+
+  // Ungroup a block group
+  const ungroupBlock = useCallback((groupId: string) => {
+    setBlocks(prev => {
+      const groupIndex = prev.findIndex(b => b.id === groupId)
+      if (groupIndex === -1) return prev
+
+      const groupBlock = prev[groupIndex]
+      if (groupBlock.type !== 'block_group' || !groupBlock.children) return prev
+
+      // Replace group with its children
+      const newBlocks = [...prev]
+      newBlocks.splice(groupIndex, 1, ...groupBlock.children)
+      
+      // Reorder
+      return newBlocks.map((b, i) => ({ ...b, order: i }))
+    })
+
+    setSelectedBlockIds(new Set())
+    toast.success('Grupo desagrupado')
+  }, [])
+
+  // Keyboard shortcuts for Delete and Ctrl+G (group)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Skip if user is typing in an input, textarea, or contenteditable
@@ -609,11 +691,17 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
         e.preventDefault()
         deleteSelectedBlocks()
       }
+
+      // Ctrl+G to group selected blocks
+      if ((e.ctrlKey || e.metaKey) && e.key === 'g' && selectedBlockIds.size >= 2 && !isPreviewMode && !isEditing) {
+        e.preventDefault()
+        groupSelectedBlocks()
+      }
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [deleteSelectedBlocks, selectedBlockIds.size, isPreviewMode])
+  }, [deleteSelectedBlocks, groupSelectedBlocks, selectedBlockIds.size, isPreviewMode])
 
   // DnD State
   const [activeDragItem, setActiveDragItem] = useState<{
@@ -932,12 +1020,48 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
 
           {/* Right Actions */}
           <div className="flex items-center gap-2">
+            {/* Single block group selected - show ungroup button */}
+            {!isPreviewMode && selectedBlockIds.size === 1 && (() => {
+              const selectedId = Array.from(selectedBlockIds)[0]
+              const selectedBlock = blocks.find(b => b.id === selectedId)
+              if (selectedBlock?.type === 'block_group') {
+                return (
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-orange-100 border border-orange-200 rounded-md">
+                    <span className="text-sm font-medium text-orange-700">
+                      Grupo seleccionado
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-7 px-2 gap-1 border-orange-300 text-orange-700 hover:bg-orange-50"
+                      onClick={() => ungroupBlock(selectedId)}
+                      title="Desagrupar bloques"
+                    >
+                      <LayoutGrid className="h-3.5 w-3.5" />
+                      Desagrupar
+                    </Button>
+                  </div>
+                )
+              }
+              return null
+            })()}
+
             {/* Multi-select indicator */}
             {!isPreviewMode && selectedBlockIds.size > 1 && (
               <div className="flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-md">
                 <span className="text-sm font-medium text-primary">
                   {selectedBlockIds.size} seleccionados
                 </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-7 px-2 gap-1"
+                  onClick={groupSelectedBlocks}
+                  title="Agrupar bloques (Ctrl+G)"
+                >
+                  <LayoutGrid className="h-3.5 w-3.5" />
+                  Agrupar
+                </Button>
                 <Button
                   variant="destructive"
                   size="sm"

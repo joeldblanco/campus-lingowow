@@ -53,6 +53,7 @@ export type BlockType =
   | 'drag_drop'
   | 'multi_select'
   | 'teacher_notes'
+  | 'block_group'
 
 // Base block type with discriminated union for different content types
 export interface BaseBlock {
@@ -411,6 +412,12 @@ export interface GrammarVisualizerBlock extends BaseBlock {
   sets: SentenceSet[]
 }
 
+export interface BlockGroupBlock extends BaseBlock {
+  type: 'block_group'
+  title?: string
+  children: Block[]
+}
+
 export type Block =
   | TitleBlock
   | TextBlock
@@ -441,6 +448,7 @@ export type Block =
   | StructuredContentBlock
   | GrammarVisualizerBlock
   | TeacherNotesBlock
+  | BlockGroupBlock
 
 // Quiz question types
 export interface QuizQuestion {

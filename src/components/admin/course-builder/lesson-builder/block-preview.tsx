@@ -57,6 +57,7 @@ import {
   Sparkles,
   Edit3,
   MessageSquare,
+  Blocks,
 } from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
@@ -133,6 +134,8 @@ export function BlockPreview({ block, isTeacher, isClassroom, isExamMode }: Bloc
         return <GrammarVisualizerBlockPreview block={block as GrammarVisualizerBlock} />
       case 'teacher_notes':
         return <TeacherNotesBlockPreview block={block as TeacherNotesBlock} />
+      case 'block_group':
+        return <BlockGroupPreview block={block} isExamMode={isExamMode} />
       default:
         return (
           <div className="p-4 bg-yellow-50 border border-yellow-200 rounded text-yellow-800 text-sm">
@@ -3380,6 +3383,33 @@ function TeacherNotesBlockPreview({ block }: { block: TeacherNotesBlock }) {
           Sin contenido. Edita este bloque para agregar indicaciones.
         </p>
       )}
+    </div>
+  )
+}
+
+function BlockGroupPreview({ block, isExamMode }: { block: Block; isExamMode?: boolean }) {
+  const children = block.children || []
+  
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+        <Blocks className="h-5 w-5" />
+        <span>Grupo de Bloques</span>
+        <span className="text-xs text-muted-foreground">({children.length} elementos)</span>
+      </div>
+      
+      <div className="border-l-4 border-primary/30 pl-4 space-y-4">
+        {children.map((childBlock, index) => (
+          <div key={childBlock.id || index} className="bg-muted/20 rounded-lg overflow-hidden">
+            <BlockPreview block={childBlock} isExamMode={isExamMode} />
+          </div>
+        ))}
+        {children.length === 0 && (
+          <p className="text-muted-foreground italic text-sm py-4">
+            Este grupo está vacío
+          </p>
+        )}
+      </div>
     </div>
   )
 }

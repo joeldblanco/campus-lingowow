@@ -133,7 +133,8 @@ export default async function TakeExamPage({ params }: PageProps) {
         points: q.points,
         minLength: q.minLength,
         maxLength: q.maxLength,
-        audioUrl: q.audioUrl
+        audioUrl: q.audioUrl,
+        groupId: (q as typeof q & { groupId?: string | null }).groupId || null
       }
     })
   }))

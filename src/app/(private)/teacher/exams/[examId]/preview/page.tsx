@@ -121,6 +121,7 @@ export default async function TeacherExamPreviewPage({ params }: PageProps) {
         points: q.points,
         minLength: q.minLength,
         maxLength: q.maxLength,
+        groupId: (q as typeof q & { groupId?: string | null }).groupId || null
       }
     })
   }))

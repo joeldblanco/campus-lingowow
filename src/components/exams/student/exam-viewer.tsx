@@ -129,6 +129,16 @@ export function ExamViewer({
   ).length
 
   const currentQuestion = allQuestions[currentQuestionIndex]
+  
+  // Obtener todas las preguntas del grupo actual (si pertenece a un grupo)
+  const currentGroupQuestions = useMemo(() => {
+    const currentGroupId = (currentQuestion as typeof currentQuestion & { groupId?: string | null })?.groupId
+    if (!currentGroupId) return [currentQuestion].filter(Boolean)
+    
+    return allQuestions.filter(q => 
+      (q as typeof q & { groupId?: string | null }).groupId === currentGroupId
+    )
+  }, [currentQuestion, allQuestions])
 
   const questionStatuses = useMemo(() => {
     return allQuestions.map((q, index) => {
@@ -290,7 +300,38 @@ export function ExamViewer({
               <p className="text-muted-foreground">{description}</p>
             </div>
 
-            {currentQuestion && (
+            {/* Renderizar preguntas agrupadas juntas o pregunta individual */}
+            {currentGroupQuestions.length > 1 ? (
+              <div className="space-y-4 p-4 bg-muted/20 rounded-xl border-2 border-primary/20">
+                <div className="flex items-center gap-2 text-sm text-primary font-medium mb-2">
+                  <span>Grupo de {currentGroupQuestions.length} elementos</span>
+                </div>
+                {currentGroupQuestions.map((q) => (
+                  <ExamQuestionCard
+                    key={q.id}
+                    questionNumber={allQuestions.findIndex(aq => aq.id === q.id) + 1}
+                    question={q}
+                    answer={answers[q.id]}
+                    onAnswerChange={(answer) => {
+                      setAnswers(prev => ({ ...prev, [q.id]: answer }))
+                      onSaveAnswer(q.id, answer)
+                    }}
+                    isFlagged={flaggedQuestions.has(q.id)}
+                    onToggleFlag={() => {
+                      setFlaggedQuestions(prev => {
+                        const newSet = new Set(prev)
+                        if (newSet.has(q.id)) {
+                          newSet.delete(q.id)
+                        } else {
+                          newSet.add(q.id)
+                        }
+                        return newSet
+                      })
+                    }}
+                  />
+                ))}
+              </div>
+            ) : currentQuestion && (
               <ExamQuestionCard
                 questionNumber={currentQuestionIndex + 1}
                 question={currentQuestion}
