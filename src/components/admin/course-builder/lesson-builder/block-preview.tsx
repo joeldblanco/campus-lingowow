@@ -2901,17 +2901,19 @@ function MultiSelectBlockPreview({ block, isExamMode }: { block: MultiSelectBloc
         </div>
       )}
 
-      <div className="flex gap-2 justify-center">
-        {!showResult ? (
-          <Button onClick={checkAnswers} disabled={selectedIds.size === 0} size="sm">
-            Verificar Respuestas
-          </Button>
-        ) : (
-          <Button variant="outline" onClick={reset} size="sm">
-            Reintentar
-          </Button>
-        )}
-      </div>
+      {!isExamMode && (
+        <div className="flex gap-2 justify-center">
+          {!showResult ? (
+            <Button onClick={checkAnswers} disabled={selectedIds.size === 0} size="sm">
+              Verificar Respuestas
+            </Button>
+          ) : (
+            <Button variant="outline" onClick={reset} size="sm">
+              Reintentar
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   )
 }
