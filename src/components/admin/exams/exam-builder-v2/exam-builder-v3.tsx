@@ -75,6 +75,37 @@ interface CourseForExam {
   }>
 }
 
+// Helper function to parse options and extract groupId
+function parseOptionsData(options: unknown): { parsed: Record<string, unknown> | string[] | null; groupId: string | null } {
+  if (!options) return { parsed: null, groupId: null }
+  
+  // Si ya es un objeto, usarlo directamente
+  if (typeof options === 'object' && options !== null) {
+    if (Array.isArray(options)) {
+      return { parsed: options, groupId: null }
+    }
+    const obj = options as Record<string, unknown>
+    return { parsed: obj, groupId: (obj.groupId as string) || null }
+  }
+  
+  // Si es un string, intentar parsear como JSON
+  if (typeof options === 'string') {
+    try {
+      const parsed = JSON.parse(options)
+      if (Array.isArray(parsed)) {
+        return { parsed, groupId: null }
+      }
+      if (typeof parsed === 'object' && parsed !== null) {
+        return { parsed, groupId: (parsed.groupId as string) || null }
+      }
+    } catch {
+      // No es JSON válido, ignorar
+    }
+  }
+  
+  return { parsed: null, groupId: null }
+}
+
 // Convert old ExamQuestion format to Block format
 function convertExamToBlocks(exam: ExamWithDetails): Block[] {
   if (!exam?.sections) return []
@@ -83,12 +114,7 @@ function convertExamToBlocks(exam: ExamWithDetails): Block[] {
   const flatBlocks: (Block & { _groupId?: string | null })[] = exam.sections.flatMap((section) =>
     section.questions.map((q): Block & { _groupId?: string | null } => {
       const qType = q.type.toLowerCase()
-      const optionsData = q.options as Record<string, unknown> | string[] | null
-      
-      // Extraer groupId de las opciones
-      const groupId = optionsData && typeof optionsData === 'object' && !Array.isArray(optionsData)
-        ? (optionsData as { groupId?: string }).groupId || null
-        : null
+      const { parsed: optionsData, groupId } = parseOptionsData(q.options)
 
       // Base block data
       const baseBlock: Partial<Block> & { _groupId?: string | null } = {

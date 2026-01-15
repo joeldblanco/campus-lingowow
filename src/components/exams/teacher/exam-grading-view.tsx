@@ -258,7 +258,12 @@ export function ExamGradingView({
               <p className="text-sm text-muted-foreground mb-3">
                 Este examen incluye {answers.filter(a => a.needsReview).length} pregunta(s) de ensayo que requieren calificación manual.
               </p>
-              <Button variant="outline" size="sm" className="w-full">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="w-full"
+                onClick={() => toast.info('La rúbrica de calificación estará disponible próximamente')}
+              >
                 Ver Rúbrica de Calificación
               </Button>
             </div>
@@ -396,7 +401,15 @@ export function ExamGradingView({
                     </div>
 
                     <div className="mt-4">
-                      <button className="text-sm text-primary hover:underline flex items-center gap-1">
+                      <button 
+                        className="text-sm text-primary hover:underline flex items-center gap-1"
+                        onClick={() => {
+                          // Habilitar edición manual para esta respuesta
+                          updateLocalGrade(currentAnswer.id, 'points', currentAnswer.pointsEarned)
+                          updateLocalGrade(currentAnswer.id, 'feedback', currentAnswer.feedback || '')
+                          toast.info('Ahora puedes modificar el puntaje y agregar comentarios')
+                        }}
+                      >
                         <AlertCircle className="h-4 w-4" />
                         Anular Puntaje o Agregar Comentario
                       </button>
@@ -432,8 +445,31 @@ export function ExamGradingView({
                   <ChevronRight className="h-4 w-4" />
                 </Button>
 
-                <Button variant="outline">
-                  Guardar Borrador
+                <Button 
+                  variant="outline"
+                  onClick={async () => {
+                    // Guardar todas las calificaciones locales como borrador
+                    const gradesToSave = Object.entries(localGrades)
+                    if (gradesToSave.length === 0) {
+                      toast.info('No hay cambios para guardar')
+                      return
+                    }
+                    setIsSaving(true)
+                    try {
+                      for (const [answerId, grade] of gradesToSave) {
+                        await onSaveGrade(answerId, grade.points, grade.feedback)
+                      }
+                      toast.success(`${gradesToSave.length} calificación(es) guardada(s)`)
+                    } catch (error) {
+                      console.error('Error saving draft:', error)
+                      toast.error('Error al guardar borrador')
+                    } finally {
+                      setIsSaving(false)
+                    }
+                  }}
+                  disabled={isSaving}
+                >
+                  {isSaving ? 'Guardando...' : 'Guardar Borrador'}
                 </Button>
 
                 <Button

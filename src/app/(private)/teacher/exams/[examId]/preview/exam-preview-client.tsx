@@ -36,6 +36,7 @@ interface ExamSection {
     points: number
     minLength?: number | null
     maxLength?: number | null
+    groupId?: string | null
   }[]
 }
 
@@ -82,6 +83,37 @@ export function ExamPreviewClient({
 
   const currentQuestion = allQuestions[currentQuestionIndex]
 
+  // Obtener todas las preguntas del grupo actual (si pertenece a un grupo)
+  const currentGroupQuestions = useMemo(() => {
+    if (!currentQuestion) return []
+    
+    const currentGroupId = currentQuestion.groupId
+    if (!currentGroupId) return [currentQuestion]
+    
+    return allQuestions.filter(q => q.groupId === currentGroupId)
+  }, [currentQuestion, allQuestions])
+
+  // Calcular índices de navegación (primer índice de cada grupo o pregunta individual)
+  const navigationIndices = useMemo(() => {
+    const indices: number[] = []
+    const processedGroupIds = new Set<string>()
+    
+    allQuestions.forEach((q, index) => {
+      const groupId = q.groupId
+      
+      if (groupId) {
+        if (!processedGroupIds.has(groupId)) {
+          indices.push(index)
+          processedGroupIds.add(groupId)
+        }
+      } else {
+        indices.push(index)
+      }
+    })
+    
+    return indices
+  }, [allQuestions])
+
   const questionStatuses = useMemo(() => {
     return allQuestions.map((q, index) => {
       const hasAnswer = answers[q.id] !== null && answers[q.id] !== undefined && answers[q.id] !== ''
@@ -112,11 +144,25 @@ export function ExamPreviewClient({
   }
 
   const handlePrevious = () => {
-    handleNavigate(currentQuestionIndex - 1)
+    // Encontrar el índice de navegación anterior (saltar grupos completos)
+    const currentNavIndex = navigationIndices.findIndex(idx => idx >= currentQuestionIndex)
+    const prevNavIndex = currentNavIndex > 0 ? currentNavIndex - 1 : -1
+    
+    if (prevNavIndex >= 0) {
+      handleNavigate(navigationIndices[prevNavIndex])
+    }
   }
 
   const handleNext = () => {
-    handleNavigate(currentQuestionIndex + 1)
+    // Encontrar el siguiente índice de navegación (saltar grupos completos)
+    const currentNavIndex = navigationIndices.findIndex(idx => idx >= currentQuestionIndex)
+    const nextNavIndex = currentNavIndex >= 0 && currentNavIndex < navigationIndices.length - 1 
+      ? currentNavIndex + 1 
+      : -1
+    
+    if (nextNavIndex >= 0) {
+      handleNavigate(navigationIndices[nextNavIndex])
+    }
   }
 
   const checkAnswer = (question: typeof currentQuestion) => {
@@ -133,8 +179,6 @@ export function ExamPreviewClient({
     }
     return String(correctAnswer).toLowerCase() === String(userAnswer).toLowerCase()
   }
-
-  const isCurrentAnswerCorrect = currentQuestion ? checkAnswer(currentQuestion) : null
 
   return (
     <div className="min-h-screen bg-background">
@@ -179,49 +223,67 @@ export function ExamPreviewClient({
               <p className="text-muted-foreground">{description}</p>
             </div>
 
-            {currentQuestion && (
-              <div className="space-y-4">
-                <ExamQuestionCard
-                  questionNumber={currentQuestionIndex + 1}
-                  question={currentQuestion as ExamQuestionData}
-                  answer={answers[currentQuestion.id]}
-                  onAnswerChange={handleAnswerChange}
-                  isFlagged={false}
-                  onToggleFlag={() => {}}
-                />
-
-                {showFeedback && answers[currentQuestion.id] !== undefined && (
-                  <Card className={isCurrentAnswerCorrect ? 'border-green-500 bg-green-50 dark:bg-green-900/20' : 'border-red-500 bg-red-50 dark:bg-red-900/20'}>
-                    <CardHeader className="py-3">
-                      <CardTitle className="text-base flex items-center gap-2">
-                        {isCurrentAnswerCorrect ? (
-                          <>
-                            <CheckCircle2 className="w-5 h-5 text-green-600" />
-                            <span className="text-green-700 dark:text-green-400">Respuesta Correcta</span>
-                          </>
-                        ) : (
-                          <>
-                            <XCircle className="w-5 h-5 text-red-600" />
-                            <span className="text-red-700 dark:text-red-400">Respuesta Incorrecta</span>
-                          </>
-                        )}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="py-3 space-y-2">
-                      <p className="text-sm">
-                        <strong>Respuesta correcta:</strong>{' '}
-                        {Array.isArray(currentQuestion.correctAnswer)
-                          ? currentQuestion.correctAnswer.join(', ')
-                          : String(currentQuestion.correctAnswer)}
-                      </p>
-                      {currentQuestion.explanation && (
-                        <p className="text-sm text-muted-foreground">
-                          <strong>Explicación:</strong> {currentQuestion.explanation}
-                        </p>
-                      )}
-                    </CardContent>
-                  </Card>
+            {currentGroupQuestions.length > 0 && (
+              <div className="space-y-6">
+                {currentGroupQuestions.length > 1 && (
+                  <Badge variant="secondary" className="mb-2">
+                    Grupo de {currentGroupQuestions.length} preguntas
+                  </Badge>
                 )}
+                {currentGroupQuestions.map((q) => {
+                  const questionIndex = allQuestions.findIndex(aq => aq.id === q.id)
+                  const isAnswerCorrect = checkAnswer(q)
+                  return (
+                    <div key={q.id} className="space-y-4">
+                      <ExamQuestionCard
+                        questionNumber={questionIndex + 1}
+                        question={q as ExamQuestionData}
+                        answer={answers[q.id]}
+                        onAnswerChange={async (answer) => {
+                          setAnswers((prev) => ({
+                            ...prev,
+                            [q.id]: answer
+                          }))
+                        }}
+                        isFlagged={false}
+                        onToggleFlag={() => {}}
+                      />
+
+                      {showFeedback && answers[q.id] !== undefined && (
+                        <Card className={isAnswerCorrect ? 'border-green-500 bg-green-50 dark:bg-green-900/20' : 'border-red-500 bg-red-50 dark:bg-red-900/20'}>
+                          <CardHeader className="py-3">
+                            <CardTitle className="text-base flex items-center gap-2">
+                              {isAnswerCorrect ? (
+                                <>
+                                  <CheckCircle2 className="w-5 h-5 text-green-600" />
+                                  <span className="text-green-700 dark:text-green-400">Respuesta Correcta</span>
+                                </>
+                              ) : (
+                                <>
+                                  <XCircle className="w-5 h-5 text-red-600" />
+                                  <span className="text-red-700 dark:text-red-400">Respuesta Incorrecta</span>
+                                </>
+                              )}
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent className="py-3 space-y-2">
+                            <p className="text-sm">
+                              <strong>Respuesta correcta:</strong>{' '}
+                              {Array.isArray(q.correctAnswer)
+                                ? q.correctAnswer.join(', ')
+                                : String(q.correctAnswer)}
+                            </p>
+                            {q.explanation && (
+                              <p className="text-sm text-muted-foreground">
+                                <strong>Explicación:</strong> {q.explanation}
+                              </p>
+                            )}
+                          </CardContent>
+                        </Card>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
             )}
 

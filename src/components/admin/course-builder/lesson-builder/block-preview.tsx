@@ -308,11 +308,13 @@ function AudioBlockPreview({ block }: { block: AudioBlock }) {
   const [duration, setDuration] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
   const [replayCount, setReplayCount] = useState(0)
+  const [hasStartedCurrentPlay, setHasStartedCurrentPlay] = useState(false)
   const [waveform] = useState(() => Array.from({ length: 32 }, () => Math.random() * 0.7 + 0.3)) // Random heights
   const audioRef = useRef<HTMLAudioElement>(null)
 
   const maxReplays = block.maxReplays || 0
-  const canPlay = maxReplays === 0 || replayCount < maxReplays
+  const hasLimit = maxReplays > 0
+  const canPlay = !hasLimit || replayCount < maxReplays
 
   const togglePlay = () => {
     if (audioRef.current) {
@@ -320,6 +322,11 @@ function AudioBlockPreview({ block }: { block: AudioBlock }) {
         audioRef.current.pause()
       } else {
         if (!canPlay) return
+        // Contar reproducción al iniciar (antes de play)
+        if (!hasStartedCurrentPlay) {
+          setReplayCount(prev => prev + 1)
+          setHasStartedCurrentPlay(true)
+        }
         audioRef.current.play()
       }
     }
@@ -342,10 +349,12 @@ function AudioBlockPreview({ block }: { block: AudioBlock }) {
 
   const handlePlayStart = () => {
     setIsPlaying(true)
-    // Increment replay count if starting from beginning (approx)
-    if (audioRef.current && audioRef.current.currentTime < 0.5) {
-      setReplayCount(prev => prev + 1)
-    }
+  }
+  
+  const handleEnded = () => {
+    setIsPlaying(false)
+    // Resetear flag para la próxima reproducción
+    setHasStartedCurrentPlay(false)
   }
 
   const formatTime = (seconds: number) => {
@@ -380,7 +389,7 @@ function AudioBlockPreview({ block }: { block: AudioBlock }) {
                 ref={audioRef}
                 src={block.url}
                 className="hidden"
-                onEnded={() => setIsPlaying(false)}
+                onEnded={handleEnded}
                 onPause={() => setIsPlaying(false)}
                 onPlay={handlePlayStart}
                 onTimeUpdate={handleTimeUpdate}
@@ -407,12 +416,12 @@ function AudioBlockPreview({ block }: { block: AudioBlock }) {
                 <div
                   className={cn(
                     "h-12 flex items-center justify-between gap-0.5",
-                    // Solo permitir navegación si puede reproducir o está reproduciendo
-                    (canPlay || isPlaying) ? "cursor-pointer" : "cursor-not-allowed opacity-60"
+                    // Bloquear navegación completamente cuando hay límite de reproducciones
+                    hasLimit ? "cursor-default" : "cursor-pointer"
                   )}
                   onClick={(e) => {
-                    // Bloquear navegación si alcanzó límite de reproducciones y no está reproduciendo
-                    if (!canPlay && !isPlaying) return;
+                    // Bloquear navegación completamente cuando hay límite de reproducciones
+                    if (hasLimit) return;
                     if (audioRef.current && duration) {
                       const rect = e.currentTarget.getBoundingClientRect()
                       const x = e.clientX - rect.left

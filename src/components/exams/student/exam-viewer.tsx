@@ -143,6 +143,29 @@ export function ExamViewer({
     )
   }, [currentQuestion, allQuestions])
 
+  // Calcular índices de navegación (primer índice de cada grupo o pregunta individual)
+  const navigationIndices = useMemo(() => {
+    const indices: number[] = []
+    const processedGroupIds = new Set<string>()
+    
+    allQuestions.forEach((q, index) => {
+      const groupId = (q as typeof q & { groupId?: string | null }).groupId
+      
+      if (groupId) {
+        // Si es parte de un grupo, solo añadir el primer índice del grupo
+        if (!processedGroupIds.has(groupId)) {
+          indices.push(index)
+          processedGroupIds.add(groupId)
+        }
+      } else {
+        // Pregunta individual, añadir su índice
+        indices.push(index)
+      }
+    })
+    
+    return indices
+  }, [allQuestions])
+
   const questionStatuses = useMemo(() => {
     return allQuestions.map((q, index) => {
       const hasAnswer = answers[q.id] !== null && answers[q.id] !== undefined && answers[q.id] !== ''
@@ -201,12 +224,26 @@ export function ExamViewer({
   }, [totalQuestions])
 
   const handlePrevious = useCallback(() => {
-    handleNavigate(currentQuestionIndex - 1)
-  }, [currentQuestionIndex, handleNavigate])
+    // Encontrar el índice de navegación anterior (saltar grupos completos)
+    const currentNavIndex = navigationIndices.findIndex(idx => idx >= currentQuestionIndex)
+    const prevNavIndex = currentNavIndex > 0 ? currentNavIndex - 1 : -1
+    
+    if (prevNavIndex >= 0) {
+      handleNavigate(navigationIndices[prevNavIndex])
+    }
+  }, [currentQuestionIndex, handleNavigate, navigationIndices])
 
   const handleNext = useCallback(() => {
-    handleNavigate(currentQuestionIndex + 1)
-  }, [currentQuestionIndex, handleNavigate])
+    // Encontrar el siguiente índice de navegación (saltar grupos completos)
+    const currentNavIndex = navigationIndices.findIndex(idx => idx >= currentQuestionIndex)
+    const nextNavIndex = currentNavIndex >= 0 && currentNavIndex < navigationIndices.length - 1 
+      ? currentNavIndex + 1 
+      : -1
+    
+    if (nextNavIndex >= 0) {
+      handleNavigate(navigationIndices[nextNavIndex])
+    }
+  }, [currentQuestionIndex, handleNavigate, navigationIndices])
 
   const handleTimeUp = useCallback(async () => {
     toast.warning('¡El tiempo se ha agotado! Enviando examen...')

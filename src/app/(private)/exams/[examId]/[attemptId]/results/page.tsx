@@ -45,11 +45,53 @@ export default async function ExamResultsPage({ params }: PageProps) {
     )
   }
 
-  const questionResults = attempt.answers.map((answer, index) => {
+  // Expandir respuestas de bloques con múltiples ítems (como multiple_choice con multipleChoiceItems)
+  let questionNumber = 0
+  const questionResults = attempt.answers.flatMap((answer) => {
     const correctAnswer = answer.question.correctAnswer
-    return {
+    const options = answer.question.options as Record<string, unknown> | null
+    
+    // Verificar si es un bloque con múltiples ítems (multiple_choice con multipleChoiceItems)
+    const multipleChoiceItems = options?.multipleChoiceItems as { 
+      id: string; 
+      question: string; 
+      options: { id: string; text: string }[];
+      correctOptionId?: string;
+    }[] | undefined
+    
+    if (multipleChoiceItems && multipleChoiceItems.length > 0) {
+      // Expandir cada ítem como un resultado individual
+      const userAnswers = answer.answer as Record<string, string> | null
+      
+      return multipleChoiceItems.map((item) => {
+        questionNumber++
+        const userAnswer = userAnswers?.[item.id] || null
+        const correctOptionId = item.correctOptionId
+        const correctOption = item.options.find(o => o.id === correctOptionId)
+        const userOption = item.options.find(o => o.id === userAnswer)
+        const isItemCorrect = userAnswer === correctOptionId
+        
+        return {
+          id: `${answer.id}-${item.id}`,
+          questionNumber,
+          type: answer.question.type,
+          category: answer.question.tags?.[0] || undefined,
+          question: item.question,
+          userAnswer: userOption?.text || userAnswer,
+          correctAnswer: correctOption?.text || correctOptionId || 'N/A',
+          isCorrect: isItemCorrect,
+          pointsEarned: isItemCorrect ? (answer.question.points / multipleChoiceItems.length) : 0,
+          maxPoints: answer.question.points / multipleChoiceItems.length,
+          explanation: answer.question.explanation
+        }
+      })
+    }
+    
+    // Respuesta normal (no expandida)
+    questionNumber++
+    return [{
       id: answer.id,
-      questionNumber: index + 1,
+      questionNumber,
       type: answer.question.type,
       category: answer.question.tags?.[0] || undefined,
       question: answer.question.question,
@@ -59,7 +101,7 @@ export default async function ExamResultsPage({ params }: PageProps) {
       pointsEarned: answer.pointsEarned,
       maxPoints: answer.question.points,
       explanation: answer.question.explanation
-    }
+    }]
   })
 
   const correctAnswers = questionResults.filter(r => r.isCorrect).length

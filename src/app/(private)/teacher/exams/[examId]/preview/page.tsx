@@ -37,11 +37,12 @@ export default async function TeacherExamPreviewPage({ params }: PageProps) {
       aiGrading?: boolean
       maxReplays?: number
     } | null
+    groupId: string | null
   }
 
   // Función para parsear opciones que pueden venir como JSON string, array u objeto
   const parseQuestionOptions = (options: unknown): ParsedOptions => {
-    const defaultResult: ParsedOptions = { options: null, multipleChoiceItems: null, originalBlockType: null, blockData: null }
+    const defaultResult: ParsedOptions = { options: null, multipleChoiceItems: null, originalBlockType: null, blockData: null, groupId: null }
     
     if (!options) return defaultResult
     
@@ -52,6 +53,9 @@ export default async function TeacherExamPreviewPage({ params }: PageProps) {
     
     // Función auxiliar para procesar objeto
     const processObject = (obj: Record<string, unknown>): ParsedOptions => {
+      // Extraer groupId si existe
+      const groupId = obj.groupId as string | null || null
+      
       // Si tiene originalBlockType, es un bloque con metadata
       if (obj.originalBlockType) {
         return {
@@ -67,17 +71,20 @@ export default async function TeacherExamPreviewPage({ params }: PageProps) {
             timeLimit: obj.timeLimit as number | undefined,
             aiGrading: obj.aiGrading as boolean | undefined,
             maxReplays: obj.maxReplays as number | undefined,
-          }
+          },
+          groupId,
         }
       }
       // Si tiene multipleChoiceItems sin originalBlockType
       if (obj.multipleChoiceItems) {
         return {
           ...defaultResult,
-          multipleChoiceItems: obj.multipleChoiceItems as ParsedOptions['multipleChoiceItems']
+          multipleChoiceItems: obj.multipleChoiceItems as ParsedOptions['multipleChoiceItems'],
+          groupId,
         }
       }
-      return defaultResult
+      // Retornar con groupId si existe
+      return { ...defaultResult, groupId }
     }
     
     // Si es un string, intentar parsear como JSON
@@ -122,7 +129,7 @@ export default async function TeacherExamPreviewPage({ params }: PageProps) {
         points: q.points,
         minLength: q.minLength,
         maxLength: q.maxLength,
-        groupId: (q as typeof q & { groupId?: string | null }).groupId || null
+        groupId: parsed.groupId
       }
     })
   }))

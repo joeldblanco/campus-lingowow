@@ -763,14 +763,7 @@ export async function startExamAttempt(examId: string, userId: string) {
       return { success: false, error: 'Este examen no está disponible' }
     }
 
-    const existingAttempts = await db.examAttempt.count({
-      where: { examId, userId },
-    })
-
-    if (existingAttempts >= exam.maxAttempts) {
-      return { success: false, error: 'Has alcanzado el número máximo de intentos' }
-    }
-
+    // Primero verificar si hay un intento en progreso (permitir continuar)
     const inProgressAttempt = await db.examAttempt.findFirst({
       where: { examId, userId, status: AttemptStatus.IN_PROGRESS },
     })
@@ -782,6 +775,15 @@ export async function startExamAttempt(examId: string, userId: string) {
         exam,
         isResuming: true,
       }
+    }
+
+    // Solo verificar límite de intentos si no hay uno en progreso
+    const existingAttempts = await db.examAttempt.count({
+      where: { examId, userId },
+    })
+
+    if (existingAttempts >= exam.maxAttempts) {
+      return { success: false, error: 'Has alcanzado el número máximo de intentos' }
     }
 
     const attempt = await db.examAttempt.create({
@@ -1011,6 +1013,7 @@ export async function getExamResultsForStudent(attemptId: string, userId: string
                 id: true,
                 type: true,
                 question: true,
+                options: true,
                 correctAnswer: true,
                 explanation: true,
                 points: true,
