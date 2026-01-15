@@ -66,6 +66,10 @@ export function ExamResults({
   const [filter, setFilter] = useState<'all' | 'correct' | 'incorrect'>('all')
 
   const filteredResults = questionResults.filter((result) => {
+    // Las preguntas pendientes de revisión solo se muestran con el filtro 'all'
+    if (result.needsReview) return filter === 'all'
+    
+    // Para las demás preguntas, aplicar filtros normales
     if (filter === 'correct') return result.isCorrect
     if (filter === 'incorrect') return !result.isCorrect
     return true
