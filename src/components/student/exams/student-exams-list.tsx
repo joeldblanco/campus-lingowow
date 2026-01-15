@@ -147,8 +147,10 @@ export function StudentExamsList({ exams }: StudentExamsListProps) {
       )
     }
     if (exam.attempts.completed > 0) {
+      // Usar el ID del último intento completado o el ID en progreso
+      const attemptId = exam.attempts.inProgressId || 'latest'
       return (
-        <Link href={`/exams/${exam.attempts.inProgressId || exam.id}/results`}>
+        <Link href={`/exams/${exam.id}/${attemptId}/results`}>
           <Button size="sm" variant="outline">
             Ver Resultados
           </Button>
