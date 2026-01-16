@@ -1,9 +1,6 @@
-'use server'
-
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
-import { canAccessExamBySlug, startExamAttempt } from '@/lib/actions/exams'
-import { PlacementTestViewer } from '@/components/placement-test/placement-test-viewer'
+import { canAccessExamBySlug } from '@/lib/actions/exams'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { AlertCircle, Lock } from 'lucide-react'
@@ -52,46 +49,9 @@ export default async function TestPage({ params }: TestPageProps) {
 
   const exam = accessCheck.exam
 
-  // Si el usuario está autenticado, iniciar el intento
+  // Si el usuario está autenticado, redirigir a la ruta unificada de exámenes
   if (session?.user?.id) {
-    const attemptResult = await startExamAttempt(exam.id, session.user.id)
-    
-    if (!attemptResult.success || !attemptResult.attempt) {
-      // Si ya completó el examen, redirigir a resultados
-      if (attemptResult.error?.includes('completado')) {
-        redirect(`/test/${slug}/results`)
-      }
-      
-      return (
-        <div className="min-h-screen flex items-center justify-center bg-background p-4">
-          <Card className="max-w-md w-full">
-            <CardHeader className="text-center">
-              <AlertCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
-              <CardTitle>Error</CardTitle>
-              <CardDescription>{attemptResult.error || 'No se pudo iniciar el examen'}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button asChild variant="outline" className="w-full">
-                <Link href="/">Volver al Inicio</Link>
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      )
-    }
-
-    return (
-      <div className="min-h-screen bg-background">
-        <PlacementTestViewer 
-          examId={exam.id}
-          attemptId={attemptResult.attempt.id}
-          title={exam.title}
-          sections={exam.sections}
-          timeLimit={exam.timeLimit || 60}
-          startedAt={attemptResult.attempt.startedAt.toISOString()}
-        />
-      </div>
-    )
+    redirect(`/exams/${exam.id}/take`)
   }
 
   // Si no está autenticado pero el examen es público, mostrar página de inicio

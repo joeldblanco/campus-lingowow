@@ -1,6 +1,7 @@
 import { auth } from '@/auth'
 import { AppSidebar } from '@/components/app-sidebar'
 import { ImpersonationBanner } from '@/components/impersonation-banner'
+import { GuestExamBanner } from '@/components/guest-exam-banner'
 import { NotificationDropdown } from '@/components/notifications/notification-dropdown'
 import { TourHeaderButton } from '@/components/tour'
 import { SidebarInset, SidebarTrigger } from '@/components/ui/sidebar'
@@ -23,6 +24,7 @@ export default async function PrivateLayout({
     <>
       <Providers defaultOpen={defaultOpen}>
         <ImpersonationBanner />
+        {session?.user?.id && <GuestExamBanner userId={session.user.id} />}
         <CurrentClassProvider>
           {session && (
             <>

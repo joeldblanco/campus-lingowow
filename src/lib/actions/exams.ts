@@ -1713,6 +1713,57 @@ export async function getNonAdminUsersForExamAssignment() {
 }
 
 /**
+ * Obtiene exámenes asignados pendientes para un usuario GUEST
+ */
+export async function getPendingExamsForGuest(userId: string) {
+  try {
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { roles: true },
+    })
+
+    if (!user || !user.roles.includes(UserRole.GUEST)) {
+      return { success: true, exams: [] }
+    }
+
+    const assignments = await db.examAssignment.findMany({
+      where: {
+        userId: userId,
+        status: AssignmentStatus.ASSIGNED,
+      },
+      include: {
+        exam: {
+          select: {
+            id: true,
+            title: true,
+            slug: true,
+            timeLimit: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 1,
+    })
+
+    return {
+      success: true,
+      exams: assignments.map((a) => ({
+        id: a.exam.id,
+        title: a.exam.title,
+        slug: a.exam.slug,
+        timeLimit: a.exam.timeLimit,
+        dueDate: a.dueDate,
+      })),
+    }
+  } catch (error) {
+    console.error('Error fetching pending exams for guest:', error)
+    return { success: false, exams: [] }
+  }
+}
+
+/**
  * Verifica si un usuario puede acceder a un examen por slug
  */
 export async function canAccessExamBySlug(

@@ -1035,7 +1035,9 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
         // Placement test fields
         examType: settings.isPlacementTest ? 'PLACEMENT_TEST' as const : 'COURSE_EXAM' as const,
         targetLanguage: settings.isPlacementTest ? settings.targetLanguage : null,
-        slug: settings.isPlacementTest && settings.slug ? settings.slug : null,
+        slug: settings.isPlacementTest 
+          ? (settings.slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || `test-${Date.now()}`)
+          : null,
         isPublicAccess: settings.isPlacementTest ? settings.isPublicAccess : false,
         isGuestAccessible: settings.isPlacementTest ? settings.isPublicAccess : false,
         // Course assignment (only for non-placement tests)
