@@ -5,7 +5,7 @@ import { auth } from '@/auth'
 import { revalidatePath } from 'next/cache'
 import { CreateExamSchema, EditExamSchema, AssignExamSchema } from '@/schemas/exams'
 import * as z from 'zod'
-import { AttemptStatus, AssignmentStatus, Prisma } from '@prisma/client'
+import { AttemptStatus, AssignmentStatus, Prisma, UserRole } from '@prisma/client'
 import type {
   ExamWithDetails,
   ExamStats,
@@ -1663,8 +1663,10 @@ export async function getNonAdminUsersForExamAssignment() {
   try {
     const users = await db.user.findMany({
       where: {
-        role: {
-          notIn: ['ADMIN', 'SUPER_ADMIN'],
+        NOT: {
+          roles: {
+            has: UserRole.ADMIN,
+          },
         },
       },
       select: {
