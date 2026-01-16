@@ -313,7 +313,7 @@ export function AssignExamDialog({ exam, open, onOpenChange }: AssignExamDialogP
                           <div className="flex-1">
                             <div className="flex items-center space-x-2">
                               <span className="font-medium">
-                                {student.name} {student.lastName}
+                                {student.name || ''} {student.lastName || ''}
                               </span>
                               {isAlreadyAssigned && (
                                 <Badge variant="secondary" className="text-xs">
@@ -342,9 +342,8 @@ export function AssignExamDialog({ exam, open, onOpenChange }: AssignExamDialogP
             {selectedStudents.length > 0 && (
               <div className="bg-primary/10 border border-primary/20 p-4 rounded-lg">
                 <p className="text-sm font-medium">
-                  <strong className="text-primary">{selectedStudents.length}</strong> estudiante
-                  {selectedStudents.length > 1 ? 's' : ''} seleccionado
-                  {selectedStudents.length > 1 ? 's' : ''} para asignación
+                  <strong className="text-primary">{selectedStudents.length}</strong>{' '}
+                  {selectedStudents.length === 1 ? 'estudiante seleccionado' : 'estudiantes seleccionados'} para asignación
                 </p>
               </div>
             )}
