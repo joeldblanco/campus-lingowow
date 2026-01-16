@@ -1,5 +1,3 @@
-import { ExamTypeValue } from '@/types/exam'
-
 export interface ExamSettings {
   timeLimit: number
   passingScore: number
@@ -15,9 +13,11 @@ export interface ExamSettings {
   blockCopyPaste: boolean
   blockRightClick: boolean
   maxWarnings: number
-  examType: ExamTypeValue
-  isGuestAccessible: boolean
+  // Placement test fields
+  isPlacementTest: boolean
   targetLanguage: string
+  slug: string
+  isPublicAccess: boolean
 }
 
 export const DEFAULT_EXAM_SETTINGS: ExamSettings = {
@@ -35,7 +35,9 @@ export const DEFAULT_EXAM_SETTINGS: ExamSettings = {
   blockCopyPaste: false,
   blockRightClick: false,
   maxWarnings: 3,
-  examType: 'COURSE_EXAM',
-  isGuestAccessible: false,
+  // Placement test defaults
+  isPlacementTest: false,
   targetLanguage: 'en',
+  slug: '',
+  isPublicAccess: false,
 }

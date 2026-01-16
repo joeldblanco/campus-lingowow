@@ -531,9 +531,16 @@ export async function updateExam(
           blockCopyPaste: validatedData.blockCopyPaste,
           blockRightClick: validatedData.blockRightClick,
           maxWarnings: validatedData.maxWarnings,
-          courseId: validatedData.courseId || undefined,
-          moduleId: validatedData.moduleId || undefined,
-          lessonId: validatedData.lessonId || undefined,
+          // Placement test fields
+          examType: validatedData.examType,
+          targetLanguage: validatedData.targetLanguage,
+          slug: validatedData.slug,
+          isPublicAccess: validatedData.isPublicAccess,
+          isGuestAccessible: validatedData.isGuestAccessible,
+          // Course assignment
+          courseId: validatedData.courseId || null,
+          moduleId: validatedData.moduleId || null,
+          lessonId: validatedData.lessonId || null,
         },
       })
 
@@ -1607,5 +1614,87 @@ export async function markResultEmailSent(attemptId: string): Promise<boolean> {
   } catch (error) {
     console.error('Error marking result email sent:', error)
     return false
+  }
+}
+
+/**
+ * Obtiene un examen por su slug
+ */
+export async function getExamBySlug(slug: string) {
+  try {
+    const exam = await db.exam.findUnique({
+      where: { slug },
+      include: {
+        creator: {
+          select: { id: true, name: true, email: true, image: true },
+        },
+        course: {
+          select: { id: true, title: true, language: true, level: true, isPersonalized: true },
+        },
+        module: {
+          select: { id: true, title: true, level: true },
+        },
+        lesson: {
+          select: { id: true, title: true },
+        },
+        sections: {
+          include: { questions: { orderBy: { order: 'asc' } } },
+          orderBy: { order: 'asc' },
+        },
+      },
+    })
+    return exam
+  } catch (error) {
+    console.error('Error getting exam by slug:', error)
+    return null
+  }
+}
+
+/**
+ * Verifica si un usuario puede acceder a un examen por slug
+ */
+export async function canAccessExamBySlug(
+  slug: string,
+  userId?: string
+): Promise<{ canAccess: boolean; reason?: string; exam?: Awaited<ReturnType<typeof getExamBySlug>> }> {
+  try {
+    const exam = await getExamBySlug(slug)
+
+    if (!exam) {
+      return { canAccess: false, reason: 'Examen no encontrado' }
+    }
+
+    if (!exam.isPublished) {
+      return { canAccess: false, reason: 'Este examen no está publicado' }
+    }
+
+    // Si es público, cualquiera puede acceder
+    if (exam.isPublicAccess) {
+      return { canAccess: true, exam }
+    }
+
+    // Si no es público, necesita estar asignado
+    if (!userId) {
+      return { canAccess: false, reason: 'Debes iniciar sesión para acceder a este examen' }
+    }
+
+    // Verificar si el usuario tiene asignación
+    const assignment = await db.examAssignment.findUnique({
+      where: {
+        examId_userId: {
+          examId: exam.id,
+          userId,
+        },
+      },
+    })
+
+    if (!assignment) {
+      return { canAccess: false, reason: 'No tienes acceso a este examen' }
+    }
+
+    return { canAccess: true, exam }
+  } catch (error) {
+    console.error('Error checking exam access:', error)
+    return { canAccess: false, reason: 'Error al verificar acceso' }
   }
 }

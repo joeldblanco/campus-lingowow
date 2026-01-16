@@ -132,6 +132,9 @@ export const CreateExamSchema = z.object({
   createdById: z.string().min(1, 'El creador es requerido'),
 })
 
+// Enum para tipo de examen
+export const ExamTypeEnum = z.enum(['COURSE_EXAM', 'PLACEMENT_TEST', 'DIAGNOSTIC', 'PRACTICE'])
+
 // Schema para editar examen
 export const EditExamSchema = z.object({
   title: z.string().min(1, 'El título es requerido').optional(),
@@ -154,6 +157,13 @@ export const EditExamSchema = z.object({
   blockCopyPaste: z.boolean().optional(),
   blockRightClick: z.boolean().optional(),
   maxWarnings: z.number().min(1).max(20).optional(),
+
+  // Placement test fields
+  examType: ExamTypeEnum.optional(),
+  targetLanguage: z.string().nullable().optional(),
+  slug: z.string().nullable().optional(),
+  isPublicAccess: z.boolean().optional(),
+  isGuestAccessible: z.boolean().optional(),
 
   // Contexto
   courseId: z.string().optional(),

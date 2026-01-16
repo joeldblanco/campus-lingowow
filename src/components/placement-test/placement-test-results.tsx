@@ -12,7 +12,7 @@ import { toast } from 'sonner'
 
 interface PlacementTestResultsProps {
   result: PlacementTestResult
-  recommendedCourses: RecommendedCourse[]
+  recommendedCourses?: RecommendedCourse[]
 }
 
 const LEVEL_DESCRIPTIONS: Record<LanguageLevel, { title: string; description: string }> = {
@@ -141,7 +141,7 @@ export function PlacementTestResults({ result, recommendedCourses }: PlacementTe
         </CardFooter>
       </Card>
 
-      {recommendedCourses.length > 0 && (
+      {recommendedCourses && recommendedCourses.length > 0 && (
         <div>
           <h2 className="text-2xl font-bold mb-4">Cursos Recomendados para Ti</h2>
           <p className="text-muted-foreground mb-6">
@@ -189,7 +189,7 @@ export function PlacementTestResults({ result, recommendedCourses }: PlacementTe
         </div>
       )}
 
-      {recommendedCourses.length === 0 && (
+      {(!recommendedCourses || recommendedCourses.length === 0) && (
         <Card className="text-center py-8">
           <CardContent>
             <BookOpen className="h-12 w-12 mx-auto text-muted-foreground mb-4" />

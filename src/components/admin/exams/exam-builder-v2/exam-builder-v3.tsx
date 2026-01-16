@@ -42,10 +42,7 @@ import {
   CheckCircle,
   LayoutGrid,
   Trash2,
-  GraduationCap,
   ClipboardCheck,
-  Stethoscope,
-  Dumbbell,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
@@ -647,9 +644,10 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
     blockCopyPaste: exam?.blockCopyPaste ?? DEFAULT_EXAM_SETTINGS.blockCopyPaste,
     blockRightClick: exam?.blockRightClick ?? DEFAULT_EXAM_SETTINGS.blockRightClick,
     maxWarnings: exam?.maxWarnings ?? DEFAULT_EXAM_SETTINGS.maxWarnings,
-    examType: exam?.examType || DEFAULT_EXAM_SETTINGS.examType,
-    isGuestAccessible: exam?.isGuestAccessible ?? DEFAULT_EXAM_SETTINGS.isGuestAccessible,
+    isPlacementTest: exam?.examType === 'PLACEMENT_TEST',
     targetLanguage: exam?.targetLanguage || DEFAULT_EXAM_SETTINGS.targetLanguage,
+    slug: exam?.slug || '',
+    isPublicAccess: exam?.isPublicAccess ?? DEFAULT_EXAM_SETTINGS.isPublicAccess,
   })
 
   const [isPublished, setIsPublished] = useState(exam?.isPublished || false)
@@ -994,9 +992,16 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
         blockCopyPaste: settings.blockCopyPaste,
         blockRightClick: settings.blockRightClick,
         maxWarnings: settings.maxWarnings,
-        courseId: courseId || undefined,
-        moduleId: moduleId || undefined,
-        lessonId: lessonId || undefined,
+        // Placement test fields
+        examType: settings.isPlacementTest ? 'PLACEMENT_TEST' as const : 'COURSE_EXAM' as const,
+        targetLanguage: settings.isPlacementTest ? settings.targetLanguage : null,
+        slug: settings.isPlacementTest && settings.slug ? settings.slug : null,
+        isPublicAccess: settings.isPlacementTest ? settings.isPublicAccess : false,
+        isGuestAccessible: settings.isPlacementTest ? settings.isPublicAccess : false,
+        // Course assignment (only for non-placement tests)
+        courseId: settings.isPlacementTest ? undefined : (courseId || undefined),
+        moduleId: settings.isPlacementTest ? undefined : (moduleId || undefined),
+        lessonId: settings.isPlacementTest ? undefined : (lessonId || undefined),
         sections: sectionsData,
         createdById: session?.user?.id || 'anonymous',
         isPublished: publish || isPublished,
@@ -1099,6 +1104,18 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
                     selectedCourse={selectedCourse}
                     selectedModule={selectedModule}
                   />
+                </div>
+                <div className="p-4 border-t bg-muted/30">
+                  <Button 
+                    className="w-full" 
+                    onClick={async () => {
+                      await handleSave()
+                      setSettingsOpen(false)
+                      toast.success('Configuración guardada')
+                    }}
+                  >
+                    Guardar Configuración
+                  </Button>
                 </div>
               </DialogContent>
             </Dialog>
@@ -1299,13 +1316,6 @@ function ExamSettingsForm({
   selectedCourse?: CourseForExam
   selectedModule?: { id: string; title: string; level: string; lessons: { id: string; title: string }[] }
 }) {
-  const EXAM_TYPE_OPTIONS = [
-    { value: 'COURSE_EXAM', label: 'Examen de Curso', icon: <GraduationCap className="h-4 w-4" />, description: 'Examen asociado a un curso específico' },
-    { value: 'PLACEMENT_TEST', label: 'Test de Clasificación', icon: <ClipboardCheck className="h-4 w-4" />, description: 'Determina el nivel del estudiante' },
-    { value: 'DIAGNOSTIC', label: 'Examen Diagnóstico', icon: <Stethoscope className="h-4 w-4" />, description: 'Evalúa conocimientos previos' },
-    { value: 'PRACTICE', label: 'Práctica Libre', icon: <Dumbbell className="h-4 w-4" />, description: 'Examen de práctica sin restricciones' },
-  ]
-
   const TARGET_LANGUAGES = [
     { value: 'en', label: '🇺🇸 Inglés' },
     { value: 'es', label: '🇪🇸 Español' },
@@ -1315,41 +1325,30 @@ function ExamSettingsForm({
     { value: 'it', label: '🇮🇹 Italiano' },
   ]
 
-  const isPlacementTest = settings.examType === 'PLACEMENT_TEST'
-
   return (
     <div className="space-y-6 py-4">
-      {/* Exam Type */}
+      {/* Placement Test Toggle */}
       <div className="space-y-4">
-        <Label className="text-base font-semibold">Tipo de Examen</Label>
-        
-        <div className="space-y-2">
-          <Label>Tipo</Label>
-          <Select
-            value={settings.examType}
-            onValueChange={(value) => onUpdate({ ...settings, examType: value as ExamSettings['examType'] })}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Seleccionar tipo" />
-            </SelectTrigger>
-            <SelectContent>
-              {EXAM_TYPE_OPTIONS.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  <div className="flex items-center gap-2">
-                    {option.icon}
-                    <span>{option.label}</span>
-                  </div>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <p className="text-xs text-muted-foreground">
-            {EXAM_TYPE_OPTIONS.find(o => o.value === settings.examType)?.description}
-          </p>
+        <div className="flex items-center justify-between p-4 border rounded-lg bg-muted/30">
+          <div className="flex items-center gap-3">
+            <ClipboardCheck className="h-5 w-5 text-primary" />
+            <div>
+              <Label className="text-base font-semibold">Test de Clasificación</Label>
+              <p className="text-xs text-muted-foreground">Examen para determinar el nivel del estudiante</p>
+            </div>
+          </div>
+          <Switch
+            checked={settings.isPlacementTest}
+            onCheckedChange={(checked) => onUpdate({ 
+              ...settings, 
+              isPlacementTest: checked,
+              isPublicAccess: checked ? settings.isPublicAccess : false,
+            })}
+          />
         </div>
 
-        {isPlacementTest && (
-          <>
+        {settings.isPlacementTest && (
+          <div className="space-y-4 p-4 border rounded-lg border-primary/20 bg-primary/5">
             <div className="space-y-2">
               <Label>Idioma Objetivo</Label>
               <Select
@@ -1369,21 +1368,41 @@ function ExamSettingsForm({
               </Select>
             </div>
 
+            <div className="space-y-2">
+              <Label>URL del Test (slug)</Label>
+              <div className="flex gap-2">
+                <div className="flex-1 flex items-center">
+                  <span className="text-sm text-muted-foreground bg-muted px-3 py-2 rounded-l-md border border-r-0">/test/</span>
+                  <Input
+                    value={settings.slug}
+                    onChange={(e) => onUpdate({ ...settings, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '') })}
+                    placeholder="mi-test-ingles"
+                    className="rounded-l-none"
+                  />
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                URL única para acceder al test. Solo letras, números y guiones.
+              </p>
+            </div>
+
             <div className="flex items-center justify-between">
               <div>
-                <Label>Acceso para Invitados</Label>
-                <p className="text-xs text-muted-foreground">Usuarios GUEST pueden tomar este test</p>
+                <Label>Acceso Público</Label>
+                <p className="text-xs text-muted-foreground">Cualquiera con el link puede tomar el test</p>
               </div>
               <Switch
-                checked={settings.isGuestAccessible}
-                onCheckedChange={(checked) => onUpdate({ ...settings, isGuestAccessible: checked })}
+                checked={settings.isPublicAccess}
+                onCheckedChange={(checked) => onUpdate({ ...settings, isPublicAccess: checked })}
               />
             </div>
 
-            <p className="text-xs text-muted-foreground bg-muted p-2 rounded">
-              ℹ️ Los usuarios solo pueden tomar 1 placement test por idioma
-            </p>
-          </>
+            {!settings.isPublicAccess && (
+              <p className="text-xs text-muted-foreground bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 p-2 rounded border border-amber-200 dark:border-amber-800">
+                ⚠️ Solo usuarios asignados podrán tomar este test
+              </p>
+            )}
+          </div>
         )}
       </div>
 
@@ -1469,66 +1488,70 @@ function ExamSettingsForm({
         </div>
       </div>
 
-      {/* Course Assignment */}
-      <Separator />
-      <div className="space-y-4">
-        <Label className="text-base font-semibold">Asignar a Curso</Label>
+      {/* Course Assignment - Only show for non-placement tests */}
+      {!settings.isPlacementTest && (
+        <>
+          <Separator />
+          <div className="space-y-4">
+            <Label className="text-base font-semibold">Asignar a Curso</Label>
 
-        <div className="space-y-2">
-          <Label>Curso</Label>
-          <Select value={courseId || '__none__'} onValueChange={(v) => { setCourseId(v === '__none__' ? '' : v); setModuleId(''); setLessonId('') }}>
-            <SelectTrigger>
-              <SelectValue placeholder="Seleccionar curso" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="__none__">Sin asignar</SelectItem>
-              {courses.map((course) => (
-                <SelectItem key={course.id} value={course.id}>
-                  {course.title}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+            <div className="space-y-2">
+              <Label>Curso</Label>
+              <Select value={courseId || '__none__'} onValueChange={(v) => { setCourseId(v === '__none__' ? '' : v); setModuleId(''); setLessonId('') }}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Seleccionar curso" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="__none__">Sin asignar</SelectItem>
+                  {courses.map((course) => (
+                    <SelectItem key={course.id} value={course.id}>
+                      {course.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-        {selectedCourse && (
-          <div className="space-y-2">
-            <Label>Módulo</Label>
-            <Select value={moduleId || '__none__'} onValueChange={(v) => { setModuleId(v === '__none__' ? '' : v); setLessonId('') }}>
-              <SelectTrigger>
-                <SelectValue placeholder="Seleccionar módulo" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="__none__">Sin asignar</SelectItem>
-                {selectedCourse.modules.map((mod) => (
-                  <SelectItem key={mod.id} value={mod.id}>
-                    {mod.title}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            {selectedCourse && (
+              <div className="space-y-2">
+                <Label>Módulo</Label>
+                <Select value={moduleId || '__none__'} onValueChange={(v) => { setModuleId(v === '__none__' ? '' : v); setLessonId('') }}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Seleccionar módulo" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__none__">Sin asignar</SelectItem>
+                    {selectedCourse.modules.map((mod) => (
+                      <SelectItem key={mod.id} value={mod.id}>
+                        {mod.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
+            {selectedModule && (
+              <div className="space-y-2">
+                <Label>Lección</Label>
+                <Select value={lessonId || '__none__'} onValueChange={(v) => setLessonId(v === '__none__' ? '' : v)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Seleccionar lección" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__none__">Sin asignar</SelectItem>
+                    {selectedModule.lessons.map((lesson) => (
+                      <SelectItem key={lesson.id} value={lesson.id}>
+                        {lesson.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
           </div>
-        )}
-
-        {selectedModule && (
-          <div className="space-y-2">
-            <Label>Lección</Label>
-            <Select value={lessonId || '__none__'} onValueChange={(v) => setLessonId(v === '__none__' ? '' : v)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Seleccionar lección" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="__none__">Sin asignar</SelectItem>
-                {selectedModule.lessons.map((lesson) => (
-                  <SelectItem key={lesson.id} value={lesson.id}>
-                    {lesson.title}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        )}
-      </div>
+        </>
+      )}
     </div>
   )
 }

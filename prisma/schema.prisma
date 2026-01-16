@@ -1710,6 +1710,8 @@ model Exam {
   examType          ExamType  @default(COURSE_EXAM) // Tipo de examen
   isGuestAccessible Boolean   @default(false) // Permite acceso a usuarios GUEST sin inscripción
   targetLanguage    String?   // Idioma objetivo para placement tests (en, es, etc.)
+  slug              String?   @unique // URL amigable para acceso directo (/test/[slug])
+  isPublicAccess    Boolean   @default(false) // true = cualquiera con link, false = solo asignados
   
   // Configuración de Proctoring
   proctoringEnabled   Boolean @default(true) // Habilitar proctoring
