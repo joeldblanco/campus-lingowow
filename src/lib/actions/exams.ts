@@ -434,6 +434,12 @@ export async function createExam(
           blockCopyPaste: validatedData.blockCopyPaste,
           blockRightClick: validatedData.blockRightClick,
           maxWarnings: validatedData.maxWarnings,
+          // Placement test fields
+          examType: validatedData.examType,
+          targetLanguage: validatedData.targetLanguage,
+          slug: validatedData.slug,
+          isPublicAccess: validatedData.isPublicAccess,
+          isGuestAccessible: validatedData.isGuestAccessible,
           createdById: validatedData.createdById,
           courseId: validatedData.courseId || null,
           moduleId: validatedData.moduleId || null,
