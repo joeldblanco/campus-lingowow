@@ -11,27 +11,22 @@ interface QuestionNavigatorProps {
     status: QuestionStatus
     navIndex?: number // Índice real de navegación en allQuestions
   }[]
-  currentIndex: number
   onNavigate: (index: number) => void
   className?: string
 }
 
 export function QuestionNavigator({ 
   questions, 
-  currentIndex, 
   onNavigate,
   className 
 }: QuestionNavigatorProps) {
   const [showLegend, setShowLegend] = useState(false)
 
-  const getButtonStyles = (status: QuestionStatus, index: number) => {
-    const isCurrent = index === currentIndex
-    
-    if (isCurrent) {
-      return "bg-white dark:bg-gray-900 border-2 border-primary text-primary shadow-sm"
-    }
-    
+  const getButtonStyles = (status: QuestionStatus) => {
+    // El status 'current' ya viene calculado correctamente desde el componente padre
     switch (status) {
+      case 'current':
+        return "bg-white dark:bg-gray-900 border-2 border-primary text-primary shadow-sm"
       case 'answered':
         return "bg-primary text-white hover:bg-primary/90"
       case 'flagged':
@@ -64,7 +59,7 @@ export function QuestionNavigator({
                 onClick={() => onNavigate(targetIndex)}
                 className={cn(
                   "aspect-square flex items-center justify-center rounded-lg text-sm font-bold transition-colors relative",
-                  getButtonStyles(question.status, index)
+                  getButtonStyles(question.status)
                 )}
               >
                 {index + 1}

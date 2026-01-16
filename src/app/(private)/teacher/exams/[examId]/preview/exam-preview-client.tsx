@@ -387,7 +387,6 @@ export function ExamPreviewClient({
 
               <QuestionNavigator
                 questions={questionStatuses}
-                currentIndex={currentQuestionIndex}
                 onNavigate={handleNavigate}
               />
             </div>

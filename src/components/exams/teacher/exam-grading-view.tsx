@@ -115,7 +115,7 @@ export function ExamGradingView({
   const [isFinishing, setIsFinishing] = useState(false)
 
   const currentAnswer = answers[currentQuestionIndex]
-  const pendingReviewCount = answers.filter(a => a.needsReview).length
+  const pendingReviewCount = answers.filter(a => a.needsReview && !a.isInformativeBlock).length
   const needsReview = pendingReviewCount > 0
 
   // Obtener todas las preguntas del grupo actual (si pertenece a un grupo)
@@ -129,11 +129,15 @@ export function ExamGradingView({
   }, [currentAnswer, answers])
 
   // Calcular índices de navegación (primer índice de cada grupo o pregunta individual)
+  // Excluir bloques informativos del navegador
   const navigationIndices = useMemo(() => {
     const indices: number[] = []
     const processedGroupIds = new Set<string>()
     
     answers.forEach((a, index) => {
+      // Saltar bloques informativos
+      if (a.isInformativeBlock) return
+      
       const groupId = a.groupId
       
       if (groupId) {
@@ -155,6 +159,20 @@ export function ExamGradingView({
     if (answer.isCorrect === false) return 'incorrect'
     return 'unanswered'
   }
+  
+  // Generar estados para el navegador de preguntas (solo preguntas respondibles)
+  const navigatorQuestions = useMemo(() => {
+    return navigationIndices.map((navIndex, displayIndex) => {
+      const answer = answers[navIndex]
+      const status = getQuestionStatus(answer)
+      return {
+        id: answer.id,
+        displayNumber: displayIndex + 1,
+        navIndex,
+        status
+      }
+    })
+  }, [navigationIndices, answers])
 
   const handleSaveGrade = useCallback(async (answerId: string) => {
     const grade = localGrades[answerId]
@@ -261,23 +279,22 @@ export function ExamGradingView({
             <div className="bg-white dark:bg-[#1a2632] rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
               <h3 className="font-bold text-foreground text-sm uppercase tracking-wider mb-4">Navegador de Preguntas</h3>
               <div className="grid grid-cols-5 gap-2">
-                {answers.map((answer, index) => {
-                  const status = getQuestionStatus(answer)
-                  const isCurrent = index === currentQuestionIndex
+                {navigatorQuestions.map((q) => {
+                  const isCurrent = q.navIndex === currentQuestionIndex
                   return (
                     <button
-                      key={answer.id}
-                      onClick={() => setCurrentQuestionIndex(index)}
+                      key={q.id}
+                      onClick={() => setCurrentQuestionIndex(q.navIndex)}
                       className={cn(
                         "aspect-square flex items-center justify-center rounded-lg text-sm font-bold transition-colors",
                         isCurrent && "ring-2 ring-primary",
-                        status === 'correct' && "bg-green-100 text-green-700",
-                        status === 'incorrect' && "bg-red-100 text-red-700",
-                        status === 'pending' && "bg-yellow-100 text-yellow-700",
-                        status === 'unanswered' && "bg-gray-100 text-gray-500"
+                        q.status === 'correct' && "bg-green-100 text-green-700",
+                        q.status === 'incorrect' && "bg-red-100 text-red-700",
+                        q.status === 'pending' && "bg-yellow-100 text-yellow-700",
+                        q.status === 'unanswered' && "bg-gray-100 text-gray-500"
                       )}
                     >
-                      {index + 1}
+                      {q.displayNumber}
                     </button>
                   )
                 })}
@@ -287,7 +304,7 @@ export function ExamGradingView({
             <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900 rounded-xl p-4">
               <h4 className="font-bold text-foreground text-sm mb-2">Nota del Profesor</h4>
               <p className="text-sm text-muted-foreground mb-3">
-                Este examen incluye {answers.filter(a => a.needsReview).length} pregunta(s) de ensayo que requieren calificación manual.
+                Este examen incluye {answers.filter(a => a.needsReview && !a.isInformativeBlock).length} pregunta(s) de ensayo que requieren calificación manual.
               </p>
               <Button 
                 variant="outline" 
@@ -606,21 +623,14 @@ export function ExamGradingView({
               <Button
                 variant="ghost"
                 onClick={() => {
-                  // Encontrar el grupo actual y navegar al anterior
-                  let currentNavIndex = -1
-                  for (let i = 0; i < navigationIndices.length; i++) {
-                    if (navigationIndices[i] <= currentQuestionIndex) {
-                      currentNavIndex = i
-                    } else {
-                      break
-                    }
-                  }
-                  const prevNavIndex = currentNavIndex > 0 ? currentNavIndex - 1 : -1
-                  if (prevNavIndex >= 0) {
-                    setCurrentQuestionIndex(navigationIndices[prevNavIndex])
+                  // Encontrar el índice actual en navigatorQuestions y navegar al anterior
+                  const currentNavQIndex = navigatorQuestions.findIndex(q => q.navIndex === currentQuestionIndex)
+                  if (currentNavQIndex > 0) {
+                    setCurrentQuestionIndex(navigatorQuestions[currentNavQIndex - 1].navIndex)
                   }
                 }}
-                disabled={navigationIndices.length === 0 || currentQuestionIndex <= navigationIndices[0]}
+                disabled={navigatorQuestions.length === 0 || 
+                  navigatorQuestions.findIndex(q => q.navIndex === currentQuestionIndex) <= 0}
                 className="flex items-center gap-2"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -630,7 +640,7 @@ export function ExamGradingView({
               <span className="text-sm text-muted-foreground">
                 {currentGroupAnswers.length > 1 
                   ? `Grupo de ${currentGroupAnswers.length} preguntas`
-                  : `Pregunta ${currentQuestionIndex + 1} de ${answers.length}`
+                  : `Pregunta ${navigatorQuestions.findIndex(q => q.navIndex === currentQuestionIndex) + 1} de ${navigatorQuestions.length}`
                 }
               </span>
 
@@ -638,24 +648,14 @@ export function ExamGradingView({
                 <Button
                   variant="ghost"
                   onClick={() => {
-                    // Encontrar el grupo actual y navegar al siguiente
-                    let currentNavIndex = -1
-                    for (let i = 0; i < navigationIndices.length; i++) {
-                      if (navigationIndices[i] <= currentQuestionIndex) {
-                        currentNavIndex = i
-                      } else {
-                        break
-                      }
-                    }
-                    const nextNavIndex = currentNavIndex >= 0 && currentNavIndex < navigationIndices.length - 1 
-                      ? currentNavIndex + 1 
-                      : -1
-                    if (nextNavIndex >= 0) {
-                      setCurrentQuestionIndex(navigationIndices[nextNavIndex])
+                    // Encontrar el índice actual en navigatorQuestions y navegar al siguiente
+                    const currentNavQIndex = navigatorQuestions.findIndex(q => q.navIndex === currentQuestionIndex)
+                    if (currentNavQIndex >= 0 && currentNavQIndex < navigatorQuestions.length - 1) {
+                      setCurrentQuestionIndex(navigatorQuestions[currentNavQIndex + 1].navIndex)
                     }
                   }}
-                  disabled={navigationIndices.length === 0 || 
-                    navigationIndices.findIndex(idx => idx > currentQuestionIndex) === -1}
+                  disabled={navigatorQuestions.length === 0 || 
+                    navigatorQuestions.findIndex(q => q.navIndex === currentQuestionIndex) >= navigatorQuestions.length - 1}
                   className="flex items-center gap-2"
                 >
                   Siguiente

@@ -485,7 +485,6 @@ export function ExamViewer({
 
               <QuestionNavigator
                 questions={questionStatuses}
-                currentIndex={currentQuestionIndex}
                 onNavigate={handleNavigate}
               />
 

@@ -45,11 +45,72 @@ export default async function ExamResultsPage({ params }: PageProps) {
     )
   }
 
-  // Expandir respuestas de bloques con múltiples ítems (como multiple_choice con multipleChoiceItems)
+  // Tipos de bloques informativos
+  const INFORMATIVE_BLOCK_TYPES = ['title', 'text', 'audio', 'video', 'image']
+
+  // Tipo para las preguntas del examen
+  type ExamQuestion = {
+    id: string
+    type: string
+    question: string
+    options: unknown
+    correctAnswer: unknown
+    explanation: string | null
+    points: number
+    tags: string[]
+    order: number
+    sectionTitle: string
+  }
+
+  // Obtener todas las preguntas del examen ordenadas por sección y orden
+  const allExamQuestions: ExamQuestion[] = exam.sections
+    .sort((a: { order: number }, b: { order: number }) => a.order - b.order)
+    .flatMap((section: { title: string; questions: Array<{ id: string; type: string; question: string; options: unknown; correctAnswer: unknown; explanation: string | null; points: number; tags: string[]; order: number }> }) => 
+      section.questions
+        .sort((a: { order: number }, b: { order: number }) => a.order - b.order)
+        .map((q: { id: string; type: string; question: string; options: unknown; correctAnswer: unknown; explanation: string | null; points: number; tags: string[]; order: number }) => ({ ...q, sectionTitle: section.title }))
+    )
+
+  // Crear mapa de respuestas por questionId
+  const answersMap = new Map(attempt.answers.map(a => [a.questionId, a]))
+
+  // Generar resultados en el orden del examen, incluyendo bloques informativos
   let questionNumber = 0
-  const questionResults = attempt.answers.flatMap((answer) => {
-    const correctAnswer = answer.question.correctAnswer
-    const options = answer.question.options as Record<string, unknown> | null
+  const questionResults = allExamQuestions.flatMap((question) => {
+    const options = question.options as Record<string, unknown> | null
+    const originalBlockType = options?.originalBlockType as string | null
+    const isInformative = originalBlockType && INFORMATIVE_BLOCK_TYPES.includes(originalBlockType)
+    
+    // Para bloques informativos, retornar estructura especial
+    if (isInformative) {
+      return [{
+        id: `informative-${question.id}`,
+        questionNumber: 0,
+        type: originalBlockType,
+        category: undefined,
+        question: question.question,
+        userAnswer: null,
+        correctAnswer: '',
+        isCorrect: true,
+        pointsEarned: 0,
+        maxPoints: 0,
+        explanation: null,
+        needsReview: false,
+        audioUrl: undefined,
+        isInformativeBlock: true,
+        informativeContent: {
+          type: originalBlockType,
+          audioUrl: (options?.audioUrl || options?.url) as string | undefined,
+          videoUrl: (options?.videoUrl || (originalBlockType === 'video' ? options?.url : undefined)) as string | undefined,
+          imageUrl: (options?.imageUrl || (originalBlockType === 'image' ? options?.url : undefined)) as string | undefined,
+          text: (options?.text || options?.content) as string | undefined,
+          title: options?.title as string | undefined,
+        }
+      }]
+    }
+    
+    const answer = answersMap.get(question.id)
+    const correctAnswer = question.correctAnswer
     
     // Verificar si es un bloque con múltiples ítems (multiple_choice con multipleChoiceItems)
     const multipleChoiceItems = options?.multipleChoiceItems as { 
@@ -59,7 +120,7 @@ export default async function ExamResultsPage({ params }: PageProps) {
       correctOptionId?: string;
     }[] | undefined
     
-    if (multipleChoiceItems && multipleChoiceItems.length > 0) {
+    if (multipleChoiceItems && multipleChoiceItems.length > 0 && answer) {
       // Expandir cada ítem como un resultado individual
       const userAnswers = answer.answer as Record<string, string> | null
       
@@ -74,15 +135,17 @@ export default async function ExamResultsPage({ params }: PageProps) {
         return {
           id: `${answer.id}-${item.id}`,
           questionNumber,
-          type: answer.question.type,
-          category: answer.question.tags?.[0] || undefined,
+          type: question.type,
+          category: question.tags?.[0] || undefined,
           question: item.question,
           userAnswer: userOption?.text || userAnswer,
           correctAnswer: correctOption?.text || correctOptionId || 'N/A',
           isCorrect: isItemCorrect,
-          pointsEarned: isItemCorrect ? (answer.question.points / multipleChoiceItems.length) : 0,
-          maxPoints: answer.question.points / multipleChoiceItems.length,
-          explanation: answer.question.explanation
+          pointsEarned: isItemCorrect ? (question.points / multipleChoiceItems.length) : 0,
+          maxPoints: question.points / multipleChoiceItems.length,
+          explanation: question.explanation,
+          needsReview: false,
+          isInformativeBlock: false
         }
       })
     }
@@ -91,19 +154,19 @@ export default async function ExamResultsPage({ params }: PageProps) {
     questionNumber++
     
     // Para preguntas tipo ESSAY, no mostrar "null" como respuesta correcta
-    const isEssayType = answer.question.type === 'ESSAY'
+    const isEssayType = question.type === 'ESSAY'
     const displayCorrectAnswer = isEssayType 
       ? 'Requiere revisión manual del profesor'
       : (Array.isArray(correctAnswer) ? correctAnswer.join(', ') : (correctAnswer ? String(correctAnswer) : 'N/A'))
     
     // Para Essay, si está pendiente de revisión, no marcar como incorrecta
-    const displayIsCorrect = isEssayType && answer.needsReview 
+    const displayIsCorrect = isEssayType && answer?.needsReview 
       ? null // Pendiente de revisión
-      : (answer.isCorrect ?? false)
+      : (answer?.isCorrect ?? false)
     
     // Formatear la respuesta del usuario para mostrar
     let displayUserAnswer: string | null = null
-    if (answer.answer) {
+    if (answer?.answer) {
       // Si es un objeto con audioUrl (grabación), mostrar mensaje apropiado
       if (typeof answer.answer === 'object' && (answer.answer as { audioUrl?: string }).audioUrl) {
         displayUserAnswer = '🎤 Grabación de audio enviada'
@@ -116,34 +179,36 @@ export default async function ExamResultsPage({ params }: PageProps) {
     }
     
     return [{
-      id: answer.id,
+      id: answer?.id || `no-answer-${question.id}`,
       questionNumber,
-      type: answer.question.type,
-      category: answer.question.tags?.[0] || undefined,
-      question: answer.question.question,
+      type: question.type,
+      category: question.tags?.[0] || undefined,
+      question: question.question,
       userAnswer: displayUserAnswer,
       correctAnswer: displayCorrectAnswer,
       isCorrect: displayIsCorrect ?? false,
-      pointsEarned: answer.pointsEarned,
-      maxPoints: answer.question.points,
-      explanation: answer.question.explanation,
-      needsReview: answer.needsReview,
-      audioUrl: typeof answer.answer === 'object' ? (answer.answer as { audioUrl?: string }).audioUrl : undefined
+      pointsEarned: answer?.pointsEarned ?? 0,
+      maxPoints: question.points,
+      explanation: question.explanation,
+      needsReview: answer?.needsReview ?? isEssayType,
+      audioUrl: typeof answer?.answer === 'object' ? (answer.answer as { audioUrl?: string }).audioUrl : undefined,
+      isInformativeBlock: false
     }]
   })
 
-  const correctAnswersCount = questionResults.filter(r => r.isCorrect).length
-  const totalQuestionsCount = questionResults.length
+  // Filtrar solo preguntas respondibles (no informativas) para estadísticas
+  const answerableResults = questionResults.filter(r => !r.isInformativeBlock)
+  const correctAnswersCount = answerableResults.filter(r => r.isCorrect && !r.needsReview).length
+  const totalAnswerableCount = answerableResults.length
   
-  // Calcular el score basado en respuestas correctas si el score guardado es 0 o null
-  // Esto ocurre cuando hay preguntas pendientes de revisión
-  const calculatedScore = totalQuestionsCount > 0 
-    ? Math.round((correctAnswersCount / totalQuestionsCount) * 100) 
+  // Siempre calcular el score basado en respuestas correctas
+  // No usar attempt.score porque puede estar desactualizado si la auto-calificación falló
+  const displayScore = totalAnswerableCount > 0 
+    ? Math.round((correctAnswersCount / totalAnswerableCount) * 100) 
     : 0
-  const displayScore = (attempt.score ?? 0) > 0 ? attempt.score! : calculatedScore
   
   // Determinar si aprobó basado en el score calculado o si tiene preguntas pendientes de revisión
-  const hasPendingReview = questionResults.some(r => 'needsReview' in r && r.needsReview)
+  const hasPendingReview = answerableResults.some(r => r.needsReview)
   const passed: boolean | 'pending' = hasPendingReview ? 'pending' : displayScore >= exam.passingScore
 
   return (
@@ -151,12 +216,14 @@ export default async function ExamResultsPage({ params }: PageProps) {
       examTitle={exam.title}
       examDescription={exam.description}
       score={displayScore}
+      passingScore={exam.passingScore}
       totalPoints={attempt.totalPoints ?? 0}
       maxPoints={attempt.maxPoints ?? 0}
       correctAnswers={correctAnswersCount}
-      totalQuestions={questionResults.length}
+      totalQuestions={totalAnswerableCount}
       timeSpent={attempt.timeSpent ?? 0}
       passed={passed}
+      hasPendingReview={hasPendingReview}
       xpEarned={passed ? 350 : 100}
       questionResults={questionResults}
       dashboardUrl="/dashboard"

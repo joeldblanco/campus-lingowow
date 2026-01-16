@@ -840,19 +840,66 @@ export async function saveExamAnswer(
 
     if (isAutoGradable && answer !== null && answer !== undefined) {
       const correctAnswer = question.correctAnswer as string | string[]
-      const userAnswer = String(answer).trim()
-
-      if (Array.isArray(correctAnswer)) {
-        isCorrect = correctAnswer.some((ca) =>
-          question.caseSensitive ? ca === userAnswer : ca.toLowerCase() === userAnswer.toLowerCase()
-        )
+      
+      // Verificar si es una pregunta de opción múltiple con múltiples pasos (answer es un objeto con IDs)
+      if (typeof answer === 'object' && answer !== null && !Array.isArray(answer)) {
+        // Para preguntas multi-step, comparar cada respuesta individual
+        const userAnswers = answer as Record<string, string>
+        let correctAnswerArray: string[] = []
+        
+        if (typeof correctAnswer === 'string') {
+          // El correctAnswer puede estar guardado como string separado por comas
+          correctAnswerArray = correctAnswer.split(',').map(s => s.trim())
+        } else if (Array.isArray(correctAnswer)) {
+          correctAnswerArray = correctAnswer
+        }
+        
+        // Obtener los items de la pregunta para mapear correctamente
+        const options = question.options as Record<string, unknown> | null
+        const multipleChoiceItems = options?.multipleChoiceItems as Array<{ id: string; options: Array<{ id: string }> }> | undefined
+        
+        if (multipleChoiceItems && multipleChoiceItems.length > 0) {
+          // Comparar cada respuesta del usuario con la respuesta correcta correspondiente
+          let allCorrect = true
+          let correctCount = 0
+          
+          multipleChoiceItems.forEach((item, index) => {
+            const userOptionId = userAnswers[item.id]
+            const correctOptionId = correctAnswerArray[index]
+            
+            if (userOptionId === correctOptionId) {
+              correctCount++
+            } else {
+              allCorrect = false
+            }
+          })
+          
+          isCorrect = allCorrect
+          // Puntos parciales: proporción de respuestas correctas
+          pointsEarned = Math.round((correctCount / multipleChoiceItems.length) * question.points)
+        } else {
+          // Fallback: comparar valores directamente
+          const userValues = Object.values(userAnswers).sort()
+          const correctValues = correctAnswerArray.sort()
+          isCorrect = JSON.stringify(userValues) === JSON.stringify(correctValues)
+          pointsEarned = isCorrect ? question.points : 0
+        }
       } else {
-        isCorrect = question.caseSensitive
-          ? correctAnswer === userAnswer
-          : correctAnswer.toLowerCase() === userAnswer.toLowerCase()
-      }
+        // Para respuestas simples (string)
+        const userAnswer = String(answer).trim()
 
-      pointsEarned = isCorrect ? question.points : 0
+        if (Array.isArray(correctAnswer)) {
+          isCorrect = correctAnswer.some((ca) =>
+            question.caseSensitive ? ca === userAnswer : ca.toLowerCase() === userAnswer.toLowerCase()
+          )
+        } else {
+          isCorrect = question.caseSensitive
+            ? correctAnswer === userAnswer
+            : correctAnswer.toLowerCase() === userAnswer.toLowerCase()
+        }
+
+        pointsEarned = isCorrect ? question.points : 0
+      }
     } else {
       needsReview = true
     }
@@ -1014,6 +1061,28 @@ export async function getExamResultsForStudent(attemptId: string, userId: string
             passingScore: true,
             showResults: true,
             allowReview: true,
+            sections: {
+              select: {
+                id: true,
+                title: true,
+                order: true,
+                questions: {
+                  select: {
+                    id: true,
+                    type: true,
+                    question: true,
+                    options: true,
+                    correctAnswer: true,
+                    explanation: true,
+                    points: true,
+                    tags: true,
+                    order: true,
+                  },
+                  orderBy: { order: 'asc' },
+                },
+              },
+              orderBy: { order: 'asc' },
+            },
           },
         },
         answers: {

@@ -1,20 +1,25 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { 
-  CheckCircle, 
-  XCircle, 
-  Timer, 
-  Target, 
-  ArrowRight,
-  Lightbulb,
-  ChevronDown,
-  Clock,
-  Play
-} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { WaveformAudioPlayer } from '@/components/ui/waveform-audio-player'
+import {
+  ArrowRight,
+  CheckCircle,
+  ChevronDown,
+  Clock,
+  FileText,
+  Image as ImageIcon,
+  Lightbulb,
+  Target,
+  Timer,
+  Type,
+  Video,
+  Volume2,
+  XCircle,
+} from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 interface QuestionResult {
   id: string
@@ -30,18 +35,29 @@ interface QuestionResult {
   explanation?: string | null
   audioUrl?: string | null
   needsReview?: boolean
+  isInformativeBlock?: boolean
+  informativeContent?: {
+    type: string
+    audioUrl?: string
+    videoUrl?: string
+    imageUrl?: string
+    text?: string
+    title?: string
+  }
 }
 
 interface ExamResultsProps {
   examTitle: string
   examDescription?: string
   score: number
+  passingScore: number
   totalPoints: number
   maxPoints: number
   correctAnswers: number
   totalQuestions: number
   timeSpent: number
   passed: boolean | 'pending'
+  hasPendingReview: boolean
   xpEarned?: number
   questionResults: QuestionResult[]
   nextLessonUrl?: string
@@ -52,15 +68,17 @@ export function ExamResults({
   examTitle,
   examDescription,
   score,
+  passingScore,
   correctAnswers,
   totalQuestions,
   timeSpent,
   passed,
+  hasPendingReview,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   xpEarned = 0,
   questionResults,
   nextLessonUrl,
-  dashboardUrl = '/dashboard'
+  dashboardUrl = '/dashboard',
 }: ExamResultsProps) {
   const router = useRouter()
   const [filter, setFilter] = useState<'all' | 'correct' | 'incorrect'>('all')
@@ -68,7 +86,7 @@ export function ExamResults({
   const filteredResults = questionResults.filter((result) => {
     // Las preguntas pendientes de revisión solo se muestran con el filtro 'all'
     if (result.needsReview) return filter === 'all'
-    
+
     // Para las demás preguntas, aplicar filtros normales
     if (filter === 'correct') return result.isCorrect
     if (filter === 'incorrect') return !result.isCorrect
@@ -91,18 +109,19 @@ export function ExamResults({
 
   return (
     <div className="min-h-screen bg-background">
-
       <div className="flex-1 max-w-[1024px] mx-auto w-full px-6 py-8 md:py-10">
         <div className="mb-10 flex flex-col gap-6 text-center">
           <div className="flex flex-col items-center gap-2">
-            <div className={cn(
-              "inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold",
-              passed === 'pending'
-                ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400"
-                : passed 
-                  ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
-                  : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
-            )}>
+            <div
+              className={cn(
+                'inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold',
+                passed === 'pending'
+                  ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
+                  : passed
+                    ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                    : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+              )}
+            >
               {passed === 'pending' ? (
                 <>
                   <Clock className="h-4 w-4" />
@@ -123,46 +142,88 @@ export function ExamResults({
             <h1 className="text-foreground text-3xl md:text-4xl font-bold leading-tight tracking-tight">
               Resultados: {examTitle}
             </h1>
-            {examDescription && (
-              <p className="text-muted-foreground text-lg">{examDescription}</p>
-            )}
+            {examDescription && <p className="text-muted-foreground text-lg">{examDescription}</p>}
           </div>
 
           <div className="bg-white dark:bg-[#1a2632] rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 md:p-8">
             <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-              <div className="relative size-40 md:size-48 flex items-center justify-center">
-                <svg className="size-full -rotate-90" viewBox="0 0 36 36">
-                  <path
-                    className="text-gray-100 dark:text-gray-700"
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                  />
-                  <path
-                    className={cn(
-                      passed === 'pending' ? "text-yellow-500" : passed ? "text-primary" : "text-red-500"
-                    )}
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeDasharray={`${score}, 100`}
-                    strokeWidth="3"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-4xl md:text-5xl font-bold text-foreground">{Math.round(score)}%</span>
-                  <span className="text-sm font-medium text-muted-foreground uppercase tracking-wide mt-1">Puntaje</span>
+              <div className="flex flex-col items-center gap-3">
+                <div className="relative size-40 md:size-48 flex items-center justify-center">
+                  <svg className="size-full -rotate-90" viewBox="0 0 36 36">
+                    <path
+                      className="text-gray-100 dark:text-gray-700"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                    />
+                    <path
+                      className={cn(
+                        passed === 'pending'
+                          ? 'text-yellow-500'
+                          : passed
+                            ? 'text-primary'
+                            : 'text-red-500'
+                      )}
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeDasharray={`${score}, 100`}
+                      strokeWidth="3"
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <span className="text-4xl md:text-5xl font-bold text-foreground">
+                      {Math.round(score)}%
+                    </span>
+                    <span className="text-sm font-medium text-muted-foreground uppercase tracking-wide mt-1">
+                      Puntaje
+                    </span>
+                  </div>
+                  {/* Indicador del score mínimo requerido */}
+                  <div 
+                    className="absolute flex items-center gap-1"
+                    style={{
+                      transform: `rotate(${(passingScore / 100) * 360 - 90}deg)`,
+                      transformOrigin: 'center',
+                      left: '50%',
+                      top: '50%',
+                    }}
+                  >
+                    <div 
+                      className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-b-[10px] border-b-red-500"
+                      style={{
+                        transform: 'translateX(-50%) translateY(-80px)',
+                      }}
+                    />
+                  </div>
                 </div>
+                {/* Texto del mínimo requerido */}
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <div className="w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-b-[6px] border-b-red-500" />
+                  <span>Mínimo requerido: <strong className="text-red-600 dark:text-red-400">{passingScore}%</strong></span>
+                </div>
+                {/* Aviso de revisión pendiente */}
+                {hasPendingReview && (
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg text-xs text-yellow-700 dark:text-yellow-400">
+                    <Clock className="h-3.5 w-3.5" />
+                    <span>El puntaje final puede variar tras la revisión manual</span>
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 w-full md:w-auto flex-1">
                 <div className="flex flex-col items-center md:items-start p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
-                  <span className="text-muted-foreground text-sm font-medium mb-1">Respuestas Correctas</span>
+                  <span className="text-muted-foreground text-sm font-medium mb-1">
+                    Respuestas Correctas
+                  </span>
                   <div className="flex items-center gap-2">
                     <CheckCircle className="h-5 w-5 text-green-500" />
                     <span className="text-xl md:text-2xl font-bold text-foreground">
-                      {correctAnswers}<span className="text-muted-foreground text-base font-normal">/{totalQuestions}</span>
+                      {correctAnswers}
+                      <span className="text-muted-foreground text-base font-normal">
+                        /{totalQuestions}
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -170,14 +231,18 @@ export function ExamResults({
                   <span className="text-muted-foreground text-sm font-medium mb-1">Tiempo</span>
                   <div className="flex items-center gap-2">
                     <Timer className="h-5 w-5 text-blue-500" />
-                    <span className="text-xl md:text-2xl font-bold text-foreground">{formatTime(timeSpent)}</span>
+                    <span className="text-xl md:text-2xl font-bold text-foreground">
+                      {formatTime(timeSpent)}
+                    </span>
                   </div>
                 </div>
                 <div className="flex flex-col items-center md:items-start p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
                   <span className="text-muted-foreground text-sm font-medium mb-1">Precisión</span>
                   <div className="flex items-center gap-2">
                     <Target className="h-5 w-5 text-purple-500" />
-                    <span className="text-xl md:text-2xl font-bold text-foreground">{getAccuracyLabel()}</span>
+                    <span className="text-xl md:text-2xl font-bold text-foreground">
+                      {getAccuracyLabel()}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -235,7 +300,9 @@ export function ExamResults({
 
         <div className="sticky bottom-6 mt-12 flex justify-end pointer-events-none">
           <div className="pointer-events-auto bg-white dark:bg-[#1a2632] p-4 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 flex items-center gap-4">
-            <span className="text-sm font-medium text-muted-foreground hidden sm:block">¿Listo para continuar?</span>
+            <span className="text-sm font-medium text-muted-foreground hidden sm:block">
+              ¿Listo para continuar?
+            </span>
             <Button
               onClick={() => router.push(nextLessonUrl || dashboardUrl)}
               className="shadow-md"
@@ -253,27 +320,102 @@ function QuestionResultCard({ result }: { result: QuestionResult }) {
   const [expanded, setExpanded] = useState(true)
 
   const isPendingReview = result.needsReview === true
-  
+  const isInformative = result.isInformativeBlock === true
+
+  // Obtener icono para bloque informativo
+  const getInformativeIcon = () => {
+    const type = result.informativeContent?.type || result.type
+    switch (type) {
+      case 'audio':
+        return <Volume2 className="h-4 w-4" />
+      case 'video':
+        return <Video className="h-4 w-4" />
+      case 'image':
+        return <ImageIcon className="h-4 w-4" />
+      case 'text':
+        return <FileText className="h-4 w-4" />
+      case 'title':
+        return <Type className="h-4 w-4" />
+      default:
+        return <FileText className="h-4 w-4" />
+    }
+  }
+
+  // Para bloques informativos, renderizar de forma diferente
+  if (isInformative) {
+    const blockType = result.informativeContent?.type || result.type
+    const isTextBlock = blockType === 'text'
+    const isTitleBlock = blockType === 'title'
+    
+    // Para bloques de texto, el contenido HTML está en informativeContent.text o en result.question
+    const htmlContent = result.informativeContent?.text || (isTextBlock ? result.question : null)
+    
+    return (
+      <div className="bg-white dark:bg-[#1a2632] rounded-xl shadow-sm border border-l-4 border-gray-200 dark:border-gray-700 border-l-blue-400 overflow-hidden">
+        <div className="p-6">
+          <div className="flex items-start justify-between gap-4 mb-4">
+            <div className="flex items-center gap-3">
+              <span className="flex items-center justify-center size-8 rounded-full font-bold text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+                {getInformativeIcon()}
+              </span>
+              <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 rounded text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase">
+                Contenido Informativo
+              </span>
+            </div>
+          </div>
+          
+          {/* Para títulos, mostrar como texto. Para otros tipos, mostrar título si existe */}
+          {isTitleBlock ? (
+            <h3 className="text-lg font-bold text-foreground mb-4">{result.informativeContent?.title || result.question}</h3>
+          ) : result.informativeContent?.title && (
+            <h3 className="text-lg font-bold text-foreground mb-4">{result.informativeContent.title}</h3>
+          )}
+
+          {result.informativeContent?.audioUrl && (
+            <div className="mb-4">
+              <WaveformAudioPlayer 
+                url={result.informativeContent.audioUrl}
+                title="Audio de listening"
+              />
+            </div>
+          )}
+
+          {/* Para bloques de texto, renderizar HTML */}
+          {htmlContent && (
+            <div
+              className="prose prose-sm dark:prose-invert max-w-none"
+              dangerouslySetInnerHTML={{ __html: htmlContent }}
+            />
+          )}
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className={cn(
-      "bg-white dark:bg-[#1a2632] rounded-xl shadow-sm border border-l-4 overflow-hidden",
-      isPendingReview
-        ? "border-gray-200 dark:border-gray-700 border-l-yellow-500"
-        : result.isCorrect 
-          ? "border-gray-200 dark:border-gray-700 border-l-green-500"
-          : "border-gray-200 dark:border-gray-700 border-l-red-500"
-    )}>
+    <div
+      className={cn(
+        'bg-white dark:bg-[#1a2632] rounded-xl shadow-sm border border-l-4 overflow-hidden',
+        isPendingReview
+          ? 'border-gray-200 dark:border-gray-700 border-l-yellow-500'
+          : result.isCorrect
+            ? 'border-gray-200 dark:border-gray-700 border-l-green-500'
+            : 'border-gray-200 dark:border-gray-700 border-l-red-500'
+      )}
+    >
       <div className="p-6">
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex items-center gap-3">
-            <span className={cn(
-              "flex items-center justify-center size-8 rounded-full font-bold text-sm",
-              isPendingReview
-                ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400"
-                : result.isCorrect 
-                  ? "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400"
-                  : "bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400"
-            )}>
+            <span
+              className={cn(
+                'flex items-center justify-center size-8 rounded-full font-bold text-sm',
+                isPendingReview
+                  ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400'
+                  : result.isCorrect
+                    ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400'
+                    : 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400'
+              )}
+            >
               {result.questionNumber}
             </span>
             {result.category && (
@@ -281,19 +423,26 @@ function QuestionResultCard({ result }: { result: QuestionResult }) {
                 {result.category}
               </span>
             )}
+            {result.maxPoints > 0 && (
+              <span className="px-2 py-1 bg-primary/10 rounded text-xs font-semibold text-primary">
+                {result.pointsEarned}/{result.maxPoints} pts
+              </span>
+            )}
           </div>
           <div className="flex items-center gap-2">
-            <span className={cn(
-              "flex items-center gap-1 font-bold text-sm",
-              isPendingReview
-                ? "text-yellow-600 dark:text-yellow-400"
-                : result.isCorrect 
-                  ? "text-green-600 dark:text-green-400"
-                  : "text-red-600 dark:text-red-400"
-            )}>
+            <span
+              className={cn(
+                'flex items-center gap-1 font-bold text-sm',
+                isPendingReview
+                  ? 'text-yellow-600 dark:text-yellow-400'
+                  : result.isCorrect
+                    ? 'text-green-600 dark:text-green-400'
+                    : 'text-red-600 dark:text-red-400'
+              )}
+            >
               {isPendingReview ? (
                 <>
-                  <Timer className="h-4 w-4" />
+                  <Clock className="h-4 w-4" />
                   Pendiente de Revisión
                 </>
               ) : result.isCorrect ? (
@@ -312,7 +461,9 @@ function QuestionResultCard({ result }: { result: QuestionResult }) {
               onClick={() => setExpanded(!expanded)}
               className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded"
             >
-              <ChevronDown className={cn("h-4 w-4 transition-transform", expanded && "rotate-180")} />
+              <ChevronDown
+                className={cn('h-4 w-4 transition-transform', expanded && 'rotate-180')}
+              />
             </button>
           </div>
         </div>
@@ -323,43 +474,42 @@ function QuestionResultCard({ result }: { result: QuestionResult }) {
           <>
             {result.audioUrl && (
               <div className="mb-4">
-                <div className="flex items-center gap-3 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
-                  <Play className="h-5 w-5 text-primary flex-shrink-0" />
-                  <audio 
-                    controls 
-                    src={result.audioUrl} 
-                    className="w-full h-8"
-                    preload="metadata"
-                  >
-                    Tu navegador no soporta el elemento de audio.
-                  </audio>
-                </div>
+                <WaveformAudioPlayer 
+                  url={result.audioUrl}
+                  title="Tu grabación"
+                />
               </div>
             )}
 
             <div className="grid md:grid-cols-2 gap-4 mb-4">
-              <div className={cn(
-                "p-4 rounded-lg border",
-                isPendingReview
-                  ? "bg-yellow-50 dark:bg-yellow-900/10 border-yellow-200 dark:border-yellow-900/30"
-                  : result.isCorrect
-                    ? "bg-green-50 dark:bg-green-900/10 border-green-200 dark:border-green-900/30"
-                    : "bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-900/30"
-              )}>
-                <span className={cn(
-                  "text-xs font-bold uppercase mb-1 block",
+              <div
+                className={cn(
+                  'p-4 rounded-lg border',
                   isPendingReview
-                    ? "text-yellow-700 dark:text-yellow-400"
+                    ? 'bg-yellow-50 dark:bg-yellow-900/10 border-yellow-200 dark:border-yellow-900/30'
                     : result.isCorrect
-                      ? "text-green-700 dark:text-green-400"
-                      : "text-red-700 dark:text-red-400"
-                )}>
+                      ? 'bg-green-50 dark:bg-green-900/10 border-green-200 dark:border-green-900/30'
+                      : 'bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-900/30'
+                )}
+              >
+                <span
+                  className={cn(
+                    'text-xs font-bold uppercase mb-1 block',
+                    isPendingReview
+                      ? 'text-yellow-700 dark:text-yellow-400'
+                      : result.isCorrect
+                        ? 'text-green-700 dark:text-green-400'
+                        : 'text-red-700 dark:text-red-400'
+                  )}
+                >
                   Tu Respuesta
                 </span>
-                <p className={cn(
-                  "text-foreground font-medium",
-                  !result.isCorrect && !isPendingReview && "line-through decoration-red-500"
-                )}>
+                <p
+                  className={cn(
+                    'text-foreground font-medium',
+                    !result.isCorrect && !isPendingReview && 'line-through decoration-red-500'
+                  )}
+                >
                   {result.userAnswer || '(Sin respuesta)'}
                 </p>
               </div>
