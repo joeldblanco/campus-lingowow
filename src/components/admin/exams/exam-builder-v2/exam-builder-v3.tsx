@@ -42,6 +42,10 @@ import {
   CheckCircle,
   LayoutGrid,
   Trash2,
+  GraduationCap,
+  ClipboardCheck,
+  Stethoscope,
+  Dumbbell,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
@@ -1295,8 +1299,96 @@ function ExamSettingsForm({
   selectedCourse?: CourseForExam
   selectedModule?: { id: string; title: string; level: string; lessons: { id: string; title: string }[] }
 }) {
+  const EXAM_TYPE_OPTIONS = [
+    { value: 'COURSE_EXAM', label: 'Examen de Curso', icon: <GraduationCap className="h-4 w-4" />, description: 'Examen asociado a un curso específico' },
+    { value: 'PLACEMENT_TEST', label: 'Test de Clasificación', icon: <ClipboardCheck className="h-4 w-4" />, description: 'Determina el nivel del estudiante' },
+    { value: 'DIAGNOSTIC', label: 'Examen Diagnóstico', icon: <Stethoscope className="h-4 w-4" />, description: 'Evalúa conocimientos previos' },
+    { value: 'PRACTICE', label: 'Práctica Libre', icon: <Dumbbell className="h-4 w-4" />, description: 'Examen de práctica sin restricciones' },
+  ]
+
+  const TARGET_LANGUAGES = [
+    { value: 'en', label: '🇺🇸 Inglés' },
+    { value: 'es', label: '🇪🇸 Español' },
+    { value: 'fr', label: '🇫🇷 Francés' },
+    { value: 'de', label: '🇩🇪 Alemán' },
+    { value: 'pt', label: '🇧🇷 Portugués' },
+    { value: 'it', label: '🇮🇹 Italiano' },
+  ]
+
+  const isPlacementTest = settings.examType === 'PLACEMENT_TEST'
+
   return (
     <div className="space-y-6 py-4">
+      {/* Exam Type */}
+      <div className="space-y-4">
+        <Label className="text-base font-semibold">Tipo de Examen</Label>
+        
+        <div className="space-y-2">
+          <Label>Tipo</Label>
+          <Select
+            value={settings.examType}
+            onValueChange={(value) => onUpdate({ ...settings, examType: value as ExamSettings['examType'] })}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Seleccionar tipo" />
+            </SelectTrigger>
+            <SelectContent>
+              {EXAM_TYPE_OPTIONS.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  <div className="flex items-center gap-2">
+                    {option.icon}
+                    <span>{option.label}</span>
+                  </div>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <p className="text-xs text-muted-foreground">
+            {EXAM_TYPE_OPTIONS.find(o => o.value === settings.examType)?.description}
+          </p>
+        </div>
+
+        {isPlacementTest && (
+          <>
+            <div className="space-y-2">
+              <Label>Idioma Objetivo</Label>
+              <Select
+                value={settings.targetLanguage || ''}
+                onValueChange={(value) => onUpdate({ ...settings, targetLanguage: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Seleccionar idioma" />
+                </SelectTrigger>
+                <SelectContent>
+                  {TARGET_LANGUAGES.map((lang) => (
+                    <SelectItem key={lang.value} value={lang.value}>
+                      {lang.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div>
+                <Label>Acceso para Invitados</Label>
+                <p className="text-xs text-muted-foreground">Usuarios GUEST pueden tomar este test</p>
+              </div>
+              <Switch
+                checked={settings.isGuestAccessible}
+                onCheckedChange={(checked) => onUpdate({ ...settings, isGuestAccessible: checked })}
+              />
+            </div>
+
+            <p className="text-xs text-muted-foreground bg-muted p-2 rounded">
+              ℹ️ Los usuarios solo pueden tomar 1 placement test por idioma
+            </p>
+          </>
+        )}
+      </div>
+
+      <Separator />
+
       {/* Time & Scoring */}
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
