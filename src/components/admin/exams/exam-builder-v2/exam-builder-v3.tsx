@@ -52,7 +52,7 @@ import { BlockLibrary, BlockCanvas, DraggableBlock } from '@/components/shared/c
 import { BlockValidationError } from '@/components/shared/content-builder/types'
 import { PropertiesPanel } from '@/components/admin/course-builder/lesson-builder/properties-panel'
 import { ExamSettings, DEFAULT_EXAM_SETTINGS } from '@/components/admin/exams/exam-builder-v2/types'
-import { createExam, updateExam, getCoursesForExams, updateExamQuestions } from '@/lib/actions/exams'
+import { createExam, updateExam, getCoursesForExams, updateExamQuestions, updateExamDraft } from '@/lib/actions/exams'
 import { ExamWithDetails } from '@/types/exam'
 
 interface ExamBuilderV3Props {
@@ -804,7 +804,9 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
 
   // Auto-save refs
   const blocksSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const titleSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const isFirstBlocksRender = useRef(true)
+  const isFirstTitleRender = useRef(true)
 
   useEffect(() => {
     loadCourses()
@@ -854,6 +856,44 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
     }
     debouncedBlocksSave(blocks)
   }, [blocks, debouncedBlocksSave])
+
+  // Auto-save title and description
+  const debouncedTitleSave = useCallback(
+    (newTitle: string, newDescription: string) => {
+      if (!exam?.id) return
+
+      setSaveStatus('saving')
+      if (titleSaveTimeoutRef.current) {
+        clearTimeout(titleSaveTimeoutRef.current)
+      }
+
+      titleSaveTimeoutRef.current = setTimeout(async () => {
+        try {
+          const result = await updateExamDraft(exam.id, { 
+            title: newTitle,
+            description: newDescription 
+          })
+          if (result.success) {
+            setSaveStatus('saved')
+          } else {
+            setSaveStatus('error')
+            toast.error('Error al guardar el título')
+          }
+        } catch {
+          setSaveStatus('error')
+        }
+      }, 1500)
+    },
+    [exam?.id]
+  )
+
+  useEffect(() => {
+    if (isFirstTitleRender.current) {
+      isFirstTitleRender.current = false
+      return
+    }
+    debouncedTitleSave(title, description)
+  }, [title, description, debouncedTitleSave])
 
   // DnD Handlers
   const handleDragStart = (event: DragStartEvent) => {
@@ -1398,7 +1438,7 @@ function ExamSettingsForm({
             </div>
 
             {!settings.isPublicAccess && (
-              <p className="text-xs text-muted-foreground bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 p-2 rounded border border-amber-200 dark:border-amber-800">
+              <p className="text-xs text-muted-foreground bg-amber-50 dark:bg-amber-950 dark:text-amber-300 p-2 rounded border border-amber-200 dark:border-amber-800">
                 ⚠️ Solo usuarios asignados podrán tomar este test
               </p>
             )}

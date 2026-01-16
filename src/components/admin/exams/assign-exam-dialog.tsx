@@ -13,12 +13,12 @@ import {
   FormDescription,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
+import { Loader2 } from 'lucide-react'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Search, Users, Calendar } from 'lucide-react'
-import { assignExamToStudents } from '@/lib/actions/exams'
+import { assignExamToStudents, getNonAdminUsersForExamAssignment } from '@/lib/actions/exams'
 import { toast } from 'sonner'
 import { AssignExamSchema } from '@/schemas/exams'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -35,9 +35,10 @@ interface AssignExamDialogProps {
 
 interface Student {
   id: string
-  name: string
+  name: string | null
   lastName: string | null
   email: string
+  image: string | null
   enrollments: {
     course: {
       title: string
@@ -54,13 +55,14 @@ export function AssignExamDialog({ exam, open, onOpenChange }: AssignExamDialogP
   const [searchTerm, setSearchTerm] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const [isLoadingStudents, setIsLoadingStudents] = useState(false)
+
   const form = useForm<FormData>({
     resolver: zodResolver(AssignExamSchema),
     defaultValues: {
       examId: exam.id,
       studentIds: [],
       dueDate: '',
-      instructions: '',
     },
   })
 
@@ -73,63 +75,25 @@ export function AssignExamDialog({ exam, open, onOpenChange }: AssignExamDialogP
         examId: exam.id,
         studentIds: [],
         dueDate: '',
-        instructions: '',
       })
       setSearchTerm('')
     }
   }, [open, exam.id, form])
 
   const loadStudents = async () => {
+    setIsLoadingStudents(true)
     try {
-      // Mock data - in real implementation, this would fetch from the database
-      const mockStudents: Student[] = [
-        {
-          id: '1',
-          name: 'John',
-          lastName: 'Doe',
-          email: 'john.doe@example.com',
-          enrollments: [
-            {
-              course: {
-                title: 'English Beginner',
-                language: 'English',
-              },
-            },
-          ],
-        },
-        {
-          id: '2',
-          name: 'Jane',
-          lastName: 'Smith',
-          email: 'jane.smith@example.com',
-          enrollments: [
-            {
-              course: {
-                title: 'Spanish Intermediate',
-                language: 'Spanish',
-              },
-            },
-          ],
-        },
-        {
-          id: '3',
-          name: 'Carlos',
-          lastName: 'Rodriguez',
-          email: 'carlos.rodriguez@example.com',
-          enrollments: [
-            {
-              course: {
-                title: 'English Advanced',
-                language: 'English',
-              },
-            },
-          ],
-        },
-      ]
-      setStudents(mockStudents)
+      const result = await getNonAdminUsersForExamAssignment()
+      if (result.success) {
+        setStudents(result.users)
+      } else {
+        toast.error(result.error || 'Error al cargar usuarios')
+      }
     } catch (error) {
       console.error('Error loading students:', error)
-      toast.error('Failed to load students')
+      toast.error('Error al cargar usuarios')
+    } finally {
+      setIsLoadingStudents(false)
     }
   }
 
@@ -139,7 +103,7 @@ export function AssignExamDialog({ exam, open, onOpenChange }: AssignExamDialogP
     if (searchTerm) {
       filtered = filtered.filter(
         (student) =>
-          student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (student.name?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
           (student.lastName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
           student.email.toLowerCase().includes(searchTerm.toLowerCase())
       )
@@ -241,53 +205,29 @@ export function AssignExamDialog({ exam, open, onOpenChange }: AssignExamDialogP
               </CardContent>
             </Card>
 
-            {/* Fecha límite e instrucciones */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="dueDate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Fecha límite (opcional)</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                        <Input
-                          type="datetime-local"
-                          placeholder="Seleccionar fecha"
-                          className="pl-10"
-                          {...field}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormDescription>Fecha y hora límite para completar el examen</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="instructions"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Instrucciones adicionales (opcional)</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Ej: Revisar el material del módulo 3 antes del examen"
-                        className="resize-none"
-                        rows={3}
+            {/* Fecha límite */}
+            <FormField
+              control={form.control}
+              name="dueDate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Fecha límite (opcional)</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        type="datetime-local"
+                        placeholder="Seleccionar fecha"
+                        className="pl-10"
                         {...field}
                       />
-                    </FormControl>
-                    <FormDescription>
-                      Instrucciones específicas para los estudiantes
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                    </div>
+                  </FormControl>
+                  <FormDescription>Fecha y hora límite para completar el examen</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             {/* Search */}
             <div className="space-y-2">
@@ -345,7 +285,11 @@ export function AssignExamDialog({ exam, open, onOpenChange }: AssignExamDialogP
               </CardHeader>
               <CardContent>
                 <div className="space-y-3 max-h-80 overflow-y-auto">
-                  {filteredStudents.length === 0 ? (
+                  {isLoadingStudents ? (
+                    <div className="flex items-center justify-center py-8">
+                      <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                    </div>
+                  ) : filteredStudents.length === 0 ? (
                     <p className="text-muted-foreground text-center py-4">
                       No se encontraron estudiantes
                     </p>

@@ -1657,6 +1657,60 @@ export async function getExamBySlug(slug: string) {
 }
 
 /**
+ * Obtiene usuarios no-admin para asignar exámenes
+ */
+export async function getNonAdminUsersForExamAssignment() {
+  try {
+    const users = await db.user.findMany({
+      where: {
+        role: {
+          notIn: ['ADMIN', 'SUPER_ADMIN'],
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        lastName: true,
+        email: true,
+        image: true,
+        enrollments: {
+          where: {
+            status: 'ACTIVE',
+          },
+          select: {
+            course: {
+              select: {
+                title: true,
+                language: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: [
+        { name: 'asc' },
+        { lastName: 'asc' },
+      ],
+    })
+
+    return {
+      success: true,
+      users: users.map((user) => ({
+        id: user.id,
+        name: user.name,
+        lastName: user.lastName,
+        email: user.email,
+        image: user.image,
+        enrollments: user.enrollments,
+      })),
+    }
+  } catch (error) {
+    console.error('Error fetching non-admin users:', error)
+    return { success: false, error: 'Error al obtener usuarios', users: [] }
+  }
+}
+
+/**
  * Verifica si un usuario puede acceder a un examen por slug
  */
 export async function canAccessExamBySlug(
