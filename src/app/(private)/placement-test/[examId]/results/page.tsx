@@ -1,8 +1,8 @@
 'use server'
 
 import { auth } from '@/auth'
-import { redirect } from 'next/navigation'
-import { getPlacementTestResult, getRecommendedCourses } from '@/lib/actions/exams'
+import { redirect, notFound } from 'next/navigation'
+import { getPlacementTestResult, getRecommendedCourses, getExamById } from '@/lib/actions/exams'
 import { PlacementTestResults } from '@/components/placement-test/placement-test-results'
 
 interface PlacementTestResultsPageProps {
@@ -17,7 +17,13 @@ export default async function PlacementTestResultsPage({ params }: PlacementTest
     redirect('/login')
   }
 
-  const result = await getPlacementTestResult(session.user.id)
+  const exam = await getExamById(examId)
+  
+  if (!exam || exam.examType !== 'PLACEMENT_TEST') {
+    notFound()
+  }
+
+  const result = await getPlacementTestResult(session.user.id, exam.targetLanguage || undefined)
   
   if (!result) {
     redirect(`/placement-test/${examId}`)
