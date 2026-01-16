@@ -10,7 +10,6 @@ export const pusherServer = new PusherServer({
 })
 
 declare global {
-  // eslint-disable-next-line no-var
   var pusherClientInstance: PusherClient | undefined
 }
 
