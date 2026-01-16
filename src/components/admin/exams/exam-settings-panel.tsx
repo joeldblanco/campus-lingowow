@@ -18,6 +18,9 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
+import { Badge } from '@/components/ui/badge'
+import { ExamTypeValue } from '@/types/exam'
+import { ClipboardCheck, GraduationCap, Stethoscope, Dumbbell } from 'lucide-react'
 
 interface CourseForExam {
   id: string
@@ -57,6 +60,12 @@ interface ExamSettingsPanelProps {
   setAllowReview: (value: boolean) => void
   isPublished: boolean
   setIsPublished: (value: boolean) => void
+  examType: ExamTypeValue
+  setExamType: (value: ExamTypeValue) => void
+  isGuestAccessible: boolean
+  setIsGuestAccessible: (value: boolean) => void
+  targetLanguage: string
+  setTargetLanguage: (value: string) => void
   courseId: string
   setCourseId: (value: string) => void
   moduleId: string
@@ -65,6 +74,22 @@ interface ExamSettingsPanelProps {
   setLessonId: (value: string) => void
   courses: CourseForExam[]
 }
+
+const EXAM_TYPE_OPTIONS: { value: ExamTypeValue; label: string; icon: React.ReactNode; description: string }[] = [
+  { value: 'COURSE_EXAM', label: 'Examen de Curso', icon: <GraduationCap className="h-4 w-4" />, description: 'Examen asociado a un curso específico' },
+  { value: 'PLACEMENT_TEST', label: 'Test de Clasificación', icon: <ClipboardCheck className="h-4 w-4" />, description: 'Determina el nivel del estudiante' },
+  { value: 'DIAGNOSTIC', label: 'Examen Diagnóstico', icon: <Stethoscope className="h-4 w-4" />, description: 'Evalúa conocimientos previos' },
+  { value: 'PRACTICE', label: 'Práctica Libre', icon: <Dumbbell className="h-4 w-4" />, description: 'Examen de práctica sin restricciones' },
+]
+
+const TARGET_LANGUAGES = [
+  { value: 'en', label: '🇺🇸 Inglés' },
+  { value: 'es', label: '🇪🇸 Español' },
+  { value: 'fr', label: '🇫🇷 Francés' },
+  { value: 'de', label: '🇩🇪 Alemán' },
+  { value: 'pt', label: '🇧🇷 Portugués' },
+  { value: 'it', label: '🇮🇹 Italiano' },
+]
 
 export function ExamSettingsPanel({
   open,
@@ -89,6 +114,12 @@ export function ExamSettingsPanel({
   setAllowReview,
   isPublished,
   setIsPublished,
+  examType,
+  setExamType,
+  isGuestAccessible,
+  setIsGuestAccessible,
+  targetLanguage,
+  setTargetLanguage,
   courseId,
   setCourseId,
   moduleId,
@@ -101,6 +132,8 @@ export function ExamSettingsPanel({
   const availableModules = selectedCourse?.modules || []
   const selectedModule = availableModules.find((m) => m.id === moduleId)
   const availableLessons = selectedModule?.lessons || []
+  
+  const isPlacementTest = examType === 'PLACEMENT_TEST'
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -113,6 +146,80 @@ export function ExamSettingsPanel({
         </SheetHeader>
 
         <div className="space-y-6 mt-6">
+          {/* Exam Type */}
+          <div className="space-y-4">
+            <h3 className="font-semibold">Tipo de examen</h3>
+            
+            <div className="space-y-2">
+              <Label htmlFor="exam-type">Tipo</Label>
+              <Select
+                value={examType}
+                onValueChange={(value) => setExamType(value as ExamTypeValue)}
+              >
+                <SelectTrigger id="exam-type">
+                  <SelectValue placeholder="Seleccionar tipo" />
+                </SelectTrigger>
+                <SelectContent>
+                  {EXAM_TYPE_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      <div className="flex items-center gap-2">
+                        {option.icon}
+                        <span>{option.label}</span>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                {EXAM_TYPE_OPTIONS.find(o => o.value === examType)?.description}
+              </p>
+            </div>
+
+            {/* Placement Test specific options */}
+            {isPlacementTest && (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="target-language">Idioma objetivo</Label>
+                  <Select
+                    value={targetLanguage}
+                    onValueChange={setTargetLanguage}
+                  >
+                    <SelectTrigger id="target-language">
+                      <SelectValue placeholder="Seleccionar idioma" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {TARGET_LANGUAGES.map((lang) => (
+                        <SelectItem key={lang.value} value={lang.value}>
+                          {lang.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="guest-accessible">Acceso para invitados</Label>
+                    <p className="text-xs text-muted-foreground">
+                      Usuarios GUEST pueden tomar este test
+                    </p>
+                  </div>
+                  <Switch
+                    id="guest-accessible"
+                    checked={isGuestAccessible}
+                    onCheckedChange={setIsGuestAccessible}
+                  />
+                </div>
+
+                <Badge variant="outline" className="text-xs">
+                  Los usuarios solo pueden tomar 1 placement test por idioma
+                </Badge>
+              </>
+            )}
+          </div>
+
+          <Separator />
+
           {/* Basic Settings */}
           <div className="space-y-4">
             <h3 className="font-semibold">Configuración básica</h3>

@@ -36,6 +36,7 @@ export async function getAllExams(): Promise<ExamWithDetails[]> {
             title: true,
             language: true,
             level: true,
+            isPersonalized: true,
           },
         },
         module: {
@@ -117,6 +118,7 @@ export async function getExamById(id: string): Promise<ExamWithDetails | null> {
             title: true,
             language: true,
             level: true,
+            isPersonalized: true,
           },
         },
         module: {
@@ -1259,5 +1261,351 @@ export async function finalizeExamReview(attemptId: string) {
   } catch (error) {
     console.error('Error finalizing exam review:', error)
     return { success: false, error: 'Error al finalizar la revisión' }
+  }
+}
+
+// =============================================
+// FUNCIONES PARA PLACEMENT TESTS
+// =============================================
+
+import type {
+  LanguageLevel,
+  PlacementTestWithDetails,
+  PlacementTestResult,
+  RecommendedCourse,
+} from '@/types/exam'
+import { ExamType } from '@prisma/client'
+import { sendPlacementTestResultEmail } from '@/lib/mail'
+
+const LEVEL_DESCRIPTIONS: Record<LanguageLevel, string> = {
+  A1: 'Principiante',
+  A2: 'Elemental',
+  B1: 'Intermedio',
+  B2: 'Intermedio Alto',
+  C1: 'Avanzado',
+  C2: 'Maestría',
+}
+
+/**
+ * Calcula el nivel recomendado basado en el puntaje
+ */
+export function calculateRecommendedLevel(score: number): LanguageLevel {
+  if (score <= 20) return 'A1'
+  if (score <= 40) return 'A2'
+  if (score <= 60) return 'B1'
+  if (score <= 80) return 'B2'
+  if (score <= 90) return 'C1'
+  return 'C2'
+}
+
+/**
+ * Obtiene todos los placement tests publicados disponibles para usuarios GUEST
+ */
+export async function getPlacementTests(userId?: string): Promise<PlacementTestWithDetails[]> {
+  try {
+    const placementTests = await db.exam.findMany({
+      where: {
+        examType: ExamType.PLACEMENT_TEST,
+        isGuestAccessible: true,
+        isPublished: true,
+      },
+      include: {
+        sections: {
+          include: {
+            questions: true,
+          },
+        },
+        attempts: userId
+          ? {
+              where: { userId },
+              orderBy: { createdAt: 'desc' },
+              take: 1,
+            }
+          : false,
+      },
+      orderBy: { title: 'asc' },
+    })
+
+    return placementTests.map((exam) => {
+      const totalQuestions = exam.sections.reduce(
+        (acc, section) => acc + section.questions.length,
+        0
+      )
+      const lastAttempt = exam.attempts?.[0]
+
+      return {
+        id: exam.id,
+        title: exam.title,
+        description: exam.description,
+        targetLanguage: exam.targetLanguage || 'en',
+        timeLimit: exam.timeLimit,
+        totalQuestions,
+        isPublished: exam.isPublished,
+        hasAttempted: !!lastAttempt,
+        lastAttemptLevel: lastAttempt?.recommendedLevel as LanguageLevel | undefined,
+      }
+    })
+  } catch (error) {
+    console.error('Error fetching placement tests:', error)
+    return []
+  }
+}
+
+/**
+ * Verifica si un usuario GUEST puede tomar un placement test
+ * (solo 1 intento por idioma)
+ */
+export async function canUserTakePlacementTest(
+  examId: string,
+  userId: string
+): Promise<{ canTake: boolean; reason?: string; existingAttempt?: { level: string; completedAt: Date } }> {
+  try {
+    const exam = await db.exam.findUnique({
+      where: { id: examId },
+      select: {
+        examType: true,
+        isGuestAccessible: true,
+        isPublished: true,
+        targetLanguage: true,
+      },
+    })
+
+    if (!exam) {
+      return { canTake: false, reason: 'Examen no encontrado' }
+    }
+
+    if (exam.examType !== ExamType.PLACEMENT_TEST) {
+      return { canTake: false, reason: 'Este no es un test de clasificación' }
+    }
+
+    if (!exam.isGuestAccessible) {
+      return { canTake: false, reason: 'Este test no está disponible para usuarios invitados' }
+    }
+
+    if (!exam.isPublished) {
+      return { canTake: false, reason: 'Este test no está publicado' }
+    }
+
+    // Verificar si ya tiene un intento completado para este idioma
+    const existingAttempt = await db.examAttempt.findFirst({
+      where: {
+        userId,
+        exam: {
+          examType: ExamType.PLACEMENT_TEST,
+          targetLanguage: exam.targetLanguage,
+        },
+        status: AttemptStatus.COMPLETED,
+      },
+      select: {
+        recommendedLevel: true,
+        submittedAt: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    })
+
+    if (existingAttempt) {
+      return {
+        canTake: false,
+        reason: `Ya completaste un test de clasificación para este idioma. Tu nivel es ${existingAttempt.recommendedLevel}.`,
+        existingAttempt: {
+          level: existingAttempt.recommendedLevel || 'A1',
+          completedAt: existingAttempt.submittedAt || new Date(),
+        },
+      }
+    }
+
+    return { canTake: true }
+  } catch (error) {
+    console.error('Error checking placement test eligibility:', error)
+    return { canTake: false, reason: 'Error al verificar elegibilidad' }
+  }
+}
+
+/**
+ * Completa un placement test y calcula el nivel recomendado
+ */
+export async function completePlacementTest(
+  attemptId: string
+): Promise<{ success: boolean; result?: PlacementTestResult; error?: string }> {
+  try {
+    const attempt = await db.examAttempt.findUnique({
+      where: { id: attemptId },
+      include: {
+        exam: true,
+        user: {
+          select: { id: true, email: true, name: true },
+        },
+        answers: {
+          include: { question: true },
+        },
+      },
+    })
+
+    if (!attempt) {
+      return { success: false, error: 'Intento no encontrado' }
+    }
+
+    if (attempt.exam.examType !== ExamType.PLACEMENT_TEST) {
+      return { success: false, error: 'Este no es un test de clasificación' }
+    }
+
+    // Calcular puntaje
+    const totalPoints = attempt.answers.reduce((sum, a) => sum + a.pointsEarned, 0)
+    const maxPoints = attempt.answers.reduce((sum, a) => sum + a.question.points, 0)
+    const score = maxPoints > 0 ? (totalPoints / maxPoints) * 100 : 0
+
+    // Calcular nivel recomendado
+    const recommendedLevel = calculateRecommendedLevel(score)
+
+    // Actualizar intento con resultados
+    const updatedAttempt = await db.examAttempt.update({
+      where: { id: attemptId },
+      data: {
+        status: AttemptStatus.COMPLETED,
+        score: Math.round(score * 100) / 100,
+        totalPoints,
+        maxPoints,
+        recommendedLevel,
+        submittedAt: new Date(),
+      },
+    })
+
+    const result: PlacementTestResult = {
+      attemptId: updatedAttempt.id,
+      examId: attempt.examId,
+      userId: attempt.userId,
+      score: updatedAttempt.score || 0,
+      recommendedLevel,
+      targetLanguage: attempt.exam.targetLanguage || 'en',
+      completedAt: updatedAttempt.submittedAt || new Date(),
+      timeSpent: updatedAttempt.timeSpent || 0,
+    }
+
+    // Enviar email con resultados
+    if (attempt.user?.email) {
+      try {
+        await sendPlacementTestResultEmail(attempt.user.email, {
+          userName: attempt.user.name || 'Estudiante',
+          language: attempt.exam.targetLanguage || 'en',
+          level: recommendedLevel,
+          levelDescription: LEVEL_DESCRIPTIONS[recommendedLevel],
+          score: updatedAttempt.score || 0,
+          completedAt: new Date().toLocaleDateString('es-PE', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+          }),
+        })
+
+        // Marcar que se envió el email
+        await db.examAttempt.update({
+          where: { id: attemptId },
+          data: { resultEmailSent: true },
+        })
+      } catch (emailError) {
+        console.error('Error sending placement test result email:', emailError)
+      }
+    }
+
+    revalidatePath('/placement-test')
+    return { success: true, result }
+  } catch (error) {
+    console.error('Error completing placement test:', error)
+    return { success: false, error: 'Error al completar el test de clasificación' }
+  }
+}
+
+/**
+ * Obtiene cursos recomendados basados en el nivel del placement test
+ */
+export async function getRecommendedCourses(
+  level: LanguageLevel,
+  language: string
+): Promise<RecommendedCourse[]> {
+  try {
+    const courses = await db.course.findMany({
+      where: {
+        language: { contains: language, mode: 'insensitive' },
+        level: { contains: level, mode: 'insensitive' },
+        isPublished: true,
+      },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        language: true,
+        level: true,
+        image: true,
+      },
+      take: 6,
+    })
+
+    return courses
+  } catch (error) {
+    console.error('Error fetching recommended courses:', error)
+    return []
+  }
+}
+
+/**
+ * Obtiene el resultado del placement test de un usuario
+ */
+export async function getPlacementTestResult(
+  userId: string,
+  language?: string
+): Promise<PlacementTestResult | null> {
+  try {
+    const attempt = await db.examAttempt.findFirst({
+      where: {
+        userId,
+        exam: {
+          examType: ExamType.PLACEMENT_TEST,
+          ...(language && { targetLanguage: language }),
+        },
+        status: AttemptStatus.COMPLETED,
+      },
+      include: {
+        exam: {
+          select: { targetLanguage: true },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    })
+
+    if (!attempt || !attempt.recommendedLevel) {
+      return null
+    }
+
+    return {
+      attemptId: attempt.id,
+      examId: attempt.examId,
+      userId: attempt.userId,
+      score: attempt.score || 0,
+      recommendedLevel: attempt.recommendedLevel as LanguageLevel,
+      targetLanguage: attempt.exam.targetLanguage || 'en',
+      completedAt: attempt.submittedAt || attempt.createdAt,
+      timeSpent: attempt.timeSpent || 0,
+    }
+  } catch (error) {
+    console.error('Error fetching placement test result:', error)
+    return null
+  }
+}
+
+/**
+ * Marca que se envió el email de resultados
+ */
+export async function markResultEmailSent(attemptId: string): Promise<boolean> {
+  try {
+    await db.examAttempt.update({
+      where: { id: attemptId },
+      data: { resultEmailSent: true },
+    })
+    return true
+  } catch (error) {
+    console.error('Error marking result email sent:', error)
+    return false
   }
 }

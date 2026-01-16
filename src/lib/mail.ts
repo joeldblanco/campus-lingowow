@@ -642,3 +642,101 @@ export const sendContactFormEmail = async (data: ContactFormData) => {
     </div>`,
   })
 }
+
+// =============================================
+// EMAILS DE PLACEMENT TEST
+// =============================================
+
+interface PlacementTestResultEmailData {
+  userName: string
+  language: string
+  level: string
+  levelDescription: string
+  score: number
+  completedAt: string
+}
+
+const LEVEL_COLORS: Record<string, string> = {
+  A1: '#22c55e',
+  A2: '#84cc16',
+  B1: '#eab308',
+  B2: '#f97316',
+  C1: '#ef4444',
+  C2: '#a855f7',
+}
+
+const LANGUAGE_NAMES: Record<string, string> = {
+  en: 'Inglés',
+  es: 'Español',
+  fr: 'Francés',
+  de: 'Alemán',
+  pt: 'Portugués',
+  it: 'Italiano',
+}
+
+export const sendPlacementTestResultEmail = async (
+  email: string,
+  data: PlacementTestResultEmailData
+) => {
+  const coursesLink = `${process.env.NEXT_PUBLIC_DOMAIN}/courses`
+  const levelColor = LEVEL_COLORS[data.level] || '#3b82f6'
+  const languageName = LANGUAGE_NAMES[data.language] || data.language
+
+  await resend.emails.send({
+    from: 'hello@lingowow.com',
+    to: email,
+    subject: `🎉 Tu resultado del Test de Clasificación de ${languageName}: Nivel ${data.level}`,
+    html: `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
+      <div style="padding: 30px; background: linear-gradient(135deg, ${levelColor} 0%, ${levelColor}dd 100%); text-align: center;">
+        <h2 style="margin: 0; font-size: 28px; color: #ffffff;">🎉 ¡Test Completado!</h2>
+        <p style="color: rgba(255,255,255,0.9); font-size: 16px; margin-top: 8px;">Test de Clasificación de ${languageName}</p>
+      </div>
+      <div style="padding: 30px;">
+        <h3 style="font-size: 18px; color: #111827; margin-bottom: 20px;">Hola ${data.userName},</h3>
+        <p style="font-size: 16px; color: #374151; line-height: 1.6;">
+          ¡Felicitaciones por completar tu test de clasificación! Aquí están tus resultados:
+        </p>
+        
+        <div style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 16px; padding: 30px; margin: 24px 0; text-align: center;">
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: #6b7280; text-transform: uppercase; letter-spacing: 1px;">Tu nivel de ${languageName}</p>
+          <div style="display: inline-block; background-color: ${levelColor}; color: white; font-size: 48px; font-weight: bold; padding: 16px 32px; border-radius: 12px; margin: 12px 0;">
+            ${data.level}
+          </div>
+          <p style="margin: 16px 0 0 0; font-size: 18px; color: #374151; font-weight: 500;">${data.levelDescription}</p>
+        </div>
+
+        <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; margin: 20px 0;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+            <span style="color: #6b7280;">Puntaje obtenido:</span>
+            <span style="color: #111827; font-weight: bold;">${Math.round(data.score)}%</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: #6b7280;">Fecha del test:</span>
+            <span style="color: #111827;">${data.completedAt}</span>
+          </div>
+        </div>
+
+        <div style="background-color: #eff6ff; border-radius: 8px; padding: 20px; margin: 20px 0; border-left: 4px solid #3b82f6;">
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: #1e40af; font-weight: bold;">¿Qué sigue?</p>
+          <p style="margin: 0; font-size: 14px; color: #1e40af; line-height: 1.6;">
+            Basándonos en tu nivel ${data.level}, te recomendamos explorar nuestros cursos diseñados específicamente para ti. 
+            ¡Comienza tu viaje de aprendizaje hoy!
+          </p>
+        </div>
+
+        <div style="text-align: center; margin: 24px 0;">
+          <a href="${coursesLink}" style="display: inline-block; background-color: #020617; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-size: 16px; font-weight: bold;">Ver Cursos Recomendados</a>
+        </div>
+        
+        <p style="font-size: 14px; color: #6b7280; text-align: center;">
+          ¿Tienes preguntas? Contáctanos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a> 
+          o escríbenos a info@lingowow.com
+        </p>
+      </div>
+      <div style="padding: 16px 20px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
+        Go wow with us! 🚀
+      </div>
+    </div>`,
+  })
+}

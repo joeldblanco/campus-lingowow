@@ -29,8 +29,9 @@ import { ViewExamDialog } from './view-exam-dialog'
 import { AssignExamDialog } from './assign-exam-dialog'
 import { toast } from 'sonner'
 import { deleteExam, updateExam } from '@/lib/actions/exams'
-import { ExamWithDetails } from '@/types/exam'
+import { ExamWithDetails, EXAM_TYPE_LABELS, ExamTypeValue } from '@/types/exam'
 import { useRouter } from 'next/navigation'
+import { ClipboardCheck, GraduationCap, Stethoscope, Dumbbell } from 'lucide-react'
 
 interface ExamsTableProps {
   exams: ExamWithDetails[]
@@ -91,8 +92,12 @@ export function ExamsTable({ exams }: ExamsTableProps) {
       filtered = filtered.filter((exam) => exam.creator?.email === creatorFilter)
     }
 
+    if (typeFilter !== 'all') {
+      filtered = filtered.filter((exam) => exam.examType === typeFilter)
+    }
+
     return filtered
-  }, [exams, searchTerm, statusFilter, courseFilter, creatorFilter])
+  }, [exams, searchTerm, statusFilter, courseFilter, creatorFilter, typeFilter])
 
   const handleDeleteExam = async (examId: string) => {
     const result = await deleteExam(examId)
@@ -127,6 +132,22 @@ export function ExamsTable({ exams }: ExamsTableProps) {
     return (
       <Badge className="bg-amber-100 text-amber-700 hover:bg-amber-100 border-0 font-medium">
         Borrador
+      </Badge>
+    )
+  }
+
+  const getExamTypeBadge = (examType: ExamTypeValue) => {
+    const config: Record<ExamTypeValue, { icon: React.ReactNode; className: string }> = {
+      COURSE_EXAM: { icon: <GraduationCap className="h-3 w-3" />, className: 'bg-blue-100 text-blue-700' },
+      PLACEMENT_TEST: { icon: <ClipboardCheck className="h-3 w-3" />, className: 'bg-purple-100 text-purple-700' },
+      DIAGNOSTIC: { icon: <Stethoscope className="h-3 w-3" />, className: 'bg-orange-100 text-orange-700' },
+      PRACTICE: { icon: <Dumbbell className="h-3 w-3" />, className: 'bg-green-100 text-green-700' },
+    }
+    const { icon, className } = config[examType] || config.COURSE_EXAM
+    return (
+      <Badge className={`${className} hover:${className} border-0 font-medium flex items-center gap-1`}>
+        {icon}
+        {EXAM_TYPE_LABELS[examType]}
       </Badge>
     )
   }
@@ -223,6 +244,11 @@ export function ExamsTable({ exams }: ExamsTableProps) {
       ),
     },
     {
+      accessorKey: 'examType',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Tipo" />,
+      cell: ({ row }) => getExamTypeBadge(row.original.examType as ExamTypeValue),
+    },
+    {
       accessorKey: 'isPublished',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Estado" />,
       cell: ({ row }) => getStatusBadge(row.original),
@@ -285,14 +311,17 @@ export function ExamsTable({ exams }: ExamsTableProps) {
                 >
                   Ver Detalles
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => {
-                    setSelectedExam(exam)
-                    setAssignDialogOpen(true)
-                  }}
-                >
-                  Asignar a Estudiantes
-                </DropdownMenuItem>
+{/* Solo mostrar opción de asignar si el examen NO tiene curso o si el curso es personalizado */}
+                {(!exam.courseId || exam.course?.isPersonalized) && (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setSelectedExam(exam)
+                      setAssignDialogOpen(true)
+                    }}
+                  >
+                    Asignar a Estudiantes
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem onClick={() => handleTogglePublish(exam)}>
                   {exam.isPublished ? 'Despublicar' : 'Publicar'}
                 </DropdownMenuItem>
@@ -359,14 +388,15 @@ export function ExamsTable({ exams }: ExamsTableProps) {
         </SelectContent>
       </Select>
       <Select value={typeFilter} onValueChange={setTypeFilter}>
-        <SelectTrigger className="w-[130px]">
+        <SelectTrigger className="w-[160px]">
           <SelectValue placeholder="Tipo" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Todos</SelectItem>
-          <SelectItem value="exam">Examen</SelectItem>
-          <SelectItem value="quiz">Quiz</SelectItem>
-          <SelectItem value="test">Test</SelectItem>
+          <SelectItem value="all">Todos los tipos</SelectItem>
+          <SelectItem value="COURSE_EXAM">Examen de Curso</SelectItem>
+          <SelectItem value="PLACEMENT_TEST">Test de Clasificación</SelectItem>
+          <SelectItem value="DIAGNOSTIC">Diagnóstico</SelectItem>
+          <SelectItem value="PRACTICE">Práctica</SelectItem>
         </SelectContent>
       </Select>
       <Button variant="outline" size="icon" onClick={clearFilters} className="shrink-0">

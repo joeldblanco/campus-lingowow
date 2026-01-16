@@ -1706,6 +1706,11 @@ model Exam {
   showResults     Boolean     @default(true) // Mostrar resultados al finalizar
   allowReview     Boolean     @default(true) // Permitir revisar respuestas
   
+  // Tipo de examen y acceso
+  examType          ExamType  @default(COURSE_EXAM) // Tipo de examen
+  isGuestAccessible Boolean   @default(false) // Permite acceso a usuarios GUEST sin inscripción
+  targetLanguage    String?   // Idioma objetivo para placement tests (en, es, etc.)
+  
   // Configuración de Proctoring
   proctoringEnabled   Boolean @default(true) // Habilitar proctoring
   requireFullscreen   Boolean @default(true)  // Requerir pantalla completa
@@ -1814,6 +1819,10 @@ model ExamAttempt {
   // Configuración del intento
   questionsOrder  Json?           // Orden de las preguntas si fueron mezcladas
   optionsOrder    Json?           // Orden de las opciones si fueron mezcladas
+  
+  // Resultado de placement test
+  recommendedLevel String?        // Nivel recomendado (A1, A2, B1, B2, C1, C2) para placement tests
+  resultEmailSent  Boolean        @default(false) // Si se envió email con resultados
   
   // Relaciones
   exam            Exam            @relation(fields: [examId], references: [id], onDelete: Cascade)
@@ -2051,6 +2060,13 @@ enum AssignmentStatus {
   COMPLETED        // Completado
   OVERDUE          // Vencido
   CANCELLED        // Cancelado
+}
+
+enum ExamType {
+  COURSE_EXAM      // Examen de curso normal
+  PLACEMENT_TEST   // Test de clasificación
+  DIAGNOSTIC       // Examen diagnóstico
+  PRACTICE         // Examen de práctica libre
 }
 
 enum AudioPosition {

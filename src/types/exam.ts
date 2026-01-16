@@ -21,6 +21,7 @@ export type ExamWithDetails = Prisma.ExamGetPayload<{
         title: true
         language: true
         level: true
+        isPersonalized: true
       }
     }
     module: {
@@ -287,6 +288,8 @@ export interface ExamAssignResponse {
 // TIPOS PARA DATOS DE ENTRADA
 // =============================================
 
+export type ExamTypeValue = 'COURSE_EXAM' | 'PLACEMENT_TEST' | 'DIAGNOSTIC' | 'PRACTICE'
+
 export interface CreateExamData {
   title: string
   description: string
@@ -300,6 +303,9 @@ export interface CreateExamData {
   shuffleOptions: boolean
   showResults: boolean
   allowReview: boolean
+  examType?: ExamTypeValue
+  isGuestAccessible?: boolean
+  targetLanguage?: string
   courseId?: string
   moduleId?: string
   lessonId?: string
@@ -358,6 +364,9 @@ export interface UpdateExamData {
   showResults?: boolean
   allowReview?: boolean
   isPublished?: boolean
+  examType?: ExamTypeValue
+  isGuestAccessible?: boolean
+  targetLanguage?: string
   courseId?: string
   moduleId?: string
   lessonId?: string
@@ -437,4 +446,58 @@ export interface ExamConfiguration {
   allowReview: boolean
   maxAttempts: number
   passingScore: number
+}
+
+// =============================================
+// TIPOS PARA PLACEMENT TESTS
+// =============================================
+
+export type LanguageLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
+
+export interface PlacementTestResult {
+  attemptId: string
+  examId: string
+  userId: string
+  score: number
+  recommendedLevel: LanguageLevel
+  targetLanguage: string
+  completedAt: Date
+  timeSpent: number
+}
+
+export interface PlacementTestWithDetails {
+  id: string
+  title: string
+  description: string
+  targetLanguage: string
+  timeLimit: number | null
+  totalQuestions: number
+  isPublished: boolean
+  hasAttempted: boolean
+  lastAttemptLevel?: LanguageLevel
+}
+
+export interface RecommendedCourse {
+  id: string
+  title: string
+  description: string
+  language: string
+  level: string
+  image: string | null
+}
+
+export const LEVEL_SCORE_RANGES: Record<LanguageLevel, { min: number; max: number }> = {
+  A1: { min: 0, max: 20 },
+  A2: { min: 21, max: 40 },
+  B1: { min: 41, max: 60 },
+  B2: { min: 61, max: 80 },
+  C1: { min: 81, max: 90 },
+  C2: { min: 91, max: 100 },
+}
+
+export const EXAM_TYPE_LABELS: Record<ExamTypeValue, string> = {
+  COURSE_EXAM: 'Examen de Curso',
+  PLACEMENT_TEST: 'Test de Clasificación',
+  DIAGNOSTIC: 'Examen Diagnóstico',
+  PRACTICE: 'Práctica Libre',
 }
