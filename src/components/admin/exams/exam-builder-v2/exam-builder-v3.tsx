@@ -643,6 +643,9 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
     blockCopyPaste: exam?.blockCopyPaste ?? DEFAULT_EXAM_SETTINGS.blockCopyPaste,
     blockRightClick: exam?.blockRightClick ?? DEFAULT_EXAM_SETTINGS.blockRightClick,
     maxWarnings: exam?.maxWarnings ?? DEFAULT_EXAM_SETTINGS.maxWarnings,
+    examType: exam?.examType || DEFAULT_EXAM_SETTINGS.examType,
+    isGuestAccessible: exam?.isGuestAccessible ?? DEFAULT_EXAM_SETTINGS.isGuestAccessible,
+    targetLanguage: exam?.targetLanguage || DEFAULT_EXAM_SETTINGS.targetLanguage,
   })
 
   const [isPublished, setIsPublished] = useState(exam?.isPublished || false)

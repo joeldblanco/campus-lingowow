@@ -1287,9 +1287,9 @@ const LEVEL_DESCRIPTIONS: Record<LanguageLevel, string> = {
 }
 
 /**
- * Calcula el nivel recomendado basado en el puntaje
+ * Calcula el nivel recomendado basado en el puntaje (función interna)
  */
-export function calculateRecommendedLevel(score: number): LanguageLevel {
+function calculateRecommendedLevel(score: number): LanguageLevel {
   if (score <= 20) return 'A1'
   if (score <= 40) return 'A2'
   if (score <= 60) return 'B1'
