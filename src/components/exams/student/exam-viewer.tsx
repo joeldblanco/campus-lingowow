@@ -184,13 +184,33 @@ export function ExamViewer({
     return navigationIndices.findIndex(idx => idx > currentQuestionIndex) === -1
   }, [navigationIndices, currentQuestionIndex])
 
+  // Generar estados de preguntas solo para los puntos de navegación (grupos)
+  // Esto evita mostrar bloques informativos como preguntas separadas
   const questionStatuses = useMemo(() => {
-    return allQuestions.map((q, index) => {
-      const hasAnswer = answers[q.id] !== null && answers[q.id] !== undefined && answers[q.id] !== ''
-      const isFlagged = flaggedQuestions.has(q.id)
+    return navigationIndices.map((navIndex, i) => {
+      // Obtener todas las preguntas de este grupo de navegación
+      const nextNavIndex = navigationIndices[i + 1] ?? allQuestions.length
+      const groupQuestions = allQuestions.slice(navIndex, nextNavIndex)
+      
+      // Filtrar solo las preguntas respondibles del grupo (excluir bloques informativos)
+      const answerableInGroup = groupQuestions.filter(q => {
+        const blockType = (q as typeof q & { originalBlockType?: string | null }).originalBlockType
+        return !blockType || !INFORMATIVE_BLOCK_TYPES.includes(blockType)
+      })
+      
+      // Verificar si alguna pregunta del grupo está respondida
+      const hasAnswer = answerableInGroup.some(q => 
+        answers[q.id] !== null && answers[q.id] !== undefined && answers[q.id] !== ''
+      )
+      
+      // Verificar si alguna pregunta del grupo está marcada
+      const isFlagged = answerableInGroup.some(q => flaggedQuestions.has(q.id))
+      
+      // Verificar si estamos en este grupo actualmente
+      const isCurrent = currentQuestionIndex >= navIndex && currentQuestionIndex < nextNavIndex
       
       let status: QuestionStatus = 'unanswered'
-      if (index === currentQuestionIndex) {
+      if (isCurrent) {
         status = 'current'
       } else if (isFlagged) {
         status = 'flagged'
@@ -198,9 +218,10 @@ export function ExamViewer({
         status = 'answered'
       }
       
-      return { id: q.id, status }
+      // Usar el primer ID del grupo como identificador
+      return { id: groupQuestions[0]?.id || `nav-${i}`, status, navIndex }
     })
-  }, [allQuestions, answers, flaggedQuestions, currentQuestionIndex])
+  }, [allQuestions, navigationIndices, answers, flaggedQuestions, currentQuestionIndex])
 
   const handleAnswerChange = useCallback(async (answer: unknown) => {
     if (!currentQuestion) return
@@ -236,10 +257,11 @@ export function ExamViewer({
   }, [currentQuestion])
 
   const handleNavigate = useCallback((index: number) => {
-    if (index >= 0 && index < totalQuestions) {
+    // Usar allQuestions.length porque los índices de navegación son de allQuestions, no de answerableQuestions
+    if (index >= 0 && index < allQuestions.length) {
       setCurrentQuestionIndex(index)
     }
-  }, [totalQuestions])
+  }, [allQuestions.length])
 
   const handlePrevious = useCallback(() => {
     // Encontrar el grupo actual: buscar el último índice que es <= currentQuestionIndex

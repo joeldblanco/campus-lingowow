@@ -2,17 +2,16 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import { 
   CheckCircle, 
   XCircle, 
   Timer, 
   Target, 
-  Zap, 
   ArrowRight,
   Lightbulb,
-  Play,
-  ChevronDown
+  ChevronDown,
+  Clock,
+  Play
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -42,7 +41,7 @@ interface ExamResultsProps {
   correctAnswers: number
   totalQuestions: number
   timeSpent: number
-  passed: boolean
+  passed: boolean | 'pending'
   xpEarned?: number
   questionResults: QuestionResult[]
   nextLessonUrl?: string
@@ -57,6 +56,7 @@ export function ExamResults({
   totalQuestions,
   timeSpent,
   passed,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   xpEarned = 0,
   questionResults,
   nextLessonUrl,
@@ -91,42 +91,24 @@ export function ExamResults({
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 bg-white dark:bg-[#1a2632] border-b border-gray-200 dark:border-gray-800 px-6 py-3 shadow-sm">
-        <div className="max-w-[1024px] mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4 text-foreground">
-            <div className="size-8 flex items-center justify-center text-primary">
-              <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
-              </svg>
-            </div>
-            <h2 className="text-foreground text-xl font-bold leading-tight tracking-tight">Lingowow</h2>
-          </div>
-          <nav className="hidden md:flex flex-1 justify-center gap-8">
-            <Link className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors" href="/dashboard">Dashboard</Link>
-            <Link className="text-primary text-sm font-bold" href="/my-courses">Cursos</Link>
-            <Link className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors" href="/messages">Comunidad</Link>
-          </nav>
-          <div className="flex items-center gap-4">
-            {xpEarned > 0 && (
-              <div className="hidden sm:flex items-center gap-2 text-sm font-medium text-muted-foreground">
-                <Zap className="h-5 w-5 text-yellow-500" />
-                <span>+{xpEarned} XP</span>
-              </div>
-            )}
-          </div>
-        </div>
-      </header>
 
       <div className="flex-1 max-w-[1024px] mx-auto w-full px-6 py-8 md:py-10">
         <div className="mb-10 flex flex-col gap-6 text-center">
           <div className="flex flex-col items-center gap-2">
             <div className={cn(
               "inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold",
-              passed 
-                ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
-                : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
+              passed === 'pending'
+                ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400"
+                : passed 
+                  ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
+                  : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
             )}>
-              {passed ? (
+              {passed === 'pending' ? (
+                <>
+                  <Clock className="h-4 w-4" />
+                  Pendiente de Revisión
+                </>
+              ) : passed ? (
                 <>
                   <CheckCircle className="h-4 w-4" />
                   Examen Aprobado
@@ -159,7 +141,7 @@ export function ExamResults({
                   />
                   <path
                     className={cn(
-                      passed ? "text-primary" : "text-red-500"
+                      passed === 'pending' ? "text-yellow-500" : passed ? "text-primary" : "text-red-500"
                     )}
                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     fill="none"
@@ -196,13 +178,6 @@ export function ExamResults({
                   <div className="flex items-center gap-2">
                     <Target className="h-5 w-5 text-purple-500" />
                     <span className="text-xl md:text-2xl font-bold text-foreground">{getAccuracyLabel()}</span>
-                  </div>
-                </div>
-                <div className="flex flex-col items-center md:items-start p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
-                  <span className="text-muted-foreground text-sm font-medium mb-1">XP Ganados</span>
-                  <div className="flex items-center gap-2">
-                    <Zap className="h-5 w-5 text-yellow-500" />
-                    <span className="text-xl md:text-2xl font-bold text-foreground">+{xpEarned}</span>
                   </div>
                 </div>
               </div>
@@ -348,10 +323,17 @@ function QuestionResultCard({ result }: { result: QuestionResult }) {
           <>
             {result.audioUrl && (
               <div className="mb-4">
-                <button className="flex items-center gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-800 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 text-sm font-medium text-primary transition-colors">
-                  <Play className="h-5 w-5" />
-                  Reproducir Audio
-                </button>
+                <div className="flex items-center gap-3 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                  <Play className="h-5 w-5 text-primary flex-shrink-0" />
+                  <audio 
+                    controls 
+                    src={result.audioUrl} 
+                    className="w-full h-8"
+                    preload="metadata"
+                  >
+                    Tu navegador no soporta el elemento de audio.
+                  </audio>
+                </div>
               </div>
             )}
 

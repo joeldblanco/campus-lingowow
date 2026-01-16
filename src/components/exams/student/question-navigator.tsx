@@ -9,6 +9,7 @@ interface QuestionNavigatorProps {
   questions: {
     id: string
     status: QuestionStatus
+    navIndex?: number // Índice real de navegación en allQuestions
   }[]
   currentIndex: number
   onNavigate: (index: number) => void
@@ -54,21 +55,25 @@ export function QuestionNavigator({
       </div>
       <div className="p-6">
         <div className="grid grid-cols-5 gap-3">
-          {questions.map((question, index) => (
-            <button
-              key={question.id}
-              onClick={() => onNavigate(index)}
-              className={cn(
-                "aspect-square flex items-center justify-center rounded-lg text-sm font-bold transition-colors relative",
-                getButtonStyles(question.status, index)
-              )}
-            >
-              {index + 1}
-              {question.status === 'flagged' && index !== currentIndex && (
-                <span className="absolute top-0.5 right-0.5 size-2 bg-yellow-500 rounded-full" />
-              )}
-            </button>
-          ))}
+          {questions.map((question, index) => {
+            // Usar navIndex si está disponible, de lo contrario usar el índice del array
+            const targetIndex = question.navIndex ?? index
+            return (
+              <button
+                key={question.id}
+                onClick={() => onNavigate(targetIndex)}
+                className={cn(
+                  "aspect-square flex items-center justify-center rounded-lg text-sm font-bold transition-colors relative",
+                  getButtonStyles(question.status, index)
+                )}
+              >
+                {index + 1}
+                {question.status === 'flagged' && (
+                  <span className="absolute top-0.5 right-0.5 size-2 bg-yellow-500 rounded-full" />
+                )}
+              </button>
+            )
+          })}
         </div>
       </div>
       {showLegend && (

@@ -101,33 +101,59 @@ export default async function ExamResultsPage({ params }: PageProps) {
       ? null // Pendiente de revisión
       : (answer.isCorrect ?? false)
     
+    // Formatear la respuesta del usuario para mostrar
+    let displayUserAnswer: string | null = null
+    if (answer.answer) {
+      // Si es un objeto con audioUrl (grabación), mostrar mensaje apropiado
+      if (typeof answer.answer === 'object' && (answer.answer as { audioUrl?: string }).audioUrl) {
+        displayUserAnswer = '🎤 Grabación de audio enviada'
+      } else if (typeof answer.answer === 'string') {
+        displayUserAnswer = answer.answer
+      } else {
+        // Para otros objetos, intentar mostrar de forma legible
+        displayUserAnswer = JSON.stringify(answer.answer)
+      }
+    }
+    
     return [{
       id: answer.id,
       questionNumber,
       type: answer.question.type,
       category: answer.question.tags?.[0] || undefined,
       question: answer.question.question,
-      userAnswer: answer.answer ? String(answer.answer) : null,
+      userAnswer: displayUserAnswer,
       correctAnswer: displayCorrectAnswer,
       isCorrect: displayIsCorrect ?? false,
       pointsEarned: answer.pointsEarned,
       maxPoints: answer.question.points,
       explanation: answer.question.explanation,
-      needsReview: answer.needsReview
+      needsReview: answer.needsReview,
+      audioUrl: typeof answer.answer === 'object' ? (answer.answer as { audioUrl?: string }).audioUrl : undefined
     }]
   })
 
-  const correctAnswers = questionResults.filter(r => r.isCorrect).length
-  const passed = (attempt.score ?? 0) >= exam.passingScore
+  const correctAnswersCount = questionResults.filter(r => r.isCorrect).length
+  const totalQuestionsCount = questionResults.length
+  
+  // Calcular el score basado en respuestas correctas si el score guardado es 0 o null
+  // Esto ocurre cuando hay preguntas pendientes de revisión
+  const calculatedScore = totalQuestionsCount > 0 
+    ? Math.round((correctAnswersCount / totalQuestionsCount) * 100) 
+    : 0
+  const displayScore = (attempt.score ?? 0) > 0 ? attempt.score! : calculatedScore
+  
+  // Determinar si aprobó basado en el score calculado o si tiene preguntas pendientes de revisión
+  const hasPendingReview = questionResults.some(r => 'needsReview' in r && r.needsReview)
+  const passed: boolean | 'pending' = hasPendingReview ? 'pending' : displayScore >= exam.passingScore
 
   return (
     <ExamResults
       examTitle={exam.title}
       examDescription={exam.description}
-      score={attempt.score ?? 0}
+      score={displayScore}
       totalPoints={attempt.totalPoints ?? 0}
       maxPoints={attempt.maxPoints ?? 0}
-      correctAnswers={correctAnswers}
+      correctAnswers={correctAnswersCount}
       totalQuestions={questionResults.length}
       timeSpent={attempt.timeSpent ?? 0}
       passed={passed}
