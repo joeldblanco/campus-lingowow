@@ -84,6 +84,9 @@ export function ExamResults({
   const [filter, setFilter] = useState<'all' | 'correct' | 'incorrect'>('all')
 
   const filteredResults = questionResults.filter((result) => {
+    // Los bloques informativos solo se muestran con el filtro 'all'
+    if (result.isInformativeBlock) return filter === 'all'
+    
     // Las preguntas pendientes de revisión solo se muestran con el filtro 'all'
     if (result.needsReview) return filter === 'all'
 
