@@ -2441,6 +2441,7 @@ function RecordingBlockPreview({
   const [hasRecorded, setHasRecorded] = useState(false)
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [isUploading, setIsUploading] = useState(false)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const audioChunksRef = useRef<Blob[]>([])
@@ -2486,23 +2487,59 @@ function RecordingBlockPreview({
         }
       }
 
-      mediaRecorder.onstop = () => {
+      mediaRecorder.onstop = async () => {
         const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
-        const url = URL.createObjectURL(audioBlob)
-        setAudioUrl(url)
+        const localUrl = URL.createObjectURL(audioBlob)
+        setAudioUrl(localUrl)
         setHasRecorded(true)
         
-        // En modo examen, guardar la respuesta
+        // En modo examen, subir a Cloudinary y guardar la URL
         if (isExamMode && onAnswerChange) {
-          // Convertir blob a base64 para guardar
-          const reader = new FileReader()
-          reader.onloadend = () => {
-            onAnswerChange({ 
-              audioUrl: reader.result as string,
-              duration: block.timeLimit ? (block.timeLimit - timeLeft) : 0
-            })
+          setIsUploading(true)
+          try {
+            // Crear FormData para subir
+            const formData = new FormData()
+            const fileName = `recording-${Date.now()}.webm`
+            const file = new File([audioBlob], fileName, { type: 'audio/webm' })
+            formData.append('file', file)
+            
+            // Importar dinámicamente la función de upload
+            const { uploadAudioFile } = await import('@/lib/actions/cloudinary')
+            const result = await uploadAudioFile(formData, 'exam-recordings')
+            
+            if (result.success && result.data?.secure_url) {
+              setAudioUrl(result.data.secure_url)
+              onAnswerChange({ 
+                audioUrl: result.data.secure_url,
+                duration: block.timeLimit ? (block.timeLimit - timeLeft) : 0
+              })
+              setIsUploading(false)
+            } else {
+              console.error('Failed to upload audio:', result.error)
+              setIsUploading(false)
+              // Fallback a base64 si falla Cloudinary
+              const reader = new FileReader()
+              reader.onloadend = () => {
+                onAnswerChange({ 
+                  audioUrl: reader.result as string,
+                  duration: block.timeLimit ? (block.timeLimit - timeLeft) : 0
+                })
+              }
+              reader.readAsDataURL(audioBlob)
+            }
+          } catch (error) {
+            console.error('Error uploading audio:', error)
+            setIsUploading(false)
+            // Fallback a base64 si hay error
+            const reader = new FileReader()
+            reader.onloadend = () => {
+              onAnswerChange({ 
+                audioUrl: reader.result as string,
+                duration: block.timeLimit ? (block.timeLimit - timeLeft) : 0
+              })
+            }
+            reader.readAsDataURL(audioBlob)
           }
-          reader.readAsDataURL(audioBlob)
         }
         
         stream.getTracks().forEach(track => track.stop())
@@ -2635,7 +2672,9 @@ function RecordingBlockPreview({
               </Button>
             </div>
             {isExamMode && (
-              <p className="text-xs text-green-600 mt-2">✓ Grabación guardada</p>
+              <p className="text-xs text-green-600 mt-2">
+                {isUploading ? '⏳ Subiendo grabación...' : '✓ Grabación guardada'}
+              </p>
             )}
           </div>
         )}

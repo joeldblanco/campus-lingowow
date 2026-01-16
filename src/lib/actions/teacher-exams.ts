@@ -621,7 +621,9 @@ export async function getExamResultsForTeacher(examId: string) {
     // Incluir tanto COMPLETED como SUBMITTED (pendientes de revisión) en las estadísticas
     const finishedAttempts = exam.attempts.filter((a) => a.status === 'COMPLETED' || a.status === 'SUBMITTED')
     const completedAttempts = exam.attempts.filter((a) => a.status === 'COMPLETED')
-    const scores = finishedAttempts.map((a) => a.score || 0)
+    // Solo incluir intentos con score real (no null) para el promedio
+    const attemptsWithScore = finishedAttempts.filter((a) => a.score !== null && a.score !== undefined)
+    const scores = attemptsWithScore.map((a) => a.score as number)
     const averageScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0
     const passedCount = completedAttempts.filter((a) => (a.score || 0) >= exam.passingScore).length
 
