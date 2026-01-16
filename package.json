@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "node --max-old-space-size=8192 node_modules/next/dist/bin/next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "seed:activities": "tsx scripts/seed-activities.ts",
     "setup:test-db": "node scripts/setup-test-db.mjs",
     "check:availability": "tsx scripts/check-availability-days.ts",
@@ -126,7 +126,7 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
+    "@eslint/eslintrc": "^3.3.3",
     "@playwright/test": "^1.55.0",
     "@tailwindcss/postcss": "^4",
     "@testing-library/jest-dom": "^6.9.1",
