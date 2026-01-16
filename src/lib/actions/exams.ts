@@ -915,8 +915,18 @@ export async function submitExamAttempt(attemptId: string) {
       return { success: false, error: 'Este intento ya fue enviado' }
     }
 
+    // Tipos de bloques informativos que no requieren respuesta
+    const INFORMATIVE_BLOCK_TYPES = ['title', 'text', 'audio', 'video', 'image']
+    
     const allQuestions = attempt.exam.sections.flatMap((s) => s.questions)
-    const maxPoints = allQuestions.reduce((sum, q) => sum + q.points, 0)
+    // Filtrar solo preguntas que requieren respuesta (excluyendo bloques informativos)
+    const answerableQuestions = allQuestions.filter(q => {
+      const options = q.options as Record<string, unknown> | null
+      const blockType = options?.originalBlockType as string | undefined
+      return !blockType || !INFORMATIVE_BLOCK_TYPES.includes(blockType)
+    })
+    
+    const maxPoints = answerableQuestions.reduce((sum, q) => sum + q.points, 0)
     const totalPoints = attempt.answers.reduce((sum, a) => sum + a.pointsEarned, 0)
     const hasPendingReview = attempt.answers.some((a) => a.needsReview)
 

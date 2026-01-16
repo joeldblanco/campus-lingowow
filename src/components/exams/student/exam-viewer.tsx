@@ -23,6 +23,9 @@ import {
 } from '@/components/ui/alert-dialog'
 import { toast } from 'sonner'
 
+// Tipos de bloques informativos que no requieren respuesta
+const INFORMATIVE_BLOCK_TYPES = ['title', 'text', 'audio', 'video', 'image']
+
 interface ExamSection {
   id: string
   title: string
@@ -122,10 +125,18 @@ export function ExamViewer({
       }))
     )
   }, [sections])
+  
+  // Filtrar solo preguntas que requieren respuesta (excluyendo bloques informativos)
+  const answerableQuestions = useMemo(() => {
+    return allQuestions.filter(q => {
+      const blockType = (q as typeof q & { originalBlockType?: string | null }).originalBlockType
+      return !blockType || !INFORMATIVE_BLOCK_TYPES.includes(blockType)
+    })
+  }, [allQuestions])
 
-  const totalQuestions = allQuestions.length
-  const answeredCount = Object.keys(answers).filter(
-    (key) => answers[key] !== null && answers[key] !== undefined && answers[key] !== ''
+  const totalQuestions = answerableQuestions.length
+  const answeredCount = answerableQuestions.filter(
+    (q) => answers[q.id] !== null && answers[q.id] !== undefined && answers[q.id] !== ''
   ).length
 
   const currentQuestion = allQuestions[currentQuestionIndex]

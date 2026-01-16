@@ -12,7 +12,11 @@ import {
   FileText,
   Save,
   Send,
-  Bell
+  Volume2,
+  Video,
+  Image as ImageIcon,
+  Type,
+  FileTextIcon
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -35,15 +39,26 @@ interface ExamAttemptInfo {
   status: 'PENDING_REVIEW' | 'COMPLETED' | 'IN_PROGRESS'
 }
 
+// Tipo para sub-respuestas de opción múltiple con múltiples pasos
+interface MultipleChoiceSubAnswer {
+  itemQuestion: string
+  userOptionLetter: string | null
+  userOptionText: string | null
+  correctOptionLetter: string
+  correctOptionText: string
+  isCorrect: boolean
+}
+
 interface QuestionAnswer {
   id: string
   questionId: string
-  questionNumber: number
+  questionNumber: number | null // null para bloques informativos
   questionType: string
   questionText: string
   category?: string
   maxPoints: number
   userAnswer: string | null
+  userAudioUrl?: string // URL de audio grabado por el estudiante
   correctAnswer?: string
   isCorrect: boolean | null
   pointsEarned: number
@@ -52,6 +67,16 @@ interface QuestionAnswer {
   isAutoGraded: boolean
   groupId?: string | null
   sectionTitle?: string
+  isInformativeBlock?: boolean // Para bloques de audio, video, texto, etc.
+  informativeContent?: { // Contenido del bloque informativo
+    type: string
+    audioUrl?: string
+    videoUrl?: string
+    imageUrl?: string
+    text?: string
+    title?: string
+  }
+  multipleChoiceDetails?: MultipleChoiceSubAnswer[] // Detalles de cada sub-pregunta
 }
 
 interface ExamGradingViewProps {
@@ -175,33 +200,6 @@ export function ExamGradingView({
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 bg-white dark:bg-[#1a2632] border-b border-gray-200 dark:border-gray-800 px-6 py-3 shadow-sm">
-        <div className="max-w-[1400px] mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="size-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
-              <FileText className="h-5 w-5" />
-            </div>
-            <h2 className="text-foreground text-lg font-bold">Portal del Profesor</h2>
-          </div>
-          <nav className="hidden md:flex flex-1 justify-center gap-8">
-            <Link className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors" href="/teacher/dashboard">Dashboard</Link>
-            <Link className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors" href="/teacher/classes">Clases</Link>
-            <Link className="text-primary text-sm font-bold" href="/teacher/grading">Calificaciones</Link>
-            <Link className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors" href="/teacher/reports">Reportes</Link>
-          </nav>
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="h-5 w-5" />
-              {pendingReviewCount > 0 && (
-                <span className="absolute -top-1 -right-1 size-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-                  {pendingReviewCount}
-                </span>
-              )}
-            </Button>
-          </div>
-        </div>
-      </header>
-
       <div className="max-w-[1400px] mx-auto px-6 py-4">
         {breadcrumbs.length > 0 && (
           <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
@@ -312,18 +310,89 @@ export function ExamGradingView({
                 )}
                 
                 {currentGroupAnswers.map((answer) => {
-                  const answerIndex = answers.findIndex(a => a.id === answer.id)
+                  // Renderizar bloque informativo
+                  if (answer.isInformativeBlock) {
+                    const infoType = answer.informativeContent?.type || 'unknown'
+                    const InfoIcon = infoType === 'audio' ? Volume2 
+                      : infoType === 'video' ? Video 
+                      : infoType === 'image' ? ImageIcon 
+                      : infoType === 'title' ? Type 
+                      : FileTextIcon
+                    
+                    return (
+                      <div key={answer.id} className="bg-blue-50 dark:bg-blue-900/20 rounded-xl shadow-sm border border-blue-200 dark:border-blue-700 p-6">
+                        <div className="flex items-center gap-3 mb-4">
+                          <InfoIcon className="h-5 w-5 text-blue-600" />
+                          <Badge variant="outline" className="bg-blue-100 text-blue-700 border-blue-300">
+                            Contenido Informativo
+                          </Badge>
+                        </div>
+                        
+                        {answer.informativeContent?.title && (
+                          <h3 className="text-xl font-bold text-foreground mb-4">{answer.informativeContent.title}</h3>
+                        )}
+                        
+                        {answer.informativeContent?.text && (
+                          <div 
+                            className="text-foreground mb-4 prose prose-sm dark:prose-invert max-w-none"
+                            dangerouslySetInnerHTML={{ __html: answer.informativeContent.text }}
+                          />
+                        )}
+                        
+                        {answer.informativeContent?.audioUrl && (
+                          <div className="mb-4">
+                            <p className="text-sm text-muted-foreground mb-2">Audio:</p>
+                            <audio controls className="w-full">
+                              <source src={answer.informativeContent.audioUrl} />
+                              Tu navegador no soporta el elemento de audio.
+                            </audio>
+                          </div>
+                        )}
+                        
+                        {answer.informativeContent?.videoUrl && (
+                          <div className="mb-4">
+                            <p className="text-sm text-muted-foreground mb-2">Video:</p>
+                            <video controls className="w-full max-h-96">
+                              <source src={answer.informativeContent.videoUrl} />
+                              Tu navegador no soporta el elemento de video.
+                            </video>
+                          </div>
+                        )}
+                        
+                        {answer.informativeContent?.imageUrl && (
+                          <div className="mb-4">
+                            <img 
+                              src={answer.informativeContent.imageUrl} 
+                              alt="Imagen informativa" 
+                              className="max-w-full h-auto rounded-lg"
+                            />
+                          </div>
+                        )}
+                        
+                        {!answer.informativeContent?.title && !answer.informativeContent?.text && 
+                         !answer.informativeContent?.audioUrl && !answer.informativeContent?.videoUrl && 
+                         !answer.informativeContent?.imageUrl && (
+                          <p className="text-muted-foreground italic">{answer.questionText || 'Contenido informativo'}</p>
+                        )}
+                      </div>
+                    )
+                  }
+                  
                   return (
                     <div key={answer.id} className="bg-white dark:bg-[#1a2632] rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                       <div className="flex items-start justify-between gap-4 mb-4">
                         <div className="flex items-center gap-3">
-                          <span className="text-muted-foreground font-medium">Pregunta {answerIndex + 1}</span>
+                          <span className="text-muted-foreground font-medium">Pregunta {answer.questionNumber}</span>
                           {answer.needsReview ? (
                             <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300">
                               Pendiente de Revisión
                             </Badge>
                           ) : answer.isAutoGraded ? (
-                            <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">
+                            <Badge variant="outline" className={cn(
+                              answer.isCorrect 
+                                ? "bg-green-50 text-green-700 border-green-300"
+                                : "bg-red-50 text-red-700 border-red-300"
+                            )}>
                               Auto-calificada: {answer.isCorrect ? 'Correcta' : 'Incorrecta'}
                             </Badge>
                           ) : answer.userAnswer === null ? (
@@ -345,15 +414,74 @@ export function ExamGradingView({
 
                       <h3 className="text-xl font-bold text-foreground mb-6">{answer.questionText}</h3>
 
-                      <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900 rounded-lg p-4 mb-6">
-                        <div className="flex items-start justify-between mb-2">
-                          <span className="text-sm font-bold text-amber-800 dark:text-amber-400 uppercase">Respuesta del Estudiante</span>
-                          <span className="text-xs text-muted-foreground">Enviado a las {attempt.submittedAt}</span>
+                      {/* Mostrar detalles de opción múltiple con múltiples pasos */}
+                      {answer.multipleChoiceDetails && answer.multipleChoiceDetails.length > 0 ? (
+                        <div className="space-y-4 mb-6">
+                          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900 rounded-lg p-4">
+                            <div className="flex items-start justify-between mb-3">
+                              <span className="text-sm font-bold text-amber-800 dark:text-amber-400 uppercase">Respuestas del Estudiante</span>
+                              <span className="text-xs text-muted-foreground">Enviado a las {attempt.submittedAt}</span>
+                            </div>
+                            <div className="space-y-2">
+                              {answer.multipleChoiceDetails.map((detail, idx) => (
+                                <div 
+                                  key={idx} 
+                                  className={cn(
+                                    "p-3 rounded-md border",
+                                    detail.isCorrect 
+                                      ? "bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800"
+                                      : "bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800"
+                                  )}
+                                >
+                                  <div className="flex items-start gap-2">
+                                    {detail.isCorrect ? (
+                                      <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                                    ) : (
+                                      <XCircle className="h-4 w-4 text-red-600 mt-0.5 flex-shrink-0" />
+                                    )}
+                                    <div className="flex-1">
+                                      <p className="font-medium text-sm">{detail.itemQuestion}</p>
+                                      <p className={cn(
+                                        "text-sm mt-1",
+                                        detail.isCorrect ? "text-green-700 dark:text-green-400" : "text-red-700 dark:text-red-400"
+                                      )}>
+                                        {detail.userOptionLetter 
+                                          ? `Respondió: (${detail.userOptionLetter}) ${detail.userOptionText}`
+                                          : 'No respondió'}
+                                      </p>
+                                      {!detail.isCorrect && (
+                                        <p className="text-sm text-muted-foreground mt-1">
+                                          Correcta: ({detail.correctOptionLetter}) {detail.correctOptionText}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
                         </div>
-                        <p className="text-foreground italic leading-relaxed">
-                          &quot;{answer.userAnswer || '(Sin respuesta)'}&quot;
-                        </p>
-                      </div>
+                      ) : (
+                        <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900 rounded-lg p-4 mb-6">
+                          <div className="flex items-start justify-between mb-2">
+                            <span className="text-sm font-bold text-amber-800 dark:text-amber-400 uppercase">Respuesta del Estudiante</span>
+                            <span className="text-xs text-muted-foreground">Enviado a las {attempt.submittedAt}</span>
+                          </div>
+                          {answer.userAudioUrl ? (
+                            <div className="mt-2">
+                              <p className="text-sm text-muted-foreground mb-2">Grabación de audio:</p>
+                              <audio controls className="w-full">
+                                <source src={answer.userAudioUrl} />
+                                Tu navegador no soporta el elemento de audio.
+                              </audio>
+                            </div>
+                          ) : (
+                            <p className="text-foreground italic leading-relaxed whitespace-pre-wrap">
+                              {answer.userAnswer || '(Sin respuesta)'}
+                            </p>
+                          )}
+                        </div>
+                      )}
 
                       {answer.needsReview && (
                         <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
@@ -422,7 +550,8 @@ export function ExamGradingView({
                         </div>
                       )}
 
-                      {!answer.needsReview && answer.isAutoGraded && (
+                      {/* Solo mostrar bloque de resultado si NO tiene multipleChoiceDetails (ya se muestra arriba) */}
+                      {!answer.needsReview && answer.isAutoGraded && !answer.multipleChoiceDetails && (
                         <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
                           <div className={cn(
                             "p-4 rounded-lg",
@@ -441,9 +570,10 @@ export function ExamGradingView({
                               </span>
                             </div>
                             {answer.correctAnswer && !answer.isCorrect && (
-                              <p className="text-sm text-muted-foreground">
-                                <strong>Respuesta correcta:</strong> {answer.correctAnswer}
-                              </p>
+                              <div className="text-sm text-muted-foreground">
+                                <strong>Respuesta correcta:</strong>
+                                <p className="whitespace-pre-wrap mt-1">{answer.correctAnswer}</p>
+                              </div>
                             )}
                           </div>
 

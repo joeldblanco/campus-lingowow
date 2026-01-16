@@ -129,7 +129,7 @@ export function BlockPreview({ block, isTeacher, isClassroom, isExamMode, answer
       case 'drag_drop':
         return <DragDropBlockPreview block={block as DragDropBlock} isExamMode={isExamMode} />
       case 'recording':
-        return <RecordingBlockPreview block={block as RecordingBlock} />
+        return <RecordingBlockPreview block={block as RecordingBlock} isExamMode={isExamMode} answer={answer} onAnswerChange={onAnswerChange} />
       case 'structured-content':
         return <StructuredContentBlockPreview block={block as StructuredContentBlock} />
       case 'grammar-visualizer':
@@ -2425,43 +2425,143 @@ function EssayBlockPreview({
   )
 }
 
-function RecordingBlockPreview({ block }: { block: RecordingBlock }) {
+function RecordingBlockPreview({ 
+  block,
+  isExamMode,
+  answer,
+  onAnswerChange
+}: { 
+  block: RecordingBlock
+  isExamMode?: boolean
+  answer?: unknown
+  onAnswerChange?: (answer: unknown) => void
+}) {
   const [isRecording, setIsRecording] = useState(false)
   const [timeLeft, setTimeLeft] = useState(block.timeLimit || 60)
   const [hasRecorded, setHasRecorded] = useState(false)
+  const [audioUrl, setAudioUrl] = useState<string | null>(null)
+  const [isPlaying, setIsPlaying] = useState(false)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null)
+  const audioChunksRef = useRef<Blob[]>([])
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const streamRef = useRef<MediaStream | null>(null)
 
-  const toggleRecording = () => {
-    if (isRecording) {
-      // Stop
-      setIsRecording(false)
-      setHasRecorded(true)
-      if (timerRef.current) clearInterval(timerRef.current)
-    } else {
-      // Start
-      setIsRecording(true)
-      setTimeLeft(block.timeLimit || 60)
-      setHasRecorded(false)
-      timerRef.current = setInterval(() => {
-        setTimeLeft(prev => {
-          if (prev <= 1) {
-            setIsRecording(false)
-            setHasRecorded(true)
-            if (timerRef.current) clearInterval(timerRef.current)
-            return 0
-          }
-          return prev - 1
-        })
-      }, 1000)
+  // Cargar audio existente de la respuesta
+  useEffect(() => {
+    if (isExamMode && answer) {
+      const answerObj = answer as { audioUrl?: string }
+      if (answerObj.audioUrl) {
+        setAudioUrl(answerObj.audioUrl)
+        setHasRecorded(true)
+      }
     }
-  }
+  }, [isExamMode, answer])
 
   // Cleanup
   useEffect(() => {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current)
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop())
+      }
+      // No revocar URL si viene de la respuesta guardada
+      if (audioUrl && !(answer as { audioUrl?: string })?.audioUrl) {
+        URL.revokeObjectURL(audioUrl)
+      }
     }
-  }, [])
+  }, [audioUrl, answer])
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      streamRef.current = stream
+      const mediaRecorder = new MediaRecorder(stream)
+      mediaRecorderRef.current = mediaRecorder
+      audioChunksRef.current = []
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data)
+        }
+      }
+
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
+        const url = URL.createObjectURL(audioBlob)
+        setAudioUrl(url)
+        setHasRecorded(true)
+        
+        // En modo examen, guardar la respuesta
+        if (isExamMode && onAnswerChange) {
+          // Convertir blob a base64 para guardar
+          const reader = new FileReader()
+          reader.onloadend = () => {
+            onAnswerChange({ 
+              audioUrl: reader.result as string,
+              duration: block.timeLimit ? (block.timeLimit - timeLeft) : 0
+            })
+          }
+          reader.readAsDataURL(audioBlob)
+        }
+        
+        stream.getTracks().forEach(track => track.stop())
+      }
+
+      mediaRecorder.start()
+      setIsRecording(true)
+      setTimeLeft(block.timeLimit || 60)
+
+      // Timer
+      timerRef.current = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            stopRecording()
+            return 0
+          }
+          return prev - 1
+        })
+      }, 1000)
+    } catch (error) {
+      console.error('Error accessing microphone:', error)
+      alert('No se pudo acceder al micrófono. Por favor, permite el acceso al micrófono.')
+    }
+  }
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+      mediaRecorderRef.current.stop()
+    }
+    if (timerRef.current) {
+      clearInterval(timerRef.current)
+    }
+    setIsRecording(false)
+  }
+
+  const toggleRecording = () => {
+    if (isRecording) {
+      stopRecording()
+    } else {
+      // Si ya hay una grabación, limpiarla primero
+      if (audioUrl && !(answer as { audioUrl?: string })?.audioUrl) {
+        URL.revokeObjectURL(audioUrl)
+      }
+      setAudioUrl(null)
+      setHasRecorded(false)
+      startRecording()
+    }
+  }
+
+  const togglePlayback = () => {
+    if (!audioRef.current || !audioUrl) return
+    
+    if (isPlaying) {
+      audioRef.current.pause()
+    } else {
+      audioRef.current.play()
+    }
+    setIsPlaying(!isPlaying)
+  }
 
   return (
     <div className="space-y-4">
@@ -2491,7 +2591,7 @@ function RecordingBlockPreview({ block }: { block: RecordingBlock }) {
             )}
           >
             {isRecording ? (
-              <div className="h-8 w-8 bg-red-500 rounded sm" />
+              <div className="h-8 w-8 bg-red-500 rounded-sm" />
             ) : (
               <Mic className="h-8 w-8 text-white" />
             )}
@@ -2502,11 +2602,42 @@ function RecordingBlockPreview({ block }: { block: RecordingBlock }) {
         </div>
 
         <p className="text-sm text-blue-600/80">
-          {hasRecorded ? "Grabación completada. ¿Grabar de nuevo?" : (isRecording ? "Haz clic para detener" : "Haz clic para comenzar a grabar")}
+          {hasRecorded ? "Grabación completada. Haz clic para grabar de nuevo." : (isRecording ? "Haz clic para detener" : "Haz clic para comenzar a grabar")}
         </p>
 
-        {hasRecorded && !isRecording && (
-          <Button size="sm" className="mt-2">Enviar Grabación</Button>
+        {/* Reproductor de audio */}
+        {audioUrl && !isRecording && (
+          <div className="mt-4 p-4 bg-white rounded-lg border border-blue-200">
+            <audio 
+              ref={audioRef}
+              src={audioUrl}
+              onEnded={() => setIsPlaying(false)}
+              className="hidden"
+            />
+            <div className="flex items-center justify-center gap-4">
+              <Button 
+                size="sm" 
+                variant="outline"
+                onClick={togglePlayback}
+                className="flex items-center gap-2"
+              >
+                {isPlaying ? (
+                  <>
+                    <LucideIcons.Square className="h-4 w-4" />
+                    Detener
+                  </>
+                ) : (
+                  <>
+                    <Play className="h-4 w-4" />
+                    Reproducir grabación
+                  </>
+                )}
+              </Button>
+            </div>
+            {isExamMode && (
+              <p className="text-xs text-green-600 mt-2">✓ Grabación guardada</p>
+            )}
+          </div>
         )}
       </div>
     </div>

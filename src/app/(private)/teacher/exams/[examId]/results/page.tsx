@@ -193,15 +193,17 @@ export default function TeacherExamResultsPage() {
                         <p className="text-sm text-muted-foreground">
                           {format(new Date(attempt.startedAt), 'PPp', { locale: es })}
                         </p>
-                        {attempt.status === 'COMPLETED' ? (
+                        {attempt.status === 'IN_PROGRESS' ? (
+                          <Badge variant="secondary">En progreso</Badge>
+                        ) : attempt.status === 'SUBMITTED' ? (
+                          <Badge variant="outline" className="border-yellow-500 text-yellow-600">Pendiente de revisión</Badge>
+                        ) : (
                           <p className={cn(
                             "font-semibold",
                             passed ? "text-green-600" : "text-destructive"
                           )}>
                             {attempt.score?.toFixed(1)}%
                           </p>
-                        ) : (
-                          <Badge variant="secondary">En progreso</Badge>
                         )}
                       </div>
                       
@@ -211,10 +213,10 @@ export default function TeacherExamResultsPage() {
                         </Badge>
                       )}
                       
-                      {attempt.status === 'COMPLETED' && (
+                      {(attempt.status === 'COMPLETED' || attempt.status === 'SUBMITTED') && (
                         <Link href={`/teacher/grading/${examId}/${attempt.id}`}>
                           <Button size="sm" variant="outline">
-                            Ver detalles
+                            {attempt.status === 'SUBMITTED' ? 'Revisar' : 'Ver detalles'}
                           </Button>
                         </Link>
                       )}

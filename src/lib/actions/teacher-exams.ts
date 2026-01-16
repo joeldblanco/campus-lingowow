@@ -578,6 +578,13 @@ export async function getExamResultsForTeacher(examId: string) {
       return { success: false, error: 'No autorizado' }
     }
 
+    // Obtener los IDs de estudiantes que tienen clases con este profesor
+    const teacherStudentIds = await db.classBooking.findMany({
+      where: { teacherId: session.user.id },
+      select: { studentId: true },
+      distinct: ['studentId']
+    }).then(bookings => bookings.map(b => b.studentId))
+
     const exam = await db.exam.findFirst({
       where: {
         id: examId,
@@ -585,6 +592,13 @@ export async function getExamResultsForTeacher(examId: string) {
       },
       include: {
         attempts: {
+          where: {
+            // Filtrar solo intentos de estudiantes del profesor o si el profesor creó el examen
+            OR: [
+              { userId: { in: teacherStudentIds } },
+              { exam: { createdById: session.user.id } }
+            ]
+          },
           include: {
             user: {
               select: {
@@ -604,10 +618,12 @@ export async function getExamResultsForTeacher(examId: string) {
       return { success: false, error: 'Examen no encontrado o no tienes permiso' }
     }
 
+    // Incluir tanto COMPLETED como SUBMITTED (pendientes de revisión) en las estadísticas
+    const finishedAttempts = exam.attempts.filter((a) => a.status === 'COMPLETED' || a.status === 'SUBMITTED')
     const completedAttempts = exam.attempts.filter((a) => a.status === 'COMPLETED')
-    const scores = completedAttempts.map((a) => a.score || 0)
+    const scores = finishedAttempts.map((a) => a.score || 0)
     const averageScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0
-    const passedCount = scores.filter((s) => s >= exam.passingScore).length
+    const passedCount = completedAttempts.filter((a) => (a.score || 0) >= exam.passingScore).length
 
     return {
       success: true,
@@ -627,7 +643,7 @@ export async function getExamResultsForTeacher(examId: string) {
         })),
         stats: {
           totalAttempts: exam.attempts.length,
-          completedAttempts: completedAttempts.length,
+          completedAttempts: finishedAttempts.length,
           averageScore,
           passRate:
             completedAttempts.length > 0 ? (passedCount / completedAttempts.length) * 100 : 0,
