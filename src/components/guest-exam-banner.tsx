@@ -36,36 +36,43 @@ export function GuestExamBanner({ userId }: GuestExamBannerProps) {
     return null
   }
 
-  const examUrl = pendingExam.slug 
-    ? `/test/${pendingExam.slug}` 
+  const examUrl = pendingExam.slug
+    ? `/test/${pendingExam.slug}`
     : `/exams/${pendingExam.id}/take`
 
   return (
-    <div className="bg-primary text-primary-foreground px-4 py-3">
-      <div className="container mx-auto flex items-center justify-between gap-4">
+    <div className="w-full bg-primary text-primary-foreground border-b">
+      <div className="flex items-center justify-between gap-4 px-4 py-3">
         <div className="flex items-center gap-3">
-          <ClipboardCheck className="h-5 w-5 shrink-0" />
-          <p className="text-sm font-medium">
-            Tienes un examen asignado: <strong>{pendingExam.title}</strong>
-            {pendingExam.dueDate && (
-              <span className="ml-2 opacity-90">
-                (Fecha límite: {new Date(pendingExam.dueDate).toLocaleDateString()})
-              </span>
-            )}
-          </p>
+          <div className="bg-primary-foreground/10 p-2 rounded-full hidden sm:block">
+            <ClipboardCheck className="h-5 w-5 shrink-0" />
+          </div>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+            <p className="text-sm font-semibold">Examen Asignado</p>
+            <span className="hidden sm:block text-primary-foreground/40 text-xs">•</span>
+            <p className="text-sm">
+              <strong>{pendingExam.title}</strong>
+              {pendingExam.dueDate && (
+                <span className="ml-2 text-primary-foreground/80 text-xs">
+                  (Vence: {new Date(pendingExam.dueDate).toLocaleDateString()})
+                </span>
+              )}
+            </p>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <Button
             asChild
             size="sm"
             variant="secondary"
+            className="font-semibold shadow-sm"
           >
             <Link href={examUrl}>Tomar Examen</Link>
           </Button>
           <Button
             size="sm"
             variant="ghost"
-            className="h-8 w-8 p-0 hover:bg-primary-foreground/20"
+            className="h-8 w-8 p-0 rounded-full hover:bg-primary-foreground/20 transition-colors"
             onClick={() => setDismissed(true)}
           >
             <X className="h-4 w-4" />
