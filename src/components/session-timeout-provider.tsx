@@ -4,8 +4,8 @@ import { useEffect, useCallback, useRef } from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import { toast } from 'sonner'
 
-const INACTIVITY_TIMEOUT = 30 * 60 * 1000 // 30 minutes
-const WARNING_BEFORE_TIMEOUT = 5 * 60 * 1000 // 5 minutes warning
+const INACTIVITY_TIMEOUT = 7 * 24 * 60 * 60 * 1000 // 7 días
+const WARNING_BEFORE_TIMEOUT = 60 * 60 * 1000 // 1 hora de advertencia
 
 export function SessionTimeoutProvider({ children }: { children: React.ReactNode }) {
   const { status } = useSession()
@@ -32,7 +32,7 @@ export function SessionTimeoutProvider({ children }: { children: React.ReactNode
       warningRef.current = setTimeout(() => {
         if (!warningShownRef.current) {
           warningShownRef.current = true
-          toast.warning('Tu sesión expirará en 5 minutos por inactividad', {
+          toast.warning('Tu sesión expirará en 1 hora por inactividad', {
             duration: 10000,
           })
         }

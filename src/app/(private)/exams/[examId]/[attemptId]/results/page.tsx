@@ -155,9 +155,28 @@ export default async function ExamResultsPage({ params }: PageProps) {
     
     // Para preguntas tipo ESSAY, no mostrar "null" como respuesta correcta
     const isEssayType = question.type === 'ESSAY'
+    
+    // Función para mapear IDs de opciones a texto
+    const mapOptionIdsToText = (ids: string[]): string => {
+      // Para multi_select, buscar en correctOptions e incorrectOptions
+      const correctOptions = options?.correctOptions as { id: string; text: string }[] | undefined
+      const incorrectOptions = options?.incorrectOptions as { id: string; text: string }[] | undefined
+      const allOptions = [...(correctOptions || []), ...(incorrectOptions || [])]
+      
+      if (allOptions.length > 0) {
+        return ids.map(id => {
+          const option = allOptions.find(o => o.id === id)
+          return option?.text || id
+        }).join(', ')
+      }
+      
+      // Fallback: devolver los IDs tal cual si no hay opciones
+      return ids.join(', ')
+    }
+    
     const displayCorrectAnswer = isEssayType 
       ? 'Requiere revisión manual del profesor'
-      : (Array.isArray(correctAnswer) ? correctAnswer.join(', ') : (correctAnswer ? String(correctAnswer) : 'N/A'))
+      : (Array.isArray(correctAnswer) ? mapOptionIdsToText(correctAnswer as string[]) : (correctAnswer ? String(correctAnswer) : 'N/A'))
     
     // Para Essay, si está pendiente de revisión, no marcar como incorrecta
     const displayIsCorrect = isEssayType && answer?.needsReview 
