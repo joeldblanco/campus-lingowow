@@ -20,7 +20,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Check, GraduationCap, MessageCircle, Star, Users } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { PricingSection } from '@/components/public-components/pricing-section'
 import { getTeachersForLanding } from '@/lib/actions/teachers'
 import { ContactForm } from '@/components/public-components/contact-form'
 import { Metadata } from 'next'
@@ -371,9 +370,6 @@ export default async function LandingPage() {
             </div>
           </div>
         </section>
-
-        {/* Precios */}
-        <PricingSection />
 
         {/* FAQ */}
         <section id="faq" className="w-full py-12 md:py-16 bg-slate-50">
