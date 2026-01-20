@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 import { BlockPreview } from './block-preview'
 import { BlockContentEditor } from './block-editor'
 import { GripVertical } from 'lucide-react'
+import Image from 'next/image'
 
 interface CanvasProps {
     blocks: Block[]
@@ -70,10 +71,13 @@ export function Canvas({
                     >
                         {coverImage ? (
                             <div className="relative w-full h-48 md:h-64">
-                                <img
+                                <Image
                                     src={coverImage}
                                     alt="Imagen de portada"
-                                    className="w-full h-full object-cover"
+                                    fill
+                                    className="object-cover"
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
+                                    unoptimized={!coverImage.includes('cloudinary') && !coverImage.includes('res.cloudinary')}
                                 />
                                 {!readOnly && (
                                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">

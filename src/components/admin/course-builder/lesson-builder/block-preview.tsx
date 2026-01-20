@@ -1519,7 +1519,7 @@ function TabGroupBlockPreview({ block, hideHeader }: { block: TabGroupBlock; hid
               {activeTab.children && activeTab.children.length > 0 ? (
                 activeTab.children.map((child: Block) => (
                   <div key={child.id} className="relative">
-                    <BlockPreview block={child} />
+                    <BlockPreview block={child} hideBlockHeader={hideHeader} />
                   </div>
                 ))
               ) : (
@@ -1540,14 +1540,13 @@ function TabGroupBlockPreview({ block, hideHeader }: { block: TabGroupBlock; hid
 }
 
 function LayoutBlockPreview({ block, hideHeader }: { block: LayoutBlock; hideHeader?: boolean }) {
-  void hideHeader // Layout blocks don't have a header to hide
   return (
     <div className="grid gap-6" style={{ gridTemplateColumns: `repeat(${block.columns}, 1fr)` }}>
       {block.children?.map(col => (
         <div key={col.id} className="min-h-[50px]">
           {col.children?.map((child: Block) => (
             <div key={child.id} className="mb-4 last:mb-0">
-              <BlockPreview block={child} />
+              <BlockPreview block={child} hideBlockHeader={hideHeader} />
             </div>
           ))}
         </div>
@@ -3654,21 +3653,22 @@ function TeacherNotesBlockPreview({ block, hideHeader }: { block: TeacherNotesBl
 }
 
 function BlockGroupPreview({ block, isExamMode, hideBlockHeader }: { block: Block; isExamMode?: boolean; hideBlockHeader?: boolean }) {
-  void hideBlockHeader // Block groups have a different layout
   const children = block.children || []
   
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-        <Blocks className="h-5 w-5" />
-        <span>Grupo de Bloques</span>
-        <span className="text-xs text-muted-foreground">({children.length} elementos)</span>
-      </div>
+      {!hideBlockHeader && (
+        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+          <Blocks className="h-5 w-5" />
+          <span>Grupo de Bloques</span>
+          <span className="text-xs text-muted-foreground">({children.length} elementos)</span>
+        </div>
+      )}
       
-      <div className="border-l-4 border-primary/30 pl-4 space-y-4">
+      <div className={hideBlockHeader ? "space-y-4" : "border-l-4 border-primary/30 pl-4 space-y-4"}>
         {children.map((childBlock, index) => (
           <div key={childBlock.id || index} className="bg-muted/20 rounded-lg overflow-hidden">
-            <BlockPreview block={childBlock} isExamMode={isExamMode} />
+            <BlockPreview block={childBlock} isExamMode={isExamMode} hideBlockHeader={hideBlockHeader} />
           </div>
         ))}
         {children.length === 0 && (
