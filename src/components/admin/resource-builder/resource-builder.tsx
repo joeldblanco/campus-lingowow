@@ -347,7 +347,13 @@ export function ResourceBuilder({
     }
   }
 
-  const handleUpdateMetadata = () => {
+  const handleUpdateMetadata = (updates: { title?: string; description?: string }) => {
+    if (updates.title !== undefined) {
+      setTitle(updates.title)
+    }
+    if (updates.description !== undefined) {
+      setDescription(updates.description)
+    }
     setSaveStatus('unsaved')
   }
 
