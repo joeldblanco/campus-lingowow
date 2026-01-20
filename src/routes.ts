@@ -3,8 +3,8 @@ export const publicRoutes = [
   '/auth/new-verification',
   '/shop',
   '/shop/*',
-  '/blog',
-  '/blog/*',
+  '/library',
+  '/library/*',
   '/demo',
   '/courses',
   '/method',
@@ -34,6 +34,6 @@ export const adminPrefix = '/admin'
 
 export const apiAuthPrefix = '/api/auth'
 
-export const apiPublicRoutes = ['/api/contact', '/api/trial-class', '/api/plans', '/api/teachers/availability']
+export const apiPublicRoutes = ['/api/contact', '/api/trial-class', '/api/plans', '/api/teachers/availability', '/api/library', '/api/library/*']
 
 export const DEFAULT_LOGIN_REDIRECT = '/dashboard'

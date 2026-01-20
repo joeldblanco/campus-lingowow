@@ -118,9 +118,6 @@ model User {
   // Relación de cursos que puede enseñar (para profesores)
   teachableCourses TeacherCourse[]
 
-  // Relación de blog posts (para editores)
-  blogPosts BlogPost[] @relation("BlogAuthor")
-
   // Configuración de pagos para profesores (JSON string)
   paymentSettings String?
 
@@ -1376,48 +1373,6 @@ model InvoiceItem {
   @@index([productId])
   @@index([planId])
   @@map("invoice_items")
-}
-
-// =============================================
-// MODELOS DE BLOG
-// =============================================
-
-model BlogPost {
-  id          String        @id @default(cuid())
-  title       String
-  slug        String        @unique
-  excerpt     String?       // Resumen corto
-  content     Json          // Contenido estructurado con componentes
-  coverImage  String?       // URL de imagen destacada
-  category    String?
-  tags        String[]
-  status      BlogStatus    @default(DRAFT)
-  authorId    String
-  readTime    Int?          // Tiempo estimado de lectura en minutos
-  views       Int           @default(0)
-  publishedAt DateTime?
-  
-  // SEO
-  metaTitle       String?
-  metaDescription String?
-  
-  // Relaciones
-  author User @relation("BlogAuthor", fields: [authorId], references: [id])
-  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
-  @@index([authorId])
-  @@index([status])
-  @@index([publishedAt])
-  @@index([slug])
-  @@map("blog_posts")
-}
-
-enum BlogStatus {
-  DRAFT
-  PUBLISHED
-  ARCHIVED
 }
 
 // =============================================
