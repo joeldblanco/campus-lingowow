@@ -73,10 +73,11 @@ interface BlockPreviewProps {
   isExamMode?: boolean // When true, disables interactive verification (feedback only at exam end)
   answer?: unknown // Current answer value (for exam mode)
   onAnswerChange?: (answer: unknown) => void // Callback when answer changes (for exam mode)
+  hideBlockHeader?: boolean // When true, hides the blue title/icon header on blocks (for Resource Builder)
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function BlockPreview({ block, isTeacher, isClassroom, isExamMode, answer, onAnswerChange }: BlockPreviewProps) {
+export function BlockPreview({ block, isTeacher, isClassroom, isExamMode, answer, onAnswerChange, hideBlockHeader }: BlockPreviewProps) {
   // Teacher notes are only visible to teachers
   if (block.type === 'teacher_notes' && !isTeacher) {
     return null
@@ -85,59 +86,59 @@ export function BlockPreview({ block, isTeacher, isClassroom, isExamMode, answer
   const renderBlockContent = () => {
     switch (block.type) {
       case 'title':
-        return <TitleBlockPreview block={block as TitleBlock} />
+        return <TitleBlockPreview block={block as TitleBlock} hideHeader={hideBlockHeader} />
       case 'text':
-        return <TextBlockPreview block={block as TextBlock} />
+        return <TextBlockPreview block={block as TextBlock} hideHeader={hideBlockHeader} />
       case 'video':
-        return <VideoBlockPreview block={block as VideoBlock} />
+        return <VideoBlockPreview block={block as VideoBlock} hideHeader={hideBlockHeader} />
       case 'image':
-        return <ImageBlockPreview block={block as ImageBlock} />
+        return <ImageBlockPreview block={block as ImageBlock} hideHeader={hideBlockHeader} />
       case 'audio':
-        return <AudioBlockPreview block={block as AudioBlock} />
+        return <AudioBlockPreview block={block as AudioBlock} hideHeader={hideBlockHeader} />
       case 'quiz':
-        return <QuizBlockPreview block={block as QuizBlock} />
+        return <QuizBlockPreview block={block as QuizBlock} hideHeader={hideBlockHeader} />
       case 'assignment':
-        return <AssignmentBlockPreview block={block as AssignmentBlock} />
+        return <AssignmentBlockPreview block={block as AssignmentBlock} hideHeader={hideBlockHeader} />
       case 'file':
-        return <FileBlockPreview block={block as FileBlock} />
+        return <FileBlockPreview block={block as FileBlock} hideHeader={hideBlockHeader} />
       case 'embed':
-        return <EmbedBlockPreview block={block as EmbedBlock} />
+        return <EmbedBlockPreview block={block as EmbedBlock} hideHeader={hideBlockHeader} />
       case 'tab_group':
-        return <TabGroupBlockPreview block={block as TabGroupBlock} />
+        return <TabGroupBlockPreview block={block as TabGroupBlock} hideHeader={hideBlockHeader} />
       case 'layout':
-        return <LayoutBlockPreview block={block as LayoutBlock} />
+        return <LayoutBlockPreview block={block as LayoutBlock} hideHeader={hideBlockHeader} />
       case 'grammar':
-        return <GrammarBlockPreview block={block as GrammarBlock} />
+        return <GrammarBlockPreview block={block as GrammarBlock} hideHeader={hideBlockHeader} />
       case 'vocabulary':
-        return <VocabularyBlockPreview block={block as VocabularyBlock} />
+        return <VocabularyBlockPreview block={block as VocabularyBlock} hideHeader={hideBlockHeader} />
       case 'fill_blanks':
-        return <FillBlanksBlockPreview block={block as FillBlanksBlock} isExamMode={isExamMode} />
+        return <FillBlanksBlockPreview block={block as FillBlanksBlock} isExamMode={isExamMode} hideHeader={hideBlockHeader} />
       case 'match':
-        return <MatchBlockPreview block={block as MatchBlock} isExamMode={isExamMode} />
+        return <MatchBlockPreview block={block as MatchBlock} isExamMode={isExamMode} hideHeader={hideBlockHeader} />
       case 'true_false':
-        return <TrueFalseBlockPreview block={block as TrueFalseBlock} isExamMode={isExamMode} />
+        return <TrueFalseBlockPreview block={block as TrueFalseBlock} isExamMode={isExamMode} hideHeader={hideBlockHeader} />
       case 'essay':
-        return <EssayBlockPreview block={block as EssayBlock} isExamMode={isExamMode} answer={answer} onAnswerChange={onAnswerChange} />
+        return <EssayBlockPreview block={block as EssayBlock} isExamMode={isExamMode} answer={answer} onAnswerChange={onAnswerChange} hideHeader={hideBlockHeader} />
       case 'short_answer':
-        return <ShortAnswerBlockPreview block={block as ShortAnswerBlock} isExamMode={isExamMode} />
+        return <ShortAnswerBlockPreview block={block as ShortAnswerBlock} isExamMode={isExamMode} hideHeader={hideBlockHeader} />
       case 'multi_select':
-        return <MultiSelectBlockPreview block={block as MultiSelectBlock} isExamMode={isExamMode} />
+        return <MultiSelectBlockPreview block={block as MultiSelectBlock} isExamMode={isExamMode} hideHeader={hideBlockHeader} />
       case 'multiple_choice':
-        return <MultipleChoiceBlockPreview block={block as MultipleChoiceBlock} isExamMode={isExamMode} answer={answer} onAnswerChange={onAnswerChange} />
+        return <MultipleChoiceBlockPreview block={block as MultipleChoiceBlock} isExamMode={isExamMode} answer={answer} onAnswerChange={onAnswerChange} hideHeader={hideBlockHeader} />
       case 'ordering':
-        return <OrderingBlockPreview block={block as OrderingBlock} isExamMode={isExamMode} />
+        return <OrderingBlockPreview block={block as OrderingBlock} isExamMode={isExamMode} hideHeader={hideBlockHeader} />
       case 'drag_drop':
-        return <DragDropBlockPreview block={block as DragDropBlock} isExamMode={isExamMode} />
+        return <DragDropBlockPreview block={block as DragDropBlock} isExamMode={isExamMode} hideHeader={hideBlockHeader} />
       case 'recording':
-        return <RecordingBlockPreview block={block as RecordingBlock} isExamMode={isExamMode} answer={answer} onAnswerChange={onAnswerChange} />
+        return <RecordingBlockPreview block={block as RecordingBlock} isExamMode={isExamMode} answer={answer} onAnswerChange={onAnswerChange} hideHeader={hideBlockHeader} />
       case 'structured-content':
-        return <StructuredContentBlockPreview block={block as StructuredContentBlock} />
+        return <StructuredContentBlockPreview block={block as StructuredContentBlock} hideHeader={hideBlockHeader} />
       case 'grammar-visualizer':
-        return <GrammarVisualizerBlockPreview block={block as GrammarVisualizerBlock} />
+        return <GrammarVisualizerBlockPreview block={block as GrammarVisualizerBlock} hideHeader={hideBlockHeader} />
       case 'teacher_notes':
-        return <TeacherNotesBlockPreview block={block as TeacherNotesBlock} />
+        return <TeacherNotesBlockPreview block={block as TeacherNotesBlock} hideHeader={hideBlockHeader} />
       case 'block_group':
-        return <BlockGroupPreview block={block} isExamMode={isExamMode} />
+        return <BlockGroupPreview block={block} isExamMode={isExamMode} hideBlockHeader={hideBlockHeader} />
       default:
         return (
           <div className="p-4 bg-yellow-50 border border-yellow-200 rounded text-yellow-800 text-sm">
@@ -156,13 +157,15 @@ export function BlockPreview({ block, isTeacher, isClassroom, isExamMode, answer
   )
 }
 
-function TitleBlockPreview({ block }: { block: TitleBlock }) {
+function TitleBlockPreview({ block, hideHeader }: { block: TitleBlock; hideHeader?: boolean }) {
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-        <Type className="h-5 w-5" />
-        <span>Título</span>
-      </div>
+      {!hideHeader && (
+        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+          <Type className="h-5 w-5" />
+          <span>Título</span>
+        </div>
+      )}
       <div className="w-full py-2 mb-4 border-b">
         <h2 className="text-2xl font-bold flex items-center gap-2 text-foreground">
           {block.title || 'Encabezado'}
@@ -173,7 +176,7 @@ function TitleBlockPreview({ block }: { block: TitleBlock }) {
 }
 
 // Text Block Preview
-function TextBlockPreview({ block }: { block: TextBlock }) {
+function TextBlockPreview({ block, hideHeader }: { block: TextBlock; hideHeader?: boolean }) {
   const content = block.content || ''
 
   if (!content) {
@@ -186,12 +189,14 @@ function TextBlockPreview({ block }: { block: TextBlock }) {
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-        <FileText className="h-5 w-5" />
-        <span>Texto</span>
-      </div>
-      <div className="prose prose-sm max-w-none text-foreground">
+    <div className={hideHeader ? '' : 'space-y-4'}>
+      {!hideHeader && (
+        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+          <FileText className="h-5 w-5" />
+          <span>Texto</span>
+        </div>
+      )}
+      <div className="prose prose-sm max-w-none text-foreground rich-text-content">
         {content.includes('<') ? (
           <div
             dangerouslySetInnerHTML={{ __html: content }}
@@ -206,7 +211,7 @@ function TextBlockPreview({ block }: { block: TextBlock }) {
 }
 
 // Video Block Preview
-function VideoBlockPreview({ block }: { block: VideoBlock }) {
+function VideoBlockPreview({ block, hideHeader }: { block: VideoBlock; hideHeader?: boolean }) {
   // Extract YouTube video ID for thumbnail
   const getYouTubeThumbnail = (url: string) => {
     if (!url) return null
@@ -217,11 +222,13 @@ function VideoBlockPreview({ block }: { block: VideoBlock }) {
   const thumbnail = block.url ? getYouTubeThumbnail(block.url) : null
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-        <Video className="h-5 w-5" />
-        <span>Video</span>
-      </div>
+    <div className={hideHeader ? '' : 'space-y-4'}>
+      {!hideHeader && (
+        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+          <Video className="h-5 w-5" />
+          <span>Video</span>
+        </div>
+      )}
 
       {block.title && (
         <div>
@@ -269,13 +276,15 @@ function VideoBlockPreview({ block }: { block: VideoBlock }) {
 }
 
 // Image Block Preview
-function ImageBlockPreview({ block }: { block: ImageBlock }) {
+function ImageBlockPreview({ block, hideHeader }: { block: ImageBlock; hideHeader?: boolean }) {
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-        <LucideImage className="h-5 w-5" />
-        <span>Imagen</span>
-      </div>
+    <div className={hideHeader ? '' : 'space-y-4'}>
+      {!hideHeader && (
+        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+          <LucideImage className="h-5 w-5" />
+          <span>Imagen</span>
+        </div>
+      )}
 
       {!block.url ? (
         <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
@@ -303,8 +312,7 @@ function ImageBlockPreview({ block }: { block: ImageBlock }) {
 }
 
 // Audio Block Preview
-// Audio Block Preview
-function AudioBlockPreview({ block }: { block: AudioBlock }) {
+function AudioBlockPreview({ block, hideHeader }: { block: AudioBlock; hideHeader?: boolean }) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [progress, setProgress] = useState(0)
   const [duration, setDuration] = useState(0)
@@ -366,11 +374,13 @@ function AudioBlockPreview({ block }: { block: AudioBlock }) {
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-        <Mic className="h-5 w-5" />
-        <span>Pronunciación</span>
-      </div>
+    <div className={hideHeader ? '' : 'space-y-4'}>
+      {!hideHeader && (
+        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+          <Mic className="h-5 w-5" />
+          <span>Pronunciación</span>
+        </div>
+      )}
 
       {block.title && (
         <div>
@@ -480,7 +490,7 @@ function AudioBlockPreview({ block }: { block: AudioBlock }) {
 }
 
 // Quiz Block Preview
-function QuizBlockPreview({ block }: { block: QuizBlock }) {
+function QuizBlockPreview({ block, hideHeader }: { block: QuizBlock; hideHeader?: boolean }) {
   const [hasStarted, setHasStarted] = useState(false)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string>>({}) // questionId -> answer
@@ -612,11 +622,13 @@ function QuizBlockPreview({ block }: { block: QuizBlock }) {
   // Not started yet - show intro
   if (!displayHasStarted) {
     return (
-      <div className="space-y-4">
-        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-          <HelpCircle className="h-5 w-5" />
-          <span>Quiz</span>
-        </div>
+      <div className={hideHeader ? '' : 'space-y-4'}>
+        {!hideHeader && (
+          <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+            <HelpCircle className="h-5 w-5" />
+            <span>Quiz</span>
+          </div>
+        )}
         {block.title && (
           <h3 className="text-xl font-bold">{block.title}</h3>
         )}
@@ -865,13 +877,15 @@ function QuizBlockPreview({ block }: { block: QuizBlock }) {
 }
 
 // Assignment Block Preview
-function AssignmentBlockPreview({ block }: { block: AssignmentBlock }) {
+function AssignmentBlockPreview({ block, hideHeader }: { block: AssignmentBlock; hideHeader?: boolean }) {
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-        <FileText className="h-5 w-5" />
-        <span>Fill in the Blanks</span>
-      </div>
+    <div className={hideHeader ? '' : 'space-y-4'}>
+      {!hideHeader && (
+        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+          <FileText className="h-5 w-5" />
+          <span>Tarea</span>
+        </div>
+      )}
       {block.title && (
         <h3 className="text-xl font-bold">{block.title}</h3>
       )}
@@ -925,12 +939,14 @@ function AssignmentBlockPreview({ block }: { block: AssignmentBlock }) {
 }
 
 // File Block Preview
-// File Block Preview
-function FileBlockPreview({ block }: { block: FileBlock }) {
+function FileBlockPreview({ block, hideHeader }: { block: FileBlock; hideHeader?: boolean }) {
   const b = block as unknown as { url?: string; filename?: string; fileType?: string; filesize?: number }
   const files = block.files?.length > 0
     ? block.files
     : (b.url ? [{ id: 'legacy', title: b.filename || 'Archivo', url: b.url, fileType: b.fileType || 'file', size: b.filesize || 0 }] : [])
+
+  // hideHeader is accepted but not used for this block type as it has a different layout
+  void hideHeader
 
   return (
     <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 flex flex-col md:flex-row items-center gap-6">
@@ -1004,7 +1020,8 @@ function FileIconByType({ type, url }: { type: string, url?: string }) {
 // Embed Block Preview
 
 // Grammar Visualizer Preview
-export function GrammarVisualizerBlockPreview({ block }: { block: GrammarVisualizerBlock }) {
+export function GrammarVisualizerBlockPreview({ block, hideHeader }: { block: GrammarVisualizerBlock; hideHeader?: boolean }) {
+  void hideHeader // Grammar visualizer has a different layout
   if (!block.sets || block.sets.length === 0) {
     return (
       <div className="p-8 border-2 border-dashed rounded-lg text-center text-muted-foreground bg-muted/20">
@@ -1397,7 +1414,7 @@ function getEmbedTypeLabel(type: string): string {
   return labels[type] || 'Contenido Web'
 }
 
-function EmbedBlockPreview({ block }: { block: EmbedBlock }) {
+function EmbedBlockPreview({ block, hideHeader }: { block: EmbedBlock; hideHeader?: boolean }) {
   const embedType = getEmbedType(block.url || '')
   const isGoogleSlides = embedType === 'google-slides'
   const embedUrl = getEmbedUrl(block.url || '', {
@@ -1407,12 +1424,14 @@ function EmbedBlockPreview({ block }: { block: EmbedBlock }) {
   })
 
   return (
-    <div className="space-y-4">
+    <div className={hideHeader ? '' : 'space-y-4'}>
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-          <Link className="h-5 w-5" />
-          <span>Contenido Embebido</span>
-        </div>
+        {!hideHeader && (
+          <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+            <Link className="h-5 w-5" />
+            <span>Contenido Embebido</span>
+          </div>
+        )}
         <div className="flex items-center gap-2">
           {isGoogleSlides && block.autoplay && (
             <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">
@@ -1464,7 +1483,8 @@ function EmbedBlockPreview({ block }: { block: EmbedBlock }) {
 }
 
 // Tab Group Block Preview
-function TabGroupBlockPreview({ block }: { block: TabGroupBlock }) {
+function TabGroupBlockPreview({ block, hideHeader }: { block: TabGroupBlock; hideHeader?: boolean }) {
+  void hideHeader // Tab groups don't have a header to hide
   const [activeTabId, setActiveTabId] = useState<string>(block.children?.[0]?.id || '')
 
   // Update active tab if block children change (e.g. new tab added)
@@ -1519,7 +1539,8 @@ function TabGroupBlockPreview({ block }: { block: TabGroupBlock }) {
   )
 }
 
-function LayoutBlockPreview({ block }: { block: LayoutBlock }) {
+function LayoutBlockPreview({ block, hideHeader }: { block: LayoutBlock; hideHeader?: boolean }) {
+  void hideHeader // Layout blocks don't have a header to hide
   return (
     <div className="grid gap-6" style={{ gridTemplateColumns: `repeat(${block.columns}, 1fr)` }}>
       {block.children?.map(col => (
@@ -1535,7 +1556,7 @@ function LayoutBlockPreview({ block }: { block: LayoutBlock }) {
   )
 }
 
-function GrammarBlockPreview({ block }: { block: GrammarBlock }) {
+function GrammarBlockPreview({ block, hideHeader }: { block: GrammarBlock; hideHeader?: boolean }) {
   if (!block.title && !block.description && (!block.examples || block.examples.length === 0)) {
     return (
       <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center bg-muted/20">
@@ -1549,10 +1570,12 @@ function GrammarBlockPreview({ block }: { block: GrammarBlock }) {
     <div className="p-6">
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-1 space-y-4">
-          <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-            <LucideIcons.Book className="h-5 w-5" />
-            <span>Gramática</span>
-          </div>
+          {!hideHeader && (
+            <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+              <LucideIcons.Book className="h-5 w-5" />
+              <span>Gramática</span>
+            </div>
+          )}
 
           <h3 className="text-2xl font-bold">{block.title || 'Regla sin título'}</h3>
 
@@ -1615,7 +1638,7 @@ function GrammarBlockPreview({ block }: { block: GrammarBlock }) {
 // I'll just skip the import patch for a second and assume I can use `LucideIcons` if I add it.
 // Let's add the import to the existing list or a new line.
 
-function VocabularyBlockPreview({ block }: { block: VocabularyBlock }) {
+function VocabularyBlockPreview({ block, hideHeader }: { block: VocabularyBlock; hideHeader?: boolean }) {
   const hasItems = block.items && block.items.length > 0
 
   if (!block.title && !hasItems) {
@@ -1629,10 +1652,12 @@ function VocabularyBlockPreview({ block }: { block: VocabularyBlock }) {
 
   return (
     <div className="p-6">
-      <div className="flex items-center gap-2 text-primary font-semibold text-sm mb-4">
-        <LucideIcons.Library className="h-5 w-5" />
-        <span>Vocabulario</span>
-      </div>
+      {!hideHeader && (
+        <div className="flex items-center gap-2 text-primary font-semibold text-sm mb-4">
+          <LucideIcons.Library className="h-5 w-5" />
+          <span>Vocabulario</span>
+        </div>
+      )}
 
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-bold">{block.title || 'Vocabulario'}</h3>
@@ -1705,7 +1730,8 @@ function VocabularyBlockPreview({ block }: { block: VocabularyBlock }) {
   )
 }
 
-function FillBlanksBlockPreview({ block, isExamMode }: { block: FillBlanksBlock; isExamMode?: boolean }) {
+function FillBlanksBlockPreview({ block, isExamMode, hideHeader }: { block: FillBlanksBlock; isExamMode?: boolean; hideHeader?: boolean }) {
+  void hideHeader // Fill blanks blocks have a different layout
   const [index, setIndex] = useState(0)
   const [allInputs, setAllInputs] = useState<Record<string, Record<number, string>>>({})
   const [allResults, setAllResults] = useState<Record<string, boolean>>({})
@@ -1884,7 +1910,8 @@ function FillBlanksBlockPreview({ block, isExamMode }: { block: FillBlanksBlock;
   )
 }
 
-function MatchBlockPreview({ block, isExamMode }: { block: MatchBlock; isExamMode?: boolean }) {
+function MatchBlockPreview({ block, isExamMode, hideHeader }: { block: MatchBlock; isExamMode?: boolean; hideHeader?: boolean }) {
+  void hideHeader // Match blocks have a different layout
   const [selectedLeft, setSelectedLeft] = useState<string | null>(null)
   const [matches, setMatches] = useState<Record<string, string>>({}) // leftId -> rightId
   const [shuffledRight, setShuffledRight] = useState<Array<{ id: string, text: string }>>([])
@@ -2138,7 +2165,8 @@ function MatchBlockPreview({ block, isExamMode }: { block: MatchBlock; isExamMod
   )
 }
 
-function TrueFalseBlockPreview({ block, isExamMode }: { block: TrueFalseBlock; isExamMode?: boolean }) {
+function TrueFalseBlockPreview({ block, isExamMode, hideHeader }: { block: TrueFalseBlock; isExamMode?: boolean; hideHeader?: boolean }) {
+  void hideHeader // True/false blocks have a different layout
   const [index, setIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, boolean | null>>({})
   const [results, setResults] = useState<Record<string, boolean>>({})
@@ -2319,13 +2347,16 @@ function EssayBlockPreview({
   block, 
   isExamMode,
   answer,
-  onAnswerChange 
+  onAnswerChange,
+  hideHeader
 }: { 
   block: EssayBlock; 
   isExamMode?: boolean;
   answer?: unknown;
   onAnswerChange?: (answer: unknown) => void;
+  hideHeader?: boolean;
 }) {
+  void hideHeader // Essay blocks have a different layout
   const [localText, setLocalText] = useState('')
   
   // En modo examen, usar las respuestas externas; de lo contrario, usar estado local
@@ -2429,13 +2460,16 @@ function RecordingBlockPreview({
   block,
   isExamMode,
   answer,
-  onAnswerChange
+  onAnswerChange,
+  hideHeader
 }: { 
   block: RecordingBlock
   isExamMode?: boolean
   answer?: unknown
   onAnswerChange?: (answer: unknown) => void
+  hideHeader?: boolean
 }) {
+  void hideHeader // Recording blocks have a different layout
   const [isRecording, setIsRecording] = useState(false)
   const [timeLeft, setTimeLeft] = useState(block.timeLimit || 60)
   const [hasRecorded, setHasRecorded] = useState(false)
@@ -2684,7 +2718,7 @@ function RecordingBlockPreview({
 }
 
 // Structured Content (Table) Block Preview
-export function StructuredContentBlockPreview({ block }: { block: StructuredContentBlock }) {
+export function StructuredContentBlockPreview({ block, hideHeader }: { block: StructuredContentBlock; hideHeader?: boolean }) {
   const { config, content, title, subtitle } = block
   const hasHeaderRow = config?.hasHeaderRow !== false // default true
   const hasStripedRows = config?.hasStripedRows // default false
@@ -2693,14 +2727,16 @@ export function StructuredContentBlockPreview({ block }: { block: StructuredCont
   return (
     <div className="space-y-4 p-4">
       {/* Block Header - Icon + Fixed Title */}
-      <div className="flex items-center gap-3">
-        <div className="p-2 bg-primary/10 rounded-lg">
-          <LucideIcons.Table className="w-5 h-5 text-primary" />
+      {!hideHeader && (
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-primary/10 rounded-lg">
+            <LucideIcons.Table className="w-5 h-5 text-primary" />
+          </div>
+          <span className="text-lg font-semibold text-primary">
+            Tabla
+          </span>
         </div>
-        <span className="text-lg font-semibold text-primary">
-          Tabla
-        </span>
-      </div>
+      )}
 
       {/* Title/Subtitle Section */}
       {(title || subtitle) && (
@@ -2766,7 +2802,8 @@ export function StructuredContentBlockPreview({ block }: { block: StructuredCont
   )
 }
 
-function ShortAnswerBlockPreview({ block, isExamMode }: { block: ShortAnswerBlock; isExamMode?: boolean }) {
+function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: ShortAnswerBlock; isExamMode?: boolean; hideHeader?: boolean }) {
+  void hideHeader // Short answer blocks have a different layout
   const items = block.items || []
   const [currentStep, setCurrentStep] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string>>({})
@@ -2927,7 +2964,8 @@ function ShortAnswerBlockPreview({ block, isExamMode }: { block: ShortAnswerBloc
   )
 }
 
-function MultiSelectBlockPreview({ block, isExamMode }: { block: MultiSelectBlock; isExamMode?: boolean }) {
+function MultiSelectBlockPreview({ block, isExamMode, hideHeader }: { block: MultiSelectBlock; isExamMode?: boolean; hideHeader?: boolean }) {
+  void hideHeader // Multi select blocks have a different layout
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [showResultState, setShowResultState] = useState(false)
   const showResult = !isExamMode && showResultState
@@ -3128,13 +3166,16 @@ function MultipleChoiceBlockPreview({
   block, 
   isExamMode,
   answer,
-  onAnswerChange 
+  onAnswerChange,
+  hideHeader
 }: { 
   block: MultipleChoiceBlock; 
   isExamMode?: boolean;
   answer?: unknown;
   onAnswerChange?: (answer: unknown) => void;
+  hideHeader?: boolean;
 }) {
+  void hideHeader // Multiple choice blocks have a different layout
   const [currentItemIndex, setCurrentItemIndex] = useState(0)
   // En modo examen, usar las respuestas externas; de lo contrario, usar estado local
   const externalAnswers = (answer as Record<string, string | null>) || {}
@@ -3300,7 +3341,8 @@ function MultipleChoiceBlockPreview({
   )
 }
 
-function OrderingBlockPreview({ block, isExamMode }: { block: OrderingBlock; isExamMode?: boolean }) {
+function OrderingBlockPreview({ block, isExamMode, hideHeader }: { block: OrderingBlock; isExamMode?: boolean; hideHeader?: boolean }) {
+  void hideHeader // Ordering blocks have a different layout
   const [items, setItems] = useState(() => 
     block.items ? [...block.items].sort(() => Math.random() - 0.5) : []
   )
@@ -3403,7 +3445,8 @@ function OrderingBlockPreview({ block, isExamMode }: { block: OrderingBlock; isE
   )
 }
 
-function DragDropBlockPreview({ block, isExamMode }: { block: DragDropBlock; isExamMode?: boolean }) {
+function DragDropBlockPreview({ block, isExamMode, hideHeader }: { block: DragDropBlock; isExamMode?: boolean; hideHeader?: boolean }) {
+  void hideHeader // Drag drop blocks have a different layout
   const [assignments, setAssignments] = useState<Record<string, string>>({}) // itemId -> categoryId
   const [showResultState, setShowResultState] = useState(false)
   const showResult = !isExamMode && showResultState
@@ -3532,7 +3575,8 @@ function DragDropBlockPreview({ block, isExamMode }: { block: DragDropBlock; isE
   )
 }
 
-function TeacherNotesBlockPreview({ block }: { block: TeacherNotesBlock }) {
+function TeacherNotesBlockPreview({ block, hideHeader }: { block: TeacherNotesBlock; hideHeader?: boolean }) {
+  void hideHeader // Teacher notes have a different layout
   const colorClasses = {
     yellow: {
       bg: 'bg-yellow-50',
@@ -3609,7 +3653,8 @@ function TeacherNotesBlockPreview({ block }: { block: TeacherNotesBlock }) {
   )
 }
 
-function BlockGroupPreview({ block, isExamMode }: { block: Block; isExamMode?: boolean }) {
+function BlockGroupPreview({ block, isExamMode, hideBlockHeader }: { block: Block; isExamMode?: boolean; hideBlockHeader?: boolean }) {
+  void hideBlockHeader // Block groups have a different layout
   const children = block.children || []
   
   return (

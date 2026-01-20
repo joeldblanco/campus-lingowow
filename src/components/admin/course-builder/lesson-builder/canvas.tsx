@@ -19,7 +19,11 @@ interface CanvasProps {
     onAddBlockClick?: () => void
     onUpdateBlock?: (blockId: string, updates: Partial<Block>) => void
     onRemoveBlock?: (blockId: string) => void
-    onUpdateMetadata?: (updates: { title?: string; description?: string }) => void
+    onUpdateMetadata?: (updates: { title?: string; description?: string; coverImage?: string }) => void
+    hideBlockHeaders?: boolean // Hide blue title/icon headers on blocks (for Resource Builder)
+    coverImage?: string // Cover image URL for the resource
+    onCoverImageClick?: () => void // Callback when cover image area is clicked (for upload)
+    showCoverImage?: boolean // Whether to show the cover image area
 }
 
 export function Canvas({
@@ -32,7 +36,11 @@ export function Canvas({
     onAddBlockClick,
     onUpdateBlock,
     onRemoveBlock,
-    onUpdateMetadata
+    onUpdateMetadata,
+    hideBlockHeaders = false,
+    coverImage,
+    onCoverImageClick,
+    showCoverImage = false
 }: CanvasProps) {
     const { setNodeRef, isOver } = useDroppable({
         id: 'canvas-droppable',
@@ -51,6 +59,44 @@ export function Canvas({
                     isOver && "ring-2 ring-primary ring-inset bg-primary/5 rounded-xl"
                 )}
             >
+                {/* Cover Image Area */}
+                {showCoverImage && (
+                    <div 
+                        className={cn(
+                            "mb-6 relative rounded-xl overflow-hidden",
+                            !readOnly && "cursor-pointer group"
+                        )}
+                        onClick={() => !readOnly && onCoverImageClick?.()}
+                    >
+                        {coverImage ? (
+                            <div className="relative w-full h-48 md:h-64">
+                                <img
+                                    src={coverImage}
+                                    alt="Imagen de portada"
+                                    className="w-full h-full object-cover"
+                                />
+                                {!readOnly && (
+                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <span className="text-white font-medium">Cambiar imagen</span>
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <div className={cn(
+                                "w-full h-32 border-2 border-dashed rounded-xl flex flex-col items-center justify-center gap-2 transition-colors",
+                                !readOnly ? "border-muted-foreground/25 hover:border-primary/50 hover:bg-muted/30" : "border-muted-foreground/15"
+                            )}>
+                                <div className="size-10 rounded-full bg-muted flex items-center justify-center">
+                                    <span className="text-xl text-muted-foreground">🖼️</span>
+                                </div>
+                                <span className="text-sm text-muted-foreground">
+                                    {readOnly ? "Sin imagen de portada" : "Agregar imagen de portada"}
+                                </span>
+                            </div>
+                        )}
+                    </div>
+                )}
+
                 {/* Lesson Header */}
                 <div className="mb-8 group">
                     <div className="flex items-start justify-between">
@@ -130,6 +176,7 @@ export function Canvas({
                                             readOnly={readOnly}
                                             onUpdate={onUpdateBlock ? (updates) => onUpdateBlock(block.id, updates) : undefined}
                                             onRemove={onRemoveBlock ? () => onRemoveBlock(block.id) : undefined}
+                                            hideBlockHeader={hideBlockHeaders}
                                         />
                                     </div>
                                 ))}
@@ -148,7 +195,8 @@ function SortableBlockItem({
     onSelect,
     readOnly,
     onUpdate,
-    onRemove
+    onRemove,
+    hideBlockHeader
 }: {
     block: Block
     isSelected: boolean
@@ -156,6 +204,7 @@ function SortableBlockItem({
     readOnly?: boolean
     onUpdate?: (updates: Partial<Block>) => void
     onRemove?: () => void
+    hideBlockHeader?: boolean
 }) {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
         id: block.id,
@@ -171,7 +220,7 @@ function SortableBlockItem({
     if (readOnly) {
         return (
             <div>
-                <BlockPreview block={block} isTeacher />
+                <BlockPreview block={block} isTeacher hideBlockHeader={hideBlockHeader} />
             </div>
         )
     }
@@ -213,7 +262,7 @@ function SortableBlockItem({
                 {isSelected && onUpdate && (block.type === 'structured-content' || block.type === 'grammar-visualizer') ? (
                     <BlockContentEditor block={block} onUpdate={onUpdate} onRemove={onRemove} />
                 ) : (
-                    <BlockPreview block={block} isTeacher />
+                    <BlockPreview block={block} isTeacher hideBlockHeader={hideBlockHeader} />
                 )}
             </div>
         </div>

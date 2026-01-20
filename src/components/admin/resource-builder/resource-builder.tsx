@@ -46,9 +46,11 @@ import {
   Upload,
   X,
   Library,
+  ImagePlus,
+  Link as LinkIcon,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { toast } from 'sonner'
 import { BlockLibrary, BlockSelectionGrid, DraggableBlock } from '../course-builder/lesson-builder/block-library'
 import { Canvas } from '../course-builder/lesson-builder/canvas'
@@ -56,6 +58,9 @@ import { PropertiesPanel } from '../course-builder/lesson-builder/properties-pan
 import type { LibraryCategory } from '@/lib/types/library'
 import { RESOURCE_TYPE_LABELS, LEVEL_LABELS, ACCESS_LEVEL_LABELS, ACCESS_LEVEL_DESCRIPTIONS } from '@/lib/types/library'
 import { LibraryResourceType, LibraryResourceStatus, LibraryResourceAccess } from '@prisma/client'
+import { uploadImageFile } from '@/lib/actions/cloudinary'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import Image from 'next/image'
 
 interface ResourceBuilderProps {
   resourceId?: string
@@ -117,6 +122,12 @@ export function ResourceBuilder({
   const [categories, setCategories] = useState<LibraryCategory[]>([])
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'error' | 'unsaved'>('unsaved')
   const [isSaving, setIsSaving] = useState(false)
+  
+  // Cover image state
+  const [isCoverImageDialogOpen, setIsCoverImageDialogOpen] = useState(false)
+  const [coverImageUrlInput, setCoverImageUrlInput] = useState('')
+  const [isUploadingCoverImage, setIsUploadingCoverImage] = useState(false)
+  const coverImageInputRef = useRef<HTMLInputElement>(null)
 
   // DnD States
   const [activeDragItem, setActiveDragItem] = useState<{
@@ -132,6 +143,10 @@ export function ResourceBuilder({
       },
     })
   )
+
+  // Autosave timer ref
+  const autosaveTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const AUTOSAVE_DELAY = 3000 // 3 seconds
 
   // Fetch categories
   useEffect(() => {
@@ -339,6 +354,28 @@ export function ResourceBuilder({
     }
   }, [title, description, excerpt, resourceType, blocks, thumbnailUrl, language, level, tags, categoryId, status, accessLevel, isEditing, resourceId, router])
 
+  // Autosave effect - only when editing an existing resource
+  useEffect(() => {
+    if (!isEditing || saveStatus !== 'unsaved' || isSaving) return
+
+    // Clear any existing timer
+    if (autosaveTimerRef.current) {
+      clearTimeout(autosaveTimerRef.current)
+    }
+
+    // Set new timer for autosave
+    autosaveTimerRef.current = setTimeout(() => {
+      handleSave()
+    }, AUTOSAVE_DELAY)
+
+    // Cleanup on unmount or when dependencies change
+    return () => {
+      if (autosaveTimerRef.current) {
+        clearTimeout(autosaveTimerRef.current)
+      }
+    }
+  }, [saveStatus, isEditing, isSaving, handleSave, AUTOSAVE_DELAY])
+
   const handleBack = () => {
     if (onBack) {
       onBack()
@@ -355,6 +392,50 @@ export function ResourceBuilder({
       setDescription(updates.description)
     }
     setSaveStatus('unsaved')
+  }
+
+  const handleCoverImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setIsUploadingCoverImage(true)
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      
+      const result = await uploadImageFile(formData, 'library/covers')
+      
+      if (result.success && result.data) {
+        setThumbnailUrl(result.data.secure_url)
+        setSaveStatus('unsaved')
+        toast.success('Imagen de portada cargada')
+        setIsCoverImageDialogOpen(false)
+      } else {
+        toast.error(result.error || 'Error al cargar la imagen')
+      }
+    } catch (error) {
+      console.error('Error uploading cover image:', error)
+      toast.error('Error al cargar la imagen')
+    } finally {
+      setIsUploadingCoverImage(false)
+    }
+  }
+
+  const handleCoverImageUrlSubmit = () => {
+    if (coverImageUrlInput.trim()) {
+      setThumbnailUrl(coverImageUrlInput.trim())
+      setSaveStatus('unsaved')
+      setIsCoverImageDialogOpen(false)
+      setCoverImageUrlInput('')
+      toast.success('Imagen de portada actualizada')
+    }
+  }
+
+  const handleRemoveCoverImage = () => {
+    setThumbnailUrl('')
+    setSaveStatus('unsaved')
+    setIsCoverImageDialogOpen(false)
+    toast.success('Imagen de portada eliminada')
   }
 
   const selectedBlock = blocks.find((b) => b.id === selectedBlockId) || null
@@ -651,10 +732,13 @@ export function ResourceBuilder({
                       </div>
                       {thumbnailUrl && (
                         <div className="relative w-full h-32 rounded-lg overflow-hidden border">
-                          <img
+                          <Image
                             src={thumbnailUrl}
                             alt="Vista previa"
-                            className="w-full h-full object-cover"
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 540px) 100vw, 540px"
+                            unoptimized={!thumbnailUrl.includes('cloudinary') && !thumbnailUrl.includes('res.cloudinary')}
                           />
                         </div>
                       )}
@@ -731,6 +815,10 @@ export function ResourceBuilder({
                 onAddBlockClick={() => setIsAddBlockModalOpen(true)}
                 onUpdateBlock={handleUpdateBlock}
                 onRemoveBlock={handleRemoveBlock}
+                hideBlockHeaders={true}
+                showCoverImage={true}
+                coverImage={thumbnailUrl}
+                onCoverImageClick={() => setIsCoverImageDialogOpen(true)}
               />
             </div>
 
@@ -772,6 +860,104 @@ export function ResourceBuilder({
           <div className="py-4">
             <BlockSelectionGrid onSelect={handleAddBlockFromModal} />
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Cover Image Dialog */}
+      <Dialog open={isCoverImageDialogOpen} onOpenChange={setIsCoverImageDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Imagen de Portada</DialogTitle>
+          </DialogHeader>
+          <Tabs defaultValue="upload" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="upload">
+                <ImagePlus className="h-4 w-4 mr-2" />
+                Subir
+              </TabsTrigger>
+              <TabsTrigger value="url">
+                <LinkIcon className="h-4 w-4 mr-2" />
+                URL
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="upload" className="space-y-4 pt-4">
+              <div className="flex flex-col items-center justify-center gap-4">
+                <input
+                  ref={coverImageInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleCoverImageUpload}
+                  className="hidden"
+                  id="cover-image-upload"
+                />
+                <label
+                  htmlFor="cover-image-upload"
+                  className={cn(
+                    "w-full h-32 border-2 border-dashed rounded-lg flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors",
+                    "hover:border-primary/50 hover:bg-muted/30",
+                    isUploadingCoverImage && "opacity-50 pointer-events-none"
+                  )}
+                >
+                  {isUploadingCoverImage ? (
+                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                  ) : (
+                    <>
+                      <Upload className="h-8 w-8 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground">
+                        Haz clic para seleccionar una imagen
+                      </span>
+                    </>
+                  )}
+                </label>
+                <p className="text-xs text-muted-foreground text-center">
+                  Formatos soportados: JPG, PNG, GIF, WebP
+                </p>
+              </div>
+            </TabsContent>
+            <TabsContent value="url" className="space-y-4 pt-4">
+              <div className="space-y-2">
+                <Label htmlFor="cover-image-url">URL de la imagen</Label>
+                <Input
+                  id="cover-image-url"
+                  value={coverImageUrlInput}
+                  onChange={(e) => setCoverImageUrlInput(e.target.value)}
+                  placeholder="https://ejemplo.com/imagen.jpg"
+                  type="url"
+                />
+              </div>
+              <Button 
+                onClick={handleCoverImageUrlSubmit} 
+                className="w-full"
+                disabled={!coverImageUrlInput.trim()}
+              >
+                Aplicar URL
+              </Button>
+            </TabsContent>
+          </Tabs>
+          {thumbnailUrl && (
+            <div className="pt-4 border-t space-y-2">
+              <p className="text-sm font-medium">Imagen actual:</p>
+              <div className="relative w-full h-24 rounded-lg overflow-hidden border">
+                <Image
+                  src={thumbnailUrl}
+                  alt="Portada actual"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 400px) 100vw, 400px"
+                  unoptimized={!thumbnailUrl.includes('cloudinary') && !thumbnailUrl.includes('res.cloudinary')}
+                />
+              </div>
+              <Button 
+                variant="destructive" 
+                size="sm" 
+                onClick={handleRemoveCoverImage}
+                className="w-full"
+              >
+                <X className="h-4 w-4 mr-2" />
+                Eliminar imagen
+              </Button>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </>
