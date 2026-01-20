@@ -160,7 +160,7 @@ export default function LibraryPage() {
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '')
   const [selectedFormats, setSelectedFormats] = useState<LibraryResourceType[]>([])
   const [selectedLevels, setSelectedLevels] = useState<string[]>([])
-  const [language, setLanguage] = useState(searchParams.get('language') || 'es')
+  const [language, setLanguage] = useState(searchParams.get('language') || 'en')
   const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'newest')
 
   const fetchCategories = useCallback(async () => {
@@ -355,11 +355,11 @@ export default function LibraryPage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="es">Español</SelectItem>
+                {/* <SelectItem value="es">Español</SelectItem> */}
                 <SelectItem value="en">Inglés</SelectItem>
-                <SelectItem value="fr">Francés</SelectItem>
+                {/* <SelectItem value="fr">Francés</SelectItem>
                 <SelectItem value="de">Alemán</SelectItem>
-                <SelectItem value="ja">Japonés</SelectItem>
+                <SelectItem value="ja">Japonés</SelectItem> */}
               </SelectContent>
             </Select>
           </div>
