@@ -159,14 +159,17 @@ export function BlockPreview({ block, isTeacher, isClassroom, isExamMode, answer
 
 function TitleBlockPreview({ block, hideHeader }: { block: TitleBlock; hideHeader?: boolean }) {
   return (
-    <div className="space-y-4">
+    <div className={hideHeader ? '' : 'space-y-4'}>
       {!hideHeader && (
         <div className="flex items-center gap-2 text-primary font-semibold text-sm">
           <Type className="h-5 w-5" />
           <span>Título</span>
         </div>
       )}
-      <div className="w-full py-2 mb-4 border-b">
+      <div className={cn(
+        "w-full border-b",
+        hideHeader ? "pt-6 pb-2 mb-1" : "py-2 mb-4"
+      )}>
         <h2 className="text-2xl font-bold flex items-center gap-2 text-foreground">
           {block.title || 'Encabezado'}
         </h2>

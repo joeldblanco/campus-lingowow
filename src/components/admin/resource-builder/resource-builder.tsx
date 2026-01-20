@@ -538,12 +538,12 @@ export function ResourceBuilder({
                     <span className="hidden sm:inline">Configuración</span>
                   </Button>
                 </SheetTrigger>
-                <SheetContent className="overflow-y-auto w-[400px] sm:w-[540px]">
-                  <SheetHeader>
+                <SheetContent className="overflow-y-auto w-[400px] sm:w-[540px] px-6">
+                  <SheetHeader className="pb-4">
                     <SheetTitle>Configuración del Recurso</SheetTitle>
                     <SheetDescription>Configura los metadatos y opciones del recurso</SheetDescription>
                   </SheetHeader>
-                  <div className="space-y-6 mt-6">
+                  <div className="space-y-6 mt-4 pb-6">
                     {/* Basic Info */}
                     <div className="space-y-4">
                       <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">

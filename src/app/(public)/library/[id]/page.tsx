@@ -50,6 +50,8 @@ import type { LibraryResource, LibraryResourceDetailResponse } from '@/lib/types
 import { RESOURCE_TYPE_LABELS, ACCESS_LEVEL_DESCRIPTIONS } from '@/lib/types/library'
 import { ArticleBlockRenderer } from '@/components/library/article-editor'
 import { parseArticleContent } from '@/lib/types/article-blocks'
+import { BlockPreview } from '@/components/admin/course-builder/lesson-builder/block-preview'
+import type { Block } from '@/types/course-builder'
 
 interface ExtendedLibraryResourceDetailResponse extends LibraryResourceDetailResponse {
   accessRestricted?: boolean
@@ -465,9 +467,15 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
               </h1>
 
               {resource.description && (
-                <p className="text-xl text-muted-foreground leading-relaxed">
-                  {resource.description}
-                </p>
+                <div 
+                  className="text-xl text-muted-foreground leading-relaxed prose prose-lg max-w-none prose-p:my-2 prose-strong:text-foreground"
+                  dangerouslySetInnerHTML={{ 
+                    __html: resource.description
+                      .replace(/\n/g, '<br />')
+                      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+                      .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+                  }}
+                />
               )}
 
               {/* Author & Metadata Bar */}
@@ -596,13 +604,37 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
             {!accessRestricted && resource.content && (
               <>
                 {(() => {
-                  // Try to parse as block content first
-                  const parsedContent = parseArticleContent(resource.content)
-                  if (parsedContent.blocks.length > 0) {
-                    return <ArticleBlockRenderer content={parsedContent} />
+                  try {
+                    const parsed = JSON.parse(resource.content)
+                    
+                    // Check if it's Course Builder format (has blocks array with type like 'title', 'text', 'video', etc.)
+                    if (parsed.blocks && Array.isArray(parsed.blocks) && parsed.blocks.length > 0) {
+                      const firstBlock = parsed.blocks[0]
+                      // Course Builder blocks have types like 'title', 'text', 'video', 'image', 'audio', etc.
+                      const courseBuilderTypes = ['title', 'text', 'video', 'image', 'audio', 'quiz', 'assignment', 'file', 'embed', 'grammar', 'vocabulary', 'fill_blanks', 'match', 'true_false', 'essay', 'short_answer', 'multi_select', 'multiple_choice', 'ordering', 'drag_drop', 'recording', 'structured-content', 'grammar-visualizer', 'teacher_notes', 'tab_group', 'layout', 'block_group']
+                      
+                      if (firstBlock.type && courseBuilderTypes.includes(firstBlock.type)) {
+                        // Render using BlockPreview from Course Builder
+                        return (
+                          <div className="space-y-6">
+                            {(parsed.blocks as Block[]).map((block: Block) => (
+                              <BlockPreview key={block.id} block={block} hideBlockHeader={true} />
+                            ))}
+                          </div>
+                        )
+                      }
+                      
+                      // Otherwise try ArticleBlockRenderer format
+                      const articleContent = parseArticleContent(resource.content)
+                      if (articleContent.blocks.length > 0) {
+                        return <ArticleBlockRenderer content={articleContent} />
+                      }
+                    }
+                  } catch {
+                    // Not JSON, fall through to HTML rendering
                   }
                   
-                  // Fallback to HTML rendering for legacy content or if parsing returned no blocks
+                  // Fallback to HTML rendering for legacy content
                   return (
                     <div
                       className="prose prose-lg max-w-none"
