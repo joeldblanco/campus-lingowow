@@ -607,13 +607,27 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                   try {
                     const parsed = JSON.parse(resource.content)
                     
-                    // Check if it's Course Builder format (has blocks array with type like 'title', 'text', 'video', etc.)
+                    // Check if it has blocks array
                     if (parsed.blocks && Array.isArray(parsed.blocks) && parsed.blocks.length > 0) {
-                      const firstBlock = parsed.blocks[0]
-                      // Course Builder blocks have types like 'title', 'text', 'video', 'image', 'audio', etc.
-                      const courseBuilderTypes = ['title', 'text', 'video', 'image', 'audio', 'quiz', 'assignment', 'file', 'embed', 'grammar', 'vocabulary', 'fill_blanks', 'match', 'true_false', 'essay', 'short_answer', 'multi_select', 'multiple_choice', 'ordering', 'drag_drop', 'recording', 'structured-content', 'grammar-visualizer', 'teacher_notes', 'tab_group', 'layout', 'block_group']
+                      // First check if it's Article format by looking for article-exclusive types
+                      const articleExclusiveTypes = ['heading', 'key-rule', 'grammar-table', 'examples-in-context', 'callout', 'divider']
+                      const hasArticleExclusiveType = parsed.blocks.some((block: { type?: string }) => 
+                        block.type && articleExclusiveTypes.includes(block.type)
+                      )
                       
-                      if (firstBlock.type && courseBuilderTypes.includes(firstBlock.type)) {
+                      if (hasArticleExclusiveType) {
+                        // It's an Article format
+                        const articleContent = parseArticleContent(resource.content)
+                        return <ArticleBlockRenderer content={articleContent} />
+                      }
+                      
+                      // Check if it's Course Builder format by looking for course-builder-exclusive types
+                      const courseBuilderExclusiveTypes = ['title', 'audio', 'quiz', 'assignment', 'file', 'embed', 'grammar', 'vocabulary', 'fill_blanks', 'match', 'true_false', 'essay', 'short_answer', 'multi_select', 'multiple_choice', 'ordering', 'drag_drop', 'recording', 'structured-content', 'grammar-visualizer', 'teacher_notes', 'tab_group', 'layout', 'block_group']
+                      const hasCourseBuilderExclusiveType = parsed.blocks.some((block: { type?: string }) => 
+                        block.type && courseBuilderExclusiveTypes.includes(block.type)
+                      )
+                      
+                      if (hasCourseBuilderExclusiveType) {
                         // Render using BlockPreview from Course Builder
                         return (
                           <div className="space-y-6">
@@ -624,10 +638,23 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                         )
                       }
                       
-                      // Otherwise try ArticleBlockRenderer format
-                      const articleContent = parseArticleContent(resource.content)
-                      if (articleContent.blocks.length > 0) {
+                      // If we can't determine the format by exclusive types, check for structural differences
+                      // Course Builder blocks have 'id', 'type', and 'content' properties
+                      // Article blocks have 'id', 'type', 'order' properties
+                      const firstBlock = parsed.blocks[0]
+                      if (firstBlock.order !== undefined) {
+                        // It's likely Article format
+                        const articleContent = parseArticleContent(resource.content)
                         return <ArticleBlockRenderer content={articleContent} />
+                      } else {
+                        // Default to Course Builder format
+                        return (
+                          <div className="space-y-6">
+                            {(parsed.blocks as Block[]).map((block: Block) => (
+                              <BlockPreview key={block.id} block={block} hideBlockHeader={true} />
+                            ))}
+                          </div>
+                        )
                       }
                     }
                   } catch {
