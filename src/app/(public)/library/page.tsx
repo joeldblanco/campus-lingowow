@@ -160,7 +160,11 @@ export default function LibraryPage() {
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '')
   const [selectedFormats, setSelectedFormats] = useState<LibraryResourceType[]>([])
   const [selectedLevels, setSelectedLevels] = useState<string[]>([])
-  const [language, setLanguage] = useState(searchParams.get('language') || 'en')
+const [language, setLanguage] = useState(() => {
+    const urlLanguage = searchParams.get('language')
+    // Only 'en' is currently enabled - validate URL parameter
+    return urlLanguage === 'en' ? 'en' : 'en'
+  })
   const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'newest')
 
   const fetchCategories = useCallback(async () => {
