@@ -638,16 +638,14 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                         )
                       }
                       
-                      // If we can't determine the format by exclusive types, check for structural differences
-                      // Course Builder blocks have 'id', 'type', and 'content' properties
-                      // Article blocks have 'id', 'type', 'order' properties
-                      const firstBlock = parsed.blocks[0]
-                      if (firstBlock.order !== undefined) {
-                        // It's likely Article format
-                        const articleContent = parseArticleContent(resource.content)
-                        return <ArticleBlockRenderer content={articleContent} />
-                      } else {
-                        // Default to Course Builder format
+                      // If we can't determine the format by exclusive types, check for format-specific properties
+                      // Course Builder text blocks have 'format' property, video/audio have 'duration'
+                      // Article text blocks don't have 'format', and use simpler structure
+                      const hasCourseBuilderProperties = parsed.blocks.some((block: { type?: string; format?: string; duration?: number }) => 
+                        block.format !== undefined || block.duration !== undefined
+                      )
+                      
+                      if (hasCourseBuilderProperties) {
                         return (
                           <div className="space-y-6">
                             {(parsed.blocks as Block[]).map((block: Block) => (
@@ -656,6 +654,15 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                           </div>
                         )
                       }
+                      
+                      // Default to Course Builder format since BlockPreview handles more block types gracefully
+                      return (
+                        <div className="space-y-6">
+                          {(parsed.blocks as Block[]).map((block: Block) => (
+                            <BlockPreview key={block.id} block={block} hideBlockHeader={true} />
+                          ))}
+                        </div>
+                      )
                     }
                   } catch {
                     // Not JSON, fall through to HTML rendering
