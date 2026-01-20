@@ -57,8 +57,6 @@ import { LibraryResourceType, LibraryResourceStatus } from '@prisma/client'
 import type { LibraryResource } from '@/lib/types/library'
 import { RESOURCE_TYPE_LABELS } from '@/lib/types/library'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
-import { getCurrentUserRoles } from '@/lib/actions/auth'
-import { UserRole } from '@prisma/client'
 
 const getTypeIcon = (type: LibraryResourceType) => {
   const iconMap: Record<LibraryResourceType, React.ReactNode> = {
@@ -113,11 +111,6 @@ export default function AdminLibraryPage() {
     total: 0,
     totalPages: 0,
   })
-  const [userRoles, setUserRoles] = useState<UserRole[]>([])
-
-  useEffect(() => {
-    getCurrentUserRoles().then(setUserRoles)
-  }, [])
 
   const fetchResources = useCallback(async () => {
     setLoading(true)
@@ -184,22 +177,12 @@ export default function AdminLibraryPage() {
             Gestiona los recursos educativos de la biblioteca
           </p>
         </div>
-        <div className="flex gap-2">
-          {(userRoles.includes('EDITOR') || userRoles.includes('ADMIN')) && (
-            <Link href="/admin/resources/new">
-              <Button variant="outline">
-                <Plus className="h-4 w-4 mr-2" />
-                Nuevo Recurso (Editor)
-              </Button>
-            </Link>
-          )}
-          <Link href="/admin/library/new">
-            <Button>
-              <Plus className="h-4 w-4 mr-2" />
-              Nuevo Recurso
-            </Button>
-          </Link>
-        </div>
+        <Link href="/admin/resources/new">
+          <Button>
+            <Plus className="h-4 w-4 mr-2" />
+            Nuevo Recurso
+          </Button>
+        </Link>
       </div>
 
       {/* Filters */}
