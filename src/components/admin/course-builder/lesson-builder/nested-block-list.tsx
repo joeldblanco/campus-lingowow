@@ -128,7 +128,7 @@ function SortableBlockItem({
                         </div>
                     ) : (
                         <div onClick={onEdit} className="cursor-pointer">
-                            <BlockPreviewComponent block={block} />
+                            <BlockPreviewComponent block={block} isTeacher />
                         </div>
                     )}
                 </div>

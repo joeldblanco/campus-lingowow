@@ -153,12 +153,12 @@ export function BlockCanvas({
                   const isSelected = selectedBlockIds.has(block.id) || selectedBlockId === block.id
 
                   if (readOnly) {
-                    return (
-                      <div key={block.id}>
-                        <BlockPreview block={block} isExamMode={mode === 'exam'} />
-                      </div>
-                    )
-                  }
+                                    return (
+                                      <div key={block.id}>
+                                        <BlockPreview block={block} isExamMode={mode === 'exam'} isTeacher />
+                                      </div>
+                                    )
+                                  }
 
                   return (
                     <BlockItem
@@ -178,7 +178,7 @@ export function BlockCanvas({
                           onRemove={onRemoveBlock ? () => onRemoveBlock(block.id) : undefined}
                         />
                       ) : (
-                        <BlockPreview block={block} isExamMode={mode === 'exam'} />
+                        <BlockPreview block={block} isExamMode={mode === 'exam'} isTeacher />
                       )}
                     </BlockItem>
                   )

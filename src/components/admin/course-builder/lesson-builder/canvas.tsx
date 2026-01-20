@@ -171,7 +171,7 @@ function SortableBlockItem({
     if (readOnly) {
         return (
             <div>
-                <BlockPreview block={block} />
+                <BlockPreview block={block} isTeacher />
             </div>
         )
     }
@@ -213,7 +213,7 @@ function SortableBlockItem({
                 {isSelected && onUpdate && (block.type === 'structured-content' || block.type === 'grammar-visualizer') ? (
                     <BlockContentEditor block={block} onUpdate={onUpdate} onRemove={onRemove} />
                 ) : (
-                    <BlockPreview block={block} />
+                    <BlockPreview block={block} isTeacher />
                 )}
             </div>
         </div>

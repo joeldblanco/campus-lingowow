@@ -29,6 +29,7 @@ import {
   OrderingBlock,
   DragDropBlock,
   MultiSelectBlock,
+  TeacherNotesBlock,
   isInteractiveBlock,
 } from '@/types/course-builder'
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -163,6 +164,8 @@ export function PropertiesPanel({ block, onUpdate, onRemove, onClose, mode = 'le
         )
       case 'embed':
         return <EmbedProperties block={block as EmbedBlock} onUpdate={onUpdate} />
+      case 'teacher_notes':
+        return <TeacherNotesProperties block={block as TeacherNotesBlock} onUpdate={onUpdate} />
       default:
         return <GenericProperties block={block} onUpdate={onUpdate} />
     }
@@ -3569,6 +3572,73 @@ function MultiSelectProperties({
           onChange={(e) => onUpdate({ points: parseInt(e.target.value) || 10 })}
           min={1}
         />
+      </div>
+    </div>
+  )
+}
+
+function TeacherNotesProperties({
+  block,
+  onUpdate,
+}: {
+  block: TeacherNotesBlock
+  onUpdate: (updates: Partial<Block>) => void
+}) {
+  const colorOptions = [
+    { value: 'yellow', label: 'Amarillo', bg: 'bg-yellow-100', border: 'border-yellow-400' },
+    { value: 'blue', label: 'Azul', bg: 'bg-blue-100', border: 'border-blue-400' },
+    { value: 'green', label: 'Verde', bg: 'bg-green-100', border: 'border-green-400' },
+    { value: 'purple', label: 'Morado', bg: 'bg-purple-100', border: 'border-purple-400' },
+    { value: 'orange', label: 'Naranja', bg: 'bg-orange-100', border: 'border-orange-400' },
+  ]
+
+  return (
+    <div className="space-y-6">
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm text-yellow-800">
+        <strong>💡 Nota:</strong> Este bloque solo será visible para profesores, administradores y editores durante la clase.
+        Los estudiantes no podrán ver este contenido.
+      </div>
+
+      <div className="space-y-2">
+        <Label>Título (opcional)</Label>
+        <Input
+          value={block.title || ''}
+          onChange={(e) => onUpdate({ title: e.target.value })}
+          placeholder="Ej: Preguntas para hacer al estudiante"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label>Contenido</Label>
+        <RichTextEditor
+          value={block.content || ''}
+          onChange={(content) => onUpdate({ content })}
+          placeholder="Escribe aquí las indicaciones, preguntas sugeridas, notas o recordatorios para la clase..."
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label>Color de resaltado</Label>
+        <div className="flex gap-2">
+          {colorOptions.map((color) => (
+            <button
+              key={color.value}
+              type="button"
+              onClick={() => onUpdate({ highlightColor: color.value as TeacherNotesBlock['highlightColor'] })}
+              className={cn(
+                "w-8 h-8 rounded-full border-2 transition-all",
+                color.bg,
+                block.highlightColor === color.value
+                  ? `${color.border} ring-2 ring-offset-2 ring-gray-400`
+                  : 'border-gray-300 hover:border-gray-500'
+              )}
+              title={color.label}
+            />
+          ))}
+        </div>
+        <p className="text-xs text-muted-foreground">
+          El color ayuda a diferenciar visualmente este bloque de otros contenidos.
+        </p>
       </div>
     </div>
   )
