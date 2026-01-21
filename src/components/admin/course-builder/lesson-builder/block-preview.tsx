@@ -2827,12 +2827,21 @@ export function StructuredContentBlockPreview({ block, hideHeader }: { block: St
   )
 }
 
+interface AIGradingResult {
+  isCorrect: boolean
+  score: number
+  feedback: string
+  suggestedCorrection?: string
+}
+
 function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: ShortAnswerBlock; isExamMode?: boolean; hideHeader?: boolean }) {
   void hideHeader // Short answer blocks have a different layout
   const items = block.items || []
   const [currentStep, setCurrentStep] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [results, setResults] = useState<Record<string, boolean | null>>({})
+  const [aiResults, setAiResults] = useState<Record<string, AIGradingResult>>({})
+  const [isGrading, setIsGrading] = useState(false)
 
   // Get classroom sync
   const classroomSync = useClassroomSync()
@@ -2856,9 +2865,63 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
     }
   }
 
-  const checkAnswer = () => {
+  const checkAnswer = async () => {
     if (isTeacherInClassroom || !currentItem) return
     const userAnswer = answers[currentItem.id] || ''
+    
+    // Check if this item has AI instructions
+    const hasAIInstructions = currentItem.aiInstructions && currentItem.aiInstructions.trim() !== ''
+    
+    if (hasAIInstructions) {
+      // Use AI grading
+      setIsGrading(true)
+      try {
+        const response = await fetch('/api/lessons/grade-short-answer', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            question: currentItem.question,
+            correctAnswer: currentItem.correctAnswer,
+            studentAnswer: userAnswer,
+            aiInstructions: currentItem.aiInstructions,
+            caseSensitive: block.caseSensitive,
+            language: 'spanish',
+          }),
+        })
+        
+        if (response.ok) {
+          const data = await response.json()
+          const aiResult = data.result as AIGradingResult
+          setAiResults(prev => ({ ...prev, [currentItem.id]: aiResult }))
+          setResults(prev => ({ ...prev, [currentItem.id]: aiResult.isCorrect }))
+          
+          // Sync result to teacher
+          if (classroomSync.canInteract) {
+            classroomSync.sendBlockResponse(block.id, 'short_answer', {
+              itemId: currentItem.id,
+              answer: userAnswer,
+              isCorrect: aiResult.isCorrect,
+              aiFeedback: aiResult.feedback,
+            }, aiResult.isCorrect, aiResult.isCorrect ? 1 : 0)
+          }
+        } else {
+          // Fallback to simple comparison on API error
+          fallbackCheck(userAnswer)
+        }
+      } catch (error) {
+        console.error('Error grading with AI:', error)
+        fallbackCheck(userAnswer)
+      } finally {
+        setIsGrading(false)
+      }
+    } else {
+      // Simple comparison (no AI)
+      fallbackCheck(userAnswer)
+    }
+  }
+  
+  const fallbackCheck = (userAnswer: string) => {
+    if (!currentItem) return
     const isCorrect = block.caseSensitive
       ? userAnswer.trim() === currentItem.correctAnswer.trim()
       : userAnswer.trim().toLowerCase() === currentItem.correctAnswer.trim().toLowerCase()
@@ -2887,6 +2950,7 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
     if (isTeacherInClassroom) return
     setAnswers({})
     setResults({})
+    setAiResults({})
     setCurrentStep(0)
   }
 
@@ -2899,6 +2963,7 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
   }
 
   const currentResult = !isExamMode && displayItem ? results[displayItem.id] : null
+  const currentAiResult = !isExamMode && displayItem ? aiResults[displayItem.id] : null
   const answeredCount = Object.keys(results).length
   const correctCount = Object.values(results).filter(r => r === true).length
 
@@ -2908,6 +2973,12 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
         <div className="flex items-center gap-2 text-primary font-semibold text-sm">
           <MessageSquare className="h-5 w-5" />
           <span>Respuesta Corta</span>
+          {displayItem?.aiInstructions && (
+            <Badge variant="secondary" className="text-[10px] gap-1">
+              <Sparkles className="h-3 w-3" />
+              Autocorrección
+            </Badge>
+          )}
         </div>
         <div className="text-sm text-muted-foreground">
           Pregunta {displayStep + 1} de {items.length}
@@ -2930,19 +3001,50 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
             type="text"
             value={displayAnswers[displayItem.id] || ''}
             onChange={(e) => handleAnswerChange(e.target.value)}
-            disabled={(currentResult !== null && currentResult !== undefined) || isTeacherInClassroom}
+            disabled={(currentResult !== null && currentResult !== undefined) || isTeacherInClassroom || isGrading}
             placeholder={isTeacherInClassroom ? "Esperando respuesta del estudiante..." : "Escribe tu respuesta..."}
             className={cn(
               "w-full px-4 py-3 border rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors",
-              currentResult === true && "border-green-500 bg-green-50 text-green-700",
-              currentResult === false && "border-red-500 bg-red-50 text-red-700",
-              (currentResult === null || currentResult === undefined) && "border-gray-200",
+              currentResult === true && "border-green-500 bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300",
+              currentResult === false && "border-red-500 bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300",
+              (currentResult === null || currentResult === undefined) && "border-gray-200 dark:border-gray-700",
               isTeacherInClassroom && "cursor-default"
             )}
           />
 
-          {currentResult === false && displayItem && (
-            <div className="text-sm text-green-600 bg-green-50 p-2 rounded">
+          {/* AI Feedback Display (inline) */}
+          {currentAiResult && (
+            <div className={cn(
+              "p-3 rounded-lg border text-sm space-y-2",
+              currentAiResult.isCorrect 
+                ? "bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800" 
+                : "bg-amber-50 border-amber-200 dark:bg-amber-950 dark:border-amber-800"
+            )}>
+              <div className="flex items-start gap-2">
+                <Sparkles className={cn(
+                  "h-4 w-4 mt-0.5 shrink-0",
+                  currentAiResult.isCorrect ? "text-green-600" : "text-amber-600"
+                )} />
+                <div className="space-y-1">
+                  <p className={cn(
+                    "font-medium",
+                    currentAiResult.isCorrect ? "text-green-700 dark:text-green-300" : "text-amber-700 dark:text-amber-300"
+                  )}>
+                    {currentAiResult.feedback}
+                  </p>
+                  {currentAiResult.suggestedCorrection && (
+                    <p className="text-muted-foreground">
+                      <span className="font-medium">Respuesta esperada:</span> {currentAiResult.suggestedCorrection}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Fallback feedback (no AI) */}
+          {currentResult === false && !currentAiResult && displayItem && (
+            <div className="text-sm text-green-600 bg-green-50 dark:bg-green-950 dark:text-green-300 p-2 rounded">
               <span className="font-medium">Respuesta correcta:</span> {displayItem.correctAnswer}
             </div>
           )}
@@ -2952,10 +3054,10 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
       {!isTeacherInClassroom && (
         <div className="flex items-center justify-between">
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => handleNav(currentStep - 1)} disabled={currentStep === 0} size="sm">
+            <Button variant="outline" onClick={() => handleNav(currentStep - 1)} disabled={currentStep === 0 || isGrading} size="sm">
               Anterior
             </Button>
-            <Button variant="outline" onClick={() => handleNav(currentStep + 1)} disabled={currentStep >= items.length - 1} size="sm">
+            <Button variant="outline" onClick={() => handleNav(currentStep + 1)} disabled={currentStep >= items.length - 1 || isGrading} size="sm">
               Siguiente
             </Button>
           </div>
@@ -2963,8 +3065,15 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
           {!isExamMode && (
             <div className="flex gap-2">
               {currentResult === null || currentResult === undefined ? (
-                <Button onClick={checkAnswer} disabled={!answers[currentItem?.id || '']} size="sm">
-                  Verificar
+                <Button onClick={checkAnswer} disabled={!answers[currentItem?.id || ''] || isGrading} size="sm">
+                  {isGrading ? (
+                    <>
+                      <Sparkles className="h-4 w-4 mr-2 animate-pulse" />
+                      Evaluando...
+                    </>
+                  ) : (
+                    'Verificar'
+                  )}
                 </Button>
               ) : currentStep < items.length - 1 ? (
                 <Button onClick={() => handleNav(currentStep + 1)} size="sm">

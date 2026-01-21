@@ -287,6 +287,7 @@ export interface ShortAnswerItem {
   id: string
   question: string
   correctAnswer: string
+  aiInstructions?: string // Instructions for AI to grade the answer
 }
 
 export interface ShortAnswerBlock extends BaseBlock {

@@ -7,19 +7,21 @@ export interface AIGradingLimits {
   essayLesson: number
   essayExam: number
   recording: number
+  shortAnswer: number
 }
 
 const DEFAULT_LIMITS: AIGradingLimits = {
   essayLesson: 5,
   essayExam: 10,
-  recording: 3
+  recording: 3,
+  shortAnswer: 20
 }
 
 const PLAN_LIMITS: Record<string, AIGradingLimits> = {
-  free: { essayLesson: 3, essayExam: 5, recording: 2 },
-  go: { essayLesson: 10, essayExam: 20, recording: 5 },
-  lingo: { essayLesson: 30, essayExam: 50, recording: 15 },
-  wow: { essayLesson: -1, essayExam: -1, recording: -1 } // -1 = unlimited
+  free: { essayLesson: 3, essayExam: 5, recording: 2, shortAnswer: 10 },
+  go: { essayLesson: 10, essayExam: 20, recording: 5, shortAnswer: 50 },
+  lingo: { essayLesson: 30, essayExam: 50, recording: 15, shortAnswer: 150 },
+  wow: { essayLesson: -1, essayExam: -1, recording: -1, shortAnswer: -1 } // -1 = unlimited
 }
 
 function getCurrentPeriod(): { start: Date; end: Date } {
@@ -41,7 +43,7 @@ export async function getUserAIGradingLimits(userId?: string): Promise<{
   if (!targetUserId) {
     return {
       limits: DEFAULT_LIMITS,
-      usage: { essayLesson: 0, essayExam: 0, recording: 0 },
+      usage: { essayLesson: 0, essayExam: 0, recording: 0, shortAnswer: 0 },
       remaining: DEFAULT_LIMITS,
       planName: 'free'
     }
@@ -76,7 +78,8 @@ export async function getUserAIGradingLimits(userId?: string): Promise<{
   const usage: AIGradingLimits = {
     essayLesson: 0,
     essayExam: 0,
-    recording: 0
+    recording: 0,
+    shortAnswer: 0
   }
 
   usageRecords.forEach(record => {
@@ -86,20 +89,23 @@ export async function getUserAIGradingLimits(userId?: string): Promise<{
       usage.essayExam = record._count.id
     } else if (record.usageType === 'recording') {
       usage.recording = record._count.id
+    } else if (record.usageType === 'short_answer') {
+      usage.shortAnswer = record._count.id
     }
   })
 
   const remaining: AIGradingLimits = {
     essayLesson: limits.essayLesson === -1 ? -1 : Math.max(0, limits.essayLesson - usage.essayLesson),
     essayExam: limits.essayExam === -1 ? -1 : Math.max(0, limits.essayExam - usage.essayExam),
-    recording: limits.recording === -1 ? -1 : Math.max(0, limits.recording - usage.recording)
+    recording: limits.recording === -1 ? -1 : Math.max(0, limits.recording - usage.recording),
+    shortAnswer: limits.shortAnswer === -1 ? -1 : Math.max(0, limits.shortAnswer - usage.shortAnswer)
   }
 
   return { limits, usage, remaining, planName: planSlug }
 }
 
 export async function canUseAIGrading(
-  usageType: 'essay_lesson' | 'essay_exam' | 'recording'
+  usageType: 'essay_lesson' | 'essay_exam' | 'recording' | 'short_answer'
 ): Promise<{ allowed: boolean; remaining: number; limit: number }> {
   const session = await auth()
   if (!session?.user?.id) {
@@ -124,6 +130,10 @@ export async function canUseAIGrading(
       limit = limits.recording
       remainingCount = remaining.recording
       break
+    case 'short_answer':
+      limit = limits.shortAnswer
+      remainingCount = remaining.shortAnswer
+      break
   }
 
   const allowed = limit === -1 || remainingCount > 0
@@ -132,7 +142,7 @@ export async function canUseAIGrading(
 }
 
 export async function recordAIGradingUsage(
-  usageType: 'essay_lesson' | 'essay_exam' | 'recording',
+  usageType: 'essay_lesson' | 'essay_exam' | 'recording' | 'short_answer',
   entityId?: string,
   entityType?: string,
   tokensUsed?: number

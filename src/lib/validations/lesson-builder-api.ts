@@ -254,6 +254,7 @@ const shortAnswerItemSchema = z.object({
   id: z.string(),
   question: z.string(),
   correctAnswer: z.string(),
+  aiInstructions: z.string().optional(),
 })
 
 const shortAnswerBlockSchema = baseBlockSchema.extend({

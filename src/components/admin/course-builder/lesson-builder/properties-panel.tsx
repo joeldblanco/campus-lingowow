@@ -48,7 +48,7 @@ import { FileUpload } from '@/components/ui/file-upload'
 import { Switch } from '@/components/ui/switch'
 import { deleteCloudinaryFile, uploadFileByType } from '@/lib/actions/cloudinary'
 import { cn } from '@/lib/utils'
-import { ArrowDown, ArrowUp, ChevronDown, Loader2, Mic, Play, Plus, Square, Trash2, X } from 'lucide-react'
+import { ArrowDown, ArrowUp, ChevronDown, Loader2, Mic, Play, Plus, Sparkles, Square, Trash2, X } from 'lucide-react'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
@@ -2941,7 +2941,7 @@ function ShortAnswerProperties({
     onUpdate({ items: [...items, { id: newId, question: '', correctAnswer: '' }] })
   }
 
-  const updateItem = (id: string, field: 'question' | 'correctAnswer', value: string) => {
+  const updateItem = (id: string, field: 'question' | 'correctAnswer' | 'aiInstructions', value: string) => {
     onUpdate({
       items: items.map((item) => (item.id === id ? { ...item, [field]: value } : item)),
     })
@@ -2999,6 +2999,22 @@ function ShortAnswerProperties({
                 placeholder="Respuesta correcta"
                 className="text-sm"
               />
+              <div className="pt-2 border-t border-dashed">
+                <div className="flex items-center gap-1 mb-1">
+                  <Sparkles className="h-3 w-3 text-primary" />
+                  <span className="text-xs font-medium text-primary">Instrucciones para IA</span>
+                </div>
+                <Textarea
+                  value={item.aiInstructions || ''}
+                  onChange={(e) => updateItem(item.id, 'aiInstructions', e.target.value)}
+                  placeholder="Ej: Acepta sinónimos como 'perro' o 'can'. También acepta respuestas en inglés como 'dog'."
+                  rows={2}
+                  className="text-xs"
+                />
+                <p className="text-[10px] text-muted-foreground mt-1">
+                  Opcional: Indica cómo debe la IA evaluar respuestas alternativas.
+                </p>
+              </div>
             </div>
           ))}
         </div>
