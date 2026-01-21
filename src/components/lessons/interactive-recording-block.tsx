@@ -2,14 +2,21 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
-import { Mic, Square, Play, Pause, Send, CheckCircle, Loader2, Trash2 } from 'lucide-react'
+import { Mic, Square, Play, Pause, Send, CheckCircle, Loader2, Trash2, Sparkles } from 'lucide-react'
 import { saveBlockResponse } from '@/lib/actions/block-responses'
 import { toast } from 'sonner'
+import { RecordingAIGrading } from '@/components/lessons/recording-ai-grading'
 
 interface RecordingBlockData {
   prompt?: string
+  instruction?: string
   timeLimit?: number
   maxAttempts?: number
+  aiGrading?: boolean
+  aiGradingConfig?: {
+    language?: string
+    targetLevel?: string
+  }
 }
 
 interface SavedResponse {
@@ -200,6 +207,12 @@ export function InteractiveRecordingBlock({
           <span>Grabación de Audio</span>
         </div>
         <div className="flex items-center gap-2">
+          {block.aiGrading !== false && (
+            <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 text-xs font-medium">
+              <Sparkles className="h-3 w-3" />
+              <span>Corrección Automática</span>
+            </div>
+          )}
           {isSaved && (
             <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-medium">
               <CheckCircle className="h-3 w-3" />
@@ -333,6 +346,19 @@ export function InteractiveRecordingBlock({
               </>
             )}
           </Button>
+        </div>
+      )}
+
+      {audioUrl && isSaved && block.aiGrading !== false && (
+        <div className="flex justify-end">
+          <RecordingAIGrading
+            audioUrl={audioUrl}
+            instruction={block.instruction || block.prompt || ''}
+            blockId={blockId}
+            language={block.aiGradingConfig?.language as 'english' | 'spanish' | undefined}
+            targetLevel={block.aiGradingConfig?.targetLevel as 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2' | undefined}
+            disabled={!audioUrl}
+          />
         </div>
       )}
     </div>

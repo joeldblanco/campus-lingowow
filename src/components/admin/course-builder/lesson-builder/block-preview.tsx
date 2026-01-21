@@ -62,8 +62,9 @@ import {
 import * as LucideIcons from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
-import { cn } from '@/lib/utils'
+import { cn, processHtmlLinks } from '@/lib/utils'
 import { EssayAIGrading as EssayAIGradingButton } from '@/components/lessons/essay-ai-grading'
+import { RecordingAIGrading } from '@/components/lessons/recording-ai-grading'
 import { useClassroomSync } from '@/components/classroom/use-classroom-sync'
 
 interface BlockPreviewProps {
@@ -202,7 +203,7 @@ function TextBlockPreview({ block, hideHeader }: { block: TextBlock; hideHeader?
       <div className="prose prose-sm max-w-none text-foreground rich-text-content">
         {content.includes('<') ? (
           <div
-            dangerouslySetInnerHTML={{ __html: content }}
+            dangerouslySetInnerHTML={{ __html: processHtmlLinks(content) }}
             className="leading-relaxed"
           />
         ) : (
@@ -2714,6 +2715,20 @@ function RecordingBlockPreview({
             )}
           </div>
         )}
+
+        {/* AI Grading Button */}
+        {audioUrl && hasRecorded && !isRecording && !isUploading && block.aiGrading !== false && (
+          <div className="mt-4 flex justify-center">
+            <RecordingAIGrading
+              audioUrl={audioUrl}
+              instruction={block.instruction || block.prompt || ''}
+              blockId={block.id}
+              language={block.aiGradingConfig?.language as 'english' | 'spanish' | undefined}
+              targetLevel={block.aiGradingConfig?.targetLevel as 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2' | undefined}
+              disabled={!audioUrl || isUploading}
+            />
+          </div>
+        )}
       </div>
     </div>
   )
@@ -3644,7 +3659,7 @@ function TeacherNotesBlockPreview({ block, hideHeader }: { block: TeacherNotesBl
       {block.content ? (
         <div 
           className="prose prose-sm max-w-none text-gray-700 leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: block.content }}
+          dangerouslySetInnerHTML={{ __html: processHtmlLinks(block.content) }}
         />
       ) : (
         <p className="text-gray-500 italic text-sm">

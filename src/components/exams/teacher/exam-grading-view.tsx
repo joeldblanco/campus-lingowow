@@ -22,7 +22,7 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { cn } from '@/lib/utils'
+import { cn, processHtmlLinks } from '@/lib/utils'
 import { toast } from 'sonner'
 
 interface StudentInfo {
@@ -352,7 +352,7 @@ export function ExamGradingView({
                         {answer.informativeContent?.text && (
                           <div 
                             className="text-foreground mb-4 prose prose-sm dark:prose-invert max-w-none"
-                            dangerouslySetInnerHTML={{ __html: answer.informativeContent.text }}
+                            dangerouslySetInnerHTML={{ __html: processHtmlLinks(answer.informativeContent.text) }}
                           />
                         )}
                         

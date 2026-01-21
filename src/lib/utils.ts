@@ -5,6 +5,23 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+// Process HTML content to make all links open in new tab
+export function processHtmlLinks(html: string): string {
+  if (!html) return html
+  
+  // Replace <a> tags to add target="_blank" and rel="noopener noreferrer"
+  return html.replace(
+    /<a\s+([^>]*?)href=/gi,
+    (match, existingAttrs) => {
+      // Check if target is already set
+      if (/target\s*=/i.test(existingAttrs)) {
+        return match
+      }
+      return `<a ${existingAttrs}target="_blank" rel="noopener noreferrer" href=`
+    }
+  )
+}
+
 // Format file size in human-readable format
 export function formatFileSize(bytes: number): string {
   if (bytes === 0) return '0 Bytes'

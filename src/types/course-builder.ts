@@ -338,6 +338,10 @@ export interface RecordingBlock extends BaseBlock {
   prompt?: string // Alternative to instruction (from import script)
   timeLimit?: number // in seconds
   aiGrading?: boolean // AI evaluation for audio transcription
+  aiGradingConfig?: {
+    language: 'english' | 'spanish'
+    targetLevel: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
+  }
 }
 
 export interface StructuredContentBlock extends BaseBlock {
@@ -700,6 +704,10 @@ export const BLOCK_TEMPLATES: BlockTemplate[] = [
       instruction: 'Graba una presentación de ti mismo.',
       timeLimit: 60,
       aiGrading: true,
+      aiGradingConfig: {
+        language: 'spanish',
+        targetLevel: 'B1',
+      },
     },
   },
   {

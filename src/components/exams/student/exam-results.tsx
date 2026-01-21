@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import { cn, processHtmlLinks } from '@/lib/utils'
 import { WaveformAudioPlayer } from '@/components/ui/waveform-audio-player'
 import {
   ArrowRight,
@@ -387,7 +387,7 @@ function QuestionResultCard({ result }: { result: QuestionResult }) {
           {htmlContent && (
             <div
               className="prose prose-sm dark:prose-invert max-w-none"
-              dangerouslySetInnerHTML={{ __html: htmlContent }}
+              dangerouslySetInnerHTML={{ __html: processHtmlLinks(htmlContent) }}
             />
           )}
         </div>

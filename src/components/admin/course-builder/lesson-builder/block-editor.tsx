@@ -58,6 +58,7 @@ import { NestedBlockList } from './nested-block-list'
 import { StructuredContentEditor } from './structured-content-editor'
 import { GrammarVisualizerEditor } from './grammar-visualizer-editor'
 import { GrammarVisualizerBlockPreview } from './block-preview'
+import { processHtmlLinks } from '@/lib/utils'
 
 interface BlockEditorProps {
   block: Block
@@ -373,7 +374,7 @@ function TextBlockPreview({ block }: { block: TextBlock }) {
   return (
     <div className="prose prose-sm max-w-none">
       {block.format === 'html' ? (
-        <div dangerouslySetInnerHTML={{ __html: content }} className="text-foreground" />
+        <div dangerouslySetInnerHTML={{ __html: processHtmlLinks(content) }} className="text-foreground" />
       ) : (
         <div className="whitespace-pre-wrap">{content}</div>
       )}

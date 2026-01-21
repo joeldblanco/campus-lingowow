@@ -29,6 +29,10 @@ export interface ExamQuestionData {
     instruction?: string
     timeLimit?: number
     aiGrading?: boolean
+    aiGradingConfig?: {
+      language?: string
+      targetLevel?: string
+    }
     maxReplays?: number
     correctOptions?: { id: string; text: string }[]
     incorrectOptions?: { id: string; text: string }[]
@@ -98,6 +102,7 @@ function reconstructBlock(question: ExamQuestionData): Block | null {
         prompt: data?.instruction || question.question,
         timeLimit: data?.timeLimit || 60,
         aiGrading: data?.aiGrading,
+        aiGradingConfig: data?.aiGradingConfig,
       } as Block
 
     case 'multiple_choice':

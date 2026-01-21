@@ -2620,6 +2620,25 @@ function RecordingProperties({
   block: RecordingBlock
   onUpdate: (updates: Partial<Block>) => void
 }) {
+  const handleAiGradingToggle = (enabled: boolean) => {
+    onUpdate({
+      aiGrading: enabled,
+      aiGradingConfig: enabled
+        ? block.aiGradingConfig || { language: 'spanish', targetLevel: 'B1' }
+        : undefined,
+    })
+  }
+
+  const handleConfigChange = (key: string, value: string) => {
+    onUpdate({
+      aiGradingConfig: {
+        language: block.aiGradingConfig?.language || 'spanish',
+        targetLevel: block.aiGradingConfig?.targetLevel || 'B1',
+        [key]: value,
+      },
+    })
+  }
+
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -2642,6 +2661,58 @@ function RecordingProperties({
         <p className="text-xs text-muted-foreground">
           Recomendado: 60-120 segundos para respuestas cortas.
         </p>
+      </div>
+
+      {/* AI Grading Section */}
+      <div className="space-y-4 pt-4 border-t">
+        <div className="flex items-center justify-between">
+          <div className="space-y-0.5">
+            <Label className="text-base">Corrección Automática</Label>
+            <p className="text-sm text-muted-foreground">
+              Evalúa automáticamente la grabación del estudiante
+            </p>
+          </div>
+          <Switch
+            checked={block.aiGrading ?? true}
+            onCheckedChange={handleAiGradingToggle}
+          />
+        </div>
+
+        {block.aiGrading !== false && (
+          <div className="space-y-4 p-4 bg-muted/50 rounded-lg">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Idioma de la Grabación</Label>
+                <select
+                  className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
+                  value={block.aiGradingConfig?.language || 'spanish'}
+                  onChange={(e) => handleConfigChange('language', e.target.value)}
+                >
+                  <option value="spanish">Español</option>
+                  <option value="english">English</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label>Nivel Objetivo</Label>
+                <select
+                  className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
+                  value={block.aiGradingConfig?.targetLevel || 'B1'}
+                  onChange={(e) => handleConfigChange('targetLevel', e.target.value)}
+                >
+                  <option value="A1">A1 - Principiante</option>
+                  <option value="A2">A2 - Elemental</option>
+                  <option value="B1">B1 - Intermedio</option>
+                  <option value="B2">B2 - Intermedio Alto</option>
+                  <option value="C1">C1 - Avanzado</option>
+                  <option value="C2">C2 - Maestría</option>
+                </select>
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Se evaluará pronunciación, gramática, vocabulario, fluidez y cumplimiento de la tarea según el nivel seleccionado.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   )
