@@ -62,10 +62,12 @@ import {
 import * as LucideIcons from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
+import { toast } from 'sonner'
 import { cn, processHtmlLinks } from '@/lib/utils'
 import { EssayAIGrading as EssayAIGradingButton } from '@/components/lessons/essay-ai-grading'
 import { RecordingAIGrading } from '@/components/lessons/recording-ai-grading'
 import { useClassroomSync } from '@/components/classroom/use-classroom-sync'
+import { canUseAIGrading, recordAIGradingUsage } from '@/lib/actions/ai-grading-limits'
 
 interface BlockPreviewProps {
   block: Block
@@ -2873,6 +2875,16 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
     const hasAIInstructions = currentItem.aiInstructions && currentItem.aiInstructions.trim() !== ''
     
     if (hasAIInstructions) {
+      // Check if user can use AI grading (based on plan limits)
+      const usageInfo = await canUseAIGrading('short_answer')
+      
+      if (!usageInfo.allowed) {
+        toast.error(`Has alcanzado el límite de ${usageInfo.limit} correcciones con IA este mes`)
+        // Fallback to simple comparison if AI usage limit reached
+        fallbackCheck(userAnswer)
+        return
+      }
+      
       // Use AI grading
       setIsGrading(true)
       try {
@@ -2894,6 +2906,9 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
           const aiResult = data.result as AIGradingResult
           setAiResults(prev => ({ ...prev, [currentItem.id]: aiResult }))
           setResults(prev => ({ ...prev, [currentItem.id]: aiResult.isCorrect }))
+          
+          // Record AI usage
+          await recordAIGradingUsage('short_answer', block.id, 'block')
           
           // Sync result to teacher
           if (classroomSync.canInteract) {
