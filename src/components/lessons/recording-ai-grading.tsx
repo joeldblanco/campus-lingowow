@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Sparkles, Loader2 } from 'lucide-react'
+import { Send, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -33,6 +33,7 @@ interface RecordingAIGradingProps {
   size?: 'default' | 'sm' | 'lg' | 'icon'
   className?: string
   entityId?: string
+  buttonText?: string
 }
 
 export function RecordingAIGrading({
@@ -49,6 +50,7 @@ export function RecordingAIGrading({
   size = 'default',
   className,
   entityId,
+  buttonText = 'Obtener Retroalimentación',
 }: RecordingAIGradingProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [showResult, setShowResult] = useState(false)
@@ -68,6 +70,25 @@ export function RecordingAIGrading({
     checkUsage()
   }, [])
 
+  const fetchAudioAsBase64 = async (url: string): Promise<{ base64: string; mimeType: string }> => {
+    const response = await fetch(url)
+    if (!response.ok) {
+      throw new Error('No se pudo obtener el audio')
+    }
+    const blob = await response.blob()
+    const mimeType = blob.type || 'audio/webm'
+    
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        const base64 = (reader.result as string).split(',')[1]
+        resolve({ base64, mimeType })
+      }
+      reader.onerror = reject
+      reader.readAsDataURL(blob)
+    })
+  }
+
   const handleGrade = async () => {
     if (!audioUrl) {
       toast.error('No hay grabación para evaluar')
@@ -81,11 +102,14 @@ export function RecordingAIGrading({
 
     setIsLoading(true)
     try {
+      const { base64, mimeType } = await fetchAudioAsBase64(audioUrl)
+      
       const response = await fetch('/api/lessons/grade-recording', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          audioUrl,
+          audioBase64: base64,
+          mimeType,
           instruction,
           maxPoints,
           language,
@@ -154,8 +178,8 @@ export function RecordingAIGrading({
           </>
         ) : (
           <>
-            <Sparkles className="h-4 w-4 mr-2" />
-            Evaluar con IA
+            <Send className="h-4 w-4 mr-2" />
+            {buttonText}
           </>
         )}
       </Button>
@@ -163,8 +187,7 @@ export function RecordingAIGrading({
       <Dialog open={showResult} onOpenChange={setShowResult}>
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-primary" />
+            <DialogTitle>
               Resultado de la Evaluación
             </DialogTitle>
           </DialogHeader>

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
-import { gradeRecordingFromUrl } from '@/lib/services/recording-grading'
+import { gradeRecordingWithAI } from '@/lib/services/recording-grading'
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,26 +10,28 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { 
-      audioUrl, 
-      instruction, 
+    const {
+      audioBase64,
+      mimeType = 'audio/webm',
+      instruction,
       prompt,
-      maxPoints = 100, 
-      language = 'spanish', 
-      targetLevel = 'B1' 
+      maxPoints = 100,
+      language = 'spanish',
+      targetLevel = 'B1'
     } = body
 
-    if (!audioUrl) {
+    if (!audioBase64) {
       return NextResponse.json(
-        { error: 'Falta el campo requerido: audioUrl' },
+        { error: 'Falta el campo requerido: audioBase64' },
         { status: 400 }
       )
     }
 
     const taskInstruction = instruction || prompt || 'Habla sobre el tema indicado'
 
-    const gradingResult = await gradeRecordingFromUrl(
-      audioUrl,
+    const gradingResult = await gradeRecordingWithAI(
+      audioBase64,
+      mimeType,
       {
         language,
         targetLevel,

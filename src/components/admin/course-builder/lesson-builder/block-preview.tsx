@@ -2639,9 +2639,17 @@ function RecordingBlockPreview({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-        <Mic className="h-5 w-5" />
-        <span>Grabación</span>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+          <Mic className="h-5 w-5" />
+          <span>Grabación</span>
+        </div>
+        {block.aiGrading !== false && (
+          <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 text-xs font-medium">
+            <Sparkles className="h-3 w-3" />
+            <span>Autocorrección</span>
+          </div>
+        )}
       </div>
 
       <div className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl space-y-6 text-center">
