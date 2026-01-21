@@ -221,6 +221,10 @@ function ClassroomInner({
             if (!result.alreadyRecording) {
               console.log(`Recording started - segment ${result.segmentNumber}`)
             }
+          } else {
+            // Reset ref to allow retry if startRecording returns failure without throwing
+            console.error('Auto-recording failed:', result.error)
+            recordingRef.current = false
           }
         } catch (error) {
           console.error('Auto-recording failed:', error)
