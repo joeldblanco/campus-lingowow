@@ -138,10 +138,20 @@ export async function POST(request: Request) {
       metadata: metadata ? JSON.parse(JSON.stringify(metadata)) : null,
     }
 
-    // Buscar si ya existe una grabación con este egressId
-    const existingRecording = metadata?.egress_id 
+    // Buscar grabación existente por egressId o por r2Key (fallback si no hay metadata)
+    let existingRecording = metadata?.egress_id 
       ? await db.classRecording.findUnique({ where: { egressId: metadata.egress_id } })
       : null
+
+    // Fallback: buscar por r2Key si no hay egressId
+    if (!existingRecording && videoFile.Key) {
+      existingRecording = await db.classRecording.findFirst({
+        where: { 
+          bookingId,
+          r2Key: videoFile.Key,
+        },
+      })
+    }
 
     let recording
     if (existingRecording) {
