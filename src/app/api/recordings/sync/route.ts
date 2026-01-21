@@ -56,7 +56,7 @@ export async function POST(request: Request) {
     // Verify booking exists
     const booking = await db.classBooking.findUnique({
       where: { id: bookingId },
-      include: { recording: true }
+      include: { recordings: true }
     })
 
     if (!booking) {
@@ -138,11 +138,34 @@ export async function POST(request: Request) {
       metadata: metadata ? JSON.parse(JSON.stringify(metadata)) : null,
     }
 
-    const recording = await db.classRecording.upsert({
-      where: { bookingId },
-      create: recordingData,
-      update: recordingData,
-    })
+    // Buscar si ya existe una grabación con este egressId
+    const existingRecording = metadata?.egress_id 
+      ? await db.classRecording.findUnique({ where: { egressId: metadata.egress_id } })
+      : null
+
+    let recording
+    if (existingRecording) {
+      // Actualizar grabación existente
+      recording = await db.classRecording.update({
+        where: { id: existingRecording.id },
+        data: recordingData,
+      })
+    } else {
+      // Crear nueva grabación con número de segmento
+      const lastRecording = await db.classRecording.findFirst({
+        where: { bookingId },
+        orderBy: { segmentNumber: 'desc' },
+        select: { segmentNumber: true },
+      })
+      const segmentNumber = (lastRecording?.segmentNumber || 0) + 1
+
+      recording = await db.classRecording.create({
+        data: {
+          ...recordingData,
+          segmentNumber,
+        },
+      })
+    }
 
     return NextResponse.json({
       success: true,
