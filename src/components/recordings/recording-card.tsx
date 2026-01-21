@@ -24,6 +24,7 @@ interface RecordingCardProps {
     duration: number | null
     startedAt: Date | null
     endedAt: Date | null
+    segmentNumber?: number
     booking: {
       id: string
       day: string
@@ -149,6 +150,11 @@ export function RecordingCard({ recording }: RecordingCardProps) {
         {/* Título del curso */}
         <h3 className="font-semibold text-base line-clamp-2 mb-2 group-hover:text-blue-600 transition-colors">
           {course.title}
+          {recording.segmentNumber && recording.segmentNumber > 1 && (
+            <span className="text-muted-foreground font-normal text-sm ml-2">
+              (Parte {recording.segmentNumber})
+            </span>
+          )}
         </h3>
 
         {/* Info del profesor */}

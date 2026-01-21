@@ -207,24 +207,29 @@ function ClassroomInner({
     }
   }, [isInitialized, connectionStatus, joinRoom, roomName, jwt])
 
-  // Auto-start recording when teacher connects (automatic, no manual control)
+  // Auto-start recording when ANY user connects (teacher or student)
+  // Recording starts when user joins and stops when they leave
   useEffect(() => {
     const autoStartRecording = async () => {
-      if (connectionStatus === 'connected' && isTeacher && bookingId && !isRecording && !recordingRef.current) {
+      if (connectionStatus === 'connected' && bookingId && !isRecording && !recordingRef.current) {
         recordingRef.current = true
         try {
           const result = await startRecording(bookingId, roomName)
           if (result.success && result.egressId) {
             setIsRecording(true)
             setEgressId(result.egressId)
+            if (!result.alreadyRecording) {
+              console.log(`Recording started - segment ${result.segmentNumber}`)
+            }
           }
         } catch (error) {
           console.error('Auto-recording failed:', error)
+          recordingRef.current = false
         }
       }
     }
     autoStartRecording()
-  }, [connectionStatus, isTeacher, bookingId, roomName, isRecording])
+  }, [connectionStatus, bookingId, roomName, isRecording])
 
 
   // Listen for lesson change commands and sync requests
@@ -359,8 +364,19 @@ function ClassroomInner({
     )
   }
 
-  // Sidebar: Videos arriba + Chat abajo (diseño según imagen)
+  // Stop recording and leave when user navigates away (back button)
   const handleBackClick = async () => {
+    // Stop recording when user leaves (creates a new segment if they rejoin)
+    if (isRecording && egressId) {
+      try {
+        await stopRecording(egressId, bookingId)
+        setIsRecording(false)
+        setEgressId(null)
+        recordingRef.current = false
+      } catch (error) {
+        console.error('Failed to stop recording on back:', error)
+      }
+    }
     await leaveRoom()
   }
 

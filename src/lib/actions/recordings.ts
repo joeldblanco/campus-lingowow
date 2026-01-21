@@ -41,6 +41,7 @@ export interface RecordingWithDetails {
   startedAt: Date | null
   endedAt: Date | null
   fileUrl: string | null
+  segmentNumber: number
   booking: {
     id: string
     day: string
@@ -271,7 +272,7 @@ export async function syncRecordingFromR2(bookingId: string) {
     const booking = await db.classBooking.findUnique({
       where: { id: bookingId },
       include: {
-        recording: true,
+        recordings: true,
       },
     })
 
@@ -355,11 +356,34 @@ export async function syncRecordingFromR2(bookingId: string) {
       metadata: metadata ? JSON.parse(JSON.stringify(metadata)) : null,
     }
 
-    const recording = await db.classRecording.upsert({
-      where: { bookingId },
-      create: recordingData,
-      update: recordingData,
-    })
+    // Buscar si ya existe una grabación con este egressId
+    const existingRecording = metadata?.egress_id 
+      ? await db.classRecording.findUnique({ where: { egressId: metadata.egress_id } })
+      : null
+
+    let recording
+    if (existingRecording) {
+      // Actualizar grabación existente
+      recording = await db.classRecording.update({
+        where: { id: existingRecording.id },
+        data: recordingData,
+      })
+    } else {
+      // Crear nueva grabación con número de segmento
+      const lastRecording = await db.classRecording.findFirst({
+        where: { bookingId },
+        orderBy: { segmentNumber: 'desc' },
+        select: { segmentNumber: true },
+      })
+      const segmentNumber = (lastRecording?.segmentNumber || 0) + 1
+
+      recording = await db.classRecording.create({
+        data: {
+          ...recordingData,
+          segmentNumber,
+        },
+      })
+    }
 
     return {
       success: true,

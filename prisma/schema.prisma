@@ -838,7 +838,7 @@ model ClassBooking {
   videoCalls         VideoCall[]
   meetingMessages    MeetingMessage[]
   whiteboardData     WhiteboardData?
-  recording          ClassRecording?
+  recordings         ClassRecording[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -2407,8 +2407,8 @@ enum PendingOrderStatus {
 
 model ClassRecording {
   id           String          @id @default(cuid())
-  bookingId    String          @unique
-  egressId     String?         // LiveKit egress ID
+  bookingId    String          // Permite múltiples grabaciones por booking
+  egressId     String?         @unique // LiveKit egress ID - único para evitar duplicados
   roomId       String?
   roomName     String?
   
@@ -2428,6 +2428,9 @@ model ClassRecording {
   
   // Estado de la grabación
   status       RecordingStatus @default(PROCESSING)
+  
+  // Número de segmento (para múltiples grabaciones en una clase)
+  segmentNumber Int            @default(1)
   
   // Metadatos adicionales (JSON del webhook de LiveKit)
   metadata     Json?

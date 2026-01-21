@@ -21,16 +21,37 @@ export async function startRecording(bookingId: string, roomName: string) {
       return { success: false, error: 'No autenticado' }
     }
 
-    // Verify user has access to this booking (teacher only)
+    // Verify user has access to this booking (teacher OR student)
     const booking = await db.classBooking.findFirst({
       where: {
         id: bookingId,
-        teacherId: session.user.id,
+        OR: [
+          { teacherId: session.user.id },
+          { studentId: session.user.id },
+        ],
       },
     })
 
     if (!booking) {
       return { success: false, error: 'No tienes permiso para grabar esta clase' }
+    }
+
+    // Check if there's already an active recording for this room
+    const existingRecording = await db.classRecording.findFirst({
+      where: {
+        bookingId,
+        status: 'PROCESSING',
+      },
+    })
+
+    if (existingRecording?.egressId) {
+      // Recording already in progress, return existing egress ID
+      return {
+        success: true,
+        egressId: existingRecording.egressId,
+        message: 'Grabación ya en progreso',
+        alreadyRecording: true,
+      }
     }
 
     if (!livekitHost || !apiKey || !apiSecret) {
@@ -86,10 +107,31 @@ export async function startRecording(bookingId: string, roomName: string) {
       data: { recordingUrl: info.egressId },
     })
 
+    // Get the next segment number for this booking
+    const lastRecording = await db.classRecording.findFirst({
+      where: { bookingId },
+      orderBy: { segmentNumber: 'desc' },
+      select: { segmentNumber: true },
+    })
+    const segmentNumber = (lastRecording?.segmentNumber || 0) + 1
+
+    // Create a new ClassRecording record with PROCESSING status
+    await db.classRecording.create({
+      data: {
+        bookingId,
+        egressId: info.egressId,
+        roomName,
+        status: 'PROCESSING',
+        segmentNumber,
+        startedAt: new Date(),
+      },
+    })
+
     return {
       success: true,
       egressId: info.egressId,
       message: 'Grabación iniciada',
+      segmentNumber,
     }
   } catch (error) {
     console.error('Error starting recording:', error)
@@ -122,7 +164,7 @@ export async function stopRecording(egressId: string, bookingId?: string) {
       resolvedBookingId = videoCall?.bookingId || undefined
     }
 
-    // Create ClassRecording record automatically
+    // Update ClassRecording record with file info
     if (resolvedBookingId) {
       try {
         const fileResult = info.fileResults?.[0]
@@ -168,22 +210,10 @@ export async function stopRecording(egressId: string, bookingId?: string) {
           }
         }
 
-        await db.classRecording.upsert({
-          where: { bookingId: resolvedBookingId },
-          create: {
-            bookingId: resolvedBookingId,
-            egressId: egressId,
-            roomName: info.roomName || null,
-            filename: filename?.split('/').pop() || null,
-            r2Key: r2Key,
-            r2Bucket: r2BucketName,
-            duration,
-            startedAt,
-            endedAt,
-            status: 'READY',
-          },
-          update: {
-            egressId: egressId,
+        // Update the existing recording record by egressId (unique)
+        await db.classRecording.update({
+          where: { egressId },
+          data: {
             roomName: info.roomName || null,
             filename: filename?.split('/').pop() || null,
             r2Key: r2Key,
@@ -195,10 +225,10 @@ export async function stopRecording(egressId: string, bookingId?: string) {
           },
         })
 
-        console.log(`ClassRecording created/updated for booking ${resolvedBookingId}`)
+        console.log(`ClassRecording updated for egressId ${egressId}`)
       } catch (dbError) {
-        console.error('Error creating ClassRecording record:', dbError)
-        // Don't fail the whole operation if DB insert fails
+        console.error('Error updating ClassRecording record:', dbError)
+        // Don't fail the whole operation if DB update fails
       }
     }
 
