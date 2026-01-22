@@ -1106,6 +1106,7 @@ export async function getExamResultsForStudent(attemptId: string, userId: string
                     points: true,
                     tags: true,
                     order: true,
+                    partialCredit: true,
                   },
                   orderBy: { order: 'asc' },
                 },

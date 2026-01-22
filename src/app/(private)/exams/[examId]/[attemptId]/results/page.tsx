@@ -59,6 +59,7 @@ export default async function ExamResultsPage({ params }: PageProps) {
     points: number
     tags: string[]
     order: number
+    partialCredit: boolean
     sectionTitle: string
   }
 
@@ -102,10 +103,10 @@ export default async function ExamResultsPage({ params }: PageProps) {
   // Obtener todas las preguntas del examen ordenadas por sección y orden
   const allExamQuestions: ExamQuestion[] = exam.sections
     .sort((a: { order: number }, b: { order: number }) => a.order - b.order)
-    .flatMap((section: { title: string; questions: Array<{ id: string; type: string; question: string; options: unknown; correctAnswer: unknown; explanation: string | null; points: number; tags: string[]; order: number }> }) => 
+    .flatMap((section: { title: string; questions: Array<{ id: string; type: string; question: string; options: unknown; correctAnswer: unknown; explanation: string | null; points: number; tags: string[]; order: number; partialCredit: boolean }> }) => 
       section.questions
         .sort((a: { order: number }, b: { order: number }) => a.order - b.order)
-        .map((q: { id: string; type: string; question: string; options: unknown; correctAnswer: unknown; explanation: string | null; points: number; tags: string[]; order: number }) => ({ ...q, sectionTitle: section.title }))
+        .map((q: { id: string; type: string; question: string; options: unknown; correctAnswer: unknown; explanation: string | null; points: number; tags: string[]; order: number; partialCredit: boolean }) => ({ ...q, sectionTitle: section.title }))
     )
 
   // Crear mapa de respuestas por questionId
@@ -159,7 +160,7 @@ export default async function ExamResultsPage({ params }: PageProps) {
     
     if (multipleChoiceItems && multipleChoiceItems.length > 0) {
       // Verificar si permite crédito parcial
-      const partialCredit = options?.partialCredit || false
+      const partialCredit = question.partialCredit || false
       const userAnswers = answer?.answer as Record<string, string> | null
       
       // Parsear correctAnswer para obtener los IDs correctos por índice
