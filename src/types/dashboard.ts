@@ -20,6 +20,9 @@ export interface AdminDashboardData {
   upcomingClasses: {
     id: string
     title: string
+    studentName: string
+    studentId?: string
+    studentImage: string | null
     teacherId?: string
     teacherName: string
     startTime: string

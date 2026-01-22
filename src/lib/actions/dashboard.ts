@@ -8,7 +8,7 @@ import type {
   StudentDashboardData,
   GuestDashboardData,
 } from '@/types/dashboard'
-import { formatDateNumeric, getCurrentDate, formatToISO, getStartOfMonth } from '@/lib/utils/date'
+import { formatDateNumeric, getCurrentDate, formatToISO, getStartOfMonth, getDateRange } from '@/lib/utils/date'
 import { getUserAvatarUrl } from '@/lib/utils'
 import { getPeriodByDate } from '@/lib/actions/academic-period'
 import { es } from 'date-fns/locale'
@@ -116,8 +116,7 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
       },
     })
 
-    // Get enrollment stats (mocked aggregation for now using recent data, or simple count grouping)
-    // For a real chart, we'd group by week/month. Let's do a simple grouping by created date of enrollments last 30 days.
+    // Get enrollment stats - agrupar inscripciones por día y rellenar días vacíos
     const thirtyDaysAgo = new Date()
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
@@ -133,13 +132,36 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
       },
     })
 
-    // Normalize for chart (simple map, in real app needs date filling)
-    const enrollmentStats = enrollmentsLast30Days
-      .map((item) => ({
-        name: formatDateNumeric(item.enrollmentDate.toISOString()),
-        students: item._count.id,
+    // Crear mapa de inscripciones por fecha para fácil lookup
+    const enrollmentMap = new Map(
+      enrollmentsLast30Days.map((item) => [
+        formatToISO(item.enrollmentDate),
+        item._count.id,
+      ])
+    )
+
+    // Generar todos los días de los últimos 30 días
+    let enrollmentStats
+    try {
+      const startDateStr = formatToISO(thirtyDaysAgo)
+      const endDateStr = formatToISO(getCurrentDate())
+      const allDates = getDateRange(startDateStr, endDateStr)
+
+      // Normalizar para chart - incluir todos los días con valor 0 si no hay inscripciones
+      enrollmentStats = allDates.map((date) => ({
+        name: formatDateNumeric(date.toISOString()),
+        students: enrollmentMap.get(formatToISO(date)) || 0,
       }))
-      .sort((a, b) => new Date(a.name).getTime() - new Date(b.name).getTime())
+    } catch (dateError) {
+      console.error('Error generating date range for enrollment stats:', dateError)
+      // Fallback a la versión anterior sin rellenar días vacíos
+      enrollmentStats = enrollmentsLast30Days
+        .map((item) => ({
+          name: formatDateNumeric(item.enrollmentDate.toISOString()),
+          students: item._count.id,
+        }))
+        .sort((a, b) => new Date(a.name).getTime() - new Date(b.name).getTime())
+    }
 
     // Get classes by language (approximation based on course enrollments)
     const languageStats = await db.course.groupBy({
@@ -173,6 +195,9 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
         return {
           id: booking.id,
           title: booking.enrollment.course.title,
+          studentName: `${booking.student.name} ${booking.student.lastName || ''}`,
+          studentId: booking.student.id,
+          studentImage: booking.student.image,
           teacherId: booking.teacher.id,
           teacherName: `${booking.teacher.name} ${booking.teacher.lastName || ''}`,
           teacherImage: booking.teacher.image,
@@ -206,6 +231,8 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
     return baseStats
   } catch (error) {
     console.error('Error getting admin dashboard stats:', error)
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace')
+    console.error('Error message:', error instanceof Error ? error.message : String(error))
     throw new Error('No se pudieron obtener las estadísticas del dashboard')
   }
 }

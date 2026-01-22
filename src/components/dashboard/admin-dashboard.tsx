@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { getUserAvatarUrl } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
@@ -200,7 +201,7 @@ const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData |
             </div>
           </div>
 
-          {/* Upcoming Classes List (Formerly Pending Actions) */}
+          {/* Upcoming Classes List */}
           <div className="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-bold text-slate-900 dark:text-white">Próximas Clases</h3>
@@ -216,17 +217,17 @@ const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData |
                     className="flex gap-4 p-3 rounded-lg border border-slate-100 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors bg-slate-50/50 dark:bg-slate-800/30 items-center"
                   >
                     <Avatar className="h-10 w-10 border border-slate-200">
-                      <AvatarImage src={booking.teacherId ? getUserAvatarUrl(booking.teacherId, booking.teacherImage) : (booking.teacherImage || '')} alt={booking.teacherName} />
-                      <AvatarFallback className="bg-primary/10 text-primary">
-                        {booking.teacherName.charAt(0)}
-                      </AvatarFallback>
+                      <AvatarImage src={getUserAvatarUrl(booking.studentId || booking.id, booking.studentImage)} alt={booking.studentName} />
                     </Avatar>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-slate-900 dark:text-white truncate">
-                        {booking.title}
+                        {booking.studentName}
                       </p>
                       <p className="text-xs text-slate-500 truncate">
-                        {booking.teacherName} • {booking.startTime}
+                        {booking.teacherName}
+                      </p>
+                      <p className="text-xs text-slate-400">
+                        {booking.startTime}
                       </p>
                     </div>
                     {/* <Button variant="ghost" size="sm" className="text-primary hover:text-blue-700">
@@ -238,12 +239,14 @@ const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData |
                 <p className="text-sm text-slate-500 text-center py-4">No hay clases próximas</p>
               )}
             </div>
-            <Button
-              variant="ghost"
-              className="w-full mt-4 py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-white font-medium border-t border-slate-100 dark:border-slate-700 transition-colors rounded-none"
-            >
-              Ver todas
-            </Button>
+            <Link href="/admin/classes">
+              <Button
+                variant="ghost"
+                className="w-full mt-4 py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-white font-medium border-t border-slate-100 dark:border-slate-700 transition-colors rounded-none"
+              >
+                Ver todas
+              </Button>
+            </Link>
           </div>
         </div>
 
