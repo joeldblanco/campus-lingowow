@@ -145,7 +145,7 @@ export default async function GradingPage({ params }: PageProps) {
         userOptionLetter: userOptionIndex >= 0 ? getOptionLetter(userOptionIndex) : null,
         userOptionText: userOption?.text || null,
         correctOptionLetter: correctOptionIndex >= 0 ? getOptionLetter(correctOptionIndex) : '?',
-        correctOptionText: correctOption?.text || String(correctOptionId),
+        correctOptionText: correctOption?.text || '(Opción no encontrada)',
         isCorrect: userOptionId === correctOptionId
       }
     })

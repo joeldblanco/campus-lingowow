@@ -874,30 +874,44 @@ export async function saveExamAnswer(
         const multipleChoiceItems = options?.multipleChoiceItems as Array<{ id: string; options: Array<{ id: string }> }> | undefined
         
         if (multipleChoiceItems && multipleChoiceItems.length > 0) {
-          // Comparar cada respuesta del usuario con la respuesta correcta correspondiente
-          let allCorrect = true
-          let correctCount = 0
+          // Verificar si el estudiante respondió al menos una pregunta
+          const hasAnyAnswer = Object.keys(userAnswers).length > 0 && Object.values(userAnswers).some(v => v !== null && v !== undefined && v !== '')
           
-          multipleChoiceItems.forEach((item, index) => {
-            const userOptionId = userAnswers[item.id]
-            const correctOptionId = correctAnswerArray[index]
+          if (!hasAnyAnswer) {
+            // Si no hay ninguna respuesta, marcar como incorrecto con 0 puntos
+            isCorrect = false
+            pointsEarned = 0
+          } else {
+            // Comparar cada respuesta del usuario con la respuesta correcta correspondiente
+            let allCorrect = true
+            let correctCount = 0
             
-            if (userOptionId === correctOptionId) {
-              correctCount++
-            } else {
-              allCorrect = false
-            }
-          })
-          
-          isCorrect = allCorrect
-          // Puntos parciales: proporción de respuestas correctas
-          pointsEarned = Math.round((correctCount / multipleChoiceItems.length) * question.points)
+            multipleChoiceItems.forEach((item, index) => {
+              const userOptionId = userAnswers[item.id]
+              const correctOptionId = correctAnswerArray[index]
+              
+              if (userOptionId === correctOptionId) {
+                correctCount++
+              } else {
+                allCorrect = false
+              }
+            })
+            
+            isCorrect = allCorrect
+            // Puntos parciales: proporción de respuestas correctas
+            pointsEarned = Math.round((correctCount / multipleChoiceItems.length) * question.points)
+          }
         } else {
           // Fallback: comparar valores directamente
-          const userValues = Object.values(userAnswers).sort()
-          const correctValues = correctAnswerArray.sort()
-          isCorrect = JSON.stringify(userValues) === JSON.stringify(correctValues)
-          pointsEarned = isCorrect ? question.points : 0
+          const userValues = Object.values(userAnswers).filter(v => v !== null && v !== undefined && v !== '')
+          if (userValues.length === 0) {
+            isCorrect = false
+            pointsEarned = 0
+          } else {
+            const correctValues = correctAnswerArray.sort()
+            isCorrect = JSON.stringify(userValues.sort()) === JSON.stringify(correctValues)
+            pointsEarned = isCorrect ? question.points : 0
+          }
         }
       } else {
         // Para respuestas simples (string)
