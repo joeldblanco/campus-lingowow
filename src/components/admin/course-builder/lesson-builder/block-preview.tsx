@@ -2875,19 +2875,18 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
     const hasAIInstructions = currentItem.aiInstructions && currentItem.aiInstructions.trim() !== ''
     
     if (hasAIInstructions) {
-      // Check if user can use AI grading (based on plan limits)
-      const usageInfo = await canUseAIGrading('short_answer')
-      
-      if (!usageInfo.allowed) {
-        toast.error(`Has alcanzado el límite de ${usageInfo.limit} correcciones con IA este mes`)
-        // Fallback to simple comparison if AI usage limit reached
-        fallbackCheck(userAnswer)
-        return
-      }
-      
       // Use AI grading
       setIsGrading(true)
       try {
+        // Check if user can use AI grading (based on plan limits)
+        const usageInfo = await canUseAIGrading('short_answer')
+        
+        if (!usageInfo.allowed) {
+          toast.error(`Has alcanzado el límite de ${usageInfo.limit} correcciones con IA este mes`)
+          // Fallback to simple comparison if AI usage limit reached
+          fallbackCheck(userAnswer)
+          return
+        }
         const response = await fetch('/api/lessons/grade-short-answer', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
