@@ -372,7 +372,7 @@ export function EssayFeedbackDisplay({ result, className }: EssayFeedbackDisplay
       <div className="flex items-start gap-3 p-4 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
         <AlertTriangle className="h-5 w-5 text-slate-500 flex-shrink-0 mt-0.5" />
         <p className="text-xs text-slate-500 dark:text-slate-400">
-          Esta calificación fue generada automáticamente por IA (Gemini). 
+          Esta calificación fue generada automáticamente por IA. 
           Tu profesor puede revisar y ajustar la calificación si es necesario.
         </p>
       </div>

@@ -2564,7 +2564,7 @@ function EssayProperties({
           <div className="space-y-0.5">
             <Label className="text-base">Corrección con IA</Label>
             <p className="text-sm text-muted-foreground">
-              Habilitar corrección automática usando Gemini AI
+              Habilitar corrección automática usando IA
             </p>
           </div>
           <Switch
