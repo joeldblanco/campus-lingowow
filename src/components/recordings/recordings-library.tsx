@@ -22,7 +22,7 @@ import {
   Video,
   Loader2
 } from 'lucide-react'
-import { getStudentRecordings, getStudentCoursesForFilter } from '@/lib/actions/recordings'
+import { getStudentRecordings, getStudentCoursesForFilter, isUserAdmin } from '@/lib/actions/recordings'
 
 interface Course {
   id: string
@@ -83,6 +83,7 @@ export function RecordingsLibrary() {
   })
   const [loading, setLoading] = useState(true)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+  const [isAdmin, setIsAdmin] = useState(false)
   
   // Filtros
   const [searchQuery, setSearchQuery] = useState('')
@@ -159,6 +160,16 @@ export function RecordingsLibrary() {
     } catch (error) {
       console.error('Error fetching courses:', error)
     }
+  }, [])
+
+  useEffect(() => {
+    const checkAdminStatus = async () => {
+      const result = await isUserAdmin()
+      if (result.success) {
+        setIsAdmin(result.isAdmin)
+      }
+    }
+    checkAdminStatus()
   }, [])
 
   useEffect(() => {
@@ -295,7 +306,7 @@ export function RecordingsLibrary() {
               : 'flex flex-col gap-4'
           }>
             {filteredRecordings.map(recording => (
-              <RecordingCard key={recording.id} recording={recording} />
+              <RecordingCard key={recording.id} recording={recording} isAdmin={isAdmin} />
             ))}
           </div>
 

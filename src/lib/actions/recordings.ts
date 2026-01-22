@@ -69,7 +69,7 @@ export interface RecordingWithDetails {
   }
 }
 
-// Obtener grabaciones del estudiante actual
+// Obtener grabaciones del estudiante actual o todas si es admin
 export async function getStudentRecordings(options?: {
   page?: number
   limit?: number
@@ -88,10 +88,16 @@ export async function getStudentRecordings(options?: {
     const limit = options?.limit || 12
     const skip = (page - 1) * limit
 
+    const isAdmin = session.user.roles?.includes('ADMIN')
+
     // Construir filtros para booking
     const bookingFilter: Record<string, unknown> = {
-      studentId: session.user.id,
       status: 'COMPLETED',
+    }
+
+    // Solo filtrar por studentId si NO es admin
+    if (!isAdmin) {
+      bookingFilter.studentId = session.user.id
     }
 
     if (options?.courseId) {
@@ -396,7 +402,7 @@ export async function syncRecordingFromR2(bookingId: string) {
   }
 }
 
-// Obtener cursos del estudiante para filtros
+// Obtener cursos del estudiante para filtros (o todos si es admin)
 export async function getStudentCoursesForFilter() {
   try {
     const session = await auth()
@@ -404,24 +410,55 @@ export async function getStudentCoursesForFilter() {
       return { success: false, error: 'No autenticado' }
     }
 
-    const enrollments = await db.enrollment.findMany({
-      where: {
-        studentId: session.user.id,
-      },
-      include: {
-        course: {
-          select: {
-            id: true,
-            title: true,
-            language: true,
-            level: true,
+    const isAdmin = session.user.roles?.includes('ADMIN')
+
+    let courses
+
+    if (isAdmin) {
+      // Admin: obtener todos los cursos que tienen grabaciones
+      const coursesWithRecordings = await db.course.findMany({
+        where: {
+          enrollments: {
+            some: {
+              bookings: {
+                some: {
+                  recordings: {
+                    some: {},
+                  },
+                },
+              },
+            },
           },
         },
-      },
-      distinct: ['courseId'],
-    })
-
-    const courses = enrollments.map(e => e.course)
+        select: {
+          id: true,
+          title: true,
+          language: true,
+          level: true,
+        },
+        distinct: ['id'],
+      })
+      courses = coursesWithRecordings
+    } else {
+      // Estudiante: solo sus cursos
+      const enrollments = await db.enrollment.findMany({
+        where: {
+          studentId: session.user.id,
+        },
+        include: {
+          course: {
+            select: {
+              id: true,
+              title: true,
+              language: true,
+              level: true,
+            },
+          },
+        },
+        distinct: ['courseId'],
+      })
+      courses = enrollments.map(e => e.course)
+    }
 
     return {
       success: true,
@@ -430,6 +467,23 @@ export async function getStudentCoursesForFilter() {
   } catch (error) {
     console.error('Error fetching student courses:', error)
     return { success: false, error: 'Error al obtener cursos' }
+  }
+}
+
+// Verificar si el usuario actual es administrador
+export async function isUserAdmin() {
+  try {
+    const session = await auth()
+    if (!session?.user?.id) {
+      return { success: false, isAdmin: false }
+    }
+
+    const isAdmin = session.user.roles?.includes('ADMIN') || false
+
+    return { success: true, isAdmin }
+  } catch (error) {
+    console.error('Error checking user role:', error)
+    return { success: false, isAdmin: false }
   }
 }
 

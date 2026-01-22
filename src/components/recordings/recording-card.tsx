@@ -29,6 +29,12 @@ interface RecordingCardProps {
       id: string
       day: string
       timeSlot: string
+      student: {
+        id: string
+        name: string
+        lastName: string | null
+        image: string | null
+      }
       teacher: {
         id: string
         name: string
@@ -45,11 +51,13 @@ interface RecordingCardProps {
       }
     }
   }
+  isAdmin?: boolean
 }
 
-export function RecordingCard({ recording }: RecordingCardProps) {
+export function RecordingCard({ recording, isAdmin = false }: RecordingCardProps) {
   const { booking } = recording
   const teacher = booking.teacher
+  const student = booking.student
   const course = booking.enrollment.course
 
   const formatDuration = (seconds: number | null) => {
@@ -162,19 +170,42 @@ export function RecordingCard({ recording }: RecordingCardProps) {
           )}
         </h3>
 
-        {/* Info del profesor */}
+        {/* Info del profesor o estudiante (según rol) */}
         <div className="flex items-center gap-2 mb-3">
-          <UserAvatar
-            userId={teacher.id}
-            userName={teacher.name}
-            userLastName={teacher.lastName}
-            userImage={teacher.image}
-            className="h-6 w-6"
-            fallbackClassName="text-xs bg-blue-100 text-blue-700"
-          />
-          <span className="text-sm text-muted-foreground">
-            {teacher.name} {teacher.lastName}
-          </span>
+          {isAdmin ? (
+            <>
+              <UserAvatar
+                userId={student.id}
+                userName={student.name}
+                userLastName={student.lastName}
+                userImage={student.image}
+                className="h-6 w-6"
+                fallbackClassName="text-xs bg-green-100 text-green-700"
+              />
+              <div className="flex flex-col">
+                <span className="text-sm text-muted-foreground">
+                  {student.name} {student.lastName}
+                </span>
+                <span className="text-xs text-muted-foreground/70">
+                  Profesor: {teacher.name} {teacher.lastName}
+                </span>
+              </div>
+            </>
+          ) : (
+            <>
+              <UserAvatar
+                userId={teacher.id}
+                userName={teacher.name}
+                userLastName={teacher.lastName}
+                userImage={teacher.image}
+                className="h-6 w-6"
+                fallbackClassName="text-xs bg-blue-100 text-blue-700"
+              />
+              <span className="text-sm text-muted-foreground">
+                {teacher.name} {teacher.lastName}
+              </span>
+            </>
+          )}
         </div>
 
         {/* Badges y metadata */}
