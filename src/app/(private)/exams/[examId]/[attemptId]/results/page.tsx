@@ -124,10 +124,18 @@ export default async function ExamResultsPage({ params }: PageProps) {
       // Expandir cada ítem como un resultado individual
       const userAnswers = answer.answer as Record<string, string> | null
       
-      return multipleChoiceItems.map((item) => {
+      // Parsear correctAnswer para obtener los IDs correctos por índice
+      const correctAnswerArray = Array.isArray(correctAnswer) 
+        ? correctAnswer as string[]
+        : typeof correctAnswer === 'string' 
+          ? (() => { try { return JSON.parse(correctAnswer) } catch { return correctAnswer.split(',').map(s => s.trim()) } })()
+          : []
+      
+      return multipleChoiceItems.map((item, index) => {
         questionNumber++
         const userAnswer = userAnswers?.[item.id] || null
-        const correctOptionId = item.correctOptionId
+        // Obtener el correctOptionId del array parseado usando el índice
+        const correctOptionId = item.correctOptionId || correctAnswerArray[index]
         const correctOption = item.options.find(o => o.id === correctOptionId)
         const userOption = item.options.find(o => o.id === userAnswer)
         const isItemCorrect = userAnswer === correctOptionId
