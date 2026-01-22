@@ -162,14 +162,11 @@ export async function getContentById(contentId: string, contentType: 'lesson' | 
         if (processedContent.startsWith('{') || processedContent.startsWith('[')) {
           try {
             const parsed = JSON.parse(processedContent)
-            // If it's a blocks array from the resource builder, convert to HTML
-            if (Array.isArray(parsed)) {
-              processedContent = parsed.map((block: { type: string; data?: { html?: string; text?: string } }) => {
-                if (block.type === 'text' && block.data?.html) {
-                  return block.data.html
-                }
-                if (block.type === 'text' && block.data?.text) {
-                  return `<p>${block.data.text}</p>`
+            // If it's a blocks object from the resource builder, convert to HTML
+            if (parsed.blocks && Array.isArray(parsed.blocks)) {
+              processedContent = parsed.blocks.map((block: { type: string; content?: string }) => {
+                if (block.type === 'text' && block.content) {
+                  return block.content
                 }
                 return ''
               }).join('')
