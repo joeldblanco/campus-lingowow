@@ -65,12 +65,22 @@ export function ExcalidrawWhiteboard({ bookingId, isTeacher = false }: Excalidra
   const mergeElements = useCallback((remoteElements: ExcalidrawElement[]): ExcalidrawElement[] => {
     if (!excalidrawAPI) return remoteElements
     
+    // If remote is empty, it means the whiteboard was cleared - replace completely
+    if (remoteElements.length === 0) {
+      return []
+    }
+    
     const localElements = excalidrawAPI.getSceneElements() as ExcalidrawElement[]
     const elementMap = new Map<string, ExcalidrawElement>()
     
-    // Add all local elements first
+    // Create a set of remote element IDs for deletion detection
+    const remoteIds = new Set(remoteElements.map((el: ExcalidrawElement) => el.id))
+    
+    // Add local elements only if they exist in remote (to handle deletions)
     localElements.forEach((el: ExcalidrawElement) => {
-      elementMap.set(el.id, el)
+      if (remoteIds.has(el.id)) {
+        elementMap.set(el.id, el)
+      }
     })
     
     // Merge remote elements - remote wins if version is higher or equal
