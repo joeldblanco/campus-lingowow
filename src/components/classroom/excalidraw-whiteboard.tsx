@@ -76,11 +76,16 @@ export function ExcalidrawWhiteboard({ bookingId, isTeacher = false }: Excalidra
     // Create a set of remote element IDs for deletion detection
     const remoteIds = new Set(remoteElements.map((el: ExcalidrawElement) => el.id))
     
-    // Add local elements only if they exist in remote (to handle deletions)
+    // Add local elements with smart deletion handling
     localElements.forEach((el: ExcalidrawElement) => {
       if (remoteIds.has(el.id)) {
+        // Element exists in remote, will be merged below
+        elementMap.set(el.id, el)
+      } else if (!lastElementsRef.current.has(el.id)) {
+        // New local element not yet synced - preserve it
         elementMap.set(el.id, el)
       }
+      // If element was in lastElementsRef but not in remote, it was deleted remotely - don't preserve
     })
     
     // Merge remote elements - remote wins if version is higher or equal
