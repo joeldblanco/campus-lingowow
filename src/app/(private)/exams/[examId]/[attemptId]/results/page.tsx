@@ -62,6 +62,43 @@ export default async function ExamResultsPage({ params }: PageProps) {
     sectionTitle: string
   }
 
+  // Tipo para los detalles de multiple choice
+  type MultipleChoiceDetail = {
+    itemQuestion: string
+    userOptionLetter: string | null
+    userOptionText: string | null
+    correctOptionLetter: string
+    correctOptionText: string
+    isCorrect: boolean
+  }
+
+  // Tipo para los resultados de las preguntas
+  type QuestionResult = {
+    id: string
+    questionNumber: number
+    type: string
+    category: string | undefined
+    question: string
+    userAnswer: string | null
+    correctAnswer: string
+    isCorrect: boolean
+    pointsEarned: number
+    maxPoints: number
+    explanation: string | null
+    audioUrl: string | undefined
+    needsReview: boolean
+    isInformativeBlock: boolean
+    informativeContent?: {
+      type: string
+      audioUrl?: string
+      videoUrl?: string
+      imageUrl?: string
+      text?: string
+      title?: string
+    }
+    multipleChoiceDetails?: MultipleChoiceDetail[]
+  }
+
   // Obtener todas las preguntas del examen ordenadas por sección y orden
   const allExamQuestions: ExamQuestion[] = exam.sections
     .sort((a: { order: number }, b: { order: number }) => a.order - b.order)
@@ -76,7 +113,7 @@ export default async function ExamResultsPage({ params }: PageProps) {
 
   // Generar resultados en el orden del examen, incluyendo bloques informativos
   let questionNumber = 0
-  const questionResults = allExamQuestions.flatMap((question) => {
+  const questionResults: QuestionResult[] = allExamQuestions.flatMap((question): QuestionResult[] => {
     const options = question.options as Record<string, unknown> | null
     const originalBlockType = options?.originalBlockType as string | null
     const isInformative = originalBlockType && INFORMATIVE_BLOCK_TYPES.includes(originalBlockType)
@@ -95,8 +132,8 @@ export default async function ExamResultsPage({ params }: PageProps) {
         pointsEarned: 0,
         maxPoints: 0,
         explanation: null,
-        needsReview: false,
         audioUrl: undefined,
+        needsReview: false,
         isInformativeBlock: true,
         informativeContent: {
           type: originalBlockType,
@@ -174,6 +211,7 @@ export default async function ExamResultsPage({ params }: PageProps) {
         pointsEarned: answer.pointsEarned ?? Math.round((correctCount / multipleChoiceItems.length) * question.points),
         maxPoints: question.points,
         explanation: question.explanation,
+        audioUrl: undefined,
         needsReview: false,
         isInformativeBlock: false,
         multipleChoiceDetails
