@@ -18,6 +18,9 @@ export async function POST(req: NextRequest) {
     
     // Validar datos
     const validatedData = registerSchema.parse(body)
+    
+    // Normalizar email a minúsculas
+    validatedData.email = validatedData.email.toLowerCase()
 
     // Verificación anti-spam
     const spamCheck = checkForSpam({

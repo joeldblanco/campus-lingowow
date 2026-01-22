@@ -8,9 +8,10 @@ import * as z from 'zod'
 
 export const getUserByEmail = async (email: string) => {
   try {
+    const normalizedEmail = email.toLowerCase()
     const user = await db.user.findFirst({
       where: {
-        email,
+        email: normalizedEmail,
       },
     })
 
@@ -66,8 +67,11 @@ export const createUser = async (userData: z.infer<typeof CreateUserSchema>) => 
     // Validate user data
     const validatedUserData = CreateUserSchema.parse(userData)
 
+    // Normalizar email a minúsculas
+    const normalizedEmail = validatedUserData.email.toLowerCase()
+
     // Check if user with this email already exists
-    const existingUser = await getUserByEmail(validatedUserData.email)
+    const existingUser = await getUserByEmail(normalizedEmail)
     if (existingUser && !('error' in existingUser)) {
       return { error: 'Ya existe un usuario con este email' }
     }
@@ -76,6 +80,7 @@ export const createUser = async (userData: z.infer<typeof CreateUserSchema>) => 
     const newUser = await db.user.create({
       data: {
         ...validatedUserData,
+        email: normalizedEmail, // Usar el email normalizado
         // Set default values if not provided
         roles: validatedUserData.roles || [UserRole.STUDENT],
         status: validatedUserData.status || UserStatus.ACTIVE,

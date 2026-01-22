@@ -27,6 +27,9 @@ export const register = async (
   if (!validatedFields.success) return { error: 'Campos inválidos' }
 
   const validatedData = validatedFields.data
+  
+  // Normalizar email a minúsculas
+  validatedData.email = validatedData.email.toLowerCase()
 
   // Verificación reCAPTCHA v3
   if (recaptchaToken) {
@@ -99,8 +102,11 @@ export const login = async (values: z.infer<typeof SignInSchema>, callbackUrl?: 
   }
 
   const { email, password, timezone } = validatedFields.data
+  
+  // Normalizar email a minúsculas
+  const normalizedEmail = email.toLowerCase()
 
-  const existingUser = await getUserByEmail(email)
+  const existingUser = await getUserByEmail(normalizedEmail)
 
   if (!existingUser || 'error' in existingUser) {
     return { error: 'Credenciales inválidas' }

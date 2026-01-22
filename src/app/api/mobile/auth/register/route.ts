@@ -16,10 +16,13 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const { name, lastName, email, password, deviceId } = registerSchema.parse(body)
+    
+    // Normalizar email a minúsculas
+    const normalizedEmail = email.toLowerCase()
 
     // Verificar si el usuario ya existe
     const existingUser = await db.user.findUnique({
-      where: { email },
+      where: { email: normalizedEmail },
     })
 
     if (existingUser) {
@@ -37,7 +40,7 @@ export async function POST(req: NextRequest) {
       data: {
         name,
         lastName,
-        email,
+        email: normalizedEmail,
         password: hashedPassword,
         roles: ['STUDENT'],
         emailVerified: new Date(), // Auto-verificar para móvil
