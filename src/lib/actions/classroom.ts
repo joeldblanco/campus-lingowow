@@ -155,12 +155,43 @@ export async function getContentById(contentId: string, contentType: 'lesson' | 
         where: { id: contentId },
       })
       if (resource) {
+        // Process content - ensure it's valid HTML
+        let processedContent = resource.content || `<p>${resource.description || ''}</p>`
+        
+        // If content looks like JSON stringified, try to parse it
+        if (processedContent.startsWith('{') || processedContent.startsWith('[')) {
+          try {
+            const parsed = JSON.parse(processedContent)
+            // If it's a blocks array from the resource builder, convert to HTML
+            if (Array.isArray(parsed)) {
+              processedContent = parsed.map((block: { type: string; data?: { html?: string; text?: string } }) => {
+                if (block.type === 'text' && block.data?.html) {
+                  return block.data.html
+                }
+                if (block.type === 'text' && block.data?.text) {
+                  return `<p>${block.data.text}</p>`
+                }
+                return ''
+              }).join('')
+            } else if (parsed.html) {
+              processedContent = parsed.html
+            }
+          } catch {
+            // Not JSON, use as-is
+          }
+        }
+        
+        // Ensure we have valid HTML content
+        if (!processedContent.trim()) {
+          processedContent = `<p>${resource.description || 'Sin contenido disponible'}</p>`
+        }
+
         // Create a synthetic content block from the library resource
         const syntheticContent = {
           id: `content-${resource.id}`,
           type: 'text',
           order: 0,
-          data: { html: resource.content || `<p>${resource.description || ''}</p>` },
+          data: { html: processedContent },
           lessonId: resource.id,
           parentId: null,
           createdAt: resource.createdAt,
