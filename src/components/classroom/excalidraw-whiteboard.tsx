@@ -51,6 +51,10 @@ export function ExcalidrawWhiteboard({ bookingId, isTeacher = false }: Excalidra
         const data = await getWhiteboardData(bookingId)
         if (data && Array.isArray(data) && data.length > 0) {
           setInitialData(data)
+          // Initialize lastElementsRef with loaded data to track them as known elements
+          data.forEach((el: ExcalidrawElement) => {
+            lastElementsRef.current.set(el.id, el.version || 0)
+          })
         }
       } catch (error) {
         console.error('Error loading whiteboard:', error)
