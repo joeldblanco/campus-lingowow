@@ -32,17 +32,20 @@ import {
 } from 'recharts'
 import { DashboardSkeleton } from './dashboard-skeleton'
 
-function StatCard({
+// StatCard Component with Link support
+const StatCard = ({
   value,
   icon: Icon,
   color,
   label,
+  href,
 }: {
   value: string | number
   icon: LucideIcon
   color: 'blue' | 'purple' | 'amber' | 'slate' | 'green'
   label: string
-}) {
+  href?: string
+}) => {
   const getColors = (c: string) => {
     switch (c) {
       case 'blue':
@@ -74,9 +77,8 @@ function StatCard({
   }
 
   const styles = getColors(color)
-
-  return (
-    <div className="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between h-36">
+  const CardContent = (
+    <div className="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between h-36 transition-all hover:shadow-md hover:border-slate-300 dark:hover:border-slate-600 cursor-pointer">
       <div className="flex justify-between items-start">
         <div className={`p-2 rounded-lg ${styles.bg}`}>
           <Icon className={`w-6 h-6 ${styles.text}`} />
@@ -88,6 +90,16 @@ function StatCard({
       </div>
     </div>
   )
+
+  if (href) {
+    return (
+      <Link href={href}>
+        {CardContent}
+      </Link>
+    )
+  }
+
+  return CardContent
 }
 
 const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData | null }) => {
@@ -134,24 +146,28 @@ const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData |
             icon={Users}
             color="blue"
             label="Total de estudiantes"
+            href="/admin/enrollments"
           />
           <StatCard
             value={dashboardData.activeCourses}
             icon={School}
             color="purple"
             label="Cursos publicados"
+            href="/admin/courses"
           />
           <StatCard
             value={`$${dashboardData.totalRevenue.toFixed(2)}`}
             icon={DollarSign}
             color="amber"
             label="Total facturado"
+            href="/admin/invoices"
           />
           <StatCard
             value={dashboardData.activeTeachers}
             icon={Activity}
             color="green"
             label="Instructores verificados"
+            href="/admin/teachers"
           />
         </div>
 
@@ -218,6 +234,9 @@ const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData |
                   >
                     <Avatar className="h-10 w-10 border border-slate-200">
                       <AvatarImage src={getUserAvatarUrl(booking.studentId || booking.id, booking.studentImage)} alt={booking.studentName} />
+                      <AvatarFallback className="text-xs font-bold bg-blue-100 text-blue-600">
+                        {booking.studentName.substring(0, 2).toUpperCase()}
+                      </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-slate-900 dark:text-white truncate">
