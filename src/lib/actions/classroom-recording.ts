@@ -169,21 +169,24 @@ export async function stopRecording(egressId: string, bookingId?: string) {
       }
     }
 
-    // Verify user has permission to stop this recording (teacher OR student of the class)
-    if (resolvedBookingId) {
-      const booking = await db.classBooking.findFirst({
-        where: {
-          id: resolvedBookingId,
-          OR: [
-            { teacherId: session.user.id },
-            { studentId: session.user.id },
-          ],
-        },
-      })
+    // SECURITY: Fail-safe - bookingId must be resolved to verify permissions
+    if (!resolvedBookingId) {
+      return { success: false, error: 'No se pudo verificar los permisos de esta grabación' }
+    }
 
-      if (!booking) {
-        return { success: false, error: 'No tienes permiso para detener esta grabación' }
-      }
+    // Verify user has permission to stop this recording (teacher OR student of the class)
+    const booking = await db.classBooking.findFirst({
+      where: {
+        id: resolvedBookingId,
+        OR: [
+          { teacherId: session.user.id },
+          { studentId: session.user.id },
+        ],
+      },
+    })
+
+    if (!booking) {
+      return { success: false, error: 'No tienes permiso para detener esta grabación' }
     }
 
     const egressClient = new EgressClient(livekitHost, apiKey, apiSecret)

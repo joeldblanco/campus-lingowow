@@ -51,6 +51,7 @@ const notificationTypeConfig: Record<
   CLASS_REMINDER: { icon: '⏰', color: 'bg-orange-500' },
   CLASS_CANCELLED: { icon: '❌', color: 'bg-red-500' },
   CLASS_RESCHEDULED: { icon: '📅', color: 'bg-amber-500' },
+  RECORDING_READY: { icon: '🎥', color: 'bg-blue-600' },
   SYSTEM_ANNOUNCEMENT: { icon: '📢', color: 'bg-slate-500' },
   ACCOUNT_UPDATE: { icon: '👤', color: 'bg-gray-500' },
 }
