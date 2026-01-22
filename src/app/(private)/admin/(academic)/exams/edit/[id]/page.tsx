@@ -6,8 +6,10 @@ import { useEffect, useState } from 'react'
 import { getExamById } from '@/lib/actions/exams'
 import { ExamWithDetails } from '@/types/exam'
 import { Loader2 } from 'lucide-react'
+import { useAutoCloseSidebar } from '@/hooks/use-auto-close-sidebar'
 
 export default function EditExamPage() {
+  useAutoCloseSidebar()
   const params = useParams()
   const examId = params.id as string
   const [exam, setExam] = useState<ExamWithDetails | null>(null)

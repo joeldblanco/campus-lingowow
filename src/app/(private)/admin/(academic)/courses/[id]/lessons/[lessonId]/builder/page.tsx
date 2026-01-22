@@ -8,8 +8,10 @@ import { Button } from '@/components/ui/button'
 import { ArrowLeft, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { getLessonForBuilder } from '@/lib/actions/course-builder'
+import { useAutoCloseSidebar } from '@/hooks/use-auto-close-sidebar'
 
 export default function LessonBuilderPage() {
+  useAutoCloseSidebar()
   const params = useParams()
   const router = useRouter()
   const [lesson, setLesson] = useState<Lesson | null>(null)

@@ -1,8 +1,8 @@
 import { auth } from '@/auth'
 import { redirect, notFound } from 'next/navigation'
 import { getStudentLessonForEdit } from '@/lib/actions/student-lessons'
-import { LessonBuilder } from '@/components/admin/course-builder/lesson-builder/lesson-builder'
 import { mapContentToBlock } from '@/lib/content-mapper'
+import { TeacherLessonBuilderWrapper } from './client-wrapper'
 
 interface EditLessonPageProps {
   params: Promise<{
@@ -38,25 +38,22 @@ export default async function EditStudentLessonPage({
   const blocks = lesson.contents?.map((c) => mapContentToBlock(c as Parameters<typeof mapContentToBlock>[0])) || []
 
   return (
-    <div className="h-[calc(100vh-4rem)]">
-      <LessonBuilder
-        lesson={{
-          id: lesson.id,
-          title: lesson.title,
-          description: lesson.description,
-          duration: lesson.duration,
-          blocks: blocks,
-          order: lesson.order,
-          moduleId: null,
-          isPublished: lesson.isPublished,
-          studentId: lesson.studentId,
-          teacherId: lesson.teacherId,
-          enrollmentId: lesson.enrollmentId,
-        }}
-        lessonType="personalized"
-        studentName={`${lesson.student?.name || ''} ${lesson.student?.lastName || ''}`}
-        courseName={lesson.enrollment?.course.title || ''}
-      />
-    </div>
+    <TeacherLessonBuilderWrapper
+      lesson={{
+        id: lesson.id,
+        title: lesson.title,
+        description: lesson.description,
+        duration: lesson.duration,
+        blocks: blocks,
+        order: lesson.order,
+        moduleId: null,
+        isPublished: lesson.isPublished,
+        studentId: lesson.studentId,
+        teacherId: lesson.teacherId,
+        enrollmentId: lesson.enrollmentId,
+      }}
+      studentName={`${lesson.student?.name || ''} ${lesson.student?.lastName || ''}`}
+      courseName={lesson.enrollment?.course.title || ''}
+    />
   )
 }

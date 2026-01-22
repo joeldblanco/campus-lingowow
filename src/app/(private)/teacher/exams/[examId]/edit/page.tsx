@@ -7,8 +7,10 @@ import { getExamById } from '@/lib/actions/exams'
 import { ExamWithDetails } from '@/types/exam'
 import { Loader2 } from 'lucide-react'
 import { useSession } from 'next-auth/react'
+import { useAutoCloseSidebar } from '@/hooks/use-auto-close-sidebar'
 
 export default function TeacherEditExamPage() {
+  useAutoCloseSidebar()
   const params = useParams()
   const { data: session } = useSession()
   const examId = params.examId as string
