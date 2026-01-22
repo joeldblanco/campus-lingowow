@@ -121,7 +121,8 @@ export default async function ExamResultsPage({ params }: PageProps) {
     }[] | undefined
     
     if (multipleChoiceItems && multipleChoiceItems.length > 0 && answer) {
-      // Expandir cada ítem como un resultado individual
+      // No expandir, sino generar detalles para renderizar como una sola pregunta
+      questionNumber++
       const userAnswers = answer.answer as Record<string, string> | null
       
       // Parsear correctAnswer para obtener los IDs correctos por índice
@@ -131,31 +132,52 @@ export default async function ExamResultsPage({ params }: PageProps) {
           ? (() => { try { return JSON.parse(correctAnswer) } catch { return correctAnswer.split(',').map(s => s.trim()) } })()
           : []
       
-      return multipleChoiceItems.map((item, index) => {
-        questionNumber++
+      // Función para obtener letra de opción (A, B, C, D...)
+      const getOptionLetter = (index: number): string => {
+        return String.fromCharCode(65 + index) // A=65, B=66, etc.
+      }
+      
+      // Generar detalles de cada ítem
+      const multipleChoiceDetails = multipleChoiceItems.map((item, index) => {
         const userAnswer = userAnswers?.[item.id] || null
-        // Obtener el correctOptionId del array parseado usando el índice
         const correctOptionId = item.correctOptionId || correctAnswerArray[index]
-        const correctOption = item.options.find(o => o.id === correctOptionId)
-        const userOption = item.options.find(o => o.id === userAnswer)
-        const isItemCorrect = userAnswer === correctOptionId
+        
+        const userOptionIndex = userAnswer ? item.options.findIndex(opt => opt.id === userAnswer) : -1
+        const correctOptionIndex = item.options.findIndex(opt => opt.id === correctOptionId)
+        
+        const userOption = userOptionIndex >= 0 ? item.options[userOptionIndex] : null
+        const correctOption = correctOptionIndex >= 0 ? item.options[correctOptionIndex] : null
         
         return {
-          id: `${answer.id}-${item.id}`,
-          questionNumber,
-          type: question.type,
-          category: question.tags?.[0] || undefined,
-          question: item.question,
-          userAnswer: userOption?.text || (userAnswer ? '(Opción no encontrada)' : null),
-          correctAnswer: correctOption?.text || '(Opción no encontrada)',
-          isCorrect: isItemCorrect,
-          pointsEarned: isItemCorrect ? (question.points / multipleChoiceItems.length) : 0,
-          maxPoints: question.points / multipleChoiceItems.length,
-          explanation: question.explanation,
-          needsReview: false,
-          isInformativeBlock: false
+          itemQuestion: item.question,
+          userOptionLetter: userOptionIndex >= 0 ? getOptionLetter(userOptionIndex) : null,
+          userOptionText: userOption?.text || null,
+          correctOptionLetter: correctOptionIndex >= 0 ? getOptionLetter(correctOptionIndex) : '?',
+          correctOptionText: correctOption?.text || '(Opción no encontrada)',
+          isCorrect: userAnswer === correctOptionId
         }
       })
+      
+      // Calcular si todas las respuestas son correctas
+      const allCorrect = multipleChoiceDetails.every(d => d.isCorrect)
+      const correctCount = multipleChoiceDetails.filter(d => d.isCorrect).length
+      
+      return [{
+        id: answer.id,
+        questionNumber,
+        type: question.type,
+        category: question.tags?.[0] || undefined,
+        question: question.question,
+        userAnswer: null, // No se usa cuando hay multipleChoiceDetails
+        correctAnswer: '', // No se usa cuando hay multipleChoiceDetails
+        isCorrect: allCorrect,
+        pointsEarned: answer.pointsEarned ?? Math.round((correctCount / multipleChoiceItems.length) * question.points),
+        maxPoints: question.points,
+        explanation: question.explanation,
+        needsReview: false,
+        isInformativeBlock: false,
+        multipleChoiceDetails
+      }]
     }
     
     // Respuesta normal (no expandida)

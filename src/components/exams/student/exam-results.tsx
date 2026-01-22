@@ -21,6 +21,15 @@ import {
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+interface MultipleChoiceDetail {
+  itemQuestion: string
+  userOptionLetter: string | null
+  userOptionText: string | null
+  correctOptionLetter: string
+  correctOptionText: string
+  isCorrect: boolean
+}
+
 interface QuestionResult {
   id: string
   questionNumber: number
@@ -44,6 +53,7 @@ interface QuestionResult {
     text?: string
     title?: string
   }
+  multipleChoiceDetails?: MultipleChoiceDetail[]
 }
 
 interface ExamResultsProps {
@@ -484,55 +494,103 @@ function QuestionResultCard({ result }: { result: QuestionResult }) {
               </div>
             )}
 
-            <div className="grid md:grid-cols-2 gap-4 mb-4">
-              <div
-                className={cn(
-                  'p-4 rounded-lg border',
-                  isPendingReview
-                    ? 'bg-yellow-50 dark:bg-yellow-900/10 border-yellow-200 dark:border-yellow-900/30'
-                    : result.isCorrect
-                      ? 'bg-green-50 dark:bg-green-900/10 border-green-200 dark:border-green-900/30'
-                      : 'bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-900/30'
-                )}
-              >
-                <span
-                  className={cn(
-                    'text-xs font-bold uppercase mb-1 block',
-                    isPendingReview
-                      ? 'text-yellow-700 dark:text-yellow-400'
-                      : result.isCorrect
-                        ? 'text-green-700 dark:text-green-400'
-                        : 'text-red-700 dark:text-red-400'
-                  )}
-                >
-                  Tu Respuesta
-                </span>
-                <p
-                  className={cn(
-                    'text-foreground font-medium',
-                    !result.isCorrect && !isPendingReview && 'line-through decoration-red-500'
-                  )}
-                >
-                  {result.userAnswer || '(Sin respuesta)'}
-                </p>
+            {/* Mostrar detalles de opción múltiple con múltiples pasos */}
+            {result.multipleChoiceDetails && result.multipleChoiceDetails.length > 0 ? (
+              <div className="space-y-4 mb-4">
+                <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                  <span className="text-sm font-bold text-foreground uppercase mb-3 block">
+                    Tus Respuestas
+                  </span>
+                  <div className="space-y-2">
+                    {result.multipleChoiceDetails.map((detail, idx) => (
+                      <div 
+                        key={idx} 
+                        className={cn(
+                          "p-3 rounded-md border",
+                          detail.isCorrect 
+                            ? "bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800"
+                            : "bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800"
+                        )}
+                      >
+                        <div className="flex items-start gap-2">
+                          {detail.isCorrect ? (
+                            <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                          ) : (
+                            <XCircle className="h-4 w-4 text-red-600 mt-0.5 flex-shrink-0" />
+                          )}
+                          <div className="flex-1">
+                            <p className="font-medium text-sm text-foreground">{detail.itemQuestion}</p>
+                            <p className={cn(
+                              "text-sm mt-1",
+                              detail.isCorrect ? "text-green-700 dark:text-green-400" : "text-red-700 dark:text-red-400"
+                            )}>
+                              {detail.userOptionLetter 
+                                ? `Tu respuesta: (${detail.userOptionLetter}) ${detail.userOptionText}`
+                                : 'No respondiste'}
+                            </p>
+                            {!detail.isCorrect && (
+                              <p className="text-sm text-green-700 dark:text-green-400 mt-1">
+                                Correcta: ({detail.correctOptionLetter}) {detail.correctOptionText}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-              {!result.isCorrect && !isPendingReview && (
-                <div className="p-4 rounded-lg bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-900/30">
-                  <span className="text-xs font-bold text-green-700 dark:text-green-400 uppercase mb-1 block">
-                    Respuesta Correcta
+            ) : (
+              <div className="grid md:grid-cols-2 gap-4 mb-4">
+                <div
+                  className={cn(
+                    'p-4 rounded-lg border',
+                    isPendingReview
+                      ? 'bg-yellow-50 dark:bg-yellow-900/10 border-yellow-200 dark:border-yellow-900/30'
+                      : result.isCorrect
+                        ? 'bg-green-50 dark:bg-green-900/10 border-green-200 dark:border-green-900/30'
+                        : 'bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-900/30'
+                  )}
+                >
+                  <span
+                    className={cn(
+                      'text-xs font-bold uppercase mb-1 block',
+                      isPendingReview
+                        ? 'text-yellow-700 dark:text-yellow-400'
+                        : result.isCorrect
+                          ? 'text-green-700 dark:text-green-400'
+                          : 'text-red-700 dark:text-red-400'
+                    )}
+                  >
+                    Tu Respuesta
                   </span>
-                  <p className="text-foreground font-medium">{result.correctAnswer}</p>
+                  <p
+                    className={cn(
+                      'text-foreground font-medium',
+                      !result.isCorrect && !isPendingReview && 'line-through decoration-red-500'
+                    )}
+                  >
+                    {result.userAnswer || '(Sin respuesta)'}
+                  </p>
                 </div>
-              )}
-              {isPendingReview && (
-                <div className="p-4 rounded-lg bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-900/30">
-                  <span className="text-xs font-bold text-yellow-700 dark:text-yellow-400 uppercase mb-1 block">
-                    Estado
-                  </span>
-                  <p className="text-foreground font-medium">{result.correctAnswer}</p>
-                </div>
-              )}
-            </div>
+                {!result.isCorrect && !isPendingReview && (
+                  <div className="p-4 rounded-lg bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-900/30">
+                    <span className="text-xs font-bold text-green-700 dark:text-green-400 uppercase mb-1 block">
+                      Respuesta Correcta
+                    </span>
+                    <p className="text-foreground font-medium">{result.correctAnswer}</p>
+                  </div>
+                )}
+                {isPendingReview && (
+                  <div className="p-4 rounded-lg bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-900/30">
+                    <span className="text-xs font-bold text-yellow-700 dark:text-yellow-400 uppercase mb-1 block">
+                      Estado
+                    </span>
+                    <p className="text-foreground font-medium">{result.correctAnswer}</p>
+                  </div>
+                )}
+              </div>
+            )}
 
             {result.explanation && (
               <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg text-sm text-muted-foreground">

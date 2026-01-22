@@ -46,6 +46,7 @@ interface ExamAttempts {
   completed: number
   remaining: number
   inProgressId: string | null
+  lastCompletedAttemptId: string | null
   bestScore: number | null
   passed: boolean
 }
@@ -146,11 +147,10 @@ export function StudentExamsList({ exams }: StudentExamsListProps) {
         </Link>
       )
     }
-    if (exam.attempts.completed > 0) {
-      // Usar el ID del último intento completado o el ID en progreso
-      const attemptId = exam.attempts.inProgressId || 'latest'
+    if (exam.attempts.completed > 0 && exam.attempts.lastCompletedAttemptId) {
+      // Usar el ID del último intento completado
       return (
-        <Link href={`/exams/${exam.id}/${attemptId}/results`}>
+        <Link href={`/exams/${exam.id}/${exam.attempts.lastCompletedAttemptId}/results`}>
           <Button size="sm" variant="outline">
             Ver Resultados
           </Button>
