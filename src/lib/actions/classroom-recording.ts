@@ -150,19 +150,45 @@ export async function stopRecording(egressId: string, bookingId?: string) {
       return { success: false, error: 'Configuración de LiveKit incompleta' }
     }
 
+    // Get bookingId from ClassRecording or VideoCall if not provided
+    let resolvedBookingId = bookingId
+    if (!resolvedBookingId) {
+      const recording = await db.classRecording.findUnique({
+        where: { egressId },
+        select: { bookingId: true },
+      })
+      
+      if (!recording) {
+        const videoCall = await db.videoCall.findFirst({
+          where: { recordingUrl: egressId },
+          select: { bookingId: true },
+        })
+        resolvedBookingId = videoCall?.bookingId || undefined
+      } else {
+        resolvedBookingId = recording.bookingId
+      }
+    }
+
+    // Verify user has permission to stop this recording (teacher OR student of the class)
+    if (resolvedBookingId) {
+      const booking = await db.classBooking.findFirst({
+        where: {
+          id: resolvedBookingId,
+          OR: [
+            { teacherId: session.user.id },
+            { studentId: session.user.id },
+          ],
+        },
+      })
+
+      if (!booking) {
+        return { success: false, error: 'No tienes permiso para detener esta grabación' }
+      }
+    }
+
     const egressClient = new EgressClient(livekitHost, apiKey, apiSecret)
 
     const info = await egressClient.stopEgress(egressId)
-
-    // Get bookingId from VideoCall if not provided
-    let resolvedBookingId = bookingId
-    if (!resolvedBookingId) {
-      const videoCall = await db.videoCall.findFirst({
-        where: { recordingUrl: egressId },
-        select: { bookingId: true },
-      })
-      resolvedBookingId = videoCall?.bookingId || undefined
-    }
 
     // Update ClassRecording record with file info
     if (resolvedBookingId) {
@@ -211,7 +237,7 @@ export async function stopRecording(egressId: string, bookingId?: string) {
         }
 
         // Update the existing recording record by egressId (unique)
-        await db.classRecording.update({
+        const updatedRecording = await db.classRecording.update({
           where: { egressId },
           data: {
             roomName: info.roomName || null,
@@ -223,9 +249,47 @@ export async function stopRecording(egressId: string, bookingId?: string) {
             endedAt,
             status: 'READY',
           },
+          include: {
+            booking: {
+              select: {
+                studentId: true,
+                day: true,
+                timeSlot: true,
+                enrollment: {
+                  select: {
+                    course: {
+                      select: {
+                        title: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
         })
 
         console.log(`ClassRecording updated for egressId ${egressId}`)
+
+        // Crear notificación para el estudiante cuando la grabación esté lista
+        try {
+          const { createNotification } = await import('./notifications')
+          await createNotification({
+            userId: updatedRecording.booking.studentId,
+            type: 'RECORDING_READY',
+            title: 'Grabación disponible',
+            message: `La grabación de tu clase de ${updatedRecording.booking.enrollment.course.title} del ${updatedRecording.booking.day} está lista para ver.`,
+            link: `/recordings/${updatedRecording.id}`,
+            metadata: {
+              recordingId: updatedRecording.id,
+              bookingId: updatedRecording.bookingId,
+              courseTitle: updatedRecording.booking.enrollment.course.title,
+            },
+          })
+        } catch (notifError) {
+          console.error('Error creating notification for recording:', notifError)
+          // No fallar la operación si falla la notificación
+        }
       } catch (dbError) {
         console.error('Error updating ClassRecording record:', dbError)
         // Don't fail the whole operation if DB update fails

@@ -241,7 +241,7 @@ export async function getRecordingById(recordingId: string) {
           Bucket: r2BucketName,
           Key: recording.r2Key,
         })
-        signedUrl = await getSignedUrl(s3Client, command, { expiresIn: 3600 }) // 1 hora
+        signedUrl = await getSignedUrl(s3Client, command, { expiresIn: 21600 }) // 6 horas
       } catch (error) {
         console.error('Error generating signed URL:', error)
       }
@@ -280,10 +280,11 @@ export async function syncRecordingFromR2(bookingId: string) {
       return { success: false, error: 'Clase no encontrada' }
     }
 
+    const isStudent = booking.studentId === session.user.id
     const isTeacher = booking.teacherId === session.user.id
     const isAdmin = session.user.roles?.includes('ADMIN')
 
-    if (!isTeacher && !isAdmin) {
+    if (!isStudent && !isTeacher && !isAdmin) {
       return { success: false, error: 'No tienes permiso para sincronizar esta grabación' }
     }
 

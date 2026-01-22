@@ -71,17 +71,22 @@ export function RecordingCard({ recording }: RecordingCardProps) {
   const getStatusBadge = () => {
     switch (recording.status) {
       case 'READY':
-        return null
+        return (
+          <Badge variant="secondary" className="absolute top-3 left-3 bg-green-100 text-green-800 border border-green-300">
+            <Video className="w-3 h-3 mr-1" />
+            Disponible
+          </Badge>
+        )
       case 'PROCESSING':
         return (
-          <Badge variant="secondary" className="absolute top-3 left-3 bg-yellow-100 text-yellow-800">
+          <Badge variant="secondary" className="absolute top-3 left-3 bg-yellow-100 text-yellow-800 border border-yellow-300 shadow-md">
             <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-            Procesando
+            Procesando...
           </Badge>
         )
       case 'ARCHIVED':
         return (
-          <Badge variant="secondary" className="absolute top-3 left-3 bg-gray-100 text-gray-800">
+          <Badge variant="secondary" className="absolute top-3 left-3 bg-gray-100 text-gray-800 border border-gray-300">
             Archivado
           </Badge>
         )

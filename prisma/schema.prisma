@@ -2361,6 +2361,7 @@ enum NotificationType {
   CLASS_REMINDER           // Recordatorio de clase (para estudiante/profesor)
   CLASS_CANCELLED          // Clase cancelada
   CLASS_RESCHEDULED        // Clase reprogramada
+  RECORDING_READY          // Grabación de clase lista (para estudiante)
   
   // Sistema
   SYSTEM_ANNOUNCEMENT      // Anuncio del sistema
