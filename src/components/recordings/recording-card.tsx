@@ -8,7 +8,6 @@ import {
   Play, 
   Clock, 
   Calendar, 
-  Download,
   Loader2,
   Video
 } from 'lucide-react'
@@ -230,17 +229,12 @@ export function RecordingCard({ recording, isAdmin = false }: RecordingCardProps
         {/* Botones de acción */}
         <div className="flex gap-2">
           {isReady ? (
-            <>
-              <Button asChild className="flex-1 bg-blue-600 hover:bg-blue-700">
-                <Link href={`/recordings/${recording.id}`}>
-                  <Play className="w-4 h-4 mr-2" />
-                  Ver
-                </Link>
-              </Button>
-              <Button variant="outline" size="icon" title="Descargar">
-                <Download className="w-4 h-4" />
-              </Button>
-            </>
+            <Button asChild className="flex-1 bg-blue-600 hover:bg-blue-700">
+              <Link href={`/recordings/${recording.id}`}>
+                <Play className="w-4 h-4 mr-2" />
+                Ver
+              </Link>
+            </Button>
           ) : recording.status === 'PROCESSING' ? (
             <Button disabled className="flex-1">
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />

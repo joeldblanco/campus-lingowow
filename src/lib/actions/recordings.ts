@@ -505,6 +505,44 @@ export async function markRecordingAsViewed(recordingId: string) {
   }
 }
 
+// Obtener mensajes de chat para una grabación
+export async function getChatMessagesForRecording(recordingId: string) {
+  try {
+    const session = await auth()
+    if (!session?.user?.id) {
+      return { success: false, error: 'No autenticado' }
+    }
+
+    // Obtener la grabación con su booking
+    const recording = await db.classRecording.findUnique({
+      where: { id: recordingId },
+      select: { bookingId: true }
+    })
+
+    if (!recording) {
+      return { success: false, error: 'Grabación no encontrada' }
+    }
+
+    // Verificar acceso a la grabación
+    const recordingAccess = await getRecordingById(recordingId)
+    if (!recordingAccess.success) {
+      return { success: false, error: 'No tienes acceso a esta grabación' }
+    }
+
+    // Importar y usar getChatMessages
+    const { getChatMessages } = await import('./classroom-chat')
+    const messages = await getChatMessages(recording.bookingId)
+
+    return {
+      success: true,
+      data: messages
+    }
+  } catch (error) {
+    console.error('Error fetching chat messages for recording:', error)
+    return { success: false, error: 'Error al obtener mensajes del chat' }
+  }
+}
+
 // Eliminar carpeta de grabaciones de R2 para una clase específica
 export async function deleteRecordingFolder(classId: string) {
   try {

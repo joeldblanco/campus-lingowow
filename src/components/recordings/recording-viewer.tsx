@@ -6,9 +6,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { UserAvatar } from '@/components/ui/user-avatar'
 import { getRecordingById, markRecordingAsViewed } from '@/lib/actions/recordings'
+import { ClassRecordingChat } from './class-recording-chat'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { AlertCircle, ArrowLeft, Calendar, Clock, Download, Loader2 } from 'lucide-react'
+import { AlertCircle, ArrowLeft, Calendar, Clock, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { VideoPlayer } from './video-player'
@@ -237,13 +238,12 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
 
         {/* Sidebar */}
         <div className="space-y-4">
-          {/* Tabs for Chapters/Materials/Transcript */}
-          <Card>
+          {/* Tabs for Info/Chat */}
+          <Card className="p-2">
             <Tabs defaultValue="info" className="w-full">
-              <TabsList className="w-full grid grid-cols-3">
+              <TabsList className="w-full grid grid-cols-2">
                 <TabsTrigger value="info">Info</TabsTrigger>
-                <TabsTrigger value="materials">Materiales</TabsTrigger>
-                <TabsTrigger value="transcript">Transcripción</TabsTrigger>
+                <TabsTrigger value="chat">Chat</TabsTrigger>
               </TabsList>
 
               <TabsContent value="info" className="p-4">
@@ -301,41 +301,12 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
                 </div>
               </TabsContent>
 
-              <TabsContent value="materials" className="p-4">
-                <div className="text-center py-8 text-muted-foreground">
-                  <p>No hay materiales disponibles para esta clase.</p>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="transcript" className="p-4">
-                <div className="text-center py-8 text-muted-foreground">
-                  <p>Transcripción no disponible.</p>
+              <TabsContent value="chat" className="p-0">
+                <div className="h-[400px]">
+                  <ClassRecordingChat bookingId={booking.id} />
                 </div>
               </TabsContent>
             </Tabs>
-          </Card>
-
-          {/* Quick Downloads */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-sm uppercase tracking-wide text-muted-foreground">
-                Descargas Rápidas
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              {videoUrl ? (
-                <Button variant="outline" className="w-full justify-start" asChild>
-                  <a href={videoUrl} download target="_blank" rel="noopener noreferrer">
-                    <Download className="w-4 h-4 mr-2" />
-                    Descargar Video
-                  </a>
-                </Button>
-              ) : (
-                <p className="text-sm text-muted-foreground text-center py-4">
-                  No hay descargas disponibles
-                </p>
-              )}
-            </CardContent>
           </Card>
         </div>
       </div>
