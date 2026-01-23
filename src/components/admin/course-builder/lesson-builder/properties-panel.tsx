@@ -2426,6 +2426,15 @@ function TrueFalseProperties({
 
   return (
     <div className="space-y-6">
+      <div className="space-y-2">
+        <Label>Título del Bloque</Label>
+        <Input
+          value={block.title || ''}
+          onChange={(e) => onUpdate({ title: e.target.value })}
+          placeholder="Ej. Verdadero o Falso"
+        />
+      </div>
+      
       <div className="flex items-center justify-between">
         <Label>Afirmaciones</Label>
         <Button variant="outline" size="sm" onClick={addItem}>
