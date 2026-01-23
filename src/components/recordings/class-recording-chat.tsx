@@ -4,24 +4,38 @@ import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Loader2, MessageCircle } from 'lucide-react'
-import { getChatMessages, ChatMessage } from '@/lib/actions/classroom-chat'
+import { getChatMessagesForRecording } from '@/lib/actions/recordings'
 import { cn } from '@/lib/utils'
 
-interface ClassRecordingChatProps {
-  bookingId: string
+interface ChatMessage {
+  id: string
+  senderId: string
+  senderName: string
+  senderImage?: string
+  content: string
+  createdAt: Date
+  isOwn: boolean
 }
 
-export function ClassRecordingChat({ bookingId }: ClassRecordingChatProps) {
+interface ClassRecordingChatProps {
+  recordingId: string
+}
+
+export function ClassRecordingChat({ recordingId }: ClassRecordingChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const loadMessages = useCallback(async () => {
     setIsLoading(true)
-    const msgs = await getChatMessages(bookingId)
-    setMessages(msgs)
+    const result = await getChatMessagesForRecording(recordingId)
+    if (result.success && result.data) {
+      setMessages(result.data)
+    } else {
+      setMessages([])
+    }
     setIsLoading(false)
-  }, [bookingId])
+  }, [recordingId])
 
   useEffect(() => {
     loadMessages()

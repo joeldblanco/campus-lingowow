@@ -303,7 +303,7 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
 
               <TabsContent value="chat" className="p-0">
                 <div className="h-[400px]">
-                  <ClassRecordingChat bookingId={booking.id} />
+                  <ClassRecordingChat recordingId={recording.id} />
                 </div>
               </TabsContent>
             </Tabs>
