@@ -43,7 +43,11 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
         if (!attendanceMarked) {
           const result = await markTeacherAttendance(classId, teacherId)
           if (result.success) {
-            toast.success('Asistencia registrada automáticamente')
+            if (result.markedAsPayable) {
+              toast.success('Asistencia registrada - Clase marcada como pagable automáticamente')
+            } else {
+              toast.success('Asistencia registrada automáticamente')
+            }
           } else if (result.outsideSchedule) {
             toast.info(result.error || 'Fuera del horario de clase')
           }

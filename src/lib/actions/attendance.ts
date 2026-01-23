@@ -147,7 +147,7 @@ export async function checkTeacherAttendance(
 export async function markTeacherAttendance(
   classId: string,
   teacherId: string
-): Promise<{ success: boolean; error?: string; outsideSchedule?: boolean }> {
+): Promise<{ success: boolean; error?: string; outsideSchedule?: boolean; markedAsPayable?: boolean }> {
   try {
     // Check if attendance is already marked
     const existingAttendance = await prisma.teacherAttendance.findFirst({
@@ -161,12 +161,14 @@ export async function markTeacherAttendance(
       return { success: true } // Already marked attendance
     }
 
-    // Get the class booking to find the schedule
+    // Get the class booking to find the schedule and current status
     const classBooking = await prisma.classBooking.findUnique({
       where: { id: classId },
       select: { 
         day: true,
         timeSlot: true,
+        status: true,
+        isPayable: true,
       },
     })
 
@@ -190,8 +192,24 @@ export async function markTeacherAttendance(
       },
     })
 
+    // Auto-mark class as payable if not already marked
+    let markedAsPayable = false
+    if (!classBooking.isPayable && (classBooking.status === 'CONFIRMED' || classBooking.status === 'COMPLETED')) {
+      await prisma.classBooking.update({
+        where: { id: classId },
+        data: {
+          isPayable: true,
+          status: 'COMPLETED',
+          completedAt: getCurrentDate(),
+        },
+      })
+      markedAsPayable = true
+    }
+
     revalidatePath(`/classroom`)
-    return { success: true }
+    revalidatePath('/admin/classes')
+    revalidatePath('/admin/reports')
+    return { success: true, markedAsPayable }
   } catch (error) {
     console.error('Error marking teacher attendance:', error)
     return { success: false, error: 'Error al marcar la asistencia del profesor' }
