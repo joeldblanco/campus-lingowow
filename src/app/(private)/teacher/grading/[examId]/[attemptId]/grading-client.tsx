@@ -100,7 +100,7 @@ export function GradingClient({
       onFinalizeReview={handleFinalizeReview}
       breadcrumbs={[
         { label: 'Calificaciones', href: '/teacher/grading' },
-        { label: examTitle, href: `/teacher/exams` },
+        { label: examTitle, href: `/teacher/exams/${examId}/results` },
         { label: 'Revisión', href: '#' }
       ]}
     />

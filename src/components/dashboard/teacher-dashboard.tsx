@@ -1,26 +1,26 @@
 'use client'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { getUserAvatarUrl } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { getUserAvatarUrl } from '@/lib/utils'
 import type { TeacherDashboardData } from '@/types/dashboard'
 import {
   Activity,
+  BookOpen,
   Calendar as CalendarIcon,
   DollarSign,
   Edit,
-  MoreVertical,
   Plus,
   Users,
   Video,
-  BookOpen,
 } from 'lucide-react'
-import { DashboardSkeleton } from './dashboard-skeleton'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
+import { DashboardSkeleton } from './dashboard-skeleton'
+import { CourseCard } from './course-card'
 
 // Helper to check if class is within 10 minutes of starting
 function isWithin10MinutesOfStart(classDate: string, classTime: string): boolean {
@@ -122,7 +122,10 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
       {/* 2. Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" data-tour="stats">
         {/* Asistencia Semanal */}
-        <Link href="/schedule" className={`${cardStyle} hover:shadow-md transition-shadow cursor-pointer block`}>
+        <Link
+          href="/schedule"
+          className={`${cardStyle} hover:shadow-md transition-shadow cursor-pointer block`}
+        >
           <div className="flex justify-between items-start mb-4">
             <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
               Asistencia Semanal
@@ -140,7 +143,10 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
         </Link>
 
         {/* Ganancias del Período */}
-        <Link href="/teacher/earnings" className={`${cardStyle} hover:shadow-md transition-shadow cursor-pointer block`}>
+        <Link
+          href="/teacher/earnings"
+          className={`${cardStyle} hover:shadow-md transition-shadow cursor-pointer block`}
+        >
           <div className="flex justify-between items-start mb-4">
             <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
               Ganancias del Mes
@@ -163,7 +169,10 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
         </Link>
 
         {/* Estudiantes Activos */}
-        <Link href="/teacher/active-students" className={`${cardStyle} hover:shadow-md transition-shadow cursor-pointer block`}>
+        <Link
+          href="/teacher/active-students"
+          className={`${cardStyle} hover:shadow-md transition-shadow cursor-pointer block`}
+        >
           <div className="flex justify-between items-start mb-4">
             <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
               Estudiantes Activos
@@ -174,12 +183,17 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
             <span className="text-3xl font-bold text-slate-900 dark:text-white">
               {dashboardData.activeStudents.count}
             </span>
-            <span className="text-xs text-blue-500 hover:text-blue-600 font-bold mb-1 ml-auto">Ver lista</span>
+            <span className="text-xs text-blue-500 hover:text-blue-600 font-bold mb-1 ml-auto">
+              Ver lista
+            </span>
           </div>
         </Link>
 
         {/* Mensajes sin leer */}
-        <Link href="/messages" className={`${cardStyle} hover:shadow-md transition-shadow cursor-pointer block`}>
+        <Link
+          href="/messages"
+          className={`${cardStyle} hover:shadow-md transition-shadow cursor-pointer block`}
+        >
           <div className="flex justify-between items-start mb-4">
             <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
               Mensajes sin leer
@@ -202,7 +216,10 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
         {/* Left Column (2/3 width) */}
         <div className="lg:col-span-2 space-y-6">
           {/* Today's Schedule */}
-          <div className="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden" data-tour="schedule">
+          <div
+            className="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden"
+            data-tour="schedule"
+          >
             <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
               <h3 className="text-lg font-bold text-slate-900 dark:text-white">Horario de Hoy</h3>
               <span className="text-sm text-slate-500 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-lg capitalize">
@@ -246,7 +263,13 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                           <div className="mt-2 flex -space-x-2 overflow-hidden ml-0 sm:ml-22 md:ml-0">
                             {/* Student Avatar + Counter if group */}
                             <Avatar className="inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-card-dark">
-                              <AvatarImage src={item.studentId ? getUserAvatarUrl(item.studentId, item.studentImage) : (item.studentImage || '')} />
+                              <AvatarImage
+                                src={
+                                  item.studentId
+                                    ? getUserAvatarUrl(item.studentId, item.studentImage)
+                                    : item.studentImage || ''
+                                }
+                              />
                               <AvatarFallback className="bg-indigo-100 text-indigo-600 text-xs">
                                 {item.studentName.substring(0, 2)}
                               </AvatarFallback>
@@ -288,44 +311,17 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4" data-tour="courses">
               {dashboardData.activeCourses.map((course) => (
-                <Link
+                <CourseCard
                   key={course.id}
+                  id={course.id}
+                  title={course.title}
+                  image={course.image}
+                  progress={course.progress}
+                  level={course.level}
+                  studentCount={course.studentCount}
                   href={`/teacher/courses/${course.id}`}
-                  className="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer group block"
-                >
-                  <div className="flex justify-between items-start mb-4">
-                    <div
-                      className={`w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg ${course.title.includes('Español') ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600'}`}
-                    >
-                      {course.title.substring(0, 2).toUpperCase()}
-                    </div>
-                    <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
-                      <MoreVertical className="w-5 h-5" />
-                    </button>
-                  </div>
-                  <h4 className="text-base font-bold text-slate-900 dark:text-white mb-1 group-hover:text-primary transition-colors">
-                    {course.title}
-                  </h4>
-                  <p className="text-xs text-slate-500 mb-4">{course.level}</p>
-
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-xs font-medium">
-                      <span className="text-slate-500">Progreso</span>
-                      <span className="text-slate-900 dark:text-white">{course.progress}%</span>
-                    </div>
-                    <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5">
-                      <div
-                        className="bg-blue-500 h-1.5 rounded-full"
-                        style={{ width: `${course.progress}%` }}
-                      ></div>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center gap-2 text-xs text-slate-500">
-                    <Users className="w-3.5 h-3.5" />
-                    <span>{course.studentCount} Estudiantes</span>
-                  </div>
-                </Link>
+                  role="teacher"
+                />
               ))}
             </div>
           </div>
@@ -334,7 +330,10 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
         {/* Right Column (1/3 width) */}
         <div className="space-y-6">
           {/* Quick Actions */}
-          <div className="bg-blue-500 dark:bg-blue-600 rounded-xl p-6 text-white shadow-lg shadow-blue-500/20" data-tour="quick-actions">
+          <div
+            className="bg-blue-500 dark:bg-blue-600 rounded-xl p-6 text-white shadow-lg shadow-blue-500/20"
+            data-tour="quick-actions"
+          >
             <h3 className="text-lg font-bold mb-4">Acciones Rápidas</h3>
             <div className="space-y-3">
               <button
@@ -392,7 +391,10 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
           <div className="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
             <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800">
               <h3 className="font-bold text-slate-900 dark:text-white">Atención Requerida</h3>
-              <Link href="/messages" className="text-xs font-bold text-blue-500 hover:text-blue-600 cursor-pointer">
+              <Link
+                href="/messages"
+                className="text-xs font-bold text-blue-500 hover:text-blue-600 cursor-pointer"
+              >
                 Ver Todo
               </Link>
             </div>
@@ -404,7 +406,13 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
                     className="p-4 flex items-center gap-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
                   >
                     <Avatar className="h-10 w-10 border border-slate-100 dark:border-slate-700">
-                      <AvatarImage src={item.studentId ? getUserAvatarUrl(item.studentId, item.studentImage) : item.studentImage} />
+                      <AvatarImage
+                        src={
+                          item.studentId
+                            ? getUserAvatarUrl(item.studentId, item.studentImage)
+                            : item.studentImage
+                        }
+                      />
                       <AvatarFallback className="bg-orange-50 text-orange-600 font-bold text-xs">
                         {item.studentName.substring(0, 2)}
                       </AvatarFallback>
