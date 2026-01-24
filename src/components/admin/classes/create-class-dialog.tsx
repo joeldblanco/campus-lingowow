@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
+import { useRouter } from 'next/navigation'
 import { createClass, getEnrollmentsWithTeachers } from '@/lib/actions/classes'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -88,6 +89,7 @@ interface CreateClassDialogProps {
 }
 
 export function CreateClassDialog({ children }: CreateClassDialogProps) {
+  const router = useRouter()
   const { timezone: userTimezone } = useTimezone()
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -182,7 +184,7 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
         setOpen(false)
         form.reset()
         setSelectedEnrollment(null)
-        window.location.reload()
+        router.refresh()
       } else {
         toast.error(result.error || 'Error al programar la clase')
       }

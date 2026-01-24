@@ -75,14 +75,20 @@ export interface TimezoneInfo {
 export function useTimezone(): TimezoneInfo {
   const { data: session, status } = useSession()
   const hasSyncedRef = useRef(false)
+  const browserTimezoneRef = useRef<string | null>(null)
   
-  // Usar estado para timezone del navegador para evitar SSR hydration mismatch
-  // Se inicializa con null y se actualiza en cliente después de la hidratación
-  const [browserTimezone, setBrowserTimezone] = useState<string | null>(null)
+  // Usar ref para timezone del navegador para evitar re-renders innecesarios
+  // Solo usamos estado para forzar un único re-render inicial
+  const [, setHydrated] = useState(false)
   
   useEffect(() => {
-    setBrowserTimezone(Intl.DateTimeFormat().resolvedOptions().timeZone)
+    if (!browserTimezoneRef.current) {
+      browserTimezoneRef.current = Intl.DateTimeFormat().resolvedOptions().timeZone
+      setHydrated(true)
+    }
   }, [])
+  
+  const browserTimezone = browserTimezoneRef.current
   
   // La timezone final: de la sesión si existe, sino del navegador, sino fallback
   const timezone = session?.user?.timezone || browserTimezone || 'America/Lima'

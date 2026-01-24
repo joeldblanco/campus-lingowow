@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import {
   ClassBookingWithDetails,
   updateClass,
@@ -47,9 +48,11 @@ interface EditClassDialogProps {
 }
 
 export function EditClassDialog({ classItem, children }: EditClassDialogProps) {
+  const router = useRouter()
   const { timezone: userTimezone } = useTimezone()
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [dataLoaded, setDataLoaded] = useState(false)
   const [students, setStudents] = useState<Array<{ id: string; name: string; lastName: string | null; email: string }>>([])
   const [teachers, setTeachers] = useState<Array<{ id: string; name: string; lastName: string | null; email: string }>>([])
   const form = useForm<z.infer<typeof EditClassSchema>>({
@@ -64,10 +67,11 @@ export function EditClassDialog({ classItem, children }: EditClassDialogProps) {
   })
 
   useEffect(() => {
-    if (open) {
+    if (open && !dataLoaded) {
       loadData()
+      setDataLoaded(true)
     }
-  }, [open])
+  }, [open, dataLoaded])
 
   const loadData = async () => {
     try {
@@ -105,7 +109,7 @@ export function EditClassDialog({ classItem, children }: EditClassDialogProps) {
       if (result.success) {
         toast.success('Clase actualizada exitosamente')
         setOpen(false)
-        window.location.reload()
+        router.refresh()
       } else {
         toast.error(result.error || 'Error al actualizar la clase')
       }

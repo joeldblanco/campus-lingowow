@@ -14,7 +14,7 @@ export function Providers({
   defaultOpen?: boolean
 }) {
   return (
-    <SessionProvider>
+    <SessionProvider refetchOnWindowFocus={false}>
       <SessionTimeoutProvider>
         <TourProvider>
           <SidebarProvider defaultOpen={defaultOpen}>{children}</SidebarProvider>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useTransition } from 'react'
+import { useState, useMemo, useTransition, memo, useEffect } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { ClassBookingWithDetails, deleteClass, updateClass, toggleClassPayable } from '@/lib/actions/classes'
 import { getTodayString } from '@/lib/utils/date'
@@ -50,16 +50,15 @@ import {
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { BookingStatus } from '@prisma/client'
-import { useTimezone } from '@/hooks/use-timezone'
 import { useRouter } from 'next/navigation'
 
 interface ClassesTableProps {
   classes: ClassBookingWithDetails[]
+  userTimezone: string
 }
 
-export function ClassesTable({ classes }: ClassesTableProps) {
+export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }: ClassesTableProps) {
   const router = useRouter()
-  const { timezone: userTimezone } = useTimezone()
   const [, startTransition] = useTransition()
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
@@ -69,9 +68,15 @@ export function ClassesTable({ classes }: ClassesTableProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [classToDelete, setClassToDelete] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [localClasses, setLocalClasses] = useState<ClassBookingWithDetails[]>(classes)
+
+  // Sync local classes with props when they change
+  useEffect(() => {
+    setLocalClasses(classes)
+  }, [classes])
 
   const filteredClasses = useMemo(() => {
-    let filtered = classes
+    let filtered = localClasses
 
     if (searchTerm) {
       filtered = filtered.filter(
@@ -129,7 +134,7 @@ export function ClassesTable({ classes }: ClassesTableProps) {
     })
 
     return filtered
-  }, [classes, searchTerm, statusFilter, teacherFilter, dateFilter, sortOrder])
+  }, [localClasses, searchTerm, statusFilter, teacherFilter, dateFilter, sortOrder])
 
   const handleDeleteClass = async () => {
     if (!classToDelete) return
@@ -186,16 +191,38 @@ export function ClassesTable({ classes }: ClassesTableProps) {
 
   const handleTogglePayable = async (classId: string, isPayable: boolean) => {
     try {
+      // Update local state optimistically
+      setLocalClasses(prev => 
+        prev.map(classItem => 
+          classItem.id === classId 
+            ? { ...classItem, isPayable }
+            : classItem
+        )
+      )
+
       const result = await toggleClassPayable(classId, isPayable)
       if (result.success) {
         toast.success(result.message)
-        startTransition(() => {
-          router.refresh()
-        })
       } else {
+        // Revert on error
+        setLocalClasses(prev => 
+          prev.map(classItem => 
+            classItem.id === classId 
+              ? { ...classItem, isPayable: !isPayable }
+              : classItem
+          )
+        )
         toast.error(result.error || 'Error al actualizar el estado de pago')
       }
     } catch {
+      // Revert on error
+      setLocalClasses(prev => 
+        prev.map(classItem => 
+          classItem.id === classId 
+            ? { ...classItem, isPayable: !isPayable }
+            : classItem
+        )
+      )
       toast.error('Error al actualizar el estado de pago')
     }
   }
@@ -493,4 +520,4 @@ export function ClassesTable({ classes }: ClassesTableProps) {
       </AlertDialog>
     </div>
   )
-}
+})

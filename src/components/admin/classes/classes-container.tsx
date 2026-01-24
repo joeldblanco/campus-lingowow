@@ -37,7 +37,7 @@ export async function ClassesContainer() {
         </CreateClassDialog>
       </div>
 
-      <ClassesTable classes={classes} />
+      <ClassesTable classes={classes} userTimezone={userTimezone} />
     </div>
   )
 }
