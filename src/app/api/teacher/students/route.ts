@@ -60,11 +60,27 @@ export async function GET() {
       // Teacher ve solo estudiantes de sus inscripciones activas donde es el teacher asignado
       console.log('=== TEACHER USER - Fetching assigned students ===')
       
-      // Obtener estudiantes de enrollments donde el profesor es el teacherId
+      // Obtener los cursos que el profesor puede enseñar (TeacherCourse)
+      const teacherCourses = await db.teacherCourse.findMany({
+        where: { teacherId: userId },
+        select: { courseId: true }
+      })
+      const teachableCourseIds = teacherCourses.map(tc => tc.courseId)
+      console.log('Teacher can teach courses:', teachableCourseIds)
+      
+      // Obtener estudiantes de enrollments donde:
+      // 1. El profesor está asignado directamente (teacherId) - enrollments nuevos
+      // 2. O el enrollment es de un curso que el profesor puede enseñar Y no tiene teacherId asignado - enrollments legacy
       const studentsFromEnrollments = await db.enrollment.findMany({
         where: {
           status: 'ACTIVE',
-          teacherId: userId  // Filtrar directamente por teacherId
+          OR: [
+            { teacherId: userId },
+            {
+              teacherId: null,
+              courseId: { in: teachableCourseIds }
+            }
+          ]
         },
         select: {
           id: true,

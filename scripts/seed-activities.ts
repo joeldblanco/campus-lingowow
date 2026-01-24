@@ -25,6 +25,32 @@ async function seedActivities() {
   try {
     // Read the JSON file
     const jsonPath = path.join(__dirname, 'activities-seed.json')
+    
+    // Check if file exists before reading
+    if (!fs.existsSync(jsonPath)) {
+      console.error('❌ Error: activities-seed.json not found!')
+      console.error(`   Expected path: ${jsonPath}`)
+      console.error('')
+      console.error('   Please create the file with the following structure:')
+      console.error('   [')
+      console.error('     {')
+      console.error('       "id": "unique-id",')
+      console.error('       "title": "Activity Title",')
+      console.error('       "description": "Description",')
+      console.error('       "activityType": "VOCABULARY|GRAMMAR|LISTENING|...",')
+      console.error('       "level": 1,')
+      console.error('       "points": 10,')
+      console.error('       "duration": 15,')
+      console.error('       "timeLimit": 30,')
+      console.error('       "isPublished": true,')
+      console.error('       "createdById": "user-id",')
+      console.error('       "steps": [],')
+      console.error('       "activityData": {}')
+      console.error('     }')
+      console.error('   ]')
+      process.exit(1)
+    }
+    
     const jsonData = fs.readFileSync(jsonPath, 'utf-8')
     const activities: ActivitySeedData[] = JSON.parse(jsonData)
 
