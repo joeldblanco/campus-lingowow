@@ -1,157 +1,91 @@
-import { PrismaClient, ActivityType, UserRole } from '@prisma/client'
+import { PrismaClient, ActivityType, Prisma } from '@prisma/client'
+import * as fs from 'fs'
+import * as path from 'path'
 
 const prisma = new PrismaClient()
 
+interface ActivitySeedData {
+  id: string
+  title: string
+  description: string
+  activityType: string
+  level: number
+  points: number
+  duration: number
+  timeLimit: number
+  isPublished: boolean
+  createdById: string
+  steps: Prisma.InputJsonValue
+  activityData: Prisma.InputJsonValue
+}
+
 async function seedActivities() {
-  console.log('🌱 Seeding test activities...')
+  console.log('🌱 Seeding activities from JSON file...')
 
   try {
-    // First, ensure we have a system user to assign as creator
-    let systemUser = await prisma.user.findFirst({
-      where: { email: 'system@campus-lingowow.com' },
-    })
+    // Read the JSON file
+    const jsonPath = path.join(__dirname, 'activities-seed.json')
+    const jsonData = fs.readFileSync(jsonPath, 'utf-8')
+    const activities: ActivitySeedData[] = JSON.parse(jsonData)
 
-    if (!systemUser) {
-      systemUser = await prisma.user.create({
-        data: {
-          name: 'System',
-          lastName: 'Admin',
-          email: 'system@campus-lingowow.com',
-          roles: [UserRole.ADMIN],
-        },
+    console.log(`📄 Found ${activities.length} activities to seed`)
+
+    // Verify the creator user exists
+    const creatorId = activities[0]?.createdById
+    if (creatorId) {
+      const user = await prisma.user.findUnique({
+        where: { id: creatorId },
       })
+      if (!user) {
+        console.error(`❌ Creator user with ID ${creatorId} not found!`)
+        console.log('Please ensure the user exists before running this seed.')
+        process.exit(1)
+      }
+      console.log(`✅ Creator user found: ${user.name} ${user.lastName || ''}`)
     }
 
-    // Create test activities for different levels
-    const activities = [
-      {
-        title: 'Basic Greetings',
-        description: 'Learn basic greeting phrases',
-        activityType: ActivityType.MULTIPLE_CHOICE,
-        level: 1,
-        points: 10,
-        duration: 5, // 5 minutes
-        activityData: {
-          type: 'MULTIPLE_CHOICE',
-          questions: [
-            {
-              question: 'How do you say "Hello" in English?',
-              options: ['Hola', 'Hello', 'Bonjour', 'Ciao'],
-              correctAnswer: 1,
-            },
-          ],
-        },
-        steps: {
-          instruction: 'Choose the correct answer',
-          questions: [
-            {
-              question: 'How do you say "Hello" in English?',
-              options: ['Hola', 'Hello', 'Bonjour', 'Ciao'],
-              correctAnswer: 1,
-            },
-          ],
-        },
-        questions: [
-          {
-            question: 'How do you say "Hello" in English?',
-            options: ['Hola', 'Hello', 'Bonjour', 'Ciao'],
-            correctAnswer: 1,
-          },
-        ],
-        timeLimit: 300, // 5 minutes in seconds
-        createdById: systemUser.id,
-        isPublished: true,
-      },
-      {
-        title: 'Numbers 1-10',
-        description: 'Learn numbers from 1 to 10',
-        activityType: ActivityType.LISTENING,
-        level: 1,
-        points: 15,
-        duration: 10, // 10 minutes
-        activityData: {
-          type: 'LISTENING',
-          audioUrl: '/audio/numbers-1-10.mp3',
-          questions: [
-            {
-              question: 'What number did you hear?',
-              options: ['One', 'Two', 'Three', 'Four'],
-              correctAnswer: 0,
-            },
-          ],
-        },
-        steps: {
-          instruction: 'Listen to the audio and answer the question',
-          audioUrl: '/audio/numbers-1-10.mp3',
-          questions: [
-            {
-              question: 'What number did you hear?',
-              options: ['One', 'Two', 'Three', 'Four'],
-              correctAnswer: 0,
-            },
-          ],
-        },
-        questions: [
-          {
-            question: 'What number did you hear?',
-            options: ['One', 'Two', 'Three', 'Four'],
-            correctAnswer: 0,
-          },
-        ],
-        timeLimit: 600, // 10 minutes in seconds
-        createdById: systemUser.id,
-        isPublished: true,
-      },
-      {
-        title: 'Present Tense Verbs',
-        description: 'Practice present tense verb conjugation',
-        activityType: ActivityType.FILL_IN_BLANK,
-        level: 2,
-        points: 20,
-        duration: 15, // 15 minutes
-        activityData: {
-          type: 'FILL_IN_BLANK',
-          sentences: [
-            {
-              text: 'I ___ to school every day.',
-              correctAnswer: 'go',
-              options: ['go', 'goes', 'going', 'went'],
-            },
-          ],
-        },
-        steps: {
-          instruction: 'Fill in the blanks with the correct verb form',
-          sentences: [
-            {
-              text: 'I ___ to school every day.',
-              correctAnswer: 'go',
-              options: ['go', 'goes', 'going', 'went'],
-            },
-          ],
-        },
-        questions: [
-          {
-            sentence: 'I ___ to school every day.',
-            correctAnswer: 'go',
-            options: ['go', 'goes', 'going', 'went'],
-          },
-        ],
-        timeLimit: 900, // 15 minutes in seconds
-        createdById: systemUser.id,
-        isPublished: true,
-      },
-    ]
+    // Delete existing activities (optional - comment out if you want to keep existing)
+    const existingCount = await prisma.activity.count()
+    if (existingCount > 0) {
+      console.log(`🗑️  Deleting ${existingCount} existing activities...`)
+      await prisma.activity.deleteMany({})
+    }
 
-    // Clear existing activities first (optional)
-    await prisma.activity.deleteMany({})
+    // Insert activities
+    let successCount = 0
+    let errorCount = 0
 
     for (const activity of activities) {
-      await prisma.activity.create({
-        data: activity,
-      })
+      try {
+        await prisma.activity.create({
+          data: {
+            id: activity.id,
+            title: activity.title,
+            description: activity.description,
+            activityType: activity.activityType as ActivityType,
+            level: activity.level,
+            points: activity.points,
+            duration: activity.duration,
+            timeLimit: activity.timeLimit,
+            isPublished: activity.isPublished,
+            createdById: activity.createdById,
+            steps: activity.steps,
+            activityData: activity.activityData,
+          },
+        })
+        successCount++
+        console.log(`  ✅ Created: ${activity.title}`)
+      } catch (error) {
+        errorCount++
+        console.error(`  ❌ Failed: ${activity.title}`, error)
+      }
     }
 
-    console.log('✅ Test activities seeded successfully!')
+    console.log('\n📊 Seed Summary:')
+    console.log(`  ✅ Successfully created: ${successCount}`)
+    console.log(`  ❌ Failed: ${errorCount}`)
+    console.log(`  📝 Total: ${activities.length}`)
+
   } catch (error) {
     console.error('❌ Error seeding activities:', error)
     throw error
@@ -160,7 +94,6 @@ async function seedActivities() {
   }
 }
 
-// Run the seeding function
 seedActivities().catch((error) => {
   console.error(error)
   process.exit(1)

@@ -72,7 +72,10 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
           enrollment.student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           (enrollment.student.lastName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
           enrollment.student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          enrollment.course.title.toLowerCase().includes(searchTerm.toLowerCase())
+          enrollment.course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (enrollment.teacher?.name?.toLowerCase().includes(searchTerm.toLowerCase()) || false) ||
+          (enrollment.teacher?.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) || false) ||
+          (enrollment.teacher?.email?.toLowerCase().includes(searchTerm.toLowerCase()) || false)
       )
     }
 
@@ -195,6 +198,39 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
           <div className="text-xs text-muted-foreground">Nivel {row.original.course.level}</div>
         </div>
       ),
+    },
+    {
+      accessorKey: 'teacher',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Profesor" />,
+      cell: ({ row }) => {
+        const teacher = row.original.teacher
+        if (!teacher) {
+          return (
+            <div className="text-sm text-muted-foreground">
+              Sin asignar
+            </div>
+          )
+        }
+        
+        return (
+          <div className="flex items-center gap-2">
+            <UserAvatar
+              userId={teacher.id}
+              userName={teacher.name}
+              userLastName={teacher.lastName}
+              userImage={teacher.image}
+              className="h-6 w-6"
+              fallbackClassName="text-xs bg-slate-200"
+            />
+            <div>
+              <div className="font-medium text-sm">
+                {teacher.name} {teacher.lastName || ''}
+              </div>
+              <div className="text-xs text-muted-foreground">{teacher.email}</div>
+            </div>
+          </div>
+        )
+      },
     },
     {
       accessorKey: 'status',

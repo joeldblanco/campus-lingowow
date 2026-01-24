@@ -57,39 +57,14 @@ export async function GET() {
       })
       console.log('All students found:', students.length)
     } else {
-      // Teacher ve solo estudiantes de sus inscripciones activas
+      // Teacher ve solo estudiantes de sus inscripciones activas donde es el teacher asignado
       console.log('=== TEACHER USER - Fetching assigned students ===')
       
-      // Primero, veamos los cursos de este teacher
-      const teacherCourses = await db.teacherCourse.findMany({
-        where: {
-          teacherId: userId
-        },
-        select: {
-          courseId: true,
-          course: {
-            select: {
-              id: true,
-              title: true
-            }
-          }
-        }
-      })
-      
-      console.log('Teacher courses found:', teacherCourses.length)
-      console.log('Course IDs:', teacherCourses.map(tc => ({ id: tc.courseId, title: tc.course.title })))
-      
-      // Ahora veamos las inscripciones a esos cursos
+      // Obtener estudiantes de enrollments donde el profesor es el teacherId
       const studentsFromEnrollments = await db.enrollment.findMany({
         where: {
           status: 'ACTIVE',
-          course: {
-            teacherCourses: {
-              some: {
-                teacherId: userId
-              }
-            }
-          }
+          teacherId: userId  // Filtrar directamente por teacherId
         },
         select: {
           id: true,
@@ -110,6 +85,7 @@ export async function GET() {
             }
           }
         },
+        distinct: ['studentId'],
       })
 
       console.log('Students from enrollments found:', studentsFromEnrollments.length)
@@ -140,7 +116,7 @@ export async function GET() {
 
     const formattedStudents = students.map(student => ({
       id: student.id,
-      name: typeof student.name === 'string' ? student.name : `${student.name || ''} ${student.lastName || ''}`.trim(),
+      name: student.lastName ? `${student.name || ''} ${student.lastName}`.trim() : (student.name || ''),
       email: student.email,
       image: student.image,
     }))

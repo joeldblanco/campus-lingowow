@@ -55,15 +55,16 @@ model User {
   teacherRankId String?
 
   // Relaciones comunes
-  createdCourses     Course[]
-  createdActivities  Activity[]         @relation("ActivityCreator")
-  enrollments        Enrollment[]
-  completedContents  UserContent[]
-  viewedResources    ResourceView[]
-  savedResources     UserResource[]
-  activities         UserActivity[]
-  attendances        ClassAttendance[]
-  teacherAttendances TeacherAttendance[] @relation("TeacherAttendances")
+  createdCourses        Course[]
+  createdActivities     Activity[]         @relation("ActivityCreator")
+  enrollments           Enrollment[]
+  enrollmentsAsTeacher  Enrollment[]       @relation("EnrollmentTeacher")
+  completedContents     UserContent[]
+  viewedResources       ResourceView[]
+  savedResources        UserResource[]
+  activities            UserActivity[]
+  attendances           ClassAttendance[]
+  teacherAttendances    TeacherAttendance[] @relation("TeacherAttendances")
 
   // Relaciones del sistema de clases
   bookingsAsStudent   ClassBooking[]        @relation("StudentBookings")
@@ -724,6 +725,7 @@ model Enrollment {
   studentId        String
   courseId         String
   academicPeriodId String
+  teacherId        String?          // Profesor responsable de esta inscripción
   status           EnrollmentStatus @default(ACTIVE)
   progress         Float            @default(0)
   enrollmentDate   DateTime         @default(now())
@@ -744,6 +746,7 @@ model Enrollment {
   student        User              @relation(fields: [studentId], references: [id], onDelete: Cascade)
   course         Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
   academicPeriod AcademicPeriod    @relation(fields: [academicPeriodId], references: [id], onDelete: Restrict)
+  teacher        User?             @relation("EnrollmentTeacher", fields: [teacherId], references: [id], onDelete: SetNull)
   purchases      ProductPurchase[]
   bookings       ClassBooking[]    // Clases programadas para esta inscripción
   attendances    ClassAttendance[] // Asistencias para esta inscripción
@@ -754,6 +757,7 @@ model Enrollment {
   @@index([studentId])
   @@index([courseId])
   @@index([academicPeriodId])
+  @@index([teacherId])
   @@map("enrollments")
 }
 

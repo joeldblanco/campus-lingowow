@@ -45,6 +45,7 @@ const CreateEnrollmentSchema = z.object({
   studentId: z.string().min(1, 'Debes seleccionar un estudiante'),
   courseId: z.string().min(1, 'Debes seleccionar un curso'),
   academicPeriodId: z.string().min(1, 'Debes seleccionar un período académico'),
+  teacherId: z.string().optional(), // Teacher responsable (opcional, se puede asignar después)
   invoiceType: z.enum(['paypal', 'lingowow']),
   paypalOrderId: z.string().optional(),
   lingowowInvoiceNumber: z.string().optional(),

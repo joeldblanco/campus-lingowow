@@ -41,6 +41,13 @@ export interface EnrollmentWithDetails {
     endDate: Date
     isActive: boolean
   }
+  teacher: {
+    id: string
+    name: string
+    lastName: string | null
+    email: string
+    image: string | null
+  } | null
 }
 
 export interface EnrollmentStats {
@@ -87,6 +94,15 @@ export async function getAllEnrollments(): Promise<EnrollmentWithDetails[]> {
             startDate: true,
             endDate: true,
             isActive: true,
+          },
+        },
+        teacher: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            email: true,
+            image: true,
           },
         },
       },
@@ -138,6 +154,15 @@ export async function getEnrollmentById(id: string): Promise<EnrollmentWithDetai
             startDate: true,
             endDate: true,
             isActive: true,
+          },
+        },
+        teacher: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            email: true,
+            image: true,
           },
         },
       },
@@ -288,6 +313,29 @@ export async function createEnrollment(data: {
           progress: 0,
         },
       })
+
+      // Buscar la primera clase programada para asignar el teacher
+      const firstBooking = await db.classBooking.findFirst({
+        where: {
+          enrollmentId: enrollment.id,
+        },
+        orderBy: {
+          day: 'asc',
+        },
+        select: {
+          teacherId: true,
+        },
+      })
+
+      // Si hay una clase programada, actualizar el teacherId
+      if (firstBooking?.teacherId) {
+        enrollment = await db.enrollment.update({
+          where: { id: enrollment.id },
+          data: {
+            teacherId: firstBooking.teacherId,
+          },
+        })
+      }
     } catch (err) {
       console.error('Error creating enrollment record:', err)
       return { success: false, error: 'Error al crear el registro de inscripción' }
@@ -441,11 +489,17 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
     // 3. Create Enrollment, Invoice, and Schedule in a transaction
     let enrollment
     try {
+      // Determinar el teacherId basado en la primera clase programada
+      const firstClassTeacherId = data.scheduledClasses.length > 0 
+        ? data.scheduledClasses[0].teacherId 
+        : data.teacherId
+
       enrollment = await db.enrollment.create({
         data: {
           studentId: data.studentId,
           courseId: data.courseId,
           academicPeriodId: data.academicPeriodId,
+          teacherId: firstClassTeacherId, // Asignar teacher de la primera clase
           status: status,
           progress: 0,
           classesTotal: data.scheduledClasses.length || 8,
