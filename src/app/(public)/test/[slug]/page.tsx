@@ -34,7 +34,7 @@ export default async function TestPage({ params }: TestPageProps) {
           <CardContent className="flex flex-col gap-3">
             {accessCheck.reason?.includes('sesión') ? (
               <Button asChild>
-                <Link href={`/login?callbackUrl=/test/${slug}`}>Iniciar Sesión</Link>
+                <Link href={`/auth/signin?callbackUrl=/test/${slug}`}>Iniciar Sesión</Link>
               </Button>
             ) : (
               <Button asChild variant="outline">
@@ -82,7 +82,7 @@ export default async function TestPage({ params }: TestPageProps) {
           
           <div className="flex flex-col gap-2">
             <Button asChild size="lg">
-              <Link href={`/login?callbackUrl=/test/${slug}`}>Iniciar Sesión</Link>
+              <Link href={`/auth/signin?callbackUrl=/test/${slug}`}>Iniciar Sesión</Link>
             </Button>
             <Button asChild variant="outline" size="lg">
               <Link href={`/register?callbackUrl=/test/${slug}`}>Crear Cuenta</Link>

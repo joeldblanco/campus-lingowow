@@ -159,6 +159,7 @@ export function AssignExamDialog({ exam, open, onOpenChange }: AssignExamDialogP
         onOpenChange(false)
         form.reset()
         setSearchTerm('')
+        window.location.reload()
       } else {
         toast.error(result.error || 'Error al asignar el examen')
       }

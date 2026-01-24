@@ -15,7 +15,7 @@ export function SessionTimeoutProvider({ children }: { children: React.ReactNode
 
   const handleLogout = useCallback(async () => {
     toast.error('Tu sesión ha expirado por inactividad')
-    await signOut({ callbackUrl: '/auth/login' })
+    await signOut({ callbackUrl: '/auth/signin' })
   }, [])
 
   const resetTimer = useCallback(() => {

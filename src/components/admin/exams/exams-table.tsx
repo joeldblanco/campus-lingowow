@@ -22,7 +22,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { DataTable, DataTableColumnHeader } from '@/components/ui/data-table'
-import { Search, Edit, MoreVertical, Plus, SlidersHorizontal } from 'lucide-react'
+import { Search, Edit, MoreVertical, Plus, SlidersHorizontal, BarChart3, Eye, UserPlus, Send, EyeOff, Trash2 } from 'lucide-react'
 import { CreateExamDialog } from './create-exam-dialog'
 import { EditExamDialog } from './edit-exam-dialog'
 import { ViewExamDialog } from './view-exam-dialog'
@@ -61,7 +61,13 @@ export function ExamsTable({ exams }: ExamsTableProps) {
   }, [exams])
 
   const uniqueCourses = useMemo(() => {
-    return Array.from(new Set(exams.map((exam) => exam.course).filter(Boolean)))
+    const courseMap = new Map()
+    exams.forEach((exam) => {
+      if (exam.course) {
+        courseMap.set(exam.course.id, exam.course)
+      }
+    })
+    return Array.from(courseMap.values())
   }, [exams])
 
   const filteredExams = useMemo(() => {
@@ -309,26 +315,40 @@ export function ExamsTable({ exams }: ExamsTableProps) {
                     setViewDialogOpen(true)
                   }}
                 >
+                  <Eye className="h-4 w-4 mr-2" />
                   Ver Detalles
                 </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => router.push(`/teacher/exams/${exam.id}/results`)}
+                >
+                  <BarChart3 className="h-4 w-4 mr-2" />
+                  Ver Resultados
+                </DropdownMenuItem>
 {/* Solo mostrar opción de asignar si el examen NO tiene curso o si el curso es personalizado */}
-                {(!exam.courseId || exam.course?.isPersonalized) && (
+                                {(!exam.courseId || exam.course?.isPersonalized) && (
                   <DropdownMenuItem
                     onClick={() => {
                       setSelectedExam(exam)
                       setAssignDialogOpen(true)
                     }}
                   >
+                    <UserPlus className="h-4 w-4 mr-2" />
                     Asignar a Estudiantes
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuItem onClick={() => handleTogglePublish(exam)}>
+                  {exam.isPublished ? (
+                    <EyeOff className="h-4 w-4 mr-2" />
+                  ) : (
+                    <Send className="h-4 w-4 mr-2" />
+                  )}
                   {exam.isPublished ? 'Despublicar' : 'Publicar'}
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => handleDeleteExam(exam.id)}
                   className="text-destructive"
                 >
+                  <Trash2 className="h-4 w-4 mr-2" />
                   Eliminar
                 </DropdownMenuItem>
               </DropdownMenuContent>

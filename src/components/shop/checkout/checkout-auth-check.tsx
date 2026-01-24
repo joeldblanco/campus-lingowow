@@ -45,7 +45,7 @@ export function CheckoutAuthCheck({ onAuthenticated, onSkipAuth }: CheckoutAuthC
     // Guardamos en el store que debe redirigir después de autenticación
     setCheckoutInfo({ redirectAfterAuth: true })
     // Redirigimos al login
-    router.push('/auth/login?redirect=/checkout')
+    router.push('/auth/signin?redirect=/checkout')
   }
 
   const handleContinueAsGuest = () => {

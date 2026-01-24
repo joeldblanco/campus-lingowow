@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { 
@@ -16,7 +16,9 @@ import {
   Video,
   Image as ImageIcon,
   Type,
-  FileTextIcon
+  FileTextIcon,
+  FileDown,
+  Loader2
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -24,6 +26,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { cn, processHtmlLinks } from '@/lib/utils'
 import { toast } from 'sonner'
+import { exportAttemptToPDF } from '@/lib/pdf-export-attempt'
 
 interface StudentInfo {
   id: string
@@ -97,6 +100,8 @@ interface ExamGradingViewProps {
 }
 
 export function ExamGradingView({
+  examTitle,
+  courseName,
   students,
   selectedStudentId,
   attempt,
@@ -113,6 +118,8 @@ export function ExamGradingView({
   const [localGrades, setLocalGrades] = useState<Record<string, { points: number; feedback: string }>>({})
   const [isSaving, setIsSaving] = useState(false)
   const [isFinishing, setIsFinishing] = useState(false)
+  const [isExporting, setIsExporting] = useState(false)
+  const navigationContainerRef = useRef<HTMLDivElement>(null)
 
   const currentAnswer = answers[currentQuestionIndex]
   const pendingReviewCount = answers.filter(a => a.needsReview && !a.isInformativeBlock).length
@@ -216,6 +223,50 @@ export function ExamGradingView({
     }))
   }
 
+  // Scroll automático al contenedor de navegación cuando cambia la pregunta
+  const scrollToNavigation = useCallback(() => {
+    if (navigationContainerRef.current) {
+      navigationContainerRef.current.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center' // Centra el contenedor en la vista, dejando espacio arriba y abajo
+      })
+    }
+  }, [])
+
+  // Wrapper para setCurrentQuestionIndex que incluye scroll
+  const setCurrentQuestionWithScroll = useCallback((newIndex: number) => {
+    setCurrentQuestionIndex(newIndex)
+    // Pequeño delay para asegurar que el DOM se actualizó antes del scroll
+    setTimeout(scrollToNavigation, 100)
+  }, [scrollToNavigation])
+
+  // Exportar PDF del attempt
+  const handleExportPDF = useCallback(async () => {
+    const selectedStudent = students.find(s => s.id === selectedStudentId)
+    if (!selectedStudent) return
+
+    setIsExporting(true)
+    try {
+      await exportAttemptToPDF({
+        studentName: selectedStudent.name,
+        studentEmail: selectedStudent.email,
+        examTitle,
+        courseName,
+        attemptNumber: attempt.attemptNumber,
+        submittedAt: attempt.submittedAt,
+        totalScore,
+        maxScore,
+        answers
+      })
+      toast.success('PDF exportado exitosamente')
+    } catch (error) {
+      console.error('Error exporting PDF:', error)
+      toast.error('Error al exportar el PDF')
+    } finally {
+      setIsExporting(false)
+    }
+  }, [students, selectedStudentId, examTitle, courseName, attempt, totalScore, maxScore, answers])
+
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-[1400px] mx-auto px-6 py-4">
@@ -259,6 +310,25 @@ export function ExamGradingView({
           </div>
 
           <div className="ml-auto flex items-center gap-4">
+            <Button
+              onClick={handleExportPDF}
+              disabled={true}
+              variant="outline"
+              size="sm"
+              className="h-10"
+            >
+              {isExporting ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Exportando...
+                </>
+              ) : (
+                <>
+                  <FileDown className="w-4 h-4 mr-2" />
+                  Exportar PDF
+                </>
+              )}
+            </Button>
             <div className="text-right">
               <p className="text-sm text-muted-foreground">Puntaje Total</p>
               <p className="text-2xl font-bold text-foreground">{totalScore}<span className="text-muted-foreground text-base">/{maxScore}</span></p>
@@ -284,7 +354,7 @@ export function ExamGradingView({
                   return (
                     <button
                       key={q.id}
-                      onClick={() => setCurrentQuestionIndex(q.navIndex)}
+                      onClick={() => setCurrentQuestionWithScroll(q.navIndex)}
                       className={cn(
                         "aspect-square flex items-center justify-center rounded-lg text-sm font-bold transition-colors",
                         isCurrent && "ring-2 ring-primary",
@@ -619,18 +689,25 @@ export function ExamGradingView({
               </div>
             )}
 
-            <div className="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 pt-6">
+            <div ref={navigationContainerRef} className="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 pt-6">
               <Button
                 variant="ghost"
                 onClick={() => {
-                  // Encontrar el índice actual en navigatorQuestions y navegar al anterior
-                  const currentNavQIndex = navigatorQuestions.findIndex(q => q.navIndex === currentQuestionIndex)
-                  if (currentNavQIndex > 0) {
-                    setCurrentQuestionIndex(navigatorQuestions[currentNavQIndex - 1].navIndex)
+                  // Encontrar el índice navegable anterior desde la posición actual
+                  const currentNavIndex = navigationIndices.findIndex(index => index === currentQuestionIndex)
+                  if (currentNavIndex > 0) {
+                    setCurrentQuestionWithScroll(navigationIndices[currentNavIndex - 1])
+                  } else if (currentNavIndex === -1) {
+                    // Si currentQuestionIndex no está en navigationIndices (bloque informativo),
+                    // encontrar el índice navegable anterior
+                    const prevNavIndex = navigationIndices.findIndex(index => index > currentQuestionIndex) - 1
+                    if (prevNavIndex >= 0) {
+                      setCurrentQuestionWithScroll(navigationIndices[prevNavIndex])
+                    }
                   }
                 }}
-                disabled={navigatorQuestions.length === 0 || 
-                  navigatorQuestions.findIndex(q => q.navIndex === currentQuestionIndex) <= 0}
+                disabled={navigationIndices.length === 0 || 
+                  navigationIndices.findIndex(index => index === currentQuestionIndex) <= 0}
                 className="flex items-center gap-2"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -648,14 +725,21 @@ export function ExamGradingView({
                 <Button
                   variant="ghost"
                   onClick={() => {
-                    // Encontrar el índice actual en navigatorQuestions y navegar al siguiente
-                    const currentNavQIndex = navigatorQuestions.findIndex(q => q.navIndex === currentQuestionIndex)
-                    if (currentNavQIndex >= 0 && currentNavQIndex < navigatorQuestions.length - 1) {
-                      setCurrentQuestionIndex(navigatorQuestions[currentNavQIndex + 1].navIndex)
+                    // Encontrar el siguiente índice navegable desde la posición actual
+                    const currentNavIndex = navigationIndices.findIndex(index => index === currentQuestionIndex)
+                    if (currentNavIndex >= 0 && currentNavIndex < navigationIndices.length - 1) {
+                      setCurrentQuestionWithScroll(navigationIndices[currentNavIndex + 1])
+                    } else if (currentNavIndex === -1) {
+                      // Si currentQuestionIndex no está en navigationIndices (bloque informativo),
+                      // encontrar el siguiente índice navegable
+                      const nextNavIndex = navigationIndices.findIndex(index => index > currentQuestionIndex)
+                      if (nextNavIndex >= 0) {
+                        setCurrentQuestionWithScroll(navigationIndices[nextNavIndex])
+                      }
                     }
                   }}
-                  disabled={navigatorQuestions.length === 0 || 
-                    navigatorQuestions.findIndex(q => q.navIndex === currentQuestionIndex) >= navigatorQuestions.length - 1}
+                  disabled={navigationIndices.length === 0 || 
+                    navigationIndices.findIndex(index => index === currentQuestionIndex) >= navigationIndices.length - 1}
                   className="flex items-center gap-2"
                 >
                   Siguiente

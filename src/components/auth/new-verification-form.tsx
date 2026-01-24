@@ -55,7 +55,7 @@ export function NewVerificationForm() {
         {(error && (
           <div className="flex flex-col gap-4 w-full items-center justify-center">
             <p className="text-sm text-gray-500 italic">{error}</p>
-            <Link href={'/auth/login'}>
+            <Link href={'/auth/signin'}>
               <Button>Volver</Button>
             </Link>
           </div>

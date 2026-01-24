@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Clock, Users, Target, BookOpen, CheckCircle, XCircle } from 'lucide-react'
+import { Clock, Users, Target, BookOpen } from 'lucide-react'
 import { ExamWithDetails } from '@/types/exam'
 
 interface ViewExamDialogProps {
@@ -172,29 +172,87 @@ export function ViewExamDialog({ exam, open, onOpenChange }: ViewExamDialogProps
                     </div>
 
                     {section.description && (
-                      <p className="text-sm text-muted-foreground mb-3">{section.description}</p>
+                      <p className="text-sm text-muted-foreground">{section.description}</p>
                     )}
 
-                    <div className="space-y-2">
-                      {section.questions.map((question, qIndex) => (
-                        <div
-                          key={question.id}
-                          className="flex items-start space-x-3 p-2 bg-muted/50 rounded"
-                        >
-                          <span className="text-sm font-medium min-w-[2rem]">{qIndex + 1}.</span>
-                          <div className="flex-1">
-                            <p className="text-sm">{question.question}</p>
-                            <div className="flex items-center space-x-2 mt-1">
-                              <Badge variant="secondary" className="text-xs">
-                                {question.type.replace('_', ' ')}
-                              </Badge>
-                              <Badge variant="outline" className="text-xs">
-                                {question.points} ptos
-                              </Badge>
+                    {/* Group questions by groupId */}
+                    <div className="space-y-3">
+                      {(() => {
+                        // Extract groupId and original block type from question options
+                        const questionsWithGroup = section.questions.map(q => {
+                          let groupId = null
+                          let originalType = null
+                          try {
+                            if (q.options) {
+                              const options = typeof q.options === 'string' ? JSON.parse(q.options) : q.options
+                              groupId = options?.groupId || null
+                              originalType = options?.originalBlockType || null
+                            }
+                          } catch {
+                            // Ignore parsing errors
+                          }
+                          return { ...q, groupId, originalType }
+                        })
+
+                        // Group questions by groupId
+                        const groupedQuestions = questionsWithGroup.reduce((acc, question) => {
+                          const key = question.groupId || 'ungrouped'
+                          if (!acc[key]) {
+                            acc[key] = []
+                          }
+                          acc[key].push(question)
+                          return acc
+                        }, {} as Record<string, typeof questionsWithGroup>)
+
+                        return Object.entries(groupedQuestions).map(([groupKey, questions], index) => {
+                          const isGrouped = groupKey !== 'ungrouped'
+                          const totalPoints = questions.reduce((sum, q) => sum + q.points, 0)
+                          
+                          // Get display types, prioritizing original block types
+                          const questionTypes = [...new Set(questions.map(q => {
+                            if (q.originalType === 'recording') return 'Grabación'
+                            if (q.originalType === 'audio') return 'Audio'
+                            // Convert standard types to Spanish and capitalized
+                            const typeMap: Record<string, string> = {
+                              'MULTIPLE_CHOICE': 'Opción Múltiple',
+                              'TRUE_FALSE': 'Verdadero Falso',
+                              'SHORT_ANSWER': 'Respuesta Corta',
+                              'ESSAY': 'Ensayo',
+                              'FILL_BLANK': 'Completar Espacio',
+                              'MATCHING': 'Relacionar',
+                              'ORDERING': 'Ordenar',
+                              'DRAG_DROP': 'Arrastrar Soltar'
+                            }
+                            return typeMap[q.type] || q.type.replace('_', ' ')
+                          }))]
+
+                          return (
+                            <div key={groupKey} className="border rounded-lg p-3 bg-muted/30">
+                              <div className="flex items-center justify-between mb-2">
+                                <h5 className="font-medium text-sm">
+                                  {isGrouped ? `Grupo ${index + 1}` : 'Preguntas individuales'}
+                                </h5>
+                                <div className="flex space-x-2">
+                                  <Badge variant="secondary" className="text-xs">
+                                    {questions.length} {questions.length === 1 ? 'pregunta' : 'preguntas'}
+                                  </Badge>
+                                  <Badge variant="outline" className="text-xs">
+                                    {totalPoints} ptos
+                                  </Badge>
+                                </div>
+                              </div>
+                              
+                              <div className="flex flex-wrap gap-1">
+                                {questionTypes.map(type => (
+                                  <Badge key={type} variant="outline" className="text-xs">
+                                    {type}
+                                  </Badge>
+                                ))}
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                      ))}
+                          )
+                        })
+                      })()}
                     </div>
                   </div>
                 ))}
@@ -202,60 +260,7 @@ export function ViewExamDialog({ exam, open, onOpenChange }: ViewExamDialogProps
             </Card>
           )}
 
-          {/* Recent Attempts */}
-          {exam.attempts.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Intentos Recientes</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {exam.attempts.slice(0, 5).map((attempt, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between p-3 border rounded"
-                    >
-                      <div className="flex items-center space-x-3">
-                        <div>
-                          <p className="font-medium">
-                            {attempt.user.name} {attempt.user.lastName}
-                          </p>
-                          <p className="text-sm text-muted-foreground">{attempt.user.email}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <div className="text-right">
-                          <p className="font-medium">
-                            {attempt.score !== null ? `${attempt.score}%` : 'En Progreso'}
-                          </p>
-                          <p className="text-sm text-muted-foreground">
-                            Intento {attempt.attemptNumber}
-                          </p>
-                        </div>
-                        <div className="flex items-center">
-                          {attempt.status === 'COMPLETED' ? (
-                            (attempt.score || 0) >= exam.passingScore ? (
-                              <CheckCircle className="h-5 w-5 text-green-600" />
-                            ) : (
-                              <XCircle className="h-5 w-5 text-red-600" />
-                            )
-                          ) : (
-                            <span className="text-sm text-muted-foreground">En Progreso</span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                  {exam.attempts.length > 5 && (
-                    <p className="text-sm text-muted-foreground text-center">
-                      Y {exam.attempts.length - 5} intentos más...
-                    </p>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          )}
-        </div>
+                  </div>
 
         <div className="p-6 pt-4 border-t flex justify-end">
           <Button onClick={() => onOpenChange(false)}>Cerrar</Button>

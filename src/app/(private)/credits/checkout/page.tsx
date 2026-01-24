@@ -12,7 +12,7 @@ export default async function CreditCheckoutPage({ searchParams }: PageProps) {
   const params = await searchParams
 
   if (!session?.user?.id) {
-    redirect('/auth/login')
+    redirect('/auth/signin')
   }
 
   const packageId = params.packageId

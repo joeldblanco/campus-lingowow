@@ -11,7 +11,7 @@ export default async function TeacherExamPreviewPage({ params }: PageProps) {
   const session = await auth()
   
   if (!session?.user?.id) {
-    redirect('/auth/login')
+    redirect('/auth/signin')
   }
 
   const { examId } = await params

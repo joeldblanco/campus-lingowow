@@ -9,7 +9,7 @@ export default async function PlacementTestPage() {
   const session = await auth()
   
   if (!session?.user?.id) {
-    redirect('/login')
+    redirect('/auth/signin')
   }
 
   const placementTests = await getPlacementTests(session.user.id)

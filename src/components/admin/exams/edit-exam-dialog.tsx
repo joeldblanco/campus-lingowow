@@ -33,6 +33,24 @@ interface EditExamDialogProps {
 
 type FormData = z.infer<typeof EditExamSchema>
 
+// Helper function to safely parse options from Prisma Json field
+const parseOptions = (options: unknown): string[] => {
+  if (!options) return []
+  if (Array.isArray(options)) return options
+  if (typeof options === 'string') {
+    try {
+      const parsed = JSON.parse(options)
+      return Array.isArray(parsed) ? parsed : []
+    } catch {
+      return []
+    }
+  }
+  if (typeof options === 'object') {
+    return Object.values(options).filter(v => typeof v === 'string') as string[]
+  }
+  return []
+}
+
 export function EditExamDialog({ exam, open, onOpenChange }: EditExamDialogProps) {
   const [sections, setSections] = useState<CreateExamSectionData[]>(
     exam.sections.map(s => ({
@@ -44,7 +62,7 @@ export function EditExamDialog({ exam, open, onOpenChange }: EditExamDialogProps
       questions: s.questions.map(q => ({
         type: q.type as CreateExamQuestionData['type'],
         question: q.question,
-        options: q.options as string[] | undefined,
+        options: parseOptions(q.options),
         correctAnswer: q.correctAnswer as string | string[],
         explanation: q.explanation || undefined,
         points: q.points,
@@ -105,7 +123,7 @@ export function EditExamDialog({ exam, open, onOpenChange }: EditExamDialogProps
         questions: s.questions.map(q => ({
           type: q.type as CreateExamQuestionData['type'],
           question: q.question,
-          options: q.options as string[] | undefined,
+          options: parseOptions(q.options),
           correctAnswer: q.correctAnswer as string | string[],
           explanation: q.explanation || undefined,
           points: q.points,

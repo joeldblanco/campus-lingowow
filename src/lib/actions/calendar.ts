@@ -116,7 +116,7 @@ export async function getStudentBookings() {
   const session = await auth()
 
   if (!session || !session.user) {
-    redirect('/login')
+    redirect('/auth/signin')
   }
 
   const userId = session.user.id

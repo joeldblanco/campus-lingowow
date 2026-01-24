@@ -1499,6 +1499,163 @@ export async function importPaypalInvoice(resourceId: string) {
 }
 
 // =============================================
+// LINGOWOW INVOICE VERIFICATION
+// =============================================
+
+export async function verifyLingowowInvoice(invoiceNumber: string) {
+  try {
+    if (!invoiceNumber || invoiceNumber.trim().length === 0) {
+      return { success: false, error: 'Debes proporcionar un número de factura' }
+    }
+
+    // Buscar factura por número
+    const invoice = await db.invoice.findFirst({
+      where: { invoiceNumber: invoiceNumber.trim() },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        items: {
+          include: {
+            product: {
+              select: {
+                id: true,
+                name: true,
+                slug: true,
+                course: {
+                  select: {
+                    id: true,
+                    title: true,
+                    classDuration: true,
+                  },
+                },
+              },
+            },
+            plan: {
+              select: {
+                id: true,
+                name: true,
+                slug: true,
+                price: true,
+                includesClasses: true,
+                classesPerPeriod: true,
+                classesPerWeek: true,
+                course: {
+                  select: {
+                    id: true,
+                    title: true,
+                    classDuration: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    })
+
+    if (!invoice) {
+      return { success: false, error: 'No se encontró ninguna factura con ese número' }
+    }
+
+    // Validar estado de la factura
+    if (invoice.status !== 'PAID' && invoice.status !== 'SENT') {
+      return {
+        success: false,
+        error: `La factura no está en estado válido (Estado: ${invoice.status})`,
+      }
+    }
+
+    // Verificar que no esté ya usada en otra inscripción
+    // Buscamos si hay compras asociadas a esta factura que ya tengan enrollment
+    const existingPurchase = await db.productPurchase.findFirst({
+      where: {
+        invoiceId: invoice.id,
+        enrollmentId: { not: null },
+      },
+    })
+
+    if (existingPurchase) {
+      return {
+        success: false,
+        error: 'Esta factura ya está asociada a una inscripción existente',
+      }
+    }
+
+    // Intentar detectar curso/plan de los items
+    let matchedCourse = null
+    let matchedPlan = null
+
+    if (invoice.items && invoice.items.length > 0) {
+      for (const item of invoice.items) {
+        // Si el item tiene plan asociado
+        if (item.plan) {
+          matchedPlan = {
+            id: item.plan.id,
+            name: item.plan.name,
+            slug: item.plan.slug,
+            price: item.plan.price,
+            includesClasses: item.plan.includesClasses,
+            classesPerPeriod: item.plan.classesPerPeriod,
+            classesPerWeek: item.plan.classesPerWeek,
+          }
+
+          // Si el plan tiene curso asociado
+          if (item.plan.course) {
+            matchedCourse = {
+              id: item.plan.course.id,
+              title: item.plan.course.title,
+              classDuration: item.plan.course.classDuration,
+            }
+          }
+          break
+        }
+
+        // Si el item tiene producto con curso asociado
+        if (item.product?.course) {
+          matchedCourse = {
+            id: item.product.course.id,
+            title: item.product.course.title,
+            classDuration: item.product.course.classDuration,
+          }
+          break
+        }
+      }
+    }
+
+    return {
+      success: true,
+      data: {
+        invoiceNumber: invoice.invoiceNumber,
+        email: invoice.user.email,
+        userId: invoice.user.id,
+        userName: `${invoice.user.name} ${invoice.user.lastName || ''}`.trim(),
+        amount: invoice.total,
+        currency: invoice.currency,
+        status: invoice.status,
+        paidAt: invoice.paidAt,
+        items: invoice.items.map((item) => ({
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          total: item.total,
+        })),
+        matchedCourse,
+        matchedPlan,
+      },
+    }
+  } catch (error) {
+    console.error('Error verifying Lingowow invoice:', error)
+    return { success: false, error: 'Error al verificar la factura de Lingowow' }
+  }
+}
+
+// =============================================
 // PLAN PRICING (Precios por idioma)
 // =============================================
 

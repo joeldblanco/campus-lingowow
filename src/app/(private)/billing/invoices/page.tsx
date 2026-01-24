@@ -10,7 +10,7 @@ export default async function StudentInvoicesPage() {
     const session = await auth()
 
     if (!session?.user?.id) {
-        redirect('/auth/login')
+        redirect('/auth/signin')
     }
 
     const invoices = await getUserInvoices(session.user.id)

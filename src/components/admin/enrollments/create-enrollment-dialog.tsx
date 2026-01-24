@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createEnrollmentWithSchedule, getAllStudents, getPublishedCourses, getActiveAndFutureAcademicPeriods } from '@/lib/actions/enrollments'
-import { verifyPaypalTransaction } from '@/lib/actions/commercial'
+import { verifyPaypalTransaction, verifyLingowowInvoice } from '@/lib/actions/commercial'
 import { Button } from '@/components/ui/button'
 import {
   Select,
@@ -100,6 +100,13 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
   const [loadingData, setLoadingData] = useState(true)
   const [isVerifyingPayment, setIsVerifyingPayment] = useState(false)
   const [verifiedPaymentAmount, setVerifiedPaymentAmount] = useState<number | null>(null)
+  const [isVerifyingLingowow, setIsVerifyingLingowow] = useState(false)
+  const [verifiedLingowowData, setVerifiedLingowowData] = useState<{
+    amount: number
+    currency: string
+    userName: string
+    email: string
+  } | null>(null)
 
   const form = useForm<z.infer<typeof CreateEnrollmentSchema>>({
     resolver: zodResolver(CreateEnrollmentSchema),
@@ -118,14 +125,20 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
 
   // Watch for changes in paypalOrderId to reset verification if changed
   const paypalOrderId = form.watch('paypalOrderId')
+  const lingowowInvoiceNumber = form.watch('lingowowInvoiceNumber')
 
   useEffect(() => {
     setVerifiedPaymentAmount(null)
   }, [paypalOrderId])
 
+  useEffect(() => {
+    setVerifiedLingowowData(null)
+  }, [lingowowInvoiceNumber])
+
   // Reset verification when switching invoice type
   useEffect(() => {
     setVerifiedPaymentAmount(null)
+    setVerifiedLingowowData(null)
   }, [invoiceType])
 
   // Obtener el curso seleccionado
@@ -190,6 +203,63 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
     }
   }
 
+  const verifyLingowowInvoiceHandler = async () => {
+    const invoiceNum = form.getValues('lingowowInvoiceNumber')
+    if (!invoiceNum || invoiceNum.length < 3) {
+      toast.error('Ingresa un número de factura válido')
+      return
+    }
+
+    setIsVerifyingLingowow(true)
+    try {
+      const result = await verifyLingowowInvoice(invoiceNum)
+      if (result.success && result.data) {
+        setVerifiedLingowowData({
+          amount: result.data.amount,
+          currency: result.data.currency,
+          userName: result.data.userName,
+          email: result.data.email,
+        })
+        
+        // Auto-complete fields if course was matched
+        const messages: string[] = [`Factura verificada: ${result.data.amount} ${result.data.currency}`]
+        
+        if (result.data.matchedCourse) {
+          const matchedCourseInList = courses.find(c => c.id === result.data.matchedCourse?.id)
+          if (matchedCourseInList) {
+            form.setValue('courseId', result.data.matchedCourse.id)
+            messages.push(`Curso detectado: ${result.data.matchedCourse.title}`)
+          }
+        }
+        
+        if (result.data.matchedPlan) {
+          messages.push(`Plan: ${result.data.matchedPlan.name}`)
+        }
+
+        // Try to find student by email
+        if (result.data.email) {
+          const matchedStudent = students.find(s => 
+            s.email.toLowerCase() === result.data.email.toLowerCase()
+          )
+          if (matchedStudent) {
+            form.setValue('studentId', matchedStudent.id)
+            messages.push(`Estudiante detectado: ${result.data.userName}`)
+          }
+        }
+        
+        toast.success(messages.join(' • '))
+      } else {
+        setVerifiedLingowowData(null)
+        toast.error(result.error || 'No se pudo verificar la factura')
+      }
+    } catch (error) {
+      console.error(error)
+      toast.error('Error al verificar la factura')
+    } finally {
+      setIsVerifyingLingowow(false)
+    }
+  }
+
   useEffect(() => {
     if (open) {
       loadData()
@@ -238,6 +308,10 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
         toast.error('Por favor ingresa el número de factura Lingowow')
         return
       }
+      if (verifiedLingowowData === null) {
+        toast.error('Por favor verifica la factura de Lingowow')
+        return
+      }
     }
     
     setCurrentStep('schedule')
@@ -250,7 +324,7 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
       return verifiedPaymentAmount !== null
     }
     if (values.invoiceType === 'lingowow') {
-      return !!values.lingowowInvoiceNumber && values.lingowowInvoiceNumber.length > 0
+      return verifiedLingowowData !== null
     }
     return false
   }
@@ -322,6 +396,7 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
     setCurrentStep('basic')
     form.reset()
     setVerifiedPaymentAmount(null)
+    setVerifiedLingowowData(null)
   }
 
   return (
@@ -604,12 +679,33 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Número de Factura Lingowow</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Ej: LW-2024-001"
-                          {...field}
-                        />
-                      </FormControl>
+                      <div className="flex gap-2">
+                        <FormControl>
+                          <Input
+                            placeholder="Ej: LW-2024-001"
+                            {...field}
+                          />
+                        </FormControl>
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          onClick={verifyLingowowInvoiceHandler}
+                          disabled={isVerifyingLingowow || !field.value || verifiedLingowowData !== null}
+                        >
+                          {isVerifyingLingowow ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : verifiedLingowowData !== null ? (
+                            'Verificado'
+                          ) : (
+                            'Verificar'
+                          )}
+                        </Button>
+                      </div>
+                      {verifiedLingowowData !== null && (
+                        <p className="text-xs text-green-600 font-medium">
+                          Factura confirmada por monto de {verifiedLingowowData.amount} {verifiedLingowowData.currency} - {verifiedLingowowData.userName}
+                        </p>
+                      )}
                       <p className="text-xs text-muted-foreground">
                         Esta factura ya existe en el sistema de Lingowow. No se creará una factura adicional.
                       </p>

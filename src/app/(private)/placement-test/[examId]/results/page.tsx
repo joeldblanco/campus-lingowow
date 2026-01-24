@@ -14,7 +14,7 @@ export default async function PlacementTestResultsPage({ params }: PlacementTest
   const session = await auth()
   
   if (!session?.user?.id) {
-    redirect('/login')
+    redirect('/auth/signin')
   }
 
   const exam = await getExamById(examId)

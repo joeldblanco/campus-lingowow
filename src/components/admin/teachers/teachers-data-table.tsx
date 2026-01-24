@@ -15,7 +15,6 @@ import {
 } from '@tanstack/react-table'
 import { ArrowUpDown, BookOpen, Calendar, Eye, Mail, MoreVertical, Pencil, Trash, Search } from 'lucide-react'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
 import { impersonateUser } from '@/lib/actions/impersonate'
 
 import { Button } from '@/components/ui/button'
@@ -57,7 +56,6 @@ export function TeachersDataTable({ teachers, onDeleteTeacher, onUpdateTeacher }
   const [scheduleTeacher, setScheduleTeacher] = useState<User | null>(null)
 
   const [isPending, startTransition] = useTransition()
-  const router = useRouter()
 
   const handleImpersonate = (userId: string) => {
     startTransition(() => {
@@ -70,8 +68,7 @@ export function TeachersDataTable({ teachers, onDeleteTeacher, onUpdateTeacher }
               description: 'Redirigiendo...',
             })
             // Redirigir después de suplantación exitosa
-            router.push('/dashboard')
-            router.refresh()
+            window.location.href = '/dashboard'
           }
         })
         .catch((error) => {

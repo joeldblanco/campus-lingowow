@@ -8,7 +8,7 @@ export default async function CreditHistoryPage() {
   const session = await auth()
 
   if (!session?.user?.id) {
-    redirect('/auth/login')
+    redirect('/auth/signin')
   }
 
   const [balanceResult, transactionsResult] = await Promise.all([

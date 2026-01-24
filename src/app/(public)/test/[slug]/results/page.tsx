@@ -18,7 +18,7 @@ export default async function ResultsPage({ params }: ResultsPageProps) {
   const session = await auth()
 
   if (!session?.user?.id) {
-    redirect(`/login?callbackUrl=/test/${slug}/results`)
+    redirect(`/auth/signin?callbackUrl=/test/${slug}/results`)
   }
 
   const exam = await getExamBySlug(slug)
