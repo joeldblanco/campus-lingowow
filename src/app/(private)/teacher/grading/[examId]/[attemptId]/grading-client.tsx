@@ -99,9 +99,9 @@ export function GradingClient({
       onSaveGrade={handleSaveGrade}
       onFinalizeReview={handleFinalizeReview}
       breadcrumbs={[
-        { label: 'Clases', href: '/teacher/classes' },
-        { label: courseName, href: `/teacher/classes/${examId}` },
-        { label: examTitle, href: `/admin/exams` }
+        { label: 'Calificaciones', href: '/teacher/grading' },
+        { label: examTitle, href: `/teacher/exams` },
+        { label: 'Revisión', href: '#' }
       ]}
     />
   )
