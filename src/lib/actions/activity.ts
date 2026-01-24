@@ -74,6 +74,16 @@ export async function getActivities() {
       orderBy: {
         createdAt: 'desc',
       },
+      include: {
+        createdBy: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
     })
   } catch (error) {
     console.error('Error obteniendo actividades:', error)
@@ -88,6 +98,14 @@ export async function getActivity(id: string) {
       where: { id },
       include: {
         content: true,
+        createdBy: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            email: true,
+          },
+        },
       },
     })
   } catch (error) {
@@ -451,6 +469,33 @@ export async function getActivitiesSummaryByLevels(userId?: string, maxLevel: nu
   } catch (error) {
     console.error('Error obteniendo resumen de actividades por niveles:', error)
     throw new Error('No se pudo obtener el resumen de actividades')
+  }
+}
+
+// Obtener estudiantes asignados a una actividad
+export async function getStudentsForActivity(activityId: string) {
+  try {
+    return await db.userActivity.findMany({
+      where: {
+        activityId,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+      orderBy: {
+        assignedAt: 'desc',
+      },
+    })
+  } catch (error) {
+    console.error('Error obteniendo estudiantes para la actividad:', error)
+    throw new Error('No se pudieron obtener los estudiantes asignados')
   }
 }
 

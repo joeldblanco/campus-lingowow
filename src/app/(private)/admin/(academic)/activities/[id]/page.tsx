@@ -1,11 +1,9 @@
-import { ActivityPreview } from '@/components/activities/activity-preview'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
@@ -26,6 +24,7 @@ import {
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { StudentAssignmentsTable } from '@/components/activities/student-assignments/student-assignments-table'
 
 export const metadata: Metadata = {
   title: 'Detalle de Actividad | Lingowow',
@@ -151,7 +150,12 @@ export default async function ActivityDetailPage({ params }: ActivityDetailPageP
                     </div>
                     <div className="bg-muted/50 p-3 rounded-md">
                       <div className="text-sm text-muted-foreground">Creado por</div>
-                      <div className="font-medium">{activity.createdById || 'Sistema'}</div>
+                      <div className="font-medium">
+                        {activity.createdBy 
+                          ? `${activity.createdBy.name}${activity.createdBy.lastName ? ' ' + activity.createdBy.lastName : ''}`
+                          : 'Sistema'
+                        }
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -161,11 +165,11 @@ export default async function ActivityDetailPage({ params }: ActivityDetailPageP
 
           <Card>
             <CardHeader>
-              <CardTitle>Visualización Previa</CardTitle>
-              <CardDescription>Así es como verán esta actividad los estudiantes</CardDescription>
+              <CardTitle>Estudiantes Asignados</CardTitle>
+              <CardDescription>Gestiona los estudiantes que tienen esta actividad asignada</CardDescription>
             </CardHeader>
             <CardContent>
-              <ActivityPreview activity={activity} />
+              <StudentAssignmentsTable activityId={id} />
             </CardContent>
           </Card>
         </div>
@@ -203,23 +207,6 @@ export default async function ActivityDetailPage({ params }: ActivityDetailPageP
                 </div>
               </div>
             </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Módulos</CardTitle>
-              <CardDescription>Módulos que incluyen esta actividad</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-8 text-muted-foreground">
-                <p>Esta actividad no está incluida en ningún módulo todavía.</p>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button className="w-full" variant="outline">
-                Añadir a un módulo
-              </Button>
-            </CardFooter>
           </Card>
         </div>
       </div>

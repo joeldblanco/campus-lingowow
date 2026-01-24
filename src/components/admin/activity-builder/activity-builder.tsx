@@ -128,7 +128,7 @@ export function ActivityBuilder({ activityId, initialData }: ActivityBuilderProp
           settings.difficulty === 'beginner' ? 1 : settings.difficulty === 'intermediate' ? 2 : 3,
         points: questions.length * 10,
         duration: Math.max(5, questions.length * 2),
-        isPublished: false, // Auto-save as draft
+        isPublished, // Preserve current published status during auto-save
         tags: settings.tags,
         questions: questions.map((q, index) => ({
           ...q,
@@ -138,7 +138,7 @@ export function ActivityBuilder({ activityId, initialData }: ActivityBuilderProp
       }
       debouncedSave(activityData)
     }
-  }, [title, questions, settings, debouncedSave, session?.user?.id])
+  }, [title, questions, settings, debouncedSave, session?.user?.id, isPublished])
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
