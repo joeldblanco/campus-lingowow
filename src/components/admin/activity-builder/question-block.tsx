@@ -19,6 +19,7 @@ import {
   QuestionType,
   QUESTION_TYPES,
   extractBlanksFromSentence,
+  ScrambledWord,
 } from './types'
 
 interface QuestionBlockProps {
@@ -103,7 +104,7 @@ export function QuestionBlock({
               type="button"
               onClick={onDelete}
               className="p-1.5 text-slate-400 hover:text-red-500 transition-colors rounded-md hover:bg-red-50 dark:hover:bg-red-900/20"
-              title="Delete"
+              title="Eliminar"
             >
               <Trash2 className="h-4 w-4" />
             </button>
@@ -111,7 +112,7 @@ export function QuestionBlock({
               type="button"
               onClick={onDuplicate}
               className="p-1.5 text-slate-400 hover:text-primary transition-colors rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/20"
-              title="Duplicate"
+              title="Duplicar"
             >
               <Copy className="h-4 w-4" />
             </button>
@@ -191,7 +192,7 @@ function MultipleChoiceEditor({
       {/* Question Text */}
       <div>
         <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">
-          Question Text
+          Texto de la Pregunta
         </label>
         <div className="relative">
           <Input
@@ -207,7 +208,7 @@ function MultipleChoiceEditor({
       {/* Answers */}
       <div>
         <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2.5">
-          Answers
+          Respuestas
         </label>
         <div className="space-y-2.5">
           {options.map((option) => (
@@ -230,7 +231,7 @@ function MultipleChoiceEditor({
                 <Input
                   value={option.text}
                   onChange={(e) => handleOptionChange(option.id, e.target.value)}
-                  placeholder="Enter an option..."
+                  placeholder="Ingresa una opción..."
                   className={cn(
                     'w-full px-4 py-2.5 rounded-lg text-sm transition-colors',
                     option.isCorrect
@@ -257,7 +258,7 @@ function MultipleChoiceEditor({
             onClick={handleAddOption}
             className="flex items-center gap-1.5 text-xs text-primary font-medium hover:underline pl-8 pt-1"
           >
-            <Plus className="h-3.5 w-3.5" /> Add another option
+            <Plus className="h-3.5 w-3.5" /> Agregar otra opción
           </button>
         </div>
       </div>
@@ -309,14 +310,14 @@ function FillBlanksEditor({
       <div className="bg-blue-50 dark:bg-blue-900/10 px-4 py-3 rounded-lg border border-blue-100 dark:border-blue-800/50">
         <p className="text-xs text-blue-600 dark:text-blue-300 flex items-center gap-2">
           <Info className="h-4 w-4 flex-shrink-0" />
-          Type your sentence below. Use square brackets <strong className="text-blue-700 dark:text-blue-200">[answer]</strong> to create a blank.
+          Escribe tu oración abajo. Usa corchetes <strong className="text-blue-700 dark:text-blue-200">[respuesta]</strong> para crear un espacio en blanco.
         </p>
       </div>
 
       {/* Sentence Editor */}
       <div>
         <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-          Sentence Editor
+          Editor de Oración
         </label>
         <Textarea
           value={question.sentenceWithBlanks || ''}
@@ -330,7 +331,7 @@ function FillBlanksEditor({
       {question.sentenceWithBlanks && (
         <div className="pt-2">
           <h4 className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-3">
-            Preview
+            Vista Previa
           </h4>
           <div className="text-base text-slate-800 dark:text-slate-200 leading-relaxed">
             {renderPreview()}
@@ -381,16 +382,16 @@ function MatchingPairsEditor({
   return (
     <div className="space-y-4">
       <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-        Pairs
+        Pares
       </label>
 
       {/* Headers */}
       <div className="grid grid-cols-2 gap-4 pr-8">
         <div className="text-xs font-semibold text-slate-500">
-          Left Item
+          Elemento Izquierdo
         </div>
         <div className="text-xs font-semibold text-slate-500">
-          Right Item (Match)
+          Elemento Derecho (Relación)
         </div>
       </div>
 
@@ -438,7 +439,7 @@ function MatchingPairsEditor({
         onClick={handleAddPair}
         className="flex items-center gap-1.5 text-xs text-primary font-medium hover:underline pt-1"
       >
-        <Plus className="h-3.5 w-3.5" /> Add another pair
+        <Plus className="h-3.5 w-3.5" /> Agregar otro par
       </button>
     </div>
   )
@@ -453,23 +454,38 @@ function SentenceUnscrambleEditor({
   onUpdate: (q: ActivityQuestion) => void
 }) {
   const handleSentenceChange = (sentence: string) => {
-    // Auto-generate scrambled words from the sentence
+    // Auto-generate scrambled words from the sentence with unique IDs
     const words = sentence.trim().split(/\s+/).filter(Boolean)
-    const scrambled = [...words].sort(() => Math.random() - 0.5)
+    const scrambled: ScrambledWord[] = words.map((word, index) => ({
+      id: `word-${Date.now()}-${index}`,
+      text: word,
+      originalIndex: index,
+    }))
+    
+    // Shuffle the scrambled words
+    const shuffled = [...scrambled].sort(() => Math.random() - 0.5)
 
     onUpdate({
       ...question,
       correctSentence: sentence,
-      scrambledWords: scrambled,
+      scrambledWords: shuffled,
     })
   }
 
   const handleReshuffle = () => {
     const words = (question.correctSentence || '').trim().split(/\s+/).filter(Boolean)
-    const scrambled = [...words].sort(() => Math.random() - 0.5)
+    const scrambled: ScrambledWord[] = words.map((word, index) => ({
+      id: `word-${Date.now()}-${index}`,
+      text: word,
+      originalIndex: index,
+    }))
+    
+    // Shuffle the scrambled words
+    const shuffled = [...scrambled].sort(() => Math.random() - 0.5)
+    
     onUpdate({
       ...question,
-      scrambledWords: scrambled,
+      scrambledWords: shuffled,
     })
   }
 
@@ -479,19 +495,19 @@ function SentenceUnscrambleEditor({
       <div className="bg-blue-50 dark:bg-blue-900/10 px-4 py-3 rounded-lg border border-blue-100 dark:border-blue-800/50">
         <p className="text-xs text-blue-600 dark:text-blue-300 flex items-center gap-2">
           <Info className="h-4 w-4 flex-shrink-0" />
-          Write the correct sentence. Words will be automatically scrambled for the student.
+          Escribe la oración correcta. Las palabras se desordenarán automáticamente para el estudiante.
         </p>
       </div>
 
       {/* Correct Sentence */}
       <div>
         <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-          Correct Sentence
+          Oración Correcta
         </label>
         <Textarea
           value={question.correctSentence || ''}
           onChange={(e) => handleSentenceChange(e.target.value)}
-          placeholder="Write the sentence in the correct order..."
+          placeholder="Escribe la oración en el orden correcto..."
           className="w-full p-4 rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-primary focus:border-primary min-h-[80px] text-sm"
         />
       </div>
@@ -501,7 +517,7 @@ function SentenceUnscrambleEditor({
         <div className="pt-2">
           <div className="flex items-center justify-between mb-3">
             <h4 className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-              Preview (Scrambled)
+              Vista Previa (Desordenada)
             </h4>
             <Button
               type="button"
@@ -510,16 +526,16 @@ function SentenceUnscrambleEditor({
               onClick={handleReshuffle}
               className="text-xs h-7 px-2"
             >
-              Reshuffle
+              Reordenar
             </Button>
           </div>
           <div className="flex flex-wrap gap-2">
-            {question.scrambledWords.map((word, idx) => (
+            {question.scrambledWords.map((wordObj, idx) => (
               <span
                 key={idx}
                 className="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700"
               >
-                {word}
+                {wordObj.text}
               </span>
             ))}
           </div>

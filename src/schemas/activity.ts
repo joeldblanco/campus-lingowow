@@ -19,7 +19,7 @@ const questionStepSchema = z.object({
 const audioStepSchema = z.object({
   type: z.literal('audio'),
   content: z.string().min(1, { message: 'El contenido no puede estar vacío' }),
-  audioUrl: z.string().url({ message: 'Debe proporcionar una URL válida' }),
+  audioUrl: z.string().optional(), // URL opcional para permitir guardar sin audio aún
   transcript: z.string().optional(),
 })
 

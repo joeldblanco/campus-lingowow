@@ -9,6 +9,7 @@ const BUILDER_ROUTES = [
   '/builder',
   '/admin/exams/edit/',
   '/admin/resources/new',
+  '/admin/activities/',
   '/teacher/students/',
   '/teacher/exams/',
 ]

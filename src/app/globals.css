@@ -228,3 +228,19 @@
 [contenteditable] li {
   margin: 0.25rem 0;
 }
+
+/* Text selection prevention for activities */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Allow selection for interactive elements */
+.selectable {
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+}

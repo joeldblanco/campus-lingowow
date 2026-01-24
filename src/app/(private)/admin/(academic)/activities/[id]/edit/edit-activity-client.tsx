@@ -2,6 +2,7 @@
 
 import { ActivityBuilder } from '@/components/admin/activity-builder'
 import { ActivityQuestion, ActivitySettings, DifficultyLevel } from '@/components/admin/activity-builder/types'
+import { useAutoCloseSidebar } from '@/hooks/use-auto-close-sidebar'
 
 interface Activity {
   id: string
@@ -11,6 +12,7 @@ interface Activity {
   activityData: unknown
   steps: unknown
   tags?: string[]
+  isPublished: boolean
 }
 
 interface EditActivityClientProps {
@@ -18,17 +20,19 @@ interface EditActivityClientProps {
 }
 
 export function EditActivityClient({ activity }: EditActivityClientProps) {
+  useAutoCloseSidebar()
+  
   // Convert activity data to the format expected by ActivityBuilder
   const initialData = {
     title: activity.title,
     description: activity.description || '',
     questions: extractQuestions(activity),
     settings: extractSettings(activity),
+    isPublished: activity.isPublished,
   }
 
   return (
     <ActivityBuilder
-      mode="edit"
       activityId={activity.id}
       initialData={initialData}
     />

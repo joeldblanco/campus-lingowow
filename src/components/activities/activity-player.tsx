@@ -74,8 +74,9 @@ export default function ActivityPlayer({ activity, onComplete, onClose }: Activi
       setCurrentStep(prev => prev + 1)
     } else {
       // Actividad completada - calcular puntaje final
+      // Nota: El score ya incluye la última respuesta porque handleSubmitAnswer se ejecutó antes
       const totalQuestions = steps.filter(s => s.type === 'question').length
-      const finalScore = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0
+      const finalScore = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 100
       onComplete(finalScore)
     }
   }

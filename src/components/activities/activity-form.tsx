@@ -103,18 +103,15 @@ export function ActivityForm({ activity }: ActivityFormProps = {}) {
   const onSubmit = async (data: ActivityFormValues) => {
     setIsSubmitting(true)
 
-    if (!session?.user) {
+    if (!session?.user?.id) {
       toast.error('Debes iniciar sesión para crear una actividad.')
+      setIsSubmitting(false)
       return
     }
 
-    const userName = session.user.name
-    const userLastName = session.user.lastName // Asumiendo que lastName está en la sesión
-    const createdBy = userLastName ? `${userName} ${userLastName}` : userName
-
     const finalData = {
       ...data,
-      createdBy: createdBy || 'Desconocido', // Fallback por si acaso
+      createdBy: session.user.id, // Usar el ID del usuario, no el nombre
     }
 
     try {

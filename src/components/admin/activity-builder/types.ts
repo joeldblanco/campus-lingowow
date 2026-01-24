@@ -8,6 +8,12 @@ export type QuestionType =
 
 export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced'
 
+export interface ScrambledWord {
+  id: string
+  text: string
+  originalIndex: number
+}
+
 export interface ActivityQuestion {
   id: string
   type: QuestionType
@@ -22,7 +28,7 @@ export interface ActivityQuestion {
   pairs?: { id: string; left: string; right: string }[]
   // Sentence Unscramble
   correctSentence?: string
-  scrambledWords?: string[]
+  scrambledWords?: ScrambledWord[]
 }
 
 export interface ActivitySettings {
@@ -38,16 +44,16 @@ export const DEFAULT_ACTIVITY_SETTINGS: ActivitySettings = {
 }
 
 export const QUESTION_TYPES: { type: QuestionType; label: string; description: string }[] = [
-  { type: 'multiple_choice', label: 'Multiple Choice', description: 'Select the correct answer' },
-  { type: 'fill_blanks', label: 'Fill in the Blanks', description: 'Fill in the missing words' },
-  { type: 'matching_pairs', label: 'Matching Pairs', description: 'Connect related items' },
-  { type: 'sentence_unscramble', label: 'Sentence Unscramble', description: 'Reorder words' },
+  { type: 'multiple_choice', label: 'Opción Múltiple', description: 'Selecciona la respuesta correcta' },
+  { type: 'fill_blanks', label: 'Completar Espacios', description: 'Completa las palabras faltantes' },
+  { type: 'matching_pairs', label: 'Relacionar Pares', description: 'Conecta elementos relacionados' },
+  { type: 'sentence_unscramble', label: 'Ordenar Oración', description: 'Reordena las palabras' },
 ]
 
 export const DIFFICULTY_LEVELS: { value: DifficultyLevel; label: string; sublabel: string }[] = [
-  { value: 'beginner', label: 'Beginner', sublabel: 'A1 - A2 Level' },
-  { value: 'intermediate', label: 'Intermediate', sublabel: 'B1 - B2 Level' },
-  { value: 'advanced', label: 'Advanced', sublabel: 'C1 - C2 Level' },
+  { value: 'beginner', label: 'Principiante', sublabel: 'A1 - A2 Level' },
+  { value: 'intermediate', label: 'Intermedio', sublabel: 'B1 - B2 Level' },
+  { value: 'advanced', label: 'Avanzado', sublabel: 'C1 - C2 Level' },
 ]
 
 export function createDefaultQuestion(type: QuestionType, order: number): ActivityQuestion {

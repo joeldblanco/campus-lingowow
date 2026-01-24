@@ -89,7 +89,7 @@ export type QuestionStep = {
 export type AudioStep = {
   type: 'audio'
   content: string
-  audioUrl: string
+  audioUrl?: string
   transcript?: string
 }
 

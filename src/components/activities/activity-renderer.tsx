@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useCallback } from 'react'
-import { Check, X, HelpCircle, ArrowRight, ArrowLeft, RotateCcw } from 'lucide-react'
+import { useState, useCallback, useMemo } from 'react'
+import { Check, X, HelpCircle, ArrowRight, RotateCcw } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -9,6 +9,12 @@ import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
 
 // Types for activity questions
+interface ScrambledWord {
+  id: string
+  text: string
+  originalIndex: number
+}
+
 interface ActivityQuestion {
   id: string
   type: 'multiple_choice' | 'fill_blanks' | 'matching_pairs' | 'sentence_unscramble'
@@ -19,7 +25,7 @@ interface ActivityQuestion {
   blanks?: { id: string; answer: string }[]
   pairs?: { id: string; left: string; right: string }[]
   correctSentence?: string
-  scrambledWords?: string[]
+  scrambledWords?: ScrambledWord[]
 }
 
 interface ActivityRendererProps {
@@ -38,7 +44,7 @@ interface ActivityRendererProps {
 
 interface QuestionAnswer {
   questionId: string
-  answer: string | string[] | Record<string, string>
+  answer: string | ScrambledWord[] | Record<string, string>
   isCorrect?: boolean
 }
 
@@ -81,15 +87,25 @@ export function ActivityRenderer({ activity, onComplete, onClose }: ActivityRend
       
       case 'sentence_unscramble':
         if (!question.correctSentence || !Array.isArray(answer)) return false
-        return (answer as string[]).join(' ') === question.correctSentence
+        // Convert ScrambledWord[] to string by joining text properties
+        const scrambledAnswer = answer as ScrambledWord[]
+        const answerText = scrambledAnswer.map(w => w.text).join(' ')
+        return answerText === question.correctSentence
       
       default:
         return false
     }
   }
 
-  const handleCheckAnswer = () => {
+  const handleCheckAnswer = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (!currentQuestion) return
+    
+    // Create particle burst effect at button center position at click time
+    const button = event.currentTarget
+    const rect = button.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const centerY = rect.top + rect.height / 2
+    createParticleBurst(centerX, centerY)
     
     const answer = answers[currentQuestion.id]
     if (answer) {
@@ -121,10 +137,21 @@ export function ActivityRenderer({ activity, onComplete, onClose }: ActivityRend
     }
   }
 
-  const handlePrevious = () => {
-    if (currentStep > 0) {
-      setShowFeedback(false)
-      setCurrentStep(prev => prev - 1)
+  const handleSkip = () => {
+    // Mark the current question as incorrect and move to next
+    if (currentQuestion) {
+      setAnswers(prev => ({
+        ...prev,
+        [currentQuestion.id]: { questionId: currentQuestion.id, answer: '', isCorrect: false }
+      }))
+    }
+    setShowFeedback(false)
+    if (currentStep < totalSteps - 1) {
+      setCurrentStep(prev => prev + 1)
+    }
+    if (currentStep === totalSteps - 2) {
+      // Moving to results
+      onComplete?.(score, activity.questions.length)
     }
   }
 
@@ -139,12 +166,74 @@ export function ActivityRenderer({ activity, onComplete, onClose }: ActivityRend
     setCurrentStep(1)
   }
 
+  // Particle Burst Effect
+  const createParticleBurst = (clientX: number, clientY: number) => {
+    // Usar coordenadas exactas del clic en lugar de la posición del botón
+    const centerX = clientX
+    const centerY = clientY
+    
+    const blueColor = '#3B82F6' // Solo azul brillante
+    
+    const particleCount = 10 + Math.floor(Math.random() * 3) // 10-12 particles
+    
+    for (let i = 0; i < particleCount; i++) {
+      const angle = Math.random() * Math.PI * 2 // 0 to 360 degrees
+      const distance = 80 + Math.random() * 120 // 80-200px (más largo)
+      const color = blueColor
+      const size = 3 + Math.random() * 4 // 3-7px (más grande)
+      
+      const particle = document.createElement('div')
+      particle.className = 'particle'
+      particle.style.cssText = `
+        position: fixed;
+        left: ${centerX}px;
+        top: ${centerY}px;
+        width: ${size}px;
+        height: ${size}px;
+        background: ${color};
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform-origin: center;
+        transition: all 0.8s ease-out;
+        opacity: 1;
+      `
+      
+      // Calculate end position
+      const endX = Math.cos(angle) * distance
+      const endY = Math.sin(angle) * distance
+      
+      // Set CSS variables for animation
+      particle.style.setProperty('--tx', `${endX}px`)
+      particle.style.setProperty('--ty', `${endY}px`)
+      
+      document.body.appendChild(particle)
+      
+      // Trigger animation
+      requestAnimationFrame(() => {
+        particle.style.opacity = '0'
+        particle.style.transform = `translate(${endX}px, ${endY}px) scale(0)`
+      })
+      
+      // Remove particle after animation
+      setTimeout(() => {
+        particle.remove()
+      }, 800)
+    }
+  }
+
   const progress = ((currentStep) / (totalSteps - 1)) * 100
 
   const difficultyColors = {
     beginner: 'bg-green-100 text-green-700',
     intermediate: 'bg-yellow-100 text-yellow-700',
     advanced: 'bg-red-100 text-red-700'
+  }
+
+  const difficultyLabels = {
+    beginner: 'Principiante',
+    intermediate: 'Intermedio',
+    advanced: 'Avanzado'
   }
 
   const currentAnswer = currentQuestion ? answers[currentQuestion.id] : undefined
@@ -155,8 +244,8 @@ export function ActivityRenderer({ activity, onComplete, onClose }: ActivityRend
   )
 
   return (
-    <div className="bg-slate-50 dark:bg-slate-950">
-      {/* Header */}
+    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 no-select">
+      {/* Sticky Header */}
       <header className="sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 py-3">
         <div className="max-w-[700px] mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -174,12 +263,12 @@ export function ActivityRenderer({ activity, onComplete, onClose }: ActivityRend
               <div className="flex items-center gap-2">
                 {activity.difficulty && (
                   <Badge variant="secondary" className={cn('text-[10px] px-1.5 py-0', difficultyColors[activity.difficulty])}>
-                    {activity.difficulty}
+                    {difficultyLabels[activity.difficulty]}
                   </Badge>
                 )}
                 {!isIntro && !isResults && (
                   <span className="text-xs text-slate-500">
-                    Question {currentQuestionIndex + 1} of {activity.questions.length}
+                    Pregunta {currentQuestionIndex + 1} de {activity.questions.length}
                   </span>
                 )}
               </div>
@@ -189,7 +278,7 @@ export function ActivityRenderer({ activity, onComplete, onClose }: ActivityRend
           <div className="flex items-center gap-3">
             {onClose && (
               <Button variant="ghost" size="sm" onClick={onClose}>
-                Close
+                Cerrar
               </Button>
             )}
           </div>
@@ -222,13 +311,13 @@ export function ActivityRenderer({ activity, onComplete, onClose }: ActivityRend
               <p className="text-slate-500 mb-4">{activity.description}</p>
             )}
             <div className="flex items-center justify-center gap-4 text-sm text-slate-500 mb-6">
-              <span>{activity.questions.length} questions</span>
+              <span>{activity.questions.length} preguntas</span>
               {activity.difficulty && (
                 <Badge variant="secondary" className={cn('text-xs', difficultyColors[activity.difficulty])}>
-                  {activity.difficulty}
+                  {difficultyLabels[activity.difficulty]}
                 </Badge>
               )}
-              {activity.points && <span>{activity.points} points</span>}
+              {activity.points && <span>{activity.points} puntos</span>}
             </div>
             {activity.tags && activity.tags.length > 0 && (
               <div className="flex flex-wrap justify-center gap-1.5 mb-6">
@@ -240,7 +329,7 @@ export function ActivityRenderer({ activity, onComplete, onClose }: ActivityRend
               </div>
             )}
             <Button size="lg" onClick={handleStart} className="px-8">
-              Start Activity
+              Comenzar Actividad
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -261,23 +350,27 @@ export function ActivityRenderer({ activity, onComplete, onClose }: ActivityRend
             <div className="flex items-center justify-between pt-4">
               <Button
                 variant="outline"
-                onClick={handlePrevious}
-                disabled={currentStep <= 1}
+                onClick={handleSkip}
+                className={cn(
+                  "text-slate-600 hover:text-slate-700 transition-all duration-300 transform",
+                  showFeedback && "scale-0 opacity-0 pointer-events-none"
+                )}
+                disabled={showFeedback}
               >
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Previous
+                Saltar
               </Button>
 
               {!showFeedback ? (
                 <Button
                   onClick={handleCheckAnswer}
                   disabled={!hasAnswered}
+                  className="relative overflow-visible transition-all duration-300"
                 >
-                  Check Answer
+                  <span className="relative z-10">Verificar Respuesta</span>
                 </Button>
               ) : (
                 <Button onClick={handleNext}>
-                  {currentStep === totalSteps - 2 ? 'See Results' : 'Next Question'}
+                  {currentStep === totalSteps - 2 ? 'Ver Resultados' : 'Siguiente Pregunta'}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               )}
@@ -299,22 +392,22 @@ export function ActivityRenderer({ activity, onComplete, onClose }: ActivityRend
               )}
             </div>
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
-              {score >= activity.questions.length * 0.7 ? 'Great Job!' : 'Keep Practicing!'}
+              {score >= activity.questions.length * 0.7 ? '¡Excelente Trabajo!' : '¡Sigue Practicando!'}
             </h2>
             <div className="text-4xl font-bold text-primary mb-2">
               {Math.round((score / activity.questions.length) * 100)}%
             </div>
             <p className="text-slate-500 mb-6">
-              You got {score} out of {activity.questions.length} questions correct
+              Obtuviste {score} de {activity.questions.length} respuestas correctas
             </p>
             <div className="flex items-center justify-center gap-3">
               <Button onClick={handleRetry} variant="outline" size="lg">
                 <RotateCcw className="mr-2 h-4 w-4" />
-                Try Again
+                Intentar de Nuevo
               </Button>
               {onClose && (
                 <Button onClick={onClose} size="lg">
-                  Finish
+                  Finalizar
                 </Button>
               )}
             </div>
@@ -336,15 +429,15 @@ interface QuestionRendererProps {
 
 function QuestionRenderer({ question, index, answer, onAnswerChange, submitted }: QuestionRendererProps) {
   const questionTypeLabels: Record<string, string> = {
-    multiple_choice: 'Multiple Choice',
-    fill_blanks: 'Fill in the Blanks',
-    matching_pairs: 'Matching Pairs',
-    sentence_unscramble: 'Sentence Unscramble'
+    multiple_choice: 'Opción Múltiple',
+    fill_blanks: 'Completar Espacios',
+    matching_pairs: 'Relacionar Pares',
+    sentence_unscramble: 'Ordenar Oración'
   }
 
   return (
     <div className={cn(
-      "bg-white dark:bg-slate-900 rounded-xl border shadow-sm transition-colors",
+      "bg-white dark:bg-slate-900 rounded-xl border shadow-sm transition-colors no-select",
       submitted && answer?.isCorrect && "border-green-300 dark:border-green-800",
       submitted && answer?.isCorrect === false && "border-red-300 dark:border-red-800",
       !submitted && "border-slate-200 dark:border-slate-800"
@@ -368,12 +461,12 @@ function QuestionRenderer({ question, index, answer, onAnswerChange, submitted }
               {answer?.isCorrect ? (
                 <>
                   <Check className="h-3.5 w-3.5" />
-                  Correct
+                  Correcto
                 </>
               ) : (
                 <>
                   <X className="h-3.5 w-3.5" />
-                  Incorrect
+                  Incorrecto
                 </>
               )}
             </div>
@@ -408,7 +501,7 @@ function QuestionRenderer({ question, index, answer, onAnswerChange, submitted }
         {question.type === 'sentence_unscramble' && (
           <SentenceUnscrambleQuestion
             question={question}
-            answer={answer?.answer as string[]}
+            answer={(answer?.answer as unknown) as ScrambledWord[]}
             onAnswerChange={onAnswerChange}
             submitted={submitted}
           />
@@ -433,7 +526,7 @@ function MultipleChoiceQuestion({
   const options = question.options || []
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 no-select">
       {question.questionText && (
         <div className="relative">
           <div className="flex items-start gap-3 p-4 bg-slate-50 dark:bg-slate-800 rounded-lg">
@@ -516,7 +609,7 @@ function FillBlanksQuestion({
 
   return (
     <div className="space-y-4">
-      <div className="text-base text-slate-800 dark:text-slate-200 leading-relaxed flex flex-wrap items-center gap-1">
+      <div className="text-base text-slate-800 dark:text-slate-200 leading-relaxed flex flex-wrap items-center gap-1 no-select">
         {parts.map((part, index) => {
           if (index % 2 === 1) {
             const blank = blanks[blankIndex]
@@ -535,7 +628,7 @@ function FillBlanksQuestion({
                   disabled={submitted}
                   placeholder="..."
                   className={cn(
-                    "w-24 h-8 text-sm text-center px-2",
+                    "w-24 h-8 text-sm text-center px-2 selectable",
                     isCorrect && "border-green-500 bg-green-50 text-green-700",
                     isIncorrect && "border-red-500 bg-red-50 text-red-700"
                   )}
@@ -568,8 +661,12 @@ function MatchingPairsQuestion({
   const pairs = question.pairs || []
   const [selectedLeft, setSelectedLeft] = useState<string | null>(null)
 
-  // Shuffle right items for display
-  const rightItems = pairs.map(p => p.right).sort(() => Math.random() - 0.5)
+  // Shuffle right items for display - usar useMemo para evitar re-shuffle en cada render
+  const rightItems = useMemo(() => 
+    [...pairs.map(p => p.right)].sort(() => Math.random() - 0.5),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [pairs.length] // Solo re-shuffle cuando cambia el número de pares
+  )
 
   const handleLeftClick = (left: string) => {
     if (submitted) return
@@ -583,11 +680,11 @@ function MatchingPairsQuestion({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 no-select">
       <div className="grid grid-cols-2 gap-4">
         {/* Left Column */}
         <div className="space-y-2">
-          <div className="text-xs font-semibold text-slate-500 mb-2">Items</div>
+          <div className="text-xs font-semibold text-slate-500 mb-2">Elementos</div>
           {pairs.map((pair) => {
             const isMatched = answer[pair.left]
             const isSelected = selectedLeft === pair.left
@@ -603,7 +700,7 @@ function MatchingPairsQuestion({
                 className={cn(
                   "w-full p-3 rounded-lg border text-sm text-left transition-all",
                   isSelected && "border-primary bg-primary/5",
-                  isMatched && !submitted && "border-green-300 bg-green-50",
+                  isMatched && !submitted && "border-blue-300 bg-blue-50",
                   !isSelected && !isMatched && "border-slate-200 hover:border-slate-300",
                   isCorrect && "border-green-500 bg-green-50",
                   isIncorrect && "border-red-500 bg-red-50"
@@ -620,7 +717,7 @@ function MatchingPairsQuestion({
 
         {/* Right Column */}
         <div className="space-y-2">
-          <div className="text-xs font-semibold text-slate-500 mb-2">Matches</div>
+          <div className="text-xs font-semibold text-slate-500 mb-2">Relaciones</div>
           {rightItems.map((right) => {
             const isUsed = Object.values(answer).includes(right)
 
@@ -655,18 +752,21 @@ function SentenceUnscrambleQuestion({
   submitted
 }: {
   question: ActivityQuestion
-  answer?: string[]
-  onAnswerChange: (answer: string[]) => void
+  answer?: ScrambledWord[]
+  onAnswerChange: (answer: ScrambledWord[]) => void
   submitted: boolean
 }) {
   const scrambledWords = question.scrambledWords || []
   const correctSentence = question.correctSentence || ''
 
-  const availableWords = scrambledWords.filter(word => !answer.includes(word))
+  // Filter available words by checking if their ID is already used in the answer
+  const availableWords = scrambledWords.filter(
+    wordObj => !answer.some(usedWord => usedWord.id === wordObj.id)
+  )
 
-  const handleWordClick = (word: string) => {
+  const handleWordClick = (wordObj: ScrambledWord) => {
     if (submitted) return
-    onAnswerChange([...answer, word])
+    onAnswerChange([...answer, wordObj])
   }
 
   const handleRemoveWord = (index: number) => {
@@ -676,10 +776,12 @@ function SentenceUnscrambleQuestion({
     onAnswerChange(newAnswer)
   }
 
-  const isCorrect = submitted && answer.join(' ') === correctSentence
+  // Check if answer is correct by comparing the text of words
+  const answerText = answer.map(w => w.text).join(' ')
+  const isCorrect = submitted && answerText === correctSentence
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 no-select">
       {/* Answer Area */}
       <div className={cn(
         "min-h-[60px] p-4 rounded-lg border-2 border-dashed flex flex-wrap gap-2",
@@ -689,9 +791,9 @@ function SentenceUnscrambleQuestion({
         !submitted && "border-slate-300"
       )}>
         {answer.length === 0 ? (
-          <span className="text-sm text-slate-400">Click words below to build your sentence</span>
+          <span className="text-sm text-slate-400">Haz clic en las palabras de abajo para construir tu oración</span>
         ) : (
-          answer.map((word, idx) => (
+          answer.map((wordObj, idx) => (
             <button
               key={idx}
               type="button"
@@ -700,11 +802,10 @@ function SentenceUnscrambleQuestion({
               className={cn(
                 "px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors",
                 !submitted && "bg-primary/10 text-primary border-primary/20 hover:bg-primary/20",
-                isCorrect && "bg-green-100 text-green-700 border-green-200",
-                submitted && !isCorrect && "bg-red-100 text-red-700 border-red-200"
+                submitted && "bg-slate-100 text-slate-500 border-slate-200"
               )}
             >
-              {word}
+              {wordObj.text}
             </button>
           ))
         )}
@@ -712,15 +813,15 @@ function SentenceUnscrambleQuestion({
 
       {/* Available Words */}
       <div className="flex flex-wrap gap-2">
-        {availableWords.map((word, idx) => (
+        {availableWords.map((wordObj, idx) => (
           <button
             key={idx}
             type="button"
-            onClick={() => handleWordClick(word)}
+            onClick={() => handleWordClick(wordObj)}
             disabled={submitted}
             className="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
           >
-            {word}
+            {wordObj.text}
           </button>
         ))}
       </div>
@@ -728,7 +829,7 @@ function SentenceUnscrambleQuestion({
       {/* Show correct answer if wrong */}
       {submitted && !isCorrect && (
         <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
-          <p className="text-xs text-green-600 dark:text-green-400 font-medium mb-1">Correct answer:</p>
+          <p className="text-xs text-green-600 dark:text-green-400 font-medium mb-1">Respuesta correcta:</p>
           <p className="text-sm text-green-700 dark:text-green-300">{correctSentence}</p>
         </div>
       )}

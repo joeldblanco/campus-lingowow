@@ -8,6 +8,11 @@ import {
   Eye,
   ChevronLeft,
   ChevronRight,
+  BookOpen,
+  Headphones,
+  Mic,
+  PenTool,
+  FileText,
   X,
   BarChart3,
   Tag,
@@ -25,6 +30,7 @@ import {
 } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
+import { ActivityRenderer } from '@/components/activities/activity-renderer'
 
 interface Activity {
   id: string
@@ -85,22 +91,40 @@ const ICON_COLORS = [
   'text-lime-600',
 ]
 
-const TYPE_CONFIG: Record<string, { label: string; icon: string }> = {
-  VOCABULARY: { label: 'Vocabulario', icon: '📚' },
-  READING: { label: 'Lectura', icon: '📖' },
-  LISTENING: { label: 'Escucha', icon: '🎧' },
-  SPEAKING: { label: 'Habla', icon: '🎤' },
-  WRITING: { label: 'Escritura', icon: '✍️' },
-  GRAMMAR: { label: 'Gramática', icon: '📝' },
-  PRONUNCIATION: { label: 'Pronunciación', icon: '🗣️' },
-  COMPREHENSION: { label: 'Comprensión', icon: '🧠' },
-  MULTIPLE_CHOICE: { label: 'Opción Múltiple', icon: '✅' },
-  FILL_IN_BLANK: { label: 'Completar', icon: '📋' },
-  MATCHING: { label: 'Emparejar', icon: '🔗' },
-  ORDERING: { label: 'Ordenar', icon: '🔢' },
-  DICTATION: { label: 'Dictado', icon: '✏️' },
-  TRANSLATION: { label: 'Traducción', icon: '🌐' },
-  OTHER: { label: 'Otro', icon: '📄' },
+const CARD_ICON_CONFIG: Record<string, React.ReactNode> = {
+  VOCABULARY: <FileText className="h-6 w-6" />,
+  READING: <BookOpen className="h-6 w-6" />,
+  LISTENING: <Headphones className="h-6 w-6" />,
+  SPEAKING: <Mic className="h-6 w-6" />,
+  WRITING: <PenTool className="h-6 w-6" />,
+  GRAMMAR: <FileText className="h-6 w-6" />,
+  PRONUNCIATION: <Mic className="h-6 w-6" />,
+  COMPREHENSION: <BookOpen className="h-6 w-6" />,
+  MULTIPLE_CHOICE: <FileText className="h-6 w-6" />,
+  FILL_IN_BLANK: <FileText className="h-6 w-6" />,
+  MATCHING: <FileText className="h-6 w-6" />,
+  ORDERING: <FileText className="h-6 w-6" />,
+  DICTATION: <PenTool className="h-6 w-6" />,
+  TRANSLATION: <FileText className="h-6 w-6" />,
+  OTHER: <FileText className="h-6 w-6" />,
+}
+
+const TYPE_CONFIG: Record<string, { label: string; icon: React.ReactNode }> = {
+  VOCABULARY: { label: 'Vocabulario', icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  READING: { label: 'Lectura', icon: <BookOpen className="h-4 w-4 text-blue-500" /> },
+  LISTENING: { label: 'Escucha', icon: <Headphones className="h-4 w-4 text-blue-500" /> },
+  SPEAKING: { label: 'Habla', icon: <Mic className="h-4 w-4 text-blue-500" /> },
+  WRITING: { label: 'Escritura', icon: <PenTool className="h-4 w-4 text-blue-500" /> },
+  GRAMMAR: { label: 'Gramática', icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  PRONUNCIATION: { label: 'Pronunciación', icon: <Mic className="h-4 w-4 text-blue-500" /> },
+  COMPREHENSION: { label: 'Comprensión', icon: <BookOpen className="h-4 w-4 text-blue-500" /> },
+  MULTIPLE_CHOICE: { label: 'Opción Múltiple', icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  FILL_IN_BLANK: { label: 'Completar', icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  MATCHING: { label: 'Emparejar', icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  ORDERING: { label: 'Ordenar', icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  DICTATION: { label: 'Dictado', icon: <PenTool className="h-4 w-4 text-blue-500" /> },
+  TRANSLATION: { label: 'Traducción', icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  OTHER: { label: 'Otro', icon: <FileText className="h-4 w-4 text-blue-500" /> },
 }
 
 const ACTIVITY_TYPES = ['GRAMMAR', 'VOCABULARY', 'READING', 'LISTENING', 'SPEAKING', 'WRITING'] as const
@@ -120,6 +144,8 @@ export function TeacherActivitiesView() {
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null)
   const [students, setStudents] = useState<Student[]>([])
   const [selectedStudents, setSelectedStudents] = useState<string[]>([])
+  const [previewDialogOpen, setPreviewDialogOpen] = useState(false)
+  const [previewActivity, setPreviewActivity] = useState<Activity | null>(null)
 
   const itemsPerPage = 6
 
@@ -279,6 +305,16 @@ export function TeacherActivitiesView() {
   const openAssignDialog = (activity: Activity) => {
     setSelectedActivity(activity)
     setAssignDialogOpen(true)
+  }
+
+  const openPreviewDialog = (activity: Activity) => {
+    setPreviewActivity(activity)
+    setPreviewDialogOpen(true)
+  }
+
+  const closePreviewDialog = () => {
+    setPreviewDialogOpen(false)
+    setPreviewActivity(null)
   }
 
   return (
@@ -528,7 +564,7 @@ export function TeacherActivitiesView() {
                     />
                     <div className="bg-white p-3 rounded-full shadow-sm z-10">
                       <span className={cn('text-3xl', ICON_COLORS[colorIndex])}>
-                        📚
+                        {CARD_ICON_CONFIG[activity.activityType] || <FileText className="h-6 w-6" />}
                       </span>
                     </div>
                     <div
@@ -574,6 +610,7 @@ export function TeacherActivitiesView() {
                         size="icon"
                         className="size-10 border-slate-200 dark:border-slate-700"
                         title="Vista Previa"
+                        onClick={() => openPreviewDialog(activity)}
                       >
                         <Eye className="h-5 w-5" />
                       </Button>
@@ -732,6 +769,44 @@ export function TeacherActivitiesView() {
               </Button>
             </div>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Preview Dialog */}
+      <Dialog open={previewDialogOpen} onOpenChange={setPreviewDialogOpen}>
+        <DialogContent className="max-w-6xl max-h-[95vh] overflow-y-auto p-0">
+          {previewActivity && (
+            <ActivityRenderer
+              activity={{
+                id: previewActivity.id,
+                title: previewActivity.title,
+                description: previewActivity.description,
+                questions: (previewActivity.activityData?.questions as Array<{
+                  id: string
+                  type: 'multiple_choice' | 'fill_blanks' | 'matching_pairs' | 'sentence_unscramble'
+                  order: number
+                  questionText?: string
+                  options?: { id: string; text: string; isCorrect: boolean }[]
+                  sentenceWithBlanks?: string
+                  blanks?: { id: string; answer: string }[]
+                  pairs?: { id: string; left: string; right: string }[]
+                  correctSentence?: string
+                  scrambledWords?: string[]
+                }>)?.map(q => ({
+                  ...q,
+                  scrambledWords: q.scrambledWords?.map((word, index) => ({
+                    id: `word-${Date.now()}-${index}`,
+                    text: word,
+                    originalIndex: index
+                  }))
+                })) || [],
+                difficulty: previewActivity.level === 1 ? 'beginner' : previewActivity.level === 2 ? 'intermediate' : 'advanced',
+                points: previewActivity.points,
+              }}
+              onComplete={() => {}} // No necesitamos manejar completion en el preview
+              onClose={closePreviewDialog}
+            />
+          )}
         </DialogContent>
       </Dialog>
     </div>

@@ -2,11 +2,16 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { Search, Flame, AlertTriangle, Clock, CheckCircle, Sparkles, Calendar } from 'lucide-react'
+import { Search, Flame, AlertTriangle, Clock, CheckCircle, Sparkles, Calendar, BookOpen, Headphones, Mic, PenTool, FileText } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { cn } from '@/lib/utils'
+import { ActivityRenderer } from '@/components/activities/activity-renderer'
+import {
+  Dialog,
+  DialogContent,
+} from '@/components/ui/dialog'
 
 interface Activity {
   id: string
@@ -39,22 +44,22 @@ const DIFFICULTY_LABELS: Record<number, { label: string; color: string }> = {
   3: { label: 'Difícil', color: 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-900/30 dark:text-red-400' },
 }
 
-const TYPE_ICONS: Record<string, string> = {
-  VOCABULARY: '📚',
-  READING: '📖',
-  LISTENING: '🎧',
-  SPEAKING: '🎤',
-  WRITING: '✍️',
-  GRAMMAR: '📝',
-  PRONUNCIATION: '🗣️',
-  COMPREHENSION: '🧠',
-  MULTIPLE_CHOICE: '✅',
-  FILL_IN_BLANK: '📋',
-  MATCHING: '🔗',
-  ORDERING: '🔢',
-  DICTATION: '✏️',
-  TRANSLATION: '🌐',
-  OTHER: '📄',
+const TYPE_ICONS: Record<string, React.ReactNode> = {
+  VOCABULARY: <FileText className="h-4 w-4 text-blue-500" />,
+  READING: <BookOpen className="h-4 w-4 text-blue-500" />,
+  LISTENING: <Headphones className="h-4 w-4 text-blue-500" />,
+  SPEAKING: <Mic className="h-4 w-4 text-blue-500" />,
+  WRITING: <PenTool className="h-4 w-4 text-blue-500" />,
+  GRAMMAR: <FileText className="h-4 w-4 text-blue-500" />,
+  PRONUNCIATION: <Mic className="h-4 w-4 text-blue-500" />,
+  COMPREHENSION: <BookOpen className="h-4 w-4 text-blue-500" />,
+  MULTIPLE_CHOICE: <FileText className="h-4 w-4 text-blue-500" />,
+  FILL_IN_BLANK: <FileText className="h-4 w-4 text-blue-500" />,
+  MATCHING: <FileText className="h-4 w-4 text-blue-500" />,
+  ORDERING: <FileText className="h-4 w-4 text-blue-500" />,
+  DICTATION: <PenTool className="h-4 w-4 text-blue-500" />,
+  TRANSLATION: <FileText className="h-4 w-4 text-blue-500" />,
+  OTHER: <FileText className="h-4 w-4 text-blue-500" />,
 }
 
 const TYPE_LABELS: Record<string, string> = {
@@ -81,6 +86,9 @@ export function StudentActivitiesView({ initialActivities }: StudentActivitiesVi
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(!initialActivities)
+  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null)
+  const [activityDialogOpen, setActivityDialogOpen] = useState(false)
+  const [userStreak, setUserStreak] = useState(0)
 
   // Stats
   const dueToday = activities.filter((a) => {
@@ -166,6 +174,77 @@ export function StudentActivitiesView({ initialActivities }: StudentActivitiesVi
     return 45 // Mock progress for in_progress
   }
 
+  // Función para iniciar una actividad
+  const handleStartActivity = (activity: Activity) => {
+    setSelectedActivity(activity)
+    setActivityDialogOpen(true)
+  }
+
+  // Función cuando se completa una actividad
+  const handleActivityComplete = async (score: number, totalQuestions: number) => {
+    if (!selectedActivity || !session?.user?.id) return
+
+    try {
+      // Actualizar progreso en el servidor
+      await fetch('/api/activities/progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          activityId: selectedActivity.id,
+          status: 'COMPLETED',
+          score: Math.round((score / totalQuestions) * 100),
+        }),
+      })
+
+      // Actualizar estado local
+      setActivities((prev) =>
+        prev.map((a) =>
+          a.id === selectedActivity.id
+            ? {
+                ...a,
+                userProgress: [
+                  {
+                    status: 'COMPLETED',
+                    score: Math.round((score / totalQuestions) * 100),
+                    completedAt: new Date().toISOString(),
+                  },
+                ],
+              }
+            : a
+        )
+      )
+
+      // Cerrar el diálogo
+      setActivityDialogOpen(false)
+      setSelectedActivity(null)
+    } catch (error) {
+      console.error('Error updating activity progress:', error)
+    }
+  }
+
+  // Función para cerrar el diálogo de actividad
+  const handleCloseActivity = () => {
+    setActivityDialogOpen(false)
+    setSelectedActivity(null)
+  }
+
+  // Cargar racha del usuario
+  useEffect(() => {
+    const fetchStreak = async () => {
+      if (!session?.user?.id) return
+      try {
+        const response = await fetch('/api/user/streak')
+        if (response.ok) {
+          const data = await response.json()
+          setUserStreak(data.currentStreak || 0)
+        }
+      } catch (error) {
+        console.error('Error fetching streak:', error)
+      }
+    }
+    fetchStreak()
+  }, [session?.user?.id])
+
   return (
     <div className="flex h-full w-full flex-row">
       {/* Sidebar */}
@@ -214,7 +293,7 @@ export function StudentActivitiesView({ initialActivities }: StudentActivitiesVi
                   onCheckedChange={() => toggleFilter(filter)}
                 />
                 <span className="text-sm text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                  <span>{TYPE_ICONS[filter]}</span>
+                  {TYPE_ICONS[filter]}
                   {TYPE_LABELS[filter]}
                 </span>
               </label>
@@ -256,7 +335,7 @@ export function StudentActivitiesView({ initialActivities }: StudentActivitiesVi
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-slate-500">Racha Actual:</span>
               <span className="flex items-center gap-1 text-sm font-bold text-orange-500">
-                <Flame className="h-4 w-4" /> 12 Días
+                <Flame className="h-4 w-4" /> {userStreak} Días
               </span>
             </div>
           </div>
@@ -320,6 +399,7 @@ export function StudentActivitiesView({ initialActivities }: StudentActivitiesVi
                     activity={activity}
                     status={getActivityStatus(activity)}
                     progress={getProgressPercentage(activity)}
+                    onStart={() => handleStartActivity(activity)}
                   />
                 ))}
               </div>
@@ -342,6 +422,7 @@ export function StudentActivitiesView({ initialActivities }: StudentActivitiesVi
                     activity={activity}
                     status="new"
                     isNew
+                    onStart={() => handleStartActivity(activity)}
                   />
                 ))}
               </div>
@@ -401,6 +482,44 @@ export function StudentActivitiesView({ initialActivities }: StudentActivitiesVi
           )}
         </div>
       </main>
+
+      {/* Activity Dialog */}
+      <Dialog open={activityDialogOpen} onOpenChange={setActivityDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
+          {selectedActivity && (
+            <ActivityRenderer
+              activity={{
+                id: selectedActivity.id,
+                title: selectedActivity.title,
+                description: selectedActivity.description,
+                questions: (selectedActivity.activityData?.questions as Array<{
+                  id: string
+                  type: 'multiple_choice' | 'fill_blanks' | 'matching_pairs' | 'sentence_unscramble'
+                  order: number
+                  questionText?: string
+                  options?: { id: string; text: string; isCorrect: boolean }[]
+                  sentenceWithBlanks?: string
+                  blanks?: { id: string; answer: string }[]
+                  pairs?: { id: string; left: string; right: string }[]
+                  correctSentence?: string
+                  scrambledWords?: string[]
+                }>)?.map(q => ({
+                  ...q,
+                  scrambledWords: q.scrambledWords?.map((word, index) => ({
+                    id: `word-${Date.now()}-${index}`,
+                    text: word,
+                    originalIndex: index
+                  }))
+                })) || [],
+                difficulty: selectedActivity.level === 1 ? 'beginner' : selectedActivity.level === 2 ? 'intermediate' : 'advanced',
+                points: selectedActivity.points,
+              }}
+              onComplete={handleActivityComplete}
+              onClose={handleCloseActivity}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
@@ -411,14 +530,16 @@ function ActivityCard({
   status,
   progress = 0,
   isNew = false,
+  onStart,
 }: {
   activity: Activity
   status: string
   progress?: number
   isNew?: boolean
+  onStart?: () => void
 }) {
   const difficulty = DIFFICULTY_LABELS[activity.level] || DIFFICULTY_LABELS[1]
-  const typeIcon = TYPE_ICONS[activity.activityType] || '📝'
+  const typeIcon = TYPE_ICONS[activity.activityType] || <FileText className="h-6 w-6 text-blue-500" />
   const tags = activity.activityData?.tags || []
 
   return (
@@ -453,7 +574,7 @@ function ActivityCard({
               ))}
             </div>
           </div>
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-2xl dark:bg-blue-900/20">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 dark:bg-blue-900/20">
             {typeIcon}
           </div>
         </div>
@@ -490,6 +611,7 @@ function ActivityCard({
             className={cn(
               status === 'in_progress' && 'bg-primary hover:bg-primary/90'
             )}
+            onClick={onStart}
           >
             {status === 'in_progress' ? 'Continuar' : 'Iniciar Actividad'}
           </Button>

@@ -32,9 +32,23 @@ export default function ActivityDetail({ activityId, onBack, onComplete }: Activ
         const activityData = await getActivity(activityId)
         if (activityData) {
           setActivity(activityData)
-          if (!(typeof activityData.steps === 'string')) return
-
-          setActivitySteps(JSON.parse(activityData.steps))
+          
+          // Parsear los steps según el formato
+          let parsedSteps: ActivityStep[] = []
+          if (typeof activityData.steps === 'string') {
+            try {
+              const parsed = JSON.parse(activityData.steps)
+              parsedSteps = parsed.steps || parsed || []
+            } catch {
+              parsedSteps = []
+            }
+          } else if (activityData.steps && typeof activityData.steps === 'object') {
+            // Si es un objeto, puede tener la estructura { steps: [...] }
+            const stepsObj = activityData.steps as { steps?: ActivityStep[] }
+            parsedSteps = stepsObj.steps || (activityData.steps as unknown as ActivityStep[]) || []
+          }
+          
+          setActivitySteps(parsedSteps)
         }
       } catch (error) {
         console.error('Error fetching activity:', error)

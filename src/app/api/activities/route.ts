@@ -101,11 +101,25 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (!questions || questions.length === 0) {
-      return NextResponse.json(
-        { error: 'Se requiere al menos una pregunta' },
-        { status: 400 }
+    // Permitir crear actividades sin preguntas inicialmente (para el modal)
+    if (questions && questions.length > 0) {
+      // Validar preguntas si se proporcionan
+      const hasValidQuestions = questions.every((q: { 
+        questionText?: string; 
+        type: string; 
+        order?: number 
+      }) => 
+        q.questionText?.trim() && 
+        q.type && 
+        q.order !== undefined
       )
+      
+      if (!hasValidQuestions) {
+        return NextResponse.json(
+          { error: 'Las preguntas proporcionadas no son válidas' },
+          { status: 400 }
+        )
+      }
     }
 
     const activity = await db.activity.create({
