@@ -241,8 +241,8 @@ export function TeacherSchedule({ initialData, currentPeriod }: TeacherScheduleP
     setLessonDialogOpen(true)
   }
 
-  const handleContactStudent = (email: string) => {
-    window.location.href = `mailto:${email}`
+  const handleContactStudent = () => {
+    router.push('/messages')
   }
 
   if (isLoading && lessons.length === 0) {

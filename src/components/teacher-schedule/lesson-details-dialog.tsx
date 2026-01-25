@@ -23,7 +23,7 @@ interface LessonDetailsDialogProps {
   onOpenChange: (open: boolean) => void
   onJoinClass?: (lessonId: string) => void
   onViewMaterials?: (lessonId: string) => void
-  onContactStudent?: (studentEmail: string) => void
+  onContactStudent?: () => void
 }
 
 export function LessonDetailsDialog({
@@ -134,7 +134,7 @@ export function LessonDetailsDialog({
             <Button
               variant="outline"
               size="icon"
-              onClick={() => onContactStudent?.(lesson.student.email)}
+              onClick={() => onContactStudent?.()}
             >
               <Mail className="h-4 w-4" />
             </Button>
