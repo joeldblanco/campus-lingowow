@@ -5,7 +5,7 @@ import { auth } from '@/auth'
 // GET - Obtener estudiantes asignados a una actividad
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth()
@@ -13,11 +13,11 @@ export async function GET(
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const activityId = params.id
+    const { id } = await params
 
     // Verificar que la actividad existe
     const activity = await db.activity.findUnique({
-      where: { id: activityId },
+      where: { id },
     })
 
     if (!activity) {
@@ -30,7 +30,7 @@ export async function GET(
     // Obtener asignaciones de esta actividad
     const assignments = await db.userActivity.findMany({
       where: {
-        activityId,
+        activityId: id,
       },
       select: {
         userId: true,
