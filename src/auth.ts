@@ -68,27 +68,40 @@ export const {
         },
         data: {
           emailVerified: new Date(),
+          lastLoginAt: new Date(),
         },
       })
     },
   },
   callbacks: {
     async signIn({ user, account }) {
-      // Allow OAuth without email verification
+      // Para proveedores OAuth (Google), permitir acceso sin verificación adicional
+      if (account?.provider !== 'credentials') {
+        // OAuth providers son confiables, permitir acceso
+        // lastLoginAt se actualiza en el evento linkAccount
+        return true
+      }
+
+      // Para credenciales, verificar emailVerified
       if (account?.provider === 'credentials') {
         if (!user.id) return false
 
         const existingUser = await getUserById(user.id)
 
         if (!existingUser || 'error' in existingUser || !existingUser.emailVerified) return false
-      }
 
-      // Actualizar último inicio de sesión (solo si no es suplantación)
-      if (user.id && !('impersonationData' in user && user.impersonationData)) {
-        await db.user.update({
-          where: { id: user.id },
-          data: { lastLoginAt: new Date() },
-        })
+        // Actualizar último inicio de sesión para credenciales (solo si no es suplantación)
+        if (!('impersonationData' in user && user.impersonationData)) {
+          try {
+            await db.user.update({
+              where: { id: user.id },
+              data: { lastLoginAt: new Date() },
+            })
+          } catch (error) {
+            // No fallar el login si la actualización falla
+            console.error('Error updating lastLoginAt:', error)
+          }
+        }
       }
 
       // TODO: Add 2FA check
