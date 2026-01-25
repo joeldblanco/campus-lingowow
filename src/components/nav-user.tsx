@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/sidebar'
 import { logout } from '@/lib/actions/auth'
 import { UserRole } from '@prisma/client'
+import { formatFirstName } from '@/lib/utils/name-formatter'
 
 export function NavUser({
   user,
@@ -59,7 +60,7 @@ export function NavUser({
                 fallbackClassName="rounded-lg"
               />
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate font-medium">{formatFirstName(user.name)}</span>
                 <span className="truncate text-xs">{user.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
@@ -82,7 +83,7 @@ export function NavUser({
                   fallbackClassName="rounded-lg"
                 />
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
+                  <span className="truncate font-medium">{formatFirstName(user.name)}</span>
                   <span className="truncate text-xs">{user.email}</span>
                 </div>
               </div>

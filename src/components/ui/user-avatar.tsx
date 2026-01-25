@@ -4,6 +4,7 @@ import * as React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { getUserAvatarUrl } from '@/lib/utils'
 import { cn } from '@/lib/utils'
+import { getInitials } from '@/lib/utils/name-formatter'
 
 interface UserAvatarProps {
   userId: string
@@ -23,7 +24,7 @@ export function UserAvatar({
   fallbackClassName,
 }: UserAvatarProps) {
   const avatarUrl = getUserAvatarUrl(userId, userImage)
-  const initials = `${userName[0] || ''}${userLastName?.[0] || ''}`.toUpperCase() || userName[0]?.toUpperCase()
+  const initials = getInitials(userName, userLastName)
 
   return (
     <Avatar className={className}>

@@ -4,6 +4,7 @@ import { useState, useMemo, useTransition, memo, useEffect } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { ClassBookingWithDetails, deleteClass, updateClass, toggleClassPayable } from '@/lib/actions/classes'
 import { getTodayString } from '@/lib/utils/date'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -250,7 +251,7 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
   const getUniqueTeachers = () => {
     const teachers = Array.from(new Set(classes.map((c) => c.teacherId)))
       .map((id) => classes.find((c) => c.teacherId === id)!)
-      .map((c) => ({ id: c.teacherId, name: `${c.teacher.name} ${c.teacher.lastName || ''}` }))
+      .map((c) => ({ id: c.teacherId, name: formatFullName(c.teacher.name, c.teacher.lastName) }))
     return teachers
   }
 
@@ -316,7 +317,7 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
           />
           <div>
             <div className="font-medium text-sm">
-              {row.original.student.name} {row.original.student.lastName || ''}
+              {formatFullName(row.original.student.name, row.original.student.lastName)}
             </div>
             <div className="text-xs text-muted-foreground">{row.original.student.email}</div>
           </div>
@@ -338,7 +339,7 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
           />
           <div>
             <div className="font-medium text-sm">
-              {row.original.teacher.name} {row.original.teacher.lastName || ''}
+              {formatFullName(row.original.teacher.name, row.original.teacher.lastName)}
             </div>
           </div>
         </div>

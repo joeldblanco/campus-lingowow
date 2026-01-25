@@ -14,6 +14,7 @@ import {
   Play,
   CheckCircle
 } from 'lucide-react'
+import { formatFirstName } from '@/lib/utils/name-formatter'
 
 interface CoursePreviewProps {
   course: {
@@ -216,7 +217,7 @@ export function CoursePreview({ course, isAuthenticated }: CoursePreviewProps) {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <h3 className="font-semibold">{course.createdBy.name}</h3>
+              <h3 className="font-semibold">{formatFirstName(course.createdBy.name)}</h3>
               {course.createdBy.bio && (
                 <p className="text-gray-600">{course.createdBy.bio}</p>
               )}

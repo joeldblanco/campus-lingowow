@@ -42,6 +42,7 @@ import { ManageTeacherCoursesDialog } from '@/components/admin/teachers/manage-t
 import { User, UserRole, UserStatus } from '@prisma/client'
 import { RoleNames, StatusNames } from '@/types/user'
 import { formatDateShort } from '@/lib/utils/date'
+import { formatFullName } from '@/lib/utils/name-formatter'
 
 interface UsersDataTableProps {
   users: User[]
@@ -148,7 +149,7 @@ export function UsersDataTable({
       header: ({ column }) => <DataTableColumnHeader column={column} title="Usuario" />,
       cell: ({ row }) => {
         const user = row.original
-        const fullName = `${user.name} ${user.lastName || ''}`.trim()
+        const fullName = formatFullName(user.name, user.lastName)
         return (
           <div className="flex items-center gap-3">
             <UserAvatar
@@ -256,7 +257,7 @@ export function UsersDataTable({
                 {user.roles.includes(UserRole.TEACHER) && (
                   <ManageTeacherCoursesDialog
                     teacherId={user.id}
-                    teacherName={`${user.name} ${user.lastName || ''}`}
+                    teacherName={formatFullName(user.name, user.lastName)}
                   >
                     <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                       <BookOpen className="mr-2 h-4 w-4" />
@@ -360,7 +361,7 @@ export function UsersDataTable({
             <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
             <AlertDialogDescription>
               Esta acción no se puede deshacer. Se eliminará permanentemente el usuario{' '}
-              <strong>{userToDelete?.name} {userToDelete?.lastName}</strong> y todos sus datos asociados.
+              <strong>{formatFullName(userToDelete?.name || '', userToDelete?.lastName)}</strong> y todos sus datos asociados.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

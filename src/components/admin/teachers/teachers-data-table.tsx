@@ -41,6 +41,7 @@ import { ManageTeacherCoursesDialog } from '@/components/admin/teachers/manage-t
 import { TeacherScheduleDialog } from '@/components/admin/teachers/teacher-schedule-dialog'
 import { UserEditDialog } from '@/components/user/user-edit-dialog'
 import { User } from '@prisma/client'
+import { formatFullName } from '@/lib/utils/name-formatter'
 
 interface TeachersDataTableProps {
   teachers: User[]
@@ -94,7 +95,7 @@ export function TeachersDataTable({ teachers, onDeleteTeacher, onUpdateTeacher }
       },
       cell: ({ row }) => {
         const teacher = row.original
-        const fullName = `${teacher.name} ${teacher.lastName || ''}`
+        const fullName = formatFullName(teacher.name, teacher.lastName)
         
         return (
           <div className="flex items-center gap-3">
@@ -116,7 +117,7 @@ export function TeachersDataTable({ teachers, onDeleteTeacher, onUpdateTeacher }
         )
       },
       filterFn: (row, columnId, filterValue) => {
-        const fullName = `${row.original.name} ${row.original.lastName || ''}`.toLowerCase()
+        const fullName = formatFullName(row.original.name, row.original.lastName).toLowerCase()
         const email = row.original.email.toLowerCase()
         const searchValue = filterValue.toLowerCase()
         return fullName.includes(searchValue) || email.includes(searchValue)
@@ -171,7 +172,7 @@ export function TeachersDataTable({ teachers, onDeleteTeacher, onUpdateTeacher }
               </DropdownMenuItem>
               <ManageTeacherCoursesDialog
                 teacherId={teacher.id}
-                teacherName={`${teacher.name} ${teacher.lastName || ''}`}
+                teacherName={formatFullName(teacher.name, teacher.lastName)}
               >
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                   <BookOpen className="mr-2 h-4 w-4" />
@@ -314,7 +315,7 @@ export function TeachersDataTable({ teachers, onDeleteTeacher, onUpdateTeacher }
       {scheduleTeacher && (
         <TeacherScheduleDialog
           teacherId={scheduleTeacher.id}
-          teacherName={`${scheduleTeacher.name} ${scheduleTeacher.lastName || ''}`}
+          teacherName={formatFullName(scheduleTeacher.name, scheduleTeacher.lastName)}
           open={!!scheduleTeacher}
           onOpenChange={(open) => !open && setScheduleTeacher(null)}
         />

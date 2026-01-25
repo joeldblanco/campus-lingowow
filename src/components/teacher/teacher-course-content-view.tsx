@@ -23,6 +23,7 @@ import {
 } from 'lucide-react'
 import { CreateExamDialog } from '@/components/teacher/exams/create-exam-dialog'
 import { ExamList } from '@/components/teacher/exams/exam-list'
+import { formatFirstName } from '@/lib/utils/name-formatter'
 
 interface Content {
   id: string
@@ -330,10 +331,11 @@ function PersonalizedContent({ lessons }: { lessons: PersonalizedLesson[] }) {
 
   const groupedByStudent = lessons.reduce(
     (acc, lesson) => {
-      if (!acc[lesson.studentName]) {
-        acc[lesson.studentName] = []
+      const formattedStudentName = formatFirstName(lesson.studentName)
+      if (!acc[formattedStudentName]) {
+        acc[formattedStudentName] = []
       }
-      acc[lesson.studentName].push(lesson)
+      acc[formattedStudentName].push(lesson)
       return acc
     },
     {} as Record<string, PersonalizedLesson[]>
@@ -351,12 +353,12 @@ function PersonalizedContent({ lessons }: { lessons: PersonalizedLesson[] }) {
       </div>
 
       <div className="space-y-6">
-        {Object.entries(groupedByStudent).map(([studentName, studentLessons]) => (
-          <Card key={studentName}>
+        {Object.entries(groupedByStudent).map(([formattedStudentName, studentLessons]) => (
+          <Card key={formattedStudentName}>
             <CardHeader className="pb-2">
               <div className="flex items-center gap-2">
                 <User className="w-5 h-5 text-muted-foreground" />
-                <CardTitle className="text-base">{studentName}</CardTitle>
+                <CardTitle className="text-base">{formattedStudentName}</CardTitle>
                 <Badge variant="secondary">{studentLessons.length} lecciones</Badge>
               </div>
             </CardHeader>

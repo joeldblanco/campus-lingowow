@@ -40,6 +40,7 @@ import { UserAvatar } from '@/components/ui/user-avatar'
 import { Progress } from '@/components/ui/progress'
 import { EnrollmentStatus } from '@prisma/client'
 import { formatDateShort } from '@/lib/utils/date'
+import { formatFullName } from '@/lib/utils/name-formatter'
 
 interface EnrollmentsTableProps {
   enrollments: EnrollmentWithDetails[]
@@ -182,7 +183,7 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
           />
           <div>
             <div className="font-medium text-sm">
-              {row.original.student.name} {row.original.student.lastName || ''}
+              {formatFullName(row.original.student.name, row.original.student.lastName)}
             </div>
             <div className="text-xs text-muted-foreground">{row.original.student.email}</div>
           </div>
@@ -224,7 +225,7 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
             />
             <div>
               <div className="font-medium text-sm">
-                {teacher.name} {teacher.lastName || ''}
+                {formatFullName(teacher.name, teacher.lastName)}
               </div>
               <div className="text-xs text-muted-foreground">{teacher.email}</div>
             </div>
