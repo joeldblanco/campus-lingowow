@@ -118,3 +118,34 @@ export type ActivityStep =
 export type ActivityContent = {
   steps: ActivityStep[]
 }
+
+// Tipo base para userProgress (campos comunes)
+export type BaseUserProgress = {
+  status: string
+  score: number | null
+  completedAt: Date | null
+}
+
+// Tipo para userProgress de admin/profesor
+export type AdminUserProgress = BaseUserProgress & {
+  userId: string
+  user: {
+    name: string
+    email: string
+  }
+}
+
+// Tipo para userProgress de estudiante
+export type StudentUserProgress = BaseUserProgress & {
+  assignedBy: string | null
+  assignedAt: Date
+}
+
+// Tipo extendido para actividades con userProgress (versión flexible)
+export type ActivityWithProgress = Prisma.ActivityGetPayload<{
+  include: {
+    userProgress: true
+  }
+}> & {
+  userProgress?: (AdminUserProgress | StudentUserProgress)[]
+}

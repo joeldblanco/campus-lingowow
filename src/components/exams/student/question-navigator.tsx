@@ -10,6 +10,8 @@ interface QuestionNavigatorProps {
     id: string
     status: QuestionStatus
     navIndex?: number // Índice real de navegación en allQuestions
+    groupSize?: number // Número de preguntas en el grupo (solo para grupos)
+    isGroup?: boolean // Indica si es un grupo
   }[]
   onNavigate: (index: number) => void
   className?: string
@@ -62,7 +64,7 @@ export function QuestionNavigator({
                   getButtonStyles(question.status)
                 )}
               >
-                {index + 1}
+                <span>{index + 1}</span>
                 {question.status === 'flagged' && (
                   <span className="absolute top-0.5 right-0.5 size-2 bg-yellow-500 rounded-full" />
                 )}
@@ -84,6 +86,12 @@ export function QuestionNavigator({
           <div className="flex items-center gap-2">
             <div className="size-3 rounded-full bg-gray-100 border border-gray-300" />
             <span>Sin responder</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="size-3 rounded-full bg-gray-100 border border-gray-300 flex items-center justify-center text-xs font-bold">
+              #
+            </div>
+            <span>Grupo</span>
           </div>
         </div>
       )}

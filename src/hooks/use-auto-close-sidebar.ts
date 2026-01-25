@@ -12,6 +12,7 @@ const BUILDER_ROUTES = [
   '/admin/activities/',
   '/teacher/students/',
   '/teacher/exams/',
+  '/activities',
 ]
 
 /**

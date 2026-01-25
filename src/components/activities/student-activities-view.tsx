@@ -2,16 +2,13 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { Search, Flame, AlertTriangle, Clock, CheckCircle, Sparkles, Calendar, BookOpen, Headphones, Mic, PenTool, FileText } from 'lucide-react'
+import { Search, Flame, Clock, CheckCircle, Sparkles, Calendar, BookOpen, Headphones, Mic, PenTool, FileText, BarChart3, Layers, Tag } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { cn } from '@/lib/utils'
-import { ActivityRenderer } from '@/components/activities/activity-renderer'
-import {
-  Dialog,
-  DialogContent,
-} from '@/components/ui/dialog'
+import { ActivityDialog } from '@/components/activities/activity-dialog'
+import { useAutoCloseSidebar } from '@/hooks/use-auto-close-sidebar'
 
 interface Activity {
   id: string
@@ -22,6 +19,7 @@ interface Activity {
   points: number
   duration: number
   activityData: {
+    readingText?: string
     tags?: string[]
     questions?: unknown[]
   }
@@ -62,40 +60,42 @@ const TYPE_ICONS: Record<string, React.ReactNode> = {
   OTHER: <FileText className="h-4 w-4 text-blue-500" />,
 }
 
-const TYPE_LABELS: Record<string, string> = {
-  VOCABULARY: 'Vocabulario',
-  READING: 'Lectura',
-  LISTENING: 'Escucha',
-  SPEAKING: 'Habla',
-  WRITING: 'Escritura',
-  GRAMMAR: 'Gramática',
-  PRONUNCIATION: 'Pronunciación',
-  COMPREHENSION: 'Comprensión',
-  MULTIPLE_CHOICE: 'Opción Múltiple',
-  FILL_IN_BLANK: 'Completar',
-  MATCHING: 'Emparejar',
-  ORDERING: 'Ordenar',
-  DICTATION: 'Dictado',
-  TRANSLATION: 'Traducción',
-  OTHER: 'Otro',
+const ACTIVITY_TYPES = ['GRAMMAR', 'VOCABULARY', 'READING', 'LISTENING', 'SPEAKING', 'WRITING'] as const
+
+const TYPE_CONFIG: Record<string, { label: string; icon: React.ReactNode }> = {
+  VOCABULARY: { label: 'Vocabulario', icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  READING: { label: 'Lectura', icon: <BookOpen className="h-4 w-4 text-blue-500" /> },
+  LISTENING: { label: 'Escucha', icon: <Headphones className="h-4 w-4 text-blue-500" /> },
+  SPEAKING: { label: 'Habla', icon: <Mic className="h-4 w-4 text-blue-500" /> },
+  WRITING: { label: 'Escritura', icon: <PenTool className="h-4 w-4 text-blue-500" /> },
+  GRAMMAR: { label: 'Gramática', icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  PRONUNCIATION: { label: 'Pronunciación', icon: <Mic className="h-4 w-4 text-blue-500" /> },
+  COMPREHENSION: { label: 'Comprensión', icon: <BookOpen className="h-4 w-4 text-blue-500" /> },
+  MULTIPLE_CHOICE: { label: 'Opción Múltiple', icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  FILL_IN_BLANK: { label: 'Completar', icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  MATCHING: { label: 'Emparejar', icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  ORDERING: { label: 'Ordenar', icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  DICTATION: { label: 'Dictado', icon: <PenTool className="h-4 w-4 text-blue-500" /> },
+  TRANSLATION: { label: 'Traducción', icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  OTHER: { label: 'Otro', icon: <FileText className="h-4 w-4 text-blue-500" /> },
 }
 
 export function StudentActivitiesView({ initialActivities }: StudentActivitiesViewProps) {
   const { data: session } = useSession()
+  useAutoCloseSidebar() // ← Cierra la sidebar automáticamente
+  
   const [activities, setActivities] = useState<Activity[]>(initialActivities || [])
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([])
+  const [selectedDifficulties, setSelectedDifficulties] = useState<number[]>([])
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([])
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [tagSearchQuery, setTagSearchQuery] = useState('')
   const [isLoading, setIsLoading] = useState(!initialActivities)
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null)
   const [activityDialogOpen, setActivityDialogOpen] = useState(false)
   const [userStreak, setUserStreak] = useState(0)
 
   // Stats
-  const dueToday = activities.filter((a) => {
-    const progress = a.userProgress?.[0]
-    return progress?.status !== 'COMPLETED' && a.dueDate === new Date().toISOString().split('T')[0]
-  }).length
-
   const pending = activities.filter((a) => {
     const progress = a.userProgress?.[0]
     return !progress || progress.status === 'ASSIGNED' || progress.status === 'IN_PROGRESS'
@@ -129,27 +129,63 @@ export function StudentActivitiesView({ initialActivities }: StudentActivitiesVi
       activity.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       activity.description.toLowerCase().includes(searchQuery.toLowerCase())
 
-    const matchesFilter =
-      selectedFilters.length === 0 ||
-      selectedFilters.includes(activity.activityType)
+    const matchesDifficulty = selectedDifficulties.length === 0 || selectedDifficulties.includes(activity.level)
+    
+    const matchesType = selectedTypes.length === 0 || selectedTypes.includes(activity.activityType)
+    
+    const matchesTags = selectedTags.length === 0 || 
+      (activity.activityData?.tags?.some(tag => selectedTags.includes(tag)) || false)
 
-    return matchesSearch && matchesFilter
+    return matchesSearch && matchesDifficulty && matchesType && matchesTags
   })
 
-  const toggleFilter = (filter: string) => {
-    setSelectedFilters((prev) =>
-      prev.includes(filter)
-        ? prev.filter((f) => f !== filter)
-        : [...prev, filter]
+  // Get all available tags
+  const allTags = Array.from(new Set(
+    activities.flatMap(a => a.activityData?.tags || [])
+  )).sort()
+
+  const filteredTags = allTags.filter(tag =>
+    tag.toLowerCase().includes(tagSearchQuery.toLowerCase())
+  )
+
+  const toggleDifficulty = (level: number) => {
+    setSelectedDifficulties(prev =>
+      prev.includes(level)
+        ? prev.filter(d => d !== level)
+        : [...prev, level]
     )
   }
 
-  // Separate activities by status
-  const dueSoonActivities = filteredActivities.filter((a) => {
-    const progress = a.userProgress?.[0]
-    return progress?.status !== 'COMPLETED'
-  }).slice(0, 3)
+  const toggleType = (type: string) => {
+    setSelectedTypes(prev =>
+      prev.includes(type)
+        ? prev.filter(t => t !== type)
+        : [...prev, type]
+    )
+  }
 
+  const toggleTag = (tag: string) => {
+    setSelectedTags(prev =>
+      prev.includes(tag)
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    )
+  }
+
+  const clearAllFilters = () => {
+    setSelectedDifficulties([])
+    setSelectedTypes([])
+    setSelectedTags([])
+    setTagSearchQuery('')
+  }
+
+  const activeFilters = [
+    ...selectedDifficulties.map(d => `Nivel ${d}`),
+    ...selectedTypes.map(t => TYPE_CONFIG[t]?.label || t),
+    ...selectedTags
+  ]
+
+  // Separate activities by status
   const newActivities = filteredActivities.filter((a) => {
     const progress = a.userProgress?.[0]
     return !progress || progress.status === 'ASSIGNED'
@@ -158,21 +194,6 @@ export function StudentActivitiesView({ initialActivities }: StudentActivitiesVi
   const completedActivities = filteredActivities.filter(
     (a) => a.userProgress?.[0]?.status === 'COMPLETED'
   )
-
-  const getActivityStatus = (activity: Activity) => {
-    const progress = activity.userProgress?.[0]
-    if (!progress) return 'new'
-    if (progress.status === 'COMPLETED') return 'completed'
-    if (progress.status === 'IN_PROGRESS') return 'in_progress'
-    return 'assigned'
-  }
-
-  const getProgressPercentage = (activity: Activity) => {
-    const progress = activity.userProgress?.[0]
-    if (!progress || progress.status === 'ASSIGNED') return 0
-    if (progress.status === 'COMPLETED') return 100
-    return 45 // Mock progress for in_progress
-  }
 
   // Función para iniciar una actividad
   const handleStartActivity = (activity: Activity) => {
@@ -280,24 +301,136 @@ export function StudentActivitiesView({ initialActivities }: StudentActivitiesVi
 
           {/* Filters */}
           <div className="flex flex-col gap-4 pt-4 border-t border-slate-100 dark:border-slate-800">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider pl-4">
-              Tipo de Actividad
-            </p>
-            {['GRAMMAR', 'VOCABULARY', 'READING', 'LISTENING', 'SPEAKING', 'WRITING'].map((filter) => (
-              <label
-                key={filter}
-                className="flex items-center gap-3 px-4 cursor-pointer group"
+            <div className="flex items-center justify-between">
+              <h2 className="text-slate-900 dark:text-white text-lg font-bold">Filtros</h2>
+              <button
+                onClick={clearAllFilters}
+                className="text-xs font-medium text-primary hover:text-primary/80"
               >
-                <Checkbox
-                  checked={selectedFilters.includes(filter)}
-                  onCheckedChange={() => toggleFilter(filter)}
-                />
-                <span className="text-sm text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                  {TYPE_ICONS[filter]}
-                  {TYPE_LABELS[filter]}
-                </span>
-              </label>
-            ))}
+                Limpiar Todo
+              </button>
+            </div>
+            <p className="text-slate-500 dark:text-slate-400 text-sm">
+              Refina tus resultados de búsqueda
+            </p>
+
+            <div className="flex flex-col gap-4">
+              {/* Difficulty Filter */}
+              <details
+                className="group rounded-lg border border-slate-200 bg-slate-50 open:bg-white open:ring-1 open:ring-primary/20 transition-all dark:border-slate-700 dark:bg-slate-800 dark:open:bg-slate-900"
+                open
+              >
+                <summary className="flex cursor-pointer items-center justify-between px-4 py-3 select-none">
+                  <span className="text-slate-900 dark:text-white text-sm font-semibold flex items-center gap-2">
+                    <BarChart3 className="h-5 w-5 text-slate-500" />
+                    Dificultad
+                  </span>
+                </summary>
+                <div className="px-4 pb-4 pt-1 flex flex-col gap-2">
+                  {[1, 2, 3].map((level) => (
+                    <label
+                      key={level}
+                      className="flex items-center gap-3 cursor-pointer group/item"
+                    >
+                      <Checkbox
+                        checked={selectedDifficulties.includes(level)}
+                        onCheckedChange={() => toggleDifficulty(level)}
+                      />
+                      <span
+                        className={cn(
+                          'text-sm',
+                          selectedDifficulties.includes(level)
+                            ? 'text-slate-900 dark:text-white font-medium'
+                            : 'text-slate-500 dark:text-slate-400 group-hover/item:text-slate-900 dark:group-hover/item:text-white'
+                        )}
+                      >
+                        {DIFFICULTY_LABELS[level]?.label}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </details>
+
+              {/* Activity Type Filter */}
+              <details
+                className="group rounded-lg border border-slate-200 bg-slate-50 open:bg-white open:ring-1 open:ring-primary/20 transition-all dark:border-slate-700 dark:bg-slate-800 dark:open:bg-slate-900"
+                open
+              >
+                <summary className="flex cursor-pointer items-center justify-between px-4 py-3 select-none">
+                  <span className="text-slate-900 dark:text-white text-sm font-semibold flex items-center gap-2">
+                    <Layers className="h-5 w-5 text-slate-500" />
+                    Tipo de Actividad
+                  </span>
+                </summary>
+                <div className="px-4 pb-4 pt-1 flex flex-col gap-2">
+                  {ACTIVITY_TYPES.map((type) => (
+                    <label
+                      key={type}
+                      className="flex items-center gap-3 cursor-pointer group/item"
+                    >
+                      <Checkbox
+                        checked={selectedTypes.includes(type)}
+                        onCheckedChange={() => toggleType(type)}
+                      />
+                      <span className={cn(
+                        'text-sm flex items-center gap-2',
+                        selectedTypes.includes(type)
+                          ? 'text-slate-900 dark:text-white font-medium'
+                          : 'text-slate-500 dark:text-slate-400 group-hover/item:text-slate-900 dark:group-hover/item:text-white'
+                      )}>
+                        <span>{TYPE_ICONS[type]}</span>
+                        {TYPE_CONFIG[type]?.label}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </details>
+
+              {/* Tags Filter */}
+              <details className="group rounded-lg border border-slate-200 bg-slate-50 open:bg-white open:ring-1 open:ring-primary/20 transition-all dark:border-slate-700 dark:bg-slate-800 dark:open:bg-slate-900">
+                <summary className="flex cursor-pointer items-center justify-between px-4 py-3 select-none">
+                  <span className="text-slate-900 dark:text-white text-sm font-semibold flex items-center gap-2">
+                    <Tag className="h-5 w-5 text-slate-500" />
+                    Etiquetas
+                    {selectedTags.length > 0 && (
+                      <span className="ml-1 px-1.5 py-0.5 text-xs bg-primary text-white rounded-full">
+                        {selectedTags.length}
+                      </span>
+                    )}
+                  </span>
+                </summary>
+                <div className="px-4 pb-4 pt-1 flex flex-col gap-2">
+                  <Input
+                    value={tagSearchQuery}
+                    onChange={(e) => setTagSearchQuery(e.target.value)}
+                    placeholder="Buscar etiquetas..."
+                    className="w-full text-xs border border-slate-200 dark:border-slate-700 rounded px-2 py-1.5 mb-2"
+                  />
+                  <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
+                    {filteredTags.length > 0 ? (
+                      filteredTags.map((tag) => (
+                        <button
+                          key={tag}
+                          onClick={() => toggleTag(tag)}
+                          className={cn(
+                            'px-2 py-1 rounded-md text-xs font-medium cursor-pointer transition-colors',
+                            selectedTags.includes(tag)
+                              ? 'bg-primary text-white'
+                              : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-primary/10 hover:text-primary'
+                          )}
+                        >
+                          {tag}
+                        </button>
+                      ))
+                    ) : (
+                      <span className="text-xs text-slate-400">
+                        {allTags.length === 0 ? 'No hay etiquetas disponibles' : 'No se encontraron etiquetas'}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </details>
+            </div>
           </div>
         </div>
       </aside>
@@ -322,6 +455,31 @@ export function StudentActivitiesView({ initialActivities }: StudentActivitiesVi
         </header>
 
         <div className="flex flex-col gap-8 px-8 pb-12 pt-2">
+          {/* Active Filters */}
+          {activeFilters.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wide mr-2">
+                Filtros Activos:
+              </span>
+              {activeFilters.map((filter, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-1 px-2 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium"
+                >
+                  {filter}
+                  <button
+                    onClick={() => {
+                      // Remove filter logic would go here
+                    }}
+                    className="hover:text-primary/80"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
           {/* Page Heading */}
           <div className="flex flex-wrap justify-between gap-4">
             <div className="flex flex-col gap-2">
@@ -341,20 +499,7 @@ export function StudentActivitiesView({ initialActivities }: StudentActivitiesVi
           </div>
 
           {/* Stats Overview */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div className="flex flex-col gap-2 rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-transform hover:-translate-y-1 dark:border-slate-800 dark:bg-slate-900">
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
-                  Vence Hoy
-                </p>
-                <div className="flex size-8 items-center justify-center rounded-full bg-red-50 text-red-500 dark:bg-red-900/20">
-                  <AlertTriangle className="h-5 w-5" />
-                </div>
-              </div>
-              <p className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
-                {dueToday}
-              </p>
-            </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="flex flex-col gap-2 rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-transform hover:-translate-y-1 dark:border-slate-800 dark:bg-slate-900">
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
@@ -382,29 +527,6 @@ export function StudentActivitiesView({ initialActivities }: StudentActivitiesVi
               </p>
             </div>
           </div>
-
-          {/* Due Soon Section */}
-          {dueSoonActivities.length > 0 && (
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center gap-2 border-b border-slate-200 pb-2 dark:border-slate-800">
-                <AlertTriangle className="h-5 w-5 text-orange-500" />
-                <h2 className="text-xl font-bold leading-tight text-slate-900 dark:text-white">
-                  Próximas a Vencer
-                </h2>
-              </div>
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {dueSoonActivities.map((activity) => (
-                  <ActivityCard
-                    key={activity.id}
-                    activity={activity}
-                    status={getActivityStatus(activity)}
-                    progress={getProgressPercentage(activity)}
-                    onStart={() => handleStartActivity(activity)}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
 
           {/* New Assignments Section */}
           {newActivities.length > 0 && (
@@ -484,42 +606,13 @@ export function StudentActivitiesView({ initialActivities }: StudentActivitiesVi
       </main>
 
       {/* Activity Dialog */}
-      <Dialog open={activityDialogOpen} onOpenChange={setActivityDialogOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
-          {selectedActivity && (
-            <ActivityRenderer
-              activity={{
-                id: selectedActivity.id,
-                title: selectedActivity.title,
-                description: selectedActivity.description,
-                questions: (selectedActivity.activityData?.questions as Array<{
-                  id: string
-                  type: 'multiple_choice' | 'fill_blanks' | 'matching_pairs' | 'sentence_unscramble'
-                  order: number
-                  questionText?: string
-                  options?: { id: string; text: string; isCorrect: boolean }[]
-                  sentenceWithBlanks?: string
-                  blanks?: { id: string; answer: string }[]
-                  pairs?: { id: string; left: string; right: string }[]
-                  correctSentence?: string
-                  scrambledWords?: string[]
-                }>)?.map(q => ({
-                  ...q,
-                  scrambledWords: q.scrambledWords?.map((word, index) => ({
-                    id: `word-${Date.now()}-${index}`,
-                    text: word,
-                    originalIndex: index
-                  }))
-                })) || [],
-                difficulty: selectedActivity.level === 1 ? 'beginner' : selectedActivity.level === 2 ? 'intermediate' : 'advanced',
-                points: selectedActivity.points,
-              }}
-              onComplete={handleActivityComplete}
-              onClose={handleCloseActivity}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
+      <ActivityDialog
+        open={activityDialogOpen}
+        onOpenChange={setActivityDialogOpen}
+        activity={selectedActivity}
+        onComplete={handleActivityComplete}
+        onClose={handleCloseActivity}
+      />
     </div>
   )
 }

@@ -30,7 +30,7 @@ import {
 } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
-import { ActivityRenderer } from '@/components/activities/activity-renderer'
+import { ActivityDialog } from '@/components/activities/activity-dialog'
 
 interface Activity {
   id: string
@@ -42,6 +42,7 @@ interface Activity {
   duration: number
   isPublished: boolean
   activityData: {
+    readingText?: string
     tags?: string[]
     questions?: unknown[]
   }
@@ -55,22 +56,27 @@ interface Student {
   image?: string
 }
 
-const DIFFICULTY_CONFIG: Record<number, { label: string; color: string; bgColor: string }> = {
-  1: {
-    label: 'Principiante',
-    color: 'text-green-800 dark:text-green-400',
-    bgColor: 'bg-green-100 border-green-200 dark:bg-green-900/30',
-  },
-  2: {
-    label: 'Intermedio',
-    color: 'text-yellow-800 dark:text-yellow-500',
-    bgColor: 'bg-yellow-100 border-yellow-200 dark:bg-yellow-900/30',
-  },
-  3: {
-    label: 'Avanzado',
-    color: 'text-red-800 dark:text-red-400',
-    bgColor: 'bg-red-100 border-red-200 dark:bg-red-900/30',
-  },
+// Función helper para obtener la configuración de dificultad basada en el nivel (1-10)
+const getDifficultyConfig = (level: number): { label: string; color: string; bgColor: string } => {
+  if (level >= 1 && level <= 3) {
+    return {
+      label: 'Principiante',
+      color: 'text-green-800 dark:text-green-400',
+      bgColor: 'bg-green-100 border-green-200 dark:bg-green-900/30',
+    }
+  } else if (level >= 4 && level <= 7) {
+    return {
+      label: 'Intermedio',
+      color: 'text-yellow-800 dark:text-yellow-500',
+      bgColor: 'bg-yellow-100 border-yellow-200 dark:bg-yellow-900/30',
+    }
+  } else {
+    return {
+      label: 'Avanzado',
+      color: 'text-red-800 dark:text-red-400',
+      bgColor: 'bg-red-100 border-red-200 dark:bg-red-900/30',
+    }
+  }
 }
 
 const GRADIENT_COLORS = [
@@ -194,7 +200,7 @@ export function TeacherActivitiesView() {
       newFilters.push(`"${searchQuery}"`)
     }
     selectedDifficulties.forEach((d) => {
-      newFilters.push(DIFFICULTY_CONFIG[d]?.label || '')
+      newFilters.push(getDifficultyConfig(d).label)
     })
     setActiveFilters(newFilters)
     setCurrentPage(1)
@@ -236,13 +242,7 @@ export function TeacherActivitiesView() {
     tag.toLowerCase().includes(tagSearchQuery.toLowerCase())
   )
 
-  const toggleDifficulty = (level: number) => {
-    setSelectedDifficulties((prev) =>
-      prev.includes(level) ? prev.filter((d) => d !== level) : [...prev, level]
-    )
-    setCurrentPage(1)
-  }
-
+  
   const toggleType = (type: string) => {
     setSelectedTypes((prev) =>
       prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
@@ -308,8 +308,23 @@ export function TeacherActivitiesView() {
     }
   }
 
-  const openAssignDialog = (activity: Activity) => {
+  const openAssignDialog = async (activity: Activity) => {
     setSelectedActivity(activity)
+    
+    // Obtener estudiantes ya asignados a esta actividad
+    try {
+      const response = await fetch(`/api/activities/${activity.id}/assignments`)
+      if (response.ok) {
+        const data = await response.json()
+        setSelectedStudents(data.assignedStudentIds || [])
+      } else {
+        setSelectedStudents([]) // Reset si hay error
+      }
+    } catch (error) {
+      console.error('Error fetching assignments:', error)
+      setSelectedStudents([]) // Reset si hay error
+    }
+    
     setAssignDialogOpen(true)
   }
 
@@ -318,11 +333,7 @@ export function TeacherActivitiesView() {
     setPreviewDialogOpen(true)
   }
 
-  const closePreviewDialog = () => {
-    setPreviewDialogOpen(false)
-    setPreviewActivity(null)
-  }
-
+  
   return (
     <div className="flex h-full w-full flex-row bg-slate-50 dark:bg-slate-950">
       {/* Sidebar Filters */}
@@ -355,25 +366,64 @@ export function TeacherActivitiesView() {
               </span>
             </summary>
             <div className="px-4 pb-4 pt-1 flex flex-col gap-2">
-              {[1, 2, 3].map((level) => (
+              {[
+                { level: 1, label: 'Principiante (A1-A2)' },
+                { level: 4, label: 'Intermedio (B1-B2)' },
+                { level: 8, label: 'Avanzado (C1-C2)' }
+              ].map(({ level, label }) => (
                 <label
                   key={level}
                   className="flex items-center gap-3 cursor-pointer group/item"
                 >
                   <Checkbox
-                    checked={selectedDifficulties.includes(level)}
-                    onCheckedChange={() => toggleDifficulty(level)}
+                    checked={selectedDifficulties.some(d => 
+                      (level === 1 && d >= 1 && d <= 3) ||
+                      (level === 4 && d >= 4 && d <= 7) ||
+                      (level === 8 && d >= 8)
+                    )}
+                    onCheckedChange={() => {
+                      if (level === 1) {
+                        // Toggle niveles 1-3 (Principiante)
+                        const hasAnyBeginner = selectedDifficulties.some(d => d >= 1 && d <= 3)
+                        if (hasAnyBeginner) {
+                          setSelectedDifficulties(prev => prev.filter(d => d < 1 || d > 3))
+                        } else {
+                          setSelectedDifficulties(prev => [...prev.filter(d => d < 1 || d > 3), 1, 2, 3])
+                        }
+                      } else if (level === 4) {
+                        // Toggle niveles 4-7 (Intermedio)
+                        const hasAnyIntermediate = selectedDifficulties.some(d => d >= 4 && d <= 7)
+                        if (hasAnyIntermediate) {
+                          setSelectedDifficulties(prev => prev.filter(d => d < 4 || d > 7))
+                        } else {
+                          setSelectedDifficulties(prev => [...prev.filter(d => d < 4 || d > 7), 4, 5, 6, 7])
+                        }
+                      } else {
+                        // Toggle niveles 8+ (Avanzado)
+                        const hasAnyAdvanced = selectedDifficulties.some(d => d >= 8)
+                        if (hasAnyAdvanced) {
+                          setSelectedDifficulties(prev => prev.filter(d => d < 8))
+                        } else {
+                          // Agregar todos los niveles avanzados posibles (8-10)
+                          setSelectedDifficulties(prev => [...prev.filter(d => d < 8), 8, 9, 10])
+                        }
+                      }
+                      setCurrentPage(1)
+                    }}
                   />
                   <span
                     className={cn(
                       'text-sm',
-                      selectedDifficulties.includes(level)
+                      selectedDifficulties.some(d => 
+                        (level === 1 && d >= 1 && d <= 3) ||
+                        (level === 4 && d >= 4 && d <= 7) ||
+                        (level === 8 && d >= 8)
+                      )
                         ? 'text-slate-900 dark:text-white font-medium'
                         : 'text-slate-500 dark:text-slate-400 group-hover/item:text-slate-900 dark:group-hover/item:text-white'
                     )}
                   >
-                    {DIFFICULTY_CONFIG[level]?.label} (
-                    {level === 1 ? 'A1-A2' : level === 2 ? 'B1-B2' : 'C1-C2'})
+                    {label}
                   </span>
                 </label>
               ))}
@@ -546,7 +596,7 @@ export function TeacherActivitiesView() {
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pt-2">
             {paginatedActivities.map((activity, index) => {
               const colorIndex = index % GRADIENT_COLORS.length
-              const difficulty = DIFFICULTY_CONFIG[activity.level] || DIFFICULTY_CONFIG[1]
+              const difficulty = getDifficultyConfig(activity.level)
               const tags = activity.activityData?.tags || []
 
               return (
@@ -779,42 +829,12 @@ export function TeacherActivitiesView() {
       </Dialog>
 
       {/* Preview Dialog */}
-      <Dialog open={previewDialogOpen} onOpenChange={setPreviewDialogOpen}>
-        <DialogContent className="max-w-6xl max-h-[95vh] overflow-y-auto p-0">
-          {previewActivity && (
-            <ActivityRenderer
-              activity={{
-                id: previewActivity.id,
-                title: previewActivity.title,
-                description: previewActivity.description,
-                questions: (previewActivity.activityData?.questions as Array<{
-                  id: string
-                  type: 'multiple_choice' | 'fill_blanks' | 'matching_pairs' | 'sentence_unscramble'
-                  order: number
-                  questionText?: string
-                  options?: { id: string; text: string; isCorrect: boolean }[]
-                  sentenceWithBlanks?: string
-                  blanks?: { id: string; answer: string }[]
-                  pairs?: { id: string; left: string; right: string }[]
-                  correctSentence?: string
-                  scrambledWords?: string[]
-                }>)?.map(q => ({
-                  ...q,
-                  scrambledWords: q.scrambledWords?.map((word, index) => ({
-                    id: `word-${Date.now()}-${index}`,
-                    text: word,
-                    originalIndex: index
-                  }))
-                })) || [],
-                difficulty: previewActivity.level === 1 ? 'beginner' : previewActivity.level === 2 ? 'intermediate' : 'advanced',
-                points: previewActivity.points,
-              }}
-              onComplete={() => {}} // No necesitamos manejar completion en el preview
-              onClose={closePreviewDialog}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
+      <ActivityDialog
+        open={previewDialogOpen}
+        onOpenChange={setPreviewDialogOpen}
+        activity={previewActivity}
+        isPreview={true}
+      />
     </div>
   )
 }

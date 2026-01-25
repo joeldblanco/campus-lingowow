@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import { ArrowLeft, ArrowRight, Clock, Target, Award, AlertTriangle, CheckCircle2, XCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -115,19 +114,62 @@ export function ExamPreviewClient({
   }, [allQuestions])
 
   const questionStatuses = useMemo(() => {
-    return allQuestions.map((q, index) => {
-      const hasAnswer = answers[q.id] !== null && answers[q.id] !== undefined && answers[q.id] !== ''
+    const statuses: { id: string; status: QuestionStatus; navIndex?: number; groupSize?: number; isGroup?: boolean }[] = []
+    const processedGroupIds = new Set<string>()
+    
+    allQuestions.forEach((q, index) => {
+      const groupId = q.groupId
       
-      let status: QuestionStatus = 'unanswered'
-      if (index === currentQuestionIndex) {
-        status = 'current'
-      } else if (hasAnswer) {
-        status = 'answered'
+      if (groupId) {
+        // Es una pregunta de grupo
+        if (!processedGroupIds.has(groupId)) {
+          // Primera vez que vemos este grupo, crear estado para el grupo
+          processedGroupIds.add(groupId)
+          
+          // Verificar si todas las preguntas del grupo están respondidas
+          const groupQuestions = allQuestions.filter(gq => gq.groupId === groupId)
+          const allAnswered = groupQuestions.every(gq => 
+            answers[gq.id] !== null && answers[gq.id] !== undefined && answers[gq.id] !== ''
+          )
+          
+          let status: QuestionStatus = 'unanswered'
+          if (navigationIndices.includes(index) && index <= currentQuestionIndex && currentQuestionIndex < index + groupQuestions.length) {
+            // El grupo está actualmente visible
+            status = 'current'
+          } else if (allAnswered) {
+            status = 'answered'
+          }
+          
+          statuses.push({ 
+            id: groupId, 
+            status, 
+            navIndex: index,
+            groupSize: groupQuestions.length,
+            isGroup: true
+          })
+        }
+      } else {
+        // Es una pregunta individual
+        const hasAnswer = answers[q.id] !== null && answers[q.id] !== undefined && answers[q.id] !== ''
+        
+        let status: QuestionStatus = 'unanswered'
+        if (index === currentQuestionIndex) {
+          status = 'current'
+        } else if (hasAnswer) {
+          status = 'answered'
+        }
+        
+        statuses.push({ 
+          id: q.id, 
+          status, 
+          navIndex: index,
+          isGroup: false
+        })
       }
-      
-      return { id: q.id, status }
     })
-  }, [allQuestions, answers, currentQuestionIndex])
+    
+    return statuses
+  }, [allQuestions, answers, currentQuestionIndex, navigationIndices])
 
   const handleNavigate = (index: number) => {
     if (index >= 0 && index < totalQuestions) {
@@ -170,6 +212,13 @@ export function ExamPreviewClient({
     if (nextNavIndex >= 0) {
       handleNavigate(navigationIndices[nextNavIndex])
     }
+  }
+
+  const isLastNavigationItem = () => {
+    // Encontrar el último índice de navegación
+    const lastNavIndex = navigationIndices[navigationIndices.length - 1]
+    // Verificar si el índice actual está en el último grupo o es la última pregunta del último grupo
+    return currentQuestionIndex >= lastNavIndex
   }
 
   const checkAnswer = (question: typeof currentQuestion) => {
@@ -305,7 +354,14 @@ export function ExamPreviewClient({
                 Anterior
               </Button>
               <div className="flex gap-4 w-full sm:w-auto">
-                {currentQuestionIndex < totalQuestions - 1 && (
+                {isLastNavigationItem() ? (
+                  <Button
+                    onClick={() => router.back()}
+                    className="flex-1 sm:flex-none flex items-center justify-center gap-2"
+                  >
+                    Cerrar Previsualización
+                  </Button>
+                ) : (
                   <Button
                     variant="secondary"
                     onClick={handleNext}
@@ -315,11 +371,6 @@ export function ExamPreviewClient({
                     <ArrowRight className="h-4 w-4" />
                   </Button>
                 )}
-                <Link href="/teacher/courses">
-                  <Button variant="outline">
-                    Volver a Cursos
-                  </Button>
-                </Link>
               </div>
             </div>
           </div>
