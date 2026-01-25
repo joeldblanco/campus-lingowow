@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -14,7 +15,7 @@ import {
   Send,
   Volume2,
   Video,
-  Image as ImageIcon,
+  ImageIcon,
   Type,
   FileTextIcon,
   FileDown,
@@ -448,9 +449,11 @@ export function ExamGradingView({
                         
                         {answer.informativeContent?.imageUrl && (
                           <div className="mb-4">
-                            <img 
+                            <Image 
                               src={answer.informativeContent.imageUrl} 
                               alt="Imagen informativa" 
+                              width={512}
+                              height={256}
                               className="max-w-full h-auto rounded-lg"
                             />
                           </div>

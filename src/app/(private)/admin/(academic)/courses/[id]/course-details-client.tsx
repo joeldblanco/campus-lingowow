@@ -63,6 +63,7 @@ import {
   Users,
   Video,
 } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -972,9 +973,11 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
                         <TableCell>
                           <div className="flex items-center gap-3">
                             {enrollment.student.image ? (
-                              <img 
+                              <Image 
                                 src={enrollment.student.image} 
                                 alt={enrollment.student.name || ''} 
+                                width={32}
+                                height={32}
                                 className="w-8 h-8 rounded-full object-cover"
                               />
                             ) : (
@@ -1083,9 +1086,11 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
                   <Card key={tc.teacherId}>
                     <CardContent className="flex items-center gap-4 p-4">
                       {tc.teacher.image ? (
-                        <img 
+                        <Image 
                           src={tc.teacher.image} 
                           alt={tc.teacher.name || ''} 
+                          width={56}
+                          height={56}
                           className="w-14 h-14 rounded-full object-cover"
                         />
                       ) : (
