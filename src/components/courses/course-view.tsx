@@ -143,27 +143,7 @@ export function CourseView({ course, progress }: CourseViewProps) {
     }
   }
 
-  const getContentTypeIcon = (contentType: string) => {
-    switch (contentType) {
-      case 'GRAMMAR_CARD':
-        return '📝'
-      case 'LEVELED_TEXT':
-        return '📖'
-      case 'THEMATIC_GLOSSARY':
-        return '📚'
-      case 'DOWNLOADABLE_RESOURCE':
-        return '📄'
-      case 'ACTIVITY':
-        return '🎯'
-      case 'VIDEO':
-        return '🎥'
-      case 'PODCAST':
-        return '🎧'
-      default:
-        return '📋'
-    }
-  }
-
+  
   const isContentCompleted = (contentId: string) => {
     return progress?.completedContentIds.includes(contentId) || false
   }
@@ -374,18 +354,6 @@ export function CourseView({ course, progress }: CourseViewProps) {
                                     )}
                                   </div>
                                   <p className="text-sm text-gray-600 line-clamp-2">{lesson.description}</p>
-
-                                  {/* Content List Preview (Optional - maybe hidden in refined view or kept minimal) */}
-                                  <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-                                    {lesson.contents.slice(0, 3).map((content) => (
-                                      <span key={content.id} className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full">
-                                        {getContentTypeIcon(content.contentType)} {content.title}
-                                      </span>
-                                    ))}
-                                    {lesson.contents.length > 3 && (
-                                      <span className="px-2 py-1">+ {lesson.contents.length - 3} más</span>
-                                    )}
-                                  </div>
                                 </div>
 
                                 <div className="shrink-0">

@@ -19,7 +19,6 @@ import {
   Video,
   Clock,
   User,
-  Play,
   ClipboardList,
 } from 'lucide-react'
 import { CreateExamDialog } from '@/components/teacher/exams/create-exam-dialog'
@@ -137,11 +136,6 @@ const languageNames: Record<string, string> = {
   it: 'Italiano',
 }
 
-const contentTypeIcons: Record<string, typeof FileText> = {
-  VIDEO: Video,
-  TEXT: FileText,
-  AUDIO: Play,
-}
 
 export function TeacherCourseContentView({ course }: TeacherCourseContentViewProps) {
   const totalLessons = course.isPersonalized
@@ -311,22 +305,7 @@ function LessonCard({ lesson, courseId }: { lesson: Lesson; courseId: string }) 
           </div>
         </div>
       </CardHeader>
-      {lesson.contents.length > 0 && (
-        <CardContent className="py-2 px-4 border-t">
-          <div className="flex flex-wrap gap-2">
-            {lesson.contents.map((content) => {
-              const Icon = contentTypeIcons[content.contentType] || FileText
-              return (
-                <Badge key={content.id} variant="outline" className="text-xs">
-                  <Icon className="w-3 h-3 mr-1" />
-                  {content.title}
-                </Badge>
-              )
-            })}
-          </div>
-        </CardContent>
-      )}
-    </Card>
+          </Card>
     </Link>
   )
 }
