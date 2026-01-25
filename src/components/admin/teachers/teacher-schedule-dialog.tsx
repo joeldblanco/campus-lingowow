@@ -11,8 +11,8 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { UserAvatar } from '@/components/ui/user-avatar'
 import { cn } from '@/lib/utils'
-import { getTeacherScheduleForAdmin, type TeacherScheduleLesson, type TeacherAvailabilitySlot } from '@/lib/actions/teacher-schedule'
-import type { ScheduleLesson } from '@/types/schedule'
+import { getTeacherScheduleForAdmin } from '@/lib/actions/teacher-schedule'
+import type { TeacherScheduleLesson, TeacherAvailabilitySlot, ScheduleLesson } from '@/types/schedule'
 import { getLessonColorClasses } from '@/types/schedule'
 import { 
   addDays, 
@@ -52,6 +52,7 @@ function transformLessons(serverLessons: TeacherScheduleLesson[]): ScheduleLesso
     id: lesson.id,
     courseTitle: lesson.courseTitle,
     courseLevel: lesson.courseLevel,
+    courseId: lesson.courseId,
     student: {
       id: lesson.student.id,
       name: lesson.student.name,

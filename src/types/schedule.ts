@@ -1,5 +1,7 @@
 // Types for Teacher Schedule View
 
+import { Prisma } from '@prisma/client'
+
 export type LessonStatus = 'scheduled' | 'in_progress' | 'completed' | 'cancelled' | 'available' | 'blocked'
 
 export interface Student {
@@ -10,10 +12,62 @@ export interface Student {
   image?: string | null
 }
 
+// Prisma-based type for raw booking data from database
+export type TeacherScheduleLessonRaw = Prisma.ClassBookingGetPayload<{
+  include: {
+    student: {
+      select: {
+        id: true
+        name: true
+        lastName: true
+        email: true
+        image: true
+      }
+    }
+    enrollment: {
+      include: {
+        course: {
+          select: {
+            id: true
+            title: true
+            level: true
+            classDuration: true
+          }
+        }
+      }
+    }
+  }
+}>
+
+// Transformed type for client-side usage (with processed fields)
+export interface TeacherScheduleLesson {
+  id: string
+  courseTitle: string
+  courseLevel: string
+  courseId: string
+  student: {
+    id: string
+    name: string
+    lastName?: string
+    email: string
+    image?: string | null
+  }
+  startTime: string
+  endTime: string
+  date: Date
+  status: 'scheduled' | 'in_progress' | 'completed' | 'cancelled'
+  topic?: string
+  duration: number
+  roomUrl?: string
+  color: 'blue' | 'purple' | 'orange' | 'green' | 'gray'
+  enrollmentId: string
+}
+
 export interface ScheduleLesson {
   id: string
   courseTitle: string
   courseLevel: string
+  courseId: string
   student: Student
   startTime: string // HH:mm format
   endTime: string // HH:mm format
@@ -23,6 +77,19 @@ export interface ScheduleLesson {
   duration: number // in minutes
   roomUrl?: string
   color?: 'blue' | 'purple' | 'orange' | 'green' | 'gray'
+}
+
+export interface TeacherAvailabilitySlot {
+  id: string
+  day: string
+  startTime: string
+  endTime: string
+}
+
+export interface TeacherScheduleData {
+  lessons: TeacherScheduleLesson[]
+  availability: TeacherAvailabilitySlot[]
+  blockedDays: string[]
 }
 
 export interface AvailableSlot {

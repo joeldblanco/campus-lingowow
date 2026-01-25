@@ -5,41 +5,7 @@ import { db } from '@/lib/db'
 import { UserRole, BookingStatus } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import { startOfWeek, endOfWeek, startOfMonth, endOfMonth, format } from 'date-fns'
-
-export interface TeacherScheduleLesson {
-  id: string
-  courseTitle: string
-  courseLevel: string
-  student: {
-    id: string
-    name: string
-    lastName?: string
-    email: string
-    image?: string | null
-  }
-  startTime: string
-  endTime: string
-  date: Date
-  status: 'scheduled' | 'in_progress' | 'completed' | 'cancelled'
-  topic?: string
-  duration: number
-  roomUrl?: string
-  color: 'blue' | 'purple' | 'orange' | 'green' | 'gray'
-  enrollmentId: string
-}
-
-export interface TeacherAvailabilitySlot {
-  id: string
-  day: string
-  startTime: string
-  endTime: string
-}
-
-export interface TeacherScheduleData {
-  lessons: TeacherScheduleLesson[]
-  availability: TeacherAvailabilitySlot[]
-  blockedDays: string[]
-}
+import { TeacherScheduleLesson, TeacherAvailabilitySlot, TeacherScheduleData } from '@/types/schedule'
 
 // Color mapping for courses
 const COURSE_COLORS: Record<string, 'blue' | 'purple' | 'orange' | 'green'> = {
@@ -61,7 +27,7 @@ function getCourseColor(courseTitle: string): 'blue' | 'purple' | 'orange' | 'gr
   return 'blue'
 }
 
-function getBookingStatus(booking: { status: BookingStatus; day: string; timeSlot: string }): TeacherScheduleLesson['status'] {
+function getBookingStatus(booking: { status: BookingStatus; day: string; timeSlot: string }): 'scheduled' | 'in_progress' | 'completed' | 'cancelled' {
   if (booking.status === BookingStatus.CANCELLED) return 'cancelled'
   if (booking.status === BookingStatus.COMPLETED) return 'completed'
   
@@ -174,6 +140,7 @@ export async function getTeacherScheduleData(
         id: booking.id,
         courseTitle: booking.enrollment.course.title,
         courseLevel: booking.enrollment.course.level,
+        courseId: booking.enrollment.courseId,
         student: {
           id: booking.student.id,
           name: booking.student.name,
@@ -497,6 +464,7 @@ export async function getTeacherScheduleForAdmin(
         id: booking.id,
         courseTitle: booking.enrollment.course.title,
         courseLevel: booking.enrollment.course.level,
+        courseId: booking.enrollment.courseId,
         student: {
           id: booking.student.id,
           name: booking.student.name,

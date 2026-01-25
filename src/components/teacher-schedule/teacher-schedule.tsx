@@ -10,7 +10,8 @@ import { LessonDetailsDialog } from './lesson-details-dialog'
 import { AvailabilityEditView } from './availability-edit-view'
 import type { ScheduleViewType, ScheduleLesson, AvailableSlot, BlockedSlot } from '@/types/schedule'
 import { isSameDay, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isWithinInterval, format } from 'date-fns'
-import { getTeacherScheduleData, bulkUpdateTeacherAvailability, type TeacherScheduleLesson, type TeacherAvailabilitySlot } from '@/lib/actions/teacher-schedule'
+import { getTeacherScheduleData, bulkUpdateTeacherAvailability } from '@/lib/actions/teacher-schedule'
+import type { TeacherScheduleLesson, TeacherAvailabilitySlot } from '@/types/schedule'
 import { Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -47,6 +48,7 @@ function transformLessons(serverLessons: TeacherScheduleLesson[]): ScheduleLesso
     id: lesson.id,
     courseTitle: lesson.courseTitle,
     courseLevel: lesson.courseLevel,
+    courseId: lesson.courseId,
     student: {
       id: lesson.student.id,
       name: lesson.student.name,
@@ -179,7 +181,11 @@ export function TeacherSchedule({ initialData, currentPeriod }: TeacherScheduleP
   }
 
   const handleViewMaterials = (lessonId: string) => {
-    router.push(`/admin/courses/materials?lessonId=${lessonId}`)
+    // Find the lesson to get the courseId
+    const lesson = lessons.find((l) => l.id === lessonId)
+    if (lesson?.courseId) {
+      router.push(`/teacher/courses/${lesson.courseId}`)
+    }
   }
 
   const handleMarkAttendance = (lessonId: string) => {
