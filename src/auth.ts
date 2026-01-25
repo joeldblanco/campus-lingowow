@@ -68,6 +68,7 @@ export const {
         },
         data: {
           emailVerified: new Date(),
+          lastLoginAt: new Date(),
         },
       })
     },
