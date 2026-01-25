@@ -3,7 +3,7 @@ import { PrismaAdapter } from '@auth/prisma-adapter'
 
 import { db } from '@/lib/db'
 import authConfig from '@/auth.config'
-import { getUserById } from '@/lib/actions/user'
+import { getUserByEmail, getUserById } from '@/lib/actions/user'
 import { UserRole } from '@prisma/client'
 
 declare module 'next-auth' {
@@ -68,17 +68,29 @@ export const {
         },
         data: {
           emailVerified: new Date(),
-          lastLoginAt: new Date(),
         },
       })
     },
   },
   callbacks: {
     async signIn({ user, account }) {
-      // Para proveedores OAuth (Google), permitir acceso sin verificación adicional
+      // Para proveedores OAuth (Google)
       if (account?.provider !== 'credentials') {
-        // OAuth providers son confiables, permitir acceso
-        // lastLoginAt se actualiza en el evento linkAccount
+        if (!user.email) return false
+        
+        // Actualizar lastLoginAt para usuarios OAuth en cada login
+        try {
+          const existingUser = await getUserByEmail(user.email)
+          if (existingUser && !('error' in existingUser)) {
+            await db.user.update({
+              where: { id: existingUser.id },
+              data: { lastLoginAt: new Date() },
+            })
+          }
+        } catch (error) {
+          console.error('Error updating lastLoginAt for OAuth:', error)
+        }
+        
         return true
       }
 
