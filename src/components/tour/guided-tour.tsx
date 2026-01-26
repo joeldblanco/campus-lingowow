@@ -89,8 +89,73 @@ export function GuidedTour() {
       if (type === EVENTS.STEP_AFTER) {
         if (action === ACTIONS.NEXT) {
           setStepIndex(index + 1)
+          
+          // Force scroll to top when navigating from step 7 to 8 (index 6 to 7) in student tour
+          if (state.tourType === 'student' && index === 6) {
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }
+          
+          // Force scroll to top when navigating to step 7 (index 6) in teacher tour
+          if (state.tourType === 'teacher' && index === 5) {
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }
+          
+          // Force scroll to top when navigating to step 7 (index 6) in guest tour
+          if (state.tourType === 'guest' && index === 5) {
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }
+          
+          // Force scroll to bottom when navigating to step 2 (index 1) in student tour
+          if (state.tourType === 'student' && index === 0) {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+          }
+          
+          // Force scroll to bottom when navigating to step 2 (index 1) in teacher tour
+          if (state.tourType === 'teacher' && index === 0) {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+          }
+          
+          // Force scroll to bottom when navigating to step 8 (index 7) in guest tour
+          if (state.tourType === 'guest' && index === 6) {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+          }
         } else if (action === ACTIONS.PREV) {
           setStepIndex(index - 1)
+          
+          // Force scroll to top when navigating to step 1 (index 0) in any tour
+          if (index - 1 === 0) {
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }
+          
+          // Force scroll to top when navigating to step 7 (index 6) in student tour
+          if (state.tourType === 'student' && index - 1 === 7) {
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }
+          
+          // Force scroll to top when navigating to step 7 (index 6) in teacher tour
+          if (state.tourType === 'teacher' && index - 1 === 6) {
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }
+          
+          // Force scroll to top when navigating to step 7 (index 6) in guest tour
+          if (state.tourType === 'guest' && index - 1 === 6) {
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }
+          
+          // Force scroll to bottom when navigating to step 2 (index 1) in student tour
+          if (state.tourType === 'student' && index - 1 === 1) {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+          }
+          
+          // Force scroll to bottom when navigating to step 2 (index 1) in teacher tour
+          if (state.tourType === 'teacher' && index - 1 === 1) {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+          }
+          
+          // Force scroll to bottom when navigating to step 8 (index 7) in guest tour
+          if (state.tourType === 'guest' && index - 1 === 7) {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+          }
         }
       }
 
@@ -124,6 +189,7 @@ export function GuidedTour() {
         close: 'Cerrar',
         last: 'Finalizar',
         next: 'Siguiente',
+        nextLabelWithProgress: 'Siguiente ({step} de {steps})',
         open: 'Abrir',
         skip: 'Saltar tour',
       }}
