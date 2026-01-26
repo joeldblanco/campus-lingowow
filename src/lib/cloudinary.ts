@@ -315,16 +315,58 @@ export class CloudinaryService {
 
   static async listFolders(prefix?: string): Promise<CloudinaryFolder[]> {
     try {
-      const result = await cloudinary.api.sub_folders(prefix || '')
-      return result.folders.map(
-        (folder: { name: string; path: string; bytes?: number; file_count?: number }) => ({
-          name: folder.name,
-          path: folder.path,
-          bytes: folder.bytes || 0,
-          file_count: folder.file_count || 0,
-          created_at: new Date().toISOString(),
-        })
-      )
+      let allFolders: CloudinaryFolder[] = []
+      
+      if (prefix) {
+        // Get subfolders of specific prefix
+        const result = await cloudinary.api.sub_folders(prefix)
+        allFolders = result.folders.map(
+          (folder: { name: string; path: string; bytes?: number; file_count?: number }) => ({
+            name: folder.name,
+            path: folder.path,
+            bytes: folder.bytes || 0,
+            file_count: folder.file_count || 0,
+            created_at: new Date().toISOString(),
+          })
+        )
+      } else {
+        // Get all root folders first
+        const rootResult = await cloudinary.api.root_folders()
+        const rootFolders = rootResult.folders.map(
+          (folder: { name: string; path: string; bytes?: number; file_count?: number }) => ({
+            name: folder.name,
+            path: folder.path,
+            bytes: folder.bytes || 0,
+            file_count: folder.file_count || 0,
+            created_at: new Date().toISOString(),
+          })
+        )
+        
+        // Then get subfolders for each root folder
+        for (const rootFolder of rootFolders) {
+          try {
+            const subResult = await cloudinary.api.sub_folders(rootFolder.path)
+            const subFolders = subResult.folders.map(
+              (folder: { name: string; path: string; bytes?: number; file_count?: number }) => ({
+                name: folder.name,
+                path: folder.path,
+                bytes: folder.bytes || 0,
+                file_count: folder.file_count || 0,
+                created_at: new Date().toISOString(),
+              })
+            )
+            allFolders.push(...subFolders)
+          } catch (error) {
+            // Skip folders that don't have subfolders
+            console.warn(`No subfolders for ${rootFolder.path}:`, error)
+          }
+        }
+        
+        // Add root folders as well
+        allFolders.push(...rootFolders)
+      }
+      
+      return allFolders
     } catch (error) {
       console.error('Cloudinary list folders error:', error)
       throw new Error('Failed to list folders from Cloudinary')

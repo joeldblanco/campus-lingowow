@@ -2170,7 +2170,8 @@ enum FileResourceType {
   IMAGE           // Imágenes
   VIDEO           // Videos
   AUDIO           // Archivos de audio
-  RAW             // Documentos y otros archivos
+  DOCUMENT        // Documentos (PDF, DOC, XLS, etc.)
+  RAW             // Otros archivos (ZIP, RAR, etc.)
 }
 
 enum UsageAction {

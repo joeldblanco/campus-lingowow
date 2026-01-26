@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { toast } from 'sonner'
 import {
   listFiles,
@@ -12,6 +12,7 @@ import {
   createFolder,
   getUsageStats,
   syncCloudinaryResources,
+  getRealFolderCounts,
   type FileListOptions,
   type ServerFileAsset,
 } from '@/lib/actions/file-manager'
@@ -29,39 +30,50 @@ export function useFileManager(initialOptions: FileListOptions = {}) {
   const [selectedFiles, setSelectedFiles] = useState<string[]>([])
   const [filters, setFilters] = useState<FileListOptions>(initialOptions)
 
+  // Use a ref to track previous filters to prevent infinite loops
+  const prevFiltersRef = useRef<FileListOptions>(initialOptions)
+
   // Load files
-  const loadFiles = useCallback(
-    async (options: FileListOptions = {}) => {
-      setLoading(true)
-      setError(null)
+  const loadFiles = useCallback(async () => {
+    setLoading(true)
+    setError(null)
 
-      try {
-        const result = await listFiles({ ...filters, ...options })
+    try {
+      const result = await listFiles(filters)
 
-        if (result.success && result.data) {
-          setFiles(result.data.files)
-          setTotal(result.data.total)
-          setCurrentPage(result.data.page)
-          setLimit(result.data.limit)
-        } else {
-          setError(result.error || 'Failed to load files')
-          toast.error(result.error || 'Failed to load files')
-        }
-      } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'An error occurred'
-        setError(errorMessage)
-        toast.error(errorMessage)
-      } finally {
-        setLoading(false)
+      if (result.success && result.data) {
+        setFiles(result.data.files)
+        setTotal(result.data.total)
+        setCurrentPage(result.data.page)
+        setLimit(result.data.limit)
+      } else {
+        setError(result.error || 'Failed to load files')
+        toast.error(result.error || 'Failed to load files')
       }
-    },
-    [filters]
-  )
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'An error occurred'
+      setError(errorMessage)
+      toast.error(errorMessage)
+    } finally {
+      setLoading(false)
+    }
+  }, [filters]) // Keep filters dependency but we'll control when this updates
+
+  // Only call loadFiles when filters actually change (not on every render)
+  useEffect(() => {
+    const currentFilters = JSON.stringify(filters)
+    const prevFilters = JSON.stringify(prevFiltersRef.current)
+    
+    if (currentFilters !== prevFilters) {
+      prevFiltersRef.current = filters
+      loadFiles()
+    }
+  }, [filters, loadFiles])
 
   // Initial load
   useEffect(() => {
     loadFiles()
-  }, [loadFiles])
+  }, [loadFiles]) // Include loadFiles dependency
 
   // Update filters
   const updateFilters = useCallback((newFilters: Partial<FileListOptions>) => {
@@ -133,23 +145,23 @@ export function useFileManager(initialOptions: FileListOptions = {}) {
   // Pagination
   const nextPage = useCallback(() => {
     if (currentPage * limit < total) {
-      loadFiles({ page: currentPage + 1 })
+      updateFilters({ page: currentPage + 1 })
     }
-  }, [currentPage, limit, total, loadFiles])
+  }, [currentPage, limit, total, updateFilters])
 
   const prevPage = useCallback(() => {
     if (currentPage > 1) {
-      loadFiles({ page: currentPage - 1 })
+      updateFilters({ page: currentPage - 1 })
     }
-  }, [currentPage, loadFiles])
+  }, [currentPage, updateFilters])
 
   const goToPage = useCallback(
     (page: number) => {
       if (page >= 1 && page <= Math.ceil(total / limit)) {
-        loadFiles({ page })
+        updateFilters({ page })
       }
     },
-    [total, limit, loadFiles]
+    [total, limit, updateFilters]
   )
 
   // Computed values
@@ -278,7 +290,16 @@ export function useFolderManager() {
       const result = await listFolders(prefix)
 
       if (result.success && result.data) {
-        setFolders(result.data)
+        // Get real file counts to fix Cloudinary's outdated counts
+        const realCounts = await getRealFolderCounts(result.data)
+        
+        // Update folders with real counts
+        const foldersWithRealCounts = result.data.map(folder => ({
+          ...folder,
+          file_count: realCounts.get(folder.path) || 0
+        }))
+        
+        setFolders(foldersWithRealCounts)
       } else {
         setError(result.error || 'Failed to load folders')
         toast.error(result.error || 'Failed to load folders')
@@ -605,12 +626,12 @@ export function useAdvancedFileManager(initialOptions: FileListOptions = {}) {
       resourceType: fileTypeFilter.activeFilters?.[0],
       category: fileCategoryFilter.activeFilters?.[0],
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     fileSearch.debouncedQuery,
     fileTypeFilter.activeFilters,
     fileCategoryFilter.activeFilters,
-    fileManager,
-    fileManager.updateFilters,
+    fileManager.updateFilters, // Keep only the function, not the entire fileManager
   ])
 
   return {

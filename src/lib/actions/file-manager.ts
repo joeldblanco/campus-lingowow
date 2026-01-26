@@ -172,6 +172,27 @@ export async function syncCloudinaryResources(): Promise<
   }
 }
 
+// Get real file counts for folders (fixes Cloudinary's outdated counts)
+export async function getRealFolderCounts(
+  folders: CloudinaryFolder[]
+): Promise<Map<string, number>> {
+  const folderCounts = new Map<string, number>()
+  
+  // Get file counts for all folders in parallel
+  const countPromises = folders.map(async (folder) => {
+    const expression = `folder:${folder.path}`
+    const result = await CloudinaryService.searchResources(expression)
+    return { path: folder.path, count: result.resources.length }
+  })
+  
+  const counts = await Promise.all(countPromises)
+  counts.forEach(({ path, count }) => {
+    folderCounts.set(path, count)
+  })
+  
+  return folderCounts
+}
+
 // List files with filtering and pagination
 export async function listFiles(
   options: FileListOptions = {}
@@ -185,88 +206,104 @@ export async function listFiles(
       limit = 20,
       search,
       resourceType,
-      category,
       folder,
-      tags,
-      sortBy = 'createdAt',
-      sortOrder = 'desc',
-      uploadedBy,
     } = options
 
-    const skip = (page - 1) * limit
-
-    // Build where clause
-    const where: Record<string, unknown> = {
-      isActive: true,
+    // Build Cloudinary search expression
+    let expression = 'folder:campus-lingowow'
+    
+    if (folder && folder !== 'campus-lingowow') {
+      // Search in specific folder ONLY (not subfolders)
+      expression = `folder:${folder}`
     }
-
+    
+    // Add search filter
     if (search) {
-      where.OR = [
-        { fileName: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } },
-        { tags: { hasSome: [search] } },
-        { publicId: { contains: search, mode: 'insensitive' } },
-      ]
+      expression += ` AND filename:${search}*`
     }
 
+    // Add resource type filter
     if (resourceType) {
-      where.resourceType = resourceType
+      const cloudinaryType = resourceType === 'IMAGE' ? 'image' : 
+                           resourceType === 'VIDEO' ? 'video' : 
+                           resourceType === 'AUDIO' ? 'video' : 'raw'
+      expression += ` AND resource_type:${cloudinaryType}`
     }
+    
+    // Get resources from Cloudinary
+    const searchResult = await CloudinaryService.searchResources(expression)
+    
+    // Convert Cloudinary resources to ServerFileAsset format
+    const files: ServerFileAsset[] = searchResult.resources.map(resource => {
+      // Determine resource type based on both resource_type and format
+      let resourceType: FileResourceType
+      if (resource.resource_type === 'image') {
+        resourceType = 'IMAGE' as FileResourceType
+      } else if (resource.resource_type === 'video') {
+        // Check if it's actually audio based on format
+        const audioFormats = ['mp3', 'wav', 'ogg', 'aac', 'm4a', 'flac', 'webm']
+        const format = (resource.format || '').toLowerCase()
+        resourceType = audioFormats.includes(format) ? 'AUDIO' as FileResourceType : 'VIDEO' as FileResourceType
+      } else if (resource.resource_type === 'raw') {
+        resourceType = 'DOCUMENT' as FileResourceType
+      } else {
+        resourceType = 'AUDIO' as FileResourceType
+      }
 
-    if (category) {
-      where.category = category
-    }
-
-    if (folder) {
-      // Ensure folder search stays within campus-lingowow if not already prefixed (though regex match would handle it, this is cleaner)
-      where.folder = { contains: folder, mode: 'insensitive' }
-    } else {
-      // If no folder specified, default to showing everything under campus-lingowow
-      where.folder = { startsWith: 'campus-lingowow' }
-    }
-
-    if (tags && tags.length > 0) {
-      where.tags = { hasSome: tags }
-    }
-
-    if (uploadedBy) {
-      where.uploadedBy = uploadedBy
-    }
-
-    // Get total count
-    const total = await db.fileAsset.count({ where })
-
-    // Get files
-    const files = await db.fileAsset.findMany({
-      where,
-      skip,
-      take: limit,
-      orderBy: { [sortBy]: sortOrder },
-      include: {
-        uploader: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
-      },
+      return {
+        id: resource.public_id,
+        publicId: resource.public_id,
+        fileName: resource.public_id.split('/').pop() || resource.public_id,
+        description: null,
+        tags: [],
+        category: 'GENERAL' as FileCategory,
+        resourceType,
+        format: resource.format || 'unknown',
+        size: resource.bytes || 0,
+        width: resource.width || null,
+        height: resource.height || null,
+        duration: resource.duration || null,
+        secureUrl: resource.secure_url,
+        url: resource.secure_url,
+        folder: resource.folder || '',
+        uploadedBy: user.id,
+        isPublic: true,
+        isActive: true,
+        usageCount: 0,
+        lastAccessedAt: null,
+        createdAt: new Date(resource.created_at || Date.now()),
+        updatedAt: new Date(resource.created_at || Date.now()),
+      }
     })
+
+    // Apply pagination
+    const startIndex = (page - 1) * limit
+    const endIndex = startIndex + limit
+    const paginatedFiles = files.slice(startIndex, endIndex)
 
     return {
       success: true,
       data: {
-        files: files as ServerFileAsset[],
-        total,
+        files: paginatedFiles,
+        total: files.length,
         page,
         limit,
-        totalPages: Math.ceil(total / limit),
-        hasNext: skip + limit < total,
+        totalPages: Math.ceil(files.length / limit),
+        hasNext: endIndex < files.length,
         hasPrev: page > 1,
       },
     }
   } catch (error) {
     console.error('List files error:', error)
+    
+    // Handle rate limit specifically
+    if (error instanceof Error && error.message.includes('Rate Limit Exceeded')) {
+      return {
+        success: false,
+        error: 'Límite de Cloudinary alcanzado. Por favor, espera unos minutos antes de continuar.',
+      }
+    }
+    
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to list files',
@@ -520,6 +557,15 @@ export async function listFolders(
     }
   } catch (error) {
     console.error('List folders error:', error)
+    
+    // Handle rate limit specifically
+    if (error instanceof Error && error.message.includes('Rate Limit Exceeded')) {
+      return {
+        success: false,
+        error: 'Límite de Cloudinary alcanzado. Por favor, espera unos minutos antes de continuar.',
+      }
+    }
+    
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to list folders',
