@@ -70,10 +70,11 @@ export function useFileManager(initialOptions: FileListOptions = {}) {
     }
   }, [filters, loadFiles])
 
-  // Initial load
+  // Initial load - only run once on mount
   useEffect(() => {
     loadFiles()
-  }, [loadFiles]) // Include loadFiles dependency
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // Empty dependency array to prevent re-runs
 
   // Update filters
   const updateFilters = useCallback((newFilters: Partial<FileListOptions>) => {
