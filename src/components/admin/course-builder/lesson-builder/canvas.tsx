@@ -25,6 +25,7 @@ interface CanvasProps {
     coverImage?: string // Cover image URL for the resource
     onCoverImageClick?: () => void // Callback when cover image area is clicked (for upload)
     showCoverImage?: boolean // Whether to show the cover image area
+    isPublished?: boolean // Whether the lesson is published
 }
 
 export function Canvas({
@@ -41,7 +42,8 @@ export function Canvas({
     hideBlockHeaders = false,
     coverImage,
     onCoverImageClick,
-    showCoverImage = false
+    showCoverImage = false,
+    isPublished = false
 }: CanvasProps) {
     const { setNodeRef, isOver } = useDroppable({
         id: 'canvas-droppable',
@@ -105,7 +107,12 @@ export function Canvas({
                 <div className="mb-8 group">
                     <div className="flex items-start justify-between">
                         <div>
-                            <span className="inline-block px-2 py-1 bg-blue-100 text-primary text-xs font-bold uppercase tracking-wide rounded mb-2">Borrador</span>
+                            {!isPublished && (
+                                <span className="inline-block px-2 py-1 bg-blue-100 text-primary text-xs font-bold uppercase tracking-wide rounded mb-2">Borrador</span>
+                            )}
+                            {isPublished && (
+                                <span className="inline-block px-2 py-1 bg-green-100 text-green-700 text-xs font-bold uppercase tracking-wide rounded mb-2">Publicado</span>
+                            )}
                             <h1 
                                 className={cn(
                                     "text-4xl font-bold tracking-tight mb-2 outline-none rounded p-1 -ml-1 transition-colors",

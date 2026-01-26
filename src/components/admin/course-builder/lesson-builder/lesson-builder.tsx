@@ -634,6 +634,7 @@ export function LessonBuilder({
                 onAddBlockClick={() => setIsAddBlockModalOpen(true)}
                 onUpdateBlock={handleUpdateBlock}
                 onRemoveBlock={handleRemoveBlock}
+                isPublished={lesson.isPublished}
               />
             </div>
 
