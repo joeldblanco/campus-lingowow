@@ -55,8 +55,7 @@ export default async function GradingPage({ params }: PageProps) {
   }
   
   // Obtener TODAS las preguntas del examen (incluyendo bloques informativos)
-  const allQuestions = attempt.exam.sections.flatMap(section => 
-    section.questions.map(q => {
+  const allQuestions = attempt.exam.questions.map(q => {
       // Extraer groupId, originalBlockType y contenido de las opciones
       let groupId: string | null = null
       let originalBlockType: string | null = null
@@ -97,7 +96,7 @@ export default async function GradingPage({ params }: PageProps) {
       
       return { 
         ...q, 
-        sectionTitle: section.title, 
+        sectionTitle: '', 
         groupId, 
         originalBlockType, 
         multipleChoiceItems,
@@ -105,7 +104,6 @@ export default async function GradingPage({ params }: PageProps) {
         informativeContent
       }
     })
-  )
 
   // Tipo para detalles de sub-respuestas de opción múltiple
   type MultipleChoiceSubAnswer = {

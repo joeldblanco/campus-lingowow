@@ -100,14 +100,10 @@ export default async function ExamResultsPage({ params }: PageProps) {
     multipleChoiceDetails?: MultipleChoiceDetail[]
   }
 
-  // Obtener todas las preguntas del examen ordenadas por sección y orden
-  const allExamQuestions: ExamQuestion[] = exam.sections
+  // Obtener todas las preguntas del examen ordenadas por orden
+  const allExamQuestions: ExamQuestion[] = exam.questions
     .sort((a: { order: number }, b: { order: number }) => a.order - b.order)
-    .flatMap((section: { title: string; questions: Array<{ id: string; type: string; question: string; options: unknown; correctAnswer: unknown; explanation: string | null; points: number; tags: string[]; order: number; partialCredit: boolean }> }) => 
-      section.questions
-        .sort((a: { order: number }, b: { order: number }) => a.order - b.order)
-        .map((q: { id: string; type: string; question: string; options: unknown; correctAnswer: unknown; explanation: string | null; points: number; tags: string[]; order: number; partialCredit: boolean }) => ({ ...q, sectionTitle: section.title }))
-    )
+    .map((q: { id: string; type: string; question: string; options: unknown; correctAnswer: unknown; explanation: string | null; points: number; tags: string[]; order: number; partialCredit: boolean }) => ({ ...q, sectionTitle: '' }))
 
   // Crear mapa de respuestas por questionId
   const answersMap = new Map(attempt.answers.map(a => [a.questionId, a]))

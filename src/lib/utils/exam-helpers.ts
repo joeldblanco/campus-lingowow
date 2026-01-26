@@ -1,11 +1,7 @@
 import type { ExamWithDetails } from '@/types/exam'
 
 export function calculateExamPoints(exam: ExamWithDetails): number {
-  return exam.sections.reduce(
-    (sum, section) => 
-      sum + section.questions.reduce((qSum, q) => qSum + (q.points || 0), 0),
-    0
-  )
+  return exam.questions.reduce((sum, q) => sum + (q.points || 0), 0)
 }
 
 export function formatExamDuration(minutes: number | null): string {

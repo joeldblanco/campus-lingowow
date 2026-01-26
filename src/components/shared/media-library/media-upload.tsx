@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useRef } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
@@ -17,8 +17,7 @@ import {
   AlertCircle,
   Loader2
 } from 'lucide-react'
-import { FileUpload } from '@/components/ui/file-upload'
-import { FileResourceType } from '@prisma/client'
+import { FileResourceType, FileCategory } from '@prisma/client'
 import { ServerFileAsset } from '@/lib/actions/file-manager'
 import { uploadFileByType } from '@/lib/actions/cloudinary'
 import { formatFileSize } from '@/lib/utils'
@@ -48,6 +47,7 @@ export const MediaUpload: React.FC<MediaUploadProps> = ({
 }) => {
   const [uploadItems, setUploadItems] = useState<UploadItem[]>([])
   const [isUploading, setIsUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const getFileType = (file: File): FileResourceType => {
     const type = file.type.toLowerCase()
@@ -103,7 +103,7 @@ export const MediaUpload: React.FC<MediaUploadProps> = ({
     setUploadItems(prev => prev.filter(item => item.id !== id))
   }, [])
 
-  const uploadSingleFile = async (item: UploadItem): Promise<ServerFileAsset | null> => {
+  const uploadSingleFile = useCallback(async (item: UploadItem): Promise<ServerFileAsset | null> => {
     try {
       setUploadItems(prev => prev.map(i => 
         i.id === item.id ? { ...i, status: 'uploading', progress: 0 } : i
@@ -113,8 +113,8 @@ export const MediaUpload: React.FC<MediaUploadProps> = ({
       formData.append('file', item.file)
 
       const resourceType = getFileType(item.file)
-      const cloudinaryType = resourceType === FileResourceType.RAW ? 'document' : resourceType.toLowerCase()
-      const result = await uploadFileByType(formData, cloudinaryType as any, folder)
+      const cloudinaryType = resourceType === FileResourceType.RAW ? 'document' : resourceType.toLowerCase() as 'image' | 'video' | 'audio' | 'document'
+      const result = await uploadFileByType(formData, cloudinaryType, folder)
 
       if (result.success && result.data) {
         // Convert CloudinaryUploadResult to ServerFileAsset format
@@ -124,13 +124,13 @@ export const MediaUpload: React.FC<MediaUploadProps> = ({
           fileName: item.file.name,
           description: null,
           tags: [],
-          category: 'GENERAL' as any,
+          category: FileCategory.GENERAL,
           resourceType,
           format: result.data.format || item.file.name.split('.').pop() || '',
           size: item.file.size,
           width: result.data.width,
           height: result.data.height,
-          duration: (result.data as any).duration,
+          duration: (result.data as { duration?: number }).duration || null,
           secureUrl: result.data.secure_url,
           url: result.data.url,
           folder: folder || 'root',
@@ -161,7 +161,7 @@ export const MediaUpload: React.FC<MediaUploadProps> = ({
       toast.error(`Failed to upload ${item.file.name}: ${errorMessage}`)
       return null
     }
-  }
+  }, [folder])
 
   const handleUpload = useCallback(async () => {
     if (uploadItems.length === 0) return
@@ -180,7 +180,7 @@ export const MediaUpload: React.FC<MediaUploadProps> = ({
         toast.success(`Successfully uploaded ${successfulUploads.length} file(s)`)
         onComplete(successfulUploads)
       }
-    } catch (error) {
+    } catch {
       toast.error('Upload failed')
     } finally {
       setIsUploading(false)
@@ -205,20 +205,11 @@ export const MediaUpload: React.FC<MediaUploadProps> = ({
       <Card>
         <CardContent className="p-6">
           <div className="border-2 border-dashed rounded-lg p-8 text-center hover:border-primary/50 transition-colors">
-            <FileUpload
-              onUploadComplete={(result) => {
-                // Create a fake FileList from the result
-                const files = [] as any
-                files.item = (index: number) => index === 0 ? {
-                  name: result.original_filename || 'uploaded-file',
-                  size: result.public_id ? 0 : 1,
-                  type: 'application/octet-stream'
-                } : null
-                files.length = 1
-                handleFileSelect(files as FileList)
-              }}
-              onUploadError={(error) => toast.error(error)}
-              acceptedTypes={allowedTypes.map(type => {
+            <input
+              ref={fileInputRef}
+              type="file"
+              className="hidden"
+              accept={allowedTypes.length > 0 ? allowedTypes.map(type => {
                 switch (type) {
                   case FileResourceType.IMAGE:
                     return 'image/*'
@@ -231,9 +222,31 @@ export const MediaUpload: React.FC<MediaUploadProps> = ({
                   default:
                     return '*/*'
                 }
-              })}
+              }).join(',') : '*/*'}
               multiple={multiple}
-              className="border-0 p-0"
+              onChange={(e) => {
+                const files = e.target.files
+                if (files) {
+                  handleFileSelect(files)
+                }
+              }}
+              disabled={isUploading}
+            />
+            <div 
+              className="cursor-pointer"
+              onClick={() => fileInputRef.current?.click()}
+              onDragOver={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+              }}
+              onDrop={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                const files = e.dataTransfer.files
+                if (files.length > 0) {
+                  handleFileSelect(files)
+                }
+              }}
             >
               <div className="space-y-4">
                 <Upload className="h-12 w-12 mx-auto text-muted-foreground" />
@@ -253,7 +266,7 @@ export const MediaUpload: React.FC<MediaUploadProps> = ({
                   </div>
                 )}
               </div>
-            </FileUpload>
+            </div>
           </div>
         </CardContent>
       </Card>

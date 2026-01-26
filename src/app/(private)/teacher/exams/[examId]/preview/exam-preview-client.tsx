@@ -10,33 +10,28 @@ import { QuestionNavigator, QuestionStatus } from '@/components/exams/student/qu
 import { ExamQuestionCard, ExamQuestionData } from '@/components/exams/student/exam-question-card'
 import { QuestionType } from '@prisma/client'
 
-interface ExamSection {
+interface ExamQuestion {
   id: string
-  title: string
-  description?: string | null
-  questions: {
-    id: string
-    type: QuestionType
-    question: string
-    options?: string[] | null
-    multipleChoiceItems?: { id: string; question: string; options: { id: string; text: string }[] }[] | null
-    originalBlockType?: string | null
-    blockData?: {
-      url?: string
-      content?: string
-      title?: string
-      instruction?: string
-      timeLimit?: number
-      aiGrading?: boolean
-      maxReplays?: number
-    } | null
-    correctAnswer: unknown
-    explanation?: string | null
-    points: number
-    minLength?: number | null
-    maxLength?: number | null
-    groupId?: string | null
-  }[]
+  type: QuestionType
+  question: string
+  options?: string[] | null
+  multipleChoiceItems?: { id: string; question: string; options: { id: string; text: string }[] }[] | null
+  originalBlockType?: string | null
+  blockData?: {
+    url?: string
+    content?: string
+    title?: string
+    instruction?: string
+    timeLimit?: number
+    aiGrading?: boolean
+    maxReplays?: number
+  } | null
+  correctAnswer: unknown
+  explanation?: string | null
+  points: number
+  minLength?: number | null
+  maxLength?: number | null
+  groupId?: string | null
 }
 
 interface ExamPreviewClientProps {
@@ -44,7 +39,7 @@ interface ExamPreviewClientProps {
   title: string
   description: string
   courseName?: string
-  sections: ExamSection[]
+  questions: ExamQuestion[]
   timeLimit: number
   passingScore: number
   totalPoints: number
@@ -55,7 +50,7 @@ export function ExamPreviewClient({
   title,
   description,
   courseName,
-  sections,
+  questions,
   timeLimit,
   passingScore,
   totalPoints,
@@ -67,13 +62,11 @@ export function ExamPreviewClient({
   const [showFeedback, setShowFeedback] = useState(false)
 
   const allQuestions = useMemo(() => {
-    return sections.flatMap((section) =>
-      section.questions.map((q) => ({
-        ...q,
-        sectionTitle: section.title
-      }))
-    )
-  }, [sections])
+    return questions.map((q) => ({
+      ...q,
+      sectionTitle: ''
+    }))
+  }, [questions])
 
   const totalQuestions = allQuestions.length
   const answeredCount = Object.keys(answers).filter(

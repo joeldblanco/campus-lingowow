@@ -109,11 +109,10 @@ function parseOptionsData(options: unknown): { parsed: Record<string, unknown> |
 
 // Convert old ExamQuestion format to Block format
 function convertExamToBlocks(exam: ExamWithDetails): Block[] {
-  if (!exam?.sections) return []
+  if (!exam?.questions) return []
 
   let order = 0
-  const flatBlocks: (Block & { _groupId?: string | null })[] = exam.sections.flatMap((section) =>
-    section.questions.map((q): Block & { _groupId?: string | null } => {
+  const flatBlocks: (Block & { _groupId?: string | null })[] = exam.questions.map((q): Block & { _groupId?: string | null } => {
       const qType = q.type.toLowerCase()
       const { parsed: optionsData, groupId } = parseOptionsData(q.options)
 
@@ -359,8 +358,7 @@ function convertExamToBlocks(exam: ExamWithDetails): Block[] {
             format: 'html',
           } as Block & { _groupId?: string | null }
       }
-    })
-  )
+  })
 
   // Reconstruir grupos a partir de _groupId
   const groupedBlocks: Block[] = []

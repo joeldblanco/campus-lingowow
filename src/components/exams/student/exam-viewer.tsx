@@ -26,13 +26,6 @@ import { toast } from 'sonner'
 // Tipos de bloques informativos que no requieren respuesta
 const INFORMATIVE_BLOCK_TYPES = ['title', 'text', 'audio', 'video', 'image']
 
-interface ExamSection {
-  id: string
-  title: string
-  description?: string | null
-  questions: ExamQuestionData[]
-}
-
 interface ProctoringConfig {
   enabled?: boolean
   requireFullscreen?: boolean
@@ -47,13 +40,14 @@ interface ExamViewerProps {
   title: string
   description: string
   courseName?: string
-  sections: ExamSection[]
+  questions: ExamQuestionData[]
   timeLimit: number
   startedAt: string
   initialAnswers?: Record<string, unknown>
   onSaveAnswer: (questionId: string, answer: unknown) => Promise<void>
   onSubmitExam: () => Promise<void>
   proctoring?: ProctoringConfig
+  examType?: 'COURSE_EXAM' | 'PLACEMENT_TEST' | 'DIAGNOSTIC' | 'PRACTICE'
 }
 
 export function ExamViewer({
@@ -62,13 +56,14 @@ export function ExamViewer({
   title,
   description,
   courseName,
-  sections,
+  questions,
   timeLimit,
   startedAt,
   initialAnswers = {},
   onSaveAnswer,
   onSubmitExam,
-  proctoring = {}
+  proctoring = {},
+  examType = 'COURSE_EXAM'
 }: ExamViewerProps) {
   const router = useRouter()
   const [answers, setAnswers] = useState<Record<string, unknown>>(initialAnswers)
@@ -118,13 +113,11 @@ export function ExamViewer({
   })
 
   const allQuestions = useMemo(() => {
-    return sections.flatMap((section) =>
-      section.questions.map((q) => ({
-        ...q,
-        sectionTitle: section.title
-      }))
-    )
-  }, [sections])
+    return questions.map((q) => ({
+      ...q,
+      sectionTitle: '' // Ya no hay secciones
+    }))
+  }, [questions])
   
   // Filtrar solo preguntas que requieren respuesta (excluyendo bloques informativos)
   const answerableQuestions = useMemo(() => {
@@ -306,14 +299,17 @@ export function ExamViewer({
     try {
       await onSubmitExam()
       toast.success('Examen enviado correctamente')
-      router.push(`/exams/${examId}/${attemptId}/results`)
+      const resultsPath = examType === 'PLACEMENT_TEST' 
+        ? `/placement-test/${examId}/results`
+        : `/exams/${examId}/${attemptId}/results`
+      router.push(resultsPath)
     } catch (error) {
       console.error('Error submitting exam:', error)
       toast.error('Error al enviar el examen')
     } finally {
       setIsSubmitting(false)
     }
-  }, [onSubmitExam, router, examId, attemptId])
+  }, [onSubmitExam, router, examId, attemptId, examType])
 
   const handleSubmitExam = useCallback(async () => {
     setIsSubmitting(true)
@@ -323,7 +319,10 @@ export function ExamViewer({
       }
       await onSubmitExam()
       toast.success('Examen enviado correctamente')
-      router.push(`/exams/${examId}/${attemptId}/results`)
+      const resultsPath = examType === 'PLACEMENT_TEST' 
+        ? `/placement-test/${examId}/results`
+        : `/exams/${examId}/${attemptId}/results`
+      router.push(resultsPath)
     } catch (error) {
       console.error('Error submitting exam:', error)
       toast.error('Error al enviar el examen')
@@ -331,7 +330,7 @@ export function ExamViewer({
       setIsSubmitting(false)
       setShowSubmitDialog(false)
     }
-  }, [onSubmitExam, router, examId, attemptId, proctoringEnabled, endProctoring])
+  }, [onSubmitExam, router, examId, attemptId, proctoringEnabled, endProctoring, examType])
 
   const unansweredCount = totalQuestions - answeredCount
 

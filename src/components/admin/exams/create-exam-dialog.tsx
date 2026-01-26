@@ -20,7 +20,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Plus, Trash2, Edit } from 'lucide-react'
 import { createExam, getCoursesForExams } from '@/lib/actions/exams'
@@ -30,7 +30,7 @@ import { CreateExamSchema } from '@/schemas/exams'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import { CreateExamSectionData, CreateExamQuestionData } from '@/types/exam'
+import { CreateExamQuestionData } from '@/types/exam'
 
 interface CreateExamDialogProps {
   open: boolean
@@ -77,7 +77,7 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
       allowReview: true,
     },
   })
-  const [sections, setSections] = useState<CreateExamSectionData[]>([])
+  const [questions, setQuestions] = useState<CreateExamQuestionData[]>([])
 
   useEffect(() => {
     if (open) {
@@ -96,8 +96,8 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
   }
 
   const onSubmit = async (values: z.infer<typeof CreateExamSchema>) => {
-    if (sections.length === 0) {
-      toast.error('Por favor, agregue al menos una sección')
+    if (questions.length === 0) {
+      toast.error('Por favor, agregue al menos una pregunta')
       return
     }
 
@@ -125,7 +125,7 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
         courseId: values.courseId || undefined,
         moduleId: values.moduleId || undefined,
         lessonId: values.lessonId || undefined,
-        sections,
+        questions,
         createdById: session?.user?.id || 'anonymous',
       })
 
@@ -147,57 +147,28 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
 
   const resetForm = () => {
     form.reset()
-    setSections([])
+    setQuestions([])
   }
 
-  const addSection = () => {
-    const newSection: CreateExamSectionData = {
-      title: 'Nueva Sección',
-      description: '',
-      instructions: '',
-      timeLimit: 30,
-      order: sections.length + 1,
-      questions: [],
-    }
-    setSections([...sections, newSection])
-  }
-
-  const updateSection = (sectionIndex: number, updates: Partial<CreateExamSectionData>) => {
-    setSections(
-      sections.map((section, idx) => (idx === sectionIndex ? { ...section, ...updates } : section))
-    )
-  }
-
-  const deleteSection = (sectionIndex: number) => {
-    setSections(sections.filter((_, idx) => idx !== sectionIndex))
-  }
-
-  const addQuestion = (sectionIndex: number) => {
+  const addQuestion = () => {
     const newQuestion: CreateExamQuestionData = {
       type: 'MULTIPLE_CHOICE',
       question: 'Nueva Pregunta',
       options: ['Opción A', 'Opción B', 'Opción C', 'Opción D'],
       correctAnswer: 'Opción A',
       points: 1,
-      order: sections[sectionIndex]?.questions.length || 0,
+      order: questions.length,
       difficulty: 'MEDIUM',
       tags: [],
       caseSensitive: false,
       partialCredit: false,
       explanation: '',
     }
-
-    updateSection(sectionIndex, {
-      questions: [...(sections[sectionIndex]?.questions || []), newQuestion],
-    })
+    setQuestions([...questions, newQuestion])
   }
 
-  const deleteQuestion = (sectionIndex: number, questionIndex: number) => {
-    const section = sections[sectionIndex]
-    if (section) {
-      const updatedQuestions = section.questions.filter((_, idx) => idx !== questionIndex)
-      updateSection(sectionIndex, { questions: updatedQuestions })
-    }
+  const deleteQuestion = (questionIndex: number) => {
+    setQuestions(questions.filter((_, idx) => idx !== questionIndex))
   }
 
   const selectedCourse = courses.find((c) => c.id === form.watch('courseId'))
@@ -429,82 +400,54 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
               />
             </div>
 
-            {/* Sections */}
+            {/* Questions */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">Secciones del examen</h3>
-                <Button type="button" onClick={addSection} variant="outline">
+                <h3 className="text-lg font-semibold">Preguntas del examen</h3>
+                <Button type="button" onClick={addQuestion} variant="outline">
                   <Plus className="mr-2 h-4 w-4" />
-                  Agregar sección
+                  Agregar pregunta
                 </Button>
               </div>
 
-              {sections.map((section, sectionIndex) => (
-                <Card key={sectionIndex}>
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-base">{section.title}</CardTitle>
-                      <div className="flex space-x-2">
-                        <Button type="button" variant="outline" size="sm" onClick={() => { }}>
-                          <Edit className="h-3 w-3" />
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          onClick={() => addQuestion(sectionIndex)}
-                        >
-                          <Plus className="h-3 w-3" />
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => deleteSection(sectionIndex)}
-                        >
-                          <Trash2 className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
-                      {section.questions.map((question, questionIndex) => (
-                        <div
-                          key={questionIndex}
-                          className="flex items-center justify-between p-2 border rounded"
-                        >
-                          <div>
-                            <span className="font-medium">{question.question}</span>
-                            <Badge variant="secondary" className="ml-2">
-                              {question.type}
-                            </Badge>
-                            <Badge variant="outline" className="ml-1">
-                              {question.points} pts
-                            </Badge>
-                          </div>
-                          <div className="flex space-x-1">
-                            <Button type="button" variant="ghost" size="sm" onClick={() => { }}>
-                              <Edit className="h-3 w-3" />
-                            </Button>
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => deleteQuestion(sectionIndex, questionIndex)}
-                            >
-                              <Trash2 className="h-3 w-3" />
-                            </Button>
-                          </div>
+              <Card>
+                <CardContent className="pt-4">
+                  <div className="space-y-2">
+                    {questions.map((question, questionIndex) => (
+                      <div
+                        key={questionIndex}
+                        className="flex items-center justify-between p-2 border rounded"
+                      >
+                        <div>
+                          <span className="font-medium">{question.question}</span>
+                          <Badge variant="secondary" className="ml-2">
+                            {question.type}
+                          </Badge>
+                          <Badge variant="outline" className="ml-1">
+                            {question.points} pts
+                          </Badge>
                         </div>
-                      ))}
-                      {section.questions.length === 0 && (
-                        <p className="text-muted-foreground text-sm">No se han agregado preguntas</p>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                        <div className="flex space-x-1">
+                          <Button type="button" variant="ghost" size="sm" onClick={() => { }}>
+                            <Edit className="h-3 w-3" />
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => deleteQuestion(questionIndex)}
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                    {questions.length === 0 && (
+                      <p className="text-muted-foreground text-sm">No se han agregado preguntas</p>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
             <div className="flex justify-end space-x-2">

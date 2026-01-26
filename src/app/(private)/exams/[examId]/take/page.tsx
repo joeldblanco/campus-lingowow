@@ -124,28 +124,23 @@ export default async function TakeExamPage({ params }: PageProps) {
     return defaultResult
   }
 
-  const sections = result.exam.sections.map(section => ({
-    id: section.id,
-    title: section.title,
-    description: section.description,
-    questions: section.questions.map(q => {
-      const parsed = parseQuestionOptions(q.options)
-      return {
-        id: q.id,
-        type: q.type,
-        question: q.question,
-        options: parsed.options,
-        multipleChoiceItems: parsed.multipleChoiceItems,
-        originalBlockType: parsed.originalBlockType,
-        blockData: parsed.blockData,
-        points: q.points,
-        minLength: q.minLength,
-        maxLength: q.maxLength,
-        audioUrl: q.audioUrl,
-        groupId: parsed.groupId
-      }
-    })
-  }))
+  const questions = result.exam.questions.map(q => {
+    const parsed = parseQuestionOptions(q.options)
+    return {
+      id: q.id,
+      type: q.type,
+      question: q.question,
+      options: parsed.options,
+      multipleChoiceItems: parsed.multipleChoiceItems,
+      originalBlockType: parsed.originalBlockType,
+      blockData: parsed.blockData,
+      points: q.points,
+      minLength: q.minLength,
+      maxLength: q.maxLength,
+      audioUrl: q.audioUrl,
+      groupId: parsed.groupId
+    }
+  })
 
   const proctoring = {
     enabled: result.exam.proctoringEnabled,
@@ -173,7 +168,7 @@ export default async function TakeExamPage({ params }: PageProps) {
       title={result.exam.title}
       description={result.exam.description}
       courseName={courseName}
-      sections={sections}
+      questions={questions}
       timeLimit={timeLimit}
       startedAt={result.attempt.startedAt.toISOString()}
       initialAnswers={initialAnswers}

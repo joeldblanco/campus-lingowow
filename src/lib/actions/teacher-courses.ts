@@ -459,11 +459,7 @@ export async function getCourseContentForTeacher(courseId: string, teacherId: st
         },
         exams: {
           include: {
-            sections: {
-              include: {
-                questions: true,
-              },
-            },
+            questions: true,
             assignments: {
               include: {
                 student: {
@@ -568,11 +564,8 @@ export async function getCourseContentForTeacher(courseId: string, teacherId: st
 
     const examsWithStats = filteredExams.map((exam) => ({
       ...exam,
-      questionCount: exam.sections.reduce((acc, s) => acc + s.questions.length, 0),
-      totalPoints: exam.sections.reduce(
-        (acc, s) => acc + s.questions.reduce((qAcc, q) => qAcc + q.points, 0),
-        0
-      ),
+      questionCount: exam.questions.length,
+      totalPoints: exam.questions.reduce((acc, q) => acc + q.points, 0),
     }))
 
     return {

@@ -110,29 +110,24 @@ export default async function TeacherExamPreviewPage({ params }: PageProps) {
     return defaultResult
   }
 
-  const sections = exam.sections.map(section => ({
-    id: section.id,
-    title: section.title,
-    description: section.description,
-    questions: section.questions.map(q => {
-      const parsed = parseQuestionOptions(q.options)
-      return {
-        id: q.id,
-        type: q.type,
-        question: q.question,
-        options: parsed.options,
-        multipleChoiceItems: parsed.multipleChoiceItems,
-        originalBlockType: parsed.originalBlockType,
-        blockData: parsed.blockData,
-        correctAnswer: q.correctAnswer,
-        explanation: q.explanation,
-        points: q.points,
-        minLength: q.minLength,
-        maxLength: q.maxLength,
-        groupId: parsed.groupId
-      }
-    })
-  }))
+  const questions = exam.questions.map(q => {
+    const parsed = parseQuestionOptions(q.options)
+    return {
+      id: q.id,
+      type: q.type,
+      question: q.question,
+      options: parsed.options,
+      multipleChoiceItems: parsed.multipleChoiceItems,
+      originalBlockType: parsed.originalBlockType,
+      blockData: parsed.blockData,
+      correctAnswer: q.correctAnswer,
+      explanation: q.explanation,
+      points: q.points,
+      minLength: q.minLength,
+      maxLength: q.maxLength,
+      groupId: parsed.groupId
+    }
+  })
 
   return (
     <ExamPreviewClient
@@ -140,7 +135,7 @@ export default async function TeacherExamPreviewPage({ params }: PageProps) {
       title={exam.title}
       description={exam.description}
       courseName={exam.course?.title}
-      sections={sections}
+      questions={questions}
       timeLimit={exam.timeLimit || 60}
       passingScore={exam.passingScore}
       totalPoints={exam.totalPoints}

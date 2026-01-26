@@ -37,14 +37,7 @@ export type ExamWithDetails = Prisma.ExamGetPayload<{
         title: true
       }
     }
-    sections: {
-      include: {
-        questions: {
-          orderBy: {
-            order: 'asc'
-          }
-        }
-      }
+    questions: {
       orderBy: {
         order: 'asc'
       }
@@ -74,7 +67,7 @@ export type ExamWithDetails = Prisma.ExamGetPayload<{
 export type ExamWithDetailsLegacy = ExamWithDetails & {
   userAttempts: ExamWithDetails['attempts']
   examData?: {
-    sections?: ExamWithDetails['sections']
+    questions?: ExamWithDetails['questions']
     timeLimit?: number
     passingScore?: number
     attempts?: number
@@ -84,17 +77,6 @@ export type ExamWithDetailsLegacy = ExamWithDetails & {
   points?: number
   duration?: number
 }
-
-// Tipo para sección de examen con preguntas
-export type ExamSectionWithQuestions = Prisma.ExamSectionGetPayload<{
-  include: {
-    questions: {
-      orderBy: {
-        order: 'asc'
-      }
-    }
-  }
-}>
 
 // Tipo para pregunta de examen completa
 export type ExamQuestionWithDetails = Prisma.ExamQuestionGetPayload<{

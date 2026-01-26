@@ -71,11 +71,7 @@ export async function getStudentAssignedExams() {
                 lastName: true,
               },
             },
-            sections: {
-              include: {
-                questions: true,
-              },
-            },
+            questions: true,
             _count: {
               select: {
                 attempts: {
@@ -113,11 +109,7 @@ export async function getStudentAssignedExams() {
             lastName: true,
           },
         },
-        sections: {
-          include: {
-            questions: true,
-          },
-        },
+        questions: true,
         _count: {
           select: {
             attempts: {
@@ -174,14 +166,8 @@ export async function getStudentAssignedExams() {
         timeLimit: assignment.exam.timeLimit,
         passingScore: assignment.exam.passingScore,
         maxAttempts: assignment.exam.maxAttempts,
-        questionCount: assignment.exam.sections.reduce(
-          (acc, s) => acc + s.questions.length,
-          0
-        ),
-        totalPoints: assignment.exam.sections.reduce(
-          (acc, s) => acc + s.questions.reduce((qAcc, q) => qAcc + q.points, 0),
-          0
-        ),
+        questionCount: assignment.exam.questions.length,
+        totalPoints: assignment.exam.questions.reduce((acc, q) => acc + q.points, 0),
         course: assignment.exam.course,
         teacher: assignment.exam.creator,
         assignment: {
@@ -221,14 +207,8 @@ export async function getStudentAssignedExams() {
         timeLimit: exam.timeLimit,
         passingScore: exam.passingScore,
         maxAttempts: exam.maxAttempts,
-        questionCount: exam.sections.reduce(
-          (acc, s) => acc + s.questions.length,
-          0
-        ),
-        totalPoints: exam.sections.reduce(
-          (acc, s) => acc + s.questions.reduce((qAcc, q) => qAcc + q.points, 0),
-          0
-        ),
+        questionCount: exam.questions.length,
+        totalPoints: exam.questions.reduce((acc, q) => acc + q.points, 0),
         course: exam.course,
         teacher: exam.creator,
         assignment: {
@@ -292,10 +272,7 @@ export async function getStudentExamDetails(examId: string) {
             lastName: true,
           },
         },
-        sections: {
-          include: {
-            questions: true,
-          },
+        questions: {
           orderBy: { order: 'asc' },
         },
       },
@@ -356,10 +333,7 @@ export async function getStudentExamDetails(examId: string) {
       success: true,
       exam: {
         ...exam,
-        questionCount: exam.sections.reduce(
-          (acc, s) => acc + s.questions.length,
-          0
-        ),
+        questionCount: exam.questions.length,
       },
       assignment: assignment
         ? {

@@ -52,12 +52,7 @@ export async function getAllExams(): Promise<ExamWithDetails[]> {
             title: true,
           },
         },
-        sections: {
-          include: {
-            questions: {
-              orderBy: { order: 'asc' },
-            },
-          },
+        questions: {
           orderBy: { order: 'asc' },
         },
         attempts: {
@@ -84,13 +79,10 @@ export async function getAllExams(): Promise<ExamWithDetails[]> {
 
     return exams.map((exam) => ({
       ...exam,
-      sections: exam.sections.map((section) => ({
-        ...section,
-        questions: section.questions.map((question) => ({
-          ...question,
-          options: question.options as string[] | null,
-          correctAnswer: question.correctAnswer as string | string[],
-        })),
+      questions: exam.questions.map((question) => ({
+        ...question,
+        options: question.options as string[] | null,
+        correctAnswer: question.correctAnswer as string | string[],
       })),
       attempts: exam.attempts,
     }))
@@ -134,12 +126,7 @@ export async function getExamById(id: string): Promise<ExamWithDetails | null> {
             title: true,
           },
         },
-        sections: {
-          include: {
-            questions: {
-              orderBy: { order: 'asc' },
-            },
-          },
+        questions: {
           orderBy: { order: 'asc' },
         },
         attempts: {
@@ -167,13 +154,10 @@ export async function getExamById(id: string): Promise<ExamWithDetails | null> {
 
     return {
       ...exam,
-      sections: exam.sections.map((section) => ({
-        ...section,
-        questions: section.questions.map((question) => ({
-          ...question,
-          options: question.options as string[] | null,
-          correctAnswer: question.correctAnswer as string | string[],
-        })),
+      questions: exam.questions.map((question) => ({
+        ...question,
+        options: question.options as string[] | null,
+        correctAnswer: question.correctAnswer as string | string[],
       })),
       attempts: exam.attempts,
     }
@@ -201,17 +185,6 @@ export async function createDraftExam(createdById: string): Promise<ExamCreateRe
         allowReview: true,
         isPublished: false,
         createdById,
-      },
-    })
-
-    // Create a default section
-    await db.examSection.create({
-      data: {
-        examId: exam.id,
-        title: 'Sección Principal',
-        description: '',
-        order: 1,
-        points: 0,
       },
     })
 
@@ -299,27 +272,9 @@ export async function updateExamQuestions(
 ): Promise<ExamUpdateResponse> {
   try {
     const result = await db.$transaction(async (tx) => {
-      // Get or create the main section
-      let section = await tx.examSection.findFirst({
-        where: { examId },
-        orderBy: { order: 'asc' },
-      })
-
-      if (!section) {
-        section = await tx.examSection.create({
-          data: {
-            examId,
-            title: 'Sección Principal',
-            description: '',
-            order: 1,
-            points: 0,
-          },
-        })
-      }
-
       // Delete existing questions
       await tx.examQuestion.deleteMany({
-        where: { sectionId: section.id },
+        where: { examId },
       })
 
       // Create new questions
@@ -365,7 +320,7 @@ export async function updateExamQuestions(
 
         await tx.examQuestion.create({
           data: {
-            sectionId: section.id,
+            examId,
             type: questionData.type,
             question: questionData.question,
             options: optionsData as Prisma.InputJsonValue,
@@ -384,13 +339,6 @@ export async function updateExamQuestions(
           },
         })
       }
-
-      // Update section points
-      const totalPoints = questions.reduce((sum, q) => sum + q.points, 0)
-      await tx.examSection.update({
-        where: { id: section.id },
-        data: { points: totalPoints },
-      })
 
       return await tx.exam.findUnique({ where: { id: examId } })
     })
@@ -447,29 +395,16 @@ export async function createExam(
         },
       })
 
-      // Crear las secciones del examen
-      for (const sectionData of validatedData.sections) {
-        const section = await tx.examSection.create({
-          data: {
-            examId: exam.id,
-            title: sectionData.title,
-            description: sectionData.description,
-            instructions: sectionData.instructions,
-            timeLimit: sectionData.timeLimit,
-            order: sectionData.order,
-            points: sectionData.questions.reduce((sum, q) => sum + q.points, 0),
-          },
-        })
-
-        // Crear las preguntas de cada sección
-        for (const questionData of sectionData.questions) {
+      // Crear las preguntas del examen directamente
+      if (validatedData.questions) {
+        for (const questionData of validatedData.questions) {
           // ESSAY type doesn't require correctAnswer (includes audio/image questions)
           const correctAnswer: Prisma.InputJsonValue | typeof Prisma.JsonNull =
             questionData.type === 'ESSAY' ? Prisma.JsonNull : (questionData.correctAnswer ?? '')
 
           await tx.examQuestion.create({
             data: {
-              sectionId: section.id,
+              examId: exam.id,
               type: questionData.type,
               question: questionData.question,
               options: questionData.options as Prisma.InputJsonValue,
@@ -550,57 +485,42 @@ export async function updateExam(
         },
       })
 
-      // Si se proporcionan secciones, actualizar completamente
-      if (validatedData.sections) {
-        // Eliminar secciones existentes (cascade eliminará preguntas)
-        await tx.examSection.deleteMany({
+      // Si se proporcionan preguntas, actualizar completamente
+      if (validatedData.questions) {
+        // Eliminar preguntas existentes
+        await tx.examQuestion.deleteMany({
           where: { examId: id },
         })
 
-        // Crear nuevas secciones
-        for (const sectionData of validatedData.sections) {
-          const section = await tx.examSection.create({
+        // Crear nuevas preguntas
+        for (const questionData of validatedData.questions) {
+          // ESSAY type doesn't require correctAnswer (includes audio/image questions)
+          const correctAnswer: Prisma.InputJsonValue | typeof Prisma.JsonNull =
+            questionData.type === 'ESSAY' ? Prisma.JsonNull : (questionData.correctAnswer ?? '')
+
+          await tx.examQuestion.create({
             data: {
               examId: exam.id,
-              title: sectionData.title,
-              description: sectionData.description,
-              instructions: sectionData.instructions,
-              timeLimit: sectionData.timeLimit,
-              order: sectionData.order,
-              points: sectionData.questions.reduce((sum, q) => sum + q.points, 0),
+              type: questionData.type,
+              question: questionData.question,
+              options: questionData.options as Prisma.InputJsonValue,
+              correctAnswer,
+              explanation: questionData.explanation,
+              points: questionData.points,
+              order: questionData.order,
+              difficulty: questionData.difficulty,
+              tags: questionData.tags,
+              caseSensitive: questionData.caseSensitive,
+              partialCredit: questionData.partialCredit,
+              minLength: questionData.minLength,
+              maxLength: questionData.maxLength,
+              audioUrl: questionData.audioUrl,
+              audioPosition: questionData.audioPosition || 'BEFORE_QUESTION',
+              maxAudioPlays: questionData.maxAudioPlays,
+              audioAutoplay: questionData.audioAutoplay || false,
+              audioPausable: questionData.audioPausable || false,
             },
           })
-
-          // Crear preguntas de la sección
-          for (const questionData of sectionData.questions) {
-            // ESSAY type doesn't require correctAnswer (includes audio/image questions)
-            const correctAnswer: Prisma.InputJsonValue | typeof Prisma.JsonNull =
-              questionData.type === 'ESSAY' ? Prisma.JsonNull : (questionData.correctAnswer ?? '')
-
-            await tx.examQuestion.create({
-              data: {
-                sectionId: section.id,
-                type: questionData.type,
-                question: questionData.question,
-                options: questionData.options as Prisma.InputJsonValue,
-                correctAnswer,
-                explanation: questionData.explanation,
-                points: questionData.points,
-                order: questionData.order,
-                difficulty: questionData.difficulty,
-                tags: questionData.tags,
-                caseSensitive: questionData.caseSensitive,
-                partialCredit: questionData.partialCredit,
-                minLength: questionData.minLength,
-                maxLength: questionData.maxLength,
-                audioUrl: questionData.audioUrl,
-                audioPosition: questionData.audioPosition || 'BEFORE_QUESTION',
-                maxAudioPlays: questionData.maxAudioPlays,
-                audioAutoplay: questionData.audioAutoplay || false,
-                audioPausable: questionData.audioPausable || false,
-              },
-            })
-          }
         }
       }
 
@@ -759,12 +679,7 @@ export async function startExamAttempt(examId: string, userId: string) {
     const exam = await db.exam.findUnique({
       where: { id: examId },
       include: {
-        sections: {
-          include: {
-            questions: {
-              orderBy: { order: 'asc' },
-            },
-          },
+        questions: {
           orderBy: { order: 'asc' },
         },
       },
@@ -975,9 +890,7 @@ export async function submitExamAttempt(attemptId: string) {
         },
         exam: {
           include: {
-            sections: {
-              include: { questions: true },
-            },
+            questions: true,
           },
         },
       },
@@ -994,7 +907,7 @@ export async function submitExamAttempt(attemptId: string) {
     // Tipos de bloques informativos que no requieren respuesta
     const INFORMATIVE_BLOCK_TYPES = ['title', 'text', 'audio', 'video', 'image']
     
-    const allQuestions = attempt.exam.sections.flatMap((s) => s.questions)
+    const allQuestions = attempt.exam.questions
     // Filtrar solo preguntas que requieren respuesta (excluyendo bloques informativos)
     const answerableQuestions = allQuestions.filter(q => {
       const options = q.options as Record<string, unknown> | null
@@ -1009,6 +922,11 @@ export async function submitExamAttempt(attemptId: string) {
     const score = maxPoints > 0 ? (totalPoints / maxPoints) * 100 : 0
     const timeSpent = Math.round((new Date().getTime() - attempt.startedAt.getTime()) / 60000)
 
+    // Calcular nivel recomendado si es un placement test
+    const recommendedLevel = attempt.exam.examType === ExamType.PLACEMENT_TEST 
+      ? calculateRecommendedLevel(score) 
+      : undefined
+
     const updatedAttempt = await db.examAttempt.update({
       where: { id: attemptId },
       data: {
@@ -1018,6 +936,7 @@ export async function submitExamAttempt(attemptId: string) {
         maxPoints,
         timeSpent,
         submittedAt: new Date(),
+        ...(recommendedLevel && { recommendedLevel }),
       },
     })
 
@@ -1037,12 +956,7 @@ export async function getExamAttemptWithAnswers(attemptId: string) {
         exam: {
           include: {
             course: { select: { title: true } },
-            sections: {
-              include: {
-                questions: {
-                  orderBy: { order: 'asc' },
-                },
-              },
+            questions: {
               orderBy: { order: 'asc' },
             },
           },
@@ -1090,26 +1004,18 @@ export async function getExamResultsForStudent(attemptId: string, userId: string
             passingScore: true,
             showResults: true,
             allowReview: true,
-            sections: {
+            questions: {
               select: {
                 id: true,
-                title: true,
+                type: true,
+                question: true,
+                options: true,
+                correctAnswer: true,
+                explanation: true,
+                points: true,
+                tags: true,
                 order: true,
-                questions: {
-                  select: {
-                    id: true,
-                    type: true,
-                    question: true,
-                    options: true,
-                    correctAnswer: true,
-                    explanation: true,
-                    points: true,
-                    tags: true,
-                    order: true,
-                    partialCredit: true,
-                  },
-                  orderBy: { order: 'asc' },
-                },
+                partialCredit: true,
               },
               orderBy: { order: 'asc' },
             },
@@ -1338,11 +1244,7 @@ export async function getPlacementTests(userId?: string): Promise<PlacementTestW
         isPublished: true,
       },
       include: {
-        sections: {
-          include: {
-            questions: true,
-          },
-        },
+        questions: true,
         attempts: userId
           ? {
               where: { userId },
@@ -1355,10 +1257,7 @@ export async function getPlacementTests(userId?: string): Promise<PlacementTestW
     })
 
     return placementTests.map((exam) => {
-      const totalQuestions = exam.sections.reduce(
-        (acc, section) => acc + section.questions.length,
-        0
-      )
+      const totalQuestions = exam.questions.length
       const lastAttempt = exam.attempts?.[0]
 
       return {
@@ -1450,7 +1349,9 @@ export async function canUserTakePlacementTest(
 }
 
 /**
+ * @deprecated Usar submitExamAttempt() en su lugar - ahora maneja placement tests automáticamente
  * Completa un placement test y calcula el nivel recomendado
+ * NOTA: Esta función se mantiene temporalmente para referencia del envío de emails
  */
 export async function completePlacementTest(
   attemptId: string
@@ -1658,8 +1559,7 @@ export async function getExamBySlug(slug: string) {
         lesson: {
           select: { id: true, title: true },
         },
-        sections: {
-          include: { questions: { orderBy: { order: 'asc' } } },
+        questions: {
           orderBy: { order: 'asc' },
         },
       },

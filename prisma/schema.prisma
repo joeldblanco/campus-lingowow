@@ -1693,7 +1693,7 @@ model Exam {
   course          Course?         @relation(fields: [courseId], references: [id])
   module          Module?         @relation(fields: [moduleId], references: [id])
   lesson          Lesson?         @relation(fields: [lessonId], references: [id])
-  sections        ExamSection[]
+  questions       ExamQuestion[]
   attempts        ExamAttempt[]
   assignments     ExamAssignment[]
 
@@ -1707,30 +1707,9 @@ model Exam {
   @@map("exams")
 }
 
-model ExamSection {
-  id              String          @id @default(cuid())
-  examId          String
-  title           String
-  description     String?
-  instructions    String?         // Instrucciones específicas de la sección
-  timeLimit       Int?            // Tiempo límite de la sección en minutos
-  order           Int             @default(0)
-  points          Float           @default(0) // Puntos totales de la sección
-
-  // Relaciones
-  exam            Exam            @relation(fields: [examId], references: [id], onDelete: Cascade)
-  questions       ExamQuestion[]
-
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
-
-  @@index([examId])
-  @@map("exam_sections")
-}
-
 model ExamQuestion {
   id              String          @id @default(cuid())
-  sectionId       String
+  examId          String
   type            QuestionType
   question        String          // Texto de la pregunta
   options         Json?           // Opciones para preguntas de opción múltiple
@@ -1755,13 +1734,13 @@ model ExamQuestion {
   audioPausable   Boolean         @default(false) // Permitir pausar el audio
 
   // Relaciones
-  section         ExamSection     @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  exam            Exam            @relation(fields: [examId], references: [id], onDelete: Cascade)
   answers         ExamAnswer[]
 
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 
-  @@index([sectionId])
+  @@index([examId])
   @@map("exam_questions")
 }
 

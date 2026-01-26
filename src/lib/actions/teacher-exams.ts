@@ -21,11 +21,7 @@ export async function getTeacherExamsForCourse(courseId: string) {
         createdById: session.user.id,
       },
       include: {
-        sections: {
-          include: {
-            questions: true,
-          },
-        },
+        questions: true,
         assignments: {
           include: {
             student: {
@@ -63,11 +59,8 @@ export async function getTeacherExamsForCourse(courseId: string) {
       success: true,
       exams: exams.map((exam) => ({
         ...exam,
-        questionCount: exam.sections.reduce((acc, s) => acc + s.questions.length, 0),
-        totalPoints: exam.sections.reduce(
-          (acc, s) => acc + s.questions.reduce((qAcc, q) => qAcc + q.points, 0),
-          0
-        ),
+        questionCount: exam.questions.length,
+        totalPoints: exam.questions.reduce((acc, q) => acc + q.points, 0),
       })),
     }
   } catch (error) {
@@ -103,17 +96,6 @@ export async function createTeacherExam(courseId: string, title: string) {
         isPublished: false,
         createdById: session.user.id,
         courseId,
-      },
-    })
-
-    // Crear una sección por defecto
-    await db.examSection.create({
-      data: {
-        examId: exam.id,
-        title: 'Sección Principal',
-        description: '',
-        order: 1,
-        points: 0,
       },
     })
 
@@ -310,11 +292,7 @@ export async function toggleExamPublished(examId: string) {
         createdById: session.user.id,
       },
       include: {
-        sections: {
-          include: {
-            questions: true,
-          },
-        },
+        questions: true,
       },
     })
 
@@ -323,7 +301,7 @@ export async function toggleExamPublished(examId: string) {
     }
 
     // Verificar que tenga al menos una pregunta antes de publicar
-    const questionCount = exam.sections.reduce((acc, s) => acc + s.questions.length, 0)
+    const questionCount = exam.questions.length
     if (!exam.isPublished && questionCount === 0) {
       return { success: false, error: 'El examen debe tener al menos una pregunta para publicarse' }
     }
@@ -536,12 +514,7 @@ export async function getExamForPreview(examId: string) {
             language: true,
           },
         },
-        sections: {
-          include: {
-            questions: {
-              orderBy: { order: 'asc' },
-            },
-          },
+        questions: {
           orderBy: { order: 'asc' },
         },
       },
@@ -555,11 +528,8 @@ export async function getExamForPreview(examId: string) {
       success: true,
       exam: {
         ...exam,
-        questionCount: exam.sections.reduce((acc, s) => acc + s.questions.length, 0),
-        totalPoints: exam.sections.reduce(
-          (acc, s) => acc + s.questions.reduce((qAcc, q) => qAcc + q.points, 0),
-          0
-        ),
+        questionCount: exam.questions.length,
+        totalPoints: exam.questions.reduce((acc, q) => acc + q.points, 0),
       },
     }
   } catch (error) {

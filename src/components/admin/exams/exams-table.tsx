@@ -194,7 +194,7 @@ export function ExamsTable({ exams }: ExamsTableProps) {
   }
 
   const getTotalQuestions = (exam: ExamWithDetails) => {
-    return exam.sections?.reduce((acc, section) => acc + (section.questions?.length || 0), 0) || 0
+    return exam.questions?.length || 0
   }
 
   const clearFilters = () => {

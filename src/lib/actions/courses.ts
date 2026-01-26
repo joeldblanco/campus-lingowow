@@ -93,7 +93,7 @@ export async function getAllCourses(): Promise<CourseWithDetails[]> {
             createdAt: true,
             _count: {
               select: {
-                sections: true,
+                questions: true,
                 attempts: true,
               },
             },
@@ -211,7 +211,7 @@ export async function getCourseById(id: string): Promise<CourseWithDetails | nul
             createdAt: true,
             _count: {
               select: {
-                sections: true,
+                questions: true,
                 attempts: true,
               },
             },
@@ -679,18 +679,9 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
             passingScore: true,
             maxAttempts: true,
             isPublished: true,
-            sections: {
+            questions: {
               select: {
-                _count: {
-                  select: {
-                    questions: true,
-                  },
-                },
-                questions: {
-                  select: {
-                    points: true,
-                  },
-                },
+                points: true,
               },
             },
           },
@@ -721,9 +712,8 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
 
     // Calcular questionCount y totalPoints para cada examen
     const examsWithStats = course.exams.map(exam => {
-      const questionCount = exam.sections.reduce((total, section) => total + section._count.questions, 0)
-      const totalPoints = exam.sections.reduce((total, section) => 
-        total + section.questions.reduce((sum, q) => sum + q.points, 0), 0)
+      const questionCount = exam.questions.length
+      const totalPoints = exam.questions.reduce((sum, q) => sum + q.points, 0)
       
       return {
         id: exam.id,

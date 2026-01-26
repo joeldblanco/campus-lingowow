@@ -82,13 +82,13 @@ export const ExamQuestionSchema = z
     }
   })
 
-// Schema para secciones de examen
+// Schema para secciones de examen (deprecated - mantener para compatibilidad)
 export const ExamSectionSchema = z.object({
-  id: z.string().optional(), // Para edición
+  id: z.string().optional(),
   title: z.string().min(1, 'El título de la sección es requerido'),
   description: z.string().optional(),
   instructions: z.string().optional(),
-  timeLimit: z.number().optional(), // En minutos
+  timeLimit: z.number().optional(),
   order: z.number().default(0),
   questions: z.array(ExamQuestionSchema).min(1, 'Debe tener al menos una pregunta'),
 })
@@ -135,8 +135,8 @@ export const CreateExamSchema = z.object({
   moduleId: z.string().optional(),
   lessonId: z.string().optional(),
 
-  // Secciones del examen
-  sections: z.array(ExamSectionSchema).min(1, 'Debe tener al menos una sección'),
+  // Preguntas del examen (directo, sin secciones)
+  questions: z.array(ExamQuestionSchema).optional(),
 
   // Usuario que crea
   createdById: z.string().min(1, 'El creador es requerido'),
@@ -177,8 +177,8 @@ export const EditExamSchema = z.object({
   moduleId: z.string().optional(),
   lessonId: z.string().optional(),
 
-  // Secciones
-  sections: z.array(ExamSectionSchema).optional(),
+  // Preguntas
+  questions: z.array(ExamQuestionSchema).optional(),
 })
 
 // Schema para asignar examen

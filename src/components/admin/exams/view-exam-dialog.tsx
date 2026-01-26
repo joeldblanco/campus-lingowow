@@ -14,8 +14,7 @@ interface ViewExamDialogProps {
 }
 
 export function ViewExamDialog({ exam, open, onOpenChange }: ViewExamDialogProps) {
-  const totalQuestions =
-    exam.sections?.reduce((sum, section) => sum + section.questions.length, 0) || 0
+  const totalQuestions = exam.questions?.length || 0
   const totalAttempts = exam.attempts.length
   const passedAttempts = exam.attempts.filter(
     (attempt) =>
@@ -147,115 +146,103 @@ export function ViewExamDialog({ exam, open, onOpenChange }: ViewExamDialogProps
             </CardContent>
           </Card>
 
-          {/* Sections */}
-          {exam.sections && exam.sections.length > 0 && (
+          {/* Questions */}
+          {exam.questions && exam.questions.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Secciones del Examen</CardTitle>
+                <CardTitle className="text-lg">Preguntas del Examen</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {exam.sections.map((section, index) => (
-                  <div key={section.id} className="border rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <h4 className="font-medium">
-                        Sección {index + 1}: {section.title}
-                      </h4>
-                      <div className="flex space-x-2">
-                        <Badge variant="outline">{section.questions.length} preguntas</Badge>
-                        <Badge variant="outline">
-                          {section.questions.reduce((sum, q) => sum + q.points, 0)} puntos
-                        </Badge>
-                        {section.timeLimit && (
-                          <Badge variant="outline">{formatDuration(section.timeLimit)}</Badge>
-                        )}
-                      </div>
-                    </div>
-
-                    {section.description && (
-                      <p className="text-sm text-muted-foreground">{section.description}</p>
-                    )}
-
-                    {/* Group questions by groupId */}
-                    <div className="space-y-3">
-                      {(() => {
-                        // Extract groupId and original block type from question options
-                        const questionsWithGroup = section.questions.map(q => {
-                          let groupId = null
-                          let originalType = null
-                          try {
-                            if (q.options) {
-                              const options = typeof q.options === 'string' ? JSON.parse(q.options) : q.options
-                              groupId = options?.groupId || null
-                              originalType = options?.originalBlockType || null
-                            }
-                          } catch {
-                            // Ignore parsing errors
-                          }
-                          return { ...q, groupId, originalType }
-                        })
-
-                        // Group questions by groupId
-                        const groupedQuestions = questionsWithGroup.reduce((acc, question) => {
-                          const key = question.groupId || 'ungrouped'
-                          if (!acc[key]) {
-                            acc[key] = []
-                          }
-                          acc[key].push(question)
-                          return acc
-                        }, {} as Record<string, typeof questionsWithGroup>)
-
-                        return Object.entries(groupedQuestions).map(([groupKey, questions], index) => {
-                          const isGrouped = groupKey !== 'ungrouped'
-                          const totalPoints = questions.reduce((sum, q) => sum + q.points, 0)
-                          
-                          // Get display types, prioritizing original block types
-                          const questionTypes = [...new Set(questions.map(q => {
-                            if (q.originalType === 'recording') return 'Grabación'
-                            if (q.originalType === 'audio') return 'Audio'
-                            // Convert standard types to Spanish and capitalized
-                            const typeMap: Record<string, string> = {
-                              'MULTIPLE_CHOICE': 'Opción Múltiple',
-                              'TRUE_FALSE': 'Verdadero Falso',
-                              'SHORT_ANSWER': 'Respuesta Corta',
-                              'ESSAY': 'Ensayo',
-                              'FILL_BLANK': 'Completar Espacio',
-                              'MATCHING': 'Relacionar',
-                              'ORDERING': 'Ordenar',
-                              'DRAG_DROP': 'Arrastrar Soltar'
-                            }
-                            return typeMap[q.type] || q.type.replace('_', ' ')
-                          }))]
-
-                          return (
-                            <div key={groupKey} className="border rounded-lg p-3 bg-muted/30">
-                              <div className="flex items-center justify-between mb-2">
-                                <h5 className="font-medium text-sm">
-                                  {isGrouped ? `Grupo ${index + 1}` : 'Preguntas individuales'}
-                                </h5>
-                                <div className="flex space-x-2">
-                                  <Badge variant="secondary" className="text-xs">
-                                    {questions.length} {questions.length === 1 ? 'pregunta' : 'preguntas'}
-                                  </Badge>
-                                  <Badge variant="outline" className="text-xs">
-                                    {totalPoints} ptos
-                                  </Badge>
-                                </div>
-                              </div>
-                              
-                              <div className="flex flex-wrap gap-1">
-                                {questionTypes.map(type => (
-                                  <Badge key={type} variant="outline" className="text-xs">
-                                    {type}
-                                  </Badge>
-                                ))}
-                              </div>
-                            </div>
-                          )
-                        })
-                      })()}
+                <div className="border rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="font-medium">Contenido del Examen</h4>
+                    <div className="flex space-x-2">
+                      <Badge variant="outline">{exam.questions.length} preguntas</Badge>
+                      <Badge variant="outline">
+                        {exam.questions.reduce((sum, q) => sum + q.points, 0)} puntos
+                      </Badge>
                     </div>
                   </div>
-                ))}
+
+                  {/* Group questions by groupId */}
+                  <div className="space-y-3">
+                    {(() => {
+                      // Extract groupId and original block type from question options
+                      const questionsWithGroup = exam.questions.map(q => {
+                        let groupId: string | null = null
+                        let originalType: string | null = null
+                        try {
+                          if (q.options) {
+                            const options = typeof q.options === 'string' ? JSON.parse(q.options as string) : q.options
+                            groupId = (options as Record<string, unknown>)?.groupId as string || null
+                            originalType = (options as Record<string, unknown>)?.originalBlockType as string || null
+                          }
+                        } catch {
+                          // Ignore parsing errors
+                        }
+                        return { ...q, groupId, originalType }
+                      })
+
+                      // Group questions by groupId
+                      const groupedQuestions = questionsWithGroup.reduce((acc, question) => {
+                        const key = question.groupId || 'ungrouped'
+                        if (!acc[key]) {
+                          acc[key] = []
+                        }
+                        acc[key].push(question)
+                        return acc
+                      }, {} as Record<string, typeof questionsWithGroup>)
+
+                      return Object.entries(groupedQuestions).map(([groupKey, questions], idx) => {
+                        const isGrouped = groupKey !== 'ungrouped'
+                        const totalPoints = questions.reduce((sum, q) => sum + q.points, 0)
+                        
+                        // Get display types, prioritizing original block types
+                        const typeMap: Record<string, string> = {
+                          'MULTIPLE_CHOICE': 'Opción Múltiple',
+                          'TRUE_FALSE': 'Verdadero Falso',
+                          'SHORT_ANSWER': 'Respuesta Corta',
+                          'ESSAY': 'Ensayo',
+                          'FILL_BLANK': 'Completar Espacio',
+                          'MATCHING': 'Relacionar',
+                          'ORDERING': 'Ordenar',
+                          'DRAG_DROP': 'Arrastrar Soltar'
+                        }
+                        const questionTypes = [...new Set(questions.map(q => {
+                          if (q.originalType === 'recording') return 'Grabación'
+                          if (q.originalType === 'audio') return 'Audio'
+                          return typeMap[q.type] || q.type.replace('_', ' ')
+                        }))]
+
+                        return (
+                          <div key={groupKey} className="border rounded-lg p-3 bg-muted/30">
+                            <div className="flex items-center justify-between mb-2">
+                              <h5 className="font-medium text-sm">
+                                {isGrouped ? `Grupo ${idx + 1}` : 'Preguntas individuales'}
+                              </h5>
+                              <div className="flex space-x-2">
+                                <Badge variant="secondary" className="text-xs">
+                                  {questions.length} {questions.length === 1 ? 'pregunta' : 'preguntas'}
+                                </Badge>
+                                <Badge variant="outline" className="text-xs">
+                                  {totalPoints} ptos
+                                </Badge>
+                              </div>
+                            </div>
+                            
+                            <div className="flex flex-wrap gap-1">
+                              {questionTypes.map(type => (
+                                <Badge key={type} variant="outline" className="text-xs">
+                                  {type}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        )
+                      })
+                    })()}
+                  </div>
+                </div>
               </CardContent>
             </Card>
           )}

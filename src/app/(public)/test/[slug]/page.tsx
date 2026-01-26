@@ -70,7 +70,7 @@ export default async function TestPage({ params }: TestPageProps) {
             </div>
             <div className="text-center p-3 bg-muted rounded-lg">
               <div className="font-semibold text-lg">
-                {exam.sections.reduce((acc, s) => acc + s.questions.length, 0)}
+                {exam.questions?.length || 0}
               </div>
               <div className="text-muted-foreground">preguntas</div>
             </div>
