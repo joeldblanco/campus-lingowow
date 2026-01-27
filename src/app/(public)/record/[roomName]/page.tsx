@@ -288,7 +288,7 @@ export default function RecordingPage({
         }
     }, [roomName, token, updateRemoteParticipant, removeRemoteParticipant])
 
-    if (connectionStatus === 'connecting' || !roomName) {
+    if (connectionStatus === 'connecting' || !roomName || !token) {
         return (
             <div className="h-screen w-full flex items-center justify-center bg-gray-900">
                 <div className="text-center">
