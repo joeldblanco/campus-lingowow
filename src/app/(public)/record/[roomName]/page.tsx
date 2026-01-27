@@ -48,17 +48,43 @@ export default function RecordingPage({
         params.then(p => setRoomName(p.roomName))
     }, [params])
 
-    // Get token from URL search params
+    // Token and layout state
     const [token, setToken] = useState<string | null>(null)
     const [layout, setLayout] = useState<string>('default')
+    const [tokenError, setTokenError] = useState<string | null>(null)
 
+    // Get layout from URL search params
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const searchParams = new URLSearchParams(window.location.search)
-            setToken(searchParams.get('token'))
             setLayout(searchParams.get('layout') || 'default')
         }
     }, [])
+
+    // Fetch recording token automatically when roomName is available
+    useEffect(() => {
+        if (!roomName) return
+
+        const fetchToken = async () => {
+            try {
+                const response = await fetch(`/api/livekit/recording-token?roomName=${encodeURIComponent(roomName)}`)
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch token: ${response.status}`)
+                }
+                const data = await response.json()
+                if (data.token) {
+                    setToken(data.token)
+                } else {
+                    throw new Error('No token in response')
+                }
+            } catch (error) {
+                console.error('[Recording] Failed to fetch token:', error)
+                setTokenError(error instanceof Error ? error.message : 'Failed to fetch token')
+            }
+        }
+
+        fetchToken()
+    }, [roomName])
 
     const updateRemoteParticipant = useCallback((participant: RemoteParticipant) => {
         setRemoteTracks((prev) => {
@@ -274,12 +300,14 @@ export default function RecordingPage({
         )
     }
 
-    if (connectionStatus === 'failed') {
+    if (connectionStatus === 'failed' || tokenError) {
         return (
             <div className="h-screen w-full flex items-center justify-center bg-gray-900">
                 <div className="text-center max-w-md p-6 bg-gray-800 rounded-xl">
                     <h2 className="text-xl font-bold text-red-400 mb-2">Error de Conexión</h2>
-                    <p className="text-gray-300">No se pudo conectar a la sala de grabación.</p>
+                    <p className="text-gray-300">
+                        {tokenError || 'No se pudo conectar a la sala de grabación.'}
+                    </p>
                 </div>
             </div>
         )
