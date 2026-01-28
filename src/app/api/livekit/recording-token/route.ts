@@ -63,13 +63,17 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Verify HMAC signature
+    // Verify HMAC signature using constant-time comparison to prevent timing attacks
     const expectedToken = crypto
       .createHmac('sha256', apiSecret)
       .update(`${roomName}:${timestamp}`)
       .digest('hex')
 
-    if (recordingToken !== expectedToken) {
+    // Use timingSafeEqual for constant-time comparison (prevents timing attacks)
+    const tokenBuffer = Buffer.from(recordingToken, 'utf8')
+    const expectedBuffer = Buffer.from(expectedToken, 'utf8')
+    
+    if (tokenBuffer.length !== expectedBuffer.length || !crypto.timingSafeEqual(tokenBuffer, expectedBuffer)) {
       console.log('[Recording Token API] Error: Invalid token signature')
       return NextResponse.json(
         { error: 'Unauthorized: Invalid token' },
