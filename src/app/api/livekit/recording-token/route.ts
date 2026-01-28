@@ -1,15 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { AccessToken } from 'livekit-server-sdk'
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+}
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders })
+}
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
     const roomName = searchParams.get('roomName')
 
+    console.log('[Recording Token API] Request received for room:', roomName)
+
     if (!roomName) {
+      console.log('[Recording Token API] Error: roomName is required')
       return NextResponse.json(
         { error: 'roomName is required' },
-        { status: 400 }
+        { status: 400, headers: corsHeaders }
       )
     }
 
@@ -17,9 +30,10 @@ export async function GET(request: NextRequest) {
     const apiSecret = process.env.LIVEKIT_API_SECRET
 
     if (!apiKey || !apiSecret) {
+      console.log('[Recording Token API] Error: LiveKit configuration missing')
       return NextResponse.json(
         { error: 'LiveKit configuration missing' },
-        { status: 500 }
+        { status: 500, headers: corsHeaders }
       )
     }
 
@@ -52,12 +66,14 @@ export async function GET(request: NextRequest) {
 
     const token = await at.toJwt()
 
-    return NextResponse.json({ token })
+    console.log('[Recording Token API] Token generated successfully for:', recorderIdentity)
+
+    return NextResponse.json({ token }, { headers: corsHeaders })
   } catch (error) {
-    console.error('Error generating recording token:', error)
+    console.error('[Recording Token API] Error generating recording token:', error)
     return NextResponse.json(
       { error: 'Failed to generate token' },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     )
   }
 }

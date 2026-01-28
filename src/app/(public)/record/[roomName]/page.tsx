@@ -67,12 +67,21 @@ export default function RecordingPage({
 
         const fetchToken = async () => {
             try {
-                const response = await fetch(`/api/livekit/recording-token?roomName=${encodeURIComponent(roomName)}`)
+                // Use absolute URL to ensure it works from egress headless browser
+                const baseUrl = typeof window !== 'undefined' 
+                    ? window.location.origin 
+                    : process.env.NEXT_PUBLIC_APP_URL || 'https://www.lingowow.com'
+                
+                console.log('[Recording] Fetching token for room:', roomName, 'from:', baseUrl)
+                
+                const response = await fetch(`${baseUrl}/api/livekit/recording-token?roomName=${encodeURIComponent(roomName)}`)
                 if (!response.ok) {
-                    throw new Error(`Failed to fetch token: ${response.status}`)
+                    const errorText = await response.text()
+                    throw new Error(`Failed to fetch token: ${response.status} - ${errorText}`)
                 }
                 const data = await response.json()
                 if (data.token) {
+                    console.log('[Recording] Token received successfully')
                     setToken(data.token)
                 } else {
                     throw new Error('No token in response')
@@ -173,10 +182,13 @@ export default function RecordingPage({
             try {
                 setConnectionStatus('connecting')
 
-                const serverUrl = process.env.NEXT_PUBLIC_LIVEKIT_URL
-                if (!serverUrl) {
-                    throw new Error('NEXT_PUBLIC_LIVEKIT_URL not configured')
-                }
+                // Hardcode the LiveKit URL to ensure it works in egress headless browser
+                // NEXT_PUBLIC_ env vars may not be available in the egress context
+                const serverUrl = process.env.NEXT_PUBLIC_LIVEKIT_URL || 'wss://meet.lingowow.com'
+                
+                console.log('[Recording] Connecting to LiveKit:', serverUrl)
+                console.log('[Recording] Room:', roomName)
+                console.log('[Recording] Token length:', token?.length)
 
                 const room = new Room({
                     adaptiveStream: true,
@@ -186,14 +198,20 @@ export default function RecordingPage({
                 roomRef.current = room
 
                 room.on(RoomEvent.ConnectionStateChanged, (state: ConnectionState) => {
+                    console.log('[Recording] Connection state changed:', state)
                     if (state === ConnectionState.Connected) {
                         setConnectionStatus('connected')
+                        console.log('[Recording] Connected! Calling START_RECORDING...')
                         // Signal to egress that recording can start
                         if (typeof window !== 'undefined' && (window as unknown as { START_RECORDING?: () => void }).START_RECORDING) {
-                            (window as unknown as { START_RECORDING: () => void }).START_RECORDING()
+                            console.log('[Recording] START_RECORDING function exists, calling it')
+                            ;(window as unknown as { START_RECORDING: () => void }).START_RECORDING()
+                        } else {
+                            console.log('[Recording] START_RECORDING function NOT found on window')
                         }
                     } else if (state === ConnectionState.Disconnected) {
                         setConnectionStatus('disconnected')
+                        console.log('[Recording] Disconnected! Calling END_RECORDING...')
                         // Signal to egress that recording should end
                         if (typeof window !== 'undefined' && (window as unknown as { END_RECORDING?: () => void }).END_RECORDING) {
                             (window as unknown as { END_RECORDING: () => void }).END_RECORDING()
