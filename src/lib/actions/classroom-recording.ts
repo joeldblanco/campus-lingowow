@@ -89,7 +89,19 @@ export async function startRecording(bookingId: string, roomName: string) {
 
     // Get custom template URL for full classroom recording (content, whiteboard, screen share)
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.lingowow.com'
-    const templateUrl = `${appUrl}/record`
+    
+    // Generate a secure recording token using HMAC
+    // This token validates that the request comes from a legitimate egress process
+    const recordingSecret = process.env.LIVEKIT_API_SECRET || ''
+    const timestamp = Date.now()
+    const crypto = await import('crypto')
+    const recordingToken = crypto
+      .createHmac('sha256', recordingSecret)
+      .update(`${roomName}:${timestamp}`)
+      .digest('hex')
+    
+    // Include the token and timestamp in the URL for validation
+    const templateUrl = `${appUrl}/record?rt=${recordingToken}&ts=${timestamp}`
 
     const info = await egressClient.startRoomCompositeEgress(
       roomName,

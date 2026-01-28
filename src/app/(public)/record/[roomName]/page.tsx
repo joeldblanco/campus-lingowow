@@ -52,18 +52,24 @@ export default function RecordingPage({
     const [token, setToken] = useState<string | null>(null)
     const [layout, setLayout] = useState<string>('default')
     const [tokenError, setTokenError] = useState<string | null>(null)
+    
+    // Security token from URL (passed by Egress)
+    const [securityToken, setSecurityToken] = useState<string | null>(null)
+    const [securityTimestamp, setSecurityTimestamp] = useState<string | null>(null)
 
-    // Get layout from URL search params
+    // Get layout and security tokens from URL search params
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const searchParams = new URLSearchParams(window.location.search)
             setLayout(searchParams.get('layout') || 'default')
+            setSecurityToken(searchParams.get('rt'))
+            setSecurityTimestamp(searchParams.get('ts'))
         }
     }, [])
 
-    // Fetch recording token automatically when roomName is available
+    // Fetch recording token automatically when roomName and security tokens are available
     useEffect(() => {
-        if (!roomName) return
+        if (!roomName || !securityToken || !securityTimestamp) return
 
         const fetchToken = async () => {
             try {
@@ -74,7 +80,10 @@ export default function RecordingPage({
                 
                 console.log('[Recording] Fetching token for room:', roomName, 'from:', baseUrl)
                 
-                const response = await fetch(`${baseUrl}/api/livekit/recording-token?roomName=${encodeURIComponent(roomName)}`)
+                // Include security tokens in the request
+                const url = `${baseUrl}/api/livekit/recording-token?roomName=${encodeURIComponent(roomName)}&rt=${encodeURIComponent(securityToken)}&ts=${encodeURIComponent(securityTimestamp)}`
+                
+                const response = await fetch(url)
                 if (!response.ok) {
                     const errorText = await response.text()
                     throw new Error(`Failed to fetch token: ${response.status} - ${errorText}`)
@@ -93,7 +102,7 @@ export default function RecordingPage({
         }
 
         fetchToken()
-    }, [roomName])
+    }, [roomName, securityToken, securityTimestamp])
 
     const updateRemoteParticipant = useCallback((participant: RemoteParticipant) => {
         setRemoteTracks((prev) => {
@@ -305,6 +314,20 @@ export default function RecordingPage({
             }
         }
     }, [roomName, token, updateRemoteParticipant, removeRemoteParticipant])
+
+    // Check for missing security tokens (unauthorized access)
+    if (roomName && (!securityToken || !securityTimestamp)) {
+        return (
+            <div className="h-screen w-full flex items-center justify-center bg-gray-900">
+                <div className="text-center max-w-md p-6 bg-gray-800 rounded-xl">
+                    <h2 className="text-xl font-bold text-red-400 mb-2">Acceso No Autorizado</h2>
+                    <p className="text-gray-300">
+                        Esta página solo puede ser accedida por el sistema de grabación.
+                    </p>
+                </div>
+            </div>
+        )
+    }
 
     if ((connectionStatus === 'connecting' || !roomName || !token) && !tokenError) {
         return (

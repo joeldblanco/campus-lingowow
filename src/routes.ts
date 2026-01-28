@@ -19,6 +19,8 @@ export const publicRoutes = [
   '/checkout',
   '/checkout/*',
   '/about',
+  '/record',
+  '/record/*',
 ]
 
 export const authRoutes = [
@@ -34,6 +36,6 @@ export const adminPrefix = '/admin'
 
 export const apiAuthPrefix = '/api/auth'
 
-export const apiPublicRoutes = ['/api/contact', '/api/trial-class', '/api/plans', '/api/teachers/availability', '/api/library', '/api/library/*']
+export const apiPublicRoutes = ['/api/contact', '/api/trial-class', '/api/plans', '/api/teachers/availability', '/api/library', '/api/library/*', '/api/livekit/recording-token']
 
 export const DEFAULT_LOGIN_REDIRECT = '/dashboard'
