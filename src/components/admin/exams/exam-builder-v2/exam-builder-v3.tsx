@@ -210,7 +210,7 @@ function convertExamToBlocks(exam: ExamWithDetails): Block[] {
                 format: 'html',
               } as Block
             }
-            if (opts.originalBlockType === 'recording') {
+            if (q.type === 'RECORDING') {
               return {
                 ...baseBlock,
                 type: 'recording',
@@ -451,8 +451,8 @@ function convertBlocksToExamFormat(blocks: Block[]) {
   })
 }
 
-function mapBlockTypeToExamType(type: string): 'MULTIPLE_CHOICE' | 'TRUE_FALSE' | 'SHORT_ANSWER' | 'ESSAY' | 'FILL_BLANK' | 'MATCHING' | 'ORDERING' | 'DRAG_DROP' {
-  const typeMap: Record<string, 'MULTIPLE_CHOICE' | 'TRUE_FALSE' | 'SHORT_ANSWER' | 'ESSAY' | 'FILL_BLANK' | 'MATCHING' | 'ORDERING' | 'DRAG_DROP'> = {
+function mapBlockTypeToExamType(type: string): 'MULTIPLE_CHOICE' | 'TRUE_FALSE' | 'SHORT_ANSWER' | 'ESSAY' | 'RECORDING' | 'FILL_BLANK' | 'MATCHING' | 'ORDERING' | 'DRAG_DROP' {
+  const typeMap: Record<string, 'MULTIPLE_CHOICE' | 'TRUE_FALSE' | 'SHORT_ANSWER' | 'ESSAY' | 'RECORDING' | 'FILL_BLANK' | 'MATCHING' | 'ORDERING' | 'DRAG_DROP'> = {
     'multiple_choice': 'MULTIPLE_CHOICE', // Will be overridden in logic if needed, but here we just return default mapping. IMPORTANT: Logic in component decides if it's ESSAY based on content.
     // Actually this function only takes type string. We handle the split logic in the caller usually, OR we need to accept the block itself.
     // However, looking at usage: const examQuestion = { type: mapBlockTypeToExamType(block.type) ... }
@@ -470,7 +470,7 @@ function mapBlockTypeToExamType(type: string): 'MULTIPLE_CHOICE' | 'TRUE_FALSE' 
     'image': 'ESSAY',
     'audio': 'ESSAY',
     'video': 'ESSAY',
-    'recording': 'ESSAY',
+    'recording': 'RECORDING',
     'multi_select': 'ESSAY',
     'title': 'ESSAY',
     'quiz': 'MULTIPLE_CHOICE',

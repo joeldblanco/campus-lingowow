@@ -483,3 +483,90 @@ export const EXAM_TYPE_LABELS: Record<ExamTypeValue, string> = {
   DIAGNOSTIC: 'Examen Diagnóstico',
   PRACTICE: 'Práctica Libre',
 }
+
+// =============================================
+// TIPOS PARA EXPORTACIÓN Y VERIFICACIÓN
+// =============================================
+
+// Tipos para respuestas de preguntas en el reporte
+export interface QuestionAnswer {
+  id: string
+  questionId: string
+  questionNumber: number | null
+  questionType: string
+  questionText: string
+  category?: string
+  maxPoints: number
+  userAnswer: string | null
+  userAudioUrl?: string
+  correctAnswer?: string
+  isCorrect: boolean | null
+  pointsEarned: number
+  needsReview: boolean
+  feedback?: string | null
+  isAutoGraded: boolean
+  groupId?: string | null
+  sectionTitle?: string
+  isInformativeBlock?: boolean
+  informativeContent?: {
+    type: string
+    audioUrl?: string
+    videoUrl?: string
+    imageUrl?: string
+    text?: string
+    title?: string
+  }
+  multipleChoiceDetails?: MultipleChoiceSubAnswer[]
+}
+
+// Subtipos para preguntas de opción múltiple
+export interface MultipleChoiceSubAnswer {
+  itemQuestion: string
+  userOptionLetter: string | null
+  userOptionText: string | null
+  correctOptionLetter: string
+  correctOptionText: string
+  isCorrect: boolean
+}
+
+// Datos para exportación de reporte HTML/PDF
+export interface AttemptData {
+  studentName: string
+  studentEmail: string
+  examTitle: string
+  courseName: string
+  attemptId: string
+  attemptNumber: number
+  submittedAt: string
+  totalScore: number
+  maxScore: number
+  answers: QuestionAnswer[]
+  verificationCode?: string
+  allowPublicVerification?: boolean
+}
+
+// Tipos para verificación pública de resultados
+export interface VerificationAttempt {
+  id: string
+  attemptNumber: number
+  status: string
+  score: number | null
+  totalPoints: number | null
+  maxPoints: number | null
+  submittedAt: string
+  verificationCode: string
+  allowPublicVerification: boolean
+  user: {
+    id: string
+    name: string
+    lastName?: string
+    email: string
+  }
+  exam: {
+    id: string
+    title: string
+    course: {
+      title: string
+    }
+  }
+}

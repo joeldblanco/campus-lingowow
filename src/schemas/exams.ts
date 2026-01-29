@@ -6,6 +6,7 @@ export const QuestionTypeEnum = z.enum([
   'TRUE_FALSE',
   'SHORT_ANSWER',
   'ESSAY',
+  'RECORDING',
   'FILL_BLANK',
   'MATCHING',
   'ORDERING',
@@ -22,8 +23,8 @@ export const AudioPositionEnum = z.enum([
 ])
 
 // Types that don't require a correct answer (manually graded)
-// ESSAY, RECORDING (mapped to ESSAY), and other content blocks don't have a "correct" answer
-const TYPES_WITHOUT_CORRECT_ANSWER = ['ESSAY'] as const
+// ESSAY, RECORDING, and other content blocks don't have a "correct" answer
+const TYPES_WITHOUT_CORRECT_ANSWER = ['ESSAY', 'RECORDING'] as const
 
 // Schema para preguntas de examen
 export const ExamQuestionSchema = z

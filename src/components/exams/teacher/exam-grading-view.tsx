@@ -27,13 +27,15 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { cn, processHtmlLinks } from '@/lib/utils'
 import { toast } from 'sonner'
-import { exportAttemptToPDF } from '@/lib/pdf-export-attempt'
+import { exportAttemptToHTML } from '@/lib/html-export-attempt'
 
 interface StudentInfo {
   id: string
+  userId: string
   name: string
   email: string
   score: number
+  attemptNumber: number
 }
 
 interface ExamAttemptInfo {
@@ -88,22 +90,29 @@ interface ExamGradingViewProps {
   examTitle: string
   courseName: string
   students: StudentInfo[]
+  attemptsByStudent: Map<string, Array<{
+    id: string
+    attemptNumber: number
+    score: number
+    submittedAt: string
+  }>>
   selectedStudentId: string
   attempt: ExamAttemptInfo
   totalScore: number
   maxScore: number
   answers: QuestionAnswer[]
   onSelectStudent: (studentId: string) => void
-  onSelectAttempt: (attemptId: string) => void
   onSaveGrade: (answerId: string, pointsEarned: number, feedback: string) => Promise<void>
   onFinalizeReview: () => Promise<void>
   breadcrumbs?: { label: string; href: string }[]
 }
 
 export function ExamGradingView({
+  examId,
   examTitle,
   courseName,
   students,
+  attemptsByStudent,
   selectedStudentId,
   attempt,
   totalScore,
@@ -116,7 +125,22 @@ export function ExamGradingView({
 }: ExamGradingViewProps) {
   const router = useRouter()
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [localGrades, setLocalGrades] = useState<Record<string, { points: number; feedback: string }>>({})
+  
+  // Obtener intentos del estudiante seleccionado
+  const studentAttempts = attemptsByStudent.get(selectedStudentId) || []
+  const [localGrades, setLocalGrades] = useState<Record<string, { points: number; feedback: string }>>(() => {
+    // Inicializar con valores existentes para que el botón funcione inmediatamente
+    const initialGrades: Record<string, { points: number; feedback: string }> = {}
+    answers.forEach(answer => {
+      if (answer.needsReview) {
+        initialGrades[answer.id] = {
+          points: answer.pointsEarned,
+          feedback: answer.feedback || ''
+        }
+      }
+    })
+    return initialGrades
+  })
   const [isSaving, setIsSaving] = useState(false)
   const [isFinishing, setIsFinishing] = useState(false)
   const [isExporting, setIsExporting] = useState(false)
@@ -183,20 +207,51 @@ export function ExamGradingView({
   }, [navigationIndices, answers])
 
   const handleSaveGrade = useCallback(async (answerId: string) => {
-    const grade = localGrades[answerId]
-    if (!grade) return
-
+    // Obtener calificación actual (local o de la respuesta)
+    const currentGrade = localGrades[answerId] || {
+      points: answers.find(a => a.id === answerId)?.pointsEarned || 0,
+      feedback: answers.find(a => a.id === answerId)?.feedback || ''
+    }
+    
     setIsSaving(true)
     try {
-      await onSaveGrade(answerId, grade.points, grade.feedback)
+      let finalAnswerId = answerId
+      
+      // Si es no-answer, crear la respuesta primero
+      if (answerId.startsWith('no-answer-')) {
+        const questionId = answerId.replace('no-answer-', '')
+        
+        // Importar dinámicamente para evitar circular dependencies
+        const { createEmptyAnswer } = await import('@/lib/actions/exams')
+        const createResult = await createEmptyAnswer(questionId, attempt.id)
+        
+        if (!createResult.success) {
+          toast.error('Error al crear respuesta')
+          return
+        }
+        
+        finalAnswerId = createResult.answer!.id
+      }
+      
+      await onSaveGrade(finalAnswerId, currentGrade.points, currentGrade.feedback)
       toast.success('Calificación guardada')
+      
+      // Limpiar estado local de esta pregunta
+      setLocalGrades(prev => {
+        const newGrades = { ...prev }
+        delete newGrades[answerId]
+        return newGrades
+      })
+      
+      // Forzar refresh de la página para obtener datos actualizados
+      router.refresh()
     } catch (error) {
       console.error('Error saving grade:', error)
       toast.error('Error al guardar calificación')
     } finally {
       setIsSaving(false)
     }
-  }, [localGrades, onSaveGrade])
+  }, [localGrades, answers, onSaveGrade, router, attempt.id])
 
   const handleFinalizeReview = useCallback(async () => {
     setIsFinishing(true)
@@ -241,28 +296,29 @@ export function ExamGradingView({
     setTimeout(scrollToNavigation, 100)
   }, [scrollToNavigation])
 
-  // Exportar PDF del attempt
+  // Exportar HTML del attempt
   const handleExportPDF = useCallback(async () => {
     const selectedStudent = students.find(s => s.id === selectedStudentId)
     if (!selectedStudent) return
 
     setIsExporting(true)
     try {
-      await exportAttemptToPDF({
+      await exportAttemptToHTML({
         studentName: selectedStudent.name,
         studentEmail: selectedStudent.email,
         examTitle,
         courseName,
+        attemptId: attempt.id,
         attemptNumber: attempt.attemptNumber,
         submittedAt: attempt.submittedAt,
         totalScore,
         maxScore,
         answers
       })
-      toast.success('PDF exportado exitosamente')
+      toast.success('Reporte exportado exitosamente')
     } catch (error) {
-      console.error('Error exporting PDF:', error)
-      toast.error('Error al exportar el PDF')
+      console.error('Error exporting report:', error)
+      toast.error('Error al exportar el reporte')
     } finally {
       setIsExporting(false)
     }
@@ -296,7 +352,7 @@ export function ExamGradingView({
             >
               {students.map(student => (
                 <option key={student.id} value={student.id}>
-                  {student.name} ({Math.round(student.score)}%)
+                  {student.name}
                 </option>
               ))}
             </select>
@@ -304,16 +360,28 @@ export function ExamGradingView({
 
           <div>
             <label className="text-sm font-medium text-muted-foreground mb-1 block">Intento del Examen</label>
-            <div className="h-10 px-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 flex items-center gap-2 text-foreground min-w-[280px]">
-              <span className="text-muted-foreground">📅</span>
-              Intento {attempt.attemptNumber} (Enviado {attempt.submittedAt})
-            </div>
+            <select
+              value={attempt.id}
+              onChange={(e) => {
+                // Navegar al intento seleccionado
+                const newAttemptId = e.target.value
+                router.push(`/teacher/grading/${examId}/${newAttemptId}`)
+              }}
+              className="h-10 px-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-foreground min-w-[200px]"
+              disabled={studentAttempts.length === 0}
+            >
+              {studentAttempts.map(attempt => (
+                <option key={attempt.id} value={attempt.id}>
+                  Intento #{attempt.attemptNumber} ({Math.round(attempt.score)}%) - {attempt.submittedAt}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="ml-auto flex items-center gap-4">
             <Button
               onClick={handleExportPDF}
-              disabled={true}
+              disabled={isExporting}
               variant="outline"
               size="sm"
               className="h-10"

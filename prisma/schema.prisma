@@ -1766,6 +1766,10 @@ model ExamAttempt {
   recommendedLevel String?        // Nivel recomendado (A1, A2, B1, B2, C1, C2) para placement tests
   resultEmailSent  Boolean        @default(false) // Si se envió email con resultados
   
+  // Verificación pública
+  verificationCode String?        // Código único para verificación pública
+  allowPublicVerification Boolean @default(true) // Si permite verificación pública
+  
   // Relaciones
   exam            Exam            @relation(fields: [examId], references: [id], onDelete: Cascade)
   user            User            @relation("ExamAttempts", fields: [userId], references: [id], onDelete: Cascade)
@@ -1975,6 +1979,7 @@ enum QuestionType {
   TRUE_FALSE        // Verdadero/Falso
   SHORT_ANSWER      // Respuesta corta
   ESSAY            // Ensayo
+  RECORDING        // Grabación de audio
   FILL_BLANK       // Llenar espacios en blanco
   MATCHING         // Emparejar
   ORDERING         // Ordenar elementos

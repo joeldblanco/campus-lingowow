@@ -6,9 +6,11 @@ import { gradeExamAnswer, finalizeExamReview } from '@/lib/actions/exams'
 
 interface StudentInfo {
   id: string
+  userId: string
   name: string
   email: string
   score: number
+  attemptNumber: number
 }
 
 interface ExamAttemptInfo {
@@ -42,6 +44,12 @@ interface GradingClientProps {
   examTitle: string
   courseName: string
   students: StudentInfo[]
+  attemptsByStudent: Map<string, Array<{
+    id: string
+    attemptNumber: number
+    score: number
+    submittedAt: string
+  }>>
   selectedStudentId: string
   attempt: ExamAttemptInfo
   totalScore: number
@@ -55,6 +63,7 @@ export function GradingClient({
   examTitle,
   courseName,
   students,
+  attemptsByStudent,
   selectedStudentId,
   attempt,
   totalScore,
@@ -65,14 +74,13 @@ export function GradingClient({
   const router = useRouter()
 
   const handleSelectStudent = (studentId: string) => {
-    const studentAttempt = students.find(s => s.id === studentId)
-    if (studentAttempt) {
-      router.push(`/teacher/grading/${examId}/${studentId}`)
+    // Obtener intentos del estudiante seleccionado
+    const studentAttempts = attemptsByStudent.get(studentId) || []
+    if (studentAttempts.length > 0) {
+      // Navegar al primer intento del estudiante
+      const firstAttempt = studentAttempts[0]
+      router.push(`/teacher/grading/${examId}/${firstAttempt.id}`)
     }
-  }
-
-  const handleSelectAttempt = (attemptId: string) => {
-    router.push(`/teacher/grading/${examId}/${attemptId}`)
   }
 
   const handleSaveGrade = async (answerId: string, pointsEarned: number, feedback: string) => {
@@ -89,13 +97,13 @@ export function GradingClient({
       examTitle={examTitle}
       courseName={courseName}
       students={students}
+      attemptsByStudent={attemptsByStudent}
       selectedStudentId={selectedStudentId}
       attempt={attempt}
       totalScore={totalScore}
       maxScore={maxScore}
       answers={answers}
       onSelectStudent={handleSelectStudent}
-      onSelectAttempt={handleSelectAttempt}
       onSaveGrade={handleSaveGrade}
       onFinalizeReview={handleFinalizeReview}
       breadcrumbs={[

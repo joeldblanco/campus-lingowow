@@ -2,6 +2,8 @@ import jsPDF from 'jspdf'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 
+// --- Interfaces ---
+
 interface MultipleChoiceSubAnswer {
   itemQuestion: string
   userOptionLetter: string | null
@@ -56,307 +58,487 @@ interface AttemptData {
   passingScore?: number
 }
 
+// --- Design Tokens (Tailwind Match) ---
+
+const colors = {
+  primary: [19, 127, 236] as [number, number, number], // #137fec
+  primaryLight: [235, 245, 255] as [number, number, number],
+  success: [46, 125, 50] as [number, number, number], // #2e7d32
+  successLight: [237, 252, 242] as [number, number, number],
+  error: [198, 40, 40] as [number, number, number], // #c62828
+  errorLight: [254, 242, 242] as [number, number, number],
+  warning: [249, 168, 37] as [number, number, number], // #f9a825
+  warningLight: [255, 251, 235] as [number, number, number],
+  text: {
+    dark: [15, 23, 42] as [number, number, number], // Slate 900
+    main: [51, 65, 85] as [number, number, number], // Slate 700
+    muted: [100, 116, 139] as [number, number, number], // Slate 500
+    light: [148, 163, 184] as [number, number, number], // Slate 400
+  },
+  border: [226, 232, 240] as [number, number, number], // Slate 200
+  background: [248, 250, 252] as [number, number, number], // Slate 50
+  white: [255, 255, 255] as [number, number, number]
+}
+
+// --- Main Export Function ---
+
 export async function exportAttemptToPDF(data: AttemptData): Promise<void> {
   const pdf = new jsPDF('p', 'mm', 'a4')
   const pageWidth = pdf.internal.pageSize.getWidth()
   const pageHeight = pdf.internal.pageSize.getHeight()
-  const margin = 20
+  const margin = 15 // Reduced margin slightly to fit design better
   let yPosition = margin
 
-  // Colores de la marca
-  const primaryColor = [59, 130, 246] as [number, number, number]
-  const textGray = [107, 114, 128] as [number, number, number]
-  const successColor = [34, 197, 94] as [number, number, number]
-  const errorColor = [239, 68, 68] as [number, number, number]
-  const warningColor = [234, 179, 8] as [number, number, number]
+  // --- Helpers ---
 
-  // Función helper para agregar texto
-  const addText = (text: string, fontSize: number, color: [number, number, number] = [0, 0, 0], x: number = margin, maxWidth?: number) => {
-    pdf.setFontSize(fontSize)
+  const setFont = (type: 'display' | 'body' | 'mono', weight: 'normal' | 'bold', size: number, color: [number, number, number] = colors.text.main) => {
+    // Mapping rudimentary fonts since custom fonts require loading
+    const fontName = type === 'mono' ? 'courier' : 'helvetica'
+    pdf.setFont(fontName, weight)
+    pdf.setFontSize(size)
     pdf.setTextColor(...color)
-    
-    if (maxWidth) {
-      const lines = pdf.splitTextToSize(text, maxWidth)
-      lines.forEach((line: string) => {
-        pdf.text(line, x, yPosition)
-        yPosition += fontSize * 0.5 + 2
-      })
-    } else {
-      pdf.text(text, x, yPosition)
-      yPosition += fontSize * 0.5 + 2
-    }
   }
 
-  // Función helper para verificar si necesitamos nueva página
   const checkPageBreak = (requiredHeight: number) => {
-    if (yPosition + requiredHeight > pageHeight - margin) {
+    if (yPosition + requiredHeight > pageHeight - margin - 15) { // 15mm bottom buffer for footer
+      drawFooter()
       pdf.addPage()
-      yPosition = margin
+      yPosition = margin + 10 // Top margin on new pages
       return true
     }
     return false
   }
 
-  // Header con logo y título
-  pdf.setFillColor(...primaryColor)
-  pdf.rect(0, 0, pageWidth, 45, 'F')
-  
-  pdf.setTextColor(255, 255, 255)
-  pdf.setFontSize(26)
-  pdf.setFont('helvetica', 'bold')
-  pdf.text('Reporte de Examen', margin, 20)
-  
-  pdf.setFontSize(11)
-  pdf.setFont('helvetica', 'normal')
-  pdf.text(`${data.studentName}`, margin, 30)
-  pdf.text(`${format(new Date(), 'dd MMMM yyyy', { locale: es })}`, margin, 38)
+  const drawFooter = () => {
+    const pageCount = pdf.getNumberOfPages()
+    pdf.setPage(pageCount)
+    
+    const footerY = pageHeight - 12
+    
+    // Line
+    pdf.setDrawColor(...colors.border)
+    pdf.setLineWidth(0.1)
+    pdf.line(margin, footerY - 5, pageWidth - margin, footerY - 5)
 
-  yPosition = 60
-
-  // Información del estudiante y examen
-  addText('Información del Estudiante', 16, primaryColor)
-  addText(`Nombre: ${data.studentName}`, 11)
-  addText(`Email: ${data.studentEmail}`, 11, textGray)
-  
-  yPosition += 5
-  
-  addText('Información del Examen', 16, primaryColor)
-  addText(`Examen: ${data.examTitle}`, 11)
-  if (data.courseName) {
-    addText(`Curso: ${data.courseName}`, 11, textGray)
+    // Generated text
+    setFont('body', 'normal', 8, colors.text.light)
+    pdf.text(`Generado el ${format(new Date(), 'dd MMM yyyy, HH:mm', { locale: es })}`, margin, footerY)
+    
+    // Page number
+    pdf.text(`Página ${pageCount}`, pageWidth - margin, footerY, { align: 'right' })
+    
+    // Copyright
+    pdf.text('© Lingowow Platform', pageWidth / 2, footerY, { align: 'center' })
   }
-  addText(`Intento #${data.attemptNumber} - Enviado: ${data.submittedAt}`, 11, textGray)
 
+  // --- Header Section ---
+
+  // Logo (Simplified geometric diamond shape)
+  pdf.setFillColor(...colors.primary)
+  // Triangle down
+  pdf.triangle(margin + 4, margin, margin, margin + 7, margin + 8, margin + 7, 'F')
+  // Triangle up (smaller) to simulate diamond effect
+  pdf.setFillColor(255, 255, 255)
+  pdf.triangle(margin + 4, margin + 2, margin + 2, margin + 5, margin + 6, margin + 5, 'F')
+  
+  // Brand Name
+  setFont('display', 'bold', 14, colors.text.dark)
+  pdf.text('Lingowow', margin + 12, margin + 6)
+
+  // Confidential Badge
+  const confText = 'CONFIDENTIAL'
+  setFont('body', 'bold', 7, colors.text.muted)
+  const confWidth = pdf.getTextWidth(confText) + 8
+  
+  pdf.setFillColor(241, 245, 249) // Slate 100
+  pdf.setDrawColor(...colors.border)
+  pdf.roundedRect(pageWidth - margin - confWidth, margin, confWidth, 7, 1, 1, 'F')
+  pdf.text(confText, pageWidth - margin - confWidth/2, margin + 4.5, { align: 'center' })
+
+  yPosition += 20
+
+  // Title
+  setFont('display', 'bold', 22, colors.text.dark)
+  pdf.text('Reporte de Evaluación Académica', margin, yPosition)
+  yPosition += 7
+  
+  setFont('body', 'normal', 10, colors.text.muted)
+  pdf.text('Análisis detallado de rendimiento y evaluación de habilidades.', margin, yPosition)
   yPosition += 10
 
-  // Estadísticas del intento
-  checkPageBreak(60)
-  addText('Resultados', 16, primaryColor)
+  // --- Info Grid (Gray Background) ---
   
-  const statsY = yPosition
-  const statsBoxHeight = 45
-  const statsBoxWidth = (pageWidth - 2 * margin - 10) / 3
+  const gridHeight = 45
+  pdf.setFillColor(...colors.background)
+  pdf.setDrawColor(...colors.border)
+  pdf.roundedRect(margin, yPosition, pageWidth - (margin * 2), gridHeight, 2, 2, 'FD')
+  
+  const col1X = margin + 8
+  const col2X = margin + (pageWidth - margin * 2) / 2 + 8
+  const gridStartY = yPosition + 10
+  
+  // Column 1: Student Details
+  setFont('body', 'bold', 8, colors.text.light)
+  pdf.text('DETALLES DEL ESTUDIANTE', col1X, gridStartY)
+  
+  const drawDetailRow = (label: string, value: string, y: number, isMono = false, isPrimary = false) => {
+    setFont('body', 'normal', 9, colors.text.muted)
+    pdf.text(label, col1X, y)
+    
+    if (isMono) setFont('mono', 'normal', 9, colors.text.dark)
+    else if (isPrimary) setFont('body', 'bold', 9, colors.primary)
+    else setFont('body', 'bold', 9, colors.text.dark)
+    
+    pdf.text(value, col1X + 35, y)
+  }
 
+  drawDetailRow('Nombre', data.studentName, gridStartY + 8)
+  drawDetailRow('Email', data.studentEmail, gridStartY + 16)
+  
+  // Column 2: Exam Details
+  setFont('body', 'bold', 8, colors.text.light)
+  pdf.text('DETALLES DEL EXAMEN', col2X, gridStartY)
+  
+  const drawExamRow = (label: string, value: string, y: number, isPrimary = false) => {
+    setFont('body', 'normal', 9, colors.text.muted)
+    pdf.text(label, col2X, y)
+    
+    if (isPrimary) setFont('body', 'bold', 9, colors.primary)
+    else setFont('body', 'bold', 9, colors.text.dark)
+    
+    pdf.text(value, col2X + 35, y)
+  }
+
+  drawExamRow('Examen', data.examTitle, gridStartY + 8, true)
+  drawExamRow('Curso', data.courseName || 'N/A', gridStartY + 16)
+  drawExamRow('Fecha', data.submittedAt, gridStartY + 24)
+
+  yPosition += gridHeight + 10
+
+  // --- Score Mastery Bar ---
+  
   const scorePercentage = data.maxScore > 0 ? Math.round((data.totalScore / data.maxScore) * 100) : 0
-  const passed = data.passingScore ? scorePercentage >= data.passingScore : null
+  
+  setFont('body', 'bold', 9, colors.text.main)
+  pdf.text('SCORE MASTERY', margin, yPosition)
+  
+  setFont('display', 'bold', 14, colors.primary)
+  pdf.text(`${scorePercentage}%`, pageWidth - margin, yPosition, { align: 'right' })
+  
+  yPosition += 3
+  
+  // Bar background
+  pdf.setFillColor(...colors.border)
+  pdf.roundedRect(margin, yPosition, pageWidth - (margin * 2), 3, 1.5, 1.5, 'F')
+  
+  // Bar fill
+  if (scorePercentage > 0) {
+    pdf.setFillColor(...colors.primary)
+    const fillWidth = ((pageWidth - (margin * 2)) * scorePercentage) / 100
+    pdf.roundedRect(margin, yPosition, fillWidth, 3, 1.5, 1.5, 'F')
+  }
+  
+  yPosition += 15
+
+  // --- Summary Cards ---
   
   const answerableQuestions = data.answers.filter(a => !a.isInformativeBlock)
   const correctAnswers = answerableQuestions.filter(a => a.isCorrect === true).length
-  const incorrectAnswers = answerableQuestions.filter(a => a.isCorrect === false).length
-  const pendingReview = answerableQuestions.filter(a => a.needsReview).length
-
-  const stats = [
-    { 
-      label: 'Puntaje', 
-      value: `${data.totalScore}/${data.maxScore}`, 
-      subtitle: `${scorePercentage}%`,
-      color: passed === null ? primaryColor : (passed ? successColor : errorColor)
-    },
-    { 
-      label: 'Correctas', 
-      value: correctAnswers.toString(), 
-      subtitle: `de ${answerableQuestions.length}`,
-      color: successColor 
-    },
-    { 
-      label: 'Incorrectas', 
-      value: incorrectAnswers.toString(),
-      subtitle: pendingReview > 0 ? `${pendingReview} pendientes` : '',
-      color: errorColor 
+  const cardWidth = (pageWidth - (margin * 2) - 10) / 3
+  const cardHeight = 30
+  
+  const drawSummaryCard = (x: number, title: string, value: string, iconType: 'score' | 'check' | 'time') => {
+    // Card Container
+    pdf.setDrawColor(...colors.border)
+    pdf.setFillColor(255, 255, 255)
+    pdf.roundedRect(x, yPosition, cardWidth, cardHeight, 3, 3, 'FD')
+    
+    // Icon Circle
+    const circleColor = iconType === 'score' ? colors.primaryLight : iconType === 'check' ? colors.successLight : colors.warningLight
+    const iconColor = iconType === 'score' ? colors.primary : iconType === 'check' ? colors.success : colors.warning
+    
+    pdf.setFillColor(...circleColor)
+    pdf.circle(x + 12, yPosition + 11, 6, 'F')
+    
+    // Placeholder Icon (Simple shapes)
+    pdf.setFillColor(...iconColor)
+    if (iconType === 'score') {
+      pdf.rect(x + 10, yPosition + 10, 1.5, 4, 'F')
+      pdf.rect(x + 12.5, yPosition + 7, 1.5, 7, 'F')
+    } else if (iconType === 'check') {
+      pdf.text('✓', x + 10.5, yPosition + 13) // Simple text check
+    } else {
+      pdf.circle(x + 12, yPosition + 11, 3, 'S') // Clock face
+      pdf.line(x + 12, yPosition + 11, x + 12, yPosition + 9) // Hand
+      pdf.line(x + 12, yPosition + 11, x + 13.5, yPosition + 11) // Hand
     }
-  ]
 
-  stats.forEach((stat, index) => {
-    const x = margin + index * (statsBoxWidth + 5)
+    // Text
+    setFont('body', 'normal', 8, colors.text.muted)
+    pdf.text(title, x + 24, yPosition + 10)
     
-    const lightColor = stat.color.map(c => Math.floor(c * 0.1)) as [number, number, number]
-    pdf.setFillColor(...lightColor)
-    pdf.rect(x, statsY, statsBoxWidth, statsBoxHeight, 'F')
-    pdf.setDrawColor(...stat.color)
-    pdf.setLineWidth(0.5)
-    pdf.rect(x, statsY, statsBoxWidth, statsBoxHeight, 'S')
-    
-    pdf.setFontSize(22)
-    pdf.setFont('helvetica', 'bold')
-    pdf.setTextColor(...stat.color)
-    pdf.text(stat.value, x + 10, statsY + 20)
-    
-    pdf.setFontSize(9)
-    pdf.setFont('helvetica', 'normal')
-    pdf.setTextColor(...textGray)
-    pdf.text(stat.label, x + 10, statsY + 30)
-    
-    if (stat.subtitle) {
-      pdf.setFontSize(8)
-      pdf.text(stat.subtitle, x + 10, statsY + 38)
-    }
-  })
+    setFont('display', 'bold', 12, colors.text.dark)
+    pdf.text(value, x + 24, yPosition + 18)
+  }
 
-  yPosition = statsY + statsBoxHeight + 15
+  drawSummaryCard(margin, 'Puntaje Total', `${data.totalScore}/${data.maxScore}`, 'score')
+  drawSummaryCard(margin + cardWidth + 5, 'Respuestas', `${correctAnswers} Correctas`, 'check')
+  // We don't have time tracked in this version, so we show total questions
+  drawSummaryCard(margin + (cardWidth + 5) * 2, 'Total Preguntas', `${answerableQuestions.length} Items`, 'time')
 
-  // Desglose de respuestas
-  checkPageBreak(40)
-  addText('Desglose de Respuestas', 16, primaryColor)
-  yPosition += 5
+  yPosition += cardHeight + 10
 
-  let currentQuestionNumber = 0
+  // Divider
+  pdf.setDrawColor(...colors.border)
+  pdf.line(margin, yPosition, pageWidth - margin, yPosition)
+  yPosition += 10
 
+  // --- Detailed Analysis Title ---
+  setFont('display', 'bold', 12, colors.text.dark)
+  pdf.text('Análisis Detallado', margin, yPosition)
+  yPosition += 10
+
+  // --- Questions Loop ---
+  
+  let questionCounter = 0
+  
   for (const answer of data.answers) {
-    // Saltar bloques informativos
     if (answer.isInformativeBlock) continue
+    questionCounter++
     
-    currentQuestionNumber++
+    // Estimate height needed for this question block
+    // Base header + question text + options + feedback
+    // This is a rough estimate, but sufficient for breaks
+    const estimatedHeight = 50 + (answer.multipleChoiceDetails ? answer.multipleChoiceDetails.length * 10 : 20)
+    checkPageBreak(estimatedHeight)
+
+    // Question Header
+    // Number Bubble
+    pdf.setFillColor(...colors.background)
+    pdf.circle(margin + 5, yPosition + 2, 5, 'F')
+    setFont('body', 'bold', 9, colors.text.main)
+    pdf.text(questionCounter.toString(), margin + 5, yPosition + 3.5, { align: 'center' })
     
-    checkPageBreak(50)
+    // Question Text (Title line) - Truncated if too long for header
+    const cleanQuestionText = answer.questionText.replace(/<[^>]*>/g, '').substring(0, 60) + (answer.questionText.length > 60 ? '...' : '')
+    setFont('body', 'bold', 10, colors.text.dark)
+    pdf.text(cleanQuestionText, margin + 14, yPosition + 3.5)
     
-    // Número y estado de la pregunta
-    const questionColor = answer.needsReview ? warningColor : (answer.isCorrect ? successColor : errorColor)
-    const statusIcon = answer.needsReview ? '⏳' : (answer.isCorrect ? '✓' : '✗')
+    // Status Badge
+    const status = answer.needsReview ? 'Revisión' : (answer.isCorrect ? 'Correcta' : 'Incorrecta')
+    const statusColor = answer.needsReview ? colors.warning : (answer.isCorrect ? colors.success : colors.error)
+    const statusBg = answer.needsReview ? colors.warningLight : (answer.isCorrect ? colors.successLight : colors.errorLight)
     
-    pdf.setFillColor(245, 245, 245)
-    pdf.rect(margin, yPosition - 5, pageWidth - 2 * margin, 8, 'F')
+    // Category Badge (Left of status)
+    if (answer.category) {
+      const catText = answer.category.toUpperCase()
+      setFont('body', 'bold', 7, colors.text.muted)
+      const catWidth = pdf.getTextWidth(catText) + 6
+      const catX = pageWidth - margin - 30 - catWidth
+      
+      pdf.setFillColor(...colors.background)
+      pdf.roundedRect(catX, yPosition - 2, catWidth, 6, 1, 1, 'F')
+      pdf.text(catText, catX + 3, yPosition + 2)
+    }
+
+    // Status Badge Drawing
+    setFont('body', 'bold', 7, statusColor)
+    const statusWidth = pdf.getTextWidth(status) + 12
+    const statusX = pageWidth - margin - statusWidth
     
-    pdf.setFontSize(11)
-    pdf.setFont('helvetica', 'bold')
-    pdf.setTextColor(...questionColor)
-    pdf.text(`${statusIcon} Pregunta ${currentQuestionNumber}`, margin + 3, yPosition)
+    pdf.setFillColor(...statusBg)
+    pdf.setDrawColor(...statusColor) // Optional border
+    pdf.roundedRect(statusX, yPosition - 2, statusWidth, 6, 3, 3, 'F')
     
-    pdf.setFontSize(9)
-    pdf.setFont('helvetica', 'normal')
-    pdf.setTextColor(...textGray)
-    pdf.text(`${answer.pointsEarned}/${answer.maxPoints} pts`, pageWidth - margin - 25, yPosition)
-    
+    // Icon inside badge
+    const iconChar = answer.needsReview ? '?' : (answer.isCorrect ? '✓' : '✗')
+    pdf.text(`${iconChar} ${status}`, statusX + 3, yPosition + 2)
+
     yPosition += 10
-
-    // Texto de la pregunta
-    pdf.setFontSize(10)
-    pdf.setFont('helvetica', 'normal')
-    pdf.setTextColor(0, 0, 0)
-    const questionLines = pdf.splitTextToSize(answer.questionText, pageWidth - 2 * margin - 10)
-    questionLines.forEach((line: string) => {
-      checkPageBreak(10)
-      pdf.text(line, margin + 5, yPosition)
-      yPosition += 5
-    })
     
-    yPosition += 3
-
-    // Respuesta del usuario y respuesta correcta
+    // We will draw the box background later or per section to manage flow?
+    // Let's just draw content and advanced spacing
+    
+    // Full Question Text
+    setFont('body', 'normal', 10, colors.text.main)
+    const qLines = pdf.splitTextToSize(answer.questionText.replace(/<[^>]*>/g, ''), pageWidth - (margin * 2) - 10)
+    pdf.text(qLines, margin + 5, yPosition)
+    yPosition += (qLines.length * 5) + 5
+    
+    // Answers Area
+    
     if (answer.multipleChoiceDetails && answer.multipleChoiceDetails.length > 0) {
-      // Opción múltiple con múltiples pasos
+      // Multiple Choice breakdown
       answer.multipleChoiceDetails.forEach((detail, idx) => {
-        checkPageBreak(25)
+        checkPageBreak(15)
         
-        pdf.setFontSize(9)
-        pdf.setFont('helvetica', 'bold')
-        pdf.setTextColor(...textGray)
+        // Option Box
+        const isUserSelected = detail.userOptionLetter !== null
+        const isItemCorrect = detail.isCorrect
+        
+        // Box Style
+        let boxColor = colors.white
+        let borderColor = colors.border
+        
+        if (isUserSelected) {
+             if (isItemCorrect) {
+                 boxColor = colors.successLight
+                 borderColor = colors.success
+             } else {
+                 boxColor = colors.errorLight
+                 borderColor = colors.error
+             }
+        }
+        
+        // Correct answer highlight if user missed it?
+        // For simplicity, let's follow the provided design:
+        // Show User Answer row
+        // Show Correct Answer row (if different)
+        
+        // Item Question Subtitle
+        setFont('body', 'bold', 9, colors.text.dark)
         pdf.text(`${idx + 1}. ${detail.itemQuestion}`, margin + 5, yPosition)
-        yPosition += 5
+        yPosition += 6
         
-        const detailColor = detail.isCorrect ? successColor : errorColor
-        pdf.setFont('helvetica', 'normal')
-        pdf.setTextColor(...detailColor)
+        // User Answer Row
+        pdf.setFillColor(...boxColor)
+        pdf.setDrawColor(...borderColor)
+        pdf.roundedRect(margin + 5, yPosition, pageWidth - (margin * 2) - 10, 10, 1.5, 1.5, 'FD')
         
-        const userAnswerText = detail.userOptionLetter 
-          ? `Tu respuesta: (${detail.userOptionLetter}) ${detail.userOptionText}`
-          : 'Tu respuesta: (Sin respuesta)'
-        pdf.text(userAnswerText, margin + 8, yPosition)
-        yPosition += 5
+        // Radio Circle
+        pdf.setDrawColor(...(isUserSelected ? borderColor : colors.border))
+        pdf.setFillColor(...(isUserSelected ? borderColor : colors.white)) // Filled if selected
+        pdf.circle(margin + 10, yPosition + 5, 2.5, 'FD')
         
+        setFont('body', 'normal', 9, colors.text.dark)
+        const userText = detail.userOptionText || '(Sin respuesta)'
+        pdf.text(userText, margin + 18, yPosition + 6.5)
+        
+        if (isUserSelected) {
+            setFont('body', 'bold', 7, isItemCorrect ? colors.success : colors.error)
+            pdf.text(isItemCorrect ? '(CORRECTO)' : '(TU RESPUESTA)', pageWidth - margin - 25, yPosition + 6.5)
+        }
+        
+        yPosition += 12
+        
+        // If incorrect, show correct one below
         if (!detail.isCorrect) {
-          pdf.setTextColor(...successColor)
-          pdf.text(`Correcta: (${detail.correctOptionLetter}) ${detail.correctOptionText}`, margin + 8, yPosition)
-          yPosition += 5
+            pdf.setFillColor(...colors.successLight)
+            pdf.setDrawColor(...colors.success)
+            pdf.roundedRect(margin + 5, yPosition, pageWidth - (margin * 2) - 10, 10, 1.5, 1.5, 'FD')
+            
+             // Green Circle
+            pdf.setDrawColor(...colors.success)
+            pdf.circle(margin + 10, yPosition + 5, 2.5, 'S')
+            
+            setFont('body', 'normal', 9, colors.text.dark)
+            pdf.text(detail.correctOptionText, margin + 18, yPosition + 6.5)
+            
+            setFont('body', 'bold', 7, colors.success)
+            pdf.text('(RESPUESTA CORRECTA)', pageWidth - margin - 35, yPosition + 6.5)
+            
+            yPosition += 12
         }
         
         yPosition += 2
       })
+      
     } else {
-      // Respuesta simple
-      checkPageBreak(20)
+      // Simple Answer or Essay
+      checkPageBreak(25)
       
-      pdf.setFontSize(9)
-      pdf.setFont('helvetica', 'bold')
-      pdf.setTextColor(...textGray)
-      pdf.text('Tu respuesta:', margin + 5, yPosition)
-      yPosition += 5
+      const isCorrect = answer.isCorrect === true
+      const needsReview = answer.needsReview
       
-      pdf.setFont('helvetica', 'normal')
-      const answerColor = answer.needsReview ? warningColor : (answer.isCorrect ? successColor : errorColor)
-      pdf.setTextColor(...answerColor)
+      let boxColor = colors.white
+      let borderColor = colors.border
       
-      if (answer.userAudioUrl) {
-        pdf.text('🎤 Grabación de audio enviada', margin + 8, yPosition)
+      if (!needsReview) {
+          boxColor = isCorrect ? colors.successLight : colors.errorLight
+          borderColor = isCorrect ? colors.success : colors.error
       } else {
-        const userAnswerText = answer.userAnswer || '(Sin respuesta)'
-        const userAnswerLines = pdf.splitTextToSize(userAnswerText, pageWidth - 2 * margin - 15)
-        userAnswerLines.forEach((line: string) => {
-          checkPageBreak(8)
-          pdf.text(line, margin + 8, yPosition)
-          yPosition += 5
-        })
+          boxColor = colors.warningLight
+          borderColor = colors.warning
       }
+
+      // User Answer Box
+      pdf.setFillColor(...boxColor)
+      pdf.setDrawColor(...borderColor)
       
-      yPosition += 3
+      // Calculate height for text
+      const userAnsText = answer.userAudioUrl ? '🎤 Grabación de audio enviada' : (answer.userAnswer || '(Sin respuesta)')
+      const textLines = pdf.splitTextToSize(userAnsText, pageWidth - (margin * 2) - 30)
+      const boxH = Math.max(12, (textLines.length * 5) + 6)
       
-      // Mostrar respuesta correcta si es incorrecta
-      if (!answer.isCorrect && !answer.needsReview && answer.correctAnswer) {
-        checkPageBreak(15)
-        pdf.setFont('helvetica', 'bold')
-        pdf.setTextColor(...textGray)
-        pdf.text('Respuesta correcta:', margin + 5, yPosition)
-        yPosition += 5
-        
-        pdf.setFont('helvetica', 'normal')
-        pdf.setTextColor(...successColor)
-        const correctLines = pdf.splitTextToSize(answer.correctAnswer, pageWidth - 2 * margin - 15)
-        correctLines.forEach((line: string) => {
-          checkPageBreak(8)
-          pdf.text(line, margin + 8, yPosition)
-          yPosition += 5
-        })
-        
-        yPosition += 3
+      pdf.roundedRect(margin + 5, yPosition, pageWidth - (margin * 2) - 10, boxH, 1.5, 1.5, 'FD')
+      
+      // Icon
+      // Radio like circle
+      pdf.setDrawColor(...borderColor)
+      pdf.setFillColor(...borderColor) 
+      pdf.circle(margin + 10, yPosition + 6, 2.5, needsReview ? 'S' : 'FD') // Filled if graded
+      
+      setFont('body', 'normal', 9, colors.text.dark)
+      pdf.text(textLines, margin + 18, yPosition + 6.5)
+      
+      // Label
+      setFont('body', 'bold', 7, needsReview ? colors.warning : (isCorrect ? colors.success : colors.error))
+      const label = needsReview ? '(TU RESPUESTA)' : (isCorrect ? '(CORRECTO)' : '(TU RESPUESTA)')
+      pdf.text(label, pageWidth - margin - 30, yPosition + 6.5)
+      
+      yPosition += boxH + 2
+      
+      // Show correct answer if incorrect and available
+      if (!isCorrect && !needsReview && answer.correctAnswer) {
+          pdf.setFillColor(...colors.successLight)
+          pdf.setDrawColor(...colors.success)
+          
+          const corrText = answer.correctAnswer
+          const corrLines = pdf.splitTextToSize(corrText, pageWidth - (margin * 2) - 30)
+          const corrH = Math.max(12, (corrLines.length * 5) + 6)
+          
+          pdf.roundedRect(margin + 5, yPosition, pageWidth - (margin * 2) - 10, corrH, 1.5, 1.5, 'FD')
+          
+          pdf.setDrawColor(...colors.success)
+          pdf.circle(margin + 10, yPosition + 6, 2.5, 'S')
+          
+          setFont('body', 'normal', 9, colors.text.dark)
+          pdf.text(corrLines, margin + 18, yPosition + 6.5)
+          
+          setFont('body', 'bold', 7, colors.success)
+          pdf.text('(RESPUESTA CORRECTA)', pageWidth - margin - 35, yPosition + 6.5)
+          
+          yPosition += corrH + 2
       }
     }
-
-    // Feedback del profesor
+    
+    // Feedback Section
     if (answer.feedback) {
-      checkPageBreak(15)
-      pdf.setFontSize(9)
-      pdf.setFont('helvetica', 'bold')
-      pdf.setTextColor(...primaryColor)
-      pdf.text('💬 Comentario del profesor:', margin + 5, yPosition)
-      yPosition += 5
-      
-      pdf.setFont('helvetica', 'normal')
-      pdf.setTextColor(...textGray)
-      const feedbackLines = pdf.splitTextToSize(answer.feedback, pageWidth - 2 * margin - 15)
-      feedbackLines.forEach((line: string) => {
-        checkPageBreak(8)
-        pdf.text(line, margin + 8, yPosition)
-        yPosition += 5
-      })
-      
-      yPosition += 3
+        checkPageBreak(20)
+        yPosition += 2
+        
+        pdf.setFillColor(...colors.primaryLight)
+        pdf.setDrawColor(...colors.primary)
+        // Left border bar style
+        pdf.rect(margin + 5, yPosition, 1, 15, 'F')
+        
+        setFont('body', 'bold', 9, colors.primary)
+        pdf.text('Feedback del Profesor:', margin + 8, yPosition + 4)
+        
+        setFont('body', 'normal', 9, colors.text.main)
+        const feedLines = pdf.splitTextToSize(answer.feedback, pageWidth - margin - 20)
+        pdf.text(feedLines, margin + 8, yPosition + 9)
+        
+        yPosition += (feedLines.length * 5) + 10
     }
 
-    yPosition += 5
+    yPosition += 8 // Spacing between questions
   }
 
-  // Footer en todas las páginas
-  const totalPages = pdf.getNumberOfPages()
-  for (let i = 1; i <= totalPages; i++) {
-    pdf.setPage(i)
-    const footerY = pageHeight - 10
-    pdf.setTextColor(...textGray)
-    pdf.setFontSize(8)
-    pdf.setFont('helvetica', 'normal')
-    pdf.text(`Página ${i} de ${totalPages}`, pageWidth - margin - 25, footerY)
-    pdf.text('Generado por Lingowow', margin, footerY)
-  }
+  // Draw footer on last page
+  drawFooter()
 
-  // Descargar el PDF
-  const fileName = `examen-${data.studentName.replace(/[^a-zA-Z0-9]/g, '-')}-${format(new Date(), 'yyyy-MM-dd')}.pdf`
-  pdf.save(fileName)
+  // Abrir en nueva pestaña en lugar de descargar
+  const pdfDataUri = pdf.output('datauristring')
+  window.open(pdfDataUri, '_blank')
 }

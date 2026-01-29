@@ -33,12 +33,40 @@ export default async function GradingPage({ params }: PageProps) {
   const { attempt } = attemptResult
   const allAttempts = attemptsResult.success ? attemptsResult.attempts || [] : []
 
-  const students = allAttempts.map(a => ({
-    id: a.userId,
-    name: `${a.user.name || ''} ${a.user.lastName || ''}`.trim() || a.user.email,
-    email: a.user.email,
-    score: a.score ?? 0
-  }))
+  // Eliminar duplicados de estudiantes (mismo userId puede tener múltiples intentos)
+  const uniqueStudents = new Map()
+  allAttempts.forEach(a => {
+    if (!uniqueStudents.has(a.userId)) {
+      uniqueStudents.set(a.userId, {
+        id: a.userId,
+        name: `${a.user.name || ''} ${a.user.lastName || ''}`.trim() || a.user.email,
+        email: a.user.email,
+        score: a.score ?? 0
+      })
+    }
+  })
+  const students = Array.from(uniqueStudents.values())
+  
+  // Agrupar intentos por estudiante
+  const attemptsByStudent = new Map()
+  allAttempts.forEach(a => {
+    if (!attemptsByStudent.has(a.userId)) {
+      attemptsByStudent.set(a.userId, [])
+    }
+    attemptsByStudent.get(a.userId).push({
+      id: a.id,
+      attemptNumber: a.attemptNumber,
+      score: a.score ?? 0,
+      submittedAt: a.submittedAt 
+        ? new Date(a.submittedAt).toLocaleString('es-ES', {
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          })
+        : 'N/A'
+    })
+  })
 
   // Crear un mapa de respuestas por questionId para acceso rápido
   const answersMap = new Map(attempt.answers.map(a => [a.questionId, a]))
@@ -277,6 +305,7 @@ export default async function GradingPage({ params }: PageProps) {
       examTitle={attempt.exam.title}
       courseName={attempt.exam.course?.title || ''}
       students={students}
+      attemptsByStudent={attemptsByStudent}
       selectedStudentId={attempt.userId}
       attempt={{
         id: attempt.id,

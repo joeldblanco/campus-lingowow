@@ -243,6 +243,7 @@ export async function updateExamQuestions(
       | 'TRUE_FALSE'
       | 'SHORT_ANSWER'
       | 'ESSAY'
+      | 'RECORDING'
       | 'FILL_BLANK'
       | 'MATCHING'
       | 'ORDERING'
@@ -280,7 +281,9 @@ export async function updateExamQuestions(
       // Create new questions
       for (const questionData of questions) {
         const correctAnswer =
-          questionData.type === 'ESSAY' ? Prisma.JsonNull : (questionData.correctAnswer ?? '')
+          questionData.type === 'ESSAY' || questionData.type === 'RECORDING'
+            ? Prisma.JsonNull
+            : (questionData.correctAnswer ?? '')
 
         // Build options object for interactive types
         let optionsData: unknown = questionData.options
@@ -770,28 +773,32 @@ export async function saveExamAnswer(
 
     if (isAutoGradable && answer !== null && answer !== undefined) {
       const correctAnswer = question.correctAnswer as string | string[]
-      
+
       // Verificar si es una pregunta de opción múltiple con múltiples pasos (answer es un objeto con IDs)
       if (typeof answer === 'object' && answer !== null && !Array.isArray(answer)) {
         // Para preguntas multi-step, comparar cada respuesta individual
         const userAnswers = answer as Record<string, string>
         let correctAnswerArray: string[] = []
-        
+
         if (typeof correctAnswer === 'string') {
           // El correctAnswer puede estar guardado como string separado por comas
-          correctAnswerArray = correctAnswer.split(',').map(s => s.trim())
+          correctAnswerArray = correctAnswer.split(',').map((s) => s.trim())
         } else if (Array.isArray(correctAnswer)) {
           correctAnswerArray = correctAnswer
         }
-        
+
         // Obtener los items de la pregunta para mapear correctamente
         const options = question.options as Record<string, unknown> | null
-        const multipleChoiceItems = options?.multipleChoiceItems as Array<{ id: string; options: Array<{ id: string }> }> | undefined
-        
+        const multipleChoiceItems = options?.multipleChoiceItems as
+          | Array<{ id: string; options: Array<{ id: string }> }>
+          | undefined
+
         if (multipleChoiceItems && multipleChoiceItems.length > 0) {
           // Verificar si el estudiante respondió al menos una pregunta
-          const hasAnyAnswer = Object.keys(userAnswers).length > 0 && Object.values(userAnswers).some(v => v !== null && v !== undefined && v !== '')
-          
+          const hasAnyAnswer =
+            Object.keys(userAnswers).length > 0 &&
+            Object.values(userAnswers).some((v) => v !== null && v !== undefined && v !== '')
+
           if (!hasAnyAnswer) {
             // Si no hay ninguna respuesta, marcar como incorrecto con 0 puntos
             isCorrect = false
@@ -800,25 +807,27 @@ export async function saveExamAnswer(
             // Comparar cada respuesta del usuario con la respuesta correcta correspondiente
             let allCorrect = true
             let correctCount = 0
-            
+
             multipleChoiceItems.forEach((item, index) => {
               const userOptionId = userAnswers[item.id]
               const correctOptionId = correctAnswerArray[index]
-              
+
               if (userOptionId === correctOptionId) {
                 correctCount++
               } else {
                 allCorrect = false
               }
             })
-            
+
             isCorrect = allCorrect
             // Puntos parciales: proporción de respuestas correctas
             pointsEarned = Math.round((correctCount / multipleChoiceItems.length) * question.points)
           }
         } else {
           // Fallback: comparar valores directamente
-          const userValues = Object.values(userAnswers).filter(v => v !== null && v !== undefined && v !== '')
+          const userValues = Object.values(userAnswers).filter(
+            (v) => v !== null && v !== undefined && v !== ''
+          )
           if (userValues.length === 0) {
             isCorrect = false
             pointsEarned = 0
@@ -834,7 +843,9 @@ export async function saveExamAnswer(
 
         if (Array.isArray(correctAnswer)) {
           isCorrect = correctAnswer.some((ca) =>
-            question.caseSensitive ? ca === userAnswer : ca.toLowerCase() === userAnswer.toLowerCase()
+            question.caseSensitive
+              ? ca === userAnswer
+              : ca.toLowerCase() === userAnswer.toLowerCase()
           )
         } else {
           isCorrect = question.caseSensitive
@@ -880,6 +891,13 @@ export async function saveExamAnswer(
   }
 }
 
+// Función para generar código de verificación único
+function generateVerificationCode(attemptId: string): string {
+  // Generar código único basado en el ID del intento
+  const hash = attemptId.slice(-6).toUpperCase()
+  return `LW-EXAM-${hash}`
+}
+
 export async function submitExamAttempt(attemptId: string) {
   try {
     const attempt = await db.examAttempt.findUnique({
@@ -906,15 +924,15 @@ export async function submitExamAttempt(attemptId: string) {
 
     // Tipos de bloques informativos que no requieren respuesta
     const INFORMATIVE_BLOCK_TYPES = ['title', 'text', 'audio', 'video', 'image']
-    
+
     const allQuestions = attempt.exam.questions
     // Filtrar solo preguntas que requieren respuesta (excluyendo bloques informativos)
-    const answerableQuestions = allQuestions.filter(q => {
+    const answerableQuestions = allQuestions.filter((q) => {
       const options = q.options as Record<string, unknown> | null
       const blockType = options?.originalBlockType as string | undefined
       return !blockType || !INFORMATIVE_BLOCK_TYPES.includes(blockType)
     })
-    
+
     const maxPoints = answerableQuestions.reduce((sum, q) => sum + q.points, 0)
     const totalPoints = attempt.answers.reduce((sum, a) => sum + a.pointsEarned, 0)
     const hasPendingReview = attempt.answers.some((a) => a.needsReview)
@@ -923,9 +941,13 @@ export async function submitExamAttempt(attemptId: string) {
     const timeSpent = Math.round((new Date().getTime() - attempt.startedAt.getTime()) / 60000)
 
     // Calcular nivel recomendado si es un placement test
-    const recommendedLevel = attempt.exam.examType === ExamType.PLACEMENT_TEST 
-      ? calculateRecommendedLevel(score) 
-      : undefined
+    const recommendedLevel =
+      attempt.exam.examType === ExamType.PLACEMENT_TEST
+        ? calculateRecommendedLevel(score)
+        : undefined
+
+    // Generar código de verificación
+    const verificationCode = generateVerificationCode(attemptId)
 
     const updatedAttempt = await db.examAttempt.update({
       where: { id: attemptId },
@@ -936,6 +958,7 @@ export async function submitExamAttempt(attemptId: string) {
         maxPoints,
         timeSpent,
         submittedAt: new Date(),
+        verificationCode,
         ...(recommendedLevel && { recommendedLevel }),
       },
     })
@@ -1086,6 +1109,58 @@ export async function getAttemptsForGrading(examId: string) {
   } catch (error) {
     console.error('Error fetching attempts for grading:', error)
     return { success: false, error: 'Error al obtener intentos para calificar' }
+  }
+}
+
+export async function createEmptyAnswer(questionId: string, attemptId: string) {
+  try {
+    // Verificar que el attempt existe
+    const attempt = await db.examAttempt.findUnique({
+      where: { id: attemptId },
+    })
+
+    if (!attempt) {
+      return { success: false, error: 'Intento no encontrado' }
+    }
+
+    // Verificar que la pregunta existe
+    const question = await db.examQuestion.findUnique({
+      where: { id: questionId },
+    })
+
+    if (!question) {
+      return { success: false, error: 'Pregunta no encontrada' }
+    }
+
+    // Verificar si ya existe una respuesta para esta pregunta
+    const existingAnswer = await db.examAnswer.findFirst({
+      where: {
+        attemptId,
+        questionId,
+      },
+    })
+
+    if (existingAnswer) {
+      return { success: true, answer: existingAnswer }
+    }
+
+    // Crear la respuesta vacía
+    const newAnswer = await db.examAnswer.create({
+      data: {
+        attemptId,
+        questionId,
+        answer: '', // Sin respuesta del estudiante
+        pointsEarned: 0,
+        needsReview: true,
+        isCorrect: false,
+      },
+    })
+
+    revalidatePath('/teacher/grading')
+    return { success: true, answer: newAnswer }
+  } catch (error) {
+    console.error('Error creating empty answer:', error)
+    return { success: false, error: 'Error al crear respuesta vacía' }
   }
 }
 
@@ -1285,7 +1360,11 @@ export async function getPlacementTests(userId?: string): Promise<PlacementTestW
 export async function canUserTakePlacementTest(
   examId: string,
   userId: string
-): Promise<{ canTake: boolean; reason?: string; existingAttempt?: { level: string; completedAt: Date } }> {
+): Promise<{
+  canTake: boolean
+  reason?: string
+  existingAttempt?: { level: string; completedAt: Date }
+}> {
   try {
     const exam = await db.exam.findUnique({
       where: { id: examId },
@@ -1604,10 +1683,7 @@ export async function getNonAdminUsersForExamAssignment() {
           },
         },
       },
-      orderBy: [
-        { name: 'asc' },
-        { lastName: 'asc' },
-      ],
+      orderBy: [{ name: 'asc' }, { lastName: 'asc' }],
     })
 
     return {
@@ -1684,7 +1760,11 @@ export async function getPendingExamsForGuest(userId: string) {
 export async function canAccessExamBySlug(
   slug: string,
   userId?: string
-): Promise<{ canAccess: boolean; reason?: string; exam?: Awaited<ReturnType<typeof getExamBySlug>> }> {
+): Promise<{
+  canAccess: boolean
+  reason?: string
+  exam?: Awaited<ReturnType<typeof getExamBySlug>>
+}> {
   try {
     const exam = await getExamBySlug(slug)
 
@@ -1724,5 +1804,99 @@ export async function canAccessExamBySlug(
   } catch (error) {
     console.error('Error checking exam access:', error)
     return { canAccess: false, reason: 'Error al verificar acceso' }
+  }
+}
+
+// Función para obtener intento de examen por código de verificación (público)
+export async function getExamAttemptByVerificationCode(code: string): Promise<{
+  id: string
+  attemptNumber: number
+  status: string
+  score: number | null
+  totalPoints: number | null
+  maxPoints: number | null
+  submittedAt: string
+  verificationCode: string
+  allowPublicVerification: boolean
+  user: {
+    id: string
+    name: string
+    email: string
+  }
+  exam: {
+    id: string
+    title: string
+    course: {
+      title: string
+    }
+  }
+} | null> {
+  try {
+    if (!code || !code.startsWith('LW-EXAM-')) {
+      return null
+    }
+
+    // Buscar intento por código de verificación directamente en la BD
+    const attempt = await db.examAttempt.findFirst({
+      where: {
+        verificationCode: code,
+        status: 'COMPLETED',
+        allowPublicVerification: true,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        exam: {
+          select: {
+            id: true,
+            title: true,
+            course: {
+              select: {
+                title: true,
+              },
+            },
+          },
+        },
+        answers: {
+          include: {
+            question: {
+              select: {
+                id: true,
+                type: true,
+                question: true,
+                points: true,
+              },
+            },
+          },
+        },
+      },
+    })
+
+    if (!attempt) {
+      return null
+    }
+
+    // Transformar los datos para que coincidan con el formato esperado
+    return {
+      ...attempt,
+      submittedAt: attempt.submittedAt
+        ? attempt.submittedAt.toISOString()
+        : new Date().toISOString(),
+      verificationCode: code,
+      allowPublicVerification: true,
+      exam: {
+        ...attempt.exam,
+        course: attempt.exam.course || { title: 'N/A' },
+      },
+    }
+  } catch (error) {
+    console.error('Error getting exam attempt by verification code:', error)
+    return null
   }
 }
