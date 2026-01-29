@@ -44,7 +44,7 @@ interface GradingClientProps {
   examTitle: string
   courseName: string
   students: StudentInfo[]
-  attemptsByStudent: Map<string, Array<{
+  attemptsByStudent: Record<string, Array<{
     id: string
     attemptNumber: number
     score: number
@@ -75,7 +75,7 @@ export function GradingClient({
 
   const handleSelectStudent = (studentId: string) => {
     // Obtener intentos del estudiante seleccionado
-    const studentAttempts = attemptsByStudent.get(studentId) || []
+    const studentAttempts = attemptsByStudent[studentId] || []
     if (studentAttempts.length > 0) {
       // Navegar al primer intento del estudiante
       const firstAttempt = studentAttempts[0]

@@ -39,21 +39,29 @@ export default async function GradingPage({ params }: PageProps) {
     if (!uniqueStudents.has(a.userId)) {
       uniqueStudents.set(a.userId, {
         id: a.userId,
+        userId: a.userId,
         name: `${a.user.name || ''} ${a.user.lastName || ''}`.trim() || a.user.email,
         email: a.user.email,
-        score: a.score ?? 0
+        score: a.score ?? 0,
+        attemptNumber: a.attemptNumber // Usar el número del primer intento encontrado
       })
     }
   })
   const students = Array.from(uniqueStudents.values())
   
-  // Agrupar intentos por estudiante
-  const attemptsByStudent = new Map()
+  // Agrupar intentos por estudiante (usando objeto plano para serialización)
+  const attemptsByStudentObj: Record<string, Array<{
+    id: string
+    attemptNumber: number
+    score: number
+    submittedAt: string
+  }>> = {}
+  
   allAttempts.forEach(a => {
-    if (!attemptsByStudent.has(a.userId)) {
-      attemptsByStudent.set(a.userId, [])
+    if (!attemptsByStudentObj[a.userId]) {
+      attemptsByStudentObj[a.userId] = []
     }
-    attemptsByStudent.get(a.userId).push({
+    attemptsByStudentObj[a.userId].push({
       id: a.id,
       attemptNumber: a.attemptNumber,
       score: a.score ?? 0,
@@ -305,7 +313,7 @@ export default async function GradingPage({ params }: PageProps) {
       examTitle={attempt.exam.title}
       courseName={attempt.exam.course?.title || ''}
       students={students}
-      attemptsByStudent={attemptsByStudent}
+      attemptsByStudent={attemptsByStudentObj}
       selectedStudentId={attempt.userId}
       attempt={{
         id: attempt.id,

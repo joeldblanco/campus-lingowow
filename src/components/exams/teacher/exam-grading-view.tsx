@@ -90,7 +90,7 @@ interface ExamGradingViewProps {
   examTitle: string
   courseName: string
   students: StudentInfo[]
-  attemptsByStudent: Map<string, Array<{
+  attemptsByStudent: Record<string, Array<{
     id: string
     attemptNumber: number
     score: number
@@ -127,7 +127,7 @@ export function ExamGradingView({
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   
   // Obtener intentos del estudiante seleccionado
-  const studentAttempts = attemptsByStudent.get(selectedStudentId) || []
+  const studentAttempts = attemptsByStudent[selectedStudentId] || []
   const [localGrades, setLocalGrades] = useState<Record<string, { points: number; feedback: string }>>(() => {
     // Inicializar con valores existentes para que el botón funcione inmediatamente
     const initialGrades: Record<string, { points: number; feedback: string }> = {}
