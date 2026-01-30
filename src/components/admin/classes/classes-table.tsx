@@ -165,11 +165,16 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
 
   const handleMarkCompleted = async (classId: string) => {
     try {
-      const classItem = filteredClasses.find((c) => c.id === classId)
+      // Find the class in localClasses (not filtered) to ensure we have the complete data
+      const classItem = localClasses.find((c) => c.id === classId)
       if (!classItem) {
         toast.error('Clase no encontrada')
         return
       }
+
+      // Store original data for potential rollback
+      const originalStatus = classItem.status
+      const originalCompletedAt = classItem.completedAt
 
       // Update local state optimistically
       setLocalClasses(prev => 
@@ -192,19 +197,19 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
       if (result.success) {
         toast.success('Clase marcada como completada')
       } else {
-        // Revert on error
+        // Revert on error using stored original values
         setLocalClasses(prev => 
           prev.map(c => 
             c.id === classId 
-              ? { ...c, status: classItem.status, completedAt: classItem.completedAt }
+              ? { ...c, status: originalStatus, completedAt: originalCompletedAt }
               : c
           )
         )
         toast.error(result.error || 'Error al actualizar la clase')
       }
     } catch {
-      // Revert on error - find original class from props
-      const originalClass = classes.find(c => c.id === classId)
+      // Revert on error - find original class from localClasses for rollback
+      const originalClass = localClasses.find(c => c.id === classId)
       if (originalClass) {
         setLocalClasses(prev => 
           prev.map(c => 
@@ -560,7 +565,16 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
     </div>
   )
 }, (prevProps, nextProps) => {
-  // Solo re-renderizar si el timezone cambia (para actualizaciones de horario)
-  // Los cambios en classes no deberían causar re-renderización para mantener filtros
-  return prevProps.userTimezone === nextProps.userTimezone
+  // Re-renderizar si el timezone cambia
+  if (prevProps.userTimezone !== nextProps.userTimezone) {
+    return false // Re-renderizar
+  }
+  
+  // Si el número de clases cambió significativamente, re-renderizar
+  if (Math.abs(prevProps.classes.length - nextProps.classes.length) > 5) {
+    return false // Re-renderizar
+  }
+  
+  // Para cambios pequeños, mantener el estado actual para preservar filtros
+  return true // No re-renderizar
 })

@@ -52,8 +52,8 @@ export function EditClassDialog({ classItem, children, onClassUpdated }: EditCla
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [dataLoaded, setDataLoaded] = useState(false)
-  const [students, setStudents] = useState<Array<{ id: string; name: string; lastName: string | null; email: string }>>([])
-  const [teachers, setTeachers] = useState<Array<{ id: string; name: string; lastName: string | null; email: string }>>([])
+  const [students, setStudents] = useState<Array<{ id: string; name: string; lastName: string | null; email: string; image: string | null }>>([])
+  const [teachers, setTeachers] = useState<Array<{ id: string; name: string; lastName: string | null; email: string; image: string | null }>>([])
   const form = useForm<z.infer<typeof EditClassSchema>>({
     resolver: zodResolver(EditClassSchema),
     defaultValues: {
@@ -108,15 +108,19 @@ export function EditClassDialog({ classItem, children, onClassUpdated }: EditCla
       if (result.success && result.class) {
         toast.success('Clase actualizada exitosamente')
         setOpen(false)
-        // Construct a complete ClassBookingWithDetails object
+        // Find updated student and teacher data from loaded arrays
+        const updatedStudent = students.find(s => s.id === result.class.studentId)
+        const updatedTeacher = teachers.find(t => t.id === result.class.teacherId)
+        
+        // Construct a complete ClassBookingWithDetails object with updated data
         const updatedClassWithDetails: ClassBookingWithDetails = {
           ...result.class,
-          student: classItem.student,
-          teacher: classItem.teacher,
+          student: updatedStudent || classItem.student,
+          teacher: updatedTeacher || classItem.teacher,
           enrollment: classItem.enrollment,
           createdAt: classItem.createdAt,
           updatedAt: new Date(),
-        } as ClassBookingWithDetails
+        }
         // Call the callback to update local state instead of refreshing
         onClassUpdated?.(updatedClassWithDetails)
       } else {

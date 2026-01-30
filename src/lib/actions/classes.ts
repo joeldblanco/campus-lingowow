@@ -596,6 +596,7 @@ export async function getAvailableTeachers(day: string, timeSlot: string, timezo
         name: true,
         lastName: true,
         email: true,
+        image: true,
       },
     })
 
@@ -858,6 +859,7 @@ export async function getAllTeachers() {
         name: true,
         lastName: true,
         email: true,
+        image: true,
       },
       orderBy: {
         name: 'asc',
@@ -885,6 +887,7 @@ export async function getAllStudents() {
         name: true,
         lastName: true,
         email: true,
+        image: true,
       },
       orderBy: {
         name: 'asc',
