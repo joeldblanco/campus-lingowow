@@ -2,6 +2,7 @@
 
 import {
   BarChart3,
+  Bell,
   Book,
   BookOpenText,
   Calendar,
@@ -244,6 +245,17 @@ const data = {
           title: 'Avanzado',
           url: '/admin/analytics/advanced',
           icon: BarChart3,
+        },
+      ],
+    },
+    {
+      title: 'Comunicaciones',
+      icon: Bell,
+      subItems: [
+        {
+          title: 'Notificaciones Masivas',
+          url: '/admin/notifications',
+          icon: Bell,
         },
       ],
     },

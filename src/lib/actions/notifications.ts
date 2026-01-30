@@ -1,9 +1,15 @@
 'use server'
 
 import { db } from '@/lib/db'
-import { NotificationType, UserRole, Prisma } from '@prisma/client'
+import { NotificationType, UserRole, Prisma, UserStatus } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import { getCurrentUser } from '@/lib/utils/session'
+import {
+  BulkNotificationPayload,
+  BulkNotificationResult,
+  NotificationPreviewData,
+  BulkNotificationFilters,
+} from '@/types/notifications'
 
 export interface NotificationWithUser {
   id: string
@@ -400,4 +406,211 @@ export async function notifyClassRescheduled(data: {
     link: `/admin/bookings`,
     metadata: { bookingId, studentId, teacherId, oldDay, oldTimeSlot, newDay, newTimeSlot },
   })
+}
+
+// =============================================
+// FUNCIONES DE NOTIFICACIONES MASIVAS
+// =============================================
+
+// Obtener usuarios por filtros
+async function getUsersByFilters(filters: BulkNotificationFilters) {
+  try {
+    const whereConditions: Prisma.UserWhereInput = {
+      roles: {
+        hasSome: filters.roles,
+      },
+    }
+
+    if (filters.userStatus && filters.userStatus !== 'ALL') {
+      whereConditions.status = filters.userStatus as UserStatus
+    }
+
+    if (filters.language) {
+      whereConditions.timezone = { contains: filters.language }
+    }
+
+    const users = await db.user.findMany({
+      where: whereConditions,
+      select: { id: true, roles: true },
+    })
+
+    return users
+  } catch (error) {
+    console.error('Error fetching users by filters:', error)
+    throw error
+  }
+}
+
+// Obtener conteo de usuarios por rol
+export async function getUserCountByRole(filters: BulkNotificationFilters) {
+  try {
+    const user = await getCurrentUser()
+    if (!user || !user.roles.includes(UserRole.ADMIN)) {
+      return { success: false, error: 'No autorizado' }
+    }
+
+    const counts: Record<UserRole, number> = {
+      [UserRole.ADMIN]: 0,
+      [UserRole.TEACHER]: 0,
+      [UserRole.STUDENT]: 0,
+      [UserRole.EDITOR]: 0,
+      [UserRole.GUEST]: 0,
+    }
+
+    for (const role of filters.roles) {
+      const count = await db.user.count({
+        where: {
+          roles: { has: role },
+          status: filters.userStatus && filters.userStatus !== 'ALL' 
+            ? (filters.userStatus as UserStatus)
+            : undefined,
+        },
+      })
+      counts[role] = count
+    }
+
+    return { success: true, data: counts }
+  } catch (error) {
+    console.error('Error counting users by role:', error)
+    return { success: false, error: 'Error al contar usuarios' }
+  }
+}
+
+// Enviar notificación masiva por rol
+export async function sendBulkNotificationByRole(
+  payload: BulkNotificationPayload
+): Promise<BulkNotificationResult> {
+  try {
+    const user = await getCurrentUser()
+    if (!user || !user.roles.includes(UserRole.ADMIN)) {
+      return {
+        success: false,
+        totalSent: 0,
+        byRole: {
+          [UserRole.ADMIN]: 0,
+          [UserRole.TEACHER]: 0,
+          [UserRole.STUDENT]: 0,
+          [UserRole.EDITOR]: 0,
+          [UserRole.GUEST]: 0,
+        },
+        failedCount: 0,
+        error: 'No autorizado',
+      }
+    }
+
+    const users = await getUsersByFilters(payload.filters)
+
+    if (users.length === 0) {
+      return {
+        success: true,
+        totalSent: 0,
+        byRole: {
+          [UserRole.ADMIN]: 0,
+          [UserRole.TEACHER]: 0,
+          [UserRole.STUDENT]: 0,
+          [UserRole.EDITOR]: 0,
+          [UserRole.GUEST]: 0,
+        },
+        failedCount: 0,
+      }
+    }
+
+    // Crear notificaciones en lotes
+    const batchSize = 1000
+    const notificationIds: string[] = []
+    const byRole: Record<UserRole, number> = {
+      [UserRole.ADMIN]: 0,
+      [UserRole.TEACHER]: 0,
+      [UserRole.STUDENT]: 0,
+      [UserRole.EDITOR]: 0,
+      [UserRole.GUEST]: 0,
+    }
+
+    for (let i = 0; i < users.length; i += batchSize) {
+      const batch = users.slice(i, i + batchSize)
+
+      await db.notification.createMany({
+        data: batch.map((u) => ({
+          userId: u.id,
+          type: payload.type,
+          title: payload.title,
+          message: payload.message,
+          link: payload.link,
+          metadata: payload.metadata as Prisma.InputJsonValue | undefined,
+        })),
+      })
+
+      // Contar por rol
+      batch.forEach((u) => {
+        u.roles.forEach((role) => {
+          if (role in byRole) {
+            byRole[role as UserRole]++
+          }
+        })
+      })
+    }
+
+    revalidatePath('/admin/notifications')
+
+    return {
+      success: true,
+      totalSent: users.length,
+      byRole,
+      failedCount: 0,
+      notificationIds,
+    }
+  } catch (error) {
+    console.error('Error sending bulk notification:', error)
+    return {
+      success: false,
+      totalSent: 0,
+      byRole: {
+        [UserRole.ADMIN]: 0,
+        [UserRole.TEACHER]: 0,
+        [UserRole.STUDENT]: 0,
+        [UserRole.EDITOR]: 0,
+        [UserRole.GUEST]: 0,
+      },
+      failedCount: 0,
+      error: 'Error al enviar notificaciones masivas',
+    }
+  }
+}
+
+// Obtener preview de notificación masiva
+export async function getBulkNotificationPreview(
+  filters: BulkNotificationFilters
+): Promise<{ success: boolean; data?: NotificationPreviewData; error?: string }> {
+  try {
+    const user = await getCurrentUser()
+    if (!user || !user.roles.includes(UserRole.ADMIN)) {
+      return { success: false, error: 'No autorizado' }
+    }
+
+    const countResult = await getUserCountByRole(filters)
+    if (!countResult.success || !countResult.data) {
+      return { success: false, error: 'Error al obtener conteo de usuarios' }
+    }
+
+    const affectedUsers = Object.entries(countResult.data).map(([role, count]) => ({
+      role: role as UserRole,
+      count,
+    }))
+
+    const totalAffected = Object.values(countResult.data).reduce((a, b) => a + b, 0)
+
+    return {
+      success: true,
+      data: {
+        title: '',
+        message: '',
+        type: NotificationType.SYSTEM_ANNOUNCEMENT,
+        affectedUsers,
+        totalAffected,
+      },
+    }
+  } catch (error) {
+    console.error('Error getting bulk notification preview:', error)
+    return { success: false, error: 'Error al obtener preview' }
+  }
 }
