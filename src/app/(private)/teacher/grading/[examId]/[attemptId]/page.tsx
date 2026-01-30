@@ -294,9 +294,9 @@ export default async function GradingPage({ params }: PageProps) {
     }
   })
 
-  // Usar los valores guardados en la base de datos que ya son correctos
-  // Estos valores se calcularon correctamente cuando se envió el examen
-  const totalScore = attempt.totalPoints || 0
+  // Calcular totalScore dinámicamente para reflejar calificaciones en tiempo real
+// Pero usar maxScore de la base de datos para mantener consistencia con el porcentaje
+  const totalScore = answers.reduce((sum: number, a) => sum + a.pointsEarned, 0)
   const maxScore = attempt.maxPoints || 0
 
   const submittedAt = attempt.submittedAt 
