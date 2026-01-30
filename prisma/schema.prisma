@@ -1770,6 +1770,11 @@ model ExamAttempt {
   verificationCode String?        // Código único para verificación pública
   allowPublicVerification Boolean @default(true) // Si permite verificación pública
   
+  // Estado de navegación y flags
+  currentQuestionIndex Int?       // Última pregunta vista por el estudiante
+  flaggedQuestions    Json?       // Array de IDs de preguntas marcadas para revisar
+  lastActivityAt      DateTime?   // Última actividad del estudiante en el examen
+  
   // Relaciones
   exam            Exam            @relation(fields: [examId], references: [id], onDelete: Cascade)
   user            User            @relation("ExamAttempts", fields: [userId], references: [id], onDelete: Cascade)

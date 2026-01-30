@@ -1,6 +1,6 @@
 import { auth } from '@/auth'
 import { redirect, notFound } from 'next/navigation'
-import { startExamAttempt, getExamAttemptWithAnswers } from '@/lib/actions/exams'
+import { startExamAttempt, getExamAttemptWithState } from '@/lib/actions/exams'
 import { db } from '@/lib/db'
 import { ExamTakingClient } from './exam-taking-client'
 
@@ -26,14 +26,20 @@ export default async function TakeExamPage({ params }: PageProps) {
   }
 
   let initialAnswers: Record<string, unknown> = {}
+  let initialQuestionIndex = 0
+  let initialFlaggedQuestions: string[] = []
   
   if (result.isResuming) {
-    const attemptData = await getExamAttemptWithAnswers(result.attempt.id)
+    const attemptData = await getExamAttemptWithState(result.attempt.id)
     if (attemptData.success && attemptData.attempt) {
       initialAnswers = attemptData.attempt.answers.reduce((acc, answer) => {
         acc[answer.questionId] = answer.answer
         return acc
       }, {} as Record<string, unknown>)
+      
+      // Recuperar estado de navegación y flags
+      initialQuestionIndex = attemptData.attempt.currentQuestionIndex ?? 0
+      initialFlaggedQuestions = attemptData.attempt.flaggedQuestions ?? []
     }
   }
 
@@ -172,6 +178,9 @@ export default async function TakeExamPage({ params }: PageProps) {
       timeLimit={timeLimit}
       startedAt={result.attempt.startedAt.toISOString()}
       initialAnswers={initialAnswers}
+      initialQuestionIndex={initialQuestionIndex}
+      initialFlaggedQuestions={initialFlaggedQuestions}
+      isResuming={result.isResuming}
       proctoring={proctoring}
     />
   )

@@ -1940,3 +1940,90 @@ export async function getExamAttemptByVerificationCode(code: string): Promise<{
     return null
   }
 }
+
+// =============================================
+// PERSISTENCIA DE ESTADO DE NAVEGACIÓN Y FLAGS
+// =============================================
+
+export async function updateExamAttemptState(
+  attemptId: string,
+  state: {
+    currentQuestionIndex?: number
+    flaggedQuestions?: string[]
+  }
+) {
+  try {
+    const session = await auth()
+    if (!session?.user?.id) {
+      return { success: false, error: 'No autorizado' }
+    }
+
+    const attempt = await db.examAttempt.findUnique({
+      where: { id: attemptId },
+      select: { userId: true },
+    })
+
+    if (!attempt || attempt.userId !== session.user.id) {
+      return { success: false, error: 'No autorizado para este intento' }
+    }
+
+    const updatedAttempt = await db.examAttempt.update({
+      where: { id: attemptId },
+      data: {
+        currentQuestionIndex: state.currentQuestionIndex,
+        flaggedQuestions: state.flaggedQuestions ? JSON.stringify(state.flaggedQuestions) : undefined,
+        lastActivityAt: new Date(),
+      },
+    })
+
+    return { success: true, attempt: updatedAttempt }
+  } catch (error) {
+    console.error('Error updating exam attempt state:', error)
+    return { success: false, error: 'Error al actualizar estado' }
+  }
+}
+
+export async function getExamAttemptWithState(attemptId: string) {
+  try {
+    const session = await auth()
+    if (!session?.user?.id) {
+      return { success: false, error: 'No autorizado' }
+    }
+
+    const attempt = await db.examAttempt.findUnique({
+      where: { id: attemptId },
+      include: {
+        answers: {
+          select: {
+            questionId: true,
+            answer: true,
+          },
+        },
+      },
+    })
+
+    if (!attempt) {
+      return { success: false, error: 'Intento no encontrado' }
+    }
+
+    if (attempt.userId !== session.user.id) {
+      return { success: false, error: 'No autorizado para este intento' }
+    }
+
+    // Parsear flaggedQuestions si existe
+    const flaggedQuestions = attempt.flaggedQuestions
+      ? JSON.parse(attempt.flaggedQuestions as string)
+      : []
+
+    return {
+      success: true,
+      attempt: {
+        ...attempt,
+        flaggedQuestions,
+      },
+    }
+  } catch (error) {
+    console.error('Error getting exam attempt with state:', error)
+    return { success: false, error: 'Error al obtener estado' }
+  }
+}

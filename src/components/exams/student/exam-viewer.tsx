@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { updateExamAttemptState } from '@/lib/actions/exams'
 import { ArrowLeft, ArrowRight, Send, Save, Info, CloudOff, ShieldAlert } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ExamTimer } from './exam-timer'
@@ -45,6 +46,9 @@ interface ExamViewerProps {
   timeLimit: number
   startedAt: string
   initialAnswers?: Record<string, unknown>
+  initialQuestionIndex?: number
+  initialFlaggedQuestions?: string[]
+  isResuming?: boolean
   onSaveAnswer: (questionId: string, answer: unknown) => Promise<{ success: boolean; requiresReauth?: boolean; error?: string; [key: string]: unknown }>
   onSubmitExam: () => Promise<{ success: boolean; requiresReauth?: boolean; error?: string; [key: string]: unknown }>
   proctoring?: ProctoringConfig
@@ -61,6 +65,9 @@ export function ExamViewer({
   timeLimit,
   startedAt,
   initialAnswers = {},
+  initialQuestionIndex = 0,
+  initialFlaggedQuestions = [],
+  isResuming = false,
   onSaveAnswer,
   onSubmitExam,
   proctoring = {},
@@ -68,8 +75,9 @@ export function ExamViewer({
 }: ExamViewerProps) {
   const router = useRouter()
   const [answers, setAnswers] = useState<Record<string, unknown>>(initialAnswers)
-  const [flaggedQuestions, setFlaggedQuestions] = useState<Set<string>>(new Set())
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  const [flaggedQuestions, setFlaggedQuestions] = useState<Set<string>>(new Set(initialFlaggedQuestions))
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(initialQuestionIndex)
+  const [showResumingIndicator, setShowResumingIndicator] = useState(isResuming)
   const [isSaving, setIsSaving] = useState(false)
   const [showSubmitDialog, setShowSubmitDialog] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -84,6 +92,16 @@ export function ExamViewer({
     attemptId,
     enabled: true,
   })
+
+  // Mostrar indicador de reanudación
+  useEffect(() => {
+    if (showResumingIndicator) {
+      const timer = setTimeout(() => {
+        setShowResumingIndicator(false)
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [showResumingIndicator])
 
   const {
     enabled: proctoringEnabled = false,
@@ -143,6 +161,18 @@ export function ExamViewer({
   ).length
 
   const currentQuestion = allQuestions[currentQuestionIndex]
+
+  // Guardar estado de navegación y flags automáticamente con debounce
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      await updateExamAttemptState(attemptId, {
+        currentQuestionIndex,
+        flaggedQuestions: Array.from(flaggedQuestions),
+      })
+    }, 2000) // Debounce de 2 segundos
+
+    return () => clearTimeout(timer)
+  }, [currentQuestionIndex, flaggedQuestions, attemptId])
   
   // Obtener todas las preguntas del grupo actual (si pertenece a un grupo)
   const currentGroupQuestions = useMemo(() => {
@@ -403,6 +433,12 @@ export function ExamViewer({
             </div>
           </div>
           <div className="flex items-center gap-6">
+            {showResumingIndicator && (
+              <div className="hidden md:flex items-center gap-2 text-sm px-3 py-1.5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 animate-pulse">
+                <Info className="h-4 w-4" />
+                <span>Reanudando examen anterior...</span>
+              </div>
+            )}
             {sessionStatus === 'expired' && (
               <div className="hidden md:flex items-center gap-2 text-sm px-3 py-1.5 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400">
                 <CloudOff className="h-4 w-4" />
@@ -470,7 +506,41 @@ export function ExamViewer({
                     answer={answers[q.id]}
                     onAnswerChange={(answer) => {
                       setAnswers(prev => ({ ...prev, [q.id]: answer }))
-                      onSaveAnswer(q.id, answer)
+                      
+                      setIsSaving(true)
+                      ;(async () => {
+                        try {
+                          const result = await onSaveAnswer(q.id, answer)
+                          
+                          // Detectar si la sesión expiró
+                          if (result && typeof result === 'object' && 'requiresReauth' in result && result.requiresReauth) {
+                            setSessionStatus('expired')
+                            setShowSessionExpiredDialog(true)
+                            setUnsyncedAnswers((prev) => [...new Set([...prev, q.id])])
+                            // Guardar en backup local
+                            saveAnswerToBackup(q.id, answer)
+                            recordExpired()
+                            toast.error('Tu sesión ha expirado. Las respuestas se guardarán localmente.')
+                            return
+                          }
+                        } catch (error) {
+                          console.error('Error saving answer:', error)
+                          // Verificar si es error de autenticación
+                          if (error instanceof Error && (error.message.includes('401') || error.message.includes('Unauthorized'))) {
+                            setSessionStatus('expired')
+                            setShowSessionExpiredDialog(true)
+                            setUnsyncedAnswers((prev) => [...new Set([...prev, q.id])])
+                            // Guardar en backup local
+                            saveAnswerToBackup(q.id, answer)
+                            recordExpired()
+                            toast.error('Tu sesión ha expirado. Las respuestas se guardarán localmente.')
+                          } else {
+                            toast.error('Error al guardar respuesta')
+                          }
+                        } finally {
+                          setIsSaving(false)
+                        }
+                      })()
                     }}
                     isFlagged={flaggedQuestions.has(q.id)}
                     onToggleFlag={() => {

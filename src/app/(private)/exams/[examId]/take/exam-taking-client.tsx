@@ -62,6 +62,9 @@ interface ExamTakingClientProps {
   timeLimit: number
   startedAt: string
   initialAnswers: Record<string, unknown>
+  initialQuestionIndex?: number
+  initialFlaggedQuestions?: string[]
+  isResuming?: boolean
   proctoring: ProctoringConfig
   examType?: 'COURSE_EXAM' | 'PLACEMENT_TEST' | 'DIAGNOSTIC' | 'PRACTICE'
 }
@@ -76,6 +79,9 @@ export function ExamTakingClient({
   timeLimit,
   startedAt,
   initialAnswers,
+  initialQuestionIndex = 0,
+  initialFlaggedQuestions = [],
+  isResuming = false,
   proctoring,
   examType = 'COURSE_EXAM'
 }: ExamTakingClientProps) {
@@ -98,6 +104,9 @@ export function ExamTakingClient({
       timeLimit={timeLimit}
       startedAt={startedAt}
       initialAnswers={initialAnswers}
+      initialQuestionIndex={initialQuestionIndex}
+      initialFlaggedQuestions={initialFlaggedQuestions}
+      isResuming={isResuming}
       onSaveAnswer={handleSaveAnswer}
       onSubmitExam={handleSubmitExam}
       proctoring={proctoring}
