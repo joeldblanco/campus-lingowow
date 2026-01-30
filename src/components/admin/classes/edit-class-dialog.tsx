@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import {
   ClassBookingWithDetails,
   updateClass,
@@ -45,10 +44,10 @@ import { useTimezone } from '@/hooks/use-timezone'
 interface EditClassDialogProps {
   classItem: ClassBookingWithDetails
   children: React.ReactNode
+  onClassUpdated?: (updatedClass: ClassBookingWithDetails) => void
 }
 
-export function EditClassDialog({ classItem, children }: EditClassDialogProps) {
-  const router = useRouter()
+export function EditClassDialog({ classItem, children, onClassUpdated }: EditClassDialogProps) {
   const { timezone: userTimezone } = useTimezone()
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -106,10 +105,20 @@ export function EditClassDialog({ classItem, children }: EditClassDialogProps) {
     try {
       const result = await updateClass(classItem.id, { ...values, timezone: userTimezone })
 
-      if (result.success) {
+      if (result.success && result.class) {
         toast.success('Clase actualizada exitosamente')
         setOpen(false)
-        router.refresh()
+        // Construct a complete ClassBookingWithDetails object
+        const updatedClassWithDetails: ClassBookingWithDetails = {
+          ...result.class,
+          student: classItem.student,
+          teacher: classItem.teacher,
+          enrollment: classItem.enrollment,
+          createdAt: classItem.createdAt,
+          updatedAt: new Date(),
+        } as ClassBookingWithDetails
+        // Call the callback to update local state instead of refreshing
+        onClassUpdated?.(updatedClassWithDetails)
       } else {
         toast.error(result.error || 'Error al actualizar la clase')
       }

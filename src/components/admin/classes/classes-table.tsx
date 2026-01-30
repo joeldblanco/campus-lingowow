@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useTransition, memo, useEffect } from 'react'
+import { useState, useMemo, memo } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { ClassBookingWithDetails, deleteClass, updateClass, toggleClassPayable } from '@/lib/actions/classes'
 import { getTodayString } from '@/lib/utils/date'
@@ -51,7 +51,6 @@ import {
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { BookingStatus } from '@prisma/client'
-import { useRouter } from 'next/navigation'
 
 interface ClassesTableProps {
   classes: ClassBookingWithDetails[]
@@ -59,8 +58,6 @@ interface ClassesTableProps {
 }
 
 export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }: ClassesTableProps) {
-  const router = useRouter()
-  const [, startTransition] = useTransition()
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [teacherFilter, setTeacherFilter] = useState('all')
@@ -69,12 +66,7 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [classToDelete, setClassToDelete] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
-  const [localClasses, setLocalClasses] = useState<ClassBookingWithDetails[]>(classes)
-
-  // Sync local classes with props when they change
-  useEffect(() => {
-    setLocalClasses(classes)
-  }, [classes])
+  const [localClasses, setLocalClasses] = useState<ClassBookingWithDetails[]>(() => classes)
 
   const filteredClasses = useMemo(() => {
     let filtered = localClasses
@@ -142,18 +134,29 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
 
     setIsDeleting(true)
     try {
+      // Update local state optimistically
+      setLocalClasses(prev => prev.filter(classItem => classItem.id !== classToDelete))
+
       const result = await deleteClass(classToDelete)
       if (result.success) {
         toast.success('Clase eliminada exitosamente')
         setDeleteDialogOpen(false)
         setClassToDelete(null)
-        startTransition(() => {
-          router.refresh()
-        })
       } else {
+        // Revert on error
+        setLocalClasses(prev => {
+          // Find the deleted class from original props to restore it
+          const deletedClass = classes.find(c => c.id === classToDelete)
+          return deletedClass ? [...prev, deletedClass] : prev
+        })
         toast.error(result.error || 'Error al eliminar la clase')
       }
     } catch {
+      // Revert on error
+      setLocalClasses(prev => {
+        const deletedClass = classes.find(c => c.id === classToDelete)
+        return deletedClass ? [...prev, deletedClass] : prev
+      })
       toast.error('Error al eliminar la clase')
     } finally {
       setIsDeleting(false)
@@ -168,6 +171,15 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
         return
       }
 
+      // Update local state optimistically
+      setLocalClasses(prev => 
+        prev.map(c => 
+          c.id === classId 
+            ? { ...c, status: BookingStatus.COMPLETED, completedAt: new Date() }
+            : c
+        )
+      )
+
       const result = await updateClass(classId, {
         studentId: classItem.studentId,
         teacherId: classItem.teacherId,
@@ -179,13 +191,29 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
       })
       if (result.success) {
         toast.success('Clase marcada como completada')
-        startTransition(() => {
-          router.refresh()
-        })
       } else {
+        // Revert on error
+        setLocalClasses(prev => 
+          prev.map(c => 
+            c.id === classId 
+              ? { ...c, status: classItem.status, completedAt: classItem.completedAt }
+              : c
+          )
+        )
         toast.error(result.error || 'Error al actualizar la clase')
       }
     } catch {
+      // Revert on error - find original class from props
+      const originalClass = classes.find(c => c.id === classId)
+      if (originalClass) {
+        setLocalClasses(prev => 
+          prev.map(c => 
+            c.id === classId 
+              ? { ...c, status: originalClass.status, completedAt: originalClass.completedAt }
+              : c
+          )
+        )
+      }
       toast.error('Error al actualizar la clase')
     }
   }
@@ -226,6 +254,16 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
       )
       toast.error('Error al actualizar el estado de pago')
     }
+  }
+
+  const handleClassUpdated = (updatedClass: ClassBookingWithDetails) => {
+    setLocalClasses(prev => 
+      prev.map(classItem => 
+        classItem.id === updatedClass.id 
+          ? updatedClass
+          : classItem
+      )
+    )
   }
 
   const getStatusBadge = (status: string) => {
@@ -372,7 +410,7 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
         const classItem = row.original
         return (
           <div className="flex items-center justify-center gap-1">
-            <EditClassDialog classItem={classItem}>
+            <EditClassDialog classItem={classItem} onClassUpdated={handleClassUpdated}>
               <Button variant="ghost" size="icon" className="h-8 w-8">
                 <Edit className="h-4 w-4" />
               </Button>
@@ -521,4 +559,8 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
       </AlertDialog>
     </div>
   )
+}, (prevProps, nextProps) => {
+  // Solo re-renderizar si el timezone cambia (para actualizaciones de horario)
+  // Los cambios en classes no deberían causar re-renderización para mantener filtros
+  return prevProps.userTimezone === nextProps.userTimezone
 })
