@@ -294,9 +294,10 @@ export default async function GradingPage({ params }: PageProps) {
     }
   })
 
-  // Calcular puntaje basado en las respuestas individuales (no usar attempt.totalPoints que puede ser 0 si hay preguntas pendientes)
-  const totalScore = answers.reduce((sum: number, a) => sum + a.pointsEarned, 0)
-  const maxScore = answers.reduce((sum: number, a) => sum + a.maxPoints, 0)
+  // Usar los valores guardados en la base de datos que ya son correctos
+  // Estos valores se calcularon correctamente cuando se envió el examen
+  const totalScore = attempt.totalPoints || 0
+  const maxScore = attempt.maxPoints || 0
 
   const submittedAt = attempt.submittedAt 
     ? new Date(attempt.submittedAt).toLocaleString('es-ES', {
