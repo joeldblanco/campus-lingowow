@@ -259,8 +259,8 @@ export default async function ExamResultsPage({ params }: PageProps) {
     // Respuesta normal (no expandida)
     questionNumber++
     
-    // Para preguntas tipo ESSAY, no mostrar "null" como respuesta correcta
-    const isEssayType = question.type === 'ESSAY'
+    // Para preguntas tipo ESSAY o RECORDING, no mostrar "null" como respuesta correcta
+    const isEssayType = ['ESSAY', 'RECORDING'].includes(question.type)
     
     // Función para mapear IDs de opciones a texto
     const mapOptionIdsToText = (ids: string[]): string => {
