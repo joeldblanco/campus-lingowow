@@ -464,7 +464,8 @@ export async function updateClass(id: string, data: z.infer<typeof EditClassSche
       data: updateData,
     })
 
-    revalidatePath('/admin/classes')
+    // No revalidamos aquí porque usamos actualizaciones optimistas en el cliente
+    // revalidatePath('/admin/classes')
     return { success: true, class: classBooking }
   } catch (error) {
     console.error('Error updating class:', error)

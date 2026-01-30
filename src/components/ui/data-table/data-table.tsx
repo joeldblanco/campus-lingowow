@@ -5,6 +5,8 @@ import {
   ColumnFiltersState,
   SortingState,
   VisibilityState,
+  PaginationState,
+  Updater,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -13,6 +15,7 @@ import {
   useReactTable,
   RowSelectionState,
   TableOptions,
+  OnChangeFn,
 } from '@tanstack/react-table'
 import {
   Table,
@@ -40,6 +43,8 @@ interface DataTableProps<TData, TValue> {
   toolbar?: React.ReactNode
   className?: string
   tableOptions?: Partial<TableOptions<TData>>
+  pagination?: PaginationState
+  onPaginationChange?: OnChangeFn<PaginationState>
 }
 
 export function DataTable<TData, TValue>({
@@ -53,11 +58,29 @@ export function DataTable<TData, TValue>({
   toolbar,
   className,
   tableOptions,
+  pagination,
+  onPaginationChange,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+  
+  // Use external pagination state if provided, otherwise use internal state
+  const [internalPagination, setInternalPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize,
+  })
+  const paginationState = pagination || internalPagination
+
+  // Handle pagination change - use external handler if provided, otherwise internal
+  const handlePaginationChange = (updater: Updater<PaginationState>) => {
+    if (onPaginationChange) {
+      onPaginationChange(updater)
+    } else {
+      setInternalPagination(updater)
+    }
+  }
 
   const table = useReactTable({
     data,
@@ -66,9 +89,11 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    autoResetPageIndex: false,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: handlePaginationChange,
     onRowSelectionChange: (updater) => {
       const newSelection = typeof updater === 'function' ? updater(rowSelection) : updater
       setRowSelection(newSelection)
@@ -84,10 +109,12 @@ export function DataTable<TData, TValue>({
       columnFilters,
       columnVisibility,
       rowSelection,
+      pagination: paginationState,
     },
     initialState: {
       pagination: {
         pageSize,
+        pageIndex: 0,
       },
     },
     ...tableOptions,

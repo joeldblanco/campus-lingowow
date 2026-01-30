@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useMemo, memo } from 'react'
-import { ColumnDef } from '@tanstack/react-table'
+import { useState, useMemo, memo, useEffect } from 'react'
+import { ColumnDef, PaginationState } from '@tanstack/react-table'
 import { ClassBookingWithDetails, deleteClass, updateClass, toggleClassPayable } from '@/lib/actions/classes'
 import { getTodayString } from '@/lib/utils/date'
 import { formatFullName } from '@/lib/utils/name-formatter'
@@ -67,6 +67,10 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
   const [classToDelete, setClassToDelete] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
   const [localClasses, setLocalClasses] = useState<ClassBookingWithDetails[]>(() => classes)
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  })
 
   const filteredClasses = useMemo(() => {
     let filtered = localClasses
@@ -129,6 +133,14 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
     return filtered
   }, [localClasses, searchTerm, statusFilter, teacherFilter, dateFilter, sortOrder])
 
+  // Adjust pagination when filtered results change to avoid invalid page
+  useEffect(() => {
+    const maxPage = Math.max(0, Math.ceil(filteredClasses.length / pagination.pageSize) - 1)
+    if (pagination.pageIndex > maxPage) {
+      setPagination(prev => ({ ...prev, pageIndex: maxPage }))
+    }
+  }, [filteredClasses.length, pagination.pageSize, pagination.pageIndex])
+
   const handleDeleteClass = async () => {
     if (!classToDelete) return
 
@@ -165,7 +177,6 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
 
   const handleMarkCompleted = async (classId: string) => {
     try {
-      // Find the class in localClasses (not filtered) to ensure we have the complete data
       const classItem = localClasses.find((c) => c.id === classId)
       if (!classItem) {
         toast.error('Clase no encontrada')
@@ -194,10 +205,11 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
         completedAt: new Date(),
         timezone: userTimezone,
       })
+      
       if (result.success) {
         toast.success('Clase marcada como completada')
       } else {
-        // Revert on error using stored original values
+        // Revert on error
         setLocalClasses(prev => 
           prev.map(c => 
             c.id === classId 
@@ -208,7 +220,7 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
         toast.error(result.error || 'Error al actualizar la clase')
       }
     } catch {
-      // Revert on error - find original class from localClasses for rollback
+      // Revert on error
       const originalClass = localClasses.find(c => c.id === classId)
       if (originalClass) {
         setLocalClasses(prev => 
@@ -539,6 +551,8 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
         data={filteredClasses}
         toolbar={toolbar}
         emptyMessage="No se encontraron clases que coincidan con los filtros."
+        pagination={pagination}
+        onPaginationChange={setPagination}
       />
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
@@ -564,17 +578,4 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
       </AlertDialog>
     </div>
   )
-}, (prevProps, nextProps) => {
-  // Re-renderizar si el timezone cambia
-  if (prevProps.userTimezone !== nextProps.userTimezone) {
-    return false // Re-renderizar
-  }
-  
-  // Si el número de clases cambió significativamente, re-renderizar
-  if (Math.abs(prevProps.classes.length - nextProps.classes.length) > 5) {
-    return false // Re-renderizar
-  }
-  
-  // Para cambios pequeños, mantener el estado actual para preservar filtros
-  return true // No re-renderizar
 })
