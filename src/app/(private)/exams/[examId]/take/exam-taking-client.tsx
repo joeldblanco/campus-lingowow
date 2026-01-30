@@ -34,6 +34,24 @@ interface ProctoringConfig {
   maxWarnings: number
 }
 
+interface SaveAnswerResult {
+  success: boolean
+  error?: string
+  code?: string
+  requiresReauth?: boolean
+  answer?: unknown
+  [key: string]: unknown
+}
+
+interface SubmitExamResult {
+  success: boolean
+  error?: string
+  code?: string
+  requiresReauth?: boolean
+  attempt?: unknown
+  [key: string]: unknown
+}
+
 interface ExamTakingClientProps {
   examId: string
   attemptId: string
@@ -61,12 +79,12 @@ export function ExamTakingClient({
   proctoring,
   examType = 'COURSE_EXAM'
 }: ExamTakingClientProps) {
-  const handleSaveAnswer = async (questionId: string, answer: unknown) => {
-    await saveExamAnswer(attemptId, questionId, answer)
+  const handleSaveAnswer = async (questionId: string, answer: unknown): Promise<SaveAnswerResult> => {
+    return await saveExamAnswer(attemptId, questionId, answer)
   }
 
-  const handleSubmitExam = async () => {
-    await submitExamAttempt(attemptId)
+  const handleSubmitExam = async (): Promise<SubmitExamResult> => {
+    return await submitExamAttempt(attemptId)
   }
 
   return (

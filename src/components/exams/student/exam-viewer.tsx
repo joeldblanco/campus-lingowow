@@ -10,6 +10,7 @@ import { QuestionNavigator, QuestionStatus } from './question-navigator'
 import { ExamQuestionCard, ExamQuestionData } from './exam-question-card'
 import { ProctorWarningDialog } from '../proctoring'
 import { useProctoring } from '@/hooks/use-proctoring'
+import { useExamBackup } from '@/hooks/use-exam-backup'
 import type { ProctorEventType } from '@/lib/actions/proctoring'
 import {
   AlertDialog,
@@ -44,8 +45,8 @@ interface ExamViewerProps {
   timeLimit: number
   startedAt: string
   initialAnswers?: Record<string, unknown>
-  onSaveAnswer: (questionId: string, answer: unknown) => Promise<void>
-  onSubmitExam: () => Promise<void>
+  onSaveAnswer: (questionId: string, answer: unknown) => Promise<{ success: boolean; requiresReauth?: boolean; error?: string; [key: string]: unknown }>
+  onSubmitExam: () => Promise<{ success: boolean; requiresReauth?: boolean; error?: string; [key: string]: unknown }>
   proctoring?: ProctoringConfig
   examType?: 'COURSE_EXAM' | 'PLACEMENT_TEST' | 'DIAGNOSTIC' | 'PRACTICE'
 }
@@ -74,6 +75,15 @@ export function ExamViewer({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showProctorWarning, setShowProctorWarning] = useState(false)
   const [currentWarningType, setCurrentWarningType] = useState<ProctorEventType | 'max_warnings' | null>(null)
+  const [sessionStatus, setSessionStatus] = useState<'active' | 'expired' | 'syncing'>('active')
+  const [showSessionExpiredDialog, setShowSessionExpiredDialog] = useState(false)
+  const [unsyncedAnswers, setUnsyncedAnswers] = useState<string[]>([])
+
+  // Hook para gestionar backup local
+  const { saveAnswer: saveAnswerToBackup, recordExpired } = useExamBackup({
+    attemptId,
+    enabled: true,
+  })
 
   const {
     enabled: proctoringEnabled = false,
@@ -226,14 +236,37 @@ export function ExamViewer({
 
     setIsSaving(true)
     try {
-      await onSaveAnswer(currentQuestion.id, answer)
+      const result = await onSaveAnswer(currentQuestion.id, answer)
+      
+      // Detectar si la sesión expiró
+      if (result && typeof result === 'object' && 'requiresReauth' in result && result.requiresReauth) {
+        setSessionStatus('expired')
+        setShowSessionExpiredDialog(true)
+        setUnsyncedAnswers((prev) => [...new Set([...prev, currentQuestion.id])])
+        // Guardar en backup local
+        saveAnswerToBackup(currentQuestion.id, answer)
+        recordExpired()
+        toast.error('Tu sesión ha expirado. Las respuestas se guardarán localmente.')
+        return
+      }
     } catch (error) {
       console.error('Error saving answer:', error)
-      toast.error('Error al guardar respuesta')
+      // Verificar si es error de autenticación
+      if (error instanceof Error && (error.message.includes('401') || error.message.includes('Unauthorized'))) {
+        setSessionStatus('expired')
+        setShowSessionExpiredDialog(true)
+        setUnsyncedAnswers((prev) => [...new Set([...prev, currentQuestion.id])])
+        // Guardar en backup local
+        saveAnswerToBackup(currentQuestion.id, answer)
+        recordExpired()
+        toast.error('Tu sesión ha expirado. Las respuestas se guardarán localmente.')
+      } else {
+        toast.error('Error al guardar respuesta')
+      }
     } finally {
       setIsSaving(false)
     }
-  }, [currentQuestion, onSaveAnswer])
+  }, [currentQuestion, onSaveAnswer, saveAnswerToBackup, recordExpired])
 
   const handleToggleFlag = useCallback(() => {
     if (!currentQuestion) return
@@ -317,7 +350,17 @@ export function ExamViewer({
       if (proctoringEnabled) {
         await endProctoring()
       }
-      await onSubmitExam()
+      const result = await onSubmitExam()
+      
+      // Detectar si la sesión expiró al enviar
+      if (result && typeof result === 'object' && 'requiresReauth' in result && result.requiresReauth) {
+        setSessionStatus('expired')
+        setShowSessionExpiredDialog(true)
+        recordExpired()
+        toast.error('Tu sesión ha expirado. Por favor, inicia sesión para enviar el examen.')
+        return
+      }
+      
       toast.success('Examen enviado correctamente')
       const resultsPath = examType === 'PLACEMENT_TEST' 
         ? `/placement-test/${examId}/results`
@@ -325,12 +368,20 @@ export function ExamViewer({
       router.push(resultsPath)
     } catch (error) {
       console.error('Error submitting exam:', error)
-      toast.error('Error al enviar el examen')
+      // Verificar si es error de autenticación
+      if (error instanceof Error && (error.message.includes('401') || error.message.includes('Unauthorized'))) {
+        setSessionStatus('expired')
+        setShowSessionExpiredDialog(true)
+        recordExpired()
+        toast.error('Tu sesión ha expirado. Por favor, inicia sesión para enviar el examen.')
+      } else {
+        toast.error('Error al enviar el examen')
+      }
     } finally {
       setIsSubmitting(false)
       setShowSubmitDialog(false)
     }
-  }, [onSubmitExam, router, examId, attemptId, proctoringEnabled, endProctoring, examType])
+  }, [onSubmitExam, router, examId, attemptId, proctoringEnabled, endProctoring, examType, recordExpired])
 
   const unansweredCount = totalQuestions - answeredCount
 
@@ -352,6 +403,12 @@ export function ExamViewer({
             </div>
           </div>
           <div className="flex items-center gap-6">
+            {sessionStatus === 'expired' && (
+              <div className="hidden md:flex items-center gap-2 text-sm px-3 py-1.5 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400">
+                <CloudOff className="h-4 w-4" />
+                <span>Sesión expirada - Modo local</span>
+              </div>
+            )}
             {proctoringEnabled && (
               <div className={`hidden md:flex items-center gap-2 text-sm px-3 py-1.5 rounded-full ${
                 violationCount > 0 
@@ -372,6 +429,11 @@ export function ExamViewer({
                 <>
                   <CloudOff className="h-4 w-4 animate-pulse" />
                   <span>Guardando...</span>
+                </>
+              ) : sessionStatus === 'expired' ? (
+                <>
+                  <Save className="h-4 w-4" />
+                  <span>Guardado localmente</span>
                 </>
               ) : (
                 <>
@@ -527,6 +589,36 @@ export function ExamViewer({
               className="bg-primary hover:bg-primary/90"
             >
               {isSubmitting ? 'Enviando...' : 'Confirmar envío'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={showSessionExpiredDialog} onOpenChange={setShowSessionExpiredDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Sesión Expirada</AlertDialogTitle>
+            <AlertDialogDescription className="space-y-3">
+              <p>Tu sesión ha expirado. Las respuestas se guardarán localmente en tu dispositivo.</p>
+              <p className="text-sm text-amber-600 dark:text-amber-400">
+                ⚠️ Para asegurar que tus respuestas se guarden correctamente en el servidor, por favor inicia sesión nuevamente.
+              </p>
+              {unsyncedAnswers.length > 0 && (
+                <p className="text-sm text-muted-foreground">
+                  Respuestas no sincronizadas: {unsyncedAnswers.length}
+                </p>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Continuar sin sincronizar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                router.push('/auth/signin')
+              }}
+              className="bg-primary hover:bg-primary/90"
+            >
+              Iniciar sesión
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -743,6 +743,17 @@ export async function saveExamAnswer(
   timeSpent?: number
 ) {
   try {
+    // Validar sesión del usuario
+    const session = await auth()
+    if (!session?.user?.id) {
+      return { 
+        success: false, 
+        error: 'Sesión expirada', 
+        code: 'SESSION_EXPIRED',
+        requiresReauth: true 
+      }
+    }
+
     const attempt = await db.examAttempt.findUnique({
       where: { id: attemptId },
       include: { exam: true },
@@ -750,6 +761,15 @@ export async function saveExamAnswer(
 
     if (!attempt) {
       return { success: false, error: 'Intento no encontrado' }
+    }
+
+    // Verificar que el intento pertenece al usuario autenticado
+    if (attempt.userId !== session.user.id) {
+      return { 
+        success: false, 
+        error: 'No autorizado para este intento',
+        code: 'UNAUTHORIZED'
+      }
     }
 
     if (attempt.status !== AttemptStatus.IN_PROGRESS) {
@@ -900,6 +920,17 @@ function generateVerificationCode(attemptId: string): string {
 
 export async function submitExamAttempt(attemptId: string) {
   try {
+    // Validar sesión del usuario
+    const session = await auth()
+    if (!session?.user?.id) {
+      return { 
+        success: false, 
+        error: 'Sesión expirada', 
+        code: 'SESSION_EXPIRED',
+        requiresReauth: true 
+      }
+    }
+
     const attempt = await db.examAttempt.findUnique({
       where: { id: attemptId },
       include: {
@@ -916,6 +947,15 @@ export async function submitExamAttempt(attemptId: string) {
 
     if (!attempt) {
       return { success: false, error: 'Intento no encontrado' }
+    }
+
+    // Verificar que el intento pertenece al usuario autenticado
+    if (attempt.userId !== session.user.id) {
+      return { 
+        success: false, 
+        error: 'No autorizado para este intento',
+        code: 'UNAUTHORIZED'
+      }
     }
 
     if (attempt.status !== AttemptStatus.IN_PROGRESS) {
