@@ -540,10 +540,10 @@ export async function sendBulkNotificationByRole(
         })),
       })
 
-      // Contar por rol
+      // Contar por rol (solo los roles seleccionados en los filtros)
       batch.forEach((u) => {
         u.roles.forEach((role) => {
-          if (role in byRole) {
+          if (payload.filters.roles.includes(role) && role in byRole) {
             byRole[role as UserRole]++
           }
         })
