@@ -16,6 +16,7 @@ import {
 import { startOfMonth, endOfMonth } from 'date-fns'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { InfoIcon } from 'lucide-react'
+import { downloadCSV } from '@/components/analytics/export-button'
 
 function LoadingSkeleton() {
   return (
@@ -100,30 +101,17 @@ export default function TeacherPaymentsPage() {
   }
 
   const handleExport = () => {
-    const csvContent = [
-      ['Profesor', 'Email', 'Rango', 'Clases', 'Horas', 'Pago Total', 'Promedio/Clase'].join(','),
-      ...payments.map((p) =>
-        [
-          p.teacherName,
-          p.teacherEmail,
-          p.rankName || '-',
-          p.totalClasses,
-          p.totalHours.toFixed(1),
-          p.totalPayment.toFixed(2),
-          p.averagePerClass.toFixed(2),
-        ].join(',')
-      ),
-    ].join('\n')
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
-    const link = document.createElement('a')
-    const url = URL.createObjectURL(blob)
-    link.setAttribute('href', url)
-    link.setAttribute('download', `pagos-profesores-${new Date().toISOString().split('T')[0]}.csv`)
-    link.style.visibility = 'hidden'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+    const csvData = payments.map((p) => ({
+      'Profesor': p.teacherName,
+      'Email': p.teacherEmail,
+      'Rango': p.rankName || '-',
+      'Clases': p.totalClasses,
+      'Horas': p.totalHours.toFixed(1),
+      'Pago Total': p.totalPayment.toFixed(2),
+      'Promedio/Clase': p.averagePerClass.toFixed(2),
+    }))
+    
+    downloadCSV(csvData, `pagos-profesores-${new Date().toISOString().split('T')[0]}`)
   }
 
   return (
