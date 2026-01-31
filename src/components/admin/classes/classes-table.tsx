@@ -2,7 +2,12 @@
 
 import { useState, useMemo, memo, useEffect } from 'react'
 import { ColumnDef, PaginationState } from '@tanstack/react-table'
-import { ClassBookingWithDetails, deleteClass, updateClass, toggleClassPayable } from '@/lib/actions/classes'
+import {
+  ClassBookingWithDetails,
+  deleteClass,
+  updateClass,
+  toggleClassPayable,
+} from '@/lib/actions/classes'
 import { getTodayString } from '@/lib/utils/date'
 import { formatFullName } from '@/lib/utils/name-formatter'
 import { Button } from '@/components/ui/button'
@@ -58,7 +63,10 @@ interface ClassesTableProps {
   userTimezone: string
 }
 
-export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }: ClassesTableProps) {
+export const ClassesTable = memo(function ClassesTable({
+  classes,
+  userTimezone,
+}: ClassesTableProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [teacherFilter, setTeacherFilter] = useState('all')
@@ -118,7 +126,9 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
       const isValidB = !isNaN(dateB.getTime())
 
       if (isValidA && isValidB) {
-        return sortOrder === 'asc' ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime()
+        return sortOrder === 'asc'
+          ? dateA.getTime() - dateB.getTime()
+          : dateB.getTime() - dateA.getTime()
       }
 
       if (isValidA !== isValidB) {
@@ -139,7 +149,7 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
   useEffect(() => {
     const maxPage = Math.max(0, Math.ceil(filteredClasses.length / pagination.pageSize) - 1)
     if (pagination.pageIndex > maxPage) {
-      setPagination(prev => ({ ...prev, pageIndex: maxPage }))
+      setPagination((prev) => ({ ...prev, pageIndex: maxPage }))
     }
   }, [filteredClasses.length, pagination.pageSize, pagination.pageIndex])
 
@@ -149,7 +159,7 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
     setIsDeleting(true)
     try {
       // Update local state optimistically
-      setLocalClasses(prev => prev.filter(classItem => classItem.id !== classToDelete))
+      setLocalClasses((prev) => prev.filter((classItem) => classItem.id !== classToDelete))
 
       const result = await deleteClass(classToDelete)
       if (result.success) {
@@ -158,17 +168,17 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
         setClassToDelete(null)
       } else {
         // Revert on error
-        setLocalClasses(prev => {
+        setLocalClasses((prev) => {
           // Find the deleted class from original props to restore it
-          const deletedClass = classes.find(c => c.id === classToDelete)
+          const deletedClass = classes.find((c) => c.id === classToDelete)
           return deletedClass ? [...prev, deletedClass] : prev
         })
         toast.error(result.error || 'Error al eliminar la clase')
       }
     } catch {
       // Revert on error
-      setLocalClasses(prev => {
-        const deletedClass = classes.find(c => c.id === classToDelete)
+      setLocalClasses((prev) => {
+        const deletedClass = classes.find((c) => c.id === classToDelete)
         return deletedClass ? [...prev, deletedClass] : prev
       })
       toast.error('Error al eliminar la clase')
@@ -190,11 +200,9 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
       const originalCompletedAt = classItem.completedAt
 
       // Update local state optimistically
-      setLocalClasses(prev => 
-        prev.map(c => 
-          c.id === classId 
-            ? { ...c, status: BookingStatus.COMPLETED, completedAt: new Date() }
-            : c
+      setLocalClasses((prev) =>
+        prev.map((c) =>
+          c.id === classId ? { ...c, status: BookingStatus.COMPLETED, completedAt: new Date() } : c
         )
       )
 
@@ -207,14 +215,14 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
         completedAt: new Date(),
         timezone: userTimezone,
       })
-      
+
       if (result.success) {
         toast.success('Clase marcada como completada')
       } else {
         // Revert on error
-        setLocalClasses(prev => 
-          prev.map(c => 
-            c.id === classId 
+        setLocalClasses((prev) =>
+          prev.map((c) =>
+            c.id === classId
               ? { ...c, status: originalStatus, completedAt: originalCompletedAt }
               : c
           )
@@ -223,11 +231,11 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
       }
     } catch {
       // Revert on error
-      const originalClass = localClasses.find(c => c.id === classId)
+      const originalClass = localClasses.find((c) => c.id === classId)
       if (originalClass) {
-        setLocalClasses(prev => 
-          prev.map(c => 
-            c.id === classId 
+        setLocalClasses((prev) =>
+          prev.map((c) =>
+            c.id === classId
               ? { ...c, status: originalClass.status, completedAt: originalClass.completedAt }
               : c
           )
@@ -240,11 +248,9 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
   const handleTogglePayable = async (classId: string, isPayable: boolean) => {
     try {
       // Update local state optimistically
-      setLocalClasses(prev => 
-        prev.map(classItem => 
-          classItem.id === classId 
-            ? { ...classItem, isPayable }
-            : classItem
+      setLocalClasses((prev) =>
+        prev.map((classItem) =>
+          classItem.id === classId ? { ...classItem, isPayable } : classItem
         )
       )
 
@@ -253,22 +259,18 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
         toast.success(result.message)
       } else {
         // Revert on error
-        setLocalClasses(prev => 
-          prev.map(classItem => 
-            classItem.id === classId 
-              ? { ...classItem, isPayable: !isPayable }
-              : classItem
+        setLocalClasses((prev) =>
+          prev.map((classItem) =>
+            classItem.id === classId ? { ...classItem, isPayable: !isPayable } : classItem
           )
         )
         toast.error(result.error || 'Error al actualizar el estado de pago')
       }
     } catch {
       // Revert on error
-      setLocalClasses(prev => 
-        prev.map(classItem => 
-          classItem.id === classId 
-            ? { ...classItem, isPayable: !isPayable }
-            : classItem
+      setLocalClasses((prev) =>
+        prev.map((classItem) =>
+          classItem.id === classId ? { ...classItem, isPayable: !isPayable } : classItem
         )
       )
       toast.error('Error al actualizar el estado de pago')
@@ -276,12 +278,8 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
   }
 
   const handleClassUpdated = (updatedClass: ClassBookingWithDetails) => {
-    setLocalClasses(prev => 
-      prev.map(classItem => 
-        classItem.id === updatedClass.id 
-          ? updatedClass
-          : classItem
-      )
+    setLocalClasses((prev) =>
+      prev.map((classItem) => (classItem.id === updatedClass.id ? updatedClass : classItem))
     )
   }
 
@@ -299,7 +297,9 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
       NO_SHOW: 'No asistió',
     }
     return (
-      <Badge className={`${statusStyles[status] || 'bg-gray-100 text-gray-700'} border-0 font-medium`}>
+      <Badge
+        className={`${statusStyles[status] || 'bg-gray-100 text-gray-700'} border-0 font-medium`}
+      >
         {statusLabels[status] || status}
       </Badge>
     )
@@ -320,31 +320,66 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
     setSelectedRows({})
   }
 
-  const handleBulkActionComplete = (updatedIds: string[], action: string) => {
+  const handleBulkActionComplete = (
+    updatedIds: string[],
+    action: string,
+    data?: {
+      teacherId?: string
+      teacher?: {
+        id: string
+        name: string
+        lastName: string | null
+        email: string
+        image: string | null
+      }
+      day?: string
+      timeSlot?: string
+    }
+  ) => {
     if (action === 'delete') {
-      setLocalClasses(prev => prev.filter(c => !updatedIds.includes(c.id)))
+      setLocalClasses((prev) => prev.filter((c) => !updatedIds.includes(c.id)))
     } else {
       // Refresh data for other actions - update local state optimistically
-      setLocalClasses(prev => prev.map(c => {
-        if (!updatedIds.includes(c.id)) return c
-        
-        switch (action) {
-          case 'mark_completed':
-            return { ...c, status: 'COMPLETED' as const, completedAt: new Date() }
-          case 'mark_confirmed':
-            return { ...c, status: 'CONFIRMED' as const }
-          case 'mark_cancelled':
-            return { ...c, status: 'CANCELLED' as const, cancelledAt: new Date() }
-          case 'mark_no_show':
-            return { ...c, status: 'NO_SHOW' as const }
-          case 'make_payable':
-            return { ...c, isPayable: true }
-          case 'make_non_payable':
-            return { ...c, isPayable: false }
-          default:
-            return c
-        }
-      }))
+      setLocalClasses((prev) =>
+        prev.map((c) => {
+          if (!updatedIds.includes(c.id)) return c
+
+          switch (action) {
+            case 'mark_completed':
+              return { ...c, status: 'COMPLETED' as const, completedAt: new Date() }
+            case 'mark_confirmed':
+              return { ...c, status: 'CONFIRMED' as const }
+            case 'mark_cancelled':
+              return { ...c, status: 'CANCELLED' as const, cancelledAt: new Date() }
+            case 'mark_no_show':
+              return { ...c, status: 'NO_SHOW' as const }
+            case 'make_payable':
+              return { ...c, isPayable: true }
+            case 'make_non_payable':
+              return { ...c, isPayable: false }
+            case 'change_teacher':
+              if (data?.teacherId && data?.teacher) {
+                return {
+                  ...c,
+                  teacherId: data.teacherId,
+                  teacher: data.teacher,
+                }
+              }
+              return c
+            case 'reschedule':
+              if (data?.day && data?.timeSlot) {
+                return {
+                  ...c,
+                  day: data.day,
+                  timeSlot: data.timeSlot,
+                }
+              }
+              return c
+            default:
+              return c
+          }
+        })
+      )
     }
     setSelectedRows({})
   }
@@ -371,7 +406,10 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Seleccionar todo"
         />
@@ -497,7 +535,9 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
                   </DropdownMenuItem>
                 )}
                 {classItem.status === 'COMPLETED' && (
-                  <DropdownMenuItem onClick={() => handleTogglePayable(classItem.id, !classItem.isPayable)}>
+                  <DropdownMenuItem
+                    onClick={() => handleTogglePayable(classItem.id, !classItem.isPayable)}
+                  >
                     <DollarSign className="h-4 w-4 mr-2" />
                     {classItem.isPayable ? 'Desmarcar como pagable' : 'Marcar como pagable'}
                   </DropdownMenuItem>
@@ -592,7 +632,7 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
         availableTeachers={getUniqueTeachers()}
         userTimezone={userTimezone}
       />
-      
+
       <DataTable
         columns={columns}
         data={filteredClasses}
@@ -603,7 +643,7 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
         onRowSelectionChange={(rows) => {
           const newSelection: Record<string, boolean> = {}
           rows.forEach((row) => {
-            const index = filteredClasses.findIndex(c => c.id === row.id)
+            const index = filteredClasses.findIndex((c) => c.id === row.id)
             if (index !== -1) newSelection[index] = true
           })
           setSelectedRows(newSelection)
