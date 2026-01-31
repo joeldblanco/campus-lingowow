@@ -1096,6 +1096,137 @@ export async function getEnrollmentsWithTeachers() {
 }
 
 /**
+ * Bulk update classes - actualiza múltiples clases a la vez
+ */
+export async function bulkUpdateClasses(
+  classIds: string[],
+  updateData: {
+    status?: 'CONFIRMED' | 'COMPLETED' | 'CANCELLED' | 'NO_SHOW'
+    isPayable?: boolean
+    teacherId?: string
+    completedAt?: Date | null
+    cancelledAt?: Date | null
+  }
+) {
+  try {
+    if (classIds.length === 0) {
+      return { success: false, error: 'No se seleccionaron clases' }
+    }
+
+    const dataToUpdate: Record<string, unknown> = {}
+    
+    if (updateData.status) {
+      dataToUpdate.status = updateData.status
+      if (updateData.status === 'COMPLETED') {
+        dataToUpdate.completedAt = new Date()
+      } else if (updateData.status === 'CANCELLED') {
+        dataToUpdate.cancelledAt = new Date()
+      }
+    }
+    
+    if (updateData.isPayable !== undefined) {
+      dataToUpdate.isPayable = updateData.isPayable
+    }
+    
+    if (updateData.teacherId) {
+      dataToUpdate.teacherId = updateData.teacherId
+    }
+
+    const result = await db.classBooking.updateMany({
+      where: { id: { in: classIds } },
+      data: dataToUpdate,
+    })
+
+    return { 
+      success: true, 
+      updatedCount: result.count,
+      message: `${result.count} clase(s) actualizada(s) exitosamente`
+    }
+  } catch (error) {
+    console.error('Error in bulk update classes:', error)
+    return { success: false, error: 'Error al actualizar las clases' }
+  }
+}
+
+/**
+ * Bulk delete classes - elimina múltiples clases a la vez
+ */
+export async function bulkDeleteClasses(classIds: string[]) {
+  try {
+    if (classIds.length === 0) {
+      return { success: false, error: 'No se seleccionaron clases' }
+    }
+
+    // Eliminar grabaciones de R2 para cada clase
+    const { deleteRecordingFolder } = await import('@/lib/actions/recordings')
+    for (const classId of classIds) {
+      await deleteRecordingFolder(classId).catch(err => 
+        console.warn(`Warning: Could not delete R2 recordings for class ${classId}:`, err)
+      )
+    }
+
+    const result = await db.classBooking.deleteMany({
+      where: { id: { in: classIds } },
+    })
+
+    revalidatePath('/admin/classes')
+    return { 
+      success: true, 
+      deletedCount: result.count,
+      message: `${result.count} clase(s) eliminada(s) exitosamente`
+    }
+  } catch (error) {
+    console.error('Error in bulk delete classes:', error)
+    return { success: false, error: 'Error al eliminar las clases' }
+  }
+}
+
+/**
+ * Bulk reschedule classes - reprograma múltiples clases a la vez
+ */
+export async function bulkRescheduleClasses(
+  classIds: string[],
+  newDay: string,
+  newTimeSlot: string,
+  timezone?: string
+) {
+  try {
+    if (classIds.length === 0) {
+      return { success: false, error: 'No se seleccionaron clases' }
+    }
+
+    // Convertir a UTC si se proporciona timezone
+    let utcDay = newDay
+    let utcTimeSlot = newTimeSlot
+    
+    if (timezone) {
+      const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
+      const converted = convertTimeSlotToUTC(newDay, newTimeSlot, timezone)
+      utcDay = converted.day
+      utcTimeSlot = converted.timeSlot
+    }
+
+    const result = await db.classBooking.updateMany({
+      where: { id: { in: classIds } },
+      data: { 
+        day: utcDay, 
+        timeSlot: utcTimeSlot,
+        status: 'CONFIRMED', // Reset status when rescheduling
+      },
+    })
+
+    return { 
+      success: true, 
+      updatedCount: result.count,
+      message: `${result.count} clase(s) reprogramada(s) exitosamente`
+    }
+  } catch (error) {
+    console.error('Error in bulk reschedule classes:', error)
+    return { success: false, error: 'Error al reprogramar las clases' }
+  }
+}
+
+/**
  * Marca o desmarca una clase como válida para pago al profesor
  */
 export async function toggleClassPayable(classId: string, isPayable: boolean) {

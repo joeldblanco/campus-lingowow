@@ -28,6 +28,8 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '50mb',
     },
   },
+  // Esto evita errores de compilación con las dependencias de puppeteer en el servidor
+  serverExternalPackages: ['puppeteer-core', '@sparticuz/chromium'],
   eslint: {
     ignoreDuringBuilds: true,
   },

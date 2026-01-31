@@ -37,6 +37,7 @@ import { DataTable, DataTableColumnHeader } from '@/components/ui/data-table'
 import { EditClassDialog } from './edit-class-dialog'
 import { ViewClassDialog } from './view-class-dialog'
 import { RescheduleClassDialog } from './reschedule-class-dialog'
+import { BulkActionsBar } from './bulk-actions-bar'
 import { UserAvatar } from '@/components/ui/user-avatar'
 import {
   MoreVertical,
@@ -71,6 +72,7 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
     pageIndex: 0,
     pageSize: 10,
   })
+  const [selectedRows, setSelectedRows] = useState<Record<string, boolean>>({})
 
   const filteredClasses = useMemo(() => {
     let filtered = localClasses
@@ -306,8 +308,45 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
   const getUniqueTeachers = () => {
     const teachers = Array.from(new Set(classes.map((c) => c.teacherId)))
       .map((id) => classes.find((c) => c.teacherId === id)!)
-      .map((c) => ({ id: c.teacherId, name: formatFullName(c.teacher.name, c.teacher.lastName) }))
+      .map((c) => ({ id: c.teacherId, name: c.teacher.name, lastName: c.teacher.lastName }))
     return teachers
+  }
+
+  const selectedClasses = useMemo(() => {
+    return filteredClasses.filter((_, index) => selectedRows[index])
+  }, [filteredClasses, selectedRows])
+
+  const handleClearSelection = () => {
+    setSelectedRows({})
+  }
+
+  const handleBulkActionComplete = (updatedIds: string[], action: string) => {
+    if (action === 'delete') {
+      setLocalClasses(prev => prev.filter(c => !updatedIds.includes(c.id)))
+    } else {
+      // Refresh data for other actions - update local state optimistically
+      setLocalClasses(prev => prev.map(c => {
+        if (!updatedIds.includes(c.id)) return c
+        
+        switch (action) {
+          case 'mark_completed':
+            return { ...c, status: 'COMPLETED' as const, completedAt: new Date() }
+          case 'mark_confirmed':
+            return { ...c, status: 'CONFIRMED' as const }
+          case 'mark_cancelled':
+            return { ...c, status: 'CANCELLED' as const, cancelledAt: new Date() }
+          case 'mark_no_show':
+            return { ...c, status: 'NO_SHOW' as const }
+          case 'make_payable':
+            return { ...c, isPayable: true }
+          case 'make_non_payable':
+            return { ...c, isPayable: false }
+          default:
+            return c
+        }
+      }))
+    }
+    setSelectedRows({})
   }
 
   const formatDate = (dateString: string) => {
@@ -546,6 +585,14 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
 
   return (
     <div className="space-y-4">
+      <BulkActionsBar
+        selectedClasses={selectedClasses}
+        onClearSelection={handleClearSelection}
+        onActionComplete={handleBulkActionComplete}
+        availableTeachers={getUniqueTeachers()}
+        userTimezone={userTimezone}
+      />
+      
       <DataTable
         columns={columns}
         data={filteredClasses}
@@ -553,6 +600,14 @@ export const ClassesTable = memo(function ClassesTable({ classes, userTimezone }
         emptyMessage="No se encontraron clases que coincidan con los filtros."
         pagination={pagination}
         onPaginationChange={setPagination}
+        onRowSelectionChange={(rows) => {
+          const newSelection: Record<string, boolean> = {}
+          rows.forEach((row) => {
+            const index = filteredClasses.findIndex(c => c.id === row.id)
+            if (index !== -1) newSelection[index] = true
+          })
+          setSelectedRows(newSelection)
+        }}
       />
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
