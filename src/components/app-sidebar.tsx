@@ -191,6 +191,11 @@ const data = {
           icon: Tag,
         },
         {
+          title: 'Pagos a Profesores',
+          url: '/admin/payments/teachers',
+          icon: DollarSign,
+        },
+        {
           title: 'Clases Pagables',
           url: '/admin/reports/payable-classes',
           icon: DollarSign,

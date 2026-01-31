@@ -63,7 +63,16 @@ type BulkAction =
 interface BulkActionsBarProps {
   selectedClasses: ClassBookingWithDetails[]
   onClearSelection: () => void
-  onActionComplete: (updatedIds: string[], action: BulkAction) => void
+  onActionComplete: (
+    updatedIds: string[], 
+    action: BulkAction, 
+    data?: { 
+      teacherId?: string
+      teacher?: { id: string; name: string; lastName: string | null; email: string; image: string | null }
+      day?: string
+      timeSlot?: string
+    }
+  ) => void
   availableTeachers: { id: string; name: string; lastName: string | null }[]
   userTimezone: string
 }
@@ -145,7 +154,7 @@ export function BulkActionsBar({
       const result = await bulkRescheduleClasses(selectedIds, newDay, newTimeSlot, userTimezone)
       if (result.success) {
         toast.success(result.message || 'Clases reprogramadas')
-        onActionComplete(selectedIds, 'reschedule')
+        onActionComplete(selectedIds, 'reschedule', { day: newDay, timeSlot: newTimeSlot })
         onClearSelection()
         setRescheduleDialogOpen(false)
         setNewDay('')
@@ -170,8 +179,21 @@ export function BulkActionsBar({
     try {
       const result = await bulkUpdateClasses(selectedIds, { teacherId: selectedTeacherId })
       if (result.success) {
+        // Buscar el teacher completo de las clases existentes o usar availableTeachers con valores por defecto
+        const existingTeacher = selectedClasses.find(c => c.teacherId === selectedTeacherId)?.teacher
+        const basicTeacher = availableTeachers.find(t => t.id === selectedTeacherId)
+        
+        const selectedTeacher = existingTeacher || (basicTeacher ? {
+          ...basicTeacher,
+          email: '', // Valor por defecto - se actualizará en el próximo fetch
+          image: null
+        } : undefined)
+        
         toast.success(result.message || 'Profesor actualizado')
-        onActionComplete(selectedIds, 'change_teacher')
+        onActionComplete(selectedIds, 'change_teacher', { 
+          teacherId: selectedTeacherId,
+          teacher: selectedTeacher 
+        })
         onClearSelection()
         setChangeTeacherDialogOpen(false)
         setSelectedTeacherId('')
