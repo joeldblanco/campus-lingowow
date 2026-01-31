@@ -153,6 +153,9 @@ model User {
   deviceTokens          DeviceToken[]
   refreshTokens         RefreshToken[]
 
+  // Confirmaciones de pago de profesores
+  paymentConfirmations  TeacherPaymentConfirmation[]
+
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   lastLoginAt DateTime?
@@ -2513,4 +2516,39 @@ model RefreshToken {
   @@index([userId])
   @@index([token])
   @@map("refresh_tokens")
+}
+
+// =============================================
+// CONFIRMACIONES DE PAGO A PROFESORES
+// =============================================
+
+model TeacherPaymentConfirmation {
+  id           String             @id @default(cuid())
+  teacherId    String
+  amount       Float
+  periodStart  DateTime
+  periodEnd    DateTime
+  confirmedAt  DateTime           @default(now())
+  hasProof     Boolean            @default(false)
+  proofUrl     String?
+  notes        String?
+  status       ConfirmationStatus @default(PENDING)
+  
+  // Relaciones
+  teacher      User               @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  
+  @@unique([teacherId, periodStart, periodEnd])
+  @@index([teacherId])
+  @@index([confirmedAt])
+  @@index([status])
+  @@map("teacher_payment_confirmations")
+}
+
+enum ConfirmationStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }

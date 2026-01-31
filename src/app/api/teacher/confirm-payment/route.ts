@@ -4,6 +4,8 @@ import { db } from '@/lib/db'
 import { sendTeacherPaymentConfirmationSlack } from '@/lib/slack'
 import { sendTeacherPaymentConfirmationAdminEmail } from '@/lib/mail'
 import { notifyTeacherPaymentConfirmed } from '@/lib/actions/notifications'
+import { createPaymentConfirmation } from '@/lib/actions/payment-confirmations'
+import { startOfMonth, endOfMonth } from 'date-fns'
 
 export async function POST(request: NextRequest) {
   try {
@@ -54,6 +56,29 @@ export async function POST(request: NextRequest) {
     const parsedAmount = parseFloat(amount)
     const teacherFullName = `${teacher.name || ''} ${teacher.lastName || ''}`.trim() || 'Sin nombre'
 
+    // Determinar el período (mes actual por defecto)
+    const now = new Date()
+    const periodStart = startOfMonth(now)
+    const periodEnd = endOfMonth(now)
+
+    // Guardar confirmación en la base de datos
+    const confirmationResult = await createPaymentConfirmation({
+      teacherId,
+      amount: parsedAmount,
+      periodStart,
+      periodEnd,
+      hasProof,
+      proofUrl: undefined, // TODO: Implementar upload a storage
+      notes: undefined,
+    })
+
+    if (!confirmationResult.success) {
+      return NextResponse.json(
+        { error: confirmationResult.error || 'Error al guardar la confirmación' },
+        { status: 500 }
+      )
+    }
+
     // Send notifications to administrators
     const notificationData = {
       teacherId,
@@ -89,6 +114,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: 'Pago confirmado correctamente',
+      confirmationId: confirmationResult.confirmation?.id,
     })
   } catch (error) {
     console.error('Error confirming payment:', error)

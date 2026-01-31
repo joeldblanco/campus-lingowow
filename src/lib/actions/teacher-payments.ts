@@ -15,6 +15,10 @@ export interface TeacherPaymentDetail {
   totalHours: number
   totalPayment: number
   averagePerClass: number
+  paymentMethod?: string
+  paymentDetails?: string
+  paymentConfirmed: boolean
+  paymentConfirmedAt?: Date
   classes: PayableClass[]
 }
 
@@ -148,6 +152,87 @@ export async function getPaymentPeriodSummary(
 }
 
 /**
+ * Verifica si un profesor confirmó su pago para un período específico
+ */
+async function checkTeacherPaymentConfirmation(teacherId: string, startDate: Date, endDate: Date) {
+  try {
+    const confirmation = await db.teacherPaymentConfirmation.findFirst({
+      where: {
+        teacherId,
+        periodStart: startDate,
+        periodEnd: endDate,
+      },
+      orderBy: {
+        confirmedAt: 'desc'
+      }
+    })
+
+    return {
+      confirmed: !!confirmation,
+      confirmedAt: confirmation?.confirmedAt || undefined,
+      status: confirmation?.status
+    }
+  } catch (error) {
+    console.error('Error checking payment confirmation:', error)
+    return { confirmed: false, confirmedAt: undefined, status: undefined }
+  }
+}
+
+/**
+ * Procesa los settings de pago de un profesor para obtener método y detalles
+ */
+function getPaymentMethodInfo(paymentSettings: string | null) {
+  if (!paymentSettings) {
+    return { paymentMethod: 'No configurado', paymentDetails: null }
+  }
+
+  try {
+    const settings = JSON.parse(paymentSettings)
+    const methodMap = {
+      bank_transfer: 'Transferencia Bancaria',
+      binance: 'Binance',
+      paypal: 'PayPal',
+      pago_movil: 'Pago Móvil'
+    }
+
+    const paymentMethod = methodMap[settings.paymentMethod as keyof typeof methodMap] || settings.paymentMethod
+    
+    let paymentDetails = null
+    switch (settings.paymentMethod) {
+      case 'bank_transfer':
+        const details = []
+        if (settings.bankName) details.push(settings.bankName)
+        if (settings.bankAccountHolder) details.push(`Titular: ${settings.bankAccountHolder}`)
+        if (settings.bankAccountNumber) details.push(`Cta: ${settings.bankAccountNumber}`)
+        if (settings.bankRoutingNumber) details.push(`CCI: ${settings.bankRoutingNumber}`)
+        paymentDetails = details.join(' - ')
+        break
+      case 'paypal':
+        paymentDetails = settings.paypalEmail
+        break
+      case 'binance':
+        const binanceDetails = []
+        if (settings.binanceEmail) binanceDetails.push(`Email: ${settings.binanceEmail}`)
+        if (settings.binanceId) binanceDetails.push(`ID: ${settings.binanceId}`)
+        paymentDetails = binanceDetails.join(' - ')
+        break
+      case 'pago_movil':
+        const pmDetails = []
+        if (settings.pmBankName) pmDetails.push(settings.pmBankName)
+        if (settings.pmPhoneNumber) pmDetails.push(`Tel: ${settings.pmPhoneNumber}`)
+        if (settings.pmIdNumber) pmDetails.push(`CI: ${settings.pmIdNumber}`)
+        paymentDetails = pmDetails.join(' - ')
+        break
+    }
+
+    return { paymentMethod, paymentDetails }
+  } catch (error) {
+    console.error('Error parsing payment settings:', error)
+    return { paymentMethod: 'Error', paymentDetails: null }
+  }
+}
+
+/**
  * Obtiene el detalle de pagos por profesor para un período específico
  */
 export async function getTeacherPaymentDetails(
@@ -180,6 +265,7 @@ export async function getTeacherPaymentDetails(
           lastName: true,
           email: true,
           image: true,
+          paymentSettings: true,
           teacherRank: {
             select: {
               name: true,
@@ -241,6 +327,9 @@ export async function getTeacherPaymentDetails(
 
     const teacher = classBooking.teacher
     if (!teacherPaymentMap.has(teacher.id)) {
+      const paymentInfo = getPaymentMethodInfo(teacher.paymentSettings)
+      const confirmationInfo = await checkTeacherPaymentConfirmation(teacher.id, start, end)
+      
       teacherPaymentMap.set(teacher.id, {
         teacherId: teacher.id,
         teacherName: `${teacher.name} ${teacher.lastName || ''}`.trim(),
@@ -252,6 +341,10 @@ export async function getTeacherPaymentDetails(
         totalHours: 0,
         totalPayment: 0,
         averagePerClass: 0,
+        paymentMethod: paymentInfo.paymentMethod,
+        paymentDetails: paymentInfo.paymentDetails,
+        paymentConfirmed: confirmationInfo.confirmed,
+        paymentConfirmedAt: confirmationInfo.confirmedAt || undefined,
         classes: [],
       })
     }
