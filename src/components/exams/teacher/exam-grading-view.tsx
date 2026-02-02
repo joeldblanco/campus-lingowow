@@ -543,7 +543,7 @@ export function ExamGradingView({
                           <span className="text-muted-foreground font-medium">Pregunta {answer.questionNumber}</span>
                           {answer.needsReview ? (
                             <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300">
-                              Pendiente de Revisión
+                              {answer.userAnswer === null ? "Sin respuesta (Pendiente)" : "Pendiente de Revisión"}
                             </Badge>
                           ) : answer.isAutoGraded ? (
                             <Badge variant="outline" className={cn(
@@ -554,12 +554,8 @@ export function ExamGradingView({
                               Auto-calificada: {answer.isCorrect ? 'Correcta' : 'Incorrecta'}
                             </Badge>
                           ) : answer.userAnswer === null ? (
-                            <Badge variant="outline" className={cn(
-                              answer.needsReview 
-                                ? "bg-yellow-50 text-yellow-700 border-yellow-300"
-                                : "bg-gray-50 text-gray-700 border-gray-300"
-                            )}>
-                              {answer.needsReview ? "Sin respuesta (Pendiente)" : "Sin respuesta"}
+                            <Badge variant="outline" className="bg-gray-50 text-gray-700 border-gray-300">
+                              Sin respuesta
                             </Badge>
                           ) : (
                             <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300">
