@@ -195,7 +195,7 @@ export function TeacherEarningsOverview() {
   useEffect(() => {
     async function loadAcademicPeriods() {
       try {
-        const response = await fetch('/api/academic-periods')
+        const response = await fetch('/api/academic-periods/earnings')
         if (response.ok) {
           const data = await response.json()
           const periods = data.periods || []
