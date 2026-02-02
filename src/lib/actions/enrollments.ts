@@ -1411,6 +1411,23 @@ export async function syncEnrollmentStatuses() {
     const activateResult = await activatePendingEnrollments()
     const completeResult = await completeExpiredEnrollments()
 
+    // Check if either sub-function failed
+    if (!activateResult.success || !completeResult.success) {
+      const errors: string[] = []
+      if (!activateResult.success && activateResult.error) {
+        errors.push(activateResult.error)
+      }
+      if (!completeResult.success && completeResult.error) {
+        errors.push(completeResult.error)
+      }
+      return {
+        success: false,
+        error: errors.join('; '),
+        activated: activateResult.count ?? 0,
+        completed: completeResult.count ?? 0,
+      }
+    }
+
     return {
       success: true,
       activated: activateResult.count,
