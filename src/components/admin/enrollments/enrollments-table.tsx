@@ -158,7 +158,7 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
   }
 
   const clearFilters = () => {
-    setStatusFilter('all')
+    setStatusFilter(EnrollmentStatus.ACTIVE)
     setCourseFilter('all')
     setPeriodFilter('all')
     setSearchTerm('')
