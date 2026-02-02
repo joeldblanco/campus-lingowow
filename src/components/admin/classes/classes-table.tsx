@@ -58,19 +58,32 @@ import {
 import { toast } from 'sonner'
 import { BookingStatus } from '@prisma/client'
 
+interface AcademicPeriod {
+  id: string
+  name: string
+  startDate: Date
+  endDate: Date
+  isActive: boolean
+}
+
 interface ClassesTableProps {
   classes: ClassBookingWithDetails[]
   userTimezone: string
+  periods: AcademicPeriod[]
+  defaultPeriodId?: string
 }
 
 export const ClassesTable = memo(function ClassesTable({
   classes,
   userTimezone,
+  periods,
+  defaultPeriodId,
 }: ClassesTableProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [teacherFilter, setTeacherFilter] = useState('all')
   const [dateFilter, setDateFilter] = useState('all')
+  const [periodFilter, setPeriodFilter] = useState(defaultPeriodId || 'all')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [classToDelete, setClassToDelete] = useState<string | null>(null)
@@ -116,6 +129,12 @@ export const ClassesTable = memo(function ClassesTable({
       }
     }
 
+    if (periodFilter !== 'all') {
+      filtered = filtered.filter(
+        (classItem) => classItem.enrollment.academicPeriod.id === periodFilter
+      )
+    }
+
     filtered = [...filtered].sort((a, b) => {
       const timeA = a.timeSlot.split('-')[0]
       const timeB = b.timeSlot.split('-')[0]
@@ -143,7 +162,7 @@ export const ClassesTable = memo(function ClassesTable({
     })
 
     return filtered
-  }, [localClasses, searchTerm, statusFilter, teacherFilter, dateFilter, sortOrder])
+  }, [localClasses, searchTerm, statusFilter, teacherFilter, dateFilter, periodFilter, sortOrder])
 
   // Adjust pagination when filtered results change to avoid invalid page
   useEffect(() => {
@@ -398,6 +417,7 @@ export const ClassesTable = memo(function ClassesTable({
     setStatusFilter('all')
     setTeacherFilter('all')
     setDateFilter('all')
+    setPeriodFilter(defaultPeriodId || 'all')
     setSearchTerm('')
   }
 
@@ -593,6 +613,19 @@ export const ClassesTable = memo(function ClassesTable({
           {getUniqueTeachers().map((teacher) => (
             <SelectItem key={teacher.id} value={teacher.id}>
               {teacher.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <Select value={periodFilter} onValueChange={setPeriodFilter}>
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Período" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Todos los períodos</SelectItem>
+          {periods.map((period) => (
+            <SelectItem key={period.id} value={period.id}>
+              {period.name} {period.isActive && '(Activo)'}
             </SelectItem>
           ))}
         </SelectContent>

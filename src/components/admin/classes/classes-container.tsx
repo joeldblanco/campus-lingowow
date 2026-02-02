@@ -1,4 +1,5 @@
 import { getAllClasses } from '@/lib/actions/classes'
+import { getAllAcademicPeriods } from '@/lib/actions/enrollments'
 import { ClassesTable } from './classes-table'
 import { CreateClassDialog } from './create-class-dialog'
 import { Button } from '@/components/ui/button'
@@ -18,7 +19,12 @@ export async function ClassesContainer() {
     userTimezone = user?.timezone || 'America/Lima'
   }
   
-  const classes = await getAllClasses({ timezone: userTimezone })
+  const periods = await getAllAcademicPeriods()
+  const activePeriod = periods.find(p => p.isActive)
+  
+  const classes = await getAllClasses({ 
+    timezone: userTimezone
+  })
 
   return (
     <div className="space-y-6">
@@ -37,7 +43,12 @@ export async function ClassesContainer() {
         </CreateClassDialog>
       </div>
 
-      <ClassesTable classes={classes} userTimezone={userTimezone} />
+      <ClassesTable 
+        classes={classes} 
+        userTimezone={userTimezone} 
+        periods={periods}
+        defaultPeriodId={activePeriod?.id}
+      />
     </div>
   )
 }
