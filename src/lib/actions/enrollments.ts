@@ -59,6 +59,24 @@ export interface EnrollmentStats {
   averageProgress: number
 }
 
+/**
+ * Determina el estado correcto de una inscripción basado en las fechas del período académico
+ * @param startDate - Fecha de inicio del período académico
+ * @param endDate - Fecha de fin del período académico
+ * @returns EnrollmentStatus correspondiente
+ */
+export function getEnrollmentStatusByPeriod(startDate: Date, endDate: Date): EnrollmentStatus {
+  const today = getCurrentDate()
+  
+  if (isAfterDate(startDate, today)) {
+    return EnrollmentStatus.PENDING
+  } else if (isAfterDate(today, endDate)) {
+    return EnrollmentStatus.COMPLETED
+  } else {
+    return EnrollmentStatus.ACTIVE
+  }
+}
+
 // Get all enrollments with details
 export async function getAllEnrollments(): Promise<EnrollmentWithDetails[]> {
   try {
@@ -294,11 +312,8 @@ export async function createEnrollment(data: {
       return { success: false, error: 'Período académico no encontrado' }
     }
 
-    // Determinar el estado según la fecha de inicio del período
-    const today = getCurrentDate()
-    const status = isAfterDate(academicPeriod.startDate, today)
-      ? EnrollmentStatus.PENDING
-      : EnrollmentStatus.ACTIVE
+    // Determinar el estado según las fechas del período académico
+    const status = getEnrollmentStatusByPeriod(academicPeriod.startDate, academicPeriod.endDate)
 
     // 3. Create Enrollment and Invoice "Atomically" (Sequential with rollback)
     // We create Enrollment first.
@@ -480,11 +495,8 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
       return { success: false, error: 'Período académico no encontrado' }
     }
 
-    // Determinar el estado según la fecha de inicio del período
-    const today = getCurrentDate()
-    const status = isAfterDate(academicPeriod.startDate, today)
-      ? EnrollmentStatus.PENDING
-      : EnrollmentStatus.ACTIVE
+    // Determinar el estado según las fechas del período académico
+    const status = getEnrollmentStatusByPeriod(academicPeriod.startDate, academicPeriod.endDate)
 
     // 3. Create Enrollment, Invoice, and Schedule in a transaction
     let enrollment
@@ -1351,6 +1363,67 @@ export async function activatePendingEnrollments() {
       success: false,
       error: 'Error al activar pre-inscripciones',
       count: 0,
+    }
+  }
+}
+
+// Complete active enrollments when their academic period ends
+export async function completeExpiredEnrollments() {
+  try {
+    const today = getTodayStart()
+
+    const result = await db.enrollment.updateMany({
+      where: {
+        status: EnrollmentStatus.ACTIVE,
+        academicPeriod: {
+          endDate: {
+            lt: today,
+          },
+        },
+      },
+      data: {
+        status: EnrollmentStatus.COMPLETED,
+      },
+    })
+
+    console.log(`Completed ${result.count} expired enrollments`)
+    revalidatePath('/admin/enrollments')
+
+    return {
+      success: true,
+      count: result.count,
+      message: `Se completaron ${result.count} inscripciones de períodos finalizados`,
+    }
+  } catch (error) {
+    console.error('Error completing expired enrollments:', error)
+    return {
+      success: false,
+      error: 'Error al completar inscripciones expiradas',
+      count: 0,
+    }
+  }
+}
+
+// Sync all enrollment statuses based on their academic period dates
+// This function updates both PENDING->ACTIVE and ACTIVE->COMPLETED
+export async function syncEnrollmentStatuses() {
+  try {
+    const activateResult = await activatePendingEnrollments()
+    const completeResult = await completeExpiredEnrollments()
+
+    return {
+      success: true,
+      activated: activateResult.count,
+      completed: completeResult.count,
+      message: `Se activaron ${activateResult.count} y se completaron ${completeResult.count} inscripciones`,
+    }
+  } catch (error) {
+    console.error('Error syncing enrollment statuses:', error)
+    return {
+      success: false,
+      error: 'Error al sincronizar estados de inscripciones',
+      activated: 0,
+      completed: 0,
     }
   }
 }
