@@ -57,8 +57,9 @@ const statusLabels: Record<EnrollmentStatus, string> = {
 
 export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: EnrollmentsTableProps) {
   const [searchTerm, setSearchTerm] = useState('')
-  const [statusFilter, setStatusFilter] = useState('all')
+  const [statusFilter, setStatusFilter] = useState<string>(EnrollmentStatus.ACTIVE)
   const [courseFilter, setCourseFilter] = useState('all')
+  const [periodFilter, setPeriodFilter] = useState('all')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [enrollmentToDelete, setEnrollmentToDelete] = useState<string | null>(null)
@@ -88,6 +89,10 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
       filtered = filtered.filter((enrollment) => enrollment.courseId === courseFilter)
     }
 
+    if (periodFilter !== 'all') {
+      filtered = filtered.filter((enrollment) => enrollment.academicPeriodId === periodFilter)
+    }
+
     filtered = [...filtered].sort((a, b) => {
       const dateA = new Date(a.enrollmentDate).getTime()
       const dateB = new Date(b.enrollmentDate).getTime()
@@ -95,7 +100,7 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
     })
 
     return filtered
-  }, [enrollments, searchTerm, statusFilter, courseFilter, sortOrder])
+  }, [enrollments, searchTerm, statusFilter, courseFilter, periodFilter, sortOrder])
 
   const handleDeleteEnrollment = async () => {
     if (!enrollmentToDelete) return
@@ -127,6 +132,16 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
     )
   }
 
+  const getPeriods = () => {
+    const periods = enrollments.map((e) => ({
+      id: e.academicPeriodId,
+      name: e.academicPeriod.name,
+    }))
+    return periods.filter(
+      (period, index, self) => self.findIndex((p) => p.id === period.id) === index
+    )
+  }
+
   const getStatusBadge = (status: EnrollmentStatus) => {
     const statusStyles: Record<EnrollmentStatus, string> = {
       PENDING: 'bg-amber-100 text-amber-700 hover:bg-amber-100',
@@ -145,6 +160,7 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
   const clearFilters = () => {
     setStatusFilter('all')
     setCourseFilter('all')
+    setPeriodFilter('all')
     setSearchTerm('')
   }
 
@@ -319,10 +335,23 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
           <SelectValue placeholder="Curso" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Todos</SelectItem>
+          <SelectItem value="all">Todos los cursos</SelectItem>
           {getCourses().map((course) => (
             <SelectItem key={course.id} value={course.id}>
               {course.title}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <Select value={periodFilter} onValueChange={setPeriodFilter}>
+        <SelectTrigger className="w-[160px]">
+          <SelectValue placeholder="Período" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Todos los períodos</SelectItem>
+          {getPeriods().map((period) => (
+            <SelectItem key={period.id} value={period.id}>
+              {period.name}
             </SelectItem>
           ))}
         </SelectContent>

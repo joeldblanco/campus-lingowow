@@ -65,7 +65,7 @@ export interface EnrollmentStats {
  * @param endDate - Fecha de fin del período académico
  * @returns EnrollmentStatus correspondiente
  */
-export function getEnrollmentStatusByPeriod(startDate: Date, endDate: Date): EnrollmentStatus {
+function getEnrollmentStatusByPeriod(startDate: Date, endDate: Date): EnrollmentStatus {
   const today = getCurrentDate()
   
   if (isAfterDate(startDate, today)) {

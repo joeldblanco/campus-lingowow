@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { convertAvailabilityFromUTC, convertTimeSlotFromUTC } from '@/lib/utils/date'
+import { EnrollmentStatus } from '@prisma/client'
 
 export async function GET(req: NextRequest) {
   try {
@@ -27,10 +28,14 @@ export async function GET(req: NextRequest) {
           include: {
             teacherAvailability: true,
             teacherRank: true,
-            // Incluir clases agendadas (no canceladas) para restarlas de la disponibilidad
+            // Incluir clases agendadas (no canceladas) de inscripciones ACTIVAS
+            // Excluir clases de inscripciones COMPLETED o PAUSED
             bookingsAsTeacher: {
               where: {
                 status: { not: 'CANCELLED' },
+                enrollment: {
+                  status: EnrollmentStatus.ACTIVE,
+                },
               },
               select: {
                 day: true,
