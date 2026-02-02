@@ -24,6 +24,8 @@ import { PaymentMethodForm } from '@/components/shop/checkout/payment-method-for
 import { CheckoutLoginModal } from '@/components/shop/checkout/login-modal'
 import { CheckoutScheduleSelector } from '@/components/checkout/checkout-schedule-selector'
 import { CouponInput } from '@/components/shop/checkout/coupon-input'
+import { convertRecurringScheduleFromUTC } from '@/lib/utils/date'
+import { getBrowserTimezone } from '@/hooks/use-timezone'
 import {
   Loader2,
   Lock,
@@ -79,6 +81,17 @@ const COUNTRIES = [
 ]
 
 const DAY_NAMES = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+
+// Helper para convertir un slot UTC a hora local para mostrar
+const convertSlotToLocalDisplay = (slot: ScheduleSlot, timezone: string): { dayOfWeek: number; startTime: string; endTime: string } => {
+  const localData = convertRecurringScheduleFromUTC(
+    slot.dayOfWeek,
+    slot.startTime,
+    slot.endTime,
+    timezone
+  )
+  return localData
+}
 
 const CHECKOUT_STATE_KEY = 'checkout-state'
 
@@ -826,14 +839,18 @@ export default function CheckoutPage() {
                       <div className="bg-slate-50 rounded-lg p-3 border border-slate-100">
                         <div className="text-xs font-bold text-slate-400 uppercase mb-2">Horarios Seleccionados</div>
                         {Object.entries(scheduleSelections).map(([planId, selection]) => (
-                          selection.schedule.map((slot, idx) => (
-                            <div key={`${planId}-${idx}`} className="flex justify-between items-center bg-white p-2 rounded border border-slate-200 mb-2 last:mb-0">
-                              <div className="flex flex-col">
-                                <span className="text-xs font-bold text-slate-700">{DAY_NAMES[slot.dayOfWeek]}</span>
-                                <span className="text-xs text-slate-500">{slot.startTime} - {slot.endTime}</span>
+                          selection.schedule.map((slot, idx) => {
+                            // Convertir de UTC a hora local para mostrar
+                            const localSlot = convertSlotToLocalDisplay(slot, getBrowserTimezone())
+                            return (
+                              <div key={`${planId}-${idx}`} className="flex justify-between items-center bg-white p-2 rounded border border-slate-200 mb-2 last:mb-0">
+                                <div className="flex flex-col">
+                                  <span className="text-xs font-bold text-slate-700">{DAY_NAMES[localSlot.dayOfWeek]}</span>
+                                  <span className="text-xs text-slate-500">{localSlot.startTime} - {localSlot.endTime}</span>
+                                </div>
                               </div>
-                            </div>
-                          ))
+                            )
+                          })
                         ))}
                       </div>
                     </div>

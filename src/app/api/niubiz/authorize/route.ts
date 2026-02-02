@@ -240,6 +240,10 @@ export async function POST(req: NextRequest) {
             currentPeriod
           ) {
             console.log('[NIUBIZ] Creating enrollment for student:', userId, 'in course:', courseId)
+            
+            // Extraer el teacherId del primer slot del horario seleccionado
+            const firstTeacherId = item.selectedSchedule[0]?.teacherId || null
+            
             enrollment = await db.enrollment.upsert({
               where: {
                 studentId_courseId_academicPeriodId: {
@@ -252,6 +256,7 @@ export async function POST(req: NextRequest) {
                 studentId: userId!,
                 courseId: courseId!,
                 academicPeriodId: currentPeriod.id,
+                teacherId: firstTeacherId,
                 status: 'ACTIVE',
                 classesTotal: item.proratedClasses || plan.classesPerPeriod || 8,
                 classesAttended: 0,
@@ -260,6 +265,8 @@ export async function POST(req: NextRequest) {
               update: {
                 status: 'ACTIVE',
                 classesTotal: item.proratedClasses || plan.classesPerPeriod || 8,
+                // Si no tiene teacherId asignado, asignarlo ahora
+                ...(firstTeacherId ? { teacherId: firstTeacherId } : {}),
               },
             })
 
@@ -318,6 +325,8 @@ export async function POST(req: NextRequest) {
               )
 
               // Bookings for current period
+              // IMPORTANTE: Los horarios en selectedSchedule ya están convertidos a UTC
+              // Debemos iterar sobre las fechas UTC y comparar con dayOfWeek UTC
               const periodStart = new Date(currentPeriod.startDate)
               const periodEnd = new Date(currentPeriod.endDate)
               const today = new Date()
@@ -325,19 +334,28 @@ export async function POST(req: NextRequest) {
               const currentDate = new Date(startDate)
 
               while (currentDate <= periodEnd) {
-                const dayOfWeek = currentDate.getDay()
+                // Usar getUTCDay() para obtener el día de la semana en UTC
+                // ya que los slots del schedule están en UTC
+                const dayOfWeekUTC = currentDate.getUTCDay()
                 const scheduleForDay = item.selectedSchedule.find(
-                  (slot) => slot.dayOfWeek === dayOfWeek
+                  (slot) => slot.dayOfWeek === dayOfWeekUTC
                 )
 
                 if (scheduleForDay) {
-                  const dayString = currentDate.toISOString().split('T')[0]
+                  // Formatear fecha en UTC para consistencia
+                  const year = currentDate.getUTCFullYear()
+                  const month = String(currentDate.getUTCMonth() + 1).padStart(2, '0')
+                  const day = String(currentDate.getUTCDate()).padStart(2, '0')
+                  const dayString = `${year}-${month}-${day}`
+                  
+                  const timeSlot = `${scheduleForDay.startTime}-${scheduleForDay.endTime}`
+                  
                   const existingBooking = await db.classBooking.findFirst({
                     where: {
                       studentId: userId!,
                       teacherId: scheduleForDay.teacherId,
                       day: dayString,
-                      timeSlot: `${scheduleForDay.startTime}-${scheduleForDay.endTime}`,
+                      timeSlot: timeSlot,
                     },
                   })
 
@@ -348,7 +366,7 @@ export async function POST(req: NextRequest) {
                         teacherId: scheduleForDay.teacherId,
                         enrollmentId: enrollment!.id,
                         day: dayString,
-                        timeSlot: `${scheduleForDay.startTime}-${scheduleForDay.endTime}`,
+                        timeSlot: timeSlot,
                         status: 'CONFIRMED',
                       },
                     })
