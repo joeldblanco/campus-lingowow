@@ -626,6 +626,12 @@ const mapContentToBlock = (
 
   const data = (content.data as Record<string, unknown>) || {}
 
+  // Override type from data if it exists (e.g. for specific custom blocks stored as RICH_TEXT or CONTAINER)
+  // This handles blocks like 'recording', 'essay', 'fill_blanks', etc. that don't have their own ContentType
+  if (data.type && typeof data.type === 'string') {
+    type = data.type as BlockType
+  }
+
   return {
     id: content.id,
     order: content.order,

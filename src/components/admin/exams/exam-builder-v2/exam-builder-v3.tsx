@@ -349,6 +349,18 @@ function convertExamToBlocks(exam: ExamWithDetails): Block[] {
             points: 0, // Informative, no points
           } as Block
 
+        case 'recording': {
+          const recOpts = optionsData as { instruction?: string; timeLimit?: number; aiGrading?: boolean; aiGradingConfig?: { language: string; targetLevel: string } } | null
+          return {
+            ...baseBlock,
+            type: 'recording',
+            instruction: recOpts?.instruction || q.question,
+            timeLimit: recOpts?.timeLimit || 60,
+            aiGrading: recOpts?.aiGrading,
+            aiGradingConfig: recOpts?.aiGradingConfig,
+          } as Block
+        }
+
         default:
           // Default to text block for unknown types
           return {

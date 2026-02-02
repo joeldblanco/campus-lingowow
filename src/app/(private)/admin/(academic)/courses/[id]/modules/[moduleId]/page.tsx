@@ -4,6 +4,7 @@ import { db } from '@/lib/db'
 import { auth } from '@/auth'
 import { ModuleLessonsClient } from './module-lessons-client'
 import { Block, Module, Lesson } from '@/types/course-builder'
+import { mapContentToBlock } from '@/lib/content-mapper'
 
 interface ModuleLessonsPageProps {
   params: Promise<{
@@ -95,63 +96,3 @@ export default async function ModuleLessonsPage({ params }: ModuleLessonsPagePro
   )
 }
 
-type ContentWithChildren = {
-  id: string
-  order: number
-  contentType: string
-  title: string | null
-  data: unknown
-  children?: ContentWithChildren[]
-}
-
-type BlockType = 'text' | 'video' | 'image' | 'audio' | 'quiz' | 'tab_group' | 'tab_item' | 'layout' | 'column' | 'container'
-
-function mapContentToBlock(content: ContentWithChildren): Block {
-  let type: BlockType = 'text'
-  switch (content.contentType) {
-    case 'RICH_TEXT':
-      type = 'text'
-      break
-    case 'VIDEO':
-      type = 'video'
-      break
-    case 'IMAGE':
-      type = 'image'
-      break
-    case 'AUDIO':
-      type = 'audio'
-      break
-    case 'ACTIVITY':
-      type = 'quiz'
-      break
-    case 'TAB_GROUP':
-      type = 'tab_group'
-      break
-    case 'TAB_ITEM':
-      type = 'tab_item'
-      break
-    case 'CONTAINER':
-      const data = content.data as { type?: string } | null
-      if (data?.type === 'layout') {
-        type = 'layout'
-      } else if (data?.type === 'column') {
-        type = 'column'
-      } else {
-        type = 'container'
-      }
-      break
-  }
-
-  const data = (content.data as Record<string, unknown>) || {}
-
-  return {
-    id: content.id,
-    order: content.order,
-    type,
-    ...data,
-    content: (data.content || data.html || '') as string,
-    children: content.children
-      ? content.children.sort((a, b) => a.order - b.order).map((c) => mapContentToBlock(c))
-      : [],
-  } as Block
-}
