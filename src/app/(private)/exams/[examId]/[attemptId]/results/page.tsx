@@ -15,7 +15,8 @@ export default async function ExamResultsPage({ params }: PageProps) {
   }
 
   const { examId, attemptId } = await params
-  const result = await getExamResultsForStudent(attemptId, session.user.id)
+  const userRoles = session.user.roles || []
+  const result = await getExamResultsForStudent(attemptId, session.user.id, { userRoles })
 
   if (!result.success || !result.attempt) {
     notFound()
@@ -26,10 +27,13 @@ export default async function ExamResultsPage({ params }: PageProps) {
     notFound()
   }
 
-  const { attempt } = result
+  const { attempt, isOwner } = result
   const exam = attempt.exam
+  const isAdminOrTeacher = userRoles.includes('ADMIN') || userRoles.includes('TEACHER')
 
-  if (!exam.showResults) {
+  // Solo mostrar mensaje de "resultados no disponibles" si es el dueño y showResults está desactivado
+  // Admins y profesores siempre pueden ver los resultados
+  if (!exam.showResults && isOwner && !isAdminOrTeacher) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center p-8 max-w-md">

@@ -844,12 +844,26 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
       blocksSaveTimeoutRef.current = setTimeout(async () => {
         try {
           const questionsData = convertBlocksToExamFormat(blocksToSave)
-          const result = await updateExamQuestions(exam.id, questionsData)
+          const result = await updateExamQuestions(exam.id, questionsData) as { 
+            success: boolean; 
+            error?: string; 
+            hasExistingAnswers?: boolean; 
+            answersCount?: number 
+          }
           if (result.success) {
             setSaveStatus('saved')
+          } else if (result.hasExistingAnswers) {
+            setSaveStatus('error')
+            toast.error(
+              `⚠️ No se pueden modificar las preguntas: hay ${result.answersCount} respuesta(s) de estudiantes que se perderían permanentemente.`,
+              { 
+                duration: 10000,
+                description: 'Para editar este examen, primero debe eliminar los intentos de estudiantes desde la sección de resultados.'
+              }
+            )
           } else {
             setSaveStatus('error')
-            toast.error('Error al guardar los bloques')
+            toast.error(result.error || 'Error al guardar los bloques')
           }
         } catch {
           setSaveStatus('error')
@@ -1078,7 +1092,18 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
         }
         router.push(backUrl)
       } else {
-        toast.error(result.error || 'Error al guardar el examen')
+        // Mostrar mensaje especial si hay respuestas de estudiantes
+        if (result.error?.includes('respuesta(s) de estudiantes')) {
+          toast.error(
+            '⚠️ No se pueden modificar las preguntas de este examen',
+            { 
+              duration: 10000,
+              description: result.error
+            }
+          )
+        } else {
+          toast.error(result.error || 'Error al guardar el examen')
+        }
       }
     } catch (error) {
       console.error('Error saving exam:', error)

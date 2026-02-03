@@ -269,11 +269,28 @@ export async function updateExamQuestions(
     items?: Array<{ text: string; correctPosition: number }>
     categories?: Array<{ id: string; name: string }>
     dragItems?: Array<{ text: string; correctCategoryId: string }>
-  }>
+  }>,
+  options?: { forceUpdate?: boolean }
 ): Promise<ExamUpdateResponse> {
   try {
+    // PROTECCIÓN: Verificar si hay respuestas de estudiantes antes de eliminar preguntas
+    const existingAnswersCount = await db.examAnswer.count({
+      where: {
+        question: { examId }
+      }
+    })
+
+    if (existingAnswersCount > 0 && !options?.forceUpdate) {
+      return {
+        success: false,
+        error: `No se pueden modificar las preguntas porque hay ${existingAnswersCount} respuesta(s) de estudiantes. Esto eliminaría permanentemente sus respuestas y calificaciones. Si desea continuar, use la opción de forzar actualización.`,
+        hasExistingAnswers: true,
+        answersCount: existingAnswersCount
+      } as ExamUpdateResponse & { hasExistingAnswers: boolean; answersCount: number }
+    }
+
     const result = await db.$transaction(async (tx) => {
-      // Delete existing questions
+      // Delete existing questions (las respuestas se eliminarán por CASCADE)
       await tx.examQuestion.deleteMany({
         where: { examId },
       })
@@ -490,7 +507,18 @@ export async function updateExam(
 
       // Si se proporcionan preguntas, actualizar completamente
       if (validatedData.questions) {
-        // Eliminar preguntas existentes
+        // PROTECCIÓN: Verificar si hay respuestas de estudiantes antes de eliminar preguntas
+        const existingAnswersCount = await tx.examAnswer.count({
+          where: {
+            question: { examId: id }
+          }
+        })
+
+        if (existingAnswersCount > 0) {
+          throw new Error(`ANSWERS_EXIST:${existingAnswersCount}`)
+        }
+
+        // Eliminar preguntas existentes (las respuestas se eliminarán por CASCADE)
         await tx.examQuestion.deleteMany({
           where: { examId: id },
         })
@@ -536,6 +564,14 @@ export async function updateExam(
     console.error('Error updating exam:', error)
     if (error instanceof z.ZodError) {
       return { success: false, error: 'Datos de validación incorrectos', details: error.errors }
+    }
+    // Manejar error de respuestas existentes
+    if (error instanceof Error && error.message.startsWith('ANSWERS_EXIST:')) {
+      const count = parseInt(error.message.split(':')[1], 10)
+      return {
+        success: false,
+        error: `No se pueden modificar las preguntas porque hay ${count} respuesta(s) de estudiantes. Esto eliminaría permanentemente sus respuestas y calificaciones.`,
+      }
     }
     return { success: false, error: 'Error al actualizar el examen' }
   }
@@ -1051,13 +1087,19 @@ export async function getExamAttemptWithAnswers(attemptId: string) {
   }
 }
 
-export async function getExamResultsForStudent(attemptId: string, userId: string) {
+export async function getExamResultsForStudent(
+  attemptId: string, 
+  userId: string,
+  options?: { userRoles?: string[] }
+) {
   try {
-    const attempt = await db.examAttempt.findFirst({
-      where: {
-        id: attemptId,
-        userId,
-      },
+    const userRoles = options?.userRoles || []
+    const isAdmin = userRoles.includes('ADMIN')
+    const isTeacher = userRoles.includes('TEACHER')
+
+    // Primero obtener el attempt sin filtro de userId para verificar permisos
+    const attempt = await db.examAttempt.findUnique({
+      where: { id: attemptId },
       include: {
         exam: {
           select: {
@@ -1067,6 +1109,7 @@ export async function getExamResultsForStudent(attemptId: string, userId: string
             passingScore: true,
             showResults: true,
             allowReview: true,
+            courseId: true,
             questions: {
               select: {
                 id: true,
@@ -1100,6 +1143,14 @@ export async function getExamResultsForStudent(attemptId: string, userId: string
             },
           },
         },
+        user: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            email: true,
+          },
+        },
       },
     })
 
@@ -1107,11 +1158,39 @@ export async function getExamResultsForStudent(attemptId: string, userId: string
       return { success: false, error: 'Resultados no encontrados' }
     }
 
+    // Verificar permisos de acceso
+    const isOwner = attempt.userId === userId
+    let hasAccess = isOwner || isAdmin
+
+    // Si es profesor, verificar si es el profesor del período activo del curso
+    if (!hasAccess && isTeacher && attempt.exam.courseId) {
+      // Buscar si el profesor tiene una inscripción activa como profesor en este curso
+      const teacherEnrollment = await db.enrollment.findFirst({
+        where: {
+          courseId: attempt.exam.courseId,
+          studentId: attempt.userId, // El estudiante que tomó el examen
+          teacherId: userId, // El profesor que quiere ver los resultados
+          status: 'ACTIVE',
+          academicPeriod: {
+            isActive: true,
+          },
+        },
+      })
+
+      if (teacherEnrollment) {
+        hasAccess = true
+      }
+    }
+
+    if (!hasAccess) {
+      return { success: false, error: 'No tienes permiso para ver estos resultados' }
+    }
+
     if (attempt.status === AttemptStatus.IN_PROGRESS) {
       return { success: false, error: 'El examen aún no ha sido enviado' }
     }
 
-    return { success: true, attempt }
+    return { success: true, attempt, isOwner }
   } catch (error) {
     console.error('Error fetching exam results:', error)
     return { success: false, error: 'Error al obtener los resultados' }
