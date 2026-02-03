@@ -164,17 +164,20 @@ export async function POST(req: NextRequest) {
         })
       }
 
-      // Obtener el período académico actual (excluyendo special weeks)
+      // Obtener el período académico actual basado en fechas (excluyendo special weeks)
       const today = new Date()
+      
+      // Buscar período donde hoy esté entre startDate y endDate
       let currentPeriod = await db.academicPeriod.findFirst({
         where: { 
-          isActive: true,
+          startDate: { lte: today },
+          endDate: { gte: today },
           isSpecialWeek: false,
         },
       })
 
-      // Si no hay período activo o ya terminó, buscar el próximo
-      if (!currentPeriod || new Date(currentPeriod.endDate) < today) {
+      // Si no hay período actual, buscar el próximo
+      if (!currentPeriod) {
         currentPeriod = await db.academicPeriod.findFirst({
           where: {
             startDate: { gte: today },

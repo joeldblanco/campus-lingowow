@@ -187,17 +187,20 @@ export async function POST(request: NextRequest) {
         
         console.log('[NIUBIZ CHECKOUT] Invoice created:', invoice.invoiceNumber)
         
-        // Get current academic period (excluding special weeks)
+        // Get current academic period based on dates (excluding special weeks)
         const today = new Date()
+        
+        // Buscar período donde hoy esté entre startDate y endDate
         let currentPeriod = await db.academicPeriod.findFirst({
           where: { 
-            isActive: true,
+            startDate: { lte: today },
+            endDate: { gte: today },
             isSpecialWeek: false,
           },
         })
 
-        // If no active period or it has ended, look for the next one
-        if (!currentPeriod || new Date(currentPeriod.endDate) < today) {
+        // Si no hay período actual, buscar el próximo
+        if (!currentPeriod) {
           currentPeriod = await db.academicPeriod.findFirst({
             where: {
               startDate: { gte: today },
