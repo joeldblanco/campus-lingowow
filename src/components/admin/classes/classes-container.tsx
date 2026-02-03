@@ -24,15 +24,21 @@ export async function ClassesContainer() {
     cache: 'no-store',
   })
   const periodsData = await periodsResponse.json()
-  const periods = periodsData.success ? periodsData.periods : []
+  const rawPeriods = periodsData.success ? periodsData.periods : []
   
   // Buscar período activo
   const today = new Date()
-  const activePeriod = periods.find((p: { startDate: string; endDate: string }) => {
+  const activePeriod = rawPeriods.find((p: { startDate: string; endDate: string }) => {
     const start = new Date(p.startDate)
     const end = new Date(p.endDate)
     return today >= start && today <= end
   })
+  
+  // Agregar propiedad isActive a cada período para el UI
+  const periods = rawPeriods.map((p: { id: string; name: string; startDate: string; endDate: string }) => ({
+    ...p,
+    isActive: p.id === activePeriod?.id,
+  }))
   
   const classes = await getAllClasses({ 
     timezone: userTimezone
