@@ -142,10 +142,26 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
       'Fecha': formatDateNumeric(invoice.createdAt),
     }))
 
+    const getExportFilename = () => {
+      const formatDate = (date: Date) => {
+        const d = new Date(date)
+        return `${d.getDate().toString().padStart(2, '0')}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getFullYear()}`
+      }
+      
+      if (dateRange?.from && dateRange?.to) {
+        return `Facturas Lingowow - ${formatDate(dateRange.from)}_${formatDate(dateRange.to)}`
+      } else if (dateRange?.from) {
+        return `Facturas Lingowow - desde ${formatDate(dateRange.from)}`
+      } else {
+        return `Facturas Lingowow - ${formatDate(new Date())}`
+      }
+    }
+
+    const filename = getExportFilename()
     if (format === 'csv') {
-      downloadCSV(exportData, `facturas-${new Date().toISOString().split('T')[0]}`)
+      downloadCSV(exportData, filename)
     } else {
-      downloadExcel(exportData, `facturas-${new Date().toISOString().split('T')[0]}`)
+      downloadExcel(exportData, filename)
     }
   }
 

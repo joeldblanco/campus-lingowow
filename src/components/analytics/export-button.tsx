@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import * as XLSX from 'xlsx'
 import { Download, FileSpreadsheet, FileText, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -91,62 +92,23 @@ export function downloadCSV(data: Record<string, unknown>[], filename: string) {
 }
 
 export function downloadExcel(data: Record<string, unknown>[], filename: string) {
-  // Para Excel, usamos un formato simple de tabla HTML que Excel puede abrir
   if (data.length === 0) {
     toast.error('No hay datos para exportar')
     return
   }
 
-  const headers = Object.keys(data[0])
+  const worksheet = XLSX.utils.json_to_sheet(data)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Datos')
   
-  const tableContent = `
-    <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
-    <head>
-      <meta charset="UTF-8">
-      <!--[if gte mso 9]>
-      <xml>
-        <x:ExcelWorkbook>
-          <x:ExcelWorksheets>
-            <x:ExcelWorksheet>
-              <x:Name>Datos</x:Name>
-              <x:WorksheetOptions>
-                <x:DisplayGridlines/>
-              </x:WorksheetOptions>
-            </x:ExcelWorksheet>
-          </x:ExcelWorksheets>
-        </x:ExcelWorkbook>
-      </xml>
-      <![endif]-->
-      <style>
-        table { border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #4472C4; color: white; font-weight: bold; }
-        tr:nth-child(even) { background-color: #f2f2f2; }
-      </style>
-    </head>
-    <body>
-      <table>
-        <thead>
-          <tr>
-            ${headers.map(h => `<th>${h}</th>`).join('')}
-          </tr>
-        </thead>
-        <tbody>
-          ${data.map(row => `
-            <tr>
-              ${headers.map(h => `<td>${row[h] ?? ''}</td>`).join('')}
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
-    </body>
-    </html>
-  `
+  const colWidths = Object.keys(data[0]).map(key => {
+    const maxLength = Math.max(
+      key.length,
+      ...data.map(row => String(row[key] ?? '').length)
+    )
+    return { wch: Math.min(maxLength + 2, 50) }
+  })
+  worksheet['!cols'] = colWidths
 
-  const blob = new Blob([tableContent], { type: 'application/vnd.ms-excel;charset=utf-8;' })
-  const link = document.createElement('a')
-  link.href = URL.createObjectURL(blob)
-  link.download = `${filename}.xls`
-  link.click()
-  URL.revokeObjectURL(link.href)
+  XLSX.writeFile(workbook, `${filename}.xlsx`)
 }
