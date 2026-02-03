@@ -127,7 +127,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
   const handleExport = async (format: 'csv' | 'excel') => {
     const exportData = filteredInvoices.map((invoice) => ({
       'Número': invoice.invoiceNumber,
-      'Cliente': invoice.user.name || 'Sin nombre',
+      'Cliente': [invoice.user.name, invoice.user.lastName].filter(Boolean).join(' ') || 'Sin nombre',
       'Email': invoice.user.email,
       'Estado': invoice.status,
       'Subtotal': invoice.subtotal,
