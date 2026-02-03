@@ -1,5 +1,4 @@
 import { getAllClasses } from '@/lib/actions/classes'
-import { getAllAcademicPeriods } from '@/lib/actions/enrollments'
 import { ClassesTable } from './classes-table'
 import { CreateClassDialog } from './create-class-dialog'
 import { Button } from '@/components/ui/button'
@@ -19,8 +18,21 @@ export async function ClassesContainer() {
     userTimezone = user?.timezone || 'America/Lima'
   }
   
-  const periods = await getAllAcademicPeriods()
-  const activePeriod = periods.find(p => p.isActive)
+  // Obtener períodos recientes (año actual + último del año anterior)
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+  const periodsResponse = await fetch(`${baseUrl}/api/academic-periods/earnings`, {
+    cache: 'no-store',
+  })
+  const periodsData = await periodsResponse.json()
+  const periods = periodsData.success ? periodsData.periods : []
+  
+  // Buscar período activo
+  const today = new Date()
+  const activePeriod = periods.find((p: { startDate: string; endDate: string }) => {
+    const start = new Date(p.startDate)
+    const end = new Date(p.endDate)
+    return today >= start && today <= end
+  })
   
   const classes = await getAllClasses({ 
     timezone: userTimezone
