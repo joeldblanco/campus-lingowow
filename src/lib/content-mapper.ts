@@ -36,29 +36,6 @@ export const mapBlockToContentData = (block: Block): Record<string, unknown> => 
   return rest
 }
 
-// Helper to map ContentType to BlockType (for the new `base.type` logic)
-const mapContentTypeToBlockType = (contentType: ContentType): BlockType => {
-  switch (contentType) {
-    case 'RICH_TEXT':
-      return 'text'
-    case 'VIDEO':
-      return 'video'
-    case 'IMAGE':
-      return 'image'
-    case 'AUDIO':
-      return 'audio'
-    case 'ACTIVITY':
-      return 'quiz'
-    case 'TAB_GROUP':
-      return 'tab_group'
-    case 'TAB_ITEM':
-      return 'tab_item'
-    case 'CONTAINER':
-      return 'container'
-    default:
-      return 'text'
-  }
-}
 
 // Helper to map Content to Block
 export const mapContentToBlock = (
@@ -108,12 +85,12 @@ export const mapContentToBlock = (
 
   const base = {
     id: content.id,
-    type: mapContentTypeToBlockType(content.contentType),
     order: content.order,
   }
 
   // Override type from data if it exists (e.g. for specific custom blocks stored as RICH_TEXT or CONTAINER)
-  if (data.type) {
+  // This handles blocks like 'recording', 'essay', 'fill_blanks', etc. that don't have their own ContentType
+  if (data.type && typeof data.type === 'string') {
     type = data.type as BlockType
   }
 

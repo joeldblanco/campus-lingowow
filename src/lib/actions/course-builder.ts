@@ -3,7 +3,8 @@
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
 import { Block, BlockType, CourseBuilderData, Lesson, Module } from '@/types/course-builder'
-import type { ContentType, Content as PrismaContent } from '@prisma/client'
+import { mapContentToBlock } from '@/lib/content-mapper'
+import type { ContentType } from '@prisma/client'
 import { Prisma } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 
@@ -583,68 +584,6 @@ export async function updateLessonBlocks(lessonId: string, blocks: Block[]) {
   }
 }
 
-// Helper to map Content to Block
-const mapContentToBlock = (
-  content: PrismaContent & { children?: (PrismaContent & { children?: PrismaContent[] })[] }
-): Block => {
-  // Map ContentType to BlockType
-  let type: BlockType = 'text'
-  switch (content.contentType) {
-    case 'RICH_TEXT':
-      type = 'text'
-      break
-    case 'VIDEO':
-      type = 'video'
-      break
-    case 'IMAGE':
-      type = 'image'
-      break
-    case 'AUDIO':
-      type = 'audio'
-      break
-    case 'ACTIVITY':
-      type = 'quiz'
-      break
-    case 'TAB_GROUP':
-      type = 'tab_group'
-      break
-    case 'TAB_ITEM':
-      type = 'tab_item'
-      break
-    case 'CONTAINER':
-      // Differentiate based on stored type in data, or default
-      const data = content.data as { type?: string } | null
-      if (data?.type === 'layout') {
-        type = 'layout'
-      } else if (data?.type === 'column') {
-        type = 'column'
-      } else {
-        type = 'container'
-      }
-      break
-  }
-
-  const data = (content.data as Record<string, unknown>) || {}
-
-  // Override type from data if it exists (e.g. for specific custom blocks stored as RICH_TEXT or CONTAINER)
-  // This handles blocks like 'recording', 'essay', 'fill_blanks', etc. that don't have their own ContentType
-  if (data.type && typeof data.type === 'string') {
-    type = data.type as BlockType
-  }
-
-  return {
-    id: content.id,
-    order: content.order,
-    type,
-    ...data,
-    // If content has legacy text content or HTML, ensure it's mapped
-    content: data.content || data.html || '',
-    // Recursive children
-    children: content.children
-      ? content.children.sort((a, b) => a.order - b.order).map((c) => mapContentToBlock(c))
-      : [],
-  } as Block
-}
 
 // Get course with all data for builder
 export async function getCourseForBuilder(courseId: string) {
