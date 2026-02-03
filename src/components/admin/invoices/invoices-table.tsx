@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
+import { DateRange } from 'react-day-picker'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -27,6 +28,8 @@ import { deleteInvoice } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
 import { formatDateNumeric } from '@/lib/utils/date'
 import { InvoiceWithDetails } from '@/types/invoice'
+import { DateRangePicker } from '@/components/analytics/date-range-picker'
+import { ExportButton, downloadCSV, downloadExcel } from '@/components/analytics/export-button'
 
 interface InvoicesTableProps {
   invoices: InvoiceWithDetails[]
@@ -37,6 +40,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
   const [viewingInvoice, setViewingInvoice] = useState<InvoiceWithDetails | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)
 
   const filteredInvoices = useMemo(() => {
     let filtered = invoices
@@ -51,8 +55,21 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
     if (statusFilter !== 'all') {
       filtered = filtered.filter((invoice) => invoice.status === statusFilter)
     }
+    if (dateRange?.from) {
+      filtered = filtered.filter((invoice) => {
+        const invoiceDate = new Date(invoice.createdAt)
+        const fromDate = new Date(dateRange.from!)
+        fromDate.setHours(0, 0, 0, 0)
+        if (dateRange.to) {
+          const toDate = new Date(dateRange.to)
+          toDate.setHours(23, 59, 59, 999)
+          return invoiceDate >= fromDate && invoiceDate <= toDate
+        }
+        return invoiceDate >= fromDate
+      })
+    }
     return filtered
-  }, [invoices, searchTerm, statusFilter])
+  }, [invoices, searchTerm, statusFilter, dateRange])
 
   const handleDelete = async (id: string) => {
     if (confirm('¿Estás seguro de que quieres eliminar esta factura?')) {
@@ -97,6 +114,27 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
   const clearFilters = () => {
     setSearchTerm('')
     setStatusFilter('all')
+    setDateRange(undefined)
+  }
+
+  const handleExport = async (format: 'csv' | 'excel') => {
+    const exportData = filteredInvoices.map((invoice) => ({
+      'Número': invoice.invoiceNumber,
+      'Cliente': invoice.user.name || 'Sin nombre',
+      'Email': invoice.user.email,
+      'Estado': invoice.status,
+      'Subtotal': invoice.subtotal,
+      'Descuento': invoice.discount,
+      'Total': invoice.total,
+      'Cupón': invoice.coupon?.code || '',
+      'Fecha': formatDateNumeric(invoice.createdAt),
+    }))
+
+    if (format === 'csv') {
+      downloadCSV(exportData, `facturas-${new Date().toISOString().split('T')[0]}`)
+    } else {
+      downloadExcel(exportData, `facturas-${new Date().toISOString().split('T')[0]}`)
+    }
   }
 
   const columns: ColumnDef<InvoiceWithDetails>[] = [
@@ -203,8 +241,8 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
   ]
 
   const toolbar = (
-    <div className="flex items-center gap-3">
-      <div className="relative flex-1 max-w-sm">
+    <div className="flex flex-wrap items-center gap-3">
+      <div className="relative flex-1 min-w-[200px] max-w-sm">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
           placeholder="Buscar por número o cliente..."
@@ -213,6 +251,10 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
           className="pl-9"
         />
       </div>
+      <DateRangePicker
+        date={dateRange}
+        onDateChange={setDateRange}
+      />
       <Select value={statusFilter} onValueChange={setStatusFilter}>
         <SelectTrigger className="w-[140px]">
           <SelectValue placeholder="Estado" />
@@ -226,6 +268,10 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
           <SelectItem value="CANCELLED">Cancelada</SelectItem>
         </SelectContent>
       </Select>
+      <ExportButton
+        onExport={handleExport}
+        disabled={filteredInvoices.length === 0}
+      />
       <Button variant="outline" size="icon" onClick={clearFilters} className="shrink-0">
         <SlidersHorizontal className="h-4 w-4" />
       </Button>
