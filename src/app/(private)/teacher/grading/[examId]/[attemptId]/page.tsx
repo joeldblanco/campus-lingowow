@@ -283,7 +283,7 @@ export default async function GradingPage({ params }: PageProps) {
       correctAnswer: correctAnswerFormatted,
       isCorrect: answer?.isCorrect ?? null,
       pointsEarned: answer?.pointsEarned ?? 0,
-      needsReview: answer?.needsReview ?? (question.type === 'ESSAY'),
+      needsReview: answer?.needsReview ?? (question.type === 'ESSAY' || question.type === 'RECORDING'),
       feedback: answer?.feedback ?? null,
       isAutoGraded: answer ? (!answer.needsReview && answer.reviewedBy !== session.user.id) : false,
       groupId: question.groupId,
