@@ -1,4 +1,5 @@
 import { getAllClasses } from '@/lib/actions/classes'
+import { getPeriods } from '@/lib/actions/academic-period'
 import { ClassesTable } from './classes-table'
 import { CreateClassDialog } from './create-class-dialog'
 import { Button } from '@/components/ui/button'
@@ -19,24 +20,50 @@ export async function ClassesContainer() {
   }
   
   // Obtener períodos recientes (año actual + último del año anterior)
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-  const periodsResponse = await fetch(`${baseUrl}/api/academic-periods/earnings`, {
-    cache: 'no-store',
-  })
-  const periodsData = await periodsResponse.json()
-  const rawPeriods = periodsData.success ? periodsData.periods : []
+  const currentYear = new Date().getFullYear()
+  const today = new Date()
+  
+  // 1. Períodos del año actual que ya hayan iniciado
+  const currentYearResult = await getPeriods(currentYear)
+  const currentYearPeriods = currentYearResult.success ? currentYearResult.periods || [] : []
+  
+  const startedPeriods = currentYearPeriods.filter(period => 
+    new Date(period.startDate) <= today
+  )
+  
+  // 2. Último período del año anterior
+  const previousYearResult = await getPeriods(currentYear - 1)
+  const previousYearPeriods = previousYearResult.success ? previousYearResult.periods || [] : []
+  
+  const lastPreviousPeriod = previousYearPeriods
+    .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime())[0]
+  
+  // Combinar y ordenar
+  const allPeriods = [...startedPeriods]
+  if (lastPreviousPeriod) {
+    allPeriods.push({
+      ...lastPreviousPeriod,
+      name: `${lastPreviousPeriod.name} ${currentYear - 1}`
+    })
+  }
+  
+  const rawPeriods = allPeriods.sort((a, b) => 
+    new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+  )
   
   // Buscar período activo
-  const today = new Date()
-  const activePeriod = rawPeriods.find((p: { startDate: string; endDate: string }) => {
+  const activePeriod = rawPeriods.find((p) => {
     const start = new Date(p.startDate)
     const end = new Date(p.endDate)
     return today >= start && today <= end
   })
   
   // Agregar propiedad isActive a cada período para el UI
-  const periods = rawPeriods.map((p: { id: string; name: string; startDate: string; endDate: string }) => ({
-    ...p,
+  const periods = rawPeriods.map((p) => ({
+    id: p.id,
+    name: p.name,
+    startDate: p.startDate,
+    endDate: p.endDate,
     isActive: p.id === activePeriod?.id,
   }))
   
