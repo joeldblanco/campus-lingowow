@@ -117,6 +117,13 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
     setDateRange(undefined)
   }
 
+  const getPaymentOrigin = (paymentMethod: string | null | undefined) => {
+    if (!paymentMethod) return ''
+    if (paymentMethod === 'paypal') return 'PAYPAL'
+    if (paymentMethod === 'card' || paymentMethod === 'creditCard') return 'NIUBIZ'
+    return paymentMethod.toUpperCase()
+  }
+
   const handleExport = async (format: 'csv' | 'excel') => {
     const exportData = filteredInvoices.map((invoice) => ({
       'Número': invoice.invoiceNumber,
@@ -127,6 +134,11 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
       'Descuento': invoice.discount,
       'Total': invoice.total,
       'Cupón': invoice.coupon?.code || '',
+      'Origen de Pago': getPaymentOrigin(invoice.paymentMethod),
+      'País': invoice.billingCountry || '',
+      'Ciudad': invoice.billingCity || '',
+      'Dirección': invoice.billingAddress || '',
+      'Código Postal': invoice.billingZipCode || '',
       'Fecha': formatDateNumeric(invoice.createdAt),
     }))
 

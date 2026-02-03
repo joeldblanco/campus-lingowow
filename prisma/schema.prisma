@@ -1347,6 +1347,12 @@ model Invoice {
   niubizTransactionId String? // Token de transacción de Niubiz
   niubizOrderId       String? // ID de orden de Niubiz
 
+  // Campos de dirección de facturación
+  billingCountry  String? // País de facturación
+  billingCity     String? // Ciudad de facturación
+  billingAddress  String? // Dirección de facturación
+  billingZipCode  String? // Código postal de facturación
+
   // Relaciones
   user                  User                    @relation(fields: [userId], references: [id])
   coupon                Coupon?                 @relation(fields: [couponId], references: [id])
