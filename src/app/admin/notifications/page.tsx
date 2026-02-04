@@ -6,6 +6,8 @@ import { BulkNotificationSender, NotificationHistory } from '@/components/admin/
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Bell, History } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Notificaciones Masivas | Admin',
   description: 'Sistema de notificaciones masivas por rol',

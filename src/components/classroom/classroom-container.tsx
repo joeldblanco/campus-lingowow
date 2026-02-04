@@ -236,7 +236,13 @@ function ClassroomInner({
   }, [connectionStatus, bookingId, roomName, isRecording])
 
 
-  // Listen for lesson change commands and sync requests
+  // Ref to track current tab for sync requests
+  const mainContentTabRef = useRef(mainContentTab)
+  useEffect(() => {
+    mainContentTabRef.current = mainContentTab
+  }, [mainContentTab])
+
+  // Listen for lesson change commands, tab sync, and sync requests
   useEffect(() => {
     const handleSetLesson = async (data: Record<string, unknown>) => {
       if (data.type === 'SET_LESSON') {
@@ -269,19 +275,35 @@ function ClassroomInner({
       }
     }
 
+    // Handle tab sync from teacher (for students)
+    const handleSetTab = (data: Record<string, unknown>) => {
+      if (data.type === 'SET_TAB' && !isTeacher) {
+        const tab = data.tab as 'lesson' | 'whiteboard' | 'screenshare'
+        if (tab && ['lesson', 'whiteboard', 'screenshare'].includes(tab)) {
+          setMainContentTab(tab)
+        }
+      }
+    }
+
     // Teacher responds to sync requests from students
     const handleSyncRequest = (data: Record<string, unknown>) => {
-      if (data.type === 'REQUEST_SYNC' && isTeacher && activeLessonRef.current) {
-        sendCommand('set-lesson', {
-          type: 'SET_LESSON',
-          lessonId: activeLessonRef.current.id,
-          contentType: activeLessonRef.current.type
-        })
+      if (data.type === 'REQUEST_SYNC' && isTeacher) {
+        // Sync current tab
+        sendCommand('set-tab', { type: 'SET_TAB', tab: mainContentTabRef.current })
+        // Sync current lesson if any
+        if (activeLessonRef.current) {
+          sendCommand('set-lesson', {
+            type: 'SET_LESSON',
+            lessonId: activeLessonRef.current.id,
+            contentType: activeLessonRef.current.type
+          })
+        }
       }
     }
 
     if (connectionStatus === 'connected') {
       addCommandListener('set-lesson', handleSetLesson)
+      addCommandListener('set-tab', handleSetTab)
       addCommandListener('sync-request', handleSyncRequest)
 
       // Student requests current state when connecting
@@ -328,7 +350,15 @@ function ClassroomInner({
     if (isScreenSharing) {
       toggleScreenShare()
     }
-    setMainContentTab('lesson')
+    handleTabChange('lesson')
+  }
+
+  // Teacher changes tab and syncs with student
+  const handleTabChange = (tab: 'lesson' | 'whiteboard' | 'screenshare') => {
+    setMainContentTab(tab)
+    if (isTeacher) {
+      sendCommand('set-tab', { type: 'SET_TAB', tab })
+    }
   }
 
   const handleEndCall = async () => {
@@ -499,61 +529,63 @@ function ClassroomInner({
         />
       }
       contentTabs={
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg">
-            <Button
-              variant={mainContentTab === 'lesson' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setMainContentTab('lesson')}
-              className="gap-2"
-            >
-              <BookOpen className="w-4 h-4" />
-              Contenido
-            </Button>
-            <Button
-              variant={mainContentTab === 'whiteboard' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setMainContentTab('whiteboard')}
-              className="gap-2"
-            >
-              <PenTool className="w-4 h-4" />
-              Pizarra
-            </Button>
-            <Button
-              variant={mainContentTab === 'screenshare' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setMainContentTab('screenshare')}
-              className="gap-2"
-            >
-              <Monitor className="w-4 h-4" />
-              Pantalla
-            </Button>
-          </div>
+        isTeacher ? (
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg">
+              <Button
+                variant={mainContentTab === 'lesson' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => handleTabChange('lesson')}
+                className="gap-2"
+              >
+                <BookOpen className="w-4 h-4" />
+                Contenido
+              </Button>
+              <Button
+                variant={mainContentTab === 'whiteboard' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => handleTabChange('whiteboard')}
+                className="gap-2"
+              >
+                <PenTool className="w-4 h-4" />
+                Pizarra
+              </Button>
+              <Button
+                variant={mainContentTab === 'screenshare' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => handleTabChange('screenshare')}
+                className="gap-2"
+              >
+                <Monitor className="w-4 h-4" />
+                Pantalla
+              </Button>
+            </div>
 
-          {/* Stop sharing buttons */}
-          {isTeacher && activeLesson && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleStopContentShare}
-              className="gap-2 text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
-            >
-              <X className="w-4 h-4" />
-              Detener Contenido
-            </Button>
-          )}
-          {isScreenSharing && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleStopScreenShare}
-              className="gap-2 text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
-            >
-              <X className="w-4 h-4" />
-              Detener Pantalla
-            </Button>
-          )}
-        </div>
+            {/* Stop sharing buttons - only for teacher */}
+            {activeLesson && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleStopContentShare}
+                className="gap-2 text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
+              >
+                <X className="w-4 h-4" />
+                Detener Contenido
+              </Button>
+            )}
+            {isScreenSharing && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleStopScreenShare}
+                className="gap-2 text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
+              >
+                <X className="w-4 h-4" />
+                Detener Pantalla
+              </Button>
+            )}
+          </div>
+        ) : null
       }
     >
       {renderMainContent()}
