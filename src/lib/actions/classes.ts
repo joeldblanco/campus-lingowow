@@ -325,7 +325,11 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
     const [newStartHour, newStartMin] = newStartTime.split(':').map(Number)
     const [newEndHour, newEndMin] = newEndTime.split(':').map(Number)
     const newStartMinutes = newStartHour * 60 + newStartMin
-    const newEndMinutes = newEndHour * 60 + newEndMin
+    let newEndMinutes = newEndHour * 60 + newEndMin
+    // Ajustar para clases que cruzan medianoche UTC
+    if (newEndMinutes <= newStartMinutes) {
+      newEndMinutes += 24 * 60
+    }
 
     // Verificar superposición con cada clase existente
     for (const existingClass of existingClasses) {
@@ -333,7 +337,11 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
       const [existingStartHour, existingStartMin] = existingStartTime.split(':').map(Number)
       const [existingEndHour, existingEndMin] = existingEndTime.split(':').map(Number)
       const existingStartMinutes = existingStartHour * 60 + existingStartMin
-      const existingEndMinutes = existingEndHour * 60 + existingEndMin
+      let existingEndMinutes = existingEndHour * 60 + existingEndMin
+      // Ajustar para clases que cruzan medianoche UTC
+      if (existingEndMinutes <= existingStartMinutes) {
+        existingEndMinutes += 24 * 60
+      }
 
       // Hay superposición si los rangos se intersectan
       const hasOverlap = newStartMinutes < existingEndMinutes && newEndMinutes > existingStartMinutes
@@ -442,7 +450,11 @@ export async function updateClass(id: string, data: z.infer<typeof EditClassSche
         const [newStartHour, newStartMin] = newStartTime.split(':').map(Number)
         const [newEndHour, newEndMin] = newEndTime.split(':').map(Number)
         const newStartMinutes = newStartHour * 60 + newStartMin
-        const newEndMinutes = newEndHour * 60 + newEndMin
+        let newEndMinutes = newEndHour * 60 + newEndMin
+        // Ajustar para clases que cruzan medianoche UTC
+        if (newEndMinutes <= newStartMinutes) {
+          newEndMinutes += 24 * 60
+        }
 
         // Verificar superposición con cada clase existente
         for (const existingClass of existingClasses) {
@@ -450,7 +462,11 @@ export async function updateClass(id: string, data: z.infer<typeof EditClassSche
           const [existingStartHour, existingStartMin] = existingStartTime.split(':').map(Number)
           const [existingEndHour, existingEndMin] = existingEndTime.split(':').map(Number)
           const existingStartMinutes = existingStartHour * 60 + existingStartMin
-          const existingEndMinutes = existingEndHour * 60 + existingEndMin
+          let existingEndMinutes = existingEndHour * 60 + existingEndMin
+          // Ajustar para clases que cruzan medianoche UTC
+          if (existingEndMinutes <= existingStartMinutes) {
+            existingEndMinutes += 24 * 60
+          }
 
           const hasOverlap = newStartMinutes < existingEndMinutes && newEndMinutes > existingStartMinutes
 
@@ -558,7 +574,11 @@ export async function rescheduleClass(id: string, newDay: string, newTimeSlot: s
     const [newStartHour, newStartMin] = newStartTime.split(':').map(Number)
     const [newEndHour, newEndMin] = newEndTime.split(':').map(Number)
     const newStartMinutes = newStartHour * 60 + newStartMin
-    const newEndMinutes = newEndHour * 60 + newEndMin
+    let newEndMinutes = newEndHour * 60 + newEndMin
+    // Ajustar para clases que cruzan medianoche UTC
+    if (newEndMinutes <= newStartMinutes) {
+      newEndMinutes += 24 * 60
+    }
 
     // Verificar superposición con cada clase existente
     for (const existingClass of existingClasses) {
@@ -566,7 +586,11 @@ export async function rescheduleClass(id: string, newDay: string, newTimeSlot: s
       const [existingStartHour, existingStartMin] = existingStartTime.split(':').map(Number)
       const [existingEndHour, existingEndMin] = existingEndTime.split(':').map(Number)
       const existingStartMinutes = existingStartHour * 60 + existingStartMin
-      const existingEndMinutes = existingEndHour * 60 + existingEndMin
+      let existingEndMinutes = existingEndHour * 60 + existingEndMin
+      // Ajustar para clases que cruzan medianoche UTC
+      if (existingEndMinutes <= existingStartMinutes) {
+        existingEndMinutes += 24 * 60
+      }
 
       const hasOverlap = newStartMinutes < existingEndMinutes && newEndMinutes > existingStartMinutes
 
