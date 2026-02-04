@@ -872,16 +872,26 @@ function MatchingPairsQuestion({
 }) {
   const pairs = useMemo(() => question.pairs || [], [question.pairs])
   const [selectedLeft, setSelectedLeft] = useState<string | null>(null)
-  const [selectedRight, setSelectedRight] = useState<string | null>(null)
+  const [selectedRightId, setSelectedRightId] = useState<string | null>(null)
   const [incorrectPairs, setIncorrectPairs] = useState<Set<string>>(new Set())
   const [correctPairs, setCorrectPairs] = useState<Set<string>>(new Set())
 
-  // Shuffle right items for display - usar useMemo para evitar re-shuffle en cada render
+  // Shuffle right items for display - usar objetos con ID único para soportar textos duplicados
   const rightItems = useMemo(
-    () => [...pairs.map((p) => p.right)].sort(() => Math.random() - 0.5),
+    () => pairs.map((p, index) => ({
+      id: `${p.id}-right-${index}`,
+      text: p.right,
+      originalPairId: p.id
+    })).sort(() => Math.random() - 0.5),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [pairs.length] // Solo re-shuffle cuando cambia el número de pares
+    [pairs.length]
   )
+
+  // Helper para obtener el texto del item seleccionado
+  const getSelectedRightText = useCallback(() => {
+    if (!selectedRightId) return null
+    return rightItems.find(item => item.id === selectedRightId)?.text || null
+  }, [selectedRightId, rightItems])
 
   // Keyboard shortcuts for matching pairs
   useEffect(() => {
@@ -916,17 +926,18 @@ function MatchingPairsQuestion({
       if (isLeftColumn) {
         // Selecting from left column
         const left = pairs[index].left
-        if (selectedRight) {
+        const selectedRightText = getSelectedRightText()
+        if (selectedRightText) {
           // If right is already selected, create match and validate
           if (!answer[left]) {
             const correctRight = pairs.find((p) => p.left === left)?.right
-            const isCorrect = selectedRight === correctRight
+            const isCorrect = selectedRightText === correctRight
 
             if (isCorrect) {
               // Correct match
-              onAnswerChange({ ...answer, [left]: selectedRight })
+              onAnswerChange({ ...answer, [left]: selectedRightText })
               setCorrectPairs((prev) => new Set([...prev, left]))
-              setSelectedRight(null)
+              setSelectedRightId(null)
             } else {
               // Incorrect match - show shake animation
               setIncorrectPairs((prev) => new Set([...prev, left]))
@@ -937,7 +948,7 @@ function MatchingPairsQuestion({
                   return newSet
                 })
               }, 600)
-              setSelectedRight(null)
+              setSelectedRightId(null)
             }
           }
         } else {
@@ -947,16 +958,26 @@ function MatchingPairsQuestion({
       } else if (isRightColumn) {
         // Selecting from right column
         const rightIndex = index - pairs.length
-        const right = rightItems[rightIndex]
-        if (!Object.values(answer).includes(right)) {
+        const rightItem = rightItems[rightIndex]
+        // Verificar si este item específico ya fue usado (por ID)
+        const isItemUsed = Object.entries(answer).some(([leftKey, rightText]) => {
+          // Buscar si hay un item con este ID que ya esté emparejado
+          const matchedItem = rightItems.find(item => 
+            item.text === rightText && 
+            pairs.find(p => p.left === leftKey)?.right === rightText
+          )
+          return matchedItem?.id === rightItem.id
+        })
+        
+        if (!isItemUsed) {
           if (selectedLeft) {
             // If left is already selected, create match and validate
             const correctRight = pairs.find((p) => p.left === selectedLeft)?.right
-            const isCorrect = right === correctRight
+            const isCorrect = rightItem.text === correctRight
 
             if (isCorrect) {
               // Correct match
-              onAnswerChange({ ...answer, [selectedLeft]: right })
+              onAnswerChange({ ...answer, [selectedLeft]: rightItem.text })
               setCorrectPairs((prev) => new Set([...prev, selectedLeft]))
               setSelectedLeft(null)
             } else {
@@ -972,8 +993,8 @@ function MatchingPairsQuestion({
               setSelectedLeft(null)
             }
           } else {
-            // Just select right
-            setSelectedRight(right)
+            // Just select right by ID
+            setSelectedRightId(rightItem.id)
           }
         }
       }
@@ -981,21 +1002,22 @@ function MatchingPairsQuestion({
 
     window.addEventListener('keydown', handleKeyPress)
     return () => window.removeEventListener('keydown', handleKeyPress)
-  }, [submitted, pairs, rightItems, selectedLeft, selectedRight, answer, onAnswerChange])
+  }, [submitted, pairs, rightItems, selectedLeft, selectedRightId, answer, onAnswerChange, getSelectedRightText])
 
   const handleLeftClick = (left: string) => {
     if (submitted) return
-    if (selectedRight) {
+    const selectedRightText = getSelectedRightText()
+    if (selectedRightText) {
       // If right is selected, create match and validate
       if (!answer[left]) {
         const correctRight = pairs.find((p) => p.left === left)?.right
-        const isCorrect = selectedRight === correctRight
+        const isCorrect = selectedRightText === correctRight
 
         if (isCorrect) {
           // Correct match
-          onAnswerChange({ ...answer, [left]: selectedRight })
+          onAnswerChange({ ...answer, [left]: selectedRightText })
           setCorrectPairs((prev) => new Set([...prev, left]))
-          setSelectedRight(null)
+          setSelectedRightId(null)
         } else {
           // Incorrect match - show shake animation
           setIncorrectPairs((prev) => new Set([...prev, left]))
@@ -1006,7 +1028,7 @@ function MatchingPairsQuestion({
               return newSet
             })
           }, 600)
-          setSelectedRight(null)
+          setSelectedRightId(null)
         }
       }
     } else {
@@ -1014,19 +1036,35 @@ function MatchingPairsQuestion({
     }
   }
 
-  const handleRightClick = (right: string) => {
+  const handleRightClick = (rightItem: { id: string; text: string }) => {
     if (submitted) return
-    const isUsed = Object.values(answer).includes(right)
-    if (isUsed) return
+    
+    // Verificar si este item específico ya fue usado
+    const usedRightIds = new Set<string>()
+    Object.entries(answer).forEach(([leftKey]) => {
+      // Encontrar el item que corresponde a este emparejamiento
+      const pair = pairs.find(p => p.left === leftKey)
+      if (pair) {
+        const matchedItem = rightItems.find(item => 
+          item.text === pair.right && 
+          !usedRightIds.has(item.id)
+        )
+        if (matchedItem) {
+          usedRightIds.add(matchedItem.id)
+        }
+      }
+    })
+    
+    if (usedRightIds.has(rightItem.id)) return
 
     if (selectedLeft) {
       // If left is selected, create match and validate
       const correctRight = pairs.find((p) => p.left === selectedLeft)?.right
-      const isCorrect = right === correctRight
+      const isCorrect = rightItem.text === correctRight
 
       if (isCorrect) {
         // Correct match
-        onAnswerChange({ ...answer, [selectedLeft]: right })
+        onAnswerChange({ ...answer, [selectedLeft]: rightItem.text })
         setCorrectPairs((prev) => new Set([...prev, selectedLeft]))
         setSelectedLeft(null)
       } else {
@@ -1042,7 +1080,7 @@ function MatchingPairsQuestion({
         setSelectedLeft(null)
       }
     } else {
-      setSelectedRight(right)
+      setSelectedRightId(rightItem.id)
     }
   }
 
@@ -1095,38 +1133,62 @@ function MatchingPairsQuestion({
         {/* Right Column */}
         <div className="space-y-2">
           <div className="text-xs font-semibold text-slate-500 mb-2">Relaciones</div>
-          {rightItems.map((right) => {
-            const isUsed = Object.values(answer).includes(right)
-            const isSelected = selectedRight === right
+          {rightItems.map((item, index) => {
+            // Calcular qué IDs ya están usados
+            const usedRightIds = new Set<string>()
+            Object.entries(answer).forEach(([leftKey]) => {
+              const pair = pairs.find(p => p.left === leftKey)
+              if (pair) {
+                const matchedItem = rightItems.find(ri => 
+                  ri.text === pair.right && 
+                  !usedRightIds.has(ri.id)
+                )
+                if (matchedItem) {
+                  usedRightIds.add(matchedItem.id)
+                }
+              }
+            })
+            
+            const isUsed = usedRightIds.has(item.id)
+            const isSelected = selectedRightId === item.id
             // Find if this right item is part of a correct match
-            const leftKey = Object.keys(answer).find((key) => answer[key] === right)
+            const leftKey = Object.keys(answer).find((key) => {
+              const pair = pairs.find(p => p.left === key)
+              if (!pair) return false
+              // Verificar si este item específico está emparejado con este left
+              const matchedItem = rightItems.find(ri => 
+                ri.text === pair.right && 
+                ri.id === item.id
+              )
+              return matchedItem && answer[key] === item.text
+            })
             const isCorrectMatch = leftKey ? correctPairs.has(leftKey) : false
 
             return (
               <button
-                key={right}
+                key={item.id}
                 type="button"
-                onClick={() => handleRightClick(right)}
+                onClick={() => handleRightClick(item)}
                 disabled={submitted || isUsed}
                 className={cn(
                   'w-full p-3 rounded-lg border text-sm text-left transition-all flex items-center gap-2',
                   isSelected && 'border-primary bg-primary/5',
-                  (selectedLeft || selectedRight) &&
+                  (selectedLeft || selectedRightId) &&
                     !isUsed &&
                     !isSelected &&
                     'border-primary/50 hover:border-primary hover:bg-primary/5',
                   isCorrectMatch && 'border-green-500 bg-green-50 text-green-700',
                   isUsed && !isCorrectMatch && 'border-slate-200 bg-slate-50 text-slate-400',
-                  !selectedLeft && !selectedRight && !isUsed && 'border-slate-200'
+                  !selectedLeft && !selectedRightId && !isUsed && 'border-slate-200'
                 )}
               >
                 <Badge
                   variant="outline"
                   className="size-6 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0"
                 >
-                  {getKeyboardLabel(pairs.length + rightItems.indexOf(right))}
+                  {getKeyboardLabel(pairs.length + index)}
                 </Badge>
-                <span className="flex-1">{right}</span>
+                <span className="flex-1">{item.text}</span>
               </button>
             )
           })}
