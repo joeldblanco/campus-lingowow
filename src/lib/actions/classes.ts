@@ -292,7 +292,6 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
 
     // Usar date-fns para manejar fechas
     const { parseISO, isWithinInterval, format: formatDate } = await import('date-fns')
-    const { getDayName } = await import('@/lib/utils/date')
 
     // Validar usando la fecha local original (la que el usuario seleccionó)
     const classDate = parseISO(day)
@@ -307,51 +306,44 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
       }
     }
 
-    // 2. Validar que el horario esté dentro de la disponibilidad del profesor
-    const [startTime, endTime] = timeSlot.split('-')
-    const dayOfWeek = getDayName(day)
-
-    // Buscar disponibilidad del profesor para ese día de la semana
-    const teacherAvailability = await db.teacherAvailability.findMany({
+    // 2. Verificar que no haya superposición con otras clases del profesor
+    // Obtener todas las clases del profesor para ese día (que no estén canceladas)
+    const existingClasses = await db.classBooking.findMany({
       where: {
-        userId: validatedData.teacherId,
-        day: dayOfWeek,
+        teacherId: validatedData.teacherId,
+        day: utcData.day,
+        status: { not: 'CANCELLED' },
+      },
+      select: {
+        id: true,
+        timeSlot: true,
       },
     })
 
-    if (teacherAvailability.length === 0) {
-      return {
-        success: false,
-        error: `El profesor no tiene disponibilidad configurada para los ${dayOfWeek === 'monday' ? 'lunes' : dayOfWeek === 'tuesday' ? 'martes' : dayOfWeek === 'wednesday' ? 'miércoles' : dayOfWeek === 'thursday' ? 'jueves' : dayOfWeek === 'friday' ? 'viernes' : dayOfWeek === 'saturday' ? 'sábados' : 'domingos'}`,
+    // Parsear el horario de la nueva clase
+    const [newStartTime, newEndTime] = utcData.timeSlot.split('-')
+    const [newStartHour, newStartMin] = newStartTime.split(':').map(Number)
+    const [newEndHour, newEndMin] = newEndTime.split(':').map(Number)
+    const newStartMinutes = newStartHour * 60 + newStartMin
+    const newEndMinutes = newEndHour * 60 + newEndMin
+
+    // Verificar superposición con cada clase existente
+    for (const existingClass of existingClasses) {
+      const [existingStartTime, existingEndTime] = existingClass.timeSlot.split('-')
+      const [existingStartHour, existingStartMin] = existingStartTime.split(':').map(Number)
+      const [existingEndHour, existingEndMin] = existingEndTime.split(':').map(Number)
+      const existingStartMinutes = existingStartHour * 60 + existingStartMin
+      const existingEndMinutes = existingEndHour * 60 + existingEndMin
+
+      // Hay superposición si los rangos se intersectan
+      const hasOverlap = newStartMinutes < existingEndMinutes && newEndMinutes > existingStartMinutes
+
+      if (hasOverlap) {
+        return {
+          success: false,
+          error: `El profesor ya tiene una clase programada de ${existingStartTime} a ${existingEndTime} que se superpone con este horario`,
+        }
       }
-    }
-
-    // Verificar que el horario de la clase esté dentro de algún rango de disponibilidad
-    const isWithinAvailability = teacherAvailability.some((slot) => {
-      return startTime >= slot.startTime && endTime <= slot.endTime
-    })
-
-    if (!isWithinAvailability) {
-      return {
-        success: false,
-        error: `El horario ${timeSlot} está fuera de la disponibilidad del profesor para este día`,
-      }
-    }
-
-    // 3. Check if the time slot is available for the teacher (no conflicting bookings)
-    // Usar valores UTC para la búsqueda ya que la DB almacena en UTC
-    const existingBooking = await db.classBooking.findUnique({
-      where: {
-        teacherId_day_timeSlot: {
-          teacherId: validatedData.teacherId,
-          day: utcData.day,
-          timeSlot: utcData.timeSlot,
-        },
-      },
-    })
-
-    if (existingBooking) {
-      return { success: false, error: 'El profesor ya tiene una clase programada en este horario' }
     }
 
     const classBooking = await db.classBooking.create({
@@ -431,19 +423,42 @@ export async function updateClass(id: string, data: z.infer<typeof EditClassSche
         newDay !== currentClass.day ||
         newTimeSlot !== currentClass.timeSlot
       ) {
-        const existingBooking = await db.classBooking.findFirst({
+        // Obtener todas las clases del profesor para ese día (excluyendo la actual y canceladas)
+        const existingClasses = await db.classBooking.findMany({
           where: {
             teacherId: newTeacherId,
             day: newDay,
-            timeSlot: newTimeSlot,
-            id: { not: id }, // Exclude current class
+            status: { not: 'CANCELLED' },
+            id: { not: id },
+          },
+          select: {
+            id: true,
+            timeSlot: true,
           },
         })
 
-        if (existingBooking) {
-          return {
-            success: false,
-            error: 'El profesor ya tiene una clase programada en este horario',
+        // Parsear el horario de la nueva clase
+        const [newStartTime, newEndTime] = newTimeSlot.split('-')
+        const [newStartHour, newStartMin] = newStartTime.split(':').map(Number)
+        const [newEndHour, newEndMin] = newEndTime.split(':').map(Number)
+        const newStartMinutes = newStartHour * 60 + newStartMin
+        const newEndMinutes = newEndHour * 60 + newEndMin
+
+        // Verificar superposición con cada clase existente
+        for (const existingClass of existingClasses) {
+          const [existingStartTime, existingEndTime] = existingClass.timeSlot.split('-')
+          const [existingStartHour, existingStartMin] = existingStartTime.split(':').map(Number)
+          const [existingEndHour, existingEndMin] = existingEndTime.split(':').map(Number)
+          const existingStartMinutes = existingStartHour * 60 + existingStartMin
+          const existingEndMinutes = existingEndHour * 60 + existingEndMin
+
+          const hasOverlap = newStartMinutes < existingEndMinutes && newEndMinutes > existingStartMinutes
+
+          if (hasOverlap) {
+            return {
+              success: false,
+              error: `El profesor ya tiene una clase programada de ${existingStartTime} a ${existingEndTime} que se superpone con este horario`,
+            }
           }
         }
       }
@@ -524,18 +539,43 @@ export async function rescheduleClass(id: string, newDay: string, newTimeSlot: s
       return { success: false, error: 'Class not found' }
     }
 
-    // Check if the new time slot is available (usando UTC)
-    const existingBooking = await db.classBooking.findFirst({
+    // Verificar superposición con otras clases del profesor
+    const existingClasses = await db.classBooking.findMany({
       where: {
         teacherId: currentClass.teacherId,
         day: utcData.day,
-        timeSlot: utcData.timeSlot,
+        status: { not: 'CANCELLED' },
         id: { not: id },
+      },
+      select: {
+        id: true,
+        timeSlot: true,
       },
     })
 
-    if (existingBooking) {
-      return { success: false, error: 'El profesor ya tiene una clase programada en este horario' }
+    // Parsear el horario de la nueva clase
+    const [newStartTime, newEndTime] = utcData.timeSlot.split('-')
+    const [newStartHour, newStartMin] = newStartTime.split(':').map(Number)
+    const [newEndHour, newEndMin] = newEndTime.split(':').map(Number)
+    const newStartMinutes = newStartHour * 60 + newStartMin
+    const newEndMinutes = newEndHour * 60 + newEndMin
+
+    // Verificar superposición con cada clase existente
+    for (const existingClass of existingClasses) {
+      const [existingStartTime, existingEndTime] = existingClass.timeSlot.split('-')
+      const [existingStartHour, existingStartMin] = existingStartTime.split(':').map(Number)
+      const [existingEndHour, existingEndMin] = existingEndTime.split(':').map(Number)
+      const existingStartMinutes = existingStartHour * 60 + existingStartMin
+      const existingEndMinutes = existingEndHour * 60 + existingEndMin
+
+      const hasOverlap = newStartMinutes < existingEndMinutes && newEndMinutes > existingStartMinutes
+
+      if (hasOverlap) {
+        return {
+          success: false,
+          error: `El profesor ya tiene una clase programada de ${existingStartTime} a ${existingEndTime} que se superpone con este horario`,
+        }
+      }
     }
 
     const updatedClass = await db.classBooking.update({
