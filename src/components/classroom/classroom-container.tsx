@@ -57,6 +57,7 @@ function ClassroomInner({
     leaveRoom,
     sendCommand,
     addCommandListener,
+    removeCommandListener,
     toggleScreenShare,
     toggleRaiseHand,
     isScreenSharing,
@@ -313,9 +314,11 @@ function ClassroomInner({
     }
 
     return () => {
-      // Cleanup if possible
+      removeCommandListener('set-lesson', handleSetLesson)
+      removeCommandListener('set-tab', handleSetTab)
+      removeCommandListener('sync-request', handleSyncRequest)
     }
-  }, [connectionStatus, addCommandListener, isTeacher, sendCommand])
+  }, [connectionStatus, addCommandListener, removeCommandListener, isTeacher, sendCommand])
 
   const handleContentSelect = async (contentId: string, contentType: ShareableContent['type']) => {
     try {
