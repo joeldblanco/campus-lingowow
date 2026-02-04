@@ -491,14 +491,14 @@ export function ActivityRenderer({ activity, onComplete, onClose }: ActivityRend
                   onClick={handleSkip}
                   className={cn(
                     'text-slate-600 hover:text-slate-700 transition-all duration-300 transform',
-                    showFeedback && 'scale-0 opacity-0 pointer-events-none'
+                    (showFeedback || (isMatchingPairs && hasAnswered)) && 'scale-0 opacity-0 pointer-events-none'
                   )}
-                  disabled={showFeedback}
+                  disabled={showFeedback || (isMatchingPairs && hasAnswered)}
                 >
                   Saltar
                 </Button>
 
-                {!showFeedback ? (
+                {!showFeedback && !(isMatchingPairs && hasAnswered) ? (
                   <Button
                     onClick={handleCheckAnswer}
                     disabled={!hasAnswered}
@@ -509,7 +509,7 @@ export function ActivityRenderer({ activity, onComplete, onClose }: ActivityRend
                     </span>
                   </Button>
                 ) : (
-                  <Button onClick={handleNext}>
+                  <Button onClick={isMatchingPairs && hasAnswered && !showFeedback ? handleCheckAnswer : handleNext}>
                     {currentStep === totalSteps - 2 ? 'Ver Resultados' : 'Siguiente Pregunta'}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
@@ -1142,8 +1142,9 @@ function MatchingPairsQuestion({
         <div className="space-y-2">
           <div className="text-xs font-semibold text-slate-500 mb-2">Relaciones</div>
           {rightItems.map((item, index) => {
-            // Calcular qué IDs ya están usados
+            // Calcular qué IDs ya están usados Y mapear leftKey -> rightItemId
             const usedRightIds = new Set<string>()
+            const leftToRightIdMap = new Map<string, string>()
             Object.entries(answer).forEach(([leftKey]) => {
               const pair = pairs.find(p => p.left === leftKey)
               if (pair) {
@@ -1153,23 +1154,17 @@ function MatchingPairsQuestion({
                 )
                 if (matchedItem) {
                   usedRightIds.add(matchedItem.id)
+                  leftToRightIdMap.set(leftKey, matchedItem.id)
                 }
               }
             })
             
             const isUsed = usedRightIds.has(item.id)
             const isSelected = selectedRightId === item.id
-            // Find if this right item is part of a correct match
-            const leftKey = Object.keys(answer).find((key) => {
-              const pair = pairs.find(p => p.left === key)
-              if (!pair) return false
-              // Verificar si este item específico está emparejado con este left
-              const matchedItem = rightItems.find(ri => 
-                ri.text === pair.right && 
-                ri.id === item.id
-              )
-              return matchedItem && answer[key] === item.text
-            })
+            // Find if this specific right item is part of a correct match
+            const leftKey = Array.from(leftToRightIdMap.entries()).find(
+              ([, rightId]) => rightId === item.id
+            )?.[0]
             const isCorrectMatch = leftKey ? correctPairs.has(leftKey) : false
 
             return (
