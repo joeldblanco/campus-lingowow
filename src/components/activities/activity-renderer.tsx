@@ -509,7 +509,26 @@ export function ActivityRenderer({ activity, onComplete, onClose }: ActivityRend
                     </span>
                   </Button>
                 ) : (
-                  <Button onClick={isMatchingPairs && hasAnswered && !showFeedback ? handleCheckAnswer : handleNext}>
+                  <Button 
+                    onClick={(e) => {
+                      // Para matching_pairs completado sin feedback mostrado, registrar y avanzar
+                      if (isMatchingPairs && hasAnswered && !showFeedback) {
+                        handleCheckAnswer(e)
+                        // Usar setTimeout para que handleNext se ejecute después de handleCheckAnswer
+                        setTimeout(() => {
+                          setShowFeedback(false)
+                          if (currentStep < totalSteps - 1) {
+                            setCurrentStep((prev) => prev + 1)
+                          }
+                          if (currentStep === totalSteps - 2) {
+                            onComplete?.(score + 1, activity.questions.length)
+                          }
+                        }, 0)
+                      } else {
+                        handleNext()
+                      }
+                    }}
+                  >
                     {currentStep === totalSteps - 2 ? 'Ver Resultados' : 'Siguiente Pregunta'}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
