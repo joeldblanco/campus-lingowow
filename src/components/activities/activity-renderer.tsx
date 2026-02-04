@@ -959,15 +959,23 @@ function MatchingPairsQuestion({
         // Selecting from right column
         const rightIndex = index - pairs.length
         const rightItem = rightItems[rightIndex]
-        // Verificar si este item específico ya fue usado (por ID)
-        const isItemUsed = Object.entries(answer).some(([leftKey, rightText]) => {
-          // Buscar si hay un item con este ID que ya esté emparejado
-          const matchedItem = rightItems.find(item => 
-            item.text === rightText && 
-            pairs.find(p => p.left === leftKey)?.right === rightText
-          )
-          return matchedItem?.id === rightItem.id
+        
+        // Calcular qué IDs ya están usados (mismo algoritmo que handleRightClick)
+        const usedRightIds = new Set<string>()
+        Object.entries(answer).forEach(([leftKey]) => {
+          const pair = pairs.find(p => p.left === leftKey)
+          if (pair) {
+            const matchedItem = rightItems.find(item => 
+              item.text === pair.right && 
+              !usedRightIds.has(item.id)
+            )
+            if (matchedItem) {
+              usedRightIds.add(matchedItem.id)
+            }
+          }
         })
+        
+        const isItemUsed = usedRightIds.has(rightItem.id)
         
         if (!isItemUsed) {
           if (selectedLeft) {
