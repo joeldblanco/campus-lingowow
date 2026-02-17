@@ -91,9 +91,7 @@ export async function getStudentRecordings(options?: {
     const isAdmin = session.user.roles?.includes('ADMIN')
 
     // Construir filtros para booking
-    const bookingFilter: Record<string, unknown> = {
-      status: 'COMPLETED',
-    }
+    const bookingFilter: Record<string, unknown> = {}
 
     // Solo filtrar por studentId si NO es admin
     if (!isAdmin) {
@@ -239,6 +237,28 @@ export async function getRecordingById(recordingId: string) {
       return { success: false, error: 'No tienes acceso a esta grabación' }
     }
 
+    // If the recording failed, return it but with a clear indication
+    if (recording.status === 'FAILED') {
+      return {
+        success: true,
+        data: {
+          ...recording,
+          signedUrl: null,
+        },
+      }
+    }
+
+    // If still processing, return without trying to generate URL
+    if (recording.status === 'PROCESSING') {
+      return {
+        success: true,
+        data: {
+          ...recording,
+          signedUrl: null,
+        },
+      }
+    }
+
     // Generar URL firmada si hay un archivo en R2
     let signedUrl = recording.fileUrl
     if (recording.r2Key) {
@@ -250,6 +270,21 @@ export async function getRecordingById(recordingId: string) {
         signedUrl = await getSignedUrl(s3Client, command, { expiresIn: 21600 }) // 6 horas
       } catch (error) {
         console.error('Error generating signed URL:', error)
+        // If the file doesn't exist in R2, mark as failed
+        if ((error as { name?: string })?.name === 'NoSuchKey' || (error as { name?: string })?.name === 'NotFound') {
+          await db.classRecording.update({
+            where: { id: recordingId },
+            data: { status: 'FAILED' },
+          })
+          return {
+            success: true,
+            data: {
+              ...recording,
+              status: 'FAILED',
+              signedUrl: null,
+            },
+          }
+        }
       }
     }
 

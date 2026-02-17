@@ -42,6 +42,7 @@ export default function RecordingPage({
     const [remoteScreenShareAudioTrack, setRemoteScreenShareAudioTrack] = useState<Track | undefined>()
 
     const roomRef = useRef<Room | null>(null)
+    const startRecordingCalledRef = useRef(false)
 
     // Parse URL params
     useEffect(() => {
@@ -53,12 +54,52 @@ export default function RecordingPage({
     const [layout, setLayout] = useState<string>('default')
     const [tokenError, setTokenError] = useState<string | null>(null)
 
-    // Get layout from URL search params
+    // CRITICAL: Call START_RECORDING as soon as possible
+    // LiveKit Egress injects this function into window and expects the page to call it
+    // to signal that the template is ready. If we wait too long, egress times out with
+    // "Start signal not received"
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            console.log('[Recording] Page loaded, URL:', window.location.href)
-            const searchParams = new URLSearchParams(window.location.search)
-            setLayout(searchParams.get('layout') || 'default')
+        if (typeof window === 'undefined') return
+
+        console.log('[Recording] Page loaded, URL:', window.location.href)
+        const searchParams = new URLSearchParams(window.location.search)
+        setLayout(searchParams.get('layout') || 'default')
+
+        const callStartRecording = () => {
+            if (startRecordingCalledRef.current) return
+            const win = window as unknown as { START_RECORDING?: () => void }
+            if (win.START_RECORDING) {
+                console.log('[Recording] START_RECORDING found, calling immediately')
+                startRecordingCalledRef.current = true
+                win.START_RECORDING()
+            }
+        }
+
+        // Try immediately
+        callStartRecording()
+
+        // If not available yet, poll every 100ms (egress may inject it after page load)
+        if (!startRecordingCalledRef.current) {
+            console.log('[Recording] START_RECORDING not yet available, polling...')
+            const interval = setInterval(() => {
+                callStartRecording()
+                if (startRecordingCalledRef.current) {
+                    clearInterval(interval)
+                }
+            }, 100)
+
+            // Stop polling after 30 seconds
+            const timeout = setTimeout(() => {
+                clearInterval(interval)
+                if (!startRecordingCalledRef.current) {
+                    console.error('[Recording] START_RECORDING never became available after 30s')
+                }
+            }, 30000)
+
+            return () => {
+                clearInterval(interval)
+                clearTimeout(timeout)
+            }
         }
     }, [])
 
@@ -204,18 +245,20 @@ export default function RecordingPage({
                     console.log('[Recording] Connection state changed:', state)
                     if (state === ConnectionState.Connected) {
                         setConnectionStatus('connected')
-                        console.log('[Recording] Connected! Calling START_RECORDING...')
-                        // Signal to egress that recording can start
-                        if (typeof window !== 'undefined' && (window as unknown as { START_RECORDING?: () => void }).START_RECORDING) {
-                            console.log('[Recording] START_RECORDING function exists, calling it')
-                            ;(window as unknown as { START_RECORDING: () => void }).START_RECORDING()
-                        } else {
-                            console.log('[Recording] START_RECORDING function NOT found on window')
+                        console.log('[Recording] Room connected successfully')
+                        // Also try calling START_RECORDING here as a fallback
+                        // in case the polling didn't find it yet
+                        if (!startRecordingCalledRef.current) {
+                            const win = window as unknown as { START_RECORDING?: () => void }
+                            if (win.START_RECORDING) {
+                                console.log('[Recording] START_RECORDING called from connection handler (fallback)')
+                                startRecordingCalledRef.current = true
+                                win.START_RECORDING()
+                            }
                         }
                     } else if (state === ConnectionState.Disconnected) {
                         setConnectionStatus('disconnected')
                         console.log('[Recording] Disconnected! Calling END_RECORDING...')
-                        // Signal to egress that recording should end
                         if (typeof window !== 'undefined' && (window as unknown as { END_RECORDING?: () => void }).END_RECORDING) {
                             (window as unknown as { END_RECORDING: () => void }).END_RECORDING()
                         }

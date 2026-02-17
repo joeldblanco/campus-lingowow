@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
 
     // Process egress events - these are the recording lifecycle events
     if (event.event === 'egress_ended' && event.egressInfo) {
-      await handleEgressEnded(event.egressInfo)
+      await handleEgressEnded(event.egressInfo as unknown as EgressInfo)
     } else if (event.event === 'egress_started' && event.egressInfo) {
       console.log(`[LiveKit Webhook] Egress started: ${event.egressInfo.egressId}`)
     }
@@ -62,6 +62,7 @@ interface EgressInfo {
   startedAt?: bigint | number | string
   endedAt?: bigint | number | string
   error?: string
+  errorMessage?: string
   fileResults?: EgressFileResult[]
   file?: EgressFileResult
   streamResults?: unknown[]
@@ -75,6 +76,9 @@ async function handleEgressEnded(egressInfo: EgressInfo) {
     console.error('[LiveKit Webhook] No egressId in egress_ended event')
     return
   }
+
+  // Log full egress info for debugging
+  console.log(`[LiveKit Webhook] Full egressInfo for ${egressId}:`, JSON.stringify(egressInfo, (_, v) => typeof v === 'bigint' ? v.toString() : v))
 
   try {
     // Find the recording by egressId
@@ -129,9 +133,16 @@ async function handleEgressEnded(egressInfo: EgressInfo) {
       }
     }
 
-    // Check if egress ended with an error
-    const isError = egressInfo.error && egressInfo.error.length > 0
+    // Check if egress ended with an error - check multiple possible error fields
+    // LiveKit SDK v2 may use 'error', 'errorMessage', or status codes
+    // Status 5 = EGRESS_FAILED, Status 4 = EGRESS_COMPLETE
+    const errorMessage = egressInfo.error || egressInfo.errorMessage || (egressInfo as unknown as Record<string, unknown>)['error_message'] as string || ''
+    const hasError = errorMessage.length > 0
+    const hasFailedStatus = egressInfo.status === 5
+    const isError = hasError || hasFailedStatus
     const newStatus = isError ? 'FAILED' : (r2Key ? 'READY' : 'FAILED')
+
+    console.log(`[LiveKit Webhook] Error detection for ${egressId}:`, { errorMessage, hasError, hasFailedStatus, egressStatus: egressInfo.status, newStatus, r2Key })
 
     const r2BucketName = process.env.CLOUDFLARE_R2_BUCKET_NAME || 'lingowow-recordings'
 

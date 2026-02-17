@@ -153,6 +153,68 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
   const teacher = booking.teacher
   const course = booking.enrollment.course
   const videoUrl = recording.signedUrl || recording.fileUrl
+  const isFailed = recording.status === 'FAILED'
+  const isProcessing = recording.status === 'PROCESSING'
+
+  // If recording is FAILED, show a clear error page
+  if (isFailed) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Link href="/recordings" className="hover:text-foreground flex items-center gap-1">
+            <ArrowLeft className="w-4 h-4" />
+            Grabaciones
+          </Link>
+          <span>/</span>
+          <span className="text-foreground">{course.title}</span>
+        </div>
+        <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
+          <AlertCircle className="h-16 w-16 text-red-500 mb-4" />
+          <h2 className="text-xl font-semibold mb-2">Grabación no disponible</h2>
+          <p className="text-muted-foreground mb-4 max-w-md">
+            Hubo un error durante la grabación de esta clase y el video no pudo ser guardado.
+            Esto puede ocurrir por problemas de conexión durante la clase.
+          </p>
+          <Button asChild>
+            <Link href="/recordings">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Volver a grabaciones
+            </Link>
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
+  // If recording is still processing, show a waiting state
+  if (isProcessing) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Link href="/recordings" className="hover:text-foreground flex items-center gap-1">
+            <ArrowLeft className="w-4 h-4" />
+            Grabaciones
+          </Link>
+          <span>/</span>
+          <span className="text-foreground">{course.title}</span>
+        </div>
+        <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
+          <Loader2 className="h-16 w-16 text-blue-500 mb-4 animate-spin" />
+          <h2 className="text-xl font-semibold mb-2">Grabación en proceso</h2>
+          <p className="text-muted-foreground mb-4 max-w-md">
+            Tu grabación aún se está procesando. Esto puede tardar unos minutos.
+            Recibirás una notificación cuando esté lista.
+          </p>
+          <Button asChild variant="outline">
+            <Link href="/recordings">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Volver a grabaciones
+            </Link>
+          </Button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
