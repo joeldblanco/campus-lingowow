@@ -12,8 +12,6 @@ import EgressHelper from '@livekit/egress-sdk'
 import { RecordingLayout } from '@/components/classroom/recording-layout'
 import { Loader2 } from 'lucide-react'
 
-const FRAME_DECODE_TIMEOUT = 5000
-
 interface VideoTrack {
     participantId: string
     name: string
@@ -264,62 +262,15 @@ export default function RecordingPage({
                 // Sync existing participants
                 room.remoteParticipants.forEach(updateRemoteParticipant)
 
-                // Signal START_RECORDING to egress using the same algorithm as the official template:
-                // - If video tracks exist, wait for frames to be decoded
-                // - If only audio tracks, start after a short delay
-                // - Timeout after FRAME_DECODE_TIMEOUT ms
-                const startTime = Date.now()
-                const interval = setInterval(async () => {
-                    if (startRecordingCalledRef.current) {
-                        clearInterval(interval)
-                        return
-                    }
-
-                    let shouldStartRecording = false
-                    let hasVideoTracks = false
-                    let hasSubscribedTracks = false
-                    let hasDecodedFrames = false
-
-                    for (const p of Array.from(room.remoteParticipants.values())) {
-                        for (const pub of Array.from(p.trackPublications.values())) {
-                            if (pub.isSubscribed) {
-                                hasSubscribedTracks = true
-                            }
-                            if (pub.kind === Track.Kind.Video) {
-                                hasVideoTracks = true
-                                if (pub.videoTrack) {
-                                    const stats = await pub.videoTrack.getRTCStatsReport()
-                                    if (stats) {
-                                        hasDecodedFrames = Array.from(stats).some(
-                                            (item) => item[1].type === 'inbound-rtp' && (item[1] as { framesDecoded?: number }).framesDecoded !== undefined && (item[1] as { framesDecoded: number }).framesDecoded > 0,
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    const timeDelta = Date.now() - startTime
-                    if (hasDecodedFrames) {
-                        shouldStartRecording = true
-                    } else if (!hasVideoTracks && hasSubscribedTracks && timeDelta > 500) {
-                        shouldStartRecording = true
-                    } else if (timeDelta > FRAME_DECODE_TIMEOUT && hasSubscribedTracks) {
-                        shouldStartRecording = true
-                    }
-
-                    if (shouldStartRecording) {
-                        console.log('[Recording] Signaling START_RECORDING to egress', {
-                            hasVideoTracks,
-                            hasSubscribedTracks,
-                            hasDecodedFrames,
-                            timeDelta,
-                        })
-                        startRecordingCalledRef.current = true
-                        EgressHelper.startRecording()
-                        clearInterval(interval)
-                    }
-                }, 100)
+                // Signal START_RECORDING immediately after connecting.
+                // The egress must start recording as soon as the page is ready,
+                // regardless of whether participants are in the room or have tracks.
+                // The recording captures the entire class duration.
+                if (!startRecordingCalledRef.current) {
+                    console.log('[Recording] Room connected, signaling START_RECORDING to egress immediately')
+                    startRecordingCalledRef.current = true
+                    EgressHelper.startRecording()
+                }
 
             } catch (e) {
                 console.error('[Recording] Connect Exception:', e)
