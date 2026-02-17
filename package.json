@@ -49,6 +49,7 @@
     "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^4.1.3",
     "@livekit/components-react": "^2.9.17",
+    "@livekit/egress-sdk": "^0.2.1",
     "@paypal/paypal-server-sdk": "^1.1.0",
     "@paypal/react-paypal-js": "^8.9.2",
     "@prisma/client": "^6.16.2",

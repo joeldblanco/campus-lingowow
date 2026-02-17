@@ -8,8 +8,11 @@ import {
     RemoteParticipant,
     ConnectionState,
 } from 'livekit-client'
+import EgressHelper from '@livekit/egress-sdk'
 import { RecordingLayout } from '@/components/classroom/recording-layout'
 import { Loader2 } from 'lucide-react'
+
+const FRAME_DECODE_TIMEOUT = 5000
 
 interface VideoTrack {
     participantId: string
@@ -44,100 +47,41 @@ export default function RecordingPage({
     const roomRef = useRef<Room | null>(null)
     const startRecordingCalledRef = useRef(false)
 
-    // Parse URL params
+    // Parse URL route params (roomName from the path)
     useEffect(() => {
         params.then(p => setRoomName(p.roomName))
     }, [params])
 
-    // Token and layout state
-    const [token, setToken] = useState<string | null>(null)
+    // LiveKit egress provides url, token, and layout as query params
+    // The egress headless browser opens: {customBaseUrl}/{roomName}?url=...&token=...&layout=...
+    const [serverUrl, setServerUrl] = useState<string>('')
+    const [token, setToken] = useState<string>('')
     const [layout, setLayout] = useState<string>('default')
-    const [tokenError, setTokenError] = useState<string | null>(null)
+    const [initError, setInitError] = useState<string | null>(null)
 
-    // CRITICAL: Call START_RECORDING as soon as possible
-    // LiveKit Egress injects this function into window and expects the page to call it
-    // to signal that the template is ready. If we wait too long, egress times out with
-    // "Start signal not received"
+    // Read query params provided by LiveKit egress
     useEffect(() => {
         if (typeof window === 'undefined') return
 
         console.log('[Recording] Page loaded, URL:', window.location.href)
         const searchParams = new URLSearchParams(window.location.search)
-        setLayout(searchParams.get('layout') || 'default')
 
-        const callStartRecording = () => {
-            if (startRecordingCalledRef.current) return
-            const win = window as unknown as { START_RECORDING?: () => void }
-            if (win.START_RECORDING) {
-                console.log('[Recording] START_RECORDING found, calling immediately')
-                startRecordingCalledRef.current = true
-                win.START_RECORDING()
-            }
+        const urlParam = searchParams.get('url') || ''
+        const tokenParam = searchParams.get('token') || ''
+        const layoutParam = searchParams.get('layout') || 'default'
+
+        console.log('[Recording] Query params - url:', urlParam ? 'present' : 'MISSING', 'token:', tokenParam ? 'present' : 'MISSING', 'layout:', layoutParam)
+
+        if (!urlParam || !tokenParam) {
+            console.error('[Recording] Missing required query params (url, token). This page must be opened by LiveKit egress.')
+            setInitError('Missing required query params (url, token)')
+            return
         }
 
-        // Try immediately
-        callStartRecording()
-
-        // If not available yet, poll every 100ms (egress may inject it after page load)
-        if (!startRecordingCalledRef.current) {
-            console.log('[Recording] START_RECORDING not yet available, polling...')
-            const interval = setInterval(() => {
-                callStartRecording()
-                if (startRecordingCalledRef.current) {
-                    clearInterval(interval)
-                }
-            }, 100)
-
-            // Stop polling after 30 seconds
-            const timeout = setTimeout(() => {
-                clearInterval(interval)
-                if (!startRecordingCalledRef.current) {
-                    console.error('[Recording] START_RECORDING never became available after 30s')
-                }
-            }, 30000)
-
-            return () => {
-                clearInterval(interval)
-                clearTimeout(timeout)
-            }
-        }
+        setServerUrl(urlParam)
+        setToken(tokenParam)
+        setLayout(layoutParam)
     }, [])
-
-    // Fetch recording token automatically when roomName is available
-    useEffect(() => {
-        if (!roomName) return
-
-        const fetchToken = async () => {
-            try {
-                // Use absolute URL to ensure it works from egress headless browser
-                const baseUrl = typeof window !== 'undefined' 
-                    ? window.location.origin 
-                    : process.env.NEXT_PUBLIC_APP_URL || 'https://www.lingowow.com'
-                
-                console.log('[Recording] Fetching token for room:', roomName, 'from:', baseUrl)
-                
-                const url = `${baseUrl}/api/livekit/recording-token?roomName=${encodeURIComponent(roomName)}`
-                
-                const response = await fetch(url)
-                if (!response.ok) {
-                    const errorText = await response.text()
-                    throw new Error(`Failed to fetch token: ${response.status} - ${errorText}`)
-                }
-                const data = await response.json()
-                if (data.token) {
-                    console.log('[Recording] Token received successfully')
-                    setToken(data.token)
-                } else {
-                    throw new Error('No token in response')
-                }
-            } catch (error) {
-                console.error('[Recording] Failed to fetch token:', error)
-                setTokenError(error instanceof Error ? error.message : 'Failed to fetch token')
-            }
-        }
-
-        fetchToken()
-    }, [roomName])
 
     const updateRemoteParticipant = useCallback((participant: RemoteParticipant) => {
         setRemoteTracks((prev) => {
@@ -218,21 +162,16 @@ export default function RecordingPage({
         setRemoteTracks((prev) => prev.filter(t => t.participantId !== participant.identity))
     }, [])
 
-    // Connect to room as observer (no publishing)
+    // Connect to room using the token and URL provided by LiveKit egress
     useEffect(() => {
-        if (!roomName || !token) return
+        if (!roomName || !token || !serverUrl) return
 
         const connectToRoom = async () => {
             try {
                 setConnectionStatus('connecting')
 
-                // Hardcode the LiveKit URL to ensure it works in egress headless browser
-                // NEXT_PUBLIC_ env vars may not be available in the egress context
-                const serverUrl = process.env.NEXT_PUBLIC_LIVEKIT_URL || 'wss://meet.lingowow.com'
-                
                 console.log('[Recording] Connecting to LiveKit:', serverUrl)
                 console.log('[Recording] Room:', roomName)
-                console.log('[Recording] Token length:', token?.length)
 
                 const room = new Room({
                     adaptiveStream: true,
@@ -241,34 +180,24 @@ export default function RecordingPage({
 
                 roomRef.current = room
 
+                // Register room with EgressHelper so it can signal START/END_RECORDING
+                EgressHelper.setRoom(room)
+
                 room.on(RoomEvent.ConnectionStateChanged, (state: ConnectionState) => {
                     console.log('[Recording] Connection state changed:', state)
                     if (state === ConnectionState.Connected) {
                         setConnectionStatus('connected')
                         console.log('[Recording] Room connected successfully')
-                        // Also try calling START_RECORDING here as a fallback
-                        // in case the polling didn't find it yet
-                        if (!startRecordingCalledRef.current) {
-                            const win = window as unknown as { START_RECORDING?: () => void }
-                            if (win.START_RECORDING) {
-                                console.log('[Recording] START_RECORDING called from connection handler (fallback)')
-                                startRecordingCalledRef.current = true
-                                win.START_RECORDING()
-                            }
-                        }
                     } else if (state === ConnectionState.Disconnected) {
                         setConnectionStatus('disconnected')
-                        console.log('[Recording] Disconnected! Calling END_RECORDING...')
-                        if (typeof window !== 'undefined' && (window as unknown as { END_RECORDING?: () => void }).END_RECORDING) {
-                            (window as unknown as { END_RECORDING: () => void }).END_RECORDING()
-                        }
+                        console.log('[Recording] Disconnected')
                     }
                 })
 
                 room.on(RoomEvent.ParticipantConnected, updateRemoteParticipant)
                 room.on(RoomEvent.ParticipantDisconnected, removeRemoteParticipant)
 
-                room.on(RoomEvent.TrackSubscribed, (track, publication, participant) => {
+                room.on(RoomEvent.TrackSubscribed, (_track, _publication, participant) => {
                     updateRemoteParticipant(participant)
                 })
 
@@ -285,13 +214,13 @@ export default function RecordingPage({
                     updateRemoteParticipant(participant)
                 })
 
-                room.on(RoomEvent.TrackMuted, (pub, participant) => {
+                room.on(RoomEvent.TrackMuted, (_pub, participant) => {
                     if (participant instanceof RemoteParticipant) {
                         updateRemoteParticipant(participant)
                     }
                 })
 
-                room.on(RoomEvent.TrackUnmuted, (pub, participant) => {
+                room.on(RoomEvent.TrackUnmuted, (_pub, participant) => {
                     if (participant instanceof RemoteParticipant) {
                         updateRemoteParticipant(participant)
                     }
@@ -321,7 +250,6 @@ export default function RecordingPage({
                         }
 
                         if (data.command === 'whiteboard-sync' && data.values?.type === 'WHITEBOARD_UPDATE') {
-                            // When whiteboard is active, set content type
                             setActiveContent((prev) =>
                                 prev?.type !== 'screenshare' ? { type: 'whiteboard' } : prev
                             )
@@ -335,6 +263,63 @@ export default function RecordingPage({
 
                 // Sync existing participants
                 room.remoteParticipants.forEach(updateRemoteParticipant)
+
+                // Signal START_RECORDING to egress using the same algorithm as the official template:
+                // - If video tracks exist, wait for frames to be decoded
+                // - If only audio tracks, start after a short delay
+                // - Timeout after FRAME_DECODE_TIMEOUT ms
+                const startTime = Date.now()
+                const interval = setInterval(async () => {
+                    if (startRecordingCalledRef.current) {
+                        clearInterval(interval)
+                        return
+                    }
+
+                    let shouldStartRecording = false
+                    let hasVideoTracks = false
+                    let hasSubscribedTracks = false
+                    let hasDecodedFrames = false
+
+                    for (const p of Array.from(room.remoteParticipants.values())) {
+                        for (const pub of Array.from(p.trackPublications.values())) {
+                            if (pub.isSubscribed) {
+                                hasSubscribedTracks = true
+                            }
+                            if (pub.kind === Track.Kind.Video) {
+                                hasVideoTracks = true
+                                if (pub.videoTrack) {
+                                    const stats = await pub.videoTrack.getRTCStatsReport()
+                                    if (stats) {
+                                        hasDecodedFrames = Array.from(stats).some(
+                                            (item) => item[1].type === 'inbound-rtp' && (item[1] as { framesDecoded?: number }).framesDecoded !== undefined && (item[1] as { framesDecoded: number }).framesDecoded > 0,
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    const timeDelta = Date.now() - startTime
+                    if (hasDecodedFrames) {
+                        shouldStartRecording = true
+                    } else if (!hasVideoTracks && hasSubscribedTracks && timeDelta > 500) {
+                        shouldStartRecording = true
+                    } else if (timeDelta > FRAME_DECODE_TIMEOUT && hasSubscribedTracks) {
+                        shouldStartRecording = true
+                    }
+
+                    if (shouldStartRecording) {
+                        console.log('[Recording] Signaling START_RECORDING to egress', {
+                            hasVideoTracks,
+                            hasSubscribedTracks,
+                            hasDecodedFrames,
+                            timeDelta,
+                        })
+                        startRecordingCalledRef.current = true
+                        EgressHelper.startRecording()
+                        clearInterval(interval)
+                    }
+                }, 100)
 
             } catch (e) {
                 console.error('[Recording] Connect Exception:', e)
@@ -350,9 +335,20 @@ export default function RecordingPage({
                 roomRef.current = null
             }
         }
-    }, [roomName, token, updateRemoteParticipant, removeRemoteParticipant])
+    }, [roomName, token, serverUrl, updateRemoteParticipant, removeRemoteParticipant])
 
-    if ((connectionStatus === 'connecting' || !roomName || !token) && !tokenError) {
+    if (initError) {
+        return (
+            <div className="h-screen w-full flex items-center justify-center bg-gray-900">
+                <div className="text-center max-w-md p-6 bg-gray-800 rounded-xl">
+                    <h2 className="text-xl font-bold text-red-400 mb-2">Error de Configuración</h2>
+                    <p className="text-gray-300">{initError}</p>
+                </div>
+            </div>
+        )
+    }
+
+    if ((connectionStatus === 'connecting' || !roomName || !token) && !initError) {
         return (
             <div className="h-screen w-full flex items-center justify-center bg-gray-900">
                 <div className="text-center">
@@ -364,13 +360,13 @@ export default function RecordingPage({
         )
     }
 
-    if (connectionStatus === 'failed' || tokenError) {
+    if (connectionStatus === 'failed') {
         return (
             <div className="h-screen w-full flex items-center justify-center bg-gray-900">
                 <div className="text-center max-w-md p-6 bg-gray-800 rounded-xl">
                     <h2 className="text-xl font-bold text-red-400 mb-2">Error de Conexión</h2>
                     <p className="text-gray-300">
-                        {tokenError || 'No se pudo conectar a la sala de grabación.'}
+                        No se pudo conectar a la sala de grabación.
                     </p>
                 </div>
             </div>
