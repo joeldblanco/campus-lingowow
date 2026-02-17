@@ -6,11 +6,8 @@ import {
     RoomEvent,
     Track,
     RemoteParticipant,
-    ConnectionState,
 } from 'livekit-client'
-import EgressHelper from '@livekit/egress-sdk'
 import { RecordingLayout } from '@/components/classroom/recording-layout'
-import { Loader2 } from 'lucide-react'
 
 interface VideoTrack {
     participantId: string
@@ -30,9 +27,6 @@ export default function RecordingPage({
     params: Promise<{ roomName: string }>
 }) {
     const [roomName, setRoomName] = useState<string>('')
-    const [connectionStatus, setConnectionStatus] = useState<
-        'disconnected' | 'connecting' | 'connected' | 'failed'
-    >('disconnected')
     const [remoteTracks, setRemoteTracks] = useState<VideoTrack[]>([])
     const [activeContent, setActiveContent] = useState<{
         type: 'lesson' | 'whiteboard' | 'screenshare'
@@ -43,42 +37,38 @@ export default function RecordingPage({
     const [remoteScreenShareAudioTrack, setRemoteScreenShareAudioTrack] = useState<Track | undefined>()
 
     const roomRef = useRef<Room | null>(null)
-    const startRecordingCalledRef = useRef(false)
 
-    // Parse URL route params (roomName from the path)
-    useEffect(() => {
-        params.then(p => setRoomName(p.roomName))
-    }, [params])
-
-    // LiveKit egress provides url, token, and layout as query params
-    // The egress headless browser opens: {customBaseUrl}/{roomName}?url=...&token=...&layout=...
     const [serverUrl, setServerUrl] = useState<string>('')
     const [token, setToken] = useState<string>('')
     const [layout, setLayout] = useState<string>('default')
-    const [initError, setInitError] = useState<string | null>(null)
+
+    // CRITICAL: Signal START_RECORDING as early as possible.
+    // The egress headless browser monitors console output for this exact string.
+    // We emit it immediately on mount, before any room connection attempt.
+    // This must happen before any async operation that could fail.
+    useEffect(() => {
+        console.log('START_RECORDING')
+    }, [])
+
+    // Parse URL route params
+    useEffect(() => {
+        params.then(p => setRoomName(p.roomName))
+    }, [params])
 
     // Read query params provided by LiveKit egress
     useEffect(() => {
         if (typeof window === 'undefined') return
 
-        console.log('[Recording] Page loaded, URL:', window.location.href)
         const searchParams = new URLSearchParams(window.location.search)
-
         const urlParam = searchParams.get('url') || ''
         const tokenParam = searchParams.get('token') || ''
         const layoutParam = searchParams.get('layout') || 'default'
 
-        console.log('[Recording] Query params - url:', urlParam ? 'present' : 'MISSING', 'token:', tokenParam ? 'present' : 'MISSING', 'layout:', layoutParam)
-
-        if (!urlParam || !tokenParam) {
-            console.error('[Recording] Missing required query params (url, token). This page must be opened by LiveKit egress.')
-            setInitError('Missing required query params (url, token)')
-            return
+        if (urlParam && tokenParam) {
+            setServerUrl(urlParam)
+            setToken(tokenParam)
+            setLayout(layoutParam)
         }
-
-        setServerUrl(urlParam)
-        setToken(tokenParam)
-        setLayout(layoutParam)
     }, [])
 
     const updateRemoteParticipant = useCallback((participant: RemoteParticipant) => {
@@ -118,7 +108,6 @@ export default function RecordingPage({
                 }
             })
 
-            // Update screen share tracks
             if (screenShareTrack) {
                 setRemoteScreenShareTrack(screenShareTrack)
                 setActiveContent({ type: 'screenshare' })
@@ -144,7 +133,6 @@ export default function RecordingPage({
     }, [])
 
     const removeRemoteParticipant = useCallback((participant: RemoteParticipant) => {
-        // Clear screen share if this participant was sharing
         participant.trackPublications.forEach((pub) => {
             if (pub.source === Track.Source.ScreenShare) {
                 setRemoteScreenShareTrack(undefined)
@@ -166,31 +154,12 @@ export default function RecordingPage({
 
         const connectToRoom = async () => {
             try {
-                setConnectionStatus('connecting')
-
-                console.log('[Recording] Connecting to LiveKit:', serverUrl)
-                console.log('[Recording] Room:', roomName)
-
                 const room = new Room({
                     adaptiveStream: true,
                     dynacast: true,
                 })
 
                 roomRef.current = room
-
-                // Register room with EgressHelper so it can signal START/END_RECORDING
-                EgressHelper.setRoom(room)
-
-                room.on(RoomEvent.ConnectionStateChanged, (state: ConnectionState) => {
-                    console.log('[Recording] Connection state changed:', state)
-                    if (state === ConnectionState.Connected) {
-                        setConnectionStatus('connected')
-                        console.log('[Recording] Room connected successfully')
-                    } else if (state === ConnectionState.Disconnected) {
-                        setConnectionStatus('disconnected')
-                        console.log('[Recording] Disconnected')
-                    }
-                })
 
                 room.on(RoomEvent.ParticipantConnected, updateRemoteParticipant)
                 room.on(RoomEvent.ParticipantDisconnected, removeRemoteParticipant)
@@ -228,7 +197,6 @@ export default function RecordingPage({
                     room.remoteParticipants.forEach(updateRemoteParticipant)
                 })
 
-                // Listen for content sync commands
                 room.on(RoomEvent.DataReceived, (payload) => {
                     try {
                         const decoder = new TextDecoder()
@@ -257,24 +225,18 @@ export default function RecordingPage({
                     }
                 })
 
+                // Signal END_RECORDING when room disconnects
+                room.on(RoomEvent.Disconnected, () => {
+                    console.log('END_RECORDING')
+                })
+
                 await room.connect(serverUrl, token)
 
                 // Sync existing participants
                 room.remoteParticipants.forEach(updateRemoteParticipant)
 
-                // Signal START_RECORDING immediately after connecting.
-                // The egress must start recording as soon as the page is ready,
-                // regardless of whether participants are in the room or have tracks.
-                // The recording captures the entire class duration.
-                if (!startRecordingCalledRef.current) {
-                    console.log('[Recording] Room connected, signaling START_RECORDING to egress immediately')
-                    startRecordingCalledRef.current = true
-                    EgressHelper.startRecording()
-                }
-
             } catch (e) {
                 console.error('[Recording] Connect Exception:', e)
-                setConnectionStatus('failed')
             }
         }
 
@@ -288,50 +250,16 @@ export default function RecordingPage({
         }
     }, [roomName, token, serverUrl, updateRemoteParticipant, removeRemoteParticipant])
 
-    if (initError) {
-        return (
-            <div className="h-screen w-full flex items-center justify-center bg-gray-900">
-                <div className="text-center max-w-md p-6 bg-gray-800 rounded-xl">
-                    <h2 className="text-xl font-bold text-red-400 mb-2">Error de Configuración</h2>
-                    <p className="text-gray-300">{initError}</p>
-                </div>
-            </div>
-        )
-    }
-
-    if ((connectionStatus === 'connecting' || !roomName || !token) && !initError) {
-        return (
-            <div className="h-screen w-full flex items-center justify-center bg-gray-900">
-                <div className="text-center">
-                    <Loader2 className="w-12 h-12 animate-spin text-blue-400 mx-auto mb-4" />
-                    <h2 className="text-xl font-semibold text-white">Iniciando grabación...</h2>
-                    <p className="text-gray-400">Conectando a la sala: {roomName || '...'}</p>
-                </div>
-            </div>
-        )
-    }
-
-    if (connectionStatus === 'failed') {
-        return (
-            <div className="h-screen w-full flex items-center justify-center bg-gray-900">
-                <div className="text-center max-w-md p-6 bg-gray-800 rounded-xl">
-                    <h2 className="text-xl font-bold text-red-400 mb-2">Error de Conexión</h2>
-                    <p className="text-gray-300">
-                        No se pudo conectar a la sala de grabación.
-                    </p>
-                </div>
-            </div>
-        )
-    }
-
     return (
-        <RecordingLayout
-            roomName={roomName}
-            remoteTracks={remoteTracks}
-            activeContent={activeContent}
-            remoteScreenShareTrack={remoteScreenShareTrack}
-            remoteScreenShareAudioTrack={remoteScreenShareAudioTrack}
-            layout={layout}
-        />
+        <div style={{ width: '100vw', height: '100vh', backgroundColor: '#111827', overflow: 'hidden' }}>
+            <RecordingLayout
+                roomName={roomName}
+                remoteTracks={remoteTracks}
+                activeContent={activeContent}
+                remoteScreenShareTrack={remoteScreenShareTrack}
+                remoteScreenShareAudioTrack={remoteScreenShareAudioTrack}
+                layout={layout}
+            />
+        </div>
     )
 }
