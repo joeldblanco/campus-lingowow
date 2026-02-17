@@ -211,6 +211,32 @@ export async function stopRecording(egressId: string, bookingId?: string) {
       throw egressError
     }
 
+    // Check if the egress was aborted or failed
+    // Status 5 = EGRESS_FAILED/ABORTED, Status 4 = EGRESS_COMPLETE
+    const egressError = (info as unknown as { error?: string }).error || ''
+    const egressStatus = info.status
+    const isEgressFailed = egressStatus === 5 || egressError.length > 0
+
+    if (isEgressFailed) {
+      console.log(`stopRecording: egressId=${egressId} was aborted/failed, status=${egressStatus}, error=${egressError}`)
+      await db.classRecording.update({
+        where: { egressId },
+        data: {
+          status: 'FAILED',
+          metadata: {
+            egressError: egressError || 'Egress aborted',
+            egressStatus,
+            stoppedAt: new Date().toISOString(),
+          },
+        },
+      })
+      return {
+        success: true,
+        message: 'La grabación no se completó correctamente',
+        pendingWebhook: false,
+      }
+    }
+
     // Extract file info - SDK v2 can return in fileResults[] or file
     const fileResult = info.fileResults?.[0] || (info as unknown as { file?: { filename?: string } }).file
     const filename = fileResult?.filename
@@ -375,8 +401,18 @@ async function pollEgressUntilReady(egressId: string, maxAttempts = 30, interval
       }
 
       const egress = egresses[0]
-      // EgressStatus: EGRESS_COMPLETE = 4
+      // EgressStatus: EGRESS_COMPLETE = 4, EGRESS_FAILED/ABORTED = 5
       const isComplete = egress.status === 4
+      const isFailed = egress.status === 5
+
+      if (isFailed) {
+        console.log(`pollEgress: ${egressId} egress failed/aborted (status=${egress.status}), marking as FAILED`)
+        await db.classRecording.update({
+          where: { egressId },
+          data: { status: 'FAILED' },
+        })
+        return
+      }
 
       if (!isComplete) {
         console.log(`pollEgress: ${egressId} attempt ${attempt}/${maxAttempts}, status=${egress.status}`)
