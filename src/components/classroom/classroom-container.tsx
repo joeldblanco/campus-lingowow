@@ -77,6 +77,7 @@ function ClassroomInner({
   const [isChatMinimized, setIsChatMinimized] = useState(false)
   const [egressId, setEgressId] = useState<string | null>(null)
   const recordingRef = useRef(false)
+  const stoppingRecordingRef = useRef(false)
   const activeLessonRef = useRef<{ id: string; type: ShareableContent['type'] } | null>(null)
 
   // Refs to access current recording values without triggering effect restarts
@@ -182,11 +183,14 @@ function ClassroomInner({
       if (result.shouldEnd && !hasEndedRef.current) {
         hasEndedRef.current = true
         // Stop recording automatically when grace period ends (use refs to avoid dependency issues)
-        if (isRecordingRef.current && egressIdRef.current) {
+        if (isRecordingRef.current && egressIdRef.current && !stoppingRecordingRef.current) {
+          stoppingRecordingRef.current = true
           try {
             await stopRecording(egressIdRef.current, bookingId)
           } catch (error) {
-            console.error('Failed to stop recording:', error)
+            console.error('Failed to stop recording on grace period end:', error)
+          } finally {
+            stoppingRecordingRef.current = false
           }
         }
         await leaveRoom()
@@ -365,12 +369,16 @@ function ClassroomInner({
   }
 
   const handleEndCall = async () => {
-    // Stop recording automatically when call ends
-    if (isRecording && egressId) {
+    // Stop recording automatically when call ends (guard against concurrent calls)
+    if (isRecording && egressId && !stoppingRecordingRef.current) {
+      stoppingRecordingRef.current = true
       try {
-        await stopRecording(egressId, bookingId)
+        const result = await stopRecording(egressId, bookingId)
+        console.log('Recording stopped on end call:', result.message)
       } catch (error) {
         console.error('Failed to stop recording:', error)
+      } finally {
+        stoppingRecordingRef.current = false
       }
     }
     await leaveRoom()
@@ -404,14 +412,18 @@ function ClassroomInner({
   // Stop recording and leave when user navigates away (back button)
   const handleBackClick = async () => {
     // Stop recording when user leaves (creates a new segment if they rejoin)
-    if (isRecording && egressId) {
+    if (isRecording && egressId && !stoppingRecordingRef.current) {
+      stoppingRecordingRef.current = true
       try {
-        await stopRecording(egressId, bookingId)
+        const result = await stopRecording(egressId, bookingId)
+        console.log('Recording stopped on back:', result.message)
         setIsRecording(false)
         setEgressId(null)
         recordingRef.current = false
       } catch (error) {
         console.error('Failed to stop recording on back:', error)
+      } finally {
+        stoppingRecordingRef.current = false
       }
     }
     await leaveRoom()

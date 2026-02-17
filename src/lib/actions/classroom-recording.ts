@@ -192,122 +192,409 @@ export async function stopRecording(egressId: string, bookingId?: string) {
 
     const egressClient = new EgressClient(livekitHost, apiKey, apiSecret)
 
-    const info = await egressClient.stopEgress(egressId)
+    let info
+    try {
+      info = await egressClient.stopEgress(egressId)
+    } catch (egressError: unknown) {
+      // If egress is already completed or not found, try to update from R2 directly
+      const errorMessage = egressError instanceof Error ? egressError.message : String(egressError)
+      console.warn(`stopEgress failed for ${egressId}: ${errorMessage}`)
 
-    // Update ClassRecording record with file info
-    if (resolvedBookingId) {
+      // If egress was already ended, that's OK - the webhook will handle it
+      if (errorMessage.includes('not found') || errorMessage.includes('already')) {
+        return {
+          success: true,
+          message: 'Grabación ya finalizada (será procesada por webhook)',
+          pendingWebhook: true,
+        }
+      }
+      throw egressError
+    }
+
+    // Extract file info - SDK v2 can return in fileResults[] or file
+    const fileResult = info.fileResults?.[0] || (info as unknown as { file?: { filename?: string } }).file
+    const filename = fileResult?.filename
+
+    // Extract r2Key from the filename path
+    // Format: classes/{bookingId}/{roomName}-{time}.mp4
+    let r2Key: string | null = null
+    if (filename) {
+      const match = filename.match(/(classes\/[^/]+\/[^/]+\.mp4)/)
+      r2Key = match ? match[1] : filename
+    }
+
+    // Calculate duration from egress info
+    let duration: number | null = null
+    let startedAt: Date | null = null
+    let endedAt: Date | null = null
+
+    if (info.startedAt && info.endedAt) {
       try {
-        const fileResult = info.fileResults?.[0]
-        const filename = fileResult?.filename
+        const startNs =
+          typeof info.startedAt === 'bigint' ? info.startedAt : BigInt(String(info.startedAt))
+        const endNs =
+          typeof info.endedAt === 'bigint' ? info.endedAt : BigInt(String(info.endedAt))
 
-        // Extract r2Key from the filename path
-        // Format: classes/{bookingId}/{roomName}-{time}.mp4
-        let r2Key: string | null = null
-        if (filename) {
-          // The filename from LiveKit includes the full path
-          const match = filename.match(/(classes\/[^/]+\/[^/]+\.mp4)/)
-          r2Key = match ? match[1] : filename
+        startedAt = new Date(Number(startNs / BigInt(1000000)))
+        endedAt = new Date(Number(endNs / BigInt(1000000)))
+        duration = Number((endNs - startNs) / BigInt(1000000000))
+      } catch (e) {
+        console.error('Error converting timestamps:', e)
+        const startMs = Number(info.startedAt)
+        const endMs = Number(info.endedAt)
+        if (!isNaN(startMs) && !isNaN(endMs)) {
+          startedAt = new Date(startMs > 1e12 ? startMs : startMs * 1000)
+          endedAt = new Date(endMs > 1e12 ? endMs : endMs * 1000)
+          duration = Math.round((endedAt.getTime() - startedAt.getTime()) / 1000)
         }
+      }
+    }
 
-        // Calculate duration from egress info
-        let duration: number | null = null
-        let startedAt: Date | null = null
-        let endedAt: Date | null = null
+    // If we have file info, update to READY immediately
+    // If not, keep as PROCESSING - the webhook will update it when the file is uploaded
+    const hasFileInfo = !!r2Key
+    const newStatus = hasFileInfo ? 'READY' : 'PROCESSING'
 
-        if (info.startedAt && info.endedAt) {
-          try {
-            // LiveKit timestamps are in nanoseconds (can be BigInt or string)
-            // Convert directly to BigInt to preserve full precision
-            const startNs =
-              typeof info.startedAt === 'bigint' ? info.startedAt : BigInt(String(info.startedAt))
-            const endNs =
-              typeof info.endedAt === 'bigint' ? info.endedAt : BigInt(String(info.endedAt))
+    console.log(`stopRecording: egressId=${egressId}, hasFile=${hasFileInfo}, status=${newStatus}, r2Key=${r2Key}`)
 
-            // Convert nanoseconds to milliseconds using BigInt division, then to Number
-            startedAt = new Date(Number(startNs / BigInt(1000000)))
-            endedAt = new Date(Number(endNs / BigInt(1000000)))
-            duration = Number((endNs - startNs) / BigInt(1000000000))
-          } catch (e) {
-            console.error('Error converting timestamps:', e)
-            // Fallback: timestamps might already be in milliseconds or seconds
-            const startMs = Number(info.startedAt)
-            const endMs = Number(info.endedAt)
-            if (!isNaN(startMs) && !isNaN(endMs)) {
-              startedAt = new Date(startMs > 1e12 ? startMs : startMs * 1000)
-              endedAt = new Date(endMs > 1e12 ? endMs : endMs * 1000)
-              duration = Math.round((endedAt.getTime() - startedAt.getTime()) / 1000)
-            }
-          }
-        }
-
-        // Update the existing recording record by egressId (unique)
-        const updatedRecording = await db.classRecording.update({
-          where: { egressId },
-          data: {
-            roomName: info.roomName || null,
-            filename: filename?.split('/').pop() || null,
-            r2Key: r2Key,
-            r2Bucket: r2BucketName,
-            duration,
-            startedAt,
-            endedAt,
-            status: 'READY',
-          },
-          include: {
-            booking: {
+    const updatedRecording = await db.classRecording.update({
+      where: { egressId },
+      data: {
+        roomName: info.roomName || null,
+        filename: filename?.split('/').pop() || null,
+        r2Key,
+        r2Bucket: r2BucketName,
+        duration,
+        startedAt,
+        endedAt,
+        status: newStatus,
+      },
+      include: {
+        booking: {
+          select: {
+            studentId: true,
+            day: true,
+            timeSlot: true,
+            enrollment: {
               select: {
-                studentId: true,
-                day: true,
-                timeSlot: true,
-                enrollment: {
+                course: {
                   select: {
-                    course: {
-                      select: {
-                        title: true,
-                      },
-                    },
+                    title: true,
                   },
                 },
               },
             },
           },
+        },
+      },
+    })
+
+    console.log(`ClassRecording updated for egressId ${egressId} -> ${newStatus}`)
+
+    // Send notification only if recording is READY (has file)
+    // Otherwise, the webhook will send the notification when the file is ready
+    if (hasFileInfo) {
+      try {
+        const { createNotification } = await import('./notifications')
+        await createNotification({
+          userId: updatedRecording.booking.studentId,
+          type: 'RECORDING_READY',
+          title: 'Grabación disponible',
+          message: `La grabación de tu clase de ${updatedRecording.booking.enrollment.course.title} del ${updatedRecording.booking.day} está lista para ver.`,
+          link: `/recordings/${updatedRecording.id}`,
+          metadata: {
+            recordingId: updatedRecording.id,
+            bookingId: updatedRecording.bookingId,
+            courseTitle: updatedRecording.booking.enrollment.course.title,
+          },
         })
+      } catch (notifError) {
+        console.error('Error creating notification for recording:', notifError)
+      }
+    }
 
-        console.log(`ClassRecording updated for egressId ${egressId}`)
+    // If file is not ready yet, start background polling as fallback
+    // (in case webhook doesn't arrive)
+    if (!hasFileInfo) {
+      pollEgressUntilReady(egressId).catch(err =>
+        console.error(`Background polling failed for ${egressId}:`, err)
+      )
+    }
 
-        // Crear notificación para el estudiante cuando la grabación esté lista
+    return {
+      success: true,
+      message: hasFileInfo ? 'Grabación detenida y guardada' : 'Grabación detenida, procesando archivo...',
+      fileUrl: filename,
+      pendingWebhook: !hasFileInfo,
+    }
+  } catch (error) {
+    console.error('Error stopping recording:', error)
+
+    // Mark recording as FAILED if we can't stop it properly
+    try {
+      await db.classRecording.updateMany({
+        where: { egressId, status: 'PROCESSING' },
+        data: { status: 'FAILED' },
+      })
+    } catch (dbErr) {
+      console.error('Error marking recording as FAILED:', dbErr)
+    }
+
+    return { success: false, error: 'Error al detener grabación' }
+  }
+}
+
+/**
+ * Background polling: checks egress status every 10s for up to 5 minutes.
+ * If the egress completes and has file info, updates the ClassRecording.
+ * This is a fallback in case the webhook doesn't arrive.
+ */
+async function pollEgressUntilReady(egressId: string, maxAttempts = 30, intervalMs = 10000) {
+  const egressClient = new EgressClient(livekitHost, apiKey, apiSecret)
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    await new Promise(resolve => setTimeout(resolve, intervalMs))
+
+    try {
+      // Check if webhook already updated the recording
+      const recording = await db.classRecording.findUnique({
+        where: { egressId },
+        select: { status: true, r2Key: true },
+      })
+
+      if (!recording || recording.status === 'READY' || recording.status === 'FAILED') {
+        console.log(`pollEgress: ${egressId} already ${recording?.status || 'deleted'}, stopping poll`)
+        return
+      }
+
+      // Query LiveKit for current egress status
+      const egresses = await egressClient.listEgress({ egressId })
+      if (egresses.length === 0) {
+        console.warn(`pollEgress: egress ${egressId} not found in LiveKit`)
+        continue
+      }
+
+      const egress = egresses[0]
+      // EgressStatus: EGRESS_COMPLETE = 4
+      const isComplete = egress.status === 4
+
+      if (!isComplete) {
+        console.log(`pollEgress: ${egressId} attempt ${attempt}/${maxAttempts}, status=${egress.status}`)
+        continue
+      }
+
+      // Egress is complete - extract file info
+      const fileResult = egress.fileResults?.[0] || (egress as unknown as { file?: { filename?: string } }).file
+      const filename = fileResult?.filename
+
+      if (!filename) {
+        console.warn(`pollEgress: ${egressId} complete but no filename found`)
+        await db.classRecording.update({
+          where: { egressId },
+          data: { status: 'FAILED' },
+        })
+        return
+      }
+
+      const match = filename.match(/(classes\/[^/]+\/[^/]+\.mp4)/)
+      const r2Key = match ? match[1] : filename
+      const r2BucketName = process.env.CLOUDFLARE_R2_BUCKET_NAME || 'lingowow-recordings'
+
+      let duration: number | null = null
+      let startedAt: Date | null = null
+      let endedAt: Date | null = null
+
+      if (egress.startedAt && egress.endedAt) {
         try {
-          const { createNotification } = await import('./notifications')
-          await createNotification({
-            userId: updatedRecording.booking.studentId,
-            type: 'RECORDING_READY',
-            title: 'Grabación disponible',
-            message: `La grabación de tu clase de ${updatedRecording.booking.enrollment.course.title} del ${updatedRecording.booking.day} está lista para ver.`,
-            link: `/recordings/${updatedRecording.id}`,
-            metadata: {
-              recordingId: updatedRecording.id,
-              bookingId: updatedRecording.bookingId,
-              courseTitle: updatedRecording.booking.enrollment.course.title,
-            },
-          })
-        } catch (notifError) {
-          console.error('Error creating notification for recording:', notifError)
-          // No fallar la operación si falla la notificación
+          const startNs = typeof egress.startedAt === 'bigint' ? egress.startedAt : BigInt(String(egress.startedAt))
+          const endNs = typeof egress.endedAt === 'bigint' ? egress.endedAt : BigInt(String(egress.endedAt))
+          startedAt = new Date(Number(startNs / BigInt(1000000)))
+          endedAt = new Date(Number(endNs / BigInt(1000000)))
+          duration = Number((endNs - startNs) / BigInt(1000000000))
+        } catch {
+          // Ignore timestamp conversion errors in polling
         }
-      } catch (dbError) {
-        console.error('Error updating ClassRecording record:', dbError)
-        // Don't fail the whole operation if DB update fails
+      }
+
+      const updatedRecording = await db.classRecording.update({
+        where: { egressId },
+        data: {
+          filename: filename.split('/').pop() || null,
+          r2Key,
+          r2Bucket: r2BucketName,
+          duration,
+          startedAt,
+          endedAt,
+          status: 'READY',
+        },
+        include: {
+          booking: {
+            select: {
+              studentId: true,
+              day: true,
+              enrollment: { select: { course: { select: { title: true } } } },
+            },
+          },
+        },
+      })
+
+      console.log(`pollEgress: ${egressId} updated to READY via polling (attempt ${attempt})`)
+
+      // Send notification
+      try {
+        const { createNotification } = await import('./notifications')
+        await createNotification({
+          userId: updatedRecording.booking.studentId,
+          type: 'RECORDING_READY',
+          title: 'Grabación disponible',
+          message: `La grabación de tu clase de ${updatedRecording.booking.enrollment.course.title} del ${updatedRecording.booking.day} está lista para ver.`,
+          link: `/recordings/${updatedRecording.id}`,
+          metadata: {
+            recordingId: updatedRecording.id,
+            bookingId: updatedRecording.bookingId,
+          },
+        })
+      } catch (notifError) {
+        console.error('pollEgress: Error creating notification:', notifError)
+      }
+
+      return
+    } catch (pollError) {
+      console.error(`pollEgress: attempt ${attempt} error for ${egressId}:`, pollError)
+    }
+  }
+
+  // Max attempts reached - mark as FAILED
+  console.error(`pollEgress: ${egressId} timed out after ${maxAttempts} attempts`)
+  try {
+    await db.classRecording.updateMany({
+      where: { egressId, status: 'PROCESSING' },
+      data: { status: 'FAILED' },
+    })
+  } catch {
+    // Ignore cleanup errors
+  }
+}
+
+/**
+ * Recover orphaned recordings stuck in PROCESSING status.
+ * Checks LiveKit egress status and R2 for file existence.
+ * Can be called from admin panel or a cron job.
+ */
+export async function recoverOrphanedRecordings() {
+  try {
+    const session = await auth()
+    if (!session?.user?.id) {
+      return { success: false, error: 'No autenticado' }
+    }
+
+    // Only admins can run this
+    const isAdmin = (session.user as { roles?: string[] }).roles?.includes('ADMIN')
+    if (!isAdmin) {
+      return { success: false, error: 'Solo administradores pueden ejecutar esta acción' }
+    }
+
+    // Find recordings stuck in PROCESSING for more than 10 minutes
+    const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000)
+    const orphanedRecordings = await db.classRecording.findMany({
+      where: {
+        status: 'PROCESSING',
+        createdAt: { lt: tenMinutesAgo },
+      },
+      select: {
+        id: true,
+        egressId: true,
+        bookingId: true,
+        createdAt: true,
+      },
+      take: 50,
+    })
+
+    if (orphanedRecordings.length === 0) {
+      return { success: true, message: 'No hay grabaciones huérfanas', recovered: 0, failed: 0 }
+    }
+
+    let recovered = 0
+    let failed = 0
+    const results: { id: string; status: string; detail: string }[] = []
+
+    for (const rec of orphanedRecordings) {
+      try {
+        // Try 1: Check LiveKit egress status if we have egressId
+        if (rec.egressId && livekitHost && apiKey && apiSecret) {
+          const egressClient = new EgressClient(livekitHost, apiKey, apiSecret)
+          try {
+            const egresses = await egressClient.listEgress({ egressId: rec.egressId })
+            if (egresses.length > 0) {
+              const egress = egresses[0]
+              const fileResult = egress.fileResults?.[0] || (egress as unknown as { file?: { filename?: string } }).file
+              const filename = fileResult?.filename
+
+              if (filename) {
+                const match = filename.match(/(classes\/[^/]+\/[^/]+\.mp4)/)
+                const r2Key = match ? match[1] : filename
+
+                await db.classRecording.update({
+                  where: { id: rec.id },
+                  data: {
+                    filename: filename.split('/').pop() || null,
+                    r2Key,
+                    r2Bucket: r2BucketName,
+                    status: 'READY',
+                  },
+                })
+                recovered++
+                results.push({ id: rec.id, status: 'READY', detail: `Recovered from LiveKit egress: ${r2Key}` })
+                continue
+              }
+            }
+          } catch (egressErr) {
+            console.warn(`recoverOrphaned: LiveKit check failed for ${rec.egressId}:`, egressErr)
+          }
+        }
+
+        // Try 2: Check R2 directly for files
+        try {
+          const { syncRecordingFromR2 } = await import('./recordings')
+          const syncResult = await syncRecordingFromR2(rec.bookingId)
+          if (syncResult.success) {
+            recovered++
+            results.push({ id: rec.id, status: 'READY', detail: 'Recovered from R2 sync' })
+            continue
+          }
+        } catch (syncErr) {
+          console.warn(`recoverOrphaned: R2 sync failed for booking ${rec.bookingId}:`, syncErr)
+        }
+
+        // If nothing worked and recording is very old (>1 hour), mark as FAILED
+        const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000)
+        if (rec.createdAt < oneHourAgo) {
+          await db.classRecording.update({
+            where: { id: rec.id },
+            data: { status: 'FAILED' },
+          })
+          failed++
+          results.push({ id: rec.id, status: 'FAILED', detail: 'Timed out after 1 hour' })
+        } else {
+          results.push({ id: rec.id, status: 'PROCESSING', detail: 'Still within recovery window' })
+        }
+      } catch (recError) {
+        console.error(`recoverOrphaned: Error processing ${rec.id}:`, recError)
+        results.push({ id: rec.id, status: 'ERROR', detail: String(recError) })
       }
     }
 
     return {
       success: true,
-      message: 'Grabación detenida',
-      fileUrl: info.fileResults?.[0]?.filename,
+      message: `Procesadas ${orphanedRecordings.length} grabaciones: ${recovered} recuperadas, ${failed} fallidas`,
+      recovered,
+      failed,
+      total: orphanedRecordings.length,
+      results,
     }
   } catch (error) {
-    console.error('Error stopping recording:', error)
-    return { success: false, error: 'Error al detener grabación' }
+    console.error('Error recovering orphaned recordings:', error)
+    return { success: false, error: 'Error al recuperar grabaciones huérfanas' }
   }
 }
 
