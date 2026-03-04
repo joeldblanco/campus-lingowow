@@ -349,10 +349,48 @@ export async function enrollStudentInPeriod() {
 }
 
 /**
+ * Sincroniza el campo isActive de todos los períodos académicos
+ * basándose en si la fecha actual está dentro de su rango startDate–endDate.
+ * Se ejecuta automáticamente en getPeriods() para mantener el estado al día.
+ */
+export async function syncAcademicPeriodStatuses() {
+  try {
+    const now = new Date()
+    await db.$transaction([
+      db.academicPeriod.updateMany({
+        where: {
+          startDate: { lte: now },
+          endDate: { gte: now },
+          isActive: false,
+        },
+        data: { isActive: true },
+      }),
+      db.academicPeriod.updateMany({
+        where: {
+          OR: [
+            { startDate: { gt: now } },
+            { endDate: { lt: now } },
+          ],
+          isActive: true,
+        },
+        data: { isActive: false },
+      }),
+    ])
+    return { success: true }
+  } catch (error) {
+    console.error('Error al sincronizar estado de períodos:', error)
+    return { success: false }
+  }
+}
+
+/**
  * Acción para obtener los períodos académicos
  */
 export async function getPeriods(year: number = getCurrentDate().getFullYear()) {
   try {
+    // Auto-sync isActive based on date ranges before returning
+    await syncAcademicPeriodStatuses()
+
     const periods = await db.academicPeriod.findMany({
       where: {
         startDate: {

@@ -177,6 +177,167 @@ async function getPayPalPayment(paymentId: string) {
   }
 }
 
+async function createPayPalOrder(params: {
+  amount: string
+  currency: string
+  description: string
+  returnUrl: string
+  cancelUrl: string
+}): Promise<{ id: string; approveUrl: string } | null> {
+  try {
+    const accessToken = await getPayPalAccessToken()
+    const url =
+      process.env.PAYPAL_MODE === 'live'
+        ? 'https://api-m.paypal.com/v2/checkout/orders'
+        : 'https://api-m.sandbox.paypal.com/v2/checkout/orders'
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        intent: 'CAPTURE',
+        purchase_units: [
+          {
+            amount: {
+              currency_code: params.currency,
+              value: params.amount,
+            },
+            description: params.description,
+          },
+        ],
+        application_context: {
+          return_url: params.returnUrl,
+          cancel_url: params.cancelUrl,
+        },
+      }),
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error(`[PayPal Create Order] Error ${response.status}: ${errorText}`)
+      return null
+    }
+
+    const data = (await response.json()) as {
+      id: string
+      links: Array<{ href: string; rel: string }>
+    }
+    const approveLink = data.links.find((l) => l.rel === 'approve')
+    if (!approveLink) return null
+
+    return { id: data.id, approveUrl: approveLink.href }
+  } catch (error) {
+    console.error('[PayPal Create Order] Exception:', error)
+    return null
+  }
+}
+
+async function createPayPalInvoice(params: {
+  amount: string
+  currency: string
+  planName: string
+  description: string
+  recipientEmail: string
+  recipientName: string
+  invoiceNumber: string
+}): Promise<{ id: string; payerViewUrl: string } | null> {
+  try {
+    const accessToken = await getPayPalAccessToken()
+    const baseUrl =
+      process.env.PAYPAL_MODE === 'live'
+        ? 'https://api-m.paypal.com'
+        : 'https://api-m.sandbox.paypal.com'
+
+    const nameParts = params.recipientName.trim().split(' ')
+    const givenName = nameParts[0]
+    const surname = nameParts.slice(1).join(' ') || nameParts[0]
+
+    // 1. Create the invoice
+    const createRes = await fetch(`${baseUrl}/v2/invoicing/invoices`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        detail: {
+          invoice_number: params.invoiceNumber,
+          currency_code: params.currency,
+          note: params.description,
+          payment_term: { term_type: 'DUE_ON_RECEIPT' },
+        },
+        invoicer: {
+          name: { given_name: 'Lingowow', surname: 'Academy' },
+          website: 'https://lingowow.com',
+        },
+        primary_recipients: [
+          {
+            billing_info: {
+              name: { given_name: givenName, surname },
+              email_address: params.recipientEmail,
+            },
+          },
+        ],
+        items: [
+          {
+            name: params.planName,
+            quantity: '1',
+            unit_amount: { currency_code: params.currency, value: params.amount },
+            description: params.description,
+          },
+        ],
+        configuration: { allow_tip: false },
+      }),
+    })
+
+    if (!createRes.ok) {
+      console.error(`[PayPal Invoice] Create error ${createRes.status}: ${await createRes.text()}`)
+      return null
+    }
+
+    const createData = (await createRes.json()) as { id: string }
+    const invoiceId = createData.id
+
+    // 2. Send the invoice (PayPal emails the recipient and makes it payable)
+    const sendRes = await fetch(`${baseUrl}/v2/invoicing/invoices/${invoiceId}/send`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ send_to_invoicer: true, send_to_recipient: true }),
+    })
+
+    if (!sendRes.ok) {
+      console.error(`[PayPal Invoice] Send error ${sendRes.status}: ${await sendRes.text()}`)
+      return null
+    }
+
+    // 3. Retrieve invoice to get payer-view URL
+    const getRes = await fetch(`${baseUrl}/v2/invoicing/invoices/${invoiceId}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+
+    if (!getRes.ok) return null
+
+    const invoiceData = (await getRes.json()) as {
+      id: string
+      links: Array<{ href: string; rel: string }>
+    }
+
+    const payerViewLink = invoiceData.links.find((l) => l.rel === 'payer-view')
+    if (!payerViewLink) return null
+
+    return { id: invoiceId, payerViewUrl: payerViewLink.href }
+  } catch (error) {
+    console.error('[PayPal Invoice] Exception:', error)
+    return null
+  }
+}
+
 export {
   paypalClient,
   ordersController,
@@ -186,4 +347,6 @@ export {
   getPayPalPayment,
   searchPayPalInvoice,
   normalizePayPalInvoiceId,
+  createPayPalOrder,
+  createPayPalInvoice,
 }
