@@ -20,6 +20,7 @@ import { handleAdminCreateInvoice, handleAdminSendInvoice } from '@/lib/chat-too
 import { handleAdminListInvoices } from '@/lib/chat-tools/admin-list-invoices'
 import { handleAdminCheckInvoicePayment } from '@/lib/chat-tools/admin-check-invoice-payment'
 import { handleAdminScheduleClass } from '@/lib/chat-tools/admin-schedule-class'
+import { handleAdminEnrollStudent } from '@/lib/chat-tools/admin-enroll-student'
 import { handleAdminGetStudentClasses, handleAdminRescheduleClass } from '@/lib/chat-tools/admin-reschedule-class'
 import { handleAdminCalculateClassDates } from '@/lib/chat-tools/admin-calculate-class-dates'
 import type { ChatMessage, ToolResult } from '@/types/ai-chat'
@@ -54,6 +55,13 @@ REGLAS DE OPERACIÓN:
 - Para agendar clases recurrentes (estudiante da múltiples días/horas de la semana como "lunes 8am, martes y jueves 6pm"): llama DIRECTAMENTE a schedule_recurring_classes con el array de slots. NO llames check_teacher_availability antes; la herramienta verifica disponibilidad por cada fecha internamente y reporta cuántas clases se agendaron y cuántas se omitieron.
 - Para agendar una clase individual en una fecha puntual: verifica disponibilidad con check_teacher_availability, confirma la fecha y hora con el estudiante, y usa schedule_class con la fecha exacta (YYYY-MM-DD) y hora de inicio (HH:MM).
 - Para reagendar una clase existente: llama PRIMERO a get_upcoming_classes para obtener las clases del estudiante y presentarlas. Nunca pidas el ID de la clase directamente al estudiante; usa el ID obtenido internamente para llamar a reschedule_class.
+
+INSTRUCCIONES ADMINISTRATIVAS CLAVE:
+- Para generar facturas (admin_create_invoice): Calcula SIEMPRE el monto en USD (Dólares Americanos). A menos que el admin indique lo contrario, no hay descuentos ni impuestos.
+- Para enviar facturas (admin_send_invoice): Llama esta función SOLO después de mostrar el monto total al administrador y recibir su confirmación explícita (ej. "Sí", "Confirmo").
+- Para verificar facturas (admin_check_invoice_payment): Si la factura ya está pagada, NO inscribas automáticamente al usuario. Solo confirma en texto que está pagada y espera la orden explícita del administrador (ej. "inscríbelo") para usar admin_enroll_student.
+- Para agendar o reagendar clases: Si el administrador no especifica la fecha u hora, pregúntale antes de actuar. Si el administrador da instrucciones vagas ("reagenda la clase de María"), pide la hora o la fecha. Si hay ambigüedad entre varios usuarios o profesores con el mismo nombre, pide al admin que aclare de cuál se trata (usando los datos de las herramientas de búsqueda), pero NUNCA preguntes redundancias.
+- Para calcular fechas (admin_calculate_class_dates): Si el administrador no especifica un rango de tiempo, calcúlalo por defecto para el PERIODO ACADÉMICO EN CURSO.
 
 INFERENCIA DE PLAN — Si el usuario ya indicó su horario semanal, infiere el plan directamente:
 - 2 días/semana → plan Go
@@ -112,7 +120,8 @@ FACTURAS PAYPAL:
 - admin_send_invoice: Solo llamar DESPUÉS de que el admin confirme el monto mostrado por admin_create_invoice.
 - admin_list_invoices: Lista facturas PayPal de un cliente por nombre o correo.
 - admin_check_invoice_payment: Verifica pago de factura. Acepta link de PayPal o ID de factura.
-- FLUJO: admin_create_invoice → mostrar datos y monto → esperar que el admin diga "sí"/"confirmo"/"dale" → admin_send_invoice.
+- FLUJO: admin_create_invoice → mostrar datos y monto en USD → esperar que el admin diga "sí"/"confirmo"/"dale" → admin_send_invoice.
+- admin_enroll_student: Crea la inscripción para un estudiante en un periodo y le agenda sus clases en un solo paso. Promueve automáticamente de GUEST a STUDENT. Requiere días/horas, nombre del estudiante, opcionalmente el profesor. Usa esta herramienta cuando el admin pida "inscribir al estudiante", "activar su plan" o luego de confirmar el pago.
 - Si el admin no especifica el idioma del cliente, asumir "en" (inglés) por defecto.
 
 AGENDAMIENTO DE CLASES (ADMIN):
@@ -127,7 +136,7 @@ CÁLCULO DE FECHAS:
 - periodQuery: "actual" (prorrateo: solo fechas futuras), "siguiente" (todas), o nombre del período.
 
 REGLAS CRÍTICAS PARA ADMIN:
-- ACTÚA INMEDIATAMENTE: Cuando el admin da una instrucción clara como "agenda clases de María, lunes y miércoles 5pm hora de Arkansas", NO pidas confirmación. Convierte "5pm" a "17:00", resuelve "Arkansas" a "America/Chicago", y llama admin_schedule_class de una vez.
+- ACTÚA INMEDIATAMENTE: Cuando el admin da una instrucción clara como "inscribe a María con el profesor Juan los lunes y miércoles 5pm hora de Arkansas", NO pidas confirmación. Convierte "5pm" a "17:00", resuelve "Arkansas" a "America/Chicago", y llama admin_enroll_student de una vez. Para reagendar, usa admin_get_student_classes y luego admin_reschedule_class.
 - CONVIERTE HORAS TÚ MISMO: "5pm" → "17:00", "6:30am" → "06:30", "8 de la noche" → "20:00". Nunca pidas al admin que reformatee la hora.
 - RESUELVE ZONAS HORARIAS TÚ MISMO: usa la tabla de referencia. Solo pregunta si la ubicación es genuinamente ambigua.
 - Cuando el admin dice "genera factura para [nombre]", usa admin_create_invoice.
@@ -420,6 +429,54 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
       required: ['invoiceLinkOrId'],
     } as unknown as FunctionDeclarationSchema,
   },
+  admin_enroll_student: {
+    name: 'admin_enroll_student',
+    description: 'Inscribe a un estudiante en un curso y periodo académico, y le agenda sus clases en los horarios dados. Puede promover de invitado a estudiante si es necesario.',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {
+        studentNameOrEmail: {
+          type: SchemaType.STRING,
+          description: 'Nombre o correo del estudiante a inscribir',
+        },
+        teacherNameOrEmail: {
+          type: SchemaType.STRING,
+          description: 'Nombre o correo del profesor (opcional)',
+        },
+        courseName: {
+          type: SchemaType.STRING,
+          description: 'Nombre del curso (opcional, por defecto el último activo)',
+        },
+        periodQuery: {
+          type: SchemaType.STRING,
+          description: 'Nombre o referencia al periodo académico (opcional, por defecto el actual)',
+        },
+        slots: {
+          type: SchemaType.ARRAY,
+          description: 'Días y horas para las clases semanales',
+          items: {
+            type: SchemaType.OBJECT,
+            properties: {
+              dayOfWeek: {
+                type: SchemaType.STRING,
+                description: 'Día de la semana en la zona horaria del estudiante (ej: "lunes")',
+              },
+              localTime: {
+                type: SchemaType.STRING,
+                description: 'Hora de inicio de la clase en la zona horaria del estudiante, formato HH:MM (ej: "17:00")',
+              },
+            },
+            required: ['dayOfWeek', 'localTime'],
+          },
+        },
+        adminTimezone: {
+          type: SchemaType.STRING,
+          description: 'La zona horaria proporcionada por el admin (ej: "America/Chicago"), o vacío para usar la del estudiante.',
+        },
+      },
+      required: ['studentNameOrEmail', 'slots'],
+    },
+  },
   admin_schedule_class: {
     name: 'admin_schedule_class',
     description:
@@ -543,6 +600,7 @@ function getToolsForRole(roles: string[]): FunctionDeclaration[] {
     tools.push(ALL_FUNCTION_DECLARATIONS.admin_list_invoices)
     tools.push(ALL_FUNCTION_DECLARATIONS.admin_check_invoice_payment)
     tools.push(ALL_FUNCTION_DECLARATIONS.admin_schedule_class)
+    tools.push(ALL_FUNCTION_DECLARATIONS.admin_enroll_student)
     tools.push(ALL_FUNCTION_DECLARATIONS.admin_get_student_classes)
     tools.push(ALL_FUNCTION_DECLARATIONS.admin_reschedule_class)
     tools.push(ALL_FUNCTION_DECLARATIONS.admin_calculate_class_dates)
@@ -789,6 +847,26 @@ export async function POST(req: NextRequest) {
               call.args as { invoiceLinkOrId: string }
             )
             break
+
+          case 'admin_enroll_student': {
+            const enrollArgs = call.args as {
+              studentNameOrEmail: string
+              teacherNameOrEmail?: string
+              courseName?: string
+              periodQuery?: string
+              slots: Array<{ dayOfWeek: string; localTime: string }>
+              adminTimezone?: string
+            }
+            toolResult = await handleAdminEnrollStudent({
+              studentNameOrEmail: enrollArgs.studentNameOrEmail,
+              teacherNameOrEmail: enrollArgs.teacherNameOrEmail,
+              courseName: enrollArgs.courseName,
+              periodQuery: enrollArgs.periodQuery,
+              slots: enrollArgs.slots,
+              adminTimezone: enrollArgs.adminTimezone || user.timezone,
+            })
+            break
+          }
 
           case 'admin_schedule_class': {
             const schedArgs = call.args as {
