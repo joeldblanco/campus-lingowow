@@ -78,17 +78,17 @@ export async function handleAdminEnrollStudent(params: {
       }
     }
 
-    // 3. Find Course (Default to first active course if not specified)
+    // 3. Find Course (Default to first published course if not specified)
     let course
     if (courseName) {
       course = await db.course.findFirst({
-        where: { title: { contains: courseName.trim(), mode: 'insensitive' }, isActive: true },
+        where: { title: { contains: courseName.trim(), mode: 'insensitive' }, isPublished: true },
       })
       if (!course) {
         return { success: false, message: `No se encontró ningún curso activo con el nombre "${courseName}".` }
       }
     } else {
-      course = await db.course.findFirst({ where: { isActive: true }, orderBy: { createdAt: 'desc' } })
+      course = await db.course.findFirst({ where: { isPublished: true }, orderBy: { createdAt: 'desc' } })
       if (!course) {
         return { success: false, message: `No hay cursos activos disponibles en el sistema.` }
       }
