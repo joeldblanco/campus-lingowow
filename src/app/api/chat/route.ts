@@ -62,7 +62,7 @@ INSTRUCCIONES ADMINISTRATIVAS CLAVE:
 - Para verificar facturas (admin_check_invoice_payment): Si la factura ya está pagada, NO inscribas automáticamente al usuario. Solo confirma en texto que está pagada y espera la orden explícita del administrador (ej. "inscríbelo") para iniciar el proceso de inscripción.
 - Para agendar o reagendar clases: Si el administrador no especifica la fecha u hora, pregúntale antes de actuar. Si el administrador da instrucciones vagas ("reagenda la clase de María"), pide la hora o la fecha. Si hay ambigüedad entre varios usuarios o profesores con el mismo nombre, pide al admin que aclare de cuál se trata (usando los datos de las herramientas de búsqueda), pero NUNCA preguntes redundancias.
 - Para calcular fechas (admin_calculate_class_dates): Si el administrador no especifica un rango de tiempo, calcúlalo por defecto para el PERIODO ACADÉMICO EN CURSO.
-- Selección de Profesor (CRÍTICO): Antes de llamar a admin_enroll_student o admin_schedule_class, el bot DEBE buscar la disponibilidad de profesores para el horario solicitado usando check_teacher_availability. Muestra al administrador la lista de profesores disponibles y PIDE QUE ELIJA UNO. NUNCA agendes ni inscribas sin que el administrador haya seleccionado explícitamente a un profesor de la lista disponible.
+- Selección de Profesor (CRÍTICO): Un estudiante NO puede tener diferentes profesores; TODAS sus clases en el período deben ser con el mismo profesor. Antes de llamar a admin_enroll_student o admin_schedule_class, el bot DEBE buscar la disponibilidad usando check_teacher_availability enviando todos los horarios solicitados a la vez. Muestra al administrador la lista de profesores que tengan disponibilidad para TODO el bloque y PIDE QUE ELIJA UNO. NUNCA agendes ni inscribas sin que el administrador haya seleccionado explícitamente a un profesor de la lista.
 
 INFERENCIA DE PLAN — Si el usuario ya indicó su horario semanal, infiere el plan directamente:
 - 2 días/semana → plan Go
@@ -150,25 +150,34 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
   check_teacher_availability: {
     name: 'check_teacher_availability',
     description:
-      'Verifica si hay profesores disponibles para el horario solicitado. Debe llamarse ANTES de confirmar cualquier agendamiento o enviar links de pago.',
+      'Verifica qué profesores tienen disponibilidad para TODOS los horarios solicitados simultáneamente (ya que un estudiante debe tener el mismo profesor para todas sus clases de la semana). Debe llamarse ANTES de confirmar cualquier agendamiento o enviar links de pago.',
     parameters: {
       type: SchemaType.OBJECT,
       properties: {
-        dayOfWeek: {
-          type: SchemaType.STRING,
-          description:
-            'Día de la semana en inglés y minúsculas (monday, tuesday, wednesday, thursday, friday, saturday, sunday)',
-        },
-        localTime: {
-          type: SchemaType.STRING,
-          description: 'Hora de inicio en formato HH:MM en la zona horaria local del usuario',
+        slots: {
+          type: SchemaType.ARRAY,
+          description: 'Lista de franjas horarias semanales a verificar',
+          items: {
+            type: SchemaType.OBJECT,
+            properties: {
+              dayOfWeek: {
+                type: SchemaType.STRING,
+                description: 'Día de la semana en la zona horaria del usuario (ej: "lunes" o "monday")',
+              },
+              localTime: {
+                type: SchemaType.STRING,
+                description: 'Hora de inicio en formato HH:MM en la zona horaria local del usuario',
+              },
+            },
+            required: ['dayOfWeek', 'localTime'],
+          },
         },
         timezone: {
           type: SchemaType.STRING,
           description: 'Zona horaria IANA del usuario (ej: America/Lima, America/New_York)',
         },
       },
-      required: ['dayOfWeek', 'localTime', 'timezone'],
+      required: ['slots', 'timezone'],
     } as unknown as FunctionDeclarationSchema,
   },
   get_upcoming_classes: {
@@ -743,7 +752,7 @@ export async function POST(req: NextRequest) {
         switch (call.name) {
           case 'check_teacher_availability':
             toolResult = await handleCheckAvailability(
-              call.args as { dayOfWeek: string; localTime: string; timezone: string }
+              call.args as { slots: Array<{ dayOfWeek: string; localTime: string }>; timezone: string }
             )
             break
 

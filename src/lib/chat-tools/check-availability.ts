@@ -12,138 +12,126 @@ const DAY_ALIASES: Record<string, string> = {
 
 const UTC_DAY_NAMES = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
-/**
- * Returns up to 5 alternative time slots on the same LOCAL day as `localDay`.
- * Queries both the given UTC day and the adjacent UTC day to account for
- * timezone crossings (e.g. Lima 20:00 = UTC Wednesday 01:00 for a Tuesday slot).
- */
-async function getAlternativesForLocalDay(
-  localDay: string,
-  utcDay: string,
-  timezone: string
-): Promise<string[]> {
-  const utcDayIdx = UTC_DAY_NAMES.indexOf(utcDay)
-  const nextUtcDay = UTC_DAY_NAMES[(utcDayIdx + 1) % 7]
-
-  const rows = await db.teacherAvailability.findMany({
-    where: { day: { in: [utcDay, nextUtcDay] } },
-    distinct: ['startTime'],
-    orderBy: { startTime: 'asc' },
-    take: 30,
-  })
-
-  const seen = new Set<string>()
-  const result: string[] = []
-
-  for (const row of rows) {
-    const local = convertAvailabilityFromUTC(row.day, row.startTime, row.endTime, timezone)
-    if (local.day !== localDay) continue
-    const label = `las ${local.startTime}`
-    if (seen.has(label)) continue
-    seen.add(label)
-    result.push(label)
-    if (result.length >= 5) break
-  }
-
-  return result
-}
-
 export async function handleCheckAvailability(params: {
-  dayOfWeek: string
-  localTime: string
+  slots: Array<{ dayOfWeek: string; localTime: string }>
   timezone: string
 }): Promise<ToolResult> {
   try {
-    const { localTime, timezone } = params
-    const dayOfWeek = DAY_ALIASES[params.dayOfWeek.toLowerCase().trim()] ?? params.dayOfWeek.toLowerCase()
+    const { slots, timezone } = params
 
-    // Build a 40-minute slot (default class duration) — must match schedule_recurring_classes
-    // Using 1 hour caused false positives for evening slots because 1h after 23:xx wraps to "00:xx"
-    // which always passes the "endTime >= '00:xx'" string comparison
-    const [hours, minutes] = localTime.split(':').map(Number)
-    const endTotalMin = hours * 60 + minutes + 40
-    const endHours = Math.floor(endTotalMin / 60) % 24
-    const endMins = endTotalMin % 60
-    const endTime = `${String(endHours).padStart(2, '0')}:${String(endMins).padStart(2, '0')}`
-
-    // Convert the requested local slot to UTC
-    const utcSlot = convertAvailabilityToUTC(dayOfWeek, localTime, endTime, timezone)
-
-    // Find teachers with availability covering the requested UTC slot
-    const rawTeachers = await db.teacherAvailability.findMany({
-      where: {
-        day: utcSlot.day,
-        startTime: { lte: utcSlot.startTime },
-        endTime: { gte: utcSlot.endTime },
-      },
-      include: {
-        user: { select: { id: true, name: true } },
-      },
-    })
-
-    // Deduplicate: a teacher with multiple overlapping slots counts as one
-    const seen = new Set<string>()
-    const availableTeachers = rawTeachers.filter((t) => {
-      if (seen.has(t.userId)) return false
-      seen.add(t.userId)
-      return true
-    })
-
-    if (availableTeachers.length === 0) {
-      const altLocalTimes = await getAlternativesForLocalDay(dayOfWeek, utcSlot.day, timezone)
+    if (!slots || slots.length === 0) {
       return {
         success: false,
-        message:
-          altLocalTimes.length > 0
-            ? `El horario del ${dayOfWeek} a las ${localTime} no está disponible. Horarios alternativos el mismo día: ${altLocalTimes.join(', ')}.`
-            : `El horario del ${dayOfWeek} a las ${localTime} no está disponible y no hay otros horarios para ese día. Por favor elige otro día de la semana.`,
-        data: { available: false, alternatives: altLocalTimes },
+        message: 'No se proporcionaron horarios para verificar disponibilidad.',
       }
     }
 
-    // Check for conflicting bookings on the next occurrence of that UTC day
-    const dayNames = [
-      'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday',
-    ]
-    const targetDayIdx = dayNames.indexOf(utcSlot.day.toLowerCase())
+    // Keep track of teachers available for EVERY requested slot
+    let commonAvailableTeachers: { id: string; name: string }[] | null = null
+    const missingAvailabilityDetails = []
+
+    // For calculating the target date for conflict checks
     const now = new Date()
     const nowDayIdx = now.getUTCDay()
-    let daysUntil = targetDayIdx - nowDayIdx
-    if (daysUntil <= 0) daysUntil += 7
-    const targetDate = new Date(now)
-    targetDate.setUTCDate(now.getUTCDate() + daysUntil)
-    const targetDateStr = `${targetDate.getUTCFullYear()}-${String(targetDate.getUTCMonth() + 1).padStart(2, '0')}-${String(targetDate.getUTCDate()).padStart(2, '0')}`
+    const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
-    const conflictingBookings = await db.classBooking.findMany({
-      where: {
-        day: targetDateStr,
-        timeSlot: { startsWith: utcSlot.startTime },
-        status: 'CONFIRMED',
-      },
-      select: { teacherId: true },
-    })
+    for (const slot of slots) {
+      const { localTime } = slot
+      const dayOfWeek = DAY_ALIASES[slot.dayOfWeek.toLowerCase().trim()] ?? slot.dayOfWeek.toLowerCase()
 
-    const bookedTeacherIds = new Set(conflictingBookings.map((b) => b.teacherId))
-    const freeTeachers = availableTeachers.filter((t) => !bookedTeacherIds.has(t.userId))
+      // Calculate 40-minute duration
+      const [hours, minutes] = localTime.split(':').map(Number)
+      const endTotalMin = hours * 60 + minutes + 40
+      const endHours = Math.floor(endTotalMin / 60) % 24
+      const endMins = endTotalMin % 60
+      const endTime = `${String(endHours).padStart(2, '0')}:${String(endMins).padStart(2, '0')}`
 
-    if (freeTeachers.length === 0) {
-      const altLocalTimes = await getAlternativesForLocalDay(dayOfWeek, utcSlot.day, timezone)
-      const busyNames = availableTeachers.map((t) => t.user.name ?? 'Sin nombre')
-      return {
-        success: false,
-        message: altLocalTimes.length > 0
-          ? `El horario del ${dayOfWeek} a las ${localTime} está ocupado (profesores con horario pero ya con clase: ${busyNames.join(', ')}). Horarios alternativos el mismo día: ${altLocalTimes.join(', ')}.`
-          : `El horario del ${dayOfWeek} a las ${localTime} está ocupado y no hay otros horarios disponibles para ese día.`,
-        data: { available: false, alternatives: altLocalTimes, busyTeachers: busyNames },
+      // Convert to UTC
+      const utcSlot = convertAvailabilityToUTC(dayOfWeek, localTime, endTime, timezone)
+
+      // 1. Find teachers with availability config matching this slot
+      const rawTeachers = await db.teacherAvailability.findMany({
+        where: {
+          day: utcSlot.day,
+          startTime: { lte: utcSlot.startTime },
+          endTime: { gte: utcSlot.endTime },
+        },
+        include: {
+          user: { select: { id: true, name: true } },
+        },
+      })
+
+      // Deduplicate configured teachers
+      const configuredMap = new Map<string, { id: string; name: string }>()
+      for (const t of rawTeachers) {
+        if (!configuredMap.has(t.userId)) {
+          configuredMap.set(t.userId, { id: t.userId, name: t.user.name ?? 'Sin nombre' })
+        }
+      }
+
+      // 2. Find teachers who are already booked at this EXACT time on the NEXT occurrence
+      const targetDayIdx = dayNames.indexOf(utcSlot.day.toLowerCase())
+      let daysUntil = targetDayIdx - nowDayIdx
+      if (daysUntil <= 0) daysUntil += 7
+      const targetDate = new Date(now)
+      targetDate.setUTCDate(now.getUTCDate() + daysUntil)
+      const targetDateStr = `${targetDate.getUTCFullYear()}-${String(targetDate.getUTCMonth() + 1).padStart(2, '0')}-${String(targetDate.getUTCDate()).padStart(2, '0')}`
+
+      const conflictingBookings = await db.classBooking.findMany({
+        where: {
+          day: targetDateStr,
+          timeSlot: { startsWith: utcSlot.startTime },
+          status: 'CONFIRMED',
+        },
+        select: { teacherId: true },
+      })
+
+      const bookedTeacherIds = new Set(conflictingBookings.map((b) => b.teacherId))
+
+      // 3. Filter configured teachers that are NOT booked
+      const freeTeachersForSlot: { id: string; name: string }[] = []
+      for (const [userId, user] of configuredMap.entries()) {
+        if (!bookedTeacherIds.has(userId)) {
+          freeTeachersForSlot.push(user)
+        }
+      }
+
+      if (freeTeachersForSlot.length === 0) {
+         missingAvailabilityDetails.push(`Para el ${dayOfWeek} a las ${localTime} no hay profesores disponibles.`)
+      }
+
+      // 4. Intersect with previous slots
+      if (commonAvailableTeachers === null) {
+        commonAvailableTeachers = freeTeachersForSlot
+      } else {
+        const currentIds = new Set(freeTeachersForSlot.map(t => t.id))
+        commonAvailableTeachers = commonAvailableTeachers.filter(t => currentIds.has(t.id))
       }
     }
 
-    const teacherNames = freeTeachers.map((t) => t.user.name ?? 'Sin nombre')
+    if (missingAvailabilityDetails.length > 0) {
+      return {
+        success: false,
+        message: missingAvailabilityDetails.join(' ') + ' El estudiante debe tener el mismo profesor para todas sus clases, por favor pídele al admin que proponga otros horarios.',
+        data: { available: false }
+      }
+    }
+
+    if (!commonAvailableTeachers || commonAvailableTeachers.length === 0) {
+       const summary = slots.map(s => `${s.dayOfWeek} ${s.localTime}`).join(', ')
+       return {
+         success: false,
+         message: `Ningún profesor tiene disponibilidad para atender TODOS los horarios solicitados al mismo tiempo (${summary}). Por favor pídele al admin que proponga horarios distintos.`,
+         data: { available: false }
+       }
+    }
+
+    const teacherNames = commonAvailableTeachers.map((t) => t.name)
 
     return {
       success: true,
-      message: `El horario del ${dayOfWeek} a las ${localTime} (${timezone}) está disponible. Profesores disponibles: ${teacherNames.join(', ')} (${freeTeachers.length} en total).`,
-      data: { available: true, teacherCount: freeTeachers.length, teacherNames },
+      message: `¡Horarios disponibles! Los siguientes profesores pueden cubrir TODOS los horarios solicitados: ${teacherNames.join(', ')}.`,
+      data: { available: true, teacherCount: commonAvailableTeachers.length, teacherNames },
     }
   } catch (error) {
     console.error('[CheckAvailability] Error:', error)
