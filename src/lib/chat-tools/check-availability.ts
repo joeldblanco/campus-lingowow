@@ -128,19 +128,22 @@ export async function handleCheckAvailability(params: {
 
     if (freeTeachers.length === 0) {
       const altLocalTimes = await getAlternativesForLocalDay(dayOfWeek, utcSlot.day, timezone)
+      const busyNames = availableTeachers.map((t) => t.user.name ?? 'Sin nombre')
       return {
         success: false,
         message: altLocalTimes.length > 0
-          ? `El horario del ${dayOfWeek} a las ${localTime} está ocupado. Horarios alternativos el mismo día: ${altLocalTimes.join(', ')}.`
+          ? `El horario del ${dayOfWeek} a las ${localTime} está ocupado (profesores con horario pero ya con clase: ${busyNames.join(', ')}). Horarios alternativos el mismo día: ${altLocalTimes.join(', ')}.`
           : `El horario del ${dayOfWeek} a las ${localTime} está ocupado y no hay otros horarios disponibles para ese día.`,
-        data: { available: false, alternatives: altLocalTimes },
+        data: { available: false, alternatives: altLocalTimes, busyTeachers: busyNames },
       }
     }
 
+    const teacherNames = freeTeachers.map((t) => t.user.name ?? 'Sin nombre')
+
     return {
       success: true,
-      message: `El horario del ${dayOfWeek} a las ${localTime} (${timezone}) está disponible. Hay ${freeTeachers.length} profesor(es) libre(s).`,
-      data: { available: true, teacherCount: freeTeachers.length },
+      message: `El horario del ${dayOfWeek} a las ${localTime} (${timezone}) está disponible. Profesores disponibles: ${teacherNames.join(', ')} (${freeTeachers.length} en total).`,
+      data: { available: true, teacherCount: freeTeachers.length, teacherNames },
     }
   } catch (error) {
     console.error('[CheckAvailability] Error:', error)

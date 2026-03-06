@@ -31,26 +31,29 @@ export async function handleCreatePaymentLink(params: {
       }
     }
 
-    const programType = (params.programType ?? 'Esencial').trim() || 'Esencial'
+    const programType = (params.programType ?? 'Esencial').trim()
+    const mappedProgramName = programType.toLowerCase().includes('exclusivo')
+      ? 'Lingowow Exclusivo'
+      : 'Lingowow Esencial'
 
-    // Find matching plan in DB — prefer match that also filters by programType (product name)
+    // Find matching plan in DB
     let plan = await db.plan.findFirst({
       where: {
-        OR: [
-          { slug: { contains: slugKey, mode: 'insensitive' } },
-          { name: { contains: rawPlanType, mode: 'insensitive' } },
+        AND: [
+          { name: { equals: rawPlanType, mode: 'insensitive' } },
+          { product: { name: { equals: mappedProgramName, mode: 'insensitive' } } },
         ],
         isActive: true,
-        product: { name: { contains: programType, mode: 'insensitive' } },
       },
     })
-    // Fallback: find any active plan matching the slug (ignoring program type)
-    if (!plan) {
+
+    // Fallback if rawPlanType was something complex, try to match by slugKey
+    if (!plan && slugKey) {
       plan = await db.plan.findFirst({
         where: {
-          OR: [
+          AND: [
             { slug: { contains: slugKey, mode: 'insensitive' } },
-            { name: { contains: rawPlanType, mode: 'insensitive' } },
+            { product: { name: { equals: mappedProgramName, mode: 'insensitive' } } },
           ],
           isActive: true,
         },
@@ -60,7 +63,7 @@ export async function handleCreatePaymentLink(params: {
     if (!plan) {
       return {
         success: false,
-        message: `No se encontró el plan ${slugKey} activo. Un asesor confirmará el precio exacto. Por favor escríbenos por WhatsApp.`,
+        message: `No se encontró el plan ${rawPlanType || slugKey} para el programa ${mappedProgramName}. Un asesor confirmará el precio exacto. Por favor escríbenos por WhatsApp.`,
       }
     }
 
@@ -70,7 +73,7 @@ export async function handleCreatePaymentLink(params: {
       : 'Inicio en el próximo período'
     const description = `${planDisplayName} - Lingowow | ${scheduleNote} | Horario: ${params.desiredDay} ${params.desiredTime}`
     const amountStr = plan.price.toFixed(2)
-    const invoiceNumber = `CHAT-${Date.now().toString().slice(-10)}`
+    const invoiceNumber = `LW-${Date.now().toString().slice(-6)}`
 
     const paypalInvoice = await createPayPalInvoice({
       amount: amountStr,

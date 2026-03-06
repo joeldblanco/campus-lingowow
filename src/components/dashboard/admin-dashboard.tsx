@@ -31,6 +31,7 @@ import {
   Tooltip,
 } from 'recharts'
 import { DashboardSkeleton } from './dashboard-skeleton'
+import { AiAssistantSection } from '@/components/ai-assistant/AiAssistantSection'
 
 // StatCard Component with Link support
 const StatCard = ({
@@ -268,6 +269,9 @@ const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData |
             </Link>
           </div>
         </div>
+
+        {/* AI Assistant */}
+        <AiAssistantSection />
 
         {/* Recent Enrollments Table (Formerly Transactions) */}
         <div className="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">

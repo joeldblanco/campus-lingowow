@@ -9,8 +9,8 @@ export async function handleNotifyAdmin(params: {
   desiredSchedule: string
   message: string
 }): Promise<ToolResult> {
-  const esc = (s: string) =>
-    s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  const esc = (s?: string | null) =>
+    (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
   const text =
     `🔔 <b>Solicitud de asistencia - Asistente IA</b>\n\n` +

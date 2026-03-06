@@ -16,7 +16,7 @@ const WELCOME_MESSAGES: Record<string, string> = {
   [UserRole.TEACHER]:
     '¡Hola! Soy el asistente de Lingowow. ¿En qué puedo ayudarte?',
   [UserRole.ADMIN]:
-    '¡Hola! Soy el asistente de Lingowow. ¿En qué puedo ayudarte?',
+    '¡Hola! Soy tu asistente administrativo. Puedo generar facturas de PayPal, listar y verificar pagos, agendar o reagendar clases de estudiantes, calcular fechas de clases y verificar disponibilidad de profesores. ¿Qué necesitas?',
 }
 
 export function AiAssistantSection() {

@@ -4,7 +4,6 @@ import AdminDashboard from '@/components/dashboard/admin-dashboard'
 import GuestDashboard from '@/components/dashboard/guest-dashboard'
 import StudentDashboard from '@/components/dashboard/student-dashboard'
 import TeacherDashboard from '@/components/dashboard/teacher-dashboard'
-// import { AiAssistantSection } from '@/components/ai-assistant/AiAssistantSection'
 import { getAdminDashboardStats, getTeacherDashboardStats } from '@/lib/actions/dashboard'
 import type { AdminDashboardData, TeacherDashboardData } from '@/types/dashboard'
 import { UserRole } from '@prisma/client'
@@ -42,7 +41,6 @@ const Dashboard = () => {
   // Renderizar el dashboard según el rol
   return (
     <div className="p-6">
-      {/* <AiAssistantSection /> */}
       {userRoles?.includes(UserRole.ADMIN) && <AdminDashboard dashboardData={adminData} />}
       {userRoles?.includes(UserRole.TEACHER) && <TeacherDashboard dashboardData={teacherData} />}
       {userRoles?.includes(UserRole.STUDENT) && <StudentDashboard />}

@@ -24,6 +24,7 @@ import { getStudentDashboardStats } from '@/lib/actions/dashboard'
 import type { StudentDashboardData } from '@/types/dashboard'
 import { PendingScheduleBanner } from '@/components/enrollments/pending-schedule-banner'
 import { CourseCard } from '@/components/dashboard/course-card'
+import { AiAssistantSection } from '@/components/ai-assistant/AiAssistantSection'
 
 export default function Dashboard() {
   const { data: session } = useSession()
@@ -123,9 +124,9 @@ export default function Dashboard() {
                 <p className="text-sm text-white/70 mt-1">con {nextClass.teacher}</p>
               </div>
             </div>
-            <Button 
-              asChild 
-              size="lg" 
+            <Button
+              asChild
+              size="lg"
               className="relative w-full md:w-auto bg-white text-emerald-700 hover:bg-white/90 hover:text-emerald-800 font-bold text-base md:text-lg px-8 py-6 shadow-xl hover:shadow-2xl transition-all hover:scale-105"
             >
               <Link href={nextClass.link}>
@@ -141,7 +142,7 @@ export default function Dashboard() {
       {currentEnrollment && (
         <div className="w-full" data-tour="continue-learning">
           <div className="flex flex-col items-stretch justify-start rounded-xl overflow-hidden md:flex-row md:items-center shadow-md bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-700 group transition-all hover:shadow-lg">
-            <div 
+            <div
               className="w-full md:w-1/3 h-48 md:h-auto md:aspect-[4/3] bg-cover bg-center relative"
               style={{ backgroundImage: currentEnrollment.image ? `url("${currentEnrollment.image}")` : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
             >
@@ -180,6 +181,9 @@ export default function Dashboard() {
           </div>
         </div>
       )}
+
+      {/* AI Assistant */}
+      <AiAssistantSection />
 
       {/* Quick Actions Bar */}
       <div>
@@ -300,7 +304,7 @@ export default function Dashboard() {
                 <Calendar className="w-5 h-5" />
               </Link>
             </div>
-            
+
             {dashboardData?.upcomingClasses && dashboardData.upcomingClasses.length > 0 ? (
               <div className="flex flex-col gap-4">
                 {dashboardData.upcomingClasses.slice(0, 2).map((classItem, index) => (

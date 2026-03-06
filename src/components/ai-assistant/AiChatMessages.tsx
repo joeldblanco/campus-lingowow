@@ -1,5 +1,6 @@
 'use client'
 
+import { useRef, useEffect } from 'react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import type { ChatMessage } from '@/types/ai-chat'
@@ -13,6 +14,14 @@ const TOOL_LABELS: Record<string, string> = {
   check_invoice_status: 'Verificando factura',
   create_payment_link: 'Generando link de pago',
   notify_admin_telegram: 'Notificando al equipo',
+  admin_create_invoice: 'Preparando factura PayPal',
+  admin_send_invoice: 'Enviando factura PayPal',
+  admin_list_invoices: 'Buscando facturas del cliente',
+  admin_check_invoice_payment: 'Verificando pago de factura',
+  admin_schedule_class: 'Agendando clases del estudiante',
+  admin_get_student_classes: 'Buscando clases del estudiante',
+  admin_reschedule_class: 'Reagendando clase del estudiante',
+  admin_calculate_class_dates: 'Calculando fechas de clases',
 }
 
 interface AiChatMessagesProps {
@@ -35,7 +44,7 @@ function tokenizeInline(text: string): InlineToken[] {
   const tokens: InlineToken[] = []
   // Order matters: markdown links before raw URLs, ** before *, __ before _
   const re =
-    /\*\*(.+?)\*\*|__(.+?)__|(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)|(?<!_)_(?!_)(.+?)(?<!_)_(?!_)|~~(.+?)~~|`(.+?)`|\[([^\]]+)\]\(([^)]+)\)|(https?:\/\/[^\s<>")\]]+)/g
+    /\*\*(.+?)\*\*|__(.+?)__|(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)|(?<!_)_(?!_)(.+?)(?<!_)_(?!_)|~~(.+?)~~|`(.+?)`|\[([^\]]+)\]\(([^)]+)\)|(https?:\/\/[^\s<>")\\]+)/g
   let lastIdx = 0
 
   for (const match of text.matchAll(re)) {
@@ -202,9 +211,21 @@ function LoadingDots() {
 }
 
 export function AiChatMessages({ messages, isLoading, lastToolExecuted }: AiChatMessagesProps) {
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  // Auto-scroll within the ScrollArea viewport only (never the page)
+  useEffect(() => {
+    if (!containerRef.current) return
+    // Radix ScrollArea wraps content in a viewport element
+    const viewport = containerRef.current.closest('[data-radix-scroll-area-viewport]')
+    if (viewport) {
+      viewport.scrollTop = viewport.scrollHeight
+    }
+  }, [messages, isLoading])
+
   return (
     <ScrollArea className="flex-1 min-h-0 px-4 py-3">
-      <div className="flex flex-col gap-3">
+      <div ref={containerRef} className="flex flex-col gap-3">
         {messages.map((msg, idx) => (
           <MessageBubble key={idx} message={msg} />
         ))}
@@ -223,3 +244,4 @@ export function AiChatMessages({ messages, isLoading, lastToolExecuted }: AiChat
     </ScrollArea>
   )
 }
+

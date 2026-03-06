@@ -1,5 +1,10 @@
 import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai'
-import type { FunctionDeclaration, FunctionDeclarationSchema, Part, Tool } from '@google/generative-ai'
+import type {
+  FunctionDeclaration,
+  FunctionDeclarationSchema,
+  Part,
+  Tool,
+} from '@google/generative-ai'
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
@@ -11,6 +16,12 @@ import { handleNotifyAdmin } from '@/lib/chat-tools/notify-admin'
 import { handleGetUpcomingClasses } from '@/lib/chat-tools/get-upcoming-classes'
 import { handleScheduleClass } from '@/lib/chat-tools/schedule-class'
 import { handleScheduleRecurringClasses } from '@/lib/chat-tools/schedule-recurring-classes'
+import { handleAdminCreateInvoice, handleAdminSendInvoice } from '@/lib/chat-tools/admin-create-invoice'
+import { handleAdminListInvoices } from '@/lib/chat-tools/admin-list-invoices'
+import { handleAdminCheckInvoicePayment } from '@/lib/chat-tools/admin-check-invoice-payment'
+import { handleAdminScheduleClass } from '@/lib/chat-tools/admin-schedule-class'
+import { handleAdminGetStudentClasses, handleAdminRescheduleClass } from '@/lib/chat-tools/admin-reschedule-class'
+import { handleAdminCalculateClassDates } from '@/lib/chat-tools/admin-calculate-class-dates'
 import type { ChatMessage, ToolResult } from '@/types/ai-chat'
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '')
@@ -50,15 +61,17 @@ INFERENCIA DE PLAN — Si el usuario ya indicó su horario semanal, infiere el p
 - 4 días/semana → plan Wow
 No le preguntes el plan si ya puedes inferirlo del horario. Solo pregunta el programa (Esencial/Exclusivo) si no lo dijo.
 
-FLUJO DE PAGO — seguir en orden estricto, sin saltarse pasos:
+FLUJO DE PAGO — seguir en orden, sin saltarse pasos ni hacer preguntas innecesarias:
 1. Si el usuario no lo dijo: preguntar qué programa (Esencial/Exclusivo) quiere. El plan se infiere del horario si ya lo dio.
 2. Determinar cuándo quiere iniciar (startNow). INFERIR directamente si el usuario ya lo indicó — NO preguntar si ya se puede deducir:
-   - "de marzo", "en marzo", "este mes", "ahora", "lo antes posible", "este período", "ya" → startNow = true (si marzo = mes actual)
+   - "de marzo", "en marzo", "este mes", "ahora", "lo antes posible", "este período", "ya", "sí" → startNow = true
    - "el siguiente período", "el próximo mes", "en abril" → startNow = false
-   - Solo preguntar si el usuario no mencionó nada sobre el inicio.
+   - Si el usuario no mencionó nada sobre el inicio, asumir startNow = true por defecto.
 3. Llamar check_invoice_status para verificar si ya tiene una factura válida.
-4. Si no tiene factura válida: llamar create_payment_link y mostrar el link al usuario.
+4. Si no tiene factura válida: llamar create_payment_link INMEDIATAMENTE y mostrar el link al usuario.
 5. CRÍTICO: NUNCA llamar notify_admin_telegram en un flujo de pago. notify_admin_telegram es exclusivamente para soporte especial o cuando el usuario pide explícitamente hablar con el equipo.
+- CRÍTICO: Si el usuario ya dio TODA la información necesaria (programa, horario, confirmación), NO vuelvas a pedir confirmación. Llama las herramientas directamente. Cada pregunta adicional innecesaria frustra al usuario.
+- CRÍTICO: Cuando el usuario responde "Sí" a una pregunta de confirmación, PROCEDE con la acción inmediatamente. Nunca respondas a un "Sí" con otra pregunta.
 
 CUANDO UNA HERRAMIENTA RETORNA "NO_ENROLLMENT":
 - El usuario no tiene inscripción activa. NO asumas que ya pagó, NO lo remitas al equipo de Lingowow.
@@ -72,7 +85,56 @@ RESTRICCIONES:
 - Nunca solicites contraseñas, datos de tarjeta u otros datos sensibles.
 - No te presentes como humano.
 - CRÍTICO: Cuando necesites usar una herramienta, llámala INMEDIATAMENTE. Nunca envíes un mensaje de texto anunciando que la vas a llamar (ej: "Un momento, verificaré..."). Llama la función directamente y luego responde con el resultado.
-- CRÍTICO: Nunca inventes URLs. Si create_payment_link retorna una URL de pago, muéstrasela al usuario exactamente como viene en el resultado, sin modificarla. Si la herramienta falla, informa el error sin inventar un link.`
+- CRÍTICO: Nunca inventes URLs. Si create_payment_link retorna una URL de pago, muéstrasela al usuario exactamente como viene en el resultado, sin modificarla. Si la herramienta falla, informa el error sin inventar un link.
+
+RESOLUCIÓN DE ZONAS HORARIAS — Cuando el admin o usuario mencione una ubicación, resuelve la zona horaria IANA tú mismo. Tabla de referencia:
+- Perú/Lima → America/Lima (UTC-5)
+- Colombia/Bogotá → America/Bogota (UTC-5)
+- México (centro)/CDMX → America/Mexico_City (UTC-6)
+- México (noroeste)/Tijuana → America/Tijuana (UTC-8)
+- Argentina/Buenos Aires → America/Argentina/Buenos_Aires (UTC-3)
+- Chile/Santiago → America/Santiago (UTC-4/-3)
+- Venezuela/Caracas → America/Caracas (UTC-4)
+- Ecuador/Quito → America/Guayaquil (UTC-5)
+- España/Madrid → Europe/Madrid (UTC+1/+2)
+- US Eastern / New York / Florida / Georgia → America/New_York (UTC-5/-4)
+- US Central / Chicago / Texas / Arkansas / Tennessee / Alabama → America/Chicago (UTC-6/-5)
+- US Mountain / Denver / Arizona → America/Denver (UTC-7/-6)
+- US Pacific / Los Angeles / California / Washington / Oregon → America/Los_Angeles (UTC-8/-7)
+- US Alaska → America/Anchorage (UTC-9/-8)
+- US Hawaii → Pacific/Honolulu (UTC-10)
+NUNCA pidas la zona horaria si puedes deducirla de la ubicación mencionada.
+
+HERRAMIENTAS DE ADMINISTRADOR (solo disponibles para rol ADMIN):
+
+FACTURAS PAYPAL:
+- admin_create_invoice: Prepara una factura. El admin da: nombre del cliente (o correo), producto (Esencial/Exclusivo), plan (Go/Lingo/Wow) y fecha de inicio. Si el admin da un nombre, busca al usuario en la DB. Si hay varios coincidencias, muestra la lista y pide confirmar. Si da un correo, emite directo. Calcula el monto automáticamente según PlanPricing.
+- admin_send_invoice: Solo llamar DESPUÉS de que el admin confirme el monto mostrado por admin_create_invoice.
+- admin_list_invoices: Lista facturas PayPal de un cliente por nombre o correo.
+- admin_check_invoice_payment: Verifica pago de factura. Acepta link de PayPal o ID de factura.
+- FLUJO: admin_create_invoice → mostrar datos y monto → esperar que el admin diga "sí"/"confirmo"/"dale" → admin_send_invoice.
+- Si el admin no especifica el idioma del cliente, asumir "en" (inglés) por defecto.
+
+AGENDAMIENTO DE CLASES (ADMIN):
+- admin_schedule_class: Agenda clases recurrentes para cualquier estudiante o invitado (GUEST → se promueve a STUDENT automáticamente). Busca por nombre o correo.
+- IMPORTANTE: Cuando el admin dice los días y horas en la zona horaria del ESTUDIANTE (ej: "lunes 5pm hora de Arkansas"), convierte la hora textual a formato HH:MM (ej: "5pm" → "17:00") y pásala directamente. La herramienta almacena en UTC internamente.
+- admin_get_student_classes: Obtiene las próximas clases de un estudiante. Necesario antes de reagendar.
+- admin_reschedule_class: Reagenda una clase usando el bookingId interno. NO le pidas el ID al admin.
+- check_teacher_availability: Para verificar disponibilidad ANTES de agendar, usa esta herramienta con la zona horaria del ESTUDIANTE (no la del admin).
+
+CÁLCULO DE FECHAS:
+- admin_calculate_class_dates: Calcula fechas de clases sin agendar. Usa para planificación.
+- periodQuery: "actual" (prorrateo: solo fechas futuras), "siguiente" (todas), o nombre del período.
+
+REGLAS CRÍTICAS PARA ADMIN:
+- ACTÚA INMEDIATAMENTE: Cuando el admin da una instrucción clara como "agenda clases de María, lunes y miércoles 5pm hora de Arkansas", NO pidas confirmación. Convierte "5pm" a "17:00", resuelve "Arkansas" a "America/Chicago", y llama admin_schedule_class de una vez.
+- CONVIERTE HORAS TÚ MISMO: "5pm" → "17:00", "6:30am" → "06:30", "8 de la noche" → "20:00". Nunca pidas al admin que reformatee la hora.
+- RESUELVE ZONAS HORARIAS TÚ MISMO: usa la tabla de referencia. Solo pregunta si la ubicación es genuinamente ambigua.
+- Cuando el admin dice "genera factura para [nombre]", usa admin_create_invoice.
+- Cuando el admin dice "lista facturas de [nombre]", usa admin_list_invoices.
+- Cuando el admin pega un link de PayPal, usa admin_check_invoice_payment.
+- Cuando el admin pregunta por disponibilidad de un horario, usa check_teacher_availability con la zona horaria del estudiante.
+- Muestra los horarios siempre en la zona horaria que el admin especificó (la del estudiante).`
 
 const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
   check_teacher_availability: {
@@ -118,7 +180,8 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
       properties: {
         localDate: {
           type: SchemaType.STRING,
-          description: 'Fecha de la clase en formato YYYY-MM-DD en la zona horaria local del estudiante',
+          description:
+            'Fecha de la clase en formato YYYY-MM-DD en la zona horaria local del estudiante',
         },
         localTime: {
           type: SchemaType.STRING,
@@ -143,11 +206,13 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
             properties: {
               dayOfWeek: {
                 type: SchemaType.STRING,
-                description: 'Día de la semana en inglés y minúsculas (monday, tuesday, wednesday, thursday, friday, saturday, sunday)',
+                description:
+                  'Día de la semana en inglés y minúsculas (monday, tuesday, wednesday, thursday, friday, saturday, sunday)',
               },
               localTime: {
                 type: SchemaType.STRING,
-                description: 'Hora de inicio en formato HH:MM en la zona horaria local del estudiante',
+                description:
+                  'Hora de inicio en formato HH:MM en la zona horaria local del estudiante',
               },
             },
             required: ['dayOfWeek', 'localTime'],
@@ -174,7 +239,8 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
         },
         newTimeSlot: {
           type: SchemaType.STRING,
-          description: 'Nuevo horario en formato HH:MM-HH:MM en la zona horaria local del estudiante',
+          description:
+            'Nuevo horario en formato HH:MM-HH:MM en la zona horaria local del estudiante',
         },
       },
       required: ['bookingId', 'newDay', 'newTimeSlot'],
@@ -193,7 +259,7 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
   create_payment_link: {
     name: 'create_payment_link',
     description:
-      'Genera un link de pago PayPal para la inscripción del invitado y lo envía por email. Solo llamar después de verificar disponibilidad y confirmar que no hay factura válida pendiente.',
+      'Genera un link de pago PayPal para la inscripción del usuario y lo envía por email. Usar cuando el usuario quiere pagar un plan. Solo llamar después de confirmar que no hay factura válida pendiente (check_invoice_status).',
     parameters: {
       type: SchemaType.OBJECT,
       properties: {
@@ -216,8 +282,7 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
         },
         desiredTime: {
           type: SchemaType.STRING,
-          description:
-            'Hora preferida para las clases en formato HH:MM (hora local del usuario)',
+          description: 'Hora preferida para las clases en formato HH:MM (hora local del usuario)',
         },
       },
       required: ['programType', 'planType', 'startNow', 'desiredDay', 'desiredTime'],
@@ -226,7 +291,7 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
   notify_admin_telegram: {
     name: 'notify_admin_telegram',
     description:
-      'Notifica al equipo de administración de Lingowow cuando no hay disponibilidad o se necesita atención especial. Pedir número de teléfono al usuario antes de llamar esta función.',
+      'Notifica al equipo de administración de Lingowow EXCLUSIVAMENTE cuando el usuario pide explícitamente hablar con un humano, reporta un error técnico, o hay un caso que ninguna otra herramienta puede resolver. NUNCA usar para pagos o agendamiento — para eso usar create_payment_link y schedule_class/schedule_recurring_classes. Pedir número de teléfono al usuario antes de llamar esta función.',
     parameters: {
       type: SchemaType.OBJECT,
       properties: {
@@ -250,10 +315,238 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
       required: ['userPhone', 'desiredProgram', 'desiredSchedule', 'message'],
     } as unknown as FunctionDeclarationSchema,
   },
+
+  // =============================================
+  // ADMIN TOOLS
+  // =============================================
+
+  admin_create_invoice: {
+    name: 'admin_create_invoice',
+    description:
+      'Prepara una factura de PayPal para un cliente. Busca al usuario por nombre o correo, calcula el monto según producto+plan+idioma, y retorna los datos para confirmar antes de enviar. Si hay múltiples usuarios con el mismo nombre, retorna la lista para que el admin confirme.',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {
+        clientNameOrEmail: {
+          type: SchemaType.STRING,
+          description: 'Nombre del cliente (buscará en la base de datos) o correo electrónico directo',
+        },
+        programType: {
+          type: SchemaType.STRING,
+          description: 'Programa: "Esencial" o "Exclusivo"',
+        },
+        planType: {
+          type: SchemaType.STRING,
+          description: 'Plan: "Go", "Lingo" o "Wow"',
+        },
+        startDate: {
+          type: SchemaType.STRING,
+          description: 'Fecha de inicio del plan (ej: "marzo 2026", "2026-03-01", "inmediato")',
+        },
+        language: {
+          type: SchemaType.STRING,
+          description: 'Idioma que el cliente estudia: "en" para inglés, "es" para español. Por defecto "en".',
+        },
+      },
+      required: ['clientNameOrEmail', 'programType', 'planType', 'startDate'],
+    } as unknown as FunctionDeclarationSchema,
+  },
+  admin_send_invoice: {
+    name: 'admin_send_invoice',
+    description:
+      'Envía la factura de PayPal previamente preparada con admin_create_invoice. Solo llamar DESPUÉS de que el admin confirme los datos (monto, destinatario, plan). Requiere todos los datos devueltos por admin_create_invoice.',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {
+        recipientEmail: {
+          type: SchemaType.STRING,
+          description: 'Correo del destinatario (obtenido de admin_create_invoice)',
+        },
+        recipientName: {
+          type: SchemaType.STRING,
+          description: 'Nombre del destinatario (obtenido de admin_create_invoice)',
+        },
+        planDisplayName: {
+          type: SchemaType.STRING,
+          description: 'Nombre del plan para la factura (obtenido de admin_create_invoice)',
+        },
+        amount: {
+          type: SchemaType.STRING,
+          description: 'Monto de la factura (obtenido de admin_create_invoice)',
+        },
+        currency: {
+          type: SchemaType.STRING,
+          description: 'Moneda (obtenido de admin_create_invoice)',
+        },
+        description: {
+          type: SchemaType.STRING,
+          description: 'Descripción para la factura (obtenido de admin_create_invoice)',
+        },
+        invoiceNumber: {
+          type: SchemaType.STRING,
+          description: 'Número de factura (obtenido de admin_create_invoice)',
+        },
+      },
+      required: ['recipientEmail', 'recipientName', 'planDisplayName', 'amount', 'currency', 'description', 'invoiceNumber'],
+    } as unknown as FunctionDeclarationSchema,
+  },
+  admin_list_invoices: {
+    name: 'admin_list_invoices',
+    description:
+      'Lista las facturas de PayPal enviadas a un cliente. Busca por nombre (busca el correo en la base de datos) o directamente por correo electrónico.',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {
+        clientNameOrEmail: {
+          type: SchemaType.STRING,
+          description: 'Nombre del cliente o correo electrónico para buscar sus facturas',
+        },
+      },
+      required: ['clientNameOrEmail'],
+    } as unknown as FunctionDeclarationSchema,
+  },
+  admin_check_invoice_payment: {
+    name: 'admin_check_invoice_payment',
+    description:
+      'Verifica si una factura de PayPal ya fue pagada. Acepta un link de PayPal (ej: https://www.paypal.com/invoice/p/#XXXX) o un ID de factura (ej: INV2-XXXX-XXXX-XXXX-XXXX).',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {
+        invoiceLinkOrId: {
+          type: SchemaType.STRING,
+          description: 'Link de PayPal de la factura o ID de la factura',
+        },
+      },
+      required: ['invoiceLinkOrId'],
+    } as unknown as FunctionDeclarationSchema,
+  },
+  admin_schedule_class: {
+    name: 'admin_schedule_class',
+    description:
+      'Agenda clases recurrentes para un estudiante (o invitado — lo promueve a estudiante automáticamente). Busca al usuario por nombre o correo, verifica disponibilidad de profesores, y crea las clases para todo el período académico activo. Las fechas se guardan en UTC internamente.',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {
+        studentNameOrEmail: {
+          type: SchemaType.STRING,
+          description: 'Nombre o correo del estudiante para quien se agendarán las clases',
+        },
+        slots: {
+          type: SchemaType.ARRAY,
+          description: 'Lista de franjas horarias recurrentes (un elemento por día de la semana)',
+          items: {
+            type: SchemaType.OBJECT,
+            properties: {
+              dayOfWeek: {
+                type: SchemaType.STRING,
+                description: 'Día de la semana (en español o inglés: lunes/monday, martes/tuesday, etc.)',
+              },
+              localTime: {
+                type: SchemaType.STRING,
+                description: 'Hora de inicio en formato HH:MM en la zona horaria local del estudiante (ej: 17:00)',
+              },
+            },
+            required: ['dayOfWeek', 'localTime'],
+          },
+        },
+        studentTimezone: {
+          type: SchemaType.STRING,
+          description: 'Zona horaria IANA del estudiante (ej: America/Chicago). Si el admin mencionó una ubicación como "Arkansas", resuelve a la zona IANA correspondiente.',
+        },
+      },
+      required: ['studentNameOrEmail', 'slots'],
+    } as unknown as FunctionDeclarationSchema,
+  },
+  admin_get_student_classes: {
+    name: 'admin_get_student_classes',
+    description:
+      'Obtiene las próximas clases confirmadas de un estudiante. Busca al usuario por nombre o correo. Necesario antes de reagendar para obtener el ID de la clase.',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {
+        studentNameOrEmail: {
+          type: SchemaType.STRING,
+          description: 'Nombre o correo del estudiante',
+        },
+      },
+      required: ['studentNameOrEmail'],
+    } as unknown as FunctionDeclarationSchema,
+  },
+  admin_reschedule_class: {
+    name: 'admin_reschedule_class',
+    description:
+      'Reagenda una clase específica de un estudiante a un nuevo horario. Requiere el bookingId obtenido de admin_get_student_classes. Verifica disponibilidad de profesores en el nuevo horario.',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {
+        bookingId: {
+          type: SchemaType.STRING,
+          description: 'ID de la clase a reagendar (obtenido de admin_get_student_classes)',
+        },
+        newLocalDate: {
+          type: SchemaType.STRING,
+          description: 'Nueva fecha en formato YYYY-MM-DD en la zona horaria local del estudiante',
+        },
+        newLocalTime: {
+          type: SchemaType.STRING,
+          description: 'Nueva hora de inicio en formato HH:MM en la zona horaria local del estudiante',
+        },
+      },
+      required: ['bookingId', 'newLocalDate', 'newLocalTime'],
+    } as unknown as FunctionDeclarationSchema,
+  },
+  admin_calculate_class_dates: {
+    name: 'admin_calculate_class_dates',
+    description:
+      'Calcula las fechas de clases en horario local dado un horario semanal y un período académico. Útil para planificar sin agendar. Si el período es el actual, hace prorrateo (solo fechas futuras). Si es pasado, lo indica. Acepta: "actual", "siguiente", o el nombre del período.',
+    parameters: {
+      type: SchemaType.OBJECT,
+      properties: {
+        slots: {
+          type: SchemaType.ARRAY,
+          description: 'Lista de franjas horarias semanales',
+          items: {
+            type: SchemaType.OBJECT,
+            properties: {
+              dayOfWeek: {
+                type: SchemaType.STRING,
+                description: 'Día de la semana (en español o inglés)',
+              },
+              localTime: {
+                type: SchemaType.STRING,
+                description: 'Hora de inicio en formato HH:MM (ej: 17:00)',
+              },
+            },
+            required: ['dayOfWeek', 'localTime'],
+          },
+        },
+        periodQuery: {
+          type: SchemaType.STRING,
+          description: 'Período: "actual", "siguiente", o nombre del período (ej: "Marzo 2026")',
+        },
+        timezone: {
+          type: SchemaType.STRING,
+          description: 'Zona horaria IANA para el cálculo (ej: America/Chicago). Por defecto usa la del admin.',
+        },
+      },
+      required: ['slots', 'periodQuery'],
+    } as unknown as FunctionDeclarationSchema,
+  },
 }
 
 function getToolsForRole(roles: string[]): FunctionDeclaration[] {
   const tools: FunctionDeclaration[] = [ALL_FUNCTION_DECLARATIONS.check_teacher_availability]
+
+  if (roles.includes('ADMIN')) {
+    tools.push(ALL_FUNCTION_DECLARATIONS.admin_create_invoice)
+    tools.push(ALL_FUNCTION_DECLARATIONS.admin_send_invoice)
+    tools.push(ALL_FUNCTION_DECLARATIONS.admin_list_invoices)
+    tools.push(ALL_FUNCTION_DECLARATIONS.admin_check_invoice_payment)
+    tools.push(ALL_FUNCTION_DECLARATIONS.admin_schedule_class)
+    tools.push(ALL_FUNCTION_DECLARATIONS.admin_get_student_classes)
+    tools.push(ALL_FUNCTION_DECLARATIONS.admin_reschedule_class)
+    tools.push(ALL_FUNCTION_DECLARATIONS.admin_calculate_class_dates)
+  }
 
   if (roles.includes('STUDENT')) {
     tools.push(ALL_FUNCTION_DECLARATIONS.get_upcoming_classes)
@@ -262,7 +555,9 @@ function getToolsForRole(roles: string[]): FunctionDeclaration[] {
     tools.push(ALL_FUNCTION_DECLARATIONS.reschedule_class)
   }
 
-  if (roles.includes('GUEST')) {
+  // Both STUDENT and GUEST can check invoices and create payment links
+  // (students may need to renew or their enrollment may have expired)
+  if (roles.includes('GUEST') || roles.includes('STUDENT')) {
     tools.push(ALL_FUNCTION_DECLARATIONS.check_invoice_status)
     tools.push(ALL_FUNCTION_DECLARATIONS.create_payment_link)
   }
@@ -281,14 +576,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const user = await db.user.findUnique({
+    const rawUser = await db.user.findUnique({
       where: { id: session.user.id },
       select: { id: true, name: true, email: true, roles: true, timezone: true },
     })
 
-    if (!user) {
+    if (!rawUser) {
       return NextResponse.json({ success: false, error: 'User not found' }, { status: 404 })
     }
+
+    const user = { ...rawUser, timezone: rawUser.timezone || 'America/Lima' }
 
     const body = (await req.json()) as { messages: ChatMessage[] }
     const messages = body.messages
@@ -307,8 +604,7 @@ export async function POST(req: NextRequest) {
       minute: '2-digit',
     }).format(new Date())
 
-    const systemPrompt = SYSTEM_PROMPT_TEMPLATE
-      .replace(/{name}/g, user.name ?? 'Usuario')
+    const systemPrompt = SYSTEM_PROMPT_TEMPLATE.replace(/{name}/g, user.name ?? 'Usuario')
       .replace(/{role}/g, user.roles.join(', '))
       .replace(/{email}/g, user.email ?? '')
       .replace(/{timezone}/g, user.timezone)
@@ -333,24 +629,45 @@ export async function POST(req: NextRequest) {
     const lastMessage = messages[messages.length - 1]
     const chat = model.startChat({ history })
 
+    console.log(`[Chat API] User: ${user.name} | Roles: ${user.roles.join(',')} | TZ: ${user.timezone} | Tools: ${toolDeclarations.map(t => t.name).join(', ')}`)
+
     let result = await chat.sendMessage(lastMessage.content)
     let toolExecuted: string | undefined
     let nudged = false
     let capturedPaymentUrl: string | undefined
+    let capturedPreNudgeText: string | undefined
+    let functionResponses: Part[] = []
     // Agentic loop — max 6 iterations to prevent infinite loops
     for (let i = 0; i < 6; i++) {
       const functionCalls = result.response.functionCalls()
 
       if (!functionCalls || functionCalls.length === 0) {
         // If the model sent a "pre-action" text without calling the function, nudge it once.
-        // This handles Gemini's occasional pattern of announcing an action before executing it.
         if (!nudged && toolDeclarations.length > 0) {
-          const previewText = result.response.text().toLowerCase()
+          let previewText = ''
+          try {
+            previewText = result.response.text().toLowerCase()
+          } catch {
+            // No text parts — nothing to nudge, just break
+            break
+          }
           const PENDING_RE =
-            /\b(verificar[eé]|comprobar[eé]|revisar[eé]|consultar[eé]|buscar[eé]|proceder[eé]|un momento|un segundo|un segundito|un momentito|voy a|déjame|dejame|ahora mismo|enseguida|procedo|procederé|let me|will check|checking)\b/
+            /\b(verificar[eé]|comprobar[eé]|revisar[eé]|consultar[eé]|buscar[eé]|proceder[eé]|un momento|un segundo|un segundito|un momentito|voy a|déjame|dejame|ahora mismo|enseguida|procedo|procederé|generar[eé]|let me|will check|checking|necesito saber|necesito la|para confirmar|para poder|podrías indicar|podrias indicar|no tengo acceso|no puedo ver|indicame|indícame|dime cu[aá]l)\b/
           if (PENDING_RE.test(previewText)) {
             nudged = true
-            result = await chat.sendMessage('Procede con la acción ahora.')
+            // Capture the pre-nudge text so we can use it as a fallback
+            try {
+              capturedPreNudgeText = result.response.text().trim()
+            } catch {
+              /* ignore */
+            }
+            // Be very explicit about what to do — the generic nudge was failing
+            const availableToolNames = toolDeclarations.map((t) => t.name).join(', ')
+            result = await chat.sendMessage(
+              `NO respondas con texto ni hagas preguntas. Llama UNA de estas funciones AHORA: ${availableToolNames}. ` +
+                `Resuelve las zonas horarias tú mismo (ej: Arkansas=America/Chicago). Convierte horas a HH:MM (ej: 5pm=17:00). ` +
+                `Si el usuario necesita pagar, llama check_invoice_status. Si no tiene factura, llama create_payment_link.`
+            )
             continue
           }
         }
@@ -358,7 +675,7 @@ export async function POST(req: NextRequest) {
       }
 
       // Execute ALL function calls in this turn — Gemini requires one response per call.
-      const functionResponses: Part[] = []
+      functionResponses = []
 
       for (const call of functionCalls) {
         toolExecuted = call.name
@@ -400,6 +717,7 @@ export async function POST(req: NextRequest) {
             break
 
           case 'create_payment_link':
+            console.log('[Chat API] create_payment_link args:', JSON.stringify(call.args))
             toolResult = await handleCreatePaymentLink({
               ...(call.args as {
                 programType: string
@@ -412,8 +730,10 @@ export async function POST(req: NextRequest) {
               userName: user.name ?? 'Usuario',
               userId: user.id,
             })
+            console.log('[Chat API] create_payment_link result:', JSON.stringify(toolResult))
             if (toolResult.success && toolResult.data) {
               capturedPaymentUrl = (toolResult.data as { paymentUrl: string }).paymentUrl
+              console.log('[Chat API] capturedPaymentUrl:', capturedPaymentUrl)
             }
             break
 
@@ -429,6 +749,90 @@ export async function POST(req: NextRequest) {
               userEmail: user.email ?? '',
             })
             break
+
+          // ── Admin tools ──────────────────────────────────────────
+
+          case 'admin_create_invoice':
+            toolResult = await handleAdminCreateInvoice(
+              call.args as {
+                clientNameOrEmail: string
+                programType: string
+                planType: string
+                startDate: string
+                language: string
+              }
+            )
+            break
+
+          case 'admin_send_invoice':
+            toolResult = await handleAdminSendInvoice(
+              call.args as {
+                recipientEmail: string
+                recipientName: string
+                planDisplayName: string
+                amount: string
+                currency: string
+                description: string
+                invoiceNumber: string
+              }
+            )
+            break
+
+          case 'admin_list_invoices':
+            toolResult = await handleAdminListInvoices(
+              call.args as { clientNameOrEmail: string }
+            )
+            break
+
+          case 'admin_check_invoice_payment':
+            toolResult = await handleAdminCheckInvoicePayment(
+              call.args as { invoiceLinkOrId: string }
+            )
+            break
+
+          case 'admin_schedule_class': {
+            const schedArgs = call.args as {
+              studentNameOrEmail: string
+              slots: Array<{ dayOfWeek: string; localTime: string }>
+              studentTimezone?: string
+            }
+            toolResult = await handleAdminScheduleClass({
+              studentNameOrEmail: schedArgs.studentNameOrEmail,
+              slots: schedArgs.slots,
+              adminTimezone: schedArgs.studentTimezone || user.timezone,
+            })
+            break
+          }
+
+          case 'admin_get_student_classes':
+            toolResult = await handleAdminGetStudentClasses(
+              call.args as { studentNameOrEmail: string }
+            )
+            break
+
+          case 'admin_reschedule_class':
+            toolResult = await handleAdminRescheduleClass(
+              call.args as {
+                bookingId: string
+                newLocalDate: string
+                newLocalTime: string
+              }
+            )
+            break
+
+          case 'admin_calculate_class_dates': {
+            const calcArgs = call.args as {
+              slots: Array<{ dayOfWeek: string; localTime: string }>
+              periodQuery: string
+              timezone?: string
+            }
+            toolResult = await handleAdminCalculateClassDates({
+              slots: calcArgs.slots,
+              periodQuery: calcArgs.periodQuery,
+              timezone: calcArgs.timezone || user.timezone,
+            })
+            break
+          }
 
           default:
             toolResult = { success: false, message: 'Herramienta no reconocida.' }
@@ -453,26 +857,65 @@ export async function POST(req: NextRequest) {
     // Strip Gemini 2.0 Flash artifacts: the model sometimes leaks internal
     // pseudocode like `print(api.create_payment_link())` as inline code blocks
     // or bare print() statements in its text response.
-    const rawText = result.response
-      .text()
-      .replace(/^`[^`\n]*`\n?/gm, '')        // standalone inline code lines: `print(...)`
-      .replace(/^\s*print\s*\([^\n]*\)\n?/gm, '') // bare print(...) lines
-      .trim()
+    // NOTE: .text() can throw if the response only contains function calls,
+    // so we wrap it in a try-catch.
+    let rawText = ''
+    try {
+      rawText = result.response
+        .text()
+        .replace(/^`[^`\n]*`\n?/gm, '') // standalone inline code lines: `print(...)`
+        .replace(/^\s*print\s*\([^\n]*\)\n?/gm, '') // bare print(...) lines
+        .trim()
+    } catch {
+      // Gemini returned no text parts — rawText stays empty
+    }
+
+    // Collect the last tool result message as a fallback if Gemini produced no text
+    const lastToolMessage =
+      functionResponses.length > 0
+        ? (
+            functionResponses[functionResponses.length - 1] as {
+              functionResponse?: { response?: { result?: { message?: string } } }
+            }
+          ).functionResponse?.response?.result?.message
+        : undefined
 
     let finalText: string
 
     if (!rawText && capturedPaymentUrl) {
       // Gemini returned empty text after create_payment_link succeeded — build the response directly.
       finalText = `¡Listo! Aquí está tu link de pago:\n\n${capturedPaymentUrl}\n\nTambién te lo enviamos a tu correo. Una vez que completes el pago tu inscripción se activará automáticamente.`
+    } else if (!rawText && lastToolMessage) {
+      // Gemini returned empty text but a tool left a human-readable message — use that.
+      console.log('[Chat API] Using lastToolMessage as fallback:', lastToolMessage)
+      finalText = lastToolMessage
     } else if (!rawText) {
-      finalText = 'Ocurrió un error inesperado. Por favor intenta de nuevo.'
+      console.log(
+        '[Chat API] FALLBACK: rawText is empty, no capturedPaymentUrl, no lastToolMessage'
+      )
+      console.log('[Chat API]  functionResponses count:', functionResponses.length)
+      console.log(
+        '[Chat API]  nudged:',
+        nudged,
+        'preNudgeText:',
+        capturedPreNudgeText?.slice(0, 50)
+      )
+      // If nudging failed but we captured the pre-nudge text, use that instead of the generic error
+      finalText =
+        capturedPreNudgeText ||
+        'No pude completar tu solicitud en este momento. Por favor intenta de nuevo o contáctanos por WhatsApp al +51 902 518 947.'
     } else {
       // Gemini did produce text — ensure the PayPal URL wasn't replaced with a placeholder.
       finalText = rawText
       if (capturedPaymentUrl) {
-        const placeholder = /\[Payment Link\]|\[link de pago\]|\[enlace de pago\]|\[aquí\]|\[aqui\]/gi
-        if (placeholder.test(finalText)) {
-          finalText = finalText.replace(placeholder, capturedPaymentUrl)
+        // Replace common Gemini placeholders with the real URL
+        // NOTE: Use string replace-all pattern to avoid regex lastIndex issues
+        const placeholderPattern =
+          /\[(?:Payment Link|link de pago|enlace de pago|aquí|aqui|URL[^\]]*inválida[^\]]*|URL[^\]]*pago[^\]]*)\]/gi
+        if (placeholderPattern.test(finalText)) {
+          // Reset lastIndex after .test() — required because /g regex retains state
+          placeholderPattern.lastIndex = 0
+          finalText = finalText.replace(placeholderPattern, capturedPaymentUrl)
         } else if (!finalText.includes(capturedPaymentUrl)) {
           finalText = `${finalText}\n\n${capturedPaymentUrl}`
         }
@@ -488,9 +931,6 @@ export async function POST(req: NextRequest) {
     })
   } catch (error) {
     console.error('[Chat API] Error:', error)
-    return NextResponse.json(
-      { success: false, error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 })
   }
 }
