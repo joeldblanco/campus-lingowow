@@ -59,9 +59,10 @@ REGLAS DE OPERACIÓN:
 INSTRUCCIONES ADMINISTRATIVAS CLAVE:
 - Para generar facturas (admin_create_invoice): Calcula SIEMPRE el monto en USD (Dólares Americanos). A menos que el admin indique lo contrario, no hay descuentos ni impuestos.
 - Para enviar facturas (admin_send_invoice): Llama esta función SOLO después de mostrar el monto total al administrador y recibir su confirmación explícita (ej. "Sí", "Confirmo").
-- Para verificar facturas (admin_check_invoice_payment): Si la factura ya está pagada, NO inscribas automáticamente al usuario. Solo confirma en texto que está pagada y espera la orden explícita del administrador (ej. "inscríbelo") para usar admin_enroll_student.
+- Para verificar facturas (admin_check_invoice_payment): Si la factura ya está pagada, NO inscribas automáticamente al usuario. Solo confirma en texto que está pagada y espera la orden explícita del administrador (ej. "inscríbelo") para iniciar el proceso de inscripción.
 - Para agendar o reagendar clases: Si el administrador no especifica la fecha u hora, pregúntale antes de actuar. Si el administrador da instrucciones vagas ("reagenda la clase de María"), pide la hora o la fecha. Si hay ambigüedad entre varios usuarios o profesores con el mismo nombre, pide al admin que aclare de cuál se trata (usando los datos de las herramientas de búsqueda), pero NUNCA preguntes redundancias.
 - Para calcular fechas (admin_calculate_class_dates): Si el administrador no especifica un rango de tiempo, calcúlalo por defecto para el PERIODO ACADÉMICO EN CURSO.
+- Selección de Profesor (CRÍTICO): Antes de llamar a admin_enroll_student o admin_schedule_class, el bot DEBE buscar la disponibilidad de profesores para el horario solicitado usando check_teacher_availability. Muestra al administrador la lista de profesores disponibles y PIDE QUE ELIJA UNO. NUNCA agendes ni inscribas sin que el administrador haya seleccionado explícitamente a un profesor de la lista disponible.
 
 INFERENCIA DE PLAN — Si el usuario ya indicó su horario semanal, infiere el plan directamente:
 - 2 días/semana → plan Go
@@ -121,7 +122,7 @@ FACTURAS PAYPAL:
 - admin_list_invoices: Lista facturas PayPal de un cliente por nombre o correo.
 - admin_check_invoice_payment: Verifica pago de factura. Acepta link de PayPal o ID de factura.
 - FLUJO: admin_create_invoice → mostrar datos y monto en USD → esperar que el admin diga "sí"/"confirmo"/"dale" → admin_send_invoice.
-- admin_enroll_student: Crea la inscripción para un estudiante en un periodo y le agenda sus clases en un solo paso. Promueve automáticamente de GUEST a STUDENT. Requiere días/horas, nombre del estudiante, opcionalmente el profesor. Usa esta herramienta cuando el admin pida "inscribir al estudiante", "activar su plan" o luego de confirmar el pago.
+- admin_enroll_student: Crea la inscripción para un estudiante en un periodo y le agenda sus clases en un solo paso. Promueve automáticamente de GUEST a STUDENT. Requiere días/horas, nombre del estudiante y el profesor seleccionado. Usa esta herramienta cuando el admin pida "inscribir al estudiante", "activar su plan" o luego de confirmar el pago, SOLO DESPUÉS de haber confirmado el profesor.
 - Si el admin no especifica el idioma del cliente, asumir "en" (inglés) por defecto.
 
 AGENDAMIENTO DE CLASES (ADMIN):
@@ -136,7 +137,7 @@ CÁLCULO DE FECHAS:
 - periodQuery: "actual" (prorrateo: solo fechas futuras), "siguiente" (todas), o nombre del período.
 
 REGLAS CRÍTICAS PARA ADMIN:
-- ACTÚA INMEDIATAMENTE: Cuando el admin da una instrucción clara como "inscribe a María con el profesor Juan los lunes y miércoles 5pm hora de Arkansas", NO pidas confirmación. Convierte "5pm" a "17:00", resuelve "Arkansas" a "America/Chicago", y llama admin_enroll_student de una vez. Para reagendar, usa admin_get_student_classes y luego admin_reschedule_class.
+- ACTÚA INMEDIATAMENTE: Si el administrador ya indicó todos los datos incluyendo el profesor, conviértelos y procede. Pero si pide "agenda clases para María los lunes a las 5pm", PRIMERO llama check_teacher_availability, muéstrale las opciones, y cuando elija al profesor, llama admin_enroll_student o admin_schedule_class. Convierte siempre las horas (ej. "5pm" → "17:00") y resuelve las zonas horarias.
 - CONVIERTE HORAS TÚ MISMO: "5pm" → "17:00", "6:30am" → "06:30", "8 de la noche" → "20:00". Nunca pidas al admin que reformatee la hora.
 - RESUELVE ZONAS HORARIAS TÚ MISMO: usa la tabla de referencia. Solo pregunta si la ubicación es genuinamente ambigua.
 - Cuando el admin dice "genera factura para [nombre]", usa admin_create_invoice.
@@ -441,7 +442,7 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
         },
         teacherNameOrEmail: {
           type: SchemaType.STRING,
-          description: 'Nombre o correo del profesor (opcional)',
+          description: 'Nombre o correo del profesor seleccionado (OBLIGATORIO para inscribir o agendar clases)',
         },
         courseName: {
           type: SchemaType.STRING,
@@ -474,7 +475,7 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
           description: 'La zona horaria proporcionada por el admin (ej: "America/Chicago"), o vacío para usar la del estudiante.',
         },
       },
-      required: ['studentNameOrEmail', 'slots'],
+      required: ['studentNameOrEmail', 'teacherNameOrEmail', 'slots'],
     },
   },
   admin_schedule_class: {
