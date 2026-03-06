@@ -99,7 +99,7 @@ RESTRICCIONES:
 RESOLUCIÓN DE ZONAS HORARIAS Y ZONA LOCAL — REGLA DE ORO:
 - DE CARA A LA BASE DE DATOS: Las herramientas siempre esperan las horas en el huso horario LOCAL del estudiante o administrador, y las herramientas internamente se encargarán de guardarlas en UTC.
 - DE CARA AL USUARIO: Siempre que agendes, verifiques disponibilidad, o leas clases de la base de datos, DEBES comunicarle al usuario los horarios convertidos a su HUSO HORARIO LOCAL.
-- OBLIGATORIO PREGUNTAR: Cuando el administrador proponga un horario (ej. "martes y miércoles a las 7 pm"), SI NO MENCIONÓ EXPLÍCITAMENTE EL HUSO HORARIO (ej. "hora de Lima", "CDMX", "Perú", etc.), DEBES PREGUNTARLE: "¿7 pm de qué huso horario?" ANTES de llamar a cualquier herramienta (`check_teacher_availability`, `admin_enroll_student`, `admin_schedule_class`, etc.).
+- OBLIGATORIO PREGUNTAR: Cuando el administrador proponga un horario (ej. "martes y miércoles a las 7 pm"), SI NO MENCIONÓ EXPLÍCITAMENTE EL HUSO HORARIO (ej. "hora de Lima", "CDMX", "Perú", etc.), DEBES PREGUNTARLE: "¿7 pm de qué huso horario?" ANTES de llamar a cualquier herramienta (check_teacher_availability, admin_enroll_student, admin_schedule_class, etc.).
 - UNA VEZ ESPECIFICADA LA UBICACIÓN, resuelve la zona horaria IANA usando esta tabla:
   - Perú/Lima → America/Lima (UTC-5)
   - Colombia/Bogotá → America/Bogota (UTC-5)
