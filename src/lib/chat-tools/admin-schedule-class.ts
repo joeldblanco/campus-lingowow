@@ -19,11 +19,12 @@ function normalizeDayName(day: string): string {
 
 export async function handleAdminScheduleClass(params: {
   studentNameOrEmail: string
+  teacherId?: string
   slots: Array<{ dayOfWeek: string; localTime: string }>
   adminTimezone: string
 }): Promise<ToolResult> {
   try {
-    const { studentNameOrEmail, slots, adminTimezone } = params
+    const { studentNameOrEmail, teacherId, slots, adminTimezone } = params
     const isEmail = studentNameOrEmail.includes('@')
 
     let student: { id: string; name: string | null; email: string | null; roles: UserRole[]; timezone: string } | null = null
@@ -207,8 +208,15 @@ export async function handleAdminScheduleClass(params: {
         }
 
         let selectedTeacherId = freeTeachers[0].userId
-        if (enrollment.teacherId && freeTeachers.some((t) => t.userId === enrollment.teacherId)) {
-          selectedTeacherId = enrollment.teacherId
+
+        // Prefer the passed teacherId, then the enrollment's teacherId
+        const preferredTeacherId = teacherId || enrollment.teacherId
+        if (preferredTeacherId && freeTeachers.some((t) => t.userId === preferredTeacherId)) {
+          selectedTeacherId = preferredTeacherId
+        } else if (preferredTeacherId) {
+          skippedCount++
+          cursor.setDate(cursor.getDate() + 1)
+          continue
         }
 
         try {

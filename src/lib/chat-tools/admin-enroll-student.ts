@@ -1,8 +1,14 @@
 import { db } from '@/lib/db'
 import { EnrollmentStatus, UserRole } from '@prisma/client'
-import { convertTimeSlotToUTC } from '@/lib/utils/date'
 import type { ToolResult } from '@/types/ai-chat'
 import { handleAdminScheduleClass } from './admin-schedule-class'
+
+type ScheduleResultData = {
+  scheduledCount?: number
+  skippedCount?: number
+  scheduledDays?: string[]
+  studentName?: string | null
+}
 
 export async function handleAdminEnrollStudent(params: {
   studentNameOrEmail: string
@@ -160,6 +166,7 @@ export async function handleAdminEnrollStudent(params: {
     if (slots && slots.length > 0) {
       const scheduleResult = await handleAdminScheduleClass({
         studentNameOrEmail: student.email || student.id, // we know exact email/id now, use email to guarantee match
+        teacherId: teacherId || undefined,
         slots: slots,
         adminTimezone: adminTimezone
       })
@@ -168,7 +175,7 @@ export async function handleAdminEnrollStudent(params: {
          return {
            success: true,
            message: `Se inscribió al estudiante "${student.name}" en el curso "${course.title}" para el periodo "${period.name}" (Profesor: ${teacherNameStr}).\n\n${scheduleResult.message}`,
-           data: { ...scheduleResult.data, enrolled: true }
+           data: { ...((scheduleResult.data as ScheduleResultData) || {}), enrolled: true }
          }
       } else {
          return {
