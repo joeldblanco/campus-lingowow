@@ -48,7 +48,7 @@ export async function GET(
       Track,
       RemoteParticipant,
       ConnectionState,
-    } from 'https://cdn.jsdelivr.net/npm/livekit-client@2.9.1/dist/livekit-client.esm.mjs';
+    } from 'https://cdn.jsdelivr.net/npm/livekit-client@2.16.1/dist/livekit-client.esm.mjs';
 
     const serverUrl = ${JSON.stringify(url)};
     const token = ${JSON.stringify(token)};
