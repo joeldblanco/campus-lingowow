@@ -21,7 +21,6 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { AiAssistantSection } from '@/components/ai-assistant/AiAssistantSection'
 
 const languageGradients: Record<string, string> = {
   'Español': 'from-yellow-400 to-orange-500',
@@ -143,9 +142,6 @@ const GuestDashboard = () => {
           </div>
         </div>
       </div>
-
-      {/* AI Assistant */}
-      <AiAssistantSection />
 
       {/* Popular Courses Section */}
       <div>

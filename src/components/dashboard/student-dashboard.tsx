@@ -24,7 +24,6 @@ import { getStudentDashboardStats } from '@/lib/actions/dashboard'
 import type { StudentDashboardData } from '@/types/dashboard'
 import { PendingScheduleBanner } from '@/components/enrollments/pending-schedule-banner'
 import { CourseCard } from '@/components/dashboard/course-card'
-import { AiAssistantSection } from '@/components/ai-assistant/AiAssistantSection'
 
 export default function Dashboard() {
   const { data: session } = useSession()
@@ -181,9 +180,6 @@ export default function Dashboard() {
           </div>
         </div>
       )}
-
-      {/* AI Assistant */}
-      <AiAssistantSection />
 
       {/* Quick Actions Bar */}
       <div>
