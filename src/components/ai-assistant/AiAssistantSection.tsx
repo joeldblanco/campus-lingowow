@@ -33,6 +33,10 @@ export function AiAssistantSection() {
           ? UserRole.STUDENT
           : UserRole.GUEST
 
+  if (primaryRole !== UserRole.ADMIN) {
+    return null
+  }
+
   const welcomeMessage = WELCOME_MESSAGES[primaryRole]
 
   return (
