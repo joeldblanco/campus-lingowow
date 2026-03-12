@@ -29,7 +29,7 @@ export function MonthView({
   currentDate,
   lessons,
   availableSlots,
-  blockedSlots,
+  blockedDays,
   onDayClick,
 }: MonthViewProps) {
   const monthStart = startOfMonth(currentDate)

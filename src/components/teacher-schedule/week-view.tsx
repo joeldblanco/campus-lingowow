@@ -49,7 +49,7 @@ export function WeekView({
   currentDate,
   lessons,
   availableSlots,
-  blockedSlots,
+  blockedDays,
   onJoinClass,
   onViewMaterials,
   onLessonClick,
