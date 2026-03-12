@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { cn, processHtmlLinks } from '@/lib/utils'
 import { WaveformAudioPlayer } from '@/components/ui/waveform-audio-player'
+import DOMPurify from 'isomorphic-dompurify'
 import {
   ArrowRight,
   CheckCircle,
@@ -397,7 +398,7 @@ function QuestionResultCard({ result }: { result: QuestionResult }) {
           {htmlContent && (
             <div
               className="prose prose-sm dark:prose-invert max-w-none"
-              dangerouslySetInnerHTML={{ __html: processHtmlLinks(htmlContent) }}
+              dangerouslySetInnerHTML={{ __html: processHtmlLinks(DOMPurify.sanitize(htmlContent)) }}
             />
           )}
         </div>
