@@ -89,48 +89,85 @@ export async function getAllStudentGrades(filters?: GradeFilters): Promise<Stude
 
     const gradesData: StudentGradeData[] = []
 
-    for (const enrollment of enrollments) {
-      // Get all activities for this student in this course
-      const activities = await db.userActivity.findMany({
-        where: {
-          userId: enrollment.studentId,
-          activity: {
-            OR: [
-              {
-                modules: {
-                  some: {
+    if (enrollments.length === 0) {
+      return gradesData
+    }
+
+    const uniqueStudentIds = [...new Set(enrollments.map((e) => e.studentId))]
+    const uniqueCourseIds = [...new Set(enrollments.map((e) => e.courseId))]
+
+    // Bulk fetch all activities for the enrolled students and courses
+    const allActivities = await db.userActivity.findMany({
+      where: {
+        userId: { in: uniqueStudentIds },
+        activity: {
+          OR: [
+            {
+              modules: {
+                some: {
+                  module: {
+                    courseId: { in: uniqueCourseIds },
+                  },
+                },
+              },
+            },
+            {
+              lessons: {
+                some: {
+                  lesson: {
                     module: {
-                      courseId: enrollment.courseId,
+                      courseId: { in: uniqueCourseIds },
                     },
                   },
                 },
               },
-              {
-                lessons: {
-                  some: {
-                    lesson: {
-                      module: {
-                        courseId: enrollment.courseId,
-                      },
-                    },
-                  },
-                },
-              },
-            ],
-          },
+            },
+          ],
         },
-        include: {
-          activity: {
-            select: {
-              id: true,
-              title: true,
-              activityType: true,
+      },
+      include: {
+        activity: {
+          select: {
+            id: true,
+            title: true,
+            activityType: true,
+            modules: {
+              select: {
+                module: {
+                  select: { courseId: true },
+                },
+              },
+            },
+            lessons: {
+              select: {
+                lesson: {
+                  select: {
+                    module: { select: { courseId: true } },
+                  },
+                },
+              },
             },
           },
         },
-        orderBy: {
-          assignedAt: 'desc',
-        },
+      },
+      orderBy: {
+        assignedAt: 'desc',
+      },
+    })
+
+    for (const enrollment of enrollments) {
+      // Filter activities for this specific student and course
+      const activities = allActivities.filter((ua) => {
+        if (ua.userId !== enrollment.studentId) return false
+
+        // Check if the activity belongs to the enrollment's course
+        const inModule = ua.activity.modules?.some(
+          (m) => m.module.courseId === enrollment.courseId
+        ) || false
+        const inLesson = ua.activity.lessons?.some(
+          (l) => l.lesson.module?.courseId === enrollment.courseId
+        ) || false
+        return inModule || inLesson
       })
 
       const activityData = activities.map((ua) => ({
@@ -485,43 +522,76 @@ export async function getStudentProgressReport(studentId: string) {
 
     const progressData = []
 
-    for (const enrollment of enrollments) {
-      const activities = await db.userActivity.findMany({
-        where: {
-          userId: studentId,
-          activity: {
-            OR: [
-              {
-                modules: {
-                  some: {
+    if (enrollments.length === 0) {
+      return { student, courses: progressData }
+    }
+
+    const uniqueCourseIds = [...new Set(enrollments.map((e) => e.courseId))]
+
+    const allActivities = await db.userActivity.findMany({
+      where: {
+        userId: studentId,
+        activity: {
+          OR: [
+            {
+              modules: {
+                some: {
+                  module: {
+                    courseId: { in: uniqueCourseIds },
+                  },
+                },
+              },
+            },
+            {
+              lessons: {
+                some: {
+                  lesson: {
                     module: {
-                      courseId: enrollment.courseId,
+                      courseId: { in: uniqueCourseIds },
                     },
                   },
                 },
               },
-              {
-                lessons: {
-                  some: {
-                    lesson: {
-                      module: {
-                        courseId: enrollment.courseId,
-                      },
-                    },
-                  },
-                },
-              },
-            ],
-          },
+            },
+          ],
         },
-        include: {
-          activity: {
-            select: {
-              title: true,
-              activityType: true,
+      },
+      include: {
+        activity: {
+          select: {
+            title: true,
+            activityType: true,
+            modules: {
+              select: {
+                module: {
+                  select: { courseId: true },
+                },
+              },
+            },
+            lessons: {
+              select: {
+                lesson: {
+                  select: {
+                    module: { select: { courseId: true } },
+                  },
+                },
+              },
             },
           },
         },
+      },
+    })
+
+    for (const enrollment of enrollments) {
+      const activities = allActivities.filter((ua) => {
+        // Check if the activity belongs to the enrollment's course
+        const inModule = ua.activity.modules?.some(
+          (m) => m.module.courseId === enrollment.courseId
+        ) || false
+        const inLesson = ua.activity.lessons?.some(
+          (l) => l.lesson.module?.courseId === enrollment.courseId
+        ) || false
+        return inModule || inLesson
       })
 
       const completedActivities = activities.filter((a) => a.status === 'COMPLETED').length
