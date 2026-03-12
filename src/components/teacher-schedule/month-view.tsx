@@ -19,7 +19,7 @@ interface MonthViewProps {
   currentDate: Date
   lessons: ScheduleLesson[]
   availableSlots: AvailableSlot[]
-  blockedSlots: BlockedSlot[]
+  blockedDays: string[]
   onDayClick?: (date: Date) => void
 }
 
@@ -53,7 +53,7 @@ export function MonthView({
   }
 
   const isBlockedDay = (date: Date) => {
-    return blockedSlots.some((slot) => isSameDay(new Date(slot.date), date))
+    return blockedDays.includes(format(date, 'yyyy-MM-dd'))
   }
 
   const renderDayContent = (date: Date) => {

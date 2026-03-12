@@ -14,7 +14,7 @@ interface WeekViewProps {
   currentDate: Date
   lessons: ScheduleLesson[]
   availableSlots: AvailableSlot[]
-  blockedSlots: BlockedSlot[]
+  blockedDays: string[]
   onJoinClass?: (lessonId: string) => void
   onViewMaterials?: (lessonId: string) => void
   onLessonClick?: (lesson: ScheduleLesson) => void
@@ -70,10 +70,8 @@ export function WeekView({
     )
   }
 
-  const isSlotBlocked = (date: Date, time: string) => {
-    return blockedSlots.some(
-      (slot) => isSameDay(new Date(slot.date), date) && slot.startTime === time
-    )
+  const isDayBlocked = (date: Date) => {
+    return blockedDays.includes(format(date, 'yyyy-MM-dd'))
   }
 
   const renderLessonCard = (lesson: ScheduleLesson) => {
@@ -301,7 +299,7 @@ export function WeekView({
               {weekDays.map((day) => {
                 const lesson = getLessonForSlot(day, time)
                 const available = isSlotAvailable(day, time)
-                const blocked = isSlotBlocked(day, time)
+                const isBlocked = isDayBlocked(day)
                 const isCurrentDay = isToday(day)
 
                 return (
@@ -311,12 +309,13 @@ export function WeekView({
                       'align-top border-r border-dashed transition-colors',
                       cellPadding,
                       rowHeight,
-                      isCurrentDay && 'bg-primary/5'
+                      isCurrentDay && 'bg-primary/5',
+                      !lesson && !available && isBlocked && 'bg-muted/30'
                     )}
                   >
                     {lesson && renderLessonCard(lesson)}
                     {!lesson && available && renderAvailableSlot()}
-                    {!lesson && !available && blocked && renderBlockedSlot()}
+                    {!lesson && !available && isBlocked && renderBlockedSlot()}
                   </td>
                 )
               })}

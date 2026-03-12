@@ -7,10 +7,13 @@ import { FileText, Video, CheckCircle, Clock, Plus, Pencil } from 'lucide-react'
 import type { ScheduleLesson, AvailableSlot } from '@/types/schedule'
 import { getLessonColorClasses } from '@/types/schedule'
 import { cn } from '@/lib/utils'
+import { format } from 'date-fns'
 
 interface DayViewProps {
+  currentDate: Date
   lessons: ScheduleLesson[]
   availableSlots: AvailableSlot[]
+  blockedDays: string[]
   currentLesson?: ScheduleLesson
   onJoinClass?: (lessonId: string) => void
   onViewMaterials?: (lessonId: string) => void
@@ -34,8 +37,10 @@ function isWithin10MinutesOfStart(lesson: ScheduleLesson): boolean {
 }
 
 export function DayView({
+  currentDate,
   lessons,
   availableSlots,
+  blockedDays,
   currentLesson,
   onJoinClass,
   onViewMaterials,
@@ -45,6 +50,8 @@ export function DayView({
 }: DayViewProps) {
   const sortedLessons = [...lessons].sort((a, b) => a.startTime.localeCompare(b.startTime))
   
+  const isBlocked = blockedDays.includes(format(currentDate, 'yyyy-MM-dd'))
+
   const allItems = [
     ...sortedLessons.map((lesson) => ({ type: 'lesson' as const, data: lesson, time: lesson.startTime })),
     ...availableSlots.map((slot) => ({ type: 'available' as const, data: slot, time: slot.startTime })),
@@ -196,6 +203,25 @@ export function DayView({
     )
   }
 
+  const renderBlockedBanner = () => (
+    <div className="w-full rounded-xl bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 p-5 shadow-sm mb-6 flex items-center justify-between">
+      <div className="flex items-center gap-4">
+        <div className="h-12 w-12 flex items-center justify-center rounded-full bg-slate-200 dark:bg-slate-700 text-slate-500">
+          <Clock className="h-6 w-6" />
+        </div>
+        <div>
+          <h4 className="font-bold text-foreground">Día Bloqueado</h4>
+          <p className="text-sm text-muted-foreground">
+            No tienes disponibilidad configurada para hoy.
+          </p>
+        </div>
+      </div>
+      <Badge variant="outline" className="text-xs font-bold uppercase">
+        Bloqueado
+      </Badge>
+    </div>
+  )
+
   const renderAvailableSlot = (slot: AvailableSlot) => (
     <div className="group flex flex-col md:flex-row gap-4 p-4 rounded-xl border border-dashed border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-900/10 hover:bg-green-50 dark:hover:bg-green-900/20 transition-all cursor-pointer">
       <div className="flex items-center gap-4 min-w-[200px]">
@@ -234,6 +260,7 @@ export function DayView({
   return (
     <div className="flex-1 flex flex-col gap-6">
       {renderCurrentLessonBanner()}
+      {isBlocked && allItems.length === 0 && renderBlockedBanner()}
 
       <div className="relative flex flex-col gap-0 border-l border-border ml-16 pl-6 pb-10">
         {allItems.map((item, index) => {

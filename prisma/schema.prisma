@@ -74,6 +74,7 @@ model User {
   classCredits        ClassCredit[]
   teacherIncentives   TeacherIncentive[]
   teacherAvailability TeacherAvailability[]
+  teacherBlockedDays  TeacherBlockedDay[]
 
   // Relación de profesor
   teacherRank TeacherRank? @relation(fields: [teacherRankId], references: [id])
@@ -1015,6 +1016,23 @@ model TeacherAvailability {
   @@unique([userId, day, startTime, endTime])
   @@index([userId, day])
   @@map("teacher_availability")
+}
+
+model TeacherBlockedDay {
+  id        String   @id @default(cuid())
+  teacherId String
+  date      String // YYYY-MM-DD
+  reason    String?
+
+  // Relación
+  teacher User @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([teacherId, date])
+  @@index([teacherId, date])
+  @@map("teacher_blocked_days")
 }
 
 model ClassAttendance {
