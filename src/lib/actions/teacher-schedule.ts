@@ -123,6 +123,20 @@ export async function getTeacherScheduleData(
       ],
     })
 
+    // Get blocked days
+    const blockedDaysRecords = await db.teacherBlockedDay.findMany({
+      where: {
+        teacherId,
+        date: {
+          gte: startDateStr,
+          lte: endDateStr,
+        },
+      },
+      select: { date: true },
+    })
+
+    const blockedDays = blockedDaysRecords.map((record) => record.date)
+
     // Transform bookings to lessons
     // Convertir de UTC a hora local del profesor
     const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
@@ -190,7 +204,7 @@ export async function getTeacherScheduleData(
       data: {
         lessons,
         availability: availabilitySlots,
-        blockedDays: [], // TODO: Implement blocked days if needed
+        blockedDays,
       },
     }
   } catch (error) {
@@ -448,6 +462,20 @@ export async function getTeacherScheduleForAdmin(
       ],
     })
 
+    // Get blocked days
+    const blockedDaysRecords = await db.teacherBlockedDay.findMany({
+      where: {
+        teacherId,
+        date: {
+          gte: startDateStr,
+          lte: endDateStr,
+        },
+      },
+      select: { date: true },
+    })
+
+    const blockedDays = blockedDaysRecords.map((record) => record.date)
+
     // Transform bookings to lessons using admin's timezone
     const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
     
@@ -508,7 +536,7 @@ export async function getTeacherScheduleForAdmin(
       data: {
         lessons,
         availability: availabilitySlots,
-        blockedDays: [],
+        blockedDays,
       },
     }
   } catch (error) {
@@ -575,5 +603,62 @@ export async function getLessonDetails(lessonId: string) {
   } catch (error) {
     console.error('Error fetching lesson details:', error)
     return { success: false, error: 'Error al cargar detalles de la clase' }
+  }
+}
+
+/**
+ * Blocks or unblocks a specific day for a teacher
+ */
+export async function toggleBlockTeacherDay(params: {
+  date: string // YYYY-MM-DD
+  blocked: boolean
+  reason?: string
+}) {
+  const session = await auth()
+
+  if (!session?.user?.id || !session.user.roles.includes(UserRole.TEACHER)) {
+    return { success: false, error: 'No autorizado' }
+  }
+
+  const teacherId = session.user.id
+  const { date, blocked, reason } = params
+
+  try {
+    if (blocked) {
+      // Check if already blocked
+      const existing = await db.teacherBlockedDay.findUnique({
+        where: {
+          teacherId_date: {
+            teacherId,
+            date,
+          },
+        },
+      })
+
+      if (!existing) {
+        await db.teacherBlockedDay.create({
+          data: {
+            teacherId,
+            date,
+            reason,
+          },
+        })
+      }
+    } else {
+      await db.teacherBlockedDay.delete({
+        where: {
+          teacherId_date: {
+            teacherId,
+            date,
+          },
+        },
+      })
+    }
+
+    revalidatePath('/schedule')
+    return { success: true }
+  } catch (error) {
+    console.error('Error toggling blocked day:', error)
+    return { success: false, error: 'Error al actualizar el día bloqueado' }
   }
 }
