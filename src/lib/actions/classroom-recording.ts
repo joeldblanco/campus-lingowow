@@ -88,9 +88,11 @@ export async function startRecording(bookingId: string, roomName: string) {
     }
 
     // Get custom template URL for full classroom recording (content, whiteboard, screen share)
-    // Note: customBaseUrl should NOT have query params - LiveKit appends /{roomName} to it
+    // Uses API Route Handler that returns raw HTML (not RSC) to guarantee START_RECORDING
+    // signal is emitted as a real <script> tag before any JS bundle loads.
+    // LiveKit egress appends /{roomName}?url=...&token=...&layout=... to customBaseUrl
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.lingowow.com'
-    const templateUrl = `${appUrl}/record`
+    const templateUrl = `${appUrl}/api/livekit/egress-recorder`
 
     const info = await egressClient.startRoomCompositeEgress(
       roomName,
