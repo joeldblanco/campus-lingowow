@@ -61,3 +61,18 @@ export function getUserAvatarUrl(userId: string, userImage?: string | null): str
   if (userImage) return userImage
   return getDiceBearAvatar(userId)
 }
+
+/**
+ * Generates a cryptographically secure random string of a given length.
+ * Uses the Web Crypto API.
+ */
+export function generateSecureRandomString(length: number): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  const array = new Uint32Array(length)
+  crypto.getRandomValues(array)
+  let result = ''
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(array[i] % chars.length)
+  }
+  return result
+}

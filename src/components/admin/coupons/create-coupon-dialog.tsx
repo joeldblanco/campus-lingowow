@@ -50,7 +50,7 @@ import { z } from 'zod'
 import { createCoupon, searchUsersForCoupon, getPlansForCoupon } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
 import { Check, ChevronsUpDown, X, User, Package } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { cn, generateSecureRandomString } from '@/lib/utils'
 
 const couponSchema = z.object({
   code: z.string().min(1, 'El código es requerido').toUpperCase(),
@@ -179,7 +179,7 @@ export function CreateCouponDialog({ children }: CreateCouponDialogProps) {
   }
 
   const generateCode = () => {
-    const code = Math.random().toString(36).substring(2, 10).toUpperCase()
+    const code = generateSecureRandomString(8)
     form.setValue('code', code)
   }
 
