@@ -342,11 +342,11 @@ export class CloudinaryService {
           })
         )
         
-        // Then get subfolders for each root folder
-        for (const rootFolder of rootFolders) {
+        // Then get subfolders for each root folder concurrently
+        const subfolderPromises = rootFolders.map(async (rootFolder: { name: string; path: string; bytes?: number; file_count?: number }) => {
           try {
             const subResult = await cloudinary.api.sub_folders(rootFolder.path)
-            const subFolders = subResult.folders.map(
+            return subResult.folders.map(
               (folder: { name: string; path: string; bytes?: number; file_count?: number }) => ({
                 name: folder.name,
                 path: folder.path,
@@ -355,11 +355,16 @@ export class CloudinaryService {
                 created_at: new Date().toISOString(),
               })
             )
-            allFolders.push(...subFolders)
           } catch (error) {
             // Skip folders that don't have subfolders
             console.warn(`No subfolders for ${rootFolder.path}:`, error)
+            return []
           }
+        })
+
+        const subfolderResults = await Promise.all(subfolderPromises)
+        for (const subFolders of subfolderResults) {
+          allFolders.push(...subFolders)
         }
         
         // Add root folders as well
