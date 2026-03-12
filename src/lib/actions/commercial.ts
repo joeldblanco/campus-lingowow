@@ -1851,15 +1851,15 @@ export async function updatePlanWithPricing(
   }>
 ) {
   try {
-    // Actualizar datos del plan
-    await db.plan.update({
+    // Preparar actualizaciones en una sola transacción
+    const updatePlanPromise = db.plan.update({
       where: { id: planId },
       data: planData,
     })
 
     // Actualizar precios por idioma
-    for (const pricing of pricingData) {
-      await db.planPricing.upsert({
+    const upsertPricingPromises = pricingData.map((pricing) =>
+      db.planPricing.upsert({
         where: {
           planId_language: {
             planId,
@@ -1883,7 +1883,9 @@ export async function updatePlanWithPricing(
           paypalSku: pricing.paypalSku || null,
         },
       })
-    }
+    )
+
+    await db.$transaction([updatePlanPromise, ...upsertPricingPromises])
 
     revalidatePath('/admin/plans')
     return { success: true }
