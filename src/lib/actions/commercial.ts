@@ -1851,41 +1851,42 @@ export async function updatePlanWithPricing(
   }>
 ) {
   try {
-    // Preparar actualizaciones en una sola transacción
-    const updatePlanPromise = db.plan.update({
-      where: { id: planId },
-      data: planData,
-    })
+    // Optimizamos usando una transacción para evitar múltiples round-trips (N+1)
+    await db.$transaction([
+      // Actualizar datos del plan
+      db.plan.update({
+        where: { id: planId },
+        data: planData,
+      }),
 
-    // Actualizar precios por idioma
-    const upsertPricingPromises = pricingData.map((pricing) =>
-      db.planPricing.upsert({
-        where: {
-          planId_language: {
+      // Actualizar precios por idioma
+      ...pricingData.map((pricing) =>
+        db.planPricing.upsert({
+          where: {
+            planId_language: {
+              planId,
+              language: pricing.language,
+            },
+          },
+          update: {
+            price: pricing.price,
+            comparePrice: pricing.comparePrice || null,
+            currency: pricing.currency || 'USD',
+            isActive: pricing.isActive ?? true,
+            paypalSku: pricing.paypalSku || null,
+          },
+          create: {
             planId,
             language: pricing.language,
+            price: pricing.price,
+            comparePrice: pricing.comparePrice || null,
+            currency: pricing.currency || 'USD',
+            isActive: pricing.isActive ?? true,
+            paypalSku: pricing.paypalSku || null,
           },
-        },
-        update: {
-          price: pricing.price,
-          comparePrice: pricing.comparePrice || null,
-          currency: pricing.currency || 'USD',
-          isActive: pricing.isActive ?? true,
-          paypalSku: pricing.paypalSku || null,
-        },
-        create: {
-          planId,
-          language: pricing.language,
-          price: pricing.price,
-          comparePrice: pricing.comparePrice || null,
-          currency: pricing.currency || 'USD',
-          isActive: pricing.isActive ?? true,
-          paypalSku: pricing.paypalSku || null,
-        },
-      })
-    )
-
-    await db.$transaction([updatePlanPromise, ...upsertPricingPromises])
+        })
+      ),
+    ])
 
     revalidatePath('/admin/plans')
     return { success: true }
