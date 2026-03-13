@@ -1851,39 +1851,42 @@ export async function updatePlanWithPricing(
   }>
 ) {
   try {
-    // Actualizar datos del plan
-    await db.plan.update({
-      where: { id: planId },
-      data: planData,
-    })
+    // Optimizamos usando una transacción para evitar múltiples round-trips (N+1)
+    await db.$transaction([
+      // Actualizar datos del plan
+      db.plan.update({
+        where: { id: planId },
+        data: planData,
+      }),
 
-    // Actualizar precios por idioma
-    for (const pricing of pricingData) {
-      await db.planPricing.upsert({
-        where: {
-          planId_language: {
+      // Actualizar precios por idioma
+      ...pricingData.map((pricing) =>
+        db.planPricing.upsert({
+          where: {
+            planId_language: {
+              planId,
+              language: pricing.language,
+            },
+          },
+          update: {
+            price: pricing.price,
+            comparePrice: pricing.comparePrice || null,
+            currency: pricing.currency || 'USD',
+            isActive: pricing.isActive ?? true,
+            paypalSku: pricing.paypalSku || null,
+          },
+          create: {
             planId,
             language: pricing.language,
+            price: pricing.price,
+            comparePrice: pricing.comparePrice || null,
+            currency: pricing.currency || 'USD',
+            isActive: pricing.isActive ?? true,
+            paypalSku: pricing.paypalSku || null,
           },
-        },
-        update: {
-          price: pricing.price,
-          comparePrice: pricing.comparePrice || null,
-          currency: pricing.currency || 'USD',
-          isActive: pricing.isActive ?? true,
-          paypalSku: pricing.paypalSku || null,
-        },
-        create: {
-          planId,
-          language: pricing.language,
-          price: pricing.price,
-          comparePrice: pricing.comparePrice || null,
-          currency: pricing.currency || 'USD',
-          isActive: pricing.isActive ?? true,
-          paypalSku: pricing.paypalSku || null,
-        },
-      })
-    }
+        })
+      ),
+    ])
 
     revalidatePath('/admin/plans')
     return { success: true }
