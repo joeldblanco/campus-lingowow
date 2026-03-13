@@ -19,6 +19,7 @@ interface TeacherScheduleProps {
   initialData?: {
     lessons: TeacherScheduleLesson[]
     availability: TeacherAvailabilitySlot[]
+    blockedDays: string[]
   }
   currentPeriod?: {
     id: string
@@ -78,6 +79,9 @@ export function TeacherSchedule({ initialData, currentPeriod }: TeacherScheduleP
   const [availability, setAvailability] = useState<TeacherAvailabilitySlot[]>(
     initialData?.availability || []
   )
+  const [blockedDays, setBlockedDays] = useState<string[]>(
+    initialData?.blockedDays || []
+  )
 
   // Dialog states
   const [selectedLesson, setSelectedLesson] = useState<ScheduleLesson | null>(null)
@@ -114,6 +118,7 @@ export function TeacherSchedule({ initialData, currentPeriod }: TeacherScheduleP
       if (result.success && result.data) {
         setLessons(transformLessons(result.data.lessons))
         setAvailability(result.data.availability)
+        setBlockedDays(result.data.blockedDays)
         lastFetchedMonth.current = monthKey
       }
     } catch (error) {
@@ -161,14 +166,13 @@ export function TeacherSchedule({ initialData, currentPeriod }: TeacherScheduleP
     // Transform availability to AvailableSlot format for the views
     // Note: Availability is stored by day of week, not specific dates
     const availableSlots: AvailableSlot[] = []
-    const blockedSlots: BlockedSlot[] = []
 
     return {
       lessons: filterByDateRange(lessons),
       availableSlots,
-      blockedSlots,
+      blockedDays,
     }
-  }, [currentDate, viewType, lessons])
+  }, [currentDate, viewType, lessons, blockedDays])
 
   // Get current lesson (in progress)
   const currentLesson = useMemo(() => {
@@ -296,7 +300,7 @@ export function TeacherSchedule({ initialData, currentPeriod }: TeacherScheduleP
           currentDate={currentDate}
           lessons={filteredData.lessons}
           availableSlots={filteredData.availableSlots}
-          blockedSlots={filteredData.blockedSlots}
+          blockedDays={filteredData.blockedDays}
           onJoinClass={handleJoinClass}
           onViewMaterials={handleViewMaterials}
           onLessonClick={handleLessonClick}
@@ -306,8 +310,10 @@ export function TeacherSchedule({ initialData, currentPeriod }: TeacherScheduleP
 
       {!isEditMode && viewType === 'day' && (
         <DayView
+          currentDate={currentDate}
           lessons={filteredData.lessons}
           availableSlots={filteredData.availableSlots}
+          blockedDays={filteredData.blockedDays}
           currentLesson={currentLesson}
           onJoinClass={handleJoinClass}
           onViewMaterials={handleViewMaterials}
@@ -322,7 +328,7 @@ export function TeacherSchedule({ initialData, currentPeriod }: TeacherScheduleP
           currentDate={currentDate}
           lessons={filteredData.lessons}
           availableSlots={filteredData.availableSlots}
-          blockedSlots={filteredData.blockedSlots}
+          blockedDays={filteredData.blockedDays}
           onDayClick={handleDayClick}
         />
       )}

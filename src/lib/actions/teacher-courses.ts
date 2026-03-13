@@ -242,19 +242,13 @@ export async function assignLanguageCoursesToTeacher(
     const courseIds = courses.map((c) => c.id)
 
     // Crear las asignaciones (ignorar duplicados)
-    for (const courseId of courseIds) {
-      await db.teacherCourse.upsert({
-        where: {
-          teacherId_courseId: {
-            teacherId,
-            courseId,
-          },
-        },
-        create: {
+    if (courseIds.length > 0) {
+      await db.teacherCourse.createMany({
+        data: courseIds.map((courseId) => ({
           teacherId,
           courseId,
-        },
-        update: {},
+        })),
+        skipDuplicates: true,
       })
     }
 

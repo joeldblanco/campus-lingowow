@@ -83,7 +83,7 @@ const GuestDashboard = () => {
               Domina un nuevo idioma esta temporada
             </h2>
             <p className="text-blue-100 text-lg">
-              Accede a clases en vivo con profesores certificados, explora nuestro catálogo de cursos 
+              Accede a clases en vivo con profesores certificados, explora nuestro catálogo de cursos
               y comienza tu camino hacia la fluidez hoy.
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
@@ -159,7 +159,7 @@ const GuestDashboard = () => {
             Explorar Todos los Cursos <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
-        
+
         {dashboardData?.popularCourses && dashboardData.popularCourses.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {dashboardData.popularCourses.map((course) => (
@@ -219,7 +219,7 @@ const GuestDashboard = () => {
               Ver Calendario
             </Link>
           </div>
-          
+
           {dashboardData?.upcomingWebinars && dashboardData.upcomingWebinars.length > 0 ? (
             <div className="space-y-4">
               {dashboardData.upcomingWebinars.map((webinar) => (
@@ -270,7 +270,7 @@ const GuestDashboard = () => {
               Ver Biblioteca
             </Link>
           </div>
-          
+
           {dashboardData?.freeResources && dashboardData.freeResources.length > 0 ? (
             <div className="grid grid-cols-2 gap-4">
               {dashboardData.freeResources.map((resource) => (
@@ -279,14 +279,13 @@ const GuestDashboard = () => {
                   href={resource.url}
                   className="p-4 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-primary dark:hover:border-primary cursor-pointer transition-all group"
                 >
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 transition-colors ${
-                    resource.type === 'PDF' ? 'bg-red-50 dark:bg-red-900/20 text-red-500 group-hover:bg-red-100 dark:group-hover:bg-red-900/40' :
-                    resource.type === 'Audio' ? 'bg-orange-50 dark:bg-orange-900/20 text-orange-500 group-hover:bg-orange-100 dark:group-hover:bg-orange-900/40' :
-                    'bg-blue-50 dark:bg-blue-900/20 text-blue-500 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/40'
-                  }`}>
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 transition-colors ${resource.type === 'PDF' ? 'bg-red-50 dark:bg-red-900/20 text-red-500 group-hover:bg-red-100 dark:group-hover:bg-red-900/40' :
+                      resource.type === 'Audio' ? 'bg-orange-50 dark:bg-orange-900/20 text-orange-500 group-hover:bg-orange-100 dark:group-hover:bg-orange-900/40' :
+                        'bg-blue-50 dark:bg-blue-900/20 text-blue-500 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/40'
+                    }`}>
                     {resource.type === 'PDF' ? <FileText className="w-5 h-5" /> :
-                     resource.type === 'Audio' ? <Headphones className="w-5 h-5" /> :
-                     <BookOpen className="w-5 h-5" />}
+                      resource.type === 'Audio' ? <Headphones className="w-5 h-5" /> :
+                        <BookOpen className="w-5 h-5" />}
                   </div>
                   <h4 className="font-semibold text-slate-900 dark:text-white text-sm">{resource.title}</h4>
                   <p className="text-xs text-slate-500 mt-1">{resource.language} • {resource.type}</p>

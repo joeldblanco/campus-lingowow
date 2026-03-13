@@ -177,6 +177,227 @@ async function getPayPalPayment(paymentId: string) {
   }
 }
 
+async function createPayPalOrder(params: {
+  amount: string
+  currency: string
+  description: string
+  returnUrl: string
+  cancelUrl: string
+}): Promise<{ id: string; approveUrl: string } | null> {
+  try {
+    const accessToken = await getPayPalAccessToken()
+    const url =
+      process.env.PAYPAL_MODE === 'live'
+        ? 'https://api-m.paypal.com/v2/checkout/orders'
+        : 'https://api-m.sandbox.paypal.com/v2/checkout/orders'
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        intent: 'CAPTURE',
+        purchase_units: [
+          {
+            amount: {
+              currency_code: params.currency,
+              value: params.amount,
+            },
+            description: params.description,
+          },
+        ],
+        application_context: {
+          return_url: params.returnUrl,
+          cancel_url: params.cancelUrl,
+        },
+      }),
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error(`[PayPal Create Order] Error ${response.status}: ${errorText}`)
+      return null
+    }
+
+    const data = (await response.json()) as {
+      id: string
+      links: Array<{ href: string; rel: string }>
+    }
+    const approveLink = data.links.find((l) => l.rel === 'approve')
+    if (!approveLink) return null
+
+    return { id: data.id, approveUrl: approveLink.href }
+  } catch (error) {
+    console.error('[PayPal Create Order] Exception:', error)
+    return null
+  }
+}
+
+async function createPayPalInvoice(params: {
+  amount: string
+  currency: string
+  planName: string
+  description: string
+  recipientEmail: string
+  recipientName: string
+  invoiceNumber: string
+}): Promise<{ id: string; payerViewUrl: string } | null> {
+  try {
+    const accessToken = await getPayPalAccessToken()
+    const baseUrl =
+      process.env.PAYPAL_MODE === 'live'
+        ? 'https://api-m.paypal.com'
+        : 'https://api-m.sandbox.paypal.com'
+
+    const nameParts = params.recipientName.trim().split(' ')
+    const givenName = nameParts[0]
+    const surname = nameParts.slice(1).join(' ') || nameParts[0]
+
+    // 1. Create the invoice
+    const termsAndConditions = `Gracias por su preferencia. Estamos trabajando para ofrecerle el mejor servicio.
+
+Lingowow
+TÉRMINOS Y CONDICIONES
+Estos términos y condiciones pueden ser actualizados sin previo aviso por parte de Lingowow.
+
+Todo cambio realizado tendrá un efecto inmediato, por lo que le instamos a conocer los términos y condiciones vigentes al momento de realizar su pago.
+
+En caso de utilizar este servicio en línea para realizar su pago, Lingowow asume que usted está de acuerdo con los términos y condiciones detallados en el presente formato.
+
+Condiciones:
+
+1. Usted garantiza que está autorizado a utilizar la cuenta de PayPal desde la cual está realizando el pago.
+
+2. Lingowow no se hace responsable si el pago es rechazado por la plataforma de PayPal por cualquier motivo, ni está en la obligación de informarlo al titular de la cuenta, estudiante, o cliente.
+
+3. El pago a través de la plataforma de PayPal, no indica la existencia de un acuerdo entre el titular de la cuenta, estudiante o cliente y Lingowow.
+
+4. Lingowow y/o cualquiera de sus asociados, están eximidos de la responsabilidad por cualquier pérdida o daño causados por el uso, incapacidad de uso, o consecuencias del uso de la plataforma de PayPal, de cualquier página web vinculada a esta, o de los materiales o información contenida en la misma.
+
+Política de Reembolso:
+
+1. El pago detallado en el presente formulario no es reembolsable.`
+
+    const createRes = await fetch(`${baseUrl}/v2/invoicing/invoices`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        detail: {
+          invoice_number: params.invoiceNumber,
+          currency_code: params.currency,
+          note: termsAndConditions,
+          payment_term: { term_type: 'DUE_ON_RECEIPT' },
+        },
+        invoicer: {
+          business_name: 'R & B GLOBAL SERVICES S.A.C.',
+          name: { given_name: 'Lingowow' },
+          address: {
+            address_line_1: 'Calle Los Ficus, Manzana H, Lote 10',
+            admin_area_2: 'Lima',
+            admin_area_1: 'Lima',
+            postal_code: '15112',
+            country_code: 'PE',
+          },
+          phones: [{ country_code: '51', national_number: '949354867', phone_type: 'MOBILE' }],
+          email_address: 'payments@theuttererscorner.com',
+          website: 'https://www.theuttererscorner.com',
+          logo_url: 'https://lingowow.com/lingowow.png',
+        },
+        primary_recipients: [
+          {
+            billing_info: {
+              name: { given_name: givenName, surname },
+              email_address: params.recipientEmail,
+            },
+          },
+        ],
+        items: [
+          {
+            name: params.planName,
+            quantity: '1',
+            unit_amount: { currency_code: params.currency, value: params.amount },
+            description: params.description,
+          },
+        ],
+        configuration: { allow_tip: false },
+      }),
+    })
+
+    if (!createRes.ok) {
+      console.error(`[PayPal Invoice] Create error ${createRes.status}: ${await createRes.text()}`)
+      return null
+    }
+
+    const createData = (await createRes.json()) as { id?: string; href?: string }
+    const invoiceId = createData.id || (createData.href ? createData.href.split('/').pop() : '')
+
+    if (!invoiceId) {
+      console.error('[PayPal Invoice] Create response missing ID or href:', createData)
+      return null
+    }
+
+    console.log(`[PayPal Invoice] Created invoice: ${invoiceId}`)
+
+    // 2. Retrieve the DRAFT invoice to get the payer-view URL
+    //    (PayPal only exposes payer-view in the draft state, not after sending)
+    let payerViewUrl: string | undefined
+    const draftRes = await fetch(`${baseUrl}/v2/invoicing/invoices/${invoiceId}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    if (draftRes.ok) {
+      const draftData = (await draftRes.json()) as {
+        id: string
+        detail?: { metadata?: { recipient_view_url?: string } }
+        links: Array<{ href: string; rel: string }>
+      }
+      // Try the links array first
+      const payerViewLink = draftData.links?.find((l) => l.rel === 'payer-view')
+      if (payerViewLink) {
+        payerViewUrl = payerViewLink.href
+      }
+      // Try the metadata recipient_view_url
+      if (!payerViewUrl && draftData.detail?.metadata?.recipient_view_url) {
+        payerViewUrl = draftData.detail.metadata.recipient_view_url
+      }
+      console.log(`[PayPal Invoice] Draft payer-view URL: ${payerViewUrl ?? 'not found'}`)
+    }
+
+    // 3. Send the invoice (PayPal emails the recipient and makes it payable)
+    const sendRes = await fetch(`${baseUrl}/v2/invoicing/invoices/${invoiceId}/send`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ send_to_invoicer: true, send_to_recipient: true }),
+    })
+
+    if (!sendRes.ok) {
+      console.error(`[PayPal Invoice] Send error ${sendRes.status}: ${await sendRes.text()}`)
+      return null
+    }
+
+    console.log(`[PayPal Invoice] Sent invoice: ${invoiceId}`)
+
+    // 4. Fallback: construct the standard PayPal payer-view URL if we didn't get one
+    if (!payerViewUrl) {
+      // Standard PayPal payer view URL format for production invoices
+      payerViewUrl = `https://www.paypal.com/invoice/payerView/details/${invoiceId}`
+      console.log(`[PayPal Invoice] Using constructed payer-view URL: ${payerViewUrl}`)
+    }
+
+    return { id: invoiceId, payerViewUrl }
+  } catch (error) {
+    console.error('[PayPal Invoice] Exception:', error)
+    return null
+  }
+}
+
 export {
   paypalClient,
   ordersController,
@@ -186,4 +407,6 @@ export {
   getPayPalPayment,
   searchPayPalInvoice,
   normalizePayPalInvoiceId,
+  createPayPalOrder,
+  createPayPalInvoice,
 }

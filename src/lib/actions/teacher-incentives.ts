@@ -91,34 +91,60 @@ export async function calculateRetentionIncentives(periodId: string) {
       },
     })
 
+    const teacherIds = teachers.map((t) => t.id)
+
+    // Obtener todas las reservas de los profesores en el período actual
+    const allCurrentPeriodBookings = await db.classBooking.findMany({
+      where: {
+        teacherId: { in: teacherIds },
+        enrollment: {
+          academicPeriodId: period.id,
+        },
+      },
+      include: {
+        student: true,
+      },
+    })
+
+    // Obtener todas las reservas de los profesores en el período anterior
+    const allPreviousPeriodBookings = await db.classBooking.findMany({
+      where: {
+        teacherId: { in: teacherIds },
+        enrollment: {
+          academicPeriodId: previousPeriod.id,
+        },
+      },
+      include: {
+        student: true,
+      },
+    })
+
+    // Agrupar reservas por profesor
+    const currentBookingsByTeacherId = allCurrentPeriodBookings.reduce(
+      (acc, booking) => {
+        if (!acc[booking.teacherId]) acc[booking.teacherId] = []
+        acc[booking.teacherId].push(booking)
+        return acc
+      },
+      {} as Record<string, typeof allCurrentPeriodBookings>
+    )
+
+    const previousBookingsByTeacherId = allPreviousPeriodBookings.reduce(
+      (acc, booking) => {
+        if (!acc[booking.teacherId]) acc[booking.teacherId] = []
+        acc[booking.teacherId].push(booking)
+        return acc
+      },
+      {} as Record<string, typeof allPreviousPeriodBookings>
+    )
+
     const createdIncentives = []
 
     // Para cada profesor, calcular su tasa de retención y crear incentivo si aplica
     for (const teacher of teachers) {
-      // Obtener las reservas del profesor en ambos períodos
-      const currentPeriodBookings = await db.classBooking.findMany({
-        where: {
-          teacherId: teacher.id,
-          enrollment: {
-            academicPeriodId: period.id,
-          },
-        },
-        include: {
-          student: true,
-        },
-      })
-
-      const previousPeriodBookings = await db.classBooking.findMany({
-        where: {
-          teacherId: teacher.id,
-          enrollment: {
-            academicPeriodId: previousPeriod.id,
-          },
-        },
-        include: {
-          student: true,
-        },
-      })
+      // Obtener las reservas del profesor en ambos períodos desde la memoria
+      const currentPeriodBookings = currentBookingsByTeacherId[teacher.id] || []
+      const previousPeriodBookings = previousBookingsByTeacherId[teacher.id] || []
 
       // Si no tuvo reservas en el período anterior, no aplica incentivo
       if (previousPeriodBookings.length === 0) {

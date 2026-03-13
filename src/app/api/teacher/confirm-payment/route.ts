@@ -5,6 +5,7 @@ import { sendTeacherPaymentConfirmationSlack } from '@/lib/slack'
 import { sendTeacherPaymentConfirmationAdminEmail } from '@/lib/mail'
 import { notifyTeacherPaymentConfirmed } from '@/lib/actions/notifications'
 import { createPaymentConfirmation } from '@/lib/actions/payment-confirmations'
+import { uploadFileByType } from '@/lib/actions/cloudinary'
 import { startOfMonth, endOfMonth } from 'date-fns'
 
 export async function POST(request: NextRequest) {
@@ -46,10 +47,32 @@ export async function POST(request: NextRequest) {
 
     // Handle file upload if provided
     let hasProof = false
+    let proofUrl: string | undefined = undefined
+
     if (paymentProof && paymentProof.size > 0) {
-      // For now, we'll just note that a file was provided
-      // In production, you would upload to a storage service
       hasProof = true
+
+      const isImage = paymentProof.type.startsWith('image/')
+      const fileType = isImage ? 'image' : 'document'
+
+      const uploadFormData = new FormData()
+      uploadFormData.append('file', paymentProof)
+
+      const uploadResult = await uploadFileByType(
+        uploadFormData,
+        fileType,
+        'teacher-payments'
+      )
+
+      if (uploadResult.success && uploadResult.data) {
+        proofUrl = uploadResult.data.secure_url
+      } else {
+        console.error('Failed to upload payment proof:', uploadResult.error)
+        return NextResponse.json(
+          { error: 'Error al subir el comprobante de pago' },
+          { status: 500 }
+        )
+      }
     }
 
     const confirmedAt = new Date().toISOString()
@@ -68,7 +91,7 @@ export async function POST(request: NextRequest) {
       periodStart,
       periodEnd,
       hasProof,
-      proofUrl: undefined, // TODO: Implementar upload a storage
+      proofUrl,
       notes: undefined,
     })
 

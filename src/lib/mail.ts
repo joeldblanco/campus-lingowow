@@ -674,6 +674,47 @@ const LANGUAGE_NAMES: Record<string, string> = {
   it: 'Italiano',
 }
 
+export const sendPaymentLinkEmail = async (params: {
+  email: string
+  name: string
+  planName: string
+  paymentUrl: string
+  price: string
+}) => {
+  await resend.emails.send({
+    from: 'hello@lingowow.com',
+    to: params.email,
+    subject: `Tu link de pago para ${params.planName} - Lingowow`,
+    html: `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
+      <div style="padding: 20px; background-color: #f3f4f6; text-align: center;">
+        <h2 style="margin: 0; font-size: 24px; color: #111827;">Completa tu inscripción</h2>
+        <p style="color: #6b7280; font-size: 14px;">Un paso más para comenzar tu aprendizaje de inglés</p>
+      </div>
+      <div style="padding: 20px;">
+        <h3 style="font-size: 18px; color: #111827;">Hola ${params.name},</h3>
+        <p style="font-size: 16px; color: #374151;">Has seleccionado el plan <strong>${params.planName}</strong> por <strong>${params.price}</strong>. Haz clic en el botón de abajo para completar tu pago de forma segura a través de PayPal.</p>
+        <div style="background-color: #eff6ff; border-radius: 8px; padding: 16px; margin: 20px 0; border-left: 4px solid #3b82f6;">
+          <p style="margin: 0; font-size: 14px; color: #1e40af; font-weight: bold;">¿Qué incluye tu plan?</p>
+          <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #1e40af; font-size: 14px;">
+            <li>Clases 1 a 1 en vivo con profesores certificados</li>
+            <li>Acceso a la plataforma Lingowow</li>
+            <li>Seguimiento personalizado de tu progreso</li>
+          </ul>
+        </div>
+        <div style="text-align: center; margin: 24px 0;">
+          <a href="${params.paymentUrl}" style="display: inline-block; background-color: #020617; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-size: 16px; font-weight: bold;">Completar Pago con PayPal</a>
+        </div>
+        <p style="font-size: 14px; color: #6b7280; text-align: center;">Una vez completado el pago, recibirás una confirmación y tu inscripción quedará activa.</p>
+        <p style="font-size: 14px; color: #6b7280; text-align: center;">Si tienes alguna duda, contáctanos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
+      </div>
+      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
+        Go wow with us! 🚀
+      </div>
+    </div>`,
+  })
+}
+
 export const sendPlacementTestResultEmail = async (
   email: string,
   data: PlacementTestResultEmailData
