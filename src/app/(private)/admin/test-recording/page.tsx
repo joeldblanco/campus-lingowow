@@ -192,6 +192,41 @@ export default function TestRecordingPage() {
     }
   }, [log, apiCall])
 
+  // Diagnose connectivity
+  const handleDiagnose = useCallback(async () => {
+    try {
+      log('Ejecutando diagnóstico de conectividad Vercel → LiveKit...')
+      const data = await apiCall('diagnose')
+      const d = data.diagnostics
+      log(`  LiveKit Host: ${d.livekitHost}`)
+      log(`  API Key presente: ${d.apiKeyPresent}, Secret len: ${d.apiSecretLen}`)
+      log(`  R2 configurado: ${d.r2Configured}`)
+      
+      const httpGet = d.httpGet as { status?: number; ms?: number; error?: string }
+      if (httpGet?.error) {
+        log(`  ❌ HTTP GET: ${httpGet.error}`)
+      } else {
+        log(`  ✅ HTTP GET: status=${httpGet?.status}, ${httpGet?.ms}ms`)
+      }
+
+      const twirp = d.twirpTest as { status?: number; body?: string; ms?: number; error?: string }
+      if (twirp?.error) {
+        log(`  ❌ Twirp POST: ${twirp.error}`)
+      } else {
+        log(`  ✅ Twirp POST: status=${twirp?.status}, ${twirp?.ms}ms, body=${twirp?.body}`)
+      }
+
+      const sdk = d.sdkListEgress as { count?: number; ms?: number; error?: string }
+      if (sdk?.error) {
+        log(`  ❌ SDK listEgress: ${sdk.error}`)
+      } else {
+        log(`  ✅ SDK listEgress: ${sdk?.count} egresses, ${sdk?.ms}ms`)
+      }
+    } catch (err) {
+      log(`❌ Error diagnóstico: ${err instanceof Error ? err.message : String(err)}`)
+    }
+  }, [log, apiCall])
+
   // Cleanup on unmount
   const handleDisconnect = useCallback(() => {
     if (pollRef.current) clearInterval(pollRef.current)
@@ -313,6 +348,13 @@ export default function TestRecordingPage() {
             <hr className="my-2" />
 
             {/* Utilities */}
+            <button
+              onClick={handleDiagnose}
+              className="w-full px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-purple-100 hover:bg-purple-200 text-purple-800"
+            >
+              Diagnóstico de Conectividad
+            </button>
+
             <button
               onClick={handleCheckLogs}
               className="w-full px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-200 hover:bg-gray-300 text-gray-700"

@@ -203,6 +203,52 @@ export async function POST(request: NextRequest) {
         })
       }
 
+      case 'diagnose': {
+        const results: Record<string, unknown> = {
+          livekitHost,
+          wsUrl,
+          apiKeyPresent: !!apiKey,
+          apiSecretLen: apiSecret.length,
+          r2Configured: !!(r2AccountId && r2AccessKeyId && r2SecretAccessKey),
+        }
+
+        // Test 1: HTTP GET to LiveKit host
+        try {
+          const t0 = Date.now()
+          const res = await fetch(livekitHost, { method: 'GET', signal: AbortSignal.timeout(10000) })
+          results.httpGet = { status: res.status, ms: Date.now() - t0 }
+        } catch (e) {
+          results.httpGet = { error: e instanceof Error ? e.message : String(e) }
+        }
+
+        // Test 2: Twirp POST (unauthenticated - should return 401)
+        try {
+          const t0 = Date.now()
+          const res = await fetch(`${livekitHost}/twirp/livekit.RoomService/ListRooms`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: '{}',
+            signal: AbortSignal.timeout(10000),
+          })
+          const text = await res.text()
+          results.twirpTest = { status: res.status, body: text.slice(0, 200), ms: Date.now() - t0 }
+        } catch (e) {
+          results.twirpTest = { error: e instanceof Error ? e.message : String(e) }
+        }
+
+        // Test 3: SDK listEgress (authenticated)
+        try {
+          const t0 = Date.now()
+          const egressClient = new EgressClient(livekitHost, apiKey, apiSecret)
+          const egresses = await egressClient.listEgress({})
+          results.sdkListEgress = { count: egresses.length, ms: Date.now() - t0 }
+        } catch (e) {
+          results.sdkListEgress = { error: e instanceof Error ? e.message : String(e) }
+        }
+
+        return NextResponse.json({ success: true, diagnostics: results })
+      }
+
       default:
         return NextResponse.json({ error: 'Acción no válida' }, { status: 400 })
     }
