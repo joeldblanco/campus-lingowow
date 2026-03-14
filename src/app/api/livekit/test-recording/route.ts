@@ -1,5 +1,3 @@
-'use server'
-
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { AccessToken, EgressClient, EncodedFileOutput, EncodedFileType, S3Upload } from 'livekit-server-sdk'
@@ -64,6 +62,13 @@ export async function POST(request: NextRequest) {
         if (!roomName) {
           return NextResponse.json({ error: 'roomName requerido' }, { status: 400 })
         }
+
+        console.log('[test-recording] start-recording config:', {
+          livekitHost,
+          apiKeyPresent: !!apiKey,
+          apiSecretPresent: !!apiSecret,
+          roomName,
+        })
 
         const egressClient = new EgressClient(livekitHost, apiKey, apiSecret)
 
@@ -203,8 +208,16 @@ export async function POST(request: NextRequest) {
     }
   } catch (error) {
     console.error('Test recording error:', error)
+    const errorMsg = error instanceof Error ? error.message : 'Error desconocido'
+    const errorStack = error instanceof Error ? error.stack : ''
     return NextResponse.json({
-      error: error instanceof Error ? error.message : 'Error desconocido',
+      error: errorMsg,
+      debug: {
+        livekitHost,
+        apiKeyPresent: !!apiKey,
+        apiSecretLen: apiSecret.length,
+        stack: errorStack?.split('\n').slice(0, 3),
+      },
     }, { status: 500 })
   }
 }

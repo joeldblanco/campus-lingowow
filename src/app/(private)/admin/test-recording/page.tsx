@@ -44,7 +44,10 @@ export default function TestRecordingPage() {
       body: JSON.stringify({ action, ...extra }),
     })
     const data = await res.json()
-    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`)
+    if (!res.ok) {
+      const debugStr = data.debug ? ` [debug: host=${data.debug.livekitHost}, keyPresent=${data.debug.apiKeyPresent}, secretLen=${data.debug.apiSecretLen}]` : ''
+      throw new Error((data.error || `HTTP ${res.status}`) + debugStr)
+    }
     return data
   }, [])
 
