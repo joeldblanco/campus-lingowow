@@ -25,6 +25,11 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    // Audit mode: list all prefixes and their sizes
+    if (req.nextUrl.searchParams.get('audit') === 'true') {
+      return auditBucket()
+    }
+
     const cutoffDate = new Date()
     cutoffDate.setDate(cutoffDate.getDate() - RETENTION_DAYS)
 
@@ -186,4 +191,58 @@ export async function GET(req: NextRequest) {
     console.error('[cleanup-recordings] Cron job error:', error)
     return NextResponse.json({ error: 'Cleanup failed', detail: errorMessage }, { status: 500 })
   }
+}
+
+async function auditBucket() {
+  const prefixes: Record<string, { count: number; sizeBytes: number; oldest: string | null; newest: string | null }> = {}
+  let totalFiles = 0
+  let totalSize = 0
+  let continuationToken: string | undefined
+
+  do {
+    const listCommand = new ListObjectsV2Command({
+      Bucket: r2BucketName,
+      ContinuationToken: continuationToken,
+    })
+    const response = await s3Client.send(listCommand)
+    continuationToken = response.NextContinuationToken
+
+    if (response.Contents) {
+      for (const obj of response.Contents) {
+        const key = obj.Key || ''
+        const prefix = key.split('/')[0] || '(root)'
+        const size = obj.Size || 0
+        const modified = obj.LastModified?.toISOString() || null
+
+        if (!prefixes[prefix]) {
+          prefixes[prefix] = { count: 0, sizeBytes: 0, oldest: null, newest: null }
+        }
+        prefixes[prefix].count++
+        prefixes[prefix].sizeBytes += size
+        if (modified && (!prefixes[prefix].oldest || modified < prefixes[prefix].oldest!)) {
+          prefixes[prefix].oldest = modified
+        }
+        if (modified && (!prefixes[prefix].newest || modified > prefixes[prefix].newest!)) {
+          prefixes[prefix].newest = modified
+        }
+
+        totalFiles++
+        totalSize += size
+      }
+    }
+  } while (continuationToken)
+
+  const summary = Object.entries(prefixes).map(([prefix, data]) => ({
+    prefix,
+    files: data.count,
+    sizeMB: Math.round(data.sizeBytes / 1024 / 1024 * 100) / 100,
+    oldest: data.oldest,
+    newest: data.newest,
+  })).sort((a, b) => b.sizeMB - a.sizeMB)
+
+  return NextResponse.json({
+    totalFiles,
+    totalSizeGB: Math.round(totalSize / 1024 / 1024 / 1024 * 100) / 100,
+    prefixes: summary,
+  })
 }
