@@ -165,7 +165,7 @@ export async function GET(req: NextRequest) {
     await db.classRecording.updateMany({
       where: { id: { in: recordingIds } },
       data: {
-        status: 'EXPIRED',
+        status: 'DELETED',
         r2Key: null,
       },
     })
@@ -182,7 +182,8 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(summary)
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error)
     console.error('[cleanup-recordings] Cron job error:', error)
-    return NextResponse.json({ error: 'Cleanup failed' }, { status: 500 })
+    return NextResponse.json({ error: 'Cleanup failed', detail: errorMessage }, { status: 500 })
   }
 }
