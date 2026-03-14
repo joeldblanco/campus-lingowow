@@ -33,8 +33,12 @@ export async function GET(
   </style>
 </head>
 <body>
-  <!-- CRITICAL: This script runs immediately during HTML parsing, before any JS bundle -->
-  <script>console.log('START_RECORDING');</script>
+  <!-- CRITICAL: Emit START_RECORDING repeatedly until the egress chromedp listener captures it -->
+  <script>
+    console.log('START_RECORDING');
+    var _sr = setInterval(function(){ console.log('START_RECORDING'); }, 100);
+    setTimeout(function(){ clearInterval(_sr); }, 15000);
+  </script>
 
   <div id="screenshare" class="hidden">
     <video id="screenshare-video" autoplay playsinline></video>
