@@ -199,6 +199,18 @@ function ClassroomInner({
     }
   }, [isInitialized, connectionStatus, joinRoom, roomName, jwt])
 
+  // Stop recording via sendBeacon when user closes tab/navigates away
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (isRecordingRef.current && egressIdRef.current && bookingId) {
+        const payload = JSON.stringify({ egressId: egressIdRef.current, bookingId })
+        navigator.sendBeacon('/api/livekit/stop-recording', new Blob([payload], { type: 'application/json' }))
+      }
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [bookingId])
+
   // Auto-start recording when ANY user connects (teacher or student)
   // Recording starts when user joins and stops when they leave
   useEffect(() => {
