@@ -1,19 +1,36 @@
 'use client'
 
-import { useState, useMemo, useEffect, useCallback, useRef } from 'react'
+import {
+  bulkUpdateTeacherAvailability,
+  getTeacherScheduleData,
+} from '@/lib/actions/teacher-schedule'
+import { openClassroomWindow } from '@/lib/open-classroom-window'
+import type {
+  AvailableSlot,
+  ScheduleLesson,
+  ScheduleViewType,
+  TeacherAvailabilitySlot,
+  TeacherScheduleLesson,
+} from '@/types/schedule'
+import {
+  endOfMonth,
+  endOfWeek,
+  format,
+  isSameDay,
+  isWithinInterval,
+  startOfMonth,
+  startOfWeek,
+} from 'date-fns'
+import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { toast } from 'sonner'
+import { AvailabilityEditView } from './availability-edit-view'
+import { DayView } from './day-view'
+import { LessonDetailsDialog } from './lesson-details-dialog'
+import { MonthView } from './month-view'
 import { ScheduleHeader } from './schedule-header'
 import { WeekView } from './week-view'
-import { DayView } from './day-view'
-import { MonthView } from './month-view'
-import { LessonDetailsDialog } from './lesson-details-dialog'
-import { AvailabilityEditView } from './availability-edit-view'
-import type { ScheduleViewType, ScheduleLesson, AvailableSlot, BlockedSlot } from '@/types/schedule'
-import { isSameDay, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isWithinInterval, format } from 'date-fns'
-import { getTeacherScheduleData, bulkUpdateTeacherAvailability } from '@/lib/actions/teacher-schedule'
-import type { TeacherScheduleLesson, TeacherAvailabilitySlot } from '@/types/schedule'
-import { Loader2 } from 'lucide-react'
-import { toast } from 'sonner'
 
 interface TeacherScheduleProps {
   initialData?: {
@@ -79,9 +96,7 @@ export function TeacherSchedule({ initialData, currentPeriod }: TeacherScheduleP
   const [availability, setAvailability] = useState<TeacherAvailabilitySlot[]>(
     initialData?.availability || []
   )
-  const [blockedDays, setBlockedDays] = useState<string[]>(
-    initialData?.blockedDays || []
-  )
+  const [blockedDays, setBlockedDays] = useState<string[]>(initialData?.blockedDays || [])
 
   // Dialog states
   const [selectedLesson, setSelectedLesson] = useState<ScheduleLesson | null>(null)
@@ -98,35 +113,38 @@ export function TeacherSchedule({ initialData, currentPeriod }: TeacherScheduleP
   const lastFetchedMonth = useRef<string>(initialData ? format(currentDate, 'yyyy-MM') : '')
 
   // Fetch data - always fetch for the full month to have all data available
-  const fetchData = useCallback(async (force = false) => {
-    const monthStart = startOfMonth(currentDate)
-    const monthKey = format(monthStart, 'yyyy-MM')
+  const fetchData = useCallback(
+    async (force = false) => {
+      const monthStart = startOfMonth(currentDate)
+      const monthKey = format(monthStart, 'yyyy-MM')
 
-    // If we're in the same month and not forcing a refresh, don't fetch
-    if (!force && lastFetchedMonth.current === monthKey) {
-      return
-    }
-
-    setIsLoading(true)
-    try {
-      // Always fetch the full month to ensure we have all lessons
-      // This prevents data from disappearing when switching views
-      const monthEnd = endOfMonth(currentDate)
-
-      const result = await getTeacherScheduleData(monthStart, monthEnd)
-
-      if (result.success && result.data) {
-        setLessons(transformLessons(result.data.lessons))
-        setAvailability(result.data.availability)
-        setBlockedDays(result.data.blockedDays)
-        lastFetchedMonth.current = monthKey
+      // If we're in the same month and not forcing a refresh, don't fetch
+      if (!force && lastFetchedMonth.current === monthKey) {
+        return
       }
-    } catch (error) {
-      console.error('Error fetching schedule data:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [currentDate])
+
+      setIsLoading(true)
+      try {
+        // Always fetch the full month to ensure we have all lessons
+        // This prevents data from disappearing when switching views
+        const monthEnd = endOfMonth(currentDate)
+
+        const result = await getTeacherScheduleData(monthStart, monthEnd)
+
+        if (result.success && result.data) {
+          setLessons(transformLessons(result.data.lessons))
+          setAvailability(result.data.availability)
+          setBlockedDays(result.data.blockedDays)
+          lastFetchedMonth.current = monthKey
+        }
+      } catch (error) {
+        console.error('Error fetching schedule data:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    },
+    [currentDate]
+  )
 
   // Only refetch when the month changes, not on every view change
   useEffect(() => {
@@ -181,7 +199,7 @@ export function TeacherSchedule({ initialData, currentPeriod }: TeacherScheduleP
 
   // Handlers
   const handleJoinClass = (lessonId: string) => {
-    router.push(`/classroom?classId=${lessonId}`)
+    openClassroomWindow(`/classroom?classId=${lessonId}`)
   }
 
   const handleViewMaterials = (lessonId: string) => {
@@ -204,12 +222,13 @@ export function TeacherSchedule({ initialData, currentPeriod }: TeacherScheduleP
     setIsEditMode(true)
   }
 
-
   const handleDiscardChanges = () => {
     setIsEditMode(false)
   }
 
-  const handleSaveAvailability = async (slots: Array<{ day: string; startTime: string; endTime: string; available: boolean }>) => {
+  const handleSaveAvailability = async (
+    slots: Array<{ day: string; startTime: string; endTime: string; available: boolean }>
+  ) => {
     setIsSavingAvailability(true)
     try {
       const result = await bulkUpdateTeacherAvailability(slots)
@@ -229,7 +248,8 @@ export function TeacherSchedule({ initialData, currentPeriod }: TeacherScheduleP
 
   const handleSaveChanges = async () => {
     // Trigger save from the AvailabilityEditView via window
-    const saveFn = (window as unknown as { __availabilitySave?: () => Promise<void> }).__availabilitySave
+    const saveFn = (window as unknown as { __availabilitySave?: () => Promise<void> })
+      .__availabilitySave
     if (saveFn) {
       await saveFn()
     }

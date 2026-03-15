@@ -63,19 +63,6 @@ export function validateClassAccess(
     const secondsUntilStart = Math.floor(millisecondsUntilStart / 1000)
     const secondsUntilEnd = Math.floor(millisecondsUntilEnd / 1000)
 
-    // Si la clase ya terminó Y pasó el período de gracia, nadie puede acceder
-    const GRACE_PERIOD_MINUTES = 10
-    if (minutesUntilEnd < -GRACE_PERIOD_MINUTES) {
-      return {
-        canAccess: false,
-        reason: 'La clase ya ha finalizado',
-        minutesUntilStart,
-        minutesUntilEnd,
-        secondsUntilStart,
-        secondsUntilEnd,
-      }
-    }
-
     // Profesores pueden acceder 10 minutos antes
     if (isTeacher) {
       if (minutesUntilStart > 10) {

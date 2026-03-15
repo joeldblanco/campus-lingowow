@@ -12,6 +12,7 @@ import { WeeklyProgressCard } from './weekly-progress-card'
 import { LessonDetailsDialog } from './lesson-details-dialog'
 import type { ScheduleViewType } from '@/types/schedule'
 import { isSameDay, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isWithinInterval } from 'date-fns'
+import { openClassroomWindow } from '@/lib/open-classroom-window'
 import { 
   getStudentScheduleData, 
   getUpcomingLesson,
@@ -130,7 +131,7 @@ export function StudentSchedule({ initialData }: StudentScheduleProps) {
 
   // Handlers
   const handleJoinClass = (lessonId: string) => {
-    router.push(`/classroom?lessonId=${lessonId}`)
+    openClassroomWindow(`/classroom?lessonId=${lessonId}`)
   }
 
   const handleViewMaterials = (lessonId: string) => {

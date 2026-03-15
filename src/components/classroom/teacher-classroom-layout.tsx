@@ -4,7 +4,6 @@ import { ClassroomContainer } from '@/components/classroom/classroom-container'
 import { checkTeacherAttendance, markTeacherAttendance } from '@/lib/actions/attendance'
 import { createLiveKitMeeting, endLiveKitMeeting } from '@/lib/actions/livekit'
 import { Loader2 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -28,7 +27,6 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
   timeSlot,
   currentUserName,
 }) => {
-  const router = useRouter()
   const [isInitializing, setIsInitializing] = useState(true)
   const [roomDetails, setRoomDetails] = useState<{ roomName: string; jwt: string | null } | null>(
     null
@@ -108,7 +106,7 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
     toast.info('Finalizando clase...')
     try {
       await endLiveKitMeeting(bookingId)
-      router.push('/dashboard')
+      window.close()
     } catch (error) {
       console.error('Error ending meeting:', error)
       toast.error('Error al guardar el estado de la clase')

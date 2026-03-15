@@ -243,25 +243,25 @@ export function ExcalidrawWhiteboard({ bookingId, isTeacher = false }: Excalidra
   if (isLoading) {
     return (
       <div className="h-full flex items-center justify-center bg-white rounded-xl">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+        <Loader2 className="w-8 h-8 animate-spin text-blue-400" />
       </div>
     )
   }
 
   return (
-    <div className="h-full flex flex-col bg-white rounded-xl overflow-hidden border">
+    <div className="h-full flex flex-col bg-[#121212] rounded-xl overflow-hidden border border-white/10">
       {/* Header with Save Button and Collaboration Indicator */}
       {bookingId && (
-        <div className="flex-none p-2 border-b bg-gray-50 flex items-center justify-between z-10">
+        <div className="flex-none p-2 border-b border-white/10 bg-[#1e1e1e] flex items-center justify-between z-10">
           <div className="flex items-center gap-2">
             {isCollaborating && (
-              <div className="flex items-center gap-1.5 text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full animate-pulse">
+              <div className="flex items-center gap-1.5 text-xs text-green-400 bg-green-500/20 px-2 py-1 rounded-full animate-pulse">
                 <Users className="w-3 h-3" />
                 <span>Colaborando...</span>
               </div>
             )}
             {connectionStatus === 'connected' && !isCollaborating && (
-              <div className="flex items-center gap-1.5 text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
+              <div className="flex items-center gap-1.5 text-xs text-blue-400 bg-blue-500/20 px-2 py-1 rounded-full">
                 <Users className="w-3 h-3" />
                 <span>Pizarra compartida</span>
               </div>
@@ -272,7 +272,7 @@ export function ExcalidrawWhiteboard({ bookingId, isTeacher = false }: Excalidra
             size="sm"
             onClick={handleSave}
             disabled={isSaving}
-            className="gap-1"
+            className="gap-1 border-white/20 text-white/80 hover:bg-white/10 hover:text-white"
           >
             {isSaving ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -296,7 +296,7 @@ export function ExcalidrawWhiteboard({ bookingId, isTeacher = false }: Excalidra
               },
             }}
             langCode="es-ES"
-            theme="light"
+            theme="dark"
             onChange={handleChange}
           />
         </div>

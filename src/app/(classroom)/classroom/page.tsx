@@ -92,10 +92,10 @@ export default function ClassroomPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-1 items-center justify-center">
+      <div className="flex flex-1 items-center justify-center h-screen bg-[#202124]">
         <div className="text-center">
-          <div className="text-lg font-medium">Cargando aula virtual...</div>
-          <div className="text-sm text-muted-foreground">Preparando tu clase</div>
+          <div className="text-lg font-medium text-white">Cargando aula virtual...</div>
+          <div className="text-sm text-white/60">Preparando tu clase</div>
         </div>
       </div>
     )
@@ -103,10 +103,10 @@ export default function ClassroomPage() {
 
   if (!effectiveClassId) {
     return (
-      <div className="flex flex-1 items-center justify-center">
+      <div className="flex flex-1 items-center justify-center h-screen bg-[#202124]">
         <div className="text-center">
-          <div className="text-lg font-medium">Selecciona una clase</div>
-          <div className="text-sm text-muted-foreground">
+          <div className="text-lg font-medium text-white">Selecciona una clase</div>
+          <div className="text-sm text-white/60">
             Elige una clase desde el panel de control o la barra lateral
           </div>
         </div>
@@ -116,10 +116,10 @@ export default function ClassroomPage() {
 
   if (!classroomData) {
     return (
-      <div className="flex flex-1 items-center justify-center">
+      <div className="flex flex-1 items-center justify-center h-screen bg-[#202124]">
         <div className="text-center">
-          <div className="text-lg font-medium">Clase no encontrada</div>
-          <div className="text-sm text-muted-foreground">
+          <div className="text-lg font-medium text-white">Clase no encontrada</div>
+          <div className="text-sm text-white/60">
             La clase seleccionada no existe o no tienes acceso a ella
           </div>
         </div>
@@ -130,13 +130,13 @@ export default function ClassroomPage() {
   // Validar acceso basado en horario
   if (accessValidation && !accessValidation.canAccess) {
     return (
-      <div className="flex flex-1 items-center justify-center">
-        <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
-          <Clock className="h-16 w-16 mx-auto mb-4 text-blue-500" />
-          <h1 className="text-2xl font-bold mb-4">{classroomData.courseName}</h1>
-          <p className="text-lg font-medium mb-2">{classroomData.lessonName}</p>
-          <p className="text-gray-600 mb-6">{accessValidation.reason}</p>
-          <div className="text-sm text-gray-500">
+      <div className="flex flex-1 items-center justify-center h-screen bg-[#202124]">
+        <div className="bg-[#292a2d] p-8 rounded-lg shadow-md max-w-md w-full text-center">
+          <Clock className="h-16 w-16 mx-auto mb-4 text-blue-400" />
+          <h1 className="text-2xl font-bold mb-4 text-white">{classroomData.courseName}</h1>
+          <p className="text-lg font-medium mb-2 text-white/80">{classroomData.lessonName}</p>
+          <p className="text-white/60 mb-6">{accessValidation.reason}</p>
+          <div className="text-sm text-white/50">
             {isTeacher ? (
               <p>Como profesor, podrás acceder 10 minutos antes de la clase.</p>
             ) : (

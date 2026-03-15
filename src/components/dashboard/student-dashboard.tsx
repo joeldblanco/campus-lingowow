@@ -21,6 +21,7 @@ import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { getStudentDashboardStats } from '@/lib/actions/dashboard'
+import { openClassroomWindow } from '@/lib/open-classroom-window'
 import type { StudentDashboardData } from '@/types/dashboard'
 import { PendingScheduleBanner } from '@/components/enrollments/pending-schedule-banner'
 import { CourseCard } from '@/components/dashboard/course-card'
@@ -124,14 +125,12 @@ export default function Dashboard() {
               </div>
             </div>
             <Button
-              asChild
               size="lg"
               className="relative w-full md:w-auto bg-white text-emerald-700 hover:bg-white/90 hover:text-emerald-800 font-bold text-base md:text-lg px-8 py-6 shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+              onClick={() => openClassroomWindow(nextClass.link)}
             >
-              <Link href={nextClass.link}>
-                <Play className="w-5 h-5 mr-2 fill-current" />
-                Entrar al Aula
-              </Link>
+              <Play className="w-5 h-5 mr-2 fill-current" />
+              Entrar al Aula
             </Button>
           </div>
         </div>

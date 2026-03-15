@@ -237,133 +237,96 @@ export interface ShareableContent {
   category?: string | null
 }
 
-// Get shareable content for the teacher in classroom
-// Optimized: minimal initial load, search triggers server query
-export async function getShareableContent(
-  searchQuery?: string,
-  contentType?: 'all' | 'lesson' | 'student_lesson' | 'library_resource'
-): Promise<ShareableContent[]> {
+// Get all shareable content metadata for the teacher in classroom
+// Loads all titles/categories upfront for instant client-side filtering
+export async function getShareableContent(): Promise<ShareableContent[]> {
   const session = await auth()
   
   if (!session?.user?.id) {
     return []
   }
 
-  const limit = 6 // Fast initial load with few items
-
-  const searchFilter = searchQuery ? {
-    OR: [
-      { title: { contains: searchQuery, mode: 'insensitive' as const } },
-      { description: { contains: searchQuery, mode: 'insensitive' as const } },
-    ]
-  } : {}
-
   try {
     const results: ShareableContent[] = []
 
-    // Only fetch requested types (or all if not specified)
-    const fetchLibrary = !contentType || contentType === 'all' || contentType === 'library_resource'
-    const fetchLessons = !contentType || contentType === 'all' || contentType === 'lesson'
-    const fetchStudentLessons = !contentType || contentType === 'all' || contentType === 'student_lesson'
-
-    // Run queries in parallel
-    const promises: Promise<void>[] = []
-
-    if (fetchLibrary) {
-      promises.push(
-        db.libraryResource.findMany({
-          where: { status: 'PUBLISHED', ...searchFilter },
-          select: {
-            id: true,
-            title: true,
-            description: true,
-            thumbnailUrl: true,
-            duration: true,
-            level: true,
-            category: { select: { name: true } },
-          },
-          orderBy: { createdAt: 'desc' },
-          take: limit,
-        }).then(items => {
-          results.push(...items.map(r => ({
-            id: r.id,
-            title: r.title,
-            description: r.description,
-            type: 'library_resource' as const,
-            thumbnailUrl: r.thumbnailUrl,
-            duration: r.duration,
-            level: r.level,
-            category: r.category?.name,
-          })))
-        })
-      )
-    }
-
-    if (fetchLessons) {
-      // Fetch regular course lessons (moduleId is not null)
-      promises.push(
-        db.lesson.findMany({
-          where: { isPublished: true, moduleId: { not: null }, ...searchFilter },
-          select: {
-            id: true,
-            title: true,
-            description: true,
-            duration: true,
-            videoUrl: true,
-            module: {
-              select: {
-                title: true,
-                course: { select: { title: true, level: true } }
-              }
+    // Fetch all types in parallel — lightweight metadata only
+    const [libraryItems, lessonItems, studentLessonItems] = await Promise.all([
+      db.libraryResource.findMany({
+        where: { status: 'PUBLISHED' },
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          thumbnailUrl: true,
+          duration: true,
+          level: true,
+          category: { select: { name: true } },
+        },
+        orderBy: { createdAt: 'desc' },
+      }),
+      db.lesson.findMany({
+        where: { isPublished: true, moduleId: { not: null } },
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          duration: true,
+          videoUrl: true,
+          module: {
+            select: {
+              title: true,
+              course: { select: { title: true, level: true } }
             }
-          },
-          orderBy: { createdAt: 'desc' },
-          take: limit,
-        }).then(items => {
-          results.push(...items.map((l: { id: string; title: string; description: string; duration: number; videoUrl: string | null; module: { title: string; course: { title: string; level: string } } | null }) => ({
-            id: l.id,
-            title: l.title,
-            description: l.description,
-            type: 'lesson' as const,
-            thumbnailUrl: l.videoUrl,
-            duration: l.duration,
-            level: l.module?.course.level,
-            category: l.module ? `${l.module.course.title} - ${l.module.title}` : undefined,
-          })))
-        })
-      )
-    }
+          }
+        },
+        orderBy: { createdAt: 'desc' },
+      }),
+      db.lesson.findMany({
+        where: { teacherId: session.user.id, isPublished: true, studentId: { not: null } },
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          duration: true,
+          videoUrl: true,
+          student: { select: { name: true } },
+        },
+        orderBy: { createdAt: 'desc' },
+      }),
+    ])
 
-    if (fetchStudentLessons) {
-      // Fetch personalized lessons (studentId is not null)
-      promises.push(
-        db.lesson.findMany({
-          where: { teacherId: session.user.id, isPublished: true, studentId: { not: null }, ...searchFilter },
-          select: {
-            id: true,
-            title: true,
-            description: true,
-            duration: true,
-            videoUrl: true,
-            student: { select: { name: true } },
-          },
-          orderBy: { createdAt: 'desc' },
-          take: limit,
-        }).then(items => {
-          results.push(...items.map((s: { id: string; title: string; description: string; duration: number; videoUrl: string | null; student: { name: string } | null }) => ({
-            id: s.id,
-            title: s.title,
-            description: s.description,
-            type: 'student_lesson' as const,
-            thumbnailUrl: s.videoUrl,
-            duration: s.duration,
-            category: s.student ? `Creado para: ${s.student.name}` : undefined,
-          })))
-        })
-      )
-    }
+    results.push(...libraryItems.map(r => ({
+      id: r.id,
+      title: r.title,
+      description: r.description,
+      type: 'library_resource' as const,
+      thumbnailUrl: r.thumbnailUrl,
+      duration: r.duration,
+      level: r.level,
+      category: r.category?.name,
+    })))
 
-    await Promise.all(promises)
+    results.push(...lessonItems.map((l: { id: string; title: string; description: string; duration: number; videoUrl: string | null; module: { title: string; course: { title: string; level: string } } | null }) => ({
+      id: l.id,
+      title: l.title,
+      description: l.description,
+      type: 'lesson' as const,
+      thumbnailUrl: l.videoUrl,
+      duration: l.duration,
+      level: l.module?.course.level,
+      category: l.module ? `${l.module.course.title} - ${l.module.title}` : undefined,
+    })))
+
+    results.push(...studentLessonItems.map((s: { id: string; title: string; description: string; duration: number; videoUrl: string | null; student: { name: string } | null }) => ({
+      id: s.id,
+      title: s.title,
+      description: s.description,
+      type: 'student_lesson' as const,
+      thumbnailUrl: s.videoUrl,
+      duration: s.duration,
+      category: s.student ? `Creado para: ${s.student.name}` : undefined,
+    })))
+
     return results
   } catch (error) {
     console.error('Error fetching shareable content:', error)

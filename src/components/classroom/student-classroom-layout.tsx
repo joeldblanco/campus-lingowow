@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react'
 import { ClassroomContainer } from '@/components/classroom/classroom-container'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
 import { createLiveKitMeeting } from '@/lib/actions/livekit'
 
@@ -21,7 +20,6 @@ interface StudentClassroomLayoutProps {
 
 export const StudentClassroomLayout: React.FC<StudentClassroomLayoutProps> = (props) => {
     const { bookingId, day, timeSlot, currentUserName } = props
-    const router = useRouter()
     const [isInitializing, setIsInitializing] = useState(true)
     const [roomDetails, setRoomDetails] = useState<{ roomName: string, jwt: string | null } | null>(null)
 
@@ -80,7 +78,7 @@ export const StudentClassroomLayout: React.FC<StudentClassroomLayoutProps> = (pr
     }, [bookingId])
 
     const handleLeave = () => {
-        router.push('/dashboard')
+        window.close()
     }
 
     if (isInitializing || !roomDetails) {

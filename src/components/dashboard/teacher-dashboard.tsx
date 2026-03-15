@@ -21,6 +21,7 @@ import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 import { DashboardSkeleton } from './dashboard-skeleton'
 import { CourseCard } from './course-card'
+import { openClassroomWindow } from '@/lib/open-classroom-window'
 
 // Helper to check if class is within 10 minutes of starting
 function isWithin10MinutesOfStart(classDate: string, classTime: string): boolean {
@@ -68,7 +69,7 @@ const TeacherDashboard = ({ dashboardData }: { dashboardData: TeacherDashboardDa
   if (!dashboardData) return <DashboardSkeleton />
 
   // Funciones de navegación
-  const handleStartClass = (classId: string) => router.push(`/classroom?classId=${classId}`)
+  const handleStartClass = (classId: string) => openClassroomWindow(`/classroom?classId=${classId}`)
   const handleNewActivity = () => router.push('/activities')
   const handleEditSchedule = () => router.push('/schedule')
   const handleViewAllSchedule = () => router.push('/schedule')

@@ -1,122 +1,139 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { ArrowLeft, Clock } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { Clock } from 'lucide-react'
 import React from 'react'
 
 interface ClassroomLayoutProps {
   children: React.ReactNode // This will be the Lesson Content
-  rightSidebar: React.ReactNode // This will be the Video/Chat Sidebar
+  videoArea: React.ReactNode // Main video area (large remote + PiP local)
+  compactVideoArea?: React.ReactNode // Compact stacked videos for sharing mode
   bottomControls: React.ReactNode // This will be the Control Bar
+  sidePanel?: React.ReactNode // Chat / Content side panel
   contentTabs?: React.ReactNode // Tabs for switching between lesson/whiteboard/screenshare
-  leftSidebar?: React.ReactNode // This will be the Lesson Selector (for teachers)
   topBanner?: React.ReactNode // Banner for device errors or notifications
+  sharingBanner?: React.ReactNode // Banner showing what's being shared with stop button
   className?: string
   lessonTitle?: string
   timeLeft?: string
-  isGracePeriod?: boolean // Whether the class is in grace period (extra 10 min)
-  isPreClass?: boolean // Whether the class hasn't started yet (countdown to start)
-  onBackClick?: () => void // Callback when back button is clicked
-  fullscreenContent?: boolean // When true, children render without ScrollArea wrapper (for whiteboard/canvas)
+  isGracePeriod?: boolean
+  isPreClass?: boolean
+  isContentSharing?: boolean // When true, content fills main area, videos float top-right
+  fullscreenContent?: boolean
 }
 
 export function ClassroomLayout({
   children,
-  rightSidebar,
+  videoArea,
+  compactVideoArea,
   bottomControls,
+  sidePanel,
   contentTabs,
-  leftSidebar,
   topBanner,
+  sharingBanner,
   className = '',
   lessonTitle = 'English Lesson',
   timeLeft = '45:00',
   isGracePeriod = false,
   isPreClass = false,
-  onBackClick,
+  isContentSharing = false,
   fullscreenContent = false,
 }: ClassroomLayoutProps) {
-  const router = useRouter()
-
-  const handleBackClick = () => {
-    if (onBackClick) {
-      onBackClick()
-    } else {
-      router.back()
-    }
-  }
 
   return (
-    <div className={`flex flex-col h-screen bg-gray-50 ${className}`}>
+    <div className={`flex flex-col h-screen bg-[#202124] ${className}`}>
       {/* Top Banner for device errors */}
       {topBanner}
 
-      {/* Header */}
-      <header className="flex-none h-16 bg-white border-b border-gray-200 px-4 flex items-center justify-between z-10">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleBackClick}
-            className="text-gray-500 hover:text-gray-900"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
-          <h1 className="text-lg font-bold text-gray-900">{lessonTitle}</h1>
+      {/* Minimal Top Bar */}
+      <header className="flex-none h-12 px-4 flex items-center justify-between z-10">
+        <div className="flex items-center gap-3">
+          <h1 className="text-sm font-semibold text-white/90 truncate max-w-[300px]">{lessonTitle}</h1>
         </div>
 
-        <div className="flex items-center gap-3">
-          {/* Controls in header */}
-          {bottomControls}
-
+        <div className="flex items-center gap-2">
           {/* Timer */}
           <div
-            className={`px-3 py-1.5 rounded-full flex items-center gap-2 font-medium text-sm ${isGracePeriod
-                ? 'bg-orange-50 text-orange-600'
+            className={`px-3 py-1 rounded-full flex items-center gap-2 font-mono text-sm ${isGracePeriod
+                ? 'bg-orange-500/20 text-orange-400'
                 : isPreClass
-                  ? 'bg-purple-50 text-purple-600'
-                  : 'bg-blue-50 text-blue-600'
+                  ? 'bg-purple-500/20 text-purple-400'
+                  : 'bg-white/10 text-white/80'
               }`}
           >
-            <Clock className="w-4 h-4" />
+            <Clock className="w-3.5 h-3.5" />
             <span>{timeLeft}</span>
-            {isGracePeriod && <span className="text-xs">(10 min adicionales)</span>}
-            {isPreClass && <span className="text-xs">(Inicia en)</span>}
+            {isGracePeriod && <span className="text-xs opacity-80">(extra)</span>}
+            {isPreClass && <span className="text-xs opacity-80">(inicia en)</span>}
           </div>
+
+          {/* Content Tabs */}
+          {contentTabs}
         </div>
       </header>
 
-      {/* Main Content Grid */}
-      <main className="flex-1 overflow-hidden p-4 grid grid-cols-12 gap-4">
-        {/* Left Panel: Lesson Selector (for teachers) */}
-        {leftSidebar && (
-          <div className="col-span-2 flex flex-col h-full overflow-hidden">{leftSidebar}</div>
+      {/* Sharing Banner */}
+      {sharingBanner}
+
+      {/* Main Area */}
+      <main className="flex-1 overflow-hidden flex relative">
+        {isContentSharing ? (
+          <>
+            {/* Content Sharing Mode: shared content fills main area */}
+            <div className="flex-1 flex flex-col min-w-0 p-2">
+              <div className="flex-1 min-h-0 rounded-xl overflow-hidden bg-white">
+                {fullscreenContent ? (
+                  <div className="h-full w-full">{children}</div>
+                ) : (
+                  <ScrollArea className="h-full w-full">
+                    <div className="p-4">{children}</div>
+                  </ScrollArea>
+                )}
+              </div>
+            </div>
+
+            {/* Floating compact videos - top right */}
+            {compactVideoArea && (
+              <div className="absolute top-2 right-2 w-[180px] h-[260px] z-20 rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+                {compactVideoArea}
+              </div>
+            )}
+          </>
+        ) : (
+          <>
+            {/* Normal Mode: videos fill main area */}
+            <div className="flex-1 flex flex-col min-w-0 p-2">
+              <div className="flex-1 min-h-0 rounded-xl overflow-hidden">
+                {videoArea}
+              </div>
+            </div>
+          </>
         )}
 
-        {/* Center Panel: Lesson Content */}
+        {/* Side Panel: Chat (slides in from right) */}
         <div
-          className={`${leftSidebar ? 'col-span-6' : 'col-span-8'} flex flex-col h-full overflow-hidden gap-3`}
+          className={`flex-none flex flex-col h-full overflow-hidden transition-all duration-300 ease-in-out ${
+            sidePanel ? 'w-[380px] opacity-100' : 'w-0 opacity-0'
+          }`}
         >
-          {/* Content Tabs - Top Right of Center Panel */}
-          {contentTabs && <div className="flex-none flex justify-end">{contentTabs}</div>}
-
-          {/* The Card wrapper gives it the white paper look from the design */}
-          <Card className="flex-1 h-full shadow-sm border border-gray-100 overflow-hidden bg-white rounded-xl flex flex-col">
-            {fullscreenContent ? (
-              <div className="h-full w-full">{children}</div>
-            ) : (
-              <ScrollArea className="h-full w-full">
-                <div className="p-8">{children}</div>
-              </ScrollArea>
-            )}
-          </Card>
+          {sidePanel && (
+            <div className="h-full flex flex-col pr-2 py-2 gap-2">
+              <div className="flex-1 min-h-0 rounded-xl overflow-hidden">
+                {sidePanel}
+              </div>
+            </div>
+          )}
         </div>
-
-        {/* Right Panel: Video & Chat */}
-        <div className="col-span-4 flex flex-col h-full gap-4 overflow-hidden">{rightSidebar}</div>
       </main>
+
+      {/* Bottom Control Bar - centered like Google Meet */}
+      <footer className="flex-none h-16 px-4 flex items-center justify-between">
+        <div className="flex-1" />
+        <div className="flex items-center">
+          {bottomControls}
+        </div>
+        <div className="flex-1" />
+      </footer>
     </div>
   )
 }

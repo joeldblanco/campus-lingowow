@@ -1,10 +1,10 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { getLessonContent, getContentById, ShareableContent } from '@/lib/actions/classroom'
+import { getLessonContent, getContentById, getShareableContent, ShareableContent } from '@/lib/actions/classroom'
 import { LessonForView } from '@/types/lesson'
-import { BookOpen, Loader2, PenTool, Monitor, X, ChevronDown, ChevronUp, MessageSquare } from 'lucide-react'
-import { useEffect, useState, useRef } from 'react'
+import { Loader2, MessageSquare, X } from 'lucide-react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { toast } from 'sonner'
 import { startRecording, stopRecording } from '@/lib/actions/classroom-recording'
 import { ActiveLessonViewer } from './active-lesson-viewer'
@@ -15,6 +15,7 @@ import { DeviceErrorBanner } from './device-error-banner'
 import { VideoGrid } from './video-grid'
 import { ExcalidrawWhiteboard } from './excalidraw-whiteboard'
 import { ClassroomChat } from './classroom-chat'
+import { ShareContentPopover } from './share-content-popover'
 import { CollaborationProvider } from './collaboration-context'
 import { CollaborativeContentWrapper } from './collaborative-content-wrapper'
 import { ScreenShareViewer } from './screen-share-viewer'
@@ -74,7 +75,10 @@ function ClassroomInner({
   const [isLoadingLesson, setIsLoadingLesson] = useState(false)
   const [mainContentTab, setMainContentTab] = useState<'lesson' | 'whiteboard' | 'screenshare'>('lesson')
   const [isRecording, setIsRecording] = useState(false)
-  const [isChatMinimized, setIsChatMinimized] = useState(false)
+  const [isChatOpen, setIsChatOpen] = useState(false)
+  const [hasUnreadChat, setHasUnreadChat] = useState(false)
+  const [isSharePopoverOpen, setIsSharePopoverOpen] = useState(false)
+  const [shareableContent, setShareableContent] = useState<ShareableContent[] | null>(null)
   const [egressId, setEgressId] = useState<string | null>(null)
   const recordingRef = useRef(false)
   const stoppingRecordingRef = useRef(false)
@@ -84,8 +88,13 @@ function ClassroomInner({
   const isRecordingRef = useRef(isRecording)
   const egressIdRef = useRef(egressId)
 
-  // Ref to track if we've already triggered end call
-  const hasEndedRef = useRef(false)
+
+  // Pre-load all shareable content metadata once on mount (teacher only)
+  useEffect(() => {
+    if (isTeacher) {
+      getShareableContent().then(setShareableContent)
+    }
+  }, [isTeacher])
 
   // Update refs when state changes
   useEffect(() => {
@@ -110,9 +119,9 @@ function ClassroomInner({
       const diffToEnd = endTimestamp - now
       const diffToGraceEnd = graceEndTimestamp - now
 
-      // Grace period has ended - close the class
+      // Grace period has ended - keep showing 00:00 but don't auto-close
       if (diffToGraceEnd <= 0) {
-        return { time: '00:00', isGrace: true, isPreClass: false, shouldEnd: true }
+        return { time: '00:00', isGrace: true, isPreClass: false }
       }
 
       // Class time has ended, but still in grace period
@@ -125,7 +134,6 @@ function ClassroomInner({
           time: `${graceMinutes.toString().padStart(2, '0')}:${graceSeconds.toString().padStart(2, '0')}`,
           isGrace: true,
           isPreClass: false,
-          shouldEnd: false
         }
       }
 
@@ -140,7 +148,6 @@ function ClassroomInner({
             time: `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`,
             isGrace: false,
             isPreClass: true,
-            shouldEnd: false
           }
         }
 
@@ -148,7 +155,6 @@ function ClassroomInner({
           time: `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`,
           isGrace: false,
           isPreClass: true,
-          shouldEnd: false
         }
       }
 
@@ -162,7 +168,6 @@ function ClassroomInner({
           time: `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`,
           isGrace: false,
           isPreClass: false,
-          shouldEnd: false
         }
       }
 
@@ -170,32 +175,14 @@ function ClassroomInner({
         time: `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`,
         isGrace: false,
         isPreClass: false,
-        shouldEnd: false
       }
     }
 
-    const updateTimer = async () => {
+    const updateTimer = () => {
       const result = calculateTimeLeft()
       setTimeLeft(result.time)
       setIsGracePeriod(result.isGrace)
       setIsPreClass(result.isPreClass)
-
-      if (result.shouldEnd && !hasEndedRef.current) {
-        hasEndedRef.current = true
-        // Stop recording automatically when grace period ends (use refs to avoid dependency issues)
-        if (isRecordingRef.current && egressIdRef.current && !stoppingRecordingRef.current) {
-          stoppingRecordingRef.current = true
-          try {
-            await stopRecording(egressIdRef.current, bookingId)
-          } catch (error) {
-            console.error('Failed to stop recording on grace period end:', error)
-          } finally {
-            stoppingRecordingRef.current = false
-          }
-        }
-        await leaveRoom()
-        onMeetingEnd()
-      }
     }
 
     updateTimer()
@@ -203,7 +190,7 @@ function ClassroomInner({
     const timer = setInterval(updateTimer, 1000)
 
     return () => clearInterval(timer)
-  }, [startTime, endTime, leaveRoom, onMeetingEnd, bookingId])
+  }, [startTime, endTime])
 
   // Auto-join when initialized
   useEffect(() => {
@@ -325,6 +312,10 @@ function ClassroomInner({
   }, [connectionStatus, addCommandListener, removeCommandListener, isTeacher, sendCommand])
 
   const handleContentSelect = async (contentId: string, contentType: ShareableContent['type']) => {
+    // Stop other share types before sharing Lingowow content
+    if (isScreenSharing) toggleScreenShare()
+    if (mainContentTab === 'whiteboard') handleTabChange('lesson')
+
     try {
       setIsLoadingLesson(true)
       const content = await getContentById(contentId, contentType)
@@ -353,19 +344,17 @@ function ClassroomInner({
     toast.info('Compartición de contenido detenida')
   }
 
-  const handleStopScreenShare = () => {
-    if (isScreenSharing) {
-      toggleScreenShare()
-    }
-    handleTabChange('lesson')
-  }
-
   // Teacher changes tab and syncs with student
   const handleTabChange = (tab: 'lesson' | 'whiteboard' | 'screenshare') => {
     setMainContentTab(tab)
     if (isTeacher) {
       sendCommand('set-tab', { type: 'SET_TAB', tab })
     }
+  }
+
+  const handleLeave = async () => {
+    await leaveRoom()
+    onMeetingEnd()
   }
 
   const handleEndCall = async () => {
@@ -385,13 +374,47 @@ function ClassroomInner({
     onMeetingEnd()
   }
 
+  // Handle new message notification
+  const handleNewChatMessage = useCallback(() => {
+    if (!isChatOpen) {
+      setHasUnreadChat(true)
+      // Play notification sound using Web Audio API
+      try {
+        const ctx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)()
+        const oscillator = ctx.createOscillator()
+        const gain = ctx.createGain()
+        oscillator.connect(gain)
+        gain.connect(ctx.destination)
+        oscillator.type = 'sine'
+        oscillator.frequency.setValueAtTime(830, ctx.currentTime)
+        oscillator.frequency.setValueAtTime(1000, ctx.currentTime + 0.1)
+        gain.gain.setValueAtTime(0.15, ctx.currentTime)
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3)
+        oscillator.start(ctx.currentTime)
+        oscillator.stop(ctx.currentTime + 0.3)
+      } catch {
+        // Silently ignore audio errors
+      }
+    }
+  }, [isChatOpen])
+
+  const handleToggleChat = useCallback(() => {
+    setIsChatOpen(prev => {
+      if (!prev) {
+        // Opening chat — clear unread
+        setHasUnreadChat(false)
+      }
+      return !prev
+    })
+  }, [])
+
   if (connectionStatus === 'connecting' || !isInitialized) {
     return (
-      <div className="h-screen w-full flex items-center justify-center bg-gray-50">
+      <div className="h-screen w-full flex items-center justify-center bg-[#202124]">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-800">Conectando al aula...</h2>
-          <p className="text-gray-500">Preparando tu entorno de aprendizaje</p>
+          <Loader2 className="w-12 h-12 animate-spin text-blue-400 mx-auto mb-4" />
+          <h2 className="text-xl font-semibold text-white">Conectando al aula...</h2>
+          <p className="text-white/60">Preparando tu entorno de aprendizaje</p>
         </div>
       </div>
     )
@@ -399,212 +422,198 @@ function ClassroomInner({
 
   if (connectionStatus === 'failed') {
     return (
-      <div className="h-screen w-full flex items-center justify-center bg-gray-50">
-        <div className="text-center max-w-md p-6 bg-white rounded-xl shadow-lg">
-          <h2 className="text-xl font-bold text-red-600 mb-2">Error de Conexión</h2>
-          <p className="text-gray-600 mb-6">No pudimos conectar con el servidor de video.</p>
+      <div className="h-screen w-full flex items-center justify-center bg-[#202124]">
+        <div className="text-center max-w-md p-6 bg-[#292a2d] rounded-xl shadow-lg">
+          <h2 className="text-xl font-bold text-red-400 mb-2">Error de Conexión</h2>
+          <p className="text-white/60 mb-6">No pudimos conectar con el servidor de video.</p>
           <Button onClick={() => window.location.reload()}>Reintentar</Button>
         </div>
       </div>
     )
   }
 
-  // Stop recording and leave when user navigates away (back button)
-  const handleBackClick = async () => {
-    // Stop recording when user leaves (creates a new segment if they rejoin)
-    if (isRecording && egressId && !stoppingRecordingRef.current) {
-      stoppingRecordingRef.current = true
-      try {
-        const result = await stopRecording(egressId, bookingId)
-        console.log('Recording stopped on back:', result.message)
-        setIsRecording(false)
-        setEgressId(null)
-        recordingRef.current = false
-      } catch (error) {
-        console.error('Failed to stop recording on back:', error)
-      } finally {
-        stoppingRecordingRef.current = false
-      }
+  // Determine if content is being shared (by anyone)
+  const isContentSharing = !!activeLesson || mainContentTab === 'whiteboard' || isScreenSharing
+
+  // Handle share popover actions — auto-stop previous sharing first
+  const handleShareScreen = () => {
+    // Stop other share types before starting screen share
+    if (activeLesson) handleStopContentShare()
+    if (mainContentTab === 'whiteboard') handleTabChange('lesson')
+    toggleScreenShare()
+    if (!isScreenSharing) {
+      handleTabChange('screenshare')
     }
-    await leaveRoom()
   }
 
-  const renderSidebar = (
-    <div className="h-full flex flex-col bg-white rounded-xl border overflow-hidden">
-      {/* Videos - When chat is minimized, videos take full height stacked vertically */}
-      <div className={isChatMinimized ? "flex-1 flex flex-col p-3 gap-3" : "flex-none p-3 space-y-2"}>
-        <VideoGrid
-          localTrack={localTracks}
-          remoteTracks={remoteTracks}
-          isTeacher={isTeacher}
-          stacked={isChatMinimized}
-        />
+  const handleShareWhiteboard = () => {
+    // Stop other share types before starting whiteboard
+    if (activeLesson) handleStopContentShare()
+    if (isScreenSharing) toggleScreenShare()
+    handleTabChange('whiteboard')
+  }
+
+  const handleStopAllSharing = () => {
+    if (activeLesson) handleStopContentShare()
+    if (isScreenSharing) toggleScreenShare()
+    handleTabChange('lesson')
+  }
+
+  // Render the main video area (side-by-side)
+  const renderVideoArea = (
+    <VideoGrid
+      localTrack={localTracks}
+      remoteTracks={remoteTracks}
+      isTeacher={isTeacher}
+    />
+  )
+
+  // Render compact stacked video area (for sharing mode overlay)
+  const renderCompactVideoArea = (
+    <VideoGrid
+      localTrack={localTracks}
+      remoteTracks={remoteTracks}
+      isTeacher={isTeacher}
+      compact
+    />
+  )
+
+  // Chat side panel
+  const renderChatPanel = (
+    <div className="h-full flex flex-col bg-[#292a2d] rounded-xl overflow-hidden">
+      {/* Chat Header */}
+      <div className="flex-none p-3 bg-[#3c4043] flex items-center gap-2">
+        <MessageSquare className="w-4 h-4 text-white/80" />
+        <h3 className="font-medium text-white/90 text-sm">Chat de Clase</h3>
       </div>
 
-      {/* Chat Section */}
-      <div className="flex flex-col transition-all duration-300 ease-in-out" style={{ flex: isChatMinimized ? '0 0 auto' : '1 1 0%', minHeight: 0 }}>
-        {/* Chat Header with minimize button - clickable */}
-        <div
-          className="flex-none p-3 border-t bg-blue-600 flex items-center justify-between cursor-pointer hover:bg-blue-700 transition-colors"
-          onClick={() => setIsChatMinimized(!isChatMinimized)}
-          title={isChatMinimized ? "Expandir chat" : "Minimizar chat"}
-        >
-          <div className="flex items-center gap-2">
-            <MessageSquare className="w-4 h-4 text-white" />
-            <div>
-              <h3 className="font-semibold text-white text-sm">Chat de Clase</h3>
-              <p className={`text-xs text-blue-100 transition-all duration-300 overflow-hidden ${isChatMinimized ? 'max-h-0 opacity-0' : 'max-h-5 opacity-100'}`}>
-                Correcciones y Vocabulario
-              </p>
-            </div>
+      {/* Chat Content */}
+      <div className="flex-1 min-h-0 overflow-hidden">
+        {bookingId ? (
+          <ClassroomChat bookingId={bookingId} onNewMessage={handleNewChatMessage} />
+        ) : (
+          <div className="h-full flex items-center justify-center text-white/40 text-sm">
+            Chat no disponible
           </div>
-          <div className="h-8 w-8 flex items-center justify-center">
-            {isChatMinimized ? (
-              <ChevronUp className="w-4 h-4 text-white" />
-            ) : (
-              <ChevronDown className="w-4 h-4 text-white" />
-            )}
-          </div>
-        </div>
-
-        {/* Chat Content - Animated visibility */}
-        <div className={`flex-1 min-h-0 transition-all duration-300 ease-in-out ${isChatMinimized ? 'max-h-0 opacity-0 overflow-hidden' : 'opacity-100 overflow-hidden'}`}>
-          {bookingId ? (
-            <ClassroomChat bookingId={bookingId} />
-          ) : (
-            <div className="h-full flex items-center justify-center text-gray-400 text-sm">
-              Chat no disponible
-            </div>
-          )}
-        </div>
+        )}
       </div>
     </div>
   )
 
-  const renderLeftSidebar = null
-
-  const renderMainContent = () => {
+  // Render shared content (fills main area when sharing)
+  const renderSharedContent = () => {
     if (isLoadingLesson) {
       return (
         <div className="w-full h-full flex items-center justify-center">
-          <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+          <Loader2 className="w-8 h-8 animate-spin text-blue-400" />
         </div>
       )
     }
 
-    switch (mainContentTab) {
-      case 'whiteboard':
-        return <ExcalidrawWhiteboard bookingId={bookingId} isTeacher={isTeacher} />
-      case 'screenshare':
-        return <ScreenShareViewer />
-      default:
-        return (
-          <CollaborativeContentWrapper className="min-h-full">
-            <ActiveLessonViewer
-              lessonData={activeLesson}
-              isTeacher={isTeacher}
-              onContentSelect={handleContentSelect}
-            />
-          </CollaborativeContentWrapper>
-        )
+    if (mainContentTab === 'whiteboard') {
+      return <ExcalidrawWhiteboard bookingId={bookingId} isTeacher={isTeacher} />
     }
+
+    if (mainContentTab === 'screenshare' || isScreenSharing) {
+      return <ScreenShareViewer />
+    }
+
+    if (activeLesson) {
+      return (
+        <CollaborativeContentWrapper className="min-h-full">
+          <ActiveLessonViewer
+            lessonData={activeLesson}
+            isTeacher={isTeacher}
+            onContentSelect={handleContentSelect}
+          />
+        </CollaborativeContentWrapper>
+      )
+    }
+
+    return null
   }
 
-  return (
-    <ClassroomLayout
-      lessonTitle={activeLesson?.title || 'Aula Virtual'}
-      timeLeft={timeLeft}
-      isGracePeriod={isGracePeriod}
-      isPreClass={isPreClass}
-      rightSidebar={renderSidebar}
-      leftSidebar={renderLeftSidebar}
-      onBackClick={handleBackClick}
-      fullscreenContent={mainContentTab === 'whiteboard' || mainContentTab === 'screenshare'}
-      topBanner={
-        deviceError ? (
-          <DeviceErrorBanner
-            type={deviceError.type}
-            message={deviceError.message}
-            canRetry={deviceError.canRetry}
-            onRetry={retryDeviceAccess}
-            onDismiss={clearDeviceError}
-          />
-        ) : null
-      }
-      bottomControls={
-        <ControlBar
-          isMicMuted={isAudioMuted}
-          isVideoMuted={isVideoMuted}
-          onToggleMic={toggleAudio}
-          onToggleVideo={toggleVideo}
-          onEndCall={handleEndCall}
-          onToggleHand={toggleRaiseHand}
-          isHandRaised={isHandRaised}
-          isRecording={isRecording}
-        />
-      }
-      contentTabs={
-        isTeacher ? (
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg">
-              <Button
-                variant={mainContentTab === 'lesson' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => handleTabChange('lesson')}
-                className="gap-2"
-              >
-                <BookOpen className="w-4 h-4" />
-                Contenido
-              </Button>
-              <Button
-                variant={mainContentTab === 'whiteboard' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => handleTabChange('whiteboard')}
-                className="gap-2"
-              >
-                <PenTool className="w-4 h-4" />
-                Pizarra
-              </Button>
-              <Button
-                variant={mainContentTab === 'screenshare' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => handleTabChange('screenshare')}
-                className="gap-2"
-              >
-                <Monitor className="w-4 h-4" />
-                Pantalla
-              </Button>
-            </div>
+  // Sharing banner
+  const renderSharingBanner = isContentSharing ? (
+    <div className="flex-none px-4 py-1.5 bg-green-600/20 flex items-center justify-center gap-3">
+      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+      <span className="text-xs text-green-400 font-medium">
+        {isScreenSharing ? 'Compartiendo pantalla' : mainContentTab === 'whiteboard' ? 'Pizarra activa' : 'Compartiendo contenido'}
+      </span>
+      {isTeacher && (
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleStopAllSharing}
+          className="gap-1 h-6 text-xs text-red-400 hover:text-red-300 hover:bg-red-500/20 px-2"
+        >
+          <X className="w-3 h-3" />
+          Detener
+        </Button>
+      )}
+    </div>
+  ) : null
 
-            {/* Stop sharing buttons - only for teacher */}
-            {activeLesson && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleStopContentShare}
-                className="gap-2 text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
-              >
-                <X className="w-4 h-4" />
-                Detener Contenido
-              </Button>
-            )}
-            {isScreenSharing && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleStopScreenShare}
-                className="gap-2 text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
-              >
-                <X className="w-4 h-4" />
-                Detener Pantalla
-              </Button>
-            )}
-          </div>
-        ) : null
-      }
-    >
-      {renderMainContent()}
-    </ClassroomLayout>
+  return (
+    <>
+      <ClassroomLayout
+        lessonTitle={activeLesson?.title || 'Aula Virtual'}
+        timeLeft={timeLeft}
+        isGracePeriod={isGracePeriod}
+        isPreClass={isPreClass}
+        videoArea={renderVideoArea}
+        compactVideoArea={renderCompactVideoArea}
+        sidePanel={isChatOpen ? renderChatPanel : undefined}
+        isContentSharing={isContentSharing}
+        fullscreenContent={mainContentTab === 'whiteboard' || mainContentTab === 'screenshare' || isScreenSharing}
+        sharingBanner={renderSharingBanner}
+        topBanner={
+          deviceError ? (
+            <DeviceErrorBanner
+              type={deviceError.type}
+              message={deviceError.message}
+              canRetry={deviceError.canRetry}
+              onRetry={retryDeviceAccess}
+              onDismiss={clearDeviceError}
+            />
+          ) : null
+        }
+        bottomControls={
+          <ControlBar
+            isMicMuted={isAudioMuted}
+            isVideoMuted={isVideoMuted}
+            onToggleMic={toggleAudio}
+            onToggleVideo={toggleVideo}
+            onEndCall={handleEndCall}
+            onLeave={handleLeave}
+            onToggleHand={toggleRaiseHand}
+            isHandRaised={isHandRaised}
+            isRecording={isRecording}
+            isTeacher={isTeacher}
+            isChatOpen={isChatOpen}
+            hasUnreadChat={hasUnreadChat}
+            onToggleChat={handleToggleChat}
+            isSharing={isContentSharing}
+            onToggleShare={() => setIsSharePopoverOpen(prev => !prev)}
+          />
+        }
+      >
+        {isContentSharing ? renderSharedContent() : null}
+      </ClassroomLayout>
+
+      {/* Share Content Popover */}
+      <ShareContentPopover
+        isTeacher={isTeacher}
+        isOpen={isSharePopoverOpen}
+        onClose={() => setIsSharePopoverOpen(false)}
+        onShareScreen={handleShareScreen}
+        onShareContent={handleContentSelect}
+        onShareWhiteboard={handleShareWhiteboard}
+        isScreenSharing={isScreenSharing}
+        someoneElseIsSharing={!!remoteTracks.find(t => t.videoTrack) && isScreenSharing}
+        preloadedContent={shareableContent}
+      />
+    </>
   )
 }
 

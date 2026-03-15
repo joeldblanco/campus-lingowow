@@ -11,18 +11,34 @@ import { cn } from '@/lib/utils'
 
 interface ClassroomChatProps {
   bookingId: string
+  onNewMessage?: () => void
 }
 
-export function ClassroomChat({ bookingId }: ClassroomChatProps) {
+export function ClassroomChat({ bookingId, onNewMessage }: ClassroomChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [newMessage, setNewMessage] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [isSending, setIsSending] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const prevMessageCountRef = useRef(0)
+  const onNewMessageRef = useRef(onNewMessage)
+
+  useEffect(() => {
+    onNewMessageRef.current = onNewMessage
+  }, [onNewMessage])
 
   const loadMessages = useCallback(async () => {
     const msgs = await getChatMessages(bookingId)
+    // Detect new messages from others
+    if (prevMessageCountRef.current > 0 && msgs.length > prevMessageCountRef.current) {
+      const newMsgs = msgs.slice(prevMessageCountRef.current)
+      const hasNewFromOthers = newMsgs.some(m => !m.isOwn)
+      if (hasNewFromOthers) {
+        onNewMessageRef.current?.()
+      }
+    }
+    prevMessageCountRef.current = msgs.length
     setMessages(msgs)
     setIsLoading(false)
   }, [bookingId])
@@ -71,7 +87,7 @@ export function ClassroomChat({ bookingId }: ClassroomChatProps) {
   if (isLoading) {
     return (
       <div className="h-full flex items-center justify-center">
-        <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+        <Loader2 className="w-6 h-6 animate-spin text-blue-400" />
       </div>
     )
   }
@@ -81,7 +97,7 @@ export function ClassroomChat({ bookingId }: ClassroomChatProps) {
       <ScrollArea className="flex-1 min-h-0 p-3" ref={scrollRef}>
         <div className="space-y-3">
           {messages.length === 0 ? (
-            <div className="text-center text-gray-400 text-sm py-8">
+            <div className="text-center text-white/40 text-sm py-8">
               No hay mensajes aún. ¡Inicia la conversación!
             </div>
           ) : (
@@ -95,7 +111,7 @@ export function ClassroomChat({ bookingId }: ClassroomChatProps) {
               >
                 <Avatar className="w-8 h-8 flex-shrink-0">
                   <AvatarImage src={msg.senderImage} />
-                  <AvatarFallback className="text-xs bg-blue-100 text-blue-600">
+                  <AvatarFallback className="text-xs bg-blue-600 text-white">
                     {msg.senderName.substring(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
@@ -104,7 +120,7 @@ export function ClassroomChat({ bookingId }: ClassroomChatProps) {
                   "max-w-[75%] rounded-lg px-3 py-2",
                   msg.isOwn 
                     ? "bg-blue-600 text-white" 
-                    : "bg-gray-100 text-gray-900"
+                    : "bg-white/10 text-white"
                 )}>
                   {!msg.isOwn && (
                     <div className="text-xs font-medium mb-1 opacity-70">
@@ -116,7 +132,7 @@ export function ClassroomChat({ bookingId }: ClassroomChatProps) {
                   </p>
                   <div className={cn(
                     "text-xs mt-1",
-                    msg.isOwn ? "text-blue-200" : "text-gray-400"
+                    msg.isOwn ? "text-blue-200" : "text-white/40"
                   )}>
                     {formatTime(msg.createdAt)}
                   </div>
@@ -127,7 +143,7 @@ export function ClassroomChat({ bookingId }: ClassroomChatProps) {
         </div>
       </ScrollArea>
       
-      <div className="flex-none p-3 border-t bg-gray-50">
+      <div className="flex-none p-3 border-t border-white/10 bg-[#292a2d]">
         <div className="flex gap-2">
           <Input
             ref={inputRef}
@@ -136,12 +152,13 @@ export function ClassroomChat({ bookingId }: ClassroomChatProps) {
             onKeyPress={handleKeyPress}
             placeholder="Escribe un mensaje..."
             disabled={isSending}
-            className="flex-1"
+            className="flex-1 bg-white/10 border-white/10 text-white placeholder:text-white/40 focus-visible:ring-white/20"
           />
           <Button 
             onClick={handleSend} 
             disabled={!newMessage.trim() || isSending}
             size="icon"
+            className="bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-40"
           >
             {isSending ? (
               <Loader2 className="w-4 h-4 animate-spin" />
