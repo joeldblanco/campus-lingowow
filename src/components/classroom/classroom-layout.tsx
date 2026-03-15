@@ -92,9 +92,9 @@ export function ClassroomLayout({
               </div>
             </div>
 
-            {/* Floating compact videos - top right */}
+            {/* Floating compact videos - below header area to avoid overlapping stop-share button */}
             {compactVideoArea && (
-              <div className="absolute top-2 right-2 w-[180px] h-[260px] z-20 rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+              <div className="absolute top-12 right-2 w-[180px] h-[260px] z-20 rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/10">
                 {compactVideoArea}
               </div>
             )}
