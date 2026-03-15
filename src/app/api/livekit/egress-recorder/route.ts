@@ -70,11 +70,40 @@ export async function GET(request: NextRequest) {
     const screenshareVideo = document.getElementById('screenshare-video');
 
     const participants = new Map();
+    // Track currently attached elements to properly detach before re-render
+    const attachedElements = new Map(); // identity -> { videoEl, audioEl }
+    let currentScreenShareTrack = null;
+    let currentScreenShareAudioTrack = null;
+
+    function detachAll() {
+      attachedElements.forEach((els) => {
+        if (els.videoTrack) els.videoTrack.detach();
+        if (els.audioTrack) els.audioTrack.detach();
+      });
+      attachedElements.clear();
+    }
+
+    function hideScreenShare() {
+      if (currentScreenShareTrack) {
+        currentScreenShareTrack.detach();
+        currentScreenShareTrack = null;
+      }
+      if (currentScreenShareAudioTrack) {
+        currentScreenShareAudioTrack.detach();
+        currentScreenShareAudioTrack = null;
+      }
+      screenshareVideo.srcObject = null;
+      const audioEl = screenshareEl.querySelector('audio');
+      if (audioEl) audioEl.srcObject = null;
+      screenshareEl.classList.add('hidden');
+    }
 
     function updateLayout() {
-      const count = participants.size;
+      // Detach all tracks from old DOM elements before rebuilding
+      detachAll();
       container.innerHTML = '';
 
+      const count = participants.size;
       if (count === 0) return;
 
       // Calculate grid dimensions
@@ -94,11 +123,15 @@ export async function GET(request: NextRequest) {
         div.style.width = 'calc(' + w + '% - 8px)';
         div.style.height = 'calc(' + h + '% - 8px)';
 
+        const tracked = { videoTrack: null, audioTrack: null };
+
         if (info.videoTrack) {
           const video = document.createElement('video');
           video.autoplay = true;
           video.playsInline = true;
+          video.muted = true;
           info.videoTrack.attach(video);
+          tracked.videoTrack = info.videoTrack;
           div.appendChild(video);
         }
 
@@ -106,8 +139,11 @@ export async function GET(request: NextRequest) {
           const audio = document.createElement('audio');
           audio.autoplay = true;
           info.audioTrack.attach(audio);
+          tracked.audioTrack = info.audioTrack;
           div.appendChild(audio);
         }
+
+        attachedElements.set(identity, tracked);
 
         const nameLabel = document.createElement('div');
         nameLabel.className = 'name';
@@ -146,11 +182,17 @@ export async function GET(request: NextRequest) {
         }
       });
 
-      // Handle screen share
+      // Handle screen share — show or hide
       if (screenShareTrack) {
-        screenshareEl.classList.remove('hidden');
-        screenShareTrack.attach(screenshareVideo);
-        if (screenShareAudioTrack) {
+        // Only re-attach if it's a new track
+        if (currentScreenShareTrack !== screenShareTrack) {
+          if (currentScreenShareTrack) currentScreenShareTrack.detach();
+          currentScreenShareTrack = screenShareTrack;
+          screenShareTrack.attach(screenshareVideo);
+        }
+        if (screenShareAudioTrack && currentScreenShareAudioTrack !== screenShareAudioTrack) {
+          if (currentScreenShareAudioTrack) currentScreenShareAudioTrack.detach();
+          currentScreenShareAudioTrack = screenShareAudioTrack;
           let audioEl = screenshareEl.querySelector('audio');
           if (!audioEl) {
             audioEl = document.createElement('audio');
@@ -159,6 +201,10 @@ export async function GET(request: NextRequest) {
           }
           screenShareAudioTrack.attach(audioEl);
         }
+        screenshareEl.classList.remove('hidden');
+      } else if (currentScreenShareTrack) {
+        // This participant no longer has screen share — hide if no one else is sharing
+        hideScreenShare();
       }
 
       let name = participant.name || participant.identity;
@@ -180,14 +226,6 @@ export async function GET(request: NextRequest) {
     }
 
     function removeParticipant(participant) {
-      // Check if this participant had screen share
-      participant.trackPublications.forEach((pub) => {
-        if (pub.source === Track.Source.ScreenShare) {
-          screenshareEl.classList.add('hidden');
-          screenshareVideo.srcObject = null;
-        }
-      });
-
       participants.delete(participant.identity);
       updateLayout();
     }
@@ -210,8 +248,7 @@ export async function GET(request: NextRequest) {
 
         room.on(RoomEvent.TrackUnsubscribed, (track, publication, participant) => {
           if (publication.source === Track.Source.ScreenShare) {
-            screenshareEl.classList.add('hidden');
-            screenshareVideo.srcObject = null;
+            hideScreenShare();
           }
           updateParticipant(participant);
         });
@@ -234,10 +271,6 @@ export async function GET(request: NextRequest) {
           if (participant instanceof RemoteParticipant) {
             updateParticipant(participant);
           }
-        });
-
-        room.on(RoomEvent.ActiveSpeakersChanged, () => {
-          room.remoteParticipants.forEach(p => updateParticipant(p));
         });
 
         room.on(RoomEvent.Disconnected, () => {
