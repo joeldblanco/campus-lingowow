@@ -18,12 +18,17 @@ export default async function GradingListPage() {
     redirect('/not-authorized')
   }
 
+  const isAdmin = userRoles.includes('ADMIN')
+
   const examsWithPendingGrading = await db.exam.findMany({
     where: {
-      OR: [
-        { createdById: session.user.id },
-        { course: { teacherCourses: { some: { teacherId: session.user.id } } } }
-      ],
+      // Admins ven todos los exámenes con calificaciones pendientes
+      ...(!isAdmin && {
+        OR: [
+          { createdById: session.user.id },
+          { course: { teacherCourses: { some: { teacherId: session.user.id } } } }
+        ],
+      }),
       attempts: {
         some: {
           status: 'SUBMITTED',

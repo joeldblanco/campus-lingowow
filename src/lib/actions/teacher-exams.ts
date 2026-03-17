@@ -15,10 +15,12 @@ export async function getTeacherExamsForCourse(courseId: string) {
       return { success: false, error: 'No autorizado', exams: [] }
     }
 
+    const isAdmin = session.user.roles?.includes('ADMIN')
+
     const exams = await db.exam.findMany({
       where: {
         courseId,
-        createdById: session.user.id,
+        ...(!isAdmin && { createdById: session.user.id }),
       },
       include: {
         questions: true,
@@ -117,17 +119,21 @@ export async function getStudentsForExamAssignment(courseId: string) {
       return { success: false, error: 'No autorizado', students: [] }
     }
 
+    const isAdmin = session.user.roles?.includes('ADMIN')
+
     // Obtener estudiantes con inscripciones activas en el curso
-    // que hayan tenido clases con este profesor
+    // Admins ven todos los estudiantes; profesores solo los que han tenido clases con ellos
     const enrollments = await db.enrollment.findMany({
       where: {
         courseId,
         status: 'ACTIVE',
-        bookings: {
-          some: {
-            teacherId: session.user.id,
+        ...(!isAdmin && {
+          bookings: {
+            some: {
+              teacherId: session.user.id,
+            },
           },
-        },
+        }),
       },
       include: {
         student: {
@@ -175,11 +181,13 @@ export async function assignExamToStudents(
 
     const teacherId = session.user.id
 
-    // Verificar que el examen pertenece al profesor
+    const isAdmin = session.user.roles?.includes('ADMIN')
+
+    // Verificar que el examen pertenece al profesor (admins pueden asignar cualquier examen)
     const exam = await db.exam.findFirst({
       where: {
         id: examId,
-        createdById: teacherId,
+        ...(!isAdmin && { createdById: teacherId }),
       },
     })
 
@@ -232,11 +240,13 @@ export async function unassignExamFromStudent(examId: string, studentId: string)
       return { success: false, error: 'No autorizado' }
     }
 
-    // Verificar que el examen pertenece al profesor
+    const isAdmin = session.user.roles?.includes('ADMIN')
+
+    // Verificar que el examen pertenece al profesor (admins pueden desasignar cualquier examen)
     const exam = await db.exam.findFirst({
       where: {
         id: examId,
-        createdById: session.user.id,
+        ...(!isAdmin && { createdById: session.user.id }),
       },
     })
 
@@ -286,10 +296,12 @@ export async function toggleExamPublished(examId: string) {
       return { success: false, error: 'No autorizado' }
     }
 
+    const isAdmin = session.user.roles?.includes('ADMIN')
+
     const exam = await db.exam.findFirst({
       where: {
         id: examId,
-        createdById: session.user.id,
+        ...(!isAdmin && { createdById: session.user.id }),
       },
       include: {
         questions: true,
@@ -329,10 +341,12 @@ export async function deleteTeacherExam(examId: string) {
       return { success: false, error: 'No autorizado' }
     }
 
+    const isAdmin = session.user.roles?.includes('ADMIN')
+
     const exam = await db.exam.findFirst({
       where: {
         id: examId,
-        createdById: session.user.id,
+        ...(!isAdmin && { createdById: session.user.id }),
       },
       include: {
         _count: {
@@ -371,10 +385,12 @@ export async function getExamStatistics(examId: string) {
       return { success: false, error: 'No autorizado' }
     }
 
+    const isAdmin = session.user.roles?.includes('ADMIN')
+
     const exam = await db.exam.findFirst({
       where: {
         id: examId,
-        createdById: session.user.id,
+        ...(!isAdmin && { createdById: session.user.id }),
       },
       include: {
         assignments: true,
@@ -427,33 +443,41 @@ export async function getExamAttemptsForTeacherStudents(examId: string, courseId
     }
 
     const teacherId = session.user.id
+    const isAdmin = session.user.roles?.includes('ADMIN')
 
-    // Obtener IDs de estudiantes que tienen clases con este profesor en este curso
-    const bookings = await db.classBooking.findMany({
-      where: {
-        teacherId,
-        enrollment: {
-          courseId,
-          status: 'ACTIVE',
+    // Admins ven todos los intentos; profesores solo los de sus estudiantes
+    let studentFilter: { in: string[] } | undefined = undefined
+
+    if (!isAdmin) {
+      // Obtener IDs de estudiantes que tienen clases con este profesor en este curso
+      const bookings = await db.classBooking.findMany({
+        where: {
+          teacherId,
+          enrollment: {
+            courseId,
+            status: 'ACTIVE',
+          },
         },
-      },
-      select: {
-        studentId: true,
-      },
-      distinct: ['studentId'],
-    })
+        select: {
+          studentId: true,
+        },
+        distinct: ['studentId'],
+      })
 
-    const studentIds = bookings.map((b) => b.studentId)
+      const studentIds = bookings.map((b) => b.studentId)
 
-    if (studentIds.length === 0) {
-      return { success: true, attempts: [] }
+      if (studentIds.length === 0) {
+        return { success: true, attempts: [] }
+      }
+
+      studentFilter = { in: studentIds }
     }
 
-    // Obtener intentos solo de estos estudiantes
+    // Obtener intentos (todos para admin, filtrados para profesor)
     const attempts = await db.examAttempt.findMany({
       where: {
         examId,
-        userId: { in: studentIds },
+        ...(studentFilter && { userId: studentFilter }),
       },
       include: {
         user: {
@@ -501,10 +525,15 @@ export async function getExamForPreview(examId: string) {
       return { success: false, error: 'No autorizado' }
     }
 
+    const isAdmin = session.user.roles?.includes('ADMIN')
+
     const exam = await db.exam.findFirst({
       where: {
         id: examId,
-        OR: [{ createdById: session.user.id }, { course: { isPersonalized: false } }],
+        // Admins pueden previsualizar cualquier examen
+        ...(!isAdmin && {
+          OR: [{ createdById: session.user.id }, { course: { isPersonalized: false } }],
+        }),
       },
       include: {
         course: {
@@ -548,27 +577,37 @@ export async function getExamResultsForTeacher(examId: string) {
       return { success: false, error: 'No autorizado' }
     }
 
-    // Obtener los IDs de estudiantes que tienen clases con este profesor
-    const teacherStudentIds = await db.classBooking.findMany({
-      where: { teacherId: session.user.id },
-      select: { studentId: true },
-      distinct: ['studentId']
-    }).then(bookings => bookings.map(b => b.studentId))
+    const isAdmin = session.user.roles?.includes('ADMIN')
+
+    // Admins ven todos los intentos; profesores solo los de sus estudiantes
+    let attemptsWhereClause: Record<string, unknown> | undefined = undefined
+
+    if (!isAdmin) {
+      const teacherStudentIds = await db.classBooking.findMany({
+        where: { teacherId: session.user.id },
+        select: { studentId: true },
+        distinct: ['studentId']
+      }).then(bookings => bookings.map(b => b.studentId))
+
+      attemptsWhereClause = {
+        OR: [
+          { userId: { in: teacherStudentIds } },
+          { exam: { createdById: session.user.id } }
+        ]
+      }
+    }
 
     const exam = await db.exam.findFirst({
       where: {
         id: examId,
-        OR: [{ createdById: session.user.id }, { course: { isPersonalized: false } }],
+        // Admins pueden ver resultados de cualquier examen
+        ...(!isAdmin && {
+          OR: [{ createdById: session.user.id }, { course: { isPersonalized: false } }],
+        }),
       },
       include: {
         attempts: {
-          where: {
-            // Filtrar solo intentos de estudiantes del profesor o si el profesor creó el examen
-            OR: [
-              { userId: { in: teacherStudentIds } },
-              { exam: { createdById: session.user.id } }
-            ]
-          },
+          ...(attemptsWhereClause && { where: attemptsWhereClause }),
           include: {
             user: {
               select: {
