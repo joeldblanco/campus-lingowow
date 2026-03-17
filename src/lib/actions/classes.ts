@@ -252,15 +252,19 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
     const hours = rawHours.padStart(2, '0')
     const minutes = rawMinutes.padStart(2, '0')
     
-    // Obtener la inscripción para saber la duración de la clase
-    const enrollmentForDuration = await db.enrollment.findUnique({
+    // Obtener la inscripción
+    const enrollment = await db.enrollment.findUnique({
       where: { id: validatedData.enrollmentId },
       include: {
         course: { select: { classDuration: true } },
       },
     })
+
+    if (!enrollment) {
+      return { success: false, error: 'Inscripción no encontrada' }
+    }
     
-    const classDuration = enrollmentForDuration?.course?.classDuration || 40
+    const classDuration = enrollment.course?.classDuration || 40
     const startHours = parseInt(hours, 10)
     const startMins = parseInt(minutes, 10)
     const endMinutes = startHours * 60 + startMins + classDuration
@@ -271,40 +275,6 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
     // Convertir day y timeSlot de hora local a UTC antes de guardar
     const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
     const utcData = convertTimeSlotToUTC(day, timeSlot, userTimezone)
-
-    // 1. Validar que la fecha esté dentro del período académico de la inscripción
-    const enrollment = await db.enrollment.findUnique({
-      where: { id: validatedData.enrollmentId },
-      include: {
-        academicPeriod: {
-          select: {
-            startDate: true,
-            endDate: true,
-            name: true,
-          },
-        },
-      },
-    })
-
-    if (!enrollment) {
-      return { success: false, error: 'Inscripción no encontrada' }
-    }
-
-    // Usar date-fns para manejar fechas
-    const { parseISO, isWithinInterval, format: formatDate } = await import('date-fns')
-
-    // Validar usando la fecha local original (la que el usuario seleccionó)
-    const classDate = parseISO(day)
-    const periodStart = parseISO(enrollment.academicPeriod.startDate.toISOString().split('T')[0])
-    const periodEnd = parseISO(enrollment.academicPeriod.endDate.toISOString().split('T')[0])
-
-    // Validar que la fecha esté dentro del período académico
-    if (!isWithinInterval(classDate, { start: periodStart, end: periodEnd })) {
-      return {
-        success: false,
-        error: `La fecha debe estar dentro del período académico "${enrollment.academicPeriod.name}" (${formatDate(periodStart, 'dd/MM/yyyy')} - ${formatDate(periodEnd, 'dd/MM/yyyy')})`,
-      }
-    }
 
     // 2. Verificar que no haya superposición con otras clases del profesor
     // Obtener todas las clases del profesor para ese día (que no estén canceladas)
