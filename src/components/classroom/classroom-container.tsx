@@ -63,6 +63,7 @@ function ClassroomInner({
     toggleRaiseHand,
     isScreenSharing,
     isHandRaised,
+    remoteScreenShareTrack,
     deviceError,
     clearDeviceError,
     retryDeviceAccess,
@@ -239,6 +240,15 @@ function ClassroomInner({
     autoStartRecording()
   }, [connectionStatus, bookingId, roomName, isRecording])
 
+
+  // Auto-switch to screenshare tab when a remote screen share track appears (student side)
+  useEffect(() => {
+    if (remoteScreenShareTrack) {
+      setMainContentTab('screenshare')
+    } else if (mainContentTab === 'screenshare' && !isScreenSharing) {
+      setMainContentTab('lesson')
+    }
+  }, [remoteScreenShareTrack, isScreenSharing, mainContentTab])
 
   // Ref to track current tab for sync requests
   const mainContentTabRef = useRef(mainContentTab)
@@ -445,7 +455,7 @@ function ClassroomInner({
   }
 
   // Determine if content is being shared (by anyone)
-  const isContentSharing = !!activeLesson || mainContentTab === 'whiteboard' || isScreenSharing
+  const isContentSharing = !!activeLesson || mainContentTab === 'whiteboard' || isScreenSharing || !!remoteScreenShareTrack
 
   // Handle share popover actions — auto-stop previous sharing first
   const handleShareScreen = () => {
@@ -526,7 +536,7 @@ function ClassroomInner({
       return <ExcalidrawWhiteboard bookingId={bookingId} isTeacher={isTeacher} />
     }
 
-    if (mainContentTab === 'screenshare' || isScreenSharing) {
+    if (mainContentTab === 'screenshare' || isScreenSharing || remoteScreenShareTrack) {
       return <ScreenShareViewer />
     }
 
@@ -550,7 +560,7 @@ function ClassroomInner({
     <div className="flex-none px-4 py-1.5 bg-green-600/20 flex items-center justify-center gap-3">
       <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
       <span className="text-xs text-green-400 font-medium">
-        {isScreenSharing ? 'Compartiendo pantalla' : mainContentTab === 'whiteboard' ? 'Pizarra activa' : 'Compartiendo contenido'}
+        {isScreenSharing || remoteScreenShareTrack ? 'Compartiendo pantalla' : mainContentTab === 'whiteboard' ? 'Pizarra activa' : 'Compartiendo contenido'}
       </span>
       {isTeacher && (
         <Button
@@ -577,7 +587,7 @@ function ClassroomInner({
         compactVideoArea={renderCompactVideoArea}
         sidePanel={isChatOpen ? renderChatPanel : undefined}
         isContentSharing={isContentSharing}
-        fullscreenContent={mainContentTab === 'whiteboard' || mainContentTab === 'screenshare' || isScreenSharing}
+        fullscreenContent={mainContentTab === 'whiteboard' || mainContentTab === 'screenshare' || isScreenSharing || !!remoteScreenShareTrack}
         sharingBanner={renderSharingBanner}
         topBanner={
           deviceError ? (
