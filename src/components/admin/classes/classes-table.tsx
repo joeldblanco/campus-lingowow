@@ -99,15 +99,17 @@ export const ClassesTable = memo(function ClassesTable({
     let filtered = localClasses
 
     if (searchTerm) {
-      filtered = filtered.filter(
-        (classItem) =>
-          classItem.student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          classItem.student.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          classItem.teacher.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          classItem.teacher.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          classItem.student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          classItem.teacher.email.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+      const term = searchTerm.toLowerCase().trim()
+      filtered = filtered.filter((classItem) => {
+        const studentFull = `${classItem.student.name} ${classItem.student.lastName || ''}`.toLowerCase()
+        const teacherFull = `${classItem.teacher.name} ${classItem.teacher.lastName || ''}`.toLowerCase()
+        return (
+          studentFull.includes(term) ||
+          teacherFull.includes(term) ||
+          classItem.student.email.toLowerCase().includes(term) ||
+          classItem.teacher.email.toLowerCase().includes(term)
+        )
+      })
     }
 
     if (statusFilter !== 'all') {
