@@ -376,8 +376,7 @@ export async function PUT(
       },
     })
   } catch (error) {
-    const msg = error instanceof Error ? error.message : String(error)
-    console.error('Error updating exam:', msg, error instanceof Error ? error.stack : '')
-    return NextResponse.json({ error: 'Internal server error', debug: msg }, { status: 500 })
+    console.error('Error updating exam:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
