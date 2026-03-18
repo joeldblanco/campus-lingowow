@@ -264,6 +264,62 @@ export const ClassesTable = memo(function ClassesTable({
     }
   }
 
+  const handleUnmarkCompleted = async (classId: string) => {
+    try {
+      const classItem = localClasses.find((c) => c.id === classId)
+      if (!classItem) {
+        toast.error('Clase no encontrada')
+        return
+      }
+
+      const originalStatus = classItem.status
+      const originalCompletedAt = classItem.completedAt
+
+      // Update local state optimistically
+      setLocalClasses((prev) =>
+        prev.map((c) =>
+          c.id === classId ? { ...c, status: BookingStatus.CONFIRMED, completedAt: null } : c
+        )
+      )
+
+      const result = await updateClass(classId, {
+        studentId: classItem.studentId,
+        teacherId: classItem.teacherId,
+        day: classItem.day,
+        timeSlot: classItem.timeSlot,
+        status: BookingStatus.CONFIRMED,
+        completedAt: null,
+        timezone: userTimezone,
+      })
+
+      if (result.success) {
+        toast.success('Clase desmarcada como completada')
+      } else {
+        // Revert on error
+        setLocalClasses((prev) =>
+          prev.map((c) =>
+            c.id === classId
+              ? { ...c, status: originalStatus, completedAt: originalCompletedAt }
+              : c
+          )
+        )
+        toast.error(result.error || 'Error al actualizar la clase')
+      }
+    } catch {
+      const originalClass = localClasses.find((c) => c.id === classId)
+      if (originalClass) {
+        setLocalClasses((prev) =>
+          prev.map((c) =>
+            c.id === classId
+              ? { ...c, status: originalClass.status, completedAt: originalClass.completedAt }
+              : c
+          )
+        )
+      }
+      toast.error('Error al actualizar la clase')
+    }
+  }
+
   const handleTogglePayable = async (classId: string, isPayable: boolean) => {
     try {
       // Update local state optimistically
@@ -555,12 +611,18 @@ export const ClassesTable = memo(function ClassesTable({
                   </DropdownMenuItem>
                 )}
                 {classItem.status === 'COMPLETED' && (
-                  <DropdownMenuItem
-                    onClick={() => handleTogglePayable(classItem.id, !classItem.isPayable)}
-                  >
-                    <DollarSign className="h-4 w-4 mr-2" />
-                    {classItem.isPayable ? 'Desmarcar como pagable' : 'Marcar como pagable'}
-                  </DropdownMenuItem>
+                  <>
+                    <DropdownMenuItem onClick={() => handleUnmarkCompleted(classItem.id)}>
+                      <Clock className="h-4 w-4 mr-2" />
+                      Desmarcar como completada
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => handleTogglePayable(classItem.id, !classItem.isPayable)}
+                    >
+                      <DollarSign className="h-4 w-4 mr-2" />
+                      {classItem.isPayable ? 'Desmarcar como pagable' : 'Marcar como pagable'}
+                    </DropdownMenuItem>
+                  </>
                 )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem

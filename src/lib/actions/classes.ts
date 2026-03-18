@@ -458,7 +458,7 @@ export async function updateClass(id: string, data: z.infer<typeof EditClassSche
     if (validatedData.notes !== undefined) updateData.notes = validatedData.notes
     if (validatedData.enrollmentId) updateData.enrollmentId = validatedData.enrollmentId
     if (validatedData.creditId && validatedData.creditId !== '') updateData.creditId = validatedData.creditId
-    if (validatedData.completedAt) updateData.completedAt = validatedData.completedAt
+    if (validatedData.completedAt !== undefined) updateData.completedAt = validatedData.completedAt
 
     const classBooking = await db.classBooking.update({
       where: { id },
@@ -1155,6 +1155,8 @@ export async function bulkUpdateClasses(
         dataToUpdate.completedAt = new Date()
       } else if (updateData.status === 'CANCELLED') {
         dataToUpdate.cancelledAt = new Date()
+      } else if (updateData.status === 'CONFIRMED') {
+        dataToUpdate.completedAt = null
       }
     }
     
