@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { authenticateRequest } from '@/lib/api-auth'
+import { Prisma } from '@prisma/client'
+import { UpdateExamApiSchema, convertBlocksToQuestions } from '../exam-schemas'
 
 /**
  * GET /api/exams/[examId]
@@ -199,6 +201,182 @@ export async function DELETE(
     return NextResponse.json({ success: true, message: 'Exam deleted successfully' })
   } catch (error) {
     console.error('Error deleting exam:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  }
+}
+
+/**
+ * PUT /api/exams/[examId]
+ * Update an exam's metadata and/or replace its blocks
+ * All fields are optional — only provided fields are updated.
+ * If "blocks" is provided, ALL existing questions are deleted and replaced.
+ */
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ examId: string }> }
+) {
+  try {
+    const authResult = await authenticateRequest(request, ['exams:write'])
+    if (!authResult.success) {
+      return NextResponse.json({ error: authResult.error }, { status: authResult.status })
+    }
+
+    const { examId } = await params
+
+    const exam = await db.exam.findUnique({
+      where: { id: examId },
+      include: { _count: { select: { attempts: true } } },
+    })
+
+    if (!exam) {
+      return NextResponse.json({ error: 'Exam not found' }, { status: 404 })
+    }
+
+    if (exam.createdById !== authResult.userId) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+
+    const body = await request.json()
+    const validation = UpdateExamApiSchema.safeParse(body)
+
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: 'Invalid request body', details: validation.error.flatten() },
+        { status: 400 }
+      )
+    }
+
+    const data = validation.data
+
+    // Validate slug uniqueness if changing it
+    if (data.slug && data.slug !== exam.slug) {
+      const existingSlug = await db.exam.findUnique({ where: { slug: data.slug } })
+      if (existingSlug) {
+        return NextResponse.json({ error: `Slug already in use: ${data.slug}` }, { status: 409 })
+      }
+    }
+
+    // Validate courseId/moduleId/lessonId if provided
+    if (data.courseId) {
+      const course = await db.course.findUnique({ where: { id: data.courseId } })
+      if (!course) {
+        return NextResponse.json({ error: `Course not found: ${data.courseId}` }, { status: 404 })
+      }
+    }
+    if (data.moduleId) {
+      const mod = await db.module.findUnique({ where: { id: data.moduleId } })
+      if (!mod) {
+        return NextResponse.json({ error: `Module not found: ${data.moduleId}` }, { status: 404 })
+      }
+    }
+    if (data.lessonId) {
+      const lesson = await db.lesson.findUnique({ where: { id: data.lessonId } })
+      if (!lesson) {
+        return NextResponse.json({ error: `Lesson not found: ${data.lessonId}` }, { status: 404 })
+      }
+    }
+
+    // Build the metadata update object (only fields that were provided)
+    const { blocks, ...metaFields } = data
+    const updateData: Record<string, unknown> = {}
+
+    const directFields = [
+      'title', 'description', 'instructions', 'timeLimit', 'passingScore', 'maxAttempts',
+      'isBlocking', 'isOptional', 'isPublished', 'shuffleQuestions', 'shuffleOptions',
+      'showResults', 'allowReview', 'proctoringEnabled', 'requireFullscreen',
+      'blockCopyPaste', 'blockRightClick', 'maxWarnings', 'examType', 'targetLanguage',
+      'slug', 'isPublicAccess', 'isGuestAccessible', 'courseId', 'moduleId', 'lessonId',
+    ] as const
+
+    for (const field of directFields) {
+      if (field in metaFields && metaFields[field as keyof typeof metaFields] !== undefined) {
+        updateData[field] = metaFields[field as keyof typeof metaFields]
+      }
+    }
+
+    // Execute in a transaction
+    await db.$transaction(async (tx) => {
+      // Update exam metadata if any fields were provided
+      if (Object.keys(updateData).length > 0) {
+        await tx.exam.update({
+          where: { id: examId },
+          data: updateData,
+        })
+      }
+
+      // Replace blocks if provided
+      if (blocks && blocks.length > 0) {
+        const questions = convertBlocksToQuestions(blocks)
+
+        // Delete all existing questions
+        await tx.examQuestion.deleteMany({ where: { examId } })
+
+        // Create new questions
+        for (const q of questions) {
+          await tx.examQuestion.create({
+            data: {
+              examId,
+              type: q.type,
+              question: q.question,
+              options: q.options ?? Prisma.JsonNull,
+              correctAnswer: q.correctAnswer,
+              explanation: q.explanation,
+              points: q.points,
+              order: q.order,
+              difficulty: q.difficulty,
+              tags: q.tags,
+              caseSensitive: q.caseSensitive,
+              partialCredit: q.partialCredit,
+              minLength: q.minLength,
+              maxLength: q.maxLength,
+              audioUrl: q.audioUrl,
+              maxAudioPlays: q.maxAudioPlays,
+            },
+          })
+        }
+      }
+    })
+
+    // Fetch the updated exam
+    const updatedExam = await db.exam.findUnique({
+      where: { id: examId },
+      include: {
+        questions: { orderBy: { order: 'asc' } },
+        course: { select: { id: true, title: true } },
+        module: { select: { id: true, title: true } },
+        lesson: { select: { id: true, title: true } },
+      },
+    })
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        id: updatedExam!.id,
+        title: updatedExam!.title,
+        description: updatedExam!.description,
+        examType: updatedExam!.examType,
+        isPublished: updatedExam!.isPublished,
+        slug: updatedExam!.slug,
+        timeLimit: updatedExam!.timeLimit,
+        passingScore: updatedExam!.passingScore,
+        maxAttempts: updatedExam!.maxAttempts,
+        questionCount: updatedExam!.questions.length,
+        totalPoints: updatedExam!.questions.reduce((sum, q) => sum + q.points, 0),
+        course: updatedExam!.course,
+        module: updatedExam!.module,
+        lesson: updatedExam!.lesson,
+        questions: updatedExam!.questions.map(q => ({
+          id: q.id,
+          type: q.type,
+          question: q.question,
+          points: q.points,
+          order: q.order,
+        })),
+        updatedAt: updatedExam!.updatedAt,
+      },
+    })
+  } catch (error) {
+    console.error('Error updating exam:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
