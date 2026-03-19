@@ -9,7 +9,6 @@ import {
   ChevronRight, 
   CheckCircle, 
   XCircle,
-  AlertCircle,
   FileText,
   Save,
   Send,
@@ -19,7 +18,13 @@ import {
   Type,
   FileTextIcon,
   FileDown,
-  Loader2
+  Loader2,
+  Sparkles,
+  Pencil,
+  BookOpen,
+  Target,
+  MessageSquare,
+  TrendingUp
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -28,6 +33,12 @@ import { Badge } from '@/components/ui/badge'
 import { cn, processHtmlLinks } from '@/lib/utils'
 import { toast } from 'sonner'
 import { exportAttemptToHTML } from '@/lib/html-export-attempt'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 
 interface StudentInfo {
   id: string
@@ -71,6 +82,7 @@ interface QuestionAnswer {
   needsReview: boolean
   feedback?: string | null
   isAutoGraded: boolean
+  reviewedBy?: string | null
   groupId?: string | null
   sectionTitle?: string
   isInformativeBlock?: boolean // Para bloques de audio, video, texto, etc.
@@ -144,6 +156,8 @@ export function ExamGradingView({
   const [isSaving, setIsSaving] = useState(false)
   const [isFinishing, setIsFinishing] = useState(false)
   const [isExporting, setIsExporting] = useState(false)
+  const [showRubricDialog, setShowRubricDialog] = useState(false)
+  const [editingAnswerIds, setEditingAnswerIds] = useState<Set<string>>(new Set())
   const navigationContainerRef = useRef<HTMLDivElement>(null)
 
   const currentAnswer = answers[currentQuestionIndex]
@@ -443,14 +457,24 @@ export function ExamGradingView({
             <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900 rounded-xl p-4">
               <h4 className="font-bold text-foreground text-sm mb-2">Nota del Profesor</h4>
               <p className="text-sm text-muted-foreground mb-3">
-                Este examen incluye {answers.filter(a => a.needsReview && !a.isInformativeBlock).length} pregunta(s) de ensayo que requieren calificación manual.
+                {(() => {
+                  const pendingManual = answers.filter(a => a.needsReview && !a.isInformativeBlock).length
+                  const aiGraded = answers.filter(a => !a.needsReview && a.reviewedBy === 'AI_GEMINI' && !a.isInformativeBlock).length
+                  const parts: string[] = []
+                  if (pendingManual > 0) parts.push(`${pendingManual} pregunta(s) pendiente(s) de revisión manual`)
+                  if (aiGraded > 0) parts.push(`${aiGraded} pregunta(s) calificada(s) por IA (editables)`)
+                  return parts.length > 0 
+                    ? `Este examen incluye ${parts.join(' y ')}.`
+                    : 'Todas las preguntas han sido calificadas.'
+                })()}
               </p>
               <Button 
                 variant="outline" 
                 size="sm" 
                 className="w-full"
-                onClick={() => toast.info('La rúbrica de calificación estará disponible próximamente')}
+                onClick={() => setShowRubricDialog(true)}
               >
+                <BookOpen className="h-4 w-4 mr-2" />
                 Ver Rúbrica de Calificación
               </Button>
             </div>
@@ -708,23 +732,40 @@ export function ExamGradingView({
                         </div>
                       )}
 
-                      {/* Solo mostrar bloque de resultado si NO tiene multipleChoiceDetails (ya se muestra arriba) */}
-                      {!answer.needsReview && answer.isAutoGraded && !answer.multipleChoiceDetails && (
-                        <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+                      {/* Bloque de resultado para preguntas auto-calificadas (NO multipleChoice) */}
+                      {!answer.needsReview && answer.isAutoGraded && !answer.multipleChoiceDetails && (() => {
+                        const isAIGraded = answer.reviewedBy === 'AI_GEMINI'
+                        const isEssayOrRecording = answer.questionType === 'ESSAY' || answer.questionType === 'RECORDING'
+                        const isEditing = editingAnswerIds.has(answer.id)
+
+                        return (
+                        <div className="border-t border-gray-200 dark:border-gray-700 pt-6 space-y-4">
+                          {/* Resultado: Correcto/Incorrecto + Puntaje */}
                           <div className={cn(
                             "p-4 rounded-lg",
                             answer.isCorrect 
                               ? "bg-green-50 dark:bg-green-900/20 border border-green-200"
                               : "bg-red-50 dark:bg-red-900/20 border border-red-200"
                           )}>
-                            <div className="flex items-center gap-2 mb-2">
-                              {answer.isCorrect ? (
-                                <CheckCircle className="h-5 w-5 text-green-600" />
-                              ) : (
-                                <XCircle className="h-5 w-5 text-red-600" />
-                              )}
-                              <span className="font-bold text-foreground">
-                                {answer.isCorrect ? 'Respuesta Correcta' : 'Respuesta Incorrecta'}
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="flex items-center gap-2">
+                                {answer.isCorrect ? (
+                                  <CheckCircle className="h-5 w-5 text-green-600" />
+                                ) : (
+                                  <XCircle className="h-5 w-5 text-red-600" />
+                                )}
+                                <span className="font-bold text-foreground">
+                                  {answer.isCorrect ? 'Respuesta Correcta' : 'Respuesta Incorrecta'}
+                                </span>
+                                {isAIGraded && (
+                                  <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-300 dark:bg-purple-900/20 dark:text-purple-400 dark:border-purple-700">
+                                    <Sparkles className="h-3 w-3 mr-1" />
+                                    Calificada por IA
+                                  </Badge>
+                                )}
+                              </div>
+                              <span className="text-sm font-medium text-muted-foreground">
+                                {answer.pointsEarned} / {answer.maxPoints} pts
                               </span>
                             </div>
                             {answer.correctAnswer && !answer.isCorrect && (
@@ -735,21 +776,140 @@ export function ExamGradingView({
                             )}
                           </div>
 
-                          <div className="mt-4">
-                            <button 
-                              className="text-sm text-primary hover:underline flex items-center gap-1"
-                              onClick={() => {
-                                updateLocalGrade(answer.id, 'points', answer.pointsEarned)
-                                updateLocalGrade(answer.id, 'feedback', answer.feedback || '')
-                                toast.info('Ahora puedes modificar el puntaje y agregar comentarios')
-                              }}
-                            >
-                              <AlertCircle className="h-4 w-4" />
-                              Anular Puntaje o Agregar Comentario
-                            </button>
-                          </div>
+                          {/* Feedback de IA para ensayos y grabaciones */}
+                          {isAIGraded && isEssayOrRecording && answer.feedback && !isEditing && (
+                            <div className="p-4 rounded-lg bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700">
+                              <div className="flex items-center gap-2 mb-3">
+                                <Sparkles className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                                <h4 className="font-bold text-purple-800 dark:text-purple-300">Retroalimentación de la IA</h4>
+                              </div>
+                              <p className="text-sm text-purple-900 dark:text-purple-200 whitespace-pre-wrap leading-relaxed">
+                                {answer.feedback}
+                              </p>
+                            </div>
+                          )}
+
+                          {/* Feedback manual existente (no-IA) */}
+                          {!isAIGraded && answer.feedback && !isEditing && (
+                            <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700">
+                              <div className="flex items-center gap-2 mb-3">
+                                <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                <h4 className="font-bold text-blue-800 dark:text-blue-300">Retroalimentación del Profesor</h4>
+                              </div>
+                              <p className="text-sm text-blue-900 dark:text-blue-200 whitespace-pre-wrap leading-relaxed">
+                                {answer.feedback}
+                              </p>
+                            </div>
+                          )}
+
+                          {/* Formulario de edición expandido */}
+                          {isEditing && (
+                            <div className="p-4 rounded-lg bg-white dark:bg-gray-800 border-2 border-primary/30">
+                              <div className="flex items-center gap-2 mb-4">
+                                <Pencil className="h-5 w-5 text-primary" />
+                                <h4 className="font-bold text-foreground">Editar Calificación y Retroalimentación</h4>
+                              </div>
+
+                              <div className="grid md:grid-cols-3 gap-6">
+                                <div className="md:col-span-2">
+                                  <label className="text-sm font-medium text-muted-foreground mb-2 block">
+                                    Retroalimentación
+                                  </label>
+                                  <Textarea
+                                    placeholder="Editar retroalimentación..."
+                                    value={localGrades[answer.id]?.feedback ?? answer.feedback ?? ''}
+                                    onChange={(e) => updateLocalGrade(answer.id, 'feedback', e.target.value)}
+                                    className="min-h-[120px]"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="text-sm font-medium text-muted-foreground mb-2 block">
+                                    Ajuste de Puntaje
+                                  </label>
+                                  <div className="flex items-center gap-2">
+                                    <Input
+                                      type="number"
+                                      min={0}
+                                      max={answer.maxPoints}
+                                      value={localGrades[answer.id]?.points ?? answer.pointsEarned}
+                                      onChange={(e) => updateLocalGrade(answer.id, 'points', parseFloat(e.target.value) || 0)}
+                                      className="w-20"
+                                    />
+                                    <span className="text-muted-foreground">/ {answer.maxPoints}</span>
+                                  </div>
+                                  <div className="flex gap-2 mt-3">
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => updateLocalGrade(answer.id, 'points', answer.maxPoints)}
+                                    >
+                                      Máximo
+                                    </Button>
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => updateLocalGrade(answer.id, 'points', answer.maxPoints * 0.5)}
+                                    >
+                                      50%
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="flex justify-end gap-2 mt-4">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => {
+                                    setEditingAnswerIds(prev => {
+                                      const next = new Set(prev)
+                                      next.delete(answer.id)
+                                      return next
+                                    })
+                                    setLocalGrades(prev => {
+                                      const newGrades = { ...prev }
+                                      delete newGrades[answer.id]
+                                      return newGrades
+                                    })
+                                  }}
+                                >
+                                  Cancelar
+                                </Button>
+                                <Button
+                                  onClick={() => handleSaveGrade(answer.id)}
+                                  disabled={isSaving}
+                                  className="flex items-center gap-2"
+                                >
+                                  <Save className="h-4 w-4" />
+                                  {isSaving ? 'Guardando...' : 'Guardar Cambios'}
+                                </Button>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Botón para editar */}
+                          {!isEditing && (
+                            <div>
+                              <button 
+                                className="text-sm text-primary hover:underline flex items-center gap-1"
+                                onClick={() => {
+                                  updateLocalGrade(answer.id, 'points', answer.pointsEarned)
+                                  updateLocalGrade(answer.id, 'feedback', answer.feedback || '')
+                                  setEditingAnswerIds(prev => {
+                                    const next = new Set(prev)
+                                    next.add(answer.id)
+                                    return next
+                                  })
+                                }}
+                              >
+                                <Pencil className="h-4 w-4" />
+                                Editar Calificación y Retroalimentación
+                              </button>
+                            </div>
+                          )}
                         </div>
-                      )}
+                        )
+                      })()}
                     </div>
                   )
                 })}
@@ -857,6 +1017,135 @@ export function ExamGradingView({
           </div>
         </div>
       </main>
+
+      {/* Rúbrica de Calificación Dialog */}
+      <Dialog open={showRubricDialog} onOpenChange={setShowRubricDialog}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <BookOpen className="h-5 w-5 text-primary" />
+              Rúbrica de Calificación
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-6">
+            {/* Ensayos */}
+            <div>
+              <h3 className="text-lg font-bold text-foreground flex items-center gap-2 mb-4">
+                <FileText className="h-5 w-5" />
+                Preguntas de Ensayo (Essay)
+              </h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Las preguntas de ensayo se evalúan en 4 categorías, cada una representando el 25% del puntaje total de la pregunta:
+              </p>
+              <div className="grid gap-3">
+                <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700">
+                  <div className="flex items-center gap-2 mb-1">
+                    <BookOpen className="h-4 w-4 text-blue-600" />
+                    <span className="font-semibold text-blue-800 dark:text-blue-300">Gramática y Precisión</span>
+                    <span className="text-xs text-blue-600 ml-auto">25%</span>
+                  </div>
+                  <p className="text-xs text-blue-700 dark:text-blue-400">Uso correcto de estructuras gramaticales, conjugaciones, concordancia y ortografía.</p>
+                </div>
+                <div className="p-3 rounded-lg bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700">
+                  <div className="flex items-center gap-2 mb-1">
+                    <MessageSquare className="h-4 w-4 text-purple-600" />
+                    <span className="font-semibold text-purple-800 dark:text-purple-300">Vocabulario</span>
+                    <span className="text-xs text-purple-600 ml-auto">25%</span>
+                  </div>
+                  <p className="text-xs text-purple-700 dark:text-purple-400">Variedad y precisión en el uso del vocabulario, adecuado al nivel esperado.</p>
+                </div>
+                <div className="p-3 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700">
+                  <div className="flex items-center gap-2 mb-1">
+                    <TrendingUp className="h-4 w-4 text-green-600" />
+                    <span className="font-semibold text-green-800 dark:text-green-300">Coherencia y Organización</span>
+                    <span className="text-xs text-green-600 ml-auto">25%</span>
+                  </div>
+                  <p className="text-xs text-green-700 dark:text-green-400">Flujo lógico de ideas, uso de conectores, estructura clara de párrafos.</p>
+                </div>
+                <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Target className="h-4 w-4 text-amber-600" />
+                    <span className="font-semibold text-amber-800 dark:text-amber-300">Cumplimiento de la Tarea</span>
+                    <span className="text-xs text-amber-600 ml-auto">25%</span>
+                  </div>
+                  <p className="text-xs text-amber-700 dark:text-amber-400">Responde adecuadamente al prompt, desarrolla el tema solicitado con suficiente detalle.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Grabaciones */}
+            <div>
+              <h3 className="text-lg font-bold text-foreground flex items-center gap-2 mb-4">
+                <Volume2 className="h-5 w-5" />
+                Preguntas de Pronunciación (Recording)
+              </h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Las grabaciones de audio se evalúan en 5 categorías, cada una representando el 20% del puntaje total:
+              </p>
+              <div className="grid gap-3">
+                <div className="p-3 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-700">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Volume2 className="h-4 w-4 text-rose-600" />
+                    <span className="font-semibold text-rose-800 dark:text-rose-300">Pronunciación y Acento</span>
+                    <span className="text-xs text-rose-600 ml-auto">20%</span>
+                  </div>
+                  <p className="text-xs text-rose-700 dark:text-rose-400">Claridad en la pronunciación, entonación y acento adecuados al idioma objetivo.</p>
+                </div>
+                <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700">
+                  <div className="flex items-center gap-2 mb-1">
+                    <BookOpen className="h-4 w-4 text-blue-600" />
+                    <span className="font-semibold text-blue-800 dark:text-blue-300">Gramática y Precisión</span>
+                    <span className="text-xs text-blue-600 ml-auto">20%</span>
+                  </div>
+                  <p className="text-xs text-blue-700 dark:text-blue-400">Uso correcto de estructuras gramaticales al hablar.</p>
+                </div>
+                <div className="p-3 rounded-lg bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700">
+                  <div className="flex items-center gap-2 mb-1">
+                    <MessageSquare className="h-4 w-4 text-purple-600" />
+                    <span className="font-semibold text-purple-800 dark:text-purple-300">Vocabulario</span>
+                    <span className="text-xs text-purple-600 ml-auto">20%</span>
+                  </div>
+                  <p className="text-xs text-purple-700 dark:text-purple-400">Variedad y precisión del vocabulario utilizado al hablar.</p>
+                </div>
+                <div className="p-3 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700">
+                  <div className="flex items-center gap-2 mb-1">
+                    <TrendingUp className="h-4 w-4 text-green-600" />
+                    <span className="font-semibold text-green-800 dark:text-green-300">Fluidez</span>
+                    <span className="text-xs text-green-600 ml-auto">20%</span>
+                  </div>
+                  <p className="text-xs text-green-700 dark:text-green-400">Naturalidad del habla, ritmo, pausas y hesitaciones.</p>
+                </div>
+                <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Target className="h-4 w-4 text-amber-600" />
+                    <span className="font-semibold text-amber-800 dark:text-amber-300">Cumplimiento de la Tarea</span>
+                    <span className="text-xs text-amber-600 ml-auto">20%</span>
+                  </div>
+                  <p className="text-xs text-amber-700 dark:text-amber-400">Responde a la instrucción de manera completa y con contenido relevante.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Nota */}
+            <div className="p-4 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <div className="flex items-start gap-3">
+                <Sparkles className="h-5 w-5 text-slate-500 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                    Calificación con IA
+                  </p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    Las preguntas de ensayo y pronunciación pueden ser calificadas automáticamente por IA (Gemini). 
+                    Los profesores y administradores pueden revisar, editar los puntajes y modificar la retroalimentación 
+                    en cualquier momento, incluso después de la calificación automática.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

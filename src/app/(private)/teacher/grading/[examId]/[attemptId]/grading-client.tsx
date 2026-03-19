@@ -35,6 +35,7 @@ interface QuestionAnswer {
   needsReview: boolean
   feedback?: string | null
   isAutoGraded: boolean
+  reviewedBy?: string | null
   groupId?: string | null
   sectionTitle?: string
 }
