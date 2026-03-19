@@ -26,7 +26,7 @@ function getSocketClient(): Socket | null {
   return globalThis.socketClientInstance
 }
 
-export const socketClient = getSocketClient()
+export const socketClient: Socket | null = getSocketClient()
 
 // --- Server-side emitter (replaces pusherServer) ---
 
