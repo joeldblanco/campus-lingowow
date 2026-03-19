@@ -131,7 +131,9 @@ export function TeacherSchedule({ initialData, currentPeriod }: TeacherScheduleP
         // This prevents data from disappearing when switching views
         const monthEnd = endOfMonth(currentDate)
 
+        console.log('[SCHEDULE CLIENT] calling getTeacherScheduleData', { monthStart: monthStart.toISOString(), monthEnd: monthEnd.toISOString() })
         const result = await getTeacherScheduleData(monthStart, monthEnd)
+        console.log('[SCHEDULE CLIENT] result:', JSON.stringify({ success: result.success, error: result.error, lessons: result.data?.lessons?.length, availability: result.data?.availability?.length, blocked: result.data?.blockedDays?.length }))
 
         if (result.success && result.data) {
           setLessons(transformLessons(result.data.lessons))

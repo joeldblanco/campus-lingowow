@@ -137,6 +137,12 @@ export async function getTeacherScheduleData(
 
     const blockedDays = blockedDaysRecords.map((record) => record.date)
 
+    console.log('[SCHEDULE] teacherId:', teacherId, 'timezone:', teacherTimezone)
+    console.log('[SCHEDULE] range:', startDateStr, 'to', endDateStr)
+    console.log('[SCHEDULE] bookings:', bookings.length, 'availability:', availability.length, 'blocked:', blockedDays.length)
+    if (bookings.length > 0) console.log('[SCHEDULE] sample booking:', bookings[0].day, bookings[0].timeSlot, bookings[0].status)
+    if (availability.length > 0) console.log('[SCHEDULE] sample avail:', availability[0].day, availability[0].startTime, availability[0].endTime)
+
     // Transform bookings to lessons
     // Convertir de UTC a hora local del profesor
     const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
@@ -208,7 +214,8 @@ export async function getTeacherScheduleData(
       },
     }
   } catch (error) {
-    console.error('Error fetching teacher schedule:', error)
+    console.error('[SCHEDULE ERROR] Full error:', error)
+    console.error('[SCHEDULE ERROR] Stack:', error instanceof Error ? error.stack : 'no stack')
     return { success: false, error: 'Error al cargar el horario' }
   }
 }
