@@ -39,8 +39,10 @@ export async function GET(request: NextRequest) {
     if (status) where.status = status
     const isValidDate = (str: string) => {
       if (!/^\d{4}-\d{2}-\d{2}$/.test(str)) return false
-      const d = new Date(str + 'T00:00:00Z')
-      return !isNaN(d.getTime()) && d.toISOString().startsWith(str)
+      const [y, m, d] = str.split('-').map(Number)
+      if (m < 1 || m > 12 || d < 1) return false
+      const daysInMonth = new Date(y, m, 0).getDate()
+      return d <= daysInMonth
     }
     if (from) {
       if (!isValidDate(from)) {
