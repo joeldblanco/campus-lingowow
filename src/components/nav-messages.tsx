@@ -7,7 +7,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
-import { usePusherChannel } from '@/hooks/use-pusher-channel'
+import { useSocketChannel } from '@/hooks/use-socket-channel'
 import { getTotalUnreadCount } from '@/lib/actions/floating-chat'
 import { MessageCircle } from 'lucide-react'
 import { useSession } from 'next-auth/react'
@@ -52,12 +52,12 @@ export function NavMessages() {
     fetchCount()
   }, [fetchCount])
 
-  const pusherEvents = useMemo(() => [
+  const socketEvents = useMemo(() => [
     { event: 'conversation-update', callback: handleConversationUpdate },
     { event: 'conversation-read', callback: handleConversationRead },
   ], [handleConversationUpdate, handleConversationRead])
 
-  usePusherChannel(userId ? `user-${userId}` : null, pusherEvents)
+  useSocketChannel(userId ? `user-${userId}` : null, socketEvents)
 
   const isActive = pathname.startsWith('/messages')
 

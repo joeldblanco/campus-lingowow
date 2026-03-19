@@ -1,6 +1,6 @@
 'use client'
 
-import { usePusherChannel } from '@/hooks/use-pusher-channel'
+import { useSocketChannel } from '@/hooks/use-socket-channel'
 import { MessageType, TeamBadge, UserRole } from '@prisma/client'
 import React, { useCallback, useMemo, useState } from 'react'
 import { ChatSidebar } from './ChatSidebar'
@@ -94,16 +94,16 @@ export const MessagesClient: React.FC<MessagesClientProps> = ({
     })
   }, [])
 
-  const handlePusherNewConversation = useCallback((data: unknown) => {
+  const handleSocketNewConversation = useCallback((data: unknown) => {
     setConversations((prev) => [data as Conversation, ...prev])
   }, [])
 
-  const pusherEvents = useMemo(() => [
+  const socketEvents = useMemo(() => [
     { event: 'conversation-update', callback: handleConversationUpdate },
-    { event: 'new-conversation', callback: handlePusherNewConversation },
-  ], [handleConversationUpdate, handlePusherNewConversation])
+    { event: 'new-conversation', callback: handleSocketNewConversation },
+  ], [handleConversationUpdate, handleSocketNewConversation])
 
-  usePusherChannel(`user-${currentUser.id}`, pusherEvents)
+  useSocketChannel(`user-${currentUser.id}`, socketEvents)
 
   const handleNewConversation = (conversation: Conversation) => {
     setConversations((prev) => {

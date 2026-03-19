@@ -1,6 +1,6 @@
 'use client'
 
-import { pusherClient } from '@/lib/pusher'
+import { socketClient } from '@/lib/socket'
 import { useEffect, useRef } from 'react'
 
 type EventCallback<T = unknown> = (data: T) => void
@@ -10,7 +10,7 @@ interface EventBinding {
   callback: EventCallback
 }
 
-export function usePusherChannel(
+export function useSocketChannel(
   channelName: string | null,
   events: EventBinding[]
 ) {
@@ -18,12 +18,10 @@ export function usePusherChannel(
   eventsRef.current = events
 
   useEffect(() => {
-    if (!channelName) return
+    if (!channelName || !socketClient) return
 
-    let channel = pusherClient.channel(channelName)
-    if (!channel) {
-      channel = pusherClient.subscribe(channelName)
-    }
+    // Join the room
+    socketClient.emit('join', channelName)
 
     const handlers = new Map<string, EventCallback>()
 
@@ -36,21 +34,15 @@ export function usePusherChannel(
           callback(data)
         }
       }
-      channel.bind(event, handler)
+      socketClient.on(event, handler)
       handlers.set(event, handler)
     })
 
     return () => {
       handlers.forEach((handler, event) => {
-        channel.unbind(event, handler)
+        socketClient.off(event, handler)
       })
-
-      const allChannels = pusherClient.allChannels()
-      const channelStillExists = allChannels.find(c => c.name === channelName)
-      const subscriptionCount = channel.subscriptionCount
-      if (!channelStillExists || (subscriptionCount !== undefined && subscriptionCount !== null && subscriptionCount <= 1)) {
-        pusherClient.unsubscribe(channelName)
-      }
+      socketClient.emit('leave', channelName)
     }
   }, [channelName])
 }

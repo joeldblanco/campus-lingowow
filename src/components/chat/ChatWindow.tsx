@@ -20,7 +20,7 @@ import {
   markMessagesAsRead,
   sendFloatingMessage,
 } from '@/lib/actions/floating-chat'
-import { usePusherChannel } from '@/hooks/use-pusher-channel'
+import { useSocketChannel } from '@/hooks/use-socket-channel'
 import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import EmojiPicker from 'emoji-picker-react'
@@ -172,11 +172,11 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
     }
   }, [conversationId, currentUser.id])
 
-  const conversationPusherEvents = useMemo(() => [
+  const conversationSocketEvents = useMemo(() => [
     { event: 'new-message', callback: handleNewMessage },
   ], [handleNewMessage])
 
-  usePusherChannel(`conversation-${conversationId}`, conversationPusherEvents)
+  useSocketChannel(`conversation-${conversationId}`, conversationSocketEvents)
 
   // --- Message Sending Logic ---
   const sendMessageInternal = async (

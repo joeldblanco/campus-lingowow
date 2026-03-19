@@ -2,7 +2,7 @@
 
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
-import { pusherServer } from '@/lib/pusher'
+import { socketServer } from '@/lib/socket'
 import { getCurrentDate } from '@/lib/utils/date'
 import { MessageType, Prisma } from '@prisma/client'
 
@@ -173,7 +173,7 @@ export async function createFloatingConversation(participantIds: string[]) {
     // Notify participants about new conversation
     for (const participant of conversation.participants) {
       if (participant.userId !== session.user.id) {
-        await pusherServer.trigger(`user-${participant.userId}`, 'new-conversation', conversation)
+        await socketServer.trigger(`user-${participant.userId}`, 'new-conversation', conversation)
       }
     }
 
@@ -274,20 +274,21 @@ export async function sendFloatingMessage(
       },
     })
 
-    // Trigger Pusher events
-    // 1. New message in the conversation channel
-    await pusherServer.trigger(`conversation-${conversationId}`, 'new-message', message)
-
-    // 2. Update conversation list for all participants
+    // Emit events via Socket.io
     const participants = updatedConversation.participants
-    for (const p of participants) {
-      await pusherServer.trigger(`user-${p.userId}`, 'conversation-update', {
-        conversationId,
-        lastMessage: updatedConversation.lastMessage,
-        lastMessageAt: updatedConversation.lastMessageAt,
-        unreadCount: p.userId !== senderId ? 1 : 0, // Simplified unread logic for now
-      })
-    }
+    await socketServer.triggerBatch([
+      { room: `conversation-${conversationId}`, event: 'new-message', data: message },
+      ...participants.map((p) => ({
+        room: `user-${p.userId}`,
+        event: 'conversation-update',
+        data: {
+          conversationId,
+          lastMessage: updatedConversation.lastMessage,
+          lastMessageAt: updatedConversation.lastMessageAt,
+          unreadCount: p.userId !== senderId ? 1 : 0,
+        },
+      })),
+    ])
 
     return { success: true, message }
   } catch (error) {
@@ -387,8 +388,8 @@ export async function markMessagesAsRead(conversationId: string, userId: string)
       },
     })
 
-    // Trigger Pusher event for the user to update sidebar
-    await pusherServer.trigger(`user-${userId}`, 'conversation-read', { conversationId })
+    // Notify client to update sidebar
+    await socketServer.trigger(`user-${userId}`, 'conversation-read', { conversationId })
 
     return { success: true }
   } catch (error) {
