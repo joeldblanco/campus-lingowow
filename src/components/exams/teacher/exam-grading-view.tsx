@@ -918,26 +918,11 @@ export function ExamGradingView({
                         return (
                         <div className="border-t border-gray-200 dark:border-gray-700 pt-6 space-y-4">
                           {/* Resultado: Puntaje */}
-                          <div className={cn(
-                            "p-4 rounded-lg",
-                            answer.isCorrect 
-                              ? "bg-green-50 dark:bg-green-900/20 border border-green-200"
-                              : answer.isCorrect === false
-                                ? "bg-red-50 dark:bg-red-900/20 border border-red-200"
-                                : "bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700"
-                          )}>
+                          <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700">
                             <div className="flex items-center justify-between mb-2">
                               <div className="flex items-center gap-2">
-                                {answer.isCorrect ? (
-                                  <CheckCircle className="h-5 w-5 text-green-600" />
-                                ) : answer.isCorrect === false ? (
-                                  <XCircle className="h-5 w-5 text-red-600" />
-                                ) : (
-                                  <CheckCircle className="h-5 w-5 text-gray-400" />
-                                )}
-                                <span className="font-bold text-foreground">
-                                  {answer.isCorrect ? 'Aprobada' : answer.isCorrect === false ? 'No Aprobada' : 'Calificada'}
-                                </span>
+                                <CheckCircle className="h-5 w-5 text-blue-600" />
+                                <span className="font-bold text-foreground">Calificada</span>
                                 <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-700">
                                   Calificada Manualmente
                                 </Badge>
