@@ -37,8 +37,19 @@ export async function GET(request: NextRequest) {
     if (studentEmail) where.student = { email: studentEmail }
     if (teacherId) where.teacherId = teacherId
     if (status) where.status = status
-    if (from) where.day = { ...(where.day || {}), gte: from }
-    if (to) where.day = { ...(where.day || {}), lte: to }
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/
+    if (from) {
+      if (!dateRegex.test(from)) {
+        return NextResponse.json({ error: 'Formato de fecha "from" inválido. Usa YYYY-MM-DD' }, { status: 400 })
+      }
+      where.day = { ...(where.day || {}), gte: from }
+    }
+    if (to) {
+      if (!dateRegex.test(to)) {
+        return NextResponse.json({ error: 'Formato de fecha "to" inválido. Usa YYYY-MM-DD' }, { status: 400 })
+      }
+      where.day = { ...(where.day || {}), lte: to }
+    }
 
     const bookings = await db.classBooking.findMany({
       where,
