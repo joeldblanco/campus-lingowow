@@ -57,7 +57,7 @@ export async function getTeacherScheduleData(
 ): Promise<{ success: boolean; data?: TeacherScheduleData; error?: string }> {
   const session = await auth()
 
-  if (!session?.user?.id || !session.user.roles.includes(UserRole.TEACHER)) {
+  if (!session?.user?.id || (!session.user.roles.includes(UserRole.TEACHER) && !session.user.roles.includes(UserRole.ADMIN))) {
     return { success: false, error: 'No autorizado' }
   }
 
@@ -241,7 +241,7 @@ export async function updateTeacherAvailabilitySlot(params: {
 }) {
   const session = await auth()
 
-  if (!session?.user?.id || !session.user.roles.includes(UserRole.TEACHER)) {
+  if (!session?.user?.id || (!session.user.roles.includes(UserRole.TEACHER) && !session.user.roles.includes(UserRole.ADMIN))) {
     return { success: false, error: 'No autorizado' }
   }
 
@@ -307,7 +307,7 @@ export async function bulkUpdateTeacherAvailability(
 ) {
   const session = await auth()
 
-  if (!session?.user?.id || !session.user.roles.includes(UserRole.TEACHER)) {
+  if (!session?.user?.id || (!session.user.roles.includes(UserRole.TEACHER) && !session.user.roles.includes(UserRole.ADMIN))) {
     return { success: false, error: 'No autorizado' }
   }
 
@@ -616,7 +616,7 @@ export async function toggleBlockTeacherDay(params: {
 }) {
   const session = await auth()
 
-  if (!session?.user?.id || !session.user.roles.includes(UserRole.TEACHER)) {
+  if (!session?.user?.id || (!session.user.roles.includes(UserRole.TEACHER) && !session.user.roles.includes(UserRole.ADMIN))) {
     return { success: false, error: 'No autorizado' }
   }
 

@@ -13,9 +13,11 @@ import type {
   TeacherScheduleLesson,
 } from '@/types/schedule'
 import {
+  addDays,
   endOfMonth,
   endOfWeek,
   format,
+  getDay,
   isSameDay,
   isWithinInterval,
   startOfMonth,
@@ -181,16 +183,56 @@ export function TeacherSchedule({ initialData, currentPeriod }: TeacherScheduleP
         return isWithinInterval(itemDate, { start: startDate, end: endDate })
       })
 
-    // Transform availability to AvailableSlot format for the views
-    // Note: Availability is stored by day of week, not specific dates
+    // Transform availability (day-of-week based) to date-specific AvailableSlot objects
+    const dayNameToIndex: Record<string, number> = {
+      sunday: 0, monday: 1, tuesday: 2, wednesday: 3,
+      thursday: 4, friday: 5, saturday: 6,
+    }
+
     const availableSlots: AvailableSlot[] = []
+    // Iterate each day in the view range and check if any availability slot matches
+    let cursor = new Date(startDate)
+    cursor.setHours(0, 0, 0, 0)
+    const end = new Date(endDate)
+    end.setHours(23, 59, 59, 999)
+
+    while (cursor <= end) {
+      const dayIndex = getDay(cursor) // 0=Sunday..6=Saturday
+      const dateStr = format(cursor, 'yyyy-MM-dd')
+      const isBlocked = blockedDays.includes(dateStr)
+
+      if (!isBlocked) {
+        for (const slot of availability) {
+          const slotDayIndex = dayNameToIndex[slot.day.toLowerCase()]
+          if (slotDayIndex === dayIndex) {
+            // Check no lesson already occupies this exact time
+            const hasLesson = lessons.some(
+              (l) => isSameDay(l.date, cursor) && l.startTime === slot.startTime
+            )
+            if (!hasLesson) {
+              const [sh, sm] = slot.startTime.split(':').map(Number)
+              const [eh, em] = slot.endTime.split(':').map(Number)
+              const duration = (eh * 60 + em) - (sh * 60 + sm)
+              availableSlots.push({
+                id: `${slot.id}-${dateStr}`,
+                startTime: slot.startTime,
+                endTime: slot.endTime,
+                date: new Date(cursor.getFullYear(), cursor.getMonth(), cursor.getDate(), 12, 0, 0, 0),
+                duration: duration > 0 ? duration : 60,
+              })
+            }
+          }
+        }
+      }
+      cursor = addDays(cursor, 1)
+    }
 
     return {
       lessons: filterByDateRange(lessons),
       availableSlots,
       blockedDays,
     }
-  }, [currentDate, viewType, lessons, blockedDays])
+  }, [currentDate, viewType, lessons, availability, blockedDays])
 
   // Get current lesson (in progress)
   const currentLesson = useMemo(() => {
