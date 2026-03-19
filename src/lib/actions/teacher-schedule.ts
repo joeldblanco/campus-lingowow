@@ -137,6 +137,19 @@ export async function getTeacherScheduleData(
 
     const blockedDays = blockedDaysRecords.map((record) => record.date)
 
+    console.log('[SCHEDULE DEBUG] teacherId:', teacherId)
+    console.log('[SCHEDULE DEBUG] teacherTimezone:', teacherTimezone)
+    console.log('[SCHEDULE DEBUG] dateRange:', startDateStr, 'to', endDateStr)
+    console.log('[SCHEDULE DEBUG] bookings found:', bookings.length)
+    console.log('[SCHEDULE DEBUG] availability found:', availability.length)
+    console.log('[SCHEDULE DEBUG] blockedDays found:', blockedDays.length)
+    if (bookings.length > 0) {
+      console.log('[SCHEDULE DEBUG] first booking:', JSON.stringify({ day: bookings[0].day, timeSlot: bookings[0].timeSlot, status: bookings[0].status }))
+    }
+    if (availability.length > 0) {
+      console.log('[SCHEDULE DEBUG] first availability:', JSON.stringify({ day: availability[0].day, startTime: availability[0].startTime, endTime: availability[0].endTime }))
+    }
+
     // Transform bookings to lessons
     // Convertir de UTC a hora local del profesor
     const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
