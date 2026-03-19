@@ -73,6 +73,17 @@ export default async function ModuleLessonsPage({ params }: ModuleLessonsPagePro
     isPublished: lesson.isPublished,
   }))
 
+  const publishedLessonOffset = await db.lesson.count({
+    where: {
+      isPublished: true,
+      module: {
+        courseId: courseId,
+        isPublished: true,
+        order: { lt: moduleRecord.order },
+      },
+    },
+  })
+
   const moduleData: Module = {
     id: moduleRecord.id,
     title: moduleRecord.title,
@@ -91,6 +102,7 @@ export default async function ModuleLessonsPage({ params }: ModuleLessonsPagePro
         moduleData={moduleData} 
         courseId={courseId}
         courseTitle={moduleRecord.course.title}
+        publishedLessonOffset={publishedLessonOffset}
       />
     </div>
   )

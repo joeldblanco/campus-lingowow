@@ -47,12 +47,14 @@ interface ModuleLessonsClientProps {
   moduleData: Module
   courseId: string
   courseTitle: string
+  publishedLessonOffset: number
 }
 
 function SortableLessonItem({
   lesson,
   moduleId,
   courseId,
+  lessonNumber,
   onRemove,
   onLessonUpdated,
   onOptimisticUpdate,
@@ -60,6 +62,7 @@ function SortableLessonItem({
   lesson: Lesson
   moduleId: string
   courseId: string
+  lessonNumber: number | null
   onRemove: (lessonId: string) => Promise<void>
   onLessonUpdated: () => void
   onOptimisticUpdate: (lessonId: string, moduleId: string, updates: { title: string; description: string; order: number; moduleId: string }) => Promise<void>
@@ -103,7 +106,7 @@ function SortableLessonItem({
         <div className="flex-1 min-w-0 mr-4">
           <div className="flex items-center gap-2 mb-1">
             <span className="w-6 h-6 bg-primary/10 text-primary text-xs rounded flex items-center justify-center font-medium flex-shrink-0">
-              {lesson.order}
+              {lessonNumber ?? '—'}
             </span>
             {getLessonIcon(lesson)}
             <h4 className="font-medium truncate" title={lesson.title}>{lesson.title}</h4>
@@ -165,7 +168,7 @@ function SortableLessonItem({
   )
 }
 
-export function ModuleLessonsClient({ moduleData, courseId, courseTitle }: ModuleLessonsClientProps) {
+export function ModuleLessonsClient({ moduleData, courseId, courseTitle, publishedLessonOffset }: ModuleLessonsClientProps) {
   const router = useRouter()
   const [lessons, setLessons] = useState<Lesson[]>(moduleData.lessons)
   const [isCreatingNew, setIsCreatingNew] = useState(false)
@@ -388,17 +391,24 @@ export function ModuleLessonsClient({ moduleData, courseId, courseTitle }: Modul
                 </Card>
               ) : (
                 <div className="space-y-2">
-                  {lessons.map((lesson) => (
-                    <SortableLessonItem
-                      key={lesson.id}
-                      lesson={lesson}
-                      moduleId={moduleData.id}
-                      courseId={courseId}
-                      onRemove={handleRemoveLesson}
-                      onLessonUpdated={handleLessonUpdated}
-                      onOptimisticUpdate={handleOptimisticUpdate}
-                    />
-                  ))}
+                  {(() => {
+                    let publishedCount = 0
+                    return lessons.map((lesson) => {
+                      const lessonNumber = lesson.isPublished ? publishedLessonOffset + (++publishedCount) : null
+                      return (
+                        <SortableLessonItem
+                          key={lesson.id}
+                          lesson={lesson}
+                          moduleId={moduleData.id}
+                          courseId={courseId}
+                          lessonNumber={lessonNumber}
+                          onRemove={handleRemoveLesson}
+                          onLessonUpdated={handleLessonUpdated}
+                          onOptimisticUpdate={handleOptimisticUpdate}
+                        />
+                      )
+                    })
+                  })()}
                 </div>
               )}
             </SortableContext>

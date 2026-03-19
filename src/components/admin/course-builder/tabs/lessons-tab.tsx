@@ -49,6 +49,7 @@ interface LessonsTabProps {
 function SortableLessonItem({
   lesson,
   moduleId,
+  lessonNumber,
   onRemove,
   onLessonUpdated,
   onOptimisticUpdate,
@@ -57,6 +58,7 @@ function SortableLessonItem({
   lesson: Lesson
   moduleId: string
   moduleName: string
+  lessonNumber: number | null
   onRemove: (moduleId: string, lessonId: string) => Promise<void>
   onLessonUpdated: () => void
   onOptimisticUpdate: (lessonId: string, moduleId: string, updates: { title: string; description: string; order: number; moduleId: string }) => Promise<void>
@@ -100,7 +102,7 @@ function SortableLessonItem({
         <div className="flex-1 min-w-0 mr-4">
           <div className="flex items-center gap-2 mb-1">
             <span className="w-6 h-6 bg-primary/10 text-primary text-xs rounded flex items-center justify-center font-medium flex-shrink-0">
-              {lesson.order}
+              {lessonNumber ?? '—'}
             </span>
             {getLessonIcon(lesson)}
             <h4 className="font-medium truncate" title={lesson.title}>{lesson.title}</h4>
@@ -155,12 +157,14 @@ function SortableLessonItem({
 
 function ModuleLessonsList({
   module,
+  lessonNumberMap,
   onRemoveLesson,
   onLessonUpdated,
   onOptimisticUpdate,
   router
 }: {
   module: Module
+  lessonNumberMap: Map<string, number>
   onRemoveLesson: (moduleId: string, lessonId: string) => Promise<void>
   onLessonUpdated: () => void
   onOptimisticUpdate: (lessonId: string, moduleId: string, updates: { title: string; description: string; order: number; moduleId: string }) => Promise<void>
@@ -192,6 +196,7 @@ function ModuleLessonsList({
                 lesson={lesson}
                 moduleId={module.id}
                 moduleName={module.title}
+                lessonNumber={lessonNumberMap.get(lesson.id) ?? null}
                 onRemove={onRemoveLesson}
                 onLessonUpdated={onLessonUpdated}
                 onOptimisticUpdate={onOptimisticUpdate}
@@ -386,16 +391,28 @@ export function LessonsTab({
           </Card>
         ) : (
           <div className="space-y-8">
-            {modules.map(module => (
-              <ModuleLessonsList
-                key={module.id}
-                module={module}
-                onRemoveLesson={handleRemoveLesson}
-                onLessonUpdated={handleLessonUpdated}
-                onOptimisticUpdate={handleOptimisticUpdate}
-                router={router}
-              />
-            ))}
+            {(() => {
+              const lessonNumberMap = new Map<string, number>()
+              let publishedCount = 0
+              for (const mod of modules) {
+                for (const lesson of mod.lessons) {
+                  if (lesson.isPublished) {
+                    lessonNumberMap.set(lesson.id, ++publishedCount)
+                  }
+                }
+              }
+              return modules.map(module => (
+                <ModuleLessonsList
+                  key={module.id}
+                  module={module}
+                  lessonNumberMap={lessonNumberMap}
+                  onRemoveLesson={handleRemoveLesson}
+                  onLessonUpdated={handleLessonUpdated}
+                  onOptimisticUpdate={handleOptimisticUpdate}
+                  router={router}
+                />
+              ))
+            })()}
           </div>
         )}
       </DndContext>

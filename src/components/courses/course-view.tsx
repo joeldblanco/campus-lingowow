@@ -280,7 +280,10 @@ export function CourseView({ course, progress }: CourseViewProps) {
         <h2 className="text-2xl font-semibold">Contenido del Curso</h2>
 
         {course.modules.length > 0 ? (
-          <div className="space-y-4">
+          (() => {
+            let globalLessonIndex = 0
+            return (
+            <div className="space-y-4">
             <Accordion type="multiple" className="space-y-4">
               {course.modules.map((module, moduleIndex) => {
                 const moduleProgress = module.lessons.reduce((total, lesson) => {
@@ -332,7 +335,9 @@ export function CourseView({ course, progress }: CourseViewProps) {
 
                     <AccordionContent className="pt-0 pb-4">
                       <div className="pl-4 border-l-2 border-gray-100 ml-2 space-y-0 mt-2">
-                        {module.lessons.map((lesson, lessonIndex) => {
+                        {module.lessons.map((lesson) => {
+                          globalLessonIndex++
+                          const currentLessonNumber = globalLessonIndex
                           const lessonProgress = lesson.contents.filter((content) =>
                             isContentCompleted(content.id)
                           ).length
@@ -347,7 +352,7 @@ export function CourseView({ course, progress }: CourseViewProps) {
                                 <div className="space-y-2 flex-1">
                                   <div className="flex items-center gap-2">
                                     <h4 className="font-medium">
-                                      {lessonIndex + 1}. {lesson.title}
+                                      {currentLessonNumber}. {lesson.title}
                                     </h4>
                                     {isLessonCompleted && (
                                       <CheckCircle className="w-4 h-4 text-green-600" />
@@ -374,6 +379,8 @@ export function CourseView({ course, progress }: CourseViewProps) {
                 )
               })}
             </Accordion>          </div>
+            )
+          })()
         ) : (
           <Card className="bg-gray-50 border-dashed">
             <CardContent className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">

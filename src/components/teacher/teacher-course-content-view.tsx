@@ -246,11 +246,13 @@ function StandardContent({ modules, courseId }: { modules: Module[]; courseId: s
     )
   }
 
+  let globalLessonIndex = 0
+
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Contenido del Curso</h2>
       <Accordion type="multiple" className="space-y-2">
-        {modules.map((module) => (
+        {modules.map((module, moduleIndex) => (
           <AccordionItem
             key={module.id}
             value={module.id}
@@ -259,7 +261,7 @@ function StandardContent({ modules, courseId }: { modules: Module[]; courseId: s
             <AccordionTrigger className="hover:no-underline">
               <div className="flex items-center gap-3 text-left">
                 <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm">
-                  {module.order + 1}
+                  {moduleIndex + 1}
                 </div>
                 <div>
                   <h3 className="font-semibold">{module.title}</h3>
@@ -271,9 +273,12 @@ function StandardContent({ modules, courseId }: { modules: Module[]; courseId: s
             </AccordionTrigger>
             <AccordionContent>
               <div className="space-y-2 pt-2 pb-4">
-                {module.lessons.map((lesson) => (
-                  <LessonCard key={lesson.id} lesson={lesson} courseId={courseId} />
-                ))}
+                {module.lessons.map((lesson) => {
+                  globalLessonIndex++
+                  return (
+                    <LessonCard key={lesson.id} lesson={lesson} courseId={courseId} lessonNumber={globalLessonIndex} />
+                  )
+                })}
               </div>
             </AccordionContent>
           </AccordionItem>
@@ -283,7 +288,7 @@ function StandardContent({ modules, courseId }: { modules: Module[]; courseId: s
   )
 }
 
-function LessonCard({ lesson, courseId }: { lesson: Lesson; courseId: string }) {
+function LessonCard({ lesson, courseId, lessonNumber }: { lesson: Lesson; courseId: string; lessonNumber: number }) {
   return (
     <Link href={`/my-courses/${courseId}/lessons/${lesson.id}`}>
       <Card className="bg-muted/30 cursor-pointer hover:bg-muted/50 transition-colors">
@@ -291,7 +296,7 @@ function LessonCard({ lesson, courseId }: { lesson: Lesson; courseId: string }) 
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <div className="w-6 h-6 rounded bg-primary/10 flex items-center justify-center text-primary text-xs font-medium">
-              {lesson.order + 1}
+              {lessonNumber}
             </div>
             <div>
               <CardTitle className="text-sm font-medium">{lesson.title}</CardTitle>
