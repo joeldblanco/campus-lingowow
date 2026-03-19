@@ -68,7 +68,6 @@ export async function POST(request: NextRequest) {
         feedback: gradingResult.feedback,
         needsReview: false,
         reviewedAt: new Date(),
-        reviewedBy: 'AI_GEMINI',
       },
     })
 

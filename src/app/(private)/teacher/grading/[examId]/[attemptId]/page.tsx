@@ -285,7 +285,7 @@ export default async function GradingPage({ params }: PageProps) {
       pointsEarned: answer?.pointsEarned ?? 0,
       needsReview: answer?.needsReview ?? (question.type === 'ESSAY' || question.type === 'RECORDING'),
       feedback: answer?.feedback ?? null,
-      isAutoGraded: answer ? (!answer.needsReview && (answer.reviewedBy === 'AI_GEMINI' || answer.reviewedBy === null)) : false,
+      isAutoGraded: answer ? (!answer.needsReview && answer.reviewedBy === null) : false,
       reviewedBy: answer?.reviewedBy ?? null,
       groupId: question.groupId,
       sectionTitle: question.sectionTitle,

@@ -459,7 +459,7 @@ export function ExamGradingView({
               <p className="text-sm text-muted-foreground mb-3">
                 {(() => {
                   const pendingManual = answers.filter(a => a.needsReview && !a.isInformativeBlock).length
-                  const aiGraded = answers.filter(a => !a.needsReview && a.reviewedBy === 'AI_GEMINI' && !a.isInformativeBlock).length
+                  const aiGraded = answers.filter(a => !a.needsReview && a.reviewedBy === null && (a.questionType === 'ESSAY' || a.questionType === 'RECORDING') && a.feedback && !a.isInformativeBlock).length
                   const parts: string[] = []
                   if (pendingManual > 0) parts.push(`${pendingManual} pregunta(s) pendiente(s) de revisión manual`)
                   if (aiGraded > 0) parts.push(`${aiGraded} pregunta(s) calificada(s) por IA (editables)`)
@@ -734,7 +734,7 @@ export function ExamGradingView({
 
                       {/* Bloque de resultado para preguntas auto-calificadas (NO multipleChoice) */}
                       {!answer.needsReview && answer.isAutoGraded && !answer.multipleChoiceDetails && (() => {
-                        const isAIGraded = answer.reviewedBy === 'AI_GEMINI'
+                        const isAIGraded = answer.reviewedBy === null && (answer.questionType === 'ESSAY' || answer.questionType === 'RECORDING') && !!answer.feedback
                         const isEssayOrRecording = answer.questionType === 'ESSAY' || answer.questionType === 'RECORDING'
                         const isEditing = editingAnswerIds.has(answer.id)
 
