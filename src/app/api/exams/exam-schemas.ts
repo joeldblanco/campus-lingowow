@@ -192,6 +192,9 @@ export const CreateExamApiSchema = z.object({
   blockRightClick: z.boolean().default(true),
   maxWarnings: z.number().min(1).max(20).default(5),
   
+  // Nivel CEFR del examen
+  level: z.string().default('B1'),
+  
   // Exam type
   examType: ExamTypeEnum.default('COURSE_EXAM'),
   targetLanguage: z.string().nullable().optional(),
@@ -231,6 +234,9 @@ export const UpdateExamApiSchema = z.object({
   blockCopyPaste: z.boolean().optional(),
   blockRightClick: z.boolean().optional(),
   maxWarnings: z.number().min(1).max(20).optional(),
+  
+  // Nivel CEFR del examen
+  level: z.string().optional(),
   
   // Exam type
   examType: ExamTypeEnum.optional(),

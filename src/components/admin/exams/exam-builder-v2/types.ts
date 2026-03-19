@@ -13,6 +13,8 @@ export interface ExamSettings {
   blockCopyPaste: boolean
   blockRightClick: boolean
   maxWarnings: number
+  // Exam level (CEFR)
+  level: string
   // Placement test fields
   isPlacementTest: boolean
   targetLanguage: string
@@ -35,6 +37,8 @@ export const DEFAULT_EXAM_SETTINGS: ExamSettings = {
   blockCopyPaste: false,
   blockRightClick: false,
   maxWarnings: 3,
+  // Exam level default
+  level: 'B1',
   // Placement test defaults
   isPlacementTest: false,
   targetLanguage: 'en',

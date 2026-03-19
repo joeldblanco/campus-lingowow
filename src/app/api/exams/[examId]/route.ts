@@ -113,6 +113,7 @@ export async function GET(
         title: exam.title,
         description: exam.description,
         instructions: exam.instructions,
+        level: exam.level,
         examType: exam.examType,
         isPublished: exam.isPublished,
         slug: exam.slug,
@@ -284,7 +285,7 @@ export async function PUT(
       'title', 'description', 'instructions', 'timeLimit', 'passingScore', 'maxAttempts',
       'isBlocking', 'isOptional', 'isPublished', 'shuffleQuestions', 'shuffleOptions',
       'showResults', 'allowReview', 'proctoringEnabled', 'requireFullscreen',
-      'blockCopyPaste', 'blockRightClick', 'maxWarnings', 'examType', 'targetLanguage',
+      'blockCopyPaste', 'blockRightClick', 'maxWarnings', 'level', 'examType', 'targetLanguage',
       'slug', 'isPublicAccess', 'isGuestAccessible', 'courseId', 'moduleId', 'lessonId',
     ] as const
 
@@ -354,6 +355,7 @@ export async function PUT(
         id: updatedExam!.id,
         title: updatedExam!.title,
         description: updatedExam!.description,
+        level: updatedExam!.level,
         examType: updatedExam!.examType,
         isPublished: updatedExam!.isPublished,
         slug: updatedExam!.slug,

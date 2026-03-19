@@ -596,7 +596,7 @@ export async function exportAttemptToHTML(data: AttemptData): Promise<void> {
             <span class="font-semibold text-primary">${data.examTitle}</span>
             <span class="text-slate-500">Nivel</span>
             <span class="font-medium text-slate-900 flex items-center gap-2">
-              Level B1
+              Level ${data.examLevel || 'B1'}
               <span class="size-2 rounded-full bg-success"></span>
             </span>
             <span class="text-slate-500">Fecha</span>

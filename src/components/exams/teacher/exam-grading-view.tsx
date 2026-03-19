@@ -100,6 +100,7 @@ interface QuestionAnswer {
 interface ExamGradingViewProps {
   examId: string
   examTitle: string
+  examLevel: string
   courseName: string
   students: StudentInfo[]
   attemptsByStudent: Record<string, Array<{
@@ -122,6 +123,7 @@ interface ExamGradingViewProps {
 export function ExamGradingView({
   examId,
   examTitle,
+  examLevel,
   courseName,
   students,
   attemptsByStudent,
@@ -321,6 +323,7 @@ export function ExamGradingView({
         studentName: selectedStudent.name,
         studentEmail: selectedStudent.email,
         examTitle,
+        examLevel,
         courseName,
         attemptId: attempt.id,
         attemptNumber: attempt.attemptNumber,
@@ -336,7 +339,7 @@ export function ExamGradingView({
     } finally {
       setIsExporting(false)
     }
-  }, [students, selectedStudentId, examTitle, courseName, attempt, totalScore, maxScore, answers])
+  }, [students, selectedStudentId, examTitle, examLevel, courseName, attempt, totalScore, maxScore, answers])
 
   return (
     <div className="min-h-screen bg-background">

@@ -212,6 +212,7 @@ export async function updateExamDraft(
     showResults?: boolean
     allowReview?: boolean
     isPublished?: boolean
+    level?: string
     courseId?: string | null
     moduleId?: string | null
     lessonId?: string | null
@@ -402,6 +403,7 @@ export async function createExam(
           blockCopyPaste: validatedData.blockCopyPaste,
           blockRightClick: validatedData.blockRightClick,
           maxWarnings: validatedData.maxWarnings,
+          level: validatedData.level,
           // Placement test fields
           examType: validatedData.examType,
           targetLanguage: validatedData.targetLanguage,
@@ -492,6 +494,7 @@ export async function updateExam(
           blockCopyPaste: validatedData.blockCopyPaste,
           blockRightClick: validatedData.blockRightClick,
           maxWarnings: validatedData.maxWarnings,
+          level: validatedData.level,
           // Placement test fields
           examType: validatedData.examType,
           targetLanguage: validatedData.targetLanguage,

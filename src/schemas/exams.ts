@@ -124,6 +124,9 @@ export const CreateExamSchema = z.object({
   blockRightClick: z.boolean().default(true),
   maxWarnings: z.number().min(1).max(20).default(5),
 
+  // Nivel CEFR del examen
+  level: z.string().default('B1'),
+
   // Placement test fields
   examType: ExamTypeEnum.optional(),
   targetLanguage: z.string().nullable().optional(),
@@ -165,6 +168,9 @@ export const EditExamSchema = z.object({
   blockCopyPaste: z.boolean().optional(),
   blockRightClick: z.boolean().optional(),
   maxWarnings: z.number().min(1).max(20).optional(),
+
+  // Nivel CEFR del examen
+  level: z.string().optional(),
 
   // Placement test fields
   examType: ExamTypeEnum.optional(),

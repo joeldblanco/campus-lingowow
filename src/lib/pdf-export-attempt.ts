@@ -47,6 +47,7 @@ interface AttemptData {
   studentName: string
   studentEmail: string
   examTitle: string
+  examLevel?: string
   examDescription?: string
   courseName?: string
   attemptNumber: number

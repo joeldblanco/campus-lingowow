@@ -13,6 +13,13 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { updateExam } from '@/lib/actions/exams'
@@ -87,6 +94,7 @@ export function EditExamDialog({ exam, open, onOpenChange }: EditExamDialogProps
       blockCopyPaste: exam.blockCopyPaste ?? true,
       blockRightClick: exam.blockRightClick ?? true,
       maxWarnings: exam.maxWarnings ?? 5,
+      level: exam.level || 'B1',
     },
   })
 
@@ -106,6 +114,7 @@ export function EditExamDialog({ exam, open, onOpenChange }: EditExamDialogProps
         blockCopyPaste: exam.blockCopyPaste ?? true,
         blockRightClick: exam.blockRightClick ?? true,
         maxWarnings: exam.maxWarnings ?? 5,
+        level: exam.level || 'B1',
       })
       setQuestions(
         exam.questions.map((q) => ({
@@ -152,6 +161,7 @@ export function EditExamDialog({ exam, open, onOpenChange }: EditExamDialogProps
         blockCopyPaste: formValues.blockCopyPaste,
         blockRightClick: formValues.blockRightClick,
         maxWarnings: formValues.maxWarnings,
+        level: formValues.level,
       })
 
       if (result.success) {
@@ -247,6 +257,33 @@ export function EditExamDialog({ exam, open, onOpenChange }: EditExamDialogProps
                     <FormControl>
                       <Textarea rows={3} {...field} />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* CEFR Level */}
+              <FormField
+                control={form.control}
+                name="level"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nivel CEFR del Examen</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value || 'B1'}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccionar nivel" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="A1">A1 - Principiante</SelectItem>
+                        <SelectItem value="A2">A2 - Elemental</SelectItem>
+                        <SelectItem value="B1">B1 - Intermedio</SelectItem>
+                        <SelectItem value="B2">B2 - Intermedio Alto</SelectItem>
+                        <SelectItem value="C1">C1 - Avanzado</SelectItem>
+                        <SelectItem value="C2">C2 - Maestría</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}

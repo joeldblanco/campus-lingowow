@@ -1694,6 +1694,9 @@ model Exam {
   showResults     Boolean     @default(true) // Mostrar resultados al finalizar
   allowReview     Boolean     @default(true) // Permitir revisar respuestas
   
+  // Nivel del examen (CEFR)
+  level             String    @default("B1") // Nivel CEFR del examen (A1, A2, B1, B2, C1, C2)
+
   // Tipo de examen y acceso
   examType          ExamType  @default(COURSE_EXAM) // Tipo de examen
   isGuestAccessible Boolean   @default(false) // Permite acceso a usuarios GUEST sin inscripción

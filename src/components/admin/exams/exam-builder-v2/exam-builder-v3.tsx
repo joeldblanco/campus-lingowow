@@ -654,6 +654,7 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
     blockCopyPaste: exam?.blockCopyPaste ?? DEFAULT_EXAM_SETTINGS.blockCopyPaste,
     blockRightClick: exam?.blockRightClick ?? DEFAULT_EXAM_SETTINGS.blockRightClick,
     maxWarnings: exam?.maxWarnings ?? DEFAULT_EXAM_SETTINGS.maxWarnings,
+    level: exam?.level || DEFAULT_EXAM_SETTINGS.level,
     isPlacementTest: exam?.examType === 'PLACEMENT_TEST',
     targetLanguage: exam?.targetLanguage || DEFAULT_EXAM_SETTINGS.targetLanguage,
     slug: exam?.slug || '',
@@ -1056,6 +1057,7 @@ export function ExamBuilderV3({ mode, exam, backUrl = '/admin/exams' }: ExamBuil
         blockCopyPaste: settings.blockCopyPaste,
         blockRightClick: settings.blockRightClick,
         maxWarnings: settings.maxWarnings,
+        level: settings.level,
         // Placement test fields
         examType: settings.isPlacementTest ? 'PLACEMENT_TEST' as const : 'COURSE_EXAM' as const,
         targetLanguage: settings.isPlacementTest ? settings.targetLanguage : null,
@@ -1481,6 +1483,32 @@ function ExamSettingsForm({
             )}
           </div>
         )}
+      </div>
+
+      <Separator />
+
+      {/* CEFR Level */}
+      <div className="space-y-2">
+        <Label>Nivel CEFR del Examen</Label>
+        <Select
+          value={settings.level || 'B1'}
+          onValueChange={(value) => onUpdate({ ...settings, level: value })}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Seleccionar nivel" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="A1">A1 - Principiante</SelectItem>
+            <SelectItem value="A2">A2 - Elemental</SelectItem>
+            <SelectItem value="B1">B1 - Intermedio</SelectItem>
+            <SelectItem value="B2">B2 - Intermedio Alto</SelectItem>
+            <SelectItem value="C1">C1 - Avanzado</SelectItem>
+            <SelectItem value="C2">C2 - Maestría</SelectItem>
+          </SelectContent>
+        </Select>
+        <p className="text-xs text-muted-foreground">
+          Nivel del Marco Común Europeo de Referencia para las Lenguas
+        </p>
       </div>
 
       <Separator />

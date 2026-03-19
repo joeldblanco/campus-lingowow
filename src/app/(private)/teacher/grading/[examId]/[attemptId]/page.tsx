@@ -313,6 +313,7 @@ export default async function GradingPage({ params }: PageProps) {
     <GradingClient
       examId={examId}
       examTitle={attempt.exam.title}
+      examLevel={attempt.exam.level || 'B1'}
       courseName={attempt.exam.course?.title || ''}
       students={students}
       attemptsByStudent={attemptsByStudentObj}

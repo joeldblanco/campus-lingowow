@@ -534,6 +534,7 @@ export interface AttemptData {
   studentName: string
   studentEmail: string
   examTitle: string
+  examLevel: string
   courseName: string
   attemptId: string
   attemptNumber: number

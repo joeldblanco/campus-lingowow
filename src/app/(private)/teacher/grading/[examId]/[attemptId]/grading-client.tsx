@@ -43,6 +43,7 @@ interface QuestionAnswer {
 interface GradingClientProps {
   examId: string
   examTitle: string
+  examLevel: string
   courseName: string
   students: StudentInfo[]
   attemptsByStudent: Record<string, Array<{
@@ -62,6 +63,7 @@ interface GradingClientProps {
 export function GradingClient({
   examId,
   examTitle,
+  examLevel,
   courseName,
   students,
   attemptsByStudent,
@@ -96,6 +98,7 @@ export function GradingClient({
     <ExamGradingView
       examId={examId}
       examTitle={examTitle}
+      examLevel={examLevel}
       courseName={courseName}
       students={students}
       attemptsByStudent={attemptsByStudent}
