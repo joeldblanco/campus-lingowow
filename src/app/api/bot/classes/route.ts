@@ -37,16 +37,20 @@ export async function GET(request: NextRequest) {
     if (studentEmail) where.student = { email: studentEmail }
     if (teacherId) where.teacherId = teacherId
     if (status) where.status = status
-    const dateRegex = /^\d{4}-\d{2}-\d{2}$/
+    const isValidDate = (str: string) => {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(str)) return false
+      const d = new Date(str + 'T00:00:00Z')
+      return !isNaN(d.getTime()) && d.toISOString().startsWith(str)
+    }
     if (from) {
-      if (!dateRegex.test(from)) {
-        return NextResponse.json({ error: 'Formato de fecha "from" inválido. Usa YYYY-MM-DD' }, { status: 400 })
+      if (!isValidDate(from)) {
+        return NextResponse.json({ error: 'Fecha "from" inválida. Usa YYYY-MM-DD con valores de fecha reales' }, { status: 400 })
       }
       where.day = { ...(where.day || {}), gte: from }
     }
     if (to) {
-      if (!dateRegex.test(to)) {
-        return NextResponse.json({ error: 'Formato de fecha "to" inválido. Usa YYYY-MM-DD' }, { status: 400 })
+      if (!isValidDate(to)) {
+        return NextResponse.json({ error: 'Fecha "to" inválida. Usa YYYY-MM-DD con valores de fecha reales' }, { status: 400 })
       }
       where.day = { ...(where.day || {}), lte: to }
     }
