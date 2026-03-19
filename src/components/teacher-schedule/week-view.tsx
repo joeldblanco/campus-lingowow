@@ -4,7 +4,7 @@ import { UserAvatar } from '@/components/ui/user-avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import type { AvailableSlot, BlockedSlot, ScheduleLesson } from '@/types/schedule'
+import type { AvailableSlot, ScheduleLesson } from '@/types/schedule'
 import { getLessonColorClasses } from '@/types/schedule'
 import { addDays, format, isSameDay, isToday, startOfWeek } from 'date-fns'
 import { es } from 'date-fns/locale'
@@ -59,14 +59,16 @@ export function WeekView({
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i)) // Monday to Sunday
 
   const getLessonForSlot = (date: Date, time: string) => {
+    const slotHour = time.split(':')[0]
     return lessons.find(
-      (lesson) => isSameDay(new Date(lesson.date), date) && lesson.startTime === time
+      (lesson) => isSameDay(new Date(lesson.date), date) && lesson.startTime.split(':')[0] === slotHour
     )
   }
 
   const isSlotAvailable = (date: Date, time: string) => {
+    const slotHour = time.split(':')[0]
     return availableSlots.some(
-      (slot) => isSameDay(new Date(slot.date), date) && slot.startTime === time
+      (slot) => isSameDay(new Date(slot.date), date) && slot.startTime.split(':')[0] === slotHour
     )
   }
 

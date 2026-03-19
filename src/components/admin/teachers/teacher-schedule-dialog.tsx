@@ -164,8 +164,9 @@ export function TeacherScheduleDialog({
   }, [lessons, weekStart])
 
   const getLessonForSlot = (date: Date, time: string) => {
+    const slotHour = time.split(':')[0]
     return filteredLessons.find(
-      (lesson) => isSameDay(new Date(lesson.date), date) && lesson.startTime === time
+      (lesson) => isSameDay(new Date(lesson.date), date) && lesson.startTime.split(':')[0] === slotHour
     )
   }
 

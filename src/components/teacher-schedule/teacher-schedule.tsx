@@ -133,15 +133,11 @@ export function TeacherSchedule({ initialData, currentPeriod }: TeacherScheduleP
 
         const result = await getTeacherScheduleData(monthStart, monthEnd)
 
-        console.log('[SCHEDULE CLIENT] fetch result:', { success: result.success, error: result.error, lessonsCount: result.data?.lessons?.length, availabilityCount: result.data?.availability?.length, blockedDaysCount: result.data?.blockedDays?.length })
-
         if (result.success && result.data) {
           setLessons(transformLessons(result.data.lessons))
           setAvailability(result.data.availability)
           setBlockedDays(result.data.blockedDays)
           lastFetchedMonth.current = monthKey
-        } else {
-          console.error('[SCHEDULE CLIENT] fetch failed:', result.error)
         }
       } catch (error) {
         console.error('Error fetching schedule data:', error)
