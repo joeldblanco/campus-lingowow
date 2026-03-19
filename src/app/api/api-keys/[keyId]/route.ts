@@ -68,13 +68,14 @@ export async function PATCH(
     }
 
     const body = await request.json()
-    const { name, isActive } = body
+    const { name, isActive, scopes } = body
 
     const updatedKey = await db.apiKey.update({
       where: { id: keyId },
       data: {
         ...(name !== undefined && { name }),
         ...(isActive !== undefined && { isActive }),
+        ...(scopes !== undefined && Array.isArray(scopes) && { scopes }),
       },
       select: {
         id: true,
