@@ -459,10 +459,10 @@ export function ExamGradingView({
               <p className="text-sm text-muted-foreground mb-3">
                 {(() => {
                   const pendingManual = answers.filter(a => a.needsReview && !a.isInformativeBlock).length
-                  const aiGraded = answers.filter(a => !a.needsReview && a.reviewedBy === null && (a.questionType === 'ESSAY' || a.questionType === 'RECORDING') && a.feedback && !a.isInformativeBlock).length
+                  const essayRecording = answers.filter(a => !a.needsReview && (a.questionType === 'ESSAY' || a.questionType === 'RECORDING') && !a.isInformativeBlock).length
                   const parts: string[] = []
                   if (pendingManual > 0) parts.push(`${pendingManual} pregunta(s) pendiente(s) de revisión manual`)
-                  if (aiGraded > 0) parts.push(`${aiGraded} pregunta(s) calificada(s) por IA (editables)`)
+                  if (essayRecording > 0) parts.push(`${essayRecording} pregunta(s) de ensayo/grabación calificada(s) (editables)`)
                   return parts.length > 0 
                     ? `Este examen incluye ${parts.join(' y ')}.`
                     : 'Todas las preguntas han sido calificadas.'
@@ -803,6 +803,165 @@ export function ExamGradingView({
                           )}
 
                           {/* Formulario de edición expandido */}
+                          {isEditing && (
+                            <div className="p-4 rounded-lg bg-white dark:bg-gray-800 border-2 border-primary/30">
+                              <div className="flex items-center gap-2 mb-4">
+                                <Pencil className="h-5 w-5 text-primary" />
+                                <h4 className="font-bold text-foreground">Editar Calificación y Retroalimentación</h4>
+                              </div>
+
+                              <div className="grid md:grid-cols-3 gap-6">
+                                <div className="md:col-span-2">
+                                  <label className="text-sm font-medium text-muted-foreground mb-2 block">
+                                    Retroalimentación
+                                  </label>
+                                  <Textarea
+                                    placeholder="Editar retroalimentación..."
+                                    value={localGrades[answer.id]?.feedback ?? answer.feedback ?? ''}
+                                    onChange={(e) => updateLocalGrade(answer.id, 'feedback', e.target.value)}
+                                    className="min-h-[120px]"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="text-sm font-medium text-muted-foreground mb-2 block">
+                                    Ajuste de Puntaje
+                                  </label>
+                                  <div className="flex items-center gap-2">
+                                    <Input
+                                      type="number"
+                                      min={0}
+                                      max={answer.maxPoints}
+                                      value={localGrades[answer.id]?.points ?? answer.pointsEarned}
+                                      onChange={(e) => updateLocalGrade(answer.id, 'points', parseFloat(e.target.value) || 0)}
+                                      className="w-20"
+                                    />
+                                    <span className="text-muted-foreground">/ {answer.maxPoints}</span>
+                                  </div>
+                                  <div className="flex gap-2 mt-3">
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => updateLocalGrade(answer.id, 'points', answer.maxPoints)}
+                                    >
+                                      Máximo
+                                    </Button>
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => updateLocalGrade(answer.id, 'points', answer.maxPoints * 0.5)}
+                                    >
+                                      50%
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="flex justify-end gap-2 mt-4">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => {
+                                    setEditingAnswerIds(prev => {
+                                      const next = new Set(prev)
+                                      next.delete(answer.id)
+                                      return next
+                                    })
+                                    setLocalGrades(prev => {
+                                      const newGrades = { ...prev }
+                                      delete newGrades[answer.id]
+                                      return newGrades
+                                    })
+                                  }}
+                                >
+                                  Cancelar
+                                </Button>
+                                <Button
+                                  onClick={() => handleSaveGrade(answer.id)}
+                                  disabled={isSaving}
+                                  className="flex items-center gap-2"
+                                >
+                                  <Save className="h-4 w-4" />
+                                  {isSaving ? 'Guardando...' : 'Guardar Cambios'}
+                                </Button>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Botón para editar */}
+                          {!isEditing && (
+                            <div>
+                              <button 
+                                className="text-sm text-primary hover:underline flex items-center gap-1"
+                                onClick={() => {
+                                  updateLocalGrade(answer.id, 'points', answer.pointsEarned)
+                                  updateLocalGrade(answer.id, 'feedback', answer.feedback || '')
+                                  setEditingAnswerIds(prev => {
+                                    const next = new Set(prev)
+                                    next.add(answer.id)
+                                    return next
+                                  })
+                                }}
+                              >
+                                <Pencil className="h-4 w-4" />
+                                Editar Calificación y Retroalimentación
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                        )
+                      })()}
+
+                      {/* Bloque para ESSAY/RECORDING ya calificadas manualmente (por un profesor) */}
+                      {!answer.needsReview && !answer.isAutoGraded && !answer.multipleChoiceDetails && (answer.questionType === 'ESSAY' || answer.questionType === 'RECORDING') && (() => {
+                        const isEditing = editingAnswerIds.has(answer.id)
+
+                        return (
+                        <div className="border-t border-gray-200 dark:border-gray-700 pt-6 space-y-4">
+                          {/* Resultado: Puntaje */}
+                          <div className={cn(
+                            "p-4 rounded-lg",
+                            answer.isCorrect 
+                              ? "bg-green-50 dark:bg-green-900/20 border border-green-200"
+                              : answer.isCorrect === false
+                                ? "bg-red-50 dark:bg-red-900/20 border border-red-200"
+                                : "bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700"
+                          )}>
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="flex items-center gap-2">
+                                {answer.isCorrect ? (
+                                  <CheckCircle className="h-5 w-5 text-green-600" />
+                                ) : answer.isCorrect === false ? (
+                                  <XCircle className="h-5 w-5 text-red-600" />
+                                ) : (
+                                  <CheckCircle className="h-5 w-5 text-gray-400" />
+                                )}
+                                <span className="font-bold text-foreground">
+                                  {answer.isCorrect ? 'Aprobada' : answer.isCorrect === false ? 'No Aprobada' : 'Calificada'}
+                                </span>
+                                <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-700">
+                                  Calificada Manualmente
+                                </Badge>
+                              </div>
+                              <span className="text-sm font-medium text-muted-foreground">
+                                {answer.pointsEarned} / {answer.maxPoints} pts
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Feedback existente */}
+                          {answer.feedback && !isEditing && (
+                            <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700">
+                              <div className="flex items-center gap-2 mb-3">
+                                <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                <h4 className="font-bold text-blue-800 dark:text-blue-300">Retroalimentación del Profesor</h4>
+                              </div>
+                              <p className="text-sm text-blue-900 dark:text-blue-200 whitespace-pre-wrap leading-relaxed">
+                                {answer.feedback}
+                              </p>
+                            </div>
+                          )}
+
+                          {/* Formulario de edición */}
                           {isEditing && (
                             <div className="p-4 rounded-lg bg-white dark:bg-gray-800 border-2 border-primary/30">
                               <div className="flex items-center gap-2 mb-4">
