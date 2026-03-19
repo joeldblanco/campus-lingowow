@@ -20,8 +20,10 @@ export function useSocketChannel(
   useEffect(() => {
     if (!channelName || !socketClient) return
 
+    const client = socketClient
+
     // Join the room
-    socketClient.emit('join', channelName)
+    client.emit('join', channelName)
 
     const handlers = new Map<string, EventCallback>()
 
@@ -34,15 +36,15 @@ export function useSocketChannel(
           callback(data)
         }
       }
-      socketClient.on(event, handler)
+      client.on(event, handler)
       handlers.set(event, handler)
     })
 
     return () => {
       handlers.forEach((handler, event) => {
-        socketClient.off(event, handler)
+        client.off(event, handler)
       })
-      socketClient.emit('leave', channelName)
+      client.emit('leave', channelName)
     }
   }, [channelName])
 }

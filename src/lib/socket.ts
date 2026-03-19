@@ -6,11 +6,9 @@ declare global {
   var socketClientInstance: Socket | undefined
 }
 
-function getSocketClient(): Socket {
+function getSocketClient(): Socket | null {
   if (typeof window === 'undefined') {
-    // Server-side: return a dummy that won't actually connect
-    // This prevents SSR from creating real connections
-    return null as unknown as Socket
+    return null
   }
 
   if (!globalThis.socketClientInstance) {
