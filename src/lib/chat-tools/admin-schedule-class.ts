@@ -6,11 +6,22 @@ import type { ToolResult } from '@/types/ai-chat'
 const UTC_DAY_NAMES = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
 const DAY_ALIASES: Record<string, string> = {
-  lunes: 'monday', martes: 'tuesday', miércoles: 'wednesday', miercoles: 'wednesday',
-  jueves: 'thursday', viernes: 'friday', sábado: 'saturday', sabado: 'saturday',
+  lunes: 'monday',
+  martes: 'tuesday',
+  miércoles: 'wednesday',
+  miercoles: 'wednesday',
+  jueves: 'thursday',
+  viernes: 'friday',
+  sábado: 'saturday',
+  sabado: 'saturday',
   domingo: 'sunday',
-  monday: 'monday', tuesday: 'tuesday', wednesday: 'wednesday', thursday: 'thursday',
-  friday: 'friday', saturday: 'saturday', sunday: 'sunday',
+  monday: 'monday',
+  tuesday: 'tuesday',
+  wednesday: 'wednesday',
+  thursday: 'thursday',
+  friday: 'friday',
+  saturday: 'saturday',
+  sunday: 'sunday',
 }
 
 function normalizeDayName(day: string): string {
@@ -27,7 +38,13 @@ export async function handleAdminScheduleClass(params: {
     const { studentNameOrEmail, teacherId, slots, adminTimezone } = params
     const isEmail = studentNameOrEmail.includes('@')
 
-    let student: { id: string; name: string | null; email: string | null; roles: UserRole[]; timezone: string } | null = null
+    let student: {
+      id: string
+      name: string | null
+      email: string | null
+      roles: UserRole[]
+      timezone: string
+    } | null = null
 
     if (isEmail) {
       student = await db.user.findFirst({
@@ -53,7 +70,10 @@ export async function handleAdminScheduleClass(params: {
         return {
           success: false,
           message: `Se encontraron ${users.length} usuarios:\n${list}\nPide al admin que confirme cuál.`,
-          data: { code: 'MULTIPLE_USERS', users: users.map((u) => ({ name: u.name, email: u.email })) },
+          data: {
+            code: 'MULTIPLE_USERS',
+            users: users.map((u) => ({ name: u.name, email: u.email })),
+          },
         }
       }
 
@@ -244,23 +264,30 @@ export async function handleAdminScheduleClass(params: {
     }
 
     if (scheduledCount === 0) {
-      const reason = skippedCount > 0
-        ? `${skippedCount} fechas omitidas por conflictos o falta de profesores.`
-        : `No se encontraron fechas en el período para los días solicitados.`
+      const reason =
+        skippedCount > 0
+          ? `${skippedCount} fechas omitidas por conflictos o falta de profesores.`
+          : `No se encontraron fechas en el período para los días solicitados.`
       return {
         success: false,
         message: `No se pudo agendar ninguna clase para "${student.name}" en el período "${enrollment.academicPeriod.name}". ${reason}`,
       }
     }
 
-    const skippedNote = skippedCount > 0
-      ? ` ${skippedCount} fecha(s) omitidas por conflictos o falta de disponibilidad.`
-      : ''
+    const skippedNote =
+      skippedCount > 0
+        ? ` ${skippedCount} fecha(s) omitidas por conflictos o falta de disponibilidad.`
+        : ''
 
     return {
       success: true,
       message: `Se agendaron ${scheduledCount} clases para "${student.name}" en el período "${enrollment.academicPeriod.name}". Horarios recurrentes: ${scheduledSummary.join(', ')}.${skippedNote} (Zona horaria: ${studentTimezone})`,
-      data: { scheduledCount, skippedCount, scheduledDays: scheduledSummary, studentName: student.name },
+      data: {
+        scheduledCount,
+        skippedCount,
+        scheduledDays: scheduledSummary,
+        studentName: student.name,
+      },
     }
   } catch (error) {
     console.error('[AdminScheduleClass] Error:', error)

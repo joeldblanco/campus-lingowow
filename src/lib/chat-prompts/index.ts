@@ -1,6 +1,11 @@
 import { getBasePrompt } from './base'
 import { STUDENT_SCHEDULING_SKILL, PAYMENT_FLOW_SKILL } from './skill-student'
-import { ADMIN_INVOICING_SKILL, ADMIN_ENROLLMENT_SKILL, ADMIN_SCHEDULING_SKILL, ADMIN_TIMEZONE_SKILL } from './skill-admin'
+import {
+  ADMIN_INVOICING_SKILL,
+  ADMIN_ENROLLMENT_SKILL,
+  ADMIN_SCHEDULING_SKILL,
+  ADMIN_TIMEZONE_SKILL,
+} from './skill-admin'
 
 interface PromptContext {
   name: string

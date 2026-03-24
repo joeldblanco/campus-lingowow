@@ -20,7 +20,15 @@ export async function handleAdminEnrollStudent(params: {
   adminTimezone: string
 }): Promise<ToolResult> {
   try {
-    const { studentNameOrEmail, teacherNameOrEmail, courseName, periodQuery, invoiceId, slots, adminTimezone } = params
+    const {
+      studentNameOrEmail,
+      teacherNameOrEmail,
+      courseName,
+      periodQuery,
+      invoiceId,
+      slots,
+      adminTimezone,
+    } = params
 
     // 1. Find Student
     let student
@@ -37,19 +45,26 @@ export async function handleAdminEnrollStudent(params: {
         take: 5,
       })
       if (users.length === 0) {
-        return { success: false, message: `No se encontró ningún estudiante con el nombre "${studentNameOrEmail}".` }
+        return {
+          success: false,
+          message: `No se encontró ningún estudiante con el nombre "${studentNameOrEmail}".`,
+        }
       }
       if (users.length > 1) {
         const list = users.map((u) => `- ${u.name} (${u.email})`).join('\n')
         return {
           success: false,
           message: `Se encontraron ${users.length} estudiantes:\n${list}\nPide al admin que confirme cuál.`,
-          data: { code: 'MULTIPLE_STUDENTS', students: users.map((u) => ({ name: u.name, email: u.email })) },
+          data: {
+            code: 'MULTIPLE_STUDENTS',
+            students: users.map((u) => ({ name: u.name, email: u.email })),
+          },
         }
       }
       student = users[0]
     }
-    if (!student) return { success: false, message: `No se encontró el estudiante "${studentNameOrEmail}".` }
+    if (!student)
+      return { success: false, message: `No se encontró el estudiante "${studentNameOrEmail}".` }
 
     // 2. Validate Paid Invoice — enrollment MUST be tied to a paid invoice
     let paidInvoice
@@ -106,11 +121,13 @@ export async function handleAdminEnrollStudent(params: {
       } else if (invoicesWithoutEnrollment.length === 1) {
         paidInvoice = invoicesWithoutEnrollment[0]
       } else {
-        const list = invoicesWithoutEnrollment.map((inv) => {
-          const planName = inv.items[0]?.name ?? 'Sin plan'
-          const paidDate = inv.paidAt ? new Date(inv.paidAt).toLocaleDateString('es-PE') : '?'
-          return `- ${inv.invoiceNumber}: ${planName} ($${inv.total} ${inv.currency}) — Pagada: ${paidDate}`
-        }).join('\n')
+        const list = invoicesWithoutEnrollment
+          .map((inv) => {
+            const planName = inv.items[0]?.name ?? 'Sin plan'
+            const paidDate = inv.paidAt ? new Date(inv.paidAt).toLocaleDateString('es-PE') : '?'
+            return `- ${inv.invoiceNumber}: ${planName} ($${inv.total} ${inv.currency}) — Pagada: ${paidDate}`
+          })
+          .join('\n')
         return {
           success: false,
           message: `El estudiante "${student.name}" tiene ${invoicesWithoutEnrollment.length} facturas pagadas sin inscripción asociada:\n${list}\nIndica cuál factura usar para esta inscripción (usa el número de factura).`,
@@ -149,7 +166,10 @@ export async function handleAdminEnrollStudent(params: {
         where: { title: { contains: courseName.trim(), mode: 'insensitive' }, isPublished: true },
       })
       if (!course) {
-        return { success: false, message: `No se encontró ningún curso activo con el nombre "${courseName}".` }
+        return {
+          success: false,
+          message: `No se encontró ningún curso activo con el nombre "${courseName}".`,
+        }
       }
     }
 
@@ -163,37 +183,49 @@ export async function handleAdminEnrollStudent(params: {
 
     // 4. Find Teacher — REQUIRED for synchronous courses
     let teacherId: string | null = null
-    let teacherNameStr = "Sin profesor asignado"
+    let teacherNameStr = 'Sin profesor asignado'
     if (teacherNameOrEmail) {
       const isTeacherEmail = teacherNameOrEmail.includes('@')
       let teacher
       if (isTeacherEmail) {
         teacher = await db.user.findFirst({
-          where: { email: { equals: teacherNameOrEmail.trim(), mode: 'insensitive' }, roles: { has: UserRole.TEACHER } },
+          where: {
+            email: { equals: teacherNameOrEmail.trim(), mode: 'insensitive' },
+            roles: { has: UserRole.TEACHER },
+          },
           select: { id: true, name: true, email: true },
         })
       } else {
         const teachers = await db.user.findMany({
-          where: { name: { contains: teacherNameOrEmail.trim(), mode: 'insensitive' }, roles: { has: UserRole.TEACHER } },
+          where: {
+            name: { contains: teacherNameOrEmail.trim(), mode: 'insensitive' },
+            roles: { has: UserRole.TEACHER },
+          },
           select: { id: true, name: true, email: true },
           take: 5,
         })
         if (teachers.length === 0) {
-          return { success: false, message: `No se encontró ningún profesor con el nombre "${teacherNameOrEmail}".` }
+          return {
+            success: false,
+            message: `No se encontró ningún profesor con el nombre "${teacherNameOrEmail}".`,
+          }
         }
         if (teachers.length > 1) {
           const list = teachers.map((u) => `- ${u.name} (${u.email})`).join('\n')
           return {
             success: false,
             message: `Se encontraron ${teachers.length} profesores:\n${list}\nPide al admin que confirme cuál.`,
-            data: { code: 'MULTIPLE_TEACHERS', teachers: teachers.map((u) => ({ name: u.name, email: u.email })) },
+            data: {
+              code: 'MULTIPLE_TEACHERS',
+              teachers: teachers.map((u) => ({ name: u.name, email: u.email })),
+            },
           }
         }
         teacher = teachers[0]
       }
       if (teacher) {
         teacherId = teacher.id
-        teacherNameStr = teacher.name || teacher.email || "Profesor"
+        teacherNameStr = teacher.name || teacher.email || 'Profesor'
       }
     }
 
@@ -214,14 +246,20 @@ export async function handleAdminEnrollStudent(params: {
         where: { name: { contains: periodQuery.trim(), mode: 'insensitive' } },
       })
       if (!period) {
-        return { success: false, message: `No se encontró ningún periodo académico llamado "${periodQuery}".` }
+        return {
+          success: false,
+          message: `No se encontró ningún periodo académico llamado "${periodQuery}".`,
+        }
       }
     } else {
       period = await db.academicPeriod.findFirst({
         where: { startDate: { lte: now }, endDate: { gte: now } },
       })
       if (!period) {
-        return { success: false, message: `No hay un periodo académico activo actualmente. Por favor especifica uno.` }
+        return {
+          success: false,
+          message: `No hay un periodo académico activo actualmente. Por favor especifica uno.`,
+        }
       }
     }
 
@@ -240,19 +278,25 @@ export async function handleAdminEnrollStudent(params: {
         studentId: student.id,
         academicPeriodId: period.id,
         courseId: course.id,
-        status: { in: [EnrollmentStatus.ACTIVE, EnrollmentStatus.PENDING] }
-      }
+        status: { in: [EnrollmentStatus.ACTIVE, EnrollmentStatus.PENDING] },
+      },
     })
 
     let enrollmentId: string
     if (existingEnrollment) {
       if (existingEnrollment.status === EnrollmentStatus.ACTIVE) {
-        return { success: false, message: `El estudiante "${student.name}" ya tiene una inscripción activa en el periodo "${period.name}" para el curso "${course.title}". Usa admin_schedule_class para agregar más clases a esta inscripción.` }
+        return {
+          success: false,
+          message: `El estudiante "${student.name}" ya tiene una inscripción activa en el periodo "${period.name}" para el curso "${course.title}". Usa admin_schedule_class para agregar más clases a esta inscripción.`,
+        }
       } else {
         // Update to active
         await db.enrollment.update({
           where: { id: existingEnrollment.id },
-          data: { status: EnrollmentStatus.ACTIVE, teacherId: teacherId || existingEnrollment.teacherId }
+          data: {
+            status: EnrollmentStatus.ACTIVE,
+            teacherId: teacherId || existingEnrollment.teacherId,
+          },
         })
         enrollmentId = existingEnrollment.id
       }
@@ -268,7 +312,7 @@ export async function handleAdminEnrollStudent(params: {
           enrollmentDate: now,
           enrollmentType: 'MANUAL',
           enrolledBy: params.adminTimezone ? undefined : undefined, // Admin ID would go here if available
-        }
+        },
       })
       enrollmentId = newEnrollment.id
     }
@@ -279,20 +323,24 @@ export async function handleAdminEnrollStudent(params: {
         studentNameOrEmail: student.email || student.id,
         teacherId: teacherId || undefined,
         slots: slots,
-        adminTimezone: adminTimezone
+        adminTimezone: adminTimezone,
       })
 
       if (scheduleResult.success) {
-         return {
-           success: true,
-           message: `Se inscribió al estudiante "${student.name}" en el curso "${course.title}" para el periodo "${period.name}" (Profesor: ${teacherNameStr}).\n\n${scheduleResult.message}`,
-           data: { ...((scheduleResult.data as ScheduleResultData) || {}), enrolled: true, enrollmentId }
-         }
+        return {
+          success: true,
+          message: `Se inscribió al estudiante "${student.name}" en el curso "${course.title}" para el periodo "${period.name}" (Profesor: ${teacherNameStr}).\n\n${scheduleResult.message}`,
+          data: {
+            ...((scheduleResult.data as ScheduleResultData) || {}),
+            enrolled: true,
+            enrollmentId,
+          },
+        }
       } else {
-         return {
-           success: false,
-           message: `Se inscribió al estudiante "${student.name}" en el curso "${course.title}" para el periodo "${period.name}" (Profesor: ${teacherNameStr}), PERO falló el agendamiento de clases: ${scheduleResult.message}`,
-         }
+        return {
+          success: false,
+          message: `Se inscribió al estudiante "${student.name}" en el curso "${course.title}" para el periodo "${period.name}" (Profesor: ${teacherNameStr}), PERO falló el agendamiento de clases: ${scheduleResult.message}`,
+        }
       }
     }
 
@@ -304,9 +352,8 @@ export async function handleAdminEnrollStudent(params: {
     return {
       success: true,
       message: `Se inscribió al estudiante "${student.name}" en el curso "${course.title}" para el periodo "${period.name}" (Profesor: ${teacherNameStr}).${asyncNote}`,
-      data: { enrolled: true, enrollmentId }
+      data: { enrolled: true, enrollmentId },
     }
-
   } catch (error) {
     console.error('[AdminEnrollStudent] Error:', error)
     return {

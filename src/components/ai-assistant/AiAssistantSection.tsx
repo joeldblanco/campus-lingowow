@@ -13,25 +13,24 @@ const WELCOME_MESSAGES: Record<string, string> = {
     '¡Hola! Soy el asistente de Lingowow. Puedo ayudarte a conocer nuestros programas y planes de inglés, verificar disponibilidad de horarios y gestionar tu inscripción. ¿En qué puedo ayudarte?',
   [UserRole.STUDENT]:
     '¡Hola! Soy tu asistente de Lingowow. Puedo ayudarte a reagendar tus clases, consultar disponibilidad de horarios o responder preguntas sobre tu programa. ¿En qué puedo ayudarte hoy?',
-  [UserRole.TEACHER]:
-    '¡Hola! Soy el asistente de Lingowow. ¿En qué puedo ayudarte?',
+  [UserRole.TEACHER]: '¡Hola! Soy el asistente de Lingowow. ¿En qué puedo ayudarte?',
   [UserRole.ADMIN]:
     '¡Hola! Soy tu asistente administrativo. Puedo generar facturas de PayPal, listar y verificar pagos, agendar o reagendar clases de estudiantes, calcular fechas de clases y verificar disponibilidad de profesores. ¿Qué necesitas?',
 }
 
 export function AiAssistantSection() {
   const { data: session } = useSession()
-  const { messages, isLoading, lastToolExecuted, pendingInteraction, sendMessage, selectOption } = useAiChat()
+  const { messages, isLoading, lastToolExecuted, pendingInteraction, sendMessage, selectOption } =
+    useAiChat()
 
   const userRoles = session?.user?.roles ?? []
-  const primaryRole =
-    userRoles.includes(UserRole.ADMIN)
-      ? UserRole.ADMIN
-      : userRoles.includes(UserRole.TEACHER)
-        ? UserRole.TEACHER
-        : userRoles.includes(UserRole.STUDENT)
-          ? UserRole.STUDENT
-          : UserRole.GUEST
+  const primaryRole = userRoles.includes(UserRole.ADMIN)
+    ? UserRole.ADMIN
+    : userRoles.includes(UserRole.TEACHER)
+      ? UserRole.TEACHER
+      : userRoles.includes(UserRole.STUDENT)
+        ? UserRole.STUDENT
+        : UserRole.GUEST
 
   if (primaryRole !== UserRole.ADMIN) {
     return null

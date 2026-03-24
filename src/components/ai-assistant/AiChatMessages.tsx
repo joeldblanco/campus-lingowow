@@ -84,7 +84,11 @@ function renderInline(text: string, isUser: boolean): React.ReactNode[] {
   return tokenizeInline(text).map((token, i) => {
     switch (token.type) {
       case 'bold':
-        return <strong key={i} className="font-semibold">{token.content}</strong>
+        return (
+          <strong key={i} className="font-semibold">
+            {token.content}
+          </strong>
+        )
       case 'italic':
         return <em key={i}>{token.content}</em>
       case 'strike':
@@ -190,9 +194,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
       <div
         className={cn(
           'max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed break-words',
-          isUser
-            ? 'bg-primary text-white rounded-tr-sm'
-            : 'bg-muted text-foreground rounded-tl-sm'
+          isUser ? 'bg-primary text-white rounded-tr-sm' : 'bg-muted text-foreground rounded-tl-sm'
         )}
       >
         {isUser ? message.content : renderMarkdown(message.content, isUser)}
@@ -245,7 +247,13 @@ function LoadingDots() {
   )
 }
 
-export function AiChatMessages({ messages, isLoading, lastToolExecuted, pendingInteraction, onSelectOption }: AiChatMessagesProps) {
+export function AiChatMessages({
+  messages,
+  isLoading,
+  lastToolExecuted,
+  pendingInteraction,
+  onSelectOption,
+}: AiChatMessagesProps) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   // Auto-scroll within the ScrollArea viewport only (never the page)
@@ -287,4 +295,3 @@ export function AiChatMessages({ messages, isLoading, lastToolExecuted, pendingI
     </ScrollArea>
   )
 }
-

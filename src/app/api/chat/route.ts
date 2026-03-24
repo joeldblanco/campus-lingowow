@@ -16,12 +16,18 @@ import { handleNotifyAdmin } from '@/lib/chat-tools/notify-admin'
 import { handleGetUpcomingClasses } from '@/lib/chat-tools/get-upcoming-classes'
 import { handleScheduleClass } from '@/lib/chat-tools/schedule-class'
 import { handleScheduleRecurringClasses } from '@/lib/chat-tools/schedule-recurring-classes'
-import { handleAdminCreateInvoice, handleAdminSendInvoice } from '@/lib/chat-tools/admin-create-invoice'
+import {
+  handleAdminCreateInvoice,
+  handleAdminSendInvoice,
+} from '@/lib/chat-tools/admin-create-invoice'
 import { handleAdminListInvoices } from '@/lib/chat-tools/admin-list-invoices'
 import { handleAdminCheckInvoicePayment } from '@/lib/chat-tools/admin-check-invoice-payment'
 import { handleAdminScheduleClass } from '@/lib/chat-tools/admin-schedule-class'
 import { handleAdminEnrollStudent } from '@/lib/chat-tools/admin-enroll-student'
-import { handleAdminGetStudentClasses, handleAdminRescheduleClass } from '@/lib/chat-tools/admin-reschedule-class'
+import {
+  handleAdminGetStudentClasses,
+  handleAdminRescheduleClass,
+} from '@/lib/chat-tools/admin-reschedule-class'
 import { handleAdminCalculateClassDates } from '@/lib/chat-tools/admin-calculate-class-dates'
 import { buildSystemPrompt } from '@/lib/chat-prompts'
 import type { ChatMessage, ChatInteraction, ToolResult } from '@/types/ai-chat'
@@ -32,7 +38,9 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '')
  * Build a ChatInteraction from a tool result that contains structured selection data.
  * This converts "multiple matches found" results into clickable button options in the UI.
  */
-function buildInteractionFromToolResult(toolResult: ToolResult | undefined): ChatInteraction | undefined {
+function buildInteractionFromToolResult(
+  toolResult: ToolResult | undefined
+): ChatInteraction | undefined {
   if (!toolResult || !toolResult.data || typeof toolResult.data !== 'object') return undefined
 
   const data = toolResult.data as Record<string, unknown>
@@ -67,9 +75,16 @@ function buildInteractionFromToolResult(toolResult: ToolResult | undefined): Cha
       }
     }
     case 'MULTIPLE_INVOICES': {
-      const invoices = data.invoices as Array<{
-        id: string; invoiceNumber: string; planName?: string; total: number; currency: string; paidAt?: string
-      }> | undefined
+      const invoices = data.invoices as
+        | Array<{
+            id: string
+            invoiceNumber: string
+            planName?: string
+            total: number
+            currency: string
+            paidAt?: string
+          }>
+        | undefined
       if (!invoices?.length) return undefined
       return {
         kind: 'single-select',
@@ -100,7 +115,6 @@ function buildInteractionFromToolResult(toolResult: ToolResult | undefined): Cha
   }
 }
 
-
 const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
   check_teacher_availability: {
     name: 'check_teacher_availability',
@@ -117,7 +131,8 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
             properties: {
               dayOfWeek: {
                 type: SchemaType.STRING,
-                description: 'Día de la semana en la zona horaria del usuario (ej: "lunes" o "monday")',
+                description:
+                  'Día de la semana en la zona horaria del usuario (ej: "lunes" o "monday")',
               },
               localTime: {
                 type: SchemaType.STRING,
@@ -303,7 +318,8 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
       properties: {
         clientNameOrEmail: {
           type: SchemaType.STRING,
-          description: 'Nombre del cliente (buscará en la base de datos) o correo electrónico directo',
+          description:
+            'Nombre del cliente (buscará en la base de datos) o correo electrónico directo',
         },
         programType: {
           type: SchemaType.STRING,
@@ -319,7 +335,8 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
         },
         language: {
           type: SchemaType.STRING,
-          description: 'Idioma que el cliente estudia: "en" para inglés, "es" para español. Por defecto "en".',
+          description:
+            'Idioma que el cliente estudia: "en" para inglés, "es" para español. Por defecto "en".',
         },
       },
       required: ['clientNameOrEmail', 'programType', 'planType', 'startDate'],
@@ -361,7 +378,15 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
           description: 'Número de factura (obtenido de admin_create_invoice)',
         },
       },
-      required: ['recipientEmail', 'recipientName', 'planDisplayName', 'amount', 'currency', 'description', 'invoiceNumber'],
+      required: [
+        'recipientEmail',
+        'recipientName',
+        'planDisplayName',
+        'amount',
+        'currency',
+        'description',
+        'invoiceNumber',
+      ],
     } as unknown as FunctionDeclarationSchema,
   },
   admin_list_invoices: {
@@ -396,7 +421,8 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
   },
   admin_enroll_student: {
     name: 'admin_enroll_student',
-    description: 'Inscribe a un estudiante en un curso y periodo académico, y le agenda sus clases en los horarios dados. REQUIERE una factura pagada. Para cursos sincrónicos, REQUIERE un profesor. Puede promover de invitado a estudiante si es necesario.',
+    description:
+      'Inscribe a un estudiante en un curso y periodo académico, y le agenda sus clases en los horarios dados. REQUIERE una factura pagada. Para cursos sincrónicos, REQUIERE un profesor. Puede promover de invitado a estudiante si es necesario.',
     parameters: {
       type: SchemaType.OBJECT,
       properties: {
@@ -406,15 +432,18 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
         },
         teacherNameOrEmail: {
           type: SchemaType.STRING,
-          description: 'Nombre o correo del profesor seleccionado (OBLIGATORIO para cursos sincrónicos)',
+          description:
+            'Nombre o correo del profesor seleccionado (OBLIGATORIO para cursos sincrónicos)',
         },
         invoiceId: {
           type: SchemaType.STRING,
-          description: 'ID de la factura pagada (obtenido de admin_check_invoice_payment o admin_list_invoices). Si no se proporciona, se busca automáticamente la factura pagada más reciente.',
+          description:
+            'ID de la factura pagada (obtenido de admin_check_invoice_payment o admin_list_invoices). Si no se proporciona, se busca automáticamente la factura pagada más reciente.',
         },
         courseName: {
           type: SchemaType.STRING,
-          description: 'Nombre del curso. Por defecto se resuelve automáticamente desde la factura pagada (plan → PlanPricing → curso).',
+          description:
+            'Nombre del curso. Por defecto se resuelve automáticamente desde la factura pagada (plan → PlanPricing → curso).',
         },
         periodQuery: {
           type: SchemaType.STRING,
@@ -432,7 +461,8 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
               },
               localTime: {
                 type: SchemaType.STRING,
-                description: 'Hora de inicio de la clase en la zona horaria del estudiante, formato HH:MM (ej: "17:00")',
+                description:
+                  'Hora de inicio de la clase en la zona horaria del estudiante, formato HH:MM (ej: "17:00")',
               },
             },
             required: ['dayOfWeek', 'localTime'],
@@ -440,7 +470,8 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
         },
         adminTimezone: {
           type: SchemaType.STRING,
-          description: 'La zona horaria proporcionada por el admin (ej: "America/Chicago"), o vacío para usar la del estudiante.',
+          description:
+            'La zona horaria proporcionada por el admin (ej: "America/Chicago"), o vacío para usar la del estudiante.',
         },
       },
       required: ['studentNameOrEmail', 'slots'],
@@ -459,7 +490,8 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
         },
         teacherId: {
           type: SchemaType.STRING,
-          description: 'ID del profesor seleccionado por el admin. Garantiza que todas las clases sean con el mismo profesor.',
+          description:
+            'ID del profesor seleccionado por el admin. Garantiza que todas las clases sean con el mismo profesor.',
         },
         slots: {
           type: SchemaType.ARRAY,
@@ -469,11 +501,13 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
             properties: {
               dayOfWeek: {
                 type: SchemaType.STRING,
-                description: 'Día de la semana (en español o inglés: lunes/monday, martes/tuesday, etc.)',
+                description:
+                  'Día de la semana (en español o inglés: lunes/monday, martes/tuesday, etc.)',
               },
               localTime: {
                 type: SchemaType.STRING,
-                description: 'Hora de inicio en formato HH:MM en la zona horaria local del estudiante (ej: 17:00)',
+                description:
+                  'Hora de inicio en formato HH:MM en la zona horaria local del estudiante (ej: 17:00)',
               },
             },
             required: ['dayOfWeek', 'localTime'],
@@ -481,7 +515,8 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
         },
         studentTimezone: {
           type: SchemaType.STRING,
-          description: 'Zona horaria IANA del estudiante (ej: America/Chicago). Si el admin mencionó una ubicación como "Arkansas", resuelve a la zona IANA correspondiente.',
+          description:
+            'Zona horaria IANA del estudiante (ej: America/Chicago). Si el admin mencionó una ubicación como "Arkansas", resuelve a la zona IANA correspondiente.',
         },
       },
       required: ['studentNameOrEmail', 'slots'],
@@ -519,7 +554,8 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
         },
         newLocalTime: {
           type: SchemaType.STRING,
-          description: 'Nueva hora de inicio en formato HH:MM en la zona horaria local del estudiante',
+          description:
+            'Nueva hora de inicio en formato HH:MM en la zona horaria local del estudiante',
         },
       },
       required: ['bookingId', 'newLocalDate', 'newLocalTime'],
@@ -556,7 +592,8 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
         },
         timezone: {
           type: SchemaType.STRING,
-          description: 'Zona horaria IANA para el cálculo (ej: America/Chicago). Por defecto usa la del admin.',
+          description:
+            'Zona horaria IANA para el cálculo (ej: America/Chicago). Por defecto usa la del admin.',
         },
       },
       required: ['slots', 'periodQuery'],
@@ -663,7 +700,9 @@ export async function POST(req: NextRequest) {
     const lastMessage = messages[messages.length - 1]
     const chat = model.startChat({ history })
 
-    console.log(`[Chat API] User: ${user.name} | Roles: ${user.roles.join(',')} | TZ: ${user.timezone} | Tools: ${toolDeclarations.map(t => t.name).join(', ')}`)
+    console.log(
+      `[Chat API] User: ${user.name} | Roles: ${user.roles.join(',')} | TZ: ${user.timezone} | Tools: ${toolDeclarations.map((t) => t.name).join(', ')}`
+    )
 
     let result = await chat.sendMessage(lastMessage.content)
     let toolExecuted: string | undefined
@@ -719,7 +758,10 @@ export async function POST(req: NextRequest) {
         switch (call.name) {
           case 'check_teacher_availability':
             toolResult = await handleCheckAvailability(
-              call.args as { slots: Array<{ dayOfWeek: string; localTime: string }>; timezone: string }
+              call.args as {
+                slots: Array<{ dayOfWeek: string; localTime: string }>
+                timezone: string
+              }
             )
             break
 
@@ -814,9 +856,7 @@ export async function POST(req: NextRequest) {
             break
 
           case 'admin_list_invoices':
-            toolResult = await handleAdminListInvoices(
-              call.args as { clientNameOrEmail: string }
-            )
+            toolResult = await handleAdminListInvoices(call.args as { clientNameOrEmail: string })
             break
 
           case 'admin_check_invoice_payment':

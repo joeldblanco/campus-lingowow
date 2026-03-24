@@ -57,8 +57,7 @@ export function useAiChat() {
           ...prev,
           {
             role: 'model',
-            content:
-              'Error de conexión. Por favor verifica tu conexión e intenta de nuevo.',
+            content: 'Error de conexión. Por favor verifica tu conexión e intenta de nuevo.',
           },
         ])
       } finally {
@@ -82,5 +81,13 @@ export function useAiChat() {
     setPendingInteraction(undefined)
   }, [])
 
-  return { messages, isLoading, lastToolExecuted, pendingInteraction, sendMessage, selectOption, clearMessages }
+  return {
+    messages,
+    isLoading,
+    lastToolExecuted,
+    pendingInteraction,
+    sendMessage,
+    selectOption,
+    clearMessages,
+  }
 }

@@ -66,7 +66,7 @@ export function AiChatInput({ onSend, isLoading, disabled }: AiChatInputProps) {
           className={cn(
             'w-full resize-none bg-transparent',
             'border-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0',
-            'text-sm px-4 pt-3 pb-2 min-h-[60px] max-h-[120px] overflow-y-auto',
+            'text-sm px-4 pt-3 pb-2 min-h-[60px] max-h-[120px] overflow-y-auto'
           )}
         />
         <div className="flex items-center justify-between px-3 pb-2.5 pt-0.5">
