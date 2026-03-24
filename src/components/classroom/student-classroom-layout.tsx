@@ -22,6 +22,8 @@ export const StudentClassroomLayout: React.FC<StudentClassroomLayoutProps> = (pr
     const { bookingId, day, timeSlot, currentUserName } = props
     const [isInitializing, setIsInitializing] = useState(true)
     const [roomDetails, setRoomDetails] = useState<{ roomName: string, jwt: string | null } | null>(null)
+    const [initError, setInitError] = useState<string | null>(null)
+    const [retryKey, setRetryKey] = useState(0)
 
     useEffect(() => {
         const join = async () => {
@@ -39,12 +41,16 @@ export const StudentClassroomLayout: React.FC<StudentClassroomLayoutProps> = (pr
 
                 const roomName = result.roomName
 
-                // Get Token
+                // Get Token (with 15s timeout)
+                const tokenController = new AbortController()
+                const tokenTimeout = setTimeout(() => tokenController.abort(), 15_000)
                 const tokenRes = await fetch('/api/livekit/token', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ roomName, bookingId })
+                    body: JSON.stringify({ roomName, bookingId }),
+                    signal: tokenController.signal,
                 })
+                clearTimeout(tokenTimeout)
 
                 if (!tokenRes.ok) throw new Error('Token error')
                 const { token } = await tokenRes.json()
@@ -69,23 +75,49 @@ export const StudentClassroomLayout: React.FC<StudentClassroomLayoutProps> = (pr
 
             } catch (e) {
                 console.error(e)
-                toast.error('Error de conexión')
+                const msg = e instanceof Error && e.name === 'AbortError'
+                    ? 'Tiempo de espera agotado al conectar'
+                    : 'Error de conexión'
+                toast.error(msg)
+                setInitError(msg)
             } finally {
                 setIsInitializing(false)
             }
         }
         join()
-    }, [bookingId])
+    }, [bookingId, retryKey])
 
     const handleLeave = () => {
         window.close()
     }
 
-    if (isInitializing || !roomDetails) {
+    if (isInitializing) {
         return (
             <div className="h-screen w-full flex flex-col items-center justify-center bg-gray-50">
                 <Loader2 className="w-12 h-12 animate-spin text-blue-600 mb-4" />
                 <h2 className="text-xl font-semibold text-gray-800">Conectando...</h2>
+            </div>
+        )
+    }
+
+    if (!roomDetails) {
+        return (
+            <div className="h-screen w-full flex flex-col items-center justify-center bg-gray-50">
+                <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                    {initError || 'No se pudo conectar a la clase'}
+                </h2>
+                <p className="text-gray-500 mb-4">Verifica tu conexión e intenta de nuevo</p>
+                <button
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                    onClick={() => {
+                        setInitError(null)
+                        setIsInitializing(true)
+                        setRoomDetails(null)
+                        setRetryKey(k => k + 1)
+                    }}
+                >
+                    Reintentar
+                </button>
             </div>
         )
     }

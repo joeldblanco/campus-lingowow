@@ -32,6 +32,7 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
     null
   )
   const [attendanceChecked, setAttendanceChecked] = useState(false)
+  const [initError, setInitError] = useState<string | null>(null)
 
   // 1. Mark Attendance (only within class schedule)
   useEffect(() => {
@@ -74,7 +75,9 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
 
         const roomName = meetingResult.roomName
 
-        // B. Get JWT Token from API Route
+        // B. Get JWT Token from API Route (with 15s timeout)
+        const tokenController = new AbortController()
+        const tokenTimeout = setTimeout(() => tokenController.abort(), 15_000)
         const tokenResponse = await fetch('/api/livekit/token', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -82,7 +85,9 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
             roomName: roomName,
             bookingId: bookingId,
           }),
+          signal: tokenController.signal,
         })
+        clearTimeout(tokenTimeout)
 
         if (!tokenResponse.ok) {
           throw new Error('Error obteniendo token de acceso')
@@ -93,7 +98,11 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
         setRoomDetails({ roomName, jwt: token }) // Token can be null now
       } catch (error) {
         console.error('Error initializing classroom:', error)
-        toast.error('Error al conectar con el aula virtual')
+        const msg = error instanceof Error && error.name === 'AbortError'
+          ? 'Tiempo de espera agotado al conectar'
+          : 'Error al conectar con el aula virtual'
+        toast.error(msg)
+        setInitError(msg)
       } finally {
         setIsInitializing(false)
       }
@@ -113,12 +122,33 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
     }
   }
 
-  if (isInitializing || !roomDetails) {
+  if (isInitializing) {
     return (
       <div className="h-screen w-full flex flex-col items-center justify-center bg-gray-50">
         <Loader2 className="w-12 h-12 animate-spin text-blue-600 mb-4" />
         <h2 className="text-xl font-semibold text-gray-800">Preparando el aula...</h2>
         <p className="text-gray-500">Registrando asistencia y conectando servicios</p>
+      </div>
+    )
+  }
+
+  if (!roomDetails) {
+    return (
+      <div className="h-screen w-full flex flex-col items-center justify-center bg-gray-50">
+        <h2 className="text-xl font-semibold text-gray-800 mb-2">
+          {initError || 'No se pudo preparar el aula'}
+        </h2>
+        <p className="text-gray-500 mb-4">Verifica tu conexión e intenta de nuevo</p>
+        <button
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          onClick={() => {
+            setInitError(null)
+            setIsInitializing(true)
+            setAttendanceChecked(false)
+          }}
+        >
+          Reintentar
+        </button>
       </div>
     )
   }

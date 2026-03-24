@@ -67,6 +67,10 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   const isConnectingRef = useRef(false)
   const isScreenSharingRef = useRef(false)
   const wasScreenSharingBeforeReconnectRef = useRef(false)
+  const joinAttemptRef = useRef(0)
+
+  const MAX_JOIN_ATTEMPTS = 3
+  const CONNECTION_TIMEOUT_MS = 15_000
 
   const [localVideoTrack, setLocalVideoTrack] = useState<Track | undefined>(undefined)
   const [localAudioTrack, setLocalAudioTrack] = useState<Track | undefined>(undefined)
@@ -431,7 +435,15 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
         }
       })
 
-      await room.connect(serverUrl, token)
+      // Connect with timeout to prevent indefinite hang
+      await Promise.race([
+        room.connect(serverUrl, token),
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('LiveKit connection timeout')), CONNECTION_TIMEOUT_MS)
+        ),
+      ])
+
+      joinAttemptRef.current = 0 // Reset on successful connect
 
       // Habilitar cámara y micrófono por separado con fallback graceful (estilo Google Meet)
       let cameraError: string | null = null
@@ -516,9 +528,14 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       setConnectionStatus('connected')
     } catch (e) {
       console.error('[LiveKit] Connect Exception:', e)
+      joinAttemptRef.current += 1
+      // Clean up the failed room to allow fresh retry
+      if (roomRef.current) {
+        try { roomRef.current.disconnect() } catch { /* ignore */ }
+        roomRef.current = null
+      }
       setConnectionStatus('failed')
       isConnectingRef.current = false
-      roomRef.current = null
     }
   }, [updateRemoteParticipant, removeRemoteParticipant])
 

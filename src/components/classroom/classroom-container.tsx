@@ -83,6 +83,7 @@ function ClassroomInner({
   const [egressId, setEgressId] = useState<string | null>(null)
   const recordingRef = useRef(false)
   const stoppingRecordingRef = useRef(false)
+  const retryCountRef = useRef(0)
   const activeLessonRef = useRef<{ id: string; type: ShareableContent['type'] } | null>(null)
 
   // Refs to access current recording values without triggering effect restarts
@@ -199,6 +200,24 @@ function ClassroomInner({
       joinRoom(roomName, jwt)
     }
   }, [isInitialized, connectionStatus, joinRoom, roomName, jwt])
+
+  // Auto-retry on failure with exponential backoff (max 3 attempts)
+  useEffect(() => {
+    if (connectionStatus !== 'failed') return
+
+    const attempt = retryCountRef.current
+    if (attempt >= 3) return // Stop after 3 auto-retries; user can still use manual button
+
+    const delay = Math.min(2000 * Math.pow(2, attempt), 10000)
+    console.log(`[Classroom] Auto-retry #${attempt + 1} in ${delay}ms`)
+
+    const timer = setTimeout(() => {
+      retryCountRef.current += 1
+      joinRoom(roomName, jwt)
+    }, delay)
+
+    return () => clearTimeout(timer)
+  }, [connectionStatus, joinRoom, roomName, jwt])
 
   // Stop recording via sendBeacon when user closes tab/navigates away
   useEffect(() => {
@@ -443,12 +462,33 @@ function ClassroomInner({
   }
 
   if (connectionStatus === 'failed') {
+    const isAutoRetrying = retryCountRef.current < 3
     return (
       <div className="h-screen w-full flex items-center justify-center bg-[#202124]">
         <div className="text-center max-w-md p-6 bg-[#292a2d] rounded-xl shadow-lg">
           <h2 className="text-xl font-bold text-red-400 mb-2">Error de Conexión</h2>
-          <p className="text-white/60 mb-6">No pudimos conectar con el servidor de video.</p>
-          <Button onClick={() => window.location.reload()}>Reintentar</Button>
+          <p className="text-white/60 mb-4">No pudimos conectar con el servidor de video.</p>
+          {isAutoRetrying ? (
+            <div className="flex items-center justify-center gap-2 text-white/50 mb-4">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span>Reintentando automáticamente ({retryCountRef.current}/3)...</span>
+            </div>
+          ) : (
+            <p className="text-white/40 text-sm mb-4">Los reintentos automáticos se agotaron.</p>
+          )}
+          <div className="flex gap-3 justify-center">
+            <Button
+              onClick={() => {
+                retryCountRef.current = 0
+                joinRoom(roomName, jwt)
+              }}
+            >
+              Reintentar conexión
+            </Button>
+            <Button variant="outline" onClick={() => window.location.reload()}>
+              Recargar página
+            </Button>
+          </div>
         </div>
       </div>
     )
