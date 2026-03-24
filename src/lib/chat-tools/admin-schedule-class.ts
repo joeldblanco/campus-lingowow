@@ -67,8 +67,8 @@ export async function handleAdminScheduleClass(params: {
       }
     }
 
-    // Priority: explicit timezone from admin (resolved from location like "Arkansas") > student's DB timezone > fallback
-    const studentTimezone = adminTimezone || student.timezone || 'America/Lima'
+    // Priority: student's DB timezone (most reliable), then admin-provided (as override for student's location), then fallback
+    const studentTimezone = student.timezone || adminTimezone || 'America/Lima'
 
     if (student.roles.includes(UserRole.GUEST) && !student.roles.includes(UserRole.STUDENT)) {
       await db.user.update({

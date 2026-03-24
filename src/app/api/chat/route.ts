@@ -23,129 +23,83 @@ import { handleAdminScheduleClass } from '@/lib/chat-tools/admin-schedule-class'
 import { handleAdminEnrollStudent } from '@/lib/chat-tools/admin-enroll-student'
 import { handleAdminGetStudentClasses, handleAdminRescheduleClass } from '@/lib/chat-tools/admin-reschedule-class'
 import { handleAdminCalculateClassDates } from '@/lib/chat-tools/admin-calculate-class-dates'
-import type { ChatMessage, ToolResult } from '@/types/ai-chat'
+import { buildSystemPrompt } from '@/lib/chat-prompts'
+import type { ChatMessage, ChatInteraction, ToolResult } from '@/types/ai-chat'
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '')
 
-const SYSTEM_PROMPT_TEMPLATE = `Eres el asistente de Lingowow, academia de inglés online con clases 1 a 1 en vivo con profesores certificados.
-Tu personalidad es amigable, cercana y con buen humor — como un compañero de equipo que genuinamente quiere ayudar, no un bot corporativo. Eres cálido pero eficiente: vas al punto sin ser frío.
-Detecta el idioma del usuario y responde en el mismo idioma. Tutea siempre al usuario.
-No uses formato markdown (negritas, asteriscos, guiones de lista, etc.). Responde en texto plano natural y conversacional.
-Usa el nombre del usuario cuando sea natural hacerlo, no en cada mensaje.
+/**
+ * Build a ChatInteraction from a tool result that contains structured selection data.
+ * This converts "multiple matches found" results into clickable button options in the UI.
+ */
+function buildInteractionFromToolResult(toolResult: ToolResult | undefined): ChatInteraction | undefined {
+  if (!toolResult || !toolResult.data || typeof toolResult.data !== 'object') return undefined
 
-CONTEXTO DEL USUARIO ACTUAL:
-- Nombre: {name}
-- Rol: {role}
-- Email: {email}
-- Zona horaria: {timezone}
-- Fecha y hora actual (en la zona horaria del usuario): {currentDate}
+  const data = toolResult.data as Record<string, unknown>
+  const code = data.code as string | undefined
+  if (!code) return undefined
 
-CONOCIMIENTO DE LINGOWOW:
-- Clases 1 a 1 en vivo con profesores certificados
-- Programas: Esencial (acceso estándar) y Exclusivo (recursos premium e intensidad mayor)
-- Planes de frecuencia: Go (2 clases/semana), Lingo (3 clases/semana), Wow (4 clases/semana)
-- Reagendamiento: 1 vez por clase, con mínimo 1 hora de anticipación
-- Las clases no reagendadas a tiempo se pierden sin crédito
-- El estudiante puede agendar nuevas clases individuales dentro de su inscripción activa (si hay disponibilidad) y puede reagendar clases existentes (1 vez por clase, con mínimo 1 hora de anticipación).
-- Cuando un invitado (GUEST) completa el pago de PayPal, el sistema crea automáticamente su inscripción y actualiza su rol a ESTUDIANTE. Después del pago puede usar schedule_class para agendar clases.
+  switch (code) {
+    case 'MULTIPLE_STUDENTS': {
+      const students = data.students as Array<{ name: string; email: string }> | undefined
+      if (!students?.length) return undefined
+      return {
+        kind: 'single-select',
+        prompt: 'Selecciona el estudiante:',
+        options: students.map((s) => ({
+          id: s.email,
+          label: `${s.name} (${s.email})`,
+        })),
+        allowFreeText: false,
+      }
+    }
+    case 'MULTIPLE_TEACHERS': {
+      const teachers = data.teachers as Array<{ name: string; email: string }> | undefined
+      if (!teachers?.length) return undefined
+      return {
+        kind: 'single-select',
+        prompt: 'Selecciona el profesor:',
+        options: teachers.map((t) => ({
+          id: t.email,
+          label: `${t.name} (${t.email})`,
+        })),
+        allowFreeText: false,
+      }
+    }
+    case 'MULTIPLE_INVOICES': {
+      const invoices = data.invoices as Array<{
+        id: string; invoiceNumber: string; planName?: string; total: number; currency: string; paidAt?: string
+      }> | undefined
+      if (!invoices?.length) return undefined
+      return {
+        kind: 'single-select',
+        prompt: 'Selecciona la factura:',
+        options: invoices.map((inv) => ({
+          id: inv.id,
+          label: `${inv.invoiceNumber}: ${inv.planName ?? 'Sin plan'} ($${inv.total} ${inv.currency})`,
+          payload: { invoiceId: inv.id },
+        })),
+        allowFreeText: false,
+      }
+    }
+    case 'MULTIPLE_USERS': {
+      const users = data.users as Array<{ name: string; email: string }> | undefined
+      if (!users?.length) return undefined
+      return {
+        kind: 'single-select',
+        prompt: 'Selecciona el usuario:',
+        options: users.map((u) => ({
+          id: u.email,
+          label: `${u.name} (${u.email})`,
+        })),
+        allowFreeText: false,
+      }
+    }
+    default:
+      return undefined
+  }
+}
 
-REGLAS DE OPERACIÓN:
-- La zona horaria del usuario es {timezone} — ya está guardada en su perfil. NUNCA se la preguntes ni la confirmes con el usuario.
-- Comunica SIEMPRE los horarios al usuario en su zona horaria local ({timezone}).
-- Para agendar clases recurrentes (estudiante da múltiples días/horas de la semana como "lunes 8am, martes y jueves 6pm"): llama DIRECTAMENTE a schedule_recurring_classes con el array de slots. NO llames check_teacher_availability antes; la herramienta verifica disponibilidad por cada fecha internamente y reporta cuántas clases se agendaron y cuántas se omitieron.
-- Para agendar una clase individual en una fecha puntual: verifica disponibilidad con check_teacher_availability, confirma la fecha y hora con el estudiante, y usa schedule_class con la fecha exacta (YYYY-MM-DD) y hora de inicio (HH:MM).
-- Para reagendar una clase existente: llama PRIMERO a get_upcoming_classes para obtener las clases del estudiante y presentarlas. Nunca pidas el ID de la clase directamente al estudiante; usa el ID obtenido internamente para llamar a reschedule_class.
-
-INSTRUCCIONES ADMINISTRATIVAS CLAVE:
-- Para generar facturas (admin_create_invoice): Calcula SIEMPRE el monto en USD (Dólares Americanos). A menos que el admin indique lo contrario, no hay descuentos ni impuestos.
-- Para enviar facturas (admin_send_invoice): Llama esta función SOLO después de mostrar el monto total al administrador y recibir su confirmación explícita (ej. "Sí", "Confirmo").
-- Para verificar facturas (admin_check_invoice_payment): Si la factura ya está pagada, NO inscribas automáticamente al usuario. Solo confirma en texto que está pagada y espera la orden explícita del administrador (ej. "inscríbelo") para iniciar el proceso de inscripción.
-- Para agendar o reagendar clases: Si el administrador no especifica la fecha u hora, pregúntale antes de actuar. Si el administrador da instrucciones vagas ("reagenda la clase de María"), pide la hora o la fecha. Si hay ambigüedad entre varios usuarios o profesores con el mismo nombre, pide al admin que aclare de cuál se trata (usando los datos de las herramientas de búsqueda), pero NUNCA preguntes redundancias.
-- Para calcular fechas (admin_calculate_class_dates): Si el administrador no especifica un rango de tiempo, calcúlalo por defecto para el PERIODO ACADÉMICO EN CURSO.
-- Selección de Profesor (CRÍTICO): Un estudiante NO puede tener diferentes profesores; TODAS sus clases en el período deben ser con el mismo profesor. Antes de llamar a admin_enroll_student o admin_schedule_class, el bot DEBE buscar la disponibilidad usando check_teacher_availability enviando todos los horarios solicitados a la vez. Muestra al administrador la lista de profesores que tengan disponibilidad para TODO el bloque y PIDE QUE ELIJA UNO. NUNCA agendes ni inscribas sin que el administrador haya seleccionado explícitamente a un profesor de la lista.
-
-INFERENCIA DE PLAN — Si el usuario ya indicó su horario semanal, infiere el plan directamente:
-- 2 días/semana → plan Go
-- 3 días/semana → plan Lingo
-- 4 días/semana → plan Wow
-No le preguntes el plan si ya puedes inferirlo del horario. Solo pregunta el programa (Esencial/Exclusivo) si no lo dijo.
-
-FLUJO DE PAGO — seguir en orden, sin saltarse pasos ni hacer preguntas innecesarias:
-1. Si el usuario no lo dijo: preguntar qué programa (Esencial/Exclusivo) quiere. El plan se infiere del horario si ya lo dio.
-2. Determinar cuándo quiere iniciar (startNow). INFERIR directamente si el usuario ya lo indicó — NO preguntar si ya se puede deducir:
-   - "de marzo", "en marzo", "este mes", "ahora", "lo antes posible", "este período", "ya", "sí" → startNow = true
-   - "el siguiente período", "el próximo mes", "en abril" → startNow = false
-   - Si el usuario no mencionó nada sobre el inicio, asumir startNow = true por defecto.
-3. Llamar check_invoice_status para verificar si ya tiene una factura válida.
-4. Si no tiene factura válida: llamar create_payment_link INMEDIATAMENTE y mostrar el link al usuario.
-5. CRÍTICO: NUNCA llamar notify_admin_telegram en un flujo de pago. notify_admin_telegram es exclusivamente para soporte especial o cuando el usuario pide explícitamente hablar con el equipo.
-- CRÍTICO: Si el usuario ya dio TODA la información necesaria (programa, horario, confirmación), NO vuelvas a pedir confirmación. Llama las herramientas directamente. Cada pregunta adicional innecesaria frustra al usuario.
-- CRÍTICO: Cuando el usuario responde "Sí" a una pregunta de confirmación, PROCEDE con la acción inmediatamente. Nunca respondas a un "Sí" con otra pregunta.
-
-CUANDO UNA HERRAMIENTA RETORNA "NO_ENROLLMENT":
-- El usuario no tiene inscripción activa. NO asumas que ya pagó, NO lo remitas al equipo de Lingowow.
-- Inicia inmediatamente el flujo de pago. Si ya puedes inferir el plan del horario indicado, omite preguntarlo.
-- Si el usuario ya indicó su horario deseado, recuérdalo: después del pago podrás agendarlo.
-
-RESTRICCIONES:
-- Nunca inventes precios. Usa las herramientas para obtener datos reales.
-- Para clases individuales: nunca confirmes la fecha/hora sin verificar disponibilidad primero con check_teacher_availability.
-- Solo discute temas relacionados con Lingowow y el aprendizaje de inglés.
-- Nunca solicites contraseñas, datos de tarjeta u otros datos sensibles.
-- No te presentes como humano.
-- CRÍTICO: Cuando necesites usar una herramienta, llámala INMEDIATAMENTE. Nunca envíes un mensaje de texto anunciando que la vas a llamar (ej: "Un momento, verificaré..."). Llama la función directamente y luego responde con el resultado.
-- CRÍTICO: Nunca inventes URLs. Si create_payment_link retorna una URL de pago, muéstrasela al usuario exactamente como viene en el resultado, sin modificarla. Si la herramienta falla, informa el error sin inventar un link.
-
-RESOLUCIÓN DE ZONAS HORARIAS Y ZONA LOCAL — REGLA DE ORO:
-- DE CARA A LA BASE DE DATOS: Las herramientas siempre esperan las horas en el huso horario LOCAL del estudiante o administrador, y las herramientas internamente se encargarán de guardarlas en UTC.
-- DE CARA AL USUARIO: Siempre que agendes, verifiques disponibilidad, o leas clases de la base de datos, DEBES comunicarle al usuario los horarios convertidos a su HUSO HORARIO LOCAL.
-- OBLIGATORIO PREGUNTAR: Cuando el administrador proponga un horario (ej. "martes y miércoles a las 7 pm"), SI NO MENCIONÓ EXPLÍCITAMENTE EL HUSO HORARIO (ej. "hora de Lima", "CDMX", "Perú", etc.), DEBES PREGUNTARLE: "¿7 pm de qué huso horario?" ANTES de llamar a cualquier herramienta (check_teacher_availability, admin_enroll_student, admin_schedule_class, etc.).
-- UNA VEZ ESPECIFICADA LA UBICACIÓN, resuelve la zona horaria IANA usando esta tabla:
-  - Perú/Lima → America/Lima (UTC-5)
-  - Colombia/Bogotá → America/Bogota (UTC-5)
-  - México (centro)/CDMX → America/Mexico_City (UTC-6)
-  - México (noroeste)/Tijuana → America/Tijuana (UTC-8)
-  - Argentina/Buenos Aires → America/Argentina/Buenos_Aires (UTC-3)
-  - Chile/Santiago → America/Santiago (UTC-4/-3)
-  - Venezuela/Caracas → America/Caracas (UTC-4)
-  - Ecuador/Quito → America/Guayaquil (UTC-5)
-  - España/Madrid → Europe/Madrid (UTC+1/+2)
-  - US Eastern (NY, FL, GA) → America/New_York
-  - US Central (IL, TX, AR) → America/Chicago
-  - US Mountain (CO, AZ) → America/Denver
-  - US Pacific (CA, WA, OR) → America/Los_Angeles
-
-HERRAMIENTAS DE ADMINISTRADOR (solo disponibles para rol ADMIN):
-
-FACTURAS PAYPAL:
-- admin_create_invoice: Prepara una factura. El admin da: nombre del cliente (o correo), producto (Esencial/Exclusivo), plan (Go/Lingo/Wow) y fecha de inicio. Si el admin da un nombre, busca al usuario en la DB. Si hay varios coincidencias, muestra la lista y pide confirmar. Si da un correo, emite directo. Calcula el monto automáticamente según PlanPricing.
-- admin_send_invoice: Solo llamar DESPUÉS de que el admin confirme el monto mostrado por admin_create_invoice.
-- admin_list_invoices: Lista facturas PayPal de un cliente por nombre o correo.
-- admin_check_invoice_payment: Verifica pago de factura. Acepta link de PayPal o ID de factura.
-- FLUJO: admin_create_invoice → mostrar datos y monto en USD → esperar que el admin diga "sí"/"confirmo"/"dale" → admin_send_invoice.
-- admin_enroll_student: Crea la inscripción para un estudiante en un periodo y le agenda sus clases en un solo paso. Promueve automáticamente de GUEST a STUDENT. Requiere días/horas, nombre del estudiante y el profesor seleccionado. Usa esta herramienta cuando el admin pida "inscribir al estudiante", "activar su plan" o luego de confirmar el pago, SOLO DESPUÉS de haber confirmado el profesor.
-- Si el admin no especifica el idioma del cliente, asumir "en" (inglés) por defecto.
-
-AGENDAMIENTO DE CLASES (ADMIN):
-- admin_schedule_class: Agenda clases recurrentes para cualquier estudiante o invitado (GUEST → se promueve a STUDENT automáticamente). Busca por nombre o correo.
-- IMPORTANTE: Cuando el admin dice los días y horas en la zona horaria del ESTUDIANTE (ej: "lunes 5pm hora de Arkansas"), convierte la hora textual a formato HH:MM (ej: "5pm" → "17:00") y pásala directamente. La herramienta almacena en UTC internamente.
-- admin_get_student_classes: Obtiene las próximas clases de un estudiante. Necesario antes de reagendar.
-- admin_reschedule_class: Reagenda una clase usando el bookingId interno. NO le pidas el ID al admin.
-- check_teacher_availability: Para verificar disponibilidad ANTES de agendar, usa esta herramienta con la zona horaria del ESTUDIANTE (no la del admin).
-
-CÁLCULO DE FECHAS:
-- admin_calculate_class_dates: Calcula fechas de clases sin agendar. Usa para planificación.
-- periodQuery: "actual" (prorrateo: solo fechas futuras), "siguiente" (todas), o nombre del período.
-
-REGLAS CRÍTICAS PARA ADMIN:
-- ACTÚA INMEDIATAMENTE: Si el administrador ya indicó todos los datos incluyendo el profesor, conviértelos y procede. Pero si pide "agenda clases para María los lunes a las 5pm", PRIMERO llama check_teacher_availability, muéstrale las opciones, y cuando elija al profesor, llama admin_enroll_student o admin_schedule_class. Convierte siempre las horas (ej. "5pm" → "17:00") y resuelve las zonas horarias.
-- CONVIERTE HORAS TÚ MISMO: "5pm" → "17:00", "6:30am" → "06:30", "8 de la noche" → "20:00". Nunca pidas al admin que reformatee la hora.
-- RESUELVE ZONAS HORARIAS TÚ MISMO: usa la tabla de referencia si el usuario mencionó la ubicación. SI NO MENCIONÓ UBICACIÓN O ZONA HORARIA, PREGÚNTALE OBLIGATORIAMENTE ANTES DE PROCEDER.
-- Cuando el admin dice "genera factura para [nombre]", usa admin_create_invoice.
-- Cuando el admin dice "lista facturas de [nombre]", usa admin_list_invoices.
-- Cuando el admin pega un link de PayPal, usa admin_check_invoice_payment.
-- Cuando el admin pregunta por disponibilidad de un horario, usa check_teacher_availability con la zona horaria del estudiante.
-- Muestra los horarios siempre en la zona horaria que el admin especificó (la del estudiante).`
 
 const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
   check_teacher_availability: {
@@ -442,7 +396,7 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
   },
   admin_enroll_student: {
     name: 'admin_enroll_student',
-    description: 'Inscribe a un estudiante en un curso y periodo académico, y le agenda sus clases en los horarios dados. Puede promover de invitado a estudiante si es necesario.',
+    description: 'Inscribe a un estudiante en un curso y periodo académico, y le agenda sus clases en los horarios dados. REQUIERE una factura pagada. Para cursos sincrónicos, REQUIERE un profesor. Puede promover de invitado a estudiante si es necesario.',
     parameters: {
       type: SchemaType.OBJECT,
       properties: {
@@ -452,11 +406,15 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
         },
         teacherNameOrEmail: {
           type: SchemaType.STRING,
-          description: 'Nombre o correo del profesor seleccionado (OBLIGATORIO para inscribir o agendar clases)',
+          description: 'Nombre o correo del profesor seleccionado (OBLIGATORIO para cursos sincrónicos)',
+        },
+        invoiceId: {
+          type: SchemaType.STRING,
+          description: 'ID de la factura pagada (obtenido de admin_check_invoice_payment o admin_list_invoices). Si no se proporciona, se busca automáticamente la factura pagada más reciente.',
         },
         courseName: {
           type: SchemaType.STRING,
-          description: 'Nombre del curso (opcional, por defecto el último activo)',
+          description: 'Nombre del curso. Por defecto se resuelve automáticamente desde la factura pagada (plan → PlanPricing → curso).',
         },
         periodQuery: {
           type: SchemaType.STRING,
@@ -464,7 +422,7 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
         },
         slots: {
           type: SchemaType.ARRAY,
-          description: 'Días y horas para las clases semanales',
+          description: 'Días y horas para las clases semanales (requerido para cursos sincrónicos)',
           items: {
             type: SchemaType.OBJECT,
             properties: {
@@ -485,7 +443,7 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
           description: 'La zona horaria proporcionada por el admin (ej: "America/Chicago"), o vacío para usar la del estudiante.',
         },
       },
-      required: ['studentNameOrEmail', 'teacherNameOrEmail', 'slots'],
+      required: ['studentNameOrEmail', 'slots'],
     },
   },
   admin_schedule_class: {
@@ -498,6 +456,10 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
         studentNameOrEmail: {
           type: SchemaType.STRING,
           description: 'Nombre o correo del estudiante para quien se agendarán las clases',
+        },
+        teacherId: {
+          type: SchemaType.STRING,
+          description: 'ID del profesor seleccionado por el admin. Garantiza que todas las clases sean con el mismo profesor.',
         },
         slots: {
           type: SchemaType.ARRAY,
@@ -673,11 +635,14 @@ export async function POST(req: NextRequest) {
       minute: '2-digit',
     }).format(new Date())
 
-    const systemPrompt = SYSTEM_PROMPT_TEMPLATE.replace(/{name}/g, user.name ?? 'Usuario')
-      .replace(/{role}/g, user.roles.join(', '))
-      .replace(/{email}/g, user.email ?? '')
-      .replace(/{timezone}/g, user.timezone)
-      .replace(/{currentDate}/g, currentDate)
+    const systemPrompt = buildSystemPrompt({
+      name: user.name ?? 'Usuario',
+      role: user.roles.join(', '),
+      email: user.email ?? '',
+      timezone: user.timezone,
+      currentDate,
+      roles: user.roles,
+    })
 
     const toolDeclarations = getToolsForRole(user.roles)
 
@@ -702,6 +667,7 @@ export async function POST(req: NextRequest) {
 
     let result = await chat.sendMessage(lastMessage.content)
     let toolExecuted: string | undefined
+    let lastToolResult: ToolResult | undefined
     let nudged = false
     let capturedPaymentUrl: string | undefined
     let capturedPreNudgeText: string | undefined
@@ -863,6 +829,7 @@ export async function POST(req: NextRequest) {
             const enrollArgs = call.args as {
               studentNameOrEmail: string
               teacherNameOrEmail?: string
+              invoiceId?: string
               courseName?: string
               periodQuery?: string
               slots: Array<{ dayOfWeek: string; localTime: string }>
@@ -871,6 +838,7 @@ export async function POST(req: NextRequest) {
             toolResult = await handleAdminEnrollStudent({
               studentNameOrEmail: enrollArgs.studentNameOrEmail,
               teacherNameOrEmail: enrollArgs.teacherNameOrEmail,
+              invoiceId: enrollArgs.invoiceId,
               courseName: enrollArgs.courseName,
               periodQuery: enrollArgs.periodQuery,
               slots: enrollArgs.slots,
@@ -882,11 +850,13 @@ export async function POST(req: NextRequest) {
           case 'admin_schedule_class': {
             const schedArgs = call.args as {
               studentNameOrEmail: string
+              teacherId?: string
               slots: Array<{ dayOfWeek: string; localTime: string }>
               studentTimezone?: string
             }
             toolResult = await handleAdminScheduleClass({
               studentNameOrEmail: schedArgs.studentNameOrEmail,
+              teacherId: schedArgs.teacherId,
               slots: schedArgs.slots,
               adminTimezone: schedArgs.studentTimezone || user.timezone,
             })
@@ -926,6 +896,8 @@ export async function POST(req: NextRequest) {
           default:
             toolResult = { success: false, message: 'Herramienta no reconocida.' }
         }
+
+        lastToolResult = toolResult
 
         functionResponses.push({
           functionResponse: { name: call.name, response: { result: toolResult } },
@@ -1011,11 +983,15 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Build interaction (clickable buttons) from the last tool result if applicable
+    const interaction = buildInteractionFromToolResult(lastToolResult)
+
     return NextResponse.json({
       success: true,
       data: {
         response: finalText,
         ...(toolExecuted && { toolExecuted }),
+        ...(interaction && { interaction }),
       },
     })
   } catch (error) {

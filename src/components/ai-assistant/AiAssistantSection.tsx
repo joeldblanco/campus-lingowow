@@ -21,7 +21,7 @@ const WELCOME_MESSAGES: Record<string, string> = {
 
 export function AiAssistantSection() {
   const { data: session } = useSession()
-  const { messages, isLoading, lastToolExecuted, sendMessage } = useAiChat()
+  const { messages, isLoading, lastToolExecuted, pendingInteraction, sendMessage, selectOption } = useAiChat()
 
   const userRoles = session?.user?.roles ?? []
   const primaryRole =
@@ -38,6 +38,7 @@ export function AiAssistantSection() {
   }
 
   const welcomeMessage = WELCOME_MESSAGES[primaryRole]
+  const inputDisabled = !!pendingInteraction && !pendingInteraction.allowFreeText
 
   return (
     <Card className="mt-6">
@@ -63,9 +64,11 @@ export function AiAssistantSection() {
               messages={messages}
               isLoading={isLoading}
               lastToolExecuted={lastToolExecuted}
+              pendingInteraction={pendingInteraction}
+              onSelectOption={selectOption}
             />
           )}
-          <AiChatInput onSend={sendMessage} isLoading={isLoading} />
+          <AiChatInput onSend={sendMessage} isLoading={isLoading} disabled={inputDisabled} />
         </div>
       </CardContent>
     </Card>

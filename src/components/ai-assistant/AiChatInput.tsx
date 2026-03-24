@@ -11,22 +11,25 @@ const MAX_CHARS = 1000
 interface AiChatInputProps {
   onSend: (message: string) => void
   isLoading: boolean
+  disabled?: boolean
 }
 
-export function AiChatInput({ onSend, isLoading }: AiChatInputProps) {
+export function AiChatInput({ onSend, isLoading, disabled }: AiChatInputProps) {
   const [value, setValue] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
+  const isDisabled = isLoading || !!disabled
+
   // Re-focus textarea when loading finishes
   useEffect(() => {
-    if (!isLoading) {
+    if (!isDisabled) {
       textareaRef.current?.focus()
     }
-  }, [isLoading])
+  }, [isDisabled])
 
   const handleSend = () => {
     const trimmed = value.trim()
-    if (!trimmed || isLoading) return
+    if (!trimmed || isDisabled) return
     onSend(trimmed)
     setValue('')
     textareaRef.current?.focus()
@@ -49,7 +52,7 @@ export function AiChatInput({ onSend, isLoading }: AiChatInputProps) {
         className={cn(
           'rounded-2xl border bg-background transition-all duration-150',
           'focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary',
-          isLoading ? 'opacity-60 border-border' : 'border-border'
+          isDisabled ? 'opacity-60 border-border' : 'border-border'
         )}
       >
         <Textarea
@@ -57,8 +60,8 @@ export function AiChatInput({ onSend, isLoading }: AiChatInputProps) {
           value={value}
           onChange={(e) => setValue(e.target.value.slice(0, MAX_CHARS))}
           onKeyDown={handleKeyDown}
-          placeholder="Escribe tu mensaje..."
-          disabled={isLoading}
+          placeholder={disabled ? 'Selecciona una opción arriba...' : 'Escribe tu mensaje...'}
+          disabled={isDisabled}
           rows={2}
           className={cn(
             'w-full resize-none bg-transparent',
@@ -85,7 +88,7 @@ export function AiChatInput({ onSend, isLoading }: AiChatInputProps) {
             </span>
             <Button
               onClick={handleSend}
-              disabled={isLoading || !value.trim() || overLimit}
+              disabled={isDisabled || !value.trim() || overLimit}
               size="icon"
               className="h-7 w-7 rounded-lg shrink-0"
             >

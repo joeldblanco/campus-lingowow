@@ -3,7 +3,7 @@
 import { useRef, useEffect } from 'react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
-import type { ChatMessage } from '@/types/ai-chat'
+import type { ChatMessage, ChatInteraction } from '@/types/ai-chat'
 
 const TOOL_LABELS: Record<string, string> = {
   check_teacher_availability: 'Verificando disponibilidad',
@@ -19,6 +19,7 @@ const TOOL_LABELS: Record<string, string> = {
   admin_list_invoices: 'Buscando facturas del cliente',
   admin_check_invoice_payment: 'Verificando pago de factura',
   admin_schedule_class: 'Agendando clases del estudiante',
+  admin_enroll_student: 'Inscribiendo estudiante',
   admin_get_student_classes: 'Buscando clases del estudiante',
   admin_reschedule_class: 'Reagendando clase del estudiante',
   admin_calculate_class_dates: 'Calculando fechas de clases',
@@ -28,6 +29,8 @@ interface AiChatMessagesProps {
   messages: ChatMessage[]
   isLoading: boolean
   lastToolExecuted?: string
+  pendingInteraction?: ChatInteraction
+  onSelectOption?: (label: string) => void
 }
 
 // ─── Inline markdown renderer ────────────────────────────────────────────────
@@ -198,6 +201,38 @@ function MessageBubble({ message }: { message: ChatMessage }) {
   )
 }
 
+function InteractionButtons({
+  interaction,
+  onSelect,
+  disabled,
+}: {
+  interaction: ChatInteraction
+  onSelect: (label: string) => void
+  disabled: boolean
+}) {
+  return (
+    <div className="flex justify-start">
+      <div className="max-w-[85%] flex flex-col gap-1.5">
+        {interaction.options.map((opt) => (
+          <button
+            key={opt.id}
+            onClick={() => onSelect(opt.label)}
+            disabled={disabled}
+            className={cn(
+              'text-left text-sm px-3 py-2 rounded-xl border border-primary/30 bg-primary/5',
+              'hover:bg-primary/10 hover:border-primary/50 transition-colors',
+              'disabled:opacity-50 disabled:cursor-not-allowed',
+              'focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:outline-none'
+            )}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function LoadingDots() {
   return (
     <div className="flex justify-start">
@@ -210,7 +245,7 @@ function LoadingDots() {
   )
 }
 
-export function AiChatMessages({ messages, isLoading, lastToolExecuted }: AiChatMessagesProps) {
+export function AiChatMessages({ messages, isLoading, lastToolExecuted, pendingInteraction, onSelectOption }: AiChatMessagesProps) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   // Auto-scroll within the ScrollArea viewport only (never the page)
@@ -221,7 +256,7 @@ export function AiChatMessages({ messages, isLoading, lastToolExecuted }: AiChat
     if (viewport) {
       viewport.scrollTop = viewport.scrollHeight
     }
-  }, [messages, isLoading])
+  }, [messages, isLoading, pendingInteraction])
 
   return (
     <ScrollArea className="flex-1 min-h-0 px-4 py-3">
@@ -229,6 +264,14 @@ export function AiChatMessages({ messages, isLoading, lastToolExecuted }: AiChat
         {messages.map((msg, idx) => (
           <MessageBubble key={idx} message={msg} />
         ))}
+
+        {pendingInteraction && onSelectOption && !isLoading && (
+          <InteractionButtons
+            interaction={pendingInteraction}
+            onSelect={onSelectOption}
+            disabled={isLoading}
+          />
+        )}
 
         {isLoading && lastToolExecuted && (
           <div className="flex justify-start">
