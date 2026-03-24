@@ -5,7 +5,11 @@ import { db } from '@/lib/db'
 import { UserRole, BookingStatus } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import { startOfWeek, endOfWeek, startOfMonth, endOfMonth, format } from 'date-fns'
-import { TeacherScheduleLesson, TeacherAvailabilitySlot, TeacherScheduleData } from '@/types/schedule'
+import {
+  TeacherScheduleLesson,
+  TeacherAvailabilitySlot,
+  TeacherScheduleData,
+} from '@/types/schedule'
 
 // Color mapping for courses
 const COURSE_COLORS: Record<string, 'blue' | 'purple' | 'orange' | 'green'> = {
@@ -27,26 +31,30 @@ function getCourseColor(courseTitle: string): 'blue' | 'purple' | 'orange' | 'gr
   return 'blue'
 }
 
-function getBookingStatus(booking: { status: BookingStatus; day: string; timeSlot: string }): 'scheduled' | 'in_progress' | 'completed' | 'cancelled' {
+function getBookingStatus(booking: {
+  status: BookingStatus
+  day: string
+  timeSlot: string
+}): 'scheduled' | 'in_progress' | 'completed' | 'cancelled' {
   if (booking.status === BookingStatus.CANCELLED) return 'cancelled'
   if (booking.status === BookingStatus.COMPLETED) return 'completed'
-  
+
   // Check if class is currently in progress
   const now = new Date()
   const [startTime, endTime] = booking.timeSlot.split('-')
   const bookingDate = new Date(booking.day)
-  
+
   const [startHour, startMin] = startTime.split(':').map(Number)
   const [endHour, endMin] = endTime.split(':').map(Number)
-  
+
   const classStart = new Date(bookingDate)
   classStart.setHours(startHour, startMin, 0, 0)
-  
+
   const classEnd = new Date(bookingDate)
   classEnd.setHours(endHour, endMin, 0, 0)
-  
+
   if (now >= classStart && now <= classEnd) return 'in_progress'
-  
+
   return 'scheduled'
 }
 
@@ -57,7 +65,10 @@ export async function getTeacherScheduleData(
 ): Promise<{ success: boolean; data?: TeacherScheduleData; error?: string }> {
   const session = await auth()
 
-  if (!session?.user?.id || (!session.user.roles.includes(UserRole.TEACHER) && !session.user.roles.includes(UserRole.ADMIN))) {
+  if (
+    !session?.user?.id ||
+    (!session.user.roles.includes(UserRole.TEACHER) && !session.user.roles.includes(UserRole.ADMIN))
+  ) {
     return { success: false, error: 'No autorizado' }
   }
 
@@ -70,7 +81,7 @@ export async function getTeacherScheduleData(
       select: { timezone: true },
     })
     const teacherTimezone = teacherData?.timezone || 'America/Lima'
-    
+
     // Format dates for query
     const startDateStr = format(startDate, 'yyyy-MM-dd')
     const endDateStr = format(endDate, 'yyyy-MM-dd')
@@ -106,10 +117,7 @@ export async function getTeacherScheduleData(
           },
         },
       },
-      orderBy: [
-        { day: 'asc' },
-        { timeSlot: 'asc' },
-      ],
+      orderBy: [{ day: 'asc' }, { timeSlot: 'asc' }],
     })
 
     // Get teacher availability
@@ -117,45 +125,40 @@ export async function getTeacherScheduleData(
       where: {
         userId: teacherId,
       },
-      orderBy: [
-        { day: 'asc' },
-        { startTime: 'asc' },
-      ],
+      orderBy: [{ day: 'asc' }, { startTime: 'asc' }],
     })
 
-    // Get blocked days
-    const blockedDaysRecords = await db.teacherBlockedDay.findMany({
-      where: {
-        teacherId,
-        date: {
-          gte: startDateStr,
-          lte: endDateStr,
+    // Get blocked days (table may not exist yet)
+    let blockedDays: string[] = []
+    try {
+      const blockedDaysRecords = await db.teacherBlockedDay.findMany({
+        where: {
+          teacherId,
+          date: {
+            gte: startDateStr,
+            lte: endDateStr,
+          },
         },
-      },
-      select: { date: true },
-    })
-
-    const blockedDays = blockedDaysRecords.map((record) => record.date)
-
-    console.log('[SCHEDULE] teacherId:', teacherId, 'timezone:', teacherTimezone)
-    console.log('[SCHEDULE] range:', startDateStr, 'to', endDateStr)
-    console.log('[SCHEDULE] bookings:', bookings.length, 'availability:', availability.length, 'blocked:', blockedDays.length)
-    if (bookings.length > 0) console.log('[SCHEDULE] sample booking:', bookings[0].day, bookings[0].timeSlot, bookings[0].status)
-    if (availability.length > 0) console.log('[SCHEDULE] sample avail:', availability[0].day, availability[0].startTime, availability[0].endTime)
+        select: { date: true },
+      })
+      blockedDays = blockedDaysRecords.map((record) => record.date)
+    } catch {
+      // Table may not exist yet — skip silently
+    }
 
     // Transform bookings to lessons
     // Convertir de UTC a hora local del profesor
     const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
-    
+
     const lessons: TeacherScheduleLesson[] = bookings.map((booking) => {
       // Convertir de UTC a hora local del profesor
       const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot, teacherTimezone)
       const [startTime, endTime] = localData.timeSlot.split('-')
-      
+
       // Parsear la fecha local
       const [year, month, day] = localData.day.split('-').map(Number)
       const lessonDate = new Date(year, month - 1, day, 12, 0, 0, 0)
-      
+
       return {
         id: booking.id,
         courseTitle: booking.enrollment.course.title,
@@ -174,7 +177,10 @@ export async function getTeacherScheduleData(
         status: getBookingStatus(booking),
         topic: booking.notes || undefined,
         duration: booking.enrollment.course.classDuration,
-        color: booking.status === BookingStatus.CANCELLED ? 'gray' : getCourseColor(booking.enrollment.course.title),
+        color:
+          booking.status === BookingStatus.CANCELLED
+            ? 'gray'
+            : getCourseColor(booking.enrollment.course.title),
         enrollmentId: booking.enrollmentId,
       }
     })
@@ -193,10 +199,15 @@ export async function getTeacherScheduleData(
 
     // Transform availability - convertir de UTC a hora local del profesor
     const { convertAvailabilityFromUTC } = await import('@/lib/utils/date')
-    
+
     const availabilitySlots: TeacherAvailabilitySlot[] = availability.map((slot) => {
       // Convertir de UTC a hora local del profesor (usando teacherTimezone obtenido arriba)
-      const localData = convertAvailabilityFromUTC(slot.day, slot.startTime, slot.endTime, teacherTimezone)
+      const localData = convertAvailabilityFromUTC(
+        slot.day,
+        slot.startTime,
+        slot.endTime,
+        teacherTimezone
+      )
       return {
         id: slot.id,
         day: localData.day,
@@ -248,7 +259,10 @@ export async function updateTeacherAvailabilitySlot(params: {
 }) {
   const session = await auth()
 
-  if (!session?.user?.id || (!session.user.roles.includes(UserRole.TEACHER) && !session.user.roles.includes(UserRole.ADMIN))) {
+  if (
+    !session?.user?.id ||
+    (!session.user.roles.includes(UserRole.TEACHER) && !session.user.roles.includes(UserRole.ADMIN))
+  ) {
     return { success: false, error: 'No autorizado' }
   }
 
@@ -262,12 +276,12 @@ export async function updateTeacherAvailabilitySlot(params: {
       select: { timezone: true },
     })
     const userTimezone = user?.timezone || 'America/Lima'
-    
+
     // Convertir a UTC
     const { convertAvailabilityToUTC } = await import('@/lib/utils/date')
     const utcData = convertAvailabilityToUTC(day, startTime, endTime, userTimezone)
     const utcDay = utcData.day.toLowerCase()
-    
+
     if (available) {
       // Check if slot already exists
       const existing = await db.teacherAvailability.findFirst({
@@ -314,7 +328,10 @@ export async function bulkUpdateTeacherAvailability(
 ) {
   const session = await auth()
 
-  if (!session?.user?.id || (!session.user.roles.includes(UserRole.TEACHER) && !session.user.roles.includes(UserRole.ADMIN))) {
+  if (
+    !session?.user?.id ||
+    (!session.user.roles.includes(UserRole.TEACHER) && !session.user.roles.includes(UserRole.ADMIN))
+  ) {
     return { success: false, error: 'No autorizado' }
   }
 
@@ -327,22 +344,27 @@ export async function bulkUpdateTeacherAvailability(
       select: { timezone: true },
     })
     const userTimezone = user?.timezone || 'America/Lima'
-    
+
     // Importar función de conversión
     const { convertAvailabilityToUTC } = await import('@/lib/utils/date')
-    
+
     // Convertir slots a UTC y agrupar por día UTC
     const slotsByDayUTC: Record<string, Array<{ startTime: string; endTime: string }>> = {}
     const allUtcDays = new Set<string>()
-    
+
     for (const slot of slots) {
       const normalizedDay = slot.day.toLowerCase()
-      
+
       if (slot.available) {
         // Convertir a UTC
-        const utcData = convertAvailabilityToUTC(normalizedDay, slot.startTime, slot.endTime, userTimezone)
+        const utcData = convertAvailabilityToUTC(
+          normalizedDay,
+          slot.startTime,
+          slot.endTime,
+          userTimezone
+        )
         const utcDay = utcData.day.toLowerCase()
-        
+
         if (!slotsByDayUTC[utcDay]) {
           slotsByDayUTC[utcDay] = []
         }
@@ -352,17 +374,22 @@ export async function bulkUpdateTeacherAvailability(
         })
         allUtcDays.add(utcDay)
       }
-      
+
       // También necesitamos rastrear qué días UTC corresponden a los días locales
       // para poder eliminar correctamente
-      const utcDataForDelete = convertAvailabilityToUTC(normalizedDay, '00:00', '23:59', userTimezone)
+      const utcDataForDelete = convertAvailabilityToUTC(
+        normalizedDay,
+        '00:00',
+        '23:59',
+        userTimezone
+      )
       allUtcDays.add(utcDataForDelete.day.toLowerCase())
     }
 
     await db.$transaction(async (tx) => {
       // Delete existing availability for those UTC days
       const uniqueUtcDays = [...allUtcDays]
-      
+
       if (uniqueUtcDays.length > 0) {
         await tx.teacherAvailability.deleteMany({
           where: {
@@ -416,7 +443,7 @@ export async function getTeacherScheduleForAdmin(
       select: { timezone: true },
     })
     const adminTimezone = adminData?.timezone || 'America/Lima'
-    
+
     // Format dates for query
     const startDateStr = format(startDate, 'yyyy-MM-dd')
     const endDateStr = format(endDate, 'yyyy-MM-dd')
@@ -452,10 +479,7 @@ export async function getTeacherScheduleForAdmin(
           },
         },
       },
-      orderBy: [
-        { day: 'asc' },
-        { timeSlot: 'asc' },
-      ],
+      orderBy: [{ day: 'asc' }, { timeSlot: 'asc' }],
     })
 
     // Get teacher availability
@@ -463,38 +487,39 @@ export async function getTeacherScheduleForAdmin(
       where: {
         userId: teacherId,
       },
-      orderBy: [
-        { day: 'asc' },
-        { startTime: 'asc' },
-      ],
+      orderBy: [{ day: 'asc' }, { startTime: 'asc' }],
     })
 
-    // Get blocked days
-    const blockedDaysRecords = await db.teacherBlockedDay.findMany({
-      where: {
-        teacherId,
-        date: {
-          gte: startDateStr,
-          lte: endDateStr,
+    // Get blocked days (table may not exist yet)
+    let blockedDays: string[] = []
+    try {
+      const blockedDaysRecords = await db.teacherBlockedDay.findMany({
+        where: {
+          teacherId,
+          date: {
+            gte: startDateStr,
+            lte: endDateStr,
+          },
         },
-      },
-      select: { date: true },
-    })
-
-    const blockedDays = blockedDaysRecords.map((record) => record.date)
+        select: { date: true },
+      })
+      blockedDays = blockedDaysRecords.map((record) => record.date)
+    } catch {
+      // Table may not exist yet — skip silently
+    }
 
     // Transform bookings to lessons using admin's timezone
     const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
-    
+
     const lessons: TeacherScheduleLesson[] = bookings.map((booking) => {
       // Convertir de UTC a hora local del admin
       const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot, adminTimezone)
       const [startTime, endTime] = localData.timeSlot.split('-')
-      
+
       // Parsear la fecha local
       const [year, month, day] = localData.day.split('-').map(Number)
       const lessonDate = new Date(year, month - 1, day, 12, 0, 0, 0)
-      
+
       return {
         id: booking.id,
         courseTitle: booking.enrollment.course.title,
@@ -513,7 +538,10 @@ export async function getTeacherScheduleForAdmin(
         status: getBookingStatus(booking),
         topic: booking.notes || undefined,
         duration: booking.enrollment.course.classDuration,
-        color: booking.status === BookingStatus.CANCELLED ? 'gray' : getCourseColor(booking.enrollment.course.title),
+        color:
+          booking.status === BookingStatus.CANCELLED
+            ? 'gray'
+            : getCourseColor(booking.enrollment.course.title),
         enrollmentId: booking.enrollmentId,
       }
     })
@@ -527,9 +555,14 @@ export async function getTeacherScheduleForAdmin(
 
     // Transform availability using admin's timezone
     const { convertAvailabilityFromUTC } = await import('@/lib/utils/date')
-    
+
     const availabilitySlots: TeacherAvailabilitySlot[] = availability.map((slot) => {
-      const localData = convertAvailabilityFromUTC(slot.day, slot.startTime, slot.endTime, adminTimezone)
+      const localData = convertAvailabilityFromUTC(
+        slot.day,
+        slot.startTime,
+        slot.endTime,
+        adminTimezone
+      )
       return {
         id: slot.id,
         day: localData.day,
@@ -623,7 +656,10 @@ export async function toggleBlockTeacherDay(params: {
 }) {
   const session = await auth()
 
-  if (!session?.user?.id || (!session.user.roles.includes(UserRole.TEACHER) && !session.user.roles.includes(UserRole.ADMIN))) {
+  if (
+    !session?.user?.id ||
+    (!session.user.roles.includes(UserRole.TEACHER) && !session.user.roles.includes(UserRole.ADMIN))
+  ) {
     return { success: false, error: 'No autorizado' }
   }
 

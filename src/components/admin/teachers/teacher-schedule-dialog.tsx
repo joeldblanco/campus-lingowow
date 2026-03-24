@@ -1,29 +1,28 @@
 'use client'
 
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { UserAvatar } from '@/components/ui/user-avatar'
 import { cn } from '@/lib/utils'
 import { getTeacherScheduleForAdmin } from '@/lib/actions/teacher-schedule'
-import type { TeacherScheduleLesson, TeacherAvailabilitySlot, ScheduleLesson } from '@/types/schedule'
+import type {
+  TeacherScheduleLesson,
+  TeacherAvailabilitySlot,
+  ScheduleLesson,
+} from '@/types/schedule'
 import { getLessonColorClasses } from '@/types/schedule'
-import { 
-  addDays, 
-  format, 
-  isSameDay, 
-  isToday, 
-  startOfWeek, 
-  startOfMonth, 
+import {
+  addDays,
+  format,
+  isSameDay,
+  isToday,
+  startOfWeek,
+  startOfMonth,
   endOfMonth,
   addWeeks,
-  subWeeks
+  subWeeks,
 } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { ChevronLeft, ChevronRight, Loader2, Calendar } from 'lucide-react'
@@ -93,32 +92,35 @@ export function TeacherScheduleDialog({
   const [availability, setAvailability] = useState<TeacherAvailabilitySlot[]>([])
   const lastFetchedMonth = useRef<string>('')
 
-  const fetchData = useCallback(async (force = false) => {
-    if (!open || !teacherId) return
+  const fetchData = useCallback(
+    async (force = false) => {
+      if (!open || !teacherId) return
 
-    const monthStart = startOfMonth(currentDate)
-    const monthKey = `${teacherId}-${format(monthStart, 'yyyy-MM')}`
+      const monthStart = startOfMonth(currentDate)
+      const monthKey = `${teacherId}-${format(monthStart, 'yyyy-MM')}`
 
-    if (!force && lastFetchedMonth.current === monthKey) {
-      return
-    }
-
-    setIsLoading(true)
-    try {
-      const monthEnd = endOfMonth(currentDate)
-      const result = await getTeacherScheduleForAdmin(teacherId, monthStart, monthEnd)
-
-      if (result.success && result.data) {
-        setLessons(transformLessons(result.data.lessons))
-        setAvailability(result.data.availability ?? [])
-        lastFetchedMonth.current = monthKey
+      if (!force && lastFetchedMonth.current === monthKey) {
+        return
       }
-    } catch (error) {
-      console.error('Error fetching teacher schedule:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [currentDate, teacherId, open])
+
+      setIsLoading(true)
+      try {
+        const monthEnd = endOfMonth(currentDate)
+        const result = await getTeacherScheduleForAdmin(teacherId, monthStart, monthEnd)
+
+        if (result.success && result.data) {
+          setLessons(transformLessons(result.data.lessons))
+          setAvailability(result.data.availability ?? [])
+          lastFetchedMonth.current = monthKey
+        }
+      } catch (error) {
+        console.error('Error fetching teacher schedule:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    },
+    [currentDate, teacherId, open]
+  )
 
   useEffect(() => {
     if (open) {
@@ -135,10 +137,20 @@ export function TeacherScheduleDialog({
   }, [open])
 
   const DAY_MAP: Record<string, number> = {
-    monday: 1, tuesday: 2, wednesday: 3, thursday: 4,
-    friday: 5, saturday: 6, sunday: 0,
-    lunes: 1, martes: 2, miércoles: 3, jueves: 4,
-    viernes: 5, sábado: 6, domingo: 0,
+    monday: 1,
+    tuesday: 2,
+    wednesday: 3,
+    thursday: 4,
+    friday: 5,
+    saturday: 6,
+    sunday: 0,
+    lunes: 1,
+    martes: 2,
+    miércoles: 3,
+    jueves: 4,
+    viernes: 5,
+    sábado: 6,
+    domingo: 0,
   }
 
   const isSlotAvailable = (date: Date, time: string) => {
@@ -166,7 +178,8 @@ export function TeacherScheduleDialog({
   const getLessonForSlot = (date: Date, time: string) => {
     const slotHour = time.split(':')[0]
     return filteredLessons.find(
-      (lesson) => isSameDay(new Date(lesson.date), date) && lesson.startTime.split(':')[0] === slotHour
+      (lesson) =>
+        isSameDay(new Date(lesson.date), date) && lesson.startTime.split(':')[0] === slotHour
     )
   }
 
@@ -217,7 +230,9 @@ export function TeacherScheduleDialog({
               className="h-4 w-4 grayscale"
               fallbackClassName="text-[8px]"
             />
-            <span className="text-[10px] font-medium text-muted-foreground truncate">{lesson.student.name}</span>
+            <span className="text-[10px] font-medium text-muted-foreground truncate">
+              {lesson.student.name}
+            </span>
           </div>
         </div>
       )
@@ -231,12 +246,7 @@ export function TeacherScheduleDialog({
         )}
       >
         <Badge
-          className={cn(
-            'text-[8px] font-bold uppercase w-fit',
-            colors.bg,
-            colors.text,
-            'border-0'
-          )}
+          className={cn('text-[8px] font-bold uppercase w-fit', colors.bg, colors.text, 'border-0')}
         >
           <p className="truncate max-w-[60px]">{lesson.courseTitle}</p>
         </Badge>
@@ -268,9 +278,7 @@ export function TeacherScheduleDialog({
             <Calendar className="h-5 w-5" />
             Horario de {teacherName}
           </DialogTitle>
-          <p className="text-sm text-muted-foreground">
-            Visualizando en tu zona horaria
-          </p>
+          <p className="text-sm text-muted-foreground">Visualizando en tu zona horaria</p>
         </DialogHeader>
 
         <div className="flex items-center justify-between py-2 border-b">
@@ -296,7 +304,8 @@ export function TeacherScheduleDialog({
             </div>
           </div>
           <div className="text-sm font-medium">
-            {format(weekStart, "d 'de' MMMM", { locale: es })} - {format(addDays(weekStart, 6), "d 'de' MMMM yyyy", { locale: es })}
+            {format(weekStart, "d 'de' MMMM", { locale: es })} -{' '}
+            {format(addDays(weekStart, 6), "d 'de' MMMM yyyy", { locale: es })}
           </div>
         </div>
 
@@ -368,16 +377,20 @@ export function TeacherScheduleDialog({
                           className={cn(
                             'align-top border-r border-dashed p-0.5 h-16',
                             isCurrentDay && 'bg-primary/5',
-                            !lesson && isSlotAvailable(day, time) && 'bg-green-50 dark:bg-green-900/20'
+                            !lesson &&
+                              isSlotAvailable(day, time) &&
+                              'bg-green-50 dark:bg-green-900/20'
                           )}
                         >
-                          {lesson ? renderLessonCard(lesson) : (
-                            isSlotAvailable(day, time) && (
-                              <div className="h-full flex items-center justify-center">
-                                <span className="text-[9px] text-green-600 dark:text-green-400 font-medium">Disponible</span>
-                              </div>
-                            )
-                          )}
+                          {lesson
+                            ? renderLessonCard(lesson)
+                            : isSlotAvailable(day, time) && (
+                                <div className="h-full flex items-center justify-center">
+                                  <span className="text-[9px] text-green-600 dark:text-green-400 font-medium">
+                                    Disponible
+                                  </span>
+                                </div>
+                              )}
                         </td>
                       )
                     })}
