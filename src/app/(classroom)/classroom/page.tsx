@@ -11,6 +11,7 @@ import { validateClassAccess } from '@/lib/utils/class-access'
 import { useTimezone } from '@/hooks/use-timezone'
 import { UserRole } from '@prisma/client'
 import { Clock } from 'lucide-react'
+import { trackEvent } from '@/lib/actions/audit-log'
 
 type ClassroomData = {
   studentId: string
@@ -35,7 +36,9 @@ export default function ClassroomPage() {
   const { timezone } = useTimezone()
   const [classroomData, setClassroomData] = useState<ClassroomData | null>(null)
   const [loading, setLoading] = useState(true)
-  const [accessValidation, setAccessValidation] = useState<ReturnType<typeof validateClassAccess> | null>(null)
+  const [accessValidation, setAccessValidation] = useState<ReturnType<
+    typeof validateClassAccess
+  > | null>(null)
 
   const urlClassId = searchParams.get('classId')
   const effectiveClassId = urlClassId || currentClassId
@@ -73,12 +76,72 @@ export default function ClassroomPage() {
     loadClassroomData()
   }, [effectiveClassId, session?.user?.id, isTeacher, timezone])
 
+  // Registrar ingreso y salida del aula
+  useEffect(() => {
+    if (!classroomData || !session?.user?.id || !accessValidation?.canAccess) return
+
+    const role = isTeacher ? 'profesor' : 'estudiante'
+    trackEvent({
+      action: 'CLASSROOM_JOIN',
+      category: 'CLASSROOM',
+      description: `${role} ingresó al aula: ${classroomData.courseName}`,
+      metadata: {
+        classId: effectiveClassId,
+        courseName: classroomData.courseName,
+        lessonName: classroomData.lessonName,
+        bookingId: classroomData.bookingId,
+        role,
+      },
+    })
+
+    const handleBeforeUnload = () => {
+      // Usar sendBeacon para asegurar que se envíe al salir
+      navigator.sendBeacon(
+        '/api/audit-log',
+        new Blob([JSON.stringify({
+          action: 'CLASSROOM_LEAVE',
+          category: 'CLASSROOM',
+          description: `${role} salió del aula: ${classroomData.courseName}`,
+          metadata: {
+            classId: effectiveClassId,
+            courseName: classroomData.courseName,
+            bookingId: classroomData.bookingId,
+            role,
+          },
+        })], { type: 'application/json' })
+      )
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+      // También trackear al desmontar el componente (navegación SPA)
+      trackEvent({
+        action: 'CLASSROOM_LEAVE',
+        category: 'CLASSROOM',
+        description: `${role} salió del aula: ${classroomData.courseName}`,
+        metadata: {
+          classId: effectiveClassId,
+          courseName: classroomData.courseName,
+          bookingId: classroomData.bookingId,
+          role,
+        },
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [classroomData?.bookingId, accessValidation?.canAccess])
+
   // Actualizar validación cada segundo y recargar cuando llegue la hora
   useEffect(() => {
     if (!classroomData) return
 
     const interval = setInterval(() => {
-      const validation = validateClassAccess(classroomData.dayUTC, classroomData.timeSlotUTC, isTeacher, timezone)
+      const validation = validateClassAccess(
+        classroomData.dayUTC,
+        classroomData.timeSlotUTC,
+        isTeacher,
+        timezone
+      )
       setAccessValidation(validation)
 
       // Si la clase ya puede accederse, recargar la página

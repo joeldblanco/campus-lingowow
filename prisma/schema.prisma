@@ -55,16 +55,16 @@ model User {
   teacherRankId String?
 
   // Relaciones comunes
-  createdCourses        Course[]
-  createdActivities     Activity[]         @relation("ActivityCreator")
-  enrollments           Enrollment[]
-  enrollmentsAsTeacher  Enrollment[]       @relation("EnrollmentTeacher")
-  completedContents     UserContent[]
-  viewedResources       ResourceView[]
-  savedResources        UserResource[]
-  activities            UserActivity[]
-  attendances           ClassAttendance[]
-  teacherAttendances    TeacherAttendance[] @relation("TeacherAttendances")
+  createdCourses       Course[]
+  createdActivities    Activity[]          @relation("ActivityCreator")
+  enrollments          Enrollment[]
+  enrollmentsAsTeacher Enrollment[]        @relation("EnrollmentTeacher")
+  completedContents    UserContent[]
+  viewedResources      ResourceView[]
+  savedResources       UserResource[]
+  activities           UserActivity[]
+  attendances          ClassAttendance[]
+  teacherAttendances   TeacherAttendance[] @relation("TeacherAttendances")
 
   // Relaciones del sistema de clases
   bookingsAsStudent   ClassBooking[]        @relation("StudentBookings")
@@ -94,8 +94,8 @@ model User {
   subscriptions        Subscription[]
 
   // Relaciones del sistema de créditos virtuales
-  userCreditBalance   UserCreditBalance?
-  creditTransactions  CreditTransaction[]
+  userCreditBalance      UserCreditBalance?
+  creditTransactions     CreditTransaction[]
   creditPackagePurchases CreditPackagePurchase[]
 
   // Relaciones de videollamadas JaaS
@@ -108,15 +108,15 @@ model User {
   sentMeetingMessages        MeetingMessage[]          @relation("SentMeetingMessages")
 
   // Relaciones de exámenes
-  createdExams     Exam[]           @relation("ExamCreator")
-  examAttempts     ExamAttempt[]    @relation("ExamAttempts")
-  examAssignments  ExamAssignment[] @relation("ExamAssignments")
-  assignedExams    ExamAssignment[] @relation("ExamAssigner")
-  reviewedAnswers  ExamAnswer[]     @relation("ExamReviewer")
+  createdExams    Exam[]           @relation("ExamCreator")
+  examAttempts    ExamAttempt[]    @relation("ExamAttempts")
+  examAssignments ExamAssignment[] @relation("ExamAssignments")
+  assignedExams   ExamAssignment[] @relation("ExamAssigner")
+  reviewedAnswers ExamAnswer[]     @relation("ExamReviewer")
 
   // Relaciones de respuestas de bloques en lecciones
-  blockResponses   BlockResponse[]
-  aiGradingUsage   AIGradingUsage[]
+  blockResponses BlockResponse[]
+  aiGradingUsage AIGradingUsage[]
 
   // Relación de cursos que puede enseñar (para profesores)
   teachableCourses TeacherCourse[]
@@ -125,37 +125,40 @@ model User {
   paymentSettings String?
 
   // Relaciones de biblioteca de recursos
-  libraryResources    LibraryResource[]     @relation("LibraryAuthor")
-  libraryLikes        LibraryResourceLike[] @relation("LibraryLikes")
-  librarySaves        LibraryResourceSave[] @relation("LibrarySaves")
+  libraryResources LibraryResource[]     @relation("LibraryAuthor")
+  libraryLikes     LibraryResourceLike[] @relation("LibraryLikes")
+  librarySaves     LibraryResourceSave[] @relation("LibrarySaves")
 
   // Relaciones de administración de archivos
-  uploadedFiles    FileAsset[]       @relation("FileUploader")
-  fileUsageLogs    FileUsageLog[]    @relation("FileUser")
-  createdFolders   FileFolder[]      @relation("FolderCreator")
+  uploadedFiles  FileAsset[]    @relation("FileUploader")
+  fileUsageLogs  FileUsageLog[] @relation("FileUser")
+  createdFolders FileFolder[]   @relation("FolderCreator")
 
   // Relaciones de lecciones personalizadas
   personalizedLessons        Lesson[] @relation("StudentLessons")
   createdPersonalizedLessons Lesson[] @relation("TeacherCreatedLessons")
 
   // Relaciones de notificaciones
-  notifications         Notification[]
+  notifications Notification[]
 
   // API Keys para acceso programático
-  apiKeys               ApiKey[]
+  apiKeys ApiKey[]
 
   // Órdenes pendientes de pago
-  pendingOrders         PendingOrder[]
+  pendingOrders PendingOrder[]
 
   // Cupones restringidos a este usuario
-  restrictedCoupons     Coupon[] @relation("UserCoupons")
+  restrictedCoupons Coupon[] @relation("UserCoupons")
 
   // Relaciones para app móvil
-  deviceTokens          DeviceToken[]
-  refreshTokens         RefreshToken[]
+  deviceTokens  DeviceToken[]
+  refreshTokens RefreshToken[]
 
   // Confirmaciones de pago de profesores
-  paymentConfirmations  TeacherPaymentConfirmation[]
+  paymentConfirmations TeacherPaymentConfirmation[]
+
+  // Audit logs
+  auditLogs AuditLog[]
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -166,15 +169,15 @@ model User {
 }
 
 model ApiKey {
-  id          String    @id @default(cuid())
-  name        String    // Nombre descriptivo de la API Key
-  key         String    @unique // Hash de la API Key
-  prefix      String    // Prefijo visible (ej: "lw_live_abc...")
-  userId      String
-  scopes      String[]  @default(["lessons:read", "lessons:write"]) // Permisos
-  lastUsedAt  DateTime?
-  expiresAt   DateTime?
-  isActive    Boolean   @default(true)
+  id         String    @id @default(cuid())
+  name       String // Nombre descriptivo de la API Key
+  key        String    @unique // Hash de la API Key
+  prefix     String // Prefijo visible (ej: "lw_live_abc...")
+  userId     String
+  scopes     String[]  @default(["lessons:read", "lessons:write"]) // Permisos
+  lastUsedAt DateTime?
+  expiresAt  DateTime?
+  isActive   Boolean   @default(true)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -261,17 +264,17 @@ model UserCreditBalance {
 }
 
 model CreditPackage {
-  id               String  @id @default(cuid())
-  name             String // "Paquete Básico", "Paquete Premium", etc.
-  description      String?
-  credits          Int // Cantidad de créditos que otorga
-  price            Float // Precio en dinero real
-  bonusCredits     Int     @default(0) // Créditos extra de bonificación
-  isActive         Boolean @default(true)
-  isPopular        Boolean @default(false)
-  sortOrder        Int     @default(0)
-  image            String?
-  
+  id           String  @id @default(cuid())
+  name         String // "Paquete Básico", "Paquete Premium", etc.
+  description  String?
+  credits      Int // Cantidad de créditos que otorga
+  price        Float // Precio en dinero real
+  bonusCredits Int     @default(0) // Créditos extra de bonificación
+  isActive     Boolean @default(true)
+  isPopular    Boolean @default(false)
+  sortOrder    Int     @default(0)
+  image        String?
+
   // Relaciones
   purchases CreditPackagePurchase[]
 
@@ -282,13 +285,13 @@ model CreditPackage {
 }
 
 model CreditPackagePurchase {
-  id              String        @id @default(cuid())
+  id              String         @id @default(cuid())
   userId          String
   packageId       String
   invoiceId       String
   creditsReceived Int // Créditos recibidos (incluye bonus)
   status          PurchaseStatus @default(CONFIRMED)
-  purchaseDate    DateTime      @default(now())
+  purchaseDate    DateTime       @default(now())
 
   // Relaciones
   user    User          @relation(fields: [userId], references: [id])
@@ -331,30 +334,30 @@ model CreditTransaction {
 // =============================================
 
 model Course {
-  id            String  @id @default(cuid())
-  title         String
-  description   String
-  language      String
-  level         String
-  isPublished   Boolean @default(false)
-  createdById   String
-  classDuration Int     @default(40) // Duración de cada clase en minutos (30, 40, 60, 90)
-  image         String? // Imagen del curso para Course Builder
+  id                     String  @id @default(cuid())
+  title                  String
+  description            String
+  language               String
+  level                  String
+  isPublished            Boolean @default(false)
+  createdById            String
+  classDuration          Int     @default(40) // Duración de cada clase en minutos (30, 40, 60, 90)
+  image                  String? // Imagen del curso para Course Builder
   defaultPaymentPerClass Float? // Pago por defecto por clase para profesores (en moneda local)
-  
+
   // Configuración de contenido personalizado
   isPersonalized Boolean @default(false) // Si usa lecciones personalizadas por estudiante
   isSynchronous  Boolean @default(false) // Si es un curso sincrónico (requiere clases en vivo con horario)
 
   // Relaciones
-  createdBy        User            @relation(fields: [createdById], references: [id])
-  modules          Module[]
-  enrollments      Enrollment[]
-  products         Product[]
-  plans            Plan[]
-  exams            Exam[]
-  teacherCourses   TeacherCourse[] // Profesores que pueden enseñar este curso
-  planPricing      PlanPricing[]   // Precios de planes que apuntan a este curso
+  createdBy      User            @relation(fields: [createdById], references: [id])
+  modules        Module[]
+  enrollments    Enrollment[]
+  products       Product[]
+  plans          Plan[]
+  exams          Exam[]
+  teacherCourses TeacherCourse[] // Profesores que pueden enseñar este curso
+  planPricing    PlanPricing[] // Precios de planes que apuntan a este curso
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -394,7 +397,7 @@ model Lesson {
   moduleId    String? // Opcional: null para lecciones personalizadas
   duration    Int     @default(30) // Duración estimada de la lección en minutos
   isPublished Boolean @default(false) // Estado de publicación de la lección
-  
+
   // Campos para el diseño del reproductor
   videoUrl      String? // URL del video/audio principal
   summary       String? // Subtítulo o resumen corto
@@ -410,11 +413,11 @@ model Lesson {
   contents   Content[]
   activities LessonActivity[]
   exams      Exam[]
-  
+
   // Relaciones para lecciones personalizadas
-  student    User?            @relation("StudentLessons", fields: [studentId], references: [id], onDelete: Cascade)
-  teacher    User?            @relation("TeacherCreatedLessons", fields: [teacherId], references: [id])
-  enrollment Enrollment?      @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  student    User?           @relation("StudentLessons", fields: [studentId], references: [id], onDelete: Cascade)
+  teacher    User?           @relation("TeacherCreatedLessons", fields: [teacherId], references: [id])
+  enrollment Enrollment?     @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
   progress   LessonProgress?
 
   createdAt DateTime @default(now())
@@ -428,11 +431,11 @@ model Lesson {
 }
 
 model LessonProgress {
-  id        String    @id @default(cuid())
-  lessonId  String    @unique
-  studentId String
-  completed Boolean   @default(false)
-  percentage Float    @default(0)
+  id           String    @id @default(cuid())
+  lessonId     String    @unique
+  studentId    String
+  completed    Boolean   @default(false)
+  percentage   Float     @default(0)
   lastAccessed DateTime?
   completedAt  DateTime?
 
@@ -449,12 +452,12 @@ model LessonProgress {
 model Content {
   id          String      @id @default(cuid())
   title       String
-  description String?     // Hecho opcional
+  description String? // Hecho opcional
   order       Int         @default(0)
   contentType ContentType
   lessonId    String
-  parentId    String?     // Para estructura recursiva (Tabs, Contenedores)
-  data        Json?       // Datos flexibles del contenido (Video URL, Texto HTML, Preguntas Quiz, etc.)
+  parentId    String? // Para estructura recursiva (Tabs, Contenedores)
+  data        Json? // Datos flexibles del contenido (Video URL, Texto HTML, Preguntas Quiz, etc.)
 
   // Relaciones
   lesson         Lesson          @relation(fields: [lessonId], references: [id], onDelete: Cascade)
@@ -610,7 +613,7 @@ model UserContent {
 }
 
 model BlockResponse {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   userId      String
   contentId   String
   blockId     String
@@ -619,11 +622,11 @@ model BlockResponse {
   score       Float?
   maxScore    Float?
   isCorrect   Boolean?
-  feedback    String?  @db.Text
+  feedback    String?   @db.Text
   gradedBy    String?
   gradedAt    DateTime?
-  submittedAt DateTime @default(now())
-  
+  submittedAt DateTime  @default(now())
+
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   content Content @relation(fields: [contentId], references: [id], onDelete: Cascade)
 
@@ -640,13 +643,13 @@ model BlockResponse {
 model AIGradingUsage {
   id          String   @id @default(cuid())
   userId      String
-  usageType   String   // "essay_lesson", "essay_exam", "recording"
-  entityId    String?  // ID del bloque, pregunta, etc.
-  entityType  String?  // "block", "exam_question"
-  tokensUsed  Int?     // Tokens consumidos (opcional para tracking)
+  usageType   String // "essay_lesson", "essay_exam", "recording"
+  entityId    String? // ID del bloque, pregunta, etc.
+  entityType  String? // "block", "exam_question"
+  tokensUsed  Int? // Tokens consumidos (opcional para tracking)
   periodStart DateTime // Inicio del período de facturación
   periodEnd   DateTime // Fin del período de facturación
-  
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
@@ -659,12 +662,12 @@ model AIGradingUsage {
 model ProctorEvent {
   id          String   @id @default(cuid())
   attemptId   String
-  eventType   String   // "tab_switch", "fullscreen_exit", "copy_attempt", "paste_attempt", "right_click", "window_blur"
+  eventType   String // "tab_switch", "fullscreen_exit", "copy_attempt", "paste_attempt", "right_click", "window_blur"
   severity    String   @default("warning") // "info", "warning", "critical"
   description String?
-  metadata    Json?    // Datos adicionales del evento
+  metadata    Json? // Datos adicionales del evento
   timestamp   DateTime @default(now())
-  
+
   attempt ExamAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
 
   @@index([attemptId])
@@ -729,7 +732,7 @@ model Enrollment {
   studentId        String
   courseId         String
   academicPeriodId String
-  teacherId        String?          // Profesor responsable de esta inscripción
+  teacherId        String? // Profesor responsable de esta inscripción
   status           EnrollmentStatus @default(ACTIVE)
   progress         Float            @default(0)
   enrollmentDate   DateTime         @default(now())
@@ -737,25 +740,25 @@ model Enrollment {
   classesTotal     Int              @default(8) // Total de clases en el paquete
   classesAttended  Int              @default(0) // Clases asistidas
   classesMissed    Int              @default(0) // Clases perdidas
-  
+
   // Campos para inscripción manual vs automática
-  enrollmentType   EnrollmentType   @default(AUTOMATIC) // Tipo de inscripción
-  enrolledBy       String?          // ID del admin que inscribió manualmente (null si fue automática)
-  notes            String?          // Notas adicionales de la inscripción
-  
+  enrollmentType EnrollmentType @default(AUTOMATIC) // Tipo de inscripción
+  enrolledBy     String? // ID del admin que inscribió manualmente (null si fue automática)
+  notes          String? // Notas adicionales de la inscripción
+
   // Campos para reagendamiento de clases
-  reschedulesUsed  Int              @default(0) // Cantidad de reagendamientos usados en este período
+  reschedulesUsed Int @default(0) // Cantidad de reagendamientos usados en este período
 
   // Relaciones
-  student        User              @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  course         Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  academicPeriod AcademicPeriod    @relation(fields: [academicPeriodId], references: [id], onDelete: Restrict)
-  teacher        User?             @relation("EnrollmentTeacher", fields: [teacherId], references: [id], onDelete: SetNull)
-  purchases      ProductPurchase[]
-  bookings       ClassBooking[]    // Clases programadas para esta inscripción
-  attendances    ClassAttendance[] // Asistencias para esta inscripción
-  schedules      ClassSchedule[]   // Horarios recurrentes para esta inscripción
-  personalizedLessons Lesson[]     // Lecciones personalizadas para esta inscripción
+  student             User              @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  course              Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  academicPeriod      AcademicPeriod    @relation(fields: [academicPeriodId], references: [id], onDelete: Restrict)
+  teacher             User?             @relation("EnrollmentTeacher", fields: [teacherId], references: [id], onDelete: SetNull)
+  purchases           ProductPurchase[]
+  bookings            ClassBooking[] // Clases programadas para esta inscripción
+  attendances         ClassAttendance[] // Asistencias para esta inscripción
+  schedules           ClassSchedule[] // Horarios recurrentes para esta inscripción
+  personalizedLessons Lesson[] // Lecciones personalizadas para esta inscripción
 
   @@unique([studentId, courseId, academicPeriodId])
   @@index([studentId])
@@ -802,7 +805,7 @@ model LessonActivity {
 model TeacherCourse {
   teacherId       String
   courseId        String
-  paymentPerClass Float?  // Pago por clase para este profesor en este curso (en la moneda local)
+  paymentPerClass Float? // Pago por clase para este profesor en este curso (en la moneda local)
 
   // Relaciones
   teacher User   @relation(fields: [teacherId], references: [id], onDelete: Cascade)
@@ -1019,7 +1022,7 @@ model TeacherAvailability {
 }
 
 model TeacherBlockedDay {
-  id        String   @id @default(cuid())
+  id        String  @id @default(cuid())
   teacherId String
   date      String // YYYY-MM-DD
   reason    String?
@@ -1182,8 +1185,8 @@ model Product {
   sortOrder    Int      @default(0) // Orden de aparición en la tienda
 
   // Campos para programación de publicación
-  publishedAt  DateTime? // Fecha de inicio de publicación
-  expiresAt    DateTime? // Fecha de fin de publicación
+  publishedAt DateTime? // Fecha de inicio de publicación
+  expiresAt   DateTime? // Fecha de fin de publicación
 
   // Campos para programación y cursos
   requiresScheduling Boolean @default(false)
@@ -1192,13 +1195,13 @@ model Product {
   scheduleDuration   Int?    @default(60) // Duración en minutos
 
   // Campos para tipos de productos
-  pricingType  ProductPricingType @default(SINGLE_PRICE) // Precio único o múltiples planes
-  paymentType  ProductPaymentType @default(ONE_TIME)     // Pago único o recurrente
+  pricingType ProductPricingType @default(SINGLE_PRICE) // Precio único o múltiples planes
+  paymentType ProductPaymentType @default(ONE_TIME) // Pago único o recurrente
 
   // Campos para sistema de créditos
-  creditPrice         Int?     // Precio en créditos (si acepta créditos)
-  acceptsCredits      Boolean  @default(false) // Si acepta pago con créditos
-  acceptsRealMoney    Boolean  @default(true) // Si acepta pago con dinero real
+  creditPrice      Int? // Precio en créditos (si acepta créditos)
+  acceptsCredits   Boolean @default(false) // Si acepta pago con créditos
+  acceptsRealMoney Boolean @default(true) // Si acepta pago con dinero real
 
   // Relaciones
   category      Category?             @relation(fields: [categoryId], references: [id])
@@ -1229,31 +1232,31 @@ model Plan {
   isPopular    Boolean @default(false)
   sortOrder    Int     @default(0)
   productId    String?
-  
+
   // Campos para integración con PayPal
-  paypalSku    String? @unique // SKU configurado en PayPal para identificar este plan
-  
+  paypalSku String? @unique // SKU configurado en PayPal para identificar este plan
+
   // Campos para planes con clases
-  includesClasses     Boolean @default(false) // Si el plan incluye clases
-  classesPerPeriod    Int?    // Cantidad de clases por período (ej: 8 clases por mes)
-  classesPerWeek      Int?    // Frecuencia semanal (ej: 2 clases por semana)
-  allowProration      Boolean @default(true) // Si permite prorateo al comprar a mitad de período
-  autoRenewal         Boolean @default(true) // Si se renueva automáticamente
-  billingCycle        String? // WEEKLY, MONTHLY, QUARTERLY, ANNUAL
-  courseId            String? // Curso asociado al plan (opcional)
+  includesClasses  Boolean @default(false) // Si el plan incluye clases
+  classesPerPeriod Int? // Cantidad de clases por período (ej: 8 clases por mes)
+  classesPerWeek   Int? // Frecuencia semanal (ej: 2 clases por semana)
+  allowProration   Boolean @default(true) // Si permite prorateo al comprar a mitad de período
+  autoRenewal      Boolean @default(true) // Si se renueva automáticamente
+  billingCycle     String? // WEEKLY, MONTHLY, QUARTERLY, ANNUAL
+  courseId         String? // Curso asociado al plan (opcional)
 
   // Campos para sistema de créditos
-  creditPrice         Int?     // Precio en créditos (si acepta créditos)
-  acceptsCredits      Boolean  @default(false) // Si acepta pago con créditos
-  acceptsRealMoney    Boolean  @default(true) // Si acepta pago con dinero real
+  creditPrice      Int? // Precio en créditos (si acepta créditos)
+  acceptsCredits   Boolean @default(false) // Si acepta pago con créditos
+  acceptsRealMoney Boolean @default(true) // Si acepta pago con dinero real
 
   // Relaciones
-  product       Product?      @relation(fields: [productId], references: [id])
-  course        Course?       @relation(fields: [courseId], references: [id])
+  product       Product?       @relation(fields: [productId], references: [id])
+  course        Course?        @relation(fields: [courseId], references: [id])
   features      PlanFeature[]
   invoiceItems  InvoiceItem[]
   subscriptions Subscription[]
-  coupons       Coupon[]      @relation("PlanCoupons")
+  coupons       Coupon[]       @relation("PlanCoupons")
   pricing       PlanPricing[] // Precios por idioma
 
   createdAt DateTime @default(now())
@@ -1281,17 +1284,17 @@ model PlanFeature {
 model PlanPricing {
   id           String  @id @default(cuid())
   planId       String
-  language     String  // Código de idioma: "en" (inglés), "es" (español), etc.
-  price        Float   // Precio para este idioma
-  comparePrice Float?  // Precio de comparación (tachado)
+  language     String // Código de idioma: "en" (inglés), "es" (español), etc.
+  price        Float // Precio para este idioma
+  comparePrice Float? // Precio de comparación (tachado)
   currency     String  @default("USD") // Moneda del precio
   isActive     Boolean @default(true)
-  
+
   // Campos opcionales para PayPal por idioma
-  paypalSku    String? // SKU de PayPal específico para este idioma
+  paypalSku String? // SKU de PayPal específico para este idioma
 
   // Curso asociado a este idioma (determina a qué curso se inscribe el estudiante)
-  courseId     String? // Curso específico para este idioma
+  courseId String? // Curso específico para este idioma
 
   // Relaciones
   plan   Plan    @relation(fields: [planId], references: [id], onDelete: Cascade)
@@ -1329,8 +1332,8 @@ model Coupon {
 
   // Relaciones
   invoices       Invoice[]
-  restrictedUser User? @relation("UserCoupons", fields: [restrictedToUserId], references: [id], onDelete: SetNull)
-  restrictedPlan Plan? @relation("PlanCoupons", fields: [restrictedToPlanId], references: [id], onDelete: SetNull)
+  restrictedUser User?     @relation("UserCoupons", fields: [restrictedToUserId], references: [id], onDelete: SetNull)
+  restrictedPlan Plan?     @relation("PlanCoupons", fields: [restrictedToPlanId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -1354,28 +1357,28 @@ model Invoice {
   notes         String?
   dueDate       DateTime?
   paidAt        DateTime?
-  
+
   // Campos para PayPal
-  paymentMethod String?       // 'paypal', 'creditCard', 'transfer'
-  paypalOrderId String?       // ID de orden de PayPal
-  paypalCaptureId String?     // ID de captura de PayPal
-  paypalPayerEmail String?    // Email del pagador en PayPal
+  paymentMethod    String? // 'paypal', 'creditCard', 'transfer'
+  paypalOrderId    String? // ID de orden de PayPal
+  paypalCaptureId  String? // ID de captura de PayPal
+  paypalPayerEmail String? // Email del pagador en PayPal
 
   // Campos para Niubiz
   niubizTransactionId String? // Token de transacción de Niubiz
   niubizOrderId       String? // ID de orden de Niubiz
 
   // Campos de dirección de facturación
-  billingCountry  String? // País de facturación
-  billingCity     String? // Ciudad de facturación
-  billingAddress  String? // Dirección de facturación
-  billingZipCode  String? // Código postal de facturación
+  billingCountry String? // País de facturación
+  billingCity    String? // Ciudad de facturación
+  billingAddress String? // Dirección de facturación
+  billingZipCode String? // Código postal de facturación
 
   // Relaciones
-  user                  User                    @relation(fields: [userId], references: [id])
-  coupon                Coupon?                 @relation(fields: [couponId], references: [id])
-  items                 InvoiceItem[]
-  purchases             ProductPurchase[]
+  user                   User                    @relation(fields: [userId], references: [id])
+  coupon                 Coupon?                 @relation(fields: [couponId], references: [id])
+  items                  InvoiceItem[]
+  purchases              ProductPurchase[]
   creditPackagePurchases CreditPackagePurchase[]
 
   createdAt DateTime @default(now())
@@ -1477,16 +1480,16 @@ enum BookingStatus {
 }
 
 enum EnrollmentStatus {
-  PENDING   // Pre-inscripción (período no ha iniciado)
-  ACTIVE    // Inscripción activa (período en curso)
+  PENDING // Pre-inscripción (período no ha iniciado)
+  ACTIVE // Inscripción activa (período en curso)
   COMPLETED // Curso completado
-  PAUSED    // Pausado temporalmente
+  PAUSED // Pausado temporalmente
   CANCELLED // Cancelado
 }
 
 enum EnrollmentType {
   AUTOMATIC // Inscripción automática al pagar y agendar clases
-  MANUAL    // Inscripción manual desde el panel de administración (factura personalizada)
+  MANUAL // Inscripción manual desde el panel de administración (factura personalizada)
 }
 
 enum ContentType {
@@ -1500,7 +1503,7 @@ enum ContentType {
   IMAGE
   VIDEO
   AUDIO
-  
+
   // Tipos Legacy / Específicos
   GRAMMAR_CARD
   LEVELED_TEXT
@@ -1527,13 +1530,13 @@ enum CouponType {
 }
 
 enum ProductPricingType {
-  SINGLE_PRICE    // Producto con un solo precio (franela, gorra, etc.)
-  MULTIPLE_PLANS  // Producto con múltiples planes (programa regular con planes simple, regular, intensivo)
+  SINGLE_PRICE // Producto con un solo precio (franela, gorra, etc.)
+  MULTIPLE_PLANS // Producto con múltiples planes (programa regular con planes simple, regular, intensivo)
 }
 
 enum ProductPaymentType {
-  ONE_TIME    // Pago único (merchandising, curso asíncrono)
-  RECURRING   // Pago recurrente/suscripción (programa regular de inglés, español)
+  ONE_TIME // Pago único (merchandising, curso asíncrono)
+  RECURRING // Pago recurrente/suscripción (programa regular de inglés, español)
 }
 
 // =============================================
@@ -1571,7 +1574,7 @@ model ProductPurchase {
   status         PurchaseStatus @default(PENDING)
   purchaseDate   DateTime       @default(now())
   scheduledDate  DateTime? // Fecha programada si aplica
-  
+
   // Campos para selección de horario de clases
   selectedSchedule Json? // Horario seleccionado antes de la compra: {teacherId, dayOfWeek, startTime, endTime}[]
   proratedClasses  Int? // Número de clases prorrateadas calculadas
@@ -1603,29 +1606,29 @@ enum PurchaseStatus {
 }
 
 model Subscription {
-  id                String             @id @default(cuid())
-  userId            String
-  planId            String
-  status            SubscriptionStatus @default(ACTIVE)
-  startDate         DateTime           @default(now())
-  endDate           DateTime?
-  nextBillingDate   DateTime?
-  cancelledAt       DateTime?
-  cancelReason      String?
-  
+  id              String             @id @default(cuid())
+  userId          String
+  planId          String
+  status          SubscriptionStatus @default(ACTIVE)
+  startDate       DateTime           @default(now())
+  endDate         DateTime?
+  nextBillingDate DateTime?
+  cancelledAt     DateTime?
+  cancelReason    String?
+
   // Campos de prorateo
-  proratedPrice     Float? // Precio prorrateado si se compró a mitad de período
-  proratedClasses   Int?   // Clases prorrateadas
-  remainingClasses  Int?   // Clases restantes en el período actual
+  proratedPrice    Float? // Precio prorrateado si se compró a mitad de período
+  proratedClasses  Int? // Clases prorrateadas
+  remainingClasses Int? // Clases restantes en el período actual
 
   // Campos de Niubiz / Recurrencia
-  niubizCardToken   String?  // Token de la tarjeta guardada
-  nextPaymentDate   DateTime? // Fecha del próximo intento de cobro (para lógica de reintentos)
-  retryCount        Int       @default(0) // Contador de reintentos fallidos
-  
+  niubizCardToken String? // Token de la tarjeta guardada
+  nextPaymentDate DateTime? // Fecha del próximo intento de cobro (para lógica de reintentos)
+  retryCount      Int       @default(0) // Contador de reintentos fallidos
+
   // Relaciones
-  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  plan              Plan               @relation(fields: [planId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan Plan @relation(fields: [planId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -1679,56 +1682,56 @@ enum CreditTransactionType {
 // =============================================
 
 model Exam {
-  id              String      @id @default(cuid())
-  title           String
-  description     String
-  instructions    String?     // Instrucciones generales del examen
-  timeLimit       Int?        // Tiempo límite total en minutos
-  passingScore    Float       @default(70) // Puntaje mínimo para aprobar (%)
-  maxAttempts     Int         @default(3) // Máximo número de intentos
-  isBlocking      Boolean     @default(false) // Bloquea progreso si no se aprueba
-  isOptional      Boolean     @default(false) // Es opcional para el curso
-  isPublished     Boolean     @default(false)
-  shuffleQuestions Boolean    @default(false) // Mezclar preguntas
-  shuffleOptions  Boolean     @default(false) // Mezclar opciones
-  showResults     Boolean     @default(true) // Mostrar resultados al finalizar
-  allowReview     Boolean     @default(true) // Permitir revisar respuestas
-  
+  id               String  @id @default(cuid())
+  title            String
+  description      String
+  instructions     String? // Instrucciones generales del examen
+  timeLimit        Int? // Tiempo límite total en minutos
+  passingScore     Float   @default(70) // Puntaje mínimo para aprobar (%)
+  maxAttempts      Int     @default(3) // Máximo número de intentos
+  isBlocking       Boolean @default(false) // Bloquea progreso si no se aprueba
+  isOptional       Boolean @default(false) // Es opcional para el curso
+  isPublished      Boolean @default(false)
+  shuffleQuestions Boolean @default(false) // Mezclar preguntas
+  shuffleOptions   Boolean @default(false) // Mezclar opciones
+  showResults      Boolean @default(true) // Mostrar resultados al finalizar
+  allowReview      Boolean @default(true) // Permitir revisar respuestas
+
   // Nivel del examen (CEFR)
-  level             String    @default("B1") // Nivel CEFR del examen (A1, A2, B1, B2, C1, C2)
+  level String @default("B1") // Nivel CEFR del examen (A1, A2, B1, B2, C1, C2)
 
   // Tipo de examen y acceso
-  examType          ExamType  @default(COURSE_EXAM) // Tipo de examen
-  isGuestAccessible Boolean   @default(false) // Permite acceso a usuarios GUEST sin inscripción
-  targetLanguage    String?   // Idioma objetivo para placement tests (en, es, etc.)
-  slug              String?   @unique // URL amigable para acceso directo (/test/[slug])
-  isPublicAccess    Boolean   @default(false) // true = cualquiera con link, false = solo asignados
-  
+  examType          ExamType @default(COURSE_EXAM) // Tipo de examen
+  isGuestAccessible Boolean  @default(false) // Permite acceso a usuarios GUEST sin inscripción
+  targetLanguage    String? // Idioma objetivo para placement tests (en, es, etc.)
+  slug              String?  @unique // URL amigable para acceso directo (/test/[slug])
+  isPublicAccess    Boolean  @default(false) // true = cualquiera con link, false = solo asignados
+
   // Configuración de Proctoring
-  proctoringEnabled   Boolean @default(true) // Habilitar proctoring
-  requireFullscreen   Boolean @default(true)  // Requerir pantalla completa
-  blockCopyPaste      Boolean @default(true)  // Bloquear copiar/pegar
-  blockRightClick     Boolean @default(true)  // Bloquear clic derecho
-  maxWarnings         Int     @default(5)     // Máximo de advertencias antes de marcar
-  
-  createdById     String
+  proctoringEnabled Boolean @default(true) // Habilitar proctoring
+  requireFullscreen Boolean @default(true) // Requerir pantalla completa
+  blockCopyPaste    Boolean @default(true) // Bloquear copiar/pegar
+  blockRightClick   Boolean @default(true) // Bloquear clic derecho
+  maxWarnings       Int     @default(5) // Máximo de advertencias antes de marcar
+
+  createdById String
 
   // Relaciones de contexto (opcional - puede estar en curso, módulo o lección)
-  courseId        String?
-  moduleId        String?
-  lessonId        String?
+  courseId String?
+  moduleId String?
+  lessonId String?
 
   // Relaciones
-  creator         User            @relation("ExamCreator", fields: [createdById], references: [id])
-  course          Course?         @relation(fields: [courseId], references: [id])
-  module          Module?         @relation(fields: [moduleId], references: [id])
-  lesson          Lesson?         @relation(fields: [lessonId], references: [id])
-  questions       ExamQuestion[]
-  attempts        ExamAttempt[]
-  assignments     ExamAssignment[]
+  creator     User             @relation("ExamCreator", fields: [createdById], references: [id])
+  course      Course?          @relation(fields: [courseId], references: [id])
+  module      Module?          @relation(fields: [moduleId], references: [id])
+  lesson      Lesson?          @relation(fields: [lessonId], references: [id])
+  questions   ExamQuestion[]
+  attempts    ExamAttempt[]
+  assignments ExamAssignment[]
 
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([courseId])
   @@index([moduleId])
@@ -1738,81 +1741,81 @@ model Exam {
 }
 
 model ExamQuestion {
-  id              String          @id @default(cuid())
-  examId          String
-  type            QuestionType
-  question        String          // Texto de la pregunta
-  options         Json?           // Opciones para preguntas de opción múltiple
-  correctAnswer   Json            // Respuesta(s) correcta(s)
-  explanation     String?         // Explicación de la respuesta
-  points          Float           @default(1) // Puntos que vale la pregunta
-  order           Int             @default(0)
-  difficulty      QuestionDifficulty @default(MEDIUM)
-  tags            String[]        // Tags para categorización
-  
+  id            String             @id @default(cuid())
+  examId        String
+  type          QuestionType
+  question      String // Texto de la pregunta
+  options       Json? // Opciones para preguntas de opción múltiple
+  correctAnswer Json // Respuesta(s) correcta(s)
+  explanation   String? // Explicación de la respuesta
+  points        Float              @default(1) // Puntos que vale la pregunta
+  order         Int                @default(0)
+  difficulty    QuestionDifficulty @default(MEDIUM)
+  tags          String[] // Tags para categorización
+
   // Configuraciones específicas por tipo de pregunta
-  caseSensitive   Boolean         @default(false) // Para preguntas de texto
-  partialCredit   Boolean         @default(false) // Crédito parcial
-  minLength       Int?            // Longitud mínima para ensayos
-  maxLength       Int?            // Longitud máxima para ensayos
+  caseSensitive Boolean @default(false) // Para preguntas de texto
+  partialCredit Boolean @default(false) // Crédito parcial
+  minLength     Int? // Longitud mínima para ensayos
+  maxLength     Int? // Longitud máxima para ensayos
 
   // Configuraciones para ejercicios de listening
-  audioUrl        String?         // URL del archivo de audio
-  audioPosition   AudioPosition   @default(BEFORE_QUESTION) // Dónde mostrar el reproductor
-  maxAudioPlays   Int?            // Número máximo de reproducciones (null = ilimitado)
-  audioAutoplay   Boolean         @default(false) // Reproducir automáticamente
-  audioPausable   Boolean         @default(false) // Permitir pausar el audio
+  audioUrl      String? // URL del archivo de audio
+  audioPosition AudioPosition @default(BEFORE_QUESTION) // Dónde mostrar el reproductor
+  maxAudioPlays Int? // Número máximo de reproducciones (null = ilimitado)
+  audioAutoplay Boolean       @default(false) // Reproducir automáticamente
+  audioPausable Boolean       @default(false) // Permitir pausar el audio
 
   // Relaciones
-  exam            Exam            @relation(fields: [examId], references: [id], onDelete: Cascade)
-  answers         ExamAnswer[]
+  exam    Exam         @relation(fields: [examId], references: [id], onDelete: Cascade)
+  answers ExamAnswer[]
 
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([examId])
   @@map("exam_questions")
 }
 
 model ExamAttempt {
-  id              String          @id @default(cuid())
-  examId          String
-  userId          String
-  attemptNumber   Int             // Número del intento (1, 2, 3...)
-  status          AttemptStatus   @default(IN_PROGRESS)
-  score           Float?          // Puntaje obtenido (%)
-  totalPoints     Float?          // Puntos totales obtenidos
-  maxPoints       Float?          // Puntos máximos posibles
-  timeSpent       Int?            // Tiempo gastado en minutos
-  startedAt       DateTime        @default(now())
-  submittedAt     DateTime?
-  reviewedAt      DateTime?       // Cuando fue revisado (para preguntas manuales)
-  
-  // Configuración del intento
-  questionsOrder  Json?           // Orden de las preguntas si fueron mezcladas
-  optionsOrder    Json?           // Orden de las opciones si fueron mezcladas
-  
-  // Resultado de placement test
-  recommendedLevel String?        // Nivel recomendado (A1, A2, B1, B2, C1, C2) para placement tests
-  resultEmailSent  Boolean        @default(false) // Si se envió email con resultados
-  
-  // Verificación pública
-  verificationCode String?        // Código único para verificación pública
-  allowPublicVerification Boolean @default(true) // Si permite verificación pública
-  
-  // Estado de navegación y flags
-  currentQuestionIndex Int?       // Última pregunta vista por el estudiante
-  flaggedQuestions    Json?       // Array de IDs de preguntas marcadas para revisar
-  lastActivityAt      DateTime?   // Última actividad del estudiante en el examen
-  
-  // Relaciones
-  exam            Exam            @relation(fields: [examId], references: [id], onDelete: Cascade)
-  user            User            @relation("ExamAttempts", fields: [userId], references: [id], onDelete: Cascade)
-  answers         ExamAnswer[]
-  proctorEvents   ProctorEvent[]
+  id            String        @id @default(cuid())
+  examId        String
+  userId        String
+  attemptNumber Int // Número del intento (1, 2, 3...)
+  status        AttemptStatus @default(IN_PROGRESS)
+  score         Float? // Puntaje obtenido (%)
+  totalPoints   Float? // Puntos totales obtenidos
+  maxPoints     Float? // Puntos máximos posibles
+  timeSpent     Int? // Tiempo gastado en minutos
+  startedAt     DateTime      @default(now())
+  submittedAt   DateTime?
+  reviewedAt    DateTime? // Cuando fue revisado (para preguntas manuales)
 
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  // Configuración del intento
+  questionsOrder Json? // Orden de las preguntas si fueron mezcladas
+  optionsOrder   Json? // Orden de las opciones si fueron mezcladas
+
+  // Resultado de placement test
+  recommendedLevel String? // Nivel recomendado (A1, A2, B1, B2, C1, C2) para placement tests
+  resultEmailSent  Boolean @default(false) // Si se envió email con resultados
+
+  // Verificación pública
+  verificationCode        String? // Código único para verificación pública
+  allowPublicVerification Boolean @default(true) // Si permite verificación pública
+
+  // Estado de navegación y flags
+  currentQuestionIndex Int? // Última pregunta vista por el estudiante
+  flaggedQuestions     Json? // Array de IDs de preguntas marcadas para revisar
+  lastActivityAt       DateTime? // Última actividad del estudiante en el examen
+
+  // Relaciones
+  exam          Exam           @relation(fields: [examId], references: [id], onDelete: Cascade)
+  user          User           @relation("ExamAttempts", fields: [userId], references: [id], onDelete: Cascade)
+  answers       ExamAnswer[]
+  proctorEvents ProctorEvent[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([examId, userId, attemptNumber])
   @@index([examId])
@@ -1821,27 +1824,27 @@ model ExamAttempt {
 }
 
 model ExamAnswer {
-  id              String          @id @default(cuid())
-  attemptId       String
-  questionId      String
-  answer          Json            // Respuesta dada por el estudiante
-  isCorrect       Boolean?        // Si es correcta (null para preguntas manuales)
-  pointsEarned    Float           @default(0) // Puntos ganados
-  timeSpent       Int?            // Tiempo gastado en esta pregunta (segundos)
-  
+  id           String   @id @default(cuid())
+  attemptId    String
+  questionId   String
+  answer       Json // Respuesta dada por el estudiante
+  isCorrect    Boolean? // Si es correcta (null para preguntas manuales)
+  pointsEarned Float    @default(0) // Puntos ganados
+  timeSpent    Int? // Tiempo gastado en esta pregunta (segundos)
+
   // Para revisión manual
-  needsReview     Boolean         @default(false)
-  reviewedBy      String?         // ID del profesor que revisó
-  reviewedAt      DateTime?
-  feedback        String?         // Comentarios del profesor
+  needsReview Boolean   @default(false)
+  reviewedBy  String? // ID del profesor que revisó
+  reviewedAt  DateTime?
+  feedback    String? // Comentarios del profesor
 
   // Relaciones
-  attempt         ExamAttempt     @relation(fields: [attemptId], references: [id], onDelete: Cascade)
-  question        ExamQuestion    @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  reviewer        User?           @relation("ExamReviewer", fields: [reviewedBy], references: [id])
+  attempt  ExamAttempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question ExamQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  reviewer User?        @relation("ExamReviewer", fields: [reviewedBy], references: [id])
 
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([attemptId, questionId])
   @@index([attemptId])
@@ -1850,21 +1853,21 @@ model ExamAnswer {
 }
 
 model ExamAssignment {
-  id              String          @id @default(cuid())
-  examId          String
-  userId          String          // Estudiante asignado
-  assignedBy      String          // Profesor que asignó
-  dueDate         DateTime?       // Fecha límite
-  instructions    String?         // Instrucciones específicas para este estudiante
-  status          AssignmentStatus @default(ASSIGNED)
-  
-  // Relaciones
-  exam            Exam            @relation(fields: [examId], references: [id], onDelete: Cascade)
-  student         User            @relation("ExamAssignments", fields: [userId], references: [id], onDelete: Cascade)
-  assignedByUser  User            @relation("ExamAssigner", fields: [assignedBy], references: [id])
+  id           String           @id @default(cuid())
+  examId       String
+  userId       String // Estudiante asignado
+  assignedBy   String // Profesor que asignó
+  dueDate      DateTime? // Fecha límite
+  instructions String? // Instrucciones específicas para este estudiante
+  status       AssignmentStatus @default(ASSIGNED)
 
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  // Relaciones
+  exam           Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
+  student        User @relation("ExamAssignments", fields: [userId], references: [id], onDelete: Cascade)
+  assignedByUser User @relation("ExamAssigner", fields: [assignedBy], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([examId, userId])
   @@index([examId])
@@ -1926,7 +1929,7 @@ model MeetingMessage {
 model WhiteboardData {
   id        String   @id @default(cuid())
   bookingId String   @unique
-  data      Json     // JSON with all drawing actions
+  data      Json // JSON with all drawing actions
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -1960,7 +1963,7 @@ model ConversationParticipant {
   joinedAt       DateTime  @default(now())
   lastReadAt     DateTime?
 
-  isArchived     Boolean   @default(false)
+  isArchived Boolean @default(false)
 
   // Relaciones
   conversation FloatingConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
@@ -1976,7 +1979,7 @@ model FloatingChatMessage {
   senderId       String
   content        String
   type           MessageType @default(TEXT)
-  metadata       Json?       // Metadata for files (url, name, size, type)
+  metadata       Json? // Metadata for files (url, name, size, type)
   timestamp      DateTime    @default(now())
   isRead         Boolean     @default(false)
 
@@ -2010,15 +2013,15 @@ enum MessageType {
 // =============================================
 
 enum QuestionType {
-  MULTIPLE_CHOICE    // Opción múltiple
-  TRUE_FALSE        // Verdadero/Falso
-  SHORT_ANSWER      // Respuesta corta
-  ESSAY            // Ensayo
-  RECORDING        // Grabación de audio
-  FILL_BLANK       // Llenar espacios en blanco
-  MATCHING         // Emparejar
-  ORDERING         // Ordenar elementos
-  DRAG_DROP        // Arrastrar y soltar
+  MULTIPLE_CHOICE // Opción múltiple
+  TRUE_FALSE // Verdadero/Falso
+  SHORT_ANSWER // Respuesta corta
+  ESSAY // Ensayo
+  RECORDING // Grabación de audio
+  FILL_BLANK // Llenar espacios en blanco
+  MATCHING // Emparejar
+  ORDERING // Ordenar elementos
+  DRAG_DROP // Arrastrar y soltar
 }
 
 enum QuestionDifficulty {
@@ -2028,34 +2031,34 @@ enum QuestionDifficulty {
 }
 
 enum AttemptStatus {
-  IN_PROGRESS      // En progreso
-  SUBMITTED        // Enviado
-  COMPLETED        // Completado y calificado
-  EXPIRED          // Expirado por tiempo
-  CANCELLED        // Cancelado
+  IN_PROGRESS // En progreso
+  SUBMITTED // Enviado
+  COMPLETED // Completado y calificado
+  EXPIRED // Expirado por tiempo
+  CANCELLED // Cancelado
 }
 
 enum AssignmentStatus {
-  ASSIGNED         // Asignado
-  STARTED          // Iniciado
-  SUBMITTED        // Enviado
-  COMPLETED        // Completado
-  OVERDUE          // Vencido
-  CANCELLED        // Cancelado
+  ASSIGNED // Asignado
+  STARTED // Iniciado
+  SUBMITTED // Enviado
+  COMPLETED // Completado
+  OVERDUE // Vencido
+  CANCELLED // Cancelado
 }
 
 enum ExamType {
-  COURSE_EXAM      // Examen de curso normal
-  PLACEMENT_TEST   // Test de clasificación
-  DIAGNOSTIC       // Examen diagnóstico
-  PRACTICE         // Examen de práctica libre
+  COURSE_EXAM // Examen de curso normal
+  PLACEMENT_TEST // Test de clasificación
+  DIAGNOSTIC // Examen diagnóstico
+  PRACTICE // Examen de práctica libre
 }
 
 enum AudioPosition {
-  BEFORE_QUESTION  // Antes del texto de la pregunta
-  AFTER_QUESTION   // Después del texto de la pregunta
-  BEFORE_OPTIONS   // Antes de las opciones (para opción múltiple)
-  SECTION_TOP      // Al inicio de la sección (compartido)
+  BEFORE_QUESTION // Antes del texto de la pregunta
+  AFTER_QUESTION // Después del texto de la pregunta
+  BEFORE_OPTIONS // Antes de las opciones (para opción múltiple)
+  SECTION_TOP // Al inicio de la sección (compartido)
 }
 
 // =============================================
@@ -2063,36 +2066,36 @@ enum AudioPosition {
 // =============================================
 
 model FileAsset {
-  id              String           @id @default(cuid())
-  publicId        String           @unique // Cloudinary public_id
-  fileName        String           // Original filename
-  description     String?          // Optional description
-  tags            String[]         @default([]) // Searchable tags
-  category        FileCategory     @default(GENERAL)
-  resourceType    FileResourceType // image, video, audio, raw
-  format          String           // File format (jpg, mp4, pdf, etc.)
-  size            Int              // File size in bytes
-  width           Int?             // Width for images/videos
-  height          Int?             // Height for images/videos
-  duration        Int?             // Duration for videos/audio in seconds
-  secureUrl       String           // Cloudinary secure URL
-  url             String           // Cloudinary URL
-  folder          String           // Cloudinary folder path
-  uploadedBy      String           // User who uploaded the file
-  isPublic        Boolean          @default(false) // Public access flag
-  isActive        Boolean          @default(true) // Soft delete flag
-  metadata        Json?            // Additional metadata (transformations, etc.)
-  usageCount      Int              @default(0) // Track file usage
-  lastAccessedAt  DateTime?
-  expiresAt       DateTime?        // For temporary files
-  
+  id             String           @id @default(cuid())
+  publicId       String           @unique // Cloudinary public_id
+  fileName       String // Original filename
+  description    String? // Optional description
+  tags           String[]         @default([]) // Searchable tags
+  category       FileCategory     @default(GENERAL)
+  resourceType   FileResourceType // image, video, audio, raw
+  format         String // File format (jpg, mp4, pdf, etc.)
+  size           Int // File size in bytes
+  width          Int? // Width for images/videos
+  height         Int? // Height for images/videos
+  duration       Int? // Duration for videos/audio in seconds
+  secureUrl      String // Cloudinary secure URL
+  url            String // Cloudinary URL
+  folder         String // Cloudinary folder path
+  uploadedBy     String // User who uploaded the file
+  isPublic       Boolean          @default(false) // Public access flag
+  isActive       Boolean          @default(true) // Soft delete flag
+  metadata       Json? // Additional metadata (transformations, etc.)
+  usageCount     Int              @default(0) // Track file usage
+  lastAccessedAt DateTime?
+  expiresAt      DateTime? // For temporary files
+
   // Relaciones
-  uploader        User             @relation("FileUploader", fields: [uploadedBy], references: [id])
+  uploader        User                 @relation("FileUploader", fields: [uploadedBy], references: [id])
   transformations FileTransformation[]
   usageLogs       FileUsageLog[]
 
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([publicId])
   @@index([uploadedBy])
@@ -2105,42 +2108,42 @@ model FileAsset {
 }
 
 model FileTransformation {
-  id              String           @id @default(cuid())
-  fileAssetId     String
-  name            String           // Transformation name (thumb, medium, large, etc.)
-  transformation  Json             // Cloudinary transformation parameters
-  generatedUrl    String           // URL of transformed file
-  width           Int?
-  height          Int?
-  format          String?
-  quality         Int?
-  size            Int?             // Size of transformed file
-  
-  // Relación
-  fileAsset       FileAsset        @relation(fields: [fileAssetId], references: [id], onDelete: Cascade)
+  id             String  @id @default(cuid())
+  fileAssetId    String
+  name           String // Transformation name (thumb, medium, large, etc.)
+  transformation Json // Cloudinary transformation parameters
+  generatedUrl   String // URL of transformed file
+  width          Int?
+  height         Int?
+  format         String?
+  quality        Int?
+  size           Int? // Size of transformed file
 
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  // Relación
+  fileAsset FileAsset @relation(fields: [fileAssetId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([fileAssetId])
   @@map("file_transformations")
 }
 
 model FileUsageLog {
-  id              String           @id @default(cuid())
-  fileAssetId     String
-  userId          String?          // User who accessed the file
-  action          UsageAction      // view, download, embed, transform
-  context         String?          // Where the file was used (course, lesson, etc.)
-  contextId       String?          // ID of the context entity
-  ipAddress       String?
-  userAgent       String?
-  
-  // Relaciones
-  fileAsset       FileAsset        @relation(fields: [fileAssetId], references: [id], onDelete: Cascade)
-  user            User?            @relation("FileUser", fields: [userId], references: [id])
+  id          String      @id @default(cuid())
+  fileAssetId String
+  userId      String? // User who accessed the file
+  action      UsageAction // view, download, embed, transform
+  context     String? // Where the file was used (course, lesson, etc.)
+  contextId   String? // ID of the context entity
+  ipAddress   String?
+  userAgent   String?
 
-  createdAt       DateTime         @default(now())
+  // Relaciones
+  fileAsset FileAsset @relation(fields: [fileAssetId], references: [id], onDelete: Cascade)
+  user      User?     @relation("FileUser", fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
 
   @@index([fileAssetId])
   @@index([userId])
@@ -2150,21 +2153,21 @@ model FileUsageLog {
 }
 
 model FileFolder {
-  id              String           @id @default(cuid())
-  name            String
-  path            String           @unique // Full path in Cloudinary
-  parentId        String?          // Parent folder for nested structure
-  description     String?
-  isPublic        Boolean          @default(false)
-  createdBy       String
-  
-  // Relaciones
-  creator         User             @relation("FolderCreator", fields: [createdBy], references: [id])
-  parent          FileFolder?      @relation("FolderHierarchy", fields: [parentId], references: [id])
-  children        FileFolder[]     @relation("FolderHierarchy")
+  id          String  @id @default(cuid())
+  name        String
+  path        String  @unique // Full path in Cloudinary
+  parentId    String? // Parent folder for nested structure
+  description String?
+  isPublic    Boolean @default(false)
+  createdBy   String
 
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  // Relaciones
+  creator  User         @relation("FolderCreator", fields: [createdBy], references: [id])
+  parent   FileFolder?  @relation("FolderHierarchy", fields: [parentId], references: [id])
+  children FileFolder[] @relation("FolderHierarchy")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([parentId])
   @@index([createdBy])
@@ -2173,33 +2176,33 @@ model FileFolder {
 
 // Enums para archivos
 enum FileCategory {
-  GENERAL         // Archivos generales
-  COURSE_CONTENT  // Contenido de cursos
+  GENERAL // Archivos generales
+  COURSE_CONTENT // Contenido de cursos
   LESSON_MATERIAL // Material de lecciones
-  ASSIGNMENT      // Tareas y exámenes
-  USER_AVATAR     // Avatares de usuarios
-  BRANDING        // Archivos de marca
-  DOCUMENTATION   // Documentación
-  MEDIA           // Archivos multimedia
-  TEMPLATE        // Plantillas
-  BACKUP          // Archivos de respaldo
+  ASSIGNMENT // Tareas y exámenes
+  USER_AVATAR // Avatares de usuarios
+  BRANDING // Archivos de marca
+  DOCUMENTATION // Documentación
+  MEDIA // Archivos multimedia
+  TEMPLATE // Plantillas
+  BACKUP // Archivos de respaldo
 }
 
 enum FileResourceType {
-  IMAGE           // Imágenes
-  VIDEO           // Videos
-  AUDIO           // Archivos de audio
-  DOCUMENT        // Documentos (PDF, DOC, XLS, etc.)
-  RAW             // Otros archivos (ZIP, RAR, etc.)
+  IMAGE // Imágenes
+  VIDEO // Videos
+  AUDIO // Archivos de audio
+  DOCUMENT // Documentos (PDF, DOC, XLS, etc.)
+  RAW // Otros archivos (ZIP, RAR, etc.)
 }
 
 enum UsageAction {
-  VIEW            // Visualización
-  DOWNLOAD        // Descarga
-  EMBED           // Incrustado en contenido
-  TRANSFORM       // Transformación aplicada
-  SHARE           // Compartido
-  DELETE          // Eliminado
+  VIEW // Visualización
+  DOWNLOAD // Descarga
+  EMBED // Incrustado en contenido
+  TRANSFORM // Transformación aplicada
+  SHARE // Compartido
+  DELETE // Eliminado
 }
 
 // =============================================
@@ -2207,49 +2210,49 @@ enum UsageAction {
 // =============================================
 
 model LibraryResource {
-  id              String                @id @default(cuid())
-  title           String
-  slug            String                @unique
-  description     String?
-  excerpt         String?               // Resumen corto para listados
-  type            LibraryResourceType
-  status          LibraryResourceStatus @default(DRAFT)
-  accessLevel     LibraryResourceAccess @default(PUBLIC) // Nivel de acceso: PUBLIC, PRIVATE (Go/Lingo), PREMIUM (Wow)
-  
+  id          String                @id @default(cuid())
+  title       String
+  slug        String                @unique
+  description String?
+  excerpt     String? // Resumen corto para listados
+  type        LibraryResourceType
+  status      LibraryResourceStatus @default(DRAFT)
+  accessLevel LibraryResourceAccess @default(PUBLIC) // Nivel de acceso: PUBLIC, PRIVATE (Go/Lingo), PREMIUM (Wow)
+
   // Contenido según el tipo
-  content         String?               // Contenido HTML para artículos
-  fileUrl         String?               // URL del archivo (PDF, imagen, audio, video)
-  fileSize        Int?                  // Tamaño en bytes
-  fileFormat      String?               // Extensión del archivo (pdf, mp3, mp4, etc.)
-  thumbnailUrl    String?               // Imagen de portada/miniatura
-  duration        Int?                  // Duración en segundos (para audio/video)
-  
+  content      String? // Contenido HTML para artículos
+  fileUrl      String? // URL del archivo (PDF, imagen, audio, video)
+  fileSize     Int? // Tamaño en bytes
+  fileFormat   String? // Extensión del archivo (pdf, mp3, mp4, etc.)
+  thumbnailUrl String? // Imagen de portada/miniatura
+  duration     Int? // Duración en segundos (para audio/video)
+
   // Metadatos
-  language        String                @default("es") // Idioma del recurso
-  level           String?               // Nivel de dificultad (A1, A2, B1, B2, C1, C2)
-  tags            String[]              @default([])
-  categoryId      String?
-  authorId        String
-  
+  language   String   @default("es") // Idioma del recurso
+  level      String? // Nivel de dificultad (A1, A2, B1, B2, C1, C2)
+  tags       String[] @default([])
+  categoryId String?
+  authorId   String
+
   // Estadísticas
-  viewCount       Int                   @default(0)
-  downloadCount   Int                   @default(0)
-  likeCount       Int                   @default(0)
-  
+  viewCount     Int @default(0)
+  downloadCount Int @default(0)
+  likeCount     Int @default(0)
+
   // SEO
   metaTitle       String?
   metaDescription String?
-  
+
   // Fechas
-  publishedAt     DateTime?
-  createdAt       DateTime              @default(now())
-  updatedAt       DateTime              @updatedAt
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   // Relaciones
-  category        LibraryCategory?      @relation(fields: [categoryId], references: [id])
-  author          User                  @relation("LibraryAuthor", fields: [authorId], references: [id])
-  userLikes       LibraryResourceLike[]
-  userSaves       LibraryResourceSave[]
+  category  LibraryCategory?      @relation(fields: [categoryId], references: [id])
+  author    User                  @relation("LibraryAuthor", fields: [authorId], references: [id])
+  userLikes LibraryResourceLike[]
+  userSaves LibraryResourceSave[]
 
   @@index([type])
   @@index([status])
@@ -2263,33 +2266,33 @@ model LibraryResource {
 }
 
 model LibraryCategory {
-  id              String              @id @default(cuid())
-  name            String
-  slug            String              @unique
-  description     String?
-  icon            String?             // Nombre del icono (lucide)
-  color           String?             // Color para UI
-  sortOrder       Int                 @default(0)
-  isActive        Boolean             @default(true)
-  
-  // Relaciones
-  resources       LibraryResource[]
+  id          String  @id @default(cuid())
+  name        String
+  slug        String  @unique
+  description String?
+  icon        String? // Nombre del icono (lucide)
+  color       String? // Color para UI
+  sortOrder   Int     @default(0)
+  isActive    Boolean @default(true)
 
-  createdAt       DateTime            @default(now())
-  updatedAt       DateTime            @updatedAt
+  // Relaciones
+  resources LibraryResource[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("library_categories")
 }
 
 model LibraryResourceLike {
-  id              String              @id @default(cuid())
-  userId          String
-  resourceId      String
-  createdAt       DateTime            @default(now())
+  id         String   @id @default(cuid())
+  userId     String
+  resourceId String
+  createdAt  DateTime @default(now())
 
   // Relaciones
-  user            User                @relation("LibraryLikes", fields: [userId], references: [id], onDelete: Cascade)
-  resource        LibraryResource     @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  user     User            @relation("LibraryLikes", fields: [userId], references: [id], onDelete: Cascade)
+  resource LibraryResource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
 
   @@unique([userId, resourceId])
   @@index([userId])
@@ -2298,14 +2301,14 @@ model LibraryResourceLike {
 }
 
 model LibraryResourceSave {
-  id              String              @id @default(cuid())
-  userId          String
-  resourceId      String
-  createdAt       DateTime            @default(now())
+  id         String   @id @default(cuid())
+  userId     String
+  resourceId String
+  createdAt  DateTime @default(now())
 
   // Relaciones
-  user            User                @relation("LibrarySaves", fields: [userId], references: [id], onDelete: Cascade)
-  resource        LibraryResource     @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  user     User            @relation("LibrarySaves", fields: [userId], references: [id], onDelete: Cascade)
+  resource LibraryResource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
 
   @@unique([userId, resourceId])
   @@index([userId])
@@ -2314,52 +2317,51 @@ model LibraryResourceSave {
 }
 
 enum LibraryResourceType {
-  ARTICLE         // Artículo de blog redactado en la plataforma
-  PDF             // Documento PDF
-  IMAGE           // Imagen
-  AUDIO           // Audio/Podcast
-  VIDEO           // Video
-  INFOGRAPHIC     // Infografía
-  TEMPLATE        // Plantilla descargable
-  EXERCISE_SHEET  // Hoja de ejercicios
-  GRAMMAR_GUIDE   // Guía de gramática
+  ARTICLE // Artículo de blog redactado en la plataforma
+  PDF // Documento PDF
+  IMAGE // Imagen
+  AUDIO // Audio/Podcast
+  VIDEO // Video
+  INFOGRAPHIC // Infografía
+  TEMPLATE // Plantilla descargable
+  EXERCISE_SHEET // Hoja de ejercicios
+  GRAMMAR_GUIDE // Guía de gramática
   VOCABULARY_LIST // Lista de vocabulario
-  OTHER           // Otros
+  OTHER // Otros
 }
 
 enum LibraryResourceStatus {
-  DRAFT           // Borrador
-  PUBLISHED       // Publicado
-  ARCHIVED        // Archivado
+  DRAFT // Borrador
+  PUBLISHED // Publicado
+  ARCHIVED // Archivado
 }
 
 enum LibraryResourceAccess {
-  PUBLIC          // Acceso público (todos pueden ver)
-  PRIVATE         // Solo usuarios con suscripción activa (Go, Lingo, Wow)
-  PREMIUM         // Solo usuarios con plan Wow
+  PUBLIC // Acceso público (todos pueden ver)
+  PRIVATE // Solo usuarios con suscripción activa (Go, Lingo, Wow)
+  PREMIUM // Solo usuarios con plan Wow
 }
-
 
 // =============================================
 // MODELOS DE NOTIFICACIONES
 // =============================================
 
 model Notification {
-  id          String             @id @default(cuid())
-  userId      String             // Usuario que recibe la notificación
-  type        NotificationType
-  title       String
-  message     String
-  link        String?            // URL para navegar al hacer clic
-  isRead      Boolean            @default(false)
-  readAt      DateTime?
-  metadata    Json?              // Datos adicionales (IDs relacionados, etc.)
-  
-  // Relaciones
-  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id       String           @id @default(cuid())
+  userId   String // Usuario que recibe la notificación
+  type     NotificationType
+  title    String
+  message  String
+  link     String? // URL para navegar al hacer clic
+  isRead   Boolean          @default(false)
+  readAt   DateTime?
+  metadata Json? // Datos adicionales (IDs relacionados, etc.)
 
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
+  // Relaciones
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
   @@index([isRead])
@@ -2370,28 +2372,28 @@ model Notification {
 
 enum NotificationType {
   // Inscripciones
-  NEW_ENROLLMENT           // Nuevo estudiante inscrito (para profesor/admin)
-  ENROLLMENT_CONFIRMED     // Inscripción confirmada (para estudiante)
-  
+  NEW_ENROLLMENT // Nuevo estudiante inscrito (para profesor/admin)
+  ENROLLMENT_CONFIRMED // Inscripción confirmada (para estudiante)
+
   // Tareas y actividades
-  TASK_ASSIGNED            // Tarea asignada (para estudiante)
-  TASK_SUBMITTED           // Tarea enviada (para profesor)
-  TASK_GRADED              // Tarea calificada (para estudiante)
-  
+  TASK_ASSIGNED // Tarea asignada (para estudiante)
+  TASK_SUBMITTED // Tarea enviada (para profesor)
+  TASK_GRADED // Tarea calificada (para estudiante)
+
   // Pagos y finanzas
-  PAYMENT_RECEIVED         // Nuevo pago recibido (para admin)
-  PAYMENT_CONFIRMED        // Pago confirmado (para estudiante)
+  PAYMENT_RECEIVED // Nuevo pago recibido (para admin)
+  PAYMENT_CONFIRMED // Pago confirmado (para estudiante)
   TEACHER_PAYMENT_CONFIRMED // Profesor confirmó su monto (para admin)
-  
+
   // Clases
-  CLASS_REMINDER           // Recordatorio de clase (para estudiante/profesor)
-  CLASS_CANCELLED          // Clase cancelada
-  CLASS_RESCHEDULED        // Clase reprogramada
-  RECORDING_READY          // Grabación de clase lista (para estudiante)
-  
+  CLASS_REMINDER // Recordatorio de clase (para estudiante/profesor)
+  CLASS_CANCELLED // Clase cancelada
+  CLASS_RESCHEDULED // Clase reprogramada
+  RECORDING_READY // Grabación de clase lista (para estudiante)
+
   // Sistema
-  SYSTEM_ANNOUNCEMENT      // Anuncio del sistema
-  ACCOUNT_UPDATE           // Actualización de cuenta
+  SYSTEM_ANNOUNCEMENT // Anuncio del sistema
+  ACCOUNT_UPDATE // Actualización de cuenta
 }
 
 // =============================================
@@ -2399,20 +2401,20 @@ enum NotificationType {
 // =============================================
 
 model PendingOrder {
-  id              String   @id @default(cuid())
-  purchaseNumber  String   @unique
-  userId          String?
-  customerEmail   String?
-  customerName    String?
-  amount          Float
-  currency        String   @default("USD")
-  invoiceData     Json
-  status          PendingOrderStatus @default(PENDING)
-  expiresAt       DateTime
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id             String             @id @default(cuid())
+  purchaseNumber String             @unique
+  userId         String?
+  customerEmail  String?
+  customerName   String?
+  amount         Float
+  currency       String             @default("USD")
+  invoiceData    Json
+  status         PendingOrderStatus @default(PENDING)
+  expiresAt      DateTime
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
 
-  user            User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@index([purchaseNumber])
   @@index([userId])
@@ -2433,40 +2435,40 @@ enum PendingOrderStatus {
 // =============================================
 
 model ClassRecording {
-  id           String          @id @default(cuid())
-  bookingId    String          // Permite múltiples grabaciones por booking
-  egressId     String?         @unique // LiveKit egress ID - único para evitar duplicados
-  roomId       String?
-  roomName     String?
-  
-  // Información del archivo
-  filename     String?
-  fileUrl      String?         // URL pública o presigned URL
-  fileSize     Int?            // Tamaño en bytes
-  duration     Int?            // Duración en segundos
-  
-  // Metadatos de R2
-  r2Key        String?         // Key en R2 bucket
-  r2Bucket     String?         @default("lingowow-recordings")
-  
-  // Timestamps de la grabación
-  startedAt    DateTime?
-  endedAt      DateTime?
-  
-  // Estado de la grabación
-  status       RecordingStatus @default(PROCESSING)
-  
-  // Número de segmento (para múltiples grabaciones en una clase)
-  segmentNumber Int            @default(1)
-  
-  // Metadatos adicionales (JSON del webhook de LiveKit)
-  metadata     Json?
-  
-  // Relaciones
-  booking      ClassBooking    @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  id        String  @id @default(cuid())
+  bookingId String // Permite múltiples grabaciones por booking
+  egressId  String? @unique // LiveKit egress ID - único para evitar duplicados
+  roomId    String?
+  roomName  String?
 
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @updatedAt
+  // Información del archivo
+  filename String?
+  fileUrl  String? // URL pública o presigned URL
+  fileSize Int? // Tamaño en bytes
+  duration Int? // Duración en segundos
+
+  // Metadatos de R2
+  r2Key    String? // Key en R2 bucket
+  r2Bucket String? @default("lingowow-recordings")
+
+  // Timestamps de la grabación
+  startedAt DateTime?
+  endedAt   DateTime?
+
+  // Estado de la grabación
+  status RecordingStatus @default(PROCESSING)
+
+  // Número de segmento (para múltiples grabaciones en una clase)
+  segmentNumber Int @default(1)
+
+  // Metadatos adicionales (JSON del webhook de LiveKit)
+  metadata Json?
+
+  // Relaciones
+  booking ClassBooking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([bookingId])
   @@index([status])
@@ -2475,11 +2477,11 @@ model ClassRecording {
 }
 
 enum RecordingStatus {
-  PROCESSING    // En proceso de grabación o procesamiento
-  READY         // Lista para visualizar
-  FAILED        // Error en la grabación
-  ARCHIVED      // Archivada (no disponible temporalmente)
-  DELETED       // Eliminada
+  PROCESSING // En proceso de grabación o procesamiento
+  READY // Lista para visualizar
+  FAILED // Error en la grabación
+  ARCHIVED // Archivada (no disponible temporalmente)
+  DELETED // Eliminada
 }
 
 // =============================================
@@ -2487,16 +2489,16 @@ enum RecordingStatus {
 // =============================================
 
 model NewsletterSubscription {
-  id           String    @id @default(cuid())
-  email        String    @unique
-  userId       String?   // Opcional, puede ser suscriptor anónimo
-  isSubscribed Boolean   @default(true)
-  source       String?   // Fuente de suscripción: 'enrollment', 'landing', 'checkout', etc.
-  
+  id           String  @id @default(cuid())
+  email        String  @unique
+  userId       String? // Opcional, puede ser suscriptor anónimo
+  isSubscribed Boolean @default(true)
+  source       String? // Fuente de suscripción: 'enrollment', 'landing', 'checkout', etc.
+
   // Historial de cambios
   subscribedAt   DateTime  @default(now())
   unsubscribedAt DateTime?
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -2511,12 +2513,12 @@ model NewsletterSubscription {
 // =============================================
 
 model DeviceToken {
-  id        String   @id @default(cuid())
-  userId    String
-  token     String   @unique
-  platform  String   // 'ios' | 'android' | 'web'
-  deviceId  String?
-  isActive  Boolean  @default(true)
+  id       String  @id @default(cuid())
+  userId   String
+  token    String  @unique
+  platform String // 'ios' | 'android' | 'web'
+  deviceId String?
+  isActive Boolean @default(true)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -2550,23 +2552,23 @@ model RefreshToken {
 // =============================================
 
 model TeacherPaymentConfirmation {
-  id           String             @id @default(cuid())
-  teacherId    String
-  amount       Float
-  periodStart  DateTime
-  periodEnd    DateTime
-  confirmedAt  DateTime           @default(now())
-  hasProof     Boolean            @default(false)
-  proofUrl     String?
-  notes        String?
-  status       ConfirmationStatus @default(PENDING)
-  
+  id          String             @id @default(cuid())
+  teacherId   String
+  amount      Float
+  periodStart DateTime
+  periodEnd   DateTime
+  confirmedAt DateTime           @default(now())
+  hasProof    Boolean            @default(false)
+  proofUrl    String?
+  notes       String?
+  status      ConfirmationStatus @default(PENDING)
+
   // Relaciones
-  teacher      User               @relation(fields: [teacherId], references: [id], onDelete: Cascade)
-  
-  createdAt    DateTime           @default(now())
-  updatedAt    DateTime           @updatedAt
-  
+  teacher User @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@unique([teacherId, periodStart, periodEnd])
   @@index([teacherId])
   @@index([confirmedAt])
@@ -2578,4 +2580,83 @@ enum ConfirmationStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+// =============================================
+// SISTEMA DE AUDIT LOGS
+// =============================================
+
+model AuditLog {
+  id          String        @id @default(cuid())
+  userId      String? // Puede ser null para acciones del sistema
+  action      AuditAction
+  category    AuditCategory
+  description String // Descripción legible de la acción
+  metadata    Json? // Datos adicionales (IPs, user agents, IDs relacionados, etc.)
+  ipAddress   String?
+  userAgent   String?
+
+  // Relaciones
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([category])
+  @@index([createdAt])
+  @@index([userId, createdAt])
+  @@map("audit_logs")
+}
+
+enum AuditAction {
+  // Autenticación
+  LOGIN
+  LOGIN_FAILED
+  LOGOUT
+  REGISTER
+  PASSWORD_RESET
+  PASSWORD_CHANGED
+  EMAIL_VERIFIED
+
+  // Sesión / Navegación
+  PAGE_ENTER
+  PAGE_LEAVE
+  SESSION_EXPIRED
+
+  // Classroom
+  CLASSROOM_JOIN
+  CLASSROOM_LEAVE
+  CLASSROOM_START
+  CLASSROOM_END
+
+  // Administración
+  USER_CREATED
+  USER_UPDATED
+  USER_DELETED
+  USER_IMPERSONATED
+  ROLE_CHANGED
+
+  // Académico
+  ENROLLMENT_CREATED
+  ENROLLMENT_UPDATED
+  COURSE_CREATED
+  COURSE_UPDATED
+  EXAM_STARTED
+  EXAM_SUBMITTED
+  GRADE_ASSIGNED
+
+  // Comercial
+  PAYMENT_COMPLETED
+  SUBSCRIPTION_CREATED
+  SUBSCRIPTION_CANCELLED
+}
+
+enum AuditCategory {
+  AUTH
+  SESSION
+  CLASSROOM
+  ADMIN
+  ACADEMIC
+  COMMERCE
 }

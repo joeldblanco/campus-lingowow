@@ -18,6 +18,7 @@ import {
   Package,
   PieChart,
   Receipt,
+  ScrollText,
   Shapes,
   ShoppingCart,
   Store,
@@ -263,6 +264,11 @@ const data = {
           icon: Bell,
         },
       ],
+    },
+    {
+      title: 'Registro de Actividad',
+      icon: ScrollText,
+      url: '/admin/audit-logs',
     },
   ],
   navEditor: [

@@ -17,6 +17,7 @@ import * as z from 'zod'
 import { getCurrentDate, isBeforeDate } from '@/lib/utils/date'
 import { checkForSpam } from '@/lib/utils/spam-protection'
 import { verifyRecaptcha } from '@/lib/utils/recaptcha'
+import { createAuditLog } from '@/lib/audit-log'
 
 export const register = async (
   values: z.infer<typeof SignUpSchema>,
@@ -27,7 +28,7 @@ export const register = async (
   if (!validatedFields.success) return { error: 'Campos inválidos' }
 
   const validatedData = validatedFields.data
-  
+
   // Normalizar email a minúsculas
   validatedData.email = validatedData.email.toLowerCase()
 
@@ -86,6 +87,14 @@ export const register = async (
 
     await sendVerificationEmail(verificationToken.email, verificationToken.token)
 
+    await createAuditLog({
+      userId: newUser.id,
+      action: 'REGISTER',
+      category: 'AUTH',
+      description: `Nuevo usuario registrado: ${validatedData.email}`,
+      metadata: { email: validatedData.email, name: validatedData.name },
+    })
+
     return { success: 'Registro exitoso', redirect: '/auth/verification' }
   } catch (error) {
     return {
@@ -102,7 +111,7 @@ export const login = async (values: z.infer<typeof SignInSchema>, callbackUrl?: 
   }
 
   const { email, password, timezone } = validatedFields.data
-  
+
   // Normalizar email a minúsculas
   const normalizedEmail = email.toLowerCase()
 
@@ -137,11 +146,27 @@ export const login = async (values: z.infer<typeof SignInSchema>, callbackUrl?: 
       redirect: false,
     })
 
+    await createAuditLog({
+      userId: existingUser.id,
+      action: 'LOGIN',
+      category: 'AUTH',
+      description: `Inicio de sesión: ${existingUser.email}`,
+      metadata: { email: existingUser.email, roles: existingUser.roles },
+    })
+
     // Determinar redirección basada en roles y callbackUrl
     const redirectUrl = getRoleBasedRedirect(existingUser.roles, callbackUrl)
     return { redirect: redirectUrl }
   } catch (error) {
     if (error instanceof AuthError) {
+      await createAuditLog({
+        userId: existingUser.id,
+        action: 'LOGIN_FAILED',
+        category: 'AUTH',
+        description: `Intento de inicio de sesión fallido: ${existingUser.email}`,
+        metadata: { email: existingUser.email, errorType: error.type },
+      })
+
       switch (error.type) {
         case 'CredentialsSignin':
           return { error: 'Credenciales inválidas' }
@@ -202,6 +227,16 @@ function getRoleBasedRedirect(roles: UserRole[], callbackUrl?: string | null): s
 }
 
 export const logout = async () => {
+  const session = await auth()
+  if (session?.user?.id) {
+    await createAuditLog({
+      userId: session.user.id,
+      action: 'LOGOUT',
+      category: 'AUTH',
+      description: `Cierre de sesión: ${session.user.email}`,
+      metadata: { email: session.user.email },
+    })
+  }
   await signOut()
 }
 

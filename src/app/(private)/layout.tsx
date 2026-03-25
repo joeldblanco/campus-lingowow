@@ -8,6 +8,7 @@ import { SidebarInset, SidebarTrigger } from '@/components/ui/sidebar'
 import { Toaster } from '@/components/ui/sonner'
 import { Providers } from '@/providers/providers'
 import { CurrentClassProvider } from '@/context/current-class'
+import { PageTracker } from '@/components/page-tracker'
 // import { FloatingChat } from '@/components/floating-chat/FloatingChat'
 import { cookies } from 'next/headers'
 
@@ -28,6 +29,7 @@ export default async function PrivateLayout({
           {session && (
             <>
               <AppSidebar />
+              <PageTracker />
               <SidebarInset>
                 {session?.user?.id && <GuestExamBanner userId={session.user.id} />}
                 <header className="flex h-16 shrink-0 items-center justify-between gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
