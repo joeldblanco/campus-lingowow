@@ -8,10 +8,7 @@ const LIVEKIT_API_KEY = process.env.LIVEKIT_API_KEY!
 const LIVEKIT_API_SECRET = process.env.LIVEKIT_API_SECRET!
 const LIVEKIT_URL = process.env.NEXT_PUBLIC_LIVEKIT_URL!
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const user = await getMobileUser(req)
 
@@ -57,10 +54,7 @@ export async function POST(
     })
 
     if (!booking) {
-      return NextResponse.json(
-        { error: 'Clase no encontrada' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Clase no encontrada' }, { status: 404 })
     }
 
     // Verificar que el usuario sea parte de la clase
@@ -68,10 +62,7 @@ export async function POST(
     const isTeacher = booking.teacherId === user.id
 
     if (!isStudent && !isTeacher) {
-      return NextResponse.json(
-        { error: 'No tienes acceso a esta clase' },
-        { status: 403 }
-      )
+      return NextResponse.json({ error: 'No tienes acceso a esta clase' }, { status: 403 })
     }
 
     // Verificar que la clase esté confirmada o pendiente
@@ -139,9 +130,6 @@ export async function POST(
   } catch (error) {
     console.error('Error uniéndose a clase:', error)
 
-    return NextResponse.json(
-      { error: 'Error al unirse a la clase' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error al unirse a la clase' }, { status: 500 })
   }
 }

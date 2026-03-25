@@ -8,10 +8,7 @@ interface LiveKitUser {
   isModerator: boolean
 }
 
-export async function generateLiveKitToken(
-  user: LiveKitUser,
-  roomName: string
-): Promise<string> {
+export async function generateLiveKitToken(user: LiveKitUser, roomName: string): Promise<string> {
   const apiKey = process.env.LIVEKIT_API_KEY
   const apiSecret = process.env.LIVEKIT_API_SECRET
 
