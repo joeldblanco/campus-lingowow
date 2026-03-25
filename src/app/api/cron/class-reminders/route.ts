@@ -10,13 +10,25 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const today = new Date()
-    // Use UTC format to match how dates are stored in the database (via toISOString().split('T')[0])
-    const todayString = today.toISOString().split('T')[0]
+    const { combineDateAndTimeUTC, formatInTimeZone } = await import('@/lib/utils/date')
+
+    // Calculate the target hour: exactly 1 hour from now, truncated to the start of the hour
+    const now = new Date()
+    const targetStart = new Date(now.getTime() + 60 * 60 * 1000)
+    targetStart.setUTCMinutes(0, 0, 0)
+    const targetEnd = new Date(targetStart.getTime() + 60 * 60 * 1000) // 1-hour window
+
+    // The target class start could span two calendar days (e.g. cron at 23:00 UTC targets 00:00 UTC next day)
+    const targetDayString = targetStart.toISOString().split('T')[0]
+    const targetEndDayString = targetEnd.toISOString().split('T')[0]
+    const targetDays = [targetDayString]
+    if (targetEndDayString !== targetDayString) {
+      targetDays.push(targetEndDayString)
+    }
 
     const classesToRemind = await db.classBooking.findMany({
       where: {
-        day: todayString,
+        day: { in: targetDays },
         status: 'CONFIRMED',
         reminderSent: false,
       },
@@ -53,18 +65,17 @@ export async function GET(req: NextRequest) {
     let sentCount = 0
     const errors: string[] = []
 
-    // Import helper functions
-    const { combineDateAndTimeUTC, formatInTimeZone } = await import('@/lib/utils/date')
-
     for (const classBooking of classesToRemind) {
       try {
         if (!classBooking.student.email) continue
 
-        const classLink = `${process.env.NEXT_PUBLIC_DOMAIN}/classroom?classId=${classBooking.id}`
         const [startTime] = classBooking.timeSlot.split('-')
-
-        // Combine UTC Date and Time
         const utcDate = combineDateAndTimeUTC(classBooking.day, startTime)
+
+        // Only send if class starts within the target 1-hour window
+        if (utcDate < targetStart || utcDate >= targetEnd) continue
+
+        const classLink = `${process.env.NEXT_PUBLIC_DOMAIN}/classroom?classId=${classBooking.id}`
         const studentTimeZone = classBooking.student.timezone || 'America/Lima'
         const teacherTimeZone = classBooking.teacher.timezone || 'America/Lima'
 
