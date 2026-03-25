@@ -4,6 +4,8 @@ import { db } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 import { CourseWithDetails } from '@/types/course'
 import { CreateCourseSchema, EditCourseSchema } from '@/schemas/courses'
+import { auditLog } from '@/lib/audit-log'
+import { auth } from '@/auth'
 import * as z from 'zod'
 
 export async function getAllCourses(): Promise<CourseWithDetails[]> {
@@ -276,6 +278,14 @@ export async function createCourse(data: z.infer<typeof CreateCourseSchema>) {
       },
     })
 
+    auditLog({
+      userId: validatedData.createdById,
+      action: 'COURSE_CREATED',
+      category: 'ACADEMIC',
+      description: `Curso creado: ${validatedData.title}`,
+      metadata: { courseId: course.id, title: validatedData.title, level: validatedData.level },
+    })
+
     revalidatePath('/admin/courses')
     return { success: true, course }
   } catch (error) {
@@ -311,6 +321,15 @@ export async function updateCourse(id: string, data: z.infer<typeof EditCourseSc
         ...validatedData,
         ...(validatedData.image && { image: validatedData.image }),
       },
+    })
+
+    const session = await auth()
+    auditLog({
+      userId: session?.user?.id || undefined,
+      action: 'COURSE_UPDATED',
+      category: 'ACADEMIC',
+      description: `Curso actualizado: ${course.title}`,
+      metadata: { adminId: session?.user?.id, courseId: id, title: course.title },
     })
 
     revalidatePath('/admin/courses')
@@ -711,10 +730,10 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
     }
 
     // Calcular questionCount y totalPoints para cada examen
-    const examsWithStats = course.exams.map(exam => {
+    const examsWithStats = course.exams.map((exam) => {
       const questionCount = exam.questions.length
       const totalPoints = exam.questions.reduce((sum, q) => sum + q.points, 0)
-      
+
       return {
         id: exam.id,
         title: exam.title,

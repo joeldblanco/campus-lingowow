@@ -6,6 +6,7 @@ import { generateRoomName } from '@/lib/livekit'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { getCurrentDate } from '@/lib/utils/date'
+import { auditLog } from '@/lib/audit-log'
 
 export async function createLiveKitMeeting(bookingId: string) {
   try {
@@ -57,6 +58,14 @@ export async function createLiveKitMeeting(bookingId: string) {
     await db.classBooking.update({
       where: { id: bookingId },
       data: { status: 'CONFIRMED' },
+    })
+
+    auditLog({
+      userId: session.user.id,
+      action: 'CLASSROOM_START',
+      category: 'CLASSROOM',
+      description: `Clase iniciada: booking ${bookingId}`,
+      metadata: { bookingId, teacherId: booking.teacherId, studentId: booking.studentId, roomName },
     })
 
     return {
@@ -121,6 +130,20 @@ export async function endLiveKitMeeting(bookingId: string) {
       data: {
         status: 'COMPLETED',
         completedAt: endTime,
+      },
+    })
+
+    auditLog({
+      userId: session.user.id,
+      action: 'CLASSROOM_END',
+      category: 'CLASSROOM',
+      description: `Clase finalizada: booking ${bookingId} (${duration} min)`,
+      metadata: {
+        bookingId,
+        teacherId: videoCall.teacherId,
+        studentId: videoCall.studentId,
+        duration,
+        roomId: videoCall.roomId,
       },
     })
 

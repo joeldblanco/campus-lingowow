@@ -4,6 +4,7 @@ import { db } from '@/lib/db'
 import { auth } from '@/auth'
 import { revalidatePath } from 'next/cache'
 import { CreateExamSchema, EditExamSchema, AssignExamSchema } from '@/schemas/exams'
+import { auditLog } from '@/lib/audit-log'
 import * as z from 'zod'
 import { AttemptStatus, AssignmentStatus, Prisma, UserRole } from '@prisma/client'
 import type {
@@ -277,8 +278,8 @@ export async function updateExamQuestions(
     // PROTECCIÓN: Verificar si hay respuestas de estudiantes antes de eliminar preguntas
     const existingAnswersCount = await db.examAnswer.count({
       where: {
-        question: { examId }
-      }
+        question: { examId },
+      },
     })
 
     if (existingAnswersCount > 0 && !options?.forceUpdate) {
@@ -286,7 +287,7 @@ export async function updateExamQuestions(
         success: false,
         error: `No se pueden modificar las preguntas porque hay ${existingAnswersCount} respuesta(s) de estudiantes. Esto eliminaría permanentemente sus respuestas y calificaciones. Si desea continuar, use la opción de forzar actualización.`,
         hasExistingAnswers: true,
-        answersCount: existingAnswersCount
+        answersCount: existingAnswersCount,
       } as ExamUpdateResponse & { hasExistingAnswers: boolean; answersCount: number }
     }
 
@@ -513,8 +514,8 @@ export async function updateExam(
         // PROTECCIÓN: Verificar si hay respuestas de estudiantes antes de eliminar preguntas
         const existingAnswersCount = await tx.examAnswer.count({
           where: {
-            question: { examId: id }
-          }
+            question: { examId: id },
+          },
         })
 
         if (existingAnswersCount > 0) {
@@ -768,6 +769,14 @@ export async function startExamAttempt(examId: string, userId: string) {
       },
     })
 
+    auditLog({
+      userId,
+      action: 'EXAM_STARTED',
+      category: 'ACADEMIC',
+      description: `Examen iniciado: ${exam.title}`,
+      metadata: { examId, attemptId: attempt.id, attemptNumber: existingAttempts + 1 },
+    })
+
     return { success: true, attempt, exam, isResuming: false }
   } catch (error) {
     console.error('Error starting exam attempt:', error)
@@ -785,11 +794,11 @@ export async function saveExamAnswer(
     // Validar sesión del usuario
     const session = await auth()
     if (!session?.user?.id) {
-      return { 
-        success: false, 
-        error: 'Sesión expirada', 
+      return {
+        success: false,
+        error: 'Sesión expirada',
         code: 'SESSION_EXPIRED',
-        requiresReauth: true 
+        requiresReauth: true,
       }
     }
 
@@ -804,10 +813,10 @@ export async function saveExamAnswer(
 
     // Verificar que el intento pertenece al usuario autenticado
     if (attempt.userId !== session.user.id) {
-      return { 
-        success: false, 
+      return {
+        success: false,
         error: 'No autorizado para este intento',
-        code: 'UNAUTHORIZED'
+        code: 'UNAUTHORIZED',
       }
     }
 
@@ -962,11 +971,11 @@ export async function submitExamAttempt(attemptId: string) {
     // Validar sesión del usuario
     const session = await auth()
     if (!session?.user?.id) {
-      return { 
-        success: false, 
-        error: 'Sesión expirada', 
+      return {
+        success: false,
+        error: 'Sesión expirada',
         code: 'SESSION_EXPIRED',
-        requiresReauth: true 
+        requiresReauth: true,
       }
     }
 
@@ -990,10 +999,10 @@ export async function submitExamAttempt(attemptId: string) {
 
     // Verificar que el intento pertenece al usuario autenticado
     if (attempt.userId !== session.user.id) {
-      return { 
-        success: false, 
+      return {
+        success: false,
         error: 'No autorizado para este intento',
-        code: 'UNAUTHORIZED'
+        code: 'UNAUTHORIZED',
       }
     }
 
@@ -1039,6 +1048,21 @@ export async function submitExamAttempt(attemptId: string) {
         submittedAt: new Date(),
         verificationCode,
         ...(recommendedLevel && { recommendedLevel }),
+      },
+    })
+
+    auditLog({
+      userId: session.user.id,
+      action: 'EXAM_SUBMITTED',
+      category: 'ACADEMIC',
+      description: `Examen enviado: ${attempt.exam.title} (${Math.round(score)}%)`,
+      metadata: {
+        attemptId,
+        examId: attempt.examId,
+        score: Math.round(score * 100) / 100,
+        totalPoints,
+        maxPoints,
+        timeSpent,
       },
     })
 
@@ -1091,7 +1115,7 @@ export async function getExamAttemptWithAnswers(attemptId: string) {
 }
 
 export async function getExamResultsForStudent(
-  attemptId: string, 
+  attemptId: string,
   userId: string,
   options?: { userRoles?: string[] }
 ) {
@@ -1315,6 +1339,20 @@ export async function gradeExamAnswer(
         needsReview: false,
         reviewedBy: reviewerId,
         reviewedAt: new Date(),
+      },
+    })
+
+    auditLog({
+      userId: reviewerId,
+      action: 'GRADE_ASSIGNED',
+      category: 'ACADEMIC',
+      description: `Calificación asignada: ${pointsEarned}/${answer.question.points} pts`,
+      metadata: {
+        answerId,
+        attemptId: answer.attemptId,
+        pointsEarned,
+        maxPoints: answer.question.points,
+        reviewerId,
       },
     })
 
@@ -2053,7 +2091,9 @@ export async function updateExamAttemptState(
       where: { id: attemptId },
       data: {
         currentQuestionIndex: state.currentQuestionIndex,
-        flaggedQuestions: state.flaggedQuestions ? JSON.stringify(state.flaggedQuestions) : undefined,
+        flaggedQuestions: state.flaggedQuestions
+          ? JSON.stringify(state.flaggedQuestions)
+          : undefined,
         lastActivityAt: new Date(),
       },
     })

@@ -4,6 +4,7 @@ import { db } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 import type { SubscriptionStatus } from '@prisma/client'
 import { getCurrentDate } from '@/lib/utils/date'
+import { auditLog } from '@/lib/audit-log'
 
 // =============================================
 // FUNCIONES DE CÁLCULO DE PRORATEO
@@ -195,6 +196,19 @@ export async function createSubscription(data: {
       },
     })
 
+    auditLog({
+      userId,
+      action: 'SUBSCRIPTION_CREATED',
+      category: 'COMMERCE',
+      description: `Suscripción creada: plan ${plan.name || planId}`,
+      metadata: {
+        subscriptionId: subscription.id,
+        planId,
+        planName: plan.name,
+        proratedPrice: prorationData.proratedPrice,
+      },
+    })
+
     revalidatePath('/dashboard')
     return { success: true, data: subscription }
   } catch (error) {
@@ -243,6 +257,14 @@ export async function cancelSubscription(subscriptionId: string, reason?: string
       },
     })
 
+    auditLog({
+      userId: subscription.userId,
+      action: 'SUBSCRIPTION_CANCELLED',
+      category: 'COMMERCE',
+      description: `Suscripción cancelada: ${subscriptionId}`,
+      metadata: { subscriptionId, reason },
+    })
+
     revalidatePath('/dashboard')
     return { success: true, data: subscription }
   } catch (error) {
@@ -251,10 +273,7 @@ export async function cancelSubscription(subscriptionId: string, reason?: string
   }
 }
 
-export async function updateSubscriptionStatus(
-  subscriptionId: string,
-  status: SubscriptionStatus
-) {
+export async function updateSubscriptionStatus(subscriptionId: string, status: SubscriptionStatus) {
   try {
     const subscription = await db.subscription.update({
       where: { id: subscriptionId },

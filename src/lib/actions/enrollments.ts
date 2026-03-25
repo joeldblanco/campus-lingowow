@@ -3,10 +3,18 @@
 import { db } from '@/lib/db'
 import { EnrollmentStatus } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
-import { getCurrentDate, isAfterDate, getTodayStart, getStartOfDayUTC, getEndOfDayUTC } from '@/lib/utils/date'
+import {
+  getCurrentDate,
+  isAfterDate,
+  getTodayStart,
+  getStartOfDayUTC,
+  getEndOfDayUTC,
+} from '@/lib/utils/date'
 import { verifyPaypalTransaction, createInvoiceFromPaypal } from '@/lib/actions/commercial'
 import { notifyNewEnrollment } from '@/lib/actions/notifications'
 import { sendNewEnrollmentTeacherEmail } from '@/lib/mail'
+import { auditLog } from '@/lib/audit-log'
+import { auth } from '@/auth'
 
 export interface EnrollmentWithDetails {
   id: string
@@ -67,7 +75,7 @@ export interface EnrollmentStats {
  */
 function getEnrollmentStatusByPeriod(startDate: Date, endDate: Date): EnrollmentStatus {
   const today = getCurrentDate()
-  
+
   if (isAfterDate(startDate, today)) {
     return EnrollmentStatus.PENDING
   } else if (isAfterDate(today, endDate)) {
@@ -369,6 +377,19 @@ export async function createEnrollment(data: {
       }
     }
 
+    auditLog({
+      userId: data.studentId,
+      action: 'ENROLLMENT_CREATED',
+      category: 'ACADEMIC',
+      description: `Inscripción creada: ${course?.title || data.courseId}`,
+      metadata: {
+        enrollmentId: enrollment.id,
+        studentId: data.studentId,
+        courseId: data.courseId,
+        academicPeriodId: data.academicPeriodId,
+      },
+    })
+
     revalidatePath('/admin/enrollments')
     revalidatePath('/admin/invoices')
     return { success: true, enrollment }
@@ -419,7 +440,7 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
       if (!data.paypalOrderId) {
         return { success: false, error: 'El ID de PayPal es requerido' }
       }
-      
+
       console.log('[Enrollment] Verifying PayPal Order:', data.paypalOrderId)
       paypalCheck = await verifyPaypalTransaction(data.paypalOrderId)
 
@@ -502,9 +523,8 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
     let enrollment
     try {
       // Determinar el teacherId basado en la primera clase programada
-      const firstClassTeacherId = data.scheduledClasses.length > 0 
-        ? data.scheduledClasses[0].teacherId 
-        : data.teacherId
+      const firstClassTeacherId =
+        data.scheduledClasses.length > 0 ? data.scheduledClasses[0].teacherId : data.teacherId
 
       enrollment = await db.enrollment.create({
         data: {
@@ -551,7 +571,7 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
           // Usar timezone del usuario pasada desde el cliente
           const { convertRecurringScheduleToUTC } = await import('@/lib/utils/date')
           const scheduleTimezone = data.userTimezone || 'America/Lima'
-          
+
           for (const slot of data.weeklySchedule) {
             // Convertir horario recurrente a UTC usando timezone del usuario
             const utcSchedule = convertRecurringScheduleToUTC(
@@ -560,7 +580,7 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
               slot.endTime,
               scheduleTimezone
             )
-            
+
             await db.classSchedule.create({
               data: {
                 enrollmentId: enrollment.id,
@@ -576,17 +596,17 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
         // Create individual class bookings
         // Importar función de conversión a UTC
         const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
-        
+
         // Usar timezone del usuario pasada desde el cliente
         // Las clases se muestran en hora local del usuario, así que debemos convertir a UTC
         const userTimezone = data.userTimezone || 'America/Lima'
-        
+
         for (const cls of data.scheduledClasses) {
           const localTimeSlot = `${cls.startTime}-${cls.endTime}`
-          
+
           // Convertir fecha y horario de hora local a UTC
           const utcData = convertTimeSlotToUTC(cls.date, localTimeSlot, userTimezone)
-          
+
           // Check if the slot is already booked
           const existingBooking = await db.classBooking.findUnique({
             where: {
@@ -610,7 +630,9 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
               },
             })
           } else {
-            console.warn(`Slot already booked: ${utcData.day} ${utcData.timeSlot} for teacher ${cls.teacherId}`)
+            console.warn(
+              `Slot already booked: ${utcData.day} ${utcData.timeSlot} for teacher ${cls.teacherId}`
+            )
           }
         }
 
@@ -625,14 +647,14 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
     // 6. Send notifications to teacher and admins
     try {
       const studentFullName = `${student.name}${student.lastName ? ' ' + student.lastName : ''}`
-      
+
       // If there's a teacher assigned, notify them
       if (data.teacherId) {
         const teacher = await db.user.findUnique({
           where: { id: data.teacherId },
           select: { id: true, name: true, email: true, timezone: true },
         })
-        
+
         if (teacher) {
           // Platform notification
           await notifyNewEnrollment({
@@ -642,14 +664,14 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
             courseName: course.title,
             enrollmentId: enrollment.id,
           })
-          
+
           // Email notification to teacher (use teacher's timezone)
           const teacherTimezone = teacher.timezone || 'America/Lima'
           await sendNewEnrollmentTeacherEmail(teacher.email, {
             teacherName: teacher.name,
             studentName: studentFullName,
             courseName: course.title,
-            enrollmentDate: new Date().toLocaleDateString('es-PE', { 
+            enrollmentDate: new Date().toLocaleDateString('es-PE', {
               timeZone: teacherTimezone,
               year: 'numeric',
               month: 'long',
@@ -675,9 +697,9 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
     revalidatePath('/admin/enrollments')
     revalidatePath('/admin/invoices')
     revalidatePath('/admin/classes')
-    
-    return { 
-      success: true, 
+
+    return {
+      success: true,
       enrollment,
       classesCreated: data.scheduledClasses.length,
     }
@@ -735,6 +757,15 @@ export async function updateEnrollment(
         ...data,
         lastAccessed: getCurrentDate(),
       },
+    })
+
+    const session = await auth()
+    auditLog({
+      userId: session?.user?.id || undefined,
+      action: 'ENROLLMENT_UPDATED',
+      category: 'ACADEMIC',
+      description: `Inscripción actualizada: ${id}`,
+      metadata: { adminId: session?.user?.id, enrollmentId: id, changes: data },
     })
 
     revalidatePath('/admin/enrollments')
@@ -800,15 +831,15 @@ export async function updateEnrollmentSchedules(
     // Crear nuevos horarios con conversión a UTC
     if (schedules.length > 0) {
       const { convertRecurringScheduleToUTC } = await import('@/lib/utils/date')
-      
+
       // Obtener timezones de los profesores
-      const teacherIds = [...new Set(schedules.map(s => s.teacherId))]
+      const teacherIds = [...new Set(schedules.map((s) => s.teacherId))]
       const teachers = await db.user.findMany({
         where: { id: { in: teacherIds } },
         select: { id: true, timezone: true },
       })
-      const teacherTimezones = new Map(teachers.map(t => [t.id, t.timezone || 'America/Lima']))
-      
+      const teacherTimezones = new Map(teachers.map((t) => [t.id, t.timezone || 'America/Lima']))
+
       const utcSchedules = schedules.map((schedule) => {
         const timezone = teacherTimezones.get(schedule.teacherId) || 'America/Lima'
         const utcData = convertRecurringScheduleToUTC(
@@ -825,7 +856,7 @@ export async function updateEnrollmentSchedules(
           endTime: utcData.endTime,
         }
       })
-      
+
       await db.classSchedule.createMany({
         data: utcSchedules,
       })
@@ -945,10 +976,10 @@ export async function updateEnrollmentWithSchedule(
     // 4. Crear nuevos horarios recurrentes si aplica
     // Importar funciones de conversión a UTC
     const { convertRecurringScheduleToUTC, convertTimeSlotToUTC } = await import('@/lib/utils/date')
-    
+
     // Usar timezone del usuario pasada desde el cliente
     const userTimezone = data.userTimezone || 'America/Lima'
-    
+
     if (data.isRecurring && data.weeklySchedule.length > 0) {
       const utcSchedules = data.weeklySchedule.map((slot) => {
         // Convertir horario recurrente de hora local a UTC
@@ -966,7 +997,7 @@ export async function updateEnrollmentWithSchedule(
           endTime: utcSchedule.endTime,
         }
       })
-      
+
       await db.classSchedule.createMany({
         data: utcSchedules,
       })
@@ -976,7 +1007,7 @@ export async function updateEnrollmentWithSchedule(
     let classesCreated = 0
     for (const cls of data.scheduledClasses) {
       const localTimeSlot = `${cls.startTime}-${cls.endTime}`
-      
+
       // Convertir fecha y horario de hora local a UTC
       const utcData = convertTimeSlotToUTC(cls.date, localTimeSlot, userTimezone)
 
@@ -1003,7 +1034,10 @@ export async function updateEnrollmentWithSchedule(
           },
         })
         classesCreated++
-      } else if (existingBooking.enrollmentId === enrollmentId && existingBooking.status === 'CANCELLED') {
+      } else if (
+        existingBooking.enrollmentId === enrollmentId &&
+        existingBooking.status === 'CANCELLED'
+      ) {
         // Reactivar la clase si era de esta misma inscripción y estaba cancelada
         await db.classBooking.update({
           where: { id: existingBooking.id },
@@ -1015,7 +1049,9 @@ export async function updateEnrollmentWithSchedule(
         })
         classesCreated++
       } else {
-        console.warn(`Slot already booked: ${utcData.day} ${utcData.timeSlot} for teacher ${cls.teacherId}`)
+        console.warn(
+          `Slot already booked: ${utcData.day} ${utcData.timeSlot} for teacher ${cls.teacherId}`
+        )
       }
     }
 

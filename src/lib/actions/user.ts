@@ -4,6 +4,8 @@ import { db } from '@/lib/db'
 import handleError from '@/lib/handleError'
 import { User, UserRole, UserStatus } from '@prisma/client'
 import { CreateUserSchema } from '@/schemas/user'
+import { auditLog } from '@/lib/audit-log'
+import { auth } from '@/auth'
 import * as z from 'zod'
 
 export const getUserByEmail = async (email: string) => {
@@ -54,6 +56,14 @@ export const updateUser = async (id: string, data: Partial<User>) => {
 
     if (!updatedUser) return { error: 'Ocurrió un error actualizando el usuario' }
 
+    auditLog({
+      userId: id,
+      action: 'USER_UPDATED',
+      category: 'ADMIN',
+      description: `Usuario actualizado: ${updatedUser.email}`,
+      metadata: { targetUserId: id, email: updatedUser.email },
+    })
+
     return updatedUser
   } catch (error) {
     return {
@@ -89,6 +99,14 @@ export const createUser = async (userData: z.infer<typeof CreateUserSchema>) => 
 
     if (!newUser) return { error: 'Ocurrió un error creando el usuario' }
 
+    auditLog({
+      userId: newUser.id,
+      action: 'USER_CREATED',
+      category: 'ADMIN',
+      description: `Usuario creado: ${normalizedEmail}`,
+      metadata: { targetUserId: newUser.id, email: normalizedEmail, roles: validatedUserData.roles },
+    })
+
     return newUser
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -110,6 +128,15 @@ export const deleteUser = async (id: string) => {
     if (!existingUser || 'error' in existingUser) {
       return { error: 'Usuario no encontrado' }
     }
+
+    const session = await auth()
+    auditLog({
+      userId: session?.user?.id || undefined,
+      action: 'USER_DELETED',
+      category: 'ADMIN',
+      description: `Usuario eliminado: ${existingUser.email}`,
+      metadata: { adminId: session?.user?.id, targetUserId: id, email: existingUser.email, name: existingUser.name },
+    })
 
     // Delete the user
     await db.user.delete({
@@ -152,6 +179,15 @@ export const deleteMultipleUsers = async (userIds: string[]) => {
     if (invalidUserIds.length > 0) {
       return { error: 'Usuario no encontrado' }
     }
+
+    const session = await auth()
+    auditLog({
+      userId: session?.user?.id || undefined,
+      action: 'USER_DELETED',
+      category: 'ADMIN',
+      description: `Usuarios eliminados en lote: ${userIds.length} usuarios`,
+      metadata: { adminId: session?.user?.id, targetUserIds: userIds },
+    })
 
     // Delete the user
     await db.user.deleteMany({

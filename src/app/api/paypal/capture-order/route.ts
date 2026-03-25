@@ -6,6 +6,7 @@ import { db } from '@/lib/db'
 import { sendPaymentConfirmationEmail, sendNewPurchaseAdminEmail } from '@/lib/mail'
 import { rateLimit, getRateLimitHeaders } from '@/lib/rate-limit'
 import { notifyNewPurchase } from '@/lib/actions/notifications'
+import { auditLog } from '@/lib/audit-log'
 
 interface ScheduleSlot {
   teacherId: string
@@ -39,7 +40,7 @@ export async function POST(req: NextRequest) {
   try {
     const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'anonymous'
     const rateLimitResult = rateLimit(`payment:${ip}`, { windowMs: 60000, maxRequests: 5 })
-    
+
     if (!rateLimitResult.success) {
       return NextResponse.json(
         { error: 'Demasiados intentos de pago. Por favor espera un momento.' },
@@ -49,7 +50,7 @@ export async function POST(req: NextRequest) {
 
     // Obtener datos del request body para usuarios invitados
     const body = await req.json()
-    
+
     const { orderID, invoiceData, customerInfo } = body as {
       orderID: string
       invoiceData: InvoiceData
@@ -66,32 +67,33 @@ export async function POST(req: NextRequest) {
 
     // Verificar datos requeridos
     if (!orderID || !invoiceData) {
-      return NextResponse.json(
-        { error: 'Datos incompletos' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Datos incompletos' }, { status: 400 })
     }
 
     // Intentar obtener autenticación (para usuarios logueados)
-    const token = await getToken({ 
+    const token = await getToken({
       req,
       secret: process.env.JWT_SECRET,
       secureCookie: process.env.NODE_ENV === 'production',
-      cookieName: process.env.NODE_ENV === 'production' 
-        ? '__Secure-authjs.session-token'
-        : 'authjs.session-token'
+      cookieName:
+        process.env.NODE_ENV === 'production'
+          ? '__Secure-authjs.session-token'
+          : 'authjs.session-token',
     })
-    
+
     let userId = token?.sub
-    
+
     if (!userId) {
       const session = await auth()
       userId = session?.user?.id
     }
-    
+
     // Para usuarios invitados, verificar que tengan información del cliente
     if (!userId && !customerInfo) {
-      return NextResponse.json({ error: 'Se requiere información del cliente para usuarios invitados' }, { status: 400 })
+      return NextResponse.json(
+        { error: 'Se requiere información del cliente para usuarios invitados' },
+        { status: 400 }
+      )
     }
 
     // Si no hay usuario autenticado pero hay información de cliente, crear un usuario invitado
@@ -109,12 +111,9 @@ export async function POST(req: NextRequest) {
     }
 
     if (!orderID) {
-      return NextResponse.json(
-        { error: 'ID de orden requerido' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'ID de orden requerido' }, { status: 400 })
     }
-    
+
     // Capturar el pago en PayPal
     const { result: captureData } = await ordersController.captureOrder({ id: orderID })
 
@@ -122,7 +121,7 @@ export async function POST(req: NextRequest) {
     if (captureData?.status === 'COMPLETED') {
       // Crear la factura en la base de datos
       const invoiceNumber = `INV-${Date.now().toString().slice(-8)}`
-      
+
       const invoice = await db.invoice.create({
         data: {
           invoiceNumber,
@@ -156,6 +155,20 @@ export async function POST(req: NextRequest) {
         },
       })
 
+      auditLog({
+        userId: userId || undefined,
+        action: 'PAYMENT_COMPLETED',
+        category: 'COMMERCE',
+        description: `Pago completado: ${invoiceNumber} ($${invoiceData.total} ${invoiceData.currency || 'USD'})`,
+        metadata: {
+          invoiceId: invoice.id,
+          invoiceNumber,
+          total: invoiceData.total,
+          currency: invoiceData.currency || 'USD',
+          paypalOrderId: orderID,
+        },
+      })
+
       // Incrementar el contador de uso del cupón si se usó uno
       if (invoiceData.couponId) {
         await db.coupon.update({
@@ -166,10 +179,10 @@ export async function POST(req: NextRequest) {
 
       // Obtener el período académico actual basado en fechas (excluyendo special weeks)
       const today = new Date()
-      
+
       // Buscar período donde hoy esté entre startDate y endDate
       let currentPeriod = await db.academicPeriod.findFirst({
-        where: { 
+        where: {
           startDate: { lte: today },
           endDate: { gte: today },
           isSpecialWeek: false,
@@ -193,7 +206,7 @@ export async function POST(req: NextRequest) {
           // Obtener información del plan si existe
           let plan = null
           let enrollment: { id: string; course?: { title?: string } } | null = null
-          
+
           if (item.planId) {
             plan = await db.plan.findUnique({
               where: { id: item.planId },
@@ -208,7 +221,9 @@ export async function POST(req: NextRequest) {
               productId: item.productId,
               invoiceId: invoice.id,
               status: 'CONFIRMED',
-              selectedSchedule: item.selectedSchedule ? JSON.parse(JSON.stringify(item.selectedSchedule)) : undefined,
+              selectedSchedule: item.selectedSchedule
+                ? JSON.parse(JSON.stringify(item.selectedSchedule))
+                : undefined,
               proratedClasses: item.proratedClasses || undefined,
               proratedPrice: item.proratedPrice || undefined,
             },
@@ -224,7 +239,7 @@ export async function POST(req: NextRequest) {
           ) {
             // Extraer el teacherId del primer slot del horario seleccionado
             const firstTeacherId = item.selectedSchedule[0]?.teacherId || null
-            
+
             // Crear o actualizar la inscripción
             enrollment = await db.enrollment.upsert({
               where: {
@@ -255,7 +270,7 @@ export async function POST(req: NextRequest) {
             // Actualizar la compra con el enrollmentId
             await db.productPurchase.update({
               where: { id: purchase.id },
-              data: { 
+              data: {
                 enrollmentId: enrollment.id,
                 status: 'ENROLLED',
               },
@@ -264,15 +279,17 @@ export async function POST(req: NextRequest) {
             // Crear los horarios recurrentes (ClassSchedule) con conversión a UTC
             if (enrollment) {
               const { convertRecurringScheduleToUTC } = await import('@/lib/utils/date')
-              
+
               // Obtener timezones de los profesores
-              const teacherIds = [...new Set(item.selectedSchedule.map(s => s.teacherId))]
+              const teacherIds = [...new Set(item.selectedSchedule.map((s) => s.teacherId))]
               const teachers = await db.user.findMany({
                 where: { id: { in: teacherIds } },
                 select: { id: true, timezone: true },
               })
-              const teacherTimezones = new Map(teachers.map(t => [t.id, t.timezone || 'America/Lima']))
-              
+              const teacherTimezones = new Map(
+                teachers.map((t) => [t.id, t.timezone || 'America/Lima'])
+              )
+
               await Promise.all(
                 item.selectedSchedule.map(async (slot) => {
                   const timezone = teacherTimezones.get(slot.teacherId) || 'America/Lima'
@@ -282,7 +299,7 @@ export async function POST(req: NextRequest) {
                     slot.endTime,
                     timezone
                   )
-                  
+
                   // Verificar si ya existe este horario (en UTC)
                   const existingSchedule = await db.classSchedule.findUnique({
                     where: {
@@ -334,9 +351,9 @@ export async function POST(req: NextRequest) {
                   const month = String(currentDate.getUTCMonth() + 1).padStart(2, '0')
                   const day = String(currentDate.getUTCDate()).padStart(2, '0')
                   const dayString = `${year}-${month}-${day}`
-                  
+
                   const timeSlot = `${scheduleForDay.startTime}-${scheduleForDay.endTime}`
-                  
+
                   // Verificar si ya existe una reserva para esta fecha
                   const existingBooking = await db.classBooking.findFirst({
                     where: {
@@ -396,26 +413,26 @@ export async function POST(req: NextRequest) {
           }
         })
       )
-      
+
       // Verificar si alguna compra requiere configuración de horario
-      const needsScheduleSetup = purchases.some(p => p.enrollment && !p.selectedSchedule)
-      
+      const needsScheduleSetup = purchases.some((p) => p.enrollment && !p.selectedSchedule)
+
       // Enviar email de confirmación de pago
       try {
         const user = await db.user.findUnique({
           where: { id: userId },
           select: { email: true, name: true, lastName: true },
         })
-        
+
         if (user?.email) {
           const customerName = `${user.name || ''} ${user.lastName || ''}`.trim() || 'Cliente'
-          const productNames = invoiceData.items.map(item => item.name).join(', ')
-          
+          const productNames = invoiceData.items.map((item) => item.name).join(', ')
+
           // Email to customer
           await sendPaymentConfirmationEmail(user.email, {
             customerName,
             invoiceNumber: invoice.invoiceNumber,
-            items: invoiceData.items.map(item => ({
+            items: invoiceData.items.map((item) => ({
               name: item.name,
               price: item.price,
               quantity: item.quantity || 1,
@@ -426,7 +443,7 @@ export async function POST(req: NextRequest) {
             total: invoiceData.total,
             currency: invoiceData.currency || 'USD',
           })
-          
+
           // Email notification to admins
           await sendNewPurchaseAdminEmail({
             customerName,
@@ -444,7 +461,7 @@ export async function POST(req: NextRequest) {
               minute: '2-digit',
             }),
           })
-          
+
           // Platform notification to admins
           await notifyNewPurchase({
             userId: userId!,
@@ -457,7 +474,7 @@ export async function POST(req: NextRequest) {
       } catch (emailError) {
         console.error('Error sending payment confirmation email:', emailError)
       }
-      
+
       return NextResponse.json({
         success: true,
         captureID: captureData.id,
@@ -466,23 +483,17 @@ export async function POST(req: NextRequest) {
         purchases,
         needsScheduleSetup,
         enrollments: purchases
-          .filter(p => p.enrollment !== null)
-          .map(p => ({ 
-            id: p.enrollment!.id, 
-            courseTitle: p.enrollment!.course?.title 
+          .filter((p) => p.enrollment !== null)
+          .map((p) => ({
+            id: p.enrollment!.id,
+            courseTitle: p.enrollment!.course?.title,
           })),
       })
     } else {
-      return NextResponse.json(
-        { error: 'El pago no se completó correctamente' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'El pago no se completó correctamente' }, { status: 400 })
     }
   } catch (error) {
     console.error('Error capturing PayPal order:', error)
-    return NextResponse.json(
-      { error: 'Error al capturar el pago de PayPal' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error al capturar el pago de PayPal' }, { status: 500 })
   }
 }

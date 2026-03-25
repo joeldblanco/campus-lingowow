@@ -325,6 +325,14 @@ export const newVerification = async (token: string) => {
     },
   })
 
+  auditLog({
+    userId: existingUser.id,
+    action: 'EMAIL_VERIFIED',
+    category: 'AUTH',
+    description: `Email verificado: ${existingToken.email}`,
+    metadata: { email: existingToken.email },
+  })
+
   await db.verificationToken.delete({
     where: {
       id: existingToken.id,
@@ -405,6 +413,14 @@ export const newPassword = async (
     },
   })
 
+  auditLog({
+    userId: existingUser.id,
+    action: 'PASSWORD_CHANGED',
+    category: 'AUTH',
+    description: `Contraseña actualizada: ${existingToken.email}`,
+    metadata: { email: existingToken.email },
+  })
+
   await db.passwordResetToken.delete({
     where: {
       id: existingToken.id,
@@ -431,6 +447,14 @@ export const reset = async (values: z.infer<typeof ResetSchema>) => {
 
   await sendPasswordResetEmail(validatedData.email, passwordResetToken.token)
 
+  auditLog({
+    userId: existingUser.id,
+    action: 'PASSWORD_RESET',
+    category: 'AUTH',
+    description: `Solicitud de recuperación de contraseña: ${validatedData.email}`,
+    metadata: { email: validatedData.email },
+  })
+
   return { success: 'Correo de recuperación enviado' }
 }
 
@@ -454,6 +478,19 @@ export const impersonateUser = async (userId: string) => {
 
     // Determinar redirección basada en roles del usuario suplantado
     const redirectUrl = getRoleBasedRedirect(userToImpersonate.roles, null)
+
+    const session = await auth()
+    auditLog({
+      userId: session?.user?.id || undefined,
+      action: 'USER_IMPERSONATED',
+      category: 'ADMIN',
+      description: `Admin suplantó a: ${userToImpersonate.email}`,
+      metadata: {
+        adminId: session?.user?.id,
+        targetUserId: userToImpersonate.id,
+        targetEmail: userToImpersonate.email,
+      },
+    })
 
     return {
       success: `Suplantando a ${userToImpersonate.name} ${userToImpersonate.lastName || ''}`.trim(),
