@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getMobileUser, unauthorizedResponse } from '@/lib/mobile-auth'
 import { db } from '@/lib/db'
 import { AccessToken } from 'livekit-server-sdk'
+import { generateRoomName } from '@/lib/livekit'
 
 const LIVEKIT_API_KEY = process.env.LIVEKIT_API_KEY!
 const LIVEKIT_API_SECRET = process.env.LIVEKIT_API_SECRET!
@@ -73,16 +74,16 @@ export async function POST(
       )
     }
 
-    // Verificar que la clase esté confirmada
-    if (booking.status !== 'CONFIRMED') {
+    // Verificar que la clase esté confirmada o pendiente
+    if (!['CONFIRMED', 'PENDING'].includes(booking.status)) {
       return NextResponse.json(
         { error: 'Esta clase no está disponible para unirse' },
         { status: 400 }
       )
     }
 
-    // Generar nombre de sala único
-    const roomName = `class-${booking.id}`
+    // Usar nombre de sala determinístico basado en bookingId
+    const roomName = generateRoomName(booking.id)
 
     // Determinar el nombre del participante
     const participantName = isTeacher
@@ -106,28 +107,19 @@ export async function POST(
 
     const token = await at.toJwt()
 
-    // Registrar o actualizar la videollamada
-    const existingCall = await db.videoCall.findUnique({
+    // Registrar o actualizar la videollamada (upsert para evitar race condition)
+    await db.videoCall.upsert({
       where: { bookingId: booking.id },
+      update: { status: 'ACTIVE' },
+      create: {
+        roomId: roomName,
+        bookingId: booking.id,
+        teacherId: booking.teacherId,
+        studentId: booking.studentId,
+        status: 'ACTIVE',
+        startTime: new Date(),
+      },
     })
-
-    if (existingCall) {
-      await db.videoCall.update({
-        where: { id: existingCall.id },
-        data: { status: 'ACTIVE' },
-      })
-    } else {
-      await db.videoCall.create({
-        data: {
-          roomId: roomName,
-          bookingId: booking.id,
-          teacherId: booking.teacherId,
-          studentId: booking.studentId,
-          status: 'ACTIVE',
-          startTime: new Date(),
-        },
-      })
-    }
 
     return NextResponse.json({
       success: true,

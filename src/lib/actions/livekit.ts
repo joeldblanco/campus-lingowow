@@ -35,35 +35,24 @@ export async function createLiveKitMeeting(bookingId: string) {
       throw new Error('No tienes permisos para crear esta videollamada')
     }
 
-    let roomName = generateRoomName(bookingId)
+    const roomName = generateRoomName(bookingId)
 
-    const existingVideoCall = await db.videoCall.findFirst({
+    // Upsert: buscar existente o crear, evitando race condition
+    await db.videoCall.upsert({
       where: { bookingId },
+      update: {
+        roomId: roomName,
+        status: 'SCHEDULED',
+      },
+      create: {
+        roomId: roomName,
+        teacherId: booking.teacherId,
+        studentId: booking.studentId,
+        bookingId: bookingId,
+        status: 'SCHEDULED',
+        startTime: getCurrentDate(),
+      },
     })
-
-    let videoCall
-    if (existingVideoCall) {
-      roomName = existingVideoCall.roomId
-
-      videoCall = await db.videoCall.update({
-        where: { id: existingVideoCall.id },
-        data: {
-          status: 'SCHEDULED',
-          startTime: getCurrentDate(),
-        },
-      })
-    } else {
-      videoCall = await db.videoCall.create({
-        data: {
-          roomId: roomName,
-          teacherId: booking.teacherId,
-          studentId: booking.studentId,
-          bookingId: bookingId,
-          status: 'SCHEDULED',
-          startTime: getCurrentDate(),
-        },
-      })
-    }
 
     await db.classBooking.update({
       where: { id: bookingId },
@@ -72,7 +61,7 @@ export async function createLiveKitMeeting(bookingId: string) {
 
     return {
       success: true,
-      roomName: videoCall.roomId,
+      roomName,
       meetingUrl: `/classroom?classId=${bookingId}`,
     }
   } catch (error) {

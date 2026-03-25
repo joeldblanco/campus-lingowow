@@ -45,6 +45,5 @@ export async function generateLiveKitToken(
 }
 
 export function generateRoomName(bookingId: string): string {
-  const timestamp = Date.now().toString().slice(-6)
-  return `lingowow-clase-${bookingId}-${timestamp}`
+  return `class-${bookingId}`
 }
