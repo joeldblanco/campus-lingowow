@@ -30,7 +30,7 @@ import {
   isWithinInterval,
 } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { toZonedTime, fromZonedTime, format as formatTz } from 'date-fns-tz'
+import { toZonedTime, fromZonedTime, format as formatTz, formatInTimeZone as libFormatInTimeZone } from 'date-fns-tz'
 
 /**
  * Parsea una fecha en formato ISO (YYYY-MM-DD) a objeto Date
@@ -723,10 +723,12 @@ export function convertAvailabilityFromUTC(
 
 /**
  * Formatea una fecha en la zona horaria especificada
+ * Usa formatInTimeZone de date-fns-tz que convierte correctamente a la zona horaria destino
+ * (format de date-fns-tz solo usa timeZone para tokens de zona horaria, no convierte la hora)
  */
 export function formatInTimeZone(date: Date | string, formatStr: string, timeZone: string): string {
   const dateObj = typeof date === 'string' ? parseISO(date) : date
-  return formatTz(dateObj, formatStr, { timeZone, locale: es })
+  return libFormatInTimeZone(dateObj, timeZone, formatStr, { locale: es })
 }
 
 /**

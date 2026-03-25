@@ -326,29 +326,30 @@ export async function notifyClassReminder(data: {
   studentId: string
   teacherId: string
   courseName: string
-  classTime: string
+  studentClassTime: string
+  teacherClassTime: string
   bookingId: string
 }) {
-  const { studentId, teacherId, courseName, classTime, bookingId } = data
+  const { studentId, teacherId, courseName, studentClassTime, teacherClassTime, bookingId } = data
 
-  // Notificar al estudiante
+  // Notificar al estudiante (con hora local del estudiante)
   await createNotification({
     userId: studentId,
     type: NotificationType.CLASS_REMINDER,
     title: 'Recordatorio de clase',
-    message: `Tu clase de ${courseName} comienza en 1 hora (${classTime})`,
+    message: `Tu clase de ${courseName} comienza en 1 hora (${studentClassTime})`,
     link: `/dashboard/classes`,
-    metadata: { bookingId, classTime },
+    metadata: { bookingId, classTime: studentClassTime },
   })
 
-  // Notificar al profesor
+  // Notificar al profesor (con hora local del profesor)
   await createNotification({
     userId: teacherId,
     type: NotificationType.CLASS_REMINDER,
     title: 'Recordatorio de clase',
-    message: `Tu clase de ${courseName} comienza en 1 hora (${classTime})`,
+    message: `Tu clase de ${courseName} comienza en 1 hora (${teacherClassTime})`,
     link: `/teacher/schedule`,
-    metadata: { bookingId, classTime },
+    metadata: { bookingId, classTime: teacherClassTime },
   })
 }
 
@@ -363,6 +364,10 @@ export async function notifyClassRescheduled(data: {
   oldTimeSlot: string
   newDay: string
   newTimeSlot: string
+  teacherOldDay: string
+  teacherOldTimeSlot: string
+  teacherNewDay: string
+  teacherNewTimeSlot: string
   bookingId: string
 }) {
   const { 
@@ -374,11 +379,15 @@ export async function notifyClassRescheduled(data: {
     oldDay, 
     oldTimeSlot, 
     newDay, 
-    newTimeSlot, 
+    newTimeSlot,
+    teacherOldDay,
+    teacherOldTimeSlot,
+    teacherNewDay,
+    teacherNewTimeSlot,
     bookingId 
   } = data
 
-  // Notificar al estudiante (confirmación)
+  // Notificar al estudiante (con horas locales del estudiante)
   await createNotification({
     userId: studentId,
     type: NotificationType.CLASS_RESCHEDULED,
@@ -388,14 +397,14 @@ export async function notifyClassRescheduled(data: {
     metadata: { bookingId, oldDay, oldTimeSlot, newDay, newTimeSlot, teacherName },
   })
 
-  // Notificar al profesor
+  // Notificar al profesor (con horas locales del profesor)
   await createNotification({
     userId: teacherId,
     type: NotificationType.CLASS_RESCHEDULED,
     title: 'Clase reagendada por estudiante',
-    message: `${studentName} ha reagendado su clase de ${courseName} de ${oldDay} ${oldTimeSlot} a ${newDay} ${newTimeSlot}`,
+    message: `${studentName} ha reagendado su clase de ${courseName} de ${teacherOldDay} ${teacherOldTimeSlot} a ${teacherNewDay} ${teacherNewTimeSlot}`,
     link: `/teacher/schedule`,
-    metadata: { bookingId, oldDay, oldTimeSlot, newDay, newTimeSlot, studentId, studentName },
+    metadata: { bookingId, oldDay: teacherOldDay, oldTimeSlot: teacherOldTimeSlot, newDay: teacherNewDay, newTimeSlot: teacherNewTimeSlot, studentId, studentName },
   })
 
   // Notificar a los administradores

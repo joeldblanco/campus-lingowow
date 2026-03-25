@@ -643,6 +643,9 @@ export async function studentRescheduleClass(params: RescheduleClassParams): Pro
 
     // Guardar datos del horario anterior para la notificación
     const oldDayLocal = convertTimeSlotFromUTC(booking.day, booking.timeSlot, studentTimezone)
+    const teacherTimezone = booking.teacher.timezone || 'America/Lima'
+    const oldDayTeacher = convertTimeSlotFromUTC(booking.day, booking.timeSlot, teacherTimezone)
+    const newDayTeacher = convertTimeSlotFromUTC(newDayUTC, newTimeSlotUTC, teacherTimezone)
 
     // Ejecutar la actualización en una transacción
     await db.$transaction(async (tx) => {
@@ -675,6 +678,10 @@ export async function studentRescheduleClass(params: RescheduleClassParams): Pro
       oldTimeSlot: oldDayLocal.timeSlot,
       newDay,
       newTimeSlot,
+      teacherOldDay: oldDayTeacher.day,
+      teacherOldTimeSlot: oldDayTeacher.timeSlot,
+      teacherNewDay: newDayTeacher.day,
+      teacherNewTimeSlot: newDayTeacher.timeSlot,
       bookingId
     })
 

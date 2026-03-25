@@ -35,6 +35,7 @@ export async function GET(req: NextRequest) {
             id: true,
             name: true,
             lastName: true,
+            timezone: true,
           },
         },
         enrollment: {
@@ -64,7 +65,8 @@ export async function GET(req: NextRequest) {
 
         // Combine UTC Date and Time
         const utcDate = combineDateAndTimeUTC(classBooking.day, startTime)
-        const userTimeZone = classBooking.student.timezone || 'America/Lima'
+        const studentTimeZone = classBooking.student.timezone || 'America/Lima'
+        const teacherTimeZone = classBooking.teacher.timezone || 'America/Lima'
 
         await sendClassReminderEmail(classBooking.student.email, {
           studentName:
@@ -74,17 +76,19 @@ export async function GET(req: NextRequest) {
           teacherName:
             `${classBooking.teacher.name || ''} ${classBooking.teacher.lastName || ''}`.trim() ||
             'Profesor',
-          classDate: formatInTimeZone(utcDate, "EEEE d 'de' MMMM", userTimeZone),
-          classTime: formatInTimeZone(utcDate, 'HH:mm', userTimeZone),
+          classDate: formatInTimeZone(utcDate, "EEEE d 'de' MMMM", studentTimeZone),
+          classTime: formatInTimeZone(utcDate, 'HH:mm', studentTimeZone),
           classLink,
         })
 
         // Send platform notifications to both student and teacher
+        // Each receives the time in their own timezone
         await notifyClassReminder({
           studentId: classBooking.student.id,
           teacherId: classBooking.teacher.id,
           courseName: classBooking.enrollment.course.title,
-          classTime: formatInTimeZone(utcDate, 'HH:mm', userTimeZone),
+          studentClassTime: formatInTimeZone(utcDate, 'HH:mm', studentTimeZone),
+          teacherClassTime: formatInTimeZone(utcDate, 'HH:mm', teacherTimeZone),
           bookingId: classBooking.id,
         })
 
