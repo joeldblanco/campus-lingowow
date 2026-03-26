@@ -142,7 +142,7 @@ export async function exportAttemptToHTML(data: AttemptData): Promise<void> {
   let correctCount = 0
   data.answers.forEach((a) => {
     if (a.isInformativeBlock) return // Ignorar bloques informativos
-    
+
     if (a.questionType === 'MULTIPLE_CHOICE' && a.multipleChoiceDetails) {
       // Para multiple choice con crédito parcial, contar cada sub-respuesta correcta
       correctCount += a.multipleChoiceDetails.filter((detail) => detail.isCorrect).length
@@ -151,7 +151,7 @@ export async function exportAttemptToHTML(data: AttemptData): Promise<void> {
       correctCount += 1
     }
   })
-  
+
   const scorePercentage =
     data.maxScore > 0 ? Math.round((data.totalScore / data.maxScore) * 100) : 0
 
@@ -515,7 +515,11 @@ export async function exportAttemptToHTML(data: AttemptData): Promise<void> {
     const isCorrect = answer.isCorrect === true
     const statusColor = isEssay ? 'primary' : isCorrect ? 'success' : 'error'
     const statusIcon = isEssay ? 'edit_note' : isCorrect ? 'check' : 'close'
-    const statusText = isEssay ? `${answer.pointsEarned}/${answer.maxPoints} pts` : isCorrect ? 'Correcto' : 'Incorrecto'
+    const statusText = isEssay
+      ? `${answer.pointsEarned}/${answer.maxPoints} pts`
+      : isCorrect
+        ? 'Correcto'
+        : 'Incorrecto'
 
     return `
       <div class="flex flex-col gap-4">
@@ -526,9 +530,13 @@ export async function exportAttemptToHTML(data: AttemptData): Promise<void> {
           </div>
           <div class="flex gap-2">
             <span class="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium border border-slate-200">${answer.category || 'General'}</span>
-            ${isEssay ? `
+            ${
+              isEssay
+                ? `
             <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-700 text-xs font-medium border border-amber-200">Calificada Manualmente</span>
-            ` : ''}
+            `
+                : ''
+            }
             <span class="px-2.5 py-0.5 rounded-full bg-${statusColor}/10 text-${statusColor} text-xs font-medium border border-${statusColor}/20 flex items-center gap-1">
               <span class="material-symbols-outlined text-[14px]">${statusIcon}</span> ${statusText}
             </span>
