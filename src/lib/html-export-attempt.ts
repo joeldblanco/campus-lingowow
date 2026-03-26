@@ -475,13 +475,47 @@ export async function exportAttemptToHTML(data: AttemptData): Promise<void> {
           }
         </div>
       `
+    } else if (answer.questionType === 'ESSAY' || answer.questionType === 'essay') {
+      questionContent = `
+        <div class="flex flex-col gap-3">
+          <p class="text-slate-800 font-medium ml-1">${answer.questionText}</p>
+          ${
+            answer.userAnswer
+              ? `
+            <div class="p-4 bg-amber-50 rounded-lg border border-amber-200">
+              <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Respuesta del Estudiante</p>
+              <p class="text-sm text-slate-700 whitespace-pre-wrap">${answer.userAnswer}</p>
+            </div>
+          `
+              : `
+            <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+              <p class="text-sm text-slate-400 italic">Sin respuesta</p>
+            </div>
+          `
+          }
+          ${
+            answer.feedback
+              ? `
+            <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="material-symbols-outlined text-blue-600 text-[18px]">rate_review</span>
+                <p class="text-sm font-bold text-blue-800">Retroalimentación del Profesor</p>
+              </div>
+              <p class="text-sm text-blue-800 whitespace-pre-wrap">${answer.feedback}</p>
+            </div>
+          `
+              : ''
+          }
+        </div>
+      `
     }
 
     const questionNumber = index + 1
+    const isEssay = answer.questionType === 'ESSAY' || answer.questionType === 'essay'
     const isCorrect = answer.isCorrect === true
-    const statusColor = isCorrect ? 'success' : 'error'
-    const statusIcon = isCorrect ? 'check' : 'close'
-    const statusText = isCorrect ? 'Correcto' : 'Incorrecto'
+    const statusColor = isEssay ? 'primary' : isCorrect ? 'success' : 'error'
+    const statusIcon = isEssay ? 'edit_note' : isCorrect ? 'check' : 'close'
+    const statusText = isEssay ? `${answer.pointsEarned}/${answer.maxPoints} pts` : isCorrect ? 'Correcto' : 'Incorrecto'
 
     return `
       <div class="flex flex-col gap-4">
@@ -492,6 +526,9 @@ export async function exportAttemptToHTML(data: AttemptData): Promise<void> {
           </div>
           <div class="flex gap-2">
             <span class="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium border border-slate-200">${answer.category || 'General'}</span>
+            ${isEssay ? `
+            <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-700 text-xs font-medium border border-amber-200">Calificada Manualmente</span>
+            ` : ''}
             <span class="px-2.5 py-0.5 rounded-full bg-${statusColor}/10 text-${statusColor} text-xs font-medium border border-${statusColor}/20 flex items-center gap-1">
               <span class="material-symbols-outlined text-[14px]">${statusIcon}</span> ${statusText}
             </span>
