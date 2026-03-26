@@ -68,6 +68,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   const isScreenSharingRef = useRef(false)
   const wasScreenSharingBeforeReconnectRef = useRef(false)
   const joinAttemptRef = useRef(0)
+  const syncTimersRef = useRef<ReturnType<typeof setTimeout>[]>([])
 
   const MAX_JOIN_ATTEMPTS = 3
   const CONNECTION_TIMEOUT_MS = 15_000
@@ -96,61 +97,53 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   const [isLocalTeacher, setIsLocalTeacher] = useState(false)
 
   const updateRemoteParticipant = useCallback((participant: RemoteParticipant) => {
+    // Extract track info OUTSIDE the state updater to keep updater pure
+    let videoTrack: Track | undefined
+    let audioTrack: Track | undefined
+    let screenShareTrack: Track | undefined
+    let screenShareAudioTrack: Track | undefined
+    let isMuted = true
+    let isVideoMuted = true
+
+    // Leer metadata del participante para determinar si es profesor
+    let isTeacherRole = false
+    try {
+      if (participant.metadata) {
+        const meta = JSON.parse(participant.metadata)
+        isTeacherRole = meta.isModerator === true
+      }
+    } catch {
+      // Ignorar errores de parseo
+    }
+
+    participant.trackPublications.forEach((pub) => {
+      if (pub.track) {
+        if (pub.track.kind === Track.Kind.Video && pub.source === Track.Source.Camera) {
+          videoTrack = pub.track
+          isVideoMuted = pub.isMuted
+        } else if (pub.track.kind === Track.Kind.Audio && pub.source === Track.Source.Microphone) {
+          audioTrack = pub.track
+          isMuted = pub.isMuted
+        } else if (pub.track.kind === Track.Kind.Video && pub.source === Track.Source.ScreenShare) {
+          screenShareTrack = pub.track
+        } else if (pub.track.kind === Track.Kind.Audio && pub.source === Track.Source.ScreenShareAudio) {
+          screenShareAudioTrack = pub.track
+        }
+      }
+    })
+
+    // Update remote screen share tracks OUTSIDE updater (setState must not be called inside another setState updater)
+    if (screenShareTrack) {
+      setRemoteScreenShareTrack(screenShareTrack)
+    }
+
+    if (screenShareAudioTrack) {
+      setRemoteScreenShareAudioTrack(screenShareAudioTrack)
+    }
+
+    // Pure state updater — only computes the new Map
     setRemoteParticipants((prev) => {
       const newMap = new Map(prev)
-
-      let videoTrack: Track | undefined
-      let audioTrack: Track | undefined
-      let screenShareTrack: Track | undefined
-      let screenShareAudioTrack: Track | undefined
-      let isMuted = true
-      let isVideoMuted = true
-
-      // Leer metadata del participante para determinar si es profesor
-      let isTeacherRole = false
-      try {
-        if (participant.metadata) {
-          const meta = JSON.parse(participant.metadata)
-          isTeacherRole = meta.isModerator === true
-        }
-      } catch {
-        // Ignorar errores de parseo
-      }
-
-      participant.trackPublications.forEach((pub) => {
-        if (pub.track) {
-          if (pub.track.kind === Track.Kind.Video && pub.source === Track.Source.Camera) {
-            videoTrack = pub.track
-            isVideoMuted = pub.isMuted
-          } else if (pub.track.kind === Track.Kind.Audio && pub.source === Track.Source.Microphone) {
-            audioTrack = pub.track
-            isMuted = pub.isMuted
-          } else if (pub.track.kind === Track.Kind.Video && pub.source === Track.Source.ScreenShare) {
-            screenShareTrack = pub.track
-          } else if (pub.track.kind === Track.Kind.Audio && pub.source === Track.Source.ScreenShareAudio) {
-            screenShareAudioTrack = pub.track
-          }
-        }
-      })
-
-      // Update remote screen share tracks - only set if found, only clear if THIS participant was sharing
-      if (screenShareTrack) {
-        setRemoteScreenShareTrack(screenShareTrack)
-      } else {
-        // Only clear if the current screen share belongs to this participant
-        setRemoteScreenShareTrack((current) => {
-          // We need to check if current track belongs to this participant
-          // If no screen share from this participant, keep the existing one (from another participant)
-          return current
-        })
-      }
-
-      // Update remote screen share audio track
-      if (screenShareAudioTrack) {
-        setRemoteScreenShareAudioTrack(screenShareAudioTrack)
-      } else {
-        setRemoteScreenShareAudioTrack((current) => current)
-      }
 
       newMap.set(participant.identity, {
         participantId: participant.identity,
@@ -502,6 +495,12 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       // Sincronizar participantes remotos existentes al conectarse
       // (para el caso donde ya hay alguien en la sala)
       syncRemoteParticipants()
+      // Delayed re-syncs to catch tracks that take longer to subscribe
+      syncTimersRef.current.forEach(clearTimeout)
+      syncTimersRef.current = [
+        setTimeout(syncRemoteParticipants, 500),
+        setTimeout(syncRemoteParticipants, 1500),
+      ]
 
       const localParticipant = room.localParticipant
 
@@ -526,6 +525,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       })
 
       setConnectionStatus('connected')
+      isConnectingRef.current = false
     } catch (e) {
       console.error('[LiveKit] Connect Exception:', e)
       joinAttemptRef.current += 1
@@ -591,6 +591,8 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   }, [cameraUnavailable, microphoneUnavailable])
 
   const leaveRoom = useCallback(async () => {
+    syncTimersRef.current.forEach(clearTimeout)
+    syncTimersRef.current = []
     if (roomRef.current) {
       await roomRef.current.disconnect()
       roomRef.current = null
@@ -760,6 +762,8 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   // Cleanup on unmount - disconnect from room when navigating away
   useEffect(() => {
     return () => {
+      syncTimersRef.current.forEach(clearTimeout)
+      syncTimersRef.current = []
       if (roomRef.current) {
         console.log('[LiveKit] Cleaning up - disconnecting from room')
         roomRef.current.disconnect()
