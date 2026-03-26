@@ -26,11 +26,29 @@ import type { StudentDashboardData } from '@/types/dashboard'
 import { PendingScheduleBanner } from '@/components/enrollments/pending-schedule-banner'
 import { CourseCard } from '@/components/dashboard/course-card'
 
+// Helper: students can enter only at or after class start time (up to 60 min after)
+function isClassTimeReached(classDate: string, classTime: string, now: Date): boolean {
+  const start = classTime.includes('-') ? classTime.split('-')[0] : classTime
+  const [hours, minutes] = start.split(':').map(Number)
+  const [year, month, day] = classDate.split('-').map(Number)
+  const classDateTime = new Date(year, month - 1, day, hours, minutes, 0, 0)
+
+  const diffMinutes = (now.getTime() - classDateTime.getTime()) / 60000
+  return diffMinutes >= 0 && diffMinutes <= 60
+}
+
 export default function Dashboard() {
   const { data: session } = useSession()
   const user = session?.user
   const [dashboardData, setDashboardData] = useState<StudentDashboardData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [now, setNow] = useState(new Date())
+
+  // Update current time every 30 seconds so the button appears automatically
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 30000)
+    return () => clearInterval(interval)
+  }, [])
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -52,6 +70,7 @@ export default function Dashboard() {
   // Get the first enrollment for "Resume Learning" section
   const currentEnrollment = dashboardData?.enrollments?.[0]
   const nextClass = dashboardData?.upcomingClasses?.[0]
+  const canJoinClass = nextClass ? isClassTimeReached(nextClass.date, nextClass.time, now) : false
 
   if (loading) {
     return (
@@ -80,16 +99,32 @@ export default function Dashboard() {
         <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-4">
           <div className="flex items-center gap-3">
             <div className="text-yellow-600 dark:text-yellow-400">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <circle cx="12" cy="12" r="10"></circle>
                 <line x1="12" y1="8" x2="12" y2="12"></line>
                 <line x1="12" y1="16" x2="12.01" y2="16"></line>
               </svg>
             </div>
             <div>
-              <p className="font-medium text-yellow-800 dark:text-yellow-200">No tienes cursos activos</p>
+              <p className="font-medium text-yellow-800 dark:text-yellow-200">
+                No tienes cursos activos
+              </p>
               <p className="text-sm text-yellow-700 dark:text-yellow-300">
-                Para empezar a aprender, <Link href="/shop" className="underline font-medium">inscríbete en un curso</Link>.
+                Para empezar a aprender,{' '}
+                <Link href="/shop" className="underline font-medium">
+                  inscríbete en un curso
+                </Link>
+                .
               </p>
             </div>
           </div>
@@ -109,7 +144,9 @@ export default function Dashboard() {
                 <Video className="w-8 h-8 md:w-10 md:h-10 text-white" />
               </div>
               <div className="text-white">
-                <p className="text-sm md:text-base font-medium text-white/80 mb-1">Tu próxima clase</p>
+                <p className="text-sm md:text-base font-medium text-white/80 mb-1">
+                  Tu próxima clase
+                </p>
                 <h2 className="text-xl md:text-2xl font-bold mb-2">{nextClass.course}</h2>
                 <div className="flex flex-wrap items-center gap-3 text-sm text-white/90">
                   <span className="flex items-center gap-1.5">
@@ -124,14 +161,24 @@ export default function Dashboard() {
                 <p className="text-sm text-white/70 mt-1">con {nextClass.teacher}</p>
               </div>
             </div>
-            <Button
-              size="lg"
-              className="relative w-full md:w-auto bg-white text-emerald-700 hover:bg-white/90 hover:text-emerald-800 font-bold text-base md:text-lg px-8 py-6 shadow-xl hover:shadow-2xl transition-all hover:scale-105"
-              onClick={() => openClassroomWindow(nextClass.link)}
-            >
-              <Play className="w-5 h-5 mr-2 fill-current" />
-              Entrar al Aula
-            </Button>
+            {canJoinClass ? (
+              <Button
+                size="lg"
+                className="relative w-full md:w-auto bg-white text-emerald-700 hover:bg-white/90 hover:text-emerald-800 font-bold text-base md:text-lg px-8 py-6 shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+                onClick={() => openClassroomWindow(nextClass.link)}
+              >
+                <Play className="w-5 h-5 mr-2 fill-current" />
+                Entrar al Aula
+              </Button>
+            ) : (
+              <div className="relative w-full md:w-auto flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white font-semibold text-sm md:text-base px-6 py-4 rounded-lg">
+                <Clock className="w-5 h-5" />
+                <span>
+                  Disponible a las{' '}
+                  {nextClass.time.includes('-') ? nextClass.time.split('-')[0] : nextClass.time}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -142,7 +189,11 @@ export default function Dashboard() {
           <div className="flex flex-col items-stretch justify-start rounded-xl overflow-hidden md:flex-row md:items-center shadow-md bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-700 group transition-all hover:shadow-lg">
             <div
               className="w-full md:w-1/3 h-48 md:h-auto md:aspect-[4/3] bg-cover bg-center relative"
-              style={{ backgroundImage: currentEnrollment.image ? `url("${currentEnrollment.image}")` : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
+              style={{
+                backgroundImage: currentEnrollment.image
+                  ? `url("${currentEnrollment.image}")`
+                  : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              }}
             >
               <div className="absolute inset-0 bg-black/10"></div>
               <div className="absolute top-3 left-3 bg-white/90 dark:bg-black/50 backdrop-blur-sm px-2 py-1 rounded text-xs font-bold text-slate-900 dark:text-white shadow-sm">
@@ -152,7 +203,9 @@ export default function Dashboard() {
             <div className="flex w-full md:w-2/3 flex-col justify-center gap-3 p-6">
               <div className="flex justify-between items-start">
                 <div>
-                  <p className="text-primary text-sm font-bold uppercase tracking-wider mb-1">Continuar Aprendiendo</p>
+                  <p className="text-primary text-sm font-bold uppercase tracking-wider mb-1">
+                    Continuar Aprendiendo
+                  </p>
                   <h2 className="text-slate-900 dark:text-white text-xl md:text-2xl font-bold leading-tight">
                     {currentEnrollment.title}
                   </h2>
@@ -184,25 +237,37 @@ export default function Dashboard() {
       <div>
         <h3 className="text-slate-900 dark:text-white text-lg font-bold mb-4">Acciones Rápidas</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4" data-tour="quick-actions">
-          <Link href="/my-courses" className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer">
+          <Link
+            href="/my-courses"
+            className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer"
+          >
             <div className="rounded-full bg-blue-50 dark:bg-blue-900/30 p-3 text-primary">
               <BookOpen className="w-5 h-5" />
             </div>
             <span className="text-slate-900 dark:text-white text-sm font-medium">Mis Cursos</span>
           </Link>
-          <Link href="/activities" className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer">
+          <Link
+            href="/activities"
+            className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer"
+          >
             <div className="rounded-full bg-orange-50 dark:bg-orange-900/30 p-3 text-orange-600 dark:text-orange-400">
               <Puzzle className="w-5 h-5" />
             </div>
             <span className="text-slate-900 dark:text-white text-sm font-medium">Actividades</span>
           </Link>
-          <Link href="/schedule" className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer">
+          <Link
+            href="/schedule"
+            className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer"
+          >
             <div className="rounded-full bg-green-50 dark:bg-green-900/30 p-3 text-green-600 dark:text-green-400">
               <Calendar className="w-5 h-5" />
             </div>
             <span className="text-slate-900 dark:text-white text-sm font-medium">Mi Horario</span>
           </Link>
-          <Link href="/my-courses" className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer">
+          <Link
+            href="/my-courses"
+            className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer"
+          >
             <div className="rounded-full bg-purple-50 dark:bg-purple-900/30 p-3 text-purple-600 dark:text-purple-400">
               <Trophy className="w-5 h-5" />
             </div>
@@ -217,7 +282,10 @@ export default function Dashboard() {
         <div className="lg:col-span-2 flex flex-col gap-6">
           <div className="flex items-center justify-between" data-tour="my-courses">
             <h3 className="text-slate-900 dark:text-white text-xl font-bold">Mis Cursos</h3>
-            <Link href="/my-courses" className="text-primary text-sm font-medium hover:underline flex items-center gap-1">
+            <Link
+              href="/my-courses"
+              className="text-primary text-sm font-medium hover:underline flex items-center gap-1"
+            >
               Ver Todos <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -238,7 +306,9 @@ export default function Dashboard() {
           ) : (
             <div className="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-700 p-8 text-center">
               <GraduationCap className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
-              <p className="text-slate-500 dark:text-slate-400 mb-4">No estás inscrito en ningún curso.</p>
+              <p className="text-slate-500 dark:text-slate-400 mb-4">
+                No estás inscrito en ningún curso.
+              </p>
               <Button asChild>
                 <Link href="/shop">Explorar Cursos</Link>
               </Button>
@@ -249,7 +319,10 @@ export default function Dashboard() {
         {/* Right Column: Goals & Schedule (1/3 width) */}
         <div className="flex flex-col gap-6">
           {/* Daily Goals Widget */}
-          <div className="bg-white dark:bg-card-dark p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700" data-tour="daily-goal">
+          <div
+            className="bg-white dark:bg-card-dark p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700"
+            data-tour="daily-goal"
+          >
             <h3 className="text-slate-900 dark:text-white text-lg font-bold mb-4">Meta Diaria</h3>
             <div className="flex items-center gap-4 mb-4">
               <div className="relative size-16 flex-shrink-0">
@@ -271,7 +344,9 @@ export default function Dashboard() {
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center flex-col">
-                  <span className="text-xs font-bold text-primary">{(dashboardData?.totalPoints || 0) % 100}%</span>
+                  <span className="text-xs font-bold text-primary">
+                    {(dashboardData?.totalPoints || 0) % 100}%
+                  </span>
                 </div>
               </div>
               <div>
@@ -279,7 +354,8 @@ export default function Dashboard() {
                   Nivel {dashboardData?.currentLevel || 1}
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
-                  {dashboardData?.currentStreak || 0} días de racha <Flame className="w-3 h-3 text-orange-500" />
+                  {dashboardData?.currentStreak || 0} días de racha{' '}
+                  <Flame className="w-3 h-3 text-orange-500" />
                 </p>
               </div>
             </div>
@@ -292,10 +368,16 @@ export default function Dashboard() {
           </div>
 
           {/* Upcoming Schedule Widget */}
-          <div className="bg-white dark:bg-card-dark p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700" data-tour="upcoming-classes">
+          <div
+            className="bg-white dark:bg-card-dark p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700"
+            data-tour="upcoming-classes"
+          >
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-slate-900 dark:text-white text-lg font-bold">Próximas Clases</h3>
-              <Link href="/schedule" className="text-slate-500 dark:text-slate-400 hover:text-primary">
+              <Link
+                href="/schedule"
+                className="text-slate-500 dark:text-slate-400 hover:text-primary"
+              >
                 <Calendar className="w-5 h-5" />
               </Link>
             </div>
@@ -303,7 +385,10 @@ export default function Dashboard() {
             {dashboardData?.upcomingClasses && dashboardData.upcomingClasses.length > 0 ? (
               <div className="flex flex-col gap-4">
                 {dashboardData.upcomingClasses.slice(0, 2).map((classItem, index) => (
-                  <div key={index} className="flex gap-3 items-start p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                  <div
+                    key={index}
+                    className="flex gap-3 items-start p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg"
+                  >
                     <div className="flex flex-col items-center bg-white dark:bg-slate-700 rounded p-1.5 min-w-[50px] shadow-sm">
                       <span className="text-xs font-bold text-red-500 uppercase">
                         {format(parseISO(classItem.date), 'EEE', { locale: es })}
