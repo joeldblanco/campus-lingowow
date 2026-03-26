@@ -34,7 +34,10 @@ interface LiveKitContextType {
   isScreenSharing: boolean
   isHandRaised: boolean
   addCommandListener: (command: string, handler: (values: Record<string, unknown>) => void) => void
-  removeCommandListener: (command: string, handler: (values: Record<string, unknown>) => void) => void
+  removeCommandListener: (
+    command: string,
+    handler: (values: Record<string, unknown>) => void
+  ) => void
   localScreenShareTrack: Track | undefined
   remoteScreenShareTrack: Track | undefined
   localScreenShareAudioTrack: Track | undefined
@@ -63,22 +66,27 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   connectionStatusRef.current = connectionStatus
 
   const roomRef = useRef<Room | null>(null)
-  const commandListenersRef = useRef<Map<string, Set<(values: Record<string, unknown>) => void>>>(new Map())
+  const commandListenersRef = useRef<Map<string, Set<(values: Record<string, unknown>) => void>>>(
+    new Map()
+  )
   const isConnectingRef = useRef(false)
   const isScreenSharingRef = useRef(false)
   const wasScreenSharingBeforeReconnectRef = useRef(false)
   const joinAttemptRef = useRef(0)
   const syncTimersRef = useRef<ReturnType<typeof setTimeout>[]>([])
 
-  const MAX_JOIN_ATTEMPTS = 3
   const CONNECTION_TIMEOUT_MS = 15_000
 
   const [localVideoTrack, setLocalVideoTrack] = useState<Track | undefined>(undefined)
   const [localAudioTrack, setLocalAudioTrack] = useState<Track | undefined>(undefined)
   const [localScreenShareTrack, setLocalScreenShareTrack] = useState<Track | undefined>(undefined)
   const [remoteScreenShareTrack, setRemoteScreenShareTrack] = useState<Track | undefined>(undefined)
-  const [localScreenShareAudioTrack, setLocalScreenShareAudioTrack] = useState<Track | undefined>(undefined)
-  const [remoteScreenShareAudioTrack, setRemoteScreenShareAudioTrack] = useState<Track | undefined>(undefined)
+  const [localScreenShareAudioTrack, setLocalScreenShareAudioTrack] = useState<Track | undefined>(
+    undefined
+  )
+  const [remoteScreenShareAudioTrack, setRemoteScreenShareAudioTrack] = useState<Track | undefined>(
+    undefined
+  )
   const [remoteParticipants, setRemoteParticipants] = useState<Map<string, VideoTrack>>(new Map())
 
   const [isAudioMuted, setIsAudioMuted] = useState(false)
@@ -126,7 +134,10 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
           isMuted = pub.isMuted
         } else if (pub.track.kind === Track.Kind.Video && pub.source === Track.Source.ScreenShare) {
           screenShareTrack = pub.track
-        } else if (pub.track.kind === Track.Kind.Audio && pub.source === Track.Source.ScreenShareAudio) {
+        } else if (
+          pub.track.kind === Track.Kind.Audio &&
+          pub.source === Track.Source.ScreenShareAudio
+        ) {
           screenShareAudioTrack = pub.track
         }
       }
@@ -213,331 +224,382 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
     return `Error al acceder a ${deviceName}. Intenta de nuevo.`
   }
 
-  const joinRoom = useCallback(async (roomName: string, token: string | null) => {
-    if (!token) {
-      console.error('[LiveKit] No token provided')
-      setConnectionStatus('failed')
-      return
-    }
-
-    // Prevent multiple simultaneous connection attempts
-    if (isConnectingRef.current || roomRef.current) {
-      console.log('[LiveKit] Already connecting or connected, skipping')
-      return
-    }
-
-    try {
-      isConnectingRef.current = true
-      setConnectionStatus('connecting')
-
-      const serverUrl = process.env.NEXT_PUBLIC_LIVEKIT_URL
-      if (!serverUrl) {
-        throw new Error('NEXT_PUBLIC_LIVEKIT_URL not configured')
+  const joinRoom = useCallback(
+    async (roomName: string, token: string | null) => {
+      if (!token) {
+        console.error('[LiveKit] No token provided')
+        setConnectionStatus('failed')
+        return
       }
 
-      const room = new Room({
-        adaptiveStream: true,
-        dynacast: true,
-        // Increase connection timeout for slower networks
-        disconnectOnPageLeave: true,
-      })
+      // Prevent multiple simultaneous connection attempts
+      if (isConnectingRef.current || roomRef.current) {
+        console.log('[LiveKit] Already connecting or connected, skipping')
+        return
+      }
 
-      roomRef.current = room
+      try {
+        isConnectingRef.current = true
+        setConnectionStatus('connecting')
 
-      room.on(RoomEvent.ConnectionStateChanged, (state: ConnectionState) => {
-        console.log('[LiveKit] Connection state:', state)
-        if (state === ConnectionState.Connected) {
-          setConnectionStatus('connected')
-        } else if (state === ConnectionState.Disconnected) {
-          if (connectionStatusRef.current !== 'failed') {
-            setConnectionStatus('disconnected')
+        const serverUrl = process.env.NEXT_PUBLIC_LIVEKIT_URL
+        if (!serverUrl) {
+          throw new Error('NEXT_PUBLIC_LIVEKIT_URL not configured')
+        }
+
+        const room = new Room({
+          adaptiveStream: true,
+          dynacast: true,
+          // Increase connection timeout for slower networks
+          disconnectOnPageLeave: true,
+        })
+
+        roomRef.current = room
+
+        room.on(RoomEvent.ConnectionStateChanged, (state: ConnectionState) => {
+          console.log('[LiveKit] Connection state:', state)
+          if (state === ConnectionState.Connected) {
+            setConnectionStatus('connected')
+          } else if (state === ConnectionState.Disconnected) {
+            if (connectionStatusRef.current !== 'failed') {
+              setConnectionStatus('disconnected')
+            }
           }
-        }
-      })
+        })
 
-      // Handle reconnection events to prevent InvalidAccessError from stale RTCRtpSender references
-      room.on(RoomEvent.Reconnecting, () => {
-        console.log('[LiveKit] Reconnecting - clearing screen share state to prevent stale sender errors')
-        // Save user's screen sharing intent before clearing state
-        wasScreenSharingBeforeReconnectRef.current = isScreenSharingRef.current
-        // Clear screen share state immediately when reconnection starts
-        // This prevents LiveKit from trying to remove tracks with stale RTCRtpSender references
-        if (isScreenSharingRef.current) {
-          setIsScreenSharing(false)
-        }
-        setLocalScreenShareTrack(undefined)
-        setLocalScreenShareAudioTrack(undefined)
-      })
+        // Handle reconnection events to prevent InvalidAccessError from stale RTCRtpSender references
+        room.on(RoomEvent.Reconnecting, () => {
+          console.log(
+            '[LiveKit] Reconnecting - clearing screen share state to prevent stale sender errors'
+          )
+          // Save user's screen sharing intent before clearing state
+          wasScreenSharingBeforeReconnectRef.current = isScreenSharingRef.current
+          // Clear screen share state immediately when reconnection starts
+          // This prevents LiveKit from trying to remove tracks with stale RTCRtpSender references
+          if (isScreenSharingRef.current) {
+            setIsScreenSharing(false)
+          }
+          setLocalScreenShareTrack(undefined)
+          setLocalScreenShareAudioTrack(undefined)
+        })
 
-      room.on(RoomEvent.Reconnected, () => {
-        console.log('[LiveKit] Reconnected - re-syncing participant state')
-        // Re-sync all remote participants after reconnection
-        room.remoteParticipants.forEach((participant) => {
+        room.on(RoomEvent.Reconnected, () => {
+          console.log('[LiveKit] Reconnected - re-syncing participant state')
+          // Re-sync all remote participants after reconnection
+          room.remoteParticipants.forEach((participant) => {
+            updateRemoteParticipant(participant)
+          })
+          // Re-sync local tracks
+          const localParticipant = room.localParticipant
+          localParticipant.trackPublications.forEach((pub) => {
+            if (pub.track) {
+              if (pub.track.kind === Track.Kind.Video && pub.source === Track.Source.Camera) {
+                setLocalVideoTrack(pub.track)
+              } else if (
+                pub.track.kind === Track.Kind.Audio &&
+                pub.source === Track.Source.Microphone
+              ) {
+                setLocalAudioTrack(pub.track)
+              } else if (
+                pub.track.kind === Track.Kind.Video &&
+                pub.source === Track.Source.ScreenShare
+              ) {
+                // Only restore screen share state if user was actually sharing before reconnection
+                if (wasScreenSharingBeforeReconnectRef.current) {
+                  setLocalScreenShareTrack(pub.track)
+                  setIsScreenSharing(true)
+                }
+              } else if (
+                pub.track.kind === Track.Kind.Audio &&
+                pub.source === Track.Source.ScreenShareAudio
+              ) {
+                if (wasScreenSharingBeforeReconnectRef.current) {
+                  setLocalScreenShareAudioTrack(pub.track)
+                }
+              }
+            }
+          })
+          // Reset the flag after reconnection is complete
+          wasScreenSharingBeforeReconnectRef.current = false
+        })
+
+        room.on(RoomEvent.ParticipantConnected, (participant: RemoteParticipant) => {
+          console.log('[LiveKit] Participant connected:', participant.identity)
+          updateRemoteParticipant(participant)
+
+          // Sincronizar TODOS los participantes remotos cuando alguien se conecta
+          // Esto asegura que los tracks existentes se sincronicen correctamente
+          // con delays escalonados para capturar suscripciones tardías
+          setTimeout(() => {
+            room.remoteParticipants.forEach((p) => {
+              console.log('[LiveKit] Re-syncing participant after new connection:', p.identity)
+              updateRemoteParticipant(p)
+            })
+          }, 500)
+          setTimeout(() => {
+            room.remoteParticipants.forEach((p) => updateRemoteParticipant(p))
+          }, 1500)
+        })
+
+        room.on(RoomEvent.ParticipantDisconnected, (participant: RemoteParticipant) => {
+          console.log('[LiveKit] Participant disconnected:', participant.identity)
+          removeRemoteParticipant(participant)
+        })
+
+        room.on(RoomEvent.TrackSubscribed, (track, publication, participant) => {
+          console.log(
+            '[LiveKit] Track subscribed:',
+            track.kind,
+            'source:',
+            publication.source,
+            'from:',
+            participant.identity
+          )
           updateRemoteParticipant(participant)
         })
-        // Re-sync local tracks
+
+        // Manejar cuando un participante remoto publica un nuevo track
+        room.on(RoomEvent.TrackPublished, (publication, participant) => {
+          console.log(
+            '[LiveKit] Track published:',
+            publication.kind,
+            'source:',
+            publication.source,
+            'from:',
+            participant.identity
+          )
+          // Forzar actualización del participante cuando publica un track
+          if (participant instanceof RemoteParticipant) {
+            updateRemoteParticipant(participant)
+          }
+        })
+
+        // Manejar cambios en el estado de suscripción (importante para reconexiones)
+        room.on(RoomEvent.TrackSubscriptionStatusChanged, (publication, status, participant) => {
+          console.log(
+            '[LiveKit] Track subscription status changed:',
+            publication.kind,
+            'status:',
+            status,
+            'from:',
+            participant?.identity
+          )
+          if (participant instanceof RemoteParticipant) {
+            updateRemoteParticipant(participant)
+          }
+        })
+
+        room.on(RoomEvent.TrackUnsubscribed, (track, publication, participant) => {
+          console.log('[LiveKit] Track unsubscribed:', track.kind, participant.identity)
+          // Clear remote screen share if this was the screen share track being unsubscribed
+          if (publication.source === Track.Source.ScreenShare) {
+            setRemoteScreenShareTrack((current) => (current === track ? undefined : current))
+          }
+          // Clear remote screen share audio if this was the audio track being unsubscribed
+          if (publication.source === Track.Source.ScreenShareAudio) {
+            setRemoteScreenShareAudioTrack((current) => (current === track ? undefined : current))
+          }
+          updateRemoteParticipant(participant)
+        })
+
+        room.on(RoomEvent.TrackMuted, (publication, participant) => {
+          if (participant instanceof RemoteParticipant) {
+            updateRemoteParticipant(participant)
+          }
+        })
+
+        room.on(RoomEvent.TrackUnmuted, (publication, participant) => {
+          if (participant instanceof RemoteParticipant) {
+            updateRemoteParticipant(participant)
+          }
+        })
+
+        // Speaking detection
+        room.on(RoomEvent.ActiveSpeakersChanged, (speakers) => {
+          const speakingIds = new Set(speakers.map((s) => s.identity))
+          setSpeakingParticipants(speakingIds)
+          setIsSpeaking(speakingIds.has(room.localParticipant.identity))
+
+          // Update remote participants with speaking status
+          room.remoteParticipants.forEach((participant) => {
+            updateRemoteParticipant(participant)
+          })
+        })
+
+        room.on(RoomEvent.DataReceived, (payload) => {
+          try {
+            const decoder = new TextDecoder()
+            const data = JSON.parse(decoder.decode(payload))
+            const command = data.command
+            const values = data.values
+
+            if (command && commandListenersRef.current.has(command)) {
+              commandListenersRef.current.get(command)?.forEach((handler) => {
+                handler(values)
+              })
+            }
+          } catch (e) {
+            console.error('[LiveKit] Error parsing data message', e)
+          }
+        })
+
+        room.on(RoomEvent.LocalTrackPublished, (publication: LocalTrackPublication) => {
+          const track = publication.track
+          if (track) {
+            if (track.kind === Track.Kind.Video && publication.source === Track.Source.Camera) {
+              setLocalVideoTrack(track)
+            } else if (
+              track.kind === Track.Kind.Video &&
+              publication.source === Track.Source.ScreenShare
+            ) {
+              setLocalScreenShareTrack(track)
+            } else if (
+              track.kind === Track.Kind.Audio &&
+              publication.source === Track.Source.ScreenShareAudio
+            ) {
+              setLocalScreenShareAudioTrack(track)
+            } else if (
+              track.kind === Track.Kind.Audio &&
+              publication.source === Track.Source.Microphone
+            ) {
+              setLocalAudioTrack(track)
+            }
+          }
+        })
+
+        room.on(RoomEvent.LocalTrackUnpublished, (publication: LocalTrackPublication) => {
+          console.log('[LiveKit] Local track unpublished:', publication.source)
+          if (publication.source === Track.Source.Camera) {
+            setLocalVideoTrack(undefined)
+          } else if (publication.source === Track.Source.Microphone) {
+            setLocalAudioTrack(undefined)
+          } else if (publication.source === Track.Source.ScreenShare) {
+            setLocalScreenShareTrack(undefined)
+            setIsScreenSharing(false)
+          } else if (publication.source === Track.Source.ScreenShareAudio) {
+            setLocalScreenShareAudioTrack(undefined)
+          }
+        })
+
+        // Connect with timeout to prevent indefinite hang
+        await Promise.race([
+          room.connect(serverUrl, token),
+          new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error('LiveKit connection timeout')), CONNECTION_TIMEOUT_MS)
+          ),
+        ])
+
+        joinAttemptRef.current = 0 // Reset on successful connect
+
+        // Habilitar cámara y micrófono por separado con fallback graceful (estilo Google Meet)
+        let cameraError: string | null = null
+        let micError: string | null = null
+
+        // Intentar habilitar micrófono primero (más importante para comunicación)
+        try {
+          await room.localParticipant.setMicrophoneEnabled(true)
+          setIsAudioMuted(false)
+          setMicrophoneUnavailable(false)
+        } catch (micException) {
+          console.warn('[LiveKit] No se pudo habilitar el micrófono:', micException)
+          micError = getDeviceErrorMessage(micException, 'microphone')
+          setIsAudioMuted(true)
+          setMicrophoneUnavailable(true)
+        }
+
+        // Intentar habilitar cámara
+        try {
+          await room.localParticipant.setCameraEnabled(true)
+          setIsVideoMuted(false)
+          setCameraUnavailable(false)
+        } catch (camException) {
+          console.warn('[LiveKit] No se pudo habilitar la cámara:', camException)
+          cameraError = getDeviceErrorMessage(camException, 'camera')
+          setIsVideoMuted(true)
+          setCameraUnavailable(true)
+        }
+
+        // Notificar al usuario sobre problemas de dispositivos (pero permitir continuar)
+        if (cameraError || micError) {
+          const errorType: DeviceError['type'] =
+            cameraError && micError ? 'both' : cameraError ? 'camera' : 'microphone'
+
+          const messages: string[] = []
+          if (micError) messages.push(micError)
+          if (cameraError) messages.push(cameraError)
+
+          setDeviceError({
+            type: errorType,
+            message: messages.join(' '),
+            canRetry: true,
+          })
+        }
+
+        // Forzar actualización de participantes remotos existentes con delay para asegurar tracks
+        const syncRemoteParticipants = () => {
+          room.remoteParticipants.forEach((participant) => {
+            console.log(
+              '[LiveKit] Sincronizando participante remoto:',
+              participant.identity,
+              'tracks:',
+              participant.trackPublications.size
+            )
+            updateRemoteParticipant(participant)
+          })
+        }
+
+        // Sincronizar participantes remotos existentes al conectarse
+        // (para el caso donde ya hay alguien en la sala)
+        syncRemoteParticipants()
+        // Delayed re-syncs to catch tracks that take longer to subscribe
+        syncTimersRef.current.forEach(clearTimeout)
+        syncTimersRef.current = [
+          setTimeout(syncRemoteParticipants, 500),
+          setTimeout(syncRemoteParticipants, 1500),
+        ]
+
         const localParticipant = room.localParticipant
+
+        // Leer metadata del participante local para determinar si es profesor
+        try {
+          if (localParticipant.metadata) {
+            const meta = JSON.parse(localParticipant.metadata)
+            setIsLocalTeacher(meta.isModerator === true)
+          }
+        } catch {
+          // Ignorar errores de parseo
+        }
+
         localParticipant.trackPublications.forEach((pub) => {
           if (pub.track) {
             if (pub.track.kind === Track.Kind.Video && pub.source === Track.Source.Camera) {
               setLocalVideoTrack(pub.track)
-            } else if (pub.track.kind === Track.Kind.Audio && pub.source === Track.Source.Microphone) {
+            } else if (pub.track.kind === Track.Kind.Audio) {
               setLocalAudioTrack(pub.track)
-            } else if (pub.track.kind === Track.Kind.Video && pub.source === Track.Source.ScreenShare) {
-              // Only restore screen share state if user was actually sharing before reconnection
-              if (wasScreenSharingBeforeReconnectRef.current) {
-                setLocalScreenShareTrack(pub.track)
-                setIsScreenSharing(true)
-              }
-            } else if (pub.track.kind === Track.Kind.Audio && pub.source === Track.Source.ScreenShareAudio) {
-              if (wasScreenSharingBeforeReconnectRef.current) {
-                setLocalScreenShareAudioTrack(pub.track)
-              }
             }
           }
         })
-        // Reset the flag after reconnection is complete
-        wasScreenSharingBeforeReconnectRef.current = false
-      })
 
-      room.on(RoomEvent.ParticipantConnected, (participant: RemoteParticipant) => {
-        console.log('[LiveKit] Participant connected:', participant.identity)
-        updateRemoteParticipant(participant)
-        
-        // Sincronizar TODOS los participantes remotos cuando alguien se conecta
-        // Esto asegura que los tracks existentes se sincronicen correctamente
-        // con delays escalonados para capturar suscripciones tardías
-        setTimeout(() => {
-          room.remoteParticipants.forEach((p) => {
-            console.log('[LiveKit] Re-syncing participant after new connection:', p.identity)
-            updateRemoteParticipant(p)
-          })
-        }, 500)
-        setTimeout(() => {
-          room.remoteParticipants.forEach((p) => updateRemoteParticipant(p))
-        }, 1500)
-      })
-
-      room.on(RoomEvent.ParticipantDisconnected, (participant: RemoteParticipant) => {
-        console.log('[LiveKit] Participant disconnected:', participant.identity)
-        removeRemoteParticipant(participant)
-      })
-
-      room.on(RoomEvent.TrackSubscribed, (track, publication, participant) => {
-        console.log('[LiveKit] Track subscribed:', track.kind, 'source:', publication.source, 'from:', participant.identity)
-        updateRemoteParticipant(participant)
-      })
-
-      // Manejar cuando un participante remoto publica un nuevo track
-      room.on(RoomEvent.TrackPublished, (publication, participant) => {
-        console.log('[LiveKit] Track published:', publication.kind, 'source:', publication.source, 'from:', participant.identity)
-        // Forzar actualización del participante cuando publica un track
-        if (participant instanceof RemoteParticipant) {
-          updateRemoteParticipant(participant)
-        }
-      })
-
-      // Manejar cambios en el estado de suscripción (importante para reconexiones)
-      room.on(RoomEvent.TrackSubscriptionStatusChanged, (publication, status, participant) => {
-        console.log('[LiveKit] Track subscription status changed:', publication.kind, 'status:', status, 'from:', participant?.identity)
-        if (participant instanceof RemoteParticipant) {
-          updateRemoteParticipant(participant)
-        }
-      })
-
-      room.on(RoomEvent.TrackUnsubscribed, (track, publication, participant) => {
-        console.log('[LiveKit] Track unsubscribed:', track.kind, participant.identity)
-        // Clear remote screen share if this was the screen share track being unsubscribed
-        if (publication.source === Track.Source.ScreenShare) {
-          setRemoteScreenShareTrack((current) => current === track ? undefined : current)
-        }
-        // Clear remote screen share audio if this was the audio track being unsubscribed
-        if (publication.source === Track.Source.ScreenShareAudio) {
-          setRemoteScreenShareAudioTrack((current) => current === track ? undefined : current)
-        }
-        updateRemoteParticipant(participant)
-      })
-
-      room.on(RoomEvent.TrackMuted, (publication, participant) => {
-        if (participant instanceof RemoteParticipant) {
-          updateRemoteParticipant(participant)
-        }
-      })
-
-      room.on(RoomEvent.TrackUnmuted, (publication, participant) => {
-        if (participant instanceof RemoteParticipant) {
-          updateRemoteParticipant(participant)
-        }
-      })
-
-      // Speaking detection
-      room.on(RoomEvent.ActiveSpeakersChanged, (speakers) => {
-        const speakingIds = new Set(speakers.map(s => s.identity))
-        setSpeakingParticipants(speakingIds)
-        setIsSpeaking(speakingIds.has(room.localParticipant.identity))
-
-        // Update remote participants with speaking status
-        room.remoteParticipants.forEach((participant) => {
-          updateRemoteParticipant(participant)
-        })
-      })
-
-      room.on(RoomEvent.DataReceived, (payload) => {
-        try {
-          const decoder = new TextDecoder()
-          const data = JSON.parse(decoder.decode(payload))
-          const command = data.command
-          const values = data.values
-
-          if (command && commandListenersRef.current.has(command)) {
-            commandListenersRef.current.get(command)?.forEach((handler) => {
-              handler(values)
-            })
+        setConnectionStatus('connected')
+        isConnectingRef.current = false
+      } catch (e) {
+        console.error('[LiveKit] Connect Exception:', e)
+        joinAttemptRef.current += 1
+        // Clean up the failed room to allow fresh retry
+        if (roomRef.current) {
+          try {
+            roomRef.current.disconnect()
+          } catch {
+            /* ignore */
           }
-        } catch (e) {
-          console.error('[LiveKit] Error parsing data message', e)
+          roomRef.current = null
         }
-      })
-
-      room.on(RoomEvent.LocalTrackPublished, (publication: LocalTrackPublication) => {
-        const track = publication.track
-        if (track) {
-          if (track.kind === Track.Kind.Video && publication.source === Track.Source.Camera) {
-            setLocalVideoTrack(track)
-          } else if (track.kind === Track.Kind.Video && publication.source === Track.Source.ScreenShare) {
-            setLocalScreenShareTrack(track)
-          } else if (track.kind === Track.Kind.Audio && publication.source === Track.Source.ScreenShareAudio) {
-            setLocalScreenShareAudioTrack(track)
-          } else if (track.kind === Track.Kind.Audio && publication.source === Track.Source.Microphone) {
-            setLocalAudioTrack(track)
-          }
-        }
-      })
-
-      room.on(RoomEvent.LocalTrackUnpublished, (publication: LocalTrackPublication) => {
-        console.log('[LiveKit] Local track unpublished:', publication.source)
-        if (publication.source === Track.Source.Camera) {
-          setLocalVideoTrack(undefined)
-        } else if (publication.source === Track.Source.Microphone) {
-          setLocalAudioTrack(undefined)
-        } else if (publication.source === Track.Source.ScreenShare) {
-          setLocalScreenShareTrack(undefined)
-          setIsScreenSharing(false)
-        } else if (publication.source === Track.Source.ScreenShareAudio) {
-          setLocalScreenShareAudioTrack(undefined)
-        }
-      })
-
-      // Connect with timeout to prevent indefinite hang
-      await Promise.race([
-        room.connect(serverUrl, token),
-        new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error('LiveKit connection timeout')), CONNECTION_TIMEOUT_MS)
-        ),
-      ])
-
-      joinAttemptRef.current = 0 // Reset on successful connect
-
-      // Habilitar cámara y micrófono por separado con fallback graceful (estilo Google Meet)
-      let cameraError: string | null = null
-      let micError: string | null = null
-
-      // Intentar habilitar micrófono primero (más importante para comunicación)
-      try {
-        await room.localParticipant.setMicrophoneEnabled(true)
-        setIsAudioMuted(false)
-        setMicrophoneUnavailable(false)
-      } catch (micException) {
-        console.warn('[LiveKit] No se pudo habilitar el micrófono:', micException)
-        micError = getDeviceErrorMessage(micException, 'microphone')
-        setIsAudioMuted(true)
-        setMicrophoneUnavailable(true)
+        setConnectionStatus('failed')
+        isConnectingRef.current = false
       }
-
-      // Intentar habilitar cámara
-      try {
-        await room.localParticipant.setCameraEnabled(true)
-        setIsVideoMuted(false)
-        setCameraUnavailable(false)
-      } catch (camException) {
-        console.warn('[LiveKit] No se pudo habilitar la cámara:', camException)
-        cameraError = getDeviceErrorMessage(camException, 'camera')
-        setIsVideoMuted(true)
-        setCameraUnavailable(true)
-      }
-
-      // Notificar al usuario sobre problemas de dispositivos (pero permitir continuar)
-      if (cameraError || micError) {
-        const errorType: DeviceError['type'] =
-          cameraError && micError ? 'both' :
-            cameraError ? 'camera' : 'microphone'
-
-        const messages: string[] = []
-        if (micError) messages.push(micError)
-        if (cameraError) messages.push(cameraError)
-
-        setDeviceError({
-          type: errorType,
-          message: messages.join(' '),
-          canRetry: true
-        })
-      }
-
-      // Forzar actualización de participantes remotos existentes con delay para asegurar tracks
-      const syncRemoteParticipants = () => {
-        room.remoteParticipants.forEach((participant) => {
-          console.log('[LiveKit] Sincronizando participante remoto:', participant.identity,
-            'tracks:', participant.trackPublications.size)
-          updateRemoteParticipant(participant)
-        })
-      }
-
-      // Sincronizar participantes remotos existentes al conectarse
-      // (para el caso donde ya hay alguien en la sala)
-      syncRemoteParticipants()
-      // Delayed re-syncs to catch tracks that take longer to subscribe
-      syncTimersRef.current.forEach(clearTimeout)
-      syncTimersRef.current = [
-        setTimeout(syncRemoteParticipants, 500),
-        setTimeout(syncRemoteParticipants, 1500),
-      ]
-
-      const localParticipant = room.localParticipant
-
-      // Leer metadata del participante local para determinar si es profesor
-      try {
-        if (localParticipant.metadata) {
-          const meta = JSON.parse(localParticipant.metadata)
-          setIsLocalTeacher(meta.isModerator === true)
-        }
-      } catch {
-        // Ignorar errores de parseo
-      }
-
-      localParticipant.trackPublications.forEach((pub) => {
-        if (pub.track) {
-          if (pub.track.kind === Track.Kind.Video && pub.source === Track.Source.Camera) {
-            setLocalVideoTrack(pub.track)
-          } else if (pub.track.kind === Track.Kind.Audio) {
-            setLocalAudioTrack(pub.track)
-          }
-        }
-      })
-
-      setConnectionStatus('connected')
-      isConnectingRef.current = false
-    } catch (e) {
-      console.error('[LiveKit] Connect Exception:', e)
-      joinAttemptRef.current += 1
-      // Clean up the failed room to allow fresh retry
-      if (roomRef.current) {
-        try { roomRef.current.disconnect() } catch { /* ignore */ }
-        roomRef.current = null
-      }
-      setConnectionStatus('failed')
-      isConnectingRef.current = false
-    }
-  }, [updateRemoteParticipant, removeRemoteParticipant])
+    },
+    [updateRemoteParticipant, removeRemoteParticipant]
+  )
 
   const clearDeviceError = useCallback(() => {
     setDeviceError(null)
@@ -575,8 +637,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
 
     if (newCameraError || newMicError) {
       const errorType: DeviceError['type'] =
-        newCameraError && newMicError ? 'both' :
-          newCameraError ? 'camera' : 'microphone'
+        newCameraError && newMicError ? 'both' : newCameraError ? 'camera' : 'microphone'
 
       const messages: string[] = []
       if (newMicError) messages.push(newMicError)
@@ -585,7 +646,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       setDeviceError({
         type: errorType,
         message: messages.join(' '),
-        canRetry: true
+        canRetry: true,
       })
     }
   }, [cameraUnavailable, microphoneUnavailable])
@@ -631,7 +692,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
         setDeviceError({
           type: cameraUnavailable ? 'both' : 'microphone',
           message: getDeviceErrorMessage(e, 'microphone'),
-          canRetry: true
+          canRetry: true,
         })
       }
     } else {
@@ -663,7 +724,11 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
         // Camera enabled - wait a bit for track to be ready
         setTimeout(() => {
           localParticipant.trackPublications.forEach((pub) => {
-            if (pub.track && pub.track.kind === Track.Kind.Video && pub.source === Track.Source.Camera) {
+            if (
+              pub.track &&
+              pub.track.kind === Track.Kind.Video &&
+              pub.source === Track.Source.Camera
+            ) {
               setLocalVideoTrack(pub.track)
             }
           })
@@ -674,7 +739,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
         setDeviceError({
           type: microphoneUnavailable ? 'both' : 'camera',
           message: getDeviceErrorMessage(e, 'camera'),
-          canRetry: true
+          canRetry: true,
         })
       }
     } else {
@@ -711,10 +776,12 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
     const newStatus = !isHandRaised
 
     const encoder = new TextEncoder()
-    const data = encoder.encode(JSON.stringify({
-      command: 'raise-hand',
-      values: { raised: newStatus }
-    }))
+    const data = encoder.encode(
+      JSON.stringify({
+        command: 'raise-hand',
+        values: { raised: newStatus },
+      })
+    )
 
     await roomRef.current.localParticipant.publishData(data, { reliable: true })
     setIsHandRaised(newStatus)
@@ -724,39 +791,47 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
     if (!roomRef.current) return
 
     const encoder = new TextEncoder()
-    const data = encoder.encode(JSON.stringify({
-      command: name,
-      values
-    }))
+    const data = encoder.encode(
+      JSON.stringify({
+        command: name,
+        values,
+      })
+    )
 
     roomRef.current.localParticipant.publishData(data, { reliable: true })
   }, [])
 
-  const addCommandListener = useCallback((command: string, handler: (values: Record<string, unknown>) => void) => {
-    if (!commandListenersRef.current.has(command)) {
-      commandListenersRef.current.set(command, new Set())
-    }
-    commandListenersRef.current.get(command)?.add(handler)
-  }, [])
+  const addCommandListener = useCallback(
+    (command: string, handler: (values: Record<string, unknown>) => void) => {
+      if (!commandListenersRef.current.has(command)) {
+        commandListenersRef.current.set(command, new Set())
+      }
+      commandListenersRef.current.get(command)?.add(handler)
+    },
+    []
+  )
 
-  const removeCommandListener = useCallback((command: string, handler: (values: Record<string, unknown>) => void) => {
-    commandListenersRef.current.get(command)?.delete(handler)
-  }, [])
+  const removeCommandListener = useCallback(
+    (command: string, handler: (values: Record<string, unknown>) => void) => {
+      commandListenersRef.current.get(command)?.delete(handler)
+    },
+    []
+  )
 
   const localTrackFormatted: VideoTrack | undefined =
     localVideoTrack || localAudioTrack
       ? {
-        participantId: 'local',
-        name: 'You',
-        isLocal: true,
-        isMuted: isAudioMuted,
-        isVideoMuted: isVideoMuted,
-        isHandRaised: isHandRaised,
-        isSpeaking: isSpeaking,
-        isTeacher: isLocalTeacher,
-        videoTrack: localVideoTrack,
-        audioTrack: localAudioTrack,
-      }
+          participantId: 'local',
+          name: 'You',
+          isLocal: true,
+          isMuted: isAudioMuted,
+          isVideoMuted: isVideoMuted,
+          isHandRaised: isHandRaised,
+          isSpeaking: isSpeaking,
+          isTeacher: isLocalTeacher,
+          videoTrack: localVideoTrack,
+          audioTrack: localAudioTrack,
+        }
       : undefined
 
   // Cleanup on unmount - disconnect from room when navigating away
