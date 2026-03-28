@@ -2,11 +2,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from '@/components/ui/hover-card'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import {
   AssignmentBlock,
   AudioBlock,
@@ -81,7 +77,16 @@ interface BlockPreviewProps {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function BlockPreview({ block, isTeacher, isClassroom, isExamMode, examAttemptId, answer, onAnswerChange, hideBlockHeader }: BlockPreviewProps) {
+export function BlockPreview({
+  block,
+  isTeacher,
+  isClassroom,
+  isExamMode,
+  examAttemptId,
+  answer,
+  onAnswerChange,
+  hideBlockHeader,
+}: BlockPreviewProps) {
   // Teacher notes are only visible to teachers
   if (block.type === 'teacher_notes' && !isTeacher) {
     return null
@@ -98,11 +103,20 @@ export function BlockPreview({ block, isTeacher, isClassroom, isExamMode, examAt
       case 'image':
         return <ImageBlockPreview block={block as ImageBlock} hideHeader={hideBlockHeader} />
       case 'audio':
-        return <AudioBlockPreview block={block as AudioBlock} hideHeader={hideBlockHeader} isExamMode={isExamMode} examAttemptId={examAttemptId} />
+        return (
+          <AudioBlockPreview
+            block={block as AudioBlock}
+            hideHeader={hideBlockHeader}
+            isExamMode={isExamMode}
+            examAttemptId={examAttemptId}
+          />
+        )
       case 'quiz':
         return <QuizBlockPreview block={block as QuizBlock} hideHeader={hideBlockHeader} />
       case 'assignment':
-        return <AssignmentBlockPreview block={block as AssignmentBlock} hideHeader={hideBlockHeader} />
+        return (
+          <AssignmentBlockPreview block={block as AssignmentBlock} hideHeader={hideBlockHeader} />
+        )
       case 'file':
         return <FileBlockPreview block={block as FileBlock} hideHeader={hideBlockHeader} />
       case 'embed':
@@ -114,35 +128,124 @@ export function BlockPreview({ block, isTeacher, isClassroom, isExamMode, examAt
       case 'grammar':
         return <GrammarBlockPreview block={block as GrammarBlock} hideHeader={hideBlockHeader} />
       case 'vocabulary':
-        return <VocabularyBlockPreview block={block as VocabularyBlock} hideHeader={hideBlockHeader} />
+        return (
+          <VocabularyBlockPreview block={block as VocabularyBlock} hideHeader={hideBlockHeader} />
+        )
       case 'fill_blanks':
-        return <FillBlanksBlockPreview block={block as FillBlanksBlock} isExamMode={isExamMode} hideHeader={hideBlockHeader} />
+        return (
+          <FillBlanksBlockPreview
+            block={block as FillBlanksBlock}
+            isExamMode={isExamMode}
+            hideHeader={hideBlockHeader}
+          />
+        )
       case 'match':
-        return <MatchBlockPreview block={block as MatchBlock} isExamMode={isExamMode} hideHeader={hideBlockHeader} />
+        return (
+          <MatchBlockPreview
+            block={block as MatchBlock}
+            isExamMode={isExamMode}
+            hideHeader={hideBlockHeader}
+          />
+        )
       case 'true_false':
-        return <TrueFalseBlockPreview block={block as TrueFalseBlock} isExamMode={isExamMode} hideHeader={hideBlockHeader} />
+        return (
+          <TrueFalseBlockPreview
+            block={block as TrueFalseBlock}
+            isExamMode={isExamMode}
+            hideHeader={hideBlockHeader}
+          />
+        )
       case 'essay':
-        return <EssayBlockPreview block={block as EssayBlock} isExamMode={isExamMode} answer={answer} onAnswerChange={onAnswerChange} hideHeader={hideBlockHeader} />
+        return (
+          <EssayBlockPreview
+            block={block as EssayBlock}
+            isExamMode={isExamMode}
+            answer={answer}
+            onAnswerChange={onAnswerChange}
+            hideHeader={hideBlockHeader}
+          />
+        )
       case 'short_answer':
-        return <ShortAnswerBlockPreview block={block as ShortAnswerBlock} isExamMode={isExamMode} hideHeader={hideBlockHeader} />
+        return (
+          <ShortAnswerBlockPreview
+            block={block as ShortAnswerBlock}
+            isExamMode={isExamMode}
+            hideHeader={hideBlockHeader}
+          />
+        )
       case 'multi_select':
-        return <MultiSelectBlockPreview block={block as MultiSelectBlock} isExamMode={isExamMode} hideHeader={hideBlockHeader} />
+        return (
+          <MultiSelectBlockPreview
+            block={block as MultiSelectBlock}
+            isExamMode={isExamMode}
+            hideHeader={hideBlockHeader}
+          />
+        )
       case 'multiple_choice':
-        return <MultipleChoiceBlockPreview block={block as MultipleChoiceBlock} isExamMode={isExamMode} answer={answer} onAnswerChange={onAnswerChange} hideHeader={hideBlockHeader} />
+        return (
+          <MultipleChoiceBlockPreview
+            block={block as MultipleChoiceBlock}
+            isExamMode={isExamMode}
+            answer={answer}
+            onAnswerChange={onAnswerChange}
+            hideHeader={hideBlockHeader}
+          />
+        )
       case 'ordering':
-        return <OrderingBlockPreview block={block as OrderingBlock} isExamMode={isExamMode} hideHeader={hideBlockHeader} />
+        return (
+          <OrderingBlockPreview
+            block={block as OrderingBlock}
+            isExamMode={isExamMode}
+            hideHeader={hideBlockHeader}
+          />
+        )
       case 'drag_drop':
-        return <DragDropBlockPreview block={block as DragDropBlock} isExamMode={isExamMode} hideHeader={hideBlockHeader} />
+        return (
+          <DragDropBlockPreview
+            block={block as DragDropBlock}
+            isExamMode={isExamMode}
+            hideHeader={hideBlockHeader}
+          />
+        )
       case 'recording':
-        return <RecordingBlockPreview block={block as RecordingBlock} isExamMode={isExamMode} answer={answer} onAnswerChange={onAnswerChange} hideHeader={hideBlockHeader} />
+        return (
+          <RecordingBlockPreview
+            block={block as RecordingBlock}
+            isExamMode={isExamMode}
+            answer={answer}
+            onAnswerChange={onAnswerChange}
+            hideHeader={hideBlockHeader}
+          />
+        )
       case 'structured-content':
-        return <StructuredContentBlockPreview block={block as StructuredContentBlock} hideHeader={hideBlockHeader} />
+        return (
+          <StructuredContentBlockPreview
+            block={block as StructuredContentBlock}
+            hideHeader={hideBlockHeader}
+          />
+        )
       case 'grammar-visualizer':
-        return <GrammarVisualizerBlockPreview block={block as GrammarVisualizerBlock} hideHeader={hideBlockHeader} />
+        return (
+          <GrammarVisualizerBlockPreview
+            block={block as GrammarVisualizerBlock}
+            hideHeader={hideBlockHeader}
+          />
+        )
       case 'teacher_notes':
-        return <TeacherNotesBlockPreview block={block as TeacherNotesBlock} hideHeader={hideBlockHeader} />
+        return (
+          <TeacherNotesBlockPreview
+            block={block as TeacherNotesBlock}
+            hideHeader={hideBlockHeader}
+          />
+        )
       case 'block_group':
-        return <BlockGroupPreview block={block} isExamMode={isExamMode} hideBlockHeader={hideBlockHeader} />
+        return (
+          <BlockGroupPreview
+            block={block}
+            isExamMode={isExamMode}
+            hideBlockHeader={hideBlockHeader}
+          />
+        )
       default:
         return (
           <div className="p-4 bg-yellow-50 border border-yellow-200 rounded text-yellow-800 text-sm">
@@ -156,9 +259,7 @@ export function BlockPreview({ block, isTeacher, isClassroom, isExamMode, examAt
     return renderBlockContent()
   }
 
-  return (
-    <div className="p-6">{renderBlockContent()}</div>
-  )
+  return <div className="p-6">{renderBlockContent()}</div>
 }
 
 function TitleBlockPreview({ block, hideHeader }: { block: TitleBlock; hideHeader?: boolean }) {
@@ -170,10 +271,7 @@ function TitleBlockPreview({ block, hideHeader }: { block: TitleBlock; hideHeade
           <span>Título</span>
         </div>
       )}
-      <div className={cn(
-        "w-full border-b",
-        hideHeader ? "pt-6 pb-2 mb-1" : "py-2 mb-4"
-      )}>
+      <div className={cn('w-full border-b', hideHeader ? 'pt-6 pb-2 mb-1' : 'py-2 mb-4')}>
         <h2 className="text-2xl font-bold flex items-center gap-2 text-foreground">
           {block.title || 'Encabezado'}
         </h2>
@@ -319,7 +417,17 @@ function ImageBlockPreview({ block, hideHeader }: { block: ImageBlock; hideHeade
 }
 
 // Audio Block Preview
-function AudioBlockPreview({ block, hideHeader, isExamMode, examAttemptId }: { block: AudioBlock; hideHeader?: boolean; isExamMode?: boolean; examAttemptId?: string }) {
+function AudioBlockPreview({
+  block,
+  hideHeader,
+  isExamMode,
+  examAttemptId,
+}: {
+  block: AudioBlock
+  hideHeader?: boolean
+  isExamMode?: boolean
+  examAttemptId?: string
+}) {
   const storageKey = examAttemptId ? `exam-audio-plays:${examAttemptId}:${block.id}` : null
 
   const [isPlaying, setIsPlaying] = useState(false)
@@ -359,7 +467,7 @@ function AudioBlockPreview({ block, hideHeader, isExamMode, examAttemptId }: { b
         if (!canPlay) return
         // Contar reproducción al iniciar (antes de play)
         if (!hasStartedCurrentPlay) {
-          setReplayCount(prev => prev + 1)
+          setReplayCount((prev) => prev + 1)
           setHasStartedCurrentPlay(true)
         }
         audioRef.current.play()
@@ -385,7 +493,7 @@ function AudioBlockPreview({ block, hideHeader, isExamMode, examAttemptId }: { b
   const handlePlayStart = () => {
     setIsPlaying(true)
   }
-  
+
   const handleEnded = () => {
     setIsPlaying(false)
     // Resetear flag para la próxima reproducción
@@ -437,30 +545,34 @@ function AudioBlockPreview({ block, hideHeader, isExamMode, examAttemptId }: { b
                 onClick={togglePlay}
                 disabled={!isPlaying && !canPlay}
                 className={cn(
-                  "h-14 w-14 flex items-center justify-center rounded-full transition-all shadow-md shrink-0",
+                  'h-14 w-14 flex items-center justify-center rounded-full transition-all shadow-md shrink-0',
                   isPlaying
-                    ? (blockPause
-                      ? "bg-blue-600 text-white cursor-default"
-                      : "bg-blue-600 text-white hover:bg-blue-700 hover:scale-105")
-                    : (!canPlay
-                      ? "bg-muted text-muted-foreground cursor-not-allowed"
-                      : "bg-blue-900 text-white hover:bg-blue-800 hover:scale-105")
+                    ? blockPause
+                      ? 'bg-blue-600 text-white cursor-default'
+                      : 'bg-blue-600 text-white hover:bg-blue-700 hover:scale-105'
+                    : !canPlay
+                      ? 'bg-muted text-muted-foreground cursor-not-allowed'
+                      : 'bg-blue-900 text-white hover:bg-blue-800 hover:scale-105'
                 )}
               >
-                {isPlaying && !blockPause ? <Pause className="h-6 w-6 fill-current" /> : <Play className="h-6 w-6 fill-current ml-1" />}
+                {isPlaying && !blockPause ? (
+                  <Pause className="h-6 w-6 fill-current" />
+                ) : (
+                  <Play className="h-6 w-6 fill-current ml-1" />
+                )}
               </button>
 
               <div className="flex-1 space-y-2">
                 {/* Waveform Visualization */}
                 <div
                   className={cn(
-                    "h-12 flex items-center justify-between gap-0.5",
+                    'h-12 flex items-center justify-between gap-0.5',
                     // Bloquear navegación completamente cuando hay límite de reproducciones o modo examen
-                    (hasLimit || isExamMode) ? "cursor-default" : "cursor-pointer"
+                    hasLimit || isExamMode ? 'cursor-default' : 'cursor-pointer'
                   )}
                   onClick={(e) => {
                     // Bloquear navegación completamente cuando hay límite de reproducciones o modo examen
-                    if (hasLimit || isExamMode) return;
+                    if (hasLimit || isExamMode) return
                     if (audioRef.current && duration) {
                       const rect = e.currentTarget.getBoundingClientRect()
                       const x = e.clientX - rect.left
@@ -476,12 +588,12 @@ function AudioBlockPreview({ block, hideHeader, isExamMode, examAttemptId }: { b
                       <div
                         key={i}
                         className={cn(
-                          "w-1 rounded-full transition-colors duration-200",
-                          isPlayed ? "bg-primary" : "bg-muted-foreground/30"
+                          'w-1 rounded-full transition-colors duration-200',
+                          isPlayed ? 'bg-primary' : 'bg-muted-foreground/30'
                         )}
                         style={{
                           height: `${height * 100}%`,
-                          minHeight: '20%'
+                          minHeight: '20%',
                         }}
                       />
                     )
@@ -492,10 +604,12 @@ function AudioBlockPreview({ block, hideHeader, isExamMode, examAttemptId }: { b
                   <span>{formatTime(currentTime)}</span>
                   <span className="flex items-center gap-2">
                     {maxReplays > 0 && (
-                      <span className={cn(
-                        "px-1.5 py-0.5 rounded text-[10px] uppercase tracking-wider",
-                        canPlay ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-                      )}>
+                      <span
+                        className={cn(
+                          'px-1.5 py-0.5 rounded text-[10px] uppercase tracking-wider',
+                          canPlay ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                        )}
+                      >
                         {replayCount} / {maxReplays} Usos
                       </span>
                     )}
@@ -522,19 +636,19 @@ function QuizBlockPreview({ block, hideHeader }: { block: QuizBlock; hideHeader?
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string>>({}) // questionId -> answer
   const [showResults, setShowResults] = useState(false)
-  
+
   // Get classroom sync if available
   const classroomSync = useClassroomSync()
-  
+
   // Get remote navigation state for teachers to follow student's progress
   const remoteNav = classroomSync.getRemoteNavigation(block.id)
 
   const questionCount = block.questions?.length || 0
   const currentQuestion = block.questions?.[currentQuestionIndex]
-  
+
   // Check if this is a teacher in classroom mode
   const isTeacherInClassroom = classroomSync.isInClassroom && classroomSync.isTeacher
-  
+
   // For teachers in classroom: follow student's navigation and answers (when available)
   const isTeacherViewing = isTeacherInClassroom && remoteNav
   const displayQuestionIndex = isTeacherViewing ? remoteNav.currentStep : currentQuestionIndex
@@ -542,17 +656,18 @@ function QuizBlockPreview({ block, hideHeader }: { block: QuizBlock; hideHeader?
   const displayShowResults = isTeacherViewing ? remoteNav.isCompleted : showResults
   const displayCurrentQuestion = block.questions?.[displayQuestionIndex]
   // Use remote answers for teacher, local answers for student
-  const displayAnswers = isTeacherViewing && remoteNav.currentAnswers ? remoteNav.currentAnswers : answers
+  const displayAnswers =
+    isTeacherViewing && remoteNav.currentAnswers ? remoteNav.currentAnswers : answers
 
   const handleStart = () => {
     // Teachers in classroom mode cannot start the quiz
     if (isTeacherInClassroom) return
-    
+
     setHasStarted(true)
     setCurrentQuestionIndex(0)
     setAnswers({})
     setShowResults(false)
-    
+
     // Sync navigation state to teacher (with empty answers)
     if (classroomSync.canInteract) {
       classroomSync.syncBlockNavigation(block.id, 0, questionCount, true, false, {})
@@ -563,13 +678,20 @@ function QuizBlockPreview({ block, hideHeader }: { block: QuizBlock; hideHeader?
     if (!currentQuestion) return
     // Teachers in classroom mode cannot interact
     if (isTeacherInClassroom) return
-    
+
     const newAnswers = { ...answers, [currentQuestion.id]: answer }
     setAnswers(newAnswers)
-    
+
     // Sync answer to teacher in real-time
     if (classroomSync.canInteract) {
-      classroomSync.syncBlockNavigation(block.id, currentQuestionIndex, questionCount, true, false, newAnswers)
+      classroomSync.syncBlockNavigation(
+        block.id,
+        currentQuestionIndex,
+        questionCount,
+        true,
+        false,
+        newAnswers
+      )
     }
   }
 
@@ -577,7 +699,7 @@ function QuizBlockPreview({ block, hideHeader }: { block: QuizBlock; hideHeader?
     if (currentQuestionIndex < (block.questions?.length || 0) - 1) {
       const newIndex = currentQuestionIndex + 1
       setCurrentQuestionIndex(newIndex)
-      
+
       // Sync navigation state to teacher (include current answers)
       if (classroomSync.canInteract) {
         classroomSync.syncBlockNavigation(block.id, newIndex, questionCount, true, false, answers)
@@ -587,28 +709,41 @@ function QuizBlockPreview({ block, hideHeader }: { block: QuizBlock; hideHeader?
       const { score, totalPoints } = calculateScoreInternal()
       const percentage = totalPoints > 0 ? Math.round((score / totalPoints) * 100) : 0
       const passed = !block.passingScore || percentage >= block.passingScore
-      
+
       // Sync result to teacher in classroom mode (only students)
       if (classroomSync.canInteract) {
-        classroomSync.sendBlockResponse(block.id, 'quiz', {
-          answers,
-          score,
-          totalPoints,
-          percentage,
-        }, passed, score)
-        
+        classroomSync.sendBlockResponse(
+          block.id,
+          'quiz',
+          {
+            answers,
+            score,
+            totalPoints,
+            percentage,
+          },
+          passed,
+          score
+        )
+
         // Mark as completed (include final answers)
-        classroomSync.syncBlockNavigation(block.id, currentQuestionIndex, questionCount, true, true, answers)
+        classroomSync.syncBlockNavigation(
+          block.id,
+          currentQuestionIndex,
+          questionCount,
+          true,
+          true,
+          answers
+        )
       }
-      
+
       setShowResults(true)
     }
   }
-  
+
   const calculateScoreInternal = () => {
     let score = 0
     let totalPoints = 0
-    block.questions?.forEach(q => {
+    block.questions?.forEach((q) => {
       totalPoints += q.points || 0
       const userAnswer = answers[q.id]
       if (userAnswer === q.correctAnswer) {
@@ -622,7 +757,7 @@ function QuizBlockPreview({ block, hideHeader }: { block: QuizBlock; hideHeader?
     if (currentQuestionIndex > 0) {
       const newIndex = currentQuestionIndex - 1
       setCurrentQuestionIndex(newIndex)
-      
+
       // Sync navigation state to teacher (include current answers)
       if (classroomSync.canInteract) {
         classroomSync.syncBlockNavigation(block.id, newIndex, questionCount, true, false, answers)
@@ -633,11 +768,11 @@ function QuizBlockPreview({ block, hideHeader }: { block: QuizBlock; hideHeader?
   const calculateScore = () => {
     let score = 0
     let totalPoints = 0
-    block.questions?.forEach(q => {
+    block.questions?.forEach((q) => {
       totalPoints += q.points || 0
       const userAnswer = answers[q.id]
-      // Simple exact match check. For arrays (multiple correct answers), logic might differ, 
-      // but typically single correct answer for radio, or array for checkbox. 
+      // Simple exact match check. For arrays (multiple correct answers), logic might differ,
+      // but typically single correct answer for radio, or array for checkbox.
       // Assuming string comparison for now.
       if (userAnswer === q.correctAnswer) {
         score += q.points || 0
@@ -656,9 +791,7 @@ function QuizBlockPreview({ block, hideHeader }: { block: QuizBlock; hideHeader?
             <span>Quiz</span>
           </div>
         )}
-        {block.title && (
-          <h3 className="text-xl font-bold">{block.title}</h3>
-        )}
+        {block.title && <h3 className="text-xl font-bold">{block.title}</h3>}
 
         <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-lg p-6 border border-primary/20">
           <div className="space-y-4">
@@ -681,8 +814,10 @@ function QuizBlockPreview({ block, hideHeader }: { block: QuizBlock; hideHeader?
               <div className="space-y-2 pt-4 border-t border-primary/20">
                 <p className="text-sm font-medium">Contenido:</p>
                 <ul className="list-disc list-inside text-sm text-muted-foreground">
-                  {block.questions?.slice(0, 3).map(q => (
-                    <li key={q.id} className="truncate">{q.question}</li>
+                  {block.questions?.slice(0, 3).map((q) => (
+                    <li key={q.id} className="truncate">
+                      {q.question}
+                    </li>
                   ))}
                 </ul>
                 {questionCount > 3 && (
@@ -716,8 +851,8 @@ function QuizBlockPreview({ block, hideHeader }: { block: QuizBlock; hideHeader?
     const { score, totalPoints } = calculateScore()
     const percentage = totalPoints > 0 ? Math.round((score / totalPoints) * 100) : 0
     const passed = !block.passingScore || percentage >= block.passingScore
-    const correctCount = Object.keys(answers).filter(qid => {
-      const q = block.questions?.find(que => que.id === qid)
+    const correctCount = Object.keys(answers).filter((qid) => {
+      const q = block.questions?.find((que) => que.id === qid)
       return q && answers[qid] === q.correctAnswer
     }).length
 
@@ -729,23 +864,33 @@ function QuizBlockPreview({ block, hideHeader }: { block: QuizBlock; hideHeader?
         </div>
 
         <div className="flex justify-center">
-          <div className={cn(
-            "p-8 rounded-full h-32 w-32 flex flex-col items-center justify-center border-4",
-            passed ? "bg-green-50 border-green-500 text-green-700" : "bg-red-50 border-red-500 text-red-700"
-          )}>
+          <div
+            className={cn(
+              'p-8 rounded-full h-32 w-32 flex flex-col items-center justify-center border-4',
+              passed
+                ? 'bg-green-50 border-green-500 text-green-700'
+                : 'bg-red-50 border-red-500 text-red-700'
+            )}
+          >
             <span className="text-3xl font-bold">{percentage}%</span>
-            <span className="text-xs font-semibold uppercase mt-1">{passed ? 'Aprobado' : 'Reprobado'}</span>
+            <span className="text-xs font-semibold uppercase mt-1">
+              {passed ? 'Aprobado' : 'Reprobado'}
+            </span>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4 max-w-sm mx-auto text-sm">
           <div className="bg-muted p-3 rounded text-center">
             <p className="text-muted-foreground">Puntaje</p>
-            <p className="font-bold text-lg">{score} / {totalPoints}</p>
+            <p className="font-bold text-lg">
+              {score} / {totalPoints}
+            </p>
           </div>
           <div className="bg-muted p-3 rounded text-center">
             <p className="text-muted-foreground">Correctas</p>
-            <p className="font-bold text-lg">{correctCount} / {questionCount}</p>
+            <p className="font-bold text-lg">
+              {correctCount} / {questionCount}
+            </p>
           </div>
         </div>
 
@@ -757,22 +902,22 @@ function QuizBlockPreview({ block, hideHeader }: { block: QuizBlock; hideHeader?
           {block.questions?.map((q, idx) => {
             const userAnswer = answers[q.id]
             const isCorrect = userAnswer === q.correctAnswer
-            
+
             return (
-              <div 
+              <div
                 key={q.id}
                 className={cn(
-                  "p-4 rounded-lg border-2 space-y-2",
-                  isCorrect 
-                    ? "bg-green-50 border-green-200" 
-                    : "bg-red-50 border-red-200"
+                  'p-4 rounded-lg border-2 space-y-2',
+                  isCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'
                 )}
               >
                 <div className="flex items-start gap-2">
-                  <span className={cn(
-                    "shrink-0 h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold",
-                    isCorrect ? "bg-green-500 text-white" : "bg-red-500 text-white"
-                  )}>
+                  <span
+                    className={cn(
+                      'shrink-0 h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold',
+                      isCorrect ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+                    )}
+                  >
                     {isCorrect ? '✓' : '✗'}
                   </span>
                   <div className="flex-1">
@@ -781,16 +926,18 @@ function QuizBlockPreview({ block, hideHeader }: { block: QuizBlock; hideHeader?
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="ml-8 space-y-1 text-sm">
-                  <p className={cn(
-                    "flex items-center gap-2",
-                    isCorrect ? "text-green-700" : "text-red-700"
-                  )}>
+                  <p
+                    className={cn(
+                      'flex items-center gap-2',
+                      isCorrect ? 'text-green-700' : 'text-red-700'
+                    )}
+                  >
                     <span className="font-medium">Tu respuesta:</span>
                     <span>{userAnswer || '(Sin respuesta)'}</span>
                   </p>
-                  
+
                   {!isCorrect && (
                     <p className="flex items-center gap-2 text-green-700">
                       <span className="font-medium">Respuesta correcta:</span>
@@ -817,7 +964,9 @@ function QuizBlockPreview({ block, hideHeader }: { block: QuizBlock; hideHeader?
     <div className="space-y-6">
       {/* Progress Header */}
       <div className="flex items-center justify-between text-sm text-muted-foreground">
-        <span>Pregunta {displayQuestionIndex + 1} de {questionCount}</span>
+        <span>
+          Pregunta {displayQuestionIndex + 1} de {questionCount}
+        </span>
         <span>{Math.round(((displayQuestionIndex + 1) / questionCount) * 100)}% completado</span>
       </div>
       <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
@@ -828,32 +977,41 @@ function QuizBlockPreview({ block, hideHeader }: { block: QuizBlock; hideHeader?
       </div>
 
       {/* Question Card with smooth transition */}
-      <div 
+      <div
         key={displayQuestionIndex}
         className="bg-card border rounded-xl p-6 shadow-sm min-h-[300px] flex flex-col animate-in fade-in slide-in-from-right-4 duration-300"
       >
         <h3 className="text-xl font-bold mb-6">{displayCurrentQuestion?.question}</h3>
 
         <div className="flex-1 space-y-3">
-          {displayCurrentQuestion?.type === 'multiple-choice' && displayCurrentQuestion.options?.map((opt, i) => (
-            <div
-              key={i}
-              onClick={() => handleAnswerSelect(opt)}
-              className={cn(
-                "p-4 border rounded-lg transition-all flex items-center gap-3",
-                classroomSync.isTeacher ? "cursor-default" : "cursor-pointer hover:bg-muted/50",
-                displayAnswers[displayCurrentQuestion.id] === opt ? "border-primary bg-primary/5 ring-1 ring-primary" : "border-input"
-              )}
-            >
-              <div className={cn(
-                "h-5 w-5 rounded-full border-2 flex items-center justify-center shrink-0",
-                displayAnswers[displayCurrentQuestion.id] === opt ? "border-primary" : "border-muted-foreground"
-              )}>
-                {displayAnswers[displayCurrentQuestion.id] === opt && <div className="h-2.5 w-2.5 rounded-full bg-primary" />}
+          {displayCurrentQuestion?.type === 'multiple-choice' &&
+            displayCurrentQuestion.options?.map((opt, i) => (
+              <div
+                key={i}
+                onClick={() => handleAnswerSelect(opt)}
+                className={cn(
+                  'p-4 border rounded-lg transition-all flex items-center gap-3',
+                  classroomSync.isTeacher ? 'cursor-default' : 'cursor-pointer hover:bg-muted/50',
+                  displayAnswers[displayCurrentQuestion.id] === opt
+                    ? 'border-primary bg-primary/5 ring-1 ring-primary'
+                    : 'border-input'
+                )}
+              >
+                <div
+                  className={cn(
+                    'h-5 w-5 rounded-full border-2 flex items-center justify-center shrink-0',
+                    displayAnswers[displayCurrentQuestion.id] === opt
+                      ? 'border-primary'
+                      : 'border-muted-foreground'
+                  )}
+                >
+                  {displayAnswers[displayCurrentQuestion.id] === opt && (
+                    <div className="h-2.5 w-2.5 rounded-full bg-primary" />
+                  )}
+                </div>
+                <span className="text-base">{opt}</span>
               </div>
-              <span className="text-base">{opt}</span>
-            </div>
-          ))}
+            ))}
 
           {displayCurrentQuestion?.type === 'true-false' && (
             <div className="grid grid-cols-2 gap-4">
@@ -863,11 +1021,13 @@ function QuizBlockPreview({ block, hideHeader }: { block: QuizBlock; hideHeader?
                   onClick={() => handleAnswerSelect(opt)}
                   disabled={classroomSync.isInClassroom && classroomSync.isTeacher}
                   className={cn(
-                    "p-8 border-2 rounded-xl font-bold text-lg transition-all",
-                    !classroomSync.isTeacher && "hover:scale-[1.02]",
+                    'p-8 border-2 rounded-xl font-bold text-lg transition-all',
+                    !classroomSync.isTeacher && 'hover:scale-[1.02]',
                     displayAnswers[displayCurrentQuestion.id] === opt
-                      ? (opt === 'Verdadero' ? "border-green-500 bg-green-50 text-green-700" : "border-red-500 bg-red-50 text-red-700")
-                      : "border-muted bg-card hover:bg-muted/50"
+                      ? opt === 'Verdadero'
+                        ? 'border-green-500 bg-green-50 text-green-700'
+                        : 'border-red-500 bg-red-50 text-red-700'
+                      : 'border-muted bg-card hover:bg-muted/50'
                   )}
                 >
                   {opt}
@@ -878,7 +1038,11 @@ function QuizBlockPreview({ block, hideHeader }: { block: QuizBlock; hideHeader?
 
           {displayCurrentQuestion?.type === 'short-answer' && (
             <Textarea
-              placeholder={classroomSync.isTeacher ? "El estudiante escribirá aquí..." : "Escribe tu respuesta aquí..."}
+              placeholder={
+                classroomSync.isTeacher
+                  ? 'El estudiante escribirá aquí...'
+                  : 'Escribe tu respuesta aquí...'
+              }
               className="min-h-[150px] text-lg p-4"
               value={displayAnswers[displayCurrentQuestion.id] || ''}
               onChange={(e) => handleAnswerSelect(e.target.value)}
@@ -904,7 +1068,13 @@ function QuizBlockPreview({ block, hideHeader }: { block: QuizBlock; hideHeader?
 }
 
 // Assignment Block Preview
-function AssignmentBlockPreview({ block, hideHeader }: { block: AssignmentBlock; hideHeader?: boolean }) {
+function AssignmentBlockPreview({
+  block,
+  hideHeader,
+}: {
+  block: AssignmentBlock
+  hideHeader?: boolean
+}) {
   return (
     <div className={hideHeader ? '' : 'space-y-4'}>
       {!hideHeader && (
@@ -913,16 +1083,12 @@ function AssignmentBlockPreview({ block, hideHeader }: { block: AssignmentBlock;
           <span>Tarea</span>
         </div>
       )}
-      {block.title && (
-        <h3 className="text-xl font-bold">{block.title}</h3>
-      )}
+      {block.title && <h3 className="text-xl font-bold">{block.title}</h3>}
 
       <div className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950/20 dark:to-orange-900/20 rounded-lg p-6 border border-orange-200 dark:border-orange-800">
         <div className="space-y-4">
           <div>
-            <h4 className="font-semibold mb-2 flex items-center gap-2">
-              📝 Instrucciones
-            </h4>
+            <h4 className="font-semibold mb-2 flex items-center gap-2">📝 Instrucciones</h4>
             {block.description ? (
               <p className="text-sm leading-relaxed">{block.description}</p>
             ) : (
@@ -934,7 +1100,7 @@ function AssignmentBlockPreview({ block, hideHeader }: { block: AssignmentBlock;
 
           <div className="flex items-center gap-3 pt-3 border-t border-orange-200 dark:border-orange-800">
             <Badge variant="outline" className="bg-background">
-              📤 Tipo: {' '}
+              📤 Tipo:{' '}
               {block.submissionType === 'text'
                 ? 'Texto'
                 : block.submissionType === 'file'
@@ -967,10 +1133,26 @@ function AssignmentBlockPreview({ block, hideHeader }: { block: AssignmentBlock;
 
 // File Block Preview
 function FileBlockPreview({ block, hideHeader }: { block: FileBlock; hideHeader?: boolean }) {
-  const b = block as unknown as { url?: string; filename?: string; fileType?: string; filesize?: number }
-  const files = block.files?.length > 0
-    ? block.files
-    : (b.url ? [{ id: 'legacy', title: b.filename || 'Archivo', url: b.url, fileType: b.fileType || 'file', size: b.filesize || 0 }] : [])
+  const b = block as unknown as {
+    url?: string
+    filename?: string
+    fileType?: string
+    filesize?: number
+  }
+  const files =
+    block.files?.length > 0
+      ? block.files
+      : b.url
+        ? [
+            {
+              id: 'legacy',
+              title: b.filename || 'Archivo',
+              url: b.url,
+              fileType: b.fileType || 'file',
+              size: b.filesize || 0,
+            },
+          ]
+        : []
 
   // hideHeader is accepted but not used for this block type as it has a different layout
   void hideHeader
@@ -984,7 +1166,9 @@ function FileBlockPreview({ block, hideHeader }: { block: FileBlock; hideHeader?
 
       {/* Content */}
       <div className="flex-1 text-center md:text-left space-y-1">
-        <h3 className="text-lg font-bold text-foreground">{block.title || 'Materiales del Curso'}</h3>
+        <h3 className="text-lg font-bold text-foreground">
+          {block.title || 'Materiales del Curso'}
+        </h3>
         <p className="text-sm text-muted-foreground">
           {block.description || 'Descarga los recursos para esta lección para estudiar offline.'}
         </p>
@@ -1007,7 +1191,9 @@ function FileBlockPreview({ block, hideHeader }: { block: FileBlock; hideHeader?
               <span className="text-sm font-semibold text-foreground group-hover:text-blue-700 block transition-colors truncate">
                 {file.title}
               </span>
-              <span className="text-xs text-muted-foreground font-normal ml-1 whitespace-nowrap shrink-0">({getFileExtension(file).toUpperCase()})</span>
+              <span className="text-xs text-muted-foreground font-normal ml-1 whitespace-nowrap shrink-0">
+                ({getFileExtension(file).toUpperCase()})
+              </span>
             </div>
           </a>
         ))}
@@ -1021,33 +1207,53 @@ function FileBlockPreview({ block, hideHeader }: { block: FileBlock; hideHeader?
   )
 }
 
-function getFileExtension(file: { fileType?: string, url?: string }) {
-  if (file.fileType && !file.fileType.includes('/')) return file.fileType;
+function getFileExtension(file: { fileType?: string; url?: string }) {
+  if (file.fileType && !file.fileType.includes('/')) return file.fileType
   // try to get from url
-  const ext = file.url?.split('.').pop()?.split('?')[0];
-  if (ext && ext.length < 5) return ext;
-  return 'file';
+  const ext = file.url?.split('.').pop()?.split('?')[0]
+  if (ext && ext.length < 5) return ext
+  return 'file'
 }
 
-function FileIconByType({ type, url }: { type: string, url?: string }) {
+function FileIconByType({ type, url }: { type: string; url?: string }) {
   const t = type.toLowerCase()
   const ext = url ? url.split('.').pop()?.split('?')[0]?.toLowerCase() : ''
 
   if (t.includes('pdf') || ext === 'pdf') return <FileText className="h-5 w-5 text-red-500" />
-  if (t.includes('audio') || t.includes('mp3') || t.includes('wav') || ext === 'mp3' || ext === 'wav') return <Music className="h-5 w-5 text-purple-500" />
-  if (t.includes('video') || t.includes('mp4') || ext === 'mp4') return <Video className="h-5 w-5 text-blue-500" />
-  if (t.includes('image') || t.includes('jpg') || t.includes('png') || ['jpg', 'jpeg', 'png', 'webp'].includes(ext || '')) return <LucideImage className="h-5 w-5 text-green-500" />
-  if (t.includes('word') || t.includes('doc') || ['doc', 'docx'].includes(ext || '')) return <FileText className="h-5 w-5 text-blue-700" />
-  if (t.includes('sheet') || t.includes('excel') || ['xls', 'xlsx'].includes(ext || '')) return <FileText className="h-5 w-5 text-green-700" />
+  if (
+    t.includes('audio') ||
+    t.includes('mp3') ||
+    t.includes('wav') ||
+    ext === 'mp3' ||
+    ext === 'wav'
+  )
+    return <Music className="h-5 w-5 text-purple-500" />
+  if (t.includes('video') || t.includes('mp4') || ext === 'mp4')
+    return <Video className="h-5 w-5 text-blue-500" />
+  if (
+    t.includes('image') ||
+    t.includes('jpg') ||
+    t.includes('png') ||
+    ['jpg', 'jpeg', 'png', 'webp'].includes(ext || '')
+  )
+    return <LucideImage className="h-5 w-5 text-green-500" />
+  if (t.includes('word') || t.includes('doc') || ['doc', 'docx'].includes(ext || ''))
+    return <FileText className="h-5 w-5 text-blue-700" />
+  if (t.includes('sheet') || t.includes('excel') || ['xls', 'xlsx'].includes(ext || ''))
+    return <FileText className="h-5 w-5 text-green-700" />
   return <FileText className="h-5 w-5 text-gray-500" />
 }
-
-
 
 // Embed Block Preview
 
 // Grammar Visualizer Preview
-export function GrammarVisualizerBlockPreview({ block, hideHeader }: { block: GrammarVisualizerBlock; hideHeader?: boolean }) {
+export function GrammarVisualizerBlockPreview({
+  block,
+  hideHeader,
+}: {
+  block: GrammarVisualizerBlock
+  hideHeader?: boolean
+}) {
   void hideHeader // Grammar visualizer has a different layout
   if (!block.sets || block.sets.length === 0) {
     return (
@@ -1067,7 +1273,10 @@ export function GrammarVisualizerBlockPreview({ block, hideHeader }: { block: Gr
       {block.sets.map((set, setIndex) => (
         <div key={set.id} className="space-y-4">
           <div className="flex items-center gap-2">
-            <Badge variant="outline" className="h-6 w-6 rounded-full flex items-center justify-center p-0 shrink-0">
+            <Badge
+              variant="outline"
+              className="h-6 w-6 rounded-full flex items-center justify-center p-0 shrink-0"
+            >
               {setIndex + 1}
             </Badge>
             <h4 className="font-semibold text-lg">{set.title}</h4>
@@ -1075,7 +1284,10 @@ export function GrammarVisualizerBlockPreview({ block, hideHeader }: { block: Gr
 
           <div className="space-y-4 pl-8">
             {set.variants.map((variant) => (
-              <div key={variant.id} className="bg-white rounded-xl p-4 shadow-sm border border-slate-100">
+              <div
+                key={variant.id}
+                className="bg-white rounded-xl p-4 shadow-sm border border-slate-100"
+              >
                 <div className="mb-3">
                   <Badge variant="secondary" className="text-xs uppercase tracking-wider mb-2">
                     {variant.label}
@@ -1089,11 +1301,16 @@ export function GrammarVisualizerBlockPreview({ block, hideHeader }: { block: Gr
                       <div
                         key={token.id}
                         className={cn(
-                          "flex flex-col items-center gap-1 p-2 rounded-lg border-2 border-transparent transition-all min-w-[60px]",
+                          'flex flex-col items-center gap-1 p-2 rounded-lg border-2 border-transparent transition-all min-w-[60px]',
                           grammarInfo.bg
                         )}
                       >
-                        <span className={cn("px-2 py-1 rounded text-lg font-medium bg-white/80 w-full text-center shadow-sm", grammarInfo.color)}>
+                        <span
+                          className={cn(
+                            'px-2 py-1 rounded text-lg font-medium bg-white/80 w-full text-center shadow-sm',
+                            grammarInfo.color
+                          )}
+                        >
                           {token.content}
                         </span>
                         <div className="flex items-center gap-1">
@@ -1111,9 +1328,7 @@ export function GrammarVisualizerBlockPreview({ block, hideHeader }: { block: Gr
                                 <p className="text-xs font-bold uppercase tracking-wider text-primary">
                                   {grammarInfo.label}
                                 </p>
-                                <p className="text-sm text-slate-600">
-                                  {grammarInfo.explanation}
-                                </p>
+                                <p className="text-sm text-slate-600">{grammarInfo.explanation}</p>
                               </div>
                             </HoverCardContent>
                           </HoverCard>
@@ -1139,184 +1354,221 @@ export function GrammarVisualizerBlockPreview({ block, hideHeader }: { block: Gr
 }
 
 function getGrammarVisualizerColor(type?: string) {
-  const map: Record<string, { label: string, color: string, bg: string, explanation: string }> = {
+  const map: Record<string, { label: string; color: string; bg: string; explanation: string }> = {
     // Sujeto
-    'subject': { 
-      label: 'Sujeto', 
-      color: 'text-yellow-700', 
+    subject: {
+      label: 'Sujeto',
+      color: 'text-yellow-700',
       bg: 'bg-yellow-100',
-      explanation: 'Quien realiza la acción o de quien se habla en la oración. (Ej: *She* runs, *The dog* barks).'
+      explanation:
+        'Quien realiza la acción o de quien se habla en la oración. (Ej: *She* runs, *The dog* barks).',
     },
     // Verbos
-    'action-verb': { 
-      label: 'Verbo de acción', 
-      color: 'text-green-700', 
+    'action-verb': {
+      label: 'Verbo de acción',
+      color: 'text-green-700',
       bg: 'bg-green-100',
-      explanation: 'Palabra que expresa una acción física o mental. (Ej: She *runs*, He *thinks*).'
+      explanation: 'Palabra que expresa una acción física o mental. (Ej: She *runs*, He *thinks*).',
     },
-    'auxiliary-verb': { 
-      label: 'Verbo auxiliar', 
-      color: 'text-green-800', 
+    'auxiliary-verb': {
+      label: 'Verbo auxiliar',
+      color: 'text-green-800',
       bg: 'bg-green-200',
-      explanation: 'Ayuda al verbo principal a formar tiempos verbales, preguntas o negaciones. (Ej: I *have* eaten, She *will* go).'
+      explanation:
+        'Ayuda al verbo principal a formar tiempos verbales, preguntas o negaciones. (Ej: I *have* eaten, She *will* go).',
     },
-    'linking-verb': { 
-      label: 'Verbo copulativo', 
-      color: 'text-green-600', 
+    'linking-verb': {
+      label: 'Verbo copulativo',
+      color: 'text-green-600',
       bg: 'bg-green-50',
-      explanation: 'Une al sujeto con una descripción o estado (ej: be, seem, become). (Ej: He *is* happy, She *seems* tired).'
+      explanation:
+        'Une al sujeto con una descripción o estado (ej: be, seem, become). (Ej: He *is* happy, She *seems* tired).',
     },
     // Objetos
-    'direct-object': { 
-      label: 'Objeto directo', 
-      color: 'text-blue-700', 
+    'direct-object': {
+      label: 'Objeto directo',
+      color: 'text-blue-700',
       bg: 'bg-blue-100',
-      explanation: 'Persona o cosa que recibe directamente la acción del verbo. (Ej: I read a *book*, She loves her *dog*).'
+      explanation:
+        'Persona o cosa que recibe directamente la acción del verbo. (Ej: I read a *book*, She loves her *dog*).',
     },
-    'indirect-object': { 
-      label: 'Objeto indirecto', 
-      color: 'text-blue-800', 
+    'indirect-object': {
+      label: 'Objeto indirecto',
+      color: 'text-blue-800',
       bg: 'bg-blue-200',
-      explanation: 'Indica a quién o para quién se realiza la acción del verbo. (Ej: He gave *me* a gift, She sent *her* a letter).'
+      explanation:
+        'Indica a quién o para quién se realiza la acción del verbo. (Ej: He gave *me* a gift, She sent *her* a letter).',
     },
     // Complementos
-    'subject-complement': { 
-      label: 'Complemento del sujeto', 
-      color: 'text-purple-700', 
+    'subject-complement': {
+      label: 'Complemento del sujeto',
+      color: 'text-purple-700',
       bg: 'bg-purple-100',
-      explanation: 'Palabra o frase que sigue a un verbo copulativo y describe al sujeto. (Ej: She is a *teacher*, He seems *happy*).'
+      explanation:
+        'Palabra o frase que sigue a un verbo copulativo y describe al sujeto. (Ej: She is a *teacher*, He seems *happy*).',
     },
-    'object-complement': { 
-      label: 'Complemento del objeto', 
-      color: 'text-fuchsia-700', 
+    'object-complement': {
+      label: 'Complemento del objeto',
+      color: 'text-fuchsia-700',
       bg: 'bg-fuchsia-100',
-      explanation: 'Describe o renombra al objeto directo. (Ej: We named him *Jack*, She called him *honey*).'
+      explanation:
+        'Describe o renombra al objeto directo. (Ej: We named him *Jack*, She called him *honey*).',
     },
     // Modificadores
-    'adjective': { 
-      label: 'Adjetivo', 
-      color: 'text-pink-700', 
+    adjective: {
+      label: 'Adjetivo',
+      color: 'text-pink-700',
       bg: 'bg-pink-100',
-      explanation: 'Palabra que describe o modifica a un sustantivo o pronombre. (Ej: *Blue* sky, *Happy* birthday).'
+      explanation:
+        'Palabra que describe o modifica a un sustantivo o pronombre. (Ej: *Blue* sky, *Happy* birthday).',
     },
-    'adverb': { 
-      label: 'Adverbio', 
-      color: 'text-teal-700', 
+    adverb: {
+      label: 'Adverbio',
+      color: 'text-teal-700',
       bg: 'bg-teal-100',
-      explanation: 'Modifica a un verbo, adjetivo u otro adverbio, indicando cómo, cuándo o dónde. (Ej: Run *fast*, She sings *beautifully*).'
+      explanation:
+        'Modifica a un verbo, adjetivo u otro adverbio, indicando cómo, cuándo o dónde. (Ej: Run *fast*, She sings *beautifully*).',
     },
-    'adverbial-complement': { 
-      label: 'Complemento adverbial', 
-      color: 'text-emerald-600', 
+    'adverbial-complement': {
+      label: 'Complemento adverbial',
+      color: 'text-emerald-600',
       bg: 'bg-emerald-100',
-      explanation: 'Información obligatoria o adicional sobre el lugar, tiempo o modo. (Ej: He lives *in Paris*, She will arrive *tomorrow*).'
+      explanation:
+        'Información obligatoria o adicional sobre el lugar, tiempo o modo. (Ej: He lives *in Paris*, She will arrive *tomorrow*).',
     },
     // Determinantes y artículos
-    'determiner': { 
-      label: 'Determinante', 
-      color: 'text-orange-700', 
+    determiner: {
+      label: 'Determinante',
+      color: 'text-orange-700',
       bg: 'bg-orange-100',
-      explanation: 'Palabra que introduce un sustantivo y especifica su referencia. (Ej: *That* car, *This* book).'
+      explanation:
+        'Palabra que introduce un sustantivo y especifica su referencia. (Ej: *That* car, *This* book).',
     },
-    'article': { 
-      label: 'Artículo', 
-      color: 'text-orange-500', 
+    article: {
+      label: 'Artículo',
+      color: 'text-orange-500',
       bg: 'bg-orange-50',
-      explanation: 'Indica si el sustantivo es específico (el, la) o general (un, una). (Ej: *The* sun, *A* dog).'
+      explanation:
+        'Indica si el sustantivo es específico (el, la) o general (un, una). (Ej: *The* sun, *A* dog).',
     },
     // Pronombres
-    'pronoun': { 
-      label: 'Pronombre', 
-      color: 'text-violet-700', 
+    pronoun: {
+      label: 'Pronombre',
+      color: 'text-violet-700',
       bg: 'bg-violet-100',
-      explanation: 'Palabra que se usa en lugar de un sustantivo. (Ej: *They* are friends, *He* is happy).'
+      explanation:
+        'Palabra que se usa en lugar de un sustantivo. (Ej: *They* are friends, *He* is happy).',
     },
-    'possessive-pronoun': { 
-      label: 'Pronombre posesivo', 
-      color: 'text-violet-500', 
+    'possessive-pronoun': {
+      label: 'Pronombre posesivo',
+      color: 'text-violet-500',
       bg: 'bg-violet-50',
-      explanation: 'Indica posesión o pertenencia (ej: mine, yours, theirs). (Ej: This is *mine*, That is *hers*).'
+      explanation:
+        'Indica posesión o pertenencia (ej: mine, yours, theirs). (Ej: This is *mine*, That is *hers*).',
     },
     // Preposiciones
-    'preposition': { 
-      label: 'Preposición', 
-      color: 'text-orange-800', 
+    preposition: {
+      label: 'Preposición',
+      color: 'text-orange-800',
       bg: 'bg-orange-200',
-      explanation: 'Muestra la relación (espacial, temporal o lógica) entre palabras. (Ej: The cat is *under* the table, The book is *on* the shelf).'
+      explanation:
+        'Muestra la relación (espacial, temporal o lógica) entre palabras. (Ej: The cat is *under* the table, The book is *on* the shelf).',
     },
-    'prepositional-object': { 
-      label: 'Objeto de la preposición', 
-      color: 'text-amber-800', 
+    'prepositional-object': {
+      label: 'Objeto de la preposición',
+      color: 'text-amber-800',
       bg: 'bg-amber-200',
-      explanation: 'Sustantivo o pronombre que sigue a una preposición. (Ej: Under the *table*, On the *shelf*).'
+      explanation:
+        'Sustantivo o pronombre que sigue a una preposición. (Ej: Under the *table*, On the *shelf*).',
     },
     // Conectores
-    'conjunction': { 
-      label: 'Conjunción', 
-      color: 'text-gray-700', 
+    conjunction: {
+      label: 'Conjunción',
+      color: 'text-gray-700',
       bg: 'bg-gray-100',
-      explanation: 'Une palabras, frases u oraciones (ej: and, but, or). (Ej: Salt *and* pepper, I like reading *but* I don\'t like writing).'
+      explanation:
+        "Une palabras, frases u oraciones (ej: and, but, or). (Ej: Salt *and* pepper, I like reading *but* I don't like writing).",
     },
-    'interjection': { 
-      label: 'Interjección', 
-      color: 'text-red-700', 
+    interjection: {
+      label: 'Interjección',
+      color: 'text-red-700',
       bg: 'bg-red-100',
-      explanation: 'Palabra que expresa una emoción fuerte o exclamación. (Ej: *Wow*!, *Oh no*!).'
+      explanation: 'Palabra que expresa una emoción fuerte o exclamación. (Ej: *Wow*!, *Oh no*!).',
     },
     // Otros elementos
-    'negation': { 
-      label: 'Negación', 
-      color: 'text-red-800', 
+    negation: {
+      label: 'Negación',
+      color: 'text-red-800',
       bg: 'bg-red-200',
-      explanation: 'Palabra usada para negar o expresar lo opuesto. (Ej: I do *not* know, She is *not* happy).'
+      explanation:
+        'Palabra usada para negar o expresar lo opuesto. (Ej: I do *not* know, She is *not* happy).',
     },
-    'modal-verb': { 
-      label: 'Modal verb', 
-      color: 'text-lime-700', 
+    'modal-verb': {
+      label: 'Modal verb',
+      color: 'text-lime-700',
       bg: 'bg-lime-100',
-      explanation: 'Tipo de auxiliar que indica posibilidad, habilidad, permiso u obligación. (Ej: I *can* swim, She *must* go).'
+      explanation:
+        'Tipo de auxiliar que indica posibilidad, habilidad, permiso u obligación. (Ej: I *can* swim, She *must* go).',
     },
-    'infinitive': { 
-      label: 'Infinitivo', 
-      color: 'text-sky-600', 
+    infinitive: {
+      label: 'Infinitivo',
+      color: 'text-sky-600',
       bg: 'bg-sky-100',
-      explanation: 'La forma básica del verbo, generalmente precedida por "to". (Ej: To *learn*, To *go*).'
+      explanation:
+        'La forma básica del verbo, generalmente precedida por "to". (Ej: To *learn*, To *go*).',
     },
-    'gerund': { 
-      label: 'Gerundio', 
-      color: 'text-cyan-600', 
+    gerund: {
+      label: 'Gerundio',
+      color: 'text-cyan-600',
       bg: 'bg-cyan-100',
-      explanation: 'Forma verbal terminada en -ing que funciona como sustantivo. (Ej: *Swimming* is fun, *Eating* is healthy).'
+      explanation:
+        'Forma verbal terminada en -ing que funciona como sustantivo. (Ej: *Swimming* is fun, *Eating* is healthy).',
     },
-    'relative-pronoun': { 
-      label: 'Pronombre relativo', 
-      color: 'text-indigo-700', 
+    'relative-pronoun': {
+      label: 'Pronombre relativo',
+      color: 'text-indigo-700',
       bg: 'bg-indigo-100',
-      explanation: 'Introduce una oración que describe a un sustantivo previo (ej: who, which). (Ej: The man *who* called, The book *that* I read).'
+      explanation:
+        'Introduce una oración que describe a un sustantivo previo (ej: who, which). (Ej: The man *who* called, The book *that* I read).',
     },
     // Puntuación
-    'punctuation': { 
-      label: 'Puntuación', 
-      color: 'text-slate-500', 
+    punctuation: {
+      label: 'Puntuación',
+      color: 'text-slate-500',
       bg: 'bg-slate-100',
-      explanation: 'Signos que ayudan a estructurar y dar sentido al texto. (Ej: Hello*.*, I love reading*!*).'
+      explanation:
+        'Signos que ayudan a estructurar y dar sentido al texto. (Ej: Hello*.*, I love reading*!*).',
     },
-    'other': { 
-      label: 'Otro', 
-      color: 'text-zinc-700', 
+    other: {
+      label: 'Otro',
+      color: 'text-zinc-700',
       bg: 'bg-zinc-100',
-      explanation: 'Otros elementos gramaticales. (Ej: *etc*).'
-    }
+      explanation: 'Otros elementos gramaticales. (Ej: *etc*).',
+    },
   }
   return map[type || 'other'] || map['other']
 }
 
 // Embed Block Utility Functions
-function getEmbedType(url: string): 'youtube' | 'vimeo' | 'google-docs' | 'google-slides' | 'google-forms' | 'spotify' | 'soundcloud' | 'codepen' | 'figma' | 'canva' | 'genially' | 'iframe' {
+function getEmbedType(
+  url: string
+):
+  | 'youtube'
+  | 'vimeo'
+  | 'google-docs'
+  | 'google-slides'
+  | 'google-forms'
+  | 'spotify'
+  | 'soundcloud'
+  | 'codepen'
+  | 'figma'
+  | 'canva'
+  | 'genially'
+  | 'iframe' {
   if (!url) return 'iframe'
-  
+
   const lowerUrl = url.toLowerCase()
-  
+
   if (lowerUrl.includes('youtube.com') || lowerUrl.includes('youtu.be')) return 'youtube'
   if (lowerUrl.includes('vimeo.com')) return 'vimeo'
   if (lowerUrl.includes('docs.google.com/document')) return 'google-docs'
@@ -1328,16 +1580,19 @@ function getEmbedType(url: string): 'youtube' | 'vimeo' | 'google-docs' | 'googl
   if (lowerUrl.includes('figma.com')) return 'figma'
   if (lowerUrl.includes('canva.com')) return 'canva'
   if (lowerUrl.includes('genial.ly') || lowerUrl.includes('genially')) return 'genially'
-  
+
   return 'iframe'
 }
 
-function getGoogleSlidesEmbedUrl(url: string, options?: { autoplay?: boolean; loop?: boolean; delayMs?: number }): string {
+function getGoogleSlidesEmbedUrl(
+  url: string,
+  options?: { autoplay?: boolean; loop?: boolean; delayMs?: number }
+): string {
   let baseUrl = url
-  
+
   // Remove any existing query parameters and hash
   baseUrl = baseUrl.split('?')[0].split('#')[0]
-  
+
   // Convert /edit or /preview to /embed for proper embedding
   if (baseUrl.includes('/edit')) {
     baseUrl = baseUrl.replace('/edit', '/embed')
@@ -1348,31 +1603,34 @@ function getGoogleSlidesEmbedUrl(url: string, options?: { autoplay?: boolean; lo
   } else if (!baseUrl.endsWith('/embed')) {
     baseUrl = baseUrl.replace(/\/?$/, '/embed')
   }
-  
+
   // Build query parameters for Google Slides
   const params = new URLSearchParams()
-  
+
   if (options?.autoplay) {
     params.set('start', 'true')
   }
-  
+
   if (options?.loop) {
     params.set('loop', 'true')
   }
-  
+
   if (options?.delayMs) {
     params.set('delayms', options.delayMs.toString())
   }
-  
+
   const queryString = params.toString()
   return queryString ? `${baseUrl}?${queryString}` : baseUrl
 }
 
-function getEmbedUrl(url: string, options?: { autoplay?: boolean; loop?: boolean; delayMs?: number }): string {
+function getEmbedUrl(
+  url: string,
+  options?: { autoplay?: boolean; loop?: boolean; delayMs?: number }
+): string {
   if (!url) return ''
-  
+
   const embedType = getEmbedType(url)
-  
+
   switch (embedType) {
     case 'youtube': {
       let videoId = ''
@@ -1425,18 +1683,18 @@ function getEmbedUrl(url: string, options?: { autoplay?: boolean; loop?: boolean
 
 function getEmbedTypeLabel(type: string): string {
   const labels: Record<string, string> = {
-    'youtube': 'YouTube',
-    'vimeo': 'Vimeo',
+    youtube: 'YouTube',
+    vimeo: 'Vimeo',
     'google-docs': 'Google Docs',
     'google-slides': 'Google Slides',
     'google-forms': 'Google Forms',
-    'spotify': 'Spotify',
-    'soundcloud': 'SoundCloud',
-    'codepen': 'CodePen',
-    'figma': 'Figma',
-    'canva': 'Canva',
-    'genially': 'Genially',
-    'iframe': 'Contenido Web',
+    spotify: 'Spotify',
+    soundcloud: 'SoundCloud',
+    codepen: 'CodePen',
+    figma: 'Figma',
+    canva: 'Canva',
+    genially: 'Genially',
+    iframe: 'Contenido Web',
   }
   return labels[type] || 'Contenido Web'
 }
@@ -1461,14 +1719,10 @@ function EmbedBlockPreview({ block, hideHeader }: { block: EmbedBlock; hideHeade
         )}
         <div className="flex items-center gap-2">
           {isGoogleSlides && block.autoplay && (
-            <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">
-              Auto
-            </span>
+            <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">Auto</span>
           )}
           {isGoogleSlides && block.loop && (
-            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-              Loop
-            </span>
+            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">Loop</span>
           )}
           {block.url && (
             <span className="text-xs bg-muted px-2 py-1 rounded font-medium">
@@ -1489,7 +1743,8 @@ function EmbedBlockPreview({ block, hideHeader }: { block: EmbedBlock; hideHeade
           <Link className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
           <p className="text-muted-foreground">Contenido embebido no configurado</p>
           <p className="text-xs text-muted-foreground mt-2">
-            Soporta Google Slides, YouTube, Vimeo, Google Docs, Spotify, Figma, Canva, Genially y más
+            Soporta Google Slides, YouTube, Vimeo, Google Docs, Spotify, Figma, Canva, Genially y
+            más
           </p>
         </div>
       ) : (
@@ -1510,7 +1765,13 @@ function EmbedBlockPreview({ block, hideHeader }: { block: EmbedBlock; hideHeade
 }
 
 // Tab Group Block Preview
-function TabGroupBlockPreview({ block, hideHeader }: { block: TabGroupBlock; hideHeader?: boolean }) {
+function TabGroupBlockPreview({
+  block,
+  hideHeader,
+}: {
+  block: TabGroupBlock
+  hideHeader?: boolean
+}) {
   void hideHeader // Tab groups don't have a header to hide
   const [activeTabId, setActiveTabId] = useState<string>(block.children?.[0]?.id || '')
 
@@ -1518,7 +1779,8 @@ function TabGroupBlockPreview({ block, hideHeader }: { block: TabGroupBlock; hid
   // But be careful not to reset user selection unnecessarily.
   // We can use a simple effect or just default if current selection invalid.
   // Filter children to ensure they are TabItemBlocks
-  const tabs = (block.children?.filter((child): child is TabItemBlock => child.type === 'tab_item') || [])
+  const tabs =
+    block.children?.filter((child): child is TabItemBlock => child.type === 'tab_item') || []
   const activeTab = tabs.find((tab) => tab.id === activeTabId) || tabs[0]
 
   return (
@@ -1530,10 +1792,10 @@ function TabGroupBlockPreview({ block, hideHeader }: { block: TabGroupBlock; hid
               key={tab.id}
               onClick={() => setActiveTabId(tab.id)}
               className={cn(
-                "px-6 py-3 text-sm font-medium border-r last:border-r-0 whitespace-nowrap transition-all",
-                (activeTab?.id === tab.id)
-                  ? "bg-background text-primary border-b-2 border-b-primary -mb-px font-bold"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                'px-6 py-3 text-sm font-medium border-r last:border-r-0 whitespace-nowrap transition-all',
+                activeTab?.id === tab.id
+                  ? 'bg-background text-primary border-b-2 border-b-primary -mb-px font-bold'
+                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
               )}
             >
               {tab.title}
@@ -1556,9 +1818,7 @@ function TabGroupBlockPreview({ block, hideHeader }: { block: TabGroupBlock; hid
               )}
             </div>
           ) : (
-            <div className="text-center py-10 text-muted-foreground">
-              Selecciona una pestaña
-            </div>
+            <div className="text-center py-10 text-muted-foreground">Selecciona una pestaña</div>
           )}
         </div>
       </div>
@@ -1569,7 +1829,7 @@ function TabGroupBlockPreview({ block, hideHeader }: { block: TabGroupBlock; hid
 function LayoutBlockPreview({ block, hideHeader }: { block: LayoutBlock; hideHeader?: boolean }) {
   return (
     <div className="grid gap-6" style={{ gridTemplateColumns: `repeat(${block.columns}, 1fr)` }}>
-      {block.children?.map(col => (
+      {block.children?.map((col) => (
         <div key={col.id} className="min-h-[50px]">
           {col.children?.map((child: Block) => (
             <div key={child.id} className="mb-4 last:mb-0">
@@ -1611,10 +1871,12 @@ function GrammarBlockPreview({ block, hideHeader }: { block: GrammarBlock; hideH
           />
 
           {block.examples && block.examples.length > 0 && (
-            <div className={cn(
-              "bg-muted/50 rounded-lg p-4 space-y-2 border-l-4 border-primary mt-4",
-              "text-muted-foreground"
-            )}>
+            <div
+              className={cn(
+                'bg-muted/50 rounded-lg p-4 space-y-2 border-l-4 border-primary mt-4',
+                'text-muted-foreground'
+              )}
+            >
               <p className="font-medium text-foreground">Ejemplo:</p>
               {block.examples.map((ex) => (
                 <div key={ex.id}>
@@ -1622,7 +1884,9 @@ function GrammarBlockPreview({ block, hideHeader }: { block: GrammarBlock; hideH
                     className="font-mono text-sm mt-1 [&_b]:text-blue-600 [&_b]:font-bold"
                     dangerouslySetInnerHTML={{ __html: ex.sentence }}
                   />
-                  {ex.translation && <p className="text-xs text-muted-foreground italic">{ex.translation}</p>}
+                  {ex.translation && (
+                    <p className="text-xs text-muted-foreground italic">{ex.translation}</p>
+                  )}
                 </div>
               ))}
             </div>
@@ -1637,7 +1901,8 @@ function GrammarBlockPreview({ block, hideHeader }: { block: GrammarBlock; hideH
               <Image src={block.image} alt="Grammar illustration" fill className="object-cover" />
             ) : (
               (() => {
-                const Icon = (LucideIcons as unknown as Record<string, React.ElementType>)[block.image] || Book
+                const Icon =
+                  (LucideIcons as unknown as Record<string, React.ElementType>)[block.image] || Book
                 return <Icon className="h-32 w-32 text-blue-500/80" />
               })()
             )
@@ -1653,18 +1918,22 @@ function GrammarBlockPreview({ block, hideHeader }: { block: GrammarBlock; hideH
   )
 }
 
-
-
 // ... existing imports ...
 
-// Note: Ensure this import is at the top of the file, merged with existing lucide-react imports or as a separate one if easier for the tool. 
+// Note: Ensure this import is at the top of the file, merged with existing lucide-react imports or as a separate one if easier for the tool.
 // Since I can't easily merge imports with replace_file_content if I don't see the top, I will handle the component logic and assume I need to direct the user or just patch the component.
 // Actually, I can just use the existing imports if I knew them, but dynamic requires all.
 // I will create a helper component inside the file to avoid import issues or reuse the existing one if I can view top.
 // I'll just skip the import patch for a second and assume I can use `LucideIcons` if I add it.
 // Let's add the import to the existing list or a new line.
 
-function VocabularyBlockPreview({ block, hideHeader }: { block: VocabularyBlock; hideHeader?: boolean }) {
+function VocabularyBlockPreview({
+  block,
+  hideHeader,
+}: {
+  block: VocabularyBlock
+  hideHeader?: boolean
+}) {
   const hasItems = block.items && block.items.length > 0
 
   if (!block.title && !hasItems) {
@@ -1696,7 +1965,8 @@ function VocabularyBlockPreview({ block, hideHeader }: { block: VocabularyBlock;
         {block.items?.map((item) => {
           // Dynamic Icon Rendering
           const iconName = item.icon || 'Book'
-          const IconComponent = (LucideIcons as unknown as Record<string, React.ElementType>)[iconName] || Book
+          const IconComponent =
+            (LucideIcons as unknown as Record<string, React.ElementType>)[iconName] || Book
 
           return (
             <Card key={item.id}>
@@ -1712,8 +1982,8 @@ function VocabularyBlockPreview({ block, hideHeader }: { block: VocabularyBlock;
                         <button
                           className="text-blue-500 hover:text-blue-700 transition-colors p-0.5 rounded-full hover:bg-blue-50"
                           onClick={() => {
-                            const audio = new Audio(item.audioUrl);
-                            audio.play();
+                            const audio = new Audio(item.audioUrl)
+                            audio.play()
                           }}
                           title="Escuchar pronunciación"
                         >
@@ -1722,7 +1992,9 @@ function VocabularyBlockPreview({ block, hideHeader }: { block: VocabularyBlock;
                       )}
                     </div>
                     {item.pronunciation && (
-                      <span className="text-xs text-muted-foreground font-mono shrink-0">/{item.pronunciation}/</span>
+                      <span className="text-xs text-muted-foreground font-mono shrink-0">
+                        /{item.pronunciation}/
+                      </span>
                     )}
                   </div>
 
@@ -1734,7 +2006,9 @@ function VocabularyBlockPreview({ block, hideHeader }: { block: VocabularyBlock;
 
                   {item.example && item.example.trim() !== '' && (
                     <div className="mt-2 pt-2 border-t border-border/50">
-                      <span className="text-xs font-semibold text-muted-foreground block mb-0.5">Ejemplo:</span>
+                      <span className="text-xs font-semibold text-muted-foreground block mb-0.5">
+                        Ejemplo:
+                      </span>
                       <p
                         className="text-sm italic text-muted-foreground [&_b]:text-blue-600 [&_b]:font-bold"
                         dangerouslySetInnerHTML={{ __html: item.example }}
@@ -1756,33 +2030,44 @@ function VocabularyBlockPreview({ block, hideHeader }: { block: VocabularyBlock;
   )
 }
 
-function FillBlanksBlockPreview({ block, isExamMode, hideHeader }: { block: FillBlanksBlock; isExamMode?: boolean; hideHeader?: boolean }) {
+function FillBlanksBlockPreview({
+  block,
+  isExamMode,
+  hideHeader,
+}: {
+  block: FillBlanksBlock
+  isExamMode?: boolean
+  hideHeader?: boolean
+}) {
   void hideHeader // Fill blanks blocks have a different layout
   const [index, setIndex] = useState(0)
   const [allInputs, setAllInputs] = useState<Record<string, Record<number, string>>>({})
   const [allResults, setAllResults] = useState<Record<string, boolean>>({})
   const items = block.items || []
   const currentItem = items[index]
-  
+
   // Get classroom sync
   const classroomSync = useClassroomSync()
   const remoteNav = classroomSync.getRemoteNavigation(block.id)
   const isTeacherInClassroom = classroomSync.isInClassroom && classroomSync.isTeacher
-  
+
   // For teachers: follow student's navigation
   const displayIndex = isTeacherInClassroom && remoteNav ? remoteNav.currentStep : index
   const displayItem = items[displayIndex]
-  
+
   // Parse remote answers for display
-  const displayInputs = isTeacherInClassroom && remoteNav?.currentAnswers 
-    ? Object.fromEntries(Object.entries(remoteNav.currentAnswers).map(([k, v]) => [parseInt(k), v]))
-    : (allInputs[displayItem?.id] || {})
+  const displayInputs =
+    isTeacherInClassroom && remoteNav?.currentAnswers
+      ? Object.fromEntries(
+          Object.entries(remoteNav.currentAnswers).map(([k, v]) => [parseInt(k), v])
+        )
+      : allInputs[displayItem?.id] || {}
 
   const handleInputChange = (partIndex: number, value: string) => {
     if (isTeacherInClassroom || !currentItem) return
     const newInputs = { ...allInputs[currentItem.id], [partIndex]: value }
-    setAllInputs(prev => ({ ...prev, [currentItem.id]: newInputs }))
-    
+    setAllInputs((prev) => ({ ...prev, [currentItem.id]: newInputs }))
+
     // Sync to teacher
     if (classroomSync.canInteract) {
       const answersForSync = Object.fromEntries(Object.entries(newInputs).map(([k, v]) => [k, v]))
@@ -1794,7 +2079,7 @@ function FillBlanksBlockPreview({ block, isExamMode, hideHeader }: { block: Fill
     if (isTeacherInClassroom || !currentItem) return
     const parts = currentItem.content ? currentItem.content.split(/(\[[^\]]+\])/g) : []
     const inputs = allInputs[currentItem.id] || {}
-    const blanks = parts.filter(part => part.startsWith('[') && part.endsWith(']'))
+    const blanks = parts.filter((part) => part.startsWith('[') && part.endsWith(']'))
     let correctCount = 0
     blanks.forEach((part) => {
       const answer = part.slice(1, -1)
@@ -1803,26 +2088,41 @@ function FillBlanksBlockPreview({ block, isExamMode, hideHeader }: { block: Fill
       if (userAnswer.toLowerCase().trim() === answer.toLowerCase().trim()) correctCount++
     })
     const allCorrect = correctCount === blanks.length
-    setAllResults(prev => ({ ...prev, [currentItem.id]: allCorrect }))
-    
+    setAllResults((prev) => ({ ...prev, [currentItem.id]: allCorrect }))
+
     // Sync result to teacher
     if (classroomSync.canInteract) {
-      classroomSync.sendBlockResponse(block.id, 'fill_blanks', {
-        itemId: currentItem.id,
-        correctCount,
-        totalBlanks: blanks.length,
-      }, allCorrect, correctCount)
+      classroomSync.sendBlockResponse(
+        block.id,
+        'fill_blanks',
+        {
+          itemId: currentItem.id,
+          correctCount,
+          totalBlanks: blanks.length,
+        },
+        allCorrect,
+        correctCount
+      )
     }
   }
 
   const handleNav = (newIndex: number) => {
     if (isTeacherInClassroom) return
     setIndex(newIndex)
-    
+
     if (classroomSync.canInteract) {
       const currentInputs = allInputs[items[newIndex]?.id] || {}
-      const answersForSync = Object.fromEntries(Object.entries(currentInputs).map(([k, v]) => [k, v]))
-      classroomSync.syncBlockNavigation(block.id, newIndex, items.length, true, false, answersForSync)
+      const answersForSync = Object.fromEntries(
+        Object.entries(currentInputs).map(([k, v]) => [k, v])
+      )
+      classroomSync.syncBlockNavigation(
+        block.id,
+        newIndex,
+        items.length,
+        true,
+        false,
+        answersForSync
+      )
     }
   }
 
@@ -1860,7 +2160,10 @@ function FillBlanksBlockPreview({ block, isExamMode, hideHeader }: { block: Fill
       {block.title && <h3 className="text-xl font-bold">{block.title}</h3>}
 
       <div className="relative">
-        <div key={displayItem?.id} className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
+        <div
+          key={displayItem?.id}
+          className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300"
+        >
           <div className="p-6 bg-white rounded-xl border shadow-sm leading-loose text-lg">
             {parts.map((part, i) => {
               if (part.startsWith('[') && part.endsWith(']')) {
@@ -1874,13 +2177,15 @@ function FillBlanksBlockPreview({ block, isExamMode, hideHeader }: { block: Fill
                       value={userAnswer}
                       onChange={(e) => handleInputChange(i, e.target.value)}
                       disabled={showResult || isTeacherInClassroom}
-                      placeholder={isTeacherInClassroom ? "..." : ""}
+                      placeholder={isTeacherInClassroom ? '...' : ''}
                       className={cn(
-                        "border-b-2 px-2 py-0.5 text-center min-w-[80px] font-medium focus:outline-none rounded-t transition-colors",
+                        'border-b-2 px-2 py-0.5 text-center min-w-[80px] font-medium focus:outline-none rounded-t transition-colors',
                         showResult
-                          ? (isCorrect ? "border-green-500 bg-green-50 text-green-700" : "border-red-500 bg-red-50 text-red-700")
-                          : "border-primary/50 bg-primary/5 text-primary",
-                        isTeacherInClassroom && "cursor-default"
+                          ? isCorrect
+                            ? 'border-green-500 bg-green-50 text-green-700'
+                            : 'border-red-500 bg-red-50 text-red-700'
+                          : 'border-primary/50 bg-primary/5 text-primary',
+                        isTeacherInClassroom && 'cursor-default'
                       )}
                     />
                     {showResult && !isCorrect && (
@@ -1893,7 +2198,7 @@ function FillBlanksBlockPreview({ block, isExamMode, hideHeader }: { block: Fill
               }
               return <span key={i}>{part}</span>
             })}
-            {(!displayItem?.content) && (
+            {!displayItem?.content && (
               <div className="text-muted-foreground italic text-sm">Contenido no configurado</div>
             )}
           </div>
@@ -1905,9 +2210,11 @@ function FillBlanksBlockPreview({ block, isExamMode, hideHeader }: { block: Fill
               </Button>
             </div>
           )}
-          
+
           {isTeacherInClassroom && !showResult && (
-            <p className="text-sm text-muted-foreground italic text-center">Esperando respuesta del estudiante...</p>
+            <p className="text-sm text-muted-foreground italic text-center">
+              Esperando respuesta del estudiante...
+            </p>
           )}
         </div>
 
@@ -1936,26 +2243,35 @@ function FillBlanksBlockPreview({ block, isExamMode, hideHeader }: { block: Fill
   )
 }
 
-function MatchBlockPreview({ block, isExamMode, hideHeader }: { block: MatchBlock; isExamMode?: boolean; hideHeader?: boolean }) {
+function MatchBlockPreview({
+  block,
+  isExamMode,
+  hideHeader,
+}: {
+  block: MatchBlock
+  isExamMode?: boolean
+  hideHeader?: boolean
+}) {
   void hideHeader // Match blocks have a different layout
   const [selectedLeft, setSelectedLeft] = useState<string | null>(null)
   const [matches, setMatches] = useState<Record<string, string>>({}) // leftId -> rightId
-  const [shuffledRight, setShuffledRight] = useState<Array<{ id: string, text: string }>>([])
+  const [shuffledRight, setShuffledRight] = useState<Array<{ id: string; text: string }>>([])
   const [showResultState, setShowResultState] = useState(false)
   const showResult = !isExamMode && showResultState
-  
+
   // Get classroom sync
   const classroomSync = useClassroomSync()
   const remoteNav = classroomSync.getRemoteNavigation(block.id)
   const isTeacherInClassroom = classroomSync.isInClassroom && classroomSync.isTeacher
-  
+
   // For teachers: use remote matches
-  const displayMatches = isTeacherInClassroom && remoteNav?.currentAnswers ? remoteNav.currentAnswers : matches
+  const displayMatches =
+    isTeacherInClassroom && remoteNav?.currentAnswers ? remoteNav.currentAnswers : matches
 
   // Shuffle effects
   const init = () => {
     if (block.pairs) {
-      const rightSide = block.pairs.map(p => ({ id: p.id, text: p.right }))
+      const rightSide = block.pairs.map((p) => ({ id: p.id, text: p.right }))
       // Simple shuffle
       setShuffledRight([...rightSide].sort(() => Math.random() - 0.5))
       setMatches({})
@@ -1967,7 +2283,7 @@ function MatchBlockPreview({ block, isExamMode, hideHeader }: { block: MatchBloc
   // Initialize on mount or block change
   useEffect(() => {
     init()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Re-shuffle when block pairs change effectively (or manual reset)
@@ -1982,10 +2298,17 @@ function MatchBlockPreview({ block, isExamMode, hideHeader }: { block: MatchBloc
       const newMatches = { ...matches }
       delete newMatches[id]
       setMatches(newMatches)
-      
+
       // Sync to teacher
       if (classroomSync.canInteract) {
-        classroomSync.syncBlockNavigation(block.id, 0, block.pairs?.length || 0, true, false, newMatches)
+        classroomSync.syncBlockNavigation(
+          block.id,
+          0,
+          block.pairs?.length || 0,
+          true,
+          false,
+          newMatches
+        )
       }
     }
     setSelectedLeft(id)
@@ -1997,10 +2320,17 @@ function MatchBlockPreview({ block, isExamMode, hideHeader }: { block: MatchBloc
       const newMatches = { ...matches, [selectedLeft]: rightId }
       setMatches(newMatches)
       setSelectedLeft(null)
-      
+
       // Sync to teacher
       if (classroomSync.canInteract) {
-        classroomSync.syncBlockNavigation(block.id, 0, block.pairs?.length || 0, true, false, newMatches)
+        classroomSync.syncBlockNavigation(
+          block.id,
+          0,
+          block.pairs?.length || 0,
+          true,
+          false,
+          newMatches
+        )
       }
     }
   }
@@ -2008,16 +2338,24 @@ function MatchBlockPreview({ block, isExamMode, hideHeader }: { block: MatchBloc
   const checkAnswers = () => {
     if (isTeacherInClassroom || isExamMode) return
     setShowResultState(true)
-    
+
     // Calculate and sync result
     if (classroomSync.canInteract && block.pairs) {
-      const correctMatches = Object.keys(matches).filter(leftId => matches[leftId] === leftId).length
+      const correctMatches = Object.keys(matches).filter(
+        (leftId) => matches[leftId] === leftId
+      ).length
       const allCorrect = correctMatches === block.pairs.length
-      classroomSync.sendBlockResponse(block.id, 'match', {
-        matches,
-        correctCount: correctMatches,
-        totalPairs: block.pairs.length,
-      }, allCorrect, correctMatches)
+      classroomSync.sendBlockResponse(
+        block.id,
+        'match',
+        {
+          matches,
+          correctCount: correctMatches,
+          totalPairs: block.pairs.length,
+        },
+        allCorrect,
+        correctMatches
+      )
     }
   }
 
@@ -2032,21 +2370,22 @@ function MatchBlockPreview({ block, isExamMode, hideHeader }: { block: MatchBloc
       <div className="grid grid-cols-2 gap-8 relative p-4">
         {/* Left Side */}
         <div className="space-y-4">
-          {block.pairs?.map(pair => {
+          {block.pairs?.map((pair) => {
             const isMatched = !!displayMatches[pair.id]
             const isSelected = selectedLeft === pair.id
             const matchedRightId = displayMatches[pair.id]
 
             // Check correctness if showing result
-            let statusClass = "border-gray-200 bg-white"
+            let statusClass = 'border-gray-200 bg-white'
             if (showResult && isMatched) {
-              statusClass = matchedRightId === pair.id
-                ? "border-green-500 bg-green-50"
-                : "border-red-500 bg-red-50"
+              statusClass =
+                matchedRightId === pair.id
+                  ? 'border-green-500 bg-green-50'
+                  : 'border-red-500 bg-red-50'
             } else if (isSelected && !isTeacherInClassroom) {
-              statusClass = "border-blue-500 bg-blue-50 ring-2 ring-blue-200"
+              statusClass = 'border-blue-500 bg-blue-50 ring-2 ring-blue-200'
             } else if (isMatched) {
-              statusClass = "border-blue-200 bg-blue-50/50"
+              statusClass = 'border-blue-200 bg-blue-50/50'
             }
 
             return (
@@ -2054,13 +2393,18 @@ function MatchBlockPreview({ block, isExamMode, hideHeader }: { block: MatchBloc
                 key={`l-${pair.id}`}
                 onClick={() => handleLeftClick(pair.id)}
                 className={cn(
-                  "p-4 border rounded-lg shadow-sm font-medium flex items-center justify-between transition-all",
-                  isTeacherInClassroom ? "cursor-default" : "cursor-pointer hover:shadow-md",
+                  'p-4 border rounded-lg shadow-sm font-medium flex items-center justify-between transition-all',
+                  isTeacherInClassroom ? 'cursor-default' : 'cursor-pointer hover:shadow-md',
                   statusClass
                 )}
               >
                 {pair.left}
-                <div className={cn("h-3 w-3 rounded-full -mr-5 border-2 border-white ring-1 ring-gray-200", isMatched || isSelected ? "bg-blue-500" : "bg-gray-200")}></div>
+                <div
+                  className={cn(
+                    'h-3 w-3 rounded-full -mr-5 border-2 border-white ring-1 ring-gray-200',
+                    isMatched || isSelected ? 'bg-blue-500' : 'bg-gray-200'
+                  )}
+                ></div>
               </div>
             )
           })}
@@ -2068,18 +2412,21 @@ function MatchBlockPreview({ block, isExamMode, hideHeader }: { block: MatchBloc
 
         {/* Right Side */}
         <div className="space-y-4">
-          {shuffledRight.map(item => {
+          {shuffledRight.map((item) => {
             // Find which left ID is connected to this right ID
-            const connectedLeftId = Object.keys(displayMatches).find(key => displayMatches[key] === item.id)
+            const connectedLeftId = Object.keys(displayMatches).find(
+              (key) => displayMatches[key] === item.id
+            )
             const isConnected = !!connectedLeftId
 
-            let statusClass = "border-2 border-dashed border-gray-200 bg-muted/30"
+            let statusClass = 'border-2 border-dashed border-gray-200 bg-muted/30'
             if (showResult && isConnected) {
-              statusClass = connectedLeftId === item.id
-                ? "border-green-500 bg-green-50 border-solid"
-                : "border-red-500 bg-red-50 border-solid"
+              statusClass =
+                connectedLeftId === item.id
+                  ? 'border-green-500 bg-green-50 border-solid'
+                  : 'border-red-500 bg-red-50 border-solid'
             } else if (isConnected) {
-              statusClass = "border-blue-300 bg-blue-50/50 border-solid"
+              statusClass = 'border-blue-300 bg-blue-50/50 border-solid'
             }
 
             return (
@@ -2087,11 +2434,16 @@ function MatchBlockPreview({ block, isExamMode, hideHeader }: { block: MatchBloc
                 key={`r-${item.id}`}
                 onClick={() => handleRightClick(item.id)}
                 className={cn(
-                  "p-4 rounded-lg text-muted-foreground flex items-center gap-2 cursor-pointer transition-all hover:bg-muted",
+                  'p-4 rounded-lg text-muted-foreground flex items-center gap-2 cursor-pointer transition-all hover:bg-muted',
                   statusClass
                 )}
               >
-                <div className={cn("h-3 w-3 rounded-full -ml-5 border-2 border-white ring-1 ring-gray-200", isConnected ? "bg-blue-500" : "bg-gray-200")}></div>
+                <div
+                  className={cn(
+                    'h-3 w-3 rounded-full -ml-5 border-2 border-white ring-1 ring-gray-200',
+                    isConnected ? 'bg-blue-500' : 'bg-gray-200'
+                  )}
+                ></div>
                 <span className="flex-1 text-right">{item.text}</span>
               </div>
             )
@@ -2110,77 +2462,87 @@ function MatchBlockPreview({ block, isExamMode, hideHeader }: { block: MatchBloc
         </div>
       )}
 
-      {showResult && block.pairs && block.pairs.length > 0 && (() => {
-        const correctMatches = Object.keys(matches).filter(leftId => matches[leftId] === leftId).length
-        const totalPairs = block.pairs.length
-        const allCorrect = correctMatches === totalPairs
-        
-        return (
-          <div className="space-y-4">
-            <div className={cn(
-              "p-4 rounded-lg text-center",
-              allCorrect ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"
-            )}>
-              <p className="font-bold">
-                {allCorrect 
-                  ? "¡Perfecto! Todos los pares están correctos" 
-                  : `${correctMatches} de ${totalPairs} pares correctos`}
-              </p>
-            </div>
+      {showResult &&
+        block.pairs &&
+        block.pairs.length > 0 &&
+        (() => {
+          const correctMatches = Object.keys(matches).filter(
+            (leftId) => matches[leftId] === leftId
+          ).length
+          const totalPairs = block.pairs.length
+          const allCorrect = correctMatches === totalPairs
 
-            {/* Detalle de cada par */}
-            {!allCorrect && (
-              <div className="space-y-2 border-t pt-4">
-                <h4 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider">
-                  Revisión de pares
-                </h4>
-                {block.pairs.map((pair) => {
-                  const userMatchedRightId = matches[pair.id]
-                  const userMatchedRight = shuffledRight.find(r => r.id === userMatchedRightId)
-                  const isCorrect = userMatchedRightId === pair.id
-                  
-                  return (
-                    <div 
-                      key={pair.id}
-                      className={cn(
-                        "p-3 rounded-lg border-2 flex items-center gap-3",
-                        isCorrect 
-                          ? "bg-green-50 border-green-200" 
-                          : "bg-red-50 border-red-200"
-                      )}
-                    >
-                      <span className={cn(
-                        "shrink-0 h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold",
-                        isCorrect ? "bg-green-500 text-white" : "bg-red-500 text-white"
-                      )}>
-                        {isCorrect ? '✓' : '✗'}
-                      </span>
-                      
-                      <div className="flex-1 text-sm">
-                        <div className="flex items-center gap-2 font-medium">
-                          <span>{pair.left}</span>
-                          <span className="text-muted-foreground">→</span>
-                          {isCorrect ? (
-                            <span className="text-green-700">{pair.right}</span>
-                          ) : (
-                            <span className="text-red-600 line-through">{userMatchedRight?.text || '(sin emparejar)'}</span>
+          return (
+            <div className="space-y-4">
+              <div
+                className={cn(
+                  'p-4 rounded-lg text-center',
+                  allCorrect ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
+                )}
+              >
+                <p className="font-bold">
+                  {allCorrect
+                    ? '¡Perfecto! Todos los pares están correctos'
+                    : `${correctMatches} de ${totalPairs} pares correctos`}
+                </p>
+              </div>
+
+              {/* Detalle de cada par */}
+              {!allCorrect && (
+                <div className="space-y-2 border-t pt-4">
+                  <h4 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider">
+                    Revisión de pares
+                  </h4>
+                  {block.pairs.map((pair) => {
+                    const userMatchedRightId = matches[pair.id]
+                    const userMatchedRight = shuffledRight.find((r) => r.id === userMatchedRightId)
+                    const isCorrect = userMatchedRightId === pair.id
+
+                    return (
+                      <div
+                        key={pair.id}
+                        className={cn(
+                          'p-3 rounded-lg border-2 flex items-center gap-3',
+                          isCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'
+                        )}
+                      >
+                        <span
+                          className={cn(
+                            'shrink-0 h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold',
+                            isCorrect ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+                          )}
+                        >
+                          {isCorrect ? '✓' : '✗'}
+                        </span>
+
+                        <div className="flex-1 text-sm">
+                          <div className="flex items-center gap-2 font-medium">
+                            <span>{pair.left}</span>
+                            <span className="text-muted-foreground">→</span>
+                            {isCorrect ? (
+                              <span className="text-green-700">{pair.right}</span>
+                            ) : (
+                              <span className="text-red-600 line-through">
+                                {userMatchedRight?.text || '(sin emparejar)'}
+                              </span>
+                            )}
+                          </div>
+
+                          {!isCorrect && (
+                            <p className="text-green-700 mt-1">
+                              <span className="font-medium">Correcto:</span> {pair.left} →{' '}
+                              <strong>{pair.right}</strong>
+                            </p>
                           )}
                         </div>
-                        
-                        {!isCorrect && (
-                          <p className="text-green-700 mt-1">
-                            <span className="font-medium">Correcto:</span> {pair.left} → <strong>{pair.right}</strong>
-                          </p>
-                        )}
                       </div>
-                    </div>
-                  )
-                })}
-              </div>
-            )}
-          </div>
-        )
-      })()}
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+          )
+        })()}
 
       {(!block.pairs || block.pairs.length === 0) && (
         <div className="text-center p-4 border border-dashed rounded text-muted-foreground">
@@ -2191,34 +2553,47 @@ function MatchBlockPreview({ block, isExamMode, hideHeader }: { block: MatchBloc
   )
 }
 
-function TrueFalseBlockPreview({ block, isExamMode, hideHeader }: { block: TrueFalseBlock; isExamMode?: boolean; hideHeader?: boolean }) {
+function TrueFalseBlockPreview({
+  block,
+  isExamMode,
+  hideHeader,
+}: {
+  block: TrueFalseBlock
+  isExamMode?: boolean
+  hideHeader?: boolean
+}) {
   void hideHeader // True/false blocks have a different layout
   const [index, setIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, boolean | null>>({})
   const [results, setResults] = useState<Record<string, boolean>>({})
   const items = block.items || []
   const currentItem = items[index]
-  
+
   // Get classroom sync
   const classroomSync = useClassroomSync()
   const remoteNav = classroomSync.getRemoteNavigation(block.id)
   const isTeacherInClassroom = classroomSync.isInClassroom && classroomSync.isTeacher
-  
+
   // For teachers: follow student's navigation
   const displayIndex = isTeacherInClassroom && remoteNav ? remoteNav.currentStep : index
   const displayItem = items[displayIndex]
-  const displayAnswers = isTeacherInClassroom && remoteNav?.currentAnswers 
-    ? Object.fromEntries(Object.entries(remoteNav.currentAnswers).map(([k, v]) => [k, v === 'true']))
-    : answers
+  const displayAnswers =
+    isTeacherInClassroom && remoteNav?.currentAnswers
+      ? Object.fromEntries(
+          Object.entries(remoteNav.currentAnswers).map(([k, v]) => [k, v === 'true'])
+        )
+      : answers
 
   const handleSelect = (value: boolean) => {
     if (isTeacherInClassroom || !currentItem) return
     const newAnswers = { ...answers, [currentItem.id]: value }
     setAnswers(newAnswers)
-    
+
     // Sync to teacher
     if (classroomSync.canInteract) {
-      const answersForSync = Object.fromEntries(Object.entries(newAnswers).map(([k, v]) => [k, String(v)]))
+      const answersForSync = Object.fromEntries(
+        Object.entries(newAnswers).map(([k, v]) => [k, String(v)])
+      )
       classroomSync.syncBlockNavigation(block.id, index, items.length, true, false, answersForSync)
     }
   }
@@ -2226,25 +2601,40 @@ function TrueFalseBlockPreview({ block, isExamMode, hideHeader }: { block: TrueF
   const handleCheck = () => {
     if (isTeacherInClassroom || !currentItem) return
     const isCorrect = answers[currentItem.id] === currentItem.correctAnswer
-    setResults(prev => ({ ...prev, [currentItem.id]: isCorrect }))
-    
+    setResults((prev) => ({ ...prev, [currentItem.id]: isCorrect }))
+
     // Sync result to teacher
     if (classroomSync.canInteract) {
-      classroomSync.sendBlockResponse(block.id, 'true_false', {
-        itemId: currentItem.id,
-        answer: answers[currentItem.id],
+      classroomSync.sendBlockResponse(
+        block.id,
+        'true_false',
+        {
+          itemId: currentItem.id,
+          answer: answers[currentItem.id],
+          isCorrect,
+        },
         isCorrect,
-      }, isCorrect, isCorrect ? 1 : 0)
+        isCorrect ? 1 : 0
+      )
     }
   }
 
   const handleNav = (newIndex: number) => {
     if (isTeacherInClassroom) return
     setIndex(newIndex)
-    
+
     if (classroomSync.canInteract) {
-      const answersForSync = Object.fromEntries(Object.entries(answers).map(([k, v]) => [k, String(v)]))
-      classroomSync.syncBlockNavigation(block.id, newIndex, items.length, true, false, answersForSync)
+      const answersForSync = Object.fromEntries(
+        Object.entries(answers).map(([k, v]) => [k, String(v)])
+      )
+      classroomSync.syncBlockNavigation(
+        block.id,
+        newIndex,
+        items.length,
+        true,
+        false,
+        answersForSync
+      )
     }
   }
 
@@ -2283,9 +2673,12 @@ function TrueFalseBlockPreview({ block, isExamMode, hideHeader }: { block: TrueF
       {block.title && <h3 className="text-xl font-bold">{block.title}</h3>}
 
       <div className="relative">
-        <div key={displayItem?.id} className="p-6 bg-white border rounded-xl shadow-sm text-center space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
+        <div
+          key={displayItem?.id}
+          className="p-6 bg-white border rounded-xl shadow-sm text-center space-y-6 animate-in fade-in slide-in-from-right-4 duration-300"
+        >
           <h3 className="text-xl font-medium leading-relaxed">
-            {displayItem?.statement || "Afirmación..."}
+            {displayItem?.statement || 'Afirmación...'}
           </h3>
 
           <div className="flex justify-center gap-4">
@@ -2293,11 +2686,11 @@ function TrueFalseBlockPreview({ block, isExamMode, hideHeader }: { block: TrueF
               onClick={() => handleSelect(true)}
               disabled={showResult || isTeacherInClassroom}
               className={cn(
-                "px-8 py-3 rounded-lg border-2 font-bold transition-all flex items-center gap-2",
+                'px-8 py-3 rounded-lg border-2 font-bold transition-all flex items-center gap-2',
                 currentAnswer === true
-                  ? "bg-green-600 text-white border-green-600"
-                  : "bg-green-50 text-green-700 border-green-100 hover:bg-green-100",
-                isTeacherInClassroom && "cursor-default"
+                  ? 'bg-green-600 text-white border-green-600'
+                  : 'bg-green-50 text-green-700 border-green-100 hover:bg-green-100',
+                isTeacherInClassroom && 'cursor-default'
               )}
             >
               Verdadero
@@ -2306,11 +2699,11 @@ function TrueFalseBlockPreview({ block, isExamMode, hideHeader }: { block: TrueF
               onClick={() => handleSelect(false)}
               disabled={showResult || isTeacherInClassroom}
               className={cn(
-                "px-8 py-3 rounded-lg border-2 font-bold transition-all flex items-center gap-2",
+                'px-8 py-3 rounded-lg border-2 font-bold transition-all flex items-center gap-2',
                 currentAnswer === false
-                  ? "bg-red-600 text-white border-red-600"
-                  : "bg-red-50 text-red-700 border-red-100 hover:bg-red-100",
-                isTeacherInClassroom && "cursor-default"
+                  ? 'bg-red-600 text-white border-red-600'
+                  : 'bg-red-50 text-red-700 border-red-100 hover:bg-red-100',
+                isTeacherInClassroom && 'cursor-default'
               )}
             >
               Falso
@@ -2318,29 +2711,36 @@ function TrueFalseBlockPreview({ block, isExamMode, hideHeader }: { block: TrueF
           </div>
 
           {showResult && (
-            <div className={cn(
-              "p-4 rounded-lg text-center space-y-2",
-              currentResult ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-            )}>
-              <p className="font-bold text-lg">
-                {currentResult ? "¡Correcto!" : "Incorrecto"}
-              </p>
+            <div
+              className={cn(
+                'p-4 rounded-lg text-center space-y-2',
+                currentResult ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+              )}
+            >
+              <p className="font-bold text-lg">{currentResult ? '¡Correcto!' : 'Incorrecto'}</p>
               {!currentResult && displayItem && (
                 <p className="text-sm">
-                  La respuesta correcta es: <strong>{displayItem.correctAnswer ? "Verdadero" : "Falso"}</strong>
+                  La respuesta correcta es:{' '}
+                  <strong>{displayItem.correctAnswer ? 'Verdadero' : 'Falso'}</strong>
                 </p>
               )}
             </div>
           )}
 
           {!showResult && !isTeacherInClassroom && !isExamMode && (
-            <Button onClick={handleCheck} disabled={currentAnswer === null || currentAnswer === undefined} size="sm">
+            <Button
+              onClick={handleCheck}
+              disabled={currentAnswer === null || currentAnswer === undefined}
+              size="sm"
+            >
               Enviar Respuesta
             </Button>
           )}
-          
+
           {isTeacherInClassroom && !showResult && (
-            <p className="text-sm text-muted-foreground italic">Esperando respuesta del estudiante...</p>
+            <p className="text-sm text-muted-foreground italic">
+              Esperando respuesta del estudiante...
+            </p>
           )}
         </div>
 
@@ -2369,46 +2769,47 @@ function TrueFalseBlockPreview({ block, isExamMode, hideHeader }: { block: TrueF
   )
 }
 
-function EssayBlockPreview({ 
-  block, 
+function EssayBlockPreview({
+  block,
   isExamMode,
   answer,
   onAnswerChange,
-  hideHeader
-}: { 
-  block: EssayBlock; 
-  isExamMode?: boolean;
-  answer?: unknown;
-  onAnswerChange?: (answer: unknown) => void;
-  hideHeader?: boolean;
+  hideHeader,
+}: {
+  block: EssayBlock
+  isExamMode?: boolean
+  answer?: unknown
+  onAnswerChange?: (answer: unknown) => void
+  hideHeader?: boolean
 }) {
   void hideHeader // Essay blocks have a different layout
   const [localText, setLocalText] = useState('')
-  
+
   // En modo examen, usar las respuestas externas; de lo contrario, usar estado local
   const externalText = (answer as string) || ''
   const text = isExamMode && onAnswerChange ? externalText : localText
-  const setText = isExamMode && onAnswerChange 
-    ? (value: string) => onAnswerChange(value)
-    : setLocalText
-  
+  const setText =
+    isExamMode && onAnswerChange ? (value: string) => onAnswerChange(value) : setLocalText
+
   // Get classroom sync
   const classroomSync = useClassroomSync()
   const remoteNav = classroomSync.getRemoteNavigation(block.id)
   const isTeacherInClassroom = classroomSync.isInClassroom && classroomSync.isTeacher
-  
+
   // For teachers: show student's text
-  const displayText = isTeacherInClassroom && remoteNav?.currentAnswers?.text 
-    ? remoteNav.currentAnswers.text 
-    : text
-  
-  const wordCount = displayText.trim().split(/\s+/).filter(w => w.length > 0).length
+  const displayText =
+    isTeacherInClassroom && remoteNav?.currentAnswers?.text ? remoteNav.currentAnswers.text : text
+
+  const wordCount = displayText
+    .trim()
+    .split(/\s+/)
+    .filter((w) => w.length > 0).length
   const meetsMinWords = !block.minWords || wordCount >= block.minWords
 
   const handleTextChange = (value: string) => {
     if (isTeacherInClassroom) return
     setText(value)
-    
+
     // Sync to teacher (debounced would be better but simple for now)
     if (classroomSync.canInteract) {
       classroomSync.syncBlockNavigation(block.id, 0, 1, true, false, { text: value })
@@ -2435,32 +2836,42 @@ function EssayBlockPreview({
         <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
           {block.minWords && <span>Mínimo {block.minWords} palabras</span>}
           {block.aiGradingConfig?.targetLevel && (
-            <span className="px-1.5 py-0.5 rounded bg-muted">Nivel: {block.aiGradingConfig.targetLevel}</span>
+            <span className="px-1.5 py-0.5 rounded bg-muted">
+              Nivel: {block.aiGradingConfig.targetLevel}
+            </span>
           )}
         </div>
       </div>
 
       <textarea
         className={cn(
-          "w-full p-4 rounded-lg border bg-background min-h-[150px] focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50",
-          isTeacherInClassroom && "cursor-default"
+          'w-full p-4 rounded-lg border bg-background min-h-[150px] focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50',
+          isTeacherInClassroom && 'cursor-default'
         )}
-        placeholder={isTeacherInClassroom ? "El estudiante escribirá aquí..." : "Escribe tu respuesta..."}
+        placeholder={
+          isTeacherInClassroom ? 'El estudiante escribirá aquí...' : 'Escribe tu respuesta...'
+        }
         value={displayText}
         onChange={(e) => handleTextChange(e.target.value)}
         disabled={isTeacherInClassroom}
       />
       <div className="flex justify-between text-xs text-muted-foreground">
-        <span className={cn(block.minWords && wordCount < block.minWords ? "text-red-500" : "text-green-600")}>
+        <span
+          className={cn(
+            block.minWords && wordCount < block.minWords ? 'text-red-500' : 'text-green-600'
+          )}
+        >
           {wordCount} palabras
         </span>
         {block.maxWords && <span>Máx {block.maxWords}</span>}
       </div>
-      
+
       {isTeacherInClassroom && !displayText && (
-        <p className="text-sm text-muted-foreground italic text-center">Esperando que el estudiante escriba...</p>
+        <p className="text-sm text-muted-foreground italic text-center">
+          Esperando que el estudiante escriba...
+        </p>
       )}
-      
+
       {!isTeacherInClassroom && !isExamMode && (
         <div className="flex justify-end">
           {block.aiGrading ? (
@@ -2471,10 +2882,14 @@ function EssayBlockPreview({
               language={block.aiGradingConfig?.language}
               targetLevel={block.aiGradingConfig?.targetLevel}
               disabled={!meetsMinWords || !text.trim()}
-              onSyncResponse={classroomSync.canInteract ? classroomSync.sendBlockResponse : undefined}
+              onSyncResponse={
+                classroomSync.canInteract ? classroomSync.sendBlockResponse : undefined
+              }
             />
           ) : (
-            <Button size="sm" disabled={!meetsMinWords}>Enviar</Button>
+            <Button size="sm" disabled={!meetsMinWords}>
+              Enviar
+            </Button>
           )}
         </div>
       )}
@@ -2482,13 +2897,13 @@ function EssayBlockPreview({
   )
 }
 
-function RecordingBlockPreview({ 
+function RecordingBlockPreview({
   block,
   isExamMode,
   answer,
   onAnswerChange,
-  hideHeader
-}: { 
+  hideHeader,
+}: {
   block: RecordingBlock
   isExamMode?: boolean
   answer?: unknown
@@ -2524,7 +2939,7 @@ function RecordingBlockPreview({
     return () => {
       if (timerRef.current) clearInterval(timerRef.current)
       if (streamRef.current) {
-        streamRef.current.getTracks().forEach(track => track.stop())
+        streamRef.current.getTracks().forEach((track) => track.stop())
       }
       // No revocar URL si viene de la respuesta guardada
       if (audioUrl && !(answer as { audioUrl?: string })?.audioUrl) {
@@ -2552,7 +2967,7 @@ function RecordingBlockPreview({
         const localUrl = URL.createObjectURL(audioBlob)
         setAudioUrl(localUrl)
         setHasRecorded(true)
-        
+
         // En modo examen, subir a Cloudinary y guardar la URL
         if (isExamMode && onAnswerChange) {
           setIsUploading(true)
@@ -2562,16 +2977,16 @@ function RecordingBlockPreview({
             const fileName = `recording-${Date.now()}.webm`
             const file = new File([audioBlob], fileName, { type: 'audio/webm' })
             formData.append('file', file)
-            
+
             // Importar dinámicamente la función de upload
             const { uploadAudioFile } = await import('@/lib/actions/cloudinary')
             const result = await uploadAudioFile(formData, 'exam-recordings')
-            
+
             if (result.success && result.data?.secure_url) {
               setAudioUrl(result.data.secure_url)
-              onAnswerChange({ 
+              onAnswerChange({
                 audioUrl: result.data.secure_url,
-                duration: block.timeLimit ? (block.timeLimit - timeLeft) : 0
+                duration: block.timeLimit ? block.timeLimit - timeLeft : 0,
               })
               setIsUploading(false)
             } else {
@@ -2580,9 +2995,9 @@ function RecordingBlockPreview({
               // Fallback a base64 si falla Cloudinary
               const reader = new FileReader()
               reader.onloadend = () => {
-                onAnswerChange({ 
+                onAnswerChange({
                   audioUrl: reader.result as string,
-                  duration: block.timeLimit ? (block.timeLimit - timeLeft) : 0
+                  duration: block.timeLimit ? block.timeLimit - timeLeft : 0,
                 })
               }
               reader.readAsDataURL(audioBlob)
@@ -2593,16 +3008,16 @@ function RecordingBlockPreview({
             // Fallback a base64 si hay error
             const reader = new FileReader()
             reader.onloadend = () => {
-              onAnswerChange({ 
+              onAnswerChange({
                 audioUrl: reader.result as string,
-                duration: block.timeLimit ? (block.timeLimit - timeLeft) : 0
+                duration: block.timeLimit ? block.timeLimit - timeLeft : 0,
               })
             }
             reader.readAsDataURL(audioBlob)
           }
         }
-        
-        stream.getTracks().forEach(track => track.stop())
+
+        stream.getTracks().forEach((track) => track.stop())
       }
 
       mediaRecorder.start()
@@ -2611,7 +3026,7 @@ function RecordingBlockPreview({
 
       // Timer
       timerRef.current = setInterval(() => {
-        setTimeLeft(prev => {
+        setTimeLeft((prev) => {
           if (prev <= 1) {
             stopRecording()
             return 0
@@ -2651,7 +3066,7 @@ function RecordingBlockPreview({
 
   const togglePlayback = () => {
     if (!audioRef.current || !audioUrl) return
-    
+
     if (isPlaying) {
       audioRef.current.pause()
     } else {
@@ -2691,8 +3106,8 @@ function RecordingBlockPreview({
           <div
             onClick={toggleRecording}
             className={cn(
-              "h-20 w-20 rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:scale-105 transition-all relative",
-              isRecording ? "bg-white border-4 border-red-500" : "bg-red-500 shadow-red-200"
+              'h-20 w-20 rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:scale-105 transition-all relative',
+              isRecording ? 'bg-white border-4 border-red-500' : 'bg-red-500 shadow-red-200'
             )}
           >
             {isRecording ? (
@@ -2701,27 +3116,33 @@ function RecordingBlockPreview({
               <Mic className="h-8 w-8 text-white" />
             )}
             {isRecording && (
-              <span className="absolute -bottom-8 text-xs text-red-500 font-bold animate-pulse">GRABANDO</span>
+              <span className="absolute -bottom-8 text-xs text-red-500 font-bold animate-pulse">
+                GRABANDO
+              </span>
             )}
           </div>
         </div>
 
         <p className="text-sm text-blue-600/80">
-          {hasRecorded ? "Grabación completada. Haz clic para grabar de nuevo." : (isRecording ? "Haz clic para detener" : "Haz clic para comenzar a grabar")}
+          {hasRecorded
+            ? 'Grabación completada. Haz clic para grabar de nuevo.'
+            : isRecording
+              ? 'Haz clic para detener'
+              : 'Haz clic para comenzar a grabar'}
         </p>
 
         {/* Reproductor de audio */}
         {audioUrl && !isRecording && (
           <div className="mt-4 p-4 bg-white rounded-lg border border-blue-200">
-            <audio 
+            <audio
               ref={audioRef}
               src={audioUrl}
               onEnded={() => setIsPlaying(false)}
               className="hidden"
             />
             <div className="flex items-center justify-center gap-4">
-              <Button 
-                size="sm" 
+              <Button
+                size="sm"
                 variant="outline"
                 onClick={togglePlayback}
                 className="flex items-center gap-2"
@@ -2755,7 +3176,16 @@ function RecordingBlockPreview({
               instruction={block.instruction || block.prompt || ''}
               blockId={block.id}
               language={block.aiGradingConfig?.language as 'english' | 'spanish' | undefined}
-              targetLevel={block.aiGradingConfig?.targetLevel as 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2' | undefined}
+              targetLevel={
+                block.aiGradingConfig?.targetLevel as
+                  | 'A1'
+                  | 'A2'
+                  | 'B1'
+                  | 'B2'
+                  | 'C1'
+                  | 'C2'
+                  | undefined
+              }
               disabled={!audioUrl || isUploading}
             />
           </div>
@@ -2766,7 +3196,13 @@ function RecordingBlockPreview({
 }
 
 // Structured Content (Table) Block Preview
-export function StructuredContentBlockPreview({ block, hideHeader }: { block: StructuredContentBlock; hideHeader?: boolean }) {
+export function StructuredContentBlockPreview({
+  block,
+  hideHeader,
+}: {
+  block: StructuredContentBlock
+  hideHeader?: boolean
+}) {
   const { config, content, title, subtitle } = block
   const hasHeaderRow = config?.hasHeaderRow !== false // default true
   const hasStripedRows = config?.hasStripedRows // default false
@@ -2780,9 +3216,7 @@ export function StructuredContentBlockPreview({ block, hideHeader }: { block: St
           <div className="p-2 bg-primary/10 rounded-lg">
             <LucideIcons.Table className="w-5 h-5 text-primary" />
           </div>
-          <span className="text-lg font-semibold text-primary">
-            Tabla
-          </span>
+          <span className="text-lg font-semibold text-primary">Tabla</span>
         </div>
       )}
 
@@ -2795,18 +3229,26 @@ export function StructuredContentBlockPreview({ block, hideHeader }: { block: St
       )}
 
       {/* Table Container */}
-      <div className={cn("overflow-hidden", hasBorders ? "border rounded-lg" : "")}>
+      <div className={cn('overflow-hidden', hasBorders ? 'border rounded-lg' : '')}>
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
             {/* Table Header */}
             {hasHeaderRow && content?.headers && content.headers.length > 0 && (
-              <thead className={cn(
-                "bg-muted/50 text-muted-foreground font-medium uppercase text-xs tracking-wider",
-                hasBorders ? "border-b" : ""
-              )}>
+              <thead
+                className={cn(
+                  'bg-muted/50 text-muted-foreground font-medium uppercase text-xs tracking-wider',
+                  hasBorders ? 'border-b' : ''
+                )}
+              >
                 <tr>
                   {content.headers.map((header, i) => (
-                    <th key={i} className={cn("px-4 py-3", hasBorders && i < content.headers.length - 1 ? "border-r" : "")}>
+                    <th
+                      key={i}
+                      className={cn(
+                        'px-4 py-3',
+                        hasBorders && i < content.headers.length - 1 ? 'border-r' : ''
+                      )}
+                    >
                       {header}
                     </th>
                   ))}
@@ -2820,16 +3262,13 @@ export function StructuredContentBlockPreview({ block, hideHeader }: { block: St
                 <tr
                   key={rowIndex}
                   className={cn(
-                    "transition-colors hover:bg-muted/30",
-                    hasStripedRows && rowIndex % 2 === 1 ? "bg-muted/20" : "",
-                    !hasBorders ? "border-none" : "divide-x"
+                    'transition-colors hover:bg-muted/30',
+                    hasStripedRows && rowIndex % 2 === 1 ? 'bg-muted/20' : '',
+                    !hasBorders ? 'border-none' : 'divide-x'
                   )}
                 >
                   {row.map((cell, cellIndex) => (
-                    <td
-                      key={cellIndex}
-                      className="px-4 py-3 whitespace-pre-wrap"
-                    >
+                    <td key={cellIndex} className="px-4 py-3 whitespace-pre-wrap">
                       {cell}
                     </td>
                   ))}
@@ -2837,7 +3276,10 @@ export function StructuredContentBlockPreview({ block, hideHeader }: { block: St
               ))}
               {(!content?.rows || content.rows.length === 0) && (
                 <tr>
-                  <td colSpan={content?.headers?.length || 1} className="px-4 py-8 text-center text-muted-foreground italic">
+                  <td
+                    colSpan={content?.headers?.length || 1}
+                    className="px-4 py-8 text-center text-muted-foreground italic"
+                  >
                     Sin datos en la tabla
                   </td>
                 </tr>
@@ -2857,7 +3299,15 @@ interface AIGradingResult {
   suggestedCorrection?: string
 }
 
-function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: ShortAnswerBlock; isExamMode?: boolean; hideHeader?: boolean }) {
+function ShortAnswerBlockPreview({
+  block,
+  isExamMode,
+  hideHeader,
+}: {
+  block: ShortAnswerBlock
+  isExamMode?: boolean
+  hideHeader?: boolean
+}) {
   void hideHeader // Short answer blocks have a different layout
   const items = block.items || []
   const [currentStep, setCurrentStep] = useState(0)
@@ -2870,10 +3320,11 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
   const classroomSync = useClassroomSync()
   const remoteNav = classroomSync.getRemoteNavigation(block.id)
   const isTeacherInClassroom = classroomSync.isInClassroom && classroomSync.isTeacher
-  
+
   // For teachers: follow student's navigation and answers
   const displayStep = isTeacherInClassroom && remoteNav ? remoteNav.currentStep : currentStep
-  const displayAnswers = isTeacherInClassroom && remoteNav?.currentAnswers ? remoteNav.currentAnswers : answers
+  const displayAnswers =
+    isTeacherInClassroom && remoteNav?.currentAnswers ? remoteNav.currentAnswers : answers
   const currentItem = items[currentStep]
   const displayItem = items[displayStep]
 
@@ -2881,27 +3332,34 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
     if (isTeacherInClassroom || !currentItem) return
     const newAnswers = { ...answers, [currentItem.id]: value }
     setAnswers(newAnswers)
-    
+
     // Sync to teacher
     if (classroomSync.canInteract) {
-      classroomSync.syncBlockNavigation(block.id, currentStep, items.length, true, false, newAnswers)
+      classroomSync.syncBlockNavigation(
+        block.id,
+        currentStep,
+        items.length,
+        true,
+        false,
+        newAnswers
+      )
     }
   }
 
   const checkAnswer = async () => {
     if (isTeacherInClassroom || !currentItem) return
     const userAnswer = answers[currentItem.id] || ''
-    
+
     // Check if this item has AI instructions
     const hasAIInstructions = currentItem.aiInstructions && currentItem.aiInstructions.trim() !== ''
-    
+
     if (hasAIInstructions) {
       // Use AI grading
       setIsGrading(true)
       try {
         // Check if user can use AI grading (based on plan limits)
         const usageInfo = await canUseAIGrading('short_answer')
-        
+
         if (!usageInfo.allowed) {
           toast.error(`Has alcanzado el límite de ${usageInfo.limit} correcciones con IA este mes`)
           // Fallback to simple comparison if AI usage limit reached
@@ -2920,24 +3378,30 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
             language: 'spanish',
           }),
         })
-        
+
         if (response.ok) {
           const data = await response.json()
           const aiResult = data.result as AIGradingResult
-          setAiResults(prev => ({ ...prev, [currentItem.id]: aiResult }))
-          setResults(prev => ({ ...prev, [currentItem.id]: aiResult.isCorrect }))
-          
+          setAiResults((prev) => ({ ...prev, [currentItem.id]: aiResult }))
+          setResults((prev) => ({ ...prev, [currentItem.id]: aiResult.isCorrect }))
+
           // Record AI usage
           await recordAIGradingUsage('short_answer', block.id, 'block')
-          
+
           // Sync result to teacher
           if (classroomSync.canInteract) {
-            classroomSync.sendBlockResponse(block.id, 'short_answer', {
-              itemId: currentItem.id,
-              answer: userAnswer,
-              isCorrect: aiResult.isCorrect,
-              aiFeedback: aiResult.feedback,
-            }, aiResult.isCorrect, aiResult.isCorrect ? 1 : 0)
+            classroomSync.sendBlockResponse(
+              block.id,
+              'short_answer',
+              {
+                itemId: currentItem.id,
+                answer: userAnswer,
+                isCorrect: aiResult.isCorrect,
+                aiFeedback: aiResult.feedback,
+              },
+              aiResult.isCorrect,
+              aiResult.isCorrect ? 1 : 0
+            )
           }
         } else {
           // Fallback to simple comparison on API error
@@ -2954,28 +3418,34 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
       fallbackCheck(userAnswer)
     }
   }
-  
+
   const fallbackCheck = (userAnswer: string) => {
     if (!currentItem) return
     const isCorrect = block.caseSensitive
       ? userAnswer.trim() === currentItem.correctAnswer.trim()
       : userAnswer.trim().toLowerCase() === currentItem.correctAnswer.trim().toLowerCase()
-    setResults(prev => ({ ...prev, [currentItem.id]: isCorrect }))
-    
+    setResults((prev) => ({ ...prev, [currentItem.id]: isCorrect }))
+
     // Sync result to teacher
     if (classroomSync.canInteract) {
-      classroomSync.sendBlockResponse(block.id, 'short_answer', {
-        itemId: currentItem.id,
-        answer: userAnswer,
+      classroomSync.sendBlockResponse(
+        block.id,
+        'short_answer',
+        {
+          itemId: currentItem.id,
+          answer: userAnswer,
+          isCorrect,
+        },
         isCorrect,
-      }, isCorrect, isCorrect ? 1 : 0)
+        isCorrect ? 1 : 0
+      )
     }
   }
 
   const handleNav = (newStep: number) => {
     if (isTeacherInClassroom) return
     setCurrentStep(newStep)
-    
+
     if (classroomSync.canInteract) {
       classroomSync.syncBlockNavigation(block.id, newStep, items.length, true, false, answers)
     }
@@ -2991,16 +3461,14 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
 
   if (items.length === 0) {
     return (
-      <div className="text-muted-foreground text-center py-8">
-        No hay preguntas configuradas
-      </div>
+      <div className="text-muted-foreground text-center py-8">No hay preguntas configuradas</div>
     )
   }
 
   const currentResult = !isExamMode && displayItem ? results[displayItem.id] : null
   const currentAiResult = !isExamMode && displayItem ? aiResults[displayItem.id] : null
   const answeredCount = Object.keys(results).length
-  const correctCount = Object.values(results).filter(r => r === true).length
+  const correctCount = Object.values(results).filter((r) => r === true).length
 
   return (
     <div className="space-y-4">
@@ -3027,7 +3495,10 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
       )}
 
       {displayItem && (
-        <div key={displayItem.id} className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
+        <div
+          key={displayItem.id}
+          className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300"
+        >
           <div className="font-medium text-lg">
             {displayStep + 1}. {displayItem.question}
           </div>
@@ -3036,40 +3507,60 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
             type="text"
             value={displayAnswers[displayItem.id] || ''}
             onChange={(e) => handleAnswerChange(e.target.value)}
-            disabled={(currentResult !== null && currentResult !== undefined) || isTeacherInClassroom || isGrading}
-            placeholder={isTeacherInClassroom ? "Esperando respuesta del estudiante..." : "Escribe tu respuesta..."}
+            disabled={
+              (currentResult !== null && currentResult !== undefined) ||
+              isTeacherInClassroom ||
+              isGrading
+            }
+            placeholder={
+              isTeacherInClassroom
+                ? 'Esperando respuesta del estudiante...'
+                : 'Escribe tu respuesta...'
+            }
             className={cn(
-              "w-full px-4 py-3 border rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors",
-              currentResult === true && "border-green-500 bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300",
-              currentResult === false && "border-red-500 bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300",
-              (currentResult === null || currentResult === undefined) && "border-gray-200 dark:border-gray-700",
-              isTeacherInClassroom && "cursor-default"
+              'w-full px-4 py-3 border rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors',
+              currentResult === true &&
+                'border-green-500 bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300',
+              currentResult === false &&
+                'border-red-500 bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300',
+              (currentResult === null || currentResult === undefined) &&
+                'border-gray-200 dark:border-gray-700',
+              isTeacherInClassroom && 'cursor-default'
             )}
           />
 
           {/* AI Feedback Display (inline) */}
           {currentAiResult && (
-            <div className={cn(
-              "p-3 rounded-lg border text-sm space-y-2",
-              currentAiResult.isCorrect 
-                ? "bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800" 
-                : "bg-amber-50 border-amber-200 dark:bg-amber-950 dark:border-amber-800"
-            )}>
+            <div
+              className={cn(
+                'p-3 rounded-lg border text-sm space-y-2',
+                currentAiResult.isCorrect
+                  ? 'bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800'
+                  : 'bg-amber-50 border-amber-200 dark:bg-amber-950 dark:border-amber-800'
+              )}
+            >
               <div className="flex items-start gap-2">
-                <Sparkles className={cn(
-                  "h-4 w-4 mt-0.5 shrink-0",
-                  currentAiResult.isCorrect ? "text-green-600" : "text-amber-600"
-                )} />
+                <Sparkles
+                  className={cn(
+                    'h-4 w-4 mt-0.5 shrink-0',
+                    currentAiResult.isCorrect ? 'text-green-600' : 'text-amber-600'
+                  )}
+                />
                 <div className="space-y-1">
-                  <p className={cn(
-                    "font-medium",
-                    currentAiResult.isCorrect ? "text-green-700 dark:text-green-300" : "text-amber-700 dark:text-amber-300"
-                  )}>
+                  <p
+                    className={cn(
+                      'font-medium',
+                      currentAiResult.isCorrect
+                        ? 'text-green-700 dark:text-green-300'
+                        : 'text-amber-700 dark:text-amber-300'
+                    )}
+                  >
                     {currentAiResult.feedback}
                   </p>
                   {currentAiResult.suggestedCorrection && (
                     <p className="text-muted-foreground">
-                      <span className="font-medium">Respuesta esperada:</span> {currentAiResult.suggestedCorrection}
+                      <span className="font-medium">Respuesta esperada:</span>{' '}
+                      {currentAiResult.suggestedCorrection}
                     </p>
                   )}
                 </div>
@@ -3089,10 +3580,20 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
       {!isTeacherInClassroom && (
         <div className="flex items-center justify-between">
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => handleNav(currentStep - 1)} disabled={currentStep === 0 || isGrading} size="sm">
+            <Button
+              variant="outline"
+              onClick={() => handleNav(currentStep - 1)}
+              disabled={currentStep === 0 || isGrading}
+              size="sm"
+            >
               Anterior
             </Button>
-            <Button variant="outline" onClick={() => handleNav(currentStep + 1)} disabled={currentStep >= items.length - 1 || isGrading} size="sm">
+            <Button
+              variant="outline"
+              onClick={() => handleNav(currentStep + 1)}
+              disabled={currentStep >= items.length - 1 || isGrading}
+              size="sm"
+            >
               Siguiente
             </Button>
           </div>
@@ -3100,7 +3601,11 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
           {!isExamMode && (
             <div className="flex gap-2">
               {currentResult === null || currentResult === undefined ? (
-                <Button onClick={checkAnswer} disabled={!answers[currentItem?.id || ''] || isGrading} size="sm">
+                <Button
+                  onClick={checkAnswer}
+                  disabled={!answers[currentItem?.id || ''] || isGrading}
+                  size="sm"
+                >
                   {isGrading ? (
                     <>
                       <Sparkles className="h-4 w-4 mr-2 animate-pulse" />
@@ -3133,7 +3638,15 @@ function ShortAnswerBlockPreview({ block, isExamMode, hideHeader }: { block: Sho
   )
 }
 
-function MultiSelectBlockPreview({ block, isExamMode, hideHeader }: { block: MultiSelectBlock; isExamMode?: boolean; hideHeader?: boolean }) {
+function MultiSelectBlockPreview({
+  block,
+  isExamMode,
+  hideHeader,
+}: {
+  block: MultiSelectBlock
+  isExamMode?: boolean
+  hideHeader?: boolean
+}) {
   void hideHeader // Multi select blocks have a different layout
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [showResultState, setShowResultState] = useState(false)
@@ -3143,20 +3656,23 @@ function MultiSelectBlockPreview({ block, isExamMode, hideHeader }: { block: Mul
   const classroomSync = useClassroomSync()
   const remoteNav = classroomSync.getRemoteNavigation(block.id)
   const isTeacherInClassroom = classroomSync.isInClassroom && classroomSync.isTeacher
-  
+
   // For teachers: use remote selections
-  const displaySelectedIds = isTeacherInClassroom && remoteNav?.currentAnswers 
-    ? new Set(Object.keys(remoteNav.currentAnswers).filter(k => remoteNav.currentAnswers![k] === 'true'))
-    : selectedIds
+  const displaySelectedIds =
+    isTeacherInClassroom && remoteNav?.currentAnswers
+      ? new Set(
+          Object.keys(remoteNav.currentAnswers).filter(
+            (k) => remoteNav.currentAnswers![k] === 'true'
+          )
+        )
+      : selectedIds
 
   const allOptions = [
-    ...(block.correctOptions || []).map(opt => ({ ...opt, isCorrect: true })),
-    ...(block.incorrectOptions || []).map(opt => ({ ...opt, isCorrect: false })),
+    ...(block.correctOptions || []).map((opt) => ({ ...opt, isCorrect: true })),
+    ...(block.incorrectOptions || []).map((opt) => ({ ...opt, isCorrect: false })),
   ]
 
-  const [shuffledOptions] = useState(() => 
-    [...allOptions].sort(() => Math.random() - 0.5)
-  )
+  const [shuffledOptions] = useState(() => [...allOptions].sort(() => Math.random() - 0.5))
 
   const toggleOption = (id: string) => {
     if (showResult || isTeacherInClassroom) return
@@ -3167,10 +3683,10 @@ function MultiSelectBlockPreview({ block, isExamMode, hideHeader }: { block: Mul
       newSelected.add(id)
     }
     setSelectedIds(newSelected)
-    
+
     // Sync to teacher
     if (classroomSync.canInteract) {
-      const answersForSync = Object.fromEntries([...newSelected].map(id => [id, 'true']))
+      const answersForSync = Object.fromEntries([...newSelected].map((id) => [id, 'true']))
       classroomSync.syncBlockNavigation(block.id, 0, 1, true, false, answersForSync)
     }
   }
@@ -3178,20 +3694,27 @@ function MultiSelectBlockPreview({ block, isExamMode, hideHeader }: { block: Mul
   const checkAnswers = () => {
     if (isTeacherInClassroom || isExamMode) return
     setShowResultState(true)
-    
+
     // Sync result to teacher
     if (classroomSync.canInteract) {
-      const correctIds = new Set((block.correctOptions || []).map(opt => opt.id))
-      const selectedCorrectCount = [...selectedIds].filter(id => correctIds.has(id)).length
-      const selectedIncorrectCount = [...selectedIds].filter(id => !correctIds.has(id)).length
+      const correctIds = new Set((block.correctOptions || []).map((opt) => opt.id))
+      const selectedCorrectCount = [...selectedIds].filter((id) => correctIds.has(id)).length
+      const selectedIncorrectCount = [...selectedIds].filter((id) => !correctIds.has(id)).length
       const totalCorrectCount = block.correctOptions?.length || 0
-      const isAllCorrect = selectedCorrectCount === totalCorrectCount && selectedIncorrectCount === 0
-      
-      classroomSync.sendBlockResponse(block.id, 'multi_select', {
-        selectedIds: [...selectedIds],
-        correctCount: selectedCorrectCount,
-        incorrectCount: selectedIncorrectCount,
-      }, isAllCorrect, selectedCorrectCount)
+      const isAllCorrect =
+        selectedCorrectCount === totalCorrectCount && selectedIncorrectCount === 0
+
+      classroomSync.sendBlockResponse(
+        block.id,
+        'multi_select',
+        {
+          selectedIds: [...selectedIds],
+          correctCount: selectedCorrectCount,
+          incorrectCount: selectedIncorrectCount,
+        },
+        isAllCorrect,
+        selectedCorrectCount
+      )
     }
   }
 
@@ -3201,9 +3724,9 @@ function MultiSelectBlockPreview({ block, isExamMode, hideHeader }: { block: Mul
     setShowResultState(false)
   }
 
-  const correctIds = new Set((block.correctOptions || []).map(opt => opt.id))
-  const selectedCorrect = [...displaySelectedIds].filter(id => correctIds.has(id)).length
-  const selectedIncorrect = [...displaySelectedIds].filter(id => !correctIds.has(id)).length
+  const correctIds = new Set((block.correctOptions || []).map((opt) => opt.id))
+  const selectedCorrect = [...displaySelectedIds].filter((id) => correctIds.has(id)).length
+  const selectedIncorrect = [...displaySelectedIds].filter((id) => !correctIds.has(id)).length
   const totalCorrect = block.correctOptions?.length || 0
 
   if (!block.correctOptions?.length && !block.incorrectOptions?.length) {
@@ -3228,30 +3751,28 @@ function MultiSelectBlockPreview({ block, isExamMode, hideHeader }: { block: Mul
       </div>
 
       {block.title && <h3 className="text-xl font-bold">{block.title}</h3>}
-      
-      {block.instruction && (
-        <p className="text-muted-foreground text-sm">{block.instruction}</p>
-      )}
+
+      {block.instruction && <p className="text-muted-foreground text-sm">{block.instruction}</p>}
 
       <div className="grid gap-2 sm:grid-cols-2">
         {shuffledOptions.map((option) => {
           const isSelected = displaySelectedIds.has(option.id)
           const isCorrectOption = option.isCorrect
 
-          let optionClass = "border-gray-200 bg-white hover:border-primary/50 hover:bg-primary/5"
-          
+          let optionClass = 'border-gray-200 bg-white hover:border-primary/50 hover:bg-primary/5'
+
           if (showResult) {
             if (isCorrectOption && isSelected) {
-              optionClass = "border-green-500 bg-green-50 text-green-700"
+              optionClass = 'border-green-500 bg-green-50 text-green-700'
             } else if (isCorrectOption && !isSelected) {
-              optionClass = "border-green-300 bg-green-50/50 text-green-600 border-dashed"
+              optionClass = 'border-green-300 bg-green-50/50 text-green-600 border-dashed'
             } else if (!isCorrectOption && isSelected) {
-              optionClass = "border-red-500 bg-red-50 text-red-700"
+              optionClass = 'border-red-500 bg-red-50 text-red-700'
             } else {
-              optionClass = "border-gray-200 bg-gray-50 text-gray-500"
+              optionClass = 'border-gray-200 bg-gray-50 text-gray-500'
             }
           } else if (isSelected) {
-            optionClass = "border-primary bg-primary/10 ring-2 ring-primary/20"
+            optionClass = 'border-primary bg-primary/10 ring-2 ring-primary/20'
           }
 
           return (
@@ -3259,15 +3780,17 @@ function MultiSelectBlockPreview({ block, isExamMode, hideHeader }: { block: Mul
               key={option.id}
               onClick={() => toggleOption(option.id)}
               className={cn(
-                "p-4 border-2 rounded-lg transition-all flex items-center gap-3",
-                isTeacherInClassroom ? "cursor-default" : "cursor-pointer",
+                'p-4 border-2 rounded-lg transition-all flex items-center gap-3',
+                isTeacherInClassroom ? 'cursor-default' : 'cursor-pointer',
                 optionClass
               )}
             >
-              <div className={cn(
-                "h-5 w-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors",
-                isSelected ? "border-current bg-current" : "border-gray-300"
-              )}>
+              <div
+                className={cn(
+                  'h-5 w-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors',
+                  isSelected ? 'border-current bg-current' : 'border-gray-300'
+                )}
+              >
                 {isSelected && (
                   <svg className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 12 12">
                     <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
@@ -3276,40 +3799,38 @@ function MultiSelectBlockPreview({ block, isExamMode, hideHeader }: { block: Mul
               </div>
               <span className="flex-1 font-medium">{option.text}</span>
               {showResult && (
-                <span className="text-xs font-bold">
-                  {isCorrectOption ? '✓' : '✗'}
-                </span>
+                <span className="text-xs font-bold">{isCorrectOption ? '✓' : '✗'}</span>
               )}
             </div>
           )
         })}
       </div>
-      
+
       {isTeacherInClassroom && !showResult && (
-        <p className="text-sm text-muted-foreground italic text-center">Esperando selección del estudiante...</p>
+        <p className="text-sm text-muted-foreground italic text-center">
+          Esperando selección del estudiante...
+        </p>
       )}
 
       {showResult && (
-        <div className={cn(
-          "p-4 rounded-lg text-center space-y-2",
-          selectedIncorrect === 0 && selectedCorrect === totalCorrect
-            ? "bg-green-100 text-green-700"
-            : "bg-amber-100 text-amber-700"
-        )}>
+        <div
+          className={cn(
+            'p-4 rounded-lg text-center space-y-2',
+            selectedIncorrect === 0 && selectedCorrect === totalCorrect
+              ? 'bg-green-100 text-green-700'
+              : 'bg-amber-100 text-amber-700'
+          )}
+        >
           <p className="font-bold">
             {selectedIncorrect === 0 && selectedCorrect === totalCorrect
-              ? "¡Perfecto! Seleccionaste todas las correctas"
+              ? '¡Perfecto! Seleccionaste todas las correctas'
               : `${selectedCorrect} de ${totalCorrect} correctas seleccionadas`}
           </p>
           {selectedIncorrect > 0 && (
-            <p className="text-sm">
-              {selectedIncorrect} opción(es) incorrecta(s) seleccionada(s)
-            </p>
+            <p className="text-sm">{selectedIncorrect} opción(es) incorrecta(s) seleccionada(s)</p>
           )}
           {block.explanation && (
-            <p className="text-sm mt-2 pt-2 border-t border-current/20">
-              {block.explanation}
-            </p>
+            <p className="text-sm mt-2 pt-2 border-t border-current/20">{block.explanation}</p>
           )}
         </div>
       )}
@@ -3331,31 +3852,38 @@ function MultiSelectBlockPreview({ block, isExamMode, hideHeader }: { block: Mul
   )
 }
 
-function MultipleChoiceBlockPreview({ 
-  block, 
+function MultipleChoiceBlockPreview({
+  block,
   isExamMode,
   answer,
   onAnswerChange,
-  hideHeader
-}: { 
-  block: MultipleChoiceBlock; 
-  isExamMode?: boolean;
-  answer?: unknown;
-  onAnswerChange?: (answer: unknown) => void;
-  hideHeader?: boolean;
+  hideHeader,
+}: {
+  block: MultipleChoiceBlock
+  isExamMode?: boolean
+  answer?: unknown
+  onAnswerChange?: (answer: unknown) => void
+  hideHeader?: boolean
 }) {
   void hideHeader // Multiple choice blocks have a different layout
   const [currentItemIndex, setCurrentItemIndex] = useState(0)
   // En modo examen, usar las respuestas externas; de lo contrario, usar estado local
   const externalAnswers = (answer as Record<string, string | null>) || {}
-  const [localSelectedOptions, setLocalSelectedOptions] = useState<Record<string, string | null>>({})
+  const [localSelectedOptions, setLocalSelectedOptions] = useState<Record<string, string | null>>(
+    {}
+  )
   const selectedOptions = isExamMode && onAnswerChange ? externalAnswers : localSelectedOptions
-  const setSelectedOptions = isExamMode && onAnswerChange 
-    ? (updater: Record<string, string | null> | ((prev: Record<string, string | null>) => Record<string, string | null>)) => {
-        const newValue = typeof updater === 'function' ? updater(externalAnswers) : updater
-        onAnswerChange(newValue)
-      }
-    : setLocalSelectedOptions
+  const setSelectedOptions =
+    isExamMode && onAnswerChange
+      ? (
+          updater:
+            | Record<string, string | null>
+            | ((prev: Record<string, string | null>) => Record<string, string | null>)
+        ) => {
+          const newValue = typeof updater === 'function' ? updater(externalAnswers) : updater
+          onAnswerChange(newValue)
+        }
+      : setLocalSelectedOptions
   const [showResults, setShowResults] = useState<Record<string, boolean>>({})
 
   const items = block.items || []
@@ -3363,19 +3891,19 @@ function MultipleChoiceBlockPreview({
 
   const handleCheck = () => {
     if (currentItem && !isExamMode) {
-      setShowResults(prev => ({ ...prev, [currentItem.id]: true }))
+      setShowResults((prev) => ({ ...prev, [currentItem.id]: true }))
     }
   }
 
   const handleNext = () => {
     if (currentItemIndex < items.length - 1) {
-      setCurrentItemIndex(prev => prev + 1)
+      setCurrentItemIndex((prev) => prev + 1)
     }
   }
 
   const handlePrev = () => {
     if (currentItemIndex > 0) {
-      setCurrentItemIndex(prev => prev - 1)
+      setCurrentItemIndex((prev) => prev - 1)
     }
   }
 
@@ -3387,9 +3915,7 @@ function MultipleChoiceBlockPreview({
 
   if (!currentItem) {
     return (
-      <div className="p-4 text-center text-muted-foreground">
-        No hay preguntas configuradas
-      </div>
+      <div className="p-4 text-center text-muted-foreground">No hay preguntas configuradas</div>
     )
   }
 
@@ -3410,52 +3936,59 @@ function MultipleChoiceBlockPreview({
         )}
       </div>
 
-      {currentItem.question && (
-        <h3 className="font-bold text-lg">{currentItem.question}</h3>
-      )}
+      {currentItem.question && <h3 className="font-bold text-lg">{currentItem.question}</h3>}
 
       <div className="space-y-2">
         {currentItem.options?.map((option) => {
           const isSelected = selectedOption === option.id
           const isCorrect = option.id === currentItem.correctOptionId
 
-          let statusClass = "border-gray-200 bg-white hover:border-primary/50"
+          let statusClass = 'border-gray-200 bg-white hover:border-primary/50'
           if (showResult) {
             if (isCorrect) {
-              statusClass = "border-green-500 bg-green-50"
+              statusClass = 'border-green-500 bg-green-50'
             } else if (isSelected && !isCorrect) {
-              statusClass = "border-red-500 bg-red-50"
+              statusClass = 'border-red-500 bg-red-50'
             }
           } else if (isSelected) {
-            statusClass = "border-primary bg-primary/5"
+            statusClass = 'border-primary bg-primary/5'
           }
 
           return (
             <div
               key={option.id}
-              onClick={() => !showResult && setSelectedOptions(prev => ({ ...prev, [currentItem.id]: option.id }))}
+              onClick={() =>
+                !showResult &&
+                setSelectedOptions((prev) => ({ ...prev, [currentItem.id]: option.id }))
+              }
               className={cn(
-                "p-3 border rounded-lg cursor-pointer transition-all flex items-center gap-3",
+                'p-3 border rounded-lg cursor-pointer transition-all flex items-center gap-3',
                 statusClass
               )}
             >
-              <div className={cn(
-                "w-5 h-5 rounded-full border-2 flex items-center justify-center",
-                isSelected ? "border-primary" : "border-gray-300",
-                showResult && isCorrect && "border-green-500 bg-green-500",
-                showResult && isSelected && !isCorrect && "border-red-500 bg-red-500"
-              )}>
+              <div
+                className={cn(
+                  'w-5 h-5 rounded-full border-2 flex items-center justify-center',
+                  isSelected ? 'border-primary' : 'border-gray-300',
+                  showResult && isCorrect && 'border-green-500 bg-green-500',
+                  showResult && isSelected && !isCorrect && 'border-red-500 bg-red-500'
+                )}
+              >
                 {(isSelected || (showResult && isCorrect)) && (
-                  <div className={cn(
-                    "w-2.5 h-2.5 rounded-full",
-                    showResult && isCorrect ? "bg-white" : showResult && isSelected ? "bg-white" : "bg-primary"
-                  )} />
+                  <div
+                    className={cn(
+                      'w-2.5 h-2.5 rounded-full',
+                      showResult && isCorrect
+                        ? 'bg-white'
+                        : showResult && isSelected
+                          ? 'bg-white'
+                          : 'bg-primary'
+                    )}
+                  />
                 )}
               </div>
               <span className="flex-1">{option.text}</span>
-              {showResult && isCorrect && (
-                <CheckCircle2 className="h-5 w-5 text-green-500" />
-              )}
+              {showResult && isCorrect && <CheckCircle2 className="h-5 w-5 text-green-500" />}
             </div>
           )
         })}
@@ -3510,9 +4043,17 @@ function MultipleChoiceBlockPreview({
   )
 }
 
-function OrderingBlockPreview({ block, isExamMode, hideHeader }: { block: OrderingBlock; isExamMode?: boolean; hideHeader?: boolean }) {
+function OrderingBlockPreview({
+  block,
+  isExamMode,
+  hideHeader,
+}: {
+  block: OrderingBlock
+  isExamMode?: boolean
+  hideHeader?: boolean
+}) {
   void hideHeader // Ordering blocks have a different layout
-  const [items, setItems] = useState(() => 
+  const [items, setItems] = useState(() =>
     block.items ? [...block.items].sort(() => Math.random() - 0.5) : []
   )
   const [showResultState, setShowResultState] = useState(false)
@@ -3555,12 +4096,12 @@ function OrderingBlockPreview({ block, isExamMode, hideHeader }: { block: Orderi
             <div
               key={item.id}
               className={cn(
-                "p-3 border rounded-lg flex items-center gap-3 transition-all",
+                'p-3 border rounded-lg flex items-center gap-3 transition-all',
                 showResult
                   ? isCorrectPosition
-                    ? "border-green-500 bg-green-50"
-                    : "border-red-500 bg-red-50"
-                  : "border-gray-200 bg-white"
+                    ? 'border-green-500 bg-green-50'
+                    : 'border-red-500 bg-red-50'
+                  : 'border-gray-200 bg-white'
               )}
             >
               <span className="font-bold text-muted-foreground w-6">{index + 1}.</span>
@@ -3587,11 +4128,12 @@ function OrderingBlockPreview({ block, isExamMode, hideHeader }: { block: Orderi
                   </Button>
                 </div>
               )}
-              {showResult && (
-                isCorrectPosition
-                  ? <CheckCircle2 className="h-5 w-5 text-green-500" />
-                  : <LucideIcons.X className="h-5 w-5 text-red-500" />
-              )}
+              {showResult &&
+                (isCorrectPosition ? (
+                  <CheckCircle2 className="h-5 w-5 text-green-500" />
+                ) : (
+                  <LucideIcons.X className="h-5 w-5 text-red-500" />
+                ))}
             </div>
           )
         })}
@@ -3614,7 +4156,15 @@ function OrderingBlockPreview({ block, isExamMode, hideHeader }: { block: Orderi
   )
 }
 
-function DragDropBlockPreview({ block, isExamMode, hideHeader }: { block: DragDropBlock; isExamMode?: boolean; hideHeader?: boolean }) {
+function DragDropBlockPreview({
+  block,
+  isExamMode,
+  hideHeader,
+}: {
+  block: DragDropBlock
+  isExamMode?: boolean
+  hideHeader?: boolean
+}) {
   void hideHeader // Drag drop blocks have a different layout
   const [assignments, setAssignments] = useState<Record<string, string>>({}) // itemId -> categoryId
   const [showResultState, setShowResultState] = useState(false)
@@ -3622,7 +4172,7 @@ function DragDropBlockPreview({ block, isExamMode, hideHeader }: { block: DragDr
 
   const handleAssign = (itemId: string, categoryId: string) => {
     if (showResult) return
-    setAssignments(prev => ({ ...prev, [itemId]: categoryId }))
+    setAssignments((prev) => ({ ...prev, [itemId]: categoryId }))
   }
 
   const handleCheck = () => {
@@ -3635,7 +4185,7 @@ function DragDropBlockPreview({ block, isExamMode, hideHeader }: { block: DragDr
     setShowResultState(false)
   }
 
-  const unassignedItems = block.items?.filter(item => !assignments[item.id]) || []
+  const unassignedItems = block.items?.filter((item) => !assignments[item.id]) || []
 
   return (
     <div className="space-y-4">
@@ -3650,10 +4200,16 @@ function DragDropBlockPreview({ block, isExamMode, hideHeader }: { block: DragDr
       {/* Unassigned items */}
       {unassignedItems.length > 0 && (
         <div className="p-3 bg-muted/30 rounded-lg border-2 border-dashed">
-          <p className="text-xs text-muted-foreground mb-2 font-medium">Elementos por clasificar:</p>
+          <p className="text-xs text-muted-foreground mb-2 font-medium">
+            Elementos por clasificar:
+          </p>
           <div className="flex flex-wrap gap-2">
-            {unassignedItems.map(item => (
-              <Badge key={item.id} variant="secondary" className="cursor-pointer hover:bg-primary/20">
+            {unassignedItems.map((item) => (
+              <Badge
+                key={item.id}
+                variant="secondary"
+                className="cursor-pointer hover:bg-primary/20"
+              >
                 {item.text}
               </Badge>
             ))}
@@ -3663,17 +4219,15 @@ function DragDropBlockPreview({ block, isExamMode, hideHeader }: { block: DragDr
 
       {/* Categories */}
       <div className="grid grid-cols-2 gap-4">
-        {block.categories?.map(category => {
-          const categoryItems = block.items?.filter(item => assignments[item.id] === category.id) || []
+        {block.categories?.map((category) => {
+          const categoryItems =
+            block.items?.filter((item) => assignments[item.id] === category.id) || []
 
           return (
-            <div
-              key={category.id}
-              className="p-3 border-2 border-dashed rounded-lg min-h-[100px]"
-            >
+            <div key={category.id} className="p-3 border-2 border-dashed rounded-lg min-h-[100px]">
               <h4 className="font-semibold text-sm mb-2 text-center">{category.name}</h4>
               <div className="space-y-1">
-                {categoryItems.map(item => {
+                {categoryItems.map((item) => {
                   const isCorrect = item.correctCategoryId === category.id
 
                   return (
@@ -3681,20 +4235,21 @@ function DragDropBlockPreview({ block, isExamMode, hideHeader }: { block: DragDr
                       key={item.id}
                       onClick={() => !showResult && handleAssign(item.id, '')}
                       className={cn(
-                        "p-2 rounded text-sm cursor-pointer transition-all",
+                        'p-2 rounded text-sm cursor-pointer transition-all',
                         showResult
                           ? isCorrect
-                            ? "bg-green-100 border border-green-300"
-                            : "bg-red-100 border border-red-300"
-                          : "bg-primary/10 border border-primary/20 hover:bg-primary/20"
+                            ? 'bg-green-100 border border-green-300'
+                            : 'bg-red-100 border border-red-300'
+                          : 'bg-primary/10 border border-primary/20 hover:bg-primary/20'
                       )}
                     >
                       {item.text}
-                      {showResult && (
-                        isCorrect
-                          ? <CheckCircle2 className="h-4 w-4 text-green-500 inline ml-2" />
-                          : <LucideIcons.X className="h-4 w-4 text-red-500 inline ml-2" />
-                      )}
+                      {showResult &&
+                        (isCorrect ? (
+                          <CheckCircle2 className="h-4 w-4 text-green-500 inline ml-2" />
+                        ) : (
+                          <LucideIcons.X className="h-4 w-4 text-red-500 inline ml-2" />
+                        ))}
                     </div>
                   )
                 })}
@@ -3709,7 +4264,7 @@ function DragDropBlockPreview({ block, isExamMode, hideHeader }: { block: DragDr
                 <div className="mt-2 pt-2 border-t border-dashed">
                   <p className="text-xs text-muted-foreground mb-1">Clic para agregar:</p>
                   <div className="flex flex-wrap gap-1">
-                    {unassignedItems.map(item => (
+                    {unassignedItems.map((item) => (
                       <Badge
                         key={item.id}
                         variant="outline"
@@ -3744,7 +4299,13 @@ function DragDropBlockPreview({ block, isExamMode, hideHeader }: { block: DragDr
   )
 }
 
-function TeacherNotesBlockPreview({ block, hideHeader }: { block: TeacherNotesBlock; hideHeader?: boolean }) {
+function TeacherNotesBlockPreview({
+  block,
+  hideHeader,
+}: {
+  block: TeacherNotesBlock
+  hideHeader?: boolean
+}) {
   void hideHeader // Teacher notes have a different layout
   const colorClasses = {
     yellow: {
@@ -3782,34 +4343,33 @@ function TeacherNotesBlockPreview({ block, hideHeader }: { block: TeacherNotesBl
   const colors = colorClasses[block.highlightColor || 'yellow']
 
   return (
-    <div className={cn(
-      "rounded-xl border-2 border-dashed p-5 space-y-3",
-      colors.bg,
-      colors.border
-    )}>
+    <div
+      className={cn('rounded-xl border-2 border-dashed p-5 space-y-3', colors.bg, colors.border)}
+    >
       <div className="flex items-center gap-2">
-        <div className={cn("p-1.5 rounded-lg", colors.bg)}>
-          <LucideIcons.StickyNote className={cn("h-5 w-5", colors.icon)} />
+        <div className={cn('p-1.5 rounded-lg', colors.bg)}>
+          <LucideIcons.StickyNote className={cn('h-5 w-5', colors.icon)} />
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <span className={cn("text-xs font-bold uppercase tracking-wider", colors.icon)}>
+            <span className={cn('text-xs font-bold uppercase tracking-wider', colors.icon)}>
               Solo para el profesor
             </span>
-            <Badge variant="outline" className={cn("text-[10px] px-1.5 py-0", colors.border, colors.icon)}>
+            <Badge
+              variant="outline"
+              className={cn('text-[10px] px-1.5 py-0', colors.border, colors.icon)}
+            >
               No visible para estudiantes
             </Badge>
           </div>
           {block.title && (
-            <h3 className={cn("font-semibold text-lg mt-1", colors.title)}>
-              {block.title}
-            </h3>
+            <h3 className={cn('font-semibold text-lg mt-1', colors.title)}>{block.title}</h3>
           )}
         </div>
       </div>
 
       {block.content ? (
-        <div 
+        <div
           className="prose prose-sm max-w-none text-gray-700 leading-relaxed"
           dangerouslySetInnerHTML={{ __html: processHtmlLinks(block.content) }}
         />
@@ -3822,9 +4382,17 @@ function TeacherNotesBlockPreview({ block, hideHeader }: { block: TeacherNotesBl
   )
 }
 
-function BlockGroupPreview({ block, isExamMode, hideBlockHeader }: { block: Block; isExamMode?: boolean; hideBlockHeader?: boolean }) {
+function BlockGroupPreview({
+  block,
+  isExamMode,
+  hideBlockHeader,
+}: {
+  block: Block
+  isExamMode?: boolean
+  hideBlockHeader?: boolean
+}) {
   const children = block.children || []
-  
+
   return (
     <div className="space-y-4">
       {!hideBlockHeader && (
@@ -3834,17 +4402,21 @@ function BlockGroupPreview({ block, isExamMode, hideBlockHeader }: { block: Bloc
           <span className="text-xs text-muted-foreground">({children.length} elementos)</span>
         </div>
       )}
-      
-      <div className={hideBlockHeader ? "space-y-4" : "border-l-4 border-primary/30 pl-4 space-y-4"}>
+
+      <div
+        className={hideBlockHeader ? 'space-y-4' : 'border-l-4 border-primary/30 pl-4 space-y-4'}
+      >
         {children.map((childBlock, index) => (
           <div key={childBlock.id || index} className="bg-muted/20 rounded-lg overflow-hidden">
-            <BlockPreview block={childBlock} isExamMode={isExamMode} hideBlockHeader={hideBlockHeader} />
+            <BlockPreview
+              block={childBlock}
+              isExamMode={isExamMode}
+              hideBlockHeader={hideBlockHeader}
+            />
           </div>
         ))}
         {children.length === 0 && (
-          <p className="text-muted-foreground italic text-sm py-4">
-            Este grupo está vacío
-          </p>
+          <p className="text-muted-foreground italic text-sm py-4">Este grupo está vacío</p>
         )}
       </div>
     </div>

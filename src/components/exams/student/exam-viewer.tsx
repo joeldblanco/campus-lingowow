@@ -49,8 +49,21 @@ interface ExamViewerProps {
   initialQuestionIndex?: number
   initialFlaggedQuestions?: string[]
   isResuming?: boolean
-  onSaveAnswer: (questionId: string, answer: unknown) => Promise<{ success: boolean; requiresReauth?: boolean; error?: string; [key: string]: unknown }>
-  onSubmitExam: () => Promise<{ success: boolean; requiresReauth?: boolean; error?: string; [key: string]: unknown }>
+  onSaveAnswer: (
+    questionId: string,
+    answer: unknown
+  ) => Promise<{
+    success: boolean
+    requiresReauth?: boolean
+    error?: string
+    [key: string]: unknown
+  }>
+  onSubmitExam: () => Promise<{
+    success: boolean
+    requiresReauth?: boolean
+    error?: string
+    [key: string]: unknown
+  }>
   proctoring?: ProctoringConfig
   examType?: 'COURSE_EXAM' | 'PLACEMENT_TEST' | 'DIAGNOSTIC' | 'PRACTICE'
 }
@@ -71,18 +84,22 @@ export function ExamViewer({
   onSaveAnswer,
   onSubmitExam,
   proctoring = {},
-  examType = 'COURSE_EXAM'
+  examType = 'COURSE_EXAM',
 }: ExamViewerProps) {
   const router = useRouter()
   const [answers, setAnswers] = useState<Record<string, unknown>>(initialAnswers)
-  const [flaggedQuestions, setFlaggedQuestions] = useState<Set<string>>(new Set(initialFlaggedQuestions))
+  const [flaggedQuestions, setFlaggedQuestions] = useState<Set<string>>(
+    new Set(initialFlaggedQuestions)
+  )
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(initialQuestionIndex)
   const [showResumingIndicator, setShowResumingIndicator] = useState(isResuming)
   const [isSaving, setIsSaving] = useState(false)
   const [showSubmitDialog, setShowSubmitDialog] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showProctorWarning, setShowProctorWarning] = useState(false)
-  const [currentWarningType, setCurrentWarningType] = useState<ProctorEventType | 'max_warnings' | null>(null)
+  const [currentWarningType, setCurrentWarningType] = useState<
+    ProctorEventType | 'max_warnings' | null
+  >(null)
   const [sessionStatus, setSessionStatus] = useState<'active' | 'expired' | 'syncing'>('active')
   const [showSessionExpiredDialog, setShowSessionExpiredDialog] = useState(false)
   const [unsyncedAnswers, setUnsyncedAnswers] = useState<string[]>([])
@@ -108,28 +125,26 @@ export function ExamViewer({
     requireFullscreen = true,
     blockCopyPaste = true,
     blockRightClick = true,
-    maxWarnings = 5
+    maxWarnings = 5,
   } = proctoring
 
-  const handleProctorViolation = useCallback((eventType: ProctorEventType, count: number) => {
-    setCurrentWarningType(eventType as ProctorEventType | 'max_warnings')
-    setShowProctorWarning(true)
-    
-    if (count >= maxWarnings) {
-      setCurrentWarningType('max_warnings')
-    }
-  }, [maxWarnings])
+  const handleProctorViolation = useCallback(
+    (eventType: ProctorEventType, count: number) => {
+      setCurrentWarningType(eventType as ProctorEventType | 'max_warnings')
+      setShowProctorWarning(true)
+
+      if (count >= maxWarnings) {
+        setCurrentWarningType('max_warnings')
+      }
+    },
+    [maxWarnings]
+  )
 
   const handleMaxWarningsReached = useCallback(() => {
     toast.error('Has alcanzado el límite de advertencias. Tu examen será revisado.')
   }, [])
 
-  const {
-    violationCount,
-    isFullscreen,
-    enterFullscreen,
-    endProctoring
-  } = useProctoring({
+  const { violationCount, isFullscreen, enterFullscreen, endProctoring } = useProctoring({
     attemptId,
     enabled: proctoringEnabled,
     requireFullscreen,
@@ -137,19 +152,19 @@ export function ExamViewer({
     blockRightClick,
     maxWarnings,
     onViolation: handleProctorViolation,
-    onMaxWarningsReached: handleMaxWarningsReached
+    onMaxWarningsReached: handleMaxWarningsReached,
   })
 
   const allQuestions = useMemo(() => {
     return questions.map((q) => ({
       ...q,
-      sectionTitle: '' // Ya no hay secciones
+      sectionTitle: '', // Ya no hay secciones
     }))
   }, [questions])
-  
+
   // Filtrar solo preguntas que requieren respuesta (excluyendo bloques informativos)
   const answerableQuestions = useMemo(() => {
-    return allQuestions.filter(q => {
+    return allQuestions.filter((q) => {
       const blockType = (q as typeof q & { originalBlockType?: string | null }).originalBlockType
       return !blockType || !INFORMATIVE_BLOCK_TYPES.includes(blockType)
     })
@@ -173,17 +188,18 @@ export function ExamViewer({
 
     return () => clearTimeout(timer)
   }, [currentQuestionIndex, flaggedQuestions, attemptId])
-  
+
   // Obtener todas las preguntas del grupo actual (si pertenece a un grupo)
   const currentGroupQuestions = useMemo(() => {
     // Si no hay pregunta actual, retornar array vacío
     if (!currentQuestion) return []
-    
-    const currentGroupId = (currentQuestion as typeof currentQuestion & { groupId?: string | null }).groupId
+
+    const currentGroupId = (currentQuestion as typeof currentQuestion & { groupId?: string | null })
+      .groupId
     if (!currentGroupId) return [currentQuestion]
-    
-    return allQuestions.filter(q => 
-      (q as typeof q & { groupId?: string | null }).groupId === currentGroupId
+
+    return allQuestions.filter(
+      (q) => (q as typeof q & { groupId?: string | null }).groupId === currentGroupId
     )
   }, [currentQuestion, allQuestions])
 
@@ -191,10 +207,10 @@ export function ExamViewer({
   const navigationIndices = useMemo(() => {
     const indices: number[] = []
     const processedGroupIds = new Set<string>()
-    
+
     allQuestions.forEach((q, index) => {
       const groupId = (q as typeof q & { groupId?: string | null }).groupId
-      
+
       if (groupId) {
         // Si es parte de un grupo, solo añadir el primer índice del grupo
         if (!processedGroupIds.has(groupId)) {
@@ -206,7 +222,7 @@ export function ExamViewer({
         indices.push(index)
       }
     })
-    
+
     return indices
   }, [allQuestions])
 
@@ -214,7 +230,7 @@ export function ExamViewer({
   const isLastGroup = useMemo(() => {
     if (navigationIndices.length === 0) return true
     // Buscar si hay algún índice de navegación mayor que el currentQuestionIndex
-    return navigationIndices.findIndex(idx => idx > currentQuestionIndex) === -1
+    return navigationIndices.findIndex((idx) => idx > currentQuestionIndex) === -1
   }, [navigationIndices, currentQuestionIndex])
 
   // Generar estados de preguntas solo para los puntos de navegación (grupos)
@@ -224,24 +240,24 @@ export function ExamViewer({
       // Obtener todas las preguntas de este grupo de navegación
       const nextNavIndex = navigationIndices[i + 1] ?? allQuestions.length
       const groupQuestions = allQuestions.slice(navIndex, nextNavIndex)
-      
+
       // Filtrar solo las preguntas respondibles del grupo (excluir bloques informativos)
-      const answerableInGroup = groupQuestions.filter(q => {
+      const answerableInGroup = groupQuestions.filter((q) => {
         const blockType = (q as typeof q & { originalBlockType?: string | null }).originalBlockType
         return !blockType || !INFORMATIVE_BLOCK_TYPES.includes(blockType)
       })
-      
+
       // Verificar si alguna pregunta del grupo está respondida
-      const hasAnswer = answerableInGroup.some(q => 
-        answers[q.id] !== null && answers[q.id] !== undefined && answers[q.id] !== ''
+      const hasAnswer = answerableInGroup.some(
+        (q) => answers[q.id] !== null && answers[q.id] !== undefined && answers[q.id] !== ''
       )
-      
+
       // Verificar si alguna pregunta del grupo está marcada
-      const isFlagged = answerableInGroup.some(q => flaggedQuestions.has(q.id))
-      
+      const isFlagged = answerableInGroup.some((q) => flaggedQuestions.has(q.id))
+
       // Verificar si estamos en este grupo actualmente
       const isCurrent = currentQuestionIndex >= navIndex && currentQuestionIndex < nextNavIndex
-      
+
       let status: QuestionStatus = 'unanswered'
       if (isCurrent) {
         status = 'current'
@@ -250,57 +266,68 @@ export function ExamViewer({
       } else if (hasAnswer) {
         status = 'answered'
       }
-      
+
       // Usar el primer ID del grupo como identificador
       return { id: groupQuestions[0]?.id || `nav-${i}`, status, navIndex }
     })
   }, [allQuestions, navigationIndices, answers, flaggedQuestions, currentQuestionIndex])
 
-  const handleAnswerChange = useCallback(async (answer: unknown) => {
-    if (!currentQuestion) return
+  const handleAnswerChange = useCallback(
+    async (answer: unknown) => {
+      if (!currentQuestion) return
 
-    setAnswers((prev) => ({
-      ...prev,
-      [currentQuestion.id]: answer
-    }))
+      setAnswers((prev) => ({
+        ...prev,
+        [currentQuestion.id]: answer,
+      }))
 
-    setIsSaving(true)
-    try {
-      const result = await onSaveAnswer(currentQuestion.id, answer)
-      
-      // Detectar si la sesión expiró
-      if (result && typeof result === 'object' && 'requiresReauth' in result && result.requiresReauth) {
-        setSessionStatus('expired')
-        setShowSessionExpiredDialog(true)
-        setUnsyncedAnswers((prev) => [...new Set([...prev, currentQuestion.id])])
-        // Guardar en backup local
-        saveAnswerToBackup(currentQuestion.id, answer)
-        recordExpired()
-        toast.error('Tu sesión ha expirado. Las respuestas se guardarán localmente.')
-        return
+      setIsSaving(true)
+      try {
+        const result = await onSaveAnswer(currentQuestion.id, answer)
+
+        // Detectar si la sesión expiró
+        if (
+          result &&
+          typeof result === 'object' &&
+          'requiresReauth' in result &&
+          result.requiresReauth
+        ) {
+          setSessionStatus('expired')
+          setShowSessionExpiredDialog(true)
+          setUnsyncedAnswers((prev) => [...new Set([...prev, currentQuestion.id])])
+          // Guardar en backup local
+          saveAnswerToBackup(currentQuestion.id, answer)
+          recordExpired()
+          toast.error('Tu sesión ha expirado. Las respuestas se guardarán localmente.')
+          return
+        }
+      } catch (error) {
+        console.error('Error saving answer:', error)
+        // Verificar si es error de autenticación
+        if (
+          error instanceof Error &&
+          (error.message.includes('401') || error.message.includes('Unauthorized'))
+        ) {
+          setSessionStatus('expired')
+          setShowSessionExpiredDialog(true)
+          setUnsyncedAnswers((prev) => [...new Set([...prev, currentQuestion.id])])
+          // Guardar en backup local
+          saveAnswerToBackup(currentQuestion.id, answer)
+          recordExpired()
+          toast.error('Tu sesión ha expirado. Las respuestas se guardarán localmente.')
+        } else {
+          toast.error('Error al guardar respuesta')
+        }
+      } finally {
+        setIsSaving(false)
       }
-    } catch (error) {
-      console.error('Error saving answer:', error)
-      // Verificar si es error de autenticación
-      if (error instanceof Error && (error.message.includes('401') || error.message.includes('Unauthorized'))) {
-        setSessionStatus('expired')
-        setShowSessionExpiredDialog(true)
-        setUnsyncedAnswers((prev) => [...new Set([...prev, currentQuestion.id])])
-        // Guardar en backup local
-        saveAnswerToBackup(currentQuestion.id, answer)
-        recordExpired()
-        toast.error('Tu sesión ha expirado. Las respuestas se guardarán localmente.')
-      } else {
-        toast.error('Error al guardar respuesta')
-      }
-    } finally {
-      setIsSaving(false)
-    }
-  }, [currentQuestion, onSaveAnswer, saveAnswerToBackup, recordExpired])
+    },
+    [currentQuestion, onSaveAnswer, saveAnswerToBackup, recordExpired]
+  )
 
   const handleToggleFlag = useCallback(() => {
     if (!currentQuestion) return
-    
+
     setFlaggedQuestions((prev) => {
       const newSet = new Set(prev)
       if (newSet.has(currentQuestion.id)) {
@@ -312,12 +339,15 @@ export function ExamViewer({
     })
   }, [currentQuestion])
 
-  const handleNavigate = useCallback((index: number) => {
-    // Usar allQuestions.length porque los índices de navegación son de allQuestions, no de answerableQuestions
-    if (index >= 0 && index < allQuestions.length) {
-      setCurrentQuestionIndex(index)
-    }
-  }, [allQuestions.length])
+  const handleNavigate = useCallback(
+    (index: number) => {
+      // Usar allQuestions.length porque los índices de navegación son de allQuestions, no de answerableQuestions
+      if (index >= 0 && index < allQuestions.length) {
+        setCurrentQuestionIndex(index)
+      }
+    },
+    [allQuestions.length]
+  )
 
   const handlePrevious = useCallback(() => {
     // Encontrar el grupo actual: buscar el último índice que es <= currentQuestionIndex
@@ -329,7 +359,7 @@ export function ExamViewer({
         break
       }
     }
-    
+
     const prevNavIndex = currentNavIndex > 0 ? currentNavIndex - 1 : -1
     if (prevNavIndex >= 0) {
       handleNavigate(navigationIndices[prevNavIndex])
@@ -346,11 +376,12 @@ export function ExamViewer({
         break
       }
     }
-    
-    const nextNavIndex = currentNavIndex >= 0 && currentNavIndex < navigationIndices.length - 1 
-      ? currentNavIndex + 1 
-      : -1
-    
+
+    const nextNavIndex =
+      currentNavIndex >= 0 && currentNavIndex < navigationIndices.length - 1
+        ? currentNavIndex + 1
+        : -1
+
     if (nextNavIndex >= 0) {
       handleNavigate(navigationIndices[nextNavIndex])
     }
@@ -362,9 +393,10 @@ export function ExamViewer({
     try {
       await onSubmitExam()
       toast.success('Examen enviado correctamente')
-      const resultsPath = examType === 'PLACEMENT_TEST' 
-        ? `/placement-test/${examId}/results`
-        : `/exams/${examId}/${attemptId}/results`
+      const resultsPath =
+        examType === 'PLACEMENT_TEST'
+          ? `/placement-test/${examId}/results`
+          : `/exams/${examId}/${attemptId}/results`
       router.push(resultsPath)
     } catch (error) {
       console.error('Error submitting exam:', error)
@@ -381,25 +413,34 @@ export function ExamViewer({
         await endProctoring()
       }
       const result = await onSubmitExam()
-      
+
       // Detectar si la sesión expiró al enviar
-      if (result && typeof result === 'object' && 'requiresReauth' in result && result.requiresReauth) {
+      if (
+        result &&
+        typeof result === 'object' &&
+        'requiresReauth' in result &&
+        result.requiresReauth
+      ) {
         setSessionStatus('expired')
         setShowSessionExpiredDialog(true)
         recordExpired()
         toast.error('Tu sesión ha expirado. Por favor, inicia sesión para enviar el examen.')
         return
       }
-      
+
       toast.success('Examen enviado correctamente')
-      const resultsPath = examType === 'PLACEMENT_TEST' 
-        ? `/placement-test/${examId}/results`
-        : `/exams/${examId}/${attemptId}/results`
+      const resultsPath =
+        examType === 'PLACEMENT_TEST'
+          ? `/placement-test/${examId}/results`
+          : `/exams/${examId}/${attemptId}/results`
       router.push(resultsPath)
     } catch (error) {
       console.error('Error submitting exam:', error)
       // Verificar si es error de autenticación
-      if (error instanceof Error && (error.message.includes('401') || error.message.includes('Unauthorized'))) {
+      if (
+        error instanceof Error &&
+        (error.message.includes('401') || error.message.includes('Unauthorized'))
+      ) {
         setSessionStatus('expired')
         setShowSessionExpiredDialog(true)
         recordExpired()
@@ -411,7 +452,16 @@ export function ExamViewer({
       setIsSubmitting(false)
       setShowSubmitDialog(false)
     }
-  }, [onSubmitExam, router, examId, attemptId, proctoringEnabled, endProctoring, examType, recordExpired])
+  }, [
+    onSubmitExam,
+    router,
+    examId,
+    attemptId,
+    proctoringEnabled,
+    endProctoring,
+    examType,
+    recordExpired,
+  ])
 
   const unansweredCount = totalQuestions - answeredCount
 
@@ -422,7 +472,12 @@ export function ExamViewer({
           <div className="flex items-center gap-4">
             <div className="size-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                />
               </svg>
             </div>
             <div>
@@ -446,11 +501,13 @@ export function ExamViewer({
               </div>
             )}
             {proctoringEnabled && (
-              <div className={`hidden md:flex items-center gap-2 text-sm px-3 py-1.5 rounded-full ${
-                violationCount > 0 
-                  ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
-                  : 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
-              }`}>
+              <div
+                className={`hidden md:flex items-center gap-2 text-sm px-3 py-1.5 rounded-full ${
+                  violationCount > 0
+                    ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
+                    : 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                }`}
+              >
                 <ShieldAlert className="h-4 w-4" />
                 <span>{isFullscreen ? 'Proctoring Activo' : 'Sin Pantalla Completa'}</span>
                 {violationCount > 0 && (
@@ -501,40 +558,53 @@ export function ExamViewer({
                 {currentGroupQuestions.map((q) => (
                   <ExamQuestionCard
                     key={q.id}
-                    questionNumber={allQuestions.findIndex(aq => aq.id === q.id) + 1}
+                    questionNumber={allQuestions.findIndex((aq) => aq.id === q.id) + 1}
                     question={q}
                     answer={answers[q.id]}
                     examAttemptId={attemptId}
                     onAnswerChange={(answer) => {
-                      setAnswers(prev => ({ ...prev, [q.id]: answer }))
-                      
+                      setAnswers((prev) => ({ ...prev, [q.id]: answer }))
+
                       setIsSaving(true)
                       ;(async () => {
                         try {
                           const result = await onSaveAnswer(q.id, answer)
-                          
+
                           // Detectar si la sesión expiró
-                          if (result && typeof result === 'object' && 'requiresReauth' in result && result.requiresReauth) {
+                          if (
+                            result &&
+                            typeof result === 'object' &&
+                            'requiresReauth' in result &&
+                            result.requiresReauth
+                          ) {
                             setSessionStatus('expired')
                             setShowSessionExpiredDialog(true)
                             setUnsyncedAnswers((prev) => [...new Set([...prev, q.id])])
                             // Guardar en backup local
                             saveAnswerToBackup(q.id, answer)
                             recordExpired()
-                            toast.error('Tu sesión ha expirado. Las respuestas se guardarán localmente.')
+                            toast.error(
+                              'Tu sesión ha expirado. Las respuestas se guardarán localmente.'
+                            )
                             return
                           }
                         } catch (error) {
                           console.error('Error saving answer:', error)
                           // Verificar si es error de autenticación
-                          if (error instanceof Error && (error.message.includes('401') || error.message.includes('Unauthorized'))) {
+                          if (
+                            error instanceof Error &&
+                            (error.message.includes('401') ||
+                              error.message.includes('Unauthorized'))
+                          ) {
                             setSessionStatus('expired')
                             setShowSessionExpiredDialog(true)
                             setUnsyncedAnswers((prev) => [...new Set([...prev, q.id])])
                             // Guardar en backup local
                             saveAnswerToBackup(q.id, answer)
                             recordExpired()
-                            toast.error('Tu sesión ha expirado. Las respuestas se guardarán localmente.')
+                            toast.error(
+                              'Tu sesión ha expirado. Las respuestas se guardarán localmente.'
+                            )
                           } else {
                             toast.error('Error al guardar respuesta')
                           }
@@ -545,7 +615,7 @@ export function ExamViewer({
                     }}
                     isFlagged={flaggedQuestions.has(q.id)}
                     onToggleFlag={() => {
-                      setFlaggedQuestions(prev => {
+                      setFlaggedQuestions((prev) => {
                         const newSet = new Set(prev)
                         if (newSet.has(q.id)) {
                           newSet.delete(q.id)
@@ -558,23 +628,27 @@ export function ExamViewer({
                   />
                 ))}
               </div>
-            ) : currentQuestion && (
-              <ExamQuestionCard
-                questionNumber={currentQuestionIndex + 1}
-                question={currentQuestion}
-                answer={answers[currentQuestion.id]}
-                onAnswerChange={handleAnswerChange}
-                isFlagged={flaggedQuestions.has(currentQuestion.id)}
-                onToggleFlag={handleToggleFlag}
-                examAttemptId={attemptId}
-              />
+            ) : (
+              currentQuestion && (
+                <ExamQuestionCard
+                  questionNumber={currentQuestionIndex + 1}
+                  question={currentQuestion}
+                  answer={answers[currentQuestion.id]}
+                  onAnswerChange={handleAnswerChange}
+                  isFlagged={flaggedQuestions.has(currentQuestion.id)}
+                  onToggleFlag={handleToggleFlag}
+                  examAttemptId={attemptId}
+                />
+              )
             )}
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
               <Button
                 variant="ghost"
                 onClick={handlePrevious}
-                disabled={navigationIndices.length === 0 || currentQuestionIndex <= navigationIndices[0]}
+                disabled={
+                  navigationIndices.length === 0 || currentQuestionIndex <= navigationIndices[0]
+                }
                 className="flex items-center gap-2"
               >
                 <ArrowLeft className="h-4 w-4" />
@@ -605,28 +679,19 @@ export function ExamViewer({
 
           <aside className="lg:col-span-4 w-full lg:max-w-[360px] space-y-6">
             <div className="sticky top-24 space-y-6">
-              <ExamTimer
-                timeLimit={timeLimit}
-                startedAt={startedAt}
-                onTimeUp={handleTimeUp}
-              />
+              <ExamTimer timeLimit={timeLimit} startedAt={startedAt} onTimeUp={handleTimeUp} />
 
-              <ExamProgress
-                answeredCount={answeredCount}
-                totalQuestions={totalQuestions}
-              />
+              <ExamProgress answeredCount={answeredCount} totalQuestions={totalQuestions} />
 
-              <QuestionNavigator
-                questions={questionStatuses}
-                onNavigate={handleNavigate}
-              />
+              <QuestionNavigator questions={questionStatuses} onNavigate={handleNavigate} />
 
               <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900 rounded-xl p-4 flex items-start gap-3">
                 <Info className="h-5 w-5 text-primary mt-0.5" />
                 <div>
                   <h4 className="text-sm font-bold text-foreground mb-1">¿Necesitas ayuda?</h4>
                   <p className="text-xs text-muted-foreground leading-relaxed">
-                    Puedes marcar preguntas para revisar después. Si tienes problemas técnicos, contacta al soporte.
+                    Puedes marcar preguntas para revisar después. Si tienes problemas técnicos,
+                    contacta al soporte.
                   </p>
                 </div>
               </div>
@@ -671,9 +736,12 @@ export function ExamViewer({
           <AlertDialogHeader>
             <AlertDialogTitle>Sesión Expirada</AlertDialogTitle>
             <AlertDialogDescription className="space-y-3">
-              <p>Tu sesión ha expirado. Las respuestas se guardarán localmente en tu dispositivo.</p>
+              <p>
+                Tu sesión ha expirado. Las respuestas se guardarán localmente en tu dispositivo.
+              </p>
               <p className="text-sm text-amber-600 dark:text-amber-400">
-                ⚠️ Para asegurar que tus respuestas se guarden correctamente en el servidor, por favor inicia sesión nuevamente.
+                ⚠️ Para asegurar que tus respuestas se guarden correctamente en el servidor, por
+                favor inicia sesión nuevamente.
               </p>
               {unsyncedAnswers.length > 0 && (
                 <p className="text-sm text-muted-foreground">

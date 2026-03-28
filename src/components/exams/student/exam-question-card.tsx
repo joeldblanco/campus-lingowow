@@ -20,7 +20,14 @@ export interface ExamQuestionData {
   type: QuestionType
   question: string
   options?: string[] | null
-  multipleChoiceItems?: { id: string; question: string; options: { id: string; text: string }[]; correctOptionId?: string }[] | null
+  multipleChoiceItems?:
+    | {
+        id: string
+        question: string
+        options: { id: string; text: string }[]
+        correctOptionId?: string
+      }[]
+    | null
   originalBlockType?: string | null
   blockData?: {
     url?: string
@@ -154,21 +161,25 @@ export function ExamQuestionCard({
   isFlagged,
   onToggleFlag,
   sectionTitle,
-  examAttemptId
+  examAttemptId,
 }: ExamQuestionCardProps) {
   // Si hay originalBlockType, usar BlockPreview para renderizar igual que en el Exam Builder
   if (question.originalBlockType) {
     const block = reconstructBlock(question)
-    
+
     if (block) {
       const isContentOnly = ['title', 'text'].includes(question.originalBlockType)
-      const isNonInteractive = ['title', 'text', 'audio', 'video', 'image'].includes(question.originalBlockType)
-      
+      const isNonInteractive = ['title', 'text', 'audio', 'video', 'image'].includes(
+        question.originalBlockType
+      )
+
       return (
-        <div className={cn(
-          "bg-white dark:bg-[#1a2632] rounded-xl shadow-sm border border-gray-200 dark:border-gray-700",
-          isContentOnly && "border-dashed border-muted-foreground/30"
-        )}>
+        <div
+          className={cn(
+            'bg-white dark:bg-[#1a2632] rounded-xl shadow-sm border border-gray-200 dark:border-gray-700',
+            isContentOnly && 'border-dashed border-muted-foreground/30'
+          )}
+        >
           {!isNonInteractive && (
             <div className="absolute top-6 right-6 flex items-center gap-2 z-10">
               <Button
@@ -176,18 +187,24 @@ export function ExamQuestionCard({
                 size="sm"
                 onClick={onToggleFlag}
                 className={cn(
-                  "h-8 px-2",
-                  isFlagged && "text-yellow-600 bg-yellow-50 hover:bg-yellow-100"
+                  'h-8 px-2',
+                  isFlagged && 'text-yellow-600 bg-yellow-50 hover:bg-yellow-100'
                 )}
               >
-                <Flag className={cn("h-4 w-4", isFlagged && "fill-yellow-500")} />
+                <Flag className={cn('h-4 w-4', isFlagged && 'fill-yellow-500')} />
               </Button>
               <span className="text-sm font-medium text-gray-400 bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded">
                 {question.points} pts
               </span>
             </div>
           )}
-          <BlockPreview block={block} isExamMode={true} examAttemptId={examAttemptId} answer={answer} onAnswerChange={onAnswerChange} />
+          <BlockPreview
+            block={block}
+            isExamMode={true}
+            examAttemptId={examAttemptId}
+            answer={answer}
+            onAnswerChange={onAnswerChange}
+          />
         </div>
       )
     }
@@ -266,11 +283,11 @@ export function ExamQuestionCard({
           size="sm"
           onClick={onToggleFlag}
           className={cn(
-            "h-8 px-2",
-            isFlagged && "text-yellow-600 bg-yellow-50 hover:bg-yellow-100"
+            'h-8 px-2',
+            isFlagged && 'text-yellow-600 bg-yellow-50 hover:bg-yellow-100'
           )}
         >
-          <Flag className={cn("h-4 w-4", isFlagged && "fill-yellow-500")} />
+          <Flag className={cn('h-4 w-4', isFlagged && 'fill-yellow-500')} />
         </Button>
         <span className="text-sm font-medium text-gray-400 bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded">
           {question.points} pts
@@ -288,9 +305,7 @@ export function ExamQuestionCard({
         </h3>
 
         {question.type !== 'FILL_BLANK' && (
-          <p className="text-lg text-foreground font-medium leading-relaxed">
-            {question.question}
-          </p>
+          <p className="text-lg text-foreground font-medium leading-relaxed">{question.question}</p>
         )}
 
         {question.audioUrl && (
@@ -302,9 +317,7 @@ export function ExamQuestionCard({
           </div>
         )}
 
-        <div className="mt-6">
-          {renderQuestionBlock()}
-        </div>
+        <div className="mt-6">{renderQuestionBlock()}</div>
       </div>
     </div>
   )
