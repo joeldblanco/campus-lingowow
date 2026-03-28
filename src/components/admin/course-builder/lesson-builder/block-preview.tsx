@@ -74,13 +74,14 @@ interface BlockPreviewProps {
   isTeacher?: boolean
   isClassroom?: boolean // When true, enables interactive block synchronization in classroom
   isExamMode?: boolean // When true, disables interactive verification (feedback only at exam end)
+  examAttemptId?: string // When provided, persists audio play counts to localStorage
   answer?: unknown // Current answer value (for exam mode)
   onAnswerChange?: (answer: unknown) => void // Callback when answer changes (for exam mode)
   hideBlockHeader?: boolean // When true, hides the blue title/icon header on blocks (for Resource Builder)
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function BlockPreview({ block, isTeacher, isClassroom, isExamMode, answer, onAnswerChange, hideBlockHeader }: BlockPreviewProps) {
+export function BlockPreview({ block, isTeacher, isClassroom, isExamMode, examAttemptId, answer, onAnswerChange, hideBlockHeader }: BlockPreviewProps) {
   // Teacher notes are only visible to teachers
   if (block.type === 'teacher_notes' && !isTeacher) {
     return null
@@ -97,7 +98,7 @@ export function BlockPreview({ block, isTeacher, isClassroom, isExamMode, answer
       case 'image':
         return <ImageBlockPreview block={block as ImageBlock} hideHeader={hideBlockHeader} />
       case 'audio':
-        return <AudioBlockPreview block={block as AudioBlock} hideHeader={hideBlockHeader} />
+        return <AudioBlockPreview block={block as AudioBlock} hideHeader={hideBlockHeader} isExamMode={isExamMode} examAttemptId={examAttemptId} />
       case 'quiz':
         return <QuizBlockPreview block={block as QuizBlock} hideHeader={hideBlockHeader} />
       case 'assignment':
@@ -318,12 +319,20 @@ function ImageBlockPreview({ block, hideHeader }: { block: ImageBlock; hideHeade
 }
 
 // Audio Block Preview
-function AudioBlockPreview({ block, hideHeader }: { block: AudioBlock; hideHeader?: boolean }) {
+function AudioBlockPreview({ block, hideHeader, isExamMode, examAttemptId }: { block: AudioBlock; hideHeader?: boolean; isExamMode?: boolean; examAttemptId?: string }) {
+  const storageKey = examAttemptId ? `exam-audio-plays:${examAttemptId}:${block.id}` : null
+
   const [isPlaying, setIsPlaying] = useState(false)
   const [progress, setProgress] = useState(0)
   const [duration, setDuration] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
-  const [replayCount, setReplayCount] = useState(0)
+  const [replayCount, setReplayCount] = useState(() => {
+    if (storageKey && typeof window !== 'undefined') {
+      const saved = localStorage.getItem(storageKey)
+      return saved ? parseInt(saved, 10) || 0 : 0
+    }
+    return 0
+  })
   const [hasStartedCurrentPlay, setHasStartedCurrentPlay] = useState(false)
   const [waveform] = useState(() => Array.from({ length: 32 }, () => Math.random() * 0.7 + 0.3)) // Random heights
   const audioRef = useRef<HTMLAudioElement>(null)
@@ -331,10 +340,20 @@ function AudioBlockPreview({ block, hideHeader }: { block: AudioBlock; hideHeade
   const maxReplays = block.maxReplays || 0
   const hasLimit = maxReplays > 0
   const canPlay = !hasLimit || replayCount < maxReplays
+  // En modo examen con límite, no permitir pausar ni navegar
+  const blockPause = isExamMode && hasLimit
+
+  // Persistir replayCount en localStorage cuando cambia
+  useEffect(() => {
+    if (storageKey && replayCount > 0) {
+      localStorage.setItem(storageKey, String(replayCount))
+    }
+  }, [storageKey, replayCount])
 
   const togglePlay = () => {
     if (audioRef.current) {
       if (isPlaying) {
+        if (blockPause) return // No permitir pausar en modo examen
         audioRef.current.pause()
       } else {
         if (!canPlay) return
@@ -420,13 +439,15 @@ function AudioBlockPreview({ block, hideHeader }: { block: AudioBlock; hideHeade
                 className={cn(
                   "h-14 w-14 flex items-center justify-center rounded-full transition-all shadow-md shrink-0",
                   isPlaying
-                    ? "bg-blue-600 text-white hover:bg-blue-700 hover:scale-105"
+                    ? (blockPause
+                      ? "bg-blue-600 text-white cursor-default"
+                      : "bg-blue-600 text-white hover:bg-blue-700 hover:scale-105")
                     : (!canPlay
                       ? "bg-muted text-muted-foreground cursor-not-allowed"
                       : "bg-blue-900 text-white hover:bg-blue-800 hover:scale-105")
                 )}
               >
-                {isPlaying ? <Pause className="h-6 w-6 fill-current" /> : <Play className="h-6 w-6 fill-current ml-1" />}
+                {isPlaying && !blockPause ? <Pause className="h-6 w-6 fill-current" /> : <Play className="h-6 w-6 fill-current ml-1" />}
               </button>
 
               <div className="flex-1 space-y-2">
@@ -434,12 +455,12 @@ function AudioBlockPreview({ block, hideHeader }: { block: AudioBlock; hideHeade
                 <div
                   className={cn(
                     "h-12 flex items-center justify-between gap-0.5",
-                    // Bloquear navegación completamente cuando hay límite de reproducciones
-                    hasLimit ? "cursor-default" : "cursor-pointer"
+                    // Bloquear navegación completamente cuando hay límite de reproducciones o modo examen
+                    (hasLimit || isExamMode) ? "cursor-default" : "cursor-pointer"
                   )}
                   onClick={(e) => {
-                    // Bloquear navegación completamente cuando hay límite de reproducciones
-                    if (hasLimit) return;
+                    // Bloquear navegación completamente cuando hay límite de reproducciones o modo examen
+                    if (hasLimit || isExamMode) return;
                     if (audioRef.current && duration) {
                       const rect = e.currentTarget.getBoundingClientRect()
                       const x = e.clientX - rect.left

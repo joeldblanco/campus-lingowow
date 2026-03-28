@@ -143,6 +143,7 @@ interface ExamQuestionCardProps {
   isFlagged: boolean
   onToggleFlag: () => void
   sectionTitle?: string
+  examAttemptId?: string
 }
 
 export function ExamQuestionCard({
@@ -152,7 +153,8 @@ export function ExamQuestionCard({
   onAnswerChange,
   isFlagged,
   onToggleFlag,
-  sectionTitle
+  sectionTitle,
+  examAttemptId
 }: ExamQuestionCardProps) {
   // Si hay originalBlockType, usar BlockPreview para renderizar igual que en el Exam Builder
   if (question.originalBlockType) {
@@ -185,7 +187,7 @@ export function ExamQuestionCard({
               </span>
             </div>
           )}
-          <BlockPreview block={block} isExamMode={true} answer={answer} onAnswerChange={onAnswerChange} />
+          <BlockPreview block={block} isExamMode={true} examAttemptId={examAttemptId} answer={answer} onAnswerChange={onAnswerChange} />
         </div>
       )
     }

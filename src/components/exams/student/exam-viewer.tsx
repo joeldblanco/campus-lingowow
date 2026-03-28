@@ -504,6 +504,7 @@ export function ExamViewer({
                     questionNumber={allQuestions.findIndex(aq => aq.id === q.id) + 1}
                     question={q}
                     answer={answers[q.id]}
+                    examAttemptId={attemptId}
                     onAnswerChange={(answer) => {
                       setAnswers(prev => ({ ...prev, [q.id]: answer }))
                       
@@ -565,6 +566,7 @@ export function ExamViewer({
                 onAnswerChange={handleAnswerChange}
                 isFlagged={flaggedQuestions.has(currentQuestion.id)}
                 onToggleFlag={handleToggleFlag}
+                examAttemptId={attemptId}
               />
             )}
 
