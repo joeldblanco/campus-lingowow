@@ -26,6 +26,7 @@ import { toast } from 'sonner'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { getRelevantPeriods } from '@/lib/actions/academic-period'
 
 interface ClassDetail {
   bookingId: string
@@ -78,6 +79,7 @@ interface AcademicPeriod {
   name: string
   startDate: string
   endDate: string
+  isActive: boolean
 }
 
 export function PayableClassesReport() {
@@ -111,25 +113,14 @@ export function PayableClassesReport() {
 
     async function loadAcademicPeriods() {
       try {
-        const response = await fetch('/api/academic-periods')
-        if (response.ok) {
-          const data = await response.json()
-          const periods = data.periods || []
-          setAcademicPeriods(periods)
+        const periods = await getRelevantPeriods()
+        setAcademicPeriods(periods)
 
-          // Buscar el período académico actual (isActive = true)
-          // Si no hay ninguno activo, buscar el más reciente que incluya la fecha actual
-          const today = new Date()
-          const activePeriod = periods.find((p: AcademicPeriod) => {
-            const start = new Date(p.startDate)
-            const end = new Date(p.endDate)
-            return today >= start && today <= end
-          })
+        const activePeriod = periods.find((p) => p.isActive)
 
-          if (activePeriod && !initialPeriodSet) {
-            setSelectedPeriod(activePeriod.id)
-            setInitialPeriodSet(true)
-          }
+        if (activePeriod && !initialPeriodSet) {
+          setSelectedPeriod(activePeriod.id)
+          setInitialPeriodSet(true)
         }
       } catch (error) {
         console.error('Error cargando períodos académicos:', error)
@@ -351,7 +342,8 @@ export function PayableClassesReport() {
                     <SelectItem value="all">Todos los períodos</SelectItem>
                     {academicPeriods.map((period) => (
                       <SelectItem key={period.id} value={period.id}>
-                        {period.name} (
+                        {period.name}
+                        {period.isActive && ' (Actual)'} (
                         {format(new Date(period.startDate), 'dd/MM/yyyy', { locale: es })} -{' '}
                         {format(new Date(period.endDate), 'dd/MM/yyyy', { locale: es })})
                       </SelectItem>

@@ -91,7 +91,10 @@ export async function getDashboardKPIs(dateRange?: DateRange): Promise<Dashboard
 
   // Gastos (pagos a profesores) - basado en clases completadas
   const currentExpenses = await calculateMonthlyTeacherPayments(currentMonthStart, currentMonthEnd)
-  const previousExpenses = await calculateMonthlyTeacherPayments(previousMonthStart, previousMonthEnd)
+  const previousExpenses = await calculateMonthlyTeacherPayments(
+    previousMonthStart,
+    previousMonthEnd
+  )
 
   // Nuevos estudiantes
   const currentNewStudents = await db.user.count({
@@ -118,27 +121,36 @@ export async function getDashboardKPIs(dateRange?: DateRange): Promise<Dashboard
   const currentClasses = await db.classBooking.groupBy({
     by: ['status'],
     where: {
-      day: { gte: format(currentMonthStart, 'yyyy-MM-dd'), lte: format(currentMonthEnd, 'yyyy-MM-dd') },
+      day: {
+        gte: format(currentMonthStart, 'yyyy-MM-dd'),
+        lte: format(currentMonthEnd, 'yyyy-MM-dd'),
+      },
     },
     _count: true,
   })
 
   const previousClasses = await db.classBooking.count({
     where: {
-      day: { gte: format(previousMonthStart, 'yyyy-MM-dd'), lte: format(previousMonthEnd, 'yyyy-MM-dd') },
+      day: {
+        gte: format(previousMonthStart, 'yyyy-MM-dd'),
+        lte: format(previousMonthEnd, 'yyyy-MM-dd'),
+      },
     },
   })
 
-  const completedClasses = currentClasses.find(c => c.status === 'COMPLETED')?._count || 0
-  const cancelledClasses = currentClasses.find(c => c.status === 'CANCELLED')?._count || 0
-  const noShowClasses = currentClasses.find(c => c.status === 'NO_SHOW')?._count || 0
+  const completedClasses = currentClasses.find((c) => c.status === 'COMPLETED')?._count || 0
+  const cancelledClasses = currentClasses.find((c) => c.status === 'CANCELLED')?._count || 0
+  const noShowClasses = currentClasses.find((c) => c.status === 'NO_SHOW')?._count || 0
   const totalCurrentClasses = currentClasses.reduce((sum, c) => sum + c._count, 0)
 
   // Tasa de retención (estudiantes que tuvieron clases este mes y el anterior)
   const studentsLastMonth = await db.classBooking.groupBy({
     by: ['studentId'],
     where: {
-      day: { gte: format(previousMonthStart, 'yyyy-MM-dd'), lte: format(previousMonthEnd, 'yyyy-MM-dd') },
+      day: {
+        gte: format(previousMonthStart, 'yyyy-MM-dd'),
+        lte: format(previousMonthEnd, 'yyyy-MM-dd'),
+      },
       status: 'COMPLETED',
     },
   })
@@ -146,14 +158,18 @@ export async function getDashboardKPIs(dateRange?: DateRange): Promise<Dashboard
   const studentsThisMonth = await db.classBooking.groupBy({
     by: ['studentId'],
     where: {
-      day: { gte: format(currentMonthStart, 'yyyy-MM-dd'), lte: format(currentMonthEnd, 'yyyy-MM-dd') },
+      day: {
+        gte: format(currentMonthStart, 'yyyy-MM-dd'),
+        lte: format(currentMonthEnd, 'yyyy-MM-dd'),
+      },
       status: 'COMPLETED',
     },
   })
 
-  const lastMonthIds = new Set(studentsLastMonth.map(s => s.studentId))
-  const retained = studentsThisMonth.filter(s => lastMonthIds.has(s.studentId)).length
-  const retentionRate = studentsLastMonth.length > 0 ? (retained / studentsLastMonth.length) * 100 : 100
+  const lastMonthIds = new Set(studentsLastMonth.map((s) => s.studentId))
+  const retained = studentsThisMonth.filter((s) => lastMonthIds.has(s.studentId)).length
+  const retentionRate =
+    studentsLastMonth.length > 0 ? (retained / studentsLastMonth.length) * 100 : 100
 
   // Proyecciones basadas en tendencia
   const daysInMonth = differenceInDays(currentMonthEnd, currentMonthStart) + 1
@@ -246,8 +262,10 @@ export async function getRevenueAnalytics(months: number = 12): Promise<RevenueA
   let totalDiscounts = 0
 
   for (const invoice of invoices) {
-    const monthKey = invoice.paidAt ? format(invoice.paidAt, 'yyyy-MM') : format(invoice.createdAt, 'yyyy-MM')
-    
+    const monthKey = invoice.paidAt
+      ? format(invoice.paidAt, 'yyyy-MM')
+      : format(invoice.createdAt, 'yyyy-MM')
+
     // Actualizar mensual
     const monthData = monthlyMap.get(monthKey)
     if (monthData) {
@@ -337,20 +355,26 @@ export async function getRevenueAnalytics(months: number = 12): Promise<RevenueA
   }
 
   // Calcular porcentajes
-  const byProduct = Array.from(productMap.values()).map(p => ({
-    ...p,
-    percentage: totalRevenue > 0 ? Math.round((p.revenue / totalRevenue) * 1000) / 10 : 0,
-  })).sort((a, b) => b.revenue - a.revenue)
+  const byProduct = Array.from(productMap.values())
+    .map((p) => ({
+      ...p,
+      percentage: totalRevenue > 0 ? Math.round((p.revenue / totalRevenue) * 1000) / 10 : 0,
+    }))
+    .sort((a, b) => b.revenue - a.revenue)
 
-  const byPlan = Array.from(planMap.values()).map(p => ({
-    ...p,
-    percentage: totalRevenue > 0 ? Math.round((p.revenue / totalRevenue) * 1000) / 10 : 0,
-  })).sort((a, b) => b.revenue - a.revenue)
+  const byPlan = Array.from(planMap.values())
+    .map((p) => ({
+      ...p,
+      percentage: totalRevenue > 0 ? Math.round((p.revenue / totalRevenue) * 1000) / 10 : 0,
+    }))
+    .sort((a, b) => b.revenue - a.revenue)
 
-  const byPaymentMethod = Array.from(paymentMethodMap.values()).map(p => ({
-    ...p,
-    percentage: totalRevenue > 0 ? Math.round((p.revenue / totalRevenue) * 1000) / 10 : 0,
-  })).sort((a, b) => b.revenue - a.revenue)
+  const byPaymentMethod = Array.from(paymentMethodMap.values())
+    .map((p) => ({
+      ...p,
+      percentage: totalRevenue > 0 ? Math.round((p.revenue / totalRevenue) * 1000) / 10 : 0,
+    }))
+    .sort((a, b) => b.revenue - a.revenue)
 
   // Ingresos por idioma (basado en cursos de las inscripciones)
   const enrollmentsByLanguage = await db.enrollment.groupBy({
@@ -359,12 +383,12 @@ export async function getRevenueAnalytics(months: number = 12): Promise<RevenueA
   })
 
   const courses = await db.course.findMany({
-    where: { id: { in: enrollmentsByLanguage.map(e => e.courseId) } },
+    where: { id: { in: enrollmentsByLanguage.map((e) => e.courseId) } },
     select: { id: true, language: true },
   })
 
-  const courseLanguageMap = new Map(courses.map(c => [c.id, c.language]))
-  
+  const courseLanguageMap = new Map(courses.map((c) => [c.id, c.language]))
+
   for (const enrollment of enrollmentsByLanguage) {
     const lang = courseLanguageMap.get(enrollment.courseId) || 'unknown'
     if (!languageMap.has(lang)) {
@@ -383,7 +407,7 @@ export async function getRevenueAnalytics(months: number = 12): Promise<RevenueA
 
   const monthlyRevenue = Array.from(monthlyMap.values())
   const sortedByRevenue = [...monthlyRevenue].sort((a, b) => b.revenue - a.revenue)
-  const nonZeroMonths = sortedByRevenue.filter(m => m.revenue > 0)
+  const nonZeroMonths = sortedByRevenue.filter((m) => m.revenue > 0)
 
   return {
     monthlyRevenue,
@@ -393,7 +417,8 @@ export async function getRevenueAnalytics(months: number = 12): Promise<RevenueA
     byPlan,
     byLanguage,
     byPaymentMethod,
-    averageTicket: invoices.length > 0 ? Math.round((totalRevenue / invoices.length) * 100) / 100 : 0,
+    averageTicket:
+      invoices.length > 0 ? Math.round((totalRevenue / invoices.length) * 100) / 100 : 0,
     totalRevenue,
     couponUsage: Array.from(couponMap.values()).sort((a, b) => b.usageCount - a.usageCount),
     totalDiscounts,
@@ -422,28 +447,41 @@ async function calculateMonthlyTeacherPayments(startDate: Date, endDate: Date): 
       teacherAttendances: { select: { status: true } },
       enrollment: {
         select: {
-          course: { select: { classDuration: true, defaultPaymentPerClass: true } },
+          courseId: true,
+          course: { select: { id: true, classDuration: true, defaultPaymentPerClass: true } },
         },
       },
       videoCalls: { select: { duration: true } },
     },
   })
 
+  // Obtener tarifas personalizadas por profesor-curso
+  const teacherCourses = await db.teacherCourse.findMany({
+    select: { teacherId: true, courseId: true, paymentPerClass: true },
+  })
+  const teacherCoursePayments = new Map(
+    teacherCourses.map((tc) => [`${tc.teacherId}-${tc.courseId}`, tc.paymentPerClass])
+  )
+
   let totalPayments = 0
 
   for (const classBooking of completedClasses) {
-    // Solo clases pagables (ambos asistieron)
+    // Solo clases pagables (profesor asistió o marcada como pagable)
     const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
-    const hasStudentAttendance = classBooking.attendances.length > 0
-    
-    if (hasTeacherAttendance && hasStudentAttendance) {
-      const duration = classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+
+    if (classBooking.isPayable || hasTeacherAttendance) {
+      const duration =
+        classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
       const rateMultiplier = classBooking.teacher.teacherRank?.rateMultiplier || 1.0
-      
-      // Usar pago por defecto del curso si existe, sino calcular por hora
-      const paymentPerClass = classBooking.enrollment.course.defaultPaymentPerClass
-      if (paymentPerClass) {
-        totalPayments += paymentPerClass * rateMultiplier
+
+      const courseId = classBooking.enrollment.course.id
+      const teacherPayment = teacherCoursePayments.get(`${classBooking.teacherId}-${courseId}`)
+      const defaultPayment = classBooking.enrollment.course.defaultPaymentPerClass
+
+      if (teacherPayment !== null && teacherPayment !== undefined) {
+        totalPayments += teacherPayment
+      } else if (defaultPayment !== null && defaultPayment !== undefined) {
+        totalPayments += defaultPayment
       } else {
         const hours = duration / 60
         totalPayments += hours * BASE_RATE_PER_HOUR * rateMultiplier
@@ -460,14 +498,14 @@ export async function getExpenseAnalytics(months: number = 12): Promise<ExpenseA
 
   // Gastos mensuales
   const monthlyExpenses: MonthlyExpense[] = []
-  
+
   for (let i = 0; i < months; i++) {
     const date = subMonths(now, months - 1 - i)
     const monthStart = startOfMonth(date)
     const monthEnd = endOfMonth(date)
-    
+
     const payments = await calculateMonthlyTeacherPayments(monthStart, monthEnd)
-    
+
     const classCount = await db.classBooking.count({
       where: {
         status: BookingStatus.COMPLETED,
@@ -499,7 +537,10 @@ export async function getExpenseAnalytics(months: number = 12): Promise<ExpenseA
   const teacherClasses = await db.classBooking.findMany({
     where: {
       status: BookingStatus.COMPLETED,
-      day: { gte: format(currentMonthStart, 'yyyy-MM-dd'), lte: format(currentMonthEnd, 'yyyy-MM-dd') },
+      day: {
+        gte: format(currentMonthStart, 'yyyy-MM-dd'),
+        lte: format(currentMonthEnd, 'yyyy-MM-dd'),
+      },
     },
     include: {
       teacher: {
@@ -526,9 +567,8 @@ export async function getExpenseAnalytics(months: number = 12): Promise<ExpenseA
 
   for (const classBooking of teacherClasses) {
     const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
-    const hasStudentAttendance = classBooking.attendances.length > 0
-    
-    if (!hasTeacherAttendance || !hasStudentAttendance) continue
+
+    if (!classBooking.isPayable && !hasTeacherAttendance) continue
 
     const teacher = classBooking.teacher
     if (!teacherPaymentMap.has(teacher.id)) {
@@ -546,11 +586,12 @@ export async function getExpenseAnalytics(months: number = 12): Promise<ExpenseA
     }
 
     const tp = teacherPaymentMap.get(teacher.id)!
-    const duration = classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+    const duration =
+      classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
     const hours = duration / 60
-    
+
     const paymentPerClass = classBooking.enrollment.course.defaultPaymentPerClass
-    const payment = paymentPerClass 
+    const payment = paymentPerClass
       ? paymentPerClass * tp.rateMultiplier
       : hours * BASE_RATE_PER_HOUR * tp.rateMultiplier
 
@@ -560,11 +601,12 @@ export async function getExpenseAnalytics(months: number = 12): Promise<ExpenseA
   }
 
   const teacherPayments = Array.from(teacherPaymentMap.values())
-    .map(tp => ({
+    .map((tp) => ({
       ...tp,
       totalHours: Math.round(tp.totalHours * 10) / 10,
       totalPayment: Math.round(tp.totalPayment * 100) / 100,
-      averagePerClass: tp.totalClasses > 0 ? Math.round((tp.totalPayment / tp.totalClasses) * 100) / 100 : 0,
+      averagePerClass:
+        tp.totalClasses > 0 ? Math.round((tp.totalPayment / tp.totalClasses) * 100) / 100 : 0,
     }))
     .sort((a, b) => b.totalPayment - a.totalPayment)
 
@@ -590,7 +632,8 @@ export async function getExpenseAnalytics(months: number = 12): Promise<ExpenseA
     teacherPayments,
     totalExpenses,
     projectedExpenses: Math.round(totalExpenses * projectionMultiplier * 100) / 100,
-    averageCostPerClass: totalClasses > 0 ? Math.round((totalExpenses / totalClasses) * 100) / 100 : 0,
+    averageCostPerClass:
+      totalClasses > 0 ? Math.round((totalExpenses / totalClasses) * 100) / 100 : 0,
     totalIncentives: incentives._sum.bonusAmount || 0,
   }
 }
@@ -610,7 +653,7 @@ export async function getProductAnalytics(): Promise<ProductAnalytics> {
     where: { status: 'PAID' },
     select: { id: true },
   })
-  const paidInvoiceIds = paidInvoices.map(i => i.id)
+  const paidInvoiceIds = paidInvoices.map((i) => i.id)
 
   // Ventas por producto
   const productSales = await db.invoiceItem.groupBy({
@@ -624,11 +667,11 @@ export async function getProductAnalytics(): Promise<ProductAnalytics> {
   })
 
   const products = await db.product.findMany({
-    where: { id: { in: productSales.filter(p => p.productId).map(p => p.productId!) } },
+    where: { id: { in: productSales.filter((p) => p.productId).map((p) => p.productId!) } },
     select: { id: true, name: true, image: true },
   })
 
-  const productMap = new Map<string, typeof products[0]>(products.map(p => [p.id, p]))
+  const productMap = new Map<string, (typeof products)[0]>(products.map((p) => [p.id, p]))
 
   // Ventas del mes anterior para calcular tendencia
   const previousPaidInvoices = await db.invoice.findMany({
@@ -638,7 +681,7 @@ export async function getProductAnalytics(): Promise<ProductAnalytics> {
     },
     select: { id: true },
   })
-  const previousPaidInvoiceIds = previousPaidInvoices.map(i => i.id)
+  const previousPaidInvoiceIds = previousPaidInvoices.map((i) => i.id)
 
   const previousProductSales = await db.invoiceItem.groupBy({
     by: ['productId'],
@@ -649,11 +692,13 @@ export async function getProductAnalytics(): Promise<ProductAnalytics> {
     _sum: { total: true },
   })
 
-  const previousSalesMap = new Map<string | null, number>(previousProductSales.map(p => [p.productId, p._sum.total || 0]))
+  const previousSalesMap = new Map<string | null, number>(
+    previousProductSales.map((p) => [p.productId, p._sum.total || 0])
+  )
 
   const topProducts: ProductSales[] = productSales
-    .filter(p => p.productId)
-    .map(p => {
+    .filter((p) => p.productId)
+    .map((p) => {
       const product = productMap.get(p.productId!)
       const previousSales = previousSalesMap.get(p.productId!) || 0
       const currentSales = p._sum.total || 0
@@ -682,16 +727,16 @@ export async function getProductAnalytics(): Promise<ProductAnalytics> {
   })
 
   const plans = await db.plan.findMany({
-    where: { id: { in: planSales.filter(p => p.planId).map(p => p.planId!) } },
+    where: { id: { in: planSales.filter((p) => p.planId).map((p) => p.planId!) } },
     include: { product: { select: { name: true } } },
   })
 
-  const planMap = new Map<string, typeof plans[0]>(plans.map(p => [p.id, p]))
+  const planMap = new Map<string, (typeof plans)[0]>(plans.map((p) => [p.id, p]))
   const totalPlanSales = planSales.reduce((sum, p) => sum + p._count, 0)
 
   const planDistribution: PlanSales[] = planSales
-    .filter(p => p.planId)
-    .map(p => {
+    .filter((p) => p.planId)
+    .map((p) => {
       const plan = planMap.get(p.planId!)
       return {
         planId: p.planId!,
@@ -699,7 +744,8 @@ export async function getProductAnalytics(): Promise<ProductAnalytics> {
         productName: plan?.product?.name || 'Sin producto',
         totalSales: p._count,
         revenue: p._sum.total || 0,
-        conversionRate: totalPlanSales > 0 ? Math.round((p._count / totalPlanSales) * 1000) / 10 : 0,
+        conversionRate:
+          totalPlanSales > 0 ? Math.round((p._count / totalPlanSales) * 1000) / 10 : 0,
       }
     })
     .sort((a, b) => b.totalSales - a.totalSales)
@@ -710,13 +756,13 @@ export async function getProductAnalytics(): Promise<ProductAnalytics> {
     _count: true,
   })
 
-  const courseIds = Array.from(new Set(enrollments.map(e => e.courseId)))
+  const courseIds = Array.from(new Set(enrollments.map((e) => e.courseId)))
   const courses = await db.course.findMany({
     where: { id: { in: courseIds } },
     select: { id: true, title: true, language: true },
   })
 
-  const courseMap = new Map<string, typeof courses[0]>(courses.map(c => [c.id, c]))
+  const courseMap = new Map<string, (typeof courses)[0]>(courses.map((c) => [c.id, c]))
   const courseEnrollmentMap = new Map<string, CourseEnrollments>()
 
   for (const e of enrollments) {
@@ -737,8 +783,9 @@ export async function getProductAnalytics(): Promise<ProductAnalytics> {
     if (e.status === 'COMPLETED') ce.completedEnrollments += e._count
   }
 
-  const courseEnrollments = Array.from(courseEnrollmentMap.values())
-    .sort((a, b) => b.totalEnrollments - a.totalEnrollments)
+  const courseEnrollments = Array.from(courseEnrollmentMap.values()).sort(
+    (a, b) => b.totalEnrollments - a.totalEnrollments
+  )
 
   // Tendencia de ventas (últimos 30 días)
   const thirtyDaysAgo = subMonths(now, 1)
@@ -752,8 +799,8 @@ export async function getProductAnalytics(): Promise<ProductAnalytics> {
   })
 
   const salesTrend = dailySales
-    .filter(s => s.paidAt)
-    .map(s => ({
+    .filter((s) => s.paidAt)
+    .map((s) => ({
       date: format(s.paidAt!, 'dd/MM'),
       sales: s._count,
     }))
@@ -794,7 +841,7 @@ export async function getTeacherAnalytics(): Promise<TeacherAnalytics> {
   // Obtener clases de los últimos 3 meses
   const classes = await db.classBooking.findMany({
     where: {
-      teacherId: { in: teachers.map(t => t.id) },
+      teacherId: { in: teachers.map((t) => t.id) },
       day: { gte: format(threeMonthsAgo, 'yyyy-MM-dd') },
     },
     include: {
@@ -802,18 +849,27 @@ export async function getTeacherAnalytics(): Promise<TeacherAnalytics> {
       teacherAttendances: { select: { status: true } },
       enrollment: {
         select: {
-          course: { select: { classDuration: true, defaultPaymentPerClass: true } },
+          courseId: true,
+          course: { select: { id: true, classDuration: true, defaultPaymentPerClass: true } },
         },
       },
       videoCalls: { select: { duration: true } },
     },
   })
 
+  // Obtener tarifas personalizadas por profesor-curso
+  const teacherCourses = await db.teacherCourse.findMany({
+    select: { teacherId: true, courseId: true, paymentPerClass: true },
+  })
+  const teacherCoursePayments = new Map(
+    teacherCourses.map((tc) => [`${tc.teacherId}-${tc.courseId}`, tc.paymentPerClass])
+  )
+
   // Estudiantes únicos por profesor
   const studentsByTeacher = await db.classBooking.groupBy({
     by: ['teacherId', 'studentId'],
     where: {
-      teacherId: { in: teachers.map(t => t.id) },
+      teacherId: { in: teachers.map((t) => t.id) },
       status: BookingStatus.COMPLETED,
     },
   })
@@ -855,20 +911,24 @@ export async function getTeacherAnalytics(): Promise<TeacherAnalytics> {
 
     if (classBooking.status === 'COMPLETED') {
       stats.completedClasses += 1
-      
+
       const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
-      const hasStudentAttendance = classBooking.attendances.length > 0
-      
-      if (hasTeacherAttendance && hasStudentAttendance) {
-        const duration = classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+
+      if (classBooking.isPayable || hasTeacherAttendance) {
+        const duration =
+          classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
         stats.totalHours += duration / 60
-        
-        const teacher = teachers.find(t => t.id === classBooking.teacherId)
+
+        const teacher = teachers.find((t) => t.id === classBooking.teacherId)
         const rateMultiplier = teacher?.teacherRank?.rateMultiplier || 1.0
-        const paymentPerClass = classBooking.enrollment.course.defaultPaymentPerClass
-        
-        if (paymentPerClass) {
-          stats.totalEarnings += paymentPerClass * rateMultiplier
+        const courseId = classBooking.enrollment.course.id
+        const teacherPayment = teacherCoursePayments.get(`${classBooking.teacherId}-${courseId}`)
+        const defaultPayment = classBooking.enrollment.course.defaultPaymentPerClass
+
+        if (teacherPayment !== null && teacherPayment !== undefined) {
+          stats.totalEarnings += teacherPayment
+        } else if (defaultPayment !== null && defaultPayment !== undefined) {
+          stats.totalEarnings += defaultPayment
         } else {
           stats.totalEarnings += (duration / 60) * BASE_RATE_PER_HOUR * rateMultiplier
         }
@@ -881,16 +941,18 @@ export async function getTeacherAnalytics(): Promise<TeacherAnalytics> {
   }
 
   // Calcular promedios y tasas
-  const allStats = Array.from(teacherStatsMap.values()).map(stats => ({
+  const allStats = Array.from(teacherStatsMap.values()).map((stats) => ({
     ...stats,
-    attendanceRate: stats.totalClasses > 0 
-      ? Math.round((stats.completedClasses / stats.totalClasses) * 1000) / 10 
-      : 0,
+    attendanceRate:
+      stats.totalClasses > 0
+        ? Math.round((stats.completedClasses / stats.totalClasses) * 1000) / 10
+        : 0,
     totalHours: Math.round(stats.totalHours * 10) / 10,
     totalEarnings: Math.round(stats.totalEarnings * 100) / 100,
-    averageClassDuration: stats.completedClasses > 0 
-      ? Math.round((stats.totalHours * 60 / stats.completedClasses) * 10) / 10 
-      : 0,
+    averageClassDuration:
+      stats.completedClasses > 0
+        ? Math.round(((stats.totalHours * 60) / stats.completedClasses) * 10) / 10
+        : 0,
   }))
 
   // Rankings
@@ -899,11 +961,11 @@ export async function getTeacherAnalytics(): Promise<TeacherAnalytics> {
   const byStudents = [...allStats].sort((a, b) => b.uniqueStudents - a.uniqueStudents)
   const mostActive = byClasses.slice(0, 10)
   const leastActive = [...allStats]
-    .filter(t => t.totalClasses > 0)
+    .filter((t) => t.totalClasses > 0)
     .sort((a, b) => a.completedClasses - b.completedClasses)
     .slice(0, 10)
 
-  const activeTeachers = allStats.filter(t => t.totalClasses > 0).length
+  const activeTeachers = allStats.filter((t) => t.totalClasses > 0).length
   const totalClasses = allStats.reduce((sum, t) => sum + t.completedClasses, 0)
   const totalEarnings = allStats.reduce((sum, t) => sum + t.totalEarnings, 0)
 
@@ -917,8 +979,10 @@ export async function getTeacherAnalytics(): Promise<TeacherAnalytics> {
     },
     totalTeachers: teachers.length,
     activeTeachers,
-    averageClassesPerTeacher: activeTeachers > 0 ? Math.round((totalClasses / activeTeachers) * 10) / 10 : 0,
-    averageEarningsPerTeacher: activeTeachers > 0 ? Math.round((totalEarnings / activeTeachers) * 100) / 100 : 0,
+    averageClassesPerTeacher:
+      activeTeachers > 0 ? Math.round((totalClasses / activeTeachers) * 10) / 10 : 0,
+    averageEarningsPerTeacher:
+      activeTeachers > 0 ? Math.round((totalEarnings / activeTeachers) * 100) / 100 : 0,
   }
 }
 
@@ -932,7 +996,7 @@ export async function getStudentAnalytics(months: number = 12): Promise<StudentA
 
   // Crecimiento mensual
   const growth: StudentGrowth[] = []
-  
+
   for (let i = 0; i < months; i++) {
     const date = subMonths(now, months - 1 - i)
     const monthStart = startOfMonth(date)
@@ -958,9 +1022,9 @@ export async function getStudentAnalytics(months: number = 12): Promise<StudentA
       by: ['studentId'],
       where: {
         status: BookingStatus.COMPLETED,
-        day: { 
-          gte: format(startOfMonth(subMonths(date, 1)), 'yyyy-MM-dd'), 
-          lte: format(previousMonthEnd, 'yyyy-MM-dd') 
+        day: {
+          gte: format(startOfMonth(subMonths(date, 1)), 'yyyy-MM-dd'),
+          lte: format(previousMonthEnd, 'yyyy-MM-dd'),
         },
       },
     })
@@ -973,8 +1037,8 @@ export async function getStudentAnalytics(months: number = 12): Promise<StudentA
       },
     })
 
-    const thisMonthIds = new Set(activeThisMonth.map(s => s.studentId))
-    const churned = activeLastMonth.filter(s => !thisMonthIds.has(s.studentId)).length
+    const thisMonthIds = new Set(activeThisMonth.map((s) => s.studentId))
+    const churned = activeLastMonth.filter((s) => !thisMonthIds.has(s.studentId)).length
 
     growth.push({
       month: getMonthName(date),
@@ -988,16 +1052,21 @@ export async function getStudentAnalytics(months: number = 12): Promise<StudentA
   // Tasa de retención y churn (último mes)
   const lastMonth = growth[growth.length - 1]
   const previousMonth = growth[growth.length - 2]
-  
-  const retentionRate = previousMonth && previousMonth.totalStudents > 0
-    ? Math.round(((previousMonth.totalStudents - lastMonth.churnedStudents) / previousMonth.totalStudents) * 1000) / 10
-    : 100
+
+  const retentionRate =
+    previousMonth && previousMonth.totalStudents > 0
+      ? Math.round(
+          ((previousMonth.totalStudents - lastMonth.churnedStudents) /
+            previousMonth.totalStudents) *
+            1000
+        ) / 10
+      : 100
 
   const churnRate = 100 - retentionRate
 
   // Estudiantes más activos (últimos 30 días)
   const thirtyDaysAgo = subMonths(now, 1)
-  
+
   const activeStudents = await db.classBooking.groupBy({
     by: ['studentId'],
     where: {
@@ -1009,7 +1078,7 @@ export async function getStudentAnalytics(months: number = 12): Promise<StudentA
     take: 10,
   })
 
-  const studentIds = activeStudents.map(s => s.studentId)
+  const studentIds = activeStudents.map((s) => s.studentId)
   const students = await db.user.findMany({
     where: { id: { in: studentIds } },
     select: { id: true, name: true, lastName: true, image: true, createdAt: true },
@@ -1021,7 +1090,7 @@ export async function getStudentAnalytics(months: number = 12): Promise<StudentA
   })
 
   const lastClasses = await db.classBooking.findMany({
-    where: { 
+    where: {
       studentId: { in: studentIds },
       status: BookingStatus.COMPLETED,
     },
@@ -1029,11 +1098,15 @@ export async function getStudentAnalytics(months: number = 12): Promise<StudentA
     distinct: ['studentId'],
   })
 
-  const studentMap = new Map<string, typeof students[0]>(students.map(s => [s.id, s]))
-  const enrollmentMap = new Map<string, typeof enrollments[0]>(enrollments.map(e => [e.studentId, e]))
-  const lastClassMap = new Map<string, typeof lastClasses[0]>(lastClasses.map(c => [c.studentId, c]))
+  const studentMap = new Map<string, (typeof students)[0]>(students.map((s) => [s.id, s]))
+  const enrollmentMap = new Map<string, (typeof enrollments)[0]>(
+    enrollments.map((e) => [e.studentId, e])
+  )
+  const lastClassMap = new Map<string, (typeof lastClasses)[0]>(
+    lastClasses.map((c) => [c.studentId, c])
+  )
 
-  const mostActive: StudentActivity[] = activeStudents.map(s => {
+  const mostActive: StudentActivity[] = activeStudents.map((s) => {
     const student = studentMap.get(s.studentId)
     const enrollment = enrollmentMap.get(s.studentId)
     const lastClass = lastClassMap.get(s.studentId)
@@ -1060,22 +1133,26 @@ export async function getStudentAnalytics(months: number = 12): Promise<StudentA
     },
   })
 
-  const recentActiveStudentIds = new Set(activeStudents.map(s => s.studentId))
-  
-  const inactiveEnrollments = allActiveEnrollments.filter(e => !recentActiveStudentIds.has(e.studentId))
+  const recentActiveStudentIds = new Set(activeStudents.map((s) => s.studentId))
+
+  const inactiveEnrollments = allActiveEnrollments.filter(
+    (e) => !recentActiveStudentIds.has(e.studentId)
+  )
 
   const inactiveStudentClasses = await db.classBooking.findMany({
     where: {
-      studentId: { in: inactiveEnrollments.map(e => e.studentId) },
+      studentId: { in: inactiveEnrollments.map((e) => e.studentId) },
       status: BookingStatus.COMPLETED,
     },
     orderBy: { day: 'desc' },
     distinct: ['studentId'],
   })
 
-  const inactiveLastClassMap = new Map<string, typeof inactiveStudentClasses[0]>(inactiveStudentClasses.map(c => [c.studentId, c]))
+  const inactiveLastClassMap = new Map<string, (typeof inactiveStudentClasses)[0]>(
+    inactiveStudentClasses.map((c) => [c.studentId, c])
+  )
 
-  const inactive: StudentActivity[] = inactiveEnrollments.slice(0, 10).map(e => ({
+  const inactive: StudentActivity[] = inactiveEnrollments.slice(0, 10).map((e) => ({
     studentId: e.studentId,
     studentName: `${e.student.name} ${e.student.lastName || ''}`.trim(),
     studentImage: e.student.image,
@@ -1131,16 +1208,16 @@ export async function getStudentAnalytics(months: number = 12): Promise<StudentA
 
 export async function getProjectionAnalytics(): Promise<ProjectionAnalytics> {
   const now = new Date()
-  
+
   // Obtener datos históricos de los últimos 12 meses
   const revenueAnalytics = await getRevenueAnalytics(12)
   const expenseAnalytics = await getExpenseAnalytics(12)
   const studentAnalytics = await getStudentAnalytics(12)
 
   // Calcular tendencia promedio
-  const monthlyRevenues = revenueAnalytics.monthlyRevenue.map(m => m.revenue)
-  const monthlyExpenses = expenseAnalytics.monthlyExpenses.map(m => m.totalPayments)
-  const monthlyStudents = studentAnalytics.growth.map(g => g.newStudents)
+  const monthlyRevenues = revenueAnalytics.monthlyRevenue.map((m) => m.revenue)
+  const monthlyExpenses = expenseAnalytics.monthlyExpenses.map((m) => m.totalPayments)
+  const monthlyStudents = studentAnalytics.growth.map((g) => g.newStudents)
 
   const avgRevenueGrowth = calculateAverageGrowth(monthlyRevenues)
   const avgExpenseGrowth = calculateAverageGrowth(monthlyExpenses)
@@ -1155,7 +1232,7 @@ export async function getProjectionAnalytics(): Promise<ProjectionAnalytics> {
   for (let i = 1; i <= 3; i++) {
     const date = new Date(now)
     date.setMonth(date.getMonth() + i)
-    
+
     const projectedRevenue = lastRevenue * Math.pow(1 + avgRevenueGrowth / 100, i)
     const projectedExpenses = lastExpense * Math.pow(1 + avgExpenseGrowth / 100, i)
     const projectedStudents = Math.round(lastStudents * Math.pow(1 + avgStudentGrowth / 100, i))
@@ -1167,13 +1244,13 @@ export async function getProjectionAnalytics(): Promise<ProjectionAnalytics> {
       projectedExpenses: Math.round(projectedExpenses * 100) / 100,
       projectedNetMargin: Math.round((projectedRevenue - projectedExpenses) * 100) / 100,
       projectedStudents,
-      confidence: Math.max(50, 90 - (i * 10)), // Confianza decrece con el tiempo
+      confidence: Math.max(50, 90 - i * 10), // Confianza decrece con el tiempo
     })
   }
 
   // Estacionalidad (promedio por mes del año)
-  const seasonalityMap = new Map<number, { revenues: number[], students: number[] }>()
-  
+  const seasonalityMap = new Map<number, { revenues: number[]; students: number[] }>()
+
   for (let i = 0; i < 12; i++) {
     seasonalityMap.set(i, { revenues: [], students: [] })
   }
@@ -1193,15 +1270,13 @@ export async function getProjectionAnalytics(): Promise<ProjectionAnalytics> {
 
   for (let i = 0; i < 12; i++) {
     const data = seasonalityMap.get(i)!
-    const avgRevenue = data.revenues.length > 0 
-      ? data.revenues.reduce((a, b) => a + b, 0) / data.revenues.length 
-      : 0
-    const avgStudents = data.students.length > 0 
-      ? data.students.reduce((a, b) => a + b, 0) / data.students.length 
-      : 0
-    
+    const avgRevenue =
+      data.revenues.length > 0 ? data.revenues.reduce((a, b) => a + b, 0) / data.revenues.length : 0
+    const avgStudents =
+      data.students.length > 0 ? data.students.reduce((a, b) => a + b, 0) / data.students.length : 0
+
     allAvgRevenues.push(avgRevenue)
-    
+
     const monthDate = new Date(now.getFullYear(), i, 1)
     seasonality.push({
       month: getMonthNameFull(monthDate),
@@ -1213,7 +1288,7 @@ export async function getProjectionAnalytics(): Promise<ProjectionAnalytics> {
 
   // Marcar meses de alta temporada (por encima del promedio)
   const overallAvgRevenue = allAvgRevenues.reduce((a, b) => a + b, 0) / 12
-  seasonality.forEach(s => {
+  seasonality.forEach((s) => {
     s.isHighSeason = s.averageRevenue > overallAvgRevenue * 1.1
   })
 
@@ -1362,10 +1437,18 @@ export async function getHistoricalComparison(
     currentPeriod: current,
     previousPeriod: previous,
     changes: {
-      revenue: previous.revenue > 0 ? ((current.revenue - previous.revenue) / previous.revenue) * 100 : 0,
-      expenses: previous.expenses > 0 ? ((current.expenses - previous.expenses) / previous.expenses) * 100 : 0,
-      students: previous.students > 0 ? ((current.students - previous.students) / previous.students) * 100 : 0,
-      classes: previous.classes > 0 ? ((current.classes - previous.classes) / previous.classes) * 100 : 0,
+      revenue:
+        previous.revenue > 0 ? ((current.revenue - previous.revenue) / previous.revenue) * 100 : 0,
+      expenses:
+        previous.expenses > 0
+          ? ((current.expenses - previous.expenses) / previous.expenses) * 100
+          : 0,
+      students:
+        previous.students > 0
+          ? ((current.students - previous.students) / previous.students) * 100
+          : 0,
+      classes:
+        previous.classes > 0 ? ((current.classes - previous.classes) / previous.classes) * 100 : 0,
     },
   }
 }
@@ -1396,17 +1479,17 @@ function getLanguageLabel(language: string): string {
 
 function calculateAverageGrowth(values: number[]): number {
   if (values.length < 2) return 0
-  
+
   let totalGrowth = 0
   let count = 0
-  
+
   for (let i = 1; i < values.length; i++) {
     if (values[i - 1] > 0) {
       totalGrowth += ((values[i] - values[i - 1]) / values[i - 1]) * 100
       count++
     }
   }
-  
+
   return count > 0 ? Math.round((totalGrowth / count) * 10) / 10 : 0
 }
 
@@ -1424,7 +1507,11 @@ import type {
   HourlyDemand,
 } from '@/types/analytics'
 
-function getHealthStatus(value: number, target: number, higherIsBetter: boolean = true): HealthStatus {
+function getHealthStatus(
+  value: number,
+  target: number,
+  higherIsBetter: boolean = true
+): HealthStatus {
   const ratio = value / target
   if (higherIsBetter) {
     if (ratio >= 0.9) return 'healthy'
@@ -1456,7 +1543,10 @@ export async function getFinancialHealth(): Promise<FinancialHealth> {
 
   // Gastos (pagos a profesores)
   const currentExpenses = await calculateMonthlyTeacherPayments(currentMonthStart, currentMonthEnd)
-  const previousExpenses = await calculateMonthlyTeacherPayments(previousMonthStart, previousMonthEnd)
+  const previousExpenses = await calculateMonthlyTeacherPayments(
+    previousMonthStart,
+    previousMonthEnd
+  )
 
   const revenue = currentRevenue._sum.total || 0
   const prevRevenue = previousRevenue._sum.total || 0
@@ -1478,11 +1568,19 @@ export async function getFinancialHealth(): Promise<FinancialHealth> {
 
   // Utilización de clases
   const totalClasses = await db.classBooking.count({
-    where: { day: { gte: format(currentMonthStart, 'yyyy-MM-dd'), lte: format(currentMonthEnd, 'yyyy-MM-dd') } },
+    where: {
+      day: {
+        gte: format(currentMonthStart, 'yyyy-MM-dd'),
+        lte: format(currentMonthEnd, 'yyyy-MM-dd'),
+      },
+    },
   })
   const completedClasses = await db.classBooking.count({
     where: {
-      day: { gte: format(currentMonthStart, 'yyyy-MM-dd'), lte: format(currentMonthEnd, 'yyyy-MM-dd') },
+      day: {
+        gte: format(currentMonthStart, 'yyyy-MM-dd'),
+        lte: format(currentMonthEnd, 'yyyy-MM-dd'),
+      },
       status: BookingStatus.COMPLETED,
     },
   })
@@ -1498,7 +1596,8 @@ export async function getFinancialHealth(): Promise<FinancialHealth> {
       target: 40,
       status: getHealthStatus(profitMargin, 40),
       description: 'Porcentaje de ingresos que queda después de gastos',
-      trend: prevRevenue > 0 ? profitMargin - ((prevRevenue - prevExpenses) / prevRevenue) * 100 : 0,
+      trend:
+        prevRevenue > 0 ? profitMargin - ((prevRevenue - prevExpenses) / prevRevenue) * 100 : 0,
     },
     revenueGrowth: {
       name: 'Crecimiento de Ingresos',
@@ -1549,12 +1648,15 @@ export async function getFinancialHealth(): Promise<FinancialHealth> {
     metricValues.reduce((sum, m) => sum + statusScores[m.status], 0) / metricValues.length
   )
 
-  const overallStatus: HealthStatus = overallScore >= 80 ? 'healthy' : overallScore >= 50 ? 'warning' : 'critical'
+  const overallStatus: HealthStatus =
+    overallScore >= 80 ? 'healthy' : overallScore >= 50 ? 'warning' : 'critical'
 
   // Generar recomendaciones
   const recommendations: string[] = []
   if (metrics.profitMargin.status !== 'healthy') {
-    recommendations.push('Considera revisar los costos operativos para mejorar el margen de beneficio')
+    recommendations.push(
+      'Considera revisar los costos operativos para mejorar el margen de beneficio'
+    )
   }
   if (metrics.revenueGrowth.status === 'critical') {
     recommendations.push('Implementa estrategias de marketing para aumentar las ventas')
@@ -1603,7 +1705,7 @@ export async function getCohortAnalytics(monthsBack: number = 12): Promise<Cohor
     const cohortSize = cohortStudents.length
     if (cohortSize === 0) continue
 
-    const studentIds = cohortStudents.map(s => s.id)
+    const studentIds = cohortStudents.map((s) => s.id)
     const retentionByMonth: number[] = [100] // Mes 0 siempre es 100%
 
     // Calcular retención para cada mes siguiente
@@ -1630,21 +1732,21 @@ export async function getCohortAnalytics(monthsBack: number = 12): Promise<Cohor
   }
 
   // Calcular promedio de retención por mes
-  const maxMonths = Math.max(...cohorts.map(c => c.retentionByMonth.length))
+  const maxMonths = Math.max(...cohorts.map((c) => c.retentionByMonth.length))
   const averageRetentionByMonth: number[] = []
 
   for (let m = 0; m < maxMonths; m++) {
     const values = cohorts
-      .filter(c => c.retentionByMonth[m] !== undefined)
-      .map(c => c.retentionByMonth[m])
-    
+      .filter((c) => c.retentionByMonth[m] !== undefined)
+      .map((c) => c.retentionByMonth[m])
+
     if (values.length > 0) {
       averageRetentionByMonth.push(Math.round(values.reduce((a, b) => a + b, 0) / values.length))
     }
   }
 
   // Encontrar mejor y peor cohorte (basado en retención al mes 3 si existe)
-  const cohortsWithRetention = cohorts.filter(c => c.retentionByMonth.length >= 4)
+  const cohortsWithRetention = cohorts.filter((c) => c.retentionByMonth.length >= 4)
   const sortedByRetention = [...cohortsWithRetention].sort(
     (a, b) => (b.retentionByMonth[3] || 0) - (a.retentionByMonth[3] || 0)
   )
@@ -1652,11 +1754,17 @@ export async function getCohortAnalytics(monthsBack: number = 12): Promise<Cohor
   return {
     cohorts,
     averageRetentionByMonth,
-    bestCohort: sortedByRetention[0] 
-      ? { month: sortedByRetention[0].cohortMonth, retention: sortedByRetention[0].retentionByMonth[3] || 0 }
+    bestCohort: sortedByRetention[0]
+      ? {
+          month: sortedByRetention[0].cohortMonth,
+          retention: sortedByRetention[0].retentionByMonth[3] || 0,
+        }
       : { month: '', retention: 0 },
     worstCohort: sortedByRetention[sortedByRetention.length - 1]
-      ? { month: sortedByRetention[sortedByRetention.length - 1].cohortMonth, retention: sortedByRetention[sortedByRetention.length - 1].retentionByMonth[3] || 0 }
+      ? {
+          month: sortedByRetention[sortedByRetention.length - 1].cohortMonth,
+          retention: sortedByRetention[sortedByRetention.length - 1].retentionByMonth[3] || 0,
+        }
       : { month: '', retention: 0 },
   }
 }
@@ -1692,11 +1800,17 @@ export async function getStudentLTV(): Promise<StudentLTV> {
       for (const item of invoice.items) {
         if (item.planId) {
           const current = ltvByPlanMap.get(item.planId) || { total: 0, count: 0 }
-          ltvByPlanMap.set(item.planId, { total: current.total + (invoice.total || 0), count: current.count + 1 })
+          ltvByPlanMap.set(item.planId, {
+            total: current.total + (invoice.total || 0),
+            count: current.count + 1,
+          })
         }
         if (item.productId) {
           const current = ltvByProductMap.get(item.productId) || { total: 0, count: 0 }
-          ltvByProductMap.set(item.productId, { total: current.total + (invoice.total || 0), count: current.count + 1 })
+          ltvByProductMap.set(item.productId, {
+            total: current.total + (invoice.total || 0),
+            count: current.count + 1,
+          })
         }
       }
     }
@@ -1704,12 +1818,14 @@ export async function getStudentLTV(): Promise<StudentLTV> {
 
   // Calcular promedio y mediana
   const sortedLTV = [...ltvValues].sort((a, b) => a - b)
-  const averageLTV = ltvValues.length > 0 ? ltvValues.reduce((a, b) => a + b, 0) / ltvValues.length : 0
-  const medianLTV = sortedLTV.length > 0 
-    ? sortedLTV.length % 2 === 0
-      ? (sortedLTV[sortedLTV.length / 2 - 1] + sortedLTV[sortedLTV.length / 2]) / 2
-      : sortedLTV[Math.floor(sortedLTV.length / 2)]
-    : 0
+  const averageLTV =
+    ltvValues.length > 0 ? ltvValues.reduce((a, b) => a + b, 0) / ltvValues.length : 0
+  const medianLTV =
+    sortedLTV.length > 0
+      ? sortedLTV.length % 2 === 0
+        ? (sortedLTV[sortedLTV.length / 2 - 1] + sortedLTV[sortedLTV.length / 2]) / 2
+        : sortedLTV[Math.floor(sortedLTV.length / 2)]
+      : 0
 
   // Obtener nombres de planes y productos
   const planIds = Array.from(ltvByPlanMap.keys())
@@ -1724,18 +1840,22 @@ export async function getStudentLTV(): Promise<StudentLTV> {
     select: { id: true, name: true },
   })
 
-  const planNameMap = new Map(plans.map(p => [p.id, p.name]))
-  const productNameMap = new Map(products.map(p => [p.id, p.name]))
+  const planNameMap = new Map(plans.map((p) => [p.id, p.name]))
+  const productNameMap = new Map(products.map((p) => [p.id, p.name]))
 
-  const ltvByPlan = Array.from(ltvByPlanMap.entries()).map(([planId, data]) => ({
-    planName: planNameMap.get(planId) || 'Plan desconocido',
-    ltv: data.count > 0 ? Math.round((data.total / data.count) * 100) / 100 : 0,
-  })).sort((a, b) => b.ltv - a.ltv)
+  const ltvByPlan = Array.from(ltvByPlanMap.entries())
+    .map(([planId, data]) => ({
+      planName: planNameMap.get(planId) || 'Plan desconocido',
+      ltv: data.count > 0 ? Math.round((data.total / data.count) * 100) / 100 : 0,
+    }))
+    .sort((a, b) => b.ltv - a.ltv)
 
-  const ltvByProduct = Array.from(ltvByProductMap.entries()).map(([productId, data]) => ({
-    productName: productNameMap.get(productId) || 'Producto desconocido',
-    ltv: data.count > 0 ? Math.round((data.total / data.count) * 100) / 100 : 0,
-  })).sort((a, b) => b.ltv - a.ltv)
+  const ltvByProduct = Array.from(ltvByProductMap.entries())
+    .map(([productId, data]) => ({
+      productName: productNameMap.get(productId) || 'Producto desconocido',
+      ltv: data.count > 0 ? Math.round((data.total / data.count) * 100) / 100 : 0,
+    }))
+    .sort((a, b) => b.ltv - a.ltv)
 
   // Distribución de LTV
   const ranges = [
@@ -1747,9 +1867,9 @@ export async function getStudentLTV(): Promise<StudentLTV> {
     { min: 1000, max: Infinity, label: '$1000+' },
   ]
 
-  const ltvDistribution = ranges.map(range => ({
+  const ltvDistribution = ranges.map((range) => ({
     range: range.label,
-    count: ltvValues.filter(v => v >= range.min && v < range.max).length,
+    count: ltvValues.filter((v) => v >= range.min && v < range.max).length,
   }))
 
   return {
@@ -1811,14 +1931,17 @@ export async function getScheduleHeatmap(monthsBack: number = 3): Promise<Schedu
       data.bookings++
       if (booking.status === BookingStatus.COMPLETED) {
         data.completedClasses++
-      } else if (booking.status === BookingStatus.CANCELLED || booking.status === BookingStatus.NO_SHOW) {
+      } else if (
+        booking.status === BookingStatus.CANCELLED ||
+        booking.status === BookingStatus.NO_SHOW
+      ) {
         data.cancellations++
       }
     }
   }
 
   // Calcular niveles de demanda
-  const allBookings = Array.from(heatmapData.values()).map(d => d.bookings)
+  const allBookings = Array.from(heatmapData.values()).map((d) => d.bookings)
   const maxBookings = Math.max(...allBookings)
   const avgBookings = allBookings.reduce((a, b) => a + b, 0) / allBookings.length
 
@@ -1839,8 +1962,13 @@ export async function getScheduleHeatmap(monthsBack: number = 3): Promise<Schedu
 
   return {
     data: dataArray,
-    peakHours: sortedByBookings.slice(0, 5).map(d => ({ hour: d.hour, day: d.day, bookings: d.bookings })),
-    lowDemandHours: sortedByBookings.slice(-5).reverse().map(d => ({ hour: d.hour, day: d.day, bookings: d.bookings })),
+    peakHours: sortedByBookings
+      .slice(0, 5)
+      .map((d) => ({ hour: d.hour, day: d.day, bookings: d.bookings })),
+    lowDemandHours: sortedByBookings
+      .slice(-5)
+      .reverse()
+      .map((d) => ({ hour: d.hour, day: d.day, bookings: d.bookings })),
     averageBookingsPerSlot: Math.round(avgBookings * 10) / 10,
   }
 }
@@ -1888,7 +2016,7 @@ export async function getProjectedPayrollAnalytics(
 
   for (const classBooking of scheduledClasses) {
     const teacher = classBooking.teacher
-    
+
     if (!teacherPaymentMap.has(teacher.id)) {
       teacherPaymentMap.set(teacher.id, {
         teacherId: teacher.id,
@@ -1906,11 +2034,12 @@ export async function getProjectedPayrollAnalytics(
     }
 
     const tp = teacherPaymentMap.get(teacher.id)!
-    const duration = classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+    const duration =
+      classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
     const hours = duration / 60
-    
+
     const paymentPerClass = classBooking.enrollment.course.defaultPaymentPerClass
-    const classPayment = paymentPerClass 
+    const classPayment = paymentPerClass
       ? paymentPerClass * tp.rateMultiplier
       : hours * BASE_RATE_PER_HOUR * tp.rateMultiplier
 
@@ -1920,9 +2049,8 @@ export async function getProjectedPayrollAnalytics(
     // Verificar si la clase ya fue completada y pagable
     const isCompleted = classBooking.status === BookingStatus.COMPLETED
     const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
-    const hasStudentAttendance = classBooking.attendances.length > 0
 
-    if (isCompleted && hasTeacherAttendance && hasStudentAttendance) {
+    if (isCompleted && (classBooking.isPayable || hasTeacherAttendance)) {
       tp.completedClasses += 1
       tp.currentPayment += classPayment
     } else if (classBooking.status !== BookingStatus.NO_SHOW) {
@@ -1933,7 +2061,7 @@ export async function getProjectedPayrollAnalytics(
   }
 
   const teacherPayments = Array.from(teacherPaymentMap.values())
-    .map(tp => ({
+    .map((tp) => ({
       ...tp,
       projectedPayment: Math.round(tp.projectedPayment * 100) / 100,
       currentPayment: Math.round(tp.currentPayment * 100) / 100,
@@ -1956,8 +2084,9 @@ export async function getProjectedPayrollAnalytics(
     totalProjectedPayment: Math.round(totalProjectedPayment * 100) / 100,
     totalCurrentPayment: Math.round(totalCurrentPayment * 100) / 100,
     totalPendingPayment: Math.round(totalPendingPayment * 100) / 100,
-    completionRate: totalScheduledClasses > 0 
-      ? Math.round((totalCompletedClasses / totalScheduledClasses) * 1000) / 10 
-      : 0,
+    completionRate:
+      totalScheduledClasses > 0
+        ? Math.round((totalCompletedClasses / totalScheduledClasses) * 1000) / 10
+        : 0,
   }
 }

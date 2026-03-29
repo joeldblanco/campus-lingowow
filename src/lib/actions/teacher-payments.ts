@@ -50,19 +50,26 @@ const BASE_RATE_PER_HOUR = 10
  */
 export async function getPaymentPeriodSummary(
   startDate?: Date,
-  endDate?: Date
+  endDate?: Date,
+  periodId?: string
 ): Promise<PaymentPeriodSummary> {
-  const start = startDate || startOfMonth(new Date())
-  const end = endDate || endOfMonth(new Date())
+  const whereClause: Prisma.ClassBookingWhereInput = {
+    status: BookingStatus.COMPLETED,
+  }
+
+  if (periodId) {
+    whereClause.enrollment = { academicPeriodId: periodId }
+  } else {
+    const start = startDate || startOfMonth(new Date())
+    const end = endDate || endOfMonth(new Date())
+    whereClause.day = {
+      gte: format(start, 'yyyy-MM-dd'),
+      lte: format(end, 'yyyy-MM-dd'),
+    }
+  }
 
   const completedClasses = await db.classBooking.findMany({
-    where: {
-      status: BookingStatus.COMPLETED,
-      day: {
-        gte: format(start, 'yyyy-MM-dd'),
-        lte: format(end, 'yyyy-MM-dd'),
-      },
-    },
+    where: whereClause,
     include: {
       teacher: {
         select: {
@@ -113,14 +120,14 @@ export async function getPaymentPeriodSummary(
 
   for (const classBooking of completedClasses) {
     const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
-    const hasStudentAttendance = classBooking.attendances.length > 0
 
-    if (!hasTeacherAttendance || !hasStudentAttendance) continue
+    if (!classBooking.isPayable && !hasTeacherAttendance) continue
 
     teacherSet.add(classBooking.teacherId)
     totalClasses++
 
-    const duration = classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+    const duration =
+      classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
     const hours = duration / 60
     totalHours += hours
 
@@ -146,8 +153,10 @@ export async function getPaymentPeriodSummary(
     totalClasses,
     totalHours: Math.round(totalHours * 10) / 10,
     totalPayment: Math.round(totalPayment * 100) / 100,
-    averagePaymentPerTeacher: teacherSet.size > 0 ? Math.round((totalPayment / teacherSet.size) * 100) / 100 : 0,
-    averagePaymentPerClass: totalClasses > 0 ? Math.round((totalPayment / totalClasses) * 100) / 100 : 0,
+    averagePaymentPerTeacher:
+      teacherSet.size > 0 ? Math.round((totalPayment / teacherSet.size) * 100) / 100 : 0,
+    averagePaymentPerClass:
+      totalClasses > 0 ? Math.round((totalPayment / totalClasses) * 100) / 100 : 0,
   }
 }
 
@@ -163,14 +172,14 @@ async function checkTeacherPaymentConfirmation(teacherId: string, startDate: Dat
         periodEnd: endDate,
       },
       orderBy: {
-        confirmedAt: 'desc'
-      }
+        confirmedAt: 'desc',
+      },
     })
 
     return {
       confirmed: !!confirmation,
       confirmedAt: confirmation?.confirmedAt || undefined,
-      status: confirmation?.status
+      status: confirmation?.status,
     }
   } catch (error) {
     console.error('Error checking payment confirmation:', error)
@@ -192,11 +201,12 @@ function getPaymentMethodInfo(paymentSettings: string | null) {
       bank_transfer: 'Transferencia Bancaria',
       binance: 'Binance',
       paypal: 'PayPal',
-      pago_movil: 'Pago Móvil'
+      pago_movil: 'Pago Móvil',
     }
 
-    const paymentMethod = methodMap[settings.paymentMethod as keyof typeof methodMap] || settings.paymentMethod
-    
+    const paymentMethod =
+      methodMap[settings.paymentMethod as keyof typeof methodMap] || settings.paymentMethod
+
     let paymentDetails = null
     switch (settings.paymentMethod) {
       case 'bank_transfer':
@@ -238,17 +248,32 @@ function getPaymentMethodInfo(paymentSettings: string | null) {
 export async function getTeacherPaymentDetails(
   startDate?: Date,
   endDate?: Date,
-  teacherId?: string
+  teacherId?: string,
+  periodId?: string
 ): Promise<TeacherPaymentDetail[]> {
-  const start = startDate || startOfMonth(new Date())
-  const end = endDate || endOfMonth(new Date())
-
   const whereClause: Prisma.ClassBookingWhereInput = {
     status: BookingStatus.COMPLETED,
-    day: {
+  }
+
+  let start: Date
+  let end: Date
+
+  if (periodId) {
+    whereClause.enrollment = { academicPeriodId: periodId }
+    // Resolver fechas reales del período para la verificación de confirmación
+    const period = await db.academicPeriod.findUnique({
+      where: { id: periodId },
+      select: { startDate: true, endDate: true },
+    })
+    start = period?.startDate || startOfMonth(new Date())
+    end = period?.endDate || endOfMonth(new Date())
+  } else {
+    start = startDate || startOfMonth(new Date())
+    end = endDate || endOfMonth(new Date())
+    whereClause.day = {
       gte: format(start, 'yyyy-MM-dd'),
       lte: format(end, 'yyyy-MM-dd'),
-    },
+    }
   }
 
   if (teacherId) {
@@ -321,15 +346,14 @@ export async function getTeacherPaymentDetails(
 
   for (const classBooking of completedClasses) {
     const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
-    const hasStudentAttendance = classBooking.attendances.length > 0
 
-    if (!hasTeacherAttendance || !hasStudentAttendance) continue
+    if (!classBooking.isPayable && !hasTeacherAttendance) continue
 
     const teacher = classBooking.teacher
     if (!teacherPaymentMap.has(teacher.id)) {
       const paymentInfo = getPaymentMethodInfo(teacher.paymentSettings)
       const confirmationInfo = await checkTeacherPaymentConfirmation(teacher.id, start, end)
-      
+
       teacherPaymentMap.set(teacher.id, {
         teacherId: teacher.id,
         teacherName: `${teacher.name} ${teacher.lastName || ''}`.trim(),
@@ -350,7 +374,8 @@ export async function getTeacherPaymentDetails(
     }
 
     const tp = teacherPaymentMap.get(teacher.id)!
-    const duration = classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+    const duration =
+      classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
     const hours = duration / 60
 
     const courseId = classBooking.enrollment.course.id
@@ -388,7 +413,8 @@ export async function getTeacherPaymentDetails(
       ...tp,
       totalHours: Math.round(tp.totalHours * 10) / 10,
       totalPayment: Math.round(tp.totalPayment * 100) / 100,
-      averagePerClass: tp.totalClasses > 0 ? Math.round((tp.totalPayment / tp.totalClasses) * 100) / 100 : 0,
+      averagePerClass:
+        tp.totalClasses > 0 ? Math.round((tp.totalPayment / tp.totalClasses) * 100) / 100 : 0,
     }))
     .sort((a, b) => b.totalPayment - a.totalPayment)
 }

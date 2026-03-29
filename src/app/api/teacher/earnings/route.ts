@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     // Verificar que el usuario sea profesor
     const user = await db.user.findUnique({
       where: { id: session.user.id },
-      select: { 
+      select: {
         roles: true,
         name: true,
         lastName: true,
@@ -23,9 +23,9 @@ export async function GET(request: NextRequest) {
         teacherRank: {
           select: {
             name: true,
-            rateMultiplier: true
-          }
-        }
+            rateMultiplier: true,
+          },
+        },
       },
     })
 
@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
     // Filtrar por período académico si se proporciona
     if (periodId) {
       whereClause.enrollment = {
-        academicPeriodId: periodId
+        academicPeriodId: periodId,
       }
     }
     // Si no hay período, usar rango de fechas
@@ -164,7 +164,8 @@ export async function GET(request: NextRequest) {
 
     const classDetails = payableClasses.map((classBooking) => {
       // Usar duración de videollamada si está disponible, sino usar duración del curso
-      const duration = classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+      const duration =
+        classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
       totalDuration += duration
 
       const courseId = classBooking.enrollment.course.id
@@ -218,8 +219,10 @@ export async function GET(request: NextRequest) {
 
     // Calcular bonificaciones totales
     const totalBonuses = incentives.reduce((sum, i) => sum + i.bonusAmount, 0)
-    const paidBonuses = incentives.filter(i => i.paid).reduce((sum, i) => sum + i.bonusAmount, 0)
-    const pendingBonuses = incentives.filter(i => !i.paid).reduce((sum, i) => sum + i.bonusAmount, 0)
+    const paidBonuses = incentives.filter((i) => i.paid).reduce((sum, i) => sum + i.bonusAmount, 0)
+    const pendingBonuses = incentives
+      .filter((i) => !i.paid)
+      .reduce((sum, i) => sum + i.bonusAmount, 0)
 
     // Obtener clases del mes pasado para calcular tendencia
     const lastMonthClasses = await db.classBooking.findMany({
@@ -244,24 +247,28 @@ export async function GET(request: NextRequest) {
     })
 
     const lastMonthPayableClasses = lastMonthClasses.filter(
-      (c) => c.teacherAttendances.length > 0 && c.attendances.length > 0
+      (c) => c.isPayable || c.teacherAttendances.length > 0
     )
 
     let lastMonthEarnings = 0
     lastMonthPayableClasses.forEach((classBooking) => {
-      const duration = classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+      const duration =
+        classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
       const hours = duration / 60
       lastMonthEarnings += hours * BASE_RATE_PER_HOUR * rateMultiplier
     })
 
     // Calcular tendencia (porcentaje de cambio)
-    const earningsTrend = lastMonthEarnings > 0 
-      ? Math.round(((totalEarnings - lastMonthEarnings) / lastMonthEarnings) * 100)
-      : totalEarnings > 0 ? 100 : 0
+    const earningsTrend =
+      lastMonthEarnings > 0
+        ? Math.round(((totalEarnings - lastMonthEarnings) / lastMonthEarnings) * 100)
+        : totalEarnings > 0
+          ? 100
+          : 0
 
     // Calcular ganancias por semana del mes actual
     const weeklyEarnings: { week: number; earnings: number; label: string }[] = []
-    const currentMonthClassDetails = classDetails.filter(c => {
+    const currentMonthClassDetails = classDetails.filter((c) => {
       const classDate = new Date(c.date)
       return classDate >= currentMonthStart && classDate <= currentMonthEnd
     })
@@ -272,7 +279,7 @@ export async function GET(request: NextRequest) {
       const weekEnd = new Date(weekStart)
       weekEnd.setDate(weekEnd.getDate() + 6)
 
-      const weekClasses = currentMonthClassDetails.filter(c => {
+      const weekClasses = currentMonthClassDetails.filter((c) => {
         const classDate = new Date(c.date)
         return classDate >= weekStart && classDate <= weekEnd
       })
@@ -287,9 +294,9 @@ export async function GET(request: NextRequest) {
 
     // Historial de pagos recientes (últimos 3 meses de incentivos pagados)
     const recentPayouts = incentives
-      .filter(i => i.paid && i.paidAt)
+      .filter((i) => i.paid && i.paidAt)
       .slice(0, 5)
-      .map(i => ({
+      .map((i) => ({
         id: i.id,
         amount: i.bonusAmount,
         date: i.paidAt,

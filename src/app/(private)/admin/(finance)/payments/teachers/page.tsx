@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import { TeacherPaymentsTable } from '@/components/admin/payments/teacher-payments-table'
-import { PaymentFilters } from '@/components/admin/payments/payment-filters'
+import {
+  PaymentFilters,
+  type AcademicPeriodOption,
+} from '@/components/admin/payments/payment-filters'
 import { PaymentSummaryCards } from '@/components/admin/payments/payment-summary-cards'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -13,7 +16,7 @@ import {
   type TeacherPaymentDetail,
   type PaymentPeriodSummary,
 } from '@/lib/actions/teacher-payments'
-import { startOfMonth, endOfMonth } from 'date-fns'
+import { getRelevantPeriods } from '@/lib/actions/academic-period'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { InfoIcon } from 'lucide-react'
 import { downloadCSV } from '@/components/analytics/export-button'
@@ -49,15 +52,17 @@ export default function TeacherPaymentsPage() {
   const [loading, setLoading] = useState(true)
   const [payments, setPayments] = useState<TeacherPaymentDetail[]>([])
   const [summary, setSummary] = useState<PaymentPeriodSummary | null>(null)
-  const [teachers, setTeachers] = useState<Array<{ id: string; name: string; email: string; rankName: string | null }>>([])
+  const [teachers, setTeachers] = useState<
+    Array<{ id: string; name: string; email: string; rankName: string | null }>
+  >([])
+  const [periods, setPeriods] = useState<AcademicPeriodOption[]>([])
   const [filters, setFilters] = useState<{
     teacherId?: string
     startDate?: Date
     endDate?: Date
-  }>({
-    startDate: startOfMonth(new Date()),
-    endDate: endOfMonth(new Date()),
-  })
+    periodId?: string
+  }>({})
+  const [filterLabel, setFilterLabel] = useState('')
 
   useEffect(() => {
     loadData()
@@ -67,11 +72,21 @@ export default function TeacherPaymentsPage() {
   const loadData = async () => {
     setLoading(true)
     try {
-      const [teachersData] = await Promise.all([
+      const [teachersData, periodsData] = await Promise.all([
         getActiveTeachers(),
+        getRelevantPeriods(),
       ])
       setTeachers(teachersData)
-      await applyFilters(filters)
+      setPeriods(periodsData)
+
+      // Auto-cargar con el período activo
+      const activePeriod = periodsData.find((p) => p.isActive)
+      if (activePeriod) {
+        const initialFilters = { periodId: activePeriod.id }
+        await applyFilters(initialFilters, periodsData)
+      } else {
+        await applyFilters({}, periodsData)
+      }
     } catch (error) {
       console.error('Error loading data:', error)
     } finally {
@@ -79,20 +94,37 @@ export default function TeacherPaymentsPage() {
     }
   }
 
-  const applyFilters = async (newFilters: typeof filters) => {
+  const applyFilters = async (
+    newFilters: typeof filters,
+    currentPeriods?: AcademicPeriodOption[]
+  ) => {
     setLoading(true)
     try {
       const [paymentsData, summaryData] = await Promise.all([
         getTeacherPaymentDetails(
           newFilters.startDate,
           newFilters.endDate,
-          newFilters.teacherId
+          newFilters.teacherId,
+          newFilters.periodId
         ),
-        getPaymentPeriodSummary(newFilters.startDate, newFilters.endDate),
+        getPaymentPeriodSummary(newFilters.startDate, newFilters.endDate, newFilters.periodId),
       ])
       setPayments(paymentsData)
       setSummary(summaryData)
       setFilters(newFilters)
+
+      // Generar label descriptivo
+      const availablePeriods = currentPeriods || periods
+      if (newFilters.periodId) {
+        const period = availablePeriods.find((p) => p.id === newFilters.periodId)
+        setFilterLabel(period ? period.name : 'Período seleccionado')
+      } else if (newFilters.startDate && newFilters.endDate) {
+        setFilterLabel(
+          `${newFilters.startDate.toLocaleDateString('es-ES')} - ${newFilters.endDate.toLocaleDateString('es-ES')}`
+        )
+      } else {
+        setFilterLabel('Mes actual')
+      }
     } catch (error) {
       console.error('Error applying filters:', error)
     } finally {
@@ -102,15 +134,15 @@ export default function TeacherPaymentsPage() {
 
   const handleExport = () => {
     const csvData = payments.map((p) => ({
-      'Profesor': p.teacherName,
-      'Email': p.teacherEmail,
-      'Rango': p.rankName || '-',
-      'Clases': p.totalClasses,
-      'Horas': p.totalHours.toFixed(1),
+      Profesor: p.teacherName,
+      Email: p.teacherEmail,
+      Rango: p.rankName || '-',
+      Clases: p.totalClasses,
+      Horas: p.totalHours.toFixed(1),
       'Pago Total': p.totalPayment.toFixed(2),
       'Promedio/Clase': p.averagePerClass.toFixed(2),
     }))
-    
+
     downloadCSV(csvData, `pagos-profesores-${new Date().toISOString().split('T')[0]}`)
   }
 
@@ -127,8 +159,8 @@ export default function TeacherPaymentsPage() {
         <InfoIcon className="h-4 w-4" />
         <AlertTitle>Información sobre Pagos</AlertTitle>
         <AlertDescription>
-          Los pagos se calculan automáticamente basándose en las clases completadas con asistencia confirmada
-          del profesor y del estudiante. El monto puede variar según el curso, el rango del profesor y la
+          Los pagos se calculan automáticamente basándose en las clases completadas con asistencia
+          confirmada del profesor. El monto puede variar según el curso, el rango del profesor y la
           configuración personalizada de pago por clase.
         </AlertDescription>
       </Alert>
@@ -136,7 +168,8 @@ export default function TeacherPaymentsPage() {
       <div className="space-y-6">
         <PaymentFilters
           teachers={teachers}
-          onFilterChange={applyFilters}
+          periods={periods}
+          onFilterChange={(f) => applyFilters(f)}
           onExport={handleExport}
         />
 
@@ -149,7 +182,7 @@ export default function TeacherPaymentsPage() {
             <TeacherPaymentsTable
               data={payments}
               title="Desglose de Pagos por Profesor"
-              description={`Período: ${filters.startDate ? filters.startDate.toLocaleDateString('es-ES') : 'Inicio'} - ${filters.endDate ? filters.endDate.toLocaleDateString('es-ES') : 'Fin'}`}
+              description={`Período: ${filterLabel}`}
             />
           </>
         )}

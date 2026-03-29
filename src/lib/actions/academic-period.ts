@@ -5,7 +5,14 @@ import { generateAcademicPeriodsForYear } from '@/lib/utils/academic-period'
 import { getCurrentUser } from '@/lib/utils/session'
 import { SeasonName } from '@/types/academic-period'
 import { UserRole } from '@prisma/client'
-import { addWeeksToDate, getStartOfDay, getEndOfDay, getCurrentDate, getStartOfYear, getEndOfYear } from '@/lib/utils/date'
+import {
+  addWeeksToDate,
+  getStartOfDay,
+  getEndOfDay,
+  getCurrentDate,
+  getStartOfYear,
+  getEndOfYear,
+} from '@/lib/utils/date'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
@@ -342,9 +349,10 @@ export async function setActivePeriod(periodId: string) {
  * Usa la funcionalidad de enrollments desde /admin/enrollments
  */
 export async function enrollStudentInPeriod() {
-  return { 
-    success: false, 
-    error: 'Esta funcionalidad ha sido reemplazada. Los estudiantes se inscriben en cursos específicos.' 
+  return {
+    success: false,
+    error:
+      'Esta funcionalidad ha sido reemplazada. Los estudiantes se inscriben en cursos específicos.',
   }
 }
 
@@ -367,10 +375,7 @@ export async function syncAcademicPeriodStatuses() {
       }),
       db.academicPeriod.updateMany({
         where: {
-          OR: [
-            { startDate: { gt: now } },
-            { endDate: { lt: now } },
-          ],
+          OR: [{ startDate: { gt: now } }, { endDate: { lt: now } }],
           isActive: true,
         },
         data: { isActive: false },
@@ -413,6 +418,59 @@ export async function getPeriods(year: number = getCurrentDate().getFullYear()) 
     console.error('Error al obtener períodos:', error)
     return { success: false, error: 'Error al obtener los períodos académicos' }
   }
+}
+
+/**
+ * Obtiene los períodos relevantes para filtros de pago/reportes:
+ * - Períodos del año actual que ya hayan iniciado (startDate <= hoy)
+ * - Último período del año anterior
+ * Retorna ordenados descendentemente por fecha de inicio, con el período activo marcado.
+ */
+export async function getRelevantPeriods() {
+  const currentYear = getCurrentDate().getFullYear()
+  const today = getCurrentDate()
+
+  // 1. Períodos del año actual que ya hayan iniciado
+  const currentYearResult = await getPeriods(currentYear)
+  const currentYearPeriods = currentYearResult.success ? currentYearResult.periods || [] : []
+
+  const startedPeriods = currentYearPeriods.filter((period) => new Date(period.startDate) <= today)
+
+  // 2. Último período del año anterior
+  const previousYearResult = await getPeriods(currentYear - 1)
+  const previousYearPeriods = previousYearResult.success ? previousYearResult.periods || [] : []
+
+  const lastPreviousPeriod = [...previousYearPeriods].sort(
+    (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+  )[0]
+
+  // Combinar y ordenar
+  const allPeriods = [...startedPeriods]
+  if (lastPreviousPeriod) {
+    allPeriods.push({
+      ...lastPreviousPeriod,
+      name: `${lastPreviousPeriod.name} ${currentYear - 1}`,
+    })
+  }
+
+  const sorted = allPeriods.sort(
+    (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+  )
+
+  // Buscar período activo
+  const activePeriod = sorted.find((p) => {
+    const start = new Date(p.startDate)
+    const end = new Date(p.endDate)
+    return today >= start && today <= end
+  })
+
+  return sorted.map((p) => ({
+    id: p.id,
+    name: p.name,
+    startDate: p.startDate instanceof Date ? p.startDate.toISOString() : String(p.startDate),
+    endDate: p.endDate instanceof Date ? p.endDate.toISOString() : String(p.endDate),
+    isActive: p.id === activePeriod?.id,
+  }))
 }
 
 /**
