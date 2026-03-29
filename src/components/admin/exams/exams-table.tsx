@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -49,29 +49,34 @@ export function ExamsTable({ exams }: ExamsTableProps) {
   const [viewDialogOpen, setViewDialogOpen] = useState(false)
   const [assignDialogOpen, setAssignDialogOpen] = useState(false)
   const [selectedExam, setSelectedExam] = useState<ExamWithDetails | null>(null)
+  const [localExams, setLocalExams] = useState(exams)
+
+  useEffect(() => {
+    setLocalExams(exams)
+  }, [exams])
 
   const uniqueCreators = useMemo(() => {
-    const creators = exams
+    const creators = localExams
       .map((exam) => exam.creator)
       .filter(Boolean)
       .filter((creator, index, self) =>
         self.findIndex(c => c?.email === creator?.email) === index
       )
     return creators
-  }, [exams])
+  }, [localExams])
 
   const uniqueCourses = useMemo(() => {
     const courseMap = new Map()
-    exams.forEach((exam) => {
+    localExams.forEach((exam) => {
       if (exam.course) {
         courseMap.set(exam.course.id, exam.course)
       }
     })
     return Array.from(courseMap.values())
-  }, [exams])
+  }, [localExams])
 
   const filteredExams = useMemo(() => {
-    let filtered = exams
+    let filtered = localExams
 
     if (searchTerm) {
       filtered = filtered.filter(
@@ -103,13 +108,13 @@ export function ExamsTable({ exams }: ExamsTableProps) {
     }
 
     return filtered
-  }, [exams, searchTerm, statusFilter, courseFilter, creatorFilter, typeFilter])
+  }, [localExams, searchTerm, statusFilter, courseFilter, creatorFilter, typeFilter])
 
   const handleDeleteExam = async (examId: string) => {
     const result = await deleteExam(examId)
     if (result.success) {
+      setLocalExams((prev) => prev.filter((e) => e.id !== examId))
       toast.success('Examen eliminado exitosamente')
-      window.location.reload()
     } else {
       toast.error(result.error || 'Error al eliminar el examen')
     }
@@ -120,8 +125,12 @@ export function ExamsTable({ exams }: ExamsTableProps) {
       isPublished: !exam.isPublished,
     })
     if (result.success) {
+      setLocalExams((prev) =>
+        prev.map((e) =>
+          e.id === exam.id ? { ...e, isPublished: !e.isPublished } : e
+        )
+      )
       toast.success(`Examen ${exam.isPublished ? 'despublicado' : 'publicado'} exitosamente`)
-      window.location.reload()
     } else {
       toast.error('Error al actualizar el estado del examen')
     }

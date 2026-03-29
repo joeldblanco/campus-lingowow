@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -34,9 +34,14 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
   const [editingCategory, setEditingCategory] = useState<CategoryWithCount | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
+  const [localCategories, setLocalCategories] = useState(categories)
+
+  useEffect(() => {
+    setLocalCategories(categories)
+  }, [categories])
 
   const filteredCategories = useMemo(() => {
-    let filtered = categories
+    let filtered = localCategories
     if (searchTerm) {
       filtered = filtered.filter(
         (cat) =>
@@ -50,12 +55,13 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
       )
     }
     return filtered
-  }, [categories, searchTerm, statusFilter])
+  }, [localCategories, searchTerm, statusFilter])
 
   const handleDelete = async (id: string) => {
     if (confirm('¿Estás seguro de que quieres eliminar esta categoría?')) {
       const result = await deleteCategory(id)
       if (result.success) {
+        setLocalCategories((prev) => prev.filter((c) => c.id !== id))
         toast.success('Categoría eliminada correctamente')
       } else {
         toast.error(result.error || 'Error al eliminar la categoría')

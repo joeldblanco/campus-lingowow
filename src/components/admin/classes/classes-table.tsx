@@ -89,6 +89,11 @@ export const ClassesTable = memo(function ClassesTable({
   const [classToDelete, setClassToDelete] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
   const [localClasses, setLocalClasses] = useState<ClassBookingWithDetails[]>(() => classes)
+
+  useEffect(() => {
+    setLocalClasses(classes)
+  }, [classes])
+
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -360,6 +365,16 @@ export const ClassesTable = memo(function ClassesTable({
     )
   }
 
+  const handleClassRescheduled = (classId: string, newDay: string, newTimeSlot: string) => {
+    setLocalClasses((prev) =>
+      prev.map((classItem) =>
+        classItem.id === classId
+          ? { ...classItem, day: newDay, timeSlot: newTimeSlot, status: 'CONFIRMED' as const }
+          : classItem
+      )
+    )
+  }
+
   const getStatusBadge = (status: string) => {
     const statusStyles: Record<string, string> = {
       CONFIRMED: 'bg-blue-100 text-blue-700 hover:bg-blue-100',
@@ -600,7 +615,7 @@ export const ClassesTable = memo(function ClassesTable({
                     Ver detalles
                   </DropdownMenuItem>
                 </ViewClassDialog>
-                <RescheduleClassDialog classItem={classItem}>
+                <RescheduleClassDialog classItem={classItem} onRescheduled={handleClassRescheduled}>
                   <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                     <Calendar className="h-4 w-4 mr-2" />
                     Reagendar

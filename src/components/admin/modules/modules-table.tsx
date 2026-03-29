@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -39,15 +39,20 @@ interface ModulesTableProps {
 export function ModulesTable({ modules, onModuleUpdated }: ModulesTableProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [isDeleting, setIsDeleting] = useState<string | null>(null)
+  const [localModules, setLocalModules] = useState(modules)
+
+  useEffect(() => {
+    setLocalModules(modules)
+  }, [modules])
 
   const filteredModules = useMemo(() => {
-    return modules.filter(
+    return localModules.filter(
       (module) =>
         module.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         module.course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         module.description?.toLowerCase().includes(searchTerm.toLowerCase())
     )
-  }, [modules, searchTerm])
+  }, [localModules, searchTerm])
 
   const handleDelete = async (id: string, title: string) => {
     if (!confirm(`¿Estás seguro de que quieres eliminar el módulo "${title}"?`)) {
@@ -57,6 +62,7 @@ export function ModulesTable({ modules, onModuleUpdated }: ModulesTableProps) {
     try {
       setIsDeleting(id)
       await deleteModule(id)
+      setLocalModules((prev) => prev.filter((m) => m.id !== id))
       toast.success('Módulo eliminado exitosamente')
       onModuleUpdated()
     } catch (error) {

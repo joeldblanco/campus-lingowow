@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -96,16 +96,21 @@ export function PlansTable({ plans }: PlansTableProps) {
   const [statusFilter, setStatusFilter] = useState('all')
   const [typeFilter, setTypeFilter] = useState('all')
   const [productFilter, setProductFilter] = useState('all')
+  const [localPlans, setLocalPlans] = useState(plans)
+
+  useEffect(() => {
+    setLocalPlans(plans)
+  }, [plans])
 
   const uniqueProducts = useMemo(() => {
-    const products = plans
+    const products = localPlans
       .filter(p => p.product)
       .map(p => ({ id: p.product!.id, name: p.product!.name }))
     return Array.from(new Map(products.map(p => [p.id, p])).values())
-  }, [plans])
+  }, [localPlans])
 
   const filteredPlans = useMemo(() => {
-    let filtered = plans
+    let filtered = localPlans
     if (searchTerm) {
       filtered = filtered.filter(
         (p) =>
@@ -129,12 +134,13 @@ export function PlansTable({ plans }: PlansTableProps) {
       )
     }
     return filtered
-  }, [plans, searchTerm, statusFilter, typeFilter, productFilter])
+  }, [localPlans, searchTerm, statusFilter, typeFilter, productFilter])
 
   const handleDelete = async (id: string) => {
     if (confirm('¿Estás seguro de que quieres eliminar este plan?')) {
       const result = await deletePlan(id)
       if (result.success) {
+        setLocalPlans((prev) => prev.filter((p) => p.id !== id))
         toast.success('Plan eliminado correctamente')
       } else {
         toast.error(result.error || 'Error al eliminar el plan')

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import {
   AlertDialog,
@@ -64,9 +64,14 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [enrollmentToDelete, setEnrollmentToDelete] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [localEnrollments, setLocalEnrollments] = useState(enrollments)
+
+  useEffect(() => {
+    setLocalEnrollments(enrollments)
+  }, [enrollments])
 
   const filteredEnrollments = useMemo(() => {
-    let filtered = enrollments
+    let filtered = localEnrollments
 
     if (searchTerm) {
       filtered = filtered.filter(
@@ -100,7 +105,7 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
     })
 
     return filtered
-  }, [enrollments, searchTerm, statusFilter, courseFilter, periodFilter, sortOrder])
+  }, [localEnrollments, searchTerm, statusFilter, courseFilter, periodFilter, sortOrder])
 
   const handleDeleteEnrollment = async () => {
     if (!enrollmentToDelete) return
@@ -109,6 +114,7 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
     try {
       const result = await deleteEnrollment(enrollmentToDelete)
       if (result.success) {
+        setLocalEnrollments((prev) => prev.filter((e) => e.id !== enrollmentToDelete))
         toast.success('Inscripción eliminada exitosamente')
         setDeleteDialogOpen(false)
         setEnrollmentToDelete(null)
@@ -125,7 +131,7 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
 
   const getCourses = () => {
     const courses = Array.from(
-      new Set(enrollments.map((e) => ({ id: e.courseId, title: e.course.title })))
+      new Set(localEnrollments.map((e) => ({ id: e.courseId, title: e.course.title })))
     )
     return courses.filter(
       (course, index, self) => self.findIndex((c) => c.id === course.id) === index
@@ -133,7 +139,7 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
   }
 
   const getPeriods = () => {
-    const periods = enrollments.map((e) => ({
+    const periods = localEnrollments.map((e) => ({
       id: e.academicPeriodId,
       name: e.academicPeriod.name,
     }))

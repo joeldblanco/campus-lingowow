@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import {
   AlertDialog,
@@ -54,9 +54,14 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
   const [isDeleting, setIsDeleting] = useState(false)
   const [selectedCourses, setSelectedCourses] = useState<CourseWithDetails[]>([])
   const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false)
+  const [localCourses, setLocalCourses] = useState(courses)
+
+  useEffect(() => {
+    setLocalCourses(courses)
+  }, [courses])
 
   const filteredCourses = useMemo(() => {
-    let filtered = courses
+    let filtered = localCourses
 
     if (searchTerm) {
       filtered = filtered.filter(
@@ -77,7 +82,7 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
     }
 
     return filtered
-  }, [courses, searchTerm, languageFilter, statusFilter])
+  }, [localCourses, searchTerm, languageFilter, statusFilter])
 
   const handleDeleteCourse = async () => {
     if (!courseToDelete) return
@@ -86,6 +91,7 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
     try {
       const result = await deleteCourse(courseToDelete)
       if (result.success) {
+        setLocalCourses((prev) => prev.filter((c) => c.id !== courseToDelete))
         toast.success('Curso eliminado exitosamente')
         setDeleteDialogOpen(false)
         setCourseToDelete(null)
@@ -105,6 +111,11 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
     try {
       const result = await toggleCoursePublished(courseId)
       if (result.success) {
+        setLocalCourses((prev) =>
+          prev.map((c) =>
+            c.id === courseId ? { ...c, isPublished: !c.isPublished } : c
+          )
+        )
         toast.success('Estado del curso actualizado')
         onCourseUpdated?.()
       } else {
@@ -116,7 +127,7 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
   }
 
   const getLanguages = () => {
-    return Array.from(new Set(courses.map((course) => course.language)))
+    return Array.from(new Set(localCourses.map((course) => course.language)))
   }
 
   const handleBulkPublish = async () => {
@@ -124,6 +135,13 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
       for (const course of selectedCourses) {
         await toggleCoursePublished(course.id)
       }
+      setLocalCourses((prev) =>
+        prev.map((c) =>
+          selectedCourses.some((sc) => sc.id === c.id)
+            ? { ...c, isPublished: !c.isPublished }
+            : c
+        )
+      )
       toast.success('Cursos publicados exitosamente')
       setSelectedCourses([])
       onCourseUpdated?.()
@@ -138,6 +156,7 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
       for (const course of selectedCourses) {
         await deleteCourse(course.id)
       }
+      setLocalCourses((prev) => prev.filter((c) => !selectedCourses.some((sc) => sc.id === c.id)))
       toast.success('Cursos eliminados exitosamente')
       setBulkDeleteDialogOpen(false)
       setSelectedCourses([])

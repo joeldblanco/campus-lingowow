@@ -271,6 +271,7 @@ export function ProductsTable({ products }: ProductsTableProps) {
     if (confirm('¿Estás seguro de que quieres eliminar este producto?')) {
       const result = await deleteProduct(id)
       if (result.success) {
+        setProductsList((prev) => prev.filter((p) => p.id !== id))
         toast.success('Producto eliminado correctamente')
       } else {
         toast.error(result.error || 'Error al eliminar el producto')

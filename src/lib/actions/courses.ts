@@ -364,7 +364,6 @@ export async function deleteCourse(id: string) {
       where: { id },
     })
 
-    revalidatePath('/admin/courses')
     return { success: true }
   } catch (error) {
     console.error('Error deleting course:', error)
@@ -390,7 +389,6 @@ export async function toggleCoursePublished(id: string) {
       },
     })
 
-    revalidatePath('/admin/courses')
     return { success: true, course: updatedCourse }
   } catch (error) {
     console.error('Error toggling course published status:', error)

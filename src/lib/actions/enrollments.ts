@@ -1118,7 +1118,6 @@ export async function deleteEnrollment(id: string) {
       where: { id },
     })
 
-    revalidatePath('/admin/enrollments')
     return { success: true }
   } catch (error) {
     console.error('Error deleting enrollment:', error)

@@ -81,7 +81,6 @@ export async function deleteCategory(id: string) {
     await db.category.delete({
       where: { id },
     })
-    revalidatePath('/admin/categories')
     return { success: true }
   } catch (error) {
     console.error('Error deleting category:', error)
@@ -162,7 +161,6 @@ export async function deleteFeature(id: string) {
     await db.feature.delete({
       where: { id },
     })
-    revalidatePath('/admin/features')
     return { success: true }
   } catch (error) {
     console.error('Error deleting feature:', error)
@@ -361,7 +359,6 @@ export async function updateProductSortOrder(id: string, sortOrder: number) {
       where: { id },
       data: { sortOrder },
     })
-    revalidatePath('/admin/products')
     return { success: true, data: product }
   } catch (error) {
     console.error('Error updating product sort order:', error)
@@ -374,7 +371,6 @@ export async function deleteProduct(id: string) {
     await db.product.delete({
       where: { id },
     })
-    revalidatePath('/admin/products')
     return { success: true }
   } catch (error) {
     console.error('Error deleting product:', error)
@@ -505,7 +501,6 @@ export async function deletePlan(id: string) {
     await db.plan.delete({
       where: { id },
     })
-    revalidatePath('/admin/plans')
     return { success: true }
   } catch (error) {
     console.error('Error deleting plan:', error)
@@ -719,7 +714,6 @@ export async function deleteCoupon(id: string) {
     await db.coupon.delete({
       where: { id },
     })
-    revalidatePath('/admin/coupons')
     return { success: true }
   } catch (error) {
     console.error('Error deleting coupon:', error)

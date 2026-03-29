@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import {
   ClassBookingWithDetails,
   rescheduleClass,
@@ -44,12 +43,12 @@ import { useTimezone } from '@/hooks/use-timezone'
 interface RescheduleClassDialogProps {
   classItem: ClassBookingWithDetails
   children: React.ReactNode
+  onRescheduled?: (classId: string, newDay: string, newTimeSlot: string) => void
 }
 
 type FormData = z.infer<typeof RescheduleClassSchema>
 
-export function RescheduleClassDialog({ classItem, children }: RescheduleClassDialogProps) {
-  const router = useRouter()
+export function RescheduleClassDialog({ classItem, children, onRescheduled }: RescheduleClassDialogProps) {
   const [open, setOpen] = useState(false)
   const [availableTeachers, setAvailableTeachers] = useState<
     Array<{ id: string; name: string; lastName: string | null; email: string }>
@@ -120,7 +119,7 @@ export function RescheduleClassDialog({ classItem, children }: RescheduleClassDi
       if (result.success) {
         toast.success('Clase reagendada exitosamente')
         setOpen(false)
-        router.refresh()
+        onRescheduled?.(classItem.id, values.newDate, values.newTimeSlot)
       } else {
         toast.error(result.error || 'Error al reagendar la clase')
       }

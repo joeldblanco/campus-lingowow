@@ -130,7 +130,6 @@ export async function deleteModule(id: string) {
       where: { id },
     })
 
-    revalidatePath('/admin/courses')
     return { success: true }
   } catch (error) {
     console.error('Error deleting module:', error)

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -59,6 +59,11 @@ export function CouponsTable({ coupons }: CouponsTableProps) {
   const [editingCoupon, setEditingCoupon] = useState<Coupon | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
+  const [localCoupons, setLocalCoupons] = useState(coupons)
+
+  useEffect(() => {
+    setLocalCoupons(coupons)
+  }, [coupons])
 
   const isExpired = (expiresAt: Date | null) => {
     if (!expiresAt) return false
@@ -73,7 +78,7 @@ export function CouponsTable({ coupons }: CouponsTableProps) {
   }
 
   const filteredCoupons = useMemo(() => {
-    let filtered = coupons
+    let filtered = localCoupons
     if (searchTerm) {
       filtered = filtered.filter(
         (coupon) =>
@@ -89,12 +94,13 @@ export function CouponsTable({ coupons }: CouponsTableProps) {
     }
     return filtered
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [coupons, searchTerm, statusFilter])
+  }, [localCoupons, searchTerm, statusFilter])
 
   const handleDelete = async (id: string) => {
     if (confirm('¿Estás seguro de que quieres eliminar este cupón?')) {
       const result = await deleteCoupon(id)
       if (result.success) {
+        setLocalCoupons((prev) => prev.filter((c) => c.id !== id))
         toast.success('Cupón eliminado correctamente')
       } else {
         toast.error(result.error || 'Error al eliminar el cupón')

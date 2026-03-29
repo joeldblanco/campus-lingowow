@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -46,9 +46,14 @@ export function FeaturesTable({ features }: FeaturesTableProps) {
   const [editingFeature, setEditingFeature] = useState<Feature | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
+  const [localFeatures, setLocalFeatures] = useState(features)
+
+  useEffect(() => {
+    setLocalFeatures(features)
+  }, [features])
 
   const filteredFeatures = useMemo(() => {
-    let filtered = features
+    let filtered = localFeatures
     if (searchTerm) {
       filtered = filtered.filter(
         (f) =>
@@ -62,12 +67,13 @@ export function FeaturesTable({ features }: FeaturesTableProps) {
       )
     }
     return filtered
-  }, [features, searchTerm, statusFilter])
+  }, [localFeatures, searchTerm, statusFilter])
 
   const handleDelete = async (id: string) => {
     if (confirm('¿Estás seguro de que quieres eliminar esta característica?')) {
       const result = await deleteFeature(id)
       if (result.success) {
+        setLocalFeatures((prev) => prev.filter((f) => f.id !== id))
         toast.success('Característica eliminada correctamente')
       } else {
         toast.error(result.error || 'Error al eliminar la característica')

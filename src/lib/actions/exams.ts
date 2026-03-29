@@ -562,7 +562,6 @@ export async function updateExam(
       return exam
     })
 
-    revalidatePath('/admin/exams')
     return { success: true, exam: result }
   } catch (error) {
     console.error('Error updating exam:', error)
@@ -596,7 +595,6 @@ export async function deleteExam(id: string): Promise<ExamDeleteResponse> {
       where: { id },
     })
 
-    revalidatePath('/admin/exams')
     return { success: true }
   } catch (error) {
     console.error('Error deleting exam:', error)

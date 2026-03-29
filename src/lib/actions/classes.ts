@@ -501,7 +501,6 @@ export async function deleteClass(id: string) {
       where: { id },
     })
 
-    revalidatePath('/admin/classes')
     return { success: true }
   } catch (error) {
     console.error('Error deleting class:', error)
@@ -581,7 +580,6 @@ export async function rescheduleClass(id: string, newDay: string, newTimeSlot: s
       },
     })
 
-    revalidatePath('/admin/classes')
     return { success: true, class: updatedClass }
   } catch (error) {
     console.error('Error rescheduling class:', error)
@@ -1272,7 +1270,6 @@ export async function toggleClassPayable(classId: string, isPayable: boolean) {
       data: { isPayable },
     })
 
-    revalidatePath('/admin/classes')
     revalidatePath('/admin/reports')
     
     return { 
