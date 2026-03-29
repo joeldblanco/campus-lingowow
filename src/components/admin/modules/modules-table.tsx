@@ -78,7 +78,10 @@ export function ModulesTable({ modules, onModuleUpdated }: ModulesTableProps) {
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Seleccionar todo"
         />
@@ -105,7 +108,9 @@ export function ModulesTable({ modules, onModuleUpdated }: ModulesTableProps) {
             </Badge>
           </div>
           {row.original.description && (
-            <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{row.original.description}</p>
+            <p className="text-xs text-muted-foreground mt-1 line-clamp-1">
+              {row.original.description}
+            </p>
           )}
         </div>
       ),

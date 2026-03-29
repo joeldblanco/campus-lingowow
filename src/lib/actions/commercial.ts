@@ -336,7 +336,6 @@ export async function updateProduct(
   data: Partial<Omit<Product, 'id' | 'createdAt' | 'updatedAt'>>
 ) {
   try {
-    
     const product = await db.product.update({
       where: { id },
       data: {
@@ -590,7 +589,7 @@ export async function updatePlanFeatures(
 export async function searchUsersForCoupon(query: string) {
   try {
     if (!query || query.length < 2) return []
-    
+
     return await db.user.findMany({
       where: {
         OR: [

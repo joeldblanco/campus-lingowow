@@ -48,7 +48,11 @@ interface RescheduleClassDialogProps {
 
 type FormData = z.infer<typeof RescheduleClassSchema>
 
-export function RescheduleClassDialog({ classItem, children, onRescheduled }: RescheduleClassDialogProps) {
+export function RescheduleClassDialog({
+  classItem,
+  children,
+  onRescheduled,
+}: RescheduleClassDialogProps) {
   const [open, setOpen] = useState(false)
   const [availableTeachers, setAvailableTeachers] = useState<
     Array<{ id: string; name: string; lastName: string | null; email: string }>
@@ -66,7 +70,7 @@ export function RescheduleClassDialog({ classItem, children, onRescheduled }: Re
 
   const watchedDate = form.watch('newDate')
   const watchedTimeSlot = form.watch('newTimeSlot')
-  
+
   // Obtener timezone del usuario (de la sesión, sincronizada con la DB)
   const { timezone: userTimezone } = useTimezone()
 
@@ -114,7 +118,12 @@ export function RescheduleClassDialog({ classItem, children, onRescheduled }: Re
 
   const onSubmit = async (values: FormData) => {
     try {
-      const result = await rescheduleClass(classItem.id, values.newDate, values.newTimeSlot, userTimezone)
+      const result = await rescheduleClass(
+        classItem.id,
+        values.newDate,
+        values.newTimeSlot,
+        userTimezone
+      )
 
       if (result.success) {
         toast.success('Clase reagendada exitosamente')

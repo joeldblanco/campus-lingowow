@@ -62,9 +62,7 @@ export function FeaturesTable({ features }: FeaturesTableProps) {
       )
     }
     if (statusFilter !== 'all') {
-      filtered = filtered.filter((f) =>
-        statusFilter === 'active' ? f.isActive : !f.isActive
-      )
+      filtered = filtered.filter((f) => (statusFilter === 'active' ? f.isActive : !f.isActive))
     }
     return filtered
   }, [localFeatures, searchTerm, statusFilter])
@@ -91,7 +89,10 @@ export function FeaturesTable({ features }: FeaturesTableProps) {
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Seleccionar todo"
         />
@@ -109,9 +110,7 @@ export function FeaturesTable({ features }: FeaturesTableProps) {
     {
       accessorKey: 'name',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Característica" />,
-      cell: ({ row }) => (
-        <span className="font-medium text-sm">{row.original.name}</span>
-      ),
+      cell: ({ row }) => <span className="font-medium text-sm">{row.original.name}</span>,
     },
     {
       accessorKey: 'description',
@@ -127,9 +126,13 @@ export function FeaturesTable({ features }: FeaturesTableProps) {
       header: ({ column }) => <DataTableColumnHeader column={column} title="Estado" />,
       cell: ({ row }) =>
         row.original.isActive ? (
-          <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 border-0 font-medium">Activa</Badge>
+          <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 border-0 font-medium">
+            Activa
+          </Badge>
         ) : (
-          <Badge className="bg-gray-100 text-gray-700 hover:bg-gray-100 border-0 font-medium">Inactiva</Badge>
+          <Badge className="bg-gray-100 text-gray-700 hover:bg-gray-100 border-0 font-medium">
+            Inactiva
+          </Badge>
         ),
     },
     {
@@ -148,7 +151,12 @@ export function FeaturesTable({ features }: FeaturesTableProps) {
         const feature = row.original
         return (
           <div className="flex items-center justify-center gap-1">
-            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditingFeature(feature)}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setEditingFeature(feature)}
+            >
               <Edit className="h-4 w-4" />
             </Button>
             <DropdownMenu>
@@ -158,7 +166,10 @@ export function FeaturesTable({ features }: FeaturesTableProps) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => handleDelete(feature.id)} className="text-destructive">
+                <DropdownMenuItem
+                  onClick={() => handleDelete(feature.id)}
+                  className="text-destructive"
+                >
                   <Trash2 className="mr-2 h-4 w-4" />
                   Eliminar
                 </DropdownMenuItem>

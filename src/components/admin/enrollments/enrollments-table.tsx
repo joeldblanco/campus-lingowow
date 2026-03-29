@@ -80,9 +80,12 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
           (enrollment.student.lastName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
           enrollment.student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
           enrollment.course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (enrollment.teacher?.name?.toLowerCase().includes(searchTerm.toLowerCase()) || false) ||
-          (enrollment.teacher?.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) || false) ||
-          (enrollment.teacher?.email?.toLowerCase().includes(searchTerm.toLowerCase()) || false)
+          enrollment.teacher?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          false ||
+          enrollment.teacher?.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          false ||
+          enrollment.teacher?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          false
       )
     }
 
@@ -175,7 +178,10 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Seleccionar todo"
         />
@@ -228,13 +234,9 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
       cell: ({ row }) => {
         const teacher = row.original.teacher
         if (!teacher) {
-          return (
-            <div className="text-sm text-muted-foreground">
-              Sin asignar
-            </div>
-          )
+          return <div className="text-sm text-muted-foreground">Sin asignar</div>
         }
-        
+
         return (
           <div className="flex items-center gap-2">
             <UserAvatar
@@ -273,7 +275,9 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
     {
       accessorKey: 'enrollmentDate',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Fecha Inscripción" />,
-      cell: ({ row }) => <span className="text-sm">{formatDateShort(row.original.enrollmentDate)}</span>,
+      cell: ({ row }) => (
+        <span className="text-sm">{formatDateShort(row.original.enrollmentDate)}</span>
+      ),
     },
     {
       id: 'actions',

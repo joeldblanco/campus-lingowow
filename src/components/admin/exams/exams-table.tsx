@@ -22,7 +22,19 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { DataTable, DataTableColumnHeader } from '@/components/ui/data-table'
-import { Search, Edit, MoreVertical, Plus, SlidersHorizontal, BarChart3, Eye, UserPlus, Send, EyeOff, Trash2 } from 'lucide-react'
+import {
+  Search,
+  Edit,
+  MoreVertical,
+  Plus,
+  SlidersHorizontal,
+  BarChart3,
+  Eye,
+  UserPlus,
+  Send,
+  EyeOff,
+  Trash2,
+} from 'lucide-react'
 import { CreateExamDialog } from './create-exam-dialog'
 import { EditExamDialog } from './edit-exam-dialog'
 import { ViewExamDialog } from './view-exam-dialog'
@@ -59,8 +71,8 @@ export function ExamsTable({ exams }: ExamsTableProps) {
     const creators = localExams
       .map((exam) => exam.creator)
       .filter(Boolean)
-      .filter((creator, index, self) =>
-        self.findIndex(c => c?.email === creator?.email) === index
+      .filter(
+        (creator, index, self) => self.findIndex((c) => c?.email === creator?.email) === index
       )
     return creators
   }, [localExams])
@@ -126,9 +138,7 @@ export function ExamsTable({ exams }: ExamsTableProps) {
     })
     if (result.success) {
       setLocalExams((prev) =>
-        prev.map((e) =>
-          e.id === exam.id ? { ...e, isPublished: !e.isPublished } : e
-        )
+        prev.map((e) => (e.id === exam.id ? { ...e, isPublished: !e.isPublished } : e))
       )
       toast.success(`Examen ${exam.isPublished ? 'despublicado' : 'publicado'} exitosamente`)
     } else {
@@ -153,14 +163,28 @@ export function ExamsTable({ exams }: ExamsTableProps) {
 
   const getExamTypeBadge = (examType: ExamTypeValue) => {
     const config: Record<ExamTypeValue, { icon: React.ReactNode; className: string }> = {
-      COURSE_EXAM: { icon: <GraduationCap className="h-3 w-3" />, className: 'bg-blue-100 text-blue-700' },
-      PLACEMENT_TEST: { icon: <ClipboardCheck className="h-3 w-3" />, className: 'bg-purple-100 text-purple-700' },
-      DIAGNOSTIC: { icon: <Stethoscope className="h-3 w-3" />, className: 'bg-orange-100 text-orange-700' },
-      PRACTICE: { icon: <Dumbbell className="h-3 w-3" />, className: 'bg-green-100 text-green-700' },
+      COURSE_EXAM: {
+        icon: <GraduationCap className="h-3 w-3" />,
+        className: 'bg-blue-100 text-blue-700',
+      },
+      PLACEMENT_TEST: {
+        icon: <ClipboardCheck className="h-3 w-3" />,
+        className: 'bg-purple-100 text-purple-700',
+      },
+      DIAGNOSTIC: {
+        icon: <Stethoscope className="h-3 w-3" />,
+        className: 'bg-orange-100 text-orange-700',
+      },
+      PRACTICE: {
+        icon: <Dumbbell className="h-3 w-3" />,
+        className: 'bg-green-100 text-green-700',
+      },
     }
     const { icon, className } = config[examType] || config.COURSE_EXAM
     return (
-      <Badge className={`${className} hover:${className} border-0 font-medium flex items-center gap-1`}>
+      <Badge
+        className={`${className} hover:${className} border-0 font-medium flex items-center gap-1`}
+      >
         {icon}
         {EXAM_TYPE_LABELS[examType]}
       </Badge>
@@ -199,7 +223,9 @@ export function ExamsTable({ exams }: ExamsTableProps) {
 
   const getCreatorName = (creator: ExamWithDetails['creator']) => {
     if (!creator) return 'Sin asignar'
-    return `${creator.name || ''} ${creator.lastName || ''}`.trim() || creator.email || 'Sin asignar'
+    return (
+      `${creator.name || ''} ${creator.lastName || ''}`.trim() || creator.email || 'Sin asignar'
+    )
   }
 
   const getTotalQuestions = (exam: ExamWithDetails) => {
@@ -218,7 +244,10 @@ export function ExamsTable({ exams }: ExamsTableProps) {
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Seleccionar todo"
         />
@@ -239,7 +268,9 @@ export function ExamsTable({ exams }: ExamsTableProps) {
       cell: ({ row }) => (
         <div>
           <div className="font-medium text-foreground">{row.original.title}</div>
-          <div className="text-xs text-muted-foreground">{formatTimeAgo(row.original.updatedAt)}</div>
+          <div className="text-xs text-muted-foreground">
+            {formatTimeAgo(row.original.updatedAt)}
+          </div>
         </div>
       ),
     },
@@ -249,7 +280,9 @@ export function ExamsTable({ exams }: ExamsTableProps) {
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
           <Avatar className="h-7 w-7">
-            <AvatarImage src={row.original.creator?.email ? getUserAvatarUrl(row.original.creator.email) : ''} />
+            <AvatarImage
+              src={row.original.creator?.email ? getUserAvatarUrl(row.original.creator.email) : ''}
+            />
             <AvatarFallback className="text-xs bg-slate-200">
               {getCreatorInitials(row.original.creator)}
             </AvatarFallback>
@@ -273,7 +306,9 @@ export function ExamsTable({ exams }: ExamsTableProps) {
       header: ({ column }) => <DataTableColumnHeader column={column} title="Asignado a" />,
       cell: ({ row }) =>
         row.original.course ? (
-          <span className="text-sm">{row.original.course.title} - {row.original.course.level}</span>
+          <span className="text-sm">
+            {row.original.course.title} - {row.original.course.level}
+          </span>
         ) : (
           <span className="text-sm text-muted-foreground">Sin asignar</span>
         ),
@@ -327,14 +362,12 @@ export function ExamsTable({ exams }: ExamsTableProps) {
                   <Eye className="h-4 w-4 mr-2" />
                   Ver Detalles
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => router.push(`/teacher/exams/${exam.id}/results`)}
-                >
+                <DropdownMenuItem onClick={() => router.push(`/teacher/exams/${exam.id}/results`)}>
                   <BarChart3 className="h-4 w-4 mr-2" />
                   Ver Resultados
                 </DropdownMenuItem>
-{/* Solo mostrar opción de asignar si el examen NO tiene curso o si el curso es personalizado */}
-                                {(!exam.courseId || exam.course?.isPersonalized) && (
+                {/* Solo mostrar opción de asignar si el examen NO tiene curso o si el curso es personalizado */}
+                {(!exam.courseId || exam.course?.isPersonalized) && (
                   <DropdownMenuItem
                     onClick={() => {
                       setSelectedExam(exam)

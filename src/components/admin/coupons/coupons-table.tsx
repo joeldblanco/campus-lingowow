@@ -20,7 +20,16 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { DataTable, DataTableColumnHeader } from '@/components/ui/data-table'
-import { MoreVertical, Edit, Trash2, Copy, Search, SlidersHorizontal, User, Package } from 'lucide-react'
+import {
+  MoreVertical,
+  Edit,
+  Trash2,
+  Copy,
+  Search,
+  SlidersHorizontal,
+  User,
+  Package,
+} from 'lucide-react'
 import { EditCouponDialog } from './edit-coupon-dialog'
 import { deleteCoupon } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
@@ -154,7 +163,10 @@ export function CouponsTable({ coupons }: CouponsTableProps) {
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Seleccionar todo"
         />
@@ -175,7 +187,12 @@ export function CouponsTable({ coupons }: CouponsTableProps) {
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
           <code className="font-mono bg-muted px-2 py-1 rounded text-sm">{row.original.code}</code>
-          <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => handleCopyCode(row.original.code)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-6"
+            onClick={() => handleCopyCode(row.original.code)}
+          >
             <Copy className="h-3 w-3" />
           </Button>
         </div>
@@ -188,7 +205,9 @@ export function CouponsTable({ coupons }: CouponsTableProps) {
         <div>
           <div className="font-medium text-sm">{row.original.name || '-'}</div>
           {row.original.description && (
-            <div className="text-xs text-muted-foreground line-clamp-1">{row.original.description}</div>
+            <div className="text-xs text-muted-foreground line-clamp-1">
+              {row.original.description}
+            </div>
           )}
         </div>
       ),
@@ -197,7 +216,9 @@ export function CouponsTable({ coupons }: CouponsTableProps) {
       accessorKey: 'value',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Descuento" />,
       cell: ({ row }) => (
-        <div className="font-medium text-sm">{formatDiscount(row.original.type, row.original.value)}</div>
+        <div className="font-medium text-sm">
+          {formatDiscount(row.original.type, row.original.value)}
+        </div>
       ),
     },
     {
@@ -233,7 +254,9 @@ export function CouponsTable({ coupons }: CouponsTableProps) {
       header: () => <div className="text-center">Uso</div>,
       cell: ({ row }) => (
         <div className="text-center text-sm">
-          {row.original.usageLimit ? `${row.original.usageCount}/${row.original.usageLimit}` : `${row.original.usageCount}/∞`}
+          {row.original.usageLimit
+            ? `${row.original.usageCount}/${row.original.usageLimit}`
+            : `${row.original.usageCount}/∞`}
         </div>
       ),
     },
@@ -244,7 +267,12 @@ export function CouponsTable({ coupons }: CouponsTableProps) {
         const coupon = row.original
         return (
           <div className="flex items-center justify-center gap-1">
-            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditingCoupon(coupon)}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setEditingCoupon(coupon)}
+            >
               <Edit className="h-4 w-4" />
             </Button>
             <DropdownMenu>
@@ -254,7 +282,10 @@ export function CouponsTable({ coupons }: CouponsTableProps) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => handleDelete(coupon.id)} className="text-destructive">
+                <DropdownMenuItem
+                  onClick={() => handleDelete(coupon.id)}
+                  className="text-destructive"
+                >
                   <Trash2 className="mr-2 h-4 w-4" />
                   Eliminar
                 </DropdownMenuItem>

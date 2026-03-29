@@ -106,8 +106,10 @@ export const ClassesTable = memo(function ClassesTable({
     if (searchTerm) {
       const term = searchTerm.toLowerCase().trim()
       filtered = filtered.filter((classItem) => {
-        const studentFull = `${classItem.student.name} ${classItem.student.lastName || ''}`.toLowerCase()
-        const teacherFull = `${classItem.teacher.name} ${classItem.teacher.lastName || ''}`.toLowerCase()
+        const studentFull =
+          `${classItem.student.name} ${classItem.student.lastName || ''}`.toLowerCase()
+        const teacherFull =
+          `${classItem.teacher.name} ${classItem.teacher.lastName || ''}`.toLowerCase()
         return (
           studentFull.includes(term) ||
           teacherFull.includes(term) ||

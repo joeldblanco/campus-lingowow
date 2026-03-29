@@ -33,7 +33,18 @@ import {
 import { DataTable, DataTableColumnHeader } from '@/components/ui/data-table'
 import { deleteCourse, toggleCoursePublished } from '@/lib/actions/courses'
 import { CourseWithDetails } from '@/types/course'
-import { Archive, Edit, Eye, Globe, MoreVertical, Trash2, Search, SlidersHorizontal, BookOpen, Users } from 'lucide-react'
+import {
+  Archive,
+  Edit,
+  Eye,
+  Globe,
+  MoreVertical,
+  Trash2,
+  Search,
+  SlidersHorizontal,
+  BookOpen,
+  Users,
+} from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
 import { EditCourseDialog } from './edit-course-dialog'
@@ -45,7 +56,11 @@ interface CoursesTableProps {
   'data-testid'?: string
 }
 
-export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }: CoursesTableProps) {
+export function CoursesTable({
+  courses,
+  onCourseUpdated,
+  'data-testid': testId,
+}: CoursesTableProps) {
   const [languageFilter, setLanguageFilter] = useState('all')
   const [statusFilter, setStatusFilter] = useState('all')
   const [searchTerm, setSearchTerm] = useState('')
@@ -112,9 +127,7 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
       const result = await toggleCoursePublished(courseId)
       if (result.success) {
         setLocalCourses((prev) =>
-          prev.map((c) =>
-            c.id === courseId ? { ...c, isPublished: !c.isPublished } : c
-          )
+          prev.map((c) => (c.id === courseId ? { ...c, isPublished: !c.isPublished } : c))
         )
         toast.success('Estado del curso actualizado')
         onCourseUpdated?.()
@@ -137,9 +150,7 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
       }
       setLocalCourses((prev) =>
         prev.map((c) =>
-          selectedCourses.some((sc) => sc.id === c.id)
-            ? { ...c, isPublished: !c.isPublished }
-            : c
+          selectedCourses.some((sc) => sc.id === c.id) ? { ...c, isPublished: !c.isPublished } : c
         )
       )
       toast.success('Cursos publicados exitosamente')
@@ -179,7 +190,10 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Seleccionar todo"
         />
@@ -200,13 +214,15 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
       header: ({ column }) => <DataTableColumnHeader column={column} title="Curso" />,
       cell: ({ row }) => (
         <div className="max-w-[200px]">
-          <Link 
+          <Link
             href={`/admin/courses/${row.original.id}`}
             className="font-medium text-sm truncate hover:text-primary hover:underline transition-colors block"
           >
             {row.original.title}
           </Link>
-          <div className="text-xs text-muted-foreground line-clamp-1">{row.original.description}</div>
+          <div className="text-xs text-muted-foreground line-clamp-1">
+            {row.original.description}
+          </div>
         </div>
       ),
     },
@@ -220,9 +236,13 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
       header: ({ column }) => <DataTableColumnHeader column={column} title="Estado" />,
       cell: ({ row }) =>
         row.original.isPublished ? (
-          <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 border-0 font-medium">Publicado</Badge>
+          <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 border-0 font-medium">
+            Publicado
+          </Badge>
         ) : (
-          <Badge className="bg-amber-100 text-amber-700 hover:bg-amber-100 border-0 font-medium">Borrador</Badge>
+          <Badge className="bg-amber-100 text-amber-700 hover:bg-amber-100 border-0 font-medium">
+            Borrador
+          </Badge>
         ),
     },
     {
@@ -259,7 +279,12 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
             </EditCourseDialog>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8" data-testid="course-actions-button">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  data-testid="course-actions-button"
+                >
                   <MoreVertical className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
@@ -325,7 +350,11 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
         <SelectContent>
           <SelectItem value="all">Todos</SelectItem>
           {getLanguages().map((language) => (
-            <SelectItem key={language} value={language} data-testid={`language-option-${language.toLowerCase()}`}>
+            <SelectItem
+              key={language}
+              value={language}
+              data-testid={`language-option-${language.toLowerCase()}`}
+            >
               {language}
             </SelectItem>
           ))}
@@ -341,7 +370,13 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
           <SelectItem value="unpublished">Borradores</SelectItem>
         </SelectContent>
       </Select>
-      <Button variant="outline" size="icon" onClick={clearFilters} className="shrink-0" data-testid="clear-filters-button">
+      <Button
+        variant="outline"
+        size="icon"
+        onClick={clearFilters}
+        className="shrink-0"
+        data-testid="clear-filters-button"
+      >
         <SlidersHorizontal className="h-4 w-4" />
       </Button>
       {selectedCourses.length > 0 && (
@@ -374,7 +409,8 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
           <AlertDialogHeader>
             <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
             <AlertDialogDescription>
-              Esta acción no se puede deshacer. Esto eliminará permanentemente el curso y todos sus datos asociados.
+              Esta acción no se puede deshacer. Esto eliminará permanentemente el curso y todos sus
+              datos asociados.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -396,7 +432,8 @@ export function CoursesTable({ courses, onCourseUpdated, 'data-testid': testId }
           <AlertDialogHeader>
             <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
             <AlertDialogDescription>
-              Esta acción no se puede deshacer. Esto eliminará permanentemente {selectedCourses.length} curso(s) y todos sus datos asociados.
+              Esta acción no se puede deshacer. Esto eliminará permanentemente{' '}
+              {selectedCourses.length} curso(s) y todos sus datos asociados.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

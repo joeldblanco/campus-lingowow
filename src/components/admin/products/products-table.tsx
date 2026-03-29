@@ -141,7 +141,9 @@ function SortableRow({
           <div className="min-w-0">
             <div className="font-medium truncate max-w-[200px]">{product.name}</div>
             {product.shortDesc && (
-              <div className="text-sm text-muted-foreground truncate max-w-[200px]">{product.shortDesc}</div>
+              <div className="text-sm text-muted-foreground truncate max-w-[200px]">
+                {product.shortDesc}
+              </div>
             )}
           </div>
         </div>
@@ -169,8 +171,9 @@ function SortableRow({
       <TableCell>
         {product.stock !== null ? (
           <span
-            className={`text-sm font-medium ${product.stock > 0 ? 'text-green-600' : 'text-red-600'
-              }`}
+            className={`text-sm font-medium ${
+              product.stock > 0 ? 'text-green-600' : 'text-red-600'
+            }`}
           >
             {product.stock} unidades
           </span>

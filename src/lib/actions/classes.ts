@@ -74,10 +74,10 @@ export async function getAllClasses(filters?: ClassFilters): Promise<ClassBookin
     // Nota: Los filtros de fecha vienen en hora local, necesitamos convertirlos a UTC
     // Usar la timezone del usuario si se proporciona
     const userTimezone = filters?.timezone || 'America/Lima'
-    
+
     if (filters?.startDate || filters?.endDate) {
       const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
-      
+
       if (filters?.startDate) {
         const utcStart = convertTimeSlotToUTC(filters.startDate, '00:00-00:00', userTimezone)
         where.day = { gte: utcStart.day }
@@ -87,7 +87,7 @@ export async function getAllClasses(filters?: ClassFilters): Promise<ClassBookin
         where.day = { ...(where.day as object), lte: utcEnd.day }
       }
     }
-    
+
     if (filters?.teacherId) {
       where.teacherId = filters.teacherId
     }
@@ -154,7 +154,7 @@ export async function getAllClasses(filters?: ClassFilters): Promise<ClassBookin
     // Convertir day y timeSlot de UTC a hora local antes de devolver
     const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
     // userTimezone ya está definido arriba
-    const classesWithLocalTime = classes.map(classItem => {
+    const classesWithLocalTime = classes.map((classItem) => {
       const localData = convertTimeSlotFromUTC(classItem.day, classItem.timeSlot, userTimezone)
       return {
         ...classItem,
@@ -170,7 +170,10 @@ export async function getAllClasses(filters?: ClassFilters): Promise<ClassBookin
   }
 }
 
-export async function getClassById(id: string, timezone?: string): Promise<ClassBookingWithDetails | null> {
+export async function getClassById(
+  id: string,
+  timezone?: string
+): Promise<ClassBookingWithDetails | null> {
   try {
     const userTimezone = timezone || 'America/Lima'
     const classBooking = await db.classBooking.findUnique({
@@ -227,7 +230,7 @@ export async function getClassById(id: string, timezone?: string): Promise<Class
     // Convertir day y timeSlot de UTC a hora local antes de devolver
     const { convertTimeSlotFromUTC } = await import('@/lib/utils/date')
     const localData = convertTimeSlotFromUTC(classBooking.day, classBooking.timeSlot, userTimezone)
-    
+
     return {
       ...classBooking,
       day: localData.day,
@@ -251,7 +254,7 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
     const [rawHours, rawMinutes] = timePart.split(':') // Extraer horas y minutos tal como el usuario los ingresó
     const hours = rawHours.padStart(2, '0')
     const minutes = rawMinutes.padStart(2, '0')
-    
+
     // Obtener la inscripción
     const enrollment = await db.enrollment.findUnique({
       where: { id: validatedData.enrollmentId },
@@ -263,7 +266,7 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
     if (!enrollment) {
       return { success: false, error: 'Inscripción no encontrada' }
     }
-    
+
     const classDuration = enrollment.course?.classDuration || 40
     const startHours = parseInt(hours, 10)
     const startMins = parseInt(minutes, 10)
@@ -314,7 +317,8 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
       }
 
       // Hay superposición si los rangos se intersectan
-      const hasOverlap = newStartMinutes < existingEndMinutes && newEndMinutes > existingStartMinutes
+      const hasOverlap =
+        newStartMinutes < existingEndMinutes && newEndMinutes > existingStartMinutes
 
       if (hasOverlap) {
         return {
@@ -363,7 +367,10 @@ export interface UpdateClassData {
   completedAt?: Date
 }
 
-export async function updateClass(id: string, data: z.infer<typeof EditClassSchema> & { timezone?: string }) {
+export async function updateClass(
+  id: string,
+  data: z.infer<typeof EditClassSchema> & { timezone?: string }
+) {
   try {
     // Validate input data
     const validatedData = EditClassSchema.parse(data)
@@ -372,7 +379,7 @@ export async function updateClass(id: string, data: z.infer<typeof EditClassSche
     // Convertir day y timeSlot a UTC si se están actualizando
     let utcDay = validatedData.day
     let utcTimeSlot = validatedData.timeSlot
-    
+
     if (validatedData.day && validatedData.timeSlot) {
       const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
       const utcData = convertTimeSlotToUTC(validatedData.day, validatedData.timeSlot, userTimezone)
@@ -438,7 +445,8 @@ export async function updateClass(id: string, data: z.infer<typeof EditClassSche
             existingEndMinutes += 24 * 60
           }
 
-          const hasOverlap = newStartMinutes < existingEndMinutes && newEndMinutes > existingStartMinutes
+          const hasOverlap =
+            newStartMinutes < existingEndMinutes && newEndMinutes > existingStartMinutes
 
           if (hasOverlap) {
             return {
@@ -457,7 +465,8 @@ export async function updateClass(id: string, data: z.infer<typeof EditClassSche
     if (validatedData.status) updateData.status = validatedData.status
     if (validatedData.notes !== undefined) updateData.notes = validatedData.notes
     if (validatedData.enrollmentId) updateData.enrollmentId = validatedData.enrollmentId
-    if (validatedData.creditId && validatedData.creditId !== '') updateData.creditId = validatedData.creditId
+    if (validatedData.creditId && validatedData.creditId !== '')
+      updateData.creditId = validatedData.creditId
     if (validatedData.completedAt !== undefined) updateData.completedAt = validatedData.completedAt
 
     const classBooking = await db.classBooking.update({
@@ -487,7 +496,7 @@ export async function deleteClass(id: string) {
     // Eliminar grabaciones de R2 antes de eliminar la clase
     const { deleteRecordingFolder } = await import('@/lib/actions/recordings')
     const r2Result = await deleteRecordingFolder(id)
-    
+
     if (!r2Result.success) {
       console.warn(`Warning: Could not delete R2 recordings for class ${id}:`, r2Result.error)
       // Continuamos con la eliminación de la clase aunque falle R2
@@ -508,7 +517,12 @@ export async function deleteClass(id: string) {
   }
 }
 
-export async function rescheduleClass(id: string, newDay: string, newTimeSlot: string, timezone?: string) {
+export async function rescheduleClass(
+  id: string,
+  newDay: string,
+  newTimeSlot: string,
+  timezone?: string
+) {
   try {
     // Convertir day y timeSlot a UTC
     const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
@@ -561,7 +575,8 @@ export async function rescheduleClass(id: string, newDay: string, newTimeSlot: s
         existingEndMinutes += 24 * 60
       }
 
-      const hasOverlap = newStartMinutes < existingEndMinutes && newEndMinutes > existingStartMinutes
+      const hasOverlap =
+        newStartMinutes < existingEndMinutes && newEndMinutes > existingStartMinutes
 
       if (hasOverlap) {
         return {
@@ -615,7 +630,7 @@ export async function getAvailableTeachers(day: string, timeSlot: string, timezo
     const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
     const userTimezone = timezone || 'America/Lima'
     const utcData = convertTimeSlotToUTC(day, timeSlot, userTimezone)
-    
+
     // Get all teachers
     const allTeachers = await db.user.findMany({
       where: {
@@ -711,7 +726,7 @@ export async function getTeacherAvailableTimeSlots(
     })
 
     // Crear un Set de slots ocupados para búsqueda rápida
-    const bookedSlotsSet = new Set(bookedClasses.map(c => c.timeSlot))
+    const bookedSlotsSet = new Set(bookedClasses.map((c) => c.timeSlot))
 
     // Generar slots según la duración del curso
     // Usar Set para evitar duplicados
@@ -735,7 +750,7 @@ export async function getTeacherAvailableTimeSlots(
         // Solo agregar si el slot completo cabe en el rango de disponibilidad
         if (slotEndMinutes <= endMinutes) {
           const timeSlot = `${slotStartHour.toString().padStart(2, '0')}:${slotStartMinute.toString().padStart(2, '0')}-${slotEndHour.toString().padStart(2, '0')}:${slotEndMinute.toString().padStart(2, '0')}`
-          
+
           // Solo agregar si el slot NO está ocupado
           if (!bookedSlotsSet.has(timeSlot)) {
             timeSlotsSet.add(timeSlot)
@@ -1099,10 +1114,7 @@ export async function getEnrollmentsWithTeachers() {
           },
         },
       },
-      orderBy: [
-        { student: { name: 'asc' } },
-        { enrollmentDate: 'desc' },
-      ],
+      orderBy: [{ student: { name: 'asc' } }, { enrollmentDate: 'desc' }],
     })
 
     // Transformar los datos para incluir profesores directamente
@@ -1146,7 +1158,7 @@ export async function bulkUpdateClasses(
     }
 
     const dataToUpdate: Record<string, unknown> = {}
-    
+
     if (updateData.status) {
       dataToUpdate.status = updateData.status
       if (updateData.status === 'COMPLETED') {
@@ -1157,11 +1169,11 @@ export async function bulkUpdateClasses(
         dataToUpdate.completedAt = null
       }
     }
-    
+
     if (updateData.isPayable !== undefined) {
       dataToUpdate.isPayable = updateData.isPayable
     }
-    
+
     if (updateData.teacherId) {
       dataToUpdate.teacherId = updateData.teacherId
     }
@@ -1171,10 +1183,10 @@ export async function bulkUpdateClasses(
       data: dataToUpdate,
     })
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       updatedCount: result.count,
-      message: `${result.count} clase(s) actualizada(s) exitosamente`
+      message: `${result.count} clase(s) actualizada(s) exitosamente`,
     }
   } catch (error) {
     console.error('Error in bulk update classes:', error)
@@ -1194,7 +1206,7 @@ export async function bulkDeleteClasses(classIds: string[]) {
     // Eliminar grabaciones de R2 para cada clase
     const { deleteRecordingFolder } = await import('@/lib/actions/recordings')
     for (const classId of classIds) {
-      await deleteRecordingFolder(classId).catch(err => 
+      await deleteRecordingFolder(classId).catch((err) =>
         console.warn(`Warning: Could not delete R2 recordings for class ${classId}:`, err)
       )
     }
@@ -1204,10 +1216,10 @@ export async function bulkDeleteClasses(classIds: string[]) {
     })
 
     revalidatePath('/admin/classes')
-    return { 
-      success: true, 
+    return {
+      success: true,
       deletedCount: result.count,
-      message: `${result.count} clase(s) eliminada(s) exitosamente`
+      message: `${result.count} clase(s) eliminada(s) exitosamente`,
     }
   } catch (error) {
     console.error('Error in bulk delete classes:', error)
@@ -1232,7 +1244,7 @@ export async function bulkRescheduleClasses(
     // Convertir a UTC si se proporciona timezone
     let utcDay = newDay
     let utcTimeSlot = newTimeSlot
-    
+
     if (timezone) {
       const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
       const converted = convertTimeSlotToUTC(newDay, newTimeSlot, timezone)
@@ -1242,17 +1254,17 @@ export async function bulkRescheduleClasses(
 
     const result = await db.classBooking.updateMany({
       where: { id: { in: classIds } },
-      data: { 
-        day: utcDay, 
+      data: {
+        day: utcDay,
         timeSlot: utcTimeSlot,
         status: 'CONFIRMED', // Reset status when rescheduling
       },
     })
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       updatedCount: result.count,
-      message: `${result.count} clase(s) reprogramada(s) exitosamente`
+      message: `${result.count} clase(s) reprogramada(s) exitosamente`,
     }
   } catch (error) {
     console.error('Error in bulk reschedule classes:', error)
@@ -1271,18 +1283,18 @@ export async function toggleClassPayable(classId: string, isPayable: boolean) {
     })
 
     revalidatePath('/admin/reports')
-    
-    return { 
-      success: true, 
-      message: isPayable 
-        ? 'Clase marcada como válida para pago' 
-        : 'Clase desmarcada como válida para pago'
+
+    return {
+      success: true,
+      message: isPayable
+        ? 'Clase marcada como válida para pago'
+        : 'Clase desmarcada como válida para pago',
     }
   } catch (error) {
     console.error('Error toggling class payable status:', error)
-    return { 
-      success: false, 
-      error: 'Error al actualizar el estado de pago de la clase' 
+    return {
+      success: false,
+      error: 'Error al actualizar el estado de pago de la clase',
     }
   }
 }

@@ -79,7 +79,10 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Seleccionar todo"
         />
@@ -111,9 +114,13 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
       header: ({ column }) => <DataTableColumnHeader column={column} title="Estado" />,
       cell: ({ row }) =>
         row.original.isActive ? (
-          <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 border-0 font-medium">Activa</Badge>
+          <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 border-0 font-medium">
+            Activa
+          </Badge>
         ) : (
-          <Badge className="bg-gray-100 text-gray-700 hover:bg-gray-100 border-0 font-medium">Inactiva</Badge>
+          <Badge className="bg-gray-100 text-gray-700 hover:bg-gray-100 border-0 font-medium">
+            Inactiva
+          </Badge>
         ),
     },
     {
@@ -132,7 +139,12 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
         const category = row.original
         return (
           <div className="flex items-center justify-center gap-1">
-            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditingCategory(category)}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setEditingCategory(category)}
+            >
               <Edit className="h-4 w-4" />
             </Button>
             <DropdownMenu>
@@ -142,7 +154,10 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => handleDelete(category.id)} className="text-destructive">
+                <DropdownMenuItem
+                  onClick={() => handleDelete(category.id)}
+                  className="text-destructive"
+                >
                   <Trash2 className="mr-2 h-4 w-4" />
                   Eliminar
                 </DropdownMenuItem>
