@@ -143,38 +143,42 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
     }
   }, [conversationId, currentUser.id])
 
-  const handleNewMessage = useCallback((data: unknown) => {
-    const message = data as ChatMessage
-    setMessages((prev) => {
-      if (prev.find((m) => m.id === message.id)) return prev
-      const pendingMatch = prev.find(
-        (m) =>
-          m.isSending &&
-          m.content === message.content &&
-          m.senderId === message.senderId &&
-          m.type === message.type &&
-          new Date(message.timestamp).getTime() - new Date(m.timestamp).getTime() < 10000
-      )
-      if (pendingMatch) {
-        return prev.map((m) => (m.id === pendingMatch.id ? message : m))
+  const handleNewMessage = useCallback(
+    (data: unknown) => {
+      const message = data as ChatMessage
+      setMessages((prev) => {
+        if (prev.find((m) => m.id === message.id)) return prev
+        const pendingMatch = prev.find(
+          (m) =>
+            m.isSending &&
+            m.content === message.content &&
+            m.senderId === message.senderId &&
+            m.type === message.type &&
+            new Date(message.timestamp).getTime() - new Date(m.timestamp).getTime() < 10000
+        )
+        if (pendingMatch) {
+          return prev.map((m) => (m.id === pendingMatch.id ? message : m))
+        }
+        return [...prev, message]
+      })
+
+      if (scrollRef.current) {
+        setTimeout(() => {
+          scrollRef.current!.scrollTop = scrollRef.current!.scrollHeight
+        }, 100)
       }
-      return [...prev, message]
-    })
 
-    if (scrollRef.current) {
-      setTimeout(() => {
-        scrollRef.current!.scrollTop = scrollRef.current!.scrollHeight
-      }, 100)
-    }
+      if (message.senderId !== currentUser.id) {
+        markMessagesAsRead(conversationId, currentUser.id)
+      }
+    },
+    [conversationId, currentUser.id]
+  )
 
-    if (message.senderId !== currentUser.id) {
-      markMessagesAsRead(conversationId, currentUser.id)
-    }
-  }, [conversationId, currentUser.id])
-
-  const conversationSocketEvents = useMemo(() => [
-    { event: 'new-message', callback: handleNewMessage },
-  ], [handleNewMessage])
+  const conversationSocketEvents = useMemo(
+    () => [{ event: 'new-message', callback: handleNewMessage }],
+    [handleNewMessage]
+  )
 
   useSocketChannel(`conversation-${conversationId}`, conversationSocketEvents)
 
@@ -374,7 +378,8 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 
     const generateWaveform = async () => {
       try {
-        const audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)()
+        const audioContext = new (window.AudioContext ||
+          (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)()
         const response = await fetch(audioUrl)
         const arrayBuffer = await response.arrayBuffer()
         const audioBuffer = await audioContext.decodeAudioData(arrayBuffer)
@@ -462,7 +467,9 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
     }
 
     const cyclePlaybackSpeed = () => {
-      const currentIndex = PLAYBACK_SPEEDS.indexOf(playbackSpeed as typeof PLAYBACK_SPEEDS[number])
+      const currentIndex = PLAYBACK_SPEEDS.indexOf(
+        playbackSpeed as (typeof PLAYBACK_SPEEDS)[number]
+      )
       const nextIndex = (currentIndex + 1) % PLAYBACK_SPEEDS.length
       const newSpeed = PLAYBACK_SPEEDS[nextIndex]
       setPlaybackSpeed(newSpeed)
