@@ -361,11 +361,13 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
   }
 
   // --- Custom Audio Player Component ---
+  const PLAYBACK_SPEEDS = [1, 1.5, 2] as const
   const CustomAudioPlayer = ({ audioUrl }: { audioUrl: string }) => {
     const [isPlaying, setIsPlaying] = useState(false)
     const [currentTime, setCurrentTime] = useState(0)
     const [duration, setDuration] = useState(0)
     const [waveformData, setWaveformData] = useState<number[]>([])
+    const [playbackSpeed, setPlaybackSpeed] = useState<number>(1)
     const audioRef = useRef<HTMLAudioElement>(null)
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const animationRef = useRef<number | null>(null)
@@ -459,6 +461,16 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
       setCurrentTime(0)
     }
 
+    const cyclePlaybackSpeed = () => {
+      const currentIndex = PLAYBACK_SPEEDS.indexOf(playbackSpeed as typeof PLAYBACK_SPEEDS[number])
+      const nextIndex = (currentIndex + 1) % PLAYBACK_SPEEDS.length
+      const newSpeed = PLAYBACK_SPEEDS[nextIndex]
+      setPlaybackSpeed(newSpeed)
+      if (audioRef.current) {
+        audioRef.current.playbackRate = newSpeed
+      }
+    }
+
     const formatTime = (time: number) => {
       const minutes = Math.floor(time / 60)
       const seconds = Math.floor(time % 60)
@@ -520,6 +532,14 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
             <span className="text-xs text-gray-500">{formatTime(duration)}</span>
           </div>
         </div>
+
+        <button
+          type="button"
+          onClick={cyclePlaybackSpeed}
+          className="flex-shrink-0 text-xs font-semibold text-gray-600 hover:text-blue-600 bg-gray-200 hover:bg-gray-300 rounded px-1.5 py-0.5 transition-colors min-w-[2.5rem] text-center"
+        >
+          {playbackSpeed}x
+        </button>
 
         <audio
           ref={audioRef}
