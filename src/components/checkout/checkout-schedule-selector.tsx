@@ -24,6 +24,7 @@ interface Teacher {
     level: number
   } | null
   availability: Record<string, Array<{ startTime: string; endTime: string }>>
+  bookedSlots?: Record<string, Array<{ startTime: string; endTime: string }>>
 }
 
 interface ScheduleSlot {
@@ -146,11 +147,23 @@ export function CheckoutScheduleSelector({
     const [slotHour] = time.split(':').map(Number)
     const slotEndHour = slotHour + Math.ceil(classDuration / 60)
     
-    return dayAvailability.some((range) => {
+    const isInAvailability = dayAvailability.some((range) => {
       const [startHour] = range.startTime.split(':').map(Number)
       const [endHour] = range.endTime.split(':').map(Number)
       return slotHour >= startHour && slotEndHour <= endHour
     })
+
+    if (!isInAvailability) return false
+
+    // Exclude slots already booked by other students
+    const dayBooked = selectedTeacher.bookedSlots?.[dayKey] || []
+    const isBooked = dayBooked.some((booked) => {
+      const [bookedStartHour] = booked.startTime.split(':').map(Number)
+      const [bookedEndHour] = booked.endTime.split(':').map(Number)
+      return slotHour >= bookedStartHour && slotHour < bookedEndHour
+    })
+
+    return !isBooked
   }, [selectedTeacher, classDuration])
 
   const calculateSelectedSlots = useCallback((start: { dayIndex: number; timeIndex: number }, end: { dayIndex: number; timeIndex: number }) => {
