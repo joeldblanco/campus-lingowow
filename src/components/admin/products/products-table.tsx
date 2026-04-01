@@ -3,7 +3,6 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import {
   Table,
@@ -229,7 +228,6 @@ export function ProductsTable({ products }: ProductsTableProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [currentPage, setCurrentPage] = useState(1)
-  const [selectedProducts, setSelectedProducts] = useState<string[]>([])
 
   // Update products list when props change
   React.useEffect(() => {
@@ -314,14 +312,6 @@ export function ProductsTable({ products }: ProductsTableProps) {
     }
   }
 
-  const handleSelectAll = (checked: boolean) => {
-    if (checked) {
-      setSelectedProducts(paginatedProducts.map((p) => p.id))
-    } else {
-      setSelectedProducts([])
-    }
-  }
-
   const clearFilters = () => {
     setSearchTerm('')
     setStatusFilter('all')
@@ -377,17 +367,11 @@ export function ProductsTable({ products }: ProductsTableProps) {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50">
-                <TableHead className="w-12">
-                  <Checkbox
-                    checked={
-                      selectedProducts.length === paginatedProducts.length &&
-                      paginatedProducts.length > 0
-                    }
-                    onCheckedChange={handleSelectAll}
-                  />
-                </TableHead>
                 <TableHead className="font-semibold text-xs uppercase text-muted-foreground">
                   Producto
+                </TableHead>
+                <TableHead className="font-semibold text-xs uppercase text-muted-foreground">
+                  SKU
                 </TableHead>
                 <TableHead className="font-semibold text-xs uppercase text-muted-foreground">
                   Categoría
