@@ -376,7 +376,7 @@ export function ProductsTable({ products }: ProductsTableProps) {
                 <TableHead className="font-semibold text-xs uppercase text-muted-foreground">
                   Categoría
                 </TableHead>
-                <TableHead className="font-semibold text-xs uppercase text-muted-foreground text-right">
+                <TableHead className="font-semibold text-xs uppercase text-muted-foreground text-center">
                   Precio
                 </TableHead>
                 <TableHead className="font-semibold text-xs uppercase text-muted-foreground">
