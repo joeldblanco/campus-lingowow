@@ -21,7 +21,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { DataTable, DataTableColumnHeader } from '@/components/ui/data-table'
-import { MoreVertical, Edit, Trash2, Eye, Send, Search, SlidersHorizontal } from 'lucide-react'
+import { MoreVertical, Edit, Trash2, Eye, Send, Search, SlidersHorizontal, CreditCard } from 'lucide-react'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import Image from 'next/image'
 import { EditInvoiceDialog } from './edit-invoice-dialog'
 import { ViewInvoiceDialog } from './view-invoice-dialog'
 import { deleteInvoice } from '@/lib/actions/commercial'
@@ -45,11 +47,16 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
   const filteredInvoices = useMemo(() => {
     let filtered = invoices
     if (searchTerm) {
+      const term = searchTerm.toLowerCase()
       filtered = filtered.filter(
-        (invoice) =>
-          invoice.invoiceNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          invoice.user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          invoice.user.email.toLowerCase().includes(searchTerm.toLowerCase())
+        (invoice) => {
+          const fullName = [invoice.user.name, invoice.user.lastName].filter(Boolean).join(' ').toLowerCase()
+          return (
+            invoice.invoiceNumber.toLowerCase().includes(term) ||
+            fullName.includes(term) ||
+            invoice.user.email.toLowerCase().includes(term)
+          )
+        }
       )
     }
     if (statusFilter !== 'all') {
@@ -200,12 +207,66 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
     {
       accessorKey: 'user',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Cliente" />,
-      cell: ({ row }) => (
-        <div>
-          <div className="font-medium text-sm">{row.original.user.name || 'Sin nombre'}</div>
-          <div className="text-xs text-muted-foreground">{row.original.user.email}</div>
-        </div>
-      ),
+      cell: ({ row }) => {
+        const fullName = [row.original.user.name, row.original.user.lastName].filter(Boolean).join(' ')
+        return (
+          <div>
+            <div className="font-medium text-sm">{fullName || 'Sin nombre'}</div>
+            <div className="text-xs text-muted-foreground">{row.original.user.email}</div>
+          </div>
+        )
+      },
+    },
+    {
+      id: 'origin',
+      header: () => <div className="text-center">Origen</div>,
+      cell: ({ row }) => {
+        const invoice = row.original
+        const isPaypal = !!invoice.paypalOrderId || invoice.paymentMethod === 'paypal'
+        const isNiubiz = !!invoice.niubizTransactionId || !!invoice.niubizOrderId || invoice.paymentMethod === 'card' || invoice.paymentMethod === 'creditCard'
+
+        let label = 'Lingowow'
+        let icon = (
+          <Image
+            src="/branding/logo.png"
+            alt="Lingowow"
+            width={20}
+            height={20}
+            className="rounded-sm"
+          />
+        )
+
+        if (isPaypal) {
+          label = 'PayPal'
+          icon = (
+            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none">
+              <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H9.603c-.564 0-1.04.408-1.127.964L7.076 21.337Z" fill="#003087"/>
+              <path d="M18.27 7.468c-.02.126-.04.254-.066.387-.944 4.848-4.178 6.52-8.307 6.52H8.06c-.505 0-.932.37-1.01.873L5.91 22.083a.55.55 0 0 0 .543.637h3.832c.442 0 .818-.321.887-.757l.037-.19.702-4.449.045-.246a.893.893 0 0 1 .882-.753h.556c3.597 0 6.413-1.46 7.235-5.684.343-1.764.166-3.236-.742-4.272a3.548 3.548 0 0 0-1.017-.74c.02.126.037.255.05.387l.35-.348Z" fill="#0070E0"/>
+            </svg>
+          )
+        } else if (isNiubiz) {
+          label = 'Niubiz'
+          icon = <CreditCard className="h-5 w-5 text-orange-600" />
+        }
+
+        return (
+          <div className="flex justify-center">
+            <TooltipProvider delayDuration={200}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex items-center justify-center cursor-default">
+                    {icon}
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{label}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        )
+      },
+      enableSorting: false,
     },
     {
       accessorKey: 'status',
