@@ -21,7 +21,16 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { DataTable, DataTableColumnHeader } from '@/components/ui/data-table'
-import { MoreVertical, Edit, Trash2, Eye, Send, Search, SlidersHorizontal, CreditCard } from 'lucide-react'
+import {
+  MoreVertical,
+  Edit,
+  Trash2,
+  Eye,
+  Send,
+  Search,
+  SlidersHorizontal,
+  CreditCard,
+} from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import Image from 'next/image'
 import { EditInvoiceDialog } from './edit-invoice-dialog'
@@ -48,16 +57,17 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
     let filtered = invoices
     if (searchTerm) {
       const term = searchTerm.toLowerCase()
-      filtered = filtered.filter(
-        (invoice) => {
-          const fullName = [invoice.user.name, invoice.user.lastName].filter(Boolean).join(' ').toLowerCase()
-          return (
-            invoice.invoiceNumber.toLowerCase().includes(term) ||
-            fullName.includes(term) ||
-            invoice.user.email.toLowerCase().includes(term)
-          )
-        }
-      )
+      filtered = filtered.filter((invoice) => {
+        const fullName = [invoice.user.name, invoice.user.lastName]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase()
+        return (
+          invoice.invoiceNumber.toLowerCase().includes(term) ||
+          fullName.includes(term) ||
+          invoice.user.email.toLowerCase().includes(term)
+        )
+      })
     }
     if (statusFilter !== 'all') {
       filtered = filtered.filter((invoice) => invoice.status === statusFilter)
@@ -105,7 +115,9 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
       CANCELLED: 'Cancelada',
     }
     return (
-      <Badge className={`${statusStyles[status] || 'bg-gray-100 text-gray-700'} border-0 font-medium`}>
+      <Badge
+        className={`${statusStyles[status] || 'bg-gray-100 text-gray-700'} border-0 font-medium`}
+      >
         {statusLabels[status] || status}
       </Badge>
     )
@@ -133,20 +145,20 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
 
   const handleExport = async (format: 'csv' | 'excel') => {
     const exportData = filteredInvoices.map((invoice) => ({
-      'Número': invoice.invoiceNumber,
-      'Cliente': [invoice.user.name, invoice.user.lastName].filter(Boolean).join(' ') || 'Sin nombre',
-      'Email': invoice.user.email,
-      'Estado': invoice.status,
-      'Subtotal': invoice.subtotal,
-      'Descuento': invoice.discount,
-      'Total': invoice.total,
-      'Cupón': invoice.coupon?.code || '',
+      Número: invoice.invoiceNumber,
+      Cliente: [invoice.user.name, invoice.user.lastName].filter(Boolean).join(' ') || 'Sin nombre',
+      Email: invoice.user.email,
+      Estado: invoice.status,
+      Subtotal: invoice.subtotal,
+      Descuento: invoice.discount,
+      Total: invoice.total,
+      Cupón: invoice.coupon?.code || '',
       'Origen de Pago': getPaymentOrigin(invoice.paymentMethod),
-      'País': invoice.billingCountry || '',
-      'Ciudad': invoice.billingCity || '',
-      'Dirección': invoice.billingAddress || '',
+      País: invoice.billingCountry || '',
+      Ciudad: invoice.billingCity || '',
+      Dirección: invoice.billingAddress || '',
       'Código Postal': invoice.billingZipCode || '',
-      'Fecha': formatDateNumeric(invoice.createdAt),
+      Fecha: formatDateNumeric(invoice.createdAt),
     }))
 
     const getExportFilename = () => {
@@ -154,7 +166,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
         const d = new Date(date)
         return `${d.getDate().toString().padStart(2, '0')}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getFullYear()}`
       }
-      
+
       if (dateRange?.from && dateRange?.to) {
         return `Facturas Lingowow - ${formatDate(dateRange.from)}_${formatDate(dateRange.to)}`
       } else if (dateRange?.from) {
@@ -177,7 +189,10 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Seleccionar todo"
         />
@@ -208,7 +223,9 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
       accessorKey: 'user',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Cliente" />,
       cell: ({ row }) => {
-        const fullName = [row.original.user.name, row.original.user.lastName].filter(Boolean).join(' ')
+        const fullName = [row.original.user.name, row.original.user.lastName]
+          .filter(Boolean)
+          .join(' ')
         return (
           <div>
             <div className="font-medium text-sm">{fullName || 'Sin nombre'}</div>
@@ -223,7 +240,11 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
       cell: ({ row }) => {
         const invoice = row.original
         const isPaypal = !!invoice.paypalOrderId || invoice.paymentMethod === 'paypal'
-        const isNiubiz = !!invoice.niubizTransactionId || !!invoice.niubizOrderId || invoice.paymentMethod === 'card' || invoice.paymentMethod === 'creditCard'
+        const isNiubiz =
+          !!invoice.niubizTransactionId ||
+          !!invoice.niubizOrderId ||
+          invoice.paymentMethod === 'card' ||
+          invoice.paymentMethod === 'creditCard'
 
         let label = 'Lingowow'
         let icon = (
@@ -240,8 +261,14 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
           label = 'PayPal'
           icon = (
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none">
-              <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H9.603c-.564 0-1.04.408-1.127.964L7.076 21.337Z" fill="#003087"/>
-              <path d="M18.27 7.468c-.02.126-.04.254-.066.387-.944 4.848-4.178 6.52-8.307 6.52H8.06c-.505 0-.932.37-1.01.873L5.91 22.083a.55.55 0 0 0 .543.637h3.832c.442 0 .818-.321.887-.757l.037-.19.702-4.449.045-.246a.893.893 0 0 1 .882-.753h.556c3.597 0 6.413-1.46 7.235-5.684.343-1.764.166-3.236-.742-4.272a3.548 3.548 0 0 0-1.017-.74c.02.126.037.255.05.387l.35-.348Z" fill="#0070E0"/>
+              <path
+                d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H9.603c-.564 0-1.04.408-1.127.964L7.076 21.337Z"
+                fill="#003087"
+              />
+              <path
+                d="M18.27 7.468c-.02.126-.04.254-.066.387-.944 4.848-4.178 6.52-8.307 6.52H8.06c-.505 0-.932.37-1.01.873L5.91 22.083a.55.55 0 0 0 .543.637h3.832c.442 0 .818-.321.887-.757l.037-.19.702-4.449.045-.246a.893.893 0 0 1 .882-.753h.556c3.597 0 6.413-1.46 7.235-5.684.343-1.764.166-3.236-.742-4.272a3.548 3.548 0 0 0-1.017-.74c.02.126.037.255.05.387l.35-.348Z"
+                fill="#0070E0"
+              />
             </svg>
           )
         } else if (isNiubiz) {
@@ -254,9 +281,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
             <TooltipProvider delayDuration={200}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <div className="flex items-center justify-center cursor-default">
-                    {icon}
-                  </div>
+                  <div className="flex items-center justify-center cursor-default">{icon}</div>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>{label}</p>
@@ -297,7 +322,12 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
         const invoice = row.original
         return (
           <div className="flex items-center justify-center gap-1">
-            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditingInvoice(invoice)}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setEditingInvoice(invoice)}
+            >
               <Edit className="h-4 w-4" />
             </Button>
             <DropdownMenu>
@@ -317,7 +347,10 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
                     Enviar
                   </DropdownMenuItem>
                 )}
-                <DropdownMenuItem onClick={() => handleDelete(invoice.id)} className="text-destructive">
+                <DropdownMenuItem
+                  onClick={() => handleDelete(invoice.id)}
+                  className="text-destructive"
+                >
                   <Trash2 className="mr-2 h-4 w-4" />
                   Eliminar
                 </DropdownMenuItem>
@@ -340,10 +373,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
           className="pl-9"
         />
       </div>
-      <DateRangePicker
-        date={dateRange}
-        onDateChange={setDateRange}
-      />
+      <DateRangePicker date={dateRange} onDateChange={setDateRange} />
       <Select value={statusFilter} onValueChange={setStatusFilter}>
         <SelectTrigger className="w-[140px]">
           <SelectValue placeholder="Estado" />
@@ -357,10 +387,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
           <SelectItem value="CANCELLED">Cancelada</SelectItem>
         </SelectContent>
       </Select>
-      <ExportButton
-        onExport={handleExport}
-        disabled={filteredInvoices.length === 0}
-      />
+      <ExportButton onExport={handleExport} disabled={filteredInvoices.length === 0} />
       <Button variant="outline" size="icon" onClick={clearFilters} className="shrink-0">
         <SlidersHorizontal className="h-4 w-4" />
       </Button>
