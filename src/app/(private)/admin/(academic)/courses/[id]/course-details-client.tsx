@@ -38,11 +38,7 @@ import {
   toggleCoursePublished,
   updateCourse,
 } from '@/lib/actions/courses'
-import {
-  upsertModule,
-  deleteModule,
-  reorderModules,
-} from '@/lib/actions/course-builder'
+import { upsertModule, deleteModule, reorderModules } from '@/lib/actions/course-builder'
 import { cn } from '@/lib/utils'
 import { CourseWithDetails } from '@/types/course'
 import {
@@ -127,14 +123,9 @@ function SortableModuleCard({
 
   const isEditing = editingModuleId === mod.id
 
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: mod.id })
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: mod.id,
+  })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -241,9 +232,7 @@ function SortableModuleCard({
               <Badge variant="outline" className="text-xs font-normal">
                 Nivel {mod.level}
               </Badge>
-              <span className="text-xs text-muted-foreground">
-                {mod._count.lessons} lecciones
-              </span>
+              <span className="text-xs text-muted-foreground">{mod._count.lessons} lecciones</span>
             </div>
           </div>
         </div>
@@ -480,12 +469,12 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
 
   const handleUpdateModule = async (moduleId: string, updates: Partial<ModuleType>) => {
     const originalModules = [...modules]
-    setModules(modules.map(m => m.id === moduleId ? { ...m, ...updates } : m))
+    setModules(modules.map((m) => (m.id === moduleId ? { ...m, ...updates } : m)))
     setEditingModuleId(null)
 
     try {
-      const result = await upsertModule(course.id, { 
-        id: moduleId, 
+      const result = await upsertModule(course.id, {
+        id: moduleId,
         title: updates.title,
         description: updates.description || undefined,
         level: updates.level,
@@ -502,10 +491,11 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
   }
 
   const handleDeleteModule = async (moduleId: string) => {
-    if (!confirm('¿Estás seguro de eliminar este módulo? Se eliminarán todas sus lecciones.')) return
+    if (!confirm('¿Estás seguro de eliminar este módulo? Se eliminarán todas sus lecciones.'))
+      return
 
     const originalModules = [...modules]
-    setModules(modules.filter(m => m.id !== moduleId))
+    setModules(modules.filter((m) => m.id !== moduleId))
 
     try {
       const result = await deleteModule(moduleId)
@@ -527,18 +517,21 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
     const { active, over } = event
     if (!over || active.id === over.id) return
 
-    const oldIndex = modules.findIndex(m => m.id === active.id)
-    const newIndex = modules.findIndex(m => m.id === over.id)
+    const oldIndex = modules.findIndex((m) => m.id === active.id)
+    const newIndex = modules.findIndex((m) => m.id === over.id)
 
     if (oldIndex !== -1 && newIndex !== -1) {
       const reorderedModules = arrayMove(modules, oldIndex, newIndex).map((m, idx) => ({
         ...m,
-        order: idx + 1
+        order: idx + 1,
       }))
       setModules(reorderedModules)
 
       try {
-        await reorderModules(course.id, reorderedModules.map(m => m.id))
+        await reorderModules(
+          course.id,
+          reorderedModules.map((m) => m.id)
+        )
         toast.success('Orden actualizado')
       } catch {
         toast.error('Error al reordenar módulos')
@@ -800,7 +793,9 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
                   <div className="flex items-center space-x-2">
                     <Switch
                       checked={newModule.isPublished}
-                      onCheckedChange={(checked) => setNewModule({ ...newModule, isPublished: checked })}
+                      onCheckedChange={(checked) =>
+                        setNewModule({ ...newModule, isPublished: checked })
+                      }
                     />
                     <label className="text-sm">Publicar inmediatamente</label>
                   </div>
@@ -815,7 +810,11 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
                         'Crear Módulo'
                       )}
                     </Button>
-                    <Button variant="outline" onClick={handleCancelCreateModule} disabled={isModuleSaving}>
+                    <Button
+                      variant="outline"
+                      onClick={handleCancelCreateModule}
+                      disabled={isModuleSaving}
+                    >
                       Cancelar
                     </Button>
                   </div>
@@ -827,7 +826,9 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
               <Card className="p-8 text-center text-muted-foreground">
                 <BookOpen className="h-12 w-12 mx-auto mb-4 opacity-50" />
                 <p className="font-medium">No hay módulos creados aún</p>
-                <p className="text-sm mt-1">Crea tu primer módulo para estructurar el contenido del curso</p>
+                <p className="text-sm mt-1">
+                  Crea tu primer módulo para estructurar el contenido del curso
+                </p>
               </Card>
             ) : (
               <DndContext
@@ -972,10 +973,12 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
                       <TableRow key={enrollment.id} className="group">
                         <TableCell>
                           <div className="flex items-center gap-3">
-                            {enrollment.student.image ? (
-                              <Image 
-                                src={enrollment.student.image} 
-                                alt={enrollment.student.name || ''} 
+                            {enrollment.student.image &&
+                            (enrollment.student.image.startsWith('/') ||
+                              enrollment.student.image.startsWith('http')) ? (
+                              <Image
+                                src={enrollment.student.image}
+                                alt={enrollment.student.name || ''}
                                 width={32}
                                 height={32}
                                 className="w-8 h-8 rounded-full object-cover"
@@ -998,8 +1001,8 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <div className="w-24 h-2 bg-muted rounded-full overflow-hidden">
-                              <div 
-                                className="h-full bg-primary rounded-full" 
+                              <div
+                                className="h-full bg-primary rounded-full"
                                 style={{ width: `${enrollment.progress}%` }}
                               />
                             </div>
@@ -1021,17 +1024,22 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
                                     : 'bg-gray-100 text-gray-800'
                             )}
                           >
-                            {enrollment.status === 'ACTIVE' ? 'Activo' : 
-                             enrollment.status === 'PENDING' ? 'Pendiente' :
-                             enrollment.status === 'COMPLETED' ? 'Completado' :
-                             enrollment.status === 'CANCELLED' ? 'Cancelado' : enrollment.status}
+                            {enrollment.status === 'ACTIVE'
+                              ? 'Activo'
+                              : enrollment.status === 'PENDING'
+                                ? 'Pendiente'
+                                : enrollment.status === 'COMPLETED'
+                                  ? 'Completado'
+                                  : enrollment.status === 'CANCELLED'
+                                    ? 'Cancelado'
+                                    : enrollment.status}
                           </Badge>
                         </TableCell>
                         <TableCell className="text-sm text-muted-foreground">
                           {new Date(enrollment.enrollmentDate).toLocaleDateString('es-ES', {
                             day: '2-digit',
                             month: 'short',
-                            year: 'numeric'
+                            year: 'numeric',
                           })}
                         </TableCell>
                         <TableCell className="text-right">
@@ -1048,7 +1056,9 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
                 {course.enrollments.length > 10 && (
                   <div className="p-4 text-center border-t">
                     <Link href={`/admin/enrollments?courseId=${course.id}`}>
-                      <Button variant="link">Ver todos los {course.enrollments.length} estudiantes</Button>
+                      <Button variant="link">
+                        Ver todos los {course.enrollments.length} estudiantes
+                      </Button>
                     </Link>
                   </div>
                 )}
@@ -1086,9 +1096,9 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
                   <Card key={tc.teacherId}>
                     <CardContent className="flex items-center gap-4 p-4">
                       {tc.teacher.image ? (
-                        <Image 
-                          src={tc.teacher.image} 
-                          alt={tc.teacher.name || ''} 
+                        <Image
+                          src={tc.teacher.image}
+                          alt={tc.teacher.name || ''}
                           width={56}
                           height={56}
                           className="w-14 h-14 rounded-full object-cover"

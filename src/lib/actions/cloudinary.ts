@@ -89,11 +89,44 @@ export async function uploadVideoFile(
       return { success: false, error: 'No file provided' }
     }
 
+    // Get current user
+    const session = await auth()
+    const userId = session?.user?.id as string
+
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
     const base64 = `data:${file.type};base64,${buffer.toString('base64')}`
 
     const result = await CloudinaryService.uploadVideo(base64, folder, file.name)
+
+    // Save metadata to database
+    if (userId) {
+      try {
+        await db.fileAsset.create({
+          data: {
+            publicId: result.public_id,
+            fileName: file.name,
+            description: null,
+            tags: [],
+            category: determineCategory(folder),
+            resourceType: FileResourceType.VIDEO,
+            format: result.format,
+            size: result.bytes,
+            width: result.width,
+            height: result.height,
+            duration: result.duration || null,
+            secureUrl: result.secure_url,
+            url: result.url,
+            folder: `campus-lingowow/${folder}`,
+            uploadedBy: userId,
+            isPublic: true,
+            isActive: true,
+          },
+        })
+      } catch (dbError) {
+        console.error('Failed to save video metadata to database:', dbError)
+      }
+    }
 
     return { success: true, data: result }
   } catch (error) {
@@ -169,6 +202,10 @@ export async function uploadDocumentFile(
       return { success: false, error: 'No file provided' }
     }
 
+    // Get current user
+    const session = await auth()
+    const userId = session?.user?.id as string
+
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
     const base64 = `data:${file.type};base64,${buffer.toString('base64')}`
@@ -177,6 +214,35 @@ export async function uploadDocumentFile(
 
     // Inject original filename explicitly so frontend can use it
     result.original_filename = file.name
+
+    // Save metadata to database
+    if (userId) {
+      try {
+        await db.fileAsset.create({
+          data: {
+            publicId: result.public_id,
+            fileName: file.name,
+            description: null,
+            tags: [],
+            category: determineCategory(folder),
+            resourceType: FileResourceType.DOCUMENT,
+            format: result.format || file.name.split('.').pop() || '',
+            size: result.bytes,
+            width: null,
+            height: null,
+            duration: null,
+            secureUrl: result.secure_url,
+            url: result.url,
+            folder: `campus-lingowow/${folder}`,
+            uploadedBy: userId,
+            isPublic: true,
+            isActive: true,
+          },
+        })
+      } catch (dbError) {
+        console.error('Failed to save document metadata to database:', dbError)
+      }
+    }
 
     return { success: true, data: result }
   } catch (error) {

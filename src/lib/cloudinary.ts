@@ -97,6 +97,7 @@ export interface CloudinaryUploadResult {
   secure_url: string
   access_mode: string
   original_filename: string
+  duration?: number
 }
 
 export interface UploadOptions {

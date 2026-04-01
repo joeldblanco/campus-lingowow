@@ -52,13 +52,28 @@ import {
 import { useRouter } from 'next/navigation'
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { toast } from 'sonner'
-import { BlockLibrary, BlockSelectionGrid, DraggableBlock } from '../course-builder/lesson-builder/block-library'
+import {
+  BlockLibrary,
+  BlockSelectionGrid,
+  DraggableBlock,
+} from '../course-builder/lesson-builder/block-library'
 import { Canvas } from '../course-builder/lesson-builder/canvas'
 import { PropertiesPanel } from '../course-builder/lesson-builder/properties-panel'
 import type { LibraryCategory } from '@/lib/types/library'
-import { RESOURCE_TYPE_LABELS, LEVEL_LABELS, ACCESS_LEVEL_LABELS, ACCESS_LEVEL_DESCRIPTIONS } from '@/lib/types/library'
-import { LibraryResourceType, LibraryResourceStatus, LibraryResourceAccess } from '@prisma/client'
+import {
+  RESOURCE_TYPE_LABELS,
+  LEVEL_LABELS,
+  ACCESS_LEVEL_LABELS,
+  ACCESS_LEVEL_DESCRIPTIONS,
+} from '@/lib/types/library'
+import {
+  LibraryResourceType,
+  LibraryResourceStatus,
+  LibraryResourceAccess,
+  FileResourceType,
+} from '@prisma/client'
 import { uploadImageFile } from '@/lib/actions/cloudinary'
+import { MediaPickerButton } from '@/components/shared/media-library/media-picker-button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import Image from 'next/image'
 
@@ -89,11 +104,7 @@ const LANGUAGES = [
   { value: 'ja', label: 'Japonés' },
 ]
 
-export function ResourceBuilder({
-  resourceId,
-  initialData,
-  onBack,
-}: ResourceBuilderProps) {
+export function ResourceBuilder({ resourceId, initialData, onBack }: ResourceBuilderProps) {
   const router = useRouter()
   const isEditing = !!resourceId
 
@@ -101,9 +112,13 @@ export function ResourceBuilder({
   const [title, setTitle] = useState(initialData?.title || 'Nuevo Recurso')
   const [description, setDescription] = useState(initialData?.description || '')
   const [excerpt, setExcerpt] = useState(initialData?.excerpt || '')
-  const [resourceType, setResourceType] = useState<LibraryResourceType>(initialData?.type || 'ARTICLE')
+  const [resourceType, setResourceType] = useState<LibraryResourceType>(
+    initialData?.type || 'ARTICLE'
+  )
   const [status, setStatus] = useState<LibraryResourceStatus>(initialData?.status || 'DRAFT')
-  const [accessLevel, setAccessLevel] = useState<LibraryResourceAccess>(initialData?.accessLevel || 'PUBLIC')
+  const [accessLevel, setAccessLevel] = useState<LibraryResourceAccess>(
+    initialData?.accessLevel || 'PUBLIC'
+  )
   const [language, setLanguage] = useState(initialData?.language || 'es')
   const [level, setLevel] = useState(initialData?.level || '')
   const [categoryId, setCategoryId] = useState(initialData?.categoryId || '')
@@ -122,7 +137,7 @@ export function ResourceBuilder({
   const [categories, setCategories] = useState<LibraryCategory[]>([])
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'error' | 'unsaved'>('unsaved')
   const [isSaving, setIsSaving] = useState(false)
-  
+
   // Cover image state
   const [isCoverImageDialogOpen, setIsCoverImageDialogOpen] = useState(false)
   const [coverImageUrlInput, setCoverImageUrlInput] = useState('')
@@ -151,7 +166,7 @@ export function ResourceBuilder({
   // Fetch categories
   useEffect(() => {
     fetch('/api/library/categories')
-      .then((res) => res.ok ? res.json() : [])
+      .then((res) => (res.ok ? res.json() : []))
       .then((data) => setCategories(data))
       .catch((err) => console.error('Error fetching categories', err))
   }, [])
@@ -245,9 +260,7 @@ export function ResourceBuilder({
   }
 
   const handleUpdateBlock = (blockId: string, updates: Partial<Block>) => {
-    setBlocks((prev) =>
-      prev.map((b) => (b.id === blockId ? ({ ...b, ...updates } as Block) : b))
-    )
+    setBlocks((prev) => prev.map((b) => (b.id === blockId ? ({ ...b, ...updates } as Block) : b)))
     setSaveStatus('unsaved')
   }
 
@@ -290,69 +303,88 @@ export function ResourceBuilder({
     setSaveStatus('unsaved')
   }
 
-  const handleSave = useCallback(async (publishStatus?: LibraryResourceStatus) => {
-    if (!title.trim()) {
-      toast.error('El título es requerido')
-      return
-    }
-
-    setIsSaving(true)
-    setSaveStatus('saving')
-
-    try {
-      const finalStatus = publishStatus || status
-      const content = JSON.stringify({ blocks, version: 1 })
-
-      const payload = {
-        title,
-        description,
-        excerpt,
-        type: resourceType,
-        content,
-        thumbnailUrl: thumbnailUrl || null,
-        language,
-        level: level || null,
-        tags,
-        categoryId: categoryId || null,
-        status: finalStatus,
-        accessLevel,
+  const handleSave = useCallback(
+    async (publishStatus?: LibraryResourceStatus) => {
+      if (!title.trim()) {
+        toast.error('El título es requerido')
+        return
       }
 
-      const url = isEditing ? `/api/library/${resourceId}` : '/api/library'
-      const method = isEditing ? 'PATCH' : 'POST'
+      setIsSaving(true)
+      setSaveStatus('saving')
 
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      })
+      try {
+        const finalStatus = publishStatus || status
+        const content = JSON.stringify({ blocks, version: 1 })
 
-      if (res.ok) {
-        setSaveStatus('saved')
-        setStatus(finalStatus)
-        toast.success(
-          finalStatus === 'PUBLISHED'
-            ? 'Recurso publicado exitosamente'
-            : 'Recurso guardado exitosamente'
-        )
-        
-        if (!isEditing) {
-          const data = await res.json()
-          router.push(`/admin/library/${data.id}/edit`)
+        const payload = {
+          title,
+          description,
+          excerpt,
+          type: resourceType,
+          content,
+          thumbnailUrl: thumbnailUrl || null,
+          language,
+          level: level || null,
+          tags,
+          categoryId: categoryId || null,
+          status: finalStatus,
+          accessLevel,
         }
-      } else {
-        const err = await res.json()
+
+        const url = isEditing ? `/api/library/${resourceId}` : '/api/library'
+        const method = isEditing ? 'PATCH' : 'POST'
+
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        })
+
+        if (res.ok) {
+          setSaveStatus('saved')
+          setStatus(finalStatus)
+          toast.success(
+            finalStatus === 'PUBLISHED'
+              ? 'Recurso publicado exitosamente'
+              : 'Recurso guardado exitosamente'
+          )
+
+          if (!isEditing) {
+            const data = await res.json()
+            router.push(`/admin/library/${data.id}/edit`)
+          }
+        } else {
+          const err = await res.json()
+          setSaveStatus('error')
+          toast.error(err.error || 'Error al guardar el recurso')
+        }
+      } catch (error) {
+        console.error(error)
         setSaveStatus('error')
-        toast.error(err.error || 'Error al guardar el recurso')
+        toast.error('Error al conectar con el servidor')
+      } finally {
+        setIsSaving(false)
       }
-    } catch (error) {
-      console.error(error)
-      setSaveStatus('error')
-      toast.error('Error al conectar con el servidor')
-    } finally {
-      setIsSaving(false)
-    }
-  }, [title, description, excerpt, resourceType, blocks, thumbnailUrl, language, level, tags, categoryId, status, accessLevel, isEditing, resourceId, router])
+    },
+    [
+      title,
+      description,
+      excerpt,
+      resourceType,
+      blocks,
+      thumbnailUrl,
+      language,
+      level,
+      tags,
+      categoryId,
+      status,
+      accessLevel,
+      isEditing,
+      resourceId,
+      router,
+    ]
+  )
 
   // Autosave effect - only when editing an existing resource
   useEffect(() => {
@@ -402,9 +434,9 @@ export function ResourceBuilder({
     try {
       const formData = new FormData()
       formData.append('file', file)
-      
+
       const result = await uploadImageFile(formData, 'library/covers')
-      
+
       if (result.success && result.data) {
         setThumbnailUrl(result.data.secure_url)
         setSaveStatus('unsaved')
@@ -491,14 +523,18 @@ export function ResourceBuilder({
                   <Badge variant="outline" className="text-xs">
                     {RESOURCE_TYPE_LABELS[resourceType]}
                   </Badge>
-                  <Badge 
-                    variant={status === 'PUBLISHED' ? 'default' : 'secondary'} 
+                  <Badge
+                    variant={status === 'PUBLISHED' ? 'default' : 'secondary'}
                     className={cn(
                       'text-xs',
                       status === 'PUBLISHED' && 'bg-green-100 text-green-800'
                     )}
                   >
-                    {status === 'PUBLISHED' ? 'Publicado' : status === 'DRAFT' ? 'Borrador' : 'Archivado'}
+                    {status === 'PUBLISHED'
+                      ? 'Publicado'
+                      : status === 'DRAFT'
+                        ? 'Borrador'
+                        : 'Archivado'}
                   </Badge>
                 </div>
               </div>
@@ -541,7 +577,9 @@ export function ResourceBuilder({
                 <SheetContent className="overflow-y-auto w-[400px] sm:w-[540px] px-6">
                   <SheetHeader className="pb-4">
                     <SheetTitle>Configuración del Recurso</SheetTitle>
-                    <SheetDescription>Configura los metadatos y opciones del recurso</SheetDescription>
+                    <SheetDescription>
+                      Configura los metadatos y opciones del recurso
+                    </SheetDescription>
                   </SheetHeader>
                   <div className="space-y-6 mt-4 pb-6">
                     {/* Basic Info */}
@@ -561,7 +599,9 @@ export function ResourceBuilder({
                           placeholder="Breve descripción para listados (máx. 200 caracteres)"
                           rows={2}
                         />
-                        <p className="text-xs text-muted-foreground text-right">{excerpt.length}/200</p>
+                        <p className="text-xs text-muted-foreground text-right">
+                          {excerpt.length}/200
+                        </p>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="description">Descripción completa</Label>
@@ -585,32 +625,42 @@ export function ResourceBuilder({
                       </h3>
                       <div className="space-y-2">
                         <Label>Tipo de recurso</Label>
-                        <Select value={resourceType} onValueChange={(v) => {
-                          setResourceType(v as LibraryResourceType)
-                          setSaveStatus('unsaved')
-                        }}>
+                        <Select
+                          value={resourceType}
+                          onValueChange={(v) => {
+                            setResourceType(v as LibraryResourceType)
+                            setSaveStatus('unsaved')
+                          }}
+                        >
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
                             {Object.entries(RESOURCE_TYPE_LABELS).map(([key, label]) => (
-                              <SelectItem key={key} value={key}>{label}</SelectItem>
+                              <SelectItem key={key} value={key}>
+                                {label}
+                              </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
                       </div>
                       <div className="space-y-2">
                         <Label>Categoría</Label>
-                        <Select value={categoryId} onValueChange={(v) => {
-                          setCategoryId(v)
-                          setSaveStatus('unsaved')
-                        }}>
+                        <Select
+                          value={categoryId}
+                          onValueChange={(v) => {
+                            setCategoryId(v)
+                            setSaveStatus('unsaved')
+                          }}
+                        >
                           <SelectTrigger>
                             <SelectValue placeholder="Seleccionar categoría" />
                           </SelectTrigger>
                           <SelectContent>
                             {categories.map((cat) => (
-                              <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+                              <SelectItem key={cat.id} value={cat.id}>
+                                {cat.name}
+                              </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
@@ -618,32 +668,42 @@ export function ResourceBuilder({
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label>Idioma</Label>
-                          <Select value={language} onValueChange={(v) => {
-                            setLanguage(v)
-                            setSaveStatus('unsaved')
-                          }}>
+                          <Select
+                            value={language}
+                            onValueChange={(v) => {
+                              setLanguage(v)
+                              setSaveStatus('unsaved')
+                            }}
+                          >
                             <SelectTrigger>
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
                               {LANGUAGES.map((lang) => (
-                                <SelectItem key={lang.value} value={lang.value}>{lang.label}</SelectItem>
+                                <SelectItem key={lang.value} value={lang.value}>
+                                  {lang.label}
+                                </SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
                         </div>
                         <div className="space-y-2">
                           <Label>Nivel</Label>
-                          <Select value={level} onValueChange={(v) => {
-                            setLevel(v)
-                            setSaveStatus('unsaved')
-                          }}>
+                          <Select
+                            value={level}
+                            onValueChange={(v) => {
+                              setLevel(v)
+                              setSaveStatus('unsaved')
+                            }}
+                          >
                             <SelectTrigger>
                               <SelectValue placeholder="Seleccionar" />
                             </SelectTrigger>
                             <SelectContent>
                               {Object.entries(LEVEL_LABELS).map(([key, label]) => (
-                                <SelectItem key={key} value={key}>{label}</SelectItem>
+                                <SelectItem key={key} value={key}>
+                                  {label}
+                                </SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
@@ -657,10 +717,13 @@ export function ResourceBuilder({
                         Nivel de Acceso
                       </h3>
                       <div className="space-y-2">
-                        <Select value={accessLevel} onValueChange={(v) => {
-                          setAccessLevel(v as LibraryResourceAccess)
-                          setSaveStatus('unsaved')
-                        }}>
+                        <Select
+                          value={accessLevel}
+                          onValueChange={(v) => {
+                            setAccessLevel(v as LibraryResourceAccess)
+                            setSaveStatus('unsaved')
+                          }}
+                        >
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
@@ -738,7 +801,10 @@ export function ResourceBuilder({
                             fill
                             className="object-cover"
                             sizes="(max-width: 540px) 100vw, 540px"
-                            unoptimized={!thumbnailUrl.includes('cloudinary') && !thumbnailUrl.includes('res.cloudinary')}
+                            unoptimized={
+                              !thumbnailUrl.includes('cloudinary') &&
+                              !thumbnailUrl.includes('res.cloudinary')
+                            }
                           />
                         </div>
                       )}
@@ -870,10 +936,14 @@ export function ResourceBuilder({
             <DialogTitle>Imagen de Portada</DialogTitle>
           </DialogHeader>
           <Tabs defaultValue="upload" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="upload">
                 <ImagePlus className="h-4 w-4 mr-2" />
                 Subir
+              </TabsTrigger>
+              <TabsTrigger value="library">
+                <Library className="h-4 w-4 mr-2" />
+                Biblioteca
               </TabsTrigger>
               <TabsTrigger value="url">
                 <LinkIcon className="h-4 w-4 mr-2" />
@@ -893,9 +963,9 @@ export function ResourceBuilder({
                 <label
                   htmlFor="cover-image-upload"
                   className={cn(
-                    "w-full h-32 border-2 border-dashed rounded-lg flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors",
-                    "hover:border-primary/50 hover:bg-muted/30",
-                    isUploadingCoverImage && "opacity-50 pointer-events-none"
+                    'w-full h-32 border-2 border-dashed rounded-lg flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors',
+                    'hover:border-primary/50 hover:bg-muted/30',
+                    isUploadingCoverImage && 'opacity-50 pointer-events-none'
                   )}
                 >
                   {isUploadingCoverImage ? (
@@ -914,6 +984,26 @@ export function ResourceBuilder({
                 </p>
               </div>
             </TabsContent>
+            <TabsContent value="library" className="space-y-4 pt-4">
+              <div className="flex flex-col items-center gap-4">
+                <p className="text-sm text-muted-foreground text-center">
+                  Selecciona una imagen desde la biblioteca de medios
+                </p>
+                <MediaPickerButton
+                  onSelect={(file) => {
+                    setThumbnailUrl(file.secureUrl)
+                    setSaveStatus('unsaved')
+                    setIsCoverImageDialogOpen(false)
+                    toast.success('Imagen de portada seleccionada')
+                  }}
+                  allowedTypes={[FileResourceType.IMAGE]}
+                  initialFolder="library/covers"
+                  builder="resource"
+                  label="Abrir biblioteca de medios"
+                  className="w-full"
+                />
+              </div>
+            </TabsContent>
             <TabsContent value="url" className="space-y-4 pt-4">
               <div className="space-y-2">
                 <Label htmlFor="cover-image-url">URL de la imagen</Label>
@@ -925,8 +1015,8 @@ export function ResourceBuilder({
                   type="url"
                 />
               </div>
-              <Button 
-                onClick={handleCoverImageUrlSubmit} 
+              <Button
+                onClick={handleCoverImageUrlSubmit}
                 className="w-full"
                 disabled={!coverImageUrlInput.trim()}
               >
@@ -944,12 +1034,14 @@ export function ResourceBuilder({
                   fill
                   className="object-cover"
                   sizes="(max-width: 400px) 100vw, 400px"
-                  unoptimized={!thumbnailUrl.includes('cloudinary') && !thumbnailUrl.includes('res.cloudinary')}
+                  unoptimized={
+                    !thumbnailUrl.includes('cloudinary') && !thumbnailUrl.includes('res.cloudinary')
+                  }
                 />
               </div>
-              <Button 
-                variant="destructive" 
-                size="sm" 
+              <Button
+                variant="destructive"
+                size="sm"
                 onClick={handleRemoveCoverImage}
                 className="w-full"
               >

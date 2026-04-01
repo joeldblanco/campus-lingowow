@@ -48,7 +48,21 @@ import { FileUpload } from '@/components/ui/file-upload'
 import { Switch } from '@/components/ui/switch'
 import { deleteCloudinaryFile, uploadFileByType } from '@/lib/actions/cloudinary'
 import { cn } from '@/lib/utils'
-import { ArrowDown, ArrowUp, ChevronDown, Loader2, Mic, Play, Plus, Sparkles, Square, Trash2, X } from 'lucide-react'
+import {
+  ArrowDown,
+  ArrowUp,
+  ChevronDown,
+  Loader2,
+  Mic,
+  Play,
+  Plus,
+  Sparkles,
+  Square,
+  Trash2,
+  X,
+} from 'lucide-react'
+import { MediaPickerButton } from '@/components/shared/media-library/media-picker-button'
+import { FileResourceType } from '@prisma/client'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
@@ -93,7 +107,13 @@ interface PropertiesPanelProps {
   mode?: 'lesson' | 'exam'
 }
 
-export function PropertiesPanel({ block, onUpdate, onRemove, onClose, mode = 'lesson' }: PropertiesPanelProps) {
+export function PropertiesPanel({
+  block,
+  onUpdate,
+  onRemove,
+  onClose,
+  mode = 'lesson',
+}: PropertiesPanelProps) {
   if (!block) return null
 
   const showExamFields = mode === 'exam' && isInteractiveBlock(block.type)
@@ -128,40 +148,15 @@ export function PropertiesPanel({ block, onUpdate, onRemove, onClose, mode = 'le
           />
         )
       case 'multiple_choice':
-        return (
-          <MultipleChoiceProperties
-            block={block as MultipleChoiceBlock}
-            onUpdate={onUpdate}
-          />
-        )
+        return <MultipleChoiceProperties block={block as MultipleChoiceBlock} onUpdate={onUpdate} />
       case 'short_answer':
-        return (
-          <ShortAnswerProperties
-            block={block as ShortAnswerBlock}
-            onUpdate={onUpdate}
-          />
-        )
+        return <ShortAnswerProperties block={block as ShortAnswerBlock} onUpdate={onUpdate} />
       case 'ordering':
-        return (
-          <OrderingProperties
-            block={block as OrderingBlock}
-            onUpdate={onUpdate}
-          />
-        )
+        return <OrderingProperties block={block as OrderingBlock} onUpdate={onUpdate} />
       case 'drag_drop':
-        return (
-          <DragDropProperties
-            block={block as DragDropBlock}
-            onUpdate={onUpdate}
-          />
-        )
+        return <DragDropProperties block={block as DragDropBlock} onUpdate={onUpdate} />
       case 'multi_select':
-        return (
-          <MultiSelectProperties
-            block={block as MultiSelectBlock}
-            onUpdate={onUpdate}
-          />
-        )
+        return <MultiSelectProperties block={block as MultiSelectBlock} onUpdate={onUpdate} />
       case 'embed':
         return <EmbedProperties block={block as EmbedBlock} onUpdate={onUpdate} />
       case 'teacher_notes':
@@ -196,16 +191,20 @@ export function PropertiesPanel({ block, onUpdate, onRemove, onClose, mode = 'le
         {renderContent()}
 
         {/* Exam-specific fields */}
-        {showExamFields && (
-          <ExamFieldsSection block={block} onUpdate={onUpdate} />
-        )}
+        {showExamFields && <ExamFieldsSection block={block} onUpdate={onUpdate} />}
       </div>
     </div>
   )
 }
 
 // Exam-specific fields section
-function ExamFieldsSection({ block, onUpdate }: { block: Block; onUpdate: (updates: Partial<Block>) => void }) {
+function ExamFieldsSection({
+  block,
+  onUpdate,
+}: {
+  block: Block
+  onUpdate: (updates: Partial<Block>) => void
+}) {
   return (
     <div className="space-y-4 pt-4 border-t">
       <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
@@ -768,6 +767,52 @@ function FileProperties({
           </p>
         </div>
 
+        {/* Library Picker */}
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background px-2 text-muted-foreground">O biblioteca</span>
+          </div>
+        </div>
+        <MediaPickerButton
+          onSelect={(file) => {
+            const ext = file.fileName?.split('.').pop()?.toLowerCase() || ''
+            const type = file.format || ext || 'file'
+            let downloadUrl = file.secureUrl
+            if (downloadUrl.includes('cloudinary.com') && !downloadUrl.includes('fl_attachment')) {
+              downloadUrl = downloadUrl.replace('/upload/', '/upload/fl_attachment/')
+            }
+            const newFile = {
+              id: `file_${Date.now()}`,
+              title: file.fileName || 'Archivo',
+              url: downloadUrl,
+              fileType: type,
+              size: file.size || 0,
+              resourceType:
+                file.resourceType === 'IMAGE'
+                  ? 'image'
+                  : file.resourceType === 'VIDEO' || file.resourceType === 'AUDIO'
+                    ? 'video'
+                    : 'raw',
+            }
+            const currentFiles = block.files || []
+            onUpdate({ files: [...currentFiles, newFile] })
+          }}
+          allowedTypes={[
+            FileResourceType.RAW,
+            FileResourceType.DOCUMENT,
+            FileResourceType.IMAGE,
+            FileResourceType.VIDEO,
+            FileResourceType.AUDIO,
+          ]}
+          initialFolder="course-files"
+          builder="lesson"
+          label="Elegir de biblioteca"
+          className="w-full"
+        />
+
         {/* File List */}
         <div className="space-y-2">
           {block.files?.map((file: DownloadableFile) => (
@@ -873,6 +918,22 @@ function GenericProperties({
                 <span className="w-full border-t" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">O biblioteca</span>
+              </div>
+            </div>
+            <MediaPickerButton
+              onSelect={(file) => onUpdate({ url: file.secureUrl })}
+              allowedTypes={[FileResourceType.VIDEO]}
+              initialFolder="course-videos"
+              builder="lesson"
+              label="Elegir video de biblioteca"
+              className="w-full"
+            />
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-background px-2 text-muted-foreground">O URL</span>
               </div>
             </div>
@@ -895,6 +956,22 @@ function GenericProperties({
               onUploadComplete={(res: { secure_url: string; original_filename?: string }) =>
                 onUpdate({ url: res.secure_url, alt: res.original_filename || '' })
               }
+            />
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">O biblioteca</span>
+              </div>
+            </div>
+            <MediaPickerButton
+              onSelect={(file) => onUpdate({ url: file.secureUrl, alt: file.fileName || '' })}
+              allowedTypes={[FileResourceType.IMAGE]}
+              initialFolder="course-images"
+              builder="lesson"
+              label="Elegir imagen de biblioteca"
+              className="w-full"
             />
           </div>
           <div className="space-y-2">
@@ -2005,6 +2082,29 @@ function AudioProperties({
             <span className="w-full border-t" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background px-2 text-muted-foreground">O biblioteca</span>
+          </div>
+        </div>
+
+        <MediaPickerButton
+          onSelect={async (file) => {
+            if (block.url) {
+              await deleteFileFromUrl(block.url, 'video')
+            }
+            onUpdate({ url: file.secureUrl })
+          }}
+          allowedTypes={[FileResourceType.AUDIO]}
+          initialFolder="course-audio"
+          builder="lesson"
+          label="Elegir audio de biblioteca"
+          className="w-full"
+        />
+
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
             <span className="bg-background px-2 text-muted-foreground">O grabar</span>
           </div>
         </div>
@@ -2434,7 +2534,7 @@ function TrueFalseProperties({
           placeholder="Ej. Verdadero o Falso"
         />
       </div>
-      
+
       <div className="flex items-center justify-between">
         <Label>Afirmaciones</Label>
         <Button variant="outline" size="sm" onClick={addItem}>
@@ -2576,10 +2676,7 @@ function EssayProperties({
               Habilitar corrección automática usando IA
             </p>
           </div>
-          <Switch
-            checked={block.aiGrading || false}
-            onCheckedChange={handleAiGradingToggle}
-          />
+          <Switch checked={block.aiGrading || false} onCheckedChange={handleAiGradingToggle} />
         </div>
 
         {block.aiGrading && (
@@ -2613,7 +2710,8 @@ function EssayProperties({
               </div>
             </div>
             <p className="text-xs text-muted-foreground">
-              La IA evaluará gramática, vocabulario, coherencia y cumplimiento de la tarea según el nivel seleccionado.
+              La IA evaluará gramática, vocabulario, coherencia y cumplimiento de la tarea según el
+              nivel seleccionado.
             </p>
           </div>
         )}
@@ -2681,10 +2779,7 @@ function RecordingProperties({
               Evalúa automáticamente la grabación del estudiante
             </p>
           </div>
-          <Switch
-            checked={block.aiGrading ?? true}
-            onCheckedChange={handleAiGradingToggle}
-          />
+          <Switch checked={block.aiGrading ?? true} onCheckedChange={handleAiGradingToggle} />
         </div>
 
         {block.aiGrading !== false && (
@@ -2718,7 +2813,8 @@ function RecordingProperties({
               </div>
             </div>
             <p className="text-xs text-muted-foreground">
-              Se evaluará pronunciación, gramática, vocabulario, fluidez y cumplimiento de la tarea según el nivel seleccionado.
+              Se evaluará pronunciación, gramática, vocabulario, fluidez y cumplimiento de la tarea
+              según el nivel seleccionado.
             </p>
           </div>
         )}
@@ -2877,7 +2973,9 @@ function MultipleChoiceProperties({
                           updateItem(item.id, {
                             options: newOpts,
                             correctOptionId:
-                              item.correctOptionId === opt.id ? newOpts[0]?.id : item.correctOptionId,
+                              item.correctOptionId === opt.id
+                                ? newOpts[0]?.id
+                                : item.correctOptionId,
                           })
                         }}
                       >
@@ -2950,7 +3048,11 @@ function ShortAnswerProperties({
     onUpdate({ items: [...items, { id: newId, question: '', correctAnswer: '' }] })
   }
 
-  const updateItem = (id: string, field: 'question' | 'correctAnswer' | 'aiInstructions', value: string) => {
+  const updateItem = (
+    id: string,
+    field: 'question' | 'correctAnswer' | 'aiInstructions',
+    value: string
+  ) => {
     onUpdate({
       items: items.map((item) => (item.id === id ? { ...item, [field]: value } : item)),
     })
@@ -3351,7 +3453,9 @@ function DragDropProperties({
 }
 
 // Embed Block Properties
-function getEmbedType(url: string): 'youtube' | 'vimeo' | 'google-docs' | 'google-slides' | 'google-forms' | 'spotify' | 'iframe' {
+function getEmbedType(
+  url: string
+): 'youtube' | 'vimeo' | 'google-docs' | 'google-slides' | 'google-forms' | 'spotify' | 'iframe' {
   if (!url) return 'iframe'
   const lowerUrl = url.toLowerCase()
   if (lowerUrl.includes('youtube.com') || lowerUrl.includes('youtu.be')) return 'youtube'
@@ -3365,13 +3469,13 @@ function getEmbedType(url: string): 'youtube' | 'vimeo' | 'google-docs' | 'googl
 
 function getEmbedTypeLabel(type: string): string {
   const labels: Record<string, string> = {
-    'youtube': 'YouTube',
-    'vimeo': 'Vimeo',
+    youtube: 'YouTube',
+    vimeo: 'Vimeo',
     'google-docs': 'Google Docs',
     'google-slides': 'Google Slides',
     'google-forms': 'Google Forms',
-    'spotify': 'Spotify',
-    'iframe': 'Contenido Web',
+    spotify: 'Spotify',
+    iframe: 'Contenido Web',
   }
   return labels[type] || 'Contenido Web'
 }
@@ -3402,8 +3506,12 @@ function EmbedProperties({
 
       {block.url && (
         <div className="flex items-center gap-2 p-2 bg-muted rounded-md">
-          <div className={`h-2 w-2 rounded-full ${isGoogleSlides ? 'bg-yellow-500' : 'bg-green-500'}`} />
-          <span className="text-sm">Detectado: <strong>{getEmbedTypeLabel(embedType)}</strong></span>
+          <div
+            className={`h-2 w-2 rounded-full ${isGoogleSlides ? 'bg-yellow-500' : 'bg-green-500'}`}
+          />
+          <span className="text-sm">
+            Detectado: <strong>{getEmbedTypeLabel(embedType)}</strong>
+          </span>
         </div>
       )}
 
@@ -3531,9 +3639,7 @@ function MultiSelectProperties({
 
   const updateCorrectOption = (id: string, text: string) => {
     onUpdate({
-      correctOptions: block.correctOptions?.map((opt) =>
-        opt.id === id ? { ...opt, text } : opt
-      ),
+      correctOptions: block.correctOptions?.map((opt) => (opt.id === id ? { ...opt, text } : opt)),
     })
   }
 
@@ -3580,9 +3686,7 @@ function MultiSelectProperties({
 
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <Label className="text-green-600 flex items-center gap-2">
-            ✓ Opciones Correctas
-          </Label>
+          <Label className="text-green-600 flex items-center gap-2">✓ Opciones Correctas</Label>
           <Button variant="outline" size="sm" onClick={addCorrectOption}>
             <Plus className="h-3 w-3 mr-1" /> Agregar
           </Button>
@@ -3616,9 +3720,7 @@ function MultiSelectProperties({
 
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <Label className="text-red-600 flex items-center gap-2">
-            ✗ Opciones Incorrectas
-          </Label>
+          <Label className="text-red-600 flex items-center gap-2">✗ Opciones Incorrectas</Label>
           <Button variant="outline" size="sm" onClick={addIncorrectOption}>
             <Plus className="h-3 w-3 mr-1" /> Agregar
           </Button>
@@ -3691,8 +3793,8 @@ function TeacherNotesProperties({
   return (
     <div className="space-y-6">
       <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm text-yellow-800">
-        <strong>💡 Nota:</strong> Este bloque solo será visible para profesores, administradores y editores durante la clase.
-        Los estudiantes no podrán ver este contenido.
+        <strong>💡 Nota:</strong> Este bloque solo será visible para profesores, administradores y
+        editores durante la clase. Los estudiantes no podrán ver este contenido.
       </div>
 
       <div className="space-y-2">
@@ -3720,9 +3822,11 @@ function TeacherNotesProperties({
             <button
               key={color.value}
               type="button"
-              onClick={() => onUpdate({ highlightColor: color.value as TeacherNotesBlock['highlightColor'] })}
+              onClick={() =>
+                onUpdate({ highlightColor: color.value as TeacherNotesBlock['highlightColor'] })
+              }
               className={cn(
-                "w-8 h-8 rounded-full border-2 transition-all",
+                'w-8 h-8 rounded-full border-2 transition-all',
                 color.bg,
                 block.highlightColor === color.value
                   ? `${color.border} ring-2 ring-offset-2 ring-gray-400`
