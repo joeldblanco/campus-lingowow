@@ -241,10 +241,11 @@ export const NiubizCheckout = ({
       onSuccess?.(data)
     } catch (error) {
       console.error('Niubiz Auth Error:', error)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      toast.error(
-        (error as any).message || 'Error al procesar el pago. Por favor verifique sus datos.'
-      )
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'Error al procesar el pago. Por favor verifique sus datos.'
+      toast.error(errorMessage)
       onError?.(error)
     } finally {
       setLoading(false)

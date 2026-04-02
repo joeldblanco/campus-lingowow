@@ -1,6 +1,7 @@
 import { auth } from '@/auth'
 import { createNiubizSession, getNiubizAccessToken } from '@/lib/niubiz'
 import { db } from '@/lib/db'
+import { Prisma } from '@prisma/client'
 import { NextResponse } from 'next/server'
 
 interface CustomerInfo {
@@ -62,10 +63,12 @@ export async function POST(req: Request) {
     if (purchaseNumber && invoiceData) {
       console.log('[NIUBIZ_SESSION] Saving pending order:', purchaseNumber)
 
-      const pendingInvoiceData = {
-        ...invoiceData,
-        customerInfo: customerInfo || null,
-      }
+      const pendingInvoiceData = JSON.parse(
+        JSON.stringify({
+          ...invoiceData,
+          customerInfo: customerInfo || null,
+        })
+      ) as Prisma.InputJsonObject
 
       // Delete any existing pending order with same purchaseNumber
       await db.pendingOrder
