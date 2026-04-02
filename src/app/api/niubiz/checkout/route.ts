@@ -54,26 +54,29 @@ const hasRequiredBillingInfo = (customerInfo?: CustomerInfo | null) => {
 // Niubiz sends transactionToken in the body as application/x-www-form-urlencoded
 export async function POST(request: NextRequest) {
   console.log('[NIUBIZ CHECKOUT] POST request received')
-  
+
   // Get purchaseNumber from URL params (we add it when configuring the SDK)
   const { searchParams } = new URL(request.url)
   const purchaseNumber = searchParams.get('purchaseNumber')
   const amount = searchParams.get('amount')
-  
+
   console.log('[NIUBIZ CHECKOUT] URL params:', { purchaseNumber, amount })
-  
+
   let transactionToken: string | null = null
-  
+
   try {
     // Try to get the form data from Niubiz POST
     // Niubiz sends as application/x-www-form-urlencoded
     const contentType = request.headers.get('content-type') || ''
     console.log('[NIUBIZ CHECKOUT] Content-Type:', contentType)
-    
-    if (contentType.includes('application/x-www-form-urlencoded') || contentType.includes('multipart/form-data')) {
+
+    if (
+      contentType.includes('application/x-www-form-urlencoded') ||
+      contentType.includes('multipart/form-data')
+    ) {
       const formData = await request.formData()
       transactionToken = formData.get('transactionToken') as string
-      
+
       // Log all form fields for debugging
       const formFields: Record<string, string> = {}
       formData.forEach((value, key) => {
@@ -88,31 +91,34 @@ export async function POST(request: NextRequest) {
       // Try to read as text and parse
       const text = await request.text()
       console.log('[NIUBIZ CHECKOUT] Raw body (first 200 chars):', text.substring(0, 200))
-      
+
       // Try to parse as URL encoded
       const params = new URLSearchParams(text)
       transactionToken = params.get('transactionToken')
     }
-    
-    console.log('[NIUBIZ CHECKOUT] Extracted transactionToken:', transactionToken ? `${transactionToken.substring(0, 30)}...` : null)
-    
+
+    console.log(
+      '[NIUBIZ CHECKOUT] Extracted transactionToken:',
+      transactionToken ? `${transactionToken.substring(0, 30)}...` : null
+    )
+
     if (!transactionToken) {
       console.error('[NIUBIZ CHECKOUT] No transactionToken in POST body')
       return NextResponse.redirect(
         new URL('/shop/cart/checkout?niubiz_error=missing_token', request.url)
       )
     }
-    
+
     if (!purchaseNumber || !amount) {
       console.error('[NIUBIZ CHECKOUT] Missing purchaseNumber or amount')
       return NextResponse.redirect(
         new URL('/shop/cart/checkout?niubiz_error=missing_params', request.url)
       )
     }
-    
+
     // Get access token for authorization
     const accessToken = await getNiubizAccessToken()
-    
+
     // Authorize the transaction with Niubiz
     const authorization = await authorizeNiubizTransaction(
       transactionToken,
@@ -120,35 +126,40 @@ export async function POST(request: NextRequest) {
       purchaseNumber,
       accessToken
     )
-    
+
     console.log('[NIUBIZ CHECKOUT] Authorization response:', {
       actionCode: authorization?.dataMap?.ACTION_CODE,
       actionDescription: authorization?.dataMap?.ACTION_DESCRIPTION,
     })
-    
+
     // Check if authorization was successful
     const actionCode = authorization?.dataMap?.ACTION_CODE
     if (actionCode !== '000') {
       const errorMessage = authorization?.dataMap?.ACTION_DESCRIPTION || 'Pago denegado'
       console.error('[NIUBIZ CHECKOUT] Authorization failed:', errorMessage)
       return NextResponse.redirect(
-        new URL(`/shop/cart/checkout?niubiz_error=auth_failed&message=${encodeURIComponent(errorMessage)}`, request.url)
+        new URL(
+          `/shop/cart/checkout?niubiz_error=auth_failed&message=${encodeURIComponent(errorMessage)}`,
+          request.url
+        )
       )
     }
-    
+
     // Payment successful - Now create invoice and enrollment
     console.log('[NIUBIZ CHECKOUT] Payment successful, processing order...')
-    
+
     // Get pending order data
-    const pendingOrder = await db.pendingOrder.findUnique({
-      where: { purchaseNumber }
-    }).catch(() => null)
-    
+    const pendingOrder = await db.pendingOrder
+      .findUnique({
+        where: { purchaseNumber },
+      })
+      .catch(() => null)
+
     let invoiceNumber = `INV-${purchaseNumber}`
-    
+
     if (pendingOrder && pendingOrder.status === 'PENDING') {
       console.log('[NIUBIZ CHECKOUT] Found pending order, creating invoice and enrollment...')
-      
+
       const invoiceData = pendingOrder.invoiceData as unknown as InvoiceData
       const customerInfo = invoiceData.customerInfo
 
@@ -160,13 +171,13 @@ export async function POST(request: NextRequest) {
       }
 
       let userId = pendingOrder.userId
-      
+
       // If no user but have customer email, find or create user
       if (!userId && pendingOrder.customerEmail) {
         const existingUser = await db.user.findUnique({
           where: { email: pendingOrder.customerEmail },
         })
-        
+
         if (existingUser) {
           userId = existingUser.id
         } else {
@@ -180,11 +191,11 @@ export async function POST(request: NextRequest) {
           userId = guestUser.id
         }
       }
-      
+
       if (userId && invoiceData) {
         // Create invoice
         invoiceNumber = `INV-${Date.now().toString().slice(-8)}`
-        
+
         const invoice = await db.invoice.create({
           data: {
             invoiceNumber,
@@ -217,15 +228,15 @@ export async function POST(request: NextRequest) {
           },
           include: { items: true },
         })
-        
+
         console.log('[NIUBIZ CHECKOUT] Invoice created:', invoice.invoiceNumber)
-        
+
         // Get current academic period based on dates (excluding special weeks)
         const today = new Date()
-        
+
         // Buscar período donde hoy esté entre startDate y endDate
         let currentPeriod = await db.academicPeriod.findFirst({
-          where: { 
+          where: {
             startDate: { lte: today },
             endDate: { gte: today },
             isSpecialWeek: false,
@@ -242,37 +253,37 @@ export async function POST(request: NextRequest) {
             orderBy: { startDate: 'asc' },
           })
         }
-        
+
         console.log('[NIUBIZ CHECKOUT] Academic period:', currentPeriod?.name || 'None found')
-        
+
         // Process each item for enrollment
         for (const item of invoiceData.items) {
           let plan = null
           let courseId: string | null = null
-          
+
           if (item.planId) {
             plan = await db.plan.findUnique({
               where: { id: item.planId },
-              include: { 
+              include: {
                 course: true,
                 product: {
-                  include: { course: true }
-                }
+                  include: { course: true },
+                },
               },
             })
             // Get courseId from plan, or from product if plan doesn't have it
             courseId = plan?.courseId || plan?.product?.courseId || null
           }
-          
+
           // If still no courseId, try to get it from the product directly
           if (!courseId && item.productId) {
             const product = await db.product.findUnique({
               where: { id: item.productId },
-              select: { courseId: true }
+              select: { courseId: true },
             })
             courseId = product?.courseId || null
           }
-          
+
           // Create product purchase
           const purchase = await db.productPurchase.create({
             data: {
@@ -287,7 +298,7 @@ export async function POST(request: NextRequest) {
               proratedPrice: item.proratedPrice || undefined,
             },
           })
-          
+
           console.log('[NIUBIZ CHECKOUT] Enrollment check:', {
             planId: item.planId,
             includesClasses: plan?.includesClasses,
@@ -297,7 +308,7 @@ export async function POST(request: NextRequest) {
             selectedSchedule: item.selectedSchedule?.length,
             currentPeriodId: currentPeriod?.id,
           })
-          
+
           // Create enrollment if plan includes classes
           if (
             plan?.includesClasses &&
@@ -306,11 +317,16 @@ export async function POST(request: NextRequest) {
             item.selectedSchedule.length > 0 &&
             currentPeriod
           ) {
-            console.log('[NIUBIZ CHECKOUT] Creating enrollment for student:', userId, 'in course:', courseId)
-            
+            console.log(
+              '[NIUBIZ CHECKOUT] Creating enrollment for student:',
+              userId,
+              'in course:',
+              courseId
+            )
+
             // Extraer el teacherId del primer slot del horario seleccionado
             const firstTeacherId = item.selectedSchedule[0]?.teacherId || null
-            
+
             const enrollment = await db.enrollment.upsert({
               where: {
                 studentId_courseId_academicPeriodId: {
@@ -336,9 +352,9 @@ export async function POST(request: NextRequest) {
                 ...(firstTeacherId ? { teacherId: firstTeacherId } : {}),
               },
             })
-            
+
             console.log('[NIUBIZ CHECKOUT] Enrollment created:', enrollment.id)
-            
+
             // Update purchase with enrollment
             await db.productPurchase.update({
               where: { id: purchase.id },
@@ -347,17 +363,19 @@ export async function POST(request: NextRequest) {
                 status: 'ENROLLED',
               },
             })
-            
+
             // Create schedules
             const { convertRecurringScheduleToUTC } = await import('@/lib/utils/date')
-            
-            const teacherIds = [...new Set(item.selectedSchedule.map(s => s.teacherId))]
+
+            const teacherIds = [...new Set(item.selectedSchedule.map((s) => s.teacherId))]
             const teachers = await db.user.findMany({
               where: { id: { in: teacherIds } },
               select: { id: true, timezone: true },
             })
-            const teacherTimezones = new Map(teachers.map(t => [t.id, t.timezone || 'America/Lima']))
-            
+            const teacherTimezones = new Map(
+              teachers.map((t) => [t.id, t.timezone || 'America/Lima'])
+            )
+
             for (const slot of item.selectedSchedule) {
               const timezone = teacherTimezones.get(slot.teacherId) || 'America/Lima'
               const utcData = convertRecurringScheduleToUTC(
@@ -366,7 +384,7 @@ export async function POST(request: NextRequest) {
                 slot.endTime,
                 timezone
               )
-              
+
               const existingSchedule = await db.classSchedule.findUnique({
                 where: {
                   enrollmentId_dayOfWeek_startTime: {
@@ -390,7 +408,7 @@ export async function POST(request: NextRequest) {
                 console.log('[NIUBIZ CHECKOUT] Schedule created for day:', utcData.dayOfWeek)
               }
             }
-            
+
             // Create bookings for current period
             // IMPORTANTE: Los horarios en selectedSchedule ya están convertidos a UTC
             // Debemos iterar sobre las fechas UTC y comparar con dayOfWeek UTC
@@ -413,9 +431,9 @@ export async function POST(request: NextRequest) {
                 const month = String(currentDate.getUTCMonth() + 1).padStart(2, '0')
                 const day = String(currentDate.getUTCDate()).padStart(2, '0')
                 const dayString = `${year}-${month}-${day}`
-                
+
                 const timeSlot = `${scheduleForDay.startTime}-${scheduleForDay.endTime}`
-                
+
                 const existingBooking = await db.classBooking.findFirst({
                   where: {
                     studentId: userId!,
@@ -440,9 +458,9 @@ export async function POST(request: NextRequest) {
               }
               currentDate.setDate(currentDate.getDate() + 1)
             }
-            
+
             console.log('[NIUBIZ CHECKOUT] Bookings created for period')
-            
+
             // Update user role to STUDENT
             const user = await db.user.findUnique({
               where: { id: userId },
@@ -464,7 +482,7 @@ export async function POST(request: NextRequest) {
             }
           }
         }
-        
+
         // Send confirmation email
         try {
           const user = await db.user.findUnique({
@@ -491,7 +509,7 @@ export async function POST(request: NextRequest) {
         } catch (emailError) {
           console.error('[NIUBIZ CHECKOUT] Error sending email:', emailError)
         }
-        
+
         // Mark pending order as completed
         await db.pendingOrder.update({
           where: { purchaseNumber },
@@ -501,23 +519,25 @@ export async function POST(request: NextRequest) {
     } else {
       console.log('[NIUBIZ CHECKOUT] No pending order found for:', purchaseNumber)
     }
-    
+
     // Redirect to confirmation page
     const confirmationUrl = new URL('/shop/cart/checkout/confirmation', request.url)
     confirmationUrl.searchParams.set('success', 'true')
     confirmationUrl.searchParams.set('orderNumber', invoiceNumber)
     confirmationUrl.searchParams.set('amount', amount)
-    
+
     console.log('[NIUBIZ CHECKOUT] Redirecting to confirmation:', confirmationUrl.toString())
-    
+
     return NextResponse.redirect(confirmationUrl)
-    
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     console.error('[NIUBIZ CHECKOUT] Error processing payment:', errorMessage)
     console.error('[NIUBIZ CHECKOUT] Full error:', error)
     return NextResponse.redirect(
-      new URL(`/shop/cart/checkout?niubiz_error=server_error&debug=${encodeURIComponent(errorMessage.substring(0, 100))}`, request.url)
+      new URL(
+        `/shop/cart/checkout?niubiz_error=server_error&debug=${encodeURIComponent(errorMessage.substring(0, 100))}`,
+        request.url
+      )
     )
   }
 }
@@ -526,17 +546,17 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const transactionToken = searchParams.get('transactionToken')
-  
+
   console.log('[NIUBIZ CHECKOUT] Received GET request:', {
     transactionToken: transactionToken ? 'present' : 'missing',
     allParams: Object.fromEntries(searchParams.entries()),
   })
-  
+
   if (transactionToken) {
     // If we got a transactionToken via GET, process it
     const purchaseNumber = searchParams.get('purchaseNumber')
     const amount = searchParams.get('amount')
-    
+
     if (purchaseNumber && amount) {
       try {
         const accessToken = await getNiubizAccessToken()
@@ -546,7 +566,7 @@ export async function GET(request: NextRequest) {
           purchaseNumber,
           accessToken
         )
-        
+
         const actionCode = authorization?.dataMap?.ACTION_CODE
         if (actionCode === '000') {
           const confirmationUrl = new URL('/shop/cart/checkout/confirmation', request.url)
@@ -560,7 +580,7 @@ export async function GET(request: NextRequest) {
       }
     }
   }
-  
+
   // Redirect back to checkout if something went wrong
   return NextResponse.redirect(
     new URL('/shop/cart/checkout?niubiz_error=invalid_request', request.url)

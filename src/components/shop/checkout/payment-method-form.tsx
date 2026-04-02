@@ -1,8 +1,6 @@
 'use client'
 
-import {
-  Form,
-} from '@/components/ui/form'
+import { Form } from '@/components/ui/form'
 import { LockIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -99,7 +97,9 @@ export function PaymentMethodForm({
     // Niubiz requires purchaseNumber to be NUMERIC ONLY (max 12 digits)
     // Format: last 9 digits of timestamp + 3 random digits = 12 digits
     const timestamp = Date.now().toString().slice(-9)
-    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0')
+    const random = Math.floor(Math.random() * 1000)
+      .toString()
+      .padStart(3, '0')
     setPurchaseNumber(`${timestamp}${random}`)
   }, [])
 
@@ -113,7 +113,7 @@ export function PaymentMethodForm({
   }
 
   const renderCreditCardForm = () => {
-    if (!purchaseNumber) return null;
+    if (!purchaseNumber) return null
 
     return (
       <div className="space-y-6">
@@ -124,11 +124,11 @@ export function PaymentMethodForm({
             purchaseNumber={purchaseNumber}
             onSuccess={(data) => {
               if (onNiubizSuccess) {
-                onNiubizSuccess(data);
+                onNiubizSuccess(data)
               }
             }}
             onError={(error) => {
-              console.error("Niubiz Error:", error);
+              console.error('Niubiz Error:', error)
             }}
             userEmail={userEmail}
             userFirstName={userFirstName}
@@ -175,7 +175,6 @@ export function PaymentMethodForm({
       </div>
     )
   }
-
 
   return (
     <Form {...form}>

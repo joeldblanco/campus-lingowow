@@ -76,36 +76,210 @@ interface PlanDetails {
 type CheckoutStep = 'schedule' | 'review' | 'payment'
 
 const COUNTRIES = [
-  'Afganistán', 'Albania', 'Alemania', 'Andorra', 'Angola', 'Antigua y Barbuda', 'Arabia Saudita', 'Argelia', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaiyán',
-  'Bahamas', 'Bangladés', 'Barbados', 'Baréin', 'Bélgica', 'Belice', 'Benín', 'Bielorrusia', 'Birmania', 'Bolivia', 'Bosnia y Herzegovina', 'Botsuana', 'Brasil', 'Brunéi', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Bután',
-  'Cabo Verde', 'Camboya', 'Camerún', 'Canadá', 'Catar', 'Chad', 'Chile', 'China', 'Chipre', 'Ciudad del Vaticano', 'Colombia', 'Comoras', 'Corea del Norte', 'Corea del Sur', 'Costa de Marfil', 'Costa Rica', 'Croacia', 'Cuba',
-  'Dinamarca', 'Dominica',
-  'Ecuador', 'Egipto', 'El Salvador', 'Emiratos Árabes Unidos', 'Eritrea', 'Eslovaquia', 'Eslovenia', 'España', 'Estados Unidos', 'Estonia', 'Etiopía',
-  'Filipinas', 'Finlandia', 'Fiyi', 'Francia',
-  'Gabón', 'Gambia', 'Georgia', 'Ghana', 'Granada', 'Grecia', 'Guatemala', 'Guinea', 'Guinea Ecuatorial', 'Guinea-Bisáu', 'Guyana',
-  'Haití', 'Honduras', 'Hungría',
-  'India', 'Indonesia', 'Irak', 'Irán', 'Irlanda', 'Islandia', 'Islas Marshall', 'Islas Salomón', 'Israel', 'Italia',
-  'Jamaica', 'Japón', 'Jordania',
-  'Kazajistán', 'Kenia', 'Kirguistán', 'Kiribati', 'Kuwait',
-  'Laos', 'Lesoto', 'Letonia', 'Líbano', 'Liberia', 'Libia', 'Liechtenstein', 'Lituania', 'Luxemburgo',
-  'Macedonia del Norte', 'Madagascar', 'Malasia', 'Malaui', 'Maldivas', 'Malí', 'Malta', 'Marruecos', 'Mauricio', 'Mauritania', 'México', 'Micronesia', 'Moldavia', 'Mónaco', 'Mongolia', 'Montenegro', 'Mozambique',
-  'Namibia', 'Nauru', 'Nepal', 'Nicaragua', 'Níger', 'Nigeria', 'Noruega', 'Nueva Zelanda',
+  'Afganistán',
+  'Albania',
+  'Alemania',
+  'Andorra',
+  'Angola',
+  'Antigua y Barbuda',
+  'Arabia Saudita',
+  'Argelia',
+  'Argentina',
+  'Armenia',
+  'Australia',
+  'Austria',
+  'Azerbaiyán',
+  'Bahamas',
+  'Bangladés',
+  'Barbados',
+  'Baréin',
+  'Bélgica',
+  'Belice',
+  'Benín',
+  'Bielorrusia',
+  'Birmania',
+  'Bolivia',
+  'Bosnia y Herzegovina',
+  'Botsuana',
+  'Brasil',
+  'Brunéi',
+  'Bulgaria',
+  'Burkina Faso',
+  'Burundi',
+  'Bután',
+  'Cabo Verde',
+  'Camboya',
+  'Camerún',
+  'Canadá',
+  'Catar',
+  'Chad',
+  'Chile',
+  'China',
+  'Chipre',
+  'Ciudad del Vaticano',
+  'Colombia',
+  'Comoras',
+  'Corea del Norte',
+  'Corea del Sur',
+  'Costa de Marfil',
+  'Costa Rica',
+  'Croacia',
+  'Cuba',
+  'Dinamarca',
+  'Dominica',
+  'Ecuador',
+  'Egipto',
+  'El Salvador',
+  'Emiratos Árabes Unidos',
+  'Eritrea',
+  'Eslovaquia',
+  'Eslovenia',
+  'España',
+  'Estados Unidos',
+  'Estonia',
+  'Etiopía',
+  'Filipinas',
+  'Finlandia',
+  'Fiyi',
+  'Francia',
+  'Gabón',
+  'Gambia',
+  'Georgia',
+  'Ghana',
+  'Granada',
+  'Grecia',
+  'Guatemala',
+  'Guinea',
+  'Guinea Ecuatorial',
+  'Guinea-Bisáu',
+  'Guyana',
+  'Haití',
+  'Honduras',
+  'Hungría',
+  'India',
+  'Indonesia',
+  'Irak',
+  'Irán',
+  'Irlanda',
+  'Islandia',
+  'Islas Marshall',
+  'Islas Salomón',
+  'Israel',
+  'Italia',
+  'Jamaica',
+  'Japón',
+  'Jordania',
+  'Kazajistán',
+  'Kenia',
+  'Kirguistán',
+  'Kiribati',
+  'Kuwait',
+  'Laos',
+  'Lesoto',
+  'Letonia',
+  'Líbano',
+  'Liberia',
+  'Libia',
+  'Liechtenstein',
+  'Lituania',
+  'Luxemburgo',
+  'Macedonia del Norte',
+  'Madagascar',
+  'Malasia',
+  'Malaui',
+  'Maldivas',
+  'Malí',
+  'Malta',
+  'Marruecos',
+  'Mauricio',
+  'Mauritania',
+  'México',
+  'Micronesia',
+  'Moldavia',
+  'Mónaco',
+  'Mongolia',
+  'Montenegro',
+  'Mozambique',
+  'Namibia',
+  'Nauru',
+  'Nepal',
+  'Nicaragua',
+  'Níger',
+  'Nigeria',
+  'Noruega',
+  'Nueva Zelanda',
   'Omán',
-  'Países Bajos', 'Pakistán', 'Palaos', 'Panamá', 'Papúa Nueva Guinea', 'Paraguay', 'Perú', 'Polonia', 'Portugal', 'Puerto Rico',
-  'Reino Unido', 'República Centroafricana', 'República Checa', 'República del Congo', 'República Democrática del Congo', 'República Dominicana', 'Ruanda', 'Rumania', 'Rusia',
-  'Samoa', 'San Cristóbal y Nieves', 'San Marino', 'San Vicente y las Granadinas', 'Santa Lucía', 'Santo Tomé y Príncipe', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leona', 'Singapur', 'Siria', 'Somalia', 'Sri Lanka', 'Suazilandia', 'Sudáfrica', 'Sudán', 'Sudán del Sur', 'Suecia', 'Suiza', 'Surinam',
-  'Tailandia', 'Tanzania', 'Tayikistán', 'Timor Oriental', 'Togo', 'Tonga', 'Trinidad y Tobago', 'Túnez', 'Turkmenistán', 'Turquía', 'Tuvalu',
-  'Ucrania', 'Uganda', 'Uruguay', 'Uzbekistán',
-  'Vanuatu', 'Venezuela', 'Vietnam',
+  'Países Bajos',
+  'Pakistán',
+  'Palaos',
+  'Panamá',
+  'Papúa Nueva Guinea',
+  'Paraguay',
+  'Perú',
+  'Polonia',
+  'Portugal',
+  'Puerto Rico',
+  'Reino Unido',
+  'República Centroafricana',
+  'República Checa',
+  'República del Congo',
+  'República Democrática del Congo',
+  'República Dominicana',
+  'Ruanda',
+  'Rumania',
+  'Rusia',
+  'Samoa',
+  'San Cristóbal y Nieves',
+  'San Marino',
+  'San Vicente y las Granadinas',
+  'Santa Lucía',
+  'Santo Tomé y Príncipe',
+  'Senegal',
+  'Serbia',
+  'Seychelles',
+  'Sierra Leona',
+  'Singapur',
+  'Siria',
+  'Somalia',
+  'Sri Lanka',
+  'Suazilandia',
+  'Sudáfrica',
+  'Sudán',
+  'Sudán del Sur',
+  'Suecia',
+  'Suiza',
+  'Surinam',
+  'Tailandia',
+  'Tanzania',
+  'Tayikistán',
+  'Timor Oriental',
+  'Togo',
+  'Tonga',
+  'Trinidad y Tobago',
+  'Túnez',
+  'Turkmenistán',
+  'Turquía',
+  'Tuvalu',
+  'Ucrania',
+  'Uganda',
+  'Uruguay',
+  'Uzbekistán',
+  'Vanuatu',
+  'Venezuela',
+  'Vietnam',
   'Yemen',
   'Yibuti',
-  'Zambia', 'Zimbabue',
+  'Zambia',
+  'Zimbabue',
 ]
 
 const DAY_NAMES = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
 
 // Helper para convertir un slot UTC a hora local para mostrar
-const convertSlotToLocalDisplay = (slot: ScheduleSlot, timezone: string): { dayOfWeek: number; startTime: string; endTime: string } => {
+const convertSlotToLocalDisplay = (
+  slot: ScheduleSlot,
+  timezone: string
+): { dayOfWeek: number; startTime: string; endTime: string } => {
   const localData = convertRecurringScheduleFromUTC(
     slot.dayOfWeek,
     slot.startTime,
@@ -144,7 +318,7 @@ export default function CheckoutPage() {
   const { data: session, status: authStatus } = useSession()
   const niubizProcessedRef = useRef(false)
   const initialStateLoaded = useRef(false)
-  
+
   const [stateRestored, setStateRestored] = useState(false)
   const [currentStep, setCurrentStep] = useState<CheckoutStep>('review')
   const [paymentMethod, setPaymentMethod] = useState<'creditCard' | 'paypal'>('creditCard')
@@ -165,10 +339,15 @@ export default function CheckoutPage() {
     country: 'Perú',
   })
 
-  const [scheduleSelections, setScheduleSelections] = useState<Record<string, {
-    schedule: ScheduleSlot[]
-    proration: ProrationResult
-  }>>({})
+  const [scheduleSelections, setScheduleSelections] = useState<
+    Record<
+      string,
+      {
+        schedule: ScheduleSlot[]
+        proration: ProrationResult
+      }
+    >
+  >({})
 
   const [planDetails, setPlanDetails] = useState<Record<string, PlanDetails>>({})
 
@@ -178,7 +357,7 @@ export default function CheckoutPage() {
   const removeCoupon = useShopStore((state) => state.removeCoupon)
 
   const plansRequiringSchedule = useMemo(() => {
-    return cartItems.filter(item => {
+    return cartItems.filter((item) => {
       const itemKey = getCartItemKey(item.plan.id, item.language)
       const details = planDetails[itemKey]
       return details?.isSynchronous && details?.courseId
@@ -189,14 +368,14 @@ export default function CheckoutPage() {
 
   const allSchedulesSelected = useMemo(() => {
     if (!requiresScheduleSelection) return true
-    return plansRequiringSchedule.every(item => {
+    return plansRequiringSchedule.every((item) => {
       const itemKey = getCartItemKey(item.plan.id, item.language)
       return scheduleSelections[itemKey]?.schedule?.length > 0
     })
   }, [plansRequiringSchedule, scheduleSelections, requiresScheduleSelection])
 
   const isRecurrentData = useMemo(() => {
-    return cartItems.some(item => {
+    return cartItems.some((item) => {
       const itemKey = getCartItemKey(item.plan.id, item.language)
       const details = planDetails[itemKey]
       return !!details?.billingCycle
@@ -204,24 +383,27 @@ export default function CheckoutPage() {
   }, [cartItems, planDetails])
 
   const requiresPlatformAccess = useMemo(() => {
-    return cartItems.some(item => {
+    return cartItems.some((item) => {
       const itemKey = getCartItemKey(item.plan.id, item.language)
       const details = planDetails[itemKey]
       return details?.courseId || details?.includesClasses || details?.isDigital
     })
   }, [cartItems, planDetails])
 
-  const calculateCouponDiscount = useCallback((coupon: AppliedCoupon | null, amount: number): number => {
-    if (!coupon) return 0
-    if (coupon.type === 'PERCENTAGE') {
-      const discount = (amount * coupon.value) / 100
-      if (coupon.maxDiscount && discount > coupon.maxDiscount) {
-        return coupon.maxDiscount
+  const calculateCouponDiscount = useCallback(
+    (coupon: AppliedCoupon | null, amount: number): number => {
+      if (!coupon) return 0
+      if (coupon.type === 'PERCENTAGE') {
+        const discount = (amount * coupon.value) / 100
+        if (coupon.maxDiscount && discount > coupon.maxDiscount) {
+          return coupon.maxDiscount
+        }
+        return discount
       }
-      return discount
-    }
-    return Math.min(coupon.value, amount)
-  }, [])
+      return Math.min(coupon.value, amount)
+    },
+    []
+  )
 
   const { subtotal, discount, taxes, total } = useMemo(() => {
     const subtotalAmount = cartItems.reduce((sum, item) => {
@@ -230,9 +412,9 @@ export default function CheckoutPage() {
       const price = proration?.proratedPrice ?? item.plan.price
       return sum + price * (item.quantity || 1)
     }, 0)
-    
+
     const discountAmount = calculateCouponDiscount(appliedCoupon, subtotalAmount)
-    
+
     return {
       subtotal: subtotalAmount,
       discount: discountAmount,
@@ -244,16 +426,18 @@ export default function CheckoutPage() {
   // Validar cupón cuando cambian los items del carrito
   useEffect(() => {
     if (!appliedCoupon) return
-    
+
     // Si el cupón está restringido a un plan específico, verificar que ese plan esté en el carrito
     if (appliedCoupon.restrictedToPlanId) {
-      const planIds = cartItems.map(item => item.plan.id)
+      const planIds = cartItems.map((item) => item.plan.id)
       const isValidForCurrentPlans = planIds.includes(appliedCoupon.restrictedToPlanId)
-      
+
       if (!isValidForCurrentPlans) {
         // El cupón no es válido para los planes actuales, removerlo
         removeCoupon()
-        toast.info('El cupón ha sido removido porque no aplica para los productos actuales del carrito')
+        toast.info(
+          'El cupón ha sido removido porque no aplica para los productos actuales del carrito'
+        )
       }
     }
   }, [cartItems, appliedCoupon, removeCoupon])
@@ -265,7 +449,7 @@ export default function CheckoutPage() {
       for (const item of cartItems) {
         // Create unique key for this cart item (planId + language)
         const itemKey = getCartItemKey(item.plan.id, item.language)
-        
+
         try {
           // Skip synthetic plans (products without real plans use "{productId}-default")
           if (item.plan.id.endsWith('-default')) {
@@ -281,9 +465,11 @@ export default function CheckoutPage() {
             }
             continue
           }
-          
+
           // Pass language to get language-specific courseId from PlanPricing
-          const languageParam = item.language ? `?language=${encodeURIComponent(item.language)}` : ''
+          const languageParam = item.language
+            ? `?language=${encodeURIComponent(item.language)}`
+            : ''
           const response = await fetch(`/api/plans/${item.plan.id}${languageParam}`)
           if (!response.ok) {
             console.warn(`Plan ${item.plan.id} not found (${response.status})`)
@@ -352,7 +538,7 @@ export default function CheckoutPage() {
   // Load persisted checkout state on mount
   useEffect(() => {
     if (initialStateLoaded.current) return
-    
+
     try {
       const savedState = sessionStorage.getItem(CHECKOUT_STATE_KEY)
       if (savedState) {
@@ -360,9 +546,14 @@ export default function CheckoutPage() {
         // Only restore if saved within the last 30 minutes
         const thirtyMinutes = 30 * 60 * 1000
         if (Date.now() - parsed.timestamp < thirtyMinutes) {
-          console.log('[Checkout] Restoring saved state:', parsed.currentStep, 'scheduleSelections:', parsed.scheduleSelections)
+          console.log(
+            '[Checkout] Restoring saved state:',
+            parsed.currentStep,
+            'scheduleSelections:',
+            parsed.scheduleSelections
+          )
           setScheduleSelections(parsed.scheduleSelections)
-          setFormData(prev => ({
+          setFormData((prev) => ({
             ...prev,
             ...parsed.formData,
           }))
@@ -378,7 +569,7 @@ export default function CheckoutPage() {
     } catch (error) {
       console.error('[Checkout] Error loading saved state:', error)
     }
-    
+
     initialStateLoaded.current = true
     setStateRestored(true)
   }, [])
@@ -386,14 +577,14 @@ export default function CheckoutPage() {
   // Save checkout state when it changes
   useEffect(() => {
     if (!initialStateLoaded.current) return
-    
+
     const stateToSave: CheckoutPersistedState = {
       currentStep,
       scheduleSelections,
       formData,
       timestamp: Date.now(),
     }
-    
+
     try {
       sessionStorage.setItem(CHECKOUT_STATE_KEY, JSON.stringify(stateToSave))
     } catch (error) {
@@ -415,7 +606,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (authStatus !== 'loading') {
       if (session?.user) {
-        setFormData(prev => ({
+        setFormData((prev) => ({
           ...prev,
           email: session.user?.email || '',
           firstName: session.user?.name?.split(' ')[0] || '',
@@ -430,13 +621,13 @@ export default function CheckoutPage() {
   useEffect(() => {
     const niubizError = searchParams.get('niubiz_error')
     const errorMessage = searchParams.get('message')
-    
+
     if (niubizError && !niubizProcessedRef.current) {
       niubizProcessedRef.current = true
-      
+
       // Clean up pending payment data
       sessionStorage.removeItem('niubiz-pending-payment')
-      
+
       // Show appropriate error message
       switch (niubizError) {
         case 'missing_token':
@@ -457,22 +648,25 @@ export default function CheckoutPage() {
         default:
           toast.error('Error al procesar el pago. Por favor intente de nuevo.')
       }
-      
+
       // Clean URL params
       router.replace('/shop/cart/checkout')
     }
   }, [searchParams, router])
 
   const handleInputChange = useCallback((field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
+    setFormData((prev) => ({ ...prev, [field]: value }))
   }, [])
 
-  const handleScheduleSelected = useCallback((itemKey: string, schedule: ScheduleSlot[], proration: ProrationResult) => {
-    setScheduleSelections(prev => ({
-      ...prev,
-      [itemKey]: { schedule, proration }
-    }))
-  }, [])
+  const handleScheduleSelected = useCallback(
+    (itemKey: string, schedule: ScheduleSlot[], proration: ProrationResult) => {
+      setScheduleSelections((prev) => ({
+        ...prev,
+        [itemKey]: { schedule, proration },
+      }))
+    },
+    []
+  )
 
   const handleContinue = useCallback(() => {
     if (currentStep === 'schedule') {
@@ -500,33 +694,27 @@ export default function CheckoutPage() {
           !formData.zipCode.trim()
 
         if (hasMissingBillingFields) {
-          toast.error(
-            'Para pagar con tarjeta, completa dirección, ciudad, país y código postal'
-          )
+          toast.error('Para pagar con tarjeta, completa dirección, ciudad, país y código postal')
           return
         }
       }
 
-      sessionStorage.setItem('customer-info', JSON.stringify({
-        ...formData,
-        fullName: `${formData.firstName} ${formData.lastName}`,
-      }))
-      
+      sessionStorage.setItem(
+        'customer-info',
+        JSON.stringify({
+          ...formData,
+          fullName: `${formData.firstName} ${formData.lastName}`,
+        })
+      )
+
       if (requiresPlatformAccess && !session?.user) {
         setShowLoginModal(true)
         return
       }
-      
+
       setCurrentStep('payment')
     }
-  }, [
-    currentStep,
-    allSchedulesSelected,
-    formData,
-    paymentMethod,
-    requiresPlatformAccess,
-    session,
-  ])
+  }, [currentStep, allSchedulesSelected, formData, paymentMethod, requiresPlatformAccess, session])
 
   const handleBack = useCallback(() => {
     if (currentStep === 'review' && requiresScheduleSelection) {
@@ -538,22 +726,25 @@ export default function CheckoutPage() {
     }
   }, [currentStep, requiresScheduleSelection, router])
 
-  const handlePaymentSuccess = useCallback((data: unknown) => {
-    const anyData = data as { invoice?: { invoiceNumber?: string }; orderId?: string }
-    const invoiceNumber = anyData.invoice?.invoiceNumber
-    
-    // Clear checkout state after successful payment
-    sessionStorage.removeItem(CHECKOUT_STATE_KEY)
-    useShopStore.getState().clearCart()
-    
-    // Redirect to confirmation page with invoice number
-    setTimeout(() => {
-      const url = invoiceNumber 
-        ? `/shop/cart/checkout/confirmation?orderNumber=${invoiceNumber}`
-        : '/shop/cart/checkout/confirmation'
-      router.push(url)
-    }, 500)
-  }, [router])
+  const handlePaymentSuccess = useCallback(
+    (data: unknown) => {
+      const anyData = data as { invoice?: { invoiceNumber?: string }; orderId?: string }
+      const invoiceNumber = anyData.invoice?.invoiceNumber
+
+      // Clear checkout state after successful payment
+      sessionStorage.removeItem(CHECKOUT_STATE_KEY)
+      useShopStore.getState().clearCart()
+
+      // Redirect to confirmation page with invoice number
+      setTimeout(() => {
+        const url = invoiceNumber
+          ? `/shop/cart/checkout/confirmation?orderNumber=${invoiceNumber}`
+          : '/shop/cart/checkout/confirmation'
+        router.push(url)
+      }, 500)
+    },
+    [router]
+  )
 
   const handlePaymentSubmit = useCallback(() => {
     if (paymentMethod === 'paypal') return
@@ -583,7 +774,14 @@ export default function CheckoutPage() {
       const selection = scheduleSelections[itemKey]
       const proration = selection?.proration
       const price = proration?.proratedPrice ?? item.plan.price
-      console.log('[Checkout] Item:', item.plan.id, 'schedule:', selection?.schedule, 'language:', item.language)
+      console.log(
+        '[Checkout] Item:',
+        item.plan.id,
+        'schedule:',
+        selection?.schedule,
+        'language:',
+        item.language
+      )
       return {
         productId: item.product.id,
         planId: item.plan.id,
@@ -599,21 +797,30 @@ export default function CheckoutPage() {
     })
   }, [cartItems, scheduleSelections])
 
-  const getStepNumber = useCallback((step: CheckoutStep) => {
-    if (requiresScheduleSelection) {
-      switch (step) {
-        case 'schedule': return 1
-        case 'review': return 2
-        case 'payment': return 3
+  const getStepNumber = useCallback(
+    (step: CheckoutStep) => {
+      if (requiresScheduleSelection) {
+        switch (step) {
+          case 'schedule':
+            return 1
+          case 'review':
+            return 2
+          case 'payment':
+            return 3
+        }
+      } else {
+        switch (step) {
+          case 'review':
+            return 1
+          case 'payment':
+            return 2
+          default:
+            return 1
+        }
       }
-    } else {
-      switch (step) {
-        case 'review': return 1
-        case 'payment': return 2
-        default: return 1
-      }
-    }
-  }, [requiresScheduleSelection])
+    },
+    [requiresScheduleSelection]
+  )
 
   if (checkingAuth || loadingPlans || !stateRestored) {
     return (
@@ -639,11 +846,20 @@ export default function CheckoutPage() {
   }
 
   const steps = requiresScheduleSelection
-    ? [{ key: 'schedule', label: 'Horario' }, { key: 'review', label: 'Revisión' }, { key: 'payment', label: 'Pago' }]
-    : [{ key: 'review', label: 'Revisión' }, { key: 'payment', label: 'Pago' }]
+    ? [
+        { key: 'schedule', label: 'Horario' },
+        { key: 'review', label: 'Revisión' },
+        { key: 'payment', label: 'Pago' },
+      ]
+    : [
+        { key: 'review', label: 'Revisión' },
+        { key: 'payment', label: 'Pago' },
+      ]
 
   return (
-    <PayPalScriptProvider options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '', currency: 'USD' }}>
+    <PayPalScriptProvider
+      options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '', currency: 'USD' }}
+    >
       <div className="min-h-screen bg-gray-50">
         {/* Header */}
         <header className="sticky top-0 z-50 bg-white border-b border-slate-200">
@@ -655,7 +871,9 @@ export default function CheckoutPage() {
               </Link>
               <div className="flex items-center gap-2">
                 <Lock className="h-4 w-4 text-green-600" />
-                <span className="text-sm font-medium hidden sm:block text-green-600">Pago Seguro</span>
+                <span className="text-sm font-medium hidden sm:block text-green-600">
+                  Pago Seguro
+                </span>
               </div>
             </div>
           </div>
@@ -671,13 +889,19 @@ export default function CheckoutPage() {
               const isCompleted = stepNum < currentNum
               return (
                 <div key={step.key} className="flex items-center">
-                  <div className={`flex items-center ${isActive ? 'text-primary' : isCompleted ? 'text-primary' : 'text-slate-400'}`}>
-                    <span className={`flex items-center justify-center w-6 h-6 rounded-full text-xs mr-2 ${isActive || isCompleted ? 'bg-primary text-white' : 'border border-slate-300 text-slate-400'}`}>
+                  <div
+                    className={`flex items-center ${isActive ? 'text-primary' : isCompleted ? 'text-primary' : 'text-slate-400'}`}
+                  >
+                    <span
+                      className={`flex items-center justify-center w-6 h-6 rounded-full text-xs mr-2 ${isActive || isCompleted ? 'bg-primary text-white' : 'border border-slate-300 text-slate-400'}`}
+                    >
                       {isCompleted ? <Check className="h-3 w-3" /> : stepNum}
                     </span>
                     <span className={isActive ? 'font-semibold' : ''}>{step.label}</span>
                   </div>
-                  {index < steps.length - 1 && <ChevronRight className="h-4 w-4 text-slate-300 mx-2" />}
+                  {index < steps.length - 1 && (
+                    <ChevronRight className="h-4 w-4 text-slate-300 mx-2" />
+                  )}
                 </div>
               )
             })}
@@ -690,21 +914,36 @@ export default function CheckoutPage() {
               {currentStep === 'schedule' && (
                 <div className="space-y-6">
                   <div>
-                    <h1 className="text-2xl md:text-3xl font-bold text-slate-900">Programa tus Sesiones</h1>
-                    <p className="text-slate-600 mt-2">Elige horarios convenientes para tus clases en vivo.</p>
+                    <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
+                      Programa tus Sesiones
+                    </h1>
+                    <p className="text-slate-600 mt-2">
+                      Elige horarios convenientes para tus clases en vivo.
+                    </p>
                   </div>
                   {plansRequiringSchedule.map((item) => {
                     const itemKey = getCartItemKey(item.plan.id, item.language)
                     const details = planDetails[itemKey]
                     if (!details?.courseId || !details?.isSynchronous) return null
                     return (
-                      <div key={itemKey} className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                      <div
+                        key={itemKey}
+                        className="bg-white rounded-xl shadow-sm border border-slate-200 p-6"
+                      >
                         <div className="flex items-center gap-4 mb-6">
                           <div className="w-16 h-16 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
                             {item.product.image ? (
-                              <Image src={item.product.image} alt={item.product.title} width={64} height={64} className="w-full h-full object-cover" />
+                              <Image
+                                src={item.product.image}
+                                alt={item.product.title}
+                                width={64}
+                                height={64}
+                                className="w-full h-full object-cover"
+                              />
                             ) : (
-                              <div className="w-full h-full flex items-center justify-center text-2xl">📚</div>
+                              <div className="w-full h-full flex items-center justify-center text-2xl">
+                                📚
+                              </div>
                             )}
                           </div>
                           <div>
@@ -717,14 +956,22 @@ export default function CheckoutPage() {
                           courseId={details.courseId!}
                           classDuration={details.classDuration}
                           maxClassesPerWeek={details.classesPerWeek || undefined}
-                          onScheduleSelected={(schedule, proration) => handleScheduleSelected(itemKey, schedule, proration)}
+                          onScheduleSelected={(schedule, proration) =>
+                            handleScheduleSelected(itemKey, schedule, proration)
+                          }
                         />
                       </div>
                     )
                   })}
                   <div className="bg-blue-50 rounded-lg p-4 flex items-start gap-3 text-sm text-blue-800">
                     <Info className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                    <p>¿No encuentras un horario que te funcione? <Link href="/contact" className="underline font-bold hover:text-blue-600">Contacta al profesor</Link> directamente.</p>
+                    <p>
+                      ¿No encuentras un horario que te funcione?{' '}
+                      <Link href="/contact" className="underline font-bold hover:text-blue-600">
+                        Contacta al profesor
+                      </Link>{' '}
+                      directamente.
+                    </p>
                   </div>
                 </div>
               )}
@@ -736,73 +983,211 @@ export default function CheckoutPage() {
                     <div className="flex justify-between items-center mb-6">
                       <h3 className="text-lg font-bold text-slate-900">Información del Cliente</h3>
                       {!session?.user && (
-                        <p className="text-sm text-slate-500">¿Ya tienes cuenta? <Link href="/auth/signin" className="text-primary hover:underline">Inicia sesión</Link></p>
+                        <p className="text-sm text-slate-500">
+                          ¿Ya tienes cuenta?{' '}
+                          <Link href="/auth/signin" className="text-primary hover:underline">
+                            Inicia sesión
+                          </Link>
+                        </p>
                       )}
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="md:col-span-2">
-                        <Label htmlFor="email" className="text-sm font-medium text-slate-700 mb-1 block">Correo Electrónico *</Label>
-                        <Input id="email" type="email" placeholder="tu@ejemplo.com" value={formData.email} onChange={(e) => handleInputChange('email', e.target.value)} />
+                        <Label
+                          htmlFor="email"
+                          className="text-sm font-medium text-slate-700 mb-1 block"
+                        >
+                          Correo Electrónico *
+                        </Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder="tu@ejemplo.com"
+                          value={formData.email}
+                          onChange={(e) => handleInputChange('email', e.target.value)}
+                        />
                       </div>
                       <div>
-                        <Label htmlFor="firstName" className="text-sm font-medium text-slate-700 mb-1 block">Nombre *</Label>
-                        <Input id="firstName" type="text" value={formData.firstName} onChange={(e) => handleInputChange('firstName', e.target.value)} />
+                        <Label
+                          htmlFor="firstName"
+                          className="text-sm font-medium text-slate-700 mb-1 block"
+                        >
+                          Nombre *
+                        </Label>
+                        <Input
+                          id="firstName"
+                          type="text"
+                          value={formData.firstName}
+                          onChange={(e) => handleInputChange('firstName', e.target.value)}
+                        />
                       </div>
                       <div>
-                        <Label htmlFor="lastName" className="text-sm font-medium text-slate-700 mb-1 block">Apellidos</Label>
-                        <Input id="lastName" type="text" value={formData.lastName} onChange={(e) => handleInputChange('lastName', e.target.value)} />
+                        <Label
+                          htmlFor="lastName"
+                          className="text-sm font-medium text-slate-700 mb-1 block"
+                        >
+                          Apellidos
+                        </Label>
+                        <Input
+                          id="lastName"
+                          type="text"
+                          value={formData.lastName}
+                          onChange={(e) => handleInputChange('lastName', e.target.value)}
+                        />
                       </div>
                       <div className="md:col-span-2">
-                        <Label htmlFor="phone" className="text-sm font-medium text-slate-700 mb-1 block">Teléfono *</Label>
-                        <Input id="phone" type="tel" value={formData.phone} onChange={(e) => handleInputChange('phone', e.target.value)} />
+                        <Label
+                          htmlFor="phone"
+                          className="text-sm font-medium text-slate-700 mb-1 block"
+                        >
+                          Teléfono *
+                        </Label>
+                        <Input
+                          id="phone"
+                          type="tel"
+                          value={formData.phone}
+                          onChange={(e) => handleInputChange('phone', e.target.value)}
+                        />
                       </div>
                     </div>
                   </section>
 
                   <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8">
-                    <h3 className="text-lg font-bold text-slate-900 mb-6">Dirección de Facturación</h3>
+                    <h3 className="text-lg font-bold text-slate-900 mb-6">
+                      Dirección de Facturación
+                    </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="md:col-span-2">
-                        <Label htmlFor="address" className="text-sm font-medium text-slate-700 mb-1 block">Dirección</Label>
-                        <Input id="address" type="text" value={formData.address} onChange={(e) => handleInputChange('address', e.target.value)} />
+                        <Label
+                          htmlFor="address"
+                          className="text-sm font-medium text-slate-700 mb-1 block"
+                        >
+                          Dirección
+                        </Label>
+                        <Input
+                          id="address"
+                          type="text"
+                          value={formData.address}
+                          onChange={(e) => handleInputChange('address', e.target.value)}
+                        />
                       </div>
                       <div>
-                        <Label htmlFor="city" className="text-sm font-medium text-slate-700 mb-1 block">Ciudad</Label>
-                        <Input id="city" type="text" value={formData.city} onChange={(e) => handleInputChange('city', e.target.value)} />
+                        <Label
+                          htmlFor="city"
+                          className="text-sm font-medium text-slate-700 mb-1 block"
+                        >
+                          Ciudad
+                        </Label>
+                        <Input
+                          id="city"
+                          type="text"
+                          value={formData.city}
+                          onChange={(e) => handleInputChange('city', e.target.value)}
+                        />
                       </div>
                       <div>
-                        <Label htmlFor="zipCode" className="text-sm font-medium text-slate-700 mb-1 block">Código Postal</Label>
-                        <Input id="zipCode" type="text" value={formData.zipCode} onChange={(e) => handleInputChange('zipCode', e.target.value)} />
+                        <Label
+                          htmlFor="zipCode"
+                          className="text-sm font-medium text-slate-700 mb-1 block"
+                        >
+                          Código Postal
+                        </Label>
+                        <Input
+                          id="zipCode"
+                          type="text"
+                          value={formData.zipCode}
+                          onChange={(e) => handleInputChange('zipCode', e.target.value)}
+                        />
                       </div>
                       <div className="md:col-span-2">
-                        <Label htmlFor="country" className="text-sm font-medium text-slate-700 mb-1 block">País</Label>
-                        <Select value={formData.country} onValueChange={(value) => handleInputChange('country', value)}>
-                          <SelectTrigger><SelectValue placeholder="Selecciona un país" /></SelectTrigger>
+                        <Label
+                          htmlFor="country"
+                          className="text-sm font-medium text-slate-700 mb-1 block"
+                        >
+                          País
+                        </Label>
+                        <Select
+                          value={formData.country}
+                          onValueChange={(value) => handleInputChange('country', value)}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecciona un país" />
+                          </SelectTrigger>
                           <SelectContent>
-                            {COUNTRIES.map((country) => (<SelectItem key={country} value={country}>{country}</SelectItem>))}
+                            {COUNTRIES.map((country) => (
+                              <SelectItem key={country} value={country}>
+                                {country}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                       </div>
                     </div>
                     <div className="mt-4 flex items-center gap-2">
-                      <Checkbox id="saveInfo" checked={saveInfo} onCheckedChange={(checked) => setSaveInfo(checked === true)} />
-                      <Label htmlFor="saveInfo" className="text-sm text-slate-700 cursor-pointer">Guardar esta información para la próxima vez</Label>
+                      <Checkbox
+                        id="saveInfo"
+                        checked={saveInfo}
+                        onCheckedChange={(checked) => setSaveInfo(checked === true)}
+                      />
+                      <Label htmlFor="saveInfo" className="text-sm text-slate-700 cursor-pointer">
+                        Guardar esta información para la próxima vez
+                      </Label>
                     </div>
                   </section>
 
                   <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8">
                     <h3 className="text-lg font-bold text-slate-900 mb-6">Método de Pago</h3>
-                    <p className="text-slate-500 text-sm mb-4">Elige cómo deseas pagar. Ingresarás los detalles en el siguiente paso.</p>
+                    <p className="text-slate-500 text-sm mb-4">
+                      Elige cómo deseas pagar. Ingresarás los detalles en el siguiente paso.
+                    </p>
                     <div className="space-y-3">
-                      <label className={`relative flex cursor-pointer rounded-lg border p-4 transition-all ${paymentMethod === 'creditCard' ? 'border-primary ring-1 ring-primary bg-white' : 'border-slate-300 bg-white hover:border-slate-400'}`}>
-                        <input type="radio" name="payment-method" value="creditCard" checked={paymentMethod === 'creditCard'} onChange={() => setPaymentMethod('creditCard')} className="sr-only" />
-                        <span className="flex flex-1"><span className="flex flex-col"><span className="block text-sm font-medium text-slate-900">Tarjeta de Crédito o Débito</span><span className="mt-1 text-sm text-slate-500">Transferencia segura usando tu cuenta bancaria.</span></span></span>
-                        <CreditCard className={`h-6 w-6 ${paymentMethod === 'creditCard' ? 'text-primary' : 'text-slate-400'}`} />
+                      <label
+                        className={`relative flex cursor-pointer rounded-lg border p-4 transition-all ${paymentMethod === 'creditCard' ? 'border-primary ring-1 ring-primary bg-white' : 'border-slate-300 bg-white hover:border-slate-400'}`}
+                      >
+                        <input
+                          type="radio"
+                          name="payment-method"
+                          value="creditCard"
+                          checked={paymentMethod === 'creditCard'}
+                          onChange={() => setPaymentMethod('creditCard')}
+                          className="sr-only"
+                        />
+                        <span className="flex flex-1">
+                          <span className="flex flex-col">
+                            <span className="block text-sm font-medium text-slate-900">
+                              Tarjeta de Crédito o Débito
+                            </span>
+                            <span className="mt-1 text-sm text-slate-500">
+                              Transferencia segura usando tu cuenta bancaria.
+                            </span>
+                          </span>
+                        </span>
+                        <CreditCard
+                          className={`h-6 w-6 ${paymentMethod === 'creditCard' ? 'text-primary' : 'text-slate-400'}`}
+                        />
                       </label>
-                      <label className={`relative flex cursor-pointer rounded-lg border p-4 transition-all ${paymentMethod === 'paypal' ? 'border-primary ring-1 ring-primary bg-white' : 'border-slate-300 bg-white hover:border-slate-400'}`}>
-                        <input type="radio" name="payment-method" value="paypal" checked={paymentMethod === 'paypal'} onChange={() => setPaymentMethod('paypal')} className="sr-only" />
-                        <span className="flex flex-1"><span className="flex flex-col"><span className="block text-sm font-medium text-slate-900">PayPal</span><span className="mt-1 text-sm text-slate-500">Serás redirigido al sitio web de PayPal.</span></span></span>
-                        <Wallet className={`h-6 w-6 ${paymentMethod === 'paypal' ? 'text-primary' : 'text-slate-400'}`} />
+                      <label
+                        className={`relative flex cursor-pointer rounded-lg border p-4 transition-all ${paymentMethod === 'paypal' ? 'border-primary ring-1 ring-primary bg-white' : 'border-slate-300 bg-white hover:border-slate-400'}`}
+                      >
+                        <input
+                          type="radio"
+                          name="payment-method"
+                          value="paypal"
+                          checked={paymentMethod === 'paypal'}
+                          onChange={() => setPaymentMethod('paypal')}
+                          className="sr-only"
+                        />
+                        <span className="flex flex-1">
+                          <span className="flex flex-col">
+                            <span className="block text-sm font-medium text-slate-900">PayPal</span>
+                            <span className="mt-1 text-sm text-slate-500">
+                              Serás redirigido al sitio web de PayPal.
+                            </span>
+                          </span>
+                        </span>
+                        <Wallet
+                          className={`h-6 w-6 ${paymentMethod === 'paypal' ? 'text-primary' : 'text-slate-400'}`}
+                        />
                       </label>
                     </div>
                   </section>
@@ -836,15 +1221,25 @@ export default function CheckoutPage() {
                       zipCode: formData.zipCode,
                     }}
                   />
-                  <Button variant="ghost" onClick={handleBack} className="mt-6"><ArrowLeft className="h-4 w-4 mr-2" />Volver</Button>
+                  <Button variant="ghost" onClick={handleBack} className="mt-6">
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Volver
+                  </Button>
                 </section>
               )}
 
               {/* Navigation Buttons */}
               {currentStep !== 'payment' && (
                 <div className="flex justify-between items-center pt-4">
-                  <Button variant="ghost" onClick={handleBack}><ArrowLeft className="h-4 w-4 mr-2" />Volver</Button>
-                  <Button onClick={handleContinue} size="lg" className="bg-primary hover:bg-primary/90">
+                  <Button variant="ghost" onClick={handleBack}>
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Volver
+                  </Button>
+                  <Button
+                    onClick={handleContinue}
+                    size="lg"
+                    className="bg-primary hover:bg-primary/90"
+                  >
                     {currentStep === 'review' ? 'Continuar al Pago' : 'Continuar'}
                     <ChevronRight className="h-4 w-4 ml-2" />
                   </Button>
@@ -868,20 +1263,38 @@ export default function CheckoutPage() {
                         <div key={itemKey} className="flex gap-4">
                           <div className="w-16 h-16 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
                             {item.product.image ? (
-                              <Image src={item.product.image} alt={item.product.title} width={64} height={64} className="w-full h-full object-cover" />
+                              <Image
+                                src={item.product.image}
+                                alt={item.product.title}
+                                width={64}
+                                height={64}
+                                className="w-full h-full object-cover"
+                              />
                             ) : (
-                              <div className="w-full h-full flex items-center justify-center text-2xl">📚</div>
+                              <div className="w-full h-full flex items-center justify-center text-2xl">
+                                📚
+                              </div>
                             )}
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex justify-between items-start gap-2">
-                              <p className="text-sm font-semibold text-slate-900 line-clamp-2">{item.product.title}</p>
-                              <p className="text-sm font-bold text-slate-900">${price.toFixed(2)}</p>
+                              <p className="text-sm font-semibold text-slate-900 line-clamp-2">
+                                {item.product.title}
+                              </p>
+                              <p className="text-sm font-bold text-slate-900">
+                                ${price.toFixed(2)}
+                              </p>
                             </div>
                             <p className="text-xs text-slate-500 mt-1">{item.plan.name}</p>
                             <div className="mt-2 flex items-center justify-end">
-                              <button onClick={() => removeFromCart(item.product.id, item.plan.id, item.language)} className="text-xs text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1">
-                                <Trash2 className="h-4 w-4" /><span>Eliminar</span>
+                              <button
+                                onClick={() =>
+                                  removeFromCart(item.product.id, item.plan.id, item.language)
+                                }
+                                className="text-xs text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                                <span>Eliminar</span>
                               </button>
                             </div>
                           </div>
@@ -894,30 +1307,39 @@ export default function CheckoutPage() {
                   {Object.keys(scheduleSelections).length > 0 && (
                     <div className="px-6 pb-4">
                       <div className="bg-slate-50 rounded-lg p-3 border border-slate-100">
-                        <div className="text-xs font-bold text-slate-400 uppercase mb-2">Horarios Seleccionados</div>
-                        {Object.entries(scheduleSelections).map(([planId, selection]) => (
+                        <div className="text-xs font-bold text-slate-400 uppercase mb-2">
+                          Horarios Seleccionados
+                        </div>
+                        {Object.entries(scheduleSelections).map(([planId, selection]) =>
                           selection.schedule.map((slot, idx) => {
                             // Convertir de UTC a hora local para mostrar
                             const localSlot = convertSlotToLocalDisplay(slot, getBrowserTimezone())
                             return (
-                              <div key={`${planId}-${idx}`} className="flex justify-between items-center bg-white p-2 rounded border border-slate-200 mb-2 last:mb-0">
+                              <div
+                                key={`${planId}-${idx}`}
+                                className="flex justify-between items-center bg-white p-2 rounded border border-slate-200 mb-2 last:mb-0"
+                              >
                                 <div className="flex flex-col">
-                                  <span className="text-xs font-bold text-slate-700">{DAY_NAMES[localSlot.dayOfWeek]}</span>
-                                  <span className="text-xs text-slate-500">{localSlot.startTime} - {localSlot.endTime}</span>
+                                  <span className="text-xs font-bold text-slate-700">
+                                    {DAY_NAMES[localSlot.dayOfWeek]}
+                                  </span>
+                                  <span className="text-xs text-slate-500">
+                                    {localSlot.startTime} - {localSlot.endTime}
+                                  </span>
                                 </div>
                               </div>
                             )
                           })
-                        ))}
+                        )}
                       </div>
                     </div>
                   )}
 
                   {/* Coupon Input */}
                   <div className="px-6 py-4 border-t border-slate-100">
-                    <CouponInput 
-                      planIds={cartItems.map(item => item.plan.id)} 
-                      subtotal={subtotal} 
+                    <CouponInput
+                      planIds={cartItems.map((item) => item.plan.id)}
+                      subtotal={subtotal}
                     />
                   </div>
 
@@ -961,7 +1383,7 @@ export default function CheckoutPage() {
           </div>
         </main>
       </div>
-      
+
       <CheckoutLoginModal
         open={showLoginModal}
         onOpenChange={setShowLoginModal}

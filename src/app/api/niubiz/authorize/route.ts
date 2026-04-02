@@ -181,10 +181,10 @@ export async function POST(req: NextRequest) {
 
       // Get current academic period based on dates (excluding special weeks)
       const today = new Date()
-      
+
       // Buscar período donde hoy esté entre startDate y endDate
       let currentPeriod = await db.academicPeriod.findFirst({
-        where: { 
+        where: {
           startDate: { lte: today },
           endDate: { gte: today },
           isSpecialWeek: false,
@@ -212,22 +212,22 @@ export async function POST(req: NextRequest) {
           if (item.planId) {
             plan = await db.plan.findUnique({
               where: { id: item.planId },
-              include: { 
+              include: {
                 course: true,
                 product: {
-                  include: { course: true }
-                }
+                  include: { course: true },
+                },
               },
             })
             // Get courseId from plan, or from product if plan doesn't have it
             courseId = plan?.courseId || plan?.product?.courseId || null
           }
-          
+
           // If still no courseId, try to get it from the product directly
           if (!courseId && item.productId) {
             const product = await db.product.findUnique({
               where: { id: item.productId },
-              select: { courseId: true }
+              select: { courseId: true },
             })
             courseId = product?.courseId || null
           }
@@ -257,7 +257,7 @@ export async function POST(req: NextRequest) {
             selectedScheduleLength: item.selectedSchedule?.length,
             currentPeriodId: currentPeriod?.id,
           })
-          
+
           if (
             plan?.includesClasses &&
             courseId &&
@@ -266,10 +266,10 @@ export async function POST(req: NextRequest) {
             currentPeriod
           ) {
             console.log('[NIUBIZ] Creating enrollment for student:', userId, 'in course:', courseId)
-            
+
             // Extraer el teacherId del primer slot del horario seleccionado
             const firstTeacherId = item.selectedSchedule[0]?.teacherId || null
-            
+
             enrollment = await db.enrollment.upsert({
               where: {
                 studentId_courseId_academicPeriodId: {
@@ -307,15 +307,17 @@ export async function POST(req: NextRequest) {
             // Create schedules and bookings
             if (enrollment) {
               const { convertRecurringScheduleToUTC } = await import('@/lib/utils/date')
-              
+
               // Obtener timezones de los profesores
-              const teacherIds = [...new Set(item.selectedSchedule.map(s => s.teacherId))]
+              const teacherIds = [...new Set(item.selectedSchedule.map((s) => s.teacherId))]
               const teachers = await db.user.findMany({
                 where: { id: { in: teacherIds } },
                 select: { id: true, timezone: true },
               })
-              const teacherTimezones = new Map(teachers.map(t => [t.id, t.timezone || 'America/Lima']))
-              
+              const teacherTimezones = new Map(
+                teachers.map((t) => [t.id, t.timezone || 'America/Lima'])
+              )
+
               await Promise.all(
                 item.selectedSchedule.map(async (slot) => {
                   const timezone = teacherTimezones.get(slot.teacherId) || 'America/Lima'
@@ -325,7 +327,7 @@ export async function POST(req: NextRequest) {
                     slot.endTime,
                     timezone
                   )
-                  
+
                   const existingSchedule = await db.classSchedule.findUnique({
                     where: {
                       enrollmentId_dayOfWeek_startTime: {
@@ -373,9 +375,9 @@ export async function POST(req: NextRequest) {
                   const month = String(currentDate.getUTCMonth() + 1).padStart(2, '0')
                   const day = String(currentDate.getUTCDate()).padStart(2, '0')
                   const dayString = `${year}-${month}-${day}`
-                  
+
                   const timeSlot = `${scheduleForDay.startTime}-${scheduleForDay.endTime}`
-                  
+
                   const existingBooking = await db.classBooking.findFirst({
                     where: {
                       studentId: userId!,
