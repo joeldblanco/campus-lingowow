@@ -741,7 +741,8 @@ export function TeacherEarningsOverview() {
                           Este botón se habilitará cuando el período académico actual finalice
                           {earningsData.currentPeriod.activePeriodEndDate
                             ? ` (${format(new Date(earningsData.currentPeriod.activePeriodEndDate), 'dd MMM, yyyy', { locale: es })})`
-                            : ''}.
+                            : ''}
+                          .
                         </p>
                       </TooltipContent>
                     </Tooltip>
