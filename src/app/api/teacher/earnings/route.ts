@@ -329,14 +329,27 @@ export async function GET(request: NextRequest) {
       orderBy: { startDate: 'desc' },
     })
 
-    // Si no hay período activo, buscar el más reciente que ya terminó
-    const latestFinishedPeriod = !currentAcademicPeriod
-      ? await db.academicPeriod.findFirst({
-          where: { endDate: { lt: now } },
-          select: { id: true, name: true, endDate: true },
-          orderBy: { endDate: 'desc' },
-        })
-      : null
+    // Buscar el período más reciente que ya terminó
+    const latestFinishedPeriod = await db.academicPeriod.findFirst({
+      where: { endDate: { lt: now } },
+      select: { id: true, name: true, endDate: true },
+      orderBy: { endDate: 'desc' },
+    })
+
+    // Determinar si el profesor puede confirmar:
+    // Solo puede si hay un período finalizado Y no ha confirmado desde que ese período terminó
+    let canConfirm = false
+    if (latestFinishedPeriod) {
+      const confirmationSinceLastPeriodEnd = await db.teacherPaymentConfirmation.findFirst({
+        where: {
+          teacherId,
+          status: { not: ConfirmationStatus.REJECTED },
+          confirmedAt: { gte: latestFinishedPeriod.endDate },
+        },
+        select: { id: true },
+      })
+      canConfirm = !confirmationSinceLastPeriodEnd
+    }
 
     return NextResponse.json({
       success: true,
@@ -368,21 +381,13 @@ export async function GET(request: NextRequest) {
         amount: Math.round(nextPayoutAmount * 100) / 100,
         estimatedDate: nextPayoutDate.toISOString(),
       },
-      currentPeriod: currentAcademicPeriod
-        ? {
-            id: currentAcademicPeriod.id,
-            name: currentAcademicPeriod.name,
-            endDate: currentAcademicPeriod.endDate.toISOString(),
-            hasEnded: false,
-          }
-        : latestFinishedPeriod
-          ? {
-              id: latestFinishedPeriod.id,
-              name: latestFinishedPeriod.name,
-              endDate: latestFinishedPeriod.endDate.toISOString(),
-              hasEnded: true,
-            }
+      currentPeriod: {
+        canConfirm,
+        activePeriodEndDate: currentAcademicPeriod
+          ? currentAcademicPeriod.endDate.toISOString()
           : null,
+        lastFinishedPeriodName: latestFinishedPeriod?.name || null,
+      },
       filters: {
         startDate,
         endDate,

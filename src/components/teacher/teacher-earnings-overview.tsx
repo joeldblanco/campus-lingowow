@@ -105,11 +105,10 @@ interface EarningsData {
     estimatedDate: string
   }
   currentPeriod: {
-    id: string
-    name: string
-    endDate: string
-    hasEnded: boolean
-  } | null
+    canConfirm: boolean
+    activePeriodEndDate: string | null
+    lastFinishedPeriodName: string | null
+  }
   filters: {
     startDate: string | null
     endDate: string | null
@@ -714,47 +713,38 @@ export function TeacherEarningsOverview() {
                       <CheckCircle className="h-4 w-4" />
                       <span>No hay montos pendientes por confirmar</span>
                     </div>
+                  ) : earningsData.currentPeriod.canConfirm ? (
+                    <Button
+                      onClick={() => setConfirmDialogOpen(true)}
+                      variant="secondary"
+                      className="w-full bg-white/20 hover:bg-white/30 text-primary-foreground border-0"
+                    >
+                      <Check className="h-4 w-4 mr-2" />
+                      Confirmar Monto
+                    </Button>
                   ) : (
-                    (() => {
-                      const isPeriodEnded = earningsData.currentPeriod?.hasEnded ?? false
-                      const periodEndDate = earningsData.currentPeriod?.endDate
-                        ? format(new Date(earningsData.currentPeriod.endDate), 'dd MMM, yyyy', {
-                            locale: es,
-                          })
-                        : null
-
-                      return isPeriodEnded ? (
-                        <Button
-                          onClick={() => setConfirmDialogOpen(true)}
-                          variant="secondary"
-                          className="w-full bg-white/20 hover:bg-white/30 text-primary-foreground border-0"
-                        >
-                          <Check className="h-4 w-4 mr-2" />
-                          Confirmar Monto
-                        </Button>
-                      ) : (
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <span className="w-full">
-                              <Button
-                                disabled
-                                variant="secondary"
-                                className="w-full bg-white/20 text-primary-foreground border-0 opacity-60 cursor-not-allowed"
-                              >
-                                <Check className="h-4 w-4 mr-2" />
-                                Confirmar Monto
-                              </Button>
-                            </span>
-                          </TooltipTrigger>
-                          <TooltipContent side="bottom">
-                            <p>
-                              Este botón se habilitará cuando el período académico actual finalice
-                              {periodEndDate ? ` (${periodEndDate})` : ''}.
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
-                      )
-                    })()
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="w-full">
+                          <Button
+                            disabled
+                            variant="secondary"
+                            className="w-full bg-white/20 text-primary-foreground border-0 opacity-60 cursor-not-allowed"
+                          >
+                            <Check className="h-4 w-4 mr-2" />
+                            Confirmar Monto
+                          </Button>
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom">
+                        <p>
+                          Este botón se habilitará cuando el período académico actual finalice
+                          {earningsData.currentPeriod.activePeriodEndDate
+                            ? ` (${format(new Date(earningsData.currentPeriod.activePeriodEndDate), 'dd MMM, yyyy', { locale: es })})`
+                            : ''}.
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
                   )}
                 </div>
                 <div className="bg-black/10 p-4 relative z-10">
