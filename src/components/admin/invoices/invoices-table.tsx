@@ -51,7 +51,21 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
   const [viewingInvoice, setViewingInvoice] = useState<InvoiceWithDetails | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
+  const [originFilter, setOriginFilter] = useState('all')
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)
+
+  const getInvoiceOrigin = (invoice: InvoiceWithDetails) => {
+    const isPaypal = !!invoice.paypalOrderId || invoice.paymentMethod === 'paypal'
+    const isNiubiz =
+      !!invoice.niubizTransactionId ||
+      !!invoice.niubizOrderId ||
+      invoice.paymentMethod === 'card' ||
+      invoice.paymentMethod === 'creditCard'
+
+    if (isPaypal) return 'PAYPAL'
+    if (isNiubiz) return 'NIUBIZ'
+    return 'LINGOWOW'
+  }
 
   const filteredInvoices = useMemo(() => {
     let filtered = invoices
@@ -72,6 +86,9 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
     if (statusFilter !== 'all') {
       filtered = filtered.filter((invoice) => invoice.status === statusFilter)
     }
+    if (originFilter !== 'all') {
+      filtered = filtered.filter((invoice) => getInvoiceOrigin(invoice) === originFilter)
+    }
     if (dateRange?.from) {
       filtered = filtered.filter((invoice) => {
         const invoiceDate = new Date(invoice.createdAt)
@@ -86,7 +103,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
       })
     }
     return filtered
-  }, [invoices, searchTerm, statusFilter, dateRange])
+  }, [invoices, searchTerm, statusFilter, originFilter, dateRange])
 
   const handleDelete = async (id: string) => {
     if (confirm('¿Estás seguro de que quieres eliminar esta factura?')) {
@@ -133,6 +150,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
   const clearFilters = () => {
     setSearchTerm('')
     setStatusFilter('all')
+    setOriginFilter('all')
     setDateRange(undefined)
   }
 
@@ -236,15 +254,11 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
     },
     {
       id: 'origin',
-      header: () => <div className="text-center">Origen</div>,
+      accessorFn: (row) => getInvoiceOrigin(row),
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Origen" />,
       cell: ({ row }) => {
         const invoice = row.original
-        const isPaypal = !!invoice.paypalOrderId || invoice.paymentMethod === 'paypal'
-        const isNiubiz =
-          !!invoice.niubizTransactionId ||
-          !!invoice.niubizOrderId ||
-          invoice.paymentMethod === 'card' ||
-          invoice.paymentMethod === 'creditCard'
+        const origin = getInvoiceOrigin(invoice)
 
         let label = 'Lingowow'
         let icon = (
@@ -257,7 +271,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
           />
         )
 
-        if (isPaypal) {
+        if (origin === 'PAYPAL') {
           label = 'PayPal'
           icon = (
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none">
@@ -271,7 +285,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
               />
             </svg>
           )
-        } else if (isNiubiz) {
+        } else if (origin === 'NIUBIZ') {
           label = 'Niubiz'
           icon = <CreditCard className="h-5 w-5 text-orange-600" />
         }
@@ -291,7 +305,6 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
           </div>
         )
       },
-      enableSorting: false,
     },
     {
       accessorKey: 'status',
@@ -300,7 +313,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
     },
     {
       accessorKey: 'total',
-      header: () => <div className="text-right">Total</div>,
+      header: ({ column }) => <DataTableColumnHeader column={column} title="TOTAL" />,
       cell: ({ row }) => (
         <div className="text-right">
           <div className="font-medium text-sm">{formatCurrency(row.original.total)}</div>
@@ -385,6 +398,17 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
           <SelectItem value="PAID">Pagada</SelectItem>
           <SelectItem value="OVERDUE">Vencida</SelectItem>
           <SelectItem value="CANCELLED">Cancelada</SelectItem>
+        </SelectContent>
+      </Select>
+      <Select value={originFilter} onValueChange={setOriginFilter}>
+        <SelectTrigger className="w-[140px]">
+          <SelectValue placeholder="Origen" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Todos</SelectItem>
+          <SelectItem value="LINGOWOW">Lingowow</SelectItem>
+          <SelectItem value="PAYPAL">PayPal</SelectItem>
+          <SelectItem value="NIUBIZ">Niubiz</SelectItem>
         </SelectContent>
       </Select>
       <ExportButton onExport={handleExport} disabled={filteredInvoices.length === 0} />
