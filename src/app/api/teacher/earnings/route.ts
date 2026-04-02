@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
-import { BookingStatus } from '@prisma/client'
+import { BookingStatus, ConfirmationStatus } from '@prisma/client'
 
 export async function GET(request: NextRequest) {
   try {
@@ -306,7 +306,37 @@ export async function GET(request: NextRequest) {
 
     // Calcular próximo pago estimado
     const nextPayoutDate = new Date(now.getFullYear(), now.getMonth() + 1, 1)
-    const nextPayoutAmount = totalEarnings + pendingBonuses
+    const grossPayoutAmount = totalEarnings + pendingBonuses
+
+    // Obtener el total de montos ya confirmados por este profesor
+    const confirmedPayments = await db.teacherPaymentConfirmation.aggregate({
+      where: {
+        teacherId,
+        status: { not: ConfirmationStatus.REJECTED },
+      },
+      _sum: { amount: true },
+    })
+    const totalConfirmedAmount = confirmedPayments._sum.amount || 0
+    const nextPayoutAmount = Math.max(grossPayoutAmount - totalConfirmedAmount, 0)
+
+    // Obtener el período académico actual para saber si ya finalizó
+    const currentAcademicPeriod = await db.academicPeriod.findFirst({
+      where: {
+        startDate: { lte: now },
+        endDate: { gte: now },
+      },
+      select: { id: true, name: true, endDate: true },
+      orderBy: { startDate: 'desc' },
+    })
+
+    // Si no hay período activo, buscar el más reciente que ya terminó
+    const latestFinishedPeriod = !currentAcademicPeriod
+      ? await db.academicPeriod.findFirst({
+          where: { endDate: { lt: now } },
+          select: { id: true, name: true, endDate: true },
+          orderBy: { endDate: 'desc' },
+        })
+      : null
 
     return NextResponse.json({
       success: true,
@@ -338,6 +368,21 @@ export async function GET(request: NextRequest) {
         amount: Math.round(nextPayoutAmount * 100) / 100,
         estimatedDate: nextPayoutDate.toISOString(),
       },
+      currentPeriod: currentAcademicPeriod
+        ? {
+            id: currentAcademicPeriod.id,
+            name: currentAcademicPeriod.name,
+            endDate: currentAcademicPeriod.endDate.toISOString(),
+            hasEnded: false,
+          }
+        : latestFinishedPeriod
+          ? {
+              id: latestFinishedPeriod.id,
+              name: latestFinishedPeriod.name,
+              endDate: latestFinishedPeriod.endDate.toISOString(),
+              hasEnded: true,
+            }
+          : null,
       filters: {
         startDate,
         endDate,

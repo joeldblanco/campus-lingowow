@@ -50,6 +50,11 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 
 interface ClassDetail {
   bookingId: string
@@ -108,6 +113,12 @@ interface EarningsData {
     amount: number
     estimatedDate: string
   }
+  currentPeriod: {
+    id: string
+    name: string
+    endDate: string
+    hasEnded: boolean
+  } | null
   filters: {
     startDate: string | null
     endDate: string | null
@@ -713,16 +724,49 @@ export function TeacherEarningsOverview() {
                       <CheckCircle className="h-4 w-4" />
                       <span>Pago confirmado - Pendiente de procesamiento</span>
                     </div>
-                  ) : (
-                    <Button
-                      onClick={() => setConfirmDialogOpen(true)}
-                      variant="secondary"
-                      className="w-full bg-white/20 hover:bg-white/30 text-primary-foreground border-0"
-                    >
-                      <Check className="h-4 w-4 mr-2" />
-                      Confirmar Monto
-                    </Button>
-                  )}
+                  ) : earningsData.nextPayout.amount <= 0 ? (
+                    <div className="flex items-center gap-2 text-sm bg-white/20 rounded-lg p-2">
+                      <CheckCircle className="h-4 w-4" />
+                      <span>No hay montos pendientes por confirmar</span>
+                    </div>
+                  ) : (() => {
+                    const isPeriodEnded = earningsData.currentPeriod?.hasEnded ?? false
+                    const periodEndDate = earningsData.currentPeriod?.endDate
+                      ? format(new Date(earningsData.currentPeriod.endDate), 'dd MMM, yyyy', { locale: es })
+                      : null
+
+                    return isPeriodEnded ? (
+                      <Button
+                        onClick={() => setConfirmDialogOpen(true)}
+                        variant="secondary"
+                        className="w-full bg-white/20 hover:bg-white/30 text-primary-foreground border-0"
+                      >
+                        <Check className="h-4 w-4 mr-2" />
+                        Confirmar Monto
+                      </Button>
+                    ) : (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="w-full">
+                            <Button
+                              disabled
+                              variant="secondary"
+                              className="w-full bg-white/20 text-primary-foreground border-0 opacity-60 cursor-not-allowed"
+                            >
+                              <Check className="h-4 w-4 mr-2" />
+                              Confirmar Monto
+                            </Button>
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent side="bottom">
+                          <p>
+                            Este botón se habilitará cuando el período académico actual finalice
+                            {periodEndDate ? ` (${periodEndDate})` : ''}.
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    )
+                  })()}
                 </div>
                 <div className="bg-black/10 p-4 relative z-10">
                   <a 
