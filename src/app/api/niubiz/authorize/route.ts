@@ -32,6 +32,25 @@ interface InvoiceData {
   currency?: string
 }
 
+interface CustomerInfo {
+  email: string
+  firstName: string
+  lastName?: string | null
+  address?: string
+  city?: string
+  country?: string
+  zipCode?: string
+}
+
+const hasRequiredBillingInfo = (customerInfo?: CustomerInfo) => {
+  return Boolean(
+    customerInfo?.address?.trim() &&
+      customerInfo?.city?.trim() &&
+      customerInfo?.country?.trim() &&
+      customerInfo?.zipCode?.trim()
+  )
+}
+
 export async function POST(req: NextRequest) {
   try {
     const session = await auth()
@@ -45,15 +64,15 @@ export async function POST(req: NextRequest) {
       orderId: string
       registerCard?: boolean
       invoiceData?: InvoiceData
-      customerInfo?: {
-        email: string
-        firstName: string
-        lastName?: string | null
-      }
+      customerInfo?: CustomerInfo
     }
 
     if (!transactionToken || !amount || !orderId) {
       return new NextResponse('Missing required fields', { status: 400 })
+    }
+
+    if (invoiceData && !hasRequiredBillingInfo(customerInfo)) {
+      return new NextResponse('Billing address is required for card payments', { status: 400 })
     }
 
     // Determine user ID
@@ -139,6 +158,10 @@ export async function POST(req: NextRequest) {
           paymentMethod: 'niubiz',
           niubizTransactionId: transactionToken,
           niubizOrderId: orderId,
+          billingCountry: customerInfo?.country?.trim() || null,
+          billingCity: customerInfo?.city?.trim() || null,
+          billingAddress: customerInfo?.address?.trim() || null,
+          billingZipCode: customerInfo?.zipCode?.trim() || null,
           notes: `Niubiz Order ID: ${orderId}, Auth: ${authorization?.header?.ecoreTransactionUUID}`,
           items: {
             create: invoiceData.items.map((item) => ({

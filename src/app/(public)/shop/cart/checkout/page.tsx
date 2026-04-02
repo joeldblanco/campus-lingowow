@@ -445,6 +445,9 @@ export default function CheckoutPage() {
         case 'missing_params':
           toast.error('Faltan parámetros de la transacción. Por favor intente de nuevo.')
           break
+        case 'missing_billing_info':
+          toast.error('Para pagar con tarjeta debes completar la dirección de facturación.')
+          break
         case 'auth_failed':
           toast.error(errorMessage ? decodeURIComponent(errorMessage) : 'El pago fue rechazado.')
           break
@@ -488,6 +491,22 @@ export default function CheckoutPage() {
         toast.error('Por favor completa todos los campos requeridos')
         return
       }
+
+      if (paymentMethod === 'creditCard') {
+        const hasMissingBillingFields =
+          !formData.address.trim() ||
+          !formData.city.trim() ||
+          !formData.country.trim() ||
+          !formData.zipCode.trim()
+
+        if (hasMissingBillingFields) {
+          toast.error(
+            'Para pagar con tarjeta, completa dirección, ciudad, país y código postal'
+          )
+          return
+        }
+      }
+
       sessionStorage.setItem('customer-info', JSON.stringify({
         ...formData,
         fullName: `${formData.firstName} ${formData.lastName}`,
@@ -500,7 +519,14 @@ export default function CheckoutPage() {
       
       setCurrentStep('payment')
     }
-  }, [currentStep, allSchedulesSelected, formData, requiresPlatformAccess, session])
+  }, [
+    currentStep,
+    allSchedulesSelected,
+    formData,
+    paymentMethod,
+    requiresPlatformAccess,
+    session,
+  ])
 
   const handleBack = useCallback(() => {
     if (currentStep === 'review' && requiresScheduleSelection) {
@@ -800,6 +826,15 @@ export default function CheckoutPage() {
                     isRecurrent={isRecurrentData}
                     allowGuestCheckout={!requiresPlatformAccess}
                     cartItems={cartItems}
+                    customerInfo={{
+                      email: session?.user?.email || formData.email,
+                      firstName: formData.firstName,
+                      lastName: formData.lastName,
+                      address: formData.address,
+                      city: formData.city,
+                      country: formData.country,
+                      zipCode: formData.zipCode,
+                    }}
                   />
                   <Button variant="ghost" onClick={handleBack} className="mt-6"><ArrowLeft className="h-4 w-4 mr-2" />Volver</Button>
                 </section>

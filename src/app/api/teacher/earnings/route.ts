@@ -304,9 +304,66 @@ export async function GET(request: NextRequest) {
         type: i.type,
       }))
 
-    // Calcular próximo pago estimado
+    // Calcular próximo pago estimado con TODO el histórico (independiente de filtros UI)
     const nextPayoutDate = new Date(now.getFullYear(), now.getMonth() + 1, 1)
-    const grossPayoutAmount = totalEarnings + pendingBonuses
+
+    const allCompletedClasses = await db.classBooking.findMany({
+      where: {
+        teacherId,
+        status: BookingStatus.COMPLETED,
+      },
+      include: {
+        enrollment: {
+          select: {
+            course: {
+              select: {
+                id: true,
+                classDuration: true,
+                defaultPaymentPerClass: true,
+              },
+            },
+          },
+        },
+        teacherAttendances: {
+          select: {
+            id: true,
+          },
+        },
+        videoCalls: {
+          select: {
+            duration: true,
+          },
+        },
+      },
+    })
+
+    const allPayableClasses = allCompletedClasses.filter((classBooking) => {
+      if (classBooking.isPayable) return true
+      return classBooking.teacherAttendances.length > 0
+    })
+
+    const totalEarningsAllTime = allPayableClasses.reduce((sum, classBooking) => {
+      const duration =
+        classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+
+      const courseId = classBooking.enrollment.course.id
+      const teacherPayment = teacherCoursePayments.get(courseId)
+      const defaultPayment = classBooking.enrollment.course.defaultPaymentPerClass
+
+      let classEarnings: number
+      if (teacherPayment !== null && teacherPayment !== undefined) {
+        classEarnings = teacherPayment
+      } else if (defaultPayment !== null && defaultPayment !== undefined) {
+        classEarnings = defaultPayment
+      } else {
+        const hours = duration / 60
+        classEarnings = hours * BASE_RATE_PER_HOUR * rateMultiplier
+      }
+
+      return sum + classEarnings
+    }, 0)
+
+    const grossPayoutAmount = totalEarningsAllTime + pendingBonuses
 
     // Obtener el total de montos ya confirmados por este profesor
     const confirmedPayments = await db.teacherPaymentConfirmation.aggregate({

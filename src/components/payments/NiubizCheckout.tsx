@@ -22,6 +22,16 @@ interface CartItem {
     quantity?: number;
 }
 
+interface CustomerInfo {
+    email: string;
+    firstName: string;
+    lastName?: string;
+    address?: string;
+    city?: string;
+    country?: string;
+    zipCode?: string;
+}
+
 interface NiubizCheckoutProps {
     amount: number;
     purchaseNumber: string; // Unique Order ID
@@ -32,7 +42,7 @@ interface NiubizCheckoutProps {
     userFirstName?: string;
     userLastName?: string;
     invoiceData?: unknown;
-    customerInfo?: unknown;
+    customerInfo?: CustomerInfo;
     allowGuest?: boolean;
     cartItems?: CartItem[];
 }
@@ -67,6 +77,12 @@ export const NiubizCheckout = ({
     const initializeSession = async () => {
         try {
             setLoading(true);
+            const finalCustomerInfo = customerInfo || (userEmail ? {
+                email: userEmail,
+                firstName: userFirstName || '',
+                lastName: userLastName || '',
+            } : undefined);
+
             const res = await fetch("/api/niubiz/session", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -75,11 +91,7 @@ export const NiubizCheckout = ({
                     allowGuest,
                     purchaseNumber,
                     invoiceData,
-                    customerInfo: customerInfo || (userEmail ? {
-                        email: userEmail,
-                        firstName: userFirstName || '',
-                        lastName: userLastName || '',
-                    } : undefined),
+                    customerInfo: finalCustomerInfo,
                 }),
             });
 
@@ -119,7 +131,7 @@ export const NiubizCheckout = ({
             sessionKey: data.sessionKey,
             timestamp: Date.now(),
             cartItems: cartItems,
-            customerInfo: {
+            customerInfo: customerInfo || {
                 email: userEmail,
                 firstName: userFirstName,
                 lastName: userLastName,

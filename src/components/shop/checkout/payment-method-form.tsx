@@ -27,6 +27,16 @@ interface CartItemForNiubiz {
   quantity?: number
 }
 
+interface CustomerInfo {
+  email: string
+  firstName: string
+  lastName?: string
+  address?: string
+  city?: string
+  country?: string
+  zipCode?: string
+}
+
 interface PaymentMethodFormProps {
   paymentMethod: string
   onSubmit: (data: PaymentFormData) => void
@@ -52,6 +62,7 @@ interface PaymentMethodFormProps {
   isRecurrent?: boolean
   allowGuestCheckout?: boolean
   cartItems?: CartItemForNiubiz[]
+  customerInfo?: CustomerInfo
 }
 
 type PaymentFormData = Record<string, never>
@@ -75,7 +86,8 @@ export function PaymentMethodForm({
   userLastName,
   isRecurrent = false,
   allowGuestCheckout = false,
-  cartItems = []
+  cartItems = [],
+  customerInfo,
 }: PaymentMethodFormProps) {
   const schema = createPaymentSchema(paymentMethod)
 
@@ -123,6 +135,7 @@ export function PaymentMethodForm({
             userLastName={userLastName}
             isRecurrent={isRecurrent}
             invoiceData={paypalData}
+            customerInfo={customerInfo}
             allowGuest={allowGuestCheckout}
             cartItems={cartItems}
           />

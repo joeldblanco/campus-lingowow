@@ -28,6 +28,26 @@ interface InvoiceData {
   discount: number
   total: number
   currency?: string
+  customerInfo?: CustomerInfo | null
+}
+
+interface CustomerInfo {
+  email: string
+  firstName: string
+  lastName?: string | null
+  address?: string
+  city?: string
+  country?: string
+  zipCode?: string
+}
+
+const hasRequiredBillingInfo = (customerInfo?: CustomerInfo | null) => {
+  return Boolean(
+    customerInfo?.address?.trim() &&
+      customerInfo?.city?.trim() &&
+      customerInfo?.country?.trim() &&
+      customerInfo?.zipCode?.trim()
+  )
 }
 
 // This endpoint receives the POST from Niubiz after 3DS authentication
@@ -130,6 +150,15 @@ export async function POST(request: NextRequest) {
       console.log('[NIUBIZ CHECKOUT] Found pending order, creating invoice and enrollment...')
       
       const invoiceData = pendingOrder.invoiceData as unknown as InvoiceData
+      const customerInfo = invoiceData.customerInfo
+
+      if (!hasRequiredBillingInfo(customerInfo)) {
+        console.error('[NIUBIZ CHECKOUT] Missing billing info for card payment')
+        return NextResponse.redirect(
+          new URL('/shop/cart/checkout?niubiz_error=missing_billing_info', request.url)
+        )
+      }
+
       let userId = pendingOrder.userId
       
       // If no user but have customer email, find or create user
@@ -170,6 +199,10 @@ export async function POST(request: NextRequest) {
             paymentMethod: 'niubiz',
             niubizTransactionId: transactionToken,
             niubizOrderId: purchaseNumber,
+            billingCountry: customerInfo?.country?.trim() || null,
+            billingCity: customerInfo?.city?.trim() || null,
+            billingAddress: customerInfo?.address?.trim() || null,
+            billingZipCode: customerInfo?.zipCode?.trim() || null,
             notes: `Niubiz Order ID: ${purchaseNumber}, Auth: ${authorization?.header?.ecoreTransactionUUID}`,
             items: {
               create: invoiceData.items.map((item) => ({

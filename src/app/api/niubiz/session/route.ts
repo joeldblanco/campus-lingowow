@@ -3,12 +3,41 @@ import { createNiubizSession, getNiubizAccessToken } from '@/lib/niubiz'
 import { db } from '@/lib/db'
 import { NextResponse } from 'next/server'
 
+interface CustomerInfo {
+  email: string
+  firstName: string
+  lastName?: string | null
+  address?: string
+  city?: string
+  country?: string
+  zipCode?: string
+}
+
+interface InvoiceData {
+  currency?: string
+}
+
+const hasRequiredBillingInfo = (customerInfo?: CustomerInfo) => {
+  return Boolean(
+    customerInfo?.address?.trim() &&
+      customerInfo?.city?.trim() &&
+      customerInfo?.country?.trim() &&
+      customerInfo?.zipCode?.trim()
+  )
+}
+
 export async function POST(req: Request) {
   try {
     const session = await auth()
     
     const body = await req.json()
-    const { amount, allowGuest, purchaseNumber, invoiceData, customerInfo } = body
+    const { amount, allowGuest, purchaseNumber, invoiceData, customerInfo } = body as {
+      amount: number
+      allowGuest?: boolean
+      purchaseNumber?: string
+      invoiceData?: InvoiceData
+      customerInfo?: CustomerInfo
+    }
 
     if (!amount) {
       return new NextResponse('Amount is required', { status: 400 })
@@ -16,6 +45,10 @@ export async function POST(req: Request) {
     
     if (!session?.user && !allowGuest) {
       return new NextResponse('Unauthorized', { status: 401 })
+    }
+
+    if (invoiceData && !hasRequiredBillingInfo(customerInfo)) {
+      return new NextResponse('Billing address is required for card payments', { status: 400 })
     }
 
     // 1. Get Access Token
@@ -28,6 +61,11 @@ export async function POST(req: Request) {
     // 3. Save pending order data if provided (for 3DS redirect flow)
     if (purchaseNumber && invoiceData) {
       console.log('[NIUBIZ_SESSION] Saving pending order:', purchaseNumber)
+
+      const pendingInvoiceData = {
+        ...invoiceData,
+        customerInfo: customerInfo || null,
+      }
       
       // Delete any existing pending order with same purchaseNumber
       await db.pendingOrder.deleteMany({
@@ -43,7 +81,7 @@ export async function POST(req: Request) {
           customerName: customerInfo?.firstName || null,
           amount,
           currency: invoiceData.currency || 'USD',
-          invoiceData: invoiceData,
+          invoiceData: pendingInvoiceData,
           status: 'PENDING',
           expiresAt: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
         }
