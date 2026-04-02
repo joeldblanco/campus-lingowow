@@ -33,12 +33,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/ui/tabs'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -50,11 +45,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 interface ClassDetail {
   bookingId: string
@@ -155,7 +146,7 @@ export function TeacherEarningsOverview() {
   // Handle payment confirmation
   const handleConfirmPayment = async () => {
     if (!earningsData) return
-    
+
     setIsConfirming(true)
     try {
       const formData = new FormData()
@@ -292,7 +283,7 @@ export function TeacherEarningsOverview() {
         }
         return str
       }
-      
+
       rows.push(
         [
           escapeField(classDetail.date),
@@ -353,11 +344,7 @@ export function TeacherEarningsOverview() {
           className
         )}
       >
-        {isPositive ? (
-          <TrendingUp className="h-4 w-4" />
-        ) : (
-          <TrendingDown className="h-4 w-4" />
-        )}
+        {isPositive ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
         {isPositive ? '+' : ''}
         {value}% vs mes anterior
       </div>
@@ -512,9 +499,7 @@ export function TeacherEarningsOverview() {
                 <div className="flex justify-between items-center mb-6">
                   <div>
                     <h3 className="text-lg font-bold">Tendencia de Ingresos</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Desglose semanal del mes actual
-                    </p>
+                    <p className="text-sm text-muted-foreground">Desglose semanal del mes actual</p>
                   </div>
                   <Select defaultValue="weekly">
                     <SelectTrigger className="w-[120px] h-9">
@@ -530,9 +515,8 @@ export function TeacherEarningsOverview() {
                 {/* Gráfico de barras CSS */}
                 <div className="grid grid-cols-4 gap-4 items-end h-48 px-2">
                   {earningsData.weeklyEarnings.map((week) => {
-                    const heightPercent = maxWeeklyEarning > 0 
-                      ? (week.earnings / maxWeeklyEarning) * 100 
-                      : 0
+                    const heightPercent =
+                      maxWeeklyEarning > 0 ? (week.earnings / maxWeeklyEarning) * 100 : 0
                     return (
                       <div
                         key={week.week}
@@ -658,7 +642,8 @@ export function TeacherEarningsOverview() {
                       {/* Paginación */}
                       <div className="flex items-center justify-between px-6 py-4 border-t bg-muted/50">
                         <p className="text-xs text-muted-foreground">
-                          Mostrando {paginatedClasses.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0}-
+                          Mostrando{' '}
+                          {paginatedClasses.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0}-
                           {Math.min(currentPage * itemsPerPage, earningsData.classes.length)} de{' '}
                           {earningsData.classes.length} clases
                         </p>
@@ -729,47 +714,51 @@ export function TeacherEarningsOverview() {
                       <CheckCircle className="h-4 w-4" />
                       <span>No hay montos pendientes por confirmar</span>
                     </div>
-                  ) : (() => {
-                    const isPeriodEnded = earningsData.currentPeriod?.hasEnded ?? false
-                    const periodEndDate = earningsData.currentPeriod?.endDate
-                      ? format(new Date(earningsData.currentPeriod.endDate), 'dd MMM, yyyy', { locale: es })
-                      : null
+                  ) : (
+                    (() => {
+                      const isPeriodEnded = earningsData.currentPeriod?.hasEnded ?? false
+                      const periodEndDate = earningsData.currentPeriod?.endDate
+                        ? format(new Date(earningsData.currentPeriod.endDate), 'dd MMM, yyyy', {
+                            locale: es,
+                          })
+                        : null
 
-                    return isPeriodEnded ? (
-                      <Button
-                        onClick={() => setConfirmDialogOpen(true)}
-                        variant="secondary"
-                        className="w-full bg-white/20 hover:bg-white/30 text-primary-foreground border-0"
-                      >
-                        <Check className="h-4 w-4 mr-2" />
-                        Confirmar Monto
-                      </Button>
-                    ) : (
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <span className="w-full">
-                            <Button
-                              disabled
-                              variant="secondary"
-                              className="w-full bg-white/20 text-primary-foreground border-0 opacity-60 cursor-not-allowed"
-                            >
-                              <Check className="h-4 w-4 mr-2" />
-                              Confirmar Monto
-                            </Button>
-                          </span>
-                        </TooltipTrigger>
-                        <TooltipContent side="bottom">
-                          <p>
-                            Este botón se habilitará cuando el período académico actual finalice
-                            {periodEndDate ? ` (${periodEndDate})` : ''}.
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    )
-                  })()}
+                      return isPeriodEnded ? (
+                        <Button
+                          onClick={() => setConfirmDialogOpen(true)}
+                          variant="secondary"
+                          className="w-full bg-white/20 hover:bg-white/30 text-primary-foreground border-0"
+                        >
+                          <Check className="h-4 w-4 mr-2" />
+                          Confirmar Monto
+                        </Button>
+                      ) : (
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <span className="w-full">
+                              <Button
+                                disabled
+                                variant="secondary"
+                                className="w-full bg-white/20 text-primary-foreground border-0 opacity-60 cursor-not-allowed"
+                              >
+                                <Check className="h-4 w-4 mr-2" />
+                                Confirmar Monto
+                              </Button>
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent side="bottom">
+                            <p>
+                              Este botón se habilitará cuando el período académico actual finalice
+                              {periodEndDate ? ` (${periodEndDate})` : ''}.
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      )
+                    })()
+                  )}
                 </div>
                 <div className="bg-black/10 p-4 relative z-10">
-                  <a 
+                  <a
                     href="/teacher/settings/payment"
                     className="w-full flex items-center justify-center gap-2 text-sm font-bold hover:text-primary-foreground/80 transition-colors"
                   >
@@ -824,8 +813,8 @@ export function TeacherEarningsOverview() {
                 <div>
                   <p className="text-sm font-bold">Consejo Pro</p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Los profesores con calificaciones de 5 estrellas ganan 15% más en bonificaciones.
-                    Revisa los comentarios de tus estudiantes.
+                    Los profesores con calificaciones de 5 estrellas ganan 15% más en
+                    bonificaciones. Revisa los comentarios de tus estudiantes.
                   </p>
                 </div>
               </div>
@@ -840,10 +829,11 @@ export function TeacherEarningsOverview() {
           <DialogHeader>
             <DialogTitle>Confirmar Monto de Pago</DialogTitle>
             <DialogDescription>
-              Revisa el monto y confirma que estás de acuerdo. Opcionalmente puedes adjuntar un comprobante.
+              Revisa el monto y confirma que estás de acuerdo. Opcionalmente puedes adjuntar un
+              comprobante.
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-4 py-4">
             <div className="bg-muted/50 rounded-lg p-4 text-center">
               <p className="text-sm text-muted-foreground">Monto a recibir</p>
@@ -851,8 +841,11 @@ export function TeacherEarningsOverview() {
                 ${earningsData?.nextPayout.amount.toFixed(2) || '0.00'}
               </p>
               <p className="text-xs text-muted-foreground mt-1">
-                Fecha estimada: {earningsData?.nextPayout.estimatedDate 
-                  ? format(new Date(earningsData.nextPayout.estimatedDate), 'dd MMM, yyyy', { locale: es })
+                Fecha estimada:{' '}
+                {earningsData?.nextPayout.estimatedDate
+                  ? format(new Date(earningsData.nextPayout.estimatedDate), 'dd MMM, yyyy', {
+                      locale: es,
+                    })
                   : '-'}
               </p>
             </div>
@@ -877,9 +870,7 @@ export function TeacherEarningsOverview() {
                   </button>
                 </div>
               )}
-              <p className="text-xs text-muted-foreground">
-                Solo archivos PDF, máximo 5MB
-              </p>
+              <p className="text-xs text-muted-foreground">Solo archivos PDF, máximo 5MB</p>
             </div>
           </div>
 
