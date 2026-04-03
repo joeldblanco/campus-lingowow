@@ -331,7 +331,10 @@ export async function handleAdminEnrollStudent(params: {
         try {
           await notifySelfServiceEnrollmentCreated(enrollmentId)
         } catch (notificationError) {
-          console.error('[AdminEnrollStudent] Error sending enrollment notifications:', notificationError)
+          console.error(
+            '[AdminEnrollStudent] Error sending enrollment notifications:',
+            notificationError
+          )
         }
 
         return {
@@ -359,7 +362,10 @@ export async function handleAdminEnrollStudent(params: {
     try {
       await notifySelfServiceEnrollmentCreated(enrollmentId)
     } catch (notificationError) {
-      console.error('[AdminEnrollStudent] Error sending enrollment notifications:', notificationError)
+      console.error(
+        '[AdminEnrollStudent] Error sending enrollment notifications:',
+        notificationError
+      )
     }
 
     return {

@@ -88,7 +88,10 @@ export default function TeacherPaymentsPage() {
     }
   }
 
-  const applyFilters = async (newFilters: TeacherPaymentFilters, currentPeriods?: AcademicPeriodOption[]) => {
+  const applyFilters = async (
+    newFilters: TeacherPaymentFilters,
+    currentPeriods?: AcademicPeriodOption[]
+  ) => {
     setLoading(true)
     try {
       const report = await getTeacherPaymentsReport(newFilters)

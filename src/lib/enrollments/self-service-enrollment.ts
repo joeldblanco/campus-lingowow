@@ -5,10 +5,7 @@ import {
   convertRecurringScheduleFromUTC,
   formatInTimeZone,
 } from '@/lib/utils/date'
-import {
-  sendEnrollmentConfirmationStudentEmail,
-  sendNewEnrollmentTeacherEmail,
-} from '@/lib/mail'
+import { sendEnrollmentConfirmationStudentEmail, sendNewEnrollmentTeacherEmail } from '@/lib/mail'
 
 const ACTIVE_ENROLLMENT_STATUS = 'ACTIVE'
 const DEFAULT_TIMEZONE = 'America/Lima'
@@ -124,21 +121,20 @@ function formatTeacherScheduleSummary(
     return null
   }
 
-  const parts = bookings
-    .map((booking) => {
-      const [startTime] = booking.timeSlot.split('-')
-      const bookingDate = combineDateAndTimeUTC(booking.day, startTime)
+  const parts = bookings.map((booking) => {
+    const [startTime] = booking.timeSlot.split('-')
+    const bookingDate = combineDateAndTimeUTC(booking.day, startTime)
 
-      const weekday = formatInTimeZone(bookingDate, 'EEEE', timezone)
-      const timeLabel = new Intl.DateTimeFormat('es-PE', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true,
-        timeZone: timezone,
-      }).format(bookingDate)
+    const weekday = formatInTimeZone(bookingDate, 'EEEE', timezone)
+    const timeLabel = new Intl.DateTimeFormat('es-PE', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+      timeZone: timezone,
+    }).format(bookingDate)
 
-      return `${weekday} a las ${timeLabel}`
-    })
+    return `${weekday} a las ${timeLabel}`
+  })
 
   return joinLabelParts([...new Set(parts)])
 }
@@ -368,7 +364,8 @@ export async function notifySelfServiceEnrollmentCreated(enrollmentId: string) {
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Error al enviar notificaciones de inscripción',
+      error:
+        error instanceof Error ? error.message : 'Error al enviar notificaciones de inscripción',
     }
   }
 }

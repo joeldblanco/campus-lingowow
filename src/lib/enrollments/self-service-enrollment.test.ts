@@ -5,10 +5,7 @@ import {
 } from './self-service-enrollment'
 import { db } from '@/lib/db'
 import { notifyNewEnrollment } from '@/lib/actions/notifications'
-import {
-  sendEnrollmentConfirmationStudentEmail,
-  sendNewEnrollmentTeacherEmail,
-} from '@/lib/mail'
+import { sendEnrollmentConfirmationStudentEmail, sendNewEnrollmentTeacherEmail } from '@/lib/mail'
 
 vi.mock('@/lib/db', () => ({
   db: {

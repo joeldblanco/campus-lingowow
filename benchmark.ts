@@ -11,7 +11,7 @@ async function runBenchmark() {
       name: 'Bench',
       lastName: 'Teacher',
       roles: ['TEACHER'],
-    }
+    },
   })
 
   // Create fake courses
@@ -26,7 +26,7 @@ async function runBenchmark() {
         level: 'BEGINNER',
         isPublished: true,
         createdBy: { connect: { id: teacher.id } },
-      }
+      },
     })
     courseIds.push(course.id)
   }

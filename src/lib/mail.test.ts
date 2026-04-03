@@ -51,6 +51,8 @@ describe('enrollment confirmation email copy', () => {
     expect(emailPayload.html).toContain(
       'Tu equipo académico te compartirá pronto el detalle de tu primera clase.'
     )
-    expect(emailPayload.html).toContain('Te avisaremos por este medio apenas se confirme el horario.')
+    expect(emailPayload.html).toContain(
+      'Te avisaremos por este medio apenas se confirme el horario.'
+    )
   })
 })

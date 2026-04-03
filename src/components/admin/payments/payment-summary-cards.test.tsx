@@ -23,7 +23,7 @@ describe('PaymentSummaryCards', () => {
 
     expect(screen.getByText('Pago Total')).toBeInTheDocument()
     expect(screen.getByText('$240.75')).toBeInTheDocument()
-  expect(screen.getByText('12 clases pagables')).toBeInTheDocument()
+    expect(screen.getByText('12 clases pagables')).toBeInTheDocument()
     expect(screen.getByText('Clases Pagables')).toBeInTheDocument()
     expect(screen.getByText('de 15 completadas')).toBeInTheDocument()
     expect(screen.getByText('Clases No Pagables')).toBeInTheDocument()

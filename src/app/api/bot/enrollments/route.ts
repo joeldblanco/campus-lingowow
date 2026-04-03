@@ -119,10 +119,12 @@ export async function GET(request: NextRequest) {
           startDate: e.academicPeriod.startDate.toISOString().split('T')[0],
           endDate: e.academicPeriod.endDate.toISOString().split('T')[0],
         },
-        teacher: e.teacher ? {
-          id: e.teacher.id,
-          name: [e.teacher.name, e.teacher.lastName].filter(Boolean).join(' '),
-        } : null,
+        teacher: e.teacher
+          ? {
+              id: e.teacher.id,
+              name: [e.teacher.name, e.teacher.lastName].filter(Boolean).join(' '),
+            }
+          : null,
         schedules: e.schedules.map((s) => ({
           dayOfWeek: s.dayOfWeek,
           dayName: dayNames[s.dayOfWeek],
@@ -135,10 +137,7 @@ export async function GET(request: NextRequest) {
     })
   } catch (error) {
     console.error('[BOT API] Error fetching enrollments:', error)
-    return NextResponse.json(
-      { error: 'Error al obtener inscripciones' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error al obtener inscripciones' }, { status: 500 })
   }
 }
 
@@ -253,7 +252,10 @@ export async function POST(request: NextRequest) {
     })
     if (existingEnrollment) {
       return NextResponse.json(
-        { error: 'El estudiante ya está inscrito en este curso para este período académico', existingEnrollmentId: existingEnrollment.id },
+        {
+          error: 'El estudiante ya está inscrito en este curso para este período académico',
+          existingEnrollmentId: existingEnrollment.id,
+        },
         { status: 409 }
       )
     }
@@ -266,7 +268,10 @@ export async function POST(request: NextRequest) {
         select: { id: true, roles: true },
       })
       if (!teacher || !teacher.roles.includes('TEACHER')) {
-        return NextResponse.json({ error: 'Profesor no encontrado o no tiene rol TEACHER' }, { status: 404 })
+        return NextResponse.json(
+          { error: 'Profesor no encontrado o no tiene rol TEACHER' },
+          { status: 404 }
+        )
       }
     }
 
@@ -287,7 +292,10 @@ export async function POST(request: NextRequest) {
       })
       if (existingInvoice) {
         return NextResponse.json(
-          { success: false, error: 'Este pago de PayPal ya está asociado a otra factura/inscripción' },
+          {
+            success: false,
+            error: 'Este pago de PayPal ya está asociado a otra factura/inscripción',
+          },
           { status: 409 }
         )
       }
@@ -315,7 +323,7 @@ export async function POST(request: NextRequest) {
         teacherId: resolvedTeacherId || null,
         status: enrollmentStatus,
         progress: 0,
-        classesTotal: classesTotal || (scheduledClasses?.length) || 8,
+        classesTotal: classesTotal || scheduledClasses?.length || 8,
         classesAttended: 0,
         classesMissed: 0,
         enrollmentType: 'MANUAL',
@@ -330,7 +338,10 @@ export async function POST(request: NextRequest) {
         // Rollback enrollment
         await db.enrollment.delete({ where: { id: enrollment.id } })
         return NextResponse.json(
-          { success: false, error: 'Error al generar la factura. La inscripción ha sido revertida.' },
+          {
+            success: false,
+            error: 'Error al generar la factura. La inscripción ha sido revertida.',
+          },
           { status: 500 }
         )
       }
@@ -439,40 +450,46 @@ export async function POST(request: NextRequest) {
       console.error('[BOT API] Error sending enrollment notifications:', notificationError)
     }
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        enrollment: {
-          id: createdEnrollment!.id,
-          status: createdEnrollment!.status,
-          classesTotal: createdEnrollment!.classesTotal,
-          student: {
-            id: createdEnrollment!.student.id,
-            name: [createdEnrollment!.student.name, createdEnrollment!.student.lastName].filter(Boolean).join(' '),
-            email: createdEnrollment!.student.email,
+    return NextResponse.json(
+      {
+        success: true,
+        data: {
+          enrollment: {
+            id: createdEnrollment!.id,
+            status: createdEnrollment!.status,
+            classesTotal: createdEnrollment!.classesTotal,
+            student: {
+              id: createdEnrollment!.student.id,
+              name: [createdEnrollment!.student.name, createdEnrollment!.student.lastName]
+                .filter(Boolean)
+                .join(' '),
+              email: createdEnrollment!.student.email,
+            },
+            course: createdEnrollment!.course,
+            academicPeriod: {
+              id: createdEnrollment!.academicPeriod.id,
+              name: createdEnrollment!.academicPeriod.name,
+              startDate: createdEnrollment!.academicPeriod.startDate.toISOString().split('T')[0],
+              endDate: createdEnrollment!.academicPeriod.endDate.toISOString().split('T')[0],
+            },
+            teacher: createdEnrollment!.teacher
+              ? {
+                  id: createdEnrollment!.teacher.id,
+                  name: [createdEnrollment!.teacher.name, createdEnrollment!.teacher.lastName]
+                    .filter(Boolean)
+                    .join(' '),
+                }
+              : null,
           },
-          course: createdEnrollment!.course,
-          academicPeriod: {
-            id: createdEnrollment!.academicPeriod.id,
-            name: createdEnrollment!.academicPeriod.name,
-            startDate: createdEnrollment!.academicPeriod.startDate.toISOString().split('T')[0],
-            endDate: createdEnrollment!.academicPeriod.endDate.toISOString().split('T')[0],
-          },
-          teacher: createdEnrollment!.teacher ? {
-            id: createdEnrollment!.teacher.id,
-            name: [createdEnrollment!.teacher.name, createdEnrollment!.teacher.lastName].filter(Boolean).join(' '),
-          } : null,
+          schedulesCreated,
+          classesCreated,
+          paypalVerified: !!paypalData,
         },
-        schedulesCreated,
-        classesCreated,
-        paypalVerified: !!paypalData,
       },
-    }, { status: 201 })
+      { status: 201 }
+    )
   } catch (error) {
     console.error('[BOT API] Error creating enrollment:', error)
-    return NextResponse.json(
-      { error: 'Error al crear la inscripción' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error al crear la inscripción' }, { status: 500 })
   }
 }

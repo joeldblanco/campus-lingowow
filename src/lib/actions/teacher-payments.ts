@@ -182,7 +182,9 @@ async function getTeacherCoursePaymentMap() {
   return new Map(teacherCourses.map((tc) => [`${tc.teacherId}-${tc.courseId}`, tc.paymentPerClass]))
 }
 
-function isPayableClass(classBooking: Pick<PaymentClassBooking, 'isPayable' | 'teacherAttendances'>) {
+function isPayableClass(
+  classBooking: Pick<PaymentClassBooking, 'isPayable' | 'teacherAttendances'>
+) {
   return classBooking.isPayable || classBooking.teacherAttendances.length > 0
 }
 
@@ -348,9 +350,13 @@ export async function getTeacherPaymentsReport(
     totalHours: Math.round(totalHours * 10) / 10,
     totalPayment: Math.round(totalPayment * 100) / 100,
     averagePaymentPerTeacher:
-      teacherReports.length > 0 ? Math.round((totalPayment / teacherReports.length) * 100) / 100 : 0,
+      teacherReports.length > 0
+        ? Math.round((totalPayment / teacherReports.length) * 100) / 100
+        : 0,
     averagePaymentPerClass:
-      payableClasses.length > 0 ? Math.round((totalPayment / payableClasses.length) * 100) / 100 : 0,
+      payableClasses.length > 0
+        ? Math.round((totalPayment / payableClasses.length) * 100) / 100
+        : 0,
     totalCompletedClasses: completedClasses.length,
     totalPayableClasses: payableClasses.length,
     totalNonPayableClasses: completedClasses.length - payableClasses.length,

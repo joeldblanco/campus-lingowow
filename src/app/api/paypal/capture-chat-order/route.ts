@@ -22,9 +22,7 @@ export async function GET(req: NextRequest) {
   const session = await auth()
   if (!session?.user?.id) {
     const callbackUrl = req.nextUrl.toString()
-    return NextResponse.redirect(
-      `${domain}/login?callbackUrl=${encodeURIComponent(callbackUrl)}`
-    )
+    return NextResponse.redirect(`${domain}/login?callbackUrl=${encodeURIComponent(callbackUrl)}`)
   }
 
   try {
@@ -49,7 +47,14 @@ export async function GET(req: NextRequest) {
     const plan = planId
       ? await db.plan.findUnique({
           where: { id: planId },
-          select: { id: true, name: true, price: true, includesClasses: true, courseId: true, classesPerPeriod: true },
+          select: {
+            id: true,
+            name: true,
+            price: true,
+            includesClasses: true,
+            courseId: true,
+            classesPerPeriod: true,
+          },
         })
       : null
 
@@ -72,7 +77,8 @@ export async function GET(req: NextRequest) {
         paymentMethod: 'paypal',
         paypalOrderId: orderId,
         paypalCaptureId: (captureData as { id?: string }).id,
-        paypalPayerEmail: (captureData as { payer?: { emailAddress?: string } }).payer?.emailAddress,
+        paypalPayerEmail: (captureData as { payer?: { emailAddress?: string } }).payer
+          ?.emailAddress,
         notes: `Chat payment: ${planName}. PayPal Order ID: ${orderId}`,
         ...(plan
           ? {

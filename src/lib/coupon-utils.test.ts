@@ -53,12 +53,10 @@ describe('coupon-utils', () => {
   })
 
   it('builds paid usage counts from grouped invoices', async () => {
-    vi.mocked(db.invoice.groupBy).mockResolvedValue(
-      [
-        { couponId: 'coupon-1', _count: { _all: 3 } },
-        { couponId: 'coupon-2', _count: { _all: 1 } },
-      ] as never
-    )
+    vi.mocked(db.invoice.groupBy).mockResolvedValue([
+      { couponId: 'coupon-1', _count: { _all: 3 } },
+      { couponId: 'coupon-2', _count: { _all: 1 } },
+    ] as never)
 
     const usageCounts = await getPaidCouponUsageCounts(['coupon-1', 'coupon-2'])
 

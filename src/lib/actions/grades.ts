@@ -161,12 +161,11 @@ export async function getAllStudentGrades(filters?: GradeFilters): Promise<Stude
         if (ua.userId !== enrollment.studentId) return false
 
         // Check if the activity belongs to the enrollment's course
-        const inModule = ua.activity.modules?.some(
-          (m) => m.module.courseId === enrollment.courseId
-        ) || false
-        const inLesson = ua.activity.lessons?.some(
-          (l) => l.lesson.module?.courseId === enrollment.courseId
-        ) || false
+        const inModule =
+          ua.activity.modules?.some((m) => m.module.courseId === enrollment.courseId) || false
+        const inLesson =
+          ua.activity.lessons?.some((l) => l.lesson.module?.courseId === enrollment.courseId) ||
+          false
         return inModule || inLesson
       })
 
@@ -521,7 +520,7 @@ export async function getStudentProgressReport(studentId: string) {
     })
 
     const progressData: Array<{
-      course: typeof enrollments[number]['course']
+      course: (typeof enrollments)[number]['course']
       enrollmentStatus: string
       enrollmentProgress: number | null
       enrollmentDate: Date
@@ -601,12 +600,11 @@ export async function getStudentProgressReport(studentId: string) {
     for (const enrollment of enrollments) {
       const activities = allActivities.filter((ua) => {
         // Check if the activity belongs to the enrollment's course
-        const inModule = ua.activity.modules?.some(
-          (m) => m.module.courseId === enrollment.courseId
-        ) || false
-        const inLesson = ua.activity.lessons?.some(
-          (l) => l.lesson.module?.courseId === enrollment.courseId
-        ) || false
+        const inModule =
+          ua.activity.modules?.some((m) => m.module.courseId === enrollment.courseId) || false
+        const inLesson =
+          ua.activity.lessons?.some((l) => l.lesson.module?.courseId === enrollment.courseId) ||
+          false
         return inModule || inLesson
       })
 

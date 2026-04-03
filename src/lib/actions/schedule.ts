@@ -39,21 +39,27 @@ export async function createScheduleSlots(productId: string, slots: Date[]) {
 }
 
 // Obtener slots disponibles para un producto
-export async function getAvailableSlots(productId: string, startDate?: Date, endDate?: Date): Promise<Array<{
-  id: string;
-  productId: string;
-  date: Date;
-  isBooked: boolean;
-  bookedBy: string | null;
-}>> {
+export async function getAvailableSlots(
+  productId: string,
+  startDate?: Date,
+  endDate?: Date
+): Promise<
+  Array<{
+    id: string
+    productId: string
+    date: Date
+    isBooked: boolean
+    bookedBy: string | null
+  }>
+> {
   try {
     const where: {
-      productId: string;
-      isBooked: boolean;
+      productId: string
+      isBooked: boolean
       date?: {
-        gte: Date;
-        lte: Date;
-      };
+        gte: Date
+        lte: Date
+      }
     } = {
       productId,
       isBooked: false,

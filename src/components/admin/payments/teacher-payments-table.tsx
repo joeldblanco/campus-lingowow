@@ -64,26 +64,40 @@ function PaymentDetailsDisplay({ paymentMethod, paymentDetails }: PaymentDetails
           icon: Building,
           fields: [
             { label: 'Banco', value: bankParts[0] || '' },
-            { label: 'Titular', value: bankParts.find(p => p.startsWith('Titular:'))?.replace('Titular: ', '') || '' },
-            { label: 'Cuenta', value: bankParts.find(p => p.startsWith('Cta:'))?.replace('Cta: ', '') || '' },
-            { label: 'CCI', value: bankParts.find(p => p.startsWith('CCI:'))?.replace('CCI: ', '') || '' },
-          ]
+            {
+              label: 'Titular',
+              value:
+                bankParts.find((p) => p.startsWith('Titular:'))?.replace('Titular: ', '') || '',
+            },
+            {
+              label: 'Cuenta',
+              value: bankParts.find((p) => p.startsWith('Cta:'))?.replace('Cta: ', '') || '',
+            },
+            {
+              label: 'CCI',
+              value: bankParts.find((p) => p.startsWith('CCI:'))?.replace('CCI: ', '') || '',
+            },
+          ],
         }
       case 'PayPal':
         return {
           icon: Mail,
-          fields: [
-            { label: 'Email PayPal', value: details }
-          ]
+          fields: [{ label: 'Email PayPal', value: details }],
         }
       case 'Binance':
         const binanceParts = details.split(' - ')
         return {
           icon: DollarSign,
           fields: [
-            { label: 'Email', value: binanceParts.find(p => p.startsWith('Email:'))?.replace('Email: ', '') || '' },
-            { label: 'ID', value: binanceParts.find(p => p.startsWith('ID:'))?.replace('ID: ', '') || '' },
-          ]
+            {
+              label: 'Email',
+              value: binanceParts.find((p) => p.startsWith('Email:'))?.replace('Email: ', '') || '',
+            },
+            {
+              label: 'ID',
+              value: binanceParts.find((p) => p.startsWith('ID:'))?.replace('ID: ', '') || '',
+            },
+          ],
         }
       case 'Pago Móvil':
         const pmParts = details.split(' - ')
@@ -91,17 +105,23 @@ function PaymentDetailsDisplay({ paymentMethod, paymentDetails }: PaymentDetails
           icon: Smartphone,
           fields: [
             { label: 'Banco', value: pmParts[0] || '' },
-            { label: 'Teléfono', value: pmParts.find(p => p.startsWith('Tel:'))?.replace('Tel: ', '') || '' },
-            { label: 'CI', value: pmParts.find(p => p.startsWith('CI:'))?.replace('CI: ', '') || '' },
-          ]
+            {
+              label: 'Teléfono',
+              value: pmParts.find((p) => p.startsWith('Tel:'))?.replace('Tel: ', '') || '',
+            },
+            {
+              label: 'CI',
+              value: pmParts.find((p) => p.startsWith('CI:'))?.replace('CI: ', '') || '',
+            },
+          ],
         }
       default:
         return {
           icon: CreditCard,
           fields: [
             { label: 'Método', value: method },
-            { label: 'Detalles', value: details }
-          ]
+            { label: 'Detalles', value: details },
+          ],
         }
     }
   }
@@ -115,19 +135,20 @@ function PaymentDetailsDisplay({ paymentMethod, paymentDetails }: PaymentDetails
         <span className="text-sm font-medium">{paymentMethod}</span>
       </div>
       <div className="grid gap-1">
-        {fields.map((field, index) => (
-          field.value && (
-            <div key={index} className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground w-16">{field.label}:</span>
-              <Input 
-                value={field.value} 
-                disabled 
-                className="h-6 text-xs bg-muted/50 border-0"
-                readOnly
-              />
-            </div>
-          )
-        ))}
+        {fields.map(
+          (field, index) =>
+            field.value && (
+              <div key={index} className="flex items-center gap-2">
+                <span className="text-xs text-muted-foreground w-16">{field.label}:</span>
+                <Input
+                  value={field.value}
+                  disabled
+                  className="h-6 text-xs bg-muted/50 border-0"
+                  readOnly
+                />
+              </div>
+            )
+        )}
       </div>
     </div>
   )
@@ -214,21 +235,36 @@ export function TeacherPaymentsTable({
                     </TableCell>
                     <TableCell onClick={() => toggleExpand(teacher.teacherId)}>
                       <div className="flex items-center gap-2">
-                        {teacher.paymentMethod === 'Transferencia Bancaria' && <Building className="h-4 w-4" />}
+                        {teacher.paymentMethod === 'Transferencia Bancaria' && (
+                          <Building className="h-4 w-4" />
+                        )}
                         {teacher.paymentMethod === 'PayPal' && <Mail className="h-4 w-4" />}
                         {teacher.paymentMethod === 'Binance' && <DollarSign className="h-4 w-4" />}
-                        {teacher.paymentMethod === 'Pago Móvil' && <Smartphone className="h-4 w-4" />}
-                        {(!teacher.paymentMethod || teacher.paymentMethod === 'No configurado') && <CreditCard className="h-4 w-4" />}
+                        {teacher.paymentMethod === 'Pago Móvil' && (
+                          <Smartphone className="h-4 w-4" />
+                        )}
+                        {(!teacher.paymentMethod || teacher.paymentMethod === 'No configurado') && (
+                          <CreditCard className="h-4 w-4" />
+                        )}
                         <span className="text-sm">{teacher.paymentMethod || 'No configurado'}</span>
                       </div>
                     </TableCell>
-                    <TableCell className="text-right" onClick={() => toggleExpand(teacher.teacherId)}>
+                    <TableCell
+                      className="text-right"
+                      onClick={() => toggleExpand(teacher.teacherId)}
+                    >
                       {teacher.totalClasses}
                     </TableCell>
-                    <TableCell className="text-right" onClick={() => toggleExpand(teacher.teacherId)}>
+                    <TableCell
+                      className="text-right"
+                      onClick={() => toggleExpand(teacher.teacherId)}
+                    >
                       {teacher.totalHours.toFixed(1)}h
                     </TableCell>
-                    <TableCell className="text-right font-medium" onClick={() => toggleExpand(teacher.teacherId)}>
+                    <TableCell
+                      className="text-right font-medium"
+                      onClick={() => toggleExpand(teacher.teacherId)}
+                    >
                       <div className="flex items-center justify-end gap-2">
                         <span className={teacher.paymentConfirmed ? 'text-green-600' : ''}>
                           ${teacher.totalPayment.toFixed(2)}
@@ -245,15 +281,14 @@ export function TeacherPaymentsTable({
                         )}
                       </div>
                     </TableCell>
-                    <TableCell className="text-right text-muted-foreground" onClick={() => toggleExpand(teacher.teacherId)}>
+                    <TableCell
+                      className="text-right text-muted-foreground"
+                      onClick={() => toggleExpand(teacher.teacherId)}
+                    >
                       ${teacher.averagePerClass.toFixed(2)}
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setSelectedTeacher(teacher)}
-                      >
+                      <Button variant="ghost" size="sm" onClick={() => setSelectedTeacher(teacher)}>
                         <Eye className="h-4 w-4" />
                       </Button>
                     </TableCell>
@@ -286,7 +321,9 @@ export function TeacherPaymentsTable({
                                   <TableCell>{classItem.studentName}</TableCell>
                                   <TableCell>{classItem.courseName}</TableCell>
                                   <TableCell>{classItem.academicPeriodName || '-'}</TableCell>
-                                  <TableCell className="text-right">{classItem.duration} min</TableCell>
+                                  <TableCell className="text-right">
+                                    {classItem.duration} min
+                                  </TableCell>
                                   <TableCell className="text-right font-medium">
                                     ${classItem.payment.toFixed(2)}
                                   </TableCell>
@@ -328,9 +365,7 @@ export function TeacherPaymentsTable({
         <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Detalle de Pagos - {selectedTeacher?.teacherName}</DialogTitle>
-            <DialogDescription>
-              Resumen completo de clases y pagos del período
-            </DialogDescription>
+            <DialogDescription>Resumen completo de clases y pagos del período</DialogDescription>
           </DialogHeader>
           {selectedTeacher && (
             <div className="space-y-6">
@@ -351,14 +386,16 @@ export function TeacherPaymentsTable({
                 </div>
                 <div className="p-4 bg-muted rounded-lg">
                   <p className="text-sm text-muted-foreground">Promedio/Clase</p>
-                  <p className="text-2xl font-bold">${selectedTeacher.averagePerClass.toFixed(2)}</p>
+                  <p className="text-2xl font-bold">
+                    ${selectedTeacher.averagePerClass.toFixed(2)}
+                  </p>
                 </div>
               </div>
 
               <div className="p-4 bg-muted/50 rounded-lg">
                 <h4 className="font-semibold mb-3">Información de Pago</h4>
                 <div className="space-y-3">
-                  <PaymentDetailsDisplay 
+                  <PaymentDetailsDisplay
                     paymentMethod={selectedTeacher.paymentMethod}
                     paymentDetails={selectedTeacher.paymentDetails}
                   />
@@ -366,10 +403,16 @@ export function TeacherPaymentsTable({
                     <div className="flex items-center gap-2 p-3 bg-green-50 rounded-lg border border-green-200">
                       <CheckCircle className="h-5 w-5 text-green-600" />
                       <div className="flex-1">
-                        <p className="text-sm font-medium text-green-900">Pago confirmado por el profesor</p>
+                        <p className="text-sm font-medium text-green-900">
+                          Pago confirmado por el profesor
+                        </p>
                         {selectedTeacher.paymentConfirmedAt && (
                           <p className="text-xs text-green-700">
-                            {format(new Date(selectedTeacher.paymentConfirmedAt), 'dd MMM yyyy HH:mm', { locale: es })}
+                            {format(
+                              new Date(selectedTeacher.paymentConfirmedAt),
+                              'dd MMM yyyy HH:mm',
+                              { locale: es }
+                            )}
                           </p>
                         )}
                       </div>
@@ -379,8 +422,12 @@ export function TeacherPaymentsTable({
                     <div className="flex items-center gap-2 p-3 bg-amber-50 rounded-lg border border-amber-200">
                       <Clock className="h-5 w-5 text-amber-600" />
                       <div className="flex-1">
-                        <p className="text-sm font-medium text-amber-900">Pendiente de confirmación</p>
-                        <p className="text-xs text-amber-700">El profesor aún no ha confirmado este pago</p>
+                        <p className="text-sm font-medium text-amber-900">
+                          Pendiente de confirmación
+                        </p>
+                        <p className="text-xs text-amber-700">
+                          El profesor aún no ha confirmado este pago
+                        </p>
                       </div>
                     </div>
                   )}
@@ -410,7 +457,9 @@ export function TeacherPaymentsTable({
                       </div>
                       <div className="text-right">
                         <p className="font-bold text-lg">${classItem.payment.toFixed(2)}</p>
-                        <p className="text-xs text-muted-foreground">{classItem.duration} minutos</p>
+                        <p className="text-xs text-muted-foreground">
+                          {classItem.duration} minutos
+                        </p>
                         <div className="mt-1 flex flex-wrap justify-end gap-1">
                           {classItem.isPayable ? (
                             <Badge variant="default" className="text-xs">

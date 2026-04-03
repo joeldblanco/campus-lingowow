@@ -44,20 +44,14 @@ export async function POST(req: NextRequest) {
     })
 
     if (!pendingOrder) {
-      return NextResponse.json(
-        { error: 'Orden no encontrada' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Orden no encontrada' }, { status: 404 })
     }
 
     // Extraer datos del JSON invoiceData
     const invoiceData = pendingOrder.invoiceData as unknown as InvoiceData
 
     if (invoiceData.paypalOrderId !== orderId) {
-      return NextResponse.json(
-        { error: 'Order ID no coincide' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Order ID no coincide' }, { status: 400 })
     }
 
     // Obtener el plan
@@ -67,10 +61,7 @@ export async function POST(req: NextRequest) {
     })
 
     if (!plan) {
-      return NextResponse.json(
-        { error: 'Plan no encontrado' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Plan no encontrado' }, { status: 404 })
     }
 
     // Capturar pago en PayPal
@@ -89,16 +80,13 @@ export async function POST(req: NextRequest) {
 
     const authData = await authResponse.json()
 
-    const captureResponse = await fetch(
-      `${PAYPAL_API_URL}/v2/checkout/orders/${orderId}/capture`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${authData.access_token}`,
-        },
-      }
-    )
+    const captureResponse = await fetch(`${PAYPAL_API_URL}/v2/checkout/orders/${orderId}/capture`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authData.access_token}`,
+      },
+    })
 
     const captureData = await captureResponse.json()
 
@@ -108,10 +96,7 @@ export async function POST(req: NextRequest) {
         data: { status: 'CANCELLED' },
       })
 
-      return NextResponse.json(
-        { error: 'Error al procesar el pago' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Error al procesar el pago' }, { status: 400 })
     }
 
     // Crear factura
@@ -208,15 +193,9 @@ export async function POST(req: NextRequest) {
     console.error('Error capturando pago PayPal:', error)
 
     if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: error.errors[0].message },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: error.errors[0].message }, { status: 400 })
     }
 
-    return NextResponse.json(
-      { error: 'Error al procesar el pago' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error al procesar el pago' }, { status: 500 })
   }
 }

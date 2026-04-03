@@ -33,9 +33,7 @@ export function PaymentSummaryCards({ summary }: PaymentSummaryCardsProps) {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{summary.totalTeachers}</div>
-          <p className="text-xs text-muted-foreground">
-            con clases en el período
-          </p>
+          <p className="text-xs text-muted-foreground">con clases en el período</p>
         </CardContent>
       </Card>
 
@@ -46,9 +44,7 @@ export function PaymentSummaryCards({ summary }: PaymentSummaryCardsProps) {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{summary.totalHours.toFixed(1)}h</div>
-          <p className="text-xs text-muted-foreground">
-            horas impartidas
-          </p>
+          <p className="text-xs text-muted-foreground">horas impartidas</p>
         </CardContent>
       </Card>
 
@@ -58,12 +54,8 @@ export function PaymentSummaryCards({ summary }: PaymentSummaryCardsProps) {
           <TrendingUp className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">
-            ${summary.averagePaymentPerClass.toFixed(2)}
-          </div>
-          <p className="text-xs text-muted-foreground">
-            costo promedio
-          </p>
+          <div className="text-2xl font-bold">${summary.averagePaymentPerClass.toFixed(2)}</div>
+          <p className="text-xs text-muted-foreground">costo promedio</p>
         </CardContent>
       </Card>
 
@@ -87,9 +79,7 @@ export function PaymentSummaryCards({ summary }: PaymentSummaryCardsProps) {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{summary.totalNonPayableClasses}</div>
-          <p className="text-xs text-muted-foreground">
-            excluidas del cálculo actual
-          </p>
+          <p className="text-xs text-muted-foreground">excluidas del cálculo actual</p>
         </CardContent>
       </Card>
     </div>

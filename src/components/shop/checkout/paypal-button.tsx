@@ -38,7 +38,7 @@ export function PayPalButton({
     try {
       // Obtener información del cliente para usuarios invitados
       const customerInfo = JSON.parse(sessionStorage.getItem('customer-info') || '{}')
-      
+
       const response = await fetch('/api/paypal/create-order', {
         method: 'POST',
         headers: {
@@ -74,7 +74,7 @@ export function PayPalButton({
     try {
       // Obtener información del cliente para usuarios invitados
       const customerInfo = JSON.parse(sessionStorage.getItem('customer-info') || '{}')
-      
+
       const response = await fetch('/api/paypal/capture-order', {
         method: 'POST',
         headers: {
@@ -105,7 +105,7 @@ export function PayPalButton({
 
       toast.success('¡Pago completado exitosamente!')
       onSuccess(result)
-      
+
       // Retornar una promesa resuelta para que PayPal cierre la ventana
       return Promise.resolve()
     } catch (error) {

@@ -41,18 +41,17 @@ describe('teacher-incentives performance test', () => {
     vi.mocked(db.academicPeriod.findUnique).mockResolvedValue({
       id: 'period2',
       startDate: new Date('2024-02-01'),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any)
     vi.mocked(db.academicPeriod.findFirst).mockResolvedValue({
       id: 'period1',
       startDate: new Date('2024-01-01'),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any)
 
     const teachers = Array.from({ length: numTeachers }).map((_, i) => ({ id: `teacher${i}` }))
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(db.user.findMany).mockResolvedValue(teachers as any)
-
 
     // Generate bookings
     let findManyCalls = 0
@@ -76,7 +75,6 @@ describe('teacher-incentives performance test', () => {
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return allBookings as any
-
     })
 
     // @ts-expect-error -- simplified mock for benchmark test

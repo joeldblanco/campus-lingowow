@@ -57,135 +57,129 @@ describe('getTeacherPaymentsReport', () => {
   })
 
   it('merges payable class detail, payment confirmation, and summary totals in one report', async () => {
-    vi.mocked(db.classBooking.findMany).mockResolvedValue(
-      [
-        {
-          id: 'booking-2',
-          teacherId: 'teacher-1',
-          day: '2026-03-12',
-          timeSlot: '11:00 - 11:30',
-          isPayable: true,
-          completedAt: new Date('2026-03-12T11:30:00.000Z'),
-          teacher,
-          student: {
-            name: 'Grace',
-            lastName: 'Hopper',
-          },
-          enrollment: {
-            course: {
-              id: 'course-2',
-              title: 'English Conversation',
-              classDuration: 30,
-              defaultPaymentPerClass: 20,
-            },
-            academicPeriod: {
-              id: 'period-1',
-              name: 'Marzo 2026',
-            },
-          },
-          teacherAttendances: [],
-          attendances: [
-            {
-              timestamp: new Date('2026-03-12T11:00:00.000Z'),
-            },
-          ],
-          videoCalls: [
-            {
-              duration: 30,
-            },
-          ],
+    vi.mocked(db.classBooking.findMany).mockResolvedValue([
+      {
+        id: 'booking-2',
+        teacherId: 'teacher-1',
+        day: '2026-03-12',
+        timeSlot: '11:00 - 11:30',
+        isPayable: true,
+        completedAt: new Date('2026-03-12T11:30:00.000Z'),
+        teacher,
+        student: {
+          name: 'Grace',
+          lastName: 'Hopper',
         },
-        {
-          id: 'booking-1',
-          teacherId: 'teacher-1',
-          day: '2026-03-10',
-          timeSlot: '10:00 - 11:00',
-          isPayable: false,
-          completedAt: new Date('2026-03-10T11:00:00.000Z'),
-          teacher,
-          student: {
-            name: 'Margaret',
-            lastName: 'Hamilton',
+        enrollment: {
+          course: {
+            id: 'course-2',
+            title: 'English Conversation',
+            classDuration: 30,
+            defaultPaymentPerClass: 20,
           },
-          enrollment: {
-            course: {
-              id: 'course-1',
-              title: 'English Basics',
-              classDuration: 60,
-              defaultPaymentPerClass: null,
-            },
-            academicPeriod: {
-              id: 'period-1',
-              name: 'Marzo 2026',
-            },
+          academicPeriod: {
+            id: 'period-1',
+            name: 'Marzo 2026',
           },
-          teacherAttendances: [
-            {
-              timestamp: new Date('2026-03-10T10:00:00.000Z'),
-            },
-          ],
-          attendances: [
-            {
-              timestamp: new Date('2026-03-10T10:01:00.000Z'),
-            },
-          ],
-          videoCalls: [
-            {
-              duration: 60,
-            },
-          ],
         },
-        {
-          id: 'booking-3',
-          teacherId: 'teacher-1',
-          day: '2026-03-08',
-          timeSlot: '09:00 - 09:30',
-          isPayable: false,
-          completedAt: new Date('2026-03-08T09:30:00.000Z'),
-          teacher,
-          student: {
-            name: 'Katherine',
-            lastName: 'Johnson',
+        teacherAttendances: [],
+        attendances: [
+          {
+            timestamp: new Date('2026-03-12T11:00:00.000Z'),
           },
-          enrollment: {
-            course: {
-              id: 'course-3',
-              title: 'Pronunciation Lab',
-              classDuration: 30,
-              defaultPaymentPerClass: 12,
-            },
-            academicPeriod: {
-              id: 'period-1',
-              name: 'Marzo 2026',
-            },
+        ],
+        videoCalls: [
+          {
+            duration: 30,
           },
-          teacherAttendances: [],
-          attendances: [],
-          videoCalls: [
-            {
-              duration: 30,
-            },
-          ],
+        ],
+      },
+      {
+        id: 'booking-1',
+        teacherId: 'teacher-1',
+        day: '2026-03-10',
+        timeSlot: '10:00 - 11:00',
+        isPayable: false,
+        completedAt: new Date('2026-03-10T11:00:00.000Z'),
+        teacher,
+        student: {
+          name: 'Margaret',
+          lastName: 'Hamilton',
         },
-      ] as never
-    )
-    vi.mocked(db.teacherCourse.findMany).mockResolvedValue(
-      [
-        {
-          teacherId: 'teacher-1',
-          courseId: 'course-1',
-          paymentPerClass: 18,
+        enrollment: {
+          course: {
+            id: 'course-1',
+            title: 'English Basics',
+            classDuration: 60,
+            defaultPaymentPerClass: null,
+          },
+          academicPeriod: {
+            id: 'period-1',
+            name: 'Marzo 2026',
+          },
         },
-      ] as never
-    )
-    vi.mocked(db.teacherPaymentConfirmation.findMany).mockResolvedValue(
-      [
-        {
-          teacherId: 'teacher-1',
-          confirmedAt: new Date('2026-03-31T18:00:00.000Z'),
+        teacherAttendances: [
+          {
+            timestamp: new Date('2026-03-10T10:00:00.000Z'),
+          },
+        ],
+        attendances: [
+          {
+            timestamp: new Date('2026-03-10T10:01:00.000Z'),
+          },
+        ],
+        videoCalls: [
+          {
+            duration: 60,
+          },
+        ],
+      },
+      {
+        id: 'booking-3',
+        teacherId: 'teacher-1',
+        day: '2026-03-08',
+        timeSlot: '09:00 - 09:30',
+        isPayable: false,
+        completedAt: new Date('2026-03-08T09:30:00.000Z'),
+        teacher,
+        student: {
+          name: 'Katherine',
+          lastName: 'Johnson',
         },
-      ] as never
-    )
+        enrollment: {
+          course: {
+            id: 'course-3',
+            title: 'Pronunciation Lab',
+            classDuration: 30,
+            defaultPaymentPerClass: 12,
+          },
+          academicPeriod: {
+            id: 'period-1',
+            name: 'Marzo 2026',
+          },
+        },
+        teacherAttendances: [],
+        attendances: [],
+        videoCalls: [
+          {
+            duration: 30,
+          },
+        ],
+      },
+    ] as never)
+    vi.mocked(db.teacherCourse.findMany).mockResolvedValue([
+      {
+        teacherId: 'teacher-1',
+        courseId: 'course-1',
+        paymentPerClass: 18,
+      },
+    ] as never)
+    vi.mocked(db.teacherPaymentConfirmation.findMany).mockResolvedValue([
+      {
+        teacherId: 'teacher-1',
+        confirmedAt: new Date('2026-03-31T18:00:00.000Z'),
+      },
+    ] as never)
 
     const report = await getTeacherPaymentsReport({ startDate, endDate })
 
@@ -254,54 +248,50 @@ describe('getTeacherPaymentsReport', () => {
     const periodStart = new Date('2026-04-01T00:00:00.000Z')
     const periodEnd = new Date('2026-04-30T23:59:59.999Z')
 
-    vi.mocked(db.academicPeriod.findUnique).mockResolvedValue(
+    vi.mocked(db.academicPeriod.findUnique).mockResolvedValue({
+      startDate: periodStart,
+      endDate: periodEnd,
+    } as never)
+    vi.mocked(db.classBooking.findMany).mockResolvedValue([
       {
-        startDate: periodStart,
-        endDate: periodEnd,
-      } as never
-    )
-    vi.mocked(db.classBooking.findMany).mockResolvedValue(
-      [
-        {
-          id: 'booking-4',
-          teacherId: 'teacher-2',
-          day: '2026-04-05',
-          timeSlot: '08:00 - 08:30',
-          isPayable: true,
-          completedAt: new Date('2026-04-05T08:30:00.000Z'),
-          teacher: {
-            ...teacher,
-            id: 'teacher-2',
-            name: 'Sofia',
-            lastName: 'Torres',
-            paymentSettings: null,
-            teacherRank: {
-              name: 'Lead',
-              rateMultiplier: 2,
-            },
+        id: 'booking-4',
+        teacherId: 'teacher-2',
+        day: '2026-04-05',
+        timeSlot: '08:00 - 08:30',
+        isPayable: true,
+        completedAt: new Date('2026-04-05T08:30:00.000Z'),
+        teacher: {
+          ...teacher,
+          id: 'teacher-2',
+          name: 'Sofia',
+          lastName: 'Torres',
+          paymentSettings: null,
+          teacherRank: {
+            name: 'Lead',
+            rateMultiplier: 2,
           },
-          student: {
-            name: 'Alan',
-            lastName: 'Turing',
-          },
-          enrollment: {
-            course: {
-              id: 'course-4',
-              title: 'Fluency Sprint',
-              classDuration: 30,
-              defaultPaymentPerClass: null,
-            },
-            academicPeriod: {
-              id: 'period-2',
-              name: 'Abril 2026',
-            },
-          },
-          teacherAttendances: [],
-          attendances: [],
-          videoCalls: [],
         },
-      ] as never
-    )
+        student: {
+          name: 'Alan',
+          lastName: 'Turing',
+        },
+        enrollment: {
+          course: {
+            id: 'course-4',
+            title: 'Fluency Sprint',
+            classDuration: 30,
+            defaultPaymentPerClass: null,
+          },
+          academicPeriod: {
+            id: 'period-2',
+            name: 'Abril 2026',
+          },
+        },
+        teacherAttendances: [],
+        attendances: [],
+        videoCalls: [],
+      },
+    ] as never)
 
     await getTeacherPaymentsReport({ periodId: 'period-2' })
 

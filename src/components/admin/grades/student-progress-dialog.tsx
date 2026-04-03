@@ -58,7 +58,7 @@ export function StudentProgressDialog({ studentId, children }: StudentProgressDi
 
   const loadProgressData = useCallback(async () => {
     if (!studentId) return
-    
+
     setIsLoading(true)
     try {
       const data = await getStudentProgressReport(studentId)
@@ -75,7 +75,6 @@ export function StudentProgressDialog({ studentId, children }: StudentProgressDi
       loadProgressData()
     }
   }, [open, progressData, loadProgressData])
-
 
   const getScoreBadge = (score: number) => {
     if (score >= 90) return <Badge className="bg-green-100 text-green-800">Excelente</Badge>
@@ -177,10 +176,7 @@ export function StudentProgressDialog({ studentId, children }: StudentProgressDi
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold text-blue-600">
-                    {
-                      progressData.courses.filter((c) => c.enrollmentStatus === 'ACTIVE')
-                        .length
-                    }
+                    {progressData.courses.filter((c) => c.enrollmentStatus === 'ACTIVE').length}
                   </div>
                 </CardContent>
               </Card>
@@ -191,10 +187,7 @@ export function StudentProgressDialog({ studentId, children }: StudentProgressDi
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold text-green-600">
-                    {
-                      progressData.courses.filter((c) => c.enrollmentStatus === 'COMPLETED')
-                        .length
-                    }
+                    {progressData.courses.filter((c) => c.enrollmentStatus === 'COMPLETED').length}
                   </div>
                 </CardContent>
               </Card>
@@ -207,10 +200,8 @@ export function StudentProgressDialog({ studentId, children }: StudentProgressDi
                   <div className="text-2xl font-bold text-yellow-600">
                     {progressData.courses.length > 0
                       ? Math.round(
-                          progressData.courses.reduce(
-                            (sum: number, c) => sum + c.averageScore,
-                            0
-                          ) / progressData.courses.length
+                          progressData.courses.reduce((sum: number, c) => sum + c.averageScore, 0) /
+                            progressData.courses.length
                         )
                       : 0}
                     %
@@ -274,31 +265,29 @@ export function StudentProgressDialog({ studentId, children }: StudentProgressDi
                         <div>
                           <p className="text-sm font-medium mb-2">Actividades Recientes</p>
                           <div className="space-y-2 max-h-32 overflow-y-auto">
-                            {courseData.activities
-                              .slice(0, 5)
-                              .map((activity, actIndex: number) => (
-                                <div
-                                  key={actIndex}
-                                  className="flex items-center justify-between text-sm p-2 bg-muted/30 rounded"
-                                >
-                                  <div>
-                                    <p className="font-medium">{activity.title}</p>
-                                    <p className="text-xs text-muted-foreground">{activity.type}</p>
-                                  </div>
-                                  <div className="flex items-center gap-2">
-                                    <Badge
-                                      variant={
-                                        activity.status === 'COMPLETED' ? 'default' : 'outline'
-                                      }
-                                    >
-                                      {activity.status}
-                                    </Badge>
-                                    {activity.score !== null && (
-                                      <span className="font-medium">{activity.score}%</span>
-                                    )}
-                                  </div>
+                            {courseData.activities.slice(0, 5).map((activity, actIndex: number) => (
+                              <div
+                                key={actIndex}
+                                className="flex items-center justify-between text-sm p-2 bg-muted/30 rounded"
+                              >
+                                <div>
+                                  <p className="font-medium">{activity.title}</p>
+                                  <p className="text-xs text-muted-foreground">{activity.type}</p>
                                 </div>
-                              ))}
+                                <div className="flex items-center gap-2">
+                                  <Badge
+                                    variant={
+                                      activity.status === 'COMPLETED' ? 'default' : 'outline'
+                                    }
+                                  >
+                                    {activity.status}
+                                  </Badge>
+                                  {activity.score !== null && (
+                                    <span className="font-medium">{activity.score}%</span>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
                           </div>
                         </div>
                       )}
