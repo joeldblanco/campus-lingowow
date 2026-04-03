@@ -2,6 +2,127 @@ import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
+const EMAIL_COLORS = {
+  canvas: '#f8fafc',
+  surface: '#ffffff',
+  border: '#e2e8f0',
+  text: '#0f172a',
+  body: '#334155',
+  muted: '#64748b',
+  primary: '#137fec',
+  primarySoft: '#eff6ff',
+  success: '#16a34a',
+  successSoft: '#ecfdf5',
+  purple: '#7c3aed',
+  purpleSoft: '#f5f3ff',
+  indigo: '#4f46e5',
+  indigoSoft: '#eef2ff',
+  warning: '#d97706',
+  warningSoft: '#fff7ed',
+  dark: '#020617',
+} as const
+
+const EMAIL_CARD_STYLE = [
+  'font-family: Arial, sans-serif',
+  'max-width: 600px',
+  'margin: 0 auto',
+  `border: 1px solid ${EMAIL_COLORS.border}`,
+  'border-radius: 16px',
+  'overflow: hidden',
+  `background-color: ${EMAIL_COLORS.surface}`,
+].join('; ')
+
+const EMAIL_FOOTER_STYLE = [
+  'padding: 12px 20px 24px 20px',
+  `background-color: ${EMAIL_COLORS.canvas}`,
+  'text-align: center',
+  'font-size: 13px',
+  `color: ${EMAIL_COLORS.muted}`,
+].join('; ')
+
+const emailButtonStyle = (backgroundColor: string) =>
+  [
+    'display: inline-block',
+    `background-color: ${backgroundColor}`,
+    'color: #ffffff',
+    'padding: 14px 28px',
+    'border-radius: 10px',
+    'text-decoration: none',
+    'font-size: 16px',
+    'font-weight: bold',
+  ].join('; ')
+
+const renderSummaryRows = (
+  rows: Array<{
+    label: string
+    value: string
+    labelColor?: string
+    valueColor?: string
+    isEmphasized?: boolean
+  }>
+) => `
+  <table role="presentation" style="width: 100%; border-collapse: collapse;">
+    ${rows
+      .map(
+        (row, index) => `
+      <tr>
+        <td style="padding: ${index === 0 ? '0 0 8px 0' : '8px 0 0 0'}; font-size: ${
+          row.isEmphasized ? '16px' : '14px'
+        }; color: ${row.labelColor ?? EMAIL_COLORS.muted}; ${
+          row.isEmphasized ? 'font-weight: bold;' : ''
+        }">${row.label}</td>
+        <td style="padding: ${index === 0 ? '0 0 8px 0' : '8px 0 0 0'}; text-align: right; font-size: ${
+          row.isEmphasized ? '18px' : '14px'
+        }; color: ${row.valueColor ?? EMAIL_COLORS.body}; ${
+          row.isEmphasized ? 'font-weight: bold;' : ''
+        }">${row.value}</td>
+      </tr>`
+      )
+      .join('')}
+  </table>`
+
+const renderEmailLayout = ({
+  headerBackgroundColor,
+  headerTitle,
+  headerSubtitle,
+  bodyHtml,
+  footerText = 'Go wow with us! 🚀',
+  headerTitleColor = '#ffffff',
+  headerSubtitleColor,
+}: {
+  headerBackgroundColor: string
+  headerTitle: string
+  headerSubtitle?: string
+  bodyHtml: string
+  footerText?: string
+  headerTitleColor?: string
+  headerSubtitleColor?: string
+}) => {
+  const resolvedHeaderSubtitleColor =
+    headerSubtitleColor ??
+    (headerTitleColor === '#ffffff' ? 'rgba(255, 255, 255, 0.88)' : EMAIL_COLORS.muted)
+
+  return `
+    <div style="margin: 0; padding: 24px 12px; background-color: ${EMAIL_COLORS.canvas};">
+      <div style="${EMAIL_CARD_STYLE}">
+        <div style="padding: 24px; background-color: ${headerBackgroundColor}; text-align: center;">
+          <h2 style="margin: 0; font-size: 26px; line-height: 1.3; color: ${headerTitleColor};">${headerTitle}</h2>
+          ${
+            headerSubtitle
+              ? `<p style="margin: 8px 0 0 0; font-size: 14px; line-height: 1.5; color: ${resolvedHeaderSubtitleColor};">${headerSubtitle}</p>`
+              : ''
+          }
+        </div>
+        <div style="padding: 24px;">
+          ${bodyHtml}
+        </div>
+        <div style="${EMAIL_FOOTER_STYLE}">
+          ${footerText}
+        </div>
+      </div>
+    </div>`
+}
+
 export const sendVerificationEmail = async (email: string, token: string) => {
   const confirmLink = `${process.env.NEXT_PUBLIC_DOMAIN}/auth/new-verification?token=${token}`
 
@@ -9,25 +130,23 @@ export const sendVerificationEmail = async (email: string, token: string) => {
     from: 'hello@lingowow.com',
     to: email,
     subject: 'Confirma tu correo electrónico',
-    html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
-      <div style="padding: 20px; background-color: #f3f4f6; text-align: center;">
-        <h2 style="margin: 0; font-size: 24px; color: #111827;">Confirmación de registro</h2>
-        <p style="color: #6b7280; font-size: 14px;">Confirma tu dirección de correo electrónico para acceder a todas las funcionalidades de Lingowow.</p>
-      </div>
-      <div style="padding: 20px;">
-        <h3 style="font-size: 18px; color: #111827;">¡Bienvenido a bordo!</h3>
-        <p style="font-size: 16px; color: #374151;">Gracias por registrarte en Lingowow. Haz clic en el botón de abajo para confirmar tu cuenta.</p>
-        <div style="text-align: center; margin: 20px 0;">
-          <a href="${confirmLink}" style="display: inline-block; background-color: #020617; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 16px;">Validar correo electrónico</a>
+    html: renderEmailLayout({
+      headerBackgroundColor: EMAIL_COLORS.primarySoft,
+      headerTitle: 'Confirmación de registro',
+      headerSubtitle:
+        'Confirma tu dirección de correo electrónico para acceder a todas las funcionalidades de Lingowow.',
+      headerTitleColor: EMAIL_COLORS.text,
+      headerSubtitleColor: EMAIL_COLORS.muted,
+      bodyHtml: `
+        <h3 style="margin: 0 0 16px 0; font-size: 18px; color: ${EMAIL_COLORS.text};">¡Bienvenido a bordo!</h3>
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: ${EMAIL_COLORS.body};">Gracias por registrarte en Lingowow. Haz clic en el botón de abajo para confirmar tu cuenta.</p>
+        <div style="text-align: center; margin: 24px 0;">
+          <a href="${confirmLink}" style="${emailButtonStyle(EMAIL_COLORS.primary)}">Validar correo electrónico</a>
         </div>
-        <p style="font-size: 14px; color: #6b7280; text-align:center;">Si tienes alguna duda, contáctanos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
-        <p style="font-size: 14px; color: #6b7280; text-align:center;">Si no has sido tú quien se ha registrado, puedes ignorar este correo.</p>
-      </div>
-      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
-        Go wow with us! 🚀
-      </div>
-    </div>`,
+        <p style="margin: 0 0 8px 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted}; text-align: center;">Si tienes alguna duda, contáctanos por <a href="https://wa.me/51902518947" style="color: ${EMAIL_COLORS.primary}; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
+        <p style="margin: 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted}; text-align: center;">Si no has sido tú quien se ha registrado, puedes ignorar este correo.</p>
+      `,
+    }),
   })
 }
 
@@ -38,25 +157,23 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
     from: 'hello@lingowow.com',
     to: email,
     subject: 'Recupera tu contraseña',
-    html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
-      <div style="padding: 20px; background-color: #f3f4f6; text-align: center;">
-        <h2 style="margin: 0; font-size: 24px; color: #111827;">Recupera tu contraseña</h2>
-        <p style="color: #6b7280; font-size: 14px;">Recupera tu contraseña para acceder a todas las funcionalidades de Lingowow.</p>
-      </div>
-      <div style="padding: 20px;">
-        <h3 style="font-size: 18px; color: #111827;">Recupera tu contraseña</h3>
-        <p style="font-size: 16px; color: #374151;">Recupera tu contraseña para acceder a todas las funcionalidades de Lingowow. Haz clic en el botón de abajo para recuperar tu contraseña.</p>
-        <div style="text-align: center; margin: 20px 0;">
-          <a href="${confirmLink}" style="display: inline-block; background-color: #020617; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 16px;">Recuperar contraseña</a>
+    html: renderEmailLayout({
+      headerBackgroundColor: EMAIL_COLORS.primarySoft,
+      headerTitle: 'Recupera tu contraseña',
+      headerSubtitle:
+        'Restablece el acceso a tu cuenta con un único paso seguro.',
+      headerTitleColor: EMAIL_COLORS.text,
+      headerSubtitleColor: EMAIL_COLORS.muted,
+      bodyHtml: `
+        <h3 style="margin: 0 0 16px 0; font-size: 18px; color: ${EMAIL_COLORS.text};">Recupera tu contraseña</h3>
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: ${EMAIL_COLORS.body};">Recupera tu contraseña para acceder a todas las funcionalidades de Lingowow. Haz clic en el botón de abajo para recuperar tu contraseña.</p>
+        <div style="text-align: center; margin: 24px 0;">
+          <a href="${confirmLink}" style="${emailButtonStyle(EMAIL_COLORS.primary)}">Recuperar contraseña</a>
         </div>
-        <p style="font-size: 14px; color: #6b7280; text-align:center;">Si tienes alguna duda, contáctanos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
-        <p style="font-size: 14px; color: #6b7280; text-align:center;">Si no has sido tú quien ha solicitado la recuperación de tu contraseña, puedes ignorar este correo.</p>
-      </div>
-      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
-        Go wow with us! 🚀
-      </div>
-    </div>`,
+        <p style="margin: 0 0 8px 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted}; text-align: center;">Si tienes alguna duda, contáctanos por <a href="https://wa.me/51902518947" style="color: ${EMAIL_COLORS.primary}; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
+        <p style="margin: 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted}; text-align: center;">Si no has sido tú quien ha solicitado la recuperación de tu contraseña, puedes ignorar este correo.</p>
+      `,
+    }),
   })
 }
 
@@ -87,9 +204,9 @@ export const sendPaymentConfirmationEmail = async (
     .map(
       (item) => `
     <tr>
-      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">${item.name}</td>
-      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: center;">${item.quantity}</td>
-      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: right;">$${item.price.toFixed(2)} ${data.currency}</td>
+      <td style="padding: 12px; border-bottom: 1px solid ${EMAIL_COLORS.border}; color: ${EMAIL_COLORS.body};">${item.name}</td>
+      <td style="padding: 12px; border-bottom: 1px solid ${EMAIL_COLORS.border}; text-align: center; color: ${EMAIL_COLORS.body};">${item.quantity}</td>
+      <td style="padding: 12px; border-bottom: 1px solid ${EMAIL_COLORS.border}; text-align: right; color: ${EMAIL_COLORS.body};">$${item.price.toFixed(2)} ${data.currency}</td>
     </tr>
   `
     )
@@ -99,27 +216,25 @@ export const sendPaymentConfirmationEmail = async (
     from: 'hello@lingowow.com',
     to: email,
     subject: `¡Gracias por tu compra! - Factura ${data.invoiceNumber}`,
-    html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
-      <div style="padding: 20px; background-color: #3b82f6; text-align: center;">
-        <h2 style="margin: 0; font-size: 24px; color: #ffffff;">¡Pago Confirmado!</h2>
-        <p style="color: #dbeafe; font-size: 14px; margin-top: 8px;">Tu compra ha sido procesada exitosamente</p>
-      </div>
-      <div style="padding: 20px;">
-        <h3 style="font-size: 18px; color: #111827;">Hola ${data.customerName},</h3>
-        <p style="font-size: 16px; color: #374151;">Gracias por confiar en Lingowow. Tu pago ha sido procesado correctamente y ya puedes acceder a tus cursos.</p>
-        
-        <div style="background-color: #f9fafb; border-radius: 8px; padding: 16px; margin: 20px 0;">
-          <p style="margin: 0 0 8px 0; font-size: 14px; color: #6b7280;">Número de factura:</p>
-          <p style="margin: 0; font-size: 18px; font-weight: bold; color: #111827;">${data.invoiceNumber}</p>
+    html: renderEmailLayout({
+      headerBackgroundColor: EMAIL_COLORS.success,
+      headerTitle: '¡Pago confirmado!',
+      headerSubtitle: 'Tu compra ha sido procesada exitosamente',
+      bodyHtml: `
+        <h3 style="margin: 0 0 16px 0; font-size: 18px; color: ${EMAIL_COLORS.text};">Hola ${data.customerName},</h3>
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: ${EMAIL_COLORS.body};">Gracias por confiar en Lingowow. Tu pago ha sido procesado correctamente y ya puedes acceder a tus cursos.</p>
+
+        <div style="background-color: ${EMAIL_COLORS.canvas}; border-radius: 12px; padding: 16px; margin: 20px 0;">
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: ${EMAIL_COLORS.muted};">Número de factura:</p>
+          <p style="margin: 0; font-size: 18px; font-weight: bold; color: ${EMAIL_COLORS.text};">${data.invoiceNumber}</p>
         </div>
 
-        <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+        <table role="presentation" style="width: 100%; border-collapse: collapse; margin: 20px 0;">
           <thead>
-            <tr style="background-color: #f3f4f6;">
-              <th style="padding: 12px; text-align: left; font-size: 14px; color: #374151;">Producto</th>
-              <th style="padding: 12px; text-align: center; font-size: 14px; color: #374151;">Cant.</th>
-              <th style="padding: 12px; text-align: right; font-size: 14px; color: #374151;">Precio</th>
+            <tr style="background-color: ${EMAIL_COLORS.canvas};">
+              <th style="padding: 12px; text-align: left; font-size: 14px; color: ${EMAIL_COLORS.body};">Producto</th>
+              <th style="padding: 12px; text-align: center; font-size: 14px; color: ${EMAIL_COLORS.body};">Cant.</th>
+              <th style="padding: 12px; text-align: right; font-size: 14px; color: ${EMAIL_COLORS.body};">Precio</th>
             </tr>
           </thead>
           <tbody>
@@ -127,47 +242,47 @@ export const sendPaymentConfirmationEmail = async (
           </tbody>
         </table>
 
-        <div style="border-top: 2px solid #e5e7eb; padding-top: 16px; margin-top: 16px;">
-          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-            <span style="color: #6b7280;">Subtotal:</span>
-            <span style="color: #374151;">$${data.subtotal.toFixed(2)} ${data.currency}</span>
-          </div>
-          ${
-            data.discount > 0
-              ? `
-          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-            <span style="color: #3b82f6;">Descuento:</span>
-            <span style="color: #3b82f6;">-$${data.discount.toFixed(2)} ${data.currency}</span>
-          </div>
-          `
-              : ''
-          }
-          ${
-            data.tax > 0
-              ? `
-          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-            <span style="color: #6b7280;">Impuestos:</span>
-            <span style="color: #374151;">$${data.tax.toFixed(2)} ${data.currency}</span>
-          </div>
-          `
-              : ''
-          }
-          <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb;">
-            <span style="color: #111827;">Total:</span>
-            <span style="color: #111827;">$${data.total.toFixed(2)} ${data.currency}</span>
-          </div>
+        <div style="border-top: 2px solid ${EMAIL_COLORS.border}; padding-top: 16px; margin-top: 16px;">
+          ${renderSummaryRows([
+            {
+              label: 'Subtotal:',
+              value: `$${data.subtotal.toFixed(2)} ${data.currency}`,
+            },
+            ...(data.discount > 0
+              ? [
+                  {
+                    label: 'Descuento:',
+                    value: `-$${data.discount.toFixed(2)} ${data.currency}`,
+                    labelColor: EMAIL_COLORS.primary,
+                    valueColor: EMAIL_COLORS.primary,
+                  },
+                ]
+              : []),
+            ...(data.tax > 0
+              ? [
+                  {
+                    label: 'Impuestos:',
+                    value: `$${data.tax.toFixed(2)} ${data.currency}`,
+                  },
+                ]
+              : []),
+            {
+              label: 'Total:',
+              value: `$${data.total.toFixed(2)} ${data.currency}`,
+              labelColor: EMAIL_COLORS.text,
+              valueColor: EMAIL_COLORS.text,
+              isEmphasized: true,
+            },
+          ])}
         </div>
 
         <div style="text-align: center; margin: 24px 0;">
-          <a href="${dashboardLink}" style="display: inline-block; background-color: #020617; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 16px;">Ir a mi Dashboard</a>
+          <a href="${dashboardLink}" style="${emailButtonStyle(EMAIL_COLORS.dark)}">Ir a mi Dashboard</a>
         </div>
-        
-        <p style="font-size: 14px; color: #6b7280; text-align: center;">Si tienes alguna pregunta, no dudes en contactarnos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a> o en info@lingowow.com</p>
-      </div>
-      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
-        Go wow with us! 🚀
-      </div>
-    </div>`,
+
+        <p style="margin: 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted}; text-align: center;">Si tienes alguna pregunta, no dudes en contactarnos por <a href="https://wa.me/51902518947" style="color: ${EMAIL_COLORS.primary}; text-decoration: none; font-weight: bold;">WhatsApp</a> o en info@lingowow.com</p>
+      `,
+    }),
   })
 }
 
@@ -185,46 +300,41 @@ export const sendClassReminderEmail = async (email: string, data: ClassReminderD
     from: 'hello@lingowow.com',
     to: email,
     subject: `Recordatorio: Tu clase de ${data.courseName} es hoy`,
-    html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
-      <div style="padding: 20px; background-color: #3b82f6; text-align: center;">
-        <h2 style="margin: 0; font-size: 24px; color: #ffffff;">¡Tu clase es hoy!</h2>
-        <p style="color: #dbeafe; font-size: 14px; margin-top: 8px;">No olvides conectarte a tiempo</p>
-      </div>
-      <div style="padding: 20px;">
-        <h3 style="font-size: 18px; color: #111827;">Hola ${data.studentName},</h3>
-        <p style="font-size: 16px; color: #374151;">Te recordamos que tienes una clase programada para hoy. ¡Prepárate para aprender!</p>
-        
-        <div style="background-color: #eff6ff; border-radius: 8px; padding: 20px; margin: 20px 0; border-left: 4px solid #3b82f6;">
+    html: renderEmailLayout({
+      headerBackgroundColor: EMAIL_COLORS.primary,
+      headerTitle: '¡Tu clase es hoy!',
+      headerSubtitle: 'No olvides conectarte a tiempo',
+      bodyHtml: `
+        <h3 style="margin: 0 0 16px 0; font-size: 18px; color: ${EMAIL_COLORS.text};">Hola ${data.studentName},</h3>
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: ${EMAIL_COLORS.body};">Te recordamos que tienes una clase programada para hoy. ¡Prepárate para aprender!</p>
+
+        <div style="background-color: ${EMAIL_COLORS.primarySoft}; border-radius: 12px; padding: 20px; margin: 20px 0; border-left: 4px solid ${EMAIL_COLORS.primary};">
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Curso</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; font-weight: bold; color: #111827;">${data.courseName}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Curso</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; font-weight: bold; color: ${EMAIL_COLORS.text};">${data.courseName}</p>
           </div>
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Profesor/a</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #374151;">${data.teacherName}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Profesor/a</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.body};">${data.teacherName}</p>
           </div>
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Fecha</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #374151;">${data.classDate}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Fecha</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.body};">${data.classDate}</p>
           </div>
           <div>
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Hora</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; font-weight: bold; color: #3b82f6;">${data.classTime}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Hora</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; font-weight: bold; color: ${EMAIL_COLORS.primary};">${data.classTime}</p>
           </div>
         </div>
 
         <div style="text-align: center; margin: 24px 0;">
-          <a href="${data.classLink}" style="display: inline-block; background-color: #3b82f6; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-size: 16px; font-weight: bold;">Unirse a la Clase</a>
+          <a href="${data.classLink}" style="${emailButtonStyle(EMAIL_COLORS.primary)}">Unirse a la Clase</a>
         </div>
-        
-        <p style="font-size: 14px; color: #6b7280; text-align: center;">El enlace estará disponible 5 minutos antes de la hora programada.</p>
-        <p style="font-size: 14px; color: #6b7280; text-align: center;">Si tienes alguna duda, contáctanos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
-      </div>
-      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
-        Go wow with us! 🚀
-      </div>
-    </div>`,
+
+        <p style="margin: 0 0 8px 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted}; text-align: center;">El enlace estará disponible 5 minutos antes de la hora programada.</p>
+        <p style="margin: 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted}; text-align: center;">Si tienes alguna duda, contáctanos por <a href="https://wa.me/51902518947" style="color: ${EMAIL_COLORS.primary}; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
+      `,
+    }),
   })
 }
 
@@ -252,69 +362,60 @@ export const sendTrialClassRequestEmail = async (data: TrialClassRequestData) =>
     to: 'info@lingowow.com',
     replyTo: data.email,
     subject: `[Clase de Prueba] Nueva solicitud - ${data.name}`,
-    html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
-      <div style="padding: 20px; background-color: #3b82f6; text-align: center;">
-        <h2 style="margin: 0; font-size: 24px; color: #ffffff;">Nueva Solicitud de Clase de Prueba</h2>
-      </div>
-      <div style="padding: 20px;">
-        <div style="background-color: #f9fafb; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+    html: renderEmailLayout({
+      headerBackgroundColor: EMAIL_COLORS.primary,
+      headerTitle: 'Nueva solicitud de clase de prueba',
+      footerText: 'Solicitud desde el formulario de lingowow.com',
+      bodyHtml: `
+        <div style="background-color: ${EMAIL_COLORS.canvas}; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Nombre</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;">${data.name}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Nombre</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.text};">${data.name}</p>
           </div>
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Email</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;"><a href="mailto:${data.email}" style="color: #3b82f6;">${data.email}</a></p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Email</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.text};"><a href="mailto:${data.email}" style="color: ${EMAIL_COLORS.primary}; text-decoration: none;">${data.email}</a></p>
           </div>
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Teléfono</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;">${data.phone}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Teléfono</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.text};">${data.phone}</p>
           </div>
           <div>
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Idioma de interés</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827; font-weight: bold;">${languageLabels[data.language] || data.language}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Idioma de interés</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.text}; font-weight: bold;">${languageLabels[data.language] || data.language}</p>
           </div>
         </div>
-        
-        <p style="font-size: 14px; color: #6b7280; text-align: center;">Contactar en las próximas 24 horas para agendar la clase de prueba.</p>
-      </div>
-      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
-        Solicitud desde el formulario de lingowow.com
-      </div>
-    </div>`,
+
+        <p style="margin: 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted}; text-align: center;">Contactar en las próximas 24 horas para agendar la clase de prueba.</p>
+      `,
+    }),
   })
 
   await resend.emails.send({
     from: 'hello@lingowow.com',
     to: data.email,
     subject: '¡Recibimos tu solicitud de clase de prueba! - Lingowow',
-    html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
-      <div style="padding: 20px; background-color: #3b82f6; text-align: center;">
-        <h2 style="margin: 0; font-size: 24px; color: #ffffff;">¡Solicitud Recibida!</h2>
-      </div>
-      <div style="padding: 20px;">
-        <h3 style="font-size: 18px; color: #111827;">Hola ${data.name},</h3>
-        <p style="font-size: 16px; color: #374151;">¡Gracias por tu interés en aprender ${languageLabels[data.language] || data.language} con nosotros!</p>
-        <p style="font-size: 16px; color: #374151;">Hemos recibido tu solicitud de clase de prueba gratuita. Un miembro de nuestro equipo se pondrá en contacto contigo en las próximas 24 horas para coordinar tu sesión.</p>
-        
-        <div style="background-color: #eff6ff; border-radius: 8px; padding: 16px; margin: 20px 0; border-left: 4px solid #3b82f6;">
-          <p style="margin: 0; font-size: 14px; color: #1e40af; font-weight: bold;">¿Qué incluye tu clase de prueba?</p>
-          <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #1e40af;">
+    html: renderEmailLayout({
+      headerBackgroundColor: EMAIL_COLORS.primary,
+      headerTitle: '¡Solicitud recibida!',
+      bodyHtml: `
+        <h3 style="margin: 0 0 16px 0; font-size: 18px; color: ${EMAIL_COLORS.text};">Hola ${data.name},</h3>
+        <p style="margin: 0 0 12px 0; font-size: 16px; line-height: 1.6; color: ${EMAIL_COLORS.body};">¡Gracias por tu interés en aprender ${languageLabels[data.language] || data.language} con nosotros!</p>
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: ${EMAIL_COLORS.body};">Hemos recibido tu solicitud de clase de prueba gratuita. Un miembro de nuestro equipo se pondrá en contacto contigo en las próximas 24 horas para coordinar tu sesión.</p>
+
+        <div style="background-color: ${EMAIL_COLORS.primarySoft}; border-radius: 12px; padding: 16px; margin: 20px 0; border-left: 4px solid ${EMAIL_COLORS.primary};">
+          <p style="margin: 0; font-size: 14px; color: ${EMAIL_COLORS.primary}; font-weight: bold;">¿Qué incluye tu clase de prueba?</p>
+          <ul style="margin: 8px 0 0 0; padding-left: 20px; color: ${EMAIL_COLORS.primary}; line-height: 1.6;">
             <li>Sesión de 30 minutos con un profesor nativo</li>
             <li>Evaluación de tu nivel actual</li>
             <li>Plan de estudio personalizado</li>
             <li>Sin compromiso de compra</li>
           </ul>
         </div>
-        
-        <p style="font-size: 14px; color: #6b7280;">Si tienes alguna pregunta mientras tanto, puedes contactarnos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
-      </div>
-      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
-        Go wow with us! 🚀
-      </div>
-    </div>`,
+
+        <p style="margin: 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted};">Si tienes alguna pregunta mientras tanto, puedes contactarnos por <a href="https://wa.me/51902518947" style="color: ${EMAIL_COLORS.primary}; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
+      `,
+    }),
   })
 }
 
@@ -336,43 +437,44 @@ export const sendCreditPurchaseConfirmationEmail = async (
     from: 'hello@lingowow.com',
     to: email,
     subject: `¡Créditos agregados! - Factura ${data.invoiceNumber}`,
-    html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
-      <div style="padding: 20px; background-color: #8b5cf6; text-align: center;">
-        <h2 style="margin: 0; font-size: 24px; color: #ffffff;">¡Créditos Agregados!</h2>
-        <p style="color: #e9d5ff; font-size: 14px; margin-top: 8px;">Tu compra ha sido procesada exitosamente</p>
-      </div>
-      <div style="padding: 20px;">
-        <h3 style="font-size: 18px; color: #111827;">Hola ${data.customerName},</h3>
-        <p style="font-size: 16px; color: #374151;">Gracias por tu compra. Tus créditos ya están disponibles en tu cuenta.</p>
-        
-        <div style="background-color: #f5f3ff; border-radius: 12px; padding: 24px; margin: 20px 0; text-align: center;">
-          <p style="margin: 0 0 8px 0; font-size: 14px; color: #6b7280;">Créditos agregados:</p>
-          <p style="margin: 0; font-size: 48px; font-weight: bold; color: #8b5cf6;">${data.creditsAmount}</p>
+    html: renderEmailLayout({
+      headerBackgroundColor: EMAIL_COLORS.purple,
+      headerTitle: '¡Créditos agregados!',
+      headerSubtitle: 'Tu compra ha sido procesada exitosamente',
+      bodyHtml: `
+        <h3 style="margin: 0 0 16px 0; font-size: 18px; color: ${EMAIL_COLORS.text};">Hola ${data.customerName},</h3>
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: ${EMAIL_COLORS.body};">Gracias por tu compra. Tus créditos ya están disponibles en tu cuenta.</p>
+
+        <div style="background-color: ${EMAIL_COLORS.purpleSoft}; border-radius: 16px; padding: 24px; margin: 20px 0; text-align: center;">
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: ${EMAIL_COLORS.muted};">Créditos agregados:</p>
+          <p style="margin: 0; font-size: 48px; font-weight: bold; color: ${EMAIL_COLORS.purple};">${data.creditsAmount}</p>
         </div>
 
-        <div style="background-color: #f9fafb; border-radius: 8px; padding: 16px; margin: 20px 0;">
-          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-            <span style="color: #6b7280;">Número de factura:</span>
-            <span style="color: #111827; font-weight: bold;">${data.invoiceNumber}</span>
-          </div>
-          <div style="display: flex; justify-content: space-between;">
-            <span style="color: #6b7280;">Total pagado:</span>
-            <span style="color: #111827; font-weight: bold;">$${data.price.toFixed(2)} ${data.currency}</span>
-          </div>
+        <div style="background-color: ${EMAIL_COLORS.canvas}; border-radius: 12px; padding: 16px; margin: 20px 0;">
+          ${renderSummaryRows([
+            {
+              label: 'Número de factura:',
+              value: data.invoiceNumber,
+              labelColor: EMAIL_COLORS.muted,
+              valueColor: EMAIL_COLORS.text,
+            },
+            {
+              label: 'Total pagado:',
+              value: `$${data.price.toFixed(2)} ${data.currency}`,
+              labelColor: EMAIL_COLORS.muted,
+              valueColor: EMAIL_COLORS.text,
+            },
+          ])}
         </div>
 
         <div style="text-align: center; margin: 24px 0;">
-          <a href="${dashboardLink}" style="display: inline-block; background-color: #8b5cf6; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 16px;">Ver mis créditos</a>
+          <a href="${dashboardLink}" style="${emailButtonStyle(EMAIL_COLORS.purple)}">Ver mis créditos</a>
         </div>
-        
-        <p style="font-size: 14px; color: #6b7280; text-align: center;">Puedes usar tus créditos para reservar clases adicionales o acceder a contenido premium.</p>
-        <p style="font-size: 14px; color: #6b7280; text-align: center;">Si tienes alguna duda, contáctanos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
-      </div>
-      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
-        Go wow with us! 🚀
-      </div>
-    </div>`,
+
+        <p style="margin: 0 0 8px 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted}; text-align: center;">Puedes usar tus créditos para reservar clases adicionales o acceder a contenido premium.</p>
+        <p style="margin: 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted}; text-align: center;">Si tienes alguna duda, contáctanos por <a href="https://wa.me/51902518947" style="color: ${EMAIL_COLORS.primary}; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
+      `,
+    }),
   })
 }
 
@@ -401,49 +503,45 @@ export const sendTeacherPaymentConfirmationAdminEmail = async (
     from: 'hello@lingowow.com',
     to: 'info@lingowow.com',
     subject: `[Pago Profesor] ${data.teacherName} confirmó $${data.amount.toFixed(2)}`,
-    html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
-      <div style="padding: 20px; background-color: #10b981; text-align: center;">
-        <h2 style="margin: 0; font-size: 24px; color: #ffffff;">💰 Confirmación de Pago</h2>
-        <p style="color: #d1fae5; font-size: 14px; margin-top: 8px;">Un profesor ha confirmado su monto de pago</p>
-      </div>
-      <div style="padding: 20px;">
-        <div style="background-color: #f9fafb; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+    html: renderEmailLayout({
+      headerBackgroundColor: EMAIL_COLORS.success,
+      headerTitle: '💰 Confirmación de pago',
+      headerSubtitle: 'Un profesor ha confirmado su monto de pago',
+      footerText: 'Notificación automática del sistema de pagos de Lingowow',
+      bodyHtml: `
+        <div style="background-color: ${EMAIL_COLORS.canvas}; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Profesor</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827; font-weight: bold;">${data.teacherName}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Profesor</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.text}; font-weight: bold;">${data.teacherName}</p>
           </div>
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Email</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;"><a href="mailto:${data.teacherEmail}" style="color: #3b82f6;">${data.teacherEmail}</a></p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Email</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.text};"><a href="mailto:${data.teacherEmail}" style="color: ${EMAIL_COLORS.primary}; text-decoration: none;">${data.teacherEmail}</a></p>
           </div>
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Monto Confirmado</p>
-            <p style="margin: 4px 0 0 0; font-size: 24px; color: #10b981; font-weight: bold;">$${data.amount.toFixed(2)}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Monto confirmado</p>
+            <p style="margin: 4px 0 0 0; font-size: 24px; color: ${EMAIL_COLORS.success}; font-weight: bold;">$${data.amount.toFixed(2)}</p>
           </div>
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Recibo por Honorarios</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;">${data.hasProof ? '✅ Adjuntado' : '❌ No adjuntado'}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Recibo por honorarios</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.text};">${data.hasProof ? '✅ Adjuntado' : '❌ No adjuntado'}</p>
           </div>
           <div>
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Fecha de Confirmación</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;">${new Date(data.confirmedAt).toLocaleString('es-PE', { timeZone: 'America/Lima' })}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Fecha de confirmación</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.text};">${new Date(data.confirmedAt).toLocaleString('es-PE', { timeZone: 'America/Lima' })}</p>
           </div>
         </div>
-        
-        <div style="background-color: #fef3c7; border-radius: 8px; padding: 16px; margin-bottom: 20px; border-left: 4px solid #f59e0b;">
-          <p style="margin: 0; font-size: 14px; color: #92400e; font-weight: bold;">⚠️ Acción Requerida</p>
-          <p style="margin: 8px 0 0 0; font-size: 14px; color: #92400e;">Procesar el pago al profesor y marcar como pagado en el sistema.</p>
+
+        <div style="background-color: ${EMAIL_COLORS.warningSoft}; border-radius: 12px; padding: 16px; margin-bottom: 20px; border-left: 4px solid ${EMAIL_COLORS.warning};">
+          <p style="margin: 0; font-size: 14px; color: ${EMAIL_COLORS.warning}; font-weight: bold;">⚠️ Acción requerida</p>
+          <p style="margin: 8px 0 0 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.warning};">Procesar el pago al profesor y marcar como pagado en el sistema.</p>
         </div>
 
-        <div style="text-align: center; margin: 24px 0;">
-          <a href="${adminDashboardLink}" style="display: inline-block; background-color: #10b981; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 16px;">Ver Panel de Pagos</a>
+        <div style="text-align: center; margin: 24px 0 0 0;">
+          <a href="${adminDashboardLink}" style="${emailButtonStyle(EMAIL_COLORS.success)}">Ver Panel de Pagos</a>
         </div>
-      </div>
-      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
-        Notificación automática del sistema de pagos de Lingowow
-      </div>
-    </div>`,
+      `,
+    }),
   })
 }
 
@@ -478,49 +576,44 @@ export const sendNewEnrollmentTeacherEmail = async (
     from: 'hello@lingowow.com',
     to: email,
     subject: `Nuevo estudiante inscrito: ${data.studentName}`,
-    html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
-      <div style="padding: 20px; background-color: #3b82f6; text-align: center;">
-        <h2 style="margin: 0; font-size: 24px; color: #ffffff;">👤 Nuevo Estudiante</h2>
-        <p style="color: #dbeafe; font-size: 14px; margin-top: 8px;">Un nuevo estudiante se ha inscrito en tu curso</p>
-      </div>
-      <div style="padding: 20px;">
-        <h3 style="font-size: 18px; color: #111827;">Hola ${data.teacherName},</h3>
-        <p style="font-size: 16px; color: #374151;">Te informamos que tienes un nuevo estudiante inscrito.</p>
-        
-        <div style="background-color: #eff6ff; border-radius: 8px; padding: 20px; margin: 20px 0; border-left: 4px solid #3b82f6;">
+    html: renderEmailLayout({
+      headerBackgroundColor: EMAIL_COLORS.primary,
+      headerTitle: '👤 Nuevo estudiante',
+      headerSubtitle: 'Un nuevo estudiante se ha inscrito en tu curso',
+      bodyHtml: `
+        <h3 style="margin: 0 0 16px 0; font-size: 18px; color: ${EMAIL_COLORS.text};">Hola ${data.teacherName},</h3>
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: ${EMAIL_COLORS.body};">Te informamos que tienes un nuevo estudiante inscrito.</p>
+
+        <div style="background-color: ${EMAIL_COLORS.primarySoft}; border-radius: 12px; padding: 20px; margin: 20px 0; border-left: 4px solid ${EMAIL_COLORS.primary};">
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Estudiante</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; font-weight: bold; color: #111827;">${data.studentName}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Estudiante</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; font-weight: bold; color: ${EMAIL_COLORS.text};">${data.studentName}</p>
           </div>
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Curso</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #374151;">${data.courseName}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Curso</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.body};">${data.courseName}</p>
           </div>
           <div>
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Fecha de inscripción</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #374151;">${data.enrollmentDate}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Fecha de inscripción</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.body};">${data.enrollmentDate}</p>
           </div>
           ${
             data.studentScheduleSummary
               ? `
           <div style="margin-top: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Horario del estudiante</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #374151;">${data.studentScheduleSummary}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Horario del estudiante</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.body};">${data.studentScheduleSummary}</p>
           </div>
           `
               : ''
           }
         </div>
 
-        <div style="text-align: center; margin: 24px 0;">
-          <a href="${dashboardLink}" style="display: inline-block; background-color: #020617; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 16px;">Ver mis estudiantes</a>
+        <div style="text-align: center; margin: 24px 0 0 0;">
+          <a href="${dashboardLink}" style="${emailButtonStyle(EMAIL_COLORS.dark)}">Ver mis estudiantes</a>
         </div>
-      </div>
-      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
-        Go wow with us! 🚀
-      </div>
-    </div>`,
+      `,
+    }),
   })
 }
 
@@ -544,28 +637,26 @@ export const sendEnrollmentConfirmationStudentEmail = async (
     from: 'hello@lingowow.com',
     to: email,
     subject: `Confirmación de inscripción: ${data.courseName}`,
-    html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
-      <div style="padding: 20px; background-color: #10b981; text-align: center;">
-        <h2 style="margin: 0; font-size: 24px; color: #ffffff;">¡Inscripción confirmada!</h2>
-        <p style="color: #d1fae5; font-size: 14px; margin-top: 8px;">Tu inscripción fue registrada correctamente</p>
-      </div>
-      <div style="padding: 20px;">
-        <h3 style="font-size: 18px; color: #111827;">Hola ${data.studentName},</h3>
-        <p style="font-size: 16px; color: #374151;">Te confirmamos que ya estás inscrito(a) en <strong>${data.courseName}</strong>.</p>
-        <p style="font-size: 16px; color: #374151;">${introCopy}</p>
+    html: renderEmailLayout({
+      headerBackgroundColor: EMAIL_COLORS.success,
+      headerTitle: '¡Inscripción confirmada!',
+      headerSubtitle: 'Tu inscripción fue registrada correctamente',
+      bodyHtml: `
+        <h3 style="margin: 0 0 16px 0; font-size: 18px; color: ${EMAIL_COLORS.text};">Hola ${data.studentName},</h3>
+        <p style="margin: 0 0 12px 0; font-size: 16px; line-height: 1.6; color: ${EMAIL_COLORS.body};">Te confirmamos que ya estás inscrito(a) en <strong>${data.courseName}</strong>.</p>
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: ${EMAIL_COLORS.body};">${introCopy}</p>
 
-        <div style="background-color: #ecfdf5; border-radius: 8px; padding: 20px; margin: 20px 0; border-left: 4px solid #10b981;">
+        <div style="background-color: ${EMAIL_COLORS.successSoft}; border-radius: 12px; padding: 20px; margin: 20px 0; border-left: 4px solid ${EMAIL_COLORS.success};">
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Curso</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; font-weight: bold; color: #111827;">${data.courseName}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Curso</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; font-weight: bold; color: ${EMAIL_COLORS.text};">${data.courseName}</p>
           </div>
           ${
             data.teacherName
               ? `
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Profesor/a</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #374151;">${data.teacherName}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Profesor/a</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.body};">${data.teacherName}</p>
           </div>
           `
               : ''
@@ -574,32 +665,29 @@ export const sendEnrollmentConfirmationStudentEmail = async (
             hasFirstClass
               ? `
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Primera clase</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #374151;">${data.firstClassDate}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Primera clase</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.body};">${data.firstClassDate}</p>
           </div>
           <div>
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Hora</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; font-weight: bold; color: #10b981;">${data.firstClassTime}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Hora</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; font-weight: bold; color: ${EMAIL_COLORS.success};">${data.firstClassTime}</p>
           </div>
           `
               : `
           <div>
-            <p style="margin: 0; font-size: 16px; color: #374151;">${pendingDetailsCopy}</p>
+            <p style="margin: 0; font-size: 16px; line-height: 1.6; color: ${EMAIL_COLORS.body};">${pendingDetailsCopy}</p>
           </div>
           `
           }
         </div>
 
         <div style="text-align: center; margin: 24px 0;">
-          <a href="${dashboardLink}" style="display: inline-block; background-color: #020617; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 16px;">Ir a mi Dashboard</a>
+          <a href="${dashboardLink}" style="${emailButtonStyle(EMAIL_COLORS.dark)}">Ir a mi Dashboard</a>
         </div>
 
-        <p style="font-size: 14px; color: #6b7280; text-align: center;">Si tienes alguna duda, contáctanos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
-      </div>
-      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
-        Go wow with us! 🚀
-      </div>
-    </div>`,
+        <p style="margin: 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted}; text-align: center;">Si tienes alguna duda, contáctanos por <a href="https://wa.me/51902518947" style="color: ${EMAIL_COLORS.primary}; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
+      `,
+    }),
   })
 }
 
@@ -620,45 +708,41 @@ export const sendNewPurchaseAdminEmail = async (data: NewPurchaseAdminEmailData)
     from: 'hello@lingowow.com',
     to: 'info@lingowow.com',
     subject: `💰 Nueva compra: ${data.customerName} - $${data.amount.toFixed(2)}`,
-    html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
-      <div style="padding: 20px; background-color: #10b981; text-align: center;">
-        <h2 style="margin: 0; font-size: 24px; color: #ffffff;">💰 Nueva Compra</h2>
-        <p style="color: #d1fae5; font-size: 14px; margin-top: 8px;">Se ha registrado un nuevo pago</p>
-      </div>
-      <div style="padding: 20px;">
-        <div style="background-color: #f9fafb; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+    html: renderEmailLayout({
+      headerBackgroundColor: EMAIL_COLORS.success,
+      headerTitle: '💰 Nueva compra',
+      headerSubtitle: 'Se ha registrado un nuevo pago',
+      footerText: 'Notificación automática del sistema de ventas de Lingowow',
+      bodyHtml: `
+        <div style="background-color: ${EMAIL_COLORS.canvas}; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Cliente</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827; font-weight: bold;">${data.customerName}</p>
-            <p style="margin: 2px 0 0 0; font-size: 14px; color: #6b7280;">${data.customerEmail}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Cliente</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.text}; font-weight: bold;">${data.customerName}</p>
+            <p style="margin: 2px 0 0 0; font-size: 14px; color: ${EMAIL_COLORS.muted};">${data.customerEmail}</p>
           </div>
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Producto</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;">${data.productName}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Producto</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.text};">${data.productName}</p>
           </div>
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Monto</p>
-            <p style="margin: 4px 0 0 0; font-size: 24px; color: #10b981; font-weight: bold;">$${data.amount.toFixed(2)} ${data.currency}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Monto</p>
+            <p style="margin: 4px 0 0 0; font-size: 24px; color: ${EMAIL_COLORS.success}; font-weight: bold;">$${data.amount.toFixed(2)} ${data.currency}</p>
           </div>
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Factura</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;">${data.invoiceNumber}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Factura</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.text};">${data.invoiceNumber}</p>
           </div>
           <div>
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Fecha</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;">${data.purchaseDate}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Fecha</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.text};">${data.purchaseDate}</p>
           </div>
         </div>
 
-        <div style="text-align: center; margin: 24px 0;">
-          <a href="${adminLink}" style="display: inline-block; background-color: #10b981; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 16px;">Ver Facturas</a>
+        <div style="text-align: center; margin: 24px 0 0 0;">
+          <a href="${adminLink}" style="${emailButtonStyle(EMAIL_COLORS.success)}">Ver Facturas</a>
         </div>
-      </div>
-      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
-        Notificación automática del sistema de ventas de Lingowow
-      </div>
-    </div>`,
+      `,
+    }),
   })
 }
 
@@ -677,68 +761,59 @@ export const sendContactFormEmail = async (data: ContactFormData) => {
     to: 'info@lingowow.com',
     replyTo: data.email,
     subject: `[Contacto Web] ${subjectLabels[data.subject] || data.subject} - ${data.name}`,
-    html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
-      <div style="padding: 20px; background-color: #6366f1; text-align: center;">
-        <h2 style="margin: 0; font-size: 24px; color: #ffffff;">Nuevo mensaje de contacto</h2>
-      </div>
-      <div style="padding: 20px;">
-        <div style="background-color: #f9fafb; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+    html: renderEmailLayout({
+      headerBackgroundColor: EMAIL_COLORS.indigo,
+      headerTitle: 'Nuevo mensaje de contacto',
+      footerText: 'Mensaje enviado desde el formulario de contacto de lingowow.com',
+      bodyHtml: `
+        <div style="background-color: ${EMAIL_COLORS.canvas}; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Nombre</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;">${data.name}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Nombre</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.text};">${data.name}</p>
           </div>
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Email</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;"><a href="mailto:${data.email}" style="color: #3b82f6;">${data.email}</a></p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Email</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.text};"><a href="mailto:${data.email}" style="color: ${EMAIL_COLORS.primary}; text-decoration: none;">${data.email}</a></p>
           </div>
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Teléfono</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;">${data.phone}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Teléfono</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.text};">${data.phone}</p>
           </div>
           <div>
-            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Asunto</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: #111827;">${subjectLabels[data.subject] || data.subject}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Asunto</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.text};">${subjectLabels[data.subject] || data.subject}</p>
           </div>
         </div>
-        
+
         <div>
-          <p style="margin: 0 0 8px 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Mensaje</p>
-          <div style="background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
-            <p style="margin: 0; font-size: 16px; color: #374151; white-space: pre-wrap;">${data.message}</p>
+          <p style="margin: 0 0 8px 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Mensaje</p>
+          <div style="background-color: ${EMAIL_COLORS.surface}; border: 1px solid ${EMAIL_COLORS.border}; border-radius: 12px; padding: 16px;">
+            <p style="margin: 0; font-size: 16px; line-height: 1.6; color: ${EMAIL_COLORS.body}; white-space: pre-wrap;">${data.message}</p>
           </div>
         </div>
-      </div>
-      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
-        Mensaje enviado desde el formulario de contacto de lingowow.com
-      </div>
-    </div>`,
+      `,
+    }),
   })
 
   await resend.emails.send({
     from: 'hello@lingowow.com',
     to: data.email,
     subject: 'Hemos recibido tu mensaje - Lingowow',
-    html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
-      <div style="padding: 20px; background-color: #3b82f6; text-align: center;">
-        <h2 style="margin: 0; font-size: 24px; color: #ffffff;">¡Mensaje recibido!</h2>
-      </div>
-      <div style="padding: 20px;">
-        <h3 style="font-size: 18px; color: #111827;">Hola ${data.name},</h3>
-        <p style="font-size: 16px; color: #374151;">Gracias por contactarnos. Hemos recibido tu mensaje y te responderemos en menos de 24 horas.</p>
-        
-        <div style="background-color: #f9fafb; border-radius: 8px; padding: 16px; margin: 20px 0;">
-          <p style="margin: 0 0 8px 0; font-size: 14px; color: #6b7280;">Tu mensaje:</p>
-          <p style="margin: 0; font-size: 14px; color: #374151; font-style: italic;">"${data.message.substring(0, 200)}${data.message.length > 200 ? '...' : ''}"</p>
+    html: renderEmailLayout({
+      headerBackgroundColor: EMAIL_COLORS.primary,
+      headerTitle: '¡Mensaje recibido!',
+      bodyHtml: `
+        <h3 style="margin: 0 0 16px 0; font-size: 18px; color: ${EMAIL_COLORS.text};">Hola ${data.name},</h3>
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: ${EMAIL_COLORS.body};">Gracias por contactarnos. Hemos recibido tu mensaje y te responderemos en menos de 24 horas.</p>
+
+        <div style="background-color: ${EMAIL_COLORS.canvas}; border-radius: 12px; padding: 16px; margin: 20px 0;">
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: ${EMAIL_COLORS.muted};">Tu mensaje:</p>
+          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.body}; font-style: italic;">"${data.message.substring(0, 200)}${data.message.length > 200 ? '...' : ''}"</p>
         </div>
-        
-        <p style="font-size: 14px; color: #6b7280;">Si necesitas una respuesta más rápida, puedes contactarnos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
-      </div>
-      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
-        Go wow with us! 🚀
-      </div>
-    </div>`,
+
+        <p style="margin: 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted};">Si necesitas una respuesta más rápida, puedes contactarnos por <a href="https://wa.me/51902518947" style="color: ${EMAIL_COLORS.primary}; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
+      `,
+    }),
   })
 }
 
@@ -784,33 +859,30 @@ export const sendPaymentLinkEmail = async (params: {
     from: 'hello@lingowow.com',
     to: params.email,
     subject: `Tu link de pago para ${params.planName} - Lingowow`,
-    html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
-      <div style="padding: 20px; background-color: #f3f4f6; text-align: center;">
-        <h2 style="margin: 0; font-size: 24px; color: #111827;">Completa tu inscripción</h2>
-        <p style="color: #6b7280; font-size: 14px;">Un paso más para comenzar tu aprendizaje de inglés</p>
-      </div>
-      <div style="padding: 20px;">
-        <h3 style="font-size: 18px; color: #111827;">Hola ${params.name},</h3>
-        <p style="font-size: 16px; color: #374151;">Has seleccionado el plan <strong>${params.planName}</strong> por <strong>${params.price}</strong>. Haz clic en el botón de abajo para completar tu pago de forma segura a través de PayPal.</p>
-        <div style="background-color: #eff6ff; border-radius: 8px; padding: 16px; margin: 20px 0; border-left: 4px solid #3b82f6;">
-          <p style="margin: 0; font-size: 14px; color: #1e40af; font-weight: bold;">¿Qué incluye tu plan?</p>
-          <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #1e40af; font-size: 14px;">
+    html: renderEmailLayout({
+      headerBackgroundColor: EMAIL_COLORS.primarySoft,
+      headerTitle: 'Completa tu inscripción',
+      headerSubtitle: 'Un paso más para comenzar tu aprendizaje de inglés',
+      headerTitleColor: EMAIL_COLORS.text,
+      headerSubtitleColor: EMAIL_COLORS.muted,
+      bodyHtml: `
+        <h3 style="margin: 0 0 16px 0; font-size: 18px; color: ${EMAIL_COLORS.text};">Hola ${params.name},</h3>
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: ${EMAIL_COLORS.body};">Has seleccionado el plan <strong>${params.planName}</strong> por <strong>${params.price}</strong>. Haz clic en el botón de abajo para completar tu pago de forma segura a través de PayPal.</p>
+        <div style="background-color: ${EMAIL_COLORS.primarySoft}; border-radius: 12px; padding: 16px; margin: 20px 0; border-left: 4px solid ${EMAIL_COLORS.primary};">
+          <p style="margin: 0; font-size: 14px; color: ${EMAIL_COLORS.primary}; font-weight: bold;">¿Qué incluye tu plan?</p>
+          <ul style="margin: 8px 0 0 0; padding-left: 20px; color: ${EMAIL_COLORS.primary}; font-size: 14px; line-height: 1.6;">
             <li>Clases 1 a 1 en vivo con profesores certificados</li>
             <li>Acceso a la plataforma Lingowow</li>
             <li>Seguimiento personalizado de tu progreso</li>
           </ul>
         </div>
         <div style="text-align: center; margin: 24px 0;">
-          <a href="${params.paymentUrl}" style="display: inline-block; background-color: #020617; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-size: 16px; font-weight: bold;">Completar Pago con PayPal</a>
+          <a href="${params.paymentUrl}" style="${emailButtonStyle(EMAIL_COLORS.primary)}">Completar Pago con PayPal</a>
         </div>
-        <p style="font-size: 14px; color: #6b7280; text-align: center;">Una vez completado el pago, recibirás una confirmación y tu inscripción quedará activa.</p>
-        <p style="font-size: 14px; color: #6b7280; text-align: center;">Si tienes alguna duda, contáctanos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
-      </div>
-      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
-        Go wow with us! 🚀
-      </div>
-    </div>`,
+        <p style="margin: 0 0 8px 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted}; text-align: center;">Una vez completado el pago, recibirás una confirmación y tu inscripción quedará activa.</p>
+        <p style="margin: 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted}; text-align: center;">Si tienes alguna duda, contáctanos por <a href="https://wa.me/51902518947" style="color: ${EMAIL_COLORS.primary}; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
+      `,
+    }),
   })
 }
 
@@ -826,57 +898,48 @@ export const sendPlacementTestResultEmail = async (
     from: 'hello@lingowow.com',
     to: email,
     subject: `🎉 Tu resultado del Test de Clasificación de ${languageName}: Nivel ${data.level}`,
-    html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
-      <div style="padding: 30px; background: linear-gradient(135deg, ${levelColor} 0%, ${levelColor}dd 100%); text-align: center;">
-        <h2 style="margin: 0; font-size: 28px; color: #ffffff;">🎉 ¡Test Completado!</h2>
-        <p style="color: rgba(255,255,255,0.9); font-size: 16px; margin-top: 8px;">Test de Clasificación de ${languageName}</p>
-      </div>
-      <div style="padding: 30px;">
-        <h3 style="font-size: 18px; color: #111827; margin-bottom: 20px;">Hola ${data.userName},</h3>
-        <p style="font-size: 16px; color: #374151; line-height: 1.6;">
-          ¡Felicitaciones por completar tu test de clasificación! Aquí están tus resultados:
-        </p>
-        
-        <div style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 16px; padding: 30px; margin: 24px 0; text-align: center;">
-          <p style="margin: 0 0 8px 0; font-size: 14px; color: #6b7280; text-transform: uppercase; letter-spacing: 1px;">Tu nivel de ${languageName}</p>
-          <div style="display: inline-block; background-color: ${levelColor}; color: white; font-size: 48px; font-weight: bold; padding: 16px 32px; border-radius: 12px; margin: 12px 0;">
+    html: renderEmailLayout({
+      headerBackgroundColor: levelColor,
+      headerTitle: '🎉 ¡Test completado!',
+      headerSubtitle: `Test de Clasificación de ${languageName}`,
+      bodyHtml: `
+        <h3 style="margin: 0 0 20px 0; font-size: 18px; color: ${EMAIL_COLORS.text};">Hola ${data.userName},</h3>
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: ${EMAIL_COLORS.body};">¡Felicitaciones por completar tu test de clasificación! Aquí están tus resultados:</p>
+
+        <div style="background-color: ${EMAIL_COLORS.canvas}; border-radius: 16px; padding: 30px; margin: 24px 0; text-align: center;">
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 1px;">Tu nivel de ${languageName}</p>
+          <div style="display: inline-block; background-color: ${levelColor}; color: #ffffff; font-size: 48px; font-weight: bold; padding: 16px 32px; border-radius: 12px; margin: 12px 0;">
             ${data.level}
           </div>
-          <p style="margin: 16px 0 0 0; font-size: 18px; color: #374151; font-weight: 500;">${data.levelDescription}</p>
+          <p style="margin: 16px 0 0 0; font-size: 18px; color: ${EMAIL_COLORS.body}; font-weight: 500; line-height: 1.6;">${data.levelDescription}</p>
         </div>
 
-        <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; margin: 20px 0;">
-          <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-            <span style="color: #6b7280;">Puntaje obtenido:</span>
-            <span style="color: #111827; font-weight: bold;">${Math.round(data.score)}%</span>
-          </div>
-          <div style="display: flex; justify-content: space-between;">
-            <span style="color: #6b7280;">Fecha del test:</span>
-            <span style="color: #111827;">${data.completedAt}</span>
-          </div>
+        <div style="background-color: ${EMAIL_COLORS.canvas}; border-radius: 12px; padding: 20px; margin: 20px 0;">
+          ${renderSummaryRows([
+            {
+              label: 'Puntaje obtenido:',
+              value: `${Math.round(data.score)}%`,
+              valueColor: EMAIL_COLORS.text,
+            },
+            {
+              label: 'Fecha del test:',
+              value: data.completedAt,
+              valueColor: EMAIL_COLORS.text,
+            },
+          ])}
         </div>
 
-        <div style="background-color: #eff6ff; border-radius: 8px; padding: 20px; margin: 20px 0; border-left: 4px solid #3b82f6;">
-          <p style="margin: 0 0 8px 0; font-size: 14px; color: #1e40af; font-weight: bold;">¿Qué sigue?</p>
-          <p style="margin: 0; font-size: 14px; color: #1e40af; line-height: 1.6;">
-            Basándonos en tu nivel ${data.level}, te recomendamos explorar nuestros cursos diseñados específicamente para ti. 
-            ¡Comienza tu viaje de aprendizaje hoy!
-          </p>
+        <div style="background-color: ${EMAIL_COLORS.primarySoft}; border-radius: 12px; padding: 20px; margin: 20px 0; border-left: 4px solid ${EMAIL_COLORS.primary};">
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: ${EMAIL_COLORS.primary}; font-weight: bold;">¿Qué sigue?</p>
+          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.primary};">Basándonos en tu nivel ${data.level}, te recomendamos explorar nuestros cursos diseñados específicamente para ti. ¡Comienza tu viaje de aprendizaje hoy!</p>
         </div>
 
         <div style="text-align: center; margin: 24px 0;">
-          <a href="${coursesLink}" style="display: inline-block; background-color: #020617; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-size: 16px; font-weight: bold;">Ver Cursos Recomendados</a>
+          <a href="${coursesLink}" style="${emailButtonStyle(EMAIL_COLORS.dark)}">Ver Cursos Recomendados</a>
         </div>
-        
-        <p style="font-size: 14px; color: #6b7280; text-align: center;">
-          ¿Tienes preguntas? Contáctanos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a> 
-          o escríbenos a info@lingowow.com
-        </p>
-      </div>
-      <div style="padding: 16px 20px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
-        Go wow with us! 🚀
-      </div>
-    </div>`,
+
+        <p style="margin: 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted}; text-align: center;">¿Tienes preguntas? Contáctanos por <a href="https://wa.me/51902518947" style="color: ${EMAIL_COLORS.primary}; text-decoration: none; font-weight: bold;">WhatsApp</a> o escríbenos a info@lingowow.com</p>
+      `,
+    }),
   })
 }
