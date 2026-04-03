@@ -120,7 +120,7 @@ describe('formatNumber', () => {
 describe('getDiceBearAvatar', () => {
   it('should return correct URL for default style', () => {
     const url = getDiceBearAvatar('user123')
-    expect(url).toBe('https://api.dicebear.com/9.x/lorelei-neutral/svg?seed=user123')
+    expect(url).toBe('https://api.dicebear.com/9.x/lorelei/svg?seed=user123')
   })
 
   it('should return correct URL for specific style', () => {
@@ -130,7 +130,7 @@ describe('getDiceBearAvatar', () => {
 
   it('should URI encode the seed', () => {
     const url = getDiceBearAvatar('user with spaces')
-    expect(url).toBe('https://api.dicebear.com/9.x/lorelei-neutral/svg?seed=user%20with%20spaces')
+    expect(url).toBe('https://api.dicebear.com/9.x/lorelei/svg?seed=user%20with%20spaces')
   })
 })
 
@@ -142,11 +142,11 @@ describe('getUserAvatarUrl', () => {
 
   it('should return DiceBear avatar if userImage is null', () => {
     const url = getUserAvatarUrl('user123', null)
-    expect(url).toBe('https://api.dicebear.com/9.x/lorelei-neutral/svg?seed=user123')
+    expect(url).toBe('https://api.dicebear.com/9.x/lorelei/svg?seed=user123')
   })
 
   it('should return DiceBear avatar if userImage is undefined', () => {
     const url = getUserAvatarUrl('user123')
-    expect(url).toBe('https://api.dicebear.com/9.x/lorelei-neutral/svg?seed=user123')
+    expect(url).toBe('https://api.dicebear.com/9.x/lorelei/svg?seed=user123')
   })
 })

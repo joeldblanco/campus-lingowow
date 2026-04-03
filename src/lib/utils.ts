@@ -51,7 +51,7 @@ export function formatNumber(num: number): string {
 // Generate DiceBear avatar URL based on user ID
 export function getDiceBearAvatar(
   userId: string,
-  style: 'initials' | 'avataaars' | 'bottts' | 'lorelei-neutral' | 'notionists' = 'lorelei-neutral'
+  style: 'initials' | 'avataaars' | 'bottts' | 'lorelei' | 'notionists' = 'lorelei'
 ): string {
   return `https://api.dicebear.com/9.x/${style}/svg?seed=${encodeURIComponent(userId)}`
 }
