@@ -17,6 +17,7 @@ interface PayPalButtonProps {
   subtotal: number
   discount: number
   currency?: string
+  couponId?: string
   onSuccess: (data: unknown) => void
   onError?: (error: unknown) => void
 }
@@ -27,6 +28,7 @@ export function PayPalButton({
   subtotal,
   discount,
   currency = 'USD',
+  couponId,
   onSuccess,
   onError,
 }: PayPalButtonProps) {
@@ -87,6 +89,7 @@ export function PayPalButton({
             discount,
             total,
             currency,
+            couponId,
           },
           customerInfo: Object.keys(customerInfo).length > 0 ? customerInfo : undefined,
         }),

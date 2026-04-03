@@ -7,6 +7,10 @@ import { sendPaymentConfirmationEmail, sendNewPurchaseAdminEmail } from '@/lib/m
 import { rateLimit, getRateLimitHeaders } from '@/lib/rate-limit'
 import { notifyNewPurchase } from '@/lib/actions/notifications'
 import { auditLog } from '@/lib/audit-log'
+import {
+  notifySelfServiceEnrollmentCreated,
+  upsertSelfServiceEnrollment,
+} from '@/lib/enrollments/self-service-enrollment'
 
 interface ScheduleSlot {
   teacherId: string
@@ -206,6 +210,7 @@ export async function POST(req: NextRequest) {
           // Obtener información del plan si existe
           let plan = null
           let enrollment: { id: string; course?: { title?: string } } | null = null
+          let enrollmentWasCreated = false
 
           if (item.planId) {
             plan = await db.plan.findUnique({
@@ -241,31 +246,15 @@ export async function POST(req: NextRequest) {
             const firstTeacherId = item.selectedSchedule[0]?.teacherId || null
 
             // Crear o actualizar la inscripción
-            enrollment = await db.enrollment.upsert({
-              where: {
-                studentId_courseId_academicPeriodId: {
-                  studentId: userId!,
-                  courseId: plan.courseId,
-                  academicPeriodId: currentPeriod.id,
-                },
-              },
-              create: {
-                studentId: userId!,
-                courseId: plan.courseId,
-                academicPeriodId: currentPeriod.id,
-                teacherId: firstTeacherId,
-                status: 'ACTIVE',
-                classesTotal: item.proratedClasses || plan.classesPerPeriod || 8,
-                classesAttended: 0,
-                classesMissed: 0,
-              },
-              update: {
-                status: 'ACTIVE',
-                classesTotal: item.proratedClasses || plan.classesPerPeriod || 8,
-                // Si no tiene teacherId asignado, asignarlo ahora
-                ...(firstTeacherId ? { teacherId: firstTeacherId } : {}),
-              },
+            const enrollmentResult = await upsertSelfServiceEnrollment({
+              studentId: userId!,
+              courseId: plan.courseId,
+              academicPeriodId: currentPeriod.id,
+              teacherId: firstTeacherId,
+              classesTotal: item.proratedClasses || plan.classesPerPeriod || 8,
             })
+            enrollment = enrollmentResult.enrollment
+            enrollmentWasCreated = enrollmentResult.wasCreated
 
             // Actualizar la compra con el enrollmentId
             await db.productPurchase.update({
@@ -410,12 +399,16 @@ export async function POST(req: NextRequest) {
           return {
             ...purchase,
             enrollment,
+            enrollmentWasCreated,
           }
         })
       )
 
       // Verificar si alguna compra requiere configuración de horario
       const needsScheduleSetup = purchases.some((p) => p.enrollment && !p.selectedSchedule)
+      const newlyCreatedEnrollmentIds = purchases.flatMap((purchase) =>
+        purchase.enrollmentWasCreated && purchase.enrollment ? [purchase.enrollment.id] : []
+      )
 
       // Enviar email de confirmación de pago
       try {
@@ -473,6 +466,23 @@ export async function POST(req: NextRequest) {
         }
       } catch (emailError) {
         console.error('Error sending payment confirmation email:', emailError)
+      }
+
+      try {
+        await Promise.all(
+          newlyCreatedEnrollmentIds.map(async (enrollmentId) => {
+            const result = await notifySelfServiceEnrollmentCreated(enrollmentId)
+
+            if (!result.success) {
+              console.error(
+                `Error sending new enrollment notification for ${enrollmentId}:`,
+                result.error
+              )
+            }
+          })
+        )
+      } catch (notificationError) {
+        console.error('Error sending self-service enrollment notifications:', notificationError)
       }
 
       return NextResponse.json({

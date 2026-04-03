@@ -2,6 +2,7 @@ import { db } from '@/lib/db'
 import { EnrollmentStatus, InvoiceStatus, UserRole } from '@prisma/client'
 import type { ToolResult } from '@/types/ai-chat'
 import { handleAdminScheduleClass } from './admin-schedule-class'
+import { notifySelfServiceEnrollmentCreated } from '@/lib/enrollments/self-service-enrollment'
 
 type ScheduleResultData = {
   scheduledCount?: number
@@ -327,6 +328,12 @@ export async function handleAdminEnrollStudent(params: {
       })
 
       if (scheduleResult.success) {
+        try {
+          await notifySelfServiceEnrollmentCreated(enrollmentId)
+        } catch (notificationError) {
+          console.error('[AdminEnrollStudent] Error sending enrollment notifications:', notificationError)
+        }
+
         return {
           success: true,
           message: `Se inscribió al estudiante "${student.name}" en el curso "${course.title}" para el periodo "${period.name}" (Profesor: ${teacherNameStr}).\n\n${scheduleResult.message}`,
@@ -348,6 +355,12 @@ export async function handleAdminEnrollStudent(params: {
     const asyncNote = !course.isSynchronous
       ? ' Este es un curso asincrónico, no requiere agendamiento de clases.'
       : ' No se solicitaron horarios para agendar.'
+
+    try {
+      await notifySelfServiceEnrollmentCreated(enrollmentId)
+    } catch (notificationError) {
+      console.error('[AdminEnrollStudent] Error sending enrollment notifications:', notificationError)
+    }
 
     return {
       success: true,

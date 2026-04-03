@@ -196,11 +196,6 @@ const data = {
           url: '/admin/payments/teachers',
           icon: DollarSign,
         },
-        {
-          title: 'Clases Pagables',
-          url: '/admin/reports/payable-classes',
-          icon: DollarSign,
-        },
       ],
     },
     {

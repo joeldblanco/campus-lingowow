@@ -4,6 +4,10 @@ import { authorizeNiubizTransaction, getNiubizAccessToken, registerNiubizCard } 
 import { db } from '@/lib/db'
 import { sendPaymentConfirmationEmail } from '@/lib/mail'
 import { Invoice } from '@prisma/client'
+import {
+  notifySelfServiceEnrollmentCreated,
+  upsertSelfServiceEnrollment,
+} from '@/lib/enrollments/self-service-enrollment'
 
 interface ScheduleSlot {
   teacherId: string
@@ -30,6 +34,7 @@ interface InvoiceData {
   discount: number
   total: number
   currency?: string
+  couponId?: string
 }
 
 interface CustomerInfo {
@@ -154,6 +159,7 @@ export async function POST(req: NextRequest) {
           total: invoiceData.total,
           status: 'PAID',
           currency: invoiceData.currency || 'USD',
+          couponId: invoiceData.couponId || null,
           paidAt: new Date(),
           paymentMethod: 'niubiz',
           niubizTransactionId: transactionToken,
@@ -178,6 +184,13 @@ export async function POST(req: NextRequest) {
           items: true,
         },
       })
+
+      if (invoiceData.couponId) {
+        await db.coupon.update({
+          where: { id: invoiceData.couponId },
+          data: { usageCount: { increment: 1 } },
+        })
+      }
 
       // Get current academic period based on dates (excluding special weeks)
       const today = new Date()
@@ -207,6 +220,7 @@ export async function POST(req: NextRequest) {
         invoiceData.items.map(async (item) => {
           let plan = null
           let enrollment: { id: string; course?: { title?: string } } | null = null
+          let enrollmentWasCreated = false
           let courseId: string | null = null
 
           if (item.planId) {
@@ -270,31 +284,15 @@ export async function POST(req: NextRequest) {
             // Extraer el teacherId del primer slot del horario seleccionado
             const firstTeacherId = item.selectedSchedule[0]?.teacherId || null
 
-            enrollment = await db.enrollment.upsert({
-              where: {
-                studentId_courseId_academicPeriodId: {
-                  studentId: userId!,
-                  courseId: courseId!,
-                  academicPeriodId: currentPeriod.id,
-                },
-              },
-              create: {
-                studentId: userId!,
-                courseId: courseId!,
-                academicPeriodId: currentPeriod.id,
-                teacherId: firstTeacherId,
-                status: 'ACTIVE',
-                classesTotal: item.proratedClasses || plan.classesPerPeriod || 8,
-                classesAttended: 0,
-                classesMissed: 0,
-              },
-              update: {
-                status: 'ACTIVE',
-                classesTotal: item.proratedClasses || plan.classesPerPeriod || 8,
-                // Si no tiene teacherId asignado, asignarlo ahora
-                ...(firstTeacherId ? { teacherId: firstTeacherId } : {}),
-              },
+            const enrollmentResult = await upsertSelfServiceEnrollment({
+              studentId: userId!,
+              courseId: courseId!,
+              academicPeriodId: currentPeriod.id,
+              teacherId: firstTeacherId,
+              classesTotal: item.proratedClasses || plan.classesPerPeriod || 8,
             })
+            enrollment = enrollmentResult.enrollment
+            enrollmentWasCreated = enrollmentResult.wasCreated
 
             await db.productPurchase.update({
               where: { id: purchase.id },
@@ -428,11 +426,15 @@ export async function POST(req: NextRequest) {
           return {
             ...purchase,
             enrollment,
+            enrollmentWasCreated,
           }
         })
       )
 
       needsScheduleSetup = purchases.some((p) => p.enrollment && !p.selectedSchedule)
+      const newlyCreatedEnrollmentIds = purchases.flatMap((purchase) =>
+        purchase.enrollmentWasCreated && purchase.enrollment ? [purchase.enrollment.id] : []
+      )
 
       // Send Email
       try {
@@ -459,6 +461,23 @@ export async function POST(req: NextRequest) {
         }
       } catch (emailError) {
         console.error('Error sending payment confirmation email:', emailError)
+      }
+
+      try {
+        await Promise.all(
+          newlyCreatedEnrollmentIds.map(async (enrollmentId) => {
+            const result = await notifySelfServiceEnrollmentCreated(enrollmentId)
+
+            if (!result.success) {
+              console.error(
+                `Error sending new enrollment notification for ${enrollmentId}:`,
+                result.error
+              )
+            }
+          })
+        )
+      } catch (notificationError) {
+        console.error('Error sending self-service enrollment notifications:', notificationError)
       }
     }
 

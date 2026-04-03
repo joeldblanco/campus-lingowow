@@ -395,7 +395,7 @@ interface TeacherPaymentConfirmationEmailData {
 export const sendTeacherPaymentConfirmationAdminEmail = async (
   data: TeacherPaymentConfirmationEmailData
 ) => {
-  const adminDashboardLink = `${process.env.NEXT_PUBLIC_DOMAIN}/admin/teacher-payments`
+  const adminDashboardLink = `${process.env.NEXT_PUBLIC_DOMAIN}/admin/payments/teachers`
 
   await resend.emails.send({
     from: 'hello@lingowow.com',
@@ -455,7 +455,17 @@ interface NewEnrollmentTeacherEmailData {
   teacherName: string
   studentName: string
   courseName: string
-  enrollmentDate: string
+  enrollmentDate?: string
+  studentScheduleSummary?: string
+}
+
+interface EnrollmentConfirmationStudentEmailData {
+  studentName: string
+  courseName: string
+  teacherName?: string
+  firstClassDate?: string
+  firstClassTime?: string
+  isSynchronousCourse?: boolean
 }
 
 export const sendNewEnrollmentTeacherEmail = async (
@@ -491,11 +501,100 @@ export const sendNewEnrollmentTeacherEmail = async (
             <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Fecha de inscripción</p>
             <p style="margin: 4px 0 0 0; font-size: 16px; color: #374151;">${data.enrollmentDate}</p>
           </div>
+          ${
+            data.studentScheduleSummary
+              ? `
+          <div style="margin-top: 12px;">
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Horario del estudiante</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: #374151;">${data.studentScheduleSummary}</p>
+          </div>
+          `
+              : ''
+          }
         </div>
 
         <div style="text-align: center; margin: 24px 0;">
           <a href="${dashboardLink}" style="display: inline-block; background-color: #020617; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 16px;">Ver mis estudiantes</a>
         </div>
+      </div>
+      <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
+        Go wow with us! 🚀
+      </div>
+    </div>`,
+  })
+}
+
+export const sendEnrollmentConfirmationStudentEmail = async (
+  email: string,
+  data: EnrollmentConfirmationStudentEmailData
+) => {
+  const dashboardLink = `${process.env.NEXT_PUBLIC_DOMAIN}/dashboard`
+  const hasFirstClass = Boolean(data.firstClassDate && data.firstClassTime)
+  const isAsynchronousCourse = data.isSynchronousCourse === false
+  const introCopy = hasFirstClass
+    ? 'Esta es la información de tu primera clase en tu hora local:'
+    : isAsynchronousCourse
+      ? 'Este curso es asíncrono, así que ya puedes empezar a avanzar a tu propio ritmo desde tu dashboard.'
+      : 'Tu equipo académico te compartirá pronto el detalle de tu primera clase.'
+  const pendingDetailsCopy = isAsynchronousCourse
+    ? 'Este curso no incluye una primera clase en vivo. Ya puedes acceder a tu contenido desde el dashboard.'
+    : 'Te avisaremos por este medio apenas se confirme el horario.'
+
+  await resend.emails.send({
+    from: 'hello@lingowow.com',
+    to: email,
+    subject: `Confirmación de inscripción: ${data.courseName}`,
+    html: `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
+      <div style="padding: 20px; background-color: #10b981; text-align: center;">
+        <h2 style="margin: 0; font-size: 24px; color: #ffffff;">¡Inscripción confirmada!</h2>
+        <p style="color: #d1fae5; font-size: 14px; margin-top: 8px;">Tu inscripción fue registrada correctamente</p>
+      </div>
+      <div style="padding: 20px;">
+        <h3 style="font-size: 18px; color: #111827;">Hola ${data.studentName},</h3>
+        <p style="font-size: 16px; color: #374151;">Te confirmamos que ya estás inscrito(a) en <strong>${data.courseName}</strong>.</p>
+        <p style="font-size: 16px; color: #374151;">${introCopy}</p>
+
+        <div style="background-color: #ecfdf5; border-radius: 8px; padding: 20px; margin: 20px 0; border-left: 4px solid #10b981;">
+          <div style="margin-bottom: 12px;">
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Curso</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; font-weight: bold; color: #111827;">${data.courseName}</p>
+          </div>
+          ${
+            data.teacherName
+              ? `
+          <div style="margin-bottom: 12px;">
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Profesor/a</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: #374151;">${data.teacherName}</p>
+          </div>
+          `
+              : ''
+          }
+          ${
+            hasFirstClass
+              ? `
+          <div style="margin-bottom: 12px;">
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Primera clase</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: #374151;">${data.firstClassDate}</p>
+          </div>
+          <div>
+            <p style="margin: 0; font-size: 12px; color: #6b7280; text-transform: uppercase;">Hora</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; font-weight: bold; color: #10b981;">${data.firstClassTime}</p>
+          </div>
+          `
+              : `
+          <div>
+            <p style="margin: 0; font-size: 16px; color: #374151;">${pendingDetailsCopy}</p>
+          </div>
+          `
+          }
+        </div>
+
+        <div style="text-align: center; margin: 24px 0;">
+          <a href="${dashboardLink}" style="display: inline-block; background-color: #020617; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 16px;">Ir a mi Dashboard</a>
+        </div>
+
+        <p style="font-size: 14px; color: #6b7280; text-align: center;">Si tienes alguna duda, contáctanos por <a href="https://wa.me/51902518947" style="color: #3b82f6; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
       </div>
       <div style="padding: 10px 10px 20px 10px; background-color: #f9fafb; text-align: center; font-size: 14px; color: #6b7280;">
         Go wow with us! 🚀

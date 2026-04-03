@@ -10,11 +10,11 @@ import { PaymentSummaryCards } from '@/components/admin/payments/payment-summary
 import { Skeleton } from '@/components/ui/skeleton'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
-  getTeacherPaymentDetails,
-  getPaymentPeriodSummary,
+  getTeacherPaymentsReport,
   getActiveTeachers,
   type TeacherPaymentDetail,
   type PaymentPeriodSummary,
+  type TeacherPaymentFilters,
 } from '@/lib/actions/teacher-payments'
 import { getRelevantPeriods } from '@/lib/actions/academic-period'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -24,8 +24,8 @@ import { downloadCSV } from '@/components/analytics/export-button'
 function LoadingSkeleton() {
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 md:grid-cols-4">
-        {[...Array(4)].map((_, i) => (
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
+        {[...Array(6)].map((_, i) => (
           <Card key={i}>
             <CardHeader className="pb-2">
               <Skeleton className="h-4 w-24" />
@@ -56,12 +56,6 @@ export default function TeacherPaymentsPage() {
     Array<{ id: string; name: string; email: string; rankName: string | null }>
   >([])
   const [periods, setPeriods] = useState<AcademicPeriodOption[]>([])
-  const [filters, setFilters] = useState<{
-    teacherId?: string
-    startDate?: Date
-    endDate?: Date
-    periodId?: string
-  }>({})
   const [filterLabel, setFilterLabel] = useState('')
 
   useEffect(() => {
@@ -94,26 +88,13 @@ export default function TeacherPaymentsPage() {
     }
   }
 
-  const applyFilters = async (
-    newFilters: typeof filters,
-    currentPeriods?: AcademicPeriodOption[]
-  ) => {
+  const applyFilters = async (newFilters: TeacherPaymentFilters, currentPeriods?: AcademicPeriodOption[]) => {
     setLoading(true)
     try {
-      const [paymentsData, summaryData] = await Promise.all([
-        getTeacherPaymentDetails(
-          newFilters.startDate,
-          newFilters.endDate,
-          newFilters.teacherId,
-          newFilters.periodId
-        ),
-        getPaymentPeriodSummary(newFilters.startDate, newFilters.endDate, newFilters.periodId),
-      ])
-      setPayments(paymentsData)
-      setSummary(summaryData)
-      setFilters(newFilters)
+      const report = await getTeacherPaymentsReport(newFilters)
+      setPayments(report.teacherReports)
+      setSummary(report.summary)
 
-      // Generar label descriptivo
       const availablePeriods = currentPeriods || periods
       if (newFilters.periodId) {
         const period = availablePeriods.find((p) => p.id === newFilters.periodId)
@@ -132,11 +113,14 @@ export default function TeacherPaymentsPage() {
     }
   }
 
-  const handleExport = () => {
+  const handleSummaryExport = () => {
     const csvData = payments.map((p) => ({
       Profesor: p.teacherName,
       Email: p.teacherEmail,
       Rango: p.rankName || '-',
+      Multiplicador: p.rateMultiplier,
+      'Método de Pago': p.paymentMethod || 'No configurado',
+      'Pago Confirmado': p.paymentConfirmed ? 'Sí' : 'No',
       Clases: p.totalClasses,
       Horas: p.totalHours.toFixed(1),
       'Pago Total': p.totalPayment.toFixed(2),
@@ -144,6 +128,28 @@ export default function TeacherPaymentsPage() {
     }))
 
     downloadCSV(csvData, `pagos-profesores-${new Date().toISOString().split('T')[0]}`)
+  }
+
+  const handleDetailExport = () => {
+    const csvData = payments.flatMap((teacher) =>
+      teacher.classes.map((classItem) => ({
+        Profesor: teacher.teacherName,
+        Email: teacher.teacherEmail,
+        Rango: teacher.rankName || '-',
+        'Método de Pago': teacher.paymentMethod || 'No configurado',
+        'Pago Confirmado': teacher.paymentConfirmed ? 'Sí' : 'No',
+        Fecha: classItem.day,
+        Hora: classItem.timeSlot,
+        Estudiante: classItem.studentName,
+        Curso: classItem.courseName,
+        'Período Académico': classItem.academicPeriodName || '-',
+        'Duración (min)': classItem.duration,
+        'Monto Clase': classItem.payment.toFixed(2),
+        'Marcada Pagable': classItem.isPayable ? 'Sí' : 'No',
+      }))
+    )
+
+    downloadCSV(csvData, `detalle-clases-pagables-${new Date().toISOString().split('T')[0]}`)
   }
 
   return (
@@ -159,9 +165,9 @@ export default function TeacherPaymentsPage() {
         <InfoIcon className="h-4 w-4" />
         <AlertTitle>Información sobre Pagos</AlertTitle>
         <AlertDescription>
-          Los pagos se calculan automáticamente basándose en las clases completadas con asistencia
-          confirmada del profesor. El monto puede variar según el curso, el rango del profesor y la
-          configuración personalizada de pago por clase.
+          Esta vista consolida el resumen de pagos y el detalle de clases pagables. Los montos se
+          calculan a partir de clases completadas con asistencia registrada del profesor, y pueden
+          variar según curso, rango y configuración personalizada de pago.
         </AlertDescription>
       </Alert>
 
@@ -170,7 +176,18 @@ export default function TeacherPaymentsPage() {
           teachers={teachers}
           periods={periods}
           onFilterChange={(f) => applyFilters(f)}
-          onExport={handleExport}
+          exportActions={[
+            {
+              label: 'Exportar resumen CSV',
+              onClick: handleSummaryExport,
+              disabled: payments.length === 0,
+            },
+            {
+              label: 'Exportar detalle CSV',
+              onClick: handleDetailExport,
+              disabled: payments.length === 0,
+            },
+          ]}
         />
 
         {loading ? (
@@ -181,8 +198,8 @@ export default function TeacherPaymentsPage() {
 
             <TeacherPaymentsTable
               data={payments}
-              title="Desglose de Pagos por Profesor"
-              description={`Período: ${filterLabel}`}
+              title="Pagos y Clases Pagables por Profesor"
+              description={`Período: ${filterLabel}${summary ? ` • ${summary.totalPayableClasses} clases pagables de ${summary.totalCompletedClasses} completadas` : ''}`}
             />
           </>
         )}

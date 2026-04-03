@@ -1,6 +1,7 @@
 'use server'
 
 import { db } from '@/lib/db'
+import { getPaidCouponUsageCounts } from '@/lib/coupon-utils'
 import { revalidatePath } from 'next/cache'
 import type { Category, Product, Plan, Feature, Coupon, Invoice, Prisma } from '@prisma/client'
 import type { InvoiceWithDetails } from '@/types/invoice'
@@ -635,7 +636,7 @@ export async function getPlansForCoupon() {
 
 export async function getCoupons() {
   try {
-    return await db.coupon.findMany({
+    const coupons = await db.coupon.findMany({
       orderBy: { createdAt: 'desc' },
       include: {
         _count: {
@@ -648,6 +649,21 @@ export async function getCoupons() {
           select: { id: true, name: true, slug: true },
         },
       },
+    })
+
+    const usageCountsByCouponId = await getPaidCouponUsageCounts(coupons.map((coupon) => coupon.id))
+
+    return coupons.map((coupon) => {
+      const usageCount = usageCountsByCouponId[coupon.id] ?? 0
+
+      return {
+        ...coupon,
+        usageCount,
+        _count: {
+          ...coupon._count,
+          invoices: usageCount,
+        },
+      }
     })
   } catch (error) {
     console.error('Error fetching coupons:', error)

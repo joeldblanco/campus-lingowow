@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { EnrollmentStatus } from '@prisma/client'
+import { notifySelfServiceEnrollmentCreated } from '@/lib/enrollments/self-service-enrollment'
 
 // Webhook para eventos de PayPal
 export async function POST(req: NextRequest) {
@@ -134,6 +135,7 @@ export async function POST(req: NextRequest) {
 
         // Wrap all writes in a single transaction
         const invoiceNumber = `INV-CHAT-${Date.now().toString().slice(-8)}`
+        let newlyCreatedEnrollmentId: string | null = null
         await db.$transaction(async (tx) => {
           // Create Invoice record in DB
           await tx.invoice.create({
@@ -166,7 +168,7 @@ export async function POST(req: NextRequest) {
 
           // Create enrollment if plan includes classes
           if (plan?.includesClasses && plan.courseId && currentPeriod) {
-            await tx.enrollment.upsert({
+            const existingEnrollment = await tx.enrollment.findUnique({
               where: {
                 studentId_courseId_academicPeriodId: {
                   studentId: pendingOrder.userId!,
@@ -174,20 +176,31 @@ export async function POST(req: NextRequest) {
                   academicPeriodId: currentPeriod.id,
                 },
               },
-              create: {
-                studentId: pendingOrder.userId!,
-                courseId: plan.courseId,
-                academicPeriodId: currentPeriod.id,
-                status: EnrollmentStatus.ACTIVE,
-                classesTotal: plan.classesPerPeriod ?? 8,
-                classesAttended: 0,
-                classesMissed: 0,
-              },
-              update: {
-                status: EnrollmentStatus.ACTIVE,
-                classesTotal: plan.classesPerPeriod ?? 8,
-              },
+              select: { id: true },
             })
+
+            if (existingEnrollment) {
+              await tx.enrollment.update({
+                where: { id: existingEnrollment.id },
+                data: {
+                  status: EnrollmentStatus.ACTIVE,
+                  classesTotal: plan.classesPerPeriod ?? 8,
+                },
+              })
+            } else {
+              const enrollment = await tx.enrollment.create({
+                data: {
+                  studentId: pendingOrder.userId!,
+                  courseId: plan.courseId,
+                  academicPeriodId: currentPeriod.id,
+                  status: EnrollmentStatus.ACTIVE,
+                  classesTotal: plan.classesPerPeriod ?? 8,
+                  classesAttended: 0,
+                  classesMissed: 0,
+                },
+              })
+              newlyCreatedEnrollmentId = enrollment.id
+            }
           }
 
           // Promote GUEST → STUDENT
@@ -213,6 +226,21 @@ export async function POST(req: NextRequest) {
             data: { status: 'COMPLETED' },
           })
         })
+
+        try {
+          if (newlyCreatedEnrollmentId) {
+            const result = await notifySelfServiceEnrollmentCreated(newlyCreatedEnrollmentId)
+
+            if (!result.success) {
+              console.error(
+                `Error sending new enrollment notification for ${newlyCreatedEnrollmentId}:`,
+                result.error
+              )
+            }
+          }
+        } catch (notificationError) {
+          console.error('Error sending self-service enrollment notification:', notificationError)
+        }
 
         break
       }

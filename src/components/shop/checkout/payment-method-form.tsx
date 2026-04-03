@@ -51,6 +51,8 @@ interface PaymentMethodFormProps {
     total: number
     subtotal: number
     discount: number
+    currency?: string
+    couponId?: string
   }
   onPayPalSuccess?: (data: unknown) => void
   onNiubizSuccess?: (data: unknown) => void
@@ -170,6 +172,8 @@ export function PaymentMethodForm({
           total={paypalData.total}
           subtotal={paypalData.subtotal}
           discount={paypalData.discount}
+          currency={paypalData.currency}
+          couponId={paypalData.couponId}
           onSuccess={onPayPalSuccess}
         />
       </div>

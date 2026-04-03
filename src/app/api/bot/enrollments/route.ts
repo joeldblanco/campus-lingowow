@@ -3,6 +3,7 @@ import { db } from '@/lib/db'
 import { authenticateRequest } from '@/lib/api-auth'
 import { EnrollmentStatus } from '@prisma/client'
 import { verifyPaypalTransaction, createInvoiceFromPaypal } from '@/lib/actions/commercial'
+import { notifySelfServiceEnrollmentCreated } from '@/lib/enrollments/self-service-enrollment'
 
 /**
  * GET /api/bot/enrollments
@@ -258,7 +259,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 5. Verify teacher exists (if provided)
-    let resolvedTeacherId = teacherId
+    const resolvedTeacherId = teacherId
     if (teacherId) {
       const teacher = await db.user.findUnique({
         where: { id: teacherId },
@@ -431,6 +432,12 @@ export async function POST(request: NextRequest) {
         },
       },
     })
+
+    try {
+      await notifySelfServiceEnrollmentCreated(enrollment.id)
+    } catch (notificationError) {
+      console.error('[BOT API] Error sending enrollment notifications:', notificationError)
+    }
 
     return NextResponse.json({
       success: true,

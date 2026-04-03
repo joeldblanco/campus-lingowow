@@ -10,7 +10,7 @@ async function runBenchmark() {
       email: 'teacher.bench@example.com',
       name: 'Bench',
       lastName: 'Teacher',
-      role: 'TEACHER',
+      roles: ['TEACHER'],
     }
   })
 
@@ -25,6 +25,7 @@ async function runBenchmark() {
         language: language,
         level: 'BEGINNER',
         isPublished: true,
+        createdBy: { connect: { id: teacher.id } },
       }
     })
     courseIds.push(course.id)

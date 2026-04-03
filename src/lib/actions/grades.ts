@@ -520,7 +520,23 @@ export async function getStudentProgressReport(studentId: string) {
       },
     })
 
-    const progressData = []
+    const progressData: Array<{
+      course: typeof enrollments[number]['course']
+      enrollmentStatus: string
+      enrollmentProgress: number | null
+      enrollmentDate: Date
+      totalActivities: number
+      completedActivities: number
+      averageScore: number
+      activities: Array<{
+        title: string
+        type: string
+        score: number | null
+        status: string
+        attempts: number
+        completedAt: Date | null
+      }>
+    }> = []
 
     if (enrollments.length === 0) {
       return { student, courses: progressData }

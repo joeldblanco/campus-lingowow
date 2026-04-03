@@ -11,10 +11,9 @@ import {
   getEndOfDayUTC,
 } from '@/lib/utils/date'
 import { verifyPaypalTransaction, createInvoiceFromPaypal } from '@/lib/actions/commercial'
-import { notifyNewEnrollment } from '@/lib/actions/notifications'
-import { sendNewEnrollmentTeacherEmail } from '@/lib/mail'
 import { auditLog } from '@/lib/audit-log'
 import { auth } from '@/auth'
+import { notifySelfServiceEnrollmentCreated } from '@/lib/enrollments/self-service-enrollment'
 
 export interface EnrollmentWithDetails {
   id: string
@@ -390,6 +389,12 @@ export async function createEnrollment(data: {
       },
     })
 
+    try {
+      await notifySelfServiceEnrollmentCreated(enrollment.id)
+    } catch (notificationError) {
+      console.error('Error sending enrollment notifications:', notificationError)
+    }
+
     revalidatePath('/admin/enrollments')
     revalidatePath('/admin/invoices')
     return { success: true, enrollment }
@@ -644,51 +649,9 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
       }
     }
 
-    // 6. Send notifications to teacher and admins
+    // 6. Send notifications to teacher, student, and admins
     try {
-      const studentFullName = `${student.name}${student.lastName ? ' ' + student.lastName : ''}`
-
-      // If there's a teacher assigned, notify them
-      if (data.teacherId) {
-        const teacher = await db.user.findUnique({
-          where: { id: data.teacherId },
-          select: { id: true, name: true, email: true, timezone: true },
-        })
-
-        if (teacher) {
-          // Platform notification
-          await notifyNewEnrollment({
-            studentId: data.studentId,
-            studentName: studentFullName,
-            teacherId: teacher.id,
-            courseName: course.title,
-            enrollmentId: enrollment.id,
-          })
-
-          // Email notification to teacher (use teacher's timezone)
-          const teacherTimezone = teacher.timezone || 'America/Lima'
-          await sendNewEnrollmentTeacherEmail(teacher.email, {
-            teacherName: teacher.name,
-            studentName: studentFullName,
-            courseName: course.title,
-            enrollmentDate: new Date().toLocaleDateString('es-PE', {
-              timeZone: teacherTimezone,
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            }),
-          })
-        }
-      } else {
-        // If no specific teacher, just notify admins
-        await notifyNewEnrollment({
-          studentId: data.studentId,
-          studentName: studentFullName,
-          teacherId: '', // Empty, will only notify admins
-          courseName: course.title,
-          enrollmentId: enrollment.id,
-        })
-      }
+      await notifySelfServiceEnrollmentCreated(enrollment.id)
     } catch (notifError) {
       console.error('Error sending enrollment notifications:', notifError)
       // Don't fail the enrollment if notifications fail

@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { ordersController } from '@/lib/paypal'
 import { db } from '@/lib/db'
-import { EnrollmentStatus } from '@prisma/client'
+import {
+  notifySelfServiceEnrollmentCreated,
+  upsertSelfServiceEnrollment,
+} from '@/lib/enrollments/self-service-enrollment'
 
 export async function GET(req: NextRequest) {
   const domain = process.env.NEXT_PUBLIC_DOMAIN ?? 'https://lingowow.com'
@@ -90,6 +93,7 @@ export async function GET(req: NextRequest) {
     })
 
     // Create enrollment if plan includes classes
+    let newlyCreatedEnrollmentId: string | null = null
     if (plan?.includesClasses && plan.courseId) {
       const today = new Date()
 
@@ -109,28 +113,16 @@ export async function GET(req: NextRequest) {
       }
 
       if (currentPeriod) {
-        await db.enrollment.upsert({
-          where: {
-            studentId_courseId_academicPeriodId: {
-              studentId: userId,
-              courseId: plan.courseId,
-              academicPeriodId: currentPeriod.id,
-            },
-          },
-          create: {
-            studentId: userId,
-            courseId: plan.courseId,
-            academicPeriodId: currentPeriod.id,
-            status: EnrollmentStatus.ACTIVE,
-            classesTotal: plan.classesPerPeriod ?? 8,
-            classesAttended: 0,
-            classesMissed: 0,
-          },
-          update: {
-            status: EnrollmentStatus.ACTIVE,
-            classesTotal: plan.classesPerPeriod ?? 8,
-          },
+        const enrollmentResult = await upsertSelfServiceEnrollment({
+          studentId: userId,
+          courseId: plan.courseId,
+          academicPeriodId: currentPeriod.id,
+          classesTotal: plan.classesPerPeriod ?? 8,
         })
+
+        if (enrollmentResult.wasCreated) {
+          newlyCreatedEnrollmentId = enrollmentResult.enrollment.id
+        }
       }
     }
 
@@ -154,6 +146,21 @@ export async function GET(req: NextRequest) {
           data: { roles: { push: 'STUDENT' } },
         })
       }
+    }
+
+    try {
+      if (newlyCreatedEnrollmentId) {
+        const result = await notifySelfServiceEnrollmentCreated(newlyCreatedEnrollmentId)
+
+        if (!result.success) {
+          console.error(
+            `Error sending new enrollment notification for ${newlyCreatedEnrollmentId}:`,
+            result.error
+          )
+        }
+      }
+    } catch (notificationError) {
+      console.error('Error sending self-service enrollment notification:', notificationError)
     }
 
     return NextResponse.redirect(`${domain}/dashboard?payment=enrolled`)

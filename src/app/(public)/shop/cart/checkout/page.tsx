@@ -1202,7 +1202,14 @@ export default function CheckoutPage() {
                     paymentMethod={paymentMethod}
                     onSubmit={handlePaymentSubmit}
                     isLoading={isLoading}
-                    paypalData={{ items: paypalItems, total, subtotal, discount }}
+                    paypalData={{
+                      items: paypalItems,
+                      total,
+                      subtotal,
+                      discount,
+                      currency: 'USD',
+                      couponId: appliedCoupon?.id,
+                    }}
                     onPayPalSuccess={handlePaymentSuccess}
                     onNiubizSuccess={handlePaymentSuccess}
                     userEmail={session?.user?.email || formData.email}

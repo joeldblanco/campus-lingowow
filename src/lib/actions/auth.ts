@@ -17,7 +17,7 @@ import * as z from 'zod'
 import { getCurrentDate, isBeforeDate } from '@/lib/utils/date'
 import { checkForSpam } from '@/lib/utils/spam-protection'
 import { verifyRecaptcha } from '@/lib/utils/recaptcha'
-import { createAuditLog } from '@/lib/audit-log'
+import { auditLog, createAuditLog } from '@/lib/audit-log'
 
 export const register = async (
   values: z.infer<typeof SignUpSchema>,
@@ -439,7 +439,7 @@ export const reset = async (values: z.infer<typeof ResetSchema>) => {
 
   const existingUser = await getUserByEmail(validatedData.email)
 
-  if (!existingUser) return { error: 'Correo electrónico no encontrado' }
+  if (!existingUser || 'error' in existingUser) return { error: 'Correo electrónico no encontrado' }
 
   const passwordResetToken = await generatePasswordResetToken(validatedData.email)
 

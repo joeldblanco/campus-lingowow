@@ -36,14 +36,18 @@ interface PaymentFiltersProps {
     endDate?: Date
     periodId?: string
   }) => void
-  onExport?: () => void
+  exportActions?: Array<{
+    label: string
+    onClick: () => void
+    disabled?: boolean
+  }>
 }
 
 export function PaymentFilters({
   teachers,
   periods,
   onFilterChange,
-  onExport,
+  exportActions,
 }: PaymentFiltersProps) {
   const [selectedTeacher, setSelectedTeacher] = useState<string>('all')
   const [filterType, setFilterType] = useState<'period' | 'dates'>('period')
@@ -234,12 +238,20 @@ export function PaymentFilters({
           </div>
         </div>
 
-        {onExport && (
-          <div className="mt-4 pt-4 border-t">
-            <Button onClick={onExport} variant="outline" className="w-full md:w-auto">
-              <Download className="h-4 w-4 mr-2" />
-              Exportar a Excel
-            </Button>
+        {exportActions && exportActions.length > 0 && (
+          <div className="mt-4 flex flex-wrap gap-2 border-t pt-4">
+            {exportActions.map((action) => (
+              <Button
+                key={action.label}
+                onClick={action.onClick}
+                variant="outline"
+                className="w-full md:w-auto"
+                disabled={action.disabled}
+              >
+                <Download className="mr-2 h-4 w-4" />
+                {action.label}
+              </Button>
+            ))}
           </div>
         )}
       </CardContent>

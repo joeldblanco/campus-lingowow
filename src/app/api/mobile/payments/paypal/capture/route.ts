@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getMobileUser, unauthorizedResponse } from '@/lib/mobile-auth'
 import { db } from '@/lib/db'
 import { z } from 'zod'
+import {
+  notifySelfServiceEnrollmentCreated,
+  upsertSelfServiceEnrollment,
+} from '@/lib/enrollments/self-service-enrollment'
 
 const captureOrderSchema = z.object({
   orderId: z.string().min(1, 'Order ID es requerido'),
@@ -140,6 +144,7 @@ export async function POST(req: NextRequest) {
     })
 
     // Si el plan incluye clases, crear inscripción
+    let newlyCreatedEnrollmentId: string | null = null
     if (plan.includesClasses && plan.courseId) {
       const activePeriod = await db.academicPeriod.findFirst({
         where: { isActive: true },
@@ -147,16 +152,16 @@ export async function POST(req: NextRequest) {
       })
 
       if (activePeriod) {
-        await db.enrollment.create({
-          data: {
-            studentId: user.id,
-            courseId: plan.courseId,
-            academicPeriodId: activePeriod.id,
-            status: 'ACTIVE',
-            classesTotal: plan.classesPerPeriod || 8,
-            enrollmentType: 'AUTOMATIC',
-          },
+        const enrollmentResult = await upsertSelfServiceEnrollment({
+          studentId: user.id,
+          courseId: plan.courseId,
+          academicPeriodId: activePeriod.id,
+          classesTotal: plan.classesPerPeriod || 8,
         })
+
+        if (enrollmentResult.wasCreated) {
+          newlyCreatedEnrollmentId = enrollmentResult.enrollment.id
+        }
       }
     }
 
@@ -173,6 +178,21 @@ export async function POST(req: NextRequest) {
       where: { id: pendingOrder.id },
       data: { status: 'COMPLETED' },
     })
+
+    try {
+      if (newlyCreatedEnrollmentId) {
+        const result = await notifySelfServiceEnrollmentCreated(newlyCreatedEnrollmentId)
+
+        if (!result.success) {
+          console.error(
+            `Error sending new enrollment notification for ${newlyCreatedEnrollmentId}:`,
+            result.error
+          )
+        }
+      }
+    } catch (notificationError) {
+      console.error('Error sending self-service enrollment notification:', notificationError)
+    }
 
     return NextResponse.json({
       success: true,

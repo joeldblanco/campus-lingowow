@@ -4,6 +4,13 @@ import { db } from '@/lib/db'
 import { BookingStatus, Prisma } from '@prisma/client'
 import { startOfMonth, endOfMonth, format } from 'date-fns'
 
+export interface TeacherPaymentFilters {
+  startDate?: Date
+  endDate?: Date
+  teacherId?: string
+  periodId?: string
+}
+
 export interface TeacherPaymentDetail {
   teacherId: string
   teacherName: string
@@ -32,6 +39,10 @@ export interface PayableClass {
   payment: number
   isPayable: boolean
   completedAt: string | null
+  academicPeriodId: string | null
+  academicPeriodName: string | null
+  teacherAttendanceTime: string | null
+  studentAttendanceTime: string | null
 }
 
 export interface PaymentPeriodSummary {
@@ -41,9 +52,321 @@ export interface PaymentPeriodSummary {
   totalPayment: number
   averagePaymentPerTeacher: number
   averagePaymentPerClass: number
+  totalCompletedClasses: number
+  totalPayableClasses: number
+  totalNonPayableClasses: number
+}
+
+export interface TeacherPaymentsReport {
+  summary: PaymentPeriodSummary
+  teacherReports: TeacherPaymentDetail[]
+  filters: {
+    teacherId: string | null
+    startDate: string | null
+    endDate: string | null
+    periodId: string | null
+  }
 }
 
 const BASE_RATE_PER_HOUR = 10
+
+const paymentClassBookingArgs = Prisma.validator<Prisma.ClassBookingDefaultArgs>()({
+  include: {
+    teacher: {
+      select: {
+        id: true,
+        name: true,
+        lastName: true,
+        email: true,
+        image: true,
+        paymentSettings: true,
+        teacherRank: {
+          select: {
+            name: true,
+            rateMultiplier: true,
+          },
+        },
+      },
+    },
+    student: {
+      select: {
+        name: true,
+        lastName: true,
+      },
+    },
+    enrollment: {
+      select: {
+        course: {
+          select: {
+            id: true,
+            title: true,
+            classDuration: true,
+            defaultPaymentPerClass: true,
+          },
+        },
+        academicPeriod: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    },
+    teacherAttendances: {
+      select: {
+        timestamp: true,
+      },
+    },
+    attendances: {
+      select: {
+        timestamp: true,
+      },
+    },
+    videoCalls: {
+      select: {
+        duration: true,
+      },
+    },
+  },
+})
+
+type PaymentClassBooking = Prisma.ClassBookingGetPayload<typeof paymentClassBookingArgs>
+
+async function resolvePaymentFilterContext(filters: TeacherPaymentFilters) {
+  const whereClause: Prisma.ClassBookingWhereInput = {
+    status: BookingStatus.COMPLETED,
+  }
+
+  let start: Date
+  let end: Date
+
+  if (filters.periodId) {
+    whereClause.enrollment = { academicPeriodId: filters.periodId }
+
+    const period = await db.academicPeriod.findUnique({
+      where: { id: filters.periodId },
+      select: { startDate: true, endDate: true },
+    })
+
+    start = period?.startDate || startOfMonth(new Date())
+    end = period?.endDate || endOfMonth(new Date())
+  } else {
+    start = filters.startDate || startOfMonth(new Date())
+    end = filters.endDate || endOfMonth(new Date())
+    whereClause.day = {
+      gte: format(start, 'yyyy-MM-dd'),
+      lte: format(end, 'yyyy-MM-dd'),
+    }
+  }
+
+  if (filters.teacherId) {
+    whereClause.teacherId = filters.teacherId
+  }
+
+  return {
+    whereClause,
+    start,
+    end,
+  }
+}
+
+async function getTeacherCoursePaymentMap() {
+  const teacherCourses = await db.teacherCourse.findMany({
+    select: {
+      teacherId: true,
+      courseId: true,
+      paymentPerClass: true,
+    },
+  })
+
+  return new Map(teacherCourses.map((tc) => [`${tc.teacherId}-${tc.courseId}`, tc.paymentPerClass]))
+}
+
+function isPayableClass(classBooking: Pick<PaymentClassBooking, 'isPayable' | 'teacherAttendances'>) {
+  return classBooking.isPayable || classBooking.teacherAttendances.length > 0
+}
+
+function getClassDuration(classBooking: Pick<PaymentClassBooking, 'videoCalls' | 'enrollment'>) {
+  return classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+}
+
+function calculateClassEarnings(
+  classBooking: Pick<PaymentClassBooking, 'teacherId' | 'teacher' | 'enrollment' | 'videoCalls'>,
+  teacherCoursePayments: Map<string, number | null>
+) {
+  const duration = getClassDuration(classBooking)
+  const hours = duration / 60
+  const courseId = classBooking.enrollment.course.id
+  const teacherPayment = teacherCoursePayments.get(`${classBooking.teacherId}-${courseId}`)
+  const defaultPayment = classBooking.enrollment.course.defaultPaymentPerClass
+
+  if (teacherPayment !== null && teacherPayment !== undefined) {
+    return teacherPayment
+  }
+
+  if (defaultPayment !== null && defaultPayment !== undefined) {
+    return defaultPayment
+  }
+
+  const rankMultiplier = classBooking.teacher.teacherRank?.rateMultiplier || 1.0
+  return hours * BASE_RATE_PER_HOUR * rankMultiplier
+}
+
+async function getPaymentConfirmationMap(teacherIds: string[], start: Date, end: Date) {
+  if (teacherIds.length === 0) {
+    return new Map<string, { confirmed: boolean; confirmedAt?: Date }>()
+  }
+
+  const confirmations = await db.teacherPaymentConfirmation.findMany({
+    where: {
+      teacherId: { in: teacherIds },
+      periodStart: start,
+      periodEnd: end,
+    },
+    select: {
+      teacherId: true,
+      confirmedAt: true,
+    },
+    orderBy: {
+      confirmedAt: 'desc',
+    },
+  })
+
+  return new Map(
+    confirmations.map((confirmation) => [
+      confirmation.teacherId,
+      {
+        confirmed: true,
+        confirmedAt: confirmation.confirmedAt,
+      },
+    ])
+  )
+}
+
+export async function getTeacherPaymentsReport(
+  filters: TeacherPaymentFilters = {}
+): Promise<TeacherPaymentsReport> {
+  const { whereClause, start, end } = await resolvePaymentFilterContext(filters)
+
+  const [completedClasses, teacherCoursePayments] = await Promise.all([
+    db.classBooking.findMany({
+      where: whereClause,
+      ...paymentClassBookingArgs,
+      orderBy: {
+        day: 'desc',
+      },
+    }),
+    getTeacherCoursePaymentMap(),
+  ])
+
+  const payableClasses = completedClasses.filter(isPayableClass)
+  const confirmationMap = await getPaymentConfirmationMap(
+    Array.from(new Set(payableClasses.map((classBooking) => classBooking.teacherId))),
+    start,
+    end
+  )
+
+  const teacherPaymentMap = new Map<string, TeacherPaymentDetail>()
+  let totalHours = 0
+  let totalPayment = 0
+
+  for (const classBooking of payableClasses) {
+    const teacher = classBooking.teacher
+
+    if (!teacherPaymentMap.has(teacher.id)) {
+      const paymentInfo = getPaymentMethodInfo(teacher.paymentSettings)
+      const confirmationInfo = confirmationMap.get(teacher.id)
+
+      teacherPaymentMap.set(teacher.id, {
+        teacherId: teacher.id,
+        teacherName: `${teacher.name} ${teacher.lastName || ''}`.trim(),
+        teacherEmail: teacher.email || '',
+        teacherImage: teacher.image,
+        rankName: teacher.teacherRank?.name || null,
+        rateMultiplier: teacher.teacherRank?.rateMultiplier || 1.0,
+        totalClasses: 0,
+        totalHours: 0,
+        totalPayment: 0,
+        averagePerClass: 0,
+        paymentMethod: paymentInfo.paymentMethod,
+        paymentDetails: paymentInfo.paymentDetails,
+        paymentConfirmed: confirmationInfo?.confirmed || false,
+        paymentConfirmedAt: confirmationInfo?.confirmedAt,
+        classes: [],
+      })
+    }
+
+    const teacherPayment = teacherPaymentMap.get(teacher.id)
+
+    if (!teacherPayment) {
+      continue
+    }
+
+    const duration = getClassDuration(classBooking)
+    const classEarnings = calculateClassEarnings(classBooking, teacherCoursePayments)
+    const roundedClassEarnings = Math.round(classEarnings * 100) / 100
+    const hours = duration / 60
+
+    teacherPayment.totalClasses += 1
+    teacherPayment.totalHours += hours
+    teacherPayment.totalPayment += roundedClassEarnings
+    teacherPayment.classes.push({
+      id: classBooking.id,
+      day: classBooking.day,
+      timeSlot: classBooking.timeSlot,
+      studentName: `${classBooking.student.name} ${classBooking.student.lastName || ''}`.trim(),
+      courseName: classBooking.enrollment.course.title,
+      duration,
+      payment: roundedClassEarnings,
+      isPayable: classBooking.isPayable,
+      completedAt: classBooking.completedAt?.toISOString() || null,
+      academicPeriodId: classBooking.enrollment.academicPeriod?.id || null,
+      academicPeriodName: classBooking.enrollment.academicPeriod?.name || null,
+      teacherAttendanceTime: classBooking.teacherAttendances[0]?.timestamp?.toISOString() || null,
+      studentAttendanceTime: classBooking.attendances[0]?.timestamp?.toISOString() || null,
+    })
+
+    totalHours += hours
+    totalPayment += roundedClassEarnings
+  }
+
+  const teacherReports = Array.from(teacherPaymentMap.values())
+    .map((teacherPayment) => ({
+      ...teacherPayment,
+      totalHours: Math.round(teacherPayment.totalHours * 10) / 10,
+      totalPayment: Math.round(teacherPayment.totalPayment * 100) / 100,
+      averagePerClass:
+        teacherPayment.totalClasses > 0
+          ? Math.round((teacherPayment.totalPayment / teacherPayment.totalClasses) * 100) / 100
+          : 0,
+    }))
+    .sort((a, b) => b.totalPayment - a.totalPayment)
+
+  const summary: PaymentPeriodSummary = {
+    totalTeachers: teacherReports.length,
+    totalClasses: payableClasses.length,
+    totalHours: Math.round(totalHours * 10) / 10,
+    totalPayment: Math.round(totalPayment * 100) / 100,
+    averagePaymentPerTeacher:
+      teacherReports.length > 0 ? Math.round((totalPayment / teacherReports.length) * 100) / 100 : 0,
+    averagePaymentPerClass:
+      payableClasses.length > 0 ? Math.round((totalPayment / payableClasses.length) * 100) / 100 : 0,
+    totalCompletedClasses: completedClasses.length,
+    totalPayableClasses: payableClasses.length,
+    totalNonPayableClasses: completedClasses.length - payableClasses.length,
+  }
+
+  return {
+    summary,
+    teacherReports,
+    filters: {
+      teacherId: filters.teacherId || null,
+      startDate: filters.startDate ? format(filters.startDate, 'yyyy-MM-dd') : null,
+      endDate: filters.endDate ? format(filters.endDate, 'yyyy-MM-dd') : null,
+      periodId: filters.periodId || null,
+    },
+  }
+}
 
 /**
  * Obtiene el resumen de pagos para un período específico
@@ -53,138 +376,13 @@ export async function getPaymentPeriodSummary(
   endDate?: Date,
   periodId?: string
 ): Promise<PaymentPeriodSummary> {
-  const whereClause: Prisma.ClassBookingWhereInput = {
-    status: BookingStatus.COMPLETED,
-  }
-
-  if (periodId) {
-    whereClause.enrollment = { academicPeriodId: periodId }
-  } else {
-    const start = startDate || startOfMonth(new Date())
-    const end = endDate || endOfMonth(new Date())
-    whereClause.day = {
-      gte: format(start, 'yyyy-MM-dd'),
-      lte: format(end, 'yyyy-MM-dd'),
-    }
-  }
-
-  const completedClasses = await db.classBooking.findMany({
-    where: whereClause,
-    include: {
-      teacher: {
-        select: {
-          teacherRank: {
-            select: {
-              rateMultiplier: true,
-            },
-          },
-        },
-      },
-      enrollment: {
-        select: {
-          course: {
-            select: {
-              id: true,
-              classDuration: true,
-              defaultPaymentPerClass: true,
-            },
-          },
-        },
-      },
-      teacherAttendances: true,
-      attendances: true,
-      videoCalls: {
-        select: {
-          duration: true,
-        },
-      },
-    },
+  const report = await getTeacherPaymentsReport({
+    startDate,
+    endDate,
+    periodId,
   })
 
-  const teacherCourses = await db.teacherCourse.findMany({
-    select: {
-      teacherId: true,
-      courseId: true,
-      paymentPerClass: true,
-    },
-  })
-
-  const teacherCoursePayments = new Map(
-    teacherCourses.map((tc) => [`${tc.teacherId}-${tc.courseId}`, tc.paymentPerClass])
-  )
-
-  let totalClasses = 0
-  let totalHours = 0
-  let totalPayment = 0
-  const teacherSet = new Set<string>()
-
-  for (const classBooking of completedClasses) {
-    const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
-
-    if (!classBooking.isPayable && !hasTeacherAttendance) continue
-
-    teacherSet.add(classBooking.teacherId)
-    totalClasses++
-
-    const duration =
-      classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
-    const hours = duration / 60
-    totalHours += hours
-
-    const courseId = classBooking.enrollment.course.id
-    const teacherPayment = teacherCoursePayments.get(`${classBooking.teacherId}-${courseId}`)
-    const defaultPayment = classBooking.enrollment.course.defaultPaymentPerClass
-
-    let classEarnings: number
-    if (teacherPayment !== null && teacherPayment !== undefined) {
-      classEarnings = teacherPayment
-    } else if (defaultPayment !== null && defaultPayment !== undefined) {
-      classEarnings = defaultPayment
-    } else {
-      const rankMultiplier = classBooking.teacher.teacherRank?.rateMultiplier || 1.0
-      classEarnings = hours * BASE_RATE_PER_HOUR * rankMultiplier
-    }
-
-    totalPayment += classEarnings
-  }
-
-  return {
-    totalTeachers: teacherSet.size,
-    totalClasses,
-    totalHours: Math.round(totalHours * 10) / 10,
-    totalPayment: Math.round(totalPayment * 100) / 100,
-    averagePaymentPerTeacher:
-      teacherSet.size > 0 ? Math.round((totalPayment / teacherSet.size) * 100) / 100 : 0,
-    averagePaymentPerClass:
-      totalClasses > 0 ? Math.round((totalPayment / totalClasses) * 100) / 100 : 0,
-  }
-}
-
-/**
- * Verifica si un profesor confirmó su pago para un período específico
- */
-async function checkTeacherPaymentConfirmation(teacherId: string, startDate: Date, endDate: Date) {
-  try {
-    const confirmation = await db.teacherPaymentConfirmation.findFirst({
-      where: {
-        teacherId,
-        periodStart: startDate,
-        periodEnd: endDate,
-      },
-      orderBy: {
-        confirmedAt: 'desc',
-      },
-    })
-
-    return {
-      confirmed: !!confirmation,
-      confirmedAt: confirmation?.confirmedAt || undefined,
-      status: confirmation?.status,
-    }
-  } catch (error) {
-    console.error('Error checking payment confirmation:', error)
-    return { confirmed: false, confirmedAt: undefined, status: undefined }
-  }
+  return report.summary
 }
 
 /**
@@ -251,172 +449,14 @@ export async function getTeacherPaymentDetails(
   teacherId?: string,
   periodId?: string
 ): Promise<TeacherPaymentDetail[]> {
-  const whereClause: Prisma.ClassBookingWhereInput = {
-    status: BookingStatus.COMPLETED,
-  }
-
-  let start: Date
-  let end: Date
-
-  if (periodId) {
-    whereClause.enrollment = { academicPeriodId: periodId }
-    // Resolver fechas reales del período para la verificación de confirmación
-    const period = await db.academicPeriod.findUnique({
-      where: { id: periodId },
-      select: { startDate: true, endDate: true },
-    })
-    start = period?.startDate || startOfMonth(new Date())
-    end = period?.endDate || endOfMonth(new Date())
-  } else {
-    start = startDate || startOfMonth(new Date())
-    end = endDate || endOfMonth(new Date())
-    whereClause.day = {
-      gte: format(start, 'yyyy-MM-dd'),
-      lte: format(end, 'yyyy-MM-dd'),
-    }
-  }
-
-  if (teacherId) {
-    whereClause.teacherId = teacherId
-  }
-
-  const completedClasses = await db.classBooking.findMany({
-    where: whereClause,
-    include: {
-      teacher: {
-        select: {
-          id: true,
-          name: true,
-          lastName: true,
-          email: true,
-          image: true,
-          paymentSettings: true,
-          teacherRank: {
-            select: {
-              name: true,
-              rateMultiplier: true,
-            },
-          },
-        },
-      },
-      student: {
-        select: {
-          name: true,
-          lastName: true,
-        },
-      },
-      enrollment: {
-        select: {
-          course: {
-            select: {
-              id: true,
-              title: true,
-              classDuration: true,
-              defaultPaymentPerClass: true,
-            },
-          },
-        },
-      },
-      teacherAttendances: true,
-      attendances: true,
-      videoCalls: {
-        select: {
-          duration: true,
-        },
-      },
-    },
-    orderBy: {
-      day: 'desc',
-    },
+  const report = await getTeacherPaymentsReport({
+    startDate,
+    endDate,
+    teacherId,
+    periodId,
   })
 
-  const teacherCourses = await db.teacherCourse.findMany({
-    select: {
-      teacherId: true,
-      courseId: true,
-      paymentPerClass: true,
-    },
-  })
-
-  const teacherCoursePayments = new Map(
-    teacherCourses.map((tc) => [`${tc.teacherId}-${tc.courseId}`, tc.paymentPerClass])
-  )
-
-  const teacherPaymentMap = new Map<string, TeacherPaymentDetail>()
-
-  for (const classBooking of completedClasses) {
-    const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
-
-    if (!classBooking.isPayable && !hasTeacherAttendance) continue
-
-    const teacher = classBooking.teacher
-    if (!teacherPaymentMap.has(teacher.id)) {
-      const paymentInfo = getPaymentMethodInfo(teacher.paymentSettings)
-      const confirmationInfo = await checkTeacherPaymentConfirmation(teacher.id, start, end)
-
-      teacherPaymentMap.set(teacher.id, {
-        teacherId: teacher.id,
-        teacherName: `${teacher.name} ${teacher.lastName || ''}`.trim(),
-        teacherEmail: teacher.email || '',
-        teacherImage: teacher.image,
-        rankName: teacher.teacherRank?.name || null,
-        rateMultiplier: teacher.teacherRank?.rateMultiplier || 1.0,
-        totalClasses: 0,
-        totalHours: 0,
-        totalPayment: 0,
-        averagePerClass: 0,
-        paymentMethod: paymentInfo.paymentMethod,
-        paymentDetails: paymentInfo.paymentDetails,
-        paymentConfirmed: confirmationInfo.confirmed,
-        paymentConfirmedAt: confirmationInfo.confirmedAt || undefined,
-        classes: [],
-      })
-    }
-
-    const tp = teacherPaymentMap.get(teacher.id)!
-    const duration =
-      classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
-    const hours = duration / 60
-
-    const courseId = classBooking.enrollment.course.id
-    const teacherPayment = teacherCoursePayments.get(`${teacher.id}-${courseId}`)
-    const defaultPayment = classBooking.enrollment.course.defaultPaymentPerClass
-
-    let classEarnings: number
-    if (teacherPayment !== null && teacherPayment !== undefined) {
-      classEarnings = teacherPayment
-    } else if (defaultPayment !== null && defaultPayment !== undefined) {
-      classEarnings = defaultPayment
-    } else {
-      const rankMultiplier = teacher.teacherRank?.rateMultiplier || 1.0
-      classEarnings = hours * BASE_RATE_PER_HOUR * rankMultiplier
-    }
-
-    tp.totalClasses++
-    tp.totalHours += hours
-    tp.totalPayment += classEarnings
-    tp.classes.push({
-      id: classBooking.id,
-      day: classBooking.day,
-      timeSlot: classBooking.timeSlot,
-      studentName: `${classBooking.student.name} ${classBooking.student.lastName || ''}`.trim(),
-      courseName: classBooking.enrollment.course.title,
-      duration,
-      payment: Math.round(classEarnings * 100) / 100,
-      isPayable: classBooking.isPayable,
-      completedAt: classBooking.completedAt?.toISOString() || null,
-    })
-  }
-
-  return Array.from(teacherPaymentMap.values())
-    .map((tp) => ({
-      ...tp,
-      totalHours: Math.round(tp.totalHours * 10) / 10,
-      totalPayment: Math.round(tp.totalPayment * 100) / 100,
-      averagePerClass:
-        tp.totalClasses > 0 ? Math.round((tp.totalPayment / tp.totalClasses) * 100) / 100 : 0,
-    }))
-    .sort((a, b) => b.totalPayment - a.totalPayment)
+  return report.teacherReports
 }
 
 /**

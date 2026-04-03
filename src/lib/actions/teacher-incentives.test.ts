@@ -38,29 +38,30 @@ describe('teacher-incentives performance test', () => {
     const bookingsPerTeacher = 50
 
     // Mock the data
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(db.academicPeriod.findUnique).mockResolvedValue({
       id: 'period2',
       startDate: new Date('2024-02-01'),
-    } as any)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any)
     vi.mocked(db.academicPeriod.findFirst).mockResolvedValue({
       id: 'period1',
       startDate: new Date('2024-01-01'),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any)
 
     const teachers = Array.from({ length: numTeachers }).map((_, i) => ({ id: `teacher${i}` }))
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(db.user.findMany).mockResolvedValue(teachers as any)
 
+
     // Generate bookings
     let findManyCalls = 0
+    // @ts-expect-error -- simplified mock for benchmark test
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(db.classBooking.findMany).mockImplementation(async (query: any) => {
       findManyCalls++
       // Return dummy bookings for all teachers
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const periodId = query.where.enrollment.academicPeriodId as any
+      const periodId = query.where.enrollment.academicPeriodId
       const teacherIds = query.where.teacherId.in as string[]
 
       const allBookings = []
@@ -75,8 +76,10 @@ describe('teacher-incentives performance test', () => {
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return allBookings as any
+
     })
 
+    // @ts-expect-error -- simplified mock for benchmark test
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(db.teacherIncentive.create).mockImplementation(async (args: any) => {
       return { id: 'new_incentive', ...args.data }

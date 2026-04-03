@@ -18,7 +18,7 @@ interface StudentProgressData {
       level: string
     }
     enrollmentStatus: string
-    enrollmentProgress: number
+    enrollmentProgress: number | null
     enrollmentDate: Date
     totalActivities: number
     completedActivities: number
@@ -247,7 +247,7 @@ export function StudentProgressDialog({ studentId, children }: StudentProgressDi
                         <div>
                           <p className="text-sm font-medium">Progreso del Curso</p>
                           <p className="text-lg font-bold">
-                            {Math.round(courseData.enrollmentProgress)}%
+                            {Math.round(courseData.enrollmentProgress ?? 0)}%
                           </p>
                         </div>
                         <div>

@@ -21,7 +21,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { ChevronDown, ChevronRight, Eye, CreditCard, Building, DollarSign, Smartphone, Mail, CheckCircle, Clock } from 'lucide-react'
+import {
+  ChevronDown,
+  ChevronRight,
+  Eye,
+  CreditCard,
+  Building,
+  DollarSign,
+  Smartphone,
+  Mail,
+  CheckCircle,
+  Clock,
+  CheckCircle2,
+} from 'lucide-react'
 import { getUserAvatarUrl } from '@/lib/utils'
 import type { TeacherPaymentDetail } from '@/lib/actions/teacher-payments'
 import { format } from 'date-fns'
@@ -250,41 +262,50 @@ export function TeacherPaymentsTable({
                     <TableRow>
                       <TableCell colSpan={9} className="bg-muted/30 p-0">
                         <div className="p-4">
-                          <h4 className="font-semibold mb-3 text-sm">Clases del período</h4>
-                          <div className="space-y-2">
-                            {teacher.classes.map((classItem) => (
-                              <div
-                                key={classItem.id}
-                                className="flex items-center justify-between p-3 bg-background rounded-lg border text-sm"
-                              >
-                                <div className="flex-1">
-                                  <p className="font-medium">{classItem.courseName}</p>
-                                  <p className="text-xs text-muted-foreground">
-                                    Estudiante: {classItem.studentName}
-                                  </p>
-                                </div>
-                                <div className="flex items-center gap-4 text-xs">
-                                  <div className="text-right">
-                                    <p className="font-medium">
-                                      {format(new Date(classItem.day), 'dd MMM yyyy', { locale: es })}
-                                    </p>
-                                    <p className="text-muted-foreground">{classItem.timeSlot}</p>
-                                  </div>
-                                  <div className="text-right">
-                                    <p className="text-muted-foreground">{classItem.duration} min</p>
-                                  </div>
-                                  <div className="text-right min-w-[80px]">
-                                    <p className="font-bold">${classItem.payment.toFixed(2)}</p>
-                                  </div>
-                                  {classItem.isPayable && (
-                                    <Badge variant="default" className="text-xs">
-                                      Pagable
-                                    </Badge>
-                                  )}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
+                          <h4 className="mb-3 text-sm font-semibold">Detalle de clases pagables</h4>
+                          <Table>
+                            <TableHeader>
+                              <TableRow>
+                                <TableHead>Fecha</TableHead>
+                                <TableHead>Hora</TableHead>
+                                <TableHead>Estudiante</TableHead>
+                                <TableHead>Curso</TableHead>
+                                <TableHead>Período</TableHead>
+                                <TableHead className="text-right">Duración</TableHead>
+                                <TableHead className="text-right">Pago</TableHead>
+                                <TableHead>Origen</TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                              {teacher.classes.map((classItem) => (
+                                <TableRow key={classItem.id}>
+                                  <TableCell>
+                                    {format(new Date(classItem.day), 'dd MMM yyyy', { locale: es })}
+                                  </TableCell>
+                                  <TableCell>{classItem.timeSlot}</TableCell>
+                                  <TableCell>{classItem.studentName}</TableCell>
+                                  <TableCell>{classItem.courseName}</TableCell>
+                                  <TableCell>{classItem.academicPeriodName || '-'}</TableCell>
+                                  <TableCell className="text-right">{classItem.duration} min</TableCell>
+                                  <TableCell className="text-right font-medium">
+                                    ${classItem.payment.toFixed(2)}
+                                  </TableCell>
+                                  <TableCell>
+                                    {classItem.isPayable ? (
+                                      <Badge variant="default" className="gap-1 text-xs">
+                                        <CheckCircle2 className="h-3 w-3" />
+                                        Marcada pagable
+                                      </Badge>
+                                    ) : (
+                                      <Badge variant="secondary" className="text-xs">
+                                        Asistencia profesor
+                                      </Badge>
+                                    )}
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -383,15 +404,29 @@ export function TeacherPaymentsTable({
                           {format(new Date(classItem.day), "dd 'de' MMMM yyyy", { locale: es })} •{' '}
                           {classItem.timeSlot}
                         </p>
+                        <p className="text-xs text-muted-foreground">
+                          Período: {classItem.academicPeriodName || 'Sin período'}
+                        </p>
                       </div>
                       <div className="text-right">
                         <p className="font-bold text-lg">${classItem.payment.toFixed(2)}</p>
                         <p className="text-xs text-muted-foreground">{classItem.duration} minutos</p>
-                        {classItem.isPayable && (
-                          <Badge variant="default" className="text-xs mt-1">
-                            Pagable
-                          </Badge>
-                        )}
+                        <div className="mt-1 flex flex-wrap justify-end gap-1">
+                          {classItem.isPayable ? (
+                            <Badge variant="default" className="text-xs">
+                              Marcada pagable
+                            </Badge>
+                          ) : (
+                            <Badge variant="secondary" className="text-xs">
+                              Pagable por asistencia
+                            </Badge>
+                          )}
+                          {classItem.teacherAttendanceTime && (
+                            <Badge variant="outline" className="text-xs">
+                              Asistencia profesor
+                            </Badge>
+                          )}
+                        </div>
                       </div>
                     </div>
                   ))}

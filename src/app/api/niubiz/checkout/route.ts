@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { authorizeNiubizTransaction, getNiubizAccessToken } from '@/lib/niubiz'
 import { db } from '@/lib/db'
 import { sendPaymentConfirmationEmail } from '@/lib/mail'
+import {
+  notifySelfServiceEnrollmentCreated,
+  upsertSelfServiceEnrollment,
+} from '@/lib/enrollments/self-service-enrollment'
 
 interface ScheduleSlot {
   teacherId: string
@@ -28,6 +32,7 @@ interface InvoiceData {
   discount: number
   total: number
   currency?: string
+  couponId?: string
   customerInfo?: CustomerInfo | null
 }
 
@@ -206,6 +211,7 @@ export async function POST(request: NextRequest) {
             total: invoiceData.total,
             status: 'PAID',
             currency: invoiceData.currency || 'USD',
+            couponId: invoiceData.couponId || null,
             paidAt: new Date(),
             paymentMethod: 'niubiz',
             niubizTransactionId: transactionToken,
@@ -228,6 +234,13 @@ export async function POST(request: NextRequest) {
           },
           include: { items: true },
         })
+
+        if (invoiceData.couponId) {
+          await db.coupon.update({
+            where: { id: invoiceData.couponId },
+            data: { usageCount: { increment: 1 } },
+          })
+        }
 
         console.log('[NIUBIZ CHECKOUT] Invoice created:', invoice.invoiceNumber)
 
@@ -257,6 +270,7 @@ export async function POST(request: NextRequest) {
         console.log('[NIUBIZ CHECKOUT] Academic period:', currentPeriod?.name || 'None found')
 
         // Process each item for enrollment
+        const newlyCreatedEnrollmentIds: string[] = []
         for (const item of invoiceData.items) {
           let plan = null
           let courseId: string | null = null
@@ -327,31 +341,18 @@ export async function POST(request: NextRequest) {
             // Extraer el teacherId del primer slot del horario seleccionado
             const firstTeacherId = item.selectedSchedule[0]?.teacherId || null
 
-            const enrollment = await db.enrollment.upsert({
-              where: {
-                studentId_courseId_academicPeriodId: {
-                  studentId: userId!,
-                  courseId: courseId!,
-                  academicPeriodId: currentPeriod.id,
-                },
-              },
-              create: {
-                studentId: userId!,
-                courseId: courseId!,
-                academicPeriodId: currentPeriod.id,
-                teacherId: firstTeacherId,
-                status: 'ACTIVE',
-                classesTotal: item.proratedClasses || plan.classesPerPeriod || 8,
-                classesAttended: 0,
-                classesMissed: 0,
-              },
-              update: {
-                status: 'ACTIVE',
-                classesTotal: item.proratedClasses || plan.classesPerPeriod || 8,
-                // Si no tiene teacherId asignado, asignarlo ahora
-                ...(firstTeacherId ? { teacherId: firstTeacherId } : {}),
-              },
+            const enrollmentResult = await upsertSelfServiceEnrollment({
+              studentId: userId!,
+              courseId: courseId!,
+              academicPeriodId: currentPeriod.id,
+              teacherId: firstTeacherId,
+              classesTotal: item.proratedClasses || plan.classesPerPeriod || 8,
             })
+            const enrollment = enrollmentResult.enrollment
+
+            if (enrollmentResult.wasCreated) {
+              newlyCreatedEnrollmentIds.push(enrollment.id)
+            }
 
             console.log('[NIUBIZ CHECKOUT] Enrollment created:', enrollment.id)
 
@@ -508,6 +509,23 @@ export async function POST(request: NextRequest) {
           }
         } catch (emailError) {
           console.error('[NIUBIZ CHECKOUT] Error sending email:', emailError)
+        }
+
+        try {
+          await Promise.all(
+            newlyCreatedEnrollmentIds.map(async (enrollmentId) => {
+              const result = await notifySelfServiceEnrollmentCreated(enrollmentId)
+
+              if (!result.success) {
+                console.error(
+                  `Error sending new enrollment notification for ${enrollmentId}:`,
+                  result.error
+                )
+              }
+            })
+          )
+        } catch (notificationError) {
+          console.error('Error sending self-service enrollment notifications:', notificationError)
         }
 
         // Mark pending order as completed

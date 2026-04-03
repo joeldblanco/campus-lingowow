@@ -3,6 +3,10 @@
 import { db } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 import { getCurrentDate } from '@/lib/utils/date'
+import {
+  notifySelfServiceEnrollmentCreated,
+  upsertSelfServiceEnrollment,
+} from '@/lib/enrollments/self-service-enrollment'
 
 export interface CreateScheduleSlotData {
   productId: string
@@ -262,31 +266,14 @@ export async function enrollUserInCourse(
   purchaseId?: string
 ): Promise<EnrollUserInCourseResult> {
   try {
-    // Verificar si ya está inscrito en este período
-    const existingEnrollment = await db.enrollment.findUnique({
-      where: {
-        studentId_courseId_academicPeriodId: {
-          studentId: userId,
-          courseId: courseId,
-          academicPeriodId: academicPeriodId,
-        },
-      },
+    const enrollmentResult = await upsertSelfServiceEnrollment({
+      studentId: userId,
+      courseId,
+      academicPeriodId,
+      classesTotal: 8,
     })
 
-    if (existingEnrollment) {
-      return { success: true, data: existingEnrollment }
-    }
-
-    // Crear nueva inscripción
-    const enrollment = await db.enrollment.create({
-      data: {
-        studentId: userId,
-        courseId: courseId,
-        academicPeriodId: academicPeriodId,
-        status: 'ACTIVE',
-        progress: 0,
-      },
-    })
+    const enrollment = enrollmentResult.enrollment
 
     // Si hay un purchaseId, actualizar la compra con la inscripción
     if (purchaseId) {
@@ -297,6 +284,21 @@ export async function enrollUserInCourse(
           status: 'ENROLLED',
         },
       })
+    }
+
+    try {
+      if (enrollmentResult.wasCreated) {
+        const result = await notifySelfServiceEnrollmentCreated(enrollment.id)
+
+        if (!result.success) {
+          console.error(
+            `Error sending new enrollment notification for ${enrollment.id}:`,
+            result.error
+          )
+        }
+      }
+    } catch (notificationError) {
+      console.error('Error sending self-service enrollment notification:', notificationError)
     }
 
     revalidatePath('/courses')

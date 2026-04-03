@@ -1,6 +1,43 @@
 import { db } from '@/lib/db'
 import type { Coupon } from '@prisma/client'
 
+export async function getPaidCouponUsageCount(couponId: string): Promise<number> {
+  return db.invoice.count({
+    where: {
+      couponId,
+      status: 'PAID',
+    },
+  })
+}
+
+export async function getPaidCouponUsageCounts(
+  couponIds: string[]
+): Promise<Record<string, number>> {
+  if (couponIds.length === 0) {
+    return {}
+  }
+
+  const usageGroups = await db.invoice.groupBy({
+    by: ['couponId'],
+    where: {
+      couponId: {
+        in: couponIds,
+      },
+      status: 'PAID',
+    },
+    _count: {
+      _all: true,
+    },
+  })
+
+  return usageGroups.reduce<Record<string, number>>((usageByCouponId, group) => {
+    if (group.couponId) {
+      usageByCouponId[group.couponId] = group._count._all
+    }
+    return usageByCouponId
+  }, {})
+}
+
 export async function validateCoupon(
   code: string,
   userId?: string,
@@ -28,7 +65,9 @@ export async function validateCoupon(
       return { valid: false, error: 'Este cupón ha expirado' }
     }
 
-    if (coupon.usageLimit && coupon.usageCount >= coupon.usageLimit) {
+    const paidUsageCount = await getPaidCouponUsageCount(coupon.id)
+
+    if (coupon.usageLimit && paidUsageCount >= coupon.usageLimit) {
       return { valid: false, error: 'Este cupón ha alcanzado su límite de uso' }
     }
 

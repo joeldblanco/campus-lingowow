@@ -3,6 +3,10 @@
 import { db } from '@/lib/db'
 import { spendUserCredits } from './credits'
 import { revalidatePath } from 'next/cache'
+import {
+  notifySelfServiceEnrollmentCreated,
+  upsertSelfServiceEnrollment,
+} from '@/lib/enrollments/self-service-enrollment'
 
 /**
  * Comprar un producto usando créditos
@@ -77,31 +81,23 @@ export async function purchaseProductWithCredits(
 
     // Crear la compra
     let enrollmentId: string | undefined
+    let newlyCreatedEnrollmentId: string | null = null
 
     // Si tiene curso asociado, inscribir automáticamente
     if (product.courseId && academicPeriodId) {
-      const enrollment = await db.enrollment.upsert({
-        where: {
-          studentId_courseId_academicPeriodId: {
-            studentId: userId,
-            courseId: product.courseId,
-            academicPeriodId,
-          },
-        },
-        create: {
-          studentId: userId,
-          courseId: product.courseId,
-          academicPeriodId,
-          status: 'ACTIVE',
-          classesTotal: 8,
-          classesAttended: 0,
-          classesMissed: 0,
-        },
-        update: {
-          status: 'ACTIVE',
-        },
+      const enrollmentResult = await upsertSelfServiceEnrollment({
+        studentId: userId,
+        courseId: product.courseId,
+        academicPeriodId,
+        classesTotal: 8,
+        updateClassesTotal: false,
       })
+      const enrollment = enrollmentResult.enrollment
       enrollmentId = enrollment.id
+
+      if (enrollmentResult.wasCreated) {
+        newlyCreatedEnrollmentId = enrollment.id
+      }
     }
 
     const purchase = await db.productPurchase.create({
@@ -137,6 +133,21 @@ export async function purchaseProductWithCredits(
 
     revalidatePath('/dashboard')
     revalidatePath('/shop')
+
+    try {
+      if (newlyCreatedEnrollmentId) {
+        const result = await notifySelfServiceEnrollmentCreated(newlyCreatedEnrollmentId)
+
+        if (!result.success) {
+          console.error(
+            `Error sending new enrollment notification for ${newlyCreatedEnrollmentId}:`,
+            result.error
+          )
+        }
+      }
+    } catch (notificationError) {
+      console.error('Error sending self-service enrollment notification:', notificationError)
+    }
 
     return {
       success: true,
@@ -243,6 +254,7 @@ export async function purchasePlanWithCredits(
     })
 
     let enrollmentId: string | undefined
+    let newlyCreatedEnrollmentId: string | null = null
 
     // Si incluye clases y tiene curso, crear inscripción
     if (plan.includesClasses && plan.courseId && academicPeriodId) {
@@ -254,29 +266,19 @@ export async function purchasePlanWithCredits(
         return { success: false, error: 'Período académico no encontrado' }
       }
 
-      const enrollment = await db.enrollment.upsert({
-        where: {
-          studentId_courseId_academicPeriodId: {
-            studentId: userId,
-            courseId: plan.courseId,
-            academicPeriodId,
-          },
-        },
-        create: {
-          studentId: userId,
-          courseId: plan.courseId,
-          academicPeriodId,
-          status: 'ACTIVE',
-          classesTotal: plan.classesPerPeriod || 8,
-          classesAttended: 0,
-          classesMissed: 0,
-        },
-        update: {
-          status: 'ACTIVE',
-          classesTotal: plan.classesPerPeriod || 8,
-        },
+      const enrollmentResult = await upsertSelfServiceEnrollment({
+        studentId: userId,
+        courseId: plan.courseId,
+        academicPeriodId,
+        teacherId: selectedSchedule?.[0]?.teacherId || null,
+        classesTotal: plan.classesPerPeriod || 8,
       })
+      const enrollment = enrollmentResult.enrollment
       enrollmentId = enrollment.id
+
+      if (enrollmentResult.wasCreated) {
+        newlyCreatedEnrollmentId = enrollment.id
+      }
 
       // Crear horarios si se proporcionaron (con conversión a UTC)
       if (selectedSchedule && selectedSchedule.length > 0) {
@@ -349,6 +351,21 @@ export async function purchasePlanWithCredits(
 
     revalidatePath('/dashboard')
     revalidatePath('/shop')
+
+    try {
+      if (newlyCreatedEnrollmentId) {
+        const result = await notifySelfServiceEnrollmentCreated(newlyCreatedEnrollmentId)
+
+        if (!result.success) {
+          console.error(
+            `Error sending new enrollment notification for ${newlyCreatedEnrollmentId}:`,
+            result.error
+          )
+        }
+      }
+    } catch (notificationError) {
+      console.error('Error sending self-service enrollment notification:', notificationError)
+    }
 
     return {
       success: true,

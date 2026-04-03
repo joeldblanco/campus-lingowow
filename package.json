@@ -36,7 +36,8 @@
     "postinstall": "prisma generate",
     "db:query": "tsx scripts/db-query.ts",
     "db:info": "tsx scripts/db-query.ts -- --info",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "backfill:coupon-links": "tsx scripts/backfill-coupon-links.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.8.0",
