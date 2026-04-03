@@ -1,17 +1,28 @@
 import { describe, it, expect } from 'vitest'
-import { processHtmlLinks, formatFileSize, formatDate, formatNumber, getDiceBearAvatar, getUserAvatarUrl } from './utils'
+import {
+  processHtmlLinks,
+  formatFileSize,
+  formatDate,
+  formatNumber,
+  getDiceBearAvatar,
+  getUserAvatarUrl,
+} from './utils'
 
 describe('processHtmlLinks', () => {
   it('should add target="_blank" and rel="noopener noreferrer" to a simple link', () => {
     const html = '<a href="https://example.com">Link</a>'
     const result = processHtmlLinks(html)
-    expect(result).toBe('<a target="_blank" rel="noopener noreferrer" href="https://example.com">Link</a>')
+    expect(result).toBe(
+      '<a target="_blank" rel="noopener noreferrer" href="https://example.com">Link</a>'
+    )
   })
 
   it('should handle links with existing attributes', () => {
     const html = '<a class="link" href="https://example.com">Link</a>'
     const result = processHtmlLinks(html)
-    expect(result).toBe('<a class="link" target="_blank" rel="noopener noreferrer" href="https://example.com">Link</a>')
+    expect(result).toBe(
+      '<a class="link" target="_blank" rel="noopener noreferrer" href="https://example.com">Link</a>'
+    )
   })
 
   it('should not modify links that already have a target attribute', () => {
@@ -23,13 +34,17 @@ describe('processHtmlLinks', () => {
   it('should handle multiple links in the same string', () => {
     const html = '<a href="url1">Link 1</a> and <a href="url2">Link 2</a>'
     const result = processHtmlLinks(html)
-    expect(result).toBe('<a target="_blank" rel="noopener noreferrer" href="url1">Link 1</a> and <a target="_blank" rel="noopener noreferrer" href="url2">Link 2</a>')
+    expect(result).toBe(
+      '<a target="_blank" rel="noopener noreferrer" href="url1">Link 1</a> and <a target="_blank" rel="noopener noreferrer" href="url2">Link 2</a>'
+    )
   })
 
   it('should handle case-insensitive tags and attributes', () => {
     const html = '<A HREF="https://example.com">Link</A>'
     const result = processHtmlLinks(html)
-    expect(result).toBe('<a target="_blank" rel="noopener noreferrer" href="https://example.com">Link</A>')
+    expect(result).toBe(
+      '<a target="_blank" rel="noopener noreferrer" href="https://example.com">Link</A>'
+    )
   })
 
   it('should return original string if no links are present', () => {
@@ -47,7 +62,9 @@ describe('processHtmlLinks', () => {
   it('should handle links with multiline attributes', () => {
     const html = `<a \n      class="link"\n      href="https://example.com">Link</a>`
     const result = processHtmlLinks(html)
-    expect(result).toBe(`<a class="link"\n      target="_blank" rel="noopener noreferrer" href="https://example.com">Link</a>`)
+    expect(result).toBe(
+      `<a class="link"\n      target="_blank" rel="noopener noreferrer" href="https://example.com">Link</a>`
+    )
   })
 })
 
@@ -103,7 +120,7 @@ describe('formatNumber', () => {
 describe('getDiceBearAvatar', () => {
   it('should return correct URL for default style', () => {
     const url = getDiceBearAvatar('user123')
-    expect(url).toBe('https://api.dicebear.com/9.x/lorelei/svg?seed=user123')
+    expect(url).toBe('https://api.dicebear.com/9.x/lorelei-neutral/svg?seed=user123')
   })
 
   it('should return correct URL for specific style', () => {
@@ -113,7 +130,7 @@ describe('getDiceBearAvatar', () => {
 
   it('should URI encode the seed', () => {
     const url = getDiceBearAvatar('user with spaces')
-    expect(url).toBe('https://api.dicebear.com/9.x/lorelei/svg?seed=user%20with%20spaces')
+    expect(url).toBe('https://api.dicebear.com/9.x/lorelei-neutral/svg?seed=user%20with%20spaces')
   })
 })
 
@@ -125,11 +142,11 @@ describe('getUserAvatarUrl', () => {
 
   it('should return DiceBear avatar if userImage is null', () => {
     const url = getUserAvatarUrl('user123', null)
-    expect(url).toBe('https://api.dicebear.com/9.x/lorelei/svg?seed=user123')
+    expect(url).toBe('https://api.dicebear.com/9.x/lorelei-neutral/svg?seed=user123')
   })
 
   it('should return DiceBear avatar if userImage is undefined', () => {
     const url = getUserAvatarUrl('user123')
-    expect(url).toBe('https://api.dicebear.com/9.x/lorelei/svg?seed=user123')
+    expect(url).toBe('https://api.dicebear.com/9.x/lorelei-neutral/svg?seed=user123')
   })
 })

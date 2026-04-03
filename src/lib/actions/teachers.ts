@@ -191,7 +191,8 @@ export async function getAvailableTeachers(options?: {
           id: teacher.id,
           name: `${teacher.name} ${teacher.lastName || ''}`.trim(),
           avatarUrl:
-            teacher.image || `https://api.dicebear.com/9.x/lorelei/svg?seed=${teacher.name}`,
+            teacher.image ||
+            `https://api.dicebear.com/9.x/lorelei-neutral/svg?seed=${teacher.name}`,
           specialties,
           availability,
           rating: Math.round(rating * 10) / 10,
@@ -213,7 +214,7 @@ export async function getAvailableTeachers(options?: {
  */
 export async function getTeachersForLanding(limit: number = 4) {
   'use server'
-  
+
   try {
     const teachers = await db.user.findMany({
       where: {
@@ -243,7 +244,8 @@ export async function getTeachersForLanding(limit: number = 4) {
     return teachers.map((teacher) => ({
       id: teacher.id,
       name: `${teacher.name} ${teacher.lastName || ''}`.trim(),
-      image: teacher.image || `https://api.dicebear.com/9.x/lorelei/svg?seed=${teacher.name}`,
+      image:
+        teacher.image || `https://api.dicebear.com/9.x/lorelei-neutral/svg?seed=${teacher.name}`,
       bio: teacher.bio || 'Profesor certificado con amplia experiencia docente',
       rank: teacher.teacherRank?.name || 'Profesor',
     }))

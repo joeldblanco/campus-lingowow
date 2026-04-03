@@ -26,7 +26,8 @@ import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Inicio | Lingowow - Aprende Idiomas con Expertos',
-  description: 'Domina cualquier idioma con instructores expertos. Clases personalizadas, metodología probada y resultados garantizados. Aprende de manera efectiva y divertida.',
+  description:
+    'Domina cualquier idioma con instructores expertos. Clases personalizadas, metodología probada y resultados garantizados. Aprende de manera efectiva y divertida.',
 }
 
 export default async function LandingPage() {
@@ -76,7 +77,7 @@ export default async function LandingPage() {
                       className="h-8 w-8 rounded-full border-2 border-white overflow-hidden bg-muted"
                     >
                       <Image
-                        src={`https://api.dicebear.com/9.x/lorelei/svg?seed=${student.name}`}
+                        src={`https://api.dicebear.com/9.x/lorelei-neutral/svg?seed=${student.name}`}
                         width={32}
                         height={32}
                         alt={student.name}
