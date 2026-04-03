@@ -34,10 +34,7 @@ export function InvoicePDF({ invoice }: InvoicePDFProps) {
           // then inject explicit hex fallbacks for the colors used here.
           clonedDoc.querySelectorAll('style').forEach((styleEl) => {
             if (styleEl.textContent?.includes('oklch')) {
-              styleEl.textContent = styleEl.textContent.replace(
-                /oklch\([^)]+\)/g,
-                'transparent'
-              )
+              styleEl.textContent = styleEl.textContent.replace(/oklch\([^)]+\)/g, 'transparent')
             }
           })
           const fallback = clonedDoc.createElement('style')
