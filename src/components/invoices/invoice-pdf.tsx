@@ -28,6 +28,35 @@ export function InvoicePDF({ invoice }: InvoicePDFProps) {
         scale: 2, // Higher resolution
         logging: false,
         useCORS: true,
+        onclone: (clonedDoc) => {
+          // html2canvas doesn't support oklch() (used by Tailwind v4).
+          // Strip it from all <style> tags to prevent a parse error,
+          // then inject explicit hex fallbacks for the colors used here.
+          clonedDoc.querySelectorAll('style').forEach((styleEl) => {
+            if (styleEl.textContent?.includes('oklch')) {
+              styleEl.textContent = styleEl.textContent.replace(
+                /oklch\([^)]+\)/g,
+                'transparent'
+              )
+            }
+          })
+          const fallback = clonedDoc.createElement('style')
+          fallback.textContent = `
+            .bg-white { background-color: #ffffff !important; }
+            .text-black { color: #000000 !important; }
+            .text-blue-800 { color: #1e40af !important; }
+            .text-blue-600 { color: #2563eb !important; }
+            .text-blue-900 { color: #1e3a8a !important; }
+            .text-gray-400 { color: #9ca3af !important; }
+            .text-gray-500 { color: #6b7280 !important; }
+            .text-gray-600 { color: #4b5563 !important; }
+            .text-gray-800 { color: #1f2937 !important; }
+            .bg-gray-50 { background-color: #f9fafb !important; }
+            .border-gray-100 { border-color: #f3f4f6 !important; }
+            .border-gray-200 { border-color: #e5e7eb !important; }
+          `
+          clonedDoc.head.appendChild(fallback)
+        },
       })
 
       const imgData = canvas.toDataURL('image/jpeg', 0.95) // JPEG is faster and smaller than PNG
