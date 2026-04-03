@@ -160,8 +160,7 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
     html: renderEmailLayout({
       headerBackgroundColor: EMAIL_COLORS.primarySoft,
       headerTitle: 'Recupera tu contraseña',
-      headerSubtitle:
-        'Restablece el acceso a tu cuenta con un único paso seguro.',
+      headerSubtitle: 'Restablece el acceso a tu cuenta con un único paso seguro.',
       headerTitleColor: EMAIL_COLORS.text,
       headerSubtitleColor: EMAIL_COLORS.muted,
       bodyHtml: `
