@@ -13,12 +13,13 @@ import {
   getCurrentDate,
   formatToISO,
   getStartOfMonth,
+  getEndOfMonth,
   getDateRange,
 } from '@/lib/utils/date'
 import { getUserAvatarUrl } from '@/lib/utils'
 import { getPeriodByDate } from '@/lib/actions/academic-period'
 import { es } from 'date-fns/locale'
-import { endOfDay, format, startOfDay } from 'date-fns'
+import { format } from 'date-fns'
 import { auth } from '@/auth'
 
 // Helper para obtener la timezone del usuario autenticado
@@ -50,12 +51,8 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
           lte: formatToISO(currentPeriod.endDate),
         }
       : undefined
-    const invoicePeriodFilter = currentPeriod
-      ? {
-          gte: startOfDay(currentPeriod.startDate),
-          lte: endOfDay(currentPeriod.endDate),
-        }
-      : undefined
+    const currentMonthStart = getStartOfMonth(getCurrentDate())
+    const currentMonthEnd = getEndOfMonth(currentMonthStart)
 
     // Get total students count
     const totalStudents = await db.user.count({
@@ -80,11 +77,14 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
       },
     })
 
-    // Calculate total revenue from paid invoices - filtered by period
+    // Calculate total revenue from paid invoices - filtered by current month
     const totalRevenueResult = await db.invoice.aggregate({
       where: {
         status: 'PAID',
-        ...(invoicePeriodFilter && { paidAt: invoicePeriodFilter }),
+        paidAt: {
+          gte: currentMonthStart,
+          lte: currentMonthEnd,
+        },
       },
       _sum: {
         total: true,

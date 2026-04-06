@@ -160,7 +160,7 @@ const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData |
             value={`$${dashboardData.totalRevenue.toFixed(2)}`}
             icon={DollarSign}
             color="amber"
-            label="Total facturado"
+            label="Facturado este mes"
             href="/admin/invoices"
           />
           <StatCard
