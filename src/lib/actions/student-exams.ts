@@ -155,9 +155,10 @@ export async function getStudentAssignedExams() {
       const examAttempts = attemptsByExam[assignment.examId] || []
       const completedAttempts = examAttempts.filter((a) => a.status === 'COMPLETED')
       const inProgressAttempt = examAttempts.find((a) => a.status === 'IN_PROGRESS')
-      const bestScore = completedAttempts.length > 0
-        ? Math.max(...completedAttempts.map((a) => a.score || 0))
-        : null
+      const bestScore =
+        completedAttempts.length > 0
+          ? Math.max(...completedAttempts.map((a) => a.score || 0))
+          : null
       const passed = bestScore !== null && bestScore >= assignment.exam.passingScore
 
       return {
@@ -196,9 +197,10 @@ export async function getStudentAssignedExams() {
       const examAttempts = attemptsByExam[exam.id] || []
       const completedAttempts = examAttempts.filter((a) => a.status === 'COMPLETED')
       const inProgressAttempt = examAttempts.find((a) => a.status === 'IN_PROGRESS')
-      const bestScore = completedAttempts.length > 0
-        ? Math.max(...completedAttempts.map((a) => a.score || 0))
-        : null
+      const bestScore =
+        completedAttempts.length > 0
+          ? Math.max(...completedAttempts.map((a) => a.score || 0))
+          : null
       const passed = bestScore !== null && bestScore >= exam.passingScore
 
       return {
@@ -356,9 +358,10 @@ export async function getStudentExamDetails(examId: string) {
         completed: completedAttempts.length,
         remaining: exam.maxAttempts - attempts.length,
         inProgressId: inProgressAttempt?.id || null,
-        bestScore: completedAttempts.length > 0
-          ? Math.max(...completedAttempts.map((a) => a.score || 0))
-          : null,
+        bestScore:
+          completedAttempts.length > 0
+            ? Math.max(...completedAttempts.map((a) => a.score || 0))
+            : null,
       },
     }
   } catch (error) {

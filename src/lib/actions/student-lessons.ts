@@ -591,10 +591,12 @@ export async function getTeacherStudentLessonStats(
 export async function getStudentLessonsForCourse(
   studentId: string,
   courseId: string
-): Promise<StudentLessonActionResult<{
-  lessons: StudentLessonListItem[]
-  teacher: { name: string; lastName: string | null; image: string | null } | null
-}>> {
+): Promise<
+  StudentLessonActionResult<{
+    lessons: StudentLessonListItem[]
+    teacher: { name: string; lastName: string | null; image: string | null } | null
+  }>
+> {
   try {
     // Buscar la inscripción activa del estudiante en el curso
     const enrollment = await db.enrollment.findFirst({

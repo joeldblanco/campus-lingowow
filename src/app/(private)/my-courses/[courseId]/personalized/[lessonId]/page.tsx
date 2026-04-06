@@ -13,9 +13,7 @@ interface PersonalizedLessonPageProps {
   }>
 }
 
-export default async function PersonalizedLessonPage({
-  params,
-}: PersonalizedLessonPageProps) {
+export default async function PersonalizedLessonPage({ params }: PersonalizedLessonPageProps) {
   const { courseId, lessonId } = await params
   const session = await auth()
 
