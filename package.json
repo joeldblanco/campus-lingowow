@@ -37,7 +37,11 @@
     "db:query": "tsx scripts/db-query.ts",
     "db:info": "tsx scripts/db-query.ts -- --info",
     "db:studio": "prisma studio",
-    "backfill:coupon-links": "tsx scripts/backfill-coupon-links.ts"
+    "backfill:coupon-links": "tsx scripts/backfill-coupon-links.ts",
+    "dry-run:legacy-exams": "tsx scripts/dry-run-legacy-exams.ts",
+    "import:legacy-exams": "tsx scripts/import-legacy-exams.ts",
+    "dry-run:legacy-units": "tsx scripts/import-legacy-units.ts",
+    "import:legacy-units": "tsx scripts/import-legacy-units.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.8.0",

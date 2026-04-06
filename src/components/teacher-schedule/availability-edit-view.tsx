@@ -1,16 +1,8 @@
 'use client'
 
 import { useState, useCallback, useRef, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Label } from '@/components/ui/label'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import { Clock, X, Check, Ban, GripVertical } from 'lucide-react'
+import { Check, Ban, GripVertical } from 'lucide-react'
 import { format, startOfWeek, addDays, isToday } from 'date-fns'
 import { cn } from '@/lib/utils'
 import type { ScheduleLesson } from '@/types/schedule'
@@ -46,6 +38,7 @@ const WEEKDAYS = [
 ]
 
 type SlotKey = `${string}-${string}`
+type AvailabilityStatus = 'available' | 'blocked'
 
 export function AvailabilityEditView({
   currentDate,
@@ -54,10 +47,11 @@ export function AvailabilityEditView({
   onSave,
 }: AvailabilityEditViewProps) {
   const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 })
+  const draggedSlotsRef = useRef<Set<SlotKey>>(new Set())
   
   // Initialize availability state - only 'available' or 'blocked'
-  const [availability, setAvailability] = useState<Record<string, Record<string, 'available' | 'blocked'>>>(() => {
-    const initial: Record<string, Record<string, 'available' | 'blocked'>> = {}
+  const [availability, setAvailability] = useState<Record<string, Record<string, AvailabilityStatus>>>(() => {
+    const initial: Record<string, Record<string, AvailabilityStatus>> = {}
     
     WEEKDAYS.forEach(({ key }) => {
       initial[key] = {}
@@ -76,20 +70,8 @@ export function AvailabilityEditView({
     return initial
   })
 
-  // Drag selection state
+  // Immediate toggle state for click-and-drag editing
   const [isDragging, setIsDragging] = useState(false)
-  const [dragStart, setDragStart] = useState<{ dayIndex: number; timeIndex: number } | null>(null)
-  const [selectedSlots, setSelectedSlots] = useState<Set<SlotKey>>(new Set())
-  
-  // Popover state for multi-selection
-  const [showMultiEditPopover, setShowMultiEditPopover] = useState(false)
-  const [multiEditStatus, setMultiEditStatus] = useState<'available' | 'blocked'>('available')
-  const popoverAnchorRef = useRef<HTMLDivElement>(null)
-  const [popoverPosition, setPopoverPosition] = useState<{ top: number; left: number } | null>(null)
-
-  // Single slot selection (for click)
-  const [selectedSingleSlot, setSelectedSingleSlot] = useState<{ day: string; time: string; dayDate: Date } | null>(null)
-  const [singleEditStatus, setSingleEditStatus] = useState<'available' | 'blocked'>('available')
 
   // Check if a slot has a booked lesson
   const getBookedLesson = useCallback((dayDate: Date, time: string): ScheduleLesson | undefined => {
@@ -103,163 +85,67 @@ export function AvailabilityEditView({
     })
   }, [lessons])
 
-  // Calculate selected slots based on drag start and end
-  const calculateSelectedSlots = useCallback((start: { dayIndex: number; timeIndex: number }, end: { dayIndex: number; timeIndex: number }) => {
-    const minDay = Math.min(start.dayIndex, end.dayIndex)
-    const maxDay = Math.max(start.dayIndex, end.dayIndex)
-    const minTime = Math.min(start.timeIndex, end.timeIndex)
-    const maxTime = Math.max(start.timeIndex, end.timeIndex)
-    
-    const slots = new Set<SlotKey>()
-    
-    for (let d = minDay; d <= maxDay; d++) {
-      for (let t = minTime; t <= maxTime; t++) {
-        const dayKey = WEEKDAYS[d].key
-        const time = TIME_SLOTS[t]
-        const dayDate = addDays(weekStart, d)
-        
-        // Don't include booked slots
-        if (!getBookedLesson(dayDate, time)) {
-          slots.add(`${dayKey}-${time}` as SlotKey)
-        }
-      }
-    }
-    
-    return slots
-  }, [weekStart, getBookedLesson])
+  const toggleSlotStatus = useCallback((day: string, time: string) => {
+    setAvailability((prev) => {
+      const currentStatus = prev[day]?.[time] || 'blocked'
+      const nextStatus: AvailabilityStatus = currentStatus === 'available' ? 'blocked' : 'available'
 
-  // Handle mouse down on a slot
+      return {
+        ...prev,
+        [day]: {
+          ...prev[day],
+          [time]: nextStatus,
+        },
+      }
+    })
+  }, [])
+
+  // Handle mouse down on a slot and toggle immediately
   const handleMouseDown = (dayIndex: number, timeIndex: number, dayDate: Date) => {
     const dayKey = WEEKDAYS[dayIndex].key
     const time = TIME_SLOTS[timeIndex]
+    const slotKey = `${dayKey}-${time}` as SlotKey
     
-    // Don't start drag on booked slots
+    // Don't allow editing booked slots
     if (getBookedLesson(dayDate, time)) return
     
     setIsDragging(true)
-    setDragStart({ dayIndex, timeIndex })
-    setSelectedSlots(new Set([`${dayKey}-${time}` as SlotKey]))
-    setSelectedSingleSlot(null)
-    setShowMultiEditPopover(false)
+    draggedSlotsRef.current = new Set([slotKey])
+    toggleSlotStatus(dayKey, time)
   }
 
-  // Handle mouse enter during drag
-  const handleMouseEnter = (dayIndex: number, timeIndex: number) => {
-    if (!isDragging || !dragStart) return
-    
-    setSelectedSlots(calculateSelectedSlots(dragStart, { dayIndex, timeIndex }))
-  }
-
-  // Handle mouse up - end drag and show popover
-  const handleMouseUp = useCallback((e: MouseEvent) => {
+  // Toggle each new slot immediately while dragging
+  const handleMouseEnter = (dayIndex: number, timeIndex: number, dayDate: Date) => {
     if (!isDragging) return
-    
+
+    const dayKey = WEEKDAYS[dayIndex].key
+    const time = TIME_SLOTS[timeIndex]
+    const slotKey = `${dayKey}-${time}` as SlotKey
+
+    if (draggedSlotsRef.current.has(slotKey)) return
+    if (getBookedLesson(dayDate, time)) return
+
+    draggedSlotsRef.current.add(slotKey)
+    toggleSlotStatus(dayKey, time)
+  }
+
+  // Handle mouse up - end drag
+  const handleMouseUp = useCallback(() => {
+    if (!isDragging) return
+
     setIsDragging(false)
-    
-    if (selectedSlots.size > 0) {
-      // Determine the most common status in selected slots
-      let availableCount = 0
-      let blockedCount = 0
-      
-      selectedSlots.forEach((slotKey) => {
-        const [day, time] = slotKey.split('-') as [string, string]
-        const status = availability[day]?.[time] || 'blocked'
-        if (status === 'available') availableCount++
-        else blockedCount++
-      })
-      
-      // Default to the opposite of the majority
-      setMultiEditStatus(availableCount > blockedCount ? 'blocked' : 'available')
-      
-      // Position popover near mouse
-      setPopoverPosition({ top: e.clientY, left: e.clientX })
-      setShowMultiEditPopover(true)
-    }
-  }, [isDragging, selectedSlots, availability])
+    draggedSlotsRef.current.clear()
+  }, [isDragging])
 
   // Add global mouse up listener
   useEffect(() => {
-    const handleGlobalMouseUp = (e: MouseEvent) => {
-      handleMouseUp(e)
+    const handleGlobalMouseUp = () => {
+      handleMouseUp()
     }
     
     window.addEventListener('mouseup', handleGlobalMouseUp)
     return () => window.removeEventListener('mouseup', handleGlobalMouseUp)
   }, [handleMouseUp])
-
-  // Apply multi-selection edit
-  const applyMultiEdit = () => {
-    setAvailability((prev) => {
-      const newAvailability = { ...prev }
-      
-      selectedSlots.forEach((slotKey) => {
-        const [day, time] = slotKey.split('-') as [string, string]
-        if (!newAvailability[day]) {
-          newAvailability[day] = {}
-        }
-        newAvailability[day][time] = multiEditStatus
-      })
-      
-      return newAvailability
-    })
-    
-    setShowMultiEditPopover(false)
-    setSelectedSlots(new Set())
-    setDragStart(null)
-  }
-
-  // Cancel multi-selection
-  const cancelMultiEdit = () => {
-    setShowMultiEditPopover(false)
-    setSelectedSlots(new Set())
-    setDragStart(null)
-  }
-
-  // Handle single slot click
-  const handleSlotClick = (dayKey: string, time: string, dayDate: Date) => {
-    // If we just finished a drag, don't open single edit
-    if (selectedSlots.size > 1) return
-    
-    const bookedLesson = getBookedLesson(dayDate, time)
-    if (bookedLesson) return
-
-    setSelectedSingleSlot({ day: dayKey, time, dayDate })
-    const currentStatus = availability[dayKey]?.[time] || 'blocked'
-    setSingleEditStatus(currentStatus)
-  }
-
-  // Apply single slot edit
-  const applySingleEdit = () => {
-    if (!selectedSingleSlot) return
-
-    setAvailability((prev) => {
-      const newAvailability = { ...prev }
-      if (!newAvailability[selectedSingleSlot.day]) {
-        newAvailability[selectedSingleSlot.day] = {}
-      }
-      newAvailability[selectedSingleSlot.day][selectedSingleSlot.time] = singleEditStatus
-      return newAvailability
-    })
-    setSelectedSingleSlot(null)
-  }
-
-  // Toggle single slot (quick action)
-  const toggleSingleSlot = () => {
-    if (!selectedSingleSlot) return
-    
-    const currentStatus = availability[selectedSingleSlot.day]?.[selectedSingleSlot.time] || 'blocked'
-    const newStatus = currentStatus === 'available' ? 'blocked' : 'available'
-    
-    setAvailability((prev) => {
-      const newAvailability = { ...prev }
-      if (!newAvailability[selectedSingleSlot.day]) {
-        newAvailability[selectedSingleSlot.day] = {}
-      }
-      newAvailability[selectedSingleSlot.day][selectedSingleSlot.time] = newStatus
-      return newAvailability
-    })
-    setSelectedSingleSlot(null)
-  }
 
   // Expose save functionality
   const getSlotsForSave = () => {
@@ -291,9 +177,6 @@ export function AvailabilityEditView({
   const getSlotContent = (dayKey: string, time: string, dayDate: Date, dayIndex: number, timeIndex: number) => {
     const bookedLesson = getBookedLesson(dayDate, time)
     const status = availability[dayKey]?.[time] || 'blocked'
-    const slotKey = `${dayKey}-${time}` as SlotKey
-    const isInSelection = selectedSlots.has(slotKey)
-    const isSingleSelected = selectedSingleSlot?.day === dayKey && selectedSingleSlot?.time === time
 
     if (bookedLesson) {
       const fullName = `${bookedLesson.student.name} ${bookedLesson.student.lastName || ''}`.trim()
@@ -311,8 +194,6 @@ export function AvailabilityEditView({
 
     const slotClasses = cn(
       "w-full h-full flex flex-col items-center justify-center rounded-lg border-2 transition-all cursor-pointer select-none",
-      isInSelection && "ring-2 ring-primary ring-offset-1 scale-95",
-      isSingleSelected && "ring-2 ring-primary ring-offset-2",
       status === 'available' && "bg-green-50 dark:bg-green-900/20 border-green-300 dark:border-green-700 hover:bg-green-100 dark:hover:bg-green-900/30",
       status === 'blocked' && "bg-slate-100 dark:bg-slate-800/50 border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-700/50"
     )
@@ -323,12 +204,7 @@ export function AvailabilityEditView({
           e.preventDefault()
           handleMouseDown(dayIndex, timeIndex, dayDate)
         }}
-        onMouseEnter={() => handleMouseEnter(dayIndex, timeIndex)}
-        onClick={() => {
-          if (!isDragging && selectedSlots.size <= 1) {
-            handleSlotClick(dayKey, time, dayDate)
-          }
-        }}
+        onMouseEnter={() => handleMouseEnter(dayIndex, timeIndex, dayDate)}
         className={slotClasses}
       >
         {status === 'available' && (
@@ -350,89 +226,7 @@ export function AvailabilityEditView({
       </div>
     )
 
-    // Wrap with popover if single selected
-    if (isSingleSelected && !showMultiEditPopover) {
-      return (
-        <Popover open={true} onOpenChange={(open) => !open && setSelectedSingleSlot(null)}>
-          <PopoverTrigger asChild>
-            {content}
-          </PopoverTrigger>
-          <PopoverContent className="w-72" align="center">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">Editar Disponibilidad</h4>
-                <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => setSelectedSingleSlot(null)}>
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-              
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Clock className="h-4 w-4" />
-                <span>
-                  {WEEKDAYS.find(w => w.key === selectedSingleSlot.day)?.label}, {selectedSingleSlot.time} - {
-                    `${String(parseInt(selectedSingleSlot.time.split(':')[0]) + 1).padStart(2, '0')}:00`
-                  }
-                </span>
-              </div>
-
-              <RadioGroup value={singleEditStatus} onValueChange={(v) => setSingleEditStatus(v as 'available' | 'blocked')}>
-                <div className="flex items-center space-x-2 p-2 rounded-lg border hover:bg-muted/50">
-                  <RadioGroupItem value="available" id="single-available" />
-                  <Label htmlFor="single-available" className="flex items-center gap-2 flex-1 cursor-pointer">
-                    <div className="h-3 w-3 rounded-full bg-green-500" />
-                    Disponible
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2 p-2 rounded-lg border hover:bg-muted/50">
-                  <RadioGroupItem value="blocked" id="single-blocked" />
-                  <Label htmlFor="single-blocked" className="flex items-center gap-2 flex-1 cursor-pointer">
-                    <div className="h-3 w-3 rounded-full bg-slate-400" />
-                    Bloqueado
-                  </Label>
-                </div>
-              </RadioGroup>
-
-              <p className="text-xs text-muted-foreground bg-muted/50 p-2 rounded">
-                La disponibilidad se aplica semanalmente para este día.
-              </p>
-
-              <div className="flex justify-between pt-2">
-                <Button variant="outline" size="sm" onClick={toggleSingleSlot}>
-                  Alternar
-                </Button>
-                <Button size="sm" onClick={applySingleEdit}>
-                  Aplicar
-                </Button>
-              </div>
-            </div>
-          </PopoverContent>
-        </Popover>
-      )
-    }
-
     return content
-  }
-
-  // Get selection summary for popover
-  const getSelectionSummary = () => {
-    if (selectedSlots.size === 0) return ''
-    
-    const days = new Set<string>()
-    const times = new Set<string>()
-    
-    selectedSlots.forEach((slotKey) => {
-      const [day, time] = slotKey.split('-') as [string, string]
-      days.add(WEEKDAYS.find(w => w.key === day)?.label || day)
-      times.add(time)
-    })
-    
-    const sortedTimes = Array.from(times).sort()
-    const minTime = sortedTimes[0]
-    const maxTime = sortedTimes[sortedTimes.length - 1]
-    const maxTimeHour = parseInt(maxTime.split(':')[0]) + 1
-    const maxTimeFormatted = `${String(maxTimeHour).padStart(2, '0')}:00`
-    
-    return `${Array.from(days).join(', ')} • ${minTime} - ${maxTimeFormatted} (${selectedSlots.size} bloques)`
   }
 
   return (
@@ -441,7 +235,7 @@ export function AvailabilityEditView({
       <div className="flex items-center justify-between gap-6 px-4 py-3 border-b bg-muted/30 flex-shrink-0">
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <GripVertical className="h-4 w-4" />
-          <span>Arrastra para seleccionar múltiples bloques</span>
+          <span>Haz clic o arrastra para alternar bloques al instante</span>
         </div>
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
@@ -526,62 +320,6 @@ export function AvailabilityEditView({
           </tbody>
         </table>
       </div>
-
-      {/* Multi-selection popover */}
-      {showMultiEditPopover && popoverPosition && (
-        <div 
-          ref={popoverAnchorRef}
-          className="fixed z-50 bg-popover border rounded-lg shadow-lg p-4 w-80"
-          style={{ 
-            top: Math.min(popoverPosition.top, window.innerHeight - 300),
-            left: Math.min(popoverPosition.left, window.innerWidth - 340)
-          }}
-        >
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h4 className="font-semibold">Editar Selección</h4>
-              <Button variant="ghost" size="icon" className="h-6 w-6" onClick={cancelMultiEdit}>
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-            
-            <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 p-2 rounded">
-              <Clock className="h-4 w-4 flex-shrink-0" />
-              <span className="truncate">{getSelectionSummary()}</span>
-            </div>
-
-            <RadioGroup value={multiEditStatus} onValueChange={(v) => setMultiEditStatus(v as 'available' | 'blocked')}>
-              <div className="flex items-center space-x-2 p-2 rounded-lg border hover:bg-muted/50">
-                <RadioGroupItem value="available" id="multi-available" />
-                <Label htmlFor="multi-available" className="flex items-center gap-2 flex-1 cursor-pointer">
-                  <div className="h-3 w-3 rounded-full bg-green-500" />
-                  Marcar como Disponible
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2 p-2 rounded-lg border hover:bg-muted/50">
-                <RadioGroupItem value="blocked" id="multi-blocked" />
-                <Label htmlFor="multi-blocked" className="flex items-center gap-2 flex-1 cursor-pointer">
-                  <div className="h-3 w-3 rounded-full bg-slate-400" />
-                  Marcar como Bloqueado
-                </Label>
-              </div>
-            </RadioGroup>
-
-            <p className="text-xs text-muted-foreground">
-              Los cambios se aplicarán semanalmente para los días seleccionados.
-            </p>
-
-            <div className="flex justify-end gap-2 pt-2">
-              <Button variant="outline" size="sm" onClick={cancelMultiEdit}>
-                Cancelar
-              </Button>
-              <Button size="sm" onClick={applyMultiEdit}>
-                Aplicar a {selectedSlots.size} bloques
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Overlay when dragging */}
       {isDragging && (

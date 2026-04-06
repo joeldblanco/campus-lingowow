@@ -60,6 +60,7 @@ keys/
 *.pem
 
 /scripts
+/reports
 *.md
 .vercel
 

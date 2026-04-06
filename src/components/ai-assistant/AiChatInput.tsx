@@ -23,7 +23,7 @@ export function AiChatInput({ onSend, isLoading, disabled }: AiChatInputProps) {
   // Re-focus textarea when loading finishes
   useEffect(() => {
     if (!isDisabled) {
-      textareaRef.current?.focus()
+      textareaRef.current?.focus({ preventScroll: true })
     }
   }, [isDisabled])
 
@@ -32,7 +32,7 @@ export function AiChatInput({ onSend, isLoading, disabled }: AiChatInputProps) {
     if (!trimmed || isDisabled) return
     onSend(trimmed)
     setValue('')
-    textareaRef.current?.focus()
+    textareaRef.current?.focus({ preventScroll: true })
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
