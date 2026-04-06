@@ -12,7 +12,7 @@ import { formatDateNumeric, getCurrentDate, formatToISO, getStartOfMonth, getDat
 import { getUserAvatarUrl } from '@/lib/utils'
 import { getPeriodByDate } from '@/lib/actions/academic-period'
 import { es } from 'date-fns/locale'
-import { format } from 'date-fns'
+import { endOfDay, format, startOfDay } from 'date-fns'
 import { auth } from '@/auth'
 
 // Helper para obtener la timezone del usuario autenticado
@@ -33,6 +33,24 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
     // Obtener timezone del usuario autenticado
     const userTimezone = await getUserTimezone()
     
+    // Fetch current period first to filter all stats
+    const periodResult = await getPeriodByDate(new Date())
+    const currentPeriod = periodResult.success ? periodResult.period : null
+    
+    // Use the appropriate filter type for each model field.
+    const bookingPeriodFilter = currentPeriod
+      ? {
+          gte: formatToISO(currentPeriod.startDate),
+          lte: formatToISO(currentPeriod.endDate),
+        }
+      : undefined
+    const invoicePeriodFilter = currentPeriod
+      ? {
+          gte: startOfDay(currentPeriod.startDate),
+          lte: endOfDay(currentPeriod.endDate),
+        }
+      : undefined
+    
     // Get total students count
     const totalStudents = await db.user.count({
       where: { roles: { has: UserRole.STUDENT } },
@@ -48,15 +66,19 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
       where: { isPublished: true },
     })
 
-    // Get total classes (completed bookings)
+    // Get total classes (completed bookings) - filtered by period
     const totalClasses = await db.classBooking.count({
-      where: { status: 'COMPLETED' },
+      where: {
+        status: 'COMPLETED',
+        ...(bookingPeriodFilter && { day: bookingPeriodFilter }),
+      },
     })
 
-    // Calculate total revenue from paid invoices
+    // Calculate total revenue from paid invoices - filtered by period
     const totalRevenueResult = await db.invoice.aggregate({
       where: {
         status: 'PAID',
+        ...(invoicePeriodFilter && { paidAt: invoicePeriodFilter }),
       },
       _sum: {
         total: true,
@@ -209,23 +231,13 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
         name: stat.language,
         classes: stat._count?.id || 0,
       })),
-      currentPeriod: null as { id: string; name: string; dates: string } | null,
-    }
-
-    // Fetch current period
-    const periodResult = await getPeriodByDate(new Date())
-    if (periodResult.success && periodResult.period) {
-      const startDate = format(periodResult.period.startDate, "d 'de' MMMM", { locale: es })
-      const endDate = format(periodResult.period.endDate, "d 'de' MMMM", { locale: es })
-
-      return {
-        ...baseStats,
-        currentPeriod: {
-          id: periodResult.period.id,
-          name: periodResult.period.name,
-          dates: `${startDate} - ${endDate}`,
-        },
-      }
+      currentPeriod: currentPeriod
+        ? {
+            id: currentPeriod.id,
+            name: currentPeriod.name,
+            dates: `${format(currentPeriod.startDate, "d 'de' MMMM", { locale: es })} - ${format(currentPeriod.endDate, "d 'de' MMMM", { locale: es })}`,
+          }
+        : null,
     }
 
     return baseStats
