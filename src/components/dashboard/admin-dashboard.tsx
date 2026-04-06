@@ -24,12 +24,7 @@ import {
   School,
   Users,
 } from 'lucide-react'
-import {
-  Area,
-  AreaChart,
-  ResponsiveContainer,
-  Tooltip,
-} from 'recharts'
+import { Area, AreaChart, ResponsiveContainer, Tooltip } from 'recharts'
 import { DashboardSkeleton } from './dashboard-skeleton'
 import { AiAssistantSection } from '@/components/ai-assistant/AiAssistantSection'
 
@@ -93,11 +88,7 @@ const StatCard = ({
   )
 
   if (href) {
-    return (
-      <Link href={href}>
-        {CardContent}
-      </Link>
-    )
+    return <Link href={href}>{CardContent}</Link>
   }
 
   return CardContent
@@ -234,7 +225,13 @@ const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData |
                     className="flex gap-4 p-3 rounded-lg border border-slate-100 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors bg-slate-50/50 dark:bg-slate-800/30 items-center"
                   >
                     <Avatar className="h-10 w-10 border border-slate-200">
-                      <AvatarImage src={getUserAvatarUrl(booking.studentId || booking.id, booking.studentImage)} alt={booking.studentName} />
+                      <AvatarImage
+                        src={getUserAvatarUrl(
+                          booking.studentId || booking.id,
+                          booking.studentImage
+                        )}
+                        alt={booking.studentName}
+                      />
                       <AvatarFallback className="text-xs font-bold bg-blue-100 text-blue-600">
                         {booking.studentName.substring(0, 2).toUpperCase()}
                       </AvatarFallback>
@@ -243,12 +240,8 @@ const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData |
                       <p className="text-sm font-semibold text-slate-900 dark:text-white truncate">
                         {booking.studentName}
                       </p>
-                      <p className="text-xs text-slate-500 truncate">
-                        {booking.teacherName}
-                      </p>
-                      <p className="text-xs text-slate-400">
-                        {booking.startTime}
-                      </p>
+                      <p className="text-xs text-slate-500 truncate">{booking.teacherName}</p>
+                      <p className="text-xs text-slate-400">{booking.startTime}</p>
                     </div>
                     {/* <Button variant="ghost" size="sm" className="text-primary hover:text-blue-700">
                       Ver
@@ -308,7 +301,13 @@ const AdminDashboard = ({ dashboardData }: { dashboardData: AdminDashboardData |
                     <TableCell className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <Avatar className="h-8 w-8 bg-indigo-100 text-indigo-600">
-                          <AvatarImage src={enrollment.studentId ? getUserAvatarUrl(enrollment.studentId, enrollment.studentImage) : (enrollment.studentImage || '')} />
+                          <AvatarImage
+                            src={
+                              enrollment.studentId
+                                ? getUserAvatarUrl(enrollment.studentId, enrollment.studentImage)
+                                : enrollment.studentImage || ''
+                            }
+                          />
                           <AvatarFallback className="text-xs font-bold">
                             {enrollment.studentName.substring(0, 2).toUpperCase()}
                           </AvatarFallback>
