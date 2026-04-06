@@ -233,11 +233,30 @@ import type { LessonForView } from '@/types/lesson'
 
 export async function getLessonForStudent(
   lessonId: string,
+  courseId: string,
   userId: string
 ): Promise<LessonForView | null> {
   try {
-    const lesson = await prisma.lesson.findUnique({
-      where: { id: lessonId },
+    const lesson = await prisma.lesson.findFirst({
+      where: {
+        id: lessonId,
+        isPublished: true,
+        module: {
+          is: {
+            courseId,
+            course: {
+              enrollments: {
+                some: {
+                  studentId: userId,
+                  status: {
+                    in: ['ACTIVE', 'PENDING', 'PAUSED', 'COMPLETED'],
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
       include: {
         module: {
           select: {

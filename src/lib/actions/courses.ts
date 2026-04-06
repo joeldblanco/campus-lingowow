@@ -8,6 +8,34 @@ import { auditLog } from '@/lib/audit-log'
 import { auth } from '@/auth'
 import * as z from 'zod'
 
+const enrollmentStatusPriority: Record<string, number> = {
+  ACTIVE: 0,
+  PENDING: 1,
+  PAUSED: 2,
+  COMPLETED: 3,
+  CANCELLED: 4,
+}
+
+function pickPreferredEnrollment<T extends { status: string; enrollmentDate: Date }>(
+  enrollments: T[]
+): T | null {
+  if (enrollments.length === 0) {
+    return null
+  }
+
+  return [...enrollments].sort((left, right) => {
+    const statusDiff =
+      (enrollmentStatusPriority[left.status] ?? Number.MAX_SAFE_INTEGER) -
+      (enrollmentStatusPriority[right.status] ?? Number.MAX_SAFE_INTEGER)
+
+    if (statusDiff !== 0) {
+      return statusDiff
+    }
+
+    return right.enrollmentDate.getTime() - left.enrollmentDate.getTime()
+  })[0]
+}
+
 export async function getAllCourses(): Promise<CourseWithDetails[]> {
   try {
     const courses = await db.course.findMany({
@@ -555,6 +583,9 @@ export async function getCoursesForPublicView(userId?: string) {
               where: {
                 studentId: userId,
               },
+              orderBy: {
+                enrollmentDate: 'desc',
+              },
               select: {
                 id: true,
                 status: true,
@@ -583,11 +614,15 @@ export async function getCoursesForPublicView(userId?: string) {
       },
     })
 
-    return courses.map((course) => ({
-      ...course,
-      isEnrolled: userId ? course.enrollments.length > 0 : false,
-      enrollment: userId && course.enrollments.length > 0 ? course.enrollments[0] : null,
-    }))
+    return courses.map((course) => {
+      const preferredEnrollment = userId ? pickPreferredEnrollment(course.enrollments) : null
+
+      return {
+        ...course,
+        isEnrolled: userId ? course.enrollments.length > 0 : false,
+        enrollment: preferredEnrollment,
+      }
+    })
   } catch (error) {
     console.error('Error fetching courses for public view:', error)
     throw new Error('Failed to fetch courses')
@@ -661,26 +696,15 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
               where: {
                 studentId: userId,
               },
+              orderBy: {
+                enrollmentDate: 'desc',
+              },
               select: {
                 id: true,
                 status: true,
                 progress: true,
                 enrollmentDate: true,
                 lastAccessed: true,
-                personalizedLessons: {
-                  where: { isPublished: true },
-                  select: {
-                    id: true,
-                    title: true,
-                    description: true,
-                    order: true,
-                    duration: true,
-                    isPublished: true,
-                    videoUrl: true,
-                    summary: true,
-                  },
-                  orderBy: { order: 'asc' },
-                },
               },
             }
           : false,
@@ -727,8 +751,41 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
       return null
     }
 
+    const visibleExams = course.isPersonalized
+      ? userId
+        ? await db.exam.findMany({
+            where: {
+              courseId,
+              isPublished: true,
+              assignments: {
+                some: {
+                  userId,
+                },
+              },
+            },
+            select: {
+              id: true,
+              title: true,
+              description: true,
+              timeLimit: true,
+              passingScore: true,
+              maxAttempts: true,
+              isPublished: true,
+              questions: {
+                select: {
+                  points: true,
+                },
+              },
+            },
+            orderBy: {
+              createdAt: 'asc',
+            },
+          })
+        : []
+      : course.exams
+
     // Calcular questionCount y totalPoints para cada examen
-    const examsWithStats = course.exams.map((exam) => {
+    const examsWithStats = visibleExams.map((exam) => {
       const questionCount = exam.questions.length
       const totalPoints = exam.questions.reduce((sum, q) => sum + q.points, 0)
 
@@ -746,12 +803,68 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
     })
 
     const enrollments = userId ? course.enrollments : []
+    const preferredEnrollment = userId ? pickPreferredEnrollment(enrollments) : null
+    const studentLessons =
+      userId && course.isPersonalized
+        ? (
+            await db.lesson.findMany({
+              where: {
+                studentId: userId,
+                isPublished: true,
+                enrollment: {
+                  is: {
+                    courseId,
+                  },
+                },
+              },
+              select: {
+                id: true,
+                title: true,
+                description: true,
+                order: true,
+                duration: true,
+                isPublished: true,
+                videoUrl: true,
+                summary: true,
+                createdAt: true,
+                enrollment: {
+                  select: {
+                    enrollmentDate: true,
+                  },
+                },
+              },
+            })
+          )
+            .sort((left, right) => {
+              const enrollmentDiff =
+                (left.enrollment?.enrollmentDate.getTime() ?? 0) -
+                (right.enrollment?.enrollmentDate.getTime() ?? 0)
+
+              if (enrollmentDiff !== 0) {
+                return enrollmentDiff
+              }
+
+              const orderDiff = left.order - right.order
+
+              if (orderDiff !== 0) {
+                return orderDiff
+              }
+
+              return left.createdAt.getTime() - right.createdAt.getTime()
+            })
+            .map(({ enrollment, ...lesson }) => lesson)
+        : []
 
     return {
       ...course,
       exams: examsWithStats,
       isEnrolled: userId ? enrollments.length > 0 : false,
-      enrollment: userId && enrollments.length > 0 ? enrollments[0] : null,
+      enrollment: preferredEnrollment
+        ? {
+            ...preferredEnrollment,
+            studentLessons,
+          }
+        : null,
     }
   } catch (error) {
     console.error('Error fetching course for public view:', error)

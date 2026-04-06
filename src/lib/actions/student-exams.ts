@@ -17,7 +17,8 @@ export async function getStudentAssignedExams() {
 
     const studentId = session.user.id
 
-    // Obtener inscripciones activas del estudiante
+    // Obtener inscripciones activas del estudiante solo para cursos no personalizados.
+    // En programas personalizados, la fuente de verdad es la asignación explícita del examen.
     const enrollments = await db.enrollment.findMany({
       where: {
         studentId,
@@ -36,10 +37,7 @@ export async function getStudentAssignedExams() {
       },
     })
 
-    // Separar cursos personalizados y no personalizados
-    const personalizedCourseIds = enrollments
-      .filter((e) => e.course.isPersonalized)
-      .map((e) => e.courseId)
+    // Separar cursos no personalizados
     const nonPersonalizedCourseIds = enrollments
       .filter((e) => !e.course.isPersonalized)
       .map((e) => e.courseId)
@@ -50,7 +48,11 @@ export async function getStudentAssignedExams() {
         userId: studentId,
         exam: {
           isPublished: true,
-          courseId: { in: personalizedCourseIds },
+          course: {
+            is: {
+              isPersonalized: true,
+            },
+          },
         },
       },
       include: {

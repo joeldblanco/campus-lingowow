@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache'
 import { CreateExamSchema, EditExamSchema, AssignExamSchema } from '@/schemas/exams'
 import { auditLog } from '@/lib/audit-log'
 import * as z from 'zod'
-import { AttemptStatus, AssignmentStatus, Prisma, UserRole } from '@prisma/client'
+import { AttemptStatus, AssignmentStatus, ExamType, Prisma, UserRole } from '@prisma/client'
 import type {
   ExamWithDetails,
   ExamStats,
@@ -720,6 +720,20 @@ export async function startExamAttempt(examId: string, userId: string) {
     const exam = await db.exam.findUnique({
       where: { id: examId },
       include: {
+        course: {
+          select: {
+            id: true,
+            isPersonalized: true,
+          },
+        },
+        assignments: {
+          where: {
+            userId,
+          },
+          select: {
+            id: true,
+          },
+        },
         questions: {
           orderBy: { order: 'asc' },
         },
@@ -732,6 +746,31 @@ export async function startExamAttempt(examId: string, userId: string) {
 
     if (!exam.isPublished) {
       return { success: false, error: 'Este examen no está disponible' }
+    }
+
+    let hasAccess = true
+
+    if (exam.examType !== ExamType.PLACEMENT_TEST && exam.courseId && exam.course) {
+      if (exam.course.isPersonalized) {
+        hasAccess = exam.assignments.length > 0
+      } else {
+        const enrollment = await db.enrollment.findFirst({
+          where: {
+            studentId: userId,
+            courseId: exam.course.id,
+            status: { not: 'CANCELLED' },
+          },
+          select: {
+            id: true,
+          },
+        })
+
+        hasAccess = !!enrollment
+      }
+    }
+
+    if (!hasAccess) {
+      return { success: false, error: 'No tienes acceso a este examen' }
     }
 
     // Primero verificar si hay un intento en progreso (permitir continuar)
@@ -1441,7 +1480,6 @@ import type {
   PlacementTestResult,
   RecommendedCourse,
 } from '@/types/exam'
-import { ExamType } from '@prisma/client'
 import { sendPlacementTestResultEmail } from '@/lib/mail'
 
 const LEVEL_DESCRIPTIONS: Record<LanguageLevel, string> = {

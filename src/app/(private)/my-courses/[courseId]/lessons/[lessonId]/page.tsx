@@ -21,7 +21,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
         redirect(`/auth/signin?callbackUrl=/my-courses/${courseId}/lessons/${lessonId}`)
     }
 
-    const lesson = await getLessonForStudent(lessonId, session.user.id)
+    const lesson = await getLessonForStudent(lessonId, courseId, session.user.id)
 
     if (!lesson) {
         notFound()

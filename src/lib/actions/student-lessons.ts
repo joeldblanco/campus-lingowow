@@ -58,6 +58,7 @@ export async function getPublishedStudentLessonsForEnrollment(
 // Obtener una lección personalizada por ID (para vista del estudiante)
 export async function getStudentLessonForView(
   lessonId: string,
+  courseId: string,
   studentId: string
 ): Promise<StudentLessonActionResult<StudentLessonForView>> {
   try {
@@ -66,6 +67,11 @@ export async function getStudentLessonForView(
         id: lessonId,
         studentId: studentId, // Asegurar que el estudiante solo vea sus propias lecciones
         isPublished: true,
+        enrollment: {
+          is: {
+            courseId,
+          },
+        },
       },
       include: {
         student: {

@@ -23,7 +23,7 @@ export default async function PersonalizedLessonPage({
     redirect(`/auth/signin?callbackUrl=/my-courses/${courseId}/personalized/${lessonId}`)
   }
 
-  const result = await getStudentLessonForView(lessonId, session.user.id)
+  const result = await getStudentLessonForView(lessonId, courseId, session.user.id)
 
   if (!result.success || !result.data) {
     notFound()
