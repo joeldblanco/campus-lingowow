@@ -28,6 +28,13 @@ export function InvoicePDF({ invoice }: InvoicePDFProps) {
         scale: 2,
         logging: false,
         useCORS: true,
+        onclone: (clonedDoc) => {
+          // html2canvas parses every stylesheet on the page, including Tailwind v4's
+          // external CSS which uses oklch() — unsupported by html2canvas 1.x.
+          // Since the invoice template uses only inline styles, we can safely remove
+          // all <link rel="stylesheet"> and <style> tags from the clone.
+          clonedDoc.querySelectorAll('link[rel="stylesheet"], style').forEach((el) => el.remove())
+        },
       })
 
       const imgData = canvas.toDataURL('image/jpeg', 0.95) // JPEG is faster and smaller than PNG
@@ -166,7 +173,7 @@ export function InvoicePDF({ invoice }: InvoicePDFProps) {
                 Fecha de pago:
               </h3>
               <p style={{ fontWeight: '500', margin: 0 }}>
-                {invoice.paidAt ? new Date(invoice.paidAt).toLocaleDateString() : 'Pendiente'}
+                {invoice.paidAt ? new Date(invoice.paidAt).toLocaleDateString('es-PE') : 'Pendiente'}
               </p>
             </div>
             <div>
