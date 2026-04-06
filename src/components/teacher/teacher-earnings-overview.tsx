@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
-import { format } from 'date-fns'
+import { format, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { toast } from 'sonner'
 import {
@@ -25,6 +25,7 @@ import {
   X,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { convertTimeSlotFromUTC } from '@/lib/utils/date'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   Select,
@@ -135,6 +136,8 @@ export function TeacherEarningsOverview() {
   const [currentPage, setCurrentPage] = useState(1)
   const [activeTab, setActiveTab] = useState('classes')
   const itemsPerPage = 4
+  const userTimezone =
+    session?.user?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/Lima'
 
   // Payment confirmation state
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false)
@@ -265,6 +268,10 @@ export function TeacherEarningsOverview() {
     }
   }, [session?.user?.id, loadReport])
 
+  function getLocalClassSchedule(day: string, timeSlot: string) {
+    return convertTimeSlotFromUTC(day, timeSlot, userTimezone)
+  }
+
   function exportToCSV() {
     if (!earningsData) return
 
@@ -274,6 +281,8 @@ export function TeacherEarningsOverview() {
     rows.push('Fecha,Hora,Estudiante,Curso,Duración (min),Ganancias,Período Académico')
 
     earningsData.classes.forEach((classDetail) => {
+      const localSchedule = getLocalClassSchedule(classDetail.date, classDetail.timeSlot)
+
       // Escape fields that might contain commas or quotes
       const escapeField = (field: string | number) => {
         const str = String(field)
@@ -285,8 +294,8 @@ export function TeacherEarningsOverview() {
 
       rows.push(
         [
-          escapeField(classDetail.date),
-          escapeField(classDetail.timeSlot),
+          escapeField(localSchedule.day),
+          escapeField(localSchedule.timeSlot),
           escapeField(classDetail.studentName),
           escapeField(classDetail.courseName),
           escapeField(classDetail.duration),
@@ -586,47 +595,54 @@ export function TeacherEarningsOverview() {
                           </thead>
                           <tbody className="divide-y">
                             {paginatedClasses.length > 0 ? (
-                              paginatedClasses.map((classDetail) => (
-                                <tr
-                                  key={classDetail.bookingId}
-                                  className="hover:bg-muted/50 transition-colors group"
-                                >
-                                  <td className="py-4 px-6 text-sm font-medium whitespace-nowrap">
-                                    {format(new Date(classDetail.date), 'dd MMM, yyyy', {
-                                      locale: es,
-                                    })}
-                                  </td>
-                                  <td className="py-4 px-6">
-                                    <div className="flex items-center gap-3">
-                                      <Avatar className="h-8 w-8">
-                                        <AvatarImage src={classDetail.studentImage || undefined} />
-                                        <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">
-                                          {getInitials(classDetail.studentName)}
-                                        </AvatarFallback>
-                                      </Avatar>
-                                      <div>
-                                        <p className="text-sm font-bold">
-                                          {classDetail.studentName}
-                                        </p>
-                                        <p className="text-xs text-muted-foreground">
-                                          {classDetail.courseName}
-                                        </p>
+                              paginatedClasses.map((classDetail) => {
+                                const localSchedule = getLocalClassSchedule(
+                                  classDetail.date,
+                                  classDetail.timeSlot
+                                )
+
+                                return (
+                                  <tr
+                                    key={classDetail.bookingId}
+                                    className="hover:bg-muted/50 transition-colors group"
+                                  >
+                                    <td className="py-4 px-6 text-sm font-medium whitespace-nowrap">
+                                      {format(parseISO(localSchedule.day), 'dd MMM, yyyy', {
+                                        locale: es,
+                                      })}
+                                    </td>
+                                    <td className="py-4 px-6">
+                                      <div className="flex items-center gap-3">
+                                        <Avatar className="h-8 w-8">
+                                          <AvatarImage src={classDetail.studentImage || undefined} />
+                                          <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">
+                                            {getInitials(classDetail.studentName)}
+                                          </AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                          <p className="text-sm font-bold">
+                                            {classDetail.studentName}
+                                          </p>
+                                          <p className="text-xs text-muted-foreground">
+                                            {classDetail.courseName}
+                                          </p>
+                                        </div>
                                       </div>
-                                    </div>
-                                  </td>
-                                  <td className="py-4 px-6 text-sm text-muted-foreground text-center">
-                                    {classDetail.duration} min
-                                  </td>
-                                  <td className="py-4 px-6 text-sm font-bold text-right">
-                                    ${classDetail.earnings.toFixed(2)}
-                                  </td>
-                                  <td className="py-4 px-6 text-center">
-                                    <button className="text-muted-foreground hover:text-primary transition-colors">
-                                      <Info className="h-5 w-5" />
-                                    </button>
-                                  </td>
-                                </tr>
-                              ))
+                                    </td>
+                                    <td className="py-4 px-6 text-sm text-muted-foreground text-center">
+                                      {classDetail.duration} min
+                                    </td>
+                                    <td className="py-4 px-6 text-sm font-bold text-right">
+                                      ${classDetail.earnings.toFixed(2)}
+                                    </td>
+                                    <td className="py-4 px-6 text-center">
+                                      <button className="text-muted-foreground hover:text-primary transition-colors">
+                                        <Info className="h-5 w-5" />
+                                      </button>
+                                    </td>
+                                  </tr>
+                                )
+                              })
                             ) : (
                               <tr>
                                 <td colSpan={5} className="py-8 text-center text-muted-foreground">
