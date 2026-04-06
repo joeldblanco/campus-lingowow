@@ -614,7 +614,9 @@ export function TeacherEarningsOverview() {
                                     <td className="py-4 px-6">
                                       <div className="flex items-center gap-3">
                                         <Avatar className="h-8 w-8">
-                                          <AvatarImage src={classDetail.studentImage || undefined} />
+                                          <AvatarImage
+                                            src={classDetail.studentImage || undefined}
+                                          />
                                           <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">
                                             {getInitials(classDetail.studentName)}
                                           </AvatarFallback>
