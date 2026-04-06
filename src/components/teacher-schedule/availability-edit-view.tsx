@@ -11,7 +11,9 @@ interface AvailabilityEditViewProps {
   currentDate: Date
   lessons: ScheduleLesson[]
   initialAvailability: Array<{ day: string; startTime: string; endTime: string }>
-  onSave: (slots: Array<{ day: string; startTime: string; endTime: string; available: boolean }>) => Promise<void>
+  onSave: (
+    slots: Array<{ day: string; startTime: string; endTime: string; available: boolean }>
+  ) => Promise<void>
   onDiscard: () => void
   isSaving?: boolean
 }
@@ -48,11 +50,13 @@ export function AvailabilityEditView({
 }: AvailabilityEditViewProps) {
   const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 })
   const draggedSlotsRef = useRef<Set<SlotKey>>(new Set())
-  
+
   // Initialize availability state - only 'available' or 'blocked'
-  const [availability, setAvailability] = useState<Record<string, Record<string, AvailabilityStatus>>>(() => {
+  const [availability, setAvailability] = useState<
+    Record<string, Record<string, AvailabilityStatus>>
+  >(() => {
     const initial: Record<string, Record<string, AvailabilityStatus>> = {}
-    
+
     WEEKDAYS.forEach(({ key }) => {
       initial[key] = {}
       TIME_SLOTS.forEach((time) => {
@@ -74,16 +78,19 @@ export function AvailabilityEditView({
   const [isDragging, setIsDragging] = useState(false)
 
   // Check if a slot has a booked lesson
-  const getBookedLesson = useCallback((dayDate: Date, time: string): ScheduleLesson | undefined => {
-    return lessons.find((lesson) => {
-      const lessonDate = new Date(lesson.date)
-      return (
-        lessonDate.toDateString() === dayDate.toDateString() &&
-        lesson.startTime === time &&
-        lesson.status !== 'cancelled'
-      )
-    })
-  }, [lessons])
+  const getBookedLesson = useCallback(
+    (dayDate: Date, time: string): ScheduleLesson | undefined => {
+      return lessons.find((lesson) => {
+        const lessonDate = new Date(lesson.date)
+        return (
+          lessonDate.toDateString() === dayDate.toDateString() &&
+          lesson.startTime === time &&
+          lesson.status !== 'cancelled'
+        )
+      })
+    },
+    [lessons]
+  )
 
   const toggleSlotStatus = useCallback((day: string, time: string) => {
     setAvailability((prev) => {
@@ -105,10 +112,10 @@ export function AvailabilityEditView({
     const dayKey = WEEKDAYS[dayIndex].key
     const time = TIME_SLOTS[timeIndex]
     const slotKey = `${dayKey}-${time}` as SlotKey
-    
+
     // Don't allow editing booked slots
     if (getBookedLesson(dayDate, time)) return
-    
+
     setIsDragging(true)
     draggedSlotsRef.current = new Set([slotKey])
     toggleSlotStatus(dayKey, time)
@@ -142,7 +149,7 @@ export function AvailabilityEditView({
     const handleGlobalMouseUp = () => {
       handleMouseUp()
     }
-    
+
     window.addEventListener('mouseup', handleGlobalMouseUp)
     return () => window.removeEventListener('mouseup', handleGlobalMouseUp)
   }, [handleMouseUp])
@@ -150,12 +157,12 @@ export function AvailabilityEditView({
   // Expose save functionality
   const getSlotsForSave = () => {
     const slots: Array<{ day: string; startTime: string; endTime: string; available: boolean }> = []
-    
+
     Object.entries(availability).forEach(([day, times]) => {
       Object.entries(times).forEach(([time, status]) => {
         const [hours] = time.split(':').map(Number)
         const endTime = `${String(hours + 1).padStart(2, '0')}:00`
-        
+
         slots.push({
           day,
           startTime: time,
@@ -172,9 +179,16 @@ export function AvailabilityEditView({
     await onSave(getSlotsForSave())
   }
 
-  ;(window as unknown as { __availabilitySave?: () => Promise<void> }).__availabilitySave = handleParentSave
+  ;(window as unknown as { __availabilitySave?: () => Promise<void> }).__availabilitySave =
+    handleParentSave
 
-  const getSlotContent = (dayKey: string, time: string, dayDate: Date, dayIndex: number, timeIndex: number) => {
+  const getSlotContent = (
+    dayKey: string,
+    time: string,
+    dayDate: Date,
+    dayIndex: number,
+    timeIndex: number
+  ) => {
     const bookedLesson = getBookedLesson(dayDate, time)
     const status = availability[dayKey]?.[time] || 'blocked'
 
@@ -193,9 +207,11 @@ export function AvailabilityEditView({
     }
 
     const slotClasses = cn(
-      "w-full h-full flex flex-col items-center justify-center rounded-lg border-2 transition-all cursor-pointer select-none",
-      status === 'available' && "bg-green-50 dark:bg-green-900/20 border-green-300 dark:border-green-700 hover:bg-green-100 dark:hover:bg-green-900/30",
-      status === 'blocked' && "bg-slate-100 dark:bg-slate-800/50 border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-700/50"
+      'w-full h-full flex flex-col items-center justify-center rounded-lg border-2 transition-all cursor-pointer select-none',
+      status === 'available' &&
+        'bg-green-50 dark:bg-green-900/20 border-green-300 dark:border-green-700 hover:bg-green-100 dark:hover:bg-green-900/30',
+      status === 'blocked' &&
+        'bg-slate-100 dark:bg-slate-800/50 border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-700/50'
     )
 
     const content = (
@@ -264,21 +280,25 @@ export function AvailabilityEditView({
                   <th
                     key={key}
                     className={cn(
-                      "min-w-[110px] px-2 py-2 text-center",
-                      isCurrentDay && "bg-primary/5"
+                      'min-w-[110px] px-2 py-2 text-center',
+                      isCurrentDay && 'bg-primary/5'
                     )}
                   >
                     <div className="flex flex-col items-center">
-                      <span className={cn(
-                        "text-xs font-medium uppercase",
-                        isCurrentDay ? "text-primary font-bold" : "text-muted-foreground"
-                      )}>
+                      <span
+                        className={cn(
+                          'text-xs font-medium uppercase',
+                          isCurrentDay ? 'text-primary font-bold' : 'text-muted-foreground'
+                        )}
+                      >
                         {label}
                       </span>
-                      <span className={cn(
-                        "text-lg font-bold",
-                        isCurrentDay ? "text-primary" : "text-foreground"
-                      )}>
+                      <span
+                        className={cn(
+                          'text-lg font-bold',
+                          isCurrentDay ? 'text-primary' : 'text-foreground'
+                        )}
+                      >
                         {format(dayDate, 'd')}
                       </span>
                     </div>
@@ -307,8 +327,8 @@ export function AvailabilityEditView({
                     <td
                       key={`${key}-${time}`}
                       className={cn(
-                        "p-1 align-top h-14 border-r min-w-[110px]",
-                        isCurrentDay && "bg-primary/5"
+                        'p-1 align-top h-14 border-r min-w-[110px]',
+                        isCurrentDay && 'bg-primary/5'
                       )}
                     >
                       {getSlotContent(key, time, dayDate, index, timeIndex)}
