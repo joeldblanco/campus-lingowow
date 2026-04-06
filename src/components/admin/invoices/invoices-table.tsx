@@ -61,7 +61,9 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [originFilter, setOriginFilter] = useState('all')
-  const [dateRange, setDateRange] = useState<DateRange | undefined>(() => getCurrentMonthDateRange())
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(() =>
+    getCurrentMonthDateRange()
+  )
 
   const getInvoiceOrigin = (invoice: InvoiceWithDetails) => {
     const isPaypal = !!invoice.paypalOrderId || invoice.paymentMethod === 'paypal'
