@@ -46,13 +46,22 @@ interface InvoicesTableProps {
   invoices: InvoiceWithDetails[]
 }
 
+const getCurrentMonthDateRange = (): DateRange => {
+  const today = new Date()
+
+  return {
+    from: new Date(today.getFullYear(), today.getMonth(), 1),
+    to: new Date(today.getFullYear(), today.getMonth() + 1, 0),
+  }
+}
+
 export function InvoicesTable({ invoices }: InvoicesTableProps) {
   const [editingInvoice, setEditingInvoice] = useState<InvoiceWithDetails | null>(null)
   const [viewingInvoice, setViewingInvoice] = useState<InvoiceWithDetails | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [originFilter, setOriginFilter] = useState('all')
-  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(() => getCurrentMonthDateRange())
 
   const getInvoiceOrigin = (invoice: InvoiceWithDetails) => {
     const isPaypal = !!invoice.paypalOrderId || invoice.paymentMethod === 'paypal'
@@ -151,7 +160,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
     setSearchTerm('')
     setStatusFilter('all')
     setOriginFilter('all')
-    setDateRange(undefined)
+    setDateRange(getCurrentMonthDateRange())
   }
 
   const getPaymentOrigin = (paymentMethod: string | null | undefined) => {
