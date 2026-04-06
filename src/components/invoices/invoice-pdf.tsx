@@ -173,7 +173,9 @@ export function InvoicePDF({ invoice }: InvoicePDFProps) {
                 Fecha de pago:
               </h3>
               <p style={{ fontWeight: '500', margin: 0 }}>
-                {invoice.paidAt ? new Date(invoice.paidAt).toLocaleDateString('es-PE') : 'Pendiente'}
+                {invoice.paidAt
+                  ? new Date(invoice.paidAt).toLocaleDateString('es-PE')
+                  : 'Pendiente'}
               </p>
             </div>
             <div>
