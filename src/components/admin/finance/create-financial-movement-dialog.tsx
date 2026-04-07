@@ -6,12 +6,7 @@ import { toast } from 'sonner'
 import { createFinancialMovement } from '@/lib/actions/finance'
 import { financeManualCategories } from '@/schemas/finance'
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -112,7 +107,10 @@ export function CreateFinancialMovementDialog({
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
             <Label>Categoría</Label>
-            <Select value={form.category} onValueChange={(value) => handleChange('category', value)}>
+            <Select
+              value={form.category}
+              onValueChange={(value) => handleChange('category', value)}
+            >
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>

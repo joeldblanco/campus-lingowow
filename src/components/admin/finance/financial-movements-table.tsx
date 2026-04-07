@@ -94,7 +94,9 @@ export function FinancialMovementsTable({ rows, basis }: FinancialMovementsTable
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <Badge variant="outline">{sourceLabels[row.sourceType] || row.sourceType}</Badge>
+                      <Badge variant="outline">
+                        {sourceLabels[row.sourceType] || row.sourceType}
+                      </Badge>
                       {row.isManual && <Badge variant="secondary">Manual</Badge>}
                     </div>
                   </TableCell>
@@ -105,7 +107,9 @@ export function FinancialMovementsTable({ rows, basis }: FinancialMovementsTable
                     )}
                   </TableCell>
                   <TableCell>
-                    <div className="max-w-[320px] whitespace-normal font-medium">{row.description}</div>
+                    <div className="max-w-[320px] whitespace-normal font-medium">
+                      {row.description}
+                    </div>
                     {row.notes && (
                       <div className="max-w-[320px] whitespace-normal text-xs text-muted-foreground">
                         {row.notes}

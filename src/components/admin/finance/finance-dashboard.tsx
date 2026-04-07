@@ -183,8 +183,8 @@ export function FinanceDashboard() {
 
       <Card>
         <CardContent className="pt-6 text-sm text-muted-foreground">
-          La plataforma registra automáticamente lo que entra por facturas pagadas y lo que sale
-          por pagos a profesores. Aquí solo agregas manualmente las otras salidas del mes.
+          La plataforma registra automáticamente lo que entra por facturas pagadas y lo que sale por
+          pagos a profesores. Aquí solo agregas manualmente las otras salidas del mes.
         </CardContent>
       </Card>
 
