@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { convertAvailabilityFromUTC, convertTimeSlotFromUTC } from '@/lib/utils/date'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { EnrollmentStatus } from '@prisma/client'
 
 export async function GET(req: NextRequest) {
@@ -58,7 +59,7 @@ export async function GET(req: NextRequest) {
     const teachersWithAvailability = teacherCourses.map((tc) => {
       const teacher = tc.teacher
       
-      console.log(`[API] Procesando profesor: ${teacher.name} ${teacher.lastName || ''} (${teacher.id})`)
+      console.log(`[API] Procesando profesor: ${formatFullName(teacher.name, teacher.lastName)} (${teacher.id})`)
       console.log(`[API] Registros de disponibilidad: ${teacher.teacherAvailability.length}`)
       
       // Agrupar disponibilidad por día de la semana (convertir de UTC a hora local)
@@ -141,7 +142,7 @@ export async function GET(req: NextRequest) {
 
       return {
         id: teacher.id,
-        name: `${teacher.name} ${teacher.lastName || ''}`,
+        name: formatFullName(teacher.name, teacher.lastName),
         email: teacher.email,
         image: teacher.image,
         bio: teacher.bio,

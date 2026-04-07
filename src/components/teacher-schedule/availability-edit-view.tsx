@@ -4,6 +4,7 @@ import { useState, useCallback, useRef, useEffect } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Check, Ban, GripVertical } from 'lucide-react'
 import { format, startOfWeek, addDays, isToday } from 'date-fns'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { cn } from '@/lib/utils'
 import type { ScheduleLesson } from '@/types/schedule'
 
@@ -193,7 +194,7 @@ export function AvailabilityEditView({
     const status = availability[dayKey]?.[time] || 'blocked'
 
     if (bookedLesson) {
-      const fullName = `${bookedLesson.student.name} ${bookedLesson.student.lastName || ''}`.trim()
+      const fullName = formatUserName(bookedLesson.student)
       return (
         <div className="w-full h-full flex flex-col items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 cursor-not-allowed opacity-70">
           <span className="text-xs font-medium text-blue-700 dark:text-blue-300 text-center truncate w-full px-1">

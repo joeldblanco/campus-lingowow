@@ -1,6 +1,7 @@
 'use server'
 
 import { db } from '@/lib/db'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { revalidatePath } from 'next/cache'
 
 /**
@@ -544,7 +545,7 @@ export async function getCourseContentForTeacher(courseId: string, teacherId: st
         isPublished: l.isPublished,
         videoUrl: l.videoUrl,
         summary: l.summary,
-        studentName: l.enrollment ? `${l.enrollment.student.name} ${l.enrollment.student.lastName || ''}`.trim() : '',
+        studentName: l.enrollment ? formatFullName(l.enrollment.student.name, l.enrollment.student.lastName) : '',
         studentId: l.studentId || '',
         enrollmentId: l.enrollmentId || '',
       }))

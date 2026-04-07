@@ -20,6 +20,7 @@ import {
 } from '@/lib/actions/calendar'
 import { getActiveEnrollmentsForStudent } from '@/lib/actions/enrollments'
 import { isSlotAvailableForDuration, isSlotOverlappingWithBookings } from '@/lib/utils/booking'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import {
   AvailabilityRange,
   isTimeSlotInAnyRange,
@@ -621,7 +622,10 @@ export function CalendarApp() {
 
       if (schedule && schedule.enrollment.student) {
         return {
-          name: `${schedule.enrollment.student.name} ${schedule.enrollment.student.lastName || ''}`.trim(),
+          name: formatFullName(
+            schedule.enrollment.student.name,
+            schedule.enrollment.student.lastName
+          ),
           color: studentColors[schedule.enrollment.student.email] || '',
           bookingId: schedule.id,
         }
@@ -632,7 +636,7 @@ export function CalendarApp() {
 
       if (booking && booking.student) {
         return {
-          name: `${booking.student.name} ${booking.student.lastName || ''}`.trim(),
+          name: formatFullName(booking.student.name, booking.student.lastName),
           color: studentColors[booking.studentId] || '',
           bookingId: booking.id,
         }

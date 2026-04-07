@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { formatFirstName, formatFullName } from '@/lib/utils/name-formatter'
 import { EnrollmentStatus } from '@prisma/client'
 
 // Public endpoint for the CRM bot to fetch students with active enrollments
@@ -61,14 +62,14 @@ export async function GET() {
       if (!studentMap.has(sid)) {
         studentMap.set(sid, {
           id: sid,
-          name: [e.student.name, e.student.lastName].filter(Boolean).join(' '),
+          name: formatFullName(e.student.name, e.student.lastName),
           email: e.student.email,
           enrollments: [],
         })
       }
       studentMap.get(sid)!.enrollments.push({
         course: e.course.title,
-        teacher: e.teacher?.name || null,
+        teacher: e.teacher?.name ? formatFirstName(e.teacher.name) : null,
         status: e.status,
         classesTotal: e.classesTotal,
         classesAttended: e.classesAttended,

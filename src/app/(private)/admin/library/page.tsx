@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import {
   Table,
   TableBody,
@@ -269,7 +270,7 @@ export default function AdminLibraryPage() {
                       <div>
                         <p className="font-medium line-clamp-1">{resource.title}</p>
                         <p className="text-xs text-muted-foreground">
-                          {resource.author.name} {resource.author.lastName}
+                          {formatUserName(resource.author) || 'Sin autor'}
                         </p>
                       </div>
                     </div>

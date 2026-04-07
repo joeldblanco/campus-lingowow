@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import {
   Home,
   ChevronRight,
@@ -499,7 +500,7 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                   )}
                   <div>
                     <p className="font-semibold text-sm">
-                      {resource.author.name} {resource.author.lastName}
+                      {formatUserName(resource.author) || 'Sin autor'}
                     </p>
                     <div className="flex items-center gap-2 text-muted-foreground text-xs">
                       <span className="flex items-center gap-1">
@@ -886,7 +887,7 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                   )}
                   <div>
                     <h4 className="font-bold">
-                      {resource.author.name} {resource.author.lastName}
+                      {formatUserName(resource.author) || 'Sin autor'}
                     </h4>
                     {resource.author.bio && (
                       <p className="text-sm text-muted-foreground mt-1">{resource.author.bio}</p>

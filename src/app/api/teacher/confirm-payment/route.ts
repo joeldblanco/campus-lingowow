@@ -6,6 +6,7 @@ import { sendTeacherPaymentConfirmationAdminEmail } from '@/lib/mail'
 import { notifyTeacherPaymentConfirmed } from '@/lib/actions/notifications'
 import { createPaymentConfirmation } from '@/lib/actions/payment-confirmations'
 import { uploadFileByType } from '@/lib/actions/cloudinary'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { startOfMonth, endOfMonth } from 'date-fns'
 
 export async function POST(request: NextRequest) {
@@ -77,7 +78,7 @@ export async function POST(request: NextRequest) {
 
     const confirmedAt = new Date().toISOString()
     const parsedAmount = parseFloat(amount)
-    const teacherFullName = `${teacher.name || ''} ${teacher.lastName || ''}`.trim() || 'Sin nombre'
+    const teacherFullName = formatFullName(teacher.name, teacher.lastName) || 'Sin nombre'
 
     // Determinar el período (mes actual por defecto)
     const now = new Date()

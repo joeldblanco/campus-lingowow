@@ -15,6 +15,7 @@ import {
   Trophy,
   User,
 } from 'lucide-react'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import Link from 'next/link'
 import type { StudentLessonListItem } from '@/types/student-lesson'
 
@@ -125,7 +126,7 @@ export function PersonalizedLessonsView({
             <div>
               <p className="text-sm text-gray-500">Tu profesor(a)</p>
               <p className="font-medium">
-                {teacher.name} {teacher.lastName || ''}
+                {formatFullName(teacher.name, teacher.lastName)}
               </p>
             </div>
           </div>

@@ -5,6 +5,7 @@ import {
   convertRecurringScheduleFromUTC,
   formatInTimeZone,
 } from '@/lib/utils/date'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { sendEnrollmentConfirmationStudentEmail, sendNewEnrollmentTeacherEmail } from '@/lib/mail'
 
 const ACTIVE_ENROLLMENT_STATUS = 'ACTIVE'
@@ -65,7 +66,7 @@ function isUniqueConstraintError(error: unknown) {
 }
 
 function getFullName(user: { name: string; lastName?: string | null }) {
-  return `${user.name}${user.lastName ? ` ${user.lastName}` : ''}`
+  return formatUserName(user)
 }
 
 function joinLabelParts(values: string[]) {

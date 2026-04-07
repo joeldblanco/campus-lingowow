@@ -11,6 +11,7 @@ import Link from 'next/link'
 import { getExamResultsForTeacher } from '@/lib/actions/teacher-exams'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { cn } from '@/lib/utils'
 
 interface ExamAttempt {
@@ -180,7 +181,7 @@ export default function TeacherExamResultsPage() {
                     <div className="flex items-center gap-4">
                       <div>
                         <p className="font-medium">
-                          {attempt.user.name} {attempt.user.lastName}
+                          {formatUserName(attempt.user) || attempt.user.email || 'Usuario'}
                         </p>
                         <p className="text-sm text-muted-foreground">
                           {attempt.user.email}

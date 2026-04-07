@@ -17,6 +17,7 @@ export const EditClassSchema = z.object({
   status: z.string().optional(),
   creditId: z.string().min(1).optional().or(z.literal('')),
   completedAt: z.date().nullable().optional(),
+  isPayable: z.boolean().optional(),
 })
 
 export const RescheduleClassSchema = z.object({

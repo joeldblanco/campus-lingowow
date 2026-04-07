@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
+import { syncAutoCompletedClassBookings } from '@/lib/class-booking-auto-completion'
 import { db } from '@/lib/db'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { BookingStatus, ConfirmationStatus } from '@prisma/client'
 
 export async function GET(request: NextRequest) {
@@ -47,6 +49,8 @@ export async function GET(request: NextRequest) {
     const currentMonthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0)
     const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1)
     const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0)
+
+    await syncAutoCompletedClassBookings({ teacherId })
 
     // Construir filtros
     const whereClause: {
@@ -190,7 +194,7 @@ export async function GET(request: NextRequest) {
         bookingId: classBooking.id,
         date: classBooking.day,
         timeSlot: classBooking.timeSlot,
-        studentName: `${classBooking.student.name} ${classBooking.student.lastName || ''}`,
+        studentName: formatFullName(classBooking.student.name, classBooking.student.lastName),
         studentImage: classBooking.student.image,
         courseName: classBooking.enrollment.course.title,
         duration,
@@ -411,7 +415,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: true,
       teacherId,
-      teacherName: `${user.name} ${user.lastName || ''}`,
+      teacherName: formatFullName(user.name, user.lastName),
       teacherEmail: user.email,
       teacherImage: user.image,
       rank: user.teacherRank?.name || null,

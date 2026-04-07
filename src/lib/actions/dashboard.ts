@@ -1,5 +1,6 @@
 'use server'
 
+import { syncAutoCompletedClassBookings } from '@/lib/class-booking-auto-completion'
 import { db } from '@/lib/db'
 import { UserRole, BookingStatus } from '@prisma/client'
 import type {
@@ -16,6 +17,7 @@ import {
   getEndOfMonth,
   getDateRange,
 } from '@/lib/utils/date'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { getUserAvatarUrl } from '@/lib/utils'
 import { getPeriodByDate } from '@/lib/actions/academic-period'
 import { es } from 'date-fns/locale'
@@ -54,7 +56,6 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
     const currentMonthStart = getStartOfMonth(getCurrentDate())
     const currentMonthEnd = getEndOfMonth(currentMonthStart)
 
-    // Get total students count
     const totalStudents = await db.user.count({
       where: { roles: { has: UserRole.STUDENT } },
     })
@@ -68,6 +69,10 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
     const activeCourses = await db.course.count({
       where: { isPublished: true },
     })
+
+    await syncAutoCompletedClassBookings(
+      bookingPeriodFilter ? { day: bookingPeriodFilter } : undefined
+    )
 
     // Get total classes (completed bookings) - filtered by period
     const totalClasses = await db.classBooking.count({
@@ -90,7 +95,7 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
         total: true,
       },
     })
-    const totalRevenue = totalRevenueResult._sum.total || 0
+    const totalRevenue = totalRevenueResult._sum?.total || 0
 
     // Get recent enrollments with student and course info
     const recentEnrollments = await db.enrollment.findMany({
@@ -105,9 +110,7 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
         },
         purchases: {
           include: {
-            invoice: {
-              select: { total: true, status: true },
-            },
+            invoice: true,
           },
           take: 1,
           orderBy: { createdAt: 'desc' },
@@ -206,7 +209,7 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
         const invoiceTotal = enrollment.purchases[0]?.invoice?.total
         return {
           studentId: enrollment.student.id,
-          studentName: `${enrollment.student.name} ${enrollment.student.lastName || ''}`,
+          studentName: formatFullName(enrollment.student.name, enrollment.student.lastName),
           studentImage: enrollment.student.image,
           courseName: enrollment.course.title,
           date: formatDateNumeric(enrollment.enrollmentDate),
@@ -220,11 +223,11 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
         return {
           id: booking.id,
           title: booking.enrollment.course.title,
-          studentName: `${booking.student.name} ${booking.student.lastName || ''}`,
+          studentName: formatFullName(booking.student.name, booking.student.lastName),
           studentId: booking.student.id,
           studentImage: booking.student.image,
           teacherId: booking.teacher.id,
-          teacherName: `${booking.teacher.name} ${booking.teacher.lastName || ''}`,
+          teacherName: formatFullName(booking.teacher.name, booking.teacher.lastName),
           teacherImage: booking.teacher.image,
           startTime: `${formatDateNumeric(localData.day)} ${localData.timeSlot}`,
           platform: 'Virtual',
@@ -255,6 +258,8 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
 // Teacher Dashboard Statistics
 export async function getTeacherDashboardStats(teacherId: string): Promise<TeacherDashboardData> {
   try {
+    await syncAutoCompletedClassBookings({ teacherId })
+
     // Obtener timezone del profesor
     const teacherData = await db.user.findUnique({
       where: { id: teacherId },
@@ -414,7 +419,7 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
         id: booking.id,
         courseId: booking.enrollment.course.id,
         studentId: booking.student.id,
-        studentName: `${booking.student.name} ${booking.student.lastName || ''}`,
+        studentName: formatFullName(booking.student.name, booking.student.lastName),
         studentImage: booking.student.image,
         course: booking.enrollment.course.title,
         date: localData.day,
@@ -487,7 +492,7 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
     const needsAttention = missedClasses.map((booking) => ({
       id: booking.id,
       studentId: booking.student.id,
-      studentName: `${booking.student.name} ${booking.student.lastName || ''}`,
+      studentName: formatFullName(booking.student.name, booking.student.lastName),
       studentImage: booking.student.image || '',
       issue: booking.status === BookingStatus.NO_SHOW ? 'Faltó a clase' : 'Clase cancelada',
       courseName: booking.enrollment.course.title,
@@ -541,6 +546,8 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
 // Student Dashboard Statistics
 export async function getStudentDashboardStats(studentId: string): Promise<StudentDashboardData> {
   try {
+    await syncAutoCompletedClassBookings({ studentId })
+
     // Obtener timezone del estudiante
     const studentData = await db.user.findUnique({
       where: { id: studentId },
@@ -639,7 +646,7 @@ export async function getStudentDashboardStats(studentId: string): Promise<Stude
         const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot, studentTimezone)
         return {
           course: booking.enrollment.course.title,
-          teacher: `${booking.teacher.name} ${booking.teacher.lastName || ''}`,
+          teacher: formatFullName(booking.teacher.name, booking.teacher.lastName),
           date: localData.day,
           time: localData.timeSlot,
           link: `/classroom?classId=${booking.id}`,
@@ -662,6 +669,10 @@ export async function getStudentDashboardStats(studentId: string): Promise<Stude
 // Get user's available classes for sidebar
 export async function getUserClasses(userId: string) {
   try {
+    await syncAutoCompletedClassBookings({
+      OR: [{ studentId: userId }, { teacherId: userId }],
+    })
+
     // Obtener timezone del usuario
     const userData = await db.user.findUnique({
       where: { id: userId },
@@ -731,6 +742,14 @@ export async function calculateTeacherMonthlyRevenue(
   try {
     const endDate = new Date(startDate)
     endDate.setMonth(endDate.getMonth() + 1)
+
+    await syncAutoCompletedClassBookings({
+      teacherId,
+      day: {
+        gte: formatToISO(startDate),
+        lt: formatToISO(endDate),
+      },
+    })
 
     // Obtener clases completadas en el período
     const completedClasses = await db.classBooking.findMany({
@@ -863,6 +882,18 @@ export async function calculateTeacherTotalRevenue(
   averagePerClass: number
 }> {
   try {
+    await syncAutoCompletedClassBookings({
+      teacherId,
+      ...(startDate || endDate
+        ? {
+            day: {
+              ...(startDate ? { gte: startDate } : {}),
+              ...(endDate ? { lte: endDate } : {}),
+            },
+          }
+        : {}),
+    })
+
     // Construir filtros
     const whereClause: {
       teacherId: string

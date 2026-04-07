@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { authenticateRequest } from '@/lib/api-auth'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { EnrollmentStatus } from '@prisma/client'
 import { verifyPaypalTransaction, createInvoiceFromPaypal } from '@/lib/actions/commercial'
 import { notifySelfServiceEnrollmentCreated } from '@/lib/enrollments/self-service-enrollment'
@@ -109,7 +110,7 @@ export async function GET(request: NextRequest) {
         classesMissed: e.classesMissed,
         student: {
           id: e.student.id,
-          name: [e.student.name, e.student.lastName].filter(Boolean).join(' '),
+          name: formatFullName(e.student.name, e.student.lastName),
           email: e.student.email,
         },
         course: e.course,
@@ -122,7 +123,7 @@ export async function GET(request: NextRequest) {
         teacher: e.teacher
           ? {
               id: e.teacher.id,
-              name: [e.teacher.name, e.teacher.lastName].filter(Boolean).join(' '),
+              name: formatFullName(e.teacher.name, e.teacher.lastName),
             }
           : null,
         schedules: e.schedules.map((s) => ({

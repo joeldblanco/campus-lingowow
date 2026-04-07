@@ -1,6 +1,7 @@
 'use server'
 
 import { db } from '@/lib/db'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { BookingStatus, Prisma } from '@prisma/client'
 import { startOfMonth, endOfMonth, format } from 'date-fns'
 
@@ -66,6 +67,13 @@ export interface TeacherPaymentsReport {
     endDate: string | null
     periodId: string | null
   }
+}
+
+export interface TeacherProjectedCostSummary {
+  totalTeachers: number
+  totalClasses: number
+  totalHours: number
+  totalPayment: number
 }
 
 const BASE_RATE_PER_HOUR = 10
@@ -281,7 +289,7 @@ export async function getTeacherPaymentsReport(
 
       teacherPaymentMap.set(teacher.id, {
         teacherId: teacher.id,
-        teacherName: `${teacher.name} ${teacher.lastName || ''}`.trim(),
+        teacherName: formatFullName(teacher.name, teacher.lastName),
         teacherEmail: teacher.email || '',
         teacherImage: teacher.image,
         rankName: teacher.teacherRank?.name || null,
@@ -316,7 +324,7 @@ export async function getTeacherPaymentsReport(
       id: classBooking.id,
       day: classBooking.day,
       timeSlot: classBooking.timeSlot,
-      studentName: `${classBooking.student.name} ${classBooking.student.lastName || ''}`.trim(),
+      studentName: formatFullName(classBooking.student.name, classBooking.student.lastName),
       courseName: classBooking.enrollment.course.title,
       duration,
       payment: roundedClassEarnings,
@@ -389,6 +397,52 @@ export async function getPaymentPeriodSummary(
   })
 
   return report.summary
+}
+
+export async function getProjectedTeacherCostSummary(
+  startDate: Date,
+  endDate: Date,
+  teacherId?: string
+): Promise<TeacherProjectedCostSummary> {
+  const whereClause: Prisma.ClassBookingWhereInput = {
+    status: BookingStatus.CONFIRMED,
+    day: {
+      gte: format(startDate, 'yyyy-MM-dd'),
+      lte: format(endDate, 'yyyy-MM-dd'),
+    },
+  }
+
+  if (teacherId) {
+    whereClause.teacherId = teacherId
+  }
+
+  const [confirmedClasses, teacherCoursePayments] = await Promise.all([
+    db.classBooking.findMany({
+      where: whereClause,
+      ...paymentClassBookingArgs,
+      orderBy: {
+        day: 'asc',
+      },
+    }),
+    getTeacherCoursePaymentMap(),
+  ])
+
+  let totalHours = 0
+  let totalPayment = 0
+  const teacherIds = new Set<string>()
+
+  for (const classBooking of confirmedClasses) {
+    teacherIds.add(classBooking.teacherId)
+    totalHours += getClassDuration(classBooking) / 60
+    totalPayment += calculateClassEarnings(classBooking, teacherCoursePayments)
+  }
+
+  return {
+    totalTeachers: teacherIds.size,
+    totalClasses: confirmedClasses.length,
+    totalHours: Math.round(totalHours * 10) / 10,
+    totalPayment: Math.round(totalPayment * 100) / 100,
+  }
 }
 
 /**
@@ -511,7 +565,7 @@ export async function getActiveTeachers() {
 
   return teachers.map((t) => ({
     id: t.id,
-    name: `${t.name} ${t.lastName || ''}`.trim(),
+    name: formatFullName(t.name, t.lastName),
     email: t.email || '',
     image: t.image,
     rankName: t.teacherRank?.name || null,

@@ -3,6 +3,7 @@ import { getMobileUser, unauthorizedResponse } from '@/lib/mobile-auth'
 import { db } from '@/lib/db'
 import { AccessToken } from 'livekit-server-sdk'
 import { generateRoomName } from '@/lib/livekit'
+import { formatFullName } from '@/lib/utils/name-formatter'
 
 const LIVEKIT_API_KEY = process.env.LIVEKIT_API_KEY!
 const LIVEKIT_API_SECRET = process.env.LIVEKIT_API_SECRET!
@@ -78,8 +79,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
     // Determinar el nombre del participante
     const participantName = isTeacher
-      ? `${booking.teacher.name} ${booking.teacher.lastName || ''}`.trim()
-      : `${booking.student.name} ${booking.student.lastName || ''}`.trim()
+      ? formatFullName(booking.teacher.name, booking.teacher.lastName)
+      : formatFullName(booking.student.name, booking.student.lastName)
 
     // Generar token de LiveKit
     const at = new AccessToken(LIVEKIT_API_KEY, LIVEKIT_API_SECRET, {

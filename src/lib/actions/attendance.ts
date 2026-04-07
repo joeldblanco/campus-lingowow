@@ -1,6 +1,7 @@
 'use server'
 
 import { db as prisma } from '@/lib/db'
+import { syncAutoCompletedClassBooking } from '@/lib/class-booking-auto-completion'
 import { revalidatePath } from 'next/cache'
 import { AttendanceStatus } from '@prisma/client'
 import { getCurrentDate } from '@/lib/utils/date'
@@ -158,7 +159,8 @@ export async function markTeacherAttendance(
     })
 
     if (existingAttendance) {
-      return { success: true } // Already marked attendance
+      const markedAsPayable = await syncAutoCompletedClassBooking(classId)
+      return { success: true, markedAsPayable } // Already marked attendance
     }
 
     // Get the class booking to find the schedule and current status
@@ -192,19 +194,7 @@ export async function markTeacherAttendance(
       },
     })
 
-    // Auto-mark class as payable if not already marked
-    let markedAsPayable = false
-    if (!classBooking.isPayable && (classBooking.status === 'CONFIRMED' || classBooking.status === 'COMPLETED')) {
-      await prisma.classBooking.update({
-        where: { id: classId },
-        data: {
-          isPayable: true,
-          status: 'COMPLETED',
-          completedAt: getCurrentDate(),
-        },
-      })
-      markedAsPayable = true
-    }
+    const markedAsPayable = await syncAutoCompletedClassBooking(classId)
 
     revalidatePath(`/classroom`)
     revalidatePath('/admin/classes')

@@ -1,6 +1,7 @@
 'use server'
 
 import { db } from '@/lib/db'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { ConfirmationStatus } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 
@@ -64,7 +65,7 @@ export async function createPaymentConfirmation(data: {
       confirmation: {
         id: confirmation.id,
         teacherId: confirmation.teacherId,
-        teacherName: `${confirmation.teacher.name} ${confirmation.teacher.lastName || ''}`.trim(),
+        teacherName: formatFullName(confirmation.teacher.name, confirmation.teacher.lastName),
         teacherEmail: confirmation.teacher.email || '',
         amount: confirmation.amount,
         periodStart: confirmation.periodStart,
@@ -136,7 +137,7 @@ export async function getPaymentConfirmations(filters?: {
     return confirmations.map((c) => ({
       id: c.id,
       teacherId: c.teacherId,
-      teacherName: `${c.teacher.name} ${c.teacher.lastName || ''}`.trim(),
+      teacherName: formatFullName(c.teacher.name, c.teacher.lastName),
       teacherEmail: c.teacher.email || '',
       amount: c.amount,
       periodStart: c.periodStart,
@@ -178,7 +179,7 @@ export async function getPaymentConfirmationById(id: string): Promise<PaymentCon
     return {
       id: confirmation.id,
       teacherId: confirmation.teacherId,
-      teacherName: `${confirmation.teacher.name} ${confirmation.teacher.lastName || ''}`.trim(),
+      teacherName: formatFullName(confirmation.teacher.name, confirmation.teacher.lastName),
       teacherEmail: confirmation.teacher.email || '',
       amount: confirmation.amount,
       periodStart: confirmation.periodStart,
@@ -231,7 +232,7 @@ export async function updatePaymentConfirmationStatus(
       confirmation: {
         id: confirmation.id,
         teacherId: confirmation.teacherId,
-        teacherName: `${confirmation.teacher.name} ${confirmation.teacher.lastName || ''}`.trim(),
+        teacherName: formatFullName(confirmation.teacher.name, confirmation.teacher.lastName),
         teacherEmail: confirmation.teacher.email || '',
         amount: confirmation.amount,
         periodStart: confirmation.periodStart,
@@ -291,7 +292,7 @@ export async function checkPaymentConfirmationExists(
       confirmation: {
         id: confirmation.id,
         teacherId: confirmation.teacherId,
-        teacherName: `${confirmation.teacher.name} ${confirmation.teacher.lastName || ''}`.trim(),
+        teacherName: formatFullName(confirmation.teacher.name, confirmation.teacher.lastName),
         teacherEmail: confirmation.teacher.email || '',
         amount: confirmation.amount,
         periodStart: confirmation.periodStart,
@@ -335,7 +336,7 @@ export async function getTeacherPaymentHistory(teacherId: string): Promise<Payme
     return confirmations.map((c) => ({
       id: c.id,
       teacherId: c.teacherId,
-      teacherName: `${c.teacher.name} ${c.teacher.lastName || ''}`.trim(),
+      teacherName: formatFullName(c.teacher.name, c.teacher.lastName),
       teacherEmail: c.teacher.email || '',
       amount: c.amount,
       periodStart: c.periodStart,

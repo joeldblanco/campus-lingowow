@@ -5,6 +5,7 @@ import { ActivityFormValues } from '@/schemas/activity'
 import { db } from '@/lib/db'
 import { getCurrentDate, getTodayStart, addDaysToDate, getDayOfWeek, isSameDayDate } from '@/lib/utils/date'
 import { notifyTaskAssigned } from '@/lib/actions/notifications'
+import { formatFullName } from '@/lib/utils/name-formatter'
 
 // Crear una nueva actividad
 export async function createActivity(data: ActivityFormValues) {
@@ -175,7 +176,7 @@ export async function assignActivityToUser(userId: string, activityId: string, a
       ])
 
       if (activity && teacher) {
-        const teacherName = `${teacher.name}${teacher.lastName ? ' ' + teacher.lastName : ''}`
+        const teacherName = formatFullName(teacher.name, teacher.lastName)
         await notifyTaskAssigned({
           studentId: userId,
           taskTitle: activity.title,

@@ -1,17 +1,20 @@
 'use server'
 
 import { auth } from '@/auth'
+import { syncAutoCompletedClassBookings } from '@/lib/class-booking-auto-completion'
 import { db } from '@/lib/db'
 import { format } from 'date-fns'
 import { Prisma } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
-import { 
-  convertTimeSlotToUTC, 
-  convertTimeSlotFromUTC,
-  combineDateAndTimeUTC 
-} from '@/lib/utils/date'
-import { splitTimeSlot, timeToMinutes, AvailabilityRange } from '@/lib/utils/calendar'
 import { notifyClassRescheduled } from '@/lib/actions/notifications'
+import { isClassBookingCompleted } from '@/lib/utils/class-booking-completion'
+import { splitTimeSlot, timeToMinutes, AvailabilityRange } from '@/lib/utils/calendar'
+import {
+  convertTimeSlotToUTC,
+  convertTimeSlotFromUTC,
+  combineDateAndTimeUTC,
+} from '@/lib/utils/date'
+import { formatFullName } from '@/lib/utils/name-formatter'
 
 // Type for booking with included relations
 type BookingWithRelations = Prisma.ClassBookingGetPayload<{
@@ -33,6 +36,11 @@ type BookingWithRelations = Prisma.ClassBookingGetPayload<{
             level: true
           }
         }
+      }
+    }
+    teacherAttendances: {
+      select: {
+        id: true
       }
     }
   }
@@ -118,16 +126,23 @@ export async function getStudentScheduleData(startDate: Date, endDate: Date) {
     }
 
     const studentId = session.user.id
-    
+
     // Obtener timezone del estudiante desde la base de datos
     const studentData = await db.user.findUnique({
       where: { id: studentId },
       select: { timezone: true },
     })
     const studentTimezone = studentData?.timezone || 'America/Lima'
-    
     const startDateStr = format(startDate, 'yyyy-MM-dd')
     const endDateStr = format(endDate, 'yyyy-MM-dd')
+
+    await syncAutoCompletedClassBookings({
+      studentId,
+      day: {
+        gte: startDateStr,
+        lte: endDateStr,
+      },
+    })
 
     // Get class bookings for the student
     const bookings = await db.classBooking.findMany({
@@ -158,6 +173,9 @@ export async function getStudentScheduleData(startDate: Date, endDate: Date) {
             },
           },
         },
+        teacherAttendances: {
+          select: { id: true },
+        },
       },
       orderBy: [
         { day: 'asc' },
@@ -184,12 +202,10 @@ export async function getStudentScheduleData(startDate: Date, endDate: Date) {
       let status: StudentScheduleLesson['status'] = 'scheduled'
       if (booking.status === 'CANCELLED') {
         status = 'cancelled'
-      } else if (booking.status === 'COMPLETED' || booking.completedAt) {
+      } else if (isClassBookingCompleted(booking, now)) {
         status = 'completed'
       } else if (now >= bookingDate && now <= bookingEndDate) {
         status = 'in_progress'
-      } else if (now > bookingEndDate) {
-        status = 'completed'
       }
 
       // Assign color based on course title
@@ -517,7 +533,7 @@ export async function studentRescheduleClass(params: RescheduleClassParams): Pro
       select: { timezone: true, name: true, lastName: true }
     })
     const studentTimezone = studentData?.timezone || 'America/Lima'
-    const studentName = `${studentData?.name || ''} ${studentData?.lastName || ''}`.trim()
+    const studentName = formatFullName(studentData?.name, studentData?.lastName)
 
     // Obtener la reserva con enrollment y profesor
     const booking = await db.classBooking.findUnique({
@@ -672,7 +688,7 @@ export async function studentRescheduleClass(params: RescheduleClassParams): Pro
       studentId,
       studentName,
       teacherId: booking.teacherId,
-      teacherName: `${booking.teacher.name || ''} ${booking.teacher.lastName || ''}`.trim(),
+      teacherName: formatFullName(booking.teacher.name, booking.teacher.lastName),
       courseName: booking.enrollment.course?.title || 'Clase',
       oldDay: oldDayLocal.day,
       oldTimeSlot: oldDayLocal.timeSlot,

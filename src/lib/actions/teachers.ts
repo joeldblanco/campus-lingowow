@@ -5,6 +5,7 @@ import {
   ClassBooking,
   UserRole,
 } from '@prisma/client'
+import { formatFullName } from '@/lib/utils/name-formatter'
 
 // Helper function to convert day string to day of week number
 function getDayOfWeekNumber(day: string): number {
@@ -189,7 +190,7 @@ export async function getAvailableTeachers(options?: {
 
         return {
           id: teacher.id,
-          name: `${teacher.name} ${teacher.lastName || ''}`.trim(),
+          name: formatFullName(teacher.name, teacher.lastName),
           avatarUrl:
             teacher.image || `https://api.dicebear.com/9.x/lorelei/svg?seed=${teacher.name}`,
           specialties,
@@ -242,7 +243,7 @@ export async function getTeachersForLanding(limit: number = 4) {
 
     return teachers.map((teacher) => ({
       id: teacher.id,
-      name: `${teacher.name} ${teacher.lastName || ''}`.trim(),
+      name: formatFullName(teacher.name, teacher.lastName),
       image: teacher.image || `https://api.dicebear.com/9.x/lorelei/svg?seed=${teacher.name}`,
       bio: teacher.bio || 'Profesor certificado con amplia experiencia docente',
       rank: teacher.teacherRank?.name || 'Profesor',

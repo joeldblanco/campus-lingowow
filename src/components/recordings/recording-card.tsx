@@ -14,6 +14,7 @@ import {
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
+import { formatUserName } from '@/lib/utils/name-formatter'
 
 interface RecordingCardProps {
   recording: {
@@ -183,10 +184,10 @@ export function RecordingCard({ recording, isAdmin = false }: RecordingCardProps
               />
               <div className="flex flex-col">
                 <span className="text-sm text-muted-foreground">
-                  {student.name} {student.lastName}
+                  {formatUserName(student) || 'Sin nombre'}
                 </span>
                 <span className="text-xs text-muted-foreground/70">
-                  Profesor: {teacher.name} {teacher.lastName}
+                  Profesor: {formatUserName(teacher) || 'Sin nombre'}
                 </span>
               </div>
             </>
@@ -201,7 +202,7 @@ export function RecordingCard({ recording, isAdmin = false }: RecordingCardProps
                 fallbackClassName="text-xs bg-blue-100 text-blue-700"
               />
               <span className="text-sm text-muted-foreground">
-                {teacher.name} {teacher.lastName}
+                {formatUserName(teacher) || 'Sin nombre'}
               </span>
             </>
           )}

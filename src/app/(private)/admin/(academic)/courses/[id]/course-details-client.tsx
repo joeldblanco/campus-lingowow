@@ -39,6 +39,7 @@ import {
   updateCourse,
 } from '@/lib/actions/courses'
 import { upsertModule, deleteModule, reorderModules } from '@/lib/actions/course-builder'
+import { formatFirstName } from '@/lib/utils/name-formatter'
 import { cn } from '@/lib/utils'
 import { CourseWithDetails } from '@/types/course'
 import {
@@ -990,7 +991,7 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
                             )}
                             <div>
                               <p className="text-sm font-bold">
-                                {enrollment.student.name || 'Usuario'}
+                                {formatFirstName(enrollment.student.name) || 'Usuario'}
                               </p>
                               <p className="text-xs text-muted-foreground">
                                 {enrollment.student.email}
@@ -1109,7 +1110,7 @@ export default function CourseDetailsClient({ course }: CourseDetailsClientProps
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-bold truncate">{tc.teacher.name}</h4>
+                        <h4 className="font-bold truncate">{formatFirstName(tc.teacher.name) || 'Profesor'}</h4>
                         <p className="text-xs text-muted-foreground truncate">{tc.teacher.email}</p>
                         {tc.paymentPerClass && (
                           <p className="text-xs text-muted-foreground mt-1">

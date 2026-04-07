@@ -5,6 +5,7 @@ import { getStudentLessonForView } from '@/lib/actions/student-lessons'
 import { LessonHeader } from '@/components/lessons/lesson-header'
 import { LessonContent } from '@/components/lessons/lesson-content'
 import { LessonLoadingSkeleton } from '@/components/lessons/lesson-loading-skeleton'
+import { formatFullName } from '@/lib/utils/name-formatter'
 
 interface PersonalizedLessonPageProps {
   params: Promise<{
@@ -35,7 +36,7 @@ export default async function PersonalizedLessonPage({ params }: PersonalizedLes
         title={lesson.title}
         subtitle={lesson.summary}
         courseTitle={lesson.enrollment?.course.title || ''}
-        moduleTitle={`Contenido de ${lesson.teacher?.name || ''} ${lesson.teacher?.lastName || ''}`}
+        moduleTitle={`Contenido de ${formatFullName(lesson.teacher?.name, lesson.teacher?.lastName)}`}
         courseId={courseId}
         progress={lesson.progress?.percentage ?? 0}
       />

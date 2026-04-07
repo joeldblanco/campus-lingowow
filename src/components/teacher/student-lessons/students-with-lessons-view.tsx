@@ -13,6 +13,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { StudentLessonsList } from './student-lessons-list'
 import type { StudentWithLessons } from '@/types/student-lesson'
 
@@ -31,7 +32,7 @@ export function StudentsWithLessonsView({
   )
 
   const filteredStudents = students.filter((s) => {
-    const fullName = `${s.student.name} ${s.student.lastName || ''}`.toLowerCase()
+    const fullName = formatUserName(s.student).toLowerCase()
     const email = s.student.email.toLowerCase()
     const query = searchQuery.toLowerCase()
     return fullName.includes(query) || email.includes(query)
@@ -149,7 +150,7 @@ export function StudentsWithLessonsView({
                       </Avatar>
                       <div className="flex-1 min-w-0">
                         <p className="font-medium truncate">
-                          {studentData.student.name} {studentData.student.lastName || ''}
+                          {formatUserName(studentData.student) || 'Sin nombre'}
                         </p>
                         <p className="text-sm text-muted-foreground truncate">
                           {studentData.enrollment.courseName}
@@ -176,7 +177,7 @@ export function StudentsWithLessonsView({
           {selectedStudent ? (
             <StudentLessonsList
               studentId={selectedStudent.student.id}
-              studentName={`${selectedStudent.student.name} ${selectedStudent.student.lastName || ''}`}
+              studentName={formatUserName(selectedStudent.student)}
               enrollmentId={selectedStudent.enrollment.id}
               courseName={selectedStudent.enrollment.courseName}
               lessons={selectedStudent.lessons}

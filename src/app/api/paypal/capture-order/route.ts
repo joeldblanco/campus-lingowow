@@ -7,6 +7,7 @@ import { sendPaymentConfirmationEmail, sendNewPurchaseAdminEmail } from '@/lib/m
 import { rateLimit, getRateLimitHeaders } from '@/lib/rate-limit'
 import { notifyNewPurchase } from '@/lib/actions/notifications'
 import { auditLog } from '@/lib/audit-log'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import {
   notifySelfServiceEnrollmentCreated,
   upsertSelfServiceEnrollment,
@@ -418,7 +419,7 @@ export async function POST(req: NextRequest) {
         })
 
         if (user?.email) {
-          const customerName = `${user.name || ''} ${user.lastName || ''}`.trim() || 'Cliente'
+          const customerName = formatFullName(user.name, user.lastName) || 'Cliente'
           const productNames = invoiceData.items.map((item) => item.name).join(', ')
 
           // Email to customer

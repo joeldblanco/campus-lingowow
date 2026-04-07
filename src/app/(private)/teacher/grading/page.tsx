@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { FileText, Clock, Users, CheckCircle, AlertCircle } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { formatUserName } from '@/lib/utils/name-formatter'
 
 export default async function GradingListPage() {
   const session = await auth()
@@ -130,7 +131,7 @@ export default async function GradingListPage() {
                         </div>
                         <div>
                           <p className="font-medium text-foreground">
-                            {attempt.user.name} {attempt.user.lastName}
+                            {formatUserName(attempt.user) || attempt.user.email || 'Usuario'}
                           </p>
                           <p className="text-xs text-muted-foreground flex items-center gap-1">
                             <Clock className="h-3 w-3" />

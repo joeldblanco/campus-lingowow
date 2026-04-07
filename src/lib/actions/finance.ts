@@ -1,7 +1,10 @@
 'use server'
 
 import { auth } from '@/auth'
-import { getTeacherPaymentsReport } from '@/lib/actions/teacher-payments'
+import {
+  getProjectedTeacherCostSummary,
+  getTeacherPaymentsReport,
+} from '@/lib/actions/teacher-payments'
 import { db } from '@/lib/db'
 import handleError from '@/lib/handleError'
 import {
@@ -16,8 +19,18 @@ import {
   FinancialMovementStatus,
   InvoiceStatus,
   Prisma,
+  SubscriptionStatus,
 } from '@prisma/client'
-import { endOfDay, endOfMonth, startOfDay, startOfMonth } from 'date-fns'
+import {
+  addDays,
+  differenceInCalendarDays,
+  endOfDay,
+  endOfMonth,
+  isSameMonth,
+  isSameYear,
+  startOfDay,
+  startOfMonth,
+} from 'date-fns'
 import { revalidatePath } from 'next/cache'
 
 export interface FinancialReportFilters {
@@ -68,9 +81,32 @@ export interface FinancialReportSummary {
   movementCount: number
 }
 
+export interface FinancialProjection {
+  monthStart: string
+  monthEnd: string
+  cutoffDate: string
+  daysRemaining: number
+  actualAccruedIncome: number
+  actualAccruedExpenses: number
+  actualAccruedNet: number
+  projectedAdditionalIncome: number
+  projectedAdditionalExpenses: number
+  projectedClosingIncome: number
+  projectedClosingExpenses: number
+  projectedClosingNet: number
+  projectedRecurringIncome: number
+  projectedManualIncome: number
+  projectedManualExpenses: number
+  projectedScheduledTeacherExpenses: number
+  remainingSubscriptionsDue: number
+  remainingConfirmedClasses: number
+  assumptions: string[]
+}
+
 export interface FinancialReportResult {
   rows: FinancialReportRow[]
   summary: FinancialReportSummary
+  projection: FinancialProjection | null
   filters: {
     basis: 'cash' | 'accrual'
     startDate: string
@@ -108,6 +144,10 @@ async function ensureAdminUser() {
 function getFullName(name?: string | null, lastName?: string | null, fallback?: string | null) {
   const fullName = `${name || ''} ${lastName || ''}`.trim()
   return fullName || fallback || null
+}
+
+function sortFinancialRows(rows: FinancialReportRow[]) {
+  return rows.sort((a, b) => new Date(b.effectiveDate).getTime() - new Date(a.effectiveDate).getTime())
 }
 
 async function getInvoiceRows(start: Date, end: Date, basis: 'cash' | 'accrual') {
@@ -237,6 +277,38 @@ async function getManualMovementRows(
     notes: movement.notes,
     isManual: movement.sourceType === FinancialMovementSourceType.MANUAL,
   }))
+}
+
+async function getProjectedSubscriptionRevenue(start: Date, end: Date) {
+  const subscriptions = await db.subscription.findMany({
+    where: {
+      status: {
+        in: [SubscriptionStatus.ACTIVE, SubscriptionStatus.PAST_DUE],
+      },
+      nextPaymentDate: {
+        gte: start,
+        lte: end,
+      },
+      niubizCardToken: {
+        not: null,
+      },
+    },
+    select: {
+      id: true,
+      plan: {
+        select: {
+          price: true,
+        },
+      },
+    },
+  })
+
+  return {
+    count: subscriptions.length,
+    totalRevenue: roundCurrency(
+      subscriptions.reduce((sum, subscription) => sum + subscription.plan.price, 0)
+    ),
+  }
 }
 
 async function getTeacherPaymentConfirmationRows(start: Date, end: Date) {
@@ -473,6 +545,122 @@ function buildSummary(rows: FinancialReportRow[], basis: 'cash' | 'accrual'): Fi
   }
 }
 
+async function collectFinancialRows(
+  start: Date,
+  end: Date,
+  basis: 'cash' | 'accrual',
+  filters: FinanceReportFilterInput
+) {
+  const [invoiceRows, manualRows, teacherRows, incentiveRows] =
+    basis === 'cash'
+      ? await Promise.all([
+          getInvoiceRows(start, end, basis),
+          getManualMovementRows(start, end, basis, filters),
+          getTeacherPaymentConfirmationRows(start, end),
+          getTeacherIncentiveRows(start, end, basis),
+        ])
+      : await Promise.all([
+          getInvoiceRows(start, end, basis),
+          getManualMovementRows(start, end, basis, filters),
+          getTeacherPayableRows(start, end),
+          getTeacherIncentiveRows(start, end, basis),
+        ])
+
+  return applyClientFilters(sortFinancialRows([...invoiceRows, ...manualRows, ...teacherRows, ...incentiveRows]), filters)
+}
+
+async function buildMonthProjection(cutoffDate: Date): Promise<FinancialProjection | null> {
+  const now = new Date()
+
+  if (!isSameMonth(cutoffDate, now) || !isSameYear(cutoffDate, now)) {
+    return null
+  }
+
+  const monthStart = startOfMonth(cutoffDate)
+  const monthEnd = endOfMonth(cutoffDate)
+  const remainingStart = startOfDay(addDays(cutoffDate, 1))
+
+  if (remainingStart > monthEnd) {
+    return null
+  }
+
+  const baseFilters = financeReportFilterSchema.parse({
+    basis: 'accrual',
+    startDate: monthStart,
+    endDate: cutoffDate,
+    direction: 'ALL',
+    sourceType: 'ALL',
+    includeDrafts: false,
+  })
+
+  const monthToDateRows = await collectFinancialRows(monthStart, endOfDay(cutoffDate), 'accrual', baseFilters)
+  const monthToDateSummary = buildSummary(monthToDateRows, 'accrual')
+
+  const futureFilters = financeReportFilterSchema.parse({
+    basis: 'accrual',
+    startDate: remainingStart,
+    endDate: monthEnd,
+    direction: 'ALL',
+    sourceType: 'ALL',
+    includeDrafts: false,
+  })
+
+  const futureManualRows = await getManualMovementRows(remainingStart, monthEnd, 'accrual', futureFilters)
+  const manualIncome = roundCurrency(
+    futureManualRows
+      .filter((row) => row.direction === FinancialMovementDirection.INCOME)
+      .reduce((sum, row) => sum + row.netAmount, 0)
+  )
+  const manualExpenses = roundCurrency(
+    futureManualRows
+      .filter((row) => row.direction === FinancialMovementDirection.EXPENSE)
+      .reduce((sum, row) => sum + row.netAmount, 0)
+  )
+
+  const [projectedSubscriptions, projectedTeacherCosts] = await Promise.all([
+    getProjectedSubscriptionRevenue(remainingStart, monthEnd),
+    getProjectedTeacherCostSummary(remainingStart, monthEnd),
+  ])
+
+  const projectedAdditionalIncome = roundCurrency(
+    projectedSubscriptions.totalRevenue + manualIncome
+  )
+  const projectedAdditionalExpenses = roundCurrency(
+    projectedTeacherCosts.totalPayment + manualExpenses
+  )
+
+  return {
+    monthStart: monthStart.toISOString(),
+    monthEnd: monthEnd.toISOString(),
+    cutoffDate: cutoffDate.toISOString(),
+    daysRemaining: Math.max(differenceInCalendarDays(monthEnd, cutoffDate), 0),
+    actualAccruedIncome: monthToDateSummary.totalIncome,
+    actualAccruedExpenses: monthToDateSummary.totalExpenses,
+    actualAccruedNet: monthToDateSummary.netIncome,
+    projectedAdditionalIncome,
+    projectedAdditionalExpenses,
+    projectedClosingIncome: roundCurrency(monthToDateSummary.totalIncome + projectedAdditionalIncome),
+    projectedClosingExpenses: roundCurrency(
+      monthToDateSummary.totalExpenses + projectedAdditionalExpenses
+    ),
+    projectedClosingNet: roundCurrency(
+      monthToDateSummary.netIncome + projectedAdditionalIncome - projectedAdditionalExpenses
+    ),
+    projectedRecurringIncome: projectedSubscriptions.totalRevenue,
+    projectedManualIncome: manualIncome,
+    projectedManualExpenses: manualExpenses,
+    projectedScheduledTeacherExpenses: projectedTeacherCosts.totalPayment,
+    remainingSubscriptionsDue: projectedSubscriptions.count,
+    remainingConfirmedClasses: projectedTeacherCosts.totalClasses,
+    assumptions: [
+      'Incluye cobros recurrentes con nextPaymentDate dentro del resto del mes.',
+      'Incluye costo docente de clases confirmadas pendientes dentro del mes.',
+      'Incluye movimientos manuales futuros ya registrados en el ledger.',
+      'No incluye ventas nuevas no calendarizadas ni incentivos futuros no generados.',
+    ],
+  }
+}
+
 export async function getFinancialReport(
   rawFilters: FinancialReportFilters = {}
 ): Promise<FinancialReportResult> {
@@ -491,32 +679,15 @@ export async function getFinancialReport(
 
   const { start, end } = getDateRange(parsedFilters)
   const basis = parsedFilters.basis
-
-  const [invoiceRows, manualRows, teacherRows, incentiveRows] =
-    basis === 'cash'
-      ? await Promise.all([
-          getInvoiceRows(start, end, basis),
-          getManualMovementRows(start, end, basis, parsedFilters),
-          getTeacherPaymentConfirmationRows(start, end),
-          getTeacherIncentiveRows(start, end, basis),
-        ])
-      : await Promise.all([
-          getInvoiceRows(start, end, basis),
-          getManualMovementRows(start, end, basis, parsedFilters),
-          getTeacherPayableRows(start, end),
-          getTeacherIncentiveRows(start, end, basis),
-        ])
-
-  const rows = applyClientFilters(
-    [...invoiceRows, ...manualRows, ...teacherRows, ...incentiveRows].sort(
-      (a, b) => new Date(b.effectiveDate).getTime() - new Date(a.effectiveDate).getTime()
-    ),
-    parsedFilters
-  )
+  const [rows, projection] = await Promise.all([
+    collectFinancialRows(start, end, basis, parsedFilters),
+    buildMonthProjection(end),
+  ])
 
   return {
     rows,
     summary: buildSummary(rows, basis),
+    projection,
     filters: {
       basis,
       startDate: start.toISOString(),

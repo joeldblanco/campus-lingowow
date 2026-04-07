@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { ClassBookingWithDetails } from '@/lib/actions/classes'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import {
   Dialog,
   DialogContent,
@@ -120,7 +121,7 @@ export function ViewClassDialog({ classItem, children }: ViewClassDialogProps) {
                 <CardContent>
                   <div>
                     <p className="font-medium">
-                      {classItem.student.name} {classItem.student.lastName}
+                      {formatFullName(classItem.student.name, classItem.student.lastName)}
                     </p>
                     <p className="text-sm text-muted-foreground">
                       {classItem.student.email}
@@ -139,7 +140,7 @@ export function ViewClassDialog({ classItem, children }: ViewClassDialogProps) {
                 <CardContent>
                   <div>
                     <p className="font-medium">
-                      {classItem.teacher.name} {classItem.teacher.lastName}
+                      {formatFullName(classItem.teacher.name, classItem.teacher.lastName)}
                     </p>
                     <p className="text-sm text-muted-foreground">
                       {classItem.teacher.email}

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { sendClassReminderEmail } from '@/lib/mail'
 import { notifyClassReminder } from '@/lib/actions/notifications'
+import { formatFullName } from '@/lib/utils/name-formatter'
 
 export async function GET(req: NextRequest) {
   try {
@@ -80,13 +81,9 @@ export async function GET(req: NextRequest) {
         const teacherTimeZone = classBooking.teacher.timezone || 'America/Lima'
 
         await sendClassReminderEmail(classBooking.student.email, {
-          studentName:
-            `${classBooking.student.name || ''} ${classBooking.student.lastName || ''}`.trim() ||
-            'Estudiante',
+          studentName: formatFullName(classBooking.student.name, classBooking.student.lastName) || 'Estudiante',
           courseName: classBooking.enrollment.course.title,
-          teacherName:
-            `${classBooking.teacher.name || ''} ${classBooking.teacher.lastName || ''}`.trim() ||
-            'Profesor',
+          teacherName: formatFullName(classBooking.teacher.name, classBooking.teacher.lastName) || 'Profesor',
           classDate: formatInTimeZone(utcDate, "EEEE d 'de' MMMM", studentTimeZone),
           classTime: formatInTimeZone(utcDate, 'HH:mm', studentTimeZone),
           classLink,

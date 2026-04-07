@@ -2,6 +2,7 @@ import { auth } from '@/auth'
 import { redirect, notFound } from 'next/navigation'
 import { db } from '@/lib/db'
 import { CreateLessonWrapper } from '@/components/teacher/student-lessons/create-lesson-wrapper'
+import { formatFullName } from '@/lib/utils/name-formatter'
 
 interface NewLessonPageProps {
   params: Promise<{
@@ -63,7 +64,7 @@ export default async function NewStudentLessonPage({
   return (
     <CreateLessonWrapper
       studentId={studentId}
-      studentName={`${enrollment.student.name} ${enrollment.student.lastName || ''}`}
+      studentName={formatFullName(enrollment.student.name, enrollment.student.lastName)}
       teacherId={session.user.id}
       enrollmentId={enrollmentId}
       courseName={enrollment.course.title}

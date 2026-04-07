@@ -6,6 +6,7 @@ import { db } from '@/lib/db'
 import { processCreditPackagePurchase } from '@/lib/actions/credits'
 import { sendCreditPurchaseConfirmationEmail } from '@/lib/mail'
 import { rateLimit, getRateLimitHeaders } from '@/lib/rate-limit'
+import { formatFullName } from '@/lib/utils/name-formatter'
 
 export async function POST(req: NextRequest) {
   try {
@@ -106,7 +107,7 @@ export async function POST(req: NextRequest) {
         
         if (user?.email) {
           await sendCreditPurchaseConfirmationEmail(user.email, {
-            customerName: `${user.name || ''} ${user.lastName || ''}`.trim() || 'Cliente',
+            customerName: formatFullName(user.name, user.lastName) || 'Cliente',
             invoiceNumber: invoice.invoiceNumber,
             creditsAmount: pkg.credits + pkg.bonusCredits,
             price: pkg.price,

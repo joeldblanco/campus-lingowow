@@ -40,6 +40,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { useTimezone } from '@/hooks/use-timezone'
+import { formatUserName } from '@/lib/utils/name-formatter'
 
 interface EditClassDialogProps {
   classItem: ClassBookingWithDetails
@@ -160,7 +161,7 @@ export function EditClassDialog({ classItem, children, onClassUpdated }: EditCla
                       <SelectContent>
                         {students.map((student) => (
                           <SelectItem key={student.id} value={student.id}>
-                            {student.name} {student.lastName} - {student.email}
+                            {formatUserName(student)} - {student.email}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -185,7 +186,7 @@ export function EditClassDialog({ classItem, children, onClassUpdated }: EditCla
                       <SelectContent>
                         {teachers.map((teacher) => (
                           <SelectItem key={teacher.id} value={teacher.id}>
-                            {teacher.name} {teacher.lastName}
+                            {formatUserName(teacher)}
                           </SelectItem>
                         ))}
                       </SelectContent>

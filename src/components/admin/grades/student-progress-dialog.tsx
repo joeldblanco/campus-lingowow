@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { getStudentProgressReport } from '@/lib/actions/grades'
+import { formatUserName } from '@/lib/utils/name-formatter'
 
 interface StudentProgressData {
   student: {
@@ -153,7 +154,7 @@ export function StudentProgressDialog({ studentId, children }: StudentProgressDi
               </div>
               <div>
                 <h3 className="font-semibold text-lg">
-                  {progressData.student.name} {progressData.student.lastName}
+                  {formatUserName(progressData.student) || 'Sin nombre'}
                 </h3>
                 <p className="text-muted-foreground">{progressData.student.email}</p>
               </div>

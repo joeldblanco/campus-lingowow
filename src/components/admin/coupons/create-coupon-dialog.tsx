@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import {
   Dialog,
   DialogContent,
@@ -439,7 +440,7 @@ export function CreateCouponDialog({ children }: CreateCouponDialogProps) {
                           >
                             {selectedUser ? (
                               <span className="flex items-center gap-2">
-                                <span>{selectedUser.name} {selectedUser.lastName || ''}</span>
+                                <span>{formatUserName(selectedUser)}</span>
                                 <Badge variant="secondary" className="text-xs">{selectedUser.email}</Badge>
                               </span>
                             ) : (
@@ -482,7 +483,7 @@ export function CreateCouponDialog({ children }: CreateCouponDialogProps) {
                                     )}
                                   />
                                   <div className="flex flex-col">
-                                    <span>{user.name} {user.lastName || ''}</span>
+                                    <span>{formatUserName(user)}</span>
                                     <span className="text-xs text-muted-foreground">{user.email}</span>
                                   </div>
                                 </CommandItem>

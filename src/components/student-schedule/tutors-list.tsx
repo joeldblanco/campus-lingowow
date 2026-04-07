@@ -3,6 +3,7 @@
 import { UserAvatar } from '@/components/ui/user-avatar'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { MessageSquare } from 'lucide-react'
 import type { StudentTutor } from '@/lib/actions/student-schedule'
 
@@ -52,7 +53,7 @@ export function TutorsList({ tutors, onContactTutor }: TutorsListProps) {
               />
               <div>
                 <p className="text-sm font-medium">
-                  {tutor.name} {tutor.lastName}
+                  {formatUserName(tutor) || 'Sin nombre'}
                 </p>
                 <p className="text-xs text-muted-foreground">
                   {tutor.language} {tutor.specialty && `• ${tutor.specialty}`}

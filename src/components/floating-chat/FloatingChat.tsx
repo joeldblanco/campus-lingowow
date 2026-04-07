@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { UserAvatar } from '@/components/ui/user-avatar'
 import { getFloatingConversations, searchUsers, sendFloatingMessage, createFloatingConversation, getConversationMessages } from '@/lib/actions/floating-chat'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { TeamBadge } from '@prisma/client'
 import { io, Socket } from 'socket.io-client'
 
@@ -385,8 +386,10 @@ export const FloatingChat: React.FC<FloatingChatProps> = ({ userId }) => {
                       />
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">
-                          {conversation.title || 
-                           `${conversation.participants[0]?.user.name} ${conversation.participants[0]?.user.lastName || ''}`}
+                          {conversation.title ||
+                            (conversation.participants[0]?.user
+                              ? formatUserName(conversation.participants[0].user)
+                              : 'Sin nombre')}
                         </p>
                         <p className="text-xs text-gray-500 truncate">
                           {conversation.lastMessage || 'Sin mensajes'}
@@ -438,7 +441,7 @@ export const FloatingChat: React.FC<FloatingChatProps> = ({ userId }) => {
                     />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium">
-                        {user.name} {user.lastName}
+                        {formatUserName(user) || 'Sin nombre'}
                       </p>
                     </div>
                     {user.teamBadge && (

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { UserRole } from '@prisma/client'
 
 export async function GET() {
@@ -33,12 +34,17 @@ export async function GET() {
 
     const userId = session.user.id
 
-    let students
+    let students: Array<{
+      id: string
+      name: string
+      email: string | null
+      image: string | null
+    }>
 
     if (isAdmin) {
       // Admin puede ver todos los estudiantes del sistema
       console.log('=== ADMIN USER - Fetching ALL students ===')
-      students = await db.user.findMany({
+      const rawStudents = await db.user.findMany({
         where: {
           roles: {
             has: 'STUDENT'
@@ -55,6 +61,12 @@ export async function GET() {
           name: 'asc'
         }
       })
+      students = rawStudents.map((student) => ({
+        id: student.id,
+        name: formatFullName(student.name, student.lastName),
+        email: student.email,
+        image: student.image,
+      }))
       console.log('All students found:', students.length)
     } else {
       // Teacher ve solo estudiantes de sus inscripciones activas donde es el teacher asignado
@@ -116,7 +128,7 @@ export async function GET() {
         if (!uniqueStudentsMap.has(student.id)) {
           uniqueStudentsMap.set(student.id, {
             id: student.id,
-            name: `${student.name || ''} ${student.lastName || ''}`.trim(),
+            name: formatFullName(student.name, student.lastName),
             email: student.email,
             image: student.image,
           })
@@ -132,7 +144,7 @@ export async function GET() {
 
     const formattedStudents = students.map(student => ({
       id: student.id,
-      name: student.lastName ? `${student.name || ''} ${student.lastName}`.trim() : (student.name || ''),
+      name: student.name || 'Sin nombre',
       email: student.email,
       image: student.image,
     }))

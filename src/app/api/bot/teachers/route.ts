@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { authenticateRequest } from '@/lib/api-auth'
+import { formatFullName } from '@/lib/utils/name-formatter'
 
 /**
  * GET /api/bot/teachers
@@ -61,7 +62,7 @@ export async function GET(request: NextRequest) {
       success: true,
       data: teachers.map((t) => ({
         id: t.id,
-        name: [t.name, t.lastName].filter(Boolean).join(' '),
+        name: formatFullName(t.name, t.lastName),
         email: t.email,
         timezone: t.timezone,
         courses: t.teachableCourses.map((tc) => ({

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { InvoicePDF } from '@/components/invoices/invoice-pdf'
 import { formatDateNumeric } from '@/lib/utils/date'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { InvoiceWithDetails } from '@/types/invoice'
 
 interface ViewInvoiceDialogProps {
@@ -32,7 +33,7 @@ export function ViewInvoiceDialog({ invoice, open, onOpenChange }: ViewInvoiceDi
           <div>
             <h4 className="font-semibold text-sm mb-2 text-muted-foreground">Cliente</h4>
             <p className="font-medium">
-              {invoice.user.name} {invoice.user.lastName}
+              {formatUserName(invoice.user) || 'Sin nombre'}
             </p>
             <p className="text-sm">{invoice.user?.email}</p>
           </div>

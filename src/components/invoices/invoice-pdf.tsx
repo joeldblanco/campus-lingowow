@@ -8,6 +8,7 @@ import { Download, Loader2 } from 'lucide-react'
 import { useRef, useState } from 'react'
 
 import { InvoiceWithDetails } from '@/types/invoice'
+import { formatUserName } from '@/lib/utils/name-formatter'
 
 interface InvoicePDFProps {
   invoice: InvoiceWithDetails
@@ -36,7 +37,7 @@ export function InvoicePDF({ invoice }: InvoicePDFProps) {
           clonedDoc.querySelectorAll('link[rel="stylesheet"], style').forEach((el) => el.remove())
         },
       })
-
+              {formatUserName(invoice.user) || 'Sin nombre'}
       const imgData = canvas.toDataURL('image/jpeg', 0.95) // JPEG is faster and smaller than PNG
       const pdf = new jsPDF({
         orientation: 'portrait',

@@ -3,6 +3,7 @@
 import { UserAvatar } from '@/components/ui/user-avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { cn } from '@/lib/utils'
 import type { AvailableSlot, ScheduleLesson } from '@/types/schedule'
 import { getLessonColorClasses } from '@/types/schedule'
@@ -82,6 +83,7 @@ export function WeekView({
     const isCompleted = lesson.status === 'completed'
     const isCancelled = lesson.status === 'cancelled'
     const canJoin = isLive || isWithin10MinutesOfStart(lesson)
+    const studentName = formatFullName(lesson.student.name, lesson.student.lastName) || 'Sin nombre'
 
     if (isCancelled) {
       return (
@@ -107,7 +109,7 @@ export function WeekView({
               fallbackClassName="text-xs"
             />
             <span className="text-sm font-medium text-muted-foreground line-through truncate">
-              {lesson.student.name}
+              {studentName}
             </span>
           </div>
         </div>
@@ -143,7 +145,7 @@ export function WeekView({
               className="h-6 w-6 grayscale"
               fallbackClassName="text-xs"
             />
-            <span className="text-sm font-medium text-muted-foreground">{lesson.student.name}</span>
+            <span className="text-sm font-medium text-muted-foreground">{studentName}</span>
           </div>
           <div className="mt-auto text-xs text-muted-foreground">Completada</div>
         </div>
@@ -180,7 +182,7 @@ export function WeekView({
             fallbackClassName={cn('text-[10px]', colors.bg, colors.text)}
           />
           <span className="text-xs font-bold text-foreground truncate">
-            {lesson.student.name} {lesson.student.lastName}
+            {studentName}
           </span>
         </div>
         <div className="mt-auto flex gap-1 flex-wrap">

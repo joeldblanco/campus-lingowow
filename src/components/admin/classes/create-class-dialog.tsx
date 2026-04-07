@@ -50,6 +50,7 @@ import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { useTimezone } from '@/hooks/use-timezone'
 import { Check, ChevronsUpDown } from 'lucide-react'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { cn } from '@/lib/utils'
 
 interface EnrollmentWithTeachers {
@@ -156,10 +157,10 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
 
     const query = enrollmentSearch.toLowerCase()
     return enrollments.filter((enrollment) => {
-      const studentName = `${enrollment.student.name} ${enrollment.student.lastName || ''}`.toLowerCase()
+      const studentName = formatUserName(enrollment.student).toLowerCase()
       const courseTitle = enrollment.course.title.toLowerCase()
       const teacherNames = enrollment.teachers
-        .map((t) => `${t.name} ${t.lastName || ''}`.toLowerCase())
+        .map((t) => formatUserName(t).toLowerCase())
         .join(' ')
 
       return (
@@ -229,7 +230,7 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                           >
                             {selectedEnrollment ? (
                               <span className="truncate">
-                                {selectedEnrollment.student.name} {selectedEnrollment.student.lastName} - {selectedEnrollment.course.title}
+                                {formatUserName(selectedEnrollment.student)} - {selectedEnrollment.course.title}
                               </span>
                             ) : (
                               'Buscar inscripción...'
@@ -264,14 +265,14 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                                     />
                                     <div className="flex flex-col">
                                       <span className="font-medium">
-                                        {enrollment.student.name} {enrollment.student.lastName}
+                                        {formatUserName(enrollment.student)}
                                       </span>
                                       <span className="text-xs text-muted-foreground">
                                         {enrollment.course.title} ({enrollment.course.language}) - {enrollment.academicPeriod.name}
                                       </span>
                                       {enrollment.teachers.length > 0 && (
                                         <span className="text-xs text-muted-foreground">
-                                          Profesores: {enrollment.teachers.map((t) => `${t.name} ${t.lastName || ''}`).join(', ')}
+                                          Profesores: {enrollment.teachers.map((t) => formatUserName(t)).join(', ')}
                                         </span>
                                       )}
                                     </div>
@@ -291,7 +292,7 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
               {selectedEnrollment && (
                 <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 space-y-1">
                   <p className="text-sm font-medium text-blue-900">
-                    {selectedEnrollment.student.name} {selectedEnrollment.student.lastName}
+                    {formatUserName(selectedEnrollment.student)}
                   </p>
                   <p className="text-xs text-blue-700">
                     {selectedEnrollment.course.title} ({selectedEnrollment.course.language} - {selectedEnrollment.course.level})
@@ -344,7 +345,7 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                         ) : (
                           selectedEnrollment.teachers.map((teacher) => (
                             <SelectItem key={teacher.id} value={teacher.id}>
-                              {teacher.name} {teacher.lastName}
+                              {formatUserName(teacher)}
                             </SelectItem>
                           ))
                         )}

@@ -30,6 +30,7 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
+import { formatFirstName } from '@/lib/utils/name-formatter'
 import { cn, processHtmlLinks } from '@/lib/utils'
 import { toast } from 'sonner'
 import { exportAttemptToHTML } from '@/lib/html-export-attempt'
@@ -369,7 +370,7 @@ export function ExamGradingView({
             >
               {students.map(student => (
                 <option key={student.id} value={student.id}>
-                  {student.name}
+                  {formatFirstName(student.name)}
                 </option>
               ))}
             </select>

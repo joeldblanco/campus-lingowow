@@ -15,6 +15,7 @@ import bcrypt from 'bcryptjs'
 import { AuthError } from 'next-auth'
 import * as z from 'zod'
 import { getCurrentDate, isBeforeDate } from '@/lib/utils/date'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { checkForSpam } from '@/lib/utils/spam-protection'
 import { verifyRecaptcha } from '@/lib/utils/recaptcha'
 import { auditLog, createAuditLog } from '@/lib/audit-log'
@@ -493,7 +494,7 @@ export const impersonateUser = async (userId: string) => {
     })
 
     return {
-      success: `Suplantando a ${userToImpersonate.name} ${userToImpersonate.lastName || ''}`.trim(),
+      success: `Suplantando a ${formatFullName(userToImpersonate.name, userToImpersonate.lastName)}`,
       userId: userToImpersonate.id,
       redirect: redirectUrl,
     }

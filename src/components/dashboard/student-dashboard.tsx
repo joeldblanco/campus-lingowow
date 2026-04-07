@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
+import { formatFirstName } from '@/lib/utils/name-formatter'
 import { format, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
 import {
@@ -86,7 +87,7 @@ export default function Dashboard() {
       <div className="flex flex-wrap justify-between items-end gap-3">
         <div className="flex flex-col gap-1">
           <h1 className="text-3xl md:text-4xl font-black leading-tight tracking-tight text-slate-900 dark:text-white">
-            ¡Hola, {user?.name ?? 'Estudiante'}! 👋
+            ¡Hola, {formatFirstName(user?.name) || 'Estudiante'}! 👋
           </h1>
           <p className="text-slate-500 dark:text-slate-400 text-base">
             ¿Listo para continuar tu aprendizaje hoy?

@@ -12,6 +12,7 @@ import {
   searchPayPalInvoice,
   normalizePayPalInvoiceId,
 } from '@/lib/paypal'
+import { formatFullName } from '@/lib/utils/name-formatter'
 
 // =============================================
 // CATEGORIES
@@ -1643,7 +1644,7 @@ export async function verifyLingowowInvoice(invoiceNumber: string) {
         invoiceNumber: invoice.invoiceNumber,
         email: invoice.user.email,
         userId: invoice.user.id,
-        userName: `${invoice.user.name} ${invoice.user.lastName || ''}`.trim(),
+        userName: formatFullName(invoice.user.name, invoice.user.lastName),
         amount: invoice.total,
         currency: invoice.currency,
         status: invoice.status,

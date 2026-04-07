@@ -2,6 +2,7 @@
 
 import { UserAvatar } from '@/components/ui/user-avatar'
 import { Input } from '@/components/ui/input'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { cn } from '@/lib/utils'
 import { formatDistanceToNow } from 'date-fns'
 import { es } from 'date-fns/locale'
@@ -74,7 +75,7 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
   const filteredConversations = conversations.filter((conv) => {
     // Filter by search
     const otherParticipant = conv.participants.find((p) => p.userId !== user.id)?.user
-    const name = `${otherParticipant?.name || ''} ${otherParticipant?.lastName || ''}`.toLowerCase()
+    const name = formatUserName(otherParticipant || {}).toLowerCase()
     const matchesSearch = name.includes(search.toLowerCase())
 
     // Filter by tab
@@ -171,7 +172,7 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-start mb-1">
                   <span className="font-semibold text-sm truncate">
-                    {otherParticipant?.name} {otherParticipant?.lastName}
+                    {formatUserName(otherParticipant || {}) || 'Sin nombre'}
                     {otherParticipant?.roles?.includes('TEACHER') && ' 🎓'}
                   </span>
                   {lastMsg && (

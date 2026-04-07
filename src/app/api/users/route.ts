@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { getAllUsers } from '@/lib/actions/user'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { UserRole } from '@prisma/client'
 
 export async function GET(request: NextRequest) {
@@ -38,7 +39,7 @@ export async function GET(request: NextRequest) {
     const formattedUsers = users
       .map(user => ({
         id: user.id,
-        name: `${user.name || ''} ${user.lastName || ''}`.trim(),
+        name: formatFullName(user.name, user.lastName),
         email: user.email,
         roles: user.roles,
       }))

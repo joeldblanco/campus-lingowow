@@ -2,6 +2,7 @@
 
 import { exitImpersonation } from '@/lib/actions/impersonate'
 import { Button } from '@/components/ui/button'
+import { formatFirstName } from '@/lib/utils/name-formatter'
 import { AlertCircle, X } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useTransition } from 'react'
@@ -49,7 +50,7 @@ export function ImpersonationBanner() {
           <div className="flex flex-col">
             <span className="font-medium">Modo suplantación activo</span>
             <span className="text-sm text-amber-100">
-              Estás navegando como {session.user.name || session.user.email}
+              Estás navegando como {formatFirstName(session.user.name) || session.user.email}
             </span>
           </div>
         </div>

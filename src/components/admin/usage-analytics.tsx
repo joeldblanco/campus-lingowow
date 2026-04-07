@@ -32,6 +32,7 @@ import {
   Zap
 } from 'lucide-react'
 import { useUsageStats } from '@/hooks/use-file-manager'
+import { formatFirstName } from '@/lib/utils/name-formatter'
 import { formatFileSize, formatNumber } from '@/lib/utils'
 import { FileResourceType } from '@prisma/client'
 
@@ -431,28 +432,32 @@ export const UsageAnalytics: React.FC<UsageAnalyticsProps> = ({
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {topUsers.map((user) => (
-                  <div key={user.id} className="flex items-center justify-between p-3 border rounded">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                        <span className="text-sm font-medium text-blue-600">
-                          {user.name.charAt(0).toUpperCase()}
-                        </span>
+                {topUsers.map((user) => {
+                  const displayName = formatFirstName(user.name) || 'Usuario'
+
+                  return (
+                    <div key={user.id} className="flex items-center justify-between p-3 border rounded">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                          <span className="text-sm font-medium text-blue-600">
+                            {displayName.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                        <div>
+                          <p className="font-medium">{displayName}</p>
+                          <p className="text-sm text-gray-600">{user.email}</p>
+                          <p className="text-xs text-gray-500">
+                            Last active {user.lastActive}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-medium">{user.name}</p>
-                        <p className="text-sm text-gray-600">{user.email}</p>
-                        <p className="text-xs text-gray-500">
-                          Last active {user.lastActive}
-                        </p>
+                      <div className="text-right">
+                        <p className="font-medium">{formatFileSize(user.storage)}</p>
+                        <p className="text-sm text-gray-600">{user.uploads} uploads</p>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="font-medium">{formatFileSize(user.storage)}</p>
-                      <p className="text-sm text-gray-600">{user.uploads} uploads</p>
-                    </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </CardContent>
           </Card>

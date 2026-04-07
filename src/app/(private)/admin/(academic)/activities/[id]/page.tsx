@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { getActivity } from '@/lib/actions/activity'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { format } from 'date-fns'
 import {
   ArrowLeft,
@@ -151,10 +152,7 @@ export default async function ActivityDetailPage({ params }: ActivityDetailPageP
                     <div className="bg-muted/50 p-3 rounded-md">
                       <div className="text-sm text-muted-foreground">Creado por</div>
                       <div className="font-medium">
-                        {activity.createdBy 
-                          ? `${activity.createdBy.name}${activity.createdBy.lastName ? ' ' + activity.createdBy.lastName : ''}`
-                          : 'Sistema'
-                        }
+                        {activity.createdBy ? formatUserName(activity.createdBy) : 'Sistema'}
                       </div>
                     </div>
                   </div>

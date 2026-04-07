@@ -38,6 +38,7 @@ import { ViewInvoiceDialog } from './view-invoice-dialog'
 import { deleteInvoice } from '@/lib/actions/commercial'
 import { toast } from 'sonner'
 import { formatDateNumeric } from '@/lib/utils/date'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { InvoiceWithDetails } from '@/types/invoice'
 import { DateRangePicker } from '@/components/analytics/date-range-picker'
 import { ExportButton, downloadCSV, downloadExcel } from '@/components/analytics/export-button'
@@ -83,10 +84,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
     if (searchTerm) {
       const term = searchTerm.toLowerCase()
       filtered = filtered.filter((invoice) => {
-        const fullName = [invoice.user.name, invoice.user.lastName]
-          .filter(Boolean)
-          .join(' ')
-          .toLowerCase()
+        const fullName = formatUserName(invoice.user).toLowerCase()
         return (
           invoice.invoiceNumber.toLowerCase().includes(term) ||
           fullName.includes(term) ||
@@ -175,7 +173,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
   const handleExport = async (format: 'csv' | 'excel') => {
     const exportData = filteredInvoices.map((invoice) => ({
       Número: invoice.invoiceNumber,
-      Cliente: [invoice.user.name, invoice.user.lastName].filter(Boolean).join(' ') || 'Sin nombre',
+      Cliente: formatUserName(invoice.user) || 'Sin nombre',
       Email: invoice.user.email,
       Estado: invoice.status,
       Subtotal: invoice.subtotal,
@@ -252,9 +250,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
       accessorKey: 'user',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Cliente" />,
       cell: ({ row }) => {
-        const fullName = [row.original.user.name, row.original.user.lastName]
-          .filter(Boolean)
-          .join(' ')
+        const fullName = formatUserName(row.original.user)
         return (
           <div>
             <div className="font-medium text-sm">{fullName || 'Sin nombre'}</div>

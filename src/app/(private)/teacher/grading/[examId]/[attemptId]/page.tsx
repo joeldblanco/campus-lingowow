@@ -1,6 +1,7 @@
 import { auth } from '@/auth'
 import { redirect, notFound } from 'next/navigation'
 import { getExamAttemptWithAnswers, getAttemptsForGrading } from '@/lib/actions/exams'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { GradingClient } from './grading-client'
 
 interface PageProps {
@@ -40,7 +41,7 @@ export default async function GradingPage({ params }: PageProps) {
       uniqueStudents.set(a.userId, {
         id: a.userId,
         userId: a.userId,
-        name: `${a.user.name || ''} ${a.user.lastName || ''}`.trim() || a.user.email,
+        name: formatFullName(a.user.name, a.user.lastName) || a.user.email,
         email: a.user.email,
         score: a.score ?? 0,
         attemptNumber: a.attemptNumber // Usar el número del primer intento encontrado

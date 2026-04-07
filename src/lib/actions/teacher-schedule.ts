@@ -1,10 +1,12 @@
 'use server'
 
 import { auth } from '@/auth'
+import { syncAutoCompletedClassBookings } from '@/lib/class-booking-auto-completion'
 import { db } from '@/lib/db'
 import { UserRole, BookingStatus } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import { startOfWeek, endOfWeek, startOfMonth, endOfMonth, format } from 'date-fns'
+import { isClassBookingCompleted } from '@/lib/utils/class-booking-completion'
 import {
   TeacherScheduleLesson,
   TeacherAvailabilitySlot,
@@ -35,9 +37,11 @@ function getBookingStatus(booking: {
   status: BookingStatus
   day: string
   timeSlot: string
+  completedAt?: Date | null
+  teacherAttendances?: Array<{ id: string }>
 }): 'scheduled' | 'in_progress' | 'completed' | 'cancelled' {
   if (booking.status === BookingStatus.CANCELLED) return 'cancelled'
-  if (booking.status === BookingStatus.COMPLETED) return 'completed'
+  if (isClassBookingCompleted(booking)) return 'completed'
 
   // Check if class is currently in progress
   const now = new Date()
@@ -86,6 +90,14 @@ export async function getTeacherScheduleData(
     const startDateStr = format(startDate, 'yyyy-MM-dd')
     const endDateStr = format(endDate, 'yyyy-MM-dd')
 
+    await syncAutoCompletedClassBookings({
+      teacherId,
+      day: {
+        gte: startDateStr,
+        lte: endDateStr,
+      },
+    })
+
     // Get class bookings for the date range
     const bookings = await db.classBooking.findMany({
       where: {
@@ -115,6 +127,9 @@ export async function getTeacherScheduleData(
               },
             },
           },
+        },
+        teacherAttendances: {
+          select: { id: true },
         },
       },
       orderBy: [{ day: 'asc' }, { timeSlot: 'asc' }],
@@ -448,6 +463,14 @@ export async function getTeacherScheduleForAdmin(
     const startDateStr = format(startDate, 'yyyy-MM-dd')
     const endDateStr = format(endDate, 'yyyy-MM-dd')
 
+    await syncAutoCompletedClassBookings({
+      teacherId,
+      day: {
+        gte: startDateStr,
+        lte: endDateStr,
+      },
+    })
+
     // Get class bookings for the teacher in the date range
     const bookings = await db.classBooking.findMany({
       where: {
@@ -477,6 +500,9 @@ export async function getTeacherScheduleForAdmin(
               },
             },
           },
+        },
+        teacherAttendances: {
+          select: { id: true },
         },
       },
       orderBy: [{ day: 'asc' }, { timeSlot: 'asc' }],

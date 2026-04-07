@@ -3,6 +3,7 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { S3Client, ListObjectsV2Command, GetObjectCommand } from '@aws-sdk/client-s3'
 
 // Cloudflare R2 Configuration
@@ -255,8 +256,8 @@ export async function GET() {
         id: b.id,
         day: b.day,
         timeSlot: b.timeSlot,
-        student: `${b.student.name} ${b.student.lastName || ''}`.trim(),
-        teacher: `${b.teacher.name} ${b.teacher.lastName || ''}`.trim(),
+        student: formatFullName(b.student.name, b.student.lastName),
+        teacher: formatFullName(b.teacher.name, b.teacher.lastName),
         course: b.enrollment.course.title,
         status: b.status
       }))

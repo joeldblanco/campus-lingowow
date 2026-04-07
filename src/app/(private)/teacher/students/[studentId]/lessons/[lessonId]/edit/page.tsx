@@ -2,6 +2,7 @@ import { auth } from '@/auth'
 import { redirect, notFound } from 'next/navigation'
 import { getStudentLessonForEdit } from '@/lib/actions/student-lessons'
 import { mapContentToBlock } from '@/lib/content-mapper'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { TeacherLessonBuilderWrapper } from './client-wrapper'
 
 interface EditLessonPageProps {
@@ -52,7 +53,7 @@ export default async function EditStudentLessonPage({
         teacherId: lesson.teacherId,
         enrollmentId: lesson.enrollmentId,
       }}
-      studentName={`${lesson.student?.name || ''} ${lesson.student?.lastName || ''}`}
+      studentName={formatFullName(lesson.student?.name, lesson.student?.lastName)}
       courseName={lesson.enrollment?.course.title || ''}
     />
   )

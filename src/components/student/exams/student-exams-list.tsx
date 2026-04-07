@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { cn } from '@/lib/utils'
 
 interface ExamCourse {
@@ -192,7 +193,7 @@ export function StudentExamsList({ exams }: StudentExamsListProps) {
                   {exam.teacher && (
                     <span className="flex items-center gap-1">
                       <User className="w-3.5 h-3.5" />
-                      {exam.teacher.name} {exam.teacher.lastName}
+                      {formatUserName(exam.teacher) || 'Sin nombre'}
                     </span>
                   )}
                   <span className="flex items-center gap-1">

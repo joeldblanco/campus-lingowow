@@ -2,6 +2,7 @@ import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
+import { formatUserName } from '@/lib/utils/name-formatter'
 
 interface ExamResultsData {
   id: string
@@ -175,7 +176,7 @@ export async function exportExamResultsToPDF(results: ExamResultsData): Promise<
       
       currentX = margin
       const rowData = [
-        `${attempt.user.name || ''} ${attempt.user.lastName || ''}`.trim(),
+        formatUserName(attempt.user),
         attempt.user.email || '',
         format(new Date(attempt.startedAt), 'dd/MM/yyyy'),
         attempt.status === 'IN_PROGRESS' ? 'En progreso' :

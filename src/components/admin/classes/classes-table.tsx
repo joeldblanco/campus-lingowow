@@ -2,6 +2,7 @@
 
 import { useState, useMemo, memo, useEffect } from 'react'
 import { ColumnDef, PaginationState } from '@tanstack/react-table'
+import { usePathname, useSearchParams } from 'next/navigation'
 import {
   ClassBookingWithDetails,
   deleteClass,
@@ -73,18 +74,66 @@ interface ClassesTableProps {
   defaultPeriodId?: string
 }
 
+const STATUS_FILTER_VALUES = new Set(['all', 'CONFIRMED', 'COMPLETED', 'CANCELLED', 'NO_SHOW'])
+const DATE_FILTER_VALUES = new Set(['all', 'past', 'today', 'future'])
+const SORT_ORDER_VALUES = new Set(['asc', 'desc'])
+
+function getFilterValue(value: string | null, fallback: string, allowedValues?: Set<string>) {
+  const normalizedValue = value?.trim()
+
+  if (!normalizedValue) {
+    return fallback
+  }
+
+  if (allowedValues && !allowedValues.has(normalizedValue)) {
+    return fallback
+  }
+
+  return normalizedValue
+}
+
+function syncFilterQueryParam(
+  params: URLSearchParams,
+  key: string,
+  value: string,
+  fallback = ''
+) {
+  const normalizedValue = value.trim()
+
+  if (!normalizedValue || normalizedValue === fallback) {
+    params.delete(key)
+    return
+  }
+
+  params.set(key, normalizedValue)
+}
+
 export const ClassesTable = memo(function ClassesTable({
   classes,
   userTimezone,
   periods,
   defaultPeriodId,
 }: ClassesTableProps) {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [statusFilter, setStatusFilter] = useState('all')
-  const [teacherFilter, setTeacherFilter] = useState('all')
-  const [dateFilter, setDateFilter] = useState('all')
-  const [periodFilter, setPeriodFilter] = useState(defaultPeriodId || 'all')
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const defaultPeriodFilter = defaultPeriodId || 'all'
+
+  const [searchTerm, setSearchTerm] = useState(() => getFilterValue(searchParams.get('q'), ''))
+  const [statusFilter, setStatusFilter] = useState(() =>
+    getFilterValue(searchParams.get('status'), 'all', STATUS_FILTER_VALUES)
+  )
+  const [teacherFilter, setTeacherFilter] = useState(() =>
+    getFilterValue(searchParams.get('teacher'), 'all')
+  )
+  const [dateFilter, setDateFilter] = useState(() =>
+    getFilterValue(searchParams.get('date'), 'all', DATE_FILTER_VALUES)
+  )
+  const [periodFilter, setPeriodFilter] = useState(() =>
+    getFilterValue(searchParams.get('period'), defaultPeriodFilter)
+  )
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>(() =>
+    getFilterValue(searchParams.get('sort'), 'asc', SORT_ORDER_VALUES) as 'asc' | 'desc'
+  )
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [classToDelete, setClassToDelete] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -93,6 +142,34 @@ export const ClassesTable = memo(function ClassesTable({
   useEffect(() => {
     setLocalClasses(classes)
   }, [classes])
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+
+    syncFilterQueryParam(params, 'q', searchTerm)
+    syncFilterQueryParam(params, 'status', statusFilter, 'all')
+    syncFilterQueryParam(params, 'teacher', teacherFilter, 'all')
+    syncFilterQueryParam(params, 'date', dateFilter, 'all')
+    syncFilterQueryParam(params, 'period', periodFilter, defaultPeriodFilter)
+    syncFilterQueryParam(params, 'sort', sortOrder, 'asc')
+
+    const nextSearch = params.toString()
+    const nextUrl = nextSearch ? `${pathname}?${nextSearch}` : pathname
+    const currentUrl = `${window.location.pathname}${window.location.search}`
+
+    if (nextUrl !== currentUrl) {
+      window.history.replaceState(window.history.state, '', nextUrl)
+    }
+  }, [
+    dateFilter,
+    defaultPeriodFilter,
+    pathname,
+    periodFilter,
+    searchTerm,
+    sortOrder,
+    statusFilter,
+    teacherFilter,
+  ])
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -106,10 +183,8 @@ export const ClassesTable = memo(function ClassesTable({
     if (searchTerm) {
       const term = searchTerm.toLowerCase().trim()
       filtered = filtered.filter((classItem) => {
-        const studentFull =
-          `${classItem.student.name} ${classItem.student.lastName || ''}`.toLowerCase()
-        const teacherFull =
-          `${classItem.teacher.name} ${classItem.teacher.lastName || ''}`.toLowerCase()
+        const studentFull = formatFullName(classItem.student.name, classItem.student.lastName).toLowerCase()
+        const teacherFull = formatFullName(classItem.teacher.name, classItem.teacher.lastName).toLowerCase()
         return (
           studentFull.includes(term) ||
           teacherFull.includes(term) ||
@@ -274,20 +349,23 @@ export const ClassesTable = memo(function ClassesTable({
   }
 
   const handleUnmarkCompleted = async (classId: string) => {
+    const classItem = localClasses.find((c) => c.id === classId)
+    if (!classItem) {
+      toast.error('Clase no encontrada')
+      return
+    }
+
+    const originalStatus = classItem.status
+    const originalCompletedAt = classItem.completedAt
+    const originalIsPayable = classItem.isPayable
+
     try {
-      const classItem = localClasses.find((c) => c.id === classId)
-      if (!classItem) {
-        toast.error('Clase no encontrada')
-        return
-      }
-
-      const originalStatus = classItem.status
-      const originalCompletedAt = classItem.completedAt
-
       // Update local state optimistically
       setLocalClasses((prev) =>
         prev.map((c) =>
-          c.id === classId ? { ...c, status: BookingStatus.CONFIRMED, completedAt: null } : c
+          c.id === classId
+            ? { ...c, status: BookingStatus.CONFIRMED, completedAt: null, isPayable: false }
+            : c
         )
       )
 
@@ -298,33 +376,45 @@ export const ClassesTable = memo(function ClassesTable({
         timeSlot: classItem.timeSlot,
         status: BookingStatus.CONFIRMED,
         completedAt: null,
+        isPayable: false,
         timezone: userTimezone,
       })
 
       if (result.success) {
-        toast.success('Clase desmarcada como completada')
+        toast.success(
+          originalIsPayable
+            ? 'Clase desmarcada como completada y pagable'
+            : 'Clase desmarcada como completada'
+        )
       } else {
         // Revert on error
         setLocalClasses((prev) =>
           prev.map((c) =>
             c.id === classId
-              ? { ...c, status: originalStatus, completedAt: originalCompletedAt }
+              ? {
+                  ...c,
+                  status: originalStatus,
+                  completedAt: originalCompletedAt,
+                  isPayable: originalIsPayable,
+                }
               : c
           )
         )
         toast.error(result.error || 'Error al actualizar la clase')
       }
     } catch {
-      const originalClass = localClasses.find((c) => c.id === classId)
-      if (originalClass) {
-        setLocalClasses((prev) =>
-          prev.map((c) =>
-            c.id === classId
-              ? { ...c, status: originalClass.status, completedAt: originalClass.completedAt }
-              : c
-          )
+      setLocalClasses((prev) =>
+        prev.map((c) =>
+          c.id === classId
+            ? {
+                ...c,
+                status: originalStatus,
+                completedAt: originalCompletedAt,
+                isPayable: originalIsPayable,
+              }
+            : c
         )
-      }
+      )
       toast.error('Error al actualizar la clase')
     }
   }
@@ -630,18 +720,18 @@ export const ClassesTable = memo(function ClassesTable({
                   </DropdownMenuItem>
                 )}
                 {classItem.status === 'COMPLETED' && (
-                  <>
-                    <DropdownMenuItem onClick={() => handleUnmarkCompleted(classItem.id)}>
-                      <Clock className="h-4 w-4 mr-2" />
-                      Desmarcar como completada
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => handleTogglePayable(classItem.id, !classItem.isPayable)}
-                    >
-                      <DollarSign className="h-4 w-4 mr-2" />
-                      {classItem.isPayable ? 'Desmarcar como pagable' : 'Marcar como pagable'}
-                    </DropdownMenuItem>
-                  </>
+                  <DropdownMenuItem onClick={() => handleUnmarkCompleted(classItem.id)}>
+                    <Clock className="h-4 w-4 mr-2" />
+                    Desmarcar como completada
+                  </DropdownMenuItem>
+                )}
+                {(classItem.status === 'COMPLETED' || classItem.isPayable) && (
+                  <DropdownMenuItem
+                    onClick={() => handleTogglePayable(classItem.id, !classItem.isPayable)}
+                  >
+                    <DollarSign className="h-4 w-4 mr-2" />
+                    {classItem.isPayable ? 'Desmarcar como pagable' : 'Marcar como pagable'}
+                  </DropdownMenuItem>
                 )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem

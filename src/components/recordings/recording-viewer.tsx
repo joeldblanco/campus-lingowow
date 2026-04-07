@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { UserAvatar } from '@/components/ui/user-avatar'
 import { getRecordingById, markRecordingAsViewed } from '@/lib/actions/recordings'
 import { ClassRecordingChat } from './class-recording-chat'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { AlertCircle, ArrowLeft, Calendar, Clock, Loader2 } from 'lucide-react'
@@ -257,7 +258,7 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
                   fallbackClassName="bg-blue-100 text-blue-700"
                 />
                 <span className="text-muted-foreground">
-                  {teacher.name} {teacher.lastName}
+                  {formatUserName(teacher) || 'Sin nombre'}
                 </span>
                 <span className="text-muted-foreground">•</span>
                 <span className="text-muted-foreground capitalize">{formatDate(booking.day)}</span>
@@ -291,8 +292,7 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
             <CardContent>
               <p className="text-muted-foreground">
                 Clase grabada el {formatDate(booking.day)} a las {booking.timeSlot}. Esta grabación
-                corresponde al curso de {course.title} con el profesor {teacher.name}{' '}
-                {teacher.lastName}.
+                corresponde al curso de {course.title} con el profesor {formatUserName(teacher)}.
               </p>
             </CardContent>
           </Card>
@@ -356,7 +356,7 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
                     <div>
                       <p className="text-sm text-muted-foreground">Profesor</p>
                       <p className="font-medium">
-                        {teacher.name} {teacher.lastName}
+                        {formatUserName(teacher) || 'Sin nombre'}
                       </p>
                     </div>
                   </div>

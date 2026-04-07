@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { createEnrollmentWithSchedule, getAllStudents, getPublishedCourses, getActiveAndFutureAcademicPeriods } from '@/lib/actions/enrollments'
 import { verifyPaypalTransaction, verifyLingowowInvoice } from '@/lib/actions/commercial'
 import { Button } from '@/components/ui/button'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import {
   Select,
   SelectContent,
@@ -187,7 +188,7 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
           )
           if (matchedStudent) {
             form.setValue('studentId', matchedStudent.id)
-            messages.push(`Estudiante detectado: ${matchedStudent.name} ${matchedStudent.lastName || ''}`)
+            messages.push(`Estudiante detectado: ${formatUserName(matchedStudent)}`)
           }
         }
         
@@ -466,7 +467,7 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
                                   </AvatarFallback>
                                 </Avatar>
                                 <span>
-                                  {student.name} {student.lastName || ''} - {student.email}
+                                  {formatUserName(student)} - {student.email}
                                 </span>
                               </div>
                             </SelectItem>

@@ -12,6 +12,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { createFloatingConversation, searchUsers } from '@/lib/actions/floating-chat'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { Loader2, Plus, Search } from 'lucide-react'
 import { UserRole } from '@prisma/client'
 import React, { useEffect, useState } from 'react'
@@ -123,7 +124,7 @@ export const NewChatDialog: React.FC<NewChatDialogProps> = ({
                     />
                     <div className="flex-1">
                       <p className="font-medium text-sm">
-                        {user.name} {user.lastName}
+                        {formatUserName(user) || 'Sin nombre'}
                       </p>
                       <p className="text-xs text-gray-500 capitalize">
                         {user.roles?.join(', ')?.toLowerCase()}

@@ -15,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { getUserAvatarUrl } from '@/lib/utils'
 import { BookOpen, Calendar, Mail, MessageSquare, Search, Users } from 'lucide-react'
 
@@ -53,7 +54,7 @@ export function TeacherActiveStudentsView({ students }: TeacherActiveStudentsVie
   const [searchQuery, setSearchQuery] = useState('')
 
   const filteredStudents = students.filter((student) => {
-    const fullName = `${student.name || ''} ${student.lastName || ''}`.toLowerCase()
+    const fullName = formatUserName(student).toLowerCase()
     const email = (student.email || '').toLowerCase()
     const query = searchQuery.toLowerCase()
     return fullName.includes(query) || email.includes(query)
@@ -112,7 +113,7 @@ export function TeacherActiveStudentsView({ students }: TeacherActiveStudentsVie
                     </Avatar>
                     <div>
                       <p className="font-medium">
-                        {student.name} {student.lastName}
+                        {formatUserName(student) || 'Sin nombre'}
                       </p>
                       {student.email && (
                         <p className="text-sm text-muted-foreground flex items-center gap-1">

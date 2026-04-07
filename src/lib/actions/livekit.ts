@@ -3,6 +3,7 @@
 import { db } from '@/lib/db'
 import { auth } from '@/auth'
 import { generateRoomName } from '@/lib/livekit'
+import { syncAutoCompletedClassBooking } from '@/lib/class-booking-auto-completion'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { getCurrentDate } from '@/lib/utils/date'
@@ -125,13 +126,7 @@ export async function endLiveKitMeeting(bookingId: string) {
       },
     })
 
-    await db.classBooking.update({
-      where: { id: bookingId },
-      data: {
-        status: 'COMPLETED',
-        completedAt: endTime,
-      },
-    })
+    await syncAutoCompletedClassBooking(bookingId)
 
     auditLog({
       userId: session.user.id,

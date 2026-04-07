@@ -33,6 +33,7 @@ import type {
   ProjectedPayrollAnalytics,
   ProjectedTeacherPayment,
 } from '@/types/analytics'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { startOfMonth, endOfMonth, subMonths, format, differenceInDays } from 'date-fns'
 import { es } from 'date-fns/locale'
 
@@ -574,7 +575,7 @@ export async function getExpenseAnalytics(months: number = 12): Promise<ExpenseA
     if (!teacherPaymentMap.has(teacher.id)) {
       teacherPaymentMap.set(teacher.id, {
         teacherId: teacher.id,
-        teacherName: `${teacher.name} ${teacher.lastName || ''}`.trim(),
+        teacherName: formatFullName(teacher.name, teacher.lastName),
         teacherImage: teacher.image,
         totalClasses: 0,
         totalHours: 0,
@@ -888,7 +889,7 @@ export async function getTeacherAnalytics(): Promise<TeacherAnalytics> {
   for (const teacher of teachers) {
     teacherStatsMap.set(teacher.id, {
       teacherId: teacher.id,
-      teacherName: `${teacher.name} ${teacher.lastName || ''}`.trim(),
+      teacherName: formatFullName(teacher.name, teacher.lastName),
       teacherImage: teacher.image,
       teacherRank: teacher.teacherRank?.name || null,
       totalClasses: 0,
@@ -1113,7 +1114,7 @@ export async function getStudentAnalytics(months: number = 12): Promise<StudentA
 
     return {
       studentId: s.studentId,
-      studentName: student ? `${student.name} ${student.lastName || ''}`.trim() : 'Estudiante',
+      studentName: student ? formatFullName(student.name, student.lastName) : 'Estudiante',
       studentImage: student?.image || null,
       totalClasses: s._count,
       completedClasses: s._count,
@@ -1154,7 +1155,7 @@ export async function getStudentAnalytics(months: number = 12): Promise<StudentA
 
   const inactive: StudentActivity[] = inactiveEnrollments.slice(0, 10).map((e) => ({
     studentId: e.studentId,
-    studentName: `${e.student.name} ${e.student.lastName || ''}`.trim(),
+    studentName: formatFullName(e.student.name, e.student.lastName),
     studentImage: e.student.image,
     totalClasses: 0,
     completedClasses: 0,
@@ -2020,7 +2021,7 @@ export async function getProjectedPayrollAnalytics(
     if (!teacherPaymentMap.has(teacher.id)) {
       teacherPaymentMap.set(teacher.id, {
         teacherId: teacher.id,
-        teacherName: `${teacher.name} ${teacher.lastName || ''}`.trim(),
+        teacherName: formatFullName(teacher.name, teacher.lastName),
         teacherImage: teacher.image,
         rankName: teacher.teacherRank?.name || null,
         rateMultiplier: teacher.teacherRank?.rateMultiplier || 1.0,

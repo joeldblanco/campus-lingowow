@@ -28,6 +28,7 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import {
   ChevronLeft,
@@ -406,7 +407,7 @@ export function AuditLogsView() {
                             </Avatar>
                             <div className="min-w-0">
                               <p className="text-sm font-medium truncate">
-                                {log.user.name} {log.user.lastName}
+                                {formatUserName(log.user) || 'Sin nombre'}
                               </p>
                               <p className="text-xs text-muted-foreground truncate">
                                 {log.user.email}
@@ -528,7 +529,7 @@ export function AuditLogsView() {
                     </Avatar>
                     <div>
                       <p className="text-sm font-medium">
-                        {selectedLog.user.name} {selectedLog.user.lastName}
+                        {formatUserName(selectedLog.user) || 'Sin nombre'}
                       </p>
                       <p className="text-xs text-muted-foreground">{selectedLog.user.email}</p>
                     </div>

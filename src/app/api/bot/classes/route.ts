@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { authenticateRequest } from '@/lib/api-auth'
+import { formatFullName } from '@/lib/utils/name-formatter'
 
 /**
  * GET /api/bot/classes
@@ -109,12 +110,12 @@ export async function GET(request: NextRequest) {
         status: b.status,
         student: {
           id: b.student.id,
-          name: [b.student.name, b.student.lastName].filter(Boolean).join(' '),
+          name: formatFullName(b.student.name, b.student.lastName),
           email: b.student.email,
         },
         teacher: {
           id: b.teacher.id,
-          name: [b.teacher.name, b.teacher.lastName].filter(Boolean).join(' '),
+          name: formatFullName(b.teacher.name, b.teacher.lastName),
           timezone: b.teacher.timezone,
         },
         course: b.enrollment.course,

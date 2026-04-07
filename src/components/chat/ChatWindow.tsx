@@ -21,6 +21,7 @@ import {
   sendFloatingMessage,
 } from '@/lib/actions/floating-chat'
 import { useSocketChannel } from '@/hooks/use-socket-channel'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import EmojiPicker from 'emoji-picker-react'
@@ -698,7 +699,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
           />
           <div>
             <h3 className="font-semibold text-sm">
-              {otherUser.name} {otherUser.lastName}
+              {formatUserName(otherUser) || 'Sin nombre'}
             </h3>
             <div className="flex items-center gap-1.5">
               <span className="text-xs text-gray-500">
@@ -793,7 +794,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
                 <div className="flex items-baseline gap-2 mb-1">
                   {!isMe && (
                     <span className="text-xs font-semibold text-gray-700">
-                      {otherUser.name} {otherUser.lastName}
+                      {formatUserName(otherUser) || 'Sin nombre'}
                     </span>
                   )}
                   <span className="text-xs text-gray-400">

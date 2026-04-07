@@ -3,6 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { UserAvatar } from '@/components/ui/user-avatar'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { Calendar, Clock, User, BookOpen } from 'lucide-react'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
@@ -162,7 +163,7 @@ export function ClassesView({ enrollments }: ClassesViewProps) {
                             {DAYS_OF_WEEK[schedule.dayOfWeek]}
                           </div>
                           <div className="text-sm text-muted-foreground">
-                            {schedule.teacher.name} {schedule.teacher.lastName || ''}
+                            {formatUserName(schedule.teacher) || 'Sin nombre'}
                           </div>
                         </div>
                       </div>
@@ -203,7 +204,7 @@ export function ClassesView({ enrollments }: ClassesViewProps) {
                           </div>
                           <div className="text-sm text-muted-foreground flex items-center gap-2">
                             <User className="h-3 w-3" />
-                            {booking.teacher.name} {booking.teacher.lastName || ''}
+                            {formatUserName(booking.teacher) || 'Sin nombre'}
                           </div>
                         </div>
                       </div>

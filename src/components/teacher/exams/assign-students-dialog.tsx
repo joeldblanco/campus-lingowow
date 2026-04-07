@@ -21,6 +21,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { CalendarIcon, Loader2, Search, Users } from 'lucide-react'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { cn } from '@/lib/utils'
 import {
   getStudentsForExamAssignment,
@@ -84,7 +85,7 @@ export function AssignStudentsDialog({
 
 
   const filteredStudents = students.filter((student) => {
-    const fullName = `${student.name} ${student.lastName || ''}`.toLowerCase()
+    const fullName = formatUserName(student).toLowerCase()
     const email = student.email.toLowerCase()
     const query = searchQuery.toLowerCase()
     return fullName.includes(query) || email.includes(query)
@@ -210,7 +211,7 @@ export function AssignStudentsDialog({
                       </Avatar>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">
-                          {student.name} {student.lastName}
+                          {formatUserName(student) || 'Sin nombre'}
                         </p>
                         <p className="text-xs text-muted-foreground truncate">
                           {student.email}

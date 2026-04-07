@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { authorizeNiubizTransaction, getNiubizAccessToken } from '@/lib/niubiz'
 import { db } from '@/lib/db'
 import { sendPaymentConfirmationEmail } from '@/lib/mail'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import {
   notifySelfServiceEnrollmentCreated,
   upsertSelfServiceEnrollment,
@@ -493,7 +494,7 @@ export async function POST(request: NextRequest) {
 
           if (user?.email) {
             await sendPaymentConfirmationEmail(user.email, {
-              customerName: `${user.name || ''} ${user.lastName || ''}`.trim() || 'Cliente',
+              customerName: formatFullName(user.name, user.lastName) || 'Cliente',
               invoiceNumber: invoice.invoiceNumber,
               items: invoiceData.items.map((item) => ({
                 name: item.name,

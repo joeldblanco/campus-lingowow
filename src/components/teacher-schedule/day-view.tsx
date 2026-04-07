@@ -3,6 +3,7 @@
 import { UserAvatar } from '@/components/ui/user-avatar'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { FileText, Video, CheckCircle, Clock, Plus, Pencil } from 'lucide-react'
 import type { ScheduleLesson, AvailableSlot } from '@/types/schedule'
 import { getLessonColorClasses } from '@/types/schedule'
@@ -126,7 +127,7 @@ export function DayView({
             fallbackClassName={cn("text-sm font-bold", colors.bg, colors.text)}
           />
           <div>
-            <h4 className="font-bold text-foreground">{lesson.student.name} {lesson.student.lastName}</h4>
+            <h4 className="font-bold text-foreground">{formatUserName(lesson.student) || 'Sin nombre'}</h4>
             <Badge className={cn("text-xs font-medium", colors.bg, colors.text, "border-0")}>
               {lesson.courseTitle}
             </Badge>

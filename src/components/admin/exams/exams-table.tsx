@@ -41,6 +41,7 @@ import { ViewExamDialog } from './view-exam-dialog'
 import { AssignExamDialog } from './assign-exam-dialog'
 import { toast } from 'sonner'
 import { deleteExam, updateExam } from '@/lib/actions/exams'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { ExamWithDetails, EXAM_TYPE_LABELS, ExamTypeValue } from '@/types/exam'
 import { useRouter } from 'next/navigation'
 import { ClipboardCheck, GraduationCap, Stethoscope, Dumbbell } from 'lucide-react'
@@ -223,9 +224,7 @@ export function ExamsTable({ exams }: ExamsTableProps) {
 
   const getCreatorName = (creator: ExamWithDetails['creator']) => {
     if (!creator) return 'Sin asignar'
-    return (
-      `${creator.name || ''} ${creator.lastName || ''}`.trim() || creator.email || 'Sin asignar'
-    )
+    return formatFullName(creator.name, creator.lastName) || creator.email || 'Sin asignar'
   }
 
   const getTotalQuestions = (exam: ExamWithDetails) => {

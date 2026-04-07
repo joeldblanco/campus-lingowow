@@ -28,6 +28,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import {
   Select,
   SelectContent,
@@ -418,7 +419,7 @@ export function BulkActionsBar({
                 <SelectContent>
                   {availableTeachers.map((teacher) => (
                     <SelectItem key={teacher.id} value={teacher.id}>
-                      {teacher.name} {teacher.lastName || ''}
+                      {formatUserName(teacher)}
                     </SelectItem>
                   ))}
                 </SelectContent>

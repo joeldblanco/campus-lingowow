@@ -1,6 +1,7 @@
 'use server'
 
 import { db } from '@/lib/db'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { UserRole } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import { getCurrentDate } from '@/lib/utils/date'
@@ -190,7 +191,7 @@ export async function getAllStudentGrades(filters?: GradeFilters): Promise<Stude
 
       gradesData.push({
         studentId: enrollment.studentId,
-        studentName: `${enrollment.student.name} ${enrollment.student.lastName || ''}`,
+        studentName: formatFullName(enrollment.student.name, enrollment.student.lastName),
         studentEmail: enrollment.student.email,
         courseId: enrollment.courseId,
         courseTitle: enrollment.course.title,
@@ -335,7 +336,10 @@ export async function getStudentGradesByCourse(
 
     return {
       studentId: enrollmentWithDetails.studentId,
-      studentName: `${enrollmentWithDetails.student.name} ${enrollmentWithDetails.student.lastName || ''}`,
+      studentName: formatFullName(
+        enrollmentWithDetails.student.name,
+        enrollmentWithDetails.student.lastName
+      ),
       studentEmail: enrollmentWithDetails.student.email,
       courseId: enrollmentWithDetails.courseId,
       courseTitle: enrollmentWithDetails.course.title,

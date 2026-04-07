@@ -1,7 +1,9 @@
 'use server'
 
+import { syncAutoCompletedClassBookings } from '@/lib/class-booking-auto-completion'
 import { db } from '@/lib/db'
 import { CreateClassSchema, EditClassSchema } from '@/schemas/classes'
+import { Prisma } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import * as z from 'zod'
 
@@ -69,7 +71,7 @@ export interface ClassFilters {
 
 export async function getAllClasses(filters?: ClassFilters): Promise<ClassBookingWithDetails[]> {
   try {
-    const where: Record<string, unknown> = {}
+    const baseWhere: Record<string, unknown> = {}
 
     // Nota: Los filtros de fecha vienen en hora local, necesitamos convertirlos a UTC
     // Usar la timezone del usuario si se proporciona
@@ -80,27 +82,31 @@ export async function getAllClasses(filters?: ClassFilters): Promise<ClassBookin
 
       if (filters?.startDate) {
         const utcStart = convertTimeSlotToUTC(filters.startDate, '00:00-00:00', userTimezone)
-        where.day = { gte: utcStart.day }
+        baseWhere.day = { gte: utcStart.day }
       }
       if (filters?.endDate) {
         const utcEnd = convertTimeSlotToUTC(filters.endDate, '23:59-23:59', userTimezone)
-        where.day = { ...(where.day as object), lte: utcEnd.day }
+        baseWhere.day = { ...(baseWhere.day as object), lte: utcEnd.day }
       }
     }
 
     if (filters?.teacherId) {
-      where.teacherId = filters.teacherId
+      baseWhere.teacherId = filters.teacherId
     }
     if (filters?.studentId) {
-      where.studentId = filters.studentId
-    }
-    if (filters?.status) {
-      where.status = filters.status
+      baseWhere.studentId = filters.studentId
     }
     if (filters?.periodId) {
-      where.enrollment = {
+      baseWhere.enrollment = {
         academicPeriodId: filters.periodId,
       }
+    }
+
+    await syncAutoCompletedClassBookings(baseWhere as Prisma.ClassBookingWhereInput)
+
+    const where: Record<string, unknown> = { ...baseWhere }
+    if (filters?.status) {
+      where.status = filters.status
     }
 
     const classes = await db.classBooking.findMany({
@@ -176,6 +182,9 @@ export async function getClassById(
 ): Promise<ClassBookingWithDetails | null> {
   try {
     const userTimezone = timezone || 'America/Lima'
+
+    await syncAutoCompletedClassBookings({ id })
+
     const classBooking = await db.classBooking.findUnique({
       where: { id },
       include: {
@@ -364,7 +373,8 @@ export interface UpdateClassData {
   notes?: string
   enrollmentId?: string
   creditId?: string
-  completedAt?: Date
+  completedAt?: Date | null
+  isPayable?: boolean
 }
 
 export async function updateClass(
@@ -468,6 +478,7 @@ export async function updateClass(
     if (validatedData.creditId && validatedData.creditId !== '')
       updateData.creditId = validatedData.creditId
     if (validatedData.completedAt !== undefined) updateData.completedAt = validatedData.completedAt
+    if (validatedData.isPayable !== undefined) updateData.isPayable = validatedData.isPayable
 
     const classBooking = await db.classBooking.update({
       where: { id },

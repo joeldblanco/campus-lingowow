@@ -10,6 +10,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { Skeleton } from '@/components/ui/skeleton'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import {
   Select,
   SelectContent,
@@ -442,7 +443,7 @@ const [language, setLanguage] = useState(() => {
                         ) : (
                           <div className="size-6 rounded-full bg-primary/20" />
                         )}
-                        <span>Por {featuredResource.author.name} {featuredResource.author.lastName}</span>
+                        <span>Por {formatUserName(featuredResource.author) || 'Sin autor'}</span>
                       </div>
                       <span>•</span>
                       <span className="flex items-center gap-1">

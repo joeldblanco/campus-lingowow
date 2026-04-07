@@ -13,6 +13,7 @@ import { Separator } from '@/components/ui/separator'
 import { Calendar, Clock, User, BookOpen, Video, FileText, Mail } from 'lucide-react'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import type { ScheduleLesson } from '@/types/schedule'
 import { getLessonColorClasses, getInitials } from '@/types/schedule'
 import { cn } from '@/lib/utils'
@@ -127,7 +128,7 @@ export function LessonDetailsDialog({
             <div className="flex-1">
               <div className="flex items-center gap-2">
                 <User className="h-4 w-4 text-muted-foreground" />
-                <p className="font-medium">{lesson.student.name} {lesson.student.lastName}</p>
+                <p className="font-medium">{formatUserName(lesson.student) || 'Sin nombre'}</p>
               </div>
               <p className="text-sm text-muted-foreground">{lesson.student.email}</p>
             </div>

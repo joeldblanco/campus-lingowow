@@ -3,6 +3,7 @@ import { auth } from '@/auth'
 import { authorizeNiubizTransaction, getNiubizAccessToken, registerNiubizCard } from '@/lib/niubiz'
 import { db } from '@/lib/db'
 import { sendPaymentConfirmationEmail } from '@/lib/mail'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { Invoice } from '@prisma/client'
 import {
   notifySelfServiceEnrollmentCreated,
@@ -445,7 +446,7 @@ export async function POST(req: NextRequest) {
 
         if (user?.email) {
           await sendPaymentConfirmationEmail(user.email, {
-            customerName: `${user.name || ''} ${user.lastName || ''}`.trim() || 'Cliente',
+            customerName: formatFullName(user.name, user.lastName) || 'Cliente',
             invoiceNumber: invoice.invoiceNumber,
             items: invoiceData.items.map((item) => ({
               name: item.name,

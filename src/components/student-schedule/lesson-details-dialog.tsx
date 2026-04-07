@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Video, FileText, Clock, Calendar, Mail, CalendarClock } from 'lucide-react'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
+import { formatUserName } from '@/lib/utils/name-formatter'
 import { cn } from '@/lib/utils'
 import type { StudentScheduleLesson } from '@/lib/actions/student-schedule'
 import { StudentRescheduleDialog } from './student-reschedule-dialog'
@@ -144,7 +145,7 @@ export function LessonDetailsDialog({
               />
               <div className="flex-1">
                 <p className="font-medium">
-                  {lesson.teacher.name} {lesson.teacher.lastName}
+                  {formatUserName(lesson.teacher) || 'Sin nombre'}
                 </p>
                 <p className="text-sm text-muted-foreground">Profesor</p>
               </div>

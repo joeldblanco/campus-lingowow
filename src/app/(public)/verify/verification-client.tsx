@@ -2,6 +2,7 @@
 
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { Award, Calendar, CheckCircle, User, XCircle } from 'lucide-react'
 import { VerificationAttempt } from '@/types/exam'
 
@@ -101,10 +102,7 @@ export default function VerificationClient({ attempt, verificationCode, error }:
               <div>
                 <p className="text-sm text-gray-500">Nombre</p>
                 <p className="font-semibold">
-                  {attempt?.user?.name && attempt?.user?.lastName 
-                    ? `${attempt.user.name} ${attempt.user.lastName}` 
-                    : attempt?.user?.name || 'N/A'
-                  }
+                  {formatFullName(attempt?.user?.name, attempt?.user?.lastName) || 'N/A'}
                 </p>
               </div>
               <div>

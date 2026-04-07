@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { formatFirstName } from '@/lib/utils/name-formatter'
 import { BookOpen, CalendarIcon, Clock } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -170,18 +171,19 @@ function TeacherCard({
 }) {
   const availabilityForDay = teacher.availability.find((a) => a.dayOfWeek === dayOfWeek)
   const availableSlots = availabilityForDay?.slots.filter((slot) => !slot.isBooked) || []
+  const teacherName = formatFirstName(teacher.name)
 
   return (
     <Card className="mb-4">
       <CardHeader className="flex flex-row items-start gap-4 pb-2">
         <UserAvatar
           userId={teacher.id}
-          userName={teacher.name}
+          userName={teacherName}
           userImage={teacher.avatarUrl}
           className="h-12 w-12 border"
         />
         <div className="space-y-1">
-          <CardTitle>{teacher.name}</CardTitle>
+          <CardTitle>{teacherName}</CardTitle>
           <CardDescription className="flex items-center">
             <BookOpen className="h-4 w-4 mr-1" />
             {teacher.totalClasses} clases impartidas

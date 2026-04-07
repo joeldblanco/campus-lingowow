@@ -5,6 +5,7 @@ import { ArrowUpDown, User as UserIcon, Calendar, CheckCircle, Clock, PlayCircle
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { format } from 'date-fns'
+import { formatUserName } from '@/lib/utils/name-formatter'
 
 // Tipo específico para la datatable
 export interface StudentAssignment {
@@ -65,7 +66,7 @@ export const studentColumns: ColumnDef<StudentAssignment>[] = [
           <UserIcon className="h-4 w-4 text-muted-foreground" />
           <div>
             <div className="font-medium">
-              {user.name}{user.lastName ? ' ' + user.lastName : ''}
+              {formatUserName(user)}
             </div>
             <div className="text-sm text-muted-foreground">{user.email}</div>
           </div>

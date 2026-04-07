@@ -3,6 +3,7 @@
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
 import { AuditAction, AuditCategory, UserRole } from '@prisma/client'
+import { formatFullName } from '@/lib/utils/name-formatter'
 import { hasRole } from '@/lib/utils/roles'
 
 export interface AuditLogFilters {
@@ -143,7 +144,7 @@ export async function exportAuditLogs(filters: AuditLogFilters = {}) {
 
   return logs.map((log) => ({
     fecha: log.createdAt.toISOString(),
-    usuario: log.user ? `${log.user.name} ${log.user.lastName || ''}`.trim() : 'Sistema',
+    usuario: log.user ? formatFullName(log.user.name, log.user.lastName) : 'Sistema',
     email: log.user?.email || '-',
     roles: log.user?.roles?.join(', ') || '-',
     accion: log.action,

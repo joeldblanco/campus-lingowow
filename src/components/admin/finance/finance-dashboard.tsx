@@ -6,13 +6,17 @@ import { Filter, Plus } from 'lucide-react'
 
 import {
   getFinancialReport,
+  type FinancialProjection,
   type FinancialReportRow,
   type FinancialReportSummary,
 } from '@/lib/actions/finance'
 import { downloadCSV, downloadExcel, ExportButton } from '@/components/analytics/export-button'
 import { CreateFinancialMovementDialog } from '@/components/admin/finance/create-financial-movement-dialog'
 import { FinancialMovementsTable } from '@/components/admin/finance/financial-movements-table'
-import { FinanceSummaryCards } from '@/components/admin/finance/finance-summary-cards'
+import {
+  FinanceProjectionCards,
+  FinanceSummaryCards,
+} from '@/components/admin/finance/finance-summary-cards'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -45,7 +49,7 @@ function buildInitialFilterState(): FilterState {
   const firstDay = new Date(now.getFullYear(), now.getMonth(), 1)
 
   return {
-    basis: 'cash',
+    basis: 'accrual',
     startDate: formatDateInput(firstDay),
     endDate: formatDateInput(now),
     direction: 'ALL',
@@ -111,6 +115,7 @@ export function FinanceDashboard() {
   const [filters, setFilters] = useState<FilterState>(initialFilters)
   const [rows, setRows] = useState<FinancialReportRow[]>([])
   const [summary, setSummary] = useState<FinancialReportSummary | null>(null)
+  const [projection, setProjection] = useState<FinancialProjection | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -133,6 +138,7 @@ export function FinanceDashboard() {
     const report = await getFinancialReport(buildActionFilters(nextFilters))
     setRows(report.rows)
     setSummary(report.summary)
+    setProjection(report.projection)
   }
 
   useEffect(() => {
@@ -141,6 +147,7 @@ export function FinanceDashboard() {
         const report = await getFinancialReport(buildActionFilters(initialFilters))
         setRows(report.rows)
         setSummary(report.summary)
+        setProjection(report.projection)
       } catch (loadError) {
         console.error('Error loading finance report:', loadError)
         setError('No se pudo cargar el centro financiero')
@@ -199,7 +206,7 @@ export function FinanceDashboard() {
         <div>
           <h1 className="text-3xl font-bold">Centro Financiero</h1>
           <p className="text-muted-foreground">
-            Ingresos, egresos y neto con vista de caja real y devengado.
+            Proyección de ganancia neta al cierre del mes y detalle financiero del período.
           </p>
         </div>
 
@@ -233,8 +240,8 @@ export function FinanceDashboard() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="cash">Caja real</SelectItem>
                   <SelectItem value="accrual">Devengado</SelectItem>
+                  <SelectItem value="cash">Caja real</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -329,6 +336,22 @@ export function FinanceDashboard() {
         <LoadingState />
       ) : (
         <>
+          {projection && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Proyección de Cierre de Mes</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <FinanceProjectionCards projection={projection} />
+                <div className="space-y-1 text-sm text-muted-foreground">
+                  {projection.assumptions.map((assumption) => (
+                    <p key={assumption}>• {assumption}</p>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {summary && <FinanceSummaryCards summary={summary} />}
           <FinancialMovementsTable rows={rows} basis={filters.basis} />
         </>
