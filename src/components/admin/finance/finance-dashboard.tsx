@@ -230,8 +230,8 @@ export function FinanceDashboard() {
         <div>
           <h1 className="text-3xl font-bold">Resultado del Período</h1>
           <p className="text-muted-foreground">
-            Facturas y costo docente del período académico, más las otras salidas que registras
-            manualmente.
+            Ingresos por clase y costo docente asociados a clases agendadas dentro del período
+            académico, más las otras salidas que registras manualmente.
           </p>
         </div>
 
@@ -247,7 +247,7 @@ export function FinanceDashboard() {
       <Card>
         <CardContent className="pt-6 text-sm text-muted-foreground">
           {selectedPeriod
-            ? `Facturas y pagos a profesores se atribuyen al período académico ${selectedPeriod.name}. Las otras salidas manuales se toman por fecha dentro de ese mismo rango.`
+            ? `Si una clase está agendada dentro de ${selectedPeriod.name}, ese período suma tanto el ingreso relacionado como el costo docente. Las otras salidas manuales se toman por fecha dentro de ese mismo rango.`
             : 'Sin período académico seleccionado, la vista funciona por rango de fechas. Las otras salidas manuales siempre se toman por fecha.'}
         </CardContent>
       </Card>

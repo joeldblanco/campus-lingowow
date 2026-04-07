@@ -13,11 +13,10 @@ import {
   type FinanceReportFilterInput,
 } from '@/schemas/finance'
 import {
-  ConfirmationStatus,
+  BookingStatus,
   FinancialMovementDirection,
   FinancialMovementSourceType,
   FinancialMovementStatus,
-  InvoiceStatus,
   Prisma,
   SubscriptionStatus,
 } from '@prisma/client'
@@ -26,6 +25,7 @@ import {
   differenceInCalendarDays,
   endOfDay,
   endOfMonth,
+  format,
   isSameMonth,
   isSameYear,
   startOfDay,
@@ -47,7 +47,7 @@ export interface FinancialReportFilters {
 
 export interface FinancialReportRow {
   id: string
-  sourceType: FinancialMovementSourceType
+  sourceType: FinancialMovementSourceType | 'SCHEDULED_CLASS_REVENUE'
   sourceId: string | null
   academicPeriodId?: string | null
   academicPeriodName?: string | null
@@ -196,77 +196,89 @@ function sortFinancialRows(rows: FinancialReportRow[]) {
   )
 }
 
-async function getInvoiceRows(
-  start: Date,
-  end: Date,
-  basis: 'cash' | 'accrual',
-  period: ResolvedAcademicPeriodFilter | null
-) {
-  const where: Prisma.InvoiceWhereInput = period
-    ? {
-        ...(basis === 'cash'
-          ? {
-              status: InvoiceStatus.PAID,
-            }
-          : {
-              status: {
-                in: [InvoiceStatus.SENT, InvoiceStatus.PAID, InvoiceStatus.OVERDUE],
-              },
-            }),
+const revenueClassBookingArgs = Prisma.validator<Prisma.ClassBookingDefaultArgs>()({
+  select: {
+    id: true,
+    day: true,
+    timeSlot: true,
+    status: true,
+    enrollment: {
+      select: {
+        id: true,
+        classesTotal: true,
+        academicPeriodId: true,
+        academicPeriod: {
+          select: {
+            name: true,
+          },
+        },
+        course: {
+          select: {
+            id: true,
+            title: true,
+            isSynchronous: true,
+          },
+        },
+        student: {
+          select: {
+            name: true,
+            lastName: true,
+            email: true,
+          },
+        },
         purchases: {
-          some: {
-            enrollment: {
-              academicPeriodId: period.id,
+          orderBy: {
+            createdAt: 'desc',
+          },
+          select: {
+            id: true,
+            proratedPrice: true,
+            proratedClasses: true,
+            product: {
+              select: {
+                id: true,
+                name: true,
+                price: true,
+                requiresScheduling: true,
+                courseId: true,
+              },
             },
-          },
-        },
-      }
-    : basis === 'cash'
-      ? {
-          status: InvoiceStatus.PAID,
-          paidAt: {
-            gte: start,
-            lte: end,
-          },
-        }
-      : {
-          status: {
-            in: [InvoiceStatus.SENT, InvoiceStatus.PAID, InvoiceStatus.OVERDUE],
-          },
-          createdAt: {
-            gte: start,
-            lte: end,
-          },
-        }
-
-  const invoices = await db.invoice.findMany({
-    where,
-    select: {
-      id: true,
-      invoiceNumber: true,
-      subtotal: true,
-      tax: true,
-      discount: true,
-      total: true,
-      currency: true,
-      status: true,
-      createdAt: true,
-      paidAt: true,
-      user: {
-        select: {
-          name: true,
-          lastName: true,
-          email: true,
-        },
-      },
-      purchases: {
-        select: {
-          enrollment: {
-            select: {
-              academicPeriod: {
-                select: {
-                  id: true,
-                  name: true,
+            invoice: {
+              select: {
+                id: true,
+                invoiceNumber: true,
+                subtotal: true,
+                discount: true,
+                tax: true,
+                total: true,
+                currency: true,
+                status: true,
+                createdAt: true,
+                paidAt: true,
+                items: {
+                  select: {
+                    total: true,
+                    price: true,
+                    quantity: true,
+                    productId: true,
+                    product: {
+                      select: {
+                        id: true,
+                        courseId: true,
+                        requiresScheduling: true,
+                        price: true,
+                      },
+                    },
+                    plan: {
+                      select: {
+                        id: true,
+                        price: true,
+                        courseId: true,
+                        includesClasses: true,
+                        classesPerPeriod: true,
+                      },
+                    },
+                  },
                 },
               },
             },
@@ -274,41 +286,149 @@ async function getInvoiceRows(
         },
       },
     },
+  },
+})
+
+type RevenueClassBooking = Prisma.ClassBookingGetPayload<typeof revenueClassBookingArgs>
+
+function resolveRevenueInvoiceItem(purchase: RevenueClassBooking['enrollment']['purchases'][number], courseId: string) {
+  return (
+    purchase.invoice.items.find(
+      (item) => item.productId === purchase.product.id || item.product?.id === purchase.product.id
+    ) ||
+    purchase.invoice.items.find(
+      (item) => item.plan?.includesClasses && item.plan.courseId === courseId
+    ) ||
+    purchase.invoice.items.find((item) => item.product?.courseId === courseId) ||
+    purchase.invoice.items[0] ||
+    null
+  )
+}
+
+function resolveScheduledClassRevenue(booking: RevenueClassBooking) {
+  const purchase = booking.enrollment.purchases[0]
+
+  if (!purchase) {
+    return null
+  }
+
+  const synchronousProductPrice =
+    (purchase.product.requiresScheduling || booking.enrollment.course.isSynchronous) &&
+    purchase.product.price > 0
+      ? roundCurrency(purchase.product.price)
+      : null
+
+  if (synchronousProductPrice !== null) {
+    return {
+      sourceId: purchase.product.id,
+      grossAmount: synchronousProductPrice,
+      discountAmount: 0,
+      netAmount: synchronousProductPrice,
+      currency: purchase.invoice.currency,
+      referenceLabel: purchase.product.name,
+    }
+  }
+
+  const matchedItem = resolveRevenueInvoiceItem(purchase, booking.enrollment.course.id)
+  const totalClasses = Math.max(
+    purchase.proratedClasses ||
+      matchedItem?.plan?.classesPerPeriod ||
+      booking.enrollment.classesTotal ||
+      1,
+    1
+  )
+
+  const subtotalBase = roundCurrency(
+    purchase.proratedPrice ||
+      matchedItem?.total ||
+      (matchedItem ? matchedItem.price * matchedItem.quantity : 0) ||
+      purchase.invoice.total
+  )
+
+  const subtotalDenominator = purchase.invoice.subtotal > 0 ? purchase.invoice.subtotal : subtotalBase
+  const allocationFactor = subtotalDenominator > 0 ? subtotalBase / subtotalDenominator : 1
+  const totalDiscountShare = roundCurrency(purchase.invoice.discount * allocationFactor)
+  const totalTaxShare = roundCurrency(purchase.invoice.tax * allocationFactor)
+  const totalGrossRevenue = roundCurrency(subtotalBase + totalTaxShare)
+  const totalNetRevenue = roundCurrency(totalGrossRevenue - totalDiscountShare)
+
+  return {
+    sourceId: purchase.id,
+    grossAmount: roundCurrency(totalGrossRevenue / totalClasses),
+    discountAmount: roundCurrency(totalDiscountShare / totalClasses),
+    netAmount: roundCurrency(totalNetRevenue / totalClasses),
+    currency: purchase.invoice.currency,
+    referenceLabel: purchase.invoice.invoiceNumber,
+  }
+}
+
+async function getScheduledClassRevenueRows(
+  start: Date,
+  end: Date,
+  period: ResolvedAcademicPeriodFilter | null
+) {
+  const bookings = await db.classBooking.findMany({
+    where: {
+      status: {
+        in: [BookingStatus.CONFIRMED, BookingStatus.COMPLETED],
+      },
+      day: {
+        gte: format(start, 'yyyy-MM-dd'),
+        lte: format(end, 'yyyy-MM-dd'),
+      },
+      ...(period
+        ? {
+            enrollment: {
+              academicPeriodId: period.id,
+            },
+          }
+        : {}),
+    },
+    ...revenueClassBookingArgs,
     orderBy: {
-      createdAt: 'desc',
+      day: 'desc',
     },
   })
 
-  return invoices.map<FinancialReportRow>((invoice) => {
-    const linkedPeriod =
-      invoice.purchases.find((purchase) => purchase.enrollment?.academicPeriod)?.enrollment
-        ?.academicPeriod || null
+  return bookings.flatMap<FinancialReportRow>((booking) => {
+    const revenue = resolveScheduledClassRevenue(booking)
 
-    return {
-      id: `invoice-${invoice.id}`,
-      sourceType: FinancialMovementSourceType.INVOICE,
-      sourceId: invoice.id,
-      academicPeriodId: linkedPeriod?.id || null,
-      academicPeriodName: linkedPeriod?.name || period?.name || null,
-      direction: FinancialMovementDirection.INCOME,
-      status: invoice.status,
-      category: 'Facturacion',
-      subcategory: invoice.discount > 0 ? 'Con descuento' : null,
-      description: `Factura ${invoice.invoiceNumber}`,
-      counterparty: getFullName(invoice.user.name, invoice.user.lastName, invoice.user.email),
-      amount: roundCurrency(invoice.subtotal + invoice.tax),
-      discountAmount: roundCurrency(invoice.discount),
-      netAmount: roundCurrency(invoice.total),
-      currency: invoice.currency,
-      baseAmount: roundCurrency(invoice.total),
-      accrualDate: invoice.createdAt.toISOString(),
-      cashDate: invoice.paidAt?.toISOString() || null,
-      effectiveDate:
-        (basis === 'cash' ? invoice.paidAt : invoice.createdAt)?.toISOString() ||
-        invoice.createdAt.toISOString(),
-      notes: null,
-      isManual: false,
+    if (!revenue) {
+      return []
     }
+
+    const classDate = new Date(`${booking.day}T00:00:00.000Z`).toISOString()
+    const studentName = getFullName(
+      booking.enrollment.student.name,
+      booking.enrollment.student.lastName,
+      booking.enrollment.student.email
+    )
+
+    return [
+      {
+        id: `scheduled-class-revenue-${booking.id}`,
+        sourceType: 'SCHEDULED_CLASS_REVENUE',
+        sourceId: revenue.sourceId,
+        academicPeriodId: booking.enrollment.academicPeriodId,
+        academicPeriodName: booking.enrollment.academicPeriod?.name || period?.name || null,
+        direction: FinancialMovementDirection.INCOME,
+        status: booking.status,
+        category: 'Ingresos por clases',
+        subcategory: booking.enrollment.course.title,
+        description: `Clase agendada ${booking.day} ${booking.timeSlot}`,
+        counterparty: studentName,
+        amount: revenue.grossAmount,
+        discountAmount: revenue.discountAmount,
+        netAmount: revenue.netAmount,
+        currency: revenue.currency,
+        baseAmount: revenue.netAmount,
+        accrualDate: classDate,
+        cashDate: classDate,
+        effectiveDate: classDate,
+        notes: `Referencia: ${revenue.referenceLabel}`,
+        isManual: false,
+      },
+    ]
   })
 }
 
@@ -406,67 +526,6 @@ async function getProjectedSubscriptionRevenue(start: Date, end: Date) {
   }
 }
 
-async function getTeacherPaymentConfirmationRows(start: Date, end: Date) {
-  const confirmations = await db.teacherPaymentConfirmation.findMany({
-    where: {
-      status: {
-        in: [ConfirmationStatus.PENDING, ConfirmationStatus.APPROVED],
-      },
-      confirmedAt: {
-        gte: start,
-        lte: end,
-      },
-    },
-    select: {
-      id: true,
-      amount: true,
-      confirmedAt: true,
-      periodStart: true,
-      periodEnd: true,
-      notes: true,
-      status: true,
-      teacher: {
-        select: {
-          name: true,
-          lastName: true,
-          email: true,
-        },
-      },
-    },
-    orderBy: {
-      confirmedAt: 'desc',
-    },
-  })
-
-  return confirmations.map<FinancialReportRow>((confirmation) => ({
-    id: `teacher-payment-${confirmation.id}`,
-    sourceType: FinancialMovementSourceType.TEACHER_PAYMENT_CONFIRMATION,
-    sourceId: confirmation.id,
-    academicPeriodId: null,
-    academicPeriodName: null,
-    direction: FinancialMovementDirection.EXPENSE,
-    status: confirmation.status,
-    category: 'Pagos a docentes',
-    subcategory: 'Caja real',
-    description: `Pago confirmado a ${getFullName(confirmation.teacher.name, confirmation.teacher.lastName, confirmation.teacher.email) || 'docente'}`,
-    counterparty: getFullName(
-      confirmation.teacher.name,
-      confirmation.teacher.lastName,
-      confirmation.teacher.email
-    ),
-    amount: roundCurrency(confirmation.amount),
-    discountAmount: 0,
-    netAmount: roundCurrency(confirmation.amount),
-    currency: 'USD',
-    baseAmount: roundCurrency(confirmation.amount),
-    accrualDate: confirmation.periodEnd.toISOString(),
-    cashDate: confirmation.confirmedAt.toISOString(),
-    effectiveDate: confirmation.confirmedAt.toISOString(),
-    notes: confirmation.notes,
-    isManual: false,
-  }))
-}
-
 async function getTeacherPayableRows(
   start: Date,
   end: Date,
@@ -476,6 +535,7 @@ async function getTeacherPayableRows(
     startDate: period ? undefined : start,
     endDate: period ? undefined : end,
     periodId: period?.id,
+    calculationMode: 'scheduled',
   })
 
   return report.teacherReports
@@ -489,8 +549,10 @@ async function getTeacherPayableRows(
       direction: FinancialMovementDirection.EXPENSE,
       status: teacher.paymentConfirmed ? 'CONFIRMED' : 'CALCULATED',
       category: 'Pagos a docentes',
-      subcategory: 'Devengado',
-      description: `Pago devengado por clases de ${teacher.teacherName}`,
+      subcategory: period ? 'Clases agendadas' : 'Devengado',
+      description: period
+        ? `Pago estimado por clases agendadas de ${teacher.teacherName}`
+        : `Pago devengado por clases de ${teacher.teacherName}`,
       counterparty: teacher.teacherName,
       amount: roundCurrency(teacher.totalPayment),
       discountAmount: 0,
@@ -642,7 +704,11 @@ function buildSummary(
     ),
     invoiceIncome: roundCurrency(
       incomeRows
-        .filter((row) => row.sourceType === FinancialMovementSourceType.INVOICE)
+        .filter(
+          (row) =>
+            row.sourceType === FinancialMovementSourceType.INVOICE ||
+            row.sourceType === 'SCHEDULED_CLASS_REVENUE'
+        )
         .reduce((sum, row) => sum + row.netAmount, 0)
     ),
     teacherExpenses: roundCurrency(
@@ -676,29 +742,15 @@ async function collectFinancialRows(
   filters: FinanceReportFilterInput,
   period: ResolvedAcademicPeriodFilter | null
 ) {
-  const [invoiceRows, manualRows, teacherRows, incentiveRows] = period
-    ? await Promise.all([
-        getInvoiceRows(start, end, basis, period),
-        getManualMovementRows(start, end, basis, filters),
-        getTeacherPayableRows(start, end, period),
-        getTeacherIncentiveRows(start, end, basis, period),
-      ])
-    : basis === 'cash'
-      ? await Promise.all([
-          getInvoiceRows(start, end, basis, null),
-          getManualMovementRows(start, end, basis, filters),
-          getTeacherPaymentConfirmationRows(start, end),
-          getTeacherIncentiveRows(start, end, basis, null),
-        ])
-      : await Promise.all([
-          getInvoiceRows(start, end, basis, null),
-          getManualMovementRows(start, end, basis, filters),
-          getTeacherPayableRows(start, end, null),
-          getTeacherIncentiveRows(start, end, basis, null),
-        ])
+  const [incomeRows, manualRows, teacherRows, incentiveRows] = await Promise.all([
+    getScheduledClassRevenueRows(start, end, period),
+    getManualMovementRows(start, end, basis, filters),
+    getTeacherPayableRows(start, end, period),
+    getTeacherIncentiveRows(start, end, basis, period),
+  ])
 
   return applyClientFilters(
-    sortFinancialRows([...invoiceRows, ...manualRows, ...teacherRows, ...incentiveRows]),
+    sortFinancialRows([...incomeRows, ...manualRows, ...teacherRows, ...incentiveRows]),
     filters
   )
 }

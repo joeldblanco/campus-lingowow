@@ -14,18 +14,18 @@ export function FinanceSummaryCards({ summary }: FinanceSummaryCardsProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
       <SimpleKPICard
-        title="Entró por Facturas"
+        title="Entró por Clases"
         value={summary.invoiceIncome}
         format="currency"
         icon={<ArrowUpCircle className="h-5 w-5" />}
-        description="Facturas asociadas al período o rango seleccionado"
+        description="Ingreso calculado desde clases agendadas del período"
       />
       <SimpleKPICard
         title="Salió a Profesores"
         value={teacherOutflows}
         format="currency"
         icon={<Landmark className="h-5 w-5" />}
-        description="Costo docente e incentivos del período evaluado"
+        description="Costo docente calculado desde clases agendadas del período"
       />
       <SimpleKPICard
         title="Otras Salidas"

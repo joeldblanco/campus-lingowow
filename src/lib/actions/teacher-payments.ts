@@ -10,7 +10,10 @@ export interface TeacherPaymentFilters {
   endDate?: Date
   teacherId?: string
   periodId?: string
+  calculationMode?: TeacherPaymentCalculationMode
 }
+
+export type TeacherPaymentCalculationMode = 'completed-payable' | 'scheduled'
 
 export interface TeacherPaymentDetail {
   teacherId: string
@@ -141,9 +144,17 @@ const paymentClassBookingArgs = Prisma.validator<Prisma.ClassBookingDefaultArgs>
 type PaymentClassBooking = Prisma.ClassBookingGetPayload<typeof paymentClassBookingArgs>
 
 async function resolvePaymentFilterContext(filters: TeacherPaymentFilters) {
-  const whereClause: Prisma.ClassBookingWhereInput = {
-    status: BookingStatus.COMPLETED,
-  }
+  const calculationMode = filters.calculationMode || 'completed-payable'
+  const whereClause: Prisma.ClassBookingWhereInput =
+    calculationMode === 'scheduled'
+      ? {
+          status: {
+            in: [BookingStatus.CONFIRMED, BookingStatus.COMPLETED],
+          },
+        }
+      : {
+          status: BookingStatus.COMPLETED,
+        }
 
   let start: Date
   let end: Date
@@ -161,10 +172,11 @@ async function resolvePaymentFilterContext(filters: TeacherPaymentFilters) {
   } else {
     start = filters.startDate || startOfMonth(new Date())
     end = filters.endDate || endOfMonth(new Date())
-    whereClause.day = {
-      gte: format(start, 'yyyy-MM-dd'),
-      lte: format(end, 'yyyy-MM-dd'),
-    }
+  }
+
+  whereClause.day = {
+    gte: format(start, 'yyyy-MM-dd'),
+    lte: format(end, 'yyyy-MM-dd'),
   }
 
   if (filters.teacherId) {
@@ -175,6 +187,7 @@ async function resolvePaymentFilterContext(filters: TeacherPaymentFilters) {
     whereClause,
     start,
     end,
+    calculationMode,
   }
 }
 
@@ -256,9 +269,9 @@ async function getPaymentConfirmationMap(teacherIds: string[], start: Date, end:
 export async function getTeacherPaymentsReport(
   filters: TeacherPaymentFilters = {}
 ): Promise<TeacherPaymentsReport> {
-  const { whereClause, start, end } = await resolvePaymentFilterContext(filters)
+  const { whereClause, start, end, calculationMode } = await resolvePaymentFilterContext(filters)
 
-  const [completedClasses, teacherCoursePayments] = await Promise.all([
+  const [matchingClasses, teacherCoursePayments] = await Promise.all([
     db.classBooking.findMany({
       where: whereClause,
       ...paymentClassBookingArgs,
@@ -269,9 +282,11 @@ export async function getTeacherPaymentsReport(
     getTeacherCoursePaymentMap(),
   ])
 
-  const payableClasses = completedClasses.filter(isPayableClass)
+  const countedClasses =
+    calculationMode === 'scheduled' ? matchingClasses : matchingClasses.filter(isPayableClass)
+
   const confirmationMap = await getPaymentConfirmationMap(
-    Array.from(new Set(payableClasses.map((classBooking) => classBooking.teacherId))),
+    Array.from(new Set(countedClasses.map((classBooking) => classBooking.teacherId))),
     start,
     end
   )
@@ -280,7 +295,7 @@ export async function getTeacherPaymentsReport(
   let totalHours = 0
   let totalPayment = 0
 
-  for (const classBooking of payableClasses) {
+  for (const classBooking of countedClasses) {
     const teacher = classBooking.teacher
 
     if (!teacherPaymentMap.has(teacher.id)) {
@@ -354,7 +369,7 @@ export async function getTeacherPaymentsReport(
 
   const summary: PaymentPeriodSummary = {
     totalTeachers: teacherReports.length,
-    totalClasses: payableClasses.length,
+    totalClasses: countedClasses.length,
     totalHours: Math.round(totalHours * 10) / 10,
     totalPayment: Math.round(totalPayment * 100) / 100,
     averagePaymentPerTeacher:
@@ -362,12 +377,14 @@ export async function getTeacherPaymentsReport(
         ? Math.round((totalPayment / teacherReports.length) * 100) / 100
         : 0,
     averagePaymentPerClass:
-      payableClasses.length > 0
-        ? Math.round((totalPayment / payableClasses.length) * 100) / 100
+      countedClasses.length > 0
+        ? Math.round((totalPayment / countedClasses.length) * 100) / 100
         : 0,
-    totalCompletedClasses: completedClasses.length,
-    totalPayableClasses: payableClasses.length,
-    totalNonPayableClasses: completedClasses.length - payableClasses.length,
+    totalCompletedClasses: matchingClasses.filter(
+      (classBooking) => classBooking.status === BookingStatus.COMPLETED
+    ).length,
+    totalPayableClasses: countedClasses.length,
+    totalNonPayableClasses: matchingClasses.length - countedClasses.length,
   }
 
   return {

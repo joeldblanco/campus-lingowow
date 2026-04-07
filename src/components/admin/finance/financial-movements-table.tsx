@@ -19,8 +19,9 @@ interface FinancialMovementsTableProps {
 
 const sourceLabels: Record<string, string> = {
   MANUAL: 'Manual',
+  SCHEDULED_CLASS_REVENUE: 'Clase agendada',
   INVOICE: 'Factura',
-  TEACHER_PAYABLE: 'Pago devengado',
+  TEACHER_PAYABLE: 'Pago programado',
   TEACHER_PAYMENT_CONFIRMATION: 'Pago confirmado',
   TEACHER_INCENTIVE: 'Incentivo',
   REFUND: 'Reembolso',
@@ -53,7 +54,7 @@ export function FinancialMovementsTable({ rows, basis }: FinancialMovementsTable
         <CardTitle>Detalle de Caja</CardTitle>
         <CardDescription>
           {basis === 'cash'
-            ? 'Facturas y costo docente atribuidos al período o rango seleccionado, más otras salidas manuales por fecha.'
+            ? 'Ingresos y costo docente atribuidos a clases agendadas del período o rango seleccionado, más otras salidas manuales por fecha.'
             : 'Devengado: obligaciones e ingresos reconocidos dentro del rango seleccionado.'}
         </CardDescription>
       </CardHeader>
