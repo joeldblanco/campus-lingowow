@@ -23,7 +23,9 @@ const optionalString = z
 
 const optionalDate = z
   .union([z.coerce.date(), z.null(), z.undefined()])
-  .transform((value) => (value instanceof Date && !Number.isNaN(value.getTime()) ? value : undefined))
+  .transform((value) =>
+    value instanceof Date && !Number.isNaN(value.getTime()) ? value : undefined
+  )
 
 export const createFinancialMovementSchema = z.object({
   direction: z.enum(financialMovementDirectionOptions),

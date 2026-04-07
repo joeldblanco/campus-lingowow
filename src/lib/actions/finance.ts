@@ -191,7 +191,9 @@ function getFullName(name?: string | null, lastName?: string | null, fallback?: 
 }
 
 function sortFinancialRows(rows: FinancialReportRow[]) {
-  return rows.sort((a, b) => new Date(b.effectiveDate).getTime() - new Date(a.effectiveDate).getTime())
+  return rows.sort(
+    (a, b) => new Date(b.effectiveDate).getTime() - new Date(a.effectiveDate).getTime()
+  )
 }
 
 async function getInvoiceRows(
@@ -566,7 +568,11 @@ async function getTeacherIncentiveRows(
     category: 'Incentivos docentes',
     subcategory: incentive.period.name,
     description: `Incentivo ${incentive.type.toLowerCase()} para ${getFullName(incentive.teacher.name, incentive.teacher.lastName, incentive.teacher.email) || 'docente'}`,
-    counterparty: getFullName(incentive.teacher.name, incentive.teacher.lastName, incentive.teacher.email),
+    counterparty: getFullName(
+      incentive.teacher.name,
+      incentive.teacher.lastName,
+      incentive.teacher.email
+    ),
     amount: roundCurrency(incentive.bonusAmount),
     discountAmount: 0,
     netAmount: roundCurrency(incentive.bonusAmount),
@@ -589,7 +595,11 @@ function applyClientFilters(rows: FinancialReportRow[], filters: FinanceReportFi
       return false
     }
 
-    if (filters.sourceType && filters.sourceType !== 'ALL' && row.sourceType !== filters.sourceType) {
+    if (
+      filters.sourceType &&
+      filters.sourceType !== 'ALL' &&
+      row.sourceType !== filters.sourceType
+    ) {
       return false
     }
 
@@ -598,7 +608,8 @@ function applyClientFilters(rows: FinancialReportRow[], filters: FinanceReportFi
     }
 
     if (filters.search) {
-      const haystack = `${row.description} ${row.counterparty || ''} ${row.category} ${row.notes || ''} ${row.academicPeriodName || ''}`.toLowerCase()
+      const haystack =
+        `${row.description} ${row.counterparty || ''} ${row.category} ${row.notes || ''} ${row.academicPeriodName || ''}`.toLowerCase()
       if (!haystack.includes(filters.search.toLowerCase())) {
         return false
       }
@@ -608,7 +619,10 @@ function applyClientFilters(rows: FinancialReportRow[], filters: FinanceReportFi
   })
 }
 
-function buildSummary(rows: FinancialReportRow[], basis: 'cash' | 'accrual'): FinancialReportSummary {
+function buildSummary(
+  rows: FinancialReportRow[],
+  basis: 'cash' | 'accrual'
+): FinancialReportSummary {
   const incomeRows = rows.filter((row) => row.direction === FinancialMovementDirection.INCOME)
   const expenseRows = rows.filter((row) => row.direction === FinancialMovementDirection.EXPENSE)
 
@@ -646,14 +660,10 @@ function buildSummary(rows: FinancialReportRow[], basis: 'cash' | 'accrual'): Fi
         .reduce((sum, row) => sum + row.netAmount, 0)
     ),
     manualIncome: roundCurrency(
-      incomeRows
-        .filter((row) => row.isManual)
-        .reduce((sum, row) => sum + row.netAmount, 0)
+      incomeRows.filter((row) => row.isManual).reduce((sum, row) => sum + row.netAmount, 0)
     ),
     manualExpenses: roundCurrency(
-      expenseRows
-        .filter((row) => row.isManual)
-        .reduce((sum, row) => sum + row.netAmount, 0)
+      expenseRows.filter((row) => row.isManual).reduce((sum, row) => sum + row.netAmount, 0)
     ),
     movementCount: rows.length,
   }
@@ -666,26 +676,25 @@ async function collectFinancialRows(
   filters: FinanceReportFilterInput,
   period: ResolvedAcademicPeriodFilter | null
 ) {
-  const [invoiceRows, manualRows, teacherRows, incentiveRows] =
-    period
+  const [invoiceRows, manualRows, teacherRows, incentiveRows] = period
+    ? await Promise.all([
+        getInvoiceRows(start, end, basis, period),
+        getManualMovementRows(start, end, basis, filters),
+        getTeacherPayableRows(start, end, period),
+        getTeacherIncentiveRows(start, end, basis, period),
+      ])
+    : basis === 'cash'
       ? await Promise.all([
-          getInvoiceRows(start, end, basis, period),
+          getInvoiceRows(start, end, basis, null),
           getManualMovementRows(start, end, basis, filters),
-          getTeacherPayableRows(start, end, period),
-          getTeacherIncentiveRows(start, end, basis, period),
+          getTeacherPaymentConfirmationRows(start, end),
+          getTeacherIncentiveRows(start, end, basis, null),
         ])
-      : basis === 'cash'
-        ? await Promise.all([
-            getInvoiceRows(start, end, basis, null),
-            getManualMovementRows(start, end, basis, filters),
-            getTeacherPaymentConfirmationRows(start, end),
-            getTeacherIncentiveRows(start, end, basis, null),
-          ])
-        : await Promise.all([
-            getInvoiceRows(start, end, basis, null),
-            getManualMovementRows(start, end, basis, filters),
-            getTeacherPayableRows(start, end, null),
-            getTeacherIncentiveRows(start, end, basis, null),
+      : await Promise.all([
+          getInvoiceRows(start, end, basis, null),
+          getManualMovementRows(start, end, basis, filters),
+          getTeacherPayableRows(start, end, null),
+          getTeacherIncentiveRows(start, end, basis, null),
         ])
 
   return applyClientFilters(
@@ -736,7 +745,12 @@ async function buildMonthProjection(cutoffDate: Date): Promise<FinancialProjecti
     includeDrafts: false,
   })
 
-  const futureManualRows = await getManualMovementRows(remainingStart, monthEnd, 'accrual', futureFilters)
+  const futureManualRows = await getManualMovementRows(
+    remainingStart,
+    monthEnd,
+    'accrual',
+    futureFilters
+  )
   const manualIncome = roundCurrency(
     futureManualRows
       .filter((row) => row.direction === FinancialMovementDirection.INCOME)
@@ -770,7 +784,9 @@ async function buildMonthProjection(cutoffDate: Date): Promise<FinancialProjecti
     actualAccruedNet: monthToDateSummary.netIncome,
     projectedAdditionalIncome,
     projectedAdditionalExpenses,
-    projectedClosingIncome: roundCurrency(monthToDateSummary.totalIncome + projectedAdditionalIncome),
+    projectedClosingIncome: roundCurrency(
+      monthToDateSummary.totalIncome + projectedAdditionalIncome
+    ),
     projectedClosingExpenses: roundCurrency(
       monthToDateSummary.totalExpenses + projectedAdditionalExpenses
     ),
