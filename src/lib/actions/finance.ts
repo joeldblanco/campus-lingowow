@@ -205,7 +205,6 @@ const revenueClassBookingArgs = Prisma.validator<Prisma.ClassBookingDefaultArgs>
     enrollment: {
       select: {
         id: true,
-        classesTotal: true,
         academicPeriodId: true,
         academicPeriod: {
           select: {
@@ -221,67 +220,10 @@ const revenueClassBookingArgs = Prisma.validator<Prisma.ClassBookingDefaultArgs>
         },
         student: {
           select: {
+            id: true,
             name: true,
             lastName: true,
             email: true,
-          },
-        },
-        purchases: {
-          orderBy: {
-            createdAt: 'desc',
-          },
-          select: {
-            id: true,
-            proratedPrice: true,
-            proratedClasses: true,
-            product: {
-              select: {
-                id: true,
-                name: true,
-                price: true,
-                requiresScheduling: true,
-                courseId: true,
-              },
-            },
-            invoice: {
-              select: {
-                id: true,
-                invoiceNumber: true,
-                subtotal: true,
-                discount: true,
-                tax: true,
-                total: true,
-                currency: true,
-                status: true,
-                createdAt: true,
-                paidAt: true,
-                items: {
-                  select: {
-                    total: true,
-                    price: true,
-                    quantity: true,
-                    productId: true,
-                    product: {
-                      select: {
-                        id: true,
-                        courseId: true,
-                        requiresScheduling: true,
-                        price: true,
-                      },
-                    },
-                    plan: {
-                      select: {
-                        id: true,
-                        price: true,
-                        courseId: true,
-                        includesClasses: true,
-                        classesPerPeriod: true,
-                      },
-                    },
-                  },
-                },
-              },
-            },
           },
         },
       },
@@ -291,78 +233,86 @@ const revenueClassBookingArgs = Prisma.validator<Prisma.ClassBookingDefaultArgs>
 
 type RevenueClassBooking = Prisma.ClassBookingGetPayload<typeof revenueClassBookingArgs>
 
-function resolveRevenueInvoiceItem(
-  purchase: RevenueClassBooking['enrollment']['purchases'][number],
+interface CourseRevenueProduct {
+  id: string
   courseId: string
-) {
-  return (
-    purchase.invoice.items.find(
-      (item) => item.productId === purchase.product.id || item.product?.id === purchase.product.id
-    ) ||
-    purchase.invoice.items.find(
-      (item) => item.plan?.includesClasses && item.plan.courseId === courseId
-    ) ||
-    purchase.invoice.items.find((item) => item.product?.courseId === courseId) ||
-    purchase.invoice.items[0] ||
-    null
-  )
+  name: string
+  price: number
+  requiresScheduling: boolean
 }
 
-function resolveScheduledClassRevenue(booking: RevenueClassBooking) {
-  const purchase = booking.enrollment.purchases[0]
-
-  if (!purchase) {
-    return null
+async function getCourseRevenueProductMap(courseIds: string[]) {
+  if (courseIds.length === 0) {
+    return new Map<string, CourseRevenueProduct>()
   }
 
-  const synchronousProductPrice =
-    (purchase.product.requiresScheduling || booking.enrollment.course.isSynchronous) &&
-    purchase.product.price > 0
-      ? roundCurrency(purchase.product.price)
-      : null
+  const products = await db.product.findMany({
+    where: {
+      courseId: {
+        in: courseIds,
+      },
+      isActive: true,
+    },
+    select: {
+      id: true,
+      courseId: true,
+      name: true,
+      price: true,
+      requiresScheduling: true,
+      sortOrder: true,
+      createdAt: true,
+    },
+    orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
+  })
 
-  if (synchronousProductPrice !== null) {
-    return {
-      sourceId: purchase.product.id,
-      grossAmount: synchronousProductPrice,
-      discountAmount: 0,
-      netAmount: synchronousProductPrice,
-      currency: purchase.invoice.currency,
-      referenceLabel: purchase.product.name,
+  const productMap = new Map<string, CourseRevenueProduct>()
+
+  for (const product of products) {
+    if (!product.courseId) {
+      continue
+    }
+
+    const normalizedProduct: CourseRevenueProduct = {
+      id: product.id,
+      courseId: product.courseId,
+      name: product.name,
+      price: product.price,
+      requiresScheduling: product.requiresScheduling,
+    }
+
+    const current = productMap.get(product.courseId)
+
+    if (!current) {
+      productMap.set(product.courseId, normalizedProduct)
+      continue
+    }
+
+    if (!current.requiresScheduling && product.requiresScheduling) {
+      productMap.set(product.courseId, normalizedProduct)
     }
   }
 
-  const matchedItem = resolveRevenueInvoiceItem(purchase, booking.enrollment.course.id)
-  const totalClasses = Math.max(
-    purchase.proratedClasses ||
-      matchedItem?.plan?.classesPerPeriod ||
-      booking.enrollment.classesTotal ||
-      1,
-    1
-  )
+  return productMap
+}
 
-  const subtotalBase = roundCurrency(
-    purchase.proratedPrice ||
-      matchedItem?.total ||
-      (matchedItem ? matchedItem.price * matchedItem.quantity : 0) ||
-      purchase.invoice.total
-  )
+function resolveScheduledClassRevenue(
+  booking: RevenueClassBooking,
+  courseRevenueProductMap: Map<string, CourseRevenueProduct>
+) {
+  const product = courseRevenueProductMap.get(booking.enrollment.course.id)
 
-  const subtotalDenominator =
-    purchase.invoice.subtotal > 0 ? purchase.invoice.subtotal : subtotalBase
-  const allocationFactor = subtotalDenominator > 0 ? subtotalBase / subtotalDenominator : 1
-  const totalDiscountShare = roundCurrency(purchase.invoice.discount * allocationFactor)
-  const totalTaxShare = roundCurrency(purchase.invoice.tax * allocationFactor)
-  const totalGrossRevenue = roundCurrency(subtotalBase + totalTaxShare)
-  const totalNetRevenue = roundCurrency(totalGrossRevenue - totalDiscountShare)
+  if (!product || product.price <= 0) {
+    return null
+  }
 
   return {
-    sourceId: purchase.id,
-    grossAmount: roundCurrency(totalGrossRevenue / totalClasses),
-    discountAmount: roundCurrency(totalDiscountShare / totalClasses),
-    netAmount: roundCurrency(totalNetRevenue / totalClasses),
-    currency: purchase.invoice.currency,
-    referenceLabel: purchase.invoice.invoiceNumber,
+    sourceId: product.id,
+    grossAmount: roundCurrency(product.price),
+    discountAmount: 0,
+    netAmount: roundCurrency(product.price),
+    currency: 'USD',
+    referenceLabel: product.name,
+    courseTitle: booking.enrollment.course.title,
   }
 }
 
@@ -394,46 +344,107 @@ async function getScheduledClassRevenueRows(
     },
   })
 
-  return bookings.flatMap<FinancialReportRow>((booking) => {
-    const revenue = resolveScheduledClassRevenue(booking)
+  const courseRevenueProductMap = await getCourseRevenueProductMap(
+    Array.from(new Set(bookings.map((booking) => booking.enrollment.course.id)))
+  )
+
+  const groupedRows = new Map<
+    string,
+    {
+      studentId: string
+      studentName: string
+      academicPeriodId: string | null
+      academicPeriodName: string | null
+      grossAmount: number
+      discountAmount: number
+      netAmount: number
+      currency: string
+      classCount: number
+      courseTitles: Set<string>
+      productNotes: Set<string>
+      firstDate: string
+      lastDate: string
+    }
+  >()
+
+  for (const booking of bookings) {
+    const revenue = resolveScheduledClassRevenue(booking, courseRevenueProductMap)
 
     if (!revenue) {
-      return []
+      continue
     }
 
+    const studentId = booking.enrollment.student.id
+    const studentName =
+      getFullName(
+        booking.enrollment.student.name,
+        booking.enrollment.student.lastName,
+        booking.enrollment.student.email
+      ) ||
+      booking.enrollment.student.email ||
+      'Estudiante'
     const classDate = new Date(`${booking.day}T00:00:00.000Z`).toISOString()
-    const studentName = getFullName(
-      booking.enrollment.student.name,
-      booking.enrollment.student.lastName,
-      booking.enrollment.student.email
-    )
+    const current = groupedRows.get(studentId)
 
-    return [
-      {
-        id: `scheduled-class-revenue-${booking.id}`,
-        sourceType: 'SCHEDULED_CLASS_REVENUE',
-        sourceId: revenue.sourceId,
+    if (!current) {
+      groupedRows.set(studentId, {
+        studentId,
+        studentName,
         academicPeriodId: booking.enrollment.academicPeriodId,
         academicPeriodName: booking.enrollment.academicPeriod?.name || period?.name || null,
-        direction: FinancialMovementDirection.INCOME,
-        status: booking.status,
-        category: 'Ingresos por clases',
-        subcategory: booking.enrollment.course.title,
-        description: `Clase agendada ${booking.day} ${booking.timeSlot}`,
-        counterparty: studentName,
-        amount: revenue.grossAmount,
+        grossAmount: revenue.grossAmount,
         discountAmount: revenue.discountAmount,
         netAmount: revenue.netAmount,
         currency: revenue.currency,
-        baseAmount: revenue.netAmount,
-        accrualDate: classDate,
-        cashDate: classDate,
-        effectiveDate: classDate,
-        notes: `Referencia: ${revenue.referenceLabel}`,
-        isManual: false,
-      },
-    ]
-  })
+        classCount: 1,
+        courseTitles: new Set([revenue.courseTitle]),
+        productNotes: new Set([
+          `${revenue.courseTitle}: ${revenue.currency} ${revenue.netAmount.toFixed(2)} por clase`,
+        ]),
+        firstDate: classDate,
+        lastDate: classDate,
+      })
+      continue
+    }
+
+    current.grossAmount = roundCurrency(current.grossAmount + revenue.grossAmount)
+    current.discountAmount = roundCurrency(current.discountAmount + revenue.discountAmount)
+    current.netAmount = roundCurrency(current.netAmount + revenue.netAmount)
+    current.classCount += 1
+    current.courseTitles.add(revenue.courseTitle)
+    current.productNotes.add(
+      `${revenue.courseTitle}: ${revenue.currency} ${revenue.netAmount.toFixed(2)} por clase`
+    )
+    current.firstDate = current.firstDate < classDate ? current.firstDate : classDate
+    current.lastDate = current.lastDate > classDate ? current.lastDate : classDate
+  }
+
+  return Array.from(groupedRows.values()).map<FinancialReportRow>((group) => ({
+    id: `scheduled-class-revenue-student-${group.studentId}`,
+    sourceType: 'SCHEDULED_CLASS_REVENUE',
+    sourceId: group.studentId,
+    academicPeriodId: group.academicPeriodId,
+    academicPeriodName: group.academicPeriodName,
+    direction: FinancialMovementDirection.INCOME,
+    status: 'SCHEDULED',
+    category: 'Ingresos por clases',
+    subcategory:
+      group.courseTitles.size === 1
+        ? Array.from(group.courseTitles)[0]
+        : `${group.courseTitles.size} cursos`,
+    description: `${group.classCount} clases agendadas del estudiante`,
+    counterparty: group.studentName,
+    amount: group.grossAmount,
+    discountAmount: group.discountAmount,
+    netAmount: group.netAmount,
+    currency: group.currency,
+    baseAmount: group.netAmount,
+    accrualDate: group.firstDate,
+    cashDate: group.lastDate,
+    effectiveDate: group.lastDate,
+    notes: Array.from(group.productNotes).join(' | '),
+    isManual: false,
+  }))
 }
 
 async function getManualMovementRows(

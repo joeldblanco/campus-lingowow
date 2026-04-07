@@ -18,7 +18,7 @@ export function FinanceSummaryCards({ summary }: FinanceSummaryCardsProps) {
         value={summary.invoiceIncome}
         format="currency"
         icon={<ArrowUpCircle className="h-5 w-5" />}
-        description="Ingreso calculado desde clases agendadas del período"
+        description="Ingreso agrupado por estudiante desde clases agendadas del período"
       />
       <SimpleKPICard
         title="Salió a Profesores"
