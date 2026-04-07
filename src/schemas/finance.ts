@@ -5,6 +5,7 @@ export const financialMovementDirectionOptions = ['INCOME', 'EXPENSE'] as const
 export const financialMovementStatusOptions = ['DRAFT', 'POSTED', 'VOID'] as const
 
 export const financeManualCategories = [
+  'Descuentos',
   'Herramientas',
   'Marketing',
   'Servicios',
@@ -31,6 +32,7 @@ export const createFinancialMovementSchema = z.object({
   direction: z.enum(financialMovementDirectionOptions),
   category: z.string().trim().min(1, 'La categoría es obligatoria'),
   subcategory: optionalString,
+  sourceId: optionalString,
   description: z.string().trim().min(3, 'La descripción es obligatoria').max(255),
   providerName: optionalString,
   amount: z.coerce.number().positive('El monto debe ser mayor a cero'),

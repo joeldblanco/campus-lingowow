@@ -330,6 +330,12 @@ export function FinanceDashboard() {
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
         onCreated={refreshAfterCreate}
+        rows={rows}
+        scope={{
+          periodName: selectedPeriod?.name || null,
+          startDate: filters.startDate,
+          endDate: filters.endDate,
+        }}
       />
     </div>
   )

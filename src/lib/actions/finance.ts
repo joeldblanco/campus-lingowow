@@ -65,6 +65,7 @@ export interface FinancialReportRow {
   accrualDate: string
   cashDate: string | null
   effectiveDate: string
+  unitCount: number | null
   notes: string | null
   isManual: boolean
 }
@@ -442,6 +443,7 @@ async function getScheduledClassRevenueRows(
     accrualDate: group.firstDate,
     cashDate: group.lastDate,
     effectiveDate: group.lastDate,
+    unitCount: group.classCount,
     notes: Array.from(group.productNotes).join(' | '),
     isManual: false,
   }))
@@ -504,6 +506,7 @@ async function getManualMovementRows(
       basis === 'cash'
         ? movement.cashDate?.toISOString() || movement.accrualDate.toISOString()
         : movement.accrualDate.toISOString(),
+    unitCount: null,
     notes: movement.notes,
     isManual: movement.sourceType === FinancialMovementSourceType.MANUAL,
   }))
@@ -577,6 +580,7 @@ async function getTeacherPayableRows(
       accrualDate: end.toISOString(),
       cashDate: teacher.paymentConfirmedAt?.toISOString() || null,
       effectiveDate: end.toISOString(),
+      unitCount: teacher.totalClasses,
       notes: null,
       isManual: false,
     }))
@@ -661,6 +665,7 @@ async function getTeacherIncentiveRows(
       basis === 'cash'
         ? incentive.paidAt?.toISOString() || incentive.createdAt.toISOString()
         : incentive.createdAt.toISOString(),
+    unitCount: null,
     notes: null,
     isManual: false,
   }))
@@ -936,6 +941,7 @@ export async function createFinancialMovement(rawInput: unknown) {
       data: {
         direction: input.direction,
         sourceType: FinancialMovementSourceType.MANUAL,
+        sourceId: input.sourceId,
         status: input.status,
         category: input.category,
         subcategory: input.subcategory,
