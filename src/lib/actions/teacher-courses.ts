@@ -1,6 +1,7 @@
 'use server'
 
 import { db } from '@/lib/db'
+import type { LessonForView } from '@/types/lesson'
 import { formatFullName } from '@/lib/utils/name-formatter'
 import { revalidatePath } from 'next/cache'
 
@@ -588,6 +589,102 @@ export async function getCourseContentForTeacher(courseId: string, teacherId: st
       error: 'Error al obtener el contenido del curso',
       course: null,
     }
+  }
+}
+
+export async function getLessonForTeacher(
+  courseId: string,
+  lessonId: string,
+  teacherId: string
+): Promise<LessonForView | null> {
+  try {
+    const lesson = await db.lesson.findFirst({
+      where: {
+        id: lessonId,
+        isPublished: true,
+        module: {
+          is: {
+            courseId,
+            isPublished: true,
+            course: {
+              OR: [
+                {
+                  teacherCourses: {
+                    some: { teacherId },
+                  },
+                },
+                {
+                  enrollments: {
+                    some: { teacherId },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+      include: {
+        module: {
+          select: {
+            id: true,
+            title: true,
+            course: {
+              select: {
+                id: true,
+                title: true,
+              },
+            },
+          },
+        },
+        contents: {
+          where: { parentId: null },
+          orderBy: { order: 'asc' },
+          include: {
+            children: {
+              orderBy: { order: 'asc' },
+              include: {
+                children: {
+                  orderBy: { order: 'asc' },
+                },
+              },
+            },
+            grammarCard: true,
+            leveledText: true,
+            thematicGlossary: true,
+            downloadableResource: true,
+            activity: true,
+          },
+        },
+        activities: {
+          include: {
+            activity: {
+              select: {
+                id: true,
+                title: true,
+                activityType: true,
+                points: true,
+              },
+            },
+          },
+          orderBy: { order: 'asc' },
+        },
+      },
+    })
+
+    if (!lesson) {
+      return null
+    }
+
+    return {
+      ...lesson,
+      activities: lesson.activities.map((activity) => ({
+        ...activity,
+        isCompleted: false,
+      })),
+    }
+  } catch (error) {
+    console.error('Error fetching lesson for teacher:', error)
+    return null
   }
 }
 
