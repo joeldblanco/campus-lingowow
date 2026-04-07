@@ -21,10 +21,7 @@ export async function getCoursesForTeacher(teacherId: string) {
           },
         },
       },
-      orderBy: [
-        { language: 'asc' },
-        { title: 'asc' },
-      ],
+      orderBy: [{ language: 'asc' }, { title: 'asc' }],
     })
 
     return {
@@ -55,21 +52,24 @@ export async function getCoursesForTeacher(teacherId: string) {
 export async function getCoursesGroupedByLanguage(teacherId: string) {
   try {
     const result = await getCoursesForTeacher(teacherId)
-    
+
     if (!result.success) {
       return result
     }
 
-    type CourseType = typeof result.courses[number]
+    type CourseType = (typeof result.courses)[number]
 
     // Agrupar cursos por idioma
-    const grouped = result.courses.reduce((acc, course) => {
-      if (!acc[course.language]) {
-        acc[course.language] = []
-      }
-      acc[course.language].push(course)
-      return acc
-    }, {} as Record<string, CourseType[]>)
+    const grouped = result.courses.reduce(
+      (acc, course) => {
+        if (!acc[course.language]) {
+          acc[course.language] = []
+        }
+        acc[course.language].push(course)
+        return acc
+      },
+      {} as Record<string, CourseType[]>
+    )
 
     return {
       success: true,
@@ -225,10 +225,7 @@ export async function updateTeacherCoursePayment(
 /**
  * Asigna todos los cursos de un idioma específico a un profesor
  */
-export async function assignLanguageCoursesToTeacher(
-  teacherId: string,
-  language: string
-) {
+export async function assignLanguageCoursesToTeacher(teacherId: string, language: string) {
   try {
     // Obtener todos los cursos del idioma
     const courses = await db.course.findMany({
@@ -273,10 +270,7 @@ export async function assignLanguageCoursesToTeacher(
 /**
  * Desasigna todos los cursos de un idioma específico de un profesor
  */
-export async function unassignLanguageCoursesFromTeacher(
-  teacherId: string,
-  language: string
-) {
+export async function unassignLanguageCoursesFromTeacher(teacherId: string, language: string) {
   try {
     // Obtener todos los cursos del idioma
     const courses = await db.course.findMany({
@@ -537,19 +531,35 @@ export async function getCourseContentForTeacher(courseId: string, teacherId: st
         orderBy: { order: 'asc' },
       })
 
-      personalizedLessons = lessons.map((l: { id: string; title: string; description: string; order: number; duration: number; isPublished: boolean; videoUrl: string | null; summary: string | null; studentId: string | null; enrollmentId: string | null; enrollment: { student: { name: string; lastName: string | null } } | null }) => ({
-        id: l.id,
-        title: l.title,
-        description: l.description,
-        order: l.order,
-        duration: l.duration,
-        isPublished: l.isPublished,
-        videoUrl: l.videoUrl,
-        summary: l.summary,
-        studentName: l.enrollment ? formatFullName(l.enrollment.student.name, l.enrollment.student.lastName) : '',
-        studentId: l.studentId || '',
-        enrollmentId: l.enrollmentId || '',
-      }))
+      personalizedLessons = lessons.map(
+        (l: {
+          id: string
+          title: string
+          description: string
+          order: number
+          duration: number
+          isPublished: boolean
+          videoUrl: string | null
+          summary: string | null
+          studentId: string | null
+          enrollmentId: string | null
+          enrollment: { student: { name: string; lastName: string | null } } | null
+        }) => ({
+          id: l.id,
+          title: l.title,
+          description: l.description,
+          order: l.order,
+          duration: l.duration,
+          isPublished: l.isPublished,
+          videoUrl: l.videoUrl,
+          summary: l.summary,
+          studentName: l.enrollment
+            ? formatFullName(l.enrollment.student.name, l.enrollment.student.lastName)
+            : '',
+          studentId: l.studentId || '',
+          enrollmentId: l.enrollmentId || '',
+        })
+      )
     }
 
     // Para programas personalizados, solo mostrar exámenes creados por el profesor

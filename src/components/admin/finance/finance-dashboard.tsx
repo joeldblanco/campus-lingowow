@@ -4,6 +4,7 @@ import { useEffect, useState, useTransition } from 'react'
 import { toast } from 'sonner'
 import { CalendarDays, Plus } from 'lucide-react'
 
+import { getRelevantPeriods } from '@/lib/actions/academic-period'
 import {
   getFinancialReport,
   type FinancialReportRow,
@@ -17,11 +18,27 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
 
 type FilterState = {
+  periodId: string
   startDate: string
   endDate: string
+}
+
+interface AcademicPeriodOption {
+  id: string
+  name: string
+  startDate: string
+  endDate: string
+  isActive: boolean
 }
 
 function formatDateInput(value: Date) {
@@ -33,16 +50,37 @@ function buildInitialFilterState(): FilterState {
   const firstDay = new Date(now.getFullYear(), now.getMonth(), 1)
 
   return {
+    periodId: 'custom',
     startDate: formatDateInput(firstDay),
     endDate: formatDateInput(now),
   }
 }
 
+function buildFilterStateFromPeriod(period: AcademicPeriodOption): FilterState {
+  return {
+    periodId: period.id,
+    startDate: formatDateInput(new Date(period.startDate)),
+    endDate: formatDateInput(new Date(period.endDate)),
+  }
+}
+
+function buildDefaultFilterState(periods: AcademicPeriodOption[]) {
+  const activePeriod = periods.find((period) => period.isActive)
+  return activePeriod ? buildFilterStateFromPeriod(activePeriod) : buildInitialFilterState()
+}
+
 function buildActionFilters(filters: FilterState) {
   return {
     basis: 'cash' as const,
-    startDate: filters.startDate ? new Date(`${filters.startDate}T00:00:00`) : undefined,
-    endDate: filters.endDate ? new Date(`${filters.endDate}T23:59:59`) : undefined,
+    periodId: filters.periodId !== 'custom' ? filters.periodId : undefined,
+    startDate:
+      filters.periodId === 'custom' && filters.startDate
+        ? new Date(`${filters.startDate}T00:00:00`)
+        : undefined,
+    endDate:
+      filters.periodId === 'custom' && filters.endDate
+        ? new Date(`${filters.endDate}T23:59:59`)
+        : undefined,
   }
 }
 
@@ -51,6 +89,7 @@ function mapRowsForExport(rows: FinancialReportRow[]) {
     Fecha: new Date(row.effectiveDate).toLocaleDateString('es-PE'),
     Movimiento: row.direction === 'INCOME' ? 'Entró' : 'Salió',
     Origen: row.sourceType,
+    'Período Académico': row.academicPeriodName || '-',
     Categoría: row.category,
     Detalle: row.description,
     Relacionado: row.counterparty || '-',
@@ -87,6 +126,7 @@ function LoadingState() {
 
 export function FinanceDashboard() {
   const [filters, setFilters] = useState<FilterState>(() => buildInitialFilterState())
+  const [periods, setPeriods] = useState<AcademicPeriodOption[]>([])
   const [rows, setRows] = useState<FinancialReportRow[]>([])
   const [summary, setSummary] = useState<FinancialReportSummary | null>(null)
   const [loading, setLoading] = useState(true)
@@ -104,13 +144,18 @@ export function FinanceDashboard() {
   useEffect(() => {
     void (async () => {
       try {
-        const initialFilters = buildInitialFilterState()
+        const periodsData = await getRelevantPeriods()
+        const initialFilters = buildDefaultFilterState(periodsData)
+
+        setPeriods(periodsData)
+        setFilters(initialFilters)
+
         const report = await getFinancialReport(buildActionFilters(initialFilters))
         setRows(report.rows)
         setSummary(report.summary)
       } catch (loadError) {
         console.error('Error loading finance report:', loadError)
-        setError('No se pudo cargar la caja del mes')
+        setError('No se pudo cargar el resultado del período')
       } finally {
         setLoading(false)
       }
@@ -124,7 +169,9 @@ export function FinanceDashboard() {
       } catch (loadError) {
         console.error('Error applying finance filters:', loadError)
         const message =
-          loadError instanceof Error ? loadError.message : 'No se pudo actualizar la caja del mes'
+          loadError instanceof Error
+            ? loadError.message
+            : 'No se pudo actualizar el resultado del período'
         setError(message)
         toast.error(message)
       }
@@ -132,7 +179,7 @@ export function FinanceDashboard() {
   }
 
   const resetFilters = () => {
-    const nextFilters = buildInitialFilterState()
+    const nextFilters = buildDefaultFilterState(periods)
     setFilters(nextFilters)
 
     startTransition(async () => {
@@ -161,13 +208,29 @@ export function FinanceDashboard() {
     await loadReport(filters)
   }
 
+  const selectedPeriod = periods.find((period) => period.id === filters.periodId) || null
+
+  const handlePeriodChange = (value: string) => {
+    if (value === 'custom') {
+      setFilters(buildInitialFilterState())
+      return
+    }
+
+    const period = periods.find((item) => item.id === value)
+    if (!period) {
+      return
+    }
+
+    setFilters(buildFilterStateFromPeriod(period))
+  }
+
   return (
     <div className="container mx-auto py-8 space-y-6">
       <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Caja del Mes</h1>
+          <h1 className="text-3xl font-bold">Resultado del Período</h1>
           <p className="text-muted-foreground">
-            Lo que entró por facturas, lo que salió por profesores y las demás salidas que cargas
+            Facturas y costo docente del período académico, más las otras salidas que registras
             manualmente.
           </p>
         </div>
@@ -183,8 +246,9 @@ export function FinanceDashboard() {
 
       <Card>
         <CardContent className="pt-6 text-sm text-muted-foreground">
-          La plataforma registra automáticamente lo que entra por facturas pagadas y lo que sale por
-          pagos a profesores. Aquí solo agregas manualmente las otras salidas del mes.
+          {selectedPeriod
+            ? `Facturas y pagos a profesores se atribuyen al período académico ${selectedPeriod.name}. Las otras salidas manuales se toman por fecha dentro de ese mismo rango.`
+            : 'Sin período académico seleccionado, la vista funciona por rango de fechas. Las otras salidas manuales siempre se toman por fecha.'}
         </CardContent>
       </Card>
 
@@ -192,16 +256,35 @@ export function FinanceDashboard() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <CalendarDays className="h-5 w-5" />
-            Período a Revisar
+            Alcance del Resultado
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4 md:grid-cols-3">
+            <div className="space-y-2 md:col-span-3">
+              <Label>Período académico</Label>
+              <Select value={filters.periodId} onValueChange={handlePeriodChange}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecciona un período" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="custom">Ver por fechas</SelectItem>
+                  {periods.map((period) => (
+                    <SelectItem key={period.id} value={period.id}>
+                      {period.name}
+                      {period.isActive ? ' (Actual)' : ''}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             <div className="space-y-2">
               <Label>Fecha inicio</Label>
               <Input
                 type="date"
                 value={filters.startDate}
+                disabled={filters.periodId !== 'custom'}
                 onChange={(event) =>
                   setFilters((current) => ({ ...current, startDate: event.target.value }))
                 }
@@ -213,6 +296,7 @@ export function FinanceDashboard() {
               <Input
                 type="date"
                 value={filters.endDate}
+                disabled={filters.periodId !== 'custom'}
                 onChange={(event) =>
                   setFilters((current) => ({ ...current, endDate: event.target.value }))
                 }
@@ -222,10 +306,10 @@ export function FinanceDashboard() {
 
           <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
             <Button variant="outline" onClick={resetFilters} disabled={isPending || loading}>
-              Mes actual
+              {periods.some((period) => period.isActive) ? 'Período actual' : 'Mes actual'}
             </Button>
             <Button onClick={applyFilters} disabled={isPending || loading}>
-              {isPending ? 'Actualizando...' : 'Actualizar caja'}
+              {isPending ? 'Actualizando...' : 'Actualizar resultado'}
             </Button>
           </div>
         </CardContent>

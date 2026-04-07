@@ -53,7 +53,7 @@ export function FinancialMovementsTable({ rows, basis }: FinancialMovementsTable
         <CardTitle>Detalle de Caja</CardTitle>
         <CardDescription>
           {basis === 'cash'
-            ? 'Facturas cobradas, pagos a profesores y otras salidas manuales registradas.'
+            ? 'Facturas y costo docente atribuidos al período o rango seleccionado, más otras salidas manuales por fecha.'
             : 'Devengado: obligaciones e ingresos reconocidos dentro del rango seleccionado.'}
         </CardDescription>
       </CardHeader>
@@ -67,13 +67,14 @@ export function FinancialMovementsTable({ rows, basis }: FinancialMovementsTable
               <TableHead>Categoría</TableHead>
               <TableHead>Detalle</TableHead>
               <TableHead>Relacionado</TableHead>
+              <TableHead>Período</TableHead>
               <TableHead className="text-right">Monto</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {rows.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="py-10 text-center text-muted-foreground">
+                <TableCell colSpan={8} className="py-10 text-center text-muted-foreground">
                   No hay movimientos para los filtros seleccionados.
                 </TableCell>
               </TableRow>
@@ -117,6 +118,7 @@ export function FinancialMovementsTable({ rows, basis }: FinancialMovementsTable
                     )}
                   </TableCell>
                   <TableCell>{row.counterparty || '-'}</TableCell>
+                  <TableCell>{row.academicPeriodName || '-'}</TableCell>
                   <TableCell className="text-right font-semibold">
                     {formatCurrency(row.netAmount, row.currency)}
                   </TableCell>

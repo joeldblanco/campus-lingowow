@@ -18,21 +18,21 @@ export function FinanceSummaryCards({ summary }: FinanceSummaryCardsProps) {
         value={summary.invoiceIncome}
         format="currency"
         icon={<ArrowUpCircle className="h-5 w-5" />}
-        description="Cobros automáticos registrados en el período"
+        description="Facturas asociadas al período o rango seleccionado"
       />
       <SimpleKPICard
         title="Salió a Profesores"
         value={teacherOutflows}
         format="currency"
         icon={<Landmark className="h-5 w-5" />}
-        description="Pagos a profesores e incentivos ya registrados"
+        description="Costo docente e incentivos del período evaluado"
       />
       <SimpleKPICard
         title="Otras Salidas"
         value={summary.manualExpenses}
         format="currency"
         icon={<FileText className="h-5 w-5" />}
-        description="Salidas manuales que cargas aparte"
+        description="Salidas manuales registradas por fecha"
       />
       <SimpleKPICard
         title="Te Queda"

@@ -48,6 +48,7 @@ export const createFinancialMovementSchema = z.object({
 
 export const financeReportFilterSchema = z.object({
   basis: z.enum(financialReportBasisOptions).default('cash'),
+  periodId: optionalString,
   startDate: optionalDate,
   endDate: optionalDate,
   direction: z.enum([...financialMovementDirectionOptions, 'ALL'] as const).default('ALL'),

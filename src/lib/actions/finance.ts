@@ -35,6 +35,7 @@ import { revalidatePath } from 'next/cache'
 
 export interface FinancialReportFilters {
   basis?: 'cash' | 'accrual'
+  periodId?: string
   startDate?: Date
   endDate?: Date
   direction?: FinancialMovementDirection | 'ALL'
@@ -48,6 +49,8 @@ export interface FinancialReportRow {
   id: string
   sourceType: FinancialMovementSourceType
   sourceId: string | null
+  academicPeriodId?: string | null
+  academicPeriodName?: string | null
   direction: FinancialMovementDirection
   status: string
   category: string
@@ -109,6 +112,8 @@ export interface FinancialReportResult {
   projection: FinancialProjection | null
   filters: {
     basis: 'cash' | 'accrual'
+    periodId: string | null
+    periodName: string | null
     startDate: string
     endDate: string
     direction: FinancialMovementDirection | 'ALL'
@@ -123,12 +128,51 @@ function roundCurrency(value: number) {
   return Math.round(value * 100) / 100
 }
 
-function getDateRange(filters: FinanceReportFilterInput) {
+interface ResolvedAcademicPeriodFilter {
+  id: string
+  name: string
+  startDate: Date
+  endDate: Date
+}
+
+async function resolveAcademicPeriodFilter(periodId?: string) {
+  if (!periodId) {
+    return null
+  }
+
+  const period = await db.academicPeriod.findUnique({
+    where: { id: periodId },
+    select: {
+      id: true,
+      name: true,
+      startDate: true,
+      endDate: true,
+    },
+  })
+
+  if (!period) {
+    throw new Error('El período académico seleccionado no existe')
+  }
+
+  return period satisfies ResolvedAcademicPeriodFilter
+}
+
+async function resolveDateRange(filters: FinanceReportFilterInput) {
+  const period = await resolveAcademicPeriodFilter(filters.periodId)
+
+  if (period) {
+    return {
+      start: startOfDay(period.startDate),
+      end: endOfDay(period.endDate),
+      period,
+    }
+  }
+
   const now = new Date()
   const start = filters.startDate ? startOfDay(filters.startDate) : startOfMonth(now)
   const end = filters.endDate ? endOfDay(filters.endDate) : endOfMonth(now)
 
-  return { start, end }
+  return { start, end, period: null }
 }
 
 async function ensureAdminUser() {
@@ -150,9 +194,32 @@ function sortFinancialRows(rows: FinancialReportRow[]) {
   return rows.sort((a, b) => new Date(b.effectiveDate).getTime() - new Date(a.effectiveDate).getTime())
 }
 
-async function getInvoiceRows(start: Date, end: Date, basis: 'cash' | 'accrual') {
-  const where: Prisma.InvoiceWhereInput =
-    basis === 'cash'
+async function getInvoiceRows(
+  start: Date,
+  end: Date,
+  basis: 'cash' | 'accrual',
+  period: ResolvedAcademicPeriodFilter | null
+) {
+  const where: Prisma.InvoiceWhereInput = period
+    ? {
+        ...(basis === 'cash'
+          ? {
+              status: InvoiceStatus.PAID,
+            }
+          : {
+              status: {
+                in: [InvoiceStatus.SENT, InvoiceStatus.PAID, InvoiceStatus.OVERDUE],
+              },
+            }),
+        purchases: {
+          some: {
+            enrollment: {
+              academicPeriodId: period.id,
+            },
+          },
+        },
+      }
+    : basis === 'cash'
       ? {
           status: InvoiceStatus.PAID,
           paidAt: {
@@ -190,33 +257,57 @@ async function getInvoiceRows(start: Date, end: Date, basis: 'cash' | 'accrual')
           email: true,
         },
       },
+      purchases: {
+        select: {
+          enrollment: {
+            select: {
+              academicPeriod: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      },
     },
     orderBy: {
       createdAt: 'desc',
     },
   })
 
-  return invoices.map<FinancialReportRow>((invoice) => ({
-    id: `invoice-${invoice.id}`,
-    sourceType: FinancialMovementSourceType.INVOICE,
-    sourceId: invoice.id,
-    direction: FinancialMovementDirection.INCOME,
-    status: invoice.status,
-    category: 'Facturacion',
-    subcategory: invoice.discount > 0 ? 'Con descuento' : null,
-    description: `Factura ${invoice.invoiceNumber}`,
-    counterparty: getFullName(invoice.user.name, invoice.user.lastName, invoice.user.email),
-    amount: roundCurrency(invoice.subtotal + invoice.tax),
-    discountAmount: roundCurrency(invoice.discount),
-    netAmount: roundCurrency(invoice.total),
-    currency: invoice.currency,
-    baseAmount: roundCurrency(invoice.total),
-    accrualDate: invoice.createdAt.toISOString(),
-    cashDate: invoice.paidAt?.toISOString() || null,
-    effectiveDate: (basis === 'cash' ? invoice.paidAt : invoice.createdAt)?.toISOString() || invoice.createdAt.toISOString(),
-    notes: null,
-    isManual: false,
-  }))
+  return invoices.map<FinancialReportRow>((invoice) => {
+    const linkedPeriod =
+      invoice.purchases.find((purchase) => purchase.enrollment?.academicPeriod)?.enrollment
+        ?.academicPeriod || null
+
+    return {
+      id: `invoice-${invoice.id}`,
+      sourceType: FinancialMovementSourceType.INVOICE,
+      sourceId: invoice.id,
+      academicPeriodId: linkedPeriod?.id || null,
+      academicPeriodName: linkedPeriod?.name || period?.name || null,
+      direction: FinancialMovementDirection.INCOME,
+      status: invoice.status,
+      category: 'Facturacion',
+      subcategory: invoice.discount > 0 ? 'Con descuento' : null,
+      description: `Factura ${invoice.invoiceNumber}`,
+      counterparty: getFullName(invoice.user.name, invoice.user.lastName, invoice.user.email),
+      amount: roundCurrency(invoice.subtotal + invoice.tax),
+      discountAmount: roundCurrency(invoice.discount),
+      netAmount: roundCurrency(invoice.total),
+      currency: invoice.currency,
+      baseAmount: roundCurrency(invoice.total),
+      accrualDate: invoice.createdAt.toISOString(),
+      cashDate: invoice.paidAt?.toISOString() || null,
+      effectiveDate:
+        (basis === 'cash' ? invoice.paidAt : invoice.createdAt)?.toISOString() ||
+        invoice.createdAt.toISOString(),
+      notes: null,
+      isManual: false,
+    }
+  })
 }
 
 async function getManualMovementRows(
@@ -257,6 +348,8 @@ async function getManualMovementRows(
     id: movement.id,
     sourceType: movement.sourceType,
     sourceId: movement.sourceId || null,
+    academicPeriodId: null,
+    academicPeriodName: null,
     direction: movement.direction,
     status: movement.status,
     category: movement.category,
@@ -347,6 +440,8 @@ async function getTeacherPaymentConfirmationRows(start: Date, end: Date) {
     id: `teacher-payment-${confirmation.id}`,
     sourceType: FinancialMovementSourceType.TEACHER_PAYMENT_CONFIRMATION,
     sourceId: confirmation.id,
+    academicPeriodId: null,
+    academicPeriodName: null,
     direction: FinancialMovementDirection.EXPENSE,
     status: confirmation.status,
     category: 'Pagos a docentes',
@@ -370,10 +465,15 @@ async function getTeacherPaymentConfirmationRows(start: Date, end: Date) {
   }))
 }
 
-async function getTeacherPayableRows(start: Date, end: Date) {
+async function getTeacherPayableRows(
+  start: Date,
+  end: Date,
+  period: ResolvedAcademicPeriodFilter | null
+) {
   const report = await getTeacherPaymentsReport({
-    startDate: start,
-    endDate: end,
+    startDate: period ? undefined : start,
+    endDate: period ? undefined : end,
+    periodId: period?.id,
   })
 
   return report.teacherReports
@@ -382,6 +482,8 @@ async function getTeacherPayableRows(start: Date, end: Date) {
       id: `teacher-payable-${teacher.teacherId}-${start.toISOString()}-${end.toISOString()}`,
       sourceType: FinancialMovementSourceType.TEACHER_PAYABLE,
       sourceId: teacher.teacherId,
+      academicPeriodId: period?.id || null,
+      academicPeriodName: period?.name || null,
       direction: FinancialMovementDirection.EXPENSE,
       status: teacher.paymentConfirmed ? 'CONFIRMED' : 'CALCULATED',
       category: 'Pagos a docentes',
@@ -401,10 +503,19 @@ async function getTeacherPayableRows(start: Date, end: Date) {
     }))
 }
 
-async function getTeacherIncentiveRows(start: Date, end: Date, basis: 'cash' | 'accrual') {
+async function getTeacherIncentiveRows(
+  start: Date,
+  end: Date,
+  basis: 'cash' | 'accrual',
+  period: ResolvedAcademicPeriodFilter | null
+) {
   const incentives = await db.teacherIncentive.findMany({
-    where:
-      basis === 'cash'
+    where: period
+      ? {
+          periodId: period.id,
+          ...(basis === 'cash' ? { paid: true } : {}),
+        }
+      : basis === 'cash'
         ? {
             paid: true,
             paidAt: {
@@ -420,6 +531,7 @@ async function getTeacherIncentiveRows(start: Date, end: Date, basis: 'cash' | '
           },
     select: {
       id: true,
+      periodId: true,
       type: true,
       bonusAmount: true,
       paid: true,
@@ -447,6 +559,8 @@ async function getTeacherIncentiveRows(start: Date, end: Date, basis: 'cash' | '
     id: `teacher-incentive-${incentive.id}`,
     sourceType: FinancialMovementSourceType.TEACHER_INCENTIVE,
     sourceId: incentive.id,
+    academicPeriodId: incentive.periodId,
+    academicPeriodName: incentive.period.name,
     direction: FinancialMovementDirection.EXPENSE,
     status: incentive.paid ? 'PAID' : 'ACCRUED',
     category: 'Incentivos docentes',
@@ -484,7 +598,7 @@ function applyClientFilters(rows: FinancialReportRow[], filters: FinanceReportFi
     }
 
     if (filters.search) {
-      const haystack = `${row.description} ${row.counterparty || ''} ${row.category} ${row.notes || ''}`.toLowerCase()
+      const haystack = `${row.description} ${row.counterparty || ''} ${row.category} ${row.notes || ''} ${row.academicPeriodName || ''}`.toLowerCase()
       if (!haystack.includes(filters.search.toLowerCase())) {
         return false
       }
@@ -549,24 +663,35 @@ async function collectFinancialRows(
   start: Date,
   end: Date,
   basis: 'cash' | 'accrual',
-  filters: FinanceReportFilterInput
+  filters: FinanceReportFilterInput,
+  period: ResolvedAcademicPeriodFilter | null
 ) {
   const [invoiceRows, manualRows, teacherRows, incentiveRows] =
-    basis === 'cash'
+    period
       ? await Promise.all([
-          getInvoiceRows(start, end, basis),
+          getInvoiceRows(start, end, basis, period),
           getManualMovementRows(start, end, basis, filters),
-          getTeacherPaymentConfirmationRows(start, end),
-          getTeacherIncentiveRows(start, end, basis),
+          getTeacherPayableRows(start, end, period),
+          getTeacherIncentiveRows(start, end, basis, period),
         ])
-      : await Promise.all([
-          getInvoiceRows(start, end, basis),
-          getManualMovementRows(start, end, basis, filters),
-          getTeacherPayableRows(start, end),
-          getTeacherIncentiveRows(start, end, basis),
+      : basis === 'cash'
+        ? await Promise.all([
+            getInvoiceRows(start, end, basis, null),
+            getManualMovementRows(start, end, basis, filters),
+            getTeacherPaymentConfirmationRows(start, end),
+            getTeacherIncentiveRows(start, end, basis, null),
+          ])
+        : await Promise.all([
+            getInvoiceRows(start, end, basis, null),
+            getManualMovementRows(start, end, basis, filters),
+            getTeacherPayableRows(start, end, null),
+            getTeacherIncentiveRows(start, end, basis, null),
         ])
 
-  return applyClientFilters(sortFinancialRows([...invoiceRows, ...manualRows, ...teacherRows, ...incentiveRows]), filters)
+  return applyClientFilters(
+    sortFinancialRows([...invoiceRows, ...manualRows, ...teacherRows, ...incentiveRows]),
+    filters
+  )
 }
 
 async function buildMonthProjection(cutoffDate: Date): Promise<FinancialProjection | null> {
@@ -593,7 +718,13 @@ async function buildMonthProjection(cutoffDate: Date): Promise<FinancialProjecti
     includeDrafts: false,
   })
 
-  const monthToDateRows = await collectFinancialRows(monthStart, endOfDay(cutoffDate), 'accrual', baseFilters)
+  const monthToDateRows = await collectFinancialRows(
+    monthStart,
+    endOfDay(cutoffDate),
+    'accrual',
+    baseFilters,
+    null
+  )
   const monthToDateSummary = buildSummary(monthToDateRows, 'accrual')
 
   const futureFilters = financeReportFilterSchema.parse({
@@ -668,6 +799,7 @@ export async function getFinancialReport(
 
   const parsedFilters = financeReportFilterSchema.parse({
     basis: rawFilters.basis,
+    periodId: rawFilters.periodId,
     startDate: rawFilters.startDate,
     endDate: rawFilters.endDate,
     direction: rawFilters.direction || 'ALL',
@@ -677,10 +809,10 @@ export async function getFinancialReport(
     includeDrafts: rawFilters.includeDrafts,
   })
 
-  const { start, end } = getDateRange(parsedFilters)
+  const { start, end, period } = await resolveDateRange(parsedFilters)
   const basis = parsedFilters.basis
   const [rows, projection] = await Promise.all([
-    collectFinancialRows(start, end, basis, parsedFilters),
+    collectFinancialRows(start, end, basis, parsedFilters, period),
     buildMonthProjection(end),
   ])
 
@@ -690,6 +822,8 @@ export async function getFinancialReport(
     projection,
     filters: {
       basis,
+      periodId: period?.id || parsedFilters.periodId || null,
+      periodName: period?.name || null,
       startDate: start.toISOString(),
       endDate: end.toISOString(),
       direction: parsedFilters.direction,
