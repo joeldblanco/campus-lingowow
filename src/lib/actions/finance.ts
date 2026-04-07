@@ -176,6 +176,13 @@ async function resolveDateRange(filters: FinanceReportFilterInput) {
   return { start, end, period: null }
 }
 
+function resolveCurrentMonthDateRange(referenceDate = new Date()) {
+  return {
+    start: startOfMonth(referenceDate),
+    end: endOfMonth(referenceDate),
+  }
+}
+
 async function ensureAdminUser() {
   const session = await auth()
 
@@ -762,9 +769,11 @@ async function collectFinancialRows(
   filters: FinanceReportFilterInput,
   period: ResolvedAcademicPeriodFilter | null
 ) {
+  const { start: manualStart, end: manualEnd } = resolveCurrentMonthDateRange()
+
   const [incomeRows, manualRows, teacherRows, incentiveRows] = await Promise.all([
     getScheduledClassRevenueRows(start, end, period),
-    getManualMovementRows(start, end, basis, filters),
+    getManualMovementRows(manualStart, manualEnd, basis, filters),
     getTeacherPayableRows(start, end, period),
     getTeacherIncentiveRows(start, end, basis, period),
   ])

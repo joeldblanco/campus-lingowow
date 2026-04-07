@@ -247,8 +247,8 @@ export function FinanceDashboard() {
       <Card>
         <CardContent className="pt-6 text-sm text-muted-foreground">
           {selectedPeriod
-            ? `Si una clase está agendada dentro de ${selectedPeriod.name}, ese período suma tanto el ingreso relacionado como el costo docente. El ingreso se agrupa por estudiante y el egreso por profesor. Las otras salidas manuales se toman por fecha dentro de ese mismo rango.`
-            : 'Sin período académico seleccionado, la vista funciona por rango de fechas. Las otras salidas manuales siempre se toman por fecha.'}
+            ? `Si una clase está agendada dentro de ${selectedPeriod.name}, ese período suma tanto el ingreso relacionado como el costo docente. El ingreso se agrupa por estudiante y el egreso por profesor. Las demás entradas y salidas manuales se toman desde el inicio hasta el fin del mes actual.`
+            : 'Sin período académico seleccionado, la vista usa el rango elegido para clases y pagos docentes. Las demás entradas y salidas manuales siempre se toman desde el inicio hasta el fin del mes actual.'}
         </CardContent>
       </Card>
 
@@ -333,8 +333,6 @@ export function FinanceDashboard() {
         rows={rows}
         scope={{
           periodName: selectedPeriod?.name || null,
-          startDate: filters.startDate,
-          endDate: filters.endDate,
         }}
       />
     </div>

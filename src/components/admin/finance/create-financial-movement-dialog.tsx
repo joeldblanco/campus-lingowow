@@ -25,8 +25,6 @@ interface CreateFinancialMovementDialogProps {
   rows: FinancialReportRow[]
   scope: {
     periodName: string | null
-    startDate: string
-    endDate: string
   }
 }
 
@@ -58,14 +56,14 @@ function roundCurrency(value: number) {
   return Math.round(value * 100) / 100
 }
 
-function buildInitialState(defaultDate?: string): FinancialMovementFormState {
+function buildInitialState(): FinancialMovementFormState {
   return {
     entryType: 'standard',
     expenseMode: 'recurring',
     studentId: '',
     description: '',
     amount: '',
-    expenseDate: defaultDate || getToday(),
+    expenseDate: getToday(),
     notes: '',
   }
 }
@@ -77,9 +75,7 @@ export function CreateFinancialMovementDialog({
   rows,
   scope,
 }: CreateFinancialMovementDialogProps) {
-  const [form, setForm] = useState<FinancialMovementFormState>(() =>
-    buildInitialState(scope.endDate)
-  )
+  const [form, setForm] = useState<FinancialMovementFormState>(() => buildInitialState())
   const [isPending, startTransition] = useTransition()
 
   const studentOptions = rows
@@ -109,14 +105,14 @@ export function CreateFinancialMovementDialog({
     : 0
   const resolvedExpenseDate =
     form.entryType === 'discount' || form.expenseMode === 'recurring'
-      ? scope.endDate || getToday()
+      ? getToday()
       : form.expenseDate
 
   useEffect(() => {
     if (!open) {
-      setForm(buildInitialState(scope.endDate))
+      setForm(buildInitialState())
     }
-  }, [open, scope.endDate])
+  }, [open])
 
   const handleChange = (field: keyof FinancialMovementFormState, value: string) => {
     setForm((current) => ({ ...current, [field]: value }))
@@ -229,7 +225,7 @@ export function CreateFinancialMovementDialog({
                   <div>
                     <p className="text-sm font-medium">Salida recurrente</p>
                     <p className="text-xs text-muted-foreground">
-                      Se registra dentro del rango visible con fecha {resolvedExpenseDate}.
+                      Se registra dentro del mes actual con fecha {resolvedExpenseDate}.
                     </p>
                   </div>
                 </label>
@@ -246,7 +242,7 @@ export function CreateFinancialMovementDialog({
             </div>
           ) : (
             <div className="rounded-lg border bg-muted/30 p-3 text-sm text-muted-foreground">
-              Este descuento se registra como salida recurrente del período visible.
+              Este descuento se registra como salida recurrente dentro del mes actual.
             </div>
           )}
 
