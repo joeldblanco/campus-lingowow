@@ -291,7 +291,10 @@ const revenueClassBookingArgs = Prisma.validator<Prisma.ClassBookingDefaultArgs>
 
 type RevenueClassBooking = Prisma.ClassBookingGetPayload<typeof revenueClassBookingArgs>
 
-function resolveRevenueInvoiceItem(purchase: RevenueClassBooking['enrollment']['purchases'][number], courseId: string) {
+function resolveRevenueInvoiceItem(
+  purchase: RevenueClassBooking['enrollment']['purchases'][number],
+  courseId: string
+) {
   return (
     purchase.invoice.items.find(
       (item) => item.productId === purchase.product.id || item.product?.id === purchase.product.id
@@ -345,7 +348,8 @@ function resolveScheduledClassRevenue(booking: RevenueClassBooking) {
       purchase.invoice.total
   )
 
-  const subtotalDenominator = purchase.invoice.subtotal > 0 ? purchase.invoice.subtotal : subtotalBase
+  const subtotalDenominator =
+    purchase.invoice.subtotal > 0 ? purchase.invoice.subtotal : subtotalBase
   const allocationFactor = subtotalDenominator > 0 ? subtotalBase / subtotalDenominator : 1
   const totalDiscountShare = roundCurrency(purchase.invoice.discount * allocationFactor)
   const totalTaxShare = roundCurrency(purchase.invoice.tax * allocationFactor)
