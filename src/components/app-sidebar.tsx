@@ -196,6 +196,11 @@ const data = {
           url: '/admin/payments/teachers',
           icon: DollarSign,
         },
+        {
+          title: 'Finanzas',
+          url: '/admin/finance',
+          icon: Wallet,
+        },
       ],
     },
     {
