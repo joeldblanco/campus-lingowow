@@ -20,6 +20,8 @@ interface FinancialMovementsTableProps {
 const sourceLabels: Record<string, string> = {
   MANUAL: 'Manual',
   SCHEDULED_CLASS_REVENUE: 'Ingreso por estudiante',
+  AUTO_GATEWAY_FEE: 'Pasarela 6%',
+  AUTO_OFFERING: 'Ofrenda 10%',
   INVOICE: 'Factura',
   TEACHER_PAYABLE: 'Pago programado',
   TEACHER_PAYMENT_CONFIRMATION: 'Pago confirmado',
@@ -54,7 +56,7 @@ export function FinancialMovementsTable({ rows, basis }: FinancialMovementsTable
         <CardTitle>Detalle de Caja</CardTitle>
         <CardDescription>
           {basis === 'cash'
-            ? 'Ingresos agrupados por estudiante y costo docente agrupado por profesor, ambos desde clases agendadas del período o rango seleccionado, más otras salidas manuales por fecha.'
+            ? 'Ingresos agrupados por estudiante y costo docente agrupado por profesor, ambos desde clases agendadas del período o rango seleccionado, más gastos fijos del mes y deducciones automáticas de pasarela y ofrenda.'
             : 'Devengado: obligaciones e ingresos reconocidos dentro del rango seleccionado.'}
         </CardDescription>
       </CardHeader>

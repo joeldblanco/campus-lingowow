@@ -3,6 +3,7 @@ import * as z from 'zod'
 export const financialReportBasisOptions = ['cash', 'accrual'] as const
 export const financialMovementDirectionOptions = ['INCOME', 'EXPENSE'] as const
 export const financialMovementStatusOptions = ['DRAFT', 'POSTED', 'VOID'] as const
+export const financialMovementRecurrenceOptions = ['ONE_TIME', 'MONTHLY', 'ANNUAL'] as const
 
 export const financeManualCategories = [
   'Descuentos',
@@ -47,6 +48,7 @@ export const createFinancialMovementSchema = z.object({
     .union([z.string().trim().url('El comprobante debe ser una URL válida'), z.literal('')])
     .optional()
     .transform((value) => (value ? value : undefined)),
+  recurrence: z.enum(financialMovementRecurrenceOptions).default('ONE_TIME'),
   status: z.enum(financialMovementStatusOptions).default('POSTED'),
 })
 

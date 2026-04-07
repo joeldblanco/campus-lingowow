@@ -22,6 +22,7 @@ import {
 } from '@prisma/client'
 import {
   addDays,
+  addMonths,
   differenceInCalendarDays,
   endOfDay,
   endOfMonth,
@@ -45,9 +46,14 @@ export interface FinancialReportFilters {
   includeDrafts?: boolean
 }
 
+type DerivedFinancialSourceType =
+  | 'SCHEDULED_CLASS_REVENUE'
+  | 'AUTO_GATEWAY_FEE'
+  | 'AUTO_OFFERING'
+
 export interface FinancialReportRow {
   id: string
-  sourceType: FinancialMovementSourceType | 'SCHEDULED_CLASS_REVENUE'
+  sourceType: FinancialMovementSourceType | DerivedFinancialSourceType
   sourceId: string | null
   academicPeriodId?: string | null
   academicPeriodName?: string | null
@@ -129,6 +135,9 @@ function roundCurrency(value: number) {
   return Math.round(value * 100) / 100
 }
 
+const GATEWAY_FEE_RATE = 0.06
+const OFFERING_RATE = 0.1
+
 interface ResolvedAcademicPeriodFilter {
   id: string
   name: string
@@ -202,6 +211,100 @@ function sortFinancialRows(rows: FinancialReportRow[]) {
   return rows.sort(
     (a, b) => new Date(b.effectiveDate).getTime() - new Date(a.effectiveDate).getTime()
   )
+}
+
+function buildAutomaticExpenseRows(
+  baseRows: FinancialReportRow[],
+  period: ResolvedAcademicPeriodFilter | null
+) {
+  const incomeRows = baseRows.filter((row) => row.direction === FinancialMovementDirection.INCOME)
+  const expenseRows = baseRows.filter(
+    (row) => row.direction === FinancialMovementDirection.EXPENSE
+  )
+
+  const totalIncome = roundCurrency(incomeRows.reduce((sum, row) => sum + row.netAmount, 0))
+
+  if (totalIncome <= 0) {
+    return [] satisfies FinancialReportRow[]
+  }
+
+  const gatewayFeeAmount = roundCurrency(totalIncome * GATEWAY_FEE_RATE)
+  const profitBeforeOffering = roundCurrency(
+    totalIncome - expenseRows.reduce((sum, row) => sum + row.netAmount, 0) - gatewayFeeAmount
+  )
+  const offeringAmount =
+    profitBeforeOffering > 0 ? roundCurrency(profitBeforeOffering * OFFERING_RATE) : 0
+  const { end: currentMonthEnd } = resolveCurrentMonthDateRange()
+  const effectiveDate = currentMonthEnd.toISOString()
+
+  const rows: FinancialReportRow[] = []
+
+  if (gatewayFeeAmount > 0) {
+    rows.push({
+      id: `auto-gateway-fee-${period?.id || format(currentMonthEnd, 'yyyy-MM')}`,
+      sourceType: 'AUTO_GATEWAY_FEE',
+      sourceId: null,
+      academicPeriodId: period?.id || null,
+      academicPeriodName: period?.name || null,
+      direction: FinancialMovementDirection.EXPENSE,
+      status: 'CALCULATED',
+      category: 'Comisión pasarela',
+      subcategory: 'Automático',
+      description: 'Descuento automático del 6% sobre todos los ingresos del resultado',
+      counterparty: 'Pasarelas de pago',
+      amount: gatewayFeeAmount,
+      discountAmount: 0,
+      netAmount: gatewayFeeAmount,
+      currency: 'USD',
+      baseAmount: gatewayFeeAmount,
+      accrualDate: effectiveDate,
+      cashDate: effectiveDate,
+      effectiveDate,
+      unitCount: null,
+      notes: `6% de USD ${totalIncome.toFixed(2)} de ingresos acumulados`,
+      isManual: false,
+    })
+  }
+
+  if (offeringAmount > 0) {
+    rows.push({
+      id: `auto-offering-${period?.id || format(currentMonthEnd, 'yyyy-MM')}`,
+      sourceType: 'AUTO_OFFERING',
+      sourceId: null,
+      academicPeriodId: period?.id || null,
+      academicPeriodName: period?.name || null,
+      direction: FinancialMovementDirection.EXPENSE,
+      status: 'CALCULATED',
+      category: 'Ofrenda',
+      subcategory: 'Automático',
+      description: 'Descuento automático del 10% sobre la ganancia restante',
+      counterparty: 'Ofrenda',
+      amount: offeringAmount,
+      discountAmount: 0,
+      netAmount: offeringAmount,
+      currency: 'USD',
+      baseAmount: offeringAmount,
+      accrualDate: effectiveDate,
+      cashDate: effectiveDate,
+      effectiveDate,
+      unitCount: null,
+      notes: `10% de USD ${profitBeforeOffering.toFixed(2)} de ganancia antes de ofrenda`,
+      isManual: false,
+    })
+  }
+
+  return rows
+}
+
+function buildAnnualInstallmentAmounts(totalAmount: number) {
+  const normalizedTotal = roundCurrency(totalAmount)
+  const installmentAmount = Math.floor((normalizedTotal / 12) * 100) / 100
+  const amounts = Array.from({ length: 12 }, () => installmentAmount)
+  const assignedAmount = roundCurrency(installmentAmount * 11)
+
+  amounts[11] = roundCurrency(normalizedTotal - assignedAmount)
+
+  return amounts
 }
 
 const revenueClassBookingArgs = Prisma.validator<Prisma.ClassBookingDefaultArgs>()({
@@ -756,7 +859,14 @@ function buildSummary(
       incomeRows.filter((row) => row.isManual).reduce((sum, row) => sum + row.netAmount, 0)
     ),
     manualExpenses: roundCurrency(
-      expenseRows.filter((row) => row.isManual).reduce((sum, row) => sum + row.netAmount, 0)
+      expenseRows
+        .filter(
+          (row) =>
+            row.isManual ||
+            row.sourceType === 'AUTO_GATEWAY_FEE' ||
+            row.sourceType === 'AUTO_OFFERING'
+        )
+        .reduce((sum, row) => sum + row.netAmount, 0)
     ),
     movementCount: rows.length,
   }
@@ -778,8 +888,11 @@ async function collectFinancialRows(
     getTeacherIncentiveRows(start, end, basis, period),
   ])
 
+  const baseRows = [...incomeRows, ...manualRows, ...teacherRows, ...incentiveRows]
+  const automaticExpenseRows = buildAutomaticExpenseRows(baseRows, period)
+
   return applyClientFilters(
-    sortFinancialRows([...incomeRows, ...manualRows, ...teacherRows, ...incentiveRows]),
+    sortFinancialRows([...baseRows, ...automaticExpenseRows]),
     filters
   )
 }
@@ -946,6 +1059,67 @@ export async function createFinancialMovement(rawInput: unknown) {
       throw new Error('La fecha de pago no puede ser anterior a la fecha devengada')
     }
 
+    if (input.recurrence === 'ANNUAL') {
+      const annualAmount = roundCurrency(input.amount)
+      const installmentAmounts = buildAnnualInstallmentAmounts(annualAmount)
+      const seriesId = crypto.randomUUID()
+
+      const movements = await db.$transaction(
+        installmentAmounts.map((installmentAmount, index) => {
+          const occurrenceDate = addMonths(input.accrualDate, index)
+          const notes = [
+            input.notes,
+            `Gasto anual prorrateado: cuota ${index + 1} de 12 por USD ${installmentAmount.toFixed(2)}.`,
+          ]
+            .filter(Boolean)
+            .join(' | ')
+
+          return db.financialMovement.create({
+            data: {
+              direction: input.direction,
+              sourceType: FinancialMovementSourceType.MANUAL,
+              sourceId: input.sourceId,
+              status: input.status,
+              category: input.category,
+              subcategory: input.subcategory,
+              description: input.description,
+              providerName: input.providerName,
+              amount: installmentAmount,
+              currency: input.currency.toUpperCase(),
+              baseCurrency: input.baseCurrency.toUpperCase(),
+              baseAmount: installmentAmount,
+              discountAmount: 0,
+              netAmount: installmentAmount,
+              accrualDate: occurrenceDate,
+              cashDate: occurrenceDate,
+              notes: notes || undefined,
+              proofUrl: input.proofUrl,
+              metadata: {
+                recurrence: input.recurrence,
+                annualAmount,
+                installmentAmount,
+                installmentIndex: index + 1,
+                installmentCount: 12,
+                seriesId,
+              },
+              createdById: adminUser.id,
+              updatedById: adminUser.id,
+            },
+          })
+        })
+      )
+
+      revalidatePath('/admin/finance')
+
+      return {
+        success: true,
+        data: {
+          id: movements[0]?.id,
+          createdCount: movements.length,
+        },
+      }
+    }
+
     const movement = await db.financialMovement.create({
       data: {
         direction: input.direction,
@@ -966,6 +1140,9 @@ export async function createFinancialMovement(rawInput: unknown) {
         cashDate: input.cashDate,
         notes: input.notes,
         proofUrl: input.proofUrl,
+        metadata: {
+          recurrence: input.recurrence,
+        },
         createdById: adminUser.id,
         updatedById: adminUser.id,
       },

@@ -231,7 +231,8 @@ export function FinanceDashboard() {
           <h1 className="text-3xl font-bold">Resultado del Período</h1>
           <p className="text-muted-foreground">
             Ingresos por clase y costo docente asociados a clases agendadas dentro del período
-            académico, más las otras salidas que registras manualmente.
+            académico, más gastos fijos del mes y descuentos automáticos por pasarela y
+            ofrenda.
           </p>
         </div>
 
@@ -247,8 +248,8 @@ export function FinanceDashboard() {
       <Card>
         <CardContent className="pt-6 text-sm text-muted-foreground">
           {selectedPeriod
-            ? `Si una clase está agendada dentro de ${selectedPeriod.name}, ese período suma tanto el ingreso relacionado como el costo docente. El ingreso se agrupa por estudiante y el egreso por profesor. Las demás entradas y salidas manuales se toman desde el inicio hasta el fin del mes actual.`
-            : 'Sin período académico seleccionado, la vista usa el rango elegido para clases y pagos docentes. Las demás entradas y salidas manuales siempre se toman desde el inicio hasta el fin del mes actual.'}
+            ? `Si una clase está agendada dentro de ${selectedPeriod.name}, ese período suma tanto el ingreso relacionado como el costo docente. El ingreso se agrupa por estudiante y el egreso por profesor. Los gastos fijos, descuentos y demás movimientos manuales se toman desde el inicio hasta el fin del mes actual, y la pasarela/ofrenda se calculan automáticamente sobre ese resultado.`
+            : 'Sin período académico seleccionado, la vista usa el rango elegido para clases y pagos docentes. Los gastos fijos, descuentos y demás movimientos manuales siempre se toman desde el inicio hasta el fin del mes actual, y la pasarela/ofrenda se calculan automáticamente sobre ese resultado.'}
         </CardContent>
       </Card>
 

@@ -32,7 +32,7 @@ export function FinanceSummaryCards({ summary }: FinanceSummaryCardsProps) {
         value={summary.manualExpenses}
         format="currency"
         icon={<FileText className="h-5 w-5" />}
-        description="Salidas manuales registradas por fecha"
+        description="Gastos fijos, descuentos y deducciones automáticas del resultado"
       />
       <SimpleKPICard
         title="Te Queda"
