@@ -30,14 +30,12 @@ interface CreateFinancialMovementDialogProps {
 }
 
 interface FinancialMovementFormState {
-  direction: 'INCOME' | 'EXPENSE'
   category: string
   subcategory: string
   description: string
   providerName: string
   amount: string
-  accrualDate: string
-  cashDate: string
+  expenseDate: string
   notes: string
   proofUrl: string
 }
@@ -47,14 +45,12 @@ function getToday() {
 }
 
 const initialState: FinancialMovementFormState = {
-  direction: 'EXPENSE',
   category: financeManualCategories[0],
   subcategory: '',
   description: '',
   providerName: '',
   amount: '',
-  accrualDate: getToday(),
-  cashDate: getToday(),
+  expenseDate: getToday(),
   notes: '',
   proofUrl: '',
 }
@@ -80,7 +76,7 @@ export function CreateFinancialMovementDialog({
   const handleSubmit = () => {
     startTransition(async () => {
       const result = await createFinancialMovement({
-        direction: form.direction,
+        direction: 'EXPENSE',
         category: form.category,
         subcategory: form.subcategory,
         description: form.description,
@@ -88,19 +84,19 @@ export function CreateFinancialMovementDialog({
         amount: form.amount,
         currency: 'USD',
         baseCurrency: 'USD',
-        accrualDate: form.accrualDate,
-        cashDate: form.cashDate || undefined,
+        accrualDate: form.expenseDate,
+        cashDate: form.expenseDate,
         notes: form.notes,
         proofUrl: form.proofUrl,
         status: 'POSTED',
       })
 
       if (!result.success) {
-        toast.error(result.error || 'No se pudo registrar el movimiento')
+        toast.error(result.error || 'No se pudo registrar la salida')
         return
       }
 
-      toast.success('Movimiento registrado correctamente')
+      toast.success('Salida registrada correctamente')
       await onCreated()
       onOpenChange(false)
     })
@@ -110,23 +106,10 @@ export function CreateFinancialMovementDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Registrar Movimiento Manual</DialogTitle>
+          <DialogTitle>Registrar Otra Salida</DialogTitle>
         </DialogHeader>
 
         <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label>Dirección</Label>
-            <Select value={form.direction} onValueChange={(value) => handleChange('direction', value)}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="EXPENSE">Egreso</SelectItem>
-                <SelectItem value="INCOME">Ingreso</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
           <div className="space-y-2">
             <Label>Categoría</Label>
             <Select value={form.category} onValueChange={(value) => handleChange('category', value)}>
@@ -143,12 +126,21 @@ export function CreateFinancialMovementDialog({
             </Select>
           </div>
 
+          <div className="space-y-2">
+            <Label>Fecha de salida</Label>
+            <Input
+              type="date"
+              value={form.expenseDate}
+              onChange={(event) => handleChange('expenseDate', event.target.value)}
+            />
+          </div>
+
           <div className="space-y-2 md:col-span-2">
             <Label>Descripción</Label>
             <Input
               value={form.description}
               onChange={(event) => handleChange('description', event.target.value)}
-              placeholder="Ej. Suscripción mensual a herramienta de soporte"
+              placeholder="Ej. Suscripción mensual, pauta, servicio, etc."
             />
           </div>
 
@@ -157,7 +149,7 @@ export function CreateFinancialMovementDialog({
             <Input
               value={form.providerName}
               onChange={(event) => handleChange('providerName', event.target.value)}
-              placeholder="Ej. Notion"
+              placeholder="Ej. Meta, Notion, Contador"
             />
           </div>
 
@@ -191,30 +183,12 @@ export function CreateFinancialMovementDialog({
             />
           </div>
 
-          <div className="space-y-2">
-            <Label>Fecha devengada</Label>
-            <Input
-              type="date"
-              value={form.accrualDate}
-              onChange={(event) => handleChange('accrualDate', event.target.value)}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label>Fecha de pago</Label>
-            <Input
-              type="date"
-              value={form.cashDate}
-              onChange={(event) => handleChange('cashDate', event.target.value)}
-            />
-          </div>
-
           <div className="space-y-2 md:col-span-2">
             <Label>Notas</Label>
             <Textarea
               value={form.notes}
               onChange={(event) => handleChange('notes', event.target.value)}
-              placeholder="Información adicional para auditoría o conciliación"
+              placeholder="Información adicional para recordar por qué salió este monto"
               rows={4}
             />
           </div>
@@ -225,7 +199,7 @@ export function CreateFinancialMovementDialog({
             Cancelar
           </Button>
           <Button onClick={handleSubmit} disabled={isPending}>
-            {isPending ? 'Guardando...' : 'Guardar movimiento'}
+            {isPending ? 'Guardando...' : 'Guardar salida'}
           </Button>
         </div>
       </DialogContent>

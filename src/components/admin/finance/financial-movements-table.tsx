@@ -50,10 +50,10 @@ export function FinancialMovementsTable({ rows, basis }: FinancialMovementsTable
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Movimientos Financieros</CardTitle>
+        <CardTitle>Detalle de Caja</CardTitle>
         <CardDescription>
           {basis === 'cash'
-            ? 'Caja real: solo movimientos con entrada o salida efectiva de dinero.'
+            ? 'Facturas cobradas, pagos a profesores y otras salidas manuales registradas.'
             : 'Devengado: obligaciones e ingresos reconocidos dentro del rango seleccionado.'}
         </CardDescription>
       </CardHeader>
@@ -62,12 +62,12 @@ export function FinancialMovementsTable({ rows, basis }: FinancialMovementsTable
           <TableHeader>
             <TableRow>
               <TableHead>Fecha</TableHead>
-              <TableHead>Dirección</TableHead>
-              <TableHead>Fuente</TableHead>
+              <TableHead>Entró / Salió</TableHead>
+              <TableHead>Origen</TableHead>
               <TableHead>Categoría</TableHead>
-              <TableHead>Descripción</TableHead>
-              <TableHead>Contraparte</TableHead>
-              <TableHead className="text-right">Neto</TableHead>
+              <TableHead>Detalle</TableHead>
+              <TableHead>Relacionado</TableHead>
+              <TableHead className="text-right">Monto</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
