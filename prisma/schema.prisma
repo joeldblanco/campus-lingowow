@@ -2582,6 +2582,63 @@ enum ConfirmationStatus {
   REJECTED
 }
 
+model FinancialMovement {
+  id             String                     @id @default(cuid())
+  direction      FinancialMovementDirection
+  sourceType     FinancialMovementSourceType @default(MANUAL)
+  sourceId       String?
+  status         FinancialMovementStatus    @default(POSTED)
+  category       String
+  subcategory    String?
+  description    String
+  providerName   String?
+  amount         Float
+  currency       String                     @default("USD")
+  baseCurrency   String                     @default("USD")
+  baseAmount     Float
+  discountAmount Float                      @default(0)
+  netAmount      Float
+  accrualDate    DateTime
+  cashDate       DateTime?
+  notes          String?
+  proofUrl       String?
+  metadata       Json?
+  createdById    String?
+  updatedById    String?
+  createdAt      DateTime                   @default(now())
+  updatedAt      DateTime                   @updatedAt
+
+  @@index([direction])
+  @@index([sourceType, sourceId])
+  @@index([status])
+  @@index([category])
+  @@index([accrualDate])
+  @@index([cashDate])
+  @@index([createdById])
+  @@map("financial_movements")
+}
+
+enum FinancialMovementDirection {
+  INCOME
+  EXPENSE
+}
+
+enum FinancialMovementSourceType {
+  MANUAL
+  INVOICE
+  TEACHER_PAYABLE
+  TEACHER_PAYMENT_CONFIRMATION
+  TEACHER_INCENTIVE
+  REFUND
+  ADJUSTMENT
+}
+
+enum FinancialMovementStatus {
+  DRAFT
+  POSTED
+  VOID
+}
+
 // =============================================
 // SISTEMA DE AUDIT LOGS
 // =============================================
