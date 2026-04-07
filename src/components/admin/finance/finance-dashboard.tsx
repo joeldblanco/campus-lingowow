@@ -231,8 +231,7 @@ export function FinanceDashboard() {
           <h1 className="text-3xl font-bold">Resultado del Período</h1>
           <p className="text-muted-foreground">
             Ingresos por clase y costo docente asociados a clases agendadas dentro del período
-            académico, más gastos fijos del mes y descuentos automáticos por pasarela y
-            ofrenda.
+            académico, más gastos fijos del mes y descuentos automáticos por pasarela y ofrenda.
           </p>
         </div>
 

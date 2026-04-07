@@ -46,10 +46,7 @@ export interface FinancialReportFilters {
   includeDrafts?: boolean
 }
 
-type DerivedFinancialSourceType =
-  | 'SCHEDULED_CLASS_REVENUE'
-  | 'AUTO_GATEWAY_FEE'
-  | 'AUTO_OFFERING'
+type DerivedFinancialSourceType = 'SCHEDULED_CLASS_REVENUE' | 'AUTO_GATEWAY_FEE' | 'AUTO_OFFERING'
 
 export interface FinancialReportRow {
   id: string
@@ -218,9 +215,7 @@ function buildAutomaticExpenseRows(
   period: ResolvedAcademicPeriodFilter | null
 ) {
   const incomeRows = baseRows.filter((row) => row.direction === FinancialMovementDirection.INCOME)
-  const expenseRows = baseRows.filter(
-    (row) => row.direction === FinancialMovementDirection.EXPENSE
-  )
+  const expenseRows = baseRows.filter((row) => row.direction === FinancialMovementDirection.EXPENSE)
 
   const totalIncome = roundCurrency(incomeRows.reduce((sum, row) => sum + row.netAmount, 0))
 
@@ -891,10 +886,7 @@ async function collectFinancialRows(
   const baseRows = [...incomeRows, ...manualRows, ...teacherRows, ...incentiveRows]
   const automaticExpenseRows = buildAutomaticExpenseRows(baseRows, period)
 
-  return applyClientFilters(
-    sortFinancialRows([...baseRows, ...automaticExpenseRows]),
-    filters
-  )
+  return applyClientFilters(sortFinancialRows([...baseRows, ...automaticExpenseRows]), filters)
 }
 
 async function buildMonthProjection(cutoffDate: Date): Promise<FinancialProjection | null> {

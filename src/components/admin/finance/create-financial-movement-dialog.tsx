@@ -180,9 +180,9 @@ export function CreateFinancialMovementDialog({
             ? 'Recurrente'
             : form.expenseMode === 'annual'
               ? 'Anual'
-            : form.expenseMode === 'recurring'
-              ? 'Recurrente'
-              : 'Puntual',
+              : form.expenseMode === 'recurring'
+                ? 'Recurrente'
+                : 'Puntual',
         sourceId: form.entryType === 'discount' ? selectedStudent?.id : undefined,
         description: form.description,
         providerName: form.entryType === 'discount' ? selectedStudent?.name : undefined,
