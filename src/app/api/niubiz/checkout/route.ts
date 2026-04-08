@@ -7,12 +7,19 @@ import {
   notifySelfServiceEnrollmentCreated,
   upsertSelfServiceEnrollment,
 } from '@/lib/enrollments/self-service-enrollment'
+import {
+  DEFAULT_TEACHER_TIMEZONE,
+  getUtcOccurrenceForDate,
+  isOccurrenceEligibleForSelfService,
+  resolveEligibleEnrollmentWindow,
+} from '@/lib/enrollments/self-service-cutoff'
 
 interface ScheduleSlot {
   teacherId: string
   dayOfWeek: number
   startTime: string
   endTime: string
+  teacherTimezone?: string | null
 }
 
 interface InvoiceItem {
@@ -245,36 +252,25 @@ export async function POST(request: NextRequest) {
 
         console.log('[NIUBIZ CHECKOUT] Invoice created:', invoice.invoiceNumber)
 
-        // Get current academic period based on dates (excluding special weeks)
         const today = new Date()
 
-        // Buscar período donde hoy esté entre startDate y endDate
-        let currentPeriod = await db.academicPeriod.findFirst({
+        const upcomingPeriods = await db.academicPeriod.findMany({
           where: {
-            startDate: { lte: today },
             endDate: { gte: today },
             isSpecialWeek: false,
           },
+          orderBy: { startDate: 'asc' },
         })
 
-        // Si no hay período actual, buscar el próximo
-        if (!currentPeriod) {
-          currentPeriod = await db.academicPeriod.findFirst({
-            where: {
-              startDate: { gte: today },
-              isSpecialWeek: false,
-            },
-            orderBy: { startDate: 'asc' },
-          })
-        }
-
-        console.log('[NIUBIZ CHECKOUT] Academic period:', currentPeriod?.name || 'None found')
+        console.log('[NIUBIZ CHECKOUT] Eligible period candidates:', upcomingPeriods.length)
 
         // Process each item for enrollment
         const newlyCreatedEnrollmentIds: string[] = []
         for (const item of invoiceData.items) {
           let plan = null
           let courseId: string | null = null
+          let teacherTimezones = new Map<string, string>()
+          let selectedScheduleWithTeacherTimezones = item.selectedSchedule
 
           if (item.planId) {
             plan = await db.plan.findUnique({
@@ -288,6 +284,22 @@ export async function POST(request: NextRequest) {
             })
             // Get courseId from plan, or from product if plan doesn't have it
             courseId = plan?.courseId || plan?.product?.courseId || null
+          }
+
+          if (item.selectedSchedule?.length) {
+            const teacherIds = [...new Set(item.selectedSchedule.map((slot) => slot.teacherId))]
+            const teachers = await db.user.findMany({
+              where: { id: { in: teacherIds } },
+              select: { id: true, timezone: true },
+            })
+            teacherTimezones = new Map(
+              teachers.map((teacher) => [teacher.id, teacher.timezone || DEFAULT_TEACHER_TIMEZONE])
+            )
+            selectedScheduleWithTeacherTimezones = item.selectedSchedule.map((slot) => ({
+              ...slot,
+              teacherTimezone:
+                teacherTimezones.get(slot.teacherId) || DEFAULT_TEACHER_TIMEZONE,
+            }))
           }
 
           // If still no courseId, try to get it from the product directly
@@ -321,8 +333,16 @@ export async function POST(request: NextRequest) {
             productCourseId: plan?.product?.courseId,
             resolvedCourseId: courseId,
             selectedSchedule: item.selectedSchedule?.length,
-            currentPeriodId: currentPeriod?.id,
+            eligiblePeriods: upcomingPeriods.length,
           })
+
+          const eligibleWindow = selectedScheduleWithTeacherTimezones?.length
+            ? resolveEligibleEnrollmentWindow(
+                upcomingPeriods,
+                selectedScheduleWithTeacherTimezones,
+                today
+              )
+            : null
 
           // Create enrollment if plan includes classes
           if (
@@ -330,7 +350,7 @@ export async function POST(request: NextRequest) {
             courseId &&
             item.selectedSchedule &&
             item.selectedSchedule.length > 0 &&
-            currentPeriod
+            eligibleWindow
           ) {
             console.log(
               '[NIUBIZ CHECKOUT] Creating enrollment for student:',
@@ -345,9 +365,9 @@ export async function POST(request: NextRequest) {
             const enrollmentResult = await upsertSelfServiceEnrollment({
               studentId: userId!,
               courseId: courseId!,
-              academicPeriodId: currentPeriod.id,
+              academicPeriodId: eligibleWindow.period.id,
               teacherId: firstTeacherId,
-              classesTotal: item.proratedClasses || plan.classesPerPeriod || 8,
+              classesTotal: item.proratedClasses ?? plan.classesPerPeriod ?? 8,
             })
             const enrollment = enrollmentResult.enrollment
 
@@ -369,17 +389,9 @@ export async function POST(request: NextRequest) {
             // Create schedules
             const { convertRecurringScheduleToUTC } = await import('@/lib/utils/date')
 
-            const teacherIds = [...new Set(item.selectedSchedule.map((s) => s.teacherId))]
-            const teachers = await db.user.findMany({
-              where: { id: { in: teacherIds } },
-              select: { id: true, timezone: true },
-            })
-            const teacherTimezones = new Map(
-              teachers.map((t) => [t.id, t.timezone || 'America/Lima'])
-            )
-
             for (const slot of item.selectedSchedule) {
-              const timezone = teacherTimezones.get(slot.teacherId) || 'America/Lima'
+              const timezone =
+                teacherTimezones.get(slot.teacherId) || DEFAULT_TEACHER_TIMEZONE
               const utcData = convertRecurringScheduleToUTC(
                 slot.dayOfWeek,
                 slot.startTime,
@@ -414,20 +426,31 @@ export async function POST(request: NextRequest) {
             // Create bookings for current period
             // IMPORTANTE: Los horarios en selectedSchedule ya están convertidos a UTC
             // Debemos iterar sobre las fechas UTC y comparar con dayOfWeek UTC
-            const periodStart = new Date(currentPeriod.startDate)
-            const periodEnd = new Date(currentPeriod.endDate)
-            const startDate = today > periodStart ? today : periodStart
+            const periodEnd = new Date(eligibleWindow.period.endDate)
+            const startDate = new Date(eligibleWindow.enrollmentStart)
             const currentDate = new Date(startDate)
+            currentDate.setUTCHours(0, 0, 0, 0)
 
             while (currentDate <= periodEnd) {
               // Usar getUTCDay() para obtener el día de la semana en UTC
               // ya que los slots del schedule están en UTC
               const dayOfWeekUTC = currentDate.getUTCDay()
-              const scheduleForDay = item.selectedSchedule.find(
+              const scheduleForDay = selectedScheduleWithTeacherTimezones?.find(
                 (slot) => slot.dayOfWeek === dayOfWeekUTC
               )
 
               if (scheduleForDay) {
+                const occurrenceAt = getUtcOccurrenceForDate(currentDate, scheduleForDay)
+
+                if (
+                  occurrenceAt.getTime() < startDate.getTime() ||
+                  occurrenceAt.getTime() > periodEnd.getTime() ||
+                  !isOccurrenceEligibleForSelfService(occurrenceAt, scheduleForDay, today)
+                ) {
+                  currentDate.setUTCDate(currentDate.getUTCDate() + 1)
+                  continue
+                }
+
                 // Formatear fecha en UTC para consistencia
                 const year = currentDate.getUTCFullYear()
                 const month = String(currentDate.getUTCMonth() + 1).padStart(2, '0')
@@ -458,7 +481,7 @@ export async function POST(request: NextRequest) {
                   })
                 }
               }
-              currentDate.setDate(currentDate.getDate() + 1)
+              currentDate.setUTCDate(currentDate.getUTCDate() + 1)
             }
 
             console.log('[NIUBIZ CHECKOUT] Bookings created for period')

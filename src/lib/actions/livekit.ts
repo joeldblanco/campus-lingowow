@@ -9,6 +9,58 @@ import { redirect } from 'next/navigation'
 import { getCurrentDate } from '@/lib/utils/date'
 import { auditLog } from '@/lib/audit-log'
 
+async function syncTeacherFinalizedClassBooking(
+  bookingId: string,
+  endTime: Date,
+  endedByTeacher: boolean
+) {
+  if (!endedByTeacher) {
+    return false
+  }
+
+  const booking = await db.classBooking.findUnique({
+    where: { id: bookingId },
+    select: {
+      status: true,
+      completedAt: true,
+      isPayable: true,
+    },
+  })
+
+  if (!booking || booking.status === 'CANCELLED') {
+    return false
+  }
+
+  const updateData: {
+    status?: 'COMPLETED'
+    completedAt?: Date
+    isPayable?: boolean
+  } = {}
+
+  if (booking.status !== 'COMPLETED') {
+    updateData.status = 'COMPLETED'
+  }
+
+  if (!booking.completedAt) {
+    updateData.completedAt = endTime
+  }
+
+  if (!booking.isPayable) {
+    updateData.isPayable = true
+  }
+
+  if (Object.keys(updateData).length === 0) {
+    return false
+  }
+
+  await db.classBooking.update({
+    where: { id: bookingId },
+    data: updateData,
+  })
+
+  return true
+}
+
 export async function createLiveKitMeeting(bookingId: string) {
   try {
     const session = await auth()
@@ -126,7 +178,16 @@ export async function endLiveKitMeeting(bookingId: string) {
       },
     })
 
-    await syncAutoCompletedClassBooking(bookingId)
+    const endedByTeacher = videoCall.teacherId === session.user.id
+    const markedCompletedByTeacher = await syncTeacherFinalizedClassBooking(
+      bookingId,
+      endTime,
+      endedByTeacher
+    )
+
+    if (!markedCompletedByTeacher) {
+      await syncAutoCompletedClassBooking(bookingId)
+    }
 
     auditLog({
       userId: session.user.id,
@@ -139,12 +200,16 @@ export async function endLiveKitMeeting(bookingId: string) {
         studentId: videoCall.studentId,
         duration,
         roomId: videoCall.roomId,
+        endedByTeacher,
+        markedCompletedByTeacher,
       },
     })
 
     const roomName = videoCall.roomId
     revalidatePath(`/classroom`)
     revalidatePath(`/dashboard`)
+    revalidatePath('/admin/classes')
+    revalidatePath('/admin/reports')
 
     return { success: true, duration, roomName }
   } catch (error) {

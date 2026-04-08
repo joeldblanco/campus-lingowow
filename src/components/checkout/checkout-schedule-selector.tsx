@@ -505,6 +505,7 @@ export function CheckoutScheduleSelector({
             <CardDescription>
               Arrastra para seleccionar múltiples bloques. Cada clase dura {classDuration} minutos.
               {maxClassesPerWeek && ` Máximo ${maxClassesPerWeek} clases por semana.`}
+              {' '}Las clases requieren al menos 8 horas de anticipación. Si empiezan antes de las 9:00 a. m. en la hora del profesor, sólo se agendan hasta las 6:00 p. m. del día anterior.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

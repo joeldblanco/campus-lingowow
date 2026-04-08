@@ -1,11 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { getStartOfDayUTC, getEndOfDayUTC } from '@/lib/utils/date'
+import { getStartOfDayUTC } from '@/lib/utils/date'
+import {
+  DEFAULT_TEACHER_TIMEZONE,
+  getEnrollmentAdvanceCutoff,
+  getUtcOccurrenceForDate,
+  isOccurrenceEligibleForSelfService,
+  resolveEligibleEnrollmentWindow,
+} from '@/lib/enrollments/self-service-cutoff'
 
 interface ScheduleSlot {
+  teacherId?: string
   dayOfWeek: number // 0-6, 0 = Sunday
   startTime: string // HH:MM
   endTime: string // HH:MM
+  teacherTimezone?: string | null
 }
 
 /**
@@ -15,10 +24,11 @@ interface ScheduleSlot {
 function calculateClassesInPeriod(
   startDate: Date,
   endDate: Date,
-  schedule: ScheduleSlot[]
+  schedule: ScheduleSlot[],
+  now: Date
 ): number {
   let classCount = 0
-  const currentDate = new Date(startDate)
+  const currentDate = getStartOfDayUTC(startDate)
   
   console.log('[calculateClassesInPeriod] Input:', {
     startDate: startDate.toISOString(),
@@ -27,27 +37,29 @@ function calculateClassesInPeriod(
   })
 
   while (currentDate <= endDate) {
-    const dayOfWeek = currentDate.getDay()
-    
-    // Verificar si hay una clase programada para este día
-    const hasClassToday = schedule.some(slot => {
-      const matches = slot.dayOfWeek === dayOfWeek
-      if (matches) {
+    const dayOfWeek = currentDate.getUTCDay()
+    const scheduleForDay = schedule.find((slot) => slot.dayOfWeek === dayOfWeek)
+
+    if (scheduleForDay) {
+      const occurrenceAt = getUtcOccurrenceForDate(currentDate, scheduleForDay)
+      const isEligibleOccurrence =
+        occurrenceAt.getTime() >= startDate.getTime() &&
+        occurrenceAt.getTime() <= endDate.getTime() &&
+        isOccurrenceEligibleForSelfService(occurrenceAt, scheduleForDay, now)
+
+      if (isEligibleOccurrence) {
         console.log('[calculateClassesInPeriod] Match found:', {
           date: currentDate.toISOString(),
+          occurrenceAt: occurrenceAt.toISOString(),
           dayOfWeek,
-          slot,
+          slot: scheduleForDay,
         })
+        classCount++
       }
-      return matches
-    })
-    
-    if (hasClassToday) {
-      classCount++
     }
     
     // Avanzar al siguiente día
-    currentDate.setDate(currentDate.getDate() + 1)
+    currentDate.setUTCDate(currentDate.getUTCDate() + 1)
   }
 
   console.log('[calculateClassesInPeriod] Result:', classCount)
@@ -88,77 +100,84 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    const teacherIds = [
+      ...new Set(
+        schedule
+          .map((slot) => slot.teacherId)
+          .filter((teacherId): teacherId is string => Boolean(teacherId))
+      ),
+    ]
+    const teachers = teacherIds.length
+      ? await db.user.findMany({
+          where: { id: { in: teacherIds } },
+          select: { id: true, timezone: true },
+        })
+      : []
+    const teacherTimezones = new Map(
+      teachers.map((teacher) => [teacher.id, teacher.timezone || DEFAULT_TEACHER_TIMEZONE])
+    )
+    const scheduleWithTeacherTimezones = schedule.map((slot) => ({
+      ...slot,
+      teacherTimezone: slot.teacherId
+        ? teacherTimezones.get(slot.teacherId) || DEFAULT_TEACHER_TIMEZONE
+        : DEFAULT_TEACHER_TIMEZONE,
+    }))
+
     // Obtener el período académico actual basándose en el RANGO DE FECHAS (no en isActive)
     // Las fechas en la DB están en UTC, así que comparamos en UTC
     const now = new Date()
-    // Obtener el inicio del día actual en UTC para comparaciones consistentes
     const todayStartUTC = getStartOfDayUTC(now)
-    const todayEndUTC = getEndOfDayUTC(now)
+    const enrollmentCutoff = getEnrollmentAdvanceCutoff(now)
     
-    console.log('[Proration] Today UTC range:', {
+    console.log('[Proration] Today UTC start:', {
       todayStartUTC: todayStartUTC.toISOString(),
-      todayEndUTC: todayEndUTC.toISOString(),
-    })
-    
-    // PASO 1: Buscar el período que CONTIENE la fecha actual (por rango de fechas)
-    // Un período es "actual" si: startDate <= hoy <= endDate
-    const currentPeriod = await db.academicPeriod.findFirst({
-      where: { 
-        startDate: { lte: todayEndUTC },
-        endDate: { gte: todayStartUTC },
-        isSpecialWeek: false, // Excluir semanas especiales
-      },
-      orderBy: { startDate: 'desc' }, // Si hay múltiples, tomar el más reciente
+      enrollmentCutoff: enrollmentCutoff.toISOString(),
     })
 
-    let periodStart: Date = new Date(now)
-    let periodEnd: Date = new Date(now)
-    periodEnd.setDate(periodEnd.getDate() + 28) // Default: 4 semanas
+    const upcomingPeriods = await db.academicPeriod.findMany({
+      where: {
+        endDate: { gte: todayStartUTC },
+        isSpecialWeek: false,
+      },
+      orderBy: { startDate: 'asc' },
+    })
+
+    let periodStart = new Date(enrollmentCutoff)
+    let periodEnd = new Date(enrollmentCutoff)
+    periodEnd.setUTCDate(periodEnd.getUTCDate() + 28)
     let useDefaultPeriod = true
     let periodName = 'Período por defecto'
+    let enrollmentStart = new Date(enrollmentCutoff)
 
-    if (currentPeriod) {
-      periodStart = new Date(currentPeriod.startDate)
-      periodEnd = new Date(currentPeriod.endDate)
+    const eligibleWindow = resolveEligibleEnrollmentWindow(
+      upcomingPeriods,
+      scheduleWithTeacherTimezones,
+      now
+    )
+
+    if (eligibleWindow) {
+      periodStart = new Date(eligibleWindow.period.startDate)
+      periodEnd = new Date(eligibleWindow.period.endDate)
       useDefaultPeriod = false
-      periodName = currentPeriod.name
-      console.log('[Proration] Found current period by date range:', currentPeriod.name, {
+      periodName = eligibleWindow.period.name
+      enrollmentStart = new Date(eligibleWindow.enrollmentStart)
+      console.log('[Proration] Using eligible period:', eligibleWindow.period.name, {
         periodStart: periodStart.toISOString(),
         periodEnd: periodEnd.toISOString(),
+        firstClassAt: eligibleWindow.firstClassAt.toISOString(),
+        enrollmentStart: enrollmentStart.toISOString(),
       })
-    }
-    
-    // PASO 2: Si no hay período actual, buscar el próximo período futuro
-    if (!currentPeriod) {
-      console.log('[Proration] No current period found, looking for next future period')
-      const nextPeriod = await db.academicPeriod.findFirst({
-        where: {
-          startDate: { gt: todayEndUTC },
-          isSpecialWeek: false,
-        },
-        orderBy: { startDate: 'asc' },
-      })
-      
-      if (nextPeriod) {
-        periodStart = new Date(nextPeriod.startDate)
-        periodEnd = new Date(nextPeriod.endDate)
-        useDefaultPeriod = false
-        periodName = nextPeriod.name
-        console.log('[Proration] Using next future period:', nextPeriod.name)
-      } else {
-        console.log('[Proration] No current or upcoming period found, using default period')
-      }
+    } else {
+      console.log('[Proration] No eligible academic period found, using default 4-week window')
     }
     
     console.log('[Proration] Period:', {
       periodStart: periodStart.toISOString(),
       periodEnd: periodEnd.toISOString(),
       today: now.toISOString(),
+      enrollmentStart: enrollmentStart.toISOString(),
       useDefaultPeriod,
     })
-    
-    // La fecha de inicio es hoy o el inicio del período, lo que sea más tarde
-    const enrollmentStart = now > periodStart ? now : periodStart
 
     console.log('[Proration] Schedule received:', schedule)
 
@@ -166,7 +185,8 @@ export async function POST(req: NextRequest) {
     const totalClassesInFullPeriod = calculateClassesInPeriod(
       periodStart,
       periodEnd,
-      schedule
+      scheduleWithTeacherTimezones,
+      now
     )
 
     console.log('[Proration] Total classes in full period:', totalClassesInFullPeriod)
@@ -175,7 +195,8 @@ export async function POST(req: NextRequest) {
     const classesFromNow = calculateClassesInPeriod(
       enrollmentStart,
       periodEnd,
-      schedule
+      scheduleWithTeacherTimezones,
+      now
     )
 
     console.log('[Proration] Classes from now:', classesFromNow)
