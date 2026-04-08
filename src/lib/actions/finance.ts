@@ -9,12 +9,16 @@ import { db } from '@/lib/db'
 import handleError from '@/lib/handleError'
 import {
   createFinancialMovementSchema,
+  financialRecurringRuleMonthOverrideSchema,
   financeReportFilterSchema,
   type FinanceReportFilterInput,
+  updateFinancialMovementAmountSchema,
+  upsertFinancialRecurringRuleSchema,
 } from '@/schemas/finance'
 import {
   BookingStatus,
   FinancialMovementDirection,
+  FinancialRecurringRuleRecurrence,
   FinancialMovementSourceType,
   FinancialMovementStatus,
   Prisma,
@@ -46,7 +50,15 @@ export interface FinancialReportFilters {
   includeDrafts?: boolean
 }
 
-type DerivedFinancialSourceType = 'SCHEDULED_CLASS_REVENUE' | 'AUTO_GATEWAY_FEE' | 'AUTO_OFFERING'
+type DerivedFinancialSourceType =
+  | 'SCHEDULED_CLASS_REVENUE'
+  | 'AUTO_GATEWAY_FEE'
+  | 'AUTO_OFFERING'
+  | 'RECURRING_RULE'
+
+type FinanceRowSection = 'CLASS' | 'OTHER'
+type FinanceRowRecurrence = 'ONE_TIME' | 'MONTHLY' | 'ANNUAL'
+type FinanceRowEditableMode = 'MOVEMENT' | 'RULE_OVERRIDE'
 
 export interface FinancialReportRow {
   id: string
@@ -68,9 +80,35 @@ export interface FinancialReportRow {
   accrualDate: string
   cashDate: string | null
   effectiveDate: string
+  section: FinanceRowSection
+  typeLabel: string | null
+  recurrence: FinanceRowRecurrence | null
+  editableMode: FinanceRowEditableMode | null
+  editableId: string | null
+  hasMonthOverride: boolean
   unitCount: number | null
   notes: string | null
   isManual: boolean
+}
+
+export interface FinancialRecurringRuleItem {
+  id: string
+  name: string
+  direction: FinancialMovementDirection
+  category: string
+  subcategory: string | null
+  recurrence: FinancialRecurringRuleRecurrence
+  amount: number
+  currency: string
+  notes: string | null
+  isActive: boolean
+  currentMonthAmount: number
+  hasMonthOverride: boolean
+}
+
+export interface FinancialRecurringRuleListResult {
+  monthKey: string
+  rules: FinancialRecurringRuleItem[]
 }
 
 export interface FinancialReportSummary {
@@ -189,6 +227,44 @@ function resolveCurrentMonthDateRange(referenceDate = new Date()) {
   }
 }
 
+function resolveCurrentMonthKey(referenceDate = new Date()) {
+  return format(referenceDate, 'yyyy-MM')
+}
+
+function isJsonRecord(value: Prisma.JsonValue | null | undefined): value is Prisma.JsonObject {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function getMetadataString(
+  metadata: Prisma.JsonValue | null | undefined,
+  key: string
+): string | null {
+  if (!isJsonRecord(metadata)) {
+    return null
+  }
+
+  const value = metadata[key]
+  return typeof value === 'string' ? value : null
+}
+
+function resolveMovementRecurrence(
+  metadata: Prisma.JsonValue | null | undefined
+): FinanceRowRecurrence {
+  const recurrence = getMetadataString(metadata, 'recurrence')
+
+  if (recurrence === 'MONTHLY' || recurrence === 'ANNUAL') {
+    return recurrence
+  }
+
+  return 'ONE_TIME'
+}
+
+function resolveRuleMonthlyAmount(recurrence: FinancialRecurringRuleRecurrence, amount: number) {
+  return recurrence === FinancialRecurringRuleRecurrence.ANNUAL
+    ? roundCurrency(amount / 12)
+    : roundCurrency(amount)
+}
+
 async function ensureAdminUser() {
   const session = await auth()
 
@@ -255,6 +331,12 @@ function buildAutomaticExpenseRows(
       accrualDate: effectiveDate,
       cashDate: effectiveDate,
       effectiveDate,
+      section: 'OTHER',
+      typeLabel: 'Automático',
+      recurrence: null,
+      editableMode: null,
+      editableId: null,
+      hasMonthOverride: false,
       unitCount: null,
       notes: `6% de USD ${totalIncome.toFixed(2)} de ingresos acumulados`,
       isManual: false,
@@ -282,6 +364,12 @@ function buildAutomaticExpenseRows(
       accrualDate: effectiveDate,
       cashDate: effectiveDate,
       effectiveDate,
+      section: 'OTHER',
+      typeLabel: 'Automático',
+      recurrence: null,
+      editableMode: null,
+      editableId: null,
+      hasMonthOverride: false,
       unitCount: null,
       notes: `10% de USD ${profitBeforeOffering.toFixed(2)} de ganancia antes de ofrenda`,
       isManual: false,
@@ -548,6 +636,12 @@ async function getScheduledClassRevenueRows(
     accrualDate: group.firstDate,
     cashDate: group.lastDate,
     effectiveDate: group.lastDate,
+    section: 'CLASS',
+    typeLabel: 'Ingreso por clases',
+    recurrence: null,
+    editableMode: null,
+    editableId: null,
+    hasMonthOverride: false,
     unitCount: group.classCount,
     notes: Array.from(group.productNotes).join(' | '),
     isManual: false,
@@ -588,33 +682,106 @@ async function getManualMovementRows(
     },
   })
 
-  return movements.map<FinancialReportRow>((movement) => ({
-    id: movement.id,
-    sourceType: movement.sourceType,
-    sourceId: movement.sourceId || null,
-    academicPeriodId: null,
-    academicPeriodName: null,
-    direction: movement.direction,
-    status: movement.status,
-    category: movement.category,
-    subcategory: movement.subcategory,
-    description: movement.description,
-    counterparty: movement.providerName || null,
-    amount: roundCurrency(movement.amount),
-    discountAmount: roundCurrency(movement.discountAmount),
-    netAmount: roundCurrency(movement.netAmount),
-    currency: movement.currency,
-    baseAmount: roundCurrency(movement.baseAmount),
-    accrualDate: movement.accrualDate.toISOString(),
-    cashDate: movement.cashDate?.toISOString() || null,
-    effectiveDate:
-      basis === 'cash'
-        ? movement.cashDate?.toISOString() || movement.accrualDate.toISOString()
-        : movement.accrualDate.toISOString(),
-    unitCount: null,
-    notes: movement.notes,
-    isManual: movement.sourceType === FinancialMovementSourceType.MANUAL,
-  }))
+  return movements.map<FinancialReportRow>((movement) => {
+    const recurrence = resolveMovementRecurrence(movement.metadata)
+
+    return {
+      id: movement.id,
+      sourceType: movement.sourceType,
+      sourceId: movement.sourceId || null,
+      academicPeriodId: null,
+      academicPeriodName: null,
+      direction: movement.direction,
+      status: movement.status,
+      category: movement.category,
+      subcategory: movement.subcategory,
+      description: movement.description,
+      counterparty: movement.providerName || null,
+      amount: roundCurrency(movement.amount),
+      discountAmount: roundCurrency(movement.discountAmount),
+      netAmount: roundCurrency(movement.netAmount),
+      currency: movement.currency,
+      baseAmount: roundCurrency(movement.baseAmount),
+      accrualDate: movement.accrualDate.toISOString(),
+      cashDate: movement.cashDate?.toISOString() || null,
+      effectiveDate:
+        basis === 'cash'
+          ? movement.cashDate?.toISOString() || movement.accrualDate.toISOString()
+          : movement.accrualDate.toISOString(),
+      section: 'OTHER',
+      typeLabel:
+        recurrence === 'MONTHLY' ? 'Mensual' : recurrence === 'ANNUAL' ? 'Anual' : 'Puntual',
+      recurrence,
+      editableMode: movement.sourceType === FinancialMovementSourceType.MANUAL ? 'MOVEMENT' : null,
+      editableId: movement.sourceType === FinancialMovementSourceType.MANUAL ? movement.id : null,
+      hasMonthOverride: false,
+      unitCount: null,
+      notes: movement.notes,
+      isManual: movement.sourceType === FinancialMovementSourceType.MANUAL,
+    }
+  })
+}
+
+async function getRecurringRuleRows(currentMonthEnd: Date) {
+  const monthKey = resolveCurrentMonthKey(currentMonthEnd)
+
+  const rules = await db.financialRecurringRule.findMany({
+    where: {
+      isActive: true,
+    },
+    include: {
+      overrides: {
+        where: {
+          yearMonth: monthKey,
+        },
+        orderBy: {
+          updatedAt: 'desc',
+        },
+        take: 1,
+      },
+    },
+    orderBy: [{ direction: 'asc' }, { category: 'asc' }, { name: 'asc' }],
+  })
+
+  const effectiveDate = currentMonthEnd.toISOString()
+
+  return rules.map<FinancialReportRow>((rule) => {
+    const override = rule.overrides[0] || null
+    const baseMonthlyAmount = resolveRuleMonthlyAmount(rule.recurrence, rule.amount)
+    const effectiveAmount = roundCurrency(override?.amount ?? baseMonthlyAmount)
+    const notes = [rule.notes, override?.notes].filter(Boolean).join(' | ')
+
+    return {
+      id: `recurring-rule-${rule.id}-${monthKey}`,
+      sourceType: 'RECURRING_RULE',
+      sourceId: rule.id,
+      academicPeriodId: null,
+      academicPeriodName: null,
+      direction: rule.direction,
+      status: override ? 'OVERRIDDEN' : 'CONFIGURED',
+      category: rule.category,
+      subcategory: rule.subcategory,
+      description: rule.name,
+      counterparty: null,
+      amount: effectiveAmount,
+      discountAmount: 0,
+      netAmount: effectiveAmount,
+      currency: rule.currency,
+      baseAmount: effectiveAmount,
+      accrualDate: effectiveDate,
+      cashDate: effectiveDate,
+      effectiveDate,
+      section: 'OTHER',
+      typeLabel: rule.recurrence === FinancialRecurringRuleRecurrence.ANNUAL ? 'Anual' : 'Mensual',
+      recurrence: rule.recurrence,
+      editableMode: 'RULE_OVERRIDE',
+      editableId: rule.id,
+      hasMonthOverride: Boolean(override),
+      unitCount: null,
+      notes: notes || null,
+      isManual: true,
+    }
+  })
 }
 
 async function getProjectedSubscriptionRevenue(start: Date, end: Date) {
@@ -685,6 +852,12 @@ async function getTeacherPayableRows(
       accrualDate: end.toISOString(),
       cashDate: teacher.paymentConfirmedAt?.toISOString() || null,
       effectiveDate: end.toISOString(),
+      section: 'CLASS',
+      typeLabel: 'Pago docente',
+      recurrence: null,
+      editableMode: null,
+      editableId: null,
+      hasMonthOverride: false,
       unitCount: teacher.totalClasses,
       notes: null,
       isManual: false,
@@ -770,6 +943,12 @@ async function getTeacherIncentiveRows(
       basis === 'cash'
         ? incentive.paidAt?.toISOString() || incentive.createdAt.toISOString()
         : incentive.createdAt.toISOString(),
+    section: 'OTHER',
+    typeLabel: 'Incentivo',
+    recurrence: null,
+    editableMode: null,
+    editableId: null,
+    hasMonthOverride: false,
     unitCount: null,
     notes: null,
     isManual: false,
@@ -876,14 +1055,23 @@ async function collectFinancialRows(
 ) {
   const { start: manualStart, end: manualEnd } = resolveCurrentMonthDateRange()
 
-  const [incomeRows, manualRows, teacherRows, incentiveRows] = await Promise.all([
-    getScheduledClassRevenueRows(start, end, period),
-    getManualMovementRows(manualStart, manualEnd, basis, filters),
-    getTeacherPayableRows(start, end, period),
-    getTeacherIncentiveRows(start, end, basis, period),
-  ])
+  const [incomeRows, manualRows, recurringRuleRows, teacherRows, incentiveRows] = await Promise.all(
+    [
+      getScheduledClassRevenueRows(start, end, period),
+      getManualMovementRows(manualStart, manualEnd, basis, filters),
+      getRecurringRuleRows(manualEnd),
+      getTeacherPayableRows(start, end, period),
+      getTeacherIncentiveRows(start, end, basis, period),
+    ]
+  )
 
-  const baseRows = [...incomeRows, ...manualRows, ...teacherRows, ...incentiveRows]
+  const baseRows = [
+    ...incomeRows,
+    ...manualRows,
+    ...recurringRuleRows,
+    ...teacherRows,
+    ...incentiveRows,
+  ]
   const automaticExpenseRows = buildAutomaticExpenseRows(baseRows, period)
 
   return applyClientFilters(sortFinancialRows([...baseRows, ...automaticExpenseRows]), filters)
@@ -1034,6 +1222,210 @@ export async function getFinancialReport(
       search: parsedFilters.search || null,
       includeDrafts: parsedFilters.includeDrafts,
     },
+  }
+}
+
+export async function getFinancialRecurringRules(): Promise<FinancialRecurringRuleListResult> {
+  await ensureAdminUser()
+
+  const monthEnd = resolveCurrentMonthDateRange().end
+  const monthKey = resolveCurrentMonthKey(monthEnd)
+
+  const rules = await db.financialRecurringRule.findMany({
+    where: {
+      isActive: true,
+    },
+    include: {
+      overrides: {
+        where: {
+          yearMonth: monthKey,
+        },
+        orderBy: {
+          updatedAt: 'desc',
+        },
+        take: 1,
+      },
+    },
+    orderBy: [{ direction: 'asc' }, { category: 'asc' }, { name: 'asc' }],
+  })
+
+  return {
+    monthKey,
+    rules: rules.map((rule) => {
+      const override = rule.overrides[0] || null
+      const currentMonthAmount = roundCurrency(
+        override?.amount ?? resolveRuleMonthlyAmount(rule.recurrence, rule.amount)
+      )
+
+      return {
+        id: rule.id,
+        name: rule.name,
+        direction: rule.direction,
+        category: rule.category,
+        subcategory: rule.subcategory,
+        recurrence: rule.recurrence,
+        amount: roundCurrency(rule.amount),
+        currency: rule.currency,
+        notes: rule.notes,
+        isActive: rule.isActive,
+        currentMonthAmount,
+        hasMonthOverride: Boolean(override),
+      }
+    }),
+  }
+}
+
+export async function upsertFinancialRecurringRule(rawInput: unknown) {
+  try {
+    const adminUser = await ensureAdminUser()
+    const input = upsertFinancialRecurringRuleSchema.parse(rawInput)
+
+    const rule = input.id
+      ? await db.financialRecurringRule.update({
+          where: { id: input.id },
+          data: {
+            name: input.name,
+            direction: input.direction,
+            category: input.category,
+            subcategory: input.subcategory,
+            recurrence: input.recurrence,
+            amount: roundCurrency(input.amount),
+            currency: input.currency.toUpperCase(),
+            notes: input.notes,
+            isActive: input.isActive,
+            updatedById: adminUser.id,
+          },
+        })
+      : await db.financialRecurringRule.create({
+          data: {
+            name: input.name,
+            direction: input.direction,
+            category: input.category,
+            subcategory: input.subcategory,
+            recurrence: input.recurrence,
+            amount: roundCurrency(input.amount),
+            currency: input.currency.toUpperCase(),
+            notes: input.notes,
+            isActive: input.isActive,
+            createdById: adminUser.id,
+            updatedById: adminUser.id,
+          },
+        })
+
+    revalidatePath('/admin/finance')
+
+    return {
+      success: true,
+      data: { id: rule.id },
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: handleError(error) || 'Error al guardar la configuración general',
+    }
+  }
+}
+
+export async function upsertFinancialRecurringRuleMonthOverride(rawInput: unknown) {
+  try {
+    const adminUser = await ensureAdminUser()
+    const input = financialRecurringRuleMonthOverrideSchema.parse(rawInput)
+
+    const override = await db.financialRecurringRuleMonthOverride.upsert({
+      where: {
+        ruleId_yearMonth: {
+          ruleId: input.ruleId,
+          yearMonth: input.yearMonth,
+        },
+      },
+      update: {
+        amount: roundCurrency(input.amount),
+        notes: input.notes,
+        updatedById: adminUser.id,
+      },
+      create: {
+        ruleId: input.ruleId,
+        yearMonth: input.yearMonth,
+        amount: roundCurrency(input.amount),
+        notes: input.notes,
+        createdById: adminUser.id,
+        updatedById: adminUser.id,
+      },
+    })
+
+    revalidatePath('/admin/finance')
+
+    return {
+      success: true,
+      data: { id: override.id },
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: handleError(error) || 'Error al guardar el ajuste mensual',
+    }
+  }
+}
+
+export async function updateFinancialMovementAmount(rawInput: unknown) {
+  try {
+    const adminUser = await ensureAdminUser()
+    const input = updateFinancialMovementAmountSchema.parse(rawInput)
+
+    const movement = await db.financialMovement.findUnique({
+      where: { id: input.movementId },
+      select: {
+        id: true,
+        sourceType: true,
+        discountAmount: true,
+        metadata: true,
+        notes: true,
+      },
+    })
+
+    if (!movement || movement.sourceType !== FinancialMovementSourceType.MANUAL) {
+      throw new Error('Solo se pueden editar movimientos manuales')
+    }
+
+    const nextAmount = roundCurrency(input.amount)
+    const nextNetAmount = roundCurrency(nextAmount - movement.discountAmount)
+
+    if (nextNetAmount < 0) {
+      throw new Error('El monto neto no puede ser negativo')
+    }
+
+    await db.financialMovement.update({
+      where: { id: movement.id },
+      data: {
+        amount: nextAmount,
+        baseAmount: nextAmount,
+        netAmount: nextNetAmount,
+        notes: input.notes ?? movement.notes,
+        metadata: isJsonRecord(movement.metadata)
+          ? {
+              ...movement.metadata,
+              inlineEdited: true,
+              inlineEditedAt: new Date().toISOString(),
+            }
+          : {
+              recurrence: resolveMovementRecurrence(movement.metadata),
+              inlineEdited: true,
+              inlineEditedAt: new Date().toISOString(),
+            },
+        updatedById: adminUser.id,
+      },
+    })
+
+    revalidatePath('/admin/finance')
+
+    return {
+      success: true,
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: handleError(error) || 'Error al actualizar el monto del movimiento',
+    }
   }
 }
 

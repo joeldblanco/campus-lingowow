@@ -7,12 +7,17 @@ import { CalendarDays, Plus } from 'lucide-react'
 import { getRelevantPeriods } from '@/lib/actions/academic-period'
 import {
   getFinancialReport,
+  getFinancialRecurringRules,
   type FinancialReportRow,
+  type FinancialRecurringRuleItem,
   type FinancialReportSummary,
+  updateFinancialMovementAmount,
+  upsertFinancialRecurringRuleMonthOverride,
 } from '@/lib/actions/finance'
 import { downloadCSV, downloadExcel, ExportButton } from '@/components/analytics/export-button'
 import { CreateFinancialMovementDialog } from '@/components/admin/finance/create-financial-movement-dialog'
 import { FinancialMovementsTable } from '@/components/admin/finance/financial-movements-table'
+import { FinancialRecurringRulesCard } from '@/components/admin/finance/financial-recurring-rules-card'
 import { FinanceSummaryCards } from '@/components/admin/finance/finance-summary-cards'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -100,6 +105,72 @@ function mapRowsForExport(rows: FinancialReportRow[]) {
   }))
 }
 
+function formatCurrency(value: number) {
+  return new Intl.NumberFormat('es-PE', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value)
+}
+
+function buildSectionSummary(rows: FinancialReportRow[]) {
+  const income = rows
+    .filter((row) => row.direction === 'INCOME')
+    .reduce((sum, row) => sum + row.netAmount, 0)
+  const expenses = rows
+    .filter((row) => row.direction === 'EXPENSE')
+    .reduce((sum, row) => sum + row.netAmount, 0)
+
+  return {
+    income,
+    expenses,
+    net: income - expenses,
+    count: rows.length,
+  }
+}
+
+function FinanceSectionSnapshot({
+  title,
+  subtitle,
+  rows,
+}: {
+  title: string
+  subtitle: string
+  rows: FinancialReportRow[]
+}) {
+  const summary = buildSectionSummary(rows)
+
+  return (
+    <Card>
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg">{title}</CardTitle>
+        <p className="text-sm text-muted-foreground">{subtitle}</p>
+      </CardHeader>
+      <CardContent>
+        <div className="grid gap-3 md:grid-cols-4">
+          <div className="rounded-lg border p-3">
+            <p className="text-xs uppercase tracking-wide text-muted-foreground">Entradas</p>
+            <p className="mt-1 text-lg font-semibold">{formatCurrency(summary.income)}</p>
+          </div>
+          <div className="rounded-lg border p-3">
+            <p className="text-xs uppercase tracking-wide text-muted-foreground">Salidas</p>
+            <p className="mt-1 text-lg font-semibold">{formatCurrency(summary.expenses)}</p>
+          </div>
+          <div className="rounded-lg border p-3">
+            <p className="text-xs uppercase tracking-wide text-muted-foreground">Resultado</p>
+            <p className="mt-1 text-lg font-semibold">{formatCurrency(summary.net)}</p>
+          </div>
+          <div className="rounded-lg border p-3">
+            <p className="text-xs uppercase tracking-wide text-muted-foreground">Movimientos</p>
+            <p className="mt-1 text-lg font-semibold">{summary.count}</p>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
 function LoadingState() {
   return (
     <div className="space-y-6">
@@ -128,17 +199,25 @@ export function FinanceDashboard() {
   const [filters, setFilters] = useState<FilterState>(() => buildInitialFilterState())
   const [periods, setPeriods] = useState<AcademicPeriodOption[]>([])
   const [rows, setRows] = useState<FinancialReportRow[]>([])
+  const [recurringRules, setRecurringRules] = useState<FinancialRecurringRuleItem[]>([])
+  const [currentMonthKey, setCurrentMonthKey] = useState('')
   const [summary, setSummary] = useState<FinancialReportSummary | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
 
-  const loadReport = async (nextFilters: FilterState) => {
+  const loadFinanceContext = async (nextFilters: FilterState) => {
     setError(null)
-    const report = await getFinancialReport(buildActionFilters(nextFilters))
+    const [report, rulesResult] = await Promise.all([
+      getFinancialReport(buildActionFilters(nextFilters)),
+      getFinancialRecurringRules(),
+    ])
+
     setRows(report.rows)
     setSummary(report.summary)
+    setRecurringRules(rulesResult.rules)
+    setCurrentMonthKey(rulesResult.monthKey)
   }
 
   useEffect(() => {
@@ -150,9 +229,7 @@ export function FinanceDashboard() {
         setPeriods(periodsData)
         setFilters(initialFilters)
 
-        const report = await getFinancialReport(buildActionFilters(initialFilters))
-        setRows(report.rows)
-        setSummary(report.summary)
+        await loadFinanceContext(initialFilters)
       } catch (loadError) {
         console.error('Error loading finance report:', loadError)
         setError('No se pudo cargar el resultado del período')
@@ -165,7 +242,7 @@ export function FinanceDashboard() {
   const applyFilters = () => {
     startTransition(async () => {
       try {
-        await loadReport(filters)
+        await loadFinanceContext(filters)
       } catch (loadError) {
         console.error('Error applying finance filters:', loadError)
         const message =
@@ -184,7 +261,7 @@ export function FinanceDashboard() {
 
     startTransition(async () => {
       try {
-        await loadReport(nextFilters)
+        await loadFinanceContext(nextFilters)
       } catch (loadError) {
         console.error('Error resetting finance filters:', loadError)
         toast.error('No se pudo reiniciar la vista')
@@ -205,10 +282,38 @@ export function FinanceDashboard() {
   }
 
   const refreshAfterCreate = async () => {
-    await loadReport(filters)
+    await loadFinanceContext(filters)
+  }
+
+  const handleInlineAmountSave = async (row: FinancialReportRow, amount: number) => {
+    const result =
+      row.editableMode === 'RULE_OVERRIDE' && row.editableId
+        ? await upsertFinancialRecurringRuleMonthOverride({
+            ruleId: row.editableId,
+            yearMonth: currentMonthKey,
+            amount,
+            notes: row.notes || undefined,
+          })
+        : row.editableMode === 'MOVEMENT' && row.editableId
+          ? await updateFinancialMovementAmount({
+              movementId: row.editableId,
+              amount,
+              notes: row.notes || undefined,
+            })
+          : { success: false, error: 'Este registro no se puede editar inline' }
+
+    if (!result.success) {
+      toast.error(result.error || 'No se pudo actualizar el monto')
+      return
+    }
+
+    toast.success('Monto actualizado para el mes visible')
+    await loadFinanceContext(filters)
   }
 
   const selectedPeriod = periods.find((period) => period.id === filters.periodId) || null
+  const classRows = rows.filter((row) => row.section === 'CLASS')
+  const otherRows = rows.filter((row) => row.section === 'OTHER')
 
   const handlePeriodChange = (value: string) => {
     if (value === 'custom') {
@@ -322,7 +427,41 @@ export function FinanceDashboard() {
       ) : (
         <>
           {summary && <FinanceSummaryCards summary={summary} />}
-          <FinancialMovementsTable rows={rows} basis="cash" />
+
+          <div className="space-y-4">
+            <FinanceSectionSnapshot
+              title="Por Clases"
+              subtitle="Ingreso por estudiante y pago docente por profesor calculados desde clases agendadas dentro del período visible."
+              rows={classRows}
+            />
+            <FinancialMovementsTable
+              title="Entradas y salidas por clases"
+              description="Esta tabla sigue el período académico o el rango elegido para clases y docentes."
+              rows={classRows}
+              emptyMessage="No hay movimientos por clases para los filtros seleccionados."
+            />
+          </div>
+
+          <div className="space-y-4">
+            <FinanceSectionSnapshot
+              title="Otras Cosas"
+              subtitle="Incluye configuraciones generales del mes, movimientos puntuales, descuentos, pasarela y ofrenda."
+              rows={otherRows}
+            />
+            <FinancialRecurringRulesCard
+              rules={recurringRules}
+              monthKey={currentMonthKey}
+              onSaved={refreshAfterCreate}
+            />
+            <FinancialMovementsTable
+              title="Entradas y salidas no ligadas a clases"
+              description="Puedes editar inline el monto del mes. Si la fila viene de una configuracion general, el override solo afecta este mes y pisa el valor base."
+              rows={otherRows}
+              allowInlineEdit
+              onInlineAmountSave={handleInlineAmountSave}
+              emptyMessage="No hay movimientos adicionales para el mes actual."
+            />
+          </div>
         </>
       )}
 

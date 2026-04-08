@@ -4,6 +4,7 @@ export const financialReportBasisOptions = ['cash', 'accrual'] as const
 export const financialMovementDirectionOptions = ['INCOME', 'EXPENSE'] as const
 export const financialMovementStatusOptions = ['DRAFT', 'POSTED', 'VOID'] as const
 export const financialMovementRecurrenceOptions = ['ONE_TIME', 'MONTHLY', 'ANNUAL'] as const
+export const financialRecurringRuleRecurrenceOptions = ['MONTHLY', 'ANNUAL'] as const
 
 export const financeManualCategories = [
   'Descuentos',
@@ -64,5 +65,39 @@ export const financeReportFilterSchema = z.object({
   includeDrafts: z.boolean().optional().default(false),
 })
 
+export const upsertFinancialRecurringRuleSchema = z.object({
+  id: optionalString,
+  name: z.string().trim().min(3, 'El nombre es obligatorio').max(120),
+  direction: z.enum(financialMovementDirectionOptions),
+  category: z.string().trim().min(1, 'La categoría es obligatoria').max(120),
+  subcategory: optionalString,
+  recurrence: z.enum(financialRecurringRuleRecurrenceOptions),
+  amount: z.coerce.number().positive('El monto debe ser mayor a cero'),
+  currency: z.string().trim().min(3).max(8).default('USD'),
+  notes: z.string().trim().max(2000).optional(),
+  isActive: z.boolean().optional().default(true),
+})
+
+export const financialRecurringRuleMonthOverrideSchema = z.object({
+  ruleId: z.string().trim().min(1, 'La regla es obligatoria'),
+  yearMonth: z
+    .string()
+    .trim()
+    .regex(/^\d{4}-\d{2}$/, 'El mes debe tener formato YYYY-MM'),
+  amount: z.coerce.number().positive('El monto debe ser mayor a cero'),
+  notes: z.string().trim().max(2000).optional(),
+})
+
+export const updateFinancialMovementAmountSchema = z.object({
+  movementId: z.string().trim().min(1, 'El movimiento es obligatorio'),
+  amount: z.coerce.number().positive('El monto debe ser mayor a cero'),
+  notes: z.string().trim().max(2000).optional(),
+})
+
 export type CreateFinancialMovementInput = z.infer<typeof createFinancialMovementSchema>
 export type FinanceReportFilterInput = z.infer<typeof financeReportFilterSchema>
+export type UpsertFinancialRecurringRuleInput = z.infer<typeof upsertFinancialRecurringRuleSchema>
+export type FinancialRecurringRuleMonthOverrideInput = z.infer<
+  typeof financialRecurringRuleMonthOverrideSchema
+>
+export type UpdateFinancialMovementAmountInput = z.infer<typeof updateFinancialMovementAmountSchema>

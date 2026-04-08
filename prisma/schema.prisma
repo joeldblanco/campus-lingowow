@@ -2583,20 +2583,20 @@ enum ConfirmationStatus {
 }
 
 model FinancialMovement {
-  id             String                     @id @default(cuid())
+  id             String                      @id @default(cuid())
   direction      FinancialMovementDirection
   sourceType     FinancialMovementSourceType @default(MANUAL)
   sourceId       String?
-  status         FinancialMovementStatus    @default(POSTED)
+  status         FinancialMovementStatus     @default(POSTED)
   category       String
   subcategory    String?
   description    String
   providerName   String?
   amount         Float
-  currency       String                     @default("USD")
-  baseCurrency   String                     @default("USD")
+  currency       String                      @default("USD")
+  baseCurrency   String                      @default("USD")
   baseAmount     Float
-  discountAmount Float                      @default(0)
+  discountAmount Float                       @default(0)
   netAmount      Float
   accrualDate    DateTime
   cashDate       DateTime?
@@ -2605,8 +2605,8 @@ model FinancialMovement {
   metadata       Json?
   createdById    String?
   updatedById    String?
-  createdAt      DateTime                   @default(now())
-  updatedAt      DateTime                   @updatedAt
+  createdAt      DateTime                    @default(now())
+  updatedAt      DateTime                    @updatedAt
 
   @@index([direction])
   @@index([sourceType, sourceId])
@@ -2618,9 +2618,57 @@ model FinancialMovement {
   @@map("financial_movements")
 }
 
+model FinancialRecurringRule {
+  id          String                           @id @default(cuid())
+  name        String
+  direction   FinancialMovementDirection
+  category    String
+  subcategory String?
+  recurrence  FinancialRecurringRuleRecurrence @default(MONTHLY)
+  amount      Float
+  currency    String                           @default("USD")
+  notes       String?
+  isActive    Boolean                          @default(true)
+  createdById String?
+  updatedById String?
+  createdAt   DateTime                         @default(now())
+  updatedAt   DateTime                         @updatedAt
+
+  overrides FinancialRecurringRuleMonthOverride[]
+
+  @@index([direction])
+  @@index([category])
+  @@index([recurrence])
+  @@index([isActive])
+  @@map("financial_recurring_rules")
+}
+
+model FinancialRecurringRuleMonthOverride {
+  id          String   @id @default(cuid())
+  ruleId      String
+  yearMonth   String
+  amount      Float
+  notes       String?
+  createdById String?
+  updatedById String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  rule FinancialRecurringRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+
+  @@unique([ruleId, yearMonth])
+  @@index([yearMonth])
+  @@map("financial_recurring_rule_month_overrides")
+}
+
 enum FinancialMovementDirection {
   INCOME
   EXPENSE
+}
+
+enum FinancialRecurringRuleRecurrence {
+  MONTHLY
+  ANNUAL
 }
 
 enum FinancialMovementSourceType {

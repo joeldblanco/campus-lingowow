@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import {
   Select,
   SelectContent,
@@ -29,11 +28,9 @@ interface CreateFinancialMovementDialogProps {
 }
 
 type EntryType = 'standard' | 'discount'
-type ExpenseMode = 'recurring' | 'annual' | 'one-time'
 
 interface FinancialMovementFormState {
   entryType: EntryType
-  expenseMode: ExpenseMode
   studentId: string
   description: string
   amount: string
@@ -59,7 +56,6 @@ function roundCurrency(value: number) {
 function buildInitialState(): FinancialMovementFormState {
   return {
     entryType: 'standard',
-    expenseMode: 'recurring',
     studentId: '',
     description: '',
     amount: '',
@@ -103,13 +99,7 @@ export function CreateFinancialMovementDialog({
   const incomeAfterDiscount = selectedStudent
     ? roundCurrency(Math.max(selectedStudent.incomeTotal - calculatedDiscountTotal, 0))
     : 0
-  const annualMonthlyAmount = parsedAmount > 0 ? roundCurrency(parsedAmount / 12) : 0
-  const resolvedExpenseDate =
-    form.entryType === 'discount' ||
-    form.expenseMode === 'recurring' ||
-    form.expenseMode === 'annual'
-      ? getToday()
-      : form.expenseDate
+  const resolvedExpenseDate = form.entryType === 'discount' ? getToday() : form.expenseDate
 
   useEffect(() => {
     if (!open) {
@@ -125,7 +115,6 @@ export function CreateFinancialMovementDialog({
     setForm((current) => ({
       ...current,
       entryType: value,
-      expenseMode: value === 'discount' ? 'recurring' : current.expenseMode,
       studentId: value === 'discount' ? current.studentId : '',
     }))
   }
@@ -158,31 +147,12 @@ export function CreateFinancialMovementDialog({
           : null
 
       const notes = [discountNotes, form.notes.trim()].filter(Boolean).join(' | ')
-      const recurrence =
-        form.entryType === 'discount'
-          ? 'MONTHLY'
-          : form.expenseMode === 'annual'
-            ? 'ANNUAL'
-            : form.expenseMode === 'recurring'
-              ? 'MONTHLY'
-              : 'ONE_TIME'
-      const annualNotes =
-        form.entryType === 'standard' && form.expenseMode === 'annual'
-          ? `Monto anual de USD ${parsedAmount.toFixed(2)} prorrateado en 12 meses de USD ${annualMonthlyAmount.toFixed(2)}.`
-          : null
-      const finalNotes = [annualNotes, notes].filter(Boolean).join(' | ')
+      const finalNotes = notes
 
       const result = await createFinancialMovement({
         direction: 'EXPENSE',
         category: form.entryType === 'discount' ? 'Descuentos' : 'Otros',
-        subcategory:
-          form.entryType === 'discount'
-            ? 'Recurrente'
-            : form.expenseMode === 'annual'
-              ? 'Anual'
-              : form.expenseMode === 'recurring'
-                ? 'Recurrente'
-                : 'Puntual',
+        subcategory: form.entryType === 'discount' ? 'Por estudiante' : 'Puntual',
         sourceId: form.entryType === 'discount' ? selectedStudent?.id : undefined,
         description: form.description,
         providerName: form.entryType === 'discount' ? selectedStudent?.name : undefined,
@@ -192,7 +162,7 @@ export function CreateFinancialMovementDialog({
         accrualDate: resolvedExpenseDate,
         cashDate: resolvedExpenseDate,
         notes: finalNotes || undefined,
-        recurrence,
+        recurrence: form.entryType === 'discount' ? 'MONTHLY' : 'ONE_TIME',
         status: 'POSTED',
       })
 
@@ -211,7 +181,7 @@ export function CreateFinancialMovementDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-xl">
         <DialogHeader>
-          <DialogTitle>Registrar Otra Salida</DialogTitle>
+          <DialogTitle>Registrar Salida del Mes</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-5">
@@ -231,48 +201,10 @@ export function CreateFinancialMovementDialog({
             </Select>
           </div>
 
-          {form.entryType === 'standard' ? (
-            <div className="space-y-3">
-              <Label>Modalidad</Label>
-              <RadioGroup
-                value={form.expenseMode}
-                onValueChange={(value) => handleChange('expenseMode', value)}
-                className="grid gap-3 md:grid-cols-3"
-              >
-                <label className="flex items-center gap-3 rounded-lg border p-3 cursor-pointer">
-                  <RadioGroupItem value="recurring" id="expense-mode-recurring" />
-                  <div>
-                    <p className="text-sm font-medium">Salida recurrente</p>
-                    <p className="text-xs text-muted-foreground">
-                      Se registra dentro del mes actual con fecha {resolvedExpenseDate}.
-                    </p>
-                  </div>
-                </label>
-                <label className="flex items-center gap-3 rounded-lg border p-3 cursor-pointer">
-                  <RadioGroupItem value="annual" id="expense-mode-annual" />
-                  <div>
-                    <p className="text-sm font-medium">Salida anual</p>
-                    <p className="text-xs text-muted-foreground">
-                      Divide el monto total entre 12 y carga una cuota mensual en la UI.
-                    </p>
-                  </div>
-                </label>
-                <label className="flex items-center gap-3 rounded-lg border p-3 cursor-pointer">
-                  <RadioGroupItem value="one-time" id="expense-mode-one-time" />
-                  <div>
-                    <p className="text-sm font-medium">Salida puntual</p>
-                    <p className="text-xs text-muted-foreground">
-                      Te permite elegir la fecha exacta de la salida.
-                    </p>
-                  </div>
-                </label>
-              </RadioGroup>
-            </div>
-          ) : (
-            <div className="rounded-lg border bg-muted/30 p-3 text-sm text-muted-foreground">
-              Este descuento se registra como salida recurrente dentro del mes actual.
-            </div>
-          )}
+          <div className="rounded-lg border bg-muted/30 p-3 text-sm text-muted-foreground">
+            Las configuraciones mensuales y anuales ahora viven en la seccion de configuracion
+            general. Este modal queda para salidas puntuales y descuentos por estudiante.
+          </div>
 
           {form.entryType === 'discount' && (
             <div className="grid gap-4 md:grid-cols-2">
@@ -349,7 +281,7 @@ export function CreateFinancialMovementDialog({
           {form.entryType === 'standard' && (
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>{form.expenseMode === 'annual' ? 'Monto anual' : 'Monto'}</Label>
+                <Label>Monto</Label>
                 <Input
                   type="number"
                   min="0"
@@ -360,31 +292,14 @@ export function CreateFinancialMovementDialog({
                 />
               </div>
 
-              {form.expenseMode === 'one-time' && (
-                <div className="space-y-2">
-                  <Label>Fecha de salida</Label>
-                  <Input
-                    type="date"
-                    value={form.expenseDate}
-                    onChange={(event) => handleChange('expenseDate', event.target.value)}
-                  />
-                </div>
-              )}
-
-              {form.expenseMode === 'annual' && (
-                <div className="rounded-lg border bg-muted/20 p-4 text-sm">
-                  <p className="font-medium">Prorrateo mensual</p>
-                  <p className="mt-2 text-muted-foreground">
-                    Se crearán 12 cargos mensuales desde este mes.
-                  </p>
-                  <p className="text-muted-foreground">
-                    Carga mensual estimada:{' '}
-                    <span className="font-medium text-foreground">
-                      USD {annualMonthlyAmount.toFixed(2)}
-                    </span>
-                  </p>
-                </div>
-              )}
+              <div className="space-y-2">
+                <Label>Fecha de salida</Label>
+                <Input
+                  type="date"
+                  value={form.expenseDate}
+                  onChange={(event) => handleChange('expenseDate', event.target.value)}
+                />
+              </div>
             </div>
           )}
 
@@ -410,12 +325,10 @@ export function CreateFinancialMovementDialog({
               form.description.trim().length < 3 ||
               parsedAmount <= 0 ||
               (form.entryType === 'discount' && !selectedStudent) ||
-              (form.entryType === 'standard' &&
-                form.expenseMode === 'one-time' &&
-                !form.expenseDate)
+              (form.entryType === 'standard' && !form.expenseDate)
             }
           >
-            {isPending ? 'Guardando...' : 'Guardar salida'}
+            {isPending ? 'Guardando...' : 'Guardar movimiento'}
           </Button>
         </div>
       </DialogContent>
