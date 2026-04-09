@@ -181,8 +181,8 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
           <AlertCircle className="h-16 w-16 text-red-500 mb-4" />
           <h2 className="text-xl font-semibold mb-2">Grabación no disponible</h2>
           <p className="text-muted-foreground mb-4 max-w-md">
-            Hubo un error durante la grabación de esta clase y el video no pudo ser guardado.
-            Esto puede ocurrir por problemas de conexión durante la clase.
+            Hubo un error durante la grabación de esta clase y el video no pudo ser guardado. Esto
+            puede ocurrir por problemas de conexión durante la clase.
           </p>
           <Button asChild>
             <Link href="/recordings">
@@ -211,8 +211,8 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
           <Loader2 className="h-16 w-16 text-blue-500 mb-4 animate-spin" />
           <h2 className="text-xl font-semibold mb-2">Grabación en proceso</h2>
           <p className="text-muted-foreground mb-4 max-w-md">
-            Tu grabación aún se está procesando. Esto puede tardar unos minutos.
-            Recibirás una notificación cuando esté lista.
+            Tu grabación aún se está procesando. Esto puede tardar unos minutos. Recibirás una
+            notificación cuando esté lista.
           </p>
           <Button asChild variant="outline">
             <Link href="/recordings">
@@ -242,7 +242,13 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
         <div className="lg:col-span-2 space-y-4">
           <Tabs defaultValue="video" className="w-full space-y-4">
             <div className="flex items-center justify-between gap-4">
-              <TabsList className={hasWhiteboard ? 'grid w-full max-w-sm grid-cols-2' : 'grid w-full max-w-[180px] grid-cols-1'}>
+              <TabsList
+                className={
+                  hasWhiteboard
+                    ? 'grid w-full max-w-sm grid-cols-2'
+                    : 'grid w-full max-w-[180px] grid-cols-1'
+                }
+              >
                 <TabsTrigger value="video">Video</TabsTrigger>
                 {hasWhiteboard && <TabsTrigger value="whiteboard">Pizarra</TabsTrigger>}
               </TabsList>
@@ -382,9 +388,7 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
                     />
                     <div>
                       <p className="text-sm text-muted-foreground">Profesor</p>
-                      <p className="font-medium">
-                        {formatUserName(teacher) || 'Sin nombre'}
-                      </p>
+                      <p className="font-medium">{formatUserName(teacher) || 'Sin nombre'}</p>
                     </div>
                   </div>
                 </div>

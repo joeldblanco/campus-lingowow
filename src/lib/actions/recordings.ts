@@ -2,7 +2,12 @@
 
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
-import { S3Client, GetObjectCommand, ListObjectsV2Command, DeleteObjectsCommand } from '@aws-sdk/client-s3'
+import {
+  S3Client,
+  GetObjectCommand,
+  ListObjectsV2Command,
+  DeleteObjectsCommand,
+} from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 // Cloudflare R2 Configuration (S3-compatible)
@@ -279,7 +284,10 @@ export async function getRecordingById(recordingId: string) {
       } catch (error) {
         console.error('Error generating signed URL:', error)
         // If the file doesn't exist in R2, mark as failed
-        if ((error as { name?: string })?.name === 'NoSuchKey' || (error as { name?: string })?.name === 'NotFound') {
+        if (
+          (error as { name?: string })?.name === 'NoSuchKey' ||
+          (error as { name?: string })?.name === 'NotFound'
+        ) {
           await db.classRecording.update({
             where: { id: recordingId },
             data: { status: 'FAILED' },
@@ -339,21 +347,21 @@ export async function syncRecordingFromR2(bookingId: string) {
 
     // Buscar archivos en R2 para este booking
     const prefix = `classes/${bookingId}/`
-    
+
     const listCommand = new ListObjectsV2Command({
       Bucket: r2BucketName,
       Prefix: prefix,
     })
 
     const listResponse = await s3Client.send(listCommand)
-    
+
     if (!listResponse.Contents || listResponse.Contents.length === 0) {
       return { success: false, error: 'No se encontraron grabaciones para esta clase' }
     }
 
     // Buscar el archivo de video (.mp4) y el archivo de metadatos (.json)
-    const videoFile = listResponse.Contents.find(obj => obj.Key?.endsWith('.mp4'))
-    const metadataFile = listResponse.Contents.find(obj => obj.Key?.endsWith('.json'))
+    const videoFile = listResponse.Contents.find((obj) => obj.Key?.endsWith('.mp4'))
+    const metadataFile = listResponse.Contents.find((obj) => obj.Key?.endsWith('.json'))
 
     if (!videoFile?.Key) {
       return { success: false, error: 'No se encontró archivo de video' }
@@ -407,7 +415,7 @@ export async function syncRecordingFromR2(bookingId: string) {
     }
 
     // Buscar si ya existe una grabación con este egressId
-    const existingRecording = metadata?.egress_id 
+    const existingRecording = metadata?.egress_id
       ? await db.classRecording.findUnique({ where: { egressId: metadata.egress_id } })
       : null
 
@@ -500,7 +508,7 @@ export async function getStudentCoursesForFilter() {
         },
         distinct: ['courseId'],
       })
-      courses = enrollments.map(e => e.course)
+      courses = enrollments.map((e) => e.course)
     }
 
     return {
@@ -559,7 +567,7 @@ export async function getChatMessagesForRecording(recordingId: string) {
     // Obtener la grabación con su booking
     const recording = await db.classRecording.findUnique({
       where: { id: recordingId },
-      select: { bookingId: true }
+      select: { bookingId: true },
     })
 
     if (!recording) {
@@ -578,7 +586,7 @@ export async function getChatMessagesForRecording(recordingId: string) {
 
     return {
       success: true,
-      data: messages
+      data: messages,
     }
   } catch (error) {
     console.error('Error fetching chat messages for recording:', error)
@@ -590,7 +598,7 @@ export async function getChatMessagesForRecording(recordingId: string) {
 export async function deleteRecordingFolder(classId: string) {
   try {
     const prefix = `classes/${classId}/`
-    
+
     // Listar todos los objetos en la carpeta
     const listCommand = new ListObjectsV2Command({
       Bucket: r2BucketName,
@@ -598,16 +606,16 @@ export async function deleteRecordingFolder(classId: string) {
     })
 
     const listResponse = await s3Client.send(listCommand)
-    
+
     if (!listResponse.Contents || listResponse.Contents.length === 0) {
       // No hay archivos que eliminar
       return { success: true, message: 'No hay grabaciones para eliminar' }
     }
 
     // Preparar lista de objetos a eliminar
-    const objectsToDelete = listResponse.Contents
-      .filter(obj => obj.Key)
-      .map(obj => ({ Key: obj.Key! }))
+    const objectsToDelete = listResponse.Contents.filter((obj) => obj.Key).map((obj) => ({
+      Key: obj.Key!,
+    }))
 
     if (objectsToDelete.length === 0) {
       return { success: true, message: 'No hay grabaciones para eliminar' }
@@ -624,12 +632,14 @@ export async function deleteRecordingFolder(classId: string) {
 
     const deleteResponse = await s3Client.send(deleteCommand)
 
-    console.log(`Deleted ${deleteResponse.Deleted?.length || 0} recording files for class ${classId}`)
+    console.log(
+      `Deleted ${deleteResponse.Deleted?.length || 0} recording files for class ${classId}`
+    )
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       deletedCount: deleteResponse.Deleted?.length || 0,
-      message: `Se eliminaron ${deleteResponse.Deleted?.length || 0} archivos de grabación`
+      message: `Se eliminaron ${deleteResponse.Deleted?.length || 0} archivos de grabación`,
     }
   } catch (error) {
     console.error('Error deleting recording folder from R2:', error)
