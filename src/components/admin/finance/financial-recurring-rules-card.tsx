@@ -78,9 +78,7 @@ const EMPTY_FORM: RuleFormState = {
   isActive: true,
 }
 
-function isPercentageRule(
-  ruleType: 'FIXED_AMOUNT' | 'INCOME_PERCENTAGE' | 'PROFIT_PERCENTAGE'
-) {
+function isPercentageRule(ruleType: 'FIXED_AMOUNT' | 'INCOME_PERCENTAGE' | 'PROFIT_PERCENTAGE') {
   return ruleType === 'INCOME_PERCENTAGE' || ruleType === 'PROFIT_PERCENTAGE'
 }
 
@@ -466,10 +464,7 @@ export function FinancialRecurringRulesCard({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={isSaving}>Cancelar</AlertDialogCancel>
-            <AlertDialogAction
-              disabled={isSaving}
-              onClick={() => void handleConfirmedSave()}
-            >
+            <AlertDialogAction disabled={isSaving} onClick={() => void handleConfirmedSave()}>
               {isSaving ? 'Guardando...' : 'Confirmar y guardar'}
             </AlertDialogAction>
           </AlertDialogFooter>

@@ -1313,9 +1313,7 @@ export async function getFinancialRecurringRules(): Promise<FinancialRecurringRu
       const isPercentage = rule.ruleType !== FinancialRecurringRuleType.FIXED_AMOUNT
       const currentMonthAmount = isPercentage
         ? roundCurrency(override?.amount ?? rule.amount)
-        : roundCurrency(
-            override?.amount ?? resolveRuleMonthlyAmount(rule.recurrence, rule.amount)
-          )
+        : roundCurrency(override?.amount ?? resolveRuleMonthlyAmount(rule.recurrence, rule.amount))
 
       return {
         id: rule.id,
