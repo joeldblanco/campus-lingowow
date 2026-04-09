@@ -16,6 +16,7 @@ interface ExcalidrawWrapperProps {
   initialData?: any
   langCode?: string
   theme?: 'light' | 'dark'
+  viewModeEnabled?: boolean
   onChange?: (elements: readonly ExcalidrawElement[], appState: AppState) => void
 }
 
@@ -24,6 +25,7 @@ export default function ExcalidrawWrapper({
   initialData,
   langCode = 'es-ES',
   theme = 'light',
+  viewModeEnabled = false,
   onChange,
 }: ExcalidrawWrapperProps) {
   const [cssLoaded, setCssLoaded] = useState(false)
@@ -95,6 +97,13 @@ export default function ExcalidrawWrapper({
         .excalidraw [data-testid="dropdown-menu-link"] {
           display: none !important;
         }
+        [data-excalidraw-readonly="true"] .excalidraw .App-menu_top,
+        [data-excalidraw-readonly="true"] .excalidraw .App-menu_bottom,
+        [data-excalidraw-readonly="true"] .excalidraw .layer-ui__wrapper__top-right,
+        [data-excalidraw-readonly="true"] .excalidraw .layer-ui__wrapper__footer-left,
+        [data-excalidraw-readonly="true"] .excalidraw .layer-ui__wrapper__footer-right {
+          display: none !important;
+        }
       `
       document.head.appendChild(style)
     }
@@ -109,15 +118,18 @@ export default function ExcalidrawWrapper({
   }
 
   return (
-    <Excalidraw
-      excalidrawAPI={excalidrawAPI}
-      initialData={initialData}
-      langCode={langCode}
-      theme={theme}
-      onChange={onChange}
-      UIOptions={{
-        dockedSidebarBreakpoint: 0,
-      }}
-    />
+    <div className="h-full w-full" data-excalidraw-readonly={viewModeEnabled ? 'true' : 'false'}>
+      <Excalidraw
+        excalidrawAPI={excalidrawAPI}
+        initialData={initialData}
+        langCode={langCode}
+        theme={theme}
+        viewModeEnabled={viewModeEnabled}
+        onChange={onChange}
+        UIOptions={{
+          dockedSidebarBreakpoint: 0,
+        }}
+      />
+    </div>
   )
 }

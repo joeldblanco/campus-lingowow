@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { UserAvatar } from '@/components/ui/user-avatar'
 import { getRecordingById, markRecordingAsViewed } from '@/lib/actions/recordings'
 import { ClassRecordingChat } from './class-recording-chat'
+import { RecordingWhiteboardPreview } from './recording-whiteboard-preview'
 import { formatUserName } from '@/lib/utils/name-formatter'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
@@ -32,6 +33,9 @@ interface RecordingData {
     id: string
     day: string
     timeSlot: string
+    whiteboardData: {
+      data: unknown
+    } | null
     student: {
       id: string
       name: string
@@ -156,6 +160,10 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
   const videoUrl = recording.signedUrl || recording.fileUrl
   const isFailed = recording.status === 'FAILED'
   const isProcessing = recording.status === 'PROCESSING'
+  const whiteboardElements = Array.isArray(booking.whiteboardData?.data)
+    ? booking.whiteboardData.data
+    : []
+  const hasWhiteboard = whiteboardElements.length > 0
 
   // If recording is FAILED, show a clear error page
   if (isFailed) {
@@ -232,17 +240,36 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Video Player - Main Content */}
         <div className="lg:col-span-2 space-y-4">
-          {/* Video Player */}
-          {videoUrl ? (
-            <VideoPlayer src={videoUrl} title={course.title} />
-          ) : (
-            <div className="aspect-video bg-slate-900 rounded-lg flex items-center justify-center">
-              <div className="text-center text-white">
-                <AlertCircle className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                <p>Video no disponible</p>
-              </div>
+          <Tabs defaultValue="video" className="w-full space-y-4">
+            <div className="flex items-center justify-between gap-4">
+              <TabsList className={hasWhiteboard ? 'grid w-full max-w-sm grid-cols-2' : 'grid w-full max-w-[180px] grid-cols-1'}>
+                <TabsTrigger value="video">Video</TabsTrigger>
+                {hasWhiteboard && <TabsTrigger value="whiteboard">Pizarra</TabsTrigger>}
+              </TabsList>
             </div>
-          )}
+
+            <TabsContent value="video" className="mt-0">
+              {videoUrl ? (
+                <VideoPlayer src={videoUrl} title={course.title} />
+              ) : (
+                <div className="aspect-video bg-slate-900 rounded-lg flex items-center justify-center">
+                  <div className="text-center text-white">
+                    <AlertCircle className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                    <p>Video no disponible</p>
+                  </div>
+                </div>
+              )}
+            </TabsContent>
+
+            {hasWhiteboard && (
+              <TabsContent value="whiteboard" className="mt-0 space-y-3">
+                <RecordingWhiteboardPreview elements={whiteboardElements} />
+                <p className="text-sm text-muted-foreground">
+                  Esta es la última pizarra guardada manualmente durante la clase.
+                </p>
+              </TabsContent>
+            )}
+          </Tabs>
 
           {/* Title and Actions */}
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">

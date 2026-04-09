@@ -46,6 +46,9 @@ export interface RecordingWithDetails {
     id: string
     day: string
     timeSlot: string
+    whiteboardData: {
+      data: unknown
+    } | null
     student: {
       id: string
       name: string
@@ -191,6 +194,11 @@ export async function getRecordingById(recordingId: string) {
       include: {
         booking: {
           include: {
+            whiteboardData: {
+              select: {
+                data: true,
+              },
+            },
             student: {
               select: {
                 id: true,
