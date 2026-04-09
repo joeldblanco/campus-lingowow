@@ -31,6 +31,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 type FilterState = {
   periodId: string
@@ -448,19 +449,29 @@ export function FinanceDashboard() {
               subtitle="Incluye configuraciones generales del mes, movimientos puntuales, descuentos, pasarela y ofrenda."
               rows={otherRows}
             />
-            <FinancialRecurringRulesCard
-              rules={recurringRules}
-              monthKey={currentMonthKey}
-              onSaved={refreshAfterCreate}
-            />
-            <FinancialMovementsTable
-              title="Entradas y salidas no ligadas a clases"
-              description="Puedes editar inline el monto del mes. Si la fila viene de una configuracion general, el override solo afecta este mes y pisa el valor base."
-              rows={otherRows}
-              allowInlineEdit
-              onInlineAmountSave={handleInlineAmountSave}
-              emptyMessage="No hay movimientos adicionales para el mes actual."
-            />
+            <Tabs defaultValue="registros">
+              <TabsList>
+                <TabsTrigger value="registros">Registros del mes</TabsTrigger>
+                <TabsTrigger value="config">Configuración general</TabsTrigger>
+              </TabsList>
+              <TabsContent value="registros" className="space-y-4 pt-2">
+                <FinancialMovementsTable
+                  title="Entradas y salidas no ligadas a clases"
+                  description="Puedes editar inline el monto del mes. Si la fila viene de una configuracion general, el override solo afecta este mes y pisa el valor base."
+                  rows={otherRows}
+                  allowInlineEdit
+                  onInlineAmountSave={handleInlineAmountSave}
+                  emptyMessage="No hay movimientos adicionales para el mes actual."
+                />
+              </TabsContent>
+              <TabsContent value="config" className="space-y-4 pt-2">
+                <FinancialRecurringRulesCard
+                  rules={recurringRules}
+                  monthKey={currentMonthKey}
+                  onSaved={refreshAfterCreate}
+                />
+              </TabsContent>
+            </Tabs>
           </div>
         </>
       )}

@@ -19,6 +19,7 @@ import {
   BookingStatus,
   FinancialMovementDirection,
   FinancialRecurringRuleRecurrence,
+  FinancialRecurringRuleType,
   FinancialMovementSourceType,
   FinancialMovementStatus,
   Prisma,
@@ -97,6 +98,7 @@ export interface FinancialRecurringRuleItem {
   direction: FinancialMovementDirection
   category: string
   subcategory: string | null
+  ruleType: FinancialRecurringRuleType
   recurrence: FinancialRecurringRuleRecurrence
   amount: number
   currency: string
@@ -170,8 +172,19 @@ function roundCurrency(value: number) {
   return Math.round(value * 100) / 100
 }
 
-const GATEWAY_FEE_RATE = 0.06
-const OFFERING_RATE = 0.1
+const DEFAULT_GATEWAY_FEE_RATE = 0.06
+const DEFAULT_OFFERING_RATE = 0.1
+
+interface PercentageRateInfo {
+  ruleId: string
+  rate: number
+  hasOverride: boolean
+}
+
+interface PercentageRates {
+  gateway: PercentageRateInfo | null
+  offering: PercentageRateInfo | null
+}
 
 interface ResolvedAcademicPeriodFilter {
   id: string
@@ -288,7 +301,8 @@ function sortFinancialRows(rows: FinancialReportRow[]) {
 
 function buildAutomaticExpenseRows(
   baseRows: FinancialReportRow[],
-  period: ResolvedAcademicPeriodFilter | null
+  period: ResolvedAcademicPeriodFilter | null,
+  rates: PercentageRates
 ) {
   const incomeRows = baseRows.filter((row) => row.direction === FinancialMovementDirection.INCOME)
   const expenseRows = baseRows.filter((row) => row.direction === FinancialMovementDirection.EXPENSE)
@@ -299,14 +313,18 @@ function buildAutomaticExpenseRows(
     return [] satisfies FinancialReportRow[]
   }
 
-  const gatewayFeeAmount = roundCurrency(totalIncome * GATEWAY_FEE_RATE)
+  const gatewayRate = rates.gateway?.rate ?? DEFAULT_GATEWAY_FEE_RATE
+  const gatewayFeeAmount = roundCurrency(totalIncome * gatewayRate)
   const profitBeforeOffering = roundCurrency(
     totalIncome - expenseRows.reduce((sum, row) => sum + row.netAmount, 0) - gatewayFeeAmount
   )
+  const offeringRate = rates.offering?.rate ?? DEFAULT_OFFERING_RATE
   const offeringAmount =
-    profitBeforeOffering > 0 ? roundCurrency(profitBeforeOffering * OFFERING_RATE) : 0
+    profitBeforeOffering > 0 ? roundCurrency(profitBeforeOffering * offeringRate) : 0
   const { end: currentMonthEnd } = resolveCurrentMonthDateRange()
   const effectiveDate = currentMonthEnd.toISOString()
+  const gatewayPct = roundCurrency(gatewayRate * 100)
+  const offeringPct = roundCurrency(offeringRate * 100)
 
   const rows: FinancialReportRow[] = []
 
@@ -314,14 +332,14 @@ function buildAutomaticExpenseRows(
     rows.push({
       id: `auto-gateway-fee-${period?.id || format(currentMonthEnd, 'yyyy-MM')}`,
       sourceType: 'AUTO_GATEWAY_FEE',
-      sourceId: null,
+      sourceId: rates.gateway?.ruleId || null,
       academicPeriodId: period?.id || null,
       academicPeriodName: period?.name || null,
       direction: FinancialMovementDirection.EXPENSE,
       status: 'CALCULATED',
       category: 'Comisión pasarela',
       subcategory: 'Automático',
-      description: 'Descuento automático del 6% sobre todos los ingresos del resultado',
+      description: `Descuento automático del ${gatewayPct}% sobre todos los ingresos del resultado`,
       counterparty: 'Pasarelas de pago',
       amount: gatewayFeeAmount,
       discountAmount: 0,
@@ -336,9 +354,9 @@ function buildAutomaticExpenseRows(
       recurrence: null,
       editableMode: null,
       editableId: null,
-      hasMonthOverride: false,
+      hasMonthOverride: rates.gateway?.hasOverride ?? false,
       unitCount: null,
-      notes: `6% de USD ${totalIncome.toFixed(2)} de ingresos acumulados`,
+      notes: `${gatewayPct}% de USD ${totalIncome.toFixed(2)} de ingresos acumulados`,
       isManual: false,
     })
   }
@@ -347,14 +365,14 @@ function buildAutomaticExpenseRows(
     rows.push({
       id: `auto-offering-${period?.id || format(currentMonthEnd, 'yyyy-MM')}`,
       sourceType: 'AUTO_OFFERING',
-      sourceId: null,
+      sourceId: rates.offering?.ruleId || null,
       academicPeriodId: period?.id || null,
       academicPeriodName: period?.name || null,
       direction: FinancialMovementDirection.EXPENSE,
       status: 'CALCULATED',
       category: 'Ofrenda',
       subcategory: 'Automático',
-      description: 'Descuento automático del 10% sobre la ganancia restante',
+      description: `Descuento automático del ${offeringPct}% sobre la ganancia restante`,
       counterparty: 'Ofrenda',
       amount: offeringAmount,
       discountAmount: 0,
@@ -369,9 +387,9 @@ function buildAutomaticExpenseRows(
       recurrence: null,
       editableMode: null,
       editableId: null,
-      hasMonthOverride: false,
+      hasMonthOverride: rates.offering?.hasOverride ?? false,
       unitCount: null,
-      notes: `10% de USD ${profitBeforeOffering.toFixed(2)} de ganancia antes de ofrenda`,
+      notes: `${offeringPct}% de USD ${profitBeforeOffering.toFixed(2)} de ganancia antes de ofrenda`,
       isManual: false,
     })
   }
@@ -722,7 +740,7 @@ async function getManualMovementRows(
   })
 }
 
-async function getRecurringRuleRows(currentMonthEnd: Date) {
+async function getAllActiveRecurringRules(currentMonthEnd: Date) {
   const monthKey = resolveCurrentMonthKey(currentMonthEnd)
 
   const rules = await db.financialRecurringRule.findMany({
@@ -743,45 +761,82 @@ async function getRecurringRuleRows(currentMonthEnd: Date) {
     orderBy: [{ direction: 'asc' }, { category: 'asc' }, { name: 'asc' }],
   })
 
-  const effectiveDate = currentMonthEnd.toISOString()
+  return { rules, monthKey, effectiveDate: currentMonthEnd.toISOString() }
+}
 
-  return rules.map<FinancialReportRow>((rule) => {
+function extractPercentageRates(
+  rules: Awaited<ReturnType<typeof getAllActiveRecurringRules>>['rules']
+): PercentageRates {
+  let gateway: PercentageRateInfo | null = null
+  let offering: PercentageRateInfo | null = null
+
+  for (const rule of rules) {
     const override = rule.overrides[0] || null
-    const baseMonthlyAmount = resolveRuleMonthlyAmount(rule.recurrence, rule.amount)
-    const effectiveAmount = roundCurrency(override?.amount ?? baseMonthlyAmount)
-    const notes = [rule.notes, override?.notes].filter(Boolean).join(' | ')
+    const effectiveAmount = override?.amount ?? rule.amount
 
-    return {
-      id: `recurring-rule-${rule.id}-${monthKey}`,
-      sourceType: 'RECURRING_RULE',
-      sourceId: rule.id,
-      academicPeriodId: null,
-      academicPeriodName: null,
-      direction: rule.direction,
-      status: override ? 'OVERRIDDEN' : 'CONFIGURED',
-      category: rule.category,
-      subcategory: rule.subcategory,
-      description: rule.name,
-      counterparty: null,
-      amount: effectiveAmount,
-      discountAmount: 0,
-      netAmount: effectiveAmount,
-      currency: rule.currency,
-      baseAmount: effectiveAmount,
-      accrualDate: effectiveDate,
-      cashDate: effectiveDate,
-      effectiveDate,
-      section: 'OTHER',
-      typeLabel: rule.recurrence === FinancialRecurringRuleRecurrence.ANNUAL ? 'Anual' : 'Mensual',
-      recurrence: rule.recurrence,
-      editableMode: 'RULE_OVERRIDE',
-      editableId: rule.id,
-      hasMonthOverride: Boolean(override),
-      unitCount: null,
-      notes: notes || null,
-      isManual: true,
+    if (rule.ruleType === FinancialRecurringRuleType.INCOME_PERCENTAGE && !gateway) {
+      gateway = {
+        ruleId: rule.id,
+        rate: effectiveAmount / 100,
+        hasOverride: Boolean(override),
+      }
+    } else if (rule.ruleType === FinancialRecurringRuleType.PROFIT_PERCENTAGE && !offering) {
+      offering = {
+        ruleId: rule.id,
+        rate: effectiveAmount / 100,
+        hasOverride: Boolean(override),
+      }
     }
-  })
+  }
+
+  return { gateway, offering }
+}
+
+function buildFixedRuleRows(
+  rules: Awaited<ReturnType<typeof getAllActiveRecurringRules>>['rules'],
+  monthKey: string,
+  effectiveDate: string
+): FinancialReportRow[] {
+  return rules
+    .filter((rule) => rule.ruleType === FinancialRecurringRuleType.FIXED_AMOUNT)
+    .map<FinancialReportRow>((rule) => {
+      const override = rule.overrides[0] || null
+      const baseMonthlyAmount = resolveRuleMonthlyAmount(rule.recurrence, rule.amount)
+      const effectiveAmount = roundCurrency(override?.amount ?? baseMonthlyAmount)
+      const notes = [rule.notes, override?.notes].filter(Boolean).join(' | ')
+
+      return {
+        id: `recurring-rule-${rule.id}-${monthKey}`,
+        sourceType: 'RECURRING_RULE',
+        sourceId: rule.id,
+        academicPeriodId: null,
+        academicPeriodName: null,
+        direction: rule.direction,
+        status: override ? 'OVERRIDDEN' : 'CONFIGURED',
+        category: rule.category,
+        subcategory: rule.subcategory,
+        description: rule.name,
+        counterparty: null,
+        amount: effectiveAmount,
+        discountAmount: 0,
+        netAmount: effectiveAmount,
+        currency: rule.currency,
+        baseAmount: effectiveAmount,
+        accrualDate: effectiveDate,
+        cashDate: effectiveDate,
+        effectiveDate,
+        section: 'OTHER',
+        typeLabel:
+          rule.recurrence === FinancialRecurringRuleRecurrence.ANNUAL ? 'Anual' : 'Mensual',
+        recurrence: rule.recurrence,
+        editableMode: 'RULE_OVERRIDE',
+        editableId: rule.id,
+        hasMonthOverride: Boolean(override),
+        unitCount: null,
+        notes: notes || null,
+        isManual: true,
+      }
+    })
 }
 
 async function getProjectedSubscriptionRevenue(start: Date, end: Date) {
@@ -1055,24 +1110,29 @@ async function collectFinancialRows(
 ) {
   const { start: manualStart, end: manualEnd } = resolveCurrentMonthDateRange()
 
-  const [incomeRows, manualRows, recurringRuleRows, teacherRows, incentiveRows] = await Promise.all(
-    [
-      getScheduledClassRevenueRows(start, end, period),
-      getManualMovementRows(manualStart, manualEnd, basis, filters),
-      getRecurringRuleRows(manualEnd),
-      getTeacherPayableRows(start, end, period),
-      getTeacherIncentiveRows(start, end, basis, period),
-    ]
+  const [incomeRows, manualRows, allRulesData, teacherRows, incentiveRows] = await Promise.all([
+    getScheduledClassRevenueRows(start, end, period),
+    getManualMovementRows(manualStart, manualEnd, basis, filters),
+    getAllActiveRecurringRules(manualEnd),
+    getTeacherPayableRows(start, end, period),
+    getTeacherIncentiveRows(start, end, basis, period),
+  ])
+
+  const fixedRuleRows = buildFixedRuleRows(
+    allRulesData.rules,
+    allRulesData.monthKey,
+    allRulesData.effectiveDate
   )
+  const percentageRates = extractPercentageRates(allRulesData.rules)
 
   const baseRows = [
     ...incomeRows,
     ...manualRows,
-    ...recurringRuleRows,
+    ...fixedRuleRows,
     ...teacherRows,
     ...incentiveRows,
   ]
-  const automaticExpenseRows = buildAutomaticExpenseRows(baseRows, period)
+  const automaticExpenseRows = buildAutomaticExpenseRows(baseRows, period, percentageRates)
 
   return applyClientFilters(sortFinancialRows([...baseRows, ...automaticExpenseRows]), filters)
 }
@@ -1232,9 +1292,6 @@ export async function getFinancialRecurringRules(): Promise<FinancialRecurringRu
   const monthKey = resolveCurrentMonthKey(monthEnd)
 
   const rules = await db.financialRecurringRule.findMany({
-    where: {
-      isActive: true,
-    },
     include: {
       overrides: {
         where: {
@@ -1246,16 +1303,19 @@ export async function getFinancialRecurringRules(): Promise<FinancialRecurringRu
         take: 1,
       },
     },
-    orderBy: [{ direction: 'asc' }, { category: 'asc' }, { name: 'asc' }],
+    orderBy: [{ ruleType: 'asc' }, { direction: 'asc' }, { category: 'asc' }, { name: 'asc' }],
   })
 
   return {
     monthKey,
     rules: rules.map((rule) => {
       const override = rule.overrides[0] || null
-      const currentMonthAmount = roundCurrency(
-        override?.amount ?? resolveRuleMonthlyAmount(rule.recurrence, rule.amount)
-      )
+      const isPercentage = rule.ruleType !== FinancialRecurringRuleType.FIXED_AMOUNT
+      const currentMonthAmount = isPercentage
+        ? roundCurrency(override?.amount ?? rule.amount)
+        : roundCurrency(
+            override?.amount ?? resolveRuleMonthlyAmount(rule.recurrence, rule.amount)
+          )
 
       return {
         id: rule.id,
@@ -1263,6 +1323,7 @@ export async function getFinancialRecurringRules(): Promise<FinancialRecurringRu
         direction: rule.direction,
         category: rule.category,
         subcategory: rule.subcategory,
+        ruleType: rule.ruleType,
         recurrence: rule.recurrence,
         amount: roundCurrency(rule.amount),
         currency: rule.currency,
@@ -1288,6 +1349,7 @@ export async function upsertFinancialRecurringRule(rawInput: unknown) {
             direction: input.direction,
             category: input.category,
             subcategory: input.subcategory,
+            ruleType: input.ruleType,
             recurrence: input.recurrence,
             amount: roundCurrency(input.amount),
             currency: input.currency.toUpperCase(),
@@ -1302,6 +1364,7 @@ export async function upsertFinancialRecurringRule(rawInput: unknown) {
             direction: input.direction,
             category: input.category,
             subcategory: input.subcategory,
+            ruleType: input.ruleType,
             recurrence: input.recurrence,
             amount: roundCurrency(input.amount),
             currency: input.currency.toUpperCase(),

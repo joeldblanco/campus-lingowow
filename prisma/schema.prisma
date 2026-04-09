@@ -2624,6 +2624,7 @@ model FinancialRecurringRule {
   direction   FinancialMovementDirection
   category    String
   subcategory String?
+  ruleType    FinancialRecurringRuleType       @default(FIXED_AMOUNT)
   recurrence  FinancialRecurringRuleRecurrence @default(MONTHLY)
   amount      Float
   currency    String                           @default("USD")
@@ -2638,6 +2639,7 @@ model FinancialRecurringRule {
 
   @@index([direction])
   @@index([category])
+  @@index([ruleType])
   @@index([recurrence])
   @@index([isActive])
   @@map("financial_recurring_rules")
@@ -2669,6 +2671,12 @@ enum FinancialMovementDirection {
 enum FinancialRecurringRuleRecurrence {
   MONTHLY
   ANNUAL
+}
+
+enum FinancialRecurringRuleType {
+  FIXED_AMOUNT
+  INCOME_PERCENTAGE
+  PROFIT_PERCENTAGE
 }
 
 enum FinancialMovementSourceType {

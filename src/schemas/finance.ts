@@ -5,6 +5,11 @@ export const financialMovementDirectionOptions = ['INCOME', 'EXPENSE'] as const
 export const financialMovementStatusOptions = ['DRAFT', 'POSTED', 'VOID'] as const
 export const financialMovementRecurrenceOptions = ['ONE_TIME', 'MONTHLY', 'ANNUAL'] as const
 export const financialRecurringRuleRecurrenceOptions = ['MONTHLY', 'ANNUAL'] as const
+export const financialRecurringRuleTypeOptions = [
+  'FIXED_AMOUNT',
+  'INCOME_PERCENTAGE',
+  'PROFIT_PERCENTAGE',
+] as const
 
 export const financeManualCategories = [
   'Descuentos',
@@ -71,6 +76,7 @@ export const upsertFinancialRecurringRuleSchema = z.object({
   direction: z.enum(financialMovementDirectionOptions),
   category: z.string().trim().min(1, 'La categoría es obligatoria').max(120),
   subcategory: optionalString,
+  ruleType: z.enum(financialRecurringRuleTypeOptions).default('FIXED_AMOUNT'),
   recurrence: z.enum(financialRecurringRuleRecurrenceOptions),
   amount: z.coerce.number().positive('El monto debe ser mayor a cero'),
   currency: z.string().trim().min(3).max(8).default('USD'),
