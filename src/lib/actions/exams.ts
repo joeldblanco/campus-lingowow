@@ -5,6 +5,7 @@ import { auth } from '@/auth'
 import { revalidatePath } from 'next/cache'
 import { CreateExamSchema, EditExamSchema, AssignExamSchema } from '@/schemas/exams'
 import { auditLog } from '@/lib/audit-log'
+import { assignExamStudentsWithNotifications } from '@/lib/exams/assign-exam-students'
 import * as z from 'zod'
 import { AttemptStatus, AssignmentStatus, ExamType, Prisma, UserRole } from '@prisma/client'
 import type {
@@ -671,34 +672,68 @@ export async function assignExamToStudents(
       return { success: false, error: 'No autorizado' }
     }
 
+    if (!session.user.roles?.includes('ADMIN')) {
+      return { success: false, error: 'No autorizado' }
+    }
+
     const currentUserId = session.user.id
     const validatedData = AssignExamSchema.parse(data)
+    const uniqueStudentIds = [...new Set(validatedData.studentIds)]
 
-    const assignments = await Promise.all(
-      validatedData.studentIds.map((studentId) =>
-        db.examAssignment.upsert({
-          where: {
-            examId_userId: {
-              examId: validatedData.examId,
-              userId: studentId,
-            },
+    const exam = await db.exam.findUnique({
+      where: { id: validatedData.examId },
+      select: {
+        id: true,
+        title: true,
+        courseId: true,
+      },
+    })
+
+    if (!exam) {
+      return { success: false, error: 'Examen no encontrado' }
+    }
+
+    const eligibleUsers = await db.user.findMany({
+      where: {
+        NOT: {
+          roles: {
+            has: UserRole.ADMIN,
           },
-          update: {
-            dueDate: validatedData.dueDate ? new Date(validatedData.dueDate) : null,
-            instructions: validatedData.instructions,
-            status: AssignmentStatus.ASSIGNED,
-          },
-          create: {
-            examId: validatedData.examId,
-            userId: studentId,
-            assignedBy: currentUserId,
-            dueDate: validatedData.dueDate ? new Date(validatedData.dueDate) : null,
-            instructions: validatedData.instructions,
-            status: AssignmentStatus.ASSIGNED,
-          },
-        })
-      )
-    )
+        },
+        ...(exam.courseId
+          ? {
+              enrollments: {
+                some: {
+                  courseId: exam.courseId,
+                  status: 'ACTIVE',
+                },
+              },
+            }
+          : {}),
+      },
+      select: {
+        id: true,
+      },
+    })
+
+    const eligibleUserIds = new Set(eligibleUsers.map((user) => user.id))
+    const hasInvalidStudent = uniqueStudentIds.some((studentId) => !eligibleUserIds.has(studentId))
+
+    if (hasInvalidStudent) {
+      return {
+        success: false,
+        error: 'Uno o más estudiantes no pueden recibir este examen',
+      }
+    }
+
+    const assignments = await assignExamStudentsWithNotifications({
+      examId: validatedData.examId,
+      studentIds: uniqueStudentIds,
+      assignedById: currentUserId,
+      examTitle: exam.title,
+      dueDate: validatedData.dueDate ? new Date(validatedData.dueDate) : null,
+      instructions: validatedData.instructions ?? null,
+    })
 
     revalidatePath('/admin/exams')
     return { success: true, assignments }
@@ -1851,6 +1886,11 @@ export async function getExamBySlug(slug: string) {
  */
 export async function getNonAdminUsersForExamAssignment() {
   try {
+    const session = await auth()
+    if (!session?.user?.id || !session.user.roles?.includes('ADMIN')) {
+      return { success: false, error: 'No autorizado', users: [] }
+    }
+
     const users = await db.user.findMany({
       where: {
         NOT: {

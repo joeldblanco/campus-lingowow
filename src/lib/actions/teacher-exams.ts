@@ -1,9 +1,9 @@
 'use server'
 
-import { db } from '@/lib/db'
 import { auth } from '@/auth'
+import { db } from '@/lib/db'
+import { assignExamStudentsWithNotifications } from '@/lib/exams/assign-exam-students'
 import { revalidatePath } from 'next/cache'
-import { AssignmentStatus } from '@prisma/client'
 
 /**
  * Obtiene los exámenes de un curso creados por el profesor actual
@@ -180,6 +180,7 @@ export async function assignExamToStudents(
     }
 
     const teacherId = session.user.id
+  const uniqueStudentIds = [...new Set(studentIds)]
 
     const isAdmin = session.user.roles?.includes('ADMIN')
 
@@ -195,32 +196,45 @@ export async function assignExamToStudents(
       return { success: false, error: 'Examen no encontrado' }
     }
 
-    // Crear asignaciones para cada estudiante
-    const assignments = await Promise.all(
-      studentIds.map((studentId) =>
-        db.examAssignment.upsert({
-          where: {
-            examId_userId: {
-              examId,
-              userId: studentId,
+    if (!exam.courseId) {
+      return { success: false, error: 'El examen no pertenece a un curso asignable' }
+    }
+
+    const eligibleEnrollments = await db.enrollment.findMany({
+      where: {
+        courseId: exam.courseId,
+        status: 'ACTIVE',
+        ...(!isAdmin && {
+          bookings: {
+            some: {
+              teacherId,
             },
           },
-          update: {
-            dueDate: dueDate || null,
-            instructions: instructions || null,
-            status: AssignmentStatus.ASSIGNED,
-          },
-          create: {
-            examId,
-            userId: studentId,
-            assignedBy: teacherId,
-            dueDate: dueDate || null,
-            instructions: instructions || null,
-            status: AssignmentStatus.ASSIGNED,
-          },
-        })
-      )
-    )
+        }),
+      },
+      select: {
+        studentId: true,
+      },
+    })
+
+    const eligibleStudentIds = new Set(eligibleEnrollments.map((enrollment) => enrollment.studentId))
+    const hasInvalidStudent = uniqueStudentIds.some((studentId) => !eligibleStudentIds.has(studentId))
+
+    if (hasInvalidStudent) {
+      return {
+        success: false,
+        error: 'Uno o más estudiantes no pueden recibir este examen',
+      }
+    }
+
+    const assignments = await assignExamStudentsWithNotifications({
+      examId,
+      studentIds: uniqueStudentIds,
+      assignedById: teacherId,
+      examTitle: exam.title,
+      dueDate: dueDate || null,
+      instructions: instructions || null,
+    })
 
     revalidatePath(`/teacher/courses/${exam.courseId}`)
     return { success: true, assignments }
@@ -583,17 +597,16 @@ export async function getExamResultsForTeacher(examId: string) {
     let attemptsWhereClause: Record<string, unknown> | undefined = undefined
 
     if (!isAdmin) {
-      const teacherStudentIds = await db.classBooking.findMany({
-        where: { teacherId: session.user.id },
-        select: { studentId: true },
-        distinct: ['studentId']
-      }).then(bookings => bookings.map(b => b.studentId))
+      const teacherStudentIds = await db.classBooking
+        .findMany({
+          where: { teacherId: session.user.id },
+          select: { studentId: true },
+          distinct: ['studentId'],
+        })
+        .then((bookings) => bookings.map((b) => b.studentId))
 
       attemptsWhereClause = {
-        OR: [
-          { userId: { in: teacherStudentIds } },
-          { exam: { createdById: session.user.id } }
-        ]
+        OR: [{ userId: { in: teacherStudentIds } }, { exam: { createdById: session.user.id } }],
       }
     }
 
@@ -628,10 +641,14 @@ export async function getExamResultsForTeacher(examId: string) {
     }
 
     // Incluir tanto COMPLETED como SUBMITTED (pendientes de revisión) en las estadísticas
-    const finishedAttempts = exam.attempts.filter((a) => a.status === 'COMPLETED' || a.status === 'SUBMITTED')
+    const finishedAttempts = exam.attempts.filter(
+      (a) => a.status === 'COMPLETED' || a.status === 'SUBMITTED'
+    )
     const completedAttempts = exam.attempts.filter((a) => a.status === 'COMPLETED')
     // Solo incluir intentos con score real (no null) para el promedio
-    const attemptsWithScore = finishedAttempts.filter((a) => a.score !== null && a.score !== undefined)
+    const attemptsWithScore = finishedAttempts.filter(
+      (a) => a.score !== null && a.score !== undefined
+    )
     const scores = attemptsWithScore.map((a) => a.score as number)
     const averageScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0
     const passedCount = completedAttempts.filter((a) => (a.score || 0) >= exam.passingScore).length

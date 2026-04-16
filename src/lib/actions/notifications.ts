@@ -277,9 +277,34 @@ export async function notifyTaskAssigned(data: {
     type: NotificationType.TASK_ASSIGNED,
     title: 'Nueva tarea asignada',
     message: `${teacherName} te ha asignado: ${taskTitle}`,
-    link: `/dashboard/activities`,
+    link: `/activities`,
     metadata: { taskId, dueDate: dueDate?.toISOString() },
   })
+}
+
+export async function notifyExamAssigned(data: {
+  studentId: string
+  examTitle: string
+  assignedByName: string
+  examId: string
+  dueDate?: Date
+}) {
+  const { studentId, examTitle, assignedByName, examId, dueDate } = data
+
+  const result = await createNotification({
+    userId: studentId,
+    type: NotificationType.TASK_ASSIGNED,
+    title: 'Nuevo examen asignado',
+    message: `${assignedByName} te ha asignado el examen: ${examTitle}`,
+    link: `/student/exams`,
+    metadata: { examId, dueDate: dueDate?.toISOString() },
+  })
+
+  if (!result.success) {
+    throw new Error(result.error || 'Error al crear notificación de examen')
+  }
+
+  return result
 }
 
 // Notificar confirmación de pago del profesor
@@ -370,21 +395,21 @@ export async function notifyClassRescheduled(data: {
   teacherNewTimeSlot: string
   bookingId: string
 }) {
-  const { 
-    studentId, 
-    studentName, 
-    teacherId, 
-    teacherName, 
-    courseName, 
-    oldDay, 
-    oldTimeSlot, 
-    newDay, 
+  const {
+    studentId,
+    studentName,
+    teacherId,
+    teacherName,
+    courseName,
+    oldDay,
+    oldTimeSlot,
+    newDay,
     newTimeSlot,
     teacherOldDay,
     teacherOldTimeSlot,
     teacherNewDay,
     teacherNewTimeSlot,
-    bookingId 
+    bookingId,
   } = data
 
   // Notificar al estudiante (con horas locales del estudiante)
@@ -404,7 +429,15 @@ export async function notifyClassRescheduled(data: {
     title: 'Clase reagendada por estudiante',
     message: `${studentName} ha reagendado su clase de ${courseName} de ${teacherOldDay} ${teacherOldTimeSlot} a ${teacherNewDay} ${teacherNewTimeSlot}`,
     link: `/teacher/schedule`,
-    metadata: { bookingId, oldDay: teacherOldDay, oldTimeSlot: teacherOldTimeSlot, newDay: teacherNewDay, newTimeSlot: teacherNewTimeSlot, studentId, studentName },
+    metadata: {
+      bookingId,
+      oldDay: teacherOldDay,
+      oldTimeSlot: teacherOldTimeSlot,
+      newDay: teacherNewDay,
+      newTimeSlot: teacherNewTimeSlot,
+      studentId,
+      studentName,
+    },
   })
 
   // Notificar a los administradores
@@ -470,9 +503,10 @@ export async function getUserCountByRole(filters: BulkNotificationFilters) {
       const count = await db.user.count({
         where: {
           roles: { has: role },
-          status: filters.userStatus && filters.userStatus !== 'ALL' 
-            ? (filters.userStatus as UserStatus)
-            : undefined,
+          status:
+            filters.userStatus && filters.userStatus !== 'ALL'
+              ? (filters.userStatus as UserStatus)
+              : undefined,
         },
       })
       counts[role] = count
