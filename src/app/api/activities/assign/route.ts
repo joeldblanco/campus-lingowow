@@ -15,17 +15,11 @@ export async function POST(request: NextRequest) {
     const { activityId, studentIds, assignedBy } = body
 
     if (!activityId) {
-      return NextResponse.json(
-        { error: 'Se requiere el ID de la actividad' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Se requiere el ID de la actividad' }, { status: 400 })
     }
 
     if (!studentIds || studentIds.length === 0) {
-      return NextResponse.json(
-        { error: 'Se requiere al menos un estudiante' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Se requiere al menos un estudiante' }, { status: 400 })
     }
 
     // Verificar que la actividad existe
@@ -34,10 +28,7 @@ export async function POST(request: NextRequest) {
     })
 
     if (!activity) {
-      return NextResponse.json(
-        { error: 'Actividad no encontrada' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Actividad no encontrada' }, { status: 404 })
     }
 
     const assignmentOwnerId = assignedBy || session.user.id
@@ -69,10 +60,7 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error('Error asignando actividad:', error)
-    return NextResponse.json(
-      { error: 'Error al asignar la actividad' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error al asignar la actividad' }, { status: 500 })
   }
 }
 
@@ -107,9 +95,6 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Error desasignando actividad:', error)
-    return NextResponse.json(
-      { error: 'Error al desasignar la actividad' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error al desasignar la actividad' }, { status: 500 })
   }
 }

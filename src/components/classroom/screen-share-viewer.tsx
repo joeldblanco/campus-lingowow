@@ -13,7 +13,7 @@ export function ScreenShareViewer() {
     toggleScreenShare,
     localScreenShareTrack,
     remoteScreenShareTrack,
-    remoteScreenShareAudioTrack
+    remoteScreenShareAudioTrack,
   } = useLiveKit()
   const videoRef = useRef<HTMLVideoElement>(null)
   const audioRef = useRef<HTMLAudioElement>(null)
@@ -35,7 +35,10 @@ export function ScreenShareViewer() {
     if (!videoRef.current || !screenTrack) return
 
     const video = videoRef.current
-    const track = screenTrack as Track & { attach: (el: HTMLVideoElement) => void; detach: (el: HTMLVideoElement) => void }
+    const track = screenTrack as Track & {
+      attach: (el: HTMLVideoElement) => void
+      detach: (el: HTMLVideoElement) => void
+    }
 
     if (track.attach) {
       track.attach(video)
@@ -54,7 +57,10 @@ export function ScreenShareViewer() {
     if (!audioRef.current || !screenAudioTrack) return
 
     const audio = audioRef.current
-    const track = screenAudioTrack as Track & { attach: (el: HTMLAudioElement) => void; detach: (el: HTMLAudioElement) => void }
+    const track = screenAudioTrack as Track & {
+      attach: (el: HTMLAudioElement) => void
+      detach: (el: HTMLAudioElement) => void
+    }
 
     if (track.attach) {
       track.attach(audio)
@@ -97,20 +103,11 @@ export function ScreenShareViewer() {
         <div className="flex-none p-2 bg-gray-800 flex items-center justify-between">
           <div className="flex items-center gap-2 text-white text-sm">
             <Monitor className="w-4 h-4 text-green-400" />
-            <span>
-              {isScreenSharing
-                ? 'Compartiendo tu pantalla'
-                : 'Pantalla compartida'}
-            </span>
+            <span>{isScreenSharing ? 'Compartiendo tu pantalla' : 'Pantalla compartida'}</span>
           </div>
           <div className="flex items-center gap-2">
             {isScreenSharing && (
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={toggleScreenShare}
-                className="gap-1"
-              >
+              <Button variant="destructive" size="sm" onClick={toggleScreenShare} className="gap-1">
                 <Monitor className="w-3 h-3" />
                 Dejar de compartir
               </Button>
@@ -121,11 +118,7 @@ export function ScreenShareViewer() {
               onClick={toggleFullscreen}
               className="text-white hover:bg-gray-700"
             >
-              {isFullscreen ? (
-                <Minimize2 className="w-4 h-4" />
-              ) : (
-                <Maximize2 className="w-4 h-4" />
-              )}
+              {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
             </Button>
           </div>
         </div>
@@ -146,15 +139,12 @@ export function ScreenShareViewer() {
   return (
     <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-xl">
       <div className="text-center text-gray-500 space-y-4">
-        <Monitor className={cn(
-          "w-16 h-16 mx-auto",
-          isScreenSharing ? "text-green-500" : "opacity-50"
-        )} />
+        <Monitor
+          className={cn('w-16 h-16 mx-auto', isScreenSharing ? 'text-green-500' : 'opacity-50')}
+        />
         <div>
           <p className="text-lg font-medium">
-            {someoneElseIsSharing
-              ? 'Otro participante está compartiendo'
-              : 'Compartir Pantalla'}
+            {someoneElseIsSharing ? 'Otro participante está compartiendo' : 'Compartir Pantalla'}
           </p>
           <p className="text-sm">
             {someoneElseIsSharing
@@ -164,7 +154,7 @@ export function ScreenShareViewer() {
         </div>
         <Button
           onClick={toggleScreenShare}
-          variant={isScreenSharing ? "destructive" : "default"}
+          variant={isScreenSharing ? 'destructive' : 'default'}
           className="gap-2"
           disabled={someoneElseIsSharing}
         >
