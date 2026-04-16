@@ -45,6 +45,7 @@ export function ScreenShareViewer() {
       if (track.detach) {
         track.detach(video)
       }
+      video.srcObject = null
     }
   }, [screenTrack])
 
@@ -63,6 +64,7 @@ export function ScreenShareViewer() {
       if (track.detach) {
         track.detach(audio)
       }
+      audio.srcObject = null
     }
   }, [screenAudioTrack])
 

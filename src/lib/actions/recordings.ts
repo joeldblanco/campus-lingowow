@@ -77,6 +77,30 @@ export interface RecordingWithDetails {
   }
 }
 
+function getRecordingBookingAccessFilter(userId: string, roles: string[]) {
+  if (roles.includes('ADMIN')) {
+    return {}
+  }
+
+  const accessConditions: Array<Record<string, string>> = []
+
+  if (roles.includes('TEACHER')) {
+    accessConditions.push({ teacherId: userId })
+  }
+
+  if (roles.includes('STUDENT') || accessConditions.length === 0) {
+    accessConditions.push({ studentId: userId })
+  }
+
+  if (accessConditions.length === 1) {
+    return accessConditions[0]
+  }
+
+  return {
+    OR: accessConditions,
+  }
+}
+
 // Obtener grabaciones del estudiante actual o todas si es admin
 export async function getStudentRecordings(options?: {
   page?: number
@@ -96,15 +120,13 @@ export async function getStudentRecordings(options?: {
     const limit = options?.limit || 12
     const skip = (page - 1) * limit
 
-    const isAdmin = session.user.roles?.includes('ADMIN')
+    const userRoles = session.user.roles || []
+    const isAdmin = userRoles.includes('ADMIN')
 
     // Construir filtros para booking
-    const bookingFilter: Record<string, unknown> = {}
-
-    // Solo filtrar por studentId si NO es admin
-    if (!isAdmin) {
-      bookingFilter.studentId = session.user.id
-    }
+    const bookingFilter: Record<string, unknown> = isAdmin
+      ? {}
+      : getRecordingBookingAccessFilter(session.user.id, userRoles)
 
     if (options?.courseId) {
       bookingFilter.enrollment = {
@@ -461,7 +483,8 @@ export async function getStudentCoursesForFilter() {
       return { success: false, error: 'No autenticado' }
     }
 
-    const isAdmin = session.user.roles?.includes('ADMIN')
+    const userRoles = session.user.roles || []
+    const isAdmin = userRoles.includes('ADMIN')
 
     let courses
 
@@ -491,24 +514,32 @@ export async function getStudentCoursesForFilter() {
       })
       courses = coursesWithRecordings
     } else {
-      // Estudiante: solo sus cursos
-      const enrollments = await db.enrollment.findMany({
+      const bookingAccessFilter = getRecordingBookingAccessFilter(session.user.id, userRoles)
+
+      const accessibleCoursesWithRecordings = await db.course.findMany({
         where: {
-          studentId: session.user.id,
-        },
-        include: {
-          course: {
-            select: {
-              id: true,
-              title: true,
-              language: true,
-              level: true,
+          enrollments: {
+            some: {
+              bookings: {
+                some: {
+                  ...bookingAccessFilter,
+                  recordings: {
+                    some: {},
+                  },
+                },
+              },
             },
           },
         },
-        distinct: ['courseId'],
+        select: {
+          id: true,
+          title: true,
+          language: true,
+          level: true,
+        },
+        distinct: ['id'],
       })
-      courses = enrollments.map((e) => e.course)
+      courses = accessibleCoursesWithRecordings
     }
 
     return {

@@ -72,6 +72,8 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   const isConnectingRef = useRef(false)
   const isScreenSharingRef = useRef(false)
   const wasScreenSharingBeforeReconnectRef = useRef(false)
+  const remoteScreenShareOwnerRef = useRef<string | null>(null)
+  const remoteScreenShareAudioOwnerRef = useRef<string | null>(null)
   const joinAttemptRef = useRef(0)
   const syncTimersRef = useRef<ReturnType<typeof setTimeout>[]>([])
 
@@ -145,11 +147,19 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
 
     // Update remote screen share tracks OUTSIDE updater (setState must not be called inside another setState updater)
     if (screenShareTrack) {
+      remoteScreenShareOwnerRef.current = participant.identity
       setRemoteScreenShareTrack(screenShareTrack)
+    } else if (remoteScreenShareOwnerRef.current === participant.identity) {
+      remoteScreenShareOwnerRef.current = null
+      setRemoteScreenShareTrack(undefined)
     }
 
     if (screenShareAudioTrack) {
+      remoteScreenShareAudioOwnerRef.current = participant.identity
       setRemoteScreenShareAudioTrack(screenShareAudioTrack)
+    } else if (remoteScreenShareAudioOwnerRef.current === participant.identity) {
+      remoteScreenShareAudioOwnerRef.current = null
+      setRemoteScreenShareAudioTrack(undefined)
     }
 
     // Pure state updater — only computes the new Map
@@ -173,29 +183,15 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const removeRemoteParticipant = useCallback((participant: RemoteParticipant) => {
-    // Only clear remote screen share if THIS participant was the one sharing
-    setRemoteScreenShareTrack((current) => {
-      // Check if the current screen share track belongs to the disconnecting participant
-      // by checking if any of their track publications match the current screen share
-      let wasSharing = false
-      participant.trackPublications.forEach((pub) => {
-        if (pub.track && pub.source === Track.Source.ScreenShare && pub.track === current) {
-          wasSharing = true
-        }
-      })
-      return wasSharing ? undefined : current
-    })
+    if (remoteScreenShareOwnerRef.current === participant.identity) {
+      remoteScreenShareOwnerRef.current = null
+      setRemoteScreenShareTrack(undefined)
+    }
 
-    // Also clear screen share audio if this participant was sharing
-    setRemoteScreenShareAudioTrack((current) => {
-      let wasSharing = false
-      participant.trackPublications.forEach((pub) => {
-        if (pub.track && pub.source === Track.Source.ScreenShareAudio && pub.track === current) {
-          wasSharing = true
-        }
-      })
-      return wasSharing ? undefined : current
-    })
+    if (remoteScreenShareAudioOwnerRef.current === participant.identity) {
+      remoteScreenShareAudioOwnerRef.current = null
+      setRemoteScreenShareAudioTrack(undefined)
+    }
 
     setRemoteParticipants((prev) => {
       const newMap = new Map(prev)
@@ -392,13 +388,43 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
         room.on(RoomEvent.TrackUnsubscribed, (track, publication, participant) => {
           console.log('[LiveKit] Track unsubscribed:', track.kind, participant.identity)
           // Clear remote screen share if this was the screen share track being unsubscribed
-          if (publication.source === Track.Source.ScreenShare) {
-            setRemoteScreenShareTrack((current) => (current === track ? undefined : current))
+          if (
+            publication.source === Track.Source.ScreenShare &&
+            remoteScreenShareOwnerRef.current === participant.identity
+          ) {
+            remoteScreenShareOwnerRef.current = null
+            setRemoteScreenShareTrack(undefined)
           }
           // Clear remote screen share audio if this was the audio track being unsubscribed
-          if (publication.source === Track.Source.ScreenShareAudio) {
-            setRemoteScreenShareAudioTrack((current) => (current === track ? undefined : current))
+          if (
+            publication.source === Track.Source.ScreenShareAudio &&
+            remoteScreenShareAudioOwnerRef.current === participant.identity
+          ) {
+            remoteScreenShareAudioOwnerRef.current = null
+            setRemoteScreenShareAudioTrack(undefined)
           }
+          updateRemoteParticipant(participant)
+        })
+
+        room.on(RoomEvent.TrackUnpublished, (publication, participant) => {
+          if (!(participant instanceof RemoteParticipant)) return
+
+          if (
+            publication.source === Track.Source.ScreenShare &&
+            remoteScreenShareOwnerRef.current === participant.identity
+          ) {
+            remoteScreenShareOwnerRef.current = null
+            setRemoteScreenShareTrack(undefined)
+          }
+
+          if (
+            publication.source === Track.Source.ScreenShareAudio &&
+            remoteScreenShareAudioOwnerRef.current === participant.identity
+          ) {
+            remoteScreenShareAudioOwnerRef.current = null
+            setRemoteScreenShareAudioTrack(undefined)
+          }
+
           updateRemoteParticipant(participant)
         })
 
@@ -662,8 +688,10 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
     setLocalVideoTrack(undefined)
     setLocalAudioTrack(undefined)
     setLocalScreenShareTrack(undefined)
+    remoteScreenShareOwnerRef.current = null
     setRemoteScreenShareTrack(undefined)
     setLocalScreenShareAudioTrack(undefined)
+    remoteScreenShareAudioOwnerRef.current = null
     setRemoteScreenShareAudioTrack(undefined)
     setRemoteParticipants(new Map())
     setConnectionStatus('disconnected')

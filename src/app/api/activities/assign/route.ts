@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { auth } from '@/auth'
+import { assignActivityToUser } from '@/lib/actions/activity'
 
 // POST - Asignar actividad a estudiantes
 export async function POST(request: NextRequest) {
@@ -39,6 +40,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const assignmentOwnerId = assignedBy || session.user.id
+
     // Crear asignaciones para cada estudiante
     const assignments = await Promise.all(
       studentIds.map(async (studentId: string) => {
@@ -56,16 +59,7 @@ export async function POST(request: NextRequest) {
           return existing
         }
 
-        // Crear nueva asignación
-        return db.userActivity.create({
-          data: {
-            userId: studentId,
-            activityId,
-            status: 'ASSIGNED',
-            assignedBy: assignedBy || session.user.id,
-            assignedAt: new Date(),
-          },
-        })
+        return assignActivityToUser(studentId, activityId, assignmentOwnerId)
       })
     )
 
