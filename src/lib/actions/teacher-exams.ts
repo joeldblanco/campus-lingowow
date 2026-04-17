@@ -180,7 +180,7 @@ export async function assignExamToStudents(
     }
 
     const teacherId = session.user.id
-  const uniqueStudentIds = [...new Set(studentIds)]
+    const uniqueStudentIds = [...new Set(studentIds)]
 
     const isAdmin = session.user.roles?.includes('ADMIN')
 
@@ -217,8 +217,12 @@ export async function assignExamToStudents(
       },
     })
 
-    const eligibleStudentIds = new Set(eligibleEnrollments.map((enrollment) => enrollment.studentId))
-    const hasInvalidStudent = uniqueStudentIds.some((studentId) => !eligibleStudentIds.has(studentId))
+    const eligibleStudentIds = new Set(
+      eligibleEnrollments.map((enrollment) => enrollment.studentId)
+    )
+    const hasInvalidStudent = uniqueStudentIds.some(
+      (studentId) => !eligibleStudentIds.has(studentId)
+    )
 
     if (hasInvalidStudent) {
       return {
