@@ -2763,6 +2763,9 @@ enum AuditAction {
   PAYMENT_COMPLETED
   SUBSCRIPTION_CREATED
   SUBSCRIPTION_CANCELLED
+
+  // MCP / Integraciones externas
+  MCP_TOOL_INVOKED
 }
 
 enum AuditCategory {
