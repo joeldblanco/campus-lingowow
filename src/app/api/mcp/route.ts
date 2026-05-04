@@ -3,6 +3,7 @@ import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/
 import { authenticateMcpRequest } from '@/lib/mcp/auth'
 import { runWithMcpContext } from '@/lib/mcp/context'
 import { buildMcpServer } from '@/lib/mcp/server'
+import { checkMcpRateLimit } from '@/lib/mcp/rate-limit'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -17,6 +18,21 @@ async function handle(request: NextRequest): Promise<Response> {
     )
   }
 
+  const rate = checkMcpRateLimit(auth.userId)
+  if (!rate.ok) {
+    return NextResponse.json(
+      { error: 'Rate limit excedido. Reintenta más tarde.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(rate.retryAfterSeconds),
+          'X-RateLimit-Limit': String(rate.limit),
+          'X-RateLimit-Remaining': '0',
+        },
+      }
+    )
+  }
+
   const ctx = {
     userId: auth.userId,
     scopes: auth.scopes ?? [],
@@ -24,7 +40,7 @@ async function handle(request: NextRequest): Promise<Response> {
     source: 'mcp' as const,
   }
 
-  return runWithMcpContext(ctx, async () => {
+  const response = await runWithMcpContext(ctx, async () => {
     const transport = new WebStandardStreamableHTTPServerTransport({
       sessionIdGenerator: undefined,
       enableJsonResponse: true,
@@ -39,6 +55,10 @@ async function handle(request: NextRequest): Promise<Response> {
       await server.close().catch(() => {})
     }
   })
+
+  response.headers.set('X-RateLimit-Limit', String(rate.limit))
+  response.headers.set('X-RateLimit-Remaining', String(rate.remaining))
+  return response
 }
 
 export async function POST(request: NextRequest) {
