@@ -16,6 +16,10 @@ existente para autenticación.
 | Clases / sesiones | `mcp:classes:read`, `mcp:classes:write` | `lingowow_classes_create`, `lingowow_classes_reschedule`, `lingowow_classes_bulk_update` |
 | Cupones | `mcp:coupons:read`, `mcp:coupons:write` | `lingowow_coupons_create`, `lingowow_coupons_update` |
 | Productos / planes | `mcp:products:read`, `mcp:products:write` | `lingowow_products_create`, `lingowow_plans_create` |
+| Profesores | `mcp:teachers:read`, `mcp:teachers:write` | `lingowow_teachers_payment_report`, `lingowow_teachers_projected_cost`, `lingowow_teachers_toggle_class_payable` |
+| Períodos académicos | `mcp:academic-periods:read`, `mcp:academic-periods:write` | `lingowow_academic_periods_list`, `lingowow_academic_periods_set_active`, `lingowow_academic_periods_generate_year` |
+| Créditos virtuales | `mcp:credits:read`, `mcp:credits:write` | `lingowow_credits_get_balance`, `lingowow_credits_add`, `lingowow_credits_packages_create` |
+| Audit logs | `mcp:audit-logs:read` | `lingowow_audit_logs_list`, `lingowow_audit_logs_recent_mcp` |
 
 Lista completa y actualizada de scopes en [`scopes.ts`](./scopes.ts). Todos los
 tools registrados se concentran en [`registry.ts`](./registry.ts).
@@ -93,12 +97,16 @@ src/lib/mcp/
 ├── server.ts          ← buildMcpServer() registra todas las tools
 ├── types.ts           ← interfaz ToolModule
 └── tools/             ← un archivo por dominio
+    ├── academic-periods.ts
+    ├── audit-logs.ts
     ├── classes.ts
     ├── coupons.ts
     ├── courses.ts
+    ├── credits.ts
     ├── enrollments.ts
     ├── finance.ts
     ├── products.ts
+    ├── teachers.ts
     └── users.ts
 ```
 

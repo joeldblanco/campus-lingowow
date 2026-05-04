@@ -32,6 +32,17 @@ export const MCP_SCOPES: McpScopeDefinition[] = [
   // Productos / Planes
   { scope: 'mcp:products:read', domain: 'products', action: 'read', description: 'Listar productos, planes, categorías y tags' },
   { scope: 'mcp:products:write', domain: 'products', action: 'write', description: 'Crear, actualizar y eliminar productos y planes' },
+  // Profesores
+  { scope: 'mcp:teachers:read', domain: 'teachers', action: 'read', description: 'Listar profesores, disponibilidad, reportes y proyecciones de pago' },
+  { scope: 'mcp:teachers:write', domain: 'teachers', action: 'write', description: 'Marcar clases como pagables/no pagables' },
+  // Períodos académicos
+  { scope: 'mcp:academic-periods:read', domain: 'academic-periods', action: 'read', description: 'Listar períodos, temporadas y consultar período por fecha' },
+  { scope: 'mcp:academic-periods:write', domain: 'academic-periods', action: 'write', description: 'Crear/activar períodos y temporadas, generar año completo' },
+  // Créditos virtuales
+  { scope: 'mcp:credits:read', domain: 'credits', action: 'read', description: 'Consultar balances, transacciones y paquetes de créditos' },
+  { scope: 'mcp:credits:write', domain: 'credits', action: 'write', description: 'Ajustar balances de usuarios y gestionar paquetes de créditos' },
+  // Audit logs
+  { scope: 'mcp:audit-logs:read', domain: 'audit-logs', action: 'read', description: 'Leer y exportar el registro de auditoría' },
 ]
 
 export interface McpScopePreset {
