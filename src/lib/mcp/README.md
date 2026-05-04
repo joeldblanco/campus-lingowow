@@ -20,6 +20,10 @@ existente para autenticación.
 | Períodos académicos | `mcp:academic-periods:read`, `mcp:academic-periods:write` | `lingowow_academic_periods_list`, `lingowow_academic_periods_set_active`, `lingowow_academic_periods_generate_year` |
 | Créditos virtuales | `mcp:credits:read`, `mcp:credits:write` | `lingowow_credits_get_balance`, `lingowow_credits_add`, `lingowow_credits_packages_create` |
 | Audit logs | `mcp:audit-logs:read` | `lingowow_audit_logs_list`, `lingowow_audit_logs_recent_mcp` |
+| Exámenes | `mcp:exams:read`, `mcp:exams:write` | `lingowow_exams_create`, `lingowow_exams_assign`, `lingowow_exams_grade_answer`, `lingowow_exams_finalize_review` |
+| Calificaciones | `mcp:grades:read`, `mcp:grades:write` | `lingowow_grades_list`, `lingowow_grades_progress_report`, `lingowow_grades_update_activity` |
+| Notificaciones | `mcp:notifications:read`, `mcp:notifications:write` | `lingowow_notifications_create`, `lingowow_notifications_send_bulk`, `lingowow_notifications_newsletter_subscribe` |
+| Analytics | `mcp:analytics:read` | `lingowow_analytics_dashboard_kpis`, `lingowow_analytics_revenue`, `lingowow_analytics_projections`, `lingowow_analytics_financial_health` |
 
 Lista completa y actualizada de scopes en [`scopes.ts`](./scopes.ts). Todos los
 tools registrados se concentran en [`registry.ts`](./registry.ts).
@@ -98,13 +102,17 @@ src/lib/mcp/
 ├── types.ts           ← interfaz ToolModule
 └── tools/             ← un archivo por dominio
     ├── academic-periods.ts
+    ├── analytics.ts
     ├── audit-logs.ts
     ├── classes.ts
     ├── coupons.ts
     ├── courses.ts
     ├── credits.ts
     ├── enrollments.ts
+    ├── exams.ts
     ├── finance.ts
+    ├── grades.ts
+    ├── notifications.ts
     ├── products.ts
     ├── teachers.ts
     └── users.ts

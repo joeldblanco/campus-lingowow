@@ -43,6 +43,17 @@ export const MCP_SCOPES: McpScopeDefinition[] = [
   { scope: 'mcp:credits:write', domain: 'credits', action: 'write', description: 'Ajustar balances de usuarios y gestionar paquetes de créditos' },
   // Audit logs
   { scope: 'mcp:audit-logs:read', domain: 'audit-logs', action: 'read', description: 'Leer y exportar el registro de auditoría' },
+  // Exámenes
+  { scope: 'mcp:exams:read', domain: 'exams', action: 'read', description: 'Listar exámenes, intentos para calificar, placement tests' },
+  { scope: 'mcp:exams:write', domain: 'exams', action: 'write', description: 'Crear/actualizar/eliminar exámenes, asignar a estudiantes, calificar respuestas' },
+  // Calificaciones
+  { scope: 'mcp:grades:read', domain: 'grades', action: 'read', description: 'Listar calificaciones, reportes de progreso, stats' },
+  { scope: 'mcp:grades:write', domain: 'grades', action: 'write', description: 'Actualizar calificaciones de actividades' },
+  // Notificaciones
+  { scope: 'mcp:notifications:read', domain: 'notifications', action: 'read', description: 'Preview de notificaciones masivas y suscripciones de newsletter' },
+  { scope: 'mcp:notifications:write', domain: 'notifications', action: 'write', description: 'Crear notificaciones individuales y masivas, gestionar newsletter' },
+  // Analytics
+  { scope: 'mcp:analytics:read', domain: 'analytics', action: 'read', description: 'KPIs, ingresos, gastos, proyecciones, cohortes, LTV, salud financiera' },
 ]
 
 export interface McpScopePreset {
