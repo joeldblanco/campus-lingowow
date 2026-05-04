@@ -54,6 +54,15 @@ export const MCP_SCOPES: McpScopeDefinition[] = [
   { scope: 'mcp:notifications:write', domain: 'notifications', action: 'write', description: 'Crear notificaciones individuales y masivas, gestionar newsletter' },
   // Analytics
   { scope: 'mcp:analytics:read', domain: 'analytics', action: 'read', description: 'KPIs, ingresos, gastos, proyecciones, cohortes, LTV, salud financiera' },
+  // Actividades
+  { scope: 'mcp:activities:read', domain: 'activities', action: 'read', description: 'Listar y consultar actividades reutilizables' },
+  { scope: 'mcp:activities:write', domain: 'activities', action: 'write', description: 'Crear/actualizar/eliminar y asignar actividades a estudiantes' },
+  // File manager
+  { scope: 'mcp:files:read', domain: 'files', action: 'read', description: 'Listar archivos en Cloudinary, carpetas y stats de uso' },
+  { scope: 'mcp:files:write', domain: 'files', action: 'write', description: 'Editar metadata, mover, eliminar archivos, gestionar carpetas, sincronizar Cloudinary' },
+  // Biblioteca
+  { scope: 'mcp:library:read', domain: 'library', action: 'read', description: 'Listar y consultar recursos y categorías de biblioteca' },
+  { scope: 'mcp:library:write', domain: 'library', action: 'write', description: 'Crear, actualizar y eliminar recursos y categorías de biblioteca' },
 ]
 
 export interface McpScopePreset {

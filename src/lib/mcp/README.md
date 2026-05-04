@@ -24,6 +24,11 @@ existente para autenticación.
 | Calificaciones | `mcp:grades:read`, `mcp:grades:write` | `lingowow_grades_list`, `lingowow_grades_progress_report`, `lingowow_grades_update_activity` |
 | Notificaciones | `mcp:notifications:read`, `mcp:notifications:write` | `lingowow_notifications_create`, `lingowow_notifications_send_bulk`, `lingowow_notifications_newsletter_subscribe` |
 | Analytics | `mcp:analytics:read` | `lingowow_analytics_dashboard_kpis`, `lingowow_analytics_revenue`, `lingowow_analytics_projections`, `lingowow_analytics_financial_health` |
+| Actividades | `mcp:activities:read`, `mcp:activities:write` | `lingowow_activities_list`, `lingowow_activities_create`, `lingowow_activities_assign` |
+| File manager | `mcp:files:read`, `mcp:files:write` | `lingowow_files_list`, `lingowow_files_update_metadata`, `lingowow_files_batch_delete`, `lingowow_files_sync_cloudinary` |
+| Biblioteca | `mcp:library:read`, `mcp:library:write` | `lingowow_library_list`, `lingowow_library_create`, `lingowow_library_categories_create` |
+| Categorías y features (productos/planes) | `mcp:products:*` | `lingowow_categories_create`, `lingowow_features_create`, `lingowow_plans_set_features`, `lingowow_invoices_create` |
+| Disponibilidad de profesores (admin) | `mcp:teachers:read`, `mcp:teachers:write` | `lingowow_teacher_availability_update_slot`, `lingowow_teacher_availability_bulk_update`, `lingowow_teacher_blocked_day_toggle` |
 
 Lista completa y actualizada de scopes en [`scopes.ts`](./scopes.ts). Todos los
 tools registrados se concentran en [`registry.ts`](./registry.ts).
@@ -102,18 +107,23 @@ src/lib/mcp/
 ├── types.ts           ← interfaz ToolModule
 └── tools/             ← un archivo por dominio
     ├── academic-periods.ts
+    ├── activities.ts
     ├── analytics.ts
     ├── audit-logs.ts
     ├── classes.ts
+    ├── commercial-extras.ts
     ├── coupons.ts
     ├── courses.ts
     ├── credits.ts
     ├── enrollments.ts
     ├── exams.ts
+    ├── file-manager.ts
     ├── finance.ts
     ├── grades.ts
+    ├── library.ts
     ├── notifications.ts
     ├── products.ts
+    ├── teacher-availability.ts
     ├── teachers.ts
     └── users.ts
 ```

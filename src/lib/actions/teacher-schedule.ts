@@ -271,6 +271,7 @@ export async function updateTeacherAvailabilitySlot(params: {
   startTime: string
   endTime: string
   available: boolean
+  targetTeacherId?: string
 }) {
   const session = await auth()
 
@@ -281,7 +282,15 @@ export async function updateTeacherAvailabilitySlot(params: {
     return { success: false, error: 'No autorizado' }
   }
 
-  const userId = session.user.id
+  // Solo ADMIN puede modificar disponibilidad de otro profesor.
+  let userId = session.user.id
+  if (params.targetTeacherId && params.targetTeacherId !== session.user.id) {
+    if (!session.user.roles.includes(UserRole.ADMIN)) {
+      return { success: false, error: 'Solo ADMIN puede modificar disponibilidad de otros profesores' }
+    }
+    userId = params.targetTeacherId
+  }
+
   const { day, startTime, endTime, available } = params
 
   try {
@@ -339,7 +348,8 @@ export async function updateTeacherAvailabilitySlot(params: {
 
 // Bulk update availability
 export async function bulkUpdateTeacherAvailability(
-  slots: Array<{ day: string; startTime: string; endTime: string; available: boolean }>
+  slots: Array<{ day: string; startTime: string; endTime: string; available: boolean }>,
+  options?: { targetTeacherId?: string }
 ) {
   const session = await auth()
 
@@ -350,7 +360,13 @@ export async function bulkUpdateTeacherAvailability(
     return { success: false, error: 'No autorizado' }
   }
 
-  const userId = session.user.id
+  let userId = session.user.id
+  if (options?.targetTeacherId && options.targetTeacherId !== session.user.id) {
+    if (!session.user.roles.includes(UserRole.ADMIN)) {
+      return { success: false, error: 'Solo ADMIN puede modificar disponibilidad de otros profesores' }
+    }
+    userId = options.targetTeacherId
+  }
 
   try {
     // Obtener timezone del usuario
@@ -679,6 +695,7 @@ export async function toggleBlockTeacherDay(params: {
   date: string // YYYY-MM-DD
   blocked: boolean
   reason?: string
+  targetTeacherId?: string
 }) {
   const session = await auth()
 
@@ -689,7 +706,15 @@ export async function toggleBlockTeacherDay(params: {
     return { success: false, error: 'No autorizado' }
   }
 
-  const teacherId = session.user.id
+  // Solo ADMIN puede bloquear/desbloquear días de otro profesor.
+  let teacherId = session.user.id
+  if (params.targetTeacherId && params.targetTeacherId !== session.user.id) {
+    if (!session.user.roles.includes(UserRole.ADMIN)) {
+      return { success: false, error: 'Solo ADMIN puede modificar días bloqueados de otros profesores' }
+    }
+    teacherId = params.targetTeacherId
+  }
+
   const { date, blocked, reason } = params
 
   try {
