@@ -1,9 +1,20 @@
+import { z } from 'zod'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { TOOL_REGISTRY } from '@/lib/mcp/registry'
 import { hasAllScopes } from '@/lib/mcp/auth'
 import { logToolInvocation } from '@/lib/mcp/audit'
 import { McpToolError, toMcpError } from '@/lib/mcp/errors'
+import { getIdempotentResult, storeIdempotentResult } from '@/lib/mcp/idempotency'
 import type { AnyToolModule } from '@/lib/mcp/types'
+
+const IDEMPOTENCY_KEY_SCHEMA = z
+  .string()
+  .min(8)
+  .max(128)
+  .optional()
+  .describe(
+    'Opcional. Si pasas la misma clave en una segunda llamada (mismo userId + tool) dentro de 24h, se devuelve el resultado cacheado en lugar de re-ejecutar. Úsalo en mutaciones que no quieres duplicar al reintentar.'
+  )
 
 interface BuildServerOptions {
   userId: string
@@ -45,15 +56,34 @@ function registerTool(
     ) => void
   ).bind(server)
 
+  const isWriteTool = tool.scopes.some((s) => s.endsWith(':write'))
+  // Para tools de escritura, exponemos `idempotencyKey` en el inputSchema
+  // declarado al cliente MCP, así el LLM lo descubre vía `tools/list`.
+  const inputShape = isWriteTool
+    ? { ...(tool.inputShape ?? {}), idempotencyKey: IDEMPOTENCY_KEY_SCHEMA }
+    : tool.inputShape
+
   registerToolFn(
     tool.name,
     {
       description: tool.description,
-      inputSchema: tool.inputShape as Record<string, unknown> | undefined,
+      inputSchema: inputShape as Record<string, unknown> | undefined,
     },
     async (args: unknown) => {
       const startedAt = Date.now()
-      const safeArgs = (args as Record<string, unknown>) ?? {}
+      const rawArgs = (args as Record<string, unknown>) ?? {}
+      // Extraemos idempotencyKey antes de pasar args al handler para que las
+      // tools no tengan que conocer el campo. Solo se considera para tools de
+      // escritura (las read son intrínsecamente idempotentes).
+      const { idempotencyKey, ...safeArgs } = rawArgs as {
+        idempotencyKey?: unknown
+        [key: string]: unknown
+      }
+      const idemKey =
+        isWriteTool && typeof idempotencyKey === 'string' && idempotencyKey.length > 0
+          ? idempotencyKey
+          : null
+
       try {
         if (!hasAllScopes(ctx.scopes, tool.scopes)) {
           throw new McpToolError(
@@ -62,11 +92,35 @@ function registerTool(
           )
         }
 
+        if (idemKey) {
+          const cached = getIdempotentResult(ctx.userId, tool.name, idemKey)
+          if (cached !== undefined) {
+            logToolInvocation({
+              userId: ctx.userId,
+              tool: tool.name,
+              args: { ...safeArgs, idempotencyKey: idemKey, _cached: true },
+              durationMs: Date.now() - startedAt,
+              ok: true,
+            })
+            return {
+              content: [
+                {
+                  type: 'text' as const,
+                  text: stringify(cached),
+                },
+              ],
+            }
+          }
+        }
+
         const result = await tool.handler(safeArgs as never)
+        if (idemKey) {
+          storeIdempotentResult(ctx.userId, tool.name, idemKey, result)
+        }
         logToolInvocation({
           userId: ctx.userId,
           tool: tool.name,
-          args: safeArgs,
+          args: idemKey ? { ...safeArgs, idempotencyKey: idemKey } : safeArgs,
           durationMs: Date.now() - startedAt,
           ok: true,
         })

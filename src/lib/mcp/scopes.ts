@@ -23,6 +23,15 @@ export const MCP_SCOPES: McpScopeDefinition[] = [
   // Cursos
   { scope: 'mcp:courses:read', domain: 'courses', action: 'read', description: 'Listar y consultar cursos y stats' },
   { scope: 'mcp:courses:write', domain: 'courses', action: 'write', description: 'Crear, actualizar, archivar y publicar cursos' },
+  // Clases / sesiones
+  { scope: 'mcp:classes:read', domain: 'classes', action: 'read', description: 'Listar y consultar clases (sesiones) y stats' },
+  { scope: 'mcp:classes:write', domain: 'classes', action: 'write', description: 'Crear, actualizar, reprogramar, eliminar clases (incluye operaciones en lote)' },
+  // Cupones
+  { scope: 'mcp:coupons:read', domain: 'coupons', action: 'read', description: 'Listar y consultar cupones' },
+  { scope: 'mcp:coupons:write', domain: 'coupons', action: 'write', description: 'Crear, actualizar y eliminar cupones' },
+  // Productos / Planes
+  { scope: 'mcp:products:read', domain: 'products', action: 'read', description: 'Listar productos, planes, categorías y tags' },
+  { scope: 'mcp:products:write', domain: 'products', action: 'write', description: 'Crear, actualizar y eliminar productos y planes' },
 ]
 
 export interface McpScopePreset {
