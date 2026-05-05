@@ -5,6 +5,7 @@ import { hasAllScopes } from '@/lib/mcp/auth'
 import { logToolInvocation } from '@/lib/mcp/audit'
 import { McpToolError, toMcpError } from '@/lib/mcp/errors'
 import { getIdempotentResult, storeIdempotentResult } from '@/lib/mcp/idempotency'
+import { reportToolOutcome, withToolSpan } from '@/lib/mcp/telemetry'
 import type { AnyToolModule } from '@/lib/mcp/types'
 
 const IDEMPOTENCY_KEY_SCHEMA = z
@@ -72,9 +73,6 @@ function registerTool(
     async (args: unknown) => {
       const startedAt = Date.now()
       const rawArgs = (args as Record<string, unknown>) ?? {}
-      // Extraemos idempotencyKey antes de pasar args al handler para que las
-      // tools no tengan que conocer el campo. Solo se considera para tools de
-      // escritura (las read son intrínsecamente idempotentes).
       const { idempotencyKey, ...safeArgs } = rawArgs as {
         idempotencyKey?: unknown
         [key: string]: unknown
@@ -84,80 +82,105 @@ function registerTool(
           ? idempotencyKey
           : null
 
-      try {
-        if (!hasAllScopes(ctx.scopes, tool.scopes)) {
-          throw new McpToolError(
-            `Tu API key no tiene los scopes requeridos: ${tool.scopes.join(', ')}`,
-            'FORBIDDEN'
-          )
-        }
+      return withToolSpan({ toolName: tool.name, userId: ctx.userId, scopes: ctx.scopes }, async () => {
+        try {
+          if (!hasAllScopes(ctx.scopes, tool.scopes)) {
+            throw new McpToolError(
+              `Tu API key no tiene los scopes requeridos: ${tool.scopes.join(', ')}`,
+              'FORBIDDEN'
+            )
+          }
 
-        if (idemKey) {
-          const cached = getIdempotentResult(ctx.userId, tool.name, idemKey)
-          if (cached !== undefined) {
-            logToolInvocation({
-              userId: ctx.userId,
-              tool: tool.name,
-              args: { ...safeArgs, idempotencyKey: idemKey, _cached: true },
-              durationMs: Date.now() - startedAt,
-              ok: true,
-            })
-            return {
-              content: [
-                {
-                  type: 'text' as const,
-                  text: stringify(cached),
-                },
-              ],
+          if (idemKey) {
+            const cached = getIdempotentResult(ctx.userId, tool.name, idemKey)
+            if (cached !== undefined) {
+              const durationMs = Date.now() - startedAt
+              logToolInvocation({
+                userId: ctx.userId,
+                tool: tool.name,
+                args: { ...safeArgs, idempotencyKey: idemKey, _cached: true },
+                durationMs,
+                ok: true,
+              })
+              reportToolOutcome({
+                toolName: tool.name,
+                userId: ctx.userId,
+                ok: true,
+                durationMs,
+                cached: true,
+              })
+              return {
+                content: [
+                  {
+                    type: 'text' as const,
+                    text: stringify(cached),
+                  },
+                ],
+              }
             }
           }
-        }
 
-        const result = await tool.handler(safeArgs as never)
-        if (idemKey) {
-          storeIdempotentResult(ctx.userId, tool.name, idemKey, result)
-        }
-        logToolInvocation({
-          userId: ctx.userId,
-          tool: tool.name,
-          args: idemKey ? { ...safeArgs, idempotencyKey: idemKey } : safeArgs,
-          durationMs: Date.now() - startedAt,
-          ok: true,
-        })
+          const result = await tool.handler(safeArgs as never)
+          if (idemKey) {
+            storeIdempotentResult(ctx.userId, tool.name, idemKey, result)
+          }
+          const durationMs = Date.now() - startedAt
+          logToolInvocation({
+            userId: ctx.userId,
+            tool: tool.name,
+            args: idemKey ? { ...safeArgs, idempotencyKey: idemKey } : safeArgs,
+            durationMs,
+            ok: true,
+          })
+          reportToolOutcome({
+            toolName: tool.name,
+            userId: ctx.userId,
+            ok: true,
+            durationMs,
+          })
 
-        return {
-          content: [
-            {
-              type: 'text' as const,
-              text: stringify(result),
-            },
-          ],
-        }
-      } catch (error) {
-        const mcpErr = toMcpError(error)
-        logToolInvocation({
-          userId: ctx.userId,
-          tool: tool.name,
-          args: safeArgs,
-          durationMs: Date.now() - startedAt,
-          ok: false,
-          error: mcpErr.message,
-        })
+          return {
+            content: [
+              {
+                type: 'text' as const,
+                text: stringify(result),
+              },
+            ],
+          }
+        } catch (error) {
+          const mcpErr = toMcpError(error)
+          const durationMs = Date.now() - startedAt
+          logToolInvocation({
+            userId: ctx.userId,
+            tool: tool.name,
+            args: safeArgs,
+            durationMs,
+            ok: false,
+            error: mcpErr.message,
+          })
+          reportToolOutcome({
+            toolName: tool.name,
+            userId: ctx.userId,
+            ok: false,
+            durationMs,
+            error: mcpErr.message,
+          })
 
-        return {
-          isError: true,
-          content: [
-            {
-              type: 'text' as const,
-              text: JSON.stringify({
-                error: mcpErr.message,
-                code: mcpErr.code,
-                ...(mcpErr.details ? { details: mcpErr.details } : {}),
-              }),
-            },
-          ],
+          return {
+            isError: true,
+            content: [
+              {
+                type: 'text' as const,
+                text: JSON.stringify({
+                  error: mcpErr.message,
+                  code: mcpErr.code,
+                  ...(mcpErr.details ? { details: mcpErr.details } : {}),
+                }),
+              },
+            ],
+          }
         }
-      }
+      })
     }
   )
 }

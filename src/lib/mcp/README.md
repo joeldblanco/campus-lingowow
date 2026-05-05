@@ -34,6 +34,10 @@ existente para autenticación.
 | Block responses (calificación inline) | `mcp:grades:read`, `mcp:grades:write` | `lingowow_block_responses_pending`, `lingowow_block_responses_grade` |
 | Calendario | `mcp:calendar:read`, `mcp:calendar:write` | `lingowow_calendar_settings_get`, `lingowow_calendar_settings_update`, `lingowow_calendar_cancel_booking` |
 | AI grading limits | `mcp:ai-grading:read` | `lingowow_ai_grading_limits_get`, `lingowow_ai_grading_history` |
+| Asistencia | `mcp:classes:read`, `mcp:classes:write` | `lingowow_attendance_check_both`, `lingowow_attendance_mark_student`, `lingowow_attendance_mark_teacher` |
+| Slots de productos | `mcp:products:read`, `mcp:products:write` | `lingowow_schedule_slots_available`, `lingowow_schedule_slots_create`, `lingowow_schedule_slot_book` |
+| Floating chat (admin) | `mcp:notifications:read`, `mcp:notifications:write` | `lingowow_floating_chat_conversations_list`, `lingowow_floating_chat_conversation_get`, `lingowow_floating_chat_archive` |
+| Impersonación (magic link) | `mcp:users:impersonate` | `lingowow_users_impersonate_token` — genera un magic link de 5 min canjeable en `/api/admin/impersonate/consume` |
 
 Lista completa y actualizada de scopes en [`scopes.ts`](./scopes.ts). Todos los
 tools registrados se concentran en [`registry.ts`](./registry.ts).
@@ -110,11 +114,15 @@ src/lib/mcp/
 ├── scopes.ts          ← catálogo de scopes y presets
 ├── server.ts          ← buildMcpServer() registra todas las tools
 ├── types.ts           ← interfaz ToolModule
+├── security-config.ts ← MCP_DISABLED, CORS, DNS rebinding
+├── telemetry.ts       ← Sentry spans/breadcrumbs por invocación
+├── impersonation-token.ts ← JWT magic link 5 min
 └── tools/             ← un archivo por dominio
     ├── academic-periods.ts
     ├── activities.ts
     ├── ai-grading-limits.ts
     ├── analytics.ts
+    ├── attendance.ts
     ├── audit-logs.ts
     ├── block-responses.ts
     ├── calendar.ts
@@ -129,10 +137,12 @@ src/lib/mcp/
     ├── exams.ts
     ├── file-manager.ts
     ├── finance.ts
+    ├── floating-chat.ts
     ├── grades.ts
     ├── library.ts
     ├── notifications.ts
     ├── products.ts
+    ├── schedule.ts
     ├── teacher-availability.ts
     ├── teachers.ts
     └── users.ts
@@ -221,8 +231,13 @@ etc.).
 
 | Variable | Default | Descripción |
 |----------|---------|-------------|
+| `MCP_DISABLED` | `false` | Si `true`, el endpoint responde 503. Kill switch sin redeploy. |
 | `MCP_RATE_LIMIT_PER_MINUTE` | `60` | Requests por minuto por userId. |
+| `MCP_ALLOWED_ORIGINS` | _unset_ | CSV de orígenes permitidos para CORS. Sin definir = no se permiten llamadas cross-origin desde navegador. `*` desactiva la restricción (no recomendado). Ej: `https://claude.ai,https://desktop.claude.ai`. |
+| `MCP_ALLOWED_HOSTS` | _unset_ | CSV de hosts permitidos para protección contra DNS rebinding. Sin definir = no se valida. Ej: `lingowow.com,api.lingowow.com`. |
 | `MCP_TEST_ADMIN_API_KEY` | _unset_ | Habilita los smoke tests happy-path en `tests/api/mcp.spec.ts`. |
+| `JWT_SECRET` | _required_ | Secreto para firmar magic links de impersonación (compartido con `mobile-auth.ts`). |
+| `NEXT_PUBLIC_APP_URL` | _unset_ | URL base usada en magic links de impersonación cuando no se pasa `baseUrl` explícito. |
 
 ## Auditoría
 
@@ -243,3 +258,31 @@ Campos como `password`, `token`, `apiKey`, `secret`, `cookie` se reemplazan por
 - **Idempotencia por instancia**: igual al rate limit. Cache local de 24h.
 - **Vercel timeout**: 60s. Reportes financieros muy amplios pueden cortarse — usa filtros (`periodId`, `startDate`/`endDate`) para acotarlos.
 - **Edge runtime no soportado**: el SDK requiere Node (`runtime = 'nodejs'` en `route.ts`).
+
+## Despliegue a producción — checklist
+
+Antes de exponer el endpoint públicamente, configura las siguientes variables y verificaciones:
+
+1. **Configura `MCP_ALLOWED_HOSTS`** con tu(s) dominio(s) — bloquea DNS rebinding.
+2. **Configura `MCP_ALLOWED_ORIGINS`** si esperas conexiones desde navegador (Claude.ai web, etc.). Si solo se llama desde Claude Desktop / Code, déjalo vacío (curl no respeta CORS).
+3. **Configura `JWT_SECRET`** (compartido con mobile-auth) — necesario para magic links de impersonación.
+4. **Configura `NEXT_PUBLIC_APP_URL`** — necesario para que los magic links se construyan con el dominio correcto.
+5. **Corre `prisma migrate deploy`** en el entorno destino para aplicar la migración `MCP_TOOL_INVOKED`.
+6. **Verifica Sentry** está activo (`sentry.server.config.ts`). Las invocaciones MCP se reportan automáticamente como spans `op=mcp.tool` con tags `mcp.tool` y `mcp.user_id`.
+7. **Crea API keys MCP iniciales** vía `/admin/api-keys` con scopes mínimos. Evita asignar `*` o `mcp:*:write` salvo a usuarios ADMIN con expiración explícita ≤ 90 días.
+8. **Activa `MCP_DISABLED=true`** como kill switch reactivo. Si detectas abuso, márcala `true` en variables de entorno y el endpoint devuelve 503 en menos de 1 minuto sin redeploy.
+
+### Observabilidad recomendada
+
+- **Sentry dashboard**: filtra por `op = mcp.tool` para ver todas las invocaciones, latencia p50/p95 por tool, ratio de errores por usuario y por tool. Las invocaciones cacheadas (idempotencia) llevan `cached: true` en el breadcrumb.
+- **Audit log** (`/admin/audit-logs`): filtra por `action = MCP_TOOL_INVOKED`. Cada entrada lleva `metadata.tool`, `metadata.args` (redactados), `metadata.durationMs`, `metadata.ok`.
+- **Alertas sugeridas**: ratio de errores > 10% sostenido 5 min, p95 de latencia > 30s, conteo > 1000 invocaciones/hora desde un mismo userId (indica fuga de API key).
+
+### Recomendaciones de hardening adicional (no implementadas)
+
+Items que requieren infraestructura externa y se dejaron para una fase futura:
+
+- **Rate limit y idempotencia distribuidos** con Upstash Redis (`@upstash/ratelimit`). Sustituir `src/lib/mcp/rate-limit.ts` y `src/lib/mcp/idempotency.ts`.
+- **Sesiones MCP stateful** con `eventStore` de `WebStandardStreamableHTTPServerTransport` para soportar streaming SSE y notificaciones servidor→cliente.
+- **Rotación automática de keys** (cron que invalida keys con `expiresAt` próximo y notifica al dueño).
+- **Geo-restricción** vía Vercel Edge Config + IP allowlist si el agente vive en una región conocida.

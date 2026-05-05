@@ -4,15 +4,47 @@ import { authenticateMcpRequest } from '@/lib/mcp/auth'
 import { runWithMcpContext } from '@/lib/mcp/context'
 import { buildMcpServer } from '@/lib/mcp/server'
 import { checkMcpRateLimit } from '@/lib/mcp/rate-limit'
+import {
+  applyCorsHeaders,
+  isHostAllowed,
+  isMcpDisabled,
+  resolveCorsOrigin,
+} from '@/lib/mcp/security-config'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60
 
+function makeJsonResponse(
+  request: NextRequest,
+  body: unknown,
+  init?: ResponseInit
+): Response {
+  const response = NextResponse.json(body, init)
+  return applyCorsHeaders(response, request)
+}
+
 async function handle(request: NextRequest): Promise<Response> {
+  if (isMcpDisabled()) {
+    return makeJsonResponse(
+      request,
+      { error: 'El servidor MCP está deshabilitado temporalmente.' },
+      { status: 503, headers: { 'Retry-After': '300' } }
+    )
+  }
+
+  if (!isHostAllowed(request)) {
+    return makeJsonResponse(
+      request,
+      { error: 'Host no permitido.' },
+      { status: 403 }
+    )
+  }
+
   const auth = await authenticateMcpRequest(request)
   if (!auth.success || !auth.userId) {
-    return NextResponse.json(
+    return makeJsonResponse(
+      request,
       { error: auth.error || 'No autorizado' },
       { status: auth.status || 401 }
     )
@@ -20,7 +52,8 @@ async function handle(request: NextRequest): Promise<Response> {
 
   const rate = checkMcpRateLimit(auth.userId)
   if (!rate.ok) {
-    return NextResponse.json(
+    return makeJsonResponse(
+      request,
       { error: 'Rate limit excedido. Reintenta más tarde.' },
       {
         status: 429,
@@ -58,7 +91,7 @@ async function handle(request: NextRequest): Promise<Response> {
 
   response.headers.set('X-RateLimit-Limit', String(rate.limit))
   response.headers.set('X-RateLimit-Remaining', String(rate.remaining))
-  return response
+  return applyCorsHeaders(response, request)
 }
 
 export async function POST(request: NextRequest) {
@@ -71,4 +104,18 @@ export async function GET(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   return handle(request)
+}
+
+/**
+ * Preflight CORS — los browsers que llaman a /api/mcp desde otro origin
+ * envían un OPTIONS antes del POST real. Si CORS no está configurado,
+ * resolveCorsOrigin devuelve undefined y respondemos sin headers (lo que
+ * efectivamente bloquea el cross-origin call, postura segura por defecto).
+ */
+export async function OPTIONS(request: NextRequest) {
+  const allowOrigin = resolveCorsOrigin(request)
+  if (!allowOrigin) {
+    return new NextResponse(null, { status: 403 })
+  }
+  return applyCorsHeaders(new NextResponse(null, { status: 204 }), request)
 }

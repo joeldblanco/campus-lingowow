@@ -14,6 +14,7 @@ export const MCP_SCOPES: McpScopeDefinition[] = [
   // Usuarios
   { scope: 'mcp:users:read', domain: 'users', action: 'read', description: 'Listar y consultar usuarios' },
   { scope: 'mcp:users:write', domain: 'users', action: 'write', description: 'Crear, actualizar y eliminar usuarios' },
+  { scope: 'mcp:users:impersonate', domain: 'users', action: 'admin', description: 'Generar magic links de impersonación de usuarios' },
   // Inscripciones
   { scope: 'mcp:enrollments:read', domain: 'enrollments', action: 'read', description: 'Listar inscripciones y stats' },
   { scope: 'mcp:enrollments:write', domain: 'enrollments', action: 'write', description: 'Crear/actualizar/eliminar inscripciones y sincronizar estados' },

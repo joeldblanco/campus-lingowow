@@ -9,7 +9,13 @@ import {
   updateUser,
 } from '@/lib/actions/user'
 import { CreateUserSchema } from '@/schemas/user'
-import { unwrapActionResult } from '@/lib/mcp/errors'
+import { unwrapActionResult, McpToolError } from '@/lib/mcp/errors'
+import { getMcpContext } from '@/lib/mcp/context'
+import {
+  IMPERSONATION_TOKEN_TTL_SECONDS,
+  buildImpersonationUrl,
+  signImpersonationToken,
+} from '@/lib/mcp/impersonation-token'
 import type { AnyToolModule } from '@/lib/mcp/types'
 
 const userRoleEnum = z.enum([
@@ -136,6 +142,39 @@ export const userTools: AnyToolModule[] = [
     handler: async ({ id }) => {
       const result = await deleteUser(id)
       return unwrapActionResult(result)
+    },
+  },
+
+  {
+    name: 'lingowow_users_impersonate_token',
+    description:
+      'Genera un magic link de un solo uso para impersonar a un usuario. El admin (dueño de la API key) debe abrir la URL en un navegador donde ya esté logueado como ese mismo admin — el endpoint /api/admin/impersonate/consume verifica que la cookie coincida y crea la sesión del usuario destino. TTL: 5 minutos.',
+    scopes: ['mcp:users:impersonate'],
+    inputShape: {
+      targetUserId: z.string().min(1),
+      baseUrl: z
+        .string()
+        .url()
+        .optional()
+        .describe('Si no se pasa, se usa NEXT_PUBLIC_APP_URL del servidor'),
+    },
+    handler: async ({ targetUserId, baseUrl }) => {
+      const ctx = getMcpContext()
+      if (!ctx?.userId) {
+        throw new McpToolError(
+          'Esta tool solo se puede invocar desde el servidor MCP (no se detectó contexto)',
+          'FORBIDDEN'
+        )
+      }
+      const token = signImpersonationToken(targetUserId, ctx.userId)
+      const url = buildImpersonationUrl(token, baseUrl)
+      return {
+        token,
+        url,
+        ttlSeconds: IMPERSONATION_TOKEN_TTL_SECONDS,
+        instructions:
+          'Abre esta URL en un navegador donde estés logueado como el admin que ejecutó esta tool. La sesión cambiará al usuario destino. La URL caduca en 5 minutos.',
+      }
     },
   },
 ]

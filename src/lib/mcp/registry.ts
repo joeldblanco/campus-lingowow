@@ -2,6 +2,7 @@ import { academicPeriodTools } from '@/lib/mcp/tools/academic-periods'
 import { activityTools } from '@/lib/mcp/tools/activities'
 import { aiGradingLimitsTools } from '@/lib/mcp/tools/ai-grading-limits'
 import { analyticsTools } from '@/lib/mcp/tools/analytics'
+import { attendanceTools } from '@/lib/mcp/tools/attendance'
 import { auditLogTools } from '@/lib/mcp/tools/audit-logs'
 import { blockResponseTools } from '@/lib/mcp/tools/block-responses'
 import { calendarTools } from '@/lib/mcp/tools/calendar'
@@ -16,10 +17,12 @@ import { enrollmentTools } from '@/lib/mcp/tools/enrollments'
 import { examTools } from '@/lib/mcp/tools/exams'
 import { fileManagerTools } from '@/lib/mcp/tools/file-manager'
 import { financeTools } from '@/lib/mcp/tools/finance'
+import { floatingChatTools } from '@/lib/mcp/tools/floating-chat'
 import { gradeTools } from '@/lib/mcp/tools/grades'
 import { libraryTools } from '@/lib/mcp/tools/library'
 import { notificationTools } from '@/lib/mcp/tools/notifications'
 import { productTools } from '@/lib/mcp/tools/products'
+import { scheduleTools } from '@/lib/mcp/tools/schedule'
 import { teacherAvailabilityTools } from '@/lib/mcp/tools/teacher-availability'
 import { teacherTools } from '@/lib/mcp/tools/teachers'
 import { userTools } from '@/lib/mcp/tools/users'
@@ -33,8 +36,10 @@ export const TOOL_REGISTRY: AnyToolModule[] = [
   ...courseBuilderTools,
   ...classTools,
   ...classroomTools,
+  ...attendanceTools,
   ...couponTools,
   ...productTools,
+  ...scheduleTools,
   ...teacherTools,
   ...teacherAvailabilityTools,
   ...academicPeriodTools,
@@ -44,6 +49,7 @@ export const TOOL_REGISTRY: AnyToolModule[] = [
   ...gradeTools,
   ...blockResponseTools,
   ...notificationTools,
+  ...floatingChatTools,
   ...analyticsTools,
   ...activityTools,
   ...fileManagerTools,
