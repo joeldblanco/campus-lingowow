@@ -29,6 +29,11 @@ existente para autenticación.
 | Biblioteca | `mcp:library:read`, `mcp:library:write` | `lingowow_library_list`, `lingowow_library_create`, `lingowow_library_categories_create` |
 | Categorías y features (productos/planes) | `mcp:products:*` | `lingowow_categories_create`, `lingowow_features_create`, `lingowow_plans_set_features`, `lingowow_invoices_create` |
 | Disponibilidad de profesores (admin) | `mcp:teachers:read`, `mcp:teachers:write` | `lingowow_teacher_availability_update_slot`, `lingowow_teacher_availability_bulk_update`, `lingowow_teacher_blocked_day_toggle` |
+| Course-builder (módulos / lecciones / bloques) | `mcp:courses:read`, `mcp:courses:write` | `lingowow_modules_create`, `lingowow_lessons_create`, `lingowow_course_builder_update_lesson_blocks` |
+| Aulas virtuales (classroom) | `mcp:classes:read`, `mcp:classes:write` | `lingowow_classroom_chat_messages`, `lingowow_classroom_whiteboard_data`, `lingowow_classroom_recordings_list` |
+| Block responses (calificación inline) | `mcp:grades:read`, `mcp:grades:write` | `lingowow_block_responses_pending`, `lingowow_block_responses_grade` |
+| Calendario | `mcp:calendar:read`, `mcp:calendar:write` | `lingowow_calendar_settings_get`, `lingowow_calendar_settings_update`, `lingowow_calendar_cancel_booking` |
+| AI grading limits | `mcp:ai-grading:read` | `lingowow_ai_grading_limits_get`, `lingowow_ai_grading_history` |
 
 Lista completa y actualizada de scopes en [`scopes.ts`](./scopes.ts). Todos los
 tools registrados se concentran en [`registry.ts`](./registry.ts).
@@ -108,11 +113,16 @@ src/lib/mcp/
 └── tools/             ← un archivo por dominio
     ├── academic-periods.ts
     ├── activities.ts
+    ├── ai-grading-limits.ts
     ├── analytics.ts
     ├── audit-logs.ts
+    ├── block-responses.ts
+    ├── calendar.ts
     ├── classes.ts
+    ├── classroom.ts
     ├── commercial-extras.ts
     ├── coupons.ts
+    ├── course-builder.ts
     ├── courses.ts
     ├── credits.ts
     ├── enrollments.ts

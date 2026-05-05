@@ -3,6 +3,17 @@
 import { db } from '@/lib/db'
 import { auth } from '@/auth'
 import { revalidatePath } from 'next/cache'
+import { getMcpContext } from '@/lib/mcp/context'
+
+async function getActor(): Promise<{ userId: string; roles: string[] } | null> {
+  const session = await auth()
+  if (session?.user?.id) {
+    return { userId: session.user.id, roles: (session.user.roles as string[]) || [] }
+  }
+  const mcp = getMcpContext()
+  if (mcp?.userId) return { userId: mcp.userId, roles: mcp.roles as unknown as string[] }
+  return null
+}
 
 export interface BlockResponseData {
   contentId: string
@@ -124,12 +135,12 @@ export async function gradeBlockResponse(
   feedback: string
 ) {
   try {
-    const session = await auth()
-    if (!session?.user?.id) {
+    const actor = await getActor()
+    if (!actor) {
       return { success: false, error: 'No autorizado' }
     }
 
-    const userRoles = session.user.roles || []
+    const userRoles = actor.roles
     if (!userRoles.includes('TEACHER') && !userRoles.includes('ADMIN')) {
       return { success: false, error: 'No tienes permiso para calificar' }
     }
@@ -152,7 +163,7 @@ export async function gradeBlockResponse(
         score,
         feedback,
         isCorrect: response.maxScore ? score >= response.maxScore * 0.6 : null,
-        gradedBy: session.user.id,
+        gradedBy: actor.userId,
         gradedAt: new Date()
       }
     })
@@ -167,12 +178,12 @@ export async function gradeBlockResponse(
 
 export async function getPendingBlockResponses(lessonId?: string) {
   try {
-    const session = await auth()
-    if (!session?.user?.id) {
+    const actor = await getActor()
+    if (!actor) {
       return { success: false, error: 'No autorizado' }
     }
 
-    const userRoles = session.user.roles || []
+    const userRoles = actor.roles
     if (!userRoles.includes('TEACHER') && !userRoles.includes('ADMIN')) {
       return { success: false, error: 'No tienes permiso para ver respuestas pendientes' }
     }

@@ -5,17 +5,46 @@ import { db } from '@/lib/db'
 import { Block, BlockType, CourseBuilderData, Lesson, Module } from '@/types/course-builder'
 import { mapContentToBlock } from '@/lib/content-mapper'
 import type { ContentType } from '@prisma/client'
-import { Prisma } from '@prisma/client'
+import { Prisma, UserRole } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
+import { getMcpContext } from '@/lib/mcp/context'
+
+interface BuilderActor {
+  userId: string
+  isAdmin: boolean
+}
+
+async function getBuilderActor(): Promise<BuilderActor> {
+  const session = await auth()
+  if (session?.user?.id) {
+    return {
+      userId: session.user.id,
+      isAdmin: session.user.roles?.includes(UserRole.ADMIN) ?? false,
+    }
+  }
+  const mcp = getMcpContext()
+  if (mcp?.userId) {
+    return {
+      userId: mcp.userId,
+      isAdmin: mcp.roles.includes(UserRole.ADMIN),
+    }
+  }
+  throw new Error('Unauthorized')
+}
+
+function authorizeCourseAccess(course: { createdById: string } | null, actor: BuilderActor): asserts course {
+  if (!course) {
+    throw new Error('Course not found')
+  }
+  if (!actor.isAdmin && course.createdById !== actor.userId) {
+    throw new Error('Unauthorized')
+  }
+}
 
 // Update course information
 export async function updateCourseInfo(courseId: string, updates: Partial<CourseBuilderData>) {
   try {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Unauthorized')
-    }
-    const userId = session.user.id
+    const actor = await getBuilderActor()
 
     // Verify user owns the course
     const course = await db.course.findUnique({
@@ -47,9 +76,7 @@ export async function updateCourseInfo(courseId: string, updates: Partial<Course
       },
     })
 
-    if (!course || course.createdById !== userId) {
-      throw new Error('Course not found or unauthorized')
-    }
+    authorizeCourseAccess(course, actor)
 
     const updatedCourse = await db.course.update({
       where: { id: courseId },
@@ -149,20 +176,14 @@ export async function updateCourseInfo(courseId: string, updates: Partial<Course
 // Create or update module
 export async function upsertModule(courseId: string, moduleData: Partial<Module>) {
   try {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Unauthorized')
-    }
-    const userId = session.user.id
+    const actor = await getBuilderActor()
 
     // Verify user owns the course
     const course = await db.course.findUnique({
       where: { id: courseId },
     })
 
-    if (!course || course.createdById !== userId) {
-      throw new Error('Course not found or unauthorized')
-    }
+    authorizeCourseAccess(course, actor)
 
     let moduleRecord
     if (moduleData.id) {
@@ -203,11 +224,8 @@ export async function upsertModule(courseId: string, moduleData: Partial<Module>
 // Delete module
 export async function deleteModule(moduleId: string) {
   try {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Unauthorized')
-    }
-    const userId = session.user.id
+    const actor = await getBuilderActor()
+    const userId = actor.userId
 
     // Verify user owns the module through the course
     const moduleRecord = await db.module.findUnique({
@@ -221,8 +239,11 @@ export async function deleteModule(moduleId: string) {
       },
     })
 
-    if (!moduleRecord || moduleRecord.course.createdById !== userId) {
-      throw new Error('Module not found or unauthorized')
+    if (!moduleRecord) {
+      throw new Error('Module not found')
+    }
+    if (!actor.isAdmin && moduleRecord.course.createdById !== userId) {
+      throw new Error('Unauthorized')
     }
 
     await db.module.delete({
@@ -239,20 +260,14 @@ export async function deleteModule(moduleId: string) {
 // Reorder modules
 export async function reorderModules(courseId: string, moduleIds: string[]) {
   try {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Unauthorized')
-    }
-    const userId = session.user.id
+    const actor = await getBuilderActor()
 
     // Verify user owns the course
     const course = await db.course.findUnique({
       where: { id: courseId },
     })
 
-    if (!course || course.createdById !== userId) {
-      throw new Error('Course not found or unauthorized')
-    }
+    authorizeCourseAccess(course, actor)
 
     // Update order for all modules
     const updatePromises = moduleIds.map((id, index) =>
@@ -274,11 +289,8 @@ export async function reorderModules(courseId: string, moduleIds: string[]) {
 // Reorder lessons
 export async function reorderLessons(moduleId: string, lessonIds: string[]) {
   try {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Unauthorized')
-    }
-    const userId = session.user.id
+    const actor = await getBuilderActor()
+    const userId = actor.userId
 
     // Verify user owns the module (and thus the lessons)
     const moduleRecord = await db.module.findUnique({
@@ -292,8 +304,11 @@ export async function reorderLessons(moduleId: string, lessonIds: string[]) {
       },
     })
 
-    if (!moduleRecord || moduleRecord.course.createdById !== userId) {
-      throw new Error('Module not found or unauthorized')
+    if (!moduleRecord) {
+      throw new Error('Module not found')
+    }
+    if (!actor.isAdmin && moduleRecord.course.createdById !== userId) {
+      throw new Error('Unauthorized')
     }
 
     // Update order for all lessons
@@ -357,11 +372,8 @@ export async function upsertLesson(moduleId: string, lessonData: Partial<Lesson>
 // Delete lesson
 export async function deleteLesson(lessonId: string) {
   try {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Unauthorized')
-    }
-    const userId = session.user.id
+    const actor = await getBuilderActor()
+    const userId = actor.userId
 
     // Optimized auth check: single query with joins instead of nested includes
     const lessonAuth = await db.$queryRaw<
@@ -491,11 +503,8 @@ async function saveBlocks(
 // Update lesson blocks
 export async function updateLessonBlocks(lessonId: string, blocks: Block[]) {
   try {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Unauthorized')
-    }
-    const userId = session.user.id
+    const actor = await getBuilderActor()
+    const userId = actor.userId
 
     // Optimized auth check: use raw query to get only necessary fields in a single query
     // This avoids N+1 queries from nested includes on every auto-save
@@ -530,16 +539,18 @@ export async function updateLessonBlocks(lessonId: string, blocks: Block[]) {
     const isModuleLesson = lesson.moduleId !== null
     const isPersonalizedLesson = lesson.teacherId !== null
 
-    if (isModuleLesson && lesson.courseCreatedById !== userId) {
-      throw new Error('Unauthorized')
-    }
+    if (!actor.isAdmin) {
+      if (isModuleLesson && lesson.courseCreatedById !== userId) {
+        throw new Error('Unauthorized')
+      }
 
-    if (isPersonalizedLesson && lesson.teacherId !== userId) {
-      throw new Error('Unauthorized')
-    }
+      if (isPersonalizedLesson && lesson.teacherId !== userId) {
+        throw new Error('Unauthorized')
+      }
 
-    if (!isModuleLesson && !isPersonalizedLesson) {
-      throw new Error('Unauthorized')
+      if (!isModuleLesson && !isPersonalizedLesson) {
+        throw new Error('Unauthorized')
+      }
     }
 
     await db.$transaction(async (tx) => {
@@ -588,11 +599,7 @@ export async function updateLessonBlocks(lessonId: string, blocks: Block[]) {
 // Get course with all data for builder
 export async function getCourseForBuilder(courseId: string) {
   try {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Unauthorized')
-    }
-    const userId = session.user.id
+    const actor = await getBuilderActor()
 
     const course = await db.course.findUnique({
       where: { id: courseId },
@@ -640,9 +647,7 @@ export async function getCourseForBuilder(courseId: string) {
       },
     })
 
-    if (!course || course.createdById !== userId) {
-      throw new Error('Course not found or unauthorized')
-    }
+    authorizeCourseAccess(course, actor)
 
     // Transform to CourseBuilderData format
     const courseBuilderData: CourseBuilderData = {
@@ -688,11 +693,8 @@ export async function getCourseForBuilder(courseId: string) {
 // Get single lesson for builder
 export async function getLessonForBuilder(lessonId: string) {
   try {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Unauthorized')
-    }
-    const userId = session.user.id
+    const actor = await getBuilderActor()
+    const userId = actor.userId
 
     // Optimized auth check: use raw query to avoid deep nested includes for just checking permissions
     // This dramatically reduces query cost on page load
@@ -726,16 +728,18 @@ export async function getLessonForBuilder(lessonId: string) {
     const isModuleLesson = lessonInfo.moduleId !== null
     const isPersonalizedLesson = lessonInfo.teacherId !== null
 
-    if (isModuleLesson && lessonInfo.courseCreatedById !== userId) {
-      throw new Error('Unauthorized')
-    }
+    if (!actor.isAdmin) {
+      if (isModuleLesson && lessonInfo.courseCreatedById !== userId) {
+        throw new Error('Unauthorized')
+      }
 
-    if (isPersonalizedLesson && lessonInfo.teacherId !== userId) {
-      throw new Error('Unauthorized')
-    }
+      if (isPersonalizedLesson && lessonInfo.teacherId !== userId) {
+        throw new Error('Unauthorized')
+      }
 
-    if (!isModuleLesson && !isPersonalizedLesson) {
-      throw new Error('Unauthorized')
+      if (!isModuleLesson && !isPersonalizedLesson) {
+        throw new Error('Unauthorized')
+      }
     }
 
     // Fetch only the data we need for the builder, avoiding unnecessary joins

@@ -63,6 +63,11 @@ export const MCP_SCOPES: McpScopeDefinition[] = [
   // Biblioteca
   { scope: 'mcp:library:read', domain: 'library', action: 'read', description: 'Listar y consultar recursos y categorías de biblioteca' },
   { scope: 'mcp:library:write', domain: 'library', action: 'write', description: 'Crear, actualizar y eliminar recursos y categorías de biblioteca' },
+  // Calendario
+  { scope: 'mcp:calendar:read', domain: 'calendar', action: 'read', description: 'Configuración global del calendario, disponibilidad de profesores, bookings' },
+  { scope: 'mcp:calendar:write', domain: 'calendar', action: 'write', description: 'Actualizar configuración del calendario y cancelar bookings' },
+  // AI grading limits
+  { scope: 'mcp:ai-grading:read', domain: 'ai-grading', action: 'read', description: 'Consultar límites y uso de calificación con IA por usuario' },
 ]
 
 export interface McpScopePreset {

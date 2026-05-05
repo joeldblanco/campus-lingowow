@@ -1,10 +1,15 @@
 import { academicPeriodTools } from '@/lib/mcp/tools/academic-periods'
 import { activityTools } from '@/lib/mcp/tools/activities'
+import { aiGradingLimitsTools } from '@/lib/mcp/tools/ai-grading-limits'
 import { analyticsTools } from '@/lib/mcp/tools/analytics'
 import { auditLogTools } from '@/lib/mcp/tools/audit-logs'
+import { blockResponseTools } from '@/lib/mcp/tools/block-responses'
+import { calendarTools } from '@/lib/mcp/tools/calendar'
 import { classTools } from '@/lib/mcp/tools/classes'
+import { classroomTools } from '@/lib/mcp/tools/classroom'
 import { commercialExtrasTools } from '@/lib/mcp/tools/commercial-extras'
 import { couponTools } from '@/lib/mcp/tools/coupons'
+import { courseBuilderTools } from '@/lib/mcp/tools/course-builder'
 import { courseTools } from '@/lib/mcp/tools/courses'
 import { creditTools } from '@/lib/mcp/tools/credits'
 import { enrollmentTools } from '@/lib/mcp/tools/enrollments'
@@ -25,7 +30,9 @@ export const TOOL_REGISTRY: AnyToolModule[] = [
   ...enrollmentTools,
   ...financeTools,
   ...courseTools,
+  ...courseBuilderTools,
   ...classTools,
+  ...classroomTools,
   ...couponTools,
   ...productTools,
   ...teacherTools,
@@ -35,12 +42,15 @@ export const TOOL_REGISTRY: AnyToolModule[] = [
   ...auditLogTools,
   ...examTools,
   ...gradeTools,
+  ...blockResponseTools,
   ...notificationTools,
   ...analyticsTools,
   ...activityTools,
   ...fileManagerTools,
   ...libraryTools,
   ...commercialExtrasTools,
+  ...calendarTools,
+  ...aiGradingLimitsTools,
 ]
 
 export const ALL_MCP_SCOPES = Array.from(
