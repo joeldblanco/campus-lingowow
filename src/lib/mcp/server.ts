@@ -1,10 +1,12 @@
 import { z } from 'zod'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { TOOL_REGISTRY } from '@/lib/mcp/registry'
+import { fireSensitiveToolWebhook } from '@/lib/mcp/audit-webhook'
 import { hasAllScopes } from '@/lib/mcp/auth'
 import { logToolInvocation } from '@/lib/mcp/audit'
 import { McpToolError, toMcpError } from '@/lib/mcp/errors'
 import { getIdempotentResult, storeIdempotentResult } from '@/lib/mcp/idempotency'
+import { checkToolRateLimit } from '@/lib/mcp/rate-limit'
 import { reportToolOutcome, withToolSpan } from '@/lib/mcp/telemetry'
 import type { AnyToolModule } from '@/lib/mcp/types'
 
@@ -91,6 +93,14 @@ function registerTool(
             )
           }
 
+          const toolLimit = checkToolRateLimit(ctx.userId, tool.name)
+          if (!toolLimit.ok) {
+            throw new McpToolError(
+              `Esta tool tiene un límite de ${toolLimit.limit}/min y se excedió. Reintenta en ${toolLimit.retryAfterSeconds}s.`,
+              'FORBIDDEN'
+            )
+          }
+
           if (idemKey) {
             const cached = getIdempotentResult(ctx.userId, tool.name, idemKey)
             if (cached !== undefined) {
@@ -138,6 +148,15 @@ function registerTool(
             ok: true,
             durationMs,
           })
+          fireSensitiveToolWebhook({
+            toolName: tool.name,
+            toolScopes: tool.scopes,
+            userId: ctx.userId,
+            ok: true,
+            durationMs,
+            argsPreview: redactPreview(safeArgs),
+            timestamp: new Date().toISOString(),
+          })
 
           return {
             content: [
@@ -164,6 +183,16 @@ function registerTool(
             ok: false,
             durationMs,
             error: mcpErr.message,
+          })
+          fireSensitiveToolWebhook({
+            toolName: tool.name,
+            toolScopes: tool.scopes,
+            userId: ctx.userId,
+            ok: false,
+            durationMs,
+            argsPreview: redactPreview(safeArgs),
+            error: mcpErr.message,
+            timestamp: new Date().toISOString(),
           })
 
           return {
@@ -196,5 +225,22 @@ function stringify(value: unknown): string {
 function jsonReplacer(_key: string, value: unknown): unknown {
   if (typeof value === 'bigint') return value.toString()
   if (value instanceof Date) return value.toISOString()
+  return value
+}
+
+const SENSITIVE_KEYS = new Set(['password', 'token', 'apikey', 'secret', 'authorization', 'cookie'])
+
+function redactPreview(value: unknown): unknown {
+  if (Array.isArray(value)) return value.slice(0, 5).map(redactPreview)
+  if (value && typeof value === 'object') {
+    const out: Record<string, unknown> = {}
+    for (const [key, val] of Object.entries(value as Record<string, unknown>)) {
+      out[key] = SENSITIVE_KEYS.has(key.toLowerCase()) ? '[REDACTED]' : redactPreview(val)
+    }
+    return out
+  }
+  if (typeof value === 'string' && value.length > 200) {
+    return `${value.slice(0, 200)}…`
+  }
   return value
 }

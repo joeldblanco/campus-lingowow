@@ -14,7 +14,7 @@ import { getMcpContext } from '@/lib/mcp/context'
 import {
   IMPERSONATION_TOKEN_TTL_SECONDS,
   buildImpersonationUrl,
-  signImpersonationToken,
+  issueImpersonationToken,
 } from '@/lib/mcp/impersonation-token'
 import type { AnyToolModule } from '@/lib/mcp/types'
 
@@ -166,14 +166,15 @@ export const userTools: AnyToolModule[] = [
           'FORBIDDEN'
         )
       }
-      const token = signImpersonationToken(targetUserId, ctx.userId)
-      const url = buildImpersonationUrl(token, baseUrl)
+      const { rawToken, expiresAt } = await issueImpersonationToken(targetUserId, ctx.userId)
+      const url = buildImpersonationUrl(rawToken, baseUrl)
       return {
-        token,
+        token: rawToken,
         url,
+        expiresAt: expiresAt.toISOString(),
         ttlSeconds: IMPERSONATION_TOKEN_TTL_SECONDS,
         instructions:
-          'Abre esta URL en un navegador donde estés logueado como el admin que ejecutó esta tool. La sesión cambiará al usuario destino. La URL caduca en 5 minutos.',
+          'Abre esta URL en un navegador donde estés logueado como el admin que ejecutó esta tool. El token es de un solo uso — al canjearse, queda inutilizable. Caduca en 5 minutos.',
       }
     },
   },

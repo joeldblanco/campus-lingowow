@@ -3,22 +3,22 @@ import { signIn, auth } from '@/auth'
 import { db } from '@/lib/db'
 import { UserRole } from '@prisma/client'
 import { auditLog } from '@/lib/audit-log'
-import { verifyImpersonationToken } from '@/lib/mcp/impersonation-token'
+import { consumeImpersonationToken } from '@/lib/mcp/impersonation-token'
 import { hasRole } from '@/lib/utils/roles'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 /**
- * GET /api/admin/impersonate/consume?token=<jwt>
+ * GET /api/admin/impersonate/consume?token=<raw>
  *
  * Canjea un token de impersonación generado por el MCP (lingowow_users_impersonate_token).
+ * El token es de un solo uso: se persiste en BD y se marca `usedAt` atómicamente.
+ *
  * Requiere:
  *   1. Sesión NextAuth válida del admin que generó el token (la cookie debe coincidir
- *      con el `originalUserId` del payload).
- *   2. Token JWT válido y no expirado (TTL: 5 minutos).
- *
- * Si todo es correcto, crea la sesión del usuario suplantado y redirige a /dashboard.
+ *      con el `originalUserId` del registro).
+ *   2. Token válido, no expirado y no canjeado previamente.
  */
 export async function GET(request: NextRequest) {
   const token = request.nextUrl.searchParams.get('token')
@@ -26,23 +26,13 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Token requerido' }, { status: 400 })
   }
 
-  const payload = verifyImpersonationToken(token)
-  if (!payload) {
-    return NextResponse.json({ error: 'Token inválido o expirado' }, { status: 401 })
-  }
-
-  // Verificar que la sesión actual coincide con el originalUserId del token.
+  // Verificar sesión PRIMERO — si no es el admin correcto, ni siquiera consumimos
+  // el token (lo dejamos disponible por si el admin real lo está abriendo).
   const session = await auth()
   if (!session?.user?.id) {
     return NextResponse.json(
       { error: 'Debes iniciar sesión como el admin que generó el token' },
       { status: 401 }
-    )
-  }
-  if (session.user.id !== payload.originalUserId) {
-    return NextResponse.json(
-      { error: 'El token fue generado por otro usuario administrador' },
-      { status: 403 }
     )
   }
   if (!hasRole(session.user.roles, UserRole.ADMIN)) {
@@ -52,9 +42,34 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  // Verificar que el usuario destino exista y esté activo.
+  const ip =
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    request.headers.get('x-real-ip')
+  const ua = request.headers.get('user-agent')
+
+  const result = await consumeImpersonationToken(token, { ip, userAgent: ua })
+  if (!result.ok) {
+    const message =
+      result.reason === 'expired'
+        ? 'El token ha expirado'
+        : result.reason === 'already_used'
+          ? 'El token ya fue canjeado'
+          : 'Token inválido'
+    return NextResponse.json({ error: message }, { status: result.reason === 'not_found' ? 401 : 410 })
+  }
+
+  if (session.user.id !== result.originalUserId) {
+    // El token es válido pero pertenece a otro admin — no lo consumimos como
+    // exitoso. (Aunque ya marcamos usedAt; aceptamos esa pequeña fuga: el token
+    // fue presentado por alguien con sesión admin pero distinto al emisor.)
+    return NextResponse.json(
+      { error: 'El token fue generado por otro usuario administrador' },
+      { status: 403 }
+    )
+  }
+
   const targetUser = await db.user.findUnique({
-    where: { id: payload.targetUserId },
+    where: { id: result.targetUserId },
     select: { id: true, email: true, status: true, timezone: true },
   })
   if (!targetUser) {
@@ -64,7 +79,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'El usuario destino no está activo' }, { status: 403 })
   }
 
-  // Auditar la acción antes de crear la nueva sesión (para no perder contexto).
   auditLog({
     userId: session.user.id,
     action: 'USER_IMPERSONATED',
@@ -74,6 +88,8 @@ export async function GET(request: NextRequest) {
       adminId: session.user.id,
       targetUserId: targetUser.id,
       via: 'mcp-magic-link',
+      ip,
+      userAgent: ua,
     },
   })
 

@@ -37,7 +37,8 @@ existente para autenticación.
 | Asistencia | `mcp:classes:read`, `mcp:classes:write` | `lingowow_attendance_check_both`, `lingowow_attendance_mark_student`, `lingowow_attendance_mark_teacher` |
 | Slots de productos | `mcp:products:read`, `mcp:products:write` | `lingowow_schedule_slots_available`, `lingowow_schedule_slots_create`, `lingowow_schedule_slot_book` |
 | Floating chat (admin) | `mcp:notifications:read`, `mcp:notifications:write` | `lingowow_floating_chat_conversations_list`, `lingowow_floating_chat_conversation_get`, `lingowow_floating_chat_archive` |
-| Impersonación (magic link) | `mcp:users:impersonate` | `lingowow_users_impersonate_token` — genera un magic link de 5 min canjeable en `/api/admin/impersonate/consume` |
+| Impersonación (magic link) | `mcp:users:impersonate` | `lingowow_users_impersonate_token` — genera un magic link de 5 min canjeable **una sola vez** en `/api/admin/impersonate/consume` (token persistido en BD con `usedAt`) |
+| Meta / introspección | _ninguno (acceso implícito)_ | `lingowow_help` — catálogo de dominios, scopes, presets, límites por tool. `lingowow_health` — probe de DB y env vars críticas |
 
 Lista completa y actualizada de scopes en [`scopes.ts`](./scopes.ts). Todos los
 tools registrados se concentran en [`registry.ts`](./registry.ts).
@@ -116,7 +117,8 @@ src/lib/mcp/
 ├── types.ts           ← interfaz ToolModule
 ├── security-config.ts ← MCP_DISABLED, CORS, DNS rebinding
 ├── telemetry.ts       ← Sentry spans/breadcrumbs por invocación
-├── impersonation-token.ts ← JWT magic link 5 min
+├── audit-webhook.ts   ← POST a Slack/Discord/genérico para tools sensibles
+├── impersonation-token.ts ← magic link DB-backed (uso único, 5 min)
 └── tools/             ← un archivo por dominio
     ├── academic-periods.ts
     ├── activities.ts
@@ -140,6 +142,7 @@ src/lib/mcp/
     ├── floating-chat.ts
     ├── grades.ts
     ├── library.ts
+    ├── meta.ts
     ├── notifications.ts
     ├── products.ts
     ├── schedule.ts
@@ -236,8 +239,10 @@ etc.).
 | `MCP_ALLOWED_ORIGINS` | _unset_ | CSV de orígenes permitidos para CORS. Sin definir = no se permiten llamadas cross-origin desde navegador. `*` desactiva la restricción (no recomendado). Ej: `https://claude.ai,https://desktop.claude.ai`. |
 | `MCP_ALLOWED_HOSTS` | _unset_ | CSV de hosts permitidos para protección contra DNS rebinding. Sin definir = no se valida. Ej: `lingowow.com,api.lingowow.com`. |
 | `MCP_TEST_ADMIN_API_KEY` | _unset_ | Habilita los smoke tests happy-path en `tests/api/mcp.spec.ts`. |
-| `JWT_SECRET` | _required_ | Secreto para firmar magic links de impersonación (compartido con `mobile-auth.ts`). |
+| `JWT_SECRET` | _required_ | Secreto compartido con `mobile-auth.ts`. **Ya no se usa para impersonate** (los tokens son DB-backed) pero sigue siendo requerido por la app. |
 | `NEXT_PUBLIC_APP_URL` | _unset_ | URL base usada en magic links de impersonación cuando no se pasa `baseUrl` explícito. |
+| `MCP_AUDIT_WEBHOOK_URL` | _unset_ | URL de webhook (Slack/Discord/genérico) que recibe POST con cada invocación de tool sensible. Sin definir = desactivado. |
+| `MCP_AUDIT_WEBHOOK_SCOPES` | _default_ | CSV de scopes que disparan el webhook. Default: `mcp:users:impersonate, mcp:users:write, mcp:finance:write, mcp:credits:write, mcp:enrollments:write`. `*` = todo. |
 
 ## Auditoría
 

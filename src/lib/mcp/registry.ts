@@ -20,6 +20,7 @@ import { financeTools } from '@/lib/mcp/tools/finance'
 import { floatingChatTools } from '@/lib/mcp/tools/floating-chat'
 import { gradeTools } from '@/lib/mcp/tools/grades'
 import { libraryTools } from '@/lib/mcp/tools/library'
+import { metaTools } from '@/lib/mcp/tools/meta'
 import { notificationTools } from '@/lib/mcp/tools/notifications'
 import { productTools } from '@/lib/mcp/tools/products'
 import { scheduleTools } from '@/lib/mcp/tools/schedule'
@@ -29,6 +30,7 @@ import { userTools } from '@/lib/mcp/tools/users'
 import type { AnyToolModule } from '@/lib/mcp/types'
 
 export const TOOL_REGISTRY: AnyToolModule[] = [
+  ...metaTools,
   ...userTools,
   ...enrollmentTools,
   ...financeTools,
