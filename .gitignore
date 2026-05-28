@@ -62,6 +62,8 @@ keys/
 /scripts
 /reports
 *.md
+!CLAUDE.md
+!AGENTS.md
 .vercel
 
 # Sentry Config File
