@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { WebhookReceiver } from 'livekit-server-sdk'
 import { db } from '@/lib/db'
-
-const apiKey = process.env.LIVEKIT_API_KEY || ''
-const apiSecret = process.env.LIVEKIT_API_SECRET || ''
+import { startRoomRecording } from '@/lib/livekit-recording'
 
 export async function POST(request: NextRequest) {
   try {
+    const apiKey = process.env.LIVEKIT_API_KEY || ''
+    const apiSecret = process.env.LIVEKIT_API_SECRET || ''
     if (!apiKey || !apiSecret) {
       console.error('[LiveKit Webhook] Missing API key or secret')
       return NextResponse.json({ error: 'Configuration missing' }, { status: 500 })
@@ -36,6 +36,8 @@ export async function POST(request: NextRequest) {
       await handleEgressEnded(event.egressInfo as unknown as EgressInfo)
     } else if (event.event === 'egress_started' && event.egressInfo) {
       console.log(`[LiveKit Webhook] Egress started: ${event.egressInfo.egressId}`)
+    } else if (event.event === 'room_started' && event.room?.name) {
+      await handleRoomStarted(event.room.name)
     }
 
     return NextResponse.json({ received: true })
@@ -212,5 +214,24 @@ async function handleEgressEnded(egressInfo: EgressInfo) {
     }
   } catch (error) {
     console.error(`[LiveKit Webhook] Error handling egress_ended for ${egressId}:`, error)
+  }
+}
+
+async function handleRoomStarted(roomName: string) {
+  try {
+    const result = await startRoomRecording(roomName)
+    if (!result.success) {
+      console.warn(`[LiveKit Webhook] Skipped recording for room "${roomName}":`, result.error)
+      return
+    }
+    if (result.alreadyRecording) {
+      console.log(`[LiveKit Webhook] Recording already in progress for room "${roomName}"`)
+      return
+    }
+    console.log(
+      `[LiveKit Webhook] Recording started for room "${roomName}" — egress ${result.egressId}, segment ${result.segmentNumber}`
+    )
+  } catch (error) {
+    console.error(`[LiveKit Webhook] Error handling room_started for "${roomName}":`, error)
   }
 }

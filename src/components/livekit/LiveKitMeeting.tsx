@@ -21,17 +21,8 @@ interface LiveKitMeetingProps {
   studentName?: string
 }
 
-function MeetingRoom({ 
-  bookingId, 
-  onMeetingEnd, 
-  isModerator 
-}: { 
-  bookingId?: string
-  onMeetingEnd?: () => void
-  isModerator: boolean
-}) {
+function MeetingRoom({ onMeetingEnd }: { onMeetingEnd?: () => void }) {
   const room = useRoomContext()
-  const [hasMarkedAttendance, setHasMarkedAttendance] = useState(false)
 
   useEffect(() => {
     if (!room) return
@@ -48,38 +39,9 @@ function MeetingRoom({
     }
   }, [room, onMeetingEnd])
 
-  useEffect(() => {
-    const markAttendance = async () => {
-      if (!bookingId || hasMarkedAttendance) return
-
-      try {
-        const userType = isModerator ? 'teacher' : 'student'
-        const response = await fetch('/api/attendance/mark', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ 
-            bookingId, 
-            userType 
-          }),
-        })
-        
-        const data = await response.json()
-        if (data.success) {
-          console.log(`Asistencia marcada: ${userType}`)
-          setHasMarkedAttendance(true)
-        } else {
-          console.error('Error marcando asistencia:', data.error)
-        }
-      } catch (error) {
-        console.error('Error al marcar asistencia:', error)
-      }
-    }
-
-    markAttendance()
-  }, [bookingId, isModerator, hasMarkedAttendance])
-
+  // Attendance is marked by the classroom layout (StudentClassroomLayout /
+  // TeacherClassroomLayout). LiveKitMeeting used to mark it again here,
+  // which created duplicate records when both components were mounted.
   return (
     <div className="h-full w-full">
       <VideoConference />
@@ -88,12 +50,17 @@ function MeetingRoom({
   )
 }
 
-export function LiveKitMeeting({ roomName, bookingId, onMeetingEnd, studentName }: LiveKitMeetingProps) {
+export function LiveKitMeeting({
+  roomName,
+  bookingId,
+  onMeetingEnd,
+  studentName,
+}: LiveKitMeetingProps) {
   const [token, setToken] = useState<string | null>(null)
   const [serverUrl, setServerUrl] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [isModerator, setIsModerator] = useState(false)
+  const [attempt, setAttempt] = useState(0)
   const router = useRouter()
 
   const handleMeetingEnd = useCallback(() => {
@@ -105,6 +72,15 @@ export function LiveKitMeeting({ roomName, bookingId, onMeetingEnd, studentName 
   }, [onMeetingEnd, router])
 
   useEffect(() => {
+    if (!bookingId) {
+      setError('Se requiere una reserva para esta videollamada')
+      setIsLoading(false)
+      return
+    }
+
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 15_000)
+
     const fetchToken = async () => {
       try {
         setIsLoading(true)
@@ -112,65 +88,42 @@ export function LiveKitMeeting({ roomName, bookingId, onMeetingEnd, studentName 
 
         const response = await fetch('/api/livekit/token', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ roomName, bookingId }),
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ bookingId }),
+          signal: controller.signal,
         })
 
         if (!response.ok) {
-          const errorData = await response.json()
+          const errorData = await response.json().catch(() => ({}))
           throw new Error(errorData.error || 'Error obteniendo token')
         }
 
         const data = await response.json()
         setToken(data.token)
         setServerUrl(data.serverUrl)
-        setIsModerator(data.user?.isModerator || false)
-      } catch (error) {
-        console.error('Error obteniendo token LiveKit:', error)
-        setError(error instanceof Error ? error.message : 'Error desconocido')
+      } catch (err) {
+        if ((err as Error)?.name === 'AbortError') {
+          setError('Tiempo de espera agotado al conectar')
+        } else {
+          console.error('Error obteniendo token LiveKit:', err)
+          setError(err instanceof Error ? err.message : 'Error desconocido')
+        }
       } finally {
+        clearTimeout(timeoutId)
         setIsLoading(false)
       }
     }
 
     fetchToken()
-  }, [roomName, bookingId])
+    return () => {
+      controller.abort()
+      clearTimeout(timeoutId)
+    }
+  }, [bookingId, roomName, attempt])
 
   const handleRetry = () => {
-    setError(null)
     setToken(null)
-    setIsLoading(true)
-    
-    const fetchToken = async () => {
-      try {
-        const response = await fetch('/api/livekit/token', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ roomName, bookingId }),
-        })
-
-        if (!response.ok) {
-          const errorData = await response.json()
-          throw new Error(errorData.error || 'Error obteniendo token')
-        }
-
-        const data = await response.json()
-        setToken(data.token)
-        setServerUrl(data.serverUrl)
-        setIsModerator(data.user?.isModerator || false)
-      } catch (error) {
-        console.error('Error obteniendo token LiveKit:', error)
-        setError(error instanceof Error ? error.message : 'Error desconocido')
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchToken()
+    setAttempt((n) => n + 1)
   }
 
   if (error) {
@@ -184,10 +137,7 @@ export function LiveKitMeeting({ roomName, bookingId, onMeetingEnd, studentName 
             <Button onClick={handleRetry} variant="default">
               Reintentar
             </Button>
-            <Button 
-              onClick={() => router.push('/dashboard')} 
-              variant="outline"
-            >
+            <Button onClick={() => router.push('/dashboard')} variant="outline">
               Volver al Dashboard
             </Button>
           </div>
@@ -225,11 +175,7 @@ export function LiveKitMeeting({ roomName, bookingId, onMeetingEnd, studentName 
         data-lk-theme="default"
         style={{ height: '100%', width: '100%' }}
       >
-        <MeetingRoom 
-          bookingId={bookingId}
-          onMeetingEnd={handleMeetingEnd}
-          isModerator={isModerator}
-        />
+        <MeetingRoom onMeetingEnd={handleMeetingEnd} />
       </LiveKitRoom>
     </div>
   )

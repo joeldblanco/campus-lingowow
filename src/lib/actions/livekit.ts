@@ -90,14 +90,16 @@ export async function createLiveKitMeeting(bookingId: string) {
     }
 
     const roomName = generateRoomName(bookingId)
+    const isTeacher = booking.teacherId === session.user.id
 
-    // Upsert: buscar existente o crear, evitando race condition
+    // Upsert: only the teacher transitions the booking through SCHEDULED/CONFIRMED.
+    // If a student arrives first, just make sure the VideoCall record exists with
+    // its current status preserved (no reset to SCHEDULED).
     await db.videoCall.upsert({
       where: { bookingId },
-      update: {
-        roomId: roomName,
-        status: 'SCHEDULED',
-      },
+      update: isTeacher
+        ? { roomId: roomName, status: 'SCHEDULED' }
+        : { roomId: roomName },
       create: {
         roomId: roomName,
         teacherId: booking.teacherId,
@@ -108,18 +110,20 @@ export async function createLiveKitMeeting(bookingId: string) {
       },
     })
 
-    await db.classBooking.update({
-      where: { id: bookingId },
-      data: { status: 'CONFIRMED' },
-    })
+    if (isTeacher) {
+      await db.classBooking.update({
+        where: { id: bookingId },
+        data: { status: 'CONFIRMED' },
+      })
 
-    auditLog({
-      userId: session.user.id,
-      action: 'CLASSROOM_START',
-      category: 'CLASSROOM',
-      description: `Clase iniciada: booking ${bookingId}`,
-      metadata: { bookingId, teacherId: booking.teacherId, studentId: booking.studentId, roomName },
-    })
+      auditLog({
+        userId: session.user.id,
+        action: 'CLASSROOM_START',
+        category: 'CLASSROOM',
+        description: `Clase iniciada: booking ${bookingId}`,
+        metadata: { bookingId, teacherId: booking.teacherId, studentId: booking.studentId, roomName },
+      })
+    }
 
     return {
       success: true,
