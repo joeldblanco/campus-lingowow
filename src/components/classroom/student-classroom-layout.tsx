@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { ClassroomContainer } from '@/components/classroom/classroom-container'
 import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { createLiveKitMeeting } from '@/lib/actions/livekit'
 
 interface StudentClassroomLayoutProps {
@@ -47,7 +48,7 @@ export const StudentClassroomLayout: React.FC<StudentClassroomLayoutProps> = (pr
                 const tokenRes = await fetch('/api/livekit/token', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ roomName, bookingId }),
+                    body: JSON.stringify({ bookingId }),
                     signal: tokenController.signal,
                 })
                 clearTimeout(tokenTimeout)
@@ -87,8 +88,9 @@ export const StudentClassroomLayout: React.FC<StudentClassroomLayoutProps> = (pr
         join()
     }, [bookingId, retryKey])
 
+    const router = useRouter()
     const handleLeave = () => {
-        window.close()
+        router.push('/dashboard')
     }
 
     if (isInitializing) {

@@ -6,7 +6,7 @@ import { LessonForView } from '@/types/lesson'
 import { Loader2, MessageSquare, X } from 'lucide-react'
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { toast } from 'sonner'
-import { startRecording, stopRecording } from '@/lib/actions/classroom-recording'
+import { getActiveRecording, stopRecording } from '@/lib/actions/classroom-recording'
 import { ActiveLessonViewer } from './active-lesson-viewer'
 import { ClassroomLayout } from './classroom-layout'
 import { ControlBar } from './control-bar'
@@ -81,7 +81,6 @@ function ClassroomInner({
   const [isSharePopoverOpen, setIsSharePopoverOpen] = useState(false)
   const [shareableContent, setShareableContent] = useState<ShareableContent[] | null>(null)
   const [egressId, setEgressId] = useState<string | null>(null)
-  const recordingRef = useRef(false)
   const stoppingRecordingRef = useRef(false)
   const retryCountRef = useRef(0)
   const activeLessonRef = useRef<{ id: string; type: ShareableContent['type'] } | null>(null)
@@ -231,33 +230,35 @@ function ClassroomInner({
     return () => window.removeEventListener('beforeunload', handleBeforeUnload)
   }, [bookingId])
 
-  // Auto-start recording when ANY user connects (teacher or student)
-  // Recording starts when user joins and stops when they leave
+  // Recording is started server-side by the LiveKit `room_started` webhook.
+  // Here we just poll for the active recording so the UI shows the indicator and
+  // we know the egressId in case the user explicitly clicks "Finalizar".
   useEffect(() => {
-    const autoStartRecording = async () => {
-      if (connectionStatus === 'connected' && bookingId && !isRecording && !recordingRef.current) {
-        recordingRef.current = true
-        try {
-          const result = await startRecording(bookingId, roomName)
-          if (result.success && result.egressId) {
-            setIsRecording(true)
-            setEgressId(result.egressId)
-            if (!result.alreadyRecording) {
-              console.log(`Recording started - segment ${result.segmentNumber}`)
-            }
-          } else {
-            // Reset ref to allow retry if startRecording returns failure without throwing
-            console.error('Auto-recording failed:', result.error)
-            recordingRef.current = false
-          }
-        } catch (error) {
-          console.error('Auto-recording failed:', error)
-          recordingRef.current = false
+    if (connectionStatus !== 'connected' || !bookingId) return
+
+    let cancelled = false
+    const poll = async () => {
+      try {
+        const result = await getActiveRecording(bookingId)
+        if (cancelled) return
+        if (result.success && result.egressId) {
+          setIsRecording(true)
+          setEgressId(result.egressId)
+        } else if (result.success && !result.egressId) {
+          setIsRecording(false)
+          setEgressId(null)
         }
+      } catch (error) {
+        console.error('getActiveRecording failed:', error)
       }
     }
-    autoStartRecording()
-  }, [connectionStatus, bookingId, roomName, isRecording])
+    poll()
+    const interval = setInterval(poll, 5000)
+    return () => {
+      cancelled = true
+      clearInterval(interval)
+    }
+  }, [connectionStatus, bookingId])
 
 
   // Auto-switch to screenshare tab when a remote screen share track appears (student side)

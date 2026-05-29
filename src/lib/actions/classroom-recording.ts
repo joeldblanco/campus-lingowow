@@ -2,33 +2,65 @@
 
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
-import { EgressClient, EncodedFileOutput, EncodedFileType, S3Upload } from 'livekit-server-sdk'
+import { EgressClient } from 'livekit-server-sdk'
+import { startRoomRecording } from '@/lib/livekit-recording'
+import { generateRoomName } from '@/lib/livekit'
 
 const livekitHost = process.env.NEXT_PUBLIC_LIVEKIT_URL?.replace('wss://', 'https://') || ''
 const apiKey = process.env.LIVEKIT_API_KEY || ''
 const apiSecret = process.env.LIVEKIT_API_SECRET || ''
-
-// Cloudflare R2 Configuration
-const r2AccountId = process.env.CLOUDFLARE_R2_ACCOUNT_ID || ''
-const r2AccessKeyId = process.env.CLOUDFLARE_R2_ACCESS_KEY_ID || ''
-const r2SecretAccessKey = process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY || ''
 const r2BucketName = process.env.CLOUDFLARE_R2_BUCKET_NAME || 'lingowow-recordings'
 
-export async function startRecording(bookingId: string, roomName: string) {
+/**
+ * Returns the active (PROCESSING) recording for a booking, if any.
+ * Used by the classroom UI to know whether the webhook has already kicked off
+ * a recording, and what egressId to stop when the user clicks "Finalizar".
+ */
+export async function getActiveRecording(bookingId: string) {
+  try {
+    const session = await auth()
+    if (!session?.user?.id) {
+      return { success: false as const, error: 'No autenticado' }
+    }
+
+    const booking = await db.classBooking.findFirst({
+      where: {
+        id: bookingId,
+        OR: [{ teacherId: session.user.id }, { studentId: session.user.id }],
+      },
+      select: { id: true },
+    })
+    if (!booking) {
+      return { success: false as const, error: 'Sin permisos' }
+    }
+
+    const recording = await db.classRecording.findFirst({
+      where: { bookingId, status: 'PROCESSING' },
+      orderBy: { createdAt: 'desc' },
+      select: { egressId: true },
+    })
+
+    return { success: true as const, egressId: recording?.egressId ?? null }
+  } catch (error) {
+    console.error('Error getting active recording:', error)
+    return { success: false as const, error: 'Error al obtener grabación activa' }
+  }
+}
+
+// Manual fallback for callers that need to (re)trigger recording from the UI.
+// In normal operation recording is started by the LiveKit `room_started` webhook,
+// see [api/livekit/webhook/route.ts]. This action stays for explicit retries.
+export async function startRecording(bookingId: string, roomName?: string) {
   try {
     const session = await auth()
     if (!session?.user?.id) {
       return { success: false, error: 'No autenticado' }
     }
 
-    // Verify user has access to this booking (teacher OR student)
     const booking = await db.classBooking.findFirst({
       where: {
         id: bookingId,
-        OR: [
-          { teacherId: session.user.id },
-          { studentId: session.user.id },
-        ],
+        OR: [{ teacherId: session.user.id }, { studentId: session.user.id }],
       },
     })
 
@@ -36,105 +68,19 @@ export async function startRecording(bookingId: string, roomName: string) {
       return { success: false, error: 'No tienes permiso para grabar esta clase' }
     }
 
-    // Check if there's already an active recording for this room
-    const existingRecording = await db.classRecording.findFirst({
-      where: {
-        bookingId,
-        status: 'PROCESSING',
-      },
-    })
+    // Always derive room name from bookingId — never trust the client-supplied one.
+    const result = await startRoomRecording(roomName ?? generateRoomName(bookingId))
 
-    if (existingRecording?.egressId) {
-      // Recording already in progress, return existing egress ID
-      return {
-        success: true,
-        egressId: existingRecording.egressId,
-        message: 'Grabación ya en progreso',
-        alreadyRecording: true,
-      }
+    if (!result.success) {
+      return result
     }
-
-    if (!livekitHost || !apiKey || !apiSecret) {
-      return { success: false, error: 'Configuración de LiveKit incompleta' }
-    }
-
-    const egressClient = new EgressClient(livekitHost, apiKey, apiSecret)
-
-    // Configure output - use Cloudflare R2 if configured, otherwise local
-    let output: EncodedFileOutput
-
-    if (r2AccountId && r2AccessKeyId && r2SecretAccessKey) {
-      // Cloudflare R2 storage (S3-compatible)
-      const s3Upload = new S3Upload({
-        accessKey: r2AccessKeyId,
-        secret: r2SecretAccessKey,
-        bucket: r2BucketName,
-        region: 'auto',
-        endpoint: `https://${r2AccountId}.r2.cloudflarestorage.com`,
-        forcePathStyle: true,
-      })
-
-      output = new EncodedFileOutput({
-        fileType: EncodedFileType.MP4,
-        filepath: `classes/${bookingId}/${roomName}-{time}.mp4`,
-        output: { case: 's3', value: s3Upload },
-      })
-    } else {
-      // Fallback to local storage
-      output = new EncodedFileOutput({
-        fileType: EncodedFileType.MP4,
-        filepath: `recordings/${bookingId}/{room_name}-{time}.mp4`,
-      })
-    }
-
-    // Get custom template URL for full classroom recording (content, whiteboard, screen share)
-    // Uses API Route Handler that returns raw HTML (not RSC) to guarantee START_RECORDING
-    // signal is emitted as a real <script> tag before any JS bundle loads.
-    // LiveKit egress appends /{roomName}?url=...&token=...&layout=... to customBaseUrl
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.lingowow.com'
-    const templateUrl = `${appUrl}/api/livekit/egress-recorder`
-
-    const info = await egressClient.startRoomCompositeEgress(
-      roomName,
-      { file: output },
-      {
-        layout: 'grid', // Fallback layout if template fails
-        customBaseUrl: templateUrl,
-        videoOnly: false, // Include audio
-      }
-    )
-
-    // Store egress ID in video call record
-    await db.videoCall.updateMany({
-      where: { bookingId },
-      data: { recordingUrl: info.egressId },
-    })
-
-    // Get the next segment number for this booking
-    const lastRecording = await db.classRecording.findFirst({
-      where: { bookingId },
-      orderBy: { segmentNumber: 'desc' },
-      select: { segmentNumber: true },
-    })
-    const segmentNumber = (lastRecording?.segmentNumber || 0) + 1
-
-    // Create a new ClassRecording record with PROCESSING status
-    await db.classRecording.create({
-      data: {
-        bookingId,
-        egressId: info.egressId,
-        roomName,
-        status: 'PROCESSING',
-        segmentNumber,
-        startedAt: new Date(),
-      },
-    })
 
     return {
       success: true,
-      egressId: info.egressId,
-      message: 'Grabación iniciada',
-      segmentNumber,
+      egressId: result.egressId,
+      message: result.alreadyRecording ? 'Grabación ya en progreso' : 'Grabación iniciada',
+      segmentNumber: result.segmentNumber,
+      alreadyRecording: result.alreadyRecording,
     }
   } catch (error) {
     console.error('Error starting recording:', error)
@@ -436,7 +382,6 @@ async function pollEgressUntilReady(egressId: string, maxAttempts = 30, interval
 
       const match = filename.match(/(classes\/[^/]+\/[^/]+\.mp4)/)
       const r2Key = match ? match[1] : filename
-      const r2BucketName = process.env.CLOUDFLARE_R2_BUCKET_NAME || 'lingowow-recordings'
 
       let duration: number | null = null
       let startedAt: Date | null = null

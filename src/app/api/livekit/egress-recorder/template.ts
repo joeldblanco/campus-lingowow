@@ -15,6 +15,15 @@ function escapeForInlineScript(value: unknown) {
     .replace(/\u2029/g, '\\u2029')
 }
 
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
 async function resolveBookingId(roomName: string) {
   if (roomName.startsWith('class-') && roomName.length > 'class-'.length) {
     return roomName.slice('class-'.length)
@@ -70,7 +79,7 @@ export async function buildEgressRecorderHtml({
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Recording - ${roomName}</title>
+  <title>Recording - ${escapeHtml(roomName)}</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #111827; color: white; font-family: sans-serif; overflow: hidden; }
@@ -92,9 +101,14 @@ export async function buildEgressRecorderHtml({
 </head>
 <body>
   <script>
+    // The LiveKit egress headless browser begins encoding when it sees the
+    // START_RECORDING line. Emit it a handful of times spaced out enough to be
+    // seen on first paint without flooding the egress log.
     console.log('START_RECORDING');
-    var _sr = setInterval(function(){ console.log('START_RECORDING'); }, 100);
-    setTimeout(function(){ clearInterval(_sr); }, 15000);
+    setTimeout(function(){ console.log('START_RECORDING'); }, 250);
+    setTimeout(function(){ console.log('START_RECORDING'); }, 750);
+    setTimeout(function(){ console.log('START_RECORDING'); }, 1500);
+    setTimeout(function(){ console.log('START_RECORDING'); }, 3000);
   </script>
 
   <div id="whiteboard" class="hidden">
