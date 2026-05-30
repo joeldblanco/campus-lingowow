@@ -2,7 +2,7 @@
 
 import { db } from '@/lib/db'
 import { formatFullName } from '@/lib/utils/name-formatter'
-import { ConfirmationStatus } from '@prisma/client'
+import { ConfirmationStatus, Prisma } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 
 export interface PaymentConfirmation {
@@ -80,6 +80,17 @@ export async function createPaymentConfirmation(data: {
       } as PaymentConfirmation,
     }
   } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === 'P2002'
+    ) {
+      return {
+        success: false,
+        error:
+          'Ya confirmaste el pago de este período. Los administradores lo están revisando.',
+      }
+    }
+
     console.error('Error creating payment confirmation:', error)
     return {
       success: false,

@@ -7,7 +7,6 @@ import { notifyTeacherPaymentConfirmed } from '@/lib/actions/notifications'
 import { createPaymentConfirmation } from '@/lib/actions/payment-confirmations'
 import { uploadFileByType } from '@/lib/actions/cloudinary'
 import { formatFullName } from '@/lib/utils/name-formatter'
-import { startOfMonth, endOfMonth } from 'date-fns'
 
 export async function POST(request: NextRequest) {
   try {
@@ -80,17 +79,30 @@ export async function POST(request: NextRequest) {
     const parsedAmount = parseFloat(amount)
     const teacherFullName = formatFullName(teacher.name, teacher.lastName) || 'Sin nombre'
 
-    // Determinar el período (mes actual por defecto)
+    // Anclar la confirmación al último período académico finalizado.
+    // Es lo mismo que /api/teacher/earnings usa para habilitar `canConfirm`,
+    // y mantiene el @@unique(teacherId, periodStart, periodEnd) consistente
+    // con la regla "una confirmación por cierre académico".
     const now = new Date()
-    const periodStart = startOfMonth(now)
-    const periodEnd = endOfMonth(now)
+    const latestFinishedPeriod = await db.academicPeriod.findFirst({
+      where: { endDate: { lt: now } },
+      select: { startDate: true, endDate: true },
+      orderBy: { endDate: 'desc' },
+    })
+
+    if (!latestFinishedPeriod) {
+      return NextResponse.json(
+        { error: 'Aún no hay un período académico finalizado para confirmar.' },
+        { status: 400 }
+      )
+    }
 
     // Guardar confirmación en la base de datos
     const confirmationResult = await createPaymentConfirmation({
       teacherId,
       amount: parsedAmount,
-      periodStart,
-      periodEnd,
+      periodStart: latestFinishedPeriod.startDate,
+      periodEnd: latestFinishedPeriod.endDate,
       hasProof,
       proofUrl,
       notes: undefined,
