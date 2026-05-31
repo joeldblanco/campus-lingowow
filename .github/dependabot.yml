@@ -1,0 +1,21 @@
+# Dependabot keeps npm dependencies patched and surfaces security advisories.
+# Addresses the Trello card "Asegurarse de que no hay vulnerabilidades npm":
+# weekly scans + grouped PRs so vulnerable/outdated packages are flagged
+# automatically instead of relying on manual `npm audit` runs.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    groups:
+      # Bundle low-risk updates so review stays manageable.
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
