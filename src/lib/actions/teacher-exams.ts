@@ -196,6 +196,38 @@ export async function assignExamToStudents(
       return { success: false, error: 'Examen no encontrado' }
     }
 
+    if (!exam.courseId) {
+      return { success: false, error: 'El examen no pertenece a un curso asignable' }
+    }
+
+    // Seguridad: un profesor solo puede asignar a estudiantes de su roster
+    // (inscripciones ACTIVE del curso del examen con clase asignada a este profesor).
+    // Los admins pueden asignar a cualquier estudiante inscrito en el curso.
+    const eligibleEnrollments = await db.enrollment.findMany({
+      where: {
+        courseId: exam.courseId,
+        status: 'ACTIVE',
+        ...(!isAdmin && {
+          bookings: {
+            some: {
+              teacherId,
+            },
+          },
+        }),
+      },
+      select: { studentId: true },
+    })
+
+    const eligibleStudentIds = new Set(eligibleEnrollments.map((e) => e.studentId))
+    const hasInvalidStudent = studentIds.some((studentId) => !eligibleStudentIds.has(studentId))
+
+    if (hasInvalidStudent) {
+      return {
+        success: false,
+        error: 'Uno o más estudiantes no pueden recibir este examen',
+      }
+    }
+
     // Crear asignaciones para cada estudiante
     const assignments = await Promise.all(
       studentIds.map((studentId) =>
