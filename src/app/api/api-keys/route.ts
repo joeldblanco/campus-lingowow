@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { UserRole } from '@prisma/client'
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
 import { generateApiKey } from '@/lib/api-auth'
+import { hasAnyMcpWriteScope } from '@/lib/mcp/scopes'
 import { z } from 'zod'
 
 const createApiKeySchema = z.object({
@@ -9,6 +11,8 @@ const createApiKeySchema = z.object({
   scopes: z.array(z.string()).optional(),
   expiresInDays: z.number().int().min(1).max(365).optional(),
 })
+
+const MCP_WRITE_MAX_DAYS = 90
 
 /**
  * GET /api/api-keys
@@ -69,6 +73,36 @@ export async function POST(request: NextRequest) {
 
     const { name, scopes, expiresInDays } = validation.data
 
+    // Reglas de seguridad para scopes MCP de escritura: requieren rol ADMIN
+    // y expiración obligatoria (máx 90 días).
+    const requestedScopes = scopes ?? ['lessons:read', 'lessons:write']
+    const requiresAdmin =
+      hasAnyMcpWriteScope(requestedScopes) || requestedScopes.includes('*')
+
+    if (requiresAdmin) {
+      const user = await db.user.findUnique({
+        where: { id: session.user.id },
+        select: { roles: true },
+      })
+      if (!user?.roles.includes(UserRole.ADMIN)) {
+        return NextResponse.json(
+          {
+            error:
+              'Los scopes MCP de escritura solo pueden asignarse a usuarios con rol ADMIN',
+          },
+          { status: 403 }
+        )
+      }
+      if (!expiresInDays || expiresInDays > MCP_WRITE_MAX_DAYS) {
+        return NextResponse.json(
+          {
+            error: `Las API keys con scopes MCP de escritura requieren expiración entre 1 y ${MCP_WRITE_MAX_DAYS} días`,
+          },
+          { status: 400 }
+        )
+      }
+    }
+
     // Generate the API key
     const { rawKey, hash, prefix } = generateApiKey()
 
@@ -84,7 +118,7 @@ export async function POST(request: NextRequest) {
         key: hash,
         prefix,
         userId: session.user.id,
-        scopes: scopes || ['lessons:read', 'lessons:write'],
+        scopes: requestedScopes,
         expiresAt,
       },
       select: {

@@ -6,6 +6,7 @@ import {
   getTeacherPaymentsReport,
 } from '@/lib/actions/teacher-payments'
 import { db } from '@/lib/db'
+import { getMcpContext } from '@/lib/mcp/context'
 import handleError from '@/lib/handleError'
 import {
   createFinancialMovementSchema,
@@ -281,11 +282,22 @@ function resolveRuleMonthlyAmount(recurrence: FinancialRecurringRuleRecurrence, 
 async function ensureAdminUser() {
   const session = await auth()
 
-  if (!session?.user?.id || !session.user.roles?.includes('ADMIN')) {
-    throw new Error('Solo los administradores pueden gestionar finanzas')
+  if (session?.user?.id && session.user.roles?.includes('ADMIN')) {
+    return session.user
   }
 
-  return session.user
+  // Fallback para invocaciones desde el servidor MCP, que no usan cookies de sesión.
+  // El wrapper authenticateMcpRequest ya validó rol ADMIN antes de poblar el contexto.
+  const mcp = getMcpContext()
+  if (mcp && mcp.roles.includes('ADMIN')) {
+    const user = await db.user.findUnique({
+      where: { id: mcp.userId },
+      select: { id: true, name: true, lastName: true, email: true, roles: true },
+    })
+    if (user) return user
+  }
+
+  throw new Error('Solo los administradores pueden gestionar finanzas')
 }
 
 function getFullName(name?: string | null, lastName?: string | null, fallback?: string | null) {

@@ -73,6 +73,7 @@ const ACTION_LABELS: Record<AuditAction, string> = {
   PAYMENT_COMPLETED: 'Pago completado',
   SUBSCRIPTION_CREATED: 'Suscripción creada',
   SUBSCRIPTION_CANCELLED: 'Suscripción cancelada',
+  MCP_TOOL_INVOKED: 'Tool MCP ejecutada',
 }
 
 const CATEGORY_LABELS: Record<AuditCategory, string> = {

@@ -129,6 +129,10 @@ model User {
   libraryLikes     LibraryResourceLike[] @relation("LibraryLikes")
   librarySaves     LibraryResourceSave[] @relation("LibrarySaves")
 
+  // Relaciones de tokens MCP de impersonación
+  impersonationTokensIssued   ImpersonationToken[] @relation("ImpersonationTokensIssued")
+  impersonationTokensReceived ImpersonationToken[] @relation("ImpersonationTokensReceived")
+
   // Relaciones de administración de archivos
   uploadedFiles  FileAsset[]    @relation("FileUploader")
   fileUsageLogs  FileUsageLog[] @relation("FileUser")
@@ -1126,6 +1130,27 @@ model VerificationToken {
 
   @@unique([email, token])
   @@map("verification_tokens")
+}
+
+model ImpersonationToken {
+  id               String    @id @default(cuid())
+  tokenHash        String    @unique // hash SHA-256 del token; el raw nunca se persiste
+  originalUserId   String // admin que generó el token
+  targetUserId     String // usuario destino de la impersonación
+  expiresAt        DateTime
+  usedAt           DateTime? // null = sin canjear; setea al canjear → uso único
+  consumedFromIp   String?
+  consumedFromUa   String?
+  createdAt        DateTime  @default(now())
+
+  originalUser User @relation("ImpersonationTokensIssued", fields: [originalUserId], references: [id], onDelete: Cascade)
+  targetUser   User @relation("ImpersonationTokensReceived", fields: [targetUserId], references: [id], onDelete: Cascade)
+
+  @@index([tokenHash])
+  @@index([originalUserId])
+  @@index([targetUserId])
+  @@index([expiresAt])
+  @@map("impersonation_tokens")
 }
 
 // =============================================
@@ -2766,6 +2791,9 @@ enum AuditAction {
   PAYMENT_COMPLETED
   SUBSCRIPTION_CREATED
   SUBSCRIPTION_CANCELLED
+
+  // MCP / Integraciones externas
+  MCP_TOOL_INVOKED
 }
 
 enum AuditCategory {

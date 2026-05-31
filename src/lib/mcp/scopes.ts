@@ -1,0 +1,113 @@
+/**
+ * Catálogo de scopes MCP y presets para la UI de creación de API keys.
+ * Mantener sincronizado con los scopes declarados en src/lib/mcp/tools/*.ts.
+ */
+
+export interface McpScopeDefinition {
+  scope: string
+  domain: string
+  action: 'read' | 'write' | 'admin'
+  description: string
+}
+
+export const MCP_SCOPES: McpScopeDefinition[] = [
+  // Usuarios
+  { scope: 'mcp:users:read', domain: 'users', action: 'read', description: 'Listar y consultar usuarios' },
+  { scope: 'mcp:users:write', domain: 'users', action: 'write', description: 'Crear, actualizar y eliminar usuarios' },
+  { scope: 'mcp:users:impersonate', domain: 'users', action: 'admin', description: 'Generar magic links de impersonación de usuarios' },
+  // Inscripciones
+  { scope: 'mcp:enrollments:read', domain: 'enrollments', action: 'read', description: 'Listar inscripciones y stats' },
+  { scope: 'mcp:enrollments:write', domain: 'enrollments', action: 'write', description: 'Crear/actualizar/eliminar inscripciones y sincronizar estados' },
+  // Finanzas
+  { scope: 'mcp:finance:read', domain: 'finance', action: 'read', description: 'Reportes financieros y confirmaciones de pago' },
+  { scope: 'mcp:finance:write', domain: 'finance', action: 'write', description: 'Crear movimientos, reglas recurrentes, actualizar pagos' },
+  // Cursos
+  { scope: 'mcp:courses:read', domain: 'courses', action: 'read', description: 'Listar y consultar cursos y stats' },
+  { scope: 'mcp:courses:write', domain: 'courses', action: 'write', description: 'Crear, actualizar, archivar y publicar cursos' },
+  // Clases / sesiones
+  { scope: 'mcp:classes:read', domain: 'classes', action: 'read', description: 'Listar y consultar clases (sesiones) y stats' },
+  { scope: 'mcp:classes:write', domain: 'classes', action: 'write', description: 'Crear, actualizar, reprogramar, eliminar clases (incluye operaciones en lote)' },
+  // Cupones
+  { scope: 'mcp:coupons:read', domain: 'coupons', action: 'read', description: 'Listar y consultar cupones' },
+  { scope: 'mcp:coupons:write', domain: 'coupons', action: 'write', description: 'Crear, actualizar y eliminar cupones' },
+  // Productos / Planes
+  { scope: 'mcp:products:read', domain: 'products', action: 'read', description: 'Listar productos, planes, categorías y tags' },
+  { scope: 'mcp:products:write', domain: 'products', action: 'write', description: 'Crear, actualizar y eliminar productos y planes' },
+  // Profesores
+  { scope: 'mcp:teachers:read', domain: 'teachers', action: 'read', description: 'Listar profesores, disponibilidad, reportes y proyecciones de pago' },
+  { scope: 'mcp:teachers:write', domain: 'teachers', action: 'write', description: 'Marcar clases como pagables/no pagables' },
+  // Períodos académicos
+  { scope: 'mcp:academic-periods:read', domain: 'academic-periods', action: 'read', description: 'Listar períodos, temporadas y consultar período por fecha' },
+  { scope: 'mcp:academic-periods:write', domain: 'academic-periods', action: 'write', description: 'Crear/activar períodos y temporadas, generar año completo' },
+  // Créditos virtuales
+  { scope: 'mcp:credits:read', domain: 'credits', action: 'read', description: 'Consultar balances, transacciones y paquetes de créditos' },
+  { scope: 'mcp:credits:write', domain: 'credits', action: 'write', description: 'Ajustar balances de usuarios y gestionar paquetes de créditos' },
+  // Audit logs
+  { scope: 'mcp:audit-logs:read', domain: 'audit-logs', action: 'read', description: 'Leer y exportar el registro de auditoría' },
+  // Exámenes
+  { scope: 'mcp:exams:read', domain: 'exams', action: 'read', description: 'Listar exámenes, intentos para calificar, placement tests' },
+  { scope: 'mcp:exams:write', domain: 'exams', action: 'write', description: 'Crear/actualizar/eliminar exámenes, asignar a estudiantes, calificar respuestas' },
+  // Calificaciones
+  { scope: 'mcp:grades:read', domain: 'grades', action: 'read', description: 'Listar calificaciones, reportes de progreso, stats' },
+  { scope: 'mcp:grades:write', domain: 'grades', action: 'write', description: 'Actualizar calificaciones de actividades' },
+  // Notificaciones
+  { scope: 'mcp:notifications:read', domain: 'notifications', action: 'read', description: 'Preview de notificaciones masivas y suscripciones de newsletter' },
+  { scope: 'mcp:notifications:write', domain: 'notifications', action: 'write', description: 'Crear notificaciones individuales y masivas, gestionar newsletter' },
+  // Analytics
+  { scope: 'mcp:analytics:read', domain: 'analytics', action: 'read', description: 'KPIs, ingresos, gastos, proyecciones, cohortes, LTV, salud financiera' },
+  // Actividades
+  { scope: 'mcp:activities:read', domain: 'activities', action: 'read', description: 'Listar y consultar actividades reutilizables' },
+  { scope: 'mcp:activities:write', domain: 'activities', action: 'write', description: 'Crear/actualizar/eliminar y asignar actividades a estudiantes' },
+  // File manager
+  { scope: 'mcp:files:read', domain: 'files', action: 'read', description: 'Listar archivos en Cloudinary, carpetas y stats de uso' },
+  { scope: 'mcp:files:write', domain: 'files', action: 'write', description: 'Editar metadata, mover, eliminar archivos, gestionar carpetas, sincronizar Cloudinary' },
+  // Biblioteca
+  { scope: 'mcp:library:read', domain: 'library', action: 'read', description: 'Listar y consultar recursos y categorías de biblioteca' },
+  { scope: 'mcp:library:write', domain: 'library', action: 'write', description: 'Crear, actualizar y eliminar recursos y categorías de biblioteca' },
+  // Calendario
+  { scope: 'mcp:calendar:read', domain: 'calendar', action: 'read', description: 'Configuración global del calendario, disponibilidad de profesores, bookings' },
+  { scope: 'mcp:calendar:write', domain: 'calendar', action: 'write', description: 'Actualizar configuración del calendario y cancelar bookings' },
+  // AI grading limits
+  { scope: 'mcp:ai-grading:read', domain: 'ai-grading', action: 'read', description: 'Consultar límites y uso de calificación con IA por usuario' },
+]
+
+export interface McpScopePreset {
+  id: string
+  label: string
+  description: string
+  scopes: string[]
+  destructive?: boolean
+}
+
+export const MCP_SCOPE_PRESETS: McpScopePreset[] = [
+  {
+    id: 'mcp-readonly',
+    label: 'MCP solo lectura',
+    description: 'Acceso de solo lectura a usuarios, inscripciones, finanzas y cursos.',
+    scopes: MCP_SCOPES.filter((s) => s.action === 'read').map((s) => s.scope),
+  },
+  {
+    id: 'mcp-full',
+    label: 'MCP admin completo',
+    description: 'Lectura y escritura en todos los dominios MCP. Solo para usuarios con rol ADMIN.',
+    scopes: MCP_SCOPES.map((s) => s.scope),
+    destructive: true,
+  },
+]
+
+/**
+ * Scopes de escritura MCP que requieren expiración obligatoria
+ * (sugerida en el plan: máx 90 días). El cliente puede inspeccionar
+ * esto para forzar `expiresInDays` en el formulario.
+ */
+export const MCP_WRITE_SCOPES = MCP_SCOPES.filter((s) => s.action === 'write').map(
+  (s) => s.scope
+)
+
+export function isMcpWriteScope(scope: string): boolean {
+  return MCP_WRITE_SCOPES.includes(scope) || scope === 'mcp:*' || scope === '*'
+}
+
+export function hasAnyMcpWriteScope(scopes: string[]): boolean {
+  return scopes.some(isMcpWriteScope)
+}

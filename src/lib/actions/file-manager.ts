@@ -4,6 +4,7 @@ import { auth } from '@/auth'
 import { db } from '@/lib/db'
 import { CloudinaryService, type CloudinaryResource, type CloudinaryFolder } from '@/lib/cloudinary'
 import { FileCategory, FileResourceType, UsageAction, Prisma } from '@prisma/client'
+import { getMcpContext } from '@/lib/mcp/context'
 
 // Interfaces for server actions
 export interface ServerFileAsset {
@@ -61,13 +62,17 @@ export interface FileListResult {
   hasPrev: boolean
 }
 
-// Get current user session
+// Get current user session, with fallback to MCP context (no cookies)
 async function getCurrentUser() {
   const session = await auth()
-  if (!session?.user?.id) {
-    throw new Error('Unauthorized')
+  if (session?.user?.id) {
+    return { ...session.user, id: session.user.id as string }
   }
-  return { ...session.user, id: session.user.id as string }
+  const mcp = getMcpContext()
+  if (mcp?.userId) {
+    return { id: mcp.userId, roles: mcp.roles }
+  }
+  throw new Error('Unauthorized')
 }
 
 // Check if user has admin permissions
