@@ -48,6 +48,7 @@ export async function GET(req: NextRequest) {
             id: true,
             name: true,
             lastName: true,
+            email: true,
             timezone: true,
           },
         },
@@ -68,8 +69,6 @@ export async function GET(req: NextRequest) {
 
     for (const classBooking of classesToRemind) {
       try {
-        if (!classBooking.student.email) continue
-
         const [startTime] = classBooking.timeSlot.split('-')
         const utcDate = combineDateAndTimeUTC(classBooking.day, startTime)
 
@@ -77,17 +76,40 @@ export async function GET(req: NextRequest) {
         if (utcDate < targetStart || utcDate >= targetEnd) continue
 
         const classLink = `${process.env.NEXT_PUBLIC_DOMAIN}/classroom?classId=${classBooking.id}`
+        const studentName = formatFullName(classBooking.student.name, classBooking.student.lastName) || 'Estudiante'
+        const teacherName = formatFullName(classBooking.teacher.name, classBooking.teacher.lastName) || 'Profesor'
         const studentTimeZone = classBooking.student.timezone || 'America/Lima'
         const teacherTimeZone = classBooking.teacher.timezone || 'America/Lima'
 
-        await sendClassReminderEmail(classBooking.student.email, {
-          studentName: formatFullName(classBooking.student.name, classBooking.student.lastName) || 'Estudiante',
-          courseName: classBooking.enrollment.course.title,
-          teacherName: formatFullName(classBooking.teacher.name, classBooking.teacher.lastName) || 'Profesor',
-          classDate: formatInTimeZone(utcDate, "EEEE d 'de' MMMM", studentTimeZone),
-          classTime: formatInTimeZone(utcDate, 'HH:mm', studentTimeZone),
-          classLink,
-        })
+        if (classBooking.student.email) {
+          await sendClassReminderEmail(
+            classBooking.student.email,
+            {
+              studentName,
+              courseName: classBooking.enrollment.course.title,
+              teacherName,
+              classDate: formatInTimeZone(utcDate, "EEEE d 'de' MMMM", studentTimeZone),
+              classTime: formatInTimeZone(utcDate, 'HH:mm', studentTimeZone),
+              classLink,
+            },
+            'student'
+          )
+        }
+
+        if (classBooking.teacher.email) {
+          await sendClassReminderEmail(
+            classBooking.teacher.email,
+            {
+              studentName,
+              courseName: classBooking.enrollment.course.title,
+              teacherName,
+              classDate: formatInTimeZone(utcDate, "EEEE d 'de' MMMM", teacherTimeZone),
+              classTime: formatInTimeZone(utcDate, 'HH:mm', teacherTimeZone),
+              classLink,
+            },
+            'teacher'
+          )
+        }
 
         // Send platform notifications to both student and teacher
         // Each receives the time in their own timezone

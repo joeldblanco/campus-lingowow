@@ -294,18 +294,37 @@ interface ClassReminderData {
   classLink: string
 }
 
-export const sendClassReminderEmail = async (email: string, data: ClassReminderData) => {
+type ClassReminderRecipient = 'student' | 'teacher'
+
+export const sendClassReminderEmail = async (
+  email: string,
+  data: ClassReminderData,
+  recipient: ClassReminderRecipient = 'student'
+) => {
+  const isTeacherReminder = recipient === 'teacher'
+  const recipientName = isTeacherReminder ? data.teacherName : data.studentName
+  const counterpartLabel = isTeacherReminder ? 'Estudiante' : 'Profesor/a'
+  const counterpartName = isTeacherReminder ? data.studentName : data.teacherName
+
   await resend.emails.send({
     from: 'hello@lingowow.com',
     to: email,
-    subject: `Recordatorio: Tu clase de ${data.courseName} es hoy`,
+    subject: isTeacherReminder
+      ? `Recordatorio: Tienes una clase de ${data.courseName} hoy`
+      : `Recordatorio: Tu clase de ${data.courseName} es hoy`,
     html: renderEmailLayout({
       headerBackgroundColor: EMAIL_COLORS.primary,
       headerTitle: '¡Tu clase es hoy!',
-      headerSubtitle: 'No olvides conectarte a tiempo',
+      headerSubtitle: isTeacherReminder
+        ? 'Revisa los detalles y conéctate a tiempo'
+        : 'No olvides conectarte a tiempo',
       bodyHtml: `
-        <h3 style="margin: 0 0 16px 0; font-size: 18px; color: ${EMAIL_COLORS.text};">Hola ${data.studentName},</h3>
-        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: ${EMAIL_COLORS.body};">Te recordamos que tienes una clase programada para hoy. ¡Prepárate para aprender!</p>
+        <h3 style="margin: 0 0 16px 0; font-size: 18px; color: ${EMAIL_COLORS.text};">Hola ${recipientName},</h3>
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: ${EMAIL_COLORS.body};">${
+          isTeacherReminder
+            ? 'Te recordamos que hoy tienes una clase programada. Revisa los detalles para ingresar puntualmente.'
+            : 'Te recordamos que tienes una clase programada para hoy. ¡Prepárate para aprender!'
+        }</p>
 
         <div style="background-color: ${EMAIL_COLORS.primarySoft}; border-radius: 12px; padding: 20px; margin: 20px 0; border-left: 4px solid ${EMAIL_COLORS.primary};">
           <div style="margin-bottom: 12px;">
@@ -313,8 +332,8 @@ export const sendClassReminderEmail = async (email: string, data: ClassReminderD
             <p style="margin: 4px 0 0 0; font-size: 16px; font-weight: bold; color: ${EMAIL_COLORS.text};">${data.courseName}</p>
           </div>
           <div style="margin-bottom: 12px;">
-            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Profesor/a</p>
-            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.body};">${data.teacherName}</p>
+            <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">${counterpartLabel}</p>
+            <p style="margin: 4px 0 0 0; font-size: 16px; color: ${EMAIL_COLORS.body};">${counterpartName}</p>
           </div>
           <div style="margin-bottom: 12px;">
             <p style="margin: 0; font-size: 12px; color: ${EMAIL_COLORS.muted}; text-transform: uppercase; letter-spacing: 0.04em;">Fecha</p>
@@ -327,7 +346,9 @@ export const sendClassReminderEmail = async (email: string, data: ClassReminderD
         </div>
 
         <div style="text-align: center; margin: 24px 0;">
-          <a href="${data.classLink}" style="${emailButtonStyle(EMAIL_COLORS.primary)}">Unirse a la Clase</a>
+          <a href="${data.classLink}" style="${emailButtonStyle(EMAIL_COLORS.primary)}">${
+            isTeacherReminder ? 'Entrar al Aula' : 'Unirse a la Clase'
+          }</a>
         </div>
 
         <p style="margin: 0 0 8px 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted}; text-align: center;">El enlace estará disponible 5 minutos antes de la hora programada.</p>
