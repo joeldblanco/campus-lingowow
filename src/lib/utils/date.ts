@@ -30,7 +30,7 @@ import {
   isWithinInterval,
 } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { toZonedTime, fromZonedTime, format as formatTz, formatInTimeZone as libFormatInTimeZone } from 'date-fns-tz'
+import { toZonedTime, fromZonedTime, formatInTimeZone as libFormatInTimeZone } from 'date-fns-tz'
 
 /**
  * Parsea una fecha en formato ISO (YYYY-MM-DD) a objeto Date

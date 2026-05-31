@@ -1,5 +1,5 @@
 import { db } from '@/lib/db'
-import { convertAvailabilityToUTC, convertAvailabilityFromUTC } from '@/lib/utils/date'
+import { convertAvailabilityToUTC } from '@/lib/utils/date'
 import type { ToolResult } from '@/types/ai-chat'
 
 const DAY_ALIASES: Record<string, string> = {
@@ -9,8 +9,6 @@ const DAY_ALIASES: Record<string, string> = {
   monday: 'monday', tuesday: 'tuesday', wednesday: 'wednesday', thursday: 'thursday',
   friday: 'friday', saturday: 'saturday', sunday: 'sunday',
 }
-
-const UTC_DAY_NAMES = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
 export async function handleCheckAvailability(params: {
   slots: Array<{ dayOfWeek: string; localTime: string }>

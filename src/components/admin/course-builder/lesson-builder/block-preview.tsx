@@ -77,11 +77,9 @@ interface BlockPreviewProps {
   hideBlockHeader?: boolean // When true, hides the blue title/icon header on blocks (for Resource Builder)
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function BlockPreview({
   block,
   isTeacher,
-  isClassroom,
   isExamMode,
   examAttemptId,
   answer,

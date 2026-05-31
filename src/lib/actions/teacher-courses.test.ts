@@ -30,8 +30,8 @@ describe('assignLanguageCoursesToTeacher', () => {
       { id: 'course3' },
     ]
 
-    vi.mocked(db.course.findMany).mockResolvedValue(mockCourses as any)
-    vi.mocked(db.teacherCourse.createMany).mockResolvedValue({ count: 3 } as any)
+    vi.mocked(db.course.findMany).mockResolvedValue(mockCourses as never)
+    vi.mocked(db.teacherCourse.createMany).mockResolvedValue({ count: 3 } as never)
 
     const result = await assignLanguageCoursesToTeacher('teacher1', 'EN')
 

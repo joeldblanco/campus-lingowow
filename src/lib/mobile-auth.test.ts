@@ -24,44 +24,44 @@ describe('Mobile Auth Utils', () => {
 
   describe('hasRole', () => {
     it('should return true when user has the target role', () => {
-      const user: MobileUser = { ...mockUserBase, roles: [UserRole.STUDENT as any] }
-      expect(hasRole(user, UserRole.STUDENT as any)).toBe(true)
+      const user: MobileUser = { ...mockUserBase, roles: [UserRole.STUDENT as UserRole] }
+      expect(hasRole(user, UserRole.STUDENT as UserRole)).toBe(true)
     })
 
     it('should return true when user has multiple roles including the target role', () => {
-      const user: MobileUser = { ...mockUserBase, roles: [UserRole.STUDENT as any, UserRole.TEACHER as any] }
-      expect(hasRole(user, UserRole.STUDENT as any)).toBe(true)
-      expect(hasRole(user, UserRole.TEACHER as any)).toBe(true)
+      const user: MobileUser = { ...mockUserBase, roles: [UserRole.STUDENT as UserRole, UserRole.TEACHER as UserRole] }
+      expect(hasRole(user, UserRole.STUDENT as UserRole)).toBe(true)
+      expect(hasRole(user, UserRole.TEACHER as UserRole)).toBe(true)
     })
 
     it('should return false when user does not have the target role', () => {
-      const user: MobileUser = { ...mockUserBase, roles: [UserRole.STUDENT as any] }
-      expect(hasRole(user, UserRole.ADMIN as any)).toBe(false)
-      expect(hasRole(user, UserRole.TEACHER as any)).toBe(false)
+      const user: MobileUser = { ...mockUserBase, roles: [UserRole.STUDENT as UserRole] }
+      expect(hasRole(user, UserRole.ADMIN as UserRole)).toBe(false)
+      expect(hasRole(user, UserRole.TEACHER as UserRole)).toBe(false)
     })
 
     it('should handle empty roles array', () => {
       const user: MobileUser = { ...mockUserBase, roles: [] }
-      expect(hasRole(user, UserRole.STUDENT as any)).toBe(false)
+      expect(hasRole(user, UserRole.STUDENT as UserRole)).toBe(false)
     })
   })
 
   describe('isStudent', () => {
     it('should return true when user has the STUDENT role', () => {
-      const user: MobileUser = { ...mockUserBase, roles: [UserRole.STUDENT as any] }
+      const user: MobileUser = { ...mockUserBase, roles: [UserRole.STUDENT as UserRole] }
       expect(isStudent(user)).toBe(true)
     })
 
     it('should return true when user has the STUDENT role along with other roles', () => {
-      const user: MobileUser = { ...mockUserBase, roles: [UserRole.STUDENT as any, UserRole.TEACHER as any] }
+      const user: MobileUser = { ...mockUserBase, roles: [UserRole.STUDENT as UserRole, UserRole.TEACHER as UserRole] }
       expect(isStudent(user)).toBe(true)
     })
 
     it('should return false when user does not have the STUDENT role', () => {
-      const user: MobileUser = { ...mockUserBase, roles: [UserRole.TEACHER as any] }
+      const user: MobileUser = { ...mockUserBase, roles: [UserRole.TEACHER as UserRole] }
       expect(isStudent(user)).toBe(false)
 
-      const adminUser: MobileUser = { ...mockUserBase, roles: [UserRole.ADMIN as any] }
+      const adminUser: MobileUser = { ...mockUserBase, roles: [UserRole.ADMIN as UserRole] }
       expect(isStudent(adminUser)).toBe(false)
     })
 

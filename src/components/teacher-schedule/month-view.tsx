@@ -11,7 +11,7 @@ import {
   isSameDay,
   isToday,
 } from 'date-fns'
-import type { ScheduleLesson, AvailableSlot, BlockedSlot } from '@/types/schedule'
+import type { ScheduleLesson, AvailableSlot } from '@/types/schedule'
 import { getLessonColorClasses } from '@/types/schedule'
 import { cn } from '@/lib/utils'
 
