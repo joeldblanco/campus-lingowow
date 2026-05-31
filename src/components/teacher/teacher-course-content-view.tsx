@@ -270,6 +270,9 @@ function StandardContent({ modules, courseId }: { modules: Module[]; courseId: s
                 </div>
                 <div>
                   <h3 className="font-semibold">{module.title}</h3>
+                  {module.description && (
+                    <p className="text-sm text-muted-foreground">{module.description}</p>
+                  )}
                   <p className="text-sm text-muted-foreground">{module.lessons.length} lecciones</p>
                 </div>
               </div>

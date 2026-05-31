@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { cn, processHtmlLinks } from '@/lib/utils'
+import { getAnswerResultStatus } from '@/lib/exams/answer-result-status'
 import { WaveformAudioPlayer } from '@/components/ui/waveform-audio-player'
 import DOMPurify from 'isomorphic-dompurify'
 import {
@@ -12,6 +13,7 @@ import {
   FileText,
   Image as ImageIcon,
   Lightbulb,
+  MinusCircle,
   Target,
   Timer,
   Type,
@@ -444,33 +446,50 @@ function QuestionResultCard({ result }: { result: QuestionResult }) {
             )}
           </div>
           <div className="flex items-center gap-2">
-            <span
-              className={cn(
-                'flex items-center gap-1 font-bold text-sm',
-                isPendingReview
-                  ? 'text-yellow-600 dark:text-yellow-400'
-                  : result.isCorrect
-                    ? 'text-green-600 dark:text-green-400'
-                    : 'text-red-600 dark:text-red-400'
-              )}
-            >
-              {isPendingReview ? (
-                <>
-                  <Clock className="h-4 w-4" />
-                  Pendiente de Revisión
-                </>
-              ) : result.isCorrect ? (
-                <>
-                  <CheckCircle className="h-4 w-4" />
-                  Correcta
-                </>
-              ) : (
-                <>
-                  <XCircle className="h-4 w-4" />
-                  Incorrecta
-                </>
-              )}
-            </span>
+            {(() => {
+              const status = getAnswerResultStatus({
+                isPendingReview,
+                isCorrect: result.isCorrect,
+                pointsEarned: result.pointsEarned,
+                maxPoints: result.maxPoints,
+              })
+              const colorByStatus = {
+                pending: 'text-yellow-600 dark:text-yellow-400',
+                correct: 'text-green-600 dark:text-green-400',
+                partial: 'text-amber-600 dark:text-amber-400',
+                incorrect: 'text-red-600 dark:text-red-400',
+              } as const
+              return (
+                <span
+                  className={cn('flex items-center gap-1 font-bold text-sm', colorByStatus[status])}
+                >
+                  {status === 'pending' && (
+                    <>
+                      <Clock className="h-4 w-4" />
+                      Pendiente de Revisión
+                    </>
+                  )}
+                  {status === 'correct' && (
+                    <>
+                      <CheckCircle className="h-4 w-4" />
+                      Correcta
+                    </>
+                  )}
+                  {status === 'partial' && (
+                    <>
+                      <MinusCircle className="h-4 w-4" />
+                      Parcialmente Correcta
+                    </>
+                  )}
+                  {status === 'incorrect' && (
+                    <>
+                      <XCircle className="h-4 w-4" />
+                      Incorrecta
+                    </>
+                  )}
+                </span>
+              )
+            })()}
             <button
               onClick={() => setExpanded(!expanded)}
               className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded"
