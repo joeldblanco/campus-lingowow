@@ -853,7 +853,11 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
 
               return left.createdAt.getTime() - right.createdAt.getTime()
             })
-            .map(({ enrollment, ...lesson }) => lesson)
+            .map((entry) => {
+              const { enrollment, ...lesson } = entry
+              void enrollment
+              return lesson
+            })
         : []
 
     return {

@@ -108,19 +108,19 @@ export function computeModuleLockState(
   let gateModuleId: string | null = null
   const result: ModuleLockState[] = []
 
-  for (const module of ordered) {
+  for (const mod of ordered) {
     result.push({
-      moduleId: module.id,
+      moduleId: mod.id,
       isLocked: locked,
       blockedByModuleId: locked ? gateModuleId : null,
     })
 
     if (!locked) {
-      const blockers = blockingByModule.get(module.id) ?? []
+      const blockers = blockingByModule.get(mod.id) ?? []
       const hasUnpassedBlocker = blockers.some((exam) => !hasPassedExam(exam, attempts))
       if (hasUnpassedBlocker) {
         locked = true
-        gateModuleId = module.id
+        gateModuleId = mod.id
       }
     }
   }
