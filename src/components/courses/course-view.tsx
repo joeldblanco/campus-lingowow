@@ -10,8 +10,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Progress } from '@/components/ui/progress'
-import { ArrowLeft, BookOpen, Calendar, CheckCircle, Clock, ClipboardList, Play, Target, Trophy, User } from 'lucide-react'
+import { ArrowLeft, BookOpen, Calendar, CheckCircle, Clock, ClipboardList, Lock, Play, Target, Trophy, User } from 'lucide-react'
 import Link from 'next/link'
+import type { ModuleWithProgress } from '@/lib/course-progression'
 
 interface CourseExam {
   id: string
@@ -104,9 +105,12 @@ interface CourseViewProps {
       completedAt?: Date | null
     }>
   } | null
+  // Per-module progress + evaluation-based lock state (#92 / #147).
+  moduleProgress?: ModuleWithProgress[]
 }
 
-export function CourseView({ course, progress }: CourseViewProps) {
+export function CourseView({ course, progress, moduleProgress }: CourseViewProps) {
+  const moduleLockById = new Map((moduleProgress ?? []).map((m) => [m.moduleId, m]))
   const totalContents = progress?.totalContents || 0
   const completedContents = progress?.completedContents || 0
   const progressPercentage = progress?.progressPercentage || course.enrollment?.progress || 0
@@ -301,6 +305,8 @@ export function CourseView({ course, progress }: CourseViewProps) {
                 const moduleProgressPercentage =
                   totalModuleContents > 0 ? (moduleProgress / totalModuleContents) * 100 : 0
 
+                const isModuleLocked = moduleLockById.get(module.id)?.isLocked ?? false
+
                 return (
                   <AccordionItem
                     key={module.id}
@@ -310,11 +316,22 @@ export function CourseView({ course, progress }: CourseViewProps) {
                     <AccordionTrigger className="hover:no-underline py-4">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-4 pr-4 text-left">
                         <div className="space-y-1 flex-1">
-                          <div className="font-semibold text-lg">
+                          <div className="font-semibold text-lg flex items-center gap-2">
+                            {isModuleLocked && <Lock className="w-4 h-4 text-gray-400" />}
                             Módulo {moduleIndex + 1}: {module.title}
+                            {isModuleLocked && (
+                              <Badge variant="outline" className="text-xs font-normal">
+                                Bloqueado
+                              </Badge>
+                            )}
                           </div>
                           {module.description && (
                             <p className="text-sm text-gray-600 font-normal">{module.description}</p>
+                          )}
+                          {isModuleLocked && (
+                            <p className="text-xs text-amber-600 font-normal">
+                              Aprueba la evaluación del módulo anterior para desbloquear este contenido.
+                            </p>
                           )}
                         </div>
 
@@ -362,12 +379,19 @@ export function CourseView({ course, progress }: CourseViewProps) {
                                 </div>
 
                                 <div className="shrink-0">
-                                  <Button asChild size="sm" variant={lessonProgress > 0 && !isLessonCompleted ? "default" : "outline"}>
-                                    <Link href={`/my-courses/${course.id}/lessons/${lesson.id}`}>
-                                      <Play className="w-4 h-4 mr-2" />
-                                      {lessonProgress > 0 ? 'Continuar' : 'Comenzar'}
-                                    </Link>
-                                  </Button>
+                                  {isModuleLocked ? (
+                                    <Button size="sm" variant="outline" disabled>
+                                      <Lock className="w-4 h-4 mr-2" />
+                                      Bloqueado
+                                    </Button>
+                                  ) : (
+                                    <Button asChild size="sm" variant={lessonProgress > 0 && !isLessonCompleted ? "default" : "outline"}>
+                                      <Link href={`/my-courses/${course.id}/lessons/${lesson.id}`}>
+                                        <Play className="w-4 h-4 mr-2" />
+                                        {lessonProgress > 0 ? 'Continuar' : 'Comenzar'}
+                                      </Link>
+                                    </Button>
+                                  )}
                                 </div>
                               </div>
                             </div>

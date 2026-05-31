@@ -282,6 +282,31 @@ export async function notifyTaskAssigned(data: {
   })
 }
 
+// Notificar examen asignado al estudiante (#118)
+export async function notifyExamAssigned(data: {
+  studentId: string
+  examTitle: string
+  teacherName: string
+  examId: string
+  dueDate?: Date | null
+  instructions?: string | null
+}) {
+  const { studentId, examTitle, teacherName, examId, dueDate, instructions } = data
+
+  await createNotification({
+    userId: studentId,
+    type: NotificationType.EXAM_ASSIGNED,
+    title: 'Nuevo examen asignado',
+    message: `${teacherName} te ha asignado el examen: ${examTitle}`,
+    link: `/exams/${examId}`,
+    metadata: {
+      examId,
+      dueDate: dueDate ? dueDate.toISOString() : undefined,
+      instructions: instructions ?? undefined,
+    },
+  })
+}
+
 // Notificar confirmación de pago del profesor
 export async function notifyTeacherPaymentConfirmed(data: {
   teacherId: string

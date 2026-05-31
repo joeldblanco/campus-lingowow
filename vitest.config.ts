@@ -20,6 +20,10 @@ export default defineConfig({
       ],
     },
   },
+  esbuild: {
+    // Use React 17+ automatic JSX runtime so components don't need `import React`.
+    jsx: 'automatic',
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

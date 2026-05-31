@@ -6,6 +6,7 @@ import { CourseWithDetails } from '@/types/course'
 import { CreateCourseSchema, EditCourseSchema } from '@/schemas/courses'
 import { auditLog } from '@/lib/audit-log'
 import { auth } from '@/auth'
+import { buildModuleProgressView, type ModuleWithProgress } from '@/lib/course-progression'
 import * as z from 'zod'
 
 const enrollmentStatusPriority: Record<string, number> = {
@@ -852,7 +853,11 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
 
               return left.createdAt.getTime() - right.createdAt.getTime()
             })
-            .map(({ enrollment, ...lesson }) => lesson)
+            .map((entry) => {
+              const { enrollment, ...lesson } = entry
+              void enrollment
+              return lesson
+            })
         : []
 
     return {
@@ -988,6 +993,59 @@ export async function getCourseProgress(
   } catch (error) {
     console.error('Error fetching course progress:', error)
     throw new Error('Failed to fetch course progress')
+  }
+}
+
+/**
+ * Per-module progress (#147) + evaluation-based lock state (#92) for a student
+ * in a standard course. Locking is derived from blocking exams: as soon as a
+ * module has an unpassed blocking exam, later modules are locked. Because
+ * Exam.isBlocking defaults to false, courses without blocking exams are
+ * unaffected.
+ */
+export async function getCourseModuleProgress(
+  courseId: string,
+  userId: string
+): Promise<ModuleWithProgress[]> {
+  try {
+    const [modules, exams, completed] = await Promise.all([
+      db.module.findMany({
+        where: { courseId, isPublished: true },
+        orderBy: { order: 'asc' },
+        select: {
+          id: true,
+          order: true,
+          title: true,
+          lessons: { select: { id: true, contents: { select: { id: true } } } },
+        },
+      }),
+      db.exam.findMany({
+        where: { courseId },
+        select: { id: true, moduleId: true, isBlocking: true, passingScore: true },
+      }),
+      db.userContent.findMany({
+        where: { userId, completed: true },
+        select: { contentId: true },
+      }),
+    ])
+
+    const examIds = exams.map((e) => e.id)
+    const attempts = examIds.length
+      ? await db.examAttempt.findMany({
+          where: { userId, examId: { in: examIds } },
+          select: { examId: true, score: true },
+        })
+      : []
+
+    return buildModuleProgressView(
+      modules,
+      completed.map((c) => c.contentId),
+      exams,
+      attempts
+    )
+  } catch (error) {
+    console.error('Error fetching course module progress:', error)
+    return []
   }
 }
 

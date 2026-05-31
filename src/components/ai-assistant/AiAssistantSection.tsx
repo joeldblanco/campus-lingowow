@@ -1,8 +1,9 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Bot } from 'lucide-react'
+import { Bot, RotateCcw } from 'lucide-react'
 import { UserRole } from '@prisma/client'
 import { AiChatMessages } from './AiChatMessages'
 import { AiChatInput } from './AiChatInput'
@@ -20,8 +21,15 @@ const WELCOME_MESSAGES: Record<string, string> = {
 
 export function AiAssistantSection() {
   const { data: session } = useSession()
-  const { messages, isLoading, lastToolExecuted, pendingInteraction, sendMessage, selectOption } =
-    useAiChat()
+  const {
+    messages,
+    isLoading,
+    lastToolExecuted,
+    pendingInteraction,
+    sendMessage,
+    selectOption,
+    clearMessages,
+  } = useAiChat()
 
   const userRoles = session?.user?.roles ?? []
   const primaryRole = userRoles.includes(UserRole.ADMIN)
@@ -42,10 +50,25 @@ export function AiAssistantSection() {
   return (
     <Card className="mt-6">
       <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-base font-semibold">
-          <Bot className="h-5 w-5 text-primary" />
-          Asistente Lingowow
-        </CardTitle>
+        <div className="flex items-center justify-between gap-2">
+          <CardTitle className="flex items-center gap-2 text-base font-semibold">
+            <Bot className="h-5 w-5 text-primary" />
+            Asistente Lingowow
+          </CardTitle>
+          {messages.length > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={clearMessages}
+              disabled={isLoading}
+              className="h-8 gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+              aria-label="Nueva conversación"
+            >
+              <RotateCcw className="h-3.5 w-3.5" />
+              Nueva conversación
+            </Button>
+          )}
+        </div>
       </CardHeader>
       <CardContent className="p-0">
         <div className="flex flex-col" style={{ height: '480px' }}>

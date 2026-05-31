@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { auth } from '@/auth'
 import { getLessonForStudent } from '@/lib/actions/lessons'
+import { getCourseModuleProgress } from '@/lib/actions/courses'
 import { notFound, redirect } from 'next/navigation'
 import { LessonHeader } from '@/components/lessons/lesson-header'
 import { LessonContent } from '@/components/lessons/lesson-content'
@@ -25,6 +26,16 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
   if (!lesson) {
     notFound()
+  }
+
+  // #92: prevent deep-linking into a lesson whose module is locked by a blocking
+  // exam the student hasn't passed yet.
+  if (lesson.module?.id) {
+    const moduleProgress = await getCourseModuleProgress(courseId, session.user.id)
+    const moduleState = moduleProgress.find((m) => m.moduleId === lesson.module?.id)
+    if (moduleState?.isLocked) {
+      redirect(`/my-courses/${courseId}`)
+    }
   }
 
   // Check if all activities are completed

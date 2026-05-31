@@ -14,8 +14,12 @@ export function useAiChat() {
       if (!content.trim() || isLoading) return
 
       const userMessage: ChatMessage = { role: 'user', content: content.trim() }
-      const updatedMessages = [...messages, userMessage]
-      setMessages(updatedMessages)
+      // Use functional update so we never serialize a stale `messages` snapshot.
+      let updatedMessages: ChatMessage[] = []
+      setMessages((prev) => {
+        updatedMessages = [...prev, userMessage]
+        return updatedMessages
+      })
       setIsLoading(true)
       setLastToolExecuted(undefined)
       setPendingInteraction(undefined)
@@ -64,7 +68,7 @@ export function useAiChat() {
         setIsLoading(false)
       }
     },
-    [messages, isLoading]
+    [isLoading]
   )
 
   const selectOption = useCallback(

@@ -37,7 +37,7 @@ describe('Class Access Validation', () => {
       const result = validateClassAccess(day, timeSlot, true)
 
       expect(result.canAccess).toBe(false)
-      expect(result.reason).toContain('minutos antes de la clase')
+      expect(result.reason).toContain('para poder acceder a la clase')
     })
 
     it('should allow teacher during class time', () => {

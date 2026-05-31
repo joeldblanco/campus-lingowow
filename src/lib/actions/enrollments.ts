@@ -10,7 +10,8 @@ import {
   getStartOfDayUTC,
   getEndOfDayUTC,
 } from '@/lib/utils/date'
-import { verifyPaypalTransaction, createInvoiceFromPaypal } from '@/lib/actions/commercial'
+import { verifyPaypalTransaction, createInvoiceFromPaypal, verifyLingowowInvoice } from '@/lib/actions/commercial'
+import { validateScheduleBlocks, type EnrollmentPlanBlocks } from '@/lib/enrollment-blocks'
 import { auditLog } from '@/lib/audit-log'
 import { auth } from '@/auth'
 import { notifySelfServiceEnrollmentCreated } from '@/lib/enrollments/self-service-enrollment'
@@ -439,6 +440,9 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
   try {
     // Variables para el flujo de PayPal
     let paypalCheck: { success: boolean; data?: unknown; error?: string } | null = null
+    // Plan asociado al pago/factura. Define cuántos bloques de horario incluye la
+    // inscripción (ver validación de bloques requeridos más abajo - card #140).
+    let matchedPlan: EnrollmentPlanBlocks | null = null
 
     // 1. Verificar según tipo de factura
     if (data.invoiceType === 'paypal') {
@@ -456,6 +460,9 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
         }
       }
 
+      matchedPlan =
+        (paypalCheck.data as { matchedPlan?: EnrollmentPlanBlocks | null })?.matchedPlan ?? null
+
       // Check if invoice already exists
       const existingInvoice = await db.invoice.findFirst({
         where: { paypalOrderId: data.paypalOrderId },
@@ -472,8 +479,13 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
         return { success: false, error: 'El número de factura Lingowow es requerido' }
       }
       console.log('[Enrollment] Using Lingowow Invoice:', data.lingowowInvoiceNumber)
-      // Las facturas Lingowow no requieren verificación externa
-      // Solo se usa como referencia para validar la inscripción
+      // Las facturas Lingowow no requieren verificación externa, pero sí
+      // consultamos la factura para conocer el plan (y sus bloques incluidos).
+      const lingowowCheck = await verifyLingowowInvoice(data.lingowowInvoiceNumber)
+      if (lingowowCheck.success && lingowowCheck.data) {
+        matchedPlan =
+          (lingowowCheck.data as { matchedPlan?: EnrollmentPlanBlocks | null }).matchedPlan ?? null
+      }
     }
 
     // 2. Check if enrollment already exists
@@ -519,6 +531,18 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
 
     if (!academicPeriod) {
       return { success: false, error: 'Período académico no encontrado' }
+    }
+
+    // #140: para cursos sincrónicos, no permitir crear la inscripción si no se
+    // seleccionó la cantidad de bloques de horario que incluye el plan.
+    if (course.isSynchronous) {
+      const selectedBlocks = data.isRecurring
+        ? data.weeklySchedule.length
+        : data.scheduledClasses.length
+      const blocksError = validateScheduleBlocks(selectedBlocks, matchedPlan, data.isRecurring)
+      if (blocksError) {
+        return { success: false, error: blocksError }
+      }
     }
 
     // Determinar el estado según las fechas del período académico

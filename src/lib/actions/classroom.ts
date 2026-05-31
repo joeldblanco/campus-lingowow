@@ -2,6 +2,7 @@
 
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
+import { buildLibraryResourceContents } from '@/lib/library-content'
 
 // Fetch the full course structure (Modules > Lessons) for a given booking
 // This allows the teacher to navigate and select lessons.
@@ -155,46 +156,10 @@ export async function getContentById(contentId: string, contentType: 'lesson' | 
         where: { id: contentId },
       })
       if (resource) {
-        // Process content - ensure it's valid HTML
-        let processedContent = resource.content || `<p>${resource.description || ''}</p>`
-        
-        // If content looks like JSON stringified, try to parse it
-        if (processedContent.startsWith('{') || processedContent.startsWith('[')) {
-          try {
-            const parsed = JSON.parse(processedContent)
-            // If it's a blocks object from the resource builder, convert to HTML
-            if (parsed.blocks && Array.isArray(parsed.blocks)) {
-              processedContent = parsed.blocks.map((block: { type: string; content?: string }) => {
-                if (block.type === 'text' && block.content) {
-                  return block.content
-                }
-                return ''
-              }).join('')
-            } else if (parsed.html) {
-              processedContent = parsed.html
-            }
-          } catch {
-            // Not JSON, use as-is
-          }
-        }
-        
-        // Ensure we have valid HTML content
-        if (!processedContent.trim()) {
-          processedContent = `<p>${resource.description || 'Sin contenido disponible'}</p>`
-        }
-
-        // Create a synthetic content block from the library resource
-        const syntheticContent = {
-          id: `content-${resource.id}`,
-          type: 'text',
-          order: 0,
-          data: { html: processedContent },
-          lessonId: resource.id,
-          parentId: null,
-          createdAt: resource.createdAt,
-          updatedAt: resource.updatedAt,
-          children: [],
-        }
+        // Convert the stored content into per-block synthetic contents so every
+        // block type renders (fixes #164) and unrecognized shapes never leak as
+        // raw JSON (fixes #152). See buildLibraryResourceContents.
+        const contents = buildLibraryResourceContents(resource)
 
         // Map LibraryResource to a lesson-like format for the viewer
         return {
@@ -208,7 +173,7 @@ export async function getContentById(contentId: string, contentType: 'lesson' | 
           videoUrl: resource.fileUrl,
           summary: resource.excerpt,
           transcription: null,
-          contents: [syntheticContent],
+          contents,
           createdAt: resource.createdAt,
           updatedAt: resource.updatedAt,
           // Extra fields for library resources

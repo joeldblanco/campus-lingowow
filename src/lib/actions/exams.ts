@@ -5,6 +5,7 @@ import { auth } from '@/auth'
 import { revalidatePath } from 'next/cache'
 import { CreateExamSchema, EditExamSchema, AssignExamSchema } from '@/schemas/exams'
 import { auditLog } from '@/lib/audit-log'
+import { notifyExamAssigned } from '@/lib/actions/notifications'
 import * as z from 'zod'
 import { AttemptStatus, AssignmentStatus, ExamType, Prisma, UserRole } from '@prisma/client'
 import type {
@@ -701,6 +702,33 @@ export async function assignExamToStudents(
     )
 
     revalidatePath('/admin/exams')
+
+    // #118: notificar a cada estudiante que se le asignó un examen (best-effort;
+    // un fallo de notificación no debe revertir la asignación ya persistida).
+    try {
+      const [exam, assigner] = await Promise.all([
+        db.exam.findUnique({ where: { id: validatedData.examId }, select: { title: true } }),
+        db.user.findUnique({ where: { id: currentUserId }, select: { name: true } }),
+      ])
+      if (exam) {
+        const teacherName = assigner?.name || 'Tu profesor'
+        await Promise.allSettled(
+          validatedData.studentIds.map((studentId) =>
+            notifyExamAssigned({
+              studentId,
+              examTitle: exam.title,
+              teacherName,
+              examId: validatedData.examId,
+              dueDate: validatedData.dueDate ? new Date(validatedData.dueDate) : null,
+              instructions: validatedData.instructions,
+            })
+          )
+        )
+      }
+    } catch (notifyError) {
+      console.error('Error sending exam assignment notifications:', notifyError)
+    }
+
     return { success: true, assignments }
   } catch (error) {
     console.error('Error assigning exam to students:', error)
