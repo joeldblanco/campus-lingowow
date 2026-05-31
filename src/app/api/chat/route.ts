@@ -6,8 +6,11 @@ import type {
   Tool,
 } from '@google/generative-ai'
 import { NextRequest, NextResponse } from 'next/server'
+import * as z from 'zod'
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
+import { rateLimit, getRateLimitHeaders } from '@/lib/rate-limit'
+import { AiChatRequestSchema } from '@/schemas/chat'
 import { handleCheckAvailability } from '@/lib/chat-tools/check-availability'
 import { handleRescheduleClass } from '@/lib/chat-tools/reschedule-class'
 import { handleCheckInvoice } from '@/lib/chat-tools/check-invoice'
@@ -30,90 +33,12 @@ import {
 } from '@/lib/chat-tools/admin-reschedule-class'
 import { handleAdminCalculateClassDates } from '@/lib/chat-tools/admin-calculate-class-dates'
 import { buildSystemPrompt } from '@/lib/chat-prompts'
-import type { ChatMessage, ChatInteraction, ToolResult } from '@/types/ai-chat'
+import { buildInteractionFromToolResult } from '@/lib/chat-interaction'
+import type { ToolResult } from '@/types/ai-chat'
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '')
-
-/**
- * Build a ChatInteraction from a tool result that contains structured selection data.
- * This converts "multiple matches found" results into clickable button options in the UI.
- */
-function buildInteractionFromToolResult(
-  toolResult: ToolResult | undefined
-): ChatInteraction | undefined {
-  if (!toolResult || !toolResult.data || typeof toolResult.data !== 'object') return undefined
-
-  const data = toolResult.data as Record<string, unknown>
-  const code = data.code as string | undefined
-  if (!code) return undefined
-
-  switch (code) {
-    case 'MULTIPLE_STUDENTS': {
-      const students = data.students as Array<{ name: string; email: string }> | undefined
-      if (!students?.length) return undefined
-      return {
-        kind: 'single-select',
-        prompt: 'Selecciona el estudiante:',
-        options: students.map((s) => ({
-          id: s.email,
-          label: `${s.name} (${s.email})`,
-        })),
-        allowFreeText: false,
-      }
-    }
-    case 'MULTIPLE_TEACHERS': {
-      const teachers = data.teachers as Array<{ name: string; email: string }> | undefined
-      if (!teachers?.length) return undefined
-      return {
-        kind: 'single-select',
-        prompt: 'Selecciona el profesor:',
-        options: teachers.map((t) => ({
-          id: t.email,
-          label: `${t.name} (${t.email})`,
-        })),
-        allowFreeText: false,
-      }
-    }
-    case 'MULTIPLE_INVOICES': {
-      const invoices = data.invoices as
-        | Array<{
-            id: string
-            invoiceNumber: string
-            planName?: string
-            total: number
-            currency: string
-            paidAt?: string
-          }>
-        | undefined
-      if (!invoices?.length) return undefined
-      return {
-        kind: 'single-select',
-        prompt: 'Selecciona la factura:',
-        options: invoices.map((inv) => ({
-          id: inv.id,
-          label: `${inv.invoiceNumber}: ${inv.planName ?? 'Sin plan'} ($${inv.total} ${inv.currency})`,
-          payload: { invoiceId: inv.id },
-        })),
-        allowFreeText: false,
-      }
-    }
-    case 'MULTIPLE_USERS': {
-      const users = data.users as Array<{ name: string; email: string }> | undefined
-      if (!users?.length) return undefined
-      return {
-        kind: 'single-select',
-        prompt: 'Selecciona el usuario:',
-        options: users.map((u) => ({
-          id: u.email,
-          label: `${u.name} (${u.email})`,
-        })),
-        allowFreeText: false,
-      }
-    }
-    default:
-      return undefined
-  }
-}
+const genAI = process.env.GEMINI_API_KEY
+  ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+  : null
 
 const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
   check_teacher_availability: {
@@ -601,37 +526,44 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
   },
 }
 
-function getToolsForRole(roles: string[]): FunctionDeclaration[] {
+export function getToolsForRole(roles: string[]): FunctionDeclaration[] {
   const tools: FunctionDeclaration[] = [ALL_FUNCTION_DECLARATIONS.check_teacher_availability]
 
-  if (roles.includes('ADMIN')) {
-    tools.push(ALL_FUNCTION_DECLARATIONS.admin_create_invoice)
-    tools.push(ALL_FUNCTION_DECLARATIONS.admin_send_invoice)
-    tools.push(ALL_FUNCTION_DECLARATIONS.admin_list_invoices)
-    tools.push(ALL_FUNCTION_DECLARATIONS.admin_check_invoice_payment)
-    tools.push(ALL_FUNCTION_DECLARATIONS.admin_schedule_class)
-    tools.push(ALL_FUNCTION_DECLARATIONS.admin_enroll_student)
-    tools.push(ALL_FUNCTION_DECLARATIONS.admin_get_student_classes)
-    tools.push(ALL_FUNCTION_DECLARATIONS.admin_reschedule_class)
-    tools.push(ALL_FUNCTION_DECLARATIONS.admin_calculate_class_dates)
+  const isAdmin = roles.includes('ADMIN')
+  const isStudent = roles.includes('STUDENT')
+  const isGuest = roles.includes('GUEST')
+
+  if (isAdmin) {
+    tools.push(
+      ALL_FUNCTION_DECLARATIONS.admin_create_invoice,
+      ALL_FUNCTION_DECLARATIONS.admin_send_invoice,
+      ALL_FUNCTION_DECLARATIONS.admin_list_invoices,
+      ALL_FUNCTION_DECLARATIONS.admin_check_invoice_payment,
+      ALL_FUNCTION_DECLARATIONS.admin_schedule_class,
+      ALL_FUNCTION_DECLARATIONS.admin_enroll_student,
+      ALL_FUNCTION_DECLARATIONS.admin_get_student_classes,
+      ALL_FUNCTION_DECLARATIONS.admin_reschedule_class,
+      ALL_FUNCTION_DECLARATIONS.admin_calculate_class_dates
+    )
   }
 
-  if (roles.includes('STUDENT')) {
-    tools.push(ALL_FUNCTION_DECLARATIONS.get_upcoming_classes)
-    tools.push(ALL_FUNCTION_DECLARATIONS.schedule_class)
-    tools.push(ALL_FUNCTION_DECLARATIONS.schedule_recurring_classes)
-    tools.push(ALL_FUNCTION_DECLARATIONS.reschedule_class)
+  if (isStudent) {
+    tools.push(
+      ALL_FUNCTION_DECLARATIONS.get_upcoming_classes,
+      ALL_FUNCTION_DECLARATIONS.schedule_class,
+      ALL_FUNCTION_DECLARATIONS.schedule_recurring_classes,
+      ALL_FUNCTION_DECLARATIONS.reschedule_class
+    )
   }
 
-  // Both STUDENT and GUEST can check invoices and create payment links
-  // (students may need to renew or their enrollment may have expired)
-  if (roles.includes('GUEST') || roles.includes('STUDENT')) {
-    tools.push(ALL_FUNCTION_DECLARATIONS.check_invoice_status)
-    tools.push(ALL_FUNCTION_DECLARATIONS.create_payment_link)
-  }
-
-  if (roles.includes('STUDENT') || roles.includes('GUEST')) {
-    tools.push(ALL_FUNCTION_DECLARATIONS.notify_admin_telegram)
+  // Both STUDENT and GUEST can check invoices, create payment links, and ping
+  // the admin team (students may need to renew or have expired enrollments).
+  if (isStudent || isGuest) {
+    tools.push(
+      ALL_FUNCTION_DECLARATIONS.check_invoice_status,
+      ALL_FUNCTION_DECLARATIONS.create_payment_link,
+      ALL_FUNCTION_DECLARATIONS.notify_admin_telegram
+    )
   }
 
   return tools
@@ -639,9 +571,28 @@ function getToolsForRole(roles: string[]): FunctionDeclaration[] {
 
 export async function POST(req: NextRequest) {
   try {
+    if (!genAI) {
+      console.error('[Chat API] GEMINI_API_KEY is not configured')
+      return NextResponse.json(
+        { success: false, error: 'AI assistant is not configured' },
+        { status: 503 }
+      )
+    }
+
     const session = await auth()
     if (!session?.user?.id) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const rateLimitResult = rateLimit(`chat:${session.user.id}`, {
+      windowMs: 60_000,
+      maxRequests: 20,
+    })
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { success: false, error: 'Demasiadas solicitudes. Espera un momento.' },
+        { status: 429, headers: getRateLimitHeaders(rateLimitResult) }
+      )
     }
 
     const rawUser = await db.user.findUnique({
@@ -655,12 +606,24 @@ export async function POST(req: NextRequest) {
 
     const user = { ...rawUser, timezone: rawUser.timezone || 'America/Lima' }
 
-    const body = (await req.json()) as { messages: ChatMessage[] }
-    const messages = body.messages
-
-    if (!messages || messages.length === 0) {
-      return NextResponse.json({ success: false, error: 'No messages provided' }, { status: 400 })
+    let body: unknown
+    try {
+      body = await req.json()
+    } catch {
+      return NextResponse.json({ success: false, error: 'Invalid JSON body' }, { status: 400 })
     }
+
+    const parsed = AiChatRequestSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: parsed.error.errors.map((e) => e.message).join(', '),
+        },
+        { status: 400, headers: getRateLimitHeaders(rateLimitResult) }
+      )
+    }
+    const messages = parsed.data.messages
 
     const currentDate = new Intl.DateTimeFormat('es', {
       timeZone: user.timezone,
@@ -707,6 +670,7 @@ export async function POST(req: NextRequest) {
     let result = await chat.sendMessage(lastMessage.content)
     let toolExecuted: string | undefined
     let lastToolResult: ToolResult | undefined
+    let lastToolMessage: string | undefined
     let nudged = false
     let capturedPaymentUrl: string | undefined
     let capturedPreNudgeText: string | undefined
@@ -793,26 +757,31 @@ export async function POST(req: NextRequest) {
             toolResult = await handleCheckInvoice(user.id)
             break
 
-          case 'create_payment_link':
-            console.log('[Chat API] create_payment_link args:', JSON.stringify(call.args))
+          case 'create_payment_link': {
+            const paymentArgs = call.args as {
+              programType: string
+              planType: string
+              startNow: boolean
+              desiredDay: string
+              desiredTime: string
+            }
+            console.log(
+              `[Chat API] create_payment_link program=${paymentArgs.programType} plan=${paymentArgs.planType} startNow=${paymentArgs.startNow}`
+            )
             toolResult = await handleCreatePaymentLink({
-              ...(call.args as {
-                programType: string
-                planType: string
-                startNow: boolean
-                desiredDay: string
-                desiredTime: string
-              }),
+              ...paymentArgs,
               userEmail: user.email ?? '',
               userName: user.name ?? 'Usuario',
               userId: user.id,
             })
-            console.log('[Chat API] create_payment_link result:', JSON.stringify(toolResult))
+            console.log(
+              `[Chat API] create_payment_link success=${toolResult.success} hasUrl=${!!(toolResult.success && toolResult.data && (toolResult.data as { paymentUrl?: string }).paymentUrl)}`
+            )
             if (toolResult.success && toolResult.data) {
               capturedPaymentUrl = (toolResult.data as { paymentUrl: string }).paymentUrl
-              console.log('[Chat API] capturedPaymentUrl:', capturedPaymentUrl)
             }
             break
+          }
 
           case 'notify_admin_telegram':
             toolResult = await handleNotifyAdmin({
@@ -938,6 +907,9 @@ export async function POST(req: NextRequest) {
         }
 
         lastToolResult = toolResult
+        if (toolResult.message) {
+          lastToolMessage = toolResult.message
+        }
 
         functionResponses.push({
           functionResponse: { name: call.name, response: { result: toolResult } },
@@ -971,16 +943,6 @@ export async function POST(req: NextRequest) {
       // Gemini returned no text parts — rawText stays empty
     }
 
-    // Collect the last tool result message as a fallback if Gemini produced no text
-    const lastToolMessage =
-      functionResponses.length > 0
-        ? (
-            functionResponses[functionResponses.length - 1] as {
-              functionResponse?: { response?: { result?: { message?: string } } }
-            }
-          ).functionResponse?.response?.result?.message
-        : undefined
-
     let finalText: string
 
     if (!rawText && capturedPaymentUrl) {
@@ -988,18 +950,10 @@ export async function POST(req: NextRequest) {
       finalText = `¡Listo! Aquí está tu link de pago:\n\n${capturedPaymentUrl}\n\nTambién te lo enviamos a tu correo. Una vez que completes el pago tu inscripción se activará automáticamente.`
     } else if (!rawText && lastToolMessage) {
       // Gemini returned empty text but a tool left a human-readable message — use that.
-      console.log('[Chat API] Using lastToolMessage as fallback:', lastToolMessage)
       finalText = lastToolMessage
     } else if (!rawText) {
       console.log(
-        '[Chat API] FALLBACK: rawText is empty, no capturedPaymentUrl, no lastToolMessage'
-      )
-      console.log('[Chat API]  functionResponses count:', functionResponses.length)
-      console.log(
-        '[Chat API]  nudged:',
-        nudged,
-        'preNudgeText:',
-        capturedPreNudgeText?.slice(0, 50)
+        `[Chat API] empty response (nudged=${nudged} functionResponses=${functionResponses.length})`
       )
       // If nudging failed but we captured the pre-nudge text, use that instead of the generic error
       finalText =
@@ -1026,15 +980,24 @@ export async function POST(req: NextRequest) {
     // Build interaction (clickable buttons) from the last tool result if applicable
     const interaction = buildInteractionFromToolResult(lastToolResult)
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        response: finalText,
-        ...(toolExecuted && { toolExecuted }),
-        ...(interaction && { interaction }),
+    return NextResponse.json(
+      {
+        success: true,
+        data: {
+          response: finalText,
+          ...(toolExecuted && { toolExecuted }),
+          ...(interaction && { interaction }),
+        },
       },
-    })
+      { headers: getRateLimitHeaders(rateLimitResult) }
+    )
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { success: false, error: error.errors.map((e) => e.message).join(', ') },
+        { status: 400 }
+      )
+    }
     console.error('[Chat API] Error:', error)
     return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 })
   }

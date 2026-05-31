@@ -41,6 +41,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { ScheduleSelectorStep } from './schedule-selector-step'
 import { useTimezone } from '@/hooks/use-timezone'
+import type { EnrollmentPlanBlocks } from '@/lib/enrollment-blocks'
 
 const CreateEnrollmentSchema = z.object({
   studentId: z.string().min(1, 'Debes seleccionar un estudiante'),
@@ -109,6 +110,8 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
     userName: string
     email: string
   } | null>(null)
+  // #140: bloques de horario que incluye el plan detectado del pago/factura.
+  const [matchedPlanBlocks, setMatchedPlanBlocks] = useState<EnrollmentPlanBlocks | null>(null)
 
   const form = useForm<z.infer<typeof CreateEnrollmentSchema>>({
     resolver: zodResolver(CreateEnrollmentSchema),
@@ -131,16 +134,19 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
 
   useEffect(() => {
     setVerifiedPaymentAmount(null)
+    setMatchedPlanBlocks(null)
   }, [paypalOrderId])
 
   useEffect(() => {
     setVerifiedLingowowData(null)
+    setMatchedPlanBlocks(null)
   }, [lingowowInvoiceNumber])
 
   // Reset verification when switching invoice type
   useEffect(() => {
     setVerifiedPaymentAmount(null)
     setVerifiedLingowowData(null)
+    setMatchedPlanBlocks(null)
   }, [invoiceType])
 
   // Obtener el curso seleccionado
@@ -179,11 +185,16 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
         
         if (result.data.matchedPlan) {
           messages.push(`Plan: ${result.data.matchedPlan.name}`)
+          setMatchedPlanBlocks({
+            includesClasses: result.data.matchedPlan.includesClasses,
+            classesPerWeek: result.data.matchedPlan.classesPerWeek,
+            classesPerPeriod: result.data.matchedPlan.classesPerPeriod,
+          })
         }
 
         // Try to find student by email
         if (result.data.email) {
-          const matchedStudent = students.find(s => 
+          const matchedStudent = students.find(s =>
             s.email.toLowerCase() === result.data.email.toLowerCase()
           )
           if (matchedStudent) {
@@ -191,7 +202,7 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
             messages.push(`Estudiante detectado: ${formatUserName(matchedStudent)}`)
           }
         }
-        
+
         toast.success(messages.join(' • '))
       } else {
         setVerifiedPaymentAmount(null)
@@ -236,11 +247,16 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
         
         if (result.data.matchedPlan) {
           messages.push(`Plan: ${result.data.matchedPlan.name}`)
+          setMatchedPlanBlocks({
+            includesClasses: result.data.matchedPlan.includesClasses,
+            classesPerWeek: result.data.matchedPlan.classesPerWeek,
+            classesPerPeriod: result.data.matchedPlan.classesPerPeriod,
+          })
         }
 
         // Try to find student by email
         if (result.data.email) {
-          const matchedStudent = students.find(s => 
+          const matchedStudent = students.find(s =>
             s.email.toLowerCase() === result.data.email.toLowerCase()
           )
           if (matchedStudent) {
@@ -248,7 +264,7 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
             messages.push(`Estudiante detectado: ${result.data.userName}`)
           }
         }
-        
+
         toast.success(messages.join(' • '))
       } else {
         setVerifiedLingowowData(null)
@@ -399,6 +415,7 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
     form.reset()
     setVerifiedPaymentAmount(null)
     setVerifiedLingowowData(null)
+    setMatchedPlanBlocks(null)
   }
 
   return (
@@ -434,6 +451,7 @@ export function CreateEnrollmentDialog({ children, onEnrollmentCreated }: Create
             periodEndDate={new Date(selectedPeriod.endDate)}
             onScheduleConfirmed={handleScheduleConfirmed}
             onBack={() => setCurrentStep('basic')}
+            planBlocks={matchedPlanBlocks}
           />
         ) : (
           <Form {...form}>

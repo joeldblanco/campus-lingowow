@@ -16,6 +16,7 @@ const notificationTypeConfig: Record<
   TASK_ASSIGNED: { icon: '📝', color: 'bg-purple-500', label: 'Tarea Asignada' },
   TASK_SUBMITTED: { icon: '📤', color: 'bg-indigo-500', label: 'Tarea Enviada' },
   TASK_GRADED: { icon: '⭐', color: 'bg-yellow-500', label: 'Tarea Calificada' },
+  EXAM_ASSIGNED: { icon: '📋', color: 'bg-violet-500', label: 'Examen Asignado' },
   PAYMENT_RECEIVED: { icon: '💰', color: 'bg-emerald-500', label: 'Pago Recibido' },
   PAYMENT_CONFIRMED: { icon: '💳', color: 'bg-green-500', label: 'Pago Confirmado' },
   TEACHER_PAYMENT_CONFIRMED: { icon: '✔️', color: 'bg-teal-500', label: 'Pago de Profesor' },

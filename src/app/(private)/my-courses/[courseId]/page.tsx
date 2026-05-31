@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { auth } from '@/auth'
-import { getCourseForPublicView, getCourseProgress } from '@/lib/actions/courses'
+import { getCourseForPublicView, getCourseProgress, getCourseModuleProgress } from '@/lib/actions/courses'
 import { CourseView } from '@/components/courses/course-view'
 import { CourseLoadingSkeleton } from '@/components/courses/course-loading-skeleton'
 import { notFound, redirect } from 'next/navigation'
@@ -26,16 +26,20 @@ export default async function CoursePage({ params }: CoursePageProps) {
   }
 
   // Get course progress for enrolled students
-  const progress = session?.user?.id 
-    ? await getCourseProgress(courseId, session.user.id)
-    : null
+  const [progress, moduleProgress] = session?.user?.id
+    ? await Promise.all([
+        getCourseProgress(courseId, session.user.id),
+        getCourseModuleProgress(courseId, session.user.id),
+      ])
+    : [null, []]
 
   return (
     <div className="container mx-auto px-4 py-8">
       <Suspense fallback={<CourseLoadingSkeleton />}>
-        <CourseView 
+        <CourseView
           course={course}
           progress={progress}
+          moduleProgress={moduleProgress}
         />
       </Suspense>
     </div>

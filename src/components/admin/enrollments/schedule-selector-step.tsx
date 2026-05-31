@@ -14,6 +14,11 @@ import { format, isBefore, parseISO, eachDayOfInterval, getDay, addDays, startOf
 import { es } from 'date-fns/locale'
 import { cn } from '@/lib/utils'
 import { useTimezone } from '@/hooks/use-timezone'
+import {
+  getRequiredScheduleBlocks,
+  validateScheduleBlocks,
+  type EnrollmentPlanBlocks,
+} from '@/lib/enrollment-blocks'
 
 interface Teacher {
   id: string
@@ -58,6 +63,8 @@ interface ScheduleSelectorStepProps {
     weeklySchedule: ScheduleSlot[]
   ) => void
   onBack: () => void
+  // Bloques de horario que incluye el plan comprado (card #140).
+  planBlocks?: EnrollmentPlanBlocks | null
 }
 
 const DAYS_OF_WEEK_MAP: Record<string, number> = {
@@ -103,6 +110,7 @@ export function ScheduleSelectorStep({
   periodEndDate,
   onScheduleConfirmed,
   onBack,
+  planBlocks,
 }: ScheduleSelectorStepProps) {
   const { timezone: userTimezone } = useTimezone()
   const [teachers, setTeachers] = useState<Teacher[]>([])
@@ -381,6 +389,11 @@ export function ScheduleSelectorStep({
 
   const scheduledClasses = calculateScheduledClasses()
 
+  // #140: cantidad de bloques que el plan exige seleccionar (null = sin requisito).
+  const requiredBlocks = getRequiredScheduleBlocks(planBlocks, isRecurring)
+  const selectedBlockCount = isRecurring ? selectedSlots.size : scheduledClasses.length
+  const meetsBlockRequirement = requiredBlocks === null || selectedBlockCount >= requiredBlocks
+
   // Confirmar selección
   const handleConfirm = () => {
     if (!selectedTeacher) {
@@ -390,6 +403,13 @@ export function ScheduleSelectorStep({
 
     if (selectedSlots.size === 0) {
       toast.error('Debes seleccionar al menos un horario')
+      return
+    }
+
+    // #140: bloquear creación si no se seleccionaron los bloques requeridos por el plan.
+    const blocksError = validateScheduleBlocks(selectedBlockCount, planBlocks, isRecurring)
+    if (blocksError) {
+      toast.error(blocksError)
       return
     }
 
@@ -706,6 +726,11 @@ export function ScheduleSelectorStep({
                   <span className="text-sm font-medium">
                     {selectedSlots.size} horarios seleccionados
                     {isRecurring && ` • ${scheduledClasses.length} clases totales`}
+                    {requiredBlocks !== null && (
+                      <span className={cn('ml-1', meetsBlockRequirement ? 'text-primary' : 'text-destructive')}>
+                        • {selectedBlockCount}/{requiredBlocks} bloques requeridos
+                      </span>
+                    )}
                   </span>
                 </div>
                 <Button variant="outline" size="sm" onClick={() => setSelectedSlots(new Set())}>
@@ -865,7 +890,7 @@ export function ScheduleSelectorStep({
         </Button>
         <Button
           onClick={handleConfirm}
-          disabled={!selectedTeacher || selectedSlots.size === 0}
+          disabled={!selectedTeacher || selectedSlots.size === 0 || !meetsBlockRequirement}
         >
           Confirmar y Crear Inscripción
           <ChevronRight className="h-4 w-4 ml-2" />

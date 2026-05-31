@@ -23,13 +23,13 @@ export default function MetodoPage() {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center text-center gap-4">
               <Badge variant="outline" className="w-fit">
-                Metodología Probada
+                Nuestra Metodología
               </Badge>
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
                 Nuestro Método de Enseñanza
               </h1>
               <p className="text-muted-foreground max-w-[700px]">
-                Un enfoque comunicativo e inmersivo que garantiza resultados reales. 
+                Un enfoque comunicativo e inmersivo orientado a resultados reales.
                 Aprende de forma natural, práctica y efectiva.
               </p>
             </div>
@@ -44,8 +44,8 @@ export default function MetodoPage() {
                 Los 3 Pilares de Nuestro Método
               </h2>
               <p className="text-muted-foreground max-w-[700px] mx-auto">
-                Nuestra metodología se basa en tres principios fundamentales que han demostrado 
-                ser los más efectivos para el aprendizaje de idiomas.
+                Nuestra metodología se basa en tres principios fundamentales para
+                el aprendizaje de idiomas.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -107,8 +107,8 @@ export default function MetodoPage() {
                 Cómo Funciona Nuestro Proceso
               </h2>
               <p className="text-muted-foreground max-w-[700px] mx-auto">
-                Un camino estructurado y probado que te llevará desde tu nivel actual 
-                hasta la fluidez que deseas alcanzar.
+                Un camino estructurado que te acompaña desde tu nivel actual
+                hacia la fluidez que deseas alcanzar.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -252,21 +252,21 @@ export default function MetodoPage() {
             <div className="max-w-3xl mx-auto">
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold tracking-tight mb-4">
-                  Resultados Garantizados
+                  Qué Puedes Esperar
                 </h2>
                 <p className="text-muted-foreground">
-                  Nuestro método ha ayudado a miles de estudiantes a alcanzar sus objetivos. 
-                  Esto es lo que puedes esperar:
+                  Nuestro método está orientado a ayudarte a alcanzar tus objetivos.
+                  Esto es en lo que nos enfocamos contigo:
                 </p>
               </div>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="h-6 w-6 text-green-500 flex-shrink-0 mt-0.5" />
                   <div>
-                    <h3 className="font-semibold mb-1">Fluidez Conversacional en 6-8 Meses</h3>
+                    <h3 className="font-semibold mb-1">Avance hacia la Fluidez Conversacional</h3>
                     <p className="text-sm text-muted-foreground">
-                      Con práctica regular, alcanzarás un nivel B1-B2 que te permitirá mantener 
-                      conversaciones fluidas en situaciones cotidianas.
+                      Con práctica regular irás progresando para mantener conversaciones
+                      con mayor confianza en situaciones cotidianas.
                     </p>
                   </div>
                 </div>
@@ -282,18 +282,10 @@ export default function MetodoPage() {
                 <div className="flex items-start gap-3">
                   <CheckCircle className="h-6 w-6 text-green-500 flex-shrink-0 mt-0.5" />
                   <div>
-                    <h3 className="font-semibold mb-1">Preparación para Certificaciones</h3>
+                    <h3 className="font-semibold mb-1">Práctica Orientada a tus Objetivos</h3>
                     <p className="text-sm text-muted-foreground">
-                      Te preparamos para exámenes oficiales como TOEFL, IELTS, DELE y otros.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="h-6 w-6 text-green-500 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-semibold mb-1">Garantía de Satisfacción</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Si no estás satisfecho en los primeros 30 días, te devolvemos tu dinero.
+                      Trabajamos contigo las habilidades que necesitas según tus metas,
+                      ya sea para estudio, trabajo o viajes.
                     </p>
                   </div>
                 </div>
@@ -310,7 +302,7 @@ export default function MetodoPage() {
                 ¿Listo para Empezar?
               </h2>
               <p className="text-muted-foreground max-w-[600px]">
-                Únete a miles de estudiantes que ya están aprendiendo con nuestro método probado.
+                Empieza a aprender con nuestro método y avanza a tu propio ritmo.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/demo">

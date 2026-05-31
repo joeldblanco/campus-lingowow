@@ -2380,6 +2380,9 @@ enum NotificationType {
   TASK_SUBMITTED // Tarea enviada (para profesor)
   TASK_GRADED // Tarea calificada (para estudiante)
 
+  // Exámenes
+  EXAM_ASSIGNED // Examen asignado (para estudiante)
+
   // Pagos y finanzas
   PAYMENT_RECEIVED // Nuevo pago recibido (para admin)
   PAYMENT_CONFIRMED // Pago confirmado (para estudiante)

@@ -6,7 +6,9 @@ export const CreateUserSchema = z
     name: z.string().min(2, {
       message: 'Name must be at least 2 characters.',
     }),
-    lastName: z.string().optional(),
+    lastName: z.string().min(2, {
+      message: 'Last name must be at least 2 characters.',
+    }),
     email: z.string().email({
       message: 'Please enter a valid email address.',
     }),

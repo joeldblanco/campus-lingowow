@@ -1,10 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { useShopStore } from './useShopStore'
-import type { CartItem } from '@/types/shop'
+import { ProductTypeEnum, type CartItem, type ProductType } from '@/types/shop'
 
 // Helper function to create mock products with all required fields for CartItem and Course compatibility
-const createMockProduct = (id: string) => ({
+const createMockProduct = (id: string, type: ProductType = ProductTypeEnum.COURSE) => ({
   id,
+  type,
   name: `Product ${id}`,
   title: `Product ${id}`, // Required for CartItem compatibility
   slug: `product-${id}`,
@@ -49,8 +50,12 @@ const createMockPlan = (id: string, price: number = 100) => ({
   features: [],
 })
 
-const createMockCartItem = (productId: string, planId: string): CartItem => ({
-  product: createMockProduct(productId),
+const createMockCartItem = (
+  productId: string,
+  planId: string,
+  type: ProductType = ProductTypeEnum.COURSE
+): CartItem => ({
+  product: createMockProduct(productId, type),
   plan: createMockPlan(planId),
 })
 
@@ -486,7 +491,7 @@ describe('useShopStore - Getters', () => {
 
     it('should return false when cart has only merchandise', () => {
       const store = useShopStore.getState()
-      const merchItem = createMockCartItem('product-1', 'plan-1')
+      const merchItem = createMockCartItem('product-1', 'plan-1', ProductTypeEnum.MERCHANDISE)
 
       store.addToCart(merchItem)
 
@@ -500,8 +505,8 @@ describe('useShopStore - Getters', () => {
 
     it('should return true when cart has mix of courses and merchandise', () => {
       const store = useShopStore.getState()
-      const courseItem = createMockCartItem('product-1', 'plan-1')
-      const merchItem = createMockCartItem('product-2', 'plan-1')
+      const courseItem = createMockCartItem('product-1', 'plan-1', ProductTypeEnum.COURSE)
+      const merchItem = createMockCartItem('product-2', 'plan-1', ProductTypeEnum.MERCHANDISE)
 
       store.addToCart(courseItem)
       store.addToCart(merchItem)
@@ -513,7 +518,7 @@ describe('useShopStore - Getters', () => {
   describe('getHasMerchandise', () => {
     it('should return true when cart has merchandise', () => {
       const store = useShopStore.getState()
-      const merchItem = createMockCartItem('product-1', 'plan-1')
+      const merchItem = createMockCartItem('product-1', 'plan-1', ProductTypeEnum.MERCHANDISE)
 
       store.addToCart(merchItem)
 
@@ -522,7 +527,7 @@ describe('useShopStore - Getters', () => {
 
     it('should return false when cart has only courses', () => {
       const store = useShopStore.getState()
-      const courseItem = createMockCartItem('product-1', 'plan-1')
+      const courseItem = createMockCartItem('product-1', 'plan-1', ProductTypeEnum.COURSE)
 
       store.addToCart(courseItem)
 
@@ -536,8 +541,8 @@ describe('useShopStore - Getters', () => {
 
     it('should return true when cart has mix of courses and merchandise', () => {
       const store = useShopStore.getState()
-      const courseItem = createMockCartItem('product-1', 'plan-1')
-      const merchItem = createMockCartItem('product-2', 'plan-1')
+      const courseItem = createMockCartItem('product-1', 'plan-1', ProductTypeEnum.COURSE)
+      const merchItem = createMockCartItem('product-2', 'plan-1', ProductTypeEnum.MERCHANDISE)
 
       store.addToCart(courseItem)
       store.addToCart(merchItem)

@@ -63,13 +63,25 @@ export function validateClassAccess(
     const secondsUntilStart = Math.floor(millisecondsUntilStart / 1000)
     const secondsUntilEnd = Math.floor(millisecondsUntilEnd / 1000)
 
+    // La clase ya terminó: nadie (profesor ni estudiante) puede acceder.
+    if (secondsUntilEnd <= 0) {
+      return {
+        canAccess: false,
+        reason: 'La clase ya ha finalizado',
+        minutesUntilStart,
+        minutesUntilEnd,
+        secondsUntilStart,
+        secondsUntilEnd,
+      }
+    }
+
     // Profesores pueden acceder 10 minutos antes
     if (isTeacher) {
       if (minutesUntilStart > 10) {
         const waitMinutes = minutesUntilStart - 10
         const hours = Math.floor(waitMinutes / 60)
         const mins = waitMinutes % 60
-        
+
         let reason = 'Faltan '
         if (hours > 0) {
           reason += `${hours} ${hours === 1 ? 'hora' : 'horas'}`
@@ -78,7 +90,7 @@ export function validateClassAccess(
           reason += `${mins} ${mins === 1 ? 'minuto' : 'minutos'}`
         }
         reason += ' para poder acceder a la clase'
-        
+
         return {
           canAccess: false,
           reason,

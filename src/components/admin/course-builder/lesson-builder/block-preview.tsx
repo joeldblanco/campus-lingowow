@@ -59,7 +59,8 @@ import * as LucideIcons from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import { toast } from 'sonner'
-import { cn, processHtmlLinks } from '@/lib/utils'
+import { cn } from '@/lib/utils'
+import { sanitizeHtml } from '@/lib/sanitize-html'
 import { EssayAIGrading as EssayAIGradingButton } from '@/components/lessons/essay-ai-grading'
 import { RecordingAIGrading } from '@/components/lessons/recording-ai-grading'
 import { useClassroomSync } from '@/components/classroom/use-classroom-sync'
@@ -304,7 +305,7 @@ function TextBlockPreview({ block, hideHeader }: { block: TextBlock; hideHeader?
       <div className="prose prose-sm max-w-none text-foreground rich-text-content">
         {content.includes('<') ? (
           <div
-            dangerouslySetInnerHTML={{ __html: processHtmlLinks(content) }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }}
             className="leading-relaxed"
           />
         ) : (
@@ -4371,7 +4372,7 @@ function TeacherNotesBlockPreview({
       {block.content ? (
         <div
           className="prose prose-sm max-w-none text-gray-700 leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: processHtmlLinks(block.content) }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(block.content) }}
         />
       ) : (
         <p className="text-gray-500 italic text-sm">

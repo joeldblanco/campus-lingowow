@@ -4,6 +4,7 @@ import { db } from '@/lib/db'
 import { auth } from '@/auth'
 import { revalidatePath } from 'next/cache'
 import { AssignmentStatus } from '@prisma/client'
+import { notifyExamAssigned } from '@/lib/actions/notifications'
 
 /**
  * Obtiene los exámenes de un curso creados por el profesor actual
@@ -223,6 +224,30 @@ export async function assignExamToStudents(
     )
 
     revalidatePath(`/teacher/courses/${exam.courseId}`)
+
+    // #118: notificar a cada estudiante que se le asignó un examen (best-effort).
+    try {
+      const assigner = await db.user.findUnique({
+        where: { id: teacherId },
+        select: { name: true },
+      })
+      const teacherName = assigner?.name || 'Tu profesor'
+      await Promise.allSettled(
+        studentIds.map((studentId) =>
+          notifyExamAssigned({
+            studentId,
+            examTitle: exam.title,
+            teacherName,
+            examId,
+            dueDate: dueDate ?? null,
+            instructions: instructions ?? null,
+          })
+        )
+      )
+    } catch (notifyError) {
+      console.error('Error sending exam assignment notifications:', notifyError)
+    }
+
     return { success: true, assignments }
   } catch (error) {
     console.error('Error assigning exam to students:', error)

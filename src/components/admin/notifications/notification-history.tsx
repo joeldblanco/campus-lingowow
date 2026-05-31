@@ -43,6 +43,7 @@ const notificationTypeLabels: Record<NotificationType, string> = {
   TASK_ASSIGNED: 'Tarea Asignada',
   TASK_SUBMITTED: 'Tarea Enviada',
   TASK_GRADED: 'Tarea Calificada',
+  EXAM_ASSIGNED: 'Examen Asignado',
   PAYMENT_RECEIVED: 'Pago Recibido',
   PAYMENT_CONFIRMED: 'Pago Confirmado',
   TEACHER_PAYMENT_CONFIRMED: 'Pago de Profesor',
