@@ -28,8 +28,16 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '50mb',
     },
   },
-  // Esto evita errores de compilación con las dependencias de puppeteer en el servidor
-  serverExternalPackages: ['puppeteer-core', '@sparticuz/chromium'],
+  // Esto evita errores de compilación con las dependencias de puppeteer en el servidor.
+  // isomorphic-dompurify/jsdom se marcan como externos para que NO se empaqueten: jsdom
+  // lee archivos (p. ej. browser/default-stylesheet.css) con fs en runtime, y al bundlear
+  // se rompía con ENOENT en la función serverless (500 en SSR, p. ej. /classroom).
+  serverExternalPackages: [
+    'puppeteer-core',
+    '@sparticuz/chromium',
+    'isomorphic-dompurify',
+    'jsdom',
+  ],
   eslint: {
     ignoreDuringBuilds: true,
   },
