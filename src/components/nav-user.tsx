@@ -1,6 +1,7 @@
 'use client'
 
 import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles } from 'lucide-react'
+import Link from 'next/link'
 
 import { UserAvatar } from '@/components/ui/user-avatar'
 import {
@@ -97,9 +98,11 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Cuenta
+              <DropdownMenuItem asChild>
+                <Link href="/settings/security">
+                  <BadgeCheck />
+                  Cuenta
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <CreditCard />
