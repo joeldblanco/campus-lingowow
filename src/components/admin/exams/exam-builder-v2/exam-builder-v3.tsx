@@ -1546,6 +1546,34 @@ function ExamSettingsForm({
         />
       </div>
 
+      {/* Course progression (#92) */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="pr-4">
+            <Label>Bloquear avance hasta aprobar</Label>
+            <p className="text-xs text-muted-foreground">
+              El estudiante no podrá acceder a los módulos siguientes del curso hasta aprobar este
+              examen. Requiere asignar el examen a un módulo (sección &quot;Asignar a Curso&quot;).
+            </p>
+          </div>
+          <Switch
+            checked={settings.isBlocking}
+            onCheckedChange={(checked) => onUpdate({ ...settings, isBlocking: checked })}
+          />
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div className="pr-4">
+            <Label>Examen opcional</Label>
+            <p className="text-xs text-muted-foreground">No es obligatorio para completar el curso.</p>
+          </div>
+          <Switch
+            checked={settings.isOptional}
+            onCheckedChange={(checked) => onUpdate({ ...settings, isOptional: checked })}
+          />
+        </div>
+      </div>
+
       {/* Options */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">

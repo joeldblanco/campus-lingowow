@@ -344,6 +344,26 @@ export function EditExamDialog({ exam, open, onOpenChange }: EditExamDialogProps
                 )}
               />
 
+              {/* Course progression (#92) */}
+              <FormField
+                control={form.control}
+                name="isBlocking"
+                render={({ field }) => (
+                  <FormItem className="flex items-center justify-between rounded-lg border p-3">
+                    <div className="space-y-0.5 pr-4">
+                      <FormLabel>Bloquear avance hasta aprobar</FormLabel>
+                      <p className="text-xs text-muted-foreground">
+                        El estudiante no podrá acceder a los módulos siguientes del curso hasta
+                        aprobar este examen. Requiere que el examen esté asignado a un módulo.
+                      </p>
+                    </div>
+                    <FormControl>
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
               {/* Proctoring Settings */}
               <Card className="border-amber-200 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-900/10">
                 <CardHeader className="pb-3">
