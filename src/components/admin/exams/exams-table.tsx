@@ -40,11 +40,13 @@ import { EditExamDialog } from './edit-exam-dialog'
 import { ViewExamDialog } from './view-exam-dialog'
 import { AssignExamDialog } from './assign-exam-dialog'
 import { toast } from 'sonner'
-import { deleteExam, updateExam } from '@/lib/actions/exams'
+import { deleteExam, updateExam, getExamResultsForExport } from '@/lib/actions/exams'
+import { downloadCSV } from '@/components/analytics/export-button'
+import { buildExamResultRows } from '@/lib/exams/exam-result-rows'
 import { formatFullName } from '@/lib/utils/name-formatter'
 import { ExamWithDetails, EXAM_TYPE_LABELS, ExamTypeValue } from '@/types/exam'
 import { useRouter } from 'next/navigation'
-import { ClipboardCheck, GraduationCap, Stethoscope, Dumbbell } from 'lucide-react'
+import { ClipboardCheck, GraduationCap, Stethoscope, Dumbbell, Download } from 'lucide-react'
 
 interface ExamsTableProps {
   exams: ExamWithDetails[]
@@ -145,6 +147,26 @@ export function ExamsTable({ exams }: ExamsTableProps) {
     } else {
       toast.error('Error al actualizar el estado del examen')
     }
+  }
+
+  const handleExportResults = async (exam: ExamWithDetails) => {
+    const result = await getExamResultsForExport(exam.id)
+    if (!result.success || !result.data) {
+      toast.error(result.error || 'No se pudieron obtener los resultados')
+      return
+    }
+    const rows = buildExamResultRows(result.data.attempts)
+    if (rows.length === 0) {
+      toast.error('Este examen aún no tiene intentos para exportar')
+      return
+    }
+    const safeTitle =
+      exam.title
+        .replace(/[^a-z0-9]+/gi, '-')
+        .replace(/(^-|-$)/g, '')
+        .toLowerCase() || 'examen'
+    downloadCSV(rows, `resultados-${safeTitle}`)
+    toast.success('Resultados exportados')
   }
 
   const getStatusBadge = (exam: ExamWithDetails) => {
@@ -364,6 +386,10 @@ export function ExamsTable({ exams }: ExamsTableProps) {
                 <DropdownMenuItem onClick={() => router.push(`/teacher/exams/${exam.id}/results`)}>
                   <BarChart3 className="h-4 w-4 mr-2" />
                   Ver Resultados
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleExportResults(exam)}>
+                  <Download className="h-4 w-4 mr-2" />
+                  Exportar Resultados
                 </DropdownMenuItem>
                 {/* Solo mostrar opción de asignar si el examen NO tiene curso o si el curso es personalizado */}
                 {(!exam.courseId || exam.course?.isPersonalized) && (

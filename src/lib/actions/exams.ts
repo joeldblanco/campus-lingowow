@@ -663,6 +663,65 @@ export async function getCoursesForExams() {
   }
 }
 
+export interface ExamResultsExport {
+  exam: { id: string; title: string; passingScore: number }
+  attempts: Array<{
+    attemptNumber: number
+    status: AttemptStatus
+    score: number | null
+    totalPoints: number | null
+    maxPoints: number | null
+    timeSpent: number | null
+    submittedAt: Date | null
+    recommendedLevel: string | null
+    user: { name: string | null; lastName: string | null; email: string | null } | null
+  }>
+}
+
+/**
+ * Admin-only: gathers an exam's attempts (with the student) for the results
+ * export. Trello card "Diseñar reporte exportación de exámenes".
+ */
+export async function getExamResultsForExport(
+  examId: string
+): Promise<{ success: boolean; data?: ExamResultsExport; error?: string }> {
+  try {
+    const session = await auth()
+    if (!session?.user?.id || !session.user.roles?.includes(UserRole.ADMIN)) {
+      return { success: false, error: 'No autorizado' }
+    }
+
+    const exam = await db.exam.findUnique({
+      where: { id: examId },
+      select: { id: true, title: true, passingScore: true },
+    })
+    if (!exam) {
+      return { success: false, error: 'Examen no encontrado' }
+    }
+
+    const attempts = await db.examAttempt.findMany({
+      where: { examId },
+      select: {
+        attemptNumber: true,
+        status: true,
+        score: true,
+        totalPoints: true,
+        maxPoints: true,
+        timeSpent: true,
+        submittedAt: true,
+        recommendedLevel: true,
+        user: { select: { name: true, lastName: true, email: true } },
+      },
+      orderBy: [{ userId: 'asc' }, { attemptNumber: 'asc' }],
+    })
+
+    return { success: true, data: { exam, attempts } }
+  } catch (error) {
+    console.error('Error getting exam results for export:', error)
+    return { success: false, error: 'Error al obtener los resultados del examen' }
+  }
+}
+
 export async function assignExamToStudents(
   data: z.infer<typeof AssignExamSchema>
 ): Promise<ExamAssignResponse> {
