@@ -54,6 +54,11 @@ model User {
   accounts      Account[]
   teacherRankId String?
 
+  // Autenticación de dos factores (2FA) — TOTP opt-in
+  twoFactorEnabled       Boolean  @default(false)
+  twoFactorSecret        String? // Secreto TOTP (base32); null si 2FA está desactivado
+  twoFactorRecoveryCodes String[] @default([]) // Hashes bcrypt de códigos de recuperación de un solo uso
+
   // Relaciones comunes
   createdCourses       Course[]
   createdActivities    Activity[]          @relation("ActivityCreator")
