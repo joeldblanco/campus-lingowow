@@ -6,6 +6,7 @@ import { db } from '@/lib/db'
 import { getCurrentDate, getTodayStart, addDaysToDate, getDayOfWeek, isSameDayDate } from '@/lib/utils/date'
 import { notifyTaskAssigned } from '@/lib/actions/notifications'
 import { formatFullName } from '@/lib/utils/name-formatter'
+import { computeActivityLocks } from '@/lib/activities/activity-locks'
 
 // Crear una nueva actividad
 export async function createActivity(data: ActivityFormValues) {
@@ -343,7 +344,7 @@ export async function getActivitiesByLevel(level: number, userId?: string) {
     })
 
     // Mapear actividades con estado de progreso del usuario
-    return activities.map((activity) => ({
+    const mapped = activities.map((activity) => ({
       id: activity.id,
       title: activity.title,
       description: activity.description,
@@ -357,7 +358,16 @@ export async function getActivitiesByLevel(level: number, userId?: string) {
       duration: activity.duration,
       level: activity.level,
       completed: userId ? activity.userProgress?.[0]?.status === 'COMPLETED' : false,
-      locked: false, // TODO: Implementar lógica de bloqueo basada en prerrequisitos
+    }))
+
+    // Bloqueo secuencial por prerrequisitos: una actividad se desbloquea cuando
+    // la anterior (por orden) está completada. Solo aplica a usuarios autenticados;
+    // los invitados ven todo desbloqueado (no tienen contexto de progreso).
+    const locks = userId ? computeActivityLocks(mapped) : mapped.map(() => false)
+
+    return mapped.map((activity, index) => ({
+      ...activity,
+      locked: locks[index],
     }))
   } catch (error) {
     console.error('Error obteniendo actividades por nivel:', error)
