@@ -10,6 +10,7 @@ import {
   ConnectionState,
 } from 'livekit-client'
 import { VideoTrack } from './video-grid'
+import { classifyConnectionError, type ConnectionErrorKind } from '@/lib/classroom/connection-error'
 
 interface DeviceError {
   type: 'camera' | 'microphone' | 'both'
@@ -20,6 +21,7 @@ interface DeviceError {
 interface LiveKitContextType {
   isInitialized: boolean
   connectionStatus: 'disconnected' | 'connecting' | 'connected' | 'failed'
+  connectionErrorKind: ConnectionErrorKind | null
   localTracks: VideoTrack | undefined
   remoteTracks: VideoTrack[]
   joinRoom: (roomName: string, token: string | null) => Promise<void>
@@ -64,6 +66,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
   >('disconnected')
   const connectionStatusRef = useRef(connectionStatus)
   connectionStatusRef.current = connectionStatus
+  const [connectionErrorKind, setConnectionErrorKind] = useState<ConnectionErrorKind | null>(null)
 
   const roomRef = useRef<Room | null>(null)
   const commandListenersRef = useRef<Map<string, Set<(values: Record<string, unknown>) => void>>>(
@@ -224,6 +227,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
     async (roomName: string, token: string | null) => {
       if (!token) {
         console.error('[LiveKit] No token provided')
+        setConnectionErrorKind(classifyConnectionError(false, null))
         setConnectionStatus('failed')
         return
       }
@@ -236,6 +240,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
 
       try {
         isConnectingRef.current = true
+        setConnectionErrorKind(null)
         setConnectionStatus('connecting')
 
         const serverUrl = process.env.NEXT_PUBLIC_LIVEKIT_URL
@@ -607,9 +612,11 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
         })
 
         setConnectionStatus('connected')
+        setConnectionErrorKind(null)
         isConnectingRef.current = false
       } catch (e) {
         console.error('[LiveKit] Connect Exception:', e)
+        setConnectionErrorKind(classifyConnectionError(true, e))
         joinAttemptRef.current += 1
         // Clean up the failed room to allow fresh retry
         if (roomRef.current) {
@@ -880,6 +887,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
       value={{
         isInitialized,
         connectionStatus,
+        connectionErrorKind,
         localTracks: localTrackFormatted,
         remoteTracks: Array.from(remoteParticipants.values()),
         joinRoom,

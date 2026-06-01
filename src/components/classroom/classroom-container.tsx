@@ -11,6 +11,7 @@ import { ActiveLessonViewer } from './active-lesson-viewer'
 import { ClassroomLayout } from './classroom-layout'
 import { ControlBar } from './control-bar'
 import { LiveKitProvider, useLiveKit } from './livekit-context'
+import { getConnectionErrorCopy } from '@/lib/classroom/connection-error'
 import { DeviceErrorBanner } from './device-error-banner'
 import { VideoGrid } from './video-grid'
 import { ExcalidrawWhiteboard } from './excalidraw-whiteboard'
@@ -49,6 +50,7 @@ function ClassroomInner({
     isInitialized,
     joinRoom,
     connectionStatus,
+    connectionErrorKind,
     localTracks,
     remoteTracks,
     toggleVideo,
@@ -464,11 +466,12 @@ function ClassroomInner({
 
   if (connectionStatus === 'failed') {
     const isAutoRetrying = retryCountRef.current < 3
+    const errorCopy = getConnectionErrorCopy(connectionErrorKind ?? 'network')
     return (
       <div className="h-screen w-full flex items-center justify-center bg-[#202124]">
         <div className="text-center max-w-md p-6 bg-[#292a2d] rounded-xl shadow-lg">
-          <h2 className="text-xl font-bold text-red-400 mb-2">Error de Conexión</h2>
-          <p className="text-white/60 mb-4">No pudimos conectar con el servidor de video.</p>
+          <h2 className="text-xl font-bold text-red-400 mb-2">{errorCopy.title}</h2>
+          <p className="text-white/60 mb-4">{errorCopy.message}</p>
           {isAutoRetrying ? (
             <div className="flex items-center justify-center gap-2 text-white/50 mb-4">
               <Loader2 className="w-4 h-4 animate-spin" />
