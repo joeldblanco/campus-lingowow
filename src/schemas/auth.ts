@@ -28,6 +28,9 @@ export const SignInSchema = z.object({
     .string({ required_error: 'La contraseña es requerida' })
     .min(8, 'La contraseña debe tener al menos 8 caracteres'),
   timezone: z.string().optional(),
+  // Código 2FA opcional (TOTP de 6 dígitos o código de recuperación), solo
+  // requerido cuando el usuario tiene la autenticación de dos factores activa.
+  code: z.string().optional(),
 })
 
 export const SignUpSchema = z

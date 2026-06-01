@@ -111,7 +111,7 @@ export const login = async (values: z.infer<typeof SignInSchema>, callbackUrl?: 
     return { error: 'Campos inválidos' }
   }
 
-  const { email, password, timezone } = validatedFields.data
+  const { email, password, timezone, code } = validatedFields.data
 
   // Normalizar email a minúsculas
   const normalizedEmail = email.toLowerCase()
@@ -140,10 +140,29 @@ export const login = async (values: z.infer<typeof SignInSchema>, callbackUrl?: 
     return { redirect: `/auth/verification?email=${existingUser.email}` }
   }
 
+  // Autenticación de dos factores: si el usuario la tiene activa, confirmamos
+  // primero la contraseña (para no revelar el estado 2FA ante contraseñas
+  // incorrectas) y, si aún no llega el código, pedimos al formulario que lo
+  // solicite. La verificación real del código ocurre en `authorize`.
+  const is2FA = !!(existingUser.twoFactorEnabled && existingUser.twoFactorSecret)
+  if (is2FA) {
+    if (!existingUser.password) {
+      return { error: 'Credenciales inválidas' }
+    }
+    const passwordValid = await bcrypt.compare(password, existingUser.password)
+    if (!passwordValid) {
+      return { error: 'Credenciales inválidas' }
+    }
+    if (!code) {
+      return { twoFactorRequired: true as const }
+    }
+  }
+
   try {
     await signIn('credentials', {
       email,
       password,
+      code,
       redirect: false,
     })
 
@@ -170,7 +189,12 @@ export const login = async (values: z.infer<typeof SignInSchema>, callbackUrl?: 
 
       switch (error.type) {
         case 'CredentialsSignin':
-          return { error: 'Credenciales inválidas' }
+          // Password was already verified above for 2FA users, so a failure
+          // here means the 2FA code was missing/invalid — keep the form in 2FA
+          // mode with a precise message.
+          return is2FA
+            ? { error: 'Código de verificación inválido', twoFactorRequired: true as const }
+            : { error: 'Credenciales inválidas' }
         case 'AccessDenied':
           return { error: 'Acceso denegado' }
         default:

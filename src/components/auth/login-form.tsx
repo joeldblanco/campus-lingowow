@@ -19,13 +19,14 @@ import { Loader2, ChevronLeft } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useTransition, useEffect } from 'react'
+import { useTransition, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
 export function LoginForm() {
   const [isPending, startTransition] = useTransition()
+  const [twoFactorRequired, setTwoFactorRequired] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl')
@@ -36,6 +37,7 @@ export function LoginForm() {
       email: '',
       password: '',
       timezone: '',
+      code: '',
     },
   })
 
@@ -48,6 +50,17 @@ export function LoginForm() {
     startTransition(() => {
       login(data, callbackUrl)
         .then((data) => {
+          // 2FA: the server confirmed the password and is asking for the code.
+          if (data && 'twoFactorRequired' in data && data.twoFactorRequired) {
+            setTwoFactorRequired(true)
+            if ('error' in data && data.error) {
+              toast.error(data.error as string)
+            } else {
+              toast.info('Ingresa el código de tu app de autenticación')
+            }
+            return
+          }
+
           if (data && 'error' in data) {
             toast.error(data.error as string)
             return
@@ -134,8 +147,43 @@ export function LoginForm() {
                 )}
               />
             </div>
+            {twoFactorRequired && (
+              <div className="grid gap-2">
+                <FormField
+                  control={loginForm.control}
+                  name="code"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Código de verificación</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={isPending}
+                          inputMode="numeric"
+                          autoComplete="one-time-code"
+                          autoFocus
+                          placeholder="123456"
+                          data-testid="twofactor-input"
+                          {...field}
+                        />
+                      </FormControl>
+                      <p className="text-xs text-muted-foreground">
+                        Ingresa el código de 6 dígitos de tu app de autenticación, o uno de tus
+                        códigos de recuperación.
+                      </p>
+                      <FormMessage data-testid="twofactor-error" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
             <Button type="submit" className="w-full" data-testid="login-button">
-              {isPending ? <Loader2 className="animate-spin" /> : 'Iniciar sesión'}
+              {isPending ? (
+                <Loader2 className="animate-spin" />
+              ) : twoFactorRequired ? (
+                'Verificar'
+              ) : (
+                'Iniciar sesión'
+              )}
             </Button>
             <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
               <span className="relative z-10 bg-background px-2 text-muted-foreground">
