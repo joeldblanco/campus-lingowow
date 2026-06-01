@@ -40,6 +40,7 @@ import {
   File,
   Eye,
   Heart,
+  Bookmark,
   Lock,
   Crown,
 } from 'lucide-react'
@@ -167,6 +168,7 @@ const [language, setLanguage] = useState(() => {
     return urlLanguage === 'en' ? 'en' : 'en'
   })
   const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'newest')
+  const [savedOnly, setSavedOnly] = useState(false)
 
   const fetchCategories = useCallback(async () => {
     try {
@@ -204,6 +206,9 @@ const [language, setLanguage] = useState(() => {
       if (language) {
         params.set('language', language)
       }
+      if (savedOnly) {
+        params.set('saved', 'true')
+      }
 
       const response = await fetch(`/api/library?${params.toString()}`)
       if (response.ok) {
@@ -218,7 +223,7 @@ const [language, setLanguage] = useState(() => {
     } finally {
       setLoading(false)
     }
-  }, [pagination.page, pagination.limit, sortBy, selectedCategory, searchQuery, selectedFormats, selectedLevels, language])
+  }, [pagination.page, pagination.limit, sortBy, selectedCategory, searchQuery, selectedFormats, selectedLevels, language, savedOnly])
 
   useEffect(() => {
     fetchCategories()
@@ -576,21 +581,41 @@ const [language, setLanguage] = useState(() => {
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
               <h2 className="text-2xl font-bold flex items-center gap-2">
                 <Sparkles className="h-5 w-5 text-primary" />
-                {sortBy === 'popular' ? 'Todos los Recursos' : 'Últimas Adiciones'}
+                {savedOnly
+                  ? 'Guardados'
+                  : sortBy === 'popular'
+                    ? 'Todos los Recursos'
+                    : 'Últimas Adiciones'}
               </h2>
-              <div className="flex items-center gap-2 bg-background rounded-lg p-1 border shadow-sm">
-                <span className="text-xs font-medium text-muted-foreground pl-2">Ordenar por:</span>
-                <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="border-none shadow-none w-auto">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="newest">Más Recientes</SelectItem>
-                    <SelectItem value="oldest">Más Antiguos</SelectItem>
-                    <SelectItem value="popular">Más Populares</SelectItem>
-                    <SelectItem value="alphabetical">Alfabético</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  variant={savedOnly ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => {
+                    setSavedOnly((v) => !v)
+                    setPagination((p) => ({ ...p, page: 1 }))
+                  }}
+                  className="gap-2"
+                  aria-pressed={savedOnly}
+                >
+                  <Bookmark className={`h-4 w-4 ${savedOnly ? 'fill-current' : ''}`} />
+                  Guardados
+                </Button>
+                <div className="flex items-center gap-2 bg-background rounded-lg p-1 border shadow-sm">
+                  <span className="text-xs font-medium text-muted-foreground pl-2">Ordenar por:</span>
+                  <Select value={sortBy} onValueChange={setSortBy}>
+                    <SelectTrigger className="border-none shadow-none w-auto">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="newest">Más Recientes</SelectItem>
+                      <SelectItem value="oldest">Más Antiguos</SelectItem>
+                      <SelectItem value="popular">Más Populares</SelectItem>
+                      <SelectItem value="alphabetical">Alfabético</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
 

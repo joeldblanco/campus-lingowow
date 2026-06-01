@@ -3,6 +3,7 @@ import { db } from '@/lib/db'
 import { auth } from '@/auth'
 import { LibraryResourceStatus, LibraryResourceType } from '@prisma/client'
 import { getUserAccessInfo } from '@/lib/library-access'
+import { buildLibraryListWhere } from '@/lib/library/library-list-where'
 
 export async function GET(request: NextRequest) {
   try {
@@ -18,6 +19,7 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search')
     const sort = searchParams.get('sort') || 'newest'
     const featured = searchParams.get('featured') === 'true'
+    const savedOnly = searchParams.get('saved') === 'true'
 
     const skip = (page - 1) * limit
 
@@ -39,21 +41,31 @@ export async function GET(request: NextRequest) {
         orderBy = { publishedAt: 'desc' }
     }
 
+    // The "saved/favorites" view only makes sense for a logged-in user; a guest
+    // has nothing saved, so return an empty list instead of every resource.
+    if (savedOnly && !session?.user?.id) {
+      return NextResponse.json({
+        resources: [],
+        featuredResource: null,
+        popularResources: [],
+        pagination: { page, limit, total: 0, totalPages: 0 },
+        userAccess: {
+          accessibleLevels: userAccessInfo.accessibleLevels,
+          hasActiveSubscription: userAccessInfo.hasActiveSubscription,
+          hasPremiumPlan: userAccessInfo.hasPremiumPlan,
+        },
+      })
+    }
+
     // Fetch all resources (including restricted) for display with access badges
-    const allResourcesWhere: Record<string, unknown> = {
-      status: LibraryResourceStatus.PUBLISHED,
-    }
-    if (type) allResourcesWhere.type = type
-    if (category) allResourcesWhere.category = { slug: category }
-    if (level) allResourcesWhere.level = level
-    if (language) allResourcesWhere.language = language
-    if (search) {
-      allResourcesWhere.OR = [
-        { title: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } },
-        { tags: { has: search } },
-      ]
-    }
+    const allResourcesWhere = buildLibraryListWhere({
+      type,
+      category,
+      level,
+      language,
+      search,
+      savedByUserId: savedOnly ? session?.user?.id ?? null : null,
+    })
 
     // Get all resources for display (with access level info)
     const allResources = await db.libraryResource.findMany({
