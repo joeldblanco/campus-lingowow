@@ -526,7 +526,10 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
   },
 }
 
-export function getToolsForRole(roles: string[]): FunctionDeclaration[] {
+// Internal helper — must NOT be exported from a route file. Next.js route
+// modules may only export HTTP handlers + config; a stray export fails the
+// generated route type-check (it is only used within this file).
+function getToolsForRole(roles: string[]): FunctionDeclaration[] {
   const tools: FunctionDeclaration[] = [ALL_FUNCTION_DECLARATIONS.check_teacher_availability]
 
   const isAdmin = roles.includes('ADMIN')
