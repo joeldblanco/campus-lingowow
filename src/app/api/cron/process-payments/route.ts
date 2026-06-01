@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { db as prisma } from '@/lib/db'
 import { Prisma } from '@prisma/client'
 import { chargeRecurrentNiubizToken } from '@/lib/niubiz'
@@ -13,16 +13,13 @@ function getFirstMondayOfNextMonth(date: Date): Date {
   return nextMonday(start)
 }
 
-export async function GET(req: Request) {
-  // 1. Security Check (Vercel Cron)
+export async function GET(req: NextRequest) {
+  // 1. Security Check (Vercel Cron) — enforce CRON_SECRET like every other cron.
+  // This route is publicly reachable on each deploy even when not scheduled, so
+  // the guard must reject any caller without the secret (no dev bypass).
   const authHeader = req.headers.get('authorization')
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    // Ideally use CRON_SECRET, but if not set in dev, maybe bypass or fail.
-    // For now, logging warning but allowing if env is dev, or fail.
-    // Assuming strict check as per best practice.
-    if (process.env.NODE_ENV === 'production') {
-      // return new NextResponse('Unauthorized', { status: 401 });
-    }
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
