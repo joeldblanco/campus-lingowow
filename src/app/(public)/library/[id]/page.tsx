@@ -54,7 +54,7 @@ import { parseArticleContent } from '@/lib/types/article-blocks'
 import { BlockPreview } from '@/components/admin/course-builder/lesson-builder/block-preview'
 import type { Block } from '@/types/course-builder'
 import { processHtmlLinks } from '@/lib/utils'
-import DOMPurify from 'isomorphic-dompurify'
+import { sanitizeHtml } from '@/lib/sanitize-html'
 
 interface ExtendedLibraryResourceDetailResponse extends LibraryResourceDetailResponse {
   accessRestricted?: boolean
@@ -473,10 +473,10 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                 <div 
                   className="text-xl text-muted-foreground leading-relaxed prose prose-lg max-w-none prose-p:my-2 prose-strong:text-foreground"
                   dangerouslySetInnerHTML={{ 
-                    __html: DOMPurify.sanitize(processHtmlLinks(resource.description
+                    __html: sanitizeHtml(resource.description
                       .replace(/\n/g, '<br />')
                       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-                      .replace(/\*([^*]+)\*/g, '<em>$1</em>')))
+                      .replace(/\*([^*]+)\*/g, '<em>$1</em>'))
                   }}
                 />
               )}

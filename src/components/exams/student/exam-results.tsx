@@ -1,10 +1,10 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { cn, processHtmlLinks } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import { getAnswerResultStatus } from '@/lib/exams/answer-result-status'
 import { WaveformAudioPlayer } from '@/components/ui/waveform-audio-player'
-import DOMPurify from 'isomorphic-dompurify'
+import { sanitizeHtml } from '@/lib/sanitize-html'
 import {
   ArrowRight,
   CheckCircle,
@@ -400,7 +400,7 @@ function QuestionResultCard({ result }: { result: QuestionResult }) {
           {htmlContent && (
             <div
               className="prose prose-sm dark:prose-invert max-w-none"
-              dangerouslySetInnerHTML={{ __html: processHtmlLinks(DOMPurify.sanitize(htmlContent)) }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(htmlContent) }}
             />
           )}
         </div>

@@ -30,4 +30,20 @@ describe('sanitizeHtml', () => {
     expect(sanitizeHtml(null)).toBe('')
     expect(sanitizeHtml(undefined)).toBe('')
   })
+
+  it('strips javascript: hrefs (XSS)', () => {
+    const out = sanitizeHtml('<a href="javascript:alert(1)">x</a>')
+    expect(out.toLowerCase()).not.toContain('javascript:')
+  })
+
+  it('keeps images but drops their event handlers', () => {
+    const out = sanitizeHtml('<img src="https://e.com/a.png" onerror="alert(1)" alt="a" />')
+    expect(out).toContain('src="https://e.com/a.png"')
+    expect(out.toLowerCase()).not.toContain('onerror')
+  })
+
+  it('keeps safe inline styles authors use', () => {
+    const out = sanitizeHtml('<span style="color: red">x</span>')
+    expect(out).toContain('color')
+  })
 })
