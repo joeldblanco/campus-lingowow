@@ -3,11 +3,14 @@ import { db } from '@/lib/db'
 import { EnrollmentStatus } from '@prisma/client'
 import { notifySelfServiceEnrollmentCreated } from '@/lib/enrollments/self-service-enrollment'
 import { verifyPayPalWebhookSignature } from '@/lib/paypal'
+import { verifyPaidAmount } from '@/lib/payments/verify-paid-amount'
 
 interface PayPalWebhookEvent {
   event_type?: string
   resource?: {
     id?: string
+    amount?: { value?: string; currency_code?: string }
+    due_amount?: { value?: string; currency_code?: string }
     supplementary_data?: { related_ids?: { order_id?: string } }
   }
 }
@@ -137,6 +140,22 @@ export async function POST(req: NextRequest) {
           planName: string
           amount: number
           startNow: boolean
+        }
+
+        // Defense-in-depth: the event is signature-verified, but still confirm
+        // the amount actually paid matches what we billed before granting access.
+        const amountCheck = verifyPaidAmount({
+          resourceAmountValue: body.resource?.amount?.value,
+          resourceAmountCurrency: body.resource?.amount?.currency_code,
+          resourceDueValue: body.resource?.due_amount?.value,
+          expectedAmount: data.amount,
+          expectedCurrency: pendingOrder.currency,
+        })
+        if (!amountCheck.ok) {
+          console.error(
+            `[PayPal Webhook] Amount guard failed (${amountCheck.reason}) for invoice ${paypalInvoiceId}: paid=${body.resource?.amount?.value} ${body.resource?.amount?.currency_code} due=${body.resource?.due_amount?.value} expected=${data.amount} ${pendingOrder.currency} — skipping enrollment`
+          )
+          break
         }
 
         // Find plan and current period before starting the transaction
