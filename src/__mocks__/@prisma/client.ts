@@ -16,6 +16,16 @@ export const UserStatus = {
 
 export type UserStatus = typeof UserStatus[keyof typeof UserStatus]
 
+export const EnrollmentStatus = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  PAUSED: 'PAUSED',
+  CANCELLED: 'CANCELLED',
+} as const
+
+export type EnrollmentStatus = typeof EnrollmentStatus[keyof typeof EnrollmentStatus]
+
 export const NotificationType = {
   NEW_ENROLLMENT: 'NEW_ENROLLMENT',
   ENROLLMENT_CONFIRMED: 'ENROLLMENT_CONFIRMED',

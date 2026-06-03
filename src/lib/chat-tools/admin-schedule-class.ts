@@ -183,9 +183,12 @@ export async function handleAdminScheduleClass(params: {
 
     while (cursor <= periodEnd) {
       const localDayName = localDayFormatter.format(cursor).toLowerCase()
-      const matchingSlot = normalizedSlots.find((s) => s.dayOfWeek === localDayName)
+      // A weekday can have MORE THAN ONE requested slot (e.g. Wed 19:00 AND
+      // Wed 20:00). Use filter (not find) so every slot for the day is booked,
+      // otherwise the second+ slot on the same weekday is silently dropped.
+      const matchingSlots = normalizedSlots.filter((s) => s.dayOfWeek === localDayName)
 
-      if (matchingSlot) {
+      for (const matchingSlot of matchingSlots) {
         const localDate = localDateFormatter.format(cursor)
 
         const [startH, startM] = matchingSlot.localTime.split(':').map(Number)
@@ -207,7 +210,6 @@ export async function handleAdminScheduleClass(params: {
         })
         if (studentConflict) {
           skippedCount++
-          cursor.setDate(cursor.getDate() + 1)
           continue
         }
 
@@ -232,7 +234,6 @@ export async function handleAdminScheduleClass(params: {
 
         if (availableTeachers.length === 0) {
           skippedCount++
-          cursor.setDate(cursor.getDate() + 1)
           continue
         }
 
@@ -249,7 +250,6 @@ export async function handleAdminScheduleClass(params: {
 
         if (freeTeachers.length === 0) {
           skippedCount++
-          cursor.setDate(cursor.getDate() + 1)
           continue
         }
 
@@ -261,7 +261,6 @@ export async function handleAdminScheduleClass(params: {
           selectedTeacherId = preferredTeacherId
         } else if (preferredTeacherId) {
           skippedCount++
-          cursor.setDate(cursor.getDate() + 1)
           continue
         }
 
