@@ -3,6 +3,7 @@ import { EnrollmentStatus, InvoiceStatus, UserRole } from '@prisma/client'
 import type { ToolResult } from '@/types/ai-chat'
 import { handleAdminScheduleClass } from './admin-schedule-class'
 import { notifySelfServiceEnrollmentCreated } from '@/lib/enrollments/self-service-enrollment'
+import { getPayPalInvoiceByNumberOrId } from '@/lib/paypal'
 
 type ScheduleResultData = {
   scheduledCount?: number
@@ -17,6 +18,7 @@ export async function handleAdminEnrollStudent(params: {
   courseName?: string
   periodQuery?: string
   invoiceId?: string
+  paypalInvoiceNumber?: string
   slots: Array<{ dayOfWeek: string; localTime: string }>
   adminTimezone: string
 }): Promise<ToolResult> {
@@ -27,6 +29,7 @@ export async function handleAdminEnrollStudent(params: {
       courseName,
       periodQuery,
       invoiceId,
+      paypalInvoiceNumber,
       slots,
       adminTimezone,
     } = params
@@ -69,7 +72,70 @@ export async function handleAdminEnrollStudent(params: {
 
     // 2. Validate Paid Invoice — enrollment MUST be tied to a paid invoice
     let paidInvoice
-    if (invoiceId) {
+
+    // 2.0 PayPal bridge: a PayPal invoice paid directly by the client does NOT
+    // create a DB invoice on its own. When given a PayPal invoice NUMBER, verify
+    // it against PayPal and mirror it into a PAID DB invoice (idempotent).
+    if (paypalInvoiceNumber && !invoiceId) {
+      const number = paypalInvoiceNumber.trim()
+      paidInvoice = await db.invoice.findFirst({
+        where: { invoiceNumber: number, userId: student.id },
+        include: { items: { include: { plan: true } } },
+      })
+      if (paidInvoice && paidInvoice.status !== InvoiceStatus.PAID) {
+        return {
+          success: false,
+          message: `La factura ${number} existe en la base de datos pero no está PAGADA (estado: ${paidInvoice.status}).`,
+          data: { code: 'INVOICE_NOT_PAID' },
+        }
+      }
+      if (!paidInvoice) {
+        const pp = (await getPayPalInvoiceByNumberOrId(number)) as {
+          status?: string
+          amount?: { value?: string; currency_code?: string }
+          payments?: { transactions?: Array<{ payment_date?: string }> }
+        } | null
+        if (!pp) {
+          return {
+            success: false,
+            message: `No se encontró ninguna factura de PayPal con el número "${number}". Verifica el número de factura.`,
+            data: { code: 'PAYPAL_INVOICE_NOT_FOUND' },
+          }
+        }
+        const isPaid = pp.status === 'PAID' || pp.status === 'MARKED_AS_PAID'
+        if (!isPaid) {
+          return {
+            success: false,
+            message: `La factura de PayPal "${number}" no está pagada (estado: ${pp.status ?? 'desconocido'}). No se puede inscribir hasta que esté pagada.`,
+            data: { code: 'PAYPAL_INVOICE_NOT_PAID' },
+          }
+        }
+        const amount = parseFloat(pp.amount?.value ?? '0') || 0
+        const currency = pp.amount?.currency_code ?? 'USD'
+        const payDateRaw = pp.payments?.transactions?.[0]?.payment_date
+        const parsedPaidAt = payDateRaw ? new Date(payDateRaw) : new Date()
+        paidInvoice = await db.invoice.create({
+          data: {
+            invoiceNumber: number,
+            userId: student.id,
+            subtotal: amount,
+            total: amount,
+            currency,
+            status: InvoiceStatus.PAID,
+            paidAt: Number.isNaN(parsedPaidAt.getTime()) ? new Date() : parsedPaidAt,
+            paymentMethod: 'paypal',
+          },
+          include: { items: { include: { plan: true } } },
+        })
+        console.log(
+          `[AdminEnrollStudent] Mirrored PayPal invoice ${number} ($${amount} ${currency}) into DB for ${student.name}`
+        )
+      }
+    }
+
+    if (paidInvoice) {
+      // Resolved via the PayPal bridge above — nothing more to look up.
+    } else if (invoiceId) {
       paidInvoice = await db.invoice.findFirst({
         where: { id: invoiceId, userId: student.id, status: InvoiceStatus.PAID },
         include: { items: { include: { plan: true } } },
@@ -171,6 +237,20 @@ export async function handleAdminEnrollStudent(params: {
           success: false,
           message: `No se encontró ningún curso activo con el nombre "${courseName}".`,
         }
+      }
+    }
+
+    // If the course still couldn't be resolved (e.g. a PayPal-mirrored invoice has
+    // no plan item), fall back to the student's most recent enrollment course —
+    // the renewal case typical of PayPal-invoice payments.
+    if (!course) {
+      const lastEnrollment = await db.enrollment.findFirst({
+        where: { studentId: student.id },
+        orderBy: { enrollmentDate: 'desc' },
+        include: { course: true },
+      })
+      if (lastEnrollment?.course) {
+        course = lastEnrollment.course
       }
     }
 

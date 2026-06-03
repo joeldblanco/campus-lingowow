@@ -398,6 +398,31 @@ Política de Reembolso:
   }
 }
 
+/**
+ * Resolves a PayPal invoice from EITHER its internal ID / share link OR its
+ * human invoice number (e.g. "LW-942526"). Tries by-ID when the input looks
+ * like an ID/URL, then falls back to search-by-number (and re-fetches the full
+ * detail by id for a consistent shape).
+ */
+async function getPayPalInvoiceByNumberOrId(input: string) {
+  const trimmed = (input ?? '').trim()
+  if (!trimmed) return null
+  const looksLikeId =
+    /paypal\.com\/invoice/i.test(trimmed) ||
+    /^INV2-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/i.test(normalizePayPalInvoiceId(trimmed))
+  if (looksLikeId) {
+    const byId = await getPayPalInvoice(normalizePayPalInvoiceId(trimmed))
+    if (byId) return byId
+  }
+  // Treat the input as an invoice NUMBER: search, then re-fetch full detail by id.
+  const found = (await searchPayPalInvoice(trimmed)) as { id?: string } | null
+  if (found?.id) {
+    const full = await getPayPalInvoice(found.id)
+    return full ?? found
+  }
+  return found
+}
+
 export {
   paypalClient,
   ordersController,
@@ -406,6 +431,7 @@ export {
   getPayPalInvoice,
   getPayPalPayment,
   searchPayPalInvoice,
+  getPayPalInvoiceByNumberOrId,
   normalizePayPalInvoiceId,
   createPayPalOrder,
   createPayPalInvoice,

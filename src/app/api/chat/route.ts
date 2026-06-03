@@ -347,7 +347,7 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
   admin_enroll_student: {
     name: 'admin_enroll_student',
     description:
-      'Inscribe a un estudiante en un curso y periodo académico, y le agenda sus clases en los horarios dados. REQUIERE una factura pagada. Para cursos sincrónicos, REQUIERE un profesor. Puede promover de invitado a estudiante si es necesario.',
+      'Inscribe a un estudiante en un curso y periodo académico, y le agenda sus clases en los horarios dados. REQUIERE una factura pagada: usa invoiceId si está en la DB, o paypalInvoiceNumber si el cliente pagó por PayPal y das el número de factura (se verifica contra PayPal y se crea en la DB automáticamente). Para cursos sincrónicos, REQUIERE un profesor. Puede promover de invitado a estudiante si es necesario.',
     parameters: {
       type: SchemaType.OBJECT,
       properties: {
@@ -363,7 +363,12 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
         invoiceId: {
           type: SchemaType.STRING,
           description:
-            'ID de la factura pagada (obtenido de admin_check_invoice_payment o admin_list_invoices). Si no se proporciona, se busca automáticamente la factura pagada más reciente.',
+            'ID de la factura pagada que YA existe en la base de datos (obtenido de admin_list_invoices). Si no se proporciona ni invoiceId ni paypalInvoiceNumber, se busca automáticamente la factura pagada más reciente en la DB.',
+        },
+        paypalInvoiceNumber: {
+          type: SchemaType.STRING,
+          description:
+            'Número de la factura de PayPal pagada por el cliente (ej: "LW-942526"). Úsalo cuando el admin proporcione un número de factura de PayPal que NO está en la base de datos: se verifica contra la API de PayPal que esté PAGADA y se crea la factura en la DB automáticamente. No requiere admin_check_invoice_payment previo.',
         },
         courseName: {
           type: SchemaType.STRING,
@@ -842,6 +847,7 @@ export async function POST(req: NextRequest) {
               studentNameOrEmail: string
               teacherNameOrEmail?: string
               invoiceId?: string
+              paypalInvoiceNumber?: string
               courseName?: string
               periodQuery?: string
               slots: Array<{ dayOfWeek: string; localTime: string }>
@@ -851,6 +857,7 @@ export async function POST(req: NextRequest) {
               studentNameOrEmail: enrollArgs.studentNameOrEmail,
               teacherNameOrEmail: enrollArgs.teacherNameOrEmail,
               invoiceId: enrollArgs.invoiceId,
+              paypalInvoiceNumber: enrollArgs.paypalInvoiceNumber,
               courseName: enrollArgs.courseName,
               periodQuery: enrollArgs.periodQuery,
               slots: enrollArgs.slots,

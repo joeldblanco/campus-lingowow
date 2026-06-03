@@ -1,4 +1,4 @@
-import { getPayPalInvoice, normalizePayPalInvoiceId } from '@/lib/paypal'
+import { getPayPalInvoiceByNumberOrId } from '@/lib/paypal'
 import type { ToolResult } from '@/types/ai-chat'
 
 interface PayPalInvoiceDetail {
@@ -35,14 +35,13 @@ export async function handleAdminCheckInvoicePayment(params: {
   try {
     const { invoiceLinkOrId } = params
 
-    const invoiceId = normalizePayPalInvoiceId(invoiceLinkOrId)
-
-    const invoice = (await getPayPalInvoice(invoiceId)) as PayPalInvoiceDetail | null
+    // Accepts a PayPal link, an internal ID (INV2-…), OR a human invoice number (e.g. "LW-942526").
+    const invoice = (await getPayPalInvoiceByNumberOrId(invoiceLinkOrId)) as PayPalInvoiceDetail | null
 
     if (!invoice) {
       return {
         success: false,
-        message: `No se encontró la factura con ID/link "${invoiceLinkOrId}". Verifica que el link o ID sea correcto. ID normalizado: ${invoiceId}`,
+        message: `No se encontró ninguna factura de PayPal con "${invoiceLinkOrId}". Verifica el número, ID o link.`,
       }
     }
 
