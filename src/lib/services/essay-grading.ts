@@ -62,7 +62,7 @@ export async function gradeEssayWithAI(
   criteria: EssayGradingCriteria,
   maxPoints: number = 100
 ): Promise<EssayGradingResult> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
 
   const rubricWeights = criteria.rubric || {
     grammar: 25,

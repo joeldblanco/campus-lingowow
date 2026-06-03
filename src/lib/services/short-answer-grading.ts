@@ -50,7 +50,7 @@ export async function gradeShortAnswerWithAI(
   }
 
   // Use AI to grade the answer
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
 
   const prompt = `You are an expert language teacher evaluating a student's short answer response.
 Analyze the student's answer and determine if it is correct based on the grading instructions.

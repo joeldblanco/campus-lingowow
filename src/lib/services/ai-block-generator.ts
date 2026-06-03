@@ -131,7 +131,7 @@ Available block types and their structure:
 export async function generateBlocksWithAI(
   request: AIBlockGeneratorRequest
 ): Promise<AIBlockGeneratorResponse> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
 
   const systemPrompt = `You are an expert educational content creator for a language learning platform.
 Your task is to generate lesson content blocks based on the user's request.
@@ -202,7 +202,7 @@ export async function suggestBlockImprovements(
   block: Block,
   instruction: string
 ): Promise<AIBlockGeneratorResponse> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
 
   const prompt = `You are an expert educational content editor.
 Improve the following lesson block based on the user's instruction.

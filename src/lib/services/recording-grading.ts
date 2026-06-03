@@ -65,7 +65,7 @@ export async function gradeRecordingWithAI(
   criteria: RecordingGradingCriteria,
   maxPoints: number = 100
 ): Promise<RecordingGradingResult> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
 
   const rubricWeights = {
     pronunciation: 20,
