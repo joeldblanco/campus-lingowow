@@ -340,3 +340,48 @@ describe('Class Access - Real World Scenarios', () => {
     expect(result.reason).toBe('La clase ya ha finalizado')
   })
 })
+
+describe('Class Access - Impersonation across timezones', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  // Caso real: una profesora en Venezuela (GMT-4) con clase a las 10:00 hora local,
+  // que se almacena como 14:00 UTC. Un admin en Perú (GMT-5) la impersona; las
+  // 14:00 UTC son las 09:00 en Perú y las 10:00 en Venezuela: el MISMO instante.
+  it('grants access at the real start instant regardless of the display timezone', () => {
+    vi.setSystemTime(new Date('2026-06-03T14:00:00.000Z'))
+
+    const asVenezuela = validateClassAccess('2026-06-03', '14:00-14:40', false, 'America/Caracas')
+    const asPeru = validateClassAccess('2026-06-03', '14:00-14:40', false, 'America/Lima')
+
+    expect(asVenezuela.canAccess).toBe(true)
+    expect(asVenezuela.secondsUntilStart).toBe(0)
+    // El acceso depende solo del instante real, no de la zona horaria mostrada.
+    expect(asVenezuela.canAccess).toBe(asPeru.canAccess)
+    expect(asVenezuela.secondsUntilStart).toBe(asPeru.secondsUntilStart)
+  })
+
+  it('reports the true time remaining, not one offset by the impersonator timezone', () => {
+    // 10 minutos antes del inicio real (13:50 UTC).
+    vi.setSystemTime(new Date('2026-06-03T13:50:00.000Z'))
+
+    const result = validateClassAccess('2026-06-03', '14:00-14:40', false, 'America/Caracas')
+
+    expect(result.canAccess).toBe(false)
+    expect(result.minutesUntilStart).toBe(10)
+  })
+
+  it('lets a teacher in 10 minutes early at the real instant, across timezones', () => {
+    // 10 minutos antes del inicio real (13:50 UTC) → el profesor sí puede entrar.
+    vi.setSystemTime(new Date('2026-06-03T13:50:00.000Z'))
+
+    const result = validateClassAccess('2026-06-03', '14:00-14:40', true, 'America/Caracas')
+
+    expect(result.canAccess).toBe(true)
+  })
+})

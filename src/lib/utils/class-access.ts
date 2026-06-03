@@ -2,8 +2,6 @@
  * Utilidades para validar el acceso a las clases según horario y rol
  */
 
-import { convertTimeSlotFromUTC } from '@/lib/utils/date'
-
 export interface ClassAccessValidation {
   canAccess: boolean
   reason?: string
@@ -14,44 +12,56 @@ export interface ClassAccessValidation {
 }
 
 /**
- * Valida si un usuario puede acceder a una clase según su rol y el horario
+ * Valida si un usuario puede acceder a una clase según su rol y el horario.
+ *
+ * `day` y `timeSlot` ya vienen en UTC, por lo que el instante absoluto de la clase
+ * queda totalmente determinado y la comparación con la hora actual es independiente
+ * de la zona horaria. NO se debe derivar la hora de la clase a partir de una zona de
+ * visualización: antes se convertía a la hora local y se reconstruía con
+ * `new Date(año, mes, …)`, que interpreta esos números en la zona del ENTORNO de
+ * ejecución (el navegador). Durante una suplantación la zona del usuario suplantado
+ * (p. ej. Venezuela, GMT-4) difería de la del admin (p. ej. Perú, GMT-5), lo que
+ * desplazaba la hora de la clase una hora y bloqueaba el ingreso.
+ *
  * @param day - Fecha de la clase en formato ISO (YYYY-MM-DD) en UTC
  * @param timeSlot - Horario de la clase (ej: "14:00-15:00") en UTC
  * @param isTeacher - Si el usuario es profesor
- * @param timezone - Zona horaria del usuario (default: America/Lima)
+ * @param timezone - Obsoleto: ya no influye en el resultado. Se conserva por
+ *   compatibilidad con las llamadas existentes.
  * @returns Objeto con información de acceso
  */
 export function validateClassAccess(
   day: string,
   timeSlot: string,
   isTeacher: boolean,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   timezone: string = 'America/Lima'
 ): ClassAccessValidation {
   try {
-    // Convertir de UTC a hora local del usuario para validar
-    const localData = convertTimeSlotFromUTC(day, timeSlot, timezone)
-    
-    // Parsear el timeSlot local para obtener hora de inicio y fin
-    const [startTime, endTime] = localData.timeSlot.split('-')
+    // Parsear inicio y fin (en UTC) directamente del timeSlot.
+    const [startTime, endTime] = timeSlot.split('-')
     if (!startTime || !endTime) {
       return { canAccess: false, reason: 'Horario de clase inválido' }
     }
 
-    // Crear objetos Date para la fecha y hora de la clase en hora local
     const [startHour, startMinute] = startTime.split(':').map(Number)
     const [endHour, endMinute] = endTime.split(':').map(Number)
+    const [year, month, dayOfMonth] = day.split('-').map(Number)
 
-    // Obtener la fecha actual en hora local
+    if (
+      [year, month, dayOfMonth, startHour, startMinute, endHour, endMinute].some((value) =>
+        Number.isNaN(value)
+      )
+    ) {
+      return { canAccess: false, reason: 'Horario de clase inválido' }
+    }
+
+    // Instantes absolutos (UTC) de inicio y fin de la clase.
+    const classStartDate = new Date(Date.UTC(year, month - 1, dayOfMonth, startHour, startMinute, 0, 0))
+    const classEndDate = new Date(Date.UTC(year, month - 1, dayOfMonth, endHour, endMinute, 0, 0))
+
+    // Hora actual (instante absoluto).
     const now = new Date()
-    
-    // Parsear el día local (YYYY-MM-DD) y crear fecha en hora local
-    const [year, month, dayOfMonth] = localData.day.split('-').map(Number)
-    
-    // Crear fecha de inicio de la clase en hora local
-    const classStartDate = new Date(year, month - 1, dayOfMonth, startHour, startMinute, 0, 0)
-
-    // Crear fecha de fin de la clase en hora local
-    const classEndDate = new Date(year, month - 1, dayOfMonth, endHour, endMinute, 0, 0)
 
     // Calcular diferencias en minutos y segundos
     const millisecondsUntilStart = classStartDate.getTime() - now.getTime()
