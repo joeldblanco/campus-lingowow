@@ -37,10 +37,23 @@ describe('handleCreatePaymentLink', () => {
 
   afterEach(() => vi.clearAllMocks())
 
+  it('shows a forced-choice confirmation (no invoice) on the first call', async () => {
+    vi.mocked(db.pendingOrder.findFirst).mockResolvedValue(null)
+
+    const res = await handleCreatePaymentLink(PARAMS) // no `confirmed`
+
+    expect(res.success).toBe(true)
+    expect((res.data as { code?: string }).code).toBe('CONFIRM_PAYMENT')
+    expect((res.data as { price?: string }).price).toBe('100.00')
+    // Nothing is billed yet.
+    expect(createPayPalInvoice).not.toHaveBeenCalled()
+    expect(db.pendingOrder.create).not.toHaveBeenCalled()
+  })
+
   it('creates a new invoice with an unguessable LW- number and stores the payer URL', async () => {
     vi.mocked(db.pendingOrder.findFirst).mockResolvedValue(null)
 
-    const res = await handleCreatePaymentLink(PARAMS)
+    const res = await handleCreatePaymentLink({ ...PARAMS, confirmed: true })
 
     expect(res.success).toBe(true)
     expect(createPayPalInvoice).toHaveBeenCalledTimes(1)
@@ -58,8 +71,8 @@ describe('handleCreatePaymentLink', () => {
 
   it('generates a different invoice number on each call (not time-derived)', async () => {
     vi.mocked(db.pendingOrder.findFirst).mockResolvedValue(null)
-    await handleCreatePaymentLink(PARAMS)
-    await handleCreatePaymentLink(PARAMS)
+    await handleCreatePaymentLink({ ...PARAMS, confirmed: true })
+    await handleCreatePaymentLink({ ...PARAMS, confirmed: true })
     const n1 = vi.mocked(createPayPalInvoice).mock.calls[0][0].invoiceNumber
     const n2 = vi.mocked(createPayPalInvoice).mock.calls[1][0].invoiceNumber
     expect(n1).not.toBe(n2)

@@ -18,6 +18,8 @@ export async function handleCreatePaymentLink(params: {
   userEmail: string
   userName: string
   userId?: string
+  /** Only create the invoice once the user confirmed via the buttons. */
+  confirmed?: boolean
 }): Promise<ToolResult> {
   try {
     const rawPlanType = (params.planType ?? '').toLowerCase().trim()
@@ -106,6 +108,29 @@ export async function handleCreatePaymentLink(params: {
             reused: true,
           },
         }
+      }
+    }
+
+    // Confirmation gate: never create a real PayPal invoice on the first call.
+    // Surface the exact, server-side plan + price as forced-choice buttons so the
+    // user explicitly confirms the amount before anything is billed. The model
+    // re-calls with confirmed=true only after the user taps the confirm button.
+    if (!params.confirmed) {
+      return {
+        success: true,
+        message: `Para confirmar tu inscripción: plan ${planDisplayName} por $${amountStr} USD (${scheduleNote}). Pulsa el botón para generar el link de pago, o cancela.`,
+        data: {
+          code: 'CONFIRM_PAYMENT',
+          planName: planDisplayName,
+          price: amountStr,
+          currency: 'USD',
+          scheduleNote,
+          programType,
+          planType: rawPlanType || slugKey,
+          startNow: params.startNow,
+          desiredDay: params.desiredDay,
+          desiredTime: params.desiredTime,
+        },
       }
     }
 
