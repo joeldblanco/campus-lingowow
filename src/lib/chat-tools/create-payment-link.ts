@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto'
 import { db } from '@/lib/db'
 import { createPayPalInvoice } from '@/lib/paypal'
 import type { ToolResult } from '@/types/ai-chat'
@@ -73,7 +74,45 @@ export async function handleCreatePaymentLink(params: {
       : 'Inicio en el próximo período'
     const description = `${planDisplayName} - Lingowow | ${scheduleNote} | Horario: ${params.desiredDay} ${params.desiredTime}`
     const amountStr = plan.price.toFixed(2)
-    const invoiceNumber = `LW-${Date.now().toString().slice(-6)}`
+
+    // Idempotency: if this user already has a PENDING, non-expired payment link
+    // for the same plan + timing, reuse it instead of generating a second
+    // invoice (which would let them be billed twice if both got paid).
+    if (params.userId) {
+      const existing = await db.pendingOrder.findFirst({
+        where: {
+          userId: params.userId,
+          status: 'PENDING',
+          expiresAt: { gt: new Date() },
+          AND: [
+            { invoiceData: { path: ['planId'], equals: plan.id } },
+            { invoiceData: { path: ['startNow'], equals: params.startNow } },
+          ],
+        },
+        orderBy: { createdAt: 'desc' },
+      })
+      const existingData = existing?.invoiceData as
+        | { payerViewUrl?: string; planName?: string }
+        | undefined
+      if (existing && existingData?.payerViewUrl) {
+        return {
+          success: true,
+          message: `Ya existe una factura de pago pendiente para este plan. Reutilizo el mismo link: ${existingData.payerViewUrl} — Muéstralo al usuario tal como está, sin modificarlo. Si necesita uno nuevo, primero hay que cancelar el anterior.`,
+          data: {
+            paymentUrl: existingData.payerViewUrl,
+            planName: existingData.planName ?? planDisplayName,
+            price: `$${amountStr} USD`,
+            invoiceId: existing.purchaseNumber,
+            reused: true,
+          },
+        }
+      }
+    }
+
+    // Unguessable, collision-free invoice number. The old Date.now().slice(-6)
+    // repeated every ~16 min and is enumerable; purchaseNumber is @unique, so a
+    // collision would also throw P2002.
+    const invoiceNumber = `LW-${randomUUID().replace(/-/g, '').slice(0, 10).toUpperCase()}`
 
     const paypalInvoice = await createPayPalInvoice({
       amount: amountStr,
@@ -107,6 +146,7 @@ export async function handleCreatePaymentLink(params: {
           expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
           invoiceData: {
             paypalInvoiceId: paypalInvoice.id,
+            payerViewUrl: paypalInvoice.payerViewUrl,
             planId: plan.id,
             planName: planDisplayName,
             amount: plan.price,
