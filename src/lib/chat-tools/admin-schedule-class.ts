@@ -87,8 +87,12 @@ export async function handleAdminScheduleClass(params: {
       }
     }
 
-    // Priority: student's DB timezone (most reliable), then admin-provided (as override for student's location), then fallback
-    const studentTimezone = student.timezone || adminTimezone || 'America/Lima'
+    // The slots are expressed in the timezone the ADMIN stated for the schedule
+    // (e.g. "hora de Lima"), which is authoritative for a synchronous class — it
+    // is the teacher's / academy's wall-clock time. The student's stored timezone
+    // can be wrong/stale (it is only used to DISPLAY the class to the student) and
+    // must not silently reinterpret the admin's requested time.
+    const scheduleTimezone = adminTimezone || student.timezone || 'America/Lima'
 
     if (student.roles.includes(UserRole.GUEST) && !student.roles.includes(UserRole.STUDENT)) {
       await db.user.update({
@@ -138,13 +142,13 @@ export async function handleAdminScheduleClass(params: {
     }))
 
     const localDateFormatter = new Intl.DateTimeFormat('en-CA', {
-      timeZone: studentTimezone,
+      timeZone: scheduleTimezone,
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
     })
     const localDayFormatter = new Intl.DateTimeFormat('en', {
-      timeZone: studentTimezone,
+      timeZone: scheduleTimezone,
       weekday: 'long',
     })
 
@@ -168,7 +172,7 @@ export async function handleAdminScheduleClass(params: {
         const endM = endTotalMin % 60
         const localTimeSlot = `${matchingSlot.localTime}-${String(endH).padStart(2, '0')}:${String(endM).padStart(2, '0')}`
 
-        const utcData = convertTimeSlotToUTC(localDate, localTimeSlot, studentTimezone)
+        const utcData = convertTimeSlotToUTC(localDate, localTimeSlot, scheduleTimezone)
         const [utcStart, utcEnd] = utcData.timeSlot.split('-')
 
         const studentConflict = await db.classBooking.findFirst({
@@ -281,7 +285,7 @@ export async function handleAdminScheduleClass(params: {
 
     return {
       success: true,
-      message: `Se agendaron ${scheduledCount} clases para "${student.name}" en el período "${enrollment.academicPeriod.name}". Horarios recurrentes: ${scheduledSummary.join(', ')}.${skippedNote} (Zona horaria: ${studentTimezone})`,
+      message: `Se agendaron ${scheduledCount} clases para "${student.name}" en el período "${enrollment.academicPeriod.name}". Horarios recurrentes: ${scheduledSummary.join(', ')}.${skippedNote} (Zona horaria: ${scheduleTimezone})`,
       data: {
         scheduledCount,
         skippedCount,
