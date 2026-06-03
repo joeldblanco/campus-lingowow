@@ -25,7 +25,7 @@ import { CheckoutLoginModal } from '@/components/shop/checkout/login-modal'
 import { CheckoutScheduleSelector } from '@/components/checkout/checkout-schedule-selector'
 import { CouponInput } from '@/components/shop/checkout/coupon-input'
 import { convertRecurringScheduleFromUTC } from '@/lib/utils/date'
-import { getBrowserTimezone } from '@/hooks/use-timezone'
+import { useTimezone } from '@/hooks/use-timezone'
 import {
   Loader2,
   Lock,
@@ -316,6 +316,9 @@ export default function CheckoutPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { data: session, status: authStatus } = useSession()
+  // Zona horaria de la sesión (la del usuario suplantado durante impersonación);
+  // cae al navegador solo para invitados sin sesión.
+  const { timezone: userTimezone } = useTimezone()
   const niubizProcessedRef = useRef(false)
   const initialStateLoaded = useRef(false)
 
@@ -1320,7 +1323,7 @@ export default function CheckoutPage() {
                         {Object.entries(scheduleSelections).map(([planId, selection]) =>
                           selection.schedule.map((slot, idx) => {
                             // Convertir de UTC a hora local para mostrar
-                            const localSlot = convertSlotToLocalDisplay(slot, getBrowserTimezone())
+                            const localSlot = convertSlotToLocalDisplay(slot, userTimezone)
                             return (
                               <div
                                 key={`${planId}-${idx}`}

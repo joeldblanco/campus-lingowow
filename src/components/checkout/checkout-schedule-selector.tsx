@@ -11,7 +11,7 @@ import { toast } from 'sonner'
 import { addDays, startOfWeek, isToday } from 'date-fns'
 import { cn } from '@/lib/utils'
 import { convertRecurringScheduleToUTC } from '@/lib/utils/date'
-import { getBrowserTimezone } from '@/hooks/use-timezone'
+import { useTimezone } from '@/hooks/use-timezone'
 
 interface Teacher {
   id: string
@@ -100,8 +100,9 @@ export function CheckoutScheduleSelector({
   maxClassesPerWeek,
   onScheduleSelected,
 }: CheckoutScheduleSelectorProps) {
-  // Usar timezone del navegador directamente porque usuarios en checkout no están necesariamente autenticados
-  const userTimezone = getBrowserTimezone()
+  // Usar la timezone de la sesión (la del usuario suplantado durante impersonación);
+  // useTimezone cae a la del navegador solo cuando no hay sesión (invitado en checkout).
+  const { timezone: userTimezone } = useTimezone()
   const [teachers, setTeachers] = useState<Teacher[]>([])
   const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null)
   const [loading, setLoading] = useState(true)

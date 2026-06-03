@@ -30,6 +30,13 @@ export async function updateUserTimezone(browserTimezone: string): Promise<{ suc
       return { success: false, updated: false }
     }
 
+    // Durante una sesión de suplantación, NO sobrescribir la timezone del usuario
+    // suplantado con la del navegador del administrador. La timezone almacenada debe
+    // pertenecer siempre al usuario real.
+    if (session.user.isImpersonating) {
+      return { success: false, updated: false }
+    }
+
     // Validar que sea una timezone válida
     try {
       Intl.DateTimeFormat(undefined, { timeZone: browserTimezone })
