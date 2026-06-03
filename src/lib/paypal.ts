@@ -423,6 +423,86 @@ async function getPayPalInvoiceByNumberOrId(input: string) {
   return found
 }
 
+/**
+ * Transmission headers PayPal sends with every webhook delivery, needed to
+ * verify the call really came from PayPal.
+ */
+export interface PayPalWebhookHeaders {
+  transmissionId: string | null
+  transmissionTime: string | null
+  transmissionSig: string | null
+  certUrl: string | null
+  authAlgo: string | null
+}
+
+/**
+ * Verifies that an incoming webhook was actually sent by PayPal, using PayPal's
+ * `verify-webhook-signature` API and the `PAYPAL_WEBHOOK_ID` env var.
+ *
+ * FAIL-CLOSED by design: returns `false` (reject the webhook) whenever the
+ * config or headers are missing, the API errors, or the status is not SUCCESS.
+ * Without this, anyone could POST a forged `INVOICING.INVOICE.PAID` event and
+ * trigger a free enrollment.
+ *
+ * NOTE: requires `PAYPAL_WEBHOOK_ID` to be set in every environment that
+ * receives PayPal webhooks — otherwise ALL webhooks are rejected.
+ */
+async function verifyPayPalWebhookSignature(params: {
+  headers: PayPalWebhookHeaders
+  event: unknown
+}): Promise<boolean> {
+  const webhookId = process.env.PAYPAL_WEBHOOK_ID
+  if (!webhookId) {
+    console.error('[PayPal Webhook] PAYPAL_WEBHOOK_ID is not configured — rejecting webhook')
+    return false
+  }
+
+  const { transmissionId, transmissionTime, transmissionSig, certUrl, authAlgo } = params.headers
+  if (!transmissionId || !transmissionTime || !transmissionSig || !certUrl || !authAlgo) {
+    console.error('[PayPal Webhook] Missing PayPal transmission headers — rejecting webhook')
+    return false
+  }
+
+  try {
+    const accessToken = await getPayPalAccessToken()
+    const base =
+      process.env.PAYPAL_MODE === 'live'
+        ? 'https://api-m.paypal.com'
+        : 'https://api-m.sandbox.paypal.com'
+
+    const response = await fetch(`${base}/v1/notifications/verify-webhook-signature`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        auth_algo: authAlgo,
+        cert_url: certUrl,
+        transmission_id: transmissionId,
+        transmission_sig: transmissionSig,
+        transmission_time: transmissionTime,
+        webhook_id: webhookId,
+        webhook_event: params.event,
+      }),
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error(
+        `[PayPal Webhook] verify-webhook-signature HTTP ${response.status}: ${errorText}`
+      )
+      return false
+    }
+
+    const data = (await response.json()) as { verification_status?: string }
+    return data.verification_status === 'SUCCESS'
+  } catch (error) {
+    console.error('[PayPal Webhook] Signature verification error:', error)
+    return false
+  }
+}
+
 export {
   paypalClient,
   ordersController,
@@ -435,4 +515,5 @@ export {
   normalizePayPalInvoiceId,
   createPayPalOrder,
   createPayPalInvoice,
+  verifyPayPalWebhookSignature,
 }
