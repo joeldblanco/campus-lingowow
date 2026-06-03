@@ -1,6 +1,7 @@
 import { db } from '@/lib/db'
 import { EnrollmentStatus, UserRole } from '@prisma/client'
 import { convertTimeSlotToUTC } from '@/lib/utils/date'
+import { resolveStudent, studentDisplayName } from './resolve-student'
 import type { ToolResult } from '@/types/ai-chat'
 
 const UTC_DAY_NAMES = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
@@ -37,56 +38,33 @@ export async function handleAdminScheduleClass(params: {
 }): Promise<ToolResult> {
   try {
     const { studentNameOrEmail, teacherId, teacherNameOrEmail, slots, adminTimezone } = params
-    const isEmail = studentNameOrEmail.includes('@')
 
-    let student: {
-      id: string
-      name: string | null
-      email: string | null
-      roles: UserRole[]
-      timezone: string
-    } | null = null
-
-    if (isEmail) {
-      student = await db.user.findFirst({
-        where: { email: { equals: studentNameOrEmail.trim(), mode: 'insensitive' } },
-        select: { id: true, name: true, email: true, roles: true, timezone: true },
-      })
-    } else {
-      const users = await db.user.findMany({
-        where: { name: { contains: studentNameOrEmail.trim(), mode: 'insensitive' } },
-        select: { id: true, name: true, email: true, roles: true, timezone: true },
-        take: 5,
-      })
-
-      if (users.length === 0) {
-        return {
-          success: false,
-          message: `No se encontró ningún usuario con el nombre "${studentNameOrEmail}". Intenta con otro nombre o correo.`,
-        }
-      }
-
-      if (users.length > 1) {
-        const list = users.map((u) => `- ${u.name} (${u.email}) [${u.roles.join(', ')}]`).join('\n')
-        return {
-          success: false,
-          message: `Se encontraron ${users.length} usuarios:\n${list}\nPide al admin que confirme cuál.`,
-          data: {
-            code: 'MULTIPLE_USERS',
-            users: users.map((u) => ({ name: u.name, email: u.email })),
-          },
-        }
-      }
-
-      student = users[0]
-    }
-
-    if (!student) {
+    // Robust resolver: matches name + lastName, accent-insensitive, and reports
+    // ambiguity (e.g. two "María Eugenia"s) instead of silently picking one.
+    const studentResolution = await resolveStudent(studentNameOrEmail)
+    if (studentResolution.kind === 'none') {
       return {
         success: false,
-        message: `No se encontró el usuario "${studentNameOrEmail}".`,
+        message: `No se encontró ningún estudiante con "${studentNameOrEmail}". Intenta con otro nombre o correo.`,
       }
     }
+    if (studentResolution.kind === 'multiple') {
+      const list = studentResolution.students
+        .map((u) => `- ${studentDisplayName(u)} (${u.email})`)
+        .join('\n')
+      return {
+        success: false,
+        message: `Se encontraron ${studentResolution.students.length} estudiantes para "${studentNameOrEmail}":\n${list}\nPide al admin que confirme cuál.`,
+        data: {
+          code: 'MULTIPLE_STUDENTS',
+          students: studentResolution.students.map((u) => ({
+            name: studentDisplayName(u),
+            email: u.email,
+          })),
+        },
+      }
+    }
+    const student = studentResolution.student
 
     // The slots are expressed in the timezone the ADMIN stated for the schedule
     // (e.g. "hora de Lima"), which is authoritative for a synchronous class — it

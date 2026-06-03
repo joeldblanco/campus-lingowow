@@ -1,5 +1,6 @@
 import { db } from '@/lib/db'
 import { convertTimeSlotToUTC } from '@/lib/utils/date'
+import { resolveStudent, studentDisplayName } from './resolve-student'
 import type { ToolResult } from '@/types/ai-chat'
 
 const UTC_DAY_NAMES = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
@@ -26,45 +27,27 @@ export async function handleAdminGetStudentClasses(params: {
 }): Promise<ToolResult> {
   try {
     const { studentNameOrEmail } = params
-    const isEmail = studentNameOrEmail.includes('@')
 
-    let studentId: string
-    let studentName: string
-    let timezone: string
-
-    if (isEmail) {
-      const user = await db.user.findFirst({
-        where: { email: { equals: studentNameOrEmail.trim(), mode: 'insensitive' } },
-        select: { id: true, name: true, timezone: true },
-      })
-      if (!user) {
-        return { success: false, message: `No se encontró usuario con correo "${studentNameOrEmail}".` }
-      }
-      studentId = user.id
-      studentName = user.name ?? studentNameOrEmail
-      timezone = user.timezone ?? 'UTC'
-    } else {
-      const users = await db.user.findMany({
-        where: { name: { contains: studentNameOrEmail.trim(), mode: 'insensitive' } },
-        select: { id: true, name: true, email: true, timezone: true },
-        take: 5,
-      })
-
-      if (users.length === 0) {
-        return { success: false, message: `No se encontró ningún usuario con el nombre "${studentNameOrEmail}".` }
-      }
-      if (users.length > 1) {
-        const list = users.map((u) => `- ${u.name} (${u.email})`).join('\n')
-        return {
-          success: false,
-          message: `Se encontraron ${users.length} usuarios:\n${list}\nPide al admin que confirme cuál.`,
-        }
-      }
-
-      studentId = users[0].id
-      studentName = users[0].name ?? studentNameOrEmail
-      timezone = users[0].timezone ?? 'UTC'
+    // Robust resolver: matches name + lastName, accent-insensitive, reports
+    // ambiguity instead of silently picking one.
+    const resolution = await resolveStudent(studentNameOrEmail)
+    if (resolution.kind === 'none') {
+      return { success: false, message: `No se encontró ningún estudiante con "${studentNameOrEmail}".` }
     }
+    if (resolution.kind === 'multiple') {
+      const list = resolution.students.map((u) => `- ${studentDisplayName(u)} (${u.email})`).join('\n')
+      return {
+        success: false,
+        message: `Se encontraron ${resolution.students.length} estudiantes para "${studentNameOrEmail}":\n${list}\nPide al admin que confirme cuál.`,
+        data: {
+          code: 'MULTIPLE_STUDENTS',
+          students: resolution.students.map((u) => ({ name: studentDisplayName(u), email: u.email })),
+        },
+      }
+    }
+    const studentId = resolution.student.id
+    const studentName = studentDisplayName(resolution.student) || studentNameOrEmail
+    const timezone = resolution.student.timezone ?? 'UTC'
 
     const todayUtc = new Date().toISOString().split('T')[0]
 

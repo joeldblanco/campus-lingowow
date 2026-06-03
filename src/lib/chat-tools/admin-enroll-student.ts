@@ -2,6 +2,7 @@ import { db } from '@/lib/db'
 import { EnrollmentStatus, InvoiceStatus, UserRole } from '@prisma/client'
 import type { ToolResult } from '@/types/ai-chat'
 import { handleAdminScheduleClass } from './admin-schedule-class'
+import { resolveStudent, studentDisplayName } from './resolve-student'
 import { notifySelfServiceEnrollmentCreated } from '@/lib/enrollments/self-service-enrollment'
 import { getPayPalInvoiceByNumberOrId } from '@/lib/paypal'
 
@@ -34,41 +35,32 @@ export async function handleAdminEnrollStudent(params: {
       adminTimezone,
     } = params
 
-    // 1. Find Student
-    let student
-    const isStudentEmail = studentNameOrEmail.includes('@')
-    if (isStudentEmail) {
-      student = await db.user.findFirst({
-        where: { email: { equals: studentNameOrEmail.trim(), mode: 'insensitive' } },
-        select: { id: true, name: true, email: true, roles: true, timezone: true },
-      })
-    } else {
-      const users = await db.user.findMany({
-        where: { name: { contains: studentNameOrEmail.trim(), mode: 'insensitive' } },
-        select: { id: true, name: true, email: true, roles: true, timezone: true },
-        take: 5,
-      })
-      if (users.length === 0) {
-        return {
-          success: false,
-          message: `No se encontró ningún estudiante con el nombre "${studentNameOrEmail}".`,
-        }
+    // 1. Find Student — robust resolver (matches name + lastName,
+    // accent-insensitive, reports ambiguity instead of guessing).
+    const studentResolution = await resolveStudent(studentNameOrEmail)
+    if (studentResolution.kind === 'none') {
+      return {
+        success: false,
+        message: `No se encontró ningún estudiante con "${studentNameOrEmail}".`,
       }
-      if (users.length > 1) {
-        const list = users.map((u) => `- ${u.name} (${u.email})`).join('\n')
-        return {
-          success: false,
-          message: `Se encontraron ${users.length} estudiantes:\n${list}\nPide al admin que confirme cuál.`,
-          data: {
-            code: 'MULTIPLE_STUDENTS',
-            students: users.map((u) => ({ name: u.name, email: u.email })),
-          },
-        }
-      }
-      student = users[0]
     }
-    if (!student)
-      return { success: false, message: `No se encontró el estudiante "${studentNameOrEmail}".` }
+    if (studentResolution.kind === 'multiple') {
+      const list = studentResolution.students
+        .map((u) => `- ${studentDisplayName(u)} (${u.email})`)
+        .join('\n')
+      return {
+        success: false,
+        message: `Se encontraron ${studentResolution.students.length} estudiantes para "${studentNameOrEmail}":\n${list}\nPide al admin que confirme cuál.`,
+        data: {
+          code: 'MULTIPLE_STUDENTS',
+          students: studentResolution.students.map((u) => ({
+            name: studentDisplayName(u),
+            email: u.email,
+          })),
+        },
+      }
+    }
+    const student = studentResolution.student
 
     // 2. Validate Paid Invoice — enrollment MUST be tied to a paid invoice
     let paidInvoice
