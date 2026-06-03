@@ -2,11 +2,46 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { EnrollmentStatus } from '@prisma/client'
 import { notifySelfServiceEnrollmentCreated } from '@/lib/enrollments/self-service-enrollment'
+import { verifyPayPalWebhookSignature } from '@/lib/paypal'
+
+interface PayPalWebhookEvent {
+  event_type?: string
+  resource?: {
+    id?: string
+    supplementary_data?: { related_ids?: { order_id?: string } }
+  }
+}
 
 // Webhook para eventos de PayPal
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json()
+    // Read the raw body so we can parse it AND hand the event to PayPal's
+    // signature verification before trusting anything in it.
+    const rawBody = await req.text()
+    let body: PayPalWebhookEvent
+    try {
+      body = JSON.parse(rawBody)
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 })
+    }
+
+    // SECURITY: reject any webhook that is not a verified PayPal delivery.
+    // Without this, a forged POST could trigger a free enrollment.
+    const verified = await verifyPayPalWebhookSignature({
+      headers: {
+        transmissionId: req.headers.get('paypal-transmission-id'),
+        transmissionTime: req.headers.get('paypal-transmission-time'),
+        transmissionSig: req.headers.get('paypal-transmission-sig'),
+        certUrl: req.headers.get('paypal-cert-url'),
+        authAlgo: req.headers.get('paypal-auth-algo'),
+      },
+      event: body,
+    })
+    if (!verified) {
+      console.error('[PayPal Webhook] Rejected: signature verification failed')
+      return NextResponse.json({ error: 'Invalid webhook signature' }, { status: 401 })
+    }
+
     const eventType = body.event_type
 
     console.log('PayPal Webhook Event:', eventType)
