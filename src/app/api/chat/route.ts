@@ -34,6 +34,7 @@ import {
 import { handleAdminCalculateClassDates } from '@/lib/chat-tools/admin-calculate-class-dates'
 import { buildSystemPrompt } from '@/lib/chat-prompts'
 import { buildInteractionFromToolResult } from '@/lib/chat-interaction'
+import { looksLikePendingAction } from '@/lib/chat/pending-action'
 import type { ToolResult } from '@/types/ai-chat'
 
 const genAI = process.env.GEMINI_API_KEY
@@ -702,9 +703,7 @@ export async function POST(req: NextRequest) {
             // No text parts — nothing to nudge, just break
             break
           }
-          const PENDING_RE =
-            /\b(verificar[eé]|comprobar[eé]|revisar[eé]|consultar[eé]|buscar[eé]|proceder[eé]|un momento|un segundo|un segundito|un momentito|voy a|déjame|dejame|ahora mismo|enseguida|procedo|procederé|generar[eé]|let me|will check|checking|necesito saber|necesito la|para confirmar|para poder|podrías indicar|podrias indicar|no tengo acceso|no puedo ver|indicame|indícame|dime cu[aá]l)\b/
-          if (PENDING_RE.test(previewText)) {
+          if (looksLikePendingAction(previewText)) {
             nudged = true
             // Capture the pre-nudge text so we can use it as a fallback
             try {
