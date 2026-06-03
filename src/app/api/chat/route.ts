@@ -421,7 +421,12 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
         teacherId: {
           type: SchemaType.STRING,
           description:
-            'ID del profesor seleccionado por el admin. Garantiza que todas las clases sean con el mismo profesor.',
+            'ID interno (cuid) del profesor, si lo conoces. Si solo tienes el nombre, usa teacherNameOrEmail.',
+        },
+        teacherNameOrEmail: {
+          type: SchemaType.STRING,
+          description:
+            'Nombre o correo del profesor seleccionado por el admin (ej: "Álvaro Jordan"). Úsalo cuando no tengas el ID interno. Garantiza que todas las clases sean con el mismo profesor.',
         },
         slots: {
           type: SchemaType.ARRAY,
@@ -870,12 +875,14 @@ export async function POST(req: NextRequest) {
             const schedArgs = call.args as {
               studentNameOrEmail: string
               teacherId?: string
+              teacherNameOrEmail?: string
               slots: Array<{ dayOfWeek: string; localTime: string }>
               studentTimezone?: string
             }
             toolResult = await handleAdminScheduleClass({
               studentNameOrEmail: schedArgs.studentNameOrEmail,
               teacherId: schedArgs.teacherId,
+              teacherNameOrEmail: schedArgs.teacherNameOrEmail,
               slots: schedArgs.slots,
               adminTimezone: schedArgs.studentTimezone || user.timezone,
             })

@@ -31,11 +31,12 @@ function normalizeDayName(day: string): string {
 export async function handleAdminScheduleClass(params: {
   studentNameOrEmail: string
   teacherId?: string
+  teacherNameOrEmail?: string
   slots: Array<{ dayOfWeek: string; localTime: string }>
   adminTimezone: string
 }): Promise<ToolResult> {
   try {
-    const { studentNameOrEmail, teacherId, slots, adminTimezone } = params
+    const { studentNameOrEmail, teacherId, teacherNameOrEmail, slots, adminTimezone } = params
     const isEmail = studentNameOrEmail.includes('@')
 
     let student: {
@@ -136,6 +137,27 @@ export async function handleAdminScheduleClass(params: {
 
     const iterStart = now > periodStart ? now : periodStart
 
+    // Resolve the requested teacher to a user id. The chat may pass an internal
+    // id (teacherId) OR a name/email (teacherNameOrEmail), and sometimes puts the
+    // teacher's NAME in teacherId — accept all forms so the right teacher sticks.
+    let resolvedTeacherId: string | undefined
+    for (const ref of [teacherId, teacherNameOrEmail]) {
+      if (resolvedTeacherId || !ref) continue
+      const r = ref.trim()
+      const t =
+        (await db.user.findFirst({
+          where: { id: r, roles: { has: UserRole.TEACHER } },
+          select: { id: true },
+        })) ||
+        (await db.user.findFirst({
+          where: r.includes('@')
+            ? { email: { equals: r, mode: 'insensitive' }, roles: { has: UserRole.TEACHER } }
+            : { name: { contains: r, mode: 'insensitive' }, roles: { has: UserRole.TEACHER } },
+          select: { id: true },
+        }))
+      if (t) resolvedTeacherId = t.id
+    }
+
     const normalizedSlots = slots.map((s) => ({
       dayOfWeek: normalizeDayName(s.dayOfWeek),
       localTime: s.localTime,
@@ -233,8 +255,8 @@ export async function handleAdminScheduleClass(params: {
 
         let selectedTeacherId = freeTeachers[0].userId
 
-        // Prefer the passed teacherId, then the enrollment's teacherId
-        const preferredTeacherId = teacherId || enrollment.teacherId
+        // Prefer the resolved teacher, then the enrollment's teacher
+        const preferredTeacherId = resolvedTeacherId || enrollment.teacherId
         if (preferredTeacherId && freeTeachers.some((t) => t.userId === preferredTeacherId)) {
           selectedTeacherId = preferredTeacherId
         } else if (preferredTeacherId) {
