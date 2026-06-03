@@ -13,9 +13,16 @@ const DAY_ALIASES: Record<string, string> = {
 export async function handleCheckAvailability(params: {
   slots: Array<{ dayOfWeek: string; localTime: string }>
   timezone: string
+  /**
+   * Optional: the student the schedule is for. When provided, a teacher who is
+   * busy ONLY because of THIS student's own class is NOT counted as unavailable,
+   * and the result flags slots the student already has booked (compared by the
+   * real UTC instant, regardless of which timezone label is used).
+   */
+  studentNameOrEmail?: string
 }): Promise<ToolResult> {
   try {
-    const { slots, timezone } = params
+    const { slots, timezone, studentNameOrEmail } = params
 
     if (!slots || slots.length === 0) {
       return {
@@ -24,9 +31,29 @@ export async function handleCheckAvailability(params: {
       }
     }
 
+    // Resolve the target student (if named). Lets us ignore the student's OWN
+    // bookings when deciding whether a teacher is free, and tell the admin when
+    // the student already has that exact class.
+    let targetStudentId: string | null = null
+    if (studentNameOrEmail?.trim()) {
+      const q = studentNameOrEmail.trim()
+      const student = q.includes('@')
+        ? await db.user.findFirst({
+            where: { email: { equals: q, mode: 'insensitive' } },
+            select: { id: true },
+          })
+        : await db.user.findFirst({
+            where: { name: { contains: q, mode: 'insensitive' } },
+            select: { id: true },
+          })
+      targetStudentId = student?.id ?? null
+    }
+
     // Keep track of teachers available for EVERY requested slot
     let commonAvailableTeachers: { id: string; name: string }[] | null = null
     const missingAvailabilityDetails = []
+    // Slots the target student already has booked (same UTC instant).
+    const alreadyBooked: string[] = []
 
     // For calculating the target date for conflict checks
     const now = new Date()
@@ -81,10 +108,23 @@ export async function handleCheckAvailability(params: {
           timeSlot: { startsWith: utcSlot.startTime },
           status: 'CONFIRMED',
         },
-        select: { teacherId: true },
+        select: { teacherId: true, studentId: true, teacher: { select: { name: true } } },
       })
 
-      const bookedTeacherIds = new Set(conflictingBookings.map((b) => b.teacherId))
+      // A teacher is "busy" only if booked with someone OTHER than the target
+      // student — a teacher already teaching THIS student at this slot is exactly
+      // who we want, not a conflict.
+      const bookedTeacherIds = new Set(
+        conflictingBookings.filter((b) => b.studentId !== targetStudentId).map((b) => b.teacherId)
+      )
+
+      // Does the target student already have this exact class? (same UTC instant)
+      if (targetStudentId) {
+        const own = conflictingBookings.find((b) => b.studentId === targetStudentId)
+        if (own) {
+          alreadyBooked.push(`${slot.dayOfWeek} ${localTime} (con ${own.teacher?.name ?? 'su profesor'})`)
+        }
+      }
 
       // 3. Filter configured teachers that are NOT booked
       const freeTeachersForSlot: { id: string; name: string }[] = []
@@ -107,11 +147,17 @@ export async function handleCheckAvailability(params: {
       }
     }
 
+    // Leading note when the student already has some of these exact classes, so
+    // the assistant tells the admin instead of looping or proposing a new teacher.
+    const alreadyNote = alreadyBooked.length
+      ? `NOTA IMPORTANTE: el estudiante YA tiene clase agendada en: ${alreadyBooked.join('; ')}. Es el MISMO instante aunque la zona horaria mostrada difiera (p. ej. 6pm Venezuela = 5pm Chicago). No agendes duplicados; si el admin pidió justamente eso, infórmale que ya está cubierto. `
+      : ''
+
     if (missingAvailabilityDetails.length > 0) {
       return {
         success: false,
-        message: missingAvailabilityDetails.join(' ') + ' El estudiante debe tener el mismo profesor para todas sus clases, por favor pídele al admin que proponga otros horarios.',
-        data: { available: false }
+        message: alreadyNote + missingAvailabilityDetails.join(' ') + ' El estudiante debe tener el mismo profesor para todas sus clases, por favor pídele al admin que proponga otros horarios.',
+        data: { available: false, alreadyBooked }
       }
     }
 
@@ -119,8 +165,8 @@ export async function handleCheckAvailability(params: {
        const summary = slots.map(s => `${s.dayOfWeek} ${s.localTime}`).join(', ')
        return {
          success: false,
-         message: `Ningún profesor tiene disponibilidad para atender TODOS los horarios solicitados al mismo tiempo (${summary}). Por favor pídele al admin que proponga horarios distintos.`,
-         data: { available: false }
+         message: `${alreadyNote}Ningún profesor tiene disponibilidad para atender TODOS los horarios solicitados al mismo tiempo (${summary}). Por favor pídele al admin que proponga horarios distintos.`,
+         data: { available: false, alreadyBooked }
        }
     }
 
@@ -128,8 +174,8 @@ export async function handleCheckAvailability(params: {
 
     return {
       success: true,
-      message: `¡Horarios disponibles! Los siguientes profesores pueden cubrir TODOS los horarios solicitados: ${teacherNames.join(', ')}.`,
-      data: { available: true, teacherCount: commonAvailableTeachers.length, teacherNames },
+      message: `${alreadyNote}¡Horarios disponibles! Los siguientes profesores pueden cubrir TODOS los horarios solicitados: ${teacherNames.join(', ')}.`,
+      data: { available: true, teacherCount: commonAvailableTeachers.length, teacherNames, alreadyBooked },
     }
   } catch (error) {
     console.error('[CheckAvailability] Error:', error)

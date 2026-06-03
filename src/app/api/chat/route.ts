@@ -72,6 +72,11 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
           type: SchemaType.STRING,
           description: 'Zona horaria IANA del usuario (ej: America/Lima, America/New_York)',
         },
+        studentNameOrEmail: {
+          type: SchemaType.STRING,
+          description:
+            'ADMIN: nombre o correo del estudiante para quien se agenda. Pásalo SIEMPRE. Hace que un profesor que solo está "ocupado" por una clase del MISMO estudiante NO se reporte como no disponible, y avisa si el estudiante ya tiene esa clase (mismo instante en UTC aunque la zona horaria difiera).',
+        },
       },
       required: ['slots', 'timezone'],
     } as unknown as FunctionDeclarationSchema,
@@ -737,6 +742,7 @@ export async function POST(req: NextRequest) {
               call.args as {
                 slots: Array<{ dayOfWeek: string; localTime: string }>
                 timezone: string
+                studentNameOrEmail?: string
               }
             )
             break
