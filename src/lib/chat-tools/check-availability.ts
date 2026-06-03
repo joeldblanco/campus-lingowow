@@ -1,5 +1,6 @@
 import { db } from '@/lib/db'
 import { convertAvailabilityToUTC } from '@/lib/utils/date'
+import { resolveStudent, studentDisplayName } from './resolve-student'
 import type { ToolResult } from '@/types/ai-chat'
 
 const DAY_ALIASES: Record<string, string> = {
@@ -31,22 +32,26 @@ export async function handleCheckAvailability(params: {
       }
     }
 
-    // Resolve the target student (if named). Lets us ignore the student's OWN
-    // bookings when deciding whether a teacher is free, and tell the admin when
-    // the student already has that exact class.
+    // Resolve the target student (if named) with the robust resolver. Lets us
+    // ignore the student's OWN bookings when deciding whether a teacher is free,
+    // and tell the admin when the student already has that exact class.
     let targetStudentId: string | null = null
     if (studentNameOrEmail?.trim()) {
-      const q = studentNameOrEmail.trim()
-      const student = q.includes('@')
-        ? await db.user.findFirst({
-            where: { email: { equals: q, mode: 'insensitive' } },
-            select: { id: true },
-          })
-        : await db.user.findFirst({
-            where: { name: { contains: q, mode: 'insensitive' } },
-            select: { id: true },
-          })
-      targetStudentId = student?.id ?? null
+      const resolution = await resolveStudent(studentNameOrEmail)
+      if (resolution.kind === 'multiple') {
+        return {
+          success: false,
+          message: `Hay varios estudiantes que coinciden con "${studentNameOrEmail}". Pide al admin que confirme cuál antes de verificar disponibilidad.`,
+          data: {
+            code: 'MULTIPLE_STUDENTS',
+            students: resolution.students.map((u) => ({
+              name: studentDisplayName(u),
+              email: u.email,
+            })),
+          },
+        }
+      }
+      if (resolution.kind === 'found') targetStudentId = resolution.student.id
     }
 
     // Keep track of teachers available for EVERY requested slot
