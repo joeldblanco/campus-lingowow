@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { validateClassAccess, shouldShowEndWarning } from './class-access'
+import { validateClassAccess, shouldShowEndWarning, shouldRemainInClassroom } from './class-access'
 import { convertTimeSlotToUTC } from './date'
 
 describe('Class Access Validation', () => {
@@ -271,6 +271,27 @@ describe('shouldShowEndWarning', () => {
     expect(shouldShowEndWarning(0)).toBe(false)
     expect(shouldShowEndWarning(-1)).toBe(false)
     expect(shouldShowEndWarning(-10)).toBe(false)
+  })
+})
+
+describe('shouldRemainInClassroom', () => {
+  it('keeps a user inside after class end if they already joined (no auto-close)', () => {
+    // El reloj cruzó la hora de fin: validateClassAccess ya devuelve canAccess=false,
+    // pero el usuario está dentro. NO debe expulsarse (bug de cierre automático).
+    expect(shouldRemainInClassroom(false, true)).toBe(true)
+  })
+
+  it('keeps a user inside while the class is still active', () => {
+    expect(shouldRemainInClassroom(true, true)).toBe(true)
+  })
+
+  it('allows entry when access is granted even before joining', () => {
+    expect(shouldRemainInClassroom(true, false)).toBe(true)
+  })
+
+  it('blocks a user who never joined and has no current access', () => {
+    // Clase aún no empieza, o ya terminó antes de abrir el aula.
+    expect(shouldRemainInClassroom(false, false)).toBe(false)
   })
 })
 
