@@ -7,7 +7,7 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { getClassroomData } from '@/lib/actions/dashboard'
-import { validateClassAccess } from '@/lib/utils/class-access'
+import { validateClassAccess, shouldRemainInClassroom } from '@/lib/utils/class-access'
 import { useTimezone } from '@/hooks/use-timezone'
 import { UserRole } from '@prisma/client'
 import { Clock } from 'lucide-react'
@@ -39,6 +39,9 @@ export default function ClassroomPage() {
   const [accessValidation, setAccessValidation] = useState<ReturnType<
     typeof validateClassAccess
   > | null>(null)
+  // Una vez que el usuario entra a una clase activa, no se le debe expulsar
+  // porque el reloj cruce la hora de fin: el aula solo se cierra manualmente.
+  const [hasJoined, setHasJoined] = useState(false)
 
   const urlClassId = searchParams.get('classId')
   const effectiveClassId = urlClassId || currentClassId
@@ -78,7 +81,7 @@ export default function ClassroomPage() {
 
   // Registrar ingreso y salida del aula
   useEffect(() => {
-    if (!classroomData || !session?.user?.id || !accessValidation?.canAccess) return
+    if (!classroomData || !session?.user?.id || !hasJoined) return
 
     const role = isTeacher ? 'profesor' : 'estudiante'
     trackEvent({
@@ -129,7 +132,15 @@ export default function ClassroomPage() {
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [classroomData?.bookingId, accessValidation?.canAccess])
+  }, [classroomData?.bookingId, hasJoined])
+
+  // Marcar que el usuario ya entró al aula. A partir de aquí permanece dentro
+  // aunque la hora de fin pase: el cierre del aula es siempre manual.
+  useEffect(() => {
+    if (accessValidation?.canAccess) {
+      setHasJoined(true)
+    }
+  }, [accessValidation?.canAccess])
 
   // Actualizar validación cada segundo y recargar cuando llegue la hora
   useEffect(() => {
@@ -190,8 +201,11 @@ export default function ClassroomPage() {
     )
   }
 
-  // Validar acceso basado en horario
-  if (accessValidation && !accessValidation.canAccess) {
+  // Validar acceso basado en horario. Si el usuario ya entró (hasJoined), no se
+  // le expulsa aunque la clase haya pasado su hora de fin: el aula solo se cierra
+  // manualmente. La compuerta solo bloquea a quien aún no ha entrado (clase no
+  // iniciada, o ya finalizada antes de abrir el aula).
+  if (accessValidation && !shouldRemainInClassroom(accessValidation.canAccess, hasJoined)) {
     return (
       <div className="flex flex-1 items-center justify-center h-screen bg-[#202124]">
         <div className="bg-[#292a2d] p-8 rounded-lg shadow-md max-w-md w-full text-center">

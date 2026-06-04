@@ -165,3 +165,25 @@ export function validateClassAccess(
 export function shouldShowEndWarning(minutesUntilEnd: number): boolean {
   return minutesUntilEnd > 0 && minutesUntilEnd <= 5
 }
+
+/**
+ * Decide si se debe seguir mostrando el aula (manteniendo la sesión de LiveKit
+ * montada) para un usuario que ya está dentro.
+ *
+ * `validateClassAccess` es una compuerta de ENTRADA: decide si alguien puede
+ * empezar una clase según el horario. NO debe usarse para EXPULSAR a quien ya
+ * entró: el aula solo se cierra de forma manual. Antes, la página revalidaba el
+ * acceso cada segundo y, en el instante exacto del fin (`secondsUntilEnd <= 0`),
+ * `canAccess` pasaba a `false`, lo que desmontaba el aula y desconectaba a ambos
+ * participantes a la vez (p. ej. 19:39:59 y 19:40:00).
+ *
+ * Una vez que el usuario entró (`hasJoined`), permanece dentro aunque el reloj
+ * cruce la hora de fin. Quien nunca entró (clase aún no empieza, o ya terminó
+ * antes de abrir el aula) sigue bloqueado por `canAccessNow`.
+ *
+ * @param canAccessNow - Resultado actual de `validateClassAccess(...).canAccess`.
+ * @param hasJoined - Si el usuario ya obtuvo acceso al aula en algún momento.
+ */
+export function shouldRemainInClassroom(canAccessNow: boolean, hasJoined: boolean): boolean {
+  return hasJoined || canAccessNow
+}
