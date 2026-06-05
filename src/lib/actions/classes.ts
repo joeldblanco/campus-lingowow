@@ -1293,7 +1293,10 @@ export async function toggleClassPayable(classId: string, isPayable: boolean) {
       data: { isPayable },
     })
 
-    revalidatePath('/admin/reports')
+    // No revalidamos aquí porque la tabla de clases usa actualizaciones optimistas
+    // en el cliente. Llamar a revalidatePath forzaba un refresh del route actual
+    // (/admin/classes), que descartaba los filtros guardados en la URL vía
+    // history.replaceState. Mismo criterio que updateClass.
 
     return {
       success: true,
