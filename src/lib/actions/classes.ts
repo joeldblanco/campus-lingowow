@@ -2,7 +2,7 @@
 
 import { syncAutoCompletedClassBookings } from '@/lib/class-booking-auto-completion'
 import { db } from '@/lib/db'
-import { CreateClassSchema, EditClassSchema } from '@/schemas/classes'
+import { CreateClassSchema, CreateTrialClassSchema, EditClassSchema } from '@/schemas/classes'
 import { Prisma } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import * as z from 'zod'
@@ -11,7 +11,7 @@ export interface ClassBookingWithDetails {
   id: string
   studentId: string
   teacherId: string
-  enrollmentId: string
+  enrollmentId: string | null
   day: string
   timeSlot: string
   status: string
@@ -22,6 +22,7 @@ export interface ClassBookingWithDetails {
   completedAt: Date | null
   creditId: string | null
   isPayable: boolean
+  isTrial: boolean
   student: {
     id: string
     name: string
@@ -53,7 +54,7 @@ export interface ClassBookingWithDetails {
     }
     classesTotal: number
     classesAttended: number
-  }
+  } | null
   createdAt: Date
   updatedAt: Date
 }
@@ -251,6 +252,66 @@ export async function getClassById(
   }
 }
 
+// Duración fija de una clase de prueba (en minutos). Las pruebas son sesiones
+// cortas, independientes de la duración del curso (que aquí no existe).
+const TRIAL_CLASS_DURATION_MINUTES = 30
+
+/**
+ * Verifica si el profesor ya tiene una clase (no cancelada) que se solapa con el
+ * rango UTC dado. Devuelve un mensaje de error si hay conflicto, o null si está libre.
+ * Compartido entre clases normales y clases de prueba.
+ */
+async function findTeacherSlotConflict(
+  teacherId: string,
+  utcDay: string,
+  utcTimeSlot: string
+): Promise<string | null> {
+  const existingClasses = await db.classBooking.findMany({
+    where: {
+      teacherId,
+      day: utcDay,
+      status: { not: 'CANCELLED' },
+    },
+    select: {
+      id: true,
+      timeSlot: true,
+    },
+  })
+
+  // Parsear el horario de la nueva clase
+  const [newStartTime, newEndTime] = utcTimeSlot.split('-')
+  const [newStartHour, newStartMin] = newStartTime.split(':').map(Number)
+  const [newEndHour, newEndMin] = newEndTime.split(':').map(Number)
+  const newStartMinutes = newStartHour * 60 + newStartMin
+  let newEndMinutes = newEndHour * 60 + newEndMin
+  // Ajustar para clases que cruzan medianoche UTC
+  if (newEndMinutes <= newStartMinutes) {
+    newEndMinutes += 24 * 60
+  }
+
+  for (const existingClass of existingClasses) {
+    const [existingStartTime, existingEndTime] = existingClass.timeSlot.split('-')
+    const [existingStartHour, existingStartMin] = existingStartTime.split(':').map(Number)
+    const [existingEndHour, existingEndMin] = existingEndTime.split(':').map(Number)
+    const existingStartMinutes = existingStartHour * 60 + existingStartMin
+    let existingEndMinutes = existingEndHour * 60 + existingEndMin
+    // Ajustar para clases que cruzan medianoche UTC
+    if (existingEndMinutes <= existingStartMinutes) {
+      existingEndMinutes += 24 * 60
+    }
+
+    // Hay superposición si los rangos se intersectan
+    const hasOverlap =
+      newStartMinutes < existingEndMinutes && newEndMinutes > existingStartMinutes
+
+    if (hasOverlap) {
+      return `El profesor ya tiene una clase programada de ${existingStartTime} a ${existingEndTime} que se superpone con este horario`
+    }
+  }
+
+  return null
+}
+
 export async function createClass(data: z.infer<typeof CreateClassSchema> & { timezone?: string }) {
   try {
     // Validate input data
@@ -289,52 +350,13 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
     const utcData = convertTimeSlotToUTC(day, timeSlot, userTimezone)
 
     // 2. Verificar que no haya superposición con otras clases del profesor
-    // Obtener todas las clases del profesor para ese día (que no estén canceladas)
-    const existingClasses = await db.classBooking.findMany({
-      where: {
-        teacherId: validatedData.teacherId,
-        day: utcData.day,
-        status: { not: 'CANCELLED' },
-      },
-      select: {
-        id: true,
-        timeSlot: true,
-      },
-    })
-
-    // Parsear el horario de la nueva clase
-    const [newStartTime, newEndTime] = utcData.timeSlot.split('-')
-    const [newStartHour, newStartMin] = newStartTime.split(':').map(Number)
-    const [newEndHour, newEndMin] = newEndTime.split(':').map(Number)
-    const newStartMinutes = newStartHour * 60 + newStartMin
-    let newEndMinutes = newEndHour * 60 + newEndMin
-    // Ajustar para clases que cruzan medianoche UTC
-    if (newEndMinutes <= newStartMinutes) {
-      newEndMinutes += 24 * 60
-    }
-
-    // Verificar superposición con cada clase existente
-    for (const existingClass of existingClasses) {
-      const [existingStartTime, existingEndTime] = existingClass.timeSlot.split('-')
-      const [existingStartHour, existingStartMin] = existingStartTime.split(':').map(Number)
-      const [existingEndHour, existingEndMin] = existingEndTime.split(':').map(Number)
-      const existingStartMinutes = existingStartHour * 60 + existingStartMin
-      let existingEndMinutes = existingEndHour * 60 + existingEndMin
-      // Ajustar para clases que cruzan medianoche UTC
-      if (existingEndMinutes <= existingStartMinutes) {
-        existingEndMinutes += 24 * 60
-      }
-
-      // Hay superposición si los rangos se intersectan
-      const hasOverlap =
-        newStartMinutes < existingEndMinutes && newEndMinutes > existingStartMinutes
-
-      if (hasOverlap) {
-        return {
-          success: false,
-          error: `El profesor ya tiene una clase programada de ${existingStartTime} a ${existingEndTime} que se superpone con este horario`,
-        }
-      }
+    const overlapError = await findTeacherSlotConflict(
+      validatedData.teacherId,
+      utcData.day,
+      utcData.timeSlot
+    )
+    if (overlapError) {
+      return { success: false, error: overlapError }
     }
 
     const classBooking = await db.classBooking.create({
@@ -362,6 +384,126 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
     }
 
     return { success: false, error: 'Error al crear la clase' }
+  }
+}
+
+/**
+ * Agenda una clase de prueba: solo estudiante + profesor + fecha/hora.
+ * No requiere inscripción, factura ni período académico. Crea un ClassBooking
+ * con enrollmentId null e isTrial true, que ya es unible (aula LiveKit). Si el
+ * estudiante es GUEST, se promueve a STUDENT para que pueda iniciar sesión y entrar.
+ */
+export async function createTrialClass(
+  data: z.infer<typeof CreateTrialClassSchema> & { timezone?: string }
+) {
+  try {
+    const validatedData = CreateTrialClassSchema.parse(data)
+    const userTimezone = data.timezone || 'America/Lima'
+
+    // Verificar que el estudiante exista; promover GUEST -> STUDENT si hace falta.
+    const student = await db.user.findUnique({
+      where: { id: validatedData.studentId },
+      select: { id: true, roles: true },
+    })
+
+    if (!student) {
+      return { success: false, error: 'Estudiante no encontrado' }
+    }
+
+    if (student.roles.includes('GUEST') && !student.roles.includes('STUDENT')) {
+      await db.user.update({
+        where: { id: student.id },
+        data: { roles: { push: 'STUDENT' } },
+      })
+    }
+
+    // Verificar que el profesor exista y tenga rol TEACHER.
+    const teacher = await db.user.findFirst({
+      where: { id: validatedData.teacherId, roles: { has: 'TEACHER' } },
+      select: { id: true },
+    })
+
+    if (!teacher) {
+      return { success: false, error: 'Profesor no encontrado' }
+    }
+
+    // Extraer day y timeSlot del datetime (formato: YYYY-MM-DDTHH:MM), tal cual
+    // los ingresó el admin, evitando el constructor Date para no desfasar la zona.
+    const [day, timePart] = validatedData.datetime.split('T')
+    const [rawHours, rawMinutes] = timePart.split(':')
+    const hours = rawHours.padStart(2, '0')
+    const minutes = rawMinutes.padStart(2, '0')
+
+    const startHours = parseInt(hours, 10)
+    const startMins = parseInt(minutes, 10)
+    const endMinutes = startHours * 60 + startMins + TRIAL_CLASS_DURATION_MINUTES
+    const endHours = Math.floor(endMinutes / 60) % 24
+    const endMins = endMinutes % 60
+    const timeSlot = `${hours}:${minutes}-${endHours.toString().padStart(2, '0')}:${endMins.toString().padStart(2, '0')}`
+
+    // Convertir de hora local a UTC antes de guardar.
+    const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
+    const utcData = convertTimeSlotToUTC(day, timeSlot, userTimezone)
+    const [utcStart] = utcData.timeSlot.split('-')
+
+    // Conflicto del profesor (clases normales o de prueba).
+    const overlapError = await findTeacherSlotConflict(
+      validatedData.teacherId,
+      utcData.day,
+      utcData.timeSlot
+    )
+    if (overlapError) {
+      return { success: false, error: overlapError }
+    }
+
+    // Conflicto del estudiante en el mismo horario.
+    const studentConflict = await db.classBooking.findFirst({
+      where: {
+        studentId: validatedData.studentId,
+        day: utcData.day,
+        timeSlot: { startsWith: utcStart },
+        status: { not: 'CANCELLED' },
+      },
+      select: { id: true },
+    })
+    if (studentConflict) {
+      return { success: false, error: 'El estudiante ya tiene una clase en ese horario' }
+    }
+
+    try {
+      const classBooking = await db.classBooking.create({
+        data: {
+          studentId: validatedData.studentId,
+          teacherId: validatedData.teacherId,
+          enrollmentId: null,
+          isTrial: true,
+          day: utcData.day,
+          timeSlot: utcData.timeSlot,
+          notes: validatedData.notes,
+          status: 'CONFIRMED',
+        },
+      })
+
+      revalidatePath('/admin/classes')
+      return { success: true, class: classBooking }
+    } catch (err) {
+      // Unique [teacherId, day, timeSlot]: el profesor ya está reservado en ese slot.
+      if ((err as { code?: string }).code === 'P2002') {
+        return { success: false, error: 'El profesor ya tiene una clase en ese horario' }
+      }
+      throw err
+    }
+  } catch (error) {
+    console.error('Error creating trial class:', error)
+
+    if (error instanceof z.ZodError) {
+      return {
+        success: false,
+        error: error.errors.map((e) => e.message).join(', '),
+      }
+    }
+
+    return { success: false, error: 'Error al crear la clase de prueba' }
   }
 }
 
@@ -957,6 +1099,39 @@ export async function getAllStudents() {
   } catch (error) {
     console.error('Error fetching students:', error)
     throw new Error('Failed to fetch students')
+  }
+}
+
+/**
+ * Candidatos para una clase de prueba: cualquier usuario activo con rol STUDENT
+ * o GUEST (prospectos/leads). A diferencia de getAllStudents, incluye GUEST, que
+ * se promueve a STUDENT al agendar (ver createTrialClass).
+ */
+export async function getTrialStudentCandidates() {
+  try {
+    const candidates = await db.user.findMany({
+      where: {
+        roles: {
+          hasSome: ['STUDENT', 'GUEST'],
+        },
+        status: 'ACTIVE',
+      },
+      select: {
+        id: true,
+        name: true,
+        lastName: true,
+        email: true,
+        image: true,
+      },
+      orderBy: {
+        name: 'asc',
+      },
+    })
+
+    return candidates
+  } catch (error) {
+    console.error('Error fetching trial student candidates:', error)
+    throw new Error('Failed to fetch trial student candidates')
   }
 }
 

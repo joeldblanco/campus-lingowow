@@ -215,7 +215,7 @@ export const ClassesTable = memo(function ClassesTable({
 
     if (periodFilter !== 'all') {
       filtered = filtered.filter(
-        (classItem) => classItem.enrollment.academicPeriod.id === periodFilter
+        (classItem) => classItem.enrollment?.academicPeriod.id === periodFilter
       )
     }
 
@@ -614,7 +614,14 @@ export const ClassesTable = memo(function ClassesTable({
       header: ({ column }) => <DataTableColumnHeader column={column} title="Clase" />,
       cell: ({ row }) => (
         <div>
-          <div className="font-medium text-sm">{formatDate(row.original.day)}</div>
+          <div className="flex items-center gap-2">
+            <span className="font-medium text-sm">{formatDate(row.original.day)}</span>
+            {row.original.isTrial && (
+              <Badge className="bg-amber-100 text-amber-700 hover:bg-amber-100 border-0 font-medium">
+                Prueba
+              </Badge>
+            )}
+          </div>
           <div className="text-xs text-muted-foreground">ID: {row.original.id.slice(0, 8)}...</div>
         </div>
       ),

@@ -141,6 +141,8 @@ export async function GET(request: NextRequest) {
     // 1. Si está marcada manualmente como pagable (isPayable = true), es pagable
     // 2. Si no, es pagable si el profesor asistió (sin importar si el estudiante asistió)
     const payableClasses = completedClasses.filter((classBooking) => {
+      // Las clases de prueba (sin inscripción/curso) no son pagables.
+      if (!classBooking.enrollment) return false
       if (classBooking.isPayable) return true
       const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
       return hasTeacherAttendance
@@ -167,14 +169,15 @@ export async function GET(request: NextRequest) {
     let totalDuration = 0
 
     const classDetails = payableClasses.map((classBooking) => {
+      // payableClasses ya excluyó las clases de prueba: enrollment está presente.
+      const enrollment = classBooking.enrollment!
       // Usar duración de videollamada si está disponible, sino usar duración del curso
-      const duration =
-        classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+      const duration = classBooking.videoCalls[0]?.duration || enrollment.course.classDuration
       totalDuration += duration
 
-      const courseId = classBooking.enrollment.course.id
+      const courseId = enrollment.course.id
       const teacherPayment = teacherCoursePayments.get(courseId)
-      const defaultPayment = classBooking.enrollment.course.defaultPaymentPerClass
+      const defaultPayment = enrollment.course.defaultPaymentPerClass
 
       let classEarnings: number
       if (teacherPayment !== null && teacherPayment !== undefined) {
@@ -196,12 +199,12 @@ export async function GET(request: NextRequest) {
         timeSlot: classBooking.timeSlot,
         studentName: formatFullName(classBooking.student.name, classBooking.student.lastName),
         studentImage: classBooking.student.image,
-        courseName: classBooking.enrollment.course.title,
+        courseName: enrollment.course.title,
         duration,
         earnings: Math.round(classEarnings * 100) / 100,
         teacherAttendanceTime: classBooking.teacherAttendances[0]?.timestamp,
         studentAttendanceTime: classBooking.attendances[0]?.timestamp,
-        academicPeriod: classBooking.enrollment.academicPeriod.name,
+        academicPeriod: enrollment.academicPeriod.name,
       }
     })
 
@@ -251,13 +254,13 @@ export async function GET(request: NextRequest) {
     })
 
     const lastMonthPayableClasses = lastMonthClasses.filter(
-      (c) => c.isPayable || c.teacherAttendances.length > 0
+      (c) => c.enrollment && (c.isPayable || c.teacherAttendances.length > 0)
     )
 
     let lastMonthEarnings = 0
     lastMonthPayableClasses.forEach((classBooking) => {
       const duration =
-        classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+        classBooking.videoCalls[0]?.duration || classBooking.enrollment?.course.classDuration || 40
       const hours = duration / 60
       lastMonthEarnings += hours * BASE_RATE_PER_HOUR * rateMultiplier
     })
@@ -342,17 +345,19 @@ export async function GET(request: NextRequest) {
     })
 
     const allPayableClasses = allCompletedClasses.filter((classBooking) => {
+      // Las clases de prueba (sin inscripción/curso) no son pagables.
+      if (!classBooking.enrollment) return false
       if (classBooking.isPayable) return true
       return classBooking.teacherAttendances.length > 0
     })
 
     const totalEarningsAllTime = allPayableClasses.reduce((sum, classBooking) => {
-      const duration =
-        classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+      const enrollment = classBooking.enrollment!
+      const duration = classBooking.videoCalls[0]?.duration || enrollment.course.classDuration
 
-      const courseId = classBooking.enrollment.course.id
+      const courseId = enrollment.course.id
       const teacherPayment = teacherCoursePayments.get(courseId)
-      const defaultPayment = classBooking.enrollment.course.defaultPaymentPerClass
+      const defaultPayment = enrollment.course.defaultPaymentPerClass
 
       let classEarnings: number
       if (teacherPayment !== null && teacherPayment !== undefined) {

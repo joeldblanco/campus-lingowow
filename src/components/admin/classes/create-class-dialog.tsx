@@ -43,6 +43,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { CreateTrialClassForm } from './create-trial-class-form'
 import { toast } from 'sonner'
 import { CreateClassSchema } from '@/schemas/classes'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -93,6 +95,7 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
   const router = useRouter()
   const { timezone: userTimezone } = useTimezone()
   const [open, setOpen] = useState(false)
+  const [mode, setMode] = useState<'enrollment' | 'trial'>('enrollment')
   const [isLoading, setIsLoading] = useState(false)
   const [enrollments, setEnrollments] = useState<EnrollmentWithTeachers[]>([])
   const [selectedEnrollment, setSelectedEnrollment] = useState<EnrollmentWithTeachers | null>(null)
@@ -122,6 +125,7 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
   useEffect(() => {
     if (open) {
       loadData()
+      setMode('enrollment')
       setSelectedEnrollment(null)
       setEnrollmentPopoverOpen(false)
       setEnrollmentSearch('')
@@ -204,11 +208,19 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
         <DialogHeader>
           <DialogTitle>Programar Nueva Clase</DialogTitle>
           <DialogDescription>
-            Selecciona una inscripción y programa la fecha y hora de la clase.
+            {mode === 'enrollment'
+              ? 'Selecciona una inscripción y programa la fecha y hora de la clase.'
+              : 'Agenda una clase de prueba con solo estudiante, profesor y fecha/hora. Sin inscripción ni factura.'}
           </DialogDescription>
         </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+        <Tabs value={mode} onValueChange={(value) => setMode(value as 'enrollment' | 'trial')}>
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="enrollment">Inscripción</TabsTrigger>
+            <TabsTrigger value="trial">Clase de prueba</TabsTrigger>
+          </TabsList>
+          <TabsContent value="enrollment">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="grid gap-4 py-4">
               <FormField
                 control={form.control}
@@ -393,16 +405,24 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                 )}
               />
             </div>
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
-                Cancelar
-              </Button>
-              <Button type="submit" disabled={isLoading}>
-                {isLoading ? 'Programando...' : 'Programar Clase'}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
+                <DialogFooter>
+                  <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+                    Cancelar
+                  </Button>
+                  <Button type="submit" disabled={isLoading}>
+                    {isLoading ? 'Programando...' : 'Programar Clase'}
+                  </Button>
+                </DialogFooter>
+              </form>
+            </Form>
+          </TabsContent>
+          <TabsContent value="trial">
+            <CreateTrialClassForm
+              onSuccess={() => setOpen(false)}
+              onCancel={() => setOpen(false)}
+            />
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   )

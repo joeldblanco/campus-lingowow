@@ -274,12 +274,12 @@ export async function stopRecording(egressId: string, bookingId?: string) {
           userId: updatedRecording.booking.studentId,
           type: 'RECORDING_READY',
           title: 'Grabación disponible',
-          message: `La grabación de tu clase de ${updatedRecording.booking.enrollment.course.title} del ${updatedRecording.booking.day} está lista para ver.`,
+          message: `La grabación de tu clase de ${(updatedRecording.booking.enrollment?.course.title ?? 'Clase de prueba')} del ${updatedRecording.booking.day} está lista para ver.`,
           link: `/recordings/${updatedRecording.id}`,
           metadata: {
             recordingId: updatedRecording.id,
             bookingId: updatedRecording.bookingId,
-            courseTitle: updatedRecording.booking.enrollment.course.title,
+            courseTitle: (updatedRecording.booking.enrollment?.course.title ?? 'Clase de prueba'),
           },
         })
       } catch (notifError) {
@@ -430,7 +430,7 @@ async function pollEgressUntilReady(egressId: string, maxAttempts = 30, interval
           userId: updatedRecording.booking.studentId,
           type: 'RECORDING_READY',
           title: 'Grabación disponible',
-          message: `La grabación de tu clase de ${updatedRecording.booking.enrollment.course.title} del ${updatedRecording.booking.day} está lista para ver.`,
+          message: `La grabación de tu clase de ${(updatedRecording.booking.enrollment?.course.title ?? 'Clase de prueba')} del ${updatedRecording.booking.day} está lista para ver.`,
           link: `/recordings/${updatedRecording.id}`,
           metadata: {
             recordingId: updatedRecording.id,

@@ -7,6 +7,14 @@ export const CreateClassSchema = z.object({
   notes: z.string().optional(),
 })
 
+// Clase de prueba: estudiante + profesor + fecha/hora, sin inscripción ni factura.
+export const CreateTrialClassSchema = z.object({
+  studentId: z.string().min(1, 'El estudiante es requerido'),
+  teacherId: z.string().min(1, 'El profesor es requerido'),
+  datetime: z.string().min(1, 'La fecha y hora son requeridas'),
+  notes: z.string().optional(),
+})
+
 export const EditClassSchema = z.object({
   studentId: z.string().min(1, 'El estudiante es requerido'),
   enrollmentId: z.string().optional(),

@@ -199,12 +199,12 @@ async function handleEgressEnded(egressInfo: EgressInfo) {
           userId: updatedRecording.booking.studentId,
           type: 'RECORDING_READY',
           title: 'Grabación disponible',
-          message: `La grabación de tu clase de ${updatedRecording.booking.enrollment.course.title} del ${updatedRecording.booking.day} está lista para ver.`,
+          message: `La grabación de tu clase de ${(updatedRecording.booking.enrollment?.course.title ?? 'Clase de prueba')} del ${updatedRecording.booking.day} está lista para ver.`,
           link: `/recordings/${updatedRecording.id}`,
           metadata: {
             recordingId: updatedRecording.id,
             bookingId: updatedRecording.bookingId,
-            courseTitle: updatedRecording.booking.enrollment.course.title,
+            courseTitle: (updatedRecording.booking.enrollment?.course.title ?? 'Clase de prueba'),
           },
         })
         console.log(`[LiveKit Webhook] Notification sent to student ${updatedRecording.booking.studentId}`)

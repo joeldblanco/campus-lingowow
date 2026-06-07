@@ -453,6 +453,21 @@ export async function checkCanReschedule(bookingId: string): Promise<{
     const rescheduleMinutes = settings?.rescheduleMinutes ?? 60
     const maxReschedulesPerPeriod = settings?.maxReschedulesPerPeriod ?? 2
 
+    // Las clases de prueba no tienen inscripción ni contador de reagendamientos.
+    if (!booking.enrollment) {
+      return {
+        success: true,
+        data: {
+          canReschedule: false,
+          reason: 'Las clases de prueba no se pueden reagendar desde aquí',
+          reschedulesUsed: 0,
+          maxReschedules: 0,
+          minutesUntilClass: 0,
+          minMinutesRequired: 0,
+        },
+      }
+    }
+
     // Calcular minutos hasta la clase (comparando en UTC)
     const [startTime] = booking.timeSlot.split('-')
     const classDateTimeUTC = combineDateAndTimeUTC(booking.day, startTime)
@@ -569,6 +584,11 @@ export async function studentRescheduleClass(params: RescheduleClassParams): Pro
     const rescheduleMinutes = settings?.rescheduleMinutes ?? 60
     const maxReschedulesPerPeriod = settings?.maxReschedulesPerPeriod ?? 2
 
+    // Las clases de prueba no tienen inscripción ni contador de reagendamientos.
+    if (!booking.enrollment) {
+      return { success: false, error: 'Las clases de prueba no se pueden reagendar desde aquí' }
+    }
+
     // Calcular minutos hasta la clase (comparando en UTC)
     const [oldStartTime] = booking.timeSlot.split('-')
     const classDateTimeUTC = combineDateAndTimeUTC(booking.day, oldStartTime)
@@ -676,7 +696,7 @@ export async function studentRescheduleClass(params: RescheduleClassParams): Pro
 
       // Incrementar contador de reagendamientos
       await tx.enrollment.update({
-        where: { id: booking.enrollmentId },
+        where: { id: booking.enrollment!.id },
         data: {
           reschedulesUsed: { increment: 1 }
         }

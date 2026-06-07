@@ -171,7 +171,7 @@ export async function GET(req: NextRequest) {
           timeSlot: c.timeSlot,
           teacherName: c.teacher.name,
           teacherImage: c.teacher.image,
-          courseName: c.enrollment.course.title,
+          courseName: c.enrollment?.course.title ?? 'Clase de prueba',
         })),
         recentActivity: recentActivity.map((a) => ({
           title: a.activity.title,
