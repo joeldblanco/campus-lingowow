@@ -210,7 +210,7 @@ function isPayableClass(
 }
 
 function getClassDuration(classBooking: Pick<PaymentClassBooking, 'videoCalls' | 'enrollment'>) {
-  return classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+  return classBooking.videoCalls[0]?.duration || classBooking.enrollment?.course.classDuration || 40
 }
 
 function calculateClassEarnings(
@@ -219,9 +219,9 @@ function calculateClassEarnings(
 ) {
   const duration = getClassDuration(classBooking)
   const hours = duration / 60
-  const courseId = classBooking.enrollment.course.id
+  const courseId = classBooking.enrollment?.course.id ?? ''
   const teacherPayment = teacherCoursePayments.get(`${classBooking.teacherId}-${courseId}`)
-  const defaultPayment = classBooking.enrollment.course.defaultPaymentPerClass
+  const defaultPayment = classBooking.enrollment?.course.defaultPaymentPerClass
 
   if (teacherPayment !== null && teacherPayment !== undefined) {
     return teacherPayment
@@ -296,6 +296,9 @@ export async function getTeacherPaymentsReport(
   let totalPayment = 0
 
   for (const classBooking of countedClasses) {
+    // Las clases de prueba (sin inscripción/curso) no entran en pagos a profesores.
+    if (!classBooking.enrollment) continue
+
     const teacher = classBooking.teacher
 
     if (!teacherPaymentMap.has(teacher.id)) {

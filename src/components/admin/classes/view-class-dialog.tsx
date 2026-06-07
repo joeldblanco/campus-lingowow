@@ -151,6 +151,20 @@ export function ViewClassDialog({ classItem, children }: ViewClassDialogProps) {
             </div>
           </div>
 
+          {/* Trial class note (no enrollment) */}
+          {!classItem.enrollment && (
+            <div>
+              <Card>
+                <CardContent className="pt-4">
+                  <p className="text-sm font-medium">Clase de prueba</p>
+                  <p className="text-sm text-muted-foreground">
+                    Esta clase no está asociada a una inscripción, curso ni período académico.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
           {/* Course and Period Information */}
           {classItem.enrollment && (
             <div>

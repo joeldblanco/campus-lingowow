@@ -258,7 +258,7 @@ export async function GET() {
         timeSlot: b.timeSlot,
         student: formatFullName(b.student.name, b.student.lastName),
         teacher: formatFullName(b.teacher.name, b.teacher.lastName),
-        course: b.enrollment.course.title,
+        course: b.enrollment?.course.title ?? 'Clase de prueba',
         status: b.status
       }))
     })

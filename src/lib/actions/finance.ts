@@ -523,6 +523,11 @@ function resolveScheduledClassRevenue(
   booking: RevenueClassBooking,
   courseRevenueProductMap: Map<string, CourseRevenueProduct>
 ) {
+  // Las clases de prueba no tienen inscripción/curso: no generan ingreso por curso.
+  if (!booking.enrollment) {
+    return null
+  }
+
   const product = courseRevenueProductMap.get(booking.enrollment.course.id)
 
   if (!product || product.price <= 0) {
@@ -569,7 +574,13 @@ async function getScheduledClassRevenueRows(
   })
 
   const courseRevenueProductMap = await getCourseRevenueProductMap(
-    Array.from(new Set(bookings.map((booking) => booking.enrollment.course.id)))
+    Array.from(
+      new Set(
+        bookings
+          .map((booking) => booking.enrollment?.course.id)
+          .filter((id): id is string => Boolean(id))
+      )
+    )
   )
 
   const groupedRows = new Map<
@@ -594,7 +605,8 @@ async function getScheduledClassRevenueRows(
   for (const booking of bookings) {
     const revenue = resolveScheduledClassRevenue(booking, courseRevenueProductMap)
 
-    if (!revenue) {
+    // revenue es null para clases de prueba (sin inscripción); el guard narrowea el tipo.
+    if (!revenue || !booking.enrollment) {
       continue
     }
 

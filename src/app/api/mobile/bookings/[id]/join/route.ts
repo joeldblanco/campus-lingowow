@@ -122,8 +122,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       },
       booking: {
         id: booking.id,
-        courseName: booking.enrollment.course.title,
-        duration: booking.enrollment.course.classDuration,
+        courseName: booking.enrollment?.course.title ?? 'Clase de prueba',
+        duration: booking.enrollment?.course.classDuration ?? 30,
         isTeacher,
         participantName,
       },

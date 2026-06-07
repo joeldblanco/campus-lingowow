@@ -121,7 +121,8 @@ export async function handleAdminRescheduleClass(params: {
     }
 
     const timezone = booking.student.timezone ?? 'UTC'
-    const classDuration = booking.enrollment.course?.classDuration ?? 40
+    // Las clases de prueba no tienen inscripción/curso: usar 40 min por defecto.
+    const classDuration = booking.enrollment?.course?.classDuration ?? 40
 
     const [startH, startM] = newLocalTime.split(':').map(Number)
     const endTotalMin = startH * 60 + startM + classDuration
@@ -171,9 +172,10 @@ export async function handleAdminRescheduleClass(params: {
       return { success: false, message: `Todos los profesores están ocupados el ${newLocalDate} a las ${newLocalTime}. Intenta otro horario.` }
     }
 
+    const preferredTeacherId = booking.enrollment?.teacherId
     let selectedTeacherId = freeTeachers[0].userId
-    if (booking.enrollment.teacherId && freeTeachers.some((t) => t.userId === booking.enrollment.teacherId)) {
-      selectedTeacherId = booking.enrollment.teacherId
+    if (preferredTeacherId && freeTeachers.some((t) => t.userId === preferredTeacherId)) {
+      selectedTeacherId = preferredTeacherId
     }
 
     await db.classBooking.update({

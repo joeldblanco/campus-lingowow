@@ -470,7 +470,8 @@ async function calculateMonthlyTeacherPayments(startDate: Date, endDate: Date): 
     // Solo clases pagables (profesor asistió o marcada como pagable)
     const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
 
-    if (classBooking.isPayable || hasTeacherAttendance) {
+    // Las clases de prueba no tienen inscripción/curso ni tarifa: no son pagables.
+    if ((classBooking.isPayable || hasTeacherAttendance) && classBooking.enrollment) {
       const duration =
         classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
       const rateMultiplier = classBooking.teacher.teacherRank?.rateMultiplier || 1.0
@@ -569,7 +570,8 @@ export async function getExpenseAnalytics(months: number = 12): Promise<ExpenseA
   for (const classBooking of teacherClasses) {
     const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
 
-    if (!classBooking.isPayable && !hasTeacherAttendance) continue
+    // Excluir clases de prueba (sin inscripción/curso ni tarifa) del cálculo de pago.
+    if ((!classBooking.isPayable && !hasTeacherAttendance) || !classBooking.enrollment) continue
 
     const teacher = classBooking.teacher
     if (!teacherPaymentMap.has(teacher.id)) {
@@ -915,7 +917,8 @@ export async function getTeacherAnalytics(): Promise<TeacherAnalytics> {
 
       const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
 
-      if (classBooking.isPayable || hasTeacherAttendance) {
+      // Las clases de prueba (sin inscripción/curso) no generan pago.
+      if ((classBooking.isPayable || hasTeacherAttendance) && classBooking.enrollment) {
         const duration =
           classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
         stats.totalHours += duration / 60
@@ -2016,6 +2019,9 @@ export async function getProjectedPayrollAnalytics(
   const teacherPaymentMap = new Map<string, ProjectedTeacherPayment>()
 
   for (const classBooking of scheduledClasses) {
+    // Las clases de prueba (sin inscripción/curso) no entran en proyección de pago.
+    if (!classBooking.enrollment) continue
+
     const teacher = classBooking.teacher
 
     if (!teacherPaymentMap.has(teacher.id)) {

@@ -459,7 +459,10 @@ export async function getTeacherStudentsWithLessons(
       distinct: ['enrollmentId'],
     })
 
-    const enrollmentIds = bookings.map((b) => b.enrollmentId)
+    // Las clases de prueba tienen enrollmentId null; excluirlas del lookup.
+    const enrollmentIds = bookings
+      .map((b) => b.enrollmentId)
+      .filter((id): id is string => id !== null)
 
     // Obtener las inscripciones con cursos personalizados
     const enrollments = await db.enrollment.findMany({

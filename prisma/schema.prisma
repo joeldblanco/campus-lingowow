@@ -837,7 +837,7 @@ model ClassBooking {
   id           String        @id @default(cuid())
   studentId    String
   teacherId    String
-  enrollmentId String
+  enrollmentId String? // null para clases de prueba (sin inscripción)
   day          String // YYYY-MM-DD
   timeSlot     String // HH:MM-HH:MM
   status       BookingStatus @default(CONFIRMED)
@@ -849,11 +849,12 @@ model ClassBooking {
   completedAt  DateTime?
   creditId     String?
   isPayable    Boolean       @default(false) // Marcar manualmente como válida para pago al profesor
+  isTrial      Boolean       @default(false) // Clase de prueba: sin inscripción, factura ni progreso
 
   // Relaciones
   student            User                @relation("StudentBookings", fields: [studentId], references: [id])
   teacher            User                @relation("TeacherBookings", fields: [teacherId], references: [id])
-  enrollment         Enrollment          @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  enrollment         Enrollment?         @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
   studentCredit      StudentCredit?      @relation(fields: [creditId], references: [id])
   attendances        ClassAttendance[]
   teacherAttendances TeacherAttendance[]
@@ -1051,14 +1052,14 @@ model ClassAttendance {
   id           String           @id @default(cuid())
   classId      String
   studentId    String
-  enrollmentId String
+  enrollmentId String? // null para asistencia de clases de prueba (sin inscripción)
   status       AttendanceStatus @default(PRESENT)
   timestamp    DateTime         @default(now())
 
   // Relations
   student    User         @relation(fields: [studentId], references: [id], onDelete: Cascade)
   booking    ClassBooking @relation(fields: [classId], references: [id], onDelete: Cascade)
-  enrollment Enrollment   @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  enrollment Enrollment?  @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
 
   // Indexes
   @@unique([classId, studentId])

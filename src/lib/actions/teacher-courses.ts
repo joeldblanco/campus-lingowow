@@ -757,6 +757,9 @@ export async function getTeacherActiveStudents(teacherId: string) {
     >()
 
     for (const booking of bookings) {
+      // Las clases de prueba (sin inscripción/curso) no agrupan por curso.
+      if (!booking.enrollment) continue
+
       const existing = studentMap.get(booking.studentId)
       if (existing) {
         existing.totalClasses++

@@ -142,15 +142,18 @@ export async function POST(request: NextRequest) {
           },
         })
 
-        // Actualizar contador de clases asistidas en la inscripción
-        await db.enrollment.update({
-          where: { id: booking.enrollmentId },
-          data: {
-            classesAttended: {
-              increment: 1,
+        // Actualizar contador de clases asistidas en la inscripción.
+        // Las clases de prueba no tienen inscripción: no hay contador que mover.
+        if (booking.enrollmentId) {
+          await db.enrollment.update({
+            where: { id: booking.enrollmentId },
+            data: {
+              classesAttended: {
+                increment: 1,
+              },
             },
-          },
-        })
+          })
+        }
       }
 
       return NextResponse.json({ 

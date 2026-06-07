@@ -85,8 +85,8 @@ export async function GET(req: NextRequest) {
         notes: b.notes,
         student: b.student,
         teacher: b.teacher,
-        course: b.enrollment.course,
-        enrollmentId: b.enrollment.id,
+        course: b.enrollment?.course ?? null,
+        enrollmentId: b.enrollment?.id ?? null,
       })),
     })
   } catch (error) {

@@ -86,7 +86,7 @@ export async function GET(req: NextRequest) {
             classBooking.student.email,
             {
               studentName,
-              courseName: classBooking.enrollment.course.title,
+              courseName: classBooking.enrollment?.course.title ?? 'Clase de prueba',
               teacherName,
               classDate: formatInTimeZone(utcDate, "EEEE d 'de' MMMM", studentTimeZone),
               classTime: formatInTimeZone(utcDate, 'HH:mm', studentTimeZone),
@@ -101,7 +101,7 @@ export async function GET(req: NextRequest) {
             classBooking.teacher.email,
             {
               studentName,
-              courseName: classBooking.enrollment.course.title,
+              courseName: classBooking.enrollment?.course.title ?? 'Clase de prueba',
               teacherName,
               classDate: formatInTimeZone(utcDate, "EEEE d 'de' MMMM", teacherTimeZone),
               classTime: formatInTimeZone(utcDate, 'HH:mm', teacherTimeZone),
@@ -116,7 +116,7 @@ export async function GET(req: NextRequest) {
         await notifyClassReminder({
           studentId: classBooking.student.id,
           teacherId: classBooking.teacher.id,
-          courseName: classBooking.enrollment.course.title,
+          courseName: classBooking.enrollment?.course.title ?? 'Clase de prueba',
           studentClassTime: formatInTimeZone(utcDate, 'HH:mm', studentTimeZone),
           teacherClassTime: formatInTimeZone(utcDate, 'HH:mm', teacherTimeZone),
           bookingId: classBooking.id,

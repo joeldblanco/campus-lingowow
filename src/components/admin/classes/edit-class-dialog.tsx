@@ -86,7 +86,8 @@ export function EditClassDialog({ classItem, children, onClassUpdated }: EditCla
 
   const generateTimeSlots = () => {
     const slots = []
-    const duration = classItem.enrollment.course.classDuration || 40
+    // Las clases de prueba no tienen inscripción/curso: usar 40 min por defecto.
+    const duration = classItem.enrollment?.course.classDuration || 40
     for (let hour = 0; hour < 24; hour++) {
       for (let minute = 0; minute < 60; minute += duration) {
         const startTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`

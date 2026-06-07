@@ -53,6 +53,9 @@ export async function getBookingCourseStructure(bookingId: string) {
 
     if (!booking) throw new Error('Booking not found')
 
+    // Las clases de prueba no tienen inscripción/curso: no hay módulos que mostrar.
+    if (!booking.enrollment) return []
+
     // Build the structure with regular modules
     const modules = booking.enrollment.course.modules.map((module: { id: string; title: string; lessons: Array<{ id: string; title: string; description: string; duration: number; videoUrl: string | null }> }) => ({
       id: module.id,

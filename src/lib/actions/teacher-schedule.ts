@@ -13,6 +13,9 @@ import {
   TeacherScheduleData,
 } from '@/types/schedule'
 
+// Duración mostrada para una clase de prueba (sin curso del cual derivarla).
+const TRIAL_CLASS_DURATION_MINUTES = 30
+
 // Color mapping for courses
 const COURSE_COLORS: Record<string, 'blue' | 'purple' | 'orange' | 'green'> = {
   español: 'blue',
@@ -174,11 +177,15 @@ export async function getTeacherScheduleData(
       const [year, month, day] = localData.day.split('-').map(Number)
       const lessonDate = new Date(year, month - 1, day, 12, 0, 0, 0)
 
+      // Las clases de prueba no tienen inscripción ni curso: usar valores neutros.
+      const isTrial = !booking.enrollment
+      const courseTitle = booking.enrollment?.course.title ?? 'Clase de prueba'
+
       return {
         id: booking.id,
-        courseTitle: booking.enrollment.course.title,
-        courseLevel: booking.enrollment.course.level,
-        courseId: booking.enrollment.courseId,
+        courseTitle,
+        courseLevel: booking.enrollment?.course.level ?? '',
+        courseId: booking.enrollment?.courseId ?? '',
         student: {
           id: booking.student.id,
           name: booking.student.name,
@@ -191,12 +198,14 @@ export async function getTeacherScheduleData(
         date: lessonDate,
         status: getBookingStatus(booking),
         topic: booking.notes || undefined,
-        duration: booking.enrollment.course.classDuration,
+        duration: booking.enrollment?.course.classDuration ?? TRIAL_CLASS_DURATION_MINUTES,
         color:
           booking.status === BookingStatus.CANCELLED
             ? 'gray'
-            : getCourseColor(booking.enrollment.course.title),
-        enrollmentId: booking.enrollmentId,
+            : isTrial
+              ? 'green'
+              : getCourseColor(courseTitle),
+        enrollmentId: booking.enrollmentId ?? '',
       }
     })
 
@@ -562,11 +571,15 @@ export async function getTeacherScheduleForAdmin(
       const [year, month, day] = localData.day.split('-').map(Number)
       const lessonDate = new Date(year, month - 1, day, 12, 0, 0, 0)
 
+      // Las clases de prueba no tienen inscripción ni curso: usar valores neutros.
+      const isTrial = !booking.enrollment
+      const courseTitle = booking.enrollment?.course.title ?? 'Clase de prueba'
+
       return {
         id: booking.id,
-        courseTitle: booking.enrollment.course.title,
-        courseLevel: booking.enrollment.course.level,
-        courseId: booking.enrollment.courseId,
+        courseTitle,
+        courseLevel: booking.enrollment?.course.level ?? '',
+        courseId: booking.enrollment?.courseId ?? '',
         student: {
           id: booking.student.id,
           name: booking.student.name,
@@ -579,12 +592,14 @@ export async function getTeacherScheduleForAdmin(
         date: lessonDate,
         status: getBookingStatus(booking),
         topic: booking.notes || undefined,
-        duration: booking.enrollment.course.classDuration,
+        duration: booking.enrollment?.course.classDuration ?? TRIAL_CLASS_DURATION_MINUTES,
         color:
           booking.status === BookingStatus.CANCELLED
             ? 'gray'
-            : getCourseColor(booking.enrollment.course.title),
-        enrollmentId: booking.enrollmentId,
+            : isTrial
+              ? 'green'
+              : getCourseColor(courseTitle),
+        enrollmentId: booking.enrollmentId ?? '',
       }
     })
 

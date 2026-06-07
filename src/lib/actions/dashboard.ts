@@ -222,7 +222,7 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardData> {
         const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot, userTimezone)
         return {
           id: booking.id,
-          title: booking.enrollment.course.title,
+          title: booking.enrollment?.course.title ?? 'Clase de prueba',
           studentName: formatFullName(booking.student.name, booking.student.lastName),
           studentId: booking.student.id,
           studentImage: booking.student.image,
@@ -417,11 +417,11 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
       const [startTime, endTime] = localData.timeSlot.split('-')
       return {
         id: booking.id,
-        courseId: booking.enrollment.course.id,
+        courseId: booking.enrollment?.course.id ?? '',
         studentId: booking.student.id,
         studentName: formatFullName(booking.student.name, booking.student.lastName),
         studentImage: booking.student.image,
-        course: booking.enrollment.course.title,
+        course: booking.enrollment?.course.title ?? 'Clase de prueba',
         date: localData.day,
         time: startTime,
         endTime: endTime,
@@ -495,7 +495,7 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
       studentName: formatFullName(booking.student.name, booking.student.lastName),
       studentImage: booking.student.image || '',
       issue: booking.status === BookingStatus.NO_SHOW ? 'Faltó a clase' : 'Clase cancelada',
-      courseName: booking.enrollment.course.title,
+      courseName: booking.enrollment?.course.title ?? 'Clase de prueba',
     }))
 
     const baseStats = {
@@ -645,7 +645,7 @@ export async function getStudentDashboardStats(studentId: string): Promise<Stude
       upcomingClasses: upcomingClasses.map((booking) => {
         const localData = convertTimeSlotFromUTC(booking.day, booking.timeSlot, studentTimezone)
         return {
-          course: booking.enrollment.course.title,
+          course: booking.enrollment?.course.title ?? 'Clase de prueba',
           teacher: formatFullName(booking.teacher.name, booking.teacher.lastName),
           date: localData.day,
           time: localData.timeSlot,
@@ -715,7 +715,7 @@ export async function getUserClasses(userId: string) {
       return {
         id: booking.id,
         name: `Clase ${localData.day} - ${localData.timeSlot}`,
-        course: booking.enrollment.course.title,
+        course: booking.enrollment?.course.title ?? 'Clase de prueba',
         date: localData.day,
         time: localData.timeSlot,
         isStudent: booking.studentId === userId,
@@ -789,13 +789,15 @@ export async function calculateTeacherMonthlyRevenue(
     // 1. Si está marcada manualmente como pagable (isPayable = true), es pagable
     // 2. Si no, es pagable si el profesor asistió (sin importar si el estudiante asistió)
     const payableClasses = completedClasses.filter((classBooking) => {
+      // Las clases de prueba (sin inscripción/curso) no son pagables.
+      if (!classBooking.enrollment) return false
       if (classBooking.isPayable) return true
       const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
       return hasTeacherAttendance
     })
 
     // Obtener los courseIds únicos para buscar tarifas específicas del profesor
-    const courseIds = [...new Set(payableClasses.map((c) => c.enrollment.courseId))]
+    const courseIds = [...new Set(payableClasses.map((c) => c.enrollment!.courseId))]
 
     // Buscar tarifas específicas del profesor por curso
     const teacherCourses = await db.teacherCourse.findMany({
@@ -817,9 +819,10 @@ export async function calculateTeacherMonthlyRevenue(
     // Calcular ingresos usando: TeacherCourse.paymentPerClass > Course.defaultPaymentPerClass > 0
     let totalRevenue = 0
     for (const classBooking of payableClasses) {
-      const courseId = classBooking.enrollment.courseId
+      const enrollment = classBooking.enrollment!
+      const courseId = enrollment.courseId
       const teacherRate = teacherRatesByCourse.get(courseId)
-      const courseRate = classBooking.enrollment.course.defaultPaymentPerClass
+      const courseRate = enrollment.course.defaultPaymentPerClass
 
       // Prioridad: tarifa específica del profesor > tarifa del curso > 0
       const paymentPerClass = teacherRate ?? courseRate ?? 0
@@ -941,13 +944,15 @@ export async function calculateTeacherTotalRevenue(
     // 1. Si está marcada manualmente como pagable (isPayable = true), es pagable
     // 2. Si no, es pagable si el profesor asistió (sin importar si el estudiante asistió)
     const payableClasses = completedClasses.filter((classBooking) => {
+      // Las clases de prueba (sin inscripción/curso) no son pagables.
+      if (!classBooking.enrollment) return false
       if (classBooking.isPayable) return true
       const hasTeacherAttendance = classBooking.teacherAttendances.length > 0
       return hasTeacherAttendance
     })
 
     // Obtener los courseIds únicos para buscar tarifas específicas del profesor
-    const courseIds = [...new Set(payableClasses.map((c) => c.enrollment.courseId))]
+    const courseIds = [...new Set(payableClasses.map((c) => c.enrollment!.courseId))]
 
     // Buscar tarifas específicas del profesor por curso
     const teacherCourses = await db.teacherCourse.findMany({
@@ -971,13 +976,13 @@ export async function calculateTeacherTotalRevenue(
     let totalDuration = 0
 
     for (const classBooking of payableClasses) {
-      const duration =
-        classBooking.videoCalls[0]?.duration || classBooking.enrollment.course.classDuration
+      const enrollment = classBooking.enrollment!
+      const duration = classBooking.videoCalls[0]?.duration || enrollment.course.classDuration
       totalDuration += duration
 
-      const courseId = classBooking.enrollment.courseId
+      const courseId = enrollment.courseId
       const teacherRate = teacherRatesByCourse.get(courseId)
-      const courseRate = classBooking.enrollment.course.defaultPaymentPerClass
+      const courseRate = enrollment.course.defaultPaymentPerClass
 
       // Prioridad: tarifa específica del profesor > tarifa del curso > 0
       const paymentPerClass = teacherRate ?? courseRate ?? 0
@@ -1054,7 +1059,7 @@ export async function getClassroomData(classId: string, userId: string) {
       studentImage: getUserAvatarUrl(classBooking.student.id, classBooking.student.image),
       teacherName: classBooking.teacher.name || 'Profesor',
       teacherImage: getUserAvatarUrl(classBooking.teacher.id, classBooking.teacher.image),
-      courseName: classBooking.enrollment.course.title,
+      courseName: classBooking.enrollment?.course.title ?? 'Clase de prueba',
       lessonName: `Clase del ${formattedDate} - ${localData.timeSlot}`,
       bookingId: classBooking.id,
       // Datos en UTC para validación
