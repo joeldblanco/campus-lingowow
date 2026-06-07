@@ -6,6 +6,10 @@ import { User, UserRole, UserStatus } from '@prisma/client'
 import { CreateUserSchema } from '@/schemas/user'
 import { auditLog } from '@/lib/audit-log'
 import { auth } from '@/auth'
+import { generateVerificationToken } from '@/lib/tokens'
+import { sendVerificationEmail } from '@/lib/mail'
+import { isBcryptHash } from '@/lib/utils/password'
+import bcrypt from 'bcryptjs'
 import * as z from 'zod'
 
 export const getUserByEmail = async (email: string) => {
@@ -47,11 +51,23 @@ export const updateUser = async (id: string, data: Partial<User>) => {
 
     if (!existingUser) return { error: 'Usuario no encontrado' }
 
+    // Si llega una contraseña en texto plano, hashearla. El guard `isBcryptHash`
+    // hace esto idempotente: cuando el caller reenvía el hash existente (p.ej. el
+    // panel admin que pasa el User completo) no se vuelve a hashear.
+    let updateData = data
+    if (
+      typeof data.password === 'string' &&
+      data.password.length > 0 &&
+      !isBcryptHash(data.password)
+    ) {
+      updateData = { ...data, password: await bcrypt.hash(data.password, 10) }
+    }
+
     const updatedUser = await db.user.update({
       where: {
         id,
       },
-      data,
+      data: updateData,
     })
 
     if (!updatedUser) return { error: 'Ocurrió un error actualizando el usuario' }
@@ -86,11 +102,16 @@ export const createUser = async (userData: z.infer<typeof CreateUserSchema>) => 
       return { error: 'Ya existe un usuario con este email' }
     }
 
+    // Hashear la contraseña antes de guardarla (el esquema entrega texto plano).
+    // Sin esto, el login (bcrypt.compare) siempre falla con "Credenciales inválidas".
+    const hashedPassword = await bcrypt.hash(validatedUserData.password, 10)
+
     // Create the user
     const newUser = await db.user.create({
       data: {
         ...validatedUserData,
         email: normalizedEmail, // Usar el email normalizado
+        password: hashedPassword,
         // Set default values if not provided
         roles: validatedUserData.roles || [UserRole.STUDENT],
         status: validatedUserData.status || UserStatus.ACTIVE,
@@ -98,6 +119,14 @@ export const createUser = async (userData: z.infer<typeof CreateUserSchema>) => 
     })
 
     if (!newUser) return { error: 'Ocurrió un error creando el usuario' }
+
+    // Enviar correo de verificación: emailVerified queda null hasta que el
+    // usuario confirme, igual que en el registro público.
+    const verificationToken = await generateVerificationToken(normalizedEmail)
+
+    if (verificationToken && !('error' in verificationToken)) {
+      await sendVerificationEmail(verificationToken.email, verificationToken.token)
+    }
 
     auditLog({
       userId: newUser.id,
