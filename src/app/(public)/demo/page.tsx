@@ -64,14 +64,14 @@ const Demo = () => {
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="w-full py-12 md:py-24 bg-gradient-to-r from-blue-50 to-indigo-50">
-          <div className="container px-4 md:px-6">
+        <section className="border-b border-border">
+          <div className="container mx-auto px-4 py-16 md:px-6 md:py-24">
             <div className="flex flex-col items-center text-center gap-4">
-              <Badge variant="outline" className="w-fit">
-                Clase de Prueba Gratuita
+              <Badge variant="outline" className="rounded-full px-3 py-1 font-normal">
+                Clase de prueba gratuita
               </Badge>
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-                Prueba Nuestro Método Sin Compromiso
+              <h1 className="font-lexend text-4xl md:text-5xl font-bold tracking-tight">
+                Prueba nuestro método sin compromiso
               </h1>
               <p className="text-muted-foreground max-w-[700px]">
                 Experimenta una clase real con uno de nuestros profesores expertos. 
@@ -82,78 +82,37 @@ const Demo = () => {
         </section>
 
         {/* Beneficios de la Clase Demo */}
-        <section className="w-full py-12 md:py-16">
-          <div className="container px-4 md:px-6">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tight mb-4">
-                ¿Qué Incluye la Clase de Prueba?
+        <section className="w-full py-16 md:py-20">
+          <div className="container mx-auto px-4 md:px-6">
+            <div className="max-w-2xl">
+              <h2 className="font-lexend text-3xl font-bold tracking-tight">
+                ¿Qué incluye la clase de prueba?
               </h2>
-              <p className="text-muted-foreground max-w-[700px] mx-auto">
+              <p className="mt-4 text-muted-foreground">
                 Una sesión completa de 45 minutos diseñada para conocer tu nivel y objetivos.
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card>
-                <CardHeader className="flex flex-col items-center text-center">
-                  <div className="p-3 bg-primary/10 rounded-full mb-4">
-                    <Video className="h-6 w-6 text-primary" />
+            <div className="mt-12 grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                { icon: Video, title: 'Clase en vivo', body: 'Sesión individual por videollamada con un profesor experto.' },
+                { icon: Calendar, title: 'Evaluación de nivel', body: 'Determinamos tu nivel actual y áreas de mejora.' },
+                { icon: Users, title: 'Plan personalizado', body: 'Recomendaciones específicas para tu aprendizaje.' },
+                { icon: Clock, title: 'Sin compromiso', body: '100% gratuita, sin obligación de inscripción.' },
+              ].map((benefit) => (
+                <div key={benefit.title} className="flex gap-4 sm:flex-col sm:gap-3">
+                  <benefit.icon className="h-6 w-6 shrink-0 text-primary" />
+                  <div>
+                    <h3 className="font-lexend text-base font-semibold">{benefit.title}</h3>
+                    <p className="mt-1.5 text-sm text-muted-foreground">{benefit.body}</p>
                   </div>
-                  <CardTitle className="text-lg">Clase en Vivo</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-sm text-muted-foreground">
-                    Sesión individual por videollamada con un profesor experto.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-col items-center text-center">
-                  <div className="p-3 bg-primary/10 rounded-full mb-4">
-                    <Calendar className="h-6 w-6 text-primary" />
-                  </div>
-                  <CardTitle className="text-lg">Evaluación de Nivel</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-sm text-muted-foreground">
-                    Determinamos tu nivel actual y áreas de mejora.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-col items-center text-center">
-                  <div className="p-3 bg-primary/10 rounded-full mb-4">
-                    <Users className="h-6 w-6 text-primary" />
-                  </div>
-                  <CardTitle className="text-lg">Plan Personalizado</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-sm text-muted-foreground">
-                    Recomendaciones específicas para tu aprendizaje.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-col items-center text-center">
-                  <div className="p-3 bg-primary/10 rounded-full mb-4">
-                    <Clock className="h-6 w-6 text-primary" />
-                  </div>
-                  <CardTitle className="text-lg">Sin Compromiso</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-sm text-muted-foreground">
-                    100% gratuita, sin obligación de inscripción.
-                  </p>
-                </CardContent>
-              </Card>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
         {/* Formulario de Solicitud */}
-        <section className="w-full py-12 md:py-16 bg-slate-50">
+        <section className="w-full border-y border-border bg-secondary/50 py-16 md:py-20">
           <div className="container px-4 md:px-6">
             <div className="max-w-2xl mx-auto">
               <Card>
@@ -333,18 +292,18 @@ const Demo = () => {
         </section>
 
         {/* Testimonios Rápidos */}
-        <section className="w-full py-12 md:py-16">
+        <section className="w-full py-16 md:py-20">
           <div className="container px-4 md:px-6">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold tracking-tight mb-4">
-                Lo Que Dicen Nuestros Estudiantes
+              <h2 className="font-lexend text-3xl font-bold tracking-tight mb-4">
+                Lo que dicen nuestros estudiantes
               </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
               <Card>
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-2 mb-3">
-                    <CheckCircle className="h-5 w-5 text-green-500" />
+                    <CheckCircle className="h-5 w-5 text-primary" />
                     <p className="font-semibold">Cristian Villamizar</p>
                   </div>
                   <p className="text-sm text-muted-foreground">
@@ -355,7 +314,7 @@ const Demo = () => {
               <Card>
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-2 mb-3">
-                    <CheckCircle className="h-5 w-5 text-green-500" />
+                    <CheckCircle className="h-5 w-5 text-primary" />
                     <p className="font-semibold">Mari Carmen Rico</p>
                   </div>
                   <p className="text-sm text-muted-foreground">
@@ -366,7 +325,7 @@ const Demo = () => {
               <Card>
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-2 mb-3">
-                    <CheckCircle className="h-5 w-5 text-green-500" />
+                    <CheckCircle className="h-5 w-5 text-primary" />
                     <p className="font-semibold">Mariana Hernandez</p>
                   </div>
                   <p className="text-sm text-muted-foreground">
@@ -379,20 +338,20 @@ const Demo = () => {
         </section>
 
         {/* CTA Final */}
-        <section className="w-full py-12 md:py-16 bg-gradient-to-r from-indigo-100 to-blue-100">
+        <section className="w-full border-t border-border bg-secondary/50 py-16 md:py-20">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center text-center gap-6">
-              <h2 className="text-3xl font-bold tracking-tight">
-                ¿Tienes Preguntas?
+              <h2 className="font-lexend text-3xl font-bold tracking-tight">
+                ¿Tienes preguntas?
               </h2>
               <p className="text-muted-foreground max-w-[600px]">
                 Visita nuestra sección de preguntas frecuentes o contáctanos directamente.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/faq">
-                  <Button size="lg" variant="outline">Preguntas Frecuentes</Button>
+                  <Button size="lg" variant="outline">Preguntas frecuentes</Button>
                 </Link>
-                <Link href="/contacto">
+                <Link href="/contact">
                   <Button size="lg">Contactar</Button>
                 </Link>
               </div>

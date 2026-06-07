@@ -1,0 +1,23 @@
+[
+  {
+    "date": "2026-06-05",
+    "scope": "app",
+    "macrostructure": "Marquee Hero",
+    "theme": "studied-DNA",
+    "theme_axes": "light / rounded-sans / cool+teal",
+    "vibe": "playful language school, blue + mint teal, WOW hero",
+    "studied": "image (original Lingowow web mockup, user-owned)",
+    "enrichment": "Tier-A CSS blobs + Tier-B SVG swoosh motif",
+    "brief": "Lingowow · pivot locked system to studied playful DNA — Fredoka display, blue+teal tokens app-wide, playful landing/header/footer; design.md amended"
+  },
+  {
+    "date": "2026-06-04",
+    "scope": "app",
+    "macrostructure": "Split Studio",
+    "theme": "custom",
+    "theme_axes": "light / geometric-sans / cool",
+    "vibe": "language school, warm, trustworthy, brand-blue",
+    "enrichment": "none",
+    "brief": "Lingowow · whole-app design system (design.md, brand-blue OKLCH tokens, Lexend) + full public-surface sweep: landing, method, pricing, courses, contact, demo, faq, resources(+podcasts/library), shop(+hero/card/checkout/confirmation), library(+detail), legal(terms/privacy/cookies), verify, 404s, header, footer. Auth + private app inherit via tokens."
+  }
+]

@@ -133,7 +133,7 @@ const getAccessBadge = (accessLevel: LibraryResourceAccess) => {
       )
     case 'PREMIUM':
       return (
-        <Badge className="gap-1 bg-purple-100 text-purple-800 border-purple-300 hover:bg-purple-100">
+        <Badge className="gap-1 border-primary/20 bg-primary/10 text-primary hover:bg-primary/10">
           <Crown className="h-3 w-3" />
           {ACCESS_LEVEL_LABELS.PREMIUM}
         </Badge>
@@ -401,7 +401,7 @@ const [language, setLanguage] = useState(() => {
                 className="w-full pl-12 pr-24 py-6 text-lg rounded-xl"
                 placeholder="Buscar guías de gramática, listas de vocabulario o consejos culturales..."
               />
-              <Button type="submit" className="absolute inset-y-2 right-2 px-6">Buscar</Button>
+              <Button type="submit" className="absolute inset-y-2 right-2 rounded-full px-6">Buscar</Button>
             </form>
           </section>
 
@@ -413,7 +413,7 @@ const [language, setLanguage] = useState(() => {
           ) : featuredResource ? (
             <section className="mb-12">
               <Link href={`/library/${featuredResource.slug}`}>
-                <div className="relative rounded-2xl overflow-hidden bg-slate-900 text-white min-h-[360px] flex items-end group cursor-pointer shadow-lg">
+                <div className="relative rounded-2xl overflow-hidden bg-foreground text-white min-h-[360px] flex items-end group cursor-pointer shadow-lg">
                   <div
                     className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                     style={{
@@ -422,14 +422,14 @@ const [language, setLanguage] = useState(() => {
                         : "url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1200')",
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/40 to-transparent" />
 
                   <div className="relative z-10 p-8 md:p-10 w-full max-w-3xl">
-                    <Badge className="mb-4 bg-blue-900/60 text-blue-200 border-blue-500/30">
+                    <Badge className="mb-4 border-transparent bg-primary/85 text-primary-foreground">
                       <Sparkles className="h-3 w-3 mr-1" />
                       Destacado
                     </Badge>
-                    <h2 className="text-3xl md:text-4xl font-bold mb-3 leading-tight group-hover:text-blue-200 transition-colors">
+                    <h2 className="text-3xl md:text-4xl font-bold mb-3 leading-tight transition-colors group-hover:text-white/80">
                       {featuredResource.title}
                     </h2>
                     <p className="text-slate-200 text-lg mb-6 line-clamp-2">
@@ -472,7 +472,7 @@ const [language, setLanguage] = useState(() => {
             <section className="mb-12">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold flex items-center gap-2">
-                  <Star className="h-5 w-5 text-yellow-500" />
+                  <Star className="h-5 w-5 text-amber-400" />
                   Recursos Populares
                 </h2>
                 <button
@@ -502,7 +502,7 @@ const [language, setLanguage] = useState(() => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {popularResources.map((resource) => (
                     <Link key={resource.id} href={`/library/${resource.slug}`}>
-                      <Card className="group overflow-hidden hover:shadow-xl hover:border-primary/30 transition-all duration-300 h-full">
+                      <Card className="group h-full overflow-hidden rounded-2xl transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl">
                         <div className="relative aspect-video overflow-hidden">
                           <div
                             className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
@@ -637,7 +637,7 @@ const [language, setLanguage] = useState(() => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {resources.map((resource) => (
                   <Link key={resource.id} href={`/library/${resource.slug}`}>
-                    <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full group">
+                    <Card className="group h-full overflow-hidden rounded-2xl transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
                       <div
                         className="h-40 bg-cover bg-center transition-transform duration-500 group-hover:scale-105 relative"
                         style={{

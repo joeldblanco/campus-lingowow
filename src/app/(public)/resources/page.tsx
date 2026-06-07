@@ -43,14 +43,14 @@ export default function EjerciciosPage() {
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="w-full py-12 md:py-24 bg-gradient-to-r from-blue-50 to-indigo-50">
-          <div className="container px-4 md:px-6">
+        <section className="border-b border-border">
+          <div className="container mx-auto px-4 py-16 md:px-6 md:py-24">
             <div className="flex flex-col items-center text-center gap-4">
-              <Badge variant="outline" className="w-fit">
-                Práctica Gratuita
+              <Badge variant="outline" className="rounded-full px-3 py-1 font-normal">
+                Práctica gratuita
               </Badge>
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-                Ejercicios Gratuitos
+              <h1 className="font-lexend text-4xl md:text-5xl font-bold tracking-tight">
+                Ejercicios gratuitos
               </h1>
               <p className="text-muted-foreground max-w-[700px]">
                 Practica y mejora tus habilidades con nuestros ejercicios interactivos gratuitos. 
@@ -70,18 +70,16 @@ export default function EjerciciosPage() {
                   <Card key={ejercicio.id} className="flex flex-col">
                     <CardHeader>
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="p-2 bg-primary/10 rounded-lg">
-                          <Icon className="h-6 w-6 text-primary" />
-                        </div>
+                        <Icon className="h-6 w-6 text-primary" />
                         <Badge variant="outline">{ejercicio.level}</Badge>
                       </div>
-                      <CardTitle>{ejercicio.title}</CardTitle>
+                      <CardTitle className="font-lexend">{ejercicio.title}</CardTitle>
                       <CardDescription>{ejercicio.description}</CardDescription>
                     </CardHeader>
                     <CardContent className="flex-1">
                       <div className="space-y-3">
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <CheckCircle className="h-4 w-4 text-green-500" />
+                          <CheckCircle className="h-4 w-4 text-primary" />
                           <span>{ejercicio.exercises} ejercicios</span>
                         </div>
                         <div>
@@ -109,18 +107,18 @@ export default function EjerciciosPage() {
         </section>
 
         {/* Benefits Section */}
-        <section className="w-full py-12 md:py-16 bg-slate-50">
+        <section className="w-full border-y border-border bg-secondary/50 py-16 md:py-20">
           <div className="container px-4 md:px-6">
             <div className="max-w-3xl mx-auto">
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold mb-4">¿Por Qué Practicar con Ejercicios?</h2>
+                <h2 className="font-lexend text-3xl font-bold mb-4">¿Por qué practicar con ejercicios?</h2>
                 <p className="text-muted-foreground">
                   La práctica constante es clave para dominar un idioma
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex gap-3">
-                  <CheckCircle className="h-6 w-6 text-green-500 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
                   <div>
                     <h3 className="font-semibold mb-1">Refuerza lo Aprendido</h3>
                     <p className="text-sm text-muted-foreground">
@@ -129,7 +127,7 @@ export default function EjerciciosPage() {
                   </div>
                 </div>
                 <div className="flex gap-3">
-                  <CheckCircle className="h-6 w-6 text-green-500 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
                   <div>
                     <h3 className="font-semibold mb-1">Feedback Inmediato</h3>
                     <p className="text-sm text-muted-foreground">
@@ -138,7 +136,7 @@ export default function EjerciciosPage() {
                   </div>
                 </div>
                 <div className="flex gap-3">
-                  <CheckCircle className="h-6 w-6 text-green-500 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
                   <div>
                     <h3 className="font-semibold mb-1">A Tu Ritmo</h3>
                     <p className="text-sm text-muted-foreground">
@@ -147,7 +145,7 @@ export default function EjerciciosPage() {
                   </div>
                 </div>
                 <div className="flex gap-3">
-                  <CheckCircle className="h-6 w-6 text-green-500 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
                   <div>
                     <h3 className="font-semibold mb-1">Seguimiento de Progreso</h3>
                     <p className="text-sm text-muted-foreground">
@@ -166,7 +164,7 @@ export default function EjerciciosPage() {
             <Card className="max-w-2xl mx-auto">
               <CardContent className="pt-6">
                 <div className="text-center space-y-4">
-                  <h2 className="text-2xl font-bold">¿Listo para Aprender en Serio?</h2>
+                  <h2 className="font-lexend text-2xl font-bold">¿Listo para aprender en serio?</h2>
                   <p className="text-muted-foreground">
                     Combina estos ejercicios con clases personalizadas para resultados óptimos. 
                     Nuestros profesores te guiarán paso a paso.

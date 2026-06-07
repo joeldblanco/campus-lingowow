@@ -1,41 +1,43 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 
 export function HeroSection() {
   return (
-    <div className="flex flex-col gap-6 py-6 md:py-10 lg:flex-row items-center">
-      <div
-        className="w-full lg:w-1/2 bg-center bg-no-repeat aspect-video bg-cover rounded-xl shadow-lg relative overflow-hidden group"
-        style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDaAy1Y5JXlwFImpD2qbHVTlVSVPP7afJhpjafbc4JVXcraFZTEHMulV5Ccg2ha5XmAVlNXbrLLupY6LxJ3XdKxWLhR-vdMFwwBR4FDTHuF8YrTC7RD9_GIotWxdlgi1G22dahwj6QDZvvBKqLZY--BfLo6mrzvzuuRoPCb3GWxjKkc7AEmOgnsINL9bcufu4TxnKK1oSjR9Ivnfuj9k6Rvrqro54no0-nkHhjSX3ELE0ZoXUqCJNSLd1QQLaJMqTIdgp-Zzv5_kzU")' }}
-      >
-        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
-      </div>
+    <div className="flex flex-col items-center gap-6 py-6 md:py-10 lg:flex-row">
+      <figure className="group relative aspect-video w-full overflow-hidden rounded-xl border border-border shadow-sm lg:w-1/2">
+        <Image
+          src="/media/images/hero-img.png"
+          alt="Aprende idiomas con Lingowow"
+          fill
+          className="object-cover"
+          sizes="(max-width: 1024px) 100vw, 50vw"
+          priority
+        />
+      </figure>
 
-      <div className="flex flex-col gap-6 w-full lg:w-1/2 lg:pl-10 justify-center">
+      <div className="flex w-full flex-col justify-center gap-6 lg:w-1/2 lg:pl-10">
         <div className="flex flex-col gap-3 text-left">
-          <span className="text-primary font-bold tracking-wider text-sm uppercase">
-            Los Más Vendidos
+          <span className="text-sm font-bold uppercase tracking-wider text-primary">
+            Los más vendidos
           </span>
-          <h1 className="text-slate-900 font-extrabold text-4xl md:text-5xl leading-tight tracking-[-0.033em] font-lexend">
+          <h1 className="font-lexend text-4xl font-extrabold leading-tight tracking-[-0.033em] text-foreground md:text-5xl">
             Domina un nuevo idioma hoy
           </h1>
-          <p className="text-slate-600 text-base md:text-lg font-normal leading-relaxed">
-            Desbloquea tu potencial con nuestra amplia gama de paquetes de cursos, sesiones de tutoría en vivo y materiales de aprendizaje premium diseñados para acelerar tu fluidez.
+          <p className="text-base font-normal leading-relaxed text-muted-foreground md:text-lg">
+            Desbloquea tu potencial con nuestra gama de paquetes de cursos, sesiones de
+            tutoría en vivo y materiales de aprendizaje premium diseñados para acelerar tu
+            fluidez.
           </p>
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <Button
-            className="h-12 px-6 bg-primary hover:bg-blue-600 text-white text-base font-bold rounded-lg shadow-md shadow-blue-500/20"
-          >
-            Ver Ofertas Especiales
+          <Button className="h-12 rounded-full px-6 text-base font-bold">
+            Ver ofertas especiales
           </Button>
-          <Button
-            variant="outline"
-            className="h-12 px-6 bg-white border-slate-200 text-slate-700 hover:bg-slate-50 text-base font-bold rounded-lg"
-          >
-            Cómo Funciona
+          <Button variant="outline" className="h-12 rounded-full px-6 text-base font-bold">
+            Cómo funciona
           </Button>
         </div>
       </div>

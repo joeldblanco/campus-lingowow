@@ -6,7 +6,7 @@ import { Card } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { useShopStore } from '@/stores/useShopStore'
 import { Course, Merge, Product } from '@/types/shop'
-import { Check, ShoppingCart } from 'lucide-react'
+import { BookOpen, Check, ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { isAfter, isBefore } from 'date-fns'
@@ -21,7 +21,7 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
   const minPrice = hasPlans ? Math.min(...product.plans.map((p) => p.price)) : (product.price ?? 0)
   const productUrl = hasPlans ? `/pricing/?productId=${product.id}` : `/checkout/${product.id}`
   const isSubscription = product.paymentType === 'RECURRING'
-  
+
   // Check if product is in cart
   const isInCart = cart.some(item => item.product.id === product.id)
 
@@ -29,7 +29,7 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    
+
     // For products without plans, create a default plan entry
     addToCart({
       product: {
@@ -56,10 +56,10 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
   const isExpired = expiresAt && isBefore(expiresAt, now)
   const isAvailable = !isScheduled && !isExpired
 
-  // Get badge info based on product properties
+  // Get badge info based on product properties (on-system colours)
   const getBadgeInfo = () => {
-    if (isSubscription) return { text: 'Mejor Precio', color: 'bg-emerald-500' }
-    else return { text: 'Popular', color: 'bg-orange-500' }
+    if (isSubscription) return { text: 'Mejor precio', color: 'bg-primary text-primary-foreground' }
+    else return { text: 'Popular', color: 'bg-secondary text-secondary-foreground' }
   }
   const badgeInfo = getBadgeInfo()
 
@@ -69,23 +69,23 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
   return (
     <Card
       className={cn(
-        'group relative flex flex-col overflow-hidden transition-all duration-300 rounded-2xl',
-        'border border-gray-100 hover:border-gray-200',
-        'hover:shadow-lg bg-white'
+        'group relative flex flex-col overflow-hidden rounded-2xl',
+        'border border-border transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg',
       )}
     >
       {/* Image Section */}
-      <div className="relative overflow-hidden bg-gray-100 aspect-[4/3] rounded-t-2xl">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-t-2xl bg-muted">
         {product.image ? (
           <Image
             src={product.image}
             alt={product.name}
             fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gray-100">
-            <span className="text-4xl">📚</span>
+          <div className="flex h-full w-full items-center justify-center">
+            <BookOpen className="h-10 w-10 text-muted-foreground/40" />
           </div>
         )}
 
@@ -93,8 +93,8 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
         {badgeInfo && (
           <Badge
             className={cn(
-              'absolute top-3 right-3 text-white border-none px-3 py-1 text-xs font-medium rounded-full',
-              badgeInfo.color
+              'absolute right-3 top-3 rounded-full border-none px-3 py-1 text-xs font-medium',
+              badgeInfo.color,
             )}
           >
             {badgeInfo.text}
@@ -103,35 +103,37 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
       </div>
 
       {/* Content Section */}
-      <div className="flex flex-col flex-1 p-5">
+      <div className="flex flex-1 flex-col p-5">
         {/* Title */}
         <Link
           href={productUrl}
-          className="block font-bold text-gray-900 hover:text-blue-600 transition-colors line-clamp-2 text-lg mb-1"
+          className="mb-1 line-clamp-2 block font-lexend text-lg font-bold text-foreground transition-colors hover:text-primary"
         >
           {product.name}
         </Link>
 
         {/* Description */}
-        <p className="text-gray-500 text-sm line-clamp-2 mb-4">
+        <p className="mb-4 line-clamp-2 text-sm text-muted-foreground">
           {product.shortDesc || product.description}
         </p>
 
         {/* Price */}
-        <div className='flex flex-col'>
-          {isSubscription && <span className="text-gray-500 text-sm">Desde</span>}
+        <div className="flex flex-col">
+          {isSubscription && <span className="text-sm text-muted-foreground">Desde</span>}
           <div className="mb-4">
-            <span className="text-2xl font-bold text-gray-900">${minPrice.toFixed(2)}</span>
-            {isSubscription && <span className="text-gray-500 text-sm">/mes</span>}
+            <span className="text-2xl font-bold tabular-nums text-foreground">
+              ${minPrice.toFixed(2)}
+            </span>
+            {isSubscription && <span className="text-sm text-muted-foreground">/mes</span>}
           </div>
         </div>
 
         {/* Features List */}
         {features.length > 0 && (
-          <ul className="space-y-2 mb-4 flex-1">
+          <ul className="mb-4 flex-1 space-y-2">
             {features.map((feature, index) => (
-              <li key={index} className="flex items-center gap-2 text-sm text-gray-600">
-                <Check className="w-4 h-4 text-blue-500 flex-shrink-0" />
+              <li key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Check className="h-4 w-4 flex-shrink-0 text-primary" />
                 <span className="line-clamp-1">{feature}</span>
               </li>
             ))}
@@ -143,33 +145,17 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
           <Button
             asChild
             variant={isSubscription ? 'default' : 'outline'}
-            className={cn(
-              'w-full mt-auto',
-              isSubscription
-                ? 'bg-blue-500 hover:bg-blue-600 text-white'
-                : 'border-gray-300 text-gray-700 hover:bg-gray-50',
-              !isAvailable && 'opacity-50 pointer-events-none'
-            )}
+            className={cn('mt-auto w-full rounded-full', !isAvailable && 'pointer-events-none opacity-50')}
             disabled={!isAvailable}
           >
             <Link href={productUrl}>
-              {isScheduled
-                ? 'Próximamente'
-                : isExpired
-                  ? 'No disponible'
-                  : 'Ver Planes'}
+              {isScheduled ? 'Próximamente' : isExpired ? 'No disponible' : 'Ver planes'}
             </Link>
           </Button>
         ) : (
           <Button
             variant={isInCart ? 'secondary' : 'outline'}
-            className={cn(
-              'w-full mt-auto',
-              isInCart
-                ? 'bg-green-500 hover:bg-green-600 text-white'
-                : 'border-gray-300 text-gray-700 hover:bg-gray-50',
-              !isAvailable && 'opacity-50 pointer-events-none'
-            )}
+            className={cn('mt-auto w-full rounded-full', !isAvailable && 'pointer-events-none opacity-50')}
             disabled={!isAvailable}
             onClick={handleAddToCart}
           >
@@ -180,12 +166,12 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
             ) : isInCart ? (
               <>
                 <Check className="mr-2 h-4 w-4" />
-                Added to Cart
+                Añadido al carrito
               </>
             ) : (
               <>
                 <ShoppingCart className="mr-2 h-4 w-4" />
-                Add to Cart
+                Añadir al carrito
               </>
             )}
           </Button>

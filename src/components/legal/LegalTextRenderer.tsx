@@ -35,11 +35,11 @@ export function LegalTextRenderer({
     <div className={cn("mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8", className)}>
       {title && (
         <div className="mb-8 border-b pb-6">
-          <h1 className="mb-3 text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl">
+          <h1 className="mb-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             {title}
           </h1>
           {lastUpdated && (
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-muted-foreground">
               Última actualización: {lastUpdated}
             </p>
           )}
@@ -47,11 +47,11 @@ export function LegalTextRenderer({
       )}
 
       {showImportantNotice && (
-        <div className="mb-8 rounded-lg border-2 border-amber-500 bg-amber-50 p-6 dark:bg-amber-950/20">
+        <div className="mb-8 rounded-2xl border-2 border-amber-500 bg-amber-50 p-6 dark:bg-amber-950/20">
           <p className="text-sm font-semibold uppercase tracking-wide text-amber-900 dark:text-amber-400">
             Importante
           </p>
-          <p className="mt-2 text-sm leading-relaxed text-gray-800 dark:text-gray-200">
+          <p className="mt-2 text-sm leading-relaxed text-foreground">
             {importantNoticeText ||
               "LEA DETENIDAMENTE ESTOS TÉRMINOS ANTES DE UTILIZAR EL SERVICIO. AL ACCEDER O UTILIZAR EL SERVICIO, USTED ACEPTA QUEDAR VINCULADO POR ESTOS TÉRMINOS. SI NO ESTÁ DE ACUERDO, NO DEBE ACCEDER NI UTILIZAR EL SERVICIO."}
           </p>
@@ -83,7 +83,7 @@ export function LegalSection({
 }: LegalSectionProps) {
   return (
     <section className={cn("mb-8", className)}>
-      <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-gray-100">
+      <h2 className="mb-4 text-2xl font-bold text-foreground">
         {number && <span className="mr-2">{number}.</span>}
         {title}
       </h2>
@@ -111,7 +111,7 @@ export function LegalSubsection({
   return (
     <div className={cn("mb-6 ml-4", className)}>
       {title && (
-        <h3 className="mb-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
+        <h3 className="mb-3 text-xl font-semibold text-foreground">
           {number && <span className="mr-2">{number}.</span>}
           {title}
         </h3>
@@ -138,7 +138,7 @@ export function LegalParagraph({
   return (
     <p
       className={cn(
-        "mb-4 leading-relaxed text-gray-700 dark:text-gray-300",
+        "mb-4 leading-relaxed text-muted-foreground",
         indent && "ml-4",
         className
       )}
@@ -164,7 +164,7 @@ export function LegalList({ items, ordered = false, className }: LegalListProps)
   return (
     <ListTag className={cn("my-4 space-y-2 pl-6", listClass, className)}>
       {items.map((item, index) => (
-        <li key={index} className="leading-relaxed text-gray-700 dark:text-gray-300">
+        <li key={index} className="leading-relaxed text-muted-foreground">
           {item}
         </li>
       ))}
@@ -195,7 +195,7 @@ export function LegalHighlight({
   return (
     <div
       className={cn(
-        "my-4 rounded-lg border-l-4 p-4",
+        "my-4 rounded-2xl border-l-4 p-4",
         variantStyles[variant],
         className
       )}
@@ -221,10 +221,10 @@ export function LegalDefinition({
 }: LegalDefinitionProps) {
   return (
     <div className={cn("mb-4", className)}>
-      <dt className="mb-1 font-semibold text-gray-900 dark:text-gray-100">
+      <dt className="mb-1 font-semibold text-foreground">
         {term}
       </dt>
-      <dd className="ml-4 text-gray-700 dark:text-gray-300">{definition}</dd>
+      <dd className="ml-4 text-muted-foreground">{definition}</dd>
     </div>
   );
 }
@@ -241,26 +241,26 @@ interface LegalTableProps {
 export function LegalTable({ headers, rows, className }: LegalTableProps) {
   return (
     <div className={cn("my-6 overflow-x-auto", className)}>
-      <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
-        <thead className="bg-gray-50 dark:bg-gray-900">
+      <table className="min-w-full divide-y divide-border">
+        <thead className="bg-muted">
           <tr>
             {headers.map((header, index) => (
               <th
                 key={index}
-                className="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100"
+                className="px-4 py-3 text-left text-sm font-semibold text-foreground"
               >
                 {header}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-800 dark:bg-gray-950">
+        <tbody className="divide-y divide-border bg-card">
           {rows.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {row.map((cell, cellIndex) => (
                 <td
                   key={cellIndex}
-                  className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300"
+                  className="px-4 py-3 text-sm text-muted-foreground"
                 >
                   {cell}
                 </td>

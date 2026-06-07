@@ -52,14 +52,17 @@ export default function BibliotecaPage() {
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="w-full py-12 md:py-24 bg-gradient-to-r from-blue-50 to-indigo-50">
-          <div className="container px-4 md:px-6">
+        <section className="border-b border-border">
+          <div className="container mx-auto px-4 py-16 md:px-6 md:py-24">
             <div className="flex flex-col items-center text-center gap-4">
-              <Badge variant="outline" className="w-fit">
-                Recursos Gratuitos
+              <Badge
+                variant="outline"
+                className="rounded-full border-teal/40 bg-teal-soft/60 px-3 py-1 font-medium text-teal-ink"
+              >
+                Recursos gratuitos
               </Badge>
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-                Biblioteca de Recursos
+              <h1 className="font-lexend text-4xl md:text-5xl font-bold tracking-tight">
+                Biblioteca de recursos
               </h1>
               <p className="text-muted-foreground max-w-[700px]">
                 Accede a nuestra colección de materiales educativos gratuitos: guías, 
@@ -76,15 +79,18 @@ export default function BibliotecaPage() {
               {recursos.map((recurso) => {
                 const Icon = recurso.icon
                 return (
-                  <Card key={recurso.id} className="flex flex-col">
+                  <Card
+                    key={recurso.id}
+                    className="flex flex-col rounded-2xl transition-transform duration-200 hover:-translate-y-1 hover:shadow-md"
+                  >
                     <CardHeader>
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="p-2 bg-primary/10 rounded-lg">
-                          <Icon className="h-5 w-5 text-primary" />
-                        </div>
+                        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-teal-soft text-teal-ink">
+                          <Icon className="h-4 w-4" />
+                        </span>
                         <Badge variant="outline">{recurso.type}</Badge>
                       </div>
-                      <CardTitle className="text-lg">{recurso.title}</CardTitle>
+                      <CardTitle className="font-lexend text-lg">{recurso.title}</CardTitle>
                       <CardDescription>{recurso.description}</CardDescription>
                     </CardHeader>
                     <CardContent className="flex-1">
@@ -94,7 +100,7 @@ export default function BibliotecaPage() {
                       </div>
                     </CardContent>
                     <CardFooter>
-                      <Button className="w-full" variant="outline" disabled>
+                      <Button className="w-full rounded-full" variant="outline" disabled>
                         <Download className="h-4 w-4 mr-2" />
                         Próximamente
                       </Button>
@@ -107,23 +113,25 @@ export default function BibliotecaPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="w-full py-12 md:py-16 bg-slate-50">
+        <section className="w-full border-t border-border bg-secondary/50 py-16 md:py-20">
           <div className="container px-4 md:px-6">
             <Card className="max-w-2xl mx-auto">
               <CardContent className="pt-6">
                 <div className="text-center space-y-4">
                   <BookOpen className="h-12 w-12 text-primary mx-auto" />
-                  <h2 className="text-2xl font-bold">¿Quieres Acceso Completo?</h2>
+                  <h2 className="font-lexend text-2xl font-bold">¿Quieres acceso completo?</h2>
                   <p className="text-muted-foreground">
                     Los estudiantes inscritos tienen acceso ilimitado a toda nuestra biblioteca 
                     de recursos, incluyendo materiales exclusivos y actualizaciones constantes.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link href="/courses">
-                      <Button size="lg">Ver Cursos</Button>
+                      <Button size="lg" className="rounded-full">Ver Cursos</Button>
                     </Link>
                     <Link href="/demo">
-                      <Button size="lg" variant="outline">Clase de Prueba</Button>
+                      <Button size="lg" variant="outline" className="rounded-full">
+                        Clase de Prueba
+                      </Button>
                     </Link>
                   </div>
                 </div>

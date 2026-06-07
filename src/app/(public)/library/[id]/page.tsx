@@ -320,7 +320,7 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
 
       case 'AUDIO':
         return (
-          <div className="w-full p-8 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 text-white">
+          <div className="w-full p-8 rounded-xl bg-primary text-white">
             <div className="flex items-center gap-6 mb-6">
               <div className="size-24 bg-white/20 rounded-xl flex items-center justify-center">
                 <Headphones className="h-12 w-12" />
@@ -352,7 +352,7 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
 
       case 'PDF':
         return (
-          <div className="w-full p-8 rounded-xl bg-gradient-to-br from-red-500 to-orange-500 text-white">
+          <div className="w-full p-8 rounded-xl bg-foreground text-white">
             <div className="flex items-center gap-6">
               <div className="size-24 bg-white/20 rounded-xl flex items-center justify-center">
                 <FileIcon className="h-12 w-12" />
@@ -451,17 +451,10 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                   {getTypeIcon(resource.type, 'h-3 w-3')}
                   {RESOURCE_TYPE_LABELS[resource.type]}
                 </Badge>
-                <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200">
+                <Badge variant="secondary" className="border-primary/20 bg-primary/10 text-primary">
                   {LANGUAGE_LABELS[resource.language] || resource.language}
                 </Badge>
-                {resource.level && (
-                  <Badge
-                    variant="secondary"
-                    className="bg-purple-100 text-purple-800 border-purple-200"
-                  >
-                    {resource.level}
-                  </Badge>
-                )}
+                {resource.level && <Badge variant="secondary">{resource.level}</Badge>}
                 {resource.category && <Badge variant="outline">{resource.category.name}</Badge>}
               </div>
 
@@ -567,7 +560,7 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
 
             {/* Access Restriction Banner */}
             {accessRestricted && (
-              <Card className="border-2 border-dashed border-amber-300 bg-gradient-to-br from-amber-50 to-orange-50">
+              <Card className="border-2 border-dashed border-amber-300 bg-amber-50/60 dark:bg-amber-950/20">
                 <CardContent className="pt-6">
                   <div className="flex flex-col items-center text-center py-8">
                     <div className="size-16 rounded-full bg-amber-100 flex items-center justify-center mb-4">
@@ -779,7 +772,7 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
             </div>
 
             {/* Lingowow CTA Banner */}
-            <div className="mt-8 p-8 rounded-2xl bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 border-2 border-primary/20">
+            <div className="mt-8 rounded-2xl border-2 border-primary/20 bg-secondary p-8">
               <div className="text-center max-w-2xl mx-auto">
                 <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
                   Aprende inglés con profesores expertos
@@ -797,11 +790,11 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                 <div className="flex items-center justify-center gap-6 mt-6 text-sm text-muted-foreground">
                   <span className="flex items-center gap-1.5">
                     <Users className="h-4 w-4" />
-                    +500 estudiantes
+                    Clases 1 a 1 en vivo
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Globe className="h-4 w-4" />
-                    Tutores de todo el mundo
+                    Tutores certificados
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Sparkles className="h-4 w-4" />
@@ -948,11 +941,10 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
             )}
 
             {/* Promo Card */}
-            <Card className="bg-gradient-to-br from-primary to-blue-600 text-white border-none overflow-hidden relative">
-              <div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-white/10 rounded-full blur-2xl" />
+            <Card className="relative overflow-hidden border-none bg-primary text-primary-foreground">
               <CardContent className="pt-6 relative z-10">
                 <h3 className="text-lg font-bold mb-2">¿Quieres practicar en vivo?</h3>
-                <p className="text-blue-100 text-sm mb-4">
+                <p className="text-primary-foreground/80 text-sm mb-4">
                   Reserva una sesión 1 a 1 con un tutor para practicar tus habilidades de
                   conversación.
                 </p>

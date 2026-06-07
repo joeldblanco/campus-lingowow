@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono, Lexend } from 'next/font/google'
+import { Geist, Geist_Mono, Fredoka } from 'next/font/google'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
@@ -9,8 +9,10 @@ const geistSans = Geist({
   subsets: ['latin'],
 })
 
-const lexend = Lexend({
-  variable: '--font-lexend',
+// Playful display face (rounded). Replaces Lexend; `font-lexend` is aliased to
+// this variable in tailwind.config.ts for back-compat.
+const fredoka = Fredoka({
+  variable: '--font-fredoka',
   subsets: ['latin'],
 })
 
@@ -36,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${geistSans.variable} ${geistMono.variable} ${lexend.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${fredoka.variable} antialiased`}>
         {children}
         <SpeedInsights />
         <Analytics />

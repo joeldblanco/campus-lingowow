@@ -14,7 +14,7 @@ export default function PrivacidadPage() {
     <div className="flex flex-col min-h-screen">
       <Header />
       
-      <main className="flex-1 bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900">
+      <main className="flex-1 bg-background">
         <LegalTextRenderer
           title="Política de Privacidad"
           lastUpdated="1 de octubre de 2025"

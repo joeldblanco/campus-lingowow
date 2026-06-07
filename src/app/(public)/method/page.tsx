@@ -1,317 +1,254 @@
 import Header from '@/components/public-components/header'
 import Footer from '@/components/public-components/footer'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { GraduationCap, Users, MessageCircle, Target, BookOpen, Headphones, Video, CheckCircle } from 'lucide-react'
+import {
+  GraduationCap,
+  Users,
+  MessageCircle,
+  Target,
+  BookOpen,
+  Headphones,
+  Video,
+  CheckCircle,
+} from 'lucide-react'
 import Link from 'next/link'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Nuestro Método | Lingowow - Metodología de Enseñanza',
-  description: 'Un enfoque comunicativo e inmersivo que garantiza resultados reales. Aprende de forma natural, práctica y efectiva con nuestra metodología probada.',
+  description:
+    'Un enfoque comunicativo e inmersivo que garantiza resultados reales. Aprende de forma natural, práctica y efectiva con nuestra metodología probada.',
 }
+
+const PILLARS = [
+  {
+    icon: GraduationCap,
+    title: 'Inmersión total',
+    body: 'Desde el primer día las clases se imparten en el idioma objetivo. Esta inmersión acelera tu comprensión y te ayuda a pensar directamente en el nuevo idioma sin traducir mentalmente.',
+  },
+  {
+    icon: Users,
+    title: 'Práctica constante',
+    body: 'Conversaciones reales, ejercicios interactivos y situaciones prácticas del día a día. Aprenderás el idioma que realmente se usa, no solo gramática teórica.',
+  },
+  {
+    icon: MessageCircle,
+    title: 'Enfoque personalizado',
+    body: 'Adaptamos el contenido, ritmo y metodología a tus necesidades, objetivos y estilo de aprendizaje. Cada estudiante es único.',
+  },
+]
+
+const STEPS = [
+  {
+    title: 'Evaluación inicial',
+    body: 'Determinamos tu nivel actual y objetivos específicos para diseñar un plan de estudios personalizado.',
+  },
+  {
+    title: 'Clases interactivas',
+    body: 'Sesiones en vivo con profesores expertos, enfocadas en conversación y práctica real del idioma.',
+  },
+  {
+    title: 'Práctica autónoma',
+    body: 'Acceso a materiales complementarios, ejercicios y recursos para practicar entre clases.',
+  },
+  {
+    title: 'Evaluación continua',
+    body: 'Seguimiento constante de tu progreso con evaluaciones periódicas y feedback personalizado.',
+  },
+]
+
+const RESOURCES = [
+  {
+    icon: Video,
+    title: 'Clases en vivo por videollamada',
+    body: 'Interacción directa con profesores profesionales en tiempo real, desde cualquier lugar.',
+  },
+  {
+    icon: BookOpen,
+    title: 'Material didáctico exclusivo',
+    body: 'Libros digitales, guías de estudio y ejercicios diseñados por nuestro equipo pedagógico.',
+  },
+  {
+    icon: Headphones,
+    title: 'Recursos multimedia',
+    body: 'Podcasts, videos, audios y contenido interactivo para practicar comprensión auditiva.',
+  },
+  {
+    icon: Target,
+    title: 'Seguimiento personalizado',
+    body: 'Plataforma digital para monitorear tu progreso, tareas y objetivos de aprendizaje.',
+  },
+]
+
+const EXPECTATIONS = [
+  {
+    title: 'Avance hacia la fluidez conversacional',
+    body: 'Con práctica regular irás progresando para mantener conversaciones con mayor confianza en situaciones cotidianas.',
+  },
+  {
+    title: 'Confianza para comunicarte',
+    body: 'Superarás el miedo a hablar y ganarás seguridad para expresarte en el nuevo idioma.',
+  },
+  {
+    title: 'Práctica orientada a tus objetivos',
+    body: 'Trabajamos las habilidades que necesitas según tus metas, ya sea para estudio, trabajo o viajes.',
+  },
+]
 
 export default function MetodoPage() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Header />
-      
+
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="w-full py-12 md:py-24 bg-gradient-to-r from-blue-50 to-indigo-50">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center text-center gap-4">
-              <Badge variant="outline" className="w-fit">
-                Nuestra Metodología
-              </Badge>
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-                Nuestro Método de Enseñanza
-              </h1>
-              <p className="text-muted-foreground max-w-[700px]">
-                Un enfoque comunicativo e inmersivo orientado a resultados reales.
-                Aprende de forma natural, práctica y efectiva.
-              </p>
-            </div>
+        {/* Hero — left-aligned statement (distinct from the landing's diptych hero) */}
+        <section className="border-b border-border">
+          <div className="container mx-auto max-w-3xl px-4 py-16 md:px-6 md:py-24">
+            <Badge
+              variant="outline"
+              className="rounded-full border-teal/40 bg-teal-soft/60 px-3 py-1 font-medium text-teal-ink"
+            >
+              Nuestra metodología
+            </Badge>
+            <h1 className="mt-5 font-lexend text-4xl font-bold leading-[1.05] tracking-tight md:text-5xl lg:text-6xl">
+              Un método de enseñanza que se nota
+            </h1>
+            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+              Un enfoque comunicativo e inmersivo orientado a resultados reales.
+              Aprende de forma natural, práctica y efectiva.
+            </p>
           </div>
         </section>
 
-        {/* Pilares del Método */}
-        <section className="w-full py-12 md:py-16">
-          <div className="container px-4 md:px-6">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tight mb-4">
-                Los 3 Pilares de Nuestro Método
+        {/* Pilares — diptych: heading-left / pillar list-right */}
+        <section className="container mx-auto grid gap-10 px-4 py-24 md:grid-cols-2 md:gap-16 md:px-6">
+          <div className="md:sticky md:top-24 md:self-start">
+            <h2 className="font-lexend text-3xl font-bold tracking-tight md:text-4xl">
+              Los tres pilares del método
+            </h2>
+            <p className="mt-4 max-w-md text-muted-foreground">
+              Nuestra metodología se apoya en tres principios fundamentales para el
+              aprendizaje de idiomas.
+            </p>
+          </div>
+          <ul className="flex flex-col gap-4">
+            {PILLARS.map((pillar) => (
+              <li
+                key={pillar.title}
+                className="flex gap-4 rounded-2xl border border-border bg-card p-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5"
+              >
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-teal-soft text-teal-ink">
+                  <pillar.icon className="h-5 w-5" />
+                </span>
+                <div>
+                  <h3 className="font-lexend text-lg font-semibold">{pillar.title}</h3>
+                  <p className="mt-1.5 text-muted-foreground">{pillar.body}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* Proceso — numbered step sequence (genuinely ordinal), full-width band */}
+        <section className="border-y border-border bg-secondary/50">
+          <div className="container mx-auto px-4 py-24 md:px-6">
+            <div className="max-w-2xl">
+              <h2 className="font-lexend text-3xl font-bold tracking-tight md:text-4xl">
+                Cómo funciona el proceso
               </h2>
-              <p className="text-muted-foreground max-w-[700px] mx-auto">
-                Nuestra metodología se basa en tres principios fundamentales para
-                el aprendizaje de idiomas.
+              <p className="mt-4 text-muted-foreground">
+                Un camino estructurado que te acompaña desde tu nivel actual hacia la
+                fluidez que deseas alcanzar.
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <Card>
-                <CardHeader className="flex flex-col items-center text-center">
-                  <div className="p-3 bg-primary/10 rounded-full mb-4">
-                    <GraduationCap className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle>Inmersión Total</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-muted-foreground">
-                    Desde el primer día, las clases se imparten en el idioma objetivo. 
-                    Esta inmersión acelera tu comprensión y te ayuda a pensar directamente 
-                    en el nuevo idioma sin traducir mentalmente.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-col items-center text-center">
-                  <div className="p-3 bg-primary/10 rounded-full mb-4">
-                    <Users className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle>Práctica Constante</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-muted-foreground">
-                    Conversaciones reales, ejercicios interactivos y situaciones prácticas 
-                    del día a día. Aprenderás el idioma que realmente se usa, no solo 
-                    gramática teórica.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-col items-center text-center">
-                  <div className="p-3 bg-primary/10 rounded-full mb-4">
-                    <MessageCircle className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle>Enfoque Personalizado</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-muted-foreground">
-                    Adaptamos el contenido, ritmo y metodología a tus necesidades específicas, 
-                    objetivos y estilo de aprendizaje. Cada estudiante es único.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
+            <ol className="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+              {STEPS.map((step, i) => (
+                <li key={step.title}>
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary font-lexend text-lg font-bold tabular-nums text-primary-foreground">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <h3 className="mt-4 font-lexend text-lg font-semibold">{step.title}</h3>
+                  <p className="mt-1.5 text-sm text-muted-foreground">{step.body}</p>
+                </li>
+              ))}
+            </ol>
           </div>
         </section>
 
-        {/* Proceso de Aprendizaje */}
-        <section className="w-full py-12 md:py-16 bg-slate-50">
-          <div className="container px-4 md:px-6">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tight mb-4">
-                Cómo Funciona Nuestro Proceso
+        {/* Recursos — 2-col feature list, left-aligned heading (icons inline, no tiles) */}
+        <section className="container mx-auto px-4 py-24 md:px-6">
+          <div className="max-w-2xl">
+            <h2 className="font-lexend text-3xl font-bold tracking-tight md:text-4xl">
+              Recursos y herramientas
+            </h2>
+            <p className="mt-4 text-muted-foreground">
+              Usamos las mejores herramientas para maximizar tu aprendizaje.
+            </p>
+          </div>
+          <div className="mt-12 grid gap-x-12 gap-y-10 md:grid-cols-2">
+            {RESOURCES.map((resource) => (
+              <div key={resource.title} className="flex gap-4">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-teal-soft text-teal-ink">
+                  <resource.icon className="h-5 w-5" />
+                </span>
+                <div>
+                  <h3 className="font-lexend text-base font-semibold">{resource.title}</h3>
+                  <p className="mt-1.5 text-sm text-muted-foreground">{resource.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Qué esperar — diptych on a muted band */}
+        <section className="border-y border-border bg-secondary/50">
+          <div className="container mx-auto grid gap-10 px-4 py-24 md:grid-cols-2 md:gap-16 md:px-6">
+            <div>
+              <h2 className="font-lexend text-3xl font-bold tracking-tight md:text-4xl">
+                Qué puedes esperar
               </h2>
-              <p className="text-muted-foreground max-w-[700px] mx-auto">
-                Un camino estructurado que te acompaña desde tu nivel actual
-                hacia la fluidez que deseas alcanzar.
+              <p className="mt-4 max-w-md text-muted-foreground">
+                Nuestro método está orientado a ayudarte a alcanzar tus objetivos. Esto
+                es en lo que nos enfocamos contigo:
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold">
-                      1
-                    </div>
-                    <CardTitle className="text-lg">Evaluación Inicial</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    Determinamos tu nivel actual y objetivos específicos para diseñar 
-                    un plan de estudios personalizado.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold">
-                      2
-                    </div>
-                    <CardTitle className="text-lg">Clases Interactivas</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    Sesiones en vivo con profesores expertos, enfocadas en conversación 
-                    y práctica real del idioma.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold">
-                      3
-                    </div>
-                    <CardTitle className="text-lg">Práctica Autónoma</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    Acceso a materiales complementarios, ejercicios y recursos para 
-                    practicar entre clases.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold">
-                      4
-                    </div>
-                    <CardTitle className="text-lg">Evaluación Continua</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    Seguimiento constante de tu progreso con evaluaciones periódicas 
-                    y feedback personalizado.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* Recursos y Herramientas */}
-        <section className="w-full py-12 md:py-16">
-          <div className="container px-4 md:px-6">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tight mb-4">
-                Recursos y Herramientas
-              </h2>
-              <p className="text-muted-foreground max-w-[700px] mx-auto">
-                Utilizamos las mejores herramientas y recursos para maximizar tu aprendizaje.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              <div className="flex gap-4">
-                <div className="flex-shrink-0">
-                  <Video className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-2">Clases en Vivo por Videollamada</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Interacción directa con profesores profesionales en tiempo real, desde cualquier lugar.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="flex-shrink-0">
-                  <BookOpen className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-2">Material Didáctico Exclusivo</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Libros digitales, guías de estudio y ejercicios diseñados por nuestro equipo pedagógico.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="flex-shrink-0">
-                  <Headphones className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-2">Recursos Multimedia</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Podcasts, videos, audios y contenido interactivo para practicar comprensión auditiva.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="flex-shrink-0">
-                  <Target className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-2">Seguimiento Personalizado</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Plataforma digital para monitorear tu progreso, tareas y objetivos de aprendizaje.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Resultados Garantizados */}
-        <section className="w-full py-12 md:py-16 bg-slate-50">
-          <div className="container px-4 md:px-6">
-            <div className="max-w-3xl mx-auto">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold tracking-tight mb-4">
-                  Qué Puedes Esperar
-                </h2>
-                <p className="text-muted-foreground">
-                  Nuestro método está orientado a ayudarte a alcanzar tus objetivos.
-                  Esto es en lo que nos enfocamos contigo:
-                </p>
-              </div>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="h-6 w-6 text-green-500 flex-shrink-0 mt-0.5" />
+            <ul className="flex flex-col gap-6">
+              {EXPECTATIONS.map((item) => (
+                <li key={item.title} className="flex items-start gap-3">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-teal text-teal-ink">
+                    <CheckCircle className="h-4 w-4" />
+                  </span>
                   <div>
-                    <h3 className="font-semibold mb-1">Avance hacia la Fluidez Conversacional</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Con práctica regular irás progresando para mantener conversaciones
-                      con mayor confianza en situaciones cotidianas.
-                    </p>
+                    <h3 className="font-lexend font-semibold">{item.title}</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">{item.body}</p>
                   </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="h-6 w-6 text-green-500 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-semibold mb-1">Confianza para Comunicarte</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Superarás el miedo a hablar y ganarás seguridad para expresarte en el nuevo idioma.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="h-6 w-6 text-green-500 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-semibold mb-1">Práctica Orientada a tus Objetivos</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Trabajamos contigo las habilidades que necesitas según tus metas,
-                      ya sea para estudio, trabajo o viajes.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="w-full py-12 md:py-24 bg-gradient-to-r from-indigo-100 to-blue-100">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center text-center gap-6">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-                ¿Listo para Empezar?
-              </h2>
-              <p className="text-muted-foreground max-w-[600px]">
-                Empieza a aprender con nuestro método y avanza a tu propio ritmo.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/demo">
-                  <Button size="lg">Clase de Prueba Gratuita</Button>
-                </Link>
-                <Link href="/courses">
-                  <Button size="lg" variant="outline">Ver Cursos</Button>
-                </Link>
-              </div>
+        {/* CTA — solid band */}
+        <section className="border-t border-border">
+          <div className="container mx-auto max-w-2xl px-4 py-24 text-center md:px-6">
+            <h2 className="font-lexend text-3xl font-bold tracking-tight md:text-4xl">
+              ¿Listo para empezar?
+            </h2>
+            <p className="mx-auto mt-4 max-w-md text-muted-foreground">
+              Empieza a aprender con nuestro método y avanza a tu propio ritmo.
+            </p>
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <Link href="/demo">
+                <Button size="lg" className="w-full rounded-full sm:w-auto">
+                  Clase de prueba gratuita
+                </Button>
+              </Link>
+              <Link href="/courses">
+                <Button size="lg" variant="outline" className="w-full rounded-full sm:w-auto">
+                  Ver cursos
+                </Button>
+              </Link>
             </div>
           </div>
         </section>

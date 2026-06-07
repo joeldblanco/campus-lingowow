@@ -5,7 +5,13 @@ import Header from '@/components/public-components/header'
 import Footer from '@/components/public-components/footer'
 import { CartDrawer } from '@/components/shop/cart/cart-drawer'
 import { Button } from '@/components/ui/button'
-import { CheckCircle, ChevronDown, GraduationCap, Globe, Rocket, Languages, Loader2, Check } from 'lucide-react'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
+import { Check, CheckCircle, Loader2, Star } from 'lucide-react'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { SUPPORTED_LANGUAGES } from '@/lib/constants/languages'
 import { cn } from '@/lib/utils'
@@ -15,6 +21,24 @@ import { useShopStore } from '@/stores/useShopStore'
 import { toast } from 'sonner'
 import type { PlanWithFeatures } from '@/types/shop'
 
+const GOOGLE_REVIEWS_URL =
+  'https://www.google.com/maps/place/Lingowow/@-12.0015217,-77.1199284,17z/data=!4m8!3m7!1s0x9105cd90a8800b7d:0xceb4d33979f426ad!8m2!3d-12.0015217!4d-77.1173535!9m1!1b1!16s%2Fg%2F11j2wlfzw8'
+
+const FAQS = [
+  {
+    q: '¿Puedo cambiar de plan más tarde?',
+    a: '¡Absolutamente! Puedes mejorar o reducir tu plan en cualquier momento desde la configuración de tu cuenta.',
+  },
+  {
+    q: '¿Hay política de reembolso?',
+    a: 'Sí, ofrecemos una garantía de devolución de dinero de 14 días para todos los planes pagos.',
+  },
+  {
+    q: '¿El acceso es ilimitado?',
+    a: 'Sí, dependiendo de tu plan, tendrás acceso ilimitado a las lecciones y ejercicios disponibles.',
+  },
+]
+
 export default function PricingPage() {
   const searchParams = useSearchParams()
   const productId = searchParams.get('productId')
@@ -23,7 +47,7 @@ export default function PricingPage() {
   const [loading, setLoading] = useState(true)
   const [uniqueFeatures, setUniqueFeatures] = useState<string[]>([])
   const [selectedLanguage, setSelectedLanguage] = useState<string>('en')
-  
+
   // Shop store
   const { addToCart, cart, isCartDrawerOpen, setCartDrawerOpen, lastAddedItem } = useShopStore()
 
@@ -52,13 +76,13 @@ export default function PricingPage() {
   }
 
   // Check if any plan has language-specific pricing configured
-  const hasLanguagePricing = plans.some(plan => 
+  const hasLanguagePricing = plans.some(plan =>
     plan.pricing && plan.pricing.length > 0 && plan.pricing.some(p => p.isActive)
   )
 
   // Filter plans based on selected language - only show plans that have pricing for that language
-  const filteredPlans = hasLanguagePricing 
-    ? plans.filter(plan => 
+  const filteredPlans = hasLanguagePricing
+    ? plans.filter(plan =>
         plan.pricing?.some(p => p.language === selectedLanguage && p.isActive)
       )
     : plans
@@ -128,33 +152,39 @@ export default function PricingPage() {
     fetchPlans()
   }, [productId])
 
+  // Tailwind can't see runtime-built class names — map plan count to literal classes.
+  const gridColsClass =
+    filteredPlans.length >= 3
+      ? 'sm:grid-cols-2 lg:grid-cols-3'
+      : filteredPlans.length === 2
+        ? 'sm:grid-cols-2 max-w-3xl mx-auto'
+        : 'max-w-md mx-auto'
+
   return (
-    <div className="min-h-screen bg-background-light dark:bg-background-dark flex flex-col">
+    <div className="flex min-h-screen flex-col bg-background">
       <Header />
 
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="relative py-12 md:py-20 px-4 overflow-hidden">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white leading-tight mb-6 font-lexend">
+        {/* Hero */}
+        <section className="border-b border-border">
+          <div className="container mx-auto max-w-3xl px-4 py-16 text-center md:px-6 md:py-24">
+            <h1 className="font-lexend text-4xl font-bold leading-tight tracking-tight md:text-5xl">
               Invierte en tu fluidez
             </h1>
-            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10">
+            <p className="mx-auto mt-5 max-w-xl text-lg text-muted-foreground">
               Elige el plan que se adapte a tus objetivos. Mejora, cambia o cancela en cualquier momento.
             </p>
 
             {/* Language Tabs - only show if plans have language-specific pricing */}
             {hasLanguagePricing && (
-              <div className="flex flex-col items-center gap-4 mb-8">
-                <span className="text-sm text-slate-500 dark:text-slate-400">Selecciona el idioma que deseas aprender:</span>
+              <div className="mt-8 flex flex-col items-center gap-4">
+                <span className="text-sm text-muted-foreground">
+                  Selecciona el idioma que deseas aprender:
+                </span>
                 <Tabs value={selectedLanguage} onValueChange={setSelectedLanguage} className="w-auto">
-                  <TabsList className="grid grid-cols-2 w-[300px]">
+                  <TabsList className="grid w-[300px] grid-cols-2">
                     {SUPPORTED_LANGUAGES.map((lang) => (
-                      <TabsTrigger 
-                        key={lang.code} 
-                        value={lang.code}
-                        className="gap-2 text-base"
-                      >
+                      <TabsTrigger key={lang.code} value={lang.code} className="gap-2 text-base">
                         <span className="text-lg">{lang.flag}</span>
                         {lang.code === 'en' ? 'Inglés' : 'Español'}
                       </TabsTrigger>
@@ -163,60 +193,61 @@ export default function PricingPage() {
                 </Tabs>
               </div>
             )}
-            <span className="font-bold text-slate-900 dark:text-white bg-blue-100 dark:bg-blue-900/30 px-4 py-2 rounded-full">
-              Planes Mensuales Flexibles
+            <span className="mt-6 inline-flex rounded-full bg-teal-soft px-4 py-2 text-sm font-medium text-teal-ink">
+              Planes mensuales flexibles
             </span>
           </div>
         </section>
 
         {/* Pricing Cards */}
-        <section className="px-4 pb-20">
-          <div className="max-w-7xl mx-auto">
+        <section className="px-4 py-16 md:py-20">
+          <div className="mx-auto max-w-7xl">
             {loading ? (
               <div className="flex justify-center py-20">
                 <Loader2 className="h-10 w-10 animate-spin text-primary" />
               </div>
             ) : (
-              <div className={`grid grid-cols-1 md:grid-cols-${Math.min(filteredPlans.length, 3)} gap-8 items-start justify-center`}>
+              <div className={cn('grid grid-cols-1 items-stretch gap-6', gridColsClass)}>
                 {filteredPlans.length === 0 && (
-                  <div className="col-span-full text-center text-slate-500">
+                  <div className="col-span-full text-center text-muted-foreground">
                     No hay planes disponibles en este momento.
                   </div>
                 )}
                 {filteredPlans.map((plan) => {
                   const isPopular = plan.isPopular
+                  const inCart = isInCart(plan.id, selectedLanguage)
 
                   return (
                     <div
                       key={plan.id}
                       className={cn(
-                        "relative flex flex-col p-6 bg-white dark:bg-[#1a2632] rounded-xl transition-all duration-300",
+                        'relative flex flex-col rounded-2xl bg-card p-6 transition-transform duration-200 hover:-translate-y-1',
                         isPopular
-                          ? "border-2 border-primary shadow-xl scale-105 z-10"
-                          : "border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md hover:border-primary/50"
+                          ? 'border-2 border-primary shadow-md'
+                          : 'border border-border shadow-sm hover:border-primary/40',
                       )}
                     >
                       {isPopular && (
-                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wide shadow-md">
-                          Más Popular
+                        <div className="absolute -top-3 left-6 rounded-full bg-primary px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-foreground">
+                          Más popular
                         </div>
                       )}
 
                       <div className="mb-5 mt-2">
-                        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2 font-lexend">{plan.name}</h3>
-                        <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">
-                          {plan.description || "Plan de aprendizaje completo"}
+                        <h3 className="font-lexend text-lg font-bold">{plan.name}</h3>
+                        <p className="mb-4 mt-1 text-sm text-muted-foreground">
+                          {plan.description || 'Plan de aprendizaje completo'}
                         </p>
                         {(() => {
                           const { price, comparePrice } = getPriceForLanguage(plan, selectedLanguage)
                           return (
                             <div className="flex items-baseline gap-2">
-                              <span className="text-4xl font-bold text-slate-900 dark:text-white font-lexend">
+                              <span className="font-lexend text-4xl font-bold tabular-nums">
                                 ${Number(price).toFixed(0)}
                               </span>
-                              <span className="text-slate-500 dark:text-slate-400 font-medium">/mes</span>
+                              <span className="font-medium text-muted-foreground">/mes</span>
                               {comparePrice && comparePrice > price && (
-                                <span className="text-lg text-slate-400 line-through">
+                                <span className="text-lg text-muted-foreground line-through tabular-nums">
                                   ${Number(comparePrice).toFixed(0)}
                                 </span>
                               )}
@@ -226,32 +257,34 @@ export default function PricingPage() {
                       </div>
 
                       <Button
-                        variant={isInCart(plan.id, selectedLanguage) ? "secondary" : isPopular ? "default" : "outline"}
-                        className={cn(
-                          "w-full py-3 h-auto mb-8 font-bold",
-                          isInCart(plan.id, selectedLanguage)
-                            ? "bg-green-500 hover:bg-green-600 text-white"
-                            : isPopular
-                              ? "bg-primary hover:bg-blue-600 text-white shadow-lg shadow-blue-500/30"
-                              : "bg-slate-100 border-none hover:bg-slate-200 text-slate-900"
-                        )}
+                        variant={inCart ? 'secondary' : isPopular ? 'default' : 'outline'}
+                        className="mb-8 h-auto w-full rounded-full py-3 font-semibold"
                         onClick={() => handleAddToCart(plan)}
                       >
-                        {isInCart(plan.id, selectedLanguage) ? (
+                        {inCart ? (
                           <>
                             <Check className="mr-2 h-4 w-4" />
-                            Añadido al Carrito
+                            Añadido al carrito
                           </>
-                        ) : isPopular ? "Obtener Plan" : "Empezar Ahora"}
+                        ) : isPopular ? (
+                          'Obtener plan'
+                        ) : (
+                          'Empezar ahora'
+                        )}
                       </Button>
 
                       <div className="space-y-4">
-                        {plan.features?.filter(f => f.included).map((pf, idx) => (
-                          <div key={idx} className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300">
-                            <CheckCircle className="text-primary h-5 w-5 shrink-0" />
+                        {plan.features?.filter((f) => f.included).map((pf, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-start gap-3 text-sm text-foreground"
+                          >
+                            <CheckCircle className="h-5 w-5 shrink-0 text-primary" />
                             <span>
                               {pf.feature.name}
-                              {pf.value != null && <span className="text-slate-500 dark:text-slate-400">: {pf.value}</span>}
+                              {pf.value != null && (
+                                <span className="text-muted-foreground">: {pf.value}</span>
+                              )}
                             </span>
                           </div>
                         ))}
@@ -264,42 +297,54 @@ export default function PricingPage() {
           </div>
         </section>
 
-        {/* Trust Indicator */}
-        <section className="border-y border-slate-200 dark:border-slate-800 bg-white dark:bg-[#1a2632]">
-          <div className="max-w-7xl mx-auto py-12 px-4 text-center">
-            <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-8">Confían en nosotros estudiantes de</p>
-            <div className="flex flex-wrap justify-center items-center gap-12 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-              <div className="flex items-center gap-2 font-bold text-xl text-slate-700 dark:text-slate-300">
-                <GraduationCap className="h-6 w-6" /> University of Tech
-              </div>
-              <div className="flex items-center gap-2 font-bold text-xl text-slate-700 dark:text-slate-300">
-                <Globe className="h-6 w-6" /> Global Corp
-              </div>
-              <div className="flex items-center gap-2 font-bold text-xl text-slate-700 dark:text-slate-300">
-                <Rocket className="h-6 w-6" /> Startup Inc
-              </div>
-              <div className="flex items-center gap-2 font-bold text-xl text-slate-700 dark:text-slate-300">
-                <Languages className="h-6 w-6" /> LinguaPress
-              </div>
-            </div>
+        {/* Trust line — real, verifiable proof (no invented logos) */}
+        <section className="border-y border-border bg-secondary/50">
+          <div className="mx-auto flex max-w-7xl flex-col items-center gap-3 px-4 py-10 text-center sm:flex-row sm:justify-center sm:gap-8">
+            <a
+              href={GOOGLE_REVIEWS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+              <span className="font-medium text-foreground">4,9</span>
+              <span>· 38 reseñas verificadas en Google</span>
+            </a>
+            <span className="hidden h-4 w-px bg-border sm:inline-block" />
+            <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+              <CheckCircle className="h-4 w-4 text-primary" />
+              Garantía de devolución de 14 días
+            </span>
           </div>
         </section>
 
         {/* Comparison Table */}
         {filteredPlans.length > 0 && !loading && (
-          <section className="py-20 px-4">
-            <div className="max-w-5xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4 font-lexend">Compara las Características</h2>
-                <p className="text-slate-600 dark:text-slate-400">Desglose detallado de lo que incluye cada plan.</p>
+          <section className="px-4 py-20">
+            <div className="mx-auto max-w-5xl">
+              <div className="mb-12 text-center">
+                <h2 className="font-lexend text-3xl font-bold tracking-tight">
+                  Compara las características
+                </h2>
+                <p className="mt-3 text-muted-foreground">
+                  Desglose detallado de lo que incluye cada plan.
+                </p>
               </div>
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
+                <table className="w-full border-collapse text-left">
                   <thead>
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <th className="py-4 px-6 text-sm font-semibold text-slate-500 dark:text-slate-400 w-1/4">Características</th>
-                      {filteredPlans.map(plan => (
-                        <th key={plan.id} className={cn("py-4 px-6 text-lg font-bold w-1/4 text-center font-lexend", plan.isPopular ? "text-primary" : "text-slate-900 dark:text-white")}>
+                    <tr className="border-b border-border">
+                      <th className="w-1/4 px-6 py-4 text-sm font-semibold text-muted-foreground">
+                        Características
+                      </th>
+                      {filteredPlans.map((plan) => (
+                        <th
+                          key={plan.id}
+                          className={cn(
+                            'w-1/4 px-6 py-4 text-center font-lexend text-lg font-bold',
+                            plan.isPopular ? 'text-primary' : 'text-foreground',
+                          )}
+                        >
                           {plan.name}
                         </th>
                       ))}
@@ -307,23 +352,26 @@ export default function PricingPage() {
                   </thead>
                   <tbody className="text-sm">
                     {uniqueFeatures.map((featureName, idx) => (
-                      <tr key={idx} className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
-                        <td className="py-4 px-6 font-medium text-slate-900 dark:text-white">{featureName}</td>
-                        {filteredPlans.map(plan => {
+                      <tr
+                        key={idx}
+                        className="border-b border-border transition-colors hover:bg-muted/50"
+                      >
+                        <td className="px-6 py-4 font-medium text-foreground">{featureName}</td>
+                        {filteredPlans.map((plan) => {
                           const pf = plan.features?.find((f) => f.feature.name === featureName)
                           const included = pf?.included
                           const value = pf?.value
                           return (
-                            <td key={plan.id} className="py-4 px-6 text-center">
-                              <div className="flex justify-center items-center">
+                            <td key={plan.id} className="px-6 py-4 text-center">
+                              <div className="flex items-center justify-center">
                                 {included ? (
                                   value != null ? (
-                                    <span className="text-slate-700 dark:text-slate-300 text-xs font-medium">{value}</span>
+                                    <span className="text-xs font-medium text-foreground">{value}</span>
                                   ) : (
-                                    <CheckCircle className="text-primary h-5 w-5" />
+                                    <CheckCircle className="h-5 w-5 text-primary" />
                                   )
                                 ) : (
-                                  <span className="text-slate-300 font-bold">—</span>
+                                  <span className="font-bold text-muted-foreground/50">—</span>
                                 )}
                               </div>
                             </td>
@@ -339,57 +387,44 @@ export default function PricingPage() {
         )}
 
         {/* FAQ Section */}
-        <section className="py-20 px-4 bg-white dark:bg-[#1a2632] border-t border-slate-200 dark:border-slate-800">
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4 font-lexend">Preguntas Frecuentes</h2>
+        <section className="border-t border-border bg-secondary/50 px-4 py-20">
+          <div className="mx-auto max-w-3xl">
+            <div className="mb-12 text-center">
+              <h2 className="font-lexend text-3xl font-bold tracking-tight">Preguntas frecuentes</h2>
             </div>
-            <div className="space-y-4">
-              <details className="group bg-slate-50 dark:bg-slate-800/50 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 open:border-primary/50 transition-all">
-                <summary className="flex items-center justify-between p-5 cursor-pointer font-bold text-slate-900 dark:text-white hover:text-primary transition-colors list-none">
-                  <span>¿Puedo cambiar de plan más tarde?</span>
-                  <ChevronDown className="transition-transform group-open:rotate-180" />
-                </summary>
-                <div className="px-5 pb-5 text-slate-600 dark:text-slate-400 leading-relaxed">
-                  ¡Absolutamente! Puedes mejorar o reducir tu plan en cualquier momento desde la configuración de tu cuenta.
-                </div>
-              </details>
-              <details className="group bg-slate-50 dark:bg-slate-800/50 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 open:border-primary/50 transition-all">
-                <summary className="flex items-center justify-between p-5 cursor-pointer font-bold text-slate-900 dark:text-white hover:text-primary transition-colors list-none">
-                  <span>¿Hay política de reembolso?</span>
-                  <ChevronDown className="transition-transform group-open:rotate-180" />
-                </summary>
-                <div className="px-5 pb-5 text-slate-600 dark:text-slate-400 leading-relaxed">
-                  Sí, ofrecemos una garantía de devolución de dinero de 14 días para todos los planes pagos.
-                </div>
-              </details>
-              <details className="group bg-slate-50 dark:bg-slate-800/50 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 open:border-primary/50 transition-all">
-                <summary className="flex items-center justify-between p-5 cursor-pointer font-bold text-slate-900 dark:text-white hover:text-primary transition-colors list-none">
-                  <span>¿El acceso es ilimitado?</span>
-                  <ChevronDown className="transition-transform group-open:rotate-180" />
-                </summary>
-                <div className="px-5 pb-5 text-slate-600 dark:text-slate-400 leading-relaxed">
-                  Sí, dependiendo de tu plan, tendrás acceso ilimitado a las lecciones y ejercicios disponibles.
-                </div>
-              </details>
-            </div>
+            <Accordion type="single" collapsible className="w-full">
+              {FAQS.map((faq, i) => (
+                <AccordionItem key={i} value={`item-${i}`}>
+                  <AccordionTrigger className="text-left font-lexend text-base font-medium">
+                    {faq.q}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">{faq.a}</AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </div>
         </section>
 
         {/* Bottom CTA */}
-        <section className="py-16 px-4 bg-primary text-white text-center">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-4 font-lexend">¿Aún tienes dudas?</h2>
-            <p className="text-lg opacity-90 mb-8">Ponte en contacto con nuestro equipo de soporte para obtener más información.</p>
-            <Button variant="secondary" className="bg-white text-primary hover:bg-slate-100 font-bold py-3 px-8 rounded-lg shadow-lg transition-transform hover:-translate-y-1">
-              Contactar Soporte
+        <section className="bg-primary px-4 py-16 text-center text-primary-foreground">
+          <div className="mx-auto max-w-4xl">
+            <h2 className="font-lexend text-3xl font-bold">¿Aún tienes dudas?</h2>
+            <p className="mx-auto mt-3 max-w-xl text-lg text-primary-foreground/90">
+              Ponte en contacto con nuestro equipo de soporte para obtener más información.
+            </p>
+            <Button
+              variant="secondary"
+              className="mt-8 rounded-full bg-background px-8 py-3 font-semibold text-primary hover:bg-background/90"
+              asChild
+            >
+              <a href="/contact">Contactar soporte</a>
             </Button>
           </div>
         </section>
       </main>
 
-      <CartDrawer 
-        open={isCartDrawerOpen} 
+      <CartDrawer
+        open={isCartDrawerOpen}
         onOpenChange={setCartDrawerOpen}
         suggestedProducts={[]}
       />

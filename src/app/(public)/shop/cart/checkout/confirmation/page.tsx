@@ -116,7 +116,7 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
   const paymentMethod = invoice.paymentMethod || 'creditCard'
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-muted/40">
       {/* Client component to clear cart on mount */}
       <ClearCartOnMount />
       
@@ -129,7 +129,7 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
               <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
                 <Check className="h-8 w-8 text-green-600" />
               </div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-3">
+              <h1 className="text-3xl font-bold text-foreground mb-3">
                 ¡Gracias por tu compra!
               </h1>
               <p className="text-gray-600 max-w-md mx-auto">
@@ -144,14 +144,14 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
             <div className="grid lg:grid-cols-5 gap-0 border-t">
               {/* Order Details - Left Side */}
               <div className="lg:col-span-3 p-6 lg:p-8">
-                <h2 className="text-lg font-semibold text-gray-900 mb-6">
+                <h2 className="text-lg font-semibold text-foreground mb-6">
                   Detalles del Pedido
                 </h2>
 
                 {/* Order Info Grid */}
                 <div className="grid sm:grid-cols-2 gap-6 mb-8">
                   <div>
-                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
                       Número de Orden
                     </p>
                     <p className="text-sm font-semibold text-primary">
@@ -159,19 +159,19 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
                       Fecha
                     </p>
-                    <p className="text-sm text-gray-900">
+                    <p className="text-sm text-foreground">
                       {formatDate(invoice.createdAt)}
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
                       Método de Pago
                     </p>
-                    <p className="text-sm text-gray-900 flex items-center gap-2">
-                      <span className="w-8 h-5 bg-gradient-to-r from-blue-600 to-blue-800 rounded text-white text-[8px] flex items-center justify-center font-bold">
+                    <p className="text-sm text-foreground flex items-center gap-2">
+                      <span className="w-8 h-5 bg-primary rounded text-primary-foreground text-[8px] flex items-center justify-center font-bold">
                         {paymentMethod === 'paypal' ? 'PP' : 'VISA'}
                       </span>
                       {paymentMethod === 'niubiz' || paymentMethod === 'creditCard'
@@ -182,10 +182,10 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
+                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
                       Total
                     </p>
-                    <p className="text-sm font-semibold text-gray-900">
+                    <p className="text-sm font-semibold text-foreground">
                       {formatCurrency(invoice.total)}
                     </p>
                   </div>
@@ -193,16 +193,16 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
 
                 {/* Items Purchased */}
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-900 mb-4">
+                  <h3 className="text-sm font-semibold text-foreground mb-4">
                     Productos Adquiridos
                   </h3>
                   <div className="space-y-4">
                     {invoice.items.map((item, index) => (
                       <div
                         key={index}
-                        className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg"
+                        className="flex items-center gap-4 p-3 bg-muted/40 rounded-lg"
                       >
-                        <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
                           {item.product?.image ? (
                             <Image
                               src={item.product.image}
@@ -212,20 +212,20 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
                               className="rounded-lg object-cover"
                             />
                           ) : (
-                            <span className="text-white text-lg font-bold">
+                            <span className="text-primary text-lg font-bold">
                               {item.name.charAt(0)}
                             </span>
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="font-medium text-gray-900 truncate">
+                          <p className="font-medium text-foreground truncate">
                             {item.product?.name || item.name}
                           </p>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-muted-foreground">
                             {item.plan?.name || 'Acceso completo'}
                           </p>
                         </div>
-                        <p className="font-semibold text-gray-900">
+                        <p className="font-semibold text-foreground">
                           {formatCurrency(item.price || 0)}
                         </p>
                       </div>
@@ -235,8 +235,8 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
               </div>
 
               {/* What's Next - Right Side */}
-              <div className="lg:col-span-2 bg-gray-50 p-6 lg:p-8 border-t lg:border-t-0 lg:border-l">
-                <h2 className="text-lg font-semibold text-gray-900 mb-6">
+              <div className="lg:col-span-2 bg-muted/40 p-6 lg:p-8 border-t lg:border-t-0 lg:border-l">
+                <h2 className="text-lg font-semibold text-foreground mb-6">
                   ¿Qué sigue?
                 </h2>
 
@@ -244,38 +244,38 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
                   {/* Go to Dashboard */}
                   <Link
                     href="/dashboard"
-                    className="flex items-center gap-4 p-4 bg-white rounded-xl border hover:border-primary hover:shadow-sm transition-all group"
+                    className="flex items-center gap-4 p-4 bg-card rounded-xl border hover:border-primary hover:shadow-sm transition-all group"
                   >
-                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <LayoutDashboard className="h-5 w-5 text-blue-600" />
+                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <LayoutDashboard className="h-5 w-5 text-primary" />
                     </div>
                     <div className="flex-1">
-                      <p className="font-medium text-gray-900">Ir a Mi Dashboard</p>
-                      <p className="text-sm text-gray-500">Comienza a aprender ahora</p>
+                      <p className="font-medium text-foreground">Ir a Mi Dashboard</p>
+                      <p className="text-sm text-muted-foreground">Comienza a aprender ahora</p>
                     </div>
-                    <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-primary transition-colors" />
+                    <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
                   </Link>
 
                   {/* View Invoice */}
                   <Link
                     href={`/billing/invoices/${invoice.id}`}
-                    className="w-full flex items-center gap-4 p-4 bg-white rounded-xl border hover:border-primary hover:shadow-sm transition-all group text-left cursor-pointer"
+                    className="w-full flex items-center gap-4 p-4 bg-card rounded-xl border hover:border-primary hover:shadow-sm transition-all group text-left cursor-pointer"
                   >
-                    <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <FileText className="h-5 w-5 text-purple-600" />
+                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <FileText className="h-5 w-5 text-primary" />
                     </div>
                     <div className="flex-1">
-                      <p className="font-medium text-gray-900">Ver Factura</p>
-                      <p className="text-sm text-gray-500">Descarga tu recibo</p>
+                      <p className="font-medium text-foreground">Ver Factura</p>
+                      <p className="text-sm text-muted-foreground">Descarga tu recibo</p>
                     </div>
-                    <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-primary transition-colors" />
+                    <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
                   </Link>
                 </div>
 
                 {/* Need Help Section */}
-                <div className="mt-8 p-4 bg-white rounded-xl border">
-                  <h3 className="font-medium text-gray-900 mb-2">¿Necesitas ayuda?</h3>
-                  <p className="text-sm text-gray-500 mb-3">
+                <div className="mt-8 p-4 bg-card rounded-xl border">
+                  <h3 className="font-medium text-foreground mb-2">¿Necesitas ayuda?</h3>
+                  <p className="text-sm text-muted-foreground mb-3">
                     Si tienes alguna pregunta sobre tu pedido, contacta a nuestro equipo de soporte.
                   </p>
                   <a

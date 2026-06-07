@@ -827,10 +827,10 @@ export default function CheckoutPage() {
 
   if (checkingAuth || loadingPlans || !stateRestored) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-muted/40 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary mb-4" />
-          <p className="text-slate-600">Cargando...</p>
+          <p className="text-muted-foreground">Cargando...</p>
         </div>
       </div>
     )
@@ -838,11 +838,11 @@ export default function CheckoutPage() {
 
   if (cartItems.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-muted/40 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Tu carrito está vacío</h1>
-          <p className="text-slate-600 mb-6">Agrega productos antes de continuar</p>
-          <Button onClick={() => router.push('/shop')}>Ir a la Tienda</Button>
+          <p className="text-muted-foreground mb-6">Agrega productos antes de continuar</p>
+          <Button onClick={() => router.push('/shop')} className="rounded-full">Ir a la Tienda</Button>
         </div>
       </div>
     )
@@ -863,9 +863,9 @@ export default function CheckoutPage() {
     <PayPalScriptProvider
       options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '', currency: 'USD' }}
     >
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-muted/40">
         {/* Header */}
-        <header className="sticky top-0 z-50 bg-white border-b border-slate-200">
+        <header className="sticky top-0 z-50 bg-card border-b border-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <Link href="/" className="flex items-center gap-3">
@@ -893,17 +893,17 @@ export default function CheckoutPage() {
               return (
                 <div key={step.key} className="flex items-center">
                   <div
-                    className={`flex items-center ${isActive ? 'text-primary' : isCompleted ? 'text-primary' : 'text-slate-400'}`}
+                    className={`flex items-center ${isActive ? 'text-primary' : isCompleted ? 'text-primary' : 'text-muted-foreground'}`}
                   >
                     <span
-                      className={`flex items-center justify-center w-6 h-6 rounded-full text-xs mr-2 ${isActive || isCompleted ? 'bg-primary text-white' : 'border border-slate-300 text-slate-400'}`}
+                      className={`flex items-center justify-center w-6 h-6 rounded-full text-xs mr-2 ${isActive || isCompleted ? 'bg-primary text-white' : 'border border-border text-muted-foreground'}`}
                     >
                       {isCompleted ? <Check className="h-3 w-3" /> : stepNum}
                     </span>
                     <span className={isActive ? 'font-semibold' : ''}>{step.label}</span>
                   </div>
                   {index < steps.length - 1 && (
-                    <ChevronRight className="h-4 w-4 text-slate-300 mx-2" />
+                    <ChevronRight className="h-4 w-4 text-muted-foreground mx-2" />
                   )}
                 </div>
               )
@@ -917,10 +917,10 @@ export default function CheckoutPage() {
               {currentStep === 'schedule' && (
                 <div className="space-y-6">
                   <div>
-                    <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
+                    <h1 className="text-2xl md:text-3xl font-bold text-foreground">
                       Programa tus Sesiones
                     </h1>
-                    <p className="text-slate-600 mt-2">
+                    <p className="text-muted-foreground mt-2">
                       Elige horarios convenientes para tus clases en vivo.
                     </p>
                   </div>
@@ -931,10 +931,10 @@ export default function CheckoutPage() {
                     return (
                       <div
                         key={itemKey}
-                        className="bg-white rounded-xl shadow-sm border border-slate-200 p-6"
+                        className="bg-card rounded-xl shadow-sm border border-border p-6"
                       >
                         <div className="flex items-center gap-4 mb-6">
-                          <div className="w-16 h-16 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
+                          <div className="w-16 h-16 rounded-lg bg-muted overflow-hidden flex-shrink-0">
                             {item.product.image ? (
                               <Image
                                 src={item.product.image}
@@ -950,8 +950,8 @@ export default function CheckoutPage() {
                             )}
                           </div>
                           <div>
-                            <h3 className="font-bold text-slate-900">{item.product.title}</h3>
-                            <p className="text-sm text-slate-500">{item.plan.name}</p>
+                            <h3 className="font-bold text-foreground">{item.product.title}</h3>
+                            <p className="text-sm text-muted-foreground">{item.plan.name}</p>
                           </div>
                         </div>
                         <CheckoutScheduleSelector
@@ -966,11 +966,11 @@ export default function CheckoutPage() {
                       </div>
                     )
                   })}
-                  <div className="bg-blue-50 rounded-lg p-4 flex items-start gap-3 text-sm text-blue-800">
-                    <Info className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <div className="bg-primary/10 rounded-lg p-4 flex items-start gap-3 text-sm text-foreground">
+                    <Info className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                     <p>
                       ¿No encuentras un horario que te funcione?{' '}
-                      <Link href="/contact" className="underline font-bold hover:text-blue-600">
+                      <Link href="/contact" className="underline font-bold hover:text-primary">
                         Contacta al profesor
                       </Link>{' '}
                       directamente.
@@ -982,11 +982,11 @@ export default function CheckoutPage() {
               {/* Review Step */}
               {currentStep === 'review' && (
                 <>
-                  <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8">
+                  <section className="bg-card rounded-xl shadow-sm border border-border p-6 sm:p-8">
                     <div className="flex justify-between items-center mb-6">
-                      <h3 className="text-lg font-bold text-slate-900">Información del Cliente</h3>
+                      <h3 className="text-lg font-bold text-foreground">Información del Cliente</h3>
                       {!session?.user && (
-                        <p className="text-sm text-slate-500">
+                        <p className="text-sm text-muted-foreground">
                           ¿Ya tienes cuenta?{' '}
                           <Link href="/auth/signin" className="text-primary hover:underline">
                             Inicia sesión
@@ -998,7 +998,7 @@ export default function CheckoutPage() {
                       <div className="md:col-span-2">
                         <Label
                           htmlFor="email"
-                          className="text-sm font-medium text-slate-700 mb-1 block"
+                          className="text-sm font-medium text-foreground mb-1 block"
                         >
                           Correo Electrónico *
                         </Label>
@@ -1013,7 +1013,7 @@ export default function CheckoutPage() {
                       <div>
                         <Label
                           htmlFor="firstName"
-                          className="text-sm font-medium text-slate-700 mb-1 block"
+                          className="text-sm font-medium text-foreground mb-1 block"
                         >
                           Nombre *
                         </Label>
@@ -1027,7 +1027,7 @@ export default function CheckoutPage() {
                       <div>
                         <Label
                           htmlFor="lastName"
-                          className="text-sm font-medium text-slate-700 mb-1 block"
+                          className="text-sm font-medium text-foreground mb-1 block"
                         >
                           Apellidos
                         </Label>
@@ -1041,7 +1041,7 @@ export default function CheckoutPage() {
                       <div className="md:col-span-2">
                         <Label
                           htmlFor="phone"
-                          className="text-sm font-medium text-slate-700 mb-1 block"
+                          className="text-sm font-medium text-foreground mb-1 block"
                         >
                           Teléfono *
                         </Label>
@@ -1055,15 +1055,15 @@ export default function CheckoutPage() {
                     </div>
                   </section>
 
-                  <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8">
-                    <h3 className="text-lg font-bold text-slate-900 mb-6">
+                  <section className="bg-card rounded-xl shadow-sm border border-border p-6 sm:p-8">
+                    <h3 className="text-lg font-bold text-foreground mb-6">
                       Dirección de Facturación
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="md:col-span-2">
                         <Label
                           htmlFor="address"
-                          className="text-sm font-medium text-slate-700 mb-1 block"
+                          className="text-sm font-medium text-foreground mb-1 block"
                         >
                           Dirección
                         </Label>
@@ -1077,7 +1077,7 @@ export default function CheckoutPage() {
                       <div>
                         <Label
                           htmlFor="city"
-                          className="text-sm font-medium text-slate-700 mb-1 block"
+                          className="text-sm font-medium text-foreground mb-1 block"
                         >
                           Ciudad
                         </Label>
@@ -1091,7 +1091,7 @@ export default function CheckoutPage() {
                       <div>
                         <Label
                           htmlFor="zipCode"
-                          className="text-sm font-medium text-slate-700 mb-1 block"
+                          className="text-sm font-medium text-foreground mb-1 block"
                         >
                           Código Postal
                         </Label>
@@ -1105,7 +1105,7 @@ export default function CheckoutPage() {
                       <div className="md:col-span-2">
                         <Label
                           htmlFor="country"
-                          className="text-sm font-medium text-slate-700 mb-1 block"
+                          className="text-sm font-medium text-foreground mb-1 block"
                         >
                           País
                         </Label>
@@ -1132,20 +1132,20 @@ export default function CheckoutPage() {
                         checked={saveInfo}
                         onCheckedChange={(checked) => setSaveInfo(checked === true)}
                       />
-                      <Label htmlFor="saveInfo" className="text-sm text-slate-700 cursor-pointer">
+                      <Label htmlFor="saveInfo" className="text-sm text-foreground cursor-pointer">
                         Guardar esta información para la próxima vez
                       </Label>
                     </div>
                   </section>
 
-                  <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8">
-                    <h3 className="text-lg font-bold text-slate-900 mb-6">Método de Pago</h3>
-                    <p className="text-slate-500 text-sm mb-4">
+                  <section className="bg-card rounded-xl shadow-sm border border-border p-6 sm:p-8">
+                    <h3 className="text-lg font-bold text-foreground mb-6">Método de Pago</h3>
+                    <p className="text-muted-foreground text-sm mb-4">
                       Elige cómo deseas pagar. Ingresarás los detalles en el siguiente paso.
                     </p>
                     <div className="space-y-3">
                       <label
-                        className={`relative flex cursor-pointer rounded-lg border p-4 transition-all ${paymentMethod === 'creditCard' ? 'border-primary ring-1 ring-primary bg-white' : 'border-slate-300 bg-white hover:border-slate-400'}`}
+                        className={`relative flex cursor-pointer rounded-lg border p-4 transition-all ${paymentMethod === 'creditCard' ? 'border-primary ring-1 ring-primary bg-card' : 'border-border bg-card hover:border-input'}`}
                       >
                         <input
                           type="radio"
@@ -1157,20 +1157,20 @@ export default function CheckoutPage() {
                         />
                         <span className="flex flex-1">
                           <span className="flex flex-col">
-                            <span className="block text-sm font-medium text-slate-900">
+                            <span className="block text-sm font-medium text-foreground">
                               Tarjeta de Crédito o Débito
                             </span>
-                            <span className="mt-1 text-sm text-slate-500">
+                            <span className="mt-1 text-sm text-muted-foreground">
                               Transferencia segura usando tu cuenta bancaria.
                             </span>
                           </span>
                         </span>
                         <CreditCard
-                          className={`h-6 w-6 ${paymentMethod === 'creditCard' ? 'text-primary' : 'text-slate-400'}`}
+                          className={`h-6 w-6 ${paymentMethod === 'creditCard' ? 'text-primary' : 'text-muted-foreground'}`}
                         />
                       </label>
                       <label
-                        className={`relative flex cursor-pointer rounded-lg border p-4 transition-all ${paymentMethod === 'paypal' ? 'border-primary ring-1 ring-primary bg-white' : 'border-slate-300 bg-white hover:border-slate-400'}`}
+                        className={`relative flex cursor-pointer rounded-lg border p-4 transition-all ${paymentMethod === 'paypal' ? 'border-primary ring-1 ring-primary bg-card' : 'border-border bg-card hover:border-input'}`}
                       >
                         <input
                           type="radio"
@@ -1182,14 +1182,14 @@ export default function CheckoutPage() {
                         />
                         <span className="flex flex-1">
                           <span className="flex flex-col">
-                            <span className="block text-sm font-medium text-slate-900">PayPal</span>
-                            <span className="mt-1 text-sm text-slate-500">
+                            <span className="block text-sm font-medium text-foreground">PayPal</span>
+                            <span className="mt-1 text-sm text-muted-foreground">
                               Serás redirigido al sitio web de PayPal.
                             </span>
                           </span>
                         </span>
                         <Wallet
-                          className={`h-6 w-6 ${paymentMethod === 'paypal' ? 'text-primary' : 'text-slate-400'}`}
+                          className={`h-6 w-6 ${paymentMethod === 'paypal' ? 'text-primary' : 'text-muted-foreground'}`}
                         />
                       </label>
                     </div>
@@ -1199,8 +1199,8 @@ export default function CheckoutPage() {
 
               {/* Payment Step */}
               {currentStep === 'payment' && (
-                <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8">
-                  <h3 className="text-lg font-bold text-slate-900 mb-6">Detalles del Pago</h3>
+                <section className="bg-card rounded-xl shadow-sm border border-border p-6 sm:p-8">
+                  <h3 className="text-lg font-bold text-foreground mb-6">Detalles del Pago</h3>
                   <PaymentMethodForm
                     paymentMethod={paymentMethod}
                     onSubmit={handlePaymentSubmit}
@@ -1248,7 +1248,7 @@ export default function CheckoutPage() {
                   <Button
                     onClick={handleContinue}
                     size="lg"
-                    className="bg-primary hover:bg-primary/90"
+                    className="rounded-full bg-primary hover:bg-primary/90"
                   >
                     {currentStep === 'review' ? 'Continuar al Pago' : 'Continuar'}
                     <ChevronRight className="h-4 w-4 ml-2" />
@@ -1260,9 +1260,9 @@ export default function CheckoutPage() {
             {/* Right Column - Order Summary */}
             <div className="lg:col-span-5 xl:col-span-4">
               <div className="sticky top-24 space-y-6">
-                <div className="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
-                  <div className="p-6 border-b border-slate-100 bg-slate-50/50">
-                    <h3 className="text-lg font-bold text-slate-900">Resumen del Pedido</h3>
+                <div className="bg-card rounded-xl shadow-lg border border-border overflow-hidden">
+                  <div className="p-6 border-b border-border bg-muted/30">
+                    <h3 className="text-lg font-bold text-foreground">Resumen del Pedido</h3>
                   </div>
                   <div className="p-6 space-y-4 max-h-[400px] overflow-y-auto">
                     {cartItems.map((item) => {
@@ -1271,7 +1271,7 @@ export default function CheckoutPage() {
                       const price = proration?.proratedPrice ?? item.plan.price
                       return (
                         <div key={itemKey} className="flex gap-4">
-                          <div className="w-16 h-16 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
+                          <div className="w-16 h-16 rounded-lg bg-muted overflow-hidden flex-shrink-0">
                             {item.product.image ? (
                               <Image
                                 src={item.product.image}
@@ -1288,20 +1288,20 @@ export default function CheckoutPage() {
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex justify-between items-start gap-2">
-                              <p className="text-sm font-semibold text-slate-900 line-clamp-2">
+                              <p className="text-sm font-semibold text-foreground line-clamp-2">
                                 {item.product.title}
                               </p>
-                              <p className="text-sm font-bold text-slate-900">
+                              <p className="text-sm font-bold text-foreground">
                                 ${price.toFixed(2)}
                               </p>
                             </div>
-                            <p className="text-xs text-slate-500 mt-1">{item.plan.name}</p>
+                            <p className="text-xs text-muted-foreground mt-1">{item.plan.name}</p>
                             <div className="mt-2 flex items-center justify-end">
                               <button
                                 onClick={() =>
                                   removeFromCart(item.product.id, item.plan.id, item.language)
                                 }
-                                className="text-xs text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1"
+                                className="text-xs text-muted-foreground hover:text-red-500 transition-colors flex items-center gap-1"
                               >
                                 <Trash2 className="h-4 w-4" />
                                 <span>Eliminar</span>
@@ -1316,8 +1316,8 @@ export default function CheckoutPage() {
                   {/* Schedule Summary */}
                   {Object.keys(scheduleSelections).length > 0 && (
                     <div className="px-6 pb-4">
-                      <div className="bg-slate-50 rounded-lg p-3 border border-slate-100">
-                        <div className="text-xs font-bold text-slate-400 uppercase mb-2">
+                      <div className="bg-muted/40 rounded-lg p-3 border border-border">
+                        <div className="text-xs font-bold text-muted-foreground uppercase mb-2">
                           Horarios Seleccionados
                         </div>
                         {Object.entries(scheduleSelections).map(([planId, selection]) =>
@@ -1327,13 +1327,13 @@ export default function CheckoutPage() {
                             return (
                               <div
                                 key={`${planId}-${idx}`}
-                                className="flex justify-between items-center bg-white p-2 rounded border border-slate-200 mb-2 last:mb-0"
+                                className="flex justify-between items-center bg-card p-2 rounded border border-border mb-2 last:mb-0"
                               >
                                 <div className="flex flex-col">
-                                  <span className="text-xs font-bold text-slate-700">
+                                  <span className="text-xs font-bold text-foreground">
                                     {DAY_NAMES[localSlot.dayOfWeek]}
                                   </span>
-                                  <span className="text-xs text-slate-500">
+                                  <span className="text-xs text-muted-foreground">
                                     {localSlot.startTime} - {localSlot.endTime}
                                   </span>
                                 </div>
@@ -1346,7 +1346,7 @@ export default function CheckoutPage() {
                   )}
 
                   {/* Coupon Input */}
-                  <div className="px-6 py-4 border-t border-slate-100">
+                  <div className="px-6 py-4 border-t border-border">
                     <CouponInput
                       planIds={cartItems.map((item) => item.plan.id)}
                       subtotal={subtotal}
@@ -1354,10 +1354,10 @@ export default function CheckoutPage() {
                   </div>
 
                   {/* Cost Breakdown */}
-                  <div className="bg-slate-50 p-6 border-t border-slate-200 space-y-3">
-                    <div className="flex justify-between text-sm text-slate-600">
+                  <div className="bg-muted/40 p-6 border-t border-border space-y-3">
+                    <div className="flex justify-between text-sm text-muted-foreground">
                       <span>Subtotal</span>
-                      <span className="font-medium text-slate-900">${subtotal.toFixed(2)}</span>
+                      <span className="font-medium text-foreground">${subtotal.toFixed(2)}</span>
                     </div>
                     {discount > 0 && (
                       <div className="flex justify-between text-sm text-green-600">
@@ -1366,12 +1366,12 @@ export default function CheckoutPage() {
                       </div>
                     )}
                     {taxes > 0 && (
-                      <div className="flex justify-between text-sm text-slate-600">
+                      <div className="flex justify-between text-sm text-muted-foreground">
                         <span>Impuestos</span>
-                        <span className="font-medium text-slate-900">${taxes.toFixed(2)}</span>
+                        <span className="font-medium text-foreground">${taxes.toFixed(2)}</span>
                       </div>
                     )}
-                    <div className="flex justify-between text-lg font-bold text-slate-900 pt-3 border-t border-slate-200">
+                    <div className="flex justify-between text-lg font-bold text-foreground pt-3 border-t border-border">
                       <span>Total</span>
                       <span>${total.toFixed(2)}</span>
                     </div>
@@ -1379,11 +1379,11 @@ export default function CheckoutPage() {
                 </div>
 
                 {/* Trust Badges */}
-                <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
-                  <div className="flex items-center gap-3 text-sm text-slate-600">
+                <div className="bg-card rounded-xl shadow-sm border border-border p-4">
+                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
                     <Lock className="h-5 w-5 text-green-600" />
                     <div>
-                      <p className="font-medium text-slate-900">Pago 100% Seguro</p>
+                      <p className="font-medium text-foreground">Pago 100% Seguro</p>
                       <p className="text-xs">Tus datos están protegidos con encriptación SSL</p>
                     </div>
                   </div>

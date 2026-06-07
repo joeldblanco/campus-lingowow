@@ -67,7 +67,7 @@ export default function VerifyFormPage() {
   // Si ya hay un intento verificado, mostrar los resultados
   if (attempt) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="min-h-screen bg-muted/30 p-4">
         <div className="max-w-4xl mx-auto">
           <div className="mb-6 text-center">
             <Button 
@@ -86,17 +86,17 @@ export default function VerifyFormPage() {
 
   // Mostrar formulario de verificación
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-muted/30 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-            <Search className="w-8 h-8 text-blue-600" />
+          <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+            <Search className="w-8 h-8 text-primary" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Verificación de Resultados
+          <h1 className="font-lexend text-3xl font-bold text-foreground mb-2">
+            Verificación de resultados
           </h1>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Ingresa el código de verificación para validar los resultados del examen
           </p>
         </div>
@@ -121,7 +121,7 @@ export default function VerifyFormPage() {
                   className="font-mono text-center tracking-wider"
                   disabled={isLoading}
                 />
-                <p className="text-xs text-gray-500 text-center">
+                <p className="text-xs text-muted-foreground text-center">
                   Formato: LW-EXAM- seguido de 6 caracteres
                 </p>
               </div>
@@ -155,7 +155,7 @@ export default function VerifyFormPage() {
         </Card>
 
         {/* Help Section */}
-        <div className="mt-8 text-center text-sm text-gray-600">
+        <div className="mt-8 text-center text-sm text-muted-foreground">
           <p className="mb-2">
             ¿No tienes un código de verificación?
           </p>

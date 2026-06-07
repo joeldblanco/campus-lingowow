@@ -15,7 +15,7 @@ interface VerificationClientProps {
 export default function VerificationClient({ attempt, verificationCode, error }: VerificationClientProps) {
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-muted/30 flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <div className="mx-auto w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-4">
@@ -24,8 +24,8 @@ export default function VerificationClient({ attempt, verificationCode, error }:
             <CardTitle className="text-red-800">Verificación Fallida</CardTitle>
           </CardHeader>
           <CardContent className="text-center">
-            <p className="text-gray-600 mb-4">{error}</p>
-            <p className="text-sm text-gray-500">
+            <p className="text-muted-foreground mb-4">{error}</p>
+            <p className="text-sm text-muted-foreground">
               Por favor, verifica el código e intenta nuevamente.
             </p>
           </CardContent>
@@ -36,7 +36,7 @@ export default function VerificationClient({ attempt, verificationCode, error }:
 
   if (!attempt) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-muted/30 flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <div className="mx-auto w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
@@ -45,8 +45,8 @@ export default function VerificationClient({ attempt, verificationCode, error }:
             <CardTitle className="text-yellow-800">Datos No Disponibles</CardTitle>
           </CardHeader>
           <CardContent className="text-center">
-            <p className="text-gray-600 mb-4">No se encontraron datos del intento de examen</p>
-            <p className="text-sm text-gray-500">
+            <p className="text-muted-foreground mb-4">No se encontraron datos del intento de examen</p>
+            <p className="text-sm text-muted-foreground">
               Por favor, contacta al administrador si el problema persiste.
             </p>
           </CardContent>
@@ -62,17 +62,17 @@ export default function VerificationClient({ attempt, verificationCode, error }:
   const passed = attempt?.score !== null ? attempt.score >= 70 : false
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-muted/30 flex items-center justify-center p-4">
       <div className="w-full max-w-2xl space-y-6">
         {/* Header */}
         <div className="text-center">
           <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
             <CheckCircle className="w-8 h-8 text-green-600" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Resultados Verificados ✓
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            Resultados verificados
           </h1>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Los resultados de este examen han sido validados exitosamente
           </p>
         </div>
@@ -81,8 +81,8 @@ export default function VerificationClient({ attempt, verificationCode, error }:
         <Card>
           <CardContent className="pt-6">
             <div className="text-center">
-              <p className="text-sm text-gray-500 mb-2">Código de Verificación</p>
-              <p className="text-xl font-mono font-bold text-blue-600 tracking-wider">
+              <p className="text-sm text-muted-foreground mb-2">Código de Verificación</p>
+              <p className="text-xl font-mono font-bold text-primary tracking-wider">
                 {verificationCode}
               </p>
             </div>
@@ -100,14 +100,14 @@ export default function VerificationClient({ attempt, verificationCode, error }:
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-gray-500">Nombre</p>
+                <p className="text-sm text-muted-foreground">Nombre</p>
                 <p className="font-semibold">
                   {formatFullName(attempt?.user?.name, attempt?.user?.lastName) || 'N/A'}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Email</p>
-                <p className="font-medium text-gray-700">{attempt?.user?.email || 'N/A'}</p>
+                <p className="text-sm text-muted-foreground">Email</p>
+                <p className="font-medium text-foreground">{attempt?.user?.email || 'N/A'}</p>
               </div>
             </div>
           </CardContent>
@@ -124,24 +124,24 @@ export default function VerificationClient({ attempt, verificationCode, error }:
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-gray-500">Examen</p>
+                <p className="text-sm text-muted-foreground">Examen</p>
                 <p className="font-semibold">{attempt?.exam?.title || 'N/A'}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Intento</p>
+                <p className="text-sm text-muted-foreground">Intento</p>
                 <p className="font-medium">#{attempt?.attemptNumber || 'N/A'}</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-gray-500">Fecha</p>
+                <p className="text-sm text-muted-foreground">Fecha</p>
                 <p className="font-medium flex items-center gap-1">
                   <Calendar className="w-4 h-4" />
                   {attempt?.submittedAt ? new Date(attempt.submittedAt).toLocaleDateString('es-ES') : 'N/A'}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Estado</p>
+                <p className="text-sm text-muted-foreground">Estado</p>
                 <Badge variant={passed ? "default" : "secondary"}>
                   {passed ? "Aprobado" : "Reprobado"}
                 </Badge>
@@ -158,23 +158,23 @@ export default function VerificationClient({ attempt, verificationCode, error }:
           <CardContent className="space-y-4">
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
-                <p className="text-2xl font-bold text-blue-600">{scorePercentage}%</p>
-                <p className="text-sm text-gray-500">Puntuación</p>
+                <p className="text-2xl font-bold text-primary">{scorePercentage}%</p>
+                <p className="text-sm text-muted-foreground">Puntuación</p>
               </div>
               <div>
                 <p className="text-2xl font-bold text-green-600">{attempt?.totalPoints || 0}</p>
-                <p className="text-sm text-gray-500">Puntos Obtenidos</p>
+                <p className="text-sm text-muted-foreground">Puntos Obtenidos</p>
               </div>
               <div>
-                <p className="text-2xl font-bold text-gray-600">{attempt?.maxPoints || 0}</p>
-                <p className="text-sm text-gray-500">Puntos Máximos</p>
+                <p className="text-2xl font-bold text-muted-foreground">{attempt?.maxPoints || 0}</p>
+                <p className="text-sm text-muted-foreground">Puntos Máximos</p>
               </div>
             </div>
             
             {/* Progress Bar */}
-            <div className="w-full bg-gray-200 rounded-full h-3">
-              <div 
-                className="bg-blue-600 h-3 rounded-full transition-all duration-500"
+            <div className="w-full bg-muted rounded-full h-3">
+              <div
+                className="bg-primary h-3 rounded-full transition-all duration-500"
                 style={{ width: `${scorePercentage}%` }}
               />
             </div>
@@ -182,7 +182,7 @@ export default function VerificationClient({ attempt, verificationCode, error }:
         </Card>
 
         {/* Footer */}
-        <div className="text-center text-sm text-gray-500">
+        <div className="text-center text-sm text-muted-foreground">
           <p>Este certificado es auténtico y ha sido verificado digitalmente</p>
           <p className="mt-1">Generado el {new Date().toLocaleDateString('es-ES')} a las {new Date().toLocaleTimeString('es-ES')}</p>
         </div>

@@ -12,7 +12,7 @@ import { SearchFilters } from '@/components/shop/search-filters'
 import { Button } from '@/components/ui/button'
 import { useFilterCourses } from '@/hooks/use-filter-courses'
 import { useShopStore } from '@/stores/useShopStore'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, PackageOpen } from 'lucide-react'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 
@@ -43,7 +43,7 @@ export default function ShopPage() {
     .slice(0, 3)
 
   return (
-    <div className="min-h-screen bg-gray-50/50">
+    <div className="min-h-screen bg-background">
       <Header />
 
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -60,8 +60,8 @@ export default function ShopPage() {
         {/* Content Section */}
         <section className="mb-16">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
-              Paquetes Destacados
+            <h2 className="font-lexend text-3xl font-extrabold tracking-tight text-foreground">
+              Paquetes destacados
             </h2>
             {/* <Button
               variant="link"
@@ -74,7 +74,7 @@ export default function ShopPage() {
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="h-[500px] bg-gray-200 animate-pulse rounded-3xl" />
+                <div key={i} className="h-[500px] animate-pulse rounded-3xl bg-muted" />
               ))}
             </div>
           ) : filteredCourses.length > 0 ? (
@@ -98,21 +98,18 @@ export default function ShopPage() {
               {/* Show More Button */}
               {totalResults > filteredCourses.length && (
                 <div className="flex justify-center mt-12">
-                  <Button
-                    variant="outline"
-                    className="px-8 py-3 rounded-full border-gray-300 hover:bg-gray-50 text-gray-600 font-semibold"
-                  >
-                    Mostrar Más Productos
+                  <Button variant="outline" className="rounded-full px-8 py-3 font-semibold">
+                    Mostrar más productos
                     <ChevronDown className="ml-2 h-4 w-4" />
                   </Button>
                 </div>
               )}
             </>
           ) : (
-            <div className="text-center py-24 bg-white rounded-3xl border border-gray-100 shadow-sm">
-              <div className="text-gray-200 text-7xl mb-6">📦</div>
-              <h3 className="text-gray-900 text-xl font-bold mb-2">No encontramos resultados</h3>
-              <p className="text-gray-500 text-lg mb-8 max-w-md mx-auto">
+            <div className="rounded-3xl border border-border bg-card py-24 text-center shadow-sm">
+              <PackageOpen className="mx-auto mb-6 h-16 w-16 text-muted-foreground/40" />
+              <h3 className="mb-2 font-lexend text-xl font-bold text-foreground">No encontramos resultados</h3>
+              <p className="mx-auto mb-8 max-w-md text-lg text-muted-foreground">
                 Intenta ajustar tus filtros o búsqueda para encontrar lo que necesitas.
               </p>
               <Button variant="outline" onClick={clearFilters} className="rounded-full px-8">

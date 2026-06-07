@@ -19,14 +19,14 @@ export default function FAQPage() {
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="w-full py-12 md:py-24 bg-gradient-to-r from-blue-50 to-indigo-50">
-          <div className="container px-4 md:px-6">
+        <section className="border-b border-border">
+          <div className="container mx-auto px-4 py-16 md:px-6 md:py-24">
             <div className="flex flex-col items-center text-center gap-4">
-              <Badge variant="outline" className="w-fit">
-                Centro de Ayuda
+              <Badge variant="outline" className="rounded-full px-3 py-1 font-normal">
+                Centro de ayuda
               </Badge>
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-                Preguntas Frecuentes
+              <h1 className="font-lexend text-4xl md:text-5xl font-bold tracking-tight">
+                Preguntas frecuentes
               </h1>
               <p className="text-muted-foreground max-w-[700px]">
                 Encuentra respuestas a las preguntas más comunes sobre nuestros cursos, 
@@ -42,7 +42,7 @@ export default function FAQPage() {
             <div className="max-w-3xl mx-auto space-y-8">
               {/* General */}
               <div>
-                <h2 className="text-2xl font-bold mb-4">General</h2>
+                <h2 className="font-lexend text-2xl font-bold mb-4">General</h2>
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="item-1">
                     <AccordionTrigger>¿Qué es Lingowow?</AccordionTrigger>
@@ -75,7 +75,7 @@ export default function FAQPage() {
 
               {/* Metodología */}
               <div>
-                <h2 className="text-2xl font-bold mb-4">Metodología</h2>
+                <h2 className="font-lexend text-2xl font-bold mb-4">Metodología</h2>
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="item-4">
                     <AccordionTrigger>¿Cuál es el método de enseñanza?</AccordionTrigger>
@@ -110,7 +110,7 @@ export default function FAQPage() {
 
               {/* Profesores */}
               <div>
-                <h2 className="text-2xl font-bold mb-4">Profesores</h2>
+                <h2 className="font-lexend text-2xl font-bold mb-4">Profesores</h2>
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="item-7">
                     <AccordionTrigger>¿Qué certificaciones tienen los profesores?</AccordionTrigger>
@@ -135,7 +135,7 @@ export default function FAQPage() {
 
               {/* Precios y Planes */}
               <div>
-                <h2 className="text-2xl font-bold mb-4">Precios y Planes</h2>
+                <h2 className="font-lexend text-2xl font-bold mb-4">Precios y Planes</h2>
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="item-9">
                     <AccordionTrigger>¿Cuánto cuestan los cursos?</AccordionTrigger>
@@ -180,7 +180,7 @@ export default function FAQPage() {
 
               {/* Clases y Horarios */}
               <div>
-                <h2 className="text-2xl font-bold mb-4">Clases y Horarios</h2>
+                <h2 className="font-lexend text-2xl font-bold mb-4">Clases y Horarios</h2>
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="item-13">
                     <AccordionTrigger>¿Cuánto dura cada clase?</AccordionTrigger>
@@ -222,7 +222,7 @@ export default function FAQPage() {
 
               {/* Certificaciones */}
               <div>
-                <h2 className="text-2xl font-bold mb-4">Certificaciones</h2>
+                <h2 className="font-lexend text-2xl font-bold mb-4">Certificaciones</h2>
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="item-17">
                     <AccordionTrigger>¿Ofrecen certificaciones oficiales?</AccordionTrigger>
@@ -247,7 +247,7 @@ export default function FAQPage() {
 
               {/* Técnico */}
               <div>
-                <h2 className="text-2xl font-bold mb-4">Aspectos Técnicos</h2>
+                <h2 className="font-lexend text-2xl font-bold mb-4">Aspectos Técnicos</h2>
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="item-19">
                     <AccordionTrigger>¿Qué necesito para tomar las clases?</AccordionTrigger>
@@ -278,18 +278,18 @@ export default function FAQPage() {
         </section>
 
         {/* CTA */}
-        <section className="w-full py-12 md:py-16 bg-slate-50">
+        <section className="w-full border-t border-border bg-secondary/50 py-12 md:py-16">
           <div className="container px-4 md:px-6">
             <Card className="max-w-2xl mx-auto">
               <CardContent className="pt-6">
                 <div className="text-center space-y-4">
-                  <h2 className="text-2xl font-bold">¿No encontraste tu respuesta?</h2>
+                  <h2 className="font-lexend text-2xl font-bold">¿No encontraste tu respuesta?</h2>
                   <p className="text-muted-foreground">
-                    Nuestro equipo está listo para ayudarte. Contáctanos y te responderemos 
+                    Nuestro equipo está listo para ayudarte. Contáctanos y te responderemos
                     en menos de 24 horas.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Link href="/contacto">
+                    <Link href="/contact">
                       <Button size="lg">Contactar</Button>
                     </Link>
                     <Link href="/demo">

@@ -69,13 +69,13 @@ export default function ContactoPage() {
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="w-full py-12 md:py-24 bg-gradient-to-r from-blue-50 to-indigo-50">
-          <div className="container px-4 md:px-6">
+        <section className="border-b border-border">
+          <div className="container mx-auto px-4 py-16 md:px-6 md:py-24">
             <div className="flex flex-col items-center text-center gap-4">
-              <Badge variant="outline" className="w-fit">
-                Estamos Aquí para Ayudarte
+              <Badge variant="outline" className="rounded-full px-3 py-1 font-normal">
+                Estamos aquí para ayudarte
               </Badge>
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+              <h1 className="font-lexend text-4xl md:text-5xl font-bold tracking-tight">
                 Contáctanos
               </h1>
               <p className="text-muted-foreground max-w-[700px]">
@@ -93,7 +93,7 @@ export default function ContactoPage() {
               {/* Contact Information */}
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-2xl font-bold mb-4">Información de Contacto</h2>
+                  <h2 className="font-lexend text-2xl font-bold mb-4">Información de Contacto</h2>
                   <p className="text-muted-foreground mb-6">
                     Puedes contactarnos a través de cualquiera de estos medios. 
                     Respondemos en menos de 24 horas.
@@ -282,10 +282,10 @@ export default function ContactoPage() {
         </section>
 
         {/* FAQ Quick Links */}
-        <section className="w-full py-12 md:py-16 bg-slate-50">
+        <section className="w-full border-t border-border bg-secondary/50 py-12 md:py-16">
           <div className="container px-4 md:px-6">
             <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold mb-2">¿Tienes Preguntas Frecuentes?</h2>
+              <h2 className="font-lexend text-2xl font-bold mb-2">¿Tienes preguntas frecuentes?</h2>
               <p className="text-muted-foreground">
                 Tal vez encuentres la respuesta que buscas en nuestra sección de FAQ
               </p>

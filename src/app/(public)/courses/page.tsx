@@ -27,19 +27,22 @@ export default async function CursosPage() {
   const courses = toPublicCourseCards(publishedCourses)
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-background">
       <Header />
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="w-full py-12 md:py-24 bg-gradient-to-r from-blue-50 to-indigo-50">
-          <div className="container px-4 md:px-6">
+        <section className="border-b border-border">
+          <div className="container mx-auto px-4 py-16 md:px-6 md:py-24">
             <div className="flex flex-col items-center text-center gap-4">
-              <Badge variant="outline" className="w-fit">
-                Cursos Disponibles
+              <Badge
+                variant="outline"
+                className="rounded-full border-teal/40 bg-teal-soft/60 px-3 py-1 font-medium text-teal-ink"
+              >
+                Cursos disponibles
               </Badge>
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-                Nuestros Cursos de Idiomas
+              <h1 className="font-lexend text-4xl md:text-5xl font-bold tracking-tight">
+                Nuestros cursos de idiomas
               </h1>
               <p className="text-muted-foreground max-w-[700px]">
                 Descubre nuestra oferta de cursos diseñados para distintos niveles.
@@ -61,15 +64,15 @@ export default async function CursosPage() {
                   y diseñaremos un programa a tu medida.
                 </p>
                 <Link href="/contact">
-                  <Button size="lg">Contactar</Button>
+                  <Button size="lg" className="rounded-full">Contactar</Button>
                 </Link>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {courses.map((course) => (
-                  <Card key={course.id} className="flex flex-col border-2 border-gray-200 shadow-lg hover:shadow-xl transition-shadow bg-white">
+                  <Card key={course.id} className="flex flex-col rounded-2xl transition-transform duration-200 hover:-translate-y-1 hover:shadow-md">
                     <CardHeader>
-                      <CardTitle className="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors">{course.title}</CardTitle>
+                      <CardTitle className="font-lexend text-xl font-bold">{course.title}</CardTitle>
                       {course.level && (
                         <div className="mt-2">
                           <Badge>{course.level}</Badge>
@@ -95,12 +98,9 @@ export default async function CursosPage() {
                     </CardContent>
                     <CardFooter>
                       <Link href="/shop" className="w-full">
-                        <Button
-                          size="lg"
-                          className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold shadow-lg hover:shadow-xl transform transition hover:scale-105"
-                        >
+                        <Button size="lg" className="w-full rounded-full font-semibold">
                           <ShoppingCart className="h-4 w-4 mr-2" />
-                          Ver Planes
+                          Ver planes
                         </Button>
                       </Link>
                     </CardFooter>
@@ -112,17 +112,17 @@ export default async function CursosPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="w-full py-12 md:py-16 bg-slate-50">
+        <section className="w-full border-t border-border bg-secondary/50 py-16 md:py-20">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center text-center gap-4">
-              <h2 className="text-3xl font-bold tracking-tight">
+              <h2 className="font-lexend text-3xl font-bold tracking-tight">
                 ¿No encuentras el curso que buscas?
               </h2>
               <p className="text-muted-foreground max-w-[600px]">
                 Contáctanos y diseñaremos un programa personalizado según tus necesidades específicas.
               </p>
               <Link href="/contact">
-                <Button size="lg">Contactar</Button>
+                <Button size="lg" className="rounded-full">Contactar</Button>
               </Link>
             </div>
           </div>
