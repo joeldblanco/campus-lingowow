@@ -61,7 +61,7 @@ interface Recording {
         language: string
         level: string
       }
-    }
+    } | null
   }
 }
 
@@ -185,7 +185,7 @@ export function RecordingsLibrary() {
     if (!searchQuery) return true
     const query = searchQuery.toLowerCase()
     return (
-      recording.booking.enrollment.course.title.toLowerCase().includes(query) ||
+      (recording.booking.enrollment?.course.title.toLowerCase().includes(query) ?? false) ||
       recording.booking.teacher.name.toLowerCase().includes(query) ||
       (recording.booking.teacher.lastName?.toLowerCase().includes(query) ?? false)
     )

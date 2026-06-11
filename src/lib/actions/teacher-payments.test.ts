@@ -247,6 +247,75 @@ describe('getTeacherPaymentsReport', () => {
     })
   })
 
+  it('skips trial classes (null enrollment) instead of crashing on the missing course rate', async () => {
+    vi.mocked(db.classBooking.findMany).mockResolvedValue([
+      {
+        id: 'booking-real',
+        teacherId: 'teacher-1',
+        day: '2026-03-12',
+        timeSlot: '11:00 - 11:30',
+        status: 'COMPLETED',
+        isPayable: true,
+        completedAt: new Date('2026-03-12T11:30:00.000Z'),
+        teacher,
+        student: {
+          name: 'Grace',
+          lastName: 'Hopper',
+        },
+        enrollment: {
+          course: {
+            id: 'course-2',
+            title: 'English Conversation',
+            classDuration: 30,
+            defaultPaymentPerClass: 20,
+          },
+          academicPeriod: {
+            id: 'period-1',
+            name: 'Marzo 2026',
+          },
+        },
+        teacherAttendances: [],
+        attendances: [],
+        videoCalls: [
+          {
+            duration: 30,
+          },
+        ],
+      },
+      {
+        // Trial class ("clase de prueba"): no enrollment, so no course rate.
+        id: 'booking-trial',
+        teacherId: 'teacher-1',
+        day: '2026-03-13',
+        timeSlot: '12:00 - 12:40',
+        status: 'COMPLETED',
+        isPayable: true,
+        completedAt: new Date('2026-03-13T12:40:00.000Z'),
+        teacher,
+        student: {
+          name: 'Trial',
+          lastName: 'Student',
+        },
+        enrollment: null,
+        teacherAttendances: [],
+        attendances: [],
+        videoCalls: [],
+      },
+    ] as never)
+
+    const report = await getTeacherPaymentsReport({ startDate, endDate })
+
+    // Trial class is excluded from every payment figure, real class still counted.
+    expect(report.summary.totalClasses).toBe(1)
+    expect(report.summary.totalCompletedClasses).toBe(1)
+    expect(report.summary.totalPayment).toBe(20)
+    expect(report.teacherReports).toHaveLength(1)
+    expect(report.teacherReports[0].classes).toHaveLength(1)
+    expect(report.teacherReports[0].classes.map((classDetail) => classDetail.id)).not.toContain(
+      'booking-trial'
+    )
+  })
+
   it('uses academic period dates when filtering by periodId so confirmations stay aligned', async () => {
     const periodStart = new Date('2026-04-01T00:00:00.000Z')
     const periodEnd = new Date('2026-04-30T23:59:59.999Z')

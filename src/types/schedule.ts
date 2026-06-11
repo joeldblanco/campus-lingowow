@@ -60,7 +60,8 @@ export interface TeacherScheduleLesson {
   duration: number
   roomUrl?: string
   color: 'blue' | 'purple' | 'orange' | 'green' | 'gray'
-  enrollmentId: string
+  // Null for trial classes ("clases de prueba"), which have no enrollment.
+  enrollmentId: string | null
 }
 
 export interface ScheduleLesson {
