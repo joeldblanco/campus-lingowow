@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { createLiveKitMeeting } from '@/lib/actions/livekit'
+import { closeClassroomWindow } from '@/lib/open-classroom-window'
 
 interface StudentClassroomLayoutProps {
     classId: string
@@ -90,7 +91,7 @@ export const StudentClassroomLayout: React.FC<StudentClassroomLayoutProps> = (pr
 
     const router = useRouter()
     const handleLeave = () => {
-        router.push('/dashboard')
+        closeClassroomWindow(() => router.push('/dashboard'))
     }
 
     if (isInitializing) {

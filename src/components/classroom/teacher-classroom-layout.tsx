@@ -3,6 +3,7 @@
 import { ClassroomContainer } from '@/components/classroom/classroom-container'
 import { checkTeacherAttendance, markTeacherAttendance } from '@/lib/actions/attendance'
 import { createLiveKitMeeting, endLiveKitMeeting } from '@/lib/actions/livekit'
+import { closeClassroomWindow } from '@/lib/open-classroom-window'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -120,7 +121,7 @@ export const TeacherClassroomLayout: React.FC<TeacherClassroomLayoutProps> = ({
       console.error('Error ending meeting:', error)
       toast.error('Error al guardar el estado de la clase')
     } finally {
-      router.push('/dashboard')
+      closeClassroomWindow(() => router.push('/dashboard'))
     }
   }
 
