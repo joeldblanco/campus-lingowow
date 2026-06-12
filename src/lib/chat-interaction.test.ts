@@ -127,4 +127,22 @@ describe('buildInteractionFromToolResult', () => {
       label: 'Alice (alice@example.com)',
     })
   })
+
+  it('builds a forced-choice confirmation for CONFIRM_PAYMENT showing the exact price', () => {
+    const result: ToolResult = {
+      success: true,
+      message: 'confirm?',
+      data: { code: 'CONFIRM_PAYMENT', planName: 'Exclusivo wow', price: '120.00', currency: 'USD' },
+    }
+    const interaction = buildInteractionFromToolResult(result)
+    expect(interaction?.kind).toBe('single-select')
+    // No free-text escape hatch on a money action.
+    expect(interaction?.allowFreeText).toBe(false)
+    expect(interaction?.prompt).toContain('Exclusivo wow')
+    expect(interaction?.prompt).toContain('120.00')
+    expect(interaction?.options).toEqual([
+      { id: 'confirm', label: 'Sí, generar el link de pago — Exclusivo wow ($120.00 USD)' },
+      { id: 'cancel', label: 'Cancelar' },
+    ])
+  })
 })

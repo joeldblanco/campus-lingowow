@@ -66,6 +66,20 @@ export function buildInteractionFromToolResult(
         allowFreeText: false,
       }
     }
+    case 'CONFIRM_PAYMENT': {
+      const planName = (data.planName as string | undefined) ?? 'tu plan'
+      const price = data.price as string | undefined
+      const priceLabel = price ? ` ($${price} USD)` : ''
+      return {
+        kind: 'single-select',
+        prompt: `Confirma tu inscripción: ${planName}${priceLabel}`,
+        options: [
+          { id: 'confirm', label: `Sí, generar el link de pago — ${planName}${priceLabel}` },
+          { id: 'cancel', label: 'Cancelar' },
+        ],
+        allowFreeText: false,
+      }
+    }
     case 'MULTIPLE_USERS': {
       const users = data.users as Array<{ name: string; email: string }> | undefined
       if (!users?.length) return undefined

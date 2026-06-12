@@ -179,7 +179,7 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
   create_payment_link: {
     name: 'create_payment_link',
     description:
-      'Genera un link de pago PayPal para la inscripción del usuario y lo envía por email. Usar cuando el usuario quiere pagar un plan. Solo llamar después de confirmar que no hay factura válida pendiente (check_invoice_status).',
+      'Genera un link de pago PayPal para la inscripción del usuario. FLUJO DE CONFIRMACIÓN OBLIGATORIO: la PRIMERA vez llámala SIN el campo "confirmed" (o confirmed=false) — NO se crea ninguna factura; solo se le muestran al usuario el plan y el precio exactos en botones de confirmación. SOLO cuando el usuario confirme pulsando el botón, vuelve a llamarla con los MISMOS parámetros y confirmed=true para crear la factura. Llamar solo después de verificar que no hay factura válida pendiente (check_invoice_status).',
     parameters: {
       type: SchemaType.OBJECT,
       properties: {
@@ -203,6 +203,11 @@ const ALL_FUNCTION_DECLARATIONS: Record<string, FunctionDeclaration> = {
         desiredTime: {
           type: SchemaType.STRING,
           description: 'Hora preferida para las clases en formato HH:MM (hora local del usuario)',
+        },
+        confirmed: {
+          type: SchemaType.BOOLEAN,
+          description:
+            'true SOLO después de que el usuario confirmó explícitamente pulsando el botón de confirmación. Omítelo (o false) en la primera llamada para mostrar el precio y pedir confirmación; nunca lo pongas en true por iniciativa propia.',
         },
       },
       required: ['programType', 'planType', 'startNow', 'desiredDay', 'desiredTime'],
@@ -782,6 +787,7 @@ export async function POST(req: NextRequest) {
               startNow: boolean
               desiredDay: string
               desiredTime: string
+              confirmed?: boolean
             }
             console.log(
               `[Chat API] create_payment_link program=${paymentArgs.programType} plan=${paymentArgs.planType} startNow=${paymentArgs.startNow}`
