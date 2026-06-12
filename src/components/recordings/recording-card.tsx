@@ -48,7 +48,7 @@ interface RecordingCardProps {
           language: string
           level: string
         }
-      }
+      } | null
     }
   }
   isAdmin?: boolean
@@ -58,7 +58,7 @@ export function RecordingCard({ recording, isAdmin = false }: RecordingCardProps
   const { booking } = recording
   const teacher = booking.teacher
   const student = booking.student
-  const course = booking.enrollment.course
+  const course = booking.enrollment?.course ?? null
 
   const formatDuration = (seconds: number | null) => {
     if (!seconds) return '--:--'
@@ -162,7 +162,7 @@ export function RecordingCard({ recording, isAdmin = false }: RecordingCardProps
       <CardContent className="p-4">
         {/* Título del curso */}
         <h3 className="font-semibold text-base line-clamp-2 mb-2 group-hover:text-blue-600 transition-colors">
-          {course.title}
+          {course?.title ?? 'Clase sin curso'}
           {recording.segmentNumber && recording.segmentNumber > 1 && (
             <span className="text-muted-foreground font-normal text-sm ml-2">
               (Parte {recording.segmentNumber})
@@ -209,11 +209,13 @@ export function RecordingCard({ recording, isAdmin = false }: RecordingCardProps
         </div>
 
         {/* Badges y metadata */}
-        <div className="flex flex-wrap items-center gap-2 mb-3">
-          <Badge variant="secondary" className={getLevelColor(course.level)}>
-            {course.level}
-          </Badge>
-        </div>
+        {course && (
+          <div className="flex flex-wrap items-center gap-2 mb-3">
+            <Badge variant="secondary" className={getLevelColor(course.level)}>
+              {course.level}
+            </Badge>
+          </div>
+        )}
 
         {/* Fecha y hora */}
         <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">

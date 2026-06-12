@@ -2,7 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card } from '@/components/ui/card'
-import { Hand, MicOff } from 'lucide-react'
+import { Hand, MicOff, UserRound } from 'lucide-react'
 import React from 'react'
 import { cn } from '@/lib/utils'
 
@@ -124,54 +124,49 @@ function VideoTile({ track }: { track: VideoTrack; isTeacher: boolean }) {
   )
 }
 
+// Empty-state tile shown while the other participant (or the local camera)
+// has not joined yet — visually distinct from a connected participant tile
+// so an empty room never looks occupied.
+function WaitingTile({ label }: { label: string }) {
+  return (
+    <Card className="relative w-full h-full rounded-lg overflow-hidden border border-dashed border-white/15 bg-gray-900/50 shadow-none">
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
+        <UserRound className="w-8 h-8 text-white/25 motion-safe:animate-pulse" />
+        <span className="text-xs font-medium text-white/50">{label}</span>
+      </div>
+    </Card>
+  )
+}
+
 export function VideoGrid({ localTrack, remoteTracks = [], isTeacher, compact = false }: VideoGridProps) {
-  // Mock data for visualization if no tracks provided
-  const mockTeacher: VideoTrack = {
-    participantId: 't1',
-    name: 'Teacher Sarah',
-    isLocal: false,
-    isMuted: false,
-    isVideoMuted: true,
-    isTeacher: true,
-  }
-
-  const mockStudent: VideoTrack = {
-    participantId: 's1',
-    name: 'You',
-    isLocal: true,
-    isMuted: true,
-    isVideoMuted: false,
-  }
-
-  // Use props or fallbacks
-  // Ensure we always have a defined object to prevent crashes
-  const safeTeacherMock = { ...mockTeacher, name: isTeacher ? 'Tú (Profesor)' : 'Profesor' }
-  const safeStudentMock = { ...mockStudent, name: isTeacher ? 'Estudiante' : 'Tú' }
-
   // Buscar el profesor por su flag isTeacher en lugar de asumir remoteTracks[0]
   const remoteTeacher = remoteTracks.find(t => t.isTeacher)
   const remoteStudent = remoteTracks.find(t => !t.isTeacher)
 
-  // Determine teacher and student tracks
-  const teacherTrack = isTeacher
-    ? localTrack || safeTeacherMock
-    : remoteTeacher || remoteTracks[0] || safeTeacherMock
+  // Determine teacher and student tracks. No mocks: an absent participant
+  // renders a waiting state instead of a fake tile.
+  const teacherTrack = isTeacher ? localTrack : remoteTeacher ?? remoteTracks[0]
+  const studentTrack = isTeacher ? remoteStudent ?? remoteTracks[0] : localTrack
 
-  const studentTrack = isTeacher
-    ? remoteStudent || remoteTracks[0] || safeStudentMock
-    : localTrack || safeStudentMock
+  const teacherSlot = teacherTrack ? (
+    <VideoTile track={teacherTrack} isTeacher={true} />
+  ) : (
+    <WaitingTile label={isTeacher ? 'Conectando tu cámara...' : 'Esperando al profesor...'} />
+  )
+
+  const studentSlot = studentTrack ? (
+    <VideoTile track={studentTrack} isTeacher={false} />
+  ) : (
+    <WaitingTile label={isTeacher ? 'Esperando al estudiante...' : 'Conectando tu cámara...'} />
+  )
 
   if (compact) {
     return (
       <div className="flex flex-col gap-1 w-full h-full">
         {/* Teacher video - top */}
-        <div className="flex-1 min-h-0 rounded-lg overflow-hidden">
-          <VideoTile track={teacherTrack!} isTeacher={true} />
-        </div>
+        <div className="flex-1 min-h-0 rounded-lg overflow-hidden">{teacherSlot}</div>
         {/* Student video - bottom */}
-        <div className="flex-1 min-h-0 rounded-lg overflow-hidden">
-          <VideoTile track={studentTrack!} isTeacher={false} />
-        </div>
+        <div className="flex-1 min-h-0 rounded-lg overflow-hidden">{studentSlot}</div>
       </div>
     )
   }
@@ -179,14 +174,10 @@ export function VideoGrid({ localTrack, remoteTracks = [], isTeacher, compact = 
   return (
     <div className="flex w-full h-full bg-[#202124] gap-2">
       {/* Teacher video - left half */}
-      <div className="flex-1 min-w-0 rounded-xl overflow-hidden">
-        <VideoTile track={teacherTrack!} isTeacher={true} />
-      </div>
+      <div className="flex-1 min-w-0 rounded-xl overflow-hidden">{teacherSlot}</div>
 
       {/* Student video - right half */}
-      <div className="flex-1 min-w-0 rounded-xl overflow-hidden">
-        <VideoTile track={studentTrack!} isTeacher={false} />
-      </div>
+      <div className="flex-1 min-w-0 rounded-xl overflow-hidden">{studentSlot}</div>
     </div>
   )
 }

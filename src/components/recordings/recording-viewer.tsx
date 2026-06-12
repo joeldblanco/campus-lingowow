@@ -55,7 +55,7 @@ interface RecordingData {
         language: string
         level: string
       }
-    }
+    } | null
   }
 }
 
@@ -156,7 +156,8 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
 
   const { booking } = recording
   const teacher = booking.teacher
-  const course = booking.enrollment.course
+  const course = booking.enrollment?.course ?? null
+  const courseTitle = course?.title ?? 'Clase sin curso'
   const videoUrl = recording.signedUrl || recording.fileUrl
   const isFailed = recording.status === 'FAILED'
   const isProcessing = recording.status === 'PROCESSING'
@@ -175,7 +176,7 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
             Grabaciones
           </Link>
           <span>/</span>
-          <span className="text-foreground">{course.title}</span>
+          <span className="text-foreground">{courseTitle}</span>
         </div>
         <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
           <AlertCircle className="h-16 w-16 text-red-500 mb-4" />
@@ -205,7 +206,7 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
             Grabaciones
           </Link>
           <span>/</span>
-          <span className="text-foreground">{course.title}</span>
+          <span className="text-foreground">{courseTitle}</span>
         </div>
         <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
           <Loader2 className="h-16 w-16 text-blue-500 mb-4 animate-spin" />
@@ -234,7 +235,7 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
           Grabaciones
         </Link>
         <span>/</span>
-        <span className="text-foreground">{course.title}</span>
+        <span className="text-foreground">{courseTitle}</span>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -256,7 +257,7 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
 
             <TabsContent value="video" className="mt-0">
               {videoUrl ? (
-                <VideoPlayer src={videoUrl} title={course.title} />
+                <VideoPlayer src={videoUrl} title={courseTitle} />
               ) : (
                 <div className="aspect-video bg-slate-900 rounded-lg flex items-center justify-center">
                   <div className="text-center text-white">
@@ -280,7 +281,7 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
           {/* Title and Actions */}
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold">{course.title}</h1>
+              <h1 className="text-2xl font-bold">{courseTitle}</h1>
               <div className="flex items-center gap-2 mt-2">
                 <UserAvatar
                   userId={teacher.id}
@@ -311,11 +312,13 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
           </div>
 
           {/* Level Badge */}
-          <div className="flex items-center gap-2">
-            <Badge variant="secondary" className={getLevelColor(course.level)}>
-              {course.level}
-            </Badge>
-          </div>
+          {course && (
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary" className={getLevelColor(course.level)}>
+                {course.level}
+              </Badge>
+            </div>
+          )}
 
           {/* About Section */}
           <Card>
@@ -325,7 +328,7 @@ export function RecordingViewer({ recordingId }: RecordingViewerProps) {
             <CardContent>
               <p className="text-muted-foreground">
                 Clase grabada el {formatDate(booking.day)} a las {booking.timeSlot}. Esta grabación
-                corresponde al curso de {course.title} con el profesor {formatUserName(teacher)}.
+                corresponde al curso de {courseTitle} con el profesor {formatUserName(teacher)}.
               </p>
             </CardContent>
           </Card>

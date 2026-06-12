@@ -457,6 +457,16 @@ const revenueClassBookingArgs = Prisma.validator<Prisma.ClassBookingDefaultArgs>
 
 type RevenueClassBooking = Prisma.ClassBookingGetPayload<typeof revenueClassBookingArgs>
 
+// Trial classes ("clases de prueba") have null enrollment and no course product to bill
+// against. Revenue/finance must SKIP them (see web/CLAUDE.md), never invent a price.
+type BillableClassBooking = RevenueClassBooking & {
+  enrollment: NonNullable<RevenueClassBooking['enrollment']>
+}
+
+function hasBillableEnrollment(booking: RevenueClassBooking): booking is BillableClassBooking {
+  return booking.enrollment !== null
+}
+
 interface CourseRevenueProduct {
   id: string
   courseId: string
@@ -520,7 +530,7 @@ async function getCourseRevenueProductMap(courseIds: string[]) {
 }
 
 function resolveScheduledClassRevenue(
-  booking: RevenueClassBooking,
+  booking: BillableClassBooking,
   courseRevenueProductMap: Map<string, CourseRevenueProduct>
 ) {
   // Las clases de prueba no tienen inscripción/curso: no generan ingreso por curso.
@@ -550,7 +560,7 @@ async function getScheduledClassRevenueRows(
   end: Date,
   period: ResolvedAcademicPeriodFilter | null
 ) {
-  const bookings = await db.classBooking.findMany({
+  const allBookings = await db.classBooking.findMany({
     where: {
       status: {
         in: [BookingStatus.CONFIRMED, BookingStatus.COMPLETED],
@@ -572,6 +582,9 @@ async function getScheduledClassRevenueRows(
       day: 'desc',
     },
   })
+
+  // Skip trial classes (null enrollment) — no course product to bill against.
+  const bookings = allBookings.filter(hasBillableEnrollment)
 
   const courseRevenueProductMap = await getCourseRevenueProductMap(
     Array.from(

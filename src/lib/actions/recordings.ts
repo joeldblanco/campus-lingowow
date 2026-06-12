@@ -73,7 +73,7 @@ export interface RecordingWithDetails {
         language: string
         level: string
       }
-    }
+    } | null
   }
 }
 

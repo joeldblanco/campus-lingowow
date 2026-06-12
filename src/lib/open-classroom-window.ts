@@ -30,3 +30,18 @@ export function openClassroomWindow(url: string) {
     window.location.href = url
   }
 }
+
+/**
+ * Closes the classroom window when the class ends. Browsers only honor
+ * window.close() on script-opened windows (openClassroomWindow above);
+ * when the classroom was reached by regular navigation the call is
+ * ignored, so we fall back to the provided navigation instead.
+ */
+export function closeClassroomWindow(fallback: () => void) {
+  window.close()
+  window.setTimeout(() => {
+    if (!window.closed) {
+      fallback()
+    }
+  }, 300)
+}
