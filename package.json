@@ -58,7 +58,7 @@
     "@livekit/egress-sdk": "^0.2.1",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "@paypal/paypal-server-sdk": "^1.1.0",
-    "@paypal/react-paypal-js": "^8.9.2",
+    "@paypal/react-paypal-js": "^9.2.0",
     "@prisma/client": "^6.16.2",
     "@radix-ui/react-accordion": "^1.2.3",
     "@radix-ui/react-alert-dialog": "^1.1.6",
