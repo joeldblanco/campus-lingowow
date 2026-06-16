@@ -5,6 +5,15 @@ import { auth } from '@/auth'
 import { revalidatePath } from 'next/cache'
 import { AssignmentStatus } from '@prisma/client'
 import { notifyExamAssigned } from '@/lib/actions/notifications'
+import { auditLog } from '@/lib/audit-log'
+import * as z from 'zod'
+
+const GrantExamRetakeSchema = z.object({
+  examId: z.string().min(1),
+  userId: z.string().min(1),
+  extraAttempts: z.number().int().min(1).max(10),
+  reason: z.string().trim().max(500).optional(),
+})
 
 /**
  * Obtiene los exámenes de un curso creados por el profesor actual
@@ -693,6 +702,23 @@ export async function getExamResultsForTeacher(examId: string) {
     const averageScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0
     const passedCount = completedAttempts.filter((a) => (a.score || 0) >= exam.passingScore).length
 
+    // Intentos extra otorgados por estudiante (para calcular intentos restantes)
+    const grantsByUser = await db.examAttemptGrant.groupBy({
+      by: ['userId'],
+      where: { examId },
+      _sum: { extraAttempts: true },
+    })
+    const grantedByUser = grantsByUser.reduce<Record<string, number>>((acc, g) => {
+      acc[g.userId] = g._sum.extraAttempts ?? 0
+      return acc
+    }, {})
+
+    // Intentos usados por estudiante (todos los estados cuentan contra el tope)
+    const usedByUser = exam.attempts.reduce<Record<string, number>>((acc, a) => {
+      acc[a.userId] = (acc[a.userId] ?? 0) + 1
+      return acc
+    }, {})
+
     return {
       success: true,
       results: {
@@ -700,6 +726,7 @@ export async function getExamResultsForTeacher(examId: string) {
         title: exam.title,
         description: exam.description,
         passingScore: exam.passingScore,
+        maxAttempts: exam.maxAttempts,
         courseId: exam.courseId,
         attempts: exam.attempts.map((a) => ({
           id: a.id,
@@ -708,6 +735,8 @@ export async function getExamResultsForTeacher(examId: string) {
           startedAt: a.startedAt,
           completedAt: a.submittedAt,
           user: a.user,
+          userRemaining:
+            exam.maxAttempts + (grantedByUser[a.userId] ?? 0) - (usedByUser[a.userId] ?? 0),
         })),
         stats: {
           totalAttempts: exam.attempts.length,
@@ -721,5 +750,97 @@ export async function getExamResultsForTeacher(examId: string) {
   } catch (error) {
     console.error('Error fetching exam results for teacher:', error)
     return { success: false, error: 'Error al obtener los resultados' }
+  }
+}
+
+/**
+ * Otorga intento(s) extra a un estudiante para un examen concreto.
+ * Pensado para desbloquear a un estudiante que ya agotó sus intentos (p. ej. reprobó
+ * un examen de un solo intento). Conserva el/los intento(s) previo(s) intactos.
+ *
+ * Permisos (espejo de getExamResultsForTeacher):
+ * - ADMIN: puede otorgar en cualquier examen/estudiante.
+ * - TEACHER: solo si creó el examen o el estudiante está en su roster (classBooking).
+ */
+export async function grantExamRetake(
+  examId: string,
+  userId: string,
+  options?: { extraAttempts?: number; reason?: string }
+) {
+  try {
+    const session = await auth()
+    if (!session?.user?.id) {
+      return { success: false, error: 'No autorizado' }
+    }
+
+    const parsed = GrantExamRetakeSchema.safeParse({
+      examId,
+      userId,
+      extraAttempts: options?.extraAttempts ?? 1,
+      reason: options?.reason,
+    })
+    if (!parsed.success) {
+      return { success: false, error: 'Datos inválidos' }
+    }
+
+    const isAdmin = session.user.roles?.includes('ADMIN')
+
+    const exam = await db.exam.findUnique({
+      where: { id: parsed.data.examId },
+      select: { id: true, title: true, createdById: true },
+    })
+    if (!exam) {
+      return { success: false, error: 'Examen no encontrado' }
+    }
+
+    // Profesores: solo pueden otorgar en exámenes que crearon o a estudiantes de su roster
+    if (!isAdmin) {
+      const isCreator = exam.createdById === session.user.id
+      let isOwnStudent = false
+      if (!isCreator) {
+        const booking = await db.classBooking.findFirst({
+          where: { teacherId: session.user.id, studentId: parsed.data.userId },
+          select: { id: true },
+        })
+        isOwnStudent = !!booking
+      }
+      if (!isCreator && !isOwnStudent) {
+        return {
+          success: false,
+          error: 'No tienes permiso para otorgar reintentos a este estudiante',
+        }
+      }
+    }
+
+    const grant = await db.examAttemptGrant.create({
+      data: {
+        examId: parsed.data.examId,
+        userId: parsed.data.userId,
+        extraAttempts: parsed.data.extraAttempts,
+        reason: parsed.data.reason || null,
+        grantedById: session.user.id,
+      },
+    })
+
+    auditLog({
+      userId: session.user.id,
+      action: 'EXAM_RETAKE_GRANTED',
+      category: 'ACADEMIC',
+      description: `Reintento otorgado en examen: ${exam.title}`,
+      metadata: {
+        examId: parsed.data.examId,
+        studentId: parsed.data.userId,
+        extraAttempts: parsed.data.extraAttempts,
+        reason: parsed.data.reason || null,
+        grantId: grant.id,
+      },
+    })
+
+    revalidatePath(`/teacher/exams/${parsed.data.examId}/results`)
+
+    return { success: true, grant }
+  } catch (error) {
+    console.error('Error granting exam retake:', error)
+    return { success: false, error: 'Error al otorgar el reintento' }
   }
 }

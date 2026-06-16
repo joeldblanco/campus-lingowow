@@ -2,6 +2,10 @@
 
 import { db } from '@/lib/db'
 import { auth } from '@/auth'
+import {
+  getGrantedExtraAttempts,
+  getGrantedExtraAttemptsByExam,
+} from '@/lib/exams/attempt-grants'
 
 /**
  * Obtiene los exámenes disponibles para el estudiante actual
@@ -150,6 +154,9 @@ export async function getStudentAssignedExams() {
       {} as Record<string, typeof attempts>
     )
 
+    // Intentos extra otorgados a este estudiante, por examen
+    const grantedExtraByExam = await getGrantedExtraAttemptsByExam(allExamIds, studentId)
+
     // Procesar exámenes asignados (programas personalizados)
     const assignedExams = assignments.map((assignment) => {
       const examAttempts = attemptsByExam[assignment.examId] || []
@@ -183,7 +190,10 @@ export async function getStudentAssignedExams() {
         attempts: {
           total: examAttempts.length,
           completed: completedAttempts.length,
-          remaining: assignment.exam.maxAttempts - examAttempts.length,
+          remaining:
+            assignment.exam.maxAttempts +
+            (grantedExtraByExam[assignment.exam.id] ?? 0) -
+            examAttempts.length,
           inProgressId: inProgressAttempt?.id || null,
           lastCompletedAttemptId: completedAttempts.length > 0 ? completedAttempts[0].id : null,
           bestScore,
@@ -225,7 +235,7 @@ export async function getStudentAssignedExams() {
         attempts: {
           total: examAttempts.length,
           completed: completedAttempts.length,
-          remaining: exam.maxAttempts - examAttempts.length,
+          remaining: exam.maxAttempts + (grantedExtraByExam[exam.id] ?? 0) - examAttempts.length,
           inProgressId: inProgressAttempt?.id || null,
           lastCompletedAttemptId: completedAttempts.length > 0 ? completedAttempts[0].id : null,
           bestScore,
@@ -332,6 +342,7 @@ export async function getStudentExamDetails(examId: string) {
 
     const completedAttempts = attempts.filter((a) => a.status === 'COMPLETED')
     const inProgressAttempt = attempts.find((a) => a.status === 'IN_PROGRESS')
+    const grantedExtra = await getGrantedExtraAttempts(examId, studentId)
 
     return {
       success: true,
@@ -356,7 +367,7 @@ export async function getStudentExamDetails(examId: string) {
         list: attempts,
         total: attempts.length,
         completed: completedAttempts.length,
-        remaining: exam.maxAttempts - attempts.length,
+        remaining: exam.maxAttempts + grantedExtra - attempts.length,
         inProgressId: inProgressAttempt?.id || null,
         bestScore:
           completedAttempts.length > 0

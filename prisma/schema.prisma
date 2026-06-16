@@ -119,6 +119,10 @@ model User {
   assignedExams   ExamAssignment[] @relation("ExamAssigner")
   reviewedAnswers ExamAnswer[]     @relation("ExamReviewer")
 
+  // Intentos extra de examen otorgados por profesores/admins
+  examGrantsReceived ExamAttemptGrant[] @relation("ExamGrantsReceived")
+  examGrantsGiven    ExamAttemptGrant[] @relation("ExamGrantsGiven")
+
   // Relaciones de respuestas de bloques en lecciones
   blockResponses BlockResponse[]
   aiGradingUsage AIGradingUsage[]
@@ -1757,9 +1761,10 @@ model Exam {
   course      Course?          @relation(fields: [courseId], references: [id])
   module      Module?          @relation(fields: [moduleId], references: [id])
   lesson      Lesson?          @relation(fields: [lessonId], references: [id])
-  questions   ExamQuestion[]
-  attempts    ExamAttempt[]
-  assignments ExamAssignment[]
+  questions     ExamQuestion[]
+  attempts      ExamAttempt[]
+  assignments   ExamAssignment[]
+  attemptGrants ExamAttemptGrant[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -1769,6 +1774,27 @@ model Exam {
   @@index([lessonId])
   @@index([createdById])
   @@map("exams")
+}
+
+model ExamAttemptGrant {
+  id            String  @id @default(cuid())
+  examId        String
+  userId        String // Estudiante que recibe el/los intento(s) extra
+  extraAttempts Int     @default(1) // Intentos adicionales otorgados en esta concesión
+  reason        String? // Motivo opcional registrado por quien otorga
+  grantedById   String // Profesor/admin que otorgó el reintento
+
+  // Relaciones
+  exam      Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
+  user      User @relation("ExamGrantsReceived", fields: [userId], references: [id], onDelete: Cascade)
+  grantedBy User @relation("ExamGrantsGiven", fields: [grantedById], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([examId, userId])
+  @@index([userId])
+  @@index([grantedById])
+  @@map("exam_attempt_grants")
 }
 
 model ExamQuestion {
@@ -2791,6 +2817,7 @@ enum AuditAction {
   COURSE_UPDATED
   EXAM_STARTED
   EXAM_SUBMITTED
+  EXAM_RETAKE_GRANTED
   GRADE_ASSIGNED
 
   // Comercial

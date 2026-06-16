@@ -8,17 +8,20 @@ vi.mock('@/auth', () => ({ auth: vi.fn() }))
 
 vi.mock('@/lib/db', () => ({
   db: {
-    exam: { findFirst: vi.fn() },
+    exam: { findFirst: vi.fn(), findUnique: vi.fn() },
     enrollment: { findMany: vi.fn() },
     examAssignment: { upsert: vi.fn() },
+    examAttemptGrant: { create: vi.fn() },
+    classBooking: { findFirst: vi.fn() },
     user: { findUnique: vi.fn() },
   },
 }))
 
 vi.mock('@/lib/actions/notifications', () => ({ notifyExamAssigned: vi.fn() }))
+vi.mock('@/lib/audit-log', () => ({ auditLog: vi.fn() }))
 vi.mock('next/cache', () => ({ revalidatePath: vi.fn() }))
 
-import { assignExamToStudents } from './teacher-exams'
+import { assignExamToStudents, grantExamRetake } from './teacher-exams'
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
 
@@ -74,5 +77,66 @@ describe('assignExamToStudents — roster security', () => {
 
     expect(result.success).toBe(true)
     expect(db.examAssignment.upsert).toHaveBeenCalledTimes(2)
+  })
+})
+
+describe('grantExamRetake — permissions and grant creation', () => {
+  const exam = { id: 'exam-1', title: 'Exam 1', createdById: 'creator-1' }
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('rejects an unauthenticated caller', async () => {
+    vi.mocked(auth).mockResolvedValue(null as never)
+
+    const result = await grantExamRetake('exam-1', 'student-1')
+
+    expect(result.success).toBe(false)
+    expect(db.examAttemptGrant.create).not.toHaveBeenCalled()
+  })
+
+  it('rejects a teacher who neither created the exam nor has the student in their roster', async () => {
+    vi.mocked(auth).mockResolvedValue({ user: { id: 'teacher-9', roles: ['TEACHER'] } } as never)
+    vi.mocked(db.exam.findUnique).mockResolvedValue(exam as never)
+    // Not the creator and no booking links teacher-9 to student-1.
+    vi.mocked(db.classBooking.findFirst).mockResolvedValue(null as never)
+
+    const result = await grantExamRetake('exam-1', 'student-1')
+
+    expect(result.success).toBe(false)
+    expect(db.examAttemptGrant.create).not.toHaveBeenCalled()
+  })
+
+  it('lets a teacher grant a retake to a student in their roster', async () => {
+    vi.mocked(auth).mockResolvedValue({ user: { id: 'teacher-9', roles: ['TEACHER'] } } as never)
+    vi.mocked(db.exam.findUnique).mockResolvedValue(exam as never)
+    vi.mocked(db.classBooking.findFirst).mockResolvedValue({ id: 'booking-1' } as never)
+    vi.mocked(db.examAttemptGrant.create).mockResolvedValue({ id: 'grant-1' } as never)
+
+    const result = await grantExamRetake('exam-1', 'student-1', { reason: 'Falla técnica' })
+
+    expect(result.success).toBe(true)
+    expect(db.examAttemptGrant.create).toHaveBeenCalledWith({
+      data: {
+        examId: 'exam-1',
+        userId: 'student-1',
+        extraAttempts: 1,
+        reason: 'Falla técnica',
+        grantedById: 'teacher-9',
+      },
+    })
+  })
+
+  it('lets an admin grant a retake on any exam without a roster check', async () => {
+    vi.mocked(auth).mockResolvedValue({ user: { id: 'admin-1', roles: ['ADMIN'] } } as never)
+    vi.mocked(db.exam.findUnique).mockResolvedValue(exam as never)
+    vi.mocked(db.examAttemptGrant.create).mockResolvedValue({ id: 'grant-2' } as never)
+
+    const result = await grantExamRetake('exam-1', 'student-1')
+
+    expect(result.success).toBe(true)
+    expect(db.classBooking.findFirst).not.toHaveBeenCalled()
+    expect(db.examAttemptGrant.create).toHaveBeenCalledTimes(1)
   })
 })
