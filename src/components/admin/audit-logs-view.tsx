@@ -69,6 +69,7 @@ const ACTION_LABELS: Record<AuditAction, string> = {
   COURSE_UPDATED: 'Curso actualizado',
   EXAM_STARTED: 'Examen iniciado',
   EXAM_SUBMITTED: 'Examen enviado',
+  EXAM_RETAKE_GRANTED: 'Reintento otorgado',
   GRADE_ASSIGNED: 'Calificación asignada',
   PAYMENT_COMPLETED: 'Pago completado',
   SUBSCRIPTION_CREATED: 'Suscripción creada',

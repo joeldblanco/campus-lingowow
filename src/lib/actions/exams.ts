@@ -6,6 +6,7 @@ import { revalidatePath } from 'next/cache'
 import { CreateExamSchema, EditExamSchema, AssignExamSchema } from '@/schemas/exams'
 import { auditLog } from '@/lib/audit-log'
 import { notifyExamAssigned } from '@/lib/actions/notifications'
+import { getEffectiveMaxAttempts } from '@/lib/exams/attempt-grants'
 import * as z from 'zod'
 import { AttemptStatus, AssignmentStatus, ExamType, Prisma, UserRole } from '@prisma/client'
 import type {
@@ -874,12 +875,15 @@ export async function startExamAttempt(examId: string, userId: string) {
       }
     }
 
-    // Solo verificar límite de intentos si no hay uno en progreso
+    // Solo verificar límite de intentos si no hay uno en progreso.
+    // El tope efectivo es el del examen más los intentos extra otorgados a este estudiante.
     const existingAttempts = await db.examAttempt.count({
       where: { examId, userId },
     })
 
-    if (existingAttempts >= exam.maxAttempts) {
+    const effectiveMaxAttempts = await getEffectiveMaxAttempts(exam.maxAttempts, examId, userId)
+
+    if (existingAttempts >= effectiveMaxAttempts) {
       return { success: false, error: 'Has alcanzado el número máximo de intentos' }
     }
 

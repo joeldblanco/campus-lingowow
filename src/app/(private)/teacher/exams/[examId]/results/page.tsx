@@ -1,18 +1,29 @@
 'use client'
 
 import { useParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Loader2, ArrowLeft, Users, CheckCircle2, Clock, Target } from 'lucide-react'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import { Loader2, ArrowLeft, Users, CheckCircle2, Clock, Target, RotateCcw } from 'lucide-react'
 import Link from 'next/link'
-import { getExamResultsForTeacher } from '@/lib/actions/teacher-exams'
+import { getExamResultsForTeacher, grantExamRetake } from '@/lib/actions/teacher-exams'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { formatUserName } from '@/lib/utils/name-formatter'
 import { cn } from '@/lib/utils'
+import { toast } from 'sonner'
 
 interface ExamAttempt {
   id: string
@@ -20,6 +31,7 @@ interface ExamAttempt {
   score: number | null
   startedAt: Date
   completedAt: Date | null
+  userRemaining: number
   user: {
     id: string
     name: string | null
@@ -33,6 +45,7 @@ interface ExamResults {
   title: string
   description: string
   passingScore: number
+  maxAttempts: number
   courseId: string | null
   attempts: ExamAttempt[]
   stats: {
@@ -50,30 +63,60 @@ export default function TeacherExamResultsPage() {
   const [results, setResults] = useState<ExamResults | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [grantTarget, setGrantTarget] = useState<ExamAttempt | null>(null)
+  const [grantReason, setGrantReason] = useState('')
+  const [granting, setGranting] = useState(false)
+
+  const loadResults = useCallback(async () => {
+    try {
+      const data = await getExamResultsForTeacher(examId)
+
+      if (!data.success || !data.results) {
+        setError(data.error || 'Error al cargar los resultados')
+        return
+      }
+
+      setResults(data.results)
+    } catch (err) {
+      console.error('Error loading exam results:', err)
+      setError('Error al cargar los resultados')
+    } finally {
+      setLoading(false)
+    }
+  }, [examId])
 
   useEffect(() => {
-    const loadResults = async () => {
-      try {
-        const data = await getExamResultsForTeacher(examId)
-        
-        if (!data.success || !data.results) {
-          setError(data.error || 'Error al cargar los resultados')
-          return
-        }
-
-        setResults(data.results)
-      } catch (err) {
-        console.error('Error loading exam results:', err)
-        setError('Error al cargar los resultados')
-      } finally {
-        setLoading(false)
-      }
-    }
-
     if (session?.user?.id) {
       loadResults()
     }
-  }, [examId, session?.user?.id])
+  }, [session?.user?.id, loadResults])
+
+  const handleGrantRetake = async () => {
+    if (!grantTarget) return
+
+    setGranting(true)
+    try {
+      const res = await grantExamRetake(examId, grantTarget.user.id, {
+        extraAttempts: 1,
+        reason: grantReason.trim() || undefined,
+      })
+
+      if (!res.success) {
+        toast.error(res.error || 'No se pudo otorgar el reintento')
+        return
+      }
+
+      toast.success('Nuevo intento otorgado')
+      setGrantTarget(null)
+      setGrantReason('')
+      await loadResults()
+    } catch (err) {
+      console.error('Error granting retake:', err)
+      toast.error('No se pudo otorgar el reintento')
+    } finally {
+      setGranting(false)
+    }
+  }
 
   if (loading) {
     return (
@@ -176,7 +219,7 @@ export default function TeacherExamResultsPage() {
                 return (
                   <div
                     key={attempt.id}
-                    className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/30 transition-colors"
+                    className="flex flex-col gap-3 p-4 border rounded-lg hover:bg-muted/30 transition-colors sm:flex-row sm:items-center sm:justify-between"
                   >
                     <div className="flex items-center gap-4">
                       <div>
@@ -189,7 +232,7 @@ export default function TeacherExamResultsPage() {
                       </div>
                     </div>
                     
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-wrap items-center gap-3 sm:justify-end sm:gap-4">
                       <div className="text-right">
                         <p className="text-sm text-muted-foreground">
                           {format(new Date(attempt.startedAt), 'PPp', { locale: es })}
@@ -221,6 +264,20 @@ export default function TeacherExamResultsPage() {
                           </Button>
                         </Link>
                       )}
+
+                      {attempt.status === 'COMPLETED' && !passed && attempt.userRemaining <= 0 && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => {
+                            setGrantReason('')
+                            setGrantTarget(attempt)
+                          }}
+                        >
+                          <RotateCcw className="w-4 h-4 mr-2" />
+                          Otorgar nuevo intento
+                        </Button>
+                      )}
                     </div>
                   </div>
                 )
@@ -229,6 +286,69 @@ export default function TeacherExamResultsPage() {
           )}
         </CardContent>
       </Card>
+
+      <Dialog
+        open={grantTarget !== null}
+        onOpenChange={(open) => {
+          if (!open && !granting) {
+            setGrantTarget(null)
+            setGrantReason('')
+          }
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Otorgar nuevo intento</DialogTitle>
+            <DialogDescription>
+              {grantTarget && (
+                <>
+                  Se habilitará un intento adicional para{' '}
+                  <span className="font-medium text-foreground">
+                    {formatUserName(grantTarget.user) || grantTarget.user.email || 'el estudiante'}
+                  </span>
+                  . El intento anterior se conserva en el historial.
+                </>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-2">
+            <Label htmlFor="grant-reason">Motivo (opcional)</Label>
+            <Textarea
+              id="grant-reason"
+              value={grantReason}
+              onChange={(e) => setGrantReason(e.target.value)}
+              placeholder="Ej.: Problemas técnicos durante el examen"
+              maxLength={500}
+              rows={3}
+              disabled={granting}
+            />
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setGrantTarget(null)
+                setGrantReason('')
+              }}
+              disabled={granting}
+            >
+              Cancelar
+            </Button>
+            <Button onClick={handleGrantRetake} disabled={granting}>
+              {granting ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Otorgando...
+                </>
+              ) : (
+                'Otorgar intento'
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
