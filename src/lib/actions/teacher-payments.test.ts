@@ -247,7 +247,7 @@ describe('getTeacherPaymentsReport', () => {
     })
   })
 
-  it('skips trial classes (null enrollment) instead of crashing on the missing course rate', async () => {
+  it('pays trial classes (null enrollment) a flat rate without crashing on the missing course rate', async () => {
     vi.mocked(db.classBooking.findMany).mockResolvedValue([
       {
         id: 'booking-real',
@@ -305,15 +305,17 @@ describe('getTeacherPaymentsReport', () => {
 
     const report = await getTeacherPaymentsReport({ startDate, endDate })
 
-    // Trial class is excluded from every payment figure, real class still counted.
-    expect(report.summary.totalClasses).toBe(1)
-    expect(report.summary.totalCompletedClasses).toBe(1)
-    expect(report.summary.totalPayment).toBe(20)
+    // Trial class is paid a flat rate (no course); real class uses its course rate (20).
+    expect(report.summary.totalClasses).toBe(2)
+    expect(report.summary.totalCompletedClasses).toBe(2)
+    expect(report.summary.totalPayment).toBe(28)
     expect(report.teacherReports).toHaveLength(1)
-    expect(report.teacherReports[0].classes).toHaveLength(1)
-    expect(report.teacherReports[0].classes.map((classDetail) => classDetail.id)).not.toContain(
-      'booking-trial'
+    expect(report.teacherReports[0].classes).toHaveLength(2)
+
+    const trialClass = report.teacherReports[0].classes.find(
+      (classDetail) => classDetail.id === 'booking-trial'
     )
+    expect(trialClass).toMatchObject({ payment: 8, courseName: 'Clase de prueba' })
   })
 
   it('uses academic period dates when filtering by periodId so confirmations stay aligned', async () => {

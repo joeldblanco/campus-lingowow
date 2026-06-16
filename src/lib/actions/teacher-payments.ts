@@ -81,6 +81,9 @@ export interface TeacherProjectedCostSummary {
 
 const BASE_RATE_PER_HOUR = 10
 
+// Pago fijo por clase de prueba (sin inscripción/curso, por lo que no hay tarifa de curso).
+const TRIAL_CLASS_PAYMENT = 8
+
 const paymentClassBookingArgs = Prisma.validator<Prisma.ClassBookingDefaultArgs>()({
   include: {
     teacher: {
@@ -217,6 +220,11 @@ function calculateClassEarnings(
   classBooking: Pick<PaymentClassBooking, 'teacherId' | 'teacher' | 'enrollment' | 'videoCalls'>,
   teacherCoursePayments: Map<string, number | null>
 ) {
+  // Clases de prueba (sin inscripción): tarifa fija, no dependen de un curso.
+  if (!classBooking.enrollment) {
+    return TRIAL_CLASS_PAYMENT
+  }
+
   const duration = getClassDuration(classBooking)
   const hours = duration / 60
   const courseId = classBooking.enrollment?.course.id ?? ''
@@ -296,9 +304,6 @@ export async function getTeacherPaymentsReport(
   let totalPayment = 0
 
   for (const classBooking of countedClasses) {
-    // Las clases de prueba (sin inscripción/curso) no entran en pagos a profesores.
-    if (!classBooking.enrollment) continue
-
     const teacher = classBooking.teacher
 
     if (!teacherPaymentMap.has(teacher.id)) {
@@ -343,13 +348,13 @@ export async function getTeacherPaymentsReport(
       day: classBooking.day,
       timeSlot: classBooking.timeSlot,
       studentName: formatFullName(classBooking.student.name, classBooking.student.lastName),
-      courseName: classBooking.enrollment.course.title,
+      courseName: classBooking.enrollment ? classBooking.enrollment.course.title : 'Clase de prueba',
       duration,
       payment: roundedClassEarnings,
       isPayable: classBooking.isPayable,
       completedAt: classBooking.completedAt?.toISOString() || null,
-      academicPeriodId: classBooking.enrollment.academicPeriod?.id || null,
-      academicPeriodName: classBooking.enrollment.academicPeriod?.name || null,
+      academicPeriodId: classBooking.enrollment?.academicPeriod?.id || null,
+      academicPeriodName: classBooking.enrollment?.academicPeriod?.name || null,
       teacherAttendanceTime: classBooking.teacherAttendances[0]?.timestamp?.toISOString() || null,
       studentAttendanceTime: classBooking.attendances[0]?.timestamp?.toISOString() || null,
     })
