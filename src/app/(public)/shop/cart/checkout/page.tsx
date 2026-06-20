@@ -15,13 +15,35 @@ import { useShopStore, AppliedCoupon } from '@/stores/useShopStore'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
 import { PaymentMethodForm } from '@/components/shop/checkout/payment-method-form'
 import { CheckoutLoginModal } from '@/components/shop/checkout/login-modal'
 import { CheckoutScheduleSelector } from '@/components/checkout/checkout-schedule-selector'
 import { CouponInput } from '@/components/shop/checkout/coupon-input'
 import { convertRecurringScheduleFromUTC } from '@/lib/utils/date'
 import { useTimezone } from '@/hooks/use-timezone'
-import { Loader2, Lock, Trash2, ArrowLeft, CalendarClock, User, MapPin, CreditCard } from 'lucide-react'
+import { COUNTRIES } from '@/lib/constants/countries'
+import { cn } from '@/lib/utils'
+import {
+  Loader2,
+  Lock,
+  Trash2,
+  ArrowLeft,
+  CalendarClock,
+  User,
+  MapPin,
+  CreditCard,
+  Check,
+  ChevronsUpDown,
+} from 'lucide-react'
 
 interface ScheduleSlot {
   teacherId: string
@@ -57,9 +79,6 @@ interface PlanDetails {
   includesClasses: boolean
   isDigital: boolean
 }
-
-// Niubiz opera solo en Perú: país fijo, sin selector.
-const FIXED_COUNTRY = 'Perú'
 
 const DAY_NAMES = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
 
@@ -116,7 +135,7 @@ export default function CheckoutPage() {
     address: '',
     city: '',
     zipCode: '',
-    country: FIXED_COUNTRY,
+    country: '',
   })
 
   const [scheduleSelections, setScheduleSelections] = useState<
@@ -398,7 +417,10 @@ export default function CheckoutPage() {
   // ---- Gating: qué falta para habilitar el pago ----
   const contactComplete = Boolean(formData.email && formData.firstName && formData.phone)
   const billingComplete = Boolean(
-    formData.address.trim() && formData.city.trim() && formData.zipCode.trim()
+    formData.address.trim() &&
+      formData.city.trim() &&
+      formData.zipCode.trim() &&
+      formData.country.trim()
   )
   const authOk = !requiresPlatformAccess || Boolean(session?.user)
   const canPay = contactComplete && billingComplete && allSchedulesSelected && authOk
@@ -566,7 +588,7 @@ export default function CheckoutPage() {
                 icon={<MapPin className="h-4 w-4" />}
                 step={requiresScheduleSelection ? '3' : '2'}
                 title="Facturación"
-                hint={`Requerido para el pago con tarjeta · ${FIXED_COUNTRY}`}
+                hint="Requerido para el pago con tarjeta"
               />
               <div className="mt-5 grid grid-cols-1 gap-4 rounded-xl border border-slate-200 bg-white p-6 md:grid-cols-2">
                 <Field
@@ -590,6 +612,11 @@ export default function CheckoutPage() {
                   required
                   value={formData.zipCode}
                   onChange={(v) => handleInputChange('zipCode', v)}
+                />
+                <CountryField
+                  className="md:col-span-2"
+                  value={formData.country}
+                  onChange={(v) => handleInputChange('country', v)}
                 />
               </div>
             </section>
@@ -839,6 +866,64 @@ function Field({
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
+    </div>
+  )
+}
+
+function CountryField({
+  value,
+  onChange,
+  className,
+}: {
+  value: string
+  onChange: (v: string) => void
+  className?: string
+}) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className={className}>
+      <Label className="mb-1.5 block text-sm font-medium text-slate-700">
+        País<span className="ml-0.5 text-primary">*</span>
+      </Label>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            type="button"
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className="w-full justify-between font-normal"
+          >
+            {value ? value : <span className="text-slate-400">Selecciona tu país</span>}
+            <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-[280px] p-0" align="start">
+          <Command>
+            <CommandInput placeholder="Buscar país…" />
+            <CommandList>
+              <CommandEmpty>Sin resultados.</CommandEmpty>
+              <CommandGroup>
+                {COUNTRIES.map((c) => (
+                  <CommandItem
+                    key={c.code}
+                    value={c.name}
+                    onSelect={() => {
+                      onChange(c.name)
+                      setOpen(false)
+                    }}
+                  >
+                    <Check
+                      className={cn('mr-2 h-4 w-4', value === c.name ? 'opacity-100' : 'opacity-0')}
+                    />
+                    {c.name}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
     </div>
   )
 }

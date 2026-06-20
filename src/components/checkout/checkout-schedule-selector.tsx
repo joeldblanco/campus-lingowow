@@ -383,7 +383,8 @@ export function CheckoutScheduleSelector({
 
   return (
     <div className="space-y-6">
-      {/* Selección de Profesor */}
+      <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)] lg:items-start">
+      {/* Selección de Profesor (izquierda) */}
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center gap-2">
@@ -431,8 +432,9 @@ export function CheckoutScheduleSelector({
         </CardContent>
       </Card>
 
-      {/* Selección de Horario por chips */}
-      {selectedTeacher && (
+      {/* Disponibilidad (derecha, sigue el scroll) */}
+      <div className="lg:sticky lg:top-24">
+      {selectedTeacher ? (
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-base flex items-center justify-between">
@@ -517,7 +519,15 @@ export function CheckoutScheduleSelector({
             )}
           </CardContent>
         </Card>
+      ) : (
+        <Card>
+          <CardContent className="py-12 text-center text-sm text-muted-foreground">
+            Elige un profesor para ver su disponibilidad.
+          </CardContent>
+        </Card>
       )}
+      </div>
+      </div>
 
       {/* Resumen de Selección */}
       {selectedSlots.size > 0 && (
