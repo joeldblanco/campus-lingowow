@@ -24,7 +24,9 @@ import {
   Clock,
   Globe,
   ChevronsUpDown,
+  ChevronRight,
   UserRound,
+  Sparkles,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
@@ -74,6 +76,15 @@ interface CheckoutScheduleSelectorProps {
   onScheduleSelected: (schedule: ScheduleSlot[], proration: ProrationResult) => void
 }
 
+interface Preset {
+  id: string
+  teacherId: string
+  teacherName: string
+  time: string
+  days: string[]
+  slotKeys: string[]
+}
+
 const DAYS_OF_WEEK_MAP: Record<string, number> = {
   monday: 1,
   tuesday: 2,
@@ -87,14 +98,27 @@ const DAYS_OF_WEEK_MAP: Record<string, number> = {
 const DAY_NAMES_ES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
 
 const WEEKDAYS = [
-  { key: 'monday', label: 'Lunes' },
-  { key: 'tuesday', label: 'Martes' },
-  { key: 'wednesday', label: 'Miércoles' },
-  { key: 'thursday', label: 'Jueves' },
-  { key: 'friday', label: 'Viernes' },
-  { key: 'saturday', label: 'Sábado' },
-  { key: 'sunday', label: 'Domingo' },
+  { key: 'monday', label: 'Lunes', short: 'Lun' },
+  { key: 'tuesday', label: 'Martes', short: 'Mar' },
+  { key: 'wednesday', label: 'Miércoles', short: 'Mié' },
+  { key: 'thursday', label: 'Jueves', short: 'Jue' },
+  { key: 'friday', label: 'Viernes', short: 'Vie' },
+  { key: 'saturday', label: 'Sábado', short: 'Sáb' },
+  { key: 'sunday', label: 'Domingo', short: 'Dom' },
 ]
+const DAY_ORDER = WEEKDAYS.map((d) => d.key)
+const DAY_SHORT: Record<string, string> = Object.fromEntries(WEEKDAYS.map((d) => [d.key, d.short]))
+
+type Band = 'manana' | 'tarde' | 'noche'
+const BANDS: Array<{ key: Band; label: string }> = [
+  { key: 'manana', label: 'Mañana' },
+  { key: 'tarde', label: 'Tarde' },
+  { key: 'noche', label: 'Noche' },
+]
+const bandOf = (time: string): Band => {
+  const h = parseInt(time, 10)
+  return h < 12 ? 'manana' : h < 18 ? 'tarde' : 'noche'
+}
 
 type SlotKey = `${string}-${string}`
 
@@ -128,12 +152,82 @@ const getOffset = (timezone: string): string => {
   }
 }
 
-// "09:00" -> "9:00 a. m.", "14:00" -> "2:00 p. m."
 const formatTime12 = (time: string): string => {
   const [h, m] = time.split(':').map(Number)
   const period = h < 12 ? 'a. m.' : 'p. m.'
   const h12 = h % 12 === 0 ? 12 : h % 12
   return `${h12}:${String(m).padStart(2, '0')} ${period}`
+}
+
+// Reparte n días de forma espaciada a lo largo de la semana.
+const spreadDays = (days: string[], n: number): string[] => {
+  if (days.length <= n) return days.slice(0, n)
+  const idx = new Set<number>()
+  for (let i = 0; i < n; i++) idx.add(Math.round((i * (days.length - 1)) / (n - 1 || 1)))
+  let i = 0
+  while (idx.size < n && i < days.length) {
+    idx.add(i)
+    i++
+  }
+  return Array.from(idx)
+    .sort((a, b) => a - b)
+    .slice(0, n)
+    .map((j) => days[j])
+}
+
+// Rutinas recomendadas (B): hasta 4 paquetes recurrentes que UN profesor cubre,
+// misma hora en N días repartidos, priorizando tarde/noche. Heurística sin historial.
+const buildPresets = (
+  availability: Map<string, Map<string, Set<string>>>,
+  teachers: Teacher[],
+  maxPerWeek?: number
+): Preset[] => {
+  if (!maxPerWeek || maxPerWeek < 1) return []
+  const pref = (t: string) => {
+    const h = parseInt(t, 10)
+    if (h >= 18 && h <= 20) return 0
+    if (h >= 16 && h < 22) return 1
+    if (h >= 8 && h < 12) return 2
+    return 3
+  }
+  const seen = new Set<string>()
+  const out: Preset[] = []
+  for (const teacher of teachers) {
+    const timeToDays = new Map<string, string[]>()
+    for (const day of DAY_ORDER) {
+      const dayMap = availability.get(day)
+      if (!dayMap) continue
+      for (const [time, set] of dayMap) {
+        if (set.has(teacher.id)) {
+          if (!timeToDays.has(time)) timeToDays.set(time, [])
+          timeToDays.get(time)!.push(day)
+        }
+      }
+    }
+    const candidates = Array.from(timeToDays.entries())
+      .filter(([, days]) => days.length >= maxPerWeek)
+      .sort((a, b) => pref(a[0]) - pref(b[0]) || a[0].localeCompare(b[0]))
+    for (const [time, days] of candidates) {
+      const ordered = days.sort((x, y) => DAY_ORDER.indexOf(x) - DAY_ORDER.indexOf(y))
+      const chosen = spreadDays(ordered, maxPerWeek)
+      if (chosen.length < maxPerWeek) continue
+      const slotKeys = chosen.map((d) => `${d}-${time}`)
+      const sig = slotKeys.slice().sort().join('|')
+      if (seen.has(sig)) continue
+      seen.add(sig)
+      out.push({
+        id: `${teacher.id}-${time}`,
+        teacherId: teacher.id,
+        teacherName: teacher.name,
+        time,
+        days: chosen,
+        slotKeys,
+      })
+    }
+  }
+  return out
+    .sort((a, b) => pref(a.time) - pref(b.time) || a.time.localeCompare(b.time))
+    .slice(0, 4)
 }
 
 function TimezonePicker({ value, onChange }: { value: string; onChange: (tz: string) => void }) {
@@ -183,12 +277,6 @@ function TimezonePicker({ value, onChange }: { value: string; onChange: (tz: str
   )
 }
 
-/**
- * Selección de horario "time-first": el alumno elige sus bloques semanales sobre la
- * disponibilidad COMBINADA de todos los profesores del curso, y el sistema asigna un
- * único profesor que cubra todos los bloques (regla: un solo profe por alumno).
- * Los bloques que ningún profesor elegible cubre quedan deshabilitados.
- */
 export function CheckoutScheduleSelector({
   planId,
   courseId,
@@ -206,8 +294,10 @@ export function CheckoutScheduleSelector({
   const [selectedSlots, setSelectedSlots] = useState<Set<SlotKey>>(new Set())
   const [assignedTeacherId, setAssignedTeacherId] = useState<string | null>(null)
   const [teacherPickerOpen, setTeacherPickerOpen] = useState(false)
+  const [showManual, setShowManual] = useState(false)
+  const [band, setBand] = useState<Band>('noche')
 
-  // Sparks azules al hacer clic en un slot (decorativo, respeta reduce-motion).
+  // Sparks azules al hacer clic (decorativo, respeta reduce-motion).
   const sparkIdRef = useRef(0)
   const [bursts, setBursts] = useState<
     Array<{ id: number; x: number; y: number; dots: Array<{ tx: number; ty: number }> }>
@@ -277,6 +367,11 @@ export function CheckoutScheduleSelector({
     return map
   }, [teachers, classHours])
 
+  const presets = useMemo(
+    () => buildPresets(availability, teachers, maxClassesPerWeek),
+    [availability, teachers, maxClassesPerWeek]
+  )
+
   const daysWithSlots = useMemo(
     () =>
       WEEKDAYS.map((d) => ({
@@ -286,6 +381,27 @@ export function CheckoutScheduleSelector({
     [availability]
   )
 
+  const availableBands = useMemo(
+    () =>
+      BANDS.filter((b) => daysWithSlots.some((d) => d.times.some((t) => bandOf(t) === b.key))),
+    [daysWithSlots]
+  )
+  const availableBandsKey = availableBands.map((b) => b.key).join(',')
+
+  // Default de banda: preferir Noche > Tarde > Mañana entre las disponibles.
+  useEffect(() => {
+    if (availableBands.length === 0) return
+    setBand((prev) => {
+      if (availableBands.some((b) => b.key === prev)) return prev
+      return (
+        availableBands.find((b) => b.key === 'noche')?.key ??
+        availableBands.find((b) => b.key === 'tarde')?.key ??
+        availableBands[0].key
+      )
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [availableBandsKey])
+
   const coverOf = useCallback(
     (slotKey: string): Set<string> => {
       const [day, time] = slotKey.split('-')
@@ -294,7 +410,6 @@ export function CheckoutScheduleSelector({
     [availability]
   )
 
-  // Profesores que pueden cubrir TODOS los bloques elegidos (intersección).
   const eligibleTeacherIds = useMemo(() => {
     if (selectedSlots.size === 0) return teachers.map((t) => t.id)
     let inter: Set<string> | null = null
@@ -315,7 +430,6 @@ export function CheckoutScheduleSelector({
 
   const eligibleKey = eligibleTeacherIds.join(',')
 
-  // Mantener un profesor asignado válido (dentro de los elegibles).
   useEffect(() => {
     setAssignedTeacherId((prev) =>
       prev && eligibleTeacherIds.includes(prev) ? prev : (eligibleTeacherIds[0] ?? null)
@@ -325,8 +439,8 @@ export function CheckoutScheduleSelector({
 
   const assignedTeacher = teachers.find((t) => t.id === assignedTeacherId) ?? null
   const eligibleTeachers = teachers.filter((t) => eligibleTeacherIds.includes(t.id))
+  const eligibleSet = useMemo(() => new Set(eligibleTeacherIds), [eligibleKey]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Feedback en vivo: cuántos profesores pueden cubrir TODO lo elegido + qué falta.
   const compatibleCount = selectedSlots.size === 0 ? teachers.length : eligibleTeacherIds.length
   const remaining = maxClassesPerWeek ? Math.max(0, maxClassesPerWeek - selectedSlots.size) : null
   const guidance =
@@ -338,9 +452,6 @@ export function CheckoutScheduleSelector({
           : `Elige ${remaining} clase${remaining > 1 ? 's' : ''} compatible${remaining > 1 ? 's' : ''} más`
         : 'Horario completo'
 
-  const eligibleSet = useMemo(() => new Set(eligibleTeacherIds), [eligibleKey]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Un bloque es seleccionable si, junto a lo ya elegido, sigue existiendo un profe que cubra todo.
   const isSelectable = useCallback(
     (slotKey: string): boolean => {
       if (selectedSlots.has(slotKey as SlotKey)) return true
@@ -385,17 +496,9 @@ export function CheckoutScheduleSelector({
     return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`
   }
 
-  const confirm = async () => {
-    if (selectedSlots.size === 0 || !assignedTeacherId) {
-      toast.error('Debes seleccionar al menos un horario')
-      return
-    }
-    if (maxClassesPerWeek && selectedSlots.size !== maxClassesPerWeek) {
-      toast.error(`Debes seleccionar exactamente ${maxClassesPerWeek} clases por semana`)
-      return
-    }
-    // Un solo profesor para todos los bloques.
-    const schedule: ScheduleSlot[] = Array.from(selectedSlots).map((slotKey) => {
+  // Núcleo compartido por el confirmar manual y los presets (B).
+  const runProration = async (slotKeys: string[], teacherId: string) => {
+    const schedule: ScheduleSlot[] = slotKeys.map((slotKey) => {
       const [day, time] = slotKey.split('-')
       const utc = convertRecurringScheduleToUTC(
         DAYS_OF_WEEK_MAP[day],
@@ -404,7 +507,7 @@ export function CheckoutScheduleSelector({
         displayTimezone
       )
       return {
-        teacherId: assignedTeacherId,
+        teacherId,
         dayOfWeek: utc.dayOfWeek,
         startTime: utc.startTime,
         endTime: utc.endTime,
@@ -429,6 +532,29 @@ export function CheckoutScheduleSelector({
     }
   }
 
+  const confirmManual = () => {
+    if (selectedSlots.size === 0 || !assignedTeacherId) {
+      toast.error('Debes seleccionar al menos un horario')
+      return
+    }
+    if (maxClassesPerWeek && selectedSlots.size !== maxClassesPerWeek) {
+      toast.error(`Debes seleccionar exactamente ${maxClassesPerWeek} clases por semana`)
+      return
+    }
+    runProration(Array.from(selectedSlots), assignedTeacherId)
+  }
+
+  const applyPreset = (preset: Preset) => {
+    setSelectedSlots(new Set(preset.slotKeys as SlotKey[]))
+    setAssignedTeacherId(preset.teacherId)
+    runProration(preset.slotKeys, preset.teacherId)
+  }
+
+  const presetActive = (preset: Preset) =>
+    assignedTeacherId === preset.teacherId &&
+    preset.slotKeys.length === selectedSlots.size &&
+    preset.slotKeys.every((k) => selectedSlots.has(k as SlotKey))
+
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
@@ -449,6 +575,8 @@ export function CheckoutScheduleSelector({
     )
   }
 
+  const manualOpen = showManual || presets.length === 0
+
   return (
     <>
       <style>{`@keyframes lw-spark{from{transform:translate(0,0) scale(1);opacity:1}to{transform:translate(var(--tx),var(--ty)) scale(0.2);opacity:0}}.lw-spark{position:absolute;left:0;top:0;width:6px;height:6px;margin:-3px;border-radius:9999px;background:#137fec;animation:lw-spark 600ms ease-out forwards}`}</style>
@@ -467,243 +595,346 @@ export function CheckoutScheduleSelector({
           ))}
         </div>
       )}
-    <Card>
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center justify-between text-base">
-          <div className="flex items-center gap-2">
-            <Calendar className="h-4 w-4" />
-            Elige tus horarios
-          </div>
-          {maxClassesPerWeek && (
-            <Badge variant={selectedSlots.size >= maxClassesPerWeek ? 'default' : 'secondary'}>
-              {selectedSlots.size} / {maxClassesPerWeek} clases
-            </Badge>
-          )}
-        </CardTitle>
-        <CardDescription>
-          Cada clase dura {classDuration} minutos.
-          {maxClassesPerWeek && ` Selecciona exactamente ${maxClassesPerWeek} por semana.`} Te
-          asignamos un profesor que cubra todos tus horarios.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-5">
-        {/* Zona horaria */}
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-lg border bg-muted/30 px-3 py-2.5">
-          <Clock className="h-4 w-4 text-muted-foreground" />
-          <span className="text-sm text-muted-foreground">Horarios en tu zona:</span>
-          <TimezonePicker value={displayTimezone} onChange={handleTimezoneChange} />
-          <span className="text-xs text-muted-foreground">
-            ¿No es tu zona horaria? Tócala para cambiarla y los horarios se ajustan al instante.
-          </span>
-        </div>
-
-        {/* Feedback en vivo: profesores compatibles + qué falta */}
-        <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-sm">
-          <span className="text-muted-foreground">
-            <span className="font-semibold text-foreground">{compatibleCount}</span>{' '}
-            {compatibleCount === 1 ? 'profesor puede' : 'profesores pueden'} cubrir tu horario
-          </span>
-          {guidance && (
-            <span className={cn('font-medium', remaining === 0 ? 'text-green-600' : 'text-primary')}>
-              {guidance}
-            </span>
-          )}
-        </div>
-
-        {/* Profesor asignado — altura reservada siempre para evitar saltos de layout */}
-        <div className="flex min-h-[60px] items-center justify-between gap-3 rounded-lg border bg-primary/5 px-3 py-2.5">
-          {selectedSlots.size > 0 && assignedTeacher ? (
-            <>
-              <div className="flex items-center gap-3">
-                <Avatar className="h-9 w-9">
-                  <AvatarImage src={assignedTeacher.image || undefined} />
-                  <AvatarFallback>{assignedTeacher.name[0]}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-xs text-muted-foreground">Tu profesor</p>
-                  <p className="text-sm font-medium">{assignedTeacher.name}</p>
-                </div>
-              </div>
-              {eligibleTeachers.length > 1 && (
-                <Popover open={teacherPickerOpen} onOpenChange={setTeacherPickerOpen}>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      Cambiar profesor
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-64 p-1" align="end">
-                    <p className="px-2 py-1.5 text-xs text-muted-foreground">
-                      Disponibles para tus horarios
-                    </p>
-                    {eligibleTeachers.map((t) => (
-                      <button
-                        key={t.id}
-                        type="button"
-                        onClick={() => {
-                          setAssignedTeacherId(t.id)
-                          setTeacherPickerOpen(false)
-                        }}
-                        className={cn(
-                          'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm transition-colors hover:bg-muted',
-                          t.id === assignedTeacherId && 'bg-muted'
-                        )}
-                      >
-                        <Avatar className="h-7 w-7">
-                          <AvatarImage src={t.image || undefined} />
-                          <AvatarFallback>{t.name[0]}</AvatarFallback>
-                        </Avatar>
-                        <span className="flex-1 truncate">{t.name}</span>
-                        {t.rank && (
-                          <Badge variant="secondary" className="text-[10px]">
-                            {t.rank.name}
-                          </Badge>
-                        )}
-                        {t.id === assignedTeacherId && <Check className="h-4 w-4 text-primary" />}
-                      </button>
-                    ))}
-                  </PopoverContent>
-                </Popover>
-              )}
-            </>
-          ) : (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <UserRound className="h-4 w-4" />
-              Te asignaremos un profesor que cubra tus horarios.
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center justify-between text-base">
+            <div className="flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              Elige tus horarios
             </div>
-          )}
-        </div>
+            {maxClassesPerWeek && (
+              <Badge variant={selectedSlots.size >= maxClassesPerWeek ? 'default' : 'secondary'}>
+                {selectedSlots.size} / {maxClassesPerWeek} clases
+              </Badge>
+            )}
+          </CardTitle>
+          <CardDescription>
+            Cada clase dura {classDuration} minutos.
+            {maxClassesPerWeek && ` Selecciona exactamente ${maxClassesPerWeek} por semana.`} Te
+            asignamos un profesor que cubra todos tus horarios.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-5">
+          {/* Zona horaria */}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-lg border bg-muted/30 px-3 py-2.5">
+            <Clock className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">Horarios en tu zona:</span>
+            <TimezonePicker value={displayTimezone} onChange={handleTimezoneChange} />
+            <span className="text-xs text-muted-foreground">
+              ¿No es tu zona horaria? Tócala para cambiarla y los horarios se ajustan al instante.
+            </span>
+          </div>
 
-        {/* Días en eje X — los bloques incompatibles desaparecen con animación */}
-        <div className="flex flex-wrap">
-          {daysWithSlots.map(({ key, label, times }) => {
-            const dayVisible = times.some((t) => {
-              const k = `${key}-${t}` as SlotKey
-              return selectedSlots.has(k) || isSelectable(k)
-            })
-            return (
-              <div
-                key={key}
-                className={cn(
-                  'flex flex-col overflow-hidden transition-all duration-300',
-                  dayVisible
-                    ? 'mb-3 mr-3 min-w-[120px] flex-1 basis-[120px] opacity-100'
-                    : 'mb-0 mr-0 min-w-0 max-w-0 basis-0 opacity-0'
-                )}
-              >
-                <p className="mb-2 border-b pb-2 text-center text-sm font-semibold text-foreground">
-                  {label}
-                </p>
-                {times.map((time) => {
-                  const slotKey = `${key}-${time}` as SlotKey
-                  const isSelected = selectedSlots.has(slotKey)
-                  const selectable = isSelectable(slotKey)
-                  const collapsed = !selectable && !isSelected
+          {/* B · Rutinas recomendadas */}
+          {presets.length > 0 && (
+            <div>
+              <div className="mb-1 flex items-center gap-1.5">
+                <Sparkles className="h-4 w-4 text-primary" />
+                <p className="text-sm font-semibold text-foreground">Rutinas recomendadas</p>
+              </div>
+              <p className="mb-3 text-xs text-muted-foreground">
+                Un toque y listo: te asignamos el profesor que cubre todo.
+              </p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {presets.map((preset) => {
+                  const active = presetActive(preset)
                   return (
-                    <div
-                      key={slotKey}
+                    <button
+                      key={preset.id}
+                      type="button"
+                      disabled={calculating}
+                      onClick={(e) => {
+                        spawnBurst(e)
+                        applyPreset(preset)
+                      }}
                       className={cn(
-                        'overflow-hidden transition-all duration-300',
-                        collapsed
-                          ? 'pointer-events-none mb-0 max-h-0 scale-95 opacity-0'
-                          : 'mb-2 max-h-14 opacity-100'
+                        'flex items-center justify-between gap-2 rounded-xl border p-3 text-left transition-colors',
+                        active
+                          ? 'border-primary bg-primary/5 ring-1 ring-primary'
+                          : 'border-slate-200 hover:border-primary/50 hover:bg-primary/5 dark:border-slate-700'
                       )}
                     >
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          if (!isSelected) spawnBurst(e)
-                          toggleSlot(slotKey)
-                        }}
-                        aria-pressed={isSelected}
-                        className={cn(
-                          'w-full cursor-pointer rounded-lg border px-2 py-1.5 text-center text-sm font-medium tabular-nums transition-all active:scale-95',
-                          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
-                          isSelected
-                            ? 'border-primary bg-primary text-primary-foreground'
-                            : 'border-green-300 bg-green-50 text-green-700 hover:bg-green-100 dark:border-green-700 dark:bg-green-900/20 dark:text-green-400 dark:hover:bg-green-900/30'
-                        )}
-                      >
-                        {formatTime12(time)}
-                      </button>
-                    </div>
-                  )
-                })}
-              </div>
-            )
-          })}
-        </div>
-
-        {/* Resumen + confirmar */}
-        {selectedSlots.size > 0 && (
-          <div className="space-y-3">
-            <div className="flex items-center justify-between rounded-lg bg-muted p-3">
-              <div className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium">{selectedSlots.size} horario(s) por semana</span>
-              </div>
-              <Button variant="outline" size="sm" onClick={() => setSelectedSlots(new Set())}>
-                <X className="mr-1 h-4 w-4" />
-                Limpiar
-              </Button>
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              {Array.from(selectedSlots)
-                .sort()
-                .map((slotKey) => {
-                  const [day, time] = slotKey.split('-')
-                  return (
-                    <div
-                      key={slotKey}
-                      className="flex items-center justify-between rounded-lg border p-2 text-sm"
-                    >
-                      <div>
-                        <p className="font-medium">{DAY_NAMES_ES[DAYS_OF_WEEK_MAP[day]]}</p>
-                        <p className="text-xs tabular-nums text-muted-foreground">
-                          {formatTime12(time)}
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-foreground">
+                          {preset.days.map((d) => DAY_SHORT[d]).join(' · ')}
+                        </p>
+                        <p className="truncate text-xs tabular-nums text-muted-foreground">
+                          {formatTime12(preset.time)} · con {preset.teacherName}
                         </p>
                       </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-6 w-6"
-                        onClick={() => toggleSlot(slotKey as SlotKey)}
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
+                      {active ? (
+                        <Check className="h-5 w-5 flex-shrink-0 text-primary" />
+                      ) : (
+                        <ChevronRight className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
+                      )}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Confirmación compacta cuando se eligió por preset (manual oculto) */}
+          {selectedSlots.size > 0 && !manualOpen && assignedTeacher && (
+            <div className="flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 px-3 py-2.5 text-sm">
+              <Check className="h-4 w-4 flex-shrink-0 text-primary" />
+              <span>
+                Horario con <span className="font-medium">{assignedTeacher.name}</span>. Revisa el
+                total en el resumen.
+              </span>
+            </div>
+          )}
+
+          {/* Toggle a selección manual */}
+          {presets.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowManual((v) => !v)}
+              className="text-sm font-medium text-primary hover:underline"
+            >
+              {showManual ? 'Ocultar elección manual' : 'Prefiero elegir mis horarios'}
+            </button>
+          )}
+
+          {/* A + grid manual */}
+          {manualOpen && (
+            <div className="space-y-5 border-t pt-5">
+              {/* Feedback en vivo */}
+              <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-sm">
+                <span className="text-muted-foreground">
+                  <span className="font-semibold text-foreground">{compatibleCount}</span>{' '}
+                  {compatibleCount === 1 ? 'profesor puede' : 'profesores pueden'} cubrir tu horario
+                </span>
+                {guidance && (
+                  <span
+                    className={cn('font-medium', remaining === 0 ? 'text-green-600' : 'text-primary')}
+                  >
+                    {guidance}
+                  </span>
+                )}
+              </div>
+
+              {/* Profesor asignado — altura reservada (sin saltos) */}
+              <div className="flex min-h-[60px] items-center justify-between gap-3 rounded-lg border bg-primary/5 px-3 py-2.5">
+                {selectedSlots.size > 0 && assignedTeacher ? (
+                  <>
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-9 w-9">
+                        <AvatarImage src={assignedTeacher.image || undefined} />
+                        <AvatarFallback>{assignedTeacher.name[0]}</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="text-xs text-muted-foreground">Tu profesor</p>
+                        <p className="text-sm font-medium">{assignedTeacher.name}</p>
+                      </div>
+                    </div>
+                    {eligibleTeachers.length > 1 && (
+                      <Popover open={teacherPickerOpen} onOpenChange={setTeacherPickerOpen}>
+                        <PopoverTrigger asChild>
+                          <Button variant="outline" size="sm">
+                            Cambiar profesor
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-64 p-1" align="end">
+                          <p className="px-2 py-1.5 text-xs text-muted-foreground">
+                            Disponibles para tus horarios
+                          </p>
+                          {eligibleTeachers.map((t) => (
+                            <button
+                              key={t.id}
+                              type="button"
+                              onClick={() => {
+                                setAssignedTeacherId(t.id)
+                                setTeacherPickerOpen(false)
+                              }}
+                              className={cn(
+                                'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm transition-colors hover:bg-muted',
+                                t.id === assignedTeacherId && 'bg-muted'
+                              )}
+                            >
+                              <Avatar className="h-7 w-7">
+                                <AvatarImage src={t.image || undefined} />
+                                <AvatarFallback>{t.name[0]}</AvatarFallback>
+                              </Avatar>
+                              <span className="flex-1 truncate">{t.name}</span>
+                              {t.rank && (
+                                <Badge variant="secondary" className="text-[10px]">
+                                  {t.rank.name}
+                                </Badge>
+                              )}
+                              {t.id === assignedTeacherId && <Check className="h-4 w-4 text-primary" />}
+                            </button>
+                          ))}
+                        </PopoverContent>
+                      </Popover>
+                    )}
+                  </>
+                ) : (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <UserRound className="h-4 w-4" />
+                    Te asignaremos un profesor que cubra tus horarios.
+                  </div>
+                )}
+              </div>
+
+              {/* A · Filtro Mañana / Tarde / Noche */}
+              {availableBands.length > 1 && (
+                <div className="inline-flex rounded-lg border bg-muted/30 p-1">
+                  {availableBands.map((b) => (
+                    <button
+                      key={b.key}
+                      type="button"
+                      onClick={() => setBand(b.key)}
+                      className={cn(
+                        'rounded-md px-3 py-1 text-sm font-medium transition-colors',
+                        band === b.key
+                          ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-white'
+                          : 'text-muted-foreground hover:text-foreground'
+                      )}
+                    >
+                      {b.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* Días en eje X — filtrados por banda; incompatibles desaparecen */}
+              <div className="flex flex-wrap">
+                {daysWithSlots.map(({ key, label, times }) => {
+                  const bandTimes = times.filter((t) => bandOf(t) === band)
+                  const dayVisible = bandTimes.some((t) => {
+                    const k = `${key}-${t}` as SlotKey
+                    return selectedSlots.has(k) || isSelectable(k)
+                  })
+                  return (
+                    <div
+                      key={key}
+                      className={cn(
+                        'flex flex-col overflow-hidden transition-all duration-300',
+                        dayVisible
+                          ? 'mb-3 mr-3 min-w-[120px] flex-1 basis-[120px] opacity-100'
+                          : 'mb-0 mr-0 min-w-0 max-w-0 basis-0 opacity-0'
+                      )}
+                    >
+                      <p className="mb-2 border-b pb-2 text-center text-sm font-semibold text-foreground">
+                        {label}
+                      </p>
+                      {bandTimes.map((time) => {
+                        const slotKey = `${key}-${time}` as SlotKey
+                        const isSelected = selectedSlots.has(slotKey)
+                        const selectable = isSelectable(slotKey)
+                        const collapsed = !selectable && !isSelected
+                        return (
+                          <div
+                            key={slotKey}
+                            className={cn(
+                              'overflow-hidden transition-all duration-300',
+                              collapsed
+                                ? 'pointer-events-none mb-0 max-h-0 scale-95 opacity-0'
+                                : 'mb-2 max-h-14 opacity-100'
+                            )}
+                          >
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                if (!isSelected) spawnBurst(e)
+                                toggleSlot(slotKey)
+                              }}
+                              aria-pressed={isSelected}
+                              className={cn(
+                                'w-full cursor-pointer rounded-lg border px-2 py-1.5 text-center text-sm font-medium tabular-nums transition-all active:scale-95',
+                                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
+                                isSelected
+                                  ? 'border-primary bg-primary text-primary-foreground'
+                                  : 'border-green-300 bg-green-50 text-green-700 hover:bg-green-100 dark:border-green-700 dark:bg-green-900/20 dark:text-green-400 dark:hover:bg-green-900/30'
+                              )}
+                            >
+                              {formatTime12(time)}
+                            </button>
+                          </div>
+                        )
+                      })}
                     </div>
                   )
                 })}
-            </div>
-            {maxClassesPerWeek && selectedSlots.size !== maxClassesPerWeek && (
-              <p className="text-center text-sm text-amber-600 dark:text-amber-400">
-                Debes seleccionar exactamente {maxClassesPerWeek} clases ({selectedSlots.size}{' '}
-                seleccionadas)
-              </p>
-            )}
-            <Button
-              onClick={confirm}
-              disabled={
-                calculating || (maxClassesPerWeek ? selectedSlots.size !== maxClassesPerWeek : false)
-              }
-              className="w-full"
-              size="lg"
-            >
-              {calculating ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Calculando precio…
-                </>
-              ) : (
-                <>
-                  <Check className="mr-2 h-4 w-4" />
-                  Confirmar Horario
-                </>
+              </div>
+
+              {/* Resumen + confirmar */}
+              {selectedSlots.size > 0 && (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between rounded-lg bg-muted p-3">
+                    <div className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-primary" />
+                      <span className="text-sm font-medium">
+                        {selectedSlots.size} horario(s) por semana
+                      </span>
+                    </div>
+                    <Button variant="outline" size="sm" onClick={() => setSelectedSlots(new Set())}>
+                      <X className="mr-1 h-4 w-4" />
+                      Limpiar
+                    </Button>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    {Array.from(selectedSlots)
+                      .sort()
+                      .map((slotKey) => {
+                        const [day, time] = slotKey.split('-')
+                        return (
+                          <div
+                            key={slotKey}
+                            className="flex items-center justify-between rounded-lg border p-2 text-sm"
+                          >
+                            <div>
+                              <p className="font-medium">{DAY_NAMES_ES[DAYS_OF_WEEK_MAP[day]]}</p>
+                              <p className="text-xs tabular-nums text-muted-foreground">
+                                {formatTime12(time)}
+                              </p>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-6 w-6"
+                              onClick={() => toggleSlot(slotKey as SlotKey)}
+                            >
+                              <X className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        )
+                      })}
+                  </div>
+                  {maxClassesPerWeek && selectedSlots.size !== maxClassesPerWeek && (
+                    <p className="text-center text-sm text-amber-600 dark:text-amber-400">
+                      Debes seleccionar exactamente {maxClassesPerWeek} clases ({selectedSlots.size}{' '}
+                      seleccionadas)
+                    </p>
+                  )}
+                  <Button
+                    onClick={confirmManual}
+                    disabled={
+                      calculating ||
+                      (maxClassesPerWeek ? selectedSlots.size !== maxClassesPerWeek : false)
+                    }
+                    className="w-full"
+                    size="lg"
+                  >
+                    {calculating ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Calculando precio…
+                      </>
+                    ) : (
+                      <>
+                        <Check className="mr-2 h-4 w-4" />
+                        Confirmar Horario
+                      </>
+                    )}
+                  </Button>
+                </div>
               )}
-            </Button>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </>
   )
 }
