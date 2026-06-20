@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -24,6 +24,7 @@ import {
   Clock,
   Globe,
   ChevronsUpDown,
+  UserRound,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
@@ -205,6 +206,24 @@ export function CheckoutScheduleSelector({
   const [selectedSlots, setSelectedSlots] = useState<Set<SlotKey>>(new Set())
   const [assignedTeacherId, setAssignedTeacherId] = useState<string | null>(null)
   const [teacherPickerOpen, setTeacherPickerOpen] = useState(false)
+
+  // Sparks azules al hacer clic en un slot (decorativo, respeta reduce-motion).
+  const sparkIdRef = useRef(0)
+  const [bursts, setBursts] = useState<
+    Array<{ id: number; x: number; y: number; dots: Array<{ tx: number; ty: number }> }>
+  >([])
+  const spawnBurst = (e: React.MouseEvent) => {
+    if (typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
+      return
+    const id = ++sparkIdRef.current
+    const dots = Array.from({ length: 8 }).map((_, i) => {
+      const angle = (Math.PI * 2 * i) / 8 + Math.random() * 0.5
+      const dist = 16 + Math.random() * 12
+      return { tx: Math.cos(angle) * dist, ty: Math.sin(angle) * dist }
+    })
+    setBursts((prev) => [...prev, { id, x: e.clientX, y: e.clientY, dots }])
+    window.setTimeout(() => setBursts((prev) => prev.filter((b) => b.id !== id)), 600)
+  }
 
   const classHours = Math.ceil(classDuration / 60)
 
@@ -431,6 +450,23 @@ export function CheckoutScheduleSelector({
   }
 
   return (
+    <>
+      <style>{`@keyframes lw-spark{from{transform:translate(0,0) scale(1);opacity:1}to{transform:translate(var(--tx),var(--ty)) scale(0.2);opacity:0}}.lw-spark{position:absolute;left:0;top:0;width:6px;height:6px;margin:-3px;border-radius:9999px;background:#137fec;animation:lw-spark 600ms ease-out forwards}`}</style>
+      {bursts.length > 0 && (
+        <div className="pointer-events-none fixed inset-0 z-[60]">
+          {bursts.map((b) => (
+            <div key={b.id} className="absolute" style={{ left: b.x, top: b.y }}>
+              {b.dots.map((d, i) => (
+                <span
+                  key={i}
+                  className="lw-spark"
+                  style={{ ['--tx']: `${d.tx}px`, ['--ty']: `${d.ty}px` } as React.CSSProperties}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
     <Card>
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center justify-between text-base">
@@ -474,97 +510,127 @@ export function CheckoutScheduleSelector({
           )}
         </div>
 
-        {/* Profesor asignado (cuando ya hay selección) */}
-        {selectedSlots.size > 0 && assignedTeacher && (
-          <div className="flex items-center justify-between rounded-lg border bg-primary/5 px-3 py-2.5">
-            <div className="flex items-center gap-3">
-              <Avatar className="h-9 w-9">
-                <AvatarImage src={assignedTeacher.image || undefined} />
-                <AvatarFallback>{assignedTeacher.name[0]}</AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="text-xs text-muted-foreground">Tu profesor</p>
-                <p className="text-sm font-medium">{assignedTeacher.name}</p>
+        {/* Profesor asignado — altura reservada siempre para evitar saltos de layout */}
+        <div className="flex min-h-[60px] items-center justify-between gap-3 rounded-lg border bg-primary/5 px-3 py-2.5">
+          {selectedSlots.size > 0 && assignedTeacher ? (
+            <>
+              <div className="flex items-center gap-3">
+                <Avatar className="h-9 w-9">
+                  <AvatarImage src={assignedTeacher.image || undefined} />
+                  <AvatarFallback>{assignedTeacher.name[0]}</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="text-xs text-muted-foreground">Tu profesor</p>
+                  <p className="text-sm font-medium">{assignedTeacher.name}</p>
+                </div>
               </div>
+              {eligibleTeachers.length > 1 && (
+                <Popover open={teacherPickerOpen} onOpenChange={setTeacherPickerOpen}>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" size="sm">
+                      Cambiar profesor
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-64 p-1" align="end">
+                    <p className="px-2 py-1.5 text-xs text-muted-foreground">
+                      Disponibles para tus horarios
+                    </p>
+                    {eligibleTeachers.map((t) => (
+                      <button
+                        key={t.id}
+                        type="button"
+                        onClick={() => {
+                          setAssignedTeacherId(t.id)
+                          setTeacherPickerOpen(false)
+                        }}
+                        className={cn(
+                          'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm transition-colors hover:bg-muted',
+                          t.id === assignedTeacherId && 'bg-muted'
+                        )}
+                      >
+                        <Avatar className="h-7 w-7">
+                          <AvatarImage src={t.image || undefined} />
+                          <AvatarFallback>{t.name[0]}</AvatarFallback>
+                        </Avatar>
+                        <span className="flex-1 truncate">{t.name}</span>
+                        {t.rank && (
+                          <Badge variant="secondary" className="text-[10px]">
+                            {t.rank.name}
+                          </Badge>
+                        )}
+                        {t.id === assignedTeacherId && <Check className="h-4 w-4 text-primary" />}
+                      </button>
+                    ))}
+                  </PopoverContent>
+                </Popover>
+              )}
+            </>
+          ) : (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <UserRound className="h-4 w-4" />
+              Te asignaremos un profesor que cubra tus horarios.
             </div>
-            {eligibleTeachers.length > 1 && (
-              <Popover open={teacherPickerOpen} onOpenChange={setTeacherPickerOpen}>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" size="sm">
-                    Cambiar profesor
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-64 p-1" align="end">
-                  <p className="px-2 py-1.5 text-xs text-muted-foreground">
-                    Disponibles para tus horarios
-                  </p>
-                  {eligibleTeachers.map((t) => (
-                    <button
-                      key={t.id}
-                      type="button"
-                      onClick={() => {
-                        setAssignedTeacherId(t.id)
-                        setTeacherPickerOpen(false)
-                      }}
+          )}
+        </div>
+
+        {/* Días en eje X — los bloques incompatibles desaparecen con animación */}
+        <div className="flex flex-wrap">
+          {daysWithSlots.map(({ key, label, times }) => {
+            const dayVisible = times.some((t) => {
+              const k = `${key}-${t}` as SlotKey
+              return selectedSlots.has(k) || isSelectable(k)
+            })
+            return (
+              <div
+                key={key}
+                className={cn(
+                  'flex flex-col overflow-hidden transition-all duration-300',
+                  dayVisible
+                    ? 'mb-3 mr-3 min-w-[120px] flex-1 basis-[120px] opacity-100'
+                    : 'mb-0 mr-0 min-w-0 max-w-0 basis-0 opacity-0'
+                )}
+              >
+                <p className="mb-2 border-b pb-2 text-center text-sm font-semibold text-foreground">
+                  {label}
+                </p>
+                {times.map((time) => {
+                  const slotKey = `${key}-${time}` as SlotKey
+                  const isSelected = selectedSlots.has(slotKey)
+                  const selectable = isSelectable(slotKey)
+                  const collapsed = !selectable && !isSelected
+                  return (
+                    <div
+                      key={slotKey}
                       className={cn(
-                        'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm transition-colors hover:bg-muted',
-                        t.id === assignedTeacherId && 'bg-muted'
+                        'overflow-hidden transition-all duration-300',
+                        collapsed
+                          ? 'pointer-events-none mb-0 max-h-0 scale-95 opacity-0'
+                          : 'mb-2 max-h-14 opacity-100'
                       )}
                     >
-                      <Avatar className="h-7 w-7">
-                        <AvatarImage src={t.image || undefined} />
-                        <AvatarFallback>{t.name[0]}</AvatarFallback>
-                      </Avatar>
-                      <span className="flex-1 truncate">{t.name}</span>
-                      {t.rank && (
-                        <Badge variant="secondary" className="text-[10px]">
-                          {t.rank.name}
-                        </Badge>
-                      )}
-                      {t.id === assignedTeacherId && <Check className="h-4 w-4 text-primary" />}
-                    </button>
-                  ))}
-                </PopoverContent>
-              </Popover>
-            )}
-          </div>
-        )}
-
-        {/* Días en eje X con chips de hora (envuelven, sin scroll horizontal) */}
-        <div className="flex flex-wrap gap-3">
-          {daysWithSlots.map(({ key, label, times }) => (
-            <div key={key} className="flex min-w-[120px] flex-1 basis-[120px] flex-col gap-2">
-              <p className="border-b pb-2 text-center text-sm font-semibold text-foreground">
-                {label}
-              </p>
-              {times.map((time) => {
-                const slotKey = `${key}-${time}` as SlotKey
-                const isSelected = selectedSlots.has(slotKey)
-                const selectable = isSelectable(slotKey)
-                return (
-                  <button
-                    key={slotKey}
-                    type="button"
-                    onClick={() => toggleSlot(slotKey)}
-                    disabled={!selectable}
-                    aria-pressed={isSelected}
-                    className={cn(
-                      'rounded-lg border px-2 py-1.5 text-center text-sm font-medium tabular-nums transition-colors',
-                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
-                      isSelected
-                        ? 'border-primary bg-primary text-primary-foreground'
-                        : selectable
-                          ? 'border-green-300 bg-green-50 text-green-700 hover:bg-green-100 dark:border-green-700 dark:bg-green-900/20 dark:text-green-400 dark:hover:bg-green-900/30'
-                          : 'cursor-not-allowed border-slate-200 bg-slate-50 text-slate-300 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-600'
-                    )}
-                    title={!selectable ? 'Otro profesor — no compatible con tu selección actual' : undefined}
-                  >
-                    {formatTime12(time)}
-                  </button>
-                )
-              })}
-            </div>
-          ))}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          if (!isSelected) spawnBurst(e)
+                          toggleSlot(slotKey)
+                        }}
+                        aria-pressed={isSelected}
+                        className={cn(
+                          'w-full cursor-pointer rounded-lg border px-2 py-1.5 text-center text-sm font-medium tabular-nums transition-all active:scale-95',
+                          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
+                          isSelected
+                            ? 'border-primary bg-primary text-primary-foreground'
+                            : 'border-green-300 bg-green-50 text-green-700 hover:bg-green-100 dark:border-green-700 dark:bg-green-900/20 dark:text-green-400 dark:hover:bg-green-900/30'
+                        )}
+                      >
+                        {formatTime12(time)}
+                      </button>
+                    </div>
+                  )
+                })}
+              </div>
+            )
+          })}
         </div>
 
         {/* Resumen + confirmar */}
@@ -638,5 +704,6 @@ export function CheckoutScheduleSelector({
         )}
       </CardContent>
     </Card>
+    </>
   )
 }
