@@ -42,6 +42,9 @@ interface Teacher {
   rank: { name: string; level: number } | null
   availability: Record<string, Array<{ startTime: string; endTime: string }>>
   bookedSlots?: Record<string, Array<{ startTime: string; endTime: string }>>
+  // Clases puntuales (p.ej. de prueba) sin horario recurrente: no bloquean el
+  // slot semanal, solo se indican al cliente.
+  oneOffSlots?: Record<string, Array<{ startTime: string; endTime: string; date: string }>>
 }
 
 interface ScheduleSlot {
@@ -441,6 +444,26 @@ export function CheckoutScheduleSelector({
   const eligibleTeachers = teachers.filter((t) => eligibleTeacherIds.includes(t.id))
   const eligibleSet = useMemo(() => new Set(eligibleTeacherIds), [eligibleKey]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Mapa `${dayKey}-${HH:00}` -> fecha de una clase puntual. Es la grilla COMBINADA
+  // de todos los profes del curso, así que agregamos las puntuales de todos como
+  // aviso (no bloquea: una clase puntual en una fecha no ocupa el slot semanal).
+  const oneOffByHour = useMemo(() => {
+    const map = new Map<string, string>()
+    for (const t of teachers) {
+      if (!t.oneOffSlots) continue
+      for (const [dayKey, slots] of Object.entries(t.oneOffSlots)) {
+        for (const s of slots) {
+          const [sh] = s.startTime.split(':').map(Number)
+          const [eh] = s.endTime.split(':').map(Number)
+          for (let h = sh; h < eh; h++) {
+            map.set(`${dayKey}-${String(h).padStart(2, '0')}:00`, s.date)
+          }
+        }
+      }
+    }
+    return map
+  }, [teachers])
+
   const compatibleCount = selectedSlots.size === 0 ? teachers.length : eligibleTeacherIds.length
   const remaining = maxClassesPerWeek ? Math.max(0, maxClassesPerWeek - selectedSlots.size) : null
   const guidance =
@@ -798,6 +821,14 @@ export function CheckoutScheduleSelector({
                 </div>
               )}
 
+              {oneOffByHour.size > 0 && (
+                <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <span className="h-2 w-2 flex-shrink-0 rounded-full bg-amber-500" aria-hidden="true" />
+                  El punto ámbar indica que un profesor tiene una clase puntual ese día y hora (no
+                  bloquea tu horario semanal).
+                </p>
+              )}
+
               {/* Días en eje X — filtrados por banda; incompatibles desaparecen */}
               <div className="flex flex-wrap">
                 {daysWithSlots.map(({ key, label, times }) => {
@@ -824,6 +855,7 @@ export function CheckoutScheduleSelector({
                         const isSelected = selectedSlots.has(slotKey)
                         const selectable = isSelectable(slotKey)
                         const collapsed = !selectable && !isSelected
+                        const oneOffDate = oneOffByHour.get(slotKey)
                         return (
                           <div
                             key={slotKey}
@@ -841,8 +873,13 @@ export function CheckoutScheduleSelector({
                                 toggleSlot(slotKey)
                               }}
                               aria-pressed={isSelected}
+                              title={
+                                oneOffDate
+                                  ? `Un profesor tiene una clase puntual el ${oneOffDate} a esta hora`
+                                  : undefined
+                              }
                               className={cn(
-                                'w-full cursor-pointer rounded-lg border px-2 py-1.5 text-center text-sm font-medium tabular-nums transition-all active:scale-95',
+                                'relative w-full cursor-pointer rounded-lg border px-2 py-1.5 text-center text-sm font-medium tabular-nums transition-all active:scale-95',
                                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
                                 isSelected
                                   ? 'border-primary bg-primary text-primary-foreground'
@@ -850,6 +887,12 @@ export function CheckoutScheduleSelector({
                               )}
                             >
                               {formatTime12(time)}
+                              {oneOffDate && (
+                                <span
+                                  className="absolute right-1 top-1 h-2 w-2 rounded-full bg-amber-500 ring-2 ring-white dark:ring-slate-900"
+                                  aria-hidden="true"
+                                />
+                              )}
                             </button>
                           </div>
                         )

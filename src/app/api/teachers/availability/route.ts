@@ -73,6 +73,27 @@ export async function GET(req: NextRequest) {
       console.log('[API] Verifica la tabla teacher_courses')
     }
 
+    // Clases puntuales / de prueba (sin inscripción recurrente) futuras de estos
+    // profesores. NO bloquean el slot semanal recurrente, pero se INDICAN al
+    // cliente para que sepa que el profe tiene una clase puntual ese día/hora.
+    const teacherIds = teacherCourses.map((tc) => tc.teacher.id)
+    const todayStr = new Date().toISOString().slice(0, 10)
+    const oneOffBookings = await db.classBooking.findMany({
+      where: {
+        teacherId: { in: teacherIds },
+        status: { not: 'CANCELLED' },
+        enrollmentId: null,
+        day: { gte: todayStr },
+      },
+      select: { teacherId: true, day: true, timeSlot: true },
+    })
+    const oneOffByTeacher = new Map<string, Array<{ day: string; timeSlot: string }>>()
+    for (const b of oneOffBookings) {
+      const list = oneOffByTeacher.get(b.teacherId) ?? []
+      list.push({ day: b.day, timeSlot: b.timeSlot })
+      oneOffByTeacher.set(b.teacherId, list)
+    }
+
     // Formatear la respuesta con disponibilidad agrupada
     const teachersWithAvailability = teacherCourses.map((tc) => {
       const teacher = tc.teacher
@@ -191,6 +212,28 @@ export async function GET(req: NextRequest) {
 
       console.log(`[API] Horarios ocupados:`, bookedSlotsByDay)
 
+      // Clases puntuales (solo indicación): día de semana → hora local + fecha.
+      const oneOffSlotsByDay: Record<
+        string,
+        Array<{ startTime: string; endTime: string; date: string }>
+      > = {}
+      for (const b of oneOffByTeacher.get(teacher.id) ?? []) {
+        try {
+          const localData = convertTimeSlotFromUTC(b.day, b.timeSlot, timezone)
+          const classDate = new Date(localData.day + 'T12:00:00')
+          const dayName = classDate.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase()
+          const [startTime, endTime] = localData.timeSlot.split('-')
+          if (!oneOffSlotsByDay[dayName]) oneOffSlotsByDay[dayName] = []
+          oneOffSlotsByDay[dayName].push({
+            startTime: startTime.trim(),
+            endTime: endTime.trim(),
+            date: localData.day,
+          })
+        } catch (error) {
+          console.error(`[API] Error converting one-off booking: ${error}`)
+        }
+      }
+
       return {
         id: teacher.id,
         name: formatFullName(teacher.name, teacher.lastName),
@@ -200,6 +243,7 @@ export async function GET(req: NextRequest) {
         rank: teacher.teacherRank,
         availability: availabilityByDay,
         bookedSlots: bookedSlotsByDay,
+        oneOffSlots: oneOffSlotsByDay,
       }
     })
 
