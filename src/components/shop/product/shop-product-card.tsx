@@ -5,8 +5,10 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { useShopStore } from '@/stores/useShopStore'
+import { SUPPORTED_LANGUAGES } from '@/lib/constants/languages'
 import { Course, Merge, Product } from '@/types/shop'
-import { Check, ShoppingCart } from 'lucide-react'
+import { Check, ChevronRight, ShoppingCart } from 'lucide-react'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -23,6 +25,51 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
   const minPrice = hasPlans ? Math.min(...product.plans.map((p) => p.price)) : (product.price ?? 0)
   const productUrl = hasPlans ? `/pricing/?productId=${product.id}` : `/checkout/${product.id}`
   const isSubscription = product.paymentType === 'RECURRING'
+
+  // --- Picker de planes inline (clases por semana + idioma) ---
+  const [expanded, setExpanded] = useState(false)
+  const plans = product.plans ?? []
+  // Idiomas con pricing activo a lo largo de los planes del producto
+  const languageCodes = Array.from(
+    new Set(plans.flatMap((p) => (p.pricing ?? []).filter((pr) => pr.isActive).map((pr) => pr.language)))
+  )
+  const hasLangPricing = languageCodes.length > 0
+  const [selectedLang, setSelectedLang] = useState(languageCodes[0] ?? 'en')
+
+  const priceForLanguage = (plan: (typeof plans)[number], lang: string) => {
+    const match = plan.pricing?.find((pr) => pr.language === lang && pr.isActive)
+    return Number(match?.price ?? plan.price)
+  }
+
+  const visiblePlans = (
+    hasLangPricing
+      ? plans.filter((p) => p.pricing?.some((pr) => pr.language === selectedLang && pr.isActive))
+      : plans
+  )
+    .slice()
+    .sort((a, b) => (a.classesPerWeek ?? 99) - (b.classesPerWeek ?? 99))
+
+  // Selección de un plan inline: compra directa al checkout con el idioma elegido.
+  const handlePickPlan = (e: React.MouseEvent, plan: (typeof plans)[number]) => {
+    e.preventDefault()
+    e.stopPropagation()
+    buyNow({
+      product: {
+        id: product.id,
+        title: product.name,
+        description: product.description,
+        image: product.image,
+      },
+      plan: {
+        id: plan.id,
+        name: plan.name,
+        price: priceForLanguage(plan, selectedLang),
+      },
+      quantity: 1,
+      language: hasLangPricing ? selectedLang : undefined,
+    })
+    router.push('/shop/cart/checkout')
+  }
 
   // Compra directa para productos sin planes: arma un plan por defecto y va al checkout.
   const handleBuyNow = (e: React.MouseEvent) => {
@@ -139,26 +186,90 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
 
         {/* CTA Button */}
         {hasPlans ? (
-          <Button
-            asChild
-            variant={isSubscription ? 'default' : 'outline'}
-            className={cn(
-              'w-full mt-auto',
-              isSubscription
-                ? 'bg-blue-500 hover:bg-blue-600 text-white'
-                : 'border-gray-300 text-gray-700 hover:bg-gray-50',
-              !isAvailable && 'opacity-50 pointer-events-none'
-            )}
-            disabled={!isAvailable}
-          >
-            <Link href={productUrl}>
-              {isScheduled
-                ? 'Próximamente'
-                : isExpired
-                  ? 'No disponible'
-                  : 'Ver Planes'}
-            </Link>
-          </Button>
+          !isAvailable ? (
+            <Button variant="outline" disabled className="w-full mt-auto opacity-50">
+              {isScheduled ? 'Próximamente' : 'No disponible'}
+            </Button>
+          ) : !expanded ? (
+            <Button
+              variant={isSubscription ? 'default' : 'outline'}
+              className={cn(
+                'w-full mt-auto',
+                isSubscription
+                  ? 'bg-blue-500 hover:bg-blue-600 text-white'
+                  : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+              )}
+              onClick={(e) => {
+                e.preventDefault()
+                setExpanded(true)
+              }}
+            >
+              Ver Planes
+            </Button>
+          ) : (
+            <div className="mt-auto space-y-3">
+              {/* Toggle de idioma (solo si hay pricing por idioma) */}
+              {languageCodes.length > 1 && (
+                <div className="flex gap-1 rounded-lg bg-gray-100 p-1">
+                  {languageCodes.map((code) => {
+                    const lang = SUPPORTED_LANGUAGES.find((l) => l.code === code)
+                    const active = selectedLang === code
+                    return (
+                      <button
+                        key={code}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setSelectedLang(code)
+                        }}
+                        className={cn(
+                          'flex-1 rounded-md px-2 py-1 text-sm font-medium transition-colors',
+                          active
+                            ? 'bg-white text-gray-900 shadow-sm'
+                            : 'text-gray-500 hover:text-gray-700'
+                        )}
+                      >
+                        {lang?.flag} {lang?.name ?? code}
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+
+              <p className="text-sm font-semibold text-gray-900">¿Cuántas clases por semana?</p>
+
+              <div className="space-y-2">
+                {visiblePlans.map((plan) => (
+                  <button
+                    key={plan.id}
+                    onClick={(e) => handlePickPlan(e, plan)}
+                    className="flex w-full items-center justify-between rounded-lg border border-gray-200 px-3 py-2 text-left transition-colors hover:border-blue-500 hover:bg-blue-50"
+                  >
+                    <span className="text-sm font-medium text-gray-900">
+                      {plan.classesPerWeek ? (
+                        <>
+                          {plan.classesPerWeek} clases
+                          <span className="text-gray-500"> / semana</span>
+                        </>
+                      ) : (
+                        plan.name
+                      )}
+                    </span>
+                    <span className="text-sm font-bold text-gray-900">
+                      ${priceForLanguage(plan, selectedLang).toFixed(2)}
+                    </span>
+                  </button>
+                ))}
+              </div>
+
+              <Link
+                href={productUrl}
+                className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700"
+              >
+                Ver planes en detalle
+                <ChevronRight className="h-4 w-4" />
+              </Link>
+            </div>
+          )
         ) : (
           <Button
             variant={isSubscription ? 'default' : 'outline'}

@@ -77,6 +77,7 @@ export function useFilterCourses() {
               autoRenewal: plan.autoRenewal,
               billingCycle: plan.billingCycle,
               courseId: plan.courseId,
+              pricing: plan.pricing,
               features: (plan.features || []).map((f: string | { feature: { name: string } }) =>
                 typeof f === 'string' ? f : f.feature?.name || ''
               ),
