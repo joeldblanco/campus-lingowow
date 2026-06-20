@@ -469,33 +469,33 @@ export function CheckoutScheduleSelector({
                 Este profesor no tiene horarios disponibles. Prueba con otro profesor.
               </p>
             ) : (
-              <div className="space-y-4">
+              <div className="flex gap-3 overflow-x-auto pb-2">
                 {daysWithAvailability.map(({ key, label, times }) => (
-                  <div key={key}>
-                    <p className="mb-2 text-sm font-medium text-foreground">{label}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {times.map((time) => {
-                        const slotKey = `${key}-${time}` as SlotKey
-                        const isSelected = selectedSlots.has(slotKey)
-                        return (
-                          <button
-                            key={slotKey}
-                            type="button"
-                            onClick={() => toggleSlot(slotKey)}
-                            aria-pressed={isSelected}
-                            className={cn(
-                              'rounded-lg border px-3 py-1.5 text-sm font-medium tabular-nums transition-colors',
-                              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
-                              isSelected
-                                ? 'border-primary bg-primary text-primary-foreground'
-                                : 'border-slate-200 bg-white text-slate-700 hover:border-primary/50 hover:bg-primary/5 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200'
-                            )}
-                          >
-                            {formatTime12(time)}
-                          </button>
-                        )
-                      })}
-                    </div>
+                  <div key={key} className="flex min-w-[112px] flex-1 flex-col gap-2">
+                    <p className="border-b pb-2 text-center text-sm font-semibold text-foreground">
+                      {label}
+                    </p>
+                    {times.map((time) => {
+                      const slotKey = `${key}-${time}` as SlotKey
+                      const isSelected = selectedSlots.has(slotKey)
+                      return (
+                        <button
+                          key={slotKey}
+                          type="button"
+                          onClick={() => toggleSlot(slotKey)}
+                          aria-pressed={isSelected}
+                          className={cn(
+                            'rounded-lg border px-2 py-1.5 text-center text-sm font-medium tabular-nums transition-colors',
+                            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
+                            isSelected
+                              ? 'border-primary bg-primary text-primary-foreground'
+                              : 'border-green-300 bg-green-50 text-green-700 hover:bg-green-100 dark:border-green-700 dark:bg-green-900/20 dark:text-green-400 dark:hover:bg-green-900/30'
+                          )}
+                        >
+                          {formatTime12(time)}
+                        </button>
+                      )
+                    })}
                   </div>
                 ))}
               </div>
