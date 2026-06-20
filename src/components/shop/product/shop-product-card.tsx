@@ -7,7 +7,14 @@ import { cn } from '@/lib/utils'
 import { useShopStore } from '@/stores/useShopStore'
 import { SUPPORTED_LANGUAGES } from '@/lib/constants/languages'
 import { Course, Merge, Product } from '@/types/shop'
-import { hasRecommendedPlan } from '@/lib/pricing-helpers'
+import {
+  hasRecommendedPlan,
+  isAnnualPlan,
+  hasBillingToggle,
+  filterByBillingView,
+  annualSavingsPercent,
+  type BillingView,
+} from '@/lib/pricing-helpers'
 import { Check, ChevronRight, ShieldCheck, ShoppingCart } from 'lucide-react'
 import { useState } from 'react'
 import Image from 'next/image'
@@ -36,17 +43,23 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
   )
   const hasLangPricing = languageCodes.length > 0
   const [selectedLang, setSelectedLang] = useState(languageCodes[0] ?? 'en')
+  const [billingView, setBillingView] = useState<BillingView>('monthly')
 
   const priceForLanguage = (plan: (typeof plans)[number], lang: string) => {
     const match = plan.pricing?.find((pr) => pr.language === lang && pr.isActive)
     return Number(match?.price ?? plan.price)
   }
 
-  const visiblePlans = (
-    hasLangPricing
-      ? plans.filter((p) => p.pricing?.some((pr) => pr.language === selectedLang && pr.isActive))
-      : plans
-  )
+  // Planes del idioma elegido (aún sin filtrar por ciclo de facturación).
+  const langPlans = hasLangPricing
+    ? plans.filter((p) => p.pricing?.some((pr) => pr.language === selectedLang && pr.isActive))
+    : plans
+
+  // El toggle Mensual/Anual solo aparece si existen AMBOS ciclos reales.
+  const showBillingToggle = hasBillingToggle(langPlans)
+  const annualSavings = annualSavingsPercent(langPlans, (p) => priceForLanguage(p, selectedLang))
+
+  const visiblePlans = (showBillingToggle ? filterByBillingView(langPlans, billingView) : langPlans)
     .slice()
     .sort((a, b) => (a.classesPerWeek ?? 99) - (b.classesPerWeek ?? 99))
 
@@ -232,30 +245,74 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
                 </div>
               )}
 
+              {/* Toggle Mensual / Anual (solo si existen ambos ciclos reales) */}
+              {showBillingToggle && (
+                <div className="flex gap-1 rounded-lg bg-gray-100 p-1">
+                  {(['monthly', 'annual'] as BillingView[]).map((view) => {
+                    const active = billingView === view
+                    return (
+                      <button
+                        key={view}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setBillingView(view)
+                        }}
+                        className={cn(
+                          'flex flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium transition-colors',
+                          active
+                            ? 'bg-white text-gray-900 shadow-sm'
+                            : 'text-gray-500 hover:text-gray-700'
+                        )}
+                      >
+                        {view === 'monthly' ? 'Mensual' : 'Anual'}
+                        {view === 'annual' && annualSavings && (
+                          <span className="rounded-full bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700">
+                            -{annualSavings}%
+                          </span>
+                        )}
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+
               <p className="text-sm font-semibold text-gray-900">¿Cuántas clases por semana?</p>
 
               <div className="space-y-2">
-                {visiblePlans.map((plan) => (
-                  <button
-                    key={plan.id}
-                    onClick={(e) => handlePickPlan(e, plan)}
-                    className="flex w-full items-center justify-between rounded-lg border border-gray-200 px-3 py-2 text-left transition-colors hover:border-blue-500 hover:bg-blue-50"
-                  >
-                    <span className="text-sm font-medium text-gray-900">
-                      {plan.classesPerWeek ? (
-                        <>
-                          {plan.classesPerWeek} clases
-                          <span className="text-gray-500"> / semana</span>
-                        </>
-                      ) : (
-                        plan.name
-                      )}
-                    </span>
-                    <span className="text-sm font-bold text-gray-900">
-                      ${priceForLanguage(plan, selectedLang).toFixed(2)}
-                    </span>
-                  </button>
-                ))}
+                {visiblePlans.map((plan) => {
+                  const annual = isAnnualPlan(plan)
+                  const raw = priceForLanguage(plan, selectedLang)
+                  const perMonth = annual ? raw / 12 : raw
+                  return (
+                    <button
+                      key={plan.id}
+                      onClick={(e) => handlePickPlan(e, plan)}
+                      className="flex w-full items-center justify-between gap-2 rounded-lg border border-gray-200 px-3 py-2 text-left transition-colors hover:border-blue-500 hover:bg-blue-50"
+                    >
+                      <span className="text-sm font-medium text-gray-900">
+                        {plan.classesPerWeek ? (
+                          <>
+                            {plan.classesPerWeek} clases
+                            <span className="text-gray-500"> / semana</span>
+                          </>
+                        ) : (
+                          plan.name
+                        )}
+                      </span>
+                      <span className="shrink-0 text-right">
+                        <span className="block text-sm font-bold text-gray-900">
+                          ${perMonth.toFixed(2)}
+                          <span className="text-xs font-normal text-gray-500">/mes</span>
+                        </span>
+                        {annual && (
+                          <span className="block text-[10px] leading-tight text-gray-500">
+                            cobrado anualmente · ${raw.toFixed(2)}/año
+                          </span>
+                        )}
+                      </span>
+                    </button>
+                  )
+                })}
               </div>
 
               <Link

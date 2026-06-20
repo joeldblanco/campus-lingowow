@@ -8,6 +8,7 @@ import {
   hasRecommendedPlan,
   getRecommendedPlanId,
   annualFromMonthly,
+  annualSavingsPercent,
   type PlanLike,
 } from './pricing-helpers'
 
@@ -135,5 +136,40 @@ describe('annualFromMonthly', () => {
 
   it('makes no saving when monthsCharged is 12', () => {
     expect(annualFromMonthly(15, 12)).toEqual({ price: 180, comparePrice: 180 })
+  })
+})
+
+describe('annualSavingsPercent', () => {
+  type Priced = PlanLike & { price: number }
+  const priced = (o: Partial<PlanLike> & { id: string; price: number }): Priced => ({ ...o })
+  const priceOf = (p: Priced) => p.price
+
+  it('returns annual-per-month saving vs the matching monthly tier', () => {
+    const plans = [
+      priced({ id: 'm2', billingCycle: 'MONTHLY', classesPerWeek: 2, price: 160 }),
+      priced({ id: 'y2', billingCycle: 'ANNUAL', classesPerWeek: 2, price: 1600 }),
+    ]
+    // 1600/12 = 133.33 vs 160 => ~17%
+    expect(annualSavingsPercent(plans, priceOf)).toBe(17)
+  })
+
+  it('takes the max across tiers and ignores annual plans without a monthly match', () => {
+    const plans = [
+      priced({ id: 'm2', billingCycle: 'MONTHLY', classesPerWeek: 2, price: 100 }),
+      priced({ id: 'y2', billingCycle: 'ANNUAL', classesPerWeek: 2, price: 1080 }), // 90/mo => 10%
+      priced({ id: 'm3', billingCycle: 'MONTHLY', classesPerWeek: 3, price: 100 }),
+      priced({ id: 'y3', billingCycle: 'ANNUAL', classesPerWeek: 3, price: 960 }), // 80/mo => 20%
+      priced({ id: 'y9', billingCycle: 'ANNUAL', classesPerWeek: 9, price: 500 }), // no monthly match
+    ]
+    expect(annualSavingsPercent(plans, priceOf)).toBe(20)
+  })
+
+  it('returns null when there is no annual/monthly pair', () => {
+    expect(
+      annualSavingsPercent(
+        [priced({ id: 'm', billingCycle: 'MONTHLY', classesPerWeek: 2, price: 160 })],
+        priceOf
+      )
+    ).toBeNull()
   })
 })

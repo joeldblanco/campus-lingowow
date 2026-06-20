@@ -13,6 +13,7 @@ export interface PlanLike {
   isPopular?: boolean | null
   billingCycle?: string | null
   sortOrder?: number | null
+  classesPerWeek?: number | null
 }
 
 /** Billing views the toggle can offer. */
@@ -89,6 +90,31 @@ export function annualFromMonthly(
     price: round2(monthlyPrice * monthsCharged),
     comparePrice: round2(monthlyPrice * 12),
   }
+}
+
+/**
+ * Highest annual saving %, comparing each annual plan's per-month price
+ * (annualPrice / 12) against the matching monthly tier (same classesPerWeek).
+ * `priceOf` resolves the comparable price (e.g. for the selected language).
+ * Returns null when there is no comparable monthly/annual pair.
+ */
+export function annualSavingsPercent<T extends PlanLike>(
+  plans: T[],
+  priceOf: (plan: T) => number
+): number | null {
+  let best = 0
+  for (const annual of plans.filter(isAnnualPlan)) {
+    const monthly = plans.find(
+      (p) => !isAnnualPlan(p) && p.classesPerWeek === annual.classesPerWeek
+    )
+    if (!monthly) continue
+    const monthlyPrice = priceOf(monthly)
+    const annualPerMonth = priceOf(annual) / 12
+    if (monthlyPrice > 0) {
+      best = Math.max(best, Math.round((1 - annualPerMonth / monthlyPrice) * 100))
+    }
+  }
+  return best > 0 ? best : null
 }
 
 /**
