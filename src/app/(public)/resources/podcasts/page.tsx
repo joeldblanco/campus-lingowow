@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Headphones, Play } from 'lucide-react'
-import Link from 'next/link'
+import NewsletterSignup from '@/components/public-components/newsletter-signup'
 
 export default function PodcastsPage() {
   const podcasts = [
@@ -91,23 +91,24 @@ export default function PodcastsPage() {
           </div>
         </section>
 
-        {/* Coming Soon */}
+        {/* Coming Soon + lead capture */}
         <section className="w-full py-12 md:py-16 bg-slate-50">
           <div className="container px-4 md:px-6">
-            <div className="max-w-2xl mx-auto text-center space-y-4">
+            <div className="max-w-2xl mx-auto space-y-6 text-center">
               <Headphones className="h-16 w-16 text-primary mx-auto" />
               <h2 className="text-3xl font-bold">Próximamente</h2>
               <p className="text-muted-foreground">
-                Estamos trabajando en una biblioteca completa de podcasts educativos. 
-                Suscríbete a nuestros cursos para ser el primero en acceder cuando estén disponibles.
+                Estamos preparando una biblioteca completa de podcasts educativos.
+                Déjanos tu correo y serás el primero en escucharlos.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                <Link href="/courses">
-                  <Button size="lg">Ver Cursos</Button>
-                </Link>
-                <Link href="/contact">
-                  <Button size="lg" variant="outline">Mantenerme Informado</Button>
-                </Link>
+              <div className="text-left">
+                <NewsletterSignup
+                  variant="panel"
+                  source="resources-podcasts"
+                  title="Avísame cuando publiquemos los podcasts"
+                  description="Te escribimos en cuanto el primer episodio esté disponible."
+                  buttonLabel="Avísame"
+                />
               </div>
             </div>
           </div>

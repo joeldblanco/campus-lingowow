@@ -3,8 +3,9 @@ import Footer from '@/components/public-components/footer'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { BookOpen, Download, FileText, Video, Headphones } from 'lucide-react'
+import { BookOpen, FileText, Video, Headphones } from 'lucide-react'
 import Link from 'next/link'
+import NewsletterSignup from '@/components/public-components/newsletter-signup'
 
 export default function BibliotecaPage() {
   const recursos = [
@@ -94,14 +95,44 @@ export default function BibliotecaPage() {
                       </div>
                     </CardContent>
                     <CardFooter>
-                      <Button className="w-full" variant="outline" disabled>
-                        <Download className="h-4 w-4 mr-2" />
-                        Próximamente
+                      <Button asChild className="w-full" variant="outline">
+                        <Link href="/library">
+                          <BookOpen className="h-4 w-4 mr-2" />
+                          Explorar biblioteca
+                        </Link>
                       </Button>
                     </CardFooter>
                   </Card>
                 )
               })}
+            </div>
+          </div>
+        </section>
+
+        {/* Real materials + lead capture */}
+        <section className="w-full py-12 md:py-16">
+          <div className="container px-4 md:px-6">
+            <div className="max-w-3xl mx-auto space-y-6">
+              {/* Materiales reales disponibles ahora */}
+              <div className="flex flex-col gap-4 rounded-2xl border bg-background p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+                <div>
+                  <h2 className="text-xl font-bold">¿Buscas materiales disponibles ahora?</h2>
+                  <p className="text-muted-foreground mt-1">
+                    Explora nuestra biblioteca digital con artículos, guías y videos ya publicados.
+                  </p>
+                </div>
+                <Button asChild size="lg" className="shrink-0">
+                  <Link href="/library">Ver biblioteca digital</Link>
+                </Button>
+              </div>
+
+              <NewsletterSignup
+                variant="panel"
+                source="resources-library"
+                title="¿Te aviso cuando agreguemos nuevas descargas?"
+                description="Te escribimos en cuanto publiquemos nuevas guías, audios y videos para descargar."
+                buttonLabel="Avísame"
+              />
             </div>
           </div>
         </section>

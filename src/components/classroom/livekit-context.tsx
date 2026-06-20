@@ -73,6 +73,9 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
     new Map()
   )
   const isConnectingRef = useRef(false)
+  // Did the WebSocket signaling open before a failure? Separates "her network
+  // can't reach us" (network) from "reached us, media couldn't flow" (media).
+  const signalConnectedRef = useRef(false)
   const isScreenSharingRef = useRef(false)
   const wasScreenSharingBeforeReconnectRef = useRef(false)
   const remoteScreenShareOwnerRef = useRef<string | null>(null)
@@ -240,6 +243,7 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
 
       try {
         isConnectingRef.current = true
+        signalConnectedRef.current = false
         setConnectionErrorKind(null)
         setConnectionStatus('connecting')
 
@@ -256,6 +260,13 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
         })
 
         roomRef.current = room
+
+        // Fires once the signaling WebSocket completes its handshake — i.e. the
+        // server is reachable. If a later failure occurs with this already true,
+        // the break is the media/ICE path, not the server being unreachable.
+        room.on(RoomEvent.SignalConnected, () => {
+          signalConnectedRef.current = true
+        })
 
         room.on(RoomEvent.ConnectionStateChanged, (state: ConnectionState) => {
           console.log('[LiveKit] Connection state:', state)
@@ -615,8 +626,17 @@ export function LiveKitProvider({ children }: { children: React.ReactNode }) {
         setConnectionErrorKind(null)
         isConnectingRef.current = false
       } catch (e) {
-        console.error('[LiveKit] Connect Exception:', e)
-        setConnectionErrorKind(classifyConnectionError(true, e))
+        const signalConnected = signalConnectedRef.current
+        // Phase tells support which layer broke without reading LiveKit internals:
+        // pre-signal  -> her network can't reach our server (firewall/VPN/offline)
+        // post-signal -> reached us, media/ICE failed (UDP blocked + TURN, or our TURN down)
+        console.error(
+          `[LiveKit] Connect failed — phase=${
+            signalConnected ? 'media/ice (signaling OK)' : 'signaling (pre-connect)'
+          }:`,
+          e
+        )
+        setConnectionErrorKind(classifyConnectionError(true, e, signalConnected))
         joinAttemptRef.current += 1
         // Clean up the failed room to allow fresh retry
         if (roomRef.current) {

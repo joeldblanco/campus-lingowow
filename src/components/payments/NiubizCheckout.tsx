@@ -259,7 +259,7 @@ export const NiubizCheckout = ({
       <Button
         onClick={initializeSession}
         disabled={loading}
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+        className="h-12 w-full bg-blue-600 text-white hover:bg-blue-700"
       >
         {loading ? (
           <>

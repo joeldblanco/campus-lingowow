@@ -176,6 +176,35 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
   })
 }
 
+export const sendAccountActivationEmail = async (
+  email: string,
+  token: string,
+  customerName?: string
+) => {
+  const activationLink = `${process.env.NEXT_PUBLIC_DOMAIN}/auth/new-password?token=${token}`
+  const greeting = customerName ? `Hola ${customerName},` : '¡Hola!'
+
+  await resend.emails.send({
+    from: 'hello@lingowow.com',
+    to: email,
+    subject: 'Activa tu cuenta de Lingowow',
+    html: renderEmailLayout({
+      headerBackgroundColor: EMAIL_COLORS.success,
+      headerTitle: 'Activa tu cuenta',
+      headerSubtitle: 'Crea tu contraseña para entrar a tus clases',
+      bodyHtml: `
+        <h3 style="margin: 0 0 16px 0; font-size: 18px; color: ${EMAIL_COLORS.text};">${greeting}</h3>
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: ${EMAIL_COLORS.body};">Tu compra fue confirmada y ya creamos tu cuenta en Lingowow. Solo falta un paso: crea tu contraseña para acceder a tus clases y a tu panel.</p>
+        <div style="text-align: center; margin: 24px 0;">
+          <a href="${activationLink}" style="${emailButtonStyle(EMAIL_COLORS.success)}">Crear mi contraseña</a>
+        </div>
+        <p style="margin: 0 0 8px 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted}; text-align: center;">Por tu seguridad, este enlace es de un solo uso y caduca en 24 horas. Si caduca, solicita uno nuevo desde "¿Olvidaste tu contraseña?" en la página de inicio de sesión.</p>
+        <p style="margin: 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted}; text-align: center;">Si no realizaste esta compra, puedes ignorar este correo. ¿Dudas? Escríbenos por <a href="https://wa.me/51902518947" style="color: ${EMAIL_COLORS.primary}; text-decoration: none; font-weight: bold;">WhatsApp</a>.</p>
+      `,
+    }),
+  })
+}
+
 interface PurchaseItem {
   name: string
   price: number
@@ -959,6 +988,105 @@ export const sendPlacementTestResultEmail = async (
         </div>
 
         <p style="margin: 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted}; text-align: center;">¿Tienes preguntas? Contáctanos por <a href="https://wa.me/51902518947" style="color: ${EMAIL_COLORS.primary}; text-decoration: none; font-weight: bold;">WhatsApp</a> o escríbenos a info@lingowow.com</p>
+      `,
+    }),
+  })
+}
+
+// =============================================
+// EMAIL DE RECUPERACIÓN DE CARRITO
+// =============================================
+
+interface CartRecoveryItem {
+  name: string
+  planName: string
+  price: number
+  quantity: number
+}
+
+interface CartRecoveryData {
+  customerName?: string
+  items: CartRecoveryItem[]
+  total: number
+  currency: string
+  recoveryToken: string
+}
+
+/**
+ * Correo de recuperación de carrito abandonado. Copy honesto y sin presión: sin
+ * descuentos falsos ni cuentas regresivas. Incluye el enlace de restauración del
+ * carrito y, de forma visible, el enlace de baja (opt-out) en el pie.
+ */
+export const sendCartRecoveryEmail = async (email: string, data: CartRecoveryData) => {
+  const recoveryLink = `${process.env.NEXT_PUBLIC_DOMAIN}/shop/cart/restore?token=${data.recoveryToken}`
+  const unsubscribeLink = `${process.env.NEXT_PUBLIC_DOMAIN}/shop/cart/unsubscribe?token=${data.recoveryToken}`
+  const greetingName = data.customerName?.trim() ? `, ${data.customerName.trim()}` : ''
+
+  const itemsHtml = data.items
+    .map(
+      (item) => `
+    <tr>
+      <td style="padding: 12px; border-bottom: 1px solid ${EMAIL_COLORS.border}; color: ${EMAIL_COLORS.body};">
+        ${item.name}
+        <span style="display: block; font-size: 13px; color: ${EMAIL_COLORS.muted};">${item.planName}</span>
+      </td>
+      <td style="padding: 12px; border-bottom: 1px solid ${EMAIL_COLORS.border}; text-align: center; color: ${EMAIL_COLORS.body};">${item.quantity}</td>
+      <td style="padding: 12px; border-bottom: 1px solid ${EMAIL_COLORS.border}; text-align: right; color: ${EMAIL_COLORS.body};">$${item.price.toFixed(2)} ${data.currency}</td>
+    </tr>
+  `
+    )
+    .join('')
+
+  await resend.emails.send({
+    from: 'hello@lingowow.com',
+    to: email,
+    subject: '¿Retomamos donde lo dejaste?',
+    html: renderEmailLayout({
+      headerBackgroundColor: EMAIL_COLORS.primarySoft,
+      headerTitle: 'Tu carrito te espera',
+      headerSubtitle: 'Guardamos tu selección por si quieres terminar cuando te venga bien.',
+      headerTitleColor: EMAIL_COLORS.text,
+      headerSubtitleColor: EMAIL_COLORS.muted,
+      footerText: `
+        Go wow with us! 🚀
+        <span style="display: block; margin-top: 10px; font-size: 12px; color: ${EMAIL_COLORS.muted};">
+          Recibes este correo porque dejaste un carrito en lingowow.com.
+          ¿Prefieres no recibir recordatorios de carrito? <a href="${unsubscribeLink}" style="color: ${EMAIL_COLORS.muted}; text-decoration: underline;">Darte de baja</a>.
+        </span>`,
+      bodyHtml: `
+        <h3 style="margin: 0 0 16px 0; font-size: 18px; color: ${EMAIL_COLORS.text};">Hola${greetingName},</h3>
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: ${EMAIL_COLORS.body};">Notamos que dejaste algunos productos en tu carrito. No hay prisa: lo guardamos para que puedas continuar tu inscripción justo donde la dejaste.</p>
+
+        <table role="presentation" style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+          <thead>
+            <tr style="background-color: ${EMAIL_COLORS.canvas};">
+              <th style="padding: 12px; text-align: left; font-size: 14px; color: ${EMAIL_COLORS.body};">Producto</th>
+              <th style="padding: 12px; text-align: center; font-size: 14px; color: ${EMAIL_COLORS.body};">Cant.</th>
+              <th style="padding: 12px; text-align: right; font-size: 14px; color: ${EMAIL_COLORS.body};">Precio</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${itemsHtml}
+          </tbody>
+        </table>
+
+        <div style="border-top: 2px solid ${EMAIL_COLORS.border}; padding-top: 16px; margin-top: 16px;">
+          ${renderSummaryRows([
+            {
+              label: 'Total:',
+              value: `$${data.total.toFixed(2)} ${data.currency}`,
+              labelColor: EMAIL_COLORS.text,
+              valueColor: EMAIL_COLORS.text,
+              isEmphasized: true,
+            },
+          ])}
+        </div>
+
+        <div style="text-align: center; margin: 24px 0;">
+          <a href="${recoveryLink}" style="${emailButtonStyle(EMAIL_COLORS.primary)}">Retomar mi carrito</a>
+        </div>
+
+        <p style="margin: 0; font-size: 14px; line-height: 1.6; color: ${EMAIL_COLORS.muted}; text-align: center;">¿Alguna duda antes de decidir? Contáctanos por <a href="https://wa.me/51902518947" style="color: ${EMAIL_COLORS.primary}; text-decoration: none; font-weight: bold;">WhatsApp</a> y te ayudamos.</p>
       `,
     }),
   })

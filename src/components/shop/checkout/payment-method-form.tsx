@@ -1,12 +1,15 @@
 'use client'
 
 import { Form } from '@/components/ui/form'
-import { LockIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { PayPalButton } from './paypal-button'
 import { NiubizCheckout } from '@/components/payments/NiubizCheckout'
+import {
+  PaymentTrustBlock,
+  RecurringBillingNotice,
+  SecureRedirectNote,
+} from '@/components/shop/checkout/payment-assurance'
 import { useEffect, useState } from 'react'
 
 interface CartItemForNiubiz {
@@ -54,12 +57,13 @@ interface PaymentMethodFormProps {
     currency?: string
     couponId?: string
   }
-  onPayPalSuccess?: (data: unknown) => void
   onNiubizSuccess?: (data: unknown) => void
   userEmail?: string
   userFirstName?: string
   userLastName?: string
   isRecurrent?: boolean
+  /** Plain-language recurring charge to surface before paying. Present iff the cart is recurrent. */
+  recurringSummary?: { amount: number; cycleLabel: string }
   allowGuestCheckout?: boolean
   cartItems?: CartItemForNiubiz[]
   customerInfo?: CustomerInfo
@@ -79,12 +83,12 @@ export function PaymentMethodForm({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   isLoading: _isLoading,
   paypalData,
-  onPayPalSuccess,
   onNiubizSuccess,
   userEmail,
   userFirstName,
   userLastName,
   isRecurrent = false,
+  recurringSummary,
   allowGuestCheckout = false,
   cartItems = [],
   customerInfo,
@@ -118,64 +122,41 @@ export function PaymentMethodForm({
     if (!purchaseNumber) return null
 
     return (
-      <div className="space-y-6">
-        <div className="p-6 border rounded-md bg-slate-50 text-center">
-          <p className="mb-4">Realiza tu pago de forma segura con Niubiz.</p>
-          <NiubizCheckout
-            amount={paypalData.total}
-            purchaseNumber={purchaseNumber}
-            onSuccess={(data) => {
-              if (onNiubizSuccess) {
-                onNiubizSuccess(data)
-              }
-            }}
-            onError={(error) => {
-              console.error('Niubiz Error:', error)
-            }}
-            userEmail={userEmail}
-            userFirstName={userFirstName}
-            userLastName={userLastName}
-            isRecurrent={isRecurrent}
-            invoiceData={paypalData}
-            customerInfo={customerInfo}
-            allowGuest={allowGuestCheckout}
-            cartItems={cartItems}
+      <div className="space-y-5">
+        {/* Recurring transparency — surfaced before the pay button, never buried in T&C. */}
+        {recurringSummary && (
+          <RecurringBillingNotice
+            amount={recurringSummary.amount}
+            cycleLabel={recurringSummary.cycleLabel}
           />
-        </div>
-      </div>
-    )
-  }
+        )}
 
-  const renderPayPalForm = () => {
-    if (!paypalData || !onPayPalSuccess) {
-      return (
-        <div className="p-6 border rounded-md bg-slate-50 text-center">
-          <p className="mb-4">Serás redirigido a PayPal para completar tu pago de forma segura.</p>
-          <p className="text-sm text-muted-foreground">
-            Nota: No es necesario tener una cuenta de PayPal para pagar con tarjeta de crédito o
-            débito a través de su plataforma.
-          </p>
-        </div>
-      )
-    }
+        {/* 3DS expectation — Niubiz redirects to the bank; set the expectation up front. */}
+        <SecureRedirectNote />
 
-    return (
-      <div className="space-y-4">
-        <div className="p-6 border rounded-md bg-slate-50 text-center">
-          <p className="mb-4">Completa tu pago de forma segura con PayPal.</p>
-          <p className="text-sm text-muted-foreground">
-            Puedes pagar con tu cuenta de PayPal o con tarjeta de crédito/débito.
-          </p>
-        </div>
-        <PayPalButton
-          items={paypalData.items}
-          total={paypalData.total}
-          subtotal={paypalData.subtotal}
-          discount={paypalData.discount}
-          currency={paypalData.currency}
-          couponId={paypalData.couponId}
-          onSuccess={onPayPalSuccess}
+        <NiubizCheckout
+          amount={paypalData.total}
+          purchaseNumber={purchaseNumber}
+          onSuccess={(data) => {
+            if (onNiubizSuccess) {
+              onNiubizSuccess(data)
+            }
+          }}
+          onError={(error) => {
+            console.error('Niubiz Error:', error)
+          }}
+          userEmail={userEmail}
+          userFirstName={userFirstName}
+          userLastName={userLastName}
+          isRecurrent={isRecurrent}
+          invoiceData={paypalData}
+          customerInfo={customerInfo}
+          allowGuest={allowGuestCheckout}
+          cartItems={cartItems}
         />
+
+        {/* Trust block stacked adjacent to the pay button (where anxiety peaks). */}
+        <PaymentTrustBlock className="pt-1" />
       </div>
     )
   }
@@ -184,21 +165,11 @@ export function PaymentMethodForm({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleFormSubmit)}>
         {paymentMethod === 'creditCard' && renderCreditCardForm()}
-        {paymentMethod === 'paypal' && renderPayPalForm()}
 
-        <div className="mt-8 text-center">
-          <div className="flex items-center justify-center mb-6">
-            <LockIcon className="h-4 w-4 mr-2 text-green-600" />
-            <span className="text-sm text-muted-foreground">
-              Pago 100% seguro con encriptación SSL
-            </span>
-          </div>
-
-          {/* Hide default submit button as both PayPal and Niubiz have their own buttons */}
-          {/* <Button type="submit" className="w-full" disabled={isLoading || form.formState.isSubmitting}>
-            {isLoading || form.formState.isSubmitting ? 'Procesando...' : 'Finalizar Compra'}
-          </Button> */}
-        </div>
+        {/* Hide default submit button as Niubiz has its own button */}
+        {/* <Button type="submit" className="w-full" disabled={isLoading || form.formState.isSubmitting}>
+          {isLoading || form.formState.isSubmitting ? 'Procesando...' : 'Finalizar Compra'}
+        </Button> */}
       </form>
     </Form>
   )

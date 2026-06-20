@@ -76,7 +76,7 @@ export function PaymentMethodSelector({
                       <CreditCard className="h-5 w-5" />
                       <div>
                         <p className="font-medium">Dinero Real</p>
-                        <p className="text-sm text-muted-foreground">Paga con PayPal o tarjeta</p>
+                        <p className="text-sm text-muted-foreground">Paga con tarjeta</p>
                       </div>
                     </div>
                     <span className="font-bold text-lg">${realPrice}</span>

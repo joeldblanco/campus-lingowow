@@ -17,11 +17,12 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Check, GraduationCap, MessageCircle, Star, Users } from 'lucide-react'
+import { Check, GraduationCap, MessageCircle, Users } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getTeachersForLanding } from '@/lib/actions/teachers'
 import { ContactForm } from '@/components/public-components/contact-form'
+import { StudentTestimonials } from '@/components/public-components/social-proof'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -65,30 +66,12 @@ export default async function LandingPage() {
                 </Link>
               </div>
               <div className="flex items-center gap-2 mt-4">
-                <div className="flex -space-x-2">
-                  {[
-                    { name: 'Cristian' },
-                    { name: 'Maria' },
-                    { name: 'Miguel' },
-                    { name: 'Elena' },
-                  ].map((student, i) => (
-                    <div
-                      key={i}
-                      className="h-8 w-8 rounded-full border-2 border-white overflow-hidden bg-muted"
-                    >
-                      <Image
-                        src={`https://api.dicebear.com/9.x/lorelei/svg?seed=${student.name}`}
-                        width={32}
-                        height={32}
-                        alt={student.name}
-                        className="w-full h-full object-cover"
-                        unoptimized
-                      />
-                    </div>
-                  ))}
-                </div>
+                <span className="text-amber-500 tracking-tight" aria-hidden="true">
+                  ★★★★★
+                </span>
                 <p className="text-sm text-muted-foreground">
-                  <span className="font-medium">+145</span> estudiantes satisfechos
+                  <span className="font-medium text-foreground">4.9</span> en Google ·{' '}
+                  <span className="font-medium text-foreground">+38</span> opiniones reales
                 </p>
               </div>
             </div>
@@ -305,72 +288,7 @@ export default async function LandingPage() {
         </section>
 
         {/* Testimonios */}
-        <section id="testimonios" className="w-full py-12 md:py-16 bg-slate-50">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center gap-4 text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tight">
-                Lo Que Dicen Nuestros Estudiantes
-              </h2>
-              <p className="text-muted-foreground max-w-[700px]">
-                Calificación de 4.9 estrellas en Google con más de 38 opiniones reales de nuestros
-                estudiantes.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                {
-                  name: 'Cristian Villamizar',
-                  text: 'Si quieres aprender inglés de forma personalizada no dudes en que Lingowow es la mejor opción… mi progreso con ellos ha sido inigualable y los recomiendo con toda confianza!',
-                },
-                {
-                  name: 'Mari Carmen Rico',
-                  text: 'Son súper profesionales!!! Son profesores titulados en Lenguas Extranjeras!! Atención 100% personalizada, es una Escuela en línea, que lo hace muy accesible para cualquier parte del mundo que te encuentres, estoy simplemente fascinada.',
-                },
-                {
-                  name: 'Mariana Hernandez',
-                  text: 'Cuando estás aprendiendo un nuevo idioma no hay nada más importante que un sistema de enseñanza dinámico, entretenido y que te rete a exponerte. Tener un profesor particular que conoce cuál es tu nivel y cuáles son tus objetivos es invaluable.',
-                },
-                {
-                  name: 'Cristina Castillo',
-                  text: 'Excelente servicio, son profesionales cada clase es un completo aprendizaje, lo recomiendo completamente, si estás pensando aprender un idioma no dudes que esta es la mejor opción.',
-                },
-                {
-                  name: 'Eme Savedra',
-                  text: 'Excelente academia, profesionales y dedicados con sus estudiantes. Atención personalizada, siempre guiándonos para lograr nuestra meta de aprender un nuevo idioma.',
-                },
-                {
-                  name: 'Mónica Pereira',
-                  text: 'El profesor es excelente, divertido y muy comprometido. Lo recomiendo ampliamente.',
-                },
-              ].map((testimonial, i) => (
-                <Card key={i} className="relative">
-                  <CardHeader>
-                    <div className="flex items-center gap-1 mb-2">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <Star key={star} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      ))}
-                    </div>
-                    <CardTitle className="text-lg">{testimonial.name}</CardTitle>
-                    <CardDescription>Reseña de Google</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm">&quot;{testimonial.text}&quot;</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-            <div className="flex justify-center mt-8">
-              <a
-                href="https://www.google.com/maps/place/Lingowow/@-12.0015217,-77.1199284,17z/data=!4m8!3m7!1s0x9105cd90a8800b7d:0xceb4d33979f426ad!8m2!3d-12.0015217!4d-77.1173535!9m1!1b1!16s%2Fg%2F11j2wlfzw8"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:underline font-medium"
-              >
-                Ver todas las opiniones en Google →
-              </a>
-            </div>
-          </div>
-        </section>
+        <StudentTestimonials id="testimonios" className="bg-slate-50" />
 
         {/* FAQ */}
         <section id="faq" className="w-full py-12 md:py-16 bg-slate-50">

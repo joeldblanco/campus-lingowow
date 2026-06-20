@@ -25,6 +25,8 @@ import {
   CommandList,
 } from '@/components/ui/command'
 import { PaymentMethodForm } from '@/components/shop/checkout/payment-method-form'
+import { CartAbandonmentTracker } from '@/components/shop/cart-abandonment-tracker'
+import { markCartPurchased } from '@/lib/actions/abandoned-cart'
 import { CheckoutLoginModal } from '@/components/shop/checkout/login-modal'
 import { CheckoutScheduleSelector } from '@/components/checkout/checkout-schedule-selector'
 import { CouponInput } from '@/components/shop/checkout/coupon-input'
@@ -81,6 +83,14 @@ interface PlanDetails {
 }
 
 const DAY_NAMES = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+
+// Plan.billingCycle is a free string (WEEKLY | MONTHLY | QUARTERLY | ANNUAL) → human cadence.
+const BILLING_CYCLE_LABELS: Record<string, string> = {
+  WEEKLY: 'cada semana',
+  MONTHLY: 'cada mes',
+  QUARTERLY: 'cada 3 meses',
+  ANNUAL: 'cada año',
+}
 
 // Helper para convertir un slot UTC a hora local para mostrar
 const convertSlotToLocalDisplay = (
@@ -171,6 +181,20 @@ export default function CheckoutPage() {
       const details = planDetails[getCartItemKey(item.plan.id, item.language)]
       return !!details?.billingCycle
     })
+  }, [cartItems, planDetails])
+
+  // Plain-language recurring charge for the payment area: the regular per-cycle price
+  // (not the prorated first charge) summed across recurrent items.
+  const recurringSummary = useMemo(() => {
+    const entries = cartItems
+      .map((item) => ({ item, details: planDetails[getCartItemKey(item.plan.id, item.language)] }))
+      .filter((e) => e.details?.billingCycle)
+    if (entries.length === 0) return undefined
+    const amount = entries.reduce((sum, e) => sum + e.item.plan.price * (e.item.quantity || 1), 0)
+    const cycles = new Set(entries.map((e) => e.details!.billingCycle as string))
+    const cycleLabel =
+      cycles.size === 1 ? (BILLING_CYCLE_LABELS[[...cycles][0]] ?? 'de forma recurrente') : 'de forma recurrente'
+    return { amount, cycleLabel }
   }, [cartItems, planDetails])
 
   const requiresPlatformAccess = useMemo(() => {
@@ -388,6 +412,9 @@ export default function CheckoutPage() {
     (data: unknown) => {
       const anyData = data as { invoice?: { invoiceNumber?: string }; orderId?: string }
       const invoiceNumber = anyData.invoice?.invoiceNumber
+      // Cortar la recuperación de carrito: no enviar correo si ya compró.
+      const purchaseEmail = session?.user?.email || formData.email
+      if (purchaseEmail) void markCartPurchased(purchaseEmail)
       sessionStorage.removeItem(CHECKOUT_STATE_KEY)
       useShopStore.getState().clearCart()
       setTimeout(() => {
@@ -398,7 +425,7 @@ export default function CheckoutPage() {
         )
       }, 500)
     },
-    [router]
+    [router, session?.user?.email, formData.email]
   )
 
   // Items para Niubiz (pasados como invoiceData). Incluye horario + proración por item.
@@ -461,6 +488,12 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-slate-50">
+      {/* Registra el carrito server-side para la recuperación por correo (1 envío) */}
+      <CartAbandonmentTracker
+        email={session?.user?.email || formData.email}
+        userId={session?.user?.id}
+      />
+
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-slate-200 bg-white">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
@@ -666,6 +699,7 @@ export default function CheckoutPage() {
                     userFirstName={formData.firstName}
                     userLastName={formData.lastName}
                     isRecurrent={isRecurrentData}
+                    recurringSummary={recurringSummary}
                     allowGuestCheckout={!requiresPlatformAccess}
                     cartItems={cartItems}
                     customerInfo={{

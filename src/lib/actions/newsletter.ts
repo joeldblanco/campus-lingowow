@@ -1,6 +1,49 @@
 'use server'
 
 import { db } from '@/lib/db'
+import handleError from '@/lib/handleError'
+import { LeadCaptureSchema, type LeadCaptureInput } from '@/schemas/public'
+
+/**
+ * Captura un lead público (footer, páginas de recursos, etc.) en la tabla de
+ * newsletter_subscriptions. Valida con Zod y devuelve la forma estándar de
+ * Server Action `{ success, message }` para usarse desde formularios públicos.
+ */
+export async function captureLead(
+  input: LeadCaptureInput
+): Promise<{ success: boolean; message: string }> {
+  const parsed = LeadCaptureSchema.safeParse(input)
+  if (!parsed.success) {
+    return {
+      success: false,
+      message: parsed.error.errors[0]?.message ?? 'Email inválido',
+    }
+  }
+
+  const { email, source } = parsed.data
+
+  try {
+    await db.newsletterSubscription.upsert({
+      where: { email },
+      create: {
+        email,
+        source,
+        isSubscribed: true,
+        subscribedAt: new Date(),
+      },
+      update: {
+        isSubscribed: true,
+        subscribedAt: new Date(),
+        unsubscribedAt: null,
+      },
+    })
+
+    return { success: true, message: '¡Listo! Te avisaremos por correo.' }
+  } catch (error) {
+    console.error('Error capturing lead:', error)
+    return { success: false, message: handleError(error) }
+  }
+}
 
 export async function subscribeToNewsletter(
   email: string,

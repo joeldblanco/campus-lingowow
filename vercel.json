@@ -11,6 +11,10 @@
     {
       "path": "/api/cron/cleanup-recordings",
       "schedule": "0 3 * * 0"
+    },
+    {
+      "path": "/api/cron/recover-abandoned-carts",
+      "schedule": "0 * * * *"
     }
   ]
 }

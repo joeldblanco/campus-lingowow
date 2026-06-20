@@ -7,7 +7,8 @@ import { cn } from '@/lib/utils'
 import { useShopStore } from '@/stores/useShopStore'
 import { SUPPORTED_LANGUAGES } from '@/lib/constants/languages'
 import { Course, Merge, Product } from '@/types/shop'
-import { Check, ChevronRight, ShoppingCart } from 'lucide-react'
+import { hasRecommendedPlan } from '@/lib/pricing-helpers'
+import { Check, ChevronRight, ShieldCheck, ShoppingCart } from 'lucide-react'
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -102,12 +103,9 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
   const isExpired = expiresAt && isBefore(expiresAt, now)
   const isAvailable = !isScheduled && !isExpired
 
-  // Get badge info based on product properties
-  const getBadgeInfo = () => {
-    if (isSubscription) return { text: 'Mejor Precio', color: 'bg-emerald-500' }
-    else return { text: 'Popular', color: 'bg-orange-500' }
-  }
-  const badgeInfo = getBadgeInfo()
+  // Recommended badge is driven by an explicit flag (a plan marked popular),
+  // not by payment type — avoids the confusing "Popular" vs "Mejor Precio" mix.
+  const isRecommended = hasRecommendedPlan(plans)
 
   // Get features from product tags or plans
   const features = product.tags?.slice(0, 3) || []
@@ -135,15 +133,10 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
           </div>
         )}
 
-        {/* Status Badge */}
-        {badgeInfo && (
-          <Badge
-            className={cn(
-              'absolute top-3 right-3 text-white border-none px-3 py-1 text-xs font-medium rounded-full',
-              badgeInfo.color
-            )}
-          >
-            {badgeInfo.text}
+        {/* Recommended badge — only when a plan is explicitly flagged popular */}
+        {isRecommended && (
+          <Badge className="absolute top-3 right-3 bg-primary text-white border-none px-3 py-1 text-xs font-medium rounded-full">
+            Más popular
           </Badge>
         )}
       </div>
@@ -163,13 +156,17 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
           {product.shortDesc || product.description}
         </p>
 
-        {/* Price */}
-        <div className='flex flex-col'>
+        {/* Price + risk reduction near the price */}
+        <div className="flex flex-col">
           {isSubscription && <span className="text-gray-500 text-sm">Desde</span>}
-          <div className="mb-4">
+          <div>
             <span className="text-2xl font-bold text-gray-900">${minPrice.toFixed(2)}</span>
             {isSubscription && <span className="text-gray-500 text-sm">/mes</span>}
           </div>
+          <span className="mt-2 mb-4 inline-flex w-fit items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
+            <ShieldCheck className="h-3.5 w-3.5" />
+            Garantía 30 días
+          </span>
         </div>
 
         {/* Features List */}

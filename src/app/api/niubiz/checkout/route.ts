@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { authorizeNiubizTransaction, getNiubizAccessToken } from '@/lib/niubiz'
 import { db } from '@/lib/db'
 import { sendPaymentConfirmationEmail } from '@/lib/mail'
+import { sendGuestActivationEmail } from '@/lib/guest-activation'
 import { formatFullName } from '@/lib/utils/name-formatter'
 import {
   notifySelfServiceEnrollmentCreated,
@@ -512,7 +513,7 @@ export async function POST(request: NextRequest) {
         try {
           const user = await db.user.findUnique({
             where: { id: userId },
-            select: { email: true, name: true, lastName: true },
+            select: { email: true, name: true, lastName: true, password: true },
           })
 
           if (user?.email) {
@@ -530,6 +531,15 @@ export async function POST(request: NextRequest) {
               total: invoiceData.total,
               currency: invoiceData.currency || 'USD',
             })
+
+            // Guest checkout: the user has no password yet, so they cannot log
+            // in. Email a single-use activation link to set their password.
+            if (!user.password) {
+              await sendGuestActivationEmail({
+                email: user.email,
+                name: formatFullName(user.name, user.lastName) || undefined,
+              })
+            }
           }
         } catch (emailError) {
           console.error('[NIUBIZ CHECKOUT] Error sending email:', emailError)

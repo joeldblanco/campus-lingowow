@@ -1,11 +1,25 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Facebook, Instagram, Linkedin, Youtube } from 'lucide-react'
+import NewsletterSignup from '@/components/public-components/newsletter-signup'
 
 const Footer = () => {
   return (
     <footer className="border-t bg-slate-100">
       <div className="container px-4 py-8 md:py-12">
+        {/* Newsletter signup — lead capture */}
+        <div className="mb-10 rounded-2xl border bg-background p-6 md:p-8">
+          <div className="max-w-xl">
+            <NewsletterSignup
+              source="footer"
+              title="Recibe tips de aprendizaje"
+              description="Consejos, recursos y novedades para mejorar tu idioma, directo a tu correo. Sin spam."
+              buttonLabel="Suscribirme"
+              demoCtaLabel="O reserva una clase gratis"
+            />
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-4">

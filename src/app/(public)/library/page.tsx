@@ -750,6 +750,27 @@ const [language, setLanguage] = useState(() => {
               </div>
             )}
           </section>
+
+          {/* Conversion CTA — non-intrusive, shown after browsing */}
+          <section className="mt-16">
+            <div className="rounded-2xl border bg-primary/5 p-8 text-center md:p-10">
+              <h2 className="text-2xl font-bold md:text-3xl">
+                ¿Listo para aprender con un profesor?
+              </h2>
+              <p className="mx-auto mt-2 max-w-xl text-muted-foreground">
+                Estos recursos son un gran complemento. Para avanzar más rápido,
+                combínalos con clases personalizadas en vivo.
+              </p>
+              <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
+                <Button asChild size="lg">
+                  <Link href="/demo">Clase de prueba gratis</Link>
+                </Button>
+                <Button asChild size="lg" variant="outline">
+                  <Link href="/pricing">Ver planes</Link>
+                </Button>
+              </div>
+            </div>
+          </section>
         </main>
       </div>
 
