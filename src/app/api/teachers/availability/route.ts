@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { convertAvailabilityFromUTC, convertTimeSlotFromUTC } from '@/lib/utils/date'
+import {
+  convertAvailabilityFromUTC,
+  convertTimeSlotFromUTC,
+  convertRecurringScheduleFromUTC,
+} from '@/lib/utils/date'
 import { formatFullName } from '@/lib/utils/name-formatter'
 import { EnrollmentStatus } from '@prisma/client'
 
@@ -41,6 +45,20 @@ export async function GET(req: NextRequest) {
               select: {
                 day: true,
                 timeSlot: true,
+              },
+            },
+            // Horarios RECURRENTES de inscripciones activas: ocupan el bloque
+            // semanal aunque no exista aún un ClassBooking concreto para cada fecha.
+            classSchedules: {
+              where: {
+                enrollment: {
+                  status: EnrollmentStatus.ACTIVE,
+                },
+              },
+              select: {
+                dayOfWeek: true,
+                startTime: true,
+                endTime: true,
               },
             },
           },
@@ -135,6 +153,39 @@ export async function GET(req: NextRequest) {
           console.log(`[API] - Clase ocupada: ${localData.day} (${dayName}) ${localData.timeSlot}`)
         } catch (error) {
           console.error(`[API] Error converting booked class: ${error}`)
+        }
+      })
+
+      // Bloquear los horarios recurrentes (ClassSchedule) de inscripciones activas.
+      // Están en UTC con dayOfWeek 0-6 (0=domingo); se convierten a la zona local.
+      const WEEKDAY_BY_INDEX = [
+        'sunday',
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+      ]
+      teacher.classSchedules.forEach((sched) => {
+        try {
+          const local = convertRecurringScheduleFromUTC(
+            sched.dayOfWeek,
+            sched.startTime,
+            sched.endTime,
+            timezone
+          )
+          const dayName = WEEKDAY_BY_INDEX[local.dayOfWeek]
+          if (!dayName) return
+          if (!bookedSlotsByDay[dayName]) {
+            bookedSlotsByDay[dayName] = []
+          }
+          bookedSlotsByDay[dayName].push({
+            startTime: local.startTime,
+            endTime: local.endTime,
+          })
+        } catch (error) {
+          console.error(`[API] Error converting recurring schedule: ${error}`)
         }
       })
 
