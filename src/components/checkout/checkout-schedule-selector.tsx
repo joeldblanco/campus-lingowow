@@ -505,10 +505,10 @@ export function CheckoutScheduleSelector({
           </div>
         )}
 
-        {/* Días en eje X con chips de hora */}
-        <div className="flex gap-3 overflow-x-auto pb-2">
+        {/* Días en eje X con chips de hora (envuelven, sin scroll horizontal) */}
+        <div className="flex flex-wrap gap-3">
           {daysWithSlots.map(({ key, label, times }) => (
-            <div key={key} className="flex min-w-[112px] flex-1 flex-col gap-2">
+            <div key={key} className="flex min-w-[120px] flex-1 basis-[120px] flex-col gap-2">
               <p className="border-b pb-2 text-center text-sm font-semibold text-foreground">
                 {label}
               </p>

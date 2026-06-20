@@ -485,50 +485,50 @@ export default function CheckoutPage() {
           </p>
         </div>
 
+        {/* Horario — ancho completo (sin Resumen al lado para que quepan los 7 días) */}
+        {requiresScheduleSelection && scheduleItem && scheduleDetails?.courseId && (
+          <section className="mb-10">
+            <SectionHead
+              icon={<CalendarClock className="h-4 w-4" />}
+              step="1"
+              title="Tu horario"
+              hint="Elige tus horarios; te asignamos un profesor que los cubra."
+            />
+            <div className="mt-5 space-y-4">
+              <div className="flex items-center gap-3">
+                <ProductThumb
+                  image={scheduleItem.product.image}
+                  title={scheduleItem.product.title}
+                />
+                <div>
+                  <h3 className="font-lexend font-medium text-slate-900">
+                    {scheduleItem.product.title}
+                  </h3>
+                  <p className="text-sm text-slate-500">{scheduleItem.plan.name}</p>
+                </div>
+              </div>
+              <CheckoutScheduleSelector
+                planId={scheduleItem.plan.id}
+                courseId={scheduleDetails.courseId}
+                classDuration={scheduleDetails.classDuration}
+                maxClassesPerWeek={scheduleDetails.classesPerWeek || undefined}
+                onScheduleSelected={(s, p) => handleScheduleSelected(scheduleItemKey!, s, p)}
+              />
+              <p className="text-sm text-slate-500">
+                ¿No encuentras un horario?{' '}
+                <Link href="/contact" className="font-medium text-primary hover:underline">
+                  Escríbele al profesor
+                </Link>
+                .
+              </p>
+            </div>
+          </section>
+        )}
+
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
           {/* ---------- Flujo (izquierda) ---------- */}
           <div className="space-y-10 lg:col-span-7">
-            {/* 1 · Horario */}
-            {requiresScheduleSelection && scheduleItem && scheduleDetails?.courseId && (
-              <section>
-                <SectionHead
-                  icon={<CalendarClock className="h-4 w-4" />}
-                  step="1"
-                  title="Tu horario"
-                  hint="Elige tus horarios; te asignamos un profesor que los cubra."
-                />
-                <div className="mt-5 space-y-4">
-                  <div className="flex items-center gap-3">
-                    <ProductThumb
-                      image={scheduleItem.product.image}
-                      title={scheduleItem.product.title}
-                    />
-                    <div>
-                      <h3 className="font-lexend font-medium text-slate-900">
-                        {scheduleItem.product.title}
-                      </h3>
-                      <p className="text-sm text-slate-500">{scheduleItem.plan.name}</p>
-                    </div>
-                  </div>
-                  <CheckoutScheduleSelector
-                    planId={scheduleItem.plan.id}
-                    courseId={scheduleDetails.courseId}
-                    classDuration={scheduleDetails.classDuration}
-                    maxClassesPerWeek={scheduleDetails.classesPerWeek || undefined}
-                    onScheduleSelected={(s, p) => handleScheduleSelected(scheduleItemKey!, s, p)}
-                  />
-                  <p className="text-sm text-slate-500">
-                    ¿No encuentras un horario?{' '}
-                    <Link href="/contact" className="font-medium text-primary hover:underline">
-                      Escríbele al profesor
-                    </Link>
-                    .
-                  </p>
-                </div>
-              </section>
-            )}
-
-            {/* 2 · Datos de contacto */}
+            {/* Datos de contacto */}
             <section>
               <div className="flex items-center justify-between">
                 <SectionHead
