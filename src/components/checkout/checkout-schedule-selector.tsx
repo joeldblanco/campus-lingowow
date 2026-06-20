@@ -1,17 +1,39 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Loader2, AlertCircle, Calendar, Check, User, X, GripVertical, Ban } from 'lucide-react'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
+import {
+  Loader2,
+  AlertCircle,
+  Calendar,
+  Check,
+  User,
+  X,
+  Clock,
+  Globe,
+  ChevronsUpDown,
+} from 'lucide-react'
 import { toast } from 'sonner'
-import { addDays, startOfWeek, isToday } from 'date-fns'
 import { cn } from '@/lib/utils'
 import { convertRecurringScheduleToUTC } from '@/lib/utils/date'
-import { useTimezone } from '@/hooks/use-timezone'
+import { useTimezone, getTimezoneShortName } from '@/hooks/use-timezone'
 
 interface Teacher {
   id: string
@@ -71,27 +93,112 @@ const DAYS_OF_WEEK_MAP: Record<string, number> = {
 
 const DAY_NAMES_ES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
 
+// Orden de días para los chips (lunes a domingo)
 const WEEKDAYS = [
-  { key: 'monday', label: 'LUN', index: 0 },
-  { key: 'tuesday', label: 'MAR', index: 1 },
-  { key: 'wednesday', label: 'MIÉ', index: 2 },
-  { key: 'thursday', label: 'JUE', index: 3 },
-  { key: 'friday', label: 'VIE', index: 4 },
-  { key: 'saturday', label: 'SÁB', index: 5 },
-  { key: 'sunday', label: 'DOM', index: 6 },
+  { key: 'monday', label: 'Lunes' },
+  { key: 'tuesday', label: 'Martes' },
+  { key: 'wednesday', label: 'Miércoles' },
+  { key: 'thursday', label: 'Jueves' },
+  { key: 'friday', label: 'Viernes' },
+  { key: 'saturday', label: 'Sábado' },
+  { key: 'sunday', label: 'Domingo' },
 ]
 
-const generateTimeSlots = () => {
-  const slots: string[] = []
-  for (let hour = 6; hour < 23; hour++) {
-    slots.push(`${String(hour).padStart(2, '0')}:00`)
+type SlotKey = `${string}-${string}`
+
+// Lista completa de zonas horarias IANA (con fallback si el navegador no la expone)
+const intlWithSupported = Intl as unknown as {
+  supportedValuesOf?: (key: 'timeZone') => string[]
+}
+const ALL_TIMEZONES: string[] = intlWithSupported.supportedValuesOf
+  ? intlWithSupported.supportedValuesOf('timeZone')
+  : [
+      'America/Lima',
+      'America/Bogota',
+      'America/Mexico_City',
+      'America/Argentina/Buenos_Aires',
+      'America/Santiago',
+      'America/New_York',
+      'America/Los_Angeles',
+      'Europe/Madrid',
+      'Europe/London',
+      'UTC',
+    ]
+
+// Offset GMT de una zona horaria (ej: 'GMT-5')
+const getOffset = (timezone: string): string => {
+  try {
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: timezone,
+      timeZoneName: 'shortOffset',
+    }).formatToParts(new Date())
+    return parts.find((p) => p.type === 'timeZoneName')?.value ?? 'GMT'
+  } catch {
+    return 'GMT'
   }
-  return slots
 }
 
-const TIME_SLOTS = generateTimeSlots()
+// Formatea "09:00" -> "9:00 a. m.", "14:00" -> "2:00 p. m."
+const formatTime12 = (time: string): string => {
+  const [h, m] = time.split(':').map(Number)
+  const period = h < 12 ? 'a. m.' : 'p. m.'
+  const h12 = h % 12 === 0 ? 12 : h % 12
+  return `${h12}:${String(m).padStart(2, '0')} ${period}`
+}
 
-type SlotKey = `${string}-${string}`
+function TimezonePicker({
+  value,
+  onChange,
+}: {
+  value: string
+  onChange: (tz: string) => void
+}) {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          size="sm"
+          role="combobox"
+          aria-expanded={open}
+          className="h-8 gap-1.5 font-medium"
+        >
+          <Globe className="h-3.5 w-3.5 text-muted-foreground" />
+          {getTimezoneShortName(value)} ({getOffset(value)})
+          <ChevronsUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[320px] p-0" align="start">
+        <Command>
+          <CommandInput placeholder="Buscar zona horaria…" />
+          <CommandList>
+            <CommandEmpty>Sin resultados.</CommandEmpty>
+            <CommandGroup>
+              {ALL_TIMEZONES.map((tz) => (
+                <CommandItem
+                  key={tz}
+                  value={tz}
+                  onSelect={() => {
+                    onChange(tz)
+                    setOpen(false)
+                  }}
+                >
+                  <Check
+                    className={cn('mr-2 h-4 w-4', value === tz ? 'opacity-100' : 'opacity-0')}
+                  />
+                  <span className="flex-1 truncate">{tz.replace(/_/g, ' ')}</span>
+                  <span className="ml-2 text-xs text-muted-foreground">{getOffset(tz)}</span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  )
+}
 
 export function CheckoutScheduleSelector({
   planId,
@@ -100,212 +207,117 @@ export function CheckoutScheduleSelector({
   maxClassesPerWeek,
   onScheduleSelected,
 }: CheckoutScheduleSelectorProps) {
-  // Usar la timezone de la sesión (la del usuario suplantado durante impersonación);
-  // useTimezone cae a la del navegador solo cuando no hay sesión (invitado en checkout).
-  const { timezone: userTimezone } = useTimezone()
+  // Timezone de la sesión (la del usuario suplantado durante impersonación); cae al
+  // navegador para invitados. El usuario puede sobreescribirla manualmente abajo.
+  const { timezone: sessionTimezone } = useTimezone()
+  const [tzOverride, setTzOverride] = useState<string | null>(null)
+  const displayTimezone = tzOverride ?? sessionTimezone
+
   const [teachers, setTeachers] = useState<Teacher[]>([])
-  const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null)
+  const [selectedTeacherId, setSelectedTeacherId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [calculating, setCalculating] = useState(false)
-  
-  const [isDragging, setIsDragging] = useState(false)
-  const [dragStart, setDragStart] = useState<{ dayIndex: number; timeIndex: number } | null>(null)
   const [selectedSlots, setSelectedSlots] = useState<Set<SlotKey>>(new Set())
-  const [tempSelectedSlots, setTempSelectedSlots] = useState<Set<SlotKey>>(new Set())
-  
-  const [showMultiEditPopover, setShowMultiEditPopover] = useState(false)
-  const [popoverPosition, setPopoverPosition] = useState<{ top: number; left: number } | null>(null)
-  const popoverRef = useRef<HTMLDivElement>(null)
 
-  const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 })
+  const selectedTeacher = teachers.find((t) => t.id === selectedTeacherId) ?? null
 
   const fetchTeachers = useCallback(async () => {
     try {
       setLoading(true)
-      const response = await fetch(`/api/teachers/availability?courseId=${courseId}&timezone=${encodeURIComponent(userTimezone)}`)
+      const response = await fetch(
+        `/api/teachers/availability?courseId=${courseId}&timezone=${encodeURIComponent(displayTimezone)}`
+      )
       if (!response.ok) throw new Error('Error al cargar profesores')
-      const data = await response.json()
+      const data: Teacher[] = await response.json()
       setTeachers(data)
-      if (data.length > 0) {
-        setSelectedTeacher(data[0])
-      }
+      // Mantener el profesor elegido si sigue disponible; si no, el primero.
+      setSelectedTeacherId((prev) =>
+        prev && data.some((t) => t.id === prev) ? prev : (data[0]?.id ?? null)
+      )
     } catch (error) {
       console.error('Error fetching teachers:', error)
       toast.error('Error al cargar la disponibilidad de profesores')
     } finally {
       setLoading(false)
     }
-  }, [courseId, userTimezone])
+  }, [courseId, displayTimezone])
 
   useEffect(() => {
     fetchTeachers()
   }, [fetchTeachers])
 
-  const isSlotAvailable = useCallback((dayKey: string, time: string): boolean => {
-    if (!selectedTeacher) return false
-    const dayAvailability = selectedTeacher.availability[dayKey] || []
-    
-    const [slotHour] = time.split(':').map(Number)
-    const slotEndHour = slotHour + Math.ceil(classDuration / 60)
-    
-    const isInAvailability = dayAvailability.some((range) => {
-      const [startHour] = range.startTime.split(':').map(Number)
-      const [endHour] = range.endTime.split(':').map(Number)
-      return slotHour >= startHour && slotEndHour <= endHour
-    })
+  const classHours = Math.ceil(classDuration / 60)
 
-    if (!isInAvailability) return false
+  // Horas de inicio disponibles para un día (solo bloques reales del profesor, sin reservados)
+  const getAvailableTimes = useCallback(
+    (dayKey: string): string[] => {
+      if (!selectedTeacher) return []
+      const ranges = selectedTeacher.availability[dayKey] || []
+      const booked = selectedTeacher.bookedSlots?.[dayKey] || []
+      const times = new Set<string>()
 
-    // Exclude slots already booked by other students
-    const dayBooked = selectedTeacher.bookedSlots?.[dayKey] || []
-    const isBooked = dayBooked.some((booked) => {
-      const [bookedStartHour] = booked.startTime.split(':').map(Number)
-      const [bookedEndHour] = booked.endTime.split(':').map(Number)
-      return slotHour >= bookedStartHour && slotHour < bookedEndHour
-    })
-
-    return !isBooked
-  }, [selectedTeacher, classDuration])
-
-  const calculateSelectedSlots = useCallback((start: { dayIndex: number; timeIndex: number }, end: { dayIndex: number; timeIndex: number }) => {
-    const minDay = Math.min(start.dayIndex, end.dayIndex)
-    const maxDay = Math.max(start.dayIndex, end.dayIndex)
-    const minTime = Math.min(start.timeIndex, end.timeIndex)
-    const maxTime = Math.max(start.timeIndex, end.timeIndex)
-    
-    const slots = new Set<SlotKey>()
-    
-    for (let d = minDay; d <= maxDay; d++) {
-      for (let t = minTime; t <= maxTime; t++) {
-        const dayKey = WEEKDAYS[d].key
-        const time = TIME_SLOTS[t]
-        
-        if (isSlotAvailable(dayKey, time)) {
-          slots.add(`${dayKey}-${time}` as SlotKey)
+      for (const range of ranges) {
+        const [startHour] = range.startTime.split(':').map(Number)
+        const [endHour] = range.endTime.split(':').map(Number)
+        for (let h = startHour; h + classHours <= endHour; h++) {
+          const isBooked = booked.some((b) => {
+            const [bs] = b.startTime.split(':').map(Number)
+            const [be] = b.endTime.split(':').map(Number)
+            return h >= bs && h < be
+          })
+          if (!isBooked) times.add(`${String(h).padStart(2, '0')}:00`)
         }
       }
-    }
-    
-    return slots
-  }, [isSlotAvailable])
 
-  const handleMouseDown = (dayIndex: number, timeIndex: number) => {
-    const dayKey = WEEKDAYS[dayIndex].key
-    const time = TIME_SLOTS[timeIndex]
-    
-    if (!isSlotAvailable(dayKey, time)) return
-    
-    setIsDragging(true)
-    setDragStart({ dayIndex, timeIndex })
-    setTempSelectedSlots(new Set([`${dayKey}-${time}` as SlotKey]))
-    setShowMultiEditPopover(false)
-  }
+      return Array.from(times).sort()
+    },
+    [selectedTeacher, classHours]
+  )
 
-  const handleMouseEnter = (dayIndex: number, timeIndex: number) => {
-    if (!isDragging || !dragStart) return
-    setTempSelectedSlots(calculateSelectedSlots(dragStart, { dayIndex, timeIndex }))
-  }
-
-  const handleMouseUp = useCallback((e: MouseEvent) => {
-    if (!isDragging) return
-    
-    setIsDragging(false)
-    
-    if (tempSelectedSlots.size > 0) {
-      if (tempSelectedSlots.size === 1) {
-        const slotKey = Array.from(tempSelectedSlots)[0]
-        setSelectedSlots(prev => {
-          const newSet = new Set(prev)
-          if (newSet.has(slotKey)) {
-            newSet.delete(slotKey)
-          } else {
-            // Check max classes limit before adding
-            const maxSlots = maxClassesPerWeek || Infinity
-            if (newSet.size >= maxSlots) {
-              toast.error(`Máximo ${maxSlots} clases por semana permitidas`)
-              return prev
-            }
-            newSet.add(slotKey)
-          }
-          return newSet
-        })
-        setTempSelectedSlots(new Set())
+  const toggleSlot = (slotKey: SlotKey) => {
+    setSelectedSlots((prev) => {
+      const next = new Set(prev)
+      if (next.has(slotKey)) {
+        next.delete(slotKey)
       } else {
-        setPopoverPosition({ top: e.clientY, left: e.clientX })
-        setShowMultiEditPopover(true)
-      }
-    }
-    
-    setDragStart(null)
-  }, [isDragging, tempSelectedSlots, maxClassesPerWeek])
-
-  useEffect(() => {
-    const handleGlobalMouseUp = (e: MouseEvent) => {
-      handleMouseUp(e)
-    }
-    
-    window.addEventListener('mouseup', handleGlobalMouseUp)
-    return () => window.removeEventListener('mouseup', handleGlobalMouseUp)
-  }, [handleMouseUp])
-
-  const applyMultiAdd = () => {
-    setSelectedSlots(prev => {
-      const newSet = new Set(prev)
-      const maxSlots = maxClassesPerWeek || Infinity
-      
-      for (const slot of tempSelectedSlots) {
-        if (newSet.size >= maxSlots) {
-          toast.error(`Máximo ${maxSlots} clases por semana permitidas`)
-          break
+        const max = maxClassesPerWeek || Infinity
+        if (next.size >= max) {
+          toast.error(`Máximo ${maxClassesPerWeek} clases por semana permitidas`)
+          return prev
         }
-        if (!newSet.has(slot)) {
-          newSet.add(slot)
-        }
+        next.add(slotKey)
       }
-      
-      return newSet
+      return next
     })
-    setShowMultiEditPopover(false)
-    setTempSelectedSlots(new Set())
   }
 
-  const applyMultiRemove = () => {
-    setSelectedSlots(prev => {
-      const newSet = new Set(prev)
-      tempSelectedSlots.forEach(slot => newSet.delete(slot))
-      return newSet
-    })
-    setShowMultiEditPopover(false)
-    setTempSelectedSlots(new Set())
+  const selectTeacher = (teacherId: string) => {
+    setSelectedTeacherId(teacherId)
+    setSelectedSlots(new Set())
   }
 
-  const cancelMultiEdit = () => {
-    setShowMultiEditPopover(false)
-    setTempSelectedSlots(new Set())
-    setDragStart(null)
+  const handleTimezoneChange = (tz: string) => {
+    setTzOverride(tz)
+    // Las horas mostradas cambian de marco: limpiar la selección anterior.
+    setSelectedSlots(new Set())
+  }
+
+  const endTimeFor = (time: string): string => {
+    const [hours, minutes] = time.split(':').map(Number)
+    const total = hours * 60 + minutes + classDuration
+    return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`
   }
 
   const getWeeklySchedule = (): ScheduleSlot[] => {
     if (!selectedTeacher) return []
-    
     return Array.from(selectedSlots).map((slotKey) => {
       const [day, time] = slotKey.split('-')
-      const dayOfWeek = DAYS_OF_WEEK_MAP[day]
-      const [hours, minutes] = time.split(':').map(Number)
-
-      const totalMinutes = hours * 60 + minutes + classDuration
-      const endHours = Math.floor(totalMinutes / 60)
-      const endMinutes = totalMinutes % 60
-      const endTime = `${String(endHours).padStart(2, '0')}:${String(endMinutes).padStart(2, '0')}`
-
-      // Convert local time to UTC before sending to server
       const utcSchedule = convertRecurringScheduleToUTC(
-        dayOfWeek,
+        DAYS_OF_WEEK_MAP[day],
         time,
-        endTime,
-        userTimezone
+        endTimeFor(time),
+        displayTimezone
       )
-
       return {
         teacherId: selectedTeacher.id,
         dayOfWeek: utcSchedule.dayOfWeek,
@@ -320,8 +332,6 @@ export function CheckoutScheduleSelector({
       toast.error('Debes seleccionar al menos un horario')
       return
     }
-
-    // Validar que se seleccione exactamente el número de clases requerido
     if (maxClassesPerWeek && selectedSlots.size !== maxClassesPerWeek) {
       toast.error(`Debes seleccionar exactamente ${maxClassesPerWeek} clases por semana`)
       return
@@ -330,18 +340,12 @@ export function CheckoutScheduleSelector({
     try {
       setCalculating(true)
       const schedule = getWeeklySchedule()
-      
       const response = await fetch('/api/plans/calculate-proration', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          planId,
-          schedule,
-        }),
+        body: JSON.stringify({ planId, schedule }),
       })
-
       if (!response.ok) throw new Error('Error al calcular prorrateo')
-
       const proration: ProrationResult = await response.json()
       onScheduleSelected(schedule, proration)
       toast.success('Horario seleccionado correctamente')
@@ -353,71 +357,11 @@ export function CheckoutScheduleSelector({
     }
   }
 
-  const getSlotContent = (dayKey: string, time: string, dayIndex: number, timeIndex: number) => {
-    const isAvailable = isSlotAvailable(dayKey, time)
-    const slotKey = `${dayKey}-${time}` as SlotKey
-    const isSelected = selectedSlots.has(slotKey)
-    const isInTempSelection = tempSelectedSlots.has(slotKey)
-
-    if (!isAvailable) {
-      return (
-        <div className="w-full h-full flex flex-col items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 cursor-not-allowed">
-          <Ban className="h-3 w-3 text-slate-400 dark:text-slate-500" />
-        </div>
-      )
-    }
-
-    const slotClasses = cn(
-      "w-full h-full flex flex-col items-center justify-center rounded-lg border-2 transition-all cursor-pointer select-none",
-      isInTempSelection && "ring-2 ring-primary ring-offset-1 scale-95",
-      isSelected && "bg-primary/20 border-primary",
-      !isSelected && "bg-green-50 dark:bg-green-900/20 border-green-300 dark:border-green-700 hover:bg-green-100 dark:hover:bg-green-900/30"
-    )
-
-    return (
-      <div
-        onMouseDown={(e) => {
-          e.preventDefault()
-          handleMouseDown(dayIndex, timeIndex)
-        }}
-        onMouseEnter={() => handleMouseEnter(dayIndex, timeIndex)}
-        className={slotClasses}
-      >
-        {isSelected ? (
-          <Check className="h-4 w-4 text-primary" />
-        ) : (
-          <span className="text-xs text-green-600 dark:text-green-400">Disponible</span>
-        )}
-      </div>
-    )
-  }
-
-  const getSelectionSummary = () => {
-    if (tempSelectedSlots.size === 0) return ''
-    
-    const days = new Set<string>()
-    const times = new Set<string>()
-    
-    tempSelectedSlots.forEach((slotKey) => {
-      const [day, time] = slotKey.split('-') as [string, string]
-      days.add(WEEKDAYS.find(w => w.key === day)?.label || day)
-      times.add(time)
-    })
-    
-    const sortedTimes = Array.from(times).sort()
-    const minTime = sortedTimes[0]
-    const maxTime = sortedTimes[sortedTimes.length - 1]
-    const maxTimeHour = parseInt(maxTime.split(':')[0]) + 1
-    const maxTimeFormatted = `${String(maxTimeHour).padStart(2, '0')}:00`
-    
-    return `${Array.from(days).join(', ')} • ${minTime} - ${maxTimeFormatted}`
-  }
-
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
         <Loader2 className="h-8 w-8 animate-spin text-muted-foreground mb-4" />
-        <p className="text-muted-foreground">Cargando disponibilidad de profesores...</p>
+        <p className="text-muted-foreground">Cargando disponibilidad de profesores…</p>
       </div>
     )
   }
@@ -433,6 +377,10 @@ export function CheckoutScheduleSelector({
     )
   }
 
+  const daysWithAvailability = WEEKDAYS.map((d) => ({ ...d, times: getAvailableTimes(d.key) })).filter(
+    (d) => d.times.length > 0
+  )
+
   return (
     <div className="space-y-6">
       {/* Selección de Profesor */}
@@ -442,25 +390,20 @@ export function CheckoutScheduleSelector({
             <User className="h-4 w-4" />
             Seleccionar Profesor
           </CardTitle>
-          <CardDescription>
-            Elige el profesor que impartirá tus clases
-          </CardDescription>
+          <CardDescription>Elige el profesor que impartirá tus clases</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 gap-3">
             {teachers.map((teacher) => (
               <div
                 key={teacher.id}
-                className={`flex items-center gap-3 p-3 border rounded-lg cursor-pointer transition-all ${
-                  selectedTeacher?.id === teacher.id
+                className={cn(
+                  'flex items-center gap-3 p-3 border rounded-lg cursor-pointer transition-all',
+                  selectedTeacherId === teacher.id
                     ? 'border-primary bg-primary/5 shadow-sm'
                     : 'hover:border-muted-foreground/50'
-                }`}
-                onClick={() => {
-                  setSelectedTeacher(teacher)
-                  setSelectedSlots(new Set())
-                  setTempSelectedSlots(new Set())
-                }}
+                )}
+                onClick={() => selectTeacher(teacher.id)}
               >
                 <Avatar className="h-10 w-10">
                   <AvatarImage src={teacher.image || undefined} />
@@ -469,7 +412,7 @@ export function CheckoutScheduleSelector({
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="font-medium truncate">{teacher.name}</span>
-                    {selectedTeacher?.id === teacher.id && (
+                    {selectedTeacherId === teacher.id && (
                       <Check className="h-4 w-4 text-primary flex-shrink-0" />
                     )}
                   </div>
@@ -488,7 +431,7 @@ export function CheckoutScheduleSelector({
         </CardContent>
       </Card>
 
-      {/* Selección de Horario con Grid */}
+      {/* Selección de Horario por chips */}
       {selectedTeacher && (
         <Card>
           <CardHeader className="pb-3">
@@ -498,150 +441,82 @@ export function CheckoutScheduleSelector({
                 Seleccionar Horario
               </div>
               {maxClassesPerWeek && (
-                <Badge variant={selectedSlots.size >= maxClassesPerWeek ? "default" : "secondary"}>
+                <Badge variant={selectedSlots.size >= maxClassesPerWeek ? 'default' : 'secondary'}>
                   {selectedSlots.size} / {maxClassesPerWeek} clases
                 </Badge>
               )}
             </CardTitle>
             <CardDescription>
-              Arrastra para seleccionar múltiples bloques. Cada clase dura {classDuration} minutos.
-              {maxClassesPerWeek && ` Máximo ${maxClassesPerWeek} clases por semana.`}
-              {' '}Las clases requieren al menos 8 horas de anticipación. Si empiezan antes de las 9:00 a. m. en la hora del profesor, sólo se agendan hasta las 6:00 p. m. del día anterior.
+              Cada clase dura {classDuration} minutos.
+              {maxClassesPerWeek && ` Selecciona exactamente ${maxClassesPerWeek} por semana.`} Las
+              clases requieren al menos 8 horas de anticipación.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            {/* Legend */}
-            <div className="flex items-center justify-between gap-4 px-2 py-2 border-b bg-muted/30 rounded-t-lg">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <GripVertical className="h-4 w-4" />
-                <span>Arrastra para seleccionar múltiples bloques</span>
-              </div>
-              
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <div className="h-4 w-4 rounded bg-green-100 dark:bg-green-900/30 border border-green-300" />
-                  <span className="text-xs text-muted-foreground">Disponible</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="h-4 w-4 rounded bg-primary/20 border-2 border-primary" />
-                  <span className="text-xs text-muted-foreground">Seleccionado</span>
-                </div>
-              </div>
+          <CardContent className="space-y-5">
+            {/* Cabecera: zona horaria autodetectada + cambio manual */}
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-lg border bg-muted/30 px-3 py-2.5">
+              <Clock className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm text-muted-foreground">Horarios en tu zona:</span>
+              <TimezonePicker value={displayTimezone} onChange={handleTimezoneChange} />
+              <span className="text-xs text-muted-foreground">
+                ¿No es tu zona horaria? Tócala para cambiarla y los horarios se ajustan al instante.
+              </span>
             </div>
 
-            {/* Schedule Grid */}
-            <div className="overflow-y-auto rounded-lg border" style={{ maxHeight: '400px' }}>
-              <table className="w-full border-collapse table-fixed">
-                <thead className="sticky top-0 z-10">
-                  <tr className="bg-muted/80 backdrop-blur">
-                    <th className="w-[60px] px-1 py-2 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground border-r">
-                      Hora
-                    </th>
-                    {WEEKDAYS.map(({ key, label, index }) => {
-                      const dayDate = addDays(weekStart, index)
-                      const isCurrentDay = isToday(dayDate)
-                      
-                      return (
-                        <th
-                          key={key}
-                          className={cn(
-                            "px-1 py-2 text-center",
-                            isCurrentDay && "bg-primary/10"
-                          )}
-                        >
-                          <div className="flex flex-col items-center">
-                            <span className={cn(
-                              "text-xs font-medium uppercase",
-                              isCurrentDay ? "text-primary font-bold" : "text-muted-foreground"
-                            )}>
-                              {label}
-                            </span>
-                          </div>
-                        </th>
-                      )
-                    })}
-                  </tr>
-                </thead>
-                <tbody className="divide-y">
-                  {TIME_SLOTS.map((time, timeIndex) => (
-                    <tr key={time}>
-                      <td className="w-[60px] px-1 py-1 text-center align-middle text-xs font-medium text-muted-foreground border-r bg-card h-10">
-                        {time}
-                      </td>
-                      {WEEKDAYS.map(({ key, index }) => {
-                        const dayDate = addDays(weekStart, index)
-                        const isCurrentDay = isToday(dayDate)
-
+            {/* Días con sus bloques disponibles */}
+            {daysWithAvailability.length === 0 ? (
+              <p className="py-8 text-center text-sm text-muted-foreground">
+                Este profesor no tiene horarios disponibles. Prueba con otro profesor.
+              </p>
+            ) : (
+              <div className="space-y-4">
+                {daysWithAvailability.map(({ key, label, times }) => (
+                  <div key={key}>
+                    <p className="mb-2 text-sm font-medium text-foreground">{label}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {times.map((time) => {
+                        const slotKey = `${key}-${time}` as SlotKey
+                        const isSelected = selectedSlots.has(slotKey)
                         return (
-                          <td
-                            key={`${key}-${time}`}
+                          <button
+                            key={slotKey}
+                            type="button"
+                            onClick={() => toggleSlot(slotKey)}
+                            aria-pressed={isSelected}
                             className={cn(
-                              "p-1 align-top h-10 border-r",
-                              isCurrentDay && "bg-primary/5"
+                              'rounded-lg border px-3 py-1.5 text-sm font-medium tabular-nums transition-colors',
+                              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
+                              isSelected
+                                ? 'border-primary bg-primary text-primary-foreground'
+                                : 'border-slate-200 bg-white text-slate-700 hover:border-primary/50 hover:bg-primary/5 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200'
                             )}
                           >
-                            {getSlotContent(key, time, index, timeIndex)}
-                          </td>
+                            {formatTime12(time)}
+                          </button>
                         )
                       })}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {selectedSlots.size > 0 && (
-              <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
+              <div className="flex items-center justify-between rounded-lg bg-muted p-3">
                 <div className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-primary" />
                   <span className="text-sm font-medium">
-                    {selectedSlots.size} horario(s) seleccionado(s) por semana
+                    {selectedSlots.size} horario(s) por semana
                   </span>
                 </div>
                 <Button variant="outline" size="sm" onClick={() => setSelectedSlots(new Set())}>
-                  <X className="h-4 w-4 mr-1" />
+                  <X className="mr-1 h-4 w-4" />
                   Limpiar
                 </Button>
               </div>
             )}
           </CardContent>
         </Card>
-      )}
-
-      {/* Multi-selection popover */}
-      {showMultiEditPopover && popoverPosition && (
-        <div 
-          ref={popoverRef}
-          className="fixed z-50 bg-popover border rounded-lg shadow-lg p-4 w-72"
-          style={{ 
-            top: Math.min(popoverPosition.top, window.innerHeight - 200),
-            left: Math.min(popoverPosition.left, window.innerWidth - 300)
-          }}
-        >
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h4 className="font-semibold text-sm">Selección múltiple</h4>
-              <Button variant="ghost" size="icon" className="h-6 w-6" onClick={cancelMultiEdit}>
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-            
-            <p className="text-xs text-muted-foreground bg-muted/50 p-2 rounded">
-              {getSelectionSummary()} ({tempSelectedSlots.size} bloques)
-            </p>
-
-            <div className="flex gap-2">
-              <Button size="sm" className="flex-1" onClick={applyMultiAdd}>
-                <Check className="h-4 w-4 mr-1" />
-                Agregar
-              </Button>
-              <Button size="sm" variant="outline" className="flex-1" onClick={applyMultiRemove}>
-                <X className="h-4 w-4 mr-1" />
-                Quitar
-              </Button>
-            </div>
-          </div>
-        </div>
       )}
 
       {/* Resumen de Selección */}
@@ -651,42 +526,27 @@ export function CheckoutScheduleSelector({
             <CardTitle className="text-base">Tu Horario Semanal</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
               {Array.from(selectedSlots)
                 .sort()
                 .map((slotKey) => {
                   const [day, time] = slotKey.split('-')
-                  const dayOfWeek = DAYS_OF_WEEK_MAP[day]
-                  const dayName = DAY_NAMES_ES[dayOfWeek]
-
-                  const [hours, minutes] = time.split(':').map(Number)
-                  const totalMinutes = hours * 60 + minutes + classDuration
-                  const endHours = Math.floor(totalMinutes / 60)
-                  const endMinutes = totalMinutes % 60
-                  const endTime = `${String(endHours).padStart(2, '0')}:${String(endMinutes).padStart(2, '0')}`
-
                   return (
                     <div
                       key={slotKey}
-                      className="flex items-center justify-between p-2 border rounded-lg text-sm"
+                      className="flex items-center justify-between rounded-lg border p-2 text-sm"
                     >
                       <div>
-                        <p className="font-medium">{dayName}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {time} - {endTime}
+                        <p className="font-medium">{DAY_NAMES_ES[DAYS_OF_WEEK_MAP[day]]}</p>
+                        <p className="text-xs text-muted-foreground tabular-nums">
+                          {formatTime12(time)}
                         </p>
                       </div>
                       <Button
                         variant="ghost"
                         size="icon"
                         className="h-6 w-6"
-                        onClick={() => {
-                          setSelectedSlots(prev => {
-                            const newSet = new Set(prev)
-                            newSet.delete(slotKey)
-                            return newSet
-                          })
-                        }}
+                        onClick={() => toggleSlot(slotKey as SlotKey)}
                       >
                         <X className="h-3 w-3" />
                       </Button>
@@ -702,8 +562,9 @@ export function CheckoutScheduleSelector({
       {selectedSlots.size > 0 && (
         <div className="space-y-2">
           {maxClassesPerWeek && selectedSlots.size !== maxClassesPerWeek && (
-            <p className="text-sm text-amber-600 dark:text-amber-400 text-center">
-              Debes seleccionar exactamente {maxClassesPerWeek} clases ({selectedSlots.size} seleccionadas)
+            <p className="text-center text-sm text-amber-600 dark:text-amber-400">
+              Debes seleccionar exactamente {maxClassesPerWeek} clases ({selectedSlots.size}{' '}
+              seleccionadas)
             </p>
           )}
           <Button
@@ -715,7 +576,7 @@ export function CheckoutScheduleSelector({
             {calculating ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Calculando precio...
+                Calculando precio…
               </>
             ) : (
               <>
@@ -725,10 +586,6 @@ export function CheckoutScheduleSelector({
             )}
           </Button>
         </div>
-      )}
-
-      {isDragging && (
-        <div className="fixed inset-0 z-40 cursor-crosshair" style={{ pointerEvents: 'none' }} />
       )}
     </div>
   )
