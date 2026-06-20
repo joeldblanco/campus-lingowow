@@ -47,6 +47,7 @@ type ShopState = {
 
   // Acciones
   addToCart: (item: CartItem) => void
+  buyNow: (item: CartItem) => void
   removeFromCart: (productId: string, planId: string, language?: string) => void
   openCartDrawer: () => void
   closeCartDrawer: () => void
@@ -137,6 +138,10 @@ export const useShopStore = create<ShopState>()(
             isCartDrawerOpen: true,
           }
         }),
+
+      // Compra directa ("1 click"): reemplaza el carrito con un solo item y no abre el drawer.
+      // Pensado para ir directo a /shop/cart/checkout sin pasar por el carrito como paso de UX.
+      buyNow: (item) => set({ cart: [item], lastAddedItem: item, isCartDrawerOpen: false }),
 
       removeFromCart: (productId, planId, language) =>
         set((state) => ({

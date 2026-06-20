@@ -3,16 +3,14 @@
 import React, { useEffect, useState } from 'react'
 import Header from '@/components/public-components/header'
 import Footer from '@/components/public-components/footer'
-import { CartDrawer } from '@/components/shop/cart/cart-drawer'
 import { Button } from '@/components/ui/button'
-import { CheckCircle, ChevronDown, GraduationCap, Globe, Rocket, Languages, Loader2, Check } from 'lucide-react'
+import { CheckCircle, ChevronDown, GraduationCap, Globe, Rocket, Languages, Loader2 } from 'lucide-react'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { SUPPORTED_LANGUAGES } from '@/lib/constants/languages'
 import { cn } from '@/lib/utils'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { getPlans, getPricingPlansForProduct, getProducts } from '@/lib/actions/commercial'
 import { useShopStore } from '@/stores/useShopStore'
-import { toast } from 'sonner'
 import type { PlanWithFeatures } from '@/types/shop'
 
 export default function PricingPage() {
@@ -25,22 +23,8 @@ export default function PricingPage() {
   const [selectedLanguage, setSelectedLanguage] = useState<string>('en')
   
   // Shop store
-  const { addToCart, cart, isCartDrawerOpen, setCartDrawerOpen, lastAddedItem } = useShopStore()
-
-  // Mostrar toast cuando se añade un producto
-  useEffect(() => {
-    if (lastAddedItem) {
-      toast.success('¡Añadido correctamente!', {
-        description: `"${lastAddedItem.plan.name}" ha sido añadido a tu carrito.`,
-        duration: 4000,
-        position: 'bottom-left',
-      })
-    }
-  }, [lastAddedItem])
-
-  const isInCart = (planId: string, language: string) => {
-    return cart.some((item) => item.plan.id === planId && item.language === language)
-  }
+  const router = useRouter()
+  const { buyNow } = useShopStore()
 
   const getPriceForLanguage = (plan: PlanWithFeatures, language: string) => {
     const pricing = plan.pricing?.find(p => p.language === language && p.isActive)
@@ -63,9 +47,9 @@ export default function PricingPage() {
       )
     : plans
 
-  const handleAddToCart = (plan: PlanWithFeatures) => {
+  const handleBuyNow = (plan: PlanWithFeatures) => {
     const { price } = getPriceForLanguage(plan, selectedLanguage)
-    addToCart({
+    buyNow({
       product: {
         id: product?.id || productId || 'unknown',
         title: product?.name || 'Plan de Aprendizaje',
@@ -80,6 +64,7 @@ export default function PricingPage() {
       quantity: 1,
       language: selectedLanguage,
     })
+    router.push('/shop/cart/checkout')
   }
 
   useEffect(() => {
@@ -226,23 +211,16 @@ export default function PricingPage() {
                       </div>
 
                       <Button
-                        variant={isInCart(plan.id, selectedLanguage) ? "secondary" : isPopular ? "default" : "outline"}
+                        variant={isPopular ? "default" : "outline"}
                         className={cn(
                           "w-full py-3 h-auto mb-8 font-bold",
-                          isInCart(plan.id, selectedLanguage)
-                            ? "bg-green-500 hover:bg-green-600 text-white"
-                            : isPopular
-                              ? "bg-primary hover:bg-blue-600 text-white shadow-lg shadow-blue-500/30"
-                              : "bg-slate-100 border-none hover:bg-slate-200 text-slate-900"
+                          isPopular
+                            ? "bg-primary hover:bg-blue-600 text-white shadow-lg shadow-blue-500/30"
+                            : "bg-slate-100 border-none hover:bg-slate-200 text-slate-900"
                         )}
-                        onClick={() => handleAddToCart(plan)}
+                        onClick={() => handleBuyNow(plan)}
                       >
-                        {isInCart(plan.id, selectedLanguage) ? (
-                          <>
-                            <Check className="mr-2 h-4 w-4" />
-                            Añadido al Carrito
-                          </>
-                        ) : isPopular ? "Obtener Plan" : "Empezar Ahora"}
+                        {isPopular ? "Obtener plan" : "Empezar ahora"}
                       </Button>
 
                       <div className="space-y-4">
@@ -388,11 +366,6 @@ export default function PricingPage() {
         </section>
       </main>
 
-      <CartDrawer 
-        open={isCartDrawerOpen} 
-        onOpenChange={setCartDrawerOpen}
-        suggestedProducts={[]}
-      />
       <Footer />
     </div>
   )

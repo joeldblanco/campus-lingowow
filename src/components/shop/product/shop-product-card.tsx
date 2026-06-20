@@ -9,6 +9,7 @@ import { Course, Merge, Product } from '@/types/shop'
 import { Check, ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { isAfter, isBefore } from 'date-fns'
 
 interface ShopProductCardProps {
@@ -16,22 +17,19 @@ interface ShopProductCardProps {
 }
 
 export function ShopProductCard({ product }: ShopProductCardProps) {
-  const { addToCart, cart } = useShopStore()
+  const router = useRouter()
+  const { buyNow } = useShopStore()
   const hasPlans = product.plans && product.plans.length > 0
   const minPrice = hasPlans ? Math.min(...product.plans.map((p) => p.price)) : (product.price ?? 0)
   const productUrl = hasPlans ? `/pricing/?productId=${product.id}` : `/checkout/${product.id}`
   const isSubscription = product.paymentType === 'RECURRING'
-  
-  // Check if product is in cart
-  const isInCart = cart.some(item => item.product.id === product.id)
 
-  // Handle add to cart for products without plans
-  const handleAddToCart = (e: React.MouseEvent) => {
+  // Compra directa para productos sin planes: arma un plan por defecto y va al checkout.
+  const handleBuyNow = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    
-    // For products without plans, create a default plan entry
-    addToCart({
+
+    buyNow({
       product: {
         id: product.id,
         title: product.name,
@@ -45,6 +43,7 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
       },
       quantity: 1,
     })
+    router.push('/shop/cart/checkout')
   }
 
   // Determine availability status
@@ -162,30 +161,25 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
           </Button>
         ) : (
           <Button
-            variant={isInCart ? 'secondary' : 'outline'}
+            variant={isSubscription ? 'default' : 'outline'}
             className={cn(
               'w-full mt-auto',
-              isInCart
-                ? 'bg-green-500 hover:bg-green-600 text-white'
+              isSubscription
+                ? 'bg-blue-500 hover:bg-blue-600 text-white'
                 : 'border-gray-300 text-gray-700 hover:bg-gray-50',
               !isAvailable && 'opacity-50 pointer-events-none'
             )}
             disabled={!isAvailable}
-            onClick={handleAddToCart}
+            onClick={handleBuyNow}
           >
             {isScheduled ? (
               'Próximamente'
             ) : isExpired ? (
               'No disponible'
-            ) : isInCart ? (
-              <>
-                <Check className="mr-2 h-4 w-4" />
-                Added to Cart
-              </>
             ) : (
               <>
                 <ShoppingCart className="mr-2 h-4 w-4" />
-                Add to Cart
+                Comprar ahora
               </>
             )}
           </Button>
