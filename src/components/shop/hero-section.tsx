@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 export function HeroSection() {
   return (
@@ -27,15 +28,17 @@ export function HeroSection() {
 
         <div className="flex flex-wrap gap-3">
           <Button
+            asChild
             className="h-12 px-6 bg-primary hover:bg-blue-600 text-white text-base font-bold rounded-lg shadow-md shadow-blue-500/20"
           >
-            Ver Ofertas Especiales
+            <Link href="/pricing">Ver Ofertas Especiales</Link>
           </Button>
           <Button
+            asChild
             variant="outline"
             className="h-12 px-6 bg-white border-slate-200 text-slate-700 hover:bg-slate-50 text-base font-bold rounded-lg"
           >
-            Cómo Funciona
+            <Link href="/method">Cómo Funciona</Link>
           </Button>
         </div>
       </div>

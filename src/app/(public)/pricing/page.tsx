@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import Header from '@/components/public-components/header'
 import Footer from '@/components/public-components/footer'
 import { Button } from '@/components/ui/button'
-import { CheckCircle, ChevronDown, GraduationCap, Globe, Rocket, Languages, Loader2 } from 'lucide-react'
+import { CheckCircle, ChevronDown, Loader2 } from 'lucide-react'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { SUPPORTED_LANGUAGES } from '@/lib/constants/languages'
 import { cn } from '@/lib/utils'
@@ -239,27 +239,6 @@ export default function PricingPage() {
                 })}
               </div>
             )}
-          </div>
-        </section>
-
-        {/* Trust Indicator */}
-        <section className="border-y border-slate-200 dark:border-slate-800 bg-white dark:bg-[#1a2632]">
-          <div className="max-w-7xl mx-auto py-12 px-4 text-center">
-            <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-8">Confían en nosotros estudiantes de</p>
-            <div className="flex flex-wrap justify-center items-center gap-12 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-              <div className="flex items-center gap-2 font-bold text-xl text-slate-700 dark:text-slate-300">
-                <GraduationCap className="h-6 w-6" /> University of Tech
-              </div>
-              <div className="flex items-center gap-2 font-bold text-xl text-slate-700 dark:text-slate-300">
-                <Globe className="h-6 w-6" /> Global Corp
-              </div>
-              <div className="flex items-center gap-2 font-bold text-xl text-slate-700 dark:text-slate-300">
-                <Rocket className="h-6 w-6" /> Startup Inc
-              </div>
-              <div className="flex items-center gap-2 font-bold text-xl text-slate-700 dark:text-slate-300">
-                <Languages className="h-6 w-6" /> LinguaPress
-              </div>
-            </div>
           </div>
         </section>
 
