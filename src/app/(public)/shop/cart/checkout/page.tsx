@@ -26,11 +26,7 @@ import {
 } from '@/components/ui/command'
 import { PaymentMethodForm } from '@/components/shop/checkout/payment-method-form'
 import { CheckoutLoginModal } from '@/components/shop/checkout/login-modal'
-import {
-  useScheduleSelection,
-  ScheduleTeacherList,
-  ScheduleAvailability,
-} from '@/components/checkout/checkout-schedule-selector'
+import { CheckoutScheduleSelector } from '@/components/checkout/checkout-schedule-selector'
 import { CouponInput } from '@/components/shop/checkout/coupon-input'
 import { convertRecurringScheduleFromUTC } from '@/lib/utils/date'
 import { useTimezone } from '@/hooks/use-timezone'
@@ -387,35 +383,6 @@ export default function CheckoutPage() {
     ? getCartItemKey(scheduleItem.plan.id, scheduleItem.language)
     : null
   const scheduleDetails = scheduleItemKey ? planDetails[scheduleItemKey] : undefined
-  const schedule = useScheduleSelection(
-    scheduleItem && scheduleDetails?.courseId
-      ? {
-          planId: scheduleItem.plan.id,
-          courseId: scheduleDetails.courseId,
-          classDuration: scheduleDetails.classDuration,
-          maxClassesPerWeek: scheduleDetails.classesPerWeek || undefined,
-          onScheduleSelected: (s, p) => handleScheduleSelected(scheduleItemKey!, s, p),
-        }
-      : null
-  )
-
-  // La disponibilidad ocupa la columna derecha (en lugar del Resumen) mientras
-  // la card "Seleccionar Profesor" esté visible en pantalla.
-  const teacherSectionRef = useRef<HTMLElement>(null)
-  const [teacherSectionVisible, setTeacherSectionVisible] = useState(false)
-  useEffect(() => {
-    const el = teacherSectionRef.current
-    if (!el) {
-      setTeacherSectionVisible(false)
-      return
-    }
-    const observer = new IntersectionObserver(
-      ([entry]) => setTeacherSectionVisible(entry.isIntersecting),
-      { rootMargin: '-80px 0px -30% 0px' }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [requiresScheduleSelection, scheduleItemKey])
 
   const handlePaymentSuccess = useCallback(
     (data: unknown) => {
@@ -522,30 +489,34 @@ export default function CheckoutPage() {
           {/* ---------- Flujo (izquierda) ---------- */}
           <div className="space-y-10 lg:col-span-7">
             {/* 1 · Horario */}
-            {requiresScheduleSelection && scheduleItem && (
-              <section ref={teacherSectionRef}>
+            {requiresScheduleSelection && scheduleItem && scheduleDetails?.courseId && (
+              <section>
                 <SectionHead
                   icon={<CalendarClock className="h-4 w-4" />}
                   step="1"
                   title="Tu horario"
-                  hint="Elige un profesor; su disponibilidad aparece a la derecha."
+                  hint="Elige tus horarios; te asignamos un profesor que los cubra."
                 />
-                <div className="mt-5 space-y-5">
-                  <div className="rounded-xl border border-slate-200 bg-white p-6">
-                    <div className="mb-5 flex items-center gap-3">
-                      <ProductThumb
-                        image={scheduleItem.product.image}
-                        title={scheduleItem.product.title}
-                      />
-                      <div>
-                        <h3 className="font-lexend font-medium text-slate-900">
-                          {scheduleItem.product.title}
-                        </h3>
-                        <p className="text-sm text-slate-500">{scheduleItem.plan.name}</p>
-                      </div>
+                <div className="mt-5 space-y-4">
+                  <div className="flex items-center gap-3">
+                    <ProductThumb
+                      image={scheduleItem.product.image}
+                      title={scheduleItem.product.title}
+                    />
+                    <div>
+                      <h3 className="font-lexend font-medium text-slate-900">
+                        {scheduleItem.product.title}
+                      </h3>
+                      <p className="text-sm text-slate-500">{scheduleItem.plan.name}</p>
                     </div>
-                    <ScheduleTeacherList state={schedule} />
                   </div>
+                  <CheckoutScheduleSelector
+                    planId={scheduleItem.plan.id}
+                    courseId={scheduleDetails.courseId}
+                    classDuration={scheduleDetails.classDuration}
+                    maxClassesPerWeek={scheduleDetails.classesPerWeek || undefined}
+                    onScheduleSelected={(s, p) => handleScheduleSelected(scheduleItemKey!, s, p)}
+                  />
                   <p className="text-sm text-slate-500">
                     ¿No encuentras un horario?{' '}
                     <Link href="/contact" className="font-medium text-primary hover:underline">
@@ -721,13 +692,9 @@ export default function CheckoutPage() {
             </Button>
           </div>
 
-          {/* ---------- Columna derecha: horario (mientras se elige profesor) o resumen ---------- */}
+          {/* ---------- Resumen (derecha, sticky) ---------- */}
           <div className="lg:col-span-5">
-            <div className="sticky top-24">
-              {requiresScheduleSelection && teacherSectionVisible ? (
-                <ScheduleAvailability state={schedule} />
-              ) : (
-              <div className="rounded-xl border border-slate-200 bg-white">
+            <div className="sticky top-24 rounded-xl border border-slate-200 bg-white">
               <h2 className="border-b border-slate-100 px-6 py-4 font-lexend text-base font-semibold text-slate-900">
                 Resumen
               </h2>
@@ -821,8 +788,6 @@ export default function CheckoutPage() {
                 <Lock className="h-3 w-3" />
                 Pago protegido con encriptación SSL
               </p>
-              </div>
-              )}
             </div>
           </div>
         </div>
