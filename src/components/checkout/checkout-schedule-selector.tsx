@@ -307,6 +307,18 @@ export function CheckoutScheduleSelector({
   const assignedTeacher = teachers.find((t) => t.id === assignedTeacherId) ?? null
   const eligibleTeachers = teachers.filter((t) => eligibleTeacherIds.includes(t.id))
 
+  // Feedback en vivo: cuántos profesores pueden cubrir TODO lo elegido + qué falta.
+  const compatibleCount = selectedSlots.size === 0 ? teachers.length : eligibleTeacherIds.length
+  const remaining = maxClassesPerWeek ? Math.max(0, maxClassesPerWeek - selectedSlots.size) : null
+  const guidance =
+    remaining === null
+      ? null
+      : remaining > 0
+        ? selectedSlots.size === 0
+          ? `Elige ${remaining} clase${remaining > 1 ? 's' : ''}`
+          : `Elige ${remaining} clase${remaining > 1 ? 's' : ''} compatible${remaining > 1 ? 's' : ''} más`
+        : 'Horario completo'
+
   const eligibleSet = useMemo(() => new Set(eligibleTeacherIds), [eligibleKey]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Un bloque es seleccionable si, junto a lo ya elegido, sigue existiendo un profe que cubra todo.
@@ -447,6 +459,19 @@ export function CheckoutScheduleSelector({
           <span className="text-xs text-muted-foreground">
             ¿No es tu zona horaria? Tócala para cambiarla y los horarios se ajustan al instante.
           </span>
+        </div>
+
+        {/* Feedback en vivo: profesores compatibles + qué falta */}
+        <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-sm">
+          <span className="text-muted-foreground">
+            <span className="font-semibold text-foreground">{compatibleCount}</span>{' '}
+            {compatibleCount === 1 ? 'profesor puede' : 'profesores pueden'} cubrir tu horario
+          </span>
+          {guidance && (
+            <span className={cn('font-medium', remaining === 0 ? 'text-green-600' : 'text-primary')}>
+              {guidance}
+            </span>
+          )}
         </div>
 
         {/* Profesor asignado (cuando ya hay selección) */}
