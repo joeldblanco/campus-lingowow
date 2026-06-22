@@ -227,7 +227,7 @@ const AcademicPeriodForm: React.FC<AcademicPeriodFormProps> = ({
                           selected={field.value}
                           onSelect={field.onChange}
                           disabled={disabledDates}
-                          initialFocus
+                          autoFocus
                           locale={es}
                         />
                       </PopoverContent>

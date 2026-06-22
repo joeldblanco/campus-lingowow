@@ -246,7 +246,7 @@ export function AssignStudentsDialog({
                     selected={dueDate}
                     onSelect={setDueDate}
                     disabled={(date) => date < new Date()}
-                    initialFocus
+                    autoFocus
                   />
                 </PopoverContent>
               </Popover>
