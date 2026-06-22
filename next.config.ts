@@ -27,6 +27,10 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: '50mb',
     },
+    // Reduce peak webpack memory during `next build` so the Vercel 8 GB build
+    // container doesn't OOM (SIGKILL). Keeps the JS heap cap at 8192 — this
+    // lowers webpack's actual working set rather than the allowed ceiling.
+    webpackMemoryOptimizations: true,
   },
   // Esto evita errores de compilación con las dependencias de puppeteer en el servidor.
   serverExternalPackages: ['puppeteer-core', '@sparticuz/chromium'],
@@ -35,6 +39,16 @@ const nextConfig: NextConfig = {
   },
   typescript: {
     ignoreBuildErrors: true,
+  },
+  webpack: (config) => {
+    // The webpack filesystem cache balloons to ~1.6 GB during `next build` and
+    // is a primary driver of the Vercel 8 GB build-container OOM (SIGKILL).
+    // Disable it for the production build — Vercel builds run cold, so the
+    // persistent cache buys little while costing a lot of memory.
+    if (config.cache) {
+      config.cache = false
+    }
+    return config
   },
 }
 
