@@ -40,6 +40,16 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  webpack: (config) => {
+    // The webpack filesystem cache balloons to ~1.6 GB during `next build` and
+    // is a primary driver of the Vercel 8 GB build-container OOM (SIGKILL).
+    // Disable it for the production build — Vercel builds run cold, so the
+    // persistent cache buys little while costing a lot of memory.
+    if (config.cache) {
+      config.cache = false
+    }
+    return config
+  },
 }
 
 export default withSentryConfig(nextConfig, {
