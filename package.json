@@ -126,7 +126,7 @@
     "react-hook-form": "^7.80.0",
     "react-joyride": "^3.1.0",
     "react-resizable-panels": "^2.1.7",
-    "recharts": "^2.15.1",
+    "recharts": "^3.8.1",
     "resend": "^4.1.2",
     "sanitize-html": "^2.17.5",
     "simple-icons": "^14.11.1",
