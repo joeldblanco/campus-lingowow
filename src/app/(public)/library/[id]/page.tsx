@@ -33,15 +33,13 @@ import {
   Lock,
   Crown,
   Sparkles,
-  Facebook,
-  Twitter,
-  Linkedin,
   Link2,
   MessageCircle,
   GraduationCap,
   Users,
   Globe,
 } from 'lucide-react'
+import { Facebook, Twitter, Linkedin } from '@/components/icons/brand-icons'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'

@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Facebook, Instagram, Linkedin, Youtube } from 'lucide-react'
+import { Facebook, Instagram, Linkedin, Youtube } from '@/components/icons/brand-icons'
 
 const Footer = () => {
   return (
