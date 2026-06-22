@@ -464,6 +464,25 @@ export function CheckoutScheduleSelector({
     return map
   }, [teachers])
 
+  // Aviso PRECISO: clases puntuales del profe ASIGNADO que coinciden con los
+  // bloques ya elegidos (no bloquea; solo informa sobre la primera ocurrencia).
+  const assignedConflicts = useMemo(() => {
+    const oneOff = assignedTeacher?.oneOffSlots
+    const out: Array<{ slotKey: string; date: string }> = []
+    if (!oneOff || selectedSlots.size === 0) return out
+    for (const slotKey of selectedSlots) {
+      const [dayKey, time] = slotKey.split('-')
+      const [h] = time.split(':').map(Number)
+      const hit = (oneOff[dayKey] ?? []).find((s) => {
+        const [sh] = s.startTime.split(':').map(Number)
+        const [eh] = s.endTime.split(':').map(Number)
+        return h >= sh && h < eh
+      })
+      if (hit) out.push({ slotKey, date: hit.date })
+    }
+    return out
+  }, [assignedTeacher, selectedSlots])
+
   const compatibleCount = selectedSlots.size === 0 ? teachers.length : eligibleTeacherIds.length
   const remaining = maxClassesPerWeek ? Math.max(0, maxClassesPerWeek - selectedSlots.size) : null
   const guidance =
@@ -917,6 +936,31 @@ export function CheckoutScheduleSelector({
                       Limpiar
                     </Button>
                   </div>
+
+                  {/* Aviso preciso: el profe asignado tiene una puntual que coincide */}
+                  {assignedConflicts.length > 0 && assignedTeacher && (
+                    <div className="flex items-start gap-2 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800 dark:border-amber-700 dark:bg-amber-900/20 dark:text-amber-300">
+                      <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
+                      <div>
+                        <span className="font-medium">{assignedTeacher.name}</span> tiene una clase
+                        puntual que coincide con:
+                        <ul className="mt-1 list-disc pl-4">
+                          {assignedConflicts.map(({ slotKey, date }) => {
+                            const [day, time] = slotKey.split('-')
+                            return (
+                              <li key={slotKey}>
+                                {DAY_NAMES_ES[DAYS_OF_WEEK_MAP[day]]} {formatTime12(time)} · el {date}
+                              </li>
+                            )
+                          })}
+                        </ul>
+                        <span className="mt-1 block text-xs">
+                          Puedes continuar; coordinaremos esa primera clase contigo.
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="grid grid-cols-2 gap-2">
                     {Array.from(selectedSlots)
                       .sort()
