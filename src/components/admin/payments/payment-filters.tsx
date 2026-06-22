@@ -187,7 +187,7 @@ export function PaymentFilters({
                         mode="single"
                         selected={startDate}
                         onSelect={setStartDate}
-                        initialFocus
+                        autoFocus
                       />
                     </PopoverContent>
                   </Popover>
@@ -213,7 +213,7 @@ export function PaymentFilters({
                         mode="single"
                         selected={endDate}
                         onSelect={setEndDate}
-                        initialFocus
+                        autoFocus
                       />
                     </PopoverContent>
                   </Popover>

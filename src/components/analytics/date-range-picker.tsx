@@ -149,7 +149,7 @@ export function DateRangePicker({
             </div>
             <div className="p-2">
               <Calendar
-                initialFocus
+                autoFocus
                 mode="range"
                 defaultMonth={date?.from}
                 selected={date}
