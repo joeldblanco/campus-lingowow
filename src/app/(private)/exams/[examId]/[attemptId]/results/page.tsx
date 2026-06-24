@@ -2,6 +2,7 @@ import { auth } from '@/auth'
 import { redirect, notFound } from 'next/navigation'
 import { getExamResultsForStudent } from '@/lib/actions/exams'
 import { ExamResults } from '@/components/exams/student'
+import { normalizeTrueFalseAnswer } from '@/lib/utils/true-false-grading'
 
 interface PageProps {
   params: Promise<{ examId: string; attemptId: string }>
@@ -260,9 +261,87 @@ export default async function ExamResultsPage({ params }: PageProps) {
       }
     }
     
+    // Bloque verdadero/falso de varias sentencias (mismo patrón que multiple_choice)
+    const trueFalseItems = options?.trueFalseItems as {
+      id: string
+      statement: string
+      correctAnswer: boolean
+    }[] | undefined
+
+    if (trueFalseItems && trueFalseItems.length > 1) {
+      const partialCredit = question.partialCredit || false
+      const userAnswers = answer?.answer as Record<string, unknown> | null
+      const toLabel = (v: boolean) => (v ? 'Verdadero' : 'Falso')
+
+      if (partialCredit) {
+        // EXPANDIR: cada sentencia como sub-pregunta individual
+        const pointsPerItem = Math.round(question.points / trueFalseItems.length)
+
+        return trueFalseItems.map((item) => {
+          const userBool = normalizeTrueFalseAnswer(userAnswers?.[item.id])
+          const isCorrect = userBool === item.correctAnswer
+
+          questionNumber++
+
+          return {
+            id: `${answer?.id || 'no-answer'}-${item.id}`,
+            questionNumber,
+            type: question.type,
+            category: question.tags?.[0] || undefined,
+            question: item.statement,
+            userAnswer: userBool === null ? null : toLabel(userBool),
+            correctAnswer: toLabel(item.correctAnswer),
+            isCorrect,
+            pointsEarned: isCorrect ? pointsPerItem : 0,
+            maxPoints: pointsPerItem,
+            explanation: question.explanation,
+            audioUrl: undefined,
+            needsReview: false,
+            isInformativeBlock: false,
+            multipleChoiceDetails: undefined,
+          }
+        })
+      } else {
+        // NO EXPANDIR: una sola fila con el detalle por sentencia (todo o nada)
+        questionNumber++
+
+        const trueFalseDetails = trueFalseItems.map((item) => {
+          const userBool = normalizeTrueFalseAnswer(userAnswers?.[item.id])
+          return {
+            itemQuestion: item.statement,
+            userOptionLetter: userBool === null ? null : userBool ? 'V' : 'F',
+            userOptionText: userBool === null ? null : toLabel(userBool),
+            correctOptionLetter: item.correctAnswer ? 'V' : 'F',
+            correctOptionText: toLabel(item.correctAnswer),
+            isCorrect: userBool === item.correctAnswer,
+          }
+        })
+
+        const allCorrect = trueFalseDetails.every((d) => d.isCorrect)
+
+        return [{
+          id: answer?.id || `no-answer-${question.id}`,
+          questionNumber,
+          type: question.type,
+          category: question.tags?.[0] || undefined,
+          question: question.question,
+          userAnswer: null,
+          correctAnswer: '',
+          isCorrect: allCorrect,
+          pointsEarned: answer?.pointsEarned ?? 0,
+          maxPoints: question.points,
+          explanation: question.explanation,
+          audioUrl: undefined,
+          needsReview: false,
+          isInformativeBlock: false,
+          multipleChoiceDetails: trueFalseDetails,
+        }]
+      }
+    }
+
     // Respuesta normal (no expandida)
     questionNumber++
-    
+
     // Para preguntas tipo ESSAY o RECORDING, no mostrar "null" como respuesta correcta
     const isEssayType = ['ESSAY', 'RECORDING'].includes(question.type)
     

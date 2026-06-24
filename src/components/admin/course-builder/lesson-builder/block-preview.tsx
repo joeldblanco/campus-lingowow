@@ -151,6 +151,8 @@ export function BlockPreview({
           <TrueFalseBlockPreview
             block={block as TrueFalseBlock}
             isExamMode={isExamMode}
+            answer={answer}
+            onAnswerChange={onAnswerChange}
             hideHeader={hideBlockHeader}
           />
         )
@@ -2555,15 +2557,23 @@ function MatchBlockPreview({
 function TrueFalseBlockPreview({
   block,
   isExamMode,
+  answer,
+  onAnswerChange,
   hideHeader,
 }: {
   block: TrueFalseBlock
   isExamMode?: boolean
+  answer?: unknown
+  onAnswerChange?: (answer: unknown) => void
   hideHeader?: boolean
 }) {
   void hideHeader // True/false blocks have a different layout
   const [index, setIndex] = useState(0)
-  const [answers, setAnswers] = useState<Record<string, boolean | null>>({})
+  // En modo examen, las respuestas viven en el intento (answer/onAnswerChange);
+  // de lo contrario se usa estado local para la previsualización.
+  const externalAnswers = (answer as Record<string, boolean | null>) || {}
+  const [localAnswers, setLocalAnswers] = useState<Record<string, boolean | null>>({})
+  const answers = isExamMode && onAnswerChange ? externalAnswers : localAnswers
   const [results, setResults] = useState<Record<string, boolean>>({})
   const items = block.items || []
   const currentItem = items[index]
@@ -2586,7 +2596,11 @@ function TrueFalseBlockPreview({
   const handleSelect = (value: boolean) => {
     if (isTeacherInClassroom || !currentItem) return
     const newAnswers = { ...answers, [currentItem.id]: value }
-    setAnswers(newAnswers)
+    if (isExamMode && onAnswerChange) {
+      onAnswerChange(newAnswers)
+    } else {
+      setLocalAnswers(newAnswers)
+    }
 
     // Sync to teacher
     if (classroomSync.canInteract) {

@@ -28,6 +28,13 @@ export interface ExamQuestionData {
         correctOptionId?: string
       }[]
     | null
+  trueFalseItems?:
+    | {
+        id: string
+        statement: string
+        correctAnswer: boolean
+      }[]
+    | null
   originalBlockType?: string | null
   blockData?: {
     url?: string
@@ -208,6 +215,60 @@ export function ExamQuestionCard({
         </div>
       )
     }
+  }
+
+  // Multi-statement TRUE/FALSE: render the same carousel the editor previews
+  // (one statement at a time with Anterior/Siguiente), capturing one answer per
+  // statement as a map of itemId -> boolean.
+  if (
+    question.type === 'TRUE_FALSE' &&
+    question.trueFalseItems &&
+    question.trueFalseItems.length > 1
+  ) {
+    const block = {
+      id: question.id,
+      type: 'true_false',
+      order: 0,
+      title: 'Verdadero o Falso',
+      points: question.points,
+      items: question.trueFalseItems,
+    } as unknown as Block
+
+    return (
+      <div className="bg-white dark:bg-[#1a2632] rounded-xl p-6 md:p-8 shadow-sm border border-gray-200 dark:border-gray-700 relative">
+        <div className="absolute top-6 right-6 flex items-center gap-2 z-10">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onToggleFlag}
+            className={cn(
+              'h-8 px-2',
+              isFlagged && 'text-yellow-600 bg-yellow-50 hover:bg-yellow-100'
+            )}
+          >
+            <Flag className={cn('h-4 w-4', isFlagged && 'fill-yellow-500')} />
+          </Button>
+          <span className="text-sm font-medium text-gray-400 bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded">
+            {question.points} pts
+          </span>
+        </div>
+        {sectionTitle && (
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+            {sectionTitle}
+          </span>
+        )}
+        <h3 className="text-primary text-sm font-bold uppercase tracking-wider mb-2">
+          Pregunta {questionNumber}
+        </h3>
+        <BlockPreview
+          block={block}
+          isExamMode={true}
+          examAttemptId={examAttemptId}
+          answer={answer}
+          onAnswerChange={onAnswerChange}
+        />
+      </div>
+    )
   }
 
   const renderQuestionBlock = () => {

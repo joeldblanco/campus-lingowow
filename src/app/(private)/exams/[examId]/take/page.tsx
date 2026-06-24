@@ -47,6 +47,7 @@ export default async function TakeExamPage({ params }: PageProps) {
   type ParsedOptions = {
     options: string[] | null
     multipleChoiceItems: { id: string; question: string; options: { id: string; text: string }[] }[] | null
+    trueFalseItems: { id: string; statement: string; correctAnswer: boolean }[] | null
     originalBlockType: string | null
     blockData: {
       url?: string
@@ -62,7 +63,7 @@ export default async function TakeExamPage({ params }: PageProps) {
 
   // Función para parsear opciones que pueden venir como JSON string, array u objeto
   const parseQuestionOptions = (options: unknown): ParsedOptions => {
-    const defaultResult: ParsedOptions = { options: null, multipleChoiceItems: null, originalBlockType: null, blockData: null, groupId: null }
+    const defaultResult: ParsedOptions = { options: null, multipleChoiceItems: null, trueFalseItems: null, originalBlockType: null, blockData: null, groupId: null }
     
     if (!options) return defaultResult
     
@@ -75,13 +76,16 @@ export default async function TakeExamPage({ params }: PageProps) {
     const processObject = (obj: Record<string, unknown>): ParsedOptions => {
       // Extraer groupId si existe
       const groupId = obj.groupId as string | null || null
-      
+      // Verdadero/Falso de varias sentencias se guarda sin originalBlockType
+      const trueFalseItems = obj.trueFalseItems as ParsedOptions['trueFalseItems'] || null
+
       // Si tiene originalBlockType, es un bloque con metadata
       if (obj.originalBlockType) {
         return {
           options: null,
           // Incluir multipleChoiceItems si existen (para bloques multiple_choice)
           multipleChoiceItems: obj.multipleChoiceItems as ParsedOptions['multipleChoiceItems'] || null,
+          trueFalseItems,
           originalBlockType: obj.originalBlockType as string,
           blockData: {
             url: obj.url as string | undefined,
@@ -100,11 +104,12 @@ export default async function TakeExamPage({ params }: PageProps) {
         return {
           ...defaultResult,
           multipleChoiceItems: obj.multipleChoiceItems as ParsedOptions['multipleChoiceItems'],
+          trueFalseItems,
           groupId,
         }
       }
-      // Retornar con groupId si existe
-      return { ...defaultResult, groupId }
+      // Retornar con groupId (y trueFalseItems si existen)
+      return { ...defaultResult, trueFalseItems, groupId }
     }
     
     // Si es un string, intentar parsear como JSON
@@ -138,6 +143,7 @@ export default async function TakeExamPage({ params }: PageProps) {
       question: q.question,
       options: parsed.options,
       multipleChoiceItems: parsed.multipleChoiceItems,
+      trueFalseItems: parsed.trueFalseItems,
       originalBlockType: parsed.originalBlockType,
       blockData: parsed.blockData,
       points: q.points,
