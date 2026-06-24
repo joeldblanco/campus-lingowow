@@ -7,7 +7,7 @@ import { CreateExamSchema, EditExamSchema, AssignExamSchema } from '@/schemas/ex
 import { auditLog } from '@/lib/audit-log'
 import { notifyExamAssigned } from '@/lib/actions/notifications'
 import { getEffectiveMaxAttempts } from '@/lib/exams/attempt-grants'
-import { gradeTrueFalseItems } from '@/lib/utils/true-false-grading'
+import { gradeTrueFalseItems, gradeSingleTrueFalse } from '@/lib/utils/true-false-grading'
 import * as z from 'zod'
 import { AttemptStatus, AssignmentStatus, ExamType, Prisma, UserRole } from '@prisma/client'
 import type {
@@ -1052,19 +1052,25 @@ export async function saveExamAnswer(
         // Para respuestas simples (string)
         const userAnswer = String(answer).trim()
 
-        if (Array.isArray(correctAnswer)) {
+        if (question.type === 'TRUE_FALSE') {
+          // El front envía un booleano, pero correctAnswer se guarda como
+          // 'Verdadero'/'Falso'. Normalizar ambos lados antes de comparar.
+          const result = gradeSingleTrueFalse(answer, correctAnswer, question.points)
+          isCorrect = result.isCorrect
+          pointsEarned = result.pointsEarned
+        } else if (Array.isArray(correctAnswer)) {
           isCorrect = correctAnswer.some((ca) =>
             question.caseSensitive
               ? ca === userAnswer
               : ca.toLowerCase() === userAnswer.toLowerCase()
           )
+          pointsEarned = isCorrect ? question.points : 0
         } else {
           isCorrect = question.caseSensitive
             ? correctAnswer === userAnswer
             : correctAnswer.toLowerCase() === userAnswer.toLowerCase()
+          pointsEarned = isCorrect ? question.points : 0
         }
-
-        pointsEarned = isCorrect ? question.points : 0
       }
     } else {
       needsReview = true

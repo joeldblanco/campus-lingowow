@@ -363,9 +363,16 @@ export default async function ExamResultsPage({ params }: PageProps) {
       return ids.join(', ')
     }
     
-    const displayCorrectAnswer = isEssayType 
+    // Verdadero/Falso de una sola sentencia: mostrar etiquetas consistentes
+    // ("Verdadero"/"Falso") en vez del booleano crudo del estudiante.
+    const isTrueFalse = question.type === 'TRUE_FALSE'
+    const tfLabel = (v: boolean | null): string | null => (v === null ? null : v ? 'Verdadero' : 'Falso')
+
+    const displayCorrectAnswer = isEssayType
       ? 'Requiere revisión manual del profesor'
-      : (Array.isArray(correctAnswer) ? mapOptionIdsToText(correctAnswer as string[]) : (correctAnswer ? String(correctAnswer) : 'N/A'))
+      : isTrueFalse
+        ? tfLabel(normalizeTrueFalseAnswer(Array.isArray(correctAnswer) ? correctAnswer[0] : correctAnswer)) ?? 'N/A'
+        : (Array.isArray(correctAnswer) ? mapOptionIdsToText(correctAnswer as string[]) : (correctAnswer ? String(correctAnswer) : 'N/A'))
     
     // Para Essay, si está pendiente de revisión, no marcar como incorrecta
     const displayIsCorrect = isEssayType && answer?.needsReview 
@@ -385,7 +392,13 @@ export default async function ExamResultsPage({ params }: PageProps) {
         displayUserAnswer = JSON.stringify(answer.answer)
       }
     }
-    
+
+    // Para verdadero/falso, normalizar a "Verdadero"/"Falso" (incluye el caso
+    // `false`, que el bloque anterior trataría como "sin responder").
+    if (isTrueFalse && answer?.answer !== undefined && answer?.answer !== null) {
+      displayUserAnswer = tfLabel(normalizeTrueFalseAnswer(answer.answer))
+    }
+
     return [{
       id: answer?.id || `no-answer-${question.id}`,
       questionNumber,

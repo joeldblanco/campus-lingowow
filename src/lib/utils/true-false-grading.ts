@@ -17,13 +17,41 @@ export interface TrueFalseItem {
 }
 
 /**
- * Normalizes a stored answer value (which may be a real boolean or a stringified
- * one once it has been through JSON) to a boolean, or `null` when unanswered.
+ * Normalizes a true/false value to a boolean, or `null` when it cannot be
+ * interpreted (i.e. unanswered).
+ *
+ * Accepts every representation the codebase has produced over time:
+ * - real booleans (`true` / `false`) — what the student UI sends,
+ * - stringified booleans (`'true'` / `'false'`) — after a JSON round-trip,
+ * - Spanish labels (`'Verdadero'` / `'Falso'`) — how `correctAnswer` is stored.
  */
 export function normalizeTrueFalseAnswer(value: unknown): boolean | null {
-  if (value === true || value === 'true') return true
-  if (value === false || value === 'false') return false
+  if (value === true) return true
+  if (value === false) return false
+  if (typeof value === 'string') {
+    const v = value.trim().toLowerCase()
+    if (v === 'true' || v === 'verdadero') return true
+    if (v === 'false' || v === 'falso') return false
+  }
   return null
+}
+
+/**
+ * Grades a single-statement TRUE/FALSE question. The student answer and the
+ * stored correct answer may each be in a different representation (boolean vs.
+ * `'Verdadero'`/`'Falso'`), so both are normalized before comparison.
+ */
+export function gradeSingleTrueFalse(
+  answer: unknown,
+  correctAnswer: unknown,
+  points: number
+): { isCorrect: boolean; pointsEarned: number } {
+  const userBool = normalizeTrueFalseAnswer(answer)
+  const correctBool = normalizeTrueFalseAnswer(
+    Array.isArray(correctAnswer) ? correctAnswer[0] : correctAnswer
+  )
+  const isCorrect = userBool !== null && correctBool !== null && userBool === correctBool
+  return { isCorrect, pointsEarned: isCorrect ? points : 0 }
 }
 
 export interface TrueFalseGradingResult {

@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   gradeTrueFalseItems,
+  gradeSingleTrueFalse,
   normalizeTrueFalseAnswer,
   type TrueFalseItem,
 } from '@/lib/utils/true-false-grading'
@@ -22,10 +23,40 @@ describe('normalizeTrueFalseAnswer', () => {
     expect(normalizeTrueFalseAnswer('false')).toBe(false)
   })
 
+  it('accepts the Spanish labels used for correctAnswer', () => {
+    expect(normalizeTrueFalseAnswer('Verdadero')).toBe(true)
+    expect(normalizeTrueFalseAnswer('falso')).toBe(false)
+    expect(normalizeTrueFalseAnswer('  VERDADERO  ')).toBe(true)
+  })
+
   it('treats anything else as unanswered', () => {
     expect(normalizeTrueFalseAnswer(undefined)).toBeNull()
     expect(normalizeTrueFalseAnswer(null)).toBeNull()
     expect(normalizeTrueFalseAnswer('')).toBeNull()
+  })
+})
+
+describe('gradeSingleTrueFalse', () => {
+  it('marks a boolean answer correct against a "Verdadero"/"Falso" correctAnswer', () => {
+    // Regression: the student UI sends a boolean while correctAnswer is stored
+    // as 'Verdadero'/'Falso'. String comparison ("true" vs "verdadero") used to
+    // mark every single true/false answer wrong.
+    expect(gradeSingleTrueFalse(true, 'Verdadero', 5)).toEqual({ isCorrect: true, pointsEarned: 5 })
+    expect(gradeSingleTrueFalse(false, 'Falso', 5)).toEqual({ isCorrect: true, pointsEarned: 5 })
+  })
+
+  it('marks a mismatching answer incorrect', () => {
+    expect(gradeSingleTrueFalse(true, 'Falso', 5)).toEqual({ isCorrect: false, pointsEarned: 0 })
+    expect(gradeSingleTrueFalse(false, 'Verdadero', 5)).toEqual({ isCorrect: false, pointsEarned: 0 })
+  })
+
+  it('handles array-wrapped and stringified correct answers', () => {
+    expect(gradeSingleTrueFalse(true, ['Verdadero'], 3).isCorrect).toBe(true)
+    expect(gradeSingleTrueFalse('true', 'Verdadero', 3).isCorrect).toBe(true)
+  })
+
+  it('is incorrect when the answer is unintelligible', () => {
+    expect(gradeSingleTrueFalse(null, 'Verdadero', 5)).toEqual({ isCorrect: false, pointsEarned: 0 })
   })
 })
 
