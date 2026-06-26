@@ -228,7 +228,7 @@ export function CreateClassDialog({ children }: CreateClassDialogProps) {
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
                     <FormLabel>Inscripción</FormLabel>
-                    <Popover open={enrollmentPopoverOpen} onOpenChange={setEnrollmentPopoverOpen}>
+                    <Popover modal open={enrollmentPopoverOpen} onOpenChange={setEnrollmentPopoverOpen}>
                       <PopoverTrigger asChild>
                         <FormControl>
                           <Button

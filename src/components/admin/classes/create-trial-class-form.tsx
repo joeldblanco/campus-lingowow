@@ -146,7 +146,7 @@ export function CreateTrialClassForm({ onSuccess, onCancel }: CreateTrialClassFo
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>Estudiante</FormLabel>
-                <Popover open={studentPopoverOpen} onOpenChange={setStudentPopoverOpen}>
+                <Popover modal open={studentPopoverOpen} onOpenChange={setStudentPopoverOpen}>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
