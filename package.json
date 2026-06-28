@@ -108,7 +108,7 @@
     "html2canvas": "^1.4.1",
     "input-otp": "^1.4.2",
     "jsonwebtoken": "^9.0.3",
-    "jspdf": "^3.0.4",
+    "jspdf": "^4.2.1",
     "livekit-client": "^2.16.1",
     "livekit-server-sdk": "^2.15.5",
     "lucide-react": "^1.21.0",
