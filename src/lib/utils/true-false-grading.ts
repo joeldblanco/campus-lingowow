@@ -16,6 +16,19 @@ export interface TrueFalseItem {
   correctAnswer: boolean
 }
 
+export interface TrueFalseAnswerDetail {
+  itemQuestion: string
+  userOptionLetter: string | null
+  userOptionText: string | null
+  correctOptionLetter: string
+  correctOptionText: string
+  isCorrect: boolean
+}
+
+export function formatTrueFalseLabel(value: boolean): string {
+  return value ? 'Verdadero' : 'Falso'
+}
+
 /**
  * Normalizes a true/false value to a boolean, or `null` when it cannot be
  * interpreted (i.e. unanswered).
@@ -34,6 +47,26 @@ export function normalizeTrueFalseAnswer(value: unknown): boolean | null {
     if (v === 'false' || v === 'falso') return false
   }
   return null
+}
+
+export function buildTrueFalseAnswerDetails(
+  userAnswers: Record<string, unknown> | null | undefined,
+  items: TrueFalseItem[]
+): TrueFalseAnswerDetail[] {
+  const answers = userAnswers || {}
+
+  return items.map((item) => {
+    const userBool = normalizeTrueFalseAnswer(answers[item.id])
+
+    return {
+      itemQuestion: item.statement,
+      userOptionLetter: userBool === null ? null : userBool ? 'V' : 'F',
+      userOptionText: userBool === null ? null : formatTrueFalseLabel(userBool),
+      correctOptionLetter: item.correctAnswer ? 'V' : 'F',
+      correctOptionText: formatTrueFalseLabel(item.correctAnswer),
+      isCorrect: userBool === item.correctAnswer,
+    }
+  })
 }
 
 /**

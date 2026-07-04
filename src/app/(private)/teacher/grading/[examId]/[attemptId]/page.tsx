@@ -3,6 +3,11 @@ import { redirect, notFound } from 'next/navigation'
 import { getExamAttemptWithAnswers, getAttemptsForGrading } from '@/lib/actions/exams'
 import { formatFullName } from '@/lib/utils/name-formatter'
 import { GradingClient } from './grading-client'
+import {
+  buildTrueFalseAnswerDetails,
+  formatTrueFalseLabel,
+  normalizeTrueFalseAnswer,
+} from '@/lib/utils/true-false-grading'
 
 interface PageProps {
   params: Promise<{ examId: string; attemptId: string }>
@@ -85,6 +90,7 @@ export default async function GradingPage({ params }: PageProps) {
   
   // Tipo para multipleChoiceItems
   type MultipleChoiceItem = { id: string; question: string; options: { id: string; text: string }[] }
+  type TrueFalseItem = { id: string; statement: string; correctAnswer: boolean }
   
   // Función para obtener letra de opción (A, B, C, D...)
   const getOptionLetter = (index: number): string => {
@@ -97,6 +103,7 @@ export default async function GradingPage({ params }: PageProps) {
       let groupId: string | null = null
       let originalBlockType: string | null = null
       let multipleChoiceItems: MultipleChoiceItem[] | null = null
+      let trueFalseItems: TrueFalseItem[] | null = null
       let informativeContent: Record<string, unknown> | null = null
       
       const parseOptions = (opts: unknown) => {
@@ -105,6 +112,7 @@ export default async function GradingPage({ params }: PageProps) {
           groupId = parsed.groupId as string || null
           originalBlockType = parsed.originalBlockType as string || null
           multipleChoiceItems = parsed.multipleChoiceItems as MultipleChoiceItem[] || null
+          trueFalseItems = parsed.trueFalseItems as TrueFalseItem[] || null
           // Extraer contenido informativo (diferentes campos según el tipo de bloque)
           informativeContent = {
             audioUrl: parsed.audioUrl || parsed.url, // audio blocks use 'url', questions use 'audioUrl'
@@ -137,6 +145,7 @@ export default async function GradingPage({ params }: PageProps) {
         groupId, 
         originalBlockType, 
         multipleChoiceItems,
+        trueFalseItems,
         isInformativeBlock: isInformative,
         informativeContent
       }
@@ -198,6 +207,7 @@ export default async function GradingPage({ params }: PageProps) {
     
     const answer = answersMap.get(question.id)
     const mcItems = question.multipleChoiceItems as MultipleChoiceItem[] | null
+    const tfItems = question.trueFalseItems as TrueFalseItem[] | null
     
     // Para bloques informativos, retornar estructura especial
     if (isInformative) {
@@ -244,16 +254,30 @@ export default async function GradingPage({ params }: PageProps) {
       userAnswerFormatted = multipleChoiceDetails.map(d => 
         `${d.itemQuestion}: ${d.userOptionLetter ? `(${d.userOptionLetter}) ${d.userOptionText}` : '(Sin respuesta)'}`
       ).join('\n')
-    } else if (answer?.answer) {
+    } else if (question.type === 'TRUE_FALSE' && tfItems && tfItems.length > 1) {
+      multipleChoiceDetails = buildTrueFalseAnswerDetails(
+        answer?.answer as Record<string, unknown> | null | undefined,
+        tfItems
+      )
+      userAnswerFormatted = multipleChoiceDetails.map(d =>
+        `${d.itemQuestion}: ${d.userOptionLetter ? `(${d.userOptionLetter}) ${d.userOptionText}` : '(Sin respuesta)'}`
+      ).join('\n')
+    } else if (answer?.answer !== null && answer?.answer !== undefined && answer.answer !== '') {
       // Verificar si la respuesta es un objeto con audioUrl (grabación de voz)
       if (typeof answer.answer === 'object' && answer.answer !== null) {
         const answerObj = answer.answer as Record<string, unknown>
         if (answerObj.audioUrl) {
           userAudioUrl = answerObj.audioUrl as string
           userAnswerFormatted = null // No mostrar texto, se mostrará el audio
+        } else if (question.type === 'TRUE_FALSE') {
+          const userBool = normalizeTrueFalseAnswer(answer.answer)
+          userAnswerFormatted = userBool === null ? JSON.stringify(answer.answer, null, 2) : formatTrueFalseLabel(userBool)
         } else {
           userAnswerFormatted = JSON.stringify(answer.answer, null, 2)
         }
+      } else if (question.type === 'TRUE_FALSE') {
+        const userBool = normalizeTrueFalseAnswer(answer.answer)
+        userAnswerFormatted = userBool === null ? String(answer.answer) : formatTrueFalseLabel(userBool)
       } else {
         userAnswerFormatted = String(answer.answer)
       }
@@ -265,10 +289,21 @@ export default async function GradingPage({ params }: PageProps) {
       correctAnswerFormatted = multipleChoiceDetails.map(d => 
         `${d.itemQuestion}: (${d.correctOptionLetter}) ${d.correctOptionText}`
       ).join('\n')
+    } else if (question.type === 'TRUE_FALSE' && tfItems && tfItems.length > 1 && multipleChoiceDetails) {
+      correctAnswerFormatted = multipleChoiceDetails.map(d =>
+        `${d.itemQuestion}: (${d.correctOptionLetter}) ${d.correctOptionText}`
+      ).join('\n')
     } else if (question.correctAnswer !== null && question.correctAnswer !== undefined) {
-      correctAnswerFormatted = Array.isArray(question.correctAnswer) 
-        ? (question.correctAnswer as string[]).join(', ') 
-        : String(question.correctAnswer)
+      if (question.type === 'TRUE_FALSE') {
+        const correctBool = normalizeTrueFalseAnswer(
+          Array.isArray(question.correctAnswer) ? question.correctAnswer[0] : question.correctAnswer
+        )
+        correctAnswerFormatted = correctBool === null ? String(question.correctAnswer) : formatTrueFalseLabel(correctBool)
+      } else {
+        correctAnswerFormatted = Array.isArray(question.correctAnswer)
+          ? (question.correctAnswer as string[]).join(', ')
+          : String(question.correctAnswer)
+      }
     }
     
     return {

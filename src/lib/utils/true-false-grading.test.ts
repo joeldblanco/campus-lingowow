@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import {
+  buildTrueFalseAnswerDetails,
   gradeTrueFalseItems,
   gradeSingleTrueFalse,
   normalizeTrueFalseAnswer,
@@ -119,5 +120,36 @@ describe('gradeTrueFalseItems – edge cases', () => {
     const r = gradeTrueFalseItems({ a: 'true', b: 'true', c: 'false' }, items, 9, false)
     expect(r.isCorrect).toBe(true)
     expect(r.pointsEarned).toBe(9)
+  })
+})
+
+describe('buildTrueFalseAnswerDetails', () => {
+  it('formats item-id answer maps for review screens instead of exposing raw JSON', () => {
+    expect(buildTrueFalseAnswerDetails({ a: true, b: false }, items)).toEqual([
+      {
+        itemQuestion: 'El cielo es azul',
+        userOptionLetter: 'V',
+        userOptionText: 'Verdadero',
+        correctOptionLetter: 'V',
+        correctOptionText: 'Verdadero',
+        isCorrect: true,
+      },
+      {
+        itemQuestion: 'El sol es amarillo',
+        userOptionLetter: 'F',
+        userOptionText: 'Falso',
+        correctOptionLetter: 'V',
+        correctOptionText: 'Verdadero',
+        isCorrect: false,
+      },
+      {
+        itemQuestion: 'La nieve es negra',
+        userOptionLetter: null,
+        userOptionText: null,
+        correctOptionLetter: 'F',
+        correctOptionText: 'Falso',
+        isCorrect: false,
+      },
+    ])
   })
 })
