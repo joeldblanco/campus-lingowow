@@ -855,6 +855,14 @@ model ClassBooking {
   isPayable    Boolean       @default(false) // Marcar manualmente como válida para pago al profesor
   isTrial      Boolean       @default(false) // Clase de prueba: sin inscripción, factura ni progreso
 
+  // Sala externa de videollamada
+  meetingProvider  MeetingProvider @default(GOOGLE_MEET)
+  meetingUrl       String?
+  meetingSpaceName String?
+  meetingCode      String?
+  meetingCreatedAt DateTime?
+  meetingLastError String?         @db.Text
+
   // Relaciones
   student            User                @relation("StudentBookings", fields: [studentId], references: [id])
   teacher            User                @relation("TeacherBookings", fields: [teacherId], references: [id])
@@ -875,6 +883,11 @@ model ClassBooking {
   @@index([teacherId])
   @@index([enrollmentId])
   @@map("class_bookings")
+}
+
+enum MeetingProvider {
+  GOOGLE_MEET
+  LIVEKIT
 }
 
 model Season {

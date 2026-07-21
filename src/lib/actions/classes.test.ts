@@ -23,6 +23,10 @@ vi.mock('@/lib/class-booking-auto-completion', () => ({
   syncAutoCompletedClassBookings: vi.fn(),
 }))
 
+vi.mock('@/lib/google-meet', () => ({
+  ensureGoogleMeetSpaceForBooking: vi.fn(),
+}))
+
 vi.mock('next/cache', () => ({
   revalidatePath: vi.fn(),
 }))

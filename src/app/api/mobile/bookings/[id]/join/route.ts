@@ -1,13 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getMobileUser, unauthorizedResponse } from '@/lib/mobile-auth'
 import { db } from '@/lib/db'
-import { AccessToken } from 'livekit-server-sdk'
-import { generateRoomName } from '@/lib/livekit'
+import { ensureGoogleMeetSpaceForBooking } from '@/lib/google-meet'
+import { getMobileUser, unauthorizedResponse } from '@/lib/mobile-auth'
 import { formatFullName } from '@/lib/utils/name-formatter'
-
-const LIVEKIT_API_KEY = process.env.LIVEKIT_API_KEY!
-const LIVEKIT_API_SECRET = process.env.LIVEKIT_API_SECRET!
-const LIVEKIT_URL = process.env.NEXT_PUBLIC_LIVEKIT_URL!
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -19,7 +14,6 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
     const { id } = await params
 
-    // Obtener la clase
     const booking = await db.classBooking.findUnique({
       where: { id },
       select: {
@@ -58,7 +52,6 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       return NextResponse.json({ error: 'Clase no encontrada' }, { status: 404 })
     }
 
-    // Verificar que el usuario sea parte de la clase
     const isStudent = booking.studentId === user.id
     const isTeacher = booking.teacherId === user.id
 
@@ -66,45 +59,36 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       return NextResponse.json({ error: 'No tienes acceso a esta clase' }, { status: 403 })
     }
 
-    // Verificar que la clase esté confirmada o pendiente
     if (!['CONFIRMED', 'PENDING'].includes(booking.status)) {
       return NextResponse.json(
-        { error: 'Esta clase no está disponible para unirse' },
+        { error: 'Esta clase no esta disponible para unirse' },
         { status: 400 }
       )
     }
 
-    // Usar nombre de sala determinístico basado en bookingId
-    const roomName = generateRoomName(booking.id)
-
-    // Determinar el nombre del participante
     const participantName = isTeacher
       ? formatFullName(booking.teacher.name, booking.teacher.lastName)
       : formatFullName(booking.student.name, booking.student.lastName)
 
-    // Generar token de LiveKit
-    const at = new AccessToken(LIVEKIT_API_KEY, LIVEKIT_API_SECRET, {
-      identity: user.id,
-      name: participantName,
-      ttl: '2h',
-    })
+    const meetResult = await ensureGoogleMeetSpaceForBooking(booking.id)
+    if (!meetResult.success) {
+      return NextResponse.json(
+        {
+          error: 'No se pudo preparar Google Meet',
+          details: meetResult.error,
+        },
+        { status: 503 }
+      )
+    }
 
-    at.addGrant({
-      roomJoin: true,
-      room: roomName,
-      canPublish: true,
-      canSubscribe: true,
-      canPublishData: true,
-    })
-
-    const token = await at.toJwt()
-
-    // Registrar o actualizar la videollamada (upsert para evitar race condition)
     await db.videoCall.upsert({
       where: { bookingId: booking.id },
-      update: { status: 'ACTIVE' },
+      update: {
+        roomId: meetResult.meetingSpaceName || meetResult.meetingUrl,
+        status: 'ACTIVE',
+      },
       create: {
-        roomId: roomName,
+        roomId: meetResult.meetingSpaceName || meetResult.meetingUrl,
         bookingId: booking.id,
         teacherId: booking.teacherId,
         studentId: booking.studentId,
@@ -115,10 +99,11 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
     return NextResponse.json({
       success: true,
-      livekit: {
-        url: LIVEKIT_URL,
-        token,
-        roomName,
+      provider: 'GOOGLE_MEET',
+      googleMeet: {
+        meetingUrl: meetResult.meetingUrl,
+        meetingCode: meetResult.meetingCode,
+        meetingSpaceName: meetResult.meetingSpaceName,
       },
       booking: {
         id: booking.id,
@@ -129,7 +114,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       },
     })
   } catch (error) {
-    console.error('Error uniéndose a clase:', error)
+    console.error('Error uniendose a clase:', error)
 
     return NextResponse.json({ error: 'Error al unirse a la clase' }, { status: 500 })
   }

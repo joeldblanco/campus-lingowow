@@ -2,6 +2,7 @@
 
 import { syncAutoCompletedClassBookings } from '@/lib/class-booking-auto-completion'
 import { db } from '@/lib/db'
+import { ensureGoogleMeetSpaceForBooking } from '@/lib/google-meet'
 import { CreateClassSchema, CreateTrialClassSchema, EditClassSchema } from '@/schemas/classes'
 import { Prisma } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
@@ -256,6 +257,14 @@ export async function getClassById(
 // cortas, independientes de la duración del curso (que aquí no existe).
 const TRIAL_CLASS_DURATION_MINUTES = 30
 
+async function prepareClassMeetingBestEffort(bookingId: string) {
+  try {
+    await ensureGoogleMeetSpaceForBooking(bookingId)
+  } catch (error) {
+    console.error(`Error preparing Google Meet for class ${bookingId}:`, error)
+  }
+}
+
 /**
  * Verifica si el profesor ya tiene una clase (no cancelada) que se solapa con el
  * rango UTC dado. Devuelve un mensaje de error si hay conflicto, o null si está libre.
@@ -371,6 +380,8 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
       },
     })
 
+    await prepareClassMeetingBestEffort(classBooking.id)
+
     revalidatePath('/admin/classes')
     return { success: true, class: classBooking }
   } catch (error) {
@@ -483,6 +494,8 @@ export async function createTrialClass(
           status: 'CONFIRMED',
         },
       })
+
+      await prepareClassMeetingBestEffort(classBooking.id)
 
       revalidatePath('/admin/classes')
       return { success: true, class: classBooking }

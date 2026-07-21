@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { ensureGoogleMeetSpaceForBooking } from '@/lib/google-meet'
 import { sendClassReminderEmail } from '@/lib/mail'
 import { notifyClassReminder } from '@/lib/actions/notifications'
 import { formatFullName } from '@/lib/utils/name-formatter'
@@ -74,6 +75,8 @@ export async function GET(req: NextRequest) {
 
         // Only send if class starts within the target 1-hour window
         if (utcDate < targetStart || utcDate >= targetEnd) continue
+
+        await ensureGoogleMeetSpaceForBooking(classBooking.id)
 
         const classLink = `${process.env.NEXT_PUBLIC_DOMAIN}/classroom?classId=${classBooking.id}`
         const studentName = formatFullName(classBooking.student.name, classBooking.student.lastName) || 'Estudiante'
