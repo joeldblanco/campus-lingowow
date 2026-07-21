@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { convertAvailabilityFromUTC, convertTimeSlotFromUTC } from '@/lib/utils/date'
+import {
+  convertAvailabilityFromUTC,
+  convertTimeSlotFromUTC,
+  convertRecurringScheduleFromUTC,
+} from '@/lib/utils/date'
 import { formatFullName } from '@/lib/utils/name-formatter'
 import { EnrollmentStatus } from '@prisma/client'
 
@@ -43,6 +47,20 @@ export async function GET(req: NextRequest) {
                 timeSlot: true,
               },
             },
+            // Horarios RECURRENTES de inscripciones activas: ocupan el bloque
+            // semanal aunque no exista aún un ClassBooking concreto para cada fecha.
+            classSchedules: {
+              where: {
+                enrollment: {
+                  status: EnrollmentStatus.ACTIVE,
+                },
+              },
+              select: {
+                dayOfWeek: true,
+                startTime: true,
+                endTime: true,
+              },
+            },
           },
         },
       },
@@ -53,6 +71,27 @@ export async function GET(req: NextRequest) {
     if (teacherCourses.length === 0) {
       console.log(`[API] ⚠️ No hay profesores asignados al curso ${courseId}`)
       console.log('[API] Verifica la tabla teacher_courses')
+    }
+
+    // Clases puntuales / de prueba (sin inscripción recurrente) futuras de estos
+    // profesores. NO bloquean el slot semanal recurrente, pero se INDICAN al
+    // cliente para que sepa que el profe tiene una clase puntual ese día/hora.
+    const teacherIds = teacherCourses.map((tc) => tc.teacher.id)
+    const todayStr = new Date().toISOString().slice(0, 10)
+    const oneOffBookings = await db.classBooking.findMany({
+      where: {
+        teacherId: { in: teacherIds },
+        status: { not: 'CANCELLED' },
+        enrollmentId: null,
+        day: { gte: todayStr },
+      },
+      select: { teacherId: true, day: true, timeSlot: true },
+    })
+    const oneOffByTeacher = new Map<string, Array<{ day: string; timeSlot: string }>>()
+    for (const b of oneOffBookings) {
+      const list = oneOffByTeacher.get(b.teacherId) ?? []
+      list.push({ day: b.day, timeSlot: b.timeSlot })
+      oneOffByTeacher.set(b.teacherId, list)
     }
 
     // Formatear la respuesta con disponibilidad agrupada
@@ -138,7 +177,62 @@ export async function GET(req: NextRequest) {
         }
       })
 
+      // Bloquear los horarios recurrentes (ClassSchedule) de inscripciones activas.
+      // Están en UTC con dayOfWeek 0-6 (0=domingo); se convierten a la zona local.
+      const WEEKDAY_BY_INDEX = [
+        'sunday',
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+      ]
+      teacher.classSchedules.forEach((sched) => {
+        try {
+          const local = convertRecurringScheduleFromUTC(
+            sched.dayOfWeek,
+            sched.startTime,
+            sched.endTime,
+            timezone
+          )
+          const dayName = WEEKDAY_BY_INDEX[local.dayOfWeek]
+          if (!dayName) return
+          if (!bookedSlotsByDay[dayName]) {
+            bookedSlotsByDay[dayName] = []
+          }
+          bookedSlotsByDay[dayName].push({
+            startTime: local.startTime,
+            endTime: local.endTime,
+          })
+        } catch (error) {
+          console.error(`[API] Error converting recurring schedule: ${error}`)
+        }
+      })
+
       console.log(`[API] Horarios ocupados:`, bookedSlotsByDay)
+
+      // Clases puntuales (solo indicación): día de semana → hora local + fecha.
+      const oneOffSlotsByDay: Record<
+        string,
+        Array<{ startTime: string; endTime: string; date: string }>
+      > = {}
+      for (const b of oneOffByTeacher.get(teacher.id) ?? []) {
+        try {
+          const localData = convertTimeSlotFromUTC(b.day, b.timeSlot, timezone)
+          const classDate = new Date(localData.day + 'T12:00:00')
+          const dayName = classDate.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase()
+          const [startTime, endTime] = localData.timeSlot.split('-')
+          if (!oneOffSlotsByDay[dayName]) oneOffSlotsByDay[dayName] = []
+          oneOffSlotsByDay[dayName].push({
+            startTime: startTime.trim(),
+            endTime: endTime.trim(),
+            date: localData.day,
+          })
+        } catch (error) {
+          console.error(`[API] Error converting one-off booking: ${error}`)
+        }
+      }
 
       return {
         id: teacher.id,
@@ -149,6 +243,7 @@ export async function GET(req: NextRequest) {
         rank: teacher.teacherRank,
         availability: availabilityByDay,
         bookedSlots: bookedSlotsByDay,
+        oneOffSlots: oneOffSlotsByDay,
       }
     })
 

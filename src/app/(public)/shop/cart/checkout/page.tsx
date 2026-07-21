@@ -1,3 +1,7 @@
+/* Hallmark · redesign · checkout 1-página Niubiz-only
+ * theme: project tokens (primary #137fec) · display: Lexend · body: Geist
+ * preserves: schedule/proration, timezone, coupon, guest, 3DS persistence, Niubiz wiring
+ */
 'use client'
 
 import { useEffect, useMemo, useState, useCallback, useRef } from 'react'
@@ -5,37 +9,42 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 import { toast } from 'sonner'
 
 import { useShopStore, AppliedCoupon } from '@/stores/useShopStore'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Checkbox } from '@/components/ui/checkbox'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
 import { PaymentMethodForm } from '@/components/shop/checkout/payment-method-form'
+import { CartAbandonmentTracker } from '@/components/shop/cart-abandonment-tracker'
+import { markCartPurchased } from '@/lib/actions/abandoned-cart'
 import { CheckoutLoginModal } from '@/components/shop/checkout/login-modal'
 import { CheckoutScheduleSelector } from '@/components/checkout/checkout-schedule-selector'
 import { CouponInput } from '@/components/shop/checkout/coupon-input'
 import { convertRecurringScheduleFromUTC } from '@/lib/utils/date'
 import { useTimezone } from '@/hooks/use-timezone'
+import { COUNTRIES } from '@/lib/constants/countries'
+import { cn } from '@/lib/utils'
 import {
   Loader2,
   Lock,
   Trash2,
-  ChevronRight,
-  CreditCard,
-  Wallet,
   ArrowLeft,
+  CalendarClock,
+  User,
+  MapPin,
+  CreditCard,
   Check,
-  Info,
+  ChevronsUpDown,
 } from 'lucide-react'
 
 interface ScheduleSlot {
@@ -73,226 +82,27 @@ interface PlanDetails {
   isDigital: boolean
 }
 
-type CheckoutStep = 'schedule' | 'review' | 'payment'
-
-const COUNTRIES = [
-  'Afganistán',
-  'Albania',
-  'Alemania',
-  'Andorra',
-  'Angola',
-  'Antigua y Barbuda',
-  'Arabia Saudita',
-  'Argelia',
-  'Argentina',
-  'Armenia',
-  'Australia',
-  'Austria',
-  'Azerbaiyán',
-  'Bahamas',
-  'Bangladés',
-  'Barbados',
-  'Baréin',
-  'Bélgica',
-  'Belice',
-  'Benín',
-  'Bielorrusia',
-  'Birmania',
-  'Bolivia',
-  'Bosnia y Herzegovina',
-  'Botsuana',
-  'Brasil',
-  'Brunéi',
-  'Bulgaria',
-  'Burkina Faso',
-  'Burundi',
-  'Bután',
-  'Cabo Verde',
-  'Camboya',
-  'Camerún',
-  'Canadá',
-  'Catar',
-  'Chad',
-  'Chile',
-  'China',
-  'Chipre',
-  'Ciudad del Vaticano',
-  'Colombia',
-  'Comoras',
-  'Corea del Norte',
-  'Corea del Sur',
-  'Costa de Marfil',
-  'Costa Rica',
-  'Croacia',
-  'Cuba',
-  'Dinamarca',
-  'Dominica',
-  'Ecuador',
-  'Egipto',
-  'El Salvador',
-  'Emiratos Árabes Unidos',
-  'Eritrea',
-  'Eslovaquia',
-  'Eslovenia',
-  'España',
-  'Estados Unidos',
-  'Estonia',
-  'Etiopía',
-  'Filipinas',
-  'Finlandia',
-  'Fiyi',
-  'Francia',
-  'Gabón',
-  'Gambia',
-  'Georgia',
-  'Ghana',
-  'Granada',
-  'Grecia',
-  'Guatemala',
-  'Guinea',
-  'Guinea Ecuatorial',
-  'Guinea-Bisáu',
-  'Guyana',
-  'Haití',
-  'Honduras',
-  'Hungría',
-  'India',
-  'Indonesia',
-  'Irak',
-  'Irán',
-  'Irlanda',
-  'Islandia',
-  'Islas Marshall',
-  'Islas Salomón',
-  'Israel',
-  'Italia',
-  'Jamaica',
-  'Japón',
-  'Jordania',
-  'Kazajistán',
-  'Kenia',
-  'Kirguistán',
-  'Kiribati',
-  'Kuwait',
-  'Laos',
-  'Lesoto',
-  'Letonia',
-  'Líbano',
-  'Liberia',
-  'Libia',
-  'Liechtenstein',
-  'Lituania',
-  'Luxemburgo',
-  'Macedonia del Norte',
-  'Madagascar',
-  'Malasia',
-  'Malaui',
-  'Maldivas',
-  'Malí',
-  'Malta',
-  'Marruecos',
-  'Mauricio',
-  'Mauritania',
-  'México',
-  'Micronesia',
-  'Moldavia',
-  'Mónaco',
-  'Mongolia',
-  'Montenegro',
-  'Mozambique',
-  'Namibia',
-  'Nauru',
-  'Nepal',
-  'Nicaragua',
-  'Níger',
-  'Nigeria',
-  'Noruega',
-  'Nueva Zelanda',
-  'Omán',
-  'Países Bajos',
-  'Pakistán',
-  'Palaos',
-  'Panamá',
-  'Papúa Nueva Guinea',
-  'Paraguay',
-  'Perú',
-  'Polonia',
-  'Portugal',
-  'Puerto Rico',
-  'Reino Unido',
-  'República Centroafricana',
-  'República Checa',
-  'República del Congo',
-  'República Democrática del Congo',
-  'República Dominicana',
-  'Ruanda',
-  'Rumania',
-  'Rusia',
-  'Samoa',
-  'San Cristóbal y Nieves',
-  'San Marino',
-  'San Vicente y las Granadinas',
-  'Santa Lucía',
-  'Santo Tomé y Príncipe',
-  'Senegal',
-  'Serbia',
-  'Seychelles',
-  'Sierra Leona',
-  'Singapur',
-  'Siria',
-  'Somalia',
-  'Sri Lanka',
-  'Suazilandia',
-  'Sudáfrica',
-  'Sudán',
-  'Sudán del Sur',
-  'Suecia',
-  'Suiza',
-  'Surinam',
-  'Tailandia',
-  'Tanzania',
-  'Tayikistán',
-  'Timor Oriental',
-  'Togo',
-  'Tonga',
-  'Trinidad y Tobago',
-  'Túnez',
-  'Turkmenistán',
-  'Turquía',
-  'Tuvalu',
-  'Ucrania',
-  'Uganda',
-  'Uruguay',
-  'Uzbekistán',
-  'Vanuatu',
-  'Venezuela',
-  'Vietnam',
-  'Yemen',
-  'Yibuti',
-  'Zambia',
-  'Zimbabue',
-]
-
 const DAY_NAMES = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+
+// Plan.billingCycle is a free string (WEEKLY | MONTHLY | QUARTERLY | ANNUAL) → human cadence.
+const BILLING_CYCLE_LABELS: Record<string, string> = {
+  WEEKLY: 'cada semana',
+  MONTHLY: 'cada mes',
+  QUARTERLY: 'cada 3 meses',
+  ANNUAL: 'cada año',
+}
 
 // Helper para convertir un slot UTC a hora local para mostrar
 const convertSlotToLocalDisplay = (
   slot: ScheduleSlot,
   timezone: string
 ): { dayOfWeek: number; startTime: string; endTime: string } => {
-  const localData = convertRecurringScheduleFromUTC(
-    slot.dayOfWeek,
-    slot.startTime,
-    slot.endTime,
-    timezone
-  )
-  return localData
+  return convertRecurringScheduleFromUTC(slot.dayOfWeek, slot.startTime, slot.endTime, timezone)
 }
 
 const CHECKOUT_STATE_KEY = 'checkout-state'
 
 interface CheckoutPersistedState {
-  currentStep: CheckoutStep
   scheduleSelections: Record<string, { schedule: ScheduleSlot[]; proration: ProrationResult }>
   formData: {
     email: string
@@ -307,10 +117,9 @@ interface CheckoutPersistedState {
   timestamp: number
 }
 
-// Helper function to create unique key for cart items (planId + language)
-const getCartItemKey = (planId: string, language?: string) => {
-  return language ? `${planId}:${language}` : planId
-}
+// Clave única por item del carrito (planId + idioma)
+const getCartItemKey = (planId: string, language?: string) =>
+  language ? `${planId}:${language}` : planId
 
 export default function CheckoutPage() {
   const router = useRouter()
@@ -323,12 +132,9 @@ export default function CheckoutPage() {
   const initialStateLoaded = useRef(false)
 
   const [stateRestored, setStateRestored] = useState(false)
-  const [currentStep, setCurrentStep] = useState<CheckoutStep>('review')
-  const [paymentMethod, setPaymentMethod] = useState<'creditCard' | 'paypal'>('creditCard')
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading] = useState(false)
   const [checkingAuth, setCheckingAuth] = useState(true)
   const [loadingPlans, setLoadingPlans] = useState(true)
-  const [saveInfo, setSaveInfo] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
 
   const [formData, setFormData] = useState({
@@ -339,17 +145,11 @@ export default function CheckoutPage() {
     address: '',
     city: '',
     zipCode: '',
-    country: 'Perú',
+    country: '',
   })
 
   const [scheduleSelections, setScheduleSelections] = useState<
-    Record<
-      string,
-      {
-        schedule: ScheduleSlot[]
-        proration: ProrationResult
-      }
-    >
+    Record<string, { schedule: ScheduleSlot[]; proration: ProrationResult }>
   >({})
 
   const [planDetails, setPlanDetails] = useState<Record<string, PlanDetails>>({})
@@ -361,8 +161,7 @@ export default function CheckoutPage() {
 
   const plansRequiringSchedule = useMemo(() => {
     return cartItems.filter((item) => {
-      const itemKey = getCartItemKey(item.plan.id, item.language)
-      const details = planDetails[itemKey]
+      const details = planDetails[getCartItemKey(item.plan.id, item.language)]
       return details?.isSynchronous && details?.courseId
     })
   }, [cartItems, planDetails])
@@ -379,16 +178,28 @@ export default function CheckoutPage() {
 
   const isRecurrentData = useMemo(() => {
     return cartItems.some((item) => {
-      const itemKey = getCartItemKey(item.plan.id, item.language)
-      const details = planDetails[itemKey]
+      const details = planDetails[getCartItemKey(item.plan.id, item.language)]
       return !!details?.billingCycle
     })
   }, [cartItems, planDetails])
 
+  // Plain-language recurring charge for the payment area: the regular per-cycle price
+  // (not the prorated first charge) summed across recurrent items.
+  const recurringSummary = useMemo(() => {
+    const entries = cartItems
+      .map((item) => ({ item, details: planDetails[getCartItemKey(item.plan.id, item.language)] }))
+      .filter((e) => e.details?.billingCycle)
+    if (entries.length === 0) return undefined
+    const amount = entries.reduce((sum, e) => sum + e.item.plan.price * (e.item.quantity || 1), 0)
+    const cycles = new Set(entries.map((e) => e.details!.billingCycle as string))
+    const cycleLabel =
+      cycles.size === 1 ? (BILLING_CYCLE_LABELS[[...cycles][0]] ?? 'de forma recurrente') : 'de forma recurrente'
+    return { amount, cycleLabel }
+  }, [cartItems, planDetails])
+
   const requiresPlatformAccess = useMemo(() => {
     return cartItems.some((item) => {
-      const itemKey = getCartItemKey(item.plan.id, item.language)
-      const details = planDetails[itemKey]
+      const details = planDetails[getCartItemKey(item.plan.id, item.language)]
       return details?.courseId || details?.includesClasses || details?.isDigital
     })
   }, [cartItems, planDetails])
@@ -398,9 +209,7 @@ export default function CheckoutPage() {
       if (!coupon) return 0
       if (coupon.type === 'PERCENTAGE') {
         const discount = (amount * coupon.value) / 100
-        if (coupon.maxDiscount && discount > coupon.maxDiscount) {
-          return coupon.maxDiscount
-        }
+        if (coupon.maxDiscount && discount > coupon.maxDiscount) return coupon.maxDiscount
         return discount
       }
       return Math.min(coupon.value, amount)
@@ -410,14 +219,11 @@ export default function CheckoutPage() {
 
   const { subtotal, discount, taxes, total } = useMemo(() => {
     const subtotalAmount = cartItems.reduce((sum, item) => {
-      const itemKey = getCartItemKey(item.plan.id, item.language)
-      const proration = scheduleSelections[itemKey]?.proration
+      const proration = scheduleSelections[getCartItemKey(item.plan.id, item.language)]?.proration
       const price = proration?.proratedPrice ?? item.plan.price
       return sum + price * (item.quantity || 1)
     }, 0)
-
     const discountAmount = calculateCouponDiscount(appliedCoupon, subtotalAmount)
-
     return {
       subtotal: subtotalAmount,
       discount: discountAmount,
@@ -429,14 +235,9 @@ export default function CheckoutPage() {
   // Validar cupón cuando cambian los items del carrito
   useEffect(() => {
     if (!appliedCoupon) return
-
-    // Si el cupón está restringido a un plan específico, verificar que ese plan esté en el carrito
     if (appliedCoupon.restrictedToPlanId) {
       const planIds = cartItems.map((item) => item.plan.id)
-      const isValidForCurrentPlans = planIds.includes(appliedCoupon.restrictedToPlanId)
-
-      if (!isValidForCurrentPlans) {
-        // El cupón no es válido para los planes actuales, removerlo
+      if (!planIds.includes(appliedCoupon.restrictedToPlanId)) {
         removeCoupon()
         toast.info(
           'El cupón ha sido removido porque no aplica para los productos actuales del carrito'
@@ -445,193 +246,127 @@ export default function CheckoutPage() {
     }
   }, [cartItems, appliedCoupon, removeCoupon])
 
+  // Cargar detalles de cada plan (define si requiere horario / acceso a plataforma)
   useEffect(() => {
     const loadPlanDetails = async () => {
       setLoadingPlans(true)
       const details: Record<string, PlanDetails> = {}
       for (const item of cartItems) {
-        // Create unique key for this cart item (planId + language)
         const itemKey = getCartItemKey(item.plan.id, item.language)
-
+        // Fail-safe: si no se puede cargar, asumir que requiere acceso a plataforma (digital).
+        const fallback: PlanDetails = {
+          id: item.plan.id,
+          courseId: null,
+          isSynchronous: false,
+          classesPerWeek: null,
+          classDuration: 0,
+          billingCycle: null,
+          includesClasses: false,
+          isDigital: true,
+        }
         try {
-          // Skip synthetic plans (products without real plans use "{productId}-default")
+          // Planes sintéticos (productos sin plan real usan "{productId}-default")
           if (item.plan.id.endsWith('-default')) {
-            details[itemKey] = {
-              id: item.plan.id,
-              courseId: null,
-              isSynchronous: false,
-              classesPerWeek: null,
-              classDuration: 0,
-              billingCycle: null,
-              includesClasses: false,
-              isDigital: false, // Products without plans are typically physical/merchandise
-            }
+            details[itemKey] = { ...fallback, isDigital: false }
             continue
           }
-
-          // Pass language to get language-specific courseId from PlanPricing
           const languageParam = item.language
             ? `?language=${encodeURIComponent(item.language)}`
             : ''
           const response = await fetch(`/api/plans/${item.plan.id}${languageParam}`)
           if (!response.ok) {
-            console.warn(`Plan ${item.plan.id} not found (${response.status})`)
-            // Fail-safe: if we can't load plan details, assume it requires platform access
-            details[itemKey] = {
-              id: item.plan.id,
-              courseId: null,
-              isSynchronous: false,
-              classesPerWeek: null,
-              classDuration: 0,
-              billingCycle: null,
-              includesClasses: false,
-              isDigital: true, // Assume digital product requires login
-            }
+            details[itemKey] = fallback
             continue
           }
           const plan = await response.json()
-          // Use effectiveCourse/effectiveCourseId which considers language-specific pricing
+          // Usar effectiveCourse/effectiveCourseId que considera el pricing por idioma
           const course = plan.effectiveCourse || plan.course || plan.product?.course || null
           const courseId = plan.effectiveCourseId || plan.courseId || course?.id || null
-          const isSynchronous = course?.isSynchronous || false
-          console.log('Plan loaded:', plan.name, {
-            courseId,
-            isSynchronous,
-            classesPerWeek: plan.classesPerWeek,
-            course,
-            productCourse: plan.product?.course,
-            language: item.language,
-          })
           details[itemKey] = {
             id: plan.id,
             courseId,
-            isSynchronous,
+            isSynchronous: course?.isSynchronous || false,
             classesPerWeek: plan.classesPerWeek || null,
             classDuration: course?.classDuration || 40,
             billingCycle: plan.billingCycle || null,
             includesClasses: plan.includesClasses || false,
             isDigital: plan.product?.isDigital ?? true,
           }
-        } catch (error) {
-          console.error(`Error loading plan ${item.plan.id}:`, error)
-          // Fail-safe: if we can't load plan details, assume it requires platform access
-          details[itemKey] = {
-            id: item.plan.id,
-            courseId: null,
-            isSynchronous: false,
-            classesPerWeek: null,
-            classDuration: 0,
-            billingCycle: null,
-            includesClasses: false,
-            isDigital: true, // Assume digital product requires login
-          }
+        } catch {
+          details[itemKey] = fallback
         }
       }
-      console.log('All plan details:', details)
       setPlanDetails(details)
       setLoadingPlans(false)
     }
-    if (cartItems.length > 0) {
-      loadPlanDetails()
-    } else {
-      setLoadingPlans(false)
-    }
+    if (cartItems.length > 0) loadPlanDetails()
+    else setLoadingPlans(false)
   }, [cartItems])
 
-  // Load persisted checkout state on mount
+  // Restaurar estado persistido al montar (sobrevive el redirect 3DS de Niubiz)
   useEffect(() => {
     if (initialStateLoaded.current) return
-
     try {
       const savedState = sessionStorage.getItem(CHECKOUT_STATE_KEY)
       if (savedState) {
         const parsed: CheckoutPersistedState = JSON.parse(savedState)
-        // Only restore if saved within the last 30 minutes
         const thirtyMinutes = 30 * 60 * 1000
         if (Date.now() - parsed.timestamp < thirtyMinutes) {
-          console.log(
-            '[Checkout] Restoring saved state:',
-            parsed.currentStep,
-            'scheduleSelections:',
-            parsed.scheduleSelections
-          )
           setScheduleSelections(parsed.scheduleSelections)
-          setFormData((prev) => ({
-            ...prev,
-            ...parsed.formData,
-          }))
-          // Restore step after plans are loaded
-          if (parsed.currentStep) {
-            setCurrentStep(parsed.currentStep)
-          }
+          setFormData((prev) => ({ ...prev, ...parsed.formData }))
         } else {
-          // Clear expired state
           sessionStorage.removeItem(CHECKOUT_STATE_KEY)
         }
       }
     } catch (error) {
       console.error('[Checkout] Error loading saved state:', error)
     }
-
     initialStateLoaded.current = true
     setStateRestored(true)
   }, [])
 
-  // Save checkout state when it changes
+  // Persistir estado cuando cambia (form + horarios) para el round-trip de Niubiz
   useEffect(() => {
     if (!initialStateLoaded.current) return
-
     const stateToSave: CheckoutPersistedState = {
-      currentStep,
       scheduleSelections,
       formData,
       timestamp: Date.now(),
     }
-
     try {
       sessionStorage.setItem(CHECKOUT_STATE_KEY, JSON.stringify(stateToSave))
+      // customer-info lo leen los handlers de retorno de Niubiz
+      sessionStorage.setItem(
+        'customer-info',
+        JSON.stringify({ ...formData, fullName: `${formData.firstName} ${formData.lastName}` })
+      )
     } catch (error) {
       console.error('[Checkout] Error saving state:', error)
     }
-  }, [currentStep, scheduleSelections, formData])
+  }, [scheduleSelections, formData])
 
-  // Only set to schedule step if no saved state was restored
-  useEffect(() => {
-    if (!loadingPlans && requiresScheduleSelection) {
-      // Check if we have a saved schedule selection - if so, don't force back to schedule step
-      const hasRestoredSchedules = Object.keys(scheduleSelections).length > 0
-      if (!hasRestoredSchedules) {
-        setCurrentStep('schedule')
-      }
-    }
-  }, [loadingPlans, requiresScheduleSelection, scheduleSelections])
-
+  // Prefill desde la sesión
   useEffect(() => {
     if (authStatus !== 'loading') {
       if (session?.user) {
         setFormData((prev) => ({
           ...prev,
-          email: session.user?.email || '',
-          firstName: session.user?.name?.split(' ')[0] || '',
-          lastName: session.user?.name?.split(' ').slice(1).join(' ') || '',
+          email: prev.email || session.user?.email || '',
+          firstName: prev.firstName || session.user?.name?.split(' ')[0] || '',
+          lastName: prev.lastName || session.user?.name?.split(' ').slice(1).join(' ') || '',
         }))
       }
       setCheckingAuth(false)
     }
   }, [authStatus, session])
 
-  // Handle Niubiz error returns (success is handled by /api/niubiz/checkout)
+  // Manejar retornos de error de Niubiz (el éxito lo maneja /api/niubiz/checkout)
   useEffect(() => {
     const niubizError = searchParams.get('niubiz_error')
     const errorMessage = searchParams.get('message')
-
     if (niubizError && !niubizProcessedRef.current) {
       niubizProcessedRef.current = true
-
-      // Clean up pending payment data
       sessionStorage.removeItem('niubiz-pending-payment')
-
-      // Show appropriate error message
       switch (niubizError) {
         case 'missing_token':
           toast.error('No se recibió el token de transacción. Por favor intente de nuevo.')
@@ -651,8 +386,6 @@ export default function CheckoutPage() {
         default:
           toast.error('Error al procesar el pago. Por favor intente de nuevo.')
       }
-
-      // Clean URL params
       router.replace('/shop/cart/checkout')
     }
   }, [searchParams, router])
@@ -663,174 +396,75 @@ export default function CheckoutPage() {
 
   const handleScheduleSelected = useCallback(
     (itemKey: string, schedule: ScheduleSlot[], proration: ProrationResult) => {
-      setScheduleSelections((prev) => ({
-        ...prev,
-        [itemKey]: { schedule, proration },
-      }))
+      setScheduleSelections((prev) => ({ ...prev, [itemKey]: { schedule, proration } }))
     },
     []
   )
 
-  const handleContinue = useCallback(() => {
-    if (currentStep === 'schedule') {
-      if (!allSchedulesSelected) {
-        toast.error('Debes seleccionar un horario para todos los cursos')
-        return
-      }
-      // Require login before proceeding to review
-      if (requiresPlatformAccess && !session?.user) {
-        setShowLoginModal(true)
-        return
-      }
-      setCurrentStep('review')
-    } else if (currentStep === 'review') {
-      if (!formData.email || !formData.firstName || !formData.phone) {
-        toast.error('Por favor completa todos los campos requeridos')
-        return
-      }
-
-      if (paymentMethod === 'creditCard') {
-        const hasMissingBillingFields =
-          !formData.address.trim() ||
-          !formData.city.trim() ||
-          !formData.country.trim() ||
-          !formData.zipCode.trim()
-
-        if (hasMissingBillingFields) {
-          toast.error('Para pagar con tarjeta, completa dirección, ciudad, país y código postal')
-          return
-        }
-      }
-
-      sessionStorage.setItem(
-        'customer-info',
-        JSON.stringify({
-          ...formData,
-          fullName: `${formData.firstName} ${formData.lastName}`,
-        })
-      )
-
-      if (requiresPlatformAccess && !session?.user) {
-        setShowLoginModal(true)
-        return
-      }
-
-      setCurrentStep('payment')
-    }
-  }, [currentStep, allSchedulesSelected, formData, paymentMethod, requiresPlatformAccess, session])
-
-  const handleBack = useCallback(() => {
-    if (currentStep === 'review' && requiresScheduleSelection) {
-      setCurrentStep('schedule')
-    } else if (currentStep === 'payment') {
-      setCurrentStep('review')
-    } else {
-      router.push('/shop')
-    }
-  }, [currentStep, requiresScheduleSelection, router])
+  // Plan síncrono a agendar. Con buyNow el carrito tiene 1 item → a lo sumo uno.
+  const scheduleItem = plansRequiringSchedule[0]
+  const scheduleItemKey = scheduleItem
+    ? getCartItemKey(scheduleItem.plan.id, scheduleItem.language)
+    : null
+  const scheduleDetails = scheduleItemKey ? planDetails[scheduleItemKey] : undefined
 
   const handlePaymentSuccess = useCallback(
     (data: unknown) => {
       const anyData = data as { invoice?: { invoiceNumber?: string }; orderId?: string }
       const invoiceNumber = anyData.invoice?.invoiceNumber
-
-      // Clear checkout state after successful payment
+      // Cortar la recuperación de carrito: no enviar correo si ya compró.
+      const purchaseEmail = session?.user?.email || formData.email
+      if (purchaseEmail) void markCartPurchased(purchaseEmail)
       sessionStorage.removeItem(CHECKOUT_STATE_KEY)
       useShopStore.getState().clearCart()
-
-      // Redirect to confirmation page with invoice number
       setTimeout(() => {
-        const url = invoiceNumber
-          ? `/shop/cart/checkout/confirmation?orderNumber=${invoiceNumber}`
-          : '/shop/cart/checkout/confirmation'
-        router.push(url)
+        router.push(
+          invoiceNumber
+            ? `/shop/cart/checkout/confirmation?orderNumber=${invoiceNumber}`
+            : '/shop/cart/checkout/confirmation'
+        )
       }, 500)
     },
-    [router]
+    [router, session?.user?.email, formData.email]
   )
 
-  const handlePaymentSubmit = useCallback(() => {
-    if (paymentMethod === 'paypal') return
-    setIsLoading(true)
-    const orderData = {
-      orderNumber: `ORD-${Date.now().toString().slice(-8)}`,
-      orderDate: new Date().toISOString(),
-      totalAmount: total,
-      items: cartItems,
-      customer: JSON.parse(sessionStorage.getItem('customer-info') || '{}'),
-      paymentMethod,
-      user: session?.user ? { id: session.user.id, email: session.user.email } : undefined,
-    }
-    sessionStorage.setItem('last-order', JSON.stringify(orderData))
-    setTimeout(() => {
-      setIsLoading(false)
-      useShopStore.getState().clearCart()
-      toast.success('¡Pago procesado correctamente!')
-      router.push('/shop/cart/checkout/confirmation')
-    }, 2000)
-  }, [paymentMethod, total, cartItems, session, router])
-
-  const paypalItems = useMemo(() => {
-    console.log('[Checkout] Building paypalItems with scheduleSelections:', scheduleSelections)
+  // Items para Niubiz (pasados como invoiceData). Incluye horario + proración por item.
+  const invoiceItems = useMemo(() => {
     return cartItems.map((item) => {
-      const itemKey = getCartItemKey(item.plan.id, item.language)
-      const selection = scheduleSelections[itemKey]
+      const selection = scheduleSelections[getCartItemKey(item.plan.id, item.language)]
       const proration = selection?.proration
-      const price = proration?.proratedPrice ?? item.plan.price
-      console.log(
-        '[Checkout] Item:',
-        item.plan.id,
-        'schedule:',
-        selection?.schedule,
-        'language:',
-        item.language
-      )
       return {
         productId: item.product.id,
         planId: item.plan.id,
         name: item.product.title,
         description: item.cartItemDescription || item.product.description || item.plan.name,
-        price,
+        price: proration?.proratedPrice ?? item.plan.price,
         quantity: item.quantity || 1,
         selectedSchedule: selection?.schedule,
         proratedClasses: proration?.classesFromNow,
         proratedPrice: proration?.proratedPrice,
-        language: item.language, // Idioma seleccionado para determinar el curso
+        language: item.language,
       }
     })
   }, [cartItems, scheduleSelections])
 
-  const getStepNumber = useCallback(
-    (step: CheckoutStep) => {
-      if (requiresScheduleSelection) {
-        switch (step) {
-          case 'schedule':
-            return 1
-          case 'review':
-            return 2
-          case 'payment':
-            return 3
-        }
-      } else {
-        switch (step) {
-          case 'review':
-            return 1
-          case 'payment':
-            return 2
-          default:
-            return 1
-        }
-      }
-    },
-    [requiresScheduleSelection]
+  // ---- Gating: qué falta para habilitar el pago ----
+  const contactComplete = Boolean(formData.email && formData.firstName && formData.phone)
+  const billingComplete = Boolean(
+    formData.address.trim() &&
+      formData.city.trim() &&
+      formData.zipCode.trim() &&
+      formData.country.trim()
   )
+  const authOk = !requiresPlatformAccess || Boolean(session?.user)
+  const canPay = contactComplete && billingComplete && allSchedulesSelected && authOk
 
   if (checkingAuth || loadingPlans || !stateRestored) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary mb-4" />
-          <p className="text-slate-600">Cargando...</p>
+      <div className="flex min-h-screen items-center justify-center bg-slate-50">
+        <div className="flex items-center gap-3 text-slate-500">
+          <Loader2 className="h-5 w-5 animate-spin text-primary" />
+          <p className="font-sans text-sm">Preparando tu inscripción…</p>
         </div>
       </div>
     )
@@ -838,387 +472,234 @@ export default function CheckoutPage() {
 
   if (cartItems.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 px-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Tu carrito está vacío</h1>
-          <p className="text-slate-600 mb-6">Agrega productos antes de continuar</p>
-          <Button onClick={() => router.push('/shop')}>Ir a la Tienda</Button>
+          <h1 className="font-lexend text-2xl font-semibold text-slate-900">
+            Tu carrito está vacío
+          </h1>
+          <p className="mt-2 text-slate-600">Agrega un plan antes de continuar.</p>
+          <Button className="mt-6" onClick={() => router.push('/shop')}>
+            Ir a la tienda
+          </Button>
         </div>
       </div>
     )
   }
 
-  const steps = requiresScheduleSelection
-    ? [
-        { key: 'schedule', label: 'Horario' },
-        { key: 'review', label: 'Revisión' },
-        { key: 'payment', label: 'Pago' },
-      ]
-    : [
-        { key: 'review', label: 'Revisión' },
-        { key: 'payment', label: 'Pago' },
-      ]
-
   return (
-    <PayPalScriptProvider
-      options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '', currency: 'USD' }}
-    >
-      <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <header className="sticky top-0 z-50 bg-white border-b border-slate-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <Link href="/" className="flex items-center gap-3">
-                <Image src="/branding/logo.png" alt="Logo" width={32} height={32} />
-                <span className="text-xl font-bold">Lingowow</span>
-              </Link>
-              <div className="flex items-center gap-2">
-                <Lock className="h-4 w-4 text-green-600" />
-                <span className="text-sm font-medium hidden sm:block text-green-600">
-                  Pago Seguro
-                </span>
+    <div className="min-h-screen bg-slate-50">
+      {/* Registra el carrito server-side para la recuperación por correo (1 envío) */}
+      <CartAbandonmentTracker
+        email={session?.user?.email || formData.email}
+        userId={session?.user?.id}
+      />
+
+      {/* Header */}
+      <header className="sticky top-0 z-50 border-b border-slate-200 bg-white">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+          <Link href="/" className="flex items-center gap-3">
+            <Image src="/branding/logo.png" alt="Lingowow" width={32} height={32} />
+            <span className="font-lexend text-lg font-semibold text-slate-900">Lingowow</span>
+          </Link>
+          <span className="flex items-center gap-1.5 text-sm text-slate-500">
+            <Lock className="h-3.5 w-3.5" />
+            Pago seguro
+          </span>
+        </div>
+      </header>
+
+      <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+        <div className="mb-8">
+          <h1 className="font-lexend text-3xl font-semibold tracking-tight text-slate-900">
+            Finaliza tu inscripción
+          </h1>
+          <p className="mt-1.5 text-slate-600">
+            Confirma tu horario, tus datos y paga en un solo paso.
+          </p>
+        </div>
+
+        {/* Horario — ancho completo (sin Resumen al lado para que quepan los 7 días) */}
+        {requiresScheduleSelection && scheduleItem && scheduleDetails?.courseId && (
+          <section className="mb-10">
+            <SectionHead
+              icon={<CalendarClock className="h-4 w-4" />}
+              step="1"
+              title="Tu horario"
+              hint="Elige tus horarios; te asignamos un profesor que los cubra."
+            />
+            <div className="mt-5 space-y-4">
+              <div className="flex items-center gap-3">
+                <ProductThumb
+                  image={scheduleItem.product.image}
+                  title={scheduleItem.product.title}
+                />
+                <div>
+                  <h3 className="font-lexend font-medium text-slate-900">
+                    {scheduleItem.product.title}
+                  </h3>
+                  <p className="text-sm text-slate-500">{scheduleItem.plan.name}</p>
+                </div>
               </div>
+              <CheckoutScheduleSelector
+                planId={scheduleItem.plan.id}
+                courseId={scheduleDetails.courseId}
+                classDuration={scheduleDetails.classDuration}
+                maxClassesPerWeek={scheduleDetails.classesPerWeek || undefined}
+                onScheduleSelected={(s, p) => handleScheduleSelected(scheduleItemKey!, s, p)}
+              />
+              <p className="text-sm text-slate-500">
+                ¿No encuentras un horario?{' '}
+                <Link href="/contact" className="font-medium text-primary hover:underline">
+                  Escríbele al profesor
+                </Link>
+                .
+              </p>
             </div>
-          </div>
-        </header>
+          </section>
+        )}
 
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Stepper */}
-          <div className="flex flex-wrap items-center gap-2 text-sm font-medium mb-8">
-            {steps.map((step, index) => {
-              const stepNum = index + 1
-              const currentNum = getStepNumber(currentStep)
-              const isActive = step.key === currentStep
-              const isCompleted = stepNum < currentNum
-              return (
-                <div key={step.key} className="flex items-center">
-                  <div
-                    className={`flex items-center ${isActive ? 'text-primary' : isCompleted ? 'text-primary' : 'text-slate-400'}`}
-                  >
-                    <span
-                      className={`flex items-center justify-center w-6 h-6 rounded-full text-xs mr-2 ${isActive || isCompleted ? 'bg-primary text-white' : 'border border-slate-300 text-slate-400'}`}
-                    >
-                      {isCompleted ? <Check className="h-3 w-3" /> : stepNum}
-                    </span>
-                    <span className={isActive ? 'font-semibold' : ''}>{step.label}</span>
-                  </div>
-                  {index < steps.length - 1 && (
-                    <ChevronRight className="h-4 w-4 text-slate-300 mx-2" />
-                  )}
-                </div>
-              )
-            })}
-          </div>
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
+          {/* ---------- Flujo (izquierda) ---------- */}
+          <div className="space-y-10 lg:col-span-7">
+            {/* Datos de contacto */}
+            <section>
+              <div className="flex items-center justify-between">
+                <SectionHead
+                  icon={<User className="h-4 w-4" />}
+                  step={requiresScheduleSelection ? '2' : '1'}
+                  title="Tus datos"
+                />
+                {!session?.user && (
+                  <span className="text-sm text-slate-500">
+                    ¿Ya tienes cuenta?{' '}
+                    <Link href="/auth/signin" className="font-medium text-primary hover:underline">
+                      Inicia sesión
+                    </Link>
+                  </span>
+                )}
+              </div>
+              <div className="mt-5 grid grid-cols-1 gap-4 rounded-xl border border-slate-200 bg-white p-6 md:grid-cols-2">
+                <Field
+                  id="email"
+                  label="Correo electrónico"
+                  required
+                  className="md:col-span-2"
+                  type="email"
+                  placeholder="tu@ejemplo.com"
+                  value={formData.email}
+                  onChange={(v) => handleInputChange('email', v)}
+                />
+                <Field
+                  id="firstName"
+                  label="Nombre"
+                  required
+                  value={formData.firstName}
+                  onChange={(v) => handleInputChange('firstName', v)}
+                />
+                <Field
+                  id="lastName"
+                  label="Apellidos"
+                  value={formData.lastName}
+                  onChange={(v) => handleInputChange('lastName', v)}
+                />
+                <Field
+                  id="phone"
+                  label="Teléfono"
+                  required
+                  className="md:col-span-2"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(v) => handleInputChange('phone', v)}
+                />
+              </div>
+            </section>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Left Column */}
-            <div className="lg:col-span-7 xl:col-span-8 space-y-6">
-              {/* Schedule Step */}
-              {currentStep === 'schedule' && (
-                <div className="space-y-6">
-                  <div>
-                    <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
-                      Programa tus Sesiones
-                    </h1>
-                    <p className="text-slate-600 mt-2">
-                      Elige horarios convenientes para tus clases en vivo.
+            {/* 3 · Facturación (Niubiz exige dirección) */}
+            <section>
+              <SectionHead
+                icon={<MapPin className="h-4 w-4" />}
+                step={requiresScheduleSelection ? '3' : '2'}
+                title="Facturación"
+                hint="Requerido para el pago con tarjeta"
+              />
+              <div className="mt-5 grid grid-cols-1 gap-4 rounded-xl border border-slate-200 bg-white p-6 md:grid-cols-2">
+                <Field
+                  id="address"
+                  label="Dirección"
+                  required
+                  className="md:col-span-2"
+                  value={formData.address}
+                  onChange={(v) => handleInputChange('address', v)}
+                />
+                <Field
+                  id="city"
+                  label="Ciudad"
+                  required
+                  value={formData.city}
+                  onChange={(v) => handleInputChange('city', v)}
+                />
+                <Field
+                  id="zipCode"
+                  label="Código postal"
+                  required
+                  value={formData.zipCode}
+                  onChange={(v) => handleInputChange('zipCode', v)}
+                />
+                <CountryField
+                  className="md:col-span-2"
+                  value={formData.country}
+                  onChange={(v) => handleInputChange('country', v)}
+                />
+              </div>
+            </section>
+
+            {/* 4 · Pago */}
+            <section>
+              <SectionHead
+                icon={<CreditCard className="h-4 w-4" />}
+                step={requiresScheduleSelection ? '4' : '3'}
+                title="Pago"
+              />
+              <div className="mt-5 rounded-xl border border-slate-200 bg-white p-6">
+                {!authOk ? (
+                  <div className="text-center">
+                    <p className="text-slate-600">
+                      Este plan incluye acceso a la plataforma. Inicia sesión o crea tu cuenta para
+                      continuar.
                     </p>
+                    <Button className="mt-4" onClick={() => setShowLoginModal(true)}>
+                      Iniciar sesión / Crear cuenta
+                    </Button>
                   </div>
-                  {plansRequiringSchedule.map((item) => {
-                    const itemKey = getCartItemKey(item.plan.id, item.language)
-                    const details = planDetails[itemKey]
-                    if (!details?.courseId || !details?.isSynchronous) return null
-                    return (
-                      <div
-                        key={itemKey}
-                        className="bg-white rounded-xl shadow-sm border border-slate-200 p-6"
-                      >
-                        <div className="flex items-center gap-4 mb-6">
-                          <div className="w-16 h-16 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
-                            {item.product.image ? (
-                              <Image
-                                src={item.product.image}
-                                alt={item.product.title}
-                                width={64}
-                                height={64}
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center text-2xl">
-                                📚
-                              </div>
-                            )}
-                          </div>
-                          <div>
-                            <h3 className="font-bold text-slate-900">{item.product.title}</h3>
-                            <p className="text-sm text-slate-500">{item.plan.name}</p>
-                          </div>
-                        </div>
-                        <CheckoutScheduleSelector
-                          planId={item.plan.id}
-                          courseId={details.courseId!}
-                          classDuration={details.classDuration}
-                          maxClassesPerWeek={details.classesPerWeek || undefined}
-                          onScheduleSelected={(schedule, proration) =>
-                            handleScheduleSelected(itemKey, schedule, proration)
-                          }
-                        />
-                      </div>
-                    )
-                  })}
-                  <div className="bg-blue-50 rounded-lg p-4 flex items-start gap-3 text-sm text-blue-800">
-                    <Info className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                    <p>
-                      ¿No encuentras un horario que te funcione?{' '}
-                      <Link href="/contact" className="underline font-bold hover:text-blue-600">
-                        Contacta al profesor
-                      </Link>{' '}
-                      directamente.
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* Review Step */}
-              {currentStep === 'review' && (
-                <>
-                  <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8">
-                    <div className="flex justify-between items-center mb-6">
-                      <h3 className="text-lg font-bold text-slate-900">Información del Cliente</h3>
-                      {!session?.user && (
-                        <p className="text-sm text-slate-500">
-                          ¿Ya tienes cuenta?{' '}
-                          <Link href="/auth/signin" className="text-primary hover:underline">
-                            Inicia sesión
-                          </Link>
-                        </p>
-                      )}
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="md:col-span-2">
-                        <Label
-                          htmlFor="email"
-                          className="text-sm font-medium text-slate-700 mb-1 block"
-                        >
-                          Correo Electrónico *
-                        </Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          placeholder="tu@ejemplo.com"
-                          value={formData.email}
-                          onChange={(e) => handleInputChange('email', e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <Label
-                          htmlFor="firstName"
-                          className="text-sm font-medium text-slate-700 mb-1 block"
-                        >
-                          Nombre *
-                        </Label>
-                        <Input
-                          id="firstName"
-                          type="text"
-                          value={formData.firstName}
-                          onChange={(e) => handleInputChange('firstName', e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <Label
-                          htmlFor="lastName"
-                          className="text-sm font-medium text-slate-700 mb-1 block"
-                        >
-                          Apellidos
-                        </Label>
-                        <Input
-                          id="lastName"
-                          type="text"
-                          value={formData.lastName}
-                          onChange={(e) => handleInputChange('lastName', e.target.value)}
-                        />
-                      </div>
-                      <div className="md:col-span-2">
-                        <Label
-                          htmlFor="phone"
-                          className="text-sm font-medium text-slate-700 mb-1 block"
-                        >
-                          Teléfono *
-                        </Label>
-                        <Input
-                          id="phone"
-                          type="tel"
-                          value={formData.phone}
-                          onChange={(e) => handleInputChange('phone', e.target.value)}
-                        />
-                      </div>
-                    </div>
-                  </section>
-
-                  <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8">
-                    <h3 className="text-lg font-bold text-slate-900 mb-6">
-                      Dirección de Facturación
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="md:col-span-2">
-                        <Label
-                          htmlFor="address"
-                          className="text-sm font-medium text-slate-700 mb-1 block"
-                        >
-                          Dirección
-                        </Label>
-                        <Input
-                          id="address"
-                          type="text"
-                          value={formData.address}
-                          onChange={(e) => handleInputChange('address', e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <Label
-                          htmlFor="city"
-                          className="text-sm font-medium text-slate-700 mb-1 block"
-                        >
-                          Ciudad
-                        </Label>
-                        <Input
-                          id="city"
-                          type="text"
-                          value={formData.city}
-                          onChange={(e) => handleInputChange('city', e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <Label
-                          htmlFor="zipCode"
-                          className="text-sm font-medium text-slate-700 mb-1 block"
-                        >
-                          Código Postal
-                        </Label>
-                        <Input
-                          id="zipCode"
-                          type="text"
-                          value={formData.zipCode}
-                          onChange={(e) => handleInputChange('zipCode', e.target.value)}
-                        />
-                      </div>
-                      <div className="md:col-span-2">
-                        <Label
-                          htmlFor="country"
-                          className="text-sm font-medium text-slate-700 mb-1 block"
-                        >
-                          País
-                        </Label>
-                        <Select
-                          value={formData.country}
-                          onValueChange={(value) => handleInputChange('country', value)}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Selecciona un país" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {COUNTRIES.map((country) => (
-                              <SelectItem key={country} value={country}>
-                                {country}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                    <div className="mt-4 flex items-center gap-2">
-                      <Checkbox
-                        id="saveInfo"
-                        checked={saveInfo}
-                        onCheckedChange={(checked) => setSaveInfo(checked === true)}
-                      />
-                      <Label htmlFor="saveInfo" className="text-sm text-slate-700 cursor-pointer">
-                        Guardar esta información para la próxima vez
-                      </Label>
-                    </div>
-                  </section>
-
-                  <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8">
-                    <h3 className="text-lg font-bold text-slate-900 mb-6">Método de Pago</h3>
-                    <p className="text-slate-500 text-sm mb-4">
-                      Elige cómo deseas pagar. Ingresarás los detalles en el siguiente paso.
-                    </p>
-                    <div className="space-y-3">
-                      <label
-                        className={`relative flex cursor-pointer rounded-lg border p-4 transition-all ${paymentMethod === 'creditCard' ? 'border-primary ring-1 ring-primary bg-white' : 'border-slate-300 bg-white hover:border-slate-400'}`}
-                      >
-                        <input
-                          type="radio"
-                          name="payment-method"
-                          value="creditCard"
-                          checked={paymentMethod === 'creditCard'}
-                          onChange={() => setPaymentMethod('creditCard')}
-                          className="sr-only"
-                        />
-                        <span className="flex flex-1">
-                          <span className="flex flex-col">
-                            <span className="block text-sm font-medium text-slate-900">
-                              Tarjeta de Crédito o Débito
-                            </span>
-                            <span className="mt-1 text-sm text-slate-500">
-                              Transferencia segura usando tu cuenta bancaria.
-                            </span>
-                          </span>
-                        </span>
-                        <CreditCard
-                          className={`h-6 w-6 ${paymentMethod === 'creditCard' ? 'text-primary' : 'text-slate-400'}`}
-                        />
-                      </label>
-                      <label
-                        className={`relative flex cursor-pointer rounded-lg border p-4 transition-all ${paymentMethod === 'paypal' ? 'border-primary ring-1 ring-primary bg-white' : 'border-slate-300 bg-white hover:border-slate-400'}`}
-                      >
-                        <input
-                          type="radio"
-                          name="payment-method"
-                          value="paypal"
-                          checked={paymentMethod === 'paypal'}
-                          onChange={() => setPaymentMethod('paypal')}
-                          className="sr-only"
-                        />
-                        <span className="flex flex-1">
-                          <span className="flex flex-col">
-                            <span className="block text-sm font-medium text-slate-900">PayPal</span>
-                            <span className="mt-1 text-sm text-slate-500">
-                              Serás redirigido al sitio web de PayPal.
-                            </span>
-                          </span>
-                        </span>
-                        <Wallet
-                          className={`h-6 w-6 ${paymentMethod === 'paypal' ? 'text-primary' : 'text-slate-400'}`}
-                        />
-                      </label>
-                    </div>
-                  </section>
-                </>
-              )}
-
-              {/* Payment Step */}
-              {currentStep === 'payment' && (
-                <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8">
-                  <h3 className="text-lg font-bold text-slate-900 mb-6">Detalles del Pago</h3>
+                ) : !canPay ? (
+                  <p className="text-center text-sm text-slate-500">
+                    Completa{' '}
+                    {!allSchedulesSelected
+                      ? 'tu horario'
+                      : !contactComplete
+                        ? 'tus datos'
+                        : 'tu dirección de facturación'}{' '}
+                    para habilitar el pago.
+                  </p>
+                ) : (
                   <PaymentMethodForm
-                    paymentMethod={paymentMethod}
-                    onSubmit={handlePaymentSubmit}
+                    paymentMethod="creditCard"
+                    onSubmit={() => {}}
                     isLoading={isLoading}
                     paypalData={{
-                      items: paypalItems,
+                      items: invoiceItems,
                       total,
                       subtotal,
                       discount,
                       currency: 'USD',
                       couponId: appliedCoupon?.id,
                     }}
-                    onPayPalSuccess={handlePaymentSuccess}
                     onNiubizSuccess={handlePaymentSuccess}
                     userEmail={session?.user?.email || formData.email}
                     userFirstName={formData.firstName}
                     userLastName={formData.lastName}
                     isRecurrent={isRecurrentData}
+                    recurringSummary={recurringSummary}
                     allowGuestCheckout={!requiresPlatformAccess}
                     cartItems={cartItems}
                     customerInfo={{
@@ -1231,179 +712,282 @@ export default function CheckoutPage() {
                       zipCode: formData.zipCode,
                     }}
                   />
-                  <Button variant="ghost" onClick={handleBack} className="mt-6">
-                    <ArrowLeft className="h-4 w-4 mr-2" />
-                    Volver
-                  </Button>
-                </section>
-              )}
+                )}
+              </div>
+            </section>
 
-              {/* Navigation Buttons */}
-              {currentStep !== 'payment' && (
-                <div className="flex justify-between items-center pt-4">
-                  <Button variant="ghost" onClick={handleBack}>
-                    <ArrowLeft className="h-4 w-4 mr-2" />
-                    Volver
-                  </Button>
-                  <Button
-                    onClick={handleContinue}
-                    size="lg"
-                    className="bg-primary hover:bg-primary/90"
-                  >
-                    {currentStep === 'review' ? 'Continuar al Pago' : 'Continuar'}
-                    <ChevronRight className="h-4 w-4 ml-2" />
-                  </Button>
+            <Button
+              variant="ghost"
+              onClick={() => router.push('/shop')}
+              className="text-slate-500 hover:text-slate-900"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Volver a la tienda
+            </Button>
+          </div>
+
+          {/* ---------- Resumen (derecha, sticky) ---------- */}
+          <div className="lg:col-span-5">
+            <div className="sticky top-24 rounded-xl border border-slate-200 bg-white">
+              <h2 className="border-b border-slate-100 px-6 py-4 font-lexend text-base font-semibold text-slate-900">
+                Resumen
+              </h2>
+
+              {/* Items */}
+              <div className="max-h-[360px] space-y-4 overflow-y-auto px-6 py-5">
+                {cartItems.map((item) => {
+                  const itemKey = getCartItemKey(item.plan.id, item.language)
+                  const proration = scheduleSelections[itemKey]?.proration
+                  const price = proration?.proratedPrice ?? item.plan.price
+                  return (
+                    <div key={itemKey} className="flex gap-4">
+                      <ProductThumb image={item.product.image} title={item.product.title} />
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between gap-2">
+                          <p className="line-clamp-2 text-sm font-medium text-slate-900">
+                            {item.product.title}
+                          </p>
+                          <p className="text-sm font-semibold tabular-nums text-slate-900">
+                            ${price.toFixed(2)}
+                          </p>
+                        </div>
+                        <p className="mt-0.5 text-xs text-slate-500">{item.plan.name}</p>
+                        <button
+                          onClick={() =>
+                            removeFromCart(item.product.id, item.plan.id, item.language)
+                          }
+                          className="mt-1.5 flex items-center gap-1 text-xs text-slate-400 transition-colors hover:text-red-500"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                          Eliminar
+                        </button>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+
+              {/* Horarios elegidos */}
+              {Object.keys(scheduleSelections).length > 0 && (
+                <div className="border-t border-slate-100 px-6 py-4">
+                  <p className="mb-2 text-xs font-medium text-slate-500">Horarios elegidos</p>
+                  <div className="space-y-1.5">
+                    {Object.entries(scheduleSelections).flatMap(([planId, selection]) =>
+                      selection.schedule.map((slot, idx) => {
+                        const localSlot = convertSlotToLocalDisplay(slot, userTimezone)
+                        return (
+                          <div
+                            key={`${planId}-${idx}`}
+                            className="flex items-center justify-between text-sm text-slate-600"
+                          >
+                            <span className="font-medium text-slate-700">
+                              {DAY_NAMES[localSlot.dayOfWeek]}
+                            </span>
+                            <span className="tabular-nums">
+                              {localSlot.startTime}–{localSlot.endTime}
+                            </span>
+                          </div>
+                        )
+                      })
+                    )}
+                  </div>
                 </div>
               )}
-            </div>
 
-            {/* Right Column - Order Summary */}
-            <div className="lg:col-span-5 xl:col-span-4">
-              <div className="sticky top-24 space-y-6">
-                <div className="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
-                  <div className="p-6 border-b border-slate-100 bg-slate-50/50">
-                    <h3 className="text-lg font-bold text-slate-900">Resumen del Pedido</h3>
-                  </div>
-                  <div className="p-6 space-y-4 max-h-[400px] overflow-y-auto">
-                    {cartItems.map((item) => {
-                      const itemKey = getCartItemKey(item.plan.id, item.language)
-                      const proration = scheduleSelections[itemKey]?.proration
-                      const price = proration?.proratedPrice ?? item.plan.price
-                      return (
-                        <div key={itemKey} className="flex gap-4">
-                          <div className="w-16 h-16 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
-                            {item.product.image ? (
-                              <Image
-                                src={item.product.image}
-                                alt={item.product.title}
-                                width={64}
-                                height={64}
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center text-2xl">
-                                📚
-                              </div>
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex justify-between items-start gap-2">
-                              <p className="text-sm font-semibold text-slate-900 line-clamp-2">
-                                {item.product.title}
-                              </p>
-                              <p className="text-sm font-bold text-slate-900">
-                                ${price.toFixed(2)}
-                              </p>
-                            </div>
-                            <p className="text-xs text-slate-500 mt-1">{item.plan.name}</p>
-                            <div className="mt-2 flex items-center justify-end">
-                              <button
-                                onClick={() =>
-                                  removeFromCart(item.product.id, item.plan.id, item.language)
-                                }
-                                className="text-xs text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                                <span>Eliminar</span>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
+              {/* Cupón */}
+              <div className="border-t border-slate-100 px-6 py-4">
+                <CouponInput planIds={cartItems.map((item) => item.plan.id)} subtotal={subtotal} />
+              </div>
 
-                  {/* Schedule Summary */}
-                  {Object.keys(scheduleSelections).length > 0 && (
-                    <div className="px-6 pb-4">
-                      <div className="bg-slate-50 rounded-lg p-3 border border-slate-100">
-                        <div className="text-xs font-bold text-slate-400 uppercase mb-2">
-                          Horarios Seleccionados
-                        </div>
-                        {Object.entries(scheduleSelections).map(([planId, selection]) =>
-                          selection.schedule.map((slot, idx) => {
-                            // Convertir de UTC a hora local para mostrar
-                            const localSlot = convertSlotToLocalDisplay(slot, userTimezone)
-                            return (
-                              <div
-                                key={`${planId}-${idx}`}
-                                className="flex justify-between items-center bg-white p-2 rounded border border-slate-200 mb-2 last:mb-0"
-                              >
-                                <div className="flex flex-col">
-                                  <span className="text-xs font-bold text-slate-700">
-                                    {DAY_NAMES[localSlot.dayOfWeek]}
-                                  </span>
-                                  <span className="text-xs text-slate-500">
-                                    {localSlot.startTime} - {localSlot.endTime}
-                                  </span>
-                                </div>
-                              </div>
-                            )
-                          })
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Coupon Input */}
-                  <div className="px-6 py-4 border-t border-slate-100">
-                    <CouponInput
-                      planIds={cartItems.map((item) => item.plan.id)}
-                      subtotal={subtotal}
-                    />
-                  </div>
-
-                  {/* Cost Breakdown */}
-                  <div className="bg-slate-50 p-6 border-t border-slate-200 space-y-3">
-                    <div className="flex justify-between text-sm text-slate-600">
-                      <span>Subtotal</span>
-                      <span className="font-medium text-slate-900">${subtotal.toFixed(2)}</span>
-                    </div>
-                    {discount > 0 && (
-                      <div className="flex justify-between text-sm text-green-600">
-                        <span>Descuento {appliedCoupon?.code && `(${appliedCoupon.code})`}</span>
-                        <span className="font-medium">-${discount.toFixed(2)}</span>
-                      </div>
-                    )}
-                    {taxes > 0 && (
-                      <div className="flex justify-between text-sm text-slate-600">
-                        <span>Impuestos</span>
-                        <span className="font-medium text-slate-900">${taxes.toFixed(2)}</span>
-                      </div>
-                    )}
-                    <div className="flex justify-between text-lg font-bold text-slate-900 pt-3 border-t border-slate-200">
-                      <span>Total</span>
-                      <span>${total.toFixed(2)}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Trust Badges */}
-                <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
-                  <div className="flex items-center gap-3 text-sm text-slate-600">
-                    <Lock className="h-5 w-5 text-green-600" />
-                    <div>
-                      <p className="font-medium text-slate-900">Pago 100% Seguro</p>
-                      <p className="text-xs">Tus datos están protegidos con encriptación SSL</p>
-                    </div>
-                  </div>
+              {/* Totales */}
+              <div className="space-y-2.5 border-t border-slate-100 px-6 py-5">
+                <Row label="Subtotal" value={`$${subtotal.toFixed(2)}`} />
+                {discount > 0 && (
+                  <Row
+                    label={`Descuento${appliedCoupon?.code ? ` (${appliedCoupon.code})` : ''}`}
+                    value={`-$${discount.toFixed(2)}`}
+                    accent
+                  />
+                )}
+                {taxes > 0 && <Row label="Impuestos" value={`$${taxes.toFixed(2)}`} />}
+                <div className="flex items-center justify-between border-t border-slate-100 pt-3">
+                  <span className="font-lexend text-base font-semibold text-slate-900">Total</span>
+                  <span className="font-lexend text-base font-semibold tabular-nums text-slate-900">
+                    ${total.toFixed(2)}
+                  </span>
                 </div>
               </div>
+
+              <p className="flex items-center gap-1.5 border-t border-slate-100 px-6 py-3.5 text-xs text-slate-400">
+                <Lock className="h-3 w-3" />
+                Pago protegido con encriptación SSL
+              </p>
             </div>
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
 
       <CheckoutLoginModal
         open={showLoginModal}
         onOpenChange={setShowLoginModal}
-        onSuccess={() => {
-          setShowLoginModal(false)
-          setCurrentStep('payment')
-        }}
+        onSuccess={() => setShowLoginModal(false)}
         title="Inicia sesión para continuar"
         description="Este producto incluye acceso a contenido de la plataforma. Necesitas una cuenta para acceder después de la compra."
       />
-    </PayPalScriptProvider>
+    </div>
+  )
+}
+
+/* ----------------------- Subcomponentes locales ----------------------- */
+
+function SectionHead({
+  icon,
+  step,
+  title,
+  hint,
+}: {
+  icon: React.ReactNode
+  step: string
+  title: string
+  hint?: string
+}) {
+  return (
+    <div className="flex items-start gap-3">
+      <span className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+        {icon}
+      </span>
+      <div>
+        <h2 className="font-lexend text-lg font-semibold text-slate-900">
+          <span className="mr-1.5 text-slate-300">{step}</span>
+          {title}
+        </h2>
+        {hint && <p className="text-sm text-slate-500">{hint}</p>}
+      </div>
+    </div>
+  )
+}
+
+function Field({
+  id,
+  label,
+  value,
+  onChange,
+  required,
+  type = 'text',
+  placeholder,
+  className,
+}: {
+  id: string
+  label: string
+  value: string
+  onChange: (v: string) => void
+  required?: boolean
+  type?: string
+  placeholder?: string
+  className?: string
+}) {
+  return (
+    <div className={className}>
+      <Label htmlFor={id} className="mb-1.5 block text-sm font-medium text-slate-700">
+        {label}
+        {required && <span className="ml-0.5 text-primary">*</span>}
+      </Label>
+      <Input
+        id={id}
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+    </div>
+  )
+}
+
+function CountryField({
+  value,
+  onChange,
+  className,
+}: {
+  value: string
+  onChange: (v: string) => void
+  className?: string
+}) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className={className}>
+      <Label className="mb-1.5 block text-sm font-medium text-slate-700">
+        País<span className="ml-0.5 text-primary">*</span>
+      </Label>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            type="button"
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className="w-full justify-between font-normal"
+          >
+            {value ? value : <span className="text-slate-400">Selecciona tu país</span>}
+            <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-[280px] p-0" align="start">
+          <Command>
+            <CommandInput placeholder="Buscar país…" />
+            <CommandList>
+              <CommandEmpty>Sin resultados.</CommandEmpty>
+              <CommandGroup>
+                {COUNTRIES.map((c) => (
+                  <CommandItem
+                    key={c.code}
+                    value={c.name}
+                    onSelect={() => {
+                      onChange(c.name)
+                      setOpen(false)
+                    }}
+                  >
+                    <Check
+                      className={cn('mr-2 h-4 w-4', value === c.name ? 'opacity-100' : 'opacity-0')}
+                    />
+                    {c.name}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </div>
+  )
+}
+
+function Row({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
+  return (
+    <div className="flex items-center justify-between text-sm">
+      <span className={accent ? 'text-green-600' : 'text-slate-600'}>{label}</span>
+      <span className={`tabular-nums ${accent ? 'font-medium text-green-600' : 'text-slate-900'}`}>
+        {value}
+      </span>
+    </div>
+  )
+}
+
+function ProductThumb({ image, title }: { image?: string | null; title: string }) {
+  return (
+    <div className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100">
+      {image ? (
+        <Image
+          src={image}
+          alt={title}
+          width={56}
+          height={56}
+          className="h-full w-full object-cover"
+        />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center font-lexend text-sm font-semibold text-slate-400">
+          {title.slice(0, 2).toUpperCase()}
+        </div>
+      )}
+    </div>
   )
 }

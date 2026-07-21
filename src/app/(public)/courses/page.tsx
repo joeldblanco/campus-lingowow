@@ -3,11 +3,16 @@ import Footer from '@/components/public-components/footer'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { BookOpen, Globe, ShoppingCart } from 'lucide-react'
+import { BookOpen, Check, Globe, ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
 import { Metadata } from 'next'
 import { db } from '@/lib/db'
 import { toPublicCourseCards } from '@/lib/public-courses'
+import {
+  GoogleRatingBadge,
+  InstructorCredentials,
+  StudentTestimonials,
+} from '@/components/public-components/social-proof'
 
 export const metadata: Metadata = {
   title: 'Cursos | Lingowow - Aprende Inglés y Español',
@@ -45,7 +50,15 @@ export default async function CursosPage() {
                 Descubre nuestra oferta de cursos diseñados para distintos niveles.
                 Desde principiantes hasta avanzados, encuentra el curso que se ajusta a ti.
               </p>
+              <GoogleRatingBadge className="mt-2" />
             </div>
+          </div>
+        </section>
+
+        {/* Instructor credibility */}
+        <section className="w-full pt-12 md:pt-16">
+          <div className="container px-4 md:px-6">
+            <InstructorCredentials />
           </div>
         </section>
 
@@ -55,14 +68,22 @@ export default async function CursosPage() {
             {courses.length === 0 ? (
               <div className="flex flex-col items-center text-center gap-4 py-12">
                 <BookOpen className="h-12 w-12 text-muted-foreground" />
-                <h2 className="text-2xl font-bold">Pronto publicaremos nuevos cursos</h2>
+                <h2 className="text-2xl font-bold">Empieza hoy con un plan a tu medida</h2>
                 <p className="text-muted-foreground max-w-[600px]">
-                  Estamos preparando nuestra oferta de cursos. Mientras tanto, contáctanos
-                  y diseñaremos un programa a tu medida.
+                  Estamos ampliando nuestro catálogo. Mientras tanto, elige un plan con clases en
+                  vivo y profesores certificados, o reserva una clase de prueba gratis para
+                  conocernos sin compromiso.
                 </p>
-                <Link href="/contact">
-                  <Button size="lg">Contactar</Button>
-                </Link>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Link href="/pricing">
+                    <Button size="lg">Ver planes y precios</Button>
+                  </Link>
+                  <Link href="/demo">
+                    <Button size="lg" variant="outline">
+                      Reserva una clase de prueba
+                    </Button>
+                  </Link>
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -87,9 +108,17 @@ export default async function CursosPage() {
                             <span>Idioma: {course.languageLabel}</span>
                           </div>
                         )}
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <BookOpen className="h-4 w-4" />
-                          <span>Materiales incluidos</span>
+                        <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <Check className="h-4 w-4 mt-0.5 shrink-0 text-primary" />
+                          <span>Clases en vivo con profesor certificado</span>
+                        </div>
+                        <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <Check className="h-4 w-4 mt-0.5 shrink-0 text-primary" />
+                          <span>Material de estudio y ejercicios prácticos</span>
+                        </div>
+                        <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <Check className="h-4 w-4 mt-0.5 shrink-0 text-primary" />
+                          <span>Seguimiento personalizado de tu progreso</span>
                         </div>
                       </div>
                     </CardContent>
@@ -110,6 +139,9 @@ export default async function CursosPage() {
             )}
           </div>
         </section>
+
+        {/* Real Google testimonials */}
+        <StudentTestimonials heading="Lo que dicen nuestros estudiantes" limit={3} />
 
         {/* CTA Section */}
         <section className="w-full py-12 md:py-16 bg-slate-50">

@@ -126,7 +126,7 @@ export type Course = {
   language: string
   category: string
   image: string
-  plans: (Plan & { features?: string[] })[] // Plans con features opcionales para compatibilidad
+  plans: (Plan & { features?: string[]; pricing?: PlanPricing[] })[] // Plans con features y pricing por idioma opcionales
 }
 
 // CartItem para el carrito de compras

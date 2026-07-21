@@ -2569,6 +2569,46 @@ model NewsletterSubscription {
 }
 
 // =============================================
+// MODELO DE CARRITO ABANDONADO (RECUPERACIÓN)
+// =============================================
+
+enum AbandonedCartStatus {
+  PENDING // Snapshot guardado, aún no se ha enviado correo de recuperación
+  EMAILED // Correo de recuperación enviado (no se vuelve a enviar)
+  RECOVERED // El usuario volvió al checkout vía el enlace de recuperación
+  PURCHASED // El usuario completó la compra (no enviar / dejar de enviar)
+}
+
+// Registro server-side de un carrito abandonado. El carrito vive en el store de
+// Zustand (localStorage) en el cliente; este modelo persiste un snapshot junto al
+// email para poder enviar UN único correo de recuperación tras un periodo de
+// inactividad. Upsert por `email` => un registro activo por persona (anti-spam).
+model AbandonedCart {
+  id       String  @id @default(cuid())
+  email    String  @unique
+  userId   String? // Opcional: id del usuario logueado si se conoce
+  items    Json // Snapshot del carrito (CartItem[]) para reconstruirlo
+  total    Float
+  currency String  @default("USD")
+
+  // Token opaco usado en el enlace de recuperación y el de baja (no expone el email)
+  recoveryToken String              @unique @default(cuid())
+  status        AbandonedCartStatus @default(PENDING)
+
+  recoveryEmailSentAt DateTime? // Cuándo se envió el correo (null => aún no enviado)
+  recoveredAt         DateTime? // Cuándo volvió vía el enlace
+  purchasedAt         DateTime? // Cuándo completó la compra
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt // Última actividad del carrito; base para el delay
+
+  @@index([email])
+  @@index([status])
+  @@index([recoveryToken])
+  @@map("abandoned_carts")
+}
+
+// =============================================
 // MODELOS PARA APP MÓVIL
 // =============================================
 

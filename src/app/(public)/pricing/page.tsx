@@ -3,17 +3,28 @@
 import React, { useEffect, useState } from 'react'
 import Header from '@/components/public-components/header'
 import Footer from '@/components/public-components/footer'
-import { CartDrawer } from '@/components/shop/cart/cart-drawer'
 import { Button } from '@/components/ui/button'
-import { CheckCircle, ChevronDown, GraduationCap, Globe, Rocket, Languages, Loader2, Check } from 'lucide-react'
+import { CheckCircle, ChevronDown, Loader2, ShieldCheck } from 'lucide-react'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { SUPPORTED_LANGUAGES } from '@/lib/constants/languages'
 import { cn } from '@/lib/utils'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { getPlans, getPricingPlansForProduct, getProducts } from '@/lib/actions/commercial'
 import { useShopStore } from '@/stores/useShopStore'
-import { toast } from 'sonner'
 import type { PlanWithFeatures } from '@/types/shop'
+import {
+  GoogleRatingBadge,
+  InstructorCredentials,
+  StudentTestimonials,
+} from '@/components/public-components/social-proof'
+import {
+  billingPeriodSuffix,
+  billingViewLabel,
+  filterByBillingView,
+  getRecommendedPlanId,
+  hasBillingToggle,
+  type BillingView,
+} from '@/lib/pricing-helpers'
 
 export default function PricingPage() {
   const searchParams = useSearchParams()
@@ -23,24 +34,11 @@ export default function PricingPage() {
   const [loading, setLoading] = useState(true)
   const [uniqueFeatures, setUniqueFeatures] = useState<string[]>([])
   const [selectedLanguage, setSelectedLanguage] = useState<string>('en')
+  const [billingView, setBillingView] = useState<BillingView>('monthly')
   
   // Shop store
-  const { addToCart, cart, isCartDrawerOpen, setCartDrawerOpen, lastAddedItem } = useShopStore()
-
-  // Mostrar toast cuando se añade un producto
-  useEffect(() => {
-    if (lastAddedItem) {
-      toast.success('¡Añadido correctamente!', {
-        description: `"${lastAddedItem.plan.name}" ha sido añadido a tu carrito.`,
-        duration: 4000,
-        position: 'bottom-left',
-      })
-    }
-  }, [lastAddedItem])
-
-  const isInCart = (planId: string, language: string) => {
-    return cart.some((item) => item.plan.id === planId && item.language === language)
-  }
+  const router = useRouter()
+  const { buyNow } = useShopStore()
 
   const getPriceForLanguage = (plan: PlanWithFeatures, language: string) => {
     const pricing = plan.pricing?.find(p => p.language === language && p.isActive)
@@ -57,15 +55,25 @@ export default function PricingPage() {
   )
 
   // Filter plans based on selected language - only show plans that have pricing for that language
-  const filteredPlans = hasLanguagePricing 
-    ? plans.filter(plan => 
+  const filteredPlans = hasLanguagePricing
+    ? plans.filter(plan =>
         plan.pricing?.some(p => p.language === selectedLanguage && p.isActive)
       )
     : plans
 
-  const handleAddToCart = (plan: PlanWithFeatures) => {
+  // Monthly/annual toggle — only rendered when the catalogue genuinely has both
+  // an annual and a non-annual plan. We never synthesize an annual price.
+  const showBillingToggle = hasBillingToggle(filteredPlans)
+  const visiblePlans = showBillingToggle
+    ? filterByBillingView(filteredPlans, billingView)
+    : filteredPlans
+
+  // Exactly one tier reads as recommended (anchor-hero-decoy).
+  const recommendedPlanId = getRecommendedPlanId(visiblePlans)
+
+  const handleBuyNow = (plan: PlanWithFeatures) => {
     const { price } = getPriceForLanguage(plan, selectedLanguage)
-    addToCart({
+    buyNow({
       product: {
         id: product?.id || productId || 'unknown',
         title: product?.name || 'Plan de Aprendizaje',
@@ -80,6 +88,7 @@ export default function PricingPage() {
       quantity: 1,
       language: selectedLanguage,
     })
+    router.push('/shop/cart/checkout')
   }
 
   useEffect(() => {
@@ -163,28 +172,54 @@ export default function PricingPage() {
                 </Tabs>
               </div>
             )}
-            <span className="font-bold text-slate-900 dark:text-white bg-blue-100 dark:bg-blue-900/30 px-4 py-2 rounded-full">
-              Planes Mensuales Flexibles
-            </span>
+            <div className="flex flex-col items-center gap-4">
+              <span className="font-bold text-slate-900 dark:text-white bg-blue-100 dark:bg-blue-900/30 px-4 py-2 rounded-full">
+                Planes flexibles, cancela cuando quieras
+              </span>
+              <GoogleRatingBadge />
+            </div>
           </div>
         </section>
 
         {/* Pricing Cards */}
         <section className="px-4 pb-20">
           <div className="max-w-7xl mx-auto">
+            {/* Monthly / annual toggle — shown only when real annual plans exist */}
+            {!loading && showBillingToggle && (
+              <div className="flex justify-center mb-10">
+                <div className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-100 p-1 dark:border-slate-700 dark:bg-slate-800">
+                  {(['monthly', 'annual'] as BillingView[]).map((view) => (
+                    <button
+                      key={view}
+                      type="button"
+                      onClick={() => setBillingView(view)}
+                      aria-pressed={billingView === view}
+                      className={cn(
+                        'rounded-full px-5 py-2 text-sm font-semibold transition-colors',
+                        billingView === view
+                          ? 'bg-white text-slate-900 shadow-sm dark:bg-[#1a2632] dark:text-white'
+                          : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                      )}
+                    >
+                      {billingViewLabel(view)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
             {loading ? (
               <div className="flex justify-center py-20">
                 <Loader2 className="h-10 w-10 animate-spin text-primary" />
               </div>
             ) : (
-              <div className={`grid grid-cols-1 md:grid-cols-${Math.min(filteredPlans.length, 3)} gap-8 items-start justify-center`}>
-                {filteredPlans.length === 0 && (
+              <div className={`grid grid-cols-1 md:grid-cols-${Math.min(visiblePlans.length, 3)} gap-8 items-start justify-center`}>
+                {visiblePlans.length === 0 && (
                   <div className="col-span-full text-center text-slate-500">
                     No hay planes disponibles en este momento.
                   </div>
                 )}
-                {filteredPlans.map((plan) => {
-                  const isPopular = plan.isPopular
+                {visiblePlans.map((plan) => {
+                  const isPopular = plan.id === recommendedPlanId
 
                   return (
                     <div
@@ -214,7 +249,9 @@ export default function PricingPage() {
                               <span className="text-4xl font-bold text-slate-900 dark:text-white font-lexend">
                                 ${Number(price).toFixed(0)}
                               </span>
-                              <span className="text-slate-500 dark:text-slate-400 font-medium">/mes</span>
+                              <span className="text-slate-500 dark:text-slate-400 font-medium">
+                                {billingPeriodSuffix(plan.billingCycle)}
+                              </span>
                               {comparePrice && comparePrice > price && (
                                 <span className="text-lg text-slate-400 line-through">
                                   ${Number(comparePrice).toFixed(0)}
@@ -226,24 +263,23 @@ export default function PricingPage() {
                       </div>
 
                       <Button
-                        variant={isInCart(plan.id, selectedLanguage) ? "secondary" : isPopular ? "default" : "outline"}
+                        variant={isPopular ? "default" : "outline"}
                         className={cn(
-                          "w-full py-3 h-auto mb-8 font-bold",
-                          isInCart(plan.id, selectedLanguage)
-                            ? "bg-green-500 hover:bg-green-600 text-white"
-                            : isPopular
-                              ? "bg-primary hover:bg-blue-600 text-white shadow-lg shadow-blue-500/30"
-                              : "bg-slate-100 border-none hover:bg-slate-200 text-slate-900"
+                          "w-full py-3 h-auto mb-3 font-bold",
+                          isPopular
+                            ? "bg-primary hover:bg-blue-600 text-white shadow-lg shadow-blue-500/30"
+                            : "bg-slate-100 border-none hover:bg-slate-200 text-slate-900"
                         )}
-                        onClick={() => handleAddToCart(plan)}
+                        onClick={() => handleBuyNow(plan)}
                       >
-                        {isInCart(plan.id, selectedLanguage) ? (
-                          <>
-                            <Check className="mr-2 h-4 w-4" />
-                            Añadido al Carrito
-                          </>
-                        ) : isPopular ? "Obtener Plan" : "Empezar Ahora"}
+                        {isPopular ? "Obtener plan" : "Empezar ahora"}
                       </Button>
+
+                      {/* Risk-reduction right at the decision point */}
+                      <p className="mb-7 flex items-center justify-center gap-1.5 text-center text-xs font-medium text-slate-500 dark:text-slate-400">
+                        <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
+                        Garantía de 30 días · Cancela cuando quieras
+                      </p>
 
                       <div className="space-y-4">
                         {plan.features?.filter(f => f.included).map((pf, idx) => (
@@ -264,29 +300,20 @@ export default function PricingPage() {
           </div>
         </section>
 
-        {/* Trust Indicator */}
-        <section className="border-y border-slate-200 dark:border-slate-800 bg-white dark:bg-[#1a2632]">
-          <div className="max-w-7xl mx-auto py-12 px-4 text-center">
-            <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-8">Confían en nosotros estudiantes de</p>
-            <div className="flex flex-wrap justify-center items-center gap-12 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-              <div className="flex items-center gap-2 font-bold text-xl text-slate-700 dark:text-slate-300">
-                <GraduationCap className="h-6 w-6" /> University of Tech
-              </div>
-              <div className="flex items-center gap-2 font-bold text-xl text-slate-700 dark:text-slate-300">
-                <Globe className="h-6 w-6" /> Global Corp
-              </div>
-              <div className="flex items-center gap-2 font-bold text-xl text-slate-700 dark:text-slate-300">
-                <Rocket className="h-6 w-6" /> Startup Inc
-              </div>
-              <div className="flex items-center gap-2 font-bold text-xl text-slate-700 dark:text-slate-300">
-                <Languages className="h-6 w-6" /> LinguaPress
-              </div>
-            </div>
+        {/* Trust block: instructor credibility + real Google reviews near the plans */}
+        <section className="px-4 pb-4">
+          <div className="max-w-5xl mx-auto">
+            <InstructorCredentials />
           </div>
         </section>
+        <StudentTestimonials
+          className="bg-slate-50 dark:bg-slate-900/40"
+          heading="Estudiantes reales, resultados reales"
+          limit={3}
+        />
 
         {/* Comparison Table */}
-        {filteredPlans.length > 0 && !loading && (
+        {visiblePlans.length > 0 && !loading && (
           <section className="py-20 px-4">
             <div className="max-w-5xl mx-auto">
               <div className="text-center mb-12">
@@ -298,8 +325,8 @@ export default function PricingPage() {
                   <thead>
                     <tr className="border-b border-slate-200 dark:border-slate-700">
                       <th className="py-4 px-6 text-sm font-semibold text-slate-500 dark:text-slate-400 w-1/4">Características</th>
-                      {filteredPlans.map(plan => (
-                        <th key={plan.id} className={cn("py-4 px-6 text-lg font-bold w-1/4 text-center font-lexend", plan.isPopular ? "text-primary" : "text-slate-900 dark:text-white")}>
+                      {visiblePlans.map(plan => (
+                        <th key={plan.id} className={cn("py-4 px-6 text-lg font-bold w-1/4 text-center font-lexend", plan.id === recommendedPlanId ? "text-primary" : "text-slate-900 dark:text-white")}>
                           {plan.name}
                         </th>
                       ))}
@@ -309,7 +336,7 @@ export default function PricingPage() {
                     {uniqueFeatures.map((featureName, idx) => (
                       <tr key={idx} className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
                         <td className="py-4 px-6 font-medium text-slate-900 dark:text-white">{featureName}</td>
-                        {filteredPlans.map(plan => {
+                        {visiblePlans.map(plan => {
                           const pf = plan.features?.find((f) => f.feature.name === featureName)
                           const included = pf?.included
                           const value = pf?.value
@@ -360,7 +387,7 @@ export default function PricingPage() {
                   <ChevronDown className="transition-transform group-open:rotate-180" />
                 </summary>
                 <div className="px-5 pb-5 text-slate-600 dark:text-slate-400 leading-relaxed">
-                  Sí, ofrecemos una garantía de devolución de dinero de 14 días para todos los planes pagos.
+                  Sí, ofrecemos una garantía de devolución de dinero de 30 días para todos los planes pagos.
                 </div>
               </details>
               <details className="group bg-slate-50 dark:bg-slate-800/50 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 open:border-primary/50 transition-all">
@@ -388,11 +415,6 @@ export default function PricingPage() {
         </section>
       </main>
 
-      <CartDrawer 
-        open={isCartDrawerOpen} 
-        onOpenChange={setCartDrawerOpen}
-        suggestedProducts={[]}
-      />
       <Footer />
     </div>
   )

@@ -92,7 +92,7 @@ export function ProductCheckout({ product, userId, onPurchaseComplete }: Product
   const handlePayment = async () => {
     setIsProcessing(true);
     try {
-      // Aquí integrarías con tu sistema de pagos (Stripe, PayPal, etc.)
+      // Aquí integrarías con tu sistema de pagos (Niubiz, etc.)
       // Por ahora simulamos el proceso
 
       // Crear factura simulada

@@ -1,5 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card'
-import { Check, ChevronRight, FileText, LayoutDashboard, Mail } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Check, ChevronRight, FileText, KeyRound, Mail } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -30,6 +31,7 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
             name: true,
             lastName: true,
             email: true,
+            password: true,
           },
         },
         items: {
@@ -69,6 +71,7 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
             name: true,
             lastName: true,
             email: true,
+            password: true,
           },
         },
         items: {
@@ -115,6 +118,12 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
   const userEmail = invoice.user?.email || ''
   const paymentMethod = invoice.paymentMethod || 'creditCard'
 
+  // A buyer with no password set has not yet activated their account. When they
+  // are not logged in either, this confirmation is the end of a guest checkout,
+  // so the single primary next step is to activate (set a password).
+  const needsActivation = !invoice.user?.password
+  const isGuestCheckout = !session?.user && needsActivation
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Client component to clear cart on mount */}
@@ -133,9 +142,9 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
                 ¡Gracias por tu compra!
               </h1>
               <p className="text-gray-600 max-w-md mx-auto">
-                Tu pago ha sido procesado exitosamente. 
+                Tu pago se procesó correctamente.
                 {userEmail && (
-                  <> Se ha enviado un correo de confirmación a <strong>{userEmail}</strong>.</>
+                  <> Te enviamos un correo de confirmación a <strong>{userEmail}</strong>.</>
                 )}
               </p>
             </div>
@@ -237,40 +246,61 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
               {/* What's Next - Right Side */}
               <div className="lg:col-span-2 bg-gray-50 p-6 lg:p-8 border-t lg:border-t-0 lg:border-l">
                 <h2 className="text-lg font-semibold text-gray-900 mb-6">
-                  ¿Qué sigue?
+                  {isGuestCheckout ? 'Activa tu cuenta' : '¿Qué sigue?'}
                 </h2>
 
-                <div className="space-y-4">
-                  {/* Go to Dashboard */}
-                  <Link
-                    href="/dashboard"
-                    className="flex items-center gap-4 p-4 bg-white rounded-xl border hover:border-primary hover:shadow-sm transition-all group"
-                  >
-                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <LayoutDashboard className="h-5 w-5 text-blue-600" />
+                {isGuestCheckout ? (
+                  <div className="space-y-4">
+                    {/* Single primary next step for a guest: set a password */}
+                    <div className="rounded-xl border border-primary/30 bg-primary/5 p-5">
+                      <div className="flex items-start gap-3 mb-4">
+                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <KeyRound className="h-5 w-5 text-primary" />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-semibold text-gray-900">
+                            Activa tu cuenta para entrar a tus clases
+                          </p>
+                          <p className="text-sm text-gray-600 mt-1">
+                            {userEmail ? (
+                              <>
+                                Te enviamos un enlace a{' '}
+                                <strong className="font-medium text-gray-900">{userEmail}</strong>{' '}
+                                para crear tu contraseña.
+                              </>
+                            ) : (
+                              <>Te enviamos un enlace por correo para crear tu contraseña.</>
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                      <Button asChild size="lg" className="w-full">
+                        <Link href="/auth/reset">Activar mi cuenta</Link>
+                      </Button>
                     </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-gray-900">Ir a Mi Dashboard</p>
-                      <p className="text-sm text-gray-500">Comienza a aprender ahora</p>
-                    </div>
-                    <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-primary transition-colors" />
-                  </Link>
-
-                  {/* View Invoice */}
-                  <Link
-                    href={`/billing/invoices/${invoice.id}`}
-                    className="w-full flex items-center gap-4 p-4 bg-white rounded-xl border hover:border-primary hover:shadow-sm transition-all group text-left cursor-pointer"
-                  >
-                    <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <FileText className="h-5 w-5 text-purple-600" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-gray-900">Ver Factura</p>
-                      <p className="text-sm text-gray-500">Descarga tu recibo</p>
-                    </div>
-                    <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-primary transition-colors" />
-                  </Link>
-                </div>
+                    <p className="text-sm text-gray-500">
+                      ¿No recibiste el correo? Revisa tu carpeta de spam o solicita el enlace de
+                      nuevo con el botón.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {/* Single primary next step for an activated buyer */}
+                    <Button asChild size="lg" className="w-full">
+                      <Link href="/dashboard">
+                        Ir a mis clases
+                        <ChevronRight className="h-5 w-5" />
+                      </Link>
+                    </Button>
+                    <Link
+                      href={`/billing/invoices/${invoice.id}`}
+                      className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-primary transition-colors"
+                    >
+                      <FileText className="h-4 w-4" />
+                      Ver factura
+                    </Link>
+                  </div>
+                )}
 
                 {/* Need Help Section */}
                 <div className="mt-8 p-4 bg-white rounded-xl border">

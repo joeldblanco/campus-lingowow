@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Header from '@/components/public-components/header'
 import Footer from '@/components/public-components/footer'
 import { Button } from '@/components/ui/button'
@@ -29,6 +30,7 @@ const ContactSchema = z.object({
 type ContactFormData = z.infer<typeof ContactSchema>
 
 export default function ContactoPage() {
+  const [submitted, setSubmitted] = useState(false)
   const form = useForm<ContactFormData>({
     resolver: zodResolver(ContactSchema),
     defaultValues: {
@@ -57,6 +59,7 @@ export default function ContactoPage() {
       
       toast.success('¡Mensaje enviado exitosamente! Te contactaremos pronto.')
       form.reset()
+      setSubmitted(true)
     } catch (error) {
       console.error('Error submitting contact form:', error)
       toast.error(error instanceof Error ? error.message : 'Error al enviar el mensaje')
@@ -163,6 +166,25 @@ export default function ContactoPage() {
 
               {/* Contact Form */}
               <div className="lg:col-span-2">
+                {submitted && (
+                  <Card className="mb-6 border-primary/20 bg-primary/5">
+                    <CardContent className="pt-6">
+                      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                          <h3 className="font-semibold">
+                            ¡Mensaje enviado! ¿Quieres avanzar más rápido?
+                          </h3>
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            Reserva una clase de prueba gratis y conoce a un profesor sin compromiso.
+                          </p>
+                        </div>
+                        <Button asChild size="lg" className="shrink-0">
+                          <Link href="/demo">Reservar clase gratis</Link>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
                 <Card>
                   <CardHeader>
                     <CardTitle>Envíanos un Mensaje</CardTitle>

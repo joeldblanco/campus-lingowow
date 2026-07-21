@@ -289,7 +289,7 @@ export default function FAQPage() {
                     en menos de 24 horas.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Link href="/contacto">
+                    <Link href="/contact">
                       <Button size="lg">Contactar</Button>
                     </Link>
                     <Link href="/demo">

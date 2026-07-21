@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button'
 import { CheckCircle, BookOpen, PenTool, Mic } from 'lucide-react'
 import Link from 'next/link'
+import NewsletterSignup from '@/components/public-components/newsletter-signup'
 
 export default function EjerciciosPage() {
   const ejercicios = [
@@ -97,13 +98,28 @@ export default function EjerciciosPage() {
                       </div>
                     </CardContent>
                     <CardFooter>
-                      <Button className="w-full" disabled>
-                        Próximamente
+                      <Button asChild className="w-full">
+                        <Link href="/demo">Practicar gratis</Link>
                       </Button>
                     </CardFooter>
                   </Card>
                 )
               })}
+            </div>
+          </div>
+        </section>
+
+        {/* Lead capture */}
+        <section className="w-full py-12 md:py-16">
+          <div className="container px-4 md:px-6">
+            <div className="max-w-3xl mx-auto">
+              <NewsletterSignup
+                variant="panel"
+                source="resources-ejercicios"
+                title="¿Te aviso cuando publiquemos nuevos ejercicios?"
+                description="Déjanos tu correo y te escribimos en cuanto estén listos. Mientras tanto, practica con un profesor en una clase de prueba gratis."
+                buttonLabel="Avísame"
+              />
             </div>
           </div>
         </section>

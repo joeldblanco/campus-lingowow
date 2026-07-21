@@ -39,6 +39,27 @@ describe('classifyConnectionError', () => {
   it('treats a NotAllowed reason as auth (token rejected)', () => {
     expect(classifyConnectionError(true, { reason: 'NotAllowed' })).toBe('auth')
   })
+
+  it('classifies a post-signal failure (signaling opened, media failed) as media', () => {
+    // Signaling reached the server, so a timeout/unknown failure is the media path.
+    expect(classifyConnectionError(true, new Error('LiveKit connection timeout'), true)).toBe(
+      'media'
+    )
+    expect(classifyConnectionError(true, {}, true)).toBe('media')
+  })
+
+  it('still treats a pre-signal failure (signaling never opened) as network', () => {
+    expect(classifyConnectionError(true, new Error('LiveKit connection timeout'), false)).toBe(
+      'network'
+    )
+  })
+
+  it('lets an explicit reason win over the signalConnected hint', () => {
+    // A token rejection or server error is not reclassified as media just because
+    // the signaling socket happened to open first.
+    expect(classifyConnectionError(true, { status: 401 }, true)).toBe('auth')
+    expect(classifyConnectionError(true, { reason: 'InternalError' }, true)).toBe('server')
+  })
 })
 
 describe('getConnectionErrorCopy', () => {
@@ -56,5 +77,15 @@ describe('getConnectionErrorCopy', () => {
   it('frames auth failures as a session problem', () => {
     const copy = getConnectionErrorCopy('auth')
     expect(copy.message.toLowerCase()).toContain('sesión')
+  })
+
+  it('frames media failures as connected-but-no-video, distinct from network', () => {
+    const media = getConnectionErrorCopy('media')
+    const network = getConnectionErrorCopy('network')
+    // Distinct copy from the plain network case so support can tell them apart.
+    expect(media.title).not.toBe(network.title)
+    // Names the media path and still offers an actionable network workaround.
+    expect(media.message.toLowerCase()).toContain('video')
+    expect(media.message.toLowerCase()).toContain('red')
   })
 })

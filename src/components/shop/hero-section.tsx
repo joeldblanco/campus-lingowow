@@ -1,13 +1,14 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 export function HeroSection() {
   return (
     <div className="flex flex-col gap-6 py-6 md:py-10 lg:flex-row items-center">
       <div
         className="w-full lg:w-1/2 bg-center bg-no-repeat aspect-video bg-cover rounded-xl shadow-lg relative overflow-hidden group"
-        style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDaAy1Y5JXlwFImpD2qbHVTlVSVPP7afJhpjafbc4JVXcraFZTEHMulV5Ccg2ha5XmAVlNXbrLLupY6LxJ3XdKxWLhR-vdMFwwBR4FDTHuF8YrTC7RD9_GIotWxdlgi1G22dahwj6QDZvvBKqLZY--BfLo6mrzvzuuRoPCb3GWxjKkc7AEmOgnsINL9bcufu4TxnKK1oSjR9Ivnfuj9k6Rvrqro54no0-nkHhjSX3ELE0ZoXUqCJNSLd1QQLaJMqTIdgp-Zzv5_kzU")' }}
+        style={{ backgroundImage: 'url("/images/hero-shop.jpg")' }}
       >
         <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
       </div>
@@ -27,15 +28,17 @@ export function HeroSection() {
 
         <div className="flex flex-wrap gap-3">
           <Button
+            asChild
             className="h-12 px-6 bg-primary hover:bg-blue-600 text-white text-base font-bold rounded-lg shadow-md shadow-blue-500/20"
           >
-            Ver Ofertas Especiales
+            <Link href="/pricing">Ver Ofertas Especiales</Link>
           </Button>
           <Button
+            asChild
             variant="outline"
             className="h-12 px-6 bg-white border-slate-200 text-slate-700 hover:bg-slate-50 text-base font-bold rounded-lg"
           >
-            Cómo Funciona
+            <Link href="/method">Cómo Funciona</Link>
           </Button>
         </div>
       </div>
