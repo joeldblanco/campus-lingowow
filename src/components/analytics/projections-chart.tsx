@@ -61,13 +61,13 @@ export function ProjectionsChart({
                 tickFormatter={(value) => `$${value}`}
               />
               <Tooltip 
-                formatter={(value: number, name: string) => {
+                formatter={(value, name) => {
                   const labels: Record<string, string> = {
                     ingresos: 'Ingresos Proyectados',
                     gastos: 'Gastos Proyectados',
                     margen: 'Margen Neto',
                   }
-                  return [`$${value.toFixed(2)}`, labels[name] || name]
+                  return [`$${Number(value).toFixed(2)}`, labels[String(name)] || name]
                 }}
                 contentStyle={{ 
                   backgroundColor: 'hsl(var(--card))',
@@ -141,9 +141,9 @@ export function SeasonalityChart({ data, title = 'Estacionalidad Anual' }: Seaso
               <XAxis dataKey="name" tick={{ fontSize: 11 }} />
               <YAxis tickFormatter={(value) => `$${value}`} tick={{ fontSize: 11 }} />
               <Tooltip 
-                formatter={(value: number, name: string) => {
-                  if (name === 'ingresos') return [`$${value.toFixed(2)}`, 'Ingresos Promedio']
-                  return [value.toFixed(1), 'Estudiantes Promedio']
+                formatter={(value, name) => {
+                  if (name === 'ingresos') return [`$${Number(value).toFixed(2)}`, 'Ingresos Promedio']
+                  return [Number(value).toFixed(1), 'Estudiantes Promedio']
                 }}
               />
               <Bar 

@@ -162,13 +162,13 @@ export function ProductAnalyticsCharts({ data }: ProductAnalyticsChartsProps) {
                     labelLine={false}
                     outerRadius={100}
                     dataKey="value"
-                    label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                    label={({ name, percent }) => `${name} (${((percent ?? 0) * 100).toFixed(0)}%)`}
                   >
                     {productChartData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.fill} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(value: number) => [`$${value.toFixed(2)}`, 'Ingresos']} />
+                  <Tooltip formatter={(value) => [`$${Number(value).toFixed(2)}`, 'Ingresos']} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
@@ -189,9 +189,9 @@ export function ProductAnalyticsCharts({ data }: ProductAnalyticsChartsProps) {
                   <XAxis type="number" />
                   <YAxis dataKey="name" type="category" width={80} tick={{ fontSize: 12 }} />
                   <Tooltip 
-                    formatter={(value: number, name: string) => {
+                    formatter={(value, name) => {
                       if (name === 'ventas') return [value, 'Ventas']
-                      return [`$${value.toFixed(2)}`, 'Ingresos']
+                      return [`$${Number(value).toFixed(2)}`, 'Ingresos']
                     }}
                   />
                   <Legend />

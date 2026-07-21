@@ -1,7 +1,29 @@
 'use client'
 
 import { useState, useEffect, useTransition } from 'react'
-import { Bell, Check, CheckCheck, Trash2, ExternalLink } from 'lucide-react'
+import {
+  Bell,
+  Check,
+  CheckCheck,
+  Trash2,
+  ExternalLink,
+  UserPlus,
+  UserCheck,
+  FileText,
+  Upload,
+  Star,
+  ClipboardList,
+  Coins,
+  CreditCard,
+  CheckSquare,
+  Clock,
+  XCircle,
+  CalendarDays,
+  Video,
+  Megaphone,
+  User,
+  LucideIcon
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -38,23 +60,23 @@ interface Notification {
 
 const notificationTypeConfig: Record<
   NotificationType,
-  { icon: string; color: string }
+  { icon: LucideIcon; color: string }
 > = {
-  NEW_ENROLLMENT: { icon: '👤', color: 'bg-blue-500' },
-  ENROLLMENT_CONFIRMED: { icon: '✅', color: 'bg-green-500' },
-  TASK_ASSIGNED: { icon: '📝', color: 'bg-purple-500' },
-  TASK_SUBMITTED: { icon: '📤', color: 'bg-indigo-500' },
-  TASK_GRADED: { icon: '⭐', color: 'bg-yellow-500' },
-  EXAM_ASSIGNED: { icon: '📋', color: 'bg-violet-500' },
-  PAYMENT_RECEIVED: { icon: '💰', color: 'bg-emerald-500' },
-  PAYMENT_CONFIRMED: { icon: '💳', color: 'bg-green-500' },
-  TEACHER_PAYMENT_CONFIRMED: { icon: '✔️', color: 'bg-teal-500' },
-  CLASS_REMINDER: { icon: '⏰', color: 'bg-orange-500' },
-  CLASS_CANCELLED: { icon: '❌', color: 'bg-red-500' },
-  CLASS_RESCHEDULED: { icon: '📅', color: 'bg-amber-500' },
-  RECORDING_READY: { icon: '🎥', color: 'bg-blue-600' },
-  SYSTEM_ANNOUNCEMENT: { icon: '📢', color: 'bg-slate-500' },
-  ACCOUNT_UPDATE: { icon: '👤', color: 'bg-gray-500' },
+  NEW_ENROLLMENT: { icon: UserPlus, color: 'bg-blue-500' },
+  ENROLLMENT_CONFIRMED: { icon: UserCheck, color: 'bg-green-500' },
+  TASK_ASSIGNED: { icon: FileText, color: 'bg-purple-500' },
+  TASK_SUBMITTED: { icon: Upload, color: 'bg-indigo-500' },
+  TASK_GRADED: { icon: Star, color: 'bg-yellow-500' },
+  EXAM_ASSIGNED: { icon: ClipboardList, color: 'bg-violet-500' },
+  PAYMENT_RECEIVED: { icon: Coins, color: 'bg-emerald-500' },
+  PAYMENT_CONFIRMED: { icon: CreditCard, color: 'bg-green-500' },
+  TEACHER_PAYMENT_CONFIRMED: { icon: CheckSquare, color: 'bg-teal-500' },
+  CLASS_REMINDER: { icon: Clock, color: 'bg-orange-500' },
+  CLASS_CANCELLED: { icon: XCircle, color: 'bg-red-500' },
+  CLASS_RESCHEDULED: { icon: CalendarDays, color: 'bg-amber-500' },
+  RECORDING_READY: { icon: Video, color: 'bg-blue-600' },
+  SYSTEM_ANNOUNCEMENT: { icon: Megaphone, color: 'bg-slate-500' },
+  ACCOUNT_UPDATE: { icon: User, color: 'bg-gray-500' },
 }
 
 export function NotificationDropdown() {
@@ -178,7 +200,7 @@ export function NotificationDropdown() {
                         config.color
                       )}
                     >
-                      {config.icon}
+                      <config.icon className="h-4 w-4 text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">

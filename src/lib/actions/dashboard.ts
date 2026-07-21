@@ -26,14 +26,22 @@ import { auth } from '@/auth'
 
 // Helper para obtener la timezone del usuario autenticado
 async function getUserTimezone(): Promise<string> {
-  const session = await auth()
-  if (!session?.user?.id) return 'America/Lima'
+  try {
+    const session = await auth()
+    if (!session?.user?.id) return 'America/Lima'
 
-  const user = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: { timezone: true },
-  })
-  return user?.timezone || 'America/Lima'
+    const user = await db.user.findUnique({
+      where: { id: session.user.id },
+      select: { timezone: true },
+    })
+    return user?.timezone || 'America/Lima'
+  } catch (error) {
+    console.warn(
+      'Advertencia: No se pudo obtener la timezone del usuario en este contexto, usando America/Lima por defecto.',
+      error
+    )
+    return 'America/Lima'
+  }
 }
 
 // Admin Dashboard Statistics
@@ -565,6 +573,9 @@ export async function getStudentDashboardStats(studentId: string): Promise<Stude
         course: {
           select: { id: true, title: true, language: true, image: true },
         },
+        teacher: {
+          select: { name: true, lastName: true },
+        },
       },
     })
 
@@ -658,6 +669,9 @@ export async function getStudentDashboardStats(studentId: string): Promise<Stude
         title: enrollment.course.title,
         image: enrollment.course.image,
         progress: enrollment.progress,
+        teacherName: enrollment.teacher
+          ? formatFullName(enrollment.teacher.name, enrollment.teacher.lastName)
+          : null,
       })),
     }
   } catch (error) {

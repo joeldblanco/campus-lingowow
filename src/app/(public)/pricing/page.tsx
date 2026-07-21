@@ -9,7 +9,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { SUPPORTED_LANGUAGES } from '@/lib/constants/languages'
 import { cn } from '@/lib/utils'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { getPlans, getPricingPlansForProduct, getProducts } from '@/lib/actions/commercial'
+import { getPricingPlansForProduct, getProducts } from '@/lib/actions/commercial'
 import { useShopStore } from '@/stores/useShopStore'
 import type { PlanWithFeatures } from '@/types/shop'
 import {
@@ -20,9 +20,11 @@ import {
 import {
   billingPeriodSuffix,
   billingViewLabel,
+  DEFAULT_BILLING_VIEW,
   filterByBillingView,
   getRecommendedPlanId,
   hasBillingToggle,
+  pricingRedirectPath,
   type BillingView,
 } from '@/lib/pricing-helpers'
 
@@ -34,11 +36,16 @@ export default function PricingPage() {
   const [loading, setLoading] = useState(true)
   const [uniqueFeatures, setUniqueFeatures] = useState<string[]>([])
   const [selectedLanguage, setSelectedLanguage] = useState<string>('en')
-  const [billingView, setBillingView] = useState<BillingView>('monthly')
+  const [billingView, setBillingView] = useState<BillingView>(DEFAULT_BILLING_VIEW)
   
   // Shop store
   const router = useRouter()
   const { buyNow } = useShopStore()
+
+  useEffect(() => {
+    const redirectPath = pricingRedirectPath(productId)
+    if (redirectPath) router.replace(redirectPath)
+  }, [productId, router])
 
   const getPriceForLanguage = (plan: PlanWithFeatures, language: string) => {
     const pricing = plan.pricing?.find(p => p.language === language && p.isActive)
@@ -97,21 +104,22 @@ export default function PricingPage() {
         setLoading(true)
         let fetchedPlans: PlanWithFeatures[] = []
 
-        if (productId) {
-          fetchedPlans = await getPricingPlansForProduct(productId)
-          // Fetch product info
-          const products = await getProducts({ isActive: true })
-          const foundProduct = products.find(p => p.id === productId)
-          if (foundProduct) {
-            setProduct({
-              id: foundProduct.id,
-              name: foundProduct.name,
-              description: foundProduct.description,
-              image: foundProduct.image,
-            })
-          }
-        } else {
-          fetchedPlans = await getPlans()
+        if (!productId) {
+          setLoading(false)
+          return
+        }
+
+        fetchedPlans = await getPricingPlansForProduct(productId)
+        // Fetch product info
+        const products = await getProducts({ isActive: true })
+        const foundProduct = products.find(p => p.id === productId)
+        if (foundProduct) {
+          setProduct({
+            id: foundProduct.id,
+            name: foundProduct.name,
+            description: foundProduct.description,
+            image: foundProduct.image,
+          })
         }
 
         setPlans(fetchedPlans)
@@ -188,22 +196,25 @@ export default function PricingPage() {
             {!loading && showBillingToggle && (
               <div className="flex justify-center mb-10">
                 <div className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-100 p-1 dark:border-slate-700 dark:bg-slate-800">
-                  {(['monthly', 'annual'] as BillingView[]).map((view) => (
-                    <button
-                      key={view}
-                      type="button"
-                      onClick={() => setBillingView(view)}
-                      aria-pressed={billingView === view}
-                      className={cn(
-                        'rounded-full px-5 py-2 text-sm font-semibold transition-colors',
-                        billingView === view
-                          ? 'bg-white text-slate-900 shadow-sm dark:bg-[#1a2632] dark:text-white'
-                          : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
-                      )}
-                    >
-                      {billingViewLabel(view)}
-                    </button>
-                  ))}
+                  <span className={cn('px-2 text-sm font-semibold', billingView === 'monthly' ? 'text-slate-900 dark:text-white' : 'text-slate-500')}>
+                    Mensual
+                  </span>
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={billingView === 'annual'}
+                    aria-label="Cambiar entre facturación mensual y anual"
+                    onClick={() => setBillingView(billingView === 'annual' ? 'monthly' : 'annual')}
+                    className={cn(
+                      'relative h-6 w-11 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                      billingView === 'annual' ? 'bg-primary' : 'bg-slate-300'
+                    )}
+                  >
+                    <span className={cn('absolute top-1 h-4 w-4 rounded-full bg-white transition-transform', billingView === 'annual' ? 'translate-x-6' : 'translate-x-1')} />
+                  </button>
+                  <span className={cn('px-2 text-sm font-semibold', billingView === 'annual' ? 'text-slate-900 dark:text-white' : 'text-slate-500')}>
+                    {billingViewLabel('annual')}
+                  </span>
                 </div>
               </div>
             )}

@@ -2,12 +2,14 @@
 
 import dynamic from 'next/dynamic'
 import { useCallback, useEffect, useState } from 'react'
-import type { CallBackProps } from 'react-joyride'
+import type { EventData, Props as JoyrideProps } from 'react-joyride'
 import { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { useTour } from './tour-context'
 import { getTourSteps } from './tour-steps'
 
-const Joyride = dynamic(() => import('react-joyride'), { ssr: false })
+const Joyride = dynamic<JoyrideProps>(() => import('react-joyride').then((mod) => mod.Joyride), {
+  ssr: false,
+})
 
 const tourStyles = {
   options: {
@@ -60,9 +62,6 @@ const tourStyles = {
     lineHeight: '1.6',
     color: '#475569',
   },
-  spotlight: {
-    borderRadius: '12px',
-  },
 }
 
 export function GuidedTour() {
@@ -74,7 +73,7 @@ export function GuidedTour() {
   }, [])
 
   const handleJoyrideCallback = useCallback(
-    (data: CallBackProps) => {
+    (data: EventData) => {
       const { status, action, index, type } = data
       const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED]
 
@@ -174,27 +173,25 @@ export function GuidedTour() {
 
   return (
     <Joyride
-      callback={handleJoyrideCallback}
+      onEvent={handleJoyrideCallback}
       continuous
-      hideCloseButton={false}
       run={state.run}
       stepIndex={state.stepIndex}
       scrollToFirstStep
-      showProgress
-      showSkipButton
       steps={steps}
       styles={tourStyles}
+      options={{
+        buttons: ['back', 'close', 'primary', 'skip'],
+        showProgress: true,
+      }}
       locale={{
         back: 'Anterior',
         close: 'Cerrar',
         last: 'Finalizar',
         next: 'Siguiente',
-        nextLabelWithProgress: 'Siguiente ({step} de {steps})',
+        nextWithProgress: 'Siguiente ({step} de {steps})',
         open: 'Abrir',
         skip: 'Saltar tour',
-      }}
-      floaterProps={{
-        disableAnimation: false,
       }}
     />
   )

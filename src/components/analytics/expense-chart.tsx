@@ -77,8 +77,8 @@ export function MonthlyExpenseChart({
                 axisLine={false}
               />
               <Tooltip 
-                formatter={(value: number, name: string) => {
-                  if (name === 'pagos') return [`$${value.toFixed(2)}`, 'Pagos']
+                formatter={(value, name) => {
+                  if (name === 'pagos') return [`$${Number(value).toFixed(2)}`, 'Pagos']
                   if (name === 'clases') return [value, 'Clases']
                   return [value, name]
                 }}
@@ -211,7 +211,7 @@ export function ExpenseTrendChart({ data, title = 'Tendencia de Gastos' }: Expen
               <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
               <XAxis dataKey="name" tick={{ fontSize: 12 }} />
               <YAxis tickFormatter={(value) => `$${value}`} tick={{ fontSize: 12 }} />
-              <Tooltip formatter={(value: number) => [`$${value.toFixed(2)}`, 'Gastos']} />
+              <Tooltip formatter={(value) => [`$${Number(value).toFixed(2)}`, 'Gastos']} />
               <Line 
                 type="monotone" 
                 dataKey="gastos" 
@@ -257,8 +257,8 @@ export function TeacherPaymentsBarChart({
               <XAxis type="number" tickFormatter={(value) => `$${value}`} />
               <YAxis dataKey="name" type="category" width={80} tick={{ fontSize: 12 }} />
               <Tooltip 
-                formatter={(value: number, name: string) => {
-                  if (name === 'pago') return [`$${value.toFixed(2)}`, 'Pago']
+                formatter={(value, name) => {
+                  if (name === 'pago') return [`$${Number(value).toFixed(2)}`, 'Pago']
                   return [value, 'Clases']
                 }}
               />

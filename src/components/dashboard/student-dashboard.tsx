@@ -9,13 +9,12 @@ import {
   ArrowRight,
   BookOpen,
   Calendar,
+  Check,
   Clock,
   Download,
-  Flame,
-  GraduationCap,
+  Hand,
   Play,
   Puzzle,
-  Trophy,
   Video,
 } from 'lucide-react'
 import { useSession } from 'next-auth/react'
@@ -36,6 +35,23 @@ function isClassTimeReached(classDate: string, classTime: string, now: Date): bo
 
   const diffMinutes = (now.getTime() - classDateTime.getTime()) / 60000
   return diffMinutes >= 0 && diffMinutes <= 60
+}
+
+function formatTimeTo12Hour(timeStr: string): string {
+  if (!timeStr) return ''
+  const parts = timeStr.split('-')
+  const formattedParts = parts.map((part) => {
+    const trimmed = part.trim()
+    const match = trimmed.match(/^(\d{1,2}):(\d{2})$/)
+    if (!match) return trimmed
+    let hours = Number(match[1])
+    const minutes = match[2]
+    const ampm = hours >= 12 ? 'p.m.' : 'a.m.'
+    hours = hours % 12
+    hours = hours ? hours : 12 // the hour '0' should be '12'
+    return `${hours}:${minutes} ${ampm}`
+  })
+  return formattedParts.join(' - ')
 }
 
 export default function Dashboard() {
@@ -71,7 +87,95 @@ export default function Dashboard() {
   // Get the first enrollment for "Resume Learning" section
   const currentEnrollment = dashboardData?.enrollments?.[0]
   const nextClass = dashboardData?.upcomingClasses?.[0]
-  const canJoinClass = nextClass ? isClassTimeReached(nextClass.date, nextClass.time, now) : false
+  const todayStr = format(now, 'yyyy-MM-dd')
+  const upcomingClasses = dashboardData?.upcomingClasses || []
+  const todayClasses = upcomingClasses.filter((c) => c.date === todayStr)
+  const hasClassToday = todayClasses.length > 0
+  const classToday = todayClasses[0]
+  const canJoinClass = classToday
+    ? isClassTimeReached(classToday.date, classToday.time, now)
+    : false
+  const futureClasses = upcomingClasses.filter((c) => c.date !== todayStr)
+
+  // Compute live class countdown label
+  let timeLabel = ''
+  if (hasClassToday && classToday) {
+    const start = classToday.time.includes('-')
+      ? classToday.time.split('-')[0].trim()
+      : classToday.time.trim()
+    const [hours, minutes] = start.split(':').map(Number)
+    const [year, month, day] = classToday.date.split('-').map(Number)
+    const classDateTime = new Date(year, month - 1, day, hours, minutes, 0, 0)
+    const diffMinutesTotal = Math.round((classDateTime.getTime() - now.getTime()) / 60000)
+
+    if (diffMinutesTotal <= 0) {
+      timeLabel = 'Tu clase está empezando'
+    } else if (diffMinutesTotal < 60) {
+      timeLabel = `Tu clase empieza en ${diffMinutesTotal} min`
+    } else {
+      const diffHours = Math.floor(diffMinutesTotal / 60)
+      timeLabel = `Tu clase empieza en ${diffHours} hora${diffHours > 1 ? 's' : ''}`
+    }
+  }
+
+  // Compute Paso 3 roadmap metadata
+  let paso3Title = 'Agenda tu próxima clase'
+  let paso3Description = 'Reserva una sesión en vivo con tu profesor/a para seguir practicando.'
+  let paso3ActionText = 'Ir a mi Horario'
+
+  if (futureClasses.length > 0) {
+    const futureClass = futureClasses[0]
+    const rawDay = format(parseISO(futureClass.date), 'EEEE d', { locale: es })
+    const capitalizedDay = rawDay.charAt(0).toUpperCase() + rawDay.slice(1)
+    paso3Title = `Clase del ${capitalizedDay}`
+    paso3Description = `Sesión en vivo con ${futureClass.teacher} programada a las ${formatTimeTo12Hour(futureClass.time)}.`
+    paso3ActionText = 'Ver detalles de clase'
+  }
+
+  // Construct dynamic roadmap steps array
+  const steps: {
+    type: 'class' | 'quiz' | 'next-class'
+    title: string
+    description: string
+    actionText: string
+    actionUrl: string
+    tag: string
+  }[] = []
+
+  // 1. If hasClassToday, add all remaining classes today (index 1 to N-1)
+  if (hasClassToday && todayClasses.length > 1) {
+    for (let i = 1; i < todayClasses.length; i++) {
+      const c = todayClasses[i]
+      steps.push({
+        type: 'class',
+        title: c.course,
+        description: `Sesión en vivo con ${c.teacher} programada a las ${formatTimeTo12Hour(c.time)}.`,
+        actionText: 'Ver detalles de clase',
+        actionUrl: '/schedule',
+        tag: 'Luego',
+      })
+    }
+  }
+
+  // 2. Add Quiz de comprensión (Activities)
+  steps.push({
+    type: 'quiz',
+    title: 'Quiz de comprensión',
+    description: 'Refuerza vocabulario y gramática con actividades interactivas en tu panel.',
+    actionText: 'Practicar Actividades',
+    actionUrl: currentEnrollment ? `/my-courses/${currentEnrollment.courseId}` : '',
+    tag: steps.length === 0 ? 'Luego' : 'Después',
+  })
+
+  // 3. Add Siguiente clase (other days / Booking reminder)
+  steps.push({
+    type: 'next-class',
+    title: paso3Title,
+    description: paso3Description,
+    actionText: paso3ActionText,
+    actionUrl: '/schedule',
+    tag: 'Después',
+  })
 
   if (loading) {
     return (
@@ -86,8 +190,9 @@ export default function Dashboard() {
       {/* Page Heading */}
       <div className="flex flex-wrap justify-between items-end gap-3">
         <div className="flex flex-col gap-1">
-          <h1 className="text-3xl md:text-4xl font-black leading-tight tracking-tight text-slate-900 dark:text-white">
-            ¡Hola, {formatFirstName(user?.name) || 'Estudiante'}! 👋
+          <h1 className="flex items-center gap-2 text-3xl md:text-4xl font-black leading-tight tracking-tight text-slate-900 dark:text-white">
+            ¡Hola, {formatFirstName(user?.name) || 'Estudiante'}!
+            <Hand className="w-8 h-8 md:w-10 md:h-10 text-yellow-500 rotate-45 shrink-0" />
           </h1>
           <p className="text-slate-500 dark:text-slate-400 text-base">
             ¿Listo para continuar tu aprendizaje hoy?
@@ -135,163 +240,286 @@ export default function Dashboard() {
       {/* Banner de horarios pendientes */}
       <PendingScheduleBanner />
 
-      {/* Hero CTA: Próxima Clase - Prominente */}
-      {nextClass && (
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 p-1 shadow-lg shadow-emerald-500/25">
-          <div className="relative flex flex-col md:flex-row items-center justify-between gap-4 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 p-6 md:p-8">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iNCIvPjwvZz48L2c+PC9zdmc+')] opacity-50"></div>
-            <div className="relative flex items-center gap-4 md:gap-6">
-              <div className="flex-shrink-0 rounded-2xl bg-white/20 backdrop-blur-sm p-4 md:p-5">
-                <Video className="w-8 h-8 md:w-10 md:h-10 text-white" />
-              </div>
-              <div className="text-white">
-                <p className="text-sm md:text-base font-medium text-white/80 mb-1">
-                  Tu próxima clase
-                </p>
-                <h2 className="text-xl md:text-2xl font-bold mb-2">{nextClass.course}</h2>
-                <div className="flex flex-wrap items-center gap-3 text-sm text-white/90">
-                  <span className="flex items-center gap-1.5">
-                    <Calendar className="w-4 h-4" />
-                    {format(parseISO(nextClass.date), "EEEE d 'de' MMMM", { locale: es })}
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <Clock className="w-4 h-4" />
-                    {nextClass.time}
-                  </span>
-                </div>
-                <p className="text-sm text-white/70 mt-1">con {nextClass.teacher}</p>
-              </div>
+      {/* Left-aligned Roadmap Flow Layout */}
+      <div className="max-w-5xl w-full flex flex-col gap-8">
+        {/* Roadmap Vertical Container */}
+        <div className="relative pl-6 md:pl-10 space-y-8 mt-6">
+          {/* The past connector line */}
+          <div className="absolute left-[9px] md:left-[21px] top-[-24px] h-[34px] w-0.5 bg-gradient-to-b from-transparent to-emerald-500" />
+
+          {/* Completed Past Step Indicator */}
+          <div className="absolute left-[-2px] md:left-[10px] top-[-36px] flex items-center justify-center size-6 rounded-full border border-emerald-500 bg-emerald-500/10 text-emerald-500 opacity-60">
+            <Check className="w-3.5 h-3.5" />
+          </div>
+
+          {/* Paso 1: Focus Card */}
+          <div className="relative pl-4">
+            {/* Connector line segment inside Paso 1 */}
+            <div className="absolute left-[-15px] md:left-[-19px] top-6 bottom-[-32px] w-0.5 bg-gradient-to-b from-emerald-500 via-[#137fec] to-slate-200 dark:to-slate-800" />
+
+            {/* Circle node dot */}
+            <div className="absolute left-[-29px] md:left-[-33px] top-4 z-10 flex items-center justify-center size-8 rounded-full border-2 border-primary bg-white dark:bg-slate-900 shadow-md">
+              <span className="flex h-3.5 w-3.5 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-primary"></span>
+              </span>
             </div>
-            {canJoinClass ? (
-              <Button
-                size="lg"
-                className="relative w-full md:w-auto bg-white text-emerald-700 hover:bg-white/90 hover:text-emerald-800 font-bold text-base md:text-lg px-8 py-6 shadow-xl hover:shadow-2xl transition-all hover:scale-105"
-                onClick={() => openClassroomWindow(nextClass.link)}
-              >
-                <Play className="w-5 h-5 mr-2 fill-current" />
-                Entrar al Aula
-              </Button>
+
+            {hasClassToday && classToday ? (
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#137fec] via-indigo-600 to-violet-600 p-1 shadow-lg shadow-[#137fec]/25">
+                <div className="relative flex flex-col md:flex-row items-center justify-between gap-6 rounded-xl bg-gradient-to-r from-[#137fec] via-indigo-600 to-violet-600 p-6 md:p-8">
+                  <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iNCIvPjwvZz48L2c+PC9zdmc+')] opacity-50"></div>
+                  <div className="relative flex items-center gap-4 md:gap-6">
+                    <div className="flex-shrink-0 rounded-2xl bg-white/20 backdrop-blur-sm p-4">
+                      <Video className="w-8 h-8 text-white" />
+                    </div>
+                    <div className="text-white">
+                      <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white mb-3">
+                        {canJoinClass ? (
+                          <span className="flex h-2 w-2 relative">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                          </span>
+                        ) : (
+                          <Clock className="w-3.5 h-3.5" />
+                        )}
+                        {(() => {
+                          const start = classToday.time.includes('-')
+                            ? classToday.time.split('-')[0].trim()
+                            : classToday.time.trim()
+                          const [hours, minutes] = start.split(':').map(Number)
+                          const [year, month, day] = classToday.date.split('-').map(Number)
+                          const classDateTime = new Date(year, month - 1, day, hours, minutes, 0, 0)
+                          const diffMinutes = Math.round(
+                            (classDateTime.getTime() - now.getTime()) / 60000
+                          )
+                          if (canJoinClass) return 'Ahora: ¡Tu clase está lista! Entra ahora'
+                          if (diffMinutes > 0 && diffMinutes <= 60)
+                            return `Ahora: Entra a tu clase en ${diffMinutes} min`
+                          return 'Ahora: Prepárate para tu clase de hoy'
+                        })()}
+                      </div>
+                      <h2 className="text-2xl md:text-3xl font-black mb-1 tracking-tight">
+                        {classToday.course}
+                      </h2>
+                      <p className="text-white/80 font-medium mb-3">con {classToday.teacher}</p>
+                      <div className="flex flex-wrap items-center gap-4 text-sm text-white/90 bg-black/10 backdrop-blur-sm px-3 py-2 rounded-lg w-fit">
+                        <span className="flex items-center gap-1.5 font-semibold">
+                          <Calendar className="w-4 h-4 text-emerald-300" />
+                          {format(parseISO(classToday.date), "EEEE d 'de' MMMM", { locale: es })}
+                        </span>
+                        <span className="flex items-center gap-1.5 font-semibold border-l border-white/20 pl-4">
+                          <Clock className="w-4 h-4 text-emerald-300" />
+                          {formatTimeTo12Hour(classToday.time)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  {canJoinClass ? (
+                    <Button
+                      size="lg"
+                      className="relative w-full md:w-auto bg-white text-indigo-700 hover:bg-white/95 hover:text-indigo-800 font-extrabold text-base md:text-lg px-8 py-6 rounded-xl shadow-xl hover:shadow-[0_0_25px_rgba(255,255,255,0.7)] transition-all hover:scale-105"
+                      onClick={() => openClassroomWindow(classToday.link)}
+                    >
+                      <Play className="w-5 h-5 mr-2 fill-current text-indigo-600 animate-pulse" />
+                      ¡Entrar a Clase ahora!
+                    </Button>
+                  ) : (
+                    <div className="relative w-full md:w-auto flex items-center gap-2 bg-white/25 backdrop-blur-sm text-white font-semibold text-sm md:text-base px-6 py-4 rounded-xl border border-white/10 shadow-inner">
+                      <Clock className="w-5 h-5 text-emerald-300 animate-pulse" />
+                      <span>{timeLabel}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
             ) : (
-              <div className="relative w-full md:w-auto flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white font-semibold text-sm md:text-base px-6 py-4 rounded-lg">
-                <Clock className="w-5 h-5" />
-                <span>
-                  Disponible a las{' '}
-                  {nextClass.time.includes('-') ? nextClass.time.split('-')[0] : nextClass.time}
-                </span>
+              <div className="relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-slate-900 via-slate-800 to-[#137fec]/20 p-6 md:p-8 shadow-xl shadow-slate-900/10">
+                <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                  <div className="flex-1 space-y-4">
+                    <div className="inline-flex items-center gap-2 bg-[#137fec]/20 border border-[#137fec]/30 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-primary">
+                      <BookOpen className="w-3.5 h-3.5" />
+                      {(() => {
+                        const teacherName =
+                          currentEnrollment?.teacherName ||
+                          (nextClass?.teacher ? nextClass.teacher : null)
+                        return `Ahora: Practica lo aprendido ${teacherName ? `con ${teacherName}` : ''}`
+                      })()}
+                    </div>
+
+                    {currentEnrollment ? (
+                      <>
+                        <div>
+                          <h2 className="text-2xl md:text-3xl font-black text-white leading-tight tracking-tight">
+                            Sigue avanzando en {currentEnrollment.title}
+                          </h2>
+                          <p className="text-slate-400 text-sm mt-1">
+                            {currentEnrollment.teacherName
+                              ? `Tu profesor asignado es ${currentEnrollment.teacherName}`
+                              : 'Continúa con tus lecciones personalizadas.'}
+                          </p>
+                        </div>
+
+                        <div className="space-y-2 max-w-md">
+                          <div className="flex justify-between text-sm font-semibold text-slate-300">
+                            <span>Progreso del curso</span>
+                            <span>{Math.round(currentEnrollment.progress)}%</span>
+                          </div>
+                          <Progress
+                            value={currentEnrollment.progress}
+                            className="h-2.5 bg-slate-800"
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <div>
+                        <h2 className="text-2xl md:text-3xl font-black text-white leading-tight tracking-tight">
+                          Comienza tu camino de aprendizaje
+                        </h2>
+                        <p className="text-slate-400 text-sm mt-1">
+                          Inscríbete en un curso y comienza a aprender un nuevo idioma con los
+                          mejores profesores.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="w-full md:w-auto flex-shrink-0">
+                    {currentEnrollment ? (
+                      <div className="flex items-center gap-3 w-full">
+                        <Button
+                          asChild
+                          size="lg"
+                          className="w-full md:w-auto bg-[#137fec] hover:bg-[#137fec]/90 text-white font-bold text-base px-8 py-6 rounded-xl shadow-lg transition-all hover:scale-105"
+                        >
+                          <Link href={`/my-courses/${currentEnrollment.courseId}`}>
+                            {currentEnrollment.progress > 0 ? 'Continuar Lección' : 'Empezar Curso'}
+                            <ArrowRight className="w-4 h-4 ml-2" />
+                          </Link>
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          title="Descargar Materiales"
+                          className="border-slate-700 hover:bg-slate-800 text-slate-300 hover:text-white h-12 w-12 rounded-xl"
+                        >
+                          <Download className="w-5 h-5" />
+                        </Button>
+                      </div>
+                    ) : (
+                      <Button
+                        asChild
+                        size="lg"
+                        className="w-full md:w-auto bg-[#137fec] hover:bg-[#137fec]/90 text-white font-bold text-base px-8 py-6 rounded-xl shadow-lg transition-all hover:scale-105"
+                      >
+                        <Link href="/shop">
+                          Explorar Cursos
+                          <ArrowRight className="w-4 h-4 ml-2" />
+                        </Link>
+                      </Button>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
           </div>
-        </div>
-      )}
 
-      {/* Hero Section: Resume Learning */}
-      {currentEnrollment && (
-        <div className="w-full" data-tour="continue-learning">
-          <div className="flex flex-col items-stretch justify-start rounded-xl overflow-hidden md:flex-row md:items-center shadow-md bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-700 group transition-all hover:shadow-lg">
-            <div
-              className="w-full md:w-1/3 h-48 md:h-auto md:aspect-[4/3] bg-cover bg-center relative"
-              style={{
-                backgroundImage: currentEnrollment.image
-                  ? `url("${currentEnrollment.image}")`
-                  : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              }}
-            >
-              <div className="absolute inset-0 bg-black/10"></div>
-              <div className="absolute top-3 left-3 bg-white/90 dark:bg-black/50 backdrop-blur-sm px-2 py-1 rounded text-xs font-bold text-slate-900 dark:text-white shadow-sm">
-                Lección Actual
-              </div>
-            </div>
-            <div className="flex w-full md:w-2/3 flex-col justify-center gap-3 p-6">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-primary text-sm font-bold uppercase tracking-wider mb-1">
-                    Continuar Aprendiendo
-                  </p>
-                  <h2 className="text-slate-900 dark:text-white text-xl md:text-2xl font-bold leading-tight">
-                    {currentEnrollment.title}
-                  </h2>
+          {/* Dynamic Roadmap Steps */}
+          {steps.map((step, index) => {
+            const stepNum = index + 2
+            const isLast = index === steps.length - 1
+
+            return (
+              <div key={index} className="relative pl-4">
+                {/* Connector line segment */}
+                <div
+                  className={`absolute left-[-15px] md:left-[-19px] top-0 w-0.5 border-l-2 border-dashed border-slate-300 dark:border-slate-700 ${
+                    isLast ? 'h-10' : 'bottom-[-32px]'
+                  }`}
+                />
+
+                {/* Circle node dot */}
+                <div className="absolute left-[-27px] md:left-[-31px] top-5 z-10 flex items-center justify-center size-7 rounded-full border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-500 font-bold text-xs">
+                  {stepNum}
+                </div>
+
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-5 bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-800/80 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex gap-4 items-start">
+                    <div
+                      className={`rounded-xl p-3 h-fit flex-shrink-0 ${
+                        step.type === 'class'
+                          ? 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400'
+                          : step.type === 'quiz'
+                            ? 'bg-orange-50 dark:bg-orange-950/30 text-orange-600 dark:text-orange-400'
+                            : 'bg-blue-50 dark:bg-blue-950/30 text-primary'
+                      }`}
+                    >
+                      {step.type === 'class' ? (
+                        <Video className="w-5 h-5" />
+                      ) : step.type === 'quiz' ? (
+                        <Puzzle className="w-5 h-5" />
+                      ) : (
+                        <Calendar className="w-5 h-5" />
+                      )}
+                    </div>
+                    <div>
+                      <span
+                        className={`text-xs font-bold uppercase tracking-wider ${
+                          step.type === 'class'
+                            ? 'text-emerald-600 dark:text-emerald-400'
+                            : step.type === 'quiz'
+                              ? 'text-orange-600 dark:text-orange-400'
+                              : 'text-primary'
+                        }`}
+                      >
+                        {step.tag}
+                      </span>
+                      <h5 className="text-slate-900 dark:text-white font-bold text-base mt-0.5">
+                        {step.title}
+                      </h5>
+                      <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
+                        {step.description}
+                      </p>
+                    </div>
+                  </div>
+                  {step.actionUrl && (
+                    <Button
+                      asChild
+                      variant="outline"
+                      className={`w-full md:w-auto rounded-xl ${
+                        step.type === 'class'
+                          ? 'border-emerald-200 text-emerald-600 hover:bg-emerald-50 dark:border-emerald-900/30 dark:text-emerald-400 dark:hover:bg-emerald-950/20'
+                          : step.type === 'quiz'
+                            ? 'border-orange-200 text-orange-600 hover:bg-orange-50 dark:border-orange-900/30 dark:text-orange-400 dark:hover:bg-orange-950/20'
+                            : 'border-blue-200 text-primary hover:bg-blue-50 dark:border-blue-900/30 dark:text-primary dark:hover:bg-blue-950/20'
+                      }`}
+                    >
+                      <Link
+                        href={step.actionUrl}
+                        className="font-semibold inline-flex items-center gap-1"
+                      >
+                        {step.actionText} <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                    </Button>
+                  )}
                 </div>
               </div>
-              <div className="flex flex-col gap-2 mt-2">
-                <div className="flex justify-between text-sm font-medium text-slate-500 dark:text-slate-400">
-                  <span>Progreso</span>
-                  <span>{Math.round(currentEnrollment.progress)}%</span>
-                </div>
-                <Progress value={currentEnrollment.progress} className="h-2.5" />
-              </div>
-              <div className="flex items-center gap-4 mt-2">
-                <Button asChild className="flex-1 md:flex-none md:w-48">
-                  <Link href={`/my-courses/${currentEnrollment.courseId}`}>
-                    {currentEnrollment.progress > 0 ? 'Continuar Lección' : 'Empezar Curso'}
-                  </Link>
-                </Button>
-                <Button variant="outline" size="icon" title="Descargar Materiales">
-                  <Download className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
+            )
+          })}
         </div>
-      )}
 
-      {/* Quick Actions Bar */}
-      <div>
-        <h3 className="text-slate-900 dark:text-white text-lg font-bold mb-4">Acciones Rápidas</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4" data-tour="quick-actions">
-          <Link
-            href="/my-courses"
-            className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer"
-          >
-            <div className="rounded-full bg-blue-50 dark:bg-blue-900/30 p-3 text-primary">
-              <BookOpen className="w-5 h-5" />
+        {/* Mis Cursos (Condicionado a > 1 activo) */}
+        {dashboardData?.enrollments && dashboardData.enrollments.length > 1 && (
+          <div className="flex flex-col gap-6 mt-8">
+            <div className="flex items-center justify-between" data-tour="my-courses">
+              <h3 className="text-slate-900 dark:text-white text-xl font-bold">Mis Cursos</h3>
+              <Link
+                href="/my-courses"
+                className="text-primary text-sm font-medium hover:underline flex items-center gap-1"
+              >
+                Ver Todos <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
-            <span className="text-slate-900 dark:text-white text-sm font-medium">Mis Cursos</span>
-          </Link>
-          <Link
-            href="/activities"
-            className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer"
-          >
-            <div className="rounded-full bg-orange-50 dark:bg-orange-900/30 p-3 text-orange-600 dark:text-orange-400">
-              <Puzzle className="w-5 h-5" />
-            </div>
-            <span className="text-slate-900 dark:text-white text-sm font-medium">Actividades</span>
-          </Link>
-          <Link
-            href="/schedule"
-            className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer"
-          >
-            <div className="rounded-full bg-green-50 dark:bg-green-900/30 p-3 text-green-600 dark:text-green-400">
-              <Calendar className="w-5 h-5" />
-            </div>
-            <span className="text-slate-900 dark:text-white text-sm font-medium">Mi Horario</span>
-          </Link>
-          <Link
-            href="/my-courses"
-            className="flex flex-col items-center gap-3 bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:-translate-y-1 transition-transform cursor-pointer"
-          >
-            <div className="rounded-full bg-purple-50 dark:bg-purple-900/30 p-3 text-purple-600 dark:text-purple-400">
-              <Trophy className="w-5 h-5" />
-            </div>
-            <span className="text-slate-900 dark:text-white text-sm font-medium">Mi Progreso</span>
-          </Link>
-        </div>
-      </div>
 
-      {/* Main Grid Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left Column: Courses (2/3 width) */}
-        <div className="lg:col-span-2 flex flex-col gap-6">
-          <div className="flex items-center justify-between" data-tour="my-courses">
-            <h3 className="text-slate-900 dark:text-white text-xl font-bold">Mis Cursos</h3>
-            <Link
-              href="/my-courses"
-              className="text-primary text-sm font-medium hover:underline flex items-center gap-1"
-            >
-              Ver Todos <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          {dashboardData?.enrollments && dashboardData.enrollments.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {dashboardData.enrollments.slice(0, 4).map((enrollment) => (
                 <CourseCard
@@ -304,130 +532,8 @@ export default function Dashboard() {
                 />
               ))}
             </div>
-          ) : (
-            <div className="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-700 p-8 text-center">
-              <GraduationCap className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
-              <p className="text-slate-500 dark:text-slate-400 mb-4">
-                No estás inscrito en ningún curso.
-              </p>
-              <Button asChild>
-                <Link href="/shop">Explorar Cursos</Link>
-              </Button>
-            </div>
-          )}
-        </div>
-
-        {/* Right Column: Goals & Schedule (1/3 width) */}
-        <div className="flex flex-col gap-6">
-          {/* Daily Goals Widget */}
-          <div
-            className="bg-white dark:bg-card-dark p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700"
-            data-tour="daily-goal"
-          >
-            <h3 className="text-slate-900 dark:text-white text-lg font-bold mb-4">Meta Diaria</h3>
-            <div className="flex items-center gap-4 mb-4">
-              <div className="relative size-16 flex-shrink-0">
-                <svg className="size-full -rotate-90" viewBox="0 0 36 36">
-                  <path
-                    className="text-slate-100 dark:text-slate-700"
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="text-primary"
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeDasharray={`${Math.min((dashboardData?.totalPoints || 0) % 100, 100)}, 100`}
-                    strokeWidth="4"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center flex-col">
-                  <span className="text-xs font-bold text-primary">
-                    {(dashboardData?.totalPoints || 0) % 100}%
-                  </span>
-                </div>
-              </div>
-              <div>
-                <p className="text-sm font-bold text-slate-900 dark:text-white">
-                  Nivel {dashboardData?.currentLevel || 1}
-                </p>
-                <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
-                  {dashboardData?.currentStreak || 0} días de racha{' '}
-                  <Flame className="w-3 h-3 text-orange-500" />
-                </p>
-              </div>
-            </div>
-            <div className="text-center text-sm text-slate-500 dark:text-slate-400 mb-3">
-              {dashboardData?.totalPoints || 0} XP totales
-            </div>
-            <Button variant="outline" className="w-full">
-              Ver Estadísticas
-            </Button>
           </div>
-
-          {/* Upcoming Schedule Widget */}
-          <div
-            className="bg-white dark:bg-card-dark p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700"
-            data-tour="upcoming-classes"
-          >
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-slate-900 dark:text-white text-lg font-bold">Próximas Clases</h3>
-              <Link
-                href="/schedule"
-                className="text-slate-500 dark:text-slate-400 hover:text-primary"
-              >
-                <Calendar className="w-5 h-5" />
-              </Link>
-            </div>
-
-            {dashboardData?.upcomingClasses && dashboardData.upcomingClasses.length > 0 ? (
-              <div className="flex flex-col gap-4">
-                {dashboardData.upcomingClasses.slice(0, 2).map((classItem, index) => (
-                  <div
-                    key={index}
-                    className="flex gap-3 items-start p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg"
-                  >
-                    <div className="flex flex-col items-center bg-white dark:bg-slate-700 rounded p-1.5 min-w-[50px] shadow-sm">
-                      <span className="text-xs font-bold text-red-500 uppercase">
-                        {format(parseISO(classItem.date), 'EEE', { locale: es })}
-                      </span>
-                      <span className="text-lg font-bold text-slate-900 dark:text-white">
-                        {format(parseISO(classItem.date), 'd')}
-                      </span>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold text-slate-900 dark:text-white leading-tight truncate">
-                        {classItem.course}
-                      </p>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                        {classItem.time} • {classItem.teacher}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-6">
-                <Calendar className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  No tienes clases próximas.
-                </p>
-              </div>
-            )}
-
-            {nextClass && (
-              <Button variant="outline" className="w-full mt-4" asChild>
-                <Link href={nextClass.link}>
-                  <Play className="w-4 h-4 mr-2" />
-                  Ver Detalles
-                </Link>
-              </Button>
-            )}
-          </div>
-        </div>
+        )}
       </div>
     </div>
   )

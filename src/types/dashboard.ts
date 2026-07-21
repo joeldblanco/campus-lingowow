@@ -111,6 +111,7 @@ export interface StudentDashboardData {
     title: string
     image: string | null
     progress: number
+    teacherName: string | null
   }[]
 }
 

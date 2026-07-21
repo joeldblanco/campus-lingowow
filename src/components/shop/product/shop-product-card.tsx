@@ -8,14 +8,20 @@ import { useShopStore } from '@/stores/useShopStore'
 import { SUPPORTED_LANGUAGES } from '@/lib/constants/languages'
 import { Course, Merge, Product } from '@/types/shop'
 import {
+  ACADEMIC_WEEKS_PER_MONTH,
+  clampClassesPerWeek,
+  DEFAULT_BILLING_VIEW,
   hasRecommendedPlan,
   isAnnualPlan,
   hasBillingToggle,
   filterByBillingView,
   annualSavingsPercent,
+  monthlyClassCount,
+  MAX_CLASSES_PER_WEEK,
+  MIN_CLASSES_PER_WEEK,
   type BillingView,
 } from '@/lib/pricing-helpers'
-import { Check, ChevronRight, ShieldCheck, ShoppingCart } from 'lucide-react'
+import { Check, ChevronRight, Minus, Plus, ShieldCheck, ShoppingCart } from 'lucide-react'
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -37,13 +43,11 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
   // --- Picker de planes inline (clases por semana + idioma) ---
   const [expanded, setExpanded] = useState(false)
   const plans = product.plans ?? []
-  // Idiomas con pricing activo a lo largo de los planes del producto
-  const languageCodes = Array.from(
-    new Set(plans.flatMap((p) => (p.pricing ?? []).filter((pr) => pr.isActive).map((pr) => pr.language)))
-  )
-  const hasLangPricing = languageCodes.length > 0
-  const [selectedLang, setSelectedLang] = useState(languageCodes[0] ?? 'en')
-  const [billingView, setBillingView] = useState<BillingView>('monthly')
+  const languageCodes = ['en']
+  const hasLangPricing = plans.some((p) => p.pricing?.some((pr) => pr.language === 'en' && pr.isActive))
+  const [selectedLang, setSelectedLang] = useState('en')
+  const [billingView, setBillingView] = useState<BillingView>(DEFAULT_BILLING_VIEW)
+  const [classesPerWeek, setClassesPerWeek] = useState(MIN_CLASSES_PER_WEEK)
 
   const priceForLanguage = (plan: (typeof plans)[number], lang: string) => {
     const match = plan.pricing?.find((pr) => pr.language === lang && pr.isActive)
@@ -52,16 +56,19 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
 
   // Planes del idioma elegido (aún sin filtrar por ciclo de facturación).
   const langPlans = hasLangPricing
-    ? plans.filter((p) => p.pricing?.some((pr) => pr.language === selectedLang && pr.isActive))
+    ? plans.filter((p) => p.pricing?.some((pr) => pr.language === 'en' && pr.isActive))
     : plans
 
   // El toggle Mensual/Anual solo aparece si existen AMBOS ciclos reales.
   const showBillingToggle = hasBillingToggle(langPlans)
-  const annualSavings = annualSavingsPercent(langPlans, (p) => priceForLanguage(p, selectedLang))
+  const annualSavings = annualSavingsPercent(langPlans, (p) => priceForLanguage(p, 'en'))
 
   const visiblePlans = (showBillingToggle ? filterByBillingView(langPlans, billingView) : langPlans)
     .slice()
     .sort((a, b) => (a.classesPerWeek ?? 99) - (b.classesPerWeek ?? 99))
+
+  const selectedPlan = visiblePlans.find((plan) => plan.classesPerWeek === classesPerWeek)
+  const monthlyClasses = monthlyClassCount(classesPerWeek)
 
   // Selección de un plan inline: compra directa al checkout con el idioma elegido.
   const handlePickPlan = (e: React.MouseEvent, plan: (typeof plans)[number]) => {
@@ -77,10 +84,10 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
       plan: {
         id: plan.id,
         name: plan.name,
-        price: priceForLanguage(plan, selectedLang),
+        price: priceForLanguage(plan, 'en'),
       },
       quantity: 1,
-      language: hasLangPricing ? selectedLang : undefined,
+      language: hasLangPricing ? 'en' : undefined,
     })
     router.push('/shop/cart/checkout')
   }
@@ -247,38 +254,98 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
 
               {/* Toggle Mensual / Anual (solo si existen ambos ciclos reales) */}
               {showBillingToggle && (
-                <div className="flex gap-1 rounded-lg bg-gray-100 p-1">
-                  {(['monthly', 'annual'] as BillingView[]).map((view) => {
-                    const active = billingView === view
-                    return (
-                      <button
-                        key={view}
-                        onClick={(e) => {
-                          e.preventDefault()
-                          setBillingView(view)
-                        }}
-                        className={cn(
-                          'flex flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium transition-colors',
-                          active
-                            ? 'bg-white text-gray-900 shadow-sm'
-                            : 'text-gray-500 hover:text-gray-700'
-                        )}
-                      >
-                        {view === 'monthly' ? 'Mensual' : 'Anual'}
-                        {view === 'annual' && annualSavings && (
-                          <span className="rounded-full bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700">
-                            -{annualSavings}%
-                          </span>
-                        )}
-                      </button>
-                    )
-                  })}
+                <div className="flex items-center justify-between rounded-lg bg-gray-100 px-3 py-2">
+                  <span className={cn('text-sm font-medium', billingView === 'monthly' ? 'text-gray-900' : 'text-gray-500')}>
+                    Mensual
+                  </span>
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={billingView === 'annual'}
+                    aria-label="Cambiar entre facturación mensual y anual"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setBillingView(billingView === 'annual' ? 'monthly' : 'annual')
+                    }}
+                    className={cn(
+                      'relative h-6 w-11 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500',
+                      billingView === 'annual' ? 'bg-blue-600' : 'bg-gray-300'
+                    )}
+                  >
+                    <span className={cn('absolute top-1 h-4 w-4 rounded-full bg-white transition-transform', billingView === 'annual' ? 'translate-x-6' : 'translate-x-1')} />
+                  </button>
+                  <span className={cn('text-sm font-medium', billingView === 'annual' ? 'text-gray-900' : 'text-gray-500')}>
+                    Anual
+                    {annualSavings && <span className="ml-1 text-xs font-bold text-emerald-700">-{annualSavings}%</span>}
+                  </span>
                 </div>
               )}
 
               <p className="text-sm font-semibold text-gray-900">¿Cuántas clases por semana?</p>
 
-              <div className="space-y-2">
+              <div className="rounded-lg border border-gray-200 px-3 py-3">
+                <div className="flex items-center justify-between gap-3">
+                  <button
+                    type="button"
+                    aria-label="Reducir clases por semana"
+                    disabled={classesPerWeek <= MIN_CLASSES_PER_WEEK}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setClassesPerWeek((value) => clampClassesPerWeek(value - 1))
+                    }}
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-300 text-gray-700 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </button>
+                  <div className="text-center">
+                    <p className="text-lg font-bold text-gray-900">
+                      {classesPerWeek} {classesPerWeek === 1 ? 'clase' : 'clases'} / semana
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {monthlyClasses} clases en {ACADEMIC_WEEKS_PER_MONTH} semanas del período académico mensual
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    aria-label="Aumentar clases por semana"
+                    disabled={classesPerWeek >= MAX_CLASSES_PER_WEEK}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setClassesPerWeek((value) => clampClassesPerWeek(value + 1))
+                    }}
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-300 text-gray-700 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </button>
+                </div>
+                {selectedPlan ? (
+                  <button
+                    onClick={(e) => handlePickPlan(e, selectedPlan)}
+                    className="mt-3 flex w-full items-center justify-between gap-2 rounded-lg border border-blue-200 bg-blue-50 px-3 py-3 text-left transition-colors hover:border-blue-500"
+                  >
+                    <span className="text-sm font-medium text-gray-900">
+                      Elegir {classesPerWeek} {classesPerWeek === 1 ? 'clase' : 'clases'} / semana
+                    </span>
+                    <span className="shrink-0 text-right">
+                      <span className="block text-sm font-bold text-gray-900">
+                        ${(isAnnualPlan(selectedPlan) ? priceForLanguage(selectedPlan, 'en') / 12 : priceForLanguage(selectedPlan, 'en')).toFixed(2)}
+                        <span className="text-xs font-normal text-gray-500">/mes</span>
+                      </span>
+                      {isAnnualPlan(selectedPlan) && (
+                        <span className="block text-[10px] leading-tight text-gray-500">
+                          cobrado anualmente · ${priceForLanguage(selectedPlan, 'en').toFixed(2)}/año
+                        </span>
+                      )}
+                    </span>
+                  </button>
+                ) : (
+                  <p className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-center text-xs text-amber-800">
+                    No hay un plan disponible para {classesPerWeek} clases por semana en esta modalidad.
+                  </p>
+                )}
+              </div>
+
+              <div className="hidden space-y-2">
                 {visiblePlans.map((plan) => {
                   const annual = isAnnualPlan(plan)
                   const raw = priceForLanguage(plan, selectedLang)

@@ -19,6 +19,23 @@ export interface PlanLike {
 /** Billing views the toggle can offer. */
 export type BillingView = 'monthly' | 'annual'
 
+export const DEFAULT_BILLING_VIEW: BillingView = 'annual'
+export const MIN_CLASSES_PER_WEEK = 1
+export const MAX_CLASSES_PER_WEEK = 7
+export const ACADEMIC_WEEKS_PER_MONTH = 4
+
+export function clampClassesPerWeek(value: number): number {
+  return Math.min(MAX_CLASSES_PER_WEEK, Math.max(MIN_CLASSES_PER_WEEK, Math.round(value)))
+}
+
+export function monthlyClassCount(classesPerWeek: number): number {
+  return clampClassesPerWeek(classesPerWeek) * ACADEMIC_WEEKS_PER_MONTH
+}
+
+export function pricingRedirectPath(productId: string | null): string | null {
+  return productId ? null : '/shop'
+}
+
 /**
  * A plan is "annual" when its real billingCycle says so. Everything else
  * (MONTHLY, WEEKLY, QUARTERLY, or null) is treated as the non-annual bucket so

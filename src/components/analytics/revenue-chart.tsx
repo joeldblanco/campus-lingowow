@@ -61,7 +61,7 @@ export function MonthlyRevenueChart({
                 tickFormatter={(value) => `$${value}`}
               />
               <Tooltip 
-                formatter={(value: number) => [`$${value.toFixed(2)}`, 'Ingresos']}
+                formatter={(value) => [`$${Number(value).toFixed(2)}`, 'Ingresos']}
                 contentStyle={{ 
                   backgroundColor: 'hsl(var(--card))',
                   border: '1px solid hsl(var(--border))',
@@ -104,7 +104,7 @@ export function RevenueTrendChart({ data, title = 'Tendencia de Ingresos' }: Rev
               <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
               <XAxis dataKey="name" tick={{ fontSize: 12 }} />
               <YAxis tickFormatter={(value) => `$${value}`} tick={{ fontSize: 12 }} />
-              <Tooltip formatter={(value: number) => [`$${value.toFixed(2)}`, 'Ingresos']} />
+              <Tooltip formatter={(value) => [`$${Number(value).toFixed(2)}`, 'Ingresos']} />
               <Line 
                 type="monotone" 
                 dataKey="ingresos" 
@@ -146,7 +146,7 @@ export function RevenueByProductChart({ data, title = 'Ingresos por Producto' }:
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                label={({ name, percent }) => `${name} (${((percent ?? 0) * 100).toFixed(0)}%)`}
                 outerRadius={100}
                 dataKey="value"
               >
@@ -154,7 +154,7 @@ export function RevenueByProductChart({ data, title = 'Ingresos por Producto' }:
                   <Cell key={`cell-${index}`} fill={entry.fill} />
                 ))}
               </Pie>
-              <Tooltip formatter={(value: number) => [`$${value.toFixed(2)}`, 'Ingresos']} />
+              <Tooltip formatter={(value) => [`$${Number(value).toFixed(2)}`, 'Ingresos']} />
               <Legend />
             </PieChart>
           </ResponsiveContainer>
@@ -189,7 +189,7 @@ export function RevenueByPlanChart({ data, title = 'Distribución por Plan' }: R
               <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
               <XAxis type="number" tickFormatter={(value) => `$${value}`} />
               <YAxis dataKey="name" type="category" width={100} tick={{ fontSize: 12 }} />
-              <Tooltip formatter={(value: number) => [`$${value.toFixed(2)}`, 'Ingresos']} />
+              <Tooltip formatter={(value) => [`$${Number(value).toFixed(2)}`, 'Ingresos']} />
               <Bar dataKey="ingresos" radius={[0, 4, 4, 0]}>
                 {chartData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.fill} />
@@ -242,7 +242,7 @@ export function RevenueByPaymentMethodChart({
                 ))}
               </Pie>
               <Tooltip 
-                formatter={(value: number) => [`$${value.toFixed(2)}`, 'Ingresos']} 
+                formatter={(value) => [`$${Number(value).toFixed(2)}`, 'Ingresos']} 
               />
               <Legend />
             </PieChart>

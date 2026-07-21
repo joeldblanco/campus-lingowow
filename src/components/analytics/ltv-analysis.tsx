@@ -116,13 +116,13 @@ export function LTVAnalysis({ data }: LTVAnalysisProps) {
                     outerRadius={100}
                     dataKey="ltv"
                     nameKey="productName"
-                    label={({ productName, ltv }) => `${productName}: $${ltv.toFixed(0)}`}
+                    label={({ name, value }) => `${name}: $${Number(value).toFixed(0)}`}
                   >
                     {data.ltvByProduct.map((_, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(value: number) => [`$${value.toFixed(2)}`, 'LTV']} />
+                  <Tooltip formatter={(value) => [`$${Number(value).toFixed(2)}`, 'LTV']} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
@@ -143,7 +143,7 @@ export function LTVAnalysis({ data }: LTVAnalysisProps) {
                 <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
                 <XAxis type="number" tickFormatter={(value) => `$${value}`} />
                 <YAxis dataKey="planName" type="category" width={120} tick={{ fontSize: 12 }} />
-                <Tooltip formatter={(value: number) => [`$${value.toFixed(2)}`, 'LTV Promedio']} />
+                <Tooltip formatter={(value) => [`$${Number(value).toFixed(2)}`, 'LTV Promedio']} />
                 <Bar dataKey="ltv" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>
