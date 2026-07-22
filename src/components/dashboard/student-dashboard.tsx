@@ -81,6 +81,7 @@ export default function Dashboard() {
 
   // Get the first enrollment for "Resume Learning" section
   const currentEnrollment = dashboardData?.enrollments?.[0]
+  const nextClass = dashboardData?.upcomingClasses?.[0]
   const todayStr = format(now, 'yyyy-MM-dd')
   const upcomingClasses = dashboardData?.upcomingClasses || []
   const todayClasses = upcomingClasses.filter(
