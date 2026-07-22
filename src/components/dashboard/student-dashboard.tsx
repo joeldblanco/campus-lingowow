@@ -26,16 +26,11 @@ import type { StudentDashboardData } from '@/types/dashboard'
 import { PendingScheduleBanner } from '@/components/enrollments/pending-schedule-banner'
 import { CourseCard } from '@/components/dashboard/course-card'
 
-// Helper: students can enter only at or after class start time (up to 60 min after)
-function isClassTimeReached(classDate: string, classTime: string, now: Date): boolean {
-  const start = classTime.includes('-') ? classTime.split('-')[0] : classTime
-  const [hours, minutes] = start.split(':').map(Number)
-  const [year, month, day] = classDate.split('-').map(Number)
-  const classDateTime = new Date(year, month - 1, day, hours, minutes, 0, 0)
-
-  const diffMinutes = (now.getTime() - classDateTime.getTime()) / 60000
-  return diffMinutes >= 0 && diffMinutes <= 60
-}
+import {
+  isClassTimeReached,
+  isClassFinished,
+  getClassTimeLabel,
+} from '@/lib/utils/class-timing'
 
 function formatTimeTo12Hour(timeStr: string): string {
   if (!timeStr) return ''
@@ -86,37 +81,20 @@ export default function Dashboard() {
 
   // Get the first enrollment for "Resume Learning" section
   const currentEnrollment = dashboardData?.enrollments?.[0]
-  const nextClass = dashboardData?.upcomingClasses?.[0]
   const todayStr = format(now, 'yyyy-MM-dd')
   const upcomingClasses = dashboardData?.upcomingClasses || []
-  const todayClasses = upcomingClasses.filter((c) => c.date === todayStr)
+  const todayClasses = upcomingClasses.filter(
+    (c) => c.date === todayStr && !isClassFinished(c.date, c.time, now)
+  )
   const hasClassToday = todayClasses.length > 0
   const classToday = todayClasses[0]
   const canJoinClass = classToday
     ? isClassTimeReached(classToday.date, classToday.time, now)
     : false
-  const futureClasses = upcomingClasses.filter((c) => c.date !== todayStr)
+  const futureClasses = upcomingClasses.filter((c) => c.date !== todayStr && !isClassFinished(c.date, c.time, now))
 
   // Compute live class countdown label
-  let timeLabel = ''
-  if (hasClassToday && classToday) {
-    const start = classToday.time.includes('-')
-      ? classToday.time.split('-')[0].trim()
-      : classToday.time.trim()
-    const [hours, minutes] = start.split(':').map(Number)
-    const [year, month, day] = classToday.date.split('-').map(Number)
-    const classDateTime = new Date(year, month - 1, day, hours, minutes, 0, 0)
-    const diffMinutesTotal = Math.round((classDateTime.getTime() - now.getTime()) / 60000)
-
-    if (diffMinutesTotal <= 0) {
-      timeLabel = 'Tu clase está empezando'
-    } else if (diffMinutesTotal < 60) {
-      timeLabel = `Tu clase empieza en ${diffMinutesTotal} min`
-    } else {
-      const diffHours = Math.floor(diffMinutesTotal / 60)
-      timeLabel = `Tu clase empieza en ${diffHours} hora${diffHours > 1 ? 's' : ''}`
-    }
-  }
+  const timeLabel = classToday ? getClassTimeLabel(classToday.date, classToday.time, now) : ''
 
   // Compute Paso 3 roadmap metadata
   let paso3Title = 'Agenda tu próxima clase'
