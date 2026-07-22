@@ -21,6 +21,7 @@ import {
   MIN_CLASSES_PER_WEEK,
   type BillingView,
 } from '@/lib/pricing-helpers'
+import { Switch } from '@/components/ui/switch'
 import { Check, ChevronRight, Minus, Plus, ShieldCheck, ShoppingCart } from 'lucide-react'
 import { useState } from 'react'
 import Image from 'next/image'
@@ -123,6 +124,7 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
   const isExpired = expiresAt && isBefore(expiresAt, now)
   const isAvailable = !isScheduled && !isExpired
 
+
   // Recommended badge is driven by an explicit flag (a plan marked popular),
   // not by payment type — avoids the confusing "Popular" vs "Mejor Precio" mix.
   const isRecommended = hasRecommendedPlan(plans)
@@ -179,10 +181,26 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
         {/* Price + risk reduction near the price */}
         <div className="flex flex-col">
           {isSubscription && <span className="text-gray-500 text-sm">Desde</span>}
-          <div>
-            <span className="text-2xl font-bold text-gray-900">${minPrice.toFixed(2)}</span>
-            {isSubscription && <span className="text-gray-500 text-sm">/mes</span>}
-          </div>
+          {(() => {
+            const activePlan = selectedPlan || (visiblePlans.length > 0 ? visiblePlans[0] : null)
+            const isAnnual = activePlan ? isAnnualPlan(activePlan) : billingView === 'annual'
+            const rawPrice = activePlan ? priceForLanguage(activePlan, 'en') : minPrice
+            const monthlyPrice = activePlan ? (isAnnual ? rawPrice / 12 : rawPrice) : minPrice
+
+            return (
+              <div>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-2xl font-bold text-gray-900">${monthlyPrice.toFixed(2)}</span>
+                  {isSubscription && <span className="text-gray-500 text-sm">/mes</span>}
+                </div>
+                {isAnnual && activePlan && (
+                  <p className="text-xs text-gray-500 mt-0.5 font-medium">
+                    facturado anualmente (${rawPrice.toFixed(2)}/año)
+                  </p>
+                )}
+              </div>
+            )
+          })()}
           <span className="mt-2 mb-4 inline-flex w-fit items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
             <ShieldCheck className="h-3.5 w-3.5" />
             Garantía 30 días
@@ -258,22 +276,11 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
                   <span className={cn('text-sm font-medium', billingView === 'monthly' ? 'text-gray-900' : 'text-gray-500')}>
                     Mensual
                   </span>
-                  <button
-                    type="button"
-                    role="switch"
-                    aria-checked={billingView === 'annual'}
+                  <Switch
+                    checked={billingView === 'annual'}
+                    onCheckedChange={(checked) => setBillingView(checked ? 'annual' : 'monthly')}
                     aria-label="Cambiar entre facturación mensual y anual"
-                    onClick={(e) => {
-                      e.preventDefault()
-                      setBillingView(billingView === 'annual' ? 'monthly' : 'annual')
-                    }}
-                    className={cn(
-                      'relative h-6 w-11 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500',
-                      billingView === 'annual' ? 'bg-blue-600' : 'bg-gray-300'
-                    )}
-                  >
-                    <span className={cn('absolute top-1 h-4 w-4 rounded-full bg-white transition-transform', billingView === 'annual' ? 'translate-x-6' : 'translate-x-1')} />
-                  </button>
+                  />
                   <span className={cn('text-sm font-medium', billingView === 'annual' ? 'text-gray-900' : 'text-gray-500')}>
                     Anual
                     {annualSavings && <span className="ml-1 text-xs font-bold text-emerald-700">-{annualSavings}%</span>}
@@ -319,67 +326,17 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
                   </button>
                 </div>
                 {selectedPlan ? (
-                  <button
+                  <Button
                     onClick={(e) => handlePickPlan(e, selectedPlan)}
-                    className="mt-3 flex w-full items-center justify-between gap-2 rounded-lg border border-blue-200 bg-blue-50 px-3 py-3 text-left transition-colors hover:border-blue-500"
+                    className="mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold"
                   >
-                    <span className="text-sm font-medium text-gray-900">
-                      Elegir {classesPerWeek} {classesPerWeek === 1 ? 'clase' : 'clases'} / semana
-                    </span>
-                    <span className="shrink-0 text-right">
-                      <span className="block text-sm font-bold text-gray-900">
-                        ${(isAnnualPlan(selectedPlan) ? priceForLanguage(selectedPlan, 'en') / 12 : priceForLanguage(selectedPlan, 'en')).toFixed(2)}
-                        <span className="text-xs font-normal text-gray-500">/mes</span>
-                      </span>
-                      {isAnnualPlan(selectedPlan) && (
-                        <span className="block text-[10px] leading-tight text-gray-500">
-                          cobrado anualmente · ${priceForLanguage(selectedPlan, 'en').toFixed(2)}/año
-                        </span>
-                      )}
-                    </span>
-                  </button>
+                    Seleccionar
+                  </Button>
                 ) : (
                   <p className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-center text-xs text-amber-800">
                     No hay un plan disponible para {classesPerWeek} clases por semana en esta modalidad.
                   </p>
                 )}
-              </div>
-
-              <div className="hidden space-y-2">
-                {visiblePlans.map((plan) => {
-                  const annual = isAnnualPlan(plan)
-                  const raw = priceForLanguage(plan, selectedLang)
-                  const perMonth = annual ? raw / 12 : raw
-                  return (
-                    <button
-                      key={plan.id}
-                      onClick={(e) => handlePickPlan(e, plan)}
-                      className="flex w-full items-center justify-between gap-2 rounded-lg border border-gray-200 px-3 py-2 text-left transition-colors hover:border-blue-500 hover:bg-blue-50"
-                    >
-                      <span className="text-sm font-medium text-gray-900">
-                        {plan.classesPerWeek ? (
-                          <>
-                            {plan.classesPerWeek} clases
-                            <span className="text-gray-500"> / semana</span>
-                          </>
-                        ) : (
-                          plan.name
-                        )}
-                      </span>
-                      <span className="shrink-0 text-right">
-                        <span className="block text-sm font-bold text-gray-900">
-                          ${perMonth.toFixed(2)}
-                          <span className="text-xs font-normal text-gray-500">/mes</span>
-                        </span>
-                        {annual && (
-                          <span className="block text-[10px] leading-tight text-gray-500">
-                            cobrado anualmente · ${raw.toFixed(2)}/año
-                          </span>
-                        )}
-                      </span>
-                    </button>
-                  )
-                })}
               </div>
 
               <Link

@@ -20,8 +20,8 @@ export interface PlanLike {
 export type BillingView = 'monthly' | 'annual'
 
 export const DEFAULT_BILLING_VIEW: BillingView = 'annual'
-export const MIN_CLASSES_PER_WEEK = 1
-export const MAX_CLASSES_PER_WEEK = 7
+export const MIN_CLASSES_PER_WEEK = 2
+export const MAX_CLASSES_PER_WEEK = 4
 export const ACADEMIC_WEEKS_PER_MONTH = 4
 
 export function clampClassesPerWeek(value: number): number {

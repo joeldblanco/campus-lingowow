@@ -17,13 +17,14 @@ import {
   InstructorCredentials,
   StudentTestimonials,
 } from '@/components/public-components/social-proof'
+import { Switch } from '@/components/ui/switch'
 import {
-  billingPeriodSuffix,
   billingViewLabel,
   DEFAULT_BILLING_VIEW,
   filterByBillingView,
   getRecommendedPlanId,
   hasBillingToggle,
+  isAnnualPlan,
   pricingRedirectPath,
   type BillingView,
 } from '@/lib/pricing-helpers'
@@ -37,7 +38,7 @@ export default function PricingPage() {
   const [uniqueFeatures, setUniqueFeatures] = useState<string[]>([])
   const [selectedLanguage, setSelectedLanguage] = useState<string>('en')
   const [billingView, setBillingView] = useState<BillingView>(DEFAULT_BILLING_VIEW)
-  
+
   // Shop store
   const router = useRouter()
   const { buyNow } = useShopStore()
@@ -195,24 +196,16 @@ export default function PricingPage() {
             {/* Monthly / annual toggle — shown only when real annual plans exist */}
             {!loading && showBillingToggle && (
               <div className="flex justify-center mb-10">
-                <div className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-100 p-1 dark:border-slate-700 dark:bg-slate-800">
-                  <span className={cn('px-2 text-sm font-semibold', billingView === 'monthly' ? 'text-slate-900 dark:text-white' : 'text-slate-500')}>
+                <div className="inline-flex items-center gap-3 rounded-full border border-slate-200 bg-slate-100 px-4 py-2 dark:border-slate-700 dark:bg-slate-800">
+                  <span className={cn('text-sm font-semibold', billingView === 'monthly' ? 'text-slate-900 dark:text-white' : 'text-slate-500')}>
                     Mensual
                   </span>
-                  <button
-                    type="button"
-                    role="switch"
-                    aria-checked={billingView === 'annual'}
+                  <Switch
+                    checked={billingView === 'annual'}
+                    onCheckedChange={(checked) => setBillingView(checked ? 'annual' : 'monthly')}
                     aria-label="Cambiar entre facturación mensual y anual"
-                    onClick={() => setBillingView(billingView === 'annual' ? 'monthly' : 'annual')}
-                    className={cn(
-                      'relative h-6 w-11 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
-                      billingView === 'annual' ? 'bg-primary' : 'bg-slate-300'
-                    )}
-                  >
-                    <span className={cn('absolute top-1 h-4 w-4 rounded-full bg-white transition-transform', billingView === 'annual' ? 'translate-x-6' : 'translate-x-1')} />
-                  </button>
-                  <span className={cn('px-2 text-sm font-semibold', billingView === 'annual' ? 'text-slate-900 dark:text-white' : 'text-slate-500')}>
+                  />
+                  <span className={cn('text-sm font-semibold', billingView === 'annual' ? 'text-slate-900 dark:text-white' : 'text-slate-500')}>
                     {billingViewLabel('annual')}
                   </span>
                 </div>
@@ -255,18 +248,28 @@ export default function PricingPage() {
                         </p>
                         {(() => {
                           const { price, comparePrice } = getPriceForLanguage(plan, selectedLanguage)
+                          const isAnnual = isAnnualPlan(plan)
+                          const monthlyPrice = isAnnual ? Number(price) / 12 : Number(price)
+
                           return (
-                            <div className="flex items-baseline gap-2">
-                              <span className="text-4xl font-bold text-slate-900 dark:text-white font-lexend">
-                                ${Number(price).toFixed(0)}
-                              </span>
-                              <span className="text-slate-500 dark:text-slate-400 font-medium">
-                                {billingPeriodSuffix(plan.billingCycle)}
-                              </span>
-                              {comparePrice && comparePrice > price && (
-                                <span className="text-lg text-slate-400 line-through">
-                                  ${Number(comparePrice).toFixed(0)}
+                            <div>
+                              <div className="flex items-baseline gap-2">
+                                <span className="text-4xl font-bold text-slate-900 dark:text-white font-lexend">
+                                  ${monthlyPrice.toFixed(0)}
                                 </span>
+                                <span className="text-slate-500 dark:text-slate-400 font-medium">
+                                  /mes
+                                </span>
+                                {comparePrice && comparePrice > price && !isAnnual && (
+                                  <span className="text-lg text-slate-400 line-through">
+                                    ${Number(comparePrice).toFixed(0)}
+                                  </span>
+                                )}
+                              </div>
+                              {isAnnual && (
+                                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">
+                                  facturado anualmente (${Number(price).toFixed(0)}/año)
+                                </p>
                               )}
                             </div>
                           )

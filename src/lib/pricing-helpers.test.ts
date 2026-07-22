@@ -23,16 +23,16 @@ describe('class quantity helpers', () => {
     expect(DEFAULT_BILLING_VIEW).toBe('annual')
   })
 
-  it('calculates four academic weeks of classes per month', () => {
-    expect(monthlyClassCount(1)).toBe(4)
+  it('calculates four academic weeks of classes per month for allowed quantities (2 to 4)', () => {
+    expect(monthlyClassCount(2)).toBe(8)
     expect(monthlyClassCount(3)).toBe(12)
-    expect(monthlyClassCount(7)).toBe(28)
+    expect(monthlyClassCount(4)).toBe(16)
   })
 
-  it('keeps the weekly class selector between 1 and 7', () => {
-    expect(clampClassesPerWeek(0)).toBe(1)
+  it('keeps the weekly class selector between 2 and 4', () => {
+    expect(clampClassesPerWeek(1)).toBe(2)
     expect(clampClassesPerWeek(3.6)).toBe(4)
-    expect(clampClassesPerWeek(8)).toBe(7)
+    expect(clampClassesPerWeek(8)).toBe(4)
   })
 
   it('redirects pricing to shop when productId is missing', () => {

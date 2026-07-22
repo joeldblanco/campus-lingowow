@@ -15,9 +15,10 @@ const config: Config = {
         'card-dark': '#1c2936',
       },
       fontFamily: {
-        sans: ['var(--font-geist-sans)', 'sans-serif'],
+        sans: ['var(--font-nunito)', 'sans-serif'],
         mono: ['var(--font-geist-mono)', 'monospace'],
-        lexend: ['var(--font-lexend)', 'sans-serif'],
+        lexend: ['var(--font-nunito)', 'sans-serif'],
+        nunito: ['var(--font-nunito)', 'sans-serif'],
       },
     },
   },

@@ -1,16 +1,11 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono, Lexend } from 'next/font/google'
+import { Geist_Mono, Nunito } from 'next/font/google'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-})
-
-const lexend = Lexend({
-  variable: '--font-lexend',
+const nunito = Nunito({
+  variable: '--font-nunito',
   subsets: ['latin'],
 })
 
@@ -36,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${geistSans.variable} ${geistMono.variable} ${lexend.variable} antialiased`}>
+      <body className={`${nunito.variable} ${geistMono.variable} font-sans antialiased`}>
         {children}
         <SpeedInsights />
         <Analytics />
