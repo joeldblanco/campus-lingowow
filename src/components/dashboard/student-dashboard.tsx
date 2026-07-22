@@ -312,10 +312,11 @@ export default function Dashboard() {
                 </div>
               </div>
             ) : (
-              <div className="relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-slate-900 via-slate-800 to-[#137fec]/20 p-6 md:p-8 shadow-xl shadow-slate-900/10">
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#137fec] via-indigo-600 to-violet-600 p-6 md:p-8 shadow-lg shadow-[#137fec]/25">
+                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iNCIvPjwvZz48L2c+PC9zdmc+')] opacity-50"></div>
                 <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                   <div className="flex-1 space-y-4">
-                    <div className="inline-flex items-center gap-2 bg-[#137fec]/20 border border-[#137fec]/30 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-primary">
+                    <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white">
                       <BookOpen className="w-3.5 h-3.5" />
                       {(() => {
                         const teacherName =
@@ -331,7 +332,7 @@ export default function Dashboard() {
                           <h2 className="text-2xl md:text-3xl font-black text-white leading-tight tracking-tight">
                             Sigue avanzando en {currentEnrollment.title}
                           </h2>
-                          <p className="text-slate-400 text-sm mt-1">
+                          <p className="text-white/80 text-sm mt-1">
                             {currentEnrollment.teacherName
                               ? `Tu profesor asignado es ${currentEnrollment.teacherName}`
                               : 'Continúa con tus lecciones personalizadas.'}
@@ -339,13 +340,13 @@ export default function Dashboard() {
                         </div>
 
                         <div className="space-y-2 max-w-md">
-                          <div className="flex justify-between text-sm font-semibold text-slate-300">
+                          <div className="flex justify-between text-sm font-semibold text-white/90">
                             <span>Progreso del curso</span>
                             <span>{Math.round(currentEnrollment.progress)}%</span>
                           </div>
                           <Progress
                             value={currentEnrollment.progress}
-                            className="h-2.5 bg-slate-800"
+                            className="h-2.5 bg-white/20 [&>div]:bg-white"
                           />
                         </div>
                       </>
@@ -354,7 +355,7 @@ export default function Dashboard() {
                         <h2 className="text-2xl md:text-3xl font-black text-white leading-tight tracking-tight">
                           Comienza tu camino de aprendizaje
                         </h2>
-                        <p className="text-slate-400 text-sm mt-1">
+                        <p className="text-white/80 text-sm mt-1">
                           Inscríbete en un curso y comienza a aprender un nuevo idioma con los
                           mejores profesores.
                         </p>
@@ -368,7 +369,7 @@ export default function Dashboard() {
                         <Button
                           asChild
                           size="lg"
-                          className="w-full md:w-auto bg-[#137fec] hover:bg-[#137fec]/90 text-white font-bold text-base px-8 py-6 rounded-xl shadow-lg transition-all hover:scale-105"
+                          className="w-full md:w-auto bg-white text-indigo-700 hover:bg-white/95 hover:text-indigo-800 font-bold text-base px-8 py-6 rounded-xl shadow-lg transition-all hover:scale-105"
                         >
                           <Link href={`/my-courses/${currentEnrollment.courseId}`}>
                             {currentEnrollment.progress > 0 ? 'Continuar Lección' : 'Empezar Curso'}
@@ -379,7 +380,7 @@ export default function Dashboard() {
                           variant="outline"
                           size="icon"
                           title="Descargar Materiales"
-                          className="border-slate-700 hover:bg-slate-800 text-slate-300 hover:text-white h-12 w-12 rounded-xl"
+                          className="border-white/30 bg-white/10 hover:bg-white/20 text-white h-12 w-12 rounded-xl"
                         >
                           <Download className="w-5 h-5" />
                         </Button>
