@@ -25,6 +25,7 @@ const ContactSchema = z.object({
   phone: z.string().min(1, 'El teléfono es requerido'),
   subject: z.string().min(1, 'Por favor selecciona un asunto'),
   message: z.string().min(10, 'El mensaje debe tener al menos 10 caracteres'),
+  website: z.string().optional(),
 })
 
 type ContactFormData = z.infer<typeof ContactSchema>
@@ -40,8 +41,10 @@ export default function ContactoPage() {
       phone: '',
       subject: '',
       message: '',
+      website: '',
     },
   })
+
 
   const onSubmit = async (values: ContactFormData) => {
     try {
@@ -195,7 +198,17 @@ export default function ContactoPage() {
                   <CardContent>
                     <Form {...form}>
                       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                        <div className="hidden" aria-hidden="true">
+                          <input
+                            type="text"
+                            tabIndex={-1}
+                            autoComplete="off"
+                            {...form.register('website')}
+                          />
+                        </div>
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
                           <FormField
                             control={form.control}
                             name="name"

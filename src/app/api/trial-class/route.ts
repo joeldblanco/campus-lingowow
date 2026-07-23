@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { sendTrialClassRequestEmail } from '@/lib/mail'
 import { sendSlackNotification } from '@/lib/slack'
 import { rateLimit, getRateLimitHeaders } from '@/lib/rate-limit'
+import { checkForSpam } from '@/lib/utils/spam-protection'
+import { verifyRecaptcha } from '@/lib/utils/recaptcha'
 import * as z from 'zod'
 
 const TrialClassSchema = z.object({
@@ -10,6 +12,8 @@ const TrialClassSchema = z.object({
   countryCode: z.string().min(1, 'El código de país es requerido'),
   phone: z.string().min(1, 'El teléfono es requerido'),
   language: z.string().min(1, 'Por favor selecciona un idioma'),
+  website: z.string().optional().nullable(),
+  recaptchaToken: z.string().optional().nullable(),
 })
 
 export async function POST(req: NextRequest) {
@@ -27,10 +31,40 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     
     const validatedData = TrialClassSchema.parse(body)
+
+    // 1. Verificación reCAPTCHA v3 si se proporciona el token
+    if (validatedData.recaptchaToken) {
+      const recaptchaResult = await verifyRecaptcha(validatedData.recaptchaToken, 'trial_class')
+      if (!recaptchaResult.success) {
+        console.log(`[RECAPTCHA BLOCKED] Reason: ${recaptchaResult.error}, Email: ${validatedData.email}`)
+        return NextResponse.json({ 
+          success: true, 
+          message: 'Solicitud enviada exitosamente' 
+        }, { headers: getRateLimitHeaders(rateLimitResult) })
+      }
+    }
+
+    // 2. Verificación anti-spam (honeypot, nombre sospechoso, email desechable)
+    const spamCheck = checkForSpam({
+      name: validatedData.name,
+      email: validatedData.email,
+      honeypot: validatedData.website,
+    })
+
+    if (spamCheck.isSpam) {
+      console.log(`[SPAM BLOCKED] Reason: ${spamCheck.reason}, Email: ${validatedData.email}`)
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Solicitud enviada exitosamente' 
+      }, { headers: getRateLimitHeaders(rateLimitResult) })
+    }
     
     const emailData = {
-      ...validatedData,
+      name: validatedData.name,
+      email: validatedData.email,
+      countryCode: validatedData.countryCode,
       phone: `${validatedData.countryCode} ${validatedData.phone}`,
+      language: validatedData.language,
     }
     
     await sendTrialClassRequestEmail(emailData)
@@ -63,3 +97,4 @@ export async function POST(req: NextRequest) {
     )
   }
 }
+

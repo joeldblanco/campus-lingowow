@@ -86,6 +86,58 @@ export function isDisposableEmail(email: string): boolean {
 }
 
 /**
+ * Lista de palabras clave típicas de spam comercial, SEO o bots
+ */
+const SPAM_KEYWORDS = [
+  'casino',
+  'poker',
+  'slot machine',
+  'crypto',
+  'bitcoin',
+  'seo ranking',
+  'backlink',
+  'guest post',
+  'viagra',
+  'cialis',
+  'rank #1',
+  'ranking #1',
+  'traffic booster',
+  'whatsapp group',
+  'telegram group',
+  'passive income',
+]
+
+/**
+ * Detecta si el texto del mensaje tiene patrones de spam
+ */
+export function isSpamContent(text: string | undefined | null): boolean {
+  if (!text || text.trim().length === 0) return false
+
+  const lowerText = text.toLowerCase()
+
+  // 1. Detección de múltiples enlaces (más de 1 URL suele ser bot spam)
+  const urlMatches = text.match(/(https?:\/\/|www\.)[^\s]+/gi) || []
+  if (urlMatches.length > 1) {
+    return true
+  }
+
+  // 2. Detección de caracteres cirílicos (spam de bots rusos comunes en formularios)
+  const cyrillicCount = (text.match(/[\u0400-\u04FF]/g) || []).length
+  if (cyrillicCount > 3) {
+    return true
+  }
+
+  // 3. Palabras clave de spam SEO/phishing
+  for (const keyword of SPAM_KEYWORDS) {
+    if (lowerText.includes(keyword)) {
+      return true
+    }
+  }
+
+  return false
+}
+
+/**
  * Resultado de la validación anti-spam
  */
 export interface SpamCheckResult {
@@ -101,6 +153,8 @@ export function checkForSpam(data: {
   lastName?: string
   email: string
   honeypot?: string | null
+  message?: string | null
+  subject?: string | null
 }): SpamCheckResult {
   // 1. Verificar honeypot
   if (isHoneypotFilled(data.honeypot)) {
@@ -122,5 +176,16 @@ export function checkForSpam(data: {
     return { isSpam: true, reason: 'disposable_email' }
   }
 
+  // 5. Verificar contenido de mensaje sospechoso
+  if (data.message && isSpamContent(data.message)) {
+    return { isSpam: true, reason: 'spam_message' }
+  }
+
+  // 6. Verificar asunto sospechoso
+  if (data.subject && isSpamContent(data.subject)) {
+    return { isSpam: true, reason: 'spam_subject' }
+  }
+
   return { isSpam: false }
 }
+

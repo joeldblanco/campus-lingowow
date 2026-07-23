@@ -37,6 +37,7 @@ const ContactSchema = z.object({
   countryCode: z.string().min(1, 'El código de país es requerido'),
   phone: z.string().min(1, 'El teléfono es requerido'),
   language: z.string().min(1, 'Por favor selecciona un idioma'),
+  website: z.string().optional(),
 })
 
 type ContactFormData = z.infer<typeof ContactSchema>
@@ -50,6 +51,7 @@ export function ContactForm() {
       countryCode: 'PE',
       phone: '',
       language: '',
+      website: '',
     },
   })
 
@@ -90,7 +92,17 @@ export function ContactForm() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <div className="hidden" aria-hidden="true">
+              <input
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                {...form.register('website')}
+              />
+            </div>
+
             <div className="grid grid-cols-1 gap-4">
+
               <FormField
                 control={form.control}
                 name="name"

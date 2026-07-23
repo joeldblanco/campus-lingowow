@@ -27,6 +27,7 @@ const DemoSchema = z.object({
   preferredDate: z.string().min(1, 'Por favor selecciona una fecha preferida'),
   preferredTime: z.string().min(1, 'Por favor selecciona un horario preferido'),
   comments: z.string().optional(),
+  website: z.string().optional(),
 })
 
 type DemoFormData = z.infer<typeof DemoSchema>
@@ -44,19 +45,32 @@ const Demo = () => {
       preferredDate: '',
       preferredTime: '',
       comments: '',
+      website: '',
     },
   })
 
   const onSubmit = async (values: DemoFormData) => {
     try {
-      console.log('Demo class request:', values)
+      const response = await fetch('/api/trial-class', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(values),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Error al enviar la solicitud')
+      }
+
       toast.success('¡Solicitud enviada exitosamente! Te contactaremos pronto para confirmar tu clase de prueba.')
       form.reset()
     } catch (error) {
       console.error('Error submitting demo request:', error)
-      toast.error('Error al enviar la solicitud')
+      toast.error(error instanceof Error ? error.message : 'Error al enviar la solicitud')
     }
   }
+
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -166,7 +180,17 @@ const Demo = () => {
                 <CardContent>
                   <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                      <div className="hidden" aria-hidden="true">
+                        <input
+                          type="text"
+                          tabIndex={-1}
+                          autoComplete="off"
+                          {...form.register('website')}
+                        />
+                      </div>
+
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
                         <FormField
                           control={form.control}
                           name="name"
