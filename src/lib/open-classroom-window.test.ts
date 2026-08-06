@@ -1,6 +1,10 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { closeClassroomWindow } from './open-classroom-window'
+import {
+  closeClassroomWindow,
+  openClassroomWindow,
+  replaceClassroomWithGoogleMeet,
+} from './open-classroom-window'
 
 describe('closeClassroomWindow', () => {
   beforeEach(() => {
@@ -36,5 +40,27 @@ describe('closeClassroomWindow', () => {
     vi.runAllTimers()
 
     expect(fallback).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('classroom window navigation', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('opens the Lingowow access check in a browser tab', () => {
+    const open = vi.spyOn(window, 'open').mockReturnValue(window)
+
+    openClassroomWindow('/classroom?classId=booking-1')
+
+    expect(open).toHaveBeenCalledWith('/classroom?classId=booking-1', '_blank')
+  })
+
+  it('replaces the access-check tab with the Google Meet URL', () => {
+    const open = vi.spyOn(window, 'open').mockReturnValue(window)
+
+    replaceClassroomWithGoogleMeet('https://meet.google.com/abc-defg-hij')
+
+    expect(open).toHaveBeenCalledWith('https://meet.google.com/abc-defg-hij', '_self')
   })
 })

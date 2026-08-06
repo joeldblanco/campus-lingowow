@@ -1,39 +1,24 @@
-/**
- * Opens the classroom in a dedicated immersive popup window
- * without browser toolbars for a focused learning experience.
- */
+/** Opens the classroom access check in a separate browser tab. */
 export function openClassroomWindow(url: string) {
-  const width = window.screen.availWidth
-  const height = window.screen.availHeight
+  const classroomWindow = window.open(url, '_blank')
 
-  const features = [
-    `width=${width}`,
-    `height=${height}`,
-    `top=0`,
-    `left=0`,
-    'menubar=no',
-    'toolbar=no',
-    'location=no',
-    'status=no',
-    'scrollbars=no',
-    'resizable=yes',
-  ].join(',')
+  if (!classroomWindow) {
+    window.location.assign(url)
+  }
+}
 
-  const classroomWindow = window.open(url, 'lingowow-classroom', features)
+/** Replaces the validated classroom tab with its Google Meet room. */
+export function replaceClassroomWithGoogleMeet(meetingUrl: string) {
+  const classroomWindow = window.open(meetingUrl, '_self')
 
-  if (classroomWindow) {
-    // Maximize the window after opening
-    classroomWindow.moveTo(0, 0)
-    classroomWindow.resizeTo(screen.availWidth, screen.availHeight)
-  } else {
-    // If popup was blocked, fall back to regular navigation
-    window.location.href = url
+  if (!classroomWindow) {
+    window.location.assign(meetingUrl)
   }
 }
 
 /**
- * Closes the classroom window when the class ends. Browsers only honor
- * window.close() on script-opened windows (openClassroomWindow above);
+ * Closes the classroom tab when the class ends. Browsers only honor
+ * window.close() on script-opened tabs (openClassroomWindow above);
  * when the classroom was reached by regular navigation the call is
  * ignored, so we fall back to the provided navigation instead.
  */
