@@ -60,7 +60,7 @@ async function loginAndSaveState(
   userType: string
 ) {
   // Ir a la página de login
-  await page.goto(`${baseURL}/auth/signin`, { waitUntil: 'networkidle' })
+  await page.goto(`${baseURL}/auth/signin`, { waitUntil: 'domcontentloaded' })
 
   // Esperar a que el formulario esté listo
   await page.waitForSelector('[data-testid="email-input"]', { 
@@ -83,33 +83,20 @@ async function loginAndSaveState(
     page.click('[data-testid="login-button"]'),
   ])
 
-  // Esperar a que la navegación se complete
-  await page.waitForLoadState('networkidle', { timeout: 30000 })
+  // El dashboard mantiene conexiones persistentes, por lo que networkidle no es
+  // una señal fiable de que la autenticación haya terminado.
+  await page.waitForURL((url) => !url.pathname.includes('/auth/signin'), { timeout: 30000 })
 
-  // Verificar que el login fue exitoso esperando el user menu
-  let retries = 5
-  while (retries > 0) {
-    try {
-      await page.waitForSelector('[data-testid="user-menu-trigger"]', {
-        state: 'visible',
-        timeout: 5000,
-      })
-      console.log(`    ✓ Login exitoso para ${userType}`)
-      break
-    } catch {
-      retries--
-      if (retries > 0) {
-        console.log(`    ⟳ Reintentando verificación de login (${retries} intentos restantes)...`)
-        await page.waitForTimeout(2000)
-        await page.reload({ waitUntil: 'networkidle' })
-      } else {
-        throw new Error(`Login falló para ${userType}: user menu no encontrado`)
-      }
-    }
+  // Verificar la sesión directamente: el menú depende de la ruta renderizada y
+  // no forma parte del estado que se guarda para los tests.
+  const sessionResponse = await page.request.get(`${baseURL}/api/auth/session`)
+  const session = (await sessionResponse.json()) as { user?: { email?: string } }
+
+  if (!sessionResponse.ok() || session.user?.email !== email) {
+    throw new Error(`Login falló para ${userType}: sesión no encontrada`)
   }
 
-  // Esperar un poco más para asegurar que las cookies estén guardadas
-  await page.waitForTimeout(2000)
+  console.log(`    ✓ Login exitoso para ${userType}`)
 }
 
 /**

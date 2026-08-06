@@ -646,6 +646,17 @@ export class DatabaseHelpers {
       const { PrismaClient } = await import('@prisma/client')
       const prisma = new PrismaClient()
 
+      // Clean up dependent test courses before their creator users.
+      await prisma.course.deleteMany({
+        where: {
+          createdBy: {
+            email: {
+              endsWith: '@test.com',
+            },
+          },
+        },
+      })
+
       // Clean up test data (be careful not to delete production data)
       // Only delete users with test emails
       await prisma.user.deleteMany({
