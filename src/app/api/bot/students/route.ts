@@ -1,13 +1,20 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { authenticateRequest } from '@/lib/api-auth'
 import { formatFirstName, formatFullName } from '@/lib/utils/name-formatter'
 import { EnrollmentStatus } from '@prisma/client'
 
-// Public endpoint for the CRM bot to fetch students with active enrollments
-// Returns only basic student info (name, email, course, status)
+// Endpoint for the CRM bot to fetch students with active enrollments.
+// Returns personal data (name, email) of enrolled students, so it requires the
+// same scoped auth as the sibling bot routes.
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const authResult = await authenticateRequest(request, ['enrollments:read'])
+    if (!authResult.success) {
+      return NextResponse.json({ error: authResult.error }, { status: authResult.status })
+    }
+
     const enrollments = await db.enrollment.findMany({
       where: {
         status: { in: [EnrollmentStatus.ACTIVE, EnrollmentStatus.PENDING] },
