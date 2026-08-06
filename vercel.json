@@ -9,6 +9,10 @@
       "schedule": "0 * * * *"
     },
     {
+      "path": "/api/cron/complete-classes",
+      "schedule": "*/5 * * * *"
+    },
+    {
       "path": "/api/cron/cleanup-recordings",
       "schedule": "0 3 * * 0"
     },

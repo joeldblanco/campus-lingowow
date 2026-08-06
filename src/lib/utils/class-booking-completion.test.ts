@@ -1,18 +1,22 @@
 import { describe, expect, it } from 'vitest'
 
 import {
-  AUTO_COMPLETE_AFTER_START_MINUTES,
   getClassAutoCompletionDate,
   isClassBookingCompleted,
   shouldAutoCompleteClassBooking,
 } from './class-booking-completion'
 
 describe('class-booking-completion', () => {
-  it('returns the auto-completion timestamp 60 minutes after class start', () => {
-    const completionDate = getClassAutoCompletionDate('2026-04-06', '14:00-15:00')
+  it('returns the scheduled end timestamp from the class time slot', () => {
+    const completionDate = getClassAutoCompletionDate('2026-04-06', '14:00-15:30')
 
-    expect(completionDate?.toISOString()).toBe('2026-04-06T15:00:00.000Z')
-    expect(AUTO_COMPLETE_AFTER_START_MINUTES).toBe(60)
+    expect(completionDate?.toISOString()).toBe('2026-04-06T15:30:00.000Z')
+  })
+
+  it('uses the following day when a class ends after midnight', () => {
+    const completionDate = getClassAutoCompletionDate('2026-04-06', '23:40-00:20')
+
+    expect(completionDate?.toISOString()).toBe('2026-04-07T00:20:00.000Z')
   })
 
   it('does not auto-complete without teacher attendance', () => {
@@ -29,29 +33,29 @@ describe('class-booking-completion', () => {
     expect(result).toBe(false)
   })
 
-  it('does not auto-complete before 60 minutes from class start', () => {
+  it('does not auto-complete before the scheduled end time', () => {
     const result = shouldAutoCompleteClassBooking(
       {
         status: 'CONFIRMED',
         day: '2026-04-06',
-        timeSlot: '14:00-15:00',
+        timeSlot: '14:00-14:40',
         teacherAttendances: [{ id: 'teacher-attendance-1' }],
       },
-      new Date('2026-04-06T14:59:59.000Z')
+      new Date('2026-04-06T14:39:59.000Z')
     )
 
     expect(result).toBe(false)
   })
 
-  it('auto-completes after 60 minutes from class start when teacher attendance exists', () => {
+  it('auto-completes at the scheduled end time when teacher attendance exists', () => {
     const result = shouldAutoCompleteClassBooking(
       {
         status: 'CONFIRMED',
         day: '2026-04-06',
-        timeSlot: '14:00-15:00',
+        timeSlot: '14:00-14:40',
         teacherAttendances: [{ id: 'teacher-attendance-1' }],
       },
-      new Date('2026-04-06T15:00:00.000Z')
+      new Date('2026-04-06T14:40:00.000Z')
     )
 
     expect(result).toBe(true)

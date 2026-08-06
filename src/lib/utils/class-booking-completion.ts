@@ -1,5 +1,3 @@
-export const AUTO_COMPLETE_AFTER_START_MINUTES = 60
-
 export interface ClassBookingCompletionInput {
   status: string
   day: string
@@ -8,34 +6,39 @@ export interface ClassBookingCompletionInput {
   teacherAttendances?: Array<{ id: string }> | null
 }
 
-function parseClassStart(day: string, timeSlot: string): Date | null {
-  const [startTime] = timeSlot.split('-').map((value) => value.trim())
-  if (!startTime) {
+function parseClassEnd(day: string, timeSlot: string): Date | null {
+  const [startTime, endTime] = timeSlot.split('-').map((value) => value.trim())
+  if (!startTime || !endTime) {
     return null
   }
 
   const [year, month, dayOfMonth] = day.split('-').map(Number)
   const [startHour, startMinute] = startTime.split(':').map(Number)
+  const [endHour, endMinute] = endTime.split(':').map(Number)
 
   if (
-    [year, month, dayOfMonth, startHour, startMinute].some((value) => Number.isNaN(value))
+    [year, month, dayOfMonth, startHour, startMinute, endHour, endMinute].some((value) =>
+      Number.isNaN(value)
+    )
   ) {
     return null
   }
 
-  return new Date(Date.UTC(year, month - 1, dayOfMonth, startHour, startMinute, 0, 0))
+  const classStart = new Date(Date.UTC(year, month - 1, dayOfMonth, startHour, startMinute, 0, 0))
+  const classEnd = new Date(Date.UTC(year, month - 1, dayOfMonth, endHour, endMinute, 0, 0))
+
+  if (classEnd.getTime() <= classStart.getTime()) {
+    classEnd.setUTCDate(classEnd.getUTCDate() + 1)
+  }
+
+  return classEnd
 }
 
 export function getClassAutoCompletionDate(
   day: string,
   timeSlot: string
 ): Date | null {
-  const classStart = parseClassStart(day, timeSlot)
-  if (!classStart) {
-    return null
-  }
-
-  return new Date(classStart.getTime() + AUTO_COMPLETE_AFTER_START_MINUTES * 60 * 1000)
+  return parseClassEnd(day, timeSlot)
 }
 
 export function shouldAutoCompleteClassBooking(
