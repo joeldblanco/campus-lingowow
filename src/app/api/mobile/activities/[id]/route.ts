@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getMobileUser, unauthorizedResponse } from '@/lib/mobile-auth'
 import { db } from '@/lib/db'
 import { z } from 'zod'
+import type { Prisma } from '@prisma/client'
+import { gradeMobileActivity } from '@/lib/mobile-activity-grading'
 
 export async function GET(
   req: NextRequest,
@@ -67,8 +69,7 @@ export async function GET(
 }
 
 const submitSchema = z.object({
-  answers: z.any(),
-  score: z.number().min(0).max(100).optional(),
+  answers: z.record(z.string(), z.unknown()),
 })
 
 export async function POST(
@@ -84,7 +85,7 @@ export async function POST(
 
     const { id } = await params
     const body = await req.json()
-    const { answers, score } = submitSchema.parse(body)
+    const { answers } = submitSchema.parse(body)
 
     // Verificar que la actividad existe
     const activity = await db.activity.findUnique({
@@ -93,15 +94,20 @@ export async function POST(
         id: true,
         points: true,
         questions: true,
+        activityData: true,
+        isPublished: true,
       },
     })
 
-    if (!activity) {
+    if (!activity || !activity.isPublished) {
       return NextResponse.json(
         { error: 'Actividad no encontrada' },
         { status: 404 }
       )
     }
+
+    const grading = gradeMobileActivity(activity, answers)
+    const storedAnswers = answers as Prisma.InputJsonValue
 
     // Actualizar o crear progreso
     const userActivity = await db.userActivity.upsert({
@@ -112,22 +118,22 @@ export async function POST(
         },
       },
       update: {
-        answers,
-        score,
+        answers: storedAnswers,
+        score: grading.score,
         attempts: { increment: 1 },
         lastAttemptAt: new Date(),
-        status: score !== undefined && score >= 70 ? 'COMPLETED' : 'IN_PROGRESS',
-        completedAt: score !== undefined && score >= 70 ? new Date() : undefined,
+        status: grading.passed ? 'COMPLETED' : 'IN_PROGRESS',
+        completedAt: grading.passed ? new Date() : undefined,
       },
       create: {
         userId: user.id,
         activityId: id,
-        answers,
-        score,
+        answers: storedAnswers,
+        score: grading.score,
         attempts: 1,
         lastAttemptAt: new Date(),
-        status: score !== undefined && score >= 70 ? 'COMPLETED' : 'IN_PROGRESS',
-        completedAt: score !== undefined && score >= 70 ? new Date() : undefined,
+        status: grading.passed ? 'COMPLETED' : 'IN_PROGRESS',
+        completedAt: grading.passed ? new Date() : undefined,
       },
     })
 
@@ -151,7 +157,7 @@ export async function POST(
           type: 'EARNED_ACTIVITY',
           amount: activity.points,
           description: `Completaste la actividad`,
-          metadata: { activityId: id, score },
+          metadata: { activityId: id, score: grading.score },
         },
       })
     }
@@ -161,6 +167,9 @@ export async function POST(
       result: {
         status: userActivity.status,
         score: userActivity.score,
+        correctAnswers: grading.correctAnswers,
+        totalQuestions: grading.totalQuestions,
+        passed: grading.passed,
         attempts: userActivity.attempts,
         pointsEarned: userActivity.status === 'COMPLETED' && userActivity.attempts === 1 
           ? activity.points 

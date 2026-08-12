@@ -200,10 +200,23 @@ export async function getMobileUser(request: Request): Promise<MobileUser | null
       roles: true,
       timezone: true,
       image: true,
+      status: true,
     },
   })
 
-  return user
+  if (!user || user.status !== 'ACTIVE') {
+    return null
+  }
+
+  return {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    lastName: user.lastName,
+    roles: user.roles,
+    timezone: user.timezone,
+    image: user.image,
+  }
 }
 
 /**

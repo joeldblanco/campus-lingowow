@@ -120,3 +120,60 @@ export async function PUT(req: NextRequest) {
     )
   }
 }
+
+const deleteAccountSchema = z.object({
+  confirmation: z.literal('DELETE'),
+})
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const user = await getMobileUser(req)
+    if (!user) {
+      return unauthorizedResponse()
+    }
+
+    deleteAccountSchema.parse(await req.json())
+
+    await db.$transaction([
+      db.account.deleteMany({ where: { userId: user.id } }),
+      db.deviceToken.deleteMany({ where: { userId: user.id } }),
+      db.notification.deleteMany({ where: { userId: user.id } }),
+      db.refreshToken.updateMany({
+        where: { userId: user.id, isRevoked: false },
+        data: { isRevoked: true },
+      }),
+      db.user.update({
+        where: { id: user.id },
+        data: {
+          name: 'Usuario eliminado',
+          lastName: null,
+          email: `deleted+${user.id}@deleted.lingowow.invalid`,
+          password: null,
+          image: null,
+          bio: null,
+          status: 'INACTIVE',
+          twoFactorEnabled: false,
+          twoFactorSecret: null,
+          twoFactorRecoveryCodes: [],
+          permissions: [],
+        },
+      }),
+    ])
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('Error eliminando cuenta móvil:', error)
+
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Confirmación inválida' },
+        { status: 400 }
+      )
+    }
+
+    return NextResponse.json(
+      { error: 'No se pudo eliminar la cuenta' },
+      { status: 500 }
+    )
+  }
+}

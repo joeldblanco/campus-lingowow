@@ -15,6 +15,10 @@ describe('routes allowlists', () => {
     expect(apiPublicRoutes).toContain('/api/livekit/egress-recorder/*')
   })
 
+  it('lets mobile API handlers authenticate with Bearer tokens instead of browser sessions', () => {
+    expect(apiPublicRoutes).toContain('/api/mobile')
+  })
+
   it('does NOT publish /api/livekit/token (must require an authenticated session)', () => {
     expect(apiPublicRoutes).not.toContain('/api/livekit/token')
   })
