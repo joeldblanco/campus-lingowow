@@ -25,6 +25,7 @@ function getPrimaryRoleFromArray(roles: string[]): string {
 
 const { auth } = NextAuth(authConfig)
 const secret = process.env.JWT_SECRET
+const LINGOFLOW_GENERATE_PATH = '/api/admin/lingoflow/generate'
 
 export default auth(async (req) => {
   const { nextUrl } = req
@@ -43,6 +44,7 @@ export default auth(async (req) => {
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
   const isApiPayPalRoute = nextUrl.pathname.startsWith('/api/paypal')
   const isApiNiubizRoute = nextUrl.pathname.startsWith('/api/niubiz')
+  const isLingoFlowGenerateRoute = nextUrl.pathname === LINGOFLOW_GENERATE_PATH
   const isAdminAuthRoute = nextUrl.pathname.startsWith(adminPrefix)
   const isPublicRoute = matchesPathPattern(nextUrl.pathname, publicRoutes)
   const isAuthRoute = authRoutes.includes(nextUrl.pathname)
@@ -80,6 +82,9 @@ export default auth(async (req) => {
   }
 
   if (!isLoggedIn && !isPublicRoute) {
+    if (isLingoFlowGenerateRoute) {
+      return NextResponse.json({ error: 'No autenticado' }, { status: 401 })
+    }
     // Preservar la URL original para redirección después del login
     const signInUrl = new URL('/auth/signin', nextUrl)
     if (nextUrl.pathname !== '/' && nextUrl.pathname !== '/dashboard') {

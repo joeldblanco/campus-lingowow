@@ -257,6 +257,11 @@ const data = {
       ],
     },
     {
+      title: 'LingoFlow',
+      icon: TrendingUp,
+      url: '/admin/lingoflow',
+    },
+    {
       title: 'Comunicaciones',
       icon: Bell,
       subItems: [
