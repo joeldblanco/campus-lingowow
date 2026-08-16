@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Geist_Mono, Nunito } from 'next/font/google'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/next'
+import Script from 'next/script'
 import './globals.css'
 
 const nunito = Nunito({
@@ -35,6 +36,13 @@ export default function RootLayout({
         {children}
         <SpeedInsights />
         <Analytics />
+        <Script
+          src="https://analytics.lingowow.com/script.js"
+          data-website-id="f65fd393-39ca-4684-8ed7-c46f02971646"
+          data-domains="lingowow.com,www.lingowow.com,nj6w4redxpt9l33334vmqrgg.137.184.8.53.sslip.io"
+          data-exclude-search="true"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   )
