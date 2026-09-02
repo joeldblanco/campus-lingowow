@@ -4,6 +4,166 @@ import { db as prisma } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 import { CreateLessonSchema, EditLessonSchema } from '@/schemas/lessons'
 import * as z from 'zod'
+import { auth } from '@/auth'
+
+const accessibleEnrollmentStatuses = ['ACTIVE', 'PENDING', 'PAUSED', 'COMPLETED'] as const
+
+async function getPublishedCourseLessons(courseId: string) {
+  return prisma.lesson.findMany({
+    where: {
+      isPublished: true,
+      module: {
+        is: {
+          courseId,
+          isPublished: true,
+        },
+      },
+    },
+    select: {
+      id: true,
+      contents: {
+        select: { id: true },
+      },
+    },
+    orderBy: [{ module: { order: 'asc' } }, { order: 'asc' }, { createdAt: 'asc' }],
+  })
+}
+
+export async function getCourseLessonNavigation(
+  courseId: string,
+  lessonId: string,
+  userId: string
+) {
+  const lessons = await getPublishedCourseLessons(courseId)
+  const currentIndex = lessons.findIndex((lesson) => lesson.id === lessonId)
+
+  if (currentIndex === -1) return null
+
+  const contentIds = lessons[currentIndex].contents.map((content) => content.id)
+  const completedContents = contentIds.length
+    ? await prisma.userContent.count({
+        where: {
+          userId,
+          contentId: { in: contentIds },
+          completed: true,
+        },
+      })
+    : 0
+
+  return {
+    prevLessonId: lessons[currentIndex - 1]?.id ?? null,
+    nextLessonId: lessons[currentIndex + 1]?.id ?? null,
+    isCompleted: contentIds.length === 0 || completedContents === contentIds.length,
+  }
+}
+
+export async function completeCourseLesson(courseId: string, lessonId: string) {
+  const session = await auth()
+
+  if (!session?.user?.id) {
+    return { success: false as const, error: 'Debes iniciar sesión' }
+  }
+  const userId = session.user.id
+
+  const enrollment = await prisma.enrollment.findFirst({
+    where: {
+      studentId: userId,
+      courseId,
+      status: { in: [...accessibleEnrollmentStatuses] },
+    },
+    orderBy: { enrollmentDate: 'desc' },
+    select: { id: true },
+  })
+
+  if (!enrollment) {
+    return { success: false as const, error: 'No tienes acceso a este curso' }
+  }
+
+  const lesson = await prisma.lesson.findFirst({
+    where: {
+      id: lessonId,
+      isPublished: true,
+      module: {
+        is: {
+          courseId,
+          isPublished: true,
+        },
+      },
+    },
+    select: { id: true },
+  })
+
+  if (!lesson) {
+    return { success: false as const, error: 'Lección no encontrada' }
+  }
+
+  const lessons = await getPublishedCourseLessons(courseId)
+  const currentIndex = lessons.findIndex((entry) => entry.id === lessonId)
+
+  if (currentIndex === -1) {
+    return { success: false as const, error: 'Lección no encontrada' }
+  }
+
+  const now = new Date()
+  const currentContentIds = lessons[currentIndex].contents.map((content) => content.id)
+  const courseContentIds = lessons.flatMap((entry) => entry.contents.map((content) => content.id))
+
+  if (currentContentIds.length > 0) {
+    await prisma.$transaction([
+      prisma.userContent.createMany({
+        data: currentContentIds.map((contentId) => ({
+          userId,
+          contentId,
+          completed: true,
+          percentage: 100,
+          lastAccessed: now,
+        })),
+        skipDuplicates: true,
+      }),
+      prisma.userContent.updateMany({
+        where: {
+          userId,
+          contentId: { in: currentContentIds },
+        },
+        data: {
+          completed: true,
+          percentage: 100,
+          lastAccessed: now,
+        },
+      }),
+    ])
+  }
+
+  const completedContents = courseContentIds.length
+    ? await prisma.userContent.count({
+        where: {
+          userId,
+          contentId: { in: courseContentIds },
+          completed: true,
+        },
+      })
+    : 0
+  const courseProgress = courseContentIds.length
+    ? Math.round((completedContents / courseContentIds.length) * 100)
+    : 0
+
+  await prisma.enrollment.update({
+    where: { id: enrollment.id },
+    data: {
+      progress: courseProgress,
+      lastAccessed: now,
+    },
+  })
+
+  revalidatePath(`/my-courses/${courseId}`)
+  revalidatePath(`/my-courses/${courseId}/lessons/${lessonId}`)
+
+  return {
+    success: true as const,
+    nextLessonId: lessons[currentIndex + 1]?.id ?? null,
+    courseProgress,
+  }
+}
 
 export async function getAllLessons() {
   try {
