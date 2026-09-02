@@ -85,63 +85,31 @@ export const studentTourSteps: TourStep[] = [
     skipScroll: true,
   },
   {
-    target: '[data-tour="dashboard"]',
+    target: '[data-tour="student-course"]',
     content:
-      'Este es tu Panel de Control. Aquí verás tu progreso, próximas clases y acciones rápidas.',
+      'Aquí verás tu siguiente paso. Entra al curso para abrir sus lecciones. Al final usa “Completar lección” y luego “Siguiente lección”; verás la marca de completado y tu progreso actualizado.',
     placement: 'bottom',
     skipBeacon: true,
     skipScroll: true,
   },
   {
-    target: '[data-tour="continue-learning"]',
-    content:
-      'Continúa tu aprendizaje desde donde lo dejaste. Haz clic para retomar tu lección actual.',
-    placement: 'bottom',
-    skipBeacon: true,
-  },
-  {
-    target: '[data-tour="quick-actions"]',
-    content: 'Accesos rápidos a tus cursos, actividades, horario y progreso.',
-    placement: 'bottom',
-    skipBeacon: true,
-  },
-  {
-    target: '[data-tour="my-courses"]',
-    content:
-      'Aquí están todos tus cursos. Haz clic en cualquiera para ver las lecciones y materiales.',
-    placement: 'top',
-    skipBeacon: true,
-  },
-  {
-    target: '[data-tour="daily-goal"]',
-    content: 'Tu meta diaria y racha de estudio. ¡Mantén tu racha para ganar más puntos!',
-    placement: 'left',
-    skipBeacon: true,
-  },
-  {
-    target: '[data-tour="upcoming-classes"]',
-    content:
-      'Tus próximas clases en vivo aparecen aquí. Cuando sea hora, podrás unirte directamente.',
-    placement: 'top',
-    skipBeacon: true,
-  },
-  {
     target: '[data-tour="nav-actividades"]',
-    content: 'Practica con actividades interactivas para reforzar lo aprendido.',
+    content:
+      'En Actividades puedes practicar y revisar cuáles ejercicios ya están completados.',
     placement: 'right',
     skipBeacon: true,
     skipScroll: true,
   },
   {
     target: '[data-tour="nav-biblioteca"]',
-    content: 'Accede a la biblioteca con recursos adicionales para tu aprendizaje.',
+    content: 'En Biblioteca encontrarás los recursos y materiales adicionales de aprendizaje.',
     placement: 'right',
     skipBeacon: true,
     skipScroll: true,
   },
   {
-    target: '[data-tour="user-menu"]',
-    content: '¡Excelente! Desde aquí puedes ver tu perfil y configuración. ¡Disfruta aprendiendo!',
+    target: '[data-tour="tour-help"]',
+    content: 'Puedes cerrar el recorrido en cualquier momento y volver a abrirlo desde este botón.',
     placement: 'top',
     skipBeacon: true,
     skipScroll: true,

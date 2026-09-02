@@ -232,7 +232,7 @@ export default function Dashboard() {
           </div>
 
           {/* Paso 1: Focus Card */}
-          <div className="relative pl-4">
+          <div className="relative pl-4" data-tour="student-course">
             {/* Connector line segment inside Paso 1 */}
             <div className="absolute left-[-15px] md:left-[-19px] top-6 bottom-[-32px] w-0.5 bg-gradient-to-b from-emerald-500 via-[#137fec] to-slate-200 dark:to-slate-800" />
 
