@@ -586,7 +586,7 @@ function ClassroomInner({
 
     if (activeLesson) {
       return (
-        <CollaborativeContentWrapper className="min-h-full">
+        <CollaborativeContentWrapper key={activeLesson.id} className="min-h-full">
           <ActiveLessonViewer
             lessonData={activeLesson}
             isTeacher={isTeacher}
