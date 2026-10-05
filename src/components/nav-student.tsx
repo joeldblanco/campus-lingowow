@@ -123,7 +123,11 @@ export function NavStudent() {
               asChild
               className={itemClass}
             >
-              <Link href="/activities" className="flex items-center gap-4 w-full">
+              <Link
+                href="/activities"
+                className="flex items-center gap-4 w-full"
+                data-tour="nav-actividades"
+              >
                 <Shapes className="!w-8 !h-8 shrink-0" />
                 <span className="text-lg font-bold uppercase">Actividades</span>
               </Link>
@@ -138,7 +142,11 @@ export function NavStudent() {
               asChild
               className={itemClass}
             >
-              <Link href="/library" className="flex items-center gap-4 w-full">
+              <Link
+                href="/library"
+                className="flex items-center gap-4 w-full"
+                data-tour="nav-biblioteca"
+              >
                 <Library className="!w-8 !h-8 shrink-0" />
                 <span className="text-lg font-bold uppercase">Biblioteca</span>
               </Link>

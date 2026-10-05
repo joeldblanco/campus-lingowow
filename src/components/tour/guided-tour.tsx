@@ -3,8 +3,9 @@
 import dynamic from 'next/dynamic'
 import { useCallback, useEffect, useState } from 'react'
 import type { EventData, Props as JoyrideProps } from 'react-joyride'
-import { ACTIONS, EVENTS, STATUS } from 'react-joyride'
+import { ACTIONS, EVENTS } from 'react-joyride'
 import { useTour } from './tour-context'
+import { shouldPersistTourCompletion } from './tour-completion'
 import { getTourSteps } from './tour-steps'
 
 const Joyride = dynamic<JoyrideProps>(() => import('react-joyride').then((mod) => mod.Joyride), {
@@ -75,9 +76,7 @@ export function GuidedTour() {
   const handleJoyrideCallback = useCallback(
     (data: EventData) => {
       const { status, action, index, type } = data
-      const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED]
-
-      if (finishedStatuses.includes(status as string)) {
+      if (shouldPersistTourCompletion(status as string, action as string)) {
         if (state.tourType) {
           markTourAsCompleted(state.tourType)
         }
@@ -89,11 +88,6 @@ export function GuidedTour() {
         if (action === ACTIONS.NEXT) {
           setStepIndex(index + 1)
           
-          // Force scroll to top when navigating from step 7 to 8 (index 6 to 7) in student tour
-          if (state.tourType === 'student' && index === 6) {
-            window.scrollTo({ top: 0, behavior: 'smooth' })
-          }
-          
           // Force scroll to top when navigating to step 7 (index 6) in teacher tour
           if (state.tourType === 'teacher' && index === 5) {
             window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -102,11 +96,6 @@ export function GuidedTour() {
           // Force scroll to top when navigating to step 7 (index 6) in guest tour
           if (state.tourType === 'guest' && index === 5) {
             window.scrollTo({ top: 0, behavior: 'smooth' })
-          }
-          
-          // Force scroll to bottom when navigating to step 2 (index 1) in student tour
-          if (state.tourType === 'student' && index === 0) {
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
           }
           
           // Force scroll to bottom when navigating to step 2 (index 1) in teacher tour
@@ -126,11 +115,6 @@ export function GuidedTour() {
             window.scrollTo({ top: 0, behavior: 'smooth' })
           }
           
-          // Force scroll to top when navigating to step 7 (index 6) in student tour
-          if (state.tourType === 'student' && index - 1 === 7) {
-            window.scrollTo({ top: 0, behavior: 'smooth' })
-          }
-          
           // Force scroll to top when navigating to step 7 (index 6) in teacher tour
           if (state.tourType === 'teacher' && index - 1 === 6) {
             window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -139,11 +123,6 @@ export function GuidedTour() {
           // Force scroll to top when navigating to step 7 (index 6) in guest tour
           if (state.tourType === 'guest' && index - 1 === 6) {
             window.scrollTo({ top: 0, behavior: 'smooth' })
-          }
-          
-          // Force scroll to bottom when navigating to step 2 (index 1) in student tour
-          if (state.tourType === 'student' && index - 1 === 1) {
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
           }
           
           // Force scroll to bottom when navigating to step 2 (index 1) in teacher tour
@@ -156,10 +135,6 @@ export function GuidedTour() {
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
           }
         }
-      }
-
-      if (action === ACTIONS.CLOSE) {
-        stopTour()
       }
     },
     [state.tourType, stopTour, markTourAsCompleted, setStepIndex]
