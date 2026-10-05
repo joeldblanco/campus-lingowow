@@ -50,7 +50,7 @@ $result = Illuminate\Support\Facades\DB::transaction(function () use ($source, $
             'NEXT_PUBLIC_APP_URL' => 'https://dev.lingowow.com',
             'AUTH_SECRET' => bin2hex(random_bytes(32)), 'JWT_SECRET' => bin2hex(random_bytes(32)),
             'CRON_SECRET' => bin2hex(random_bytes(32)), 'NODE_ENV' => 'production',
-            'NIXPACKS_NODE_VERSION' => '22', 'NEXT_TELEMETRY_DISABLED' => '1',
+            'NIXPACKS_NODE_VERSION' => '24', 'NEXT_TELEMETRY_DISABLED' => '1',
             'RESEND_API_KEY' => 're_staging_disabled', 'PAYPAL_CLIENT_ID' => 'staging_disabled',
             'PAYPAL_CLIENT_SECRET' => 'staging_disabled', 'PAYPAL_MODE' => 'sandbox',
             'GEMINI_API_KEY' => 'staging_disabled', 'LINGOFLOW_AI_ENABLED' => 'false',
