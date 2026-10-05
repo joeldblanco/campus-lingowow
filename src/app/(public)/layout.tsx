@@ -14,8 +14,10 @@ export default async function PublicLayout({
   return (
     <>
       <Providers defaultOpen={defaultOpen}>
-        <ImpersonationBanner />
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+          <ImpersonationBanner />
+          {children}
+        </div>
       </Providers>
       <Toaster richColors theme="light" />
     </>
