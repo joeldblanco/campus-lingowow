@@ -140,13 +140,18 @@ export default function FAQPage() {
                   <AccordionItem value="item-9">
                     <AccordionTrigger>¿Cuánto cuestan los cursos?</AccordionTrigger>
                     <AccordionContent>
-                      Ofrecemos diferentes planes según la intensidad de estudio:
+                      Ofrecemos las líneas Essentials y Exclusive para inglés y español,
+                      con planes según la intensidad de estudio:
                       <ul className="list-disc list-inside mt-2 space-y-1">
-                        <li>Plan Básico: $89/mes (2 clases/semana)</li>
-                        <li>Plan Intensivo: $149/mes (4 clases/semana)</li>
-                        <li>Plan Premium: $199/mes (5 clases/semana)</li>
+                        <li>Go: 8 clases al mes (2 por semana)</li>
+                        <li>Lingo: 12 clases al mes (3 por semana)</li>
+                        <li>Wow: 16 clases al mes (4 por semana)</li>
                       </ul>
-                      Todos los materiales están incluidos.
+                      Los precios varían según el idioma, la línea y el plan. Consulta los precios
+                      vigentes y los detalles de cada opción en la{' '}
+                      <Link href="/shop" className="text-primary underline">
+                        Tienda
+                      </Link>.
                     </AccordionContent>
                   </AccordionItem>
 
@@ -185,9 +190,9 @@ export default function FAQPage() {
                   <AccordionItem value="item-13">
                     <AccordionTrigger>¿Cuánto dura cada clase?</AccordionTrigger>
                     <AccordionContent>
-                      Cada clase tiene una duración de 60 minutos. Este tiempo es ideal para 
-                      mantener la concentración y aprovechar al máximo la sesión sin que resulte 
-                      agotador.
+                      Cada clase tiene una duración garantizada de 40 minutos. Puede extenderse
+                      hasta 60 minutos a criterio del profesor. Esta extensión es opcional y
+                      no constituye un derecho del estudiante ni una obligación del profesor.
                     </AccordionContent>
                   </AccordionItem>
 

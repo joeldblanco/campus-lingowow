@@ -1,0 +1,75 @@
+name: Deploy environments
+
+on:
+  push:
+    branches: [dev, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
+
+concurrency:
+  group: lingowow-environments
+  cancel-in-progress: false
+
+jobs:
+  release-quality:
+    if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      TZ: America/Lima
+      DATABASE_URL: postgresql://test:test@localhost:5432/test
+      RESEND_API_KEY: re_ci_disabled
+      PAYPAL_CLIENT_ID: ci_disabled
+      PAYPAL_CLIENT_SECRET: ci_disabled
+      GEMINI_API_KEY: ci_disabled
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install --global npm@11.17.0
+      - run: npm ci
+      - run: npm run test:unit -- --run
+      - run: npm run lint
+      - run: npx tsc --noEmit
+  deploy:
+    needs: release-quality
+    if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment:
+      name: ${{ github.ref_name == 'main' && 'production' || 'dev' }}
+      url: ${{ github.ref_name == 'main' && 'https://www.lingowow.com' || 'https://dev.lingowow.com' }}
+    steps:
+      - name: Configure restricted deployment key
+        env:
+          SSH_KEY: ${{ secrets.LINGOWOW_CI_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.LINGOWOW_CI_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/lingowow_ci
+          chmod 600 ~/.ssh/lingowow_ci
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+      - name: Deploy selected environment
+        env:
+          BRANCH: ${{ github.ref_name }}
+          COMMIT: ${{ github.sha }}
+        run: ssh -o BatchMode=yes -o IdentitiesOnly=yes -i ~/.ssh/lingowow_ci root@137.184.8.53 "deploy-$BRANCH $COMMIT"
+      - name: Record staging deployment
+        if: github.ref == 'refs/heads/dev' && always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          COMMIT: ${{ github.sha }}
+          RESULT: ${{ job.status }}
+          REPOSITORY: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          state=failure
+          if [ "$RESULT" = success ]; then state=success; fi
+          gh api "repos/$REPOSITORY/statuses/$COMMIT" --method POST -f state="$state" -f context=dev-deployed -f description='Staging deployment verification' -f target_url="$RUN_URL"

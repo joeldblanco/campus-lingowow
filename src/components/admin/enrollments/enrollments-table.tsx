@@ -36,6 +36,7 @@ import { Edit, MoreVertical, Search, Trash2, Plus, SlidersHorizontal } from 'luc
 import { toast } from 'sonner'
 import { EditEnrollmentDialog } from './edit-enrollment-dialog'
 import { CreateEnrollmentDialog } from './create-enrollment-dialog'
+import { ExternalPaymentDialog } from './external-payment-dialog'
 import { UserAvatar } from '@/components/ui/user-avatar'
 import { Progress } from '@/components/ui/progress'
 import { EnrollmentStatus } from '@prisma/client'
@@ -390,12 +391,15 @@ export function EnrollmentsTable({ enrollments, onEnrollmentUpdated }: Enrollmen
             Administra las inscripciones de estudiantes en los cursos.
           </p>
         </div>
+        <div className="flex flex-wrap gap-2">
+        <ExternalPaymentDialog onEnrollmentCreated={onEnrollmentUpdated} />
         <CreateEnrollmentDialog onEnrollmentCreated={onEnrollmentUpdated}>
           <Button className="bg-primary hover:bg-primary/80 text-white">
             <Plus className="mr-2 h-4 w-4" />
             Nueva Inscripción
           </Button>
         </CreateEnrollmentDialog>
+        </div>
       </div>
 
       <DataTable

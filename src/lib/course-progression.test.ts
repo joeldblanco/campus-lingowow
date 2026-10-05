@@ -4,6 +4,7 @@ import {
   hasPassedExam,
   computeModuleLockState,
   buildModuleProgressView,
+  summarizeCourseProgress,
   type ProgressModule,
   type GatingExam,
 } from './course-progression'
@@ -61,6 +62,23 @@ describe('computeModuleProgress (#147)', () => {
     const shuffled = [modules[2], modules[0], modules[1]]
     const progress = computeModuleProgress(shuffled, [])
     expect(progress.map((p) => p.moduleId)).toEqual(['m1', 'm2', 'm3'])
+  })
+})
+
+describe('summarizeCourseProgress', () => {
+  it('counts only completed contents that belong to the visible course', () => {
+    const summary = summarizeCourseProgress(modules, [
+      { contentId: 'c1', completed: true },
+      { contentId: 'c2', completed: false },
+      { contentId: 'content-from-another-course', completed: true },
+    ])
+
+    expect(summary).toEqual({
+      totalContents: 5,
+      completedContents: 1,
+      progressPercentage: 20,
+      completedContentIds: ['c1'],
+    })
   })
 })
 
