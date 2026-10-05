@@ -151,4 +151,17 @@ describe('getCourseForPublicView exam progress metadata', () => {
     })
     expect(db.examAttempt.findMany).not.toHaveBeenCalled()
   })
+
+  it('keeps an evaluation pending when all scores are below the passing threshold', async () => {
+    const exam = makeExam({ id: 'pending-exam', passingScore: 80 })
+    vi.mocked(db.course.findUnique).mockResolvedValue(makeCourse({ exams: [exam] }) as never)
+    vi.mocked(db.examAttempt.findMany).mockResolvedValue([
+      { examId: exam.id, score: 79 },
+      { examId: exam.id, score: null },
+    ] as never)
+
+    const result = await getCourseForPublicView('course-1', 'student-1')
+
+    expect(result?.exams[0].hasPassed).toBe(false)
+  })
 })
