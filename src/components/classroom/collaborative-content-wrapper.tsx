@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState, memo } from 'react'
 import { useCollaboration } from './collaboration-context'
+import { useRecorderScroll } from './use-recorder-scroll'
+import { useRecorderMedia } from './use-recorder-media'
 import { RemoteCursor } from './remote-cursor'
 import { cn } from '@/lib/utils'
 import { ChevronUp, ChevronDown, Highlighter, X } from 'lucide-react'
@@ -35,7 +37,10 @@ export function CollaborativeContentWrapper({
     updateTextSelection,
     remoteSelection,
     localSelection,
+    isTeacher,
   } = useCollaboration()
+  useRecorderScroll(containerRef, isTeacher)
+  useRecorderMedia(containerRef, isTeacher)
 
   // Pending selection waiting for user to click "Highlight" button
   // Using ref + state to avoid re-renders that break native selection

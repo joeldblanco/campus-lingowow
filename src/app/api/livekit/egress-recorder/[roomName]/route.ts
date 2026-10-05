@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { buildEgressRecorderHtml } from '../template'
+import { authorizeRecorderToken } from '../auth'
 
 // This Route Handler returns raw HTML (not RSC) for the LiveKit egress headless Chrome.
 // It emits START_RECORDING as a real <script> tag in the HTML, guaranteed to execute
@@ -13,6 +14,11 @@ export async function GET(
   const { roomName } = await params
   const url = request.nextUrl.searchParams.get('url') || ''
   const token = request.nextUrl.searchParams.get('token') || ''
+  const authorization = await authorizeRecorderToken(token)
+  if (!authorization || authorization.roomName !== roomName) {
+    return NextResponse.json({ error: 'Token de grabación no válido' }, { status: 401 })
+  }
+
   const html = await buildEgressRecorderHtml({ roomName, url, token })
 
   return new NextResponse(html, {

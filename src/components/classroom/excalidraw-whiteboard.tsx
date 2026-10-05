@@ -162,6 +162,26 @@ export function ExcalidrawWhiteboard({ bookingId, isTeacher = false }: Excalidra
     }
   }, [connectionStatus, excalidrawAPI, addCommandListener, removeCommandListener, mergeElements])
 
+  // A recorder (or reconnecting participant) needs the live scene, which may
+  // include changes that have not been saved to the booking yet.
+  useEffect(() => {
+    if (connectionStatus !== 'connected' || !isTeacher || !excalidrawAPI) return
+    const handleSyncRequest = (data: Record<string, unknown>) => {
+      if (data.type !== 'REQUEST_SYNC') return
+      sendCommand('whiteboard-sync', {
+        type: 'WHITEBOARD_UPDATE',
+        elements: excalidrawAPI.getSceneElements(),
+        participantId: 'teacher',
+      })
+    }
+    addCommandListener('sync-request', handleSyncRequest)
+    return () => removeCommandListener('sync-request', handleSyncRequest)
+  }, [connectionStatus, isTeacher, excalidrawAPI, sendCommand, addCommandListener, removeCommandListener])
+
+  useEffect(() => () => {
+    if (syncThrottleRef.current) clearTimeout(syncThrottleRef.current)
+  }, [])
+
   // Send whiteboard updates to remote participants (throttled)
   const syncWhiteboardElements = useCallback(() => {
     if (!excalidrawAPI) return
@@ -178,7 +198,7 @@ export function ExcalidrawWhiteboard({ bookingId, isTeacher = false }: Excalidra
     // Throttle to max 4 updates per second for stability
     syncThrottleRef.current = setTimeout(() => {
       const elements = excalidrawAPI.getSceneElements() as ExcalidrawElement[]
-      if (!elements || elements.length === 0) return
+      if (!elements) return
       
       // Check if anything actually changed
       let hasChanges = false
