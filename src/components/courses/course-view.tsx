@@ -344,7 +344,7 @@ export function CourseView({ course, progress, moduleProgress }: CourseViewProps
                             <Progress value={moduleProgressPercentage} className="h-2" />
                           </div>
                           <div className="text-xs text-gray-400 font-normal">
-                            {moduleProgress} de {totalModuleContents} contenidos • {module._count.lessons} lecciones
+                            {moduleProgress} de {totalModuleContents} contenidos • {module.lessons.length} lecciones
                           </div>
                         </div>
                       </div>
