@@ -572,7 +572,9 @@ export async function getCoursesForPublicView(userId?: string) {
             isPublished: true,
             _count: {
               select: {
-                lessons: true,
+                lessons: {
+                  where: { isPublished: true },
+                },
               },
             },
           },
@@ -685,7 +687,9 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
             },
             _count: {
               select: {
-                lessons: true,
+                lessons: {
+                  where: { isPublished: true },
+                },
               },
             },
           },
