@@ -1022,7 +1022,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-          { success: false, error: error.issues.map((e) => e.message).join(', ') },
+        { success: false, error: error.issues.map((e) => e.message).join(', ') },
         { status: 400 }
       )
     }
