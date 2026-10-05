@@ -12,12 +12,12 @@ import {
   syncAcademicPeriodStatuses,
 } from '@/lib/actions/academic-period'
 import { unwrapActionResult } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 const seasonNameEnum = z.enum(SeasonName)
 
 export const academicPeriodTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_academic_periods_list',
     description: 'Lista los períodos académicos de un año. Sincroniza isActive automáticamente según las fechas.',
     scopes: ['mcp:academic-periods:read'],
@@ -25,16 +25,16 @@ export const academicPeriodTools: AnyToolModule[] = [
       year: z.number().int().min(2020).max(2100).optional(),
     },
     handler: async ({ year }) => getPeriods(year),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_academic_periods_relevant',
     description: 'Devuelve los períodos relevantes (activo + cercanos en el tiempo). Útil para mostrar contexto temporal.',
     scopes: ['mcp:academic-periods:read'],
     handler: async () => getRelevantPeriods(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_academic_periods_get_by_date',
     description: 'Devuelve el período académico que contiene una fecha específica.',
     scopes: ['mcp:academic-periods:read'],
@@ -42,16 +42,16 @@ export const academicPeriodTools: AnyToolModule[] = [
       date: z.string().describe('YYYY-MM-DD o ISO datetime'),
     },
     handler: async ({ date }) => getPeriodByDate(date),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_academic_periods_seasons_list',
     description: 'Lista todas las temporadas (Winter, Spring, Summer, Fall) con sus rangos de fechas.',
     scopes: ['mcp:academic-periods:read'],
     handler: async () => getSeasons(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_academic_periods_create',
     description:
       'Crea un período académico. La fecha de fin se calcula automáticamente: 4 semanas (default) o 1 semana si isSpecialWeek=true. Si isActive=true, desactiva los demás períodos.',
@@ -73,9 +73,9 @@ export const academicPeriodTools: AnyToolModule[] = [
       })
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_academic_periods_create_season',
     description: 'Crea una temporada (Winter, Spring, Summer, Fall) para un año específico.',
     scopes: ['mcp:academic-periods:write'],
@@ -96,9 +96,9 @@ export const academicPeriodTools: AnyToolModule[] = [
       })
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_academic_periods_generate_year',
     description:
       'Genera automáticamente los períodos académicos de un año completo (4 temporadas × N períodos). Idempotente: no duplica si ya existen.',
@@ -110,9 +110,9 @@ export const academicPeriodTools: AnyToolModule[] = [
       const result = await generatePeriodsForYear(year)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_academic_periods_set_active',
     description: 'Marca un período como activo y desactiva los demás. Operación administrativa para forzar el período activo.',
     scopes: ['mcp:academic-periods:write'],
@@ -121,9 +121,9 @@ export const academicPeriodTools: AnyToolModule[] = [
       const result = await setActivePeriod(periodId)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_academic_periods_sync_statuses',
     description:
       'Recalcula y sincroniza el flag isActive de todos los períodos según la fecha actual. Idempotente.',
@@ -132,5 +132,5 @@ export const academicPeriodTools: AnyToolModule[] = [
       const result = await syncAcademicPeriodStatuses()
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

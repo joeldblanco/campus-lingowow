@@ -12,13 +12,13 @@ import {
   updateFileMetadata,
 } from '@/lib/actions/file-manager'
 import { unwrapActionResult } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 const fileCategoryEnum = z.enum(FileCategory)
 const fileResourceTypeEnum = z.enum(FileResourceType)
 
 export const fileManagerTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_files_list',
     description:
       'Lista archivos almacenados en Cloudinary con paginación. Filtros: search, resourceType (IMAGE/VIDEO/AUDIO/DOCUMENT), folder.',
@@ -34,9 +34,9 @@ export const fileManagerTools: AnyToolModule[] = [
       const result = await listFiles(args)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_files_get_details',
     description: 'Obtiene los detalles completos de un archivo (incluye uploader, transformaciones y logs de uso).',
     scopes: ['mcp:files:read'],
@@ -45,9 +45,9 @@ export const fileManagerTools: AnyToolModule[] = [
       const result = await getFileDetails(publicId)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_files_list_folders',
     description: 'Lista las carpetas de Cloudinary bajo el prefijo del proyecto.',
     scopes: ['mcp:files:read'],
@@ -55,9 +55,9 @@ export const fileManagerTools: AnyToolModule[] = [
       const result = await listFolders()
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_files_usage_stats',
     description: 'Estadísticas globales de uso de archivos: total, por tipo, por categoría, almacenamiento.',
     scopes: ['mcp:files:read'],
@@ -65,9 +65,9 @@ export const fileManagerTools: AnyToolModule[] = [
       const result = await getUsageStats()
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_files_update_metadata',
     description:
       'Actualiza metadata de un archivo (fileName, description, tags, category, isPublic). Sincroniza tags con Cloudinary.',
@@ -84,9 +84,9 @@ export const fileManagerTools: AnyToolModule[] = [
       const result = await updateFileMetadata(publicId, metadata)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_files_batch_delete',
     description:
       'Elimina archivos en lote de Cloudinary y marca como inactivos en DB (soft delete). Operación destructiva.',
@@ -98,9 +98,9 @@ export const fileManagerTools: AnyToolModule[] = [
       const result = await batchDeleteFiles(publicIds)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_files_move',
     description: 'Mueve archivos a una carpeta destino en Cloudinary.',
     scopes: ['mcp:files:write'],
@@ -112,9 +112,9 @@ export const fileManagerTools: AnyToolModule[] = [
       const result = await moveFiles(publicIds, targetFolder)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_files_create_folder',
     description: 'Crea una carpeta nueva en Cloudinary bajo el prefijo del proyecto.',
     scopes: ['mcp:files:write'],
@@ -123,9 +123,9 @@ export const fileManagerTools: AnyToolModule[] = [
       const result = await createFolder(path)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_files_sync_cloudinary',
     description:
       'Sincroniza los recursos de Cloudinary (campus-lingowow/) con la tabla FileAsset de la DB. Idempotente: crea registros faltantes y actualiza los existentes.',
@@ -134,5 +134,5 @@ export const fileManagerTools: AnyToolModule[] = [
       const result = await syncCloudinaryResources()
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

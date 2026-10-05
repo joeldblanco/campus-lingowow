@@ -10,7 +10,7 @@ import {
   updateTeacherAvailabilitySlot,
 } from '@/lib/actions/teacher-schedule'
 import { unwrapActionResult } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 const dayOfWeekEnum = z.enum([
   'monday',
@@ -30,7 +30,7 @@ const slotShape = z.object({
 })
 
 export const teacherAvailabilityTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_teacher_schedule_get',
     description:
       'Obtiene los datos de horario del profesor autenticado en un rango de fechas (disponibilidad + clases reservadas).',
@@ -41,9 +41,9 @@ export const teacherAvailabilityTools: AnyToolModule[] = [
     },
     handler: async ({ startDate, endDate }) =>
       getTeacherScheduleData(new Date(startDate), new Date(endDate)),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_teacher_schedule_for_admin',
     description: 'Vista admin del horario de un profesor en un rango de fechas con todos los detalles de clases y bookings.',
     scopes: ['mcp:teachers:read'],
@@ -54,9 +54,9 @@ export const teacherAvailabilityTools: AnyToolModule[] = [
     },
     handler: async ({ teacherId, startDate, endDate }) =>
       getTeacherScheduleForAdmin(teacherId, new Date(startDate), new Date(endDate)),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_teacher_schedule_week',
     description: 'Devuelve el horario de la semana que contiene la fecha indicada (formato ISO).',
     scopes: ['mcp:teachers:read'],
@@ -64,9 +64,9 @@ export const teacherAvailabilityTools: AnyToolModule[] = [
       date: z.string().datetime(),
     },
     handler: async ({ date }) => getWeekSchedule(new Date(date)),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_teacher_schedule_month',
     description: 'Devuelve el horario del mes que contiene la fecha indicada.',
     scopes: ['mcp:teachers:read'],
@@ -74,9 +74,9 @@ export const teacherAvailabilityTools: AnyToolModule[] = [
       date: z.string().datetime(),
     },
     handler: async ({ date }) => getMonthSchedule(new Date(date)),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_teacher_schedule_day',
     description: 'Devuelve el horario del día indicado.',
     scopes: ['mcp:teachers:read'],
@@ -84,9 +84,9 @@ export const teacherAvailabilityTools: AnyToolModule[] = [
       date: z.string().datetime(),
     },
     handler: async ({ date }) => getDaySchedule(new Date(date)),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_teacher_availability_update_slot',
     description:
       'Activa o desactiva un slot de disponibilidad de un profesor en un día y horario. Si pasas targetTeacherId distinto al dueño de la API key, requiere rol ADMIN.',
@@ -108,9 +108,9 @@ export const teacherAvailabilityTools: AnyToolModule[] = [
       })
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_teacher_availability_bulk_update',
     description:
       'Reemplaza la disponibilidad de un profesor para varios días en una sola llamada. Cada slot puede ser available=true (lo crea/mantiene) o false (lo elimina si existía).',
@@ -123,9 +123,9 @@ export const teacherAvailabilityTools: AnyToolModule[] = [
       const result = await bulkUpdateTeacherAvailability(slots, { targetTeacherId })
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_teacher_blocked_day_toggle',
     description:
       'Bloquea o desbloquea un día específico (YYYY-MM-DD) para un profesor. Útil para vacaciones, ausencias o licencias.',
@@ -145,5 +145,5 @@ export const teacherAvailabilityTools: AnyToolModule[] = [
       })
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

@@ -15,7 +15,7 @@ import {
   unsubscribeFromNewsletter,
 } from '@/lib/actions/newsletter'
 import { unwrapActionResult } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 const notificationTypeEnum = z.enum(NotificationType)
 const userRoleEnum = z.enum(UserRole)
@@ -32,7 +32,7 @@ const bulkFiltersShape = z.object({
 })
 
 export const notificationTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_notifications_create',
     description:
       'Crea una notificación dirigida a un usuario específico (in-app). El usuario la verá en su campanita.',
@@ -56,9 +56,9 @@ export const notificationTools: AnyToolModule[] = [
       })
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_notifications_create_for_users',
     description: 'Crea la misma notificación para una lista explícita de userIds (lote).',
     scopes: ['mcp:notifications:write'],
@@ -80,9 +80,9 @@ export const notificationTools: AnyToolModule[] = [
       })
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_notifications_notify_admins',
     description: 'Crea la notificación para todos los usuarios con rol ADMIN activos.',
     scopes: ['mcp:notifications:write'],
@@ -103,9 +103,9 @@ export const notificationTools: AnyToolModule[] = [
       })
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_notifications_bulk_preview',
     description:
       'Devuelve un preview de a cuántos usuarios afectaría una notificación masiva con los filtros dados, sin enviarla.',
@@ -117,9 +117,9 @@ export const notificationTools: AnyToolModule[] = [
       const result = await getBulkNotificationPreview(filters)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_notifications_count_by_role',
     description: 'Cuenta cuántos usuarios coinciden con un set de filtros bulk, agrupados por rol.',
     scopes: ['mcp:notifications:read'],
@@ -130,9 +130,9 @@ export const notificationTools: AnyToolModule[] = [
       const result = await getUserCountByRole(filters)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_notifications_send_bulk',
     description:
       'Envía una notificación masiva a todos los usuarios que coincidan con los filtros (rol obligatorio, status/idioma/nivel/curso opcionales). Operación destructiva-on-recipients: se recomienda verificar antes con el preview.',
@@ -156,10 +156,10 @@ export const notificationTools: AnyToolModule[] = [
       })
       return unwrapActionResult(result)
     },
-  },
+  }),
 
   // Newsletter
-  {
+  defineTool({
     name: 'lingowow_notifications_newsletter_list',
     description: 'Lista las suscripciones al newsletter con filtros opcionales (paginado).',
     scopes: ['mcp:notifications:read'],
@@ -170,17 +170,17 @@ export const notificationTools: AnyToolModule[] = [
       offset: z.number().int().min(0).optional(),
     },
     handler: async (args) => getNewsletterSubscriptions(args),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_notifications_newsletter_check',
     description: 'Verifica si un email está suscrito al newsletter.',
     scopes: ['mcp:notifications:read'],
     inputShape: { email: z.string().email() },
     handler: async ({ email }) => checkNewsletterSubscription(email),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_notifications_newsletter_subscribe',
     description: 'Suscribe un email al newsletter (idempotente: re-activa si estaba inactivo).',
     scopes: ['mcp:notifications:write'],
@@ -193,9 +193,9 @@ export const notificationTools: AnyToolModule[] = [
       const result = await subscribeToNewsletter(email, name, source)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_notifications_newsletter_unsubscribe',
     description: 'Desuscribe un email del newsletter (lo marca como isActive=false).',
     scopes: ['mcp:notifications:write'],
@@ -204,5 +204,5 @@ export const notificationTools: AnyToolModule[] = [
       const result = await unsubscribeFromNewsletter(email)
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

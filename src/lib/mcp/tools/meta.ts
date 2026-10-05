@@ -3,7 +3,7 @@ import { db } from '@/lib/db'
 import { TOOL_REGISTRY } from '@/lib/mcp/registry'
 import { MCP_SCOPES, MCP_SCOPE_PRESETS } from '@/lib/mcp/scopes'
 import { getToolRateLimits } from '@/lib/mcp/rate-limit'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 /**
  * Tools de meta-introspección y diagnóstico.
@@ -30,7 +30,7 @@ function summarizeRegistry() {
 }
 
 export const metaTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_help',
     description:
       'Devuelve el catálogo de dominios, scopes, presets de scopes, límites por tool y conteo total de tools del servidor MCP. Úsalo al iniciar una sesión para descubrir qué puedes hacer y qué scopes necesitas pedir.',
@@ -77,9 +77,9 @@ export const metaTools: AnyToolModule[] = [
         },
       }
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_health',
     description:
       'Probe de salud del servidor MCP: verifica conectividad con PostgreSQL, presencia de env vars críticas y estado del feature flag. Útil antes de operaciones largas o multi-step.',
@@ -127,5 +127,5 @@ export const metaTools: AnyToolModule[] = [
         timestamp: new Date().toISOString(),
       }
     },
-  },
+  }),
 ]

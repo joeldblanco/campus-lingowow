@@ -11,10 +11,10 @@ import {
 } from '@/lib/actions/courses'
 import { CreateCourseSchema, EditCourseSchema } from '@/schemas/courses'
 import { unwrapActionResult } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 export const courseTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_courses_list',
     description: 'Lista todos los cursos del campus con sus detalles. Soporta paginación.',
     scopes: ['mcp:courses:read'],
@@ -31,9 +31,9 @@ export const courseTools: AnyToolModule[] = [
         courses: all.slice(offset, offset + limit),
       }
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_courses_get',
     description: 'Obtiene un curso por ID con todos sus detalles.',
     scopes: ['mcp:courses:read'],
@@ -43,17 +43,17 @@ export const courseTools: AnyToolModule[] = [
       if (!course) throw new Error('Curso no encontrado')
       return course
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_courses_stats',
     description:
       'Devuelve estadísticas agregadas de cursos: totales, publicados, inscripciones y módulos.',
     scopes: ['mcp:courses:read'],
     handler: async () => getCourseStats(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_courses_create',
     description:
       'Crea un curso nuevo. createdById debe ser el ID de un usuario con rol ADMIN o TEACHER. El curso se crea como no publicado.',
@@ -75,9 +75,9 @@ export const courseTools: AnyToolModule[] = [
       const result = await createCourse(data)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_courses_update',
     description: 'Actualiza los campos de un curso existente.',
     scopes: ['mcp:courses:write'],
@@ -98,9 +98,9 @@ export const courseTools: AnyToolModule[] = [
       const result = await updateCourse(id, parsed)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_courses_toggle_published',
     description: 'Alterna el estado publicado/borrador de un curso.',
     scopes: ['mcp:courses:write'],
@@ -109,9 +109,9 @@ export const courseTools: AnyToolModule[] = [
       const result = await toggleCoursePublished(id)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_courses_archive',
     description: 'Archiva un curso (lo marca como no publicado).',
     scopes: ['mcp:courses:write'],
@@ -120,9 +120,9 @@ export const courseTools: AnyToolModule[] = [
       const result = await archiveCourse(id)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_courses_delete',
     description:
       'Elimina un curso permanentemente. Falla si tiene inscripciones activas. Operación destructiva.',
@@ -132,5 +132,5 @@ export const courseTools: AnyToolModule[] = [
       const result = await deleteCourse(id)
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

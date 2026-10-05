@@ -10,7 +10,7 @@ import {
   updateCreditPackage,
 } from '@/lib/actions/credits'
 import { unwrapActionResult } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 const adjustmentTypeEnum = z.enum([
   'PURCHASE',
@@ -35,7 +35,7 @@ const transactionFilterTypeEnum = z.enum([
 const spendTypeEnum = z.enum(['SPEND_PRODUCT', 'SPEND_PLAN', 'SPEND_COURSE'])
 
 export const creditTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_credits_get_balance',
     description: 'Obtiene el balance de créditos de un usuario (totales, disponibles, gastados, bonus). Crea el balance inicial si no existe.',
     scopes: ['mcp:credits:read'],
@@ -44,9 +44,9 @@ export const creditTools: AnyToolModule[] = [
       const result = await getUserCreditBalance(userId)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_credits_list_transactions',
     description: 'Lista el historial de transacciones de créditos de un usuario, con paginación y filtro por tipo.',
     scopes: ['mcp:credits:read'],
@@ -60,9 +60,9 @@ export const creditTools: AnyToolModule[] = [
       const result = await getCreditTransactions(userId, { limit, offset, type })
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_credits_add',
     description:
       'Agrega créditos a un usuario. Útil para ADMIN_ADJUSTMENT, BONUS, REWARD, REFUND. PURCHASE normalmente se hace vía processCreditPackagePurchase con una factura.',
@@ -78,9 +78,9 @@ export const creditTools: AnyToolModule[] = [
       const result = await addCreditsToUser(userId, amount, transactionType, description, metadata)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_credits_spend',
     description:
       'Resta créditos del balance de un usuario para una compra interna (producto, plan o curso). Falla si el balance disponible es insuficiente.',
@@ -106,9 +106,9 @@ export const creditTools: AnyToolModule[] = [
       )
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_credits_packages_list',
     description: 'Lista los paquetes de créditos activos disponibles para compra.',
     scopes: ['mcp:credits:read'],
@@ -116,9 +116,9 @@ export const creditTools: AnyToolModule[] = [
       const result = await getCreditPackages()
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_credits_packages_get',
     description: 'Obtiene un paquete de créditos por ID.',
     scopes: ['mcp:credits:read'],
@@ -127,9 +127,9 @@ export const creditTools: AnyToolModule[] = [
       const result = await getCreditPackageById(packageId)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_credits_packages_create',
     description: 'Crea un paquete de créditos para venta. credits = créditos que recibe el usuario; bonusCredits = adicionales gratis.',
     scopes: ['mcp:credits:write'],
@@ -156,9 +156,9 @@ export const creditTools: AnyToolModule[] = [
       })
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_credits_packages_update',
     description: 'Actualiza un paquete de créditos. Pasa solo los campos a modificar.',
     scopes: ['mcp:credits:write'],
@@ -178,5 +178,5 @@ export const creditTools: AnyToolModule[] = [
       const result = await updateCreditPackage(packageId, data)
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

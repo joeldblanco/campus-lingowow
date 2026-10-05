@@ -8,29 +8,29 @@ import {
 } from '@/lib/actions/classroom'
 import { getRecordingStatus, recoverOrphanedRecordings } from '@/lib/actions/classroom-recording'
 import { unwrapActionResult } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 const contentTypeEnum = z.enum(['lesson', 'student_lesson', 'library_resource'])
 
 export const classroomTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_classroom_booking_course_structure',
     description:
       'Devuelve la estructura del curso (módulos + lecciones) asociada a un booking, incluyendo lecciones personalizadas si existen.',
     scopes: ['mcp:classes:read'],
     inputShape: { bookingId: z.string().min(1) },
     handler: async ({ bookingId }) => getBookingCourseStructure(bookingId),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_classroom_lesson_content',
     description: 'Obtiene el contenido completo de una lección con bloques anidados.',
     scopes: ['mcp:classes:read'],
     inputShape: { lessonId: z.string().min(1) },
     handler: async ({ lessonId }) => getLessonContent(lessonId),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_classroom_content_get',
     description:
       'Obtiene contenido compartible por ID y tipo (lesson, student_lesson, library_resource).',
@@ -40,16 +40,16 @@ export const classroomTools: AnyToolModule[] = [
       contentType: contentTypeEnum,
     },
     handler: async ({ contentId, contentType }) => getContentById(contentId, contentType),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_classroom_shareable_content',
     description: 'Lista todo el contenido compartible disponible para usar en clase.',
     scopes: ['mcp:classes:read'],
     handler: async () => getShareableContent(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_classroom_chat_messages',
     description:
       'Lista los mensajes de chat de una clase (booking) en orden cronológico. Acceso admin: no requiere ser participante.',
@@ -67,18 +67,18 @@ export const classroomTools: AnyToolModule[] = [
         orderBy: { createdAt: 'asc' },
         take: limit,
       }),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_classroom_whiteboard_data',
     description: 'Devuelve la pizarra (whiteboard) asociada a un booking.',
     scopes: ['mcp:classes:read'],
     inputShape: { bookingId: z.string().min(1) },
     handler: async ({ bookingId }) =>
       db.whiteboardData.findUnique({ where: { bookingId } }),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_classroom_recording_status',
     description: 'Obtiene el estado de una grabación en LiveKit por egressId.',
     scopes: ['mcp:classes:read'],
@@ -87,9 +87,9 @@ export const classroomTools: AnyToolModule[] = [
       const result = await getRecordingStatus(egressId)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_classroom_recordings_list',
     description:
       'Lista las grabaciones registradas en la base de datos (ClassRecording) con paginación y filtros.',
@@ -126,9 +126,9 @@ export const classroomTools: AnyToolModule[] = [
       ])
       return { total, limit, offset, recordings }
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_classroom_recover_orphaned_recordings',
     description:
       'Recupera grabaciones huérfanas: busca egresses en LiveKit que no tienen registro local y los registra. Operación administrativa.',
@@ -137,5 +137,5 @@ export const classroomTools: AnyToolModule[] = [
       const result = await recoverOrphanedRecordings()
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

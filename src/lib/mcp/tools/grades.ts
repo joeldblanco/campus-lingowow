@@ -9,10 +9,10 @@ import {
   updateActivityGrade,
 } from '@/lib/actions/grades'
 import { unwrapActionResult } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 export const gradeTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_grades_list',
     description:
       'Lista calificaciones agregadas por estudiante e inscripción con filtros opcionales (curso, estudiante, idioma, nivel, status).',
@@ -35,9 +35,9 @@ export const gradeTools: AnyToolModule[] = [
         grades: all.slice(offset, offset + limit),
       }
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_grades_by_course',
     description: 'Calificaciones detalladas de un estudiante en un curso específico.',
     scopes: ['mcp:grades:read'],
@@ -46,38 +46,38 @@ export const gradeTools: AnyToolModule[] = [
       courseId: z.string().min(1),
     },
     handler: async ({ studentId, courseId }) => getStudentGradesByCourse(studentId, courseId),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_grades_progress_report',
     description: 'Reporte completo de progreso académico de un estudiante (todas sus inscripciones).',
     scopes: ['mcp:grades:read'],
     inputShape: { studentId: z.string().min(1) },
     handler: async ({ studentId }) => getStudentProgressReport(studentId),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_grades_stats',
     description: 'Estadísticas globales de calificaciones (totales, promedios, completion rate).',
     scopes: ['mcp:grades:read'],
     handler: async () => getGradeStats(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_grades_list_courses',
     description: 'Lista los cursos disponibles para filtrar calificaciones.',
     scopes: ['mcp:grades:read'],
     handler: async () => getAllCoursesForGrades(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_grades_list_students',
     description: 'Lista los estudiantes disponibles para filtrar calificaciones.',
     scopes: ['mcp:grades:read'],
     handler: async () => getAllStudentsForGrades(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_grades_update_activity',
     description:
       'Actualiza la calificación de una actividad para un estudiante. Marca la actividad como COMPLETED.',
@@ -91,5 +91,5 @@ export const gradeTools: AnyToolModule[] = [
       const result = await updateActivityGrade(userId, activityId, score)
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]
