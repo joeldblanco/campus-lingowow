@@ -24,6 +24,8 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
+    // The shared deployment server has 8 GB; page workers must run sequentially.
+    cpus: 1,
     serverActions: {
       bodySizeLimit: '50mb',
     },
