@@ -13,6 +13,9 @@ vi.mock('@/lib/db', () => ({
       findFirst: vi.fn(),
       update: vi.fn(),
     },
+    module: { findMany: vi.fn() },
+    exam: { findMany: vi.fn() },
+    examAttempt: { findMany: vi.fn() },
     lesson: {
       findFirst: vi.fn(),
       findMany: vi.fn(),
@@ -35,7 +38,10 @@ describe('completeCourseLesson', () => {
     vi.clearAllMocks()
     vi.mocked(auth).mockResolvedValue({ user: { id: 'student-1' } } as never)
     vi.mocked(db.enrollment.findFirst).mockResolvedValue({ id: 'enrollment-1' } as never)
-    vi.mocked(db.lesson.findFirst).mockResolvedValue({ id: 'lesson-1' } as never)
+    vi.mocked(db.lesson.findFirst).mockResolvedValue({ id: 'lesson-1', moduleId: 'module-1' } as never)
+    vi.mocked(db.module.findMany).mockResolvedValue([{ id: 'module-1', order: 1 }] as never)
+    vi.mocked(db.exam.findMany).mockResolvedValue([])
+    vi.mocked(db.examAttempt.findMany).mockResolvedValue([])
     vi.mocked(db.lesson.findMany).mockResolvedValue([
       { id: 'lesson-1', contents: [{ id: 'content-1' }, { id: 'content-2' }] },
       { id: 'lesson-2', contents: [{ id: 'content-3' }] },
@@ -83,6 +89,24 @@ describe('completeCourseLesson', () => {
       where: { id: 'enrollment-1' },
       data: expect.objectContaining({ progress: 67 }),
     })
+  })
+
+  it('rejects completion in a module locked by an unpassed blocking exam', async () => {
+    vi.mocked(db.module.findMany).mockResolvedValue([
+      { id: 'module-0', order: 0 },
+      { id: 'module-1', order: 1 },
+    ] as never)
+    vi.mocked(db.exam.findMany).mockResolvedValue([
+      { id: 'exam-1', moduleId: 'module-0', isBlocking: true, passingScore: 70 },
+    ] as never)
+    vi.mocked(db.examAttempt.findMany).mockResolvedValue([])
+
+    await expect(completeCourseLesson('course-1', 'lesson-1')).resolves.toEqual({
+      success: false,
+      error: 'Debes aprobar la evaluaci\u00f3n anterior para acceder a esta lecci\u00f3n',
+    })
+    expect(db.userContent.createMany).not.toHaveBeenCalled()
+    expect(db.enrollment.update).not.toHaveBeenCalled()
   })
 
   it('returns to the course after completing the final lesson', async () => {

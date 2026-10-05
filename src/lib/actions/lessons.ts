@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { CreateLessonSchema, EditLessonSchema } from '@/schemas/lessons'
 import * as z from 'zod'
 import { auth } from '@/auth'
+import { computeModuleLockState } from '@/lib/course-progression'
 
 const accessibleEnrollmentStatuses = ['ACTIVE', 'PENDING', 'PAUSED', 'COMPLETED'] as const
 
@@ -90,11 +91,40 @@ export async function completeCourseLesson(courseId: string, lessonId: string) {
         },
       },
     },
-    select: { id: true },
+    select: { id: true, moduleId: true },
   })
 
   if (!lesson) {
     return { success: false as const, error: 'Lección no encontrada' }
+  }
+
+  const [modules, exams] = await Promise.all([
+    prisma.module.findMany({
+      where: { courseId, isPublished: true },
+      select: { id: true, order: true },
+      orderBy: { order: 'asc' },
+    }),
+    prisma.exam.findMany({
+      where: { courseId, isBlocking: true },
+      select: { id: true, moduleId: true, isBlocking: true, passingScore: true },
+    }),
+  ])
+  const attempts = exams.length
+    ? await prisma.examAttempt.findMany({
+        where: { userId, examId: { in: exams.map((exam) => exam.id) } },
+        select: { examId: true, score: true },
+      })
+    : []
+  const lock = computeModuleLockState(
+    modules.map((module) => ({ ...module, lessons: [] })),
+    exams,
+    attempts
+  ).find((module) => module.moduleId === lesson.moduleId)
+  if (lock?.isLocked) {
+    return {
+      success: false as const,
+      error: 'Debes aprobar la evaluaci\u00f3n anterior para acceder a esta lecci\u00f3n',
+    }
   }
 
   const lessons = await getPublishedCourseLessons(courseId)
