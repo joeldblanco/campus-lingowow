@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { auth } from '@/auth'
-import { getLessonForStudent } from '@/lib/actions/lessons'
+import { getCourseLessonNavigation, getLessonForStudent } from '@/lib/actions/lessons'
 import { getCourseModuleProgress } from '@/lib/actions/courses'
 import { notFound, redirect } from 'next/navigation'
 import { LessonHeader } from '@/components/lessons/lesson-header'
@@ -28,6 +28,8 @@ export default async function LessonPage({ params }: LessonPageProps) {
     notFound()
   }
 
+  const navigation = await getCourseLessonNavigation(courseId, lessonId, session.user.id)
+
   // #92: prevent deep-linking into a lesson whose module is locked by a blocking
   // exam the student hasn't passed yet.
   if (lesson.module?.id) {
@@ -49,12 +51,12 @@ export default async function LessonPage({ params }: LessonPageProps) {
         courseTitle={lesson.module?.course.title || ''}
         moduleTitle={lesson.module?.title || ''}
         courseId={courseId}
-        progress={40} // Example progress, we need to fetch real progress
+        progress={navigation?.isCompleted ? 100 : 0}
       />
 
       <main className="container mx-auto px-4 py-8 max-w-5xl space-y-8">
         <Suspense fallback={<LessonLoadingSkeleton />}>
-          <LessonContent lesson={lesson} />
+          <LessonContent lesson={lesson} courseId={courseId} navigation={navigation} />
         </Suspense>
       </main>
     </div>

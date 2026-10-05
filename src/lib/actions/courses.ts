@@ -6,7 +6,11 @@ import { CourseWithDetails } from '@/types/course'
 import { CreateCourseSchema, EditCourseSchema } from '@/schemas/courses'
 import { auditLog } from '@/lib/audit-log'
 import { auth } from '@/auth'
-import { buildModuleProgressView, type ModuleWithProgress } from '@/lib/course-progression'
+import {
+  buildModuleProgressView,
+  summarizeCourseProgress,
+  type ModuleWithProgress,
+} from '@/lib/course-progression'
 import * as z from 'zod'
 
 const enrollmentStatusPriority: Record<string, number> = {
@@ -568,7 +572,9 @@ export async function getCoursesForPublicView(userId?: string) {
             isPublished: true,
             _count: {
               select: {
-                lessons: true,
+                lessons: {
+                  where: { isPublished: true },
+                },
               },
             },
           },
@@ -681,7 +687,9 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
             },
             _count: {
               select: {
-                lessons: true,
+                lessons: {
+                  where: { isPublished: true },
+                },
               },
             },
           },
@@ -939,6 +947,7 @@ export async function getCourseProgress(
               select: {
                 id: true,
                 lessons: {
+                  where: { isPublished: true },
                   select: {
                     id: true,
                     contents: {
@@ -962,30 +971,14 @@ export async function getCourseProgress(
       return null
     }
 
-    // Calculate total content items
-    const totalContents = enrollmentWithDetails.course.modules.reduce((total, module) => {
-      return (
-        total +
-        module.lessons.reduce((lessonTotal, lesson) => {
-          return lessonTotal + lesson.contents.length
-        }, 0)
-      )
-    }, 0)
-
-    // Calculate completed content items
-    const completedContents = enrollmentWithDetails.student.completedContents.filter(
-      (content) => content.completed
-    ).length
-
-    // Calculate overall progress percentage
-    const progressPercentage = totalContents > 0 ? (completedContents / totalContents) * 100 : 0
+    const progress = summarizeCourseProgress(
+      enrollmentWithDetails.course.modules,
+      enrollmentWithDetails.student.completedContents
+    )
 
     return {
       enrollment: enrollmentWithDetails,
-      totalContents,
-      completedContents,
-      progressPercentage: Math.round(progressPercentage),
-      completedContentIds: enrollmentWithDetails.student.completedContents.map((c) => c.contentId),
+      ...progress,
       completedActivities: enrollmentWithDetails.student.activities.filter(
         (a) => a.status === 'COMPLETED'
       ),
@@ -1016,7 +1009,10 @@ export async function getCourseModuleProgress(
           id: true,
           order: true,
           title: true,
-          lessons: { select: { id: true, contents: { select: { id: true } } } },
+          lessons: {
+            where: { isPublished: true },
+            select: { id: true, contents: { select: { id: true } } },
+          },
         },
       }),
       db.exam.findMany({
