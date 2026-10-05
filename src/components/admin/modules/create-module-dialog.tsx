@@ -47,13 +47,14 @@ interface CreateModuleDialogProps {
   onModuleCreated: () => void
 }
 
-type FormData = z.infer<typeof CreateModuleSchema>
+type FormInput = z.input<typeof CreateModuleSchema>
+type FormData = z.output<typeof CreateModuleSchema>
 
 export function CreateModuleDialog({ children, onModuleCreated }: CreateModuleDialogProps) {
   const [open, setOpen] = useState(false)
   const [courses, setCourses] = useState<Course[]>([])
   
-  const form = useForm<FormData>({
+  const form = useForm<FormInput, unknown, FormData>({
     resolver: zodResolver(CreateModuleSchema),
     defaultValues: {
       title: '',

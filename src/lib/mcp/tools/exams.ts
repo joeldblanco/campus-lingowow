@@ -16,12 +16,12 @@ import {
 } from '@/lib/actions/exams'
 import { CreateExamSchema, EditExamSchema, AssignExamSchema } from '@/schemas/exams'
 import { unwrapActionResult } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 const examTypeEnum = z.enum(['COURSE_EXAM', 'PLACEMENT_TEST', 'DIAGNOSTIC', 'PRACTICE'])
 
 export const examTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_exams_list',
     description: 'Lista todos los exámenes con detalles (curso, módulo, preguntas, asignaciones).',
     scopes: ['mcp:exams:read'],
@@ -38,9 +38,9 @@ export const examTools: AnyToolModule[] = [
         exams: all.slice(offset, offset + limit),
       }
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_exams_get',
     description: 'Obtiene un examen por ID con todas sus preguntas y configuración.',
     scopes: ['mcp:exams:read'],
@@ -50,33 +50,33 @@ export const examTools: AnyToolModule[] = [
       if (!exam) throw new Error('Examen no encontrado')
       return exam
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_exams_stats',
     description: 'Estadísticas agregadas de exámenes (totales por estado, por tipo, etc).',
     scopes: ['mcp:exams:read'],
     handler: async () => getExamStats(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_exams_list_placement_tests',
     description:
       'Lista los placement tests del campus. Si pasas userId, filtra por accesibles para ese usuario.',
     scopes: ['mcp:exams:read'],
     inputShape: { userId: z.string().optional() },
     handler: async ({ userId }) => getPlacementTests(userId),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_exams_list_assignable_users',
     description:
       'Lista usuarios no-admin (estudiantes/profesores) candidatos para asignar un examen.',
     scopes: ['mcp:exams:read'],
     handler: async () => getNonAdminUsersForExamAssignment(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_exams_create',
     description:
       'Crea un examen. Acepta la estructura completa del CreateExamSchema, incluidas preguntas. createdById debe ser un usuario válido (admin o teacher). Para placement tests pasa examType=PLACEMENT_TEST.',
@@ -111,7 +111,7 @@ export const examTools: AnyToolModule[] = [
       lessonId: z.string().optional(),
       createdById: z.string().min(1),
       questions: z
-        .array(z.record(z.unknown()))
+        .array(z.record(z.string(), z.unknown()))
         .optional()
         .describe(
           'Array de preguntas (estructura ExamQuestionSchema). Cada pregunta requiere type, question, points y para la mayoría correctAnswer.'
@@ -122,9 +122,9 @@ export const examTools: AnyToolModule[] = [
       const result = await createExam(data)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_exams_update',
     description:
       'Actualiza un examen existente. Pasa solo los campos a modificar. Si pasas questions, ten cuidado: reemplaza el set de preguntas (se valida si hay respuestas existentes).',
@@ -158,16 +158,16 @@ export const examTools: AnyToolModule[] = [
       courseId: z.string().optional(),
       moduleId: z.string().optional(),
       lessonId: z.string().optional(),
-      questions: z.array(z.record(z.unknown())).optional(),
+      questions: z.array(z.record(z.string(), z.unknown())).optional(),
     },
     handler: async ({ id, ...rest }) => {
       const data = EditExamSchema.parse(rest)
       const result = await updateExam(id, data)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_exams_delete',
     description: 'Elimina un examen permanentemente con sus preguntas y asignaciones.',
     scopes: ['mcp:exams:write'],
@@ -176,9 +176,9 @@ export const examTools: AnyToolModule[] = [
       const result = await deleteExam(id)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_exams_assign',
     description:
       'Asigna un examen a uno o varios estudiantes. Si ya existe la asignación, actualiza dueDate e instructions.',
@@ -194,9 +194,9 @@ export const examTools: AnyToolModule[] = [
       const result = await assignExamToStudents(data)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_exams_attempts_for_grading',
     description:
       'Lista los intentos enviados/completados de un examen que tienen respuestas pendientes de revisión manual.',
@@ -206,18 +206,18 @@ export const examTools: AnyToolModule[] = [
       const result = await getAttemptsForGrading(examId)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_exams_attempt_get',
     description:
       'Obtiene el intento de examen completo con todas sus respuestas (incluye preguntas y feedback).',
     scopes: ['mcp:exams:read'],
     inputShape: { attemptId: z.string().min(1) },
     handler: async ({ attemptId }) => getExamAttemptWithAnswers(attemptId),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_exams_grade_answer',
     description:
       'Califica manualmente una respuesta de examen (típicamente ESSAY o RECORDING). pointsEarned no puede exceder el máximo de la pregunta. reviewerId es el admin/teacher que califica.',
@@ -232,9 +232,9 @@ export const examTools: AnyToolModule[] = [
       const result = await gradeExamAnswer(answerId, pointsEarned, feedback, reviewerId)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_exams_finalize_review',
     description:
       'Cierra la revisión de un intento de examen, calculando el score total. Idempotente: si ya está finalizado, no afecta.',
@@ -244,5 +244,5 @@ export const examTools: AnyToolModule[] = [
       const result = await finalizeExamReview(attemptId)
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

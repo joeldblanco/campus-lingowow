@@ -69,7 +69,8 @@ const couponSchema = z.object({
   restrictedToPlanId: z.string().optional(),
 })
 
-type CouponFormData = z.infer<typeof couponSchema>
+type CouponFormInput = z.input<typeof couponSchema>
+type CouponFormData = z.output<typeof couponSchema>
 
 interface UserOption {
   id: string
@@ -127,7 +128,7 @@ export function EditCouponDialog({ coupon, open, onOpenChange }: EditCouponDialo
   const [planOptions, setPlanOptions] = useState<PlanOption[]>([])
   const [selectedPlan, setSelectedPlan] = useState<PlanOption | null>(null)
 
-  const form = useForm<CouponFormData>({
+  const form = useForm<CouponFormInput, unknown, CouponFormData>({
     resolver: zodResolver(couponSchema),
     defaultValues: {
       code: '',

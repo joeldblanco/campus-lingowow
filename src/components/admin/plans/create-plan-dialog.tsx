@@ -59,7 +59,8 @@ const planSchema = z.object({
   acceptsRealMoney: z.boolean().default(true),
 })
 
-type PlanFormData = z.infer<typeof planSchema>
+type PlanFormInput = z.input<typeof planSchema>
+type PlanFormData = z.output<typeof planSchema>
 
 interface CreatePlanDialogProps {
   children: React.ReactNode
@@ -69,7 +70,7 @@ export function CreatePlanDialog({ children }: CreatePlanDialogProps) {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const form = useForm<PlanFormData>({
+  const form = useForm<PlanFormInput, unknown, PlanFormData>({
     resolver: zodResolver(planSchema),
     defaultValues: {
       name: '',

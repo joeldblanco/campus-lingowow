@@ -25,7 +25,7 @@ export const createPersonalInfoSchema = () => {
 export const PaymentMethodSchema = z
   .object({
     paymentMethod: z.enum(['card', 'bank_transfer'], {
-      required_error: 'Debe seleccionar un método de pago',
+      error: (issue) => issue.input === undefined ? 'Debe seleccionar un método de pago' : undefined,
     }),
     cardNumber: z.string().optional(),
     expiryDate: z.string().optional(),

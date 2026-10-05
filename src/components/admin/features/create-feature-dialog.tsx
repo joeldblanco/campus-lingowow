@@ -33,7 +33,8 @@ const featureSchema = z.object({
   isActive: z.boolean().default(true),
 })
 
-type FeatureFormData = z.infer<typeof featureSchema>
+type FeatureFormInput = z.input<typeof featureSchema>
+type FeatureFormData = z.output<typeof featureSchema>
 
 interface CreateFeatureDialogProps {
   children: React.ReactNode
@@ -43,7 +44,7 @@ export function CreateFeatureDialog({ children }: CreateFeatureDialogProps) {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const form = useForm<FeatureFormData>({
+  const form = useForm<FeatureFormInput, unknown, FeatureFormData>({
     resolver: zodResolver(featureSchema),
     defaultValues: {
       name: '',

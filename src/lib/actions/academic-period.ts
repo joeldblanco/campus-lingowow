@@ -27,7 +27,7 @@ const createPeriodSchema = z.object({
 
 // Schema para validar la creación de temporadas
 const createSeasonSchema = z.object({
-  name: z.nativeEnum(SeasonName),
+  name: z.enum(SeasonName),
   startDate: z.date(),
   endDate: z.date(),
   year: z.number().int().min(2020).max(2100),

@@ -17,7 +17,7 @@ import {
   updateProductSortOrder,
 } from '@/lib/actions/commercial'
 import { unwrapActionResult } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 const pricingTypeEnum = z.enum([
   ProductPricingType.SINGLE_PRICE,
@@ -30,7 +30,7 @@ const paymentTypeEnum = z.enum([
 
 export const productTools: AnyToolModule[] = [
   // Productos
-  {
+  defineTool({
     name: 'lingowow_products_list',
     description:
       'Lista productos de la tienda. Filtros opcionales por categoría, tags, búsqueda y estado activo.',
@@ -52,9 +52,9 @@ export const productTools: AnyToolModule[] = [
         products: all.slice(offset, offset + limit),
       }
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_products_get',
     description: 'Obtiene un producto por ID con su categoría, planes asociados y items de factura.',
     scopes: ['mcp:products:read'],
@@ -64,23 +64,23 @@ export const productTools: AnyToolModule[] = [
       if (!product) throw new Error('Producto no encontrado')
       return product
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_products_list_categories',
     description: 'Lista todas las categorías de productos.',
     scopes: ['mcp:products:read'],
     handler: async () => getCategories(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_products_list_tags',
     description: 'Lista todos los tags únicos usados por productos activos.',
     scopes: ['mcp:products:read'],
     handler: async () => getAllProductTags(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_products_create',
     description:
       'Crea un producto. slug debe ser único. Para productos con múltiples planes, usa pricingType MULTIPLE_PLANS y luego asocia planes con lingowow_plans_create.',
@@ -114,9 +114,9 @@ export const productTools: AnyToolModule[] = [
       const result = await createProduct(args as never)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_products_update',
     description: 'Actualiza un producto existente. Pasa solo los campos a modificar.',
     scopes: ['mcp:products:write'],
@@ -150,9 +150,9 @@ export const productTools: AnyToolModule[] = [
       const result = await updateProduct(id, data as never)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_products_set_sort_order',
     description: 'Actualiza el orden de aparición de un producto en la tienda.',
     scopes: ['mcp:products:write'],
@@ -164,9 +164,9 @@ export const productTools: AnyToolModule[] = [
       const result = await updateProductSortOrder(id, sortOrder)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_products_delete',
     description: 'Elimina un producto permanentemente. Operación destructiva.',
     scopes: ['mcp:products:write'],
@@ -175,25 +175,25 @@ export const productTools: AnyToolModule[] = [
       const result = await deleteProduct(id)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
   // Planes
-  {
+  defineTool({
     name: 'lingowow_plans_list',
     description: 'Lista todos los planes con su producto, curso, características y precios asociados.',
     scopes: ['mcp:products:read'],
     handler: async () => getPlans(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_plans_list_for_product',
     description: 'Lista los planes activos asociados a un producto específico.',
     scopes: ['mcp:products:read'],
     inputShape: { productId: z.string().min(1) },
     handler: async ({ productId }) => getPricingPlansForProduct(productId),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_plans_get',
     description: 'Obtiene un plan por ID con sus features y items de factura.',
     scopes: ['mcp:products:read'],
@@ -203,9 +203,9 @@ export const productTools: AnyToolModule[] = [
       if (!plan) throw new Error('Plan no encontrado')
       return plan
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_plans_create',
     description:
       'Crea un plan. duration en días (período de facturación). Si includesClasses=true, indica classesPerPeriod o classesPerWeek.',
@@ -237,9 +237,9 @@ export const productTools: AnyToolModule[] = [
       const result = await createPlan(args as never)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_plans_update',
     description: 'Actualiza un plan existente.',
     scopes: ['mcp:products:write'],
@@ -270,9 +270,9 @@ export const productTools: AnyToolModule[] = [
       const result = await updatePlan(id, data as never)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_plans_delete',
     description: 'Elimina un plan permanentemente.',
     scopes: ['mcp:products:write'],
@@ -281,5 +281,5 @@ export const productTools: AnyToolModule[] = [
       const result = await deletePlan(id)
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

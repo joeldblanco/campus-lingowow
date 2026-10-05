@@ -307,7 +307,7 @@ export async function createLesson(data: z.infer<typeof CreateLessonSchema>) {
     console.error('Error creating lesson:', error)
 
     if (error instanceof z.ZodError) {
-      throw new Error(error.errors.map((e) => e.message).join(', '))
+      throw new Error(error.issues.map((e) => e.message).join(', '))
     }
 
     throw new Error('Error al crear la lección')
@@ -349,7 +349,7 @@ export async function updateLesson(id: string, data: z.infer<typeof EditLessonSc
     console.error('Error updating lesson:', error)
 
     if (error instanceof z.ZodError) {
-      throw new Error(error.errors.map((e) => e.message).join(', '))
+      throw new Error(error.issues.map((e) => e.message).join(', '))
     }
 
     throw new Error('Error al actualizar la lección')

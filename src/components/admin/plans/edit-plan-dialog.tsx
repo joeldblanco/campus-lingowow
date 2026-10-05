@@ -62,7 +62,8 @@ const planSchema = z.object({
   billingCycle: z.string().optional(),
 })
 
-type PlanFormData = z.infer<typeof planSchema>
+type PlanFormInput = z.input<typeof planSchema>
+type PlanFormData = z.output<typeof planSchema>
 
 interface PlanPricingData {
   id?: string
@@ -151,7 +152,7 @@ export function EditPlanDialog({ plan, open, onOpenChange }: EditPlanDialogProps
   })
   const [activePricingTab, setActivePricingTab] = useState<string>(SUPPORTED_LANGUAGES[0].code)
 
-  const form = useForm<PlanFormData>({
+  const form = useForm<PlanFormInput, unknown, PlanFormData>({
     resolver: zodResolver(planSchema),
     defaultValues: {
       name: plan.name,

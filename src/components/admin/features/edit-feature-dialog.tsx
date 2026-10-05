@@ -32,7 +32,8 @@ const featureSchema = z.object({
   isActive: z.boolean().default(true),
 })
 
-type FeatureFormData = z.infer<typeof featureSchema>
+type FeatureFormInput = z.input<typeof featureSchema>
+type FeatureFormData = z.output<typeof featureSchema>
 
 interface Feature {
   id: string
@@ -56,7 +57,7 @@ interface EditFeatureDialogProps {
 export function EditFeatureDialog({ feature, open, onOpenChange }: EditFeatureDialogProps) {
   const [isLoading, setIsLoading] = useState(false)
 
-  const form = useForm<FeatureFormData>({
+  const form = useForm<FeatureFormInput, unknown, FeatureFormData>({
     resolver: zodResolver(featureSchema),
     defaultValues: {
       name: feature.name,

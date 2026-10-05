@@ -32,7 +32,11 @@ export function RegisterForm() {
   const router = useRouter()
   const { executeRecaptcha } = useGoogleReCaptcha()
   
-  const registerForm = useForm<z.infer<typeof SignUpSchema>>({
+  const registerForm = useForm<
+    z.input<typeof SignUpSchema>,
+    unknown,
+    z.output<typeof SignUpSchema>
+  >({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
       name: '',
@@ -52,7 +56,7 @@ export function RegisterForm() {
     return await executeRecaptcha('register')
   }, [executeRecaptcha])
 
-  const onSubmit = async (data: z.infer<typeof SignUpSchema>) => {
+  const onSubmit = async (data: z.output<typeof SignUpSchema>) => {
     const recaptchaToken = await handleReCaptchaVerify()
     
     startTransition(() => {

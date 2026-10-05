@@ -10,12 +10,12 @@ import {
   updateCoupon,
 } from '@/lib/actions/commercial'
 import { unwrapActionResult } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 const couponTypeEnum = z.enum([CouponType.PERCENTAGE, CouponType.FIXED_AMOUNT] as const)
 
 export const couponTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_coupons_list',
     description: 'Lista todos los cupones con conteo de usos pagados.',
     scopes: ['mcp:coupons:read'],
@@ -32,9 +32,9 @@ export const couponTools: AnyToolModule[] = [
         coupons: all.slice(offset, offset + limit),
       }
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_coupons_get',
     description: 'Obtiene un cupón por ID con sus facturas asociadas y restricciones.',
     scopes: ['mcp:coupons:read'],
@@ -44,24 +44,24 @@ export const couponTools: AnyToolModule[] = [
       if (!coupon) throw new Error('Cupón no encontrado')
       return coupon
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_coupons_search_users',
     description: 'Busca usuarios por nombre/email para restringir un cupón a un usuario específico.',
     scopes: ['mcp:coupons:read'],
     inputShape: { query: z.string().min(1) },
     handler: async ({ query }) => searchUsersForCoupon(query),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_coupons_list_plans',
     description: 'Lista los planes disponibles para asignar como restricción a un cupón.',
     scopes: ['mcp:coupons:read'],
     handler: async () => getPlansForCoupon(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_coupons_create',
     description:
       'Crea un cupón. PERCENTAGE espera value 0-100 (porcentaje); FIXED_AMOUNT espera value en la moneda base. Restricciones de usuario o plan son opcionales.',
@@ -102,9 +102,9 @@ export const couponTools: AnyToolModule[] = [
       })
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_coupons_update',
     description: 'Actualiza un cupón. Pasa solo los campos a modificar.',
     scopes: ['mcp:coupons:write'],
@@ -128,14 +128,14 @@ export const couponTools: AnyToolModule[] = [
     handler: async ({ id, ...data }) => {
       const result = await updateCoupon(id, {
         ...data,
-        startsAt: data.startsAt ? new Date(data.startsAt) : data.startsAt,
-        expiresAt: data.expiresAt ? new Date(data.expiresAt) : data.expiresAt,
+        startsAt: data.startsAt == null ? data.startsAt : new Date(data.startsAt),
+        expiresAt: data.expiresAt == null ? data.expiresAt : new Date(data.expiresAt),
       })
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_coupons_delete',
     description: 'Elimina un cupón permanentemente.',
     scopes: ['mcp:coupons:write'],
@@ -144,5 +144,5 @@ export const couponTools: AnyToolModule[] = [
       const result = await deleteCoupon(id)
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

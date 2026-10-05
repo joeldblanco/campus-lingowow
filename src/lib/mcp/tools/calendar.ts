@@ -9,10 +9,10 @@ import {
   updateCalendarSettings,
 } from '@/lib/actions/calendar'
 import { unwrapActionResult } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 export const calendarTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_calendar_settings_get',
     description:
       'Devuelve la configuración global del calendario (slotDuration, startHour, endHour, maxBookingsPerStudent). La crea con defaults si no existe.',
@@ -21,9 +21,9 @@ export const calendarTools: AnyToolModule[] = [
       const result = await getCalendarSettings()
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_calendar_settings_update',
     description:
       'Actualiza la configuración global del calendario. startHour y endHour en escala de 24h (puede ser decimal: 8 = 08:00, 16.5 = 16:30). endHour debe ser > startHour.',
@@ -36,9 +36,9 @@ export const calendarTools: AnyToolModule[] = [
       const result = await updateCalendarSettings({ startHour, endHour })
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_calendar_teacher_availability',
     description: 'Devuelve la disponibilidad publicada de un profesor.',
     scopes: ['mcp:calendar:read'],
@@ -47,9 +47,9 @@ export const calendarTools: AnyToolModule[] = [
       const result = await getTeacherAvailability(teacherId)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_calendar_teacher_schedules',
     description:
       'Lista los horarios programados (ClassSchedule) de un profesor. Si se omite teacherId, usa el dueño de la API key.',
@@ -58,23 +58,23 @@ export const calendarTools: AnyToolModule[] = [
       teacherId: z.string().optional(),
     },
     handler: async ({ teacherId }) => getTeacherSchedules(teacherId),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_calendar_student_bookings',
     description: 'Lista las reservas de clases del estudiante autenticado (vía la API key).',
     scopes: ['mcp:calendar:read'],
     handler: async () => getStudentBookings(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_calendar_teacher_bookings',
     description: 'Lista las reservas de clases del profesor autenticado (vía la API key).',
     scopes: ['mcp:calendar:read'],
     handler: async () => getTeacherBookings(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_calendar_cancel_booking',
     description: 'Cancela una reserva de clase por ID.',
     scopes: ['mcp:calendar:write'],
@@ -83,5 +83,5 @@ export const calendarTools: AnyToolModule[] = [
       const result = await cancelBooking(bookingId)
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

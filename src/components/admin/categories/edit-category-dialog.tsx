@@ -37,7 +37,8 @@ const categorySchema = z.object({
   sortOrder: z.number().min(0).default(0),
 })
 
-type CategoryFormData = z.infer<typeof categorySchema>
+type CategoryFormInput = z.input<typeof categorySchema>
+type CategoryFormData = z.output<typeof categorySchema>
 
 interface EditCategoryDialogProps {
   category: Category | CategoryWithCount
@@ -48,7 +49,7 @@ interface EditCategoryDialogProps {
 export function EditCategoryDialog({ category, open, onOpenChange }: EditCategoryDialogProps) {
   const [isLoading, setIsLoading] = useState(false)
 
-  const form = useForm<CategoryFormData>({
+  const form = useForm<CategoryFormInput, unknown, CategoryFormData>({
     resolver: zodResolver(categorySchema),
     defaultValues: {
       name: category.name,

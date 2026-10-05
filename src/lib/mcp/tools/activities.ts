@@ -10,10 +10,10 @@ import {
   getStudentsForActivity,
   updateActivity,
 } from '@/lib/actions/activity'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 import { unwrapActionResult } from '@/lib/mcp/errors'
 
-const activityTypeEnum = z.nativeEnum(ActivityType)
+const activityTypeEnum = z.enum(ActivityType)
 
 const activityStepSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('instruction'), content: z.string().min(1) }),
@@ -43,7 +43,7 @@ const activityContentSchema = z.object({
 })
 
 export const activityTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_activities_list',
     description: 'Lista todas las actividades reutilizables del campus.',
     scopes: ['mcp:activities:read'],
@@ -60,17 +60,17 @@ export const activityTools: AnyToolModule[] = [
         activities: all.slice(offset, offset + limit),
       }
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_activities_get',
     description: 'Obtiene una actividad por ID con todo su contenido (steps, options).',
     scopes: ['mcp:activities:read'],
     inputShape: { id: z.string().min(1) },
     handler: async ({ id }) => getActivity(id),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_activities_by_level',
     description: 'Lista actividades de un nivel específico (1-10). userId opcional para incluir progreso del usuario.',
     scopes: ['mcp:activities:read'],
@@ -79,17 +79,17 @@ export const activityTools: AnyToolModule[] = [
       userId: z.string().optional(),
     },
     handler: async ({ level, userId }) => getActivitiesByLevel(level, userId),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_activities_students',
     description: 'Lista los estudiantes que tienen una actividad asignada.',
     scopes: ['mcp:activities:read'],
     inputShape: { activityId: z.string().min(1) },
     handler: async ({ activityId }) => getStudentsForActivity(activityId),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_activities_create',
     description:
       'Crea una actividad reutilizable. content.steps soporta tipos: instruction, question (con options/correctAnswer), audio, recording, completion.',
@@ -119,9 +119,9 @@ export const activityTools: AnyToolModule[] = [
       })
       return created
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_activities_update',
     description: 'Actualiza una actividad existente. Acepta los mismos campos que create.',
     scopes: ['mcp:activities:write'],
@@ -151,17 +151,17 @@ export const activityTools: AnyToolModule[] = [
       })
       return updated
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_activities_delete',
     description: 'Elimina una actividad permanentemente.',
     scopes: ['mcp:activities:write'],
     inputShape: { id: z.string().min(1) },
     handler: async ({ id }) => deleteActivity(id),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_activities_assign',
     description: 'Asigna una actividad a un estudiante. assignedBy debe ser el ID del admin/teacher que la asigna.',
     scopes: ['mcp:activities:write'],
@@ -174,5 +174,5 @@ export const activityTools: AnyToolModule[] = [
       const result = await assignActivityToUser(userId, activityId, assignedBy)
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

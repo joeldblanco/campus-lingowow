@@ -15,8 +15,8 @@ export function toMcpError(error: unknown): McpToolError {
   if (error instanceof McpToolError) return error
 
   if (error instanceof z.ZodError) {
-    const message = error.errors.map((e) => `${e.path.join('.') || 'input'}: ${e.message}`).join('; ')
-    return new McpToolError(`Validación fallida: ${message}`, 'BAD_REQUEST', error.errors)
+    const message = error.issues.map((e) => `${e.path.join('.') || 'input'}: ${e.message}`).join('; ')
+    return new McpToolError(`Validación fallida: ${message}`, 'BAD_REQUEST', error.issues)
   }
 
   if (error instanceof Error) {

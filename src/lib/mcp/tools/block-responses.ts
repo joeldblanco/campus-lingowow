@@ -5,10 +5,10 @@ import {
   gradeBlockResponse,
 } from '@/lib/actions/block-responses'
 import { unwrapActionResult } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 export const blockResponseTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_block_responses_list',
     description:
       'Lista las respuestas (block responses) de un bloque de contenido para un usuario específico. Si se omite userId, usa el dueño de la API key.',
@@ -21,9 +21,9 @@ export const blockResponseTools: AnyToolModule[] = [
       const result = await getBlockResponses(contentId, userId)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_block_responses_pending',
     description:
       'Lista respuestas pendientes de calificar (typically essay/recording). Filtro opcional por lessonId. Solo TEACHER/ADMIN.',
@@ -35,9 +35,9 @@ export const blockResponseTools: AnyToolModule[] = [
       const result = await getPendingBlockResponses(lessonId)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_block_responses_grade',
     description:
       'Califica una respuesta de bloque manualmente. Score no puede exceder maxScore del bloque (si está definido). El gradedBy se toma de la sesión/contexto MCP.',
@@ -51,5 +51,5 @@ export const blockResponseTools: AnyToolModule[] = [
       const result = await gradeBlockResponse(responseId, score, feedback)
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

@@ -7,10 +7,10 @@ import {
   getUserBookedSlots,
 } from '@/lib/actions/schedule'
 import { unwrapActionResult } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 export const scheduleTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_schedule_slots_available',
     description:
       'Lista slots de horario disponibles (no reservados) para un producto, opcionalmente filtrados por rango de fechas.',
@@ -26,17 +26,17 @@ export const scheduleTools: AnyToolModule[] = [
         startDate ? new Date(startDate) : undefined,
         endDate ? new Date(endDate) : undefined
       ),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_schedule_user_booked_slots',
     description: 'Lista los slots de horario reservados por un usuario específico.',
     scopes: ['mcp:products:read'],
     inputShape: { userId: z.string().min(1) },
     handler: async ({ userId }) => getUserBookedSlots(userId),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_schedule_slots_create',
     description:
       'Crea slots de horario en lote para un producto. dates es un array de timestamps ISO. Idempotente: skipDuplicates en la BD.',
@@ -52,9 +52,9 @@ export const scheduleTools: AnyToolModule[] = [
       )
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_schedule_slot_book',
     description: 'Reserva un slot de horario para un usuario. Falla si el slot ya está reservado.',
     scopes: ['mcp:products:write'],
@@ -66,9 +66,9 @@ export const scheduleTools: AnyToolModule[] = [
       const result = await bookScheduleSlot(slotId, userId)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_schedule_slot_cancel',
     description: 'Cancela la reserva de un slot. El userId debe coincidir con el dueño actual del slot.',
     scopes: ['mcp:products:write'],
@@ -80,5 +80,5 @@ export const scheduleTools: AnyToolModule[] = [
       const result = await cancelScheduleSlot(slotId, userId)
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

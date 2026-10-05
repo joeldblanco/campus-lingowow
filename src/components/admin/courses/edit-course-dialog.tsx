@@ -46,12 +46,13 @@ interface EditCourseDialogProps {
   onCourseUpdated?: () => void
 }
 
-type FormData = z.infer<typeof EditCourseSchema>
+type FormInput = z.input<typeof EditCourseSchema>
+type FormData = z.output<typeof EditCourseSchema>
 
 export function EditCourseDialog({ course, children, onCourseUpdated }: EditCourseDialogProps) {
   const [open, setOpen] = useState(false)
 
-  const form = useForm<FormData>({
+  const form = useForm<FormInput, unknown, FormData>({
     resolver: zodResolver(EditCourseSchema),
     defaultValues: {
       title: course.title,
