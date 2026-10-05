@@ -47,10 +47,10 @@ import { Season } from '@prisma/client'
 const formSchema = z.object({
   name: z.string().min(3, 'El nombre debe tener al menos 3 caracteres'),
   startDate: z.date({
-    required_error: 'La fecha de inicio es obligatoria',
+    error: (issue) => (issue.input === undefined ? 'La fecha de inicio es obligatoria' : undefined),
   }),
   seasonId: z.string({
-    required_error: 'La temporada es obligatoria',
+    error: (issue) => (issue.input === undefined ? 'La temporada es obligatoria' : undefined),
   }),
   isSpecialWeek: z.boolean().default(false),
   isActive: z.boolean().default(false),

@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
     
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: error.errors.map(e => e.message).join(', ') },
+          { error: error.issues.map(e => e.message).join(', ') },
         { status: 400 }
       )
     }

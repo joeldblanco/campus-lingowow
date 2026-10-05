@@ -10,9 +10,9 @@ import { getMcpContext } from '@/lib/mcp/context'
 import { McpToolError } from '@/lib/mcp/errors'
 import type { AnyToolModule } from '@/lib/mcp/types'
 
-const libraryTypeEnum = z.nativeEnum(LibraryResourceType)
-const libraryStatusEnum = z.nativeEnum(LibraryResourceStatus)
-const libraryAccessEnum = z.nativeEnum(LibraryResourceAccess)
+const libraryTypeEnum = z.enum(LibraryResourceType)
+const libraryStatusEnum = z.enum(LibraryResourceStatus)
+const libraryAccessEnum = z.enum(LibraryResourceAccess)
 
 function slugify(input: string): string {
   return input

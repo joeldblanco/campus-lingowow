@@ -14,8 +14,8 @@ import {
 import { unwrapActionResult } from '@/lib/mcp/errors'
 import type { AnyToolModule } from '@/lib/mcp/types'
 
-const fileCategoryEnum = z.nativeEnum(FileCategory)
-const fileResourceTypeEnum = z.nativeEnum(FileResourceType)
+const fileCategoryEnum = z.enum(FileCategory)
+const fileResourceTypeEnum = z.enum(FileResourceType)
 
 export const fileManagerTools: AnyToolModule[] = [
   {

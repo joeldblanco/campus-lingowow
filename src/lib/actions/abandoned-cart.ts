@@ -27,7 +27,7 @@ export async function recordAbandonedCart(
 ): Promise<{ success: boolean; message: string }> {
   const parsed = RecordAbandonedCartSchema.safeParse(input)
   if (!parsed.success) {
-    return { success: false, message: parsed.error.errors[0]?.message ?? 'Datos inválidos' }
+      return { success: false, message: parsed.error.issues[0]?.message ?? 'Datos inválidos' }
   }
 
   const { email, userId, currency, items } = parsed.data

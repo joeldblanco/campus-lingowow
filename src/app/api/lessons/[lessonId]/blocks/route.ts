@@ -9,6 +9,7 @@ import {
 import { Block } from '@/types/course-builder'
 import { ContentType, Prisma } from '@prisma/client'
 import crypto from 'crypto'
+import { z } from 'zod'
 
 // Generate a cuid-like ID
 function generateId(): string {
@@ -190,7 +191,7 @@ export async function PUT(
 
     if (!validation.success) {
       return NextResponse.json(
-        { error: 'Invalid request body', details: validation.error.flatten() },
+          { error: 'Invalid request body', details: z.flattenError(validation.error) },
         { status: 400 }
       )
     }
@@ -293,7 +294,7 @@ export async function POST(
 
     if (!validation.success) {
       return NextResponse.json(
-        { error: 'Invalid request body', details: validation.error.flatten() },
+          { error: 'Invalid request body', details: z.flattenError(validation.error) },
         { status: 400 }
       )
     }

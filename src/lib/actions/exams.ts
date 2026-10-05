@@ -462,7 +462,7 @@ export async function createExam(
   } catch (error) {
     console.error('Error creating exam:', error)
     if (error instanceof z.ZodError) {
-      return { success: false, error: 'Datos de validación incorrectos', details: error.errors }
+        return { success: false, error: 'Datos de validación incorrectos', details: error.issues }
     }
     return { success: false, error: 'Error al crear el examen' }
   }
@@ -569,7 +569,7 @@ export async function updateExam(
   } catch (error) {
     console.error('Error updating exam:', error)
     if (error instanceof z.ZodError) {
-      return { success: false, error: 'Datos de validación incorrectos', details: error.errors }
+        return { success: false, error: 'Datos de validación incorrectos', details: error.issues }
     }
     // Manejar error de respuestas existentes
     if (error instanceof Error && error.message.startsWith('ANSWERS_EXIST:')) {
@@ -794,7 +794,7 @@ export async function assignExamToStudents(
   } catch (error) {
     console.error('Error assigning exam to students:', error)
     if (error instanceof z.ZodError) {
-      return { success: false, error: 'Datos de validación incorrectos', details: error.errors }
+        return { success: false, error: 'Datos de validación incorrectos', details: error.issues }
     }
     return { success: false, error: 'Error al asignar examen a estudiantes' }
   }

@@ -13,7 +13,7 @@ import {
 import type { AnyToolModule } from '@/lib/mcp/types'
 import { unwrapActionResult } from '@/lib/mcp/errors'
 
-const activityTypeEnum = z.nativeEnum(ActivityType)
+const activityTypeEnum = z.enum(ActivityType)
 
 const activityStepSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('instruction'), content: z.string().min(1) }),

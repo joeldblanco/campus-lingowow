@@ -642,7 +642,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: parsed.error.errors.map((e) => e.message).join(', '),
+          error: parsed.error.issues.map((e) => e.message).join(', '),
         },
         { status: 400, headers: getRateLimitHeaders(rateLimitResult) }
       )
@@ -1022,7 +1022,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { success: false, error: error.errors.map((e) => e.message).join(', ') },
+          { success: false, error: error.issues.map((e) => e.message).join(', ') },
         { status: 400 }
       )
     }

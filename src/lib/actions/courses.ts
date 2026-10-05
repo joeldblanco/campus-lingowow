@@ -327,7 +327,7 @@ export async function createCourse(data: z.infer<typeof CreateCourseSchema>) {
     if (error instanceof z.ZodError) {
       return {
         success: false,
-        error: error.errors.map((e) => e.message).join(', '),
+        error: error.issues.map((e) => e.message).join(', '),
       }
     }
 
@@ -374,7 +374,7 @@ export async function updateCourse(id: string, data: z.infer<typeof EditCourseSc
     if (error instanceof z.ZodError) {
       return {
         success: false,
-        error: error.errors.map((e) => e.message).join(', '),
+        error: error.issues.map((e) => e.message).join(', '),
       }
     }
 

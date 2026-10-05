@@ -72,7 +72,7 @@ export const creditTools: AnyToolModule[] = [
       amount: z.number().int().positive(),
       transactionType: adjustmentTypeEnum,
       description: z.string().min(1).max(500),
-      metadata: z.record(z.unknown()).optional(),
+      metadata: z.record(z.string(), z.unknown()).optional(),
     },
     handler: async ({ userId, amount, transactionType, description, metadata }) => {
       const result = await addCreditsToUser(userId, amount, transactionType, description, metadata)
@@ -92,7 +92,7 @@ export const creditTools: AnyToolModule[] = [
       description: z.string().min(1).max(500),
       relatedEntityId: z.string().optional(),
       relatedEntityType: z.string().optional(),
-      metadata: z.record(z.unknown()).optional(),
+      metadata: z.record(z.string(), z.unknown()).optional(),
     },
     handler: async (args) => {
       const result = await spendUserCredits(

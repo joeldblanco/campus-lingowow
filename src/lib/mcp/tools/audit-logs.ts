@@ -4,8 +4,8 @@ import { exportAuditLogs, getAuditLogs } from '@/lib/actions/admin-audit-logs'
 import { unwrapActionResult } from '@/lib/mcp/errors'
 import type { AnyToolModule } from '@/lib/mcp/types'
 
-const auditActionEnum = z.nativeEnum(AuditAction)
-const auditCategoryEnum = z.nativeEnum(AuditCategory)
+const auditActionEnum = z.enum(AuditAction)
+const auditCategoryEnum = z.enum(AuditCategory)
 
 export const auditLogTools: AnyToolModule[] = [
   {

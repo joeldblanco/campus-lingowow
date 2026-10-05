@@ -17,8 +17,8 @@ import {
 import { unwrapActionResult } from '@/lib/mcp/errors'
 import type { AnyToolModule } from '@/lib/mcp/types'
 
-const notificationTypeEnum = z.nativeEnum(NotificationType)
-const userRoleEnum = z.nativeEnum(UserRole)
+const notificationTypeEnum = z.enum(NotificationType)
+const userRoleEnum = z.enum(UserRole)
 const userStatusEnum = z.enum(['ACTIVE', 'INACTIVE', 'ALL'])
 
 const bulkFiltersShape = z.object({
@@ -43,7 +43,7 @@ export const notificationTools: AnyToolModule[] = [
       title: z.string().min(1).max(200),
       message: z.string().min(1).max(2000),
       link: z.string().optional(),
-      metadata: z.record(z.unknown()).optional(),
+      metadata: z.record(z.string(), z.unknown()).optional(),
     },
     handler: async (args) => {
       const result = await createNotification({
@@ -68,7 +68,7 @@ export const notificationTools: AnyToolModule[] = [
       title: z.string().min(1).max(200),
       message: z.string().min(1).max(2000),
       link: z.string().optional(),
-      metadata: z.record(z.unknown()).optional(),
+      metadata: z.record(z.string(), z.unknown()).optional(),
     },
     handler: async ({ userIds, type, title, message, link, metadata }) => {
       const result = await createNotificationsForUsers(userIds, {
@@ -91,7 +91,7 @@ export const notificationTools: AnyToolModule[] = [
       title: z.string().min(1).max(200),
       message: z.string().min(1).max(2000),
       link: z.string().optional(),
-      metadata: z.record(z.unknown()).optional(),
+      metadata: z.record(z.string(), z.unknown()).optional(),
     },
     handler: async (args) => {
       const result = await notifyAdmins({
@@ -142,7 +142,7 @@ export const notificationTools: AnyToolModule[] = [
       title: z.string().min(1).max(200),
       message: z.string().min(1).max(2000),
       link: z.string().optional(),
-      metadata: z.record(z.unknown()).optional(),
+      metadata: z.record(z.string(), z.unknown()).optional(),
       filters: bulkFiltersShape,
     },
     handler: async (args) => {

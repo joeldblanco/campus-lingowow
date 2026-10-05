@@ -390,7 +390,7 @@ export async function createClass(data: z.infer<typeof CreateClassSchema> & { ti
     if (error instanceof z.ZodError) {
       return {
         success: false,
-        error: error.errors.map((e) => e.message).join(', '),
+        error: error.issues.map((e) => e.message).join(', '),
       }
     }
 
@@ -512,7 +512,7 @@ export async function createTrialClass(
     if (error instanceof z.ZodError) {
       return {
         success: false,
-        error: error.errors.map((e) => e.message).join(', '),
+        error: error.issues.map((e) => e.message).join(', '),
       }
     }
 
@@ -649,7 +649,7 @@ export async function updateClass(
     if (error instanceof z.ZodError) {
       return {
         success: false,
-        error: error.errors.map((e) => e.message).join(', '),
+        error: error.issues.map((e) => e.message).join(', '),
       }
     }
 

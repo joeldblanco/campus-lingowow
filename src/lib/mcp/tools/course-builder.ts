@@ -371,7 +371,9 @@ export const courseBuilderTools: AnyToolModule[] = [
     scopes: ['mcp:courses:write'],
     inputShape: {
       lessonId: z.string().min(1),
-      blocks: z.array(z.record(z.unknown())).describe('Array de Block (estructura del course-builder)'),
+      blocks: z
+        .array(z.record(z.string(), z.unknown()))
+        .describe('Array de Block (estructura del course-builder)'),
     },
     handler: async ({ lessonId, blocks }) => {
       const result = await updateLessonBlocks(lessonId, blocks as never)

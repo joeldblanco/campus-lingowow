@@ -2,7 +2,9 @@ import * as z from 'zod'
 
 export const NewPasswordSchema = z.object({
   password: z
-    .string({ required_error: 'La contraseña es requerida' })
+    .string({
+      error: (issue) => (issue.input === undefined ? 'La contraseña es requerida' : undefined),
+    })
     .min(8, 'La contraseña debe tener al menos 8 caracteres')
     .max(32, 'La contraseña debe tener menos de 32 caracteres')
     .regex(
@@ -13,19 +15,26 @@ export const NewPasswordSchema = z.object({
 
 export const ResetSchema = z.object({
   email: z
-    .string({ required_error: 'Correo electrónico requerido' })
+    .string({
+      error: (issue) => (issue.input === undefined ? 'Correo electrónico requerido' : undefined),
+    })
     .min(1, 'Correo electrónico requerido')
     .email('Correo electrónico no válido'),
 })
 
 export const SignInSchema = z.object({
   email: z
-    .string({ required_error: 'El correo electrónico es requerido' })
+    .string({
+      error: (issue) =>
+        issue.input === undefined ? 'El correo electrónico es requerido' : undefined,
+    })
     .min(1, 'El correo electrónico es requerido')
     .email('Formato de correo electrónico inválido'),
 
   password: z
-    .string({ required_error: 'La contraseña es requerida' })
+    .string({
+      error: (issue) => (issue.input === undefined ? 'La contraseña es requerida' : undefined),
+    })
     .min(8, 'La contraseña debe tener al menos 8 caracteres'),
   timezone: z.string().optional(),
   // Código 2FA opcional (TOTP de 6 dígitos o código de recuperación), solo
@@ -36,22 +45,30 @@ export const SignInSchema = z.object({
 export const SignUpSchema = z
   .object({
     name: z
-      .string({ required_error: 'El nombre es requerido' })
+      .string({
+        error: (issue) => (issue.input === undefined ? 'El nombre es requerido' : undefined),
+      })
       .min(1, 'El nombre es requerido')
       .max(255, 'El nombre debe tener menos de 255 caracteres'),
 
     lastName: z
-      .string({ required_error: 'El apellido es requerido' })
+      .string({
+        error: (issue) => (issue.input === undefined ? 'El apellido es requerido' : undefined),
+      })
       .min(1, 'El apellido es requerido')
       .max(255, 'El apellido debe tener menos de 255 caracteres'),
 
     email: z
-      .string({ required_error: 'Correo electrónico requerido' })
+      .string({
+        error: (issue) => (issue.input === undefined ? 'Correo electrónico requerido' : undefined),
+      })
       .min(1, 'Correo electrónico requerido')
       .email('Correo electrónico no válido'),
 
     password: z
-      .string({ required_error: 'Contraseña requerida' })
+      .string({
+        error: (issue) => (issue.input === undefined ? 'Contraseña requerida' : undefined),
+      })
       .min(8, 'La contraseña debe tener al menos 8 caracteres')
       .max(32, 'Máximo 32 caracteres')
       .regex(
@@ -60,7 +77,9 @@ export const SignUpSchema = z
       ),
 
     confirmPassword: z
-      .string({ required_error: 'Confirmación requerida' })
+      .string({
+        error: (issue) => (issue.input === undefined ? 'Confirmación requerida' : undefined),
+      })
       .min(8, 'Mínimo 8 caracteres')
       .max(32, 'Máximo 32 caracteres')
       .regex(

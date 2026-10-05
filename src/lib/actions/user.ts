@@ -140,7 +140,7 @@ export const createUser = async (userData: z.infer<typeof CreateUserSchema>) => 
   } catch (error) {
     if (error instanceof z.ZodError) {
       return {
-        error: error.errors.map((e) => `${e.path}: ${e.message}`).join(', '),
+        error: error.issues.map((e) => `${e.path}: ${e.message}`).join(', '),
       }
     }
 

@@ -58,8 +58,9 @@ export const activityFormSchema = z.object({
     .string()
     .min(10, { message: 'La descripción debe tener al menos 10 caracteres' })
     .max(500, { message: 'La descripción no puede exceder los 500 caracteres' }),
-  type: z.nativeEnum(ActivityType, {
-    required_error: 'Debes seleccionar un tipo de actividad',
+  type: z.enum(ActivityType, {
+    error: (issue) =>
+      issue.input === undefined ? 'Debes seleccionar un tipo de actividad' : undefined,
   }),
   level: z
     .number()
@@ -82,7 +83,7 @@ export const activityFormSchema = z.object({
 export const userActivitySchema = z.object({
   userId: z.string(),
   activityId: z.string(),
-  status: z.nativeEnum(ActivityStatus),
+  status: z.enum(ActivityStatus),
   score: z.number().nullable(),
   completedAt: z.date().nullable(),
   lastAttemptAt: z.date().nullable(),

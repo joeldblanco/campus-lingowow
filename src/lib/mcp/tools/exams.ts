@@ -111,7 +111,7 @@ export const examTools: AnyToolModule[] = [
       lessonId: z.string().optional(),
       createdById: z.string().min(1),
       questions: z
-        .array(z.record(z.unknown()))
+        .array(z.record(z.string(), z.unknown()))
         .optional()
         .describe(
           'Array de preguntas (estructura ExamQuestionSchema). Cada pregunta requiere type, question, points y para la mayoría correctAnswer.'
@@ -158,7 +158,7 @@ export const examTools: AnyToolModule[] = [
       courseId: z.string().optional(),
       moduleId: z.string().optional(),
       lessonId: z.string().optional(),
-      questions: z.array(z.record(z.unknown())).optional(),
+      questions: z.array(z.record(z.string(), z.unknown())).optional(),
     },
     handler: async ({ id, ...rest }) => {
       const data = EditExamSchema.parse(rest)

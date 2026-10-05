@@ -14,7 +14,7 @@ import {
 import { unwrapActionResult } from '@/lib/mcp/errors'
 import type { AnyToolModule } from '@/lib/mcp/types'
 
-const seasonNameEnum = z.nativeEnum(SeasonName)
+const seasonNameEnum = z.enum(SeasonName)
 
 export const academicPeriodTools: AnyToolModule[] = [
   {
