@@ -725,6 +725,8 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
             passingScore: true,
             maxAttempts: true,
             isPublished: true,
+            moduleId: true,
+            isBlocking: true,
             questions: {
               select: {
                 points: true,
@@ -776,6 +778,8 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
               passingScore: true,
               maxAttempts: true,
               isPublished: true,
+              moduleId: true,
+              isBlocking: true,
               questions: {
                 select: {
                   points: true,
@@ -789,10 +793,33 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
         : []
       : course.exams
 
+    const attempts = userId && visibleExams.length > 0
+      ? await db.examAttempt.findMany({
+          where: {
+            userId,
+            examId: {
+              in: visibleExams.map((exam) => exam.id),
+            },
+          },
+          select: {
+            examId: true,
+            score: true,
+          },
+        })
+      : []
+
     // Calcular questionCount y totalPoints para cada examen
     const examsWithStats = visibleExams.map((exam) => {
       const questionCount = exam.questions.length
       const totalPoints = exam.questions.reduce((sum, q) => sum + q.points, 0)
+      const hasPassed = userId
+        ? attempts.some(
+            (attempt) =>
+              attempt.examId === exam.id &&
+              attempt.score !== null &&
+              attempt.score >= exam.passingScore
+          )
+        : false
 
       return {
         id: exam.id,
@@ -802,6 +829,9 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
         passingScore: exam.passingScore,
         maxAttempts: exam.maxAttempts,
         isPublished: exam.isPublished,
+        moduleId: exam.moduleId,
+        isBlocking: exam.isBlocking,
+        hasPassed,
         questionCount,
         totalPoints,
       }
