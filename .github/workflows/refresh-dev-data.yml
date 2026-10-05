@@ -1,0 +1,32 @@
+name: Refresh dev data from production
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lingowow-environments
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    if: github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: dev
+      url: https://dev.lingowow.com
+    steps:
+      - name: Configure restricted staging key
+        env:
+          SSH_KEY: ${{ secrets.LINGOWOW_CI_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.LINGOWOW_CI_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/lingowow_ci
+          chmod 600 ~/.ssh/lingowow_ci
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+      - name: Replace dev data with an isolated production snapshot
+        run: ssh -o BatchMode=yes -o IdentitiesOnly=yes -i ~/.ssh/lingowow_ci root@137.184.8.53 refresh-dev-data
