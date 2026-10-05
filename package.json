@@ -168,5 +168,8 @@
     "tsx": "^4.22.4",
     "typescript": "^6",
     "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": "24.x"
   }
 }

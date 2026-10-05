@@ -73,6 +73,11 @@
 
 ## 🚀 Instalación y Ejecución
 
+Usa Node.js 24 (`.nvmrc`) y npm 11. Las comprobaciones de CI y los nuevos entornos
+de dev usan esa misma versión de Node. Al actualizar un entorno existente en
+Coolify, configura `NIXPACKS_NODE_VERSION=24` antes del siguiente despliegue;
+cambiar esa variable no requiere reiniciar la aplicación en ejecución.
+
 ### **1️⃣ Clonar el repositorio**
 
 ```bash
