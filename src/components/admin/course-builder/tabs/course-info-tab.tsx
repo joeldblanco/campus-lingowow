@@ -36,7 +36,11 @@ interface CourseInfoTabProps {
 }
 
 export function CourseInfoTab({ course, onUpdateCourse }: CourseInfoTabProps) {
-  const form = useForm<z.infer<typeof CreateCourseSchema>>({
+  const form = useForm<
+    z.input<typeof CreateCourseSchema>,
+    unknown,
+    z.output<typeof CreateCourseSchema>
+  >({
     resolver: zodResolver(CreateCourseSchema),
     defaultValues: {
       title: course.title,
@@ -49,7 +53,7 @@ export function CourseInfoTab({ course, onUpdateCourse }: CourseInfoTabProps) {
     },
   })
 
-  const onSubmit = (values: z.infer<typeof CreateCourseSchema>) => {
+  const onSubmit = (values: z.output<typeof CreateCourseSchema>) => {
     onUpdateCourse(values)
   }
 

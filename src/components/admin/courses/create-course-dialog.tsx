@@ -49,7 +49,11 @@ export function CreateCourseDialog({ children, onCourseCreated }: CreateCourseDi
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const form = useForm<z.infer<typeof CreateCourseSchema>>({
+  const form = useForm<
+    z.input<typeof CreateCourseSchema>,
+    unknown,
+    z.output<typeof CreateCourseSchema>
+  >({
     resolver: zodResolver(CreateCourseSchema),
     defaultValues: {
       title: '',
@@ -64,7 +68,7 @@ export function CreateCourseDialog({ children, onCourseCreated }: CreateCourseDi
     },
   })
 
-  const onSubmit = async (values: z.infer<typeof CreateCourseSchema>) => {
+  const onSubmit = async (values: z.output<typeof CreateCourseSchema>) => {
     if (!session?.user?.id) {
       toast.error('Debes estar autenticado para crear un curso')
       return

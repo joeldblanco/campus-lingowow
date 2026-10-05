@@ -77,7 +77,8 @@ const productSchema = z.object({
   expiresAt: z.date().optional().nullable(),
 })
 
-type ProductFormData = z.infer<typeof productSchema>
+type ProductFormInput = z.input<typeof productSchema>
+type ProductFormData = z.output<typeof productSchema>
 
 interface CreateProductDialogProps {
   children: React.ReactNode
@@ -90,7 +91,7 @@ export function CreateProductDialog({ children }: CreateProductDialogProps) {
   const [courses, setCourses] = useState<Course[]>([])
   const [plans, setPlans] = useState<PlanData[]>([])
 
-  const form = useForm<ProductFormData>({
+  const form = useForm<ProductFormInput, unknown, ProductFormData>({
     resolver: zodResolver(productSchema),
     defaultValues: {
       name: '',

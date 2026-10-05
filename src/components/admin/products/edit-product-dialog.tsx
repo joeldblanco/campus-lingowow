@@ -57,7 +57,8 @@ const productSchema = z.object({
   expiresAt: z.date().optional().nullable(),
 })
 
-type ProductFormData = z.infer<typeof productSchema>
+type ProductFormInput = z.input<typeof productSchema>
+type ProductFormData = z.output<typeof productSchema>
 
 interface Product {
   id: string
@@ -100,7 +101,7 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
   const [categories, setCategories] = useState<Category[]>([])
   const [courses, setCourses] = useState<Array<{ id: string; title: string; isSynchronous: boolean }>>([])
 
-  const form = useForm<ProductFormData>({
+  const form = useForm<ProductFormInput, unknown, ProductFormData>({
     resolver: zodResolver(productSchema),
     defaultValues: {
       name: product.name,

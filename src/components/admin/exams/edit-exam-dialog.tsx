@@ -38,7 +38,8 @@ interface EditExamDialogProps {
   onOpenChange: (open: boolean) => void
 }
 
-type FormData = z.infer<typeof EditExamSchema>
+type FormInput = z.input<typeof EditExamSchema>
+type FormData = z.output<typeof EditExamSchema>
 
 // Helper function to safely parse options from Prisma Json field
 const parseOptions = (options: unknown): string[] => {
@@ -78,7 +79,7 @@ export function EditExamDialog({ exam, open, onOpenChange }: EditExamDialogProps
   )
   const [loading, setLoading] = useState(false)
 
-  const form = useForm<FormData>({
+  const form = useForm<FormInput, unknown, FormData>({
     resolver: zodResolver(EditExamSchema),
     defaultValues: {
       title: exam.title,

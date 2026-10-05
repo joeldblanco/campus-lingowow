@@ -58,13 +58,16 @@ const formSchema = z.object({
 
 interface AcademicPeriodFormProps {
   seasons: (Season & { name: SeasonName })[]
-  onSubmit: (values: z.infer<typeof formSchema>) => Promise<void>
+  onSubmit: (values: AcademicPeriodFormData) => Promise<void>
   defaultMonth?: Date
   existingPeriods?: Array<{
     startDate: Date
     endDate: Date
   }>
 }
+
+type AcademicPeriodFormInput = z.input<typeof formSchema>
+type AcademicPeriodFormData = z.output<typeof formSchema>
 
 const AcademicPeriodForm: React.FC<AcademicPeriodFormProps> = ({
   seasons,
@@ -75,7 +78,7 @@ const AcademicPeriodForm: React.FC<AcademicPeriodFormProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Inicializar el formulario
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<AcademicPeriodFormInput, unknown, AcademicPeriodFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
@@ -107,7 +110,7 @@ const AcademicPeriodForm: React.FC<AcademicPeriodFormProps> = ({
   }, [startDate, endDate, existingPeriods])
 
   // Manejar envío del formulario
-  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+  const handleSubmit = async (values: AcademicPeriodFormData) => {
     if (hasOverlap) {
       toast.error('El período se superpone con otro existente')
       return
