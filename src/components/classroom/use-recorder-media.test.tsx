@@ -7,12 +7,23 @@ const mocks = vi.hoisted(() => ({ send: vi.fn(), add: vi.fn(), remove: vi.fn() }
 vi.mock('./livekit-context', () => ({ useLiveKit: () => ({
   sendCommand: mocks.send, addCommandListener: mocks.add, removeCommandListener: mocks.remove, connectionStatus: 'connected',
 }) }))
-function Material() {
+function Material({ isTeacher = true }: { isTeacher?: boolean }) {
   const ref = useRef<HTMLDivElement>(null)
-  useRecorderMedia(ref, true)
+  useRecorderMedia(ref, isTeacher)
   return <><div ref={ref}><section data-block-id="audio-block"><audio data-testid="audio" /></section><section data-block-id="video-block"><video data-testid="video" /></section></div><audio data-testid="unrelated" /></>
 }
 beforeEach(() => vi.clearAllMocks())
+it('does not let student media overwrite the teacher playback in recordings', () => {
+  render(<Material isTeacher={false} />)
+  for (const testId of ['audio', 'video']) {
+    const media = screen.getByTestId(testId)
+    for (const event of ['play', 'pause', 'seeked', 'ratechange', 'ended']) {
+      fireEvent(media, new Event(event))
+    }
+  }
+  expect(mocks.send).not.toHaveBeenCalled()
+  expect(mocks.add).not.toHaveBeenCalled()
+})
 it('broadcasts native audio play, seek, pause and existing state for a joining recorder', () => {
   render(<Material />)
   const audio = screen.getByTestId('audio') as HTMLAudioElement

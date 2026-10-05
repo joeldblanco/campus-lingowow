@@ -6,7 +6,7 @@ import { useLiveKit } from './livekit-context'
 export function useRecorderMedia(containerRef: RefObject<HTMLElement | null>, isTeacher: boolean) {
   const { sendCommand, addCommandListener, removeCommandListener, connectionStatus } = useLiveKit()
   useEffect(() => {
-    if (connectionStatus !== 'connected') return
+    if (!isTeacher || connectionStatus !== 'connected') return
     const publish = (media: HTMLMediaElement) => {
       const container = containerRef.current
       const block = media.closest('[data-block-id]')
