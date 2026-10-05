@@ -5,6 +5,7 @@ import { mapContentToBlock } from '@/lib/content-mapper'
 import { updateSingleBlockRequestSchema } from '@/lib/validations/lesson-builder-api'
 import { Block } from '@/types/course-builder'
 import { ContentType, Prisma } from '@prisma/client'
+import { z } from 'zod'
 
 // Helper to verify lesson access
 async function verifyLessonAccess(lessonId: string, userId: string) {
@@ -146,7 +147,7 @@ export async function PATCH(
 
     if (!validation.success) {
       return NextResponse.json(
-        { error: 'Invalid request body', details: validation.error.flatten() },
+          { error: 'Invalid request body', details: z.flattenError(validation.error) },
         { status: 400 }
       )
     }

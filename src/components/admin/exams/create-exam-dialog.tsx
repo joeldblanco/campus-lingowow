@@ -58,7 +58,11 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
       }>
     }>
   >([])
-  const form = useForm<z.infer<typeof CreateExamSchema>>({
+  const form = useForm<
+    z.input<typeof CreateExamSchema>,
+    unknown,
+    z.output<typeof CreateExamSchema>
+  >({
     resolver: zodResolver(CreateExamSchema),
     defaultValues: {
       title: '',
@@ -96,7 +100,7 @@ export function CreateExamDialog({ open, onOpenChange }: CreateExamDialogProps) 
     }
   }
 
-  const onSubmit = async (values: z.infer<typeof CreateExamSchema>) => {
+  const onSubmit = async (values: z.output<typeof CreateExamSchema>) => {
     if (questions.length === 0) {
       toast.error('Por favor, agregue al menos una pregunta')
       return

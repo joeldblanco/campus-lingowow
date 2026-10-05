@@ -16,7 +16,7 @@ import {
   buildImpersonationUrl,
   issueImpersonationToken,
 } from '@/lib/mcp/impersonation-token'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 const userRoleEnum = z.enum([
   UserRole.ADMIN,
@@ -29,7 +29,7 @@ const userRoleEnum = z.enum([
 const userStatusEnum = z.enum([UserStatus.ACTIVE, UserStatus.INACTIVE] as const)
 
 export const userTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_users_list',
     description:
       'Lista usuarios del campus. Soporta paginación con limit/offset (default limit 50, máx 200).',
@@ -58,9 +58,9 @@ export const userTools: AnyToolModule[] = [
         })),
       }
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_users_get',
     description: 'Obtiene un usuario por ID o por email. Indica al menos uno.',
     scopes: ['mcp:users:read'],
@@ -75,9 +75,9 @@ export const userTools: AnyToolModule[] = [
       const user = id ? await getUserById(id) : await getUserByEmail(email!)
       return unwrapActionResult(user)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_users_create',
     description:
       'Crea un usuario nuevo. La contraseña debe cumplir las reglas estándar: 8-32 chars, mayúscula, minúscula, número y símbolo.',
@@ -96,9 +96,9 @@ export const userTools: AnyToolModule[] = [
       const user = await createUser(data)
       return unwrapActionResult(user)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_users_update',
     description: 'Actualiza un usuario existente. Pasa solo los campos a modificar.',
     scopes: ['mcp:users:write'],
@@ -115,9 +115,9 @@ export const userTools: AnyToolModule[] = [
       const updated = await updateUser(id, data)
       return unwrapActionResult(updated)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_users_set_status',
     description: 'Activa o desactiva una cuenta de usuario.',
     scopes: ['mcp:users:write'],
@@ -129,9 +129,9 @@ export const userTools: AnyToolModule[] = [
       const updated = await updateUser(id, { status })
       return unwrapActionResult(updated)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_users_delete',
     description:
       'Elimina un usuario por ID. Operación destructiva: no es idempotente y borra datos relacionados según las reglas del schema.',
@@ -143,9 +143,9 @@ export const userTools: AnyToolModule[] = [
       const result = await deleteUser(id)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_users_impersonate_token',
     description:
       'Genera un magic link de un solo uso para impersonar a un usuario. El admin (dueño de la API key) debe abrir la URL en un navegador donde ya esté logueado como ese mismo admin — el endpoint /api/admin/impersonate/consume verifica que la cookie coincida y crea la sesión del usuario destino. TTL: 5 minutos.',
@@ -177,5 +177,5 @@ export const userTools: AnyToolModule[] = [
           'Abre esta URL en un navegador donde estés logueado como el admin que ejecutó esta tool. El token es de un solo uso — al canjearse, queda inutilizable. Caduca en 5 minutos.',
       }
     },
-  },
+  }),
 ]

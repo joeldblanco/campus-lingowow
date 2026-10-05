@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
+import { usePathname } from 'next/navigation'
 import { UserRole } from '@prisma/client'
 import { useTour } from './tour-context'
 import type { TourType } from './tour-types'
+import { canAutoStartTour } from './tour-routing'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,6 +21,7 @@ import { Sparkles } from 'lucide-react'
 
 export function TourAutoStart() {
   const { data: session } = useSession()
+  const pathname = usePathname()
   const { startTour, hasCompletedTour, markTourAsCompleted } = useTour()
   const [showDialog, setShowDialog] = useState(false)
   const [tourType, setTourType] = useState<TourType | null>(null)
@@ -37,7 +40,16 @@ export function TourAutoStart() {
       detectedTourType = 'guest'
     }
 
-    if (detectedTourType && !hasCompletedTour(detectedTourType)) {
+    if (detectedTourType && !canAutoStartTour(detectedTourType, pathname)) {
+      setShowDialog(false)
+      return
+    }
+
+    if (
+      detectedTourType &&
+      canAutoStartTour(detectedTourType, pathname) &&
+      !hasCompletedTour(detectedTourType)
+    ) {
       setTourType(detectedTourType)
       // Small delay to ensure the page is fully loaded
       const timer = setTimeout(() => {
@@ -45,7 +57,7 @@ export function TourAutoStart() {
       }, 1000)
       return () => clearTimeout(timer)
     }
-  }, [session, hasCompletedTour])
+  }, [session, pathname, hasCompletedTour])
 
   const handleStartTour = () => {
     setShowDialog(false)

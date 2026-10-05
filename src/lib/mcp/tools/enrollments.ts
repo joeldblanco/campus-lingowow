@@ -12,7 +12,7 @@ import {
   updateEnrollment,
 } from '@/lib/actions/enrollments'
 import { unwrapActionResult } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 const enrollmentStatusEnum = z.enum([
   EnrollmentStatus.ACTIVE,
@@ -23,7 +23,7 @@ const enrollmentStatusEnum = z.enum([
 ] as const)
 
 export const enrollmentTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_enrollments_list',
     description: 'Lista todas las inscripciones con detalles. Soporta paginación.',
     scopes: ['mcp:enrollments:read'],
@@ -40,9 +40,9 @@ export const enrollmentTools: AnyToolModule[] = [
         enrollments: all.slice(offset, offset + limit),
       }
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_enrollments_get',
     description: 'Obtiene una inscripción por ID con todos sus detalles.',
     scopes: ['mcp:enrollments:read'],
@@ -54,16 +54,16 @@ export const enrollmentTools: AnyToolModule[] = [
       }
       return enrollment
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_enrollments_stats',
     description: 'Devuelve estadísticas agregadas de inscripciones (totales por estado).',
     scopes: ['mcp:enrollments:read'],
     handler: async () => getEnrollmentStats(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_enrollments_create',
     description:
       'Crea una inscripción nueva. Requiere un paypalOrderId válido (la acción verifica la transacción contra PayPal y crea la factura asociada).',
@@ -83,9 +83,9 @@ export const enrollmentTools: AnyToolModule[] = [
       })
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_enrollments_update',
     description: 'Actualiza el estado, progreso, curso o período de una inscripción existente.',
     scopes: ['mcp:enrollments:write'],
@@ -100,9 +100,9 @@ export const enrollmentTools: AnyToolModule[] = [
       const result = await updateEnrollment(id, data)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_enrollments_delete',
     description: 'Elimina una inscripción por ID. Operación destructiva.',
     scopes: ['mcp:enrollments:write'],
@@ -111,9 +111,9 @@ export const enrollmentTools: AnyToolModule[] = [
       const result = await deleteEnrollment(id)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_enrollments_activate_pending',
     description:
       'Activa todas las inscripciones PENDING cuya fecha de inicio del período ya llegó. Idempotente.',
@@ -122,9 +122,9 @@ export const enrollmentTools: AnyToolModule[] = [
       const result = await activatePendingEnrollments()
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_enrollments_complete_expired',
     description: 'Marca como COMPLETED las inscripciones cuyo período ya finalizó. Idempotente.',
     scopes: ['mcp:enrollments:write'],
@@ -132,9 +132,9 @@ export const enrollmentTools: AnyToolModule[] = [
       const result = await completeExpiredEnrollments()
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_enrollments_sync_statuses',
     description:
       'Recalcula y sincroniza los estados de todas las inscripciones según las fechas de sus períodos académicos. Idempotente.',
@@ -143,5 +143,5 @@ export const enrollmentTools: AnyToolModule[] = [
       const result = await syncEnrollmentStatuses()
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

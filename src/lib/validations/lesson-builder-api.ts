@@ -5,7 +5,7 @@ const baseBlockSchema = z.object({
   id: z.string().optional(), // Optional for creation, will be generated if not provided
   order: z.number().int().min(0).optional(),
   children: z.lazy(() => z.array(blockSchema)).optional(),
-  data: z.record(z.unknown()).optional(),
+  data: z.record(z.string(), z.unknown()).optional(),
 })
 
 // Block type enum

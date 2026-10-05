@@ -21,7 +21,7 @@ import {
   getRevenueByMonth,
   getTotalRevenue,
 } from '@/lib/actions/commercial'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 const dateRangeShape = z.object({
   startDate: z.string().datetime().optional(),
@@ -29,7 +29,7 @@ const dateRangeShape = z.object({
 })
 
 export const analyticsTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_analytics_dashboard_kpis',
     description:
       'KPIs principales del dashboard admin: ingresos, gastos, estudiantes activos, profesores, conversión, churn. Compara contra período anterior.',
@@ -46,9 +46,9 @@ export const analyticsTools: AnyToolModule[] = [
             }
           : undefined
       ),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_analytics_revenue',
     description:
       'Análisis de ingresos: serie mensual, desglose por producto/plan/idioma/método de pago, uso de cupones. months controla el rango (default 12).',
@@ -57,9 +57,9 @@ export const analyticsTools: AnyToolModule[] = [
       months: z.number().int().min(1).max(60).optional().default(12),
     },
     handler: async ({ months }) => getRevenueAnalytics(months),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_analytics_expenses',
     description: 'Análisis de gastos mensuales (incluye pagos a profesores). months controla el rango.',
     scopes: ['mcp:analytics:read'],
@@ -67,23 +67,23 @@ export const analyticsTools: AnyToolModule[] = [
       months: z.number().int().min(1).max(60).optional().default(12),
     },
     handler: async ({ months }) => getExpenseAnalytics(months),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_analytics_products',
     description: 'Performance de productos y planes (ventas, ingresos, conversión).',
     scopes: ['mcp:analytics:read'],
     handler: async () => getProductAnalytics(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_analytics_teachers',
     description: 'Métricas por profesor (clases dictadas, horas, rating, retención de estudiantes, ingresos generados).',
     scopes: ['mcp:analytics:read'],
     handler: async () => getTeacherAnalytics(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_analytics_students',
     description: 'Crecimiento y actividad de estudiantes en los últimos N meses.',
     scopes: ['mcp:analytics:read'],
@@ -91,23 +91,23 @@ export const analyticsTools: AnyToolModule[] = [
       months: z.number().int().min(1).max(60).optional().default(12),
     },
     handler: async ({ months }) => getStudentAnalytics(months),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_analytics_projections',
     description: 'Proyecciones financieras de ingresos/gastos basadas en tendencias históricas, con alertas y estacionalidad.',
     scopes: ['mcp:analytics:read'],
     handler: async () => getProjectionAnalytics(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_analytics_financial_health',
     description: 'Indicadores de salud financiera: margen, runway, ratios y warning signals.',
     scopes: ['mcp:analytics:read'],
     handler: async () => getFinancialHealth(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_analytics_historical_comparison',
     description: 'Compara KPIs (ingresos, gastos, estudiantes) entre dos rangos de fechas explícitos.',
     scopes: ['mcp:analytics:read'],
@@ -124,9 +124,9 @@ export const analyticsTools: AnyToolModule[] = [
         new Date(previousStart),
         new Date(previousEnd)
       ),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_analytics_cohorts',
     description: 'Análisis de cohortes (retención por mes de adquisición). monthsBack controla la profundidad histórica.',
     scopes: ['mcp:analytics:read'],
@@ -134,16 +134,16 @@ export const analyticsTools: AnyToolModule[] = [
       monthsBack: z.number().int().min(1).max(36).optional().default(12),
     },
     handler: async ({ monthsBack }) => getCohortAnalytics(monthsBack),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_analytics_student_ltv',
     description: 'Lifetime value por estudiante: ingresos totales, clases tomadas, antigüedad.',
     scopes: ['mcp:analytics:read'],
     handler: async () => getStudentLTV(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_analytics_schedule_heatmap',
     description: 'Heatmap de uso del horario (clases por día/hora) para los últimos N meses.',
     scopes: ['mcp:analytics:read'],
@@ -151,9 +151,9 @@ export const analyticsTools: AnyToolModule[] = [
       monthsBack: z.number().int().min(1).max(12).optional().default(3),
     },
     handler: async ({ monthsBack }) => getScheduleHeatmap(monthsBack),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_analytics_projected_payroll',
     description:
       'Proyección de nómina (pago a profesores) para un mes específico. Considera todas las clases programadas no canceladas. Default: mes actual.',
@@ -162,17 +162,17 @@ export const analyticsTools: AnyToolModule[] = [
       month: z.string().datetime().optional().describe('Fecha cualquiera dentro del mes a proyectar'),
     },
     handler: async ({ month }) => getProjectedPayrollAnalytics(month ? new Date(month) : undefined),
-  },
+  }),
 
   // Atajos comerciales útiles para el agente
-  {
+  defineTool({
     name: 'lingowow_analytics_total_revenue',
     description: 'Ingresos totales acumulados (todas las facturas pagadas).',
     scopes: ['mcp:analytics:read'],
     handler: async () => getTotalRevenue(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_analytics_monthly_revenue',
     description: 'Ingresos de un mes/año específico.',
     scopes: ['mcp:analytics:read'],
@@ -181,9 +181,9 @@ export const analyticsTools: AnyToolModule[] = [
       month: z.number().int().min(1).max(12),
     },
     handler: async ({ year, month }) => getMonthlyRevenue(year, month),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_analytics_revenue_by_month',
     description: 'Serie mensual de ingresos para un año completo.',
     scopes: ['mcp:analytics:read'],
@@ -191,19 +191,19 @@ export const analyticsTools: AnyToolModule[] = [
       year: z.number().int().min(2020).max(2100),
     },
     handler: async ({ year }) => getRevenueByMonth(year),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_analytics_active_subscriptions',
     description: 'Conteo de suscripciones activas.',
     scopes: ['mcp:analytics:read'],
     handler: async () => getActiveSubscriptionsCount(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_analytics_product_sales',
     description: 'Conteo de ventas por producto.',
     scopes: ['mcp:analytics:read'],
     handler: async () => getProductSalesCount(),
-  },
+  }),
 ]

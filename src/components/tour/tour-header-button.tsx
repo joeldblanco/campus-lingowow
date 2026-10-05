@@ -38,6 +38,7 @@ export function TourHeaderButton() {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
+            data-tour="tour-help"
             variant="ghost"
             size="icon"
             onClick={handleStartTour}

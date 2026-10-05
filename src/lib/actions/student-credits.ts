@@ -13,7 +13,7 @@ import { UserRole } from '@prisma/client'
 const createCreditsSchema = z.object({
   studentId: z.string(),
   amount: z.number().min(1).default(1),
-  source: z.nativeEnum(CreditSource),
+  source: z.enum(CreditSource),
   expiryMonths: z.number().min(1).default(3),
 })
 

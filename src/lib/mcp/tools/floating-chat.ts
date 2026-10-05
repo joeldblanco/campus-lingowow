@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { db } from '@/lib/db'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 /**
  * Tools de administración de floating chat (vista admin).
@@ -11,7 +11,7 @@ import type { AnyToolModule } from '@/lib/mcp/types'
  */
 
 export const floatingChatTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_floating_chat_conversations_list',
     description:
       'Lista conversaciones del chat flotante (admin). Filtros opcionales: isGroup, userId (conversaciones donde participa).',
@@ -45,9 +45,9 @@ export const floatingChatTools: AnyToolModule[] = [
       ])
       return { total, limit, offset, conversations }
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_floating_chat_conversation_get',
     description:
       'Devuelve una conversación del chat flotante con sus participantes y los últimos mensajes.',
@@ -77,9 +77,9 @@ export const floatingChatTools: AnyToolModule[] = [
       if (!conversation) throw new Error('Conversación no encontrada')
       return conversation
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_floating_chat_messages_list',
     description: 'Lista mensajes de una conversación con paginación (orden cronológico).',
     scopes: ['mcp:notifications:read'],
@@ -100,9 +100,9 @@ export const floatingChatTools: AnyToolModule[] = [
       })
       return messages
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_floating_chat_archive',
     description:
       'Marca como archivada la conversación para todos sus participantes (admin maintenance).',
@@ -115,5 +115,5 @@ export const floatingChatTools: AnyToolModule[] = [
       })
       return { success: true, updatedParticipants: result.count }
     },
-  },
+  }),
 ]

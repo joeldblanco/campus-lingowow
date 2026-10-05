@@ -23,13 +23,13 @@ import {
   updatePlanFeatures,
 } from '@/lib/actions/commercial'
 import { unwrapActionResult } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 const invoiceStatusEnum = z.enum(['DRAFT', 'SENT', 'PAID', 'OVERDUE', 'CANCELLED'])
 
 export const commercialExtrasTools: AnyToolModule[] = [
   // Categorías de productos
-  {
+  defineTool({
     name: 'lingowow_categories_get',
     description: 'Obtiene una categoría de productos por ID con sus productos asociados.',
     scopes: ['mcp:products:read'],
@@ -39,9 +39,9 @@ export const commercialExtrasTools: AnyToolModule[] = [
       if (!cat) throw new Error('Categoría no encontrada')
       return cat
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_categories_create',
     description: 'Crea una categoría de productos.',
     scopes: ['mcp:products:write'],
@@ -64,9 +64,9 @@ export const commercialExtrasTools: AnyToolModule[] = [
       })
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_categories_update',
     description: 'Actualiza una categoría de productos.',
     scopes: ['mcp:products:write'],
@@ -83,9 +83,9 @@ export const commercialExtrasTools: AnyToolModule[] = [
       const result = await updateCategory(id, data)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_categories_delete',
     description: 'Elimina una categoría de productos. Falla si tiene productos asociados.',
     scopes: ['mcp:products:write'],
@@ -94,17 +94,17 @@ export const commercialExtrasTools: AnyToolModule[] = [
       const result = await deleteCategory(id)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
   // Features
-  {
+  defineTool({
     name: 'lingowow_features_list',
     description: 'Lista todas las features (características) que pueden asociarse a planes.',
     scopes: ['mcp:products:read'],
     handler: async () => getFeatures(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_features_get',
     description: 'Obtiene una feature por ID con los planes que la usan.',
     scopes: ['mcp:products:read'],
@@ -114,9 +114,9 @@ export const commercialExtrasTools: AnyToolModule[] = [
       if (!feat) throw new Error('Feature no encontrada')
       return feat
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_features_create',
     description: 'Crea una feature reutilizable.',
     scopes: ['mcp:products:write'],
@@ -135,9 +135,9 @@ export const commercialExtrasTools: AnyToolModule[] = [
       })
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_features_update',
     description: 'Actualiza una feature.',
     scopes: ['mcp:products:write'],
@@ -152,9 +152,9 @@ export const commercialExtrasTools: AnyToolModule[] = [
       const result = await updateFeature(id, data)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_features_delete',
     description: 'Elimina una feature permanentemente.',
     scopes: ['mcp:products:write'],
@@ -163,10 +163,10 @@ export const commercialExtrasTools: AnyToolModule[] = [
       const result = await deleteFeature(id)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
   // Plan ↔ Feature management
-  {
+  defineTool({
     name: 'lingowow_plans_add_feature',
     description: 'Asocia una feature a un plan. value puede usarse para descripciones tipo "Hasta 10 clases".',
     scopes: ['mcp:products:write'],
@@ -180,9 +180,9 @@ export const commercialExtrasTools: AnyToolModule[] = [
       const result = await addFeatureToPlan(planId, featureId, included, value)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_plans_remove_feature',
     description: 'Desasocia una feature de un plan.',
     scopes: ['mcp:products:write'],
@@ -194,9 +194,9 @@ export const commercialExtrasTools: AnyToolModule[] = [
       const result = await removeFeatureFromPlan(planId, featureId)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_plans_set_features',
     description:
       'Reemplaza el set completo de features de un plan. Útil para sincronizar todas las features de una sola llamada.',
@@ -217,10 +217,10 @@ export const commercialExtrasTools: AnyToolModule[] = [
       const result = await updatePlanFeatures(planId, features)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
   // Plan ↔ Product association
-  {
+  defineTool({
     name: 'lingowow_plans_associate_product',
     description: 'Asocia un plan a un producto.',
     scopes: ['mcp:products:write'],
@@ -232,9 +232,9 @@ export const commercialExtrasTools: AnyToolModule[] = [
       const result = await associatePlanToProduct(planId, productId)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_plans_dissociate_product',
     description: 'Desasocia un plan de su producto actual.',
     scopes: ['mcp:products:write'],
@@ -243,17 +243,17 @@ export const commercialExtrasTools: AnyToolModule[] = [
       const result = await dissociatePlanFromProduct(planId)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_plans_available_for_product',
     description: 'Lista los planes que aún no tienen producto asociado (candidatos para asociar).',
     scopes: ['mcp:products:read'],
     handler: async () => getAvailablePlansForProduct(),
-  },
+  }),
 
   // Facturas (CRUD admin)
-  {
+  defineTool({
     name: 'lingowow_invoices_list',
     description: 'Lista todas las facturas con sus items, cupones y datos del cliente.',
     scopes: ['mcp:finance:read'],
@@ -270,17 +270,17 @@ export const commercialExtrasTools: AnyToolModule[] = [
         invoices: all.slice(offset, offset + limit),
       }
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_invoices_list_for_user',
     description: 'Lista las facturas de un usuario específico.',
     scopes: ['mcp:finance:read'],
     inputShape: { userId: z.string().min(1) },
     handler: async ({ userId }) => getUserInvoices(userId),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_invoices_get',
     description: 'Obtiene una factura por ID o por invoiceNumber. Indica al menos uno.',
     scopes: ['mcp:finance:read'],
@@ -296,9 +296,9 @@ export const commercialExtrasTools: AnyToolModule[] = [
       if (!invoice) throw new Error('Factura no encontrada')
       return invoice
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_invoices_create',
     description:
       'Crea una factura con items. invoiceNumber debe ser único. couponId opcional. Cada item necesita name, price, quantity, total y opcionalmente productId/planId.',
@@ -355,9 +355,9 @@ export const commercialExtrasTools: AnyToolModule[] = [
       })
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_invoices_update',
     description:
       'Actualiza campos no destructivos de una factura (status, dueDate, paidAt, invoiceNumber). Para crear/eliminar items, recrea la factura.',
@@ -378,5 +378,5 @@ export const commercialExtrasTools: AnyToolModule[] = [
       })
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

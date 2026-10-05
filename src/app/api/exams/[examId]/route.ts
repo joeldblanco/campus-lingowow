@@ -3,6 +3,7 @@ import { db } from '@/lib/db'
 import { authenticateRequest } from '@/lib/api-auth'
 import { Prisma } from '@prisma/client'
 import { UpdateExamApiSchema, convertBlocksToQuestions } from '../exam-schemas'
+import { z } from 'zod'
 
 /**
  * GET /api/exams/[examId]
@@ -242,7 +243,7 @@ export async function PUT(
 
     if (!validation.success) {
       return NextResponse.json(
-        { error: 'Invalid request body', details: validation.error.flatten() },
+        { error: 'Invalid request body', details: z.flattenError(validation.error) },
         { status: 400 }
       )
     }

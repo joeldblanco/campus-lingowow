@@ -14,7 +14,7 @@ import {
   updateClass,
 } from '@/lib/actions/classes'
 import { unwrapActionResult } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 const bookingStatusEnum = z.enum([
   BookingStatus.CONFIRMED,
@@ -25,7 +25,7 @@ const bookingStatusEnum = z.enum([
 ] as const)
 
 export const classTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_classes_list',
     description:
       'Lista clases con filtros opcionales (rango de fechas, profesor, estudiante, estado, curso, período). Las fechas se interpretan en el timezone indicado (default America/Lima).',
@@ -51,9 +51,9 @@ export const classTools: AnyToolModule[] = [
         classes: all.slice(offset, offset + limit),
       }
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_classes_get',
     description: 'Obtiene una clase por ID con todos sus detalles.',
     scopes: ['mcp:classes:read'],
@@ -66,16 +66,16 @@ export const classTools: AnyToolModule[] = [
       if (!cls) throw new Error('Clase no encontrada')
       return cls
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_classes_stats',
     description: 'Estadísticas agregadas de clases (totales por estado).',
     scopes: ['mcp:classes:read'],
     handler: async () => getClassStats(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_classes_create',
     description:
       'Crea una clase nueva. `datetime` debe ser ISO local (YYYY-MM-DDTHH:MM) en el timezone indicado. Verifica conflicto de horarios con el profesor.',
@@ -97,9 +97,9 @@ export const classTools: AnyToolModule[] = [
       })
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_classes_update',
     description:
       'Actualiza una clase. day y timeSlot deben ir juntos cuando se cambia el horario. Verifica conflictos con el profesor.',
@@ -130,9 +130,9 @@ export const classTools: AnyToolModule[] = [
       })
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_classes_reschedule',
     description: 'Reprograma una clase a una nueva fecha y horario, validando disponibilidad del profesor.',
     scopes: ['mcp:classes:write'],
@@ -146,9 +146,9 @@ export const classTools: AnyToolModule[] = [
       const result = await rescheduleClass(id, newDay, newTimeSlot, timezone)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_classes_delete',
     description:
       'Elimina una clase y sus grabaciones asociadas. Operación destructiva e irreversible.',
@@ -158,9 +158,9 @@ export const classTools: AnyToolModule[] = [
       const result = await deleteClass(id)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_classes_toggle_payable',
     description: 'Marca una clase como pagable o no pagable al profesor.',
     scopes: ['mcp:classes:write'],
@@ -172,9 +172,9 @@ export const classTools: AnyToolModule[] = [
       const result = await toggleClassPayable(classId, isPayable)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_classes_bulk_update',
     description:
       'Actualiza múltiples clases en lote. Útil para marcar como completadas o canceladas en masa.',
@@ -189,9 +189,9 @@ export const classTools: AnyToolModule[] = [
       const result = await bulkUpdateClasses(classIds, updateData)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_classes_bulk_delete',
     description: 'Elimina múltiples clases en lote. Operación destructiva.',
     scopes: ['mcp:classes:write'],
@@ -202,9 +202,9 @@ export const classTools: AnyToolModule[] = [
       const result = await bulkDeleteClasses(classIds)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_classes_bulk_reschedule',
     description: 'Reprograma múltiples clases a la misma fecha y horario.',
     scopes: ['mcp:classes:write'],
@@ -218,5 +218,5 @@ export const classTools: AnyToolModule[] = [
       const result = await bulkRescheduleClasses(classIds, newDay, newTimeSlot, timezone)
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

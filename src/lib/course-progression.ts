@@ -32,6 +32,35 @@ export interface ModuleProgress {
   isCompleted: boolean
 }
 
+export interface CourseContentProgress {
+  contentId: string
+  completed: boolean
+}
+
+export function summarizeCourseProgress(
+  modules: Array<Pick<ProgressModule, 'lessons'>>,
+  contentProgress: CourseContentProgress[]
+) {
+  const courseContentIds = new Set(
+    modules.flatMap((module) =>
+      module.lessons.flatMap((lesson) => lesson.contents.map((content) => content.id))
+    )
+  )
+  const completedContentIds = contentProgress
+    .filter((entry) => entry.completed && courseContentIds.has(entry.contentId))
+    .map((entry) => entry.contentId)
+  const totalContents = courseContentIds.size
+  const completedContents = completedContentIds.length
+
+  return {
+    totalContents,
+    completedContents,
+    progressPercentage:
+      totalContents > 0 ? Math.round((completedContents / totalContents) * 100) : 0,
+    completedContentIds,
+  }
+}
+
 /** Per-module completion derived from the set of completed content ids. */
 export function computeModuleProgress(
   modules: ProgressModule[],
@@ -45,7 +74,8 @@ export function computeModuleProgress(
       const contentIds = module.lessons.flatMap((lesson) => lesson.contents.map((c) => c.id))
       const totalContents = contentIds.length
       const completedContents = contentIds.filter((id) => completed.has(id)).length
-      const percentage = totalContents > 0 ? Math.round((completedContents / totalContents) * 100) : 0
+      const percentage =
+        totalContents > 0 ? Math.round((completedContents / totalContents) * 100) : 0
 
       return {
         moduleId: module.id,

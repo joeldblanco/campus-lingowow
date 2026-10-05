@@ -2,13 +2,13 @@ import { z } from 'zod'
 import { AuditAction, AuditCategory } from '@prisma/client'
 import { exportAuditLogs, getAuditLogs } from '@/lib/actions/admin-audit-logs'
 import { unwrapActionResult } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
-const auditActionEnum = z.nativeEnum(AuditAction)
-const auditCategoryEnum = z.nativeEnum(AuditCategory)
+const auditActionEnum = z.enum(AuditAction)
+const auditCategoryEnum = z.enum(AuditCategory)
 
 export const auditLogTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_audit_logs_list',
     description:
       'Lista entradas del audit log con filtros (action, category, userId, rango de fechas, búsqueda de texto). Útil para que el agente verifique el efecto de sus propias llamadas MCP.',
@@ -27,9 +27,9 @@ export const auditLogTools: AnyToolModule[] = [
       const result = await getAuditLogs(args)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_audit_logs_export',
     description:
       'Exporta los audit logs que coincidan con los filtros (sin paginación). Pensado para reportes; ten cuidado con rangos de fechas amplios — devuelve todo en memoria.',
@@ -46,9 +46,9 @@ export const auditLogTools: AnyToolModule[] = [
       const result = await exportAuditLogs(args)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_audit_logs_recent_mcp',
     description:
       'Atajo: lista las invocaciones recientes del propio servidor MCP (action=MCP_TOOL_INVOKED) ordenadas por fecha desc. Útil para que el agente revise sus propias acciones.',
@@ -67,5 +67,5 @@ export const auditLogTools: AnyToolModule[] = [
       })
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

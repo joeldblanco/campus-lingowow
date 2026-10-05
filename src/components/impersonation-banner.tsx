@@ -43,14 +43,14 @@ export function ImpersonationBanner() {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-amber-500 text-white shadow-lg">
-      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+    <div className="relative z-40 border-b border-amber-200 bg-amber-50 text-amber-900">
+      <div className="container mx-auto px-4 py-2 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <AlertCircle className="h-5 w-5" />
-          <div className="flex flex-col">
-            <span className="font-medium">Modo suplantación activo</span>
-            <span className="text-sm text-amber-100">
-              Estás navegando como {formatFirstName(session.user.name) || session.user.email}
+          <div className="flex flex-wrap items-center gap-1">
+            <span className="font-medium">Vista de usuario ·</span>
+            <span className="text-sm">
+              {formatFirstName(session.user.name?.trim().split(/\s+/)[0]) || session.user.email}
             </span>
           </div>
         </div>
@@ -62,7 +62,7 @@ export function ImpersonationBanner() {
           className="bg-white text-amber-600 hover:bg-gray-100"
         >
           <X className="h-4 w-4 mr-2" />
-          {isPending ? 'Saliendo...' : 'Salir de suplantación'}
+          {isPending ? 'Saliendo...' : 'Salir'}
         </Button>
       </div>
     </div>

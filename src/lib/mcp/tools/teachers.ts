@@ -8,20 +8,20 @@ import {
   getTeacherPaymentsReport,
 } from '@/lib/actions/teacher-payments'
 import { toggleClassPayable } from '@/lib/actions/teacher-payments'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 import { unwrapActionResult } from '@/lib/mcp/errors'
 
 const calculationModeEnum = z.enum(['completed-payable', 'scheduled'])
 
 export const teacherTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_teachers_list_active',
     description: 'Lista todos los profesores con rol TEACHER, su rango y datos de pago.',
     scopes: ['mcp:teachers:read'],
     handler: async () => getActiveTeachers(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_teachers_list_available',
     description:
       'Lista profesores disponibles con su disponibilidad agrupada por día. Filtros opcionales: courseId, languageId, rango de fechas.',
@@ -39,9 +39,9 @@ export const teacherTools: AnyToolModule[] = [
         startDate: args.startDate ? new Date(args.startDate) : undefined,
         endDate: args.endDate ? new Date(args.endDate) : undefined,
       }),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_teachers_payment_report',
     description:
       'Reporte de pagos a profesores con filtros (rango de fechas, período académico, calculationMode). calculationMode=completed-payable cuenta solo clases completadas y marcadas como pagables; scheduled incluye programadas.',
@@ -61,9 +61,9 @@ export const teacherTools: AnyToolModule[] = [
         teacherId: args.teacherId,
         calculationMode: args.calculationMode,
       }),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_teachers_payment_period_summary',
     description: 'Devuelve solo el resumen agregado del reporte de pagos (totales, sin desglose por profesor).',
     scopes: ['mcp:teachers:read'],
@@ -78,9 +78,9 @@ export const teacherTools: AnyToolModule[] = [
         args.endDate ? new Date(args.endDate) : undefined,
         args.periodId
       ),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_teachers_projected_cost',
     description:
       'Proyección de costo total a profesores en un rango: incluye pagables ya completados + clases programadas restantes. startDate y endDate son obligatorios.',
@@ -96,9 +96,9 @@ export const teacherTools: AnyToolModule[] = [
         new Date(args.endDate),
         args.teacherId
       ),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_teachers_payment_details',
     description: 'Detalles de pago para un profesor específico en un rango de fechas o período académico.',
     scopes: ['mcp:teachers:read'],
@@ -115,9 +115,9 @@ export const teacherTools: AnyToolModule[] = [
         args.teacherId,
         args.periodId
       ),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_teachers_toggle_class_payable',
     description: 'Marca una clase específica como pagable o no pagable al profesor (afecta el reporte de pagos).',
     scopes: ['mcp:teachers:write'],
@@ -129,5 +129,5 @@ export const teacherTools: AnyToolModule[] = [
       const result = await toggleClassPayable(classId, isPayable)
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

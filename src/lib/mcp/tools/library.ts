@@ -8,11 +8,11 @@ import {
 import { db } from '@/lib/db'
 import { getMcpContext } from '@/lib/mcp/context'
 import { McpToolError } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
-const libraryTypeEnum = z.nativeEnum(LibraryResourceType)
-const libraryStatusEnum = z.nativeEnum(LibraryResourceStatus)
-const libraryAccessEnum = z.nativeEnum(LibraryResourceAccess)
+const libraryTypeEnum = z.enum(LibraryResourceType)
+const libraryStatusEnum = z.enum(LibraryResourceStatus)
+const libraryAccessEnum = z.enum(LibraryResourceAccess)
 
 function slugify(input: string): string {
   return input
@@ -35,7 +35,7 @@ async function ensureUniqueSlug(base: string): Promise<string> {
 }
 
 export const libraryTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_library_list',
     description:
       'Lista recursos de la biblioteca con filtros (type, status, accessLevel, language, level, categoryId, search, tag). Para admins muestra todos los estados (incluido DRAFT/ARCHIVED).',
@@ -84,9 +84,9 @@ export const libraryTools: AnyToolModule[] = [
       ])
       return { total, limit: args.limit, offset: args.offset, resources }
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_library_get',
     description: 'Obtiene un recurso por ID o por slug.',
     scopes: ['mcp:library:read'],
@@ -108,9 +108,9 @@ export const libraryTools: AnyToolModule[] = [
       if (!resource) throw new McpToolError('Recurso no encontrado', 'NOT_FOUND')
       return resource
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_library_categories_list',
     description: 'Lista las categorías de la biblioteca.',
     scopes: ['mcp:library:read'],
@@ -118,9 +118,9 @@ export const libraryTools: AnyToolModule[] = [
       db.libraryCategory.findMany({
         orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
       }),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_library_create',
     description:
       'Crea un recurso de biblioteca. authorId debe ser un usuario válido. Si status=PUBLISHED, se setea publishedAt automáticamente. El slug se deriva del título y se garantiza único.',
@@ -175,9 +175,9 @@ export const libraryTools: AnyToolModule[] = [
       })
       return resource
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_library_update',
     description:
       'Actualiza un recurso existente. Si se cambia status a PUBLISHED y publishedAt era null, se setea ahora. El slug no se cambia automáticamente al editar el título.',
@@ -234,9 +234,9 @@ export const libraryTools: AnyToolModule[] = [
 
       return db.libraryResource.update({ where: { id }, data: updates })
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_library_delete',
     description: 'Elimina un recurso de biblioteca permanentemente.',
     scopes: ['mcp:library:write'],
@@ -245,9 +245,9 @@ export const libraryTools: AnyToolModule[] = [
       await db.libraryResource.delete({ where: { id } })
       return { success: true }
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_library_categories_create',
     description: 'Crea una categoría de biblioteca. slug se deriva del nombre si no se proporciona.',
     scopes: ['mcp:library:write'],
@@ -278,9 +278,9 @@ export const libraryTools: AnyToolModule[] = [
         },
       })
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_library_categories_update',
     description: 'Actualiza una categoría de biblioteca.',
     scopes: ['mcp:library:write'],
@@ -295,9 +295,9 @@ export const libraryTools: AnyToolModule[] = [
     },
     handler: async ({ id, ...data }) =>
       db.libraryCategory.update({ where: { id }, data }),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_library_categories_delete',
     description: 'Elimina una categoría de biblioteca. Falla si tiene recursos asociados.',
     scopes: ['mcp:library:write'],
@@ -313,5 +313,5 @@ export const libraryTools: AnyToolModule[] = [
       await db.libraryCategory.delete({ where: { id } })
       return { success: true }
     },
-  },
+  }),
 ]

@@ -32,7 +32,7 @@ export const ExamQuestionSchema = z
     id: z.string().optional(), // Para edición
     type: QuestionTypeEnum,
     question: z.string().min(1, 'La pregunta es requerida'),
-    options: z.union([z.array(z.string()), z.record(z.unknown())]).optional(), // For multiple choice (string[]) or block type metadata (object)
+    options: z.union([z.array(z.string()), z.record(z.string(), z.unknown())]).optional(), // For multiple choice (string[]) or block type metadata (object)
     // Multi-step multiple choice items
     multipleChoiceItems: z
       .array(

@@ -5,11 +5,13 @@ export const MAX_CHAT_HISTORY_MESSAGES = 50
 
 export const ChatMessageSchema = z.object({
   role: z.enum(['user', 'model'], {
-    required_error: 'role es requerido',
-    invalid_type_error: 'role debe ser "user" o "model"',
+    error: (issue) =>
+      issue.input === undefined ? 'role es requerido' : 'role debe ser "user" o "model"',
   }),
   content: z
-    .string({ required_error: 'content es requerido' })
+    .string({
+      error: (issue) => (issue.input === undefined ? 'content es requerido' : undefined),
+    })
     .min(1, 'content no puede estar vacío')
     .max(MAX_CHAT_MESSAGE_CHARS, `content excede ${MAX_CHAT_MESSAGE_CHARS} caracteres`),
 })

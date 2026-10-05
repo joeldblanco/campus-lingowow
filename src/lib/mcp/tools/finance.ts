@@ -18,7 +18,7 @@ import {
   updateFinancialMovementAmountSchema,
 } from '@/schemas/finance'
 import { unwrapActionResult } from '@/lib/mcp/errors'
-import type { AnyToolModule } from '@/lib/mcp/types'
+import { defineTool, type AnyToolModule } from '@/lib/mcp/types'
 
 const confirmationStatusEnum = z.enum([
   ConfirmationStatus.PENDING,
@@ -27,7 +27,7 @@ const confirmationStatusEnum = z.enum([
 ] as const)
 
 export const financeTools: AnyToolModule[] = [
-  {
+  defineTool({
     name: 'lingowow_finance_report',
     description:
       'Genera el reporte financiero (cash o accrual) con filtros opcionales: período académico, rango de fechas, dirección, categoría, búsqueda. Limita el rango para evitar timeouts.',
@@ -55,16 +55,16 @@ export const financeTools: AnyToolModule[] = [
       })
       return result
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_finance_recurring_list',
     description: 'Lista todas las reglas financieras recurrentes con su monto del mes actual.',
     scopes: ['mcp:finance:read'],
     handler: async () => getFinancialRecurringRules(),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_finance_movement_create',
     description:
       'Crea un movimiento financiero manual (ingreso o egreso). No idempotente: cada llamada genera un movimiento nuevo.',
@@ -97,9 +97,9 @@ export const financeTools: AnyToolModule[] = [
       const result = await createFinancialMovement(parsed)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_finance_movement_update_amount',
     description: 'Actualiza el monto de un movimiento financiero existente y registra una nota opcional.',
     scopes: ['mcp:finance:write'],
@@ -113,9 +113,9 @@ export const financeTools: AnyToolModule[] = [
       const result = await updateFinancialMovementAmount(parsed)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_finance_recurring_upsert',
     description:
       'Crea o actualiza una regla financiera recurrente (ingreso/egreso fijo o porcentual). Si pasas id, actualiza; si no, crea.',
@@ -138,9 +138,9 @@ export const financeTools: AnyToolModule[] = [
       const result = await upsertFinancialRecurringRule(parsed)
       return unwrapActionResult(result)
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_payments_list',
     description:
       'Lista confirmaciones de pago a profesores. Filtros opcionales por teacherId, status y rango de fechas.',
@@ -158,9 +158,9 @@ export const financeTools: AnyToolModule[] = [
         periodEnd: args.periodEnd ? new Date(args.periodEnd) : undefined,
         status: args.status,
       }),
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_payments_get',
     description: 'Obtiene una confirmación de pago a profesor por ID.',
     scopes: ['mcp:finance:read'],
@@ -170,9 +170,9 @@ export const financeTools: AnyToolModule[] = [
       if (!result) throw new Error('Confirmación de pago no encontrada')
       return result
     },
-  },
+  }),
 
-  {
+  defineTool({
     name: 'lingowow_payments_update_status',
     description: 'Actualiza el estado (PENDING, APPROVED, REJECTED) de una confirmación de pago.',
     scopes: ['mcp:finance:write'],
@@ -185,5 +185,5 @@ export const financeTools: AnyToolModule[] = [
       const result = await updatePaymentConfirmationStatus(id, status, notes)
       return unwrapActionResult(result)
     },
-  },
+  }),
 ]

@@ -6,7 +6,11 @@ import { CourseWithDetails } from '@/types/course'
 import { CreateCourseSchema, EditCourseSchema } from '@/schemas/courses'
 import { auditLog } from '@/lib/audit-log'
 import { auth } from '@/auth'
-import { buildModuleProgressView, type ModuleWithProgress } from '@/lib/course-progression'
+import {
+  buildModuleProgressView,
+  summarizeCourseProgress,
+  type ModuleWithProgress,
+} from '@/lib/course-progression'
 import * as z from 'zod'
 
 const enrollmentStatusPriority: Record<string, number> = {
@@ -323,7 +327,7 @@ export async function createCourse(data: z.infer<typeof CreateCourseSchema>) {
     if (error instanceof z.ZodError) {
       return {
         success: false,
-        error: error.errors.map((e) => e.message).join(', '),
+        error: error.issues.map((e) => e.message).join(', '),
       }
     }
 
@@ -370,7 +374,7 @@ export async function updateCourse(id: string, data: z.infer<typeof EditCourseSc
     if (error instanceof z.ZodError) {
       return {
         success: false,
-        error: error.errors.map((e) => e.message).join(', '),
+        error: error.issues.map((e) => e.message).join(', '),
       }
     }
 
@@ -568,7 +572,9 @@ export async function getCoursesForPublicView(userId?: string) {
             isPublished: true,
             _count: {
               select: {
-                lessons: true,
+                lessons: {
+                  where: { isPublished: true },
+                },
               },
             },
           },
@@ -681,7 +687,9 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
             },
             _count: {
               select: {
-                lessons: true,
+                lessons: {
+                  where: { isPublished: true },
+                },
               },
             },
           },
@@ -721,6 +729,8 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
             passingScore: true,
             maxAttempts: true,
             isPublished: true,
+            moduleId: true,
+            isBlocking: true,
             questions: {
               select: {
                 points: true,
@@ -772,6 +782,8 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
               passingScore: true,
               maxAttempts: true,
               isPublished: true,
+              moduleId: true,
+              isBlocking: true,
               questions: {
                 select: {
                   points: true,
@@ -785,10 +797,33 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
         : []
       : course.exams
 
+    const attempts = userId && visibleExams.length > 0
+      ? await db.examAttempt.findMany({
+          where: {
+            userId,
+            examId: {
+              in: visibleExams.map((exam) => exam.id),
+            },
+          },
+          select: {
+            examId: true,
+            score: true,
+          },
+        })
+      : []
+
     // Calcular questionCount y totalPoints para cada examen
     const examsWithStats = visibleExams.map((exam) => {
       const questionCount = exam.questions.length
       const totalPoints = exam.questions.reduce((sum, q) => sum + q.points, 0)
+      const hasPassed = userId
+        ? attempts.some(
+            (attempt) =>
+              attempt.examId === exam.id &&
+              attempt.score !== null &&
+              attempt.score >= exam.passingScore
+          )
+        : false
 
       return {
         id: exam.id,
@@ -798,6 +833,9 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
         passingScore: exam.passingScore,
         maxAttempts: exam.maxAttempts,
         isPublished: exam.isPublished,
+        moduleId: exam.moduleId,
+        isBlocking: exam.isBlocking,
+        hasPassed,
         questionCount,
         totalPoints,
       }
@@ -939,6 +977,7 @@ export async function getCourseProgress(
               select: {
                 id: true,
                 lessons: {
+                  where: { isPublished: true },
                   select: {
                     id: true,
                     contents: {
@@ -962,30 +1001,14 @@ export async function getCourseProgress(
       return null
     }
 
-    // Calculate total content items
-    const totalContents = enrollmentWithDetails.course.modules.reduce((total, module) => {
-      return (
-        total +
-        module.lessons.reduce((lessonTotal, lesson) => {
-          return lessonTotal + lesson.contents.length
-        }, 0)
-      )
-    }, 0)
-
-    // Calculate completed content items
-    const completedContents = enrollmentWithDetails.student.completedContents.filter(
-      (content) => content.completed
-    ).length
-
-    // Calculate overall progress percentage
-    const progressPercentage = totalContents > 0 ? (completedContents / totalContents) * 100 : 0
+    const progress = summarizeCourseProgress(
+      enrollmentWithDetails.course.modules,
+      enrollmentWithDetails.student.completedContents
+    )
 
     return {
       enrollment: enrollmentWithDetails,
-      totalContents,
-      completedContents,
-      progressPercentage: Math.round(progressPercentage),
-      completedContentIds: enrollmentWithDetails.student.completedContents.map((c) => c.contentId),
+      ...progress,
       completedActivities: enrollmentWithDetails.student.activities.filter(
         (a) => a.status === 'COMPLETED'
       ),
@@ -1016,7 +1039,10 @@ export async function getCourseModuleProgress(
           id: true,
           order: true,
           title: true,
-          lessons: { select: { id: true, contents: { select: { id: true } } } },
+          lessons: {
+            where: { isPublished: true },
+            select: { id: true, contents: { select: { id: true } } },
+          },
         },
       }),
       db.exam.findMany({

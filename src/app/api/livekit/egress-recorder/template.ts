@@ -96,6 +96,9 @@ export async function buildEgressRecorderHtml({
     #whiteboard-canvas svg { width: 100%; height: 100%; display: block; }
     .whiteboard-empty { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 24px; font-weight: 600; }
     .whiteboard-error { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #b91c1c; font-size: 20px; font-weight: 600; background: #fee2e2; }
+    #lesson { position: absolute; inset: 0; z-index: 8; background: #f8fafc; color: #0f172a; padding: 18px; overflow: hidden; }
+    #lesson-stage { width: 100%; height: 100%; margin: 0 auto; overflow: hidden; background: #ffffff; border-radius: 12px; box-shadow: 0 12px 40px rgba(15,23,42,0.12); }
+    #lesson-frame { width: 100%; height: 100%; border: 0; display: block; background: #ffffff; }
     .hidden { display: none !important; }
   </style>
 </head>
@@ -110,6 +113,12 @@ export async function buildEgressRecorderHtml({
     setTimeout(function(){ console.log('START_RECORDING'); }, 1500);
     setTimeout(function(){ console.log('START_RECORDING'); }, 3000);
   </script>
+
+  <div id="lesson" class="hidden">
+    <div id="lesson-stage">
+      <iframe id="lesson-frame" title="Contenido de la lección" src="/record/${encodeURIComponent(roomName)}/lesson"></iframe>
+    </div>
+  </div>
 
   <div id="whiteboard" class="hidden">
     <div id="whiteboard-stage">
@@ -142,6 +151,8 @@ export async function buildEgressRecorderHtml({
     const container = document.getElementById('container');
     const screenshareEl = document.getElementById('screenshare');
     const screenshareVideo = document.getElementById('screenshare-video');
+    const lessonEl = document.getElementById('lesson');
+    const lessonFrame = document.getElementById('lesson-frame');
     const whiteboardEl = document.getElementById('whiteboard');
     const whiteboardCanvas = document.getElementById('whiteboard-canvas');
 
@@ -155,6 +166,13 @@ export async function buildEgressRecorderHtml({
     let whiteboardRenderTimeout = null;
     let whiteboardRenderVersion = 0;
     let exportToSvgFn = null;
+    let activeLesson = null;
+    let lessonRequested = false;
+    let lessonFrameReady = false;
+    let lessonMessageVersion = 0;
+    let lessonScrollProgress = null;
+    const lessonBlockNavigation = new Map();
+    const lessonMediaState = new Map();
 
     function sendCommand(room, name, values) {
       const data = encoder.encode(JSON.stringify({ command: name, values }));
@@ -185,10 +203,17 @@ export async function buildEgressRecorderHtml({
     }
 
     function syncContentVisibility() {
+      sendLessonFrameMessage({ type: 'set-visible', visible: activeTab === 'lesson' });
       if (activeTab === 'whiteboard') {
         whiteboardEl.classList.remove('hidden');
       } else {
         whiteboardEl.classList.add('hidden');
+      }
+
+      if (activeTab === 'lesson' && (lessonRequested || activeLesson)) {
+        lessonEl.classList.remove('hidden');
+      } else {
+        lessonEl.classList.add('hidden');
       }
 
       if (activeTab === 'screenshare' && currentScreenShareTrack) {
@@ -197,6 +222,74 @@ export async function buildEgressRecorderHtml({
         screenshareEl.classList.add('hidden');
       }
     }
+
+    function sendLessonFrameMessage(message) {
+      if (!lessonFrame || !lessonFrame.contentWindow) return;
+      lessonFrame.contentWindow.postMessage({
+        source: 'lingowow-recorder',
+        ...message,
+      }, window.location.origin);
+    }
+
+    function replayLessonState() {
+      if (!lessonFrameReady) return;
+
+      if (activeLesson) {
+        sendLessonFrameMessage({
+          type: 'set-lesson',
+          token,
+          contentId: activeLesson.contentId,
+          contentType: activeLesson.contentType,
+          version: lessonMessageVersion,
+        });
+      } else {
+        sendLessonFrameMessage({ type: 'clear-lesson', version: lessonMessageVersion });
+      }
+
+      if (typeof lessonScrollProgress === 'number') {
+        sendLessonFrameMessage({ type: 'scroll-progress', progress: lessonScrollProgress });
+      }
+
+      lessonBlockNavigation.forEach((navigation) => {
+        sendLessonFrameMessage({ type: 'block-navigation', ...navigation });
+      });
+      lessonMediaState.forEach(sendLessonFrameMessage);
+      sendLessonFrameMessage({ type: 'set-visible', visible: activeTab === 'lesson' });
+    }
+
+    function clearLesson() {
+      lessonMessageVersion += 1;
+      activeLesson = null;
+      lessonRequested = false;
+      lessonScrollProgress = null;
+      lessonBlockNavigation.clear();
+      lessonMediaState.clear();
+      syncContentVisibility();
+      if (lessonFrameReady) sendLessonFrameMessage({ type: 'clear-lesson', version: lessonMessageVersion });
+    }
+
+    function loadLesson(contentId, contentType) {
+      lessonMessageVersion += 1;
+      activeLesson = { contentId, contentType };
+      lessonRequested = true;
+      lessonScrollProgress = null;
+      lessonBlockNavigation.clear();
+      lessonMediaState.clear();
+      replayLessonState();
+      syncContentVisibility();
+    }
+
+    lessonFrame.addEventListener('load', () => {
+      lessonFrameReady = true;
+      replayLessonState();
+    });
+
+    window.addEventListener('message', (event) => {
+      if (event.origin !== window.location.origin || event.source !== lessonFrame.contentWindow) return;
+      if (event.data?.source !== 'lingowow-recorder' || event.data?.type !== 'lesson-frame-ready') return;
+      lessonFrameReady = true;
+      replayLessonState();
+    });
 
     function updateLayout() {
       detachAll();
@@ -466,6 +559,69 @@ export async function buildEgressRecorderHtml({
               }
             }
 
+            if (data.command === 'set-lesson' && data.values?.type === 'SET_LESSON') {
+              const lessonId = data.values.lessonId;
+              if (!lessonId) {
+                clearLesson();
+              } else {
+                const contentType = typeof data.values.contentType === 'string'
+                  ? data.values.contentType
+                  : 'lesson';
+                if (['lesson', 'student_lesson', 'library_resource'].includes(contentType)) {
+                  loadLesson(String(lessonId), contentType);
+                }
+              }
+            }
+
+            if (data.command === 'block-navigation' && data.values?.type === 'BLOCK_NAVIGATION') {
+              if (typeof data.values.blockId === 'string') {
+                const currentStep = Number(data.values.currentStep);
+                const totalSteps = Number(data.values.totalSteps);
+                if (!Number.isFinite(currentStep) || !Number.isFinite(totalSteps)) return;
+                const navigation = {
+                  type: 'block-navigation',
+                  blockId: data.values.blockId,
+                  currentStep,
+                  totalSteps,
+                  hasStarted: data.values.hasStarted === true,
+                  isCompleted: data.values.isCompleted === true,
+                  currentAnswers: data.values.currentAnswers && typeof data.values.currentAnswers === 'object'
+                    ? data.values.currentAnswers
+                    : undefined,
+                  participantName: typeof data.values.participantName === 'string'
+                    ? data.values.participantName
+                    : 'Student',
+                };
+                lessonBlockNavigation.set(data.values.blockId, navigation);
+                sendLessonFrameMessage(navigation);
+              }
+            }
+
+            if (data.command === 'lesson-scroll' && data.values?.type === 'LESSON_SCROLL') {
+              const progress = Number(data.values.progress);
+              if (Number.isFinite(progress)) {
+                lessonScrollProgress = Math.max(0, Math.min(1, progress));
+                sendLessonFrameMessage({
+                  type: 'scroll-progress',
+                  progress: lessonScrollProgress,
+                });
+              }
+            }
+
+            if (data.command === 'audio-sync' && ['AUDIO_PLAY', 'AUDIO_PAUSE', 'AUDIO_SEEK'].includes(data.values?.type)) {
+              const media = {
+                type: 'audio-sync',
+                blockId: data.values.blockId,
+                isPlaying: data.values.type === 'AUDIO_PLAY',
+                currentTime: Number(data.values.currentTime) || 0,
+                mediaType: data.values.mediaType === 'video' ? 'video' : 'audio',
+                mediaIndex: Number.isInteger(data.values.mediaIndex) ? Math.max(0, data.values.mediaIndex) : 0,
+                playbackRate: Number(data.values.playbackRate) || 1,
+              };
+              lessonMediaState.set(media.blockId + ':' + media.mediaType + ':' + media.mediaIndex, media);
+              sendLessonFrameMessage(media);
+            }
+
             if (data.command === 'whiteboard-sync' && data.values?.type === 'WHITEBOARD_UPDATE') {
               currentWhiteboardElements = Array.isArray(data.values.elements)
                 ? data.values.elements
@@ -488,6 +644,10 @@ export async function buildEgressRecorderHtml({
 
         await room.connect(serverUrl, token);
         console.log('[Recording] Connected to room:', roomName);
+
+        room.on(RoomEvent.Reconnected, () => {
+          sendCommand(room, 'sync-request', { type: 'REQUEST_SYNC' });
+        });
 
         room.remoteParticipants.forEach((participant) => updateParticipant(participant));
         sendCommand(room, 'sync-request', { type: 'REQUEST_SYNC' });
