@@ -87,7 +87,7 @@ export const studentTourSteps: TourStep[] = [
   {
     target: '[data-tour="student-course"]',
     content:
-      'Aquí verás tu siguiente paso. Entra al curso para abrir sus lecciones. Al final usa “Completar lección” y luego “Siguiente lección”; verás la marca de completado y tu progreso actualizado.',
+      'Aquí verás tu siguiente paso. Entra al curso para abrir sus lecciones. Al terminar, usa “Completar y continuar” para guardar tu progreso y avanzar, o “Completar Lección” si es la última. Al regresar verás “Lección completada”; para repasar y avanzar puedes usar “Siguiente Lección”.',
     placement: 'bottom',
     skipBeacon: true,
     skipScroll: true,
