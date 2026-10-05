@@ -1,0 +1,33 @@
+name: PR quality checks
+
+on:
+  pull_request:
+    branches: [dev, main]
+
+permissions:
+  contents: read
+
+jobs:
+  pr-quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      TZ: America/Lima
+      DATABASE_URL: postgresql://test:test@localhost:5432/test
+      RESEND_API_KEY: re_ci_disabled
+      PAYPAL_CLIENT_ID: ci_disabled
+      PAYPAL_CLIENT_SECRET: ci_disabled
+      GEMINI_API_KEY: ci_disabled
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install --global npm@11.17.0
+      - run: npm ci
+      - run: npm run test:unit -- --run
+      - run: npm run lint
+      - run: npx tsc --noEmit

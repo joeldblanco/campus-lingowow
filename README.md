@@ -120,15 +120,30 @@ npm run dev
 
 ----------
 
-## 🔧 Despliegue (en proceso)
+## 🔧 Despliegue
 
-El despliegue se realizará en **Vercel** para la aplicación y **Neon** para la base de datos. 🚀
+La aplicación se despliega en **Coolify**, en el VPS `137.184.8.53`, con PostgreSQL. El flujo de ramas es:
+
+1. Crea una rama de trabajo desde `dev` y abre un pull request hacia `dev`. Las pruebas unitarias, lint y TypeScript deben pasar antes del merge.
+2. Cuando el cambio esté listo, abre un pull request de `dev` hacia `main`. La comprobación obligatoria `main-from-dev` solo acepta esa rama desde este mismo repositorio.
+3. Al fusionar hacia `dev`, GitHub Actions despliega `https://dev.lingowow.com`. Revisa allí los cambios antes de promoverlos.
+4. `main` es la rama de producción. Después de fusionar el pull request `dev` → `main`, GitHub Actions despliega `https://www.lingowow.com`.
+
+Los pull requests hacia `main` desde otra rama se cierran automáticamente por `.github/workflows/branch-policy.yml`. Los pull requests hacia `dev` quedan disponibles para integrar ramas de trabajo.
+
+### Actualizar los datos de dev
+
+En [Actions → Refresh dev data from production](https://github.com/joeldblanco/campus-lingowow/actions/workflows/refresh-dev-data.yml), pulsa **Run workflow** con la rama `dev` seleccionada. La acción reemplaza los datos de pruebas por una copia actual de producción, conserva la copia anterior de dev y solo lee la base de producción.
+
+La copia retira tokens OAuth, claves API, tokens móviles y de recuperación, y tarjetas guardadas. Dev usa secretos de autenticación propios; los envíos, los cobros, las integraciones externas y las tareas programadas de producción no están habilitados allí. Los usuarios con contraseña pueden iniciar sesión con su contraseña habitual; Google OAuth requiere credenciales propias de pruebas.
+
+Los scripts de `scripts/deployment/` se instalan en `/root/lingowow-ci/`. La clave SSH de GitHub Actions tiene un comando forzado que solo acepta despliegues de las ramas `dev`/`main` y la actualización de datos de dev.
 
 ----------
 
 ## 📝 Mantenimiento y Administración
 
--   **Base de datos**: Actualmente en PostgreSQL. Se planea migrar a Neon.
+-   **Base de datos**: PostgreSQL en Coolify; producción y dev usan instancias independientes.
     
 -   **Autenticación**: Usando Google con `Auth.js`.
     
@@ -145,4 +160,4 @@ El despliegue se realizará en **Vercel** para la aplicación y **Neon** para la
     
 -   **Solución rápida de errores**: Ver [docs/QUICK_FIX_JITSI_ERROR.md](./docs/QUICK_FIX_JITSI_ERROR.md) para resolver errores de Jitsi.
     
--   Se evaluará la configuración de CI/CD para automatizar el despliegue.
+-   CI/CD: `.github/workflows/deploy-environments.yml` valida y despliega `dev` y `main`.
