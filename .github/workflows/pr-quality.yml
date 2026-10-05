@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
+      TZ: America/Lima
       DATABASE_URL: postgresql://test:test@localhost:5432/test
       RESEND_API_KEY: re_ci_disabled
       PAYPAL_CLIENT_ID: ci_disabled
