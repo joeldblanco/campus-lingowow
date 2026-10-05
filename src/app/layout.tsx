@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { Geist_Mono, Nunito } from 'next/font/google'
-import { HostingTelemetry } from '@/components/hosting-telemetry'
 import Script from 'next/script'
 import './globals.css'
 
@@ -33,7 +32,6 @@ export default function RootLayout({
     <html lang="es">
       <body className={`${nunito.variable} ${geistMono.variable} font-sans antialiased`}>
         {children}
-        <HostingTelemetry />
         <Script
           src="https://analytics.lingowow.com/script.js"
           data-website-id="f65fd393-39ca-4684-8ed7-c46f02971646"
