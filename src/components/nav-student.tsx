@@ -1,6 +1,16 @@
 'use client'
 
-import { Home, MessageCircle, Store, Video, Shapes, Library, UserRound } from 'lucide-react'
+import {
+  Home,
+  MessageCircle,
+  Store,
+  Video,
+  Shapes,
+  Library,
+  UserRound,
+  BookOpen,
+  Calendar,
+} from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState, useMemo, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
@@ -59,7 +69,7 @@ export function NavStudent() {
   const isProfileActive = pathname.startsWith('/settings')
 
   const itemClass =
-    'font-lexend rounded-xl px-5 py-4 h-auto border border-transparent hover:bg-slate-100/70 dark:hover:bg-slate-800/30 hover:text-slate-900 dark:hover:text-white data-[active=true]:bg-primary/8 data-[active=true]:border-primary/20 data-[active=true]:text-primary data-[active=true]:hover:bg-primary/12 transition-all duration-200'
+    'font-lexend rounded-xl px-3 py-2.5 h-auto border border-transparent hover:bg-slate-100/70 dark:hover:bg-slate-800/30 hover:text-slate-900 dark:hover:text-white data-[active=true]:bg-primary/8 data-[active=true]:border-primary/20 data-[active=true]:text-primary data-[active=true]:hover:bg-primary/12 transition-all duration-200'
 
   return (
     <SidebarGroup>
@@ -73,12 +83,31 @@ export function NavStudent() {
               asChild
               className={itemClass}
             >
-              <Link href="/dashboard" className="flex items-center gap-4 w-full">
-                <Home className="!w-8 !h-8 shrink-0" />
-                <span className="text-lg font-bold uppercase">Inicio</span>
+              <Link href="/dashboard" className="flex items-center gap-3 w-full">
+                <Home className="!w-5 !h-5 shrink-0" />
+                <span className="text-sm font-medium">Inicio</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
+
+          {[
+            { label: 'Mi curso', href: '/my-courses', icon: BookOpen },
+            { label: 'Horario', href: '/schedule', icon: Calendar },
+          ].map(({ label, href, icon: Icon }) => (
+            <SidebarMenuItem key={href}>
+              <SidebarMenuButton
+                tooltip={label}
+                isActive={pathname.startsWith(href)}
+                asChild
+                className={itemClass}
+              >
+                <Link href={href} className="flex items-center gap-3 w-full">
+                  <Icon className="!w-5 !h-5 shrink-0" />
+                  <span className="text-sm font-medium">{label}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
 
           {/* Mensajes */}
           <SidebarMenuItem>
@@ -88,9 +117,9 @@ export function NavStudent() {
               asChild
               className={itemClass}
             >
-              <Link href="/messages" className="flex items-center gap-4 w-full relative">
-                <MessageCircle className="!w-8 !h-8 shrink-0" />
-                <span className="text-lg font-bold uppercase">Mensajes</span>
+              <Link href="/messages" className="flex items-center gap-3 w-full relative">
+                <MessageCircle className="!w-5 !h-5 shrink-0" />
+                <span className="text-sm font-medium">Mensajes</span>
                 {unreadMessages > 0 && !isMessagesActive && (
                   <span className="absolute right-0 top-1/2 -translate-y-1/2 bg-red-500 text-white text-[10px] font-bold px-1.5 h-4 min-w-[16px] flex items-center justify-center rounded-full">
                     {unreadMessages > 99 ? '99+' : unreadMessages}
@@ -108,9 +137,9 @@ export function NavStudent() {
               asChild
               className={itemClass}
             >
-              <Link href="/recordings" className="flex items-center gap-4 w-full">
-                <Video className="!w-8 !h-8 shrink-0" />
-                <span className="text-lg font-bold uppercase">Grabaciones</span>
+              <Link href="/recordings" className="flex items-center gap-3 w-full">
+                <Video className="!w-5 !h-5 shrink-0" />
+                <span className="text-sm font-medium">Grabaciones</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -123,13 +152,9 @@ export function NavStudent() {
               asChild
               className={itemClass}
             >
-              <Link
-                href="/activities"
-                className="flex items-center gap-4 w-full"
-                data-tour="nav-actividades"
-              >
-                <Shapes className="!w-8 !h-8 shrink-0" />
-                <span className="text-lg font-bold uppercase">Actividades</span>
+              <Link href="/activities" className="flex items-center gap-3 w-full" data-tour="nav-actividades">
+                <Shapes className="!w-5 !h-5 shrink-0" />
+                <span className="text-sm font-medium">Actividades</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -142,13 +167,9 @@ export function NavStudent() {
               asChild
               className={itemClass}
             >
-              <Link
-                href="/library"
-                className="flex items-center gap-4 w-full"
-                data-tour="nav-biblioteca"
-              >
-                <Library className="!w-8 !h-8 shrink-0" />
-                <span className="text-lg font-bold uppercase">Biblioteca</span>
+              <Link href="/library" className="flex items-center gap-3 w-full" data-tour="nav-biblioteca">
+                <Library className="!w-5 !h-5 shrink-0" />
+                <span className="text-sm font-medium">Biblioteca</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -161,9 +182,9 @@ export function NavStudent() {
               asChild
               className={itemClass}
             >
-              <Link href="/shop" className="flex items-center gap-4 w-full">
-                <Store className="!w-8 !h-8 shrink-0" />
-                <span className="text-lg font-bold uppercase">Tienda</span>
+              <Link href="/shop" className="flex items-center gap-3 w-full">
+                <Store className="!w-5 !h-5 shrink-0" />
+                <span className="text-sm font-medium">Tienda</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -176,9 +197,9 @@ export function NavStudent() {
               asChild
               className={itemClass}
             >
-              <Link href="/settings/security" className="flex items-center gap-4 w-full">
-                <UserRound className="!w-8 !h-8 shrink-0" />
-                <span className="text-lg font-bold uppercase">Perfil</span>
+              <Link href="/settings/security" className="flex items-center gap-3 w-full">
+                <UserRound className="!w-5 !h-5 shrink-0" />
+                <span className="text-sm font-medium">Perfil</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
