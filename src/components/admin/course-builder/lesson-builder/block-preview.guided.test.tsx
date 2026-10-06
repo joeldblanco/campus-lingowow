@@ -162,4 +162,142 @@ describe('BlockPreview guided appearance', () => {
     expect(target.querySelector('button')).toHaveTextContent('Comprobar')
     expect(target.querySelector('button')).toBeDisabled()
   })
+
+  it('keeps the default matching renderer and labels when guided mode is omitted', () => {
+    render(
+      <BlockPreview
+        block={{
+          id: 'match',
+          type: 'match',
+          order: 0,
+          title: 'Práctica de vocabulario',
+          pairs: [{ id: 'name', left: 'Name', right: 'Peter' }],
+        }}
+      />
+    )
+
+    expect(screen.getByText('Emparejar')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Práctica de vocabulario' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Verificar' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Reiniciar' })).toBeInTheDocument()
+  })
+
+  it('uses a compact guided matching stage, portals checking, and preserves all pairings', () => {
+    const target = document.createElement('div')
+    document.body.appendChild(target)
+    const onGuidedActionPresence = vi.fn()
+
+    render(
+      <BlockPreview
+        guidedAppearance
+        guidedActionTarget={target}
+        onGuidedActionPresence={onGuidedActionPresence}
+        block={{
+          id: 'match',
+          type: 'match',
+          order: 0,
+          title: 'Práctica de vocabulario',
+          pairs: [
+            { id: 'name', left: 'Name', right: 'Peter' },
+            { id: 'age', left: 'Age', right: '20 years old' },
+          ],
+        }}
+      />
+    )
+
+    expect(screen.queryByText('Emparejar')).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('heading', { name: 'Práctica de vocabulario' })
+    ).not.toBeInTheDocument()
+    expect(screen.getByText('Toca una palabra y su pareja.')).toBeVisible()
+    expect(screen.getAllByRole('button', { name: /Pareja:/ })).toHaveLength(2)
+    expect(screen.getAllByRole('button', { name: /Pareja:/ })[0]).toHaveAttribute('type', 'button')
+    expect(target.querySelector('button')).toHaveTextContent('Comprobar')
+    expect(onGuidedActionPresence).toHaveBeenLastCalledWith(true)
+
+    const firstChoice = screen.getByRole('button', { name: 'Pareja: Peter' })
+    fireEvent.click(firstChoice)
+    expect(firstChoice).toHaveAttribute('aria-pressed', 'true')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Siguiente' }))
+    expect(screen.getByText('Age')).toBeVisible()
+    const secondChoice = screen.getByRole('button', { name: 'Pareja: 20 years old' })
+    fireEvent.keyDown(secondChoice, { key: 'Enter' })
+    expect(secondChoice).toHaveAttribute('aria-pressed', 'true')
+
+    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
+    expect(screen.getByText('¡Perfecto! Todos los pares están correctos')).toBeVisible()
+    expect(onGuidedActionPresence).toHaveBeenLastCalledWith(false)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Reiniciar' }))
+    expect(screen.getByText('Name')).toBeVisible()
+    expect(screen.getByRole('button', { name: 'Pareja: Peter' })).toHaveAttribute(
+      'aria-pressed',
+      'false'
+    )
+  })
+
+  it('keeps fill-in and multiple-choice prompts compact and moves their primary actions', () => {
+    const fillTarget = document.createElement('div')
+    const choiceTarget = document.createElement('div')
+    document.body.append(fillTarget, choiceTarget)
+
+    render(
+      <>
+        <BlockPreview
+          guidedAppearance
+          guidedActionTarget={fillTarget}
+          block={{
+            id: 'to-be',
+            type: 'fill_blanks',
+            order: 0,
+            title: 'Práctica: To Be',
+            items: [{ id: 'be', content: 'I [am] a student.' }],
+          }}
+        />
+        <BlockPreview
+          guidedAppearance
+          guidedActionTarget={choiceTarget}
+          block={{
+            id: 'possessives',
+            type: 'multiple_choice',
+            order: 1,
+            items: [
+              {
+                id: 'poss-i',
+                question: 'I am Peter. ___ name is Peter.',
+                options: [
+                  { id: 'my', text: 'My' },
+                  { id: 'your', text: 'Your' },
+                ],
+                correctOptionId: 'my',
+              },
+            ],
+          }}
+        />
+      </>
+    )
+
+    expect(screen.queryByText('Rellenar Espacios')).not.toBeInTheDocument()
+    expect(screen.queryByText('Práctica: To Be')).not.toBeInTheDocument()
+    expect(fillTarget.querySelector('button')).toHaveTextContent('Comprobar')
+
+    const fillInput = screen.getByRole('textbox', { name: 'Respuesta 2' })
+    expect(fillInput).toHaveClass('min-h-11', 'text-base')
+    expect(fillInput.className).not.toMatch(/green|red/)
+    fireEvent.change(fillInput, { target: { value: 'am' } })
+    fireEvent.click(fillTarget.querySelector('button') as HTMLButtonElement)
+    expect(fillInput).toBeDisabled()
+
+    expect(screen.getByText('I am Peter. ___ name is Peter.')).toHaveClass('text-base', 'leading-6')
+    expect(screen.queryByText('Opción Múltiple')).not.toBeInTheDocument()
+    expect(choiceTarget.querySelector('button')).toHaveTextContent('Comprobar')
+    expect(choiceTarget.querySelector('button')).toBeDisabled()
+
+    const myChoice = screen.getByRole('button', { name: 'My' })
+    fireEvent.click(myChoice)
+    expect(myChoice).toHaveAttribute('aria-pressed', 'true')
+    expect(myChoice.className).not.toMatch(/green|red/)
+    expect(choiceTarget.querySelector('button')).not.toBeDisabled()
+  })
 })
