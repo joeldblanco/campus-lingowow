@@ -56,7 +56,8 @@ import {
   Blocks,
 } from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import Image from 'next/image'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
@@ -75,8 +76,44 @@ interface BlockPreviewProps {
   answer?: unknown // Current answer value (for exam mode)
   onAnswerChange?: (answer: unknown) => void // Callback when answer changes (for exam mode)
   hideBlockHeader?: boolean // When true, hides the blue title/icon header on blocks (for Resource Builder)
+  guidedAppearance?: boolean // When true, applies the guided lesson presentation to supported blocks
+  guidedActionTarget?: HTMLElement | null // Optional viewer footer target for a block's existing primary action
+  onGuidedActionPresence?: (present: boolean) => void
   onRecordingStateChange?: (active: boolean) => void
 }
+
+function useGuidedActionPresence(
+  guidedAppearance: boolean,
+  hasAction: boolean,
+  onGuidedActionPresence?: (present: boolean) => void
+) {
+  const callbackRef = useRef(onGuidedActionPresence)
+
+  useEffect(() => {
+    callbackRef.current = onGuidedActionPresence
+  }, [onGuidedActionPresence])
+
+  useEffect(() => {
+    callbackRef.current?.(guidedAppearance && hasAction)
+    return () => callbackRef.current?.(false)
+  }, [guidedAppearance, hasAction])
+}
+
+function renderGuidedAction(
+  action: ReactNode,
+  guidedAppearance: boolean,
+  guidedActionTarget?: HTMLElement | null
+) {
+  if (guidedAppearance && guidedActionTarget) {
+    return createPortal(action, guidedActionTarget)
+  }
+  return action
+}
+
+const GUIDED_PRIMARY_ACTION_CLASS =
+  'min-h-12 rounded-full bg-[#245CFF] px-6 text-base leading-6 text-white hover:bg-[#245CFF]/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
+const GUIDED_SECONDARY_ACTION_CLASS =
+  'min-h-11 rounded-full border-[#506187] bg-[#FAF8F4] px-5 text-base leading-6 text-[#10245C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
 
 export function BlockPreview({
   block,
@@ -86,6 +123,9 @@ export function BlockPreview({
   answer,
   onAnswerChange,
   hideBlockHeader,
+  guidedAppearance = false,
+  guidedActionTarget,
+  onGuidedActionPresence,
   onRecordingStateChange,
 }: BlockPreviewProps) {
   // Teacher notes are only visible to teachers
@@ -110,6 +150,8 @@ export function BlockPreview({
             hideHeader={hideBlockHeader}
             isExamMode={isExamMode}
             examAttemptId={examAttemptId}
+            guidedAppearance={guidedAppearance}
+            onGuidedActionPresence={onGuidedActionPresence}
           />
         )
       case 'quiz':
@@ -156,6 +198,9 @@ export function BlockPreview({
             answer={answer}
             onAnswerChange={onAnswerChange}
             hideHeader={hideBlockHeader}
+            guidedAppearance={guidedAppearance}
+            guidedActionTarget={guidedActionTarget}
+            onGuidedActionPresence={onGuidedActionPresence}
           />
         )
       case 'essay':
@@ -166,6 +211,9 @@ export function BlockPreview({
             answer={answer}
             onAnswerChange={onAnswerChange}
             hideHeader={hideBlockHeader}
+            guidedAppearance={guidedAppearance}
+            guidedActionTarget={guidedActionTarget}
+            onGuidedActionPresence={onGuidedActionPresence}
           />
         )
       case 'short_answer':
@@ -219,6 +267,9 @@ export function BlockPreview({
             onAnswerChange={onAnswerChange}
             hideHeader={hideBlockHeader}
             onRecordingStateChange={onRecordingStateChange}
+            guidedAppearance={guidedAppearance}
+            guidedActionTarget={guidedActionTarget}
+            onGuidedActionPresence={onGuidedActionPresence}
           />
         )
       case 'structured-content':
@@ -426,11 +477,15 @@ function AudioBlockPreview({
   hideHeader,
   isExamMode,
   examAttemptId,
+  guidedAppearance = false,
+  onGuidedActionPresence,
 }: {
   block: AudioBlock
   hideHeader?: boolean
   isExamMode?: boolean
   examAttemptId?: string
+  guidedAppearance?: boolean
+  onGuidedActionPresence?: (present: boolean) => void
 }) {
   const storageKey = examAttemptId ? `exam-audio-plays:${examAttemptId}:${block.id}` : null
 
@@ -448,6 +503,8 @@ function AudioBlockPreview({
   const [hasStartedCurrentPlay, setHasStartedCurrentPlay] = useState(false)
   const [waveform] = useState(() => Array.from({ length: 32 }, () => Math.random() * 0.7 + 0.3)) // Random heights
   const audioRef = useRef<HTMLAudioElement>(null)
+
+  useGuidedActionPresence(guidedAppearance, false, onGuidedActionPresence)
 
   const maxReplays = block.maxReplays || 0
   const hasLimit = maxReplays > 0
@@ -511,15 +568,15 @@ function AudioBlockPreview({
   }
 
   return (
-    <div className={hideHeader ? '' : 'space-y-4'}>
-      {!hideHeader && (
+    <div className={guidedAppearance ? 'space-y-6 text-[#10245C]' : hideHeader ? '' : 'space-y-4'}>
+      {!hideHeader && !guidedAppearance && (
         <div className="flex items-center gap-2 text-primary font-semibold text-sm">
           <Mic className="h-5 w-5" />
           <span>Pronunciación</span>
         </div>
       )}
 
-      {block.title && (
+      {block.title && !guidedAppearance && (
         <div>
           <h3 className="text-xl font-bold">{block.title}</h3>
         </div>
@@ -532,7 +589,12 @@ function AudioBlockPreview({
         </div>
       ) : (
         <>
-          <div className="bg-card border rounded-xl p-6 shadow-sm">
+          <div
+            className={cn(
+              'rounded-xl border p-6 shadow-sm',
+              guidedAppearance ? 'border-[#506187] bg-[#FAF8F4]' : 'bg-card'
+            )}
+          >
             <div className="flex items-center gap-6">
               <audio
                 ref={audioRef}
@@ -550,14 +612,21 @@ function AudioBlockPreview({
                 disabled={!isPlaying && !canPlay}
                 className={cn(
                   'h-14 w-14 flex items-center justify-center rounded-full transition-all shadow-md shrink-0',
-                  isPlaying
-                    ? blockPause
-                      ? 'bg-blue-600 text-white cursor-default'
-                      : 'bg-blue-600 text-white hover:bg-blue-700 hover:scale-105'
-                    : !canPlay
-                      ? 'bg-muted text-muted-foreground cursor-not-allowed'
-                      : 'bg-blue-900 text-white hover:bg-blue-800 hover:scale-105'
+                  guidedAppearance
+                    ? isPlaying
+                      ? 'bg-[#245CFF] text-white cursor-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
+                      : !canPlay
+                        ? 'bg-[#FAF8F4] text-[#506187] cursor-not-allowed border border-[#506187]'
+                        : 'bg-[#10245C] text-white hover:bg-[#10245C]/90 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
+                    : isPlaying
+                      ? blockPause
+                        ? 'bg-blue-600 text-white cursor-default'
+                        : 'bg-blue-600 text-white hover:bg-blue-700 hover:scale-105'
+                      : !canPlay
+                        ? 'bg-muted text-muted-foreground cursor-not-allowed'
+                        : 'bg-blue-900 text-white hover:bg-blue-800 hover:scale-105'
                 )}
+                aria-label={isPlaying ? 'Pausar audio' : 'Reproducir audio'}
               >
                 {isPlaying && !blockPause ? (
                   <Pause className="h-6 w-6 fill-current" />
@@ -593,7 +662,13 @@ function AudioBlockPreview({
                         key={i}
                         className={cn(
                           'w-1 rounded-full transition-colors duration-200',
-                          isPlayed ? 'bg-primary' : 'bg-muted-foreground/30'
+                          isPlayed
+                            ? guidedAppearance
+                              ? 'bg-[#245CFF]'
+                              : 'bg-primary'
+                            : guidedAppearance
+                              ? 'bg-[#506187]/40'
+                              : 'bg-muted-foreground/30'
                         )}
                         style={{
                           height: `${height * 100}%`,
@@ -604,14 +679,23 @@ function AudioBlockPreview({
                   })}
                 </div>
 
-                <div className="flex justify-between text-xs font-medium text-muted-foreground">
+                <div
+                  className={cn(
+                    'flex justify-between font-medium',
+                    guidedAppearance ? 'text-sm text-[#506187]' : 'text-xs text-muted-foreground'
+                  )}
+                >
                   <span>{formatTime(currentTime)}</span>
                   <span className="flex items-center gap-2">
                     {maxReplays > 0 && (
                       <span
                         className={cn(
                           'px-1.5 py-0.5 rounded text-[10px] uppercase tracking-wider',
-                          canPlay ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                          guidedAppearance
+                            ? 'border border-[#506187] text-[#506187]'
+                            : canPlay
+                              ? 'bg-green-100 text-green-700'
+                              : 'bg-red-100 text-red-700'
                         )}
                       >
                         {replayCount} / {maxReplays} Usos
@@ -2563,12 +2647,18 @@ function TrueFalseBlockPreview({
   answer,
   onAnswerChange,
   hideHeader,
+  guidedAppearance = false,
+  guidedActionTarget,
+  onGuidedActionPresence,
 }: {
   block: TrueFalseBlock
   isExamMode?: boolean
   answer?: unknown
   onAnswerChange?: (answer: unknown) => void
   hideHeader?: boolean
+  guidedAppearance?: boolean
+  guidedActionTarget?: HTMLElement | null
+  onGuidedActionPresence?: (present: boolean) => void
 }) {
   void hideHeader // True/false blocks have a different layout
   const [index, setIndex] = useState(0)
@@ -2595,6 +2685,17 @@ function TrueFalseBlockPreview({
           Object.entries(remoteNav.currentAnswers).map(([k, v]) => [k, v === 'true'])
         )
       : answers
+
+  const currentAnswer = displayItem ? displayAnswers[displayItem.id] : undefined
+  const currentResult = displayItem ? results[displayItem.id] : undefined
+  const showResult = !isExamMode && currentResult !== undefined
+  const hasGuidedAction =
+    items.length > 0 &&
+    !isTeacherInClassroom &&
+    !isExamMode &&
+    (!showResult || displayIndex < items.length - 1)
+
+  useGuidedActionPresence(guidedAppearance, hasGuidedAction, onGuidedActionPresence)
 
   const handleSelect = (value: boolean) => {
     if (isTeacherInClassroom || !currentItem) return
@@ -2656,11 +2757,13 @@ function TrueFalseBlockPreview({
 
   if (!items.length) {
     return (
-      <div className="space-y-4">
-        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-          <CheckCircle2 className="h-5 w-5" />
-          <span>Verdadero o Falso</span>
-        </div>
+      <div className={guidedAppearance ? 'space-y-6 text-[#10245C]' : 'space-y-4'}>
+        {!guidedAppearance && (
+          <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+            <CheckCircle2 className="h-5 w-5" />
+            <span>Verdadero o Falso</span>
+          </div>
+        )}
         <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
           <p className="text-muted-foreground">Sin preguntas configuradas</p>
         </div>
@@ -2668,45 +2771,68 @@ function TrueFalseBlockPreview({
     )
   }
 
-  const currentAnswer = displayAnswers[displayItem?.id]
-  const currentResult = results[displayItem?.id]
-  const showResult = !isExamMode && currentResult !== undefined
-
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-          <CheckCircle2 className="h-5 w-5" />
-          <span>Verdadero o Falso</span>
+    <div className={guidedAppearance ? 'space-y-6 text-[#10245C]' : 'space-y-4'}>
+      {!guidedAppearance && (
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+            <CheckCircle2 className="h-5 w-5" />
+            <span>Verdadero o Falso</span>
+          </div>
+          {items.length > 1 && (
+            <span className="text-xs text-muted-foreground">
+              Pregunta {displayIndex + 1} de {items.length}
+            </span>
+          )}
         </div>
-        {items.length > 1 && (
-          <span className="text-xs text-muted-foreground">
-            Pregunta {displayIndex + 1} de {items.length}
-          </span>
-        )}
-      </div>
+      )}
 
-      {block.title && <h3 className="text-xl font-bold">{block.title}</h3>}
+      {guidedAppearance && items.length > 1 && (
+        <span className="block text-sm text-[#506187]">
+          Pregunta {displayIndex + 1} de {items.length}
+        </span>
+      )}
+
+      {block.title && !guidedAppearance && <h3 className="text-xl font-bold">{block.title}</h3>}
 
       <div className="relative">
         <div
           key={displayItem?.id}
-          className="p-6 bg-white border rounded-xl shadow-sm text-center space-y-6 animate-in fade-in slide-in-from-right-4 duration-300"
+          className={cn(
+            'text-center space-y-6 animate-in fade-in slide-in-from-right-4 duration-300',
+            guidedAppearance
+              ? 'rounded-2xl border border-[#506187] bg-[#FAF8F4] p-6'
+              : 'p-6 bg-white border rounded-xl shadow-sm'
+          )}
         >
-          <h3 className="text-xl font-medium leading-relaxed">
-            {displayItem?.statement || 'Afirmación...'}
-          </h3>
+          {guidedAppearance ? (
+            <p className="text-base leading-6 text-[#10245C]">
+              {displayItem?.statement || 'Afirmación...'}
+            </p>
+          ) : (
+            <h3 className="text-xl font-medium leading-relaxed">
+              {displayItem?.statement || 'Afirmación...'}
+            </h3>
+          )}
 
           <div className="flex justify-center gap-4">
             <button
               onClick={() => handleSelect(true)}
               disabled={showResult || isTeacherInClassroom}
+              aria-pressed={currentAnswer === true}
               className={cn(
-                'px-8 py-3 rounded-lg border-2 font-bold transition-all flex items-center gap-2',
-                currentAnswer === true
-                  ? 'bg-green-600 text-white border-green-600'
-                  : 'bg-green-50 text-green-700 border-green-100 hover:bg-green-100',
-                isTeacherInClassroom && 'cursor-default'
+                guidedAppearance
+                  ? 'min-h-11 rounded-lg border-2 border-[#506187] bg-[#FAF8F4] px-6 py-3 text-base leading-6 font-semibold text-[#10245C] transition-colors hover:bg-[#FAF8F4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
+                  : 'px-8 py-3 rounded-lg border-2 font-bold transition-all flex items-center gap-2',
+                !guidedAppearance &&
+                  (currentAnswer === true
+                    ? 'bg-green-600 text-white border-green-600'
+                    : 'bg-green-50 text-green-700 border-green-100 hover:bg-green-100'),
+                !guidedAppearance && isTeacherInClassroom && 'cursor-default',
+                guidedAppearance &&
+                  currentAnswer === true &&
+                  'border-[#10245C] bg-[#10245C] text-white',
+                guidedAppearance && isTeacherInClassroom && 'cursor-default'
               )}
             >
               Verdadero
@@ -2714,12 +2840,20 @@ function TrueFalseBlockPreview({
             <button
               onClick={() => handleSelect(false)}
               disabled={showResult || isTeacherInClassroom}
+              aria-pressed={currentAnswer === false}
               className={cn(
-                'px-8 py-3 rounded-lg border-2 font-bold transition-all flex items-center gap-2',
-                currentAnswer === false
-                  ? 'bg-red-600 text-white border-red-600'
-                  : 'bg-red-50 text-red-700 border-red-100 hover:bg-red-100',
-                isTeacherInClassroom && 'cursor-default'
+                guidedAppearance
+                  ? 'min-h-11 rounded-lg border-2 border-[#506187] bg-[#FAF8F4] px-6 py-3 text-base leading-6 font-semibold text-[#10245C] transition-colors hover:bg-[#FAF8F4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
+                  : 'px-8 py-3 rounded-lg border-2 font-bold transition-all flex items-center gap-2',
+                !guidedAppearance &&
+                  (currentAnswer === false
+                    ? 'bg-red-600 text-white border-red-600'
+                    : 'bg-red-50 text-red-700 border-red-100 hover:bg-red-100'),
+                !guidedAppearance && isTeacherInClassroom && 'cursor-default',
+                guidedAppearance &&
+                  currentAnswer === false &&
+                  'border-[#10245C] bg-[#10245C] text-white',
+                guidedAppearance && isTeacherInClassroom && 'cursor-default'
               )}
             >
               Falso
@@ -2730,7 +2864,13 @@ function TrueFalseBlockPreview({
             <div
               className={cn(
                 'p-4 rounded-lg text-center space-y-2',
-                currentResult ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                guidedAppearance
+                  ? currentResult
+                    ? 'border border-[#08775E] text-[#08775E]'
+                    : 'border border-[#C13E50] text-[#C13E50]'
+                  : currentResult
+                    ? 'bg-green-100 text-green-700'
+                    : 'bg-red-100 text-red-700'
               )}
             >
               <p className="font-bold text-lg">{currentResult ? '¡Correcto!' : 'Incorrecto'}</p>
@@ -2743,15 +2883,41 @@ function TrueFalseBlockPreview({
             </div>
           )}
 
-          {!showResult && !isTeacherInClassroom && !isExamMode && (
-            <Button
-              onClick={handleCheck}
-              disabled={currentAnswer === null || currentAnswer === undefined}
-              size="sm"
-            >
-              Enviar Respuesta
-            </Button>
-          )}
+          {!showResult &&
+            !isTeacherInClassroom &&
+            !isExamMode &&
+            (() => {
+              const checkAction = (
+                <Button
+                  onClick={handleCheck}
+                  disabled={currentAnswer === null || currentAnswer === undefined}
+                  size="sm"
+                  className={guidedAppearance ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
+                >
+                  {guidedAppearance ? 'Comprobar' : 'Enviar Respuesta'}
+                </Button>
+              )
+
+              return guidedAppearance && guidedActionTarget
+                ? renderGuidedAction(checkAction, guidedAppearance, guidedActionTarget)
+                : checkAction
+            })()}
+
+          {showResult &&
+            guidedAppearance &&
+            guidedActionTarget &&
+            !isTeacherInClassroom &&
+            displayIndex < items.length - 1 &&
+            renderGuidedAction(
+              <Button
+                onClick={() => handleNav(Math.min(items.length - 1, index + 1))}
+                className={GUIDED_PRIMARY_ACTION_CLASS}
+              >
+                Siguiente
+              </Button>,
+              guidedAppearance,
+              guidedActionTarget
+            )}
 
           {isTeacherInClassroom && !showResult && (
             <p className="text-sm text-muted-foreground italic">
@@ -2767,17 +2933,21 @@ function TrueFalseBlockPreview({
               size="sm"
               onClick={() => handleNav(Math.max(0, index - 1))}
               disabled={index === 0}
+              className={guidedAppearance ? GUIDED_SECONDARY_ACTION_CLASS : undefined}
             >
               Anterior
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleNav(Math.min(items.length - 1, index + 1))}
-              disabled={index === items.length - 1}
-            >
-              Siguiente
-            </Button>
+            {!(guidedAppearance && showResult && guidedActionTarget) && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleNav(Math.min(items.length - 1, index + 1))}
+                disabled={index === items.length - 1}
+                className={guidedAppearance ? GUIDED_SECONDARY_ACTION_CLASS : undefined}
+              >
+                Siguiente
+              </Button>
+            )}
           </div>
         )}
       </div>
@@ -2791,12 +2961,18 @@ function EssayBlockPreview({
   answer,
   onAnswerChange,
   hideHeader,
+  guidedAppearance = false,
+  guidedActionTarget,
+  onGuidedActionPresence,
 }: {
   block: EssayBlock
   isExamMode?: boolean
   answer?: unknown
   onAnswerChange?: (answer: unknown) => void
   hideHeader?: boolean
+  guidedAppearance?: boolean
+  guidedActionTarget?: HTMLElement | null
+  onGuidedActionPresence?: (present: boolean) => void
 }) {
   void hideHeader // Essay blocks have a different layout
   const [localText, setLocalText] = useState('')
@@ -2821,6 +2997,9 @@ function EssayBlockPreview({
     .split(/\s+/)
     .filter((w) => w.length > 0).length
   const meetsMinWords = !block.minWords || wordCount >= block.minWords
+  const hasEssayAction = !isTeacherInClassroom && !isExamMode
+
+  useGuidedActionPresence(guidedAppearance, hasEssayAction, onGuidedActionPresence)
 
   const handleTextChange = (value: string) => {
     if (isTeacherInClassroom) return
@@ -2833,26 +3012,51 @@ function EssayBlockPreview({
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-          <FileSignature className="h-5 w-5" />
-          <span>Ensayo</span>
-        </div>
-        {block.aiGrading && (
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 text-xs font-medium">
-            <Sparkles className="h-3 w-3" />
-            <span>Autocorrección</span>
+    <div className={guidedAppearance ? 'space-y-6 text-[#10245C]' : 'space-y-4'}>
+      {!guidedAppearance && (
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+            <FileSignature className="h-5 w-5" />
+            <span>Ensayo</span>
           </div>
-        )}
-      </div>
+          {block.aiGrading && (
+            <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 text-xs font-medium">
+              <Sparkles className="h-3 w-3" />
+              <span>Autocorrección</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {guidedAppearance && block.aiGrading && (
+        <span className="inline-flex items-center gap-1.5 text-sm text-[#506187]">
+          <Sparkles className="h-4 w-4" />
+          Autocorrección disponible
+        </span>
+      )}
 
       <div className="space-y-2">
-        <h3 className="font-bold text-lg">{block.prompt || 'Escribe tu respuesta aquí...'}</h3>
-        <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+        {guidedAppearance ? (
+          <p className="text-base leading-6 text-[#10245C]">
+            {block.prompt || 'Escribe tu respuesta aquí...'}
+          </p>
+        ) : (
+          <h3 className="font-bold text-lg">{block.prompt || 'Escribe tu respuesta aquí...'}</h3>
+        )}
+        <div
+          className={cn(
+            'flex flex-wrap gap-2',
+            guidedAppearance ? 'text-sm text-[#506187]' : 'text-xs text-muted-foreground'
+          )}
+        >
           {block.minWords && <span>Mínimo {block.minWords} palabras</span>}
           {block.aiGradingConfig?.targetLevel && (
-            <span className="px-1.5 py-0.5 rounded bg-muted">
+            <span
+              className={cn(
+                'px-1.5 py-0.5 rounded',
+                guidedAppearance ? 'border border-[#506187] text-[#506187]' : 'bg-muted'
+              )}
+            >
               Nivel: {block.aiGradingConfig.targetLevel}
             </span>
           )}
@@ -2861,7 +3065,10 @@ function EssayBlockPreview({
 
       <textarea
         className={cn(
-          'w-full p-4 rounded-lg border bg-background min-h-[150px] focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50',
+          'w-full p-4 rounded-lg border min-h-[150px] focus:outline-none disabled:opacity-50',
+          guidedAppearance
+            ? 'border-[#506187] bg-[#FAF8F4] text-base leading-6 text-[#10245C] placeholder:text-[#506187] focus:ring-2 focus:ring-[#10245C]/20'
+            : 'bg-background focus:ring-2 focus:ring-primary/20',
           isTeacherInClassroom && 'cursor-default'
         )}
         placeholder={
@@ -2871,10 +3078,21 @@ function EssayBlockPreview({
         onChange={(e) => handleTextChange(e.target.value)}
         disabled={isTeacherInClassroom}
       />
-      <div className="flex justify-between text-xs text-muted-foreground">
+      <div
+        className={cn(
+          'flex justify-between',
+          guidedAppearance ? 'text-sm text-[#506187]' : 'text-xs text-muted-foreground'
+        )}
+      >
         <span
           className={cn(
-            block.minWords && wordCount < block.minWords ? 'text-red-500' : 'text-green-600'
+            guidedAppearance
+              ? block.minWords && wordCount < block.minWords
+                ? 'text-[#C13E50]'
+                : 'text-[#08775E]'
+              : block.minWords && wordCount < block.minWords
+                ? 'text-red-500'
+                : 'text-green-600'
           )}
         >
           {wordCount} palabras
@@ -2888,9 +3106,9 @@ function EssayBlockPreview({
         </p>
       )}
 
-      {!isTeacherInClassroom && !isExamMode && (
-        <div className="flex justify-end">
-          {block.aiGrading ? (
+      {hasEssayAction &&
+        (() => {
+          const essayAction = block.aiGrading ? (
             <EssayAIGradingButton
               essayText={text}
               prompt={block.prompt || ''}
@@ -2898,17 +3116,27 @@ function EssayBlockPreview({
               language={block.aiGradingConfig?.language}
               targetLevel={block.aiGradingConfig?.targetLevel}
               disabled={!meetsMinWords || !text.trim()}
+              className={guidedAppearance ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
               onSyncResponse={
                 classroomSync.canInteract ? classroomSync.sendBlockResponse : undefined
               }
             />
           ) : (
-            <Button size="sm" disabled={!meetsMinWords}>
+            <Button
+              size="sm"
+              disabled={!meetsMinWords}
+              className={guidedAppearance ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
+            >
               Enviar
             </Button>
-          )}
-        </div>
-      )}
+          )
+
+          return guidedAppearance && guidedActionTarget ? (
+            renderGuidedAction(essayAction, guidedAppearance, guidedActionTarget)
+          ) : (
+            <div className="flex justify-end">{essayAction}</div>
+          )
+        })()}
     </div>
   )
 }
@@ -2920,6 +3148,9 @@ function RecordingBlockPreview({
   onAnswerChange,
   hideHeader,
   onRecordingStateChange,
+  guidedAppearance = false,
+  guidedActionTarget,
+  onGuidedActionPresence,
 }: {
   block: RecordingBlock
   isExamMode?: boolean
@@ -2927,6 +3158,9 @@ function RecordingBlockPreview({
   onAnswerChange?: (answer: unknown) => void
   hideHeader?: boolean
   onRecordingStateChange?: (active: boolean) => void
+  guidedAppearance?: boolean
+  guidedActionTarget?: HTMLElement | null
+  onGuidedActionPresence?: (present: boolean) => void
 }) {
   void hideHeader // Recording blocks have a different layout
   const [isRecording, setIsRecording] = useState(false)
@@ -2940,6 +3174,11 @@ function RecordingBlockPreview({
   const audioChunksRef = useRef<Blob[]>([])
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const streamRef = useRef<MediaStream | null>(null)
+
+  const hasRecordingAction =
+    Boolean(audioUrl) && hasRecorded && !isRecording && !isUploading && block.aiGrading !== false
+
+  useGuidedActionPresence(guidedAppearance, hasRecordingAction, onGuidedActionPresence)
 
   // Cargar audio existente de la respuesta
   useEffect(() => {
@@ -3097,27 +3336,49 @@ function RecordingBlockPreview({
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-          <Mic className="h-5 w-5" />
-          <span>Grabación</span>
-        </div>
-        {block.aiGrading !== false && (
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 text-xs font-medium">
-            <Sparkles className="h-3 w-3" />
-            <span>Autocorrección</span>
+    <div className={guidedAppearance ? 'space-y-6 text-[#10245C]' : 'space-y-4'}>
+      {!guidedAppearance && (
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+            <Mic className="h-5 w-5" />
+            <span>Grabación</span>
           </div>
-        )}
-      </div>
+          {block.aiGrading !== false && (
+            <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 text-xs font-medium">
+              <Sparkles className="h-3 w-3" />
+              <span>Autocorrección</span>
+            </div>
+          )}
+        </div>
+      )}
 
-      <div className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl space-y-6 text-center">
+      <div
+        className={cn(
+          'p-6 border rounded-xl space-y-6 text-center',
+          guidedAppearance
+            ? 'border-[#506187] bg-[#FAF8F4]'
+            : 'bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-100'
+        )}
+      >
         <div className="space-y-2">
-          <h3 className="font-medium text-lg text-blue-900">
-            {block.instruction || block.prompt || 'Graba tu respuesta...'}
-          </h3>
+          {guidedAppearance ? (
+            <p className="text-base leading-6 text-[#10245C]">
+              {block.instruction || block.prompt || 'Graba tu respuesta...'}
+            </p>
+          ) : (
+            <h3 className="font-medium text-lg text-blue-900">
+              {block.instruction || block.prompt || 'Graba tu respuesta...'}
+            </h3>
+          )}
           {block.timeLimit && (
-            <span className="inline-block px-2 py-1 bg-white rounded text-xs font-mono text-blue-600 border border-blue-200">
+            <span
+              className={cn(
+                'inline-block px-2 py-1 rounded border',
+                guidedAppearance
+                  ? 'text-sm text-[#506187] border-[#506187] bg-[#FAF8F4]'
+                  : 'bg-white text-xs font-mono text-blue-600 border-blue-200'
+              )}
+            >
               {isRecording ? `Tiempo restante: ${timeLeft}s` : `Límite: ${block.timeLimit}s`}
             </span>
           )}
@@ -3130,23 +3391,43 @@ function RecordingBlockPreview({
             onClick={toggleRecording}
             className={cn(
               'h-20 w-20 rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:scale-105 transition-all relative',
-              isRecording ? 'bg-white border-4 border-red-500' : 'bg-red-500 shadow-red-200'
+              guidedAppearance
+                ? isRecording
+                  ? 'bg-[#FAF8F4] border-4 border-[#C13E50]'
+                  : 'bg-[#10245C]'
+                : isRecording
+                  ? 'bg-white border-4 border-red-500'
+                  : 'bg-red-500 shadow-red-200'
             )}
           >
             {isRecording ? (
-              <div className="h-8 w-8 bg-red-500 rounded-sm" />
+              <div
+                className={cn(
+                  'h-8 w-8 rounded-sm',
+                  guidedAppearance ? 'bg-[#C13E50]' : 'bg-red-500'
+                )}
+              />
             ) : (
               <Mic className="h-8 w-8 text-white" />
             )}
             {isRecording && (
-              <span className="absolute -bottom-8 text-xs text-red-500 font-bold animate-pulse">
+              <span
+                className={cn(
+                  'absolute -bottom-8 text-xs font-bold animate-pulse',
+                  guidedAppearance ? 'text-[#C13E50]' : 'text-red-500'
+                )}
+              >
                 GRABANDO
               </span>
             )}
           </button>
         </div>
 
-        <p className="text-sm text-blue-600/80">
+        <p
+          className={
+            guidedAppearance ? 'text-base leading-6 text-[#506187]' : 'text-sm text-blue-600/80'
+          }
+        >
           {hasRecorded
             ? 'Grabación completada. Haz clic para grabar de nuevo.'
             : isRecording
@@ -3156,7 +3437,12 @@ function RecordingBlockPreview({
 
         {/* Reproductor de audio */}
         {audioUrl && !isRecording && (
-          <div className="mt-4 p-4 bg-white rounded-lg border border-blue-200">
+          <div
+            className={cn(
+              'mt-4 p-4 rounded-lg border',
+              guidedAppearance ? 'border-[#506187] bg-[#FAF8F4]' : 'bg-white border-blue-200'
+            )}
+          >
             <audio
               ref={audioRef}
               src={audioUrl}
@@ -3168,7 +3454,10 @@ function RecordingBlockPreview({
                 size="sm"
                 variant="outline"
                 onClick={togglePlayback}
-                className="flex items-center gap-2"
+                className={cn(
+                  'flex items-center gap-2',
+                  guidedAppearance && GUIDED_SECONDARY_ACTION_CLASS
+                )}
               >
                 {isPlaying ? (
                   <>
@@ -3184,7 +3473,12 @@ function RecordingBlockPreview({
               </Button>
             </div>
             {isExamMode && (
-              <p className="text-xs text-green-600 mt-2">
+              <p
+                className={cn(
+                  'mt-2',
+                  guidedAppearance ? 'text-sm text-[#08775E]' : 'text-xs text-green-600'
+                )}
+              >
                 {isUploading ? '⏳ Subiendo grabación...' : '✓ Grabación guardada'}
               </p>
             )}
@@ -3192,27 +3486,32 @@ function RecordingBlockPreview({
         )}
 
         {/* AI Grading Button */}
-        {audioUrl && hasRecorded && !isRecording && !isUploading && block.aiGrading !== false && (
-          <div className="mt-4 flex justify-center">
-            <RecordingAIGrading
-              audioUrl={audioUrl}
-              instruction={block.instruction || block.prompt || ''}
-              blockId={block.id}
-              language={block.aiGradingConfig?.language as 'english' | 'spanish' | undefined}
-              targetLevel={
-                block.aiGradingConfig?.targetLevel as
-                  | 'A1'
-                  | 'A2'
-                  | 'B1'
-                  | 'B2'
-                  | 'C1'
-                  | 'C2'
-                  | undefined
-              }
-              disabled={!audioUrl || isUploading}
-            />
-          </div>
-        )}
+        {hasRecordingAction &&
+          (() => {
+            const gradingAction = (
+              <RecordingAIGrading
+                audioUrl={audioUrl as string}
+                instruction={block.instruction || block.prompt || ''}
+                blockId={block.id}
+                language={block.aiGradingConfig?.language as 'english' | 'spanish' | undefined}
+                targetLevel={
+                  block.aiGradingConfig?.targetLevel as
+                    'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2' | undefined
+                }
+                disabled={!audioUrl || isUploading}
+                className={guidedAppearance ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
+              />
+            )
+
+            const renderedAction =
+              guidedAppearance && guidedActionTarget ? (
+                renderGuidedAction(gradingAction, guidedAppearance, guidedActionTarget)
+              ) : (
+                <div className="mt-4 flex justify-center">{gradingAction}</div>
+              )
+
+            return renderedAction
+          })()}
       </div>
     </div>
   )
