@@ -94,9 +94,9 @@ const VOCABULARY_ICON_RULES: Array<{ terms: string[]; icon: LucideIcon }> = [
 ]
 
 const VOCABULARY_CARD_LAYOUT = [
-  'w-full sm:w-[54%]',
-  'w-full sm:w-[42%] sm:ml-auto sm:mt-4',
-  'w-full sm:w-[50%] sm:ml-[6%] sm:mt-2',
+  'w-full sm:w-[52%]',
+  'w-full sm:w-[40%] sm:ml-auto sm:mt-2',
+  'w-full sm:w-[90%] sm:ml-[6%] sm:mt-1',
 ]
 
 function normalizeVocabularyTerm(term: string): string {
@@ -130,13 +130,13 @@ function renderVocabularyCard(
     <div
       key={item.id}
       data-guided-vocabulary-card={item.id}
-      className={`min-w-0 max-w-full rounded-[24px] border border-[#EEE8FA] bg-white px-5 py-5 shadow-[0_12px_28px_rgba(16,36,92,0.08)] sm:px-6 ${VOCABULARY_CARD_LAYOUT[index % VOCABULARY_CARD_LAYOUT.length]}`}
+      className={`min-w-0 max-w-full rounded-[24px] border border-[#EEE8FA] bg-white px-3 py-3 shadow-[0_12px_28px_rgba(16,36,92,0.08)] sm:px-4 ${VOCABULARY_CARD_LAYOUT[index % VOCABULARY_CARD_LAYOUT.length]}`}
     >
       <dt
         className={`flex items-center gap-3 font-sans text-base font-semibold leading-6 ${SLATE_TEXT}`}
       >
         <span
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#EEE8FA] text-[#10245C]"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#EEE8FA] text-[#10245C]"
           aria-hidden="true"
         >
           <Icon className="h-5 w-5" strokeWidth={1.8} aria-hidden="true" />
@@ -144,7 +144,7 @@ function renderVocabularyCard(
         <span>{item.term}</span>
       </dt>
       <dd
-        className={`mt-4 font-serif text-xl font-normal leading-7 ${NAVY_TEXT} sm:text-2xl sm:leading-8`}
+        className={`mt-1 font-serif text-xl font-normal leading-7 ${NAVY_TEXT}`}
         style={GEORGIA_FONT}
       >
         {renderVocabularyValue(item.definition)}
@@ -184,7 +184,7 @@ function VocabularyPresentation({ block }: { block: Extract<Block, { type: 'voca
         className="pointer-events-none absolute -bottom-28 left-1/4 h-56 w-72 -rotate-6 rounded-[48%] bg-[#EEE8FA]/45"
         aria-hidden="true"
       />
-      <dl className="relative flex flex-wrap items-start gap-4 sm:gap-6">
+      <dl className="relative flex flex-wrap items-start gap-4 sm:gap-4">
         {block.items.map(renderVocabularyCard)}
       </dl>
     </section>
@@ -238,7 +238,7 @@ function getGrammarVariantGroups(variants: SentenceVariant[]) {
   }
 }
 
-function GrammarVariantPresentation({ variant }: { variant: SentenceVariant }) {
+function GrammarVariantPresentation({ variant, deferHint = false }: { variant: SentenceVariant; deferHint?: boolean }) {
   return (
     <article data-guided-grammar-variant={variant.id} className="min-w-0 flex-1">
       <p className={`mb-2 font-sans text-base font-semibold leading-6 ${SLATE_TEXT}`}>
@@ -254,7 +254,7 @@ function GrammarVariantPresentation({ variant }: { variant: SentenceVariant }) {
           ? variant.tokens.map((token, index) => renderToken(token, index))
           : variant.rawSentence}
       </p>
-      {variant.hint && (
+      {variant.hint && !deferHint && (
         <p className={`mt-2 whitespace-pre-line font-sans text-base leading-6 ${SLATE_TEXT}`}>
           {variant.hint}
         </p>
@@ -332,13 +332,18 @@ function GrammarSetPresentation({
           data-guided-grammar-transition
           className="flex flex-col gap-4 md:flex-row md:items-center md:gap-3"
         >
-          <GrammarVariantPresentation variant={transition[0]} />
+          <GrammarVariantPresentation variant={transition[0]} deferHint />
           {transition.length > 1 && <GrammarTransformationArrow />}
           {transition.slice(1).map((variant) => (
-            <GrammarVariantPresentation key={variant.id} variant={variant} />
+            <GrammarVariantPresentation key={variant.id} variant={variant} deferHint />
           ))}
         </div>
       )}
+      {transition.filter((variant) => variant.hint).map((variant) => (
+        <p key={`${variant.id}-hint`} className={`whitespace-pre-line font-sans text-base leading-6 ${SLATE_TEXT}`}>
+          {variant.hint}
+        </p>
+      ))}
       {negatives.length > 0 && (
         <div data-guided-grammar-negative className="flex flex-col gap-4 md:mx-auto md:max-w-[72%]">
           {negatives.map((variant) => (
@@ -425,7 +430,7 @@ export function GuidedLessonBlock({
           )}
           <table
             aria-label={block.title || 'Tabla de referencia'}
-            className={`w-full min-w-[360px] table-fixed border-separate border-spacing-0 text-left text-base leading-6 ${NAVY_TEXT}`}
+            className={`w-full min-w-[240px] table-fixed border-separate border-spacing-0 text-left text-base leading-6 ${NAVY_TEXT}`}
           >
             <caption className="sr-only">{block.title || 'Tabla de referencia'}</caption>
             <thead className="bg-[#EEE8FA]">
@@ -447,7 +452,7 @@ export function GuidedLessonBlock({
                   {row.map((cell, cellIndex) => (
                     <td
                       key={cellIndex}
-                      className={`whitespace-pre-wrap border-b border-[#EEE8FA] px-3 py-2 font-sans text-base leading-6 ${NAVY_TEXT} ${index === block.content!.rows.length - 1 ? 'border-b-0' : ''}`}
+                      className={`whitespace-pre-wrap border-b border-[#EEE8FA] px-3 py-1 font-sans text-base leading-6 ${NAVY_TEXT} ${index === block.content!.rows.length - 1 ? 'border-b-0' : ''}`}
                     >
                       {cell}
                     </td>

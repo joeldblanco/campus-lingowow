@@ -58,7 +58,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
         guidedAppearance={isPilot}
       />
 
-      <main className={`container mx-auto px-4 py-8 space-y-8 ${isPilot ? 'max-w-7xl' : 'max-w-5xl'}`}>
+      <main className={isPilot ? 'mx-auto w-full max-w-7xl px-4 py-2 sm:px-6' : 'container mx-auto max-w-5xl space-y-8 px-4 py-8'}>
         <Suspense fallback={<LessonLoadingSkeleton />}>
           <LessonContent
             lesson={lesson}

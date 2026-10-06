@@ -26,7 +26,7 @@ export function LessonHeader({
 }: LessonHeaderProps) {
   return (
     <div className={guidedAppearance ? 'sticky top-0 z-50 border-b border-[#eee8fa] bg-[#faf8f4] text-[#10245c]' : 'bg-white border-b sticky top-0 z-50'}>
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+      <div className={guidedAppearance ? 'mx-auto flex h-11 max-w-7xl items-center justify-between px-4 sm:px-6' : 'container mx-auto px-4 h-16 flex items-center justify-between'}>
         <div className="flex items-center gap-4 flex-1 min-w-0">
           <Link
             href={backUrl ?? `/my-courses/${courseId}`}

@@ -14,7 +14,7 @@ import {
   writeGuidedLessonStepIndex,
   type GuidedLessonStep,
 } from '@/lib/guided-lesson'
-import { buildIllustratedLessonSteps } from '@/lib/illustrated-lesson'
+import { buildIllustratedLessonSteps, getIllustratedLessonTaskTitle } from '@/lib/illustrated-lesson'
 import { Block } from '@/types/course-builder'
 
 interface GuidedLessonViewerProps {
@@ -74,6 +74,7 @@ export function GuidedLessonViewer({
 
   const activeStepIndex = steps.length > 0 ? Math.min(activeStep, steps.length - 1) : 0
   const currentStep = steps[activeStepIndex]
+  const taskTitle = currentStep && illustratedContent ? getIllustratedLessonTaskTitle(currentStep) : currentStep?.label
   const isFinalStep = steps.length > 0 && activeStepIndex === steps.length - 1
   const isRecordingActive = Object.values(recordingByBlockId).some(Boolean)
   const currentStepArt = illustratedContent && currentStep ? STEP_ART[currentStep.kind] : undefined
@@ -81,7 +82,7 @@ export function GuidedLessonViewer({
     currentStep?.sceneSubject ??
     currentStep?.blocks
       .find((block) => block.type === 'vocabulary')
-      ?.items.find((item) => item.term.trim().toLowerCase() === 'name')?.definition
+      ?.items?.find((item) => item.term.trim().toLowerCase() === 'name')?.definition
   const hasActivityAction =
     illustratedContent && currentStep?.blocks.some((block) => presence[block.id])
   const forwardActionClass = cn(
@@ -169,12 +170,8 @@ export function GuidedLessonViewer({
       className="guided-lesson-viewer relative bg-[#FAF8F4] font-sans text-[#10245C]"
       aria-label="Lección guiada"
     >
-      <div className="relative border-b border-[#506187]/20 px-5 py-4 sm:px-8 sm:py-5">
+      <div className="relative border-b border-[#506187]/20 px-5 py-2 sm:px-8 sm:py-3">
         <div className="flex items-center gap-3 text-sm">
-          <span className="font-semibold text-[#10245C]">This is me!</span>
-          <span className="text-[#506187]/60" aria-hidden="true">
-            ·
-          </span>
           <span className="font-medium text-[#506187]">
             Paso {String(activeStepIndex + 1).padStart(2, '0')}
           </span>
@@ -208,7 +205,7 @@ export function GuidedLessonViewer({
 
       <div
         className={cn(
-          'guided-lesson-main relative grid gap-x-6 gap-y-6 px-5 py-6 sm:px-8 sm:py-8 md:gap-x-12 md:gap-y-6 md:px-12',
+          'guided-lesson-main relative grid gap-x-6 gap-y-3 px-5 py-4 sm:px-8 sm:py-4 md:gap-x-12 md:gap-y-3 md:px-12',
           currentStepArt
             ? currentStepArt.variant === 'portrait'
               ? 'guided-lesson-main--portrait'
@@ -223,7 +220,7 @@ export function GuidedLessonViewer({
         }
       >
         <div className="guided-lesson-content order-1 min-w-0 md:order-1" data-guided-content>
-          <div className="mb-5 flex items-start justify-between gap-4">
+          <div className="mb-3 flex items-start justify-between gap-4">
             <h2
               ref={headingRef}
               tabIndex={-1}
@@ -231,7 +228,7 @@ export function GuidedLessonViewer({
               data-task-heading
               aria-live="polite"
             >
-              {currentStep.label}
+              {taskTitle}
             </h2>
             {isCompleted && (
               <span className="shrink-0 rounded-full bg-[#08775E]/10 px-3 py-2 text-sm font-semibold text-[#08775E]">
@@ -369,6 +366,10 @@ export function GuidedLessonViewer({
           scroll-margin-top: 80px;
         }
 
+        .guided-lesson-step[hidden], [data-guided-footer][hidden] {
+          display: none !important;
+        }
+
         .guided-lesson-main {
           grid-template-columns: minmax(0, 1fr);
         }
@@ -390,6 +391,11 @@ export function GuidedLessonViewer({
 
         .guided-lesson-footer {
           min-height: 64px;
+          position: sticky;
+          bottom: 0;
+          z-index: 20;
+          background: #FAF8F4;
+          padding-block: 8px;
         }
 
         .guided-lesson-step--grammar-reference {
@@ -412,7 +418,7 @@ export function GuidedLessonViewer({
           }
 
           .guided-lesson-main--grammar {
-            grid-template-columns: minmax(0, 1.2fr) minmax(190px, 0.8fr);
+            grid-template-columns: minmax(0, 1.8fr) minmax(190px, 0.6fr);
           }
 
           .guided-lesson-main--grammar .guided-lesson-content {
