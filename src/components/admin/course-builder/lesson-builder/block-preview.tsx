@@ -579,7 +579,7 @@ function AudioBlockPreview({
   const guidedPrompt = (block as AudioBlock & { prompt?: string }).prompt?.trim()
 
   return (
-    <div className={guidedAppearance ? 'space-y-6 text-[#10245C]' : hideHeader ? '' : 'space-y-4'}>
+    <div className={guidedAppearance ? 'space-y-2 text-[#10245C]' : hideHeader ? '' : 'space-y-4'}>
       {!hideHeader && !guidedAppearance && (
         <div className="flex items-center gap-2 text-primary font-semibold text-sm">
           <Mic className="h-5 w-5" />
@@ -607,7 +607,7 @@ function AudioBlockPreview({
           <div
             className={cn(
               guidedAppearance
-                ? 'rounded-2xl border p-4 sm:p-5'
+                ? 'rounded-2xl border p-2 sm:p-2'
                 : 'rounded-xl border p-6 shadow-sm',
               guidedAppearance ? 'border-[#506187] bg-[#FAF8F4]' : 'bg-card'
             )}
@@ -659,7 +659,7 @@ function AudioBlockPreview({
                 <div
                   className={cn(
                     guidedAppearance
-                      ? 'h-8 flex items-center justify-between gap-0.5'
+                      ? 'h-6 flex items-center justify-between gap-0.5'
                       : 'h-12 flex items-center justify-between gap-0.5',
                     // Bloquear navegación completamente cuando hay límite de reproducciones o modo examen
                     hasLimit || isExamMode ? 'cursor-default' : 'cursor-pointer'
