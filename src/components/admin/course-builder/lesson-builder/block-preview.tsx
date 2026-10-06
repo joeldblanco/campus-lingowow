@@ -111,9 +111,9 @@ function renderGuidedAction(
 }
 
 const GUIDED_PRIMARY_ACTION_CLASS =
-  'min-h-12 rounded-full bg-[#245CFF] px-6 text-base leading-6 text-white hover:bg-[#245CFF]/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
+  'min-h-12 rounded-full bg-[#245CFF] px-6 text-base leading-6 text-white hover:bg-[#245CFF]/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
 const GUIDED_SECONDARY_ACTION_CLASS =
-  'min-h-11 rounded-full border-[#506187] bg-[#FAF8F4] px-5 text-base leading-6 text-[#10245C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
+  'min-h-11 rounded-full border-[#506187] bg-white px-5 text-base leading-6 text-[#10245C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
 
 export function BlockPreview({
   block,
@@ -180,6 +180,9 @@ export function BlockPreview({
             block={block as FillBlanksBlock}
             isExamMode={isExamMode}
             hideHeader={hideBlockHeader}
+            guidedAppearance={guidedAppearance}
+            guidedActionTarget={guidedActionTarget}
+            onGuidedActionPresence={onGuidedActionPresence}
           />
         )
       case 'match':
@@ -188,6 +191,9 @@ export function BlockPreview({
             block={block as MatchBlock}
             isExamMode={isExamMode}
             hideHeader={hideBlockHeader}
+            guidedAppearance={guidedAppearance}
+            guidedActionTarget={guidedActionTarget}
+            onGuidedActionPresence={onGuidedActionPresence}
           />
         )
       case 'true_false':
@@ -240,6 +246,9 @@ export function BlockPreview({
             answer={answer}
             onAnswerChange={onAnswerChange}
             hideHeader={hideBlockHeader}
+            guidedAppearance={guidedAppearance}
+            guidedActionTarget={guidedActionTarget}
+            onGuidedActionPresence={onGuidedActionPresence}
           />
         )
       case 'ordering':
@@ -314,7 +323,7 @@ export function BlockPreview({
     return renderBlockContent()
   }
 
-  return <div className="p-6">{renderBlockContent()}</div>
+  return <div className={guidedAppearance ? 'p-0' : 'p-6'}>{renderBlockContent()}</div>
 }
 
 function TitleBlockPreview({ block, hideHeader }: { block: TitleBlock; hideHeader?: boolean }) {
@@ -501,10 +510,22 @@ function AudioBlockPreview({
     return 0
   })
   const [hasStartedCurrentPlay, setHasStartedCurrentPlay] = useState(false)
-  const [waveform] = useState(() => Array.from({ length: 32 }, () => Math.random() * 0.7 + 0.3)) // Random heights
+  const [waveform] = useState(() =>
+    Array.from({ length: 32 }, (_, index) =>
+      guidedAppearance ? 0.35 + ((index * 17) % 45) / 100 : Math.random() * 0.7 + 0.3
+    )
+  ) // Keep guided SSR deterministic; the default renderer retains its existing waveform behavior.
   const audioRef = useRef<HTMLAudioElement>(null)
 
   useGuidedActionPresence(guidedAppearance, false, onGuidedActionPresence)
+
+  useEffect(() => {
+    if (!guidedAppearance || !block.url) return
+    const audio = audioRef.current
+    if (audio && audio.readyState > 0 && Number.isFinite(audio.duration) && audio.duration > 0) {
+      setDuration(audio.duration)
+    }
+  }, [block.url, guidedAppearance])
 
   const maxReplays = block.maxReplays || 0
   const hasLimit = maxReplays > 0
@@ -567,8 +588,10 @@ function AudioBlockPreview({
     return `${mins}:${secs.toString().padStart(2, '0')}`
   }
 
+  const guidedPrompt = (block as AudioBlock & { prompt?: string }).prompt?.trim()
+
   return (
-    <div className={guidedAppearance ? 'space-y-6 text-[#10245C]' : hideHeader ? '' : 'space-y-4'}>
+    <div className={guidedAppearance ? 'space-y-2 text-[#10245C]' : hideHeader ? '' : 'space-y-4'}>
       {!hideHeader && !guidedAppearance && (
         <div className="flex items-center gap-2 text-primary font-semibold text-sm">
           <Mic className="h-5 w-5" />
@@ -582,6 +605,10 @@ function AudioBlockPreview({
         </div>
       )}
 
+      {guidedAppearance && guidedPrompt && (
+        <p className="text-base leading-6 text-[#10245C]">{guidedPrompt}</p>
+      )}
+
       {!block.url ? (
         <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
           <Music className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -591,11 +618,13 @@ function AudioBlockPreview({
         <>
           <div
             className={cn(
-              'rounded-xl border p-6 shadow-sm',
-              guidedAppearance ? 'border-[#506187] bg-[#FAF8F4]' : 'bg-card'
+              guidedAppearance
+                ? 'rounded-[2rem] bg-white p-4 shadow-[0_12px_32px_rgba(16,36,92,0.10)] sm:p-5'
+                : 'rounded-xl border p-6 shadow-sm',
+              guidedAppearance ? '' : 'bg-card'
             )}
           >
-            <div className="flex items-center gap-6">
+            <div className={cn('flex items-center', guidedAppearance ? 'gap-4' : 'gap-6')}>
               <audio
                 ref={audioRef}
                 src={block.url}
@@ -611,13 +640,15 @@ function AudioBlockPreview({
                 onClick={togglePlay}
                 disabled={!isPlaying && !canPlay}
                 className={cn(
-                  'h-14 w-14 flex items-center justify-center rounded-full transition-all shadow-md shrink-0',
+                  guidedAppearance
+                    ? 'h-12 w-12 flex items-center justify-center rounded-full transition-all shadow-md shrink-0'
+                    : 'h-14 w-14 flex items-center justify-center rounded-full transition-all shadow-md shrink-0',
                   guidedAppearance
                     ? isPlaying
                       ? 'bg-[#245CFF] text-white cursor-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
                       : !canPlay
-                        ? 'bg-[#FAF8F4] text-[#506187] cursor-not-allowed border border-[#506187]'
-                        : 'bg-[#10245C] text-white hover:bg-[#10245C]/90 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
+                        ? 'bg-white text-[#506187] cursor-not-allowed border border-[#506187]'
+                        : 'bg-[#245CFF] text-white hover:bg-[#245CFF]/90 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
                     : isPlaying
                       ? blockPause
                         ? 'bg-blue-600 text-white cursor-default'
@@ -639,7 +670,9 @@ function AudioBlockPreview({
                 {/* Waveform Visualization */}
                 <div
                   className={cn(
-                    'h-12 flex items-center justify-between gap-0.5',
+                    guidedAppearance
+                      ? 'h-10 flex items-center justify-between gap-1 bg-transparent px-1'
+                      : 'h-12 flex items-center justify-between gap-0.5',
                     // Bloquear navegación completamente cuando hay límite de reproducciones o modo examen
                     hasLimit || isExamMode ? 'cursor-default' : 'cursor-pointer'
                   )}
@@ -654,8 +687,8 @@ function AudioBlockPreview({
                     }
                   }}
                 >
-                  {waveform.map((height, i) => {
-                    const barPct = (i / waveform.length) * 100
+                  {(guidedAppearance ? waveform.slice(0, 24) : waveform).map((height, i, bars) => {
+                    const barPct = (i / bars.length) * 100
                     const isPlayed = progress > barPct
                     return (
                       <div
@@ -667,7 +700,7 @@ function AudioBlockPreview({
                               ? 'bg-[#245CFF]'
                               : 'bg-primary'
                             : guidedAppearance
-                              ? 'bg-[#506187]/40'
+                              ? 'bg-[#A99BCD]'
                               : 'bg-muted-foreground/30'
                         )}
                         style={{
@@ -692,7 +725,7 @@ function AudioBlockPreview({
                         className={cn(
                           'px-1.5 py-0.5 rounded text-[10px] uppercase tracking-wider',
                           guidedAppearance
-                            ? 'border border-[#506187] text-[#506187]'
+                            ? 'bg-transparent text-[#506187]'
                             : canPlay
                               ? 'bg-green-100 text-green-700'
                               : 'bg-red-100 text-red-700'
@@ -2122,10 +2155,16 @@ function FillBlanksBlockPreview({
   block,
   isExamMode,
   hideHeader,
+  guidedAppearance = false,
+  guidedActionTarget,
+  onGuidedActionPresence,
 }: {
   block: FillBlanksBlock
   isExamMode?: boolean
   hideHeader?: boolean
+  guidedAppearance?: boolean
+  guidedActionTarget?: HTMLElement | null
+  onGuidedActionPresence?: (present: boolean) => void
 }) {
   void hideHeader // Fill blanks blocks have a different layout
   const [index, setIndex] = useState(0)
@@ -2214,13 +2253,47 @@ function FillBlanksBlockPreview({
     }
   }
 
+  const parts = displayItem?.content ? displayItem.content.split(/(\[[^\]]+\])/g) : []
+  const showResult = !isExamMode && displayItem ? allResults[displayItem.id] !== undefined : false
+
+  const hasGuidedAction =
+    items.length > 0 &&
+    !isTeacherInClassroom &&
+    !isExamMode &&
+    (!showResult || displayIndex < items.length - 1)
+
+  useGuidedActionPresence(guidedAppearance, hasGuidedAction, onGuidedActionPresence)
+
+  const checkAction = (
+    <Button
+      onClick={handleCheck}
+      disabled={showResult}
+      size="sm"
+      className={guidedAppearance ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
+    >
+      {guidedAppearance ? 'Comprobar' : 'Verificar'}
+    </Button>
+  )
+
+  const nextAction = (
+    <Button
+      onClick={() => handleNav(Math.min(items.length - 1, index + 1))}
+      size="sm"
+      className={guidedAppearance ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
+    >
+      Siguiente
+    </Button>
+  )
+
   if (!items.length) {
     return (
-      <div className="space-y-4">
-        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-          <Edit3 className="h-5 w-5" />
-          <span>Rellenar Espacios</span>
-        </div>
+      <div className={guidedAppearance ? 'space-y-5 text-[#10245C]' : 'space-y-4'}>
+        {!guidedAppearance && (
+          <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+            <Edit3 className="h-5 w-5" />
+            <span>Rellenar Espacios</span>
+          </div>
+        )}
         <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
           <p className="text-muted-foreground">Sin ejercicios configurados</p>
         </div>
@@ -2228,31 +2301,43 @@ function FillBlanksBlockPreview({
     )
   }
 
-  const parts = displayItem?.content ? displayItem.content.split(/(\[[^\]]+\])/g) : []
-  const showResult = !isExamMode && displayItem ? allResults[displayItem.id] !== undefined : false
-
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-          <Edit3 className="h-5 w-5" />
-          <span>Rellenar Espacios</span>
+    <div className={guidedAppearance ? 'space-y-5 text-[#10245C]' : 'space-y-4'}>
+      {!guidedAppearance && (
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+            <Edit3 className="h-5 w-5" />
+            <span>Rellenar Espacios</span>
+          </div>
+          {items.length > 1 && (
+            <span className="text-xs text-muted-foreground">
+              Ejercicio {displayIndex + 1} de {items.length}
+            </span>
+          )}
         </div>
-        {items.length > 1 && (
-          <span className="text-xs text-muted-foreground">
-            Ejercicio {displayIndex + 1} de {items.length}
-          </span>
-        )}
-      </div>
+      )}
 
-      {block.title && <h3 className="text-xl font-bold">{block.title}</h3>}
+      {guidedAppearance && items.length > 1 && (
+        <span className="block text-sm leading-6 text-[#506187]">
+          Pregunta {displayIndex + 1} de {items.length}
+        </span>
+      )}
+
+      {block.title && !guidedAppearance && <h3 className="text-xl font-bold">{block.title}</h3>}
 
       <div className="relative">
         <div
           key={displayItem?.id}
           className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300"
         >
-          <div className="p-6 bg-white rounded-xl border shadow-sm leading-loose text-lg">
+          <div
+            className={cn(
+              'rounded-2xl border leading-6',
+              guidedAppearance
+                ? 'border-0 bg-white p-4 text-base text-[#10245C] sm:p-6'
+                : 'bg-white p-6 text-lg shadow-sm'
+            )}
+          >
             {parts.map((part, i) => {
               if (part.startsWith('[') && part.endsWith(']')) {
                 const answer = part.slice(1, -1)
@@ -2267,14 +2352,19 @@ function FillBlanksBlockPreview({
                       disabled={showResult || isTeacherInClassroom}
                       placeholder={isTeacherInClassroom ? '...' : ''}
                       className={cn(
-                        'border-b-2 px-2 py-0.5 text-center min-w-[80px] font-medium focus:outline-none rounded-t transition-colors',
+                        guidedAppearance
+                          ? 'min-h-11 min-w-[120px] rounded-none border-0 border-b-2 border-[#506187] bg-white px-2 py-1 text-center text-base font-medium leading-6 focus:border-[#245CFF] focus:outline-none focus:ring-0'
+                          : 'border-b-2 px-2 py-0.5 text-center min-w-[80px] font-medium focus:outline-none rounded-t transition-colors',
                         showResult
                           ? isCorrect
                             ? 'border-green-500 bg-green-50 text-green-700'
                             : 'border-red-500 bg-red-50 text-red-700'
-                          : 'border-primary/50 bg-primary/5 text-primary',
+                          : guidedAppearance
+                            ? 'border-[#506187] bg-white text-[#10245C]'
+                            : 'border-primary/50 bg-primary/5 text-primary',
                         isTeacherInClassroom && 'cursor-default'
                       )}
+                      aria-label={`Respuesta ${i + 1}`}
                     />
                     {showResult && !isCorrect && (
                       <span className="absolute -top-6 left-0 text-xs text-green-600 font-bold bg-green-100 px-1 rounded whitespace-nowrap z-10">
@@ -2291,11 +2381,11 @@ function FillBlanksBlockPreview({
             )}
           </div>
 
-          {!isTeacherInClassroom && !isExamMode && (
+          {!isTeacherInClassroom && !isExamMode && (!guidedAppearance || !showResult) && (
             <div className="flex gap-2">
-              <Button onClick={handleCheck} disabled={showResult} size="sm">
-                Verificar
-              </Button>
+              {guidedAppearance && guidedActionTarget
+                ? renderGuidedAction(checkAction, guidedAppearance, guidedActionTarget)
+                : checkAction}
             </div>
           )}
 
@@ -2307,25 +2397,35 @@ function FillBlanksBlockPreview({
         </div>
 
         {items.length > 1 && !isTeacherInClassroom && (
-          <div className="flex justify-between mt-4">
+          <div className="mt-4 flex justify-between">
             <Button
               variant="outline"
               size="sm"
               onClick={() => handleNav(Math.max(0, index - 1))}
               disabled={index === 0}
+              className={guidedAppearance ? GUIDED_SECONDARY_ACTION_CLASS : undefined}
             >
               Anterior
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleNav(Math.min(items.length - 1, index + 1))}
-              disabled={index === items.length - 1}
-            >
-              Siguiente
-            </Button>
+            {!(guidedAppearance && showResult && guidedActionTarget) && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleNav(Math.min(items.length - 1, index + 1))}
+                disabled={index === items.length - 1}
+                className={guidedAppearance ? GUIDED_SECONDARY_ACTION_CLASS : undefined}
+              >
+                Siguiente
+              </Button>
+            )}
           </div>
         )}
+
+        {guidedAppearance &&
+          guidedActionTarget &&
+          showResult &&
+          displayIndex < items.length - 1 &&
+          renderGuidedAction(nextAction, guidedAppearance, guidedActionTarget)}
       </div>
     </div>
   )
@@ -2335,15 +2435,25 @@ function MatchBlockPreview({
   block,
   isExamMode,
   hideHeader,
+  guidedAppearance = false,
+  guidedActionTarget,
+  onGuidedActionPresence,
 }: {
   block: MatchBlock
   isExamMode?: boolean
   hideHeader?: boolean
+  guidedAppearance?: boolean
+  guidedActionTarget?: HTMLElement | null
+  onGuidedActionPresence?: (present: boolean) => void
 }) {
   void hideHeader // Match blocks have a different layout
   const [selectedLeft, setSelectedLeft] = useState<string | null>(null)
   const [matches, setMatches] = useState<Record<string, string>>({}) // leftId -> rightId
-  const [shuffledRight, setShuffledRight] = useState<Array<{ id: string; text: string }>>([])
+  const [guidedPairIndex, setGuidedPairIndex] = useState(0)
+  const [shuffledRight, setShuffledRight] = useState<Array<{ id: string; text: string }>>(() => {
+    const rightSide = [...(block.pairs || [])].map((pair) => ({ id: pair.id, text: pair.right }))
+    return guidedAppearance ? rightSide : rightSide.sort(() => Math.random() - 0.5)
+  })
   const [showResultState, setShowResultState] = useState(false)
   const showResult = !isExamMode && showResultState
 
@@ -2351,6 +2461,11 @@ function MatchBlockPreview({
   const classroomSync = useClassroomSync()
   const remoteNav = classroomSync.getRemoteNavigation(block.id)
   const isTeacherInClassroom = classroomSync.isInClassroom && classroomSync.isTeacher
+
+  const hasGuidedAction =
+    block.pairs?.length > 0 && !isTeacherInClassroom && !isExamMode && !showResult
+
+  useGuidedActionPresence(guidedAppearance, Boolean(hasGuidedAction), onGuidedActionPresence)
 
   // For teachers: use remote matches
   const displayMatches =
@@ -2378,6 +2493,7 @@ function MatchBlockPreview({
   const handleReset = () => {
     if (isTeacherInClassroom) return
     init()
+    setGuidedPairIndex(0)
   }
 
   const handleLeftClick = (id: string) => {
@@ -2423,6 +2539,79 @@ function MatchBlockPreview({
     }
   }
 
+  const handleGuidedRightClick = (rightId: string) => {
+    if (showResult || isTeacherInClassroom) return
+    const currentPair = block.pairs?.[guidedPairIndex]
+    if (!currentPair) return
+
+    const connectedLeftId = Object.keys(matches).find((key) => matches[key] === rightId)
+    if (connectedLeftId && connectedLeftId !== currentPair.id) return
+
+    const newMatches = { ...matches }
+    if (newMatches[currentPair.id] === rightId) {
+      delete newMatches[currentPair.id]
+    } else {
+      newMatches[currentPair.id] = rightId
+    }
+    setMatches(newMatches)
+
+    if (classroomSync.canInteract) {
+      classroomSync.syncBlockNavigation(
+        block.id,
+        guidedPairIndex,
+        block.pairs?.length || 0,
+        true,
+        false,
+        newMatches
+      )
+    }
+  }
+
+  const handleGuidedLeftClick = () => {
+    if (showResult || isTeacherInClassroom) return
+    const currentPair = block.pairs?.[guidedPairIndex]
+    if (!currentPair) return
+
+    if (!matches[currentPair.id]) {
+      setSelectedLeft(currentPair.id)
+      return
+    }
+
+    const newMatches = { ...matches }
+    delete newMatches[currentPair.id]
+    setMatches(newMatches)
+    setSelectedLeft(null)
+
+    if (classroomSync.canInteract) {
+      classroomSync.syncBlockNavigation(
+        block.id,
+        guidedPairIndex,
+        block.pairs?.length || 0,
+        true,
+        false,
+        newMatches
+      )
+    }
+  }
+
+  const handleGuidedNav = (newIndex: number) => {
+    if (isTeacherInClassroom || showResult) return
+    const boundedIndex = Math.max(0, Math.min(block.pairs.length - 1, newIndex))
+    setGuidedPairIndex(boundedIndex)
+    setSelectedLeft(null)
+
+    if (classroomSync.canInteract) {
+      classroomSync.syncBlockNavigation(
+        block.id,
+        boundedIndex,
+        block.pairs.length,
+        true,
+        false,
+        matches
+      )
+    }
+  }
+
   const checkAnswers = () => {
     if (isTeacherInClassroom || isExamMode) return
     setShowResultState(true)
@@ -2447,17 +2636,257 @@ function MatchBlockPreview({
     }
   }
 
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-        <Shuffle className="h-5 w-5" />
-        <span>Emparejar</span>
-      </div>
-      {block.title && <h3 className="font-bold text-lg">{block.title}</h3>}
+  const checkAction = (
+    <Button
+      onClick={checkAnswers}
+      disabled={showResult}
+      size="sm"
+      className={guidedAppearance ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
+    >
+      {guidedAppearance ? 'Comprobar' : 'Verificar'}
+    </Button>
+  )
 
-      <div className="grid grid-cols-2 gap-8 relative p-4">
+  const guidedInstructionId = `guided-match-instruction-${block.id}`
+
+  if (guidedAppearance) {
+    const guidedCurrentPair = block.pairs?.[guidedPairIndex]
+    const guidedCurrentMatch = guidedCurrentPair ? matches[guidedCurrentPair.id] : undefined
+
+    return (
+      <div className="space-y-5 text-[#10245C]">
+        <p id={guidedInstructionId} className="text-base leading-6 text-[#506187]">
+          Toca una palabra y su pareja.
+        </p>
+
+        {guidedCurrentPair ? (
+          <section
+            className="space-y-5 rounded-2xl border border-[#506187]/50 bg-white p-4 sm:p-6"
+            aria-describedby={guidedInstructionId}
+            aria-label="Actividad de emparejar"
+          >
+            <div className="flex items-center justify-between gap-4">
+              <span className="text-sm leading-6 text-[#506187]">
+                {guidedPairIndex + 1} de {block.pairs.length}
+              </span>
+              <span className="text-sm leading-6 text-[#506187]">
+                {Object.keys(matches).length} respuestas
+              </span>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleGuidedLeftClick}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault()
+                  handleGuidedLeftClick()
+                }
+              }}
+              disabled={isTeacherInClassroom || showResult}
+              aria-pressed={Boolean(guidedCurrentMatch) || selectedLeft === guidedCurrentPair.id}
+              aria-label={`Palabra: ${guidedCurrentPair.left}`}
+              className={cn(
+                'min-h-11 w-full rounded-2xl border px-4 py-3 text-left text-base font-semibold leading-6 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2',
+                guidedCurrentMatch || selectedLeft === guidedCurrentPair.id
+                  ? 'border-[#10245C] bg-[#EEE8FA] text-[#10245C] ring-2 ring-[#10245C]/20'
+                  : 'border-[#506187] bg-white text-[#10245C] hover:bg-[#EEE8FA]',
+                (isTeacherInClassroom || showResult) && 'cursor-not-allowed'
+              )}
+            >
+              {guidedCurrentPair.left}
+            </button>
+
+            <div className="flex flex-wrap gap-2" role="group" aria-label="Opciones de pareja">
+              {shuffledRight.map((item) => {
+                const connectedLeftId = Object.keys(matches).find((key) => matches[key] === item.id)
+                const isConnected = Boolean(connectedLeftId)
+                const isCurrentMatch = guidedCurrentMatch === item.id
+                const isUnavailable = isConnected && !isCurrentMatch
+
+                return (
+                  <button
+                    key={`guided-r-${item.id}`}
+                    type="button"
+                    onClick={() => handleGuidedRightClick(item.id)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault()
+                        handleGuidedRightClick(item.id)
+                      }
+                    }}
+                    disabled={isTeacherInClassroom || showResult || isUnavailable}
+                    aria-pressed={isCurrentMatch}
+                    aria-label={`Pareja: ${item.text}`}
+                    data-guided-match-choice={item.id}
+                    className={cn(
+                      'min-h-11 rounded-xl border px-3 py-2 text-left text-base leading-6 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2',
+                      isTeacherInClassroom || showResult || isUnavailable
+                        ? 'cursor-not-allowed'
+                        : 'cursor-pointer hover:bg-[#EEE8FA]',
+                      isCurrentMatch
+                        ? 'border-[#10245C] bg-[#EEE8FA] font-semibold text-[#10245C] ring-2 ring-[#10245C]/20'
+                        : isConnected
+                          ? 'border-[#506187] bg-[#EEE8FA] text-[#10245C]'
+                          : 'border-[#506187] bg-white text-[#10245C]'
+                    )}
+                  >
+                    {item.text}
+                  </button>
+                )
+              })}
+            </div>
+
+            <div className="flex justify-between gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => handleGuidedNav(guidedPairIndex - 1)}
+                disabled={guidedPairIndex === 0 || showResult}
+                className={GUIDED_SECONDARY_ACTION_CLASS}
+              >
+                Anterior
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => handleGuidedNav(guidedPairIndex + 1)}
+                disabled={guidedPairIndex === block.pairs.length - 1 || showResult}
+                className={GUIDED_SECONDARY_ACTION_CLASS}
+              >
+                Siguiente
+              </Button>
+            </div>
+          </section>
+        ) : (
+          <div className="rounded-2xl border border-dashed border-[#506187] bg-white p-6 text-center text-base leading-6 text-[#506187]">
+            Sin pares definidos
+          </div>
+        )}
+
+        {!isExamMode && (
+          <div className="flex justify-end gap-2">
+            {!showResult &&
+              (guidedActionTarget
+                ? renderGuidedAction(checkAction, guidedAppearance, guidedActionTarget)
+                : checkAction)}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleReset}
+              size="sm"
+              className={GUIDED_SECONDARY_ACTION_CLASS}
+            >
+              Reiniciar
+            </Button>
+          </div>
+        )}
+
+        {showResult &&
+          block.pairs &&
+          block.pairs.length > 0 &&
+          (() => {
+            const correctMatches = Object.keys(matches).filter(
+              (leftId) => matches[leftId] === leftId
+            ).length
+            const totalPairs = block.pairs.length
+            const allCorrect = correctMatches === totalPairs
+
+            return (
+              <div className="space-y-4">
+                <div
+                  className={cn(
+                    'rounded-xl border p-4 text-center',
+                    allCorrect
+                      ? 'border-[#08775E] text-[#08775E]'
+                      : 'border-[#C13E50] text-[#C13E50]'
+                  )}
+                >
+                  <p className="font-bold">
+                    {allCorrect
+                      ? '¡Perfecto! Todos los pares están correctos'
+                      : `${correctMatches} de ${totalPairs} pares correctos`}
+                  </p>
+                </div>
+
+                {!allCorrect && (
+                  <div className="space-y-2 border-t border-[#506187]/30 pt-4">
+                    <h4 className="text-sm font-semibold uppercase tracking-wider text-[#506187]">
+                      Revisión de pares
+                    </h4>
+                    {block.pairs.map((pair) => {
+                      const userMatchedRightId = matches[pair.id]
+                      const userMatchedRight = shuffledRight.find(
+                        (right) => right.id === userMatchedRightId
+                      )
+                      const isCorrect = userMatchedRightId === pair.id
+
+                      return (
+                        <div
+                          key={pair.id}
+                          className={cn(
+                            'flex items-center gap-3 rounded-lg border p-3 text-sm',
+                            isCorrect
+                              ? 'border-[#08775E]/40 text-[#08775E]'
+                              : 'border-[#C13E50]/40 text-[#C13E50]'
+                          )}
+                        >
+                          <span className="flex-1">
+                            {pair.left} →{' '}
+                            {isCorrect ? pair.right : userMatchedRight?.text || '(sin emparejar)'}
+                          </span>
+                          {!isCorrect && (
+                            <span className="text-[#08775E]">
+                              Correcto: <strong>{pair.right}</strong>
+                            </span>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+            )
+          })()}
+      </div>
+    )
+  }
+
+  return (
+    <div className={guidedAppearance ? 'space-y-5 text-[#10245C]' : 'space-y-4'}>
+      {!guidedAppearance && (
+        <>
+          <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+            <Shuffle className="h-5 w-5" />
+            <span>Emparejar</span>
+          </div>
+          {block.title && <h3 className="font-bold text-lg">{block.title}</h3>}
+        </>
+      )}
+
+      {guidedAppearance && (
+        <p id={guidedInstructionId} className="text-base leading-6 text-[#506187]">
+          Toca una palabra y su pareja.
+        </p>
+      )}
+
+      <div
+        className={cn(
+          'relative grid grid-cols-2',
+          guidedAppearance
+            ? 'gap-3 rounded-2xl border border-[#506187] bg-[#FAF8F4] p-4 sm:gap-6 sm:p-6'
+            : 'gap-8 p-4'
+        )}
+        aria-describedby={guidedAppearance ? guidedInstructionId : undefined}
+      >
         {/* Left Side */}
-        <div className="space-y-4">
+        <div
+          className={guidedAppearance ? 'space-y-3' : 'space-y-4'}
+          aria-label="Palabras"
+          role={guidedAppearance ? 'group' : undefined}
+        >
           {block.pairs?.map((pair) => {
             const isMatched = !!displayMatches[pair.id]
             const isSelected = selectedLeft === pair.id
@@ -2474,6 +2903,38 @@ function MatchBlockPreview({
               statusClass = 'border-blue-500 bg-blue-50 ring-2 ring-blue-200'
             } else if (isMatched) {
               statusClass = 'border-blue-200 bg-blue-50/50'
+            }
+
+            if (guidedAppearance) {
+              return (
+                <button
+                  key={`l-${pair.id}`}
+                  type="button"
+                  onClick={() => handleLeftClick(pair.id)}
+                  disabled={isTeacherInClassroom || showResult}
+                  aria-pressed={isSelected}
+                  aria-label={`Palabra: ${pair.left}`}
+                  data-guided-match-side="left"
+                  className={cn(
+                    'flex min-h-11 w-full items-center justify-between rounded-xl border px-4 py-2 text-left text-base font-semibold leading-6 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2',
+                    isTeacherInClassroom || showResult ? 'cursor-default' : 'hover:bg-[#EEE8FA]',
+                    isSelected
+                      ? 'border-[#10245C] bg-[#EEE8FA] text-[#10245C] ring-2 ring-[#10245C]/20'
+                      : isMatched
+                        ? 'border-[#506187] bg-[#EEE8FA] text-[#10245C]'
+                        : 'border-[#506187] bg-[#FAF8F4] text-[#10245C]'
+                  )}
+                >
+                  <span>{pair.left}</span>
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      'h-3 w-3 rounded-full border-2 border-[#FAF8F4] ring-1 ring-[#506187]',
+                      isMatched || isSelected ? 'bg-[#245CFF]' : 'bg-[#FAF8F4]'
+                    )}
+                  />
+                </button>
+              )
             }
 
             return (
@@ -2499,7 +2960,11 @@ function MatchBlockPreview({
         </div>
 
         {/* Right Side */}
-        <div className="space-y-4">
+        <div
+          className={guidedAppearance ? 'space-y-3' : 'space-y-4'}
+          aria-label="Parejas"
+          role={guidedAppearance ? 'group' : undefined}
+        >
           {shuffledRight.map((item) => {
             // Find which left ID is connected to this right ID
             const connectedLeftId = Object.keys(displayMatches).find(
@@ -2515,6 +2980,36 @@ function MatchBlockPreview({
                   : 'border-red-500 bg-red-50 border-solid'
             } else if (isConnected) {
               statusClass = 'border-blue-300 bg-blue-50/50 border-solid'
+            }
+
+            if (guidedAppearance) {
+              return (
+                <button
+                  key={`r-${item.id}`}
+                  type="button"
+                  onClick={() => handleRightClick(item.id)}
+                  disabled={isTeacherInClassroom || showResult}
+                  aria-pressed={isConnected}
+                  aria-label={`Pareja: ${item.text}`}
+                  data-guided-match-side="right"
+                  className={cn(
+                    'flex min-h-11 w-full items-center gap-2 rounded-xl border px-4 py-2 text-right text-base font-semibold leading-6 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2',
+                    isTeacherInClassroom || showResult ? 'cursor-default' : 'hover:bg-[#EEE8FA]',
+                    isConnected
+                      ? 'border-[#506187] bg-[#EEE8FA] text-[#10245C]'
+                      : 'border-[#506187] bg-[#FAF8F4] text-[#10245C]'
+                  )}
+                >
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      'h-3 w-3 rounded-full border-2 border-[#FAF8F4] ring-1 ring-[#506187]',
+                      isConnected ? 'bg-[#245CFF]' : 'bg-[#FAF8F4]'
+                    )}
+                  />
+                  <span className="flex-1">{item.text}</span>
+                </button>
+              )
             }
 
             return (
@@ -2540,11 +3035,16 @@ function MatchBlockPreview({
       </div>
 
       {!isExamMode && (
-        <div className="flex gap-2 justify-center">
-          <Button onClick={checkAnswers} disabled={showResult} size="sm">
-            Verificar
-          </Button>
-          <Button variant="outline" onClick={handleReset} size="sm">
+        <div className={cn('flex gap-2', guidedAppearance ? 'justify-end' : 'justify-center')}>
+          {guidedAppearance && guidedActionTarget
+            ? renderGuidedAction(checkAction, guidedAppearance, guidedActionTarget)
+            : checkAction}
+          <Button
+            variant="outline"
+            onClick={handleReset}
+            size="sm"
+            className={guidedAppearance ? GUIDED_SECONDARY_ACTION_CLASS : undefined}
+          >
             Reiniciar
           </Button>
         </div>
@@ -2800,9 +3300,7 @@ function TrueFalseBlockPreview({
           key={displayItem?.id}
           className={cn(
             'text-center space-y-6 animate-in fade-in slide-in-from-right-4 duration-300',
-            guidedAppearance
-              ? 'rounded-2xl border border-[#506187] bg-[#FAF8F4] p-6'
-              : 'p-6 bg-white border rounded-xl shadow-sm'
+            guidedAppearance ? 'p-0' : 'p-6 bg-white border rounded-xl shadow-sm'
           )}
         >
           {guidedAppearance ? (
@@ -2822,7 +3320,7 @@ function TrueFalseBlockPreview({
               aria-pressed={currentAnswer === true}
               className={cn(
                 guidedAppearance
-                  ? 'min-h-11 rounded-lg border-2 border-[#506187] bg-[#FAF8F4] px-6 py-3 text-base leading-6 font-semibold text-[#10245C] transition-colors hover:bg-[#FAF8F4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
+                  ? 'min-h-14 min-w-[12rem] rounded-2xl border border-[#EEE8FA] bg-white px-8 py-4 text-xl font-semibold leading-7 text-[#10245C] shadow-[0_4px_12px_rgba(16,36,92,0.06)] transition-colors hover:bg-[#EEE8FA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
                   : 'px-8 py-3 rounded-lg border-2 font-bold transition-all flex items-center gap-2',
                 !guidedAppearance &&
                   (currentAnswer === true
@@ -2843,7 +3341,7 @@ function TrueFalseBlockPreview({
               aria-pressed={currentAnswer === false}
               className={cn(
                 guidedAppearance
-                  ? 'min-h-11 rounded-lg border-2 border-[#506187] bg-[#FAF8F4] px-6 py-3 text-base leading-6 font-semibold text-[#10245C] transition-colors hover:bg-[#FAF8F4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
+                  ? 'min-h-14 min-w-[12rem] rounded-2xl border border-[#EEE8FA] bg-white px-8 py-4 text-xl font-semibold leading-7 text-[#10245C] shadow-[0_4px_12px_rgba(16,36,92,0.06)] transition-colors hover:bg-[#EEE8FA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
                   : 'px-8 py-3 rounded-lg border-2 font-bold transition-all flex items-center gap-2',
                 !guidedAppearance &&
                   (currentAnswer === false
@@ -3066,10 +3564,10 @@ function EssayBlockPreview({
       <textarea
         aria-labelledby={guidedAppearance ? `guided-essay-prompt-${block.id}` : undefined}
         className={cn(
-          'w-full p-4 rounded-lg border min-h-[150px] focus:outline-none disabled:opacity-50',
+          'w-full p-4 border focus:outline-none disabled:opacity-50',
           guidedAppearance
-            ? 'border-[#506187] bg-[#FAF8F4] text-base leading-6 text-[#10245C] placeholder:text-[#506187] focus:ring-2 focus:ring-[#10245C]/20'
-            : 'bg-background focus:ring-2 focus:ring-primary/20',
+            ? 'min-h-[180px] rounded-2xl border-[#245CFF]/40 bg-white text-base leading-6 text-[#10245C] placeholder:text-[#506187] focus:ring-2 focus:ring-[#245CFF]/20'
+            : 'min-h-[150px] rounded-lg bg-background focus:ring-2 focus:ring-primary/20',
           isTeacherInClassroom && 'cursor-default'
         )}
         placeholder={
@@ -3355,10 +3853,10 @@ function RecordingBlockPreview({
 
       <div
         className={cn(
-          'p-6 border rounded-xl space-y-6 text-center',
+          'space-y-6 text-center',
           guidedAppearance
-            ? 'border-[#506187] bg-[#FAF8F4]'
-            : 'bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-100'
+            ? 'bg-transparent'
+            : 'p-6 border rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-100'
         )}
       >
         <div className="space-y-2">
@@ -3374,10 +3872,9 @@ function RecordingBlockPreview({
           {block.timeLimit && (
             <span
               className={cn(
-                'inline-block px-2 py-1 rounded border',
                 guidedAppearance
-                  ? 'text-sm text-[#506187] border-[#506187] bg-[#FAF8F4]'
-                  : 'bg-white text-xs font-mono text-blue-600 border-blue-200'
+                  ? 'text-base text-[#506187]'
+                  : 'inline-block rounded border bg-white px-2 py-1 text-xs font-mono text-blue-600 border-blue-200'
               )}
             >
               {isRecording ? `Tiempo restante: ${timeLeft}s` : `Límite: ${block.timeLimit}s`}
@@ -3391,14 +3888,16 @@ function RecordingBlockPreview({
             aria-label={isRecording ? 'Detener grabación' : 'Grabar'}
             onClick={toggleRecording}
             className={cn(
-              'h-20 w-20 rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:scale-105 transition-all relative',
               guidedAppearance
-                ? isRecording
-                  ? 'bg-[#FAF8F4] border-4 border-[#C13E50]'
-                  : 'bg-[#10245C]'
-                : isRecording
-                  ? 'bg-white border-4 border-red-500'
-                  : 'bg-red-500 shadow-red-200'
+                ? 'relative flex h-28 w-28 cursor-pointer flex-col items-center justify-center gap-1 rounded-full border-2 border-[#245CFF] bg-white text-[#10245C] shadow-[0_0_0_12px_rgba(238,232,250,0.8)] transition-all hover:scale-105'
+                : 'relative flex h-20 w-20 items-center justify-center rounded-full shadow-lg cursor-pointer transition-all hover:scale-105' +
+                    (isRecording
+                      ? ' bg-white border-4 border-red-500'
+                      : ' bg-red-500 shadow-red-200'),
+              guidedAppearance &&
+                (isRecording
+                  ? 'border-4 border-[#C13E50] text-[#C13E50] shadow-[0_0_0_12px_rgba(193,62,80,0.12)]'
+                  : 'border-2 border-[#245CFF] text-[#10245C]')
             )}
           >
             {isRecording ? (
@@ -3409,7 +3908,12 @@ function RecordingBlockPreview({
                 )}
               />
             ) : (
-              <Mic className="h-8 w-8 text-white" />
+              <>
+                <Mic
+                  className={cn('h-8 w-8', guidedAppearance ? 'text-[#245CFF]' : 'text-white')}
+                />
+                {guidedAppearance && <span className="text-base font-semibold">Grabar</span>}
+              </>
             )}
             {isRecording && (
               <span
@@ -3441,7 +3945,9 @@ function RecordingBlockPreview({
           <div
             className={cn(
               'mt-4 p-4 rounded-lg border',
-              guidedAppearance ? 'border-[#506187] bg-[#FAF8F4]' : 'bg-white border-blue-200'
+              guidedAppearance
+                ? 'rounded-2xl border-[#506187]/50 bg-white'
+                : 'bg-white border-blue-200'
             )}
           >
             <audio
@@ -4181,12 +4687,18 @@ function MultipleChoiceBlockPreview({
   answer,
   onAnswerChange,
   hideHeader,
+  guidedAppearance = false,
+  guidedActionTarget,
+  onGuidedActionPresence,
 }: {
   block: MultipleChoiceBlock
   isExamMode?: boolean
   answer?: unknown
   onAnswerChange?: (answer: unknown) => void
   hideHeader?: boolean
+  guidedAppearance?: boolean
+  guidedActionTarget?: HTMLElement | null
+  onGuidedActionPresence?: (present: boolean) => void
 }) {
   void hideHeader // Multiple choice blocks have a different layout
   const [currentItemIndex, setCurrentItemIndex] = useState(0)
@@ -4211,6 +4723,11 @@ function MultipleChoiceBlockPreview({
 
   const items = block.items || []
   const currentItem = items[currentItemIndex]
+  const showResult = !isExamMode && Boolean(currentItem && showResults[currentItem.id])
+  const hasGuidedAction =
+    Boolean(currentItem) && !isExamMode && (!showResult || currentItemIndex < items.length - 1)
+
+  useGuidedActionPresence(guidedAppearance, hasGuidedAction, onGuidedActionPresence)
 
   const handleCheck = () => {
     if (currentItem && !isExamMode) {
@@ -4243,38 +4760,129 @@ function MultipleChoiceBlockPreview({
   }
 
   const selectedOption = selectedOptions[currentItem.id] || null
-  const showResult = !isExamMode && (showResults[currentItem.id] || false)
+
+  const checkAction = (
+    <Button
+      onClick={handleCheck}
+      disabled={!selectedOption}
+      size="sm"
+      className={guidedAppearance ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
+    >
+      {guidedAppearance ? 'Comprobar' : 'Verificar'}
+    </Button>
+  )
+
+  const nextAction = (
+    <Button
+      onClick={handleNext}
+      size="sm"
+      className={guidedAppearance ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
+    >
+      Siguiente
+    </Button>
+  )
+
+  const resetAction = (
+    <Button
+      variant="outline"
+      onClick={handleReset}
+      size="sm"
+      className={guidedAppearance ? GUIDED_SECONDARY_ACTION_CLASS : undefined}
+    >
+      Reintentar
+    </Button>
+  )
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-          <CheckCircle2 className="h-5 w-5" />
-          <span>Opción Múltiple</span>
+    <div className={guidedAppearance ? 'space-y-5 text-[#10245C]' : 'space-y-4'}>
+      {!guidedAppearance && (
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+            <CheckCircle2 className="h-5 w-5" />
+            <span>Opción Múltiple</span>
+          </div>
+          {items.length > 1 && (
+            <span className="text-xs text-muted-foreground">
+              Pregunta {currentItemIndex + 1} de {items.length}
+            </span>
+          )}
         </div>
-        {items.length > 1 && (
-          <span className="text-xs text-muted-foreground">
-            Pregunta {currentItemIndex + 1} de {items.length}
-          </span>
-        )}
-      </div>
+      )}
 
-      {currentItem.question && <h3 className="font-bold text-lg">{currentItem.question}</h3>}
+      {guidedAppearance && items.length > 1 && (
+        <span className="block text-sm leading-6 text-[#506187]">
+          Pregunta {currentItemIndex + 1} de {items.length}
+        </span>
+      )}
 
-      <div className="space-y-2">
+      {currentItem.question && (
+        <div
+          id={guidedAppearance ? `guided-multiple-choice-question-${currentItem.id}` : undefined}
+          className={
+            guidedAppearance
+              ? 'max-w-[30rem] text-base font-bold leading-6 text-[20px] leading-7 text-[#10245C]'
+              : 'font-bold text-lg'
+          }
+        >
+          {currentItem.question}
+        </div>
+      )}
+
+      <div className={guidedAppearance ? 'mx-auto max-w-[30rem] space-y-3' : 'space-y-2'}>
         {currentItem.options?.map((option) => {
           const isSelected = selectedOption === option.id
           const isCorrect = option.id === currentItem.correctOptionId
 
-          let statusClass = 'border-gray-200 bg-white hover:border-primary/50'
+          let statusClass = guidedAppearance
+            ? 'border-[#EEE8FA] bg-white text-[#10245C] hover:bg-[#EEE8FA]'
+            : 'border-gray-200 bg-white hover:border-primary/50'
           if (showResult) {
             if (isCorrect) {
-              statusClass = 'border-green-500 bg-green-50'
+              statusClass = guidedAppearance
+                ? 'border-[#08775E] bg-[#08775E]/10 text-[#08775E]'
+                : 'border-green-500 bg-green-50'
             } else if (isSelected && !isCorrect) {
-              statusClass = 'border-red-500 bg-red-50'
+              statusClass = guidedAppearance
+                ? 'border-[#C13E50] bg-[#C13E50]/10 text-[#C13E50]'
+                : 'border-red-500 bg-red-50'
             }
           } else if (isSelected) {
-            statusClass = 'border-primary bg-primary/5'
+            statusClass = guidedAppearance
+              ? 'border-[#10245C] bg-[#EEE8FA] text-[#10245C] ring-2 ring-[#10245C]/20'
+              : 'border-primary bg-primary/5'
+          }
+
+          if (guidedAppearance) {
+            return (
+              <button
+                key={option.id}
+                type="button"
+                onClick={() =>
+                  !showResult &&
+                  setSelectedOptions((prev) => ({ ...prev, [currentItem.id]: option.id }))
+                }
+                disabled={showResult}
+                aria-pressed={isSelected}
+                aria-label={option.text}
+                className={cn(
+                  'flex min-h-14 w-full items-center gap-4 rounded-2xl border px-5 py-3 text-left text-xl font-semibold leading-7 shadow-[0_4px_12px_rgba(16,36,92,0.06)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2',
+                  showResult ? 'cursor-default' : 'cursor-pointer',
+                  statusClass
+                )}
+              >
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    'flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2',
+                    isSelected ? 'border-[#10245C] bg-[#10245C]' : 'border-[#506187]/50 bg-white'
+                  )}
+                >
+                  {isSelected && <span className="h-2.5 w-2.5 rounded-full bg-white" />}
+                </span>
+                <span className="flex-1">{option.text}</span>
+                {showResult && isCorrect && <CheckCircle2 className="h-5 w-5" />}
+              </button>
+            )
           }
 
           return (
@@ -4318,26 +4926,42 @@ function MultipleChoiceBlockPreview({
       </div>
 
       {/* Navigation and verification buttons - hidden in exam mode */}
-      {!isExamMode && (
+      {!isExamMode && !guidedAppearance && (
         <div className="flex gap-2">
           {items.length > 1 && currentItemIndex > 0 && (
             <Button variant="outline" onClick={handlePrev} size="sm">
               Anterior
             </Button>
           )}
-          {!showResult ? (
-            <Button onClick={handleCheck} disabled={!selectedOption} size="sm">
-              Verificar
-            </Button>
-          ) : items.length > 1 && currentItemIndex < items.length - 1 ? (
-            <Button onClick={handleNext} size="sm">
-              Siguiente
-            </Button>
-          ) : (
-            <Button variant="outline" onClick={handleReset} size="sm">
-              Reintentar
+          {!showResult
+            ? checkAction
+            : items.length > 1 && currentItemIndex < items.length - 1
+              ? nextAction
+              : resetAction}
+        </div>
+      )}
+
+      {!isExamMode && guidedAppearance && (
+        <div className="flex gap-2">
+          {items.length > 1 && currentItemIndex > 0 && (
+            <Button
+              variant="outline"
+              onClick={handlePrev}
+              size="sm"
+              className={GUIDED_SECONDARY_ACTION_CLASS}
+            >
+              Anterior
             </Button>
           )}
+          {!showResult
+            ? guidedActionTarget
+              ? renderGuidedAction(checkAction, guidedAppearance, guidedActionTarget)
+              : checkAction
+            : items.length > 1 && currentItemIndex < items.length - 1
+              ? guidedActionTarget
+                ? renderGuidedAction(nextAction, guidedAppearance, guidedActionTarget)
+                : nextAction
+              : resetAction}
         </div>
       )}
 

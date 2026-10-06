@@ -71,6 +71,44 @@ describe('BlockPreview guided appearance', () => {
     expect(screen.getByRole('button', { name: 'Reproducir audio' })).toBeInTheDocument()
   })
 
+  it('hydrates guided audio duration from an already-loaded media element', () => {
+    const durationDescriptor = Object.getOwnPropertyDescriptor(
+      HTMLMediaElement.prototype,
+      'duration'
+    )
+    const readyStateDescriptor = Object.getOwnPropertyDescriptor(
+      HTMLMediaElement.prototype,
+      'readyState'
+    )
+
+    Object.defineProperty(HTMLMediaElement.prototype, 'duration', {
+      configurable: true,
+      get: () => 24.85,
+    })
+    Object.defineProperty(HTMLMediaElement.prototype, 'readyState', {
+      configurable: true,
+      get: () => 1,
+    })
+
+    try {
+      render(
+        <BlockPreview
+          guidedAppearance
+          block={{ id: 'loaded-audio', type: 'audio', order: 0, url: '/lesson.mp3' }}
+        />
+      )
+
+      expect(screen.getByText('0:24')).toBeInTheDocument()
+    } finally {
+      if (durationDescriptor) {
+        Object.defineProperty(HTMLMediaElement.prototype, 'duration', durationDescriptor)
+      }
+      if (readyStateDescriptor) {
+        Object.defineProperty(HTMLMediaElement.prototype, 'readyState', readyStateDescriptor)
+      }
+    }
+  })
+
   it('keeps the default renderer appearance when guided mode is omitted', () => {
     render(
       <BlockPreview
@@ -161,5 +199,229 @@ describe('BlockPreview guided appearance', () => {
     expect(screen.getByText('Second statement.')).toBeInTheDocument()
     expect(target.querySelector('button')).toHaveTextContent('Comprobar')
     expect(target.querySelector('button')).toBeDisabled()
+  })
+
+  it('keeps the default matching renderer and labels when guided mode is omitted', () => {
+    render(
+      <BlockPreview
+        block={{
+          id: 'match',
+          type: 'match',
+          order: 0,
+          title: 'Práctica de vocabulario',
+          pairs: [{ id: 'name', left: 'Name', right: 'Peter' }],
+        }}
+      />
+    )
+
+    expect(screen.getByText('Emparejar')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Práctica de vocabulario' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Verificar' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Reiniciar' })).toBeInTheDocument()
+  })
+
+  it('uses a compact guided matching stage, portals checking, and preserves all pairings', () => {
+    const target = document.createElement('div')
+    document.body.appendChild(target)
+    const onGuidedActionPresence = vi.fn()
+
+    render(
+      <BlockPreview
+        guidedAppearance
+        guidedActionTarget={target}
+        onGuidedActionPresence={onGuidedActionPresence}
+        block={{
+          id: 'match',
+          type: 'match',
+          order: 0,
+          title: 'Práctica de vocabulario',
+          pairs: [
+            { id: 'name', left: 'Name', right: 'Peter' },
+            { id: 'age', left: 'Age', right: '20 years old' },
+          ],
+        }}
+      />
+    )
+
+    expect(screen.queryByText('Emparejar')).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('heading', { name: 'Práctica de vocabulario' })
+    ).not.toBeInTheDocument()
+    expect(screen.getByText('Toca una palabra y su pareja.')).toBeVisible()
+    expect(screen.getAllByRole('button', { name: /Pareja:/ })).toHaveLength(2)
+    expect(screen.getAllByRole('button', { name: /Pareja:/ })[0]).toHaveAttribute('type', 'button')
+    expect(target.querySelector('button')).toHaveTextContent('Comprobar')
+    expect(onGuidedActionPresence).toHaveBeenLastCalledWith(true)
+
+    const firstChoice = screen.getByRole('button', { name: 'Pareja: Peter' })
+    fireEvent.click(firstChoice)
+    expect(firstChoice).toHaveAttribute('aria-pressed', 'true')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Siguiente' }))
+    expect(screen.getByText('Age')).toBeVisible()
+    const secondChoice = screen.getByRole('button', { name: 'Pareja: 20 years old' })
+    fireEvent.keyDown(secondChoice, { key: 'Enter' })
+    expect(secondChoice).toHaveAttribute('aria-pressed', 'true')
+
+    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
+    expect(screen.getByText('¡Perfecto! Todos los pares están correctos')).toBeVisible()
+    expect(onGuidedActionPresence).toHaveBeenLastCalledWith(false)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Reiniciar' }))
+    expect(screen.getByText('Name')).toBeVisible()
+    expect(screen.getByRole('button', { name: 'Pareja: Peter' })).toHaveAttribute(
+      'aria-pressed',
+      'false'
+    )
+  })
+
+  it('enforces one-to-one guided matches and supports keyboard clearing and reassignment', () => {
+    const target = document.createElement('div')
+    document.body.appendChild(target)
+
+    render(
+      <BlockPreview
+        guidedAppearance
+        guidedActionTarget={target}
+        block={{
+          id: 'match-unique',
+          type: 'match',
+          order: 0,
+          pairs: [
+            { id: 'first', left: 'First', right: 'Alpha' },
+            { id: 'second', left: 'Second', right: 'Beta' },
+            { id: 'third', left: 'Third', right: 'Gamma' },
+          ],
+        }}
+      />
+    )
+
+    const beta = screen.getByRole('button', { name: 'Pareja: Beta' })
+    fireEvent.click(beta)
+    expect(beta).toHaveAttribute('aria-pressed', 'true')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Siguiente' }))
+    const occupiedBeta = screen.getByRole('button', { name: 'Pareja: Beta' })
+    expect(occupiedBeta).toBeDisabled()
+    fireEvent.keyDown(occupiedBeta, { key: 'Enter' })
+    expect(occupiedBeta).toHaveAttribute('aria-pressed', 'false')
+
+    const gamma = screen.getByRole('button', { name: 'Pareja: Gamma' })
+    fireEvent.keyDown(gamma, { key: ' ' })
+    expect(gamma).toHaveAttribute('aria-pressed', 'true')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Anterior' }))
+    const selectedBeta = screen.getByRole('button', { name: 'Pareja: Beta' })
+    fireEvent.keyDown(selectedBeta, { key: 'Enter' })
+    expect(selectedBeta).toHaveAttribute('aria-pressed', 'false')
+    expect(selectedBeta).not.toBeDisabled()
+
+    const alpha = screen.getByRole('button', { name: 'Pareja: Alpha' })
+    fireEvent.keyDown(alpha, { key: ' ' })
+    expect(alpha).toHaveAttribute('aria-pressed', 'true')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Siguiente' }))
+    const reassignedBeta = screen.getByRole('button', { name: 'Pareja: Beta' })
+    expect(reassignedBeta).not.toBeDisabled()
+    fireEvent.keyDown(reassignedBeta, { key: 'Enter' })
+    expect(reassignedBeta).toHaveAttribute('aria-pressed', 'true')
+
+    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
+    expect(screen.getByText('2 de 3 pares correctos')).toBeVisible()
+  })
+
+  it('makes the guided current word actionable and supports keyboard clearing', () => {
+    render(
+      <BlockPreview
+        guidedAppearance
+        block={{
+          id: 'match-left-button',
+          type: 'match',
+          order: 0,
+          pairs: [
+            { id: 'name', left: 'Name', right: 'Peter' },
+            { id: 'age', left: 'Age', right: '20 years old' },
+          ],
+        }}
+      />
+    )
+
+    const leftWord = screen.getByRole('button', { name: 'Palabra: Name' })
+    const rightChoice = screen.getByRole('button', { name: 'Pareja: Peter' })
+
+    fireEvent.click(rightChoice)
+    expect(rightChoice).toHaveAttribute('aria-pressed', 'true')
+
+    fireEvent.keyDown(leftWord, { key: 'Enter' })
+    expect(rightChoice).toHaveAttribute('aria-pressed', 'false')
+
+    fireEvent.keyDown(leftWord, { key: ' ' })
+    expect(leftWord).toHaveAttribute('aria-pressed', 'true')
+    fireEvent.keyDown(rightChoice, { key: 'Enter' })
+    expect(rightChoice).toHaveAttribute('aria-pressed', 'true')
+  })
+
+  it('keeps fill-in and multiple-choice prompts compact and moves their primary actions', () => {
+    const fillTarget = document.createElement('div')
+    const choiceTarget = document.createElement('div')
+    document.body.append(fillTarget, choiceTarget)
+
+    render(
+      <>
+        <BlockPreview
+          guidedAppearance
+          guidedActionTarget={fillTarget}
+          block={{
+            id: 'to-be',
+            type: 'fill_blanks',
+            order: 0,
+            title: 'Práctica: To Be',
+            items: [{ id: 'be', content: 'I [am] a student.' }],
+          }}
+        />
+        <BlockPreview
+          guidedAppearance
+          guidedActionTarget={choiceTarget}
+          block={{
+            id: 'possessives',
+            type: 'multiple_choice',
+            order: 1,
+            items: [
+              {
+                id: 'poss-i',
+                question: 'I am Peter. ___ name is Peter.',
+                options: [
+                  { id: 'my', text: 'My' },
+                  { id: 'your', text: 'Your' },
+                ],
+                correctOptionId: 'my',
+              },
+            ],
+          }}
+        />
+      </>
+    )
+
+    expect(screen.queryByText('Rellenar Espacios')).not.toBeInTheDocument()
+    expect(screen.queryByText('Práctica: To Be')).not.toBeInTheDocument()
+    expect(fillTarget.querySelector('button')).toHaveTextContent('Comprobar')
+
+    const fillInput = screen.getByRole('textbox', { name: 'Respuesta 2' })
+    expect(fillInput).toHaveClass('min-h-11', 'text-base')
+    expect(fillInput.className).not.toMatch(/green|red/)
+    fireEvent.change(fillInput, { target: { value: 'am' } })
+    fireEvent.click(fillTarget.querySelector('button') as HTMLButtonElement)
+    expect(fillInput).toBeDisabled()
+
+    expect(screen.getByText('I am Peter. ___ name is Peter.')).toHaveClass('text-base', 'leading-6')
+    expect(screen.queryByText('Opción Múltiple')).not.toBeInTheDocument()
+    expect(choiceTarget.querySelector('button')).toHaveTextContent('Comprobar')
+    expect(choiceTarget.querySelector('button')).toBeDisabled()
+
+    const myChoice = screen.getByRole('button', { name: 'My' })
+    fireEvent.click(myChoice)
+    expect(myChoice).toHaveAttribute('aria-pressed', 'true')
+    expect(myChoice.className).not.toMatch(/green|red/)
+    expect(choiceTarget.querySelector('button')).not.toBeDisabled()
   })
 })

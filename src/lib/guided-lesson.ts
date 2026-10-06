@@ -15,6 +15,9 @@ export interface GuidedLessonStep {
   kind: GuidedLessonStepKind
   label: string
   blocks: Block[]
+  /** Authored subject carried across compact vocabulary scenes. */
+  sceneSubject?: string
+  vocabularyPart?: { index: number; total: number }
 }
 
 const KIND_LABELS: Record<GuidedLessonStepKind, string> = {

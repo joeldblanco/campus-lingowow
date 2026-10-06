@@ -1,0 +1,50 @@
+{
+  "version": 2,
+  "assets": [
+    {
+      "file": "lucas.webp",
+      "width": 960,
+      "height": 1200,
+      "bytes": 148358
+    },
+    {
+      "file": "carl.webp",
+      "width": 960,
+      "height": 1200,
+      "bytes": 125668
+    },
+    {
+      "file": "peter.webp",
+      "width": 960,
+      "height": 1200,
+      "bytes": 131146
+    }
+  ],
+  "format": "WebP",
+  "quality": 82,
+  "alphaQuality": 100,
+  "prompts": [
+    {
+      "id": "lucas",
+      "mode": "built-in imagegen",
+      "prompt": "Create ONE production illustration asset, not a mockup or character sheet. Reference image is canonical identity and painterly editorial style reference. Extract/recreate ONLY Lucas (left man): identical warm tan skin, tousled dark-brown curly hair, short beard, cobalt overshirt and white tee. Waist-up friendly presentation pose, smiling naturally and one open hand gesturing toward screen right. Match exactly this adult semi-realistic painterly editorial family, subtle brush texture, matte light, natural proportions. Transparent background with actual alpha, no room, no furniture, no pale backdrop, no shapes, no labels, no text, no UI, no logo. A single large isolated figure fills a portrait 4:5 canvas; leave modest breathing room around hair and hands, cut torso at lower edge. This is for compositing into a real course screen.",
+      "transparent_background": true,
+      "reference": "docs/design/graphic-guide-v1/characters.webp"
+    },
+    {
+      "id": "carl",
+      "mode": "built-in imagegen",
+      "prompt": "Create ONE production illustration asset, not a mockup or character sheet. Reference image is canonical identity and painterly editorial style reference. Extract/recreate ONLY Carl (middle man): identical dark brown skin, cropped black hair, completely clean-shaven face, round glasses, sage shirt. Waist-up relaxed thoughtful friendly presentation pose with arms resting/crossed, smiling naturally, torso angled slightly toward screen right. Exactly same adult semi-realistic painterly editorial family, subtle brush texture, matte light and natural proportions. Transparent background with actual alpha, no room, furniture, pale backdrop, shapes, labels, text, UI or logo. Single large isolated figure fills portrait 4:5 canvas; hair and hands intact, torso cropped at bottom.",
+      "transparent_background": true,
+      "reference": "docs/design/graphic-guide-v1/characters.webp"
+    },
+    {
+      "id": "peter",
+      "mode": "built-in imagegen",
+      "prompt": "Generate ONE new character illustration asset for the existing fictional course person Peter Smith, aged 20. Reference image is STYLE ONLY; do not copy Lucas, Carl or the woman. Peter is a distinct friendly young adult man: short straight dark hair, clean-shaven, light warm olive complexion, softly rounded youthful facial features, simple muted rust overshirt over cream tee. Waist-up, natural welcoming smile and a modest open-handed introduction gesture toward screen right. Match reference's adult semi-realistic painterly editorial style, natural human proportions, subtle brush marks, matte soft light; not a photo, not 3D, not anime, not childish cartoon. Transparent background with actual alpha. No other people, room, furniture, shapes, backdrop, text, logos or UI. Single large isolated figure on portrait 4:5 canvas; breathing room for hair and hands, torso ends at bottom. Do not write his name anywhere.",
+      "transparent_background": true,
+      "reference": "docs/design/graphic-guide-v1/characters.webp"
+    }
+  ]
+}
+
