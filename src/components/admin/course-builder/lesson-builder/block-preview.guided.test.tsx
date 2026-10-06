@@ -237,6 +237,61 @@ describe('BlockPreview guided appearance', () => {
     )
   })
 
+  it('enforces one-to-one guided matches and supports keyboard clearing and reassignment', () => {
+    const target = document.createElement('div')
+    document.body.appendChild(target)
+
+    render(
+      <BlockPreview
+        guidedAppearance
+        guidedActionTarget={target}
+        block={{
+          id: 'match-unique',
+          type: 'match',
+          order: 0,
+          pairs: [
+            { id: 'first', left: 'First', right: 'Alpha' },
+            { id: 'second', left: 'Second', right: 'Beta' },
+            { id: 'third', left: 'Third', right: 'Gamma' },
+          ],
+        }}
+      />
+    )
+
+    const beta = screen.getByRole('button', { name: 'Pareja: Beta' })
+    fireEvent.click(beta)
+    expect(beta).toHaveAttribute('aria-pressed', 'true')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Siguiente' }))
+    const occupiedBeta = screen.getByRole('button', { name: 'Pareja: Beta' })
+    expect(occupiedBeta).toBeDisabled()
+    fireEvent.keyDown(occupiedBeta, { key: 'Enter' })
+    expect(occupiedBeta).toHaveAttribute('aria-pressed', 'false')
+
+    const gamma = screen.getByRole('button', { name: 'Pareja: Gamma' })
+    fireEvent.keyDown(gamma, { key: ' ' })
+    expect(gamma).toHaveAttribute('aria-pressed', 'true')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Anterior' }))
+    const selectedBeta = screen.getByRole('button', { name: 'Pareja: Beta' })
+    fireEvent.keyDown(selectedBeta, { key: 'Enter' })
+    expect(selectedBeta).toHaveAttribute('aria-pressed', 'false')
+    expect(selectedBeta).not.toBeDisabled()
+
+    const alpha = screen.getByRole('button', { name: 'Pareja: Alpha' })
+    fireEvent.keyDown(alpha, { key: ' ' })
+    expect(alpha).toHaveAttribute('aria-pressed', 'true')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Siguiente' }))
+    const reassignedBeta = screen.getByRole('button', { name: 'Pareja: Beta' })
+    expect(reassignedBeta).not.toBeDisabled()
+    fireEvent.keyDown(reassignedBeta, { key: 'Enter' })
+    expect(reassignedBeta).toHaveAttribute('aria-pressed', 'true')
+
+    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
+    expect(screen.getByText('2 de 3 pares correctos')).toBeVisible()
+  })
+
   it('keeps fill-in and multiple-choice prompts compact and moves their primary actions', () => {
     const fillTarget = document.createElement('div')
     const choiceTarget = document.createElement('div')

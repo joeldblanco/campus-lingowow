@@ -2533,7 +2533,15 @@ function MatchBlockPreview({
     const currentPair = block.pairs?.[guidedPairIndex]
     if (!currentPair) return
 
-    const newMatches = { ...matches, [currentPair.id]: rightId }
+    const connectedLeftId = Object.keys(matches).find((key) => matches[key] === rightId)
+    if (connectedLeftId && connectedLeftId !== currentPair.id) return
+
+    const newMatches = { ...matches }
+    if (newMatches[currentPair.id] === rightId) {
+      delete newMatches[currentPair.id]
+    } else {
+      newMatches[currentPair.id] = rightId
+    }
     setMatches(newMatches)
 
     if (classroomSync.canInteract) {
@@ -2638,6 +2646,7 @@ function MatchBlockPreview({
                 const connectedLeftId = Object.keys(matches).find((key) => matches[key] === item.id)
                 const isConnected = Boolean(connectedLeftId)
                 const isCurrentMatch = guidedCurrentMatch === item.id
+                const isUnavailable = isConnected && !isCurrentMatch
 
                 return (
                   <button
@@ -2650,14 +2659,14 @@ function MatchBlockPreview({
                         handleGuidedRightClick(item.id)
                       }
                     }}
-                    disabled={isTeacherInClassroom || showResult}
+                    disabled={isTeacherInClassroom || showResult || isUnavailable}
                     aria-pressed={isCurrentMatch}
                     aria-label={`Pareja: ${item.text}`}
                     data-guided-match-choice={item.id}
                     className={cn(
                       'min-h-11 rounded-xl border px-3 py-2 text-left text-base leading-6 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2',
-                      isTeacherInClassroom || showResult
-                        ? 'cursor-default'
+                      isTeacherInClassroom || showResult || isUnavailable
+                        ? 'cursor-not-allowed'
                         : 'cursor-pointer hover:bg-[#EEE8FA]',
                       isCurrentMatch
                         ? 'border-[#10245C] bg-[#EEE8FA] font-semibold text-[#10245C] ring-2 ring-[#10245C]/20'
