@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
 import { BlockPreview } from '@/components/admin/course-builder/lesson-builder/block-preview'
 import { GuidedLessonBlock } from './guided-lesson-block'
 import { GuidedLessonActionSlot, useGuidedLessonActions } from './guided-lesson-actions'
-import { GuidedLessonScene } from './guided-lesson-scene'
+import { GuidedLessonScene, LessonSceneBackdrop } from './guided-lesson-scene'
 import { focusGuidedLessonHeading, resetGuidedLessonViewport } from './guided-lesson-scroll'
 import { cn } from '@/lib/utils'
 import {
@@ -167,9 +167,10 @@ export function GuidedLessonViewer({
   return (
     <section
       ref={viewerRef}
-      className="guided-lesson-viewer relative bg-[#FAF8F4] font-sans text-[#10245C]"
+      className="guided-lesson-viewer relative isolate overflow-hidden bg-[#FAF8F4] font-sans text-[#10245C]"
       aria-label="Lección guiada"
     >
+      {illustratedContent && <LessonSceneBackdrop variant={currentStepArt?.variant ?? 'plain'} />}
       <div className="relative border-b border-[#506187]/20 px-5 py-2 sm:px-8 sm:py-3">
         <div className="flex items-center gap-3 text-sm">
           <span className="font-medium text-[#506187]">
