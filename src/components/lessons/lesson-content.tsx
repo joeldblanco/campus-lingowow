@@ -9,12 +9,14 @@ import { completeCourseLesson } from '@/lib/actions/lessons'
 import { useRouter } from 'next/navigation'
 import { useState, useTransition } from 'react'
 import { toast } from 'sonner'
+import { GuidedLessonViewer } from './guided-lesson-viewer'
 
 interface LessonContentProps {
   lesson: LessonForView
   isTeacher?: boolean
   isClassroom?: boolean // When true, enables interactive block synchronization
   courseId?: string
+  guidedStorageKey?: string
   navigation?: {
     prevLessonId: string | null
     nextLessonId: string | null
@@ -28,6 +30,7 @@ export function LessonContent({
   isClassroom,
   courseId,
   navigation,
+  guidedStorageKey,
 }: LessonContentProps) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
@@ -63,6 +66,20 @@ export function LessonContent({
   const blocks: Block[] = (lesson.contents ?? []).map((content) =>
     mapContentToBlock(content as Parameters<typeof mapContentToBlock>[0])
   )
+
+  if (guidedStorageKey && !isTeacher && !isClassroom && !lesson.videoUrl && blocks.length > 0) {
+    return (
+      <GuidedLessonViewer
+        key={guidedStorageKey}
+        blocks={blocks}
+        storageKey={guidedStorageKey}
+        onComplete={courseId && navigation ? handleComplete : undefined}
+        isPending={isPending}
+        isCompleted={isCompleted}
+        illustratedContent
+      />
+    )
+  }
 
   return (
     <div className="space-y-8">

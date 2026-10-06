@@ -1,0 +1,56 @@
+[
+  {
+    "file": "01-basic-practice.webp",
+    "source": "exec-e1f8147e-ad9a-4bbd-9af7-9b9e0867aab4.png",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 182252,
+    "format": "webp",
+    "quality": 92
+  },
+  {
+    "file": "02-advanced-practice.webp",
+    "source": "exec-c05751ae-cab1-4a50-87ad-22ef365c33b3.png",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 210778,
+    "format": "webp",
+    "quality": 92
+  },
+  {
+    "file": "03-language.webp",
+    "source": "exec-72062801-44b4-4cba-8e00-49bd9799ed37.png",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 164126,
+    "format": "webp",
+    "quality": 92
+  },
+  {
+    "file": "04-multimedia.webp",
+    "source": "exec-c228d206-2127-4ce2-8cd8-a24825c473a1.png",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 257270,
+    "format": "webp",
+    "quality": 92
+  },
+  {
+    "file": "05-production.webp",
+    "source": "exec-a620b382-b7d1-4f69-ba63-88e9130ced4c.png",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 132288,
+    "format": "webp",
+    "quality": 92
+  },
+  {
+    "file": "06-resources-structure.webp",
+    "source": "exec-a6c1fba7-dbb4-4ab8-8fc9-ec0c1f2f18af.png",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 178422,
+    "format": "webp",
+    "quality": 92
+  }
+]

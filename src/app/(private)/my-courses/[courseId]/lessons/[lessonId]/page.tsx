@@ -6,6 +6,7 @@ import { notFound, redirect } from 'next/navigation'
 import { LessonHeader } from '@/components/lessons/lesson-header'
 import { LessonContent } from '@/components/lessons/lesson-content'
 import { LessonLoadingSkeleton } from '@/components/lessons/lesson-loading-skeleton'
+import { guidedLessonStorageKey, isGuidedLessonPilot } from '@/lib/lesson-pilot'
 
 interface LessonPageProps {
   params: Promise<{
@@ -40,23 +41,31 @@ export default async function LessonPage({ params }: LessonPageProps) {
     }
   }
 
+  const isPilot = isGuidedLessonPilot(lessonId, courseId)
+
   // Check if all activities are completed
   // const areActivitiesCompleted = lesson.activities.length === 0 || lesson.activities.every(a => a.isCompleted)
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className={isPilot ? 'min-h-screen bg-[#faf8f4] pb-8' : 'min-h-screen bg-gray-50 pb-20'}>
       <LessonHeader
         title={lesson.title}
-        subtitle={lesson.summary}
+        subtitle={isPilot ? null : lesson.summary}
         courseTitle={lesson.module?.course.title || ''}
         moduleTitle={lesson.module?.title || ''}
         courseId={courseId}
         progress={navigation?.isCompleted ? 100 : 0}
+        guidedAppearance={isPilot}
       />
 
-      <main className="container mx-auto px-4 py-8 max-w-5xl space-y-8">
+      <main className={`container mx-auto px-4 py-8 space-y-8 ${isPilot ? 'max-w-7xl' : 'max-w-5xl'}`}>
         <Suspense fallback={<LessonLoadingSkeleton />}>
-          <LessonContent lesson={lesson} courseId={courseId} navigation={navigation} />
+          <LessonContent
+            lesson={lesson}
+            courseId={courseId}
+            navigation={navigation}
+            guidedStorageKey={isPilot ? guidedLessonStorageKey(session.user.id, courseId, lessonId) : undefined}
+          />
         </Suspense>
       </main>
     </div>
