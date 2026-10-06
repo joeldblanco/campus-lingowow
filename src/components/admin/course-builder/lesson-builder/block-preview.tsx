@@ -700,7 +700,7 @@ function AudioBlockPreview({
                               ? 'bg-[#245CFF]'
                               : 'bg-primary'
                             : guidedAppearance
-                              ? 'bg-[#EEE8FA]'
+                              ? 'bg-[#A99BCD]'
                               : 'bg-muted-foreground/30'
                         )}
                         style={{

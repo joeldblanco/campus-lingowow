@@ -409,6 +409,12 @@ export function GuidedLessonViewer({
           display: block;
         }
 
+        @media (max-width: 639px) {
+          .guided-lesson-footer [data-guided-footer] button {
+            width: 100%;
+          }
+        }
+
         @media (min-width: 768px) {
           .guided-lesson-main--portrait {
             grid-template-columns: minmax(220px, 0.78fr) minmax(0, 1.22fr);
