@@ -136,7 +136,7 @@ export function GuidedLessonScene({ src, kind, variant, subject }: GuidedLessonS
             aria-hidden="true"
             fill
             priority
-            sizes="(max-width: 767px) 100vw, 36vw"
+            sizes="(max-width: 767px) 80vw, (max-width: 1280px) 32vw, 400px"
             className={cn(
               'object-contain object-bottom drop-shadow-[0_18px_20px_rgba(16,36,92,0.14)]',
               isGrammar && 'scale-[0.88]'

@@ -167,7 +167,7 @@ export function GuidedLessonViewer({
   return (
     <section
       ref={viewerRef}
-      className="guided-lesson-viewer relative isolate overflow-hidden bg-[#FAF8F4] font-sans text-[#10245C]"
+      className="guided-lesson-viewer relative isolate overflow-clip bg-[#FAF8F4] font-sans text-[#10245C]"
       aria-label="Lección guiada"
       data-illustrated={illustratedContent || undefined}
     >
