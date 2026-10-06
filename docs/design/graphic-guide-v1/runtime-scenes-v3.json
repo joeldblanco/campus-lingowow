@@ -1,0 +1,23 @@
+{
+  "mode": "built-in imagegen",
+  "peter": {
+    "prompt": "Use case: illustration-story. Asset type: production illustration for the left half of a real Lingowow lesson screen, NOT a UI mockup.\nReferences: image 1 (peter.webp) is the exact identity reference for Peter: young clean-shaven 20-year-old man, dark wavy hair, rust overshirt and cream T-shirt. Preserve his face, age, hair and clothing. Image 2 (scenes-ui.webp) defines the approved painterly medium-realistic illustration style and classroom environment. Image 3 (04-multimedia.webp) defines scenic richness, large character scale, desk foreground and warm window light.\nCreate a COMPLETE illustrated classroom scene featuring Peter as a friendly teacher, seated or standing behind a warm wooden teacher's desk, smiling toward the learner with a welcoming small hand gesture. Peter must be large, face in the upper central area, upper body occupying about half of the picture height, hands and desk clearly visible. Around him show a sunlit window with greenery outside, a large dark green chalkboard without writing, a leafy plant, books, a notebook and pencil cup on the foreground desk, and a small globe. The room and foreground props are essential and must fill the image edge to edge. This is a rich real environment, not an isolated portrait, not a colored blob, not a gradient background.\nLandscape composition, roughly 3:2, subject centrally framed for a later organic crop. Arrange main features within the central 80% so a slightly taller crop preserves face and hands. Match the approved semi-realistic painted family: visible soft brush texture, natural proportions, warm neutral ivory walls, sage foliage and navy details; not a photograph, not Pixar/3D, not flat vector art. Single character only, no speech bubbles, no controls, no borders, no lettering, no logo, no watermark. Full opaque environment, no transparency.",
+    "file": "peter-classroom-v3.webp"
+  },
+  "studyRoom": {
+    "prompt": "Use case: illustration-story. Production scenic background for real interactive Lingowow lesson screens, not a UI mockup.\nReference 1 is the approved painted scenes/props/lighting family. Reference 2 is the complete Peter classroom already generated, use matching brushwork, warmth and proportions. Create an empty sunlit learning/work desk setting WITHOUT ANY PEOPLE: a tall window with greenery and distant city outside, leafy plant, bookshelf, warm wooden desk with a blank open notebook, stacked books, a pencil cup, a small globe and an unlit smartphone. The illustrated environment and large foreground objects dominate the RIGHT 60% of the landscape picture. LEFT 40% is a calm light ivory wall area reserved for live HTML text and controls; do not add a paper panel, card, UI, lettering, border, logo, watermark or abstract blobs there. The wooden desk and objects are real painted scenery, not icons or small stickers. A book/plant/window should be large, readable forms filling substantial screen area. Landscape roughly 3:2; keep the key props vertically within central 70% so a wider crop retains them. Same medium-realistic editorial painted illustration style as approved family, not photograph, not 3D, not flat vector. Full opaque illustration edge to edge.",
+    "file": "study-room-v3.webp"
+  },
+  "reused": [
+    "lucas-scene.webp",
+    "carl-scene.webp",
+    "writing.webp",
+    "speaking.webp"
+  ],
+  "runtimeAliases": {
+    "peter.webp": "peter-classroom-v3.webp",
+    "carl.webp": "carl-scene.webp",
+    "lucas.webp": "lucas-scene.webp"
+  },
+  "contract": "V3 runtime aliases are opaque full environments. V2 transparent character files are preserved as peter-cutout-v2.webp, carl-cutout-v2.webp and lucas-cutout-v2.webp; runtime-assets-v2.json documents the historical cutouts."
+}

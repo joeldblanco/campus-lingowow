@@ -14,7 +14,10 @@ import {
   writeGuidedLessonStepIndex,
   type GuidedLessonStep,
 } from '@/lib/guided-lesson'
-import { buildIllustratedLessonSteps, getIllustratedLessonTaskTitle } from '@/lib/illustrated-lesson'
+import {
+  buildIllustratedLessonSteps,
+  getIllustratedLessonTaskTitle,
+} from '@/lib/illustrated-lesson'
 import { Block } from '@/types/course-builder'
 
 interface GuidedLessonViewerProps {
@@ -74,10 +77,19 @@ export function GuidedLessonViewer({
 
   const activeStepIndex = steps.length > 0 ? Math.min(activeStep, steps.length - 1) : 0
   const currentStep = steps[activeStepIndex]
-  const taskTitle = currentStep && illustratedContent ? getIllustratedLessonTaskTitle(currentStep) : currentStep?.label
+  const taskTitle =
+    currentStep && illustratedContent
+      ? getIllustratedLessonTaskTitle(currentStep)
+      : currentStep?.label
   const isFinalStep = steps.length > 0 && activeStepIndex === steps.length - 1
   const isRecordingActive = Object.values(recordingByBlockId).some(Boolean)
   const currentStepArt = illustratedContent && currentStep ? STEP_ART[currentStep.kind] : undefined
+  const currentSettingSrc =
+    currentStep?.kind === 'writing'
+      ? '/images/lessons/this-is-me/writing.webp'
+      : currentStep?.kind === 'speaking'
+        ? '/images/lessons/this-is-me/speaking.webp'
+        : '/images/lessons/this-is-me/study-room-v3.webp'
   const currentSceneSubject =
     currentStep?.sceneSubject ??
     currentStep?.blocks
@@ -171,7 +183,9 @@ export function GuidedLessonViewer({
       aria-label="Lección guiada"
       data-illustrated={illustratedContent || undefined}
     >
-      {illustratedContent && <LessonSceneBackdrop variant={currentStepArt?.variant ?? 'plain'} />}
+      {illustratedContent && !currentStepArt && (
+        <LessonSceneBackdrop variant="plain" src={currentSettingSrc} />
+      )}
       <div className="relative border-b border-[#506187]/20 px-5 py-2 sm:px-8 sm:py-3">
         <div className="flex items-center gap-3 text-sm">
           <span className="font-medium text-[#506187]">
@@ -212,9 +226,12 @@ export function GuidedLessonViewer({
             ? currentStepArt.variant === 'portrait'
               ? 'guided-lesson-main--portrait'
               : 'guided-lesson-main--grammar'
-            : 'mx-auto w-full max-w-4xl'
+            : illustratedContent
+              ? 'guided-lesson-main--setting mx-auto w-full max-w-[1200px]'
+              : 'mx-auto w-full max-w-4xl'
         )}
         data-guided-layout={currentStepArt?.variant ?? 'plain'}
+        data-guided-kind={currentStep?.kind}
         data-guided-vocabulary-part={
           currentStep?.vocabularyPart
             ? `${currentStep.vocabularyPart.index}/${currentStep.vocabularyPart.total}`
@@ -291,6 +308,16 @@ export function GuidedLessonViewer({
             kind={currentStep.kind}
             variant={currentStepArt.variant}
             subject={currentSceneSubject}
+            environment
+          />
+        )}
+
+        {illustratedContent && !currentStepArt && (
+          <div
+            aria-hidden="true"
+            data-mobile-illustrated-setting
+            className="order-2 h-[220px] w-full rounded-[32px] bg-cover bg-center md:hidden"
+            style={{ backgroundImage: `url("${currentSettingSrc}")` }}
           />
         )}
 
@@ -405,6 +432,10 @@ export function GuidedLessonViewer({
           padding-block: 8px;
         }
 
+        .guided-lesson-main--portrait {
+          max-width: 1200px;
+        }
+
         .guided-lesson-step--grammar-reference {
           display: block;
         }
@@ -416,8 +447,17 @@ export function GuidedLessonViewer({
         }
 
         @media (min-width: 768px) {
+          .guided-lesson-main--setting .guided-lesson-content { width: 55%; }
+          .guided-lesson-main[data-guided-kind='reading'] .guided-lesson-content { grid-column: 1; }
+          .guided-lesson-main[data-guided-kind='reading'] .guided-lesson-art { grid-column: 2; margin-left: 0; margin-right: -64px; }
+
           .guided-lesson-main--portrait {
-            grid-template-columns: minmax(220px, 0.78fr) minmax(0, 1.22fr);
+            grid-template-columns: minmax(240px, 1.2fr) minmax(0, 1fr);
+          }
+
+          .guided-lesson-main--portrait [data-illustrated-environment] {
+            width: calc(100% + 64px);
+            margin-left: -64px;
           }
 
           .guided-lesson-main--portrait .guided-lesson-content {
@@ -431,13 +471,15 @@ export function GuidedLessonViewer({
           }
 
           .guided-lesson-main--grammar {
-            grid-template-columns: minmax(0, 1.8fr) minmax(190px, 0.6fr);
+            grid-template-columns: minmax(0, 1.2fr) minmax(240px, 1fr);
           }
 
           .guided-lesson-main--grammar .guided-lesson-content {
             grid-column: 1;
             grid-row: 1;
           }
+
+          .guided-lesson-main--grammar [data-illustrated-environment] { height: 340px; min-height: 340px; }
 
           .guided-lesson-main--grammar .guided-lesson-art {
             grid-column: 2;
@@ -446,7 +488,7 @@ export function GuidedLessonViewer({
 
           .guided-lesson-step--grammar-reference {
             display: grid;
-            grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+            grid-template-columns: minmax(0, 1fr);
             align-items: start;
             column-gap: 24px;
             row-gap: 24px;
@@ -465,6 +507,14 @@ export function GuidedLessonViewer({
             [data-guided-block-type='structured-content'] {
             min-width: 0;
           }
+        }
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+          .guided-lesson-main--portrait, .guided-lesson-main--grammar { grid-template-columns: minmax(0, 1fr); }
+          .guided-lesson-main[data-guided-kind] .guided-lesson-content { grid-column: 1; grid-row: 1; width: 100%; }
+          .guided-lesson-main[data-guided-kind] .guided-lesson-art { grid-column: 1; grid-row: 2; width: 100%; margin-inline: 0; }
+          [data-guided-scene-backdrop] { display: none; }
+          [data-mobile-illustrated-setting] { display: block; height: 320px; }
         }
 
         .guided-lesson-viewer,
