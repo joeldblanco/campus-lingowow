@@ -1,6 +1,7 @@
 # Catálogo del nuevo formato de unidades
 
-La revisión más reciente está en [Mockups refinados · Versión 2](v2/README.md).
+La revisión más reciente está en [Mockups v3 · Familia gráfica definitiva](v3/README.md),
+regenerados con la [guía gráfica v1](../graphic-guide-v1/README.md).
 Esta primera versión se conserva para comparación.
 
 24 propuestas visuales en seis láminas. Cubren los 23 tipos disponibles en el

@@ -1,5 +1,7 @@
 # Mockups refinados · Versión 2
 
+La familia gráfica unificada está en la [versión 3](../v3/README.md).
+
 24 vistas. Misma cobertura que la versión anterior, con ejercicios contextualizados,
 menos ilustración decorativa y una jerarquía de títulos común.
 

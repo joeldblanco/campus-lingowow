@@ -1,11 +1,11 @@
-# Guía gráfica v1 para lecciones guiadas
+# Guía gráfica definitiva · v1.0
 
 **Estado:** normativa para la regeneración de las 24 propuestas visuales y para la posterior implementación de la experiencia de lecciones. **Ámbito:** dirección de arte, composición, copy y entrega de medios. No sustituye la configuración del contenido ni las reglas de evaluación del producto.
 
 Esta guía es la fuente de decisión visual para las placas de estilo y los seis tableros v3. El catálogo v3 estará en
 [../content-format-mockups/v3/README.md](../content-format-mockups/v3/README.md).
 Las referencias aprobadas de personajes y escenas son
-[../characters.webp](../characters.webp) y [../scenes-ui.webp](../scenes-ui.webp).
+[characters.webp](characters.webp) y [scenes-ui.webp](scenes-ui.webp).
 Si una placa o un mockup contradice este documento, se corrige la placa o el mockup; el contenido publicado y su configuración siguen siendo la autoridad pedagógica.
 
 ## 1. Decisiones que no se negocian
@@ -20,6 +20,14 @@ Si una placa o un mockup contradice este documento, se corrige la placa o el moc
 
 ## 2. Lenguaje visual aprobado
 
+### Marca y navegación
+
+Usar el logotipo existente de `public/branding/Lingowow - Logo azul sin fondo.png`
+o su variante de marca aprobada. No redibujarlo, reinterpretar su tipografía ni
+añadir un símbolo nuevo. La paleta de la unidad no autoriza recolorear el logotipo.
+Mantener nombres y destinos de la navegación existente; en móvil, conservar el
+acceso reconocible a la navegación sin ocupar la zona de respuesta.
+
 ### Estilo de imagen
 
 Usar fondos marfil con formas orgánicas lilas, masas de color suaves, bordes ligeramente irregulares y textura de pincel controlada. Mantener una iluminación mate y una profundidad corta, suficiente para separar planos sin simular una foto. Las manos, objetos y rostros deben conservar proporciones humanas naturales. El acabado editorial debe sentirse adulto, cálido y didáctico, sin ternurizar al estudiante ni convertir la interfaz en una escena infantil.
@@ -27,6 +35,8 @@ Usar fondos marfil con formas orgánicas lilas, masas de color suaves, bordes li
 No introducir grano fotográfico, poros de piel, reflejos especulares, volumen 3D, perspectiva extrema, ojos de anime, cabezas sobredimensionadas, contornos negros de caricatura plana, texto ilegible generado, logos inventados o elementos de UI dentro de un raster. Una pizarra, taza o libro de fondo no debe llevar escritura decorativa. Si una imagen contiene una palabra por razones pedagógicas, esa palabra debe estar también en el contenido accesible real.
 
 ### Personajes y continuidad
+
+![Referencias canónicas de Lucas, Carl y la interlocutora](characters.webp)
 
 | Identidad | Descripción que se debe conservar | Uso autorizado |
 | --- | --- | --- |
@@ -38,11 +48,15 @@ Las personas sin nombre no reciben una identidad nueva solo para llenar una esce
 
 ### Objetos y escenas
 
+![Escenas, objetos, paleta y jerarquía de interfaz de la misma familia gráfica](scenes-ui.webp)
+
 La familia de objetos y escenas comparte el mismo tratamiento painterly, mate y semirrealista. Un micrófono, auriculares, cuaderno, taza, lámpara salvia, planta, mapa o plano ambiental sirven para explicar la tarea o dar escala; no se añaden porque sí. Un objeto que aparece en una placa debe conservar su color, material y proporción al reaparecer.
 
 La escena puede usar una mesa de café, una oficina sobria o un paisaje de trabajo cuando el texto lo justifique. El fondo no debe competir con la instrucción, formar una rejilla de tarjetas ni introducir marcas o texto inventado. La ilustración no debe derivar hacia un realismo distinto del personaje que la acompaña.
 
 ## 3. Tokens de la guía
+
+Los valores reutilizables están también en [tokens.json](tokens.json).
 
 Los siguientes valores son la paleta de dirección de arte. Son tokens de intención, no una autorización para combinar cualquier color con cualquier fondo. La persona que implemente debe conservar las relaciones de rol y usar los valores accesibles aprobados por la revisión de contraste.
 
@@ -58,7 +72,8 @@ Los siguientes valores son la paleta de dirección de arte. Son tokens de intenc
 | coral | #DC5968 | Acento de ilustración no textual. No usar como texto, enlace o mensaje de error. |
 | slate | #506187 | Texto secundario, metadatos y bordes con contraste aprobado. |
 | sage | #71856B | Decoración de ilustración. No usar como texto de interfaz. |
-| error-text | #C13E50 | Texto de error legible; usar solo en mensajes de error y validación. |
+| error-text | #C13E50 | Texto de error legible, acompañado de una explicación. |
+| negation-text | #C13E50 | Alias del coral oscuro para la palabra de negación en gramática; no indica que la respuesta sea incorrecta. |
 
 La aprobación de contraste de esta versión se calculó con el método WCAG. La referencia para contraste mínimo es [WCAG 2.2 · Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html). Los ratios se muestran redondeados para lectura; la revisión debe comparar los valores sin redondear. Estas parejas son las únicas referencias de texto/controles aprobadas hasta que la revisión principal publique una actualización; por sí solas no certifican toda la interfaz:
 
@@ -91,6 +106,12 @@ No asumir que un color es accesible porque pertenece a la paleta. En cada estado
 
 Usar únicamente la escala **8 / 16 / 24 / 32 / 48 px** para márgenes, rellenos y separación. Elegir el paso más pequeño que mantenga el grupo reconocible; no crear valores ad hoc para cada mockup.
 
+Los radios de referencia son 8 px para elementos pequeños, 16 px para campos,
+24 px para medios y 999 px para botones de pie. Las máscaras orgánicas se reservan
+para arte y se reutilizan; no se inventa una forma diferente en cada pantalla.
+El foco usa un anillo marino de 2 px, separado del control por 2 px de superficie clara,
+para que también sea reconocible sobre un botón cobalto.
+
 | Elemento | Regla de forma |
 | --- | --- |
 | Superficie de contenido | Máscara rectangular de esquinas suaves; no usar un contorno orgánico detrás de texto largo. |
@@ -114,7 +135,7 @@ La secuencia visual estable es:
 5. explicación breve o feedback junto a la respuesta, cuando corresponda;
 6. pie con una sola acción primaria.
 
-La unidad no vuelve a aparecer como un título enorme. Un prompt como «Completa la presentación» es cuerpo de la tarea, no un segundo título. El pie debe permanecer a la vista después de la interacción sin saltos de layout. Si la pantalla es muy corta, se permite desplazamiento; no se comprime texto por debajo de 16 px.
+La unidad no vuelve a aparecer como un título enorme. «Completa la presentación» puede ser el único encabezado de tarea; la frase «I ___ a teacher» es contenido en el cuerpo, no un segundo encabezado. El pie debe permanecer a la vista después de la interacción sin saltos de layout. Si la pantalla es muy corta, se permite desplazamiento; no se comprime texto por debajo de 16 px.
 
 La acción de pie es cobalto con texto blanco y estados claros. Antes de verificar muestra **Comprobar**. Después de la respuesta válida, el mismo control puede mostrar **Siguiente**. Si la configuración no requiere comprobación, el texto de la acción debe corresponder al flujo real. Nunca inventar un gate de «aprobar» o «desbloquear» solo porque una maqueta tiene un botón.
 
@@ -145,6 +166,10 @@ No mezclar el feedback con una nueva pantalla modal si una línea junto a la res
 - Las imágenes decorativas tienen alt vacío. Las imágenes pedagógicas describen el dato necesario para responder, no el nombre de la persona que aparece.
 - Las notas del profesor no aparecen en el recorrido del estudiante. Un contenido obligatorio en pestaña se convierte en un paso secuencial; no se esconde como tema que el estudiante podría omitir.
 - Con prefers-reduced-motion, quitar desplazamientos, rebotes, zoom de imagen y transiciones largas. Conservar el cambio de estado y el feedback en forma inmediata. Nunca usar animación para comunicar que una respuesta es correcta.
+- Como decisiones de producto, usar 160 ms para cambios de estado y hasta 240 ms
+  para una transformación gramatical explicativa. Sin movimiento reducido se permite
+  una transición suave; con esa preferencia, la duración es cero. No bloquear una acción
+  esperando la animación ni reproducir audio automáticamente al cambiar de paso.
 - No usar sonido, vibración, parpadeo ni temporizadores visuales como única señal. El contador de grabación se acompaña de texto y estado accesible.
 
 ## 6. Cobertura de los 30 tipos declarados
@@ -189,7 +214,7 @@ El editor declara 30 BlockType: 23 plantillas de contenido y siete tipos estruct
 | column | Columna de layout; se apila en móvil y conserva el orden de lectura. No usarla para esconder una respuesta. |
 | container | Agrupación genérica declarada para compatibilidad. No presentarla como actividad independiente si no tiene visor/editor específico. |
 | block_group | Grupo semántico de bloques. Puede compartir contexto visual, pero no añade un título de tarea ni un gate. |
-| assignment | Compatibilidad legacy descrita arriba: solo la modalidad real configurada, con sus límites reales. El mockup no puede inventar un selector o plazo. |
+| assignment | Tarea de compatibilidad: instrucción, estado de entrega y únicamente la modalidad configurada (texto, archivo o enlace). Nombre de archivo/enlace, plazo y límites se muestran solo si existen; la acción es «Entregar». No inventar un selector de modalidad ni una fecha. |
 
 assignment pertenece a la familia de compatibilidad para el inventario de 30. El recuento es: 23 plantillas declaradas por el editor + 7 tipos estructurales/compatibilidad = 30.
 
@@ -216,7 +241,7 @@ El feedback debe describir el siguiente paso: «Revisa el auxiliar» o «Escucha
 
 ## 8. Entrega de medios
 
-- Entregar imágenes runtime en **WebP**, con un máximo de **1200 px** en su dimensión individual. No ampliar una fuente pequeña.
+- Entregar imágenes runtime en **WebP**, con un máximo de **1200 px en su lado mayor**. No ampliar una fuente pequeña.
 - Un retrato o escena con contenido relevante es contentful: conservar el cuerpo y el encuadre necesario, sin recortar una cara para llenar un contenedor.
 - Entregar cada tablero de diseño a **1536 px de ancho**, WebP con calidad **92**. Las placas son referencias de revisión, no imágenes que sustituyan elementos DOM.
 - Conservar los originales raster en el almacenamiento de producción correspondiente junto a su nombre de fuente y fecha; no borrar originales después de exportar.
@@ -226,7 +251,14 @@ El feedback debe describir el siguiente paso: «Revisa el auxiliar» o «Escucha
 
 ## 9. Receta de generación y revisión
 
+Los prompts exactos de las dos placas se conservan en [generation-prompts.json](generation-prompts.json).
+
 ### Prompt base
+
+Esta receta produce **ilustraciones runtime sin texto**. Para regenerar un mockup,
+se conserva la interfaz y se cambia solo la dirección de arte según las dos placas;
+los prompts completos de mockups se guardan en su catálogo v3. Un mockup puede mostrar
+texto de interfaz para revisión, pero no se exporta como sustituto de la interfaz real.
 
 Comenzar cada prompt de imagen con este bloqueo de estilo:
 
@@ -243,6 +275,12 @@ Después añadir, en este orden:
 Cerrar con una exclusión explícita: no photopores, no photorealism, no 3D, no anime, no childish flat cartoon, no plastic gloss, no invented logos, no UI text, no extra characters, no identity drift. Para Carl añadir clean-shaven, round glasses; para Lucas short beard, cobalt overshirt, white tee; para la interlocutora approved original identity only.
 
 ### Secuencia de producción
+
+Para los mockups v3 se usaron siempre tres entradas: composición anterior, lámina
+canónica de personajes y lámina canónica de escenas/objetos. Las dos referencias
+canónicas tienen prioridad sobre los rostros o acabados de la composición anterior.
+Para nueva ilustración runtime, leer también la ficha del personaje y adjuntar la
+referencia canónica; describir una pose no autoriza modificar su identidad.
 
 1. Leer el tipo, el contenido real y su configuración antes de escribir el prompt.
 2. Elegir la referencia de personaje/escena y fijar continuidad en una hoja de control; no crear una identidad nueva para resolver una composición.
@@ -282,3 +320,7 @@ Cerrar con una exclusión explícita: no photopores, no photorealism, no 3D, no 
 - [ ] Fotos/videos son medios reales autorizados y pedagógicos; no hay un raster que sustituya un control, prompt o estado real.
 
 Una guía o tablero que falla un punto de esta lista vuelve a revisión antes de regenerar las 24 propuestas o integrarse en la experiencia de lecciones.
+
+Las fichas canónicas de esta versión no se reinterpretan al cambiar una pose.
+Un cambio posterior de identidad, acabado, paleta o jerarquía se documenta como una
+nueva versión de la guía y se aplica de forma coherente a todas las vistas afectadas.
