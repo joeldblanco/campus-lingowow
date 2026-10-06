@@ -2,11 +2,13 @@
 
 **Estado:** normativa para la regeneración de las 24 propuestas visuales y para la posterior implementación de la experiencia de lecciones. **Ámbito:** dirección de arte, composición, copy y entrega de medios. No sustituye la configuración del contenido ni las reglas de evaluación del producto.
 
-Esta guía es la fuente de decisión visual para las placas de estilo y los seis tableros v3. El catálogo v3 estará en
+Esta guía es la fuente de decisión visual para las placas de estilo y los seis tableros v3. El catálogo v3 está en
 [../content-format-mockups/v3/README.md](../content-format-mockups/v3/README.md).
 Las referencias aprobadas de personajes y escenas son
 [characters.webp](characters.webp) y [scenes-ui.webp](scenes-ui.webp).
 Si una placa o un mockup contradice este documento, se corrige la placa o el mockup; el contenido publicado y su configuración siguen siendo la autoridad pedagógica.
+
+La [aplicación al piloto «This is me!»](pilot-implementation.md) delimita la implementación y sus criterios de revisión.
 
 ## 1. Decisiones que no se negocian
 

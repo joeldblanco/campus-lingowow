@@ -3037,7 +3037,7 @@ function EssayBlockPreview({
 
       <div className="space-y-2">
         {guidedAppearance ? (
-          <p className="text-base leading-6 text-[#10245C]">
+          <p id={`guided-essay-prompt-${block.id}`} className="text-base leading-6 text-[#10245C]">
             {block.prompt || 'Escribe tu respuesta aquí...'}
           </p>
         ) : (
@@ -3064,6 +3064,7 @@ function EssayBlockPreview({
       </div>
 
       <textarea
+        aria-labelledby={guidedAppearance ? `guided-essay-prompt-${block.id}` : undefined}
         className={cn(
           'w-full p-4 rounded-lg border min-h-[150px] focus:outline-none disabled:opacity-50',
           guidedAppearance

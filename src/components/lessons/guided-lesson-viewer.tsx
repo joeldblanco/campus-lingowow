@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
 import { BlockPreview } from '@/components/admin/course-builder/lesson-builder/block-preview'
 import { GuidedLessonBlock } from './guided-lesson-block'
+import { GuidedLessonActionSlot, useGuidedLessonActions } from './guided-lesson-actions'
 import { cn } from '@/lib/utils'
 import {
   buildGuidedLessonSteps,
@@ -41,6 +42,7 @@ export function GuidedLessonViewer({
   illustratedContent = false,
 }: GuidedLessonViewerProps) {
   const steps = useMemo(() => buildGuidedLessonSteps(blocks), [blocks])
+  const { targets, presence, callbacks, captureTarget } = useGuidedLessonActions(steps)
   // Start at zero for the server and first client render, then restore the
   // session position after hydration so SSR markup stays deterministic.
   const [activeStep, setActiveStep] = useState(0)
@@ -56,6 +58,13 @@ export function GuidedLessonViewer({
   const isFinalStep = steps.length > 0 && activeStepIndex === steps.length - 1
   const isRecordingActive = Object.values(recordingByBlockId).some(Boolean)
   const currentStepArt = illustratedContent && currentStep ? STEP_ART[currentStep.kind] : undefined
+  const hasActivityAction = illustratedContent && currentStep?.blocks.some((block) => presence[block.id])
+  const forwardActionClass = cn(
+    'inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-base font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10245C] disabled:cursor-wait disabled:opacity-60',
+    hasActivityAction
+      ? 'border border-[#506187] bg-[#FAF8F4] text-[#10245C] hover:bg-[#EEE8FA]'
+      : 'bg-[#245CFF] text-white shadow-sm hover:bg-[#10245C]'
+  )
 
   useEffect(() => {
     setHydratedStorageKey(storageKey)
@@ -168,7 +177,7 @@ export function GuidedLessonViewer({
         </ol>
       </div>
 
-      <div className="relative grid gap-8 px-4 py-8 sm:px-8 sm:py-12 md:grid-cols-[minmax(0,1fr)_minmax(220px,0.7fr)] md:gap-8 md:px-12">
+      <div className={cn('relative grid gap-8 px-4 py-8 sm:px-8 sm:py-12 md:gap-8 md:px-12', currentStepArt ? 'md:grid-cols-[minmax(0,1fr)_minmax(220px,0.7fr)]' : 'mx-auto w-full max-w-4xl')}>
         <div className="guided-lesson-content order-1 min-w-0 md:order-1" data-guided-content>
           <div className="mb-6 flex items-start justify-between gap-4">
             <h2
@@ -198,13 +207,15 @@ export function GuidedLessonViewer({
               <div className="space-y-6">
                 {step.blocks.map((block) => (
                   <div key={block.id} data-block-id={block.id} data-guided-block-type={block.type}>
-                    <GuidedLessonBlock block={block} enabled={illustratedContent}>
+                    <GuidedLessonBlock block={block} enabled={illustratedContent} suppressHeading={block.type === 'title' && block.title.trim() === step.label}>
                       <BlockPreview
                         block={block}
                         isTeacher={isTeacher}
                         isClassroom={isClassroom}
                         hideBlockHeader
                         guidedAppearance={illustratedContent}
+                        guidedActionTarget={illustratedContent ? targets[step.id] : undefined}
+                        onGuidedActionPresence={illustratedContent ? callbacks[block.id] : undefined}
                         onRecordingStateChange={(active) => {
                           setRecordingByBlockId((current) => ({ ...current, [block.id]: active }))
                         }}
@@ -219,7 +230,7 @@ export function GuidedLessonViewer({
 
         {currentStepArt && (
           <aside
-            className="guided-lesson-art order-2 flex min-h-[240px] items-end justify-center overflow-hidden rounded-[24px] bg-[#EEE8FA] md:order-2 md:min-h-[320px]"
+            className="guided-lesson-art order-2 flex min-h-[240px] items-end justify-center overflow-hidden rounded-[48%_52%_44%_56%/42%_44%_56%_58%] bg-[#EEE8FA] md:order-2 md:min-h-[320px]"
             data-guided-art
             aria-hidden="true"
           >
@@ -238,14 +249,14 @@ export function GuidedLessonViewer({
 
         {navigationNotice && (
           <p
-            className="mt-6 rounded-[16px] border border-[#C13E50]/40 bg-[#FAF8F4] px-4 py-4 text-base font-medium text-[#C13E50] md:col-span-2"
+            className={cn('order-3 mt-6 rounded-[16px] border border-[#C13E50]/40 bg-[#FAF8F4] px-4 py-4 text-base font-medium text-[#C13E50]', currentStepArt && 'md:col-span-2')}
             role="alert"
           >
             {navigationNotice}
           </p>
         )}
 
-        <div className="order-3 mt-8 flex flex-col-reverse gap-4 border-t border-[#506187]/20 pt-6 sm:flex-row sm:items-center sm:justify-between md:col-span-2">
+        <div className={cn('order-4 mt-8 flex flex-col-reverse gap-4 border-t border-[#506187]/20 pt-6 sm:flex-row sm:items-center sm:justify-between', currentStepArt && 'md:col-span-2')}>
           <button
             type="button"
             onClick={() => goToStep(activeStepIndex - 1)}
@@ -256,12 +267,13 @@ export function GuidedLessonViewer({
             Atrás
           </button>
 
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
           {isFinalStep ? (
             <button
               type="button"
               onClick={handleComplete}
               disabled={isPending}
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#245CFF] px-6 text-base font-semibold text-white shadow-sm transition-colors hover:bg-[#10245C] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10245C] disabled:cursor-wait disabled:opacity-60"
+              className={forwardActionClass}
             >
               {isPending ? 'Guardando…' : 'Completar lección'}
               <Check className="h-4 w-4" aria-hidden="true" />
@@ -270,12 +282,16 @@ export function GuidedLessonViewer({
             <button
               type="button"
               onClick={() => goToStep(activeStepIndex + 1)}
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#245CFF] px-6 text-base font-semibold text-white shadow-sm transition-colors hover:bg-[#10245C] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10245C]"
+              className={forwardActionClass}
             >
-              Siguiente
+              {hasActivityAction ? 'Continuar lección' : 'Siguiente'}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </button>
           )}
+          {illustratedContent && steps.map((step, index) => (
+            <GuidedLessonActionSlot key={step.id} stepId={step.id} active={index === activeStepIndex} captureTarget={captureTarget} />
+          ))}
+          </div>
         </div>
       </div>
 
@@ -285,18 +301,9 @@ export function GuidedLessonViewer({
           transition-duration: 160ms;
         }
 
-        .guided-lesson-viewer [data-guided-block-type='vocabulary'] .grid {
-          display: flex;
-          flex-direction: column;
-          gap: 0;
-        }
-
-        .guided-lesson-viewer [data-guided-block-type='vocabulary'] .grid > * {
-          border: 0;
-          border-bottom: 1px solid #50618733;
-          border-radius: 0;
-          background: transparent;
-          box-shadow: none;
+        .guided-lesson-viewer :is(button, a, input, textarea, select):focus-visible {
+          outline: 2px solid #10245C;
+          outline-offset: 2px;
         }
 
         @media (prefers-reduced-motion: reduce) {
