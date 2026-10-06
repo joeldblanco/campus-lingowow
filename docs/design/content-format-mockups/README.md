@@ -1,5 +1,8 @@
 # Catálogo del nuevo formato de unidades
 
+La revisión más reciente está en [Mockups refinados · Versión 2](v2/README.md).
+Esta primera versión se conserva para comparación.
+
 24 propuestas visuales en seis láminas. Cubren los 23 tipos disponibles en el
 editor actual y los tipos adicionales de estructura o compatibilidad.
 Las ilustraciones son mockups, no cambios implementados en los ejercicios.
