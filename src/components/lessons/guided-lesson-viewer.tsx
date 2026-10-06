@@ -1,12 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
 import { BlockPreview } from '@/components/admin/course-builder/lesson-builder/block-preview'
 import { GuidedLessonBlock } from './guided-lesson-block'
@@ -30,15 +25,9 @@ interface GuidedLessonViewerProps {
   illustratedContent?: boolean
 }
 
-const STEP_ART: Record<GuidedLessonStep['kind'], string> = {
+const STEP_ART: Partial<Record<GuidedLessonStep['kind'], string>> = {
   reading: '/images/lessons/this-is-me/carl.webp',
-  listening: '/images/lessons/this-is-me/speaking.webp',
-  vocabulary: '/images/lessons/this-is-me/lucas.webp',
   grammar: '/images/lessons/this-is-me/lucas.webp',
-  speaking: '/images/lessons/this-is-me/speaking.webp',
-  writing: '/images/lessons/this-is-me/writing.webp',
-  practice: '/images/lessons/this-is-me/speaking.webp',
-  content: '/images/lessons/this-is-me/lucas.webp',
 }
 
 export function GuidedLessonViewer({
@@ -66,6 +55,7 @@ export function GuidedLessonViewer({
   const currentStep = steps[activeStepIndex]
   const isFinalStep = steps.length > 0 && activeStepIndex === steps.length - 1
   const isRecordingActive = Object.values(recordingByBlockId).some(Boolean)
+  const currentStepArt = illustratedContent && currentStep ? STEP_ART[currentStep.kind] : undefined
 
   useEffect(() => {
     setHydratedStorageKey(storageKey)
@@ -128,7 +118,7 @@ export function GuidedLessonViewer({
   if (steps.length === 0) {
     return (
       <section
-        className="rounded-[2rem] border border-[#e8dfd2] bg-[#fffaf1] p-8 text-[#14213d] shadow-sm"
+        className="rounded-[24px] border border-[#506187]/20 bg-[#FAF8F4] p-8 text-[#10245C] shadow-sm"
         aria-labelledby="guided-lesson-empty"
       >
         <h2 id="guided-lesson-empty" className="text-xl font-semibold">
@@ -141,21 +131,16 @@ export function GuidedLessonViewer({
   return (
     <section
       ref={viewerRef}
-      className="guided-lesson-viewer relative overflow-hidden bg-[#fffaf1] text-[#14213d]"
-      aria-labelledby="guided-lesson-title"
+      className="guided-lesson-viewer relative overflow-hidden bg-[#FAF8F4] text-[#10245C] font-sans"
+      aria-label="Lección guiada"
     >
-      <h1 id="guided-lesson-title" className="sr-only">
-        Lección guiada
-      </h1>
-
-      <div className="relative border-b border-[#e8dfd2] px-5 py-5 sm:px-8">
-        <div className="flex items-center gap-3 text-sm">
-          <span className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#76609f]">
+      <div className="relative border-b border-[#506187]/20 px-6 py-6 sm:px-8">
+        <div className="flex items-center gap-4 text-sm">
+          <span className="font-semibold text-[#506187]">
             Paso {String(activeStepIndex + 1).padStart(2, '0')}
           </span>
-          <span className="h-1 w-1 rounded-full bg-[#c8bddc]" aria-hidden="true" />
-          <span className="truncate font-semibold text-[#14213d]">{currentStep.label}</span>
-          <span className="ml-auto shrink-0 font-mono text-xs text-[#766b86]">
+          <span className="h-1 w-1 rounded-full bg-[#506187]/50" aria-hidden="true" />
+          <span className="ml-auto shrink-0 text-sm text-[#506187]">
             {activeStepIndex + 1}/{steps.length}
           </span>
         </div>
@@ -170,33 +155,33 @@ export function GuidedLessonViewer({
                 <span
                   className={cn(
                     'block h-1.5 rounded-full transition-colors',
-                    isCurrent && 'bg-[#14213d]',
-                    isPast && 'bg-[#76609f]',
-                    !isCurrent && !isPast && 'bg-[#d9d0e5]'
+                    isCurrent && 'bg-[#10245C]',
+                    isPast && 'bg-[#506187]',
+                    !isCurrent && !isPast && 'bg-[#506187]/20'
                   )}
                   aria-current={isCurrent ? 'step' : undefined}
                   aria-label={`${index + 1}. ${step.label}`}
-                >
-                </span>
+                ></span>
               </li>
             )
           })}
         </ol>
       </div>
 
-      <div className="relative grid gap-8 px-4 py-8 sm:px-8 sm:py-10 md:grid-cols-[minmax(0,1fr)_minmax(220px,0.7fr)] md:gap-10 md:px-10">
-        <div className="order-2 min-w-0 md:order-1">
-          <div className="mb-7 flex items-start justify-between gap-4">
+      <div className="relative grid gap-8 px-4 py-8 sm:px-8 sm:py-12 md:grid-cols-[minmax(0,1fr)_minmax(220px,0.7fr)] md:gap-8 md:px-12">
+        <div className="guided-lesson-content order-1 min-w-0 md:order-1" data-guided-content>
+          <div className="mb-6 flex items-start justify-between gap-4">
             <h2
               ref={headingRef}
               tabIndex={-1}
-              className="text-2xl font-semibold tracking-tight outline-none sm:text-3xl"
+              className="font-[Georgia,serif] text-[26px] font-bold leading-8 tracking-tight text-[#10245C] outline-none sm:text-[32px] sm:leading-10"
+              data-task-heading
               aria-live="polite"
             >
               {currentStep.label}
             </h2>
             {isCompleted && (
-              <span className="shrink-0 rounded-full bg-[#e5f2e8] px-3 py-1 text-xs font-semibold text-[#2d6b45]">
+              <span className="shrink-0 rounded-full bg-[#08775E]/10 px-4 py-2 text-sm font-semibold text-[#08775E]">
                 Completada
               </span>
             )}
@@ -210,19 +195,20 @@ export function GuidedLessonViewer({
               aria-hidden={index !== activeStepIndex}
               className="guided-lesson-step"
             >
-              <div className="space-y-5">
+              <div className="space-y-6">
                 {step.blocks.map((block) => (
                   <div key={block.id} data-block-id={block.id} data-guided-block-type={block.type}>
                     <GuidedLessonBlock block={block} enabled={illustratedContent}>
-                    <BlockPreview
-                      block={block}
-                      isTeacher={isTeacher}
-                      isClassroom={isClassroom}
-                      hideBlockHeader
-                      onRecordingStateChange={(active) => {
-                        setRecordingByBlockId((current) => ({ ...current, [block.id]: active }))
-                      }}
-                    />
+                      <BlockPreview
+                        block={block}
+                        isTeacher={isTeacher}
+                        isClassroom={isClassroom}
+                        hideBlockHeader
+                        guidedAppearance={illustratedContent}
+                        onRecordingStateChange={(active) => {
+                          setRecordingByBlockId((current) => ({ ...current, [block.id]: active }))
+                        }}
+                      />
                     </GuidedLessonBlock>
                   </div>
                 ))}
@@ -231,35 +217,40 @@ export function GuidedLessonViewer({
           ))}
         </div>
 
-        <aside className="relative order-1 flex min-h-[220px] items-end justify-center overflow-hidden rounded-[48%_52%_44%_56%/42%_44%_56%_58%] bg-[#eee8fa] md:order-2 md:min-h-[380px]">
-          <div className="pointer-events-none absolute -left-10 top-8 h-32 w-32 rounded-full bg-[#f5d6b4]/50 blur-2xl" />
-          <div className="relative h-[270px] w-full md:h-[430px]">
-            <Image
-              src={STEP_ART[currentStep.kind]}
-              alt=""
-              aria-hidden="true"
-              fill
-              sizes="(max-width: 768px) 100vw, 40vw"
-              className="object-contain object-bottom drop-shadow-[0_18px_20px_rgba(63,44,100,0.14)]"
-            />
-          </div>
-        </aside>
+        {currentStepArt && (
+          <aside
+            className="guided-lesson-art order-2 flex min-h-[240px] items-end justify-center overflow-hidden rounded-[24px] bg-[#EEE8FA] md:order-2 md:min-h-[320px]"
+            data-guided-art
+            aria-hidden="true"
+          >
+            <div className="relative h-[280px] w-full md:h-[360px]">
+              <Image
+                src={currentStepArt}
+                alt=""
+                aria-hidden="true"
+                fill
+                sizes="(max-width: 768px) 100vw, 40vw"
+                className="object-contain object-bottom drop-shadow-[0_18px_20px_rgba(16,36,92,0.14)]"
+              />
+            </div>
+          </aside>
+        )}
 
         {navigationNotice && (
           <p
-            className="mt-5 rounded-xl border border-[#e4b9a9] bg-[#fff1eb] px-4 py-3 text-sm font-medium text-[#8d3f2f]"
+            className="mt-6 rounded-[16px] border border-[#C13E50]/40 bg-[#FAF8F4] px-4 py-4 text-base font-medium text-[#C13E50] md:col-span-2"
             role="alert"
           >
             {navigationNotice}
           </p>
         )}
 
-        <div className="order-3 mt-8 flex flex-col-reverse gap-3 border-t border-[#e8dfd2] pt-6 sm:flex-row sm:items-center sm:justify-between md:col-span-2">
+        <div className="order-3 mt-8 flex flex-col-reverse gap-4 border-t border-[#506187]/20 pt-6 sm:flex-row sm:items-center sm:justify-between md:col-span-2">
           <button
             type="button"
             onClick={() => goToStep(activeStepIndex - 1)}
             disabled={activeStepIndex === 0}
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#cfc5df] bg-white px-5 text-sm font-semibold text-[#3e3553] transition-colors hover:bg-[#f6f1fd] disabled:cursor-not-allowed disabled:opacity-45"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#506187] bg-[#FAF8F4] px-5 text-base font-semibold text-[#10245C] transition-colors hover:bg-[#EEE8FA] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10245C] disabled:cursor-not-allowed disabled:opacity-45"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Atrás
@@ -270,7 +261,7 @@ export function GuidedLessonViewer({
               type="button"
               onClick={handleComplete}
               disabled={isPending}
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#245cff] px-6 text-base font-semibold text-white shadow-sm transition-colors hover:bg-[#1848d5] disabled:cursor-wait disabled:opacity-60"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#245CFF] px-6 text-base font-semibold text-white shadow-sm transition-colors hover:bg-[#10245C] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10245C] disabled:cursor-wait disabled:opacity-60"
             >
               {isPending ? 'Guardando…' : 'Completar lección'}
               <Check className="h-4 w-4" aria-hidden="true" />
@@ -279,7 +270,7 @@ export function GuidedLessonViewer({
             <button
               type="button"
               onClick={() => goToStep(activeStepIndex + 1)}
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#245cff] px-6 text-base font-semibold text-white shadow-sm transition-colors hover:bg-[#1848d5]"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#245CFF] px-6 text-base font-semibold text-white shadow-sm transition-colors hover:bg-[#10245C] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10245C]"
             >
               Siguiente
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -291,7 +282,7 @@ export function GuidedLessonViewer({
       <style>{`
         .guided-lesson-viewer,
         .guided-lesson-viewer * {
-          transition-duration: 180ms;
+          transition-duration: 160ms;
         }
 
         .guided-lesson-viewer [data-guided-block-type='vocabulary'] .grid {
@@ -302,7 +293,7 @@ export function GuidedLessonViewer({
 
         .guided-lesson-viewer [data-guided-block-type='vocabulary'] .grid > * {
           border: 0;
-          border-bottom: 1px solid #e8dfd2;
+          border-bottom: 1px solid #50618733;
           border-radius: 0;
           background: transparent;
           box-shadow: none;
