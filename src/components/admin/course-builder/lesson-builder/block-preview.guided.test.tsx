@@ -71,6 +71,44 @@ describe('BlockPreview guided appearance', () => {
     expect(screen.getByRole('button', { name: 'Reproducir audio' })).toBeInTheDocument()
   })
 
+  it('hydrates guided audio duration from an already-loaded media element', () => {
+    const durationDescriptor = Object.getOwnPropertyDescriptor(
+      HTMLMediaElement.prototype,
+      'duration'
+    )
+    const readyStateDescriptor = Object.getOwnPropertyDescriptor(
+      HTMLMediaElement.prototype,
+      'readyState'
+    )
+
+    Object.defineProperty(HTMLMediaElement.prototype, 'duration', {
+      configurable: true,
+      get: () => 24.85,
+    })
+    Object.defineProperty(HTMLMediaElement.prototype, 'readyState', {
+      configurable: true,
+      get: () => 1,
+    })
+
+    try {
+      render(
+        <BlockPreview
+          guidedAppearance
+          block={{ id: 'loaded-audio', type: 'audio', order: 0, url: '/lesson.mp3' }}
+        />
+      )
+
+      expect(screen.getByText('0:24')).toBeInTheDocument()
+    } finally {
+      if (durationDescriptor) {
+        Object.defineProperty(HTMLMediaElement.prototype, 'duration', durationDescriptor)
+      }
+      if (readyStateDescriptor) {
+        Object.defineProperty(HTMLMediaElement.prototype, 'readyState', readyStateDescriptor)
+      }
+    }
+  })
+
   it('keeps the default renderer appearance when guided mode is omitted', () => {
     render(
       <BlockPreview

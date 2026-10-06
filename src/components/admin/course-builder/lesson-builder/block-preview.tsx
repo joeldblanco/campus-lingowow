@@ -519,6 +519,14 @@ function AudioBlockPreview({
 
   useGuidedActionPresence(guidedAppearance, false, onGuidedActionPresence)
 
+  useEffect(() => {
+    if (!guidedAppearance || !block.url) return
+    const audio = audioRef.current
+    if (audio && audio.readyState > 0 && Number.isFinite(audio.duration) && audio.duration > 0) {
+      setDuration(audio.duration)
+    }
+  }, [block.url, guidedAppearance])
+
   const maxReplays = block.maxReplays || 0
   const hasLimit = maxReplays > 0
   const canPlay = !hasLimit || replayCount < maxReplays
@@ -611,7 +619,7 @@ function AudioBlockPreview({
           <div
             className={cn(
               guidedAppearance
-                ? 'rounded-2xl border border-[#506187]/50 bg-white p-4 sm:p-6'
+                ? 'rounded-[2rem] bg-white p-4 shadow-[0_12px_32px_rgba(16,36,92,0.10)] sm:p-5'
                 : 'rounded-xl border p-6 shadow-sm',
               guidedAppearance ? '' : 'bg-card'
             )}
@@ -663,7 +671,7 @@ function AudioBlockPreview({
                 <div
                   className={cn(
                     guidedAppearance
-                      ? 'h-10 flex items-center justify-between gap-1 rounded-xl bg-[#FAF8F4] px-3'
+                      ? 'h-10 flex items-center justify-between gap-1 bg-transparent px-1'
                       : 'h-12 flex items-center justify-between gap-0.5',
                     // Bloquear navegación completamente cuando hay límite de reproducciones o modo examen
                     hasLimit || isExamMode ? 'cursor-default' : 'cursor-pointer'
@@ -692,7 +700,7 @@ function AudioBlockPreview({
                               ? 'bg-[#245CFF]'
                               : 'bg-primary'
                             : guidedAppearance
-                              ? 'bg-[#506187]/30'
+                              ? 'bg-[#EEE8FA]'
                               : 'bg-muted-foreground/30'
                         )}
                         style={{
@@ -717,7 +725,7 @@ function AudioBlockPreview({
                         className={cn(
                           'px-1.5 py-0.5 rounded text-[10px] uppercase tracking-wider',
                           guidedAppearance
-                            ? 'border border-[#506187]/60 text-[#506187]'
+                            ? 'bg-transparent text-[#506187]'
                             : canPlay
                               ? 'bg-green-100 text-green-700'
                               : 'bg-red-100 text-red-700'
@@ -3292,9 +3300,7 @@ function TrueFalseBlockPreview({
           key={displayItem?.id}
           className={cn(
             'text-center space-y-6 animate-in fade-in slide-in-from-right-4 duration-300',
-            guidedAppearance
-              ? 'rounded-2xl border border-[#506187]/50 bg-white p-6'
-              : 'p-6 bg-white border rounded-xl shadow-sm'
+            guidedAppearance ? 'p-0' : 'p-6 bg-white border rounded-xl shadow-sm'
           )}
         >
           {guidedAppearance ? (
@@ -3314,7 +3320,7 @@ function TrueFalseBlockPreview({
               aria-pressed={currentAnswer === true}
               className={cn(
                 guidedAppearance
-                  ? 'min-h-11 rounded-xl border-2 border-[#506187] bg-white px-6 py-3 text-base leading-6 font-semibold text-[#10245C] transition-colors hover:bg-[#EEE8FA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
+                  ? 'min-h-14 min-w-[12rem] rounded-2xl border border-[#EEE8FA] bg-white px-8 py-4 text-xl font-semibold leading-7 text-[#10245C] shadow-[0_4px_12px_rgba(16,36,92,0.06)] transition-colors hover:bg-[#EEE8FA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
                   : 'px-8 py-3 rounded-lg border-2 font-bold transition-all flex items-center gap-2',
                 !guidedAppearance &&
                   (currentAnswer === true
@@ -3335,7 +3341,7 @@ function TrueFalseBlockPreview({
               aria-pressed={currentAnswer === false}
               className={cn(
                 guidedAppearance
-                  ? 'min-h-11 rounded-xl border-2 border-[#506187] bg-white px-6 py-3 text-base leading-6 font-semibold text-[#10245C] transition-colors hover:bg-[#EEE8FA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
+                  ? 'min-h-14 min-w-[12rem] rounded-2xl border border-[#EEE8FA] bg-white px-8 py-4 text-xl font-semibold leading-7 text-[#10245C] shadow-[0_4px_12px_rgba(16,36,92,0.06)] transition-colors hover:bg-[#EEE8FA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
                   : 'px-8 py-3 rounded-lg border-2 font-bold transition-all flex items-center gap-2',
                 !guidedAppearance &&
                   (currentAnswer === false
@@ -4812,19 +4818,23 @@ function MultipleChoiceBlockPreview({
       {currentItem.question && (
         <div
           id={guidedAppearance ? `guided-multiple-choice-question-${currentItem.id}` : undefined}
-          className={guidedAppearance ? 'text-base leading-6 text-[#10245C]' : 'font-bold text-lg'}
+          className={
+            guidedAppearance
+              ? 'max-w-[30rem] text-base font-bold leading-6 text-[20px] leading-7 text-[#10245C]'
+              : 'font-bold text-lg'
+          }
         >
           {currentItem.question}
         </div>
       )}
 
-      <div className={guidedAppearance ? 'space-y-3' : 'space-y-2'}>
+      <div className={guidedAppearance ? 'mx-auto max-w-[30rem] space-y-3' : 'space-y-2'}>
         {currentItem.options?.map((option) => {
           const isSelected = selectedOption === option.id
           const isCorrect = option.id === currentItem.correctOptionId
 
           let statusClass = guidedAppearance
-            ? 'border-[#506187] bg-white text-[#10245C] hover:bg-[#EEE8FA]'
+            ? 'border-[#EEE8FA] bg-white text-[#10245C] hover:bg-[#EEE8FA]'
             : 'border-gray-200 bg-white hover:border-primary/50'
           if (showResult) {
             if (isCorrect) {
@@ -4855,7 +4865,7 @@ function MultipleChoiceBlockPreview({
                 aria-pressed={isSelected}
                 aria-label={option.text}
                 className={cn(
-                  'flex min-h-11 w-full items-center gap-3 rounded-xl border px-4 py-2 text-left text-base leading-6 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2',
+                  'flex min-h-14 w-full items-center gap-4 rounded-2xl border px-5 py-3 text-left text-xl font-semibold leading-7 shadow-[0_4px_12px_rgba(16,36,92,0.06)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2',
                   showResult ? 'cursor-default' : 'cursor-pointer',
                   statusClass
                 )}
@@ -4863,11 +4873,11 @@ function MultipleChoiceBlockPreview({
                 <span
                   aria-hidden="true"
                   className={cn(
-                    'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2',
-                    isSelected ? 'border-[#10245C] bg-[#10245C]' : 'border-[#506187] bg-white'
+                    'flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2',
+                    isSelected ? 'border-[#10245C] bg-[#10245C]' : 'border-[#506187]/50 bg-white'
                   )}
                 >
-                  {isSelected && <span className="h-2 w-2 rounded-full bg-[#FAF8F4]" />}
+                  {isSelected && <span className="h-2.5 w-2.5 rounded-full bg-white" />}
                 </span>
                 <span className="flex-1">{option.text}</span>
                 {showResult && isCorrect && <CheckCircle2 className="h-5 w-5" />}
