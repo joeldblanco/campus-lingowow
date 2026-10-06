@@ -31,14 +31,14 @@ interface GuidedLessonViewerProps {
 }
 
 const STEP_ART: Record<GuidedLessonStep['kind'], string> = {
-  reading: '/images/lessons/this-is-me/carl.png',
-  listening: '/images/lessons/this-is-me/speaking.png',
-  vocabulary: '/images/lessons/this-is-me/lucas.png',
-  grammar: '/images/lessons/this-is-me/lucas.png',
-  speaking: '/images/lessons/this-is-me/speaking.png',
-  writing: '/images/lessons/this-is-me/writing.png',
-  practice: '/images/lessons/this-is-me/speaking.png',
-  content: '/images/lessons/this-is-me/lucas.png',
+  reading: '/images/lessons/this-is-me/carl.webp',
+  listening: '/images/lessons/this-is-me/speaking.webp',
+  vocabulary: '/images/lessons/this-is-me/lucas.webp',
+  grammar: '/images/lessons/this-is-me/lucas.webp',
+  speaking: '/images/lessons/this-is-me/speaking.webp',
+  writing: '/images/lessons/this-is-me/writing.webp',
+  practice: '/images/lessons/this-is-me/speaking.webp',
+  content: '/images/lessons/this-is-me/lucas.webp',
 }
 
 export function GuidedLessonViewer({

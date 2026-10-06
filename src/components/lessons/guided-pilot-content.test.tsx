@@ -41,7 +41,7 @@ describe('illustrated pilot content', () => {
     expect(screen.getByText('Control original: true_false')).toBeVisible()
     fireEvent.click(screen.getByRole('button', { name: 'Siguiente' }))
     expect(screen.getByText('Carl Johnson works in The Amazon.')).toBeVisible()
-    expect(screen.getByTestId('illustration')).toHaveTextContent('/carl.png')
+    expect(screen.getByTestId('illustration')).toHaveTextContent('/carl.webp')
   })
 
   it('retains an essay draft when returning to the speaking step and back', () => {

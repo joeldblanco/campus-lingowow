@@ -18,10 +18,22 @@ configured. Do not invent a maximum enforcement rule.
 Generated with the built-in image-generation tool; original raster assets, not screenshots
 of the interface. Text and controls remain real DOM elements.
 
-- `public/images/lessons/this-is-me/lucas.png`
-- `public/images/lessons/this-is-me/carl.png`
-- `public/images/lessons/this-is-me/speaking.png`
-- `public/images/lessons/this-is-me/writing.png`
+- `public/images/lessons/this-is-me/lucas.webp`
+- `public/images/lessons/this-is-me/carl.webp`
+- `public/images/lessons/this-is-me/speaking.webp`
+- `public/images/lessons/this-is-me/writing.webp`
+
+Runtime assets are WebP derivatives generated with Sharp at quality 82 and
+effort 6, resized to a maximum width of 1200px without upscaling. The source
+PNG files remain in the source worktree.
+
+| Asset | Original PNG | Runtime WebP | Dimensions | Reduction |
+| --- | ---: | ---: | ---: | ---: |
+| `carl` | 2,397,102 B | 110,816 B | 1200 × 800 | 95.38% |
+| `lucas` | 2,048,186 B | 71,714 B | 1200 × 800 | 96.50% |
+| `speaking` | 2,105,406 B | 90,292 B | 1200 × 800 | 95.71% |
+| `writing` | 2,192,319 B | 103,468 B | 1200 × 800 | 95.28% |
+| **Total** | **8,743,013 B** | **376,290 B** | — | **95.70%** |
 
 Prompts used:
 
