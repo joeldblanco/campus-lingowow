@@ -75,6 +75,7 @@ interface BlockPreviewProps {
   answer?: unknown // Current answer value (for exam mode)
   onAnswerChange?: (answer: unknown) => void // Callback when answer changes (for exam mode)
   hideBlockHeader?: boolean // When true, hides the blue title/icon header on blocks (for Resource Builder)
+  onRecordingStateChange?: (active: boolean) => void
 }
 
 export function BlockPreview({
@@ -85,6 +86,7 @@ export function BlockPreview({
   answer,
   onAnswerChange,
   hideBlockHeader,
+  onRecordingStateChange,
 }: BlockPreviewProps) {
   // Teacher notes are only visible to teachers
   if (block.type === 'teacher_notes' && !isTeacher) {
@@ -216,6 +218,7 @@ export function BlockPreview({
             answer={answer}
             onAnswerChange={onAnswerChange}
             hideHeader={hideBlockHeader}
+            onRecordingStateChange={onRecordingStateChange}
           />
         )
       case 'structured-content':
@@ -2916,12 +2919,14 @@ function RecordingBlockPreview({
   answer,
   onAnswerChange,
   hideHeader,
+  onRecordingStateChange,
 }: {
   block: RecordingBlock
   isExamMode?: boolean
   answer?: unknown
   onAnswerChange?: (answer: unknown) => void
   hideHeader?: boolean
+  onRecordingStateChange?: (active: boolean) => void
 }) {
   void hideHeader // Recording blocks have a different layout
   const [isRecording, setIsRecording] = useState(false)
@@ -2962,6 +2967,7 @@ function RecordingBlockPreview({
   }, [audioUrl, answer])
 
   const startRecording = async () => {
+    onRecordingStateChange?.(true)
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
       streamRef.current = stream
@@ -3031,6 +3037,7 @@ function RecordingBlockPreview({
         }
 
         stream.getTracks().forEach((track) => track.stop())
+        onRecordingStateChange?.(false)
       }
 
       mediaRecorder.start()
@@ -3048,6 +3055,7 @@ function RecordingBlockPreview({
         })
       }, 1000)
     } catch (error) {
+      onRecordingStateChange?.(false)
       console.error('Error accessing microphone:', error)
       alert('No se pudo acceder al micrófono. Por favor, permite el acceso al micrófono.')
     }
@@ -3116,7 +3124,9 @@ function RecordingBlockPreview({
         </div>
 
         <div className="flex justify-center">
-          <div
+          <button
+            type="button"
+            aria-label={isRecording ? 'Detener grabación' : 'Grabar'}
             onClick={toggleRecording}
             className={cn(
               'h-20 w-20 rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:scale-105 transition-all relative',
@@ -3133,7 +3143,7 @@ function RecordingBlockPreview({
                 GRABANDO
               </span>
             )}
-          </div>
+          </button>
         </div>
 
         <p className="text-sm text-blue-600/80">

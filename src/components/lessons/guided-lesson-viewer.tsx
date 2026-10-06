@@ -2,8 +2,6 @@
 
 import Image from 'next/image'
 import {
-  type ComponentProps,
-  type ComponentType,
   useEffect,
   useMemo,
   useRef,
@@ -11,6 +9,7 @@ import {
 } from 'react'
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
 import { BlockPreview } from '@/components/admin/course-builder/lesson-builder/block-preview'
+import { GuidedLessonBlock } from './guided-lesson-block'
 import { cn } from '@/lib/utils'
 import {
   buildGuidedLessonSteps,
@@ -20,15 +19,6 @@ import {
 } from '@/lib/guided-lesson'
 import { Block } from '@/types/course-builder'
 
-type GuidedBlockPreviewProps = ComponentProps<typeof BlockPreview> & {
-  onRecordingStateChange?: (active: boolean) => void
-}
-
-// The callback is added to BlockPreview by the lesson viewer integration. The
-// cast keeps this isolated pilot source compatible with the current renderer
-// while allowing recording state to be reported when that prop is available.
-const GuidedBlockPreview = BlockPreview as ComponentType<GuidedBlockPreviewProps>
-
 interface GuidedLessonViewerProps {
   blocks: Block[]
   storageKey: string
@@ -37,6 +27,7 @@ interface GuidedLessonViewerProps {
   isCompleted?: boolean
   isTeacher?: boolean
   isClassroom?: boolean
+  illustratedContent?: boolean
 }
 
 const STEP_ART: Record<GuidedLessonStep['kind'], string> = {
@@ -58,6 +49,7 @@ export function GuidedLessonViewer({
   isCompleted = false,
   isTeacher,
   isClassroom,
+  illustratedContent = false,
 }: GuidedLessonViewerProps) {
   const steps = useMemo(() => buildGuidedLessonSteps(blocks), [blocks])
   // Start at zero for the server and first client render, then restore the
@@ -221,7 +213,8 @@ export function GuidedLessonViewer({
               <div className="space-y-5">
                 {step.blocks.map((block) => (
                   <div key={block.id} data-block-id={block.id} data-guided-block-type={block.type}>
-                    <GuidedBlockPreview
+                    <GuidedLessonBlock block={block} enabled={illustratedContent}>
+                    <BlockPreview
                       block={block}
                       isTeacher={isTeacher}
                       isClassroom={isClassroom}
@@ -230,6 +223,7 @@ export function GuidedLessonViewer({
                         setRecordingByBlockId((current) => ({ ...current, [block.id]: active }))
                       }}
                     />
+                    </GuidedLessonBlock>
                   </div>
                 ))}
               </div>
@@ -276,7 +270,7 @@ export function GuidedLessonViewer({
               type="button"
               onClick={handleComplete}
               disabled={isPending}
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#14213d] px-6 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#273a64] disabled:cursor-wait disabled:opacity-60"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#245cff] px-6 text-base font-semibold text-white shadow-sm transition-colors hover:bg-[#1848d5] disabled:cursor-wait disabled:opacity-60"
             >
               {isPending ? 'Guardando…' : 'Completar lección'}
               <Check className="h-4 w-4" aria-hidden="true" />
@@ -285,7 +279,7 @@ export function GuidedLessonViewer({
             <button
               type="button"
               onClick={() => goToStep(activeStepIndex + 1)}
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#14213d] px-6 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#273a64]"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#245cff] px-6 text-base font-semibold text-white shadow-sm transition-colors hover:bg-[#1848d5]"
             >
               Siguiente
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
