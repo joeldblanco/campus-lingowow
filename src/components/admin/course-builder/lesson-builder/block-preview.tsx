@@ -113,7 +113,7 @@ function renderGuidedAction(
 const GUIDED_PRIMARY_ACTION_CLASS =
   'min-h-12 rounded-full bg-[#245CFF] px-6 text-base leading-6 text-white hover:bg-[#245CFF]/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
 const GUIDED_SECONDARY_ACTION_CLASS =
-  'min-h-11 rounded-full border-[#506187] bg-[#FAF8F4] px-5 text-base leading-6 text-[#10245C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
+  'min-h-11 rounded-full border-[#506187] bg-white px-5 text-base leading-6 text-[#10245C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
 
 export function BlockPreview({
   block,
@@ -510,7 +510,11 @@ function AudioBlockPreview({
     return 0
   })
   const [hasStartedCurrentPlay, setHasStartedCurrentPlay] = useState(false)
-  const [waveform] = useState(() => Array.from({ length: 32 }, () => Math.random() * 0.7 + 0.3)) // Random heights
+  const [waveform] = useState(() =>
+    Array.from({ length: 32 }, (_, index) =>
+      guidedAppearance ? 0.35 + ((index * 17) % 45) / 100 : Math.random() * 0.7 + 0.3
+    )
+  ) // Keep guided SSR deterministic; the default renderer retains its existing waveform behavior.
   const audioRef = useRef<HTMLAudioElement>(null)
 
   useGuidedActionPresence(guidedAppearance, false, onGuidedActionPresence)
@@ -607,9 +611,9 @@ function AudioBlockPreview({
           <div
             className={cn(
               guidedAppearance
-                ? 'rounded-2xl border p-2 sm:p-2'
+                ? 'rounded-2xl border border-[#506187]/50 bg-white p-4 sm:p-6'
                 : 'rounded-xl border p-6 shadow-sm',
-              guidedAppearance ? 'border-[#506187] bg-[#FAF8F4]' : 'bg-card'
+              guidedAppearance ? '' : 'bg-card'
             )}
           >
             <div className={cn('flex items-center', guidedAppearance ? 'gap-4' : 'gap-6')}>
@@ -635,8 +639,8 @@ function AudioBlockPreview({
                     ? isPlaying
                       ? 'bg-[#245CFF] text-white cursor-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
                       : !canPlay
-                        ? 'bg-[#FAF8F4] text-[#506187] cursor-not-allowed border border-[#506187]'
-                        : 'bg-[#10245C] text-white hover:bg-[#10245C]/90 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
+                        ? 'bg-white text-[#506187] cursor-not-allowed border border-[#506187]'
+                        : 'bg-[#245CFF] text-white hover:bg-[#245CFF]/90 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
                     : isPlaying
                       ? blockPause
                         ? 'bg-blue-600 text-white cursor-default'
@@ -659,7 +663,7 @@ function AudioBlockPreview({
                 <div
                   className={cn(
                     guidedAppearance
-                      ? 'h-6 flex items-center justify-between gap-0.5'
+                      ? 'h-10 flex items-center justify-between gap-1 rounded-xl bg-[#FAF8F4] px-3'
                       : 'h-12 flex items-center justify-between gap-0.5',
                     // Bloquear navegación completamente cuando hay límite de reproducciones o modo examen
                     hasLimit || isExamMode ? 'cursor-default' : 'cursor-pointer'
@@ -688,7 +692,7 @@ function AudioBlockPreview({
                               ? 'bg-[#245CFF]'
                               : 'bg-primary'
                             : guidedAppearance
-                              ? 'bg-[#506187]/40'
+                              ? 'bg-[#506187]/30'
                               : 'bg-muted-foreground/30'
                         )}
                         style={{
@@ -713,7 +717,7 @@ function AudioBlockPreview({
                         className={cn(
                           'px-1.5 py-0.5 rounded text-[10px] uppercase tracking-wider',
                           guidedAppearance
-                            ? 'border border-[#506187] text-[#506187]'
+                            ? 'border border-[#506187]/60 text-[#506187]'
                             : canPlay
                               ? 'bg-green-100 text-green-700'
                               : 'bg-red-100 text-red-700'
@@ -2322,7 +2326,7 @@ function FillBlanksBlockPreview({
             className={cn(
               'rounded-2xl border leading-6',
               guidedAppearance
-                ? 'border-[#506187] bg-[#FAF8F4] p-4 text-base text-[#10245C] sm:p-6'
+                ? 'border-0 bg-white p-4 text-base text-[#10245C] sm:p-6'
                 : 'bg-white p-6 text-lg shadow-sm'
             )}
           >
@@ -2341,14 +2345,14 @@ function FillBlanksBlockPreview({
                       placeholder={isTeacherInClassroom ? '...' : ''}
                       className={cn(
                         guidedAppearance
-                          ? 'min-h-11 min-w-[80px] rounded-lg border border-[#506187] px-3 py-2 text-center text-base font-medium leading-6 focus:outline-none focus:ring-2 focus:ring-[#10245C]/20'
+                          ? 'min-h-11 min-w-[120px] rounded-none border-0 border-b-2 border-[#506187] bg-white px-2 py-1 text-center text-base font-medium leading-6 focus:border-[#245CFF] focus:outline-none focus:ring-0'
                           : 'border-b-2 px-2 py-0.5 text-center min-w-[80px] font-medium focus:outline-none rounded-t transition-colors',
                         showResult
                           ? isCorrect
                             ? 'border-green-500 bg-green-50 text-green-700'
                             : 'border-red-500 bg-red-50 text-red-700'
                           : guidedAppearance
-                            ? 'border-[#506187] bg-[#FAF8F4] text-[#10245C]'
+                            ? 'border-[#506187] bg-white text-[#10245C]'
                             : 'border-primary/50 bg-primary/5 text-primary',
                         isTeacherInClassroom && 'cursor-default'
                       )}
@@ -2438,11 +2442,10 @@ function MatchBlockPreview({
   const [selectedLeft, setSelectedLeft] = useState<string | null>(null)
   const [matches, setMatches] = useState<Record<string, string>>({}) // leftId -> rightId
   const [guidedPairIndex, setGuidedPairIndex] = useState(0)
-  const [shuffledRight, setShuffledRight] = useState<Array<{ id: string; text: string }>>(() =>
-    [...(block.pairs || [])]
-      .map((pair) => ({ id: pair.id, text: pair.right }))
-      .sort(() => Math.random() - 0.5)
-  )
+  const [shuffledRight, setShuffledRight] = useState<Array<{ id: string; text: string }>>(() => {
+    const rightSide = [...(block.pairs || [])].map((pair) => ({ id: pair.id, text: pair.right }))
+    return guidedAppearance ? rightSide : rightSide.sort(() => Math.random() - 0.5)
+  })
   const [showResultState, setShowResultState] = useState(false)
   const showResult = !isExamMode && showResultState
 
@@ -2556,10 +2559,38 @@ function MatchBlockPreview({
     }
   }
 
+  const handleGuidedLeftClick = () => {
+    if (showResult || isTeacherInClassroom) return
+    const currentPair = block.pairs?.[guidedPairIndex]
+    if (!currentPair) return
+
+    if (!matches[currentPair.id]) {
+      setSelectedLeft(currentPair.id)
+      return
+    }
+
+    const newMatches = { ...matches }
+    delete newMatches[currentPair.id]
+    setMatches(newMatches)
+    setSelectedLeft(null)
+
+    if (classroomSync.canInteract) {
+      classroomSync.syncBlockNavigation(
+        block.id,
+        guidedPairIndex,
+        block.pairs?.length || 0,
+        true,
+        false,
+        newMatches
+      )
+    }
+  }
+
   const handleGuidedNav = (newIndex: number) => {
     if (isTeacherInClassroom || showResult) return
     const boundedIndex = Math.max(0, Math.min(block.pairs.length - 1, newIndex))
     setGuidedPairIndex(boundedIndex)
+    setSelectedLeft(null)
 
     if (classroomSync.canInteract) {
       classroomSync.syncBlockNavigation(
@@ -2622,7 +2653,7 @@ function MatchBlockPreview({
 
         {guidedCurrentPair ? (
           <section
-            className="space-y-5 rounded-2xl border border-[#506187] bg-[#FAF8F4] p-4 sm:p-6"
+            className="space-y-5 rounded-2xl border border-[#506187]/50 bg-white p-4 sm:p-6"
             aria-describedby={guidedInstructionId}
             aria-label="Actividad de emparejar"
           >
@@ -2635,11 +2666,28 @@ function MatchBlockPreview({
               </span>
             </div>
 
-            <div className="rounded-2xl border border-[#506187] bg-[#EEE8FA] px-4 py-3">
-              <p className="text-base font-semibold leading-6 text-[#10245C]">
-                {guidedCurrentPair.left}
-              </p>
-            </div>
+            <button
+              type="button"
+              onClick={handleGuidedLeftClick}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault()
+                  handleGuidedLeftClick()
+                }
+              }}
+              disabled={isTeacherInClassroom || showResult}
+              aria-pressed={Boolean(guidedCurrentMatch) || selectedLeft === guidedCurrentPair.id}
+              aria-label={`Palabra: ${guidedCurrentPair.left}`}
+              className={cn(
+                'min-h-11 w-full rounded-2xl border px-4 py-3 text-left text-base font-semibold leading-6 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2',
+                guidedCurrentMatch || selectedLeft === guidedCurrentPair.id
+                  ? 'border-[#10245C] bg-[#EEE8FA] text-[#10245C] ring-2 ring-[#10245C]/20'
+                  : 'border-[#506187] bg-white text-[#10245C] hover:bg-[#EEE8FA]',
+                (isTeacherInClassroom || showResult) && 'cursor-not-allowed'
+              )}
+            >
+              {guidedCurrentPair.left}
+            </button>
 
             <div className="flex flex-wrap gap-2" role="group" aria-label="Opciones de pareja">
               {shuffledRight.map((item) => {
@@ -2672,7 +2720,7 @@ function MatchBlockPreview({
                         ? 'border-[#10245C] bg-[#EEE8FA] font-semibold text-[#10245C] ring-2 ring-[#10245C]/20'
                         : isConnected
                           ? 'border-[#506187] bg-[#EEE8FA] text-[#10245C]'
-                          : 'border-[#506187] bg-[#FAF8F4] text-[#10245C]'
+                          : 'border-[#506187] bg-white text-[#10245C]'
                     )}
                   >
                     {item.text}
@@ -2705,7 +2753,7 @@ function MatchBlockPreview({
             </div>
           </section>
         ) : (
-          <div className="rounded-2xl border border-dashed border-[#506187] bg-[#FAF8F4] p-6 text-center text-base leading-6 text-[#506187]">
+          <div className="rounded-2xl border border-dashed border-[#506187] bg-white p-6 text-center text-base leading-6 text-[#506187]">
             Sin pares definidos
           </div>
         )}
@@ -3245,7 +3293,7 @@ function TrueFalseBlockPreview({
           className={cn(
             'text-center space-y-6 animate-in fade-in slide-in-from-right-4 duration-300',
             guidedAppearance
-              ? 'rounded-2xl border border-[#506187] bg-[#FAF8F4] p-6'
+              ? 'rounded-2xl border border-[#506187]/50 bg-white p-6'
               : 'p-6 bg-white border rounded-xl shadow-sm'
           )}
         >
@@ -3266,7 +3314,7 @@ function TrueFalseBlockPreview({
               aria-pressed={currentAnswer === true}
               className={cn(
                 guidedAppearance
-                  ? 'min-h-11 rounded-lg border-2 border-[#506187] bg-[#FAF8F4] px-6 py-3 text-base leading-6 font-semibold text-[#10245C] transition-colors hover:bg-[#FAF8F4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
+                  ? 'min-h-11 rounded-xl border-2 border-[#506187] bg-white px-6 py-3 text-base leading-6 font-semibold text-[#10245C] transition-colors hover:bg-[#EEE8FA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
                   : 'px-8 py-3 rounded-lg border-2 font-bold transition-all flex items-center gap-2',
                 !guidedAppearance &&
                   (currentAnswer === true
@@ -3287,7 +3335,7 @@ function TrueFalseBlockPreview({
               aria-pressed={currentAnswer === false}
               className={cn(
                 guidedAppearance
-                  ? 'min-h-11 rounded-lg border-2 border-[#506187] bg-[#FAF8F4] px-6 py-3 text-base leading-6 font-semibold text-[#10245C] transition-colors hover:bg-[#FAF8F4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
+                  ? 'min-h-11 rounded-xl border-2 border-[#506187] bg-white px-6 py-3 text-base leading-6 font-semibold text-[#10245C] transition-colors hover:bg-[#EEE8FA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
                   : 'px-8 py-3 rounded-lg border-2 font-bold transition-all flex items-center gap-2',
                 !guidedAppearance &&
                   (currentAnswer === false
@@ -3510,10 +3558,10 @@ function EssayBlockPreview({
       <textarea
         aria-labelledby={guidedAppearance ? `guided-essay-prompt-${block.id}` : undefined}
         className={cn(
-          'w-full p-4 rounded-lg border min-h-[150px] focus:outline-none disabled:opacity-50',
+          'w-full p-4 border focus:outline-none disabled:opacity-50',
           guidedAppearance
-            ? 'border-[#506187] bg-[#FAF8F4] text-base leading-6 text-[#10245C] placeholder:text-[#506187] focus:ring-2 focus:ring-[#10245C]/20'
-            : 'bg-background focus:ring-2 focus:ring-primary/20',
+            ? 'min-h-[180px] rounded-2xl border-[#245CFF]/40 bg-white text-base leading-6 text-[#10245C] placeholder:text-[#506187] focus:ring-2 focus:ring-[#245CFF]/20'
+            : 'min-h-[150px] rounded-lg bg-background focus:ring-2 focus:ring-primary/20',
           isTeacherInClassroom && 'cursor-default'
         )}
         placeholder={
@@ -3799,10 +3847,10 @@ function RecordingBlockPreview({
 
       <div
         className={cn(
-          'p-6 border rounded-xl space-y-6 text-center',
+          'space-y-6 text-center',
           guidedAppearance
-            ? 'border-[#506187] bg-[#FAF8F4]'
-            : 'bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-100'
+            ? 'bg-transparent'
+            : 'p-6 border rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-100'
         )}
       >
         <div className="space-y-2">
@@ -3818,10 +3866,9 @@ function RecordingBlockPreview({
           {block.timeLimit && (
             <span
               className={cn(
-                'inline-block px-2 py-1 rounded border',
                 guidedAppearance
-                  ? 'text-sm text-[#506187] border-[#506187] bg-[#FAF8F4]'
-                  : 'bg-white text-xs font-mono text-blue-600 border-blue-200'
+                  ? 'text-base text-[#506187]'
+                  : 'inline-block rounded border bg-white px-2 py-1 text-xs font-mono text-blue-600 border-blue-200'
               )}
             >
               {isRecording ? `Tiempo restante: ${timeLeft}s` : `Límite: ${block.timeLimit}s`}
@@ -3835,14 +3882,16 @@ function RecordingBlockPreview({
             aria-label={isRecording ? 'Detener grabación' : 'Grabar'}
             onClick={toggleRecording}
             className={cn(
-              'h-20 w-20 rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:scale-105 transition-all relative',
               guidedAppearance
-                ? isRecording
-                  ? 'bg-[#FAF8F4] border-4 border-[#C13E50]'
-                  : 'bg-[#10245C]'
-                : isRecording
-                  ? 'bg-white border-4 border-red-500'
-                  : 'bg-red-500 shadow-red-200'
+                ? 'relative flex h-28 w-28 cursor-pointer flex-col items-center justify-center gap-1 rounded-full border-2 border-[#245CFF] bg-white text-[#10245C] shadow-[0_0_0_12px_rgba(238,232,250,0.8)] transition-all hover:scale-105'
+                : 'relative flex h-20 w-20 items-center justify-center rounded-full shadow-lg cursor-pointer transition-all hover:scale-105' +
+                    (isRecording
+                      ? ' bg-white border-4 border-red-500'
+                      : ' bg-red-500 shadow-red-200'),
+              guidedAppearance &&
+                (isRecording
+                  ? 'border-4 border-[#C13E50] text-[#C13E50] shadow-[0_0_0_12px_rgba(193,62,80,0.12)]'
+                  : 'border-2 border-[#245CFF] text-[#10245C]')
             )}
           >
             {isRecording ? (
@@ -3853,7 +3902,12 @@ function RecordingBlockPreview({
                 )}
               />
             ) : (
-              <Mic className="h-8 w-8 text-white" />
+              <>
+                <Mic
+                  className={cn('h-8 w-8', guidedAppearance ? 'text-[#245CFF]' : 'text-white')}
+                />
+                {guidedAppearance && <span className="text-base font-semibold">Grabar</span>}
+              </>
             )}
             {isRecording && (
               <span
@@ -3885,7 +3939,9 @@ function RecordingBlockPreview({
           <div
             className={cn(
               'mt-4 p-4 rounded-lg border',
-              guidedAppearance ? 'border-[#506187] bg-[#FAF8F4]' : 'bg-white border-blue-200'
+              guidedAppearance
+                ? 'rounded-2xl border-[#506187]/50 bg-white'
+                : 'bg-white border-blue-200'
             )}
           >
             <audio
@@ -4768,7 +4824,7 @@ function MultipleChoiceBlockPreview({
           const isCorrect = option.id === currentItem.correctOptionId
 
           let statusClass = guidedAppearance
-            ? 'border-[#506187] bg-[#FAF8F4] text-[#10245C] hover:bg-[#EEE8FA]'
+            ? 'border-[#506187] bg-white text-[#10245C] hover:bg-[#EEE8FA]'
             : 'border-gray-200 bg-white hover:border-primary/50'
           if (showResult) {
             if (isCorrect) {
@@ -4808,7 +4864,7 @@ function MultipleChoiceBlockPreview({
                   aria-hidden="true"
                   className={cn(
                     'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2',
-                    isSelected ? 'border-[#10245C] bg-[#10245C]' : 'border-[#506187] bg-[#FAF8F4]'
+                    isSelected ? 'border-[#10245C] bg-[#10245C]' : 'border-[#506187] bg-white'
                   )}
                 >
                   {isSelected && <span className="h-2 w-2 rounded-full bg-[#FAF8F4]" />}

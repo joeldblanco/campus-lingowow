@@ -292,6 +292,37 @@ describe('BlockPreview guided appearance', () => {
     expect(screen.getByText('2 de 3 pares correctos')).toBeVisible()
   })
 
+  it('makes the guided current word actionable and supports keyboard clearing', () => {
+    render(
+      <BlockPreview
+        guidedAppearance
+        block={{
+          id: 'match-left-button',
+          type: 'match',
+          order: 0,
+          pairs: [
+            { id: 'name', left: 'Name', right: 'Peter' },
+            { id: 'age', left: 'Age', right: '20 years old' },
+          ],
+        }}
+      />
+    )
+
+    const leftWord = screen.getByRole('button', { name: 'Palabra: Name' })
+    const rightChoice = screen.getByRole('button', { name: 'Pareja: Peter' })
+
+    fireEvent.click(rightChoice)
+    expect(rightChoice).toHaveAttribute('aria-pressed', 'true')
+
+    fireEvent.keyDown(leftWord, { key: 'Enter' })
+    expect(rightChoice).toHaveAttribute('aria-pressed', 'false')
+
+    fireEvent.keyDown(leftWord, { key: ' ' })
+    expect(leftWord).toHaveAttribute('aria-pressed', 'true')
+    fireEvent.keyDown(rightChoice, { key: 'Enter' })
+    expect(rightChoice).toHaveAttribute('aria-pressed', 'true')
+  })
+
   it('keeps fill-in and multiple-choice prompts compact and moves their primary actions', () => {
     const fillTarget = document.createElement('div')
     const choiceTarget = document.createElement('div')
