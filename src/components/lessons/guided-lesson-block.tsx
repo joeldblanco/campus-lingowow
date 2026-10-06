@@ -173,17 +173,9 @@ function VocabularyPresentation({ block }: { block: Extract<Block, { type: 'voca
   return (
     <section
       data-guided-vocabulary
-      className="relative isolate overflow-hidden rounded-[24px] bg-[#FAF8F4] px-2 py-2 sm:px-4"
+      className="relative px-2 py-2 sm:px-4"
       aria-label={block.title || 'Vocabulario'}
     >
-      <div
-        className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-[#EEE8FA]/70"
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute -bottom-28 left-1/4 h-56 w-72 -rotate-6 rounded-[48%] bg-[#EEE8FA]/45"
-        aria-hidden="true"
-      />
       <dl className="relative flex flex-wrap items-start gap-4 sm:gap-4">
         {block.items.map(renderVocabularyCard)}
       </dl>
@@ -405,7 +397,7 @@ export function GuidedLessonBlock({
 
     case 'grammar-visualizer':
       return (
-        <div className={`space-y-8 text-base leading-6 ${IVORY_TEXT}`}>
+        <div className={`space-y-8 text-base leading-6 ${NAVY_TEXT}`}>
           {block.description && <p className="whitespace-pre-line">{block.description}</p>}
           {block.sets.map((set, setIndex) => (
             <GrammarSetPresentation
@@ -452,7 +444,8 @@ export function GuidedLessonBlock({
                   {row.map((cell, cellIndex) => (
                     <td
                       key={cellIndex}
-                      className={`whitespace-pre-wrap border-b border-[#EEE8FA] px-3 py-1 font-sans text-base leading-6 ${NAVY_TEXT} ${index === block.content!.rows.length - 1 ? 'border-b-0' : ''}`}
+                      className={`whitespace-pre-wrap border-b border-[#EEE8FA] px-3 py-1 font-serif text-lg leading-6 ${NAVY_TEXT} ${index === block.content!.rows.length - 1 ? 'border-b-0' : ''}`}
+                      style={GEORGIA_FONT}
                     >
                       {cell}
                     </td>

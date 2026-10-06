@@ -169,6 +169,7 @@ export function GuidedLessonViewer({
       ref={viewerRef}
       className="guided-lesson-viewer relative isolate overflow-hidden bg-[#FAF8F4] font-sans text-[#10245C]"
       aria-label="Lección guiada"
+      data-illustrated={illustratedContent || undefined}
     >
       {illustratedContent && <LessonSceneBackdrop variant={currentStepArt?.variant ?? 'plain'} />}
       <div className="relative border-b border-[#506187]/20 px-5 py-2 sm:px-8 sm:py-3">
@@ -373,6 +374,11 @@ export function GuidedLessonViewer({
 
         .guided-lesson-main {
           grid-template-columns: minmax(0, 1fr);
+        }
+
+        .guided-lesson-viewer[data-illustrated] .guided-lesson-main {
+          min-height: max(400px, calc(100svh - 260px));
+          align-content: space-between;
         }
 
         .guided-lesson-main--portrait,
