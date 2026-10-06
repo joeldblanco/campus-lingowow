@@ -8,8 +8,8 @@ const SLATE_TEXT = 'text-[#506187]'
 const GREEN_TEXT = 'text-[#08775E]'
 const NEGATION_TEXT = 'text-[#C13E50]'
 const IVORY_TEXT = `${IVORY_BACKGROUND} ${NAVY_TEXT}`
-const DIVIDED_CONTENT = `divide-y divide-[#506187]/20 ${IVORY_BACKGROUND}`
-const GUIDED_READING_CLASSES = `guided-reading text-base leading-6 ${IVORY_TEXT} [&_a]:text-[#10245C] [&_a]:underline [&_h1]:font-serif [&_h1]:text-3xl [&_h1]:font-bold [&_h2]:font-serif [&_h2]:text-2xl [&_h2]:font-bold [&_h3]:font-serif [&_h3]:text-xl [&_h3]:font-bold [&_li]:mb-2 [&_ol]:my-6 [&_ol]:pl-6 [&_p]:mb-6 [&_p:last-child]:mb-0 [&_ul]:my-6 [&_ul]:list-disc [&_ul]:pl-6`
+const GEORGIA_FONT = { fontFamily: 'Georgia, serif' }
+const GUIDED_READING_CLASSES = `guided-reading text-base leading-6 ${IVORY_TEXT} [&_a]:text-[#10245C] [&_a]:underline [&_h1]:font-serif [&_h1]:text-xl [&_h1]:font-bold [&_h2]:font-serif [&_h2]:text-xl [&_h2]:font-bold [&_h3]:font-serif [&_h3]:text-lg [&_h3]:font-bold [&_h4]:font-serif [&_h4]:text-lg [&_h4]:font-bold [&_li]:mb-2 [&_ol]:my-6 [&_ol]:pl-6 [&_p]:mb-6 [&_p:last-child]:mb-0 [&_ul]:my-6 [&_ul]:list-disc [&_ul]:pl-6`
 
 /**
  * Titles such as these are editor defaults or block type labels. They are
@@ -82,7 +82,7 @@ export function GuidedLessonBlock({
       if (suppressHeading || isTechnicalGuidedTitle(block.title) || !block.title.trim()) return null
 
       return (
-        <h2 className={`font-serif text-3xl font-bold leading-8 ${NAVY_TEXT}`}>
+        <h2 className={`font-serif text-3xl font-bold leading-8 ${NAVY_TEXT}`} style={GEORGIA_FONT}>
           {block.title}
         </h2>
       )
@@ -106,28 +106,30 @@ export function GuidedLessonBlock({
       }
 
       return (
-        <dl className={DIVIDED_CONTENT}>
+        <dl className={`grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 ${IVORY_BACKGROUND}`}>
           {block.items.map((item) => (
-            <div key={item.id} className="py-6 first:pt-0 last:pb-0">
-              <dt className={`font-serif text-2xl font-bold leading-8 ${NAVY_TEXT}`}>
+            <div key={item.id} className="min-w-0 space-y-2">
+              <dt className={`font-sans text-base font-semibold leading-6 ${SLATE_TEXT}`}>
                 {item.term}
               </dt>
-              <dd className={`mt-2 text-base leading-6 ${NAVY_TEXT}`}>{item.definition}</dd>
+              <dd className={`font-serif text-xl font-normal leading-7 ${NAVY_TEXT}`} style={GEORGIA_FONT}>
+                {item.definition}
+              </dd>
               {item.pronunciation && (
-                <dd className={`mt-2 text-base leading-6 ${SLATE_TEXT}`}>
+                <dd className={`pt-2 font-sans text-base leading-6 ${SLATE_TEXT}`}>
                   {item.pronunciation}
                 </dd>
               )}
               {item.example && (
                 <dd
-                  className={`mt-4 text-base leading-6 ${NAVY_TEXT}`}
+                  className={`pt-2 font-sans text-base leading-6 ${NAVY_TEXT}`}
                   dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.example) }}
                 />
               )}
               {item.examples?.map((example, index) => (
                 <dd
                   key={`${item.id}-example-${index}`}
-                  className={`mt-4 text-base leading-6 ${NAVY_TEXT}`}
+                  className={`pt-2 font-sans text-base leading-6 ${NAVY_TEXT}`}
                   dangerouslySetInnerHTML={{ __html: sanitizeHtml(example) }}
                 />
               ))}
@@ -146,31 +148,45 @@ export function GuidedLessonBlock({
               className="space-y-4"
               aria-labelledby={set.title ? `guided-grammar-set-${set.id}` : undefined}
             >
-              {set.title && (
-                <h3
-                  id={`guided-grammar-set-${set.id}`}
-                  className={`font-serif text-2xl font-bold leading-8 ${NAVY_TEXT}`}
-                >
-                  {set.title}
-                </h3>
-              )}
+              {set.title &&
+                (suppressHeading && block.sets.length === 1 ? (
+                  <p
+                    id={`guided-grammar-set-${set.id}`}
+                    className={`text-base leading-6 ${SLATE_TEXT}`}
+                  >
+                    {set.title}
+                  </p>
+                ) : (
+                  <h3
+                    id={`guided-grammar-set-${set.id}`}
+                    className={`font-sans text-base font-semibold leading-6 ${SLATE_TEXT}`}
+                  >
+                    {set.title}
+                  </h3>
+                ))}
               {set.hint && (
                 <p className={`whitespace-pre-line text-base leading-6 ${SLATE_TEXT}`}>
                   {set.hint}
                 </p>
               )}
-              {set.variants.map((variant) => (
-                <div key={variant.id} className="border-b border-[#EEE8FA] pb-6 last:border-b-0">
-                  <p className={`mb-2 text-base font-semibold leading-6 ${SLATE_TEXT}`}>
+              {set.variants.map((variant, index) => (
+                <div
+                  key={variant.id}
+                  className={`${index % 2 === 0 ? 'mr-4 sm:mr-8' : 'ml-4 sm:ml-8'} ${index === set.variants.length - 1 ? 'pb-2' : 'pb-6'}`}
+                >
+                  <p className={`mb-2 font-sans text-base font-semibold leading-6 ${SLATE_TEXT}`}>
                     {variant.label}
                   </p>
-                  <p className={`font-serif text-2xl leading-8 ${NAVY_TEXT}`}>
+                  <p
+                    className={`rounded-[2rem_2rem_2rem_0.4rem] border border-[#506187] bg-[#EEE8FA] px-4 py-3 font-serif text-2xl font-normal leading-8 ${NAVY_TEXT}`}
+                    style={GEORGIA_FONT}
+                  >
                     {variant.tokens.length
                       ? variant.tokens.map((token, index) => renderToken(token, index))
                       : variant.rawSentence}
                   </p>
                   {variant.hint && (
-                    <p className={`mt-2 whitespace-pre-line text-base leading-6 ${SLATE_TEXT}`}>
+                    <p className={`mt-2 whitespace-pre-line font-sans text-base leading-6 ${SLATE_TEXT}`}>
                       {variant.hint}
                     </p>
                   )}
@@ -197,7 +213,7 @@ export function GuidedLessonBlock({
                   <th
                     key={index}
                     scope="col"
-                    className={`border-b border-[#506187] py-3 pr-6 text-base font-semibold leading-6 ${SLATE_TEXT}`}
+                    className={`whitespace-pre-wrap border-b border-[#506187] py-3 pr-6 font-sans text-base font-semibold leading-6 ${SLATE_TEXT}`}
                   >
                     {header}
                   </th>
@@ -208,7 +224,10 @@ export function GuidedLessonBlock({
               {block.content.rows.map((row, index) => (
                 <tr key={index}>
                   {row.map((cell, cellIndex) => (
-                    <td key={cellIndex} className="border-b border-[#EEE8FA] py-3 pr-6">
+                    <td
+                      key={cellIndex}
+                      className={`whitespace-pre-wrap border-b border-[#EEE8FA] py-3 pr-6 font-sans text-base leading-6 ${NAVY_TEXT}`}
+                    >
                       {cell}
                     </td>
                   ))}
