@@ -55,10 +55,10 @@ export default async function LessonPage({ params }: LessonPageProps) {
         moduleTitle={lesson.module?.title || ''}
         courseId={courseId}
         progress={navigation?.isCompleted ? 100 : 0}
+        guidedAppearance={isPilot}
       />
 
       <main className={`container mx-auto px-4 py-8 space-y-8 ${isPilot ? 'max-w-7xl' : 'max-w-5xl'}`}>
-        {isPilot && <h2 className="font-serif text-4xl font-bold text-[#10245c] sm:text-6xl">{lesson.title}</h2>}
         <Suspense fallback={<LessonLoadingSkeleton />}>
           <LessonContent
             lesson={lesson}
