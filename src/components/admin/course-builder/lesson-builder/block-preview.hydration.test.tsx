@@ -1,4 +1,4 @@
-import { cleanup } from '@testing-library/react'
+import { act, cleanup } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { hydrateRoot } from 'react-dom/client'
 import { renderToString } from 'react-dom/server'
@@ -39,24 +39,28 @@ describe('BlockPreview guided hydration', () => {
         />
       </>
     )
+    const random = vi.spyOn(Math, 'random').mockReturnValue(0.9)
     const serverMarkup = renderToString(content())
+    random.mockReturnValue(0.1)
     const container = document.createElement('div')
     container.innerHTML = serverMarkup
     document.body.appendChild(container)
     const recoverableErrors: unknown[] = []
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined)
 
-    const root = hydrateRoot(container, content(), {
-      onRecoverableError: (error) => recoverableErrors.push(error),
+    let root: ReturnType<typeof hydrateRoot> | undefined
+    await act(async () => {
+      root = hydrateRoot(container, content(), {
+        onRecoverableError: (error) => recoverableErrors.push(error),
+      })
     })
-
-    await new Promise((resolve) => setTimeout(resolve, 0))
 
     expect(recoverableErrors).toEqual([])
     expect(consoleError).not.toHaveBeenCalled()
 
-    root.unmount()
+    await act(async () => root?.unmount())
     consoleError.mockRestore()
+    random.mockRestore()
     container.remove()
   })
 })
