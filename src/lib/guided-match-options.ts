@@ -13,27 +13,10 @@ export type GuidedMatchRandom = () => number
 
 interface GuidedMatchOptionConfig {
   random?: GuidedMatchRandom
-  pilotProfile?: boolean
   blockId?: string
 }
 
 export const UNIT_ONE_GUIDED_MATCH_BLOCK_ID = 'dev-unit1-interleaved-vocabulary'
-
-const PILOT_PROFILE: Readonly<Record<string, readonly string[]>> = {
-  name: ['Lucas', 'Carl', 'Jake'],
-  family: ['Johnson', 'Brown', 'Davis'],
-  occupation: ['Student', 'Engineer', 'Doctor'],
-  spelling: ['P-A-T-E-R', 'P-E-T-A-R', 'P-E-T-E-R-R'],
-  age: ['19 years old', '21 years old', '22 years old'],
-  origin: ['Canada', 'Mexico', 'The UK'],
-  address: ['Lincoln Avenue, 21st', 'Lincoln Avenue, 24th', 'Oak Street, 23rd'],
-  phone: ['01 154 8594', '01 154 8595', '01 154 8596'],
-  marital: [
-    'I am single but Jake is married',
-    'I am married and Jake is married',
-    'I am single and Jake is single',
-  ],
-}
 
 const PILOT_CORRECT_VALUES: Readonly<Record<string, string>> = {
   name: 'Peter',
@@ -82,17 +65,12 @@ function categoryForLabel(label: string): string | undefined {
   return undefined
 }
 
-/**
- * The authored Unit 1 profile is the only content for which we create
- * distractors. Every other match block is restricted to its authored right
- * values, so an unknown block never receives invented answers.
- */
 export function isPilotGuidedMatchProfile(
   pairs: readonly GuidedMatchPair[],
   blockId?: string
 ): boolean {
   if (blockId === UNIT_ONE_GUIDED_MATCH_BLOCK_ID) return true
-  if (pairs.length !== Object.keys(PILOT_PROFILE).length) return false
+  if (pairs.length !== Object.keys(PILOT_CORRECT_VALUES).length) return false
 
   const found = new Set<string>()
 
@@ -103,7 +81,32 @@ export function isPilotGuidedMatchProfile(
     }
   }
 
-  return found.size === Object.keys(PILOT_PROFILE).length
+  return found.size === Object.keys(PILOT_CORRECT_VALUES).length
+}
+
+const PERSONAL_DATA_EXAMPLES: Readonly<Record<string, { example: string; label: string }>> = {
+  name: { example: 'My first name is Ana.', label: 'Name' },
+  family: { example: 'My surname is Brown.', label: 'Family Name' },
+  occupation: { example: 'I work as an engineer.', label: 'Occupation' },
+  spelling: { example: 'My name is spelled L-U-C-A-S.', label: 'Spelling' },
+  age: { example: 'I am 32 years old.', label: 'Age' },
+  origin: { example: 'I am from Canada.', label: 'Origin' },
+  address: { example: 'I live at 14 Oak Street.', label: 'Address' },
+  phone: { example: 'My phone number is 555 0182.', label: 'Phone Number' },
+  marital: { example: 'I am single.', label: 'Marital Status' },
+}
+
+/** Teach category recognition in the Unit 1 guided activity, preserving source IDs/content. */
+export function prepareGuidedMatchPairs(
+  pairs: readonly GuidedMatchPair[],
+  blockId?: string
+): GuidedMatchPair[] {
+  if (!isPilotGuidedMatchProfile(pairs, blockId)) return [...pairs]
+  return pairs.map(pair => {
+    const category = categoryForLabel(pair.left)
+    const content = category && PERSONAL_DATA_EXAMPLES[category]
+    return content ? { id: pair.id, left: content.example, right: content.label } : pair
+  })
 }
 
 function shuffle<T>(items: readonly T[], random: GuidedMatchRandom): T[] {
@@ -133,26 +136,13 @@ function uniqueChoices(choices: readonly GuidedMatchChoice[]): GuidedMatchChoice
 function choicesForPair(
   pairs: readonly GuidedMatchPair[],
   pair: GuidedMatchPair,
-  pilotProfile: boolean
+  random: GuidedMatchRandom
 ): GuidedMatchChoice[] {
   const correctChoice: GuidedMatchChoice = { id: pair.id, text: pair.right }
-  const authoredDistractors = pairs
-    .filter((candidate) => candidate.id !== pair.id)
-    .map((candidate) => ({
-      id: `guided-match:${pair.id}:${candidate.id}`,
-      text: candidate.right,
-    }))
-
-  const category = categoryForLabel(pair.left)
-  const pilotDistractors =
-    pilotProfile && category
-      ? PILOT_PROFILE[category].map((text, index) => ({
-          id: `guided-match:${pair.id}:pilot-${index + 1}`,
-          text,
-        }))
-      : []
-
-  return uniqueChoices([correctChoice, ...pilotDistractors, ...authoredDistractors]).slice(0, 4)
+  const authoredDistractors = uniqueChoices(pairs
+    .filter(candidate => candidate.id !== pair.id && normalize(candidate.right) !== normalize(pair.right))
+    .map(candidate => ({ id: `guided-match:${pair.id}:${candidate.id}`, text: candidate.right })))
+  return [correctChoice, ...shuffle(authoredDistractors, random).slice(0, 3)]
 }
 
 /**
@@ -165,9 +155,8 @@ export function buildGuidedMatchOptions(
   config: GuidedMatchOptionConfig = {}
 ): Record<string, GuidedMatchChoice[]> {
   const random = config.random ?? Math.random
-  const pilotProfile = config.pilotProfile ?? isPilotGuidedMatchProfile(pairs, config.blockId)
 
   return Object.fromEntries(
-    pairs.map((pair) => [pair.id, shuffle(choicesForPair(pairs, pair, pilotProfile), random)])
+    pairs.map((pair) => [pair.id, shuffle(choicesForPair(pairs, pair, random), random)])
   )
 }

@@ -35,6 +35,11 @@ describe('illustrated vocabulary sequence', () => {
     expect(getIllustratedLessonTaskTitle(steps[0])).toBe('Escucha y decide.')
   })
 
+  it('names the personal-data activity by its recognition objective', () => {
+    const block: Block = { id: 'dev-unit1-interleaved-vocabulary', type: 'match', order: 0, pairs: [{ id: 'name', left: 'Name', right: 'Peter' }] }
+    expect(getIllustratedLessonTaskTitle(buildIllustratedLessonSteps([block])[0])).toBe('Identifica el dato.')
+  })
+
   it('uses the authored subject for a concise task heading across vocabulary scenes', () => {
     const steps = buildIllustratedLessonSteps([vocabulary])
     expect(steps.map(getIllustratedLessonTaskTitle)).toEqual(['Conoce a Peter.', 'Un poco más sobre Peter.', 'Sus datos personales.'])
