@@ -391,7 +391,7 @@ function PossessiveAvatar({ kind }: { kind: PossessiveAvatarKind }) {
             fill
             sizes="48px"
             unoptimized
-            className="origin-[12%_0%] scale-[2.4] object-contain object-bottom"
+            className="origin-[32%_0%] scale-[2.4] object-contain object-bottom"
           />
         </span>
         <span className="relative -ml-2 h-12 w-12 overflow-hidden rounded-full">
@@ -425,7 +425,7 @@ function PossessiveAvatar({ kind }: { kind: PossessiveAvatarKind }) {
         className={
           isAna
             ? 'origin-[85%_30%] scale-[2.4] object-cover object-[85%_30%]'
-            : 'origin-[12%_0%] scale-[2.4] object-contain object-bottom'
+            : 'origin-[32%_0%] scale-[2.4] object-contain object-bottom'
         }
       />
     </span>
