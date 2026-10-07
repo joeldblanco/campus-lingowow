@@ -1,0 +1,61 @@
+{
+  "generation": "built-in imagegen",
+  "reference": "study-room-v3.webp",
+  "requirements": [
+    "full lesson canvas outside header/sidebar",
+    "complete painted environments, no shaped crops",
+    "white blending near live controls",
+    "same adult semi-realistic painterly style",
+    "deterministic unique assignment per ordinary step; vocabulary introduction continuity allowed"
+  ],
+  "assets": [
+    {
+      "id": "library",
+      "file": "/images/lessons/backgrounds/library.webp",
+      "width": 1200,
+      "height": 800,
+      "bytes": 126976,
+      "original": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-8c96bf0c-2195-44f3-9c1c-a577454f39ef.png"
+    },
+    {
+      "id": "bakery",
+      "file": "/images/lessons/backgrounds/bakery.webp",
+      "width": 1200,
+      "height": 800,
+      "bytes": 132986,
+      "original": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-19aebcef-24e8-4cb0-806b-498a99f0a7c5.png"
+    },
+    {
+      "id": "botanical-office",
+      "file": "/images/lessons/backgrounds/botanical-office.webp",
+      "width": 1200,
+      "height": 800,
+      "bytes": 137064,
+      "original": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-e468efa8-4ef3-495b-ac54-a786a361d1df.png"
+    },
+    {
+      "id": "listening-lounge",
+      "file": "/images/lessons/backgrounds/listening-lounge.webp",
+      "width": 1200,
+      "height": 800,
+      "bytes": 124724,
+      "original": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-1a3c4667-86fe-4dc4-9246-4017a1d32d02.png"
+    },
+    {
+      "id": "campus",
+      "file": "/images/lessons/backgrounds/campus.webp",
+      "width": 1200,
+      "height": 800,
+      "bytes": 147284,
+      "original": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-37e4e562-021c-40a3-80bf-469a4d531484.png"
+    }
+  ],
+  "promptShared": "Production full-bleed lesson background, NOT mockup. Landscape 3:2. Match study-room-v3: adult medium-realistic painterly editorial illustration, natural proportions, subtle brush texture, warm matte sunlight, ivory/navy/sage palette. Complete richly illustrated environment edge to edge. Main scenery and large foreground objects occupy right 65%; left 35% calm pale wall or light open space reserved for live controls, organically continuous with scene. No rectangular panels, UI, text, logos, watermarks, abstract blobs, photograph, 3D or cartoon.",
+  "promptSubjects": {
+    "library": "Quiet library reading nook with oak bookcases, navy armchair, open book, sage plants and broad arched garden window.",
+    "bakery": "Neighborhood bakery, bread baskets and croissants, round table with notebook, bright shop window, sage tiles.",
+    "botanical-office": "Environmental engineer studio with landscape plans, magnifying glass, seedlings, lush plants and Brazilian greenery.",
+    "listening-lounge": "Navy sofa, headphones and audio player on side table, curtains, plants and afternoon light.",
+    "campus": "University courtyard with bench, notebook and satchel, leafy trees, stone arcade and campus building."
+  }
+}

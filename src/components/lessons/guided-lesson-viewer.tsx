@@ -19,6 +19,7 @@ import {
   getIllustratedLessonTaskTitle,
 } from '@/lib/illustrated-lesson'
 import { Block } from '@/types/course-builder'
+import { assignLessonBackgrounds } from '@/lib/lesson-backgrounds'
 
 interface GuidedLessonViewerProps {
   blocks: Block[]
@@ -84,12 +85,11 @@ export function GuidedLessonViewer({
   const isFinalStep = steps.length > 0 && activeStepIndex === steps.length - 1
   const isRecordingActive = Object.values(recordingByBlockId).some(Boolean)
   const currentStepArt = illustratedContent && currentStep ? STEP_ART[currentStep.kind] : undefined
-  const currentSettingSrc =
-    currentStep?.kind === 'writing'
-      ? '/images/lessons/this-is-me/writing.webp'
-      : currentStep?.kind === 'speaking'
-        ? '/images/lessons/this-is-me/speaking.webp'
-        : '/images/lessons/this-is-me/study-room-v3.webp'
+  const backgrounds = useMemo(
+    () => illustratedContent ? assignLessonBackgrounds(steps) : {},
+    [steps, illustratedContent]
+  )
+  const currentSettingSrc = currentStep ? backgrounds[currentStep.id] : undefined
   const currentSceneSubject =
     currentStep?.sceneSubject ??
     currentStep?.blocks
@@ -575,6 +575,10 @@ export function GuidedLessonViewer({
         .guided-lesson-viewer :is(button, a, input, textarea, select):focus-visible {
           outline: 2px solid #10245C;
           outline-offset: 2px;
+        }
+
+        .guided-lesson-viewer[data-illustrated] [data-guided-block-type='fill_blanks'] input:focus-visible {
+          outline: none;
         }
 
         .guided-lesson-viewer [data-guided-block-type='vocabulary'] .grid {
