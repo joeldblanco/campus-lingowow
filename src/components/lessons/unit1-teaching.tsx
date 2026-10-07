@@ -384,7 +384,7 @@ function PossessiveAvatar({ kind }: { kind: PossessiveAvatarKind }) {
   if (kind === 'pair') {
     return (
       <span className="flex h-16 w-[6.5rem] shrink-0 items-end" data-unit1-avatar="pair">
-        <span className="relative z-10 h-12 w-12 overflow-hidden rounded-full">
+        <span className="relative z-10 h-12 w-12 overflow-hidden rounded-full bg-[#EEF0FF]">
           <Image
             src="/images/lessons/this-is-me/peter-cutout-v2.webp"
             alt="Peter, clean-shaven, with a rust-colored shirt"
@@ -411,7 +411,7 @@ function PossessiveAvatar({ kind }: { kind: PossessiveAvatarKind }) {
   const isAna = kind === 'ana'
   return (
     <span
-      className="relative flex h-16 w-16 shrink-0 items-end overflow-hidden rounded-full"
+      className="relative flex h-16 w-16 shrink-0 items-end overflow-hidden rounded-full bg-[#EEF0FF]"
       data-unit1-avatar={kind}
     >
       <Image

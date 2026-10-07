@@ -362,13 +362,13 @@
 .guided-lesson-viewer[data-unit1-authored]
   .guided-lesson-main[data-guided-kind='reading']
   .guided-lesson-content {
-  max-width: 42rem;
+  max-width: min(42rem, 38vw);
 }
 
 .guided-lesson-viewer[data-unit1-authored]
   .guided-lesson-main[data-guided-kind='reading']
   [data-guided-reading] {
-  max-width: 42rem;
+  max-width: min(42rem, 38vw);
   background: transparent;
 }
 
