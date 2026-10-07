@@ -56,7 +56,7 @@ import {
   Blocks,
 } from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
-import { useState, useRef, useEffect, type ReactNode } from 'react'
+import { useState, useRef, useEffect, useMemo, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import Image from 'next/image'
 import { toast } from 'sonner'
@@ -2541,7 +2541,7 @@ function GuidedMatchInteraction({
   onGuidedCompletionChange,
 }: MatchBlockPreviewProps) {
   const { syncBlockNavigation } = useClassroomSync()
-  const pairs = (block.pairs || []) as GuidedMatchPair[]
+  const pairs = useMemo(() => (block.pairs || []) as GuidedMatchPair[], [block.pairs])
   const pairSignature = pairs.map((pair) => `${pair.id}\u0000${pair.left}\u0000${pair.right}`).join('\u0001')
   const deterministicRandom = () => 0
   const [choicesByPair, setChoicesByPair] = useState<Record<string, GuidedMatchChoice[]>>(() =>
@@ -2593,7 +2593,7 @@ function GuidedMatchInteraction({
     const randomizedChoices = buildGuidedMatchOptions(pairs, { blockId: block.id })
     choicesRef.current = randomizedChoices
     setChoicesByPair(randomizedChoices)
-  }, [pairSignature])
+  }, [block.id, pairSignature, pairs])
 
   useGuidedActionPresence(true, false, onGuidedActionPresence)
   useGuidedCompletion(
