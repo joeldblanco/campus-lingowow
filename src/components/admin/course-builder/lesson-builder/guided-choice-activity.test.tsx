@@ -53,7 +53,7 @@ describe('GuidedChoiceActivity', () => {
 
     act(() => vi.advanceTimersByTime(1))
     expect(screen.getByText('They are students. ___ teacher is kind.')).toBeInTheDocument()
-    expect(document.activeElement).toBe(screen.getByRole('heading', { name: questions[1].prompt }))
+    expect(document.activeElement).toBe(screen.getByText(questions[1].prompt))
   })
 
   it('keeps wrong feedback visible longer and marks both the selected and correct rows inline', () => {
@@ -119,6 +119,7 @@ describe('GuidedChoiceActivity', () => {
     act(() => vi.advanceTimersByTime(1))
     expect(onCompletionChange).toHaveBeenLastCalledWith(true)
     expect(screen.getByRole('heading', { name: 'Resumen' })).toBeInTheDocument()
+    expect(document.activeElement).toBe(screen.getByRole('heading', { name: 'Resumen' }))
     expect(screen.getByText('Her')).toBeInTheDocument()
     expect(screen.getByText('My')).toBeInTheDocument()
     expect(screen.getAllByText('Their').length).toBeGreaterThanOrEqual(1)

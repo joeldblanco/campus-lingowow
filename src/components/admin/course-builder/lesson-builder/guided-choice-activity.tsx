@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { Check, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export interface GuidedChoice {
@@ -35,6 +36,18 @@ type ChoiceState = 'idle' | 'selected' | 'correct' | 'wrong' | 'neutral'
 
 const CORRECT_FEEDBACK_MS = 900
 const WRONG_FEEDBACK_MS = 1800
+
+function questionSetSignature(questions: GuidedChoiceQuestion[]) {
+  return JSON.stringify(
+    questions.map(({ id, prompt, choices, correctChoiceId, explanation }) => ({
+      id,
+      prompt,
+      choices: choices.map(({ id: choiceId, text }) => ({ id: choiceId, text })),
+      correctChoiceId,
+      explanation: explanation ?? null,
+    }))
+  )
+}
 
 function isGuidedStepHidden(step: HTMLElement | null) {
   if (!step) return false
@@ -77,7 +90,7 @@ function stateLabel(state: ChoiceState) {
 }
 
 const choiceBaseClass =
-  'flex min-h-14 w-full min-w-0 items-center gap-4 rounded-2xl border px-5 py-3 text-left text-base leading-6 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2 sm:text-lg'
+  'flex min-h-14 w-full min-w-0 items-center gap-4 rounded-2xl border px-5 py-3 text-left text-base leading-6 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
 
 function choiceClassName(state: ChoiceState, isInteractive: boolean) {
   const interactionClass = isInteractive ? 'cursor-pointer' : 'cursor-default'
@@ -102,11 +115,7 @@ function choiceClassName(state: ChoiceState, isInteractive: boolean) {
         'border-[#C13E50] bg-[#C13E50]/10 text-[#C13E50]'
       )
     case 'neutral':
-      return cn(
-        choiceBaseClass,
-        interactionClass,
-        'border-[#EEE8FA] bg-white text-[#506187] opacity-70'
-      )
+      return cn(choiceBaseClass, interactionClass, 'border-[#EEE8FA] bg-white text-[#506187]')
     default:
       return cn(
         choiceBaseClass,
@@ -127,7 +136,9 @@ function ChoiceMarker({ state }: { state: ChoiceState }) {
 
   return (
     <span className={markerClass} aria-hidden="true">
-      {state === 'correct' ? '✓' : state === 'wrong' ? '×' : state === 'selected' ? '•' : ''}
+      {state === 'correct' && <Check className="h-4 w-4" strokeWidth={2.5} />}
+      {state === 'wrong' && <X className="h-4 w-4" strokeWidth={2.5} />}
+      {state === 'selected' && <span className="h-2.5 w-2.5 rounded-full bg-white" />}
     </span>
   )
 }
@@ -155,15 +166,19 @@ function SummaryChoiceRow({ choice, state }: { choice: GuidedChoice; state: Choi
 
 export function GuidedChoiceActivity({ questions, onCompletionChange }: GuidedChoiceActivityProps) {
   const rootRef = useRef<HTMLDivElement>(null)
-  const promptRef = useRef<HTMLHeadingElement>(null)
+  const promptRef = useRef<HTMLParagraphElement>(null)
+  const summaryHeadingRef = useRef<HTMLHeadingElement>(null)
   const pendingTimerRef = useRef<PendingTimer | null>(null)
   const selectionLockRef = useRef(false)
   const questionIndexRef = useRef(0)
-  const questionSignatureRef = useRef(questions.map((question) => question.id).join('\u0000'))
+  const questionSignature = questionSetSignature(questions)
+  const questionSignatureRef = useRef(questionSignature)
   const advanceQuestionRef = useRef<(questionIndex: number) => void>(() => undefined)
   const pauseTimerRef = useRef<() => void>(() => undefined)
   const resumeTimerRef = useRef<() => void>(() => undefined)
   const clearTimerRef = useRef<() => void>(() => undefined)
+  const focusIfVisibleRef = useRef<() => void>(() => undefined)
+  const pendingFocusRef = useRef<'prompt' | 'summary' | null>(null)
   const completionCallbackRef = useRef(onCompletionChange)
   const previousQuestionIndexRef = useRef(0)
 
@@ -243,6 +258,25 @@ export function GuidedChoiceActivity({ questions, onCompletionChange }: GuidedCh
 
   resumeTimerRef.current = resumeTimer
 
+  const focusIfVisible = () => {
+    const step = rootRef.current?.closest<HTMLElement>('[data-guided-step]') ?? null
+    if (isGuidedStepHidden(step)) {
+      pendingFocusRef.current = completed ? 'summary' : 'prompt'
+      return
+    }
+
+    const target = completed ? summaryHeadingRef.current : promptRef.current
+    if (!target) {
+      pendingFocusRef.current = completed ? 'summary' : 'prompt'
+      return
+    }
+
+    target.focus()
+    pendingFocusRef.current = null
+  }
+
+  focusIfVisibleRef.current = focusIfVisible
+
   const startTimer = (index: number, delay: number) => {
     pendingTimerRef.current = {
       questionIndex: index,
@@ -263,6 +297,7 @@ export function GuidedChoiceActivity({ questions, onCompletionChange }: GuidedCh
           pauseTimerRef.current()
         } else {
           resumeTimerRef.current()
+          if (pendingFocusRef.current) focusIfVisibleRef.current()
         }
       })
       observer.observe(step, {
@@ -280,8 +315,6 @@ export function GuidedChoiceActivity({ questions, onCompletionChange }: GuidedCh
     }
   }, [])
 
-  const questionSignature = questions.map((question) => question.id).join('\u0000')
-
   useEffect(() => {
     if (questionSignatureRef.current === questionSignature) return
 
@@ -293,6 +326,7 @@ export function GuidedChoiceActivity({ questions, onCompletionChange }: GuidedCh
     setFeedbackByQuestion({})
     setAnnouncement('')
     setCompleted(false)
+    pendingFocusRef.current = null
   }, [questionSignature])
 
   useEffect(() => {
@@ -306,8 +340,12 @@ export function GuidedChoiceActivity({ questions, onCompletionChange }: GuidedCh
   useLayoutEffect(() => {
     if (previousQuestionIndexRef.current === questionIndex) return
     previousQuestionIndexRef.current = questionIndex
-    promptRef.current?.focus()
+    focusIfVisibleRef.current()
   }, [questionIndex])
+
+  useLayoutEffect(() => {
+    if (completed) focusIfVisibleRef.current()
+  }, [completed])
 
   if (questions.length === 0) {
     return (
@@ -379,7 +417,9 @@ export function GuidedChoiceActivity({ questions, onCompletionChange }: GuidedCh
       aria-labelledby="guided-choice-summary-heading"
     >
       <h2
+        ref={summaryHeadingRef}
         id="guided-choice-summary-heading"
+        tabIndex={-1}
         className="text-xl font-bold leading-7 text-[#10245C] sm:text-2xl"
       >
         Resumen
@@ -388,6 +428,17 @@ export function GuidedChoiceActivity({ questions, onCompletionChange }: GuidedCh
         {questions.map((question, index) => {
           const selectedId = answers[question.id]
           const feedback = feedbackByQuestion[question.id]
+          const selectedChoice = question.choices.find((choice) => choice.id === selectedId)
+          const correctChoice = question.choices.find(
+            (choice) => choice.id === question.correctChoiceId
+          )
+          const summaryChoices = selectedChoice
+            ? selectedChoice.id === correctChoice?.id || !correctChoice
+              ? [selectedChoice]
+              : [selectedChoice, correctChoice]
+            : correctChoice
+              ? [correctChoice]
+              : []
 
           return (
             <section
@@ -403,7 +454,7 @@ export function GuidedChoiceActivity({ questions, onCompletionChange }: GuidedCh
                 {index + 1}. {question.prompt}
               </h3>
               <div className="space-y-3">
-                {question.choices.map((choice) => (
+                {summaryChoices.map((choice) => (
                   <SummaryChoiceRow
                     key={choice.id}
                     choice={choice}
@@ -412,7 +463,7 @@ export function GuidedChoiceActivity({ questions, onCompletionChange }: GuidedCh
                 ))}
               </div>
               {question.explanation && (
-                <p className="text-sm leading-5 text-[#506187]">{question.explanation}</p>
+                <p className="text-base leading-6 text-[#506187]">{question.explanation}</p>
               )}
             </section>
           )
@@ -435,14 +486,14 @@ export function GuidedChoiceActivity({ questions, onCompletionChange }: GuidedCh
             <p className="text-sm leading-6 text-[#506187]">
               Pregunta {questionIndex + 1} de {questions.length}
             </p>
-            <h2
+            <p
               ref={promptRef}
               id={promptId}
               tabIndex={-1}
-              className="max-w-[38rem] break-words text-xl font-bold leading-7 text-[#10245C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2 sm:text-2xl"
+              className="max-w-[38rem] break-words text-base font-semibold leading-6 text-[#10245C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2"
             >
               {currentQuestion.prompt}
-            </h2>
+            </p>
           </div>
 
           <div
@@ -460,7 +511,7 @@ export function GuidedChoiceActivity({ questions, onCompletionChange }: GuidedCh
               role="status"
               aria-live="polite"
               className={cn(
-                'text-sm leading-5',
+                'text-base leading-6',
                 currentFeedback.isCorrect ? 'text-[#08775E]' : 'text-[#C13E50]'
               )}
             >
