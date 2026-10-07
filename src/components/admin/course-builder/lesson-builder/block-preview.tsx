@@ -2729,6 +2729,9 @@ function GuidedMatchInteraction({
 
   return (
     <div ref={rootRef} className="space-y-6 text-[#10245C]" data-guided-match>
+      {!guidedCompleted && (
+        <p className="text-base leading-6 text-[#506187]">Elige la respuesta para este dato.</p>
+      )}
       {guidedCompleted ? (
         <section
           ref={summaryRef}

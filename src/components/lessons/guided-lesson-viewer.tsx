@@ -253,7 +253,7 @@ export function GuidedLessonViewer({
             >
               {taskTitle}
             </h2>
-            {isCompleted && (
+            {isCompleted && !awaitingActivity && (
               <span className="shrink-0 rounded-full bg-[#08775E]/10 px-3 py-2 text-sm font-semibold text-[#08775E]">
                 Completada
               </span>
@@ -393,7 +393,7 @@ export function GuidedLessonViewer({
                 type="button"
                 onClick={() => isFinalStep ? handleComplete() : goToStep(activeStepIndex + 1)}
                 disabled={isRecordingActive || isPending}
-                className="min-h-11 rounded-full px-4 text-sm text-[#506187] underline underline-offset-4 hover:text-[#10245C] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10245C] disabled:opacity-45 sm:order-first"
+                className="min-h-11 rounded-full border border-[#506187]/50 bg-white px-5 text-base font-medium text-[#10245C] hover:bg-[#EEE8FA] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10245C] disabled:opacity-45 sm:order-first"
               >
                 Saltar ejercicio
               </button>
