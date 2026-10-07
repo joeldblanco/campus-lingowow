@@ -531,7 +531,13 @@ export function GuidedLessonViewer({
           content: ""; position: absolute; inset: -8px; z-index: -1; pointer-events: none;
           background: #ffffffed; box-shadow: 0 0 40px 40px #ffffffed;
         }
-        .guided-lesson-footer { background: linear-gradient(to bottom, #ffffffd9, #fff 65%); }
+        .guided-lesson-viewer[data-illustrated] .guided-lesson-footer {
+          background: transparent;
+          border-top: 0;
+        }
+        .guided-lesson-viewer[data-illustrated] .guided-lesson-footer button {
+          box-shadow: 0 0 24px 12px #ffffffeb;
+        }
         [data-mobile-illustrated-setting] { mask-image: linear-gradient(to bottom, transparent, black 12%, black 85%, transparent); }
         @media (min-width: 1024px) {
           .guided-lesson-viewer[data-illustrated] .guided-lesson-main[data-guided-kind] { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
