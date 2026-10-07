@@ -115,7 +115,7 @@ export function ExamEntryDialog({
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
-        className="max-h-[min(90vh,42rem)] max-w-lg overflow-y-auto rounded-2xl border-[#d9def0] bg-[#faf8f4] p-6 text-[#10245c] sm:p-8 [&>button]:size-11 [&>button]:rounded-full"
+        className="max-h-[min(90vh,42rem)] max-w-[calc(100%-2rem)] overflow-y-auto rounded-2xl border-[#d9def0] bg-[#faf8f4] p-6 text-[#10245c] sm:max-w-lg sm:p-8 [&>button]:size-11 [&>button]:rounded-full"
         onPointerDownOutside={(event) => {
           if (isEntering) event.preventDefault()
         }}
@@ -129,29 +129,21 @@ export function ExamEntryDialog({
           </DialogTitle>
           <p className="text-base font-semibold leading-6 text-[#245cff]">{title}</p>
           <DialogDescription className="text-base leading-6 text-[#506187]">
-            Revisa estas condiciones antes de comenzar. Podrás volver a intentarlo si el navegador
-            no permite activar una condición requerida.
+            {proctoring.requireFullscreen ? 'Entrarás en pantalla completa.' : 'Esta evaluación no requiere pantalla completa.'}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-3 text-base leading-6 text-[#10245c]">
-          <p>
-            {proctoring.requireFullscreen
-              ? 'Para entrar, debes usar la pantalla completa.'
-              : 'Esta evaluación no requiere usar la pantalla completa.'}
-          </p>
-
           {proctoring.enabled ? (
             <>
               <p>
-                La supervisión está activa: se monitorizan los cambios de pestaña, ventana y
+                Una vez dentro, la supervisión está activa: se monitorizan los cambios de pestaña, ventana y
                 pantalla completa.
               </p>
               {proctoring.blockCopyPaste && <p>Copiar y pegar estarán bloqueados durante la evaluación.</p>}
               {proctoring.blockRightClick && <p>El clic derecho estará bloqueado durante la evaluación.</p>}
               <p>
-                Al llegar a {proctoring.maxWarnings} advertencias, el intento pasa a revisión; no
-                se marca automáticamente como reprobado.
+                Al llegar a {proctoring.maxWarnings} advertencias, verás un aviso de revisión.
               </p>
             </>
           ) : (

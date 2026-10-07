@@ -52,7 +52,7 @@ interface SubmitExamResult {
   [key: string]: unknown
 }
 
-interface ExamTakingClientProps {
+export interface ExamTakingClientProps {
   examId: string
   attemptId: string
   title: string
