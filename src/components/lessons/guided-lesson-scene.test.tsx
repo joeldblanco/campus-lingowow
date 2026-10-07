@@ -9,7 +9,7 @@ vi.mock('next/image', () => ({
 }))
 
 describe('guided lesson scene layers', () => {
-  it('renders the complete environment as pointer-free cover artwork with an organic crop', () => {
+  it('renders the complete environment as pointer-free cover artwork without a shaped crop', () => {
     const { container } = render(
       <GuidedLessonScene
         src="/images/lessons/this-is-me/peter-classroom-v3.webp"
@@ -19,10 +19,10 @@ describe('guided lesson scene layers', () => {
       />
     )
     const art = container.querySelector('[data-illustrated-environment]')
-    expect(art).toHaveClass('pointer-events-none', 'md:h-[424px]')
+    expect(art).toHaveClass('pointer-events-none', 'min-h-[320px]')
     expect(art).toHaveAttribute('aria-hidden', 'true')
-    expect(art?.getAttribute('style')).toContain('clip-path: url(')
-    expect(container.querySelector('clipPath path')).toBeInTheDocument()
+    expect(art?.getAttribute('style') || '').not.toContain('clip-path')
+    expect(container.querySelector('clipPath')).not.toBeInTheDocument()
     expect(container.querySelector('[data-testid="scene-image"]')).toHaveClass('object-cover')
   })
 
@@ -36,10 +36,11 @@ describe('guided lesson scene layers', () => {
       'data-scene-src',
       '/images/lessons/this-is-me/study-room-v3.webp'
     )
-    expect(setting).toHaveClass('w-[64%]', 'h-[76%]', 'bg-cover')
+    expect(setting).toHaveClass('absolute', 'inset-0', 'bg-cover')
     expect(setting).toHaveStyle({
       backgroundImage: 'url("/images/lessons/this-is-me/study-room-v3.webp")',
     })
+    expect(setting?.getAttribute('style')).toContain('mask-image: linear-gradient(')
     expect(backdrop).toHaveAttribute('aria-hidden', 'true')
     expect(backdrop?.querySelector('button, input, a')).not.toBeInTheDocument()
   })
