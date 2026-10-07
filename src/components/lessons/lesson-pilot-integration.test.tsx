@@ -30,7 +30,7 @@ describe('pilot integration', () => {
       navigation={{ prevLessonId: null, nextLessonId: null, isCompleted: false }} />)
     fireEvent.click(screen.getByRole('button', { name: 'Completar piloto' }))
     await waitFor(() => expect(completeCourseLesson).toHaveBeenCalledWith('course', 'pilot'))
-    expect(push).toHaveBeenCalledWith('/my-courses/course')
+    expect(push).toHaveBeenCalledWith('/my-courses/course?completedLesson=pilot')
   })
 
   it.each([{ isTeacher: true }, { isClassroom: true }, {}])('preserves the classic viewer outside student opt-in: %j', (props) => {

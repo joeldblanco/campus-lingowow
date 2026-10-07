@@ -26,6 +26,7 @@ interface EssayAIGradingProps {
     feedback: string
     detailedResult: EssayGradingResult
   }) => void
+  onGradingStateChange?: (state: 'loading' | 'success' | 'error') => void
   onSyncResponse?: (blockId: string, blockType: string, response: unknown, isCorrect?: boolean, score?: number) => void
   disabled?: boolean
   variant?: 'default' | 'outline' | 'ghost'
@@ -33,6 +34,7 @@ interface EssayAIGradingProps {
   className?: string
   usageType?: 'essay_lesson' | 'essay_exam'
   entityId?: string
+  label?: string
 }
 
 export function EssayAIGrading({
@@ -43,6 +45,7 @@ export function EssayAIGrading({
   language = 'spanish',
   targetLevel = 'B1',
   onGraded,
+  onGradingStateChange,
   onSyncResponse,
   disabled = false,
   variant = 'default',
@@ -50,6 +53,7 @@ export function EssayAIGrading({
   className,
   usageType = 'essay_lesson',
   entityId,
+  label = 'Enviar',
 }: EssayAIGradingProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [showResult, setShowResult] = useState(false)
@@ -70,21 +74,25 @@ export function EssayAIGrading({
 
   const handleGrade = async () => {
     if (!essayText.trim()) {
+      onGradingStateChange?.('error')
       toast.error('El ensayo está vacío')
       return
     }
 
     if (essayText.trim().split(/\s+/).length < 5) {
+      onGradingStateChange?.('error')
       toast.error('El ensayo es demasiado corto para ser evaluado')
       return
     }
 
     if (usageInfo && !usageInfo.allowed) {
+      onGradingStateChange?.('error')
       toast.error(`Has alcanzado el límite de ${usageInfo.limit} correcciones con IA este mes`)
       return
     }
 
     setIsLoading(true)
+    onGradingStateChange?.('loading')
     try {
       const response = await fetch('/api/lessons/grade-essay', {
         method: 'POST',
@@ -120,6 +128,7 @@ export function EssayAIGrading({
       if (onGraded) {
         onGraded(data.gradingResult)
       }
+      onGradingStateChange?.('success')
 
       // Sync response to teacher in classroom mode
       if (onSyncResponse && blockId) {
@@ -134,6 +143,7 @@ export function EssayAIGrading({
 
       toast.success('Ensayo calificado exitosamente')
     } catch (error) {
+      onGradingStateChange?.('error')
       console.error('Error grading essay:', error)
       toast.error(error instanceof Error ? error.message : 'Error al calificar el ensayo')
     } finally {
@@ -160,7 +170,7 @@ export function EssayAIGrading({
         ) : (
           <>
             <Sparkles className="h-4 w-4 mr-2" />
-            Enviar
+            {label}
           </>
         )}
       </Button>

@@ -16,13 +16,17 @@ import type { Block, SentenceVariant } from '@/types/course-builder'
 import { sanitizeHtml } from '@/lib/sanitize-html'
 
 const NAVY_TEXT = 'text-[#10245C]'
-const IVORY_BACKGROUND = 'bg-[#FAF8F4]'
 const SLATE_TEXT = 'text-[#506187]'
 const GREEN_TEXT = 'text-[#08775E]'
 const NEGATION_TEXT = 'text-[#C13E50]'
-const IVORY_TEXT = `${IVORY_BACKGROUND} ${NAVY_TEXT}`
 const GEORGIA_FONT = { fontFamily: 'Georgia, serif' }
-const GUIDED_READING_CLASSES = `guided-reading text-base leading-6 ${IVORY_TEXT} [&_a]:text-[#10245C] [&_a]:underline [&_blockquote]:my-6 [&_blockquote]:rounded-[16px] [&_blockquote]:border-l-4 [&_blockquote]:border-[#08775E] [&_blockquote]:bg-[#EEE8FA] [&_blockquote]:px-4 [&_blockquote]:py-4 [&_strong]:font-bold [&_strong]:text-[#10245C] [&_h1]:font-serif [&_h1]:text-xl [&_h1]:font-bold [&_h2]:font-serif [&_h2]:text-xl [&_h2]:font-bold [&_h3]:font-serif [&_h3]:text-lg [&_h3]:font-bold [&_h4]:font-serif [&_h4]:text-lg [&_h4]:font-bold [&_li]:mb-2 [&_ol]:my-6 [&_ol]:pl-6 [&_p]:mb-6 [&_p:last-child]:mb-0 [&_ul]:my-6 [&_ul]:list-disc [&_ul]:pl-6`
+const GUIDED_READING_CLASSES = `guided-reading text-base leading-6 ${NAVY_TEXT} [&_a]:text-[#10245C] [&_a]:underline [&_blockquote]:my-6 [&_blockquote]:rounded-[16px] [&_blockquote]:border-l-4 [&_blockquote]:border-[#08775E] [&_blockquote]:bg-[#EEE8FA] [&_blockquote]:px-4 [&_blockquote]:py-4 [&_strong]:font-bold [&_strong]:text-[#10245C] [&_h1]:font-serif [&_h1]:text-xl [&_h1]:font-bold [&_h2]:font-serif [&_h2]:text-xl [&_h2]:font-bold [&_h3]:font-serif [&_h3]:text-lg [&_h3]:font-bold [&_h4]:font-serif [&_h4]:text-lg [&_h4]:font-bold [&_li]:mb-2 [&_ol]:my-6 [&_ol]:pl-6 [&_p]:mb-6 [&_p:last-child]:mb-0 [&_ul]:my-6 [&_ul]:list-disc [&_ul]:pl-6`
+
+const EMPTY_GUIDED_PARAGRAPH = /<p\b[^>]*>(?:(?:\s|&nbsp;|&#160;)|<br\s*\/?>)*<\/p>/gi
+
+function sanitizeGuidedReadingHtml(content: string): string {
+  return sanitizeHtml(content).replace(EMPTY_GUIDED_PARAGRAPH, '')
+}
 
 /**
  * Titles such as these are editor defaults or block type labels. They are
@@ -376,11 +380,11 @@ export function GuidedLessonBlock({
 
     case 'text':
       return block.format === 'plain' ? (
-        <p className={`whitespace-pre-wrap text-base leading-6 ${IVORY_TEXT}`}>{block.content}</p>
+        <p className={`whitespace-pre-wrap text-base leading-6 ${NAVY_TEXT}`}>{block.content}</p>
       ) : (
         <div
           className={GUIDED_READING_CLASSES}
-          dangerouslySetInnerHTML={{ __html: sanitizeHtml(block.content) }}
+          dangerouslySetInnerHTML={{ __html: sanitizeGuidedReadingHtml(block.content) }}
         />
       )
 

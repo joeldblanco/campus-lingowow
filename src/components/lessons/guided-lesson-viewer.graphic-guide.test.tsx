@@ -53,7 +53,7 @@ describe('GuidedLessonViewer graphic guide shell', () => {
       '/images/lessons/this-is-me/carl.webp'
     )
 
-    fireEvent.click(screen.getByRole('button', { name: 'Siguiente' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Continuar' }))
     expect(screen.getByTestId('guided-illustration')).toHaveAttribute(
       'data-src',
       '/images/lessons/this-is-me/lucas.webp'
@@ -96,13 +96,15 @@ describe('GuidedLessonViewer graphic guide shell', () => {
     expect(content).toHaveClass('order-1', 'md:order-1')
     expect(art).toHaveClass('order-2', 'md:order-2')
 
-    expect(screen.getByRole('button', { name: 'Atrás' })).toHaveClass(
-      'min-h-11',
+    expect(screen.queryByRole('button', { name: 'Paso anterior' })).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Continuar' })).toHaveClass(
+      'min-h-12',
       'focus-visible:outline-2',
       'focus-visible:outline-offset-2'
     )
-    expect(screen.getByRole('button', { name: 'Siguiente' })).toHaveClass(
-      'min-h-12',
+    fireEvent.click(screen.getByRole('button', { name: 'Continuar' }))
+    expect(screen.getByRole('button', { name: 'Paso anterior' })).toHaveClass(
+      'min-h-11',
       'focus-visible:outline-2',
       'focus-visible:outline-offset-2'
     )

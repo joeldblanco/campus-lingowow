@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation'
 import { useState, useTransition } from 'react'
 import { toast } from 'sonner'
 import { GuidedLessonViewer } from './guided-lesson-viewer'
+import { buildCourseCompletionUrl } from '@/lib/course-completion'
 
 interface LessonContentProps {
   lesson: LessonForView
@@ -50,11 +51,7 @@ export function LessonContent({
 
         setIsCompleted(true)
         toast.success('Progreso guardado')
-        router.push(
-          result.nextLessonId
-            ? `/my-courses/${courseId}/lessons/${result.nextLessonId}`
-            : `/my-courses/${courseId}`
-        )
+        router.push(buildCourseCompletionUrl(courseId, lesson.id))
         router.refresh()
       } catch {
         toast.error('No se pudo guardar el progreso')

@@ -4,7 +4,7 @@ import { ImpersonationBanner } from '@/components/impersonation-banner'
 import { GuestExamBanner } from '@/components/guest-exam-banner'
 import { NotificationDropdown } from '@/components/notifications/notification-dropdown'
 import { TourHeaderButton } from '@/components/tour'
-import { SidebarInset, SidebarTrigger } from '@/components/ui/sidebar'
+import { SidebarTrigger } from '@/components/ui/sidebar'
 import { Toaster } from '@/components/ui/sonner'
 import { Providers } from '@/providers/providers'
 import { CurrentClassProvider } from '@/context/current-class'
@@ -12,6 +12,7 @@ import { PageTracker } from '@/components/page-tracker'
 // import { FloatingChat } from '@/components/floating-chat/FloatingChat'
 import { cookies } from 'next/headers'
 import { db } from '@/lib/db'
+import { ExamChrome, ExamMain, ExamContentArea } from '@/components/exams/student/exam-focus'
 import { Flame } from 'lucide-react'
 
 export default async function PrivateLayout({
@@ -63,9 +64,10 @@ export default async function PrivateLayout({
         <CurrentClassProvider>
           {session && (
             <>
-              <AppSidebar />
+              <ExamChrome><AppSidebar /></ExamChrome>
               <PageTracker />
-              <SidebarInset>
+              <ExamMain>
+                <ExamChrome>
                 <ImpersonationBanner />
                 {session?.user?.id && <GuestExamBanner userId={session.user.id} />}
                 <header className="flex h-16 shrink-0 items-center justify-between gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
@@ -114,8 +116,9 @@ export default async function PrivateLayout({
                     <NotificationDropdown />
                   </div>
                 </header>
-                <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>
-              </SidebarInset>
+                </ExamChrome>
+                <ExamContentArea>{children}</ExamContentArea>
+              </ExamMain>
               {/* <FloatingChat userId={session.user.id || ''} /> */}
             </>
           )}

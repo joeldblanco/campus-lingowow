@@ -39,10 +39,13 @@ describe('LessonContent progress navigation', () => {
   })
 
   it('persists lesson completion before navigating to the next lesson', async () => {
-    vi.mocked(completeCourseLesson).mockResolvedValue({
-      success: true,
-      nextLessonId: 'lesson-2',
-      courseProgress: 50,
+    const events: string[] = []
+    vi.mocked(completeCourseLesson).mockImplementation(async () => {
+      events.push('complete')
+      return { success: true, nextLessonId: 'lesson-2', courseProgress: 50 }
+    })
+    push.mockImplementation(() => {
+      events.push('push')
     })
 
     render(
@@ -55,11 +58,10 @@ describe('LessonContent progress navigation', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /completar y continuar/i }))
 
-    await waitFor(() => {
-      expect(completeCourseLesson).toHaveBeenCalledWith('course-1', 'lesson-1')
-      expect(push).toHaveBeenCalledWith('/my-courses/course-1/lessons/lesson-2')
-      expect(refresh).toHaveBeenCalled()
-    })
+    await waitFor(() => expect(push).toHaveBeenCalledWith('/my-courses/course-1?completedLesson=lesson-1'))
+    expect(completeCourseLesson).toHaveBeenCalledWith('course-1', 'lesson-1')
+    expect(events).toEqual(['complete', 'push'])
+    expect(refresh).toHaveBeenCalled()
   })
 
   it('returns to the course after completing the final lesson', async () => {
@@ -80,7 +82,28 @@ describe('LessonContent progress navigation', () => {
     fireEvent.click(screen.getByRole('button', { name: /completar lección/i }))
 
     await waitFor(() => {
-      expect(push).toHaveBeenCalledWith('/my-courses/course-1')
+      expect(push).toHaveBeenCalledWith('/my-courses/course-1?completedLesson=lesson-1')
     })
+  })
+
+  it('does not navigate when the completion action fails', async () => {
+    vi.mocked(completeCourseLesson).mockResolvedValue({
+      success: false,
+      error: 'No se pudo guardar',
+    } as never)
+
+    render(
+      <LessonContent
+        lesson={lesson as never}
+        courseId="course-1"
+        navigation={{ prevLessonId: null, nextLessonId: null, isCompleted: false }}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: /completar lección/i }))
+
+    await waitFor(() => expect(completeCourseLesson).toHaveBeenCalled())
+    expect(push).not.toHaveBeenCalled()
+    expect(refresh).not.toHaveBeenCalled()
   })
 })
