@@ -316,6 +316,7 @@ describe('BlockPreview guided appearance', () => {
     expect(screen.getByText('Elige la respuesta para este dato.')).toBeVisible()
     expect(screen.getByLabelText('Dato actual')).toHaveTextContent('Name')
     expect(screen.queryByRole('button', { name: 'Palabra: Name' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Reiniciar' })).not.toBeInTheDocument()
     expect(screen.getAllByRole('button', { name: /Pareja:/ })).toHaveLength(2)
     expect(screen.getAllByRole('button', { name: /Pareja:/ })[0]).toHaveAttribute('type', 'button')
     expect(target.querySelector('button')).toHaveTextContent('Comprobar')
@@ -324,6 +325,7 @@ describe('BlockPreview guided appearance', () => {
     const firstChoice = screen.getByRole('button', { name: 'Pareja: Peter' })
     fireEvent.click(firstChoice)
     expect(screen.getByText('Age')).toBeVisible()
+    expect(screen.getByText('1 respuesta')).toBeVisible()
     expect(screen.queryByRole('button', { name: 'Pareja: Peter' })).not.toBeInTheDocument()
     const secondChoice = screen.getByRole('button', { name: 'Pareja: 20 years old' })
     fireEvent.keyDown(secondChoice, { key: 'Enter' })
@@ -333,6 +335,13 @@ describe('BlockPreview guided appearance', () => {
 
     fireEvent.click(target.querySelector('button') as HTMLButtonElement)
     expect(screen.getByText('¡Perfecto! Todos los pares están correctos')).toBeVisible()
+    const result = screen.getByRole('region', { name: 'Resultado de asociaciones' })
+    expect(result).toHaveTextContent('Name')
+    expect(result).toHaveTextContent('Peter')
+    expect(result).toHaveTextContent('Age')
+    expect(result).toHaveTextContent('20 years old')
+    expect(screen.queryByRole('button', { name: 'Cambiar' })).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Reiniciar' })).toBeVisible()
     expect(onGuidedActionPresence).toHaveBeenLastCalledWith(false)
 
     fireEvent.click(screen.getByRole('button', { name: 'Reiniciar' }))
@@ -387,6 +396,14 @@ describe('BlockPreview guided appearance', () => {
 
     fireEvent.click(target.querySelector('button') as HTMLButtonElement)
     expect(screen.getByText('0 de 3 pares correctos')).toBeVisible()
+    const result = screen.getByRole('region', { name: 'Resultado de asociaciones' })
+    expect(result).toHaveTextContent('First')
+    expect(result).toHaveTextContent('Beta')
+    expect(result).toHaveTextContent('Second')
+    expect(result).toHaveTextContent('Gamma')
+    expect(result).toHaveTextContent('Third')
+    expect(result).toHaveTextContent('Alpha')
+    expect(screen.queryByRole('button', { name: 'Cambiar' })).not.toBeInTheDocument()
   })
 
   it('keeps the guided matching datum fixed and keyboard choices actionable', () => {

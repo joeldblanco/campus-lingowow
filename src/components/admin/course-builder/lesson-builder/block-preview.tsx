@@ -2688,7 +2688,9 @@ function MatchBlockPreview({
     const currentGuidedPairIndex = guidedEditPairIndex ?? guidedPairIndex
     const guidedCurrentPair = pairs[currentGuidedPairIndex]
     const guidedCurrentMatch = guidedCurrentPair ? matches[guidedCurrentPair.id] : undefined
+    const responseCount = Object.keys(matches).length
     const showGuidedSummary = allMatched && guidedEditPairIndex === null && !showResult
+    const showGuidedResult = showResult && pairs.length > 0
 
     return (
       <div className="space-y-5 text-[#10245C]">
@@ -2696,7 +2698,77 @@ function MatchBlockPreview({
           Elige la respuesta para este dato.
         </p>
 
-        {showGuidedSummary ? (
+        {showGuidedResult ? (
+          (() => {
+            const correctMatches = pairs.filter((pair) => matches[pair.id] === pair.id).length
+            const allCorrect = correctMatches === pairs.length
+
+            return (
+              <section
+                className="space-y-4 rounded-2xl border border-[#506187]/50 bg-white p-4 sm:p-6"
+                aria-describedby={guidedInstructionId}
+                aria-label="Resultado de asociaciones"
+              >
+                <div
+                  className={cn(
+                    'rounded-xl border p-4 text-center',
+                    allCorrect
+                      ? 'border-[#08775E] text-[#08775E]'
+                      : 'border-[#C13E50] text-[#C13E50]'
+                  )}
+                >
+                  <p className="font-bold">
+                    {allCorrect
+                      ? '¡Perfecto! Todos los pares están correctos'
+                      : `${correctMatches} de ${pairs.length} pares correctos`}
+                  </p>
+                </div>
+
+                <div className="space-y-2 border-t border-[#506187]/30 pt-4">
+                  <h3 className="text-sm font-semibold uppercase tracking-wider text-[#506187]">
+                    Revisión de pares
+                  </h3>
+                  {pairs.map((pair) => {
+                    const userMatchedRightId = matches[pair.id]
+                    const userMatchedRight = shuffledRight.find(
+                      (right) => right.id === userMatchedRightId
+                    )
+                    const isCorrect = userMatchedRightId === pair.id
+
+                    return (
+                      <div
+                        key={pair.id}
+                        className={cn(
+                          'flex items-center gap-3 rounded-lg border p-3 text-sm',
+                          isCorrect
+                            ? 'border-[#08775E]/40 text-[#08775E]'
+                            : 'border-[#C13E50]/40 text-[#C13E50]'
+                        )}
+                      >
+                        <span
+                          aria-label={isCorrect ? 'Correcto' : 'Incorrecto'}
+                          className="shrink-0 font-bold"
+                        >
+                          {isCorrect ? '✓' : '✗'}
+                        </span>
+                        <span className="flex-1">
+                          {pair.left} → {userMatchedRight?.text || '(sin emparejar)'}
+                        </span>
+                        {isCorrect ? (
+                          <span className="font-medium">Correcto</span>
+                        ) : (
+                          <span className="text-[#08775E]">
+                            Correcto: <strong>{pair.right}</strong>
+                          </span>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              </section>
+            )
+          })()
+        ) : showGuidedSummary ? (
           <section
             className="space-y-4 rounded-2xl border border-[#506187]/50 bg-white p-4 sm:p-6"
             aria-describedby={guidedInstructionId}
@@ -2758,7 +2830,7 @@ function MatchBlockPreview({
                 {currentGuidedPairIndex + 1} de {pairs.length}
               </span>
               <span className="text-sm leading-6 text-[#506187]">
-                {Object.keys(matches).length} respuestas
+                {responseCount} {responseCount === 1 ? 'respuesta' : 'respuestas'}
               </span>
             </div>
 
@@ -2824,84 +2896,19 @@ function MatchBlockPreview({
               (guidedActionTarget
                 ? renderGuidedAction(checkAction, guidedAppearance, guidedActionTarget)
                 : checkAction)}
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleReset}
-              size="sm"
-              className={GUIDED_SECONDARY_ACTION_CLASS}
-            >
-              Reiniciar
-            </Button>
+            {responseCount > 0 && (
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={handleReset}
+                size="sm"
+                className="min-h-11 rounded-full px-5 text-base leading-6 text-[#506187] hover:bg-[#EEE8FA] hover:text-[#10245C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2"
+              >
+                Reiniciar
+              </Button>
+            )}
           </div>
         )}
-
-        {showResult &&
-          block.pairs &&
-          block.pairs.length > 0 &&
-          (() => {
-            const correctMatches = Object.keys(matches).filter(
-              (leftId) => matches[leftId] === leftId
-            ).length
-            const totalPairs = block.pairs.length
-            const allCorrect = correctMatches === totalPairs
-
-            return (
-              <div className="space-y-4">
-                <div
-                  className={cn(
-                    'rounded-xl border p-4 text-center',
-                    allCorrect
-                      ? 'border-[#08775E] text-[#08775E]'
-                      : 'border-[#C13E50] text-[#C13E50]'
-                  )}
-                >
-                  <p className="font-bold">
-                    {allCorrect
-                      ? '¡Perfecto! Todos los pares están correctos'
-                      : `${correctMatches} de ${totalPairs} pares correctos`}
-                  </p>
-                </div>
-
-                {!allCorrect && (
-                  <div className="space-y-2 border-t border-[#506187]/30 pt-4">
-                    <h4 className="text-sm font-semibold uppercase tracking-wider text-[#506187]">
-                      Revisión de pares
-                    </h4>
-                    {block.pairs.map((pair) => {
-                      const userMatchedRightId = matches[pair.id]
-                      const userMatchedRight = shuffledRight.find(
-                        (right) => right.id === userMatchedRightId
-                      )
-                      const isCorrect = userMatchedRightId === pair.id
-
-                      return (
-                        <div
-                          key={pair.id}
-                          className={cn(
-                            'flex items-center gap-3 rounded-lg border p-3 text-sm',
-                            isCorrect
-                              ? 'border-[#08775E]/40 text-[#08775E]'
-                              : 'border-[#C13E50]/40 text-[#C13E50]'
-                          )}
-                        >
-                          <span className="flex-1">
-                            {pair.left} →{' '}
-                            {isCorrect ? pair.right : userMatchedRight?.text || '(sin emparejar)'}
-                          </span>
-                          {!isCorrect && (
-                            <span className="text-[#08775E]">
-                              Correcto: <strong>{pair.right}</strong>
-                            </span>
-                          )}
-                        </div>
-                      )
-                    })}
-                  </div>
-                )}
-              </div>
-            )
-          })()}
       </div>
     )
   }
