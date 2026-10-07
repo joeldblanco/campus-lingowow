@@ -390,7 +390,7 @@ function PossessiveAvatar({ kind }: { kind: PossessiveAvatarKind }) {
             alt="Peter, clean-shaven, with a rust-colored shirt"
             fill
             sizes="48px"
-            className="object-contain object-bottom"
+            className="origin-[50%_20%] scale-[2.4] object-contain object-bottom"
           />
         </span>
         <span className="relative -ml-2 h-12 w-12 overflow-hidden rounded-full">
@@ -399,7 +399,7 @@ function PossessiveAvatar({ kind }: { kind: PossessiveAvatarKind }) {
             alt="Ana, with a striped sweater"
             fill
             sizes="48px"
-            className="object-cover object-[85%_30%]"
+            className="origin-[85%_30%] scale-[2.4] object-cover object-[85%_30%]"
           />
         </span>
       </span>
@@ -419,7 +419,11 @@ function PossessiveAvatar({ kind }: { kind: PossessiveAvatarKind }) {
         }
         fill
         sizes="64px"
-        className={isAna ? 'object-cover object-[85%_30%]' : 'object-contain object-bottom'}
+        className={
+          isAna
+            ? 'origin-[85%_30%] scale-[2.4] object-cover object-[85%_30%]'
+            : 'origin-[50%_20%] scale-[2.4] object-contain object-bottom'
+        }
       />
     </span>
   )

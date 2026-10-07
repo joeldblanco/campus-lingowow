@@ -4,8 +4,14 @@ import type { Block } from '@/types/course-builder'
 import { isUnit1TeachingBlock, Unit1Teaching } from './unit1-teaching'
 
 vi.mock('next/image', () => ({
-  default: ({ src, alt }: { src: string; alt: string }) => (
-    <span role="img" aria-label={alt} data-testid="unit1-image" data-src={src} />
+  default: ({ src, alt, className }: { src: string; alt: string; className?: string }) => (
+    <span
+      role="img"
+      aria-label={alt}
+      data-testid="unit1-image"
+      data-src={src}
+      data-class-name={className}
+    />
   ),
 }))
 
@@ -120,6 +126,15 @@ describe('Unit 1 teaching blocks', () => {
     expect(container.querySelector('[data-unit1-avatar="pair"]')).toBeInTheDocument()
     expect(container.querySelectorAll('[data-src*="possessives.webp"]')).toHaveLength(2)
     expect(container.querySelectorAll('[data-testid="unit1-image"]')).toHaveLength(4)
+    expect(
+      container.querySelector('[data-unit1-avatar="peter"] [data-testid="unit1-image"]')
+    ).toHaveAttribute('data-class-name', expect.stringContaining('scale-[2.4]'))
+    expect(
+      container.querySelector('[data-unit1-avatar="ana"] [data-testid="unit1-image"]')
+    ).toHaveAttribute('data-class-name', expect.stringContaining('object-[85%_30%]'))
+    expect(
+      container.querySelector('[data-unit1-avatar="ana"] [data-testid="unit1-image"]')
+    ).toHaveAttribute('data-class-name', expect.stringContaining('scale-[2.4]'))
     expect(container.querySelector('[data-testid="unit1-image"][data-src*="lucas"]')).toBeNull()
 
     fireEvent.click(screen.getByText('Ver todos los posesivos'))
