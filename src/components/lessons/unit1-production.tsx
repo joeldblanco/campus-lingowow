@@ -17,7 +17,8 @@ import { RecordingAIGrading } from './recording-ai-grading'
 import { cn } from '@/lib/utils'
 import { useClassroomSync } from '@/components/classroom/use-classroom-sync'
 
-export type Unit1ProductionRole = 'sentences' | 'conversation' | 'profile' | 'presentation'
+import { getUnit1ProductionRole } from '@/lib/unit1-production-role'
+export { getUnit1ProductionRole, isUnit1ProductionBlock } from '@/lib/unit1-production-role'
 
 export interface Unit1ProductionProps {
   block: Block
@@ -66,29 +67,6 @@ function getUnit1Data(block: Block): Unit1Data {
 
 function asString(value: unknown): string | undefined {
   return typeof value === 'string' && value.trim() ? value : undefined
-}
-
-function getRoleValue(block: Block): Unit1ProductionRole | null {
-  const role = getUnit1Data(block).unit1Role
-  if (role === 'sentences' || role === 'conversation' || role === 'profile' || role === 'presentation') {
-    return role
-  }
-  return null
-}
-
-/** Returns true only for the explicitly authored Unit 1 production variants. */
-export function isUnit1ProductionBlock(block: Block): boolean {
-  const role = getRoleValue(block)
-  return (
-    (role === 'sentences' && block.type === 'essay') ||
-    (role === 'profile' && block.type === 'essay') ||
-    (role === 'conversation' && block.type === 'recording') ||
-    (role === 'presentation' && block.type === 'recording')
-  )
-}
-
-export function getUnit1ProductionRole(block: Block): Unit1ProductionRole | null {
-  return isUnit1ProductionBlock(block) ? getRoleValue(block) : null
 }
 
 function readArray(data: Unit1Data, keys: string[]): unknown[] {
@@ -376,7 +354,7 @@ function TeacherConversationMode({
 
   return (
     <div className="space-y-6" data-unit1-conversation-mode="teacher">
-      <p className="text-base leading-6 text-[#506187]">Hagan las preguntas por turnos.</p>
+        <p className="text-base leading-6 text-[#506187]">Pregunten y respondan por turnos.</p>
       <ol className="space-y-3" aria-label="Preguntas para practicar con tu profesora">
         {turns.map((turn, index) => (
           <li
@@ -385,9 +363,6 @@ function TeacherConversationMode({
           >
             <span className="mr-2 font-semibold text-[#506187]">{index + 1}.</span>
             <span>{turn.question}</span>
-            <span className="mt-1 block text-[#506187]">
-              {turn.answerPrompt || 'Responde y pregunta lo mismo.'}
-            </span>
           </li>
         ))}
       </ol>

@@ -425,7 +425,7 @@ function PossessiveAvatar({ kind }: { kind: PossessiveAvatarKind }) {
         className={
           isAna
             ? 'origin-[85%_30%] scale-[2.4] object-cover object-[85%_30%]'
-            : 'origin-[50%_20%] scale-[2.4] object-contain object-bottom'
+            : 'origin-[12%_0%] scale-[2.4] object-contain object-bottom'
         }
       />
     </span>

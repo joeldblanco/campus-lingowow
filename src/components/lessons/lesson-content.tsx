@@ -11,6 +11,7 @@ import { useState, useTransition } from 'react'
 import { toast } from 'sonner'
 import { GuidedLessonViewer } from './guided-lesson-viewer'
 import { buildCourseCompletionUrl } from '@/lib/course-completion'
+import { UNIT_ONE_LESSON_ID } from '@/lib/unit-one-learning'
 
 interface LessonContentProps {
   lesson: LessonForView
@@ -38,7 +39,7 @@ export function LessonContent({
   const [isCompleted, setIsCompleted] = useState(navigation?.isCompleted ?? false)
 
   const handleComplete = () => {
-    if (!courseId) return
+    if (!courseId) { setIsCompleted(true); return }
 
     startTransition(async () => {
       try {
@@ -64,16 +65,20 @@ export function LessonContent({
     mapContentToBlock(content as Parameters<typeof mapContentToBlock>[0])
   )
 
-  if (guidedStorageKey && !isTeacher && !isClassroom && !lesson.videoUrl && blocks.length > 0) {
+  const unitOneClassroom = lesson.id === UNIT_ONE_LESSON_ID && Boolean(isTeacher || isClassroom)
+  const viewerStorageKey = guidedStorageKey || `unit1:${lesson.id}`
+  if ((guidedStorageKey && !isTeacher && !isClassroom || unitOneClassroom) && !lesson.videoUrl && blocks.length > 0) {
     return (
       <GuidedLessonViewer
-        key={guidedStorageKey}
+        key={viewerStorageKey}
         blocks={blocks}
-        storageKey={guidedStorageKey}
-        onComplete={courseId && navigation ? handleComplete : undefined}
+        storageKey={viewerStorageKey}
+        onComplete={courseId && navigation || unitOneClassroom ? handleComplete : undefined}
         isPending={isPending}
         isCompleted={isCompleted}
         illustratedContent
+        isTeacher={isTeacher}
+        isClassroom={isClassroom}
       />
     )
   }

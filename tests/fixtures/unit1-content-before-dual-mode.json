@@ -1,0 +1,844 @@
+{
+  "rows": [
+    {
+      "id": "448e4bb1-e411-482d-8e51-7487b209fb45",
+      "title": "",
+      "description": null,
+      "order": 0,
+      "contentType": "AUDIO",
+      "lessonId": "cmk4otvgp0001w1p4ijdkv6i2",
+      "createdAt": "2026-04-01T04:23:52.321",
+      "updatedAt": "2026-10-05T23:37:08.761",
+      "data": {
+        "url": "https://res.cloudinary.com/dnjzg8tyg/video/upload/v1767397072/campus-lingowow/course-audio/Unit_1-1.wav",
+        "type": "audio",
+        "title": "",
+        "prompt": "Escucha el audio de dos personas hablando.",
+        "content": ""
+      },
+      "parentId": null
+    },
+    {
+      "id": "e03d6044-8e65-4013-8e3b-bb696b23dfb6",
+      "title": "Vocabulario",
+      "description": null,
+      "order": 1,
+      "contentType": "RICH_TEXT",
+      "lessonId": "cmk4otvgp0001w1p4ijdkv6i2",
+      "createdAt": "2026-04-01T04:23:52.598",
+      "updatedAt": "2026-10-05T23:37:08.772",
+      "data": {
+        "type": "vocabulary",
+        "items": [
+          {
+            "id": "d242203f-70ec-433c-89d2-a83cbb63d5df",
+            "icon": "User",
+            "term": "Name",
+            "example": "",
+            "definition": "Peter",
+            "pronunciation": ""
+          },
+          {
+            "id": "c557f6cc-9448-4bfe-b9c9-313bebca33aa",
+            "icon": "Users",
+            "term": "Family Name",
+            "example": "",
+            "definition": "Smith",
+            "pronunciation": ""
+          },
+          {
+            "id": "d47665b1-144a-4537-b750-f3644c33cb9f",
+            "icon": "Briefcase",
+            "term": "Occupation",
+            "example": "",
+            "definition": "Teacher",
+            "pronunciation": ""
+          },
+          {
+            "id": "830200e0-8b62-40b4-9a0b-b4159fb62a3d",
+            "icon": "MoreHorizontal",
+            "term": "Spelling",
+            "example": "",
+            "definition": "P-E-T-E-R",
+            "pronunciation": ""
+          },
+          {
+            "id": "5d5534a1-5183-4a05-82c3-914399fc3209",
+            "icon": "Baby",
+            "term": "Age",
+            "example": "",
+            "definition": "20 years old",
+            "pronunciation": ""
+          },
+          {
+            "id": "86aa9e78-45e7-44c7-9a12-001abbdec9b6",
+            "icon": "Globe",
+            "term": "Origin",
+            "example": "",
+            "definition": "The US",
+            "pronunciation": ""
+          },
+          {
+            "id": "0a72cce9-f48e-4f64-b815-a21a97a82ad4",
+            "icon": "MapPin",
+            "term": "Address",
+            "example": "",
+            "definition": "Lincoln Avenue, 23rd",
+            "pronunciation": ""
+          },
+          {
+            "id": "a29f255a-a466-44a8-92ec-577feaaebd9d",
+            "icon": "Smartphone",
+            "term": "Phone/Mail",
+            "example": "",
+            "definition": "01 154 8593",
+            "pronunciation": ""
+          },
+          {
+            "id": "509f9bfc-4b61-4474-b88c-a378907f43f4",
+            "icon": "Heart",
+            "term": "Marital Status",
+            "example": "",
+            "definition": "I am married but Jake is single",
+            "pronunciation": ""
+          }
+        ],
+        "title": "Vocabulario",
+        "content": ""
+      },
+      "parentId": null
+    },
+    {
+      "id": "dev-unit1-interleaved-vocabulary",
+      "title": "Práctica de vocabulario",
+      "description": null,
+      "order": 2,
+      "contentType": "RICH_TEXT",
+      "lessonId": "cmk4otvgp0001w1p4ijdkv6i2",
+      "createdAt": "2026-10-05T23:37:08.777",
+      "updatedAt": "2026-10-05T23:37:08.777",
+      "data": {
+        "type": "match",
+        "pairs": [
+          {
+            "id": "vocab-0",
+            "left": "Name",
+            "right": "Peter"
+          },
+          {
+            "id": "vocab-1",
+            "left": "Family Name",
+            "right": "Smith"
+          },
+          {
+            "id": "vocab-2",
+            "left": "Occupation",
+            "right": "Teacher"
+          },
+          {
+            "id": "vocab-3",
+            "left": "Spelling",
+            "right": "P-E-T-E-R"
+          },
+          {
+            "id": "vocab-4",
+            "left": "Age",
+            "right": "20 years old"
+          },
+          {
+            "id": "vocab-5",
+            "left": "Origin",
+            "right": "The US"
+          },
+          {
+            "id": "vocab-6",
+            "left": "Address",
+            "right": "Lincoln Avenue, 23rd"
+          },
+          {
+            "id": "vocab-7",
+            "left": "Phone/Mail",
+            "right": "01 154 8593"
+          },
+          {
+            "id": "vocab-8",
+            "left": "Marital Status",
+            "right": "I am married but Jake is single"
+          }
+        ],
+        "title": "Práctica de vocabulario"
+      },
+      "parentId": null
+    },
+    {
+      "id": "block_1768882120327",
+      "title": "Sugerencias para la clase",
+      "description": null,
+      "order": 3,
+      "contentType": "RICH_TEXT",
+      "lessonId": "cmk4otvgp0001w1p4ijdkv6i2",
+      "createdAt": "2026-04-01T04:23:52.912",
+      "updatedAt": "2026-10-05T23:37:08.782",
+      "data": {
+        "type": "teacher_notes",
+        "title": "Sugerencias para la clase",
+        "content": "<p data-path-to-node=\"5,0\"><b data-path-to-node=\"5,1,0,0\" data-index-in-node=\"0\">Claridad de vocabulario:</b> Explicar matices entre palabras parecidas (ej. <a href=\"https://www.lingowow.com/library/ocupacion-o-profesion-descubre-la-diferencia-para-impulsar-tu-perfil-internacional\"><i data-path-to-node=\"5,1,0,0\" data-index-in-node=\"72\">Profession</i> vs. <i data-path-to-node=\"5,1,0,0\" data-index-in-node=\"87\">Occupation</i></a>) y <a href=\"https://www.lingowow.com/library/last-name-surname-o-family-name-cual-es-la-diferencia-y-como-usarlos-correctamente\">variaciones de nombres (<i data-path-to-node=\"5,1,0,0\" data-index-in-node=\"125\" style=\"\">Family Name / Last Name / Surname</i>)</a>.</p><p data-path-to-node=\"5,0\"><b data-path-to-node=\"5,1,1,0\" data-index-in-node=\"0\"><br></b></p><p data-path-to-node=\"5,0\"><b data-path-to-node=\"5,1,1,0\" data-index-in-node=\"0\">Estrategias de aprendizaje:</b> Incluir tips extras como el <span data-path-to-node=\"5,1,1,0\" data-index-in-node=\"56\"><a href=\"https://www.lingowow.com/library/one-five-four-o-one-fifty-four-el-secreto-para-dictar-numeros-en-ingles-como-un-nativo-1\" style=\"\"><u style=\"\">chunking</u></a></span> para el manejo de números.</p>",
+        "highlightColor": "yellow"
+      },
+      "parentId": null
+    },
+    {
+      "id": "block_1768233937020",
+      "title": "Conjugación de Verbos - To Be",
+      "description": null,
+      "order": 4,
+      "contentType": "RICH_TEXT",
+      "lessonId": "cmk4otvgp0001w1p4ijdkv6i2",
+      "createdAt": "2026-04-01T04:23:53.047",
+      "updatedAt": "2026-10-05T23:37:08.786",
+      "data": {
+        "type": "structured-content",
+        "title": "Conjugación de Verbos - To Be",
+        "config": {
+          "hasBorders": true,
+          "hasHeaderRow": true,
+          "hasStripedRows": false
+        },
+        "content": {
+          "rows": [
+            [
+              "I",
+              "am"
+            ],
+            [
+              "You",
+              "are"
+            ],
+            [
+              "He/She/It",
+              "is"
+            ],
+            [
+              "We",
+              "are"
+            ],
+            [
+              "They",
+              "are"
+            ]
+          ],
+          "headers": [
+            "Pronombre",
+            "Verbo"
+          ]
+        },
+        "subtitle": "Presente Simple"
+      },
+      "parentId": null
+    },
+    {
+      "id": "block_1768234904236",
+      "title": "Nuevo Visualizador Gramatical",
+      "description": null,
+      "order": 5,
+      "contentType": "RICH_TEXT",
+      "lessonId": "cmk4otvgp0001w1p4ijdkv6i2",
+      "createdAt": "2026-04-01T04:23:53.183",
+      "updatedAt": "2026-10-05T23:37:08.789",
+      "data": {
+        "sets": [
+          {
+            "id": "set-default",
+            "title": "Presente Simple - To Be",
+            "variants": [
+              {
+                "id": "var-default-1",
+                "label": "Afirmativo",
+                "tokens": [
+                  {
+                    "id": "c757d77e-fb09-416e-9dcd-4167ea5b2915",
+                    "content": "I",
+                    "grammarType": "subject"
+                  },
+                  {
+                    "id": "45b54285-8345-430f-b4fc-cd5513bf6539",
+                    "content": "am",
+                    "grammarType": "linking-verb"
+                  },
+                  {
+                    "id": "d3065f47-3ff5-4f73-b679-a4cca57d9f3b",
+                    "content": "Lucas",
+                    "grammarType": "subject-complement"
+                  }
+                ],
+                "rawSentence": "I am Lucas"
+              },
+              {
+                "id": "f3d72910-491a-4870-a1c3-21423dafb82a",
+                "hint": "‘I am’ changes to ‘are you’ in questions.\n\nEjemplo: ‘I am a teacher → Are you a teacher?’",
+                "label": "Interrogativo",
+                "tokens": [
+                  {
+                    "id": "dcf6ba06-7cf5-4dbf-907b-1952f036ab21",
+                    "content": "Are",
+                    "grammarType": "linking-verb"
+                  },
+                  {
+                    "id": "53bbaa92-a81e-472e-b035-c62f68a303d5",
+                    "content": "you",
+                    "grammarType": "subject"
+                  },
+                  {
+                    "id": "89d1c7fa-391c-4eff-a302-2afca3fcb8c5",
+                    "content": "Lucas",
+                    "grammarType": "subject-complement"
+                  },
+                  {
+                    "id": "c41e3695-a709-44d2-bd15-56e87c46188b",
+                    "content": "?",
+                    "grammarType": "punctuation"
+                  }
+                ],
+                "rawSentence": "Are you Lucas?"
+              },
+              {
+                "id": "8bdcc662-cc19-47c6-a594-bf24a3f33e9a",
+                "label": "Negativo",
+                "tokens": [
+                  {
+                    "id": "9efd1bda-ff33-4f67-bf92-cebbfb93af7c",
+                    "content": "I",
+                    "grammarType": "subject"
+                  },
+                  {
+                    "id": "db7ef6fb-333e-491d-8799-b4b00aa7ac09",
+                    "content": "am",
+                    "grammarType": "linking-verb"
+                  },
+                  {
+                    "id": "516314f3-d0e2-4cd7-8ae5-659c61d11e7d",
+                    "content": "not",
+                    "grammarType": "negation"
+                  },
+                  {
+                    "id": "5d0b94b9-f66b-4be3-84fa-5738d5465778",
+                    "content": "Lucas",
+                    "grammarType": "subject-complement"
+                  }
+                ],
+                "rawSentence": "I am not Lucas"
+              }
+            ]
+          }
+        ],
+        "type": "grammar-visualizer",
+        "title": "Nuevo Visualizador Gramatical",
+        "content": ""
+      },
+      "parentId": null
+    },
+    {
+      "id": "dev-unit1-interleaved-to-be",
+      "title": "Práctica: To Be",
+      "description": null,
+      "order": 6,
+      "contentType": "RICH_TEXT",
+      "lessonId": "cmk4otvgp0001w1p4ijdkv6i2",
+      "createdAt": "2026-10-05T23:37:08.793",
+      "updatedAt": "2026-10-05T23:37:08.793",
+      "data": {
+        "type": "fill_blanks",
+        "items": [
+          {
+            "id": "be-i",
+            "content": "I [am] a student."
+          },
+          {
+            "id": "be-you",
+            "content": "You [are] a teacher."
+          },
+          {
+            "id": "be-she",
+            "content": "She [is] an engineer."
+          },
+          {
+            "id": "be-we",
+            "content": "We [are] students."
+          },
+          {
+            "id": "be-question",
+            "content": "[Are] you Lucas?"
+          },
+          {
+            "id": "be-negative",
+            "content": "I am [not] Lucas."
+          }
+        ],
+        "title": "Práctica: To Be"
+      },
+      "parentId": null
+    },
+    {
+      "id": "b0f06be9-2457-4552-a1a6-37cc0f606604",
+      "title": "Adjetivos Posesivos",
+      "description": null,
+      "order": 7,
+      "contentType": "RICH_TEXT",
+      "lessonId": "cmk4otvgp0001w1p4ijdkv6i2",
+      "createdAt": "2026-04-01T04:23:53.318",
+      "updatedAt": "2026-10-05T23:37:08.796",
+      "data": {
+        "type": "structured-content",
+        "title": "Adjetivos Posesivos",
+        "content": {
+          "rows": [
+            [
+              "I",
+              "My"
+            ],
+            [
+              "You",
+              "Your"
+            ],
+            [
+              "He",
+              "His"
+            ],
+            [
+              "She",
+              "Her"
+            ],
+            [
+              "It",
+              "Its"
+            ],
+            [
+              "We",
+              "Our"
+            ],
+            [
+              "You",
+              "Your"
+            ],
+            [
+              "They",
+              "Their"
+            ]
+          ],
+          "headers": [
+            "Pronombre",
+            "Adjetivo Posesivo"
+          ]
+        }
+      },
+      "parentId": null
+    },
+    {
+      "id": "dev-unit1-interleaved-possessives",
+      "title": "Práctica: adjetivos posesivos",
+      "description": null,
+      "order": 8,
+      "contentType": "RICH_TEXT",
+      "lessonId": "cmk4otvgp0001w1p4ijdkv6i2",
+      "createdAt": "2026-10-05T23:37:08.799",
+      "updatedAt": "2026-10-05T23:37:08.799",
+      "data": {
+        "type": "multiple_choice",
+        "items": [
+          {
+            "id": "poss-i",
+            "options": [
+              {
+                "id": "my",
+                "text": "My"
+              },
+              {
+                "id": "your",
+                "text": "Your"
+              },
+              {
+                "id": "his",
+                "text": "His"
+              }
+            ],
+            "question": "I am Peter. ___ name is Peter.",
+            "correctOptionId": "my"
+          },
+          {
+            "id": "poss-she",
+            "options": [
+              {
+                "id": "his",
+                "text": "His"
+              },
+              {
+                "id": "her",
+                "text": "Her"
+              },
+              {
+                "id": "their",
+                "text": "Their"
+              }
+            ],
+            "question": "She is Ana. ___ name is Ana.",
+            "correctOptionId": "her"
+          },
+          {
+            "id": "poss-we",
+            "options": [
+              {
+                "id": "our",
+                "text": "Our"
+              },
+              {
+                "id": "my",
+                "text": "My"
+              },
+              {
+                "id": "its",
+                "text": "Its"
+              }
+            ],
+            "question": "We are students. ___ teacher is Lucas.",
+            "correctOptionId": "our"
+          },
+          {
+            "id": "poss-they",
+            "options": [
+              {
+                "id": "your",
+                "text": "Your"
+              },
+              {
+                "id": "her",
+                "text": "Her"
+              },
+              {
+                "id": "their",
+                "text": "Their"
+              }
+            ],
+            "question": "They are teachers. ___ names are Peter and Ana.",
+            "correctOptionId": "their"
+          }
+        ],
+        "title": "Práctica: adjetivos posesivos"
+      },
+      "parentId": null
+    },
+    {
+      "id": "block_1768953748231",
+      "title": "Práctica integradora",
+      "description": null,
+      "order": 9,
+      "contentType": "RICH_TEXT",
+      "lessonId": "cmk4otvgp0001w1p4ijdkv6i2",
+      "createdAt": "2026-04-01T04:23:53.453",
+      "updatedAt": "2026-10-05T23:37:08.802",
+      "data": {
+        "type": "title",
+        "title": "Práctica integradora",
+        "content": ""
+      },
+      "parentId": null
+    },
+    {
+      "id": "block_1768234652918",
+      "title": "Lectura: Carl Johnson",
+      "description": null,
+      "order": 10,
+      "contentType": "RICH_TEXT",
+      "lessonId": "cmk4otvgp0001w1p4ijdkv6i2",
+      "createdAt": "2026-04-01T04:23:53.857",
+      "updatedAt": "2026-10-05T23:37:08.803",
+      "data": {
+        "type": "text",
+        "content": "<p><b>Carl Johnson</b></p><p><br></p><p><i>My name is Carl Johnson and I am 32 years old. I am from The USA but I live in Brazil now with my family. I am an environmental engineer and I work in The Amazon. Our house is in Sao Paulo. If you need to contact me, my telephone number is +55 789 452 321 and my email is carlj@hotmail.com</i></p>"
+      },
+      "parentId": null
+    },
+    {
+      "id": "dev-unit1-interleaved-reading",
+      "title": "Comprensión de lectura: Carl Johnson",
+      "description": null,
+      "order": 11,
+      "contentType": "RICH_TEXT",
+      "lessonId": "cmk4otvgp0001w1p4ijdkv6i2",
+      "createdAt": "2026-10-05T23:37:08.806",
+      "updatedAt": "2026-10-05T23:37:08.806",
+      "data": {
+        "type": "multiple_choice",
+        "items": [
+          {
+            "id": "carl-age",
+            "options": [
+              {
+                "id": "20",
+                "text": "20 years old"
+              },
+              {
+                "id": "32",
+                "text": "32 years old"
+              },
+              {
+                "id": "30",
+                "text": "30 years old"
+              }
+            ],
+            "question": "How old is Carl Johnson?",
+            "correctOptionId": "32"
+          },
+          {
+            "id": "carl-origin",
+            "options": [
+              {
+                "id": "brazil",
+                "text": "Brazil"
+              },
+              {
+                "id": "usa",
+                "text": "The USA"
+              },
+              {
+                "id": "mexico",
+                "text": "Mexico"
+              }
+            ],
+            "question": "Where is Carl from?",
+            "correctOptionId": "usa"
+          },
+          {
+            "id": "carl-location",
+            "options": [
+              {
+                "id": "usa",
+                "text": "The USA"
+              },
+              {
+                "id": "brazil",
+                "text": "Brazil"
+              },
+              {
+                "id": "mexico",
+                "text": "Mexico"
+              }
+            ],
+            "question": "Where does Carl live now?",
+            "correctOptionId": "brazil"
+          },
+          {
+            "id": "carl-job",
+            "options": [
+              {
+                "id": "teacher",
+                "text": "Teacher"
+              },
+              {
+                "id": "engineer",
+                "text": "Environmental engineer"
+              },
+              {
+                "id": "student",
+                "text": "Student"
+              }
+            ],
+            "question": "What is Carl’s occupation?",
+            "correctOptionId": "engineer"
+          },
+          {
+            "id": "carl-house",
+            "options": [
+              {
+                "id": "saopaulo",
+                "text": "Sao Paulo"
+              },
+              {
+                "id": "rio",
+                "text": "Rio de Janeiro"
+              },
+              {
+                "id": "miami",
+                "text": "Miami"
+              }
+            ],
+            "question": "Where is Carl’s house?",
+            "correctOptionId": "saopaulo"
+          }
+        ],
+        "title": "Comprensión de lectura: Carl Johnson"
+      },
+      "parentId": null
+    },
+    {
+      "id": "37caebcf-d2bf-487a-bcc4-d7e87d1b3d4b",
+      "title": "Comprensión Auditiva",
+      "description": null,
+      "order": 12,
+      "contentType": "AUDIO",
+      "lessonId": "cmk4otvgp0001w1p4ijdkv6i2",
+      "createdAt": "2026-04-01T04:23:53.585",
+      "updatedAt": "2026-10-07T04:20:56.448",
+      "data": {
+        "url": "https://res.cloudinary.com/dnjzg8tyg/video/upload/v1766895685/campus-lingowow/course-audio/Unit_1-2.wav",
+        "type": "audio",
+        "title": "Comprensión Auditiva",
+        "prompt": "Escucha y marca verdadero o falso.",
+        "content": ""
+      },
+      "parentId": null
+    },
+    {
+      "id": "92983cec-2105-41d9-a47b-7fc00acba4e3",
+      "title": "Comprensión Auditiva - Verdadero o Falso",
+      "description": null,
+      "order": 13,
+      "contentType": "RICH_TEXT",
+      "lessonId": "cmk4otvgp0001w1p4ijdkv6i2",
+      "createdAt": "2026-04-01T04:23:53.722",
+      "updatedAt": "2026-10-07T04:20:56.448",
+      "data": {
+        "type": "true_false",
+        "items": [
+          {
+            "id": "eac6c2b6-78af-48f3-9eac-ede896f25dfe",
+            "statement": "He is 20 years old.",
+            "correctAnswer": false
+          },
+          {
+            "id": "d0a38dfa-06d8-4aba-a8dd-e599233067a5",
+            "statement": "He is a university student.",
+            "correctAnswer": true
+          },
+          {
+            "id": "2bbb0060-b1c0-509d-971c-12a869177f8c",
+            "statement": "He works in a bakery.",
+            "correctAnswer": true
+          },
+          {
+            "id": "0371437b-bc35-5ed4-812a-d97ee6319e01",
+            "statement": "He works in the mornings.",
+            "correctAnswer": false
+          },
+          {
+            "id": "c43fac82-7a2a-4abf-a106-3bafda2aa801",
+            "statement": "He lives with his parents.",
+            "correctAnswer": false
+          },
+          {
+            "id": "37cc96e1-a94f-581d-8d7f-5039c7175a23",
+            "statement": "He uses a Gmail email address.",
+            "correctAnswer": true
+          }
+        ],
+        "title": "Comprensión Auditiva - Verdadero o Falso",
+        "content": "",
+        "listeningRevision": "unit1-listening-real-audio-v1",
+        "previousListeningItems": [
+          {
+            "id": "eac6c2b6-78af-48f3-9eac-ede896f25dfe",
+            "statement": "He is 20 years old.",
+            "correctAnswer": false
+          },
+          {
+            "id": "0fae1d61-a8b0-4be5-876e-fce10445505f",
+            "statement": "He works in a restaurant.",
+            "correctAnswer": false
+          },
+          {
+            "id": "c43fac82-7a2a-4abf-a106-3bafda2aa801",
+            "statement": "He lives with his parents.",
+            "correctAnswer": false
+          },
+          {
+            "id": "d0a38dfa-06d8-4aba-a8dd-e599233067a5",
+            "statement": "He is a university student.",
+            "correctAnswer": true
+          },
+          {
+            "id": "644e9640-6365-4dd7-8b60-88bfd6e4a4d7",
+            "statement": "His job is in the afternoons.",
+            "correctAnswer": true
+          },
+          {
+            "id": "b3df60ba-4b58-4751-8e41-248025e30e3c",
+            "statement": "His email address is @yahoo",
+            "correctAnswer": false
+          }
+        ]
+      },
+      "parentId": null
+    },
+    {
+      "id": "2f05bcbc-d5c9-4cbc-9a80-849d1d20b563",
+      "title": "Práctica final: escritura",
+      "description": null,
+      "order": 14,
+      "contentType": "RICH_TEXT",
+      "lessonId": "cmk4otvgp0001w1p4ijdkv6i2",
+      "createdAt": "2026-04-01T04:23:54.266",
+      "updatedAt": "2026-10-05T23:37:08.815",
+      "data": {
+        "type": "essay",
+        "title": "Práctica final: escritura",
+        "prompt": "Escribe un perfil de 30-50 palabras similar a la lectura donde uses tu propia información.",
+        "content": "",
+        "maxWords": 50,
+        "minWords": 30,
+        "aiGrading": true,
+        "aiGradingConfig": {
+          "rubric": {
+            "grammar": 30,
+            "coherence": 20,
+            "vocabulary": 25,
+            "taskCompletion": 25
+          },
+          "language": "english",
+          "targetLevel": "A1"
+        }
+      },
+      "parentId": null
+    },
+    {
+      "id": "8add680e-7b45-49fa-b111-479c628df5b5",
+      "title": "Práctica final: presentación oral",
+      "description": null,
+      "order": 15,
+      "contentType": "RICH_TEXT",
+      "lessonId": "cmk4otvgp0001w1p4ijdkv6i2",
+      "createdAt": "2026-04-01T04:23:53.992",
+      "updatedAt": "2026-10-05T23:37:08.818",
+      "data": {
+        "type": "recording",
+        "title": "Práctica final: presentación oral",
+        "prompt": "Imagina que eres un nuevo empleado en una oficina. Graba una presentación en inglés con tu nombre, edad, procedencia, ocupación e información de contacto. Usa el verbo to be y adjetivos posesivos.",
+        "content": "",
+        "aiGrading": true,
+        "timeLimit": 120,
+        "instruction": "Imagina que eres un nuevo empleado en una oficina. Graba una presentación en inglés con tu nombre, edad, procedencia, ocupación e información de contacto. Usa el verbo to be y adjetivos posesivos.",
+        "maxDuration": 120,
+        "aiGradingConfig": {
+          "language": "english",
+          "targetLevel": "A1"
+        }
+      },
+      "parentId": null
+    },
+    {
+      "id": "block_1768955778828",
+      "title": "Indicaciones para el profesor",
+      "description": null,
+      "order": 16,
+      "contentType": "RICH_TEXT",
+      "lessonId": "cmk4otvgp0001w1p4ijdkv6i2",
+      "createdAt": "2026-04-01T04:23:54.133",
+      "updatedAt": "2026-10-05T23:37:08.821",
+      "data": {
+        "type": "teacher_notes",
+        "title": "Indicaciones para el profesor",
+        "content": "<p>En clase, acompaña la práctica sin sustituir los ejercicios de la plataforma. La presentación oral y el texto escrito se evalúan automáticamente con IA; los ejercicios de vocabulario, gramática y comprensión usan sus claves de respuesta.</p>",
+        "highlightColor": "yellow"
+      },
+      "parentId": null
+    }
+  ]
+}

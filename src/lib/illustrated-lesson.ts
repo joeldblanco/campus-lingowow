@@ -38,6 +38,13 @@ export function buildIllustratedLessonSteps(blocks: Block[]): GuidedLessonStep[]
 }
 
 export function getIllustratedLessonTaskTitle(step: GuidedLessonStep): string {
+  const authoredTitles = step.blocks.find(block => Array.isArray(block.data?.guidedTitles))?.data?.guidedTitles
+  if (Array.isArray(authoredTitles)) {
+    const title = authoredTitles[(step.vocabularyPart?.index ?? 1) - 1]
+    if (typeof title === 'string') return title
+  }
+  const authoredTitle = step.blocks.find(block => typeof block.data?.guidedTitle === 'string')?.data?.guidedTitle
+  if (typeof authoredTitle === 'string') return authoredTitle
   const vocabulary = step.blocks.find((block) => block.type === 'vocabulary')
   const subject = step.sceneSubject || vocabulary?.items?.find((item) => item.term.trim().toLowerCase() === 'name')?.definition
   if (vocabulary && subject) {

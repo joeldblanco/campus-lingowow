@@ -196,7 +196,7 @@ describe('Unit 1 conversation production', () => {
     )
 
     fireEvent.click(screen.getByRole('button', { name: 'Con mi profesora' }))
-    expect(screen.getByText('Hagan las preguntas por turnos.')).toBeVisible()
+    expect(screen.getByText('Pregunten y respondan por turnos.')).toBeVisible()
     expect(screen.queryByRole('button', { name: 'Grabar respuesta' })).not.toBeInTheDocument()
     expect(target.querySelector('button')).toHaveTextContent('He practicado')
     fireEvent.click(target.querySelector('button') as HTMLButtonElement)
