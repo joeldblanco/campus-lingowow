@@ -25,6 +25,7 @@ import { Unit1Teaching, isUnit1TeachingBlock } from './unit1-teaching'
 import dynamic from 'next/dynamic'
 import { isUnit1ProductionBlock } from '@/lib/unit1-production-role'
 import { useClassroomSync } from '@/components/classroom/use-classroom-sync'
+import motion from './guided-lesson-viewer-motion.module.css'
 const Unit1Production = dynamic(() => import('./unit1-production').then(module => module.Unit1Production))
 
 interface GuidedLessonViewerProps {
@@ -36,6 +37,11 @@ interface GuidedLessonViewerProps {
   isTeacher?: boolean
   isClassroom?: boolean
   illustratedContent?: boolean
+}
+
+type StepTransition = {
+  stepIndex: number
+  direction: 'forward' | 'backward'
 }
 
 const STEP_ART: Partial<
@@ -81,6 +87,8 @@ export function GuidedLessonViewer({
   // session position after hydration so SSR markup stays deterministic.
   const [activeStep, setActiveStep] = useState(0)
   const [hydratedStorageKey, setHydratedStorageKey] = useState<string | null>(null)
+  const hydratedPositionKeyRef = useRef<string | null>(null)
+  const [stepTransition, setStepTransition] = useState<StepTransition | null>(null)
   const [recordingByBlockId, setRecordingByBlockId] = useState<Record<string, boolean>>({})
   const [navigationNotice, setNavigationNotice] = useState<string | null>(null)
   const viewerRef = useRef<HTMLElement>(null)
@@ -113,15 +121,32 @@ export function GuidedLessonViewer({
     ? currentStep?.blocks.filter((block) => GUIDED_ACTIVITIES.has(block.type)) ?? [] : []
   const hasActivityAction = currentActivities.length > 0
   const awaitingActivity = !(isTeacher && isClassroom) && currentActivities.some((block) => !completed[block.id])
+  const activeStepTransition = stepTransition?.stepIndex === activeStepIndex ? stepTransition : null
+  const sceneTransitionClass = activeStepTransition?.direction === 'forward'
+    ? motion.sceneForward
+    : activeStepTransition?.direction === 'backward'
+      ? motion.sceneBackward
+      : undefined
   const forwardActionClass = cn(
     'inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-base font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10245C] disabled:cursor-wait disabled:opacity-60',
     'bg-[#245CFF] text-white shadow-sm hover:bg-[#10245C]'
   )
 
   useEffect(() => {
+    if (steps.length === 0) {
+      hydratedPositionKeyRef.current = null
+      setHydratedStorageKey(null)
+      return
+    }
+
+    if (hydratedPositionKeyRef.current === positionStorageKey) {
+      return
+    }
+
+    hydratedPositionKeyRef.current = positionStorageKey
     setHydratedStorageKey(positionStorageKey)
-    setActiveStep(readGuidedLessonStepIndex(positionStorageKey, steps.length))
-  }, [positionStorageKey, steps.length])
+    setActiveStep(isCompleted ? 0 : readGuidedLessonStepIndex(positionStorageKey, steps.length))
+  }, [positionStorageKey, steps.length, isCompleted])
 
   useEffect(() => {
     setActiveStep((current) => (steps.length > 0 ? Math.min(current, steps.length - 1) : 0))
@@ -148,6 +173,15 @@ export function GuidedLessonViewer({
     const changedStep = previousStepRef.current !== activeStepIndex
 
     if (changedStep) {
+      const previousStep = previousStepRef.current
+      const direction = activeStepIndex > previousStep ? 'forward' : 'backward'
+
+      setStepTransition((current) =>
+        current?.stepIndex === activeStepIndex && current.direction === direction
+          ? current
+          : { stepIndex: activeStepIndex, direction }
+      )
+
       const hiddenAudio = viewerRef.current?.querySelectorAll<HTMLAudioElement>(
         '[data-guided-step][hidden] audio'
       )
@@ -176,7 +210,15 @@ export function GuidedLessonViewer({
     }
 
     setNavigationNotice(null)
-    setActiveStep(Math.min(Math.max(nextStep, 0), steps.length - 1))
+
+    const clampedStep = Math.min(Math.max(nextStep, 0), steps.length - 1)
+    if (clampedStep !== activeStepIndex) {
+      setStepTransition({
+        stepIndex: clampedStep,
+        direction: clampedStep > activeStepIndex ? 'forward' : 'backward',
+      })
+    }
+    setActiveStep(clampedStep)
   }
 
   const handleComplete = () => {
@@ -205,15 +247,28 @@ export function GuidedLessonViewer({
   return (
     <section
       ref={viewerRef}
-      className="guided-lesson-viewer relative isolate overflow-clip bg-[#FAF8F4] font-sans text-[#10245C]"
+      className={cn(motion.viewer, 'guided-lesson-viewer relative isolate overflow-clip bg-[#FAF8F4] font-sans text-[#10245C]')}
       aria-label="Lección guiada"
       data-illustrated={illustratedContent || undefined}
       data-unit1-authored={typeof authoredScene === 'string' || undefined}
       data-scene-side={sceneSide}
+      data-guided-step-transition={activeStepTransition?.direction}
     >
-      {typeof authoredScene === 'string' && <Unit1Scene src={authoredScene} side={sceneSide} />}
+      {typeof authoredScene === 'string' && (
+        <div
+          key={`authored-scene-${currentStep?.id ?? 'empty'}`}
+          className={cn(motion.sceneSlot, sceneTransitionClass)}
+        >
+          <Unit1Scene src={authoredScene} side={sceneSide} />
+        </div>
+      )}
       {illustratedContent && !currentStepArt && !authoredScene && (
-        <LessonSceneBackdrop variant="plain" src={currentSettingSrc} />
+        <div
+          key={`setting-backdrop-${currentStep?.id ?? 'empty'}`}
+          className={cn(motion.sceneSlot, sceneTransitionClass)}
+        >
+          <LessonSceneBackdrop variant="plain" src={currentSettingSrc} />
+        </div>
       )}
       <div className="relative border-b border-[#506187]/20 px-5 py-2 sm:px-8 sm:py-3">
         <div className="flex items-center gap-3 text-sm">
@@ -291,7 +346,14 @@ export function GuidedLessonViewer({
               data-guided-step={step.id}
               hidden={index !== activeStepIndex}
               aria-hidden={index !== activeStepIndex}
-              className="guided-lesson-step"
+              data-guided-step-transition={
+                activeStepTransition?.stepIndex === index ? activeStepTransition.direction : undefined
+              }
+              className={cn(
+                'guided-lesson-step',
+                activeStepTransition?.stepIndex === index &&
+                  (activeStepTransition.direction === 'forward' ? motion.stepEnterForward : motion.stepEnterBackward)
+              )}
             >
               <div
                 className={cn(
@@ -348,23 +410,40 @@ export function GuidedLessonViewer({
         </div>
 
         {currentStepArt && (
-          <GuidedLessonScene
-            src={currentStepArt.src}
-            kind={currentStep.kind}
-            variant={currentStepArt.variant}
-            subject={currentSceneSubject}
-            environment
-          />
+          <div
+            key={`step-art-${currentStep?.id ?? 'empty'}`}
+            className={cn(motion.sceneSlot, sceneTransitionClass)}
+          >
+            <GuidedLessonScene
+              src={currentStepArt.src}
+              kind={currentStep.kind}
+              variant={currentStepArt.variant}
+              subject={currentSceneSubject}
+              environment
+            />
+          </div>
         )}
 
-        {typeof authoredScene === 'string' && <Unit1Scene src={authoredScene} side={sceneSide} mobile />}
+        {typeof authoredScene === 'string' && (
+          <div
+            key={`authored-scene-mobile-${currentStep?.id ?? 'empty'}`}
+            className={cn(motion.sceneSlot, sceneTransitionClass)}
+          >
+            <Unit1Scene src={authoredScene} side={sceneSide} mobile />
+          </div>
+        )}
         {illustratedContent && !currentStepArt && !authoredScene && (
           <div
-            aria-hidden="true"
-            data-mobile-illustrated-setting
-            className="order-2 h-[320px] w-full bg-cover bg-center md:hidden"
-            style={{ backgroundImage: `url("${currentSettingSrc}")` }}
-          />
+            key={`setting-mobile-${currentStep?.id ?? 'empty'}`}
+            className={cn(motion.sceneSlot, sceneTransitionClass)}
+          >
+            <div
+              aria-hidden="true"
+              data-mobile-illustrated-setting
+              className="order-2 h-[320px] w-full bg-cover bg-center md:hidden"
+              style={{ backgroundImage: `url("${currentSettingSrc}")` }}
+            />
+          </div>
         )}
 
         {navigationNotice && (
