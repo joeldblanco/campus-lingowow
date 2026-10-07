@@ -65,8 +65,9 @@ import { sanitizeHtml } from '@/lib/sanitize-html'
 import { getGuidedEssayPrompt } from '@/lib/guided-essay-prompt'
 import {
   buildGuidedMatchOptions,
+  prepareGuidedMatchPairs,
+  isPilotGuidedMatchProfile,
   type GuidedMatchChoice,
-  type GuidedMatchPair,
 } from '@/lib/guided-match-options'
 import { EssayAIGrading as EssayAIGradingButton } from '@/components/lessons/essay-ai-grading'
 import { RecordingAIGrading } from '@/components/lessons/recording-ai-grading'
@@ -2541,7 +2542,8 @@ function GuidedMatchInteraction({
   onGuidedCompletionChange,
 }: MatchBlockPreviewProps) {
   const { syncBlockNavigation } = useClassroomSync()
-  const pairs = useMemo(() => (block.pairs || []) as GuidedMatchPair[], [block.pairs])
+  const identifyingPersonalData = isPilotGuidedMatchProfile(block.pairs || [], block.id)
+  const pairs = useMemo(() => prepareGuidedMatchPairs(block.pairs || [], block.id), [block.pairs, block.id])
   const pairSignature = pairs.map((pair) => `${pair.id}\u0000${pair.left}\u0000${pair.right}`).join('\u0001')
   const deterministicRandom = () => 0
   const [choicesByPair, setChoicesByPair] = useState<Record<string, GuidedMatchChoice[]>>(() =>
@@ -2730,7 +2732,7 @@ function GuidedMatchInteraction({
   return (
     <div ref={rootRef} className="space-y-6 text-[#10245C]" data-guided-match>
       {!guidedCompleted && (
-        <p className="text-base leading-6 text-[#506187]">Elige la respuesta para este dato.</p>
+        <p className="text-base leading-6 text-[#506187]">{identifyingPersonalData ? '¿Qué tipo de dato es?' : 'Elige la respuesta para este dato.'}</p>
       )}
       {guidedCompleted ? (
         <section

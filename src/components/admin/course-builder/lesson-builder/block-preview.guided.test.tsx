@@ -298,7 +298,8 @@ describe('BlockPreview guided appearance', () => {
     { id: 'second', left: 'Second', right: 'Beta' },
   ]
 
-  it('shows four pilot choices with the authored answer and keeps their order stable', () => {
+  it('teaches category recognition with four stable choices and advances after correction', () => {
+    vi.useFakeTimers()
     const pilotPairs = [
       { id: 'name', left: 'Name', right: 'Peter' },
       { id: 'family', left: 'Family Name', right: 'Smith' },
@@ -321,7 +322,10 @@ describe('BlockPreview guided appearance', () => {
       (button) => button.textContent
     )
     expect(container.querySelectorAll('[data-guided-match-choice]')).toHaveLength(4)
-    expect(firstOrder).toEqual(expect.arrayContaining(['Peter', 'Lucas', 'Carl', 'Jake']))
+    expect(screen.getByRole('heading', { name: 'My first name is Ana.' })).toBeInTheDocument()
+    expect(screen.getByText('¿Qué tipo de dato es?')).toBeInTheDocument()
+    expect(firstOrder).toContain('Name')
+    expect(firstOrder).not.toEqual(expect.arrayContaining(['Peter', 'Lucas', 'Carl', 'Jake']))
 
     rerender(
       <BlockPreview
@@ -334,6 +338,11 @@ describe('BlockPreview guided appearance', () => {
         (button) => button.textContent
       )
     ).toEqual(firstOrder)
+    fireEvent.click(screen.getByRole('button', { name: 'Name', exact: true }))
+    expect(screen.getByRole('status')).toHaveTextContent('¡Correcto!')
+    act(() => vi.advanceTimersByTime(GUIDED_MATCH_CORRECT_FEEDBACK_MS))
+    expect(screen.getByRole('heading', { name: 'My surname is Brown.' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Family Name', exact: true })).toBeInTheDocument()
   })
 
   it('confirms immediately, guards duplicate clicks, announces wrong feedback, and advances', () => {

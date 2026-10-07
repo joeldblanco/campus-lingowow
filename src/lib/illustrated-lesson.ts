@@ -1,3 +1,4 @@
+import { isPilotGuidedMatchProfile } from './guided-match-options'
 import type { Block } from '@/types/course-builder'
 import { buildGuidedLessonSteps, type GuidedLessonStep } from './guided-lesson'
 
@@ -46,7 +47,8 @@ export function getIllustratedLessonTaskTitle(step: GuidedLessonStep): string {
   }
   if (step.blocks.some((block) => block.type === 'grammar-visualizer' && block.sets?.length)) return 'Transforma la frase.'
   if (step.blocks.some((block) => block.type === 'structured-content' && block.content)) return step.label.toLowerCase().includes('posesivo') ? 'Consulta los posesivos.' : 'Consulta las formas.'
-  if (step.blocks.some((block) => block.type === 'match')) return 'Une cada dato.'
+  const matching = step.blocks.find(block => block.type === 'match')
+  if (matching?.type === 'match') return isPilotGuidedMatchProfile(matching.pairs || [], matching.id) ? 'Identifica el dato.' : 'Une cada dato.'
   if (step.blocks.some((block) => block.type === 'fill_blanks')) return 'Completa la frase.'
   if (step.blocks.some((block) => block.type === 'multiple_choice')) return 'Elige la respuesta.'
   if (step.blocks.some((block) => block.type === 'true_false')) return 'Escucha y decide.'
