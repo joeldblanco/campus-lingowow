@@ -26,6 +26,8 @@ export function assignLessonBackgrounds(steps: GuidedLessonStep[]): Record<strin
   const result: Record<string, string> = {}
   const reserved = new Set<string>()
   for (const step of steps) {
+    const authoredScene = step.blocks.find(block => typeof block.data?.scene === 'string')?.data?.scene
+    if (typeof authoredScene === 'string') { reserved.add(authoredScene); continue }
     if (step.kind === 'vocabulary' || step.kind === 'grammar' || step.kind === 'reading') continue
     const preferred = preferredBackground(step)
     if (preferred) reserved.add(preferred)
@@ -33,6 +35,8 @@ export function assignLessonBackgrounds(steps: GuidedLessonStep[]): Record<strin
   const available = LESSON_BACKGROUNDS.filter((src) => !reserved.has(src))
   const used = new Set<string>()
   for (const step of steps) {
+    const authoredScene = step.blocks.find(block => typeof block.data?.scene === 'string')?.data?.scene
+    if (typeof authoredScene === 'string') { result[step.id] = authoredScene; used.add(authoredScene); continue }
     // These scenes carry a named character's authored context. Vocabulary
     // parts deliberately remain in the same room as a continuous introduction.
     const character = step.kind === 'vocabulary' ? 'peter'

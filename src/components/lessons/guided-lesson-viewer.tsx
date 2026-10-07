@@ -20,6 +20,12 @@ import {
 } from '@/lib/illustrated-lesson'
 import { Block } from '@/types/course-builder'
 import { assignLessonBackgrounds } from '@/lib/lesson-backgrounds'
+import { Unit1Scene } from './unit1-scene'
+import { Unit1Teaching, isUnit1TeachingBlock } from './unit1-teaching'
+import dynamic from 'next/dynamic'
+import { isUnit1ProductionBlock } from '@/lib/unit1-production-role'
+import { useClassroomSync } from '@/components/classroom/use-classroom-sync'
+const Unit1Production = dynamic(() => import('./unit1-production').then(module => module.Unit1Production))
 
 interface GuidedLessonViewerProps {
   blocks: Block[]
@@ -68,7 +74,8 @@ export function GuidedLessonViewer({
       illustratedContent ? buildIllustratedLessonSteps(blocks) : buildGuidedLessonSteps(blocks),
     [blocks, illustratedContent]
   )
-  const positionStorageKey = illustratedContent ? `${storageKey}:scene-v2` : storageKey
+  const authoredRevision = blocks.find(block => typeof block.data?.learningRevision === 'string')?.data?.learningRevision
+  const positionStorageKey = illustratedContent ? `${storageKey}:${authoredRevision || 'scene-v2'}` : storageKey
   const { targets, callbacks, completed, completionCallbacks, captureTarget } = useGuidedLessonActions(steps)
   // Start at zero for the server and first client render, then restore the
   // session position after hydration so SSR markup stays deterministic.
@@ -79,6 +86,7 @@ export function GuidedLessonViewer({
   const viewerRef = useRef<HTMLElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
   const previousStepRef = useRef(activeStep)
+  const { syncBlockNavigation, remoteBlockNavigation } = useClassroomSync()
 
   const activeStepIndex = steps.length > 0 ? Math.min(activeStep, steps.length - 1) : 0
   const currentStep = steps[activeStepIndex]
@@ -88,7 +96,9 @@ export function GuidedLessonViewer({
       : currentStep?.label
   const isFinalStep = steps.length > 0 && activeStepIndex === steps.length - 1
   const isRecordingActive = Object.values(recordingByBlockId).some(Boolean)
-  const currentStepArt = illustratedContent && currentStep ? STEP_ART[currentStep.kind] : undefined
+  const authoredScene = currentStep?.blocks.find(block => typeof block.data?.scene === 'string')?.data?.scene
+  const sceneSide = currentStep?.blocks.find(block => block.data?.sceneSide === 'left') ? 'left' : 'right'
+  const currentStepArt = illustratedContent && currentStep && !authoredScene ? STEP_ART[currentStep.kind] : undefined
   const backgrounds = useMemo(
     () => illustratedContent ? assignLessonBackgrounds(steps) : {},
     [steps, illustratedContent]
@@ -102,7 +112,7 @@ export function GuidedLessonViewer({
   const currentActivities = illustratedContent
     ? currentStep?.blocks.filter((block) => GUIDED_ACTIVITIES.has(block.type)) ?? [] : []
   const hasActivityAction = currentActivities.length > 0
-  const awaitingActivity = currentActivities.some((block) => !completed[block.id])
+  const awaitingActivity = !(isTeacher && isClassroom) && currentActivities.some((block) => !completed[block.id])
   const forwardActionClass = cn(
     'inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-base font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10245C] disabled:cursor-wait disabled:opacity-60',
     'bg-[#245CFF] text-white shadow-sm hover:bg-[#10245C]'
@@ -121,6 +131,18 @@ export function GuidedLessonViewer({
     if (hydratedStorageKey !== positionStorageKey) return
     writeGuidedLessonStepIndex(positionStorageKey, activeStepIndex)
   }, [activeStepIndex, hydratedStorageKey, positionStorageKey])
+
+  useEffect(() => {
+    if (isClassroom && !isTeacher && hydratedStorageKey === positionStorageKey) {
+      syncBlockNavigation(positionStorageKey, activeStepIndex, steps.length, true, false)
+    }
+  }, [activeStepIndex, steps.length, isClassroom, isTeacher, positionStorageKey, hydratedStorageKey, syncBlockNavigation])
+  const remoteStep = remoteBlockNavigation.get(positionStorageKey)?.currentStep
+  useEffect(() => {
+    if (isClassroom && isTeacher && typeof remoteStep === 'number') {
+      setActiveStep(Math.min(Math.max(remoteStep, 0), Math.max(steps.length - 1, 0)))
+    }
+  }, [isClassroom, isTeacher, remoteStep, steps.length])
 
   useEffect(() => {
     const changedStep = previousStepRef.current !== activeStepIndex
@@ -186,8 +208,11 @@ export function GuidedLessonViewer({
       className="guided-lesson-viewer relative isolate overflow-clip bg-[#FAF8F4] font-sans text-[#10245C]"
       aria-label="Lección guiada"
       data-illustrated={illustratedContent || undefined}
+      data-unit1-authored={typeof authoredScene === 'string' || undefined}
+      data-scene-side={sceneSide}
     >
-      {illustratedContent && !currentStepArt && (
+      {typeof authoredScene === 'string' && <Unit1Scene src={authoredScene} side={sceneSide} />}
+      {illustratedContent && !currentStepArt && !authoredScene && (
         <LessonSceneBackdrop variant="plain" src={currentSettingSrc} />
       )}
       <div className="relative border-b border-[#506187]/20 px-5 py-2 sm:px-8 sm:py-3">
@@ -277,14 +302,22 @@ export function GuidedLessonViewer({
                     'guided-lesson-step--grammar-reference'
                 )}
               >
-                {step.blocks.map((block) => (
+                {step.blocks.filter((block, blockIndex) => !(block.data?.unit1Role === 'transform' && blockIndex > 0 && step.blocks.some(previous => previous.type === 'structured-content' && previous.data?.unit1Role === 'transform'))).map((block) => (
                   <div key={block.id} data-block-id={block.id} data-guided-block-type={block.type}>
                     <GuidedLessonBlock
                       block={block}
-                      enabled={illustratedContent}
+                      enabled={illustratedContent && !isUnit1TeachingBlock(block)}
                       suppressHeading={block.type === 'title' && block.title.trim() === step.label}
                     >
-                      <BlockPreview
+                      {isUnit1TeachingBlock(block) && block.type !== 'audio' ? <Unit1Teaching block={block} />
+                      : isUnit1ProductionBlock(block) && ['sentences', 'conversation'].includes(String(block.data?.unit1Role)) ? <Unit1Production
+                        block={block}
+                        guidedActionTarget={targets[step.id]}
+                        onGuidedCompletionChange={completionCallbacks[block.id]}
+                        isTeacher={isTeacher}
+                        isClassroom={isClassroom}
+                        onRecordingStateChange={(active) => setRecordingByBlockId(current => ({ ...current, [block.id]: active }))}
+                      /> : <BlockPreview
                         block={block}
                         isTeacher={isTeacher}
                         isClassroom={isClassroom}
@@ -300,7 +333,12 @@ export function GuidedLessonViewer({
                         onRecordingStateChange={(active) => {
                           setRecordingByBlockId((current) => ({ ...current, [block.id]: active }))
                         }}
-                      />
+                      />}
+                      {block.type === 'audio' && block.data?.unit1Role === 'intro-audio-notes' && <Unit1Teaching block={block} />}
+                      {block.data?.unit1Role === 'reading-practice' && <details className="unit1-source-reading mt-5">
+                        <summary className="cursor-pointer text-base font-medium text-[#10245C] underline underline-offset-4">Leer el perfil</summary>
+                        <div className="mt-4 text-base leading-7">{blocks.filter(source => source.id === 'block_1768234652918').map(source => <GuidedLessonBlock key={source.id} block={source}><BlockPreview block={source} hideBlockHeader guidedAppearance /></GuidedLessonBlock>)}</div>
+                      </details>}
                     </GuidedLessonBlock>
                   </div>
                 ))}
@@ -319,7 +357,8 @@ export function GuidedLessonViewer({
           />
         )}
 
-        {illustratedContent && !currentStepArt && (
+        {typeof authoredScene === 'string' && <Unit1Scene src={authoredScene} side={sceneSide} mobile />}
+        {illustratedContent && !currentStepArt && !authoredScene && (
           <div
             aria-hidden="true"
             data-mobile-illustrated-setting
@@ -402,6 +441,11 @@ export function GuidedLessonViewer({
           </div>
         </div>
       </div>
+
+      {isTeacher && blocks.some(block => block.type === 'teacher_notes') && <details className="relative z-10 mx-6 mb-6 rounded-2xl bg-white/95 p-4 text-sm">
+        <summary className="cursor-pointer font-semibold">Guía para la profesora</summary>
+        <div className="mt-4 space-y-4">{blocks.filter(block => block.type === 'teacher_notes').map(block => <BlockPreview key={block.id} block={block} isTeacher hideBlockHeader />)}</div>
+      </details>}
 
       <style>{`
         .guided-lesson-viewer {
@@ -613,6 +657,18 @@ export function GuidedLessonViewer({
           background: rgba(255, 255, 255, 0.52);
           padding: 16px;
         }
+
+        @media (min-width: 1024px) {
+          .unit1-scene-canvas { top: 64px; }
+          .guided-lesson-viewer[data-unit1-authored] .guided-lesson-main[data-guided-kind] { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 96px); }
+          .guided-lesson-viewer[data-unit1-authored] .guided-lesson-content { grid-column: 1; width: 100%; }
+          .guided-lesson-viewer[data-unit1-authored][data-scene-side='left'] .guided-lesson-content { grid-column: 2; }
+          .guided-lesson-viewer[data-unit1-authored] .guided-lesson-content::before { display: none; }
+          .guided-lesson-viewer[data-unit1-authored] .guided-lesson-footer { grid-column: 1 / -1; }
+        }
+        .unit1-source-reading { background: transparent; }
+        .unit1-source-reading [data-guided-reading] { background: transparent; }
+        .guided-lesson-viewer [data-unit1-role='sentences'] input:focus-visible { outline: none; box-shadow: 0 2px 0 #245CFF; }
 
         @media (prefers-reduced-motion: reduce) {
           .guided-lesson-viewer,
