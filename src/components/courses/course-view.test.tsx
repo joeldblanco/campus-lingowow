@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -316,6 +316,57 @@ describe('CourseView compact content', () => {
     expect(screen.getByText('Módulo 10')).toBeInTheDocument()
   })
 
+  it('opens a newly active module when refreshed server progress changes the next step', () => {
+    const first = makeModule('m1', 'Foundations', 1, 'c1')
+    const second = makeModule('m2', 'Conversation', 2, 'c2')
+    const course = makeCourse([first, second]) as never
+    const progressBefore = makeProgress([], 2)
+    const progressAfter = makeProgress(['c1'], 2)
+    const moduleProgressBefore = [
+      {
+        moduleId: 'm1',
+        totalContents: 1,
+        completedContents: 0,
+        percentage: 0,
+        isCompleted: false,
+        isLocked: false,
+        blockedByModuleId: null,
+        order: 1,
+      },
+      {
+        moduleId: 'm2',
+        totalContents: 1,
+        completedContents: 0,
+        percentage: 0,
+        isCompleted: false,
+        isLocked: false,
+        blockedByModuleId: null,
+        order: 2,
+      },
+    ]
+    const moduleProgressAfter = moduleProgressBefore.map((module) =>
+      module.moduleId === 'm1'
+        ? { ...module, completedContents: 1, percentage: 100, isCompleted: true }
+        : module
+    )
+    const { rerender } = render(
+      <CourseView
+        course={course}
+        progress={progressBefore}
+        moduleProgress={moduleProgressBefore}
+      />
+    )
+
+    expect(screen.getByText('1. Foundations lesson')).toBeInTheDocument()
+    expect(screen.queryByText('1. Conversation lesson')).not.toBeInTheDocument()
+
+    rerender(
+      <CourseView course={course} progress={progressAfter} moduleProgress={moduleProgressAfter} />
+    )
+
+    expect(screen.getByText('1. Conversation lesson')).toBeInTheDocument()
+  })
+
   it('returns to and celebrates the server-confirmed lesson, including a final module beyond eight', async () => {
     const modules = Array.from({ length: 10 }, (_, index) =>
       makeModule(`m${index + 1}`, `Módulo ${index + 1}`, index + 1, `c${index + 1}`)
@@ -439,5 +490,64 @@ describe('CourseView compact content', () => {
 
     render(<CourseView {...props} />)
     expect(screen.queryByRole('status')).not.toBeInTheDocument()
+  })
+
+  it('waits for the target to settle in view before starting the success glow', async () => {
+    const moduleItem = makeModule('m1', 'Foundations', 1, 'c1')
+    window.history.replaceState({}, '', '/my-courses/course-1?completedLesson=m1-lesson')
+    const scrollIntoView = vi.fn()
+    HTMLElement.prototype.scrollIntoView = scrollIntoView
+    let observeTarget: Element | undefined
+    let intersectionCallback: IntersectionObserverCallback | undefined
+    const originalIntersectionObserver = window.IntersectionObserver
+    class FakeIntersectionObserver {
+      constructor(callback: IntersectionObserverCallback) {
+        intersectionCallback = callback
+      }
+
+      observe(target: Element) {
+        observeTarget = target
+      }
+
+      disconnect() {}
+      unobserve() {}
+      takeRecords(): IntersectionObserverEntry[] {
+        return []
+      }
+    }
+    window.IntersectionObserver = FakeIntersectionObserver as unknown as typeof IntersectionObserver
+
+    render(
+      <CourseView
+        course={makeCourse([moduleItem]) as never}
+        progress={makeProgress(['c1'], 1)}
+        moduleProgress={[
+          {
+            moduleId: 'm1',
+            totalContents: 1,
+            completedContents: 1,
+            percentage: 100,
+            isCompleted: true,
+            isLocked: false,
+            blockedByModuleId: null,
+            order: 1,
+          },
+        ]}
+      />
+    )
+
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Lección completada'))
+    const target = screen.getByText('1. Foundations lesson').closest('[data-completion-target]')
+    expect(target).toBe(observeTarget)
+    expect(target).not.toHaveClass('course-completion-glow')
+
+    await act(async () => {
+      intersectionCallback?.(
+        [{ isIntersecting: true, intersectionRatio: 1 } as IntersectionObserverEntry],
+        {} as IntersectionObserver
+      )
+    })
+    expect(target).toHaveClass('course-completion-glow')
+    window.IntersectionObserver = originalIntersectionObserver
   })
 })

@@ -362,10 +362,11 @@ export function CourseView({ course, progress, moduleProgress }: CourseViewProps
     const initialModuleId = completionModuleId ?? activeModuleId
     return initialModuleId ? [initialModuleId] : []
   })
-  const [celebratedLessonId, setCelebratedLessonId] = useState<string | null>(null)
+  const [completionTargetLessonId, setCompletionTargetLessonId] = useState<string | null>(null)
+  const [completionAnimationLessonId, setCompletionAnimationLessonId] = useState<string | null>(null)
   const [completionAnnouncement, setCompletionAnnouncement] = useState<string | null>(null)
   const completionHandledRef = useRef(false)
-  const completionScrollHandledRef = useRef(false)
+  const completionRevealHandledRef = useRef(false)
 
   useEffect(() => {
     if (completionMarker !== null || typeof window === 'undefined') return
@@ -383,23 +384,91 @@ export function CourseView({ course, progress, moduleProgress }: CourseViewProps
     setOpenModuleIds((current) =>
       current.includes(completionModuleId) ? current : [...current, completionModuleId]
     )
-    setCelebratedLessonId(completionMarker)
+    setCompletionTargetLessonId(completionMarker)
     setCompletionAnnouncement('Lección completada')
   }, [completionIsAuthoritative, completionMarker, completionModuleId])
 
   useEffect(() => {
-    if (!celebratedLessonId || completionScrollHandledRef.current) return
+    if (!activeModuleId) return
+
+    setOpenModuleIds((current) =>
+      current.includes(activeModuleId) ? current : [...current, activeModuleId]
+    )
+  }, [activeModuleId])
+
+  useEffect(() => {
+    if (!completionTargetLessonId || completionRevealHandledRef.current) return
 
     const target = Array.from(
       document.querySelectorAll<HTMLElement>('[data-lesson-id]')
-    ).find((element) => element.dataset.lessonId === celebratedLessonId)
+    ).find((element) => element.dataset.lessonId === completionTargetLessonId)
     if (!target) return
 
     const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
     target.scrollIntoView?.({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' })
     target.focus({ preventScroll: true })
-    completionScrollHandledRef.current = true
-  }, [celebratedLessonId, openModuleIds, showAllModules])
+    completionRevealHandledRef.current = true
+
+    if (reducedMotion) {
+      setCompletionAnimationLessonId(completionTargetLessonId)
+      return
+    }
+
+    let settled = false
+    let observer: IntersectionObserver | null = null
+    let pollId: number | undefined
+    const startedAt = Date.now()
+    const maxWaitMs = 1200
+
+    const isVisible = () => {
+      const rect = target.getBoundingClientRect()
+      // jsdom and some embedded webviews report no layout box; the scroll call
+      // is still the best available settlement signal in those environments.
+      if (rect.width === 0 && rect.height === 0) return true
+      const viewportWidth = window.innerWidth || document.documentElement.clientWidth
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight
+      return rect.top < viewportHeight && rect.bottom > 0 && rect.left < viewportWidth && rect.right > 0
+    }
+
+    const settle = () => {
+      if (settled) return
+      settled = true
+      if (pollId !== undefined) window.clearTimeout(pollId)
+      observer?.disconnect()
+      window.removeEventListener('scrollend', settle)
+      setCompletionAnimationLessonId(completionTargetLessonId)
+    }
+
+    const pollForSettlement = () => {
+      if (settled) return
+      if (isVisible() || Date.now() - startedAt >= maxWaitMs) {
+        settle()
+        return
+      }
+      pollId = window.setTimeout(pollForSettlement, 50)
+    }
+
+    if (typeof window.IntersectionObserver === 'function') {
+      observer = new window.IntersectionObserver(
+        (entries) => {
+          const entry = entries[0]
+          if (entry?.isIntersecting && entry.intersectionRatio >= 0.65) settle()
+        },
+        { threshold: [0.65] }
+      )
+      observer.observe(target)
+    }
+
+    window.addEventListener('scrollend', settle, { once: true })
+    pollId = window.setTimeout(pollForSettlement, 50)
+
+    return () => {
+      settled = true
+      if (pollId !== undefined) window.clearTimeout(pollId)
+      observer?.disconnect()
+      window.removeEventListener('scrollend', settle)
+    }
+  }, [completionTargetLessonId])
 
   const renderExamMeta = (exam: CourseExam) => (
     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500">
@@ -647,13 +716,16 @@ export function CourseView({ course, progress, moduleProgress }: CourseViewProps
                               const isLessonCompleted =
                                 lesson.contents.length > 0 && lessonProgress === lesson.contents.length
                               const isLessonInProgress = lessonProgress > 0 && !isLessonCompleted
-                              const isCelebrating = celebratedLessonId === lesson.id && isLessonCompleted
+                              const isCompletionTarget =
+                                completionTargetLessonId === lesson.id && isLessonCompleted
+                              const isCelebrating =
+                                completionAnimationLessonId === lesson.id && isLessonCompleted
 
                               return (
                                 <div
                                   key={lesson.id}
                                   data-lesson-id={lesson.id}
-                                  data-completion-target={isCelebrating ? 'true' : undefined}
+                                  data-completion-target={isCompletionTarget ? 'true' : undefined}
                                   tabIndex={-1}
                                   aria-label={isLessonCompleted ? `${lesson.title}, completada` : lesson.title}
                                   className={`scroll-mt-24 flex items-center justify-between gap-3 rounded-md px-2 py-2 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] ${
@@ -678,7 +750,7 @@ export function CourseView({ course, progress, moduleProgress }: CourseViewProps
                                       </h3>
                                       <p className="text-xs text-gray-500">
                                         {lessonProgress} de {lesson.contents.length} contenidos
-                                        {isCelebrating
+                                        {isCompletionTarget
                                           ? ' · Completada'
                                           : isLessonInProgress && ' · En progreso'}
                                       </p>
