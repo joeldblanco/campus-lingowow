@@ -343,6 +343,7 @@ export function GuidedLessonViewer({
         <div
           className={cn(
             'guided-lesson-footer order-4 mt-2 flex flex-col-reverse gap-4 border-t border-[#506187]/20 pt-4 sm:flex-row sm:items-center sm:justify-between',
+            illustratedContent && currentStep?.blocks.some((block) => block.type === 'match') && 'guided-lesson-footer--match',
             currentStepArt && 'md:col-span-2'
           )}
           data-guided-footer-shell
@@ -449,6 +450,8 @@ export function GuidedLessonViewer({
           background: #FAF8F4;
           padding-block: 8px;
         }
+
+        .guided-lesson-footer--match { position: static; }
 
         .guided-lesson-main--portrait {
           max-width: 1200px;
