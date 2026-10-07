@@ -1,0 +1,67 @@
+{
+  "status": "verified-and-published-to-dev",
+  "source": {
+    "audioUrl": "https://res.cloudinary.com/dnjzg8tyg/video/upload/v1766895685/campus-lingowow/course-audio/Unit_1-2.wav",
+    "sha256": "8ecf99c68ac421c19fb5cbf975d78a5f9ff1eb592f7c36afd4f599c64ca5f029",
+    "durationSeconds": 15.5709583333,
+    "verification": "Whisper small and base agree on all assessed facts; name/email username spelling not assessed."
+  },
+  "instruction": "Escucha y marca verdadero o falso.",
+  "items": [
+    {
+      "statement": "He is 20 years old.",
+      "correctAnswer": false,
+      "evidence": "I am 19 years old.",
+      "start": 0,
+      "end": 3.2,
+      "correction": "He is 19 years old.",
+      "id": "eac6c2b6-78af-48f3-9eac-ede896f25dfe"
+    },
+    {
+      "statement": "He is a university student.",
+      "correctAnswer": true,
+      "evidence": "I am a university student.",
+      "start": 3.6,
+      "end": 7.8,
+      "id": "d0a38dfa-06d8-4aba-a8dd-e599233067a5"
+    },
+    {
+      "statement": "He works in a bakery.",
+      "correctAnswer": true,
+      "evidence": "I work in a bakery.",
+      "start": 3.6,
+      "end": 7.8,
+      "id": "2bbb0060-b1c0-509d-971c-12a869177f8c"
+    },
+    {
+      "statement": "He works in the mornings.",
+      "correctAnswer": false,
+      "evidence": "In the afternoons, I work in a bakery.",
+      "start": 3.6,
+      "end": 7.8,
+      "correction": "He works in the afternoons.",
+      "id": "0371437b-bc35-5ed4-812a-d97ee6319e01"
+    },
+    {
+      "statement": "He lives with his parents.",
+      "correctAnswer": false,
+      "evidence": "I live alone, not with my parents.",
+      "start": 8.2,
+      "end": 10.3,
+      "correction": "He lives alone.",
+      "id": "c43fac82-7a2a-4abf-a106-3bafda2aa801"
+    },
+    {
+      "statement": "He uses a Gmail email address.",
+      "correctAnswer": true,
+      "evidence": "My email address is ... at gmail.com.",
+      "start": 11,
+      "end": 15.3,
+      "id": "37cc96e1-a94f-581d-8d7f-5039c7175a23"
+    }
+  ],
+  "revision": "unit1-listening-real-audio-v1",
+  "lessonId": "cmk4otvgp0001w1p4ijdkv6i2",
+  "audioBlockId": "37caebcf-d2bf-487a-bcc4-d7e87d1b3d4b",
+  "exerciseBlockId": "92983cec-2105-41d9-a47b-7fc00acba4e3"
+}
