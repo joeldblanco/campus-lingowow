@@ -4,11 +4,16 @@ from __future__ import annotations
 
 import copy
 import importlib.util
+import json
 import unittest
 from pathlib import Path
 
 
 SCRIPT_PATH = Path(__file__).parents[2] / "scripts" / "content" / "apply-unit1-learning.py"
+REVIEWED_PLAN_PATH = Path(
+    r"C:\Users\ACER\.codex\visualizations\2026\10\03\01a102c6-28e9-7d12-ab7a-d8b58f36616a"
+    r"\unit1-dual-mode-mockups\reviewed-content-plan.json"
+)
 SPEC = importlib.util.spec_from_file_location("apply_unit1_learning", SCRIPT_PATH)
 assert SPEC and SPEC.loader
 MODULE = importlib.util.module_from_spec(SPEC)
@@ -63,6 +68,14 @@ class ApplyUnit1LearningSafetyTests(unittest.TestCase):
         plan = make_plan()
         self.assertIs(MODULE.validate_plan(plan), plan)
 
+    def test_reviewed_snapshot_validates_when_available(self) -> None:
+        if not REVIEWED_PLAN_PATH.is_file():
+            self.skipTest("the local reviewed-content-plan.json artifact is unavailable")
+        with REVIEWED_PLAN_PATH.open(encoding="utf-8") as plan_file:
+            plan = json.load(plan_file)
+        self.assertEqual(len(MODULE.validate_plan(plan)["previousRows"]), 17)
+        self.assertEqual(len(plan["nextRows"]), 22)
+
     def test_invalid_lesson_is_rejected(self) -> None:
         plan = make_plan()
         plan["lessonId"] = "wrong-lesson"
@@ -98,6 +111,8 @@ class ApplyUnit1LearningSafetyTests(unittest.TestCase):
         sql = MODULE.generate_sql(plan)
         self.assertIn('AND c."order" = (previous_row->>\'order\')::integer', sql)
         self.assertIn('"order" = (next_row->>\'order\')::integer', sql)
+        self.assertIn('"createdAt", "updatedAt"', sql)
+        self.assertIn("CURRENT_TIMESTAMP,\n      CURRENT_TIMESTAMP", sql)
         self.assertIn("Content changed since the reviewed snapshot", sql)
 
     def test_sql_locks_inventory_and_checks_history_hashes(self) -> None:

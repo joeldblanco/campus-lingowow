@@ -328,7 +328,10 @@ BEGIN
        OR next_row->'parentId' IS NOT NULL AND next_row->'parentId' <> 'null'::jsonb THEN
       RAISE EXCEPTION 'New content must be top-level RICH_TEXT';
     END IF;
-    INSERT INTO contents (id, title, "order", "contentType", "lessonId", "parentId", data)
+    INSERT INTO contents (
+      id, title, "order", "contentType", "lessonId", "parentId", data,
+      "createdAt", "updatedAt"
+    )
     VALUES (
       next_row->>'id',
       next_row->>'title',
@@ -336,7 +339,9 @@ BEGIN
       (next_row->>'contentType')::"ContentType",
       {lesson},
       NULL,
-      NULLIF(next_row->'data', 'null'::jsonb)
+      NULLIF(next_row->'data', 'null'::jsonb),
+      CURRENT_TIMESTAMP,
+      CURRENT_TIMESTAMP
     );
   END LOOP;
 
