@@ -63,6 +63,11 @@ import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { sanitizeHtml } from '@/lib/sanitize-html'
 import { getGuidedEssayPrompt } from '@/lib/guided-essay-prompt'
+import {
+  buildGuidedMatchOptions,
+  type GuidedMatchChoice,
+  type GuidedMatchPair,
+} from '@/lib/guided-match-options'
 import { EssayAIGrading as EssayAIGradingButton } from '@/components/lessons/essay-ai-grading'
 import { RecordingAIGrading } from '@/components/lessons/recording-ai-grading'
 import { useClassroomSync } from '@/components/classroom/use-classroom-sync'
@@ -2497,7 +2502,364 @@ function FillBlanksBlockPreview({
   )
 }
 
-function MatchBlockPreview({
+type MatchBlockPreviewProps = {
+  block: MatchBlock
+  isExamMode?: boolean
+  hideHeader?: boolean
+  guidedAppearance?: boolean
+  guidedActionTarget?: HTMLElement | null
+  onGuidedActionPresence?: (present: boolean) => void
+  onGuidedCompletionChange?: (completed: boolean) => void
+}
+
+export const GUIDED_MATCH_CORRECT_FEEDBACK_MS = 900
+export const GUIDED_MATCH_WRONG_FEEDBACK_MS = 1800
+
+function MatchBlockPreview(props: MatchBlockPreviewProps) {
+  if (props.guidedAppearance && !props.isExamMode) {
+    return <GuidedMatchPreview {...props} />
+  }
+
+  return <ClassicMatchBlockPreview {...props} guidedAppearance={false} />
+}
+
+function GuidedMatchPreview(props: MatchBlockPreviewProps) {
+  const classroomSync = useClassroomSync()
+
+  // Guided illustrated activities are for the student viewer. Keep the
+  // existing classroom renderer (including teacher-following state) intact.
+  if (classroomSync.isInClassroom) {
+    return <ClassicMatchBlockPreview {...props} guidedAppearance={false} />
+  }
+
+  return <GuidedMatchInteraction {...props} />
+}
+
+function GuidedMatchInteraction({
+  block,
+  onGuidedActionPresence,
+  onGuidedCompletionChange,
+}: MatchBlockPreviewProps) {
+  const { syncBlockNavigation } = useClassroomSync()
+  const pairs = (block.pairs || []) as GuidedMatchPair[]
+  const pairSignature = pairs.map((pair) => `${pair.id}\u0000${pair.left}\u0000${pair.right}`).join('\u0001')
+  const deterministicRandom = () => 0
+  const [choicesByPair, setChoicesByPair] = useState<Record<string, GuidedMatchChoice[]>>(() =>
+    buildGuidedMatchOptions(pairs, { random: deterministicRandom, blockId: block.id })
+  )
+  const choicesRef = useRef(choicesByPair)
+  const hydratedSignatureRef = useRef<string | null>(null)
+  const previousSignatureRef = useRef(pairSignature)
+  const hasInteractedRef = useRef(false)
+  const processingChoiceRef = useRef(false)
+  const rootRef = useRef<HTMLDivElement>(null)
+  const questionRef = useRef<HTMLHeadingElement>(null)
+  const summaryRef = useRef<HTMLElement>(null)
+  const hasRenderedQuestionRef = useRef(false)
+  const [guidedPairIndex, setGuidedPairIndex] = useState(0)
+  const [guidedAnswers, setGuidedAnswers] = useState<
+    Record<string, { choiceId: string; text: string }>
+  >({})
+  const [feedback, setFeedback] = useState<{
+    pairIndex: number
+    selectedChoiceId: string
+    selectedText: string
+    isCorrect: boolean
+    correctText: string
+  } | null>(null)
+  const [guidedCompleted, setGuidedCompleted] = useState(false)
+
+  useEffect(() => {
+    const signatureChanged = previousSignatureRef.current !== pairSignature
+    if (signatureChanged) {
+      previousSignatureRef.current = pairSignature
+      hydratedSignatureRef.current = null
+      hasInteractedRef.current = false
+      processingChoiceRef.current = false
+      choicesRef.current = buildGuidedMatchOptions(pairs, {
+        random: deterministicRandom,
+        blockId: block.id,
+      })
+      setChoicesByPair(choicesRef.current)
+      setGuidedPairIndex(0)
+      setGuidedAnswers({})
+      setFeedback(null)
+      setGuidedCompleted(false)
+    }
+
+    if (hydratedSignatureRef.current === pairSignature || hasInteractedRef.current) return
+
+    hydratedSignatureRef.current = pairSignature
+    const randomizedChoices = buildGuidedMatchOptions(pairs, { blockId: block.id })
+    choicesRef.current = randomizedChoices
+    setChoicesByPair(randomizedChoices)
+  }, [pairSignature])
+
+  useGuidedActionPresence(true, false, onGuidedActionPresence)
+  useGuidedCompletion(
+    true,
+    guidedCompleted,
+    pairs.length > 0,
+    onGuidedCompletionChange
+  )
+
+  useEffect(() => {
+    if (!hasRenderedQuestionRef.current) {
+      hasRenderedQuestionRef.current = true
+      return
+    }
+
+    questionRef.current?.focus()
+  }, [guidedPairIndex])
+
+  useEffect(() => {
+    if (!guidedCompleted) return
+    summaryRef.current?.focus()
+  }, [guidedCompleted])
+
+  useEffect(() => {
+    if (!feedback) return
+
+    const currentFeedback = feedback
+    const stepElement = rootRef.current?.closest<HTMLElement>('[data-guided-step]')
+    let timeoutId: number | null = null
+
+    const isHidden = () =>
+      Boolean(
+        stepElement?.hidden || stepElement?.getAttribute('aria-hidden') === 'true'
+      )
+
+    const clearTimer = () => {
+      if (timeoutId !== null) {
+        window.clearTimeout(timeoutId)
+        timeoutId = null
+      }
+    }
+
+    const advance = () => {
+      timeoutId = null
+      processingChoiceRef.current = false
+
+      if (currentFeedback.pairIndex < pairs.length - 1) {
+        setGuidedPairIndex(currentFeedback.pairIndex + 1)
+        setFeedback(null)
+        return
+      }
+
+      setFeedback(null)
+      setGuidedCompleted(true)
+      const completedAnswers = Object.fromEntries(
+        Object.entries(guidedAnswers).map(([pairId, answer]) => [pairId, answer.choiceId])
+      )
+      syncBlockNavigation(
+        block.id,
+        currentFeedback.pairIndex,
+        pairs.length,
+        true,
+        true,
+        completedAnswers
+      )
+    }
+
+    const schedule = () => {
+      if (timeoutId !== null || isHidden()) return
+      timeoutId = window.setTimeout(
+        advance,
+        currentFeedback.isCorrect
+          ? GUIDED_MATCH_CORRECT_FEEDBACK_MS
+          : GUIDED_MATCH_WRONG_FEEDBACK_MS
+      )
+    }
+
+    let observer: MutationObserver | undefined
+    if (stepElement && typeof MutationObserver !== 'undefined') {
+      observer = new MutationObserver(() => {
+        if (isHidden()) clearTimer()
+        else schedule()
+      })
+      observer.observe(stepElement, { attributes: true, attributeFilter: ['hidden', 'aria-hidden'] })
+    }
+
+    schedule()
+    return () => {
+      clearTimer()
+      observer?.disconnect()
+    }
+  }, [block.id, feedback, guidedAnswers, pairs.length, syncBlockNavigation])
+
+  const currentPair = pairs[guidedPairIndex]
+  const currentChoices = currentPair ? choicesByPair[currentPair.id] || [] : []
+  const currentAnswer = currentPair ? guidedAnswers[currentPair.id] : undefined
+
+  const handleChoice = (choice: GuidedMatchChoice) => {
+    if (!currentPair || feedback || guidedCompleted || processingChoiceRef.current) return
+
+    processingChoiceRef.current = true
+    hasInteractedRef.current = true
+    const isCorrect = choice.id === currentPair.id
+    const nextAnswers = {
+      ...guidedAnswers,
+      [currentPair.id]: { choiceId: choice.id, text: choice.text },
+    }
+
+    setGuidedAnswers(nextAnswers)
+    setFeedback({
+      pairIndex: guidedPairIndex,
+      selectedChoiceId: choice.id,
+      selectedText: choice.text,
+      isCorrect,
+      correctText: currentPair.right,
+    })
+
+    syncBlockNavigation(
+      block.id,
+      guidedPairIndex,
+      pairs.length,
+      true,
+      false,
+      Object.fromEntries(
+        Object.entries(nextAnswers).map(([pairId, answer]) => [pairId, answer.choiceId])
+      )
+    )
+  }
+
+  const correctCount = pairs.filter(
+    (pair) => guidedAnswers[pair.id]?.choiceId === pair.id
+  ).length
+
+  return (
+    <div ref={rootRef} className="space-y-6 text-[#10245C]" data-guided-match>
+      {guidedCompleted ? (
+        <section
+          ref={summaryRef}
+          tabIndex={-1}
+          role="region"
+          aria-label="Resultado de asociaciones"
+          className="space-y-5 outline-none"
+        >
+          <div
+            role="status"
+            aria-live="polite"
+            className="text-base font-semibold leading-6 text-[#10245C]"
+          >
+            {correctCount === pairs.length
+              ? '¡Perfecto! Todas las respuestas son correctas.'
+              : `${correctCount} de ${pairs.length} respuestas correctas.`}
+          </div>
+
+          <div className="space-y-3" data-guided-match-summary>
+            {pairs.map((pair) => {
+              const submitted = guidedAnswers[pair.id]?.text || '(sin respuesta)'
+              const isCorrect = guidedAnswers[pair.id]?.choiceId === pair.id
+
+              return (
+                <div
+                  key={pair.id}
+                  className={cn(
+                    'rounded-[18px] border bg-white px-5 py-4 text-base leading-6 shadow-sm',
+                    isCorrect ? 'border-[#08775E]/40' : 'border-[#C13E50]/40'
+                  )}
+                  data-guided-match-summary-item={pair.id}
+                >
+                  {isCorrect ? (
+                    <p
+                      className="flex items-center gap-2 font-semibold text-[#08775E]"
+                      aria-label={`Correcto: ${pair.left}, ${submitted}`}
+                    >
+                      <span aria-hidden="true">✓</span>
+                      <span>
+                        {pair.left} <span aria-hidden="true">→</span> {submitted}
+                      </span>
+                      <span className="sr-only">Correcto</span>
+                    </p>
+                  ) : (
+                    <>
+                      <p className="font-semibold text-[#10245C]">{pair.left}</p>
+                      <p className="text-[#506187]">
+                        Tu respuesta: <span className="text-[#10245C]">{submitted}</span>
+                      </p>
+                      <p className="text-[#08775E]">
+                        Respuesta correcta: <strong>{pair.right}</strong>
+                      </p>
+                    </>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </section>
+      ) : currentPair ? (
+        <section aria-label="Actividad de emparejar" className="space-y-6">
+          <p className="text-sm leading-5 text-[#506187]">
+            Dato {guidedPairIndex + 1} de {pairs.length}
+          </p>
+
+          <h3
+            ref={questionRef}
+            tabIndex={-1}
+            className="font-[Georgia,serif] text-[24px] font-bold leading-7 tracking-tight text-[#10245C] outline-none sm:text-[28px] sm:leading-8"
+            data-guided-match-question
+          >
+            {currentPair.left}
+          </h3>
+
+          <div className="flex w-full max-w-[480px] flex-col gap-3" role="group" aria-label="Opciones de respuesta">
+            {currentChoices.map((choice) => {
+              const isSelected = currentAnswer?.choiceId === choice.id
+              const isCorrectChoice = feedback?.selectedChoiceId === choice.id && feedback.isCorrect
+              const isWrongChoice = feedback?.selectedChoiceId === choice.id && !feedback.isCorrect
+
+              return (
+                <button
+                  key={choice.id}
+                  type="button"
+                  disabled={Boolean(feedback) || guidedCompleted}
+                  aria-pressed={isSelected}
+                  data-guided-match-choice={choice.id}
+                  onClick={() => handleChoice(choice)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault()
+                      handleChoice(choice)
+                    }
+                  }}
+                  className={cn(
+                    'min-h-[58px] w-full rounded-[18px] border bg-white px-5 py-4 text-left text-base leading-6 text-[#10245C] shadow-[0_2px_8px_rgba(80,97,135,0.12)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2',
+                    !feedback && 'border-[#EEE8FA] hover:bg-[#EEE8FA]/50',
+                    isCorrectChoice && 'border-[#08775E] bg-[#08775E]/5',
+                    isWrongChoice && 'border-[#C13E50] bg-[#C13E50]/5',
+                    feedback && !isCorrectChoice && !isWrongChoice && 'border-[#EEE8FA] opacity-80'
+                  )}
+                >
+                  {choice.text}
+                </button>
+              )
+            })}
+          </div>
+
+          <p
+            role="status"
+            aria-live="polite"
+            className={cn(
+              'min-h-6 text-base leading-6',
+              feedback?.isCorrect ? 'text-[#08775E]' : 'text-[#C13E50]'
+            )}
+          >
+            {feedback
+              ? feedback.isCorrect
+                ? '¡Correcto!'
+                : `No exactamente. Respuesta correcta: ${feedback.correctText}`
+              : ''}
+          </p>
+        </section>
+      ) : (
+        <p className="text-base leading-6 text-[#506187]">Sin pares definidos</p>
+      )}
+    </div>
+  )
+}
+
+function ClassicMatchBlockPreview({
   block,
   isExamMode,
   hideHeader,
