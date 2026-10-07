@@ -49,6 +49,10 @@ const STEP_ART: Partial<
   },
 }
 
+const GUIDED_ACTIVITIES = new Set<Block['type']>([
+  'match', 'fill_blanks', 'multiple_choice', 'true_false', 'essay', 'recording',
+])
+
 export function GuidedLessonViewer({
   blocks,
   storageKey,
@@ -65,7 +69,7 @@ export function GuidedLessonViewer({
     [blocks, illustratedContent]
   )
   const positionStorageKey = illustratedContent ? `${storageKey}:scene-v2` : storageKey
-  const { targets, presence, callbacks, captureTarget } = useGuidedLessonActions(steps)
+  const { targets, callbacks, completed, completionCallbacks, captureTarget } = useGuidedLessonActions(steps)
   // Start at zero for the server and first client render, then restore the
   // session position after hydration so SSR markup stays deterministic.
   const [activeStep, setActiveStep] = useState(0)
@@ -95,13 +99,13 @@ export function GuidedLessonViewer({
     currentStep?.blocks
       .find((block) => block.type === 'vocabulary')
       ?.items?.find((item) => item.term.trim().toLowerCase() === 'name')?.definition
-  const hasActivityAction =
-    illustratedContent && currentStep?.blocks.some((block) => presence[block.id])
+  const currentActivities = illustratedContent
+    ? currentStep?.blocks.filter((block) => GUIDED_ACTIVITIES.has(block.type)) ?? [] : []
+  const hasActivityAction = currentActivities.length > 0
+  const awaitingActivity = currentActivities.some((block) => !completed[block.id])
   const forwardActionClass = cn(
     'inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-base font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10245C] disabled:cursor-wait disabled:opacity-60',
-    hasActivityAction
-      ? 'border border-[#506187] bg-[#FAF8F4] text-[#10245C] hover:bg-[#EEE8FA]'
-      : 'bg-[#245CFF] text-white shadow-sm hover:bg-[#10245C]'
+    'bg-[#245CFF] text-white shadow-sm hover:bg-[#10245C]'
   )
 
   useEffect(() => {
@@ -290,6 +294,9 @@ export function GuidedLessonViewer({
                         onGuidedActionPresence={
                           illustratedContent ? callbacks[block.id] : undefined
                         }
+                        onGuidedCompletionChange={
+                          illustratedContent ? completionCallbacks[block.id] : undefined
+                        }
                         onRecordingStateChange={(active) => {
                           setRecordingByBlockId((current) => ({ ...current, [block.id]: active }))
                         }}
@@ -340,25 +347,25 @@ export function GuidedLessonViewer({
           )}
           data-guided-footer-shell
         >
-          <button
+          {illustratedContent && activeStepIndex === 0 ? <span aria-hidden="true" /> : <button
             type="button"
             onClick={() => goToStep(activeStepIndex - 1)}
             disabled={activeStepIndex === 0}
             className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#506187] bg-[#FAF8F4] px-5 text-base font-semibold text-[#10245C] transition-colors hover:bg-[#EEE8FA] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10245C] disabled:cursor-not-allowed disabled:opacity-45"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            Atrás
-          </button>
+            {illustratedContent ? 'Paso anterior' : 'Atrás'}
+          </button>}
 
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-            {isFinalStep ? (
+            {!awaitingActivity && (isFinalStep ? (
               <button
                 type="button"
                 onClick={handleComplete}
                 disabled={isPending}
                 className={forwardActionClass}
               >
-                {isPending ? 'Guardando…' : 'Completar lección'}
+                {isPending ? 'Guardando…' : illustratedContent ? 'Terminar lección' : 'Completar lección'}
                 <Check className="h-4 w-4" aria-hidden="true" />
               </button>
             ) : (
@@ -367,19 +374,30 @@ export function GuidedLessonViewer({
                 onClick={() => goToStep(activeStepIndex + 1)}
                 className={forwardActionClass}
               >
-                {hasActivityAction ? 'Continuar lección' : 'Siguiente'}
+                {illustratedContent ? 'Continuar' : 'Siguiente'}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </button>
-            )}
+            ))}
             {illustratedContent &&
               steps.map((step, index) => (
                 <GuidedLessonActionSlot
                   key={step.id}
                   stepId={step.id}
-                  active={index === activeStepIndex}
+                  active={index === activeStepIndex &&
+                    step.blocks.some((block) => GUIDED_ACTIVITIES.has(block.type) && !completed[block.id])}
                   captureTarget={captureTarget}
                 />
               ))}
+            {hasActivityAction && awaitingActivity && (
+              <button
+                type="button"
+                onClick={() => isFinalStep ? handleComplete() : goToStep(activeStepIndex + 1)}
+                disabled={isRecordingActive || isPending}
+                className="min-h-11 rounded-full px-4 text-sm text-[#506187] underline underline-offset-4 hover:text-[#10245C] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10245C] disabled:opacity-45 sm:order-first"
+              >
+                Saltar ejercicio
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -565,6 +583,7 @@ export function GuidedLessonViewer({
         }
         @media (max-width: 1023px) {
           [data-illustrated-environment] { mask-image: linear-gradient(to bottom, transparent, black 2%, black 88%, transparent); }
+          .guided-lesson-viewer[data-illustrated] .guided-lesson-footer { position: static; }
         }
 
         .guided-lesson-viewer,

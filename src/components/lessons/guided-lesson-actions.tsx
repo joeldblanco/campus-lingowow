@@ -7,6 +7,7 @@ import type { GuidedLessonStep } from '@/lib/guided-lesson'
 export function useGuidedLessonActions(steps: GuidedLessonStep[]) {
   const [targets, setTargets] = useState<Record<string, HTMLElement | null>>({})
   const [presence, setPresence] = useState<Record<string, boolean>>({})
+  const [completed, setCompleted] = useState<Record<string, boolean>>({})
   const captureTarget = useCallback((stepId: string, element: HTMLElement | null) => {
     setTargets((current) => current[stepId] === element ? current : { ...current, [stepId]: element })
   }, [])
@@ -16,7 +17,13 @@ export function useGuidedLessonActions(steps: GuidedLessonStep[]) {
     }] as const))
   ), [steps])
 
-  return { targets, presence, callbacks, captureTarget }
+  const completionCallbacks = useMemo(() => Object.fromEntries(
+    steps.flatMap((step) => step.blocks.map((block) => [block.id, (done: boolean) => {
+      setCompleted((current) => current[block.id] === done ? current : { ...current, [block.id]: done })
+    }] as const))
+  ), [steps])
+
+  return { targets, presence, callbacks, completed, completionCallbacks, captureTarget }
 }
 
 export function GuidedLessonActionSlot({ stepId, active, captureTarget }: {
