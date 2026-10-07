@@ -37,11 +37,13 @@ export function LessonHeader({
           </Link>
 
           <div className="flex flex-col min-w-0">
-            <nav aria-label="Ubicación de la lección" className={guidedAppearance ? 'flex min-w-0 items-center gap-1 text-sm text-[#506187]' : 'flex items-center gap-1 text-xs text-gray-500 mb-0.5'}>
-              <span className={guidedAppearance ? 'truncate' : undefined}>{courseTitle}</span>
-              <ChevronRight className="w-3 h-3 shrink-0" aria-hidden="true" />
-              <span className={guidedAppearance ? 'truncate' : undefined}>{moduleTitle}</span>
-            </nav>
+            {!guidedAppearance && (
+              <nav aria-label="Ubicación de la lección" className="flex items-center gap-1 text-xs text-gray-500 mb-0.5">
+                <span>{courseTitle}</span>
+                <ChevronRight className="w-3 h-3 shrink-0" aria-hidden="true" />
+                <span>{moduleTitle}</span>
+              </nav>
+            )}
             <h1 className={guidedAppearance ? 'max-w-xl truncate text-sm font-semibold leading-6 text-[#10245c]' : 'text-lg font-bold text-gray-900 leading-none truncate max-w-xl'}>
               {title}
             </h1>
