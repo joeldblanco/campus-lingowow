@@ -62,6 +62,7 @@ import Image from 'next/image'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { sanitizeHtml } from '@/lib/sanitize-html'
+import { getGuidedEssayPrompt } from '@/lib/guided-essay-prompt'
 import { EssayAIGrading as EssayAIGradingButton } from '@/components/lessons/essay-ai-grading'
 import { RecordingAIGrading } from '@/components/lessons/recording-ai-grading'
 import { useClassroomSync } from '@/components/classroom/use-classroom-sync'
@@ -3473,6 +3474,7 @@ function EssayBlockPreview({
   onGuidedActionPresence?: (present: boolean) => void
 }) {
   void hideHeader // Essay blocks have a different layout
+  const essayPrompt = guidedAppearance ? getGuidedEssayPrompt(block) : block.prompt || 'Escribe tu respuesta aquí...'
   const [localText, setLocalText] = useState('')
 
   // En modo examen, usar las respuestas externas; de lo contrario, usar estado local
@@ -3536,7 +3538,7 @@ function EssayBlockPreview({
       <div className="space-y-2">
         {guidedAppearance ? (
           <p id={`guided-essay-prompt-${block.id}`} className="text-base leading-6 text-[#10245C]">
-            {block.prompt || 'Escribe tu respuesta aquí...'}
+            {essayPrompt}
           </p>
         ) : (
           <h3 className="font-bold text-lg">{block.prompt || 'Escribe tu respuesta aquí...'}</h3>
@@ -3548,7 +3550,7 @@ function EssayBlockPreview({
           )}
         >
           {block.minWords && <span>Mínimo {block.minWords} palabras</span>}
-          {block.aiGradingConfig?.targetLevel && (
+          {!guidedAppearance && block.aiGradingConfig?.targetLevel && (
             <span
               className={cn(
                 'px-1.5 py-0.5 rounded',
@@ -3610,7 +3612,7 @@ function EssayBlockPreview({
           const essayAction = block.aiGrading ? (
             <EssayAIGradingButton
               essayText={text}
-              prompt={block.prompt || ''}
+              prompt={guidedAppearance ? essayPrompt : block.prompt || ''}
               blockId={block.id}
               language={block.aiGradingConfig?.language}
               targetLevel={block.aiGradingConfig?.targetLevel}
