@@ -338,11 +338,11 @@ describe('BlockPreview guided appearance', () => {
         (button) => button.textContent
       )
     ).toEqual(firstOrder)
-    fireEvent.click(screen.getByRole('button', { name: 'Name', exact: true }))
+    fireEvent.click(screen.getByRole('button', { name: 'Name' }))
     expect(screen.getByRole('status')).toHaveTextContent('¡Correcto!')
     act(() => vi.advanceTimersByTime(GUIDED_MATCH_CORRECT_FEEDBACK_MS))
     expect(screen.getByRole('heading', { name: 'My surname is Brown.' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Family Name', exact: true })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Family Name' })).toBeInTheDocument()
   })
 
   it('confirms immediately, guards duplicate clicks, announces wrong feedback, and advances', () => {
