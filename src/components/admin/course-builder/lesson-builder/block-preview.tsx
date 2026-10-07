@@ -54,6 +54,7 @@ import {
   Edit3,
   MessageSquare,
   Blocks,
+  ArrowRight,
 } from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
 import { useState, useRef, useEffect, useMemo, type ReactNode } from 'react'
@@ -154,6 +155,36 @@ const GUIDED_PRIMARY_ACTION_CLASS =
   'min-h-12 rounded-full bg-[#245CFF] px-6 text-base leading-6 text-white hover:bg-[#245CFF]/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
 const GUIDED_SECONDARY_ACTION_CLASS =
   'min-h-11 rounded-full border-[#506187] bg-white px-5 text-base leading-6 text-[#10245C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
+
+type Unit1ProductionRole = 'sentences' | 'conversation' | 'profile' | 'presentation'
+
+function getUnit1ProductionRole(block: Block): Unit1ProductionRole | null {
+  const role = block.data?.unit1Role
+  if (
+    role !== 'sentences' &&
+    role !== 'conversation' &&
+    role !== 'profile' &&
+    role !== 'presentation'
+  ) {
+    return null
+  }
+
+  if ((role === 'sentences' || role === 'profile') && block.type === 'essay') return role
+  if ((role === 'conversation' || role === 'presentation') && block.type === 'recording') return role
+  return null
+}
+
+function getUnit1DataString(block: Block, key: string): string | undefined {
+  const value = block.data?.[key]
+  return typeof value === 'string' && value.trim() ? value : undefined
+}
+
+function getUnit1DataStrings(block: Block, key: string, fallback: string[]): string[] {
+  const value = block.data?.[key]
+  if (!Array.isArray(value)) return fallback
+  const strings = value.filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
+  return strings.length > 0 ? strings : fallback
+}
 
 export function BlockPreview({
   block,
@@ -2200,7 +2231,11 @@ function VocabularyBlockPreview({
 
 function FillBlanksBlockPreview(props: Parameters<typeof ClassicFillBlanksBlockPreview>[0]) {
   const classroom = useClassroomSync()
-  const automatic = Boolean(props.guidedAppearance && !props.isExamMode && !classroom.isInClassroom)
+  const automatic = Boolean(
+    props.guidedAppearance &&
+      !props.isExamMode &&
+      (!classroom.isInClassroom || !classroom.isTeacher)
+  )
   useGuidedActionPresence(automatic, false, automatic ? props.onGuidedActionPresence : undefined)
   return automatic
     ? <GuidedFillActivity items={props.block.items || []} onCompletionChange={props.onGuidedCompletionChange} />
@@ -3580,7 +3615,11 @@ function ClassicMatchBlockPreview({
 
 function TrueFalseBlockPreview(props: Parameters<typeof ClassicTrueFalseBlockPreview>[0]) {
   const classroom = useClassroomSync()
-  const automatic = Boolean(props.guidedAppearance && !props.isExamMode && !classroom.isInClassroom)
+  const automatic = Boolean(
+    props.guidedAppearance &&
+      !props.isExamMode &&
+      (!classroom.isInClassroom || !classroom.isTeacher)
+  )
   useGuidedActionPresence(automatic, false, automatic ? props.onGuidedActionPresence : undefined)
   return automatic ? <GuidedChoiceActivity
     questions={(props.block.items || []).map(item => ({
@@ -3945,9 +3984,17 @@ function EssayBlockPreview({
   onGuidedCompletionChange?: (completed: boolean) => void
 }) {
   void hideHeader // Essay blocks have a different layout
-  const essayPrompt = guidedAppearance ? getGuidedEssayPrompt(block) : block.prompt || 'Escribe tu respuesta aquí...'
+  const unit1Role = getUnit1ProductionRole(block)
+  const isUnit1Profile = guidedAppearance && unit1Role === 'profile'
+  const essayPrompt = isUnit1Profile
+    ? getUnit1DataString(block, 'productionPrompt') ||
+      'Escribe en inglés un perfil de 30–50 palabras con tu nombre, edad, origen, ocupación y dónde vives.'
+    : guidedAppearance
+      ? getGuidedEssayPrompt(block)
+      : block.prompt || 'Escribe tu respuesta aquí...'
   const [localText, setLocalText] = useState('')
   const [gradingState, setGradingState] = useState<'idle' | 'draft' | 'loading' | 'success' | 'error'>('idle')
+  const [showProfileExample, setShowProfileExample] = useState(false)
 
   // En modo examen, usar las respuestas externas; de lo contrario, usar estado local
   const externalText = (answer as string) || ''
@@ -3968,7 +4015,10 @@ function EssayBlockPreview({
     .trim()
     .split(/\s+/)
     .filter((w) => w.length > 0).length
-  const meetsMinWords = !block.minWords || wordCount >= block.minWords
+  const guidedMinWords = isUnit1Profile ? 30 : block.minWords
+  const guidedMaxWords = isUnit1Profile ? 50 : block.maxWords
+  const meetsMinWords = !guidedMinWords || wordCount >= guidedMinWords
+  const withinMaxWords = !guidedMaxWords || wordCount <= guidedMaxWords
   const hasEssayAction = !isTeacherInClassroom && !isExamMode
 
   useGuidedCompletion(
@@ -4011,7 +4061,7 @@ function EssayBlockPreview({
         </div>
       )}
 
-      {guidedAppearance && block.aiGrading && (
+      {guidedAppearance && block.aiGrading && !isUnit1Profile && (
         <span className="inline-flex items-center gap-1.5 text-sm text-[#506187]">
           <Sparkles className="h-4 w-4" />
           Autocorrección disponible
@@ -4026,13 +4076,36 @@ function EssayBlockPreview({
         ) : (
           <h3 className="font-bold text-lg">{block.prompt || 'Escribe tu respuesta aquí...'}</h3>
         )}
+        {isUnit1Profile && (
+          <>
+            <p className="text-base leading-6 text-[#506187]">
+              Nombre <span aria-hidden="true">·</span> Edad <span aria-hidden="true">·</span> Origen{' '}
+              <span aria-hidden="true">·</span> Ocupación <span aria-hidden="true">·</span> Dónde vives
+            </p>
+            <button
+              type="button"
+              aria-expanded={showProfileExample}
+              onClick={() => setShowProfileExample((open) => !open)}
+              className="inline-flex min-h-11 items-center gap-2 text-base font-semibold text-[#245CFF] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10245C]"
+            >
+              <span aria-hidden="true">›</span>
+              Ver ejemplo
+            </button>
+            {showProfileExample && (
+              <p className="rounded-2xl border border-[#EEE8FA] bg-white px-5 py-4 text-base leading-6 text-[#10245C]">
+                {getUnit1DataString(block, 'example') ||
+                  'My name is Sofia. I am 24 years old. I am from Mexico and I live in Puebla. I am a student.'}
+              </p>
+            )}
+          </>
+        )}
         <div
           className={cn(
             'flex flex-wrap gap-2',
             guidedAppearance ? 'text-sm text-[#506187]' : 'text-xs text-muted-foreground'
           )}
         >
-          {block.minWords && <span>Mínimo {block.minWords} palabras</span>}
+          {!isUnit1Profile && block.minWords && <span>Mínimo {block.minWords} palabras</span>}
           {!guidedAppearance && block.aiGradingConfig?.targetLevel && (
             <span
               className={cn(
@@ -4071,17 +4144,19 @@ function EssayBlockPreview({
         <span
           className={cn(
             guidedAppearance
-              ? block.minWords && wordCount < block.minWords
-                ? 'text-[#C13E50]'
-                : 'text-[#08775E]'
+              ? isUnit1Profile
+                ? 'text-[#506187]'
+                : block.minWords && wordCount < block.minWords
+                  ? 'text-[#C13E50]'
+                  : 'text-[#08775E]'
               : block.minWords && wordCount < block.minWords
                 ? 'text-red-500'
                 : 'text-green-600'
           )}
         >
-          {wordCount} palabras
+          {isUnit1Profile ? `${wordCount} / ${guidedMaxWords} palabras` : `${wordCount} palabras`}
         </span>
-        {block.maxWords && <span>Máx {block.maxWords}</span>}
+        {!isUnit1Profile && block.maxWords && <span>Máx {block.maxWords}</span>}
       </div>
 
       {isTeacherInClassroom && !displayText && (
@@ -4099,9 +4174,9 @@ function EssayBlockPreview({
               blockId={block.id}
               language={block.aiGradingConfig?.language}
               targetLevel={block.aiGradingConfig?.targetLevel}
-              disabled={!meetsMinWords || !text.trim()}
+              disabled={!meetsMinWords || !withinMaxWords || !text.trim()}
               className={guidedAppearance ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
-              label={guidedAppearance ? 'Corregir' : undefined}
+              label={guidedAppearance ? (isUnit1Profile ? 'Revisar mi texto' : 'Corregir') : undefined}
               onGraded={() => setGradingState('success')}
               onGradingStateChange={setGradingState}
               onSyncResponse={
@@ -4152,6 +4227,13 @@ function RecordingBlockPreview({
   onGuidedCompletionChange?: (completed: boolean) => void
 }) {
   void hideHeader // Recording blocks have a different layout
+  const unit1Role = getUnit1ProductionRole(block)
+  const isUnit1Presentation = guidedAppearance && unit1Role === 'presentation'
+  const presentationCues = getUnit1DataStrings(block, 'presentationCues', [
+    'Tu nombre y edad',
+    'De dónde eres y dónde vives',
+    'Tu ocupación y contacto',
+  ])
   const [isRecording, setIsRecording] = useState(false)
   const [timeLeft, setTimeLeft] = useState(block.timeLimit || 60)
   const [hasRecorded, setHasRecorded] = useState(false)
@@ -4164,9 +4246,22 @@ function RecordingBlockPreview({
   const audioChunksRef = useRef<Blob[]>([])
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const streamRef = useRef<MediaStream | null>(null)
+  const recordingStateCallbackRef = useRef(onRecordingStateChange)
+  const classroomSync = useClassroomSync()
+  const isTeacherInClassroom = classroomSync.isInClassroom && classroomSync.isTeacher
 
   const hasRecordingAction =
     Boolean(audioUrl) && hasRecorded && !isRecording && !isUploading && block.aiGrading !== false
+  const hasPresentationAction =
+    isUnit1Presentation &&
+    !isTeacherInClassroom &&
+    !isExamMode &&
+    block.aiGrading !== false &&
+    gradingState !== 'success'
+
+  useEffect(() => {
+    recordingStateCallbackRef.current = onRecordingStateChange
+  }, [onRecordingStateChange])
 
   useGuidedCompletion(
     guidedAppearance,
@@ -4176,7 +4271,7 @@ function RecordingBlockPreview({
   )
   useGuidedActionPresence(
     guidedAppearance,
-    hasRecordingAction && gradingState !== 'success',
+    (hasRecordingAction || hasPresentationAction) && gradingState !== 'success',
     onGuidedActionPresence
   )
 
@@ -4202,6 +4297,7 @@ function RecordingBlockPreview({
       if (audioUrl && !(answer as { audioUrl?: string })?.audioUrl) {
         URL.revokeObjectURL(audioUrl)
       }
+      recordingStateCallbackRef.current?.(false)
     }
   }, [audioUrl, answer])
 
@@ -4364,14 +4460,27 @@ function RecordingBlockPreview({
         <div className="space-y-2">
           {guidedAppearance ? (
             <p className="text-base leading-6 text-[#10245C]">
-              {block.instruction || block.prompt || 'Graba tu respuesta...'}
+              {isUnit1Presentation
+                ? getUnit1DataString(block, 'productionPrompt') ||
+                  block.instruction ||
+                  'Graba una presentación de 30–60 segundos.'
+                : block.instruction || block.prompt || 'Graba tu respuesta...'}
             </p>
           ) : (
             <h3 className="font-medium text-lg text-blue-900">
               {block.instruction || block.prompt || 'Graba tu respuesta...'}
             </h3>
           )}
-          {block.timeLimit && (
+          {isUnit1Presentation ? (
+            <ul className="mx-auto max-w-[28rem] space-y-2 text-left text-base leading-6 text-[#10245C]">
+              {presentationCues.map((cue) => (
+                <li key={cue} className="flex items-start gap-3">
+                  <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#245CFF]" aria-hidden="true" />
+                  {cue}
+                </li>
+              ))}
+            </ul>
+          ) : block.timeLimit ? (
             <span
               className={cn(
                 guidedAppearance
@@ -4381,7 +4490,7 @@ function RecordingBlockPreview({
             >
               {isRecording ? `Tiempo restante: ${timeLeft}s` : `Límite: ${block.timeLimit}s`}
             </span>
-          )}
+          ) : null}
         </div>
 
         <div className="flex justify-center">
@@ -4391,7 +4500,12 @@ function RecordingBlockPreview({
             onClick={toggleRecording}
             className={cn(
               guidedAppearance
-                ? 'relative flex h-28 w-28 cursor-pointer flex-col items-center justify-center gap-1 rounded-full border-2 border-[#245CFF] bg-white text-[#10245C] shadow-[0_0_0_12px_rgba(238,232,250,0.8)] transition-all hover:scale-105'
+                ? cn(
+                    'relative flex h-28 w-28 cursor-pointer flex-col items-center justify-center gap-1 rounded-full shadow-[0_0_0_12px_rgba(238,232,250,0.8)] transition-all hover:scale-105',
+                    isUnit1Presentation
+                      ? 'border-2 border-[#245CFF] bg-[#245CFF] text-white hover:bg-[#10245C]'
+                      : 'border-2 border-[#245CFF] bg-white text-[#10245C]'
+                  )
                 : 'relative flex h-20 w-20 items-center justify-center rounded-full shadow-lg cursor-pointer transition-all hover:scale-105' +
                     (isRecording
                       ? ' bg-white border-4 border-red-500'
@@ -4399,7 +4513,9 @@ function RecordingBlockPreview({
               guidedAppearance &&
                 (isRecording
                   ? 'border-4 border-[#C13E50] text-[#C13E50] shadow-[0_0_0_12px_rgba(193,62,80,0.12)]'
-                  : 'border-2 border-[#245CFF] text-[#10245C]')
+                  : isUnit1Presentation
+                    ? 'border-2 border-[#245CFF] bg-[#245CFF] text-white'
+                    : 'border-2 border-[#245CFF] text-[#10245C]')
             )}
           >
             {isRecording ? (
@@ -4412,7 +4528,14 @@ function RecordingBlockPreview({
             ) : (
               <>
                 <Mic
-                  className={cn('h-8 w-8', guidedAppearance ? 'text-[#245CFF]' : 'text-white')}
+                  className={cn(
+                    'h-8 w-8',
+                    guidedAppearance
+                      ? isUnit1Presentation
+                        ? 'text-white'
+                        : 'text-[#245CFF]'
+                      : 'text-white'
+                  )}
                 />
                 {guidedAppearance && <span className="text-base font-semibold">Grabar</span>}
               </>
@@ -4436,7 +4559,9 @@ function RecordingBlockPreview({
           }
         >
           {hasRecorded
-            ? 'Grabación completada. Haz clic para grabar de nuevo.'
+            ? isUnit1Presentation
+              ? 'Escucha tu grabación antes de enviarla.'
+              : 'Grabación completada. Haz clic para grabar de nuevo.'
             : isRecording
               ? 'Haz clic para detener'
               : 'Haz clic para comenzar a grabar'}
@@ -4495,9 +4620,9 @@ function RecordingBlockPreview({
         )}
 
         {/* AI Grading Button */}
-        {hasRecordingAction &&
+        {(hasRecordingAction || hasPresentationAction) &&
           (() => {
-            const gradingAction = (
+            const gradingAction = hasRecordingAction ? (
               <RecordingAIGrading
                 audioUrl={audioUrl as string}
                 instruction={block.instruction || block.prompt || ''}
@@ -4509,9 +4634,19 @@ function RecordingBlockPreview({
                 }
                 disabled={!audioUrl || isUploading}
                 className={guidedAppearance ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
+                buttonText={isUnit1Presentation ? 'Enviar grabación' : undefined}
                 onGraded={() => setGradingState('success')}
                 onGradingStateChange={setGradingState}
               />
+            ) : (
+              <Button
+                type="button"
+                disabled
+                className={guidedAppearance ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
+              >
+                Enviar grabación
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Button>
             )
 
             const renderedAction =
@@ -5187,7 +5322,11 @@ function MultiSelectBlockPreview({
 
 function MultipleChoiceBlockPreview(props: Parameters<typeof ClassicMultipleChoiceBlockPreview>[0]) {
   const classroom = useClassroomSync()
-  const automatic = Boolean(props.guidedAppearance && !props.isExamMode && !classroom.isInClassroom)
+  const automatic = Boolean(
+    props.guidedAppearance &&
+      !props.isExamMode &&
+      (!classroom.isInClassroom || !classroom.isTeacher)
+  )
   useGuidedActionPresence(automatic, false, automatic ? props.onGuidedActionPresence : undefined)
   const items = props.block.items?.length ? props.block.items : props.block.question ? [{
     id: props.block.id, question: props.block.question,
