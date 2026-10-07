@@ -1,6 +1,6 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import type { ReactNode } from 'react'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('next/link', () => ({
   default: ({ children, href, ...props }: { children: ReactNode; href: string }) => (
@@ -11,6 +11,19 @@ vi.mock('next/link', () => ({
 }))
 
 import { CourseView } from './course-view'
+
+const originalMatchMedia = window.matchMedia
+
+beforeEach(() => {
+  window.history.replaceState({}, '', '/')
+  window.matchMedia = vi.fn().mockReturnValue({ matches: false }) as typeof window.matchMedia
+})
+
+afterEach(() => {
+  cleanup()
+  window.history.replaceState({}, '', '/')
+  window.matchMedia = originalMatchMedia
+})
 
 type CourseModule = {
   id: string
@@ -301,5 +314,130 @@ describe('CourseView compact content', () => {
     fireEvent.click(showAll)
     expect(showAll).toHaveAttribute('aria-expanded', 'true')
     expect(screen.getByText('Módulo 10')).toBeInTheDocument()
+  })
+
+  it('returns to and celebrates the server-confirmed lesson, including a final module beyond eight', async () => {
+    const modules = Array.from({ length: 10 }, (_, index) =>
+      makeModule(`m${index + 1}`, `Módulo ${index + 1}`, index + 1, `c${index + 1}`)
+    )
+    const moduleProgress = modules.map((module) => ({
+      moduleId: module.id,
+      totalContents: 1,
+      completedContents: 1,
+      percentage: 100,
+      isCompleted: true,
+      isLocked: false,
+      blockedByModuleId: null,
+      order: Number(module.id.slice(1)),
+    }))
+    window.history.replaceState({}, '', '/my-courses/course-1?completedLesson=m10-lesson')
+    const scrollIntoView = vi.fn()
+    const focus = vi.spyOn(HTMLElement.prototype, 'focus')
+    HTMLElement.prototype.scrollIntoView = scrollIntoView
+
+    render(
+      <CourseView
+        course={makeCourse(modules) as never}
+        progress={makeProgress(modules.map((module) => `${module.id.replace('m', 'c')}`), 10)}
+        moduleProgress={moduleProgress}
+      />
+    )
+
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Lección completada'))
+    expect(screen.getByText('Módulo 10')).toBeInTheDocument()
+    expect(screen.getByText('1. Módulo 10 lesson').closest('[data-completion-target]')).toHaveAttribute(
+      'data-completion-target',
+      'true'
+    )
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'center' })
+    expect(focus).toHaveBeenCalled()
+    expect(window.location.search).toBe('')
+  })
+
+  it('clears invalid or unconfirmed markers without faking completion', async () => {
+    const modules = Array.from({ length: 10 }, (_, index) =>
+      makeModule(`m${index + 1}`, `Módulo ${index + 1}`, index + 1, `c${index + 1}`)
+    )
+    window.history.replaceState({}, '', '/my-courses/course-1?completedLesson=missing')
+
+    render(
+      <CourseView
+        course={makeCourse(modules) as never}
+        progress={makeProgress(['c1'], 10)}
+        moduleProgress={modules.map((module, index) => ({
+          moduleId: module.id,
+          totalContents: 1,
+          completedContents: index === 0 ? 1 : 0,
+          percentage: index === 0 ? 100 : 0,
+          isCompleted: index === 0,
+          isLocked: false,
+          blockedByModuleId: null,
+          order: index + 1,
+        }))}
+      />
+    )
+
+    await waitFor(() => expect(window.location.search).toBe(''))
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
+    expect(screen.queryByText('Módulo 10')).not.toBeInTheDocument()
+  })
+
+  it('uses automatic scrolling and keeps the completion message with reduced motion', async () => {
+    const moduleItem = makeModule('m1', 'Foundations', 1, 'c1')
+    window.history.replaceState({}, '', '/my-courses/course-1?completedLesson=m1-lesson')
+    window.matchMedia = vi.fn().mockReturnValue({ matches: true }) as typeof window.matchMedia
+    const scrollIntoView = vi.fn()
+    HTMLElement.prototype.scrollIntoView = scrollIntoView
+
+    render(
+      <CourseView
+        course={makeCourse([moduleItem]) as never}
+        progress={makeProgress(['c1'], 1)}
+        moduleProgress={[
+          {
+            moduleId: 'm1',
+            totalContents: 1,
+            completedContents: 1,
+            percentage: 100,
+            isCompleted: true,
+            isLocked: false,
+            blockedByModuleId: null,
+            order: 1,
+          },
+        ]}
+      />
+    )
+
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Lección completada'))
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto', block: 'center' })
+    expect(screen.getByRole('status')).toBeVisible()
+  })
+
+  it('does not replay a consumed marker after the course view remounts', async () => {
+    const moduleItem = makeModule('m1', 'Foundations', 1, 'c1')
+    const props = {
+      course: makeCourse([moduleItem]) as never,
+      progress: makeProgress(['c1'], 1),
+      moduleProgress: [
+        {
+          moduleId: 'm1',
+          totalContents: 1,
+          completedContents: 1,
+          percentage: 100,
+          isCompleted: true,
+          isLocked: false,
+          blockedByModuleId: null,
+          order: 1,
+        },
+      ],
+    }
+    window.history.replaceState({}, '', '/my-courses/course-1?completedLesson=m1-lesson')
+
+    render(<CourseView {...props} />)
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Lección completada'))
+    cleanup()
+
+    render(<CourseView {...props} />)
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
   })
 })
