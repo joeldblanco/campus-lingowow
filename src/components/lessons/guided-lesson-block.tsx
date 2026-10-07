@@ -274,7 +274,7 @@ function GrammarTransformationArrow() {
           strokeLinecap="round"
         />
         <path
-          d="m56 17 11 2-5 9"
+          d="M54.4 18.2L66 19L61.2 8.4"
           stroke="currentColor"
           strokeWidth="2.5"
           strokeLinecap="round"

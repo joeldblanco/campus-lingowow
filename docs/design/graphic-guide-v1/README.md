@@ -12,6 +12,15 @@ La [aplicación al piloto «This is me!»](pilot-implementation.md) delimita la 
 
 ## 1. Decisiones que no se negocian
 
+Actualización aprobada, 7 de octubre: en ejercicios guiados de elección única,
+seleccionar comprueba inmediatamente y la siguiente pregunta aparece tras una
+pausa breve de feedback. No añadir «Comprobar» ni «Siguiente pregunta» a ese flujo.
+En completar frases, «Comprobar» queda junto a la respuesta y Enter lo activa;
+después del feedback también se avanza automáticamente. El pie ofrece «Saltar
+ejercicio» y solo muestra «Continuar» cuando acaba el ejercicio. Esta regla
+prevalece sobre las referencias anteriores de Comprobar → Siguiente para esos
+tipos. Las evaluaciones y el aula en vivo conservan sus reglas propias.
+
 - La imagen aprobada es un punto medio **painterly editorial adulto y semirrealista**: proporciones naturales, rasgos suavizados, textura de pincel sutil y luz mate.
 - Quedan fuera el fotorrealismo con poros visibles, el render 3D, el anime, el acabado infantil o de caricatura plana, el plástico brillante y cualquier deriva hacia una estética fotográfica o de videojuego.
 - Cada pantalla tiene una tarea reconocible. Hay una mini-miga de unidad, un solo encabezado de tarea y un prompt en cuerpo de texto; el prompt no se convierte en un segundo encabezado.

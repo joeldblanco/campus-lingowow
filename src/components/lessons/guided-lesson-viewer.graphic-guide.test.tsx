@@ -27,6 +27,14 @@ describe('GuidedLessonViewer graphic guide shell', () => {
     sessionStorage.clear()
   })
 
+  it.each(['multiple_choice', 'true_false', 'fill_blanks'] as const)(
+    'keeps the %s exercise footer in normal flow so answers are never covered', (type) => {
+      const { container } = render(<GuidedLessonViewer blocks={[block(type, 'practice')]}
+        storageKey={`flow-${type}`} illustratedContent />)
+      expect(container.querySelector('[data-guided-footer-shell]')).toHaveClass('guided-lesson-footer--exercise')
+    }
+  )
+
   it('keeps one visible task heading and removes the duplicated step label from the header', () => {
     render(<GuidedLessonViewer blocks={[block('text', 'reading')]} storageKey="guide-heading" />)
 

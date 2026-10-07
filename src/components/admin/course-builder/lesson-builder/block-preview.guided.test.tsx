@@ -57,6 +57,22 @@ afterEach(() => {
 })
 
 describe('BlockPreview guided appearance', () => {
+  it('does not reveal answers or auto-advance in exam mode even with guided appearance', () => {
+    vi.useFakeTimers()
+    const changed = vi.fn()
+    render(<BlockPreview guidedAppearance isExamMode onAnswerChange={changed} answer={{}}
+      block={{ id: 'exam', type: 'true_false', order: 0, items: [
+        { id: 'first', statement: 'Exam statement.', correctAnswer: true },
+        { id: 'second', statement: 'Second exam statement.', correctAnswer: false },
+      ] }} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Verdadero' }))
+    expect(changed).toHaveBeenCalledWith({ first: true })
+    act(() => vi.advanceTimersByTime(2000))
+    expect(screen.getByText('Exam statement.')).toBeInTheDocument()
+    expect(screen.queryByText('Correcta')).not.toBeInTheDocument()
+    expect(screen.queryByText('¡Correcto!')).not.toBeInTheDocument()
+  })
+
   it('suppresses repeated labels and titles while preserving authored prompts', () => {
     render(
       <>
@@ -167,78 +183,22 @@ describe('BlockPreview guided appearance', () => {
     expect(screen.getByText('True or false practice')).toBeInTheDocument()
   })
 
-  it('keeps true/false selection neutral and preserves check behavior', () => {
+  it('checks true/false on selection without a footer checking action', () => {
+    vi.useFakeTimers()
     const target = document.createElement('div')
     document.body.appendChild(target)
-    const onGuidedActionPresence = vi.fn()
-
-    render(
-      <BlockPreview
-        guidedAppearance
-        guidedActionTarget={target}
-        onGuidedActionPresence={onGuidedActionPresence}
-        block={{
-          id: 'true-false',
-          type: 'true_false',
-          order: 0,
-          items: [{ id: 'statement', statement: 'Lucas lives in Lima.', correctAnswer: true }],
-        }}
-      />
-    )
-
-    const trueButton = screen.getByRole('button', { name: 'Verdadero' })
-    const falseButton = screen.getByRole('button', { name: 'Falso' })
-    expect(trueButton).toHaveAttribute('aria-pressed', 'false')
-    expect(falseButton).toHaveAttribute('aria-pressed', 'false')
-    expect(trueButton.className).not.toMatch(/green|red/)
-    expect(falseButton.className).not.toMatch(/green|red/)
-
-    const disabledCheckButton = target.querySelector('button')
-    expect(disabledCheckButton).toHaveTextContent('Comprobar')
-    expect(disabledCheckButton).toBeDisabled()
-    expect(onGuidedActionPresence).toHaveBeenLastCalledWith(true)
-
-    fireEvent.click(trueButton)
-    expect(trueButton).toHaveAttribute('aria-pressed', 'true')
-    expect(falseButton).toHaveAttribute('aria-pressed', 'false')
-
-    const checkButton = target.querySelector('button')
-    expect(checkButton).toHaveTextContent('Comprobar')
-    fireEvent.click(checkButton as HTMLButtonElement)
-
-    expect(screen.getByText('¡Correcto!')).toBeInTheDocument()
-    expect(onGuidedActionPresence).toHaveBeenLastCalledWith(false)
-  })
-
-  it('moves the checked two-question flow to the footer action', () => {
-    const target = document.createElement('div')
-    document.body.appendChild(target)
-
-    render(
-      <BlockPreview
-        guidedAppearance
-        guidedActionTarget={target}
-        block={{
-          id: 'true-false',
-          type: 'true_false',
-          order: 0,
-          items: [
-            { id: 'first', statement: 'First statement.', correctAnswer: true },
-            { id: 'second', statement: 'Second statement.', correctAnswer: false },
-          ],
-        }}
-      />
-    )
-
+    const presence = vi.fn()
+    render(<BlockPreview guidedAppearance guidedActionTarget={target} onGuidedActionPresence={presence}
+      block={{ id: 'tf', type: 'true_false', order: 0, items: [
+        { id: 'first', statement: 'First statement.', correctAnswer: true },
+        { id: 'second', statement: 'Second statement.', correctAnswer: false },
+      ] }} />)
+    expect(target.querySelector('button')).toBeNull()
+    expect(presence).toHaveBeenLastCalledWith(false)
     fireEvent.click(screen.getByRole('button', { name: 'Verdadero' }))
-    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
-
-    expect(target.querySelector('button')).toHaveTextContent('Siguiente pregunta')
-    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
-
+    expect(screen.queryByRole('button', { name: 'Comprobar' })).not.toBeInTheDocument()
+    act(() => vi.advanceTimersByTime(900))
     expect(screen.getByText('Second statement.')).toBeInTheDocument()
-    expect(target.querySelector('button')).toHaveTextContent('Comprobar')
-    expect(target.querySelector('button')).toBeDisabled()
   })
 
   it('keeps the default matching renderer and labels when guided mode is omitted', () => {
@@ -260,37 +220,22 @@ describe('BlockPreview guided appearance', () => {
     expect(screen.getByRole('button', { name: 'Reiniciar' })).toBeInTheDocument()
   })
 
-  it('reports completion only after every true/false question has been checked', () => {
-    const target = document.createElement('div')
-    const onGuidedCompletionChange = vi.fn()
-    document.body.appendChild(target)
-
-    render(
-      <BlockPreview
-        guidedAppearance
-        guidedActionTarget={target}
-        onGuidedCompletionChange={onGuidedCompletionChange}
-        block={{
-          id: 'true-false-completion',
-          type: 'true_false',
-          order: 0,
-          items: [
-            { id: 'first', statement: 'First statement.', correctAnswer: true },
-            { id: 'second', statement: 'Second statement.', correctAnswer: false },
-          ],
-        }}
-      />
-    )
-
+  it('waits for final true/false feedback before reporting completion', () => {
+    vi.useFakeTimers()
+    const complete = vi.fn()
+    render(<BlockPreview guidedAppearance onGuidedCompletionChange={complete} block={{
+      id: 'tf', type: 'true_false', order: 0, items: [
+        { id: 'first', statement: 'First statement.', correctAnswer: true },
+        { id: 'second', statement: 'Second statement.', correctAnswer: false },
+      ]
+    }} />)
     fireEvent.click(screen.getByRole('button', { name: 'Falso' }))
-    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
-    expect(onGuidedCompletionChange).toHaveBeenLastCalledWith(false)
-    expect(target.querySelector('button')).toHaveTextContent('Siguiente pregunta')
-
-    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
-    fireEvent.click(screen.getByRole('button', { name: 'Verdadero' }))
-    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
-    expect(onGuidedCompletionChange).toHaveBeenLastCalledWith(true)
+    expect(complete).toHaveBeenLastCalledWith(false)
+    act(() => vi.advanceTimersByTime(1800))
+    fireEvent.click(screen.getByRole('button', { name: 'Falso' }))
+    expect(complete).toHaveBeenLastCalledWith(false)
+    act(() => vi.advanceTimersByTime(900))
+    expect(complete).toHaveBeenLastCalledWith(true)
   })
 
   const guidedPairs = [
@@ -440,87 +385,46 @@ describe('BlockPreview guided appearance', () => {
     expect(vi.getTimerCount()).toBe(0)
   })
 
-  it('reports fill-in completion after checking all authored questions, including a wrong answer', () => {
+  it('checks fill blanks locally with Enter and automatically advances', () => {
+    vi.useFakeTimers()
+    const complete = vi.fn()
     const target = document.createElement('div')
-    const onGuidedCompletionChange = vi.fn()
     document.body.appendChild(target)
-
-    render(
-      <BlockPreview
-        guidedAppearance
-        guidedActionTarget={target}
-        onGuidedCompletionChange={onGuidedCompletionChange}
-        block={{
-          id: 'fill-completion',
-          type: 'fill_blanks',
-          order: 0,
-          items: [
-            { id: 'first', content: 'I [am] ready.' },
-            { id: 'second', content: 'You [are] ready.' },
-          ],
-        }}
-      />
-    )
-
-    const firstInput = screen.getByRole('textbox', { name: 'Respuesta 2' })
-    expect(target.querySelector('button')).toBeDisabled()
-    fireEvent.change(firstInput, { target: { value: 'is' } })
-    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
-    expect(onGuidedCompletionChange).toHaveBeenLastCalledWith(false)
-    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
-
-    const secondInput = screen.getByRole('textbox', { name: 'Respuesta 2' })
-    fireEvent.change(secondInput, { target: { value: 'are' } })
-    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
-    expect(onGuidedCompletionChange).toHaveBeenLastCalledWith(true)
+    render(<BlockPreview guidedAppearance guidedActionTarget={target} onGuidedCompletionChange={complete}
+      block={{ id: 'fill', type: 'fill_blanks', order: 0, items: [
+        { id: 'first', content: 'I [am] ready.' }, { id: 'second', content: 'You [are] ready.' },
+      ] }} />)
+    expect(target.querySelector('button')).toBeNull()
+    expect(screen.getByRole('button', { name: 'Comprobar' })).toBeDisabled()
+    const input = screen.getByRole('textbox', { name: 'Respuesta 2' })
+    fireEvent.change(input, { target: { value: 'is' } })
+    fireEvent.keyDown(input, { key: 'Enter' })
+    expect(complete).toHaveBeenLastCalledWith(false)
+    act(() => vi.advanceTimersByTime(1800))
+    const second = screen.getByRole('textbox', { name: 'Respuesta 2' })
+    fireEvent.change(second, { target: { value: 'are' } })
+    fireEvent.keyDown(second, { key: 'Enter' })
+    act(() => vi.advanceTimersByTime(900))
+    expect(complete).toHaveBeenLastCalledWith(true)
+    expect(screen.queryByRole('button', { name: 'Pregunta anterior' })).not.toBeInTheDocument()
   })
 
-  it('reports multiple-choice completion after every question is checked', () => {
-    const target = document.createElement('div')
-    const onGuidedCompletionChange = vi.fn()
-    document.body.appendChild(target)
-
-    render(
-      <BlockPreview
-        guidedAppearance
-        guidedActionTarget={target}
-        onGuidedCompletionChange={onGuidedCompletionChange}
-        block={{
-          id: 'choice-completion',
-          type: 'multiple_choice',
-          order: 0,
-          items: [
-            {
-              id: 'first',
-              question: 'First?',
-              options: [
-                { id: 'yes', text: 'Yes' },
-                { id: 'no', text: 'No' },
-              ],
-              correctOptionId: 'yes',
-            },
-            {
-              id: 'second',
-              question: 'Second?',
-              options: [
-                { id: 'yes', text: 'Yes' },
-                { id: 'no', text: 'No' },
-              ],
-              correctOptionId: 'no',
-            },
-          ],
-        }}
-      />
-    )
-
+  it('checks multiple choice directly and waits until final feedback to complete', () => {
+    vi.useFakeTimers()
+    const complete = vi.fn()
+    render(<BlockPreview guidedAppearance onGuidedCompletionChange={complete} block={{
+      id: 'mc', type: 'multiple_choice', order: 0, items: [
+        { id: 'first', question: 'First?', options: [{ id: 'yes', text: 'Yes' }, { id: 'no', text: 'No' }], correctOptionId: 'yes' },
+        { id: 'second', question: 'Second?', options: [{ id: 'yes', text: 'Yes' }, { id: 'no', text: 'No' }], correctOptionId: 'no' },
+      ]
+    }} />)
     fireEvent.click(screen.getByRole('button', { name: 'No' }))
-    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
-    expect(onGuidedCompletionChange).toHaveBeenLastCalledWith(false)
-    expect(target.querySelector('button')).toHaveTextContent('Siguiente pregunta')
-    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
+    expect(complete).toHaveBeenLastCalledWith(false)
+    act(() => vi.advanceTimersByTime(1800))
+    expect(screen.getByText('Second?')).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'No' }))
-    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
-    expect(onGuidedCompletionChange).toHaveBeenLastCalledWith(true)
+    act(() => vi.advanceTimersByTime(900))
+    expect(complete).toHaveBeenLastCalledWith(true)
   })
 
   it('uses Corregir for guided essay grading and invalidates completion when the draft changes', () => {
@@ -551,67 +455,15 @@ describe('BlockPreview guided appearance', () => {
     expect(onGuidedCompletionChange).toHaveBeenLastCalledWith(false)
   })
 
-  it('keeps fill-in and multiple-choice prompts compact and moves their primary actions', () => {
-    const fillTarget = document.createElement('div')
-    const choiceTarget = document.createElement('div')
-    document.body.append(fillTarget, choiceTarget)
-
-    render(
-      <>
-        <BlockPreview
-          guidedAppearance
-          guidedActionTarget={fillTarget}
-          block={{
-            id: 'to-be',
-            type: 'fill_blanks',
-            order: 0,
-            title: 'Práctica: To Be',
-            items: [{ id: 'be', content: 'I [am] a student.' }],
-          }}
-        />
-        <BlockPreview
-          guidedAppearance
-          guidedActionTarget={choiceTarget}
-          block={{
-            id: 'possessives',
-            type: 'multiple_choice',
-            order: 1,
-            items: [
-              {
-                id: 'poss-i',
-                question: 'I am Peter. ___ name is Peter.',
-                options: [
-                  { id: 'my', text: 'My' },
-                  { id: 'your', text: 'Your' },
-                ],
-                correctOptionId: 'my',
-              },
-            ],
-          }}
-        />
-      </>
-    )
-
-    expect(screen.queryByText('Rellenar Espacios')).not.toBeInTheDocument()
-    expect(screen.queryByText('Práctica: To Be')).not.toBeInTheDocument()
-    expect(fillTarget.querySelector('button')).toHaveTextContent('Comprobar')
-
-    const fillInput = screen.getByRole('textbox', { name: 'Respuesta 2' })
-    expect(fillInput).toHaveClass('min-h-11', 'text-base')
-    expect(fillInput.className).not.toMatch(/green|red/)
-    fireEvent.change(fillInput, { target: { value: 'am' } })
-    fireEvent.click(fillTarget.querySelector('button') as HTMLButtonElement)
-    expect(fillInput).not.toBeDisabled()
-
-    expect(screen.getByText('I am Peter. ___ name is Peter.')).toHaveClass('text-base', 'leading-6')
-    expect(screen.queryByText('Opción Múltiple')).not.toBeInTheDocument()
-    expect(choiceTarget.querySelector('button')).toHaveTextContent('Comprobar')
-    expect(choiceTarget.querySelector('button')).toBeDisabled()
-
-    const myChoice = screen.getByRole('button', { name: 'My' })
-    fireEvent.click(myChoice)
-    expect(myChoice).toHaveAttribute('aria-pressed', 'true')
-    expect(myChoice.className).not.toMatch(/green|red/)
-    expect(choiceTarget.querySelector('button')).not.toBeDisabled()
+  it('supports automatic checking for legacy single-question multiple choice', () => {
+    vi.useFakeTimers()
+    const complete = vi.fn()
+    render(<BlockPreview guidedAppearance onGuidedCompletionChange={complete} block={{
+      id: 'legacy', type: 'multiple_choice', order: 0, question: 'Choose a possessive.',
+      options: [{ id: 'my', text: 'My' }, { id: 'your', text: 'Your' }], correctOptionId: 'my',
+    }} />)
+    fireEvent.click(screen.getByRole('button', { name: 'My' }))
+    act(() => vi.advanceTimersByTime(900))
+    expect(complete).toHaveBeenLastCalledWith(true)
   })
 })

@@ -343,7 +343,7 @@ export function GuidedLessonViewer({
         <div
           className={cn(
             'guided-lesson-footer order-4 mt-2 flex flex-col-reverse gap-4 border-t border-[#506187]/20 pt-4 sm:flex-row sm:items-center sm:justify-between',
-            illustratedContent && currentStep?.blocks.some((block) => block.type === 'match') && 'guided-lesson-footer--match',
+            illustratedContent && currentStep?.blocks.some((block) => ['match', 'multiple_choice', 'true_false', 'fill_blanks'].includes(block.type)) && 'guided-lesson-footer--exercise',
             currentStepArt && 'md:col-span-2'
           )}
           data-guided-footer-shell
@@ -451,7 +451,7 @@ export function GuidedLessonViewer({
           padding-block: 8px;
         }
 
-        .guided-lesson-footer--match { position: static; }
+        .guided-lesson-footer--exercise { position: static; }
 
         .guided-lesson-main--portrait {
           max-width: 1200px;
@@ -580,9 +580,9 @@ export function GuidedLessonViewer({
           .guided-lesson-main--portrait:not([data-guided-kind='reading']) .guided-lesson-content { grid-column: 2; }
           .guided-lesson-main--portrait:not([data-guided-kind='reading']) .guided-lesson-scene__figure img { object-position: 40% center; }
         }
-        .guided-lesson-viewer [data-guided-block-type='true_false'] button[aria-pressed='true'] { background: #10245C; color: #fff; border-color: #10245C; }
+        .guided-lesson-viewer [data-guided-block-type='true_false'] button[aria-pressed='true']:not([data-guided-choice]) { background: #10245C; color: #fff; border-color: #10245C; }
         @media (max-width: 639px) {
-          .guided-lesson-viewer [data-guided-block-type='true_false'] button[aria-pressed] { min-width: 0; width: calc(50% - 8px); padding-inline: 12px; font-size: 18px; }
+          .guided-lesson-viewer [data-guided-block-type='true_false'] button[aria-pressed]:not([data-guided-choice]) { min-width: 0; width: calc(50% - 8px); padding-inline: 12px; font-size: 18px; }
         }
         @media (max-width: 1023px) {
           [data-illustrated-environment] { mask-image: linear-gradient(to bottom, transparent, black 2%, black 88%, transparent); }
