@@ -135,6 +135,9 @@ function TeachingTip({ children }: { children: ReactNode }) {
 function IntroductionsTeaching() {
   return (
     <div className="max-w-[38rem] space-y-6" data-unit1-teaching-content="introductions">
+      <p className={`font-sans text-base leading-6 ${NAVY_TEXT}`} data-unit1-practice-label>
+        Ejemplos para practicar
+      </p>
       <ul className="m-0 list-none space-y-5 p-0" data-unit1-examples="introductions">
         <li data-unit1-example-row>
           <ExampleText>
@@ -343,15 +346,15 @@ function TransformTeaching() {
         </summary>
         <div className="mt-5 overflow-x-auto" data-unit1-reference-content>
           <table
-            className={`min-w-[20rem] border-collapse text-left font-sans text-base leading-6 ${NAVY_TEXT}`}
+            className={`w-full table-fixed border-collapse text-left font-sans text-base leading-6 ${NAVY_TEXT}`}
           >
             <caption className="sr-only">Formas del verbo to be en presente simple</caption>
             <thead>
               <tr className={SLATE_TEXT}>
-                <th className="pb-2 pr-8 font-semibold" scope="col">
+                <th className="w-1/2 break-words pb-2 pr-3 font-semibold sm:pr-8" scope="col">
                   Pronombre
                 </th>
-                <th className="pb-2 font-semibold" scope="col">
+                <th className="w-1/2 break-words pb-2 font-semibold" scope="col">
                   Verbo
                 </th>
               </tr>
@@ -359,10 +362,10 @@ function TransformTeaching() {
             <tbody>
               {TO_BE_ROWS.map(([pronoun, form]) => (
                 <tr key={`${pronoun}-${form}`} data-unit1-reference-row>
-                  <th className="py-2 pr-8 font-normal" scope="row">
+                  <th className="break-words py-2 pr-3 font-normal sm:pr-8" scope="row">
                     {pronoun}
                   </th>
-                  <td className={`py-2 font-semibold ${TEAL_TEXT}`}>{form}</td>
+                  <td className={`break-words py-2 font-semibold ${TEAL_TEXT}`}>{form}</td>
                 </tr>
               ))}
             </tbody>
@@ -373,6 +376,55 @@ function TransformTeaching() {
   )
 }
 
+const ANA_AVATAR_SRC = '/images/lessons/this-is-me/dual-mode/possessives.webp'
+
+type PossessiveAvatarKind = 'peter' | 'ana' | 'pair'
+
+function PossessiveAvatar({ kind }: { kind: PossessiveAvatarKind }) {
+  if (kind === 'pair') {
+    return (
+      <span className="flex h-16 w-[6.5rem] shrink-0 items-end" data-unit1-avatar="pair">
+        <span className="relative z-10 h-12 w-12 overflow-hidden rounded-full">
+          <Image
+            src="/images/lessons/this-is-me/peter-cutout-v2.webp"
+            alt="Peter, clean-shaven, with a rust-colored shirt"
+            fill
+            sizes="48px"
+            className="object-contain object-bottom"
+          />
+        </span>
+        <span className="relative -ml-2 h-12 w-12 overflow-hidden rounded-full">
+          <Image
+            src={ANA_AVATAR_SRC}
+            alt="Ana, with a striped sweater"
+            fill
+            sizes="48px"
+            className="object-cover object-[85%_30%]"
+          />
+        </span>
+      </span>
+    )
+  }
+
+  const isAna = kind === 'ana'
+  return (
+    <span
+      className="relative flex h-16 w-16 shrink-0 items-end overflow-hidden rounded-full"
+      data-unit1-avatar={kind}
+    >
+      <Image
+        src={isAna ? ANA_AVATAR_SRC : '/images/lessons/this-is-me/peter-cutout-v2.webp'}
+        alt={
+          isAna ? 'Ana, with a striped sweater' : 'Peter, clean-shaven, with a rust-colored shirt'
+        }
+        fill
+        sizes="64px"
+        className={isAna ? 'object-cover object-[85%_30%]' : 'object-contain object-bottom'}
+      />
+    </span>
+  )
+}
+
 function PossessiveExample({
   children,
   translation,
@@ -380,26 +432,11 @@ function PossessiveExample({
 }: {
   children: ReactNode
   translation: string
-  avatar?: boolean
+  avatar: PossessiveAvatarKind
 }) {
   return (
     <li className="flex items-center gap-4" data-unit1-possessive-example>
-      {avatar ? (
-        <span
-          className="flex h-16 w-16 shrink-0 items-end justify-center overflow-hidden rounded-full"
-          data-unit1-avatar="peter"
-        >
-          <Image
-            src="/images/lessons/this-is-me/peter-cutout-v2.webp"
-            alt="Peter, clean-shaven, with a rust-colored shirt"
-            width={64}
-            height={80}
-            className="h-20 w-16 object-contain object-bottom"
-          />
-        </span>
-      ) : (
-        <span aria-hidden="true" className="h-16 w-16 shrink-0" />
-      )}
+      <PossessiveAvatar kind={avatar} />
       <div className="min-w-0">
         <ExampleText>{children}</ExampleText>
         <Translation>{translation}</Translation>
@@ -412,13 +449,13 @@ function PossessivesTeaching() {
   return (
     <div className="max-w-[42rem] space-y-8" data-unit1-teaching-content="possessives">
       <ul className="m-0 list-none space-y-6 p-0" data-unit1-possessive-examples>
-        <PossessiveExample avatar translation="mi">
+        <PossessiveExample avatar="peter" translation="mi">
           <Teal>My</Teal> name is Peter.
         </PossessiveExample>
-        <PossessiveExample translation="su (de ella)">
+        <PossessiveExample avatar="ana" translation="su (de ella)">
           <Teal>Her</Teal> name is Ana.
         </PossessiveExample>
-        <PossessiveExample translation="sus (de ellos)">
+        <PossessiveExample avatar="pair" translation="sus (de ellos)">
           <Teal>Their</Teal> names are Peter and Ana.
         </PossessiveExample>
       </ul>
@@ -431,18 +468,18 @@ function PossessivesTeaching() {
         </summary>
         <div className="mt-5 overflow-x-auto" data-unit1-possessive-reference>
           <table
-            className={`min-w-[28rem] border-collapse text-left font-sans text-base leading-6 ${NAVY_TEXT}`}
+            className={`w-full table-fixed border-collapse text-left font-sans text-base leading-6 ${NAVY_TEXT}`}
           >
             <caption className="sr-only">Los ocho adjetivos posesivos</caption>
             <thead>
               <tr className={SLATE_TEXT}>
-                <th className="pb-2 pr-8 font-semibold" scope="col">
+                <th className="w-1/4 break-words pb-2 pr-3 font-semibold sm:pr-8" scope="col">
                   Pronombre
                 </th>
-                <th className="pb-2 pr-8 font-semibold" scope="col">
+                <th className="w-1/4 break-words pb-2 pr-3 font-semibold sm:pr-8" scope="col">
                   Posesivo
                 </th>
-                <th className="pb-2 font-semibold" scope="col">
+                <th className="w-1/2 break-words pb-2 font-semibold" scope="col">
                   Traducción
                 </th>
               </tr>
@@ -450,11 +487,13 @@ function PossessivesTeaching() {
             <tbody>
               {POSSESSIVE_ROWS.map(([pronoun, possessive, translation], index) => (
                 <tr key={`${pronoun}-${possessive}-${index}`} data-unit1-possessive-row>
-                  <th className="py-2 pr-8 font-normal" scope="row">
+                  <th className="break-words py-2 pr-3 font-normal sm:pr-8" scope="row">
                     {pronoun}
                   </th>
-                  <td className={`py-2 pr-8 font-semibold ${TEAL_TEXT}`}>{possessive}</td>
-                  <td className={`py-2 ${SLATE_TEXT}`}>{translation}</td>
+                  <td className={`break-words py-2 pr-3 font-semibold sm:pr-8 ${TEAL_TEXT}`}>
+                    {possessive}
+                  </td>
+                  <td className={`break-words py-2 ${SLATE_TEXT}`}>{translation}</td>
                 </tr>
               ))}
             </tbody>
@@ -467,18 +506,21 @@ function PossessivesTeaching() {
 
 function IntroAudioNotesTeaching() {
   return (
-    <div className="max-w-[42rem] space-y-6" data-unit1-teaching-content="intro-audio-notes">
-      <p className={`font-sans text-sm leading-6 ${SLATE_TEXT}`} data-unit1-audio-note>
-        Notas del audio existente.
-      </p>
-      <ul className={`m-0 list-none space-y-4 p-0 ${BODY_TEXT}`} data-unit1-audio-facts>
-        <li data-unit1-audio-fact>Jake y Pete tienen 17 años.</li>
-        <li data-unit1-audio-fact>
-          Jake es un estudiante nuevo; el audio menciona Jackson Ave, 6th.
-        </li>
-        <li data-unit1-audio-fact>Pete está en la misma clase; el audio menciona 8th.</li>
-        <li data-unit1-audio-fact>El audio no dice la ocupación ni el teléfono de Smith.</li>
-      </ul>
+    <div className="max-w-[42rem]" data-unit1-teaching-content="intro-audio-notes">
+      <details data-unit1-audio-details>
+        <summary
+          className={`cursor-pointer list-none font-sans text-base font-semibold leading-6 ${NAVY_TEXT} underline decoration-[#506187]/40 underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#10245C]`}
+        >
+          Lo que escuchas
+        </summary>
+        <ul className={`m-0 mt-5 list-disc space-y-3 pl-5 ${BODY_TEXT}`} data-unit1-audio-facts>
+          <li data-unit1-audio-fact>Jake y Pete tienen 17 años.</li>
+          <li data-unit1-audio-fact>
+            Jake es un estudiante nuevo; el audio menciona Jackson Ave y 6th.
+          </li>
+          <li data-unit1-audio-fact>Pete está en la misma clase; el audio menciona 8th.</li>
+        </ul>
+      </details>
     </div>
   )
 }
