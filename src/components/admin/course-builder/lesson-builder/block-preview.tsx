@@ -72,6 +72,8 @@ import {
 import { EssayAIGrading as EssayAIGradingButton } from '@/components/lessons/essay-ai-grading'
 import { RecordingAIGrading } from '@/components/lessons/recording-ai-grading'
 import { useClassroomSync } from '@/components/classroom/use-classroom-sync'
+import { GuidedChoiceActivity } from './guided-choice-activity'
+import { GuidedFillActivity } from './guided-fill-activity'
 import { canUseAIGrading, recordAIGradingUsage } from '@/lib/actions/ai-grading-limits'
 
 interface BlockPreviewProps {
@@ -2196,7 +2198,16 @@ function VocabularyBlockPreview({
   )
 }
 
-function FillBlanksBlockPreview({
+function FillBlanksBlockPreview(props: Parameters<typeof ClassicFillBlanksBlockPreview>[0]) {
+  const classroom = useClassroomSync()
+  const automatic = Boolean(props.guidedAppearance && !props.isExamMode && !classroom.isInClassroom)
+  useGuidedActionPresence(automatic, false, automatic ? props.onGuidedActionPresence : undefined)
+  return automatic
+    ? <GuidedFillActivity items={props.block.items || []} onCompletionChange={props.onGuidedCompletionChange} />
+    : <ClassicFillBlanksBlockPreview {...props} />
+}
+
+function ClassicFillBlanksBlockPreview({
   block,
   isExamMode,
   hideHeader,
@@ -3567,7 +3578,21 @@ function ClassicMatchBlockPreview({
   )
 }
 
-function TrueFalseBlockPreview({
+function TrueFalseBlockPreview(props: Parameters<typeof ClassicTrueFalseBlockPreview>[0]) {
+  const classroom = useClassroomSync()
+  const automatic = Boolean(props.guidedAppearance && !props.isExamMode && !classroom.isInClassroom)
+  useGuidedActionPresence(automatic, false, automatic ? props.onGuidedActionPresence : undefined)
+  return automatic ? <GuidedChoiceActivity
+    questions={(props.block.items || []).map(item => ({
+      id: item.id, prompt: item.statement,
+      choices: [{ id: 'true', text: 'Verdadero' }, { id: 'false', text: 'Falso' }],
+      correctChoiceId: String(item.correctAnswer),
+    }))}
+    onCompletionChange={props.onGuidedCompletionChange}
+  /> : <ClassicTrueFalseBlockPreview {...props} />
+}
+
+function ClassicTrueFalseBlockPreview({
   block,
   isExamMode,
   answer,
@@ -5160,7 +5185,24 @@ function MultiSelectBlockPreview({
   )
 }
 
-function MultipleChoiceBlockPreview({
+function MultipleChoiceBlockPreview(props: Parameters<typeof ClassicMultipleChoiceBlockPreview>[0]) {
+  const classroom = useClassroomSync()
+  const automatic = Boolean(props.guidedAppearance && !props.isExamMode && !classroom.isInClassroom)
+  useGuidedActionPresence(automatic, false, automatic ? props.onGuidedActionPresence : undefined)
+  const items = props.block.items?.length ? props.block.items : props.block.question ? [{
+    id: props.block.id, question: props.block.question,
+    options: props.block.options || [], correctOptionId: props.block.correctOptionId || '',
+  }] : []
+  return automatic ? <GuidedChoiceActivity
+    questions={items.map(item => ({
+      id: item.id, prompt: item.question, choices: item.options,
+      correctChoiceId: item.correctOptionId, explanation: props.block.explanation,
+    }))}
+    onCompletionChange={props.onGuidedCompletionChange}
+  /> : <ClassicMultipleChoiceBlockPreview {...props} />
+}
+
+function ClassicMultipleChoiceBlockPreview({
   block,
   isExamMode,
   answer,

@@ -297,7 +297,7 @@ export function GuidedFillActivity({ items, onCompletionChange }: GuidedFillActi
                   data-guided-fill-summary-item={item.id}
                   className="rounded-2xl border border-[#EEE8FA] bg-white px-4 py-3 text-base leading-6 shadow-sm sm:px-5 sm:py-4"
                 >
-                  <p className="break-words font-semibold text-[#10245C]">{item.content}</p>
+                  <p className="break-words font-semibold text-[#10245C]">{parts.map(part => part.kind === 'text' ? part.value : '___').join('')}</p>
                   <p className="text-[#506187]">
                     Tu respuesta:{' '}
                     <span className="text-[#10245C]">
@@ -338,8 +338,8 @@ export function GuidedFillActivity({ items, onCompletionChange }: GuidedFillActi
               }
 
               const value = currentAnswers[part.partIndex] || ''
-              const isWrong = hasFeedback && !hasFeedback.isCorrect
-              const isCorrect = hasFeedback?.isCorrect
+              const isCorrect = Boolean(hasFeedback && answerIsCorrect(value, part.expected))
+              const isWrong = Boolean(hasFeedback && !isCorrect)
 
               return (
                 <span key={part.partIndex} className="mx-1 inline-block max-w-full align-baseline">
@@ -362,7 +362,7 @@ export function GuidedFillActivity({ items, onCompletionChange }: GuidedFillActi
                     aria-invalid={isWrong || undefined}
                     style={{ width: '120px', maxWidth: '100%' }}
                     className={
-                      'min-h-11 max-w-full min-w-0 rounded-none border-x-0 border-t-0 border-b-2 border-[#10245C] bg-transparent px-1 py-1 text-center text-base font-medium leading-6 text-[#10245C] outline-none transition-colors focus:border-[#245CFF] focus:outline-none focus:ring-0 focus-visible:border-[#245CFF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#245CFF] focus-visible:ring-offset-2 ' +
+                      'min-h-11 max-w-full min-w-0 rounded-none border-x-0 border-t-0 border-b-2 border-[#10245C] bg-transparent px-1 py-1 text-center text-base font-medium leading-6 text-[#10245C] outline-none transition-colors focus:border-[#245CFF] focus:outline-none focus:ring-0 focus-visible:border-[#245CFF] focus-visible:outline-none focus-visible:shadow-[0_2px_0_#245CFF] ' +
                       (isCorrect
                         ? 'border-[#08775E] text-[#08775E]'
                         : isWrong

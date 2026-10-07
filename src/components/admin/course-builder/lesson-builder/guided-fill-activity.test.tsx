@@ -12,6 +12,17 @@ afterEach(() => {
 })
 
 describe('GuidedFillActivity', () => {
+  it('marks only the incorrect blank invalid when a sentence has mixed answers', () => {
+    render(<GuidedFillActivity items={[{ id: 'mixed', content: 'I [am] and you [are] ready.' }]} />)
+    const first = screen.getByRole('textbox', { name: 'Respuesta 2' })
+    const second = screen.getByRole('textbox', { name: 'Respuesta 4' })
+    fireEvent.change(first, { target: { value: 'am' } })
+    fireEvent.change(second, { target: { value: 'is' } })
+    fireEvent.keyDown(second, { key: 'Enter' })
+    expect(first).not.toHaveAttribute('aria-invalid', 'true')
+    expect(second).toHaveAttribute('aria-invalid', 'true')
+  })
+
   it('keeps Comprobar local, guards incomplete Enter, and uses accessible bracket labels', () => {
     const onCompletionChange = vi.fn()
     render(
@@ -81,7 +92,7 @@ describe('GuidedFillActivity', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Comprobar' }))
     act(() => vi.advanceTimersByTime(GUIDED_FILL_CORRECT_FEEDBACK_MS))
     expect(screen.getByRole('region', { name: 'Resultado de completar frases' })).toHaveTextContent(
-      'I [am] ready.'
+      'I ___ ready.'
     )
   })
 
@@ -107,7 +118,7 @@ describe('GuidedFillActivity', () => {
     act(() => vi.advanceTimersByTime(1))
     expect(onCompletionChange).toHaveBeenLastCalledWith(true)
     const summary = screen.getByRole('region', { name: 'Resultado de completar frases' })
-    expect(summary).toHaveTextContent('I [am] ready.')
+    expect(summary).toHaveTextContent('I ___ ready.')
     expect(summary).toHaveTextContent('Tu respuesta: am')
     expect(summary).toHaveTextContent('Correcto')
     expect(screen.queryByRole('button', { name: 'Comprobar' })).not.toBeInTheDocument()

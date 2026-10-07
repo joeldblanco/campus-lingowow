@@ -420,7 +420,7 @@ export function GuidedChoiceActivity({ questions, onCompletionChange }: GuidedCh
         ref={summaryHeadingRef}
         id="guided-choice-summary-heading"
         tabIndex={-1}
-        className="text-xl font-bold leading-7 text-[#10245C] sm:text-2xl"
+        className="text-base font-semibold leading-6 text-[#506187] outline-none"
       >
         Resumen
       </h2>
@@ -490,7 +490,7 @@ export function GuidedChoiceActivity({ questions, onCompletionChange }: GuidedCh
               ref={promptRef}
               id={promptId}
               tabIndex={-1}
-              className="max-w-[38rem] break-words text-base font-semibold leading-6 text-[#10245C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2"
+              className="max-w-[38rem] break-words text-base font-semibold leading-6 text-[#10245C] outline-none"
             >
               {currentQuestion.prompt}
             </p>
