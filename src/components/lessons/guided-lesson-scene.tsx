@@ -1,7 +1,6 @@
 'use client'
 
 import Image from 'next/image'
-import { useId } from 'react'
 import type { GuidedLessonStepKind } from '@/lib/guided-lesson'
 import { cn } from '@/lib/utils'
 
@@ -40,12 +39,12 @@ export function LessonSceneBackdrop({
       <div
         data-illustrated-setting
         data-scene-src={src}
-        className="absolute right-0 top-[12%] h-[76%] w-[64%] bg-cover bg-center max-md:hidden"
+        className="absolute inset-0 bg-cover bg-right max-md:hidden"
         style={{
           backgroundImage: `url("${src}")`,
           maskImage: src.endsWith('study-room-v3.webp')
-            ? 'linear-gradient(to right, transparent, black 18%)'
-            : 'linear-gradient(to right, transparent, transparent 15%, black 45%)',
+            ? 'linear-gradient(to right, transparent, black 38%)'
+            : 'linear-gradient(to right, transparent, transparent 10%, black 55%)',
         }}
       />
     </div>
@@ -61,14 +60,13 @@ export function GuidedLessonScene({
   environment = false,
 }: GuidedLessonSceneProps) {
   const isGrammar = variant === 'grammar'
-  const clipId = `lesson-environment-${useId().replace(/:/g, '')}`
 
   return (
     <aside
       className={cn(
         'guided-lesson-art pointer-events-none order-2 isolate flex self-start md:order-2',
         environment
-          ? 'h-[220px] min-h-[220px] sm:h-[320px] sm:min-h-[320px] md:h-[424px] md:min-h-[424px]'
+          ? 'h-[320px] min-h-[320px] sm:h-[420px] sm:min-h-[420px]'
           : isGrammar
             ? 'h-[220px] min-h-[220px] sm:h-[248px] sm:min-h-[248px] md:h-[264px] md:min-h-[264px]'
             : 'h-[260px] min-h-[260px] sm:h-[300px] sm:min-h-[300px] md:h-[min(34vw,344px)] md:min-h-[300px]'
@@ -78,17 +76,7 @@ export function GuidedLessonScene({
       data-guided-scene-subject={subject || undefined}
       data-illustrated-environment={environment || undefined}
       aria-hidden="true"
-      style={environment ? { clipPath: `url(#${clipId})` } : undefined}
     >
-      {environment && (
-        <svg width="0" height="0" className="absolute" aria-hidden="true">
-          <defs>
-            <clipPath id={clipId} clipPathUnits="objectBoundingBox">
-              <path d="M0 .08 C.15 0,.55 0,.8 .02 C.97 .04,1 .17,1 .45 C1 .7,.96 .9,.77 .96 C.53 1,.32 .95,.15 .9 C.04 .86,0 .76,0 .57 Z" />
-            </clipPath>
-          </defs>
-        </svg>
-      )}
       <div className="guided-lesson-scene relative h-full w-full">
         {!environment && (
           <span
@@ -122,7 +110,7 @@ export function GuidedLessonScene({
             priority
             quality={environment ? 85 : 75}
             sizes={
-              environment ? '(max-width: 767px) 100vw, 52vw' : '(max-width: 767px) 80vw, 400px'
+              environment ? '(max-width: 1023px) 100vw, 75vw' : '(max-width: 767px) 80vw, 400px'
             }
             className={cn(
               environment

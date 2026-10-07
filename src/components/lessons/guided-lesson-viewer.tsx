@@ -227,7 +227,7 @@ export function GuidedLessonViewer({
               ? 'guided-lesson-main--portrait'
               : 'guided-lesson-main--grammar'
             : illustratedContent
-              ? 'guided-lesson-main--setting mx-auto w-full max-w-[1200px]'
+              ? 'guided-lesson-main--setting w-full'
               : 'mx-auto w-full max-w-4xl'
         )}
         data-guided-layout={currentStepArt?.variant ?? 'plain'}
@@ -316,7 +316,7 @@ export function GuidedLessonViewer({
           <div
             aria-hidden="true"
             data-mobile-illustrated-setting
-            className="order-2 h-[220px] w-full rounded-[32px] bg-cover bg-center md:hidden"
+            className="order-2 h-[320px] w-full bg-cover bg-center md:hidden"
             style={{ backgroundImage: `url("${currentSettingSrc}")` }}
           />
         )}
@@ -515,6 +515,50 @@ export function GuidedLessonViewer({
           .guided-lesson-main[data-guided-kind] .guided-lesson-art { grid-column: 1; grid-row: 2; width: 100%; margin-inline: 0; }
           [data-guided-scene-backdrop] { display: none; }
           [data-mobile-illustrated-setting] { display: block; height: 320px; }
+        }
+
+        /* The entire lesson is the canvas; white fades protect live controls. */
+        .guided-lesson-viewer[data-illustrated] { background: #fff; }
+        .guided-lesson-viewer[data-illustrated] > .relative.border-b { background: linear-gradient(to bottom, #fff, #ffffffeb); }
+        .guided-lesson-viewer[data-illustrated] .guided-lesson-main {
+          max-width: none;
+          min-height: max(640px, calc(100svh - 220px));
+          padding-inline: clamp(24px, 6vw, 112px);
+          padding-block: 32px 24px;
+        }
+        .guided-lesson-content { position: relative; z-index: 2; isolation: isolate; }
+        .guided-lesson-main--setting .guided-lesson-content::before {
+          content: ""; position: absolute; inset: -8px; z-index: -1; pointer-events: none;
+          background: #ffffffed; box-shadow: 0 0 40px 40px #ffffffed;
+        }
+        .guided-lesson-footer { background: linear-gradient(to bottom, #ffffffd9, #fff 65%); }
+        [data-mobile-illustrated-setting] { mask-image: linear-gradient(to bottom, transparent, black 12%, black 85%, transparent); }
+        @media (min-width: 1024px) {
+          .guided-lesson-viewer[data-illustrated] .guided-lesson-main[data-guided-kind] { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+          .guided-lesson-main--setting .guided-lesson-content { width: 100%; grid-column: 1; }
+          .guided-lesson-main--setting .guided-lesson-footer { grid-column: 1 / -1; }
+          .guided-lesson-main[data-guided-kind] [data-illustrated-environment] {
+            position: absolute; grid-column: auto; grid-row: auto; top: 0; bottom: 0; left: 0; width: 72%;
+            height: min(100%, 780px); min-height: 640px; margin: 0;
+            mask-image: linear-gradient(to right, black 45%, transparent 85%), linear-gradient(to bottom, transparent, black 2%, black 88%, transparent);
+            mask-composite: intersect;
+          }
+          .guided-lesson-main[data-guided-kind='grammar'] [data-illustrated-environment],
+          .guided-lesson-main[data-guided-kind='reading'] [data-illustrated-environment] {
+            left: auto; right: 0;
+            mask-image: linear-gradient(to left, black 45%, transparent 85%), linear-gradient(to bottom, transparent, black 2%, black 88%, transparent);
+          }
+          .guided-lesson-main--grammar .guided-lesson-content,
+          .guided-lesson-main[data-guided-kind='reading'] .guided-lesson-content { grid-column: 1; }
+          .guided-lesson-main--portrait:not([data-guided-kind='reading']) .guided-lesson-content { grid-column: 2; }
+          .guided-lesson-main--portrait:not([data-guided-kind='reading']) .guided-lesson-scene__figure img { object-position: 40% center; }
+        }
+        .guided-lesson-viewer [data-guided-block-type='true_false'] button[aria-pressed='true'] { background: #10245C; color: #fff; border-color: #10245C; }
+        @media (max-width: 639px) {
+          .guided-lesson-viewer [data-guided-block-type='true_false'] button[aria-pressed] { min-width: 0; width: calc(50% - 8px); padding-inline: 12px; font-size: 18px; }
+        }
+        @media (max-width: 1023px) {
+          [data-illustrated-environment] { mask-image: linear-gradient(to bottom, transparent, black 2%, black 88%, transparent); }
         }
 
         .guided-lesson-viewer,

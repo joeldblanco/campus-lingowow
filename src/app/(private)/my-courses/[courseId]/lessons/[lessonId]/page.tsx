@@ -47,7 +47,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
   // const areActivitiesCompleted = lesson.activities.length === 0 || lesson.activities.every(a => a.isCompleted)
 
   return (
-    <div className={isPilot ? 'min-h-screen bg-[#faf8f4] pb-8' : 'min-h-screen bg-gray-50 pb-20'}>
+    <div className={isPilot ? '-mx-4 min-h-screen bg-[#faf8f4]' : 'min-h-screen bg-gray-50 pb-20'}>
       <LessonHeader
         title={lesson.title}
         subtitle={isPilot ? null : lesson.summary}
@@ -58,7 +58,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
         guidedAppearance={isPilot}
       />
 
-      <main className={isPilot ? 'mx-auto w-full max-w-7xl px-4 py-2 sm:px-6' : 'container mx-auto max-w-5xl space-y-8 px-4 py-8'}>
+      <main className={isPilot ? 'w-full' : 'container mx-auto max-w-5xl space-y-8 px-4 py-8'}>
         <Suspense fallback={<LessonLoadingSkeleton />}>
           <LessonContent
             lesson={lesson}
