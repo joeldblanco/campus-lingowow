@@ -1,6 +1,10 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { BlockPreview } from './block-preview'
+import {
+  BlockPreview,
+  GUIDED_MATCH_CORRECT_FEEDBACK_MS,
+  GUIDED_MATCH_WRONG_FEEDBACK_MS,
+} from './block-preview'
 
 vi.mock('@/components/lessons/essay-ai-grading', () => ({
   EssayAIGrading: ({
@@ -47,7 +51,10 @@ vi.mock('@/lib/actions/ai-grading-limits', () => ({
   recordAIGradingUsage: vi.fn(),
 }))
 
-afterEach(() => cleanup())
+afterEach(() => {
+  vi.useRealTimers()
+  cleanup()
+})
 
 describe('BlockPreview guided appearance', () => {
   it('suppresses repeated labels and titles while preserving authored prompts', () => {
@@ -286,148 +293,142 @@ describe('BlockPreview guided appearance', () => {
     expect(onGuidedCompletionChange).toHaveBeenLastCalledWith(true)
   })
 
-  it('guides matching one datum at a time and reviews every association before checking', () => {
+  const guidedPairs = [
+    { id: 'first', left: 'First', right: 'Alpha' },
+    { id: 'second', left: 'Second', right: 'Beta' },
+  ]
+
+  it('shows four pilot choices with the authored answer and keeps their order stable', () => {
+    const pilotPairs = [
+      { id: 'name', left: 'Name', right: 'Peter' },
+      { id: 'family', left: 'Family Name', right: 'Smith' },
+      { id: 'occupation', left: 'Occupation', right: 'Teacher' },
+      { id: 'spelling', left: 'Spelling', right: 'P-E-T-E-R' },
+      { id: 'age', left: 'Age', right: '20 years old' },
+      { id: 'origin', left: 'Origin', right: 'The US' },
+      { id: 'address', left: 'Address', right: 'Lincoln Avenue, 23rd' },
+      { id: 'phone', left: 'Phone/Mail', right: '01 154 8593' },
+      { id: 'marital', left: 'Marital Status', right: 'I am married but Jake is single' },
+    ]
+    const { rerender, container } = render(
+      <BlockPreview
+        guidedAppearance
+        block={{ id: 'dev-unit1-interleaved-vocabulary', type: 'match', order: 0, pairs: pilotPairs }}
+      />
+    )
+
+    const firstOrder = Array.from(container.querySelectorAll('[data-guided-match-choice]')).map(
+      (button) => button.textContent
+    )
+    expect(container.querySelectorAll('[data-guided-match-choice]')).toHaveLength(4)
+    expect(firstOrder).toEqual(expect.arrayContaining(['Peter', 'Lucas', 'Carl', 'Jake']))
+
+    rerender(
+      <BlockPreview
+        guidedAppearance
+        block={{ id: 'dev-unit1-interleaved-vocabulary', type: 'match', order: 0, pairs: pilotPairs }}
+      />
+    )
+    expect(
+      Array.from(container.querySelectorAll('[data-guided-match-choice]')).map(
+        (button) => button.textContent
+      )
+    ).toEqual(firstOrder)
+  })
+
+  it('confirms immediately, guards duplicate clicks, announces wrong feedback, and advances', () => {
+    vi.useFakeTimers()
+    render(
+      <BlockPreview
+        guidedAppearance
+        block={{ id: 'match-feedback', type: 'match', order: 0, pairs: guidedPairs }}
+      />
+    )
+
+    const wrongChoice = screen.getByRole('button', { name: 'Beta' })
+    fireEvent.click(wrongChoice)
+    fireEvent.click(wrongChoice)
+
+    expect(screen.getByRole('status')).toHaveTextContent('Respuesta correcta: Alpha')
+    expect(wrongChoice).toBeDisabled()
+    expect(screen.getByRole('heading', { name: 'First' })).toBeInTheDocument()
+
+    act(() => vi.advanceTimersByTime(GUIDED_MATCH_WRONG_FEEDBACK_MS - 1))
+    expect(screen.getByRole('heading', { name: 'First' })).toBeInTheDocument()
+    act(() => vi.advanceTimersByTime(1))
+    expect(screen.getByRole('heading', { name: 'Second' })).toBeInTheDocument()
+  })
+
+  it('supports keyboard activation and reports a complete summary, including wrong answers', () => {
+    vi.useFakeTimers()
+    const onGuidedCompletionChange = vi.fn()
+    render(
+      <BlockPreview
+        guidedAppearance
+        onGuidedCompletionChange={onGuidedCompletionChange}
+        block={{ id: 'match-summary', type: 'match', order: 0, pairs: guidedPairs }}
+      />
+    )
+
+    fireEvent.keyDown(screen.getByRole('button', { name: 'Beta' }), { key: 'Enter' })
+    act(() => vi.advanceTimersByTime(GUIDED_MATCH_WRONG_FEEDBACK_MS))
+    fireEvent.keyDown(screen.getByRole('button', { name: 'Beta' }), { key: ' ' })
+    act(() => vi.advanceTimersByTime(GUIDED_MATCH_CORRECT_FEEDBACK_MS))
+
+    expect(onGuidedCompletionChange).toHaveBeenLastCalledWith(true)
+    const summary = screen.getByRole('region', { name: 'Resultado de asociaciones' })
+    expect(summary).toHaveTextContent('First')
+    expect(summary).toHaveTextContent('Tu respuesta: Beta')
+    expect(summary).toHaveTextContent('Respuesta correcta: Alpha')
+    expect(summary).toHaveTextContent('Second')
+    expect(summary).toHaveTextContent('Second → Beta')
+    expect(summary).toHaveTextContent('Correcto')
+  })
+
+  it('reports completion after all correct answers and keeps the guided footer action absent', () => {
+    vi.useFakeTimers()
     const target = document.createElement('div')
-    document.body.appendChild(target)
     const onGuidedActionPresence = vi.fn()
+    const onGuidedCompletionChange = vi.fn()
+    document.body.appendChild(target)
 
     render(
       <BlockPreview
         guidedAppearance
         guidedActionTarget={target}
         onGuidedActionPresence={onGuidedActionPresence}
-        block={{
-          id: 'match',
-          type: 'match',
-          order: 0,
-          title: 'Práctica de vocabulario',
-          pairs: [
-            { id: 'name', left: 'Name', right: 'Peter' },
-            { id: 'age', left: 'Age', right: '20 years old' },
-          ],
-        }}
+        onGuidedCompletionChange={onGuidedCompletionChange}
+        block={{ id: 'match-complete', type: 'match', order: 0, pairs: guidedPairs }}
       />
     )
 
-    expect(screen.queryByText('Emparejar')).not.toBeInTheDocument()
-    expect(
-      screen.queryByRole('heading', { name: 'Práctica de vocabulario' })
-    ).not.toBeInTheDocument()
-    expect(screen.getByText('Elige la respuesta para este dato.')).toBeVisible()
-    expect(screen.getByLabelText('Dato actual')).toHaveTextContent('Name')
-    expect(screen.queryByRole('button', { name: 'Palabra: Name' })).not.toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'Reiniciar' })).not.toBeInTheDocument()
-    expect(screen.getAllByRole('button', { name: /Pareja:/ })).toHaveLength(2)
-    expect(screen.getAllByRole('button', { name: /Pareja:/ })[0]).toHaveAttribute('type', 'button')
-    expect(target.querySelector('button')).toHaveTextContent('Comprobar')
-    expect(onGuidedActionPresence).toHaveBeenLastCalledWith(true)
-
-    const firstChoice = screen.getByRole('button', { name: 'Pareja: Peter' })
-    fireEvent.click(firstChoice)
-    expect(screen.getByText('Age')).toBeVisible()
-    expect(screen.getByText('1 respuesta')).toBeVisible()
-    expect(screen.queryByRole('button', { name: 'Pareja: Peter' })).not.toBeInTheDocument()
-    const secondChoice = screen.getByRole('button', { name: 'Pareja: 20 years old' })
-    fireEvent.keyDown(secondChoice, { key: 'Enter' })
-    expect(screen.getByText('Revisa tus asociaciones')).toBeVisible()
-    expect(screen.getAllByRole('button', { name: 'Cambiar' })).toHaveLength(2)
-    expect(target.querySelector('button')).not.toBeDisabled()
-
-    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
-    expect(screen.getByText('¡Perfecto! Todos los pares están correctos')).toBeVisible()
-    const result = screen.getByRole('region', { name: 'Resultado de asociaciones' })
-    expect(result).toHaveTextContent('Name')
-    expect(result).toHaveTextContent('Peter')
-    expect(result).toHaveTextContent('Age')
-    expect(result).toHaveTextContent('20 years old')
-    expect(screen.queryByRole('button', { name: 'Cambiar' })).not.toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Reiniciar' })).toBeVisible()
     expect(onGuidedActionPresence).toHaveBeenLastCalledWith(false)
+    expect(target).toBeEmptyDOMElement()
+    fireEvent.click(screen.getByRole('button', { name: 'Alpha' }))
+    act(() => vi.advanceTimersByTime(GUIDED_MATCH_CORRECT_FEEDBACK_MS))
+    fireEvent.click(screen.getByRole('button', { name: 'Beta' }))
+    act(() => vi.advanceTimersByTime(GUIDED_MATCH_CORRECT_FEEDBACK_MS))
 
-    fireEvent.click(screen.getByRole('button', { name: 'Reiniciar' }))
-    expect(screen.getByText('Name')).toBeVisible()
-    expect(screen.getByRole('button', { name: 'Pareja: Peter' })).toHaveAttribute(
-      'aria-pressed',
-      'false'
+    expect(onGuidedCompletionChange).toHaveBeenLastCalledWith(true)
+    expect(screen.getByRole('region', { name: 'Resultado de asociaciones' })).toHaveTextContent(
+      'Todas las respuestas son correctas'
     )
+    expect(target).toBeEmptyDOMElement()
   })
 
-  it('enforces one-to-one guided matches and supports keyboard reassignment', () => {
-    const target = document.createElement('div')
-    document.body.appendChild(target)
-
-    render(
+  it('cleans up the feedback timer when the guided match unmounts', () => {
+    vi.useFakeTimers()
+    const { unmount } = render(
       <BlockPreview
         guidedAppearance
-        guidedActionTarget={target}
-        block={{
-          id: 'match-unique',
-          type: 'match',
-          order: 0,
-          pairs: [
-            { id: 'first', left: 'First', right: 'Alpha' },
-            { id: 'second', left: 'Second', right: 'Beta' },
-            { id: 'third', left: 'Third', right: 'Gamma' },
-          ],
-        }}
+        block={{ id: 'match-cleanup', type: 'match', order: 0, pairs: guidedPairs }}
       />
     )
 
-    const beta = screen.getByRole('button', { name: 'Pareja: Beta' })
-    fireEvent.click(beta)
-    expect(screen.getByText('Second')).toBeVisible()
-    expect(screen.queryByRole('button', { name: 'Pareja: Beta' })).not.toBeInTheDocument()
-
-    const gamma = screen.getByRole('button', { name: 'Pareja: Gamma' })
-    fireEvent.keyDown(gamma, { key: ' ' })
-    expect(screen.getByText('Third')).toBeVisible()
-
-    const alpha = screen.getByRole('button', { name: 'Pareja: Alpha' })
-    fireEvent.keyDown(alpha, { key: 'Enter' })
-    expect(screen.getByText('Revisa tus asociaciones')).toBeVisible()
-
-    const changeSecond = screen.getAllByRole('button', { name: 'Cambiar' })[1]
-    fireEvent.click(changeSecond)
-    expect(screen.getByLabelText('Dato actual')).toHaveTextContent('Second')
-    expect(screen.queryByRole('button', { name: 'Pareja: Beta' })).not.toBeInTheDocument()
-    const reassignedGamma = screen.getByRole('button', { name: 'Pareja: Gamma' })
-    fireEvent.keyDown(reassignedGamma, { key: 'Enter' })
-    expect(screen.getByText('Revisa tus asociaciones')).toBeVisible()
-
-    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
-    expect(screen.getByText('0 de 3 pares correctos')).toBeVisible()
-    const result = screen.getByRole('region', { name: 'Resultado de asociaciones' })
-    expect(result).toHaveTextContent('First')
-    expect(result).toHaveTextContent('Beta')
-    expect(result).toHaveTextContent('Second')
-    expect(result).toHaveTextContent('Gamma')
-    expect(result).toHaveTextContent('Third')
-    expect(result).toHaveTextContent('Alpha')
-    expect(screen.queryByRole('button', { name: 'Cambiar' })).not.toBeInTheDocument()
-  })
-
-  it('keeps the guided matching datum fixed and keyboard choices actionable', () => {
-    render(
-      <BlockPreview
-        guidedAppearance
-        block={{
-          id: 'match-left-button',
-          type: 'match',
-          order: 0,
-          pairs: [
-            { id: 'name', left: 'Name', right: 'Peter' },
-            { id: 'age', left: 'Age', right: '20 years old' },
-          ],
-        }}
-      />
-    )
-
-    expect(screen.getByLabelText('Dato actual')).toHaveTextContent('Name')
-    expect(screen.queryByRole('button', { name: 'Palabra: Name' })).not.toBeInTheDocument()
-    const rightChoice = screen.getByRole('button', { name: 'Pareja: Peter' })
-
-    fireEvent.keyDown(rightChoice, { key: 'Enter' })
-    expect(screen.getByLabelText('Dato actual')).toHaveTextContent('Age')
+    fireEvent.click(screen.getByRole('button', { name: 'Alpha' }))
+    expect(vi.getTimerCount()).toBe(1)
+    unmount()
+    expect(vi.getTimerCount()).toBe(0)
   })
 
   it('reports fill-in completion after checking all authored questions, including a wrong answer', () => {

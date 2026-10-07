@@ -28,6 +28,13 @@ vi.mock('@/components/admin/course-builder/lesson-builder/block-preview', () => 
 beforeEach(() => sessionStorage.clear())
 
 describe('guided primary footer actions', () => {
+  it('does not mark an unfinished retaken activity completed just because the lesson was completed', () => {
+    render(<GuidedLessonViewer blocks={[{ id: 'essay', type: 'essay', order: 0, prompt: 'Write' }]} storageKey="footer-retake" isCompleted illustratedContent />)
+    expect(screen.queryByText('Completada')).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Comprobar' }))
+    expect(screen.getByText('Completada')).toBeVisible()
+  })
+
   it('places the real activity action in the footer and preserves its state across steps', async () => {
     const blocks: Block[] = [
       { id: 'essay', type: 'essay', order: 0, prompt: 'Write your profile' },
