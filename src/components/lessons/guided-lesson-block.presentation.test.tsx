@@ -75,10 +75,57 @@ describe('guided presentation content', () => {
     )
 
     const reading = container.firstElementChild
-    expect(reading).toHaveClass('text-base', 'leading-6', 'bg-[#FAF8F4]', 'text-[#10245C]')
+    expect(reading).toHaveClass('text-base', 'leading-6', 'text-[#10245C]')
+    expect(reading).not.toHaveClass('bg-[#FAF8F4]')
     expect(screen.getByText('First paragraph.')).toBeVisible()
     expect(screen.getByText(/Second paragraph with/)).toBeVisible()
     expect(screen.getByText('detail')).toBeVisible()
+  })
+
+  it('blends authored Carl reading into the scene while removing empty spacer paragraphs', () => {
+    const { container } = render(
+      <GuidedLessonBlock
+        block={{
+          id: 'carl-reading',
+          type: 'text',
+          order: 0,
+          content:
+            '<p><b>Carl Johnson</b></p><p><br></p><p><i>My name is Carl Johnson and I am 32 years old.</i></p><p><a href="https://example.com">Read more</a></p><script>alert(1)</script>',
+        }}
+      >
+        fallback
+      </GuidedLessonBlock>
+    )
+
+    const reading = container.firstElementChild
+    expect(reading).not.toHaveClass('bg-[#FAF8F4]')
+    expect(reading?.querySelectorAll('p')).toHaveLength(3)
+    expect(screen.getByText('Carl Johnson')).toBeVisible()
+    expect(screen.getByText(/My name is Carl Johnson and I am 32 years old/)).toBeVisible()
+    expect(screen.getByRole('link', { name: 'Read more' })).toHaveAttribute('target', '_blank')
+    expect(container.querySelector('script')).toBeNull()
+  })
+
+  it('keeps plain guided reading transparent at the guide body size', () => {
+    const { container } = render(
+      <GuidedLessonBlock
+        block={{
+          id: 'plain-reading',
+          type: 'text',
+          order: 0,
+          format: 'plain',
+          content: 'Carl Johnson\nMy name is Carl Johnson.',
+        }}
+      >
+        fallback
+      </GuidedLessonBlock>
+    )
+
+    const reading = container.firstElementChild
+    expect(reading).toHaveClass('whitespace-pre-wrap', 'text-base', 'leading-6', 'text-[#10245C]')
+    expect(reading).not.toHaveClass('bg-[#FAF8F4]')
+    expect(reading).toHaveTextContent('Carl Johnson')
+    expect(reading).toHaveTextContent('My name is Carl Johnson.')
   })
 
   it('keeps every table header and row without adding a technical heading', () => {
