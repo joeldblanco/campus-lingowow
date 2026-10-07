@@ -27,6 +27,7 @@ interface RecordingAIGradingProps {
     transcription: string
     detailedResult: RecordingGradingResult
   }) => void
+  onGradingStateChange?: (state: 'loading' | 'success' | 'error') => void
   onSyncResponse?: (blockId: string, blockType: string, response: unknown, isCorrect?: boolean, score?: number) => void
   disabled?: boolean
   variant?: 'default' | 'outline' | 'ghost'
@@ -44,6 +45,7 @@ export function RecordingAIGrading({
   language = 'spanish',
   targetLevel = 'B1',
   onGraded,
+  onGradingStateChange,
   onSyncResponse,
   disabled = false,
   variant = 'default',
@@ -91,16 +93,19 @@ export function RecordingAIGrading({
 
   const handleGrade = async () => {
     if (!audioUrl) {
+      onGradingStateChange?.('error')
       toast.error('No hay grabación para evaluar')
       return
     }
 
     if (usageInfo && !usageInfo.allowed) {
+      onGradingStateChange?.('error')
       toast.error(`Has alcanzado el límite de ${usageInfo.limit} correcciones de audio este mes`)
       return
     }
 
     setIsLoading(true)
+    onGradingStateChange?.('loading')
     try {
       const { base64, mimeType } = await fetchAudioAsBase64(audioUrl)
       
@@ -139,6 +144,7 @@ export function RecordingAIGrading({
       if (onGraded) {
         onGraded(data.gradingResult)
       }
+      onGradingStateChange?.('success')
 
       if (onSyncResponse && blockId) {
         const score = data.gradingResult.pointsEarned
@@ -153,6 +159,7 @@ export function RecordingAIGrading({
 
       toast.success('Grabación evaluada exitosamente')
     } catch (error) {
+      onGradingStateChange?.('error')
       console.error('Error grading recording:', error)
       toast.error(error instanceof Error ? error.message : 'Error al calificar la grabación')
     } finally {

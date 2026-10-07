@@ -80,6 +80,7 @@ interface BlockPreviewProps {
   guidedAppearance?: boolean // When true, applies the guided lesson presentation to supported blocks
   guidedActionTarget?: HTMLElement | null // Optional viewer footer target for a block's existing primary action
   onGuidedActionPresence?: (present: boolean) => void
+  onGuidedCompletionChange?: (completed: boolean) => void
   onRecordingStateChange?: (active: boolean) => void
 }
 
@@ -111,6 +112,36 @@ function renderGuidedAction(
   return action
 }
 
+function useGuidedCompletion(
+  guidedAppearance: boolean,
+  completed: boolean,
+  ready: boolean,
+  onGuidedCompletionChange?: (completed: boolean) => void
+) {
+  const callbackRef = useRef(onGuidedCompletionChange)
+  const lastReportedRef = useRef<boolean | null>(null)
+
+  useEffect(() => {
+    callbackRef.current = onGuidedCompletionChange
+  }, [onGuidedCompletionChange])
+
+  useEffect(() => {
+    if (!guidedAppearance || !ready) return
+    if (lastReportedRef.current === completed) return
+
+    lastReportedRef.current = completed
+    callbackRef.current?.(completed)
+  }, [completed, guidedAppearance, ready])
+
+  useEffect(() => {
+    return () => {
+      if (lastReportedRef.current !== null) {
+        callbackRef.current?.(false)
+      }
+    }
+  }, [])
+}
+
 const GUIDED_PRIMARY_ACTION_CLASS =
   'min-h-12 rounded-full bg-[#245CFF] px-6 text-base leading-6 text-white hover:bg-[#245CFF]/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
 const GUIDED_SECONDARY_ACTION_CLASS =
@@ -127,6 +158,7 @@ export function BlockPreview({
   guidedAppearance = false,
   guidedActionTarget,
   onGuidedActionPresence,
+  onGuidedCompletionChange,
   onRecordingStateChange,
 }: BlockPreviewProps) {
   // Teacher notes are only visible to teachers
@@ -184,6 +216,7 @@ export function BlockPreview({
             guidedAppearance={guidedAppearance}
             guidedActionTarget={guidedActionTarget}
             onGuidedActionPresence={onGuidedActionPresence}
+            onGuidedCompletionChange={onGuidedCompletionChange}
           />
         )
       case 'match':
@@ -195,6 +228,7 @@ export function BlockPreview({
             guidedAppearance={guidedAppearance}
             guidedActionTarget={guidedActionTarget}
             onGuidedActionPresence={onGuidedActionPresence}
+            onGuidedCompletionChange={onGuidedCompletionChange}
           />
         )
       case 'true_false':
@@ -208,6 +242,7 @@ export function BlockPreview({
             guidedAppearance={guidedAppearance}
             guidedActionTarget={guidedActionTarget}
             onGuidedActionPresence={onGuidedActionPresence}
+            onGuidedCompletionChange={onGuidedCompletionChange}
           />
         )
       case 'essay':
@@ -221,6 +256,7 @@ export function BlockPreview({
             guidedAppearance={guidedAppearance}
             guidedActionTarget={guidedActionTarget}
             onGuidedActionPresence={onGuidedActionPresence}
+            onGuidedCompletionChange={onGuidedCompletionChange}
           />
         )
       case 'short_answer':
@@ -250,6 +286,7 @@ export function BlockPreview({
             guidedAppearance={guidedAppearance}
             guidedActionTarget={guidedActionTarget}
             onGuidedActionPresence={onGuidedActionPresence}
+            onGuidedCompletionChange={onGuidedCompletionChange}
           />
         )
       case 'ordering':
@@ -280,6 +317,7 @@ export function BlockPreview({
             guidedAppearance={guidedAppearance}
             guidedActionTarget={guidedActionTarget}
             onGuidedActionPresence={onGuidedActionPresence}
+            onGuidedCompletionChange={onGuidedCompletionChange}
           />
         )
       case 'structured-content':
@@ -2159,6 +2197,7 @@ function FillBlanksBlockPreview({
   guidedAppearance = false,
   guidedActionTarget,
   onGuidedActionPresence,
+  onGuidedCompletionChange,
 }: {
   block: FillBlanksBlock
   isExamMode?: boolean
@@ -2166,11 +2205,13 @@ function FillBlanksBlockPreview({
   guidedAppearance?: boolean
   guidedActionTarget?: HTMLElement | null
   onGuidedActionPresence?: (present: boolean) => void
+  onGuidedCompletionChange?: (completed: boolean) => void
 }) {
   void hideHeader // Fill blanks blocks have a different layout
   const [index, setIndex] = useState(0)
   const [allInputs, setAllInputs] = useState<Record<string, Record<number, string>>>({})
   const [allResults, setAllResults] = useState<Record<string, boolean>>({})
+  const [hasChecked, setHasChecked] = useState(false)
   const items = block.items || []
   const currentItem = items[index]
 
@@ -2195,6 +2236,12 @@ function FillBlanksBlockPreview({
     if (isTeacherInClassroom || !currentItem) return
     const newInputs = { ...allInputs[currentItem.id], [partIndex]: value }
     setAllInputs((prev) => ({ ...prev, [currentItem.id]: newInputs }))
+    setAllResults((prev) => {
+      if (!(currentItem.id in prev)) return prev
+      const next = { ...prev }
+      delete next[currentItem.id]
+      return next
+    })
 
     // Sync to teacher
     if (classroomSync.canInteract) {
@@ -2207,15 +2254,17 @@ function FillBlanksBlockPreview({
     if (isTeacherInClassroom || !currentItem) return
     const parts = currentItem.content ? currentItem.content.split(/(\[[^\]]+\])/g) : []
     const inputs = allInputs[currentItem.id] || {}
-    const blanks = parts.filter((part) => part.startsWith('[') && part.endsWith(']'))
+    const blanks = parts.flatMap((part, partIndex) =>
+      part.startsWith('[') && part.endsWith(']') ? [{ part, partIndex }] : []
+    )
     let correctCount = 0
-    blanks.forEach((part) => {
+    blanks.forEach(({ part, partIndex }) => {
       const answer = part.slice(1, -1)
-      const partIndex = parts.indexOf(part)
       const userAnswer = inputs[partIndex] || ''
       if (userAnswer.toLowerCase().trim() === answer.toLowerCase().trim()) correctCount++
     })
     const allCorrect = correctCount === blanks.length
+    setHasChecked(true)
     setAllResults((prev) => ({ ...prev, [currentItem.id]: allCorrect }))
 
     // Sync result to teacher
@@ -2256,11 +2305,26 @@ function FillBlanksBlockPreview({
 
   const parts = displayItem?.content ? displayItem.content.split(/(\[[^\]]+\])/g) : []
   const showResult = !isExamMode && displayItem ? allResults[displayItem.id] !== undefined : false
+  const currentParts = currentItem?.content ? currentItem.content.split(/(\[[^\]]+\])/g) : []
+  const currentBlanks = currentParts.filter(
+    (part) => part.startsWith('[') && part.endsWith(']')
+  )
+  const currentBlankIndices = currentParts.flatMap((part, partIndex) =>
+    part.startsWith('[') && part.endsWith(']') ? [partIndex] : []
+  )
+  const currentInputs = currentItem ? allInputs[currentItem.id] || {} : {}
+  const isCurrentAnswered =
+    currentBlanks.length > 0 &&
+    currentBlankIndices.every((partIndex) => Boolean(currentInputs[partIndex]?.trim()))
+  const completed = items.length > 0 && items.every((item) => item.id in allResults)
+
+  useGuidedCompletion(guidedAppearance, completed, hasChecked, onGuidedCompletionChange)
 
   const hasGuidedAction =
     items.length > 0 &&
     !isTeacherInClassroom &&
     !isExamMode &&
+    !completed &&
     (!showResult || displayIndex < items.length - 1)
 
   useGuidedActionPresence(guidedAppearance, hasGuidedAction, onGuidedActionPresence)
@@ -2268,7 +2332,7 @@ function FillBlanksBlockPreview({
   const checkAction = (
     <Button
       onClick={handleCheck}
-      disabled={showResult}
+      disabled={showResult || (guidedAppearance && !isCurrentAnswered)}
       size="sm"
       className={guidedAppearance ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
     >
@@ -2282,7 +2346,7 @@ function FillBlanksBlockPreview({
       size="sm"
       className={guidedAppearance ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
     >
-      Siguiente
+      Siguiente pregunta
     </Button>
   )
 
@@ -2350,7 +2414,7 @@ function FillBlanksBlockPreview({
                     <input
                       value={userAnswer}
                       onChange={(e) => handleInputChange(i, e.target.value)}
-                      disabled={showResult || isTeacherInClassroom}
+                      disabled={(showResult && !guidedAppearance) || isTeacherInClassroom}
                       placeholder={isTeacherInClassroom ? '...' : ''}
                       className={cn(
                         guidedAppearance
@@ -2382,7 +2446,7 @@ function FillBlanksBlockPreview({
             )}
           </div>
 
-          {!isTeacherInClassroom && !isExamMode && (!guidedAppearance || !showResult) && (
+          {!isTeacherInClassroom && !isExamMode && !showResult && (
             <div className="flex gap-2">
               {guidedAppearance && guidedActionTarget
                 ? renderGuidedAction(checkAction, guidedAppearance, guidedActionTarget)
@@ -2399,16 +2463,18 @@ function FillBlanksBlockPreview({
 
         {items.length > 1 && !isTeacherInClassroom && (
           <div className="mt-4 flex justify-between">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleNav(Math.max(0, index - 1))}
-              disabled={index === 0}
-              className={guidedAppearance ? GUIDED_SECONDARY_ACTION_CLASS : undefined}
-            >
-              Anterior
-            </Button>
-            {!(guidedAppearance && showResult && guidedActionTarget) && (
+            {(guidedAppearance ? index > 0 : true) && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleNav(Math.max(0, index - 1))}
+                disabled={!guidedAppearance && index === 0}
+                className={guidedAppearance ? GUIDED_SECONDARY_ACTION_CLASS : undefined}
+              >
+                {guidedAppearance ? 'Pregunta anterior' : 'Anterior'}
+              </Button>
+            )}
+            {!guidedAppearance && (
               <Button
                 variant="outline"
                 size="sm"
@@ -2422,11 +2488,10 @@ function FillBlanksBlockPreview({
           </div>
         )}
 
-        {guidedAppearance &&
-          guidedActionTarget &&
-          showResult &&
-          displayIndex < items.length - 1 &&
-          renderGuidedAction(nextAction, guidedAppearance, guidedActionTarget)}
+        {guidedAppearance && showResult && displayIndex < items.length - 1 && !completed &&
+          (guidedActionTarget
+            ? renderGuidedAction(nextAction, guidedAppearance, guidedActionTarget)
+            : nextAction)}
       </div>
     </div>
   )
@@ -2439,6 +2504,7 @@ function MatchBlockPreview({
   guidedAppearance = false,
   guidedActionTarget,
   onGuidedActionPresence,
+  onGuidedCompletionChange,
 }: {
   block: MatchBlock
   isExamMode?: boolean
@@ -2446,27 +2512,26 @@ function MatchBlockPreview({
   guidedAppearance?: boolean
   guidedActionTarget?: HTMLElement | null
   onGuidedActionPresence?: (present: boolean) => void
+  onGuidedCompletionChange?: (completed: boolean) => void
 }) {
   void hideHeader // Match blocks have a different layout
   const [selectedLeft, setSelectedLeft] = useState<string | null>(null)
   const [matches, setMatches] = useState<Record<string, string>>({}) // leftId -> rightId
   const [guidedPairIndex, setGuidedPairIndex] = useState(0)
+  const [guidedEditPairIndex, setGuidedEditPairIndex] = useState<number | null>(null)
   const [shuffledRight, setShuffledRight] = useState<Array<{ id: string; text: string }>>(() => {
     const rightSide = [...(block.pairs || [])].map((pair) => ({ id: pair.id, text: pair.right }))
     return guidedAppearance ? rightSide : rightSide.sort(() => Math.random() - 0.5)
   })
   const [showResultState, setShowResultState] = useState(false)
+  const [hasChecked, setHasChecked] = useState(false)
   const showResult = !isExamMode && showResultState
+  const pairs = block.pairs || []
 
   // Get classroom sync
   const classroomSync = useClassroomSync()
   const remoteNav = classroomSync.getRemoteNavigation(block.id)
   const isTeacherInClassroom = classroomSync.isInClassroom && classroomSync.isTeacher
-
-  const hasGuidedAction =
-    block.pairs?.length > 0 && !isTeacherInClassroom && !isExamMode && !showResult
-
-  useGuidedActionPresence(guidedAppearance, Boolean(hasGuidedAction), onGuidedActionPresence)
 
   // For teachers: use remote matches
   const displayMatches =
@@ -2476,11 +2541,11 @@ function MatchBlockPreview({
   const init = () => {
     if (block.pairs) {
       const rightSide = block.pairs.map((p) => ({ id: p.id, text: p.right }))
-      // Simple shuffle
-      setShuffledRight([...rightSide].sort(() => Math.random() - 0.5))
+      setShuffledRight(guidedAppearance ? rightSide : [...rightSide].sort(() => Math.random() - 0.5))
       setMatches({})
       setShowResultState(false)
       setSelectedLeft(null)
+      setGuidedEditPairIndex(null)
     }
   }
 
@@ -2495,6 +2560,7 @@ function MatchBlockPreview({
     if (isTeacherInClassroom) return
     init()
     setGuidedPairIndex(0)
+    setGuidedEditPairIndex(null)
   }
 
   const handleLeftClick = (id: string) => {
@@ -2542,94 +2608,52 @@ function MatchBlockPreview({
 
   const handleGuidedRightClick = (rightId: string) => {
     if (showResult || isTeacherInClassroom) return
-    const currentPair = block.pairs?.[guidedPairIndex]
+    const currentPairIndex = guidedEditPairIndex ?? guidedPairIndex
+    const currentPair = pairs[currentPairIndex]
     if (!currentPair) return
 
     const connectedLeftId = Object.keys(matches).find((key) => matches[key] === rightId)
     if (connectedLeftId && connectedLeftId !== currentPair.id) return
 
-    const newMatches = { ...matches }
-    if (newMatches[currentPair.id] === rightId) {
-      delete newMatches[currentPair.id]
-    } else {
-      newMatches[currentPair.id] = rightId
-    }
+    const newMatches = { ...matches, [currentPair.id]: rightId }
     setMatches(newMatches)
+    setGuidedEditPairIndex(null)
+
+    const nextUnmatchedIndex = pairs.findIndex(
+      (pair, pairIndex) => pairIndex !== currentPairIndex && !newMatches[pair.id]
+    )
+    if (nextUnmatchedIndex >= 0) setGuidedPairIndex(nextUnmatchedIndex)
 
     if (classroomSync.canInteract) {
       classroomSync.syncBlockNavigation(
         block.id,
-        guidedPairIndex,
-        block.pairs?.length || 0,
+        currentPairIndex,
+        pairs.length,
         true,
         false,
         newMatches
-      )
-    }
-  }
-
-  const handleGuidedLeftClick = () => {
-    if (showResult || isTeacherInClassroom) return
-    const currentPair = block.pairs?.[guidedPairIndex]
-    if (!currentPair) return
-
-    if (!matches[currentPair.id]) {
-      setSelectedLeft(currentPair.id)
-      return
-    }
-
-    const newMatches = { ...matches }
-    delete newMatches[currentPair.id]
-    setMatches(newMatches)
-    setSelectedLeft(null)
-
-    if (classroomSync.canInteract) {
-      classroomSync.syncBlockNavigation(
-        block.id,
-        guidedPairIndex,
-        block.pairs?.length || 0,
-        true,
-        false,
-        newMatches
-      )
-    }
-  }
-
-  const handleGuidedNav = (newIndex: number) => {
-    if (isTeacherInClassroom || showResult) return
-    const boundedIndex = Math.max(0, Math.min(block.pairs.length - 1, newIndex))
-    setGuidedPairIndex(boundedIndex)
-    setSelectedLeft(null)
-
-    if (classroomSync.canInteract) {
-      classroomSync.syncBlockNavigation(
-        block.id,
-        boundedIndex,
-        block.pairs.length,
-        true,
-        false,
-        matches
       )
     }
   }
 
   const checkAnswers = () => {
-    if (isTeacherInClassroom || isExamMode) return
+    if (isTeacherInClassroom || isExamMode || (guidedAppearance && !allMatched)) return
+    setHasChecked(true)
     setShowResultState(true)
 
     // Calculate and sync result
-    if (classroomSync.canInteract && block.pairs) {
+    if (classroomSync.canInteract && pairs.length > 0) {
       const correctMatches = Object.keys(matches).filter(
         (leftId) => matches[leftId] === leftId
       ).length
-      const allCorrect = correctMatches === block.pairs.length
+      const allCorrect = correctMatches === pairs.length
       classroomSync.sendBlockResponse(
         block.id,
         'match',
         {
           matches,
           correctCount: correctMatches,
-          totalPairs: block.pairs.length,
+          totalPairs: pairs.length,
         },
         allCorrect,
         correctMatches
@@ -2637,10 +2661,20 @@ function MatchBlockPreview({
     }
   }
 
+  const allMatched = pairs.length > 0 && pairs.every((pair) => Boolean(matches[pair.id]))
+  const completed = showResult && allMatched
+
+  useGuidedCompletion(guidedAppearance, completed, hasChecked, onGuidedCompletionChange)
+
+  const hasGuidedAction =
+    pairs.length > 0 && !isTeacherInClassroom && !isExamMode && !completed
+
+  useGuidedActionPresence(guidedAppearance, hasGuidedAction, onGuidedActionPresence)
+
   const checkAction = (
     <Button
       onClick={checkAnswers}
-      disabled={showResult}
+      disabled={showResult || (guidedAppearance && !allMatched)}
       size="sm"
       className={guidedAppearance ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
     >
@@ -2651,16 +2685,69 @@ function MatchBlockPreview({
   const guidedInstructionId = `guided-match-instruction-${block.id}`
 
   if (guidedAppearance) {
-    const guidedCurrentPair = block.pairs?.[guidedPairIndex]
+    const currentGuidedPairIndex = guidedEditPairIndex ?? guidedPairIndex
+    const guidedCurrentPair = pairs[currentGuidedPairIndex]
     const guidedCurrentMatch = guidedCurrentPair ? matches[guidedCurrentPair.id] : undefined
+    const showGuidedSummary = allMatched && guidedEditPairIndex === null && !showResult
 
     return (
       <div className="space-y-5 text-[#10245C]">
         <p id={guidedInstructionId} className="text-base leading-6 text-[#506187]">
-          Toca una palabra y su pareja.
+          Elige la respuesta para este dato.
         </p>
 
-        {guidedCurrentPair ? (
+        {showGuidedSummary ? (
+          <section
+            className="space-y-4 rounded-2xl border border-[#506187]/50 bg-white p-4 sm:p-6"
+            aria-describedby={guidedInstructionId}
+            aria-label="Asociaciones seleccionadas"
+          >
+            <h3 className="text-base font-semibold leading-6 text-[#10245C]">
+              Revisa tus asociaciones
+            </h3>
+            <div className="space-y-3">
+              {pairs.map((pair, pairIndex) => {
+                const matchedRight = shuffledRight.find((right) => right.id === matches[pair.id])
+                return (
+                  <div
+                    key={pair.id}
+                    className="flex items-center gap-3 rounded-xl border border-[#506187]/40 px-4 py-3 text-base leading-6"
+                  >
+                    <span className="flex-1 text-[#10245C]">
+                      {pair.left} <span className="text-[#506187]">→</span>{' '}
+                      {matchedRight?.text || pair.right}
+                    </span>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        const nextMatches = { ...matches }
+                        delete nextMatches[pair.id]
+                        setMatches(nextMatches)
+                        setGuidedEditPairIndex(pairIndex)
+                        setGuidedPairIndex(pairIndex)
+                        if (classroomSync.canInteract) {
+                          classroomSync.syncBlockNavigation(
+                            block.id,
+                            pairIndex,
+                            pairs.length,
+                            true,
+                            false,
+                            nextMatches
+                          )
+                        }
+                      }}
+                      className={GUIDED_SECONDARY_ACTION_CLASS}
+                    >
+                      Cambiar
+                    </Button>
+                  </div>
+                )
+              })}
+            </div>
+          </section>
+        ) : guidedCurrentPair ? (
           <section
             className="space-y-5 rounded-2xl border border-[#506187]/50 bg-white p-4 sm:p-6"
             aria-describedby={guidedInstructionId}
@@ -2668,42 +2755,28 @@ function MatchBlockPreview({
           >
             <div className="flex items-center justify-between gap-4">
               <span className="text-sm leading-6 text-[#506187]">
-                {guidedPairIndex + 1} de {block.pairs.length}
+                {currentGuidedPairIndex + 1} de {pairs.length}
               </span>
               <span className="text-sm leading-6 text-[#506187]">
                 {Object.keys(matches).length} respuestas
               </span>
             </div>
 
-            <button
-              type="button"
-              onClick={handleGuidedLeftClick}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                  event.preventDefault()
-                  handleGuidedLeftClick()
-                }
-              }}
-              disabled={isTeacherInClassroom || showResult}
-              aria-pressed={Boolean(guidedCurrentMatch) || selectedLeft === guidedCurrentPair.id}
-              aria-label={`Palabra: ${guidedCurrentPair.left}`}
-              className={cn(
-                'min-h-11 w-full rounded-2xl border px-4 py-3 text-left text-base font-semibold leading-6 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2',
-                guidedCurrentMatch || selectedLeft === guidedCurrentPair.id
-                  ? 'border-[#10245C] bg-[#EEE8FA] text-[#10245C] ring-2 ring-[#10245C]/20'
-                  : 'border-[#506187] bg-white text-[#10245C] hover:bg-[#EEE8FA]',
-                (isTeacherInClassroom || showResult) && 'cursor-not-allowed'
-              )}
+            <div
+              aria-label="Dato actual"
+              className="min-h-11 w-full rounded-2xl border border-[#506187] bg-white px-4 py-3 text-left text-base font-semibold leading-6 text-[#10245C]"
             >
               {guidedCurrentPair.left}
-            </button>
+            </div>
 
             <div className="flex flex-wrap gap-2" role="group" aria-label="Opciones de pareja">
-              {shuffledRight.map((item) => {
+              {shuffledRight.filter((item) => {
+                const connectedLeftId = Object.keys(matches).find((key) => matches[key] === item.id)
+                return !connectedLeftId || connectedLeftId === guidedCurrentPair.id
+              }).map((item) => {
                 const connectedLeftId = Object.keys(matches).find((key) => matches[key] === item.id)
                 const isConnected = Boolean(connectedLeftId)
                 const isCurrentMatch = guidedCurrentMatch === item.id
-                const isUnavailable = isConnected && !isCurrentMatch
 
                 return (
                   <button
@@ -2716,13 +2789,13 @@ function MatchBlockPreview({
                         handleGuidedRightClick(item.id)
                       }
                     }}
-                    disabled={isTeacherInClassroom || showResult || isUnavailable}
+                    disabled={isTeacherInClassroom || showResult}
                     aria-pressed={isCurrentMatch}
                     aria-label={`Pareja: ${item.text}`}
                     data-guided-match-choice={item.id}
                     className={cn(
                       'min-h-11 rounded-xl border px-3 py-2 text-left text-base leading-6 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2',
-                      isTeacherInClassroom || showResult || isUnavailable
+                      isTeacherInClassroom || showResult
                         ? 'cursor-not-allowed'
                         : 'cursor-pointer hover:bg-[#EEE8FA]',
                       isCurrentMatch
@@ -2738,28 +2811,6 @@ function MatchBlockPreview({
               })}
             </div>
 
-            <div className="flex justify-between gap-3">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => handleGuidedNav(guidedPairIndex - 1)}
-                disabled={guidedPairIndex === 0 || showResult}
-                className={GUIDED_SECONDARY_ACTION_CLASS}
-              >
-                Anterior
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => handleGuidedNav(guidedPairIndex + 1)}
-                disabled={guidedPairIndex === block.pairs.length - 1 || showResult}
-                className={GUIDED_SECONDARY_ACTION_CLASS}
-              >
-                Siguiente
-              </Button>
-            </div>
           </section>
         ) : (
           <div className="rounded-2xl border border-dashed border-[#506187] bg-white p-6 text-center text-base leading-6 text-[#506187]">
@@ -3151,6 +3202,7 @@ function TrueFalseBlockPreview({
   guidedAppearance = false,
   guidedActionTarget,
   onGuidedActionPresence,
+  onGuidedCompletionChange,
 }: {
   block: TrueFalseBlock
   isExamMode?: boolean
@@ -3160,6 +3212,7 @@ function TrueFalseBlockPreview({
   guidedAppearance?: boolean
   guidedActionTarget?: HTMLElement | null
   onGuidedActionPresence?: (present: boolean) => void
+  onGuidedCompletionChange?: (completed: boolean) => void
 }) {
   void hideHeader // True/false blocks have a different layout
   const [index, setIndex] = useState(0)
@@ -3169,6 +3222,7 @@ function TrueFalseBlockPreview({
   const [localAnswers, setLocalAnswers] = useState<Record<string, boolean | null>>({})
   const answers = isExamMode && onAnswerChange ? externalAnswers : localAnswers
   const [results, setResults] = useState<Record<string, boolean>>({})
+  const [hasChecked, setHasChecked] = useState(false)
   const items = block.items || []
   const currentItem = items[index]
 
@@ -3190,16 +3244,26 @@ function TrueFalseBlockPreview({
   const currentAnswer = displayItem ? displayAnswers[displayItem.id] : undefined
   const currentResult = displayItem ? results[displayItem.id] : undefined
   const showResult = !isExamMode && currentResult !== undefined
+  const completed = items.length > 0 && items.every((item) => item.id in results)
   const hasGuidedAction =
     items.length > 0 &&
     !isTeacherInClassroom &&
     !isExamMode &&
+    !completed &&
     (!showResult || displayIndex < items.length - 1)
 
+  useGuidedCompletion(guidedAppearance, completed, hasChecked, onGuidedCompletionChange)
   useGuidedActionPresence(guidedAppearance, hasGuidedAction, onGuidedActionPresence)
 
   const handleSelect = (value: boolean) => {
     if (isTeacherInClassroom || !currentItem) return
+    if (guidedAppearance && currentItem.id in results) {
+      setResults((prev) => {
+        const next = { ...prev }
+        delete next[currentItem.id]
+        return next
+      })
+    }
     const newAnswers = { ...answers, [currentItem.id]: value }
     if (isExamMode && onAnswerChange) {
       onAnswerChange(newAnswers)
@@ -3219,6 +3283,7 @@ function TrueFalseBlockPreview({
   const handleCheck = () => {
     if (isTeacherInClassroom || !currentItem) return
     const isCorrect = answers[currentItem.id] === currentItem.correctAnswer
+    setHasChecked(true)
     setResults((prev) => ({ ...prev, [currentItem.id]: isCorrect }))
 
     // Sync result to teacher
@@ -3317,7 +3382,7 @@ function TrueFalseBlockPreview({
           <div className="flex justify-center gap-4">
             <button
               onClick={() => handleSelect(true)}
-              disabled={showResult || isTeacherInClassroom}
+              disabled={(showResult && !guidedAppearance) || isTeacherInClassroom}
               aria-pressed={currentAnswer === true}
               className={cn(
                 guidedAppearance
@@ -3338,7 +3403,7 @@ function TrueFalseBlockPreview({
             </button>
             <button
               onClick={() => handleSelect(false)}
-              disabled={showResult || isTeacherInClassroom}
+              disabled={(showResult && !guidedAppearance) || isTeacherInClassroom}
               aria-pressed={currentAnswer === false}
               className={cn(
                 guidedAppearance
@@ -3404,19 +3469,22 @@ function TrueFalseBlockPreview({
 
           {showResult &&
             guidedAppearance &&
-            guidedActionTarget &&
             !isTeacherInClassroom &&
             displayIndex < items.length - 1 &&
-            renderGuidedAction(
-              <Button
-                onClick={() => handleNav(Math.min(items.length - 1, index + 1))}
-                className={GUIDED_PRIMARY_ACTION_CLASS}
-              >
-                Siguiente
-              </Button>,
-              guidedAppearance,
-              guidedActionTarget
-            )}
+            !completed &&
+            (() => {
+              const nextAction = (
+                <Button
+                  onClick={() => handleNav(Math.min(items.length - 1, index + 1))}
+                  className={GUIDED_PRIMARY_ACTION_CLASS}
+                >
+                  Siguiente pregunta
+                </Button>
+              )
+              return guidedActionTarget
+                ? renderGuidedAction(nextAction, guidedAppearance, guidedActionTarget)
+                : nextAction
+            })()}
 
           {isTeacherInClassroom && !showResult && (
             <p className="text-sm text-muted-foreground italic">
@@ -3427,16 +3495,18 @@ function TrueFalseBlockPreview({
 
         {items.length > 1 && !isTeacherInClassroom && (
           <div className="flex justify-between mt-4">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleNav(Math.max(0, index - 1))}
-              disabled={index === 0}
-              className={guidedAppearance ? GUIDED_SECONDARY_ACTION_CLASS : undefined}
-            >
-              Anterior
-            </Button>
-            {!(guidedAppearance && showResult && guidedActionTarget) && (
+            {(guidedAppearance ? index > 0 : true) && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleNav(Math.max(0, index - 1))}
+                disabled={!guidedAppearance && index === 0}
+                className={guidedAppearance ? GUIDED_SECONDARY_ACTION_CLASS : undefined}
+              >
+                {guidedAppearance ? 'Pregunta anterior' : 'Anterior'}
+              </Button>
+            )}
+            {!guidedAppearance && (
               <Button
                 variant="outline"
                 size="sm"
@@ -3463,6 +3533,7 @@ function EssayBlockPreview({
   guidedAppearance = false,
   guidedActionTarget,
   onGuidedActionPresence,
+  onGuidedCompletionChange,
 }: {
   block: EssayBlock
   isExamMode?: boolean
@@ -3472,10 +3543,12 @@ function EssayBlockPreview({
   guidedAppearance?: boolean
   guidedActionTarget?: HTMLElement | null
   onGuidedActionPresence?: (present: boolean) => void
+  onGuidedCompletionChange?: (completed: boolean) => void
 }) {
   void hideHeader // Essay blocks have a different layout
   const essayPrompt = guidedAppearance ? getGuidedEssayPrompt(block) : block.prompt || 'Escribe tu respuesta aquí...'
   const [localText, setLocalText] = useState('')
+  const [gradingState, setGradingState] = useState<'idle' | 'draft' | 'loading' | 'success' | 'error'>('idle')
 
   // En modo examen, usar las respuestas externas; de lo contrario, usar estado local
   const externalText = (answer as string) || ''
@@ -3499,10 +3572,21 @@ function EssayBlockPreview({
   const meetsMinWords = !block.minWords || wordCount >= block.minWords
   const hasEssayAction = !isTeacherInClassroom && !isExamMode
 
-  useGuidedActionPresence(guidedAppearance, hasEssayAction, onGuidedActionPresence)
+  useGuidedCompletion(
+    guidedAppearance,
+    gradingState === 'success',
+    gradingState !== 'idle',
+    onGuidedCompletionChange
+  )
+  useGuidedActionPresence(
+    guidedAppearance,
+    hasEssayAction && gradingState !== 'success',
+    onGuidedActionPresence
+  )
 
   const handleTextChange = (value: string) => {
     if (isTeacherInClassroom) return
+    if (guidedAppearance) setGradingState('draft')
     setText(value)
 
     // Sync to teacher (debounced would be better but simple for now)
@@ -3618,6 +3702,9 @@ function EssayBlockPreview({
               targetLevel={block.aiGradingConfig?.targetLevel}
               disabled={!meetsMinWords || !text.trim()}
               className={guidedAppearance ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
+              label={guidedAppearance ? 'Corregir' : undefined}
+              onGraded={() => setGradingState('success')}
+              onGradingStateChange={setGradingState}
               onSyncResponse={
                 classroomSync.canInteract ? classroomSync.sendBlockResponse : undefined
               }
@@ -3652,6 +3739,7 @@ function RecordingBlockPreview({
   guidedAppearance = false,
   guidedActionTarget,
   onGuidedActionPresence,
+  onGuidedCompletionChange,
 }: {
   block: RecordingBlock
   isExamMode?: boolean
@@ -3662,6 +3750,7 @@ function RecordingBlockPreview({
   guidedAppearance?: boolean
   guidedActionTarget?: HTMLElement | null
   onGuidedActionPresence?: (present: boolean) => void
+  onGuidedCompletionChange?: (completed: boolean) => void
 }) {
   void hideHeader // Recording blocks have a different layout
   const [isRecording, setIsRecording] = useState(false)
@@ -3670,6 +3759,7 @@ function RecordingBlockPreview({
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
+  const [gradingState, setGradingState] = useState<'idle' | 'draft' | 'loading' | 'success' | 'error'>('idle')
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const audioChunksRef = useRef<Blob[]>([])
@@ -3679,7 +3769,17 @@ function RecordingBlockPreview({
   const hasRecordingAction =
     Boolean(audioUrl) && hasRecorded && !isRecording && !isUploading && block.aiGrading !== false
 
-  useGuidedActionPresence(guidedAppearance, hasRecordingAction, onGuidedActionPresence)
+  useGuidedCompletion(
+    guidedAppearance,
+    gradingState === 'success',
+    gradingState !== 'idle',
+    onGuidedCompletionChange
+  )
+  useGuidedActionPresence(
+    guidedAppearance,
+    hasRecordingAction && gradingState !== 'success',
+    onGuidedActionPresence
+  )
 
   // Cargar audio existente de la respuesta
   useEffect(() => {
@@ -3815,6 +3915,7 @@ function RecordingBlockPreview({
     if (isRecording) {
       stopRecording()
     } else {
+      if (guidedAppearance) setGradingState('draft')
       // Si ya hay una grabación, limpiarla primero
       if (audioUrl && !(answer as { audioUrl?: string })?.audioUrl) {
         URL.revokeObjectURL(audioUrl)
@@ -4009,6 +4110,8 @@ function RecordingBlockPreview({
                 }
                 disabled={!audioUrl || isUploading}
                 className={guidedAppearance ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
+                onGraded={() => setGradingState('success')}
+                onGradingStateChange={setGradingState}
               />
             )
 
@@ -4692,6 +4795,7 @@ function MultipleChoiceBlockPreview({
   guidedAppearance = false,
   guidedActionTarget,
   onGuidedActionPresence,
+  onGuidedCompletionChange,
 }: {
   block: MultipleChoiceBlock
   isExamMode?: boolean
@@ -4701,6 +4805,7 @@ function MultipleChoiceBlockPreview({
   guidedAppearance?: boolean
   guidedActionTarget?: HTMLElement | null
   onGuidedActionPresence?: (present: boolean) => void
+  onGuidedCompletionChange?: (completed: boolean) => void
 }) {
   void hideHeader // Multiple choice blocks have a different layout
   const [currentItemIndex, setCurrentItemIndex] = useState(0)
@@ -4722,17 +4827,21 @@ function MultipleChoiceBlockPreview({
         }
       : setLocalSelectedOptions
   const [showResults, setShowResults] = useState<Record<string, boolean>>({})
+  const [hasChecked, setHasChecked] = useState(false)
 
   const items = block.items || []
   const currentItem = items[currentItemIndex]
   const showResult = !isExamMode && Boolean(currentItem && showResults[currentItem.id])
+  const completed = items.length > 0 && items.every((item) => item.id in showResults)
   const hasGuidedAction =
-    Boolean(currentItem) && !isExamMode && (!showResult || currentItemIndex < items.length - 1)
+    Boolean(currentItem) && !isExamMode && !completed && (!showResult || currentItemIndex < items.length - 1)
 
+  useGuidedCompletion(guidedAppearance, completed, hasChecked, onGuidedCompletionChange)
   useGuidedActionPresence(guidedAppearance, hasGuidedAction, onGuidedActionPresence)
 
   const handleCheck = () => {
     if (currentItem && !isExamMode) {
+      setHasChecked(true)
       setShowResults((prev) => ({ ...prev, [currentItem.id]: true }))
     }
   }
@@ -4780,7 +4889,7 @@ function MultipleChoiceBlockPreview({
       size="sm"
       className={guidedAppearance ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
     >
-      Siguiente
+      {guidedAppearance ? 'Siguiente pregunta' : 'Siguiente'}
     </Button>
   )
 
@@ -4859,11 +4968,18 @@ function MultipleChoiceBlockPreview({
               <button
                 key={option.id}
                 type="button"
-                onClick={() =>
-                  !showResult &&
+                onClick={() => {
+                  if (showResult && !guidedAppearance) return
+                  if (showResult && guidedAppearance) {
+                    setShowResults((prev) => {
+                      const next = { ...prev }
+                      delete next[currentItem.id]
+                      return next
+                    })
+                  }
                   setSelectedOptions((prev) => ({ ...prev, [currentItem.id]: option.id }))
-                }
-                disabled={showResult}
+                }}
+                disabled={showResult && !guidedAppearance}
                 aria-pressed={isSelected}
                 aria-label={option.text}
                 className={cn(
@@ -4952,14 +5068,14 @@ function MultipleChoiceBlockPreview({
               size="sm"
               className={GUIDED_SECONDARY_ACTION_CLASS}
             >
-              Anterior
+              Pregunta anterior
             </Button>
           )}
           {!showResult
             ? guidedActionTarget
               ? renderGuidedAction(checkAction, guidedAppearance, guidedActionTarget)
               : checkAction
-            : items.length > 1 && currentItemIndex < items.length - 1
+            : !completed && items.length > 1 && currentItemIndex < items.length - 1
               ? guidedActionTarget
                 ? renderGuidedAction(nextAction, guidedAppearance, guidedActionTarget)
                 : nextAction

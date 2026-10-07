@@ -3,10 +3,44 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { BlockPreview } from './block-preview'
 
 vi.mock('@/components/lessons/essay-ai-grading', () => ({
-  EssayAIGrading: () => <button type="button">Enviar</button>,
+  EssayAIGrading: ({
+    label = 'Enviar',
+    onGraded,
+    onGradingStateChange,
+  }: {
+    label?: string
+    onGraded?: () => void
+    onGradingStateChange?: (state: 'loading' | 'success' | 'error') => void
+  }) => (
+    <button
+      type="button"
+      onClick={() => {
+        onGradingStateChange?.('success')
+        onGraded?.()
+      }}
+    >
+      {label}
+    </button>
+  ),
 }))
 vi.mock('@/components/lessons/recording-ai-grading', () => ({
-  RecordingAIGrading: () => <button type="button">Obtener Retroalimentación</button>,
+  RecordingAIGrading: ({
+    onGraded,
+    onGradingStateChange,
+  }: {
+    onGraded?: () => void
+    onGradingStateChange?: (state: 'loading' | 'success' | 'error') => void
+  }) => (
+    <button
+      type="button"
+      onClick={() => {
+        onGradingStateChange?.('success')
+        onGraded?.()
+      }}
+    >
+      Obtener Retroalimentación
+    </button>
+  ),
 }))
 vi.mock('@/lib/actions/ai-grading-limits', () => ({
   canUseAIGrading: vi.fn(),
@@ -192,8 +226,7 @@ describe('BlockPreview guided appearance', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Verdadero' }))
     fireEvent.click(target.querySelector('button') as HTMLButtonElement)
 
-    expect(target.querySelector('button')).toHaveTextContent('Siguiente')
-    expect(screen.queryByRole('button', { name: 'Siguiente' })).toBeInTheDocument()
+    expect(target.querySelector('button')).toHaveTextContent('Siguiente pregunta')
     fireEvent.click(target.querySelector('button') as HTMLButtonElement)
 
     expect(screen.getByText('Second statement.')).toBeInTheDocument()
@@ -220,7 +253,40 @@ describe('BlockPreview guided appearance', () => {
     expect(screen.getByRole('button', { name: 'Reiniciar' })).toBeInTheDocument()
   })
 
-  it('uses a compact guided matching stage, portals checking, and preserves all pairings', () => {
+  it('reports completion only after every true/false question has been checked', () => {
+    const target = document.createElement('div')
+    const onGuidedCompletionChange = vi.fn()
+    document.body.appendChild(target)
+
+    render(
+      <BlockPreview
+        guidedAppearance
+        guidedActionTarget={target}
+        onGuidedCompletionChange={onGuidedCompletionChange}
+        block={{
+          id: 'true-false-completion',
+          type: 'true_false',
+          order: 0,
+          items: [
+            { id: 'first', statement: 'First statement.', correctAnswer: true },
+            { id: 'second', statement: 'Second statement.', correctAnswer: false },
+          ],
+        }}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Falso' }))
+    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
+    expect(onGuidedCompletionChange).toHaveBeenLastCalledWith(false)
+    expect(target.querySelector('button')).toHaveTextContent('Siguiente pregunta')
+
+    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
+    fireEvent.click(screen.getByRole('button', { name: 'Verdadero' }))
+    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
+    expect(onGuidedCompletionChange).toHaveBeenLastCalledWith(true)
+  })
+
+  it('guides matching one datum at a time and reviews every association before checking', () => {
     const target = document.createElement('div')
     document.body.appendChild(target)
     const onGuidedActionPresence = vi.fn()
@@ -247,7 +313,9 @@ describe('BlockPreview guided appearance', () => {
     expect(
       screen.queryByRole('heading', { name: 'Práctica de vocabulario' })
     ).not.toBeInTheDocument()
-    expect(screen.getByText('Toca una palabra y su pareja.')).toBeVisible()
+    expect(screen.getByText('Elige la respuesta para este dato.')).toBeVisible()
+    expect(screen.getByLabelText('Dato actual')).toHaveTextContent('Name')
+    expect(screen.queryByRole('button', { name: 'Palabra: Name' })).not.toBeInTheDocument()
     expect(screen.getAllByRole('button', { name: /Pareja:/ })).toHaveLength(2)
     expect(screen.getAllByRole('button', { name: /Pareja:/ })[0]).toHaveAttribute('type', 'button')
     expect(target.querySelector('button')).toHaveTextContent('Comprobar')
@@ -255,13 +323,13 @@ describe('BlockPreview guided appearance', () => {
 
     const firstChoice = screen.getByRole('button', { name: 'Pareja: Peter' })
     fireEvent.click(firstChoice)
-    expect(firstChoice).toHaveAttribute('aria-pressed', 'true')
-
-    fireEvent.click(screen.getByRole('button', { name: 'Siguiente' }))
     expect(screen.getByText('Age')).toBeVisible()
+    expect(screen.queryByRole('button', { name: 'Pareja: Peter' })).not.toBeInTheDocument()
     const secondChoice = screen.getByRole('button', { name: 'Pareja: 20 years old' })
     fireEvent.keyDown(secondChoice, { key: 'Enter' })
-    expect(secondChoice).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByText('Revisa tus asociaciones')).toBeVisible()
+    expect(screen.getAllByRole('button', { name: 'Cambiar' })).toHaveLength(2)
+    expect(target.querySelector('button')).not.toBeDisabled()
 
     fireEvent.click(target.querySelector('button') as HTMLButtonElement)
     expect(screen.getByText('¡Perfecto! Todos los pares están correctos')).toBeVisible()
@@ -275,7 +343,7 @@ describe('BlockPreview guided appearance', () => {
     )
   })
 
-  it('enforces one-to-one guided matches and supports keyboard clearing and reassignment', () => {
+  it('enforces one-to-one guided matches and supports keyboard reassignment', () => {
     const target = document.createElement('div')
     document.body.appendChild(target)
 
@@ -298,39 +366,30 @@ describe('BlockPreview guided appearance', () => {
 
     const beta = screen.getByRole('button', { name: 'Pareja: Beta' })
     fireEvent.click(beta)
-    expect(beta).toHaveAttribute('aria-pressed', 'true')
-
-    fireEvent.click(screen.getByRole('button', { name: 'Siguiente' }))
-    const occupiedBeta = screen.getByRole('button', { name: 'Pareja: Beta' })
-    expect(occupiedBeta).toBeDisabled()
-    fireEvent.keyDown(occupiedBeta, { key: 'Enter' })
-    expect(occupiedBeta).toHaveAttribute('aria-pressed', 'false')
+    expect(screen.getByText('Second')).toBeVisible()
+    expect(screen.queryByRole('button', { name: 'Pareja: Beta' })).not.toBeInTheDocument()
 
     const gamma = screen.getByRole('button', { name: 'Pareja: Gamma' })
     fireEvent.keyDown(gamma, { key: ' ' })
-    expect(gamma).toHaveAttribute('aria-pressed', 'true')
-
-    fireEvent.click(screen.getByRole('button', { name: 'Anterior' }))
-    const selectedBeta = screen.getByRole('button', { name: 'Pareja: Beta' })
-    fireEvent.keyDown(selectedBeta, { key: 'Enter' })
-    expect(selectedBeta).toHaveAttribute('aria-pressed', 'false')
-    expect(selectedBeta).not.toBeDisabled()
+    expect(screen.getByText('Third')).toBeVisible()
 
     const alpha = screen.getByRole('button', { name: 'Pareja: Alpha' })
-    fireEvent.keyDown(alpha, { key: ' ' })
-    expect(alpha).toHaveAttribute('aria-pressed', 'true')
+    fireEvent.keyDown(alpha, { key: 'Enter' })
+    expect(screen.getByText('Revisa tus asociaciones')).toBeVisible()
 
-    fireEvent.click(screen.getByRole('button', { name: 'Siguiente' }))
-    const reassignedBeta = screen.getByRole('button', { name: 'Pareja: Beta' })
-    expect(reassignedBeta).not.toBeDisabled()
-    fireEvent.keyDown(reassignedBeta, { key: 'Enter' })
-    expect(reassignedBeta).toHaveAttribute('aria-pressed', 'true')
+    const changeSecond = screen.getAllByRole('button', { name: 'Cambiar' })[1]
+    fireEvent.click(changeSecond)
+    expect(screen.getByLabelText('Dato actual')).toHaveTextContent('Second')
+    expect(screen.queryByRole('button', { name: 'Pareja: Beta' })).not.toBeInTheDocument()
+    const reassignedGamma = screen.getByRole('button', { name: 'Pareja: Gamma' })
+    fireEvent.keyDown(reassignedGamma, { key: 'Enter' })
+    expect(screen.getByText('Revisa tus asociaciones')).toBeVisible()
 
     fireEvent.click(target.querySelector('button') as HTMLButtonElement)
-    expect(screen.getByText('2 de 3 pares correctos')).toBeVisible()
+    expect(screen.getByText('0 de 3 pares correctos')).toBeVisible()
   })
 
-  it('makes the guided current word actionable and supports keyboard clearing', () => {
+  it('keeps the guided matching datum fixed and keyboard choices actionable', () => {
     render(
       <BlockPreview
         guidedAppearance
@@ -346,19 +405,123 @@ describe('BlockPreview guided appearance', () => {
       />
     )
 
-    const leftWord = screen.getByRole('button', { name: 'Palabra: Name' })
+    expect(screen.getByLabelText('Dato actual')).toHaveTextContent('Name')
+    expect(screen.queryByRole('button', { name: 'Palabra: Name' })).not.toBeInTheDocument()
     const rightChoice = screen.getByRole('button', { name: 'Pareja: Peter' })
 
-    fireEvent.click(rightChoice)
-    expect(rightChoice).toHaveAttribute('aria-pressed', 'true')
-
-    fireEvent.keyDown(leftWord, { key: 'Enter' })
-    expect(rightChoice).toHaveAttribute('aria-pressed', 'false')
-
-    fireEvent.keyDown(leftWord, { key: ' ' })
-    expect(leftWord).toHaveAttribute('aria-pressed', 'true')
     fireEvent.keyDown(rightChoice, { key: 'Enter' })
-    expect(rightChoice).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByLabelText('Dato actual')).toHaveTextContent('Age')
+  })
+
+  it('reports fill-in completion after checking all authored questions, including a wrong answer', () => {
+    const target = document.createElement('div')
+    const onGuidedCompletionChange = vi.fn()
+    document.body.appendChild(target)
+
+    render(
+      <BlockPreview
+        guidedAppearance
+        guidedActionTarget={target}
+        onGuidedCompletionChange={onGuidedCompletionChange}
+        block={{
+          id: 'fill-completion',
+          type: 'fill_blanks',
+          order: 0,
+          items: [
+            { id: 'first', content: 'I [am] ready.' },
+            { id: 'second', content: 'You [are] ready.' },
+          ],
+        }}
+      />
+    )
+
+    const firstInput = screen.getByRole('textbox', { name: 'Respuesta 2' })
+    expect(target.querySelector('button')).toBeDisabled()
+    fireEvent.change(firstInput, { target: { value: 'is' } })
+    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
+    expect(onGuidedCompletionChange).toHaveBeenLastCalledWith(false)
+    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
+
+    const secondInput = screen.getByRole('textbox', { name: 'Respuesta 2' })
+    fireEvent.change(secondInput, { target: { value: 'are' } })
+    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
+    expect(onGuidedCompletionChange).toHaveBeenLastCalledWith(true)
+  })
+
+  it('reports multiple-choice completion after every question is checked', () => {
+    const target = document.createElement('div')
+    const onGuidedCompletionChange = vi.fn()
+    document.body.appendChild(target)
+
+    render(
+      <BlockPreview
+        guidedAppearance
+        guidedActionTarget={target}
+        onGuidedCompletionChange={onGuidedCompletionChange}
+        block={{
+          id: 'choice-completion',
+          type: 'multiple_choice',
+          order: 0,
+          items: [
+            {
+              id: 'first',
+              question: 'First?',
+              options: [
+                { id: 'yes', text: 'Yes' },
+                { id: 'no', text: 'No' },
+              ],
+              correctOptionId: 'yes',
+            },
+            {
+              id: 'second',
+              question: 'Second?',
+              options: [
+                { id: 'yes', text: 'Yes' },
+                { id: 'no', text: 'No' },
+              ],
+              correctOptionId: 'no',
+            },
+          ],
+        }}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'No' }))
+    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
+    expect(onGuidedCompletionChange).toHaveBeenLastCalledWith(false)
+    expect(target.querySelector('button')).toHaveTextContent('Siguiente pregunta')
+    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
+    fireEvent.click(screen.getByRole('button', { name: 'No' }))
+    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
+    expect(onGuidedCompletionChange).toHaveBeenLastCalledWith(true)
+  })
+
+  it('uses Corregir for guided essay grading and invalidates completion when the draft changes', () => {
+    const target = document.createElement('div')
+    const onGuidedCompletionChange = vi.fn()
+    document.body.appendChild(target)
+
+    render(
+      <BlockPreview
+        guidedAppearance
+        guidedActionTarget={target}
+        onGuidedCompletionChange={onGuidedCompletionChange}
+        block={{
+          id: 'essay-completion',
+          type: 'essay',
+          order: 0,
+          prompt: 'Write a paragraph.',
+          aiGrading: true,
+        }}
+      />
+    )
+
+    expect(target.querySelector('button')).toHaveTextContent('Corregir')
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'A complete draft.' } })
+    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
+    expect(onGuidedCompletionChange).toHaveBeenLastCalledWith(true)
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'An edited draft.' } })
+    expect(onGuidedCompletionChange).toHaveBeenLastCalledWith(false)
   })
 
   it('keeps fill-in and multiple-choice prompts compact and moves their primary actions', () => {
@@ -411,7 +574,7 @@ describe('BlockPreview guided appearance', () => {
     expect(fillInput.className).not.toMatch(/green|red/)
     fireEvent.change(fillInput, { target: { value: 'am' } })
     fireEvent.click(fillTarget.querySelector('button') as HTMLButtonElement)
-    expect(fillInput).toBeDisabled()
+    expect(fillInput).not.toBeDisabled()
 
     expect(screen.getByText('I am Peter. ___ name is Peter.')).toHaveClass('text-base', 'leading-6')
     expect(screen.queryByText('Opción Múltiple')).not.toBeInTheDocument()
