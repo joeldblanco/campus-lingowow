@@ -24,6 +24,8 @@ Open the concrete side-by-side comparison at:
 
 ## Representative screen results
 
+Seven final actual captures are also committed for remote review: [original figure](course-final-units/actual/unit54-figure-desktop.png), [original audio playback](course-final-units/actual/unit55-original-audio-desktop.png), [grammar desktop](course-final-units/actual/unit56-grammar-desktop.png), [grammar mobile](course-final-units/actual/unit56-grammar-mobile.png), [circular recording control](course-final-units/actual/unit53-recording-mobile.png), [stationary instructions during table scroll](course-final-units/actual/unit53-table-mobile-examples.png), and [correct answer state](course-final-units/actual/unit53-choice-feedback-desktop.png).
+
 | Capture | Actual pixels | Reference comparison | Result | Evidence and remaining work |
 | --- | ---: | --- | --- | --- |
 | Unit 53 source figure, desktop | 1536×864 | v3 Multimedia + scene guide | **Pass** | Full source photograph is visible and uncropped. The painted botanical office environment, white fade, heading, and bottom controls remain present. |
