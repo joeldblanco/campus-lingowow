@@ -78,7 +78,7 @@ BEGIN
  IF current_database()<>'lingowow_dev' THEN RAISE EXCEPTION 'Dev database required'; END IF;
  FOR p IN SELECT value FROM course_learning_plan,jsonb_array_elements(payload) LOOP
   lesson:=p->>'lessonId';
-  IF lesson='{UNIT_ONE}' OR NOT EXISTS(SELECT 1 FROM lessons l JOIN modules m ON m.id=l."moduleId" WHERE l.id=lesson AND m."courseId"='{COURSE_ID}') THEN RAISE EXCEPTION 'Unexpected course/lesson'; END IF;
+  IF lesson='{UNIT_ONE}' OR NOT EXISTS(SELECT 1 FROM lessons l JOIN modules m ON m.id=l."moduleId" WHERE l.id=lesson AND l."isPublished"=true AND m."courseId"='{COURSE_ID}') THEN RAISE EXCEPTION 'Unexpected course/published lesson'; END IF;
   IF (SELECT count(*) FROM contents WHERE "lessonId"=lesson)<>jsonb_array_length(p->'previousRows') THEN RAISE EXCEPTION 'Source inventory changed'; END IF;
   FOR old IN SELECT value FROM jsonb_array_elements(p->'previousRows') LOOP
    SELECT value INTO newer FROM jsonb_array_elements(p->'nextRows') WHERE value->>'id'=old->>'id';

@@ -31,6 +31,11 @@ class CourseApplyTests(unittest.TestCase):
     def test_apply_is_explicit(self):
         self.assertTrue(module.build_sql([plan()], apply=True).rstrip().endswith('COMMIT;'))
 
+    def test_draft_lessons_are_excluded_at_the_database_boundary(self):
+        sql = module.build_sql([plan()])
+        self.assertIn('l."isPublished"=true', sql)
+        self.assertIn('Unexpected course/published lesson', sql)
+
     def test_rejects_unreviewed_media_and_other_courses(self):
         for field, value in [('publishable', False), ('blockers', ['Missing audio']), ('courseId', 'other')]:
             with self.subTest(field=field):
