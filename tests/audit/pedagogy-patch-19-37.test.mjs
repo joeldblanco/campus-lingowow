@@ -144,6 +144,7 @@ describe('authored U19–37 pedagogical patch', () => {
     )
     expect(oralPatches.length).toBe(19)
     for (const patch of oralPatches) {
+      expect(rows.get(patch.rowId).data.data.guidedRole).toBe('conversation')
       const turns = rows.get(patch.rowId).data.data.turns
       expect(turns.length).toBeGreaterThanOrEqual(3)
       expect(turns.length).toBeLessThanOrEqual(5)
@@ -169,8 +170,14 @@ describe('authored U19–37 pedagogical patch', () => {
     const u29 = rows.get(
       'course-guided-cmnmm9nmo000tw1qkxzhh3pwc-recording-15-d-following-the-example-from-the-previous-activity-act-out--036'
     )
+    expect(u24.data.data.guidedTitle).toBe('Describe una situación.')
+    expect(u29.data.data.guidedTitle).toBe('Cuenta qué ocurrió.')
     for (const row of [u24, u29]) {
       expect(row.data.instruction).toMatch(/80.?120 words/i)
+      expect(row.data.type).toBe('essay')
+      expect(row.data.prompt).toMatch(/80.?120 words/i)
+      expect(row.data.minWords).toBe(80)
+      expect(row.data.maxWords).toBe(120)
       expect(row.data.data.exerciseReview.kind).toBe('writing')
       expect(row.data.data.guidedRole).toBeUndefined()
       expect(row.data.data.turns).toBeUndefined()

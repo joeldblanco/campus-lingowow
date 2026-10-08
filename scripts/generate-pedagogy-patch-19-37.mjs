@@ -288,6 +288,7 @@ replaceString(29, rows.u29Oral, 'Correct the D oral prompt wording before adding
   if (!before.includes('essentials human needs')) throw new Error('U29 D prompt wording changed')
   return 'D. Discuss essential human needs with your teacher and express your opinions where relevant.'
 })
+addChange(29, rows.u29Oral, 'Enable the topic-specific oral turns in the self-study conversation renderer.', ['data', 'guidedRole'], 'conversation')
 replaceExactFragment(29, rows.u29Grammar, 'Correct the keep on example so the gerund pattern is complete.', ['content'], 'They decided to keep on that.', 'They decided to keep on doing that.')
 addOralTurns(29, rows.u29Oral, 'Discuss essential human needs and everyday opinions with a partner.', [
   { id: 'scenario', question: 'Which essential human need matters in your daily life?', answerPrompt: selfStudyModel('People need rest every day.') },
@@ -295,6 +296,11 @@ addOralTurns(29, rows.u29Oral, 'Discuss essential human needs and everyday opini
   { id: 'question', question: 'Ask your partner about an essential human need.', answerPrompt: 'Ask and answer one clear question.' },
 ])
 addChange(29, rows.u29Essay, 'Convert the E recording into a written open response with an explicit word limit and writing review kind.', ['instruction'], 'E. Write 80–120 words about a difficult situation in your life or someone else’s. Include opinions, ideas, and apologies where needed; explain what happened and whether it is solved.')
+addChange(29, rows.u29Essay, 'Convert the E recording into a written open response with an explicit word limit and writing review kind.', ['type'], 'essay')
+addChange(29, rows.u29Essay, 'Convert the E recording into a written open response with an explicit word limit and writing review kind.', ['prompt'], 'Write 80–120 words about a difficult situation. Explain what happened, whether it is solved, and the relevant opinions, ideas, or apologies.')
+addChange(29, rows.u29Essay, 'Convert the E recording into a written open response with an explicit word limit and writing review kind.', ['minWords'], 80)
+addChange(29, rows.u29Essay, 'Convert the E recording into a written open response with an explicit word limit and writing review kind.', ['maxWords'], 120)
+addChange(29, rows.u29Essay, 'Convert the E recording into a written open response with an explicit word limit and writing review kind.', ['data', 'guidedTitle'], 'Cuenta qué ocurrió.')
 addChange(29, rows.u29Essay, 'Convert the E recording into a written open response with an explicit word limit and writing review kind.', ['data', 'learnerPrompt'], 'Write 80–120 words about a difficult situation. Explain what happened, whether it is solved, and the relevant opinions, ideas, or apologies.')
 replaceString(29, rows.u29Essay, 'Convert the E recording into a written open response with an explicit word limit and writing review kind.', ['data', 'aiGradingContext'], (before) => `${before}\n\nEvaluation guidance: Treat this as writing. Check the 80–120 word range, a clear situation, what happened, whether it is solved, and relevant opinions, ideas, or apologies. Do not require a single canonical answer.`)
 addChange(29, rows.u29Essay, 'Convert the E recording into a written open response with an explicit word limit and writing review kind.', ['data', 'exerciseReview'], {
@@ -472,6 +478,11 @@ addOralTurns(37, rows.u37Oral, 'Discuss what you want, expect, and look for in a
 
 // U24 E is a writing activity, not a role-play recording. Keep authored source metadata but remove conversation-only fields.
 addChange(24, rows.u24Essay, 'Convert the E recording into a written open response with an explicit word limit and writing review kind.', ['instruction'], 'E. Write 80–120 words about a place where people face unresolved issues. Explain the situation, possible solutions, what people are doing, and your role. Use relative clauses.')
+addChange(24, rows.u24Essay, 'Convert the E recording into a written open response with an explicit word limit and writing review kind.', ['type'], 'essay')
+addChange(24, rows.u24Essay, 'Convert the E recording into a written open response with an explicit word limit and writing review kind.', ['prompt'], 'Write 80–120 words about a place where people face unresolved issues. Explain the situation, possible solutions, what people are doing, and your role. Use relative clauses.')
+addChange(24, rows.u24Essay, 'Convert the E recording into a written open response with an explicit word limit and writing review kind.', ['minWords'], 80)
+addChange(24, rows.u24Essay, 'Convert the E recording into a written open response with an explicit word limit and writing review kind.', ['maxWords'], 120)
+addChange(24, rows.u24Essay, 'Convert the E recording into a written open response with an explicit word limit and writing review kind.', ['data', 'guidedTitle'], 'Describe una situación.')
 replaceValue(24, rows.u24Essay, 'Convert the E recording into a written open response with an explicit word limit and writing review kind.', ['data', 'learnerPrompt'], () => 'Write 80–120 words about a place where people face unresolved issues. Explain the situation, possible solutions, what people are doing, and your role. Use relative clauses.')
 replaceString(24, rows.u24Essay, 'Convert the E recording into a written open response with an explicit word limit and writing review kind.', ['data', 'aiGradingContext'], (before) => `${before}\n\nEvaluation guidance: Treat this as writing, not role-play. Check the 80–120 word range, a clear situation and role, possible solutions, and accurate restrictive or non-restrictive relative clauses. Do not require a single canonical answer.`)
 replaceString(24, rows.u24Essay, 'Convert the E recording into a written open response with an explicit word limit and writing review kind.', ['data', 'exerciseReview', 'prompt'], (before) => before.replace('Role-play a situation about a job or expectation and write an 80–120 word paragraph.', 'Write an 80–120 word paragraph about a place with unresolved issues, possible solutions, actions, and your role.'))

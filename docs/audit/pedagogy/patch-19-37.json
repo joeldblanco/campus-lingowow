@@ -600,6 +600,50 @@
         },
         {
           "path": [
+            "type"
+          ],
+          "before": "recording",
+          "after": "essay"
+        },
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Write 80–120 words about a place where people face unresolved issues. Explain the situation, possible solutions, what people are doing, and your role. Use relative clauses."
+        },
+        {
+          "path": [
+            "minWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 80
+        },
+        {
+          "path": [
+            "maxWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 120
+        },
+        {
+          "path": [
+            "data",
+            "guidedTitle"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Describe una situación."
+        },
+        {
+          "path": [
             "data",
             "learnerPrompt"
           ],
@@ -1061,6 +1105,16 @@
         {
           "path": [
             "data",
+            "guidedRole"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "conversation"
+        },
+        {
+          "path": [
+            "data",
             "learnerPrompt"
           ],
           "before": {
@@ -1108,6 +1162,50 @@
           ],
           "before": "E. Write an 80 to 120 word text where you present a difficult situation in your life or someone else’s opinions, ideas and apologies when needed. What happened? Is it solved now? Do not leave any detail out.",
           "after": "E. Write 80–120 words about a difficult situation in your life or someone else’s. Include opinions, ideas, and apologies where needed; explain what happened and whether it is solved."
+        },
+        {
+          "path": [
+            "type"
+          ],
+          "before": "recording",
+          "after": "essay"
+        },
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Write 80–120 words about a difficult situation. Explain what happened, whether it is solved, and the relevant opinions, ideas, or apologies."
+        },
+        {
+          "path": [
+            "minWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 80
+        },
+        {
+          "path": [
+            "maxWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 120
+        },
+        {
+          "path": [
+            "data",
+            "guidedTitle"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Cuenta qué ocurrió."
         },
         {
           "path": [
