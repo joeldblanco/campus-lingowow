@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import copy
 from collections import Counter, defaultdict
+import hashlib
 import json
 import re
 import subprocess
@@ -513,6 +514,8 @@ def _figure_candidates(
     sources_by_unit: Mapping[int, Mapping[str, Any]],
     asset_roots: Sequence[Path],
     blockers: list[dict[str, Any]],
+    figure_proof: Mapping[str, Any] | None = None,
+    figure_proof_ref: str = "",
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     candidates: list[dict[str, Any]] = []
     seen: set[tuple[int, int, str]] = set()
@@ -523,7 +526,8 @@ def _figure_candidates(
         unit_entry = confirmed_units.get(str(unit), {}) if isinstance(confirmed_units, Mapping) else {}
         if unit in {33, 34, 35, 36}:
             # These decks have no whole-deck native match.  Their figures are
-            # admitted only through the separately reviewed correspondence file.
+            # admitted only through the separately reviewed proof/correspondence
+            # artifact handled below.
             continue
         slides = unit_entry.get("slides", {}) if isinstance(unit_entry, Mapping) else {}
         if not isinstance(slides, Mapping):
@@ -556,61 +560,131 @@ def _figure_candidates(
                         "mapping": "reviewed-figures",
                     }
                 )
-    corr_units = correspondence.get("units", []) if isinstance(correspondence, Mapping) else []
-    if isinstance(corr_units, Mapping):
-        corr_units = list(corr_units.values())
-    for unit_entry in _as_list(corr_units):
-        if not isinstance(unit_entry, Mapping):
-            continue
-        unit = _int(unit_entry.get("unit"))
-        if unit not in {33, 34, 35, 36}:
-            continue
-        findings = {
-            _int(item.get("sourceSlide")): item
-            for item in _as_list(unit_entry.get("slideFindings"))
-            if isinstance(item, Mapping) and _int(item.get("sourceSlide")) is not None
-        }
-        for item in _as_list(unit_entry.get("correspondences")):
-            if not isinstance(item, Mapping):
+    if isinstance(figure_proof, Mapping):
+        # Units 33-36 may enter the builder only through the proof artifact.
+        # Its live observed slide and downloaded published payload digest are
+        # required together; text order or the old correspondence artifact is
+        # insufficient evidence for a native figure mapping.
+        proof_units = figure_proof.get("units", [])
+        if isinstance(proof_units, Mapping):
+            proof_units = list(proof_units.values())
+        for unit_entry in _as_list(proof_units):
+            if not isinstance(unit_entry, Mapping):
                 continue
-            source_slide = _int(item.get("sourceSlide"))
-            published_slide = _int(item.get("publishedSlide"))
-            digest = _record_sha(item)
-            path = _record_path(item)
-            finding = findings.get(source_slide)
-            exact = (
-                source_slide is not None
-                and published_slide == source_slide
-                and finding is not None
-                and _text(finding.get("status")).casefold() == "confirmed"
-                and bool(digest)
-                and bool(path)
-            )
-            if not exact:
-                blockers.append(
-                    {
-                        "kind": "image",
+            unit = _int(unit_entry.get("unit"))
+            if unit not in {33, 34, 35, 36}:
+                continue
+            for slide_entry in _as_list(unit_entry.get("requiredSlides")):
+                if not isinstance(slide_entry, Mapping):
+                    continue
+                published_slide = _int(slide_entry.get("publishedSlide"))
+                observed_slide = _text(slide_entry.get("observedSlideUrlSuffix"))
+                for item in _as_list(slide_entry.get("candidates")):
+                    if not isinstance(item, Mapping):
+                        continue
+                    candidate_slide = _int(item.get("publishedSlide"))
+                    native_digest = _text(item.get("nativeSha256")).casefold()
+                    published_digest = _text(item.get("publishedReferenceSha256")).casefold()
+                    path = _text(item.get("nativePath"))
+                    exact = (
+                        published_slide is not None
+                        and candidate_slide == published_slide
+                        and bool(observed_slide)
+                        and _text(item.get("visualStatus")).casefold() == "confirmed"
+                        and item.get("byteExactMatch") is True
+                        and bool(SHA256_RE.fullmatch(native_digest))
+                        and native_digest == published_digest
+                        and bool(path)
+                    )
+                    if not exact:
+                        blockers.append(
+                            {
+                                "kind": "image",
+                                "unit": unit,
+                                "slide": published_slide or candidate_slide,
+                                "code": "figure-proof-not-exact",
+                            }
+                        )
+                        continue
+                    proof_ref = {
+                        "manifest": figure_proof_ref,
                         "unit": unit,
-                        "slide": published_slide or source_slide,
-                        "code": "figure-correspondence-not-exact",
+                        "publishedSlideNumber": published_slide,
+                        "publishedMediaOrdinal": _int(item.get("publishedMediaOrdinal")),
+                        "observedSlideUrlSuffix": observed_slide,
+                        "publishedReferencePath": _text(item.get("publishedReferencePath")),
+                        "publishedReferenceSha256": published_digest,
+                        "publishedReferenceBytes": _int(item.get("publishedReferenceBytes")),
+                        "byteExactMatch": True,
+                    }
+                    candidates.append(
+                        {
+                            "unit": unit,
+                            "slideNumber": published_slide,
+                            "sourceSha256": native_digest,
+                            "sourcePath": _resolve_local_path(path, asset_roots),
+                            "purpose": _text(slide_entry.get("publishedTitle")),
+                            "reviewedFigure": copy.deepcopy(dict(item)),
+                            "mapping": "units-33-36-visual-proof",
+                            "sourceProofRef": proof_ref,
+                        }
+                    )
+    else:
+        corr_units = correspondence.get("units", []) if isinstance(correspondence, Mapping) else []
+        if isinstance(corr_units, Mapping):
+            corr_units = list(corr_units.values())
+        for unit_entry in _as_list(corr_units):
+            if not isinstance(unit_entry, Mapping):
+                continue
+            unit = _int(unit_entry.get("unit"))
+            if unit not in {33, 34, 35, 36}:
+                continue
+            findings = {
+                _int(item.get("sourceSlide")): item
+                for item in _as_list(unit_entry.get("slideFindings"))
+                if isinstance(item, Mapping) and _int(item.get("sourceSlide")) is not None
+            }
+            for item in _as_list(unit_entry.get("correspondences")):
+                if not isinstance(item, Mapping):
+                    continue
+                source_slide = _int(item.get("sourceSlide"))
+                published_slide = _int(item.get("publishedSlide"))
+                digest = _record_sha(item)
+                path = _record_path(item)
+                finding = findings.get(source_slide)
+                exact = (
+                    source_slide is not None
+                    and published_slide == source_slide
+                    and finding is not None
+                    and _text(finding.get("status")).casefold() == "confirmed"
+                    and bool(digest)
+                    and bool(path)
+                )
+                if not exact:
+                    blockers.append(
+                        {
+                            "kind": "image",
+                            "unit": unit,
+                            "slide": published_slide or source_slide,
+                            "code": "figure-correspondence-not-exact",
+                        }
+                    )
+                    continue
+                candidates.append(
+                    {
+                        "unit": unit,
+                        "slideNumber": published_slide,
+                        "sourceSha256": digest,
+                        "sourcePath": _resolve_local_path(path, asset_roots),
+                        "purpose": _text(finding.get("purpose")),
+                        "reviewedFigure": copy.deepcopy(dict(item)),
+                        "mapping": "units-33-36-correspondence",
+                        "correspondenceEvidence": {
+                            "nativeCandidateSha256": _text(unit_entry.get("nativeCandidateSha256")),
+                            "publishedTextSequenceRatio": item.get("publishedTextSequenceRatio"),
+                        },
                     }
                 )
-                continue
-            candidates.append(
-                {
-                    "unit": unit,
-                    "slideNumber": published_slide,
-                    "sourceSha256": digest,
-                    "sourcePath": _resolve_local_path(path, asset_roots),
-                    "purpose": _text(finding.get("purpose")),
-                    "reviewedFigure": copy.deepcopy(dict(item)),
-                    "mapping": "units-33-36-correspondence",
-                    "correspondenceEvidence": {
-                        "nativeCandidateSha256": _text(unit_entry.get("nativeCandidateSha256")),
-                        "publishedTextSequenceRatio": item.get("publishedTextSequenceRatio"),
-                    },
-                }
-            )
     ready_figures: list[dict[str, Any]] = []
     for candidate in candidates:
         unit = candidate["unit"]
@@ -672,6 +746,8 @@ def _figure_candidates(
         trace["sourceSha256"] = digest
         trace["sourcePath"] = source_path
         trace["mapping"] = candidate["mapping"]
+        if candidate.get("sourceProofRef"):
+            trace["sourceProofRef"] = copy.deepcopy(candidate["sourceProofRef"])
         ready_figures.append(
             {
                 "unit": unit,
@@ -683,6 +759,11 @@ def _figure_candidates(
                 "role": "instructional-figure",
                 "confirmedInstructional": True,
                 "nativeEvidence": trace,
+                **(
+                    {"sourceProofRef": copy.deepcopy(candidate["sourceProofRef"])}
+                    if candidate.get("sourceProofRef")
+                    else {}
+                ),
             }
         )
     return ready_figures, {
@@ -884,6 +965,269 @@ def _normalise_review_placements(
     return result, fixes
 
 
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _semantic_patch_entries(patch: Mapping[str, Any]) -> list[Mapping[str, Any]]:
+    entries: list[Mapping[str, Any]] = []
+    for key in ("resolved", "reviewedOpenResponse"):
+        entries.extend(item for item in _as_list(patch.get(key)) if isinstance(item, Mapping))
+    return entries
+
+
+def _patch_item_parts(item_id: str) -> tuple[str, str | None]:
+    base, separator, nested = item_id.partition(":")
+    return base, nested if separator and nested else None
+
+
+def _patch_rekey_item(item_id: str, source_slide: int | None) -> str:
+    if source_slide is None:
+        return item_id
+    match = re.match(r"^(u\d+-)s\d+(-.+)$", item_id, flags=re.IGNORECASE)
+    if not match:
+        return item_id
+    return f"{match.group(1)}s{source_slide:02d}{match.group(2)}"
+
+
+def _published_source_text(source: Mapping[str, Any]) -> str:
+    return "\n".join(
+        _text(value)
+        for slide in _source_slides(source)
+        for value in _as_list(slide.get("visibleTexts"))
+        if _text(value)
+    )
+
+
+def _apply_exercise_semantic_patch(
+    exercise_review: Mapping[str, Any] | None,
+    patch: Mapping[str, Any] | None,
+    sources_by_lesson: Mapping[str, Mapping[str, Any]],
+    asset_roots: Sequence[Path],
+    blockers: list[dict[str, Any]],
+    patch_ref: str,
+) -> tuple[Mapping[str, Any] | None, dict[str, Any]]:
+    """Apply an explicitly supplied, source-validated semantic review patch.
+
+    The patch is opt-in at the CLI.  Every applied entry must identify the
+    current review item, its published source slide, a provenance file whose
+    SHA-256 matches, and source evidence present in the published manifest.
+    Remaining hard blocks are reported by the patch and are deliberately not
+    applied.
+    """
+
+    if not isinstance(patch, Mapping):
+        return exercise_review, {"status": "not-supplied", "applied": 0, "remainingHardBlocks": 0}
+    if not isinstance(exercise_review, Mapping):
+        blockers.append({"kind": "exercise", "code": "exercise-review-missing-for-semantic-patch"})
+        return exercise_review, {"status": "blocked", "applied": 0, "remainingHardBlocks": len(_as_list(patch.get("remainingHardBlocks")))}
+    policy = patch.get("sourcePolicy")
+    required_policy = (
+        "publishedSlidesAuthoritative",
+        "sourceFilesReadOnly",
+        "preserveOriginalPromptsAndProvenance",
+        "noInventedAudioOrIdentities",
+        "ambiguousClaimsMustBeRewordedOrRemainBlocked",
+        "openResponseNeverGetsSyntheticAnswerKey",
+        "reviewedOpenResponseHasNoSyntheticAnswerKey",
+    )
+    if not isinstance(policy, Mapping) or any(policy.get(key) is not True for key in required_policy):
+        raise ComposeError("semantic patch source policy is incomplete or unsafe")
+    result = copy.deepcopy(dict(exercise_review))
+    raw_lessons = result.get("lessons")
+    if not isinstance(raw_lessons, Mapping):
+        blockers.append({"kind": "exercise", "code": "exercise-review-lessons-missing-for-semantic-patch"})
+        return result, {"status": "blocked", "applied": 0, "remainingHardBlocks": len(_as_list(patch.get("remainingHardBlocks")))}
+    entries = _semantic_patch_entries(patch)
+    applied: list[str] = []
+    rejected: list[dict[str, Any]] = []
+    seen_patch_ids: set[str] = set()
+    for patch_item in entries:
+        raw_item_id = _text(patch_item.get("itemId") or patch_item.get("sourceItemId"))
+        base_item_id, nested_id = _patch_item_parts(raw_item_id)
+        lesson_id = _text(patch_item.get("lessonId"))
+        lesson = raw_lessons.get(lesson_id)
+        provenance = patch_item.get("provenance")
+        source = sources_by_lesson.get(lesson_id)
+        reason: str | None = None
+        target_item: dict[str, Any] | None = None
+        current_slide: int | None = None
+        current_slide_items: list[Any] | None = None
+        target_slide = _int(patch_item.get("publishedSourceSlide"))
+        if not base_item_id or not lesson_id or not isinstance(lesson, Mapping):
+            reason = "item-or-lesson-missing"
+        elif not isinstance(source, Mapping):
+            reason = "published-source-missing"
+        elif raw_item_id in seen_patch_ids:
+            reason = "duplicate-patch-item"
+        else:
+            seen_patch_ids.add(raw_item_id)
+        if reason is None:
+            for raw_slide, slide in lesson.get("slides", {}).items() if isinstance(lesson.get("slides"), Mapping) else []:
+                if not isinstance(slide, Mapping) or not isinstance(slide.get("items"), list):
+                    continue
+                for item in slide["items"]:
+                    if not isinstance(item, Mapping) or _text(item.get("id")) != base_item_id:
+                        continue
+                    target_item = item
+                    current_slide = _int(raw_slide)
+                    current_slide_items = slide["items"]
+                    break
+                if target_item is not None:
+                    break
+            if target_item is None:
+                reason = "review-item-missing"
+        if reason is None and target_slide is None:
+            reason = "published-source-slide-missing"
+        published_slide = _source_slide(source or {}, target_slide or -1)
+        if reason is None and published_slide is None:
+            reason = "published-source-slide-not-found"
+        if reason is None and isinstance(provenance, Mapping):
+            provenance_file = _text(provenance.get("file"))
+            provenance_path = Path(_resolve_local_path(provenance_file, asset_roots))
+            expected_sha = _text(provenance.get("sha256")).casefold()
+            if not provenance_file or not provenance_path.is_file() or not SHA256_RE.fullmatch(expected_sha):
+                reason = "provenance-file-missing-or-sha-invalid"
+            elif _sha256_file(provenance_path).casefold() != expected_sha:
+                reason = "provenance-sha-mismatch"
+            elif _text(provenance.get("sourceUrl")) != _source_url(source or {}):
+                reason = "provenance-source-url-mismatch"
+            elif _source_slide(source or {}, _int(provenance.get("publishedSlide")) or -1) is None:
+                reason = "provenance-slide-missing"
+        elif reason is None:
+            reason = "provenance-missing"
+        if reason is None and isinstance(target_item, Mapping):
+            original_prompt = _text(patch_item.get("originalPrompt"))
+            if original_prompt and _normalise_review_text(original_prompt) != _normalise_review_text(target_item.get("prompt")):
+                reason = "original-prompt-mismatch"
+        source_text = _normalise_review_text(_published_source_text(source or {}))
+        source_evidence = [_text(value) for value in _as_list(patch_item.get("sourceEvidence")) if _text(value)]
+        if reason is None and not source_evidence:
+            reason = "source-evidence-missing"
+        if reason is None and not all(_normalise_review_text(value) in source_text for value in source_evidence):
+            reason = "source-evidence-mismatch"
+        if reason is not None:
+            blocker = {
+                "kind": "exercise",
+                "lessonId": lesson_id,
+                "itemId": raw_item_id,
+                "unit": _int(patch_item.get("unit")),
+                "code": f"exercise-semantic-patch-{reason}",
+            }
+            blockers.append(blocker)
+            rejected.append(blocker)
+            continue
+
+        assert target_item is not None and current_slide_items is not None and current_slide is not None
+        updated = target_item
+        original_prompt = _text(updated.get("prompt"))
+        original_status = _text(updated.get("reviewStatus"))
+        revised_prompt = _text(patch_item.get("revisedPrompt"))
+        if revised_prompt:
+            updated["prompt"] = revised_prompt
+        if _text(patch_item.get("reviewStatus")):
+            patch_status = _text(patch_item.get("reviewStatus"))
+            # Keep the manual status in semanticPatch provenance while using
+            # the builder's small, explicit status vocabulary for the merged
+            # review. Open response remains teacher/AI formative feedback and
+            # never receives a deterministic answer key.
+            if (
+                _text(patch_item.get("responseMode")).casefold() == "open-response"
+                or patch_item.get("doNotAutoGrade") is True
+                or "open-response" in patch_status.casefold()
+            ):
+                updated["reviewStatus"] = "open-response-preserved"
+            else:
+                updated["reviewStatus"] = "reviewed"
+        if source_evidence:
+            updated["sourceEvidence"] = copy.deepcopy(source_evidence)
+        if "sourceEvidenceLocations" in patch_item:
+            updated["sourceEvidenceLocations"] = copy.deepcopy(patch_item["sourceEvidenceLocations"])
+        if "responseMode" in patch_item:
+            updated["responseMode"] = copy.deepcopy(patch_item["responseMode"])
+        if "doNotAutoGrade" in patch_item:
+            updated["doNotAutoGrade"] = patch_item["doNotAutoGrade"] is True
+        if isinstance(patch_item.get("builderHints"), Mapping):
+            hints = updated.get("builderHints") if isinstance(updated.get("builderHints"), Mapping) else {}
+            updated["builderHints"] = {**copy.deepcopy(dict(hints)), **copy.deepcopy(dict(patch_item["builderHints"]))}
+        answer_items = patch_item.get("answerItems")
+        if isinstance(answer_items, list) and nested_id is None:
+            updated["answerItems"] = copy.deepcopy(answer_items)
+        elif nested_id is not None:
+            nested_answers = updated.get("answerItems")
+            nested_target = next(
+                (answer for answer in nested_answers if isinstance(answer, Mapping) and _text(answer.get("id")) == nested_id),
+                None,
+            ) if isinstance(nested_answers, list) else None
+            if nested_target is None:
+                reason = "nested-answer-item-missing"
+            else:
+                for key in ("canonical", "accepted", "evidence", "rationale", "status"):
+                    if key in patch_item:
+                        nested_target[key] = copy.deepcopy(patch_item[key])
+        if reason is not None:
+            blocker = {
+                "kind": "exercise",
+                "lessonId": lesson_id,
+                "itemId": raw_item_id,
+                "unit": _int(patch_item.get("unit")),
+                "code": f"exercise-semantic-patch-{reason}",
+            }
+            blockers.append(blocker)
+            rejected.append(blocker)
+            continue
+        updated.setdefault("originalPrompt", original_prompt)
+        updated.setdefault("originalReviewStatus", original_status)
+        updated["semanticPatch"] = {
+            "sourcePatchRef": patch_ref,
+            "originalPrompt": original_prompt,
+            "originalReviewStatus": original_status,
+            "patchItemId": raw_item_id,
+            "provenance": copy.deepcopy(provenance),
+            "sourceEvidence": copy.deepcopy(source_evidence),
+            "originalSourceEvidence": copy.deepcopy(patch_item.get("originalSourceEvidence", [])),
+            "validatedProvenanceSha256": _text((provenance or {}).get("sha256")),
+            "patchReviewStatus": _text(patch_item.get("reviewStatus")),
+            "validatedPublishedSourceSlide": target_slide,
+        }
+        if target_slide != current_slide:
+            target_slide_record = lesson.get("slides", {}).get(str(target_slide)) if isinstance(lesson.get("slides"), Mapping) else None
+            if not isinstance(target_slide_record, Mapping) or not isinstance(target_slide_record.get("items"), list):
+                blocker = {
+                    "kind": "exercise",
+                    "lessonId": lesson_id,
+                    "itemId": raw_item_id,
+                    "unit": _int(patch_item.get("unit")),
+                    "code": "exercise-semantic-patch-target-slide-missing",
+                }
+                blockers.append(blocker)
+                rejected.append(blocker)
+                continue
+            current_slide_items.remove(updated)
+            target_slide_record["items"].append(updated)
+        updated["id"] = _patch_rekey_item(base_item_id, target_slide)
+        applied.append(raw_item_id)
+
+    result["semanticPatch"] = {
+        "sourcePatchRef": patch_ref,
+        "validated": not rejected,
+        "appliedItemIds": applied,
+        "rejectedItemIds": [item["itemId"] for item in rejected],
+        "remainingHardBlocks": copy.deepcopy(patch.get("remainingHardBlocks", [])),
+    }
+    return result, {
+        "status": "applied" if not rejected else "partially-applied",
+        "applied": len(applied),
+        "rejected": len(rejected),
+        "remainingHardBlocks": len(_as_list(patch.get("remainingHardBlocks"))),
+        "sourcePatchRef": patch_ref,
+    }
+
+
 def _normalize_exercise_review(
     exercise_review: Mapping[str, Any] | None,
     source_by_lesson: Mapping[str, Mapping[str, Any]],
@@ -916,13 +1260,16 @@ def _normalize_exercise_review(
     missing = sorted(expected - set(lessons))
     for lesson_id in missing:
         blockers.append({"kind": "exercise", "lessonId": lesson_id, "code": "exercise-review-lesson-missing"})
-    return {
+    normalized = {
         "schemaVersion": exercise_review.get("schemaVersion", 1),
         "courseId": _text(exercise_review.get("courseId")) or COURSE_ID,
         "sourcePolicy": copy.deepcopy(exercise_review.get("sourcePolicy")),
         "lessons": lessons,
         "placementFixes": placement_fixes,
     }
+    if isinstance(exercise_review.get("semanticPatch"), Mapping):
+        normalized["semanticPatch"] = copy.deepcopy(exercise_review["semanticPatch"])
+    return normalized
 
 
 def _normalize_listening(
@@ -1074,9 +1421,11 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     reviewed_media = _load_json(args.reviewed_media) if args.reviewed_media else None
     reviewed_figures = _load_json(args.reviewed_figures) if args.reviewed_figures else None
     correspondence = _load_json(args.figure_correspondence) if args.figure_correspondence else None
+    figure_proof = _load_json(args.figure_proof) if args.figure_proof else None
     native_audit = _load_json(args.native_audit) if args.native_audit else None
     native_match = _load_json(args.native_match) if args.native_match else None
     exercise_review = _load_json(args.exercise_review) if args.exercise_review else None
+    exercise_semantic_patch = _load_json(args.exercise_semantic_patch) if args.exercise_semantic_patch else None
     listening_documents = [_load_json(path) for path in args.listening_review]
     pronunciation_review = getattr(args, "pronunciation_review", None)
     if pronunciation_review:
@@ -1090,6 +1439,16 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     sources, sources_by_unit, sources_by_lesson = _published_sources(source_manifest, snapshot, blockers)
     snapshot_lessons = _snapshot_lessons(snapshot)
     source_by_lesson = {lesson_id: source for lesson_id, source in sources_by_lesson.items() if lesson_id in snapshot_lessons}
+    exercise_patch_summary = {"status": "not-supplied", "applied": 0, "remainingHardBlocks": 0}
+    if exercise_semantic_patch is not None:
+        exercise_review, exercise_patch_summary = _apply_exercise_semantic_patch(
+            exercise_review,
+            exercise_semantic_patch,
+            source_by_lesson,
+            args.asset_root,
+            blockers,
+            str(args.exercise_semantic_patch),
+        )
 
     _reviewed_audio, reviewed_images = _index_reviewed_media(reviewed_media)
     stage_image_records = _media_records(staged_media, "images")
@@ -1110,6 +1469,8 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         sources_by_unit,
         args.asset_root,
         blockers,
+        figure_proof,
+        str(args.figure_proof) if args.figure_proof else "",
     )
     filtered_native = _compose_native_audit(
         native_audit,
@@ -1153,7 +1514,8 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "sourceCount": len(sources),
             "publishedSourcePriority": True,
             "nativeSupplementOnlyWhenAligned": True,
-            "unit33To36FiguresRequireCorrespondence": True,
+            "unit33To36FiguresRequireVisualProof": True,
+            "oldFigureCorrespondenceIgnoredWhenProofProvided": bool(figure_proof),
             "unit3AudioPolicy": "reuse-exact-audio2-only-when-slide4-source-match-is-proven",
         },
         "inputPaths": {
@@ -1163,9 +1525,11 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "reviewedMedia": str(args.reviewed_media) if args.reviewed_media else None,
             "reviewedFigures": str(args.reviewed_figures) if args.reviewed_figures else None,
             "figureCorrespondence": str(args.figure_correspondence) if args.figure_correspondence else None,
+            "figureProof": str(args.figure_proof) if args.figure_proof else None,
             "nativeAudit": str(args.native_audit) if args.native_audit else None,
             "nativeMatch": str(args.native_match) if args.native_match else None,
             "exerciseReview": str(args.exercise_review) if args.exercise_review else None,
+            "exerciseSemanticPatch": str(args.exercise_semantic_patch) if args.exercise_semantic_patch else None,
             "listeningReview": [str(path) for path in args.listening_review],
             "pronunciationReview": str(pronunciation_review) if pronunciation_review else None,
         },
@@ -1199,6 +1563,7 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "audio": audio_counts,
             "figures": figure_counts,
             "exerciseReviewLessons": len(normalized_exercise["lessons"]),
+            "exerciseSemanticPatch": exercise_patch_summary,
             "listeningReviewEntries": len(normalized_listening["exercises"]),
             "listeningReviewRejectedEntries": len(normalized_listening.get("rejectedEntries", [])),
             "listeningReviewItems": sum(
@@ -1270,7 +1635,13 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         "policy": {
             "publishedSlidesAuthoritative": True,
             "genericNativeImageRefsExcluded": True,
-            "unresolvedUnit33To36FiguresStayBlocked": True,
+            "unit33To36FiguresRequireVisualProof": True,
+            "oldFigureCorrespondenceIgnoredWhenProofProvided": bool(figure_proof),
+            "exerciseSemanticPatchExplicitOnly": True,
+            "exerciseSemanticPatchSummary": exercise_patch_summary,
+            "unresolvedUnit33To36FiguresStayBlocked": not any(
+                item.get("mapping") == "units-33-36-visual-proof" for item in figures
+            ),
             "unit3DoesNotInventAudio1": True,
             "databaseOrPublicWrites": False,
         },
@@ -1295,9 +1666,19 @@ def _parse_args(argv: Sequence[str]) -> argparse.Namespace:
     parser.add_argument("--reviewed-media", type=Path)
     parser.add_argument("--reviewed-figures", type=Path)
     parser.add_argument("--figure-correspondence", type=Path)
+    parser.add_argument(
+        "--figure-proof",
+        type=Path,
+        help="visual published/native proof for Units 33-36; supersedes old correspondence when supplied",
+    )
     parser.add_argument("--native-audit", type=Path)
     parser.add_argument("--native-match", type=Path)
     parser.add_argument("--exercise-review", type=Path)
+    parser.add_argument(
+        "--exercise-semantic-patch",
+        type=Path,
+        help="explicit source-validated semantic exercise patch; remaining hard blocks stay blocked",
+    )
     parser.add_argument("--listening-review", type=Path, action="append", default=[])
     parser.add_argument(
         "--pronunciation-review",

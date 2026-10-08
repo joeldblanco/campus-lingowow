@@ -7,7 +7,9 @@
     "sourcePathField": "sourcePath",
     "nativeTraceField": "nativeTrace",
     "deduplicationField": "dedupSha256",
-    "rawMediaEmbedded": false
+    "rawMediaEmbedded": false,
+    "sourceProofField": "sourceProofRef",
+    "sourceProofPolicy": "Confirmed published/native byte equality plus observed published slide; source proof is retained per image."
   },
   "scope": {
     "unitRange": [
@@ -32,54 +34,40 @@
     "publishedAudioIdentityReview": "docs/audit/published-audio-identity-review.json",
     "transcriptManifest": "docs/audit/course-audio-transcripts/course-audio-transcripts.json",
     "reviewedFigures": "docs/audit/reviewed-figures.json",
-    "rawMediaEmbedded": false
+    "rawMediaEmbedded": false,
+    "figureProofManifest": "docs/audit/figure-proof/units-33-36-visual-proof.json"
   },
   "counts": {
     "units": 51,
     "audioRecords": 103,
     "publishedAudioIdsMatched": 103,
     "transcriptsMatched": 103,
-    "confirmedImageReferences": 287,
-    "deduplicatedImageAssetsPerUnit": 287,
-    "deduplicatedImageSha256Global": 285,
-    "unitsWithImages": 47,
-    "unitsWithoutImages": [
-      33,
-      34,
-      35,
-      36
-    ]
+    "confirmedImageReferences": 303,
+    "deduplicatedImageAssetsPerUnit": 303,
+    "deduplicatedImageSha256Global": 301,
+    "unitsWithImages": 51,
+    "unitsWithoutImages": []
   },
   "validation": {
     "audioSourceFilesChecked": 103,
     "audioSourceFilesPresent": 103,
     "audioSha256Matches": 103,
-    "imageReferencesChecked": 287,
-    "imageSourceFilesPresent": 287,
-    "imageSha256Matches": 287,
+    "imageReferencesChecked": 303,
+    "imageSourceFilesPresent": 303,
+    "imageSha256Matches": 303,
     "transcriptKeyUniqueness": true,
     "allPublishedAudioRefsDirectIdMatched": true,
     "shapeIdsUsedAsDriveIds": false,
-    "excludedAmbiguousImageUnits": [
-      33,
-      34,
-      35,
-      36
-    ]
+    "excludedAmbiguousImageUnits": [],
+    "figureProof": {
+      "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+      "candidateReferences": 16,
+      "confirmedReferences": 16,
+      "byteExactMatches": 16,
+      "requiredSlides": 7
+    }
   },
   "blockers": [
-    {
-      "units": [
-        33,
-        34,
-        35,
-        36
-      ],
-      "kind": "mapping-ambiguity",
-      "action": "Keep native instructional image assets out of the final media manifest until published/native mapping is resolved.",
-      "source": "docs/audit/reviewed-figures.json",
-      "mediaKind": "image"
-    },
     {
       "units": [
         53,
@@ -26887,6 +26875,1270 @@
       ]
     },
     {
+      "id": "unit-33-176f9679a163729f-slide-4-ref-1",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 33,
+      "lessonId": "cmnmm9ozb0015w1qkj7gth0wy",
+      "slideNumber": 4,
+      "sourceSlideNumber": 4,
+      "publishedSlideNumber": 4,
+      "mediaPath": "ppt/media/image12.jpg",
+      "localPath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image12.jpg",
+      "sourcePath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image12.jpg",
+      "sourceSha256": "176f9679a163729fb38a7eaaa23d0c4e95b30e2a0b969ad3e3dc2aa45efd5aa1",
+      "sha256": "176f9679a163729fb38a7eaaa23d0c4e95b30e2a0b969ad3e3dc2aa45efd5aa1",
+      "dedupSha256": "176f9679a163729fb38a7eaaa23d0c4e95b30e2a0b969ad3e3dc2aa45efd5aa1",
+      "mimeType": "image/jpeg",
+      "bytes": 219391,
+      "shapeId": "220",
+      "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+      "bbox": {
+        "x": 5489900,
+        "y": 534475,
+        "cx": 2565848,
+        "cy": 1710724,
+        "right": 8055748,
+        "bottom": 2245199
+      },
+      "confirmedInstructional": true,
+      "selected": true,
+      "reviewed": true,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": "111FslIrt1Ryd46e0p8tRG9ceIA02pXHP",
+        "nativePresentationTitle": "This is how we do it! - Unit 33.pptx",
+        "nativePresentationSha256": "39b3b8bb4fa0aac4bcfc18a2ac39a6d1db88c9785f1fefa488707124cd1c3966",
+        "nativePresentationPath": "docs/audit/source-originals/B-unit-33-primary-01-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP.pptx",
+        "sourceSlideNumber": 4,
+        "publishedSlideNumber": 4,
+        "mediaPath": "ppt/media/image12.jpg",
+        "shapeId": "220",
+        "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+        "bbox": {
+          "x": 5489900,
+          "y": 534475,
+          "cx": 2565848,
+          "cy": 1710724,
+          "right": 8055748,
+          "bottom": 2245199
+        },
+        "sourceProofRef": {
+          "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+          "unit": 33,
+          "publishedSlideNumber": 4,
+          "publishedMediaOrdinal": 1,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_37",
+          "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s4-published-media2.jpg",
+          "publishedReferenceSha256": "176f9679a163729fb38a7eaaa23d0c4e95b30e2a0b969ad3e3dc2aa45efd5aa1",
+          "publishedReferenceBytes": 219391,
+          "byteExactMatch": true
+        }
+      },
+      "sourceProofRef": {
+        "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+        "unit": 33,
+        "publishedSlideNumber": 4,
+        "publishedMediaOrdinal": 1,
+        "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_37",
+        "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s4-published-media2.jpg",
+        "publishedReferenceSha256": "176f9679a163729fb38a7eaaa23d0c4e95b30e2a0b969ad3e3dc2aa45efd5aa1",
+        "publishedReferenceBytes": 219391,
+        "byteExactMatch": true
+      },
+      "reviewEvidence": [
+        "Published deck rendered in Chrome at the observed slide parameter.",
+        "Native candidate opened with a local image viewer.",
+        "Published image payload was downloaded from the published source media URL.",
+        "SHA-256 equality between the downloaded published payload and native bytes."
+      ]
+    },
+    {
+      "id": "unit-33-0496bfbc49c4f311-slide-6-ref-7",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 33,
+      "lessonId": "cmnmm9ozb0015w1qkj7gth0wy",
+      "slideNumber": 6,
+      "sourceSlideNumber": 6,
+      "publishedSlideNumber": 6,
+      "mediaPath": "ppt/media/image11.jpg",
+      "localPath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image11.jpg",
+      "sourcePath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image11.jpg",
+      "sourceSha256": "0496bfbc49c4f311803e4049d5db6b2dff6a0caef8071a2f3b4775e5f6b287f6",
+      "sha256": "0496bfbc49c4f311803e4049d5db6b2dff6a0caef8071a2f3b4775e5f6b287f6",
+      "dedupSha256": "0496bfbc49c4f311803e4049d5db6b2dff6a0caef8071a2f3b4775e5f6b287f6",
+      "mimeType": "image/jpeg",
+      "bytes": 232794,
+      "shapeId": "241",
+      "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+      "bbox": {
+        "x": 6551667,
+        "y": 2842820,
+        "cx": 1450194,
+        "cy": 903880,
+        "right": 8001861,
+        "bottom": 3746700
+      },
+      "confirmedInstructional": true,
+      "selected": true,
+      "reviewed": true,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": "111FslIrt1Ryd46e0p8tRG9ceIA02pXHP",
+        "nativePresentationTitle": "This is how we do it! - Unit 33.pptx",
+        "nativePresentationSha256": "39b3b8bb4fa0aac4bcfc18a2ac39a6d1db88c9785f1fefa488707124cd1c3966",
+        "nativePresentationPath": "docs/audit/source-originals/B-unit-33-primary-01-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP.pptx",
+        "sourceSlideNumber": 6,
+        "publishedSlideNumber": 6,
+        "mediaPath": "ppt/media/image11.jpg",
+        "shapeId": "241",
+        "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+        "bbox": {
+          "x": 6551667,
+          "y": 2842820,
+          "cx": 1450194,
+          "cy": 903880,
+          "right": 8001861,
+          "bottom": 3746700
+        },
+        "sourceProofRef": {
+          "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+          "unit": 33,
+          "publishedSlideNumber": 6,
+          "publishedMediaOrdinal": 7,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+          "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media8.jpg",
+          "publishedReferenceSha256": "0496bfbc49c4f311803e4049d5db6b2dff6a0caef8071a2f3b4775e5f6b287f6",
+          "publishedReferenceBytes": 232794,
+          "byteExactMatch": true
+        }
+      },
+      "sourceProofRef": {
+        "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+        "unit": 33,
+        "publishedSlideNumber": 6,
+        "publishedMediaOrdinal": 7,
+        "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+        "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media8.jpg",
+        "publishedReferenceSha256": "0496bfbc49c4f311803e4049d5db6b2dff6a0caef8071a2f3b4775e5f6b287f6",
+        "publishedReferenceBytes": 232794,
+        "byteExactMatch": true
+      },
+      "reviewEvidence": [
+        "Published deck rendered in Chrome at the observed slide parameter.",
+        "Native candidate opened with a local image viewer.",
+        "Published image payload was downloaded from the published source media URL.",
+        "SHA-256 equality between the downloaded published payload and native bytes."
+      ]
+    },
+    {
+      "id": "unit-33-210327264755df13-slide-6-ref-4",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 33,
+      "lessonId": "cmnmm9ozb0015w1qkj7gth0wy",
+      "slideNumber": 6,
+      "sourceSlideNumber": 6,
+      "publishedSlideNumber": 6,
+      "mediaPath": "ppt/media/image8.jpg",
+      "localPath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image8.jpg",
+      "sourcePath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image8.jpg",
+      "sourceSha256": "210327264755df13adc2a279369a75cc73c10af9bcde140dc13a87155eb80cce",
+      "sha256": "210327264755df13adc2a279369a75cc73c10af9bcde140dc13a87155eb80cce",
+      "dedupSha256": "210327264755df13adc2a279369a75cc73c10af9bcde140dc13a87155eb80cce",
+      "mimeType": "image/jpeg",
+      "bytes": 61369,
+      "shapeId": "238",
+      "shapeName": "Google Shape;238;g72967b2bcc_0_57",
+      "bbox": {
+        "x": 4754794,
+        "y": 2846030,
+        "cx": 1490705,
+        "cy": 903884,
+        "right": 6245499,
+        "bottom": 3749914
+      },
+      "confirmedInstructional": true,
+      "selected": true,
+      "reviewed": true,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": "111FslIrt1Ryd46e0p8tRG9ceIA02pXHP",
+        "nativePresentationTitle": "This is how we do it! - Unit 33.pptx",
+        "nativePresentationSha256": "39b3b8bb4fa0aac4bcfc18a2ac39a6d1db88c9785f1fefa488707124cd1c3966",
+        "nativePresentationPath": "docs/audit/source-originals/B-unit-33-primary-01-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP.pptx",
+        "sourceSlideNumber": 6,
+        "publishedSlideNumber": 6,
+        "mediaPath": "ppt/media/image8.jpg",
+        "shapeId": "238",
+        "shapeName": "Google Shape;238;g72967b2bcc_0_57",
+        "bbox": {
+          "x": 4754794,
+          "y": 2846030,
+          "cx": 1490705,
+          "cy": 903884,
+          "right": 6245499,
+          "bottom": 3749914
+        },
+        "sourceProofRef": {
+          "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+          "unit": 33,
+          "publishedSlideNumber": 6,
+          "publishedMediaOrdinal": 4,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+          "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media5.jpg",
+          "publishedReferenceSha256": "210327264755df13adc2a279369a75cc73c10af9bcde140dc13a87155eb80cce",
+          "publishedReferenceBytes": 61369,
+          "byteExactMatch": true
+        }
+      },
+      "sourceProofRef": {
+        "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+        "unit": 33,
+        "publishedSlideNumber": 6,
+        "publishedMediaOrdinal": 4,
+        "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+        "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media5.jpg",
+        "publishedReferenceSha256": "210327264755df13adc2a279369a75cc73c10af9bcde140dc13a87155eb80cce",
+        "publishedReferenceBytes": 61369,
+        "byteExactMatch": true
+      },
+      "reviewEvidence": [
+        "Published deck rendered in Chrome at the observed slide parameter.",
+        "Native candidate opened with a local image viewer.",
+        "Published image payload was downloaded from the published source media URL.",
+        "SHA-256 equality between the downloaded published payload and native bytes."
+      ]
+    },
+    {
+      "id": "unit-33-213557603377d015-slide-6-ref-6",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 33,
+      "lessonId": "cmnmm9ozb0015w1qkj7gth0wy",
+      "slideNumber": 6,
+      "sourceSlideNumber": 6,
+      "publishedSlideNumber": 6,
+      "mediaPath": "ppt/media/image9.jpg",
+      "localPath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image9.jpg",
+      "sourcePath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image9.jpg",
+      "sourceSha256": "213557603377d015b37b87b405d6f655171b73f0db7d55886ee578d2bc4c8ab0",
+      "sha256": "213557603377d015b37b87b405d6f655171b73f0db7d55886ee578d2bc4c8ab0",
+      "dedupSha256": "213557603377d015b37b87b405d6f655171b73f0db7d55886ee578d2bc4c8ab0",
+      "mimeType": "image/jpeg",
+      "bytes": 106136,
+      "shapeId": "240",
+      "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+      "bbox": {
+        "x": 2985575,
+        "y": 2747900,
+        "cx": 1450378,
+        "cy": 1012975,
+        "right": 4435953,
+        "bottom": 3760875
+      },
+      "confirmedInstructional": true,
+      "selected": true,
+      "reviewed": true,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": "111FslIrt1Ryd46e0p8tRG9ceIA02pXHP",
+        "nativePresentationTitle": "This is how we do it! - Unit 33.pptx",
+        "nativePresentationSha256": "39b3b8bb4fa0aac4bcfc18a2ac39a6d1db88c9785f1fefa488707124cd1c3966",
+        "nativePresentationPath": "docs/audit/source-originals/B-unit-33-primary-01-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP.pptx",
+        "sourceSlideNumber": 6,
+        "publishedSlideNumber": 6,
+        "mediaPath": "ppt/media/image9.jpg",
+        "shapeId": "240",
+        "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+        "bbox": {
+          "x": 2985575,
+          "y": 2747900,
+          "cx": 1450378,
+          "cy": 1012975,
+          "right": 4435953,
+          "bottom": 3760875
+        },
+        "sourceProofRef": {
+          "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+          "unit": 33,
+          "publishedSlideNumber": 6,
+          "publishedMediaOrdinal": 6,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+          "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media7.jpg",
+          "publishedReferenceSha256": "213557603377d015b37b87b405d6f655171b73f0db7d55886ee578d2bc4c8ab0",
+          "publishedReferenceBytes": 106136,
+          "byteExactMatch": true
+        }
+      },
+      "sourceProofRef": {
+        "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+        "unit": 33,
+        "publishedSlideNumber": 6,
+        "publishedMediaOrdinal": 6,
+        "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+        "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media7.jpg",
+        "publishedReferenceSha256": "213557603377d015b37b87b405d6f655171b73f0db7d55886ee578d2bc4c8ab0",
+        "publishedReferenceBytes": 106136,
+        "byteExactMatch": true
+      },
+      "reviewEvidence": [
+        "Published deck rendered in Chrome at the observed slide parameter.",
+        "Native candidate opened with a local image viewer.",
+        "Published image payload was downloaded from the published source media URL.",
+        "SHA-256 equality between the downloaded published payload and native bytes."
+      ]
+    },
+    {
+      "id": "unit-33-375e80b8a712d16b-slide-6-ref-1",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 33,
+      "lessonId": "cmnmm9ozb0015w1qkj7gth0wy",
+      "slideNumber": 6,
+      "sourceSlideNumber": 6,
+      "publishedSlideNumber": 6,
+      "mediaPath": "ppt/media/image14.jpg",
+      "localPath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image14.jpg",
+      "sourcePath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image14.jpg",
+      "sourceSha256": "375e80b8a712d16bb287f24309897525ea09a3e9ac3f35fb55bd4f4dbfbdee51",
+      "sha256": "375e80b8a712d16bb287f24309897525ea09a3e9ac3f35fb55bd4f4dbfbdee51",
+      "dedupSha256": "375e80b8a712d16bb287f24309897525ea09a3e9ac3f35fb55bd4f4dbfbdee51",
+      "mimeType": "image/jpeg",
+      "bytes": 241729,
+      "shapeId": "235",
+      "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+      "bbox": {
+        "x": 1123500,
+        "y": 1063975,
+        "cx": 1450199,
+        "cy": 912776,
+        "right": 2573699,
+        "bottom": 1976751
+      },
+      "confirmedInstructional": true,
+      "selected": true,
+      "reviewed": true,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": "111FslIrt1Ryd46e0p8tRG9ceIA02pXHP",
+        "nativePresentationTitle": "This is how we do it! - Unit 33.pptx",
+        "nativePresentationSha256": "39b3b8bb4fa0aac4bcfc18a2ac39a6d1db88c9785f1fefa488707124cd1c3966",
+        "nativePresentationPath": "docs/audit/source-originals/B-unit-33-primary-01-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP.pptx",
+        "sourceSlideNumber": 6,
+        "publishedSlideNumber": 6,
+        "mediaPath": "ppt/media/image14.jpg",
+        "shapeId": "235",
+        "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+        "bbox": {
+          "x": 1123500,
+          "y": 1063975,
+          "cx": 1450199,
+          "cy": 912776,
+          "right": 2573699,
+          "bottom": 1976751
+        },
+        "sourceProofRef": {
+          "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+          "unit": 33,
+          "publishedSlideNumber": 6,
+          "publishedMediaOrdinal": 1,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+          "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media2.jpg",
+          "publishedReferenceSha256": "375e80b8a712d16bb287f24309897525ea09a3e9ac3f35fb55bd4f4dbfbdee51",
+          "publishedReferenceBytes": 241729,
+          "byteExactMatch": true
+        }
+      },
+      "sourceProofRef": {
+        "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+        "unit": 33,
+        "publishedSlideNumber": 6,
+        "publishedMediaOrdinal": 1,
+        "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+        "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media2.jpg",
+        "publishedReferenceSha256": "375e80b8a712d16bb287f24309897525ea09a3e9ac3f35fb55bd4f4dbfbdee51",
+        "publishedReferenceBytes": 241729,
+        "byteExactMatch": true
+      },
+      "reviewEvidence": [
+        "Published deck rendered in Chrome at the observed slide parameter.",
+        "Native candidate opened with a local image viewer.",
+        "Published image payload was downloaded from the published source media URL.",
+        "SHA-256 equality between the downloaded published payload and native bytes."
+      ]
+    },
+    {
+      "id": "unit-33-3b1fd6a47c3abc7f-slide-6-ref-3",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 33,
+      "lessonId": "cmnmm9ozb0015w1qkj7gth0wy",
+      "slideNumber": 6,
+      "sourceSlideNumber": 6,
+      "publishedSlideNumber": 6,
+      "mediaPath": "ppt/media/image13.jpg",
+      "localPath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image13.jpg",
+      "sourcePath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image13.jpg",
+      "sourceSha256": "3b1fd6a47c3abc7fa745e0d74e1f258176ceff16ef223a7c8c7d034be0b5cd79",
+      "sha256": "3b1fd6a47c3abc7fa745e0d74e1f258176ceff16ef223a7c8c7d034be0b5cd79",
+      "dedupSha256": "3b1fd6a47c3abc7fa745e0d74e1f258176ceff16ef223a7c8c7d034be0b5cd79",
+      "mimeType": "image/jpeg",
+      "bytes": 167680,
+      "shapeId": "237",
+      "shapeName": "Google Shape;237;g72967b2bcc_0_57",
+      "bbox": {
+        "x": 4754790,
+        "y": 1111469,
+        "cx": 1490657,
+        "cy": 854029,
+        "right": 6245447,
+        "bottom": 1965498
+      },
+      "confirmedInstructional": true,
+      "selected": true,
+      "reviewed": true,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": "111FslIrt1Ryd46e0p8tRG9ceIA02pXHP",
+        "nativePresentationTitle": "This is how we do it! - Unit 33.pptx",
+        "nativePresentationSha256": "39b3b8bb4fa0aac4bcfc18a2ac39a6d1db88c9785f1fefa488707124cd1c3966",
+        "nativePresentationPath": "docs/audit/source-originals/B-unit-33-primary-01-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP.pptx",
+        "sourceSlideNumber": 6,
+        "publishedSlideNumber": 6,
+        "mediaPath": "ppt/media/image13.jpg",
+        "shapeId": "237",
+        "shapeName": "Google Shape;237;g72967b2bcc_0_57",
+        "bbox": {
+          "x": 4754790,
+          "y": 1111469,
+          "cx": 1490657,
+          "cy": 854029,
+          "right": 6245447,
+          "bottom": 1965498
+        },
+        "sourceProofRef": {
+          "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+          "unit": 33,
+          "publishedSlideNumber": 6,
+          "publishedMediaOrdinal": 3,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+          "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media4.jpg",
+          "publishedReferenceSha256": "3b1fd6a47c3abc7fa745e0d74e1f258176ceff16ef223a7c8c7d034be0b5cd79",
+          "publishedReferenceBytes": 167680,
+          "byteExactMatch": true
+        }
+      },
+      "sourceProofRef": {
+        "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+        "unit": 33,
+        "publishedSlideNumber": 6,
+        "publishedMediaOrdinal": 3,
+        "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+        "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media4.jpg",
+        "publishedReferenceSha256": "3b1fd6a47c3abc7fa745e0d74e1f258176ceff16ef223a7c8c7d034be0b5cd79",
+        "publishedReferenceBytes": 167680,
+        "byteExactMatch": true
+      },
+      "reviewEvidence": [
+        "Published deck rendered in Chrome at the observed slide parameter.",
+        "Native candidate opened with a local image viewer.",
+        "Published image payload was downloaded from the published source media URL.",
+        "SHA-256 equality between the downloaded published payload and native bytes."
+      ]
+    },
+    {
+      "id": "unit-33-78d4654af911a5a0-slide-6-ref-2",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 33,
+      "lessonId": "cmnmm9ozb0015w1qkj7gth0wy",
+      "slideNumber": 6,
+      "sourceSlideNumber": 6,
+      "publishedSlideNumber": 6,
+      "mediaPath": "ppt/media/image10.jpg",
+      "localPath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image10.jpg",
+      "sourcePath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image10.jpg",
+      "sourceSha256": "78d4654af911a5a0d83d58f45b8ccdfde3f66742beeb1a4305bba7a9e5e79ded",
+      "sha256": "78d4654af911a5a0d83d58f45b8ccdfde3f66742beeb1a4305bba7a9e5e79ded",
+      "dedupSha256": "78d4654af911a5a0d83d58f45b8ccdfde3f66742beeb1a4305bba7a9e5e79ded",
+      "mimeType": "image/jpeg",
+      "bytes": 184047,
+      "shapeId": "236",
+      "shapeName": "Google Shape;236;g72967b2bcc_0_57",
+      "bbox": {
+        "x": 2918925,
+        "y": 1048451,
+        "cx": 1490675,
+        "cy": 912776,
+        "right": 4409600,
+        "bottom": 1961227
+      },
+      "confirmedInstructional": true,
+      "selected": true,
+      "reviewed": true,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": "111FslIrt1Ryd46e0p8tRG9ceIA02pXHP",
+        "nativePresentationTitle": "This is how we do it! - Unit 33.pptx",
+        "nativePresentationSha256": "39b3b8bb4fa0aac4bcfc18a2ac39a6d1db88c9785f1fefa488707124cd1c3966",
+        "nativePresentationPath": "docs/audit/source-originals/B-unit-33-primary-01-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP.pptx",
+        "sourceSlideNumber": 6,
+        "publishedSlideNumber": 6,
+        "mediaPath": "ppt/media/image10.jpg",
+        "shapeId": "236",
+        "shapeName": "Google Shape;236;g72967b2bcc_0_57",
+        "bbox": {
+          "x": 2918925,
+          "y": 1048451,
+          "cx": 1490675,
+          "cy": 912776,
+          "right": 4409600,
+          "bottom": 1961227
+        },
+        "sourceProofRef": {
+          "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+          "unit": 33,
+          "publishedSlideNumber": 6,
+          "publishedMediaOrdinal": 2,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+          "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media3.jpg",
+          "publishedReferenceSha256": "78d4654af911a5a0d83d58f45b8ccdfde3f66742beeb1a4305bba7a9e5e79ded",
+          "publishedReferenceBytes": 184047,
+          "byteExactMatch": true
+        }
+      },
+      "sourceProofRef": {
+        "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+        "unit": 33,
+        "publishedSlideNumber": 6,
+        "publishedMediaOrdinal": 2,
+        "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+        "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media3.jpg",
+        "publishedReferenceSha256": "78d4654af911a5a0d83d58f45b8ccdfde3f66742beeb1a4305bba7a9e5e79ded",
+        "publishedReferenceBytes": 184047,
+        "byteExactMatch": true
+      },
+      "reviewEvidence": [
+        "Published deck rendered in Chrome at the observed slide parameter.",
+        "Native candidate opened with a local image viewer.",
+        "Published image payload was downloaded from the published source media URL.",
+        "SHA-256 equality between the downloaded published payload and native bytes."
+      ]
+    },
+    {
+      "id": "unit-33-8162989ff4b4f001-slide-6-ref-8",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 33,
+      "lessonId": "cmnmm9ozb0015w1qkj7gth0wy",
+      "slideNumber": 6,
+      "sourceSlideNumber": 6,
+      "publishedSlideNumber": 6,
+      "mediaPath": "ppt/media/image7.jpg",
+      "localPath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image7.jpg",
+      "sourcePath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image7.jpg",
+      "sourceSha256": "8162989ff4b4f0013e0264c95684afa776df395f83fb4d622d6abc296537c044",
+      "sha256": "8162989ff4b4f0013e0264c95684afa776df395f83fb4d622d6abc296537c044",
+      "dedupSha256": "8162989ff4b4f0013e0264c95684afa776df395f83fb4d622d6abc296537c044",
+      "mimeType": "image/jpeg",
+      "bytes": 66134,
+      "shapeId": "245",
+      "shapeName": "Google Shape;245;g72967b2bcc_0_57",
+      "bbox": {
+        "x": 6530050,
+        "y": 1106725,
+        "cx": 1490601,
+        "cy": 903874,
+        "right": 8020651,
+        "bottom": 2010599
+      },
+      "confirmedInstructional": true,
+      "selected": true,
+      "reviewed": true,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": "111FslIrt1Ryd46e0p8tRG9ceIA02pXHP",
+        "nativePresentationTitle": "This is how we do it! - Unit 33.pptx",
+        "nativePresentationSha256": "39b3b8bb4fa0aac4bcfc18a2ac39a6d1db88c9785f1fefa488707124cd1c3966",
+        "nativePresentationPath": "docs/audit/source-originals/B-unit-33-primary-01-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP.pptx",
+        "sourceSlideNumber": 6,
+        "publishedSlideNumber": 6,
+        "mediaPath": "ppt/media/image7.jpg",
+        "shapeId": "245",
+        "shapeName": "Google Shape;245;g72967b2bcc_0_57",
+        "bbox": {
+          "x": 6530050,
+          "y": 1106725,
+          "cx": 1490601,
+          "cy": 903874,
+          "right": 8020651,
+          "bottom": 2010599
+        },
+        "sourceProofRef": {
+          "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+          "unit": 33,
+          "publishedSlideNumber": 6,
+          "publishedMediaOrdinal": 8,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+          "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media9.jpg",
+          "publishedReferenceSha256": "8162989ff4b4f0013e0264c95684afa776df395f83fb4d622d6abc296537c044",
+          "publishedReferenceBytes": 66134,
+          "byteExactMatch": true
+        }
+      },
+      "sourceProofRef": {
+        "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+        "unit": 33,
+        "publishedSlideNumber": 6,
+        "publishedMediaOrdinal": 8,
+        "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+        "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media9.jpg",
+        "publishedReferenceSha256": "8162989ff4b4f0013e0264c95684afa776df395f83fb4d622d6abc296537c044",
+        "publishedReferenceBytes": 66134,
+        "byteExactMatch": true
+      },
+      "reviewEvidence": [
+        "Published deck rendered in Chrome at the observed slide parameter.",
+        "Native candidate opened with a local image viewer.",
+        "Published image payload was downloaded from the published source media URL.",
+        "SHA-256 equality between the downloaded published payload and native bytes."
+      ]
+    },
+    {
+      "id": "unit-33-cabea1165cdeb6e0-slide-6-ref-5",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 33,
+      "lessonId": "cmnmm9ozb0015w1qkj7gth0wy",
+      "slideNumber": 6,
+      "sourceSlideNumber": 6,
+      "publishedSlideNumber": 6,
+      "mediaPath": "ppt/media/image6.jpg",
+      "localPath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image6.jpg",
+      "sourcePath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image6.jpg",
+      "sourceSha256": "cabea1165cdeb6e05d319ae5e57fedb72c990a0bcf1991757e5246d2ba95e1f6",
+      "sha256": "cabea1165cdeb6e05d319ae5e57fedb72c990a0bcf1991757e5246d2ba95e1f6",
+      "dedupSha256": "cabea1165cdeb6e05d319ae5e57fedb72c990a0bcf1991757e5246d2ba95e1f6",
+      "mimeType": "image/jpeg",
+      "bytes": 70483,
+      "shapeId": "239",
+      "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+      "bbox": {
+        "x": 1123491,
+        "y": 2851732,
+        "cx": 1450224,
+        "cy": 903880,
+        "right": 2573715,
+        "bottom": 3755612
+      },
+      "confirmedInstructional": true,
+      "selected": true,
+      "reviewed": true,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": "111FslIrt1Ryd46e0p8tRG9ceIA02pXHP",
+        "nativePresentationTitle": "This is how we do it! - Unit 33.pptx",
+        "nativePresentationSha256": "39b3b8bb4fa0aac4bcfc18a2ac39a6d1db88c9785f1fefa488707124cd1c3966",
+        "nativePresentationPath": "docs/audit/source-originals/B-unit-33-primary-01-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP.pptx",
+        "sourceSlideNumber": 6,
+        "publishedSlideNumber": 6,
+        "mediaPath": "ppt/media/image6.jpg",
+        "shapeId": "239",
+        "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+        "bbox": {
+          "x": 1123491,
+          "y": 2851732,
+          "cx": 1450224,
+          "cy": 903880,
+          "right": 2573715,
+          "bottom": 3755612
+        },
+        "sourceProofRef": {
+          "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+          "unit": 33,
+          "publishedSlideNumber": 6,
+          "publishedMediaOrdinal": 5,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+          "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media6.jpg",
+          "publishedReferenceSha256": "cabea1165cdeb6e05d319ae5e57fedb72c990a0bcf1991757e5246d2ba95e1f6",
+          "publishedReferenceBytes": 70483,
+          "byteExactMatch": true
+        }
+      },
+      "sourceProofRef": {
+        "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+        "unit": 33,
+        "publishedSlideNumber": 6,
+        "publishedMediaOrdinal": 5,
+        "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+        "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media6.jpg",
+        "publishedReferenceSha256": "cabea1165cdeb6e05d319ae5e57fedb72c990a0bcf1991757e5246d2ba95e1f6",
+        "publishedReferenceBytes": 70483,
+        "byteExactMatch": true
+      },
+      "reviewEvidence": [
+        "Published deck rendered in Chrome at the observed slide parameter.",
+        "Native candidate opened with a local image viewer.",
+        "Published image payload was downloaded from the published source media URL.",
+        "SHA-256 equality between the downloaded published payload and native bytes."
+      ]
+    },
+    {
+      "id": "unit-34-d931da88b346615d-slide-4-ref-1",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 34,
+      "lessonId": "cmnmm9pbg0018w1qkdkv1gbma",
+      "slideNumber": 4,
+      "sourceSlideNumber": 4,
+      "publishedSlideNumber": 4,
+      "mediaPath": "ppt/media/image9.jpg",
+      "localPath": "docs/audit/source-originals/images/B-unit-34-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP/image9.jpg",
+      "sourcePath": "docs/audit/source-originals/images/B-unit-34-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP/image9.jpg",
+      "sourceSha256": "d931da88b346615dbdf76559853d249ed3c3e9a48822a6fcaeef79d683e407c3",
+      "sha256": "d931da88b346615dbdf76559853d249ed3c3e9a48822a6fcaeef79d683e407c3",
+      "dedupSha256": "d931da88b346615dbdf76559853d249ed3c3e9a48822a6fcaeef79d683e407c3",
+      "mimeType": "image/jpeg",
+      "bytes": 331478,
+      "shapeId": "220",
+      "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+      "bbox": {
+        "x": 5489900,
+        "y": 534475,
+        "cx": 2565848,
+        "cy": 1710724,
+        "right": 8055748,
+        "bottom": 2245199
+      },
+      "confirmedInstructional": true,
+      "selected": true,
+      "reviewed": true,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": "17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP",
+        "nativePresentationTitle": "Then and Now - Unit 34.pptx",
+        "nativePresentationSha256": "5f8f533d054bd053f0d545466a43d65d527d16b8f12c485e5938a0eb858d2217",
+        "nativePresentationPath": "docs/audit/source-originals/B-unit-34-primary-01-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP.pptx",
+        "sourceSlideNumber": 4,
+        "publishedSlideNumber": 4,
+        "mediaPath": "ppt/media/image9.jpg",
+        "shapeId": "220",
+        "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+        "bbox": {
+          "x": 5489900,
+          "y": 534475,
+          "cx": 2565848,
+          "cy": 1710724,
+          "right": 8055748,
+          "bottom": 2245199
+        },
+        "sourceProofRef": {
+          "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+          "unit": 34,
+          "publishedSlideNumber": 4,
+          "publishedMediaOrdinal": 1,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_37",
+          "publishedReferencePath": "docs/audit/figure-proof/published-figures/u34-s4-published-media2.jpg",
+          "publishedReferenceSha256": "d931da88b346615dbdf76559853d249ed3c3e9a48822a6fcaeef79d683e407c3",
+          "publishedReferenceBytes": 331478,
+          "byteExactMatch": true
+        }
+      },
+      "sourceProofRef": {
+        "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+        "unit": 34,
+        "publishedSlideNumber": 4,
+        "publishedMediaOrdinal": 1,
+        "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_37",
+        "publishedReferencePath": "docs/audit/figure-proof/published-figures/u34-s4-published-media2.jpg",
+        "publishedReferenceSha256": "d931da88b346615dbdf76559853d249ed3c3e9a48822a6fcaeef79d683e407c3",
+        "publishedReferenceBytes": 331478,
+        "byteExactMatch": true
+      },
+      "reviewEvidence": [
+        "Published deck rendered in Chrome at the observed slide parameter.",
+        "Native candidate opened with a local image viewer.",
+        "Published image payload was downloaded from the published source media URL.",
+        "SHA-256 equality between the downloaded published payload and native bytes."
+      ]
+    },
+    {
+      "id": "unit-34-1f098ebfcf7dbb37-slide-6-ref-2",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 34,
+      "lessonId": "cmnmm9pbg0018w1qkdkv1gbma",
+      "slideNumber": 6,
+      "sourceSlideNumber": 6,
+      "publishedSlideNumber": 6,
+      "mediaPath": "ppt/media/image8.jpg",
+      "localPath": "docs/audit/source-originals/images/B-unit-34-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP/image8.jpg",
+      "sourcePath": "docs/audit/source-originals/images/B-unit-34-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP/image8.jpg",
+      "sourceSha256": "1f098ebfcf7dbb378a3d7e8be75fd93d728c09344980e39c6de825acba0fbe3c",
+      "sha256": "1f098ebfcf7dbb378a3d7e8be75fd93d728c09344980e39c6de825acba0fbe3c",
+      "dedupSha256": "1f098ebfcf7dbb378a3d7e8be75fd93d728c09344980e39c6de825acba0fbe3c",
+      "mimeType": "image/jpeg",
+      "bytes": 311907,
+      "shapeId": "244",
+      "shapeName": "Google Shape;244;g72967b2bcc_0_57",
+      "bbox": {
+        "x": 6702228,
+        "y": 1062045,
+        "cx": 1987475,
+        "cy": 1324631,
+        "right": 8689703,
+        "bottom": 2386676
+      },
+      "confirmedInstructional": true,
+      "selected": true,
+      "reviewed": true,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": "17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP",
+        "nativePresentationTitle": "Then and Now - Unit 34.pptx",
+        "nativePresentationSha256": "5f8f533d054bd053f0d545466a43d65d527d16b8f12c485e5938a0eb858d2217",
+        "nativePresentationPath": "docs/audit/source-originals/B-unit-34-primary-01-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP.pptx",
+        "sourceSlideNumber": 6,
+        "publishedSlideNumber": 6,
+        "mediaPath": "ppt/media/image8.jpg",
+        "shapeId": "244",
+        "shapeName": "Google Shape;244;g72967b2bcc_0_57",
+        "bbox": {
+          "x": 6702228,
+          "y": 1062045,
+          "cx": 1987475,
+          "cy": 1324631,
+          "right": 8689703,
+          "bottom": 2386676
+        },
+        "sourceProofRef": {
+          "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+          "unit": 34,
+          "publishedSlideNumber": 6,
+          "publishedMediaOrdinal": 2,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+          "publishedReferencePath": "docs/audit/figure-proof/published-figures/u34-s6-published-media3.jpg",
+          "publishedReferenceSha256": "1f098ebfcf7dbb378a3d7e8be75fd93d728c09344980e39c6de825acba0fbe3c",
+          "publishedReferenceBytes": 311907,
+          "byteExactMatch": true
+        }
+      },
+      "sourceProofRef": {
+        "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+        "unit": 34,
+        "publishedSlideNumber": 6,
+        "publishedMediaOrdinal": 2,
+        "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+        "publishedReferencePath": "docs/audit/figure-proof/published-figures/u34-s6-published-media3.jpg",
+        "publishedReferenceSha256": "1f098ebfcf7dbb378a3d7e8be75fd93d728c09344980e39c6de825acba0fbe3c",
+        "publishedReferenceBytes": 311907,
+        "byteExactMatch": true
+      },
+      "reviewEvidence": [
+        "Published deck rendered in Chrome at the observed slide parameter.",
+        "Native candidate opened with a local image viewer.",
+        "Published image payload was downloaded from the published source media URL.",
+        "SHA-256 equality between the downloaded published payload and native bytes."
+      ]
+    },
+    {
+      "id": "unit-34-386dc05b70b0f420-slide-6-ref-3",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 34,
+      "lessonId": "cmnmm9pbg0018w1qkdkv1gbma",
+      "slideNumber": 6,
+      "sourceSlideNumber": 6,
+      "publishedSlideNumber": 6,
+      "mediaPath": "ppt/media/image7.jpg",
+      "localPath": "docs/audit/source-originals/images/B-unit-34-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP/image7.jpg",
+      "sourcePath": "docs/audit/source-originals/images/B-unit-34-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP/image7.jpg",
+      "sourceSha256": "386dc05b70b0f42001e70ffea700b4693207911db560e6b31baa5f641dc0f865",
+      "sha256": "386dc05b70b0f42001e70ffea700b4693207911db560e6b31baa5f641dc0f865",
+      "dedupSha256": "386dc05b70b0f42001e70ffea700b4693207911db560e6b31baa5f641dc0f865",
+      "mimeType": "image/jpeg",
+      "bytes": 227434,
+      "shapeId": "245",
+      "shapeName": "Google Shape;245;g72967b2bcc_0_57",
+      "bbox": {
+        "x": 4458925,
+        "y": 1062050,
+        "cx": 1987451,
+        "cy": 1324625,
+        "right": 6446376,
+        "bottom": 2386675
+      },
+      "confirmedInstructional": true,
+      "selected": true,
+      "reviewed": true,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": "17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP",
+        "nativePresentationTitle": "Then and Now - Unit 34.pptx",
+        "nativePresentationSha256": "5f8f533d054bd053f0d545466a43d65d527d16b8f12c485e5938a0eb858d2217",
+        "nativePresentationPath": "docs/audit/source-originals/B-unit-34-primary-01-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP.pptx",
+        "sourceSlideNumber": 6,
+        "publishedSlideNumber": 6,
+        "mediaPath": "ppt/media/image7.jpg",
+        "shapeId": "245",
+        "shapeName": "Google Shape;245;g72967b2bcc_0_57",
+        "bbox": {
+          "x": 4458925,
+          "y": 1062050,
+          "cx": 1987451,
+          "cy": 1324625,
+          "right": 6446376,
+          "bottom": 2386675
+        },
+        "sourceProofRef": {
+          "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+          "unit": 34,
+          "publishedSlideNumber": 6,
+          "publishedMediaOrdinal": 3,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+          "publishedReferencePath": "docs/audit/figure-proof/published-figures/u34-s6-published-media4.jpg",
+          "publishedReferenceSha256": "386dc05b70b0f42001e70ffea700b4693207911db560e6b31baa5f641dc0f865",
+          "publishedReferenceBytes": 227434,
+          "byteExactMatch": true
+        }
+      },
+      "sourceProofRef": {
+        "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+        "unit": 34,
+        "publishedSlideNumber": 6,
+        "publishedMediaOrdinal": 3,
+        "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+        "publishedReferencePath": "docs/audit/figure-proof/published-figures/u34-s6-published-media4.jpg",
+        "publishedReferenceSha256": "386dc05b70b0f42001e70ffea700b4693207911db560e6b31baa5f641dc0f865",
+        "publishedReferenceBytes": 227434,
+        "byteExactMatch": true
+      },
+      "reviewEvidence": [
+        "Published deck rendered in Chrome at the observed slide parameter.",
+        "Native candidate opened with a local image viewer.",
+        "Published image payload was downloaded from the published source media URL.",
+        "SHA-256 equality between the downloaded published payload and native bytes."
+      ]
+    },
+    {
+      "id": "unit-34-7b8aca98de03a88f-slide-6-ref-1",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 34,
+      "lessonId": "cmnmm9pbg0018w1qkdkv1gbma",
+      "slideNumber": 6,
+      "sourceSlideNumber": 6,
+      "publishedSlideNumber": 6,
+      "mediaPath": "ppt/media/image6.jpg",
+      "localPath": "docs/audit/source-originals/images/B-unit-34-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP/image6.jpg",
+      "sourcePath": "docs/audit/source-originals/images/B-unit-34-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP/image6.jpg",
+      "sourceSha256": "7b8aca98de03a88f614f005ebfd03ce51dcc80268b674311d6bc9058ccaef653",
+      "sha256": "7b8aca98de03a88f614f005ebfd03ce51dcc80268b674311d6bc9058ccaef653",
+      "dedupSha256": "7b8aca98de03a88f614f005ebfd03ce51dcc80268b674311d6bc9058ccaef653",
+      "mimeType": "image/jpeg",
+      "bytes": 150351,
+      "shapeId": "243",
+      "shapeName": "Google Shape;243;g72967b2bcc_0_57",
+      "bbox": {
+        "x": 5561975,
+        "y": 2934200,
+        "cx": 2031224,
+        "cy": 1694550,
+        "right": 7593199,
+        "bottom": 4628750
+      },
+      "confirmedInstructional": true,
+      "selected": true,
+      "reviewed": true,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": "17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP",
+        "nativePresentationTitle": "Then and Now - Unit 34.pptx",
+        "nativePresentationSha256": "5f8f533d054bd053f0d545466a43d65d527d16b8f12c485e5938a0eb858d2217",
+        "nativePresentationPath": "docs/audit/source-originals/B-unit-34-primary-01-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP.pptx",
+        "sourceSlideNumber": 6,
+        "publishedSlideNumber": 6,
+        "mediaPath": "ppt/media/image6.jpg",
+        "shapeId": "243",
+        "shapeName": "Google Shape;243;g72967b2bcc_0_57",
+        "bbox": {
+          "x": 5561975,
+          "y": 2934200,
+          "cx": 2031224,
+          "cy": 1694550,
+          "right": 7593199,
+          "bottom": 4628750
+        },
+        "sourceProofRef": {
+          "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+          "unit": 34,
+          "publishedSlideNumber": 6,
+          "publishedMediaOrdinal": 1,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+          "publishedReferencePath": "docs/audit/figure-proof/published-figures/u34-s6-published-media2.jpg",
+          "publishedReferenceSha256": "7b8aca98de03a88f614f005ebfd03ce51dcc80268b674311d6bc9058ccaef653",
+          "publishedReferenceBytes": 150351,
+          "byteExactMatch": true
+        }
+      },
+      "sourceProofRef": {
+        "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+        "unit": 34,
+        "publishedSlideNumber": 6,
+        "publishedMediaOrdinal": 1,
+        "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+        "publishedReferencePath": "docs/audit/figure-proof/published-figures/u34-s6-published-media2.jpg",
+        "publishedReferenceSha256": "7b8aca98de03a88f614f005ebfd03ce51dcc80268b674311d6bc9058ccaef653",
+        "publishedReferenceBytes": 150351,
+        "byteExactMatch": true
+      },
+      "reviewEvidence": [
+        "Published deck rendered in Chrome at the observed slide parameter.",
+        "Native candidate opened with a local image viewer.",
+        "Published image payload was downloaded from the published source media URL.",
+        "SHA-256 equality between the downloaded published payload and native bytes."
+      ]
+    },
+    {
+      "id": "unit-35-a3030929875e7041-slide-4-ref-1",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 35,
+      "lessonId": "cmnmm9pns001bw1qki5fh6r0j",
+      "slideNumber": 4,
+      "sourceSlideNumber": 4,
+      "publishedSlideNumber": 4,
+      "mediaPath": "ppt/media/image6.jpg",
+      "localPath": "docs/audit/source-originals/images/B-unit-35-1uf4e0qmsGhMSF7VuMTQzafcjni_CtvJW/image6.jpg",
+      "sourcePath": "docs/audit/source-originals/images/B-unit-35-1uf4e0qmsGhMSF7VuMTQzafcjni_CtvJW/image6.jpg",
+      "sourceSha256": "a3030929875e7041d24c095d088c9b3df7057581881deb7fb768a3ab620d07bb",
+      "sha256": "a3030929875e7041d24c095d088c9b3df7057581881deb7fb768a3ab620d07bb",
+      "dedupSha256": "a3030929875e7041d24c095d088c9b3df7057581881deb7fb768a3ab620d07bb",
+      "mimeType": "image/jpeg",
+      "bytes": 16527,
+      "shapeId": "220",
+      "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+      "bbox": {
+        "x": 5489900,
+        "y": 534475,
+        "cx": 2565848,
+        "cy": 1710724,
+        "right": 8055748,
+        "bottom": 2245199
+      },
+      "confirmedInstructional": true,
+      "selected": true,
+      "reviewed": true,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": "1uf4e0qmsGhMSF7VuMTQzafcjni_CtvJW",
+        "nativePresentationTitle": "I might not go - Unit 35.pptx",
+        "nativePresentationSha256": "687e8f0d1e48fcc10e29bdf53dc1a9546679661a1a412e54cbdf110219fc970b",
+        "nativePresentationPath": "docs/audit/source-originals/B-unit-35-primary-01-1uf4e0qmsGhMSF7VuMTQzafcjni_CtvJW.pptx",
+        "sourceSlideNumber": 4,
+        "publishedSlideNumber": 4,
+        "mediaPath": "ppt/media/image6.jpg",
+        "shapeId": "220",
+        "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+        "bbox": {
+          "x": 5489900,
+          "y": 534475,
+          "cx": 2565848,
+          "cy": 1710724,
+          "right": 8055748,
+          "bottom": 2245199
+        },
+        "sourceProofRef": {
+          "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+          "unit": 35,
+          "publishedSlideNumber": 4,
+          "publishedMediaOrdinal": 1,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_37",
+          "publishedReferencePath": "docs/audit/figure-proof/published-figures/u35-s4-published-media2.jpg",
+          "publishedReferenceSha256": "a3030929875e7041d24c095d088c9b3df7057581881deb7fb768a3ab620d07bb",
+          "publishedReferenceBytes": 16527,
+          "byteExactMatch": true
+        }
+      },
+      "sourceProofRef": {
+        "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+        "unit": 35,
+        "publishedSlideNumber": 4,
+        "publishedMediaOrdinal": 1,
+        "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_37",
+        "publishedReferencePath": "docs/audit/figure-proof/published-figures/u35-s4-published-media2.jpg",
+        "publishedReferenceSha256": "a3030929875e7041d24c095d088c9b3df7057581881deb7fb768a3ab620d07bb",
+        "publishedReferenceBytes": 16527,
+        "byteExactMatch": true
+      },
+      "reviewEvidence": [
+        "Published deck rendered in Chrome at the observed slide parameter.",
+        "Native candidate opened with a local image viewer.",
+        "Published image payload was downloaded from the published source media URL.",
+        "SHA-256 equality between the downloaded published payload and native bytes."
+      ]
+    },
+    {
+      "id": "unit-36-f8bc4f7cffad083f-slide-4-ref-1",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 36,
+      "lessonId": "cmnmm9q04001ew1qke5tfufyk",
+      "slideNumber": 4,
+      "sourceSlideNumber": 4,
+      "publishedSlideNumber": 4,
+      "mediaPath": "ppt/media/image7.jpg",
+      "localPath": "docs/audit/source-originals/images/B-unit-36-17j5e6oibQHQvOYlT446cQOYANPKRklcn/image7.jpg",
+      "sourcePath": "docs/audit/source-originals/images/B-unit-36-17j5e6oibQHQvOYlT446cQOYANPKRklcn/image7.jpg",
+      "sourceSha256": "f8bc4f7cffad083fbd4f0a49a22af61cffcd66a7ba14191f20036f3e43bbf3fa",
+      "sha256": "f8bc4f7cffad083fbd4f0a49a22af61cffcd66a7ba14191f20036f3e43bbf3fa",
+      "dedupSha256": "f8bc4f7cffad083fbd4f0a49a22af61cffcd66a7ba14191f20036f3e43bbf3fa",
+      "mimeType": "image/jpeg",
+      "bytes": 228446,
+      "shapeId": "220",
+      "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+      "bbox": {
+        "x": 5489900,
+        "y": 534475,
+        "cx": 2565848,
+        "cy": 1710724,
+        "right": 8055748,
+        "bottom": 2245199
+      },
+      "confirmedInstructional": true,
+      "selected": true,
+      "reviewed": true,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": "17j5e6oibQHQvOYlT446cQOYANPKRklcn",
+        "nativePresentationTitle": "You'd better do it - Unit 36.pptx",
+        "nativePresentationSha256": "362d2e52292badf0dc635768f0ec5c276ff91fd64c637d8a82d6b68e11d4dfb1",
+        "nativePresentationPath": "docs/audit/source-originals/B-unit-36-primary-01-17j5e6oibQHQvOYlT446cQOYANPKRklcn.pptx",
+        "sourceSlideNumber": 4,
+        "publishedSlideNumber": 4,
+        "mediaPath": "ppt/media/image7.jpg",
+        "shapeId": "220",
+        "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+        "bbox": {
+          "x": 5489900,
+          "y": 534475,
+          "cx": 2565848,
+          "cy": 1710724,
+          "right": 8055748,
+          "bottom": 2245199
+        },
+        "sourceProofRef": {
+          "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+          "unit": 36,
+          "publishedSlideNumber": 4,
+          "publishedMediaOrdinal": 1,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_37",
+          "publishedReferencePath": "docs/audit/figure-proof/published-figures/u36-s4-published-media2.jpg",
+          "publishedReferenceSha256": "f8bc4f7cffad083fbd4f0a49a22af61cffcd66a7ba14191f20036f3e43bbf3fa",
+          "publishedReferenceBytes": 228446,
+          "byteExactMatch": true
+        }
+      },
+      "sourceProofRef": {
+        "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+        "unit": 36,
+        "publishedSlideNumber": 4,
+        "publishedMediaOrdinal": 1,
+        "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_37",
+        "publishedReferencePath": "docs/audit/figure-proof/published-figures/u36-s4-published-media2.jpg",
+        "publishedReferenceSha256": "f8bc4f7cffad083fbd4f0a49a22af61cffcd66a7ba14191f20036f3e43bbf3fa",
+        "publishedReferenceBytes": 228446,
+        "byteExactMatch": true
+      },
+      "reviewEvidence": [
+        "Published deck rendered in Chrome at the observed slide parameter.",
+        "Native candidate opened with a local image viewer.",
+        "Published image payload was downloaded from the published source media URL.",
+        "SHA-256 equality between the downloaded published payload and native bytes."
+      ]
+    },
+    {
+      "id": "unit-36-0c9ba549ea2cdf40-slide-6-ref-1",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 36,
+      "lessonId": "cmnmm9q04001ew1qke5tfufyk",
+      "slideNumber": 6,
+      "sourceSlideNumber": 6,
+      "publishedSlideNumber": 6,
+      "mediaPath": "ppt/media/image4.jpg",
+      "localPath": "docs/audit/source-originals/images/B-unit-36-17j5e6oibQHQvOYlT446cQOYANPKRklcn/image4.jpg",
+      "sourcePath": "docs/audit/source-originals/images/B-unit-36-17j5e6oibQHQvOYlT446cQOYANPKRklcn/image4.jpg",
+      "sourceSha256": "0c9ba549ea2cdf400f4c90c03c6f9fd10f68ad0b9cce324ec449c81bb00472d5",
+      "sha256": "0c9ba549ea2cdf400f4c90c03c6f9fd10f68ad0b9cce324ec449c81bb00472d5",
+      "dedupSha256": "0c9ba549ea2cdf400f4c90c03c6f9fd10f68ad0b9cce324ec449c81bb00472d5",
+      "mimeType": "image/jpeg",
+      "bytes": 10114,
+      "shapeId": "235",
+      "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+      "bbox": {
+        "x": 4310175,
+        "y": 1234300,
+        "cx": 4025050,
+        "cy": 2683350,
+        "right": 8335225,
+        "bottom": 3917650
+      },
+      "confirmedInstructional": true,
+      "selected": true,
+      "reviewed": true,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": "17j5e6oibQHQvOYlT446cQOYANPKRklcn",
+        "nativePresentationTitle": "You'd better do it - Unit 36.pptx",
+        "nativePresentationSha256": "362d2e52292badf0dc635768f0ec5c276ff91fd64c637d8a82d6b68e11d4dfb1",
+        "nativePresentationPath": "docs/audit/source-originals/B-unit-36-primary-01-17j5e6oibQHQvOYlT446cQOYANPKRklcn.pptx",
+        "sourceSlideNumber": 6,
+        "publishedSlideNumber": 6,
+        "mediaPath": "ppt/media/image4.jpg",
+        "shapeId": "235",
+        "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+        "bbox": {
+          "x": 4310175,
+          "y": 1234300,
+          "cx": 4025050,
+          "cy": 2683350,
+          "right": 8335225,
+          "bottom": 3917650
+        },
+        "sourceProofRef": {
+          "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+          "unit": 36,
+          "publishedSlideNumber": 6,
+          "publishedMediaOrdinal": 1,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+          "publishedReferencePath": "docs/audit/figure-proof/published-figures/u36-s6-published-media2.jpg",
+          "publishedReferenceSha256": "0c9ba549ea2cdf400f4c90c03c6f9fd10f68ad0b9cce324ec449c81bb00472d5",
+          "publishedReferenceBytes": 10114,
+          "byteExactMatch": true
+        }
+      },
+      "sourceProofRef": {
+        "manifest": "docs/audit/figure-proof/units-33-36-visual-proof.json",
+        "unit": 36,
+        "publishedSlideNumber": 6,
+        "publishedMediaOrdinal": 1,
+        "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+        "publishedReferencePath": "docs/audit/figure-proof/published-figures/u36-s6-published-media2.jpg",
+        "publishedReferenceSha256": "0c9ba549ea2cdf400f4c90c03c6f9fd10f68ad0b9cce324ec449c81bb00472d5",
+        "publishedReferenceBytes": 10114,
+        "byteExactMatch": true
+      },
+      "reviewEvidence": [
+        "Published deck rendered in Chrome at the observed slide parameter.",
+        "Native candidate opened with a local image viewer.",
+        "Published image payload was downloaded from the published source media URL.",
+        "SHA-256 equality between the downloaded published payload and native bytes."
+      ]
+    },
+    {
       "id": "unit-37-004b50f5a0e93a2d-slide-4-ref-1",
       "kind": "instructional-image",
       "assetType": "instructional-image",
@@ -30160,7 +31412,7 @@
       "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTgbM5EqOu9mCR4_xlGt7SojjpKIYqvKaUkbOvVVjpVp3qrZWpmho5EeqcWc9i9Fg/embed?start=false&loop=false&delayms=3000",
       "publishedDeckTitle": "New This is how we do it! - Unit 33.pptx",
       "publishedSlideCount": 16,
-      "nativeImageMappingStatus": "native-only-published-mismatch",
+      "nativeImageMappingStatus": "published-source-visual-proof-confirmed",
       "audioNumbers": [
         1,
         2
@@ -30173,11 +31425,19 @@
         "1f04d6fee494e34e6c701833d030e95ac841c0510ad7b244d2b078ecbca962c8",
         "7d88c5f82f65996836649eb04759c8c9a1cdd17227d77acbcd9bb09b35f09850"
       ],
-      "imageDedupSha256": [],
-      "imageReferenceCount": 0,
-      "mediaBlockers": [
-        "native image media excluded: Unit 33-36 published/native mapping remains ambiguous"
-      ]
+      "imageDedupSha256": [
+        "176f9679a163729fb38a7eaaa23d0c4e95b30e2a0b969ad3e3dc2aa45efd5aa1",
+        "0496bfbc49c4f311803e4049d5db6b2dff6a0caef8071a2f3b4775e5f6b287f6",
+        "210327264755df13adc2a279369a75cc73c10af9bcde140dc13a87155eb80cce",
+        "213557603377d015b37b87b405d6f655171b73f0db7d55886ee578d2bc4c8ab0",
+        "375e80b8a712d16bb287f24309897525ea09a3e9ac3f35fb55bd4f4dbfbdee51",
+        "3b1fd6a47c3abc7fa745e0d74e1f258176ceff16ef223a7c8c7d034be0b5cd79",
+        "78d4654af911a5a0d83d58f45b8ccdfde3f66742beeb1a4305bba7a9e5e79ded",
+        "8162989ff4b4f0013e0264c95684afa776df395f83fb4d622d6abc296537c044",
+        "cabea1165cdeb6e05d319ae5e57fedb72c990a0bcf1991757e5246d2ba95e1f6"
+      ],
+      "imageReferenceCount": 9,
+      "mediaBlockers": []
     },
     "34": {
       "unit": 34,
@@ -30197,7 +31457,7 @@
       "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRyTEsKeEx6Q3JQWJzaF-A9WI8yo-wNNPg7WWy7ccH6nAm7kAlBOqXcXstrtDX1LA/embed?start=false&loop=false&delayms=3000",
       "publishedDeckTitle": "New Then and Now - Unit 34.pptx",
       "publishedSlideCount": 17,
-      "nativeImageMappingStatus": "native-only-published-mismatch",
+      "nativeImageMappingStatus": "published-source-visual-proof-confirmed",
       "audioNumbers": [
         1,
         2
@@ -30210,11 +31470,14 @@
         "69c22640cc989df5ba29f4bae6159ef0504b174ed94f86878bb5e7e3c01f983a",
         "e5bb7cc1ecf39e85b43398a5c17ddbf64cb89bb4f7682a27dd9f953a3967342a"
       ],
-      "imageDedupSha256": [],
-      "imageReferenceCount": 0,
-      "mediaBlockers": [
-        "native image media excluded: Unit 33-36 published/native mapping remains ambiguous"
-      ]
+      "imageDedupSha256": [
+        "d931da88b346615dbdf76559853d249ed3c3e9a48822a6fcaeef79d683e407c3",
+        "1f098ebfcf7dbb378a3d7e8be75fd93d728c09344980e39c6de825acba0fbe3c",
+        "386dc05b70b0f42001e70ffea700b4693207911db560e6b31baa5f641dc0f865",
+        "7b8aca98de03a88f614f005ebfd03ce51dcc80268b674311d6bc9058ccaef653"
+      ],
+      "imageReferenceCount": 4,
+      "mediaBlockers": []
     },
     "35": {
       "unit": 35,
@@ -30234,7 +31497,7 @@
       "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRNt2DWUL7WelOabuFQqj2IwGFLNMJS5nkOpuJ0f6RHQ4M_GEnGSW_QK6lhQ2mJhg/embed?start=false&loop=false&delayms=3000",
       "publishedDeckTitle": "New I might not go - Unit 35.pptx",
       "publishedSlideCount": 16,
-      "nativeImageMappingStatus": "native-only-published-mismatch",
+      "nativeImageMappingStatus": "published-source-visual-proof-confirmed",
       "audioNumbers": [
         1,
         2
@@ -30247,11 +31510,11 @@
         "b192e70d45de5f90d76726169c32546257cb68a578fd11e4cd7d1a8d8f9aac35",
         "dc5c735e823fbbf06dbeed3a851314a78267ebaac9f607fe9319781be7409e28"
       ],
-      "imageDedupSha256": [],
-      "imageReferenceCount": 0,
-      "mediaBlockers": [
-        "native image media excluded: Unit 33-36 published/native mapping remains ambiguous"
-      ]
+      "imageDedupSha256": [
+        "a3030929875e7041d24c095d088c9b3df7057581881deb7fb768a3ab620d07bb"
+      ],
+      "imageReferenceCount": 1,
+      "mediaBlockers": []
     },
     "36": {
       "unit": 36,
@@ -30271,7 +31534,7 @@
       "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS1T-BEGUK8u0Fcj65jVu9HMcTLrhutFcgHVmXKr2HtNlSe-UeQUgSU0JXlzF1zdQ/embed?start=false&loop=false&delayms=3000",
       "publishedDeckTitle": "New You'd better do it - Unit 36.pptx",
       "publishedSlideCount": 16,
-      "nativeImageMappingStatus": "native-only-published-mismatch",
+      "nativeImageMappingStatus": "published-source-visual-proof-confirmed",
       "audioNumbers": [
         1,
         2
@@ -30284,11 +31547,12 @@
         "b7143a46fa85d692056d74a71a5516606224dcee6fee96c7a4ad81a275d7c9cf",
         "de7f0135948f3740aa0c0c8bf4a2a41ac44ba139b0310bcdab956b4ede50b58d"
       ],
-      "imageDedupSha256": [],
-      "imageReferenceCount": 0,
-      "mediaBlockers": [
-        "native image media excluded: Unit 33-36 published/native mapping remains ambiguous"
-      ]
+      "imageDedupSha256": [
+        "f8bc4f7cffad083fbd4f0a49a22af61cffcd66a7ba14191f20036f3e43bbf3fa",
+        "0c9ba549ea2cdf400f4c90c03c6f9fd10f68ad0b9cce324ec449c81bb00472d5"
+      ],
+      "imageReferenceCount": 2,
+      "mediaBlockers": []
     },
     "37": {
       "unit": 37,

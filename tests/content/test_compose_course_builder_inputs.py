@@ -1,5 +1,7 @@
 import importlib.util
+import hashlib
 from pathlib import Path
+import tempfile
 import unittest
 
 
@@ -103,6 +105,202 @@ class ComposeCourseBuilderInputsTests(unittest.TestCase):
         self.assertEqual([item["sourceSha256"] for item in figures], [])
         self.assertIn("figure-source-file-missing", [item["code"] for item in blockers])
         self.assertNotIn("a" * 64, {item["sourceSha256"] for item in figures})
+
+    def test_visual_proof_accepts_observed_slide_and_byte_exact_candidate(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "figure.jpg"
+            source.write_bytes(b"verified published/native figure")
+            digest = hashlib.sha256(source.read_bytes()).hexdigest()
+            proof = {
+                "units": [
+                    {
+                        "unit": 33,
+                        "requiredSlides": [
+                            {
+                                "publishedSlide": 4,
+                                "observedSlideUrlSuffix": "slide=id.observed-4",
+                                "candidates": [
+                                    {
+                                        "publishedSlide": 4,
+                                        "publishedMediaOrdinal": 1,
+                                        "nativePath": source.name,
+                                        "nativeSha256": digest,
+                                        "publishedReferenceSha256": digest,
+                                        "publishedReferencePath": "published/u33-s4.jpg",
+                                        "publishedReferenceBytes": source.stat().st_size,
+                                        "visualStatus": "confirmed",
+                                        "byteExactMatch": True,
+                                    }
+                                ],
+                            }
+                        ],
+                    }
+                ]
+            }
+            blockers = []
+            figures, counts = composer._figure_candidates(
+                None,
+                {
+                    "units": [
+                        {
+                            "unit": 33,
+                            "slideFindings": [{"sourceSlide": 4, "status": "confirmed"}],
+                            "correspondences": [{"sourceSlide": 4, "publishedSlide": 4, "sha256": "f" * 64, "localPath": "old.jpg"}],
+                        }
+                    ]
+                },
+                {digest: {"status": "ready", "sourceSha256": digest, "publicUrl": "/figure.webp"}},
+                {},
+                {33: {"lesson": {"id": "lesson-33"}}},
+                [root],
+                blockers,
+                proof,
+                "docs/audit/figure-proof/units-33-36-visual-proof.json",
+            )
+
+            self.assertEqual(counts["candidateReferences"], 1)
+            self.assertEqual(len(figures), 1)
+            self.assertEqual(figures[0]["nativeEvidence"]["mapping"], "units-33-36-visual-proof")
+            self.assertEqual(figures[0]["sourceProofRef"]["manifest"], "docs/audit/figure-proof/units-33-36-visual-proof.json")
+            self.assertEqual(figures[0]["nativeEvidence"]["sourceProofRef"]["observedSlideUrlSuffix"], "slide=id.observed-4")
+            self.assertEqual(blockers, [])
+
+    def test_visual_proof_rejects_false_candidate_even_with_old_correspondence(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "figure.jpg"
+            source.write_bytes(b"native bytes")
+            digest = hashlib.sha256(source.read_bytes()).hexdigest()
+            proof = {
+                "units": [
+                    {
+                        "unit": 33,
+                        "requiredSlides": [
+                            {
+                                "publishedSlide": 4,
+                                "observedSlideUrlSuffix": "slide=id.observed-4",
+                                "candidates": [
+                                    {
+                                        "publishedSlide": 4,
+                                        "nativePath": source.name,
+                                        "nativeSha256": digest,
+                                        "publishedReferenceSha256": "0" * 64,
+                                        "visualStatus": "confirmed",
+                                        "byteExactMatch": False,
+                                    }
+                                ],
+                            }
+                        ],
+                    }
+                ]
+            }
+            blockers = []
+            figures, _ = composer._figure_candidates(
+                None,
+                {
+                    "units": [
+                        {
+                            "unit": 33,
+                            "slideFindings": [{"sourceSlide": 4, "status": "confirmed"}],
+                            "correspondences": [{"sourceSlide": 4, "publishedSlide": 4, "sha256": digest, "localPath": source.name}],
+                        }
+                    ]
+                },
+                {digest: {"status": "ready", "sourceSha256": digest, "publicUrl": "/figure.webp"}},
+                {},
+                {33: {"lesson": {"id": "lesson-33"}}},
+                [root],
+                blockers,
+                proof,
+                "proof.json",
+            )
+
+            self.assertEqual(figures, [])
+            self.assertIn("figure-proof-not-exact", [item["code"] for item in blockers])
+            self.assertNotIn("figure-correspondence-not-exact", [item["code"] for item in blockers])
+
+    def test_explicit_semantic_patch_validates_sha_evidence_and_rekeys_item(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            provenance_file = root / "published-source.json"
+            provenance_file.write_text("source bytes", encoding="utf-8")
+            provenance_sha = hashlib.sha256(provenance_file.read_bytes()).hexdigest()
+            source = {
+                "sourceUrl": "https://example.test/unit-33",
+                "deck": {
+                    "deckTitle": "Unit 33 - Source.pptx",
+                    "slides": [{"number": 4, "visibleTexts": ["Published prompt"]}],
+                },
+            }
+            review = {
+                "schemaVersion": 1,
+                "lessons": {
+                    "lesson-33": {
+                        "slides": {
+                            "4": {
+                                "items": [
+                                    {
+                                        "id": "u33-s04-a",
+                                        "prompt": "Original prompt",
+                                        "reviewStatus": "source-ambiguous",
+                                        "answerItems": [],
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+            }
+            patch = {
+                "sourcePolicy": {
+                    "publishedSlidesAuthoritative": True,
+                    "sourceFilesReadOnly": True,
+                    "preserveOriginalPromptsAndProvenance": True,
+                    "noInventedAudioOrIdentities": True,
+                    "ambiguousClaimsMustBeRewordedOrRemainBlocked": True,
+                    "openResponseNeverGetsSyntheticAnswerKey": True,
+                    "reviewedOpenResponseHasNoSyntheticAnswerKey": True,
+                },
+                "resolved": [
+                    {
+                        "lessonId": "lesson-33",
+                        "unit": 33,
+                        "itemId": "u33-s04-a",
+                        "publishedSourceSlide": 4,
+                        "originalPrompt": "Original prompt",
+                        "revisedPrompt": "Published prompt",
+                        "reviewStatus": "reviewed-manual-source-alignment",
+                        "sourceEvidence": ["Published prompt"],
+                        "answerItems": [{"id": "answer", "canonical": "yes", "accepted": ["yes"]}],
+                        "provenance": {
+                            "file": provenance_file.name,
+                            "sha256": provenance_sha,
+                            "sourceUrl": "https://example.test/unit-33",
+                            "publishedSlide": 4,
+                        },
+                    }
+                ],
+                "reviewedOpenResponse": [],
+                "remainingHardBlocks": [],
+            }
+            blockers = []
+            merged, summary = composer._apply_exercise_semantic_patch(
+                review,
+                patch,
+                {"lesson-33": source},
+                [root],
+                blockers,
+                "semantic-patch.json",
+            )
+
+            item = merged["lessons"]["lesson-33"]["slides"]["4"]["items"][0]
+            self.assertEqual(summary["applied"], 1)
+            self.assertEqual(item["id"], "u33-s04-a")
+            self.assertEqual(item["reviewStatus"], "reviewed")
+            self.assertEqual(item["semanticPatch"]["patchReviewStatus"], "reviewed-manual-source-alignment")
+            self.assertEqual(item["answerItems"][0]["canonical"], "yes")
+            self.assertEqual(blockers, [])
 
     def test_staged_audio_overrides_review_record_with_public_url(self) -> None:
         source = {"lesson": {"id": "lesson-2"}}
