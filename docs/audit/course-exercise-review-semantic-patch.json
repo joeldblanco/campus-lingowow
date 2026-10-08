@@ -1,0 +1,698 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Manual semantic review patch for deterministic exercise blockers; proposal only, not composer input.",
+  "sourceAudit": "docs/audit/course-builder-blocker-classification.json",
+  "exerciseReview": "docs/audit/course-exercise-review.json",
+  "sourcePolicy": {
+    "publishedSlidesAuthoritative": true,
+    "sourceFilesReadOnly": true,
+    "preserveOriginalPromptsAndProvenance": true,
+    "noInventedAudioOrIdentities": true,
+    "ambiguousClaimsMustBeRewordedOrRemainBlocked": true,
+    "openResponseNeverGetsSyntheticAnswerKey": true
+  },
+  "summary": {
+    "resolvedCount": 4,
+    "resolvedItems": [
+      "u29-s15-c",
+      "u18-s13-q3",
+      "u44-s13-a:item-3",
+      "u41-s15-c"
+    ],
+    "remainingHardBlockCount": 18,
+    "sourceMismatchEntriesReviewed": 17,
+    "remainingHardBlockItems": 18,
+    "resolvedCodes": {
+      "exercise-review-evidence-mismatch": {
+        "resolved": 1,
+        "remaining": 16
+      },
+      "exercise-review-ambiguous": {
+        "resolved": 1,
+        "remaining": 0
+      },
+      "exercise-review-answer-ambiguous": {
+        "resolved": 1,
+        "remaining": 1
+      },
+      "exercise-review-slide-missing": {
+        "resolved": 0,
+        "remaining": 1
+      },
+      "exercise-review-source-label-mismatch": {
+        "resolved": 1,
+        "remaining": 0
+      }
+    }
+  },
+  "resolved": [
+    {
+      "lessonId": "cmnmm9nmo000tw1qkxzhh3pwc",
+      "unit": 29,
+      "itemId": "u29-s15-c",
+      "action": "move-to-published-source-slide-and-rekey",
+      "originalReviewSlide": 15,
+      "publishedSourceSlide": 14,
+      "originalPrompt": "Extract gerund/infinitive examples from the paragraph.",
+      "revisedPrompt": "Extract gerund and infinitive examples from the paragraph on the published slide.",
+      "originalReviewStatus": "reviewed",
+      "reviewStatus": "reviewed-manual-source-alignment",
+      "originalSourceEvidence": [
+        "How to be in life ... People have to understand that respect and honesty are fundamental to have and keep healthy relationships..."
+      ],
+      "sourceEvidence": [
+        "How to be in life I am sure there are many conceptions on how to proceed in life regarding many issues. Fairly speaking, I believe people need to be honest to get along with others. Additionally, by respecting others, you can get to be respected as well. People have to understand that respect and honesty are fundamental to have and keep healthy relationships in life. I have decided to live by these standards and it would be a great idea for people to consider them, and have the courage to admit not having used these values in certain circumstances, in order to say they’re sorry, and mend what they did. What do you think of this? Do you agree?"
+      ],
+      "answerItems": [
+        {
+          "id": "infinitive-complements",
+          "category": "infinitive-complement",
+          "canonicalSourceQuote": "to be honest",
+          "acceptedSourceQuotes": [
+            "to be honest",
+            "to get along with others",
+            "to be respected",
+            "to have and keep healthy relationships in life",
+            "to live by these standards",
+            "to consider them",
+            "to say they’re sorry"
+          ],
+          "evidence": "people need to be honest to get along with others. Additionally, by respecting others, you can get to be respected as well. People have to understand that respect and honesty are fundamental to have and keep healthy relationships in life. I have decided to live by these standards and it would be a great idea for people to consider them, and have the courage to admit not having used these values in certain circumstances, in order to say they’re sorry, and mend what they did.",
+          "rationale": "Each accepted quote is an exact source substring with an infinitive form; no replacement text is introduced."
+        },
+        {
+          "id": "gerund-after-preposition",
+          "category": "gerund-after-preposition",
+          "canonicalSourceQuote": "by respecting others",
+          "acceptedSourceQuotes": [
+            "by respecting others"
+          ],
+          "evidence": "Additionally, by respecting others, you can get to be respected as well.",
+          "rationale": "By is a preposition and the published text uses respecting as its gerund complement."
+        },
+        {
+          "id": "gerund-participial-complement",
+          "category": "gerund-participial-complement",
+          "canonicalSourceQuote": "not having used these values",
+          "acceptedSourceQuotes": [
+            "not having used these values"
+          ],
+          "evidence": "...have the courage to admit not having used these values in certain circumstances...",
+          "rationale": "The exact source uses a perfect gerund-participial complement after admit; it is retained separately from a prepositional gerund."
+        }
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9nmo000tw1qkxzhh3pwc.json",
+        "sha256": "7ede44e57ae26cc37d2b806a4cfd8d90031ef65e6b4801e01d6a7dfc84df4379",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRkbbiqHgxtQo1qQatUlVkLe8CZKrL4g2DrMS3VKHmx_AchSgx7MPbJH2MUF-sR3g/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9npq000uw1qk12lqpei1",
+        "deckTitle": "New Making a point!- Unit 29.pptx",
+        "publishedSlide": 14
+      },
+      "rationale": "The review item was attached to slide 15 even though the paragraph is published on slide 14. The patch moves it to the source slide and replaces truncated evidence with exact source substrings."
+    },
+    {
+      "lessonId": "cmk4011yd0003ju0505ofufnq",
+      "unit": 18,
+      "itemId": "u18-s13-q3",
+      "action": "reword-ambiguous-claim-to-explicit-source-contradiction",
+      "publishedSourceSlide": 13,
+      "originalPrompt": "They are going with aunt Melissa.",
+      "revisedPrompt": "The dialogue presents going with aunt Melissa as a definite arrangement.",
+      "originalReviewStatus": "source-ambiguous",
+      "reviewStatus": "reviewed-reworded",
+      "answerItems": [
+        {
+          "id": "answer",
+          "canonical": "F",
+          "accepted": [
+            "F",
+            "false"
+          ],
+          "evidence": [
+            "Well, maybe we can go with aunt Melissa.",
+            "Uhm… if she is going, you can go with her then."
+          ],
+          "rationale": "Maybe and if make the arrangement conditional; they do not state a definite plan. The revised statement is contradicted by the source rather than assumed false."
+        }
+      ],
+      "builderHints": {
+        "_explicit_options": [
+          {
+            "id": "true",
+            "text": "T",
+            "isCorrect": false
+          },
+          {
+            "id": "false",
+            "text": "F",
+            "isCorrect": true
+          }
+        ],
+        "_explicit_answer_key": "false"
+      },
+      "originalSourceEvidence": [
+        "Maybe we can go with aunt Melissa. She is going as far as I know."
+      ],
+      "sourceEvidence": [
+        "Attending a party! Mum! Are we attending Lilly’s party? I still don’t know. Your dad is having a meeting at work that day. I see. Well, maybe we can go with aunt Melissa. She is going as far as I know. Uhm… if she is going, you can go with her then. I am waiting for your father even if we arrive late. Ok! What are we getting her as a present? Oh! When are we buying it? We are planning to go and buy something on Friday. Fine, I am going with you, can I? Totally, we are leaving at 6:00pm. Oh! I am not getting you anything. Huh! I am staying at home then."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmk4011yd0003ju0505ofufnq.json",
+        "sha256": "35cb1f2dbf8a65172a90ee1dcdc134b3a315349ade13b9a832536b3512a0be47",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vStkjDOuCJ2J4Q24C6ZJE11I4FujuMsG8RG9sAk4s-BXhbjPvqn4XG7axrqrvpN7Q/pub?start=false&loop=false&delayms=3000",
+        "contentId": "block_1767789290330",
+        "deckTitle": "Unit 18 - We are attending.pptx",
+        "publishedSlide": 13
+      },
+      "rationale": "Preserves the T/F objective while changing the claim from an unsupported definite arrangement to a statement whose contradiction is directly marked by the published dialogue."
+    },
+    {
+      "lessonId": "cmnmm9sq20022w1qkn3bi0mm7",
+      "unit": 44,
+      "itemId": "u44-s13-a:item-3",
+      "sourceItemId": "u44-s13-a",
+      "action": "repair-obvious-source-typo-and-key-passive-form",
+      "publishedSourceSlide": 13,
+      "originalPrompt": "Convert each sentence to passive voice.",
+      "revisedPrompt": "Convert each sentence to passive voice.",
+      "originalSourceSentence": "The have worked in the report for days.",
+      "manualSourceCorrection": "They have worked on the report for days.",
+      "canonical": "The report has been worked on for days.",
+      "accepted": [
+        "The report has been worked on for days."
+      ],
+      "evidence": "The have worked in the report for days.",
+      "grammarReference": "John has done the house chores lately. The house chores have been done by John lately.",
+      "originalReviewStatus": "source-ambiguous",
+      "reviewStatus": "reviewed-with-source-correction",
+      "rationale": "The published item contains a one-letter subject error (The/They) and the non-idiomatic in the report. The only grammatical repair consistent with the lesson is They have worked on the report; the passive transformation then moves report to subject and uses has been worked on. The original text and correction remain recorded so the published source is never overwritten.",
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9sq20022w1qkn3bi0mm7.json",
+        "sha256": "22444005d588825b82bc79e8ce2a94c104a1a641c7ffd6c82fdcf53cce021017",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSIB-tzusORvj7s0t4PDV4cJwsSBuvX3_KQvd2TS0Gkts-upwplF2ydLq07geouTw/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9st50023w1qkri0hhjjp",
+        "deckTitle": "NEW Great Minds Think Alike - Unit 44.pptx",
+        "publishedSlide": 13
+      },
+      "sourceEvidence": [
+        "You will buy all the ingredients for the cake. I am preparing lunch for my family. The have worked in the report for days. Jake and Jill were buying a house in Miami. I normally clean my house twice a week. Josh usually calls his family on Saturdays. The factory made the fabric elastic. We had bought the yacht before Christmas. They finally finished the paper last night. My house is normally cleaned twice a week (by me).",
+        "STRUCTURES ACTIVE VOICE PASSIVE VOICE To be + Past Participle They built the building in glass. The building was built in glass. Someone stole my car yesterday. My car was stolen yesterday. Those are plastic chairs. Those chairs are plastic-made. To be + Past Participle + by Alex will finish the job tonight. The job will be finished by Alex tonight. John has done the house chores lately. The house chores have been done by John lately. Tim had borne in mind this idea for ages. This idea had been borne in mind by Tim for ages."
+      ]
+    },
+    {
+      "lessonId": "cmnmm9rp6001tw1qk9ct8o936",
+      "unit": 41,
+      "itemId": "u41-s15-c",
+      "action": "replace-inferred-key-with-published-label-key",
+      "publishedSourceSlide": 15,
+      "originalPrompt": "Extract past-perfect forms from the reading.",
+      "revisedPrompt": "C. Read the following paragraph and extract sentences with the delexical verbs and tell your teacher what their intended meaning is.",
+      "originalReviewStatus": "reviewed-with-source-label-mismatch",
+      "reviewStatus": "reviewed-source-label-aligned",
+      "answerItems": [
+        {
+          "id": "delexical-have-experience",
+          "category": "delexical-have",
+          "canonical": "had one of those days",
+          "accepted": [
+            "had one of those days"
+          ],
+          "meaning": "experienced one of those days",
+          "evidence": "have you ever had one of those days when everything seemed to go wrong?",
+          "rationale": "Have + an experience noun phrase is used as a delexical verb; the accepted quote is exact source text."
+        },
+        {
+          "id": "delexical-have-day",
+          "category": "delexical-have",
+          "canonical": "had a terrible day",
+          "accepted": [
+            "had a terrible day"
+          ],
+          "meaning": "experienced a terrible day",
+          "evidence": "Have you ever had a terrible day like that, when everything went wrong?",
+          "rationale": "This is the second exact have + experience noun phrase in the published article."
+        }
+      ],
+      "originalAnswerItems": [
+        "past-perfect-prior-action",
+        "simple-past-sequence"
+      ],
+      "sourceEvidence": [
+        "What a day! Hi, have you ever had one of those days when everything seemed to go wrong? I'm sure you have, I know I have. I remember one particular day, I'd been invited to a party and there was someone going who I'd never met but I really wanted to meet, so I was quite excited about going to this party, and I maybe spent too long getting ready and I was a bit late when I was leaving the house, but not too late. But then I looked down and saw I had a hole in my tights! So I had to go back inside, change my tights, come out again, so I was getting a little bit late for the party, but not too bad. I got in my car, started driving, about halfway to the party my car stopped. I couldn't understand what was the matter until I looked at the petrol gauge: it had run out of petrol! Why? Because I'd lent my car to my son the day before and he'd used the petrol and he hadn't filled the car up! So I thought I'd ring the AA. I looked in my handbag to find my mobile phone, but I couldn't find it. Why? Because I'd left it next to my bed charging. So even though it was pouring with rain, I had to get out of my car, in my party clothes, walk to the petrol station and come back with petrol. By which time I was nearly 2 hours late. So, I was so flustered about being late, I started to drive and I just took a wrong turn and I ended up on this one-way system, totally lost, driving round and round for at least 45 minutes before I managed to get my bearings. So finally, I arrived at the party over 3 hours late and when I arrived the person I wanted to meet had just left, all the food had gone, and my host was horribly drunk. I was so disappointed that I just turned around and left and went back home. Have you ever had a terrible day like that, when everything went wrong? If you have, write and tell us about it. https://esol.britishcouncil.org/content/learners/grammar-and-vocabulary/grammar-lessons/one-those-days-past-perfect"
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9rp6001tw1qk9ct8o936.json",
+        "sha256": "728a6336fc2d58c4ddc5f27446d0e9d20807434275a55dfc1ba0ab51919d688d",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQQDKlPsI8g_mLrHXlTpj2aFSRgWeIkU6iL644qP33jsX3rn_SWMF7jiYbpwHAW2Q/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9rs8001uw1qk0wzi8wo5",
+        "deckTitle": "NEW I thought she had done it!- Unit 41.pptx",
+        "publishedSlide": 15
+      },
+      "rationale": "The published slide explicitly asks for delexical verbs. The prior review inferred a past-perfect extraction from the lesson theme, so this patch preserves that record but keys only exact delexical-have phrases required by the published prompt."
+    }
+  ],
+  "remainingHardBlocks": [
+    {
+      "unit": 45,
+      "lessonId": "cmnmm9t2a0025w1qk877v6313",
+      "slide": 15,
+      "itemId": "u45-s15-d",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Continue the article task and discuss the source claims.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": [
+        "15",
+        "When the alarm was finally raised the crew acted very quickly but it was already too late to save the ship. Within twenty minutes of the collision the ship had flooded, so the captain ordered the lifeboats to be prepared, filled with women and children, and lowered into the water. This didn’t go well, regulations about the number of lifeboats a ship should carry were already out of date when the Titanic set sail, and even if the evacuation had been better organised, there wouldn’t have been enough boats to hold everybody. Meanwhile, the crew were sending out distress signals. The first message was \"sinking, need immediate assistance,\" and then \"SOS\". Several ships responded, including the Mount Temple, Frankfurt, and the Titanic's sister ship, Olympic, but they were too far away. The closest ship to respond was the Carpathia, which arrived in about four hours, too late to save everybody. Various distress flares launched from the sinking ship were also ineffective, including those seen by a ship called the Californian, whose captain, Stanley Lord, had ordered his crew to stop the ship for the night because of the icebergs. When Captain Lord was informed of the flares he failed to respond because he did not think they were important. Nor did the crew of the Californian wake their radio operator, who had gone to bed for the night. And what of Bruce Ismay, who many believe acted without regard for safety by requiring an unprepared ship to sail at such speed in spite of the danger? History tells us that he survived, but from the lifeboat turned his back on his beautiful ship as it sank That night, of a total of 2,208 people, only 712 were rescued by the Carpathia, while 1,496 perished. If the lifeboats had been filled to capacity, 1,178 people could have been saved. If there had been enough lifeboats, maybe everybody could have been saved. However, we may never know for sure. Article adapted from https://esol.britishcouncil.org/sites/default/files/attachments/informational-page/The_Sinking_of_the_Third_Condition.pdf"
+      ],
+      "originalSourceEvidence": [
+        "D. Continue reading and discuss the questions with your teacher."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9t2a0025w1qk877v6313.json",
+        "sha256": "a5069975a5acfed23a03ec9914297dad9795252d6a2d80d4b07f0f742e6e8dec",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS_rMp82qmTecshEDYUBoz_JOvXO6Y770kY3fDgGwS6qq6rlIl_nujrywGuZqJWbw/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9t5d0026w1qk2ph5vysf",
+        "deckTitle": "NEW If I had seen it... - Unit 45.pptx",
+        "publishedSlide": 15
+      },
+      "action": "remain-hard-blocked",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
+    },
+    {
+      "unit": 45,
+      "lessonId": "cmnmm9t2a0025w1qk877v6313",
+      "slide": 16,
+      "itemId": "u45-s16-e",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the final role-play or writing activity.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "D. Based on the topic presented in the reading section, what other event in the world do you think would have been prevented if the right people had acted on time? Use the language studied.",
+      "originalSourceEvidence": [
+        "E. Complete the final activity on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9t2a0025w1qk877v6313.json",
+        "sha256": "a5069975a5acfed23a03ec9914297dad9795252d6a2d80d4b07f0f742e6e8dec",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS_rMp82qmTecshEDYUBoz_JOvXO6Y770kY3fDgGwS6qq6rlIl_nujrywGuZqJWbw/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9t5d0026w1qk2ph5vysf",
+        "deckTitle": "NEW If I had seen it... - Unit 45.pptx",
+        "publishedSlide": 16
+      },
+      "action": "remain-hard-blocked",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
+    },
+    {
+      "unit": 46,
+      "lessonId": "cmnmm9tei0028w1qkri0q23eb",
+      "slide": 12,
+      "itemId": "u46-s12-a",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the grammar practice shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "Let’s Practice",
+      "originalSourceEvidence": [
+        "A. Complete the grammar exercise on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9tei0028w1qkri0q23eb.json",
+        "sha256": "f70150fc8d4802426c20dccfc0bbd3e2054e3dc850702060065987b0bb7073a4",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vR94uKUH9GxmAjQsdhCQI5LAFneW1xtYFln8WJaTsErKgUPlEX-305BZrjXe36z6A/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9thk0029w1qk0zfq5ucy",
+        "deckTitle": "NEW If it had been me.... - Unit 46.pptx",
+        "publishedSlide": 12
+      },
+      "action": "remain-hard-blocked",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
+    },
+    {
+      "unit": 46,
+      "lessonId": "cmnmm9tei0028w1qkri0q23eb",
+      "slide": 15,
+      "itemId": "u46-s15-d",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher.",
+      "originalSourceEvidence": [
+        "D. Complete the final activity on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9tei0028w1qkri0q23eb.json",
+        "sha256": "f70150fc8d4802426c20dccfc0bbd3e2054e3dc850702060065987b0bb7073a4",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vR94uKUH9GxmAjQsdhCQI5LAFneW1xtYFln8WJaTsErKgUPlEX-305BZrjXe36z6A/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9thk0029w1qk0zfq5ucy",
+        "deckTitle": "NEW If it had been me.... - Unit 46.pptx",
+        "publishedSlide": 15
+      },
+      "action": "remain-hard-blocked",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
+    },
+    {
+      "unit": 47,
+      "lessonId": "cmnmm9tqo002bw1qklsuz2eli",
+      "slide": 12,
+      "itemId": "u47-s12-a",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the grammar practice shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "Let’s Practice",
+      "originalSourceEvidence": [
+        "A. Complete the grammar exercise on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9tqo002bw1qklsuz2eli.json",
+        "sha256": "f303d2de50f8711fa491d86580397bdf6a0f0c6c454afc64cd6f2d9a308f6caa",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSqEZZ29RAMRwYxiA4q2J48uqBbC5t_GGY6yOXTnEeWb0q4L_qtdCELEVAei8J3-A/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9ttr002cw1qk4m656ire",
+        "deckTitle": "NEW If only I had called... - Unit 47.pptx",
+        "publishedSlide": 12
+      },
+      "action": "remain-hard-blocked",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
+    },
+    {
+      "unit": 47,
+      "lessonId": "cmnmm9tqo002bw1qklsuz2eli",
+      "slide": 15,
+      "itemId": "u47-s15-d",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "C. Read the following article and have a discussion with the teacher. After that, read the text aloud to your teacher. You can read the full version on the link provided for further activities.",
+      "originalSourceEvidence": [
+        "D. Complete the final activity on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9tqo002bw1qklsuz2eli.json",
+        "sha256": "f303d2de50f8711fa491d86580397bdf6a0f0c6c454afc64cd6f2d9a308f6caa",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSqEZZ29RAMRwYxiA4q2J48uqBbC5t_GGY6yOXTnEeWb0q4L_qtdCELEVAei8J3-A/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9ttr002cw1qk4m656ire",
+        "deckTitle": "NEW If only I had called... - Unit 47.pptx",
+        "publishedSlide": 15
+      },
+      "action": "remain-hard-blocked",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
+    },
+    {
+      "unit": 48,
+      "lessonId": "cmnmm9u2w002ew1qkvb9dzxjp",
+      "slide": 12,
+      "itemId": "u48-s12-a",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the grammar practice shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "Let’s Practice",
+      "originalSourceEvidence": [
+        "A. Complete the grammar exercise on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9u2w002ew1qkvb9dzxjp.json",
+        "sha256": "2da48aab899d4e3f00249fc40cddf2ea2886e7ed46c1d8cb5e9e0aa207203631",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS9Jp3rurEXM9axOt3csUe4WdDYbLvr_dbtHD9Sqb6zMQkd-cmkGBZoagk-z8fyJg/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9u5w002fw1qk640elu0g",
+        "deckTitle": "NEW It could have been that way. - Unit 48.pptx",
+        "publishedSlide": 12
+      },
+      "action": "remain-hard-blocked",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
+    },
+    {
+      "unit": 48,
+      "lessonId": "cmnmm9u2w002ew1qkvb9dzxjp",
+      "slide": 15,
+      "itemId": "u48-s15-d",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "C. Read the following article and have a discussion with the teacher. After that, read the text aloud to your teacher. You can read the full version on the link provided for further activities.",
+      "originalSourceEvidence": [
+        "D. Complete the final activity on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9u2w002ew1qkvb9dzxjp.json",
+        "sha256": "2da48aab899d4e3f00249fc40cddf2ea2886e7ed46c1d8cb5e9e0aa207203631",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS9Jp3rurEXM9axOt3csUe4WdDYbLvr_dbtHD9Sqb6zMQkd-cmkGBZoagk-z8fyJg/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9u5w002fw1qk640elu0g",
+        "deckTitle": "NEW It could have been that way. - Unit 48.pptx",
+        "publishedSlide": 15
+      },
+      "action": "remain-hard-blocked",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
+    },
+    {
+      "unit": 49,
+      "lessonId": "cmnmm9uey002hw1qk4poj2sfe",
+      "slide": 12,
+      "itemId": "u49-s12-a",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the grammar practice shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "A. Using the phrases learned in the lesson, write 8 sentences expressing situations likely to happen. Follow the example.",
+      "originalSourceEvidence": [
+        "A. Complete the grammar exercise on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9uey002hw1qk4poj2sfe.json",
+        "sha256": "b34e294963d4b5000863e5dcf5847a8203f4f85f2be8fbbe60525f1bdd298387",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSeVrypohmrcGfrbHSH_BSbqqzcj4h3uFT2Oh5QBOkCKb4Nq2EUk386Am14X0q80A/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9ui0002iw1qkr9gl1c9s",
+        "deckTitle": "NEW In case they're lost - Unit 49.pptx",
+        "publishedSlide": 12
+      },
+      "action": "remain-hard-blocked",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
+    },
+    {
+      "unit": 49,
+      "lessonId": "cmnmm9uey002hw1qk4poj2sfe",
+      "slide": 15,
+      "itemId": "u49-s15-d",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "D. Based on the topic presented in the reading section, what other issues you think people should be aware of? Having answered that, what are the circumstances likely to happen depending on people’s response to them?",
+      "originalSourceEvidence": [
+        "D. Complete the final activity on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9uey002hw1qk4poj2sfe.json",
+        "sha256": "b34e294963d4b5000863e5dcf5847a8203f4f85f2be8fbbe60525f1bdd298387",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSeVrypohmrcGfrbHSH_BSbqqzcj4h3uFT2Oh5QBOkCKb4Nq2EUk386Am14X0q80A/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9ui0002iw1qkr9gl1c9s",
+        "deckTitle": "NEW In case they're lost - Unit 49.pptx",
+        "publishedSlide": 15
+      },
+      "action": "remain-hard-blocked",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
+    },
+    {
+      "unit": 50,
+      "lessonId": "cmnmm9ur4002kw1qkr4g1untw",
+      "slide": 12,
+      "itemId": "u50-s12-a",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the grammar practice shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "A. Using the phrases learned in the lesson, write 8 sentences expressing situations not likely to happen and wishes for the future. Follow the example.",
+      "originalSourceEvidence": [
+        "A. Complete the grammar exercise on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9ur4002kw1qkr4g1untw.json",
+        "sha256": "963e0cd4c4334bcb06d65f1bc2ea30c987fe90a94aa88698faba20065980e284",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRhC8eydj4UMLsNKsGAcGhFmGrAjEeNLqHPzjhK9BeQc2EnD9xBBA6RC-vbY4e2IA/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9uu6002lw1qkj4ao2e9x",
+        "deckTitle": "NEW Imagine you had a car - Unit 50.pptx",
+        "publishedSlide": 12
+      },
+      "action": "remain-hard-blocked",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
+    },
+    {
+      "unit": 50,
+      "lessonId": "cmnmm9ur4002kw1qkr4g1untw",
+      "slide": 15,
+      "itemId": "u50-s15-d",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "D. Based on the topic presented in the reading section, tell your teacher about the wishes you have that you feel like they may not come true. Explain why you think that, the reasons and if you plan to do something about it.",
+      "originalSourceEvidence": [
+        "D. Complete the final activity on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9ur4002kw1qkr4g1untw.json",
+        "sha256": "963e0cd4c4334bcb06d65f1bc2ea30c987fe90a94aa88698faba20065980e284",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRhC8eydj4UMLsNKsGAcGhFmGrAjEeNLqHPzjhK9BeQc2EnD9xBBA6RC-vbY4e2IA/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9uu6002lw1qkj4ao2e9x",
+        "deckTitle": "NEW Imagine you had a car - Unit 50.pptx",
+        "publishedSlide": 15
+      },
+      "action": "remain-hard-blocked",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
+    },
+    {
+      "unit": 51,
+      "lessonId": "cmnmm9v3a002nw1qkedoaw2od",
+      "slide": 12,
+      "itemId": "u51-s12-a",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the grammar practice shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "A. Using the phrases learned in the lesson, write 8 sentences expressing events or wishes that did not happen. Follow the example.",
+      "originalSourceEvidence": [
+        "A. Complete the grammar exercise on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9v3a002nw1qkedoaw2od.json",
+        "sha256": "8b4f5da240789c74fea48fb529b8294774b7d1199bc434def0ae732bcd8202cc",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQR_8lUzeku4wyvwihPJxPjnWOcUhYUoe3nfiLvUfGzMQnOvwVGbxjnR_PhNd5IXA/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9v6c002ow1qk7b5lo03z",
+        "deckTitle": "NEW What if he had lost his job? - Unit 51.pptx",
+        "publishedSlide": 12
+      },
+      "action": "remain-hard-blocked",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
+    },
+    {
+      "unit": 51,
+      "lessonId": "cmnmm9v3a002nw1qkedoaw2od",
+      "slide": 15,
+      "itemId": "u51-s15-d",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "D. Based on the topic presented in the reading section, make a small presentation / discussion about what other global disaster had been announced and never came to happen? What if it had became true? Suppose that we had lived it, where would that have let us?",
+      "originalSourceEvidence": [
+        "D. Complete the final activity on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9v3a002nw1qkedoaw2od.json",
+        "sha256": "8b4f5da240789c74fea48fb529b8294774b7d1199bc434def0ae732bcd8202cc",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQR_8lUzeku4wyvwihPJxPjnWOcUhYUoe3nfiLvUfGzMQnOvwVGbxjnR_PhNd5IXA/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9v6c002ow1qk7b5lo03z",
+        "deckTitle": "NEW What if he had lost his job? - Unit 51.pptx",
+        "publishedSlide": 15
+      },
+      "action": "remain-hard-blocked",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
+    },
+    {
+      "unit": 52,
+      "lessonId": "cmnmm9vfh002qw1qknevwf813",
+      "slide": 12,
+      "itemId": "u52-s12-a",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the grammar practice shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are yet to happen. Follow the example.",
+      "originalSourceEvidence": [
+        "A. Complete the grammar exercise on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9vfh002qw1qknevwf813.json",
+        "sha256": "251b6283a58c491c7a47e1bfc3be52be7a79e8087304cb9319b54c46092cce6e",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQQeqAI67769x4EO1FJwv8LXNfCFDMAZY0WNICVJl9YMnJYMGl8VplBKKbCZH3SuQ/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9vij002rw1qkwktvpnx4",
+        "deckTitle": "NEW I'll have finished by then - Unit 52.pptx",
+        "publishedSlide": 12
+      },
+      "action": "remain-hard-blocked",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
+    },
+    {
+      "unit": 52,
+      "lessonId": "cmnmm9vfh002qw1qknevwf813",
+      "slide": 15,
+      "itemId": "u52-s15-d",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "D. Make a small presentation / discussion about where will we have gotten as a society in 40 years’ time? Will we be doing better? Worse? Why? Talk about the different important areas and how you see it.",
+      "originalSourceEvidence": [
+        "D. Complete the final activity on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9vfh002qw1qknevwf813.json",
+        "sha256": "251b6283a58c491c7a47e1bfc3be52be7a79e8087304cb9319b54c46092cce6e",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQQeqAI67769x4EO1FJwv8LXNfCFDMAZY0WNICVJl9YMnJYMGl8VplBKKbCZH3SuQ/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9vij002rw1qkwktvpnx4",
+        "deckTitle": "NEW I'll have finished by then - Unit 52.pptx",
+        "publishedSlide": 15
+      },
+      "action": "remain-hard-blocked",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
+    },
+    {
+      "unit": 6,
+      "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
+      "slide": 6,
+      "itemId": null,
+      "blockerCode": "exercise-review-slide-missing",
+      "originalPrompt": null,
+      "originalReviewStatus": null,
+      "publishedSourceInstruction": null,
+      "originalSourceEvidence": [],
+      "provenance": {
+        "file": "docs/audit/source-files/cmk0wvpbg0001jp04c8e0dhjt.json",
+        "sha256": "edd9a665774097c5f7aadb760d89adcf3dd36c83670acba362ed8d7b05a95a37",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS2SkpEvv-4pNugWriBeDaC5uB0S3T1NEoHg0SyEYtWI7ZJ18C7KeRgaF97nzG7dQ/pub?start=false&loop=false&delayms=3000",
+        "contentId": "block_1767602602393",
+        "deckTitle": "Unit 6 - What do you do.pptx",
+        "publishedSlide": 6
+      },
+      "action": "remain-hard-blocked",
+      "reason": "The authoritative published source manifest has no slide 6 entry; no prompt or answer key can be derived without inventing source content."
+    },
+    {
+      "unit": 38,
+      "lessonId": "cmnmm9qog001kw1qkht1v6i81",
+      "slide": 13,
+      "itemId": "u38-s13-a:item-3",
+      "sourceItemId": "u38-s13-a",
+      "blockerCode": "exercise-review-answer-ambiguous",
+      "originalPrompt": "Correct the causative-verb sentences where needed.",
+      "originalReviewStatus": "reviewed",
+      "originalAnswerItem": {
+        "id": "item-3",
+        "canonical": "Source wording is insufficient to determine a unique correction.",
+        "accepted": [],
+        "evidence": "I have chance my arm so long for this company.",
+        "status": "source-ambiguous",
+        "rationale": "The published sentence appears corrupted; it does not identify whether chance/change or a causative object was intended."
+      },
+      "publishedSourceInstruction": "A. Look at the sentences and identify where the mistakes are if there are any. After that fix them. Follow the example.",
+      "publishedSourceSentence": "I have chance my arm so long for this company.",
+      "sourceEvidence": [
+        "A. Look at the sentences and identify where the mistakes are if there are any. After that fix them. Follow the example.\n0. Dexter had chime in Mary at the talk. / Dexter had Mary chime in at the talk. 1. Clayton got the copier fixed yesterday. 2. I will had John come for the dinner party. 3. I have chance my arm so long for this company. 4. Danny always has Daniel help him with his homework. 5. Get the homework ready and you can go out. 6. I was having Jake cleaned the house and he fell over. 7. The company most of the staff fired for corruption. 8. I will have Jimmy buy our food tonight."
+      ],
+      "action": "remain-hard-blocked",
+      "reason": "The published causative-verb sentence is corrupted. Chance/change and the missing causative object are both plausible repairs, so no unique correction can be asserted from the source. Preserve the original prompt and do not invent accepted answers.",
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9qog001kw1qkht1v6i81.json",
+        "sha256": "c5dd9c7999b9adc9cfbae82ac497f7cc2efd42dbd6a8c3e683f60c301d88320d",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTRpvGytWJK57nUqkzdpf9JCTBi5ZA9GWqK1BeQ7v2VRQWW-Ae17Vo6j2Iumgqz6g/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9qro001lw1qkhsmzt3ve",
+        "deckTitle": "New Can you do it for me? - Unit 38.pptx",
+        "publishedSlide": 13
+      }
+    }
+  ]
+}
