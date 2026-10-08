@@ -1,5 +1,6 @@
 import importlib.util
 import hashlib
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -13,6 +14,134 @@ SPEC.loader.exec_module(composer)
 
 
 class ComposeCourseBuilderInputsTests(unittest.TestCase):
+    def _table_review_fixture(self, root: Path, *, source_kind: str = "published-visible-text", approved: bool = True) -> tuple[dict, dict, dict, dict]:
+        source_path = root / "published.json"
+        native_path = root / "native.json"
+        source_document = {
+            "courseId": composer.COURSE_ID,
+            "lesson": {"id": "lesson-44"},
+            "sourceUrl": "https://example.test/unit-44",
+            "deck": {
+                "deckTitle": "Unit 44 - Source.pptx",
+                "slides": [
+                    {
+                        "number": 11,
+                        "title": "Check the chart.",
+                        "visibleTexts": ["Check the chart.", "HEAD VALUE"],
+                        "tables": [],
+                    }
+                ],
+            },
+        }
+        source_path.write_text(json.dumps(source_document), encoding="utf-8")
+        native_path.write_text("native audit bytes", encoding="utf-8")
+        digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
+        projection = {
+            "approved": approved,
+            "source": source_kind,
+            "nativeIdentityConfirmed": source_kind == "native-a:tbl",
+            "mode": "structured" if approved else "text-only",
+            "tables": [{"shapeId": "shape-1", "bbox": {"x": 1}, "columnWidths": [2], "rows": [["HEAD", "VALUE"]]}] if approved else [],
+            "notes": "Reviewed source projection.",
+        }
+        review = {
+            "tableReview": {
+                "reviewPolicy": {
+                    "publishedSlidesAuthoritativeOnMismatch": True,
+                    "sourceQuotesRequired": True,
+                    "nativeShapeProvenanceRequired": True,
+                    "noInventedCellsOrExamples": True,
+                    "publishedSourceProjectionAllowedWhenNativeDiffers": True,
+                    "publishedSourceProjectionRequiresLiteralCellQuotes": True,
+                },
+                "entries": [
+                    {
+                        "unit": 44,
+                        "lessonId": "lesson-44",
+                        "sourceSlide": 11,
+                        "status": "reviewed-published-source",
+                        "clearTableSemanticsBlocker": True,
+                        "sourceEvidence": {"publishedTitle": "Check the chart.", "publishedVisibleTexts": ["Check the chart.", "HEAD VALUE"], "differences": ["native differs"]},
+                        "approvedProjection": projection,
+                        "sourceRefs": [
+                            {"kind": "published", "path": source_path.name, "sha256": digest(source_path)},
+                            {"kind": "native", "path": native_path.name, "sha256": digest(native_path)},
+                        ],
+                    }
+                ],
+            }
+        }
+        sources = [source_document]
+        return review, source_document, {44: source_document}, {"lesson-44": source_document}
+
+    def test_table_review_published_projection_is_attached_and_native_substitution_is_disabled(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            review, source, by_unit, by_lesson = self._table_review_fixture(root)
+            # The fixture references filenames relative to its root.
+            blockers: list[dict] = []
+            summary, decisions = composer._apply_table_review(
+                review,
+                [source],
+                by_unit,
+                by_lesson,
+                [root],
+                blockers,
+            )
+
+            self.assertEqual(summary["applied"], 1)
+            self.assertEqual(summary["publishedProjections"], 1)
+            self.assertEqual(blockers, [])
+            slide = source["deck"]["slides"][0]
+            self.assertEqual(slide["tables"][0]["rows"], [["HEAD", "VALUE"]])
+            self.assertEqual(slide["data"]["tableReview"]["projection"]["source"], "published-visible-text")
+            self.assertTrue(decisions[(44, 11)]["excludeNativeTables"])
+
+    def test_table_review_text_only_preserves_source_without_inventing_matrix(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            review, source, by_unit, by_lesson = self._table_review_fixture(root, approved=False)
+            entry = review["tableReview"]["entries"][0]
+            entry["approvedProjection"]["mode"] = "text-only"
+            entry["approvedProjection"]["source"] = "published-visible-text"
+            entry["approvedProjection"]["nativeIdentityConfirmed"] = False
+            entry["sourceEvidence"]["differences"] = []
+            blockers: list[dict] = []
+            summary, decisions = composer._apply_table_review(review, [source], by_unit, by_lesson, [root], blockers)
+
+            self.assertEqual(summary["textOnly"], 1)
+            self.assertEqual(blockers, [])
+            slide = source["deck"]["slides"][0]
+            self.assertEqual(slide["tables"], [])
+            self.assertTrue(slide["tableSemantics"]["tableReferenceResolved"])
+            self.assertFalse(decisions[(44, 11)]["excludeNativeTables"])
+
+    def test_table_review_rejects_published_projection_claimed_as_native_identity(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            review, source, by_unit, by_lesson = self._table_review_fixture(root, source_kind="published-visible-text")
+            review["tableReview"]["entries"][0]["approvedProjection"]["nativeIdentityConfirmed"] = True
+            blockers: list[dict] = []
+            summary, _ = composer._apply_table_review(review, [source], by_unit, by_lesson, [root], blockers)
+
+            self.assertEqual(summary["applied"], 0)
+            self.assertIn("table-review-published-projection-native-identity-conflict", [item["code"] for item in blockers])
+            self.assertEqual(source["deck"]["slides"][0]["tables"], [])
+
+    def test_table_review_excludes_native_matrix_when_published_correction_is_recorded(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            review, source, by_unit, by_lesson = self._table_review_fixture(root, source_kind="native-a:tbl")
+            entry = review["tableReview"]["entries"][0]
+            entry["sourceEvidence"]["differences"] = [{"kind": "published-cell-correction"}]
+            blockers: list[dict] = []
+            summary, decisions = composer._apply_table_review(review, [source], by_unit, by_lesson, [root], blockers)
+
+            self.assertEqual(summary["applied"], 1)
+            self.assertEqual(summary["excludedNativeTables"], 1)
+            self.assertTrue(decisions[(44, 11)]["excludeNativeTables"])
+            self.assertEqual(blockers, [])
+
     def test_unit3_missing_slide_reuses_only_the_verified_audio2_slide(self) -> None:
         source = {
             "lesson": {"id": "lesson-3"},

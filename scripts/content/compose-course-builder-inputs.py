@@ -32,6 +32,13 @@ READY_MEDIA_STATUSES = {"planned", "staged", "already-staged", "ready"}
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$", re.IGNORECASE)
 UNIT_RE = re.compile(r"\bunit\s*[-#]?\s*(\d{1,3})\b", re.IGNORECASE)
 REVIEW_ITEM_ID_RE = re.compile(r"^u(?P<unit>\d+)[-_]s(?P<slide>\d+)(?:[-_]|$)", re.IGNORECASE)
+TABLE_REVIEW_POLICY_KEYS = (
+    "publishedSlidesAuthoritativeOnMismatch",
+    "sourceQuotesRequired",
+    "nativeShapeProvenanceRequired",
+    "noInventedCellsOrExamples",
+    "publishedSourceProjectionRequiresLiteralCellQuotes",
+)
 
 
 class ComposeError(ValueError):
@@ -135,6 +142,372 @@ def _source_slides(source: Mapping[str, Any]) -> list[Mapping[str, Any]]:
 
 def _source_slide(source: Mapping[str, Any], number: int) -> Mapping[str, Any] | None:
     return next((item for item in _source_slides(source) if _int(item.get("number")) == number), None)
+
+
+def _table_review_refs(entry: Mapping[str, Any]) -> list[Mapping[str, Any]]:
+    refs = [item for item in _as_list(entry.get("sourceRefs")) if isinstance(item, Mapping)]
+    if refs:
+        return refs
+    fallback: list[Mapping[str, Any]] = []
+    for kind, key in (("published", "publishedSourceFile"), ("native", "nativeSourceFile")):
+        path = _text(entry.get(key))
+        if path:
+            fallback.append({"kind": kind, "path": path})
+    return fallback
+
+
+def _table_review_ref(refs: Sequence[Mapping[str, Any]], kind: str) -> Mapping[str, Any] | None:
+    return next((ref for ref in refs if _text(ref.get("kind")).casefold() == kind), None)
+
+
+def _table_review_cells(projection: Mapping[str, Any]) -> list[list[list[str]]]:
+    """Return the reviewed matrix while rejecting non-source cell values."""
+
+    tables: list[list[list[str]]] = []
+    for raw_table in _as_list(projection.get("tables")):
+        if not isinstance(raw_table, Mapping):
+            raise ComposeError("table review projection table must be an object")
+        raw_rows = raw_table.get("rows")
+        if not isinstance(raw_rows, list) or not raw_rows:
+            raise ComposeError("table review projection table has no rows")
+        rows: list[list[str]] = []
+        for raw_row in raw_rows:
+            if not isinstance(raw_row, list) or not raw_row:
+                raise ComposeError("table review projection row must be a non-empty list")
+            row: list[str] = []
+            for value in raw_row:
+                if not isinstance(value, str):
+                    raise ComposeError("table review projection cells must be strings")
+                row.append(value.strip())
+            rows.append(row)
+        if any(value for row in rows for value in row):
+            tables.append(rows)
+    return tables
+
+
+def _table_review_source_text(slide: Mapping[str, Any]) -> str:
+    return _normalise_review_text("\n".join(_text(value) for value in _as_list(slide.get("visibleTexts"))))
+
+
+def _table_review_contains(source_text: str, value: str) -> bool:
+    """Match authored cell quotes while tolerating extractor punctuation joins."""
+
+    normalized = _normalise_review_text(value)
+    if normalized and normalized in source_text:
+        return True
+    compact = re.sub(r"[^a-z0-9]+", "", normalized)
+    compact_source = re.sub(r"[^a-z0-9]+", "", source_text)
+    return bool(compact and compact in compact_source)
+
+
+def _table_review_file_sha(path: Path) -> str:
+    return _sha256_file(path).casefold()
+
+
+def _table_review_metadata(
+    entry: Mapping[str, Any],
+    projection: Mapping[str, Any],
+    refs: Sequence[Mapping[str, Any]],
+    tables: Sequence[Sequence[Sequence[str]]],
+) -> dict[str, Any]:
+    source = _text(projection.get("source"))
+    approved = projection.get("approved") is True
+    return {
+        "schemaVersion": 1,
+        "unit": _int(entry.get("unit")),
+        "lessonId": _text(entry.get("lessonId")),
+        "sourceSlide": _int(entry.get("sourceSlide")),
+        "reviewStatus": _text(entry.get("status")),
+        "clearTableSemanticsBlocker": entry.get("clearTableSemanticsBlocker") is True,
+        "tableReferenceResolved": entry.get("clearTableSemanticsBlocker") is True,
+        "projection": {
+            "approved": approved,
+            "mode": _text(projection.get("mode")) or ("structured" if tables else "text-only"),
+            "source": source,
+            "nativeIdentityConfirmed": projection.get("nativeIdentityConfirmed") is True,
+            "notes": _text(projection.get("notes")),
+            "tableCount": len(tables),
+        },
+        "tableBlock": {
+            "mode": _text(projection.get("mode")) or ("structured" if tables else "text-only"),
+            "source": source,
+            "tableCount": len(tables),
+            "tableReferenceResolved": entry.get("clearTableSemanticsBlocker") is True,
+            "publishedSourceProjection": source == "published-visible-text",
+            "nativeShapeProvenance": [
+                {
+                    key: copy.deepcopy(table[key])
+                    for key in ("shapeId", "shapeName", "bbox", "columnWidths")
+                    if key in table
+                }
+                for table in _as_list(projection.get("tables"))
+                if isinstance(table, Mapping)
+            ],
+        },
+        "sourceRefs": copy.deepcopy(list(refs)),
+        "sourceEvidence": {
+            "publishedTitle": _text((entry.get("sourceEvidence") or {}).get("publishedTitle"))
+            if isinstance(entry.get("sourceEvidence"), Mapping)
+            else "",
+            "publishedVisibleTexts": copy.deepcopy(
+                _as_list((entry.get("sourceEvidence") or {}).get("publishedVisibleTexts"))
+            )
+            if isinstance(entry.get("sourceEvidence"), Mapping)
+            else [],
+            "differences": copy.deepcopy((entry.get("sourceEvidence") or {}).get("differences", []))
+            if isinstance(entry.get("sourceEvidence"), Mapping)
+            else [],
+        },
+    }
+
+
+def _apply_table_review(
+    table_review_document: Mapping[str, Any] | None,
+    sources: Sequence[Mapping[str, Any]],
+    sources_by_unit: Mapping[int, Mapping[str, Any]],
+    sources_by_lesson: Mapping[str, Mapping[str, Any]],
+    asset_roots: Sequence[Path],
+    blockers: list[dict[str, Any]],
+) -> tuple[dict[str, Any], dict[tuple[int, int], dict[str, Any]]]:
+    """Attach source-grounded table matrices without replacing published prose.
+
+    The review artifact is deliberately applied before native-audit composition.
+    A reviewed projection is therefore visible to the builder, while the
+    native table payload is explicitly removed whenever the review records a
+    published projection or correction so a mismatched PPTX candidate cannot
+    override it later.
+    """
+
+    empty = {
+        "status": "not-supplied",
+        "entries": 0,
+        "applied": 0,
+        "structured": 0,
+        "textOnly": 0,
+        "publishedProjections": 0,
+        "nativeProjections": 0,
+        "excludedNativeTables": 0,
+        "rejected": 0,
+    }
+    if table_review_document is None:
+        return empty, {}
+    raw_review = table_review_document.get("tableReview")
+    if not isinstance(raw_review, Mapping):
+        raise ComposeError("table review input must contain a tableReview object")
+    policy = raw_review.get("reviewPolicy")
+    if not isinstance(policy, Mapping) or any(policy.get(key) is not True for key in TABLE_REVIEW_POLICY_KEYS):
+        raise ComposeError("table review source policy is incomplete or unsafe")
+    raw_entries = raw_review.get("entries")
+    if not isinstance(raw_entries, list):
+        raise ComposeError("table review input has no entries list")
+
+    summary = {**empty, "status": "applied", "entries": len(raw_entries)}
+    decisions: dict[tuple[int, int], dict[str, Any]] = {}
+    seen_keys: set[tuple[int, int]] = set()
+    for raw_entry in raw_entries:
+        if not isinstance(raw_entry, Mapping):
+            blockers.append({"kind": "table", "code": "table-review-entry-invalid"})
+            summary["rejected"] += 1
+            continue
+        unit = _int(raw_entry.get("unit"))
+        lesson_id = _text(raw_entry.get("lessonId"))
+        slide_number = _int(raw_entry.get("sourceSlide"))
+        key = (unit or 0, slide_number or 0)
+        if unit is None or slide_number is None or not lesson_id:
+            blockers.append({"kind": "table", "unit": unit, "code": "table-review-identity-missing"})
+            summary["rejected"] += 1
+            continue
+        if key in seen_keys:
+            blockers.append({"kind": "table", "unit": unit, "slide": slide_number, "code": "table-review-duplicate-entry"})
+            summary["rejected"] += 1
+            continue
+        seen_keys.add(key)
+        source = sources_by_lesson.get(lesson_id)
+        if source is None or sources_by_unit.get(unit) is not source:
+            blockers.append(
+                {
+                    "kind": "table",
+                    "unit": unit,
+                    "lessonId": lesson_id,
+                    "slide": slide_number,
+                    "code": "table-review-source-identity-mismatch",
+                }
+            )
+            summary["rejected"] += 1
+            continue
+        slide = _source_slide(source, slide_number)
+        if slide is None:
+            blockers.append({"kind": "table", "unit": unit, "slide": slide_number, "code": "table-review-slide-missing"})
+            summary["rejected"] += 1
+            continue
+
+        refs = _table_review_refs(raw_entry)
+        published_ref = _table_review_ref(refs, "published")
+        native_ref = _table_review_ref(refs, "native")
+        valid_refs = True
+        for ref in refs:
+            path_value = _text(ref.get("path"))
+            expected_sha = _text(ref.get("sha256")).casefold()
+            path = Path(_resolve_local_path(path_value, asset_roots)) if path_value else Path()
+            if not path_value or not path.is_file() or not SHA256_RE.fullmatch(expected_sha):
+                valid_refs = False
+                blockers.append(
+                    {
+                        "kind": "table",
+                        "unit": unit,
+                        "slide": slide_number,
+                        "code": "table-review-source-ref-missing-or-invalid",
+                        "referenceKind": _text(ref.get("kind")),
+                    }
+                )
+                continue
+            if _table_review_file_sha(path) != expected_sha:
+                valid_refs = False
+                blockers.append(
+                    {
+                        "kind": "table",
+                        "unit": unit,
+                        "slide": slide_number,
+                        "code": "table-review-source-ref-sha-mismatch",
+                        "referenceKind": _text(ref.get("kind")),
+                    }
+                )
+        if published_ref is None:
+            valid_refs = False
+            blockers.append({"kind": "table", "unit": unit, "slide": slide_number, "code": "table-review-published-ref-missing"})
+        projection = raw_entry.get("approvedProjection")
+        if not isinstance(projection, Mapping):
+            valid_refs = False
+            blockers.append({"kind": "table", "unit": unit, "slide": slide_number, "code": "table-review-projection-missing"})
+            summary["rejected"] += 1
+            continue
+        try:
+            tables = _table_review_cells(projection)
+        except ComposeError as exc:
+            valid_refs = False
+            blockers.append({"kind": "table", "unit": unit, "slide": slide_number, "code": "table-review-projection-invalid", "detail": str(exc)})
+            tables = []
+
+        source_kind = _text(projection.get("source"))
+        approved = projection.get("approved") is True
+        native_identity = projection.get("nativeIdentityConfirmed") is True
+        mode = _text(projection.get("mode"))
+        if source_kind == "native-a:tbl":
+            if not approved or not native_identity or native_ref is None:
+                valid_refs = False
+                blockers.append({"kind": "table", "unit": unit, "slide": slide_number, "code": "table-review-native-projection-unproven"})
+            for table in _as_list(projection.get("tables")):
+                if not isinstance(table, Mapping) or not _text(table.get("shapeId")) or not isinstance(table.get("bbox"), Mapping) or not isinstance(table.get("columnWidths"), list):
+                    valid_refs = False
+                    blockers.append({"kind": "table", "unit": unit, "slide": slide_number, "code": "table-review-native-shape-provenance-missing"})
+                    break
+        elif source_kind == "published-visible-text":
+            if not bool(policy.get("publishedSourceProjectionAllowedWhenNativeDiffers")) or not bool(policy.get("publishedSourceProjectionRequiresLiteralCellQuotes")):
+                valid_refs = False
+                blockers.append({"kind": "table", "unit": unit, "slide": slide_number, "code": "table-review-published-projection-policy-missing"})
+            if native_identity:
+                valid_refs = False
+                blockers.append({"kind": "table", "unit": unit, "slide": slide_number, "code": "table-review-published-projection-native-identity-conflict"})
+        elif source_kind:
+            valid_refs = False
+            blockers.append({"kind": "table", "unit": unit, "slide": slide_number, "code": "table-review-source-kind-unsupported"})
+
+        if not raw_entry.get("clearTableSemanticsBlocker") is True:
+            valid_refs = False
+            blockers.append({"kind": "table", "unit": unit, "slide": slide_number, "code": "table-review-clearance-missing"})
+        if not approved:
+            if mode != "text-only" or tables:
+                valid_refs = False
+                blockers.append({"kind": "table", "unit": unit, "slide": slide_number, "code": "table-review-unapproved-projection"})
+        elif not tables:
+            valid_refs = False
+            blockers.append({"kind": "table", "unit": unit, "slide": slide_number, "code": "table-review-approved-projection-empty"})
+
+        published_document: Mapping[str, Any] | None = None
+        if published_ref is not None:
+            published_path_value = _text(published_ref.get("path"))
+            published_path = Path(_resolve_local_path(published_path_value, asset_roots)) if published_path_value else Path()
+            if published_path.is_file():
+                loaded = _load_json(published_path)
+                if isinstance(loaded, Mapping):
+                    published_document = loaded
+                    published_slide = _source_slide(loaded, slide_number)
+                    if published_slide is None:
+                        valid_refs = False
+                        blockers.append({"kind": "table", "unit": unit, "slide": slide_number, "code": "table-review-published-slide-missing"})
+                    elif _source_url(source) and _source_url(loaded) and _source_url(source) != _source_url(loaded):
+                        valid_refs = False
+                        blockers.append({"kind": "table", "unit": unit, "slide": slide_number, "code": "table-review-published-url-mismatch"})
+            else:
+                valid_refs = False
+        source_text = _table_review_source_text(slide)
+        evidence = raw_entry.get("sourceEvidence")
+        evidence_text = _normalise_review_text("\n".join(_text(value) for value in _as_list(evidence.get("publishedVisibleTexts")))) if isinstance(evidence, Mapping) else ""
+        if not evidence_text:
+            valid_refs = False
+            blockers.append({"kind": "table", "unit": unit, "slide": slide_number, "code": "table-review-source-quotes-missing"})
+        for table in tables:
+            for row in table:
+                for cell in row:
+                    if not cell:
+                        continue
+                    normalized_cell = _normalise_review_text(cell)
+                    if not _table_review_contains(source_text, cell) or not _table_review_contains(evidence_text, cell):
+                        valid_refs = False
+                        blockers.append(
+                            {
+                                "kind": "table",
+                                "unit": unit,
+                                "slide": slide_number,
+                                "code": "table-review-cell-source-mismatch",
+                                "cell": cell,
+                            }
+                        )
+
+        if not valid_refs:
+            summary["rejected"] += 1
+            continue
+        metadata = _table_review_metadata(raw_entry, projection, refs, tables)
+        # ``tables`` is the only learner-facing matrix. Shape/bbox evidence is
+        # retained in tableReview/data and never substituted into cell text.
+        slide["tables"] = [{"rows": copy.deepcopy(table)} for table in tables]
+        slide["tableReview"] = metadata
+        current_data = slide.get("data") if isinstance(slide.get("data"), Mapping) else {}
+        slide["data"] = {**copy.deepcopy(dict(current_data)), "tableReview": copy.deepcopy(metadata)}
+        if not approved:
+            slide["tableSemantics"] = {
+                "mode": "text-only",
+                "tables": [],
+                "tableReferenceResolved": True,
+            }
+            summary["textOnly"] += 1
+        else:
+            slide["tableSemantics"] = {
+                "mode": _text(projection.get("mode")) or "structured",
+                "tables": copy.deepcopy(tables),
+                "tableReferenceResolved": True,
+                "source": source_kind,
+            }
+            summary["structured"] += 1
+            if source_kind == "published-visible-text":
+                summary["publishedProjections"] += 1
+            elif source_kind == "native-a:tbl":
+                summary["nativeProjections"] += 1
+        evidence_differences = raw_entry.get("sourceEvidence", {}).get("differences", []) if isinstance(raw_entry.get("sourceEvidence"), Mapping) else []
+        exclude_native_tables = bool(evidence_differences) or (approved and source_kind == "published-visible-text")
+        decision = {
+            **metadata,
+            "excludeNativeTables": exclude_native_tables,
+            "excludeNativeTablesReason": (
+                "published-projection" if source_kind == "published-visible-text" else "published-correction"
+            ) if exclude_native_tables else "",
+        }
+        decisions[key] = decision
+        if decision["excludeNativeTables"]:
+            summary["excludedNativeTables"] += 1
+        summary["applied"] += 1
+
+    return summary, decisions
 
 
 def _normalise_review_text(value: Any) -> str:
@@ -813,6 +1186,7 @@ def _compose_native_audit(
     figures: Sequence[Mapping[str, Any]],
     sources_by_unit: Mapping[int, Mapping[str, Any]],
     blockers: list[dict[str, Any]],
+    table_reviews: Mapping[tuple[int, int], Mapping[str, Any]] | None = None,
 ) -> dict[str, Any]:
     if not isinstance(native_audit, Mapping):
         blockers.append({"kind": "native", "code": "native-audit-missing"})
@@ -864,6 +1238,30 @@ def _compose_native_audit(
                     continue
                 slide = copy.deepcopy(dict(raw_slide))
                 number = _int(slide.get("number"))
+                table_review = (table_reviews or {}).get((unit, number or 0))
+                if isinstance(table_review, Mapping) and table_review.get("excludeNativeTables") is True:
+                    # A published-visible-text projection is authoritative for
+                    # this reviewed mismatch. Remove both the explicit table
+                    # payload and table-like shapes so the builder cannot fall
+                    # back to the rejected native matrix.
+                    for key in ("tables", "actualTables", "tableData", "structuredTables"):
+                        if key in slide:
+                            slide[key] = []
+                    shapes = slide.get("shapes")
+                    if isinstance(shapes, list):
+                        slide["shapes"] = [
+                            shape
+                            for shape in shapes
+                            if not (
+                                isinstance(shape, Mapping)
+                                and (
+                                    "table" in _text(shape.get("kind") or shape.get("type")).casefold()
+                                    or "table" in _text(shape.get("shapeType")).casefold()
+                                    or any(key in shape for key in ("rows", "cells", "columns"))
+                                )
+                            )
+                        ]
+                    slide["tableReview"] = copy.deepcopy(dict(table_review))
                 if number is not None and figure_map.get((unit, number)):
                     slide["figures"] = copy.deepcopy(figure_map[(unit, number)])
                 slides.append(slide)
@@ -1426,6 +1824,7 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     native_match = _load_json(args.native_match) if args.native_match else None
     exercise_review = _load_json(args.exercise_review) if args.exercise_review else None
     exercise_semantic_patch = _load_json(args.exercise_semantic_patch) if args.exercise_semantic_patch else None
+    table_review = _load_json(args.table_review) if args.table_review else None
     listening_documents = [_load_json(path) for path in args.listening_review]
     pronunciation_review = getattr(args, "pronunciation_review", None)
     if pronunciation_review:
@@ -1437,6 +1836,14 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         raise ComposeError("snapshot course id does not match the course builder")
     blockers: list[dict[str, Any]] = []
     sources, sources_by_unit, sources_by_lesson = _published_sources(source_manifest, snapshot, blockers)
+    table_review_summary, table_review_decisions = _apply_table_review(
+        table_review,
+        sources,
+        sources_by_unit,
+        sources_by_lesson,
+        args.asset_root,
+        blockers,
+    )
     snapshot_lessons = _snapshot_lessons(snapshot)
     source_by_lesson = {lesson_id: source for lesson_id, source in sources_by_lesson.items() if lesson_id in snapshot_lessons}
     exercise_patch_summary = {"status": "not-supplied", "applied": 0, "remainingHardBlocks": 0}
@@ -1480,6 +1887,7 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         figures,
         sources_by_unit,
         blockers,
+        table_review_decisions,
     )
     normalized_exercise = _normalize_exercise_review(exercise_review, source_by_lesson, blockers)
     normalized_listening = _normalize_listening(
@@ -1517,6 +1925,7 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "unit33To36FiguresRequireVisualProof": True,
             "oldFigureCorrespondenceIgnoredWhenProofProvided": bool(figure_proof),
             "unit3AudioPolicy": "reuse-exact-audio2-only-when-slide4-source-match-is-proven",
+            "tableReviewPublishedPriority": bool(table_review),
         },
         "inputPaths": {
             "snapshot": str(args.snapshot),
@@ -1530,6 +1939,7 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "nativeMatch": str(args.native_match) if args.native_match else None,
             "exerciseReview": str(args.exercise_review) if args.exercise_review else None,
             "exerciseSemanticPatch": str(args.exercise_semantic_patch) if args.exercise_semantic_patch else None,
+            "tableReview": str(args.table_review) if args.table_review else None,
             "listeningReview": [str(path) for path in args.listening_review],
             "pronunciationReview": str(pronunciation_review) if pronunciation_review else None,
         },
@@ -1564,6 +1974,7 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "figures": figure_counts,
             "exerciseReviewLessons": len(normalized_exercise["lessons"]),
             "exerciseSemanticPatch": exercise_patch_summary,
+            "tableReview": table_review_summary,
             "listeningReviewEntries": len(normalized_listening["exercises"]),
             "listeningReviewRejectedEntries": len(normalized_listening.get("rejectedEntries", [])),
             "listeningReviewItems": sum(
@@ -1638,6 +2049,8 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "unit33To36FiguresRequireVisualProof": True,
             "oldFigureCorrespondenceIgnoredWhenProofProvided": bool(figure_proof),
             "exerciseSemanticPatchExplicitOnly": True,
+            "tableReviewPublishedPriority": bool(table_review),
+            "tableReviewNativeMismatchesExcluded": table_review_summary["excludedNativeTables"] > 0,
             "exerciseSemanticPatchSummary": exercise_patch_summary,
             "unresolvedUnit33To36FiguresStayBlocked": not any(
                 item.get("mapping") == "units-33-36-visual-proof" for item in figures
@@ -1678,6 +2091,11 @@ def _parse_args(argv: Sequence[str]) -> argparse.Namespace:
         "--exercise-semantic-patch",
         type=Path,
         help="explicit source-validated semantic exercise patch; remaining hard blocks stay blocked",
+    )
+    parser.add_argument(
+        "--table-review",
+        type=Path,
+        help="source-grounded tableReview contract; published projections override mismatched native tables",
     )
     parser.add_argument("--listening-review", type=Path, action="append", default=[])
     parser.add_argument(
