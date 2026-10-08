@@ -7,6 +7,26 @@ import {
 } from './block-preview'
 import { ClassroomSyncContext } from '@/components/classroom/use-classroom-sync'
 
+describe('guided source truth labels', () => {
+  it('expands reviewed T/F labels while keeping the original answer IDs', () => {
+    const options = [{ id: 'true', text: 'T' }, { id: 'false', text: 'F' }]
+    render(<BlockPreview guidedAppearance block={{ id: 'source-truth', type: 'multiple_choice', order: 0, question: 'Joe likes animals.', options, correctOptionId: 'true' }} />)
+    const correct = screen.getByRole('button', { name: 'Verdadero' })
+    expect(screen.getByRole('button', { name: 'Falso' })).toBeVisible()
+    fireEvent.click(correct)
+    expect(correct).toHaveAttribute('aria-pressed', 'true')
+    expect(correct).toHaveAttribute('data-guided-choice-state', 'correct')
+    expect(correct).toHaveAttribute('data-guided-choice', 'true')
+    expect(options).toEqual([{ id: 'true', text: 'T' }, { id: 'false', text: 'F' }])
+  })
+  it('leaves actual letter-choice questions unchanged', () => {
+    render(<BlockPreview guidedAppearance block={{ id: 'letters', type: 'multiple_choice', order: 0, question: 'Choose the letter.', options: [{ id: 'letter-t', text: 'T' }, { id: 'letter-f', text: 'F' }], correctOptionId: 'letter-t' }} />)
+    expect(screen.getByRole('button', { name: 'T' })).toBeVisible()
+    expect(screen.getByRole('button', { name: 'F' })).toBeVisible()
+    expect(screen.queryByRole('button', { name: 'Verdadero' })).not.toBeInTheDocument()
+  })
+})
+
 vi.mock('next/image', () => ({
   default: ({ src, alt, onError }: { src: string; alt: string; onError?: () => void }) => (
     // eslint-disable-next-line @next/next/no-img-element

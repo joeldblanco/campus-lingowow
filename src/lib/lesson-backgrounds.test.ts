@@ -7,10 +7,10 @@ const step = (id: string, kind: GuidedLessonStep['kind'] = 'practice'): GuidedLe
   ({ id, kind, label: id, blocks: [] })
 
 describe('lesson background library', () => {
-  it('covers a long course lesson with twenty-five unrelated scenes without repetition', () => {
-    const steps = Array.from({ length: 25 }, (_, index) => step(`long-course-${index}`, 'content'))
+  it('covers a long course lesson with twenty-nine unrelated scenes without repetition', () => {
+    const steps = Array.from({ length: 29 }, (_, index) => step(`long-course-${index}`, 'content'))
     const backgrounds = assignLessonBackgrounds(steps, { unitOneAuthored: false })
-    expect(new Set(Object.values(backgrounds)).size).toBe(25)
+    expect(new Set(Object.values(backgrounds)).size).toBe(29)
   })
   it('keeps related source figures in one setting without sharing it with another slide', () => {
     const figure = (id: string, slide: number): GuidedLessonStep => ({

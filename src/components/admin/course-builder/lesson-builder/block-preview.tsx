@@ -5459,6 +5459,13 @@ function MultiSelectBlockPreview({
   )
 }
 
+function guidedTruthOptionLabels(options: MultipleChoiceBlock['options']) {
+  if (options.length !== 2 ||
+      !options.some((option) => option.id === 'true' && /^(t|true)$/i.test(option.text.trim())) ||
+      !options.some((option) => option.id === 'false' && /^(f|false)$/i.test(option.text.trim()))) return options
+  return options.map((option) => ({ ...option, text: option.id === 'true' ? 'Verdadero' : 'Falso' }))
+}
+
 function MultipleChoiceBlockPreview(props: Parameters<typeof ClassicMultipleChoiceBlockPreview>[0]) {
   const classroom = useClassroomSync()
   const items = props.block.items?.length ? props.block.items : props.block.question ? [{
@@ -5480,7 +5487,7 @@ function MultipleChoiceBlockPreview(props: Parameters<typeof ClassicMultipleChoi
   return automatic ? <GuidedChoiceActivity
     shuffleChoices
     questions={items.map(item => ({
-      id: item.id, prompt: item.question, choices: item.options,
+      id: item.id, prompt: item.question, choices: guidedTruthOptionLabels(item.options),
       correctChoiceId: item.correctOptionId, explanation: props.block.explanation,
     }))}
     onAnswer={guidedClassroomSync.handleAnswer}

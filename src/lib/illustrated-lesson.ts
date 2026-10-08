@@ -62,6 +62,10 @@ export const APPROVED_ILLUSTRATED_SCENES = [
   '/images/lessons/backgrounds/science-lab.webp',
   '/images/lessons/backgrounds/harbor-promenade.webp',
   '/images/lessons/backgrounds/community-bookshop.webp',
+  '/images/lessons/backgrounds/museum-gallery.webp',
+  '/images/lessons/backgrounds/lakeside-reading-terrace.webp',
+  '/images/lessons/backgrounds/music-room.webp',
+  '/images/lessons/backgrounds/village-square.webp',
 ] as const
 
 const APPROVED_SCENE_SET = new Set<string>(APPROVED_ILLUSTRATED_SCENES)
