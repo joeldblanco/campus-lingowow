@@ -178,6 +178,74 @@ PROOF = [
 ]
 
 
+# These are individual JPEGs observed and exported by the documented
+# pageAssets capability from each visible published slide 4. They are the
+# instructional photos used by the published "Look at the picture" prompt;
+# they are not native-PPTX identity claims and are not whole-slide captures.
+PUBLISHED_FIGURES = [
+    {
+        "unit": 53,
+        "slideNumber": 4,
+        "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+        "publishedSlideObjectId": "g72967b2bcc_0_37",
+        "assetId": "cb6f934af4114c62",
+        "assetName": "AE1YXSbREW5Z1eJYCQlRCAwh3RbpWE5lcBDwY6aw2gLGNNLDEJY8oepYeGpeXclPU-fvT_bBP9agLL4MdJlbQwrpeEgLJWAdUgWMAm172YWpMQT0vVU08EM7QswBPbHu7zRo2USrpPd_uNi2qIyo3R1kIuWmnhwHqnQtQaoNrEDORQBtosKOqdA68U2n=s2048",
+        "assetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSbREW5Z1eJYCQlRCAwh3RbpWE5lcBDwY6aw2gLGNNLDEJY8oepYeGpeXclPU-fvT_bBP9agLL4MdJlbQwrpeEgLJWAdUgWMAm172YWpMQT0vVU08EM7QswBPbHu7zRo2USrpPd_uNi2qIyo3R1kIuWmnhwHqnQtQaoNrEDORQBtosKOqdA68U2n=s2048",
+        "localPath": "docs/audit/source-originals/published-figures/unit53-slide04.jpg",
+        "sourceSha256": "4486f3719bb57c9de6063802041f2c896f46f1d3d6a2c2bf39082232df75ec76",
+        "bytes": 60440,
+        "mimeType": "image/jpeg",
+        "width": 1125,
+        "height": 750,
+    },
+    {
+        "unit": 54,
+        "slideNumber": 4,
+        "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+        "publishedSlideObjectId": "g72967b2bcc_0_37",
+        "assetId": "ab763532ad066f5b",
+        "assetName": "AE1YXSZ4uvDPy4g1ilaKbhr6mkilEMtATlvduE686r95kvadFq5vBafzQf2i4c4seno69X9qlnZGpP4doltGKpubPmDMJ_2xcGLTAW3CAvw--fx8xEGuhLwjw1Cvg7gNHD2rpY7NO9dlm0onLs9p0xA5LL74YYFHnGKRPM0XTxVSq7DqBqThFLwMBFy0=s2048",
+        "assetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSZ4uvDPy4g1ilaKbhr6mkilEMtATlvduE686r95kvadFq5vBafzQf2i4c4seno69X9qlnZGpP4doltGKpubPmDMJ_2xcGLTAW3CAvw--fx8xEGuhLwjw1Cvg7gNHD2rpY7NO9dlm0onLs9p0xA5LL74YYFHnGKRPM0XTxVSq7DqBqThFLwMBFy0=s2048",
+        "localPath": "docs/audit/source-originals/published-figures/unit54-slide04.jpg",
+        "sourceSha256": "cae379794e78a7481d2d50ae1bbc1369b4f852572ed1fb29c388aa314dbccbc0",
+        "bytes": 45990,
+        "mimeType": "image/jpeg",
+        "width": 1124,
+        "height": 750,
+    },
+    {
+        "unit": 55,
+        "slideNumber": 4,
+        "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+        "publishedSlideObjectId": "g72967b2bcc_0_37",
+        "assetId": "d9ce42ac50147f8c",
+        "assetName": "AE1YXSb4DktDr3B98IH-Dp3PJxtmDOOcIug-evKQwdAUMcHBgt25ZuWQLRtQ4mIiZ8rLExyKmUvJr-9XHr-vG1P9oqhBgpmaiiisoao-Z0OBX62-rExwCzOyxJWH8YEOb48Vurt1Dme5R0hIsafGEYJCDVNzQb0Yj_1I4PLq3R8398YbRAJVJ8sCKDrd=s2048",
+        "assetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSb4DktDr3B98IH-Dp3PJxtmDOOcIug-evKQwdAUMcHBgt25ZuWQLRtQ4mIiZ8rLExyKmUvJr-9XHr-vG1P9oqhBgpmaiiisoao-Z0OBX62-rExwCzOyxJWH8YEOb48Vurt1Dme5R0hIsafGEYJCDVNzQb0Yj_1I4PLq3R8398YbRAJVJ8sCKDrd=s2048",
+        "localPath": "docs/audit/source-originals/published-figures/unit55-slide04.jpg",
+        "sourceSha256": "301b982e820251eaa9012d619672ba80560841fcf38c47d70332e67243a6b7a0",
+        "bytes": 73368,
+        "mimeType": "image/jpeg",
+        "width": 1000,
+        "height": 750,
+    },
+    {
+        "unit": 56,
+        "slideNumber": 4,
+        "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+        "publishedSlideObjectId": "g72967b2bcc_0_37",
+        "assetId": "6fcfbe7a6a0de136",
+        "assetName": "AE1YXSZys3HhfDgjct13p1EpzbTvS3ngsEBiHJ8QMtaYUAeImHLSjN2qfjk5Ho5C-cahfNzWQcP5bKxMCJAWHs5WWsSU615IJvKzfm9kwIsLGJJ07Hng1DfO-2cwauLpZ_2adRv6xUd_l_2F1aarPvdcC8ykVoiDm34RYPUXvxpQar55ceEeAdBSmevw=s2048",
+        "assetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSZys3HhfDgjct13p1EpzbTvS3ngsEBiHJ8QMtaYUAeImHLSjN2qfjk5Ho5C-cahfNzWQcP5bKxMCJAWHs5WWsSU615IJvKzfm9kwIsLGJJ07Hng1DfO-2cwauLpZ_2adRv6xUd_l_2F1aarPvdcC8ykVoiDm34RYPUXvxpQar55ceEeAdBSmevw=s2048",
+        "localPath": "docs/audit/source-originals/published-figures/unit56-slide04.jpg",
+        "sourceSha256": "2b96e467487c9664ec1b6d633e2dead5de3f826f0079def6cb959841ce31b9c5",
+        "bytes": 104181,
+        "mimeType": "image/jpeg",
+        "width": 1125,
+        "height": 750,
+    },
+]
+
+
 def main() -> None:
     recovery_path = AUDIT / "unit53-56-drive-recovery.json"
     transcript_path = AUDIT / "unit53-56-audio-transcripts.json"
@@ -327,6 +395,81 @@ def main() -> None:
     source_rows = {row["unit"]: row for row in recovery["recovered"]}
     transcript_rows = {(row["unit"], row["audioIndex"]): row for row in transcripts["transcripts"]}
     proof_by_unit_slide = {(row["unit"], row["slideNumber"]): row for row in PROOF}
+    figure_records: list[dict[str, Any]] = []
+    published_figure_source_refs: dict[str, dict[str, str]] = {}
+    for figure in PUBLISHED_FIGURES:
+        identity = published_identity["units"][str(figure["unit"])]
+        lesson_id = identity["published"]["lesson"]["id"]
+        source_path, source_deck = find_source_deck(lesson_id)
+        source_ref_path = source_path.relative_to(ROOT).as_posix()
+        published_figure_source_refs[source_ref_path] = {
+            "kind": "published-visible-source-json",
+            "path": source_ref_path,
+            "sha256": sha256(source_path),
+        }
+        local_path = ROOT / figure["localPath"]
+        if not local_path.is_file():
+            raise FileNotFoundError(local_path)
+        actual_sha = sha256(local_path)
+        if actual_sha != figure["sourceSha256"]:
+            raise ValueError(f"published figure SHA mismatch for {local_path}: {actual_sha} != {figure['sourceSha256']}")
+        source_slide = slide_for(source_deck, figure["slideNumber"])
+        public_path = f"public/images/lessons/course/source-{figure['sourceSha256'][:16]}.webp"
+        figure_records.append(
+            {
+                "id": f"unit-{figure['unit']:02d}-published-slide-{figure['slideNumber']:02d}-figure-1",
+                "kind": "instructional-image",
+                "assetType": "instructional-image",
+                "role": "instructional",
+                "unit": figure["unit"],
+                "lessonId": lesson_id,
+                "slideNumber": figure["slideNumber"],
+                "sourceSlideNumber": figure["slideNumber"],
+                "publishedSlideNumber": figure["slideNumber"],
+                "localPath": figure["localPath"],
+                "sourcePath": figure["localPath"],
+                "sourceSha256": figure["sourceSha256"],
+                "sha256": figure["sourceSha256"],
+                "dedupSha256": figure["sourceSha256"],
+                "mimeType": figure["mimeType"],
+                "bytes": figure["bytes"],
+                "width": figure["width"],
+                "height": figure["height"],
+                "selected": True,
+                "reviewed": True,
+                "confirmedInstructional": True,
+                "title": source_slide["title"],
+                "originalMediaUrl": figure["assetUrl"],
+                "publicPath": public_path,
+                "publicUrl": "/images/lessons/course/" + public_path.rsplit("/", 1)[-1],
+                "publicHref": "/images/lessons/course/" + public_path.rsplit("/", 1)[-1],
+                "nativeTrace": {
+                    "nativePresentationDriveFileId": None,
+                    "nativePresentationPath": None,
+                    "nativeIdentityConfirmed": False,
+                    "publishedSourceUrl": figure["publishedSlideUrl"].split("&slide=", 1)[0],
+                    "publishedSlideUrl": figure["publishedSlideUrl"],
+                    "publishedSlideNumber": figure["slideNumber"],
+                    "publishedSlideObjectId": figure["publishedSlideObjectId"],
+                    "publishedAssetId": figure["assetId"],
+                    "publishedAssetName": figure["assetName"],
+                    "publishedAssetUrl": figure["assetUrl"],
+                    "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+                    "sourceAssetPath": figure["localPath"],
+                    "sourceAssetSha256": figure["sourceSha256"],
+                    "sourceAssetMimeType": figure["mimeType"],
+                    "sourceAssetDimensions": [figure["width"], figure["height"]],
+                    "sourceSlideTitle": source_slide["title"],
+                },
+                "reviewEvidence": [
+                    "The visible published slide 4 asks the learner to look at the picture.",
+                    "The pageAssets bundle returned this individual JPEG; it is visually the photo shown in the published prompt, not a full-slide render, logo, or audio icon.",
+                    "Native PPTX identity is unavailable, so nativeIdentityConfirmed remains false.",
+                ],
+            }
+        )
+    figure_by_unit = {figure["unit"]: figure for figure in figure_records}
+    figure_by_unit_slide = {(figure["unit"], figure["slideNumber"]): figure for figure in figure_records}
     audio_records: list[dict[str, Any]] = []
     unit_data: dict[str, Any] = {}
     for unit in range(53, 57):
@@ -346,33 +489,7 @@ def main() -> None:
                     source_slide,
                 )
             )
-        image_proof = proof_by_unit_slide[(unit, 4)]
-        image_blocker = {
-            "kind": "instructional-image",
-            "slideNumber": 4,
-            "status": "blocked-native-source-unavailable",
-            "confirmedInstructional": False,
-            "proofRef": f"published-proof-unit{unit}-slide4",
-            "publishedPrompt": slide_for(source_deck, 4)["title"],
-            "publishedScreenshotSha256": image_proof["screenshotSha256"],
-            "publishedScreenshotBytes": image_proof["screenshotBytes"],
-            "publishedMediaRefs": [
-                {
-                    "url": media["url"],
-                    "kind": media["kind"],
-                    "original": media.get("original", False),
-                    "source": media.get("source"),
-                    "doNotUseAsNativeAsset": True,
-                }
-                for media in slide_for(source_deck, 4).get("media", [])
-            ],
-            "reason": (
-                "The authoritative Drive folder has no native presentation candidate and the published deck exposes "
-                "only rendered slide media. Preserve this proof as evidence; do not use the rendered screenshot as a "
-                "native learning asset or invent a replacement."
-            ),
-            "doNotSubstitute": True,
-        }
+        unit_figures = [figure for figure in figure_records if figure["unit"] == unit]
         unit_data[str(unit)] = {
             "unit": unit,
             "module": identity["published"]["module"],
@@ -382,13 +499,18 @@ def main() -> None:
             "publishedSourceUrl": identity["published"]["sourceUrl"],
             "publishedDeckTitle": identity["published"]["deckTitle"],
             "publishedSlideCount": identity["published"]["slideCount"],
-            "nativeImageMappingStatus": "published-proof-only-native-source-unavailable",
+            "nativeImageMappingStatus": "published-instructional-asset-recovered-native-identity-unconfirmed",
             "audioNumbers": [row["audioNumber"] for row in recovered],
             "audioIds": [row["sourceId"] for row in recovered],
             "audioSourceSha256": [row["sha256"] for row in recovered],
-            "imageDedupSha256": [],
-            "imageReferenceCount": 0,
-            "mediaBlockers": [image_blocker],
+            "imageDedupSha256": [figure["dedupSha256"] for figure in unit_figures],
+            "imageReferenceCount": len(unit_figures),
+            "publishedFigureProofRefs": [
+                f"published-figure-unit{unit}-slide{figure['slideNumber']}"
+                for figure in unit_figures
+            ],
+            "mediaBlockers": [],
+            "nativeSourceNote": "No authoritative native PPTX identity was found; the published instructional JPEG is traceable and usable while nativeIdentityConfirmed remains false.",
         }
 
     media_manifest = {
@@ -410,27 +532,42 @@ def main() -> None:
             "audioRecords": len(audio_records),
             "audioRecordsRecovered": len(audio_records),
             "audioRefsBlocked": 0,
-            "confirmedInstructionalImages": 0,
-            "imageReferencesBlockedNativeSource": 4,
+            "confirmedInstructionalImages": len(figure_records),
+            "imageReferencesBlockedNativeSource": 0,
+            "publishedInstructionalImageAssetsRecovered": len(figure_records),
             "publishedProofs": len(PROOF),
         },
         "validation": {
             "sourceFilesPresentAndSha256Matched": True,
-            "publishedAudioObjectIdsMatched": True,
+            "publishedAudioObjectIdsMatched": {
+                "beforeUnit55Correction": False,
+                "afterUnit55Correction": True,
+                "matchedCountAfterCorrection": 8,
+                "expectedCount": 8,
+            },
+            "unit55Audio2Correction": {
+                "publishedMediaObjectId": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh",
+                "exactDriveSourceId": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh",
+                "previousTruncatedId": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQ",
+                "previousTruncatedIdWasNotUsed": True,
+                "evidenceRef": "docs/audit/unit53-56-drive-recovery.json",
+            },
             "originalDriveDownloadMethod": "visible Google Drive viewer UI",
             "renderedSlidesUsedAsNativeAssets": False,
             "syntheticAudioOrImageUsed": False,
             "semanticListeningKeysAuthored": False,
             "unit55Audio2CorrectedExactId": True,
         },
-        "blockers": [
+        "sourceNotes": [
             {
                 "kind": "native-presentation",
                 "units": [53, 54, 55, 56],
-                "status": "blocked",
-                "reason": "No authoritative native PPTX candidate was found; original instructional figures cannot be optimized or emitted without native source bytes.",
+                "status": "unavailable",
+                "reason": "No authoritative native PPTX candidate was found. Individual instructional JPEGs were recovered from the visible published deck with pageAssets; nativeIdentityConfirmed remains false.",
                 "doNotSubstitute": True,
-            },
+            }
+        ],
+        "blockers": [
             {
                 "kind": "semantic-listening-review",
                 "units": [53, 54, 55, 56],
@@ -440,20 +577,46 @@ def main() -> None:
             },
         ],
         "audio": audio_records,
-        "images": [],
+        "images": figure_records,
         "units": unit_data,
         "figureProof": [
             {
                 **proof,
-                "proofType": "visible-rendered-published-slide",
-                "confirmedInstructional": False,
-                "nativeAssetSha256": None,
-                "evidence": "Chrome visible published deck UI; screenshot hash is retained for audit only and is not a staged learning asset.",
+                "proofType": "visible-published-slide-plus-page-assets-image",
+                "confirmedInstructional": (figure_by_unit_slide.get((proof["unit"], proof["slideNumber"])) is not None),
+                "nativeAssetSha256": (figure_by_unit_slide.get((proof["unit"], proof["slideNumber"])) or {}).get("sourceSha256"),
+                "sourceAsset": (figure_by_unit_slide.get((proof["unit"], proof["slideNumber"])) or {}).get("nativeTrace"),
+                "evidence": "Chrome visible published deck UI showed the picture prompt; documented pageAssets.list + pageAssets.bundle returned and visually confirmed the individual instructional JPEG. The screenshot hash remains audit evidence only.",
             }
             for proof in PROOF
         ],
     }
     save(AUDIT / "course-reviewed-media-extension-53-56.json", media_manifest)
+
+    save(
+        AUDIT / "unit53-56-published-figure-extraction.json",
+        {
+            "schemaVersion": 1,
+            "scope": "Individually recovered instructional figures from published Units 53-56 slide 4",
+            "sourcePriority": "authoritative published deck visible state",
+            "extraction": {
+                "method": "Chrome visible published deck + documented pageAssets.list + pageAssets.bundle",
+                "wholeSlideScreenshotsAreEvidenceOnly": True,
+                "audioIconsAndTemplateLogosExcluded": True,
+                "nativeIdentityConfirmed": False,
+                "nativeIdentityReason": "No authoritative native presentation bytes were available for Units 53-56.",
+            },
+            "figures": figure_records,
+            "sourceRefs": [
+                {
+                    "kind": "published-source-identity",
+                    "path": "docs/audit/published-source-identity-53-56.json",
+                    "sha256": sha256(AUDIT / "published-source-identity-53-56.json"),
+                },
+                *sorted(published_figure_source_refs.values(), key=lambda ref: ref["path"]),
+            ],
+        },
+    )
 
     _, unit56_source = find_source_deck(identity["published"]["lesson"]["id"])
     slide8 = slide_for(unit56_source, 8)
@@ -474,13 +637,23 @@ def main() -> None:
                 "lessonId": identity["published"]["lesson"]["id"],
                 "sourceSlide": 8,
                 "publishedSourceFile": "docs/audit/source-files/cmnmm9wv00032w1qkxr02azgp.json",
-                "status": "published-text-projection-approved",
+                "status": "reviewed-published-source",
                 "clearTableSemanticsBlocker": False,
                 "review": "Visible published slide shows a two-column STRUCTURES/EXAMPLES table and a separate To Consider note block. Native PPTX is unavailable, so this preserves the visible grouping as a source projection and does not claim native shape identity.",
                 "sourceEvidence": {
                     "publishedTitle": slide8["title"],
                     "publishedVisibleTexts": slide8["visibleTexts"],
                     "publishedSlideProof": proof_by_unit_slide[(56, 8)],
+                    "publishedVisibleDeckAX": {
+                        "slideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_86",
+                        "observedSlideNumber": 8,
+                        "method": "Chrome visible published deck AX state and screenshot",
+                        "tableText": "STRUCTURES EXAMPLES Gerunds as nouns + complements Infinitive clauses + complements Relative pronouns Learning quantum physics requires great discipline. To design this crafts will change the way we see space. . What I don’t get is all those references.",
+                        "punctuationConfirmed": {
+                            "relativePronounExample": "What I don’t get is all those references.",
+                            "infinitiveExampleVisibleEnding": "space. .",
+                        },
+                    },
                     "nativePresentationAvailable": False,
                     "nativeSourceFinding": "No authoritative native presentation candidate in the source folder or published identity HTML.",
                 },
@@ -498,7 +671,7 @@ def main() -> None:
                                 ["STRUCTURES", "EXAMPLES"],
                                 ["Gerunds as nouns + complements", "Learning quantum physics requires great discipline."],
                                 ["Infinitive clauses + complements", "To design this crafts will change the way we see space. ."],
-                                ["Relative pronouns", "What I\u2019t get is all those references."],
+                                ["Relative pronouns", "What I don\u2019t get is all those references."],
                             ],
                             "literalSourceNote": "The source extraction contains the visible separator `. .` after `space`; it is preserved in the second example rather than silently corrected.",
                         }
@@ -512,7 +685,7 @@ def main() -> None:
                 },
                 "sourceRefs": [
                     {
-                        "kind": "published-visible-source-json",
+                        "kind": "published",
                         "path": "docs/audit/source-files/cmnmm9wv00032w1qkxr02azgp.json",
                         "sha256": sha256(AUDIT / "source-files/cmnmm9wv00032w1qkxr02azgp.json"),
                         "slideNumber": 8,
@@ -526,6 +699,33 @@ def main() -> None:
                 ],
             }
         ],
+    }
+    # The composer consumes the shared blocker-classification contract. Keep
+    # the legacy root fields for audit readers, while exposing the same review
+    # under the required tableReview object for --table-review.
+    table_review["tableReview"] = {
+        "schemaVersion": 1,
+        "purpose": "Manual source-grounded review of the Unit 56 published table projection.",
+        "reviewPolicy": {
+            "publishedSlidesAuthoritativeOnMismatch": True,
+            "sourceQuotesRequired": True,
+            "nativeShapeProvenanceRequired": True,
+            "noInventedCellsOrExamples": True,
+            "preserveExcludedNotesAsLearnerText": True,
+            "blockedWhenNativePublishedIdentityIsUnresolved": False,
+            "publishedSourceProjectionAllowedWhenNativeDiffers": True,
+            "publishedSourceProjectionRequiresLiteralCellQuotes": True,
+        },
+        "sourceRefs": table_review["entries"][0]["sourceRefs"],
+        "entries": table_review["entries"],
+        "summary": {
+            "auditedCount": 1,
+            "approvedProjectionCount": 1,
+            "clearTableSemanticsBlockerCount": 1,
+            "blockedCount": 0,
+            "approvedUnits": [56],
+            "blockedUnits": [],
+        },
     }
     save(AUDIT / "unit53-56-table-review.json", table_review)
 

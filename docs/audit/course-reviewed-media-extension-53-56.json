@@ -21,20 +21,33 @@
     "audioRecords": 8,
     "audioRecordsRecovered": 8,
     "audioRefsBlocked": 0,
-    "confirmedInstructionalImages": 0,
-    "imageReferencesBlockedNativeSource": 4,
+    "confirmedInstructionalImages": 4,
+    "imageReferencesBlockedNativeSource": 0,
+    "publishedInstructionalImageAssetsRecovered": 4,
     "publishedProofs": 5
   },
   "validation": {
     "sourceFilesPresentAndSha256Matched": true,
-    "publishedAudioObjectIdsMatched": true,
+    "publishedAudioObjectIdsMatched": {
+      "beforeUnit55Correction": false,
+      "afterUnit55Correction": true,
+      "matchedCountAfterCorrection": 8,
+      "expectedCount": 8
+    },
+    "unit55Audio2Correction": {
+      "publishedMediaObjectId": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh",
+      "exactDriveSourceId": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh",
+      "previousTruncatedId": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQ",
+      "previousTruncatedIdWasNotUsed": true,
+      "evidenceRef": "docs/audit/unit53-56-drive-recovery.json"
+    },
     "originalDriveDownloadMethod": "visible Google Drive viewer UI",
     "renderedSlidesUsedAsNativeAssets": false,
     "syntheticAudioOrImageUsed": false,
     "semanticListeningKeysAuthored": false,
     "unit55Audio2CorrectedExactId": true
   },
-  "blockers": [
+  "sourceNotes": [
     {
       "kind": "native-presentation",
       "units": [
@@ -43,10 +56,12 @@
         55,
         56
       ],
-      "status": "blocked",
-      "reason": "No authoritative native PPTX candidate was found; original instructional figures cannot be optimized or emitted without native source bytes.",
+      "status": "unavailable",
+      "reason": "No authoritative native PPTX candidate was found. Individual instructional JPEGs were recovered from the visible published deck with pageAssets; nativeIdentityConfirmed remains false.",
       "doNotSubstitute": true
-    },
+    }
+  ],
+  "blockers": [
     {
       "kind": "semantic-listening-review",
       "units": [
@@ -1156,7 +1171,224 @@
       }
     }
   ],
-  "images": [],
+  "images": [
+    {
+      "id": "unit-53-published-slide-04-figure-1",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 53,
+      "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+      "slideNumber": 4,
+      "sourceSlideNumber": 4,
+      "publishedSlideNumber": 4,
+      "localPath": "docs/audit/source-originals/published-figures/unit53-slide04.jpg",
+      "sourcePath": "docs/audit/source-originals/published-figures/unit53-slide04.jpg",
+      "sourceSha256": "4486f3719bb57c9de6063802041f2c896f46f1d3d6a2c2bf39082232df75ec76",
+      "sha256": "4486f3719bb57c9de6063802041f2c896f46f1d3d6a2c2bf39082232df75ec76",
+      "dedupSha256": "4486f3719bb57c9de6063802041f2c896f46f1d3d6a2c2bf39082232df75ec76",
+      "mimeType": "image/jpeg",
+      "bytes": 60440,
+      "width": 1125,
+      "height": 750,
+      "selected": true,
+      "reviewed": true,
+      "confirmedInstructional": true,
+      "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+      "originalMediaUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSbREW5Z1eJYCQlRCAwh3RbpWE5lcBDwY6aw2gLGNNLDEJY8oepYeGpeXclPU-fvT_bBP9agLL4MdJlbQwrpeEgLJWAdUgWMAm172YWpMQT0vVU08EM7QswBPbHu7zRo2USrpPd_uNi2qIyo3R1kIuWmnhwHqnQtQaoNrEDORQBtosKOqdA68U2n=s2048",
+      "publicPath": "public/images/lessons/course/source-4486f3719bb57c9d.webp",
+      "publicUrl": "/images/lessons/course/source-4486f3719bb57c9d.webp",
+      "publicHref": "/images/lessons/course/source-4486f3719bb57c9d.webp",
+      "nativeTrace": {
+        "nativePresentationDriveFileId": null,
+        "nativePresentationPath": null,
+        "nativeIdentityConfirmed": false,
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
+        "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+        "publishedSlideNumber": 4,
+        "publishedSlideObjectId": "g72967b2bcc_0_37",
+        "publishedAssetId": "cb6f934af4114c62",
+        "publishedAssetName": "AE1YXSbREW5Z1eJYCQlRCAwh3RbpWE5lcBDwY6aw2gLGNNLDEJY8oepYeGpeXclPU-fvT_bBP9agLL4MdJlbQwrpeEgLJWAdUgWMAm172YWpMQT0vVU08EM7QswBPbHu7zRo2USrpPd_uNi2qIyo3R1kIuWmnhwHqnQtQaoNrEDORQBtosKOqdA68U2n=s2048",
+        "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSbREW5Z1eJYCQlRCAwh3RbpWE5lcBDwY6aw2gLGNNLDEJY8oepYeGpeXclPU-fvT_bBP9agLL4MdJlbQwrpeEgLJWAdUgWMAm172YWpMQT0vVU08EM7QswBPbHu7zRo2USrpPd_uNi2qIyo3R1kIuWmnhwHqnQtQaoNrEDORQBtosKOqdA68U2n=s2048",
+        "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+        "sourceAssetPath": "docs/audit/source-originals/published-figures/unit53-slide04.jpg",
+        "sourceAssetSha256": "4486f3719bb57c9de6063802041f2c896f46f1d3d6a2c2bf39082232df75ec76",
+        "sourceAssetMimeType": "image/jpeg",
+        "sourceAssetDimensions": [
+          1125,
+          750
+        ],
+        "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+      },
+      "reviewEvidence": [
+        "The visible published slide 4 asks the learner to look at the picture.",
+        "The pageAssets bundle returned this individual JPEG; it is visually the photo shown in the published prompt, not a full-slide render, logo, or audio icon.",
+        "Native PPTX identity is unavailable, so nativeIdentityConfirmed remains false."
+      ]
+    },
+    {
+      "id": "unit-54-published-slide-04-figure-1",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 54,
+      "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+      "slideNumber": 4,
+      "sourceSlideNumber": 4,
+      "publishedSlideNumber": 4,
+      "localPath": "docs/audit/source-originals/published-figures/unit54-slide04.jpg",
+      "sourcePath": "docs/audit/source-originals/published-figures/unit54-slide04.jpg",
+      "sourceSha256": "cae379794e78a7481d2d50ae1bbc1369b4f852572ed1fb29c388aa314dbccbc0",
+      "sha256": "cae379794e78a7481d2d50ae1bbc1369b4f852572ed1fb29c388aa314dbccbc0",
+      "dedupSha256": "cae379794e78a7481d2d50ae1bbc1369b4f852572ed1fb29c388aa314dbccbc0",
+      "mimeType": "image/jpeg",
+      "bytes": 45990,
+      "width": 1124,
+      "height": 750,
+      "selected": true,
+      "reviewed": true,
+      "confirmedInstructional": true,
+      "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+      "originalMediaUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSZ4uvDPy4g1ilaKbhr6mkilEMtATlvduE686r95kvadFq5vBafzQf2i4c4seno69X9qlnZGpP4doltGKpubPmDMJ_2xcGLTAW3CAvw--fx8xEGuhLwjw1Cvg7gNHD2rpY7NO9dlm0onLs9p0xA5LL74YYFHnGKRPM0XTxVSq7DqBqThFLwMBFy0=s2048",
+      "publicPath": "public/images/lessons/course/source-cae379794e78a748.webp",
+      "publicUrl": "/images/lessons/course/source-cae379794e78a748.webp",
+      "publicHref": "/images/lessons/course/source-cae379794e78a748.webp",
+      "nativeTrace": {
+        "nativePresentationDriveFileId": null,
+        "nativePresentationPath": null,
+        "nativeIdentityConfirmed": false,
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000",
+        "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+        "publishedSlideNumber": 4,
+        "publishedSlideObjectId": "g72967b2bcc_0_37",
+        "publishedAssetId": "ab763532ad066f5b",
+        "publishedAssetName": "AE1YXSZ4uvDPy4g1ilaKbhr6mkilEMtATlvduE686r95kvadFq5vBafzQf2i4c4seno69X9qlnZGpP4doltGKpubPmDMJ_2xcGLTAW3CAvw--fx8xEGuhLwjw1Cvg7gNHD2rpY7NO9dlm0onLs9p0xA5LL74YYFHnGKRPM0XTxVSq7DqBqThFLwMBFy0=s2048",
+        "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSZ4uvDPy4g1ilaKbhr6mkilEMtATlvduE686r95kvadFq5vBafzQf2i4c4seno69X9qlnZGpP4doltGKpubPmDMJ_2xcGLTAW3CAvw--fx8xEGuhLwjw1Cvg7gNHD2rpY7NO9dlm0onLs9p0xA5LL74YYFHnGKRPM0XTxVSq7DqBqThFLwMBFy0=s2048",
+        "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+        "sourceAssetPath": "docs/audit/source-originals/published-figures/unit54-slide04.jpg",
+        "sourceAssetSha256": "cae379794e78a7481d2d50ae1bbc1369b4f852572ed1fb29c388aa314dbccbc0",
+        "sourceAssetMimeType": "image/jpeg",
+        "sourceAssetDimensions": [
+          1124,
+          750
+        ],
+        "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+      },
+      "reviewEvidence": [
+        "The visible published slide 4 asks the learner to look at the picture.",
+        "The pageAssets bundle returned this individual JPEG; it is visually the photo shown in the published prompt, not a full-slide render, logo, or audio icon.",
+        "Native PPTX identity is unavailable, so nativeIdentityConfirmed remains false."
+      ]
+    },
+    {
+      "id": "unit-55-published-slide-04-figure-1",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 55,
+      "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+      "slideNumber": 4,
+      "sourceSlideNumber": 4,
+      "publishedSlideNumber": 4,
+      "localPath": "docs/audit/source-originals/published-figures/unit55-slide04.jpg",
+      "sourcePath": "docs/audit/source-originals/published-figures/unit55-slide04.jpg",
+      "sourceSha256": "301b982e820251eaa9012d619672ba80560841fcf38c47d70332e67243a6b7a0",
+      "sha256": "301b982e820251eaa9012d619672ba80560841fcf38c47d70332e67243a6b7a0",
+      "dedupSha256": "301b982e820251eaa9012d619672ba80560841fcf38c47d70332e67243a6b7a0",
+      "mimeType": "image/jpeg",
+      "bytes": 73368,
+      "width": 1000,
+      "height": 750,
+      "selected": true,
+      "reviewed": true,
+      "confirmedInstructional": true,
+      "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+      "originalMediaUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSb4DktDr3B98IH-Dp3PJxtmDOOcIug-evKQwdAUMcHBgt25ZuWQLRtQ4mIiZ8rLExyKmUvJr-9XHr-vG1P9oqhBgpmaiiisoao-Z0OBX62-rExwCzOyxJWH8YEOb48Vurt1Dme5R0hIsafGEYJCDVNzQb0Yj_1I4PLq3R8398YbRAJVJ8sCKDrd=s2048",
+      "publicPath": "public/images/lessons/course/source-301b982e820251ea.webp",
+      "publicUrl": "/images/lessons/course/source-301b982e820251ea.webp",
+      "publicHref": "/images/lessons/course/source-301b982e820251ea.webp",
+      "nativeTrace": {
+        "nativePresentationDriveFileId": null,
+        "nativePresentationPath": null,
+        "nativeIdentityConfirmed": false,
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
+        "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+        "publishedSlideNumber": 4,
+        "publishedSlideObjectId": "g72967b2bcc_0_37",
+        "publishedAssetId": "d9ce42ac50147f8c",
+        "publishedAssetName": "AE1YXSb4DktDr3B98IH-Dp3PJxtmDOOcIug-evKQwdAUMcHBgt25ZuWQLRtQ4mIiZ8rLExyKmUvJr-9XHr-vG1P9oqhBgpmaiiisoao-Z0OBX62-rExwCzOyxJWH8YEOb48Vurt1Dme5R0hIsafGEYJCDVNzQb0Yj_1I4PLq3R8398YbRAJVJ8sCKDrd=s2048",
+        "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSb4DktDr3B98IH-Dp3PJxtmDOOcIug-evKQwdAUMcHBgt25ZuWQLRtQ4mIiZ8rLExyKmUvJr-9XHr-vG1P9oqhBgpmaiiisoao-Z0OBX62-rExwCzOyxJWH8YEOb48Vurt1Dme5R0hIsafGEYJCDVNzQb0Yj_1I4PLq3R8398YbRAJVJ8sCKDrd=s2048",
+        "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+        "sourceAssetPath": "docs/audit/source-originals/published-figures/unit55-slide04.jpg",
+        "sourceAssetSha256": "301b982e820251eaa9012d619672ba80560841fcf38c47d70332e67243a6b7a0",
+        "sourceAssetMimeType": "image/jpeg",
+        "sourceAssetDimensions": [
+          1000,
+          750
+        ],
+        "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+      },
+      "reviewEvidence": [
+        "The visible published slide 4 asks the learner to look at the picture.",
+        "The pageAssets bundle returned this individual JPEG; it is visually the photo shown in the published prompt, not a full-slide render, logo, or audio icon.",
+        "Native PPTX identity is unavailable, so nativeIdentityConfirmed remains false."
+      ]
+    },
+    {
+      "id": "unit-56-published-slide-04-figure-1",
+      "kind": "instructional-image",
+      "assetType": "instructional-image",
+      "role": "instructional",
+      "unit": 56,
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "slideNumber": 4,
+      "sourceSlideNumber": 4,
+      "publishedSlideNumber": 4,
+      "localPath": "docs/audit/source-originals/published-figures/unit56-slide04.jpg",
+      "sourcePath": "docs/audit/source-originals/published-figures/unit56-slide04.jpg",
+      "sourceSha256": "2b96e467487c9664ec1b6d633e2dead5de3f826f0079def6cb959841ce31b9c5",
+      "sha256": "2b96e467487c9664ec1b6d633e2dead5de3f826f0079def6cb959841ce31b9c5",
+      "dedupSha256": "2b96e467487c9664ec1b6d633e2dead5de3f826f0079def6cb959841ce31b9c5",
+      "mimeType": "image/jpeg",
+      "bytes": 104181,
+      "width": 1125,
+      "height": 750,
+      "selected": true,
+      "reviewed": true,
+      "confirmedInstructional": true,
+      "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+      "originalMediaUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSZys3HhfDgjct13p1EpzbTvS3ngsEBiHJ8QMtaYUAeImHLSjN2qfjk5Ho5C-cahfNzWQcP5bKxMCJAWHs5WWsSU615IJvKzfm9kwIsLGJJ07Hng1DfO-2cwauLpZ_2adRv6xUd_l_2F1aarPvdcC8ykVoiDm34RYPUXvxpQar55ceEeAdBSmevw=s2048",
+      "publicPath": "public/images/lessons/course/source-2b96e467487c9664.webp",
+      "publicUrl": "/images/lessons/course/source-2b96e467487c9664.webp",
+      "publicHref": "/images/lessons/course/source-2b96e467487c9664.webp",
+      "nativeTrace": {
+        "nativePresentationDriveFileId": null,
+        "nativePresentationPath": null,
+        "nativeIdentityConfirmed": false,
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000",
+        "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+        "publishedSlideNumber": 4,
+        "publishedSlideObjectId": "g72967b2bcc_0_37",
+        "publishedAssetId": "6fcfbe7a6a0de136",
+        "publishedAssetName": "AE1YXSZys3HhfDgjct13p1EpzbTvS3ngsEBiHJ8QMtaYUAeImHLSjN2qfjk5Ho5C-cahfNzWQcP5bKxMCJAWHs5WWsSU615IJvKzfm9kwIsLGJJ07Hng1DfO-2cwauLpZ_2adRv6xUd_l_2F1aarPvdcC8ykVoiDm34RYPUXvxpQar55ceEeAdBSmevw=s2048",
+        "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSZys3HhfDgjct13p1EpzbTvS3ngsEBiHJ8QMtaYUAeImHLSjN2qfjk5Ho5C-cahfNzWQcP5bKxMCJAWHs5WWsSU615IJvKzfm9kwIsLGJJ07Hng1DfO-2cwauLpZ_2adRv6xUd_l_2F1aarPvdcC8ykVoiDm34RYPUXvxpQar55ceEeAdBSmevw=s2048",
+        "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+        "sourceAssetPath": "docs/audit/source-originals/published-figures/unit56-slide04.jpg",
+        "sourceAssetSha256": "2b96e467487c9664ec1b6d633e2dead5de3f826f0079def6cb959841ce31b9c5",
+        "sourceAssetMimeType": "image/jpeg",
+        "sourceAssetDimensions": [
+          1125,
+          750
+        ],
+        "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+      },
+      "reviewEvidence": [
+        "The visible published slide 4 asks the learner to look at the picture.",
+        "The pageAssets bundle returned this individual JPEG; it is visually the photo shown in the published prompt, not a full-slide render, logo, or audio icon.",
+        "Native PPTX identity is unavailable, so nativeIdentityConfirmed remains false."
+      ]
+    }
+  ],
   "units": {
     "53": {
       "unit": 53,
@@ -1176,7 +1408,7 @@
       "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
       "publishedDeckTitle": "NEW Never say die- Unit 53.pptx",
       "publishedSlideCount": 17,
-      "nativeImageMappingStatus": "published-proof-only-native-source-unavailable",
+      "nativeImageMappingStatus": "published-instructional-asset-recovered-native-identity-unconfirmed",
       "audioNumbers": [
         1,
         2
@@ -1189,45 +1421,15 @@
         "60d8c83cbf90acf2ab91e22d763fdcae52a9b0a3a381712146e6c1f339efdb98",
         "e2dbfac9997ff26812ae77a103ccf0d36de922fa0ed61b5246e9723973fe7e37"
       ],
-      "imageDedupSha256": [],
-      "imageReferenceCount": 0,
-      "mediaBlockers": [
-        {
-          "kind": "instructional-image",
-          "slideNumber": 4,
-          "status": "blocked-native-source-unavailable",
-          "confirmedInstructional": false,
-          "proofRef": "published-proof-unit53-slide4",
-          "publishedPrompt": "A. Look at the picture. What is it suggesting? What is today’s topic?",
-          "publishedScreenshotSha256": "757acd55a8507768347555ceee8caf9c117f1515c01d4a112504fd4aab6070ed",
-          "publishedScreenshotBytes": 63017,
-          "publishedMediaRefs": [
-            {
-              "url": "https://docs.google.com/slides-images-rt/AE1YXSbGNHY8dq6PODcnQQd3TFzGQnb8G1mc5qelCFH4tJkjh6jFwvv8rR9n7AtoB4frSVn9eh8c7d5i6C6eCBmIvf2oSSjTiY6hi6VqF0jJLFj-ozDSR_1scL07fVeVtUkbUhJCA9nw0d6cmqHcQxzhF_BsoCTdlt7gHtViCFL-1JMipyLA-fV3a0_F-FiSC93WSA=s2048",
-              "kind": "rendered-slide-image",
-              "original": false,
-              "source": "image",
-              "doNotUseAsNativeAsset": true
-            },
-            {
-              "url": "https://docs.google.com/slides-images-rt/AE1YXSYQAbrumPtSSW_8R7MRxJXb9T3R20LSyYaOQqCrRw9IFoRzrSOl1MbVHe90fYMDI7xqv8mezGZeghPVkII2YBjhII7bF_QEbhJ9aHKCicIbwKfQnBPIs5dpuDl8QHn3YS5Cnxlg0svVvP9uxQHOq8XnhpKWpghmjDN6CvA5ZOd0cLgKXwDSsbl4=s2048",
-              "kind": "rendered-slide-image",
-              "original": false,
-              "source": "image",
-              "doNotUseAsNativeAsset": true
-            },
-            {
-              "url": "https://ssl.gstatic.com/docs/drawings/images/audio.png",
-              "kind": "audio-icon",
-              "original": false,
-              "source": "image",
-              "doNotUseAsNativeAsset": true
-            }
-          ],
-          "reason": "The authoritative Drive folder has no native presentation candidate and the published deck exposes only rendered slide media. Preserve this proof as evidence; do not use the rendered screenshot as a native learning asset or invent a replacement.",
-          "doNotSubstitute": true
-        }
-      ]
+      "imageDedupSha256": [
+        "4486f3719bb57c9de6063802041f2c896f46f1d3d6a2c2bf39082232df75ec76"
+      ],
+      "imageReferenceCount": 1,
+      "publishedFigureProofRefs": [
+        "published-figure-unit53-slide4"
+      ],
+      "mediaBlockers": [],
+      "nativeSourceNote": "No authoritative native PPTX identity was found; the published instructional JPEG is traceable and usable while nativeIdentityConfirmed remains false."
     },
     "54": {
       "unit": 54,
@@ -1247,7 +1449,7 @@
       "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000",
       "publishedDeckTitle": "NEW This is our shot in the arm - Unit 54.pptx",
       "publishedSlideCount": 17,
-      "nativeImageMappingStatus": "published-proof-only-native-source-unavailable",
+      "nativeImageMappingStatus": "published-instructional-asset-recovered-native-identity-unconfirmed",
       "audioNumbers": [
         1,
         2
@@ -1260,45 +1462,15 @@
         "3e66b7acccfd02b14241761a76d8085bbb99430cec23beccee5d9404ffbff7ab",
         "0d3deb461926d8847cdc5f9dbe03210cd03c5c24e6a499686fa8fd7b119af4d6"
       ],
-      "imageDedupSha256": [],
-      "imageReferenceCount": 0,
-      "mediaBlockers": [
-        {
-          "kind": "instructional-image",
-          "slideNumber": 4,
-          "status": "blocked-native-source-unavailable",
-          "confirmedInstructional": false,
-          "proofRef": "published-proof-unit54-slide4",
-          "publishedPrompt": "A. Look at the picture. What is it suggesting? What is today’s topic?",
-          "publishedScreenshotSha256": "05fe4213a6da49cd8e810c88d1a313caac9ae9ba5adc86ff350060df5c1b85d2",
-          "publishedScreenshotBytes": 59871,
-          "publishedMediaRefs": [
-            {
-              "url": "https://docs.google.com/slides-images-rt/AE1YXSYFyNEK4UaliMANdj-f47rIk3M3aiYxiOPwntInqXQpjhGG_GOsFybGSKrQPWP8UbLlt8Y5Kio8vhBRUODY3LEuwgtK8vYpP3oReeeHcgcbfAQA3FLCKSwdTmANbO99nHZQOQt--1APcWNLPxplRtJTa_SRZc_vvzy19sCJUpjzp6TUTSajufoAnd3_yl2X8g=s2048",
-              "kind": "rendered-slide-image",
-              "original": false,
-              "source": "image",
-              "doNotUseAsNativeAsset": true
-            },
-            {
-              "url": "https://docs.google.com/slides-images-rt/AE1YXSY-bhZR3-cWLVlfd4SwarFGGVsPL9hExkJ1jPKa-FhN8FLYsQAoLUTI96kTpnciFYWXm4DEWIPLRTgB8dDGp5-4Qd6CfVGWTk1fBy5lE0xvWWRcHF4eSzyXXuqrnzFgXh0ghrpBrt5IGIgFiaAbTgXuJ9T47_iOMY_g6INn1o9vVlwnWFKrgo2Z=s2048",
-              "kind": "rendered-slide-image",
-              "original": false,
-              "source": "image",
-              "doNotUseAsNativeAsset": true
-            },
-            {
-              "url": "https://ssl.gstatic.com/docs/drawings/images/audio.png",
-              "kind": "audio-icon",
-              "original": false,
-              "source": "image",
-              "doNotUseAsNativeAsset": true
-            }
-          ],
-          "reason": "The authoritative Drive folder has no native presentation candidate and the published deck exposes only rendered slide media. Preserve this proof as evidence; do not use the rendered screenshot as a native learning asset or invent a replacement.",
-          "doNotSubstitute": true
-        }
-      ]
+      "imageDedupSha256": [
+        "cae379794e78a7481d2d50ae1bbc1369b4f852572ed1fb29c388aa314dbccbc0"
+      ],
+      "imageReferenceCount": 1,
+      "publishedFigureProofRefs": [
+        "published-figure-unit54-slide4"
+      ],
+      "mediaBlockers": [],
+      "nativeSourceNote": "No authoritative native PPTX identity was found; the published instructional JPEG is traceable and usable while nativeIdentityConfirmed remains false."
     },
     "55": {
       "unit": 55,
@@ -1318,7 +1490,7 @@
       "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
       "publishedDeckTitle": "NEW That's anyone's call - Unit 55.pptx",
       "publishedSlideCount": 17,
-      "nativeImageMappingStatus": "published-proof-only-native-source-unavailable",
+      "nativeImageMappingStatus": "published-instructional-asset-recovered-native-identity-unconfirmed",
       "audioNumbers": [
         1,
         2
@@ -1331,45 +1503,15 @@
         "693e9e1af6b107bf33474a18d40d16d38f4245d89da9759ee7a09491202d5bf5",
         "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301"
       ],
-      "imageDedupSha256": [],
-      "imageReferenceCount": 0,
-      "mediaBlockers": [
-        {
-          "kind": "instructional-image",
-          "slideNumber": 4,
-          "status": "blocked-native-source-unavailable",
-          "confirmedInstructional": false,
-          "proofRef": "published-proof-unit55-slide4",
-          "publishedPrompt": "A. Look at the picture. What is it suggesting? What is today’s topic?",
-          "publishedScreenshotSha256": "ad16820bc3c0c6f185186a2a4dae701e985b92b1654b6edcaa361c39804f7848",
-          "publishedScreenshotBytes": 66676,
-          "publishedMediaRefs": [
-            {
-              "url": "https://docs.google.com/slides-images-rt/AE1YXSbeQfZqzlP5W656xI0Cw-F3nox1yQyF1p4u8PN4wYoFpiVIBu4YaFI01g-OaNjUHV-YrzKq_RL5bPSuMKMVZFRTKNGydJC5rVT033F3-6XoIbs8OfT4q_sUDXP1WTC0fvMk7bNYfe2gNwNAy3c2rRBU9F3bQx4B0FA-AyTsFvH-Qi_PHWQlZWqfudq-KHMSCw=s2048",
-              "kind": "rendered-slide-image",
-              "original": false,
-              "source": "image",
-              "doNotUseAsNativeAsset": true
-            },
-            {
-              "url": "https://docs.google.com/slides-images-rt/AE1YXSY0FEmUO1QWZzuaRJSW_VHn6hnt5fLQVOd0WjCIAX1q2jCglcvEvplOzxpnA6dCG0LMpv9H6e7fJro-og2bhwYZC5R2R6r_GtqHhti4LQ28AMMupOkH__4TU0Uni49vJ2MRhODkA8zAtoRM_-s8JNdZV8QWjBbbAgiJ-Z4YMq6j1fLEVqeAgXrU=s2048",
-              "kind": "rendered-slide-image",
-              "original": false,
-              "source": "image",
-              "doNotUseAsNativeAsset": true
-            },
-            {
-              "url": "https://ssl.gstatic.com/docs/drawings/images/audio.png",
-              "kind": "audio-icon",
-              "original": false,
-              "source": "image",
-              "doNotUseAsNativeAsset": true
-            }
-          ],
-          "reason": "The authoritative Drive folder has no native presentation candidate and the published deck exposes only rendered slide media. Preserve this proof as evidence; do not use the rendered screenshot as a native learning asset or invent a replacement.",
-          "doNotSubstitute": true
-        }
-      ]
+      "imageDedupSha256": [
+        "301b982e820251eaa9012d619672ba80560841fcf38c47d70332e67243a6b7a0"
+      ],
+      "imageReferenceCount": 1,
+      "publishedFigureProofRefs": [
+        "published-figure-unit55-slide4"
+      ],
+      "mediaBlockers": [],
+      "nativeSourceNote": "No authoritative native PPTX identity was found; the published instructional JPEG is traceable and usable while nativeIdentityConfirmed remains false."
     },
     "56": {
       "unit": 56,
@@ -1389,7 +1531,7 @@
       "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000",
       "publishedDeckTitle": "NEW Blood, Sweat and Tears- Unit 56.pptx",
       "publishedSlideCount": 17,
-      "nativeImageMappingStatus": "published-proof-only-native-source-unavailable",
+      "nativeImageMappingStatus": "published-instructional-asset-recovered-native-identity-unconfirmed",
       "audioNumbers": [
         1,
         2
@@ -1402,45 +1544,15 @@
         "55e031fa88111a38719137cc621445b5dae416025d5360c3f49a3a420031ea3b",
         "6283d8249c5241dfc7f67b39dbcca23a029f980bb67111d1a454fe26382c03f1"
       ],
-      "imageDedupSha256": [],
-      "imageReferenceCount": 0,
-      "mediaBlockers": [
-        {
-          "kind": "instructional-image",
-          "slideNumber": 4,
-          "status": "blocked-native-source-unavailable",
-          "confirmedInstructional": false,
-          "proofRef": "published-proof-unit56-slide4",
-          "publishedPrompt": "A. Look at the picture. What is it suggesting? What is today’s topic?",
-          "publishedScreenshotSha256": "ca9505c66e3bc6ce4b40fb9b47b7c99e1b2ee46c13b599656177580945d2f9c6",
-          "publishedScreenshotBytes": 67674,
-          "publishedMediaRefs": [
-            {
-              "url": "https://docs.google.com/slides-images-rt/AE1YXSYSApPUGMcS94kTK8QweNolcDxaJEWMAB6MoL7fBlUv4ZsaH_bgZt3nnIUrjnTiUf-WrqbMN5RRiBOXw2VnDFAgrlw-5ubYsypV_QZSG0eWQ0gT5mRkpyVGajC0Ub2E7Mte-ELCp7a22GcSy8tWD0m91PUvpZ5OK0lGD5_DddZaSsKggAfBkAq1I0xSL9KsQg=nw",
-              "kind": "rendered-slide-image",
-              "original": false,
-              "source": "image",
-              "doNotUseAsNativeAsset": true
-            },
-            {
-              "url": "https://docs.google.com/slides-images-rt/AE1YXSa7cpnvODk2JJz13PnC2ODCVH6SegvZE9kYa6LosuBtbiMswXMAh-PxkcRTzrS5CgA56JLR3nxR4PKiVqn62odjSWWHchMbF23e0ReYJDnDDxUNFpmfacXr3hOfssyZlhfW-Z3fC5smjjHohkLG0JxXQk7J0xmwdDg9A-48T3_JpegT__jjG_MB=nw",
-              "kind": "rendered-slide-image",
-              "original": false,
-              "source": "image",
-              "doNotUseAsNativeAsset": true
-            },
-            {
-              "url": "https://ssl.gstatic.com/docs/drawings/images/audio.png",
-              "kind": "audio-icon",
-              "original": false,
-              "source": "image",
-              "doNotUseAsNativeAsset": true
-            }
-          ],
-          "reason": "The authoritative Drive folder has no native presentation candidate and the published deck exposes only rendered slide media. Preserve this proof as evidence; do not use the rendered screenshot as a native learning asset or invent a replacement.",
-          "doNotSubstitute": true
-        }
-      ]
+      "imageDedupSha256": [
+        "2b96e467487c9664ec1b6d633e2dead5de3f826f0079def6cb959841ce31b9c5"
+      ],
+      "imageReferenceCount": 1,
+      "publishedFigureProofRefs": [
+        "published-figure-unit56-slide4"
+      ],
+      "mediaBlockers": [],
+      "nativeSourceNote": "No authoritative native PPTX identity was found; the published instructional JPEG is traceable and usable while nativeIdentityConfirmed remains false."
     }
   },
   "figureProof": [
@@ -1450,10 +1562,31 @@
       "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
       "screenshotBytes": 63017,
       "screenshotSha256": "757acd55a8507768347555ceee8caf9c117f1515c01d4a112504fd4aab6070ed",
-      "proofType": "visible-rendered-published-slide",
-      "confirmedInstructional": false,
-      "nativeAssetSha256": null,
-      "evidence": "Chrome visible published deck UI; screenshot hash is retained for audit only and is not a staged learning asset."
+      "proofType": "visible-published-slide-plus-page-assets-image",
+      "confirmedInstructional": true,
+      "nativeAssetSha256": "4486f3719bb57c9de6063802041f2c896f46f1d3d6a2c2bf39082232df75ec76",
+      "sourceAsset": {
+        "nativePresentationDriveFileId": null,
+        "nativePresentationPath": null,
+        "nativeIdentityConfirmed": false,
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
+        "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+        "publishedSlideNumber": 4,
+        "publishedSlideObjectId": "g72967b2bcc_0_37",
+        "publishedAssetId": "cb6f934af4114c62",
+        "publishedAssetName": "AE1YXSbREW5Z1eJYCQlRCAwh3RbpWE5lcBDwY6aw2gLGNNLDEJY8oepYeGpeXclPU-fvT_bBP9agLL4MdJlbQwrpeEgLJWAdUgWMAm172YWpMQT0vVU08EM7QswBPbHu7zRo2USrpPd_uNi2qIyo3R1kIuWmnhwHqnQtQaoNrEDORQBtosKOqdA68U2n=s2048",
+        "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSbREW5Z1eJYCQlRCAwh3RbpWE5lcBDwY6aw2gLGNNLDEJY8oepYeGpeXclPU-fvT_bBP9agLL4MdJlbQwrpeEgLJWAdUgWMAm172YWpMQT0vVU08EM7QswBPbHu7zRo2USrpPd_uNi2qIyo3R1kIuWmnhwHqnQtQaoNrEDORQBtosKOqdA68U2n=s2048",
+        "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+        "sourceAssetPath": "docs/audit/source-originals/published-figures/unit53-slide04.jpg",
+        "sourceAssetSha256": "4486f3719bb57c9de6063802041f2c896f46f1d3d6a2c2bf39082232df75ec76",
+        "sourceAssetMimeType": "image/jpeg",
+        "sourceAssetDimensions": [
+          1125,
+          750
+        ],
+        "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+      },
+      "evidence": "Chrome visible published deck UI showed the picture prompt; documented pageAssets.list + pageAssets.bundle returned and visually confirmed the individual instructional JPEG. The screenshot hash remains audit evidence only."
     },
     {
       "unit": 54,
@@ -1461,10 +1594,31 @@
       "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
       "screenshotBytes": 59871,
       "screenshotSha256": "05fe4213a6da49cd8e810c88d1a313caac9ae9ba5adc86ff350060df5c1b85d2",
-      "proofType": "visible-rendered-published-slide",
-      "confirmedInstructional": false,
-      "nativeAssetSha256": null,
-      "evidence": "Chrome visible published deck UI; screenshot hash is retained for audit only and is not a staged learning asset."
+      "proofType": "visible-published-slide-plus-page-assets-image",
+      "confirmedInstructional": true,
+      "nativeAssetSha256": "cae379794e78a7481d2d50ae1bbc1369b4f852572ed1fb29c388aa314dbccbc0",
+      "sourceAsset": {
+        "nativePresentationDriveFileId": null,
+        "nativePresentationPath": null,
+        "nativeIdentityConfirmed": false,
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000",
+        "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+        "publishedSlideNumber": 4,
+        "publishedSlideObjectId": "g72967b2bcc_0_37",
+        "publishedAssetId": "ab763532ad066f5b",
+        "publishedAssetName": "AE1YXSZ4uvDPy4g1ilaKbhr6mkilEMtATlvduE686r95kvadFq5vBafzQf2i4c4seno69X9qlnZGpP4doltGKpubPmDMJ_2xcGLTAW3CAvw--fx8xEGuhLwjw1Cvg7gNHD2rpY7NO9dlm0onLs9p0xA5LL74YYFHnGKRPM0XTxVSq7DqBqThFLwMBFy0=s2048",
+        "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSZ4uvDPy4g1ilaKbhr6mkilEMtATlvduE686r95kvadFq5vBafzQf2i4c4seno69X9qlnZGpP4doltGKpubPmDMJ_2xcGLTAW3CAvw--fx8xEGuhLwjw1Cvg7gNHD2rpY7NO9dlm0onLs9p0xA5LL74YYFHnGKRPM0XTxVSq7DqBqThFLwMBFy0=s2048",
+        "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+        "sourceAssetPath": "docs/audit/source-originals/published-figures/unit54-slide04.jpg",
+        "sourceAssetSha256": "cae379794e78a7481d2d50ae1bbc1369b4f852572ed1fb29c388aa314dbccbc0",
+        "sourceAssetMimeType": "image/jpeg",
+        "sourceAssetDimensions": [
+          1124,
+          750
+        ],
+        "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+      },
+      "evidence": "Chrome visible published deck UI showed the picture prompt; documented pageAssets.list + pageAssets.bundle returned and visually confirmed the individual instructional JPEG. The screenshot hash remains audit evidence only."
     },
     {
       "unit": 55,
@@ -1472,10 +1626,31 @@
       "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
       "screenshotBytes": 66676,
       "screenshotSha256": "ad16820bc3c0c6f185186a2a4dae701e985b92b1654b6edcaa361c39804f7848",
-      "proofType": "visible-rendered-published-slide",
-      "confirmedInstructional": false,
-      "nativeAssetSha256": null,
-      "evidence": "Chrome visible published deck UI; screenshot hash is retained for audit only and is not a staged learning asset."
+      "proofType": "visible-published-slide-plus-page-assets-image",
+      "confirmedInstructional": true,
+      "nativeAssetSha256": "301b982e820251eaa9012d619672ba80560841fcf38c47d70332e67243a6b7a0",
+      "sourceAsset": {
+        "nativePresentationDriveFileId": null,
+        "nativePresentationPath": null,
+        "nativeIdentityConfirmed": false,
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
+        "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+        "publishedSlideNumber": 4,
+        "publishedSlideObjectId": "g72967b2bcc_0_37",
+        "publishedAssetId": "d9ce42ac50147f8c",
+        "publishedAssetName": "AE1YXSb4DktDr3B98IH-Dp3PJxtmDOOcIug-evKQwdAUMcHBgt25ZuWQLRtQ4mIiZ8rLExyKmUvJr-9XHr-vG1P9oqhBgpmaiiisoao-Z0OBX62-rExwCzOyxJWH8YEOb48Vurt1Dme5R0hIsafGEYJCDVNzQb0Yj_1I4PLq3R8398YbRAJVJ8sCKDrd=s2048",
+        "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSb4DktDr3B98IH-Dp3PJxtmDOOcIug-evKQwdAUMcHBgt25ZuWQLRtQ4mIiZ8rLExyKmUvJr-9XHr-vG1P9oqhBgpmaiiisoao-Z0OBX62-rExwCzOyxJWH8YEOb48Vurt1Dme5R0hIsafGEYJCDVNzQb0Yj_1I4PLq3R8398YbRAJVJ8sCKDrd=s2048",
+        "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+        "sourceAssetPath": "docs/audit/source-originals/published-figures/unit55-slide04.jpg",
+        "sourceAssetSha256": "301b982e820251eaa9012d619672ba80560841fcf38c47d70332e67243a6b7a0",
+        "sourceAssetMimeType": "image/jpeg",
+        "sourceAssetDimensions": [
+          1000,
+          750
+        ],
+        "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+      },
+      "evidence": "Chrome visible published deck UI showed the picture prompt; documented pageAssets.list + pageAssets.bundle returned and visually confirmed the individual instructional JPEG. The screenshot hash remains audit evidence only."
     },
     {
       "unit": 56,
@@ -1483,10 +1658,31 @@
       "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
       "screenshotBytes": 67674,
       "screenshotSha256": "ca9505c66e3bc6ce4b40fb9b47b7c99e1b2ee46c13b599656177580945d2f9c6",
-      "proofType": "visible-rendered-published-slide",
-      "confirmedInstructional": false,
-      "nativeAssetSha256": null,
-      "evidence": "Chrome visible published deck UI; screenshot hash is retained for audit only and is not a staged learning asset."
+      "proofType": "visible-published-slide-plus-page-assets-image",
+      "confirmedInstructional": true,
+      "nativeAssetSha256": "2b96e467487c9664ec1b6d633e2dead5de3f826f0079def6cb959841ce31b9c5",
+      "sourceAsset": {
+        "nativePresentationDriveFileId": null,
+        "nativePresentationPath": null,
+        "nativeIdentityConfirmed": false,
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000",
+        "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+        "publishedSlideNumber": 4,
+        "publishedSlideObjectId": "g72967b2bcc_0_37",
+        "publishedAssetId": "6fcfbe7a6a0de136",
+        "publishedAssetName": "AE1YXSZys3HhfDgjct13p1EpzbTvS3ngsEBiHJ8QMtaYUAeImHLSjN2qfjk5Ho5C-cahfNzWQcP5bKxMCJAWHs5WWsSU615IJvKzfm9kwIsLGJJ07Hng1DfO-2cwauLpZ_2adRv6xUd_l_2F1aarPvdcC8ykVoiDm34RYPUXvxpQar55ceEeAdBSmevw=s2048",
+        "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSZys3HhfDgjct13p1EpzbTvS3ngsEBiHJ8QMtaYUAeImHLSjN2qfjk5Ho5C-cahfNzWQcP5bKxMCJAWHs5WWsSU615IJvKzfm9kwIsLGJJ07Hng1DfO-2cwauLpZ_2adRv6xUd_l_2F1aarPvdcC8ykVoiDm34RYPUXvxpQar55ceEeAdBSmevw=s2048",
+        "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+        "sourceAssetPath": "docs/audit/source-originals/published-figures/unit56-slide04.jpg",
+        "sourceAssetSha256": "2b96e467487c9664ec1b6d633e2dead5de3f826f0079def6cb959841ce31b9c5",
+        "sourceAssetMimeType": "image/jpeg",
+        "sourceAssetDimensions": [
+          1125,
+          750
+        ],
+        "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+      },
+      "evidence": "Chrome visible published deck UI showed the picture prompt; documented pageAssets.list + pageAssets.bundle returned and visually confirmed the individual instructional JPEG. The screenshot hash remains audit evidence only."
     },
     {
       "unit": 56,
@@ -1494,10 +1690,11 @@
       "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_86",
       "screenshotBytes": 110946,
       "screenshotSha256": "5c8f95080bd544d777795cdf10f8bec80462cb0df15fa8dcda892ddc0fa68919",
-      "proofType": "visible-rendered-published-slide",
+      "proofType": "visible-published-slide-plus-page-assets-image",
       "confirmedInstructional": false,
       "nativeAssetSha256": null,
-      "evidence": "Chrome visible published deck UI; screenshot hash is retained for audit only and is not a staged learning asset."
+      "sourceAsset": null,
+      "evidence": "Chrome visible published deck UI showed the picture prompt; documented pageAssets.list + pageAssets.bundle returned and visually confirmed the individual instructional JPEG. The screenshot hash remains audit evidence only."
     }
   ]
 }
