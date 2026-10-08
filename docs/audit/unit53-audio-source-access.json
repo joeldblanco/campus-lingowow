@@ -61,6 +61,16 @@
       ],
       "result": "blocked",
       "error": "Asset bundle request included unsupported asset kinds"
+    },
+    "locatorDownloadAttempt": {
+      "element": "audio",
+      "result": "timed-out-without-local-file",
+      "timeoutSeconds": 120
+    },
+    "playbackPageDownloadAttempt": {
+      "element": "video",
+      "result": "blocked",
+      "error": "Matched element does not expose a downloadable URL"
     }
   },
   "retrieval": {
@@ -68,7 +78,16 @@
     "originalBytesRetrieved": false,
     "sha256": null,
     "bytes": null,
-    "blocker": "The documented pageAssets bundle rejected the observed audio asset because Chrome classified it as kind 'other'. No direct asset navigation, hidden browser state, alternate URL probing, or account authorization was used."
+    "exactPublicSourceGet": {
+      "method": "GET",
+      "sourceId": "1aUFmqvXvMo4LiQ7V9tz2L695QYoY_J_L",
+      "queryPolicy": "exact observed source without cookies or signed query tokens",
+      "httpStatus": 200,
+      "contentType": "text/html",
+      "responseBytes": 946272,
+      "audioBytes": false
+    },
+    "blocker": "The documented pageAssets bundle rejected the observed audio asset because Chrome classified it as kind 'other'. The documented media locator timed out on the audio element and the loaded playback video exposed no downloadable URL. The exact public source GET returned HTML rather than audio bytes. No alternate URL probing, hidden browser state, cookies, signed query tokens, or account authorization was used."
   },
   "nextAction": "Keep Unit 53 Audio 1 source identity and published playback available for later documented source-connector retrieval. Do not substitute generated audio or mark original bytes recovered from this evidence."
 }
