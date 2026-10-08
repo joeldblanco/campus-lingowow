@@ -184,6 +184,35 @@ describe('summarizeCourseProgress', () => {
   })
 })
 
+describe('real converted archive identity', () => {
+  const convertedLesson = (originalIDs: string[]) => ({
+    id: 'lesson-2',
+    contents: [
+      { id: 'original-embed', data: { type: 'teacher_notes', data: {
+        learningRevision: 'course-guided-v1', lessonId: 'lesson-2', originalIDs,
+        originalSource: { type: 'embed', url: 'https://docs.google.com/presentation/source' },
+      } } },
+      { id: 'native-reading', data: { type: 'text' } },
+    ],
+  })
+
+  it('preserves completion with the exact builder archive shape and no synthetic source ID', () => {
+    expect(summarizeCourseProgress(
+      [{ lessons: [convertedLesson(['original-embed'])] }],
+      [{ contentId: 'original-embed', completed: true }],
+      { courseId: 'course-1' },
+    )).toMatchObject({ totalContents: 1, completedContents: 1, completedContentIds: ['native-reading'] })
+  })
+
+  it('rejects an originalIDs list that does not identify the archived row itself', () => {
+    expect(summarizeCourseProgress(
+      [{ lessons: [convertedLesson(['other-content'])] }],
+      [{ contentId: 'other-content', completed: true }],
+      { courseId: 'course-1' },
+    )).toMatchObject({ totalContents: 1, completedContents: 0, completedContentIds: [] })
+  })
+})
+
 describe('hasPassedExam (#92)', () => {
   const exam: GatingExam = { id: 'e1', moduleId: 'm1', isBlocking: true, passingScore: 70 }
 

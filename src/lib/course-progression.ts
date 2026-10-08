@@ -115,6 +115,12 @@ export function getConvertedEmbedSourceId(
     if (sourceContentId) return sourceContentId
   }
 
+  // The reviewed builder preserves the original JSON verbatim and records
+  // database identity separately. Only bridge the archived row's own ID.
+  if (Array.isArray(metadata.originalIDs) && metadata.originalIDs.includes(content.id)) {
+    return content.id
+  }
+
   return null
 }
 
