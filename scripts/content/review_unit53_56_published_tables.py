@@ -64,7 +64,7 @@ def _rows_and_notes() -> dict[tuple[int, int], dict[str, Any]]:
                 ["TO BE BROWN BREAD", "To be dead.", "I could not stay at the party, it was brown bread."],
                 ["THE BUCKET LIST", "Things to do before dying.", "Gotta jump off a plane soon, It’s part of my bucket list."],
             ],
-            "notes": [{"heading": "Teacher prompt", "text": "Look at the phrases and discuss them with your teacher. Did you know them?"}],
+            "notes": [{"heading": "", "text": "Look at the phrases and discuss them with your teacher. Did you know them?"}],
         },
         (53, 8): {
             "layout": "two-column mixed-conditional chart with a full-width To Consider note block below",
@@ -97,7 +97,7 @@ def _rows_and_notes() -> dict[tuple[int, int], dict[str, Any]]:
                 ["TO HAVE SENSE OF WORTH", "To have self-esteem, to know one’s worth and value", "She would not accept that if she had sense of worth."],
                 ["TO BE AS BOLD AS BRASS", "To be extremely confident but with no respect nor politeness.", "He came in and acted as bold as brass like always."],
             ],
-            "notes": [{"heading": "Teacher prompt", "text": "Look at the phrases and discuss them with your teacher. Did you know them?"}],
+            "notes": [{"heading": "", "text": "Look at the phrases and discuss them with your teacher. Did you know them?"}],
         },
         (54, 8): {
             "layout": "two-column mixed-conditional chart with a full-width To Consider note block below",
@@ -130,7 +130,7 @@ def _rows_and_notes() -> dict[tuple[int, int], dict[str, Any]]:
                 ["TAKE POT LUCK", "If you take pot luck, you accept whatever is available without knowing what it will be like.", "We were so hungry we decided to take pot luck and stopped at the first restaurant we saw."],
                 ["PLAY A WAITING GAME", "If you play a waiting game, you deliberately delay taking action in order to be able to act more effectively later.", "The cat keeps its eye on the bird, carefully playing a waiting game."],
             ],
-            "notes": [{"heading": "Teacher prompt", "text": "Look at the phrases and discuss them with your teacher. Did you know them?"}],
+            "notes": [{"heading": "", "text": "Look at the phrases and discuss them with your teacher. Did you know them?"}],
         },
         (55, 8): {
             "layout": "two-column mixed-conditional chart with a full-width To Consider note block below",
@@ -163,7 +163,7 @@ def _rows_and_notes() -> dict[tuple[int, int], dict[str, Any]]:
                 ["STAY AHEAD OF THE GAME", "To react quickly and gain/keep an advantage.", "We are changing our marketing strategy, advertising will now include TikTok. We must stay ahead of the game."],
                 ["BEND OVER BACKWARDS", "To work extra hard to help someone or to make them happy.", "I don’t understand why he continues to bend over backwards for Julia, she doesn’t appreciate it."],
             ],
-            "notes": [{"heading": "Teacher prompt", "text": "Look at the phrases and discuss them with your teacher. Did you know them?"}],
+            "notes": [{"heading": "", "text": "Look at the phrases and discuss them with your teacher. Did you know them?"}],
         },
         (56, 8): {
             "layout": "two-column STRUCTURES / EXAMPLES table with a full-width To Consider note block below",
