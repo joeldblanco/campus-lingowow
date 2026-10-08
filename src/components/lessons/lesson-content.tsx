@@ -67,9 +67,9 @@ export function LessonContent({
   )
 
   const lessonCourseId = courseId || lesson.module?.course?.id
-  const guidedCourseLesson = Boolean(lessonCourseId && isGuidedLessonPilot(lesson.id, lessonCourseId))
+  const guidedCourseLesson = Boolean(lessonCourseId && isGuidedLessonPilot(lesson.id, lessonCourseId, lesson.contents ?? []))
   const unitOneClassroom = lesson.id === UNIT_ONE_LESSON_ID && Boolean(isTeacher || isClassroom)
-  const guidedClassroomLesson = guidedCourseLesson && Boolean(isClassroom)
+  const guidedClassroomLesson = guidedCourseLesson && Boolean(isTeacher || isClassroom)
   const useGuidedViewer = Boolean(guidedStorageKey && !isTeacher && !isClassroom) || unitOneClassroom || guidedClassroomLesson
   const viewerStorageKey = guidedStorageKey || (lesson.id === UNIT_ONE_LESSON_ID
     ? `unit1:${lesson.id}`

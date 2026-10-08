@@ -41,7 +41,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
     }
   }
 
-  const isPilot = isGuidedLessonPilot(lessonId, courseId)
+  const isPilot = isGuidedLessonPilot(lessonId, courseId, lesson.contents ?? [])
 
   // Check if all activities are completed
   // const areActivitiesCompleted = lesson.activities.length === 0 || lesson.activities.every(a => a.isCompleted)
