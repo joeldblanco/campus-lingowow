@@ -9,7 +9,8 @@
     "preserveOriginalPromptsAndProvenance": true,
     "noInventedAudioOrIdentities": true,
     "ambiguousClaimsMustBeRewordedOrRemainBlocked": true,
-    "openResponseNeverGetsSyntheticAnswerKey": true
+    "openResponseNeverGetsSyntheticAnswerKey": true,
+    "reviewedOpenResponseHasNoSyntheticAnswerKey": true
   },
   "summary": {
     "resolvedCount": 4,
@@ -19,13 +20,17 @@
       "u44-s13-a:item-3",
       "u41-s15-c"
     ],
-    "remainingHardBlockCount": 18,
+    "remainingHardBlockCount": 2,
     "sourceMismatchEntriesReviewed": 17,
-    "remainingHardBlockItems": 18,
+    "remainingHardBlockItems": [
+      null,
+      "u38-s13-a:item-3"
+    ],
     "resolvedCodes": {
       "exercise-review-evidence-mismatch": {
         "resolved": 1,
-        "remaining": 16
+        "reviewedOpenResponse": 16,
+        "remaining": 0
       },
       "exercise-review-ambiguous": {
         "resolved": 1,
@@ -43,7 +48,26 @@
         "resolved": 1,
         "remaining": 0
       }
-    }
+    },
+    "reviewedOpenResponseCount": 16,
+    "reviewedOpenResponseItems": [
+      "u45-s15-d",
+      "u45-s16-e",
+      "u46-s12-a",
+      "u46-s15-d",
+      "u47-s12-a",
+      "u47-s15-d",
+      "u48-s12-a",
+      "u48-s15-d",
+      "u49-s12-a",
+      "u49-s15-d",
+      "u50-s12-a",
+      "u50-s15-d",
+      "u51-s12-a",
+      "u51-s15-d",
+      "u52-s12-a",
+      "u52-s15-d"
+    ]
   },
   "resolved": [
     {
@@ -254,393 +278,6 @@
   ],
   "remainingHardBlocks": [
     {
-      "unit": 45,
-      "lessonId": "cmnmm9t2a0025w1qk877v6313",
-      "slide": 15,
-      "itemId": "u45-s15-d",
-      "blockerCode": "exercise-review-evidence-mismatch",
-      "originalPrompt": "Continue the article task and discuss the source claims.",
-      "originalReviewStatus": "open-response-preserved",
-      "responseMode": "open-response",
-      "publishedSourceInstruction": [
-        "15",
-        "When the alarm was finally raised the crew acted very quickly but it was already too late to save the ship. Within twenty minutes of the collision the ship had flooded, so the captain ordered the lifeboats to be prepared, filled with women and children, and lowered into the water. This didn’t go well, regulations about the number of lifeboats a ship should carry were already out of date when the Titanic set sail, and even if the evacuation had been better organised, there wouldn’t have been enough boats to hold everybody. Meanwhile, the crew were sending out distress signals. The first message was \"sinking, need immediate assistance,\" and then \"SOS\". Several ships responded, including the Mount Temple, Frankfurt, and the Titanic's sister ship, Olympic, but they were too far away. The closest ship to respond was the Carpathia, which arrived in about four hours, too late to save everybody. Various distress flares launched from the sinking ship were also ineffective, including those seen by a ship called the Californian, whose captain, Stanley Lord, had ordered his crew to stop the ship for the night because of the icebergs. When Captain Lord was informed of the flares he failed to respond because he did not think they were important. Nor did the crew of the Californian wake their radio operator, who had gone to bed for the night. And what of Bruce Ismay, who many believe acted without regard for safety by requiring an unprepared ship to sail at such speed in spite of the danger? History tells us that he survived, but from the lifeboat turned his back on his beautiful ship as it sank That night, of a total of 2,208 people, only 712 were rescued by the Carpathia, while 1,496 perished. If the lifeboats had been filled to capacity, 1,178 people could have been saved. If there had been enough lifeboats, maybe everybody could have been saved. However, we may never know for sure. Article adapted from https://esol.britishcouncil.org/sites/default/files/attachments/informational-page/The_Sinking_of_the_Third_Condition.pdf"
-      ],
-      "originalSourceEvidence": [
-        "D. Continue reading and discuss the questions with your teacher."
-      ],
-      "provenance": {
-        "file": "docs/audit/source-files/cmnmm9t2a0025w1qk877v6313.json",
-        "sha256": "a5069975a5acfed23a03ec9914297dad9795252d6a2d80d4b07f0f742e6e8dec",
-        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS_rMp82qmTecshEDYUBoz_JOvXO6Y770kY3fDgGwS6qq6rlIl_nujrywGuZqJWbw/embed?start=false&loop=false&delayms=3000",
-        "contentId": "cmnmm9t5d0026w1qk2ph5vysf",
-        "deckTitle": "NEW If I had seen it... - Unit 45.pptx",
-        "publishedSlide": 15
-      },
-      "action": "remain-hard-blocked",
-      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
-    },
-    {
-      "unit": 45,
-      "lessonId": "cmnmm9t2a0025w1qk877v6313",
-      "slide": 16,
-      "itemId": "u45-s16-e",
-      "blockerCode": "exercise-review-evidence-mismatch",
-      "originalPrompt": "Complete the final role-play or writing activity.",
-      "originalReviewStatus": "open-response-preserved",
-      "responseMode": "open-response",
-      "publishedSourceInstruction": "D. Based on the topic presented in the reading section, what other event in the world do you think would have been prevented if the right people had acted on time? Use the language studied.",
-      "originalSourceEvidence": [
-        "E. Complete the final activity on the published slide."
-      ],
-      "provenance": {
-        "file": "docs/audit/source-files/cmnmm9t2a0025w1qk877v6313.json",
-        "sha256": "a5069975a5acfed23a03ec9914297dad9795252d6a2d80d4b07f0f742e6e8dec",
-        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS_rMp82qmTecshEDYUBoz_JOvXO6Y770kY3fDgGwS6qq6rlIl_nujrywGuZqJWbw/embed?start=false&loop=false&delayms=3000",
-        "contentId": "cmnmm9t5d0026w1qk2ph5vysf",
-        "deckTitle": "NEW If I had seen it... - Unit 45.pptx",
-        "publishedSlide": 16
-      },
-      "action": "remain-hard-blocked",
-      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
-    },
-    {
-      "unit": 46,
-      "lessonId": "cmnmm9tei0028w1qkri0q23eb",
-      "slide": 12,
-      "itemId": "u46-s12-a",
-      "blockerCode": "exercise-review-evidence-mismatch",
-      "originalPrompt": "Complete the grammar practice shown on the published slide.",
-      "originalReviewStatus": "open-response-preserved",
-      "responseMode": "open-response",
-      "publishedSourceInstruction": "Let’s Practice",
-      "originalSourceEvidence": [
-        "A. Complete the grammar exercise on the published slide."
-      ],
-      "provenance": {
-        "file": "docs/audit/source-files/cmnmm9tei0028w1qkri0q23eb.json",
-        "sha256": "f70150fc8d4802426c20dccfc0bbd3e2054e3dc850702060065987b0bb7073a4",
-        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vR94uKUH9GxmAjQsdhCQI5LAFneW1xtYFln8WJaTsErKgUPlEX-305BZrjXe36z6A/embed?start=false&loop=false&delayms=3000",
-        "contentId": "cmnmm9thk0029w1qk0zfq5ucy",
-        "deckTitle": "NEW If it had been me.... - Unit 46.pptx",
-        "publishedSlide": 12
-      },
-      "action": "remain-hard-blocked",
-      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
-    },
-    {
-      "unit": 46,
-      "lessonId": "cmnmm9tei0028w1qkri0q23eb",
-      "slide": 15,
-      "itemId": "u46-s15-d",
-      "blockerCode": "exercise-review-evidence-mismatch",
-      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
-      "originalReviewStatus": "open-response-preserved",
-      "responseMode": "open-response",
-      "publishedSourceInstruction": "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher.",
-      "originalSourceEvidence": [
-        "D. Complete the final activity on the published slide."
-      ],
-      "provenance": {
-        "file": "docs/audit/source-files/cmnmm9tei0028w1qkri0q23eb.json",
-        "sha256": "f70150fc8d4802426c20dccfc0bbd3e2054e3dc850702060065987b0bb7073a4",
-        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vR94uKUH9GxmAjQsdhCQI5LAFneW1xtYFln8WJaTsErKgUPlEX-305BZrjXe36z6A/embed?start=false&loop=false&delayms=3000",
-        "contentId": "cmnmm9thk0029w1qk0zfq5ucy",
-        "deckTitle": "NEW If it had been me.... - Unit 46.pptx",
-        "publishedSlide": 15
-      },
-      "action": "remain-hard-blocked",
-      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
-    },
-    {
-      "unit": 47,
-      "lessonId": "cmnmm9tqo002bw1qklsuz2eli",
-      "slide": 12,
-      "itemId": "u47-s12-a",
-      "blockerCode": "exercise-review-evidence-mismatch",
-      "originalPrompt": "Complete the grammar practice shown on the published slide.",
-      "originalReviewStatus": "open-response-preserved",
-      "responseMode": "open-response",
-      "publishedSourceInstruction": "Let’s Practice",
-      "originalSourceEvidence": [
-        "A. Complete the grammar exercise on the published slide."
-      ],
-      "provenance": {
-        "file": "docs/audit/source-files/cmnmm9tqo002bw1qklsuz2eli.json",
-        "sha256": "f303d2de50f8711fa491d86580397bdf6a0f0c6c454afc64cd6f2d9a308f6caa",
-        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSqEZZ29RAMRwYxiA4q2J48uqBbC5t_GGY6yOXTnEeWb0q4L_qtdCELEVAei8J3-A/embed?start=false&loop=false&delayms=3000",
-        "contentId": "cmnmm9ttr002cw1qk4m656ire",
-        "deckTitle": "NEW If only I had called... - Unit 47.pptx",
-        "publishedSlide": 12
-      },
-      "action": "remain-hard-blocked",
-      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
-    },
-    {
-      "unit": 47,
-      "lessonId": "cmnmm9tqo002bw1qklsuz2eli",
-      "slide": 15,
-      "itemId": "u47-s15-d",
-      "blockerCode": "exercise-review-evidence-mismatch",
-      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
-      "originalReviewStatus": "open-response-preserved",
-      "responseMode": "open-response",
-      "publishedSourceInstruction": "C. Read the following article and have a discussion with the teacher. After that, read the text aloud to your teacher. You can read the full version on the link provided for further activities.",
-      "originalSourceEvidence": [
-        "D. Complete the final activity on the published slide."
-      ],
-      "provenance": {
-        "file": "docs/audit/source-files/cmnmm9tqo002bw1qklsuz2eli.json",
-        "sha256": "f303d2de50f8711fa491d86580397bdf6a0f0c6c454afc64cd6f2d9a308f6caa",
-        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSqEZZ29RAMRwYxiA4q2J48uqBbC5t_GGY6yOXTnEeWb0q4L_qtdCELEVAei8J3-A/embed?start=false&loop=false&delayms=3000",
-        "contentId": "cmnmm9ttr002cw1qk4m656ire",
-        "deckTitle": "NEW If only I had called... - Unit 47.pptx",
-        "publishedSlide": 15
-      },
-      "action": "remain-hard-blocked",
-      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
-    },
-    {
-      "unit": 48,
-      "lessonId": "cmnmm9u2w002ew1qkvb9dzxjp",
-      "slide": 12,
-      "itemId": "u48-s12-a",
-      "blockerCode": "exercise-review-evidence-mismatch",
-      "originalPrompt": "Complete the grammar practice shown on the published slide.",
-      "originalReviewStatus": "open-response-preserved",
-      "responseMode": "open-response",
-      "publishedSourceInstruction": "Let’s Practice",
-      "originalSourceEvidence": [
-        "A. Complete the grammar exercise on the published slide."
-      ],
-      "provenance": {
-        "file": "docs/audit/source-files/cmnmm9u2w002ew1qkvb9dzxjp.json",
-        "sha256": "2da48aab899d4e3f00249fc40cddf2ea2886e7ed46c1d8cb5e9e0aa207203631",
-        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS9Jp3rurEXM9axOt3csUe4WdDYbLvr_dbtHD9Sqb6zMQkd-cmkGBZoagk-z8fyJg/embed?start=false&loop=false&delayms=3000",
-        "contentId": "cmnmm9u5w002fw1qk640elu0g",
-        "deckTitle": "NEW It could have been that way. - Unit 48.pptx",
-        "publishedSlide": 12
-      },
-      "action": "remain-hard-blocked",
-      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
-    },
-    {
-      "unit": 48,
-      "lessonId": "cmnmm9u2w002ew1qkvb9dzxjp",
-      "slide": 15,
-      "itemId": "u48-s15-d",
-      "blockerCode": "exercise-review-evidence-mismatch",
-      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
-      "originalReviewStatus": "open-response-preserved",
-      "responseMode": "open-response",
-      "publishedSourceInstruction": "C. Read the following article and have a discussion with the teacher. After that, read the text aloud to your teacher. You can read the full version on the link provided for further activities.",
-      "originalSourceEvidence": [
-        "D. Complete the final activity on the published slide."
-      ],
-      "provenance": {
-        "file": "docs/audit/source-files/cmnmm9u2w002ew1qkvb9dzxjp.json",
-        "sha256": "2da48aab899d4e3f00249fc40cddf2ea2886e7ed46c1d8cb5e9e0aa207203631",
-        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS9Jp3rurEXM9axOt3csUe4WdDYbLvr_dbtHD9Sqb6zMQkd-cmkGBZoagk-z8fyJg/embed?start=false&loop=false&delayms=3000",
-        "contentId": "cmnmm9u5w002fw1qk640elu0g",
-        "deckTitle": "NEW It could have been that way. - Unit 48.pptx",
-        "publishedSlide": 15
-      },
-      "action": "remain-hard-blocked",
-      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
-    },
-    {
-      "unit": 49,
-      "lessonId": "cmnmm9uey002hw1qk4poj2sfe",
-      "slide": 12,
-      "itemId": "u49-s12-a",
-      "blockerCode": "exercise-review-evidence-mismatch",
-      "originalPrompt": "Complete the grammar practice shown on the published slide.",
-      "originalReviewStatus": "open-response-preserved",
-      "responseMode": "open-response",
-      "publishedSourceInstruction": "A. Using the phrases learned in the lesson, write 8 sentences expressing situations likely to happen. Follow the example.",
-      "originalSourceEvidence": [
-        "A. Complete the grammar exercise on the published slide."
-      ],
-      "provenance": {
-        "file": "docs/audit/source-files/cmnmm9uey002hw1qk4poj2sfe.json",
-        "sha256": "b34e294963d4b5000863e5dcf5847a8203f4f85f2be8fbbe60525f1bdd298387",
-        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSeVrypohmrcGfrbHSH_BSbqqzcj4h3uFT2Oh5QBOkCKb4Nq2EUk386Am14X0q80A/embed?start=false&loop=false&delayms=3000",
-        "contentId": "cmnmm9ui0002iw1qkr9gl1c9s",
-        "deckTitle": "NEW In case they're lost - Unit 49.pptx",
-        "publishedSlide": 12
-      },
-      "action": "remain-hard-blocked",
-      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
-    },
-    {
-      "unit": 49,
-      "lessonId": "cmnmm9uey002hw1qk4poj2sfe",
-      "slide": 15,
-      "itemId": "u49-s15-d",
-      "blockerCode": "exercise-review-evidence-mismatch",
-      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
-      "originalReviewStatus": "open-response-preserved",
-      "responseMode": "open-response",
-      "publishedSourceInstruction": "D. Based on the topic presented in the reading section, what other issues you think people should be aware of? Having answered that, what are the circumstances likely to happen depending on people’s response to them?",
-      "originalSourceEvidence": [
-        "D. Complete the final activity on the published slide."
-      ],
-      "provenance": {
-        "file": "docs/audit/source-files/cmnmm9uey002hw1qk4poj2sfe.json",
-        "sha256": "b34e294963d4b5000863e5dcf5847a8203f4f85f2be8fbbe60525f1bdd298387",
-        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSeVrypohmrcGfrbHSH_BSbqqzcj4h3uFT2Oh5QBOkCKb4Nq2EUk386Am14X0q80A/embed?start=false&loop=false&delayms=3000",
-        "contentId": "cmnmm9ui0002iw1qkr9gl1c9s",
-        "deckTitle": "NEW In case they're lost - Unit 49.pptx",
-        "publishedSlide": 15
-      },
-      "action": "remain-hard-blocked",
-      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
-    },
-    {
-      "unit": 50,
-      "lessonId": "cmnmm9ur4002kw1qkr4g1untw",
-      "slide": 12,
-      "itemId": "u50-s12-a",
-      "blockerCode": "exercise-review-evidence-mismatch",
-      "originalPrompt": "Complete the grammar practice shown on the published slide.",
-      "originalReviewStatus": "open-response-preserved",
-      "responseMode": "open-response",
-      "publishedSourceInstruction": "A. Using the phrases learned in the lesson, write 8 sentences expressing situations not likely to happen and wishes for the future. Follow the example.",
-      "originalSourceEvidence": [
-        "A. Complete the grammar exercise on the published slide."
-      ],
-      "provenance": {
-        "file": "docs/audit/source-files/cmnmm9ur4002kw1qkr4g1untw.json",
-        "sha256": "963e0cd4c4334bcb06d65f1bc2ea30c987fe90a94aa88698faba20065980e284",
-        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRhC8eydj4UMLsNKsGAcGhFmGrAjEeNLqHPzjhK9BeQc2EnD9xBBA6RC-vbY4e2IA/embed?start=false&loop=false&delayms=3000",
-        "contentId": "cmnmm9uu6002lw1qkj4ao2e9x",
-        "deckTitle": "NEW Imagine you had a car - Unit 50.pptx",
-        "publishedSlide": 12
-      },
-      "action": "remain-hard-blocked",
-      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
-    },
-    {
-      "unit": 50,
-      "lessonId": "cmnmm9ur4002kw1qkr4g1untw",
-      "slide": 15,
-      "itemId": "u50-s15-d",
-      "blockerCode": "exercise-review-evidence-mismatch",
-      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
-      "originalReviewStatus": "open-response-preserved",
-      "responseMode": "open-response",
-      "publishedSourceInstruction": "D. Based on the topic presented in the reading section, tell your teacher about the wishes you have that you feel like they may not come true. Explain why you think that, the reasons and if you plan to do something about it.",
-      "originalSourceEvidence": [
-        "D. Complete the final activity on the published slide."
-      ],
-      "provenance": {
-        "file": "docs/audit/source-files/cmnmm9ur4002kw1qkr4g1untw.json",
-        "sha256": "963e0cd4c4334bcb06d65f1bc2ea30c987fe90a94aa88698faba20065980e284",
-        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRhC8eydj4UMLsNKsGAcGhFmGrAjEeNLqHPzjhK9BeQc2EnD9xBBA6RC-vbY4e2IA/embed?start=false&loop=false&delayms=3000",
-        "contentId": "cmnmm9uu6002lw1qkj4ao2e9x",
-        "deckTitle": "NEW Imagine you had a car - Unit 50.pptx",
-        "publishedSlide": 15
-      },
-      "action": "remain-hard-blocked",
-      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
-    },
-    {
-      "unit": 51,
-      "lessonId": "cmnmm9v3a002nw1qkedoaw2od",
-      "slide": 12,
-      "itemId": "u51-s12-a",
-      "blockerCode": "exercise-review-evidence-mismatch",
-      "originalPrompt": "Complete the grammar practice shown on the published slide.",
-      "originalReviewStatus": "open-response-preserved",
-      "responseMode": "open-response",
-      "publishedSourceInstruction": "A. Using the phrases learned in the lesson, write 8 sentences expressing events or wishes that did not happen. Follow the example.",
-      "originalSourceEvidence": [
-        "A. Complete the grammar exercise on the published slide."
-      ],
-      "provenance": {
-        "file": "docs/audit/source-files/cmnmm9v3a002nw1qkedoaw2od.json",
-        "sha256": "8b4f5da240789c74fea48fb529b8294774b7d1199bc434def0ae732bcd8202cc",
-        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQR_8lUzeku4wyvwihPJxPjnWOcUhYUoe3nfiLvUfGzMQnOvwVGbxjnR_PhNd5IXA/embed?start=false&loop=false&delayms=3000",
-        "contentId": "cmnmm9v6c002ow1qk7b5lo03z",
-        "deckTitle": "NEW What if he had lost his job? - Unit 51.pptx",
-        "publishedSlide": 12
-      },
-      "action": "remain-hard-blocked",
-      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
-    },
-    {
-      "unit": 51,
-      "lessonId": "cmnmm9v3a002nw1qkedoaw2od",
-      "slide": 15,
-      "itemId": "u51-s15-d",
-      "blockerCode": "exercise-review-evidence-mismatch",
-      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
-      "originalReviewStatus": "open-response-preserved",
-      "responseMode": "open-response",
-      "publishedSourceInstruction": "D. Based on the topic presented in the reading section, make a small presentation / discussion about what other global disaster had been announced and never came to happen? What if it had became true? Suppose that we had lived it, where would that have let us?",
-      "originalSourceEvidence": [
-        "D. Complete the final activity on the published slide."
-      ],
-      "provenance": {
-        "file": "docs/audit/source-files/cmnmm9v3a002nw1qkedoaw2od.json",
-        "sha256": "8b4f5da240789c74fea48fb529b8294774b7d1199bc434def0ae732bcd8202cc",
-        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQR_8lUzeku4wyvwihPJxPjnWOcUhYUoe3nfiLvUfGzMQnOvwVGbxjnR_PhNd5IXA/embed?start=false&loop=false&delayms=3000",
-        "contentId": "cmnmm9v6c002ow1qk7b5lo03z",
-        "deckTitle": "NEW What if he had lost his job? - Unit 51.pptx",
-        "publishedSlide": 15
-      },
-      "action": "remain-hard-blocked",
-      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
-    },
-    {
-      "unit": 52,
-      "lessonId": "cmnmm9vfh002qw1qknevwf813",
-      "slide": 12,
-      "itemId": "u52-s12-a",
-      "blockerCode": "exercise-review-evidence-mismatch",
-      "originalPrompt": "Complete the grammar practice shown on the published slide.",
-      "originalReviewStatus": "open-response-preserved",
-      "responseMode": "open-response",
-      "publishedSourceInstruction": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are yet to happen. Follow the example.",
-      "originalSourceEvidence": [
-        "A. Complete the grammar exercise on the published slide."
-      ],
-      "provenance": {
-        "file": "docs/audit/source-files/cmnmm9vfh002qw1qknevwf813.json",
-        "sha256": "251b6283a58c491c7a47e1bfc3be52be7a79e8087304cb9319b54c46092cce6e",
-        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQQeqAI67769x4EO1FJwv8LXNfCFDMAZY0WNICVJl9YMnJYMGl8VplBKKbCZH3SuQ/embed?start=false&loop=false&delayms=3000",
-        "contentId": "cmnmm9vij002rw1qkwktvpnx4",
-        "deckTitle": "NEW I'll have finished by then - Unit 52.pptx",
-        "publishedSlide": 12
-      },
-      "action": "remain-hard-blocked",
-      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
-    },
-    {
-      "unit": 52,
-      "lessonId": "cmnmm9vfh002qw1qknevwf813",
-      "slide": 15,
-      "itemId": "u52-s15-d",
-      "blockerCode": "exercise-review-evidence-mismatch",
-      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
-      "originalReviewStatus": "open-response-preserved",
-      "responseMode": "open-response",
-      "publishedSourceInstruction": "D. Make a small presentation / discussion about where will we have gotten as a society in 40 years’ time? Will we be doing better? Worse? Why? Talk about the different important areas and how you see it.",
-      "originalSourceEvidence": [
-        "D. Complete the final activity on the published slide."
-      ],
-      "provenance": {
-        "file": "docs/audit/source-files/cmnmm9vfh002qw1qknevwf813.json",
-        "sha256": "251b6283a58c491c7a47e1bfc3be52be7a79e8087304cb9319b54c46092cce6e",
-        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQQeqAI67769x4EO1FJwv8LXNfCFDMAZY0WNICVJl9YMnJYMGl8VplBKKbCZH3SuQ/embed?start=false&loop=false&delayms=3000",
-        "contentId": "cmnmm9vij002rw1qkwktvpnx4",
-        "deckTitle": "NEW I'll have finished by then - Unit 52.pptx",
-        "publishedSlide": 15
-      },
-      "action": "remain-hard-blocked",
-      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems."
-    },
-    {
       "unit": 6,
       "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
       "slide": 6,
@@ -693,6 +330,947 @@
         "deckTitle": "New Can you do it for me? - Unit 38.pptx",
         "publishedSlide": 13
       }
+    }
+  ],
+  "reviewedOpenResponse": [
+    {
+      "unit": 45,
+      "lessonId": "cmnmm9t2a0025w1qk877v6313",
+      "slide": 15,
+      "itemId": "u45-s15-d",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Continue the article task and discuss the source claims.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "D. Based on the topic presented in the reading section, what other event in the world do you think would have been prevented if the right people had acted on time? Use the language studied.",
+      "originalSourceEvidence": [
+        "D. Continue reading and discuss the questions with your teacher."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9t2a0025w1qk877v6313.json",
+        "sha256": "a5069975a5acfed23a03ec9914297dad9795252d6a2d80d4b07f0f742e6e8dec",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS_rMp82qmTecshEDYUBoz_JOvXO6Y770kY3fDgGwS6qq6rlIl_nujrywGuZqJWbw/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9t5d0026w1qk2ph5vysf",
+        "deckTitle": "NEW If I had seen it... - Unit 45.pptx",
+        "publishedSlide": 15,
+        "publishedSourceSlide": 16
+      },
+      "action": "review-source-aligned-open-response",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems.",
+      "originalReviewSlide": 15,
+      "publishedSourceSlide": 16,
+      "publishedSourceEvidence": [
+        "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher.",
+        "The Sinking of Titanic. The sinking of the RMS Titanic was one of the worst maritime disasters in history. On April 14, 1912, at 11:40 p.m., the ‘unsinkable’ luxury ship hit an iceberg and sank in just under three hours with the loss of around 1500 lives. There are many different descriptions of the disaster by the surviving passengers and crew, but few people doubt that human error played a part in the tragedy. Let’s look at some of the things that went wrong. On the night of Sunday, 14 April 1912 the temperature was near freezing and the ocean was completely calm. Surviving 2nd Officer Charles Lightoller later wrote, \"the sea was like glass\". The ship’s course had been changed by the captain, but other than this, he saw no reason to slow down.The owner of the ship, Bruce Ismay, was also on board and had instructed the captain to speed up in order to break the record for a transatlantic voyage. The captain agreed, but perhaps if he had known of the messages the ship had received in the radio room, he would have acted differently. According to a ship ahead called the Mesaba, lots of large icebergs were in the area. These messages did not reach him. There were three teams of lookouts on board keeping constant watch for obstacles in the ship’s path, but as Charles Lightoller said at the British inquiry, \"Everything was against us, there was no moon, no wind, no binoculars and with the dark side of the iceberg facing the ship, the lookouts were powerless.”",
+        "When the alarm was finally raised the crew acted very quickly but it was already too late to save the ship. Within twenty minutes of the collision the ship had flooded, so the captain ordered the lifeboats to be prepared, filled with women and children, and lowered into the water. This didn’t go well, regulations about the number of lifeboats a ship should carry were already out of date when the Titanic set sail, and even if the evacuation had been better organised, there wouldn’t have been enough boats to hold everybody. Meanwhile, the crew were sending out distress signals. The first message was \"sinking, need immediate assistance,\" and then \"SOS\". Several ships responded, including the Mount Temple, Frankfurt, and the Titanic's sister ship, Olympic, but they were too far away. The closest ship to respond was the Carpathia, which arrived in about four hours, too late to save everybody. Various distress flares launched from the sinking ship were also ineffective, including those seen by a ship called the Californian, whose captain, Stanley Lord, had ordered his crew to stop the ship for the night because of the icebergs. When Captain Lord was informed of the flares he failed to respond because he did not think they were important. Nor did the crew of the Californian wake their radio operator, who had gone to bed for the night. And what of Bruce Ismay, who many believe acted without regard for safety by requiring an unprepared ship to sail at such speed in spite of the danger? History tells us that he survived, but from the lifeboat turned his back on his beautiful ship as it sank That night, of a total of 2,208 people, only 712 were rescued by the Carpathia, while 1,496 perished. If the lifeboats had been filled to capacity, 1,178 people could have been saved. If there had been enough lifeboats, maybe everybody could have been saved. However, we may never know for sure. Article adapted from https://esol.britishcouncil.org/sites/default/files/attachments/informational-page/The_Sinking_of_the_Third_Condition.pdf",
+        "D. Based on the topic presented in the reading section, what other event in the world do you think would have been prevented if the right people had acted on time? Use the language studied."
+      ],
+      "sourceEvidence": [
+        "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher.",
+        "The Sinking of Titanic. The sinking of the RMS Titanic was one of the worst maritime disasters in history. On April 14, 1912, at 11:40 p.m., the ‘unsinkable’ luxury ship hit an iceberg and sank in just under three hours with the loss of around 1500 lives. There are many different descriptions of the disaster by the surviving passengers and crew, but few people doubt that human error played a part in the tragedy. Let’s look at some of the things that went wrong. On the night of Sunday, 14 April 1912 the temperature was near freezing and the ocean was completely calm. Surviving 2nd Officer Charles Lightoller later wrote, \"the sea was like glass\". The ship’s course had been changed by the captain, but other than this, he saw no reason to slow down.The owner of the ship, Bruce Ismay, was also on board and had instructed the captain to speed up in order to break the record for a transatlantic voyage. The captain agreed, but perhaps if he had known of the messages the ship had received in the radio room, he would have acted differently. According to a ship ahead called the Mesaba, lots of large icebergs were in the area. These messages did not reach him. There were three teams of lookouts on board keeping constant watch for obstacles in the ship’s path, but as Charles Lightoller said at the British inquiry, \"Everything was against us, there was no moon, no wind, no binoculars and with the dark side of the iceberg facing the ship, the lookouts were powerless.”",
+        "When the alarm was finally raised the crew acted very quickly but it was already too late to save the ship. Within twenty minutes of the collision the ship had flooded, so the captain ordered the lifeboats to be prepared, filled with women and children, and lowered into the water. This didn’t go well, regulations about the number of lifeboats a ship should carry were already out of date when the Titanic set sail, and even if the evacuation had been better organised, there wouldn’t have been enough boats to hold everybody. Meanwhile, the crew were sending out distress signals. The first message was \"sinking, need immediate assistance,\" and then \"SOS\". Several ships responded, including the Mount Temple, Frankfurt, and the Titanic's sister ship, Olympic, but they were too far away. The closest ship to respond was the Carpathia, which arrived in about four hours, too late to save everybody. Various distress flares launched from the sinking ship were also ineffective, including those seen by a ship called the Californian, whose captain, Stanley Lord, had ordered his crew to stop the ship for the night because of the icebergs. When Captain Lord was informed of the flares he failed to respond because he did not think they were important. Nor did the crew of the Californian wake their radio operator, who had gone to bed for the night. And what of Bruce Ismay, who many believe acted without regard for safety by requiring an unprepared ship to sail at such speed in spite of the danger? History tells us that he survived, but from the lifeboat turned his back on his beautiful ship as it sank That night, of a total of 2,208 people, only 712 were rescued by the Carpathia, while 1,496 perished. If the lifeboats had been filled to capacity, 1,178 people could have been saved. If there had been enough lifeboats, maybe everybody could have been saved. However, we may never know for sure. Article adapted from https://esol.britishcouncil.org/sites/default/files/attachments/informational-page/The_Sinking_of_the_Third_Condition.pdf",
+        "D. Based on the topic presented in the reading section, what other event in the world do you think would have been prevented if the right people had acted on time? Use the language studied."
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 14,
+          "visibleTextIndex": 1,
+          "text": "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher."
+        },
+        {
+          "slide": 14,
+          "visibleTextIndex": 2,
+          "text": "The Sinking of Titanic. The sinking of the RMS Titanic was one of the worst maritime disasters in history. On April 14, 1912, at 11:40 p.m., the ‘unsinkable’ luxury ship hit an iceberg and sank in just under three hours with the loss of around 1500 lives. There are many different descriptions of the disaster by the surviving passengers and crew, but few people doubt that human error played a part in the tragedy. Let’s look at some of the things that went wrong. On the night of Sunday, 14 April 1912 the temperature was near freezing and the ocean was completely calm. Surviving 2nd Officer Charles Lightoller later wrote, \"the sea was like glass\". The ship’s course had been changed by the captain, but other than this, he saw no reason to slow down.The owner of the ship, Bruce Ismay, was also on board and had instructed the captain to speed up in order to break the record for a transatlantic voyage. The captain agreed, but perhaps if he had known of the messages the ship had received in the radio room, he would have acted differently. According to a ship ahead called the Mesaba, lots of large icebergs were in the area. These messages did not reach him. There were three teams of lookouts on board keeping constant watch for obstacles in the ship’s path, but as Charles Lightoller said at the British inquiry, \"Everything was against us, there was no moon, no wind, no binoculars and with the dark side of the iceberg facing the ship, the lookouts were powerless.”"
+        },
+        {
+          "slide": 15,
+          "visibleTextIndex": 1,
+          "text": "When the alarm was finally raised the crew acted very quickly but it was already too late to save the ship. Within twenty minutes of the collision the ship had flooded, so the captain ordered the lifeboats to be prepared, filled with women and children, and lowered into the water. This didn’t go well, regulations about the number of lifeboats a ship should carry were already out of date when the Titanic set sail, and even if the evacuation had been better organised, there wouldn’t have been enough boats to hold everybody. Meanwhile, the crew were sending out distress signals. The first message was \"sinking, need immediate assistance,\" and then \"SOS\". Several ships responded, including the Mount Temple, Frankfurt, and the Titanic's sister ship, Olympic, but they were too far away. The closest ship to respond was the Carpathia, which arrived in about four hours, too late to save everybody. Various distress flares launched from the sinking ship were also ineffective, including those seen by a ship called the Californian, whose captain, Stanley Lord, had ordered his crew to stop the ship for the night because of the icebergs. When Captain Lord was informed of the flares he failed to respond because he did not think they were important. Nor did the crew of the Californian wake their radio operator, who had gone to bed for the night. And what of Bruce Ismay, who many believe acted without regard for safety by requiring an unprepared ship to sail at such speed in spite of the danger? History tells us that he survived, but from the lifeboat turned his back on his beautiful ship as it sank That night, of a total of 2,208 people, only 712 were rescued by the Carpathia, while 1,496 perished. If the lifeboats had been filled to capacity, 1,178 people could have been saved. If there had been enough lifeboats, maybe everybody could have been saved. However, we may never know for sure. Article adapted from https://esol.britishcouncil.org/sites/default/files/attachments/informational-page/The_Sinking_of_the_Third_Condition.pdf"
+        },
+        {
+          "slide": 16,
+          "visibleTextIndex": 0,
+          "text": "D. Based on the topic presented in the reading section, what other event in the world do you think would have been prevented if the right people had acted on time? Use the language studied."
+        }
+      ],
+      "sourceTaskType": "reading-discussion",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "D. Based on the topic presented in the reading section, what other event in the world do you think would have been prevented if the right people had acted on time? Use the language studied.",
+      "rationale": "The original review item was attached to the article continuation, but the published discussion prompt is the exact D instruction on slide 16. The patch preserves the original prompt and maps the open response to that published instruction plus the article text on slides 14-15. It remains teacher-led and has no canonical answer."
+    },
+    {
+      "unit": 45,
+      "lessonId": "cmnmm9t2a0025w1qk877v6313",
+      "slide": 16,
+      "itemId": "u45-s16-e",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the final role-play or writing activity.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "E. Write an 160-200 word text about a bad choice you made and what would have happened if you had not done it. How would have your life turned out if you had chosen something differently? Be very detailed, the story does not have to be real. Remember to use the language studied.",
+      "originalSourceEvidence": [
+        "E. Complete the final activity on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9t2a0025w1qk877v6313.json",
+        "sha256": "a5069975a5acfed23a03ec9914297dad9795252d6a2d80d4b07f0f742e6e8dec",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS_rMp82qmTecshEDYUBoz_JOvXO6Y770kY3fDgGwS6qq6rlIl_nujrywGuZqJWbw/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9t5d0026w1qk2ph5vysf",
+        "deckTitle": "NEW If I had seen it... - Unit 45.pptx",
+        "publishedSlide": 16,
+        "publishedSourceSlide": 16
+      },
+      "action": "review-source-aligned-open-response",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems.",
+      "originalReviewSlide": 16,
+      "publishedSourceSlide": 16,
+      "publishedSourceEvidence": [
+        "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher.",
+        "The Sinking of Titanic. The sinking of the RMS Titanic was one of the worst maritime disasters in history. On April 14, 1912, at 11:40 p.m., the ‘unsinkable’ luxury ship hit an iceberg and sank in just under three hours with the loss of around 1500 lives. There are many different descriptions of the disaster by the surviving passengers and crew, but few people doubt that human error played a part in the tragedy. Let’s look at some of the things that went wrong. On the night of Sunday, 14 April 1912 the temperature was near freezing and the ocean was completely calm. Surviving 2nd Officer Charles Lightoller later wrote, \"the sea was like glass\". The ship’s course had been changed by the captain, but other than this, he saw no reason to slow down.The owner of the ship, Bruce Ismay, was also on board and had instructed the captain to speed up in order to break the record for a transatlantic voyage. The captain agreed, but perhaps if he had known of the messages the ship had received in the radio room, he would have acted differently. According to a ship ahead called the Mesaba, lots of large icebergs were in the area. These messages did not reach him. There were three teams of lookouts on board keeping constant watch for obstacles in the ship’s path, but as Charles Lightoller said at the British inquiry, \"Everything was against us, there was no moon, no wind, no binoculars and with the dark side of the iceberg facing the ship, the lookouts were powerless.”",
+        "When the alarm was finally raised the crew acted very quickly but it was already too late to save the ship. Within twenty minutes of the collision the ship had flooded, so the captain ordered the lifeboats to be prepared, filled with women and children, and lowered into the water. This didn’t go well, regulations about the number of lifeboats a ship should carry were already out of date when the Titanic set sail, and even if the evacuation had been better organised, there wouldn’t have been enough boats to hold everybody. Meanwhile, the crew were sending out distress signals. The first message was \"sinking, need immediate assistance,\" and then \"SOS\". Several ships responded, including the Mount Temple, Frankfurt, and the Titanic's sister ship, Olympic, but they were too far away. The closest ship to respond was the Carpathia, which arrived in about four hours, too late to save everybody. Various distress flares launched from the sinking ship were also ineffective, including those seen by a ship called the Californian, whose captain, Stanley Lord, had ordered his crew to stop the ship for the night because of the icebergs. When Captain Lord was informed of the flares he failed to respond because he did not think they were important. Nor did the crew of the Californian wake their radio operator, who had gone to bed for the night. And what of Bruce Ismay, who many believe acted without regard for safety by requiring an unprepared ship to sail at such speed in spite of the danger? History tells us that he survived, but from the lifeboat turned his back on his beautiful ship as it sank That night, of a total of 2,208 people, only 712 were rescued by the Carpathia, while 1,496 perished. If the lifeboats had been filled to capacity, 1,178 people could have been saved. If there had been enough lifeboats, maybe everybody could have been saved. However, we may never know for sure. Article adapted from https://esol.britishcouncil.org/sites/default/files/attachments/informational-page/The_Sinking_of_the_Third_Condition.pdf",
+        "E. Write an 160-200 word text about a bad choice you made and what would have happened if you had not done it. How would have your life turned out if you had chosen something differently? Be very detailed, the story does not have to be real. Remember to use the language studied."
+      ],
+      "sourceEvidence": [
+        "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher.",
+        "The Sinking of Titanic. The sinking of the RMS Titanic was one of the worst maritime disasters in history. On April 14, 1912, at 11:40 p.m., the ‘unsinkable’ luxury ship hit an iceberg and sank in just under three hours with the loss of around 1500 lives. There are many different descriptions of the disaster by the surviving passengers and crew, but few people doubt that human error played a part in the tragedy. Let’s look at some of the things that went wrong. On the night of Sunday, 14 April 1912 the temperature was near freezing and the ocean was completely calm. Surviving 2nd Officer Charles Lightoller later wrote, \"the sea was like glass\". The ship’s course had been changed by the captain, but other than this, he saw no reason to slow down.The owner of the ship, Bruce Ismay, was also on board and had instructed the captain to speed up in order to break the record for a transatlantic voyage. The captain agreed, but perhaps if he had known of the messages the ship had received in the radio room, he would have acted differently. According to a ship ahead called the Mesaba, lots of large icebergs were in the area. These messages did not reach him. There were three teams of lookouts on board keeping constant watch for obstacles in the ship’s path, but as Charles Lightoller said at the British inquiry, \"Everything was against us, there was no moon, no wind, no binoculars and with the dark side of the iceberg facing the ship, the lookouts were powerless.”",
+        "When the alarm was finally raised the crew acted very quickly but it was already too late to save the ship. Within twenty minutes of the collision the ship had flooded, so the captain ordered the lifeboats to be prepared, filled with women and children, and lowered into the water. This didn’t go well, regulations about the number of lifeboats a ship should carry were already out of date when the Titanic set sail, and even if the evacuation had been better organised, there wouldn’t have been enough boats to hold everybody. Meanwhile, the crew were sending out distress signals. The first message was \"sinking, need immediate assistance,\" and then \"SOS\". Several ships responded, including the Mount Temple, Frankfurt, and the Titanic's sister ship, Olympic, but they were too far away. The closest ship to respond was the Carpathia, which arrived in about four hours, too late to save everybody. Various distress flares launched from the sinking ship were also ineffective, including those seen by a ship called the Californian, whose captain, Stanley Lord, had ordered his crew to stop the ship for the night because of the icebergs. When Captain Lord was informed of the flares he failed to respond because he did not think they were important. Nor did the crew of the Californian wake their radio operator, who had gone to bed for the night. And what of Bruce Ismay, who many believe acted without regard for safety by requiring an unprepared ship to sail at such speed in spite of the danger? History tells us that he survived, but from the lifeboat turned his back on his beautiful ship as it sank That night, of a total of 2,208 people, only 712 were rescued by the Carpathia, while 1,496 perished. If the lifeboats had been filled to capacity, 1,178 people could have been saved. If there had been enough lifeboats, maybe everybody could have been saved. However, we may never know for sure. Article adapted from https://esol.britishcouncil.org/sites/default/files/attachments/informational-page/The_Sinking_of_the_Third_Condition.pdf",
+        "E. Write an 160-200 word text about a bad choice you made and what would have happened if you had not done it. How would have your life turned out if you had chosen something differently? Be very detailed, the story does not have to be real. Remember to use the language studied."
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 14,
+          "visibleTextIndex": 1,
+          "text": "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher."
+        },
+        {
+          "slide": 14,
+          "visibleTextIndex": 2,
+          "text": "The Sinking of Titanic. The sinking of the RMS Titanic was one of the worst maritime disasters in history. On April 14, 1912, at 11:40 p.m., the ‘unsinkable’ luxury ship hit an iceberg and sank in just under three hours with the loss of around 1500 lives. There are many different descriptions of the disaster by the surviving passengers and crew, but few people doubt that human error played a part in the tragedy. Let’s look at some of the things that went wrong. On the night of Sunday, 14 April 1912 the temperature was near freezing and the ocean was completely calm. Surviving 2nd Officer Charles Lightoller later wrote, \"the sea was like glass\". The ship’s course had been changed by the captain, but other than this, he saw no reason to slow down.The owner of the ship, Bruce Ismay, was also on board and had instructed the captain to speed up in order to break the record for a transatlantic voyage. The captain agreed, but perhaps if he had known of the messages the ship had received in the radio room, he would have acted differently. According to a ship ahead called the Mesaba, lots of large icebergs were in the area. These messages did not reach him. There were three teams of lookouts on board keeping constant watch for obstacles in the ship’s path, but as Charles Lightoller said at the British inquiry, \"Everything was against us, there was no moon, no wind, no binoculars and with the dark side of the iceberg facing the ship, the lookouts were powerless.”"
+        },
+        {
+          "slide": 15,
+          "visibleTextIndex": 1,
+          "text": "When the alarm was finally raised the crew acted very quickly but it was already too late to save the ship. Within twenty minutes of the collision the ship had flooded, so the captain ordered the lifeboats to be prepared, filled with women and children, and lowered into the water. This didn’t go well, regulations about the number of lifeboats a ship should carry were already out of date when the Titanic set sail, and even if the evacuation had been better organised, there wouldn’t have been enough boats to hold everybody. Meanwhile, the crew were sending out distress signals. The first message was \"sinking, need immediate assistance,\" and then \"SOS\". Several ships responded, including the Mount Temple, Frankfurt, and the Titanic's sister ship, Olympic, but they were too far away. The closest ship to respond was the Carpathia, which arrived in about four hours, too late to save everybody. Various distress flares launched from the sinking ship were also ineffective, including those seen by a ship called the Californian, whose captain, Stanley Lord, had ordered his crew to stop the ship for the night because of the icebergs. When Captain Lord was informed of the flares he failed to respond because he did not think they were important. Nor did the crew of the Californian wake their radio operator, who had gone to bed for the night. And what of Bruce Ismay, who many believe acted without regard for safety by requiring an unprepared ship to sail at such speed in spite of the danger? History tells us that he survived, but from the lifeboat turned his back on his beautiful ship as it sank That night, of a total of 2,208 people, only 712 were rescued by the Carpathia, while 1,496 perished. If the lifeboats had been filled to capacity, 1,178 people could have been saved. If there had been enough lifeboats, maybe everybody could have been saved. However, we may never know for sure. Article adapted from https://esol.britishcouncil.org/sites/default/files/attachments/informational-page/The_Sinking_of_the_Third_Condition.pdf"
+        },
+        {
+          "slide": 16,
+          "visibleTextIndex": 1,
+          "text": "E. Write an 160-200 word text about a bad choice you made and what would have happened if you had not done it. How would have your life turned out if you had chosen something differently? Be very detailed, the story does not have to be real. Remember to use the language studied."
+        }
+      ],
+      "sourceTaskType": "writing-production",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "E. Write an 160-200 word text about a bad choice you made and what would have happened if you had not done it. How would have your life turned out if you had chosen something differently? Be very detailed, the story does not have to be real. Remember to use the language studied.",
+      "rationale": "The original review label is generic, while slide 16 publishes the exact E writing prompt. The patch preserves the original label and records the literal prompt and reading source. This is learner-authored writing, so no answerItems are added."
+    },
+    {
+      "unit": 46,
+      "lessonId": "cmnmm9tei0028w1qkri0q23eb",
+      "slide": 12,
+      "itemId": "u46-s12-a",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the grammar practice shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "A. Write 8 sentences where you include suggestions, expectations and opinions in the past. Follow the example.",
+      "originalSourceEvidence": [
+        "A. Complete the grammar exercise on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9tei0028w1qkri0q23eb.json",
+        "sha256": "f70150fc8d4802426c20dccfc0bbd3e2054e3dc850702060065987b0bb7073a4",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vR94uKUH9GxmAjQsdhCQI5LAFneW1xtYFln8WJaTsErKgUPlEX-305BZrjXe36z6A/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9thk0029w1qk0zfq5ucy",
+        "deckTitle": "NEW If it had been me.... - Unit 46.pptx",
+        "publishedSlide": 12,
+        "publishedSourceSlide": 13
+      },
+      "action": "review-source-aligned-open-response",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems.",
+      "originalReviewSlide": 12,
+      "publishedSourceSlide": 13,
+      "publishedSourceEvidence": [
+        "0. Alex should’ve called Annie; Now, he has lost her for good.",
+        "A. Write 8 sentences where you include suggestions, expectations and opinions in the past. Follow the example."
+      ],
+      "sourceEvidence": [
+        "0. Alex should’ve called Annie; Now, he has lost her for good.",
+        "A. Write 8 sentences where you include suggestions, expectations and opinions in the past. Follow the example."
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 13,
+          "visibleTextIndex": 1,
+          "text": "0. Alex should’ve called Annie; Now, he has lost her for good."
+        },
+        {
+          "slide": 13,
+          "visibleTextIndex": 0,
+          "text": "A. Write 8 sentences where you include suggestions, expectations and opinions in the past. Follow the example."
+        }
+      ],
+      "sourceTaskType": "grammar-production",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "A. Write 8 sentences where you include suggestions, expectations and opinions in the past. Follow the example.",
+      "rationale": "The original review label is generic, while the published slide gives the exact learner-generated sentence task and example. The patch preserves that instruction and its source text as an open response; the source provides no unique canonical answer, so no answerItems are added."
+    },
+    {
+      "unit": 46,
+      "lessonId": "cmnmm9tei0028w1qkri0q23eb",
+      "slide": 15,
+      "itemId": "u46-s15-d",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "D. Based on the topic presented in the reading section, what other programs should have been considered as iconic as Friends? Would have you chosen any other? Why? Use the language studied.",
+      "originalSourceEvidence": [
+        "D. Complete the final activity on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9tei0028w1qkri0q23eb.json",
+        "sha256": "f70150fc8d4802426c20dccfc0bbd3e2054e3dc850702060065987b0bb7073a4",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vR94uKUH9GxmAjQsdhCQI5LAFneW1xtYFln8WJaTsErKgUPlEX-305BZrjXe36z6A/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9thk0029w1qk0zfq5ucy",
+        "deckTitle": "NEW If it had been me.... - Unit 46.pptx",
+        "publishedSlide": 15,
+        "publishedSourceSlide": 16
+      },
+      "action": "review-source-aligned-open-response",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems.",
+      "originalReviewSlide": 15,
+      "publishedSourceSlide": 16,
+      "publishedSourceEvidence": [
+        "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher.",
+        "'Friends' cast sings show's theme song with James Corden James Corden, host of the reunion that we all couldn't stop talking about, recruited the cast of \"Friends\" for a special segment that aired on his show Wednesday night. In the clip, Corden helps transport the cast -- Jennifer Aniston, Courteney Cox, Lisa Kudrow, Matt LeBlanc, Matthew Perry and David Schwimmer -- to the set and uses the brief ride through the Warner Bros. lot, where they used to film, to channel \"Carpool Karaoke.\" Do you really need to ask the song choice? We all would have chosen the same, wouldn’t we? After belting The Rembrandt's \"I'll Be There For You,\" Corden and the cast get cozy in Central Perk for some fun and games, that turns some on the couches to tears as we all must’ve expected. \"Friends: The Reunion\" was released last month on HBO Max. (CNN, like HBO, is owned by Warner Media.) and it was said to be the last episode (reunion) of the cast despite fans would have desired it to be one of many to come. While the streamer has not released viewing numbers, Variety reported that the highly-anticipated special may have performed nearly as well as \"Wonder Woman 1984,\" the sequel to the 2017 blockbuster superhero film. Nevertheless, it is a fact that thousands if not millions of people watched the reunion and we would not have expected less from a TV show that is clearly part of pop culture and an iconic program for masses. Article adapted from https://edition.cnn.com/2021/06/17/entertainment/friends-james-corden/index.html",
+        "D. Based on the topic presented in the reading section, what other programs should have been considered as iconic as Friends? Would have you chosen any other? Why? Use the language studied."
+      ],
+      "sourceEvidence": [
+        "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher.",
+        "'Friends' cast sings show's theme song with James Corden James Corden, host of the reunion that we all couldn't stop talking about, recruited the cast of \"Friends\" for a special segment that aired on his show Wednesday night. In the clip, Corden helps transport the cast -- Jennifer Aniston, Courteney Cox, Lisa Kudrow, Matt LeBlanc, Matthew Perry and David Schwimmer -- to the set and uses the brief ride through the Warner Bros. lot, where they used to film, to channel \"Carpool Karaoke.\" Do you really need to ask the song choice? We all would have chosen the same, wouldn’t we? After belting The Rembrandt's \"I'll Be There For You,\" Corden and the cast get cozy in Central Perk for some fun and games, that turns some on the couches to tears as we all must’ve expected. \"Friends: The Reunion\" was released last month on HBO Max. (CNN, like HBO, is owned by Warner Media.) and it was said to be the last episode (reunion) of the cast despite fans would have desired it to be one of many to come. While the streamer has not released viewing numbers, Variety reported that the highly-anticipated special may have performed nearly as well as \"Wonder Woman 1984,\" the sequel to the 2017 blockbuster superhero film. Nevertheless, it is a fact that thousands if not millions of people watched the reunion and we would not have expected less from a TV show that is clearly part of pop culture and an iconic program for masses. Article adapted from https://edition.cnn.com/2021/06/17/entertainment/friends-james-corden/index.html",
+        "D. Based on the topic presented in the reading section, what other programs should have been considered as iconic as Friends? Would have you chosen any other? Why? Use the language studied."
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 15,
+          "visibleTextIndex": 1,
+          "text": "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher."
+        },
+        {
+          "slide": 15,
+          "visibleTextIndex": 2,
+          "text": "'Friends' cast sings show's theme song with James Corden James Corden, host of the reunion that we all couldn't stop talking about, recruited the cast of \"Friends\" for a special segment that aired on his show Wednesday night. In the clip, Corden helps transport the cast -- Jennifer Aniston, Courteney Cox, Lisa Kudrow, Matt LeBlanc, Matthew Perry and David Schwimmer -- to the set and uses the brief ride through the Warner Bros. lot, where they used to film, to channel \"Carpool Karaoke.\" Do you really need to ask the song choice? We all would have chosen the same, wouldn’t we? After belting The Rembrandt's \"I'll Be There For You,\" Corden and the cast get cozy in Central Perk for some fun and games, that turns some on the couches to tears as we all must’ve expected. \"Friends: The Reunion\" was released last month on HBO Max. (CNN, like HBO, is owned by Warner Media.) and it was said to be the last episode (reunion) of the cast despite fans would have desired it to be one of many to come. While the streamer has not released viewing numbers, Variety reported that the highly-anticipated special may have performed nearly as well as \"Wonder Woman 1984,\" the sequel to the 2017 blockbuster superhero film. Nevertheless, it is a fact that thousands if not millions of people watched the reunion and we would not have expected less from a TV show that is clearly part of pop culture and an iconic program for masses. Article adapted from https://edition.cnn.com/2021/06/17/entertainment/friends-james-corden/index.html"
+        },
+        {
+          "slide": 16,
+          "visibleTextIndex": 0,
+          "text": "D. Based on the topic presented in the reading section, what other programs should have been considered as iconic as Friends? Would have you chosen any other? Why? Use the language studied."
+        }
+      ],
+      "sourceTaskType": "reading-discussion",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "D. Based on the topic presented in the reading section, what other programs should have been considered as iconic as Friends? Would have you chosen any other? Why? Use the language studied.",
+      "rationale": "The original review label is generic, while the published slide gives the exact teacher-led discussion or presentation prompt. The patch preserves the original label and records the literal prompt and reading source. This is learner-generated open response, so no answerItems are added."
+    },
+    {
+      "unit": 47,
+      "lessonId": "cmnmm9tqo002bw1qklsuz2eli",
+      "slide": 12,
+      "itemId": "u47-s12-a",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the grammar practice shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "A. Write 8 sentences where you include different regrets as seen in the lesson. Follow the example.",
+      "originalSourceEvidence": [
+        "A. Complete the grammar exercise on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9tqo002bw1qklsuz2eli.json",
+        "sha256": "f303d2de50f8711fa491d86580397bdf6a0f0c6c454afc64cd6f2d9a308f6caa",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSqEZZ29RAMRwYxiA4q2J48uqBbC5t_GGY6yOXTnEeWb0q4L_qtdCELEVAei8J3-A/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9ttr002cw1qk4m656ire",
+        "deckTitle": "NEW If only I had called... - Unit 47.pptx",
+        "publishedSlide": 12,
+        "publishedSourceSlide": 13
+      },
+      "action": "review-source-aligned-open-response",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems.",
+      "originalReviewSlide": 12,
+      "publishedSourceSlide": 13,
+      "publishedSourceEvidence": [
+        "0. I should’ve called the cops the first time; at least now, he is in jail.",
+        "A. Write 8 sentences where you include different regrets as seen in the lesson. Follow the example."
+      ],
+      "sourceEvidence": [
+        "0. I should’ve called the cops the first time; at least now, he is in jail.",
+        "A. Write 8 sentences where you include different regrets as seen in the lesson. Follow the example."
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 13,
+          "visibleTextIndex": 1,
+          "text": "0. I should’ve called the cops the first time; at least now, he is in jail."
+        },
+        {
+          "slide": 13,
+          "visibleTextIndex": 0,
+          "text": "A. Write 8 sentences where you include different regrets as seen in the lesson. Follow the example."
+        }
+      ],
+      "sourceTaskType": "grammar-production",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "A. Write 8 sentences where you include different regrets as seen in the lesson. Follow the example.",
+      "rationale": "The original review label is generic, while the published slide gives the exact learner-generated sentence task and example. The patch preserves that instruction and its source text as an open response; the source provides no unique canonical answer, so no answerItems are added."
+    },
+    {
+      "unit": 47,
+      "lessonId": "cmnmm9tqo002bw1qklsuz2eli",
+      "slide": 15,
+      "itemId": "u47-s15-d",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "D. Based on the topic presented in the reading section, how would you consider regret to be? Is it healthy? What is your position? Can you recall any regrets you have had in life? What happened?",
+      "originalSourceEvidence": [
+        "D. Complete the final activity on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9tqo002bw1qklsuz2eli.json",
+        "sha256": "f303d2de50f8711fa491d86580397bdf6a0f0c6c454afc64cd6f2d9a308f6caa",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSqEZZ29RAMRwYxiA4q2J48uqBbC5t_GGY6yOXTnEeWb0q4L_qtdCELEVAei8J3-A/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9ttr002cw1qk4m656ire",
+        "deckTitle": "NEW If only I had called... - Unit 47.pptx",
+        "publishedSlide": 15,
+        "publishedSourceSlide": 17
+      },
+      "action": "review-source-aligned-open-response",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems.",
+      "originalReviewSlide": 15,
+      "publishedSourceSlide": 17,
+      "publishedSourceEvidence": [
+        "C. Read the following article and have a discussion with the teacher. After that, read the text aloud to your teacher. You can read the full version on the link provided for further activities.",
+        "Regret can Seriously Damage your Mental Health There was once a banker in his 50s who had worked seven days a week for 25 years and become a very wealthy man. Then, at the apex of his career, he looked around him and realised that he had entirely neglected his family; as a result, his family had rejected him. The regret was overwhelming, and came out in panic attacks every Sunday. Would this man be able to find a way out of this cruel place he had created for himself? This man was a patient of the psychoanalyst David Morgan, of the Institute of Psychoanalysis, who spent several years helping him explore what had compelled him to work so hard and to ignore his children (he has been anonymised and gave Morgan permission to use his case). It became clear that this need to become richer than everyone else had roots in his very early childhood, when he watched his parents nearly starve to death during the 1980s miners’ strike. He had, unconsciously, repeated this by impoverishing his children by not being there for them, in turn impoverishing himself of these loving relationships, in his efforts to overcome the traumatic poverty of his childhood. “That complicated understanding,” Morgan explains, “freed things up, setting his regret in a generational context so he didn’t have to feel quite so guilty for acting something out, because it was beyond his ken. It doesn’t mean that he can’t feel real pain, but that pain is given a sense of history.” This meant his regret could be understood and given meaning – and that changed his life.",
+        "Regret can be all-consuming, and it can destroy lives. We can see it all around us, whether it is the man who cannot forgive himself for cheating on his first girlfriend and has not had a serious relationship in 30 years. Or the woman who is so tied up in wishing she’d had a child with her ex-partner, instead of breaking up with him, that she cannot find happiness in her current circumstances. It is not unusual for patients to seek therapy because they feel plagued by regret and unable to live full lives because of it, says Morgan, whether it is over affairs, career choices or relationships. The kind of regret that brings people to his consulting room is “paranoid and persecutory. It’s: ‘Oh God, I’m so terrible, I’m dreadful,’” he says. It is self-flagellation, and it can be incredibly damaging to our mental health. It is exhausting, it sucks all joy and fulfilment from our days and it leaves us stuck, always looking backwards and unable to move forward in our lives. The cognitive behaviour therapist Windy Dryden says that, when we are trapped in this cycle of regret, characterised by rigidity and inflexibility, we only seem able to blame ourselves for what has happened, rather than seeing our behaviour in a wider context and understanding why we took the path we did based on the information we had at the time. Under these conditions, regret will become toxic. Keep reading the article here: https://www.theguardian.com/lifeandstyle/2019/jun/27/regret-can-seriously-damage-your-mental-health-heres-how-to-leave-it-behind",
+        "D. Based on the topic presented in the reading section, how would you consider regret to be? Is it healthy? What is your position? Can you recall any regrets you have had in life? What happened?"
+      ],
+      "sourceEvidence": [
+        "C. Read the following article and have a discussion with the teacher. After that, read the text aloud to your teacher. You can read the full version on the link provided for further activities.",
+        "Regret can Seriously Damage your Mental Health There was once a banker in his 50s who had worked seven days a week for 25 years and become a very wealthy man. Then, at the apex of his career, he looked around him and realised that he had entirely neglected his family; as a result, his family had rejected him. The regret was overwhelming, and came out in panic attacks every Sunday. Would this man be able to find a way out of this cruel place he had created for himself? This man was a patient of the psychoanalyst David Morgan, of the Institute of Psychoanalysis, who spent several years helping him explore what had compelled him to work so hard and to ignore his children (he has been anonymised and gave Morgan permission to use his case). It became clear that this need to become richer than everyone else had roots in his very early childhood, when he watched his parents nearly starve to death during the 1980s miners’ strike. He had, unconsciously, repeated this by impoverishing his children by not being there for them, in turn impoverishing himself of these loving relationships, in his efforts to overcome the traumatic poverty of his childhood. “That complicated understanding,” Morgan explains, “freed things up, setting his regret in a generational context so he didn’t have to feel quite so guilty for acting something out, because it was beyond his ken. It doesn’t mean that he can’t feel real pain, but that pain is given a sense of history.” This meant his regret could be understood and given meaning – and that changed his life.",
+        "Regret can be all-consuming, and it can destroy lives. We can see it all around us, whether it is the man who cannot forgive himself for cheating on his first girlfriend and has not had a serious relationship in 30 years. Or the woman who is so tied up in wishing she’d had a child with her ex-partner, instead of breaking up with him, that she cannot find happiness in her current circumstances. It is not unusual for patients to seek therapy because they feel plagued by regret and unable to live full lives because of it, says Morgan, whether it is over affairs, career choices or relationships. The kind of regret that brings people to his consulting room is “paranoid and persecutory. It’s: ‘Oh God, I’m so terrible, I’m dreadful,’” he says. It is self-flagellation, and it can be incredibly damaging to our mental health. It is exhausting, it sucks all joy and fulfilment from our days and it leaves us stuck, always looking backwards and unable to move forward in our lives. The cognitive behaviour therapist Windy Dryden says that, when we are trapped in this cycle of regret, characterised by rigidity and inflexibility, we only seem able to blame ourselves for what has happened, rather than seeing our behaviour in a wider context and understanding why we took the path we did based on the information we had at the time. Under these conditions, regret will become toxic. Keep reading the article here: https://www.theguardian.com/lifeandstyle/2019/jun/27/regret-can-seriously-damage-your-mental-health-heres-how-to-leave-it-behind",
+        "D. Based on the topic presented in the reading section, how would you consider regret to be? Is it healthy? What is your position? Can you recall any regrets you have had in life? What happened?"
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 15,
+          "visibleTextIndex": 1,
+          "text": "C. Read the following article and have a discussion with the teacher. After that, read the text aloud to your teacher. You can read the full version on the link provided for further activities."
+        },
+        {
+          "slide": 15,
+          "visibleTextIndex": 2,
+          "text": "Regret can Seriously Damage your Mental Health There was once a banker in his 50s who had worked seven days a week for 25 years and become a very wealthy man. Then, at the apex of his career, he looked around him and realised that he had entirely neglected his family; as a result, his family had rejected him. The regret was overwhelming, and came out in panic attacks every Sunday. Would this man be able to find a way out of this cruel place he had created for himself? This man was a patient of the psychoanalyst David Morgan, of the Institute of Psychoanalysis, who spent several years helping him explore what had compelled him to work so hard and to ignore his children (he has been anonymised and gave Morgan permission to use his case). It became clear that this need to become richer than everyone else had roots in his very early childhood, when he watched his parents nearly starve to death during the 1980s miners’ strike. He had, unconsciously, repeated this by impoverishing his children by not being there for them, in turn impoverishing himself of these loving relationships, in his efforts to overcome the traumatic poverty of his childhood. “That complicated understanding,” Morgan explains, “freed things up, setting his regret in a generational context so he didn’t have to feel quite so guilty for acting something out, because it was beyond his ken. It doesn’t mean that he can’t feel real pain, but that pain is given a sense of history.” This meant his regret could be understood and given meaning – and that changed his life."
+        },
+        {
+          "slide": 16,
+          "visibleTextIndex": 1,
+          "text": "Regret can be all-consuming, and it can destroy lives. We can see it all around us, whether it is the man who cannot forgive himself for cheating on his first girlfriend and has not had a serious relationship in 30 years. Or the woman who is so tied up in wishing she’d had a child with her ex-partner, instead of breaking up with him, that she cannot find happiness in her current circumstances. It is not unusual for patients to seek therapy because they feel plagued by regret and unable to live full lives because of it, says Morgan, whether it is over affairs, career choices or relationships. The kind of regret that brings people to his consulting room is “paranoid and persecutory. It’s: ‘Oh God, I’m so terrible, I’m dreadful,’” he says. It is self-flagellation, and it can be incredibly damaging to our mental health. It is exhausting, it sucks all joy and fulfilment from our days and it leaves us stuck, always looking backwards and unable to move forward in our lives. The cognitive behaviour therapist Windy Dryden says that, when we are trapped in this cycle of regret, characterised by rigidity and inflexibility, we only seem able to blame ourselves for what has happened, rather than seeing our behaviour in a wider context and understanding why we took the path we did based on the information we had at the time. Under these conditions, regret will become toxic. Keep reading the article here: https://www.theguardian.com/lifeandstyle/2019/jun/27/regret-can-seriously-damage-your-mental-health-heres-how-to-leave-it-behind"
+        },
+        {
+          "slide": 17,
+          "visibleTextIndex": 0,
+          "text": "D. Based on the topic presented in the reading section, how would you consider regret to be? Is it healthy? What is your position? Can you recall any regrets you have had in life? What happened?"
+        }
+      ],
+      "sourceTaskType": "reading-discussion",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "D. Based on the topic presented in the reading section, how would you consider regret to be? Is it healthy? What is your position? Can you recall any regrets you have had in life? What happened?",
+      "rationale": "The original review label is generic, while the published slide gives the exact teacher-led discussion or presentation prompt. The patch preserves the original label and records the literal prompt and reading source. This is learner-generated open response, so no answerItems are added."
+    },
+    {
+      "unit": 48,
+      "lessonId": "cmnmm9u2w002ew1qkvb9dzxjp",
+      "slide": 12,
+      "itemId": "u48-s12-a",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the grammar practice shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "A. Write 8 sentences where you include the different structures and functions studied in this lesson. Follow the example.",
+      "originalSourceEvidence": [
+        "A. Complete the grammar exercise on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9u2w002ew1qkvb9dzxjp.json",
+        "sha256": "2da48aab899d4e3f00249fc40cddf2ea2886e7ed46c1d8cb5e9e0aa207203631",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS9Jp3rurEXM9axOt3csUe4WdDYbLvr_dbtHD9Sqb6zMQkd-cmkGBZoagk-z8fyJg/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9u5w002fw1qk640elu0g",
+        "deckTitle": "NEW It could have been that way. - Unit 48.pptx",
+        "publishedSlide": 12,
+        "publishedSourceSlide": 13
+      },
+      "action": "review-source-aligned-open-response",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems.",
+      "originalReviewSlide": 12,
+      "publishedSourceSlide": 13,
+      "publishedSourceEvidence": [
+        "0. We could have gone there, but you wanted us to stay home.",
+        "A. Write 8 sentences where you include the different structures and functions studied in this lesson. Follow the example."
+      ],
+      "sourceEvidence": [
+        "0. We could have gone there, but you wanted us to stay home.",
+        "A. Write 8 sentences where you include the different structures and functions studied in this lesson. Follow the example."
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 13,
+          "visibleTextIndex": 1,
+          "text": "0. We could have gone there, but you wanted us to stay home."
+        },
+        {
+          "slide": 13,
+          "visibleTextIndex": 0,
+          "text": "A. Write 8 sentences where you include the different structures and functions studied in this lesson. Follow the example."
+        }
+      ],
+      "sourceTaskType": "grammar-production",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "A. Write 8 sentences where you include the different structures and functions studied in this lesson. Follow the example.",
+      "rationale": "The original review label is generic, while the published slide gives the exact learner-generated sentence task and example. The patch preserves that instruction and its source text as an open response; the source provides no unique canonical answer, so no answerItems are added."
+    },
+    {
+      "unit": 48,
+      "lessonId": "cmnmm9u2w002ew1qkvb9dzxjp",
+      "slide": 15,
+      "itemId": "u48-s15-d",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "D. Based on the topic presented in the reading section, prepare a small presentation about someone or something that may have had an even more especial impact on people / society / the world if it / he had not ceased existing. What could have been different? How?",
+      "originalSourceEvidence": [
+        "D. Complete the final activity on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9u2w002ew1qkvb9dzxjp.json",
+        "sha256": "2da48aab899d4e3f00249fc40cddf2ea2886e7ed46c1d8cb5e9e0aa207203631",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS9Jp3rurEXM9axOt3csUe4WdDYbLvr_dbtHD9Sqb6zMQkd-cmkGBZoagk-z8fyJg/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9u5w002fw1qk640elu0g",
+        "deckTitle": "NEW It could have been that way. - Unit 48.pptx",
+        "publishedSlide": 15,
+        "publishedSourceSlide": 17
+      },
+      "action": "review-source-aligned-open-response",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems.",
+      "originalReviewSlide": 15,
+      "publishedSourceSlide": 17,
+      "publishedSourceEvidence": [
+        "C. Read the following article and have a discussion with the teacher. After that, read the text aloud to your teacher. You can read the full version on the link provided for further activities.",
+        "What if Dinosaurs had survived? Around 66 million years ago, a 14 km-wide asteroid smashed into our planet. An estimated 15 billion tonnes of soot spread through the atmosphere, creating one long night that lasted several years and made photosynthesis all but impossible. It heralded an endless winter that saw average temperatures fall by as much as 28oC. These are the conditions that the few wretched creatures that survived the initial impact had to endure – not to mention the earthquakes, tsunamis, wildfires and volcanic eruptions that swiftly followed in its wake. Around three-quarters of all species went extinct and no animal bigger than a Labrador dog survived. But according to researchers at the University of Texas, things could have been very different. They reported findings that had the asteroid struck Earth just a few minutes earlier, it would have hit the deep ocean rather than the shallow sea of the Yucatan Peninsula in present-day Mexico. Had that been the case, then the damage would have been more localised. Some of the dinosaurs far from the impact site might have survived, and the world would be a different place today. In our own history, only the feathered theropod dinosaurs (a group of bipedal dinosaurs) we know as birds made it through the calamity, but how would things have turned out if their larger relatives had joined them? Would dinosaurs still be alive today and could mammals such as humans have evolved? What would our world look like if we shared it with the descendants of animals like T. rex and Triceratops?",
+        "“I’m sure a fairly nice diversity of non-avian dinosaurs would still be here,” says Dr Stephen Brusatte, a palaeontology at the University of Edinburgh. “If there was no sudden, catastrophic shock of the asteroid, I really don’t see anything that’s happened since – whether it was the spread of grasslands; changing ocean currents; the separation of Antarctica from South America, which caused a cold snap; or the more recent Ice Ages – that would have knocked off the dinosaurs.” Over the years many have tried to imagine what kind of creatures dinosaurs might have evolved into had they survived. The most famous attempt is a 1988 book called The New Dinosaurs: An Alternative Evolution, by Scottish geologist and author Dougal Dixon. For this magnificent work of speculative zoology, Dixon conjured up creatures such as the ‘cutlasstooth’ – a pack-hunting, sabre-toothed predator from South America; the ‘cribrum’ – a flamingo-like, filter-feeding theropod from Australia; and the ‘gourmand’ – a relative of T. rex that lost its front limbs entirely and developed a distensible jaw to allow it to rapidly swallow prey whole, much like a snake. Perhaps this last idea isn’t entirely wide of the mark. Dr Tom Holtz, an expert on theropod dinosaurs at the University of Maryland in the US, says that both tyrannosaurs and abelisaurs, the two types of big meat-eater present in the Late Cretaceous, are notable for their tiny forelimbs. “Given that arms were non-critical for hunting, it’s possible that a Cenozoic [current geological era] tyrannosaur could have been armless,” says Holtz. The beginning of the Cenozoic Era (which spans the period from 66 million years ago until the present day) might essentially have been an ecological extension of the Late Cretaceous. Various creatures such as… Keep reading the article here: https://www.sciencefocus.com/nature/what-if-the-dinosaurs-had-survived/",
+        "D. Based on the topic presented in the reading section, prepare a small presentation about someone or something that may have had an even more especial impact on people / society / the world if it / he had not ceased existing. What could have been different? How?"
+      ],
+      "sourceEvidence": [
+        "C. Read the following article and have a discussion with the teacher. After that, read the text aloud to your teacher. You can read the full version on the link provided for further activities.",
+        "What if Dinosaurs had survived? Around 66 million years ago, a 14 km-wide asteroid smashed into our planet. An estimated 15 billion tonnes of soot spread through the atmosphere, creating one long night that lasted several years and made photosynthesis all but impossible. It heralded an endless winter that saw average temperatures fall by as much as 28oC. These are the conditions that the few wretched creatures that survived the initial impact had to endure – not to mention the earthquakes, tsunamis, wildfires and volcanic eruptions that swiftly followed in its wake. Around three-quarters of all species went extinct and no animal bigger than a Labrador dog survived. But according to researchers at the University of Texas, things could have been very different. They reported findings that had the asteroid struck Earth just a few minutes earlier, it would have hit the deep ocean rather than the shallow sea of the Yucatan Peninsula in present-day Mexico. Had that been the case, then the damage would have been more localised. Some of the dinosaurs far from the impact site might have survived, and the world would be a different place today. In our own history, only the feathered theropod dinosaurs (a group of bipedal dinosaurs) we know as birds made it through the calamity, but how would things have turned out if their larger relatives had joined them? Would dinosaurs still be alive today and could mammals such as humans have evolved? What would our world look like if we shared it with the descendants of animals like T. rex and Triceratops?",
+        "“I’m sure a fairly nice diversity of non-avian dinosaurs would still be here,” says Dr Stephen Brusatte, a palaeontology at the University of Edinburgh. “If there was no sudden, catastrophic shock of the asteroid, I really don’t see anything that’s happened since – whether it was the spread of grasslands; changing ocean currents; the separation of Antarctica from South America, which caused a cold snap; or the more recent Ice Ages – that would have knocked off the dinosaurs.” Over the years many have tried to imagine what kind of creatures dinosaurs might have evolved into had they survived. The most famous attempt is a 1988 book called The New Dinosaurs: An Alternative Evolution, by Scottish geologist and author Dougal Dixon. For this magnificent work of speculative zoology, Dixon conjured up creatures such as the ‘cutlasstooth’ – a pack-hunting, sabre-toothed predator from South America; the ‘cribrum’ – a flamingo-like, filter-feeding theropod from Australia; and the ‘gourmand’ – a relative of T. rex that lost its front limbs entirely and developed a distensible jaw to allow it to rapidly swallow prey whole, much like a snake. Perhaps this last idea isn’t entirely wide of the mark. Dr Tom Holtz, an expert on theropod dinosaurs at the University of Maryland in the US, says that both tyrannosaurs and abelisaurs, the two types of big meat-eater present in the Late Cretaceous, are notable for their tiny forelimbs. “Given that arms were non-critical for hunting, it’s possible that a Cenozoic [current geological era] tyrannosaur could have been armless,” says Holtz. The beginning of the Cenozoic Era (which spans the period from 66 million years ago until the present day) might essentially have been an ecological extension of the Late Cretaceous. Various creatures such as… Keep reading the article here: https://www.sciencefocus.com/nature/what-if-the-dinosaurs-had-survived/",
+        "D. Based on the topic presented in the reading section, prepare a small presentation about someone or something that may have had an even more especial impact on people / society / the world if it / he had not ceased existing. What could have been different? How?"
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 15,
+          "visibleTextIndex": 1,
+          "text": "C. Read the following article and have a discussion with the teacher. After that, read the text aloud to your teacher. You can read the full version on the link provided for further activities."
+        },
+        {
+          "slide": 15,
+          "visibleTextIndex": 2,
+          "text": "What if Dinosaurs had survived? Around 66 million years ago, a 14 km-wide asteroid smashed into our planet. An estimated 15 billion tonnes of soot spread through the atmosphere, creating one long night that lasted several years and made photosynthesis all but impossible. It heralded an endless winter that saw average temperatures fall by as much as 28oC. These are the conditions that the few wretched creatures that survived the initial impact had to endure – not to mention the earthquakes, tsunamis, wildfires and volcanic eruptions that swiftly followed in its wake. Around three-quarters of all species went extinct and no animal bigger than a Labrador dog survived. But according to researchers at the University of Texas, things could have been very different. They reported findings that had the asteroid struck Earth just a few minutes earlier, it would have hit the deep ocean rather than the shallow sea of the Yucatan Peninsula in present-day Mexico. Had that been the case, then the damage would have been more localised. Some of the dinosaurs far from the impact site might have survived, and the world would be a different place today. In our own history, only the feathered theropod dinosaurs (a group of bipedal dinosaurs) we know as birds made it through the calamity, but how would things have turned out if their larger relatives had joined them? Would dinosaurs still be alive today and could mammals such as humans have evolved? What would our world look like if we shared it with the descendants of animals like T. rex and Triceratops?"
+        },
+        {
+          "slide": 16,
+          "visibleTextIndex": 1,
+          "text": "“I’m sure a fairly nice diversity of non-avian dinosaurs would still be here,” says Dr Stephen Brusatte, a palaeontology at the University of Edinburgh. “If there was no sudden, catastrophic shock of the asteroid, I really don’t see anything that’s happened since – whether it was the spread of grasslands; changing ocean currents; the separation of Antarctica from South America, which caused a cold snap; or the more recent Ice Ages – that would have knocked off the dinosaurs.” Over the years many have tried to imagine what kind of creatures dinosaurs might have evolved into had they survived. The most famous attempt is a 1988 book called The New Dinosaurs: An Alternative Evolution, by Scottish geologist and author Dougal Dixon. For this magnificent work of speculative zoology, Dixon conjured up creatures such as the ‘cutlasstooth’ – a pack-hunting, sabre-toothed predator from South America; the ‘cribrum’ – a flamingo-like, filter-feeding theropod from Australia; and the ‘gourmand’ – a relative of T. rex that lost its front limbs entirely and developed a distensible jaw to allow it to rapidly swallow prey whole, much like a snake. Perhaps this last idea isn’t entirely wide of the mark. Dr Tom Holtz, an expert on theropod dinosaurs at the University of Maryland in the US, says that both tyrannosaurs and abelisaurs, the two types of big meat-eater present in the Late Cretaceous, are notable for their tiny forelimbs. “Given that arms were non-critical for hunting, it’s possible that a Cenozoic [current geological era] tyrannosaur could have been armless,” says Holtz. The beginning of the Cenozoic Era (which spans the period from 66 million years ago until the present day) might essentially have been an ecological extension of the Late Cretaceous. Various creatures such as… Keep reading the article here: https://www.sciencefocus.com/nature/what-if-the-dinosaurs-had-survived/"
+        },
+        {
+          "slide": 17,
+          "visibleTextIndex": 0,
+          "text": "D. Based on the topic presented in the reading section, prepare a small presentation about someone or something that may have had an even more especial impact on people / society / the world if it / he had not ceased existing. What could have been different? How?"
+        }
+      ],
+      "sourceTaskType": "reading-discussion",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "D. Based on the topic presented in the reading section, prepare a small presentation about someone or something that may have had an even more especial impact on people / society / the world if it / he had not ceased existing. What could have been different? How?",
+      "rationale": "The original review label is generic, while the published slide gives the exact teacher-led discussion or presentation prompt. The patch preserves the original label and records the literal prompt and reading source. This is learner-generated open response, so no answerItems are added."
+    },
+    {
+      "unit": 49,
+      "lessonId": "cmnmm9uey002hw1qk4poj2sfe",
+      "slide": 12,
+      "itemId": "u49-s12-a",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the grammar practice shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "A. Using the phrases learned in the lesson, write 8 sentences expressing situations likely to happen. Follow the example.",
+      "originalSourceEvidence": [
+        "A. Complete the grammar exercise on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9uey002hw1qk4poj2sfe.json",
+        "sha256": "b34e294963d4b5000863e5dcf5847a8203f4f85f2be8fbbe60525f1bdd298387",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSeVrypohmrcGfrbHSH_BSbqqzcj4h3uFT2Oh5QBOkCKb4Nq2EUk386Am14X0q80A/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9ui0002iw1qkr9gl1c9s",
+        "deckTitle": "NEW In case they're lost - Unit 49.pptx",
+        "publishedSlide": 12,
+        "publishedSourceSlide": 12
+      },
+      "action": "review-source-aligned-open-response",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems.",
+      "originalReviewSlide": 12,
+      "publishedSourceSlide": 12,
+      "publishedSourceEvidence": [
+        "What if… Imagine that / if… In case… Suppose / Supposing that… They have to call Pete in case he intends to come to the meeting.",
+        "A. Using the phrases learned in the lesson, write 8 sentences expressing situations likely to happen. Follow the example."
+      ],
+      "sourceEvidence": [
+        "What if… Imagine that / if… In case… Suppose / Supposing that… They have to call Pete in case he intends to come to the meeting.",
+        "A. Using the phrases learned in the lesson, write 8 sentences expressing situations likely to happen. Follow the example."
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 12,
+          "visibleTextIndex": 1,
+          "text": "What if… Imagine that / if… In case… Suppose / Supposing that… They have to call Pete in case he intends to come to the meeting."
+        },
+        {
+          "slide": 12,
+          "visibleTextIndex": 0,
+          "text": "A. Using the phrases learned in the lesson, write 8 sentences expressing situations likely to happen. Follow the example."
+        }
+      ],
+      "sourceTaskType": "grammar-production",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "A. Using the phrases learned in the lesson, write 8 sentences expressing situations likely to happen. Follow the example.",
+      "rationale": "The original review label is generic, while the published slide gives the exact learner-generated sentence task and example. The patch preserves that instruction and its source text as an open response; the source provides no unique canonical answer, so no answerItems are added."
+    },
+    {
+      "unit": 49,
+      "lessonId": "cmnmm9uey002hw1qk4poj2sfe",
+      "slide": 15,
+      "itemId": "u49-s15-d",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "D. Based on the topic presented in the reading section, what other issues you think people should be aware of? Having answered that, what are the circumstances likely to happen depending on people’s response to them?",
+      "originalSourceEvidence": [
+        "D. Complete the final activity on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9uey002hw1qk4poj2sfe.json",
+        "sha256": "b34e294963d4b5000863e5dcf5847a8203f4f85f2be8fbbe60525f1bdd298387",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSeVrypohmrcGfrbHSH_BSbqqzcj4h3uFT2Oh5QBOkCKb4Nq2EUk386Am14X0q80A/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9ui0002iw1qkr9gl1c9s",
+        "deckTitle": "NEW In case they're lost - Unit 49.pptx",
+        "publishedSlide": 15,
+        "publishedSourceSlide": 15
+      },
+      "action": "review-source-aligned-open-response",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems.",
+      "originalReviewSlide": 15,
+      "publishedSourceSlide": 15,
+      "publishedSourceEvidence": [
+        "C. Read the following paragraph and have a discussion with the teacher. After that, read aloud the text to your teacher.",
+        "Possible Potential Outcomes from COVID-19 Complications on Testes: Lesson from SARS Infection Coronavirus infection disease-2019 (COVID-19) gained worldwide fame after deadly outbreak in China and its subsequent spread to many countries. So far, COVID-19 is not fully contained, and new cases are arising on daily bases in various countries, Imagine if it keeps growing. Due to zoonotic nature and human-to-human spread, COVID-19 is considered pandemic with more causalities in developing countries. Full genome analysis revealed its resemblance with severe acute respiratory syndrome (SARS) virus with minor variation in non-structural proteins. Both viruses use the common angiotensin converting enzyme (ACE2) receptor to attach to the epithelial cells of the target organs. Currently, in case someone gets COVID-19, those patients are treated with drugs that are used for lungs infections. However, ACE2 has high expression in other human organs such as kidney and testes. So what if that’s not enough? Thus, it is assumed that, like SARS, it may have adverse effects on other vital organs, which have dominant expression of ACE2. In testis, SARS affected patients displayed peritubular fibrosis, extensive germ cell disruption, damage of blood-testis barrier integrity and more frequent occurrence of apoptosis. Here, we critically discuss the possible adverse effects of COVID-19 on the testes of patients along with future precautions to overcome the complications of reproductive organs. Adapted from: https://pubmed.ncbi.nlm.nih.gov/33115584/",
+        "D. Based on the topic presented in the reading section, what other issues you think people should be aware of? Having answered that, what are the circumstances likely to happen depending on people’s response to them?"
+      ],
+      "sourceEvidence": [
+        "C. Read the following paragraph and have a discussion with the teacher. After that, read aloud the text to your teacher.",
+        "Possible Potential Outcomes from COVID-19 Complications on Testes: Lesson from SARS Infection Coronavirus infection disease-2019 (COVID-19) gained worldwide fame after deadly outbreak in China and its subsequent spread to many countries. So far, COVID-19 is not fully contained, and new cases are arising on daily bases in various countries, Imagine if it keeps growing. Due to zoonotic nature and human-to-human spread, COVID-19 is considered pandemic with more causalities in developing countries. Full genome analysis revealed its resemblance with severe acute respiratory syndrome (SARS) virus with minor variation in non-structural proteins. Both viruses use the common angiotensin converting enzyme (ACE2) receptor to attach to the epithelial cells of the target organs. Currently, in case someone gets COVID-19, those patients are treated with drugs that are used for lungs infections. However, ACE2 has high expression in other human organs such as kidney and testes. So what if that’s not enough? Thus, it is assumed that, like SARS, it may have adverse effects on other vital organs, which have dominant expression of ACE2. In testis, SARS affected patients displayed peritubular fibrosis, extensive germ cell disruption, damage of blood-testis barrier integrity and more frequent occurrence of apoptosis. Here, we critically discuss the possible adverse effects of COVID-19 on the testes of patients along with future precautions to overcome the complications of reproductive organs. Adapted from: https://pubmed.ncbi.nlm.nih.gov/33115584/",
+        "D. Based on the topic presented in the reading section, what other issues you think people should be aware of? Having answered that, what are the circumstances likely to happen depending on people’s response to them?"
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 14,
+          "visibleTextIndex": 1,
+          "text": "C. Read the following paragraph and have a discussion with the teacher. After that, read aloud the text to your teacher."
+        },
+        {
+          "slide": 14,
+          "visibleTextIndex": 2,
+          "text": "Possible Potential Outcomes from COVID-19 Complications on Testes: Lesson from SARS Infection Coronavirus infection disease-2019 (COVID-19) gained worldwide fame after deadly outbreak in China and its subsequent spread to many countries. So far, COVID-19 is not fully contained, and new cases are arising on daily bases in various countries, Imagine if it keeps growing. Due to zoonotic nature and human-to-human spread, COVID-19 is considered pandemic with more causalities in developing countries. Full genome analysis revealed its resemblance with severe acute respiratory syndrome (SARS) virus with minor variation in non-structural proteins. Both viruses use the common angiotensin converting enzyme (ACE2) receptor to attach to the epithelial cells of the target organs. Currently, in case someone gets COVID-19, those patients are treated with drugs that are used for lungs infections. However, ACE2 has high expression in other human organs such as kidney and testes. So what if that’s not enough? Thus, it is assumed that, like SARS, it may have adverse effects on other vital organs, which have dominant expression of ACE2. In testis, SARS affected patients displayed peritubular fibrosis, extensive germ cell disruption, damage of blood-testis barrier integrity and more frequent occurrence of apoptosis. Here, we critically discuss the possible adverse effects of COVID-19 on the testes of patients along with future precautions to overcome the complications of reproductive organs. Adapted from: https://pubmed.ncbi.nlm.nih.gov/33115584/"
+        },
+        {
+          "slide": 15,
+          "visibleTextIndex": 0,
+          "text": "D. Based on the topic presented in the reading section, what other issues you think people should be aware of? Having answered that, what are the circumstances likely to happen depending on people’s response to them?"
+        }
+      ],
+      "sourceTaskType": "reading-discussion",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "D. Based on the topic presented in the reading section, what other issues you think people should be aware of? Having answered that, what are the circumstances likely to happen depending on people’s response to them?",
+      "rationale": "The original review label is generic, while the published slide gives the exact teacher-led discussion or presentation prompt. The patch preserves the original label and records the literal prompt and reading source. This is learner-generated open response, so no answerItems are added."
+    },
+    {
+      "unit": 50,
+      "lessonId": "cmnmm9ur4002kw1qkr4g1untw",
+      "slide": 12,
+      "itemId": "u50-s12-a",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the grammar practice shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "A. Using the phrases learned in the lesson, write 8 sentences expressing situations not likely to happen and wishes for the future. Follow the example.",
+      "originalSourceEvidence": [
+        "A. Complete the grammar exercise on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9ur4002kw1qkr4g1untw.json",
+        "sha256": "963e0cd4c4334bcb06d65f1bc2ea30c987fe90a94aa88698faba20065980e284",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRhC8eydj4UMLsNKsGAcGhFmGrAjEeNLqHPzjhK9BeQc2EnD9xBBA6RC-vbY4e2IA/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9uu6002lw1qkj4ao2e9x",
+        "deckTitle": "NEW Imagine you had a car - Unit 50.pptx",
+        "publishedSlide": 12,
+        "publishedSourceSlide": 12
+      },
+      "action": "review-source-aligned-open-response",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems.",
+      "originalReviewSlide": 12,
+      "publishedSourceSlide": 12,
+      "publishedSourceEvidence": [
+        "What if… Imagine that / if… If only… I wish… I wish they called, that would be awesome.",
+        "A. Using the phrases learned in the lesson, write 8 sentences expressing situations not likely to happen and wishes for the future. Follow the example."
+      ],
+      "sourceEvidence": [
+        "What if… Imagine that / if… If only… I wish… I wish they called, that would be awesome.",
+        "A. Using the phrases learned in the lesson, write 8 sentences expressing situations not likely to happen and wishes for the future. Follow the example."
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 12,
+          "visibleTextIndex": 1,
+          "text": "What if… Imagine that / if… If only… I wish… I wish they called, that would be awesome."
+        },
+        {
+          "slide": 12,
+          "visibleTextIndex": 0,
+          "text": "A. Using the phrases learned in the lesson, write 8 sentences expressing situations not likely to happen and wishes for the future. Follow the example."
+        }
+      ],
+      "sourceTaskType": "grammar-production",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "A. Using the phrases learned in the lesson, write 8 sentences expressing situations not likely to happen and wishes for the future. Follow the example.",
+      "rationale": "The original review label is generic, while the published slide gives the exact learner-generated sentence task and example. The patch preserves that instruction and its source text as an open response; the source provides no unique canonical answer, so no answerItems are added."
+    },
+    {
+      "unit": 50,
+      "lessonId": "cmnmm9ur4002kw1qkr4g1untw",
+      "slide": 15,
+      "itemId": "u50-s15-d",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "D. Based on the topic presented in the reading section, tell your teacher about the wishes you have that you feel like they may not come true. Explain why you think that, the reasons and if you plan to do something about it.",
+      "originalSourceEvidence": [
+        "D. Complete the final activity on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9ur4002kw1qkr4g1untw.json",
+        "sha256": "963e0cd4c4334bcb06d65f1bc2ea30c987fe90a94aa88698faba20065980e284",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRhC8eydj4UMLsNKsGAcGhFmGrAjEeNLqHPzjhK9BeQc2EnD9xBBA6RC-vbY4e2IA/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9uu6002lw1qkj4ao2e9x",
+        "deckTitle": "NEW Imagine you had a car - Unit 50.pptx",
+        "publishedSlide": 15,
+        "publishedSourceSlide": 15
+      },
+      "action": "review-source-aligned-open-response",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems.",
+      "originalReviewSlide": 15,
+      "publishedSourceSlide": 15,
+      "publishedSourceEvidence": [
+        "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher. Check the full article in the link below.",
+        "Achieving Your Wishes : Will Wishing Work? Do you wish you had a better job, bigger house, more friends, better health, less worries, and greater happiness? We all engage in wishing, but should we? Should we wish for more or be satisfied with what we have? Why can't we do both? Just because we are satisfied with what we have doesn't mean we can't or shouldn't wish for more. After all, isn't self-improvement or personal-development about wishing for more? No, there isn't anything wrong with wishing. A wish is merely the voice of our Higher Self reminding us that we have boundless potential and urging us to take advantage of it. If anything, we should wish to have, be, and do more because that's how we help to create a better world; if only we always thought that way.. It is only when we have more than we need that we can share what we have with those who have less than they need. It is only when we are healthy that we can help the sick. And it is only when we are strong that we can help the weak. As you can see, wishing plays an important role, for we either allow ourselves to become what others will make of us, or we wish to become something better. Did you ever toss a coin into a wishing well and make a wish? What if you had your own wishing well? Aware of it or not, that's precisely what we have. We have a personal genie within us. It is our subconscious. Its sole purpose is to serve us. It serves us by regulating our heart and breathing rate, body temperature, and the flow of hormones, just to name a few of its many functions. But another major function of the subconscious is to grant our every wish! And it works tirelessly, 24/7, granting us what it believes we want. Adapted from: https://www.rotaryeclubone.org/makeups/articles/achievingyourwishe/",
+        "D. Based on the topic presented in the reading section, tell your teacher about the wishes you have that you feel like they may not come true. Explain why you think that, the reasons and if you plan to do something about it."
+      ],
+      "sourceEvidence": [
+        "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher. Check the full article in the link below.",
+        "Achieving Your Wishes : Will Wishing Work? Do you wish you had a better job, bigger house, more friends, better health, less worries, and greater happiness? We all engage in wishing, but should we? Should we wish for more or be satisfied with what we have? Why can't we do both? Just because we are satisfied with what we have doesn't mean we can't or shouldn't wish for more. After all, isn't self-improvement or personal-development about wishing for more? No, there isn't anything wrong with wishing. A wish is merely the voice of our Higher Self reminding us that we have boundless potential and urging us to take advantage of it. If anything, we should wish to have, be, and do more because that's how we help to create a better world; if only we always thought that way.. It is only when we have more than we need that we can share what we have with those who have less than they need. It is only when we are healthy that we can help the sick. And it is only when we are strong that we can help the weak. As you can see, wishing plays an important role, for we either allow ourselves to become what others will make of us, or we wish to become something better. Did you ever toss a coin into a wishing well and make a wish? What if you had your own wishing well? Aware of it or not, that's precisely what we have. We have a personal genie within us. It is our subconscious. Its sole purpose is to serve us. It serves us by regulating our heart and breathing rate, body temperature, and the flow of hormones, just to name a few of its many functions. But another major function of the subconscious is to grant our every wish! And it works tirelessly, 24/7, granting us what it believes we want. Adapted from: https://www.rotaryeclubone.org/makeups/articles/achievingyourwishe/",
+        "D. Based on the topic presented in the reading section, tell your teacher about the wishes you have that you feel like they may not come true. Explain why you think that, the reasons and if you plan to do something about it."
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 14,
+          "visibleTextIndex": 1,
+          "text": "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher. Check the full article in the link below."
+        },
+        {
+          "slide": 14,
+          "visibleTextIndex": 2,
+          "text": "Achieving Your Wishes : Will Wishing Work? Do you wish you had a better job, bigger house, more friends, better health, less worries, and greater happiness? We all engage in wishing, but should we? Should we wish for more or be satisfied with what we have? Why can't we do both? Just because we are satisfied with what we have doesn't mean we can't or shouldn't wish for more. After all, isn't self-improvement or personal-development about wishing for more? No, there isn't anything wrong with wishing. A wish is merely the voice of our Higher Self reminding us that we have boundless potential and urging us to take advantage of it. If anything, we should wish to have, be, and do more because that's how we help to create a better world; if only we always thought that way.. It is only when we have more than we need that we can share what we have with those who have less than they need. It is only when we are healthy that we can help the sick. And it is only when we are strong that we can help the weak. As you can see, wishing plays an important role, for we either allow ourselves to become what others will make of us, or we wish to become something better. Did you ever toss a coin into a wishing well and make a wish? What if you had your own wishing well? Aware of it or not, that's precisely what we have. We have a personal genie within us. It is our subconscious. Its sole purpose is to serve us. It serves us by regulating our heart and breathing rate, body temperature, and the flow of hormones, just to name a few of its many functions. But another major function of the subconscious is to grant our every wish! And it works tirelessly, 24/7, granting us what it believes we want. Adapted from: https://www.rotaryeclubone.org/makeups/articles/achievingyourwishe/"
+        },
+        {
+          "slide": 15,
+          "visibleTextIndex": 0,
+          "text": "D. Based on the topic presented in the reading section, tell your teacher about the wishes you have that you feel like they may not come true. Explain why you think that, the reasons and if you plan to do something about it."
+        }
+      ],
+      "sourceTaskType": "reading-discussion",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "D. Based on the topic presented in the reading section, tell your teacher about the wishes you have that you feel like they may not come true. Explain why you think that, the reasons and if you plan to do something about it.",
+      "rationale": "The original review label is generic, while the published slide gives the exact teacher-led discussion or presentation prompt. The patch preserves the original label and records the literal prompt and reading source. This is learner-generated open response, so no answerItems are added."
+    },
+    {
+      "unit": 51,
+      "lessonId": "cmnmm9v3a002nw1qkedoaw2od",
+      "slide": 12,
+      "itemId": "u51-s12-a",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the grammar practice shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "A. Using the phrases learned in the lesson, write 8 sentences expressing events or wishes that did not happen. Follow the example.",
+      "originalSourceEvidence": [
+        "A. Complete the grammar exercise on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9v3a002nw1qkedoaw2od.json",
+        "sha256": "8b4f5da240789c74fea48fb529b8294774b7d1199bc434def0ae732bcd8202cc",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQR_8lUzeku4wyvwihPJxPjnWOcUhYUoe3nfiLvUfGzMQnOvwVGbxjnR_PhNd5IXA/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9v6c002ow1qk7b5lo03z",
+        "deckTitle": "NEW What if he had lost his job? - Unit 51.pptx",
+        "publishedSlide": 12,
+        "publishedSourceSlide": 12
+      },
+      "action": "review-source-aligned-open-response",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems.",
+      "originalReviewSlide": 12,
+      "publishedSourceSlide": 12,
+      "publishedSourceEvidence": [
+        "What if… Imagine that / if… Suppose that / if… I wish… I wish they had left the house earlier, so they could have seen the play start.",
+        "A. Using the phrases learned in the lesson, write 8 sentences expressing events or wishes that did not happen. Follow the example."
+      ],
+      "sourceEvidence": [
+        "What if… Imagine that / if… Suppose that / if… I wish… I wish they had left the house earlier, so they could have seen the play start.",
+        "A. Using the phrases learned in the lesson, write 8 sentences expressing events or wishes that did not happen. Follow the example."
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 12,
+          "visibleTextIndex": 1,
+          "text": "What if… Imagine that / if… Suppose that / if… I wish… I wish they had left the house earlier, so they could have seen the play start."
+        },
+        {
+          "slide": 12,
+          "visibleTextIndex": 0,
+          "text": "A. Using the phrases learned in the lesson, write 8 sentences expressing events or wishes that did not happen. Follow the example."
+        }
+      ],
+      "sourceTaskType": "grammar-production",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "A. Using the phrases learned in the lesson, write 8 sentences expressing events or wishes that did not happen. Follow the example.",
+      "rationale": "The original review label is generic, while the published slide gives the exact learner-generated sentence task and example. The patch preserves that instruction and its source text as an open response; the source provides no unique canonical answer, so no answerItems are added."
+    },
+    {
+      "unit": 51,
+      "lessonId": "cmnmm9v3a002nw1qkedoaw2od",
+      "slide": 15,
+      "itemId": "u51-s15-d",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "D. Based on the topic presented in the reading section, make a small presentation / discussion about what other global disaster had been announced and never came to happen? What if it had became true? Suppose that we had lived it, where would that have let us?",
+      "originalSourceEvidence": [
+        "D. Complete the final activity on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9v3a002nw1qkedoaw2od.json",
+        "sha256": "8b4f5da240789c74fea48fb529b8294774b7d1199bc434def0ae732bcd8202cc",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQR_8lUzeku4wyvwihPJxPjnWOcUhYUoe3nfiLvUfGzMQnOvwVGbxjnR_PhNd5IXA/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9v6c002ow1qk7b5lo03z",
+        "deckTitle": "NEW What if he had lost his job? - Unit 51.pptx",
+        "publishedSlide": 15,
+        "publishedSourceSlide": 15
+      },
+      "action": "review-source-aligned-open-response",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems.",
+      "originalReviewSlide": 15,
+      "publishedSourceSlide": 15,
+      "publishedSourceEvidence": [
+        "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher. Check the full article in the link below.",
+        "Global Disasters that never Came to happen: The Impending Ice Age An April 28, 1975 article in Newsweek Magazine titled \"The Cooling World\" warned that the world could freeze over before we knew it. A year earlier, Time ran an article titled, \"A New Ice Age?\" The media of the mid-70's latched onto the idea of impending icy death, imagine if it had become true. But where did this come from? Between 1945 and the 1970's global temperatures had decreased. Scientists have since figured out that sulphate aerosols caused cooling, by blocking and reflecting sunlight as well as serving as seeds for cloud coverage. At the same time scientific papers explaining about how the earth's orbital patterns affect global weather and the creation of ice ages were being published. The media seemed to pick up geologist saying an ice age could be soon — but not really understanding that thousands of years is \"soon\" to a geologist; but what if that had happened? We would not probable have written this article. Despite the media hype, the scientific journals were either unsure about how humans were affecting the climate, or already predicting the possibility of global warming due to CO2. Current research shows the high level of CO2 in the atmosphere is preventing any growth of the ice sheets. The Ice Age fear has come back recently, most likely because of the 2012 hysteria, but this time in conjunction with the sun's solar cycles. Bad Astronomy explains why you don't need invest in parkas quite yet. Incidentally, Newsweek issued a correction to the 1975 article in 2006, since by then it was clear an Ice Age hadn't wiped us all out. If only people had been more cautious in the information they linked, we (new generations) may have turned more eager for facts than farandula. Adapted from: https://gizmodo.com/9-global-disasters-that-never-came-to-pass-5943220",
+        "D. Based on the topic presented in the reading section, make a small presentation / discussion about what other global disaster had been announced and never came to happen? What if it had became true? Suppose that we had lived it, where would that have let us?"
+      ],
+      "sourceEvidence": [
+        "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher. Check the full article in the link below.",
+        "Global Disasters that never Came to happen: The Impending Ice Age An April 28, 1975 article in Newsweek Magazine titled \"The Cooling World\" warned that the world could freeze over before we knew it. A year earlier, Time ran an article titled, \"A New Ice Age?\" The media of the mid-70's latched onto the idea of impending icy death, imagine if it had become true. But where did this come from? Between 1945 and the 1970's global temperatures had decreased. Scientists have since figured out that sulphate aerosols caused cooling, by blocking and reflecting sunlight as well as serving as seeds for cloud coverage. At the same time scientific papers explaining about how the earth's orbital patterns affect global weather and the creation of ice ages were being published. The media seemed to pick up geologist saying an ice age could be soon — but not really understanding that thousands of years is \"soon\" to a geologist; but what if that had happened? We would not probable have written this article. Despite the media hype, the scientific journals were either unsure about how humans were affecting the climate, or already predicting the possibility of global warming due to CO2. Current research shows the high level of CO2 in the atmosphere is preventing any growth of the ice sheets. The Ice Age fear has come back recently, most likely because of the 2012 hysteria, but this time in conjunction with the sun's solar cycles. Bad Astronomy explains why you don't need invest in parkas quite yet. Incidentally, Newsweek issued a correction to the 1975 article in 2006, since by then it was clear an Ice Age hadn't wiped us all out. If only people had been more cautious in the information they linked, we (new generations) may have turned more eager for facts than farandula. Adapted from: https://gizmodo.com/9-global-disasters-that-never-came-to-pass-5943220",
+        "D. Based on the topic presented in the reading section, make a small presentation / discussion about what other global disaster had been announced and never came to happen? What if it had became true? Suppose that we had lived it, where would that have let us?"
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 14,
+          "visibleTextIndex": 1,
+          "text": "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher. Check the full article in the link below."
+        },
+        {
+          "slide": 14,
+          "visibleTextIndex": 2,
+          "text": "Global Disasters that never Came to happen: The Impending Ice Age An April 28, 1975 article in Newsweek Magazine titled \"The Cooling World\" warned that the world could freeze over before we knew it. A year earlier, Time ran an article titled, \"A New Ice Age?\" The media of the mid-70's latched onto the idea of impending icy death, imagine if it had become true. But where did this come from? Between 1945 and the 1970's global temperatures had decreased. Scientists have since figured out that sulphate aerosols caused cooling, by blocking and reflecting sunlight as well as serving as seeds for cloud coverage. At the same time scientific papers explaining about how the earth's orbital patterns affect global weather and the creation of ice ages were being published. The media seemed to pick up geologist saying an ice age could be soon — but not really understanding that thousands of years is \"soon\" to a geologist; but what if that had happened? We would not probable have written this article. Despite the media hype, the scientific journals were either unsure about how humans were affecting the climate, or already predicting the possibility of global warming due to CO2. Current research shows the high level of CO2 in the atmosphere is preventing any growth of the ice sheets. The Ice Age fear has come back recently, most likely because of the 2012 hysteria, but this time in conjunction with the sun's solar cycles. Bad Astronomy explains why you don't need invest in parkas quite yet. Incidentally, Newsweek issued a correction to the 1975 article in 2006, since by then it was clear an Ice Age hadn't wiped us all out. If only people had been more cautious in the information they linked, we (new generations) may have turned more eager for facts than farandula. Adapted from: https://gizmodo.com/9-global-disasters-that-never-came-to-pass-5943220"
+        },
+        {
+          "slide": 15,
+          "visibleTextIndex": 0,
+          "text": "D. Based on the topic presented in the reading section, make a small presentation / discussion about what other global disaster had been announced and never came to happen? What if it had became true? Suppose that we had lived it, where would that have let us?"
+        }
+      ],
+      "sourceTaskType": "reading-discussion",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "D. Based on the topic presented in the reading section, make a small presentation / discussion about what other global disaster had been announced and never came to happen? What if it had became true? Suppose that we had lived it, where would that have let us?",
+      "rationale": "The original review label is generic, while the published slide gives the exact teacher-led discussion or presentation prompt. The patch preserves the original label and records the literal prompt and reading source. This is learner-generated open response, so no answerItems are added."
+    },
+    {
+      "unit": 52,
+      "lessonId": "cmnmm9vfh002qw1qknevwf813",
+      "slide": 12,
+      "itemId": "u52-s12-a",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the grammar practice shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are yet to happen. Follow the example.",
+      "originalSourceEvidence": [
+        "A. Complete the grammar exercise on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9vfh002qw1qknevwf813.json",
+        "sha256": "251b6283a58c491c7a47e1bfc3be52be7a79e8087304cb9319b54c46092cce6e",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQQeqAI67769x4EO1FJwv8LXNfCFDMAZY0WNICVJl9YMnJYMGl8VplBKKbCZH3SuQ/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9vij002rw1qkwktvpnx4",
+        "deckTitle": "NEW I'll have finished by then - Unit 52.pptx",
+        "publishedSlide": 12,
+        "publishedSourceSlide": 12
+      },
+      "action": "review-source-aligned-open-response",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems.",
+      "originalReviewSlide": 12,
+      "publishedSourceSlide": 12,
+      "publishedSourceEvidence": [
+        "0. Jake will have taken the chance with Annie in two weeks’ time.",
+        "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are yet to happen. Follow the example."
+      ],
+      "sourceEvidence": [
+        "0. Jake will have taken the chance with Annie in two weeks’ time.",
+        "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are yet to happen. Follow the example."
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 12,
+          "visibleTextIndex": 1,
+          "text": "0. Jake will have taken the chance with Annie in two weeks’ time."
+        },
+        {
+          "slide": 12,
+          "visibleTextIndex": 0,
+          "text": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are yet to happen. Follow the example."
+        }
+      ],
+      "sourceTaskType": "grammar-production",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are yet to happen. Follow the example.",
+      "rationale": "The original review label is generic, while the published slide gives the exact learner-generated sentence task and example. The patch preserves that instruction and its source text as an open response; the source provides no unique canonical answer, so no answerItems are added."
+    },
+    {
+      "unit": 52,
+      "lessonId": "cmnmm9vfh002qw1qknevwf813",
+      "slide": 15,
+      "itemId": "u52-s15-d",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the role-play or writing activity shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "D. Make a small presentation / discussion about where will we have gotten as a society in 40 years’ time? Will we be doing better? Worse? Why? Talk about the different important areas and how you see it.",
+      "originalSourceEvidence": [
+        "D. Complete the final activity on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9vfh002qw1qknevwf813.json",
+        "sha256": "251b6283a58c491c7a47e1bfc3be52be7a79e8087304cb9319b54c46092cce6e",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQQeqAI67769x4EO1FJwv8LXNfCFDMAZY0WNICVJl9YMnJYMGl8VplBKKbCZH3SuQ/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9vij002rw1qkwktvpnx4",
+        "deckTitle": "NEW I'll have finished by then - Unit 52.pptx",
+        "publishedSlide": 15,
+        "publishedSourceSlide": 15
+      },
+      "action": "review-source-aligned-open-response",
+      "reason": "The published slide is learner-generated discussion, writing, role-play, or a generic practice label and does not establish one canonical answer. Keep it open response and do not invent answerItems.",
+      "originalReviewSlide": 15,
+      "publishedSourceSlide": 15,
+      "publishedSourceEvidence": [
+        "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher. Check the full article in the link below.",
+        "The expert guide to space colonies With our rising planet’s population competing for space and resources, some people are convinced we need to look beyond Earth to help ensure humanity’s survival; What will we have had when that time comes?. As Elon Musk, the entrepreneur behind space tourism company SpaceX put it recently: “I think there is a strong argument for making life multiplanetary in order to safeguard the existence of humanity in the event that something catastrophic were to happen.” Even if you don’t believe this bleak vision, it’s hard to ignore the eternal human instinct to discover the undiscovered – an urge that could push people beyond the safety of our planet, and we reckon we will be doing something about it when time comes. And there might not be as many hurdles as you might think. “We are at the level of technology where we can imagine leaving the planet for a few nearby places in our Solar System,” former astronaut Jeffrey Hoffman, who will present his ideas at our summit, told BBC Future previously. “The Moon is just around the corner, and Mars isn’t that far away. We have the possibility of at least making the first steps of those voyages in our own lifetimes.” What could a space colony look like? One possible idea goes as far back as the 1920s. Austro-Hungarian rocket pioneer Herman Potočnik imagined a circular spacecraft - rather like a flying saucer – that rotates to create artificial gravity while a large, concave mirror could focus sunlight for an energy source. As far-fetched as this may sound, the idea has lingered over the years – most notably in the mid-1970s by the late Princeton physicist Gerard O’Neill, and again by the space think tank British Interplanetary Society. Before you dismiss the idea of floating colonies completely, it’s worth noting that the British Interplanetary Society predicted we would reach the Moon three decades before it actually happened, so imagine where it will have gotten once it sets its mind on it. Adapted from: https://www.bbc.com/future/article/20141002-time-to-plan-a-space-colony",
+        "D. Make a small presentation / discussion about where will we have gotten as a society in 40 years’ time? Will we be doing better? Worse? Why? Talk about the different important areas and how you see it."
+      ],
+      "sourceEvidence": [
+        "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher. Check the full article in the link below.",
+        "The expert guide to space colonies With our rising planet’s population competing for space and resources, some people are convinced we need to look beyond Earth to help ensure humanity’s survival; What will we have had when that time comes?. As Elon Musk, the entrepreneur behind space tourism company SpaceX put it recently: “I think there is a strong argument for making life multiplanetary in order to safeguard the existence of humanity in the event that something catastrophic were to happen.” Even if you don’t believe this bleak vision, it’s hard to ignore the eternal human instinct to discover the undiscovered – an urge that could push people beyond the safety of our planet, and we reckon we will be doing something about it when time comes. And there might not be as many hurdles as you might think. “We are at the level of technology where we can imagine leaving the planet for a few nearby places in our Solar System,” former astronaut Jeffrey Hoffman, who will present his ideas at our summit, told BBC Future previously. “The Moon is just around the corner, and Mars isn’t that far away. We have the possibility of at least making the first steps of those voyages in our own lifetimes.” What could a space colony look like? One possible idea goes as far back as the 1920s. Austro-Hungarian rocket pioneer Herman Potočnik imagined a circular spacecraft - rather like a flying saucer – that rotates to create artificial gravity while a large, concave mirror could focus sunlight for an energy source. As far-fetched as this may sound, the idea has lingered over the years – most notably in the mid-1970s by the late Princeton physicist Gerard O’Neill, and again by the space think tank British Interplanetary Society. Before you dismiss the idea of floating colonies completely, it’s worth noting that the British Interplanetary Society predicted we would reach the Moon three decades before it actually happened, so imagine where it will have gotten once it sets its mind on it. Adapted from: https://www.bbc.com/future/article/20141002-time-to-plan-a-space-colony",
+        "D. Make a small presentation / discussion about where will we have gotten as a society in 40 years’ time? Will we be doing better? Worse? Why? Talk about the different important areas and how you see it."
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 14,
+          "visibleTextIndex": 1,
+          "text": "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher. Check the full article in the link below."
+        },
+        {
+          "slide": 14,
+          "visibleTextIndex": 2,
+          "text": "The expert guide to space colonies With our rising planet’s population competing for space and resources, some people are convinced we need to look beyond Earth to help ensure humanity’s survival; What will we have had when that time comes?. As Elon Musk, the entrepreneur behind space tourism company SpaceX put it recently: “I think there is a strong argument for making life multiplanetary in order to safeguard the existence of humanity in the event that something catastrophic were to happen.” Even if you don’t believe this bleak vision, it’s hard to ignore the eternal human instinct to discover the undiscovered – an urge that could push people beyond the safety of our planet, and we reckon we will be doing something about it when time comes. And there might not be as many hurdles as you might think. “We are at the level of technology where we can imagine leaving the planet for a few nearby places in our Solar System,” former astronaut Jeffrey Hoffman, who will present his ideas at our summit, told BBC Future previously. “The Moon is just around the corner, and Mars isn’t that far away. We have the possibility of at least making the first steps of those voyages in our own lifetimes.” What could a space colony look like? One possible idea goes as far back as the 1920s. Austro-Hungarian rocket pioneer Herman Potočnik imagined a circular spacecraft - rather like a flying saucer – that rotates to create artificial gravity while a large, concave mirror could focus sunlight for an energy source. As far-fetched as this may sound, the idea has lingered over the years – most notably in the mid-1970s by the late Princeton physicist Gerard O’Neill, and again by the space think tank British Interplanetary Society. Before you dismiss the idea of floating colonies completely, it’s worth noting that the British Interplanetary Society predicted we would reach the Moon three decades before it actually happened, so imagine where it will have gotten once it sets its mind on it. Adapted from: https://www.bbc.com/future/article/20141002-time-to-plan-a-space-colony"
+        },
+        {
+          "slide": 15,
+          "visibleTextIndex": 0,
+          "text": "D. Make a small presentation / discussion about where will we have gotten as a society in 40 years’ time? Will we be doing better? Worse? Why? Talk about the different important areas and how you see it."
+        }
+      ],
+      "sourceTaskType": "reading-discussion",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "D. Make a small presentation / discussion about where will we have gotten as a society in 40 years’ time? Will we be doing better? Worse? Why? Talk about the different important areas and how you see it.",
+      "rationale": "The original review label is generic, while the published slide gives the exact teacher-led discussion or presentation prompt. The patch preserves the original label and records the literal prompt and reading source. This is learner-generated open response, so no answerItems are added."
     }
   ]
 }
