@@ -349,6 +349,115 @@ class ComposeCourseBuilderInputsTests(unittest.TestCase):
             self.assertIn("figure-proof-not-exact", [item["code"] for item in blockers])
             self.assertNotIn("figure-correspondence-not-exact", [item["code"] for item in blockers])
 
+    def test_visual_proof_accepts_non_33_to_36_candidate_with_generic_mapping(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "family.jpg"
+            source.write_bytes(b"unit five verified portrait")
+            digest = hashlib.sha256(source.read_bytes()).hexdigest()
+            proof = {
+                "units": [
+                    {
+                        "unit": 5,
+                        "requiredSlides": [
+                            {
+                                "publishedSlide": 4,
+                                "observedSlideUrlSuffix": "slide=id.unit5-s4",
+                                "candidates": [
+                                    {
+                                        "publishedSlide": 4,
+                                        "publishedMediaOrdinal": 2,
+                                        "nativePath": source.name,
+                                        "nativeSha256": digest,
+                                        "publishedReferenceSha256": digest,
+                                        "publishedReferencePath": "published/u5-s4.jpg",
+                                        "publishedReferenceBytes": source.stat().st_size,
+                                        "visualStatus": "confirmed",
+                                        "byteExactMatch": True,
+                                    }
+                                ],
+                            }
+                        ],
+                    }
+                ]
+            }
+            blockers: list[dict] = []
+            figures, counts = composer._figure_candidates(
+                None,
+                None,
+                {digest: {"status": "ready", "sourceSha256": digest, "publicUrl": "/unit5.webp"}},
+                {},
+                {5: {"lesson": {"id": "lesson-5"}}},
+                [root],
+                blockers,
+                proof,
+                "docs/audit/figure-proof/units-3-5-visual-proof.json",
+            )
+
+            self.assertEqual(counts["candidateReferences"], 1)
+            self.assertEqual(len(figures), 1)
+            self.assertEqual(figures[0]["nativeEvidence"]["mapping"], "visual-proof")
+            self.assertTrue(figures[0]["sourceProofRef"]["byteExactMatch"])
+            self.assertEqual(blockers, [])
+
+    def test_vector_review_injects_editable_table_and_proof_into_matching_native_slide(self) -> None:
+        source_url = "https://example.test/unit-3"
+        records = []
+        sources_by_unit = {}
+        for unit in range(composer.UNIT_FIRST, composer.UNIT_LAST + 1):
+            sources_by_unit[unit] = {
+                "sourceUrl": source_url if unit == 3 else f"https://example.test/unit-{unit}",
+                "deck": {"deckTitle": f"Unit {unit}", "slides": []},
+            }
+            records.append(
+                {
+                    "unit": unit,
+                    "candidate": {"id": f"candidate-{unit}", "role": "primary-candidate", "title": f"Unit {unit}"},
+                    "native": {
+                        "slides": [
+                            {"number": 4, "visibleTexts": ["Week"]}
+                        ] if unit == 3 else [],
+                    },
+                }
+            )
+        vector_review = {
+            "scope": {"unit": 3, "publishedSlide": 4},
+            "source": {"publishedSourceUrl": source_url},
+            "slide": {"publishedSlide": 4},
+            "structuredContent": {
+                "content": {"headers": ["DAY", "ACTIVITIES"], "rows": [["SUNDAY", "DINNER AT MOM'S"]]},
+                "tables": [[["DAY", "ACTIVITIES"], ["SUNDAY", "DINNER AT MOM'S"]]],
+                "data": {
+                    "tableGroups": [{"key": "week-overview", "layout": "compact-two-column"}],
+                    "figureProof": {
+                        "kind": "native-vector",
+                        "visualRole": "week-calendar",
+                        "confirmedInstructional": True,
+                        "rasterRequired": False,
+                    },
+                },
+            },
+        }
+        blockers: list[dict] = []
+        composed = composer._compose_native_audit(
+            {"schemaVersion": 1, "records": records},
+            None,
+            None,
+            None,
+            [],
+            sources_by_unit,
+            blockers,
+            vector_review=vector_review,
+        )
+
+        unit3 = next(item for item in composed["records"] if item["unit"] == 3)
+        slide4 = unit3["native"]["slides"][0]
+        self.assertEqual(slide4["tables"], [[["DAY", "ACTIVITIES"], ["SUNDAY", "DINNER AT MOM'S"]]])
+        self.assertEqual(slide4["vectorStructuredContent"]["data"]["tableGroups"][0]["layout"], "compact-two-column")
+        self.assertTrue(slide4["vectorFigureProof"]["confirmedInstructional"])
+        self.assertEqual(composed["vectorReview"]["scope"]["unit"], 3)
+        self.assertEqual(blockers, [])
+
     def test_figure_uses_verified_absolute_staged_source_when_review_path_is_elsewhere(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

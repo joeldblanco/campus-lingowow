@@ -943,6 +943,7 @@ def _figure_candidates(
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     candidates: list[dict[str, Any]] = []
     seen: set[tuple[int, int, str]] = set()
+    proof_refs: dict[tuple[int, int, str], dict[str, Any]] = {}
     confirmed_units = reviewed_figures.get("units", {}) if isinstance(reviewed_figures, Mapping) else {}
     if isinstance(confirmed_units, list):
         confirmed_units = {str(item.get("unit")): item for item in confirmed_units if isinstance(item, Mapping)}
@@ -985,10 +986,10 @@ def _figure_candidates(
                     }
                 )
     if isinstance(figure_proof, Mapping):
-        # Units 33-36 may enter the builder only through the proof artifact.
-        # Its live observed slide and downloaded published payload digest are
-        # required together; text order or the old correspondence artifact is
-        # insufficient evidence for a native figure mapping.
+        # A proof entry may independently verify a figure on any published
+        # slide. Units 33-36 have no reviewed-figures admission path, while
+        # Unit 5 uses this same exact proof to preserve its portrait when the
+        # native prose alignment remains below threshold.
         proof_units = figure_proof.get("units", [])
         if isinstance(proof_units, Mapping):
             proof_units = list(proof_units.values())
@@ -996,8 +997,6 @@ def _figure_candidates(
             if not isinstance(unit_entry, Mapping):
                 continue
             unit = _int(unit_entry.get("unit"))
-            if unit not in {33, 34, 35, 36}:
-                continue
             for slide_entry in _as_list(unit_entry.get("requiredSlides")):
                 if not isinstance(slide_entry, Mapping):
                     continue
@@ -1011,6 +1010,8 @@ def _figure_candidates(
                     published_digest = _text(item.get("publishedReferenceSha256")).casefold()
                     path = _text(item.get("nativePath"))
                     exact = (
+                        unit is not None
+                        and
                         published_slide is not None
                         and candidate_slide == published_slide
                         and bool(observed_slide)
@@ -1041,6 +1042,7 @@ def _figure_candidates(
                         "publishedReferenceBytes": _int(item.get("publishedReferenceBytes")),
                         "byteExactMatch": True,
                     }
+                    proof_refs[(unit, published_slide, native_digest)] = proof_ref
                     candidates.append(
                         {
                             "unit": unit,
@@ -1049,7 +1051,11 @@ def _figure_candidates(
                             "sourcePath": _resolve_local_path(path, asset_roots),
                             "purpose": _text(slide_entry.get("publishedTitle")),
                             "reviewedFigure": copy.deepcopy(dict(item)),
-                            "mapping": "units-33-36-visual-proof",
+                            "mapping": (
+                                "units-33-36-visual-proof"
+                                if unit in {33, 34, 35, 36}
+                                else "visual-proof"
+                            ),
                             "sourceProofRef": proof_ref,
                         }
                     )
@@ -1109,6 +1115,18 @@ def _figure_candidates(
                         },
                     }
                 )
+    for candidate in candidates:
+        proof_ref = proof_refs.get(
+            (
+                _int(candidate.get("unit")) or 0,
+                _int(candidate.get("slideNumber")) or 0,
+                _text(candidate.get("sourceSha256")).casefold(),
+            )
+        )
+        if proof_ref is not None:
+            candidate["sourceProofRef"] = copy.deepcopy(proof_ref)
+            if candidate.get("mapping") == "reviewed-figures":
+                candidate["mapping"] = "reviewed-figures+visual-proof"
     ready_figures: list[dict[str, Any]] = []
     for candidate in candidates:
         unit = candidate["unit"]
@@ -1285,6 +1303,44 @@ def _native_candidate_ids(
     return result
 
 
+def _vector_review_index(vector_review: Mapping[str, Any] | None) -> dict[tuple[int, int], Mapping[str, Any]]:
+    """Index source-verified vector projections by unit and published slide."""
+
+    if not isinstance(vector_review, Mapping):
+        return {}
+    entries: list[Mapping[str, Any]] = []
+    raw_units = vector_review.get("units")
+    if isinstance(raw_units, Mapping):
+        entries.extend(item for item in raw_units.values() if isinstance(item, Mapping))
+    elif isinstance(raw_units, list):
+        entries.extend(item for item in raw_units if isinstance(item, Mapping))
+    else:
+        entries.append(vector_review)
+    result: dict[tuple[int, int], Mapping[str, Any]] = {}
+    for entry in entries:
+        scope = entry.get("scope") if isinstance(entry.get("scope"), Mapping) else entry
+        slide = entry.get("slide") if isinstance(entry.get("slide"), Mapping) else entry
+        unit = _int(scope.get("unit") if isinstance(scope, Mapping) else None)
+        published_slide = _int(
+            slide.get("publishedSlide")
+            if isinstance(slide, Mapping)
+            else None
+        )
+        if published_slide is None and isinstance(scope, Mapping):
+            published_slide = _int(scope.get("publishedSlide"))
+        if unit is None or published_slide is None:
+            continue
+        result[(unit, published_slide)] = entry
+    return result
+
+
+def _vector_review_source_url(vector_review: Mapping[str, Any]) -> str:
+    source = vector_review.get("source")
+    if isinstance(source, Mapping):
+        return _text(source.get("publishedSourceUrl") or source.get("sourceUrl"))
+    return _text(vector_review.get("publishedSourceUrl") or vector_review.get("sourceUrl"))
+
+
 def _compose_native_audit(
     native_audit: Mapping[str, Any] | None,
     reviewed_figures: Mapping[str, Any] | None,
@@ -1294,12 +1350,14 @@ def _compose_native_audit(
     sources_by_unit: Mapping[int, Mapping[str, Any]],
     blockers: list[dict[str, Any]],
     table_reviews: Mapping[tuple[int, int], Mapping[str, Any]] | None = None,
+    vector_review: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     if not isinstance(native_audit, Mapping):
         blockers.append({"kind": "native", "code": "native-audit-missing"})
         return {"schemaVersion": 1, "records": []}
     raw_records = [item for item in _as_list(native_audit.get("records")) if isinstance(item, Mapping)]
     candidate_ids = _native_candidate_ids(reviewed_figures, correspondence, native_match)
+    vector_reviews = _vector_review_index(vector_review)
     figure_map: dict[tuple[int, int], list[Mapping[str, Any]]] = defaultdict(list)
     for figure in figures:
         figure_map[(int(figure["unit"]), int(figure["slideNumber"]))].append(figure)
@@ -1345,6 +1403,33 @@ def _compose_native_audit(
                     continue
                 slide = copy.deepcopy(dict(raw_slide))
                 number = _int(slide.get("number"))
+                vector_entry = vector_reviews.get((unit, number or 0))
+                if vector_entry is not None:
+                    expected_url = _vector_review_source_url(vector_entry)
+                    if expected_url and expected_url != _source_url(source or {}):
+                        blockers.append(
+                            {
+                                "kind": "native",
+                                "unit": unit,
+                                "slide": number,
+                                "code": "vector-review-source-url-mismatch",
+                            }
+                        )
+                    else:
+                        structured = vector_entry.get("structuredContent")
+                        if isinstance(structured, Mapping):
+                            tables = structured.get("tables")
+                            if tables and not slide.get("tables"):
+                                slide["tables"] = copy.deepcopy(tables)
+                            slide["vectorStructuredContent"] = copy.deepcopy(dict(structured))
+                            data = structured.get("data")
+                            figure_proof = data.get("figureProof") if isinstance(data, Mapping) else None
+                            if isinstance(figure_proof, Mapping):
+                                # Keep the vector proof separate from raster
+                                # ``figures``. The builder/control layer can
+                                # accept this as a confirmed visual source
+                                # without fabricating an image URL.
+                                slide["vectorFigureProof"] = copy.deepcopy(dict(figure_proof))
                 table_review = (table_reviews or {}).get((unit, number or 0))
                 if isinstance(table_review, Mapping) and table_review.get("excludeNativeTables") is True:
                     # A published-visible-text projection is authoritative for
@@ -1380,6 +1465,7 @@ def _compose_native_audit(
         "source": "composed published-priority native audit",
         "_auditPath": "course-builder-native-audit.json",
         "records": selected,
+        **({"vectorReview": copy.deepcopy(dict(vector_review))} if isinstance(vector_review, Mapping) else {}),
     }
 
 
@@ -2490,6 +2576,8 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     reviewed_figures = _load_json(args.reviewed_figures) if args.reviewed_figures else None
     correspondence = _load_json(args.figure_correspondence) if args.figure_correspondence else None
     figure_proof = _load_json(args.figure_proof) if args.figure_proof else None
+    vector_review = _load_json(args.vector_review) if args.vector_review else None
+    vector_review_index = _vector_review_index(vector_review)
     native_audit = _load_json(args.native_audit) if args.native_audit else None
     native_match = _load_json(args.native_match) if args.native_match else None
     exercise_review = _load_json(args.exercise_review) if args.exercise_review else None
@@ -2591,6 +2679,7 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         sources_by_unit,
         blockers,
         table_review_decisions,
+        vector_review,
     )
     normalized_exercise = _normalize_exercise_review(exercise_review, source_by_lesson, blockers)
     normalized_listening = _normalize_listening(
@@ -2629,6 +2718,8 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "oldFigureCorrespondenceIgnoredWhenProofProvided": bool(figure_proof),
             "unit3AudioPolicy": "reuse-exact-audio2-only-when-slide4-source-match-is-proven",
             "tableReviewPublishedPriority": bool(table_review),
+            "vectorReviewExplicitOnly": True,
+            "unit3VectorReview": bool(vector_review),
         },
         "inputPaths": {
             "snapshot": str(args.snapshot),
@@ -2638,6 +2729,7 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "reviewedFigures": str(args.reviewed_figures) if args.reviewed_figures else None,
             "figureCorrespondence": str(args.figure_correspondence) if args.figure_correspondence else None,
             "figureProof": str(args.figure_proof) if args.figure_proof else None,
+            "vectorReview": str(args.vector_review) if args.vector_review else None,
             "nativeAudit": str(args.native_audit) if args.native_audit else None,
             "nativeMatch": str(args.native_match) if args.native_match else None,
             "exerciseReview": str(args.exercise_review) if args.exercise_review else None,
@@ -2684,6 +2776,13 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "exerciseErrataReview": errata_summary,
             "unit6Recovery": unit6_recovery_summary,
             "tableReview": table_review_summary,
+            "vectorReview": {
+                "status": "supplied" if isinstance(vector_review, Mapping) else "not-supplied",
+                "entries": [
+                    {"unit": unit, "publishedSlide": slide}
+                    for unit, slide in sorted(vector_review_index)
+                ],
+            },
             "listeningReviewEntries": len(normalized_listening["exercises"]),
             "listeningReviewRejectedEntries": len(normalized_listening.get("rejectedEntries", [])),
             "listeningReviewItems": sum(
@@ -2763,6 +2862,8 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "unit6RecoveryExplicitOnly": True,
             "tableReviewPublishedPriority": bool(table_review),
             "tableReviewNativeMismatchesExcluded": table_review_summary["excludedNativeTables"] > 0,
+            "vectorReviewExplicitOnly": True,
+            "unit3VectorReviewSupplied": bool(vector_review),
             "exerciseSemanticPatchSummary": exercise_patch_summary,
             "unresolvedUnit33To36FiguresStayBlocked": not any(
                 item.get("mapping") == "units-33-36-visual-proof" for item in figures
@@ -2794,7 +2895,12 @@ def _parse_args(argv: Sequence[str]) -> argparse.Namespace:
     parser.add_argument(
         "--figure-proof",
         type=Path,
-        help="visual published/native proof for Units 33-36; supersedes old correspondence when supplied",
+        help="exact visual published/native proof; supersedes old correspondence when supplied",
+    )
+    parser.add_argument(
+        "--vector-review",
+        type=Path,
+        help="source-verified editable vector projection keyed by unit and published slide",
     )
     parser.add_argument("--native-audit", type=Path)
     parser.add_argument("--native-match", type=Path)
