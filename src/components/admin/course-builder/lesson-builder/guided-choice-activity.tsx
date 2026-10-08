@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import motion from './guided-choice-activity.module.css'
+import { shuffleGuidedChoices } from '@/lib/shuffle-guided-choices'
 
 export interface GuidedChoice {
   id: string
@@ -19,6 +20,7 @@ export interface GuidedChoiceQuestion {
 export interface GuidedChoiceActivityProps {
   questions: GuidedChoiceQuestion[]
   onCompletionChange?: (completed: boolean) => void
+  shuffleChoices?: boolean
 }
 
 type ChoiceFeedback = {
@@ -183,7 +185,7 @@ function SummaryChoiceRow({ choice, state }: { choice: GuidedChoice; state: Choi
   )
 }
 
-export function GuidedChoiceActivity({ questions, onCompletionChange }: GuidedChoiceActivityProps) {
+export function GuidedChoiceActivity({ questions, onCompletionChange, shuffleChoices = false }: GuidedChoiceActivityProps) {
   const rootRef = useRef<HTMLDivElement>(null)
   const promptRef = useRef<HTMLParagraphElement>(null)
   const summaryHeadingRef = useRef<HTMLHeadingElement>(null)
@@ -526,7 +528,7 @@ export function GuidedChoiceActivity({ questions, onCompletionChange }: GuidedCh
             className="w-full min-w-0 space-y-3"
             data-guided-choice-options
           >
-            {currentQuestion.choices.map(renderChoiceButton)}
+            {(shuffleChoices ? shuffleGuidedChoices(currentQuestion.choices, currentQuestion.id) : currentQuestion.choices).map(renderChoiceButton)}
           </div>
 
           {currentFeedback && (

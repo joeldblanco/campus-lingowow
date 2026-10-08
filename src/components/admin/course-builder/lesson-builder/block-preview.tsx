@@ -5369,6 +5369,7 @@ function MultipleChoiceBlockPreview(props: Parameters<typeof ClassicMultipleChoi
     options: props.block.options || [], correctOptionId: props.block.correctOptionId || '',
   }] : []
   return automatic ? <GuidedChoiceActivity
+    shuffleChoices
     questions={items.map(item => ({
       id: item.id, prompt: item.question, choices: item.options,
       correctChoiceId: item.correctOptionId, explanation: props.block.explanation,
