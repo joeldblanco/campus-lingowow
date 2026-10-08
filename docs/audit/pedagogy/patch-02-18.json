@@ -113,7 +113,7 @@
           "before": {
             "$missing": true
           },
-          "after": "E. Write a 30 - 50 word paragraph where you talk about your origins and your family’s origins too. Check the example given in exercise D."
+          "after": "Escribe 30–50 palabras en inglés sobre tu origen y el de tu familia. Incluye países, nacionalidades e idiomas."
         },
         {
           "path": [
@@ -132,6 +132,16 @@
             "$missing": true
           },
           "after": 50
+        },
+        {
+          "path": [
+            "data",
+            "guidedTitle"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Escribe sobre tus orígenes."
         }
       ]
     },
@@ -417,7 +427,7 @@
           "before": {
             "$missing": true
           },
-          "after": "E. Write a 50 - 80 word paragraph where you talk about someone else’s family. Include all the details learned during this lesson."
+          "after": "Escribe 50–80 palabras en inglés sobre la familia de otra persona. Incluye relaciones familiares, miembros y al menos un dato de cada uno."
         },
         {
           "path": [
@@ -496,6 +506,16 @@
           ],
           "before": "Present a family tree and write a 50–80 word paragraph about someone else’s family.",
           "after": "Write a 50–80 word paragraph about someone else’s family, including family relationships and members."
+        },
+        {
+          "path": [
+            "data",
+            "guidedTitle"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Escribe sobre otra familia."
         }
       ]
     },
@@ -762,7 +782,7 @@
           "before": {
             "$missing": true
           },
-          "after": "E. Write a 80 - 100 word paragraph where you talk about your family’s shopping habits as in the example stated in the reading activity."
+          "after": "Escribe 80–100 palabras en inglés sobre los hábitos de compra de tu familia. Incluye cantidades de productos contables y no contables."
         },
         {
           "path": [
@@ -841,6 +861,16 @@
           ],
           "before": "Organize a party discussion and write an 80–100 word shopping-habits paragraph.",
           "after": "Write an 80–100 word paragraph about your family’s shopping habits using countable and uncountable quantities."
+        },
+        {
+          "path": [
+            "data",
+            "guidedTitle"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Escribe sobre hábitos de compra."
         }
       ]
     },
@@ -955,7 +985,7 @@
           "before": {
             "$missing": true
           },
-          "after": "E. Write a 50–80 word conversation about an argument. You and your brother are having a fight over your clothes, shoes and colognes. Use as many interventions as needed to include the language studied."
+          "after": "Escribe una conversación de 50–80 palabras en inglés sobre una discusión con tu hermano por ropa, zapatos y colonias. Incluye demostrativos y posesivos."
         },
         {
           "path": [
@@ -1034,6 +1064,16 @@
             "$missing": true
           },
           "after": 80
+        },
+        {
+          "path": [
+            "data",
+            "guidedTitle"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Escribe una conversación."
         }
       ]
     },
@@ -1160,7 +1200,7 @@
           "before": {
             "$missing": true
           },
-          "after": "E. Write a 80 - 100 word paragraph describing your city. Talk about at least 6 places and state how to get there. Use the language studied."
+          "after": "Escribe 80–100 palabras en inglés para describir tu ciudad. Menciona al menos seis lugares y explica cómo llegar a ellos."
         },
         {
           "path": [
@@ -1239,6 +1279,16 @@
           ],
           "before": "Role-play visiting a city and write an 80–100 word city description.",
           "after": "Write an 80–100 word city description with at least six places and routes."
+        },
+        {
+          "path": [
+            "data",
+            "guidedTitle"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Escribe sobre tu ciudad."
         }
       ]
     },
