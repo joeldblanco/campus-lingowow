@@ -533,6 +533,56 @@ def duplicate_passage_source_cases() -> list[dict[str, object]]:
     ]
 
 
+def picture_prompt_source_cases() -> list[dict[str, object]]:
+    """Published picture prompts whose context extraction repeated the prompt."""
+
+    unit2_prompt = "A. Look at the picture. What is it suggesting? What is today�s topic?."
+    unit7_prompt = "A. Look at the picture. What is it suggesting? What is today�s topic? ."
+    unit34_prompt = "Look at the information, Where do you think these phrases belong to? Match them with a picture."
+    return [
+        {
+            "lesson": "Unit 2",
+            "slide": 4,
+            "title": unit2_prompt,
+            "visibleTexts": [
+                unit2_prompt,
+                "B. Listen to the audio and discuss with your teacher: what is the topic? Are there phrases you know? Write them in the chat box.",
+            ],
+            "prompt": unit2_prompt,
+            "suffix": "B. Listen to the audio and discuss with your teacher: what is the topic? Are there phrases you know? Write them in the chat box.",
+        },
+        {
+            "lesson": "Unit 7",
+            "slide": 4,
+            "title": unit7_prompt,
+            "visibleTexts": [
+                unit7_prompt,
+                "B. Listen to the audio and discuss with your teacher: What are they talking about? Can you get some details?.",
+            ],
+            "prompt": unit7_prompt,
+            "suffix": "",
+        },
+        {
+            "lesson": "Unit 34",
+            "slide": 6,
+            "title": unit34_prompt,
+            "visibleTexts": [
+                unit34_prompt,
+                "DURING THOSE DAYS",
+                "BACK THEN",
+                "NOWADAYS",
+                "THESE DAYS",
+                "IN # YEARS",
+                "# YEARS AHEAD",
+                "TODAY",
+                "SOON",
+            ],
+            "prompt": unit34_prompt,
+            "suffix": "DURING THOSE DAYS BACK THEN NOWADAYS THESE DAYS IN # YEARS # YEARS AHEAD TODAY SOON",
+        },
+    ]
+
+
 class BuildCourseLearningTests(unittest.TestCase):
     def test_goal_slide_renders_one_concise_source_block(self) -> None:
         goal = "Describe oneself and others� origins by talking about countries and nationalities."
@@ -3774,6 +3824,63 @@ class BuildCourseLearningTests(unittest.TestCase):
                 msg=f"{case['lesson']} slide {case['slide']} retained a duplicate text row",
             )
             self.assertFalse(blockers, msg=f"unexpected blocker on {case['lesson']} slide {case['slide']}")
+
+    def test_real_picture_prompts_keep_one_protected_instruction_and_new_suffix_text(self) -> None:
+        for case in picture_prompt_source_cases():
+            source = source_fixture()
+            slide = {
+                "number": case["slide"],
+                "title": case["title"],
+                "visibleTexts": case["visibleTexts"],
+                "_nativeAudit": {
+                    "figures": [
+                        {
+                            "assetPath": str(SCRIPT),
+                            "url": "/images/picture-prompt-fixture.webp",
+                        }
+                    ]
+                },
+            }
+            source["deck"]["slides"] = [slide]
+            source["deck"]["slideCount"] = 1
+            blockers: list[dict] = []
+            specs = builder._native_block_specs(
+                source,
+                slide,
+                LESSON_ID,
+                builder._source_digest(source),
+                None,
+                [],
+                None,
+                blockers,
+            )
+
+            text_specs = [payload for native_type, payload in specs if native_type == "text"]
+            protected = [
+                payload
+                for payload in text_specs
+                if payload.get("sourceRole") == "picture-instruction"
+            ]
+            prompt = builder._plain_learner_text(case["prompt"])
+            prompt_rows = [
+                payload
+                for payload in text_specs
+                if prompt in builder._plain_learner_text(payload.get("content"))
+            ]
+            self.assertEqual(len(protected), 1, msg=f"{case['lesson']} lost its protected picture instruction")
+            self.assertEqual(len(prompt_rows), 1, msg=f"{case['lesson']} rendered the picture prompt twice")
+            self.assertEqual(
+                len([payload for native_type, payload in specs if native_type == "image"]),
+                1,
+                msg=f"{case['lesson']} lost its instructional figure",
+            )
+            rendered = " ".join(
+                builder._plain_learner_text(payload.get("content"))
+                for payload in text_specs
+            )
+            suffix = builder._plain_learner_text(case["suffix"])
+            if suffix:
+                self.assertIn(suffix, rendered, msg=f"{case['lesson']} dropped source suffix text")
 
     def test_combined_review_placeholder_keeps_one_source_control_per_final_prompt(self) -> None:
         source = source_fixture()

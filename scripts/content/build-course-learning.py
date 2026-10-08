@@ -2091,6 +2091,69 @@ def _drop_contained_passage_specs(
     return [item for index, item in enumerate(specs) if index not in remove]
 
 
+def _dedupe_picture_instruction_specs(
+    specs: Sequence[tuple[str, dict[str, Any]]],
+    source_slide_number: int,
+) -> list[tuple[str, dict[str, Any]]]:
+    """Keep one protected picture prompt while retaining any new suffix prose."""
+
+    if source_slide_number <= 0:
+        return list(specs)
+    protected = [
+        (index, payload)
+        for index, (native_type, payload) in enumerate(specs)
+        if native_type == "text"
+        and not payload.get("hiddenFromLearners") is True
+        and _text(payload.get("sourceRole")).casefold() == "picture-instruction"
+        and isinstance(payload.get("content"), str)
+    ]
+    if not protected:
+        return list(specs)
+
+    remove: set[int] = set()
+    replacements: dict[int, dict[str, Any]] = {}
+    for index, (native_type, payload) in enumerate(specs):
+        if (
+            native_type != "text"
+            or payload.get("hiddenFromLearners") is True
+            or _text(payload.get("sourceRole")).casefold() == "picture-instruction"
+            or not isinstance(payload.get("content"), str)
+        ):
+            continue
+        ordinary_content = _text(payload["content"])
+        ordinary_plain = _plain_learner_text(ordinary_content)
+        if not ordinary_plain:
+            continue
+        for _protected_index, protected_payload in protected:
+            protected_content = _text(protected_payload["content"])
+            protected_plain = _plain_learner_text(protected_content)
+            if not protected_plain or not ordinary_plain.startswith(protected_plain):
+                continue
+            # A strict raw-prefix match is required before changing a longer
+            # block. This preserves every suffix paragraph byte-for-byte and
+            # avoids trimming prose when normalization only made two strings
+            # look similar.
+            if ordinary_content == protected_content:
+                remove.add(index)
+                break
+            if not ordinary_content.startswith(protected_content):
+                continue
+            suffix = ordinary_content[len(protected_content) :].lstrip()
+            if not _plain_learner_text(suffix):
+                remove.add(index)
+                break
+            copied = copy.deepcopy(payload)
+            copied["content"] = suffix
+            replacements[index] = copied
+            break
+
+    return [
+        (native_type, replacements.get(index, payload))
+        for index, (native_type, payload) in enumerate(specs)
+        if index not in remove
+    ]
+
+
 def _extract_pairs(texts: Sequence[str]) -> list[dict[str, str]]:
     pairs: list[dict[str, str]] = []
     pattern = re.compile(r"([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ' ]{1,38}?)\s*[-–—]\s*([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ' ]{1,58})")
@@ -4693,6 +4756,7 @@ def _native_block_specs(
             return (7, 0)
         return (8, 0)
 
+    specs = _dedupe_picture_instruction_specs(specs, number)
     specs = _drop_contained_passage_specs(specs, number)
     return [item for _, item in sorted(enumerate(specs), key=lambda pair: (*spec_priority(pair[1]), pair[0]))]
 
