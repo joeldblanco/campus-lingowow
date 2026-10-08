@@ -164,11 +164,18 @@ def _nested_text(value: Any) -> str:
     """Read text from the small paragraph records emitted by audit extractors."""
 
     if isinstance(value, Mapping):
-        for key in ("text", "content", "value", "plainText", "body"):
-            candidate = _text(value.get(key))
+        for key in ("text", "plainText", "value", "content", "body"):
+            raw_candidate = value.get(key)
+            candidate = _nested_text(raw_candidate) if isinstance(raw_candidate, (Mapping, list, tuple)) else _normalise(raw_candidate)
             if candidate:
                 return candidate
+        for key in ("paragraphs", "runs", "spans", "segments", "lines"):
+            nested = _unique_texts(_nested_text(item) for item in _as_list(value.get(key)))
+            if nested:
+                return " ".join(nested)
         return ""
+    if isinstance(value, (list, tuple)):
+        return " ".join(_unique_texts(_nested_text(item) for item in value))
     return _text(value)
 
 
@@ -331,6 +338,24 @@ def _time_limit(text: str) -> int | None:
 
 
 def _tables(slide: Mapping[str, Any]) -> list[list[list[str]]]:
+    def cell_text(value: Any) -> str:
+        """Extract authored cell text without serializing the cell mapping."""
+
+        if isinstance(value, Mapping):
+            for key in ("text", "plainText", "value", "content"):
+                raw_candidate = value.get(key)
+                candidate = cell_text(raw_candidate) if isinstance(raw_candidate, (Mapping, list, tuple)) else _normalise(raw_candidate)
+                if candidate:
+                    return candidate
+            for key in ("paragraphs", "runs", "spans", "segments", "lines"):
+                nested = _unique_texts(cell_text(item) for item in _as_list(value.get(key)))
+                if nested:
+                    return " ".join(nested)
+            return ""
+        if isinstance(value, (list, tuple)):
+            return " ".join(_unique_texts(cell_text(item) for item in value))
+        return _normalise(value)
+
     def parse(raw_tables: Any) -> list[list[list[str]]]:
         result: list[list[list[str]]] = []
         for raw_table in _as_list(raw_tables):
@@ -342,26 +367,85 @@ def _tables(slide: Mapping[str, Any]) -> list[list[list[str]]]:
             for raw_row in _as_list(raw_rows):
                 if isinstance(raw_row, Mapping):
                     raw_row = raw_row.get("cells", raw_row.get("values", raw_row.get("columns", [])))
-                cells = [_normalise(cell) for cell in _as_list(raw_row)]
-                if cells and any(cells):
+                cells = [cell_text(cell) for cell in _as_list(raw_row)]
+                # Keep empty cells in the matrix: their positions carry the
+                # authored column layout. Empty rows are retained when the
+                # table has other content, but an entirely empty table is not
+                # usable evidence.
+                if cells:
                     rows.append(cells)
-            if rows:
+            if rows and any(cell for row in rows for cell in row):
                 result.append(rows)
         return result
 
     raw_tables = slide.get("tables")
     if raw_tables is None and isinstance(slide.get("table"), Mapping):
         raw_tables = [slide.get("table")]
-    parsed = parse(raw_tables)
-    if parsed:
-        return parsed
+    published = parse(raw_tables)
     native = slide.get("_nativeAudit")
     if isinstance(native, Mapping):
         for key in ("tables", "actualTables", "tableData", "structuredTables"):
-            parsed = parse(native.get(key))
-            if parsed:
-                return parsed
-    return []
+            native_tables = parse(native.get(key))
+            if native_tables:
+                # Native table evidence contains the real cell boundaries and
+                # text. Prefer it whenever attached, even when the published
+                # extractor supplied a Python-like cell repr.
+                return native_tables
+    return published
+
+
+def _table_cell_texts(tables: Sequence[Sequence[Sequence[str]]]) -> set[str]:
+    return {
+        _normalise(cell).casefold()
+        for table in tables
+        for row in table
+        for cell in row
+        if _normalise(cell)
+    }
+
+
+def _learner_context_texts(
+    slide: Mapping[str, Any],
+    tables: Sequence[Sequence[Sequence[str]]],
+    prompt_text: str,
+) -> list[str]:
+    """Return authored teaching prose that needs its own visible text block.
+
+    Published extraction can flatten a whole table into one long string while
+    the native audit supplies the real matrix. Keep the surrounding
+    explanation and rules, but omit exact table cells and flat strings that
+    repeat several table cells. Activity prompts remain in their structured
+    block; they are added back only when a blocked activity needs a source
+    fallback later.
+    """
+
+    cell_texts = _table_cell_texts(tables)
+    video_urls = {_normalise(url).casefold() for url in _video_urls(slide)}
+    prompt_key = _normalise(prompt_text).casefold()
+    candidates = [*_native_paragraphs(slide), *_meaningful_texts(slide)]
+    result: list[str] = []
+    seen: set[str] = set()
+    for raw_value in candidates:
+        value = _normalise(raw_value)
+        key = value.casefold()
+        if not value or key in seen or key == prompt_key or key in video_urls:
+            continue
+        if key in cell_texts:
+            continue
+        if cell_texts:
+            # A published flattened table often contains many cell values in
+            # one string. Do not turn that serialization into a second giant
+            # paragraph beside the structured matrix.
+            matching_cells = sum(
+                1
+                for cell in cell_texts
+                if len(cell) >= 8 and cell in key
+            )
+            if matching_cells >= 2:
+                continue
+        seen.add(key)
+        result.append(value)
+    return result
 
 
 def _media(slide: Mapping[str, Any]) -> list[Mapping[str, Any]]:
@@ -1871,6 +1955,35 @@ def _exercise_review_metadata(item: Mapping[str, Any]) -> dict[str, Any]:
     return {"exerciseReview": copy.deepcopy(dict(item))}
 
 
+def _exercise_review_ai_context(
+    slide: Mapping[str, Any],
+    item: Mapping[str, Any],
+    prompt: str,
+    audio_item: Mapping[str, Any] | None = None,
+    source: Mapping[str, Any] | None = None,
+) -> str:
+    """Build a grounded rubric context for open self-study responses."""
+
+    original_prompt = _text(item.get("prompt"))
+    context = _ai_grading_context(slide, prompt, audio_item, source)
+    if original_prompt:
+        context += f"\n\nAuthored source prompt:\n{original_prompt}"
+    rubric_values: list[str] = []
+    for key in ("constraints", "rubric", "criteria", "sourceContext", "readingPassage", "audioTranscript"):
+        value = item.get(key)
+        if isinstance(value, Mapping):
+            value = json.dumps(value, ensure_ascii=False, sort_keys=True)
+        elif isinstance(value, (list, tuple)):
+            value = "\n".join(_text(entry) for entry in value if _text(entry))
+        else:
+            value = _text(value)
+        if value:
+            rubric_values.append(f"{key}:\n{value}")
+    if rubric_values:
+        context += "\n\nAuthored review criteria/context:\n" + "\n\n".join(rubric_values)
+    return context
+
+
 def _exercise_review_answer_key(item: Mapping[str, Any]) -> Any:
     hints = item.get("builderHints") if isinstance(item.get("builderHints"), Mapping) else {}
     if isinstance(hints, Mapping) and hints.get("_explicit_answer_key") not in (None, "", [], {}):
@@ -1944,6 +2057,8 @@ def _exercise_review_specs(
     slide: Mapping[str, Any],
     review_items: Sequence[Mapping[str, Any]],
     blockers: list[dict[str, Any]],
+    audio_item: Mapping[str, Any] | None = None,
+    source: Mapping[str, Any] | None = None,
 ) -> tuple[list[tuple[str, dict[str, Any]]], bool]:
     """Map reviewed exercise items without collapsing distinct prompts or answers."""
 
@@ -1957,14 +2072,21 @@ def _exercise_review_specs(
         item_id = _text(item.get("id")) or f"slide-{number}-item"
         kind = _text(item.get("kind")).casefold()
         response_mode = _text(item.get("responseMode")).casefold()
-        if status in {"blocked-awaiting-transcript", "blocked", "listening-blocked"}:
-            if "listen" in kind or "audio" in response_mode or response_mode == "teacher-listening":
+        listening_item = "listen" in kind or "audio" in response_mode or response_mode == "teacher-listening"
+        has_transcript = bool(audio_item and _audio_transcript(audio_item))
+        if status in {"blocked-awaiting-transcript", "blocked", "listening-blocked"} and not (listening_item and has_transcript):
+            if listening_item:
                 listening_blocked = True
                 code = "exercise-review-listening-blocked"
             else:
                 code = "exercise-review-item-blocked"
             _add_blocker(blockers, _blocker(code, number, _text(item.get("blocker")) or f"Exercise review item {item_id!r} is blocked."))
             continue
+        if status in {"blocked-awaiting-transcript", "blocked", "listening-blocked"} and listening_item and has_transcript:
+            # A staged original transcript resolves the review gate for an
+            # open listening reflection; it still does not invent a closed
+            # answer key.
+            status = "open-response-preserved"
         if status in {"source-ambiguous", "ambiguous"}:
             _add_blocker(blockers, _blocker("exercise-review-ambiguous", number, _text(item.get("blocker")) or f"Exercise review item {item_id!r} is ambiguous."))
             continue
@@ -2035,23 +2157,33 @@ def _exercise_review_specs(
         if not canonical_items and not ambiguous_answer:
             for native_type, prompt in _exercise_review_open_parts(item):
                 min_words, max_words = _word_limits(prompt)
+                teacher_only = response_mode in {"teacher", "teacher-only", "teacher-practice"}
+                ai_context = _exercise_review_ai_context(slide, item, prompt, audio_item, source)
                 payload: dict[str, Any] = {
                     "data": _exercise_review_metadata(item),
                     "reviewStatus": status,
                     "sourceReviewId": item_id,
-                    "doNotAutoGrade": True,
                 }
+                payload["data"]["aiGradingContext"] = ai_context
                 if native_type == "recording":
                     kind = _text(item.get("kind")).casefold()
                     if any(token in kind for token in ("roleplay", "role-play", "conversation")):
                         payload["data"].update(_exercise_review_conversation_metadata(item))
-                    payload.update({"instruction": prompt, "mode": "teacher-and-self-study", "aiGrading": False})
+                    payload.update(
+                        {
+                            "instruction": prompt,
+                            "mode": "teacher-and-self-study",
+                            "aiGrading": not teacher_only,
+                        }
+                    )
                 else:
-                    payload.update({"prompt": prompt, "aiGrading": False})
+                    payload.update({"prompt": prompt, "aiGrading": not teacher_only})
                     if min_words is not None:
                         payload["minWords"] = min_words
                     if max_words is not None:
                         payload["maxWords"] = max_words
+                if teacher_only:
+                    payload["doNotAutoGrade"] = True
                 open_specs.append((native_type, payload))
     specs: list[tuple[str, dict[str, Any]]] = []
     if short_items:
@@ -2205,7 +2337,13 @@ def _native_block_specs(
     review_specs: list[tuple[str, dict[str, Any]]] = []
     review_listening_blocked = False
     if review_supplied:
-        review_specs, review_listening_blocked = _exercise_review_specs(slide, exercise_items or [], blockers)
+        review_specs, review_listening_blocked = _exercise_review_specs(
+            slide,
+            exercise_items or [],
+            blockers,
+            audio_item,
+            source,
+        )
     if _is_picture_prompt_required(slide) and not native_figures:
         _add_blocker(
             blockers,
@@ -2236,6 +2374,7 @@ def _native_block_specs(
 
     specs: list[tuple[str, dict[str, Any]]] = []
     prompt_text = _prompt_text(slide, texts)
+    context_texts = _learner_context_texts(slide, tables, prompt_text)
     common = {
         "sourceText": texts,
         "sourceTitle": _text(slide.get("title")),
@@ -2457,18 +2596,45 @@ def _native_block_specs(
     if listening_review_supplied:
         specs.extend(listening_specs)
 
+    if context_texts and not closed_answer_blocked and not listening_review_supplied and (tables or not _is_reading(full_text)):
+        visible_context = list(context_texts)
+        # When no structured block survived (for example an audio source whose
+        # URL is missing), retain the authored instruction in the reviewable
+        # fallback text instead of leaving only a heading visible.
+        if not specs and prompt_text and _normalise(prompt_text).casefold() not in {
+            _normalise(value).casefold() for value in visible_context
+        }:
+            visible_context.append(prompt_text)
+        if visible_context:
+            specs.append(
+                (
+                    "text",
+                    {
+                        **common,
+                        "content": _readable_html(visible_context),
+                        "format": "html",
+                        "sourceRole": "teaching-context",
+                    },
+                )
+            )
+
     # Preserve a long authored reading passage as readable HTML even when the
     # same slide also has questions or a read-aloud instruction.
     if _is_reading(full_text) and not tables:
         specs.append(("text", {**common, "content": _readable_html(evidence_texts), "format": "html"}))
 
     if closed_answer_blocked and not any(native_type == "text" for native_type, _ in specs):
+        blocked_texts = [*context_texts]
+        if prompt_text and _normalise(prompt_text).casefold() not in {
+            _normalise(value).casefold() for value in blocked_texts
+        }:
+            blocked_texts.append(prompt_text)
         specs.append(
             (
                 "text",
                 {
                     **common,
-                    "content": _readable_html(evidence_texts),
+                    "content": _readable_html(blocked_texts or evidence_texts),
                     "format": "html",
                     "reviewRequired": True,
                     "reviewReason": "closed-answer-key-missing",
@@ -2477,13 +2643,13 @@ def _native_block_specs(
         )
 
     if not specs and full_text:
-        specs.append(("text", {**common, "content": _readable_html(evidence_texts), "format": "html"}))
+        specs.append(("text", {**common, "content": _readable_html(context_texts or evidence_texts), "format": "html"}))
     if audio_required and not audio_item and not full_text:
         # The blocker is the evidence for an audio-only source slide; do not
         # fabricate a playable block or a transcript.
         return specs
     if audio_required and audio_item and not _audio_url(audio_item) and full_text and not specs:
-        specs.append(("text", {**common, "content": _readable_html(evidence_texts), "format": "html"}))
+        specs.append(("text", {**common, "content": _readable_html(context_texts or evidence_texts), "format": "html"}))
     return specs
 
 

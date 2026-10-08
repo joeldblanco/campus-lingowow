@@ -54,6 +54,7 @@ def source_fixture(*, complete_audio: bool = False) -> dict:
         "kind": "audio",
         "url": "https://cdn.example/lesson/audio-6.mp3",
     }
+
     if complete_audio:
         audio_media.update(
             {
@@ -138,6 +139,122 @@ def source_fixture(*, complete_audio: bool = False) -> dict:
             ],
         },
     }
+
+
+def unit2_slide8_native_fixture() -> tuple[dict, dict]:
+    """The published/native shapes from Unit 2 slide 8, reduced to the table contract."""
+
+    title = (
+        "We normally use simple present tense to talk about countries and nationalities. "
+        "Not only the verb to be can be useful to talk about this. Revise the following chart and check some examples."
+    )
+    published = {
+        "courseId": COURSE_ID,
+        "lesson": {"id": LESSON_ID, "order": 2, "title": "I come from"},
+        "contentId": "unit-2-source-fixture",
+        "sourceUrl": "https://slides.example/unit-2",
+        "status": "ok",
+        "deck": {
+            "deckTitle": "Unit 2 - I come from.pptx",
+            "slideCount": 1,
+            "slides": [
+                {
+                    "number": 8,
+                    "title": title,
+                    "visibleTexts": [
+                        title,
+                        "Even when we talk about this topic, the grammar rules must be respected. To Be – works alone. Other verbs – Use auxiliaries.",
+                        "MOST COMMON QUESTIONS - Where are you from? - Where do you come from?",
+                        "To Be verb Other verbs – Auxiliary Introduction John is American Is he American? She comes from England. Does she come from England? They are from Mexico Where are they from? You speak Italian Do you speak Italian? The verb to be is an independent verb it can say a sentence, it can make a question or deny by itself. NO AUXILIARY NEEDED The rest of the verbs are dependent. They use auxiliaries to make questions and to deny an action. Do - I/You/We/They Does - He/She/ It (3rd person singular) *Pronunciation hint: https://youtu.be/EMWmCb1CIdc",
+                    ],
+                    "tables": [],
+                }
+            ],
+        },
+    }
+
+    def cell(text: str, *paragraphs: str) -> dict:
+        return {
+            "text": text,
+            "paragraphs": [{"text": paragraph, "runs": [paragraph]} for paragraph in paragraphs] if paragraphs else [],
+        }
+
+    native_table = {
+        "rows": [
+            {
+                "height": 465675,
+                "cells": [
+                    cell("To Be verb", "To Be verb"),
+                    cell(""),
+                    cell("Other verbs – Auxiliary Introduction", "Other verbs – Auxiliary Introduction"),
+                    cell(""),
+                ],
+            },
+            {
+                "height": 455900,
+                "cells": [
+                    cell("John is American", "John is American"),
+                    cell("Is he American?", "Is he American?"),
+                    cell("She comes from England.", "She comes from England."),
+                    cell("Does she come from England?", "Does she come from England?"),
+                ],
+            },
+            {
+                "height": 455900,
+                "cells": [
+                    cell("They are from Mexico", "They are from Mexico"),
+                    cell("Where are they from?", "Where are they from?"),
+                    cell("You speak Italian", "You speak Italian"),
+                    cell("Do you speak Italian?", "Do you speak Italian?"),
+                ],
+            },
+            {
+                "height": 1185325,
+                "cells": [
+                    cell(
+                        "The verb to be is an independent verb it can say a sentence, it can make a question or deny by itself. NO AUXILIARY NEEDED",
+                        "The verb to be is an independent verb it can say a sentence, it can make a question or deny by itself. NO AUXILIARY NEEDED",
+                    ),
+                    cell(""),
+                    cell(
+                        "The rest of the verbs are dependent. They use auxiliaries to make questions and to deny an action. Do - I/You/We/They Does - He/She/ It (3rd person singular) *Pronunciation hint: https://youtu.be/EMWmCb1CIdc",
+                        "The rest of the verbs are dependent. They use auxiliaries to make questions and to deny an action.",
+                        "Do - I/You/We/They",
+                        "Does - He/She/ It (3rd person singular)",
+                        "*Pronunciation hint: https://youtu.be/EMWmCb1CIdc",
+                    ),
+                    cell(""),
+                ],
+            },
+        ]
+    }
+    native_slide = {
+        "number": 8,
+        "texts": published["deck"]["slides"][0]["visibleTexts"],
+        "shapes": [
+            {
+                "kind": "text",
+                "paragraphs": [
+                    {"text": "Even when we talk about this topic, the grammar rules must be respected."},
+                    {"text": "To Be – works alone."},
+                    {"text": "Other verbs – Use auxiliaries."},
+                    {"text": "MOST COMMON QUESTIONS"},
+                ],
+            }
+        ],
+        "tables": [native_table],
+    }
+    native_audit = {
+        "records": [
+            {
+                "unit": 2,
+                "status": "ok",
+                "candidate": {"id": "unit-2-native-fixture", "title": "Unit 2 - I come from.pptx"},
+                "native": {"slides": [native_slide]},
+            }
+        ]
+    }
+    return published, native_audit
 
 
 class BuildCourseLearningTests(unittest.TestCase):
@@ -515,6 +632,43 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertEqual(image["data"]["url"], "/images/lessons/course/native-fixture.png")
         self.assertNotIn("slides-images-rt", image["data"]["assetPath"])
         self.assertEqual(image["data"]["data"]["originalSource"]["nativeEvidence"]["figures"][0]["assetPath"], str(asset.resolve()))
+
+    def test_unit2_slide8_native_table_preserves_matrix_and_teaching_prose(self) -> None:
+        source, native_audit = unit2_slide8_native_fixture()
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, native_audit=native_audit)
+
+        self.assertTrue(plan["publishable"])
+        generated = [row for row in plan["nextRows"] if row["id"].startswith("course-guided-")]
+        structured = next(row for row in generated if row["data"]["type"] == "structured-content")
+        self.assertEqual(structured["data"]["content"]["headers"], ["To Be verb", "", "Other verbs – Auxiliary Introduction", ""])
+        self.assertEqual(
+            structured["data"]["content"]["rows"],
+            [
+                ["John is American", "Is he American?", "She comes from England.", "Does she come from England?"],
+                ["They are from Mexico", "Where are they from?", "You speak Italian", "Do you speak Italian?"],
+                [
+                    "The verb to be is an independent verb it can say a sentence, it can make a question or deny by itself. NO AUXILIARY NEEDED",
+                    "",
+                    "The rest of the verbs are dependent. They use auxiliaries to make questions and to deny an action. Do - I/You/We/They Does - He/She/ It (3rd person singular) *Pronunciation hint: https://youtu.be/EMWmCb1CIdc",
+                    "",
+                ],
+            ],
+        )
+        serialized = json.dumps(structured["data"]["content"], ensure_ascii=False)
+        self.assertNotIn("{'text'", serialized)
+        self.assertNotIn('"paragraphs"', serialized)
+
+        context = next(
+            row
+            for row in generated
+            if row["data"]["type"] == "text"
+            and row["data"].get("sourceRole") == "teaching-context"
+            and row["data"]["data"]["sourceSlides"] == [8]
+        )
+        self.assertIn("Even when we talk about this topic", context["data"]["content"])
+        self.assertIn("To Be", context["data"]["content"])
+        self.assertIn("MOST COMMON QUESTIONS", context["data"]["content"])
+        self.assertNotIn("To Be verb Other verbs", context["data"]["content"])
 
     def test_native_audit_rejects_slide_mismatch_and_untraceable_figure(self) -> None:
         source = {
@@ -1300,12 +1454,71 @@ class BuildCourseLearningTests(unittest.TestCase):
         recording = next(row for row in plan["nextRows"] if row["data"].get("type") == "recording")
         essay = next(row for row in plan["nextRows"] if row["data"].get("type") == "essay")
         self.assertIn("Act out the situation", recording["data"]["instruction"])
+        self.assertTrue(recording["data"]["aiGrading"])
+        self.assertNotIn("doNotAutoGrade", recording["data"])
         self.assertEqual(recording["data"]["data"]["guidedRole"], "conversation")
         self.assertEqual(recording["data"]["data"]["turns"][0]["question"], review["lessons"][LESSON_ID]["slides"]["5"]["items"][0]["prompt"])
         self.assertEqual(recording["data"]["data"]["turns"][0]["answerPrompt"], "Responde a la situación.")
         self.assertIn("30-50 word paragraph", essay["data"]["prompt"])
+        self.assertTrue(essay["data"]["aiGrading"])
+        self.assertIn("Authored source prompt", essay["data"]["data"]["aiGradingContext"])
         self.assertEqual(essay["data"]["minWords"], 30)
         self.assertEqual(essay["data"]["maxWords"], 50)
+
+    def test_teacher_listening_with_staged_transcript_keeps_audio_and_open_reflection(self) -> None:
+        source = source_fixture(complete_audio=True)
+        source["deck"]["slides"] = [
+            {
+                "number": 6,
+                "title": "Listening",
+                "visibleTexts": ["Listening", "Listen to the audio and write two phrases you understood."],
+                "media": [
+                    {
+                        "kind": "audio",
+                        "url": "https://cdn.example/lesson/audio-6.mp3",
+                        "digest": "audio-sha256-fixture",
+                        "transcript": "I come from Peru.",
+                    }
+                ],
+            }
+        ]
+        source["deck"]["slideCount"] = 1
+        slide = source["deck"]["slides"][0]
+        review = {
+            "courseId": COURSE_ID,
+            "lessons": {
+                LESSON_ID: {
+                    "sourceUrl": source["sourceUrl"],
+                    "slides": {
+                        "6": {
+                            "source": copy.deepcopy(slide),
+                            "items": [
+                                {
+                                    "id": "u02-s06-reflection",
+                                    "kind": "listening",
+                                    "prompt": "Listen to the audio and write two phrases you understood.",
+                                    "responseMode": "teacher-listening",
+                                    "reviewStatus": "blocked-awaiting-transcript",
+                                    "answerItems": [],
+                                    "sourceEvidence": ["Listen to the audio and write two phrases you understood."],
+                                }
+                            ],
+                        }
+                    },
+                }
+            },
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, exercise_review=review)
+
+        self.assertTrue(plan["publishable"])
+        self.assertFalse(any(blocker["code"] == "exercise-review-listening-blocked" for blocker in plan["blockers"]))
+        audio = next(row for row in plan["nextRows"] if row["data"].get("type") == "audio")
+        reflection = next(row for row in plan["nextRows"] if row["data"].get("type") == "essay")
+        self.assertEqual(audio["data"]["transcript"], "I come from Peru.")
+        self.assertTrue(reflection["data"]["aiGrading"])
+        self.assertIn("I come from Peru.", reflection["data"]["data"]["aiGradingContext"])
+        self.assertIn("write two phrases", reflection["data"]["prompt"])
 
     def test_audio_manifest_with_wrong_lesson_or_slide_is_not_attached(self) -> None:
         source = source_fixture()
