@@ -318,7 +318,7 @@ class BuildCourseLearningTests(unittest.TestCase):
             source["deck"]["slides"][0]["visibleTexts"],
         )
 
-    def test_long_source_title_becomes_a_concise_step_label(self) -> None:
+    def test_instructional_source_title_uses_a_concise_type_label(self) -> None:
         source = source_fixture(complete_audio=True)
         title = (
             "A. Change the following sentences into the interrogative and negative form. "
@@ -338,9 +338,121 @@ class BuildCourseLearningTests(unittest.TestCase):
         )
         self.assertEqual(
             row["data"]["title"],
-            "A. Change the following sentences into the interrogative and negative form",
+            "Consulta las formas.",
         )
         self.assertLess(len(row["data"]["title"]), len(title))
+        self.assertEqual(row["title"], title)
+        self.assertNotIn("guidedTitle", row["data"]["data"])
+
+    def test_navigation_titles_drop_raw_prose_numeric_and_one_word_source_titles(self) -> None:
+        source = source_fixture(complete_audio=True)
+        source_digest = builder._source_digest(source)
+
+        image = builder._native_row(
+            LESSON_ID,
+            source,
+            source_digest,
+            {
+                "number": 9,
+                "title": "A. Look at the picture and discuss today's topic with your teacher.",
+                "visibleTexts": ["A. Look at the picture and discuss today's topic with your teacher."],
+            },
+            "image",
+            {"url": "/images/lessons/course/fixture.png"},
+            1,
+            0,
+        )
+        self.assertEqual(image["title"], "A. Look at the picture and discuss today's topic with your teacher.")
+        self.assertEqual(image["data"]["title"], "Observa la imagen.")
+        self.assertEqual(image["data"]["data"]["guidedTitle"], "Observa la imagen.")
+
+        audio = builder._native_row(
+            LESSON_ID,
+            source,
+            source_digest,
+            {
+                "number": 13,
+                "title": "13",
+                "visibleTexts": ["Listen to the original recording."],
+            },
+            "audio",
+            {
+                "url": "https://cdn.example/audio.mp3",
+                "mediaDigest": "audio-sha256-fixture",
+                "transcript": "Original recording.",
+            },
+            2,
+            1,
+        )
+        self.assertEqual(audio["title"], "13")
+        self.assertEqual(audio["data"]["title"], "Escucha.")
+        self.assertNotIn("guidedTitle", audio["data"]["data"])
+
+        vocabulary = builder._native_row(
+            LESSON_ID,
+            source,
+            source_digest,
+            {"number": 14, "title": "Olá!", "visibleTexts": ["Olá!"]},
+            "vocabulary",
+            {"items": [{"id": "hello", "term": "Olá", "definition": "Hello"}]},
+            3,
+            2,
+        )
+        self.assertEqual(vocabulary["title"], "Olá!")
+        self.assertEqual(vocabulary["data"]["title"], "Vocabulario.")
+        self.assertNotIn("guidedTitle", vocabulary["data"]["data"])
+
+        structured = builder._native_row(
+            LESSON_ID,
+            source,
+            source_digest,
+            {"number": 15, "title": "Grammar practice", "visibleTexts": ["Grammar practice"]},
+            "structured-content",
+            {"content": {"headers": ["Subject"], "rows": [["I"]]}},
+            4,
+            3,
+        )
+        self.assertEqual(structured["data"]["title"], "Grammar practice")
+        self.assertEqual(structured["data"]["data"]["guidedTitle"], "Grammar practice")
+
+        reading = builder._native_row(
+            LESSON_ID,
+            source,
+            source_digest,
+            {
+                "number": 16,
+                "title": "Reading passage",
+                "visibleTexts": [
+                    "Reading passage",
+                    "Maria is from Peru. She lives in Lima and studies English every day. "
+                    "Her friend Joao is from Brazil. They practice together after class and share stories.",
+                ],
+            },
+            "text",
+            {"content": "<p>Maria is from Peru.</p>"},
+            5,
+            4,
+        )
+        self.assertEqual(reading["data"]["title"], "Lee el texto.")
+        self.assertEqual(reading["data"]["data"]["guidedTitle"], "Lee el texto.")
+
+        video = builder._native_row(
+            LESSON_ID,
+            source,
+            source_digest,
+            {
+                "number": 17,
+                "title": "17",
+                "visibleTexts": ["Listen and repeat the pronunciation."],
+                "videoUrl": "https://youtu.be/fixture",
+            },
+            "video",
+            {"url": "https://youtu.be/fixture"},
+            6,
+            5,
+        )
+        self.assertEqual(video["data"]["title"], "Escucha la pronunciación.")
+        self.assertEqual(video["data"]["data"]["guidedTitle"], "Escucha la pronunciación.")
 
     def test_plan_is_deterministic_and_preserves_existing_identity(self) -> None:
         source = source_fixture()
@@ -1426,7 +1538,7 @@ class BuildCourseLearningTests(unittest.TestCase):
             ],
         )
         self.assertEqual(short_answer["data"]["title"], "Transforma la frase.")
-        self.assertEqual(short_answer["title"], "Transforma la frase.")
+        self.assertEqual(short_answer["title"], "Grammar practice")
         self.assertEqual(short_answer["data"]["data"]["guidedTitle"], "Transforma la frase.")
         self.assertEqual(short_answer["data"]["context"], "Convierte cada frase en pregunta y negativa.")
         self.assertEqual(

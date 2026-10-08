@@ -3287,24 +3287,67 @@ def _archive_existing_rows(
     return result
 
 
-def _concise_block_title(value: Any) -> str:
-    """Keep an authored title useful as a step label without dumping a slide."""
+_GUIDED_REVIEW_TITLES = {
+    "transforma la frase.": "Transforma la frase.",
+    "escucha y reflexiona.": "Escucha y reflexiona.",
+}
+
+_SOURCE_HEADING_INSTRUCTION_WORDS = re.compile(
+    r"\b(?:act|answer|ask|choose|circle|complete|change|describe|discuss|fill|hear|identify|listen|look|match|observe|pick|point|read|repeat|respond|select|state|talk|tell|transform|underline|write|"
+    r"actúa|cambia|completa|describe|discute|elige|escucha|escribe|identifica|lee|mira|observa|responde|selecciona|transforma)\b",
+    re.IGNORECASE,
+)
+
+
+def _source_heading(value: Any) -> str:
+    """Return a short named heading, excluding prompts and slide numbers."""
 
     candidate = _normalise(value)
-    if len(candidate) <= 96:
-        return candidate
-    # Source decks often put the whole instruction in the slide title. The
-    # first authored sentence/clause is a stable, meaningful step label while
-    # the complete instruction remains in the block payload and provenance.
-    # Do not split the authored ``A.``/``B.`` exercise marker as a sentence.
-    first = re.split(r"(?<=[!?])\s+|(?<=[a-z0-9])\.\s+|:\s+", candidate, maxsplit=1)[0].strip()
-    if 12 <= len(first) <= 120:
-        return first
-    if len(first) > 120:
-        before_comma = first.split(",", 1)[0].strip()
-        if 12 <= len(before_comma) <= 120:
-            return before_comma
+    if not candidate:
+        return ""
+    words = re.findall(r"[\wÀ-ÿ]+(?:['’–-][\wÀ-ÿ]+)?", candidate, flags=re.UNICODE)
+    if len(words) < 2 or len(words) > 8 or len(candidate) > 72:
+        return ""
+    if re.fullmatch(r"[\d\s./_-]+", candidate) or re.fullmatch(
+        r"(?:unit|lesson|slide)\s*\d{1,3}", candidate, flags=re.IGNORECASE
+    ):
+        return ""
+    if re.match(r"^(?:[A-Za-z]|\d{1,3})[.)]\s", candidate):
+        return ""
+    if (
+        re.search(r"[!?]", candidate)
+        or re.match(r"^(?:what|which|where|who|when|why|how|qué|cuál|dónde|quién|cuándo|por qué|cómo)\b", candidate, flags=re.IGNORECASE)
+        or _SOURCE_HEADING_INSTRUCTION_WORDS.search(candidate)
+    ):
+        return ""
+    if _is_technical_text(candidate):
+        return ""
     return candidate
+
+
+def _reviewed_guided_title(payload: Mapping[str, Any]) -> str:
+    candidate = _normalise(payload.get("title"))
+    if not candidate:
+        return ""
+    return _GUIDED_REVIEW_TITLES.get(candidate.casefold(), "")
+
+
+def _is_reading_content(slide: Mapping[str, Any]) -> bool:
+    evidence = " ".join(_evidence_texts(slide))
+    if not evidence:
+        return False
+    title_and_evidence = f"{_text(slide.get('title'))} {evidence}"
+    return bool(
+        re.search(r"\b(?:reading|passage|read\s+(?:the|a|an)?\s*text|read\s+the\s+following)\b", title_and_evidence, flags=re.IGNORECASE)
+        and any(len(value) >= 120 for value in _reading_passage_texts(slide, _evidence_texts(slide)))
+    )
+
+
+def _video_has_pronunciation_hint(slide: Mapping[str, Any]) -> bool:
+    evidence = " ".join([_text(slide.get("title")), *_evidence_texts(slide)])
+    return bool(
+        re.search(r"\b(?:pronunciation|pronounce|repeat|listen|hear)\b", evidence, flags=re.IGNORECASE)
+    )
 
 
 def _native_row_title(
@@ -3312,10 +3355,71 @@ def _native_row_title(
     native_type: str,
     payload: Mapping[str, Any],
 ) -> str:
-    payload_title = _text(payload.get("title"))
-    if payload_title:
-        return _concise_block_title(payload_title)
-    return _concise_block_title(_text(slide.get("title")) or native_type.replace("-", " ").title())
+    """Return the concise title stored on a mapped block for navigation."""
+
+    reviewed_title = _reviewed_guided_title(payload)
+    if reviewed_title:
+        return reviewed_title
+
+    source_role = _text(payload.get("sourceRole")).casefold()
+    heading = _source_heading(_text(slide.get("title")))
+    if native_type == "teacher_notes":
+        return ""
+    if source_role == "learning-goal":
+        return _source_heading(payload.get("title")) or heading or "En esta unidad."
+    if native_type == "image":
+        return "Observa la imagen." if _is_picture_prompt_required(slide) else heading or "Imagen."
+    if native_type == "video":
+        if _video_has_pronunciation_hint(slide):
+            return "Escucha la pronunciación."
+        return heading or "Mira el video."
+    if native_type == "text":
+        if _is_reading_content(slide):
+            return "Lee el texto."
+        return heading or "Contenido."
+    if native_type == "structured-content":
+        return heading or "Consulta las formas."
+    if native_type == "vocabulary":
+        return heading or "Vocabulario."
+    if native_type == "audio":
+        return heading or "Escucha."
+    if native_type == "multiple_choice":
+        return heading or "Elige la respuesta."
+    if native_type == "short_answer":
+        return heading or "Responde la actividad."
+    if native_type == "essay":
+        return heading or "Escribe tu respuesta."
+    if native_type == "recording":
+        return heading or "Habla."
+    if native_type == "teacher_notes":
+        return heading or "Notas del docente."
+    return heading or native_type.replace("-", " ").title()
+
+
+def _native_row_guided_title(
+    slide: Mapping[str, Any],
+    native_type: str,
+    payload: Mapping[str, Any],
+) -> str:
+    """Return only reviewed or evidence-backed overrides for task headings."""
+
+    reviewed_title = _reviewed_guided_title(payload)
+    if reviewed_title:
+        return reviewed_title
+
+    source_role = _text(payload.get("sourceRole")).casefold()
+    heading = _source_heading(_text(slide.get("title")))
+    if native_type == "teacher_notes":
+        return ""
+    if source_role == "learning-goal":
+        return _source_heading(payload.get("title")) or heading or "En esta unidad."
+    if native_type == "image" and _is_picture_prompt_required(slide):
+        return "Observa la imagen."
+    if native_type == "video" and _video_has_pronunciation_hint(slide):
+        return "Escucha la pronunciación."
+    if native_type == "text" and _is_reading_content(slide):
+        return "Lee el texto."
+    return heading
 
 
 def _native_row(
@@ -3355,15 +3459,18 @@ def _native_row(
         metadata = {**copy.deepcopy(dict(existing_metadata)), **metadata}
     data["type"] = native_type
     # ``mapContentToBlock`` reads the nested data object and does not expose a
-    # Prisma row's top-level title. Store a concise authored label there so the
-    # guided viewer can name the step without rendering the full slide prompt.
-    guided_title = _native_row_title(slide, native_type, payload)
-    metadata["guidedTitle"] = guided_title
-    data["title"] = guided_title
+    # Prisma row's top-level title. Store a concise navigation label there so
+    # the guided viewer never uses a full slide prompt as a step heading.
+    navigation_title = _native_row_title(slide, native_type, payload)
+    guided_title = _native_row_guided_title(slide, native_type, payload)
+    metadata.pop("guidedTitle", None)
+    if guided_title:
+        metadata["guidedTitle"] = guided_title
+    data["title"] = navigation_title
     data["data"] = metadata
     return {
         "id": row_id,
-        "title": guided_title,
+        "title": title,
         "order": order,
         "contentType": "RICH_TEXT",
         "lessonId": lesson_id,
