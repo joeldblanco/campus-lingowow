@@ -712,7 +712,8 @@ export function GuidedLessonViewer({
           outline-offset: 2px;
         }
 
-        .guided-lesson-viewer[data-illustrated] [data-guided-block-type='fill_blanks'] input:focus-visible {
+        .guided-lesson-viewer[data-illustrated] [data-guided-block-type='fill_blanks'] input:focus-visible,
+        .guided-lesson-viewer[data-illustrated] [data-guided-block-type='short_answer'] input:focus-visible {
           outline: none;
         }
 
