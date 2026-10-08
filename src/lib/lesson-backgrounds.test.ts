@@ -7,6 +7,11 @@ const step = (id: string, kind: GuidedLessonStep['kind'] = 'practice'): GuidedLe
   ({ id, kind, label: id, blocks: [] })
 
 describe('lesson background library', () => {
+  it('covers a long course lesson with twenty-five unrelated scenes without repetition', () => {
+    const steps = Array.from({ length: 25 }, (_, index) => step(`long-course-${index}`, 'content'))
+    const backgrounds = assignLessonBackgrounds(steps, { unitOneAuthored: false })
+    expect(new Set(Object.values(backgrounds)).size).toBe(25)
+  })
   it('reserves listening and Carl environments even when earlier exercises need a background', () => {
     const listening = { ...step('listen'), blocks: [{ type: 'true_false' } as Block] }
     const readingPractice = { ...step('reading-practice'), label: 'Comprensión de lectura: Carl Johnson', blocks: [{ type: 'multiple_choice' } as Block] }

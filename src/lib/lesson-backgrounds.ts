@@ -25,6 +25,13 @@ export const LESSON_BACKGROUNDS = [
   '/images/lessons/backgrounds/restaurant.webp',
   '/images/lessons/backgrounds/garden.webp',
   '/images/lessons/backgrounds/town-park.webp',
+  '/images/lessons/backgrounds/art-studio.webp',
+  '/images/lessons/backgrounds/mountain-cabin.webp',
+  '/images/lessons/backgrounds/flower-courtyard.webp',
+  '/images/lessons/backgrounds/airport-lounge.webp',
+  '/images/lessons/backgrounds/science-lab.webp',
+  '/images/lessons/backgrounds/harbor-promenade.webp',
+  '/images/lessons/backgrounds/community-bookshop.webp',
 ] as const
 
 export interface LessonBackgroundOptions {

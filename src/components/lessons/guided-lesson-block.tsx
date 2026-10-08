@@ -483,11 +483,15 @@ function GuidedTablePanel({
   notes: string[]
   indexColumn?: number
 }) {
+  const columnCount = Math.max(headers.reduce((sum, cell) => sum + (cell.colSpan || 1), 0), ...rows.map((row) => row.reduce((sum, cell) => sum + (cell.colSpan || 1), 0)))
+  const tableMinWidth = id === 'week-overview' ? 240 : Math.max(240, columnCount * 144 - (indexColumn === undefined ? 0 : 96))
   return (
     <section data-guided-table-group={id} className="overflow-x-auto rounded-[20px] border border-[#EEE8FA] bg-white p-2 sm:p-3">
+      {columnCount > 2 && <p className="mb-2 px-3 text-sm text-[#506187] sm:hidden">Desliza para ver la tabla →</p>}
       <table
         aria-label={label}
         className={`w-full min-w-[240px] table-fixed border-separate border-spacing-0 text-left text-base leading-6 ${NAVY_TEXT}`}
+        style={{ minWidth: tableMinWidth }}
       >
         <caption className="sr-only">{label}</caption>
         <thead className="bg-[#EEE8FA]">
@@ -513,7 +517,7 @@ function GuidedTablePanel({
                   key={cellIndex}
                   colSpan={cell.colSpan}
                   rowSpan={cell.rowSpan}
-                  className={`whitespace-pre-wrap break-words border-b border-[#EEE8FA] ${id === 'week-overview' ? 'px-2 sm:px-3' : 'px-3'} py-2 align-top font-serif ${id === 'week-overview' ? (cellIndex === 0 ? 'text-sm sm:text-lg' : 'text-base sm:text-lg') : 'text-lg'} leading-6 ${NAVY_TEXT} ${rowIndex === rows.length - 1 ? 'border-b-0' : ''} ${cellIndex === indexColumn ? 'w-12 min-w-12' : ''}`}
+                  className={`whitespace-pre-wrap break-words border-b border-[#EEE8FA] ${id === 'week-overview' ? 'px-2 sm:px-3' : 'px-3'} py-2 align-top font-serif ${id === 'week-overview' && cellIndex === 0 ? 'text-sm sm:text-lg' : 'text-base sm:text-lg'} leading-6 ${NAVY_TEXT} ${rowIndex === rows.length - 1 ? 'border-b-0' : ''} ${cellIndex === indexColumn ? 'w-12 min-w-12' : ''}`}
                   style={GEORGIA_FONT}
                 >
                   <GuidedTableCellContent cell={cell} />
@@ -571,6 +575,8 @@ function StructuredContentPresentation({
   const headers = content.headers.map((text) => ({ text }))
   const rows = content.rows.map((row) => row.map((text) => ({ text })))
   const indexColumn = numericIndexColumn(headers, rows)
+  const columnCount = Math.max(headers.length, ...rows.map((row) => row.length))
+  const tableMinWidth = Math.max(240, columnCount * 144 - (indexColumn === undefined ? 0 : 96))
 
   return (
     <div
@@ -580,9 +586,11 @@ function StructuredContentPresentation({
       {block.subtitle && (
         <p className={`px-3 pb-3 pt-2 text-base leading-6 ${SLATE_TEXT}`}>{block.subtitle}</p>
       )}
+      {columnCount > 2 && <p className="mb-2 px-3 text-sm text-[#506187] sm:hidden">Desliza para ver la tabla →</p>}
       <table
         aria-label={block.title || 'Tabla de referencia'}
         className={`w-full min-w-[240px] table-fixed border-separate border-spacing-0 text-left text-base leading-6 ${NAVY_TEXT}`}
+        style={{ minWidth: tableMinWidth }}
       >
         <caption className="sr-only">{block.title || 'Tabla de referencia'}</caption>
         <thead className="bg-[#EEE8FA]">
@@ -604,7 +612,7 @@ function StructuredContentPresentation({
               {row.map((cell, cellIndex) => (
                 <td
                   key={cellIndex}
-                  className={`whitespace-pre-wrap break-words border-b border-[#EEE8FA] px-3 py-1 align-top font-serif text-lg leading-6 ${NAVY_TEXT} ${index === rows.length - 1 ? 'border-b-0' : ''} ${cellIndex === indexColumn ? 'w-12 min-w-12' : ''}`}
+                  className={`whitespace-pre-wrap break-words border-b border-[#EEE8FA] px-3 py-1 align-top font-serif text-base sm:text-lg leading-6 ${NAVY_TEXT} ${index === rows.length - 1 ? 'border-b-0' : ''} ${cellIndex === indexColumn ? 'w-12 min-w-12' : ''}`}
                   style={GEORGIA_FONT}
                 >
                   {cell.text}

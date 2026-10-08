@@ -55,6 +55,13 @@ export const APPROVED_ILLUSTRATED_SCENES = [
   '/images/lessons/backgrounds/restaurant.webp',
   '/images/lessons/backgrounds/garden.webp',
   '/images/lessons/backgrounds/town-park.webp',
+  '/images/lessons/backgrounds/art-studio.webp',
+  '/images/lessons/backgrounds/mountain-cabin.webp',
+  '/images/lessons/backgrounds/flower-courtyard.webp',
+  '/images/lessons/backgrounds/airport-lounge.webp',
+  '/images/lessons/backgrounds/science-lab.webp',
+  '/images/lessons/backgrounds/harbor-promenade.webp',
+  '/images/lessons/backgrounds/community-bookshop.webp',
 ] as const
 
 const APPROVED_SCENE_SET = new Set<string>(APPROVED_ILLUSTRATED_SCENES)
@@ -117,7 +124,8 @@ function getBlockMetadata(block: Block): Record<string, unknown> {
 
 function getMetadataValue(block: Block, keys: string[]): unknown {
   const metadata = getBlockMetadata(block)
-  return keys.map((key) => metadata[key]).find((value) => value !== undefined)
+  const authoredFields = block as unknown as Record<string, unknown>
+  return keys.map((key) => metadata[key] ?? authoredFields[key]).find((value) => value !== undefined)
 }
 
 function getStepMetadata(step: GuidedLessonStep, keys: string[]): unknown {
@@ -369,6 +377,24 @@ export function buildIllustratedLessonSteps(blocks: Block[]): GuidedLessonStep[]
   const relatedSteps: GuidedLessonStep[] = []
   for (const step of buildGuidedLessonSteps(blocks)) {
     const previous = relatedSteps[relatedSteps.length - 1]
+    const pictureInstruction = previous?.blocks.find((block) =>
+      getMetadataValue(block, ['sourceRole']) === 'picture-instruction'
+    )
+    const pictureSlides = pictureInstruction && getMetadataValue(pictureInstruction, ['sourceSlides'])
+    if (
+      previous && Array.isArray(pictureSlides) && pictureSlides.length > 0 &&
+      step.blocks.some((block) => block.type === 'image') &&
+      step.blocks.every((block) => block.type === 'title' || (
+        block.type === 'image' &&
+        Array.isArray(getMetadataValue(block, ['sourceSlides'])) &&
+        (getMetadataValue(block, ['sourceSlides']) as unknown[]).some((slide) => pictureSlides.includes(slide))
+      ))
+    ) {
+      previous.blocks = [...previous.blocks, ...step.blocks]
+      previous.kind = 'content'
+      previous.label = 'Observa la imagen.'
+      continue
+    }
     if (
       previous?.kind === 'listening' &&
       previous.blocks.every((block) => block.type === 'audio' || block.type === 'video' || block.type === 'title') &&
@@ -400,6 +426,12 @@ export function buildIllustratedLessonSteps(blocks: Block[]): GuidedLessonStep[]
 }
 
 export function getIllustratedLessonTaskTitle(step: GuidedLessonStep): string {
+  if (step.blocks.some((block) => getMetadataValue(block, ['learningRevision']) === 'course-guided-v1' &&
+      getMetadataValue(block, ['sourceRole']) === 'learning-goal')) return 'En esta unidad.'
+  if (step.blocks.some((block) => block.type === 'image') &&
+      step.blocks.some((block) => getMetadataValue(block, ['sourceRole']) === 'picture-instruction')) {
+    return 'Observa la imagen.'
+  }
   const authoredTitle = getAuthoredGuidedTitle(step)
   if (authoredTitle) return authoredTitle
 

@@ -10,6 +10,26 @@ import {
 const vocabulary: VocabularyBlock = { id: 'vocabulary', type: 'vocabulary', order: 1, title: 'Vocabulario', items: Array.from({ length: 9 }, (_, index) => ({ id: `item-${index}`, term: index === 0 ? 'Name' : `Term ${index}`, definition: index === 0 ? 'Peter' : `Definition ${index}` })) }
 
 describe('illustrated vocabulary sequence', () => {
+  it('keeps a published picture question with its own figure instead of a separate step', () => {
+    const prompt = {
+      id: 'picture-prompt', type: 'text', order: 0, content: 'What is the picture suggesting?',
+      sourceRole: 'picture-instruction',
+      data: { learningRevision: 'course-guided-v1', sourceSlides: [4] },
+    } as Block
+    const figure: Block = {
+      id: 'figure', type: 'image', order: 1, url: '/source-figure.webp',
+      data: { learningRevision: 'course-guided-v1', sourceSlides: [4] },
+    }
+    const unrelated: Block = {
+      id: 'next-figure', type: 'image', order: 2, url: '/next-figure.webp',
+      data: { learningRevision: 'course-guided-v1', sourceSlides: [5] },
+    }
+    const steps = buildIllustratedLessonSteps([prompt, figure, unrelated])
+    expect(steps).toHaveLength(2)
+    expect(steps[0].blocks).toEqual([prompt, figure])
+    expect(getIllustratedLessonTaskTitle(steps[0])).toBe('Observa la imagen.')
+    expect(steps[1].blocks).toEqual([unrelated])
+  })
   it('shows three facts per scene without losing or reordering authored items', () => {
     const audio: Block = { id: 'audio', type: 'audio', order: 0, url: '/presentation.wav', maxReplays: 2 }
     const steps = buildIllustratedLessonSteps([audio, vocabulary])
@@ -126,6 +146,15 @@ describe('illustrated vocabulary sequence', () => {
     expect(getIllustratedLessonTaskTitle(buildIllustratedLessonSteps([family])[0])).toBe('Presenta a tu familia.')
     expect(getIllustratedLessonTaskTitle(buildIllustratedLessonSteps([topic])[0])).toBe('Graba tu presentación.')
     expect(getIllustratedLessonTaskTitle(buildIllustratedLessonSteps([self])[0])).toBe('Preséntate.')
+  })
+
+  it('introduces published learning goals with a concise student-facing heading', () => {
+    const goal = {
+      id: 'goal', type: 'text', order: 0, title: 'Communicative Function',
+      content: 'Talk about your family.', sourceRole: 'learning-goal',
+      data: { learningRevision: 'course-guided-v1', guidedTitle: 'Communicative Function' },
+    } as Block
+    expect(getIllustratedLessonTaskTitle(buildIllustratedLessonSteps([goal])[0])).toBe('En esta unidad.')
   })
 
   it('accepts only known scene assets and keeps generic steps on the setting path', () => {
