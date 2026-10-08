@@ -73,6 +73,18 @@
       "error": "Matched element does not expose a downloadable URL"
     }
   },
+  "normalUiInspection": {
+    "playerOpened": true,
+    "moreControlsOpened": true,
+    "moreControlsItems": [
+      "Playback speed"
+    ],
+    "downloadOrSaveItemPresent": false,
+    "audioFileTitleOrOpenOriginalLinkPresent": false,
+    "nativeContextMenuAttempted": true,
+    "nativeContextMenuExposedDownloadOrSave": false,
+    "result": "no-public-download-ui"
+  },
   "retrieval": {
     "status": "played-original-but-bytes-unretrievable",
     "originalBytesRetrieved": false,
