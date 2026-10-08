@@ -319,7 +319,16 @@
       ],
       "revisionRationale": "Four concise comprehension questions are authored only from explicit transcript clauses; original source prompts and original audio bytes remain archived.",
       "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording.",
-      "sourceViewerUrl": "https://drive.google.com/file/d/1MKVNsi26svUAQ6Rw6Px4jqtQ467e7KPZ/view"
+      "sourceViewerUrl": "https://drive.google.com/file/d/1MKVNsi26svUAQ6Rw6Px4jqtQ467e7KPZ/view",
+      "sourceAudioSlideNumber": 12,
+      "sourceAudioSlideEvidence": [
+        "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are unreal in both the past and present. Follow the example.",
+        "0. If we had called before, they would be waiting."
+      ],
+      "targetSlideEvidence": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceActivitySlideNumber": 13
     },
     {
       "key": {
