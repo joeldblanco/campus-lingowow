@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "purpose": "Manual semantic exercise-review patch for Units 53–56 slide 12 grammar production and the U53 cross-slide listening-audio link; proposal only, not direct composer input.",
+  "purpose": "Explicit source-validated semantic exercise-review patch for Units 53–56 slide 12 grammar production and the U53 cross-slide listening-audio link; consume with compose-course-builder-inputs.py --exercise-semantic-patch.",
   "scope": {
     "units": [
       53,

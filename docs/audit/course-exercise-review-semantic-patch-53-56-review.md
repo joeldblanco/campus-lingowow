@@ -1,5 +1,7 @@
 # Unit53–56 semantic exercise-review patch
 
+This is a concrete source-validated patch for `compose-course-builder-inputs.py --exercise-semantic-patch`; it is intended for direct composer input.
+
 This patch resolves the four `exercise-review-evidence-mismatch` blockers for the published slide 12 grammar-production activities. The prior review item used the generic evidence `A. Complete the grammar exercise on the published slide.`; each revised entry now copies the exact published instruction and example from its matching `source-files/<lessonId>.json` slide 12.
 
 Each activity remains an open response: the learner must write eight sentences, the original source wording and example are preserved, and `answerItems` stays empty with `doNotAutoGrade: true`. The patch keeps teacher/classroom review intent in metadata without inventing a canonical answer.
@@ -14,3 +16,5 @@ Each activity remains an open response: the learner must write eight sentences, 
 The U53 Audio 2 source remains attached to published source slide 12 with SHA `e2dbfac9997ff26812ae77a103ccf0d36de922fa0ed61b5246e9723973fe7e37`; the exact listening prompt is on published slide 13. The patch records that cross-slide link by lesson, audio ordinal, and SHA so runtime can attach the verified audio to the slide 13 listening activity without moving or duplicating the source media metadata.
 
 Validation evidence: every `sourceEvidence` string equals the published slide 12 `visibleTexts`, each entry's provenance SHA-256 was computed from the corresponding source JSON, and all four entries contain no answer key.
+
+Composer validation: with `--unit-first 53 --unit-last 56`, the parent composer applied all 4 entries (`applied: 4`, `rejected: 0`, `remainingHardBlocks: 0`). The same scoped run reports the separately documented U53 Audio2 cross-slide coordinate mismatch until runtime resolves source slide 12 audio to the slide 13 listening activity.
