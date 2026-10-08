@@ -210,7 +210,7 @@ class CourseListeningReviewTests(unittest.TestCase):
         self.assertEqual(len(item_set["originalQuestionsOmitted"]), 1)
         self.assertEqual(item_set["originalQuestionsOmitted"][0]["question"], "His mother lives in the USA")
 
-    def test_missing_source_questions_get_four_transcript_grounded_items(self):
+    def test_missing_source_questions_are_blocked_until_semantic_authoring(self):
         exercise = {
             "courseId": MODULE.COURSE_ID,
             "lessons": {
@@ -226,10 +226,68 @@ class CourseListeningReviewTests(unittest.TestCase):
             {"transcripts": [transcript(15, 2, "We used to play near the river. We went there every Saturday. We were good kids. We listened to music.")]},
         )
         item_set = output["exercises"][0]
-        self.assertEqual(item_set["reviewStatus"], "reviewed")
+        self.assertEqual(item_set["reviewStatus"], "blocked-unreviewed-pedagogy")
         self.assertEqual(len(item_set["items"]), 4)
-        self.assertTrue(all(item["answerItems"][0]["sourceAudioSha256"] == item_set["sourceAudioSha256"] for item in item_set["items"]))
+        self.assertTrue(all(item["reviewStatus"] == "blocked-unreviewed-pedagogy" for item in item_set["items"]))
+        self.assertTrue(all(item["answerItems"] == [] for item in item_set["items"]))
+        self.assertTrue(all(item["correct"] is None for item in item_set["items"]))
         self.assertTrue(all(item["originalQuestion"] is None for item in item_set["items"]))
+
+    def test_manual_units_three_to_fifteen_have_four_grounded_multiple_choice_items(self):
+        lessons = {
+            f"lesson-{unit}": {"unit": unit, "lessonTitle": f"Unit {unit}", "slides": {}}
+            for unit in range(3, 16)
+        }
+        transcripts = {
+            "transcripts": [
+                transcript(
+                    unit,
+                    2,
+                    " ".join(question["evidence"] for question in MODULE.MANUAL_AUTHORED_03_15[unit]),
+                )
+                for unit in range(3, 16)
+            ]
+        }
+        source_sets = {
+            "exercises": [
+                {
+                    "unit": unit,
+                    "audioIndex": 2,
+                    "lessonId": f"lesson-{unit}",
+                    "lessonTitle": f"Unit {unit}",
+                    "slideNumber": 13,
+                    "sourceExactTexts": [f"Unit {unit} source"],
+                    "sourceItemIds": [f"u{unit:02d}-s13-b"],
+                    "sourcePrompts": ["Listen and answer."],
+                }
+                for unit in range(3, 16)
+            ]
+        }
+        output = MODULE.build_authored_03_15(
+            {"courseId": MODULE.COURSE_ID, "lessons": lessons},
+            transcripts,
+            source_sets,
+        )
+        self.assertEqual(output["counts"], {
+            "exerciseSets": 13,
+            "reviewedSets": 13,
+            "blockedSets": 0,
+            "reviewedItems": 52,
+            "blockedItems": 0,
+        })
+        for item_set in output["exercises"]:
+            self.assertEqual(item_set["reviewStatus"], "reviewed")
+            self.assertEqual(len(item_set["items"]), 4)
+            for item in item_set["items"]:
+                self.assertEqual(item["kind"], "prompt")
+                self.assertEqual(item["format"], "multiple-choice")
+                self.assertEqual(len(item["explicitOptions"]), 4)
+                self.assertEqual(len({option.casefold() for option in item["explicitOptions"]}), 4)
+                self.assertIn(item["correct"], item["explicitOptions"])
+                self.assertEqual(item["answerItems"][0]["canonical"], item["correct"])
+                self.assertEqual(item["answerItems"][0]["sourceAudioSha256"], item_set["sourceAudioSha256"])
+                self.assertEqual(item["answerItems"][0]["evidence"], item["evidence"])
+                self.assertIn(item["evidence"], next(row for row in transcripts["transcripts"] if row["unit"] == item_set["unit"])["text"])
 
     def test_audio3_pronunciation_stays_blocked_without_source_answer_labels(self):
         pronunciation = slide(

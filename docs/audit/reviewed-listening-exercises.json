@@ -10,10 +10,10 @@
   },
   "counts": {
     "exerciseSets": 53,
-    "reviewedSets": 47,
-    "blockedSets": 6,
-    "reviewedItems": 189,
-    "blockedItems": 18,
+    "reviewedSets": 35,
+    "blockedSets": 18,
+    "reviewedItems": 141,
+    "blockedItems": 66,
     "originalQuestionsOmitted": 3,
     "audio3ManualSets": 2
   },
@@ -904,8 +904,8 @@
         "avgLogprob": -0.2625007266468472,
         "uncertaintyFlags": []
       },
-      "reviewStatus": "reviewed",
-      "manualReviewRequired": false,
+      "reviewStatus": "blocked-unreviewed-pedagogy",
+      "manualReviewRequired": true,
       "originalQuestionsOmitted": [],
       "revisionRationale": "Published source prompt retained; answerable facts use transcript evidence only.",
       "items": [
@@ -913,111 +913,72 @@
           "id": "audio-tf-1",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? My name is Arthur and I am always busy.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "My name is Arthur and I am always busy.",
-              "sourceAudioSha256": "8aaf47e29440b086abe0de0b6f4c2a4a1d33aeba0e796688e8fe5506846be408"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "My name is Arthur and I am always busy.",
           "sourceAudioSha256": "8aaf47e29440b086abe0de0b6f4c2a4a1d33aeba0e796688e8fe5506846be408",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-2",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? I wake up very early in the morning, have breakfast and I take a shower.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "I wake up very early in the morning, have breakfast and I take a shower.",
-              "sourceAudioSha256": "8aaf47e29440b086abe0de0b6f4c2a4a1d33aeba0e796688e8fe5506846be408"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "I wake up very early in the morning, have breakfast and I take a shower.",
           "sourceAudioSha256": "8aaf47e29440b086abe0de0b6f4c2a4a1d33aeba0e796688e8fe5506846be408",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-3",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? After that, I go out to take the bus and go to work.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "After that, I go out to take the bus and go to work.",
-              "sourceAudioSha256": "8aaf47e29440b086abe0de0b6f4c2a4a1d33aeba0e796688e8fe5506846be408"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "After that, I go out to take the bus and go to work.",
           "sourceAudioSha256": "8aaf47e29440b086abe0de0b6f4c2a4a1d33aeba0e796688e8fe5506846be408",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-4",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? arrive at 8 o'clock and I usually finish at 5 p.m.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "arrive at 8 o'clock and I usually finish at 5 p.m.",
-              "sourceAudioSha256": "8aaf47e29440b086abe0de0b6f4c2a4a1d33aeba0e796688e8fe5506846be408"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "arrive at 8 o'clock and I usually finish at 5 p.m.",
           "sourceAudioSha256": "8aaf47e29440b086abe0de0b6f4c2a4a1d33aeba0e796688e8fe5506846be408",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         }
-      ]
+      ],
+      "reviewRejection": "Generated transcript-verbatim fallback questions were rejected: semantic authoring is required before publication."
     },
     {
       "key": {
@@ -1051,8 +1012,8 @@
         "avgLogprob": -0.22110325714637494,
         "uncertaintyFlags": []
       },
-      "reviewStatus": "reviewed",
-      "manualReviewRequired": false,
+      "reviewStatus": "blocked-unreviewed-pedagogy",
+      "manualReviewRequired": true,
       "originalQuestionsOmitted": [],
       "revisionRationale": "Published source prompt retained; answerable facts use transcript evidence only.",
       "items": [
@@ -1060,111 +1021,72 @@
           "id": "audio-tf-1",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? My name is Dylan and I'm 28 years old.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "My name is Dylan and I'm 28 years old.",
-              "sourceAudioSha256": "d259e69f4bab862de276c401e31a7466814a0827e925c849697d1f993b0df010"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "My name is Dylan and I'm 28 years old.",
           "sourceAudioSha256": "d259e69f4bab862de276c401e31a7466814a0827e925c849697d1f993b0df010",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-2",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? That is why I love cooking",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "That is why I love cooking",
-              "sourceAudioSha256": "d259e69f4bab862de276c401e31a7466814a0827e925c849697d1f993b0df010"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "That is why I love cooking",
           "sourceAudioSha256": "d259e69f4bab862de276c401e31a7466814a0827e925c849697d1f993b0df010",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-3",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? I'm a big fan of pasta, but I'm not fond of rice",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "I'm a big fan of pasta, but I'm not fond of rice",
-              "sourceAudioSha256": "d259e69f4bab862de276c401e31a7466814a0827e925c849697d1f993b0df010"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "I'm a big fan of pasta, but I'm not fond of rice",
           "sourceAudioSha256": "d259e69f4bab862de276c401e31a7466814a0827e925c849697d1f993b0df010",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-4",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? I'm crazy about desserts and I am making them.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "I'm crazy about desserts and I am making them.",
-              "sourceAudioSha256": "d259e69f4bab862de276c401e31a7466814a0827e925c849697d1f993b0df010"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "I'm crazy about desserts and I am making them.",
           "sourceAudioSha256": "d259e69f4bab862de276c401e31a7466814a0827e925c849697d1f993b0df010",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         }
-      ]
+      ],
+      "reviewRejection": "Generated transcript-verbatim fallback questions were rejected: semantic authoring is required before publication."
     },
     {
       "key": {
@@ -1196,8 +1118,8 @@
         "avgLogprob": -0.1566562287718336,
         "uncertaintyFlags": []
       },
-      "reviewStatus": "reviewed",
-      "manualReviewRequired": false,
+      "reviewStatus": "blocked-unreviewed-pedagogy",
+      "manualReviewRequired": true,
       "originalQuestionsOmitted": [],
       "revisionRationale": "Published source prompt retained; answerable facts use transcript evidence only.",
       "items": [
@@ -1205,111 +1127,72 @@
           "id": "audio-tf-1",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? My name is David and I come from a big family.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "My name is David and I come from a big family.",
-              "sourceAudioSha256": "ace167b91ccdfc1914e6ae77738974dae1814098a64019936b83113ac74eec43"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "My name is David and I come from a big family.",
           "sourceAudioSha256": "ace167b91ccdfc1914e6ae77738974dae1814098a64019936b83113ac74eec43",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-2",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? I have three brothers and two sisters.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "I have three brothers and two sisters.",
-              "sourceAudioSha256": "ace167b91ccdfc1914e6ae77738974dae1814098a64019936b83113ac74eec43"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "I have three brothers and two sisters.",
           "sourceAudioSha256": "ace167b91ccdfc1914e6ae77738974dae1814098a64019936b83113ac74eec43",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-3",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Yeah, I know, lots of people.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Yeah, I know, lots of people.",
-              "sourceAudioSha256": "ace167b91ccdfc1914e6ae77738974dae1814098a64019936b83113ac74eec43"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Yeah, I know, lots of people.",
           "sourceAudioSha256": "ace167b91ccdfc1914e6ae77738974dae1814098a64019936b83113ac74eec43",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-4",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Our parents' names are Judith and Theo.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Our parents' names are Judith and Theo.",
-              "sourceAudioSha256": "ace167b91ccdfc1914e6ae77738974dae1814098a64019936b83113ac74eec43"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Our parents' names are Judith and Theo.",
           "sourceAudioSha256": "ace167b91ccdfc1914e6ae77738974dae1814098a64019936b83113ac74eec43",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         }
-      ]
+      ],
+      "reviewRejection": "Generated transcript-verbatim fallback questions were rejected: semantic authoring is required before publication."
     },
     {
       "key": {
@@ -1341,8 +1224,8 @@
         "avgLogprob": -0.22640949596058238,
         "uncertaintyFlags": []
       },
-      "reviewStatus": "reviewed",
-      "manualReviewRequired": false,
+      "reviewStatus": "blocked-unreviewed-pedagogy",
+      "manualReviewRequired": true,
       "originalQuestionsOmitted": [],
       "revisionRationale": "Published source prompt retained; answerable facts use transcript evidence only.",
       "items": [
@@ -1350,111 +1233,72 @@
           "id": "audio-tf-1",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Julio is an administrator.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Julio is an administrator.",
-              "sourceAudioSha256": "c673cb4e8e656ebf5ed01e385480ac17c8ba74dba03fa0edc87a7728b18d6ac7"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Julio is an administrator.",
           "sourceAudioSha256": "c673cb4e8e656ebf5ed01e385480ac17c8ba74dba03fa0edc87a7728b18d6ac7",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-2",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? He is 26 years old, and he works for the fast-food restaurant chain.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "He is 26 years old, and he works for the fast-food restaurant chain.",
-              "sourceAudioSha256": "c673cb4e8e656ebf5ed01e385480ac17c8ba74dba03fa0edc87a7728b18d6ac7"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "He is 26 years old, and he works for the fast-food restaurant chain.",
           "sourceAudioSha256": "c673cb4e8e656ebf5ed01e385480ac17c8ba74dba03fa0edc87a7728b18d6ac7",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-3",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Also, he administrates the hotel and a bar.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Also, he administrates the hotel and a bar.",
-              "sourceAudioSha256": "c673cb4e8e656ebf5ed01e385480ac17c8ba74dba03fa0edc87a7728b18d6ac7"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Also, he administrates the hotel and a bar.",
           "sourceAudioSha256": "c673cb4e8e656ebf5ed01e385480ac17c8ba74dba03fa0edc87a7728b18d6ac7",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-4",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? He's a very organized person because he manages more than one business.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "He's a very organized person because he manages more than one business.",
-              "sourceAudioSha256": "c673cb4e8e656ebf5ed01e385480ac17c8ba74dba03fa0edc87a7728b18d6ac7"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "He's a very organized person because he manages more than one business.",
           "sourceAudioSha256": "c673cb4e8e656ebf5ed01e385480ac17c8ba74dba03fa0edc87a7728b18d6ac7",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         }
-      ]
+      ],
+      "reviewRejection": "Generated transcript-verbatim fallback questions were rejected: semantic authoring is required before publication."
     },
     {
       "key": {
@@ -1539,8 +1383,8 @@
         "avgLogprob": -0.16164692295225044,
         "uncertaintyFlags": []
       },
-      "reviewStatus": "reviewed",
-      "manualReviewRequired": false,
+      "reviewStatus": "blocked-unreviewed-pedagogy",
+      "manualReviewRequired": true,
       "originalQuestionsOmitted": [],
       "revisionRationale": "Published source prompt retained; answerable facts use transcript evidence only.",
       "items": [
@@ -1548,111 +1392,72 @@
           "id": "audio-tf-1",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Hey man, there's no milk left.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Hey man, there's no milk left.",
-              "sourceAudioSha256": "f6e90ceb5a496d915b068f4086ebf4753ddd381d114f2f2938564148da40cace"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Hey man, there's no milk left.",
           "sourceAudioSha256": "f6e90ceb5a496d915b068f4086ebf4753ddd381d114f2f2938564148da40cace",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-2",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Well, is there something else we need to buy?",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Well, is there something else we need to buy?",
-              "sourceAudioSha256": "f6e90ceb5a496d915b068f4086ebf4753ddd381d114f2f2938564148da40cace"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Well, is there something else we need to buy?",
           "sourceAudioSha256": "f6e90ceb5a496d915b068f4086ebf4753ddd381d114f2f2938564148da40cace",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-3",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? We don't have much sugar.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "We don't have much sugar.",
-              "sourceAudioSha256": "f6e90ceb5a496d915b068f4086ebf4753ddd381d114f2f2938564148da40cace"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "We don't have much sugar.",
           "sourceAudioSha256": "f6e90ceb5a496d915b068f4086ebf4753ddd381d114f2f2938564148da40cace",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-4",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? And we need some cheese too.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "And we need some cheese too.",
-              "sourceAudioSha256": "f6e90ceb5a496d915b068f4086ebf4753ddd381d114f2f2938564148da40cace"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "And we need some cheese too.",
           "sourceAudioSha256": "f6e90ceb5a496d915b068f4086ebf4753ddd381d114f2f2938564148da40cace",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         }
-      ]
+      ],
+      "reviewRejection": "Generated transcript-verbatim fallback questions were rejected: semantic authoring is required before publication."
     },
     {
       "key": {
@@ -1685,7 +1490,7 @@
           "low-transcript-confidence"
         ]
       },
-      "reviewStatus": "blocked-manual",
+      "reviewStatus": "blocked-unreviewed-pedagogy",
       "manualReviewRequired": true,
       "originalQuestionsOmitted": [],
       "revisionRationale": "Published source prompt retained; answerable facts use transcript evidence only.",
@@ -1694,7 +1499,7 @@
           "id": "audio-tf-1",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? You know Jake jump drive these amazing car to school.",
-          "reviewStatus": "blocked-manual-transcript-review",
+          "reviewStatus": "blocked-unreviewed-pedagogy",
           "answerItems": [],
           "explicitOptions": [
             "true",
@@ -1704,13 +1509,14 @@
           "evidence": "You know Jake jump drive these amazing car to school.",
           "sourceAudioSha256": "2529c70cce4d22bfb30319b25dd52bca0a25d5e95349ee6a0b85746920652b37",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-2",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? That is his father's car.",
-          "reviewStatus": "blocked-manual-transcript-review",
+          "reviewStatus": "blocked-unreviewed-pedagogy",
           "answerItems": [],
           "explicitOptions": [
             "true",
@@ -1720,13 +1526,14 @@
           "evidence": "That is his father's car.",
           "sourceAudioSha256": "2529c70cce4d22bfb30319b25dd52bca0a25d5e95349ee6a0b85746920652b37",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-3",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? How about your car?",
-          "reviewStatus": "blocked-manual-transcript-review",
+          "reviewStatus": "blocked-unreviewed-pedagogy",
           "answerItems": [],
           "explicitOptions": [
             "true",
@@ -1736,13 +1543,14 @@
           "evidence": "How about your car?",
           "sourceAudioSha256": "2529c70cce4d22bfb30319b25dd52bca0a25d5e95349ee6a0b85746920652b37",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-4",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? There's a mother's car.",
-          "reviewStatus": "blocked-manual-transcript-review",
+          "reviewStatus": "blocked-unreviewed-pedagogy",
           "answerItems": [],
           "explicitOptions": [
             "true",
@@ -1752,9 +1560,11 @@
           "evidence": "There's a mother's car.",
           "sourceAudioSha256": "2529c70cce4d22bfb30319b25dd52bca0a25d5e95349ee6a0b85746920652b37",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         }
-      ]
+      ],
+      "reviewRejection": "Generated transcript-verbatim fallback questions were rejected: semantic authoring is required before publication."
     },
     {
       "key": {
@@ -1785,8 +1595,8 @@
         "avgLogprob": -0.12949340055790784,
         "uncertaintyFlags": []
       },
-      "reviewStatus": "reviewed",
-      "manualReviewRequired": false,
+      "reviewStatus": "blocked-unreviewed-pedagogy",
+      "manualReviewRequired": true,
       "originalQuestionsOmitted": [],
       "revisionRationale": "Published source prompt retained; answerable facts use transcript evidence only.",
       "items": [
@@ -1794,111 +1604,72 @@
           "id": "audio-tf-1",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Hi James, it's me Joe.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Hi James, it's me Joe.",
-              "sourceAudioSha256": "7bfdc2910f3fa677505de92c35645b6813987331f234a545af8759c1b116109a"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Hi James, it's me Joe.",
           "sourceAudioSha256": "7bfdc2910f3fa677505de92c35645b6813987331f234a545af8759c1b116109a",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-2",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Hey Joe, how are you?",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Hey Joe, how are you?",
-              "sourceAudioSha256": "7bfdc2910f3fa677505de92c35645b6813987331f234a545af8759c1b116109a"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Hey Joe, how are you?",
           "sourceAudioSha256": "7bfdc2910f3fa677505de92c35645b6813987331f234a545af8759c1b116109a",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-3",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? I'm a little confused though.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "I'm a little confused though.",
-              "sourceAudioSha256": "7bfdc2910f3fa677505de92c35645b6813987331f234a545af8759c1b116109a"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "I'm a little confused though.",
           "sourceAudioSha256": "7bfdc2910f3fa677505de92c35645b6813987331f234a545af8759c1b116109a",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-4",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? I'm downtown and I need to get to the Science Museum.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "I'm downtown and I need to get to the Science Museum.",
-              "sourceAudioSha256": "7bfdc2910f3fa677505de92c35645b6813987331f234a545af8759c1b116109a"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "I'm downtown and I need to get to the Science Museum.",
           "sourceAudioSha256": "7bfdc2910f3fa677505de92c35645b6813987331f234a545af8759c1b116109a",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         }
-      ]
+      ],
+      "reviewRejection": "Generated transcript-verbatim fallback questions were rejected: semantic authoring is required before publication."
     },
     {
       "key": {
@@ -1932,8 +1703,8 @@
         "avgLogprob": -0.18015592158595217,
         "uncertaintyFlags": []
       },
-      "reviewStatus": "reviewed",
-      "manualReviewRequired": false,
+      "reviewStatus": "blocked-unreviewed-pedagogy",
+      "manualReviewRequired": true,
       "originalQuestionsOmitted": [],
       "revisionRationale": "Published source prompt retained; answerable facts use transcript evidence only.",
       "items": [
@@ -1941,111 +1712,72 @@
           "id": "audio-tf-1",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Hi, my name is Andrew.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Hi, my name is Andrew.",
-              "sourceAudioSha256": "98f89fef3f8b014666e8d2be9760f048b97086b64df672204b0eb83040a9baf8"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Hi, my name is Andrew.",
           "sourceAudioSha256": "98f89fef3f8b014666e8d2be9760f048b97086b64df672204b0eb83040a9baf8",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-2",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? I'm from Galway, Ireland.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "I'm from Galway, Ireland.",
-              "sourceAudioSha256": "98f89fef3f8b014666e8d2be9760f048b97086b64df672204b0eb83040a9baf8"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "I'm from Galway, Ireland.",
           "sourceAudioSha256": "98f89fef3f8b014666e8d2be9760f048b97086b64df672204b0eb83040a9baf8",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-3",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Galway is a beautiful city.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Galway is a beautiful city.",
-              "sourceAudioSha256": "98f89fef3f8b014666e8d2be9760f048b97086b64df672204b0eb83040a9baf8"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Galway is a beautiful city.",
           "sourceAudioSha256": "98f89fef3f8b014666e8d2be9760f048b97086b64df672204b0eb83040a9baf8",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-4",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? It is a hardwood city with majestic, peaceful beaches and beautiful green landscapes.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "It is a hardwood city with majestic, peaceful beaches and beautiful green landscapes.",
-              "sourceAudioSha256": "98f89fef3f8b014666e8d2be9760f048b97086b64df672204b0eb83040a9baf8"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "It is a hardwood city with majestic, peaceful beaches and beautiful green landscapes.",
           "sourceAudioSha256": "98f89fef3f8b014666e8d2be9760f048b97086b64df672204b0eb83040a9baf8",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         }
-      ]
+      ],
+      "reviewRejection": "Generated transcript-verbatim fallback questions were rejected: semantic authoring is required before publication."
     },
     {
       "key": {
@@ -2079,8 +1811,8 @@
         "avgLogprob": -0.28441974176810336,
         "uncertaintyFlags": []
       },
-      "reviewStatus": "reviewed",
-      "manualReviewRequired": false,
+      "reviewStatus": "blocked-unreviewed-pedagogy",
+      "manualReviewRequired": true,
       "originalQuestionsOmitted": [],
       "revisionRationale": "Published source prompt retained; answerable facts use transcript evidence only.",
       "items": [
@@ -2088,111 +1820,72 @@
           "id": "audio-tf-1",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? hello hi nice tour right lovely Rome is a beautiful city yes it is but it's not",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "hello hi nice tour right lovely Rome is a beautiful city yes it is but it's not",
-              "sourceAudioSha256": "7261346741e249b40f4d1fa454219d5d87b4eb27e0578850b46da1174e11e933"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "hello hi nice tour right lovely Rome is a beautiful city yes it is but it's not",
           "sourceAudioSha256": "7261346741e249b40f4d1fa454219d5d87b4eb27e0578850b46da1174e11e933",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-2",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? nicer than Vienna well I think Rome is bigger and it has more places to visit",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "nicer than Vienna well I think Rome is bigger and it has more places to visit",
-              "sourceAudioSha256": "7261346741e249b40f4d1fa454219d5d87b4eb27e0578850b46da1174e11e933"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "nicer than Vienna well I think Rome is bigger and it has more places to visit",
           "sourceAudioSha256": "7261346741e249b40f4d1fa454219d5d87b4eb27e0578850b46da1174e11e933",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-3",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? indeed but Vienna is more picturesque and colorful okay you know what",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "indeed but Vienna is more picturesque and colorful okay you know what",
-              "sourceAudioSha256": "7261346741e249b40f4d1fa454219d5d87b4eb27e0578850b46da1174e11e933"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "indeed but Vienna is more picturesque and colorful okay you know what",
           "sourceAudioSha256": "7261346741e249b40f4d1fa454219d5d87b4eb27e0578850b46da1174e11e933",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-4",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Santorini is way more beautiful than these two cities don't you think",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Santorini is way more beautiful than these two cities don't you think",
-              "sourceAudioSha256": "7261346741e249b40f4d1fa454219d5d87b4eb27e0578850b46da1174e11e933"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Santorini is way more beautiful than these two cities don't you think",
           "sourceAudioSha256": "7261346741e249b40f4d1fa454219d5d87b4eb27e0578850b46da1174e11e933",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         }
-      ]
+      ],
+      "reviewRejection": "Generated transcript-verbatim fallback questions were rejected: semantic authoring is required before publication."
     },
     {
       "key": {
@@ -2226,8 +1919,8 @@
         "avgLogprob": -0.20067042092076065,
         "uncertaintyFlags": []
       },
-      "reviewStatus": "reviewed",
-      "manualReviewRequired": false,
+      "reviewStatus": "blocked-unreviewed-pedagogy",
+      "manualReviewRequired": true,
       "originalQuestionsOmitted": [],
       "revisionRationale": "Published source prompt retained; answerable facts use transcript evidence only.",
       "items": [
@@ -2235,111 +1928,72 @@
           "id": "audio-tf-1",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? It was the longest plane trip I have ever taken.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "It was the longest plane trip I have ever taken.",
-              "sourceAudioSha256": "2eed45d29002738e1499a201d6ab69f419f53ed42a08c9a7fac2f3d44c1ed582"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "It was the longest plane trip I have ever taken.",
           "sourceAudioSha256": "2eed45d29002738e1499a201d6ab69f419f53ed42a08c9a7fac2f3d44c1ed582",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-2",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? It wasn't that long and you enjoyed it at least.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "It wasn't that long and you enjoyed it at least.",
-              "sourceAudioSha256": "2eed45d29002738e1499a201d6ab69f419f53ed42a08c9a7fac2f3d44c1ed582"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "It wasn't that long and you enjoyed it at least.",
           "sourceAudioSha256": "2eed45d29002738e1499a201d6ab69f419f53ed42a08c9a7fac2f3d44c1ed582",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-3",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Yes man it was the longest but the best trip of my entire life",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Yes man it was the longest but the best trip of my entire life",
-              "sourceAudioSha256": "2eed45d29002738e1499a201d6ab69f419f53ed42a08c9a7fac2f3d44c1ed582"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Yes man it was the longest but the best trip of my entire life",
           "sourceAudioSha256": "2eed45d29002738e1499a201d6ab69f419f53ed42a08c9a7fac2f3d44c1ed582",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-4",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Tokyo is one of the biggest city in the world",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Tokyo is one of the biggest city in the world",
-              "sourceAudioSha256": "2eed45d29002738e1499a201d6ab69f419f53ed42a08c9a7fac2f3d44c1ed582"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Tokyo is one of the biggest city in the world",
           "sourceAudioSha256": "2eed45d29002738e1499a201d6ab69f419f53ed42a08c9a7fac2f3d44c1ed582",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         }
-      ]
+      ],
+      "reviewRejection": "Generated transcript-verbatim fallback questions were rejected: semantic authoring is required before publication."
     },
     {
       "key": {
@@ -2373,8 +2027,8 @@
         "avgLogprob": -0.1516978504702589,
         "uncertaintyFlags": []
       },
-      "reviewStatus": "reviewed",
-      "manualReviewRequired": false,
+      "reviewStatus": "blocked-unreviewed-pedagogy",
+      "manualReviewRequired": true,
       "originalQuestionsOmitted": [],
       "revisionRationale": "Published source prompt retained; answerable facts use transcript evidence only.",
       "items": [
@@ -2382,111 +2036,72 @@
           "id": "audio-tf-1",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? No, it looks like, but it's not raining right now.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "No, it looks like, but it's not raining right now.",
-              "sourceAudioSha256": "dabbe15990369db86f68a67dc31f40792808640cf36ff2b07f07dda28548d425"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "No, it looks like, but it's not raining right now.",
           "sourceAudioSha256": "dabbe15990369db86f68a67dc31f40792808640cf36ff2b07f07dda28548d425",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-2",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? However, it is raining all these days.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "However, it is raining all these days.",
-              "sourceAudioSha256": "dabbe15990369db86f68a67dc31f40792808640cf36ff2b07f07dda28548d425"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "However, it is raining all these days.",
           "sourceAudioSha256": "dabbe15990369db86f68a67dc31f40792808640cf36ff2b07f07dda28548d425",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-3",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Okay, so it's cloudy now.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Okay, so it's cloudy now.",
-              "sourceAudioSha256": "dabbe15990369db86f68a67dc31f40792808640cf36ff2b07f07dda28548d425"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Okay, so it's cloudy now.",
           "sourceAudioSha256": "dabbe15990369db86f68a67dc31f40792808640cf36ff2b07f07dda28548d425",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-4",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Can you let me know if it starts raining?",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Can you let me know if it starts raining?",
-              "sourceAudioSha256": "dabbe15990369db86f68a67dc31f40792808640cf36ff2b07f07dda28548d425"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Can you let me know if it starts raining?",
           "sourceAudioSha256": "dabbe15990369db86f68a67dc31f40792808640cf36ff2b07f07dda28548d425",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         }
-      ]
+      ],
+      "reviewRejection": "Generated transcript-verbatim fallback questions were rejected: semantic authoring is required before publication."
     },
     {
       "key": {
@@ -2515,8 +2130,8 @@
         "avgLogprob": -0.25911708976681513,
         "uncertaintyFlags": []
       },
-      "reviewStatus": "reviewed",
-      "manualReviewRequired": false,
+      "reviewStatus": "blocked-unreviewed-pedagogy",
+      "manualReviewRequired": true,
       "originalQuestionsOmitted": [],
       "revisionRationale": "Published source prompt retained; answerable facts use transcript evidence only.",
       "items": [
@@ -2524,111 +2139,72 @@
           "id": "audio-tf-1",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Montreal is a really big city.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Montreal is a really big city.",
-              "sourceAudioSha256": "13d237184b3afae36b2afc87c18b346f1a2043ee312813624899c0d96eae1044"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Montreal is a really big city.",
           "sourceAudioSha256": "13d237184b3afae36b2afc87c18b346f1a2043ee312813624899c0d96eae1044",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-2",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? How do you know that?",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "How do you know that?",
-              "sourceAudioSha256": "13d237184b3afae36b2afc87c18b346f1a2043ee312813624899c0d96eae1044"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "How do you know that?",
           "sourceAudioSha256": "13d237184b3afae36b2afc87c18b346f1a2043ee312813624899c0d96eae1044",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-3",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Have you ever been there?",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Have you ever been there?",
-              "sourceAudioSha256": "13d237184b3afae36b2afc87c18b346f1a2043ee312813624899c0d96eae1044"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Have you ever been there?",
           "sourceAudioSha256": "13d237184b3afae36b2afc87c18b346f1a2043ee312813624899c0d96eae1044",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-4",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? We went to Montreal last week.",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "We went to Montreal last week.",
-              "sourceAudioSha256": "13d237184b3afae36b2afc87c18b346f1a2043ee312813624899c0d96eae1044"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "We went to Montreal last week.",
           "sourceAudioSha256": "13d237184b3afae36b2afc87c18b346f1a2043ee312813624899c0d96eae1044",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         }
-      ]
+      ],
+      "reviewRejection": "Generated transcript-verbatim fallback questions were rejected: semantic authoring is required before publication."
     },
     {
       "key": {
@@ -2710,8 +2286,8 @@
         "avgLogprob": -0.2585634273805905,
         "uncertaintyFlags": []
       },
-      "reviewStatus": "reviewed",
-      "manualReviewRequired": false,
+      "reviewStatus": "blocked-unreviewed-pedagogy",
+      "manualReviewRequired": true,
       "originalQuestionsOmitted": [],
       "revisionRationale": "Published source prompt retained; answerable facts use transcript evidence only.",
       "items": [
@@ -2719,111 +2295,72 @@
           "id": "audio-tf-1",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Yeah, I remember that too you remember when we were children and we used to play in the big tractor wheel",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Yeah, I remember that too you remember when we were children and we used to play in the big tractor wheel",
-              "sourceAudioSha256": "8c7f0d910ed67cbf3d064a4fe2a3f206dd8a8f0a1060bc4d69a422bcd57fdaaa"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Yeah, I remember that too you remember when we were children and we used to play in the big tractor wheel",
           "sourceAudioSha256": "8c7f0d910ed67cbf3d064a4fe2a3f206dd8a8f0a1060bc4d69a422bcd57fdaaa",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-2",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Yes, and I remember when you fell down there and bro your glasses",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Yes, and I remember when you fell down there and bro your glasses",
-              "sourceAudioSha256": "8c7f0d910ed67cbf3d064a4fe2a3f206dd8a8f0a1060bc4d69a422bcd57fdaaa"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Yes, and I remember when you fell down there and bro your glasses",
           "sourceAudioSha256": "8c7f0d910ed67cbf3d064a4fe2a3f206dd8a8f0a1060bc4d69a422bcd57fdaaa",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-3",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? I didn't remember I used to wear glasses",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "I didn't remember I used to wear glasses",
-              "sourceAudioSha256": "8c7f0d910ed67cbf3d064a4fe2a3f206dd8a8f0a1060bc4d69a422bcd57fdaaa"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "I didn't remember I used to wear glasses",
           "sourceAudioSha256": "8c7f0d910ed67cbf3d064a4fe2a3f206dd8a8f0a1060bc4d69a422bcd57fdaaa",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         },
         {
           "id": "audio-tf-4",
           "kind": "true-false",
           "prompt": "According to the audio, is this statement true or false? Glasses they used to be more like two big bottle buttons in front of your face",
-          "reviewStatus": "reviewed",
-          "answerItems": [
-            {
-              "id": "true",
-              "canonical": "true",
-              "accepted": [
-                "true",
-                "t"
-              ],
-              "evidence": "Glasses they used to be more like two big bottle buttons in front of your face",
-              "sourceAudioSha256": "8c7f0d910ed67cbf3d064a4fe2a3f206dd8a8f0a1060bc4d69a422bcd57fdaaa"
-            }
-          ],
+          "reviewStatus": "blocked-unreviewed-pedagogy",
+          "answerItems": [],
           "explicitOptions": [
             "true",
             "false"
           ],
-          "correct": "true",
+          "correct": null,
           "evidence": "Glasses they used to be more like two big bottle buttons in front of your face",
           "sourceAudioSha256": "8c7f0d910ed67cbf3d064a4fe2a3f206dd8a8f0a1060bc4d69a422bcd57fdaaa",
           "originalQuestion": null,
-          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+          "rationale": "No answerable published listening questions were extracted; facts quote transcript clauses verbatim.",
+          "reviewRejection": "Raw ASR fragment fallback is retained for audit only and is never accepted as pedagogy."
         }
-      ]
+      ],
+      "reviewRejection": "Generated transcript-verbatim fallback questions were rejected: semantic authoring is required before publication."
     },
     {
       "key": {
